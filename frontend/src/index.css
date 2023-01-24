@@ -1,3 +1,151 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('./assets/fonts/Roboto-Regular.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TitilliumWeb-Bold';
+  src: url('./assets/fonts/TitilliumWeb-Bold.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto-Bold';
+  src: url('./assets/fonts/Roboto-Bold.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto-Medium';
+  src: url('./assets/fonts/Roboto-Medium.ttf');
+  font-display: swap;
+}
+
+@layer base {
+  body {
+    @apply text-cool-gray-800;
+  }
+
+  body,
+  p {
+    @apply font-roboto text-base;
+  }
+
+  small {
+    @apply text-sm font-roboto;
+  }
+
+  button {
+    @apply text-sm font-robotoMedium;
+  }
+
+  a {
+    @apply text-sm font-robotoBold text-turquoise hover:text-turquoise-700 active:text-turquoise-800 focus:outline-0;
+  }
+
+  h1 {
+    @apply text-4xl font-titilliumBold;
+  }
+
+  h2 {
+    @apply text-xl font-titilliumBold;
+  }
+
+  h3 {
+    @apply text-xl font-roboto font-semibold;
+  }
+
+  h4 {
+    @apply text-base font-titilliumBold;
+  }
+
+  h5 {
+    @apply text-sm font-titilliumBold;
+  }
+}
+
+@layer components {
+  .typography {
+    @apply p-0 m-0;
+
+    word-break: break-word;
+  }
+
+  .btn {
+    @apply flex items-center justify-center rounded-md min-w-fit w-20 py-2.5 gap-x-2 whitespace-nowrap font-medium text-sm font-robotoMedium disabled:opacity-50;
+
+    padding-inline: 17px;
+  }
+
+  .btn-primary {
+    @apply btn text-white bg-turquoise hover:bg-turquoise-700 active:bg-turquoise-800 focus:shadow-yellow focus:outline-0;
+  }
+
+  .btn-danger {
+    @apply btn text-white bg-red hover:bg-red-700 active:bg-red-800 focus:shadow-yellow focus:outline-0;
+  }
+
+  .btn-secondary {
+    @apply btn text-white bg-cool-gray focus:shadow-yellow focus:outline-0;
+  }
+
+  .btn-outline-secondary {
+    @apply btn border border-cool-gray-300 text-cool-gray-900 bg-white hover:bg-cool-gray-50 active:bg-cool-gray-100 focus:shadow-blue focus:outline-0;
+  }
+
+  .btn-text-primary {
+    @apply btn text-turquoise hover:text-turquoise-700 active:text-turquoise-800 focus:shadow-yellow focus:outline-0;
+  }
+
+  .btn-text-danger {
+    @apply btn text-red hover:text-red-700 active:text-red-800 focus:shadow-yellow focus:outline-0;
+  }
+
+  .input-style {
+    @apply border border-cool-gray-200 rounded-md shadow-sm;
+  }
+
+  .logo {
+    @apply bg-cool-gray-700 rounded-full bg-cover;
+  }
+}
+
+.rdt_TableWrapper {
+  @apply pb-2 !important;
+}
+
+/* Overrride default overflow for datatables to allow popovers */
+.rdt_TableWrapper div {
+  overflow-x: initial !important;
+  overflow-y: initial !important;
+}
+
+.rdt_TableWrapper > div:first-of-type {
+  overflow: scroll !important;
+  /* added for action menu to be visible without scrolling */
+  padding-bottom: 7rem !important;
+}
+
+/* data table overrides */
+.rdt_TableHeadRow > .rdt_TableCol {
+  @apply bg-cool-gray-50 text-sm text-cool-gray-900 border-cool-gray-300;
+}
+
+.rdt_TableHeadRow > .rdt_TableCol > div {
+  @apply py-3.5 pl-2 pr-3;
+}
+
+.rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
+  @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-sm font-normal text-cool-gray-700;
+}
+
+.rdt_TableBody > div:last-of-type {
+  border-bottom-style: solid !important;
+  border-bottom-width: 1px !important;
+  border-bottom-color: rgba(0, 0, 0, 0.12) !important;
+}
