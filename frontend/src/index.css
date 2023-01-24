@@ -36,6 +36,10 @@
     @apply font-roboto text-base;
   }
 
+  header {
+    @apply shadow-header;
+  }
+
   small {
     @apply text-sm font-roboto;
   }
@@ -112,6 +116,10 @@
 
   .logo {
     @apply bg-cool-gray-700 rounded-full bg-cover;
+  }
+
+  .menu-item {
+    @apply h-10 text-gray-50 hover:bg-turquoise/[0.15]  hover:text-turquoise flex items-center px-0 py-2 font-medium rounded-md;
   }
 }
 

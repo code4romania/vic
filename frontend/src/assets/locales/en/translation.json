@@ -2,10 +2,16 @@
   "header": {
     "login": "Login",
     "menu": {
-      "oprions": {
+      "options": {
         "my_account": "Contul meu",
-        "logout": "Logout"
+        "logout": "Log out"
       }
     }
+  },
+  "side_menu": {
+    "options": {
+      "dashboard": "Dashboard"
+    },
+    "collapse": "Restrange meniul"
   }
 }

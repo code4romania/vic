@@ -7,5 +7,11 @@
         "logout": "Log out"
       }
     }
+  },
+  "side_menu": {
+    "options": {
+      "dashboard": "Dashboard"
+    },
+    "collapse": "Restrange meniul"
   }
 }
