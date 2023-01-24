@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { AuthContext } from '../contexts/auth/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { useTestValuesQuery } from '../services/test/test.service';
 
 const Dashboard = () => {
-  const { logout } = useContext(AuthContext);
+  const { logout } = useAuth();
   // for testing purpose only
   const { t } = useTranslation('general');
   // for testing purpos only
