@@ -1,5 +1,11 @@
 {
-  "general": {
-    "test": "Test me"
+  "header": {
+    "login": "Login",
+    "menu": {
+      "oprions": {
+        "my_account": "Contul meu",
+        "logout": "Logout"
+      }
+    }
   }
 }

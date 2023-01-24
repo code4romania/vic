@@ -1,5 +1,11 @@
 {
-  "general": {
-    "test": "Testeaza-ma"
+  "header": {
+    "login": "Login",
+    "menu": {
+      "options": {
+        "my_account": "Contul meu",
+        "logout": "Log out"
+      }
+    }
   }
 }

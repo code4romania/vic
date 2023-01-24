@@ -28,7 +28,7 @@
 
 @layer base {
   body {
-    @apply text-cool-gray-800;
+    @apply text-cool-gray-800 bg-gray-50;
   }
 
   body,
@@ -45,7 +45,7 @@
   }
 
   a {
-    @apply text-sm font-robotoBold text-turquoise hover:text-turquoise-700 active:text-turquoise-800 focus:outline-0;
+    @apply sm:text-sm text-xs font-robotoBold text-turquoise hover:text-turquoise-700 active:text-turquoise-800 focus:outline-0 cursor-pointer;
   }
 
   h1 {
@@ -61,7 +61,7 @@
   }
 
   h4 {
-    @apply text-base font-titilliumBold;
+    @apply sm:text-sm lg:text-base text-xs font-titilliumBold;
   }
 
   h5 {
