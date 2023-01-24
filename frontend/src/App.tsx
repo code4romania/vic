@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import AuthContextProvider from './contexts/auth/AuthContextProvider';
 import Router from './routes/Router';
