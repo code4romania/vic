@@ -31,6 +31,7 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
           {isAuthenticated && (
             <div className="flex md:hidden items-center">
               <button
+                id="side_menu__open-btn"
                 aria-label="Menu"
                 className="flex items-center gap-4 hover:bg-green-tab py-2 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
                 onClick={openSlidingMenu.bind(null, true)}
@@ -51,7 +52,10 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
           <div className="flex space-x-4 items-center">
             <Menu as="div" className="relative inline-block text-left">
               <div>
-                <Menu.Button className="flex items-center gap-4 hover:bg-green-tab sm:py-2 sm:px-4 py-1 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                <Menu.Button
+                  id="account_menu__open-btn"
+                  className="flex items-center gap-4 hover:bg-green-tab sm:py-2 sm:px-4 py-1 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+                >
                   <h4 className="tracking-wide text-right">Profile Name</h4>
                   <ChevronDownIcon className="w-5 h-5 md:w-6 md:h-6 text-gray-900" />
                 </Menu.Button>
@@ -70,6 +74,7 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
                     <Menu.Item>
                       {({ active }) => (
                         <a
+                          id="profile__menu-item"
                           aria-label="my account"
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
@@ -88,6 +93,7 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
                     <Menu.Item>
                       {({ active }) => (
                         <a
+                          id="logout__menu-item"
                           aria-label="logout"
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',

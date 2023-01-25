@@ -12,6 +12,7 @@ interface MenuItemProps {
 const MenuItem = ({ item, active, isNarrow, onClick }: MenuItemProps) => {
   return (
     <a
+      id={`${item.name}__menu-item`}
       aria-label={item.name}
       className={classNames(
         active ? 'bg-turquoise/[0.15] text-turquoise' : 'text-gray-50',

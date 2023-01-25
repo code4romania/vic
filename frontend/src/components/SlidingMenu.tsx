@@ -61,6 +61,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
                   >
                     <div className="absolute top-0 -right-8 flex pt-4">
                       <button
+                        id="close_panel__btn"
                         aria-label="Close panel"
                         type="button"
                         className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
