@@ -12,7 +12,7 @@ const MainLayout = () => {
       <Header openSlidingMenu={setSlidingMenuOpen} />
       <SlidingMenu isOpen={isSlidingMenuOpen} setSlidingMenuOpen={setSlidingMenuOpen} />
       <section className="flex flex-row sm:p-6 p-4 gap-6">
-        <div className="menu hidden md:flex">
+        <div className="hidden md:flex">
           <SideMenu />
         </div>
         <div className="w-full">
