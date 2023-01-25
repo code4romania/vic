@@ -71,6 +71,10 @@
   h5 {
     @apply text-sm font-titilliumBold;
   }
+
+  nav {
+    @apply font-titilliumBold;
+  }
 }
 
 @layer components {
@@ -116,10 +120,6 @@
 
   .logo {
     @apply bg-cool-gray-700 rounded-full bg-cover;
-  }
-
-  .menu-item {
-    @apply h-10 text-gray-50 hover:bg-turquoise/[0.15]  hover:text-turquoise flex items-center px-0 py-2 font-medium rounded-md;
   }
 }
 

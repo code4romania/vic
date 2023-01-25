@@ -26,13 +26,10 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
 
   return (
     <header className="bg-white py-4 px-4 md:px-10">
-      <nav
-        className="w-full flex justify-between items-center"
-        onClick={openSlidingMenu.bind(null, true)}
-      >
+      <nav className="w-full flex justify-between items-center">
         <div className="flex gap-4">
           {isAuthenticated && (
-            <div className="flex lg:hidden items-center">
+            <div className="flex md:hidden items-center">
               <button
                 aria-label="Menu"
                 className="flex items-center gap-4 hover:bg-green-tab py-2 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
@@ -84,7 +81,7 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
                             className="mr-3 sm:h-5 sm:w-5 h-4 w-4 text-gray-800 "
                             aria-hidden="true"
                           />
-                          {t('menu.options.my_account')}
+                          <small>{t('menu.options.my_account')}</small>
                         </a>
                       )}
                     </Menu.Item>
@@ -102,7 +99,7 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
                             className="mr-3 sm:h-5 sm:w-5 h-4 w-4 text-gray-800 "
                             aria-hidden="true"
                           />
-                          {t('menu.options.logout')}
+                          <small>{t('menu.options.logout')}</small>
                         </a>
                       )}
                     </Menu.Item>
