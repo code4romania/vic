@@ -4,7 +4,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
-import { Environment } from './common/config/environment-config';
+import { Environment } from './core/config/environment-config';
+import { ExceptionsFilter } from './core/filters/exception.filter';
 import { createQueueMonitoring } from './libs/bull-board';
 
 async function bootstrap() {
@@ -15,6 +16,8 @@ async function bootstrap() {
   });
 
   app.use(helmet());
+
+  app.useGlobalFilters(new ExceptionsFilter());
 
   app.useLogger(app.get(Logger));
 
