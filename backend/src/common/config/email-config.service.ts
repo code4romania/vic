@@ -24,17 +24,17 @@ export class EmailConfigService {
       },
       preview: true,
       template: {
-        dir: __dirname + '/../../mail/templates',
-        adapter: new HandlebarsAdapter({'asset_url': this.createAssetUrl}),
+        dir: __dirname + '/../../modules/mail/templates',
+        adapter: new HandlebarsAdapter({ asset_url: this.createAssetUrl }),
         options: {
           strict: true,
         },
       },
       options: {
         partials: {
-          dir: __dirname + '/../../mail/templates/' + 'partials',
+          dir: __dirname + '/../../modules/mail/templates/' + 'partials',
           options: {
-            strict: true
+            strict: true,
           },
         },
       },

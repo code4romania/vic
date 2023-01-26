@@ -2,9 +2,8 @@ import { ExpressAdapter } from '@bull-board/express';
 import { Logger, INestApplication } from '@nestjs/common';
 import { BullAdapter } from '@bull-board/api/bullAdapter';
 import { createBullBoard } from '@bull-board/api';
-import { QUEUES } from 'src/common/constants/queues.constants';
 import { Queue } from 'bull';
-import { COMMON_ERRORS } from 'src/common/constants/error-common.constants';
+import { QUEUES } from 'src/common/constants/constants';
 
 export function createQueueMonitoring(app: INestApplication) {
   try {
@@ -23,6 +22,8 @@ export function createQueueMonitoring(app: INestApplication) {
 
     return serverAdapter;
   } catch (err) {
-    app.get(Logger).log(COMMON_ERRORS.BULLBOARD, 'createQueueMonitoring');
+    app
+      .get(Logger)
+      .log('BullBoard could not be initialized', 'createQueueMonitoring');
   }
 }
