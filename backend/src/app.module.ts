@@ -10,7 +10,7 @@ import { RolesGuard } from './core/guards/roles.guard';
 import { ThrottlerGuardByIP } from './core/guards/throttler.guard';
 import { JsonBodyMiddleware } from './core/middleware/json-body.middlware';
 import { RawBodyMiddleware } from './core/middleware/raw-body.middleware';
-import { MailModule } from './modules/mail/mail.module';
+import { MailModule } from './core/mail/mail.module';
 import {
   CacheProviderModule,
   DatabaseProviderModule,
