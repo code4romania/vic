@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/core/base/base-entity';
+import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
 import {
   Column,
   Entity,
@@ -25,4 +26,16 @@ export class AdminUserEntity extends BaseEntity {
   @OneToOne(() => UserEntity)
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
+
+  @Exclude()
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    name: 'organization_id',
+  })
+  organizationId: string;
+
+  @OneToOne(() => OrganizationEntity)
+  @JoinColumn({ name: 'organization_id' })
+  organization: OrganizationEntity;
 }
