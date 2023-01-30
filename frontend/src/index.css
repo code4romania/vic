@@ -2,33 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Roboto';
-  src: url('./assets/fonts/Roboto-Regular.ttf');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'TitilliumWeb-Bold';
-  src: url('./assets/fonts/TitilliumWeb-Bold.ttf');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Roboto-Bold';
-  src: url('./assets/fonts/Roboto-Bold.ttf');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Roboto-Medium';
-  src: url('./assets/fonts/Roboto-Medium.ttf');
-  font-display: swap;
-}
-
 @layer base {
   body {
-    @apply text-cool-gray-800 bg-gray-50;
+    @apply text-cool-gray-800 bg-cool-gray-50;
   }
 
   body,
@@ -75,6 +51,30 @@
   nav {
     @apply font-titilliumBold;
   }
+
+  textarea {
+    @apply min-h-[6rem];
+  }
+
+  input::placeholder {
+    @apply text-cool-gray-500;
+  }
+
+  input:disabled {
+    @apply bg-cool-gray-200 text-cool-gray-500 cursor-auto;
+  }
+
+  input,
+  textarea {
+    @apply text-cool-gray-900 rounded-md border border-cool-gray-200 py-2.5 bg-white max-w-[30rem] h-fit cursor-text outline-0 shadow-sm text-sm font-roboto focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500;
+
+    padding-inline: 0.813rem;
+    word-break: break-word;
+  }
+
+  label {
+    @apply text-base font-roboto;
+  }
 }
 
 @layer components {
@@ -84,8 +84,12 @@
     word-break: break-word;
   }
 
+  .helper-text {
+    @apply text-sm font-roboto text-cool-gray-500;
+  }
+
   .btn {
-    @apply flex items-center justify-center rounded-md min-w-fit w-20 py-2.5 gap-x-2 whitespace-nowrap font-medium text-sm font-robotoMedium disabled:opacity-50;
+    @apply flex items-center justify-center rounded-md min-w-fit w-full sm:w-20 py-2.5 gap-x-2 whitespace-nowrap font-medium text-sm font-robotoMedium disabled:opacity-50;
 
     padding-inline: 17px;
   }
@@ -121,6 +125,30 @@
   .logo {
     @apply bg-cool-gray-700 rounded-full bg-cover;
   }
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('./assets/fonts/Roboto-Regular.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto-Medium';
+  src: url('./assets/fonts/Roboto-Medium.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto-Bold';
+  src: url('./assets/fonts/Roboto-Bold.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TitilliumWeb-Bold';
+  src: url('./assets/fonts/TitilliumWeb-Bold.ttf');
+  font-display: swap;
 }
 
 .rdt_TableWrapper {
