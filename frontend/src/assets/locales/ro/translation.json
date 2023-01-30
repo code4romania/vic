@@ -1,4 +1,10 @@
 {
+  "general": {
+    "created_by": "Creat de",
+    "name": "Nume",
+    "created_on": "Date",
+    "add": "Adauga"
+  },
   "header": {
     "login": "Login",
     "menu": {
@@ -10,8 +16,12 @@
   },
   "side_menu": {
     "options": {
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "organization": "Structura ONG"
     },
     "collapse": "Restrange meniul"
+  },
+  "division": {
+    "members": "Membri"
   }
 }
