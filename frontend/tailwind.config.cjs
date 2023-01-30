@@ -10,7 +10,6 @@ module.exports = {
         current: 'currentColor',
         transparent: 'transparent',
         white: '#FFFFFF',
-        indigo: '#6366F1',
         turquoise: {
           DEFAULT: '#12B6B6',
           50: '#EEF8F8',
@@ -39,16 +38,13 @@ module.exports = {
         },
         red: {
           DEFAULT: '#DC2626',
+          300: '#FCA5A5',
+          500: '#EF4444',
           600: '#DC2626',
           700: '#D42424',
           800: '#CC2323',
+          900: '#7F1D1D',
         },
-      },
-      fontFamily: {
-        roboto: 'Roboto',
-        robotoBold: 'Roboto-Bold',
-        robotoMedium: 'Roboto-Medium',
-        titilliumBold: 'TitilliumWeb-Bold',
       },
       transitionProperty: {
         width: 'width',
@@ -56,6 +52,12 @@ module.exports = {
       flex: {
         2: '2 2 0%',
         3: '3 3 0%',
+      },
+      fontFamily: {
+        roboto: 'Roboto',
+        robotoMedium: 'Roboto-Medium',
+        robotoBold: 'Roboto-Bold',
+        titilliumBold: 'TitilliumWeb-Bold',
       },
       boxShadow: {
         blur: '0px 3px 6px rgba(48, 60, 108, 0.1)',
