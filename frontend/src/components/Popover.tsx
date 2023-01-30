@@ -1,15 +1,19 @@
-import React, { ReactNode, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { Popover as PopoverHeadlessui, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { classNames } from '../common/utils/utils';
 
 // Bug: tailwind doesn't load all clases, be carefull if classes used for items isn't used elsewhere
 
-interface PopoverProps {
-  items: { icon: ReactNode; label: string; color?: 'primary' | 'alert'; onClick: () => void }[];
+export interface PopoverProps {
+  id: string;
+  icon: React.ReactNode;
+  label: string;
+  onClick: (id: string) => void;
+  alert?: boolean;
 }
 
-const Popover = ({ items }: PopoverProps) => {
+const Popover = (items: PopoverProps[]) => {
   return (
     <PopoverHeadlessui className="relative">
       {({ open, close }) => (
@@ -38,15 +42,15 @@ const Popover = ({ items }: PopoverProps) => {
             <PopoverHeadlessui.Panel className="absolute right-0 z-10 mt-2 px-0 max-w-[224px] min-w-fit">
               <div className="rounded-lg shadow-section overflow-hidden">
                 <div className="bg-white">
-                  {items.map(({ icon, label, color, onClick }) => (
+                  {items.map(({ id, icon, label, onClick, alert }) => (
                     <label
                       className={classNames(
-                        color === 'alert' ? 'text-red-700' : 'text-cool-gray-700',
+                        alert ? 'text-red-700' : 'text-cool-gray-700',
                         `py-2 px-4 flex gap-1 items-center hover:bg-cool-gray-100 transition ease-in-out cursor-pointer`,
                       )}
                       key={label}
                       onClick={() => {
-                        onClick();
+                        onClick(id);
                         close();
                       }}
                     >
