@@ -4,12 +4,12 @@ import { APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { LoggerModule } from 'nestjs-pino';
 import { ApiModule } from './api/api.module';
-import { validate } from './core/config/environment-config';
-import { PinoLoggerConfig } from './core/config/logging.config';
-import { RolesGuard } from './core/guards/roles.guard';
-import { ThrottlerGuardByIP } from './core/guards/throttler.guard';
-import { JsonBodyMiddleware } from './core/middleware/json-body.middlware';
-import { RawBodyMiddleware } from './core/middleware/raw-body.middleware';
+import { validate } from './infrastructure/config/environment-config';
+import { PinoLoggerConfig } from './infrastructure/config/logging.config';
+import { RolesGuard } from './infrastructure/guards/roles.guard';
+import { ThrottlerGuardByIP } from './infrastructure/guards/throttler.guard';
+import { JsonBodyMiddleware } from './infrastructure/middleware/json-body.middlware';
+import { RawBodyMiddleware } from './infrastructure/middleware/raw-body.middleware';
 import { MailModule } from './modules/mail/mail.module';
 import {
   CacheProviderModule,
