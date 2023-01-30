@@ -1,10 +1,10 @@
 import React from 'react';
 import DataTable, { SortOrder, TableColumn } from 'react-data-table-component';
 
-interface DataTableProps {
+interface DataTableProps<T> {
   className: string;
-  columns: TableColumn<any>[];
-  data: any[];
+  columns: TableColumn<T>[];
+  data: T[];
   rowsPerPageText?: string;
   rangeSeparatorText?: string;
   EmptyContent?: JSX.Element;
@@ -19,12 +19,12 @@ interface DataTableProps {
   paginationDefaultPage?: number;
   onChangePage?: (page: number) => void;
   onChangeRowsPerPage?: (rowsPerPage: number) => void;
-  onSort?: (selectedColumn: TableColumn<any>, sortDirection: SortOrder, sortedRows: any[]) => void;
+  onSort?: (selectedColumn: TableColumn<T>, sortDirection: SortOrder, sortedRows: T[]) => void;
   defaultSortFieldId?: string | number;
   defaultSortAsc?: boolean;
 }
 
-const DataTableComponent = ({
+const DataTableComponent = <T extends object>({
   className,
   columns,
   data,
@@ -45,7 +45,7 @@ const DataTableComponent = ({
   onChangeRowsPerPage,
   defaultSortFieldId,
   defaultSortAsc,
-}: DataTableProps) => {
+}: DataTableProps<T>) => {
   return (
     <div className={className}>
       <DataTable
