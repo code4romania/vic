@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { BaseEntity } from 'src/core/base/base-entity';
+import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import {
   Column,
   Entity,
