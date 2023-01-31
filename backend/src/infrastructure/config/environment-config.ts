@@ -5,6 +5,7 @@ import {
   validateSync,
   IsString,
   IsOptional,
+  IsNumberString,
 } from 'class-validator';
 
 export enum Environment {
@@ -38,9 +39,37 @@ class EnvironmentVariables {
 
   @IsString()
   DATABASE_HOST: string;
+
+  @IsString()
+  COGNITO_USER_POOL_ID_WEB: string;
+  @IsString()
+  COGNITO_CLIENT_ID_WEB: string;
+  @IsString()
+  COGNITO_REGION_WEB: string;
+
+  @IsString()
+  COGNITO_USER_POOL_ID_MOBILE: string;
+  @IsString()
+  COGNITO_CLIENT_ID_MOBILE: string;
+  @IsString()
+  COGNITO_REGION_MOBILE: string;
+
+  @IsString()
+  REDIS_HOST: string;
+  @IsNumber()
+  REDIS_PORT: number;
+
+  @IsString()
+  MAIL_HOST;
+  @IsNumberString()
+  MAIL_PORT;
+  @IsString()
+  MAIL_USER;
+  @IsString()
+  MAIL_PASS;
 }
 
-export function validate(config: Record<string, unknown>) {
+export function validate(config: Record<string, string | number>) {
   const validatedConfig = plainToClass(EnvironmentVariables, config, {
     enableImplicitConversion: true,
   });

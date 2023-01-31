@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { RateLimiterConfigService } from 'src/core/config/rate-limiter-config.service';
+import { RateLimiterConfigService } from 'src/infrastructure/config/rate-limiter-config.service';
 
 @Module({
   imports: [

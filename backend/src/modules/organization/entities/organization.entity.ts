@@ -1,4 +1,4 @@
-import { BaseEntity } from 'src/core/base/base-entity';
+import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'organization' })
