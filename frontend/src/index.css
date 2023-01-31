@@ -2,33 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Roboto';
-  src: url('./assets/fonts/Roboto-Regular.ttf');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'TitilliumWeb-Bold';
-  src: url('./assets/fonts/TitilliumWeb-Bold.ttf');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Roboto-Bold';
-  src: url('./assets/fonts/Roboto-Bold.ttf');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Roboto-Medium';
-  src: url('./assets/fonts/Roboto-Medium.ttf');
-  font-display: swap;
-}
-
 @layer base {
   body {
-    @apply text-cool-gray-800 bg-gray-50;
+    @apply text-cool-gray-800 bg-cool-gray-50;
   }
 
   body,
@@ -113,7 +89,7 @@
   }
 
   .btn {
-    @apply flex items-center justify-center rounded-md min-w-fit w-20 py-2.5 gap-x-2 whitespace-nowrap font-medium text-sm font-robotoMedium disabled:opacity-50;
+    @apply flex items-center justify-center rounded-md min-w-fit w-full sm:w-20 py-2.5 gap-x-2 whitespace-nowrap font-medium text-sm font-robotoMedium disabled:opacity-50;
 
     padding-inline: 17px;
   }
@@ -149,6 +125,30 @@
   .logo {
     @apply bg-cool-gray-700 rounded-full bg-cover;
   }
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('./assets/fonts/Roboto-Regular.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto-Medium';
+  src: url('./assets/fonts/Roboto-Medium.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto-Bold';
+  src: url('./assets/fonts/Roboto-Bold.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TitilliumWeb-Bold';
+  src: url('./assets/fonts/TitilliumWeb-Bold.ttf');
+  font-display: swap;
 }
 
 .rdt_TableWrapper {

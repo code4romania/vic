@@ -1,0 +1,31 @@
+{
+  "recommendations": [
+    "aslamanver.vsc-export",
+    "bradlc.vscode-tailwindcss",
+    "burkeholland.simple-react-snippets",
+    "christian-kohler.npm-intellisense",
+    "christian-kohler.path-intellisense",
+    "ckolkman.vscode-postgres",
+    "csstools.postcss",
+    "dbaeumer.vscode-eslint",
+    "dsznajder.es7-react-js-snippets",
+    "eamodio.gitlens",
+    "EditorConfig.EditorConfig",
+    "esbenp.prettier-vscode",
+    "formulahendry.auto-close-tag",
+    "formulahendry.auto-rename-tag",
+    "infeng.vscode-react-typescript",
+    "leizongmin.node-module-intellisense",
+    "mhutchie.git-graph",
+    "pranaygp.vscode-css-peek",
+    "redhat.vscode-yaml",
+    "ritwickdey.LiveServer",
+    "usernamehw.errorlens",
+    "vincaslt.highlight-matching-tag",
+    "VisualStudioExptTeam.intellicode-api-usage-examples",
+    "VisualStudioExptTeam.vscodeintellicode",
+    "xabikos.JavaScriptSnippets",
+    "yzhang.markdown-all-in-one",
+    "github.vscode-pull-request-github"
+  ]
+}
