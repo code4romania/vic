@@ -3,9 +3,7 @@ import { Popover as PopoverHeadlessui, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { classNames } from '../common/utils/utils';
 
-// Bug: tailwind doesn't load all clases, be carefull if classes used for items isn't used elsewhere
-
-export interface PopoverProps {
+interface PopoverItem {
   id: string;
   icon: React.ReactNode;
   label: string;
@@ -13,7 +11,11 @@ export interface PopoverProps {
   alert?: boolean;
 }
 
-const Popover = (items: PopoverProps[]) => {
+interface PopoverProps {
+  items: PopoverItem[];
+}
+
+const Popover = ({ items }: PopoverProps) => {
   return (
     <PopoverHeadlessui className="relative">
       {({ open, close }) => (
