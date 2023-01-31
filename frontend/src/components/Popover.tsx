@@ -3,19 +3,19 @@ import { Popover as PopoverHeadlessui, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { classNames } from '../common/utils/utils';
 
-interface PopoverItem {
-  id: string;
+interface PopoverItem<T> {
   icon: React.ReactNode;
   label: string;
-  onClick: (id: string) => void;
+  onClick: (row: T) => void;
   alert?: boolean;
 }
 
-interface PopoverProps {
-  items: PopoverItem[];
+interface PopoverProps<T> {
+  row: T;
+  items: PopoverItem<T>[];
 }
 
-const Popover = ({ items }: PopoverProps) => {
+const Popover = <T extends object>({ row, items }: PopoverProps<T>) => {
   return (
     <PopoverHeadlessui className="relative">
       {({ open, close }) => (
@@ -41,10 +41,10 @@ const Popover = ({ items }: PopoverProps) => {
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <PopoverHeadlessui.Panel className="absolute right-0 z-10 mt-2 px-0 max-w-[224px] min-w-fit">
+            <PopoverHeadlessui.Panel className="absolute right-0 z-10 mt-2 px-0 w-44 sm:w-56 min-w-fit">
               <div className="rounded-lg shadow-section overflow-hidden">
                 <div className="bg-white">
-                  {items.map(({ id, icon, label, onClick, alert }) => (
+                  {items.map(({ icon, label, onClick, alert }) => (
                     <label
                       className={classNames(
                         alert ? 'text-red-700' : 'text-cool-gray-700',
@@ -52,7 +52,7 @@ const Popover = ({ items }: PopoverProps) => {
                       )}
                       key={label}
                       onClick={() => {
-                        onClick(id);
+                        onClick(row);
                         close();
                       }}
                     >

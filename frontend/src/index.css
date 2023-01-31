@@ -89,7 +89,7 @@
   }
 
   .btn {
-    @apply flex items-center justify-center rounded-md min-w-fit w-full sm:w-20 py-2.5 gap-x-2 whitespace-nowrap font-medium text-sm font-robotoMedium disabled:opacity-50;
+    @apply flex items-center justify-center rounded-md min-w-fit w-20 py-2.5 gap-x-2 whitespace-nowrap font-medium text-sm font-robotoMedium disabled:opacity-50;
 
     padding-inline: 17px;
   }
@@ -124,6 +124,10 @@
 
   .logo {
     @apply bg-cool-gray-700 rounded-full bg-cover;
+  }
+
+  .menu-icon {
+    @apply flex-shrink-0 h-5 w-5;
   }
 }
 
@@ -184,4 +188,17 @@
   border-bottom-style: solid !important;
   border-bottom-width: 1px !important;
   border-bottom-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.Toastify__toast {
+  @apply font-roboto !important;
+  @apply sm:text-sm lg:text-base text-xs;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  @apply bg-turquoise-500 !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--error {
+  @apply bg-red-500 !important;
 }

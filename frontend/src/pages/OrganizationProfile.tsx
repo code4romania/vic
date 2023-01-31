@@ -1,5 +1,5 @@
 import React from 'react';
-import Divisions from '../components/Divisions';
+import Divisions from '../components/Division';
 import PageLayout from '../layouts/PageLayout';
 
 const OrganizationProfile = () => {
