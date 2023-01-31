@@ -10,6 +10,7 @@ import { RolesGuard } from './infrastructure/guards/roles.guard';
 import { ThrottlerGuardByIP } from './infrastructure/guards/throttler.guard';
 import { JsonBodyMiddleware } from './infrastructure/middleware/json-body.middlware';
 import { RawBodyMiddleware } from './infrastructure/middleware/raw-body.middleware';
+import { AuthenticationModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
 import {
   CacheProviderModule,
@@ -24,17 +25,15 @@ import {
     LoggerModule.forRoot(PinoLoggerConfig),
     ConfigModule.forRoot({ validate, isGlobal: true }),
     EventEmitterModule.forRoot(),
-
     // Providers
     DatabaseProviderModule,
     CacheProviderModule,
     QueueProviderModule,
     ThrottleModule,
-
-    // mail
+    // Modules
     MailModule,
-
-    // api
+    AuthenticationModule,
+    // API
     ApiModule,
   ],
   providers: [
