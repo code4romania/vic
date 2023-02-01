@@ -17,7 +17,7 @@ export const toOrganizationModel = (
 };
 
 export const toOrganizationEntity = (
-  organizationModel: IOrganizationModel,
+  organizationModel: Omit<IOrganizationModel, 'id'>,
 ): OrganizationEntity => {
   const organizationEntity: OrganizationEntity = new OrganizationEntity();
   organizationEntity.name = organizationModel.name;
