@@ -60,16 +60,18 @@ class EnvironmentVariables {
   REDIS_PORT: number;
 
   @IsString()
-  MAIL_HOST;
+  MAIL_HOST: string;
   @IsNumberString()
-  MAIL_PORT;
+  MAIL_PORT: string | number;
   @IsString()
-  MAIL_USER;
+  MAIL_USER: string;
   @IsString()
-  MAIL_PASS;
+  MAIL_PASS: string;
 }
 
-export function validate(config: Record<string, string | number>) {
+export function validate(
+  config: Record<string, string | number>,
+): EnvironmentVariables {
   const validatedConfig = plainToClass(EnvironmentVariables, config, {
     enableImplicitConversion: true,
   });
