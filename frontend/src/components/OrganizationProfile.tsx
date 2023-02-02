@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Card from '../layouts/CardLayout';
 import Button from './Button';
 import CardHeader from './CardHeader';
-import { PencilIcon } from '@heroicons/react/24/outline';
 import CardBody from './CardBody';
+import FormInput from './FormInput';
+import { PencilIcon } from '@heroicons/react/24/outline';
+import PageLayout from '../layouts/PageLayout';
 
 interface IOrganization {
   id: string;
@@ -17,20 +19,39 @@ interface IOrganization {
 
 interface OrganizationProfileProps {
   organization: IOrganization;
-  onSubmit: (description: string) => void;
 }
 
-const OrganizationProfile = ({ organization, onSubmit }: OrganizationProfileProps) => {
-  const [readOnly, setReadOnly] = useState(true);
-
+const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
   return (
     <Card>
       <CardHeader>
         <h2>Profil organizatie</h2>
-        <Button label={'Editeaza'} icon={<PencilIcon />} />
+        <Button
+          className="btn-outline-secondary"
+          label={'Editeaza'}
+          icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
+          onClick={() => console.log('navigate')}
+        />
       </CardHeader>
       <CardBody>
-        <form></form>
+        <div className="h-fit w-full px-36 py-4">
+          <PageLayout>
+            <div className="flex flex-col gap-1">
+              <h2>Profil organizatie</h2>
+              <p className="text-cool-gray-500">Datele sunt preluate din ONGHub.</p>
+            </div>
+            <div className="flex flex-col gap-1">
+              <p>Logo organizație</p>
+              <img src={organization.logo} alt="Organization Logo" />
+            </div>
+            <FormInput label="Denumire organizație" value={organization.name} readOnly />
+            <FormInput label="Email" value={organization.email} readOnly />
+            <FormInput label="Telefon" value={organization.phone} readOnly />
+            <FormInput label="Adresa" value={organization.address} readOnly />
+            <div className="h-[1px] min-w-full bg-cool-gray-200"></div>
+            <div>ceva</div>
+          </PageLayout>
+        </div>
       </CardBody>
     </Card>
   );

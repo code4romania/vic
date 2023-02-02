@@ -13,5 +13,14 @@
       "dashboard": "Dashboard"
     },
     "collapse": "Restrange meniul"
+  },
+  "organization_profile": {
+    "title": "Profil organizație",
+    "logo": "Logo organizație",
+    "name": "Denumire organizație",
+    "email": "Email",
+    "phone": "Telefon",
+    "address": "Adresa",
+    "description": "Descriere organizație"
   }
 }
