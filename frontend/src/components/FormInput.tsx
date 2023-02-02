@@ -5,21 +5,22 @@ interface FormInputProps extends InputProps {
   errorMessage?: string;
 }
 
-const FormInput = ({ errorMessage, readOnly, ...props }: FormInputProps) => {
+const FormInput = ({ errorMessage, readOnly, value, label, ...props }: FormInputProps) => {
   return readOnly ? (
-    <Input
-      {...props}
-      className="border-0 cursor-default focus:ring-0 shadow-none p-0 text-base"
-      helper={''}
-    />
+    <div className="flex gap-2.5 flex-col">
+      <label>{label}</label>
+      <p>{value}</p>
+    </div>
   ) : errorMessage ? (
     <Input
+      value={value}
+      label={label}
       className="border border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500"
       {...props}
       helper={<p className="text-red-500">{errorMessage}</p>}
     />
   ) : (
-    <Input {...props} />
+    <Input value={value} label={label} {...props} />
   );
 };
 
