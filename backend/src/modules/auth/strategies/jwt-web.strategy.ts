@@ -32,7 +32,7 @@ export class WebJwtStrategy extends PassportStrategy(
     });
   }
 
-  public async validate(token: { username: string }) {
+  public async validate(token: { username: string }): Promise<unknown> {
     return { user: 'test', token };
   }
 }
