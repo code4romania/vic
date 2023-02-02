@@ -6,9 +6,9 @@ import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import { Environment } from './infrastructure/config/environment-config';
 import { ExceptionsFilter } from './infrastructure/filters/exception.filter';
-import { createQueueMonitoring } from './libs/bull-board';
+import { createQueueMonitoring } from './infrastructure/config/create-bull-board';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
