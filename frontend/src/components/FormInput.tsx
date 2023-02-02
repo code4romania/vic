@@ -5,8 +5,8 @@ interface FormInputProps extends InputProps {
   errorMessage?: string;
 }
 
-const FormInput = ({ errorMessage, ...props }: FormInputProps) => {
-  return props.readOnly ? (
+const FormInput = ({ errorMessage, readOnly, ...props }: FormInputProps) => {
+  return readOnly ? (
     <Input
       {...props}
       className="border-0 cursor-default focus:ring-0 shadow-none p-0 text-base"
