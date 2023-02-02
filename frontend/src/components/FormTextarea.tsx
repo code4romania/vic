@@ -1,6 +1,7 @@
 import React from 'react';
 import Textarea, { TextareaProps } from './Textarea';
 import { classNames } from '../common/utils/utils';
+import FormReadOnlyElement from './FormReadOnlyElement';
 
 interface FormTextareaProps extends TextareaProps {
   errorMessage?: string;
@@ -9,16 +10,13 @@ interface FormTextareaProps extends TextareaProps {
 const FormTextarea = ({
   errorMessage,
   readOnly,
-  value,
+  defaultValue,
   label,
   className,
   ...props
 }: FormTextareaProps) => {
   return readOnly ? (
-    <div>
-      <label>{label}</label>
-      <p>{value}</p>
-    </div>
+    <FormReadOnlyElement label={label} value={defaultValue || ''} />
   ) : (
     <div className="flex flex-col gap-1">
       <Textarea
@@ -29,6 +27,7 @@ const FormTextarea = ({
             : '',
           className,
         )}
+        defaultValue={defaultValue}
         {...props}
       />
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}

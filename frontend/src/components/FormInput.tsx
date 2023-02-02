@@ -1,6 +1,7 @@
 import React from 'react';
 import Input, { InputProps } from './Input';
 import { classNames } from '../common/utils/utils';
+import FormReadOnlyElement from './FormReadOnlyElement';
 
 interface FormInputProps extends InputProps {
   errorMessage?: string;
@@ -16,10 +17,7 @@ const FormInput = ({
   ...props
 }: FormInputProps) => {
   return readOnly ? (
-    <div className="flex gap-2.5 flex-col">
-      <label>{label}</label>
-      <p>{value}</p>
-    </div>
+    <FormReadOnlyElement label={label} value={value || ''} />
   ) : (
     <Input
       value={value}
