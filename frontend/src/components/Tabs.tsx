@@ -17,7 +17,7 @@ const Tabs = ({ children, tabs, onClick, defaultTab }: TabsProps) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-5">
       <nav className="hidden flex-col sm:flex-row lg:flex">
         {tabs.map((tab) => (
           <a
