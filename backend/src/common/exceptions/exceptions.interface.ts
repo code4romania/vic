@@ -1,11 +1,12 @@
-export interface IFormatExceptionMessage {
+export interface IError {
   message: string;
-  code_error?: number;
+  code_error?: string;
 }
 
 export interface IException {
-  badRequestException(data: IFormatExceptionMessage): void;
-  internalServerErrorException(data?: IFormatExceptionMessage): void;
-  forbiddenException(data?: IFormatExceptionMessage): void;
-  UnauthorizedException(data?: IFormatExceptionMessage): void;
+  badRequestException(data: IError): void;
+  internalServerErrorException(data?: IError): void;
+  forbiddenException(data?: IError): void;
+  unauthorizedException(data?: IError): void;
+  notFoundException(data?: IError): void;
 }
