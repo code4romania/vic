@@ -1,6 +1,6 @@
 import React, { ComponentPropsWithoutRef, ReactNode } from 'react';
 
-interface InputProps extends ComponentPropsWithoutRef<'input'> {
+export interface InputProps extends ComponentPropsWithoutRef<'input'> {
   label: string;
   helper?: ReactNode;
 }

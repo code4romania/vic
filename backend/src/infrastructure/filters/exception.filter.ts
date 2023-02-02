@@ -6,35 +6,53 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
-
-interface IError {
-  message: string;
-  code_error: string;
-}
+import { Request, Response } from 'express';
+import { IError } from 'src/common/exceptions/exceptions.interface';
+import { TypeORMError } from 'typeorm';
 
 @Catch()
 export class ExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(ExceptionsFilter.name);
-  catch(exception: any, host: ArgumentsHost) {
+  catch(
+    exception: HttpException | TypeORMError | TypeError,
+    host: ArgumentsHost,
+  ): void {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse();
-    const request: any = ctx.getRequest();
+    const response = ctx.getResponse<Response>();
+    const request = ctx.getRequest<Request>();
+    // define error message
+    let message: IError;
 
-    const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
-    const message =
-      exception instanceof HttpException
-        ? (exception.getResponse() as IError)
-        : { message: (exception as Error).message, code_error: null };
+    // set default status
+    let status = HttpStatus.INTERNAL_SERVER_ERROR;
 
+    if (exception instanceof HttpException) {
+      // handle http exceptions
+      status = exception.getStatus();
+      message = exception.getResponse() as IError;
+    } else if (exception instanceof TypeORMError) {
+      // handle typeorm errors
+      status = HttpStatus.UNPROCESSABLE_ENTITY;
+      message = {
+        message: exception.message,
+        code_error: null,
+      };
+    } else if (exception instanceof TypeError) {
+      // handle type errors
+      status = HttpStatus.INTERNAL_SERVER_ERROR;
+      message = {
+        message: exception.message,
+        code_error: null,
+      };
+    } else {
+      status = HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+
+    // build response data
     const responseData = {
-      ...{
-        statusCode: status,
-        timestamp: new Date().toISOString(),
-        path: request.url,
-      },
+      statusCode: status,
+      timestamp: new Date().toISOString(),
+      path: request.url,
       ...message,
     };
 
@@ -44,18 +62,18 @@ export class ExceptionsFilter implements ExceptionFilter {
   }
 
   private logMessage(
-    request: any,
+    request: Request,
     message: IError,
     status: number,
-    exception: any,
-  ) {
-    if (status === 500) {
+    exception: HttpException | TypeORMError | TypeError,
+  ): void {
+    if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
       this.logger.error(
         `End Request for ${request.path}`,
         `method=${request.method} status=${status} code_error=${
           message.code_error ? message.code_error : null
         } message=${message.message ? message.message : null}`,
-        status >= 500 ? exception.stack : '',
+        exception?.stack,
       );
     } else {
       this.logger.warn(

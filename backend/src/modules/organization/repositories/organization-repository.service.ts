@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OrganizationEntity } from '../entities/organization.entity';
+import {
+  toOrganizationEntity,
+  toOrganizationModel,
+} from '../helpers/organization.helper';
 import { IOrganizationRepository } from '../interfaces/organization-repository.interface';
 import { IOrganizationModel } from '../models/organization.model';
 
@@ -12,20 +16,51 @@ export class OrganizationRepositoryService implements IOrganizationRepository {
     private readonly organizationRepository: Repository<OrganizationEntity>,
   ) {}
 
-  // TODO: Database related operations
-  create(organization: IOrganizationModel): Promise<IOrganizationModel> {
-    throw new Error('Method not implemented.');
+  public async create(
+    organization: Omit<IOrganizationModel, 'id'>,
+  ): Promise<IOrganizationModel> {
+    // create organization entity
+    const newOrganizationEntity = toOrganizationEntity(organization);
+
+    // save organization entity
+    const organizationEntity = await this.organizationRepository.save(
+      newOrganizationEntity,
+    );
+
+    // return organization model
+    return toOrganizationModel(organizationEntity);
   }
 
-  update(description: string): Promise<IOrganizationModel> {
-    throw new Error('Method not implemented.');
+  public async update(
+    id: string,
+    description: string,
+  ): Promise<IOrganizationModel> {
+    // update organization entity
+    await this.organizationRepository.update({ id }, { description });
+
+    // return organization model
+    return this.findById(id);
   }
 
-  findById(id: string): Promise<IOrganizationModel> {
-    throw new Error('Method not implemented.');
+  public async findById(id: string): Promise<IOrganizationModel> {
+    // get organization entity by id
+    const organizationEntity = await this.organizationRepository.findOne({
+      where: { id },
+    });
+
+    // return organization model
+    return organizationEntity ? toOrganizationModel(organizationEntity) : null;
   }
 
-  findAll(): Promise<IOrganizationModel[]> {
-    throw new Error('Method not implemented.');
+  public async findOneByOptions(
+    options: Partial<Omit<IOrganizationModel, 'id'>>,
+  ): Promise<IOrganizationModel> {
+    // get organization entity by id
+    const organizationEntity = await this.organizationRepository.findOneBy(
+      options,
+    );
+
+    // return organization model
+    return organizationEntity ? toOrganizationModel(organizationEntity) : null;
   }
 }
