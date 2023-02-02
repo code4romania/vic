@@ -38,13 +38,8 @@ export class OrganizationRepositoryService implements IOrganizationRepository {
     // update organization entity
     await this.organizationRepository.update({ id }, { description });
 
-    // get new update entity
-    const updatedOrganizationEntity = await this.organizationRepository.findOne(
-      { where: { id } },
-    );
-
     // return organization model
-    return toOrganizationModel(updatedOrganizationEntity);
+    return this.findById(id);
   }
 
   public async findById(id: string): Promise<IOrganizationModel> {

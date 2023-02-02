@@ -7,13 +7,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { IError } from 'src/common/exceptions/exceptions.interface';
 import { TypeORMError } from 'typeorm';
-
-interface IError {
-  message: string;
-  error_key?: string;
-  code_error: string;
-}
 
 @Catch()
 export class ExceptionsFilter implements ExceptionFilter {
@@ -21,7 +16,7 @@ export class ExceptionsFilter implements ExceptionFilter {
   catch(
     exception: HttpException | TypeORMError | TypeError,
     host: ArgumentsHost,
-  ) {
+  ): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
@@ -71,14 +66,13 @@ export class ExceptionsFilter implements ExceptionFilter {
     message: IError,
     status: number,
     exception: HttpException | TypeORMError | TypeError,
-  ) {
+  ): void {
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
       this.logger.error(
         `End Request for ${request.path}`,
         `method=${request.method} status=${status} code_error=${
           message.code_error ? message.code_error : null
         } message=${message.message ? message.message : null}`,
-        `error key=${message.error_key}`,
         exception?.stack,
       );
     } else {
@@ -87,7 +81,6 @@ export class ExceptionsFilter implements ExceptionFilter {
         `method=${request.method} status=${status} code_error=${
           message.code_error ? message.code_error : null
         } message=${message.message ? message.message : null}`,
-        `error key=${message.error_key}`,
       );
     }
   }
