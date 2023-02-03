@@ -27,14 +27,14 @@ const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
       <CardHeader>
         <h2>Profil organizatie</h2>
         <Button
-          className="btn-outline-secondary"
+          className="btn-outline-secondary w-20"
           label={'Editeaza'}
           icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
           onClick={() => console.log('navigate')}
         />
       </CardHeader>
       <CardBody>
-        <div className="h-fit w-full sm:px-36 sm:py-4 md:px-0 md:py-0 xl:px-36 xl:py-4">
+        <div className="h-fit w-full sm:px-36 sm:py-4 md:px-0 md:py-0 lg:px-36 lg:py-4">
           <PageLayout>
             <div className="flex flex-col gap-1">
               <h2>Profil organizatie</h2>
