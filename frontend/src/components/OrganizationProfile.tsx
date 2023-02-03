@@ -45,7 +45,7 @@ const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
           <div className="flex flex-col gap-1">
             <p>{t('logo')}</p>
             <img
-              src="logo.svg"
+              src={organization.logo}
               alt="Organization Logo"
               className="h-28 object-contain self-start p-2"
             />
