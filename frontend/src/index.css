@@ -50,11 +50,11 @@
   }
 
   nav {
-    @apply font-titilliumBold typography;
+    @apply font-titilliumBold;
   }
 
   textarea {
-    @apply min-h-[6rem];
+    @apply min-h-[7rem] max-w-full;
   }
 
   input::placeholder {

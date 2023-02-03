@@ -1,26 +1,28 @@
 import React from 'react';
-import Input, { InputProps } from './Input';
+import Textarea, { TextareaProps } from './Textarea';
 import { classNames } from '../common/utils/utils';
 import FormReadOnlyElement from './FormReadOnlyElement';
 
-interface FormInputProps extends InputProps {
+interface FormTextareaProps extends TextareaProps {
   errorMessage?: string;
 }
 
-const FormInput = ({
+const FormTextarea = ({
   errorMessage,
   readOnly,
-  value,
+  defaultValue,
   label,
   className,
   helper,
   ...props
-}: FormInputProps) => {
+}: FormTextareaProps) => {
   return readOnly ? (
-    <FormReadOnlyElement label={label} value={value instanceof Array ? value.join(', ') : value} />
+    <FormReadOnlyElement
+      label={label}
+      value={defaultValue instanceof Array ? defaultValue.join(', ') : defaultValue}
+    />
   ) : (
-    <Input
-      value={value}
+    <Textarea
       label={label}
       className={classNames(
         errorMessage
@@ -28,10 +30,11 @@ const FormInput = ({
           : '',
         className,
       )}
+      defaultValue={defaultValue}
       {...props}
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
     />
   );
 };
 
-export default FormInput;
+export default FormTextarea;
