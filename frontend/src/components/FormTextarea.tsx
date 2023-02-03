@@ -17,7 +17,10 @@ const FormTextarea = ({
   ...props
 }: FormTextareaProps) => {
   return readOnly ? (
-    <FormReadOnlyElement label={label} value={defaultValue || ''} />
+    <FormReadOnlyElement
+      label={label}
+      value={defaultValue instanceof Array ? defaultValue.join(', ') : defaultValue}
+    />
   ) : (
     <Textarea
       label={label}

@@ -17,7 +17,7 @@ const FormInput = ({
   ...props
 }: FormInputProps) => {
   return readOnly ? (
-    <FormReadOnlyElement label={label} value={value || ''} />
+    <FormReadOnlyElement label={label} value={value instanceof Array ? value.join(', ') : value} />
   ) : (
     <Input
       value={value}
