@@ -8,7 +8,8 @@
   }
 
   body,
-  p {
+  p,
+  label {
     @apply font-roboto text-base;
   }
 
@@ -71,10 +72,6 @@
     padding-inline: 0.813rem;
     word-break: break-word;
   }
-
-  label {
-    @apply text-base font-roboto;
-  }
 }
 
 @layer components {
@@ -124,6 +121,13 @@
 
   .logo {
     @apply bg-cool-gray-700 rounded-full bg-cover;
+  }
+
+  .input {
+    @apply text-cool-gray-900 rounded-md border border-cool-gray-200 py-2.5 bg-white max-w-[30rem] h-fit cursor-text outline-0 shadow-sm text-sm font-roboto focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500;
+
+    padding-inline: 0.813rem;
+    word-break: break-word;
   }
 }
 
