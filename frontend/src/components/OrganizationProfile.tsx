@@ -42,7 +42,11 @@ const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
             </div>
             <div className="flex flex-col gap-1">
               <p>Logo organizație</p>
-              <img src={organization.logo} alt="Organization Logo" />
+              <img
+                src="logo.svg"
+                alt="Organization Logo"
+                className="h-28 object-contain self-start p-2"
+              />
             </div>
             <FormInput label="Denumire organizație" value={organization.name} readOnly />
             <FormInput label="Email" value={organization.email} readOnly />
