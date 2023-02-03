@@ -52,10 +52,6 @@
     @apply font-titilliumBold;
   }
 
-  textarea {
-    @apply min-h-[6rem];
-  }
-
   input::placeholder {
     @apply text-cool-gray-500;
   }
@@ -70,6 +66,10 @@
 
     padding-inline: 0.813rem;
     word-break: break-word;
+  }
+
+  textarea {
+    @apply min-h-[7rem] max-w-full;
   }
 
   label {
