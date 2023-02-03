@@ -13,25 +13,24 @@ const FormTextarea = ({
   defaultValue,
   label,
   className,
+  helper,
   ...props
 }: FormTextareaProps) => {
   return readOnly ? (
     <FormReadOnlyElement label={label} value={defaultValue || ''} />
   ) : (
-    <div className="flex flex-col gap-1">
-      <Textarea
-        label={label}
-        className={classNames(
-          errorMessage
-            ? 'border border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500'
-            : '',
-          className,
-        )}
-        defaultValue={defaultValue}
-        {...props}
-      />
-      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-    </div>
+    <Textarea
+      label={label}
+      className={classNames(
+        errorMessage
+          ? 'border border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500'
+          : '',
+        className,
+      )}
+      defaultValue={defaultValue}
+      {...props}
+      helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
+    />
   );
 };
 

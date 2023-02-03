@@ -2,7 +2,7 @@ import React from 'react';
 
 interface FormReadOnlyElementProps {
   label: string;
-  value?: string | number;
+  value?: string | number | readonly string[];
 }
 
 const FormReadOnlyElement = ({ label, value }: FormReadOnlyElementProps) => {

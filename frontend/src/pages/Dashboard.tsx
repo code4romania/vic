@@ -6,6 +6,7 @@ import CardHeader from '../components/CardHeader';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { useTestValuesQuery } from '../services/test/test.service';
+import FormTextarea from '../components/FormTextarea';
 
 const Dashboard = () => {
   // for testing purpose only
@@ -16,6 +17,7 @@ const Dashboard = () => {
   return (
     <PageLayout>
       This is the Dashboard
+      <FormTextarea label="Eu sunt label" value="adasdsa" errorMessage="Nu e bine" />
       <h1>Translation test {t('test')}</h1>
       <p>{JSON.stringify(data)}</p>
       <Card>
