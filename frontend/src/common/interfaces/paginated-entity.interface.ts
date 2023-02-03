@@ -1,4 +1,4 @@
-import { OrderDirection } from '../enums/sort-direction.enum';
+import { OrderDirection } from '../enums/order-direction.enum';
 
 interface IPaginationMeta {
   currentPage: number;

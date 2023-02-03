@@ -1,7 +1,7 @@
 import React from 'react';
-import { IUsername } from '../common/interfaces/username.interface';
+import { IUser } from '../common/interfaces/user.interface';
 import i18n from '../common/config/i18n';
-import { classNames, formatDate } from '../common/utils/utils';
+import { formatDate } from '../common/utils/utils';
 import Card from '../layouts/CardLayout';
 import CardHeader from './CardHeader';
 import CardBody from './CardBody';
@@ -14,7 +14,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Button from './Button';
 import DataTableComponent from './DataTableComponent';
-import { PaginationConfig } from '../common/config/pagination.config';
+import { PaginationConfig } from '../common/constants/pagination';
 import EmptyContent from './EmptyContent';
 import LoadingContent from './LoadingContent';
 import { SortOrder, TableColumn } from 'react-data-table-component';
@@ -25,21 +25,22 @@ import Tabs from './Tabs';
 import { SelectItem } from './Select';
 
 export enum DivisionType {
-  Branch = 'branch',
-  Department = 'department',
-  Role = 'role',
+  Branches = 'branches',
+  Departments = 'departments',
+  Roles = 'roles',
 }
 
 export interface IDivision extends IBaseEntity {
   name: string;
-  createdBy: IUsername;
+  createdBy: Pick<IUser, 'id' | 'name'>;
   membersCount: number;
+  createdOn: Date | string;
 }
 
 export const DivisionTabs: SelectItem[] = [
-  { key: 0, value: i18n.t('division:branch') },
-  { key: 1, value: i18n.t('division:department') },
-  { key: 2, value: i18n.t('division:role') },
+  { key: 0, value: i18n.t('division:branches') },
+  { key: 1, value: i18n.t('division:departments') },
+  { key: 2, value: i18n.t('division:roles') },
 ];
 
 export const DivisionTableHeader = [
@@ -78,7 +79,7 @@ export const DivisionTableHeader = [
 ];
 
 interface DivisionProps {
-  data: IPaginatedEntity<IDivision> | undefined;
+  data?: IPaginatedEntity<IDivision>;
   isLoading: boolean;
   divisionType: DivisionType;
   page: number;
@@ -159,13 +160,9 @@ const Division = ({
         </CardHeader>
         <CardBody>
           <DataTableComponent
-            className={classNames(
-              !isLoading && data?.items?.length ? 'border-cool-gray-200' : '',
-              'rdt_TableWrapper',
-            )}
             columns={[...DivisionTableHeader, buildDivisionActionColumn()]}
             sortIcon={<ChevronUpDownIcon />}
-            data={data?.items || []}
+            data={data?.items}
             loading={isLoading}
             pagination
             paginationPerPage={data?.meta?.itemsPerPage}

@@ -18,7 +18,7 @@ const Tabs = ({ children, tabs, onClick, defaultTab }: TabsProps) => {
 
   return (
     <div className="flex flex-col gap-5">
-      <nav className="hidden flex-col sm:flex-row lg:flex">
+      <nav className="hidden flex-col sm:flex-row lg:flex gap-2">
         {tabs.map((tab) => (
           <a
             id={`${tab.value.split(' ').join('-')}__tab`}

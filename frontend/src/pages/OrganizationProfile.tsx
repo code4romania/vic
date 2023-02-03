@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { OrderDirection } from '../common/enums/sort-direction.enum';
+import { OrderDirection } from '../common/enums/order-direction.enum';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 import Divisions, { DivisionTabs, DivisionType, IDivision } from '../components/Division';
 import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
-import { useDivisionDataQuery } from '../services/test/test.service';
 import i18n from '../common/config/i18n';
 import { SortOrder, TableColumn } from 'react-data-table-component';
+import { useDivisionDataQuery } from '../services/division/division.service';
 
 const OrganizationProfile = () => {
-  const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.Branch);
+  const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.Branches);
   const [data, setData] = useState<IPaginatedEntity<IDivision>>();
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
@@ -38,7 +38,7 @@ const OrganizationProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (error) useErrorToast(i18n.t('general:load_error'));
+    if (error) useErrorToast(i18n.t('general:error.load_entries'));
   }, [error]);
 
   const handleTabClick = (id: number) => {
@@ -56,7 +56,6 @@ const OrganizationProfile = () => {
   };
 
   const onSort = (column: TableColumn<IDivision>, direction: SortOrder) => {
-    console.log(column);
     setOrderByColumn(column.id as string);
     setOrderDirection(
       direction.toLocaleUpperCase() === OrderDirection.ASC

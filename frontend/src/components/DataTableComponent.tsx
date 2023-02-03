@@ -1,10 +1,11 @@
 import React from 'react';
 import DataTable, { SortOrder, TableColumn } from 'react-data-table-component';
+import { classNames } from '../common/utils/utils';
 
 interface DataTableProps<T> {
-  className: string;
+  className?: string;
   columns: TableColumn<T>[];
-  data: T[];
+  data?: T[];
   rowsPerPageText?: string;
   rangeSeparatorText?: string;
   EmptyContent?: JSX.Element;
@@ -49,9 +50,13 @@ const DataTableComponent = <T extends object>({
   return (
     <div className={className}>
       <DataTable
+        className={classNames(
+          !loading && data?.length ? 'border-cool-gray-200' : '',
+          `rdt_TableWrapper ${className}`,
+        )}
         noHeader
         columns={columns}
-        data={data}
+        data={data || []}
         progressPending={loading}
         pagination={pagination}
         paginationServer={pagination}

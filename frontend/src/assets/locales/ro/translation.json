@@ -2,15 +2,15 @@
   "general": {
     "created_by": "Creat de",
     "name": "Nume",
-    "created_on": "Date",
+    "created_on": "Data crearii",
     "add": "Adauga",
-    "empty": {
-      "table": "Nu exista date in tabel"
-    },
+    "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
     "edit": "Editeaza",
     "delete": "Sterge",
-    "load_error": "Eroare la incarcarea datelor"
+    "error": {
+      "load_entries": "Eroare la incarcarea datelor"
+    }
   },
   "header": {
     "login": "Login",
@@ -30,8 +30,8 @@
   },
   "division": {
     "members": "Membri",
-    "branch": "Filiale si sucursale",
-    "department": "Departamente",
-    "role": "Roluri"
+    "branches": "Filiale si sucursale",
+    "departments": "Departamente",
+    "roles": "Roluri"
   }
 }
