@@ -16,11 +16,14 @@
   },
   "organization_profile": {
     "title": "Profil organizație",
+    "button_label": "Editează",
+    "data_info": "Datele sunt preluate din ONGHub.",
     "logo": "Logo organizație",
     "name": "Denumire organizație",
     "email": "Email",
     "phone": "Telefon",
     "address": "Adresa",
-    "description": "Descriere organizație"
+    "description_title": "Descriere organizație",
+    "description": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poti alege sa formulezi o descriere specifica pentru aplicatia TEO, prin care sa atragi cat mai multi voluntari, sau sa folosesti descrierea organizatiei asa cum se regaseste in ONGHub."
   }
 }
