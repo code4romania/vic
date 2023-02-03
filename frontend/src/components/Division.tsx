@@ -150,7 +150,7 @@ const Division = ({
     <Tabs tabs={DivisionTabs} onClick={onTabChange}>
       <Card>
         <CardHeader>
-          <h3>{i18n.t(`${divisionType}`)}</h3>
+          <h3>{divisionType}</h3>
           <Button
             className="btn-outline-secondary"
             label={i18n.t('general:add')}

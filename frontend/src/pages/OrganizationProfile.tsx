@@ -68,7 +68,7 @@ const OrganizationProfile = () => {
     <PageLayout>
       <Divisions
         isLoading={isLoading}
-        divisionType={divisionType as DivisionType}
+        divisionType={divisionType}
         data={data}
         onTabChange={handleTabClick}
         onSort={onSort}
