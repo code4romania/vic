@@ -18,7 +18,7 @@
   }
 
   small {
-    @apply text-sm font-roboto;
+    @apply text-sm font-roboto typography;
   }
 
   button {
@@ -26,31 +26,31 @@
   }
 
   a {
-    @apply sm:text-sm text-xs font-robotoBold text-turquoise hover:text-turquoise-700 active:text-turquoise-800 focus:outline-0 cursor-pointer;
+    @apply sm:text-sm text-xs font-robotoBold text-turquoise hover:text-turquoise-700 active:text-turquoise-800 focus:outline-0 cursor-pointer typography;
   }
 
   h1 {
-    @apply text-4xl font-titilliumBold;
+    @apply text-4xl font-titilliumBold typography;
   }
 
   h2 {
-    @apply text-xl font-titilliumBold;
+    @apply text-xl font-titilliumBold typography;
   }
 
   h3 {
-    @apply text-xl font-roboto font-semibold;
+    @apply text-xl font-roboto font-semibold typography;
   }
 
   h4 {
-    @apply sm:text-sm lg:text-base text-xs font-titilliumBold;
+    @apply sm:text-sm lg:text-base text-xs font-titilliumBold typography;
   }
 
   h5 {
-    @apply text-sm font-titilliumBold;
+    @apply text-sm font-titilliumBold typography;
   }
 
   nav {
-    @apply font-titilliumBold;
+    @apply font-titilliumBold typography;
   }
 
   textarea {
@@ -67,10 +67,7 @@
 
   input,
   textarea {
-    @apply text-cool-gray-900 rounded-md border border-cool-gray-200 py-2.5 bg-white max-w-[30rem] h-fit cursor-text outline-0 shadow-sm text-sm font-roboto focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500;
-
-    padding-inline: 0.813rem;
-    word-break: break-word;
+    @apply text-cool-gray-900 rounded-md border border-cool-gray-200 py-2.5 bg-white max-w-[30rem] h-fit cursor-text outline-0 shadow-sm text-sm font-roboto focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 typography typography;
   }
 }
 
@@ -124,10 +121,7 @@
   }
 
   .input {
-    @apply text-cool-gray-900 rounded-md border border-cool-gray-200 py-2.5 bg-white max-w-[30rem] h-fit cursor-text outline-0 shadow-sm text-sm font-roboto focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500;
-
-    padding-inline: 0.813rem;
-    word-break: break-word;
+    @apply text-cool-gray-900 rounded-md border border-cool-gray-200 py-2.5 bg-white max-w-[30rem] h-fit cursor-text outline-0 shadow-sm text-sm font-roboto focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 typography;
   }
 }
 
