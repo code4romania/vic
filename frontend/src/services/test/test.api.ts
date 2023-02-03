@@ -14,7 +14,6 @@ export const getDivisionData = async (
   orderDirection: OrderDirection,
   divisionType: DivisionType,
 ): Promise<IPaginatedEntity<IDivision>> => {
-  console.log(divisionType);
   return API.get(
     `/divisions?divisionType=${divisionType}&limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`,
   ).then((res) => res.data);
