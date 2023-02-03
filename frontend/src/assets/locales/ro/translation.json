@@ -10,7 +10,9 @@
     "delete": "Sterge",
     "error": {
       "load_entries": "Eroare la incarcarea datelor"
-    }
+    },
+    "cancel": "Anuleaza",
+    "delete_modal_description": "Esti sigur ca doresti stergerea campului din tabel? Aceasta actiune nu este reversibila."
   },
   "header": {
     "login": "Login",
@@ -32,6 +34,9 @@
     "members": "Membri",
     "branches": "Filiale si sucursale",
     "departments": "Departamente",
-    "roles": "Roluri"
+    "roles": "Roluri",
+    "error": {
+      "delete": "Eroare la stergerea diviziei"
+    }
   }
 }

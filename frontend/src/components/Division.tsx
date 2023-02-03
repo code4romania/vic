@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IUser } from '../common/interfaces/user.interface';
 import i18n from '../common/config/i18n';
 import { formatDate } from '../common/utils/utils';
@@ -23,6 +23,9 @@ import { IBaseEntity } from '../common/interfaces/base-entity.interface';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 import Tabs from './Tabs';
 import { SelectItem } from './Select';
+import ConfirmationModal from './ConfirmationModal';
+import { useDeleteDivisionMutation } from '../services/division/division.service';
+import { useErrorToast } from '../hooks/useToast';
 
 export enum DivisionType {
   Branches = 'branches',
@@ -87,6 +90,7 @@ interface DivisionProps {
   onChangePage: (newPage: number) => void;
   onRowsPerPageChange: (rows: number) => void;
   onTabChange: (id: number) => void;
+  refetch: () => void;
 }
 
 const Division = ({
@@ -98,7 +102,19 @@ const Division = ({
   onChangePage,
   onRowsPerPageChange,
   onTabChange,
+  refetch,
 }: DivisionProps) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [selectedRow, setSelectedRow] = useState<IDivision | null>(null);
+  const [rows, setRows] = useState<IDivision[] | undefined>([]);
+
+  const { mutateAsync: deleteDivision, isLoading: deleteDivisionLoading } =
+    useDeleteDivisionMutation();
+
+  useEffect(() => {
+    if (data?.items) setRows(data.items);
+  }, [data]);
+
   // component actions
   const onAdd = () => {
     alert('Not yet implemented');
@@ -114,7 +130,26 @@ const Division = ({
   };
 
   const onDelete = (row: IDivision) => {
-    alert(`Not yet implemented, ${row}`);
+    setSelectedRow(row);
+    setIsDeleteModalOpen(true);
+  };
+
+  // entity actions
+  const onDeleteRow = () => {
+    if (selectedRow) {
+      deleteDivision(selectedRow.id, {
+        onSuccess: () => {
+          setSelectedRow(null);
+          setIsDeleteModalOpen(false);
+          refetch();
+        },
+        onError: () => {
+          setSelectedRow(null);
+          setIsDeleteModalOpen(false);
+          useErrorToast(i18n.t('division:error.delete'));
+        },
+      });
+    }
   };
 
   // menu items
@@ -162,8 +197,8 @@ const Division = ({
           <DataTableComponent
             columns={[...DivisionTableHeader, buildDivisionActionColumn()]}
             sortIcon={<ChevronUpDownIcon />}
-            data={data?.items}
-            loading={isLoading}
+            data={rows}
+            loading={isLoading || deleteDivisionLoading}
             pagination
             paginationPerPage={data?.meta?.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
@@ -177,6 +212,17 @@ const Division = ({
           />
         </CardBody>
       </Card>
+      {isDeleteModalOpen && (
+        <ConfirmationModal
+          title={i18n.t('general:delete')}
+          description={i18n.t('general:delete_modal_description')}
+          onClose={() => {
+            setSelectedRow(null);
+            setIsDeleteModalOpen(false);
+          }}
+          onConfirm={onDeleteRow}
+        />
+      )}
     </Tabs>
   );
 };

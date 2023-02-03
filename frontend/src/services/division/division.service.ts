@@ -1,7 +1,7 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { DivisionType } from '../../components/Division';
-import { getDivisionData } from './division.api';
+import { deleteDivision, getDivisionData } from './division.api';
 
 export const useDivisionDataQuery = (
   limit: number,
@@ -13,4 +13,8 @@ export const useDivisionDataQuery = (
   return useQuery(['divisions', limit, page, orderBy, orderDirection, divisionType], () =>
     getDivisionData(limit, page, orderBy, orderDirection, divisionType),
   );
+};
+
+export const useDeleteDivisionMutation = () => {
+  return useMutation((id: string) => deleteDivision(id));
 };

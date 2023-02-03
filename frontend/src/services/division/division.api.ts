@@ -14,3 +14,7 @@ export const getDivisionData = async (
     `/divisions?divisionType=${divisionType}&limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`,
   ).then((res) => res.data);
 };
+
+export const deleteDivision = async (id: string): Promise<void> => {
+  return API.delete(`/divisions?id=${id}`).then((res) => res.data);
+};
