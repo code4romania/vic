@@ -3,19 +3,19 @@ import Modal from './Modal';
 import { Controller, useForm } from 'react-hook-form';
 import Button from './Button';
 import * as yup from 'yup';
-import { NAME_REGEX } from '../common/utils/utils';
 import i18n from '../common/config/i18n';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Input from './Input';
+import { REGEX } from '../common/constants/patterns';
 
 interface DivisionInputModalProps {
   title: string;
   onClose: () => void;
-  onSubmit: (division: DivisionInputTypes) => void;
+  onSubmit: (division: DivisionFormTypes) => void;
   defaultValue?: string;
 }
 
-type DivisionInputTypes = {
+type DivisionFormTypes = {
   name: string;
 };
 
@@ -23,10 +23,10 @@ const schema = yup
   .object({
     name: yup
       .string()
-      .required(`${i18n.t('division:config.required')}`)
-      .min(2, `${i18n.t('division:config.min_length')}`)
-      .max(20, `${i18n.t('division:config.max_length')}`)
-      .matches(NAME_REGEX, `${i18n.t('division:config.pattern')}`),
+      .required(`${i18n.t('division:form.required')}`)
+      .min(2, `${i18n.t('division:form.min_length')}`)
+      .max(20, `${i18n.t('division:form.max_length')}`)
+      .matches(REGEX.NAME_REGEX, `${i18n.t('division:form.pattern')}`),
   })
   .required();
 
@@ -40,7 +40,7 @@ const DivisionInputModal = ({
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<DivisionInputTypes>({
+  } = useForm<DivisionFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
@@ -57,7 +57,8 @@ const DivisionInputModal = ({
             return (
               <Input
                 type="text"
-                label="Nume"
+                label={i18n.t('general:name')}
+                // TODO: investigate why we need a specific class and why the global styling isn't being applied
                 className="input"
                 onChange={onChange}
                 defaultValue={defaultValue || value}
