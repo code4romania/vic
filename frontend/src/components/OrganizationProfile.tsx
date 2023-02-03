@@ -34,7 +34,7 @@ const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
         />
       </CardHeader>
       <CardBody>
-        <div className="h-fit w-full px-36 py-4">
+        <div className="h-fit w-full sm:px-36 sm:py-4 md:px-0 md:py-0 xl:px-36 xl:py-4">
           <PageLayout>
             <div className="flex flex-col gap-1">
               <h2>Profil organizatie</h2>
