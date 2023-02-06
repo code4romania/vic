@@ -58,8 +58,6 @@ const DivisionInputModal = ({
               <Input
                 type="text"
                 label={i18n.t('general:name')}
-                // TODO: investigate why we need a specific class and why the global styling isn't being applied
-                className="input"
                 onChange={onChange}
                 defaultValue={defaultValue || value}
                 aria-invalid={errors['name']?.message ? 'true' : 'false'}
