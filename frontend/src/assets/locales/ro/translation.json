@@ -33,5 +33,9 @@
     "branches": "Filiale si sucursale",
     "departments": "Departamente",
     "roles": "Roluri"
+  },
+  "pagination": {
+    "rows_per_page": "Randuri pe pagina",
+    "range_separator_text": "din"
   }
 }

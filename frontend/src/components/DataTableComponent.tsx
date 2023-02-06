@@ -1,16 +1,15 @@
 import React from 'react';
 import DataTable, { SortOrder, TableColumn } from 'react-data-table-component';
 import { classNames } from '../common/utils/utils';
+import i18n from '../common/config/i18n';
+import EmptyContent from './EmptyContent';
+import LoadingContent from './LoadingContent';
+import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 
 interface DataTableProps<T> {
   className?: string;
   columns: TableColumn<T>[];
   data?: T[];
-  rowsPerPageText?: string;
-  rangeSeparatorText?: string;
-  EmptyContent?: JSX.Element;
-  LoadingContent?: JSX.Element;
-  sortIcon?: JSX.Element;
   loading?: boolean;
   pagination?: boolean;
   sortServer?: boolean;
@@ -29,11 +28,6 @@ const DataTableComponent = <T extends object>({
   className,
   columns,
   data,
-  rowsPerPageText,
-  rangeSeparatorText,
-  EmptyContent,
-  LoadingContent,
-  sortIcon,
   loading,
   pagination,
   sortServer,
@@ -61,12 +55,12 @@ const DataTableComponent = <T extends object>({
         pagination={pagination}
         paginationServer={pagination}
         paginationComponentOptions={{
-          rowsPerPageText,
-          rangeSeparatorText,
+          rowsPerPageText: (i18n.t('pagination:rows_per_page') as string) || '',
+          rangeSeparatorText: (i18n.t('pagination:range_separator_text') as string) || '',
         }}
         paginationDefaultPage={paginationDefaultPage}
         responsive
-        sortIcon={sortIcon}
+        sortIcon={<ChevronUpDownIcon />}
         sortServer={sortServer}
         onSort={onSort}
         paginationTotalRows={paginationTotalRows}
@@ -74,8 +68,8 @@ const DataTableComponent = <T extends object>({
         paginationRowsPerPageOptions={paginationRowsPerPageOptions}
         onChangePage={onChangePage}
         onChangeRowsPerPage={onChangeRowsPerPage}
-        noDataComponent={EmptyContent}
-        progressComponent={LoadingContent}
+        noDataComponent={<EmptyContent />}
+        progressComponent={<LoadingContent />}
         defaultSortFieldId={defaultSortFieldId}
         defaultSortAsc={defaultSortAsc}
       />

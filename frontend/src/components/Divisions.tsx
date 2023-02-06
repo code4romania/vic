@@ -5,18 +5,10 @@ import { formatDate } from '../common/utils/utils';
 import Card from '../layouts/CardLayout';
 import CardHeader from './CardHeader';
 import CardBody from './CardBody';
-import {
-  ChevronUpDownIcon,
-  EyeIcon,
-  PencilIcon,
-  PlusIcon,
-  TrashIcon,
-} from '@heroicons/react/24/outline';
+import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Button from './Button';
 import DataTableComponent from './DataTableComponent';
 import { PaginationConfig } from '../common/constants/pagination';
-import EmptyContent from './EmptyContent';
-import LoadingContent from './LoadingContent';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from './Popover';
 import { IBaseEntity } from '../common/interfaces/base-entity.interface';
@@ -37,7 +29,7 @@ export interface IDivision extends IBaseEntity {
   createdOn: Date | string;
 }
 
-export const DivisionTabs: SelectItem[] = [
+export const DivisionsTabs: SelectItem[] = [
   { key: 0, value: i18n.t('division:branches') },
   { key: 1, value: i18n.t('division:departments') },
   { key: 2, value: i18n.t('division:roles') },
@@ -66,7 +58,7 @@ export const DivisionTableHeader = [
     sortable: true,
     grow: 2,
     minWidth: '15rem',
-    selector: (row: IDivision) => row.createdBy.name,
+    cell: (row: IDivision) => <a>{row.createdBy.name}</a>,
   },
   {
     id: 'createdOn',
@@ -78,7 +70,7 @@ export const DivisionTableHeader = [
   },
 ];
 
-interface DivisionProps {
+interface DivisionsProps {
   data?: IPaginatedEntity<IDivision>;
   isLoading: boolean;
   divisionType: DivisionType;
@@ -89,7 +81,7 @@ interface DivisionProps {
   onTabChange: (id: number) => void;
 }
 
-const Division = ({
+const Divisions = ({
   data,
   isLoading,
   divisionType,
@@ -98,7 +90,7 @@ const Division = ({
   onChangePage,
   onRowsPerPageChange,
   onTabChange,
-}: DivisionProps) => {
+}: DivisionsProps) => {
   // component actions
   const onAdd = () => {
     alert('Not yet implemented');
@@ -140,14 +132,14 @@ const Division = ({
 
     return {
       name: '',
-      cell: (row: IDivision) => <Popover row={row} items={divisionMenuItems} />,
+      cell: (row: IDivision) => <Popover<IDivision> row={row} items={divisionMenuItems} />,
       width: '50px',
       allowOverflow: true,
     };
   };
 
   return (
-    <Tabs tabs={DivisionTabs} onClick={onTabChange}>
+    <Tabs tabs={DivisionsTabs} onClick={onTabChange}>
       <Card>
         <CardHeader>
           <h3>{divisionType}</h3>
@@ -159,9 +151,8 @@ const Division = ({
           />
         </CardHeader>
         <CardBody>
-          <DataTableComponent
+          <DataTableComponent<IDivision>
             columns={[...DivisionTableHeader, buildDivisionActionColumn()]}
-            sortIcon={<ChevronUpDownIcon />}
             data={data?.items}
             loading={isLoading}
             pagination
@@ -172,8 +163,6 @@ const Division = ({
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}
-            EmptyContent={<EmptyContent />}
-            LoadingContent={<LoadingContent />}
           />
         </CardBody>
       </Card>
@@ -181,4 +170,4 @@ const Division = ({
   );
 };
 
-export default Division;
+export default Divisions;
