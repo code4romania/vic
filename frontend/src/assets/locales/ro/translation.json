@@ -21,8 +21,8 @@
   "division": {
     "form": {
       "required": "Campul este obligatoriu",
-      "max_length": "Numele poate sa aiba maxim 20 de caractere",
-      "min_length": "Numele poate sa aiba minim 2 caractere",
+      "max": "Numele poate sa aiba maxim 20 de caractere",
+      "min": "Numele poate sa aiba minim 2 caractere",
       "pattern": "Numele are un format invalid"
     }
   }
