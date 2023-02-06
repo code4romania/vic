@@ -1,4 +1,23 @@
 {
+  "general": {
+    "created_by": "Creat de",
+    "name": "Nume",
+    "created_on": "Data crearii",
+    "add": "Adauga",
+    "email": "Email",
+    "phone": "Telefon",
+    "address": "Adresa",
+    "empty_table": "Nu exista date in tabel",
+    "view": "Vizualizeaza",
+    "edit": "Editeaza",
+    "delete": "Sterge",
+    "back": "Inapoi",
+    "save_changes": "Salveaza modificari",
+    "description": "Descriere",
+    "error": {
+      "load_entries": "Eroare la incarcarea datelor"
+    }
+  },
   "header": {
     "login": "Login",
     "menu": {
@@ -10,8 +29,28 @@
   },
   "side_menu": {
     "options": {
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "organization": "Structura ONG"
     },
     "collapse": "Restrange meniul"
+  },
+  "division": {
+    "members": "Membri",
+    "branches": "Filiale si sucursale",
+    "departments": "Departamente",
+    "roles": "Roluri"
+  },
+  "organization": {
+    "title": "Profil organizație",
+    "subtitle": "Datele sunt preluate din ONGHub.",
+    "logo": "Logo organizație",
+    "organization_naming": "Denumire organizație",
+    "description_title": "Descriere organizație",
+    "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poti alege sa formulezi o descriere specifica pentru aplicatia TEO, prin care sa atragi cat mai multi voluntari, sau sa folosesti descrierea organizatiei asa cum se regaseste in ONGHub."
+  },
+  "edit_organization": {
+    "title": "Editare profil",
+    "card_title": "Editează profil organizație",
+    "teo_description": "Descrierea organizatiei in TEO"
   }
 }
