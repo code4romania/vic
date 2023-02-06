@@ -5,8 +5,8 @@ on:
       - develop
     tags:
       - "v*"
-    # paths:
-    #   - "backend/**"
+    paths:
+      - "backend/**"
   workflow_dispatch:
 
 name: Build Docker image
