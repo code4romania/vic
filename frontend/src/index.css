@@ -53,6 +53,24 @@
     @apply font-titilliumBold;
   }
 
+  input[type='text'],
+  [type='email'],
+  [type='url'],
+  [type='password'],
+  [type='number'],
+  [type='date'],
+  [type='datetime-local'],
+  [type='month'],
+  [type='search'],
+  [type='tel'],
+  [type='time'],
+  [type='week'],
+  [multiple],
+  textarea,
+  select {
+    @apply text-cool-gray-900 rounded-md border border-cool-gray-200 py-2.5 px-3 bg-white max-w-[30rem] h-fit cursor-text outline-0 shadow-sm text-sm font-roboto font-normal focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 typography;
+  }
+
   textarea {
     @apply min-h-[7rem] max-w-full;
   }
@@ -63,11 +81,6 @@
 
   input:disabled {
     @apply bg-cool-gray-200 text-cool-gray-500 cursor-auto;
-  }
-
-  input,
-  textarea {
-    @apply text-cool-gray-900 rounded-md border border-cool-gray-200 py-2.5 bg-white max-w-[30rem] h-fit cursor-text outline-0 shadow-sm text-sm font-roboto focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 typography typography;
   }
 }
 
@@ -118,10 +131,6 @@
 
   .logo {
     @apply bg-cool-gray-700 rounded-full bg-cover;
-  }
-
-  .input {
-    @apply text-cool-gray-900 rounded-md border border-cool-gray-200 py-2.5 bg-white max-w-[30rem] h-fit cursor-text outline-0 shadow-sm text-sm font-roboto focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500 typography;
   }
 }
 
