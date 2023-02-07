@@ -1,18 +1,18 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { GetUserProfileUseCaseService } from 'src/usecases/user/get-user-profile-use-case.service';
 
 @UseGuards(WebJwtAuthGuard)
-@Controller('user')
-export class UserController {
+@Controller('auth')
+export class AuthController {
   constructor(
     private readonly getUserProfileUseCase: GetUserProfileUseCaseService,
   ) {}
 
-  @Get()
-  getProfile(
+  @Post('login')
+  login(
     @ExtractUser() { token }: { token: { username: string } },
     @Req() req: Request,
   ): Promise<unknown> {

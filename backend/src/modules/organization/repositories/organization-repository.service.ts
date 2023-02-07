@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OrganizationEntity } from '../entities/organization.entity';
-import {
-  toOrganizationEntity,
-  toOrganizationModel,
-} from '../helpers/organization.helper';
 import { IOrganizationRepository } from '../interfaces/organization-repository.interface';
-import { IOrganizationModel } from '../models/organization.model';
+import {
+  ICreateOrganizationModel,
+  IOrganizationModel,
+  OrganizationTransformer,
+} from '../models/organization.model';
 
 @Injectable()
 export class OrganizationRepositoryService implements IOrganizationRepository {
@@ -17,10 +17,11 @@ export class OrganizationRepositoryService implements IOrganizationRepository {
   ) {}
 
   public async create(
-    organization: Omit<IOrganizationModel, 'id'>,
+    organization: ICreateOrganizationModel,
   ): Promise<IOrganizationModel> {
     // create organization entity
-    const newOrganizationEntity = toOrganizationEntity(organization);
+    const newOrganizationEntity =
+      OrganizationTransformer.toEntity(organization);
 
     // save organization entity
     const organizationEntity = await this.organizationRepository.save(
@@ -28,7 +29,7 @@ export class OrganizationRepositoryService implements IOrganizationRepository {
     );
 
     // return organization model
-    return toOrganizationModel(organizationEntity);
+    return OrganizationTransformer.fromEntity(organizationEntity);
   }
 
   public async update(
@@ -49,11 +50,13 @@ export class OrganizationRepositoryService implements IOrganizationRepository {
     });
 
     // return organization model
-    return organizationEntity ? toOrganizationModel(organizationEntity) : null;
+    return organizationEntity
+      ? OrganizationTransformer.fromEntity(organizationEntity)
+      : null;
   }
 
   public async findOneByOptions(
-    options: Partial<Omit<IOrganizationModel, 'id'>>,
+    options: Partial<ICreateOrganizationModel>,
   ): Promise<IOrganizationModel> {
     // get organization entity by id
     const organizationEntity = await this.organizationRepository.findOneBy(
@@ -61,6 +64,8 @@ export class OrganizationRepositoryService implements IOrganizationRepository {
     );
 
     // return organization model
-    return organizationEntity ? toOrganizationModel(organizationEntity) : null;
+    return organizationEntity
+      ? OrganizationTransformer.fromEntity(organizationEntity)
+      : null;
   }
 }

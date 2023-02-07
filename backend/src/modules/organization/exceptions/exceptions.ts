@@ -3,6 +3,7 @@ import { BusinessException } from 'src/common/interfaces/business-exception.inte
 export enum OrganizationExceptionCodes {
   ORG_001 = 'ORG_001',
   ORG_002 = 'ORG_002',
+  ORG_003 = 'ORG_003',
 }
 
 type OrganizationExceptionCodeType = keyof typeof OrganizationExceptionCodes;
@@ -19,5 +20,9 @@ export const OrganizationExceptionMessages: Record<
   [OrganizationExceptionCodes.ORG_002]: {
     message: 'Organization already exists',
     code_error: OrganizationExceptionCodes.ORG_002,
+  },
+  [OrganizationExceptionCodes.ORG_003]: {
+    message: 'Error while creating the organization',
+    code_error: OrganizationExceptionCodes.ORG_003,
   },
 };
