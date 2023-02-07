@@ -55,7 +55,8 @@
     "teo_description": "Descrierea organizatiei in TEO",
     "form": {
       "max": "Descrierea trebuie sa aiba maxim 250 de caractere",
-      "min": "Descrierea trebuie sa aiba minim 50 caractere"
+      "min": "Descrierea trebuie sa aiba minim 50 caractere",
+      "description_error": "Actualizarea descrierii a esuat"
     }
   },
   "pagination": {

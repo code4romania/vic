@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AuthContext } from './AuthContext';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const login = () => {
     setIsAuthenticated(true);
