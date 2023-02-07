@@ -31,6 +31,8 @@
     "options": {
       "dashboard": "Dashboard",
       "organization": "Structura ONG"
+      "dashboard": "Dashboard",
+      "organization": "Structura ONG"
     },
     "collapse": "Restrange meniul"
   },
@@ -52,5 +54,10 @@
     "title": "Editare profil",
     "card_title": "Editează profil organizație",
     "teo_description": "Descrierea organizatiei in TEO"
+  },
+
+  "pagination": {
+    "rows_per_page": "Randuri pe pagina",
+    "range_separator_text": "din"
   }
 }
