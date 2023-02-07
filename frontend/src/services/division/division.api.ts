@@ -16,5 +16,5 @@ export const getDivisions = async (
 };
 
 export const deleteDivision = async (id: string): Promise<void> => {
-  return API.delete(`/divisions?id=${id}`).then((res) => res.data);
+  return API.delete(`/divisions/${id}`).then((res) => res.data);
 };

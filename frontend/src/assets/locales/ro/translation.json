@@ -37,6 +37,12 @@
     "roles": "Roluri",
     "error": {
       "delete": "Eroare la stergerea diviziei"
+    },
+    "delete": {
+      "title": "Sterge divizie",
+      "description": "Esti sigur ca doresti stergerea diviziei?",
+      "success": "Divizie stearsa cu succes",
+      "error": "Eroare la stergerea diviziei"
     }
   },
   "pagination": {

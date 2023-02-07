@@ -18,6 +18,7 @@ const Organization = () => {
     data: division,
     isLoading,
     error,
+    refetch,
   } = useDivisionsQuery(
     rowsPerPage as number,
     page as number,
@@ -61,6 +62,10 @@ const Organization = () => {
     );
   };
 
+  const onRefetch = () => {
+    refetch();
+  };
+
   return (
     <PageLayout>
       <Divisions
@@ -72,6 +77,7 @@ const Organization = () => {
         page={page as number}
         onChangePage={onChangePage}
         onRowsPerPageChange={onRowsPerPageChange}
+        onRefetch={onRefetch}
       />
     </PageLayout>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IUser } from '../common/interfaces/user.interface';
 import i18n from '../common/config/i18n';
 import { formatDate } from '../common/utils/utils';
@@ -15,6 +15,9 @@ import { IBaseEntity } from '../common/interfaces/base-entity.interface';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 import Tabs from './Tabs';
 import { SelectItem } from './Select';
+import ConfirmationModal from './ConfirmationModal';
+import { useDeleteDivisionMutation } from '../services/division/division.service';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 
 export enum DivisionType {
   Branches = 'branches',
@@ -79,6 +82,7 @@ interface DivisionsProps {
   onChangePage: (newPage: number) => void;
   onRowsPerPageChange: (rows: number) => void;
   onTabChange: (id: number) => void;
+  onRefetch: () => void;
 }
 
 const Divisions = ({
@@ -90,11 +94,12 @@ const Divisions = ({
   onChangePage,
   onRowsPerPageChange,
   onTabChange,
+  onRefetch,
 }: DivisionsProps) => {
-  // component actions
-  const onAdd = () => {
-    alert('Not yet implemented');
-  };
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [selectedRow, setSelectedRow] = useState<IDivision | null>(null);
+
+  const { mutateAsync: deleteDivision } = useDeleteDivisionMutation();
 
   // row actions
   const onView = (row: IDivision) => {
@@ -106,7 +111,27 @@ const Divisions = ({
   };
 
   const onDelete = (row: IDivision) => {
-    alert(`Not yet implemented, ${row}`);
+    setSelectedRow(row);
+    setIsDeleteModalOpen(true);
+  };
+
+  // component actions
+  const onAdd = () => {
+    alert('Not yet implemented');
+  };
+
+  const handleDelete = (row: IDivision) => {
+    deleteDivision(row.id, {
+      onSuccess: () => {
+        setSelectedRow(null);
+        setIsDeleteModalOpen(false);
+        useSuccessToast(i18n.t('division:delete.success'));
+        onRefetch();
+      },
+      onError: () => {
+        useErrorToast(i18n.t('division:delete.error'));
+      },
+    });
   };
 
   // menu items
@@ -166,6 +191,17 @@ const Divisions = ({
           />
         </CardBody>
       </Card>
+      {isDeleteModalOpen && selectedRow && (
+        <ConfirmationModal
+          title={i18n.t('division:delete.title')}
+          description={i18n.t('division:delete.description')}
+          onClose={() => {
+            setSelectedRow(null);
+            setIsDeleteModalOpen(false);
+          }}
+          onConfirm={() => handleDelete(selectedRow)}
+        />
+      )}
     </Tabs>
   );
 };
