@@ -1,6 +1,6 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+// import { useForm } from 'react-hook-form';
+// import * as yup from 'yup';
 import PageLayout from '../layouts/PageLayout';
 import Button from '../components/Button';
 import Card from '../layouts/CardLayout';
@@ -12,10 +12,10 @@ import { useParams } from 'react-router-dom';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 import { useOrganizationDescriptionQuery } from '../services/edit-organization/EditOrganization.service';
 
-const schema = yup.object({ description: yup.string() });
+// const schema = yup.object({ description: yup.string(). });
 
 const EditOrganizationProfile = () => {
-  const {} = useForm({ mode: 'onChange', reValidateMode: 'onChange', resolver });
+  // const {} = useForm({ mode: 'onChange', reValidateMode: 'onChange', resolver });
 
   const { id } = useParams();
   const { data } = useOrganizationDescriptionQuery(id as string);
