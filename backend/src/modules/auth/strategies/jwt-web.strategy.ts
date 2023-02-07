@@ -7,6 +7,7 @@ import {
   getCognitoProperty,
 } from '../../../infrastructure/config/cognito.config';
 import { AUTH_STRATEGIES } from '../auth.constants';
+import { IRequestUser } from 'src/common/interfaces/request-user.interface';
 
 @Injectable()
 export class WebJwtStrategy extends PassportStrategy(
@@ -32,7 +33,7 @@ export class WebJwtStrategy extends PassportStrategy(
     });
   }
 
-  public async validate(token: { username: string }): Promise<unknown> {
-    return { user: 'test', token };
+  public async validate(user: IRequestUser): Promise<unknown> {
+    return user;
   }
 }
