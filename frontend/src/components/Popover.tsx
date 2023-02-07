@@ -57,7 +57,7 @@ const Popover = <T extends object>({ row, items }: PopoverProps<T>) => {
                       }}
                     >
                       {icon}
-                      <p>{label}</p>
+                      <small>{label}</small>
                     </label>
                   ))}
                 </div>

@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { IUser } from '../common/interfaces/user.interface';
 import i18n from '../common/config/i18n';
 import { formatDate } from '../common/utils/utils';
 import Card from '../layouts/CardLayout';
 import CardHeader from './CardHeader';
 import CardBody from './CardBody';
-import {
-  ChevronUpDownIcon,
-  EyeIcon,
-  PencilIcon,
-  PlusIcon,
-  TrashIcon,
-} from '@heroicons/react/24/outline';
+import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Button from './Button';
 import DataTableComponent from './DataTableComponent';
 import { PaginationConfig } from '../common/constants/pagination';
-import EmptyContent from './EmptyContent';
-import LoadingContent from './LoadingContent';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from './Popover';
 import { IBaseEntity } from '../common/interfaces/base-entity.interface';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 import Tabs from './Tabs';
 import { SelectItem } from './Select';
-import ConfirmationModal from './ConfirmationModal';
-import { useDeleteDivisionMutation } from '../services/division/division.service';
-import { useErrorToast } from '../hooks/useToast';
 
 export enum DivisionType {
   Branches = 'branches',
@@ -40,7 +29,7 @@ export interface IDivision extends IBaseEntity {
   createdOn: Date | string;
 }
 
-export const DivisionTabs: SelectItem[] = [
+export const DivisionsTabs: SelectItem[] = [
   { key: 0, value: i18n.t('division:branches') },
   { key: 1, value: i18n.t('division:departments') },
   { key: 2, value: i18n.t('division:roles') },
@@ -69,7 +58,7 @@ export const DivisionTableHeader = [
     sortable: true,
     grow: 2,
     minWidth: '15rem',
-    selector: (row: IDivision) => row.createdBy.name,
+    cell: (row: IDivision) => <a>{row.createdBy.name}</a>,
   },
   {
     id: 'createdOn',
@@ -81,7 +70,7 @@ export const DivisionTableHeader = [
   },
 ];
 
-interface DivisionProps {
+interface DivisionsProps {
   data?: IPaginatedEntity<IDivision>;
   isLoading: boolean;
   divisionType: DivisionType;
@@ -90,10 +79,9 @@ interface DivisionProps {
   onChangePage: (newPage: number) => void;
   onRowsPerPageChange: (rows: number) => void;
   onTabChange: (id: number) => void;
-  refetch: () => void;
 }
 
-const Division = ({
+const Divisions = ({
   data,
   isLoading,
   divisionType,
@@ -102,19 +90,7 @@ const Division = ({
   onChangePage,
   onRowsPerPageChange,
   onTabChange,
-  refetch,
-}: DivisionProps) => {
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const [selectedRow, setSelectedRow] = useState<IDivision | null>(null);
-  const [rows, setRows] = useState<IDivision[] | undefined>([]);
-
-  const { mutateAsync: deleteDivision, isLoading: deleteDivisionLoading } =
-    useDeleteDivisionMutation();
-
-  useEffect(() => {
-    if (data?.items) setRows(data.items);
-  }, [data]);
-
+}: DivisionsProps) => {
   // component actions
   const onAdd = () => {
     alert('Not yet implemented');
@@ -130,26 +106,7 @@ const Division = ({
   };
 
   const onDelete = (row: IDivision) => {
-    setSelectedRow(row);
-    setIsDeleteModalOpen(true);
-  };
-
-  // entity actions
-  const onDeleteRow = () => {
-    if (selectedRow) {
-      deleteDivision(selectedRow.id, {
-        onSuccess: () => {
-          setSelectedRow(null);
-          setIsDeleteModalOpen(false);
-          refetch();
-        },
-        onError: () => {
-          setSelectedRow(null);
-          setIsDeleteModalOpen(false);
-          useErrorToast(i18n.t('division:error.delete'));
-        },
-      });
-    }
+    alert(`Not yet implemented, ${row}`);
   };
 
   // menu items
@@ -175,14 +132,14 @@ const Division = ({
 
     return {
       name: '',
-      cell: (row: IDivision) => <Popover row={row} items={divisionMenuItems} />,
+      cell: (row: IDivision) => <Popover<IDivision> row={row} items={divisionMenuItems} />,
       width: '50px',
       allowOverflow: true,
     };
   };
 
   return (
-    <Tabs tabs={DivisionTabs} onClick={onTabChange}>
+    <Tabs tabs={DivisionsTabs} onClick={onTabChange}>
       <Card>
         <CardHeader>
           <h3>{divisionType}</h3>
@@ -194,11 +151,10 @@ const Division = ({
           />
         </CardHeader>
         <CardBody>
-          <DataTableComponent
+          <DataTableComponent<IDivision>
             columns={[...DivisionTableHeader, buildDivisionActionColumn()]}
-            sortIcon={<ChevronUpDownIcon />}
-            data={rows}
-            loading={isLoading || deleteDivisionLoading}
+            data={data?.items}
+            loading={isLoading}
             pagination
             paginationPerPage={data?.meta?.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
@@ -207,24 +163,11 @@ const Division = ({
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}
-            EmptyContent={<EmptyContent />}
-            LoadingContent={<LoadingContent />}
           />
         </CardBody>
       </Card>
-      {isDeleteModalOpen && (
-        <ConfirmationModal
-          title={i18n.t('general:delete')}
-          description={i18n.t('general:delete_modal_description')}
-          onClose={() => {
-            setSelectedRow(null);
-            setIsDeleteModalOpen(false);
-          }}
-          onConfirm={onDeleteRow}
-        />
-      )}
     </Tabs>
   );
 };
 
-export default Division;
+export default Divisions;

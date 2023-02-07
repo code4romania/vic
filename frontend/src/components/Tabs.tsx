@@ -27,7 +27,7 @@ const Tabs = ({ children, tabs, onClick, defaultTab }: TabsProps) => {
             onClick={onTabClick.bind(null, tab)}
             className={`${
               activeTab.key === tab.key ? 'bg-turquoise-200' : 'font-roboto hover:bg-turquoise-200'
-            } min-w-fit text-base leading-5 text-cool-gray-800 hover:text-cool-gray-800 px-4 py-2 rounded-md active:bg-turquoise-300`}
+            } min-w-fit leading-5 text-cool-gray-800 hover:text-cool-gray-800 px-4 py-2 rounded-md active:bg-turquoise-300`}
           >
             {tab.value}
           </a>

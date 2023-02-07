@@ -38,5 +38,9 @@
     "error": {
       "delete": "Eroare la stergerea diviziei"
     }
+  },
+  "pagination": {
+    "rows_per_page": "Randuri pe pagina",
+    "range_separator_text": "din"
   }
 }

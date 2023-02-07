@@ -1,14 +1,16 @@
-import React, { ComponentPropsWithoutRef } from 'react';
+import React, { ComponentPropsWithoutRef, ReactNode } from 'react';
 
-interface TextareaProps extends ComponentPropsWithoutRef<'textarea'> {
+export interface TextareaProps extends ComponentPropsWithoutRef<'textarea'> {
   label: string;
+  helper?: ReactNode;
 }
 
-const Textarea = ({ label, ...props }: TextareaProps) => {
+const Textarea = ({ label, helper, ...props }: TextareaProps) => {
   return (
     <div className="flex gap-1 flex-col">
       <label htmlFor={label}>{label}</label>
-      <textarea id={label} {...props} className="max-w-full"></textarea>
+      <textarea id={label} {...props}></textarea>
+      {helper}
     </div>
   );
 };

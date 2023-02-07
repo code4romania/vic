@@ -1,17 +1,21 @@
 import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { DivisionType } from '../../components/Division';
-import { deleteDivision, getDivisionData } from './division.api';
+import { DivisionType } from '../../components/Divisions';
+import { deleteDivision, getDivisions } from './division.api';
 
-export const useDivisionDataQuery = (
+export const useDivisionsQuery = (
   limit: number,
   page: number,
-  orderBy: string,
-  orderDirection: OrderDirection,
   divisionType: DivisionType,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
 ) => {
-  return useQuery(['divisions', limit, page, orderBy, orderDirection, divisionType], () =>
-    getDivisionData(limit, page, orderBy, orderDirection, divisionType),
+  return useQuery(
+    ['divisions', limit, page, divisionType, orderBy, orderDirection],
+    () => getDivisions(limit, page, divisionType, orderBy, orderDirection),
+    {
+      enabled: !!(limit && page && divisionType),
+    },
   );
 };
 
