@@ -16,7 +16,7 @@ const Organization = () => {
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
 
-  const { data: organization } = useOrganizationProfileQuery();
+  const { data: organization, error: organizationProfileError } = useOrganizationProfileQuery();
 
   const {
     data: division,
@@ -40,8 +40,10 @@ const Organization = () => {
   }, []);
 
   useEffect(() => {
-    if (error) useErrorToast(i18n.t('general:error.load_entries'));
-  }, [error]);
+    if (error) useErrorToast(i18n.t('general:error.load_entries'), 'division-toast');
+    if (organizationProfileError)
+      useErrorToast(i18n.t('general:error.load_entries'), 'organization-toast');
+  }, [error, organizationProfileError]);
 
   const onTabClick = (id: number) => {
     setDivisionType(DivisionsTabs.find((tab) => tab.key === id)?.value as DivisionType);
