@@ -58,6 +58,31 @@ export class GetUserProfileUseCaseService
 
     const { user, organization } = userWithOrganization;
 
+    // check if there is already an organization with the same data
+    const dbOrganization =
+      await this.organizationService.getOrganizationByOptions({
+        email: organization.email,
+        phone: organization.phone,
+      });
+
+    // there is already an organization with the same phone number and email
+    if (dbOrganization) {
+      this.exceptionService.badRequestException(
+        OrganizationExceptionMessages.ORG_004,
+      );
+    }
+
+    // // check if there is already a user with the same data
+    const dbUser = await this.userService.getUserByOptions({
+      email: user.email,
+      phone: user.phone,
+    });
+
+    // // there is already an user with the same phone number and email
+    if (dbUser) {
+      this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
+    }
+
     // save organization to database
     const createdOrganization =
       await this.organizationService.createOrganization(organization);
