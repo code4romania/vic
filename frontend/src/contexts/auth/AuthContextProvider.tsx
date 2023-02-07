@@ -8,11 +8,21 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [profile, setProfile] = useState<IUser>();
-  const { mutate: getProfile } = useLogin();
+  const { mutate: getProfile, data: userProfile, isLoading: isFetchingProfile } = useLogin();
 
   useEffect(() => {
     initProfile();
   }, []);
+
+  useEffect(() => {
+    // once we retrieve the profile we can asume we are logged in
+    if (userProfile) {
+      // set user and authenticated which will automatically show protected routes
+      setIsAuthenticated(true);
+      // set user profile
+      setProfile(userProfile);
+    }
+  }, [userProfile]);
 
   const initProfile = async () => {
     // show loading screen
@@ -20,16 +30,9 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       // this will throw error if user is not authenticated
       await Auth.currentAuthenticatedUser();
-      // request profile data
-      await getProfile(undefined, {
-        onSuccess: (user: IUser) => {
-          // set user profile in user auth context
-          setProfile(user);
-        },
-      });
 
-      // set user and authenticated which will automatically show protected routes
-      setIsAuthenticated(true);
+      // request profile data
+      getProfile();
     } catch (error) {
       // https://github.com/aws-amplify/amplify-js/blob/6caccc7b4/packages/auth/src/Auth.ts#L1705
       // here are just error strings validating user pool config and if user is authenticated
@@ -51,7 +54,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout, profile }}>
-      {!isLoading ? children : <div>Loading...</div>}
+      {!(isLoading || isFetchingProfile) ? children : <div>Loading...</div>}
     </AuthContext.Provider>
   );
 };
