@@ -1,11 +1,8 @@
 import i18n from '../config/i18n';
-import { RectangleGroupIcon } from '@heroicons/react/24/outline';
+import { RectangleGroupIcon, SunIcon } from '@heroicons/react/24/outline';
 import { IRoute } from '../interfaces/route.interface';
 
-const translations = {
-  dashboard: i18n.t('side_menu:options:dashboard'),
-};
-
 export const ROUTES: IRoute[] = [
-  { id: 0, name: translations.dashboard, href: '', icon: RectangleGroupIcon },
+  { id: 0, name: i18n.t('side_menu:options.dashboard'), href: '', icon: RectangleGroupIcon },
+  { id: 1, name: i18n.t('side_menu:options.organization'), href: 'organization', icon: SunIcon },
 ];

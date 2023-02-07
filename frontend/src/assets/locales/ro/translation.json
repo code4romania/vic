@@ -1,4 +1,17 @@
 {
+  "general": {
+    "created_by": "Creat de",
+    "name": "Nume",
+    "created_on": "Data crearii",
+    "add": "Adauga",
+    "empty_table": "Nu exista date in tabel",
+    "view": "Vizualizeaza",
+    "edit": "Editeaza",
+    "delete": "Sterge",
+    "error": {
+      "load_entries": "Eroare la incarcarea datelor"
+    }
+  },
   "header": {
     "login": "Login",
     "menu": {
@@ -10,8 +23,19 @@
   },
   "side_menu": {
     "options": {
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "organization": "Structura ONG"
     },
     "collapse": "Restrange meniul"
+  },
+  "division": {
+    "members": "Membri",
+    "branches": "Filiale si sucursale",
+    "departments": "Departamente",
+    "roles": "Roluri"
+  },
+  "pagination": {
+    "rows_per_page": "Randuri pe pagina",
+    "range_separator_text": "din"
   }
 }
