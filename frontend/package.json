@@ -11,6 +11,7 @@
     "commit": "git-cz"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^4.3.6",
     "@headlessui/react": "1.7.7",
     "@heroicons/react": "^2.0.13",
     "aws-amplify": "^5.0.12",
