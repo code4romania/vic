@@ -2,15 +2,17 @@ import { Injectable, Logger } from '@nestjs/common';
 import { OngHubService } from 'src/modules/onghub/services/ong-hub.service';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
-import { IUserModel } from 'src/modules/user/models/user.model';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { OngHubExceptionMessages } from 'src/modules/onghub/exceptions/exceptions';
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization-facade.service';
 import { OrganizationExceptionMessages } from 'src/modules/organization/exceptions/exceptions';
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 @Injectable()
-export class GetUserProfileUseCaseService implements IUseCaseService<unknown> {
+export class GetUserProfileUseCaseService
+  implements IUseCaseService<IAdminUserModel>
+{
   private readonly logger = new Logger(GetUserProfileUseCaseService.name);
 
   constructor(
@@ -20,7 +22,10 @@ export class GetUserProfileUseCaseService implements IUseCaseService<unknown> {
     private readonly organizationService: OrganizationFacadeService,
   ) {}
 
-  async execute(cognitoUserId: string, token: string): Promise<IUserModel> {
+  async execute(
+    cognitoUserId: string,
+    token: string,
+  ): Promise<IAdminUserModel> {
     // check if user in the database
     const existingUser = await this.userService.getAdminUserByCognitoId(
       cognitoUserId,
