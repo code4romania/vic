@@ -5,11 +5,14 @@
 @layer base {
   body {
     @apply text-cool-gray-800 bg-cool-gray-50;
+
+    word-break: break-word;
   }
 
   body,
-  p {
-    @apply font-roboto text-base;
+  p,
+  span {
+    @apply font-roboto text-sm sm:text-base;
   }
 
   header {
@@ -25,23 +28,23 @@
   }
 
   a {
-    @apply sm:text-sm text-xs font-robotoBold text-turquoise hover:text-turquoise-700 active:text-turquoise-800 focus:outline-0 cursor-pointer;
+    @apply text-sm sm:text-base font-robotoBold text-turquoise hover:text-turquoise-700 active:text-turquoise-800 focus:outline-0 cursor-pointer;
   }
 
   h1 {
-    @apply text-4xl font-titilliumBold;
+    @apply text-lg sm:text-4xl font-titilliumBold;
   }
 
   h2 {
-    @apply text-xl font-titilliumBold;
+    @apply text-sm sm:text-xl font-titilliumBold;
   }
 
   h3 {
-    @apply text-xl font-roboto font-semibold;
+    @apply text-sm sm:text-xl font-roboto font-semibold;
   }
 
   h4 {
-    @apply sm:text-sm lg:text-base text-xs font-titilliumBold;
+    @apply text-base font-titilliumBold;
   }
 
   h5 {
@@ -78,18 +81,12 @@
 }
 
 @layer components {
-  .typography {
-    @apply p-0 m-0;
-
-    word-break: break-word;
-  }
-
   .helper-text {
     @apply text-sm font-roboto text-cool-gray-500;
   }
 
   .btn {
-    @apply flex items-center justify-center rounded-md min-w-fit w-full sm:w-20 py-2.5 gap-x-2 whitespace-nowrap font-medium text-sm font-robotoMedium disabled:opacity-50;
+    @apply flex items-center justify-center rounded-md min-w-fit w-20 py-2.5 gap-x-2 whitespace-pre-wrap font-medium text-xs sm:text-sm font-robotoMedium disabled:opacity-50;
 
     padding-inline: 17px;
   }
@@ -124,6 +121,10 @@
 
   .logo {
     @apply bg-cool-gray-700 rounded-full bg-cover;
+  }
+
+  .menu-icon {
+    @apply flex-shrink-0 h-5 w-5;
   }
 }
 
@@ -177,11 +178,43 @@
 }
 
 .rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
-  @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-sm font-normal text-cool-gray-700;
+  @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-xs sm:text-sm font-normal text-cool-gray-700;
 }
 
 .rdt_TableBody > div:last-of-type {
   border-bottom-style: solid !important;
   border-bottom-width: 1px !important;
   border-bottom-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.rdt_TableCol_Sortable svg {
+  @apply ml-1;
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.rdt_Pagination {
+  border-top: none !important;
+}
+
+.rdt_Pagination > div > svg {
+  display: none;
+}
+
+.rdt_Pagination > div > div > svg {
+  display: none;
+}
+
+.Toastify__toast {
+  @apply font-roboto !important;
+  @apply sm:text-sm lg:text-base text-xs;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  @apply bg-turquoise-500 !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--error {
+  @apply bg-red-500 !important;
 }
