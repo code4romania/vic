@@ -10,7 +10,8 @@
     "delete": "Sterge",
     "error": {
       "load_entries": "Eroare la incarcarea datelor"
-    }
+    },
+    "access_codes": "Coduri de acces"
   },
   "header": {
     "login": "Login",
@@ -37,5 +38,10 @@
   "pagination": {
     "rows_per_page": "Randuri pe pagina",
     "range_separator_text": "din"
+  },
+  "access_codes": {
+    "create": "Creeaza cod nou",
+    "availability": "Valabilitate",
+    "uses": "Utilizari"
   }
 }
