@@ -17,7 +17,7 @@ interface HeaderProps {
 }
 
 const Header = ({ openSlidingMenu }: HeaderProps) => {
-  const { logout, isAuthenticated } = useAuth();
+  const { logout, isAuthenticated, profile } = useAuth();
   const navigate = useNavigate();
 
   const { t } = useTranslation('header');
@@ -56,7 +56,7 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
                   id="account_menu__open-btn"
                   className="flex items-center gap-4 hover:bg-green-tab sm:py-2 sm:px-4 py-1 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
                 >
-                  <h4 className="tracking-wide text-right">Profile Name</h4>
+                  <h4 className="tracking-wide text-right">{profile?.name || ''}</h4>
                   <ChevronDownIcon className="w-5 h-5 md:w-6 md:h-6 text-gray-900" />
                 </Menu.Button>
               </div>
