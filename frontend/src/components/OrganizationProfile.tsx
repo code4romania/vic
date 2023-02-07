@@ -7,8 +7,9 @@ import CardBody from './CardBody';
 import FormInput from './FormInput';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import FormTextarea from './FormTextarea';
+import { useNavigate } from 'react-router';
 
-interface IOrganization {
+export interface IOrganization {
   id: string;
   name: string;
   email: string;
@@ -23,6 +24,8 @@ interface OrganizationProfileProps {
 }
 
 const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
+  const navigate = useNavigate();
+
   return (
     <Card>
       <CardHeader>
@@ -31,7 +34,7 @@ const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
           className="btn-outline-secondary w-20"
           label={i18n.t('general:edit')}
           icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
-          onClick={() => console.log('navigate')}
+          onClick={() => navigate('edit')}
         />
       </CardHeader>
       <CardBody>

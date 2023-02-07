@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { OrderDirection } from '../common/enums/order-direction.enum';
+import OrganizationProfile from '../components/OrganizationProfile';
 import Divisions, { DivisionsTabs, DivisionType, IDivision } from '../components/Divisions';
 import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useDivisionsQuery } from '../services/division/division.service';
+import { useOrganizationProfileQuery } from '../services/organization-profile/organizationProfile.service';
 
 const Organization = () => {
   const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.Branches);
@@ -13,6 +15,8 @@ const Organization = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+
+  const { data: organization } = useOrganizationProfileQuery();
 
   const {
     data: division,
@@ -63,6 +67,7 @@ const Organization = () => {
 
   return (
     <PageLayout>
+      {organization && <OrganizationProfile organization={organization} />}
       <Divisions
         isLoading={isLoading}
         divisionType={divisionType}
