@@ -1,12 +1,13 @@
-import { IOrganizationModel } from '../models/organization.model';
+import {
+  ICreateOrganizationModel,
+  IOrganizationModel,
+} from '../models/organization.model';
 
 export interface IOrganizationRepository {
-  create(
-    organization: Omit<IOrganizationModel, 'id'>,
-  ): Promise<IOrganizationModel>;
+  create(organization: ICreateOrganizationModel): Promise<IOrganizationModel>;
   update(id: string, description: string): Promise<IOrganizationModel>;
   findById(id: string): Promise<IOrganizationModel>;
   findOneByOptions(
-    options: Partial<Omit<IOrganizationModel, 'id'>>,
+    options: Partial<ICreateOrganizationModel>,
   ): Promise<IOrganizationModel>;
 }
