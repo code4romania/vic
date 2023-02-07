@@ -5,7 +5,7 @@ import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
 import { SortOrder, TableColumn } from 'react-data-table-component';
-import { useDivisionDataQuery } from '../services/division/division.service';
+import { useDivisionsQuery } from '../services/division/division.service';
 
 const Organization = () => {
   const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.Branches);
@@ -18,7 +18,7 @@ const Organization = () => {
     data: division,
     isLoading,
     error,
-  } = useDivisionDataQuery(
+  } = useDivisionsQuery(
     rowsPerPage as number,
     page as number,
     divisionType as DivisionType,

@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { DivisionType } from '../../components/Divisions';
-import { getDivisionData } from './division.api';
+import { getDivisions } from './division.api';
 
-export const useDivisionDataQuery = (
+export const useDivisionsQuery = (
   limit: number,
   page: number,
   divisionType: DivisionType,
@@ -12,7 +12,7 @@ export const useDivisionDataQuery = (
 ) => {
   return useQuery(
     ['divisions', limit, page, divisionType, orderBy, orderDirection],
-    () => getDivisionData(limit, page, divisionType, orderBy, orderDirection),
+    () => getDivisions(limit, page, divisionType, orderBy, orderDirection),
     {
       enabled: !!(limit && page && divisionType),
     },
