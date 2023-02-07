@@ -1,11 +1,15 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { AxiosError } from 'axios';
 import { firstValueFrom } from 'rxjs';
+import { OngHubExceptionMessages } from '../exceptions/exceptions';
 import { IUserWithOrganizationModel } from '../models/user-with-organization.model';
 
 @Injectable()
 export class OngHubService {
+  private readonly logger = new Logger(OngHubService.name);
+
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
@@ -36,9 +40,28 @@ export class OngHubService {
     // transform observable to promise
     return firstValueFrom(request$)
       .then((response) => response.data as IUserWithOrganizationModel)
-      .catch((error) => {
-        // handle error of failing request here
-        console.log(error);
+      .catch((error: AxiosError) => {
+        if (error.code === 'ECONNREFUSED') {
+          // there is no connection with onghub server
+          this.logger.error({
+            ...error,
+            ...OngHubExceptionMessages.ONG_001,
+          });
+        } else if (error.code === 'ERR_BAD_REQUEST') {
+          // this is an onghub handled error
+          this.logger.error({
+            ...(error.response.data as HttpException),
+            ...OngHubExceptionMessages.ONG_002,
+          });
+        } else {
+          // any other error
+          this.logger.error({
+            error,
+            ...OngHubExceptionMessages.ONG_003,
+          });
+        }
+
+        // while the request fails we return nothing
         return null;
       });
   }

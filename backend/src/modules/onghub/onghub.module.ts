@@ -7,4 +7,4 @@ import { OngHubService } from './services/ong-hub.service';
   providers: [OngHubService],
   exports: [OngHubService],
 })
-export class ExternalDataModule {}
+export class OngHubModule {}

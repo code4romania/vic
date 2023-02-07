@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ExceptionsModule } from 'src/infrastructure/exceptions/exceptions.module';
-import { ExternalDataModule } from 'src/modules/external-data/external-data.module';
+import { OngHubModule } from 'src/modules/onghub/onghub.module';
 import { OrganizationModule } from 'src/modules/organization/organization.module';
 import { GetOrganizationUseCaseService } from './organization/get-organization-use-case.service';
 import { UpdateOrganizationDescriptionUseCaseService } from './organization/update-organization-description-use-case.service';
 import { GetUserProfileUseCaseService } from './user/get-user-profile-use-case.service';
 
 @Module({
-  imports: [ExceptionsModule, OrganizationModule, ExternalDataModule],
+  imports: [ExceptionsModule, OrganizationModule, OngHubModule],
   providers: [
     GetOrganizationUseCaseService,
     UpdateOrganizationDescriptionUseCaseService,
