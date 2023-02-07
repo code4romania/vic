@@ -68,7 +68,7 @@ const DataTableComponent = <T extends object>({
         paginationRowsPerPageOptions={paginationRowsPerPageOptions}
         onChangePage={onChangePage}
         onChangeRowsPerPage={onChangeRowsPerPage}
-        noDataComponent={<EmptyContent />}
+        noDataComponent={<EmptyContent description={i18n.t('general:empty_table')} />}
         progressComponent={<LoadingContent />}
         defaultSortFieldId={defaultSortFieldId}
         defaultSortAsc={defaultSortAsc}

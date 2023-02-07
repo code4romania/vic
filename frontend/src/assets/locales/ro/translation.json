@@ -10,7 +10,14 @@
     "delete": "Sterge",
     "error": {
       "load_entries": "Eroare la incarcarea datelor"
-    }
+    },
+    "phone": "Telefon",
+    "email": "Email de contact",
+    "sex": {
+      "male": "Barbatesc",
+      "female": "Feminin"
+    },
+    "back": "Inapoi"
   },
   "header": {
     "login": "Login",
@@ -24,9 +31,24 @@
   "side_menu": {
     "options": {
       "dashboard": "Dashboard",
-      "organization": "Structura ONG"
+      "organization": "Structura ONG",
+      "volunteers": {
+        "name": "Voluntari",
+        "access_requests": "Cereri de inscriere"
+      }
     },
     "collapse": "Restrange meniul"
+  },
+  "registration": {
+    "title": "Cerere de inscriere",
+    "form": "Formular inscriere",
+    "answer": "Raspunsul voluntarului",
+    "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
+    "found_location": "De unde ai aflat de organizatie?",
+    "motivation": "Ce te motiveaza sa fii voluntar?",
+    "error": {
+      "loading": "Nu s-a putut incarca cererea voluntarului"
+    }
   },
   "division": {
     "members": "Membri",

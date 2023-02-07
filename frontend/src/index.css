@@ -120,7 +120,7 @@
   }
 
   .logo {
-    @apply bg-cool-gray-700 rounded-full bg-cover;
+    @apply bg-cool-gray-700 rounded-full bg-cover object-cover;
   }
 
   .menu-icon {
