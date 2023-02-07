@@ -14,6 +14,7 @@
     "back": "Inapoi",
     "save_changes": "Salveaza modificari",
     "description": "Descriere",
+    "required": "Campul este obligatoriu",
     "error": {
       "load_entries": "Eroare la incarcarea datelor"
     }
@@ -51,7 +52,11 @@
   "edit_organization": {
     "title": "Editare profil",
     "card_title": "Editează profil organizație",
-    "teo_description": "Descrierea organizatiei in TEO"
+    "teo_description": "Descrierea organizatiei in TEO",
+    "form": {
+      "max": "Descrierea trebuie sa aiba maxim 250 de caractere",
+      "min": "Descrierea trebuie sa aiba minim 50 caractere"
+    }
   },
   "pagination": {
     "rows_per_page": "Randuri pe pagina",
