@@ -1,4 +1,4 @@
-import { Expose, plainToClass } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IAccessCodeModel } from 'src/modules/organization/models/access-code.model';
 
@@ -45,6 +45,6 @@ export class AccessCodePresenter {
   usageCount: number;
 
   @Expose()
-  @ApiProperty({ description: 'The Admin User who created the code' })
+  @ApiProperty({ description: 'The Admin User who created the code' }) // TODO: how to annotate this properly?
   createdBy: { id: string; name: string };
 }

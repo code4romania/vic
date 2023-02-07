@@ -10,6 +10,7 @@ export interface IAccessCodeModel {
   // And it seems confusing to create submodels here?
   createdBy: { id: string; name: string };
   usageCount: number;
+  organizationId?: string;
 }
 
 export type ICreateAccessCodeModel = Pick<
@@ -19,6 +20,10 @@ export type ICreateAccessCodeModel = Pick<
 
 export type IFindAccessCodeModel = Partial<
   Pick<IAccessCodeModel, 'id' | 'code'>
+>;
+
+export type IFindAllAccessCodeModel = Required<
+  Pick<IAccessCodeModel, 'organizationId'>
 >;
 
 type IUpdateAccessCodeEndDate = Required<
@@ -44,6 +49,7 @@ export class AccessCodeTransformer {
         name: entity.adminUser?.user?.name,
       },
       usageCount: entity.usageCount,
+      organizationId: entity.organizationId,
     };
   }
 

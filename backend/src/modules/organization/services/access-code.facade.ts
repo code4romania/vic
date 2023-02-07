@@ -3,6 +3,7 @@ import {
   IAccessCodeModel,
   ICreateAccessCodeModel,
   IFindAccessCodeModel,
+  IFindAllAccessCodeModel,
   IUpdateAccessCodeModel,
 } from '../models/access-code.model';
 import { AccessCodeRepositoryService } from '../repositories/access-code.repository';
@@ -12,6 +13,12 @@ export class AccessCodeFacade {
   constructor(
     private readonly accessCodeRepository: AccessCodeRepositoryService,
   ) {}
+
+  public async findAll(
+    findOptions: IFindAllAccessCodeModel,
+  ): Promise<IAccessCodeModel[]> {
+    return this.accessCodeRepository.findAll(findOptions);
+  }
 
   public async find(
     findOptions: IFindAccessCodeModel,

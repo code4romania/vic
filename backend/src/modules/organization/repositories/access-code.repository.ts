@@ -8,6 +8,7 @@ import {
   IAccessCodeModel,
   ICreateAccessCodeModel,
   IFindAccessCodeModel,
+  IFindAllAccessCodeModel,
   IUpdateAccessCodeModel,
 } from '../models/access-code.model';
 
@@ -52,6 +53,21 @@ export class AccessCodeRepositoryService implements IAccessCodeRepository {
     return accessCodeEntity
       ? AccessCodeTransformer.fromEntity(accessCodeEntity)
       : null;
+  }
+
+  async findAll(
+    findOptions: IFindAllAccessCodeModel /* INSERT FILTERING OPTIONS */,
+  ): Promise<IAccessCodeModel[]> {
+    const accessCodeEntities = await this.accessCodeRepository.find({
+      where: { ...findOptions },
+      relations: {
+        adminUser: {
+          user: true,
+        },
+      },
+    });
+
+    return accessCodeEntities.map(AccessCodeTransformer.fromEntity);
   }
 
   async delete(id: string): Promise<IAccessCodeModel> {
