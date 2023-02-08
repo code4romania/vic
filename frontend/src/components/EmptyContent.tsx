@@ -1,10 +1,13 @@
 import React from 'react';
-import i18n from '../common/config/i18n';
 
-const EmptyContent = () => {
+interface EmptyContentProps {
+  description: string;
+}
+
+const EmptyContent = ({ description }: EmptyContentProps) => {
   return (
-    <span role="row" className="p-8 sm:text-sm lg:text-base text-xs">
-      {i18n.t('general:empty_table')}
+    <span role="row" className="text-center p-8 sm:text-sm lg:text-base text-xs">
+      {description}
     </span>
   );
 };
