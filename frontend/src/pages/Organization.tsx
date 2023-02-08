@@ -29,6 +29,7 @@ const Organization = () => {
     data: division,
     isLoading: isFetchingDivision,
     error: divisionError,
+    refetch,
   } = useDivisionsQuery(
     rowsPerPage as number,
     page as number,
@@ -63,8 +64,12 @@ const Organization = () => {
     }
   }, [divisionError, organizationError]);
 
-  const onTabClick = (id: number) => {
-    setDivisionType(DivisionsTabs.find((tab) => tab.key === id)?.value as DivisionType);
+  const onTabClick = (id: DivisionType) => {
+    setDivisionType(DivisionsTabs.find((tab) => tab.key === id)?.key as DivisionType);
+  };
+
+  const onRefetch = () => {
+    refetch();
   };
 
   // pagination
@@ -106,6 +111,7 @@ const Organization = () => {
         page={page}
         onChangePage={onChangePage}
         onRowsPerPageChange={onRowsPerPageChange}
+        onRefetch={onRefetch}
       />
     </PageLayout>
   );
