@@ -56,7 +56,7 @@ export class OrganizationRepositoryService implements IOrganizationRepository {
   }
 
   public async findOneByOptions(
-    options: Partial<ICreateOrganizationModel>,
+    options: Partial<IOrganizationModel>,
   ): Promise<IOrganizationModel> {
     // get organization entity by id
     const organizationEntity = await this.organizationRepository.findOneBy(
