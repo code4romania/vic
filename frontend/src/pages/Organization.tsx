@@ -4,10 +4,10 @@ import OrganizationProfile from '../components/OrganizationProfile';
 import Divisions, { DivisionsTabs, DivisionType, IDivision } from '../components/Divisions';
 import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
-import i18n from '../common/config/i18n';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useDivisionsQuery } from '../services/division/division.service';
 import { useOrganizationProfileQuery } from '../services/organization-profile/organizationProfile.service';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const Organization = () => {
   const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.Branches);
@@ -20,14 +20,14 @@ const Organization = () => {
 
   const {
     data: division,
-    isLoading,
-    error,
+    isLoading: isFetchingDivision,
+    error: divisionError,
   } = useDivisionsQuery(
     rowsPerPage as number,
     page as number,
-    divisionType as DivisionType,
-    orderByColumn as string,
-    orderDirection as OrderDirection,
+    divisionType,
+    orderByColumn,
+    orderDirection,
   );
 
   useEffect(() => {
@@ -39,11 +39,24 @@ const Organization = () => {
     }
   }, []);
 
+  // error handling
   useEffect(() => {
-    if (error) useErrorToast(i18n.t('general:error.load_entries'), 'division-toast');
-    if (organizationProfileError)
-      useErrorToast(i18n.t('general:error.load_entries'), 'organization-toast');
-  }, [error, organizationProfileError]);
+    // map error messages for DIVISIONS fetch
+    if (divisionError) {
+      useErrorToast(
+        InternalErrors.DIVISION_ERRORS.getError(divisionError.response?.data.code_error),
+      );
+    }
+
+    // map error messages for ORGANIZATION fetch
+    if (organizationProfileError) {
+      useErrorToast(
+        InternalErrors.ORGANIZATION_ERRORS.getError(
+          organizationProfileError.response?.data.code_error,
+        ),
+      );
+    }
+  }, [divisionError, organizationProfileError]);
 
   const onTabClick = (id: number) => {
     setDivisionType(DivisionsTabs.find((tab) => tab.key === id)?.value as DivisionType);
@@ -70,13 +83,15 @@ const Organization = () => {
   return (
     <PageLayout>
       {organization && <OrganizationProfile organization={organization} />}
+      {/* TODO: here we should add an ErrorContent in case don't have any values for organization */}
+      {/* TODO: here we should add an Loading container to shwo while the organization is loading */}
       <Divisions
-        isLoading={isLoading}
+        isLoading={isFetchingDivision}
         divisionType={divisionType}
         data={division}
         onTabChange={onTabClick}
         onSort={onSort}
-        page={page as number}
+        page={page}
         onChangePage={onChangePage}
         onRowsPerPageChange={onRowsPerPageChange}
       />

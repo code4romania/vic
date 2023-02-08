@@ -71,10 +71,10 @@ export const DivisionTableHeader = [
 ];
 
 interface DivisionsProps {
-  data?: IPaginatedEntity<IDivision>;
   isLoading: boolean;
   divisionType: DivisionType;
-  page: number;
+  data?: IPaginatedEntity<IDivision>;
+  page?: number;
   onSort: (column: TableColumn<IDivision>, direction: SortOrder) => void;
   onChangePage: (newPage: number) => void;
   onRowsPerPageChange: (rows: number) => void;

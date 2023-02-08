@@ -13,7 +13,9 @@
     "delete": "Sterge",
     "description": "Descriere",
     "error": {
-      "load_entries": "Eroare la incarcarea datelor"
+      "load_entries": "Eroare la incarcarea datelor",
+      "unkown": "A aparut o eroare necunoscuta",
+      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
     }
   },
   "header": {
@@ -44,7 +46,10 @@
     "logo": "Logo organizație",
     "organization_name": "Denumire organizație",
     "description": "Descriere organizație",
-    "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poti alege sa formulezi o descriere specifica pentru aplicatia TEO, prin care sa atragi cat mai multi voluntari, sau sa folosesti descrierea organizatiei asa cum se regaseste in ONGHub."
+    "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poti alege sa formulezi o descriere specifica pentru aplicatia TEO, prin care sa atragi cat mai multi voluntari, sau sa folosesti descrierea organizatiei asa cum se regaseste in ONGHub.",
+    "errors": {
+      "ORG_001": "Organizatia nu a fost gasita"
+    }
   },
   "pagination": {
     "rows_per_page": "Randuri pe pagina",
