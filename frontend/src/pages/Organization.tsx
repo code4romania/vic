@@ -6,9 +6,11 @@ import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useDivisionsQuery } from '../services/division/division.service';
-import { useOrganizationProfileQuery } from '../services/organization-profile/organizationProfile.service';
+import { useOrganizationQuery } from '../services/organization/organization.service';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import i18n from '../common/config/i18n';
+import EmptyContent from '../components/EmptyContent';
+import LoadingContent from '../components/LoadingContent';
 
 const Organization = () => {
   const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.Branches);
@@ -17,7 +19,11 @@ const Organization = () => {
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
 
-  const { data: organization, error: organizationProfileError } = useOrganizationProfileQuery();
+  const {
+    data: organization,
+    error: organizationError,
+    isLoading: isOrganizationLoading,
+  } = useOrganizationQuery();
 
   const {
     data: division,
@@ -50,14 +56,12 @@ const Organization = () => {
     }
 
     // map error messages for ORGANIZATION fetch
-    if (organizationProfileError) {
+    if (organizationError) {
       useErrorToast(
-        InternalErrors.ORGANIZATION_ERRORS.getError(
-          organizationProfileError.response?.data.code_error,
-        ),
+        InternalErrors.ORGANIZATION_ERRORS.getError(organizationError.response?.data.code_error),
       );
     }
-  }, [divisionError, organizationProfileError]);
+  }, [divisionError, organizationError]);
 
   const onTabClick = (id: number) => {
     setDivisionType(DivisionsTabs.find((tab) => tab.key === id)?.value as DivisionType);
@@ -85,8 +89,14 @@ const Organization = () => {
     <PageLayout>
       <h1>{i18n.t('side_menu:options.organization')}</h1>
       {organization && <OrganizationProfile organization={organization} />}
-      {/* TODO: here we should add an ErrorContent in case don't have any values for organization */}
-      {/* TODO: here we should add an Loading container to shwo while the organization is loading */}
+      {organizationError && (
+        <EmptyContent
+          description={InternalErrors.ORGANIZATION_ERRORS.getError(
+            organizationError.response?.data.code_error,
+          )}
+        />
+      )}
+      {isOrganizationLoading && <LoadingContent />}
       <Divisions
         isLoading={isFetchingDivision}
         divisionType={divisionType}
