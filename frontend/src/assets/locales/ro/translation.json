@@ -35,6 +35,17 @@
     "branches": "Filiale si sucursale",
     "departments": "Departamente",
     "roles": "Roluri",
+    "form": {
+      "required": "Campul este obligatoriu",
+      "max": "Numele poate sa aiba maxim 20 de caractere",
+      "min": "Numele poate sa aiba minim 2 caractere",
+      "pattern": "Numele are un format invalid"
+    },
+    "modal": {
+      "branches": "filiala",
+      "departments": "departament",
+      "roles": "rol"
+    },
     "error": {
       "delete": "Eroare la stergerea diviziei"
     },

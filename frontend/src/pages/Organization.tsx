@@ -40,8 +40,12 @@ const Organization = () => {
     if (error) useErrorToast(i18n.t('general:error.load_entries'));
   }, [error]);
 
-  const onTabClick = (id: number) => {
-    setDivisionType(DivisionsTabs.find((tab) => tab.key === id)?.value as DivisionType);
+  const onTabClick = (id: DivisionType) => {
+    setDivisionType(DivisionsTabs.find((tab) => tab.key === id)?.key as DivisionType);
+  };
+
+  const onRefetch = () => {
+    refetch();
   };
 
   // pagination

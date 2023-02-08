@@ -14,6 +14,7 @@ import Popover from './Popover';
 import { IBaseEntity } from '../common/interfaces/base-entity.interface';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 import Tabs from './Tabs';
+import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 import { SelectItem } from './Select';
 import ConfirmationModal from './ConfirmationModal';
 import { useDeleteDivisionMutation } from '../services/division/division.service';
@@ -32,10 +33,10 @@ export interface IDivision extends IBaseEntity {
   createdOn: Date | string;
 }
 
-export const DivisionsTabs: SelectItem[] = [
-  { key: 0, value: i18n.t('division:branches') },
-  { key: 1, value: i18n.t('division:departments') },
-  { key: 2, value: i18n.t('division:roles') },
+export const DivisionsTabs: SelectItem<DivisionType>[] = [
+  { key: DivisionType.Branches, value: i18n.t('division:branches') },
+  { key: DivisionType.Departments, value: i18n.t('division:departments') },
+  { key: DivisionType.Roles, value: i18n.t('division:roles') },
 ];
 
 export const DivisionTableHeader = [
@@ -81,7 +82,7 @@ interface DivisionsProps {
   onSort: (column: TableColumn<IDivision>, direction: SortOrder) => void;
   onChangePage: (newPage: number) => void;
   onRowsPerPageChange: (rows: number) => void;
-  onTabChange: (id: number) => void;
+  onTabChange: (id: DivisionType) => void;
   onRefetch: () => void;
 }
 
@@ -98,16 +99,19 @@ const Divisions = ({
 }: DivisionsProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<IDivision | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   const { mutateAsync: deleteDivision } = useDeleteDivisionMutation();
 
-  // row actions
+  // simple actions
   const onView = (row: IDivision) => {
     alert(`Not yet implemented, ${row}`);
   };
 
   const onEdit = (row: IDivision) => {
-    alert(`Not yet implemented, ${row}`);
+    console.log(`Not yet implemented, ${row}`);
+    setIsEditModalOpen(true);
   };
 
   const onDelete = (row: IDivision) => {
@@ -115,10 +119,11 @@ const Divisions = ({
     setIsDeleteModalOpen(true);
   };
 
-  // component actions
   const onAdd = () => {
     alert('Not yet implemented');
   };
+
+  // handle actions
 
   const handleDelete = (row: IDivision) => {
     deleteDivision(row.id, {
@@ -163,11 +168,31 @@ const Divisions = ({
     };
   };
 
+  const addDivision = (inputData: DivisionFormTypes) => {
+    console.log(inputData);
+    onRefetch();
+    setIsAddModalOpen(false);
+  };
+
+  const editDivision = (inputData: DivisionFormTypes) => {
+    console.log(inputData);
+    onRefetch();
+    setIsEditModalOpen(false);
+  };
+
+  const closeAddModal = () => {
+    setIsAddModalOpen(false);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+  };
+
   return (
-    <Tabs tabs={DivisionsTabs} onClick={onTabChange}>
+    <Tabs<DivisionType> tabs={DivisionsTabs} onClick={onTabChange}>
       <Card>
         <CardHeader>
-          <h3>{divisionType}</h3>
+          <h3>{i18n.t(`division:${divisionType}`)}</h3>
           <Button
             className="btn-outline-secondary"
             label={i18n.t('general:add')}
@@ -191,6 +216,22 @@ const Divisions = ({
           />
         </CardBody>
       </Card>
+      {isAddModalOpen && (
+        <DivisionInputModal
+          title={`${i18n.t('general:add')} ${i18n.t(`division:modal.${divisionType}`)}`}
+          divisionType={divisionType}
+          onClose={closeAddModal}
+          onSubmit={addDivision}
+        />
+      )}
+      {isEditModalOpen && (
+        <DivisionInputModal
+          title={`${i18n.t('general:edit')} ${i18n.t(`division:modal.${divisionType}`)}`}
+          divisionType={divisionType}
+          onClose={closeEditModal}
+          onSubmit={editDivision}
+        />
+      )}
       {isDeleteModalOpen && selectedRow && (
         <ConfirmationModal
           title={i18n.t('division:delete.title')}
