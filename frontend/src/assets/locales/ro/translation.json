@@ -14,7 +14,7 @@
     "description": "Descriere",
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
-      "unkown": "A aparut o eroare necunoscuta",
+      "unknown": "A aparut o eroare necunoscuta",
       "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
     }
   },
