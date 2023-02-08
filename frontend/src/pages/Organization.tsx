@@ -8,6 +8,7 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useDivisionsQuery } from '../services/division/division.service';
 import { useOrganizationProfileQuery } from '../services/organization-profile/organizationProfile.service';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import i18n from '../common/config/i18n';
 
 const Organization = () => {
   const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.Branches);
@@ -82,6 +83,7 @@ const Organization = () => {
 
   return (
     <PageLayout>
+      <h1>{i18n.t('side_menu:options.organization')}</h1>
       {organization && <OrganizationProfile organization={organization} />}
       {/* TODO: here we should add an ErrorContent in case don't have any values for organization */}
       {/* TODO: here we should add an Loading container to shwo while the organization is loading */}
