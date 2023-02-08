@@ -3,20 +3,26 @@ import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { classNames } from '../common/utils/utils';
 
-export interface SelectItem {
+export interface SelectItem<T> {
   value: string;
-  key: number;
+  key: T;
 }
-interface SelectProps {
+interface SelectProps<T> {
   label?: string;
-  options: SelectItem[];
-  onChange: (item: SelectItem) => void;
-  defaultValue?: SelectItem;
+  options: SelectItem<T>[];
+  onChange: (item: SelectItem<T>) => void;
+  defaultValue?: SelectItem<T>;
   placeholder?: string;
 }
 
-const Select = ({ label, options, onChange, defaultValue, placeholder }: SelectProps) => {
-  const [selected, setSelected] = useState<SelectItem | undefined>(defaultValue);
+const Select = <T extends React.Key>({
+  label,
+  options,
+  onChange,
+  defaultValue,
+  placeholder,
+}: SelectProps<T>) => {
+  const [selected, setSelected] = useState<SelectItem<T> | undefined>(defaultValue);
 
   useEffect(() => {
     if (selected) onChange(selected);
