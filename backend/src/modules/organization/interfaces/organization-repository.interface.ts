@@ -8,6 +8,6 @@ export interface IOrganizationRepository {
   update(id: string, description: string): Promise<IOrganizationModel>;
   findById(id: string): Promise<IOrganizationModel>;
   findOneByOptions(
-    options: Partial<ICreateOrganizationModel>,
+    options: Partial<IOrganizationModel>,
   ): Promise<IOrganizationModel>;
 }
