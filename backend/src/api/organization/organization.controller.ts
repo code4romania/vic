@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { GetOrganizationUseCaseService } from 'src/usecases/organization/get-organization-use-case.service';
 import { UpdateOrganizationDescriptionUseCaseService } from 'src/usecases/organization/update-organization-description-use-case.service';
 import { UpdateOrganizationDescriptionDto } from './dto/update-organization-description.dto';
@@ -19,7 +20,7 @@ export class OrganizationController {
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   getOrganization(
-    @Param('id') organizationid: string,
+    @Param('id', UuidValidationPipe) organizationid: string,
   ): Promise<IOrganizationPresenter> {
     return this.getOrganizationUseCase.execute(organizationid);
   }
@@ -29,7 +30,7 @@ export class OrganizationController {
   @ApiBody({ type: UpdateOrganizationDescriptionDto })
   @Patch(':id')
   patchOrganization(
-    @Param('id') organizationid: string,
+    @Param('id', UuidValidationPipe) organizationid: string,
     @Body() { description }: UpdateOrganizationDescriptionDto,
   ): Promise<IOrganizationPresenter> {
     return this.updateOrganizationDescriptionUseCase.execute(
