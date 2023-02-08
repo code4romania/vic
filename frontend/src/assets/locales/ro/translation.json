@@ -1,5 +1,6 @@
 {
   "general": {
+    "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "name": "Nume",
     "created_on": "Data crearii",
@@ -24,7 +25,15 @@
   "side_menu": {
     "options": {
       "dashboard": "Dashboard",
-      "organization": "Structura ONG"
+      "organization": "Structura ONG",
+      "volunteers": {
+        "main": "Voluntari",
+        "options": {
+          "list": "Listă voluntari",
+          "registration_requests": "Cereri de înscriere",
+          "access_codes": "Coduri de acces"
+        }
+      }
     },
     "collapse": "Restrange meniul"
   },
@@ -37,5 +46,12 @@
   "pagination": {
     "rows_per_page": "Randuri pe pagina",
     "range_separator_text": "din"
+  },
+  "registration_requests": {
+    "title": "Cereri de înscriere",
+    "options": {
+      "requests": "Cereri",
+      "rejected_requests": "Cereri respinse"
+    }
   }
 }
