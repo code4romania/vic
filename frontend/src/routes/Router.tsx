@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import Dashboard from '../pages/Dashboard';
 import Login from '../pages/Login';
@@ -14,7 +14,10 @@ const Router = () => {
         <Route path="/login" element={<PublicRoute element={<Login />} />} />
         <Route path="/" element={<PrivateRoute element={<MainLayout />} />}>
           <Route index element={<Dashboard />}></Route>
-          <Route path="organization" element={<Organization />}></Route>
+          <Route path="organization" element={<Outlet />}>
+            <Route index element={<Organization />} />
+            <Route path="edit" element={<div>Edit page to be added</div>} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
