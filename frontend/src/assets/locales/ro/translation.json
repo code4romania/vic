@@ -3,16 +3,18 @@
     "created_by": "Creat de",
     "name": "Nume",
     "created_on": "Data crearii",
-    "add": "Adauga",
+    "add": "Adauga {{item}}",
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
-    "edit": "Editeaza",
+    "edit": "Editeaza {{item}}",
     "delete": "Sterge",
     "error": {
       "load_entries": "Eroare la incarcarea datelor"
     },
-    "cancel": "Anuleaza",
-    "delete_modal_description": "Esti sigur ca doresti stergerea campului din tabel? Aceasta actiune nu este reversibila."
+    "cancel": "Anuleaza"
+  },
+  "confirmation": {
+    "delete": "Esti"
   },
   "header": {
     "login": "Login",
@@ -44,16 +46,15 @@
     "modal": {
       "branches": "filiala",
       "departments": "departament",
-      "roles": "rol"
+      "roles": "rol",
+      "delete": {
+        "title": "Sterge {{division}}",
+        "description": "Esti sigur ca doresti stergerea acestui rol/departament/filiala?",
+        "success": "Divizie stearsa cu succes"
+      }
     },
-    "error": {
+    "errors": {
       "delete": "Eroare la stergerea diviziei"
-    },
-    "delete": {
-      "title": "Sterge divizie",
-      "description": "Esti sigur ca doresti stergerea diviziei?",
-      "success": "Divizie stearsa cu succes",
-      "error": "Eroare la stergerea diviziei"
     }
   },
   "pagination": {
