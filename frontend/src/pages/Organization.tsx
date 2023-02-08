@@ -53,6 +53,7 @@ const Organization = () => {
     if (divisionError) {
       useErrorToast(
         InternalErrors.DIVISION_ERRORS.getError(divisionError.response?.data.code_error),
+        'divisions_error',
       );
     }
 
@@ -60,6 +61,7 @@ const Organization = () => {
     if (organizationError) {
       useErrorToast(
         InternalErrors.ORGANIZATION_ERRORS.getError(organizationError.response?.data.code_error),
+        'organization_error',
       );
     }
   }, [divisionError, organizationError]);
