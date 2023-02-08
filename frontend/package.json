@@ -13,6 +13,7 @@
   "dependencies": {
     "@headlessui/react": "1.7.7",
     "@heroicons/react": "^2.0.13",
+    "aws-amplify": "^5.0.12",
     "axios": "^1.2.3",
     "date-fns": "^2.29.3",
     "i18next": "22.4.9",

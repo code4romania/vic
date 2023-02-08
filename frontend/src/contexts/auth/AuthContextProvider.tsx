@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Auth } from 'aws-amplify';
 import { AuthContext } from './AuthContext';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  const login = () => {
+  useEffect(() => {
+    initProfile();
+  }, []);
+
+  const initProfile = async () => {
+    await Auth.currentAuthenticatedUser();
     setIsAuthenticated(true);
   };
 
-  const logout = () => {
+  const login = async () => {
+    await Auth.federatedSignIn();
+  };
+
+  const logout = async () => {
+    await Auth.signOut();
     setIsAuthenticated(false);
   };
 

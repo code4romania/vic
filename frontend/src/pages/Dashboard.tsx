@@ -5,25 +5,25 @@ import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
-import { useTestValuesQuery } from '../services/test/test.service';
+import { useUserProfile } from '../services/profile/profile.service';
 
 const Dashboard = () => {
   // for testing purpose only
   const { t } = useTranslation('general');
-  // for testing purpos only
-  const { data } = useTestValuesQuery();
+
+  const { data } = useUserProfile();
 
   return (
     <PageLayout>
       This is the Dashboard
       <h1>Translation test {t('test')}</h1>
-      <p>{JSON.stringify(data)}</p>
       <Card>
         <CardHeader>
           <h4>Test header</h4>
           <XMarkIcon className="h-6 w-6" />
         </CardHeader>
         <CardBody>
+          <p>{JSON.stringify(data)}</p>
           <div>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem eius quia necessitatibus
             voluptate mollitia blanditiis voluptatum modi corrupti natus numquam, expedita, tempore
