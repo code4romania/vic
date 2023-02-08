@@ -66,10 +66,6 @@ const Organization = () => {
     );
   };
 
-  const onRefetch = () => {
-    refetch();
-  };
-
   return (
     <PageLayout>
       <Divisions
