@@ -15,7 +15,7 @@ interface DivisionInputModalProps {
   defaultValue?: string;
 }
 
-type DivisionFormTypes = {
+export type DivisionFormTypes = {
   name: string;
 };
 

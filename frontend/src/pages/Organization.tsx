@@ -18,6 +18,7 @@ const Organization = () => {
     data: division,
     isLoading,
     error,
+    refetch,
   } = useDivisionsQuery(
     rowsPerPage as number,
     page as number,
@@ -41,6 +42,10 @@ const Organization = () => {
 
   const onTabClick = (id: number) => {
     setDivisionType(DivisionsTabs.find((tab) => tab.key === id)?.value as DivisionType);
+  };
+
+  const onRefetch = () => {
+    refetch();
   };
 
   // pagination
@@ -72,6 +77,7 @@ const Organization = () => {
         page={page as number}
         onChangePage={onChangePage}
         onRowsPerPageChange={onRowsPerPageChange}
+        onRefetch={onRefetch}
       />
     </PageLayout>
   );

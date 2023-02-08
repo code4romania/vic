@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IUser } from '../common/interfaces/user.interface';
 import i18n from '../common/config/i18n';
 import { formatDate } from '../common/utils/utils';
@@ -15,6 +15,7 @@ import { IBaseEntity } from '../common/interfaces/base-entity.interface';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 import Tabs from './Tabs';
 import { SelectItem } from './Select';
+import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 
 export enum DivisionType {
   Branches = 'branches',
@@ -79,6 +80,7 @@ interface DivisionsProps {
   onChangePage: (newPage: number) => void;
   onRowsPerPageChange: (rows: number) => void;
   onTabChange: (id: number) => void;
+  onRefetch: () => void;
 }
 
 const Divisions = ({
@@ -90,10 +92,13 @@ const Divisions = ({
   onChangePage,
   onRowsPerPageChange,
   onTabChange,
+  onRefetch,
 }: DivisionsProps) => {
+  const [isAddModalOpen, setIsOpenModalOpen] = useState<boolean>(false);
+
   // component actions
   const onAdd = () => {
-    alert('Not yet implemented');
+    setIsOpenModalOpen(true);
   };
 
   // row actions
@@ -138,6 +143,12 @@ const Divisions = ({
     };
   };
 
+  const addDivision = (inputData: DivisionFormTypes) => {
+    console.log(inputData);
+    onRefetch();
+    setIsOpenModalOpen(false);
+  };
+
   return (
     <Tabs tabs={DivisionsTabs} onClick={onTabChange}>
       <Card>
@@ -166,6 +177,13 @@ const Divisions = ({
           />
         </CardBody>
       </Card>
+      {isAddModalOpen && (
+        <DivisionInputModal
+          title={''}
+          onClose={() => setIsOpenModalOpen(false)}
+          onSubmit={addDivision}
+        />
+      )}
     </Tabs>
   );
 };
