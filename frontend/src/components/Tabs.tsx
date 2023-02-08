@@ -1,17 +1,17 @@
 import React, { ReactNode, useState } from 'react';
 import Select, { SelectItem } from './Select';
 
-interface TabsProps {
-  tabs: SelectItem[];
+interface TabsProps<T> {
+  tabs: SelectItem<T>[];
   children: ReactNode;
-  defaultTab?: SelectItem;
-  onClick: (id: number) => void;
+  defaultTab?: SelectItem<T>;
+  onClick: (id: T) => void;
 }
 
-const Tabs = ({ children, tabs, onClick, defaultTab }: TabsProps) => {
-  const [activeTab, setActiveTab] = useState<SelectItem>(defaultTab || tabs[0]);
+const Tabs = <T extends React.Key>({ children, tabs, onClick, defaultTab }: TabsProps<T>) => {
+  const [activeTab, setActiveTab] = useState<SelectItem<T>>(defaultTab || tabs[0]);
 
-  const onTabClick = (selected: SelectItem): void => {
+  const onTabClick = (selected: SelectItem<T>): void => {
     setActiveTab(selected);
     onClick(selected.key);
   };

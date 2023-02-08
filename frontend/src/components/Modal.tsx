@@ -39,14 +39,14 @@ const Modal = ({ children, title, onClose }: ModalProps) => {
                 <div className="flex justify-between items-center text-center sm:text-left">
                   <Dialog.Title
                     as="h3"
-                    className="sm:text-lg lg:text-xl leading-6 font-robotoBold sm:truncate"
+                    className="sm:text-lg lg:text-xl leading-6 font-robotoBold truncate"
                   >
                     {title}
                   </Dialog.Title>
                   <button
-                    className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue absolute top-2 right-2 sm:static"
+                    className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
                     onClick={onClose}
-                    aria-label="close modal"
+                    aria-label="close-modal"
                   >
                     <XMarkIcon className="h-6 w-6" />
                   </button>
