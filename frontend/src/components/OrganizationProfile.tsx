@@ -26,6 +26,10 @@ interface OrganizationProfileProps {
 const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
   const navigate = useNavigate();
 
+  const onEditButtonClick = () => {
+    navigate('edit');
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -34,7 +38,7 @@ const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
           className="btn-outline-secondary w-20"
           label={i18n.t('general:edit')}
           icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
-          onClick={() => navigate('edit')}
+          onClick={onEditButtonClick}
         />
       </CardHeader>
       <CardBody>
