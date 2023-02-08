@@ -7,9 +7,11 @@ import i18n from '../common/config/i18n';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { REGEX } from '../common/constants/patterns';
 import FormInput from './FormInput';
+import { DivisionType } from './Divisions';
 
 interface DivisionInputModalProps {
   title: string;
+  divisionType: DivisionType;
   onClose: () => void;
   onSubmit: (division: DivisionFormTypes) => void;
   defaultValue?: string;
@@ -32,6 +34,7 @@ const schema = yup
 
 const DivisionInputModal = ({
   title,
+  divisionType,
   onClose,
   onSubmit,
   defaultValue,
@@ -60,7 +63,7 @@ const DivisionInputModal = ({
                 errorMessage={errors['name']?.message}
                 readOnly={false}
                 value={defaultValue || value}
-                label={i18n.t('general:name')}
+                label={`${i18n.t('general:name')} ${i18n.t(`division:modal.${divisionType}`)}`}
                 onChange={onChange}
                 aria-invalid={errors['name']?.message ? 'true' : 'false'}
               />
