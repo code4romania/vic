@@ -41,9 +41,9 @@ API.interceptors.response.use(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async (error: any) => {
     // Redirect to login once we have restricted access
-    // if (error.response.status === 401) {
-    //   window.location.href = '/login';
-    // }
+    if (error.response.status === 401) {
+      window.location.href = '/login';
+    }
 
     // if not any of the auth error codes throw the error
     throw error;
