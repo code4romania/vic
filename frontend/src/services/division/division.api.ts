@@ -14,3 +14,11 @@ export const getDivisions = async (
     params: { divisionType, limit, page, orderBy, orderDirection },
   }).then((res) => res.data);
 };
+
+export const addDivision = async (name: string): Promise<void> => {
+  return API.post('/divisions', name).then((res) => res.data);
+};
+
+export const editDivision = async (id: string, name: string): Promise<void> => {
+  return API.patch('/divisions', { params: id, data: name }).then((res) => res.data);
+};

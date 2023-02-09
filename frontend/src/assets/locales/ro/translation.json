@@ -49,6 +49,19 @@
       "branches": "filiala",
       "departments": "departament",
       "roles": "rol"
+    },
+    "success": {
+      "add": "Divizie adaugata cu succes",
+      "edit": "Divizie actualizata cu succes"
+    },
+    "errors": {
+      "branches": "filialei",
+      "departments": "departamentului",
+      "roles": "rolului",
+      "add": "Eroare la crearea {{division}}",
+      "edit": "Eroare la editarea {{division}}",
+      "ORGANIZATION_STRUCTURE_001": "Nu exista divizie cu acest nume",
+      "ORGANIZATION_STRUCTURE_002": "Exista deja o divizie cu acest nume"
     }
   },
   "organization": {

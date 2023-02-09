@@ -16,6 +16,12 @@ import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interfac
 import Tabs from './Tabs';
 import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 import { SelectItem } from './Select';
+import {
+  useAddDivisionMutation,
+  useEditDivisionMutation,
+} from '../services/division/division.service';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 export enum DivisionType {
   Branches = 'branches',
@@ -95,26 +101,11 @@ const Divisions = ({
   onRefetch,
 }: DivisionsProps) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [selectedIdForEdit, setSelectedIdForEdit] = useState<string>();
 
-  // component actions
-  const onAdd = () => {
-    setIsAddModalOpen(true);
-  };
-
-  // row actions
-  const onView = (row: IDivision) => {
-    alert(`Not yet implemented, ${row}`);
-  };
-
-  const onEdit = (row: IDivision) => {
-    console.log(`Not yet implemented, ${row}`);
-    setIsEditModalOpen(true);
-  };
-
-  const onDelete = (row: IDivision) => {
-    alert(`Not yet implemented, ${row}`);
-  };
+  const { mutateAsync: addDivisionMutation } = useAddDivisionMutation();
+  const { mutateAsync: editDivisionMutation, error: editDivisionMutationError } =
+    useEditDivisionMutation();
 
   // menu items
   const buildDivisionActionColumn = (): TableColumn<IDivision> => {
@@ -145,24 +136,71 @@ const Divisions = ({
     };
   };
 
-  const addDivision = (inputData: DivisionFormTypes) => {
-    console.log(inputData);
-    onRefetch();
-    setIsAddModalOpen(false);
+  // simple actions
+  const onAdd = () => {
+    setIsAddModalOpen(true);
   };
 
-  const editDivision = (inputData: DivisionFormTypes) => {
-    console.log(inputData);
-    onRefetch();
-    setIsEditModalOpen(false);
+  const onView = (row: IDivision) => {
+    alert(`Not yet implemented, ${row}`);
   };
 
-  const closeAddModal = () => {
-    setIsAddModalOpen(false);
+  const onEdit = (row: IDivision) => {
+    setSelectedIdForEdit(row.id);
   };
 
-  const closeEditModal = () => {
-    setIsEditModalOpen(false);
+  const onDelete = (row: IDivision) => {
+    alert(`Not yet implemented, ${row}`);
+  };
+
+  // add division
+  const handleAdd = (inputData: DivisionFormTypes) => {
+    addDivisionMutation(inputData.name, {
+      onSuccess: () => {
+        useSuccessToast(i18n.t('division:success.add'));
+        onRefetch();
+      },
+      onError: () => {
+        useErrorToast(
+          i18n.t('division:errors.add', { division: i18n.t(`division:errors.${divisionType}`) }),
+        );
+      },
+      onSettled: () => {
+        setIsAddModalOpen(false);
+      },
+    });
+  };
+
+  // edit division
+  const handleEdit = (inputData: DivisionFormTypes) => {
+    if (selectedIdForEdit) {
+      editDivisionMutation(
+        { id: selectedIdForEdit, name: inputData.name },
+        {
+          onSuccess: () => {
+            useSuccessToast(i18n.t('division:success.edit'));
+            onRefetch();
+          },
+          onError: () => {
+            if (editDivisionMutationError)
+              useErrorToast(
+                InternalErrors.DIVISION_ERRORS.getError(
+                  editDivisionMutationError?.response?.data.code_error,
+                ),
+              );
+            else
+              useErrorToast(
+                i18n.t('division:errors.edit', {
+                  division: i18n.t(`division:errors.${divisionType}`),
+                }),
+              );
+          },
+          onSettled: () => {
+            setSelectedIdForEdit(undefined);
+          },
+        },
+      );
+    }
   };
 
   return (
@@ -197,16 +235,16 @@ const Divisions = ({
         <DivisionInputModal
           title={`${i18n.t('general:add')} ${i18n.t(`division:modal.${divisionType}`)}`}
           divisionType={divisionType}
-          onClose={closeAddModal}
-          onSubmit={addDivision}
+          onClose={setIsAddModalOpen.bind(null, false)}
+          onSubmit={handleAdd}
         />
       )}
-      {isEditModalOpen && (
+      {selectedIdForEdit && (
         <DivisionInputModal
           title={`${i18n.t('general:edit')} ${i18n.t(`division:modal.${divisionType}`)}`}
           divisionType={divisionType}
-          onClose={closeEditModal}
-          onSubmit={editDivision}
+          onClose={setSelectedIdForEdit.bind(null, undefined)}
+          onSubmit={handleEdit}
         />
       )}
     </Tabs>
