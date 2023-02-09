@@ -11,12 +11,13 @@ import FormTextarea from '../components/FormTextarea';
 import i18n from '../common/config/i18n';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 import {
-  useOrganizationDescriptionQuery,
-  useUpdateOrganizationDescriptionMutation,
-} from '../services/edit-organization/EditOrganization.service';
+  useOrganizationForEditQuery,
+  useUpdateOrganizationMutation,
+} from '../services/organization/organization.service';
 import { useErrorToast } from '../hooks/useToast';
 import { useNavigate } from 'react-router';
 import EmptyContent from '../components/EmptyContent';
+import LoadingContent from '../components/LoadingContent';
 
 const schema = yup
   .object({
@@ -32,10 +33,10 @@ type OrganizationTypeInput = {
   description: string;
 };
 
-const EditOrganizationProfile = () => {
+const EditOrganization = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: updateOrganizationDescription } = useUpdateOrganizationDescriptionMutation();
+  const { mutateAsync: updateOrganizationDescription } = useUpdateOrganizationMutation();
 
   const {
     handleSubmit,
@@ -47,8 +48,7 @@ const EditOrganizationProfile = () => {
     resolver: yupResolver(schema),
   });
 
-  const { data: organizationDescription, error: organizationDescriptionError } =
-    useOrganizationDescriptionQuery();
+  const { data: organization, error, isLoading } = useOrganizationForEditQuery();
 
   const navigateBack = () => {
     navigate(-1);
@@ -62,12 +62,12 @@ const EditOrganizationProfile = () => {
   };
 
   useEffect(() => {
-    if (organizationDescriptionError) useErrorToast(i18n.t('general:error.load_entries'));
-  }, [organizationDescriptionError]);
+    if (error) useErrorToast(i18n.t('general:error.load_entries'));
+  }, [error]);
 
   return (
     <PageLayout>
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-center">
         <Button
           label={i18n.t('general:back')}
           icon={<ChevronLeftIcon className="h-5 w-5 text-white" />}
@@ -76,7 +76,9 @@ const EditOrganizationProfile = () => {
         />
         <h1>{i18n.t('edit_organization:title')}</h1>
       </div>
-      {organizationDescription && (
+      {isLoading && <LoadingContent />}
+      {error && <EmptyContent description={i18n.t('general:error.load_entries')} />}
+      {organization && (
         <Card>
           <CardHeader>
             <h2>{i18n.t('edit_organization:card_title')}</h2>
@@ -103,7 +105,7 @@ const EditOrganizationProfile = () => {
                     return (
                       <FormTextarea
                         label={i18n.t('edit_organization:teo_description')}
-                        defaultValue={value || organizationDescription}
+                        defaultValue={value || organization.description}
                         onChange={onChange}
                         errorMessage={errors.description?.message as string}
                       />
@@ -115,11 +117,8 @@ const EditOrganizationProfile = () => {
           </CardBody>
         </Card>
       )}
-      {!organizationDescription && (
-        <EmptyContent description={i18n.t('general:error.load_entries')} />
-      )}
     </PageLayout>
   );
 };
 
-export default EditOrganizationProfile;
+export default EditOrganization;
