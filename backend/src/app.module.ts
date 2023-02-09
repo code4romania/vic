@@ -12,6 +12,7 @@ import { JsonBodyMiddleware } from './infrastructure/middleware/json-body.middlw
 import { RawBodyMiddleware } from './infrastructure/middleware/raw-body.middleware';
 import { AuthenticationModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
+import { UserModule } from './modules/user/user.module';
 import {
   CacheProviderModule,
   DatabaseProviderModule,
@@ -33,6 +34,7 @@ import {
     // Modules
     MailModule,
     AuthenticationModule,
+    UserModule,
     // API
     ApiModule,
   ],

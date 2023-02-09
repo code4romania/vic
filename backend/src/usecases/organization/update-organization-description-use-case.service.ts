@@ -3,7 +3,7 @@ import { IUseCaseService } from 'src/common/interfaces/use-case-service.interfac
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { OrganizationExceptionMessages } from 'src/modules/organization/exceptions/exceptions';
 import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
-import { OrganizationFacadeService } from 'src/modules/organization/services/organization-facade.service';
+import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
 
 @Injectable()
 export class UpdateOrganizationDescriptionUseCaseService
