@@ -41,9 +41,9 @@ export class AccessCodeController {
   }
 
   @ApiParam({ name: 'accessCodeId', type: 'string' })
-  @Get(':accessCodeId')
+  @Get(':id')
   async getOne(
-    @Param('accessCodeId', UuidValidationPipe) accessCodeId: string,
+    @Param('id', UuidValidationPipe) accessCodeId: string,
   ): Promise<AccessCodePresenter> {
     const accessCodeModel = await this.findAccessCodeUseCase.execute(
       accessCodeId,
