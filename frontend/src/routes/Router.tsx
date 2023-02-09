@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import Dashboard from '../pages/Dashboard';
+import EditAccessCode from '../pages/EditAccessCode';
 import Login from '../pages/Login';
 import Organization from '../pages/Organization';
 import PrivateRoute from './PrivateRoute';
@@ -17,6 +18,10 @@ const Router = () => {
           <Route path="organization" element={<Outlet />}>
             <Route index element={<Organization />} />
             <Route path="edit" element={<div>Edit page to be added</div>} />
+          </Route>
+          <Route path="access-codes" element={<Outlet />}>
+            <Route index element={<div></div>} />
+            <Route path="edit" element={<EditAccessCode />} />
           </Route>
         </Route>
       </Routes>
