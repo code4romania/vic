@@ -170,8 +170,8 @@ const Divisions = ({
         onError: () => {
           // show error message
           useErrorToast(
-            i18n.t('division:errors.delete.message', {
-              division: i18n.t(`division:errors.delete.${divisionType}`),
+            i18n.t('division:errors.delete', {
+              division: i18n.t(`division:errors.${divisionType}`),
             }),
           );
         },
@@ -252,10 +252,12 @@ const Divisions = ({
           title={i18n.t('division:modal.delete.title', {
             division: i18n.t(`division:modal.${divisionType}`),
           })}
-          description={i18n.t('confirmation:delete')}
+          description={i18n.t('confirmation:delete', {
+            item: i18n.t(`division:modal.${divisionType}`),
+          })}
           confirmBtnLabel={i18n.t('general:delete')}
           confirmBtnClassName="btn-danger"
-          onClose={setSelectedIdForDeletion.bind(null, '')}
+          onClose={setSelectedIdForDeletion.bind(null, undefined)}
           onConfirm={handleDelete}
         />
       )}

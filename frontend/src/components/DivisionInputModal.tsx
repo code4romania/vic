@@ -73,7 +73,7 @@ const DivisionInputModal = ({
       </form>
       <div className="flex flex-row-reverse">
         <Button
-          label={i18n.t('general:add')}
+          label={i18n.t('general:add', { item: i18n.t(`division:modal.${divisionType}`) })}
           className="btn-primary"
           onClick={handleSubmit(onSubmit)}
         />

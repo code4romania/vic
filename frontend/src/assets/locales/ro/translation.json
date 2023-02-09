@@ -20,7 +20,7 @@
     "cancel": "Anuleaza"
   },
   "confirmation": {
-    "delete": "Esti sigur ca doresti stergerea acestui rol/departament/filiala?"
+    "delete": "Esti sigur ca doresti stergerea acestui {{item}}?"
   },
   "header": {
     "login": "Login",
@@ -59,12 +59,10 @@
       }
     },
     "errors": {
-      "delete": {
-        "message": "Eroare la stergerea {{division}}",
-        "branches": "filialei",
-        "departments": "departamentului",
-        "roles": "rolului"
-      }
+      "delete": "Eroare la stergerea {{division}}",
+      "branches": "filialei",
+      "departments": "departamentului",
+      "roles": "rolului"
     }
   },
   "organization": {
