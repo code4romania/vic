@@ -13,16 +13,16 @@ export class ExceptionsService implements IException {
   badRequestException(data: IError): void {
     throw new BadRequestException(data);
   }
-  internalServerErrorException(data?: IError): void {
+  internalServerErrorException(data: IError): void {
     throw new InternalServerErrorException(data);
   }
-  forbiddenException(data?: IError): void {
+  forbiddenException(data: IError): void {
     throw new ForbiddenException(data);
   }
-  unauthorizedException(data?: IError): void {
+  unauthorizedException(data: IError): void {
     throw new UnauthorizedException(data);
   }
-  notFoundException(data?: IError): void {
+  notFoundException(data: IError): void {
     throw new NotFoundException(data);
   }
 }

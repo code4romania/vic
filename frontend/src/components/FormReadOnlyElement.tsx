@@ -8,7 +8,7 @@ interface FormReadOnlyElementProps {
 const FormReadOnlyElement = ({ label, value }: FormReadOnlyElementProps) => {
   return (
     <div className="flex gap-2.5 flex-col">
-      <label>{label}</label>
+      <small className="text-cool-gray-500">{label}</small>
       <p>{value}</p>
     </div>
   );
