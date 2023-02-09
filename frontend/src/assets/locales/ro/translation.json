@@ -4,8 +4,6 @@
     "name": "Nume",
     "created_on": "Data crearii",
     "add": "Adauga",
-    "email": "Email",
-    "phone": "Telefon",
     "address": "Adresa",
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
@@ -52,9 +50,11 @@
     "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
     "found_location": "De unde ai aflat de organizatie?",
     "motivation": "Ce te motiveaza sa fii voluntar?",
-    "error": {
+    "errors": {
       "loading": "Nu s-a putut incarca cererea voluntarului"
-    }
+    },
+    "years_old": "{{age}} de ani",
+    "sex": "Sex {{sex_type}}"
   },
   "division": {
     "members": "Membri",

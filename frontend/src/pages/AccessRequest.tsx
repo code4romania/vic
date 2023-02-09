@@ -37,9 +37,9 @@ const AccessRequest = () => {
         />
         <h1>{i18n.t('registration:title')}</h1>
       </div>
-      {registration && !isLoading && (
-        <div className="grid lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
-          <div>
+      {registration && (
+        <div className="w-full flex flex-col lg:flex-row gap-4">
+          <div className="w-1/3 xl:w-1/4">
             <ProfileCard
               name={registration.name}
               age={registration.age}
@@ -48,7 +48,7 @@ const AccessRequest = () => {
               logo={registration.logo}
             />
           </div>
-          <div className="lg:col-span-2 xl:col-span-4 2xl:col-span-5">
+          <div className="w-2/3 xl:w-3/4">
             <VolunteerRequest
               email={registration.email}
               createdOn={registration.createdOn}
@@ -58,10 +58,10 @@ const AccessRequest = () => {
           </div>
         </div>
       )}
-      {!registration && !isLoading && (
-        <EmptyContent description={i18n.t('registration:error.loading')} />
-      )}
       {isLoading && <LoadingContent />}
+      {!registration && !isLoading && (
+        <EmptyContent description={i18n.t('registration:errors.loading')} />
+      )}
     </PageLayout>
   );
 };
