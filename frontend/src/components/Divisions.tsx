@@ -159,13 +159,21 @@ const Divisions = ({
       deleteDivision(selectedIdForDeletion, {
         onSuccess: () => {
           // show success message
-          useSuccessToast(i18n.t('division:delete.success'));
+          useSuccessToast(
+            i18n.t('division:delete.success', {
+              division: i18n.t(`division:modal.${divisionType}`),
+            }),
+          );
           // refresh table
           onRefetch();
         },
         onError: () => {
           // show error message
-          useErrorToast(i18n.t('division:errors.delete'));
+          useErrorToast(
+            i18n.t('division:errors.delete.message', {
+              division: i18n.t(`division:errors.delete.${divisionType}`),
+            }),
+          );
         },
         onSettled: () => {
           // close modal
@@ -202,7 +210,7 @@ const Divisions = ({
           <h3>{i18n.t(`division:${divisionType}`)}</h3>
           <Button
             className="btn-outline-secondary"
-            label={i18n.t('general:add')}
+            label={i18n.t('general:add', { item: i18n.t(`division:modal.${divisionType}`) })}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
           />
@@ -244,7 +252,7 @@ const Divisions = ({
           title={i18n.t('division:modal.delete.title', {
             division: i18n.t(`division:modal.${divisionType}`),
           })}
-          description={i18n.t('division:modal.delete.description')}
+          description={i18n.t('confirmation:delete')}
           confirmBtnLabel={i18n.t('general:delete')}
           confirmBtnClassName="btn-danger"
           onClose={setSelectedIdForDeletion.bind(null, '')}

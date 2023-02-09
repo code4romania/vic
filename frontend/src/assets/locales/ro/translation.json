@@ -20,7 +20,7 @@
     "cancel": "Anuleaza"
   },
   "confirmation": {
-    "delete": "Esti"
+    "delete": "Esti sigur ca doresti stergerea acestui rol/departament/filiala?"
   },
   "header": {
     "login": "Login",
@@ -55,23 +55,16 @@
       "roles": "rol",
       "delete": {
         "title": "Sterge {{division}}",
-        "description": "Esti sigur ca doresti stergerea acestui rol/departament/filiala?",
-        "success": "Divizie stearsa cu succes"
+        "success": "{{division}} stearsa cu succes"
       }
     },
     "errors": {
-      "delete": "Eroare la stergerea diviziei"
-    }
-  },
-  "organization": {
-    "title": "Profil organizație",
-    "subtitle": "Datele sunt preluate din ONGHub.",
-    "logo": "Logo organizație",
-    "name": "Denumire organizație",
-    "description": "Descriere organizație",
-    "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poti alege sa formulezi o descriere specifica pentru aplicatia TEO, prin care sa atragi cat mai multi voluntari, sau sa folosesti descrierea organizatiei asa cum se regaseste in ONGHub.",
-    "errors": {
-      "ORG_001": "Organizatia nu a fost gasita"
+      "delete": {
+        "message": "Eroare la stergerea {{division}}",
+        "branches": "filialei",
+        "departments": "departamentului",
+        "roles": "rolului"
+      }
     }
   },
   "organization": {
