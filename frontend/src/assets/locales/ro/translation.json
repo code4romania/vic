@@ -68,6 +68,7 @@
     "range_separator_text": "din"
   },
   "access_codes": {
+    "name": "Cod acces",
     "create": "Creeaza cod nou",
     "availability": "Valabilitate",
     "uses": "Utilizari"

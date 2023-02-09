@@ -28,7 +28,7 @@ export interface IAccessCode {
 const AccessCodeTableHeader = [
   {
     id: 'name',
-    name: i18n.t('general:name'),
+    name: i18n.t('access_codes:name'),
     sortable: true,
     grow: 3,
     minWidth: '20rem',
