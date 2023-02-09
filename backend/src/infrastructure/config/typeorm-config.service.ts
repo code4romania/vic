@@ -19,9 +19,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       migrationsRun: true,
       synchronize: false, // never set it to TRUE in production
       subscribers: [],
-      logging: !!parseInt(this.configService.get('TYPEORM_DEBUG'))
-        ? true
-        : false,
+      logging: parseInt(this.configService.get('TYPEORM_DEBUG')) ? true : false,
       ssl:
         this.configService.get('NODE_ENV') === 'local'
           ? false

@@ -15,7 +15,10 @@ const Router = () => {
         <Route path="/login" element={<PublicRoute element={<Login />} />} />
         <Route path="/" element={<PrivateRoute element={<MainLayout />} />}>
           <Route index element={<Dashboard />}></Route>
-          <Route path="organization" element={<Organization />}></Route>
+          <Route path="organization" element={<Outlet />}>
+            <Route index element={<Organization />} />
+            <Route path="edit" element={<div>Edit page to be added</div>} />
+          </Route>
           <Route path="volunteers" element={<Outlet />}>
             <Route path="access-codes" element={<ViewAccessCodes />} />
           </Route>
