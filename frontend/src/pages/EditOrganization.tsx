@@ -12,7 +12,7 @@ import i18n from '../common/config/i18n';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 import {
   useOrganizationForEditQuery,
-  useUpdateOrganizationMutation,
+  useUpdateOrganizationDescriptionMutation,
 } from '../services/organization/organization.service';
 import { useErrorToast } from '../hooks/useToast';
 import { useNavigate } from 'react-router';
@@ -36,7 +36,8 @@ type OrganizationTypeInput = {
 const EditOrganization = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: updateOrganizationDescription } = useUpdateOrganizationMutation();
+  const { mutateAsync: updateOrganizationDescription, isLoading: isUpdateDescriptionLoading } =
+    useUpdateOrganizationDescriptionMutation();
 
   const {
     handleSubmit,
@@ -48,7 +49,11 @@ const EditOrganization = () => {
     resolver: yupResolver(schema),
   });
 
-  const { data: organization, error, isLoading } = useOrganizationForEditQuery();
+  const {
+    data: organization,
+    error,
+    isLoading: isOrganizationLoading,
+  } = useOrganizationForEditQuery();
 
   const navigateBack = () => {
     navigate(-1);
@@ -76,7 +81,7 @@ const EditOrganization = () => {
         />
         <h1>{i18n.t('edit_organization:title')}</h1>
       </div>
-      {isLoading && <LoadingContent />}
+      {isOrganizationLoading && <LoadingContent />}
       {error && <EmptyContent description={i18n.t('general:error.load_entries')} />}
       {organization && (
         <Card>
@@ -117,6 +122,7 @@ const EditOrganization = () => {
           </CardBody>
         </Card>
       )}
+      {isUpdateDescriptionLoading && <LoadingContent />}
     </PageLayout>
   );
 };
