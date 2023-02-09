@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
-import { IRequestUser } from 'src/common/interfaces/request-user.interface';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOrganizationUseCaseService } from 'src/usecases/organization/get-organization.usecase';
 import { UpdateOrganizationDescriptionUseCaseService } from 'src/usecases/organization/update-organization-description.usecase';
 import { UpdateOrganizationDescriptionDto } from './dto/update-organization-description.dto';
@@ -19,7 +19,7 @@ export class OrganizationController {
 
   @Get()
   getOrganization(
-    @ExtractUser() { organizationId }: IRequestUser,
+    @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<IOrganizationPresenter> {
     return this.getOrganizationUseCase.execute(organizationId);
   }
@@ -27,7 +27,7 @@ export class OrganizationController {
   @ApiBody({ type: UpdateOrganizationDescriptionDto })
   @Patch()
   patchOrganization(
-    @ExtractUser() { organizationId }: IRequestUser,
+    @ExtractUser() { organizationId }: IAdminUserModel,
     @Body() { description }: UpdateOrganizationDescriptionDto,
   ): Promise<IOrganizationPresenter> {
     return this.updateOrganizationDescriptionUseCase.execute(

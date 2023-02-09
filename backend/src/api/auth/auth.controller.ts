@@ -1,8 +1,8 @@
 import { Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
-import { IRequestUser } from 'src/common/interfaces/request-user.interface';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetUserProfileUseCaseService } from 'src/usecases/user/get-user-profile.usecase';
 import { AdminUserPresenter } from './presenters/admin-user.presenter';
 
@@ -15,7 +15,7 @@ export class AuthController {
 
   @Post('login')
   async login(
-    @ExtractUser() { cognitoId }: IRequestUser,
+    @ExtractUser() { cognitoId }: IAdminUserModel,
     @Req() req: Request,
   ): Promise<AdminUserPresenter> {
     const adminUser = await this.getUserProfileUseCase.execute(

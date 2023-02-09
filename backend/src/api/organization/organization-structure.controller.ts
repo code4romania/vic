@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
-import { IRequestUser } from 'src/common/interfaces/request-user.interface';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateOrganizationStructureUseCase } from 'src/usecases/organization/organization-structure/create-organization-structure.usecase';
 import { DeleteOrganizationStructureUseCase } from 'src/usecases/organization/organization-structure/delete-organization-structure.usecase';
 import { GetAllOrganizationStructureUseCase } from 'src/usecases/organization/organization-structure/get-all-organization-structure.usecase';
@@ -37,7 +37,7 @@ export class OrganizationStructureController {
   @Get(':type')
   async getAll(
     @Param('type') type: OrganizationStructureType,
-    @ExtractUser() { organizationId }: IRequestUser,
+    @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<OrganizationStructurePresenter[]> {
     const accessCodes = await this.getAllStructureUsecase.execute({
       type,
@@ -53,13 +53,13 @@ export class OrganizationStructureController {
   @Post()
   async create(
     @Body() { name, type }: CreateOrganizationStructureDto,
-    @ExtractUser() { organizationId, cognitoId }: IRequestUser,
+    @ExtractUser() { organizationId, id }: IAdminUserModel,
   ): Promise<OrganizationStructurePresenter> {
     const structure = await this.createStructureUsecase.execute({
       name,
       type,
       organizationId: organizationId,
-      createdById: cognitoId,
+      createdById: id,
     });
     return new OrganizationStructurePresenter(structure);
   }

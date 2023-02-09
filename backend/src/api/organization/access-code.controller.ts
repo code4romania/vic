@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
-import { IRequestUser } from 'src/common/interfaces/request-user.interface';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateAccessCodeUseCase } from 'src/usecases/access-code/create-access-code.usecase';
 import { DeleteAccessCodeUseCase } from 'src/usecases/access-code/delete-access-code.usecase';
 import { GetAccessCodeUseCase } from 'src/usecases/access-code/get-access-code.usecase';
@@ -35,7 +35,7 @@ export class AccessCodeController {
 
   @Get()
   async getAll(
-    @ExtractUser() { organizationId }: IRequestUser,
+    @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<AccessCodePresenter[]> {
     const accessCodes = await this.findAllAccessCodeUseCase.execute({
       organizationId,
@@ -59,14 +59,14 @@ export class AccessCodeController {
   @Post()
   async create(
     @Body() { code, startDate, endDate }: CreateAccessCodeDto,
-    @ExtractUser() { organizationId, cognitoId }: IRequestUser,
+    @ExtractUser() { organizationId, id }: IAdminUserModel,
   ): Promise<AccessCodePresenter> {
     const accessCodeModel = await this.createAccessCodeUseCase.execute({
       code,
       startDate,
       endDate,
       organizationId: organizationId,
-      createdById: cognitoId,
+      createdById: id,
     });
     return new AccessCodePresenter(accessCodeModel);
   }

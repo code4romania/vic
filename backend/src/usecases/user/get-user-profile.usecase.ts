@@ -59,17 +59,32 @@ export class GetUserProfileUseCaseService
     const { user, organization } = userWithOrganization;
 
     // check if there is already an organization with the same data
-    const dbOrganization = await this.organizationService.findOrganization([
+    let dbOrganization = await this.organizationService.findOrganization([
       { name: organization.name },
-      { phone: organization.email },
+      { phone: organization.phone },
       { email: organization.email },
     ]);
 
-    // there is already an organization with the same phone number and email
-    if (dbOrganization) {
-      this.exceptionService.badRequestException(
-        OrganizationExceptionMessages.ORG_004,
+    try {
+      // if there is no organization save it
+      if (!dbOrganization) {
+        // save organization to database
+        dbOrganization = await this.organizationService.createOrganization(
+          organization,
+        );
+      }
+    } catch (error) {
+      // throw bad server exception for failing to save the organization
+      this.exceptionService.internalServerErrorException(
+        OrganizationExceptionMessages.ORG_003,
       );
+
+      // log the error and the payload
+      this.logger.error({
+        error,
+        ...OrganizationExceptionMessages.ORG_003,
+        organization,
+      });
     }
 
     // // check if there is already a user with the same data
@@ -85,32 +100,16 @@ export class GetUserProfileUseCaseService
       this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
     }
 
-    // save organization to database
-    const createdOrganization =
-      await this.organizationService.createOrganization(organization);
-
-    // if organization was not saved throw error
-    if (!createdOrganization) {
-      // throw bad server exception for failing to save the organization
-      this.exceptionService.internalServerErrorException(
-        OrganizationExceptionMessages.ORG_003,
-      );
-
-      // log the error and the payload
-      this.logger.debug({
-        ...OrganizationExceptionMessages.ORG_003,
-        organization,
+    try {
+      // save user to database
+      const adminUser = await this.userService.createAdmin({
+        ...user,
+        organizationId: dbOrganization.id,
       });
-    }
 
-    // save user to database
-    const adminUser = await this.userService.createAdmin({
-      ...user,
-      organizationId: createdOrganization.id,
-    });
-
-    // if user was not saved throw error
-    if (!adminUser) {
+      // return newly created
+      return adminUser;
+    } catch (error) {
       // throw bad server exception for failing to save the organization
       this.exceptionService.internalServerErrorException(
         UserExceptionMessages.USER_002,
@@ -119,14 +118,12 @@ export class GetUserProfileUseCaseService
       // log the error and the payload
       this.logger.debug({
         ...UserExceptionMessages.USER_002,
+        error,
         user: {
           ...user,
-          organizationId: createdOrganization.id,
+          organizationId: dbOrganization.id,
         },
       });
     }
-
-    // return newly created
-    return adminUser;
   }
 }

@@ -8,4 +8,5 @@ export type OneOf<T extends object[]> = {
   >;
 }[number];
 
+// e.g. const filters: ArrayOfPropetyType<{name: string}> = [{name: 'Andrew'}, {name: 'Florian'}]
 export type ArrayOfPropetyType<T> = { [P in keyof Partial<T>]: string }[];
