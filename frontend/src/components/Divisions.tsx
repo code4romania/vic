@@ -162,7 +162,9 @@ const Divisions = ({
       },
       onError: () => {
         useErrorToast(
-          i18n.t('division:errors.add', { division: i18n.t(`division:errors.${divisionType}`) }),
+          i18n.t('division:errors.generic.add', {
+            division: i18n.t(`division:errors.${divisionType}`),
+          }),
         );
       },
       onSettled: () => {
@@ -190,7 +192,7 @@ const Divisions = ({
               );
             else
               useErrorToast(
-                i18n.t('division:errors.edit', {
+                i18n.t('division:errors.generic.edit', {
                   division: i18n.t(`division:errors.${divisionType}`),
                 }),
               );

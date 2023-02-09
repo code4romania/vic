@@ -12,10 +12,10 @@ export class DivisionError extends ErrorClass<DISVISION_ERRORS> {
   private constructor() {
     super({
       [DISVISION_ERRORS.ORGANIZATION_STRUCTURE_001]: i18n.t(
-        'division:errors.ORGANIZATION_STRUCTURE_001',
+        'division:errors.custom.ORGANIZATION_STRUCTURE_001',
       ),
       [DISVISION_ERRORS.ORGANIZATION_STRUCTURE_002]: i18n.t(
-        'division:errors.ORGANIZATION_STRUCTURE_002',
+        'division:errors.custom.ORGANIZATION_STRUCTURE_002',
       ),
     });
   }
