@@ -1,5 +1,6 @@
 import { Auth } from 'aws-amplify';
-import axios, { AxiosRequestHeaders } from 'axios';
+import axios, { AxiosError, AxiosRequestHeaders } from 'axios';
+import { IBusinessException } from '../common/interfaces/business-exception.interface';
 
 // https://vitejs.dev/guide/env-and-mode.html
 const API = axios.create({
@@ -38,10 +39,9 @@ API.interceptors.response.use(
   async (response) => {
     return response;
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async (error: any) => {
+  async (error: AxiosError<IBusinessException<symbol>>) => {
     // Redirect to login once we have restricted access
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
       window.location.href = '/login';
     }
 
