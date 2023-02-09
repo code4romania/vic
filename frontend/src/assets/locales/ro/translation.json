@@ -36,9 +36,13 @@
   },
   "division": {
     "members": "Membri",
-    "branches": "Filiale si sucursale",
-    "departments": "Departamente",
-    "roles": "Roluri",
+    "table": {
+      "title": {
+        "branch": "Filiale si sucursale",
+        "department": "Departamente",
+        "role": "Roluri"
+      }
+    },
     "form": {
       "required": "Campul este obligatoriu",
       "max": "Numele poate sa aiba maxim 20 de caractere",

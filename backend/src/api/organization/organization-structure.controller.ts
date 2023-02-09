@@ -6,11 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { IRequestUser } from 'src/common/interfaces/request-user.interface';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
+import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
 import { CreateOrganizationStructureUseCase } from 'src/usecases/organization/organization-structure/create-organization-structure.usecase';
 import { DeleteOrganizationStructureUseCase } from 'src/usecases/organization/organization-structure/delete-organization-structure.usecase';
@@ -21,8 +23,7 @@ import { UpdateOrganizationStructureDto } from './dto/update-org-structure.dto';
 import { OrganizationStructurePresenter } from './presenters/organization-structure.presenter';
 
 // @Roles(Role.ADMIN)
-// @UseGuards(WebJwtAuthGuard)
-// @UsePipes(new UuidValidationPipe())
+@UseGuards(WebJwtAuthGuard)
 @Controller('organization-structure')
 export class OrganizationStructureController {
   constructor(

@@ -18,9 +18,9 @@ import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 import { SelectItem } from './Select';
 
 export enum DivisionType {
-  Branches = 'branches',
-  Departments = 'departments',
-  Roles = 'roles',
+  BRANCH = 'Branch',
+  DEPARTMENT = 'Department',
+  ROLE = 'Role',
 }
 
 export interface IDivision extends IBaseEntity {
@@ -31,9 +31,9 @@ export interface IDivision extends IBaseEntity {
 }
 
 export const DivisionsTabs: SelectItem<DivisionType>[] = [
-  { key: DivisionType.Branches, value: i18n.t('division:branches') },
-  { key: DivisionType.Departments, value: i18n.t('division:departments') },
-  { key: DivisionType.Roles, value: i18n.t('division:roles') },
+  { key: DivisionType.BRANCH, value: i18n.t(`division:table.title.branch`) },
+  { key: DivisionType.DEPARTMENT, value: i18n.t('division:table.title.department') },
+  { key: DivisionType.ROLE, value: i18n.t('division:table.title.role') },
 ];
 
 export const DivisionTableHeader = [
@@ -169,7 +169,7 @@ const Divisions = ({
     <Tabs<DivisionType> tabs={DivisionsTabs} onClick={onTabChange}>
       <Card>
         <CardHeader>
-          <h3>{i18n.t(`division:${divisionType}`)}</h3>
+          <h3>{i18n.t(`division:table.title.${divisionType.toLocaleLowerCase()}`)}</h3>
           <Button
             className="btn-outline-secondary"
             label={i18n.t('general:add')}

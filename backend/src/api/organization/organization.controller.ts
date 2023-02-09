@@ -1,8 +1,6 @@
 import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from 'src/common/enums/role.enum';
 import { IRequestUser } from 'src/common/interfaces/request-user.interface';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { GetOrganizationUseCaseService } from 'src/usecases/organization/get-organization.usecase';
@@ -10,7 +8,7 @@ import { UpdateOrganizationDescriptionUseCaseService } from 'src/usecases/organi
 import { UpdateOrganizationDescriptionDto } from './dto/update-organization-description.dto';
 import { IOrganizationPresenter } from './presenters/organization-presenter.interface';
 
-@Roles(Role.ADMIN)
+// @Roles(Role.ADMIN)
 @UseGuards(WebJwtAuthGuard)
 @Controller('organization')
 export class OrganizationController {
