@@ -30,7 +30,8 @@
   "side_menu": {
     "options": {
       "dashboard": "Dashboard",
-      "organization": "Structura ONG"
+      "organization": "Structura ONG",
+      "access_codes": "Coduri de acces"
     },
     "collapse": "Restrange meniul"
   },

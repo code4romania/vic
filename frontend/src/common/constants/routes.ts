@@ -6,5 +6,10 @@ import { UsersIcon } from '@heroicons/react/24/solid';
 export const ROUTES: IRoute[] = [
   { id: 0, name: i18n.t('side_menu:options.dashboard'), href: '', icon: RectangleGroupIcon },
   { id: 1, name: i18n.t('side_menu:options.organization'), href: 'organization', icon: SunIcon },
-  { id: 2, name: i18n.t('general:access_codes'), href: 'volunteers/access-codes', icon: UsersIcon },
+  {
+    id: 2,
+    name: i18n.t('side_menu:options.access_codes'),
+    href: 'volunteers/access-codes',
+    icon: UsersIcon,
+  },
 ];

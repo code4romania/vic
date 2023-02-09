@@ -158,7 +158,7 @@ const ViewAccessCodes = () => {
     <PageLayout>
       <div className="flex flex-col gap-6">
         <div className="flex flex-row justify-between">
-          <h1>{i18n.t('general:access_codes')}</h1>
+          <h1>{i18n.t('side_menu:options.access_codes')}</h1>
           <Button
             className="btn-primary"
             label={i18n.t('access_codes:create')}
@@ -168,7 +168,7 @@ const ViewAccessCodes = () => {
         </div>
         <Card>
           <CardHeader>
-            <h3>{i18n.t('general:access_codes')}</h3>
+            <h3>{i18n.t('side_menu:options.access_codes')}</h3>
           </CardHeader>
           <CardBody>
             <DataTableComponent<IAccessCode>
