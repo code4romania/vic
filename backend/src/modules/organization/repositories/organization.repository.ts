@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
 import { Repository } from 'typeorm';
 import { OrganizationEntity } from '../entities/organization.entity';
 import { IOrganizationRepository } from '../interfaces/organization-repository.interface';
@@ -45,7 +46,9 @@ export class OrganizationRepositoryService implements IOrganizationRepository {
   }
 
   public async find(
-    options: Partial<IFindOrganizationModel>,
+    options:
+      | Partial<IFindOrganizationModel>
+      | ArrayOfPropetyType<IFindOrganizationModel>,
   ): Promise<IOrganizationModel> {
     // get organization entity by id
     const organizationEntity = await this.organizationRepository.findOne({

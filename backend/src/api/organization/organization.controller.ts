@@ -1,14 +1,17 @@
-import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
-import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
+import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
+import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { Role } from 'src/common/enums/role.enum';
+import { IRequestUser } from 'src/common/interfaces/request-user.interface';
+import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { GetOrganizationUseCaseService } from 'src/usecases/organization/get-organization.usecase';
 import { UpdateOrganizationDescriptionUseCaseService } from 'src/usecases/organization/update-organization-description.usecase';
 import { UpdateOrganizationDescriptionDto } from './dto/update-organization-description.dto';
 import { IOrganizationPresenter } from './presenters/organization-presenter.interface';
 
-// @Roles(Role.ADMIN)
-// @UseGuards(WebJwtAuthGuard)
-// @UsePipes(new UuidValidationPipe())
+@Roles(Role.ADMIN)
+@UseGuards(WebJwtAuthGuard)
 @Controller('organization')
 export class OrganizationController {
   constructor(
@@ -16,25 +19,21 @@ export class OrganizationController {
     private readonly updateOrganizationDescriptionUseCase: UpdateOrganizationDescriptionUseCaseService,
   ) {}
 
-  // TODO: the organization id will be retrieved from the user once it is implemented
-  @ApiParam({ name: 'id', type: 'string' })
-  @Get(':id')
+  @Get()
   getOrganization(
-    @Param('id', UuidValidationPipe) organizationid: string,
+    @ExtractUser() { organizationId }: IRequestUser,
   ): Promise<IOrganizationPresenter> {
-    return this.getOrganizationUseCase.execute(organizationid);
+    return this.getOrganizationUseCase.execute(organizationId);
   }
 
-  // TODO: the organization id will be retrieved from the user once it is implemented
-  @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: UpdateOrganizationDescriptionDto })
-  @Patch(':id')
+  @Patch()
   patchOrganization(
-    @Param('id', UuidValidationPipe) organizationid: string,
+    @ExtractUser() { organizationId }: IRequestUser,
     @Body() { description }: UpdateOrganizationDescriptionDto,
   ): Promise<IOrganizationPresenter> {
     return this.updateOrganizationDescriptionUseCase.execute(
-      organizationid,
+      organizationId,
       description,
     );
   }

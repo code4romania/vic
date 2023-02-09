@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { IUserRepository } from '../interfaces/user-repository.interface';
@@ -16,7 +17,9 @@ export class UserRepositoryService implements IUserRepository {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  public async find(options: Partial<IFindUserModel>): Promise<IUserModel> {
+  public async find(
+    options: Partial<IFindUserModel> | ArrayOfPropetyType<IFindUserModel>,
+  ): Promise<IUserModel> {
     // retrieve user by cognito id
     const userEntity = await this.userRepository.findOne({
       where: options,

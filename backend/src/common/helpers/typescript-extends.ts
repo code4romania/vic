@@ -7,3 +7,5 @@ export type OneOf<T extends object[]> = {
     T[K] & Partial<Record<Exclude<UnionKeys<T[number]>, keyof T[K]>, never>>
   >;
 }[number];
+
+export type ArrayOfPropetyType<T> = { [P in keyof Partial<T>]: string }[];

@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
 import { IAdminUserRepository } from '../interfaces/admin-user-repository.interface';
 import { IUserRepository } from '../interfaces/user-repository.interface';
 import {
@@ -25,7 +26,9 @@ export class UserFacadeService {
     return this.adminUserRepository.find(optinos);
   }
 
-  public async findUser(options: Partial<IFindUserModel>): Promise<IUserModel> {
+  public async findUser(
+    options: Partial<IFindUserModel> | ArrayOfPropetyType<IFindUserModel>,
+  ): Promise<IUserModel> {
     return this.userRepository.find(options);
   }
 

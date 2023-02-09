@@ -59,10 +59,11 @@ export class GetUserProfileUseCaseService
     const { user, organization } = userWithOrganization;
 
     // check if there is already an organization with the same data
-    const dbOrganization = await this.organizationService.findOrganization({
-      email: organization.email,
-      phone: organization.phone,
-    });
+    const dbOrganization = await this.organizationService.findOrganization([
+      { name: organization.name },
+      { phone: organization.email },
+      { email: organization.email },
+    ]);
 
     // there is already an organization with the same phone number and email
     if (dbOrganization) {
@@ -72,10 +73,12 @@ export class GetUserProfileUseCaseService
     }
 
     // // check if there is already a user with the same data
-    const dbUser = await this.userService.findUser({
-      email: user.email,
-      phone: user.phone,
-    });
+    const dbUser = await this.userService.findUser([
+      {
+        email: user.email,
+      },
+      { phone: user.phone },
+    ]);
 
     // // there is already an user with the same phone number and email
     if (dbUser) {
