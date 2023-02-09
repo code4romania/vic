@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Outlet, Outlet, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import AccessRequest from '../pages/AccessRequest';
 import Dashboard from '../pages/Dashboard';
