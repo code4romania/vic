@@ -8,7 +8,7 @@ export interface IOrganizationStructureModel extends IBaseModel {
   type: OrganizationStructureType;
 
   members: number; // No of members in the structure
-  createdBy: { id: string; name: string };
+  createdBy: { id: string; name: string }; // TODO: @birloiflorian refactor to use IAdminUser. Here we put the entire object and we pick what we need in presenter.
   organizationId?: string;
 }
 

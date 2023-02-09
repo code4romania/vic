@@ -30,7 +30,6 @@ export class OrganizationStructurePresenter {
   @Expose()
   @ApiProperty({
     description: 'Type of the structure (branch/department/role)',
-    isArray: true,
     enum: OrganizationStructureType,
     examples: Object.values(OrganizationStructureType),
   })
