@@ -13,7 +13,7 @@ import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
 
 const Organization = () => {
-  const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.Branches);
+  const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.BRANCH);
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();

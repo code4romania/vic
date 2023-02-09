@@ -1,5 +1,5 @@
 export enum OrganizationStructureType {
-  BRANCH = 'BRANCH',
-  DEPARTMENT = 'DEPARTMENT',
-  ROLE = 'ROLE',
+  BRANCH = 'Branch',
+  DEPARTMENT = 'Department',
+  ROLE = 'Role',
 }

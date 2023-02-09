@@ -16,17 +16,19 @@ import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interfac
 import Tabs from './Tabs';
 import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 import { SelectItem } from './Select';
+import ConfirmationModal from './ConfirmationModal';
 import {
   useAddDivisionMutation,
   useEditDivisionMutation,
+  useDeleteDivisionMutation,
 } from '../services/division/division.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 
 export enum DivisionType {
-  Branches = 'branches',
-  Departments = 'departments',
-  Roles = 'roles',
+  BRANCH = 'Branch',
+  DEPARTMENT = 'Department',
+  ROLE = 'Role',
 }
 
 export interface IDivision extends IBaseEntity {
@@ -37,9 +39,9 @@ export interface IDivision extends IBaseEntity {
 }
 
 export const DivisionsTabs: SelectItem<DivisionType>[] = [
-  { key: DivisionType.Branches, value: i18n.t('division:branches') },
-  { key: DivisionType.Departments, value: i18n.t('division:departments') },
-  { key: DivisionType.Roles, value: i18n.t('division:roles') },
+  { key: DivisionType.BRANCH, value: i18n.t(`division:table.title.branch`) },
+  { key: DivisionType.DEPARTMENT, value: i18n.t('division:table.title.department') },
+  { key: DivisionType.ROLE, value: i18n.t('division:table.title.role') },
 ];
 
 export const DivisionTableHeader = [
@@ -100,9 +102,11 @@ const Divisions = ({
   onTabChange,
   onRefetch,
 }: DivisionsProps) => {
+  const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [selectedIdForEdit, setSelectedIdForEdit] = useState<string>();
 
+  const { mutateAsync: deleteDivision } = useDeleteDivisionMutation();
   const { mutateAsync: addDivisionMutation } = useAddDivisionMutation();
   const { mutateAsync: editDivisionMutation, error: editDivisionMutationError } =
     useEditDivisionMutation();
@@ -116,12 +120,14 @@ const Divisions = ({
         onClick: onView,
       },
       {
-        label: i18n.t('general:edit'),
+        label: i18n.t('general:edit', { item: i18n.t(`division:modal.${divisionType}`) }),
         icon: <PencilIcon className="menu-icon" />,
         onClick: onEdit,
       },
       {
-        label: i18n.t('general:delete'),
+        label: i18n.t('division:modal.delete.title', {
+          division: i18n.t(`division:modal.${divisionType}`),
+        }),
         icon: <TrashIcon className="menu-icon" />,
         onClick: onDelete,
         alert: true,
@@ -134,6 +140,36 @@ const Divisions = ({
       width: '50px',
       allowOverflow: true,
     };
+  };
+
+  // delete request
+  const handleDelete = () => {
+    if (selectedIdForDeletion) {
+      deleteDivision(selectedIdForDeletion, {
+        onSuccess: () => {
+          // show success message
+          useSuccessToast(
+            i18n.t('division:delete.success', {
+              division: i18n.t(`division:modal.${divisionType}`),
+            }),
+          );
+          // refresh table
+          onRefetch();
+        },
+        onError: () => {
+          // show error message
+          useErrorToast(
+            i18n.t('division:errors.delete', {
+              division: i18n.t(`division:errors.${divisionType}`),
+            }),
+          );
+        },
+        onSettled: () => {
+          // close modal
+          setSelectedIdForDeletion(undefined);
+        },
+      });
+    }
   };
 
   // simple actions
@@ -209,10 +245,10 @@ const Divisions = ({
     <Tabs<DivisionType> tabs={DivisionsTabs} onClick={onTabChange}>
       <Card>
         <CardHeader>
-          <h3>{i18n.t(`division:${divisionType}`)}</h3>
+          <h3>{i18n.t(`division:table.title.${divisionType.toLocaleLowerCase()}`)}</h3>
           <Button
             className="btn-outline-secondary"
-            label={i18n.t('general:add')}
+            label={i18n.t('general:add', { item: i18n.t(`division:modal.${divisionType}`) })}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
           />
@@ -235,7 +271,7 @@ const Divisions = ({
       </Card>
       {isAddModalOpen && (
         <DivisionInputModal
-          title={`${i18n.t('general:add')} ${i18n.t(`division:modal.${divisionType}`)}`}
+          title={i18n.t('general:add', { item: i18n.t(`division:modal.${divisionType}`) })}
           divisionType={divisionType}
           onClose={setIsAddModalOpen.bind(null, false)}
           onSubmit={handleAdd}
@@ -243,10 +279,38 @@ const Divisions = ({
       )}
       {selectedIdForEdit && (
         <DivisionInputModal
-          title={`${i18n.t('general:edit')} ${i18n.t(`division:modal.${divisionType}`)}`}
+          title={i18n.t('general:edit', { item: i18n.t(`division:modal.${divisionType}`) })}
           divisionType={divisionType}
           onClose={setSelectedIdForEdit.bind(null, undefined)}
           onSubmit={handleEdit}
+        />
+      )}
+      {selectedIdForDeletion && (
+        <ConfirmationModal
+          title={i18n.t('division:modal.delete.title', {
+            division: i18n.t(`division:modal.${divisionType}`),
+          })}
+          description={i18n.t('confirmation:delete', {
+            item: i18n.t(`division:modal.${divisionType}`),
+          })}
+          confirmBtnLabel={i18n.t('general:delete')}
+          confirmBtnClassName="btn-danger"
+          onClose={setSelectedIdForDeletion.bind(null, undefined)}
+          onConfirm={handleDelete}
+        />
+      )}
+      {selectedIdForDeletion && (
+        <ConfirmationModal
+          title={i18n.t('division:modal.delete.title', {
+            division: i18n.t(`division:modal.${divisionType}`),
+          })}
+          description={i18n.t('confirmation:delete', {
+            item: i18n.t(`division:modal.${divisionType}`),
+          })}
+          confirmBtnLabel={i18n.t('general:delete')}
+          confirmBtnClassName="btn-danger"
+          onClose={setSelectedIdForDeletion.bind(null, undefined)}
+          onConfirm={handleDelete}
         />
       )}
     </Tabs>

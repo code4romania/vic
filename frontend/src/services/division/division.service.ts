@@ -5,7 +5,7 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { DISVISION_ERRORS } from '../../common/errors/entities/division.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { DivisionType } from '../../components/Divisions';
-import { addDivision, getDivisions, editDivision } from './division.api';
+import { addDivision, deleteDivision, getDivisions, editDivision } from './division.api';
 
 export const useDivisionsQuery = (
   limit: number = PaginationConfig.defaultRowsPerPage,
@@ -32,4 +32,8 @@ export const useEditDivisionMutation = () => {
   return useMutation(({ id, name }: { id: string; name: string }) => editDivision(id, name), {
     onError: (error: AxiosError<IBusinessException<DISVISION_ERRORS>>) => Promise.resolve(error),
   });
+};
+
+export const useDeleteDivisionMutation = () => {
+  return useMutation((id: string) => deleteDivision(id));
 };
