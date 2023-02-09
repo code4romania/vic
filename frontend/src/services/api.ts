@@ -1,4 +1,5 @@
-import axios, { AxiosError } from 'axios';
+import { Auth } from 'aws-amplify';
+import axios, { AxiosError, AxiosRequestHeaders } from 'axios';
 import { IBusinessException } from '../common/interfaces/business-exception.interface';
 
 // https://vitejs.dev/guide/env-and-mode.html
@@ -12,6 +13,25 @@ const API = axios.create({
 
 API.interceptors.request.use(async (request) => {
   // add auth header with jwt if account is logged in and request is to the api url
+  try {
+    const user = await Auth.currentAuthenticatedUser();
+
+    if (!request.headers) {
+      request.headers = {} as AxiosRequestHeaders;
+    }
+
+    if (user?.getSignInUserSession()) {
+      request.headers.Authorization = `Bearer ${user
+        .getSignInUserSession()
+        .getAccessToken()
+        .getJwtToken()}`;
+    }
+  } catch (err) {
+    // User not authenticated. May be a public API.
+    // Catches "The user is not authenticated".
+    return request;
+  }
+
   return request;
 });
 

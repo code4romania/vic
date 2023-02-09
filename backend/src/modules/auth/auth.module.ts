@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { AuthController } from './auth.controller';
+import { UserModule } from '../user/user.module';
 import { MobileJwtStrategy } from './strategies/jwt-mobile.strategy';
 import { WebJwtStrategy } from './strategies/jwt-web.strategy';
 
 @Module({
-  imports: [PassportModule.register({})],
-  controllers: [AuthController],
+  imports: [PassportModule.register({}), UserModule],
   providers: [WebJwtStrategy, MobileJwtStrategy],
   exports: [],
 })

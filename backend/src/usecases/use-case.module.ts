@@ -1,20 +1,23 @@
 import { Module } from '@nestjs/common';
 import { ExceptionsModule } from 'src/infrastructure/exceptions/exceptions.module';
+import { OngHubModule } from 'src/modules/onghub/onghub.module';
 import { OrganizationModule } from 'src/modules/organization/organization.module';
+import { UserModule } from 'src/modules/user/user.module';
 import { CreateAccessCodeUseCase } from './access-code/create-access-code.usecase';
 import { DeleteAccessCodeUseCase } from './access-code/delete-access-code.usecase';
 import { GetAccessCodeUseCase } from './access-code/get-access-code.usecase';
 import { GetAllAccessCodeUseCase } from './access-code/get-all-access-codes.usecase';
 import { UpdateAccessCodeUseCase } from './access-code/update-access-code.usecase';
-import { GetOrganizationUseCaseService } from './organization/get-organization-use-case.service';
+import { GetOrganizationUseCaseService } from './organization/get-organization.usecase';
 import { CreateOrganizationStructureUseCase } from './organization/organization-structure/create-organization-structure.usecase';
 import { DeleteOrganizationStructureUseCase } from './organization/organization-structure/delete-organization-structure.usecase';
 import { GetAllOrganizationStructureUseCase } from './organization/organization-structure/get-all-organization-structure.usecase';
 import { UpdateOrganizationStructureUseCase } from './organization/organization-structure/update-organization-structure.usecase';
-import { UpdateOrganizationDescriptionUseCaseService } from './organization/update-organization-description-use-case.service';
+import { UpdateOrganizationDescriptionUseCaseService } from './organization/update-organization-description.usecase';
+import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
 
 @Module({
-  imports: [ExceptionsModule, OrganizationModule],
+  imports: [ExceptionsModule, OrganizationModule, OngHubModule, UserModule],
   providers: [
     // Organization
     GetOrganizationUseCaseService,
@@ -30,6 +33,8 @@ import { UpdateOrganizationDescriptionUseCaseService } from './organization/upda
     GetAllOrganizationStructureUseCase,
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
+    // User
+    GetUserProfileUseCaseService,
   ],
   exports: [
     // Organization
@@ -46,6 +51,8 @@ import { UpdateOrganizationDescriptionUseCaseService } from './organization/upda
     GetAllOrganizationStructureUseCase,
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
+    // user
+    GetUserProfileUseCaseService,
   ],
 })
 export class UseCaseModule {}
