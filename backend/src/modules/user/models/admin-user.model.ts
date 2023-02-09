@@ -1,6 +1,11 @@
 import { AdminUserEntity } from '../entities/admin-user.entity';
 import { UserType } from '../enums/user-type.enum';
-import { ICreateUserModel, IUserModel, UserTransformer } from './user.model';
+import {
+  ICreateUserModel,
+  IUserModel,
+  UserTransformer,
+  IFindUserModel,
+} from './user.model';
 
 export interface IAdminUserModel extends IUserModel {
   organizationId: string;
@@ -9,6 +14,10 @@ export interface IAdminUserModel extends IUserModel {
 export type ICreateAdminUserModel = Omit<ICreateUserModel, 'type'> & {
   organizationId: string;
 };
+
+export type IFindAdminUserModel = Partial<
+  IFindUserModel & Pick<IAdminUserModel, 'organizationId'>
+>;
 
 export class AdminUserTransformer {
   static fromEntity(entity: AdminUserEntity): IAdminUserModel {

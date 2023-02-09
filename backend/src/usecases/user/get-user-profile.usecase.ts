@@ -4,7 +4,7 @@ import { IUseCaseService } from 'src/common/interfaces/use-case-service.interfac
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { OngHubExceptionMessages } from 'src/modules/onghub/exceptions/exceptions';
-import { OrganizationFacadeService } from 'src/modules/organization/services/organization-facade.service';
+import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
 import { OrganizationExceptionMessages } from 'src/modules/organization/exceptions/exceptions';
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
@@ -27,9 +27,9 @@ export class GetUserProfileUseCaseService
     token: string,
   ): Promise<IAdminUserModel> {
     // check if user in the database
-    const existingUser = await this.userService.getAdminUserByCognitoId(
-      cognitoUserId,
-    );
+    const existingUser = await this.userService.findAdminUser({
+      cognitoId: cognitoUserId,
+    });
 
     // if user exists in the databse return the user
     if (existingUser) {
@@ -59,11 +59,10 @@ export class GetUserProfileUseCaseService
     const { user, organization } = userWithOrganization;
 
     // check if there is already an organization with the same data
-    const dbOrganization =
-      await this.organizationService.getOrganizationByOptions({
-        email: organization.email,
-        phone: organization.phone,
-      });
+    const dbOrganization = await this.organizationService.findOrganization({
+      email: organization.email,
+      phone: organization.phone,
+    });
 
     // there is already an organization with the same phone number and email
     if (dbOrganization) {
@@ -73,7 +72,7 @@ export class GetUserProfileUseCaseService
     }
 
     // // check if there is already a user with the same data
-    const dbUser = await this.userService.getUserByOptions({
+    const dbUser = await this.userService.findUser({
       email: user.email,
       phone: user.phone,
     });

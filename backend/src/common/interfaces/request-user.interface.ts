@@ -1,3 +1,4 @@
 export interface IRequestUser {
-  username: string;
+  cognitoId: string;
+  organizationId: string;
 }

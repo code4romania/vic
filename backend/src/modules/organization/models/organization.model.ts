@@ -12,6 +12,11 @@ export interface IOrganizationModel {
 
 export type ICreateOrganizationModel = Omit<IOrganizationModel, 'id'>;
 
+export type IFindOrganizationModel = Pick<
+  IOrganizationModel,
+  'id' | 'name' | 'email' | 'phone'
+>;
+
 export class OrganizationTransformer {
   static fromEntity(
     organizationEntity: OrganizationEntity,

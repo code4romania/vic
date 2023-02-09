@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
-import { GetOrganizationUseCaseService } from 'src/usecases/organization/get-organization-use-case.service';
-import { UpdateOrganizationDescriptionUseCaseService } from 'src/usecases/organization/update-organization-description-use-case.service';
+import { GetOrganizationUseCaseService } from 'src/usecases/organization/get-organization.usecase';
+import { UpdateOrganizationDescriptionUseCaseService } from 'src/usecases/organization/update-organization-description.usecase';
 import { UpdateOrganizationDescriptionDto } from './dto/update-organization-description.dto';
 import { IOrganizationPresenter } from './presenters/organization-presenter.interface';
 

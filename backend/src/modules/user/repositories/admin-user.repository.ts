@@ -7,6 +7,7 @@ import {
   AdminUserTransformer,
   IAdminUserModel,
   ICreateAdminUserModel,
+  IFindAdminUserModel,
 } from '../models/admin-user.model';
 
 @Injectable()
@@ -31,15 +32,21 @@ export class AdminUserRepositoryService implements IAdminUserRepository {
     return AdminUserTransformer.fromEntity(adminUserEntity);
   }
 
-  public async findByCognitoId(cognitoId: string): Promise<IAdminUserModel> {
-    // retrieve user by cognito id
+  public async find(
+    options: Partial<IFindAdminUserModel>,
+  ): Promise<IAdminUserModel> {
+    // separate the user conditions from the admin user conditions
+    const { organizationId, id, ...user } = options;
+
     const userEntity = await this.adminUserRepository.findOne({
       where: {
-        user: {
-          cognitoId,
-        },
+        user,
+        organizationId,
+        id,
       },
-      relations: ['user'],
+      relations: {
+        user: true,
+      },
     });
 
     // return user model

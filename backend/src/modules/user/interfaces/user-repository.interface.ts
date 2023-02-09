@@ -1,5 +1,5 @@
-import { IUserModel } from '../models/user.model';
+import { IFindUserModel, IUserModel } from '../models/user.model';
 
 export interface IUserRepository {
-  findByOptions(options: Partial<IUserModel>): Promise<IUserModel>;
+  find(options: Partial<IFindUserModel>): Promise<IUserModel>;
 }

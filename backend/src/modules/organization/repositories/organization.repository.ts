@@ -5,6 +5,7 @@ import { OrganizationEntity } from '../entities/organization.entity';
 import { IOrganizationRepository } from '../interfaces/organization-repository.interface';
 import {
   ICreateOrganizationModel,
+  IFindOrganizationModel,
   IOrganizationModel,
   OrganizationTransformer,
 } from '../models/organization.model';
@@ -40,28 +41,16 @@ export class OrganizationRepositoryService implements IOrganizationRepository {
     await this.organizationRepository.update({ id }, { description });
 
     // return organization model
-    return this.findById(id);
+    return this.find({ id });
   }
 
-  public async findById(id: string): Promise<IOrganizationModel> {
-    // get organization entity by id
-    const organizationEntity = await this.organizationRepository.findOne({
-      where: { id },
-    });
-
-    // return organization model
-    return organizationEntity
-      ? OrganizationTransformer.fromEntity(organizationEntity)
-      : null;
-  }
-
-  public async findOneByOptions(
-    options: Partial<IOrganizationModel>,
+  public async find(
+    options: Partial<IFindOrganizationModel>,
   ): Promise<IOrganizationModel> {
     // get organization entity by id
-    const organizationEntity = await this.organizationRepository.findOneBy(
-      options,
-    );
+    const organizationEntity = await this.organizationRepository.findOne({
+      where: options,
+    });
 
     // return organization model
     return organizationEntity

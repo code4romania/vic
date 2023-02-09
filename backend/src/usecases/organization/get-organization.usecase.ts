@@ -16,9 +16,9 @@ export class GetOrganizationUseCaseService
 
   public async execute(organizationId: string): Promise<IOrganizationModel> {
     // Get organization from the database
-    const organization = await this.organizationService.getOrganizationById(
-      organizationId,
-    );
+    const organization = await this.organizationService.findOrganization({
+      id: organizationId,
+    });
 
     // If organization is not found throw error
     if (!organization) {

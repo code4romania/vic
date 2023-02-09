@@ -4,10 +4,11 @@ import { IUserRepository } from '../interfaces/user-repository.interface';
 import {
   IAdminUserModel,
   ICreateAdminUserModel,
+  IFindAdminUserModel,
 } from '../models/admin-user.model';
-import { IUserModel } from '../models/user.model';
-import { AdminUserRepositoryService } from '../repositories/admin-user-repository.service';
-import { UserRepositoryService } from '../repositories/user-repository.service';
+import { IFindUserModel, IUserModel } from '../models/user.model';
+import { AdminUserRepositoryService } from '../repositories/admin-user.repository';
+import { UserRepositoryService } from '../repositories/user.repository';
 
 @Injectable()
 export class UserFacadeService {
@@ -18,16 +19,14 @@ export class UserFacadeService {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  public async getAdminUserByCognitoId(
-    cognitoId: string,
+  public async findAdminUser(
+    optinos: IFindAdminUserModel,
   ): Promise<IAdminUserModel> {
-    return this.adminUserRepository.findByCognitoId(cognitoId);
+    return this.adminUserRepository.find(optinos);
   }
 
-  public async getUserByOptions(
-    options: Partial<IUserModel>,
-  ): Promise<IUserModel> {
-    return this.userRepository.findByOptions(options);
+  public async findUser(options: Partial<IFindUserModel>): Promise<IUserModel> {
+    return this.userRepository.find(options);
   }
 
   public async createAdmin(

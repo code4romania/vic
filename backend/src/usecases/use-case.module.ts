@@ -8,13 +8,13 @@ import { DeleteAccessCodeUseCase } from './access-code/delete-access-code.usecas
 import { GetAccessCodeUseCase } from './access-code/get-access-code.usecase';
 import { GetAllAccessCodeUseCase } from './access-code/get-all-access-codes.usecase';
 import { UpdateAccessCodeUseCase } from './access-code/update-access-code.usecase';
-import { GetOrganizationUseCaseService } from './organization/get-organization-use-case.service';
+import { GetOrganizationUseCaseService } from './organization/get-organization.usecase';
 import { CreateOrganizationStructureUseCase } from './organization/organization-structure/create-organization-structure.usecase';
 import { DeleteOrganizationStructureUseCase } from './organization/organization-structure/delete-organization-structure.usecase';
 import { GetAllOrganizationStructureUseCase } from './organization/organization-structure/get-all-organization-structure.usecase';
 import { UpdateOrganizationStructureUseCase } from './organization/organization-structure/update-organization-structure.usecase';
-import { UpdateOrganizationDescriptionUseCaseService } from './organization/update-organization-description-use-case.service';
-import { GetUserProfileUseCaseService } from './user/get-user-profile-use-case.service';
+import { UpdateOrganizationDescriptionUseCaseService } from './organization/update-organization-description.usecase';
+import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
 
 @Module({
   imports: [ExceptionsModule, OrganizationModule, OngHubModule, UserModule],

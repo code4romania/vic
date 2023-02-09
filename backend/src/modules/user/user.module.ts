@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AdminUserEntity } from './entities/admin-user.entity';
 import { UserEntity } from './entities/user.entity';
-import { AdminUserRepositoryService } from './repositories/admin-user-repository.service';
+import { AdminUserRepositoryService } from './repositories/admin-user.repository';
 import { VolunteerUserEntity } from './entities/volunteer-user.entity';
-import { UserRepositoryService } from './repositories/user-repository.service';
+import { UserRepositoryService } from './repositories/user.repository';
 import { UserFacadeService } from './services/user-facade.service';
 
 @Module({

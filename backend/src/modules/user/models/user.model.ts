@@ -12,6 +12,8 @@ export interface IUserModel {
 
 export type ICreateUserModel = Omit<IUserModel, 'id'>;
 
+export type IFindUserModel = Omit<IUserModel, 'type'>;
+
 export class UserTransformer {
   static fromEntity(userEntity: UserEntity): IUserModel {
     return {
