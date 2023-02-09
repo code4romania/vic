@@ -21,5 +21,12 @@ export const useOrganizationForEditQuery = () => {
 };
 
 export const useUpdateOrganizationDescriptionMutation = () => {
-  return useMutation((description: string) => updateOrganizationDescription(description));
+  return useMutation(
+    ['organization'],
+    (description: string) => updateOrganizationDescription(description),
+    {
+      onError: (error: AxiosError<IBusinessException<ORGANIZATION_ERRORS>>) =>
+        Promise.resolve(error),
+    },
+  );
 };

@@ -18,6 +18,7 @@ import { useErrorToast } from '../hooks/useToast';
 import { useNavigate } from 'react-router';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const schema = yup
   .object({
@@ -36,8 +37,11 @@ type OrganizationTypeInput = {
 const EditOrganization = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: updateOrganizationDescription, isLoading: isUpdateDescriptionLoading } =
-    useUpdateOrganizationDescriptionMutation();
+  const {
+    mutateAsync: updateOrganizationDescription,
+    isLoading: isUpdateDescriptionLoading,
+    error: updateOrganizationDescriptionError,
+  } = useUpdateOrganizationDescriptionMutation();
 
   const {
     handleSubmit,
@@ -51,7 +55,7 @@ const EditOrganization = () => {
 
   const {
     data: organization,
-    error,
+    error: organizationError,
     isLoading: isOrganizationLoading,
   } = useOrganizationForEditQuery();
 
@@ -62,13 +66,22 @@ const EditOrganization = () => {
   const handleFormSubmit = (data: OrganizationTypeInput) => {
     updateOrganizationDescription(data.description, {
       onSuccess: () => navigateBack(),
-      onError: () => useErrorToast(i18n.t('edit_organization:form.description_error')),
     });
   };
 
   useEffect(() => {
-    if (error) useErrorToast(i18n.t('general:error.load_entries'));
-  }, [error]);
+    if (organizationError)
+      useErrorToast(
+        InternalErrors.ORGANIZATION_ERRORS.getError(organizationError.response?.data.code_error),
+      );
+
+    if (updateOrganizationDescriptionError)
+      useErrorToast(
+        InternalErrors.ORGANIZATION_ERRORS.getError(
+          updateOrganizationDescriptionError.response?.data.code_error,
+        ),
+      );
+  }, [organizationError, updateOrganizationDescriptionError]);
 
   return (
     <PageLayout>
@@ -82,7 +95,13 @@ const EditOrganization = () => {
         <h1>{i18n.t('edit_organization:title')}</h1>
       </div>
       {isOrganizationLoading && <LoadingContent />}
-      {error && <EmptyContent description={i18n.t('general:error.load_entries')} />}
+      {organizationError && (
+        <EmptyContent
+          description={InternalErrors.ORGANIZATION_ERRORS.getError(
+            organizationError.response?.data.code_error,
+          )}
+        />
+      )}
       {organization && (
         <Card>
           <CardHeader>
@@ -96,7 +115,7 @@ const EditOrganization = () => {
           <CardBody>
             <div className="flex flex-col gap-6 w-full lg:w-[80%] mx-auto sm:pt-4 pb-16">
               <div className="flex flex-col gap-2">
-                <h2>{i18n.t('organization:description_title')}</h2>
+                <h2>{i18n.t('organization:description')}</h2>
                 <p className="text-cool-gray-500">
                   {i18n.t('organization:description_placeholder')}
                 </p>
