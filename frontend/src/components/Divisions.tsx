@@ -16,6 +16,9 @@ import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interfac
 import Tabs from './Tabs';
 import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 import { SelectItem } from './Select';
+import ConfirmationModal from './ConfirmationModal';
+import { useDeleteDivisionMutation } from '../services/division/division.service';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 
 export enum DivisionType {
   BRANCH = 'Branch',
@@ -94,27 +97,11 @@ const Divisions = ({
   onTabChange,
   onRefetch,
 }: DivisionsProps) => {
+  const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
-  // component actions
-  const onAdd = () => {
-    setIsAddModalOpen(true);
-  };
-
-  // row actions
-  const onView = (row: IDivision) => {
-    alert(`Not yet implemented, ${row}`);
-  };
-
-  const onEdit = (row: IDivision) => {
-    console.log(`Not yet implemented, ${row}`);
-    setIsEditModalOpen(true);
-  };
-
-  const onDelete = (row: IDivision) => {
-    alert(`Not yet implemented, ${row}`);
-  };
+  const { mutateAsync: deleteDivision } = useDeleteDivisionMutation();
 
   // menu items
   const buildDivisionActionColumn = (): TableColumn<IDivision> => {
@@ -125,12 +112,14 @@ const Divisions = ({
         onClick: onView,
       },
       {
-        label: i18n.t('general:edit'),
+        label: i18n.t('general:edit', { item: i18n.t(`division:modal.${divisionType}`) }),
         icon: <PencilIcon className="menu-icon" />,
         onClick: onEdit,
       },
       {
-        label: i18n.t('general:delete'),
+        label: i18n.t('division:modal.delete.title', {
+          division: i18n.t(`division:modal.${divisionType}`),
+        }),
         icon: <TrashIcon className="menu-icon" />,
         onClick: onDelete,
         alert: true,
@@ -143,6 +132,55 @@ const Divisions = ({
       width: '50px',
       allowOverflow: true,
     };
+  };
+
+  // simple actions
+  const onView = (row: IDivision) => {
+    alert(`Not yet implemented, ${row}`);
+  };
+
+  const onEdit = (row: IDivision) => {
+    console.log(`Not yet implemented, ${row}`);
+    setIsEditModalOpen(true);
+  };
+
+  const onDelete = (row: IDivision) => {
+    setSelectedIdForDeletion(row.id);
+  };
+
+  const onAdd = () => {
+    console.log('Not yet implemented');
+    setIsAddModalOpen(true);
+  };
+
+  // delete request
+  const handleDelete = () => {
+    if (selectedIdForDeletion) {
+      deleteDivision(selectedIdForDeletion, {
+        onSuccess: () => {
+          // show success message
+          useSuccessToast(
+            i18n.t('division:delete.success', {
+              division: i18n.t(`division:modal.${divisionType}`),
+            }),
+          );
+          // refresh table
+          onRefetch();
+        },
+        onError: () => {
+          // show error message
+          useErrorToast(
+            i18n.t('division:errors.delete', {
+              division: i18n.t(`division:errors.${divisionType}`),
+            }),
+          );
+        },
+        onSettled: () => {
+          // close modal
+          setSelectedIdForDeletion(undefined);
+        },
+      });
+    }
   };
 
   const addDivision = (inputData: DivisionFormTypes) => {
@@ -172,7 +210,7 @@ const Divisions = ({
           <h3>{i18n.t(`division:table.title.${divisionType.toLocaleLowerCase()}`)}</h3>
           <Button
             className="btn-outline-secondary"
-            label={i18n.t('general:add')}
+            label={i18n.t('general:add', { item: i18n.t(`division:modal.${divisionType}`) })}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
           />
@@ -195,7 +233,7 @@ const Divisions = ({
       </Card>
       {isAddModalOpen && (
         <DivisionInputModal
-          title={`${i18n.t('general:add')} ${i18n.t(`division:modal.${divisionType}`)}`}
+          title={i18n.t('general:add', { item: i18n.t(`division:modal.${divisionType}`) })}
           divisionType={divisionType}
           onClose={closeAddModal}
           onSubmit={addDivision}
@@ -203,10 +241,24 @@ const Divisions = ({
       )}
       {isEditModalOpen && (
         <DivisionInputModal
-          title={`${i18n.t('general:edit')} ${i18n.t(`division:modal.${divisionType}`)}`}
+          title={i18n.t('general:edit', { item: i18n.t(`division:modal.${divisionType}`) })}
           divisionType={divisionType}
           onClose={closeEditModal}
           onSubmit={editDivision}
+        />
+      )}
+      {selectedIdForDeletion && (
+        <ConfirmationModal
+          title={i18n.t('division:modal.delete.title', {
+            division: i18n.t(`division:modal.${divisionType}`),
+          })}
+          description={i18n.t('confirmation:delete', {
+            item: i18n.t(`division:modal.${divisionType}`),
+          })}
+          confirmBtnLabel={i18n.t('general:delete')}
+          confirmBtnClassName="btn-danger"
+          onClose={setSelectedIdForDeletion.bind(null, undefined)}
+          onConfirm={handleDelete}
         />
       )}
     </Tabs>

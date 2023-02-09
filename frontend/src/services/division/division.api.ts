@@ -13,3 +13,7 @@ export const getDivisions = async (
   console.log('limit, page, orderBy, orderDirection', limit, page, orderBy, orderDirection);
   return API.get(`/organization-structure/${type}`).then((res) => res.data);
 };
+
+export const deleteDivision = async (id: string): Promise<void> => {
+  return API.delete(`/divisions/${id}`).then((res) => res.data);
+};
