@@ -20,6 +20,7 @@ import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
 import { PaginationConfig } from '../common/constants/pagination';
+import EmptyContent from '../components/EmptyContent';
 
 export interface IAccessRequest {
   id: string;
@@ -29,6 +30,7 @@ export interface IAccessRequest {
   email: string;
   phone: string;
   createdOn: string;
+  rejectedOn?: string;
 }
 
 export enum FilterType {
@@ -41,7 +43,7 @@ const RegistrationRequestsTabs: SelectItem<FilterType>[] = [
   { key: FilterType.Rejected, value: i18n.t('registration_requests:options.rejected_requests') },
 ];
 
-const RegistrationRequestsTableHeader = [
+const PendingRequestsTableHeader = [
   {
     id: 'name',
     name: i18n.t('general:name'),
@@ -70,6 +72,16 @@ const RegistrationRequestsTableHeader = [
     name: i18n.t('registration_requests:date'),
     sortable: true,
     selector: (row: IAccessRequest) => row.createdOn,
+  },
+];
+
+const RejectedRequestsTableHeader = [
+  ...PendingRequestsTableHeader,
+  {
+    id: 'rejectedDate',
+    name: i18n.t('registration_requests:rejected_date'),
+    sortable: true,
+    cell: (row: IAccessRequest) => <div data-tag="allowRowEvents">{row.rejectedOn}</div>,
   },
 ];
 
@@ -160,7 +172,11 @@ const RegistrationRequests = () => {
     );
   };
 
-  const { data: registrationRequests, isLoading } = useRegistrationRequestsQuery(
+  const {
+    data: registrationRequests,
+    isLoading: isRegistrationRequestsLoading,
+    error: registrationRequestsError,
+  } = useRegistrationRequestsQuery(
     filterStatus,
     rowsPerPage as number,
     page as number,
@@ -187,7 +203,6 @@ const RegistrationRequests = () => {
       <Tabs<FilterType> tabs={RegistrationRequestsTabs} onClick={handleTabClick}>
         <Card>
           <CardHeader>
-            <div></div>
             <Button
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
@@ -196,22 +211,34 @@ const RegistrationRequests = () => {
             />
           </CardHeader>
           <CardBody>
-            <DataTableComponent
-              columns={[
-                ...RegistrationRequestsTableHeader,
-                buildRegistrationRequestsActionColumn(filterStatus),
-              ]}
-              data={registrationRequests?.items}
-              loading={isLoading}
-              pagination
-              paginationPerPage={rowsPerPage}
-              paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
-              paginationTotalRows={registrationRequests?.meta?.totalItems}
-              paginationDefaultPage={page}
-              onChangeRowsPerPage={setRowsPerPage}
-              onChangePage={setPage}
-              onSort={onSort}
-            />
+            {registrationRequestsError && (
+              <EmptyContent description={i18n.t('registration_requests:errors.no_data')} />
+            )}
+            {registrationRequests && (
+              <DataTableComponent
+                columns={
+                  filterStatus === FilterType.Pending
+                    ? [
+                        ...PendingRequestsTableHeader,
+                        buildRegistrationRequestsActionColumn(filterStatus),
+                      ]
+                    : [
+                        ...RejectedRequestsTableHeader,
+                        buildRegistrationRequestsActionColumn(filterStatus),
+                      ]
+                }
+                data={registrationRequests?.items}
+                loading={!!isRegistrationRequestsLoading}
+                pagination
+                paginationPerPage={rowsPerPage}
+                paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
+                paginationTotalRows={registrationRequests?.meta?.totalItems}
+                paginationDefaultPage={page}
+                onChangeRowsPerPage={setRowsPerPage}
+                onChangePage={setPage}
+                onSort={onSort}
+              />
+            )}
           </CardBody>
         </Card>
       </Tabs>

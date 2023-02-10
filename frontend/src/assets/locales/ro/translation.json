@@ -79,6 +79,7 @@
   "registration_requests": {
     "title": "Cereri de înscriere",
     "date": "Data cerere acces",
+    "rejected_date": "Data respingere",
     "contact": "Date contact",
     "options": {
       "requests": "Cereri",
@@ -89,6 +90,9 @@
       "approve": "Aprobă cerere",
       "reject": "Respinge cerere",
       "delete": "Sterge din listă"
+    },
+    "errors": {
+      "no_data": "Nu s-au putut incarca cererile de inscriere"
     }
   }
 }
