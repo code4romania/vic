@@ -3,20 +3,27 @@
     "created_by": "Creat de",
     "name": "Nume",
     "created_on": "Data crearii",
-    "add": "Adauga",
+    "add": "Adauga {{item}}",
     "email": "Email",
     "phone": "Telefon",
     "address": "Adresa",
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
-    "edit": "Editeaza",
+    "edit": "Editeaza {{item}}",
     "delete": "Sterge",
+    "back": "Inapoi",
+    "save_changes": "Salveaza modificari",
     "description": "Descriere",
+    "required": "Campul este obligatoriu",
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
       "unknown": "A aparut o eroare necunoscuta",
       "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
     },
+    "cancel": "Anuleaza"
+  },
+  "confirmation": {
+    "delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
     "back": "Inapoi",
     "save": "Salveaza modificari"
   },
@@ -38,9 +45,13 @@
   },
   "division": {
     "members": "Membri",
-    "branches": "Filiale si sucursale",
-    "departments": "Departamente",
-    "roles": "Roluri",
+    "table": {
+      "title": {
+        "branch": "Filiale si sucursale",
+        "department": "Departamente",
+        "role": "Roluri"
+      }
+    },
     "form": {
       "required": "Campul este obligatoriu",
       "max": "Numele poate sa aiba maxim 20 de caractere",
@@ -50,7 +61,17 @@
     "modal": {
       "branches": "filiala",
       "departments": "departament",
-      "roles": "rol"
+      "roles": "rol",
+      "delete": {
+        "title": "Sterge {{division}}",
+        "success": "{{division}} stearsa cu succes"
+      }
+    },
+    "errors": {
+      "delete": "Eroare la stergerea {{division}}",
+      "branches": "filialei",
+      "departments": "departamentului",
+      "roles": "rolului"
     }
   },
   "organization": {
@@ -61,7 +82,21 @@
     "description": "Descriere organizație",
     "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poti alege sa formulezi o descriere specifica pentru aplicatia TEO, prin care sa atragi cat mai multi voluntari, sau sa folosesti descrierea organizatiei asa cum se regaseste in ONGHub.",
     "errors": {
-      "ORG_001": "Organizatia nu a fost gasita"
+      "ORG_001": "Organizatia nu a fost gasita",
+      "no_data": "Nu s-au putut incarca datele organizatiei"
+    }
+  },
+  "edit_organization": {
+    "title": "Editare profil",
+    "card_title": "Editează profil organizație",
+    "teo_description": "Descrierea organizatiei in TEO",
+    "form": {
+      "max": "Descrierea trebuie sa aiba maxim 250 de caractere",
+      "min": "Descrierea trebuie sa aiba minim 50 caractere",
+      "description_error": "Actualizarea descrierii a esuat"
+    },
+    "messages": {
+      "submit": "Descrierea organizatiei a fost actualizata"
     }
   },
   "pagination": {

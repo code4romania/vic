@@ -4,7 +4,7 @@ import { AccessCodeEntity } from './entities/access-code.entity';
 import { OrganizationStructureEntity } from './entities/organization-structure.entity';
 import { OrganizationEntity } from './entities/organization.entity';
 import { AccessCodeRepositoryService } from './repositories/access-code.repository';
-import { OrganizationRepositoryService } from './repositories/organization-repository.service';
+import { OrganizationRepositoryService } from './repositories/organization.repository';
 import { OrganizationStructureRepositoryService } from './repositories/organization-structure.repository';
 import { AccessCodeFacade } from './services/access-code.facade';
 import { OrganizationStructureFacade } from './services/organization-structure.facade';
