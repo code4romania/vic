@@ -37,7 +37,7 @@ const AccessCodeTableHeader = [
   },
   {
     id: 'availability',
-    name: i18n.t('access_codes:availability'),
+    name: i18n.t('general:availability'),
     sortable: true,
     grow: 2,
     minWidth: '10rem',
@@ -45,7 +45,7 @@ const AccessCodeTableHeader = [
   },
   {
     id: 'uses',
-    name: i18n.t('access_codes:uses'),
+    name: i18n.t('general:uses'),
     sortable: true,
     grow: 1,
     minWidth: '2rem',

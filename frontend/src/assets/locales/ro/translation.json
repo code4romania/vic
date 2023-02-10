@@ -24,7 +24,9 @@
     "sex_male": "Barbatesc",
     "sex_female": "Feminin",
     "phone": "Telefon",
-    "email": "Email de contact"
+    "email": "Email de contact",
+    "availability": "Valabilitate",
+    "uses": "Utilizari"
   },
   "confirmation": {
     "delete": "Esti sigur ca doresti stergerea acestui {{item}}?"
@@ -130,8 +132,6 @@
   },
   "access_codes": {
     "name": "Cod acces",
-    "create": "Creeaza cod nou",
-    "availability": "Valabilitate",
-    "uses": "Utilizari"
+    "create": "Creeaza cod nou"
   }
 }
