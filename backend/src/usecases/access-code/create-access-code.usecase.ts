@@ -22,6 +22,7 @@ export class CreateAccessCodeUseCase
   ): Promise<IAccessCodeModel> {
     const accessCode = await this.accessCodeFacade.find({
       code: createAccessCodeModel.code,
+      organizationId: createAccessCodeModel.organizationId,
     });
 
     if (accessCode) {

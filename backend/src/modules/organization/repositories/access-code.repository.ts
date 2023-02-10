@@ -22,8 +22,6 @@ export class AccessCodeRepositoryService implements IAccessCodeRepository {
   async create(
     newAccessCode: ICreateAccessCodeModel,
   ): Promise<IAccessCodeModel> {
-    console.log(newAccessCode);
-
     const accessCode = await this.accessCodeRepository.save(
       AccessCodeTransformer.toEntity(newAccessCode),
     );

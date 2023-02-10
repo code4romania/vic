@@ -1,7 +1,8 @@
 import { OneOf } from 'src/common/helpers/typescript-extends';
+import { IBaseModel } from 'src/common/interfaces/base.model';
 import { AccessCodeEntity } from '../entities/access-code.entity';
 
-export interface IAccessCodeModel {
+export interface IAccessCodeModel extends IBaseModel {
   id: string;
   code: string;
   startDate: Date;
@@ -19,7 +20,7 @@ export type ICreateAccessCodeModel = Pick<
 > & { createdById: string; organizationId: string };
 
 export type IFindAccessCodeModel = Partial<
-  Pick<IAccessCodeModel, 'id' | 'code'>
+  Pick<IAccessCodeModel, 'id' | 'code' | 'organizationId'>
 >;
 
 export type IFindAllAccessCodeModel = Required<
@@ -50,6 +51,8 @@ export class AccessCodeTransformer {
       },
       usageCount: entity.usageCount,
       organizationId: entity.organizationId,
+      updatedOn: entity.updatedOn,
+      createdOn: entity.createdOn,
     };
   }
 

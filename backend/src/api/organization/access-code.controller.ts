@@ -8,6 +8,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
+import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateAccessCodeUseCase } from 'src/usecases/access-code/create-access-code.usecase';
 import { DeleteAccessCodeUseCase } from 'src/usecases/access-code/delete-access-code.usecase';
 import { GetAccessCodeUseCase } from 'src/usecases/access-code/get-access-code.usecase';
@@ -20,7 +23,7 @@ import { AccessCodePresenter } from './presenters/access-code.presenter';
 // @Roles(Role.ADMIN)
 // @UseGuards(WebJwtAuthGuard)
 // @UsePipes(new UuidValidationPipe())
-@Controller('organization/access-code')
+@Controller('access-code')
 export class AccessCodeController {
   constructor(
     private readonly createAccessCodeUseCase: CreateAccessCodeUseCase,
@@ -30,19 +33,21 @@ export class AccessCodeController {
     private readonly findAllAccessCodeUseCase: GetAllAccessCodeUseCase,
   ) {}
 
-  @Get('access-code')
-  async getAll(): Promise<AccessCodePresenter[]> {
+  @Get()
+  async getAll(
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<AccessCodePresenter[]> {
     const accessCodes = await this.findAllAccessCodeUseCase.execute({
-      organizationId: '3631315f-02f1-42c9-a418-8bff2e15fb2d', // TODO: replace with organization from @User request
+      organizationId,
     });
 
     return accessCodes.map((accessCode) => new AccessCodePresenter(accessCode));
   }
 
   @ApiParam({ name: 'accessCodeId', type: 'string' })
-  @Get('access-code/:accessCodeId')
+  @Get(':id')
   async getOne(
-    @Param('accessCodeId') accessCodeId: string,
+    @Param('id', UuidValidationPipe) accessCodeId: string,
   ): Promise<AccessCodePresenter> {
     const accessCodeModel = await this.findAccessCodeUseCase.execute(
       accessCodeId,
@@ -51,25 +56,26 @@ export class AccessCodeController {
   }
 
   @ApiBody({ type: CreateAccessCodeDto })
-  @Post('access-code')
+  @Post()
   async create(
     @Body() { code, startDate, endDate }: CreateAccessCodeDto,
+    @ExtractUser() { organizationId, id }: IAdminUserModel,
   ): Promise<AccessCodePresenter> {
     const accessCodeModel = await this.createAccessCodeUseCase.execute({
       code,
       startDate,
       endDate,
-      organizationId: '3631315f-02f1-42c9-a418-8bff2e15fb2d', // TODO: replace with organization from @User request
-      createdById: '6e5ca126-2c04-4403-a641-53345da26ef8', // TODO: replace with user from @User request
+      organizationId: organizationId,
+      createdById: id,
     });
     return new AccessCodePresenter(accessCodeModel);
   }
 
   @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: UpdateAccessCodeDto })
-  @Patch(':id/access-code/:accessCodeId')
+  @Patch(':id')
   async update(
-    @Param('accessCodeId') accessCodeId: string,
+    @Param('id', UuidValidationPipe) accessCodeId: string,
     @Body() { endDate }: UpdateAccessCodeDto,
   ): Promise<AccessCodePresenter> {
     const accessCodeModel = await this.updateAccessCodeUseCase.execute({
@@ -80,9 +86,9 @@ export class AccessCodeController {
   }
 
   @ApiParam({ name: 'id', type: 'string' })
-  @Delete(':id/access-code/:accessCodeId')
+  @Delete(':id')
   async delete(
-    @Param('accessCodeId') accessCodeId: string,
+    @Param('accessCodeId', UuidValidationPipe) accessCodeId: string,
   ): Promise<AccessCodePresenter> {
     const accessCodeModel = await this.deleteAccessCodeUseCase.execute(
       accessCodeId,

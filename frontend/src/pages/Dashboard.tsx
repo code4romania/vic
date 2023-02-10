@@ -5,19 +5,15 @@ import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
-import { useTestValuesQuery } from '../services/test/test.service';
 
 const Dashboard = () => {
   // for testing purpose only
   const { t } = useTranslation('general');
-  // for testing purpos only
-  const { data } = useTestValuesQuery();
 
   return (
     <PageLayout>
       This is the Dashboard
       <h1>Translation test {t('test')}</h1>
-      <p>{JSON.stringify(data)}</p>
       <Card>
         <CardHeader>
           <h4>Test header</h4>
