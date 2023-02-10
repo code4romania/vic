@@ -21,7 +21,7 @@ const ProfileCard = ({ name, logo, age, sex, location }: ProfileCardProps) => {
           <img
             src={`${logo}`}
             alt="Profile picture"
-            className="logo w-32 h-32 lg:w-44 lg:h-44 border-white border-4 shadow-blur"
+            className="logo w-32 lg:w-44 border-white border-4 shadow-blur"
           />
           <small className="text-cool-gray-500">{i18n.t('general:years_old', { age })}</small>
           <small className="text-cool-gray-500">
