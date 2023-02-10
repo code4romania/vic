@@ -11,10 +11,10 @@ import FormTextarea from '../components/FormTextarea';
 import i18n from '../common/config/i18n';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 import {
-  useOrganizationForEditQuery,
+  useOrganizationQuery,
   useUpdateOrganizationDescriptionMutation,
 } from '../services/organization/organization.service';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { useNavigate } from 'react-router';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
@@ -30,13 +30,21 @@ const schema = yup
   })
   .required();
 
-type OrganizationTypeInput = {
+type OrganizationFormType = {
   description: string;
 };
 
 const EditOrganization = () => {
   const navigate = useNavigate();
 
+  // load organization data
+  const {
+    data: organization,
+    error: organizationError,
+    isLoading: isOrganizationLoading,
+  } = useOrganizationQuery();
+
+  // submit form data
   const {
     mutateAsync: updateOrganizationDescription,
     isLoading: isUpdateDescriptionLoading,
@@ -47,25 +55,24 @@ const EditOrganization = () => {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<OrganizationTypeInput>({
+    reset,
+  } = useForm<OrganizationFormType>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });
 
-  const {
-    data: organization,
-    error: organizationError,
-    isLoading: isOrganizationLoading,
-  } = useOrganizationForEditQuery();
+  useEffect(() => {
+    // prefill form
+    if (organization) reset({ description: organization.description });
+  }, [organization]);
 
-  const navigateBack = () => {
-    navigate(-1);
-  };
-
-  const handleFormSubmit = (data: OrganizationTypeInput) => {
-    updateOrganizationDescription(data.description, {
-      onSuccess: () => navigateBack(),
+  const onSubmit = ({ description }: OrganizationFormType) => {
+    updateOrganizationDescription(description, {
+      onSuccess: () => {
+        useSuccessToast(i18n.t('edit_organization:messages.submit'));
+        navigate('/organization', { replace: true });
+      },
     });
   };
 
@@ -90,26 +97,22 @@ const EditOrganization = () => {
           label={i18n.t('general:back')}
           icon={<ChevronLeftIcon className="h-5 w-5 text-white" />}
           className="btn-secondary"
-          onClick={navigateBack}
+          onClick={navigate.bind(null, -1)}
         />
         <h1>{i18n.t('edit_organization:title')}</h1>
       </div>
-      {isOrganizationLoading && <LoadingContent />}
-      {organizationError && (
-        <EmptyContent
-          description={InternalErrors.ORGANIZATION_ERRORS.getError(
-            organizationError.response?.data.code_error,
-          )}
-        />
+      {(isOrganizationLoading || isUpdateDescriptionLoading) && <LoadingContent />}
+      {organizationError && !organization && (
+        <EmptyContent description={i18n.t('organization:errors.no_data')} />
       )}
-      {organization && (
+      {organization && !isUpdateDescriptionLoading && !isOrganizationLoading && (
         <Card>
           <CardHeader>
             <h2>{i18n.t('edit_organization:card_title')}</h2>
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"
-              onClick={handleSubmit(handleFormSubmit)}
+              onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>
           <CardBody>
@@ -129,7 +132,7 @@ const EditOrganization = () => {
                     return (
                       <FormTextarea
                         label={i18n.t('edit_organization:teo_description')}
-                        defaultValue={value || organization.description}
+                        defaultValue={value}
                         onChange={onChange}
                         errorMessage={errors.description?.message as string}
                       />
@@ -141,7 +144,6 @@ const EditOrganization = () => {
           </CardBody>
         </Card>
       )}
-      {isUpdateDescriptionLoading && <LoadingContent />}
     </PageLayout>
   );
 };

@@ -80,7 +80,8 @@
     "description": "Descriere organizație",
     "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poti alege sa formulezi o descriere specifica pentru aplicatia TEO, prin care sa atragi cat mai multi voluntari, sau sa folosesti descrierea organizatiei asa cum se regaseste in ONGHub.",
     "errors": {
-      "ORG_001": "Organizatia nu a fost gasita"
+      "ORG_001": "Organizatia nu a fost gasita",
+      "no_data": "Nu s-au putut incarca datele organizatiei"
     }
   },
   "edit_organization": {
@@ -91,6 +92,9 @@
       "max": "Descrierea trebuie sa aiba maxim 250 de caractere",
       "min": "Descrierea trebuie sa aiba minim 50 caractere",
       "description_error": "Actualizarea descrierii a esuat"
+    },
+    "messages": {
+      "submit": "Descrierea organizatiei a fost actualizata"
     }
   },
   "pagination": {
