@@ -19,7 +19,7 @@
       "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
     },
     "cancel": "Anuleaza",
-    "years_old": "{{age}} de ani",
+    "years_old": "{{age}} ani",
     "sex": "Sex {{sex_type}}",
     "sex_male": "Barbatesc",
     "sex_female": "Feminin",

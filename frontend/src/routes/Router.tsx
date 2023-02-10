@@ -20,9 +20,8 @@ const Router = () => {
             <Route index element={<Organization />} />
             <Route path="edit" element={<EditOrganization />} />
           </Route>
-          <Route path="volunteers" element={<Outlet />}>
-            <Route path="requests" element={<AccessRequest />} />
-          </Route>
+          <Route path="volunteers/requests" element={<div>To be implemented...</div>} />
+          <Route path="volunteers/requests/:id" element={<AccessRequest />} />
         </Route>
       </Routes>
     </BrowserRouter>

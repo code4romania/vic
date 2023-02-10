@@ -21,7 +21,7 @@ const VolunteerRequest = ({ email, phone, createdOn, answers }: VolunteerRequest
       </CardHeader>
       <CardBody>
         <div className="flex flex-col divide-y divide-cool-gray-200 gap-6 pb-4">
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <FormReadOnlyElement value={email} label={i18n.t('general:email')} />
             <FormReadOnlyElement value={phone} label={i18n.t('general:phone')} />
             <FormReadOnlyElement
