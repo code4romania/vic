@@ -49,13 +49,13 @@ const EditAccessCode = () => {
           icon={<ChevronLeftIcon className="h-5 w-5" />}
           onClick={onNavigateBack}
         ></Button>
-        <h1>{i18n.t('general:add')}</h1>
+        <h1>{i18n.t('general:add', { item: i18n.t('access_codes:name').toLocaleLowerCase() })}</h1>
       </div>
       <Card>
         <CardHeader>
           <h3>{i18n.t('access_codes:name')}</h3>
           <Button
-            label={i18n.t('general:save')}
+            label={i18n.t('confirmation:save')}
             className="btn-primary"
             onClick={handleSubmit(onSave)}
           />

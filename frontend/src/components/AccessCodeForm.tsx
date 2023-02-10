@@ -1,7 +1,7 @@
 import React from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl } from 'react-hook-form';
 import i18n from '../common/config/i18n';
-import { formatDate } from '../common/utils/utils';
+import DatePickerForm from './DatePickerForm';
 import FormInput from './FormInput';
 
 interface AccessCodeFormProps {
@@ -45,18 +45,7 @@ const AccessCodeForm = ({ control, errors }: AccessCodeFormProps) => {
           name="availabilityStart"
           control={control}
           render={({ field: { onChange, value } }) => {
-            return (
-              <FormInput
-                type="date"
-                readOnly={false}
-                value={formatDate(value)}
-                errorMessage={errors['code']?.message}
-                label={`${i18n.t('access_codes:availability', { context: 'start' })}*`}
-                onChange={onChange}
-                aria-invalid={errors['availabilityStart']?.message ? 'true' : 'false'}
-                id="access-code-form__start-date"
-              />
-            );
+            return <DatePickerForm onChange={onChange} value={value} />;
           }}
         />
         <Controller
@@ -64,18 +53,7 @@ const AccessCodeForm = ({ control, errors }: AccessCodeFormProps) => {
           name="availabilityEnd"
           control={control}
           render={({ field: { onChange, value } }) => {
-            return (
-              <FormInput
-                type="date"
-                readOnly={false}
-                value={formatDate(value as Date)}
-                errorMessage={errors['code']?.message}
-                label={`${i18n.t('access_codes:availability', { context: 'end' })}*`}
-                onChange={onChange}
-                aria-invalid={errors['availabilityEnd']?.message ? 'true' : 'false'}
-                id="access-code-form__end-date"
-              />
-            );
+            return <DatePickerForm onChange={onChange} value={value} />;
           }}
         />
       </div>
