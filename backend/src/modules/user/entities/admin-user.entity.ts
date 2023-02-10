@@ -23,7 +23,7 @@ export class AdminUserEntity extends BaseEntity {
   })
   userId: string;
 
-  @OneToOne(() => UserEntity)
+  @OneToOne(() => UserEntity, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 

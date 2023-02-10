@@ -7,13 +7,15 @@ import {
   getCognitoProperty,
 } from '../../../infrastructure/config/cognito.config';
 import { AUTH_STRATEGIES } from '../auth.constants';
+import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 @Injectable()
 export class WebJwtStrategy extends PassportStrategy(
   Strategy,
   AUTH_STRATEGIES.WEB,
 ) {
-  constructor() {
+  constructor(private readonly userService: UserFacadeService) {
     super({
       secretOrKeyProvider: passportJwtSecret({
         cache: true,
@@ -32,7 +34,14 @@ export class WebJwtStrategy extends PassportStrategy(
     });
   }
 
-  public async validate(token: { username: string }) {
-    return { user: 'test', token };
+  public async validate(reqUser: {
+    username: string;
+  }): Promise<Partial<IAdminUserModel>> {
+    const user = await this.userService.findAdminUser({
+      cognitoId: reqUser.username,
+    });
+
+    // if the user is not found we assume it's login and we need to request the data and we do not set the oragnization id
+    return user || { cognitoId: reqUser.username };
   }
 }

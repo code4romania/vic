@@ -72,6 +72,9 @@ module.exports = {
       fontSize: {
         '4xl': ['2rem', '2.375rem'],
       },
+      aspectRatio: {
+        square: '1/1',
+      },
     },
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio')],

@@ -1,12 +1,16 @@
-import { IOrganizationModel } from '../models/organization.model';
+import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
+import {
+  ICreateOrganizationModel,
+  IFindOrganizationModel,
+  IOrganizationModel,
+} from '../models/organization.model';
 
 export interface IOrganizationRepository {
-  create(
-    organization: Omit<IOrganizationModel, 'id'>,
-  ): Promise<IOrganizationModel>;
+  create(organization: ICreateOrganizationModel): Promise<IOrganizationModel>;
   update(id: string, description: string): Promise<IOrganizationModel>;
-  findById(id: string): Promise<IOrganizationModel>;
-  findOneByOptions(
-    options: Partial<Omit<IOrganizationModel, 'id'>>,
+  find(
+    options:
+      | Partial<IFindOrganizationModel>
+      | ArrayOfPropetyType<IFindOrganizationModel>,
   ): Promise<IOrganizationModel>;
 }

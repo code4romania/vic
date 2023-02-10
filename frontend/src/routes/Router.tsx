@@ -1,10 +1,13 @@
 import React from 'react';
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
+import AccessRequest from '../pages/AccessRequest';
 import Dashboard from '../pages/Dashboard';
+import EditOrganization from '../pages/EditOrganization';
 import Login from '../pages/Login';
 import Organization from '../pages/Organization';
 import RegistrationRequests from '../pages/RegistrationRequests';
+import AccessCodes from '../pages/AccesCodes';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -17,13 +20,11 @@ const Router = () => {
           <Route index element={<Dashboard />}></Route>
           <Route path="organization" element={<Outlet />}>
             <Route index element={<Organization />} />
-            <Route path="edit" element={<div>Edit page to be added</div>} />
+            <Route path="edit" element={<EditOrganization />} />
           </Route>
-          <Route path="volunteers" element={<Outlet />}>
-            <Route index element={<Navigate to={'list'} replace={true}></Navigate>} />
-            <Route path="list" element={<div>this is volunteers list</div>} />
-            <Route path="registration-requests" element={<RegistrationRequests />} />
-          </Route>
+          <Route path="volunteers/access-codes" element={<AccessCodes />} />
+          <Route path="volunteers/requests" element={<RegistrationRequests />} />
+          <Route path="volunteers/requests/:id" element={<AccessRequest />} />
         </Route>
       </Routes>
     </BrowserRouter>

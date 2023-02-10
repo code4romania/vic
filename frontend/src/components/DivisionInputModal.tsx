@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from './Modal';
 import { Controller, useForm } from 'react-hook-form';
 import Button from './Button';
@@ -43,11 +43,16 @@ const DivisionInputModal = ({
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<DivisionFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    if (defaultValue) reset({ name: defaultValue });
+  }, []);
 
   return (
     <Modal title={title} onClose={onClose}>
@@ -62,8 +67,10 @@ const DivisionInputModal = ({
                 type="text"
                 errorMessage={errors['name']?.message}
                 readOnly={false}
-                value={defaultValue || value}
-                label={`${i18n.t('general:name')} ${i18n.t(`division:modal.${divisionType}`)}`}
+                value={value}
+                label={`${i18n.t('general:name')} ${i18n.t(
+                  `division:entity.${divisionType.toLocaleLowerCase()}`,
+                )}`}
                 onChange={onChange}
                 aria-invalid={errors['name']?.message ? 'true' : 'false'}
               />
@@ -73,7 +80,9 @@ const DivisionInputModal = ({
       </form>
       <div className="flex flex-row-reverse">
         <Button
-          label={i18n.t('general:add')}
+          label={i18n.t('general:add', {
+            item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+          })}
           className="btn-primary"
           onClick={handleSubmit(onSubmit)}
         />

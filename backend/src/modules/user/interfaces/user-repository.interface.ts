@@ -1,6 +1,8 @@
-import { IUserModel } from '../models/user.model';
+import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
+import { IFindUserModel, IUserModel } from '../models/user.model';
 
 export interface IUserRepository {
-  create(userModel: Omit<IUserModel, 'id'>): Promise<IUserModel>;
-  findById(id: string): Promise<IUserModel>;
+  find(
+    options: Partial<IFindUserModel> | ArrayOfPropetyType<IFindUserModel>,
+  ): Promise<IUserModel>;
 }
