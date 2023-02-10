@@ -9,7 +9,6 @@ import CardHeader from '../components/CardHeader';
 import CardBody from '../components/CardBody';
 import FormTextarea from '../components/FormTextarea';
 import i18n from '../common/config/i18n';
-import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 import {
   useOrganizationQuery,
   useUpdateOrganizationDescriptionMutation,
@@ -19,6 +18,7 @@ import { useNavigate } from 'react-router';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import PageHeader from '../components/PageHeader';
 
 const schema = yup
   .object({
@@ -92,15 +92,9 @@ const EditOrganization = () => {
 
   return (
     <PageLayout>
-      <div className="flex gap-4 items-center">
-        <Button
-          label={i18n.t('general:back')}
-          icon={<ChevronLeftIcon className="h-5 w-5 text-white" />}
-          className="btn-secondary"
-          onClick={navigate.bind(null, -1)}
-        />
-        <h1>{i18n.t('edit_organization:title')}</h1>
-      </div>
+      <PageHeader onBackButtonPress={navigate.bind(null, -1)}>
+        {i18n.t('edit_organization:title')}
+      </PageHeader>
       {(isOrganizationLoading || isUpdateDescriptionLoading) && <LoadingContent />}
       {organizationError && !organization && (
         <EmptyContent description={i18n.t('organization:errors.no_data')} />
