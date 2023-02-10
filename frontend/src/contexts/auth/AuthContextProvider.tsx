@@ -6,7 +6,7 @@ import { IUser } from '../../common/interfaces/user.interface';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [profile, setProfile] = useState<IUser>();
   const { mutate: getProfile, data: userProfile, isLoading: isFetchingProfile } = useLogin();
 
@@ -21,12 +21,12 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAuthenticated(true);
       // set user profile
       setProfile(userProfile);
+      // hide loading screen
+      setIsLoading(false);
     }
   }, [userProfile]);
 
   const initProfile = async () => {
-    // show loading screen
-    setIsLoading(true);
     try {
       // this will throw error if user is not authenticated
       await Auth.currentAuthenticatedUser();
@@ -37,8 +37,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       // https://github.com/aws-amplify/amplify-js/blob/6caccc7b4/packages/auth/src/Auth.ts#L1705
       // here are just error strings validating user pool config and if user is authenticated
       console.debug('[Cognito] error while loging in:', error);
-    } finally {
-      // hide loading screen
       setIsLoading(false);
     }
   };
