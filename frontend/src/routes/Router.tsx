@@ -6,6 +6,7 @@ import Dashboard from '../pages/Dashboard';
 import EditOrganization from '../pages/EditOrganization';
 import Login from '../pages/Login';
 import Organization from '../pages/Organization';
+import ViewAccessCodes from '../pages/ViewAccesCodes';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -20,6 +21,7 @@ const Router = () => {
             <Route index element={<Organization />} />
             <Route path="edit" element={<EditOrganization />} />
           </Route>
+          <Route path="volunteers/access-codes" element={<ViewAccessCodes />} />
           <Route path="volunteers/requests" element={<div>To be implemented...</div>} />
           <Route path="volunteers/requests/:id" element={<AccessRequest />} />
         </Route>

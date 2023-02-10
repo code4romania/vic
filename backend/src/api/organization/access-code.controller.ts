@@ -6,10 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
+import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateAccessCodeUseCase } from 'src/usecases/access-code/create-access-code.usecase';
 import { DeleteAccessCodeUseCase } from 'src/usecases/access-code/delete-access-code.usecase';
@@ -21,7 +23,7 @@ import { UpdateAccessCodeDto } from './dto/update-access-code.dto';
 import { AccessCodePresenter } from './presenters/access-code.presenter';
 
 // @Roles(Role.ADMIN)
-// @UseGuards(WebJwtAuthGuard)
+@UseGuards(WebJwtAuthGuard)
 // @UsePipes(new UuidValidationPipe())
 @Controller('access-code')
 export class AccessCodeController {

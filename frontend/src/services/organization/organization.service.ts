@@ -1,8 +1,9 @@
 import { AxiosError } from 'axios';
 import { useQuery, useMutation } from 'react-query';
+import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ORGANIZATION_ERRORS } from '../../common/errors/entities/organization.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
-import { getOrganization, updateOrganizationDescription } from './organization.api';
+import { getAccessCodes, getOrganization, updateOrganizationDescription } from './organization.api';
 
 export const useOrganizationQuery = () => {
   return useQuery(['organization'], () => getOrganization(), {
@@ -18,5 +19,18 @@ export const useUpdateOrganizationDescriptionMutation = () => {
       onError: (error: AxiosError<IBusinessException<ORGANIZATION_ERRORS>>) =>
         Promise.resolve(error),
     },
+  );
+};
+
+export const useAccessCodesQuery = (
+  limit: number,
+  page: number,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+) => {
+  return useQuery(
+    ['access-codes', limit, page, orderBy, orderDirection],
+    () => getAccessCodes(limit, page, orderBy, orderDirection),
+    { enabled: !!(limit && page) },
   );
 };
