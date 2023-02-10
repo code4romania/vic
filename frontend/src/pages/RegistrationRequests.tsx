@@ -7,7 +7,13 @@ import Button from '../components/Button';
 import Tabs from '../components/Tabs';
 import DataTableComponent from '../components/DataTableComponent';
 import i18n from '../common/config/i18n';
-import { ArrowDownTrayIcon, CheckIcon, EyeIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowDownTrayIcon,
+  CheckIcon,
+  EyeIcon,
+  XMarkIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
 import { useRegistrationRequestsQuery } from '../services/registration-requests/registration-requests.service';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
@@ -87,8 +93,14 @@ const RegistrationRequests = () => {
     alert(`Not yet implemented, ${row}`);
   };
 
+  const onDelete = (row: IAccessRequest) => {
+    alert(`Not yet implemented, ${row}`);
+  };
+
   // menu items
-  const buildRegistrationRequestsActionColumn = (): TableColumn<IAccessRequest> => {
+  const buildRegistrationRequestsActionColumn = (
+    filterStatus: FilterType,
+  ): TableColumn<IAccessRequest> => {
     const registrationRequestsMenuItems = [
       {
         label: i18n.t('registration_requests:modal.view'),
@@ -108,10 +120,31 @@ const RegistrationRequests = () => {
       },
     ];
 
+    const rejectedRequestsMenuItems = [
+      {
+        label: i18n.t('registration_requests:modal.view'),
+        icon: <EyeIcon className="menu-icon" />,
+        onClick: onView,
+      },
+      {
+        label: i18n.t('registration_requests:modal.delete'),
+        icon: <TrashIcon className="menu-icon" />,
+        onClick: onDelete,
+        alert: true,
+      },
+    ];
+
     return {
       name: '',
       cell: (row: IAccessRequest) => (
-        <Popover<IAccessRequest> row={row} items={registrationRequestsMenuItems} />
+        <Popover<IAccessRequest>
+          row={row}
+          items={
+            filterStatus === FilterType.Pending
+              ? registrationRequestsMenuItems
+              : rejectedRequestsMenuItems
+          }
+        />
       ),
       width: '50px',
       allowOverflow: true,
@@ -166,7 +199,7 @@ const RegistrationRequests = () => {
             <DataTableComponent
               columns={[
                 ...RegistrationRequestsTableHeader,
-                buildRegistrationRequestsActionColumn(),
+                buildRegistrationRequestsActionColumn(filterStatus),
               ]}
               data={registrationRequests?.items}
               loading={isLoading}

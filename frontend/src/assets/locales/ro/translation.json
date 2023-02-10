@@ -87,7 +87,8 @@
     "modal": {
       "view": "Vizualizeaza aplicare",
       "approve": "Aprobă cerere",
-      "reject": "Respinge cerere"
+      "reject": "Respinge cerere",
+      "delete": "Sterge din listă"
     }
   }
 }
