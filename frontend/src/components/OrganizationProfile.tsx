@@ -36,7 +36,7 @@ const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
         <h2>{i18n.t('organization:title')}</h2>
         <Button
           className="btn-outline-secondary w-20"
-          label={i18n.t('general:edit')}
+          label={i18n.t('general:edit', { item: '' })}
           icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
           onClick={onEditButtonClick}
         />
