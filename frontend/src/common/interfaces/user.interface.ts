@@ -1,5 +1,4 @@
-import { IBaseEntity } from './base-entity.interface';
-
-export interface IUser extends IBaseEntity {
+export interface IUser {
+  id: string;
   name: string;
 }

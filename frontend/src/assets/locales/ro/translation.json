@@ -3,13 +3,13 @@
     "created_by": "Creat de",
     "name": "Nume",
     "created_on": "Data crearii",
-    "add": "Adauga",
+    "add": "Adauga {{item}}",
     "email": "Email",
     "phone": "Telefon",
     "address": "Adresa",
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
-    "edit": "Editeaza",
+    "edit": "Editeaza {{item}}",
     "delete": "Sterge",
     "back": "Inapoi",
     "save_changes": "Salveaza modificari",
@@ -19,7 +19,11 @@
       "load_entries": "Eroare la incarcarea datelor",
       "unknown": "A aparut o eroare necunoscuta",
       "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
-    }
+    },
+    "cancel": "Anuleaza"
+  },
+  "confirmation": {
+    "delete": "Esti sigur ca doresti stergerea acestui {{item}}?"
   },
   "header": {
     "login": "Login",
@@ -39,9 +43,13 @@
   },
   "division": {
     "members": "Membri",
-    "branches": "Filiale si sucursale",
-    "departments": "Departamente",
-    "roles": "Roluri",
+    "table": {
+      "title": {
+        "branch": "Filiale si sucursale",
+        "department": "Departamente",
+        "role": "Roluri"
+      }
+    },
     "form": {
       "required": "Campul este obligatoriu",
       "max": "Numele poate sa aiba maxim 20 de caractere",
@@ -51,7 +59,17 @@
     "modal": {
       "branches": "filiala",
       "departments": "departament",
-      "roles": "rol"
+      "roles": "rol",
+      "delete": {
+        "title": "Sterge {{division}}",
+        "success": "{{division}} stearsa cu succes"
+      }
+    },
+    "errors": {
+      "delete": "Eroare la stergerea {{division}}",
+      "branches": "filialei",
+      "departments": "departamentului",
+      "roles": "rolului"
     }
   },
   "organization": {

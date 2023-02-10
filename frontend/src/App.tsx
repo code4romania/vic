@@ -4,8 +4,13 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import AuthContextProvider from './contexts/auth/AuthContextProvider';
 import Router from './routes/Router';
 import { toast, ToastContainer } from 'react-toastify';
+import { Amplify } from 'aws-amplify';
+import { AMPLIFY_CONFIG } from './common/config/amplify';
 
 import 'react-toastify/dist/ReactToastify.css';
+
+// Configure Amplify for Login
+Amplify.configure(AMPLIFY_CONFIG);
 
 const queryClient = new QueryClient({
   defaultOptions: {

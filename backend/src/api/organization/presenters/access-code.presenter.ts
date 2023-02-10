@@ -10,6 +10,7 @@ export class AccessCodePresenter {
     this.endDate = accessCode.endDate;
     this.usageCount = accessCode.usageCount;
     this.createdBy = accessCode.createdBy;
+    this.createdOn = accessCode.createdOn;
   }
 
   @Expose()
@@ -47,4 +48,8 @@ export class AccessCodePresenter {
   @Expose()
   @ApiProperty({ description: 'The Admin User who created the code' }) // TODO: how to annotate this properly?
   createdBy: { id: string; name: string };
+
+  @Expose()
+  @ApiProperty({ description: 'Date of creation' })
+  createdOn: Date;
 }

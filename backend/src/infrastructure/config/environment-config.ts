@@ -67,6 +67,9 @@ class EnvironmentVariables {
   MAIL_USER: string;
   @IsString()
   MAIL_PASS: string;
+
+  @IsString()
+  ONG_HUB_API: string;
 }
 
 export function validate(
