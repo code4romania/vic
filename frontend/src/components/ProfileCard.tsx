@@ -21,11 +21,11 @@ const ProfileCard = ({ name, logo, age, sex, location }: ProfileCardProps) => {
           <img
             src={`${logo}`}
             alt="Profile picture"
-            className="w-44 h-44 border-white border-4 shadow-blur logo"
+            className="logo w-32 h-32 lg:w-44 lg:h-44 border-white border-4 shadow-blur"
           />
-          <small className="text-cool-gray-500">{i18n.t('registration:years_old', { age })}</small>
+          <small className="text-cool-gray-500">{i18n.t('general:years_old', { age })}</small>
           <small className="text-cool-gray-500">
-            {i18n.t('registration:sex', { sex_type: i18n.t(`general:sex.${sex}`) })}
+            {i18n.t('general:sex', { sex_type: i18n.t(`general:sex.${sex}`) })}
           </small>
           <small className="text-cool-gray-500">{location}</small>
         </div>

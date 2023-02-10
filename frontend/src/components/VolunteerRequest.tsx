@@ -17,41 +17,32 @@ const VolunteerRequest = ({ email, phone, createdOn, answers }: VolunteerRequest
   return (
     <Card>
       <CardHeader>
-        <h2>{i18n.t('registration:form')}</h2>
+        <h2>{i18n.t('volunteer:registration.form')}</h2>
       </CardHeader>
       <CardBody>
         <div className="flex flex-col divide-y divide-cool-gray-200 gap-6 pb-4">
           <div className="grid grid-cols-2 gap-8">
-            <FormReadOnlyElement
-              value={email}
-              valueStyle="text-cool-gray-900"
-              label={i18n.t('general:email')}
-              labelStyle="text-cool-gray-500"
-            />
-            <FormReadOnlyElement
-              value={phone}
-              valueStyle="text-cool-gray-900"
-              label={i18n.t('general:phone')}
-              labelStyle="text-cool-gray-500"
-            />
+            <FormReadOnlyElement value={email} label={i18n.t('general:email')} />
+            <FormReadOnlyElement value={phone} label={i18n.t('general:phone')} />
             <FormReadOnlyElement
               value={formatDate(createdOn)}
-              valueStyle="text-cool-gray-900"
               label={i18n.t('general:created_on')}
-              labelStyle="text-cool-gray-500"
             />
           </div>
           <div className="pt-4 flex flex-col gap-6">
             <div className="flex flex-col gap-2">
-              <h3>{i18n.t('registration:answer')}</h3>
-              <p className="text-cool-gray-500">{i18n.t('registration:description')}</p>
+              <h3>{i18n.t('volunteer:registration.answer')}</h3>
+              <p className="text-cool-gray-500">{i18n.t('volunteer:registration.description')}</p>
             </div>
             <div className="flex flex-col gap-5">
               <FormReadOnlyElement
                 value={answers[0]}
-                label={i18n.t('registration:found_location')}
+                label={i18n.t('volunteer:registration.found_location')}
               />
-              <FormReadOnlyElement value={answers[1]} label={i18n.t('registration:motivation')} />
+              <FormReadOnlyElement
+                value={answers[1]}
+                label={i18n.t('volunteer:registration.motivation')}
+              />
             </div>
           </div>
         </div>

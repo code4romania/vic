@@ -17,7 +17,10 @@
       "unknown": "A aparut o eroare necunoscuta",
       "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
     },
-    "cancel": "Anuleaza"
+    "cancel": "Anuleaza",
+    "years_old": "{{age}} de ani",
+    "sex": "Sex {{sex_type}}",
+    "back": "Inapoi"
   },
   "confirmation": {
     "delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
@@ -26,8 +29,7 @@
     "sex": {
       "male": "Barbatesc",
       "female": "Feminin"
-    },
-    "back": "Inapoi"
+    }
   },
   "header": {
     "login": "Login",
@@ -49,18 +51,18 @@
     },
     "collapse": "Restrange meniul"
   },
-  "registration": {
-    "title": "Cerere de inscriere",
-    "form": "Formular inscriere",
-    "answer": "Raspunsul voluntarului",
-    "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
-    "found_location": "De unde ai aflat de organizatie?",
-    "motivation": "Ce te motiveaza sa fii voluntar?",
-    "errors": {
-      "loading": "Nu s-a putut incarca cererea voluntarului"
+  "volunteer": {
+    "registration": {
+      "title": "Cerere de inscriere",
+      "form": "Formular inscriere",
+      "answer": "Raspunsul voluntarului",
+      "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
+      "found_location": "De unde ai aflat de organizatie?",
+      "motivation": "Ce te motiveaza sa fii voluntar?"
     },
-    "years_old": "{{age}} de ani",
-    "sex": "Sex {{sex_type}}"
+    "errors": {
+      "VOL_001": "Nu s-a putut incarca cererea voluntarului"
+    }
   },
   "division": {
     "members": "Membri",
@@ -78,9 +80,9 @@
       "pattern": "Numele are un format invalid"
     },
     "modal": {
-      "branches": "filiala",
-      "departments": "departament",
-      "roles": "rol",
+      "branch": "filiala",
+      "department": "departament",
+      "role": "rol",
       "delete": {
         "title": "Sterge {{division}}",
         "success": "{{division}} stearsa cu succes"
@@ -88,9 +90,9 @@
     },
     "errors": {
       "delete": "Eroare la stergerea {{division}}",
-      "branches": "filialei",
-      "departments": "departamentului",
-      "roles": "rolului"
+      "branch": "filialei",
+      "department": "departamentului",
+      "role": "rolului"
     }
   },
   "organization": {

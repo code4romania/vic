@@ -26,7 +26,7 @@ const FormInput = ({
         errorMessage
           ? 'border border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500'
           : '',
-        className ? className : '',
+        className || '',
       )}
       {...props}
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
