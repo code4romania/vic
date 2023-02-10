@@ -18,11 +18,12 @@ import { useAccessCodesQuery } from '../services/organization/organization.servi
 
 export interface IAccessCode {
   id: string;
-  name: string;
-  availability: string;
-  uses: number;
+  code: string;
+  startDate: Date;
+  endDate: Date;
+  usageCount: number;
   createdOn: Date;
-  createdBy: Pick<IUser, 'id' | 'name'>;
+  createdBy: IUser;
 }
 
 const AccessCodeTableHeader = [
@@ -30,32 +31,32 @@ const AccessCodeTableHeader = [
     id: 'name',
     name: i18n.t('access_codes:name'),
     sortable: true,
-    grow: 3,
-    minWidth: '20rem',
-    selector: (row: IAccessCode) => row.name,
+    grow: 1,
+    minWidth: '5rem',
+    selector: (row: IAccessCode) => row.code,
   },
   {
     id: 'availability',
     name: i18n.t('access_codes:availability'),
     sortable: true,
-    grow: 1,
+    grow: 2,
     minWidth: '10rem',
-    selector: (row: IAccessCode) => row.availability,
+    selector: (row: IAccessCode) => `${formatDate(row.startDate)} - ${formatDate(row.endDate)}`,
   },
   {
     id: 'uses',
     name: i18n.t('access_codes:uses'),
     sortable: true,
     grow: 1,
-    minWidth: '10rem',
-    selector: (row: IAccessCode) => row.uses,
+    minWidth: '2rem',
+    selector: (row: IAccessCode) => row.usageCount,
   },
   {
     id: 'createdOn',
     name: i18n.t('general:created_on'),
     sortable: true,
     grow: 1,
-    minWidth: '10rem',
+    minWidth: '5rem',
     selector: (row: IAccessCode) => formatDate(row.createdOn),
   },
   {
@@ -63,7 +64,7 @@ const AccessCodeTableHeader = [
     name: i18n.t('general:created_by'),
     sortable: true,
     grow: 1,
-    minWidth: '10rem',
+    minWidth: '5rem',
     cell: (row: IAccessCode) => <a>{row.createdBy.name}</a>,
   },
 ];
@@ -134,7 +135,7 @@ const ViewAccessCodes = () => {
   const buildAccessCodeActionColumn = (): TableColumn<IAccessCode> => {
     const accessCodeMenuItems = [
       {
-        label: i18n.t('general:edit'),
+        label: i18n.t('general:edit', { item: '' }),
         icon: <PencilIcon className="menu-icon" />,
         onClick: onEdit,
       },

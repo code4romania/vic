@@ -20,7 +20,29 @@ export const getAccessCodes = async (
   orderBy?: string,
   orderDirection?: OrderDirection,
 ): Promise<IPaginatedEntity<IAccessCode>> => {
-  return API.get(`/access-codes`, { params: { limit, page, orderBy, orderDirection } }).then(
-    (res) => res.data,
-  );
+  console.log('limit, page, orderBy, orderDirection', limit, page, orderBy, orderDirection);
+  return API.get(`/access-code`).then((res) => {
+    return {
+      items: [
+        {
+          id: 'aa',
+          code: '1123',
+          startDate: new Date(),
+          endDate: new Date(),
+          usageCount: 10,
+          createdOn: new Date(),
+          createdBy: { id: 'as', name: 'ajskadhs' },
+        },
+      ],
+      meta: {
+        currentPage: 1,
+        itemCount: 1,
+        itemsPerPage: 10,
+        totalItems: res.data.length,
+        totalPages: 1,
+        orderByColumn: 'name',
+        orderDirection: OrderDirection.ASC,
+      },
+    };
+  });
 };
