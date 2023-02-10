@@ -12,6 +12,7 @@
     "view": "Vizualizeaza",
     "edit": "Editeaza",
     "delete": "Sterge",
+    "location": "Location",
     "description": "Descriere",
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
@@ -77,9 +78,16 @@
   },
   "registration_requests": {
     "title": "Cereri de înscriere",
+    "date": "Data cerere acces",
+    "contact": "Date contact",
     "options": {
       "requests": "Cereri",
       "rejected_requests": "Cereri respinse"
+    },
+    "modal": {
+      "view": "Vizualizeaza aplicare",
+      "approve": "Aprobă cerere",
+      "reject": "Respinge cerere"
     }
   }
 }
