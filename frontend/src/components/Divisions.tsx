@@ -106,10 +106,21 @@ const Divisions = ({
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [selectedIdForEdit, setSelectedIdForEdit] = useState<string>();
 
-  const { mutateAsync: deleteDivision } = useDeleteDivisionMutation();
-  const { mutateAsync: addDivisionMutation } = useAddDivisionMutation();
-  const { mutateAsync: editDivisionMutation, error: editDivisionMutationError } =
-    useEditDivisionMutation();
+  const {
+    mutateAsync: deleteDivision,
+    error: deleteDivisionMutationError,
+    isLoading: deleteDivisionMutationLoading,
+  } = useDeleteDivisionMutation();
+  const {
+    mutateAsync: addDivisionMutation,
+    error: addDivisionMutationError,
+    isLoading: addDivisionMutationLoading,
+  } = useAddDivisionMutation();
+  const {
+    mutateAsync: editDivisionMutation,
+    error: editDivisionMutationError,
+    isLoading: editDivisionMutationLoading,
+  } = useEditDivisionMutation();
 
   // menu items
   const buildDivisionActionColumn = (): TableColumn<IDivision> => {
@@ -120,13 +131,15 @@ const Divisions = ({
         onClick: onView,
       },
       {
-        label: i18n.t('general:edit', { item: i18n.t(`division:modal.${divisionType}`) }),
+        label: i18n.t('general:edit', {
+          item: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
+        }),
         icon: <PencilIcon className="menu-icon" />,
         onClick: onEdit,
       },
       {
         label: i18n.t('division:modal.delete.title', {
-          division: i18n.t(`division:modal.${divisionType}`),
+          division: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
         }),
         icon: <TrashIcon className="menu-icon" />,
         onClick: onDelete,
@@ -140,36 +153,6 @@ const Divisions = ({
       width: '50px',
       allowOverflow: true,
     };
-  };
-
-  // delete request
-  const handleDelete = () => {
-    if (selectedIdForDeletion) {
-      deleteDivision(selectedIdForDeletion, {
-        onSuccess: () => {
-          // show success message
-          useSuccessToast(
-            i18n.t('division:delete.success', {
-              division: i18n.t(`division:modal.${divisionType}`),
-            }),
-          );
-          // refresh table
-          onRefetch();
-        },
-        onError: () => {
-          // show error message
-          useErrorToast(
-            i18n.t('division:errors.delete', {
-              division: i18n.t(`division:errors.${divisionType}`),
-            }),
-          );
-        },
-        onSettled: () => {
-          // close modal
-          setSelectedIdForDeletion(undefined);
-        },
-      });
-    }
   };
 
   // simple actions
@@ -197,11 +180,12 @@ const Divisions = ({
         onRefetch();
       },
       onError: () => {
-        useErrorToast(
-          i18n.t('division:errors.generic.add', {
-            division: i18n.t(`division:errors.${divisionType}`),
-          }),
-        );
+        if (addDivisionMutationError)
+          useErrorToast(
+            InternalErrors.DIVISION_ERRORS.getError(
+              addDivisionMutationError.response?.data.code_error,
+            ),
+          );
       },
       onSettled: () => {
         setIsAddModalOpen(false);
@@ -226,18 +210,43 @@ const Divisions = ({
                   editDivisionMutationError?.response?.data.code_error,
                 ),
               );
-            else
-              useErrorToast(
-                i18n.t('division:errors.generic.edit', {
-                  division: i18n.t(`division:errors.${divisionType}`),
-                }),
-              );
           },
           onSettled: () => {
             setSelectedIdForEdit(undefined);
           },
         },
       );
+    }
+  };
+
+  // delete request
+  const handleDelete = () => {
+    if (selectedIdForDeletion) {
+      deleteDivision(selectedIdForDeletion, {
+        onSuccess: () => {
+          // show success message
+          useSuccessToast(
+            i18n.t('division:delete.success', {
+              division: i18n.t(`division:modal.${divisionType}`),
+            }),
+          );
+          // refresh table
+          onRefetch();
+        },
+        onError: () => {
+          // show error message
+          if (deleteDivisionMutationError)
+            useErrorToast(
+              InternalErrors.DIVISION_ERRORS.getError(
+                deleteDivisionMutationError.response?.data.code_error,
+              ),
+            );
+        },
+        onSettled: () => {
+          // close modal
+          setSelectedIdForDeletion(undefined);
+        },
+      });
     }
   };
 
@@ -248,7 +257,9 @@ const Divisions = ({
           <h3>{i18n.t(`division:table.title.${divisionType.toLocaleLowerCase()}`)}</h3>
           <Button
             className="btn-outline-secondary"
-            label={i18n.t('general:add', { item: i18n.t(`division:modal.${divisionType}`) })}
+            label={i18n.t('general:add', {
+              item: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
+            })}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
           />
@@ -257,7 +268,12 @@ const Divisions = ({
           <DataTableComponent<IDivision>
             columns={[...DivisionTableHeader, buildDivisionActionColumn()]}
             data={data?.items}
-            loading={isLoading}
+            loading={
+              isLoading ||
+              addDivisionMutationLoading ||
+              editDivisionMutationLoading ||
+              deleteDivisionMutationLoading
+            }
             pagination
             paginationPerPage={data?.meta?.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
@@ -271,7 +287,9 @@ const Divisions = ({
       </Card>
       {isAddModalOpen && (
         <DivisionInputModal
-          title={i18n.t('general:add', { item: i18n.t(`division:modal.${divisionType}`) })}
+          title={i18n.t('general:add', {
+            item: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
+          })}
           divisionType={divisionType}
           onClose={setIsAddModalOpen.bind(null, false)}
           onSubmit={handleAdd}
@@ -279,7 +297,9 @@ const Divisions = ({
       )}
       {selectedIdForEdit && (
         <DivisionInputModal
-          title={i18n.t('general:edit', { item: i18n.t(`division:modal.${divisionType}`) })}
+          title={i18n.t('general:edit', {
+            item: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
+          })}
           divisionType={divisionType}
           onClose={setSelectedIdForEdit.bind(null, undefined)}
           onSubmit={handleEdit}
@@ -288,10 +308,10 @@ const Divisions = ({
       {selectedIdForDeletion && (
         <ConfirmationModal
           title={i18n.t('division:modal.delete.title', {
-            division: i18n.t(`division:modal.${divisionType}`),
+            division: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
           })}
           description={i18n.t('confirmation:delete', {
-            item: i18n.t(`division:modal.${divisionType}`),
+            item: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
           })}
           confirmBtnLabel={i18n.t('general:delete')}
           confirmBtnClassName="btn-danger"
@@ -302,10 +322,10 @@ const Divisions = ({
       {selectedIdForDeletion && (
         <ConfirmationModal
           title={i18n.t('division:modal.delete.title', {
-            division: i18n.t(`division:modal.${divisionType}`),
+            division: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
           })}
           description={i18n.t('confirmation:delete', {
-            item: i18n.t(`division:modal.${divisionType}`),
+            item: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
           })}
           confirmBtnLabel={i18n.t('general:delete')}
           confirmBtnClassName="btn-danger"

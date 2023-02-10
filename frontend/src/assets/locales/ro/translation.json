@@ -54,36 +54,21 @@
       "pattern": "Numele are un format invalid"
     },
     "modal": {
-      "branches": "filiala",
-      "departments": "departament",
-      "roles": "rol",
+      "branch": "filiala",
+      "department": "departament",
+      "role": "rol",
       "delete": {
         "title": "Sterge {{division}}",
         "success": "{{division}} stearsa cu succes"
       }
-    },
-    "errors": {
-      "delete": "Eroare la stergerea {{division}}",
-      "branches": "filialei",
-      "departments": "departamentului",
-      "roles": "rolului"
     },
     "success": {
       "add": "Divizie adaugata cu succes",
       "edit": "Divizie actualizata cu succes"
     },
     "errors": {
-      "branches": "filialei",
-      "departments": "departamentului",
-      "roles": "rolului",
-      "generic": {
-        "add": "Eroare la crearea {{division}}",
-        "edit": "Eroare la editarea {{division}}"
-      },
-      "custom": {
-        "ORGANIZATION_STRUCTURE_001": "Nu exista divizie cu acest nume",
-        "ORGANIZATION_STRUCTURE_002": "Exista deja o divizie cu acest nume"
-      }
+      "ORGANIZATION_STRUCTURE_001": "Nu exista divizie cu acest nume",
+      "ORGANIZATION_STRUCTURE_002": "Exista deja o divizie cu acest nume"
     }
   },
   "organization": {
