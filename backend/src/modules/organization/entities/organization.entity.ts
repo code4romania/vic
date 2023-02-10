@@ -6,7 +6,7 @@ export class OrganizationEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'text', name: 'name' })
+  @Column({ type: 'text', unique: true, name: 'name' })
   name: string;
 
   @Column({ type: 'text', unique: true, name: 'email' })

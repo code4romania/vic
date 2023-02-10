@@ -12,4 +12,10 @@ export const ROUTES: IRoute[] = [
     href: 'volunteers/access-codes',
     icon: UsersIcon,
   },
+  {
+    id: 3,
+    name: i18n.t('side_menu:options.volunteers.access_requests'),
+    href: 'volunteers/requests',
+    icon: UsersIcon,
+  },
 ];

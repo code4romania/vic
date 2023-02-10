@@ -1,15 +1,12 @@
-import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { IAccessCode } from '../../pages/ViewAccesCodes';
-import API from '../api';
+import { AxiosError } from 'axios';
+import { useQuery } from 'react-query';
+import { VOLUNTEER_ERRORS } from '../../common/errors/entities/volunteer.errors';
+import { IBusinessException } from '../../common/interfaces/business-exception.interface';
+import { getAccessRequest } from './volunteer.api';
 
-export const getAccessCodes = async (
-  limit: number,
-  page: number,
-  orderBy?: string,
-  orderDirection?: OrderDirection,
-): Promise<IPaginatedEntity<IAccessCode>> => {
-  return API.get(`/access-codes`, { params: { limit, page, orderBy, orderDirection } }).then(
-    (res) => res.data,
-  );
+export const useAcceesRequestQuery = (id: string) => {
+  return useQuery(['access-request', id], () => getAccessRequest(id), {
+    enabled: !!id,
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
 };

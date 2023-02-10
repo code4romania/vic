@@ -11,29 +11,38 @@ import DataTableComponent from './DataTableComponent';
 import { PaginationConfig } from '../common/constants/pagination';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from './Popover';
-import { IBaseEntity } from '../common/interfaces/base-entity.interface';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 import Tabs from './Tabs';
 import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 import { SelectItem } from './Select';
+import ConfirmationModal from './ConfirmationModal';
+import {
+  useAddDivisionMutation,
+  useEditDivisionMutation,
+  useDeleteDivisionMutation,
+} from '../services/division/division.service';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 export enum DivisionType {
-  Branches = 'branches',
-  Departments = 'departments',
-  Roles = 'roles',
+  BRANCH = 'Branch',
+  DEPARTMENT = 'Department',
+  ROLE = 'Role',
 }
 
-export interface IDivision extends IBaseEntity {
+export interface IDivision {
+  id: string;
   name: string;
-  createdBy: Pick<IUser, 'id' | 'name'>;
-  membersCount: number;
-  createdOn: Date | string;
+  type: DivisionType;
+  createdBy: IUser;
+  numberOfMembers: number;
+  createdOn: Date;
 }
 
 export const DivisionsTabs: SelectItem<DivisionType>[] = [
-  { key: DivisionType.Branches, value: i18n.t('division:branches') },
-  { key: DivisionType.Departments, value: i18n.t('division:departments') },
-  { key: DivisionType.Roles, value: i18n.t('division:roles') },
+  { key: DivisionType.BRANCH, value: i18n.t(`division:table.title.branch`) },
+  { key: DivisionType.DEPARTMENT, value: i18n.t('division:table.title.department') },
+  { key: DivisionType.ROLE, value: i18n.t('division:table.title.role') },
 ];
 
 export const DivisionTableHeader = [
@@ -41,32 +50,28 @@ export const DivisionTableHeader = [
     id: 'name',
     name: i18n.t('general:name'),
     sortable: true,
-    grow: 2,
-    minWidth: '15rem',
+    minWidth: '10rem',
     selector: (row: IDivision) => row.name,
   },
   {
     id: 'membersCount',
     name: i18n.t('division:members'),
     sortable: true,
-    grow: 2,
-    minWidth: '15rem',
-    selector: (row: IDivision) => row.membersCount,
+    minWidth: '2rem',
+    selector: (row: IDivision) => row.numberOfMembers,
   },
   {
     id: 'createdBy.name',
     name: i18n.t('general:created_by'),
     sortable: true,
-    grow: 2,
-    minWidth: '15rem',
+    minWidth: '10rem',
     cell: (row: IDivision) => <a>{row.createdBy.name}</a>,
   },
   {
     id: 'createdOn',
     name: i18n.t('general:created_on'),
     sortable: true,
-    grow: 2,
-    minWidth: '15rem',
+    minWidth: '5rem',
     selector: (row: IDivision) => formatDate(row.createdOn),
   },
 ];
@@ -95,26 +100,17 @@ const Divisions = ({
   onRefetch,
 }: DivisionsProps) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [selectedDivisionForUpdate, setSelectedDivisionForUpdate] = useState<IDivision>();
+  const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
 
-  // component actions
-  const onAdd = () => {
-    setIsAddModalOpen(true);
-  };
+  const { mutateAsync: addDivisionMutation, isLoading: addDivisionMutationLoading } =
+    useAddDivisionMutation();
 
-  // row actions
-  const onView = (row: IDivision) => {
-    alert(`Not yet implemented, ${row}`);
-  };
+  const { mutateAsync: editDivisionMutation, isLoading: editDivisionMutationLoading } =
+    useEditDivisionMutation();
 
-  const onEdit = (row: IDivision) => {
-    console.log(`Not yet implemented, ${row}`);
-    setIsEditModalOpen(true);
-  };
-
-  const onDelete = (row: IDivision) => {
-    alert(`Not yet implemented, ${row}`);
-  };
+  const { mutateAsync: deleteDivision, isLoading: deleteDivisionMutationLoading } =
+    useDeleteDivisionMutation();
 
   // menu items
   const buildDivisionActionColumn = (): TableColumn<IDivision> => {
@@ -125,12 +121,16 @@ const Divisions = ({
         onClick: onView,
       },
       {
-        label: i18n.t('general:edit'),
+        label: i18n.t('general:edit', {
+          item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+        }),
         icon: <PencilIcon className="menu-icon" />,
         onClick: onEdit,
       },
       {
-        label: i18n.t('general:delete'),
+        label: i18n.t('division:modal.delete.title', {
+          division: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+        }),
         icon: <TrashIcon className="menu-icon" />,
         onClick: onDelete,
         alert: true,
@@ -145,34 +145,108 @@ const Divisions = ({
     };
   };
 
-  const addDivision = (inputData: DivisionFormTypes) => {
-    console.log(inputData);
-    onRefetch();
-    setIsAddModalOpen(false);
+  // simple actions
+  const onAdd = () => {
+    setIsAddModalOpen(true);
   };
 
-  const editDivision = (inputData: DivisionFormTypes) => {
-    console.log(inputData);
-    onRefetch();
-    setIsEditModalOpen(false);
+  const onEdit = (row: IDivision) => {
+    setSelectedDivisionForUpdate(row);
   };
 
-  const closeAddModal = () => {
-    setIsAddModalOpen(false);
+  const onView = (row: IDivision) => {
+    alert(`Not yet implemented, ${row}`);
   };
 
-  const closeEditModal = () => {
-    setIsEditModalOpen(false);
+  const onDelete = (row: IDivision) => {
+    setSelectedIdForDeletion(row.id);
+  };
+
+  // add division
+  const onSubmitDivision = ({ name }: DivisionFormTypes) => {
+    addDivisionMutation(
+      { name, type: divisionType },
+      {
+        onSuccess: () => {
+          useSuccessToast(
+            i18n.t('division:messages.add', {
+              division: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+            }),
+          );
+          onRefetch();
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.DIVISION_ERRORS.getError(error.response?.data.code_error));
+        },
+        onSettled: () => {
+          setIsAddModalOpen(false);
+        },
+      },
+    );
+  };
+
+  // edit division
+  const onUpdateDivision = (inputData: DivisionFormTypes) => {
+    if (selectedDivisionForUpdate) {
+      editDivisionMutation(
+        { id: selectedDivisionForUpdate.id, name: inputData.name },
+        {
+          onSuccess: () => {
+            useSuccessToast(
+              i18n.t('division:messages.edit', {
+                division: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+              }),
+            );
+            onRefetch();
+          },
+          onError: (error) => {
+            useErrorToast(
+              InternalErrors.DIVISION_ERRORS.getError(error?.response?.data.code_error),
+            );
+          },
+          onSettled: () => {
+            setSelectedDivisionForUpdate(undefined);
+          },
+        },
+      );
+    }
+  };
+
+  // delete request
+  const onDeleteDivision = () => {
+    if (selectedIdForDeletion) {
+      deleteDivision(selectedIdForDeletion, {
+        onSuccess: () => {
+          // show success message
+          useSuccessToast(
+            i18n.t('division:modal.delete.success', {
+              division: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+            }),
+          );
+          // refresh table
+          onRefetch();
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.DIVISION_ERRORS.getError(error.response?.data.code_error));
+        },
+        onSettled: () => {
+          // close modal
+          setSelectedIdForDeletion(undefined);
+        },
+      });
+    }
   };
 
   return (
     <Tabs<DivisionType> tabs={DivisionsTabs} onClick={onTabChange}>
       <Card>
         <CardHeader>
-          <h3>{i18n.t(`division:${divisionType}`)}</h3>
+          <h3>{i18n.t(`division:table.title.${divisionType.toLocaleLowerCase()}`)}</h3>
           <Button
             className="btn-outline-secondary"
-            label={i18n.t('general:add')}
+            label={i18n.t('general:add', {
+              item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+            })}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
           />
@@ -181,7 +255,12 @@ const Divisions = ({
           <DataTableComponent<IDivision>
             columns={[...DivisionTableHeader, buildDivisionActionColumn()]}
             data={data?.items}
-            loading={isLoading}
+            loading={
+              isLoading ||
+              addDivisionMutationLoading ||
+              editDivisionMutationLoading ||
+              deleteDivisionMutationLoading
+            }
             pagination
             paginationPerPage={data?.meta?.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
@@ -195,18 +274,37 @@ const Divisions = ({
       </Card>
       {isAddModalOpen && (
         <DivisionInputModal
-          title={`${i18n.t('general:add')} ${i18n.t(`division:modal.${divisionType}`)}`}
+          title={i18n.t('general:add', {
+            item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+          })}
           divisionType={divisionType}
-          onClose={closeAddModal}
-          onSubmit={addDivision}
+          onClose={setIsAddModalOpen.bind(null, false)}
+          onSubmit={onSubmitDivision}
         />
       )}
-      {isEditModalOpen && (
+      {selectedDivisionForUpdate && (
         <DivisionInputModal
-          title={`${i18n.t('general:edit')} ${i18n.t(`division:modal.${divisionType}`)}`}
+          title={i18n.t('general:edit', {
+            item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+          })}
           divisionType={divisionType}
-          onClose={closeEditModal}
-          onSubmit={editDivision}
+          onClose={setSelectedDivisionForUpdate.bind(null, undefined)}
+          onSubmit={onUpdateDivision}
+          defaultValue={selectedDivisionForUpdate.name}
+        />
+      )}
+      {selectedIdForDeletion && (
+        <ConfirmationModal
+          title={i18n.t('division:modal.delete.title', {
+            division: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+          })}
+          description={i18n.t('confirmation:delete', {
+            item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+          })}
+          confirmBtnLabel={i18n.t('general:delete')}
+          confirmBtnClassName="btn-danger"
+          onClose={setSelectedIdForDeletion.bind(null, undefined)}
+          onConfirm={onDeleteDivision}
         />
       )}
     </Tabs>

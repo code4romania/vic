@@ -3,20 +3,31 @@
     "created_by": "Creat de",
     "name": "Nume",
     "created_on": "Data crearii",
-    "add": "Adauga",
-    "email": "Email",
-    "phone": "Telefon",
+    "add": "Adauga {{item}}",
     "address": "Adresa",
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
-    "edit": "Editeaza",
+    "edit": "Editeaza {{item}}",
     "delete": "Sterge",
+    "back": "Inapoi",
+    "save_changes": "Salveaza modificari",
     "description": "Descriere",
+    "required": "Campul este obligatoriu",
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
       "unknown": "A aparut o eroare necunoscuta",
       "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
-    }
+    },
+    "cancel": "Anuleaza",
+    "years_old": "{{age}} ani",
+    "sex": "Sex {{sex_type}}",
+    "sex_male": "Barbatesc",
+    "sex_female": "Feminin",
+    "phone": "Telefon",
+    "email": "Email de contact"
+  },
+  "confirmation": {
+    "delete": "Esti sigur ca doresti stergerea acestui {{item}}?"
   },
   "header": {
     "login": "Login",
@@ -31,15 +42,41 @@
     "options": {
       "dashboard": "Dashboard",
       "organization": "Structura ONG",
-      "access_codes": "Coduri de acces"
+      "access_codes": "Coduri de acces",
+      "volunteers": {
+        "name": "Voluntari",
+        "access_requests": "Cereri de inscriere"
+      }
     },
     "collapse": "Restrange meniul"
   },
+  "volunteer": {
+    "registration": {
+      "title": "Cerere de inscriere",
+      "form": "Formular inscriere",
+      "answer": "Raspunsul voluntarului",
+      "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
+      "found_location": "De unde ai aflat de organizatie?",
+      "motivation": "Ce te motiveaza sa fii voluntar?"
+    },
+    "errors": {
+      "VOL_001": "Nu s-a putut incarca cererea voluntarului"
+    }
+  },
   "division": {
     "members": "Membri",
-    "branches": "Filiale si sucursale",
-    "departments": "Departamente",
-    "roles": "Roluri",
+    "entity": {
+      "branch": "Filiala",
+      "role": "Rol",
+      "department": "Departament"
+    },
+    "table": {
+      "title": {
+        "branch": "Filiale si sucursale",
+        "department": "Departamente",
+        "role": "Roluri"
+      }
+    },
     "form": {
       "required": "Campul este obligatoriu",
       "max": "Numele poate sa aiba maxim 20 de caractere",
@@ -47,9 +84,19 @@
       "pattern": "Numele are un format invalid"
     },
     "modal": {
-      "branches": "filiala",
-      "departments": "departament",
-      "roles": "rol"
+      "delete": {
+        "title": "Sterge {{division}}",
+        "success": "{{division}} stearsa cu succes"
+      }
+    },
+    "messages": {
+      "add": "{{division}} adaugata cu succes",
+      "edit": "{{division}} actualizata cu succes"
+    },
+    "errors": {
+      "delete": "Eroare la stergerea {{division}}",
+      "ORGANIZATION_STRUCTURE_001": "Nu exista structura organizationala cu acest nume",
+      "ORGANIZATION_STRUCTURE_002": "Exista deja o structura organizationala cu acest nume"
     }
   },
   "organization": {
@@ -60,7 +107,21 @@
     "description": "Descriere organizație",
     "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poti alege sa formulezi o descriere specifica pentru aplicatia TEO, prin care sa atragi cat mai multi voluntari, sau sa folosesti descrierea organizatiei asa cum se regaseste in ONGHub.",
     "errors": {
-      "ORG_001": "Organizatia nu a fost gasita"
+      "ORG_001": "Organizatia nu a fost gasita",
+      "no_data": "Nu s-au putut incarca datele organizatiei"
+    }
+  },
+  "edit_organization": {
+    "title": "Editare profil",
+    "card_title": "Editează profil organizație",
+    "teo_description": "Descrierea organizatiei in TEO",
+    "form": {
+      "max": "Descrierea trebuie sa aiba maxim 250 de caractere",
+      "min": "Descrierea trebuie sa aiba minim 50 caractere",
+      "description_error": "Actualizarea descrierii a esuat"
+    },
+    "messages": {
+      "submit": "Descrierea organizatiei a fost actualizata"
     }
   },
   "pagination": {

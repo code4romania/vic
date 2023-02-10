@@ -11,9 +11,10 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import i18n from '../common/config/i18n';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
+import PageHeader from '../components/PageHeader';
 
 const Organization = () => {
-  const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.Branches);
+  const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.BRANCH);
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
@@ -94,7 +95,7 @@ const Organization = () => {
 
   return (
     <PageLayout>
-      <h1>{i18n.t('side_menu:options.organization')}</h1>
+      <PageHeader>{i18n.t('side_menu:options.organization')}</PageHeader>
       {organization && <OrganizationProfile organization={organization} />}
       {organizationError && (
         <EmptyContent

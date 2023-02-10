@@ -14,7 +14,7 @@ import Popover from '../components/Popover';
 import { useErrorToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
-import { useGetAccessCodesQuery } from '../services/volunteer/volunteer.api';
+import { useAccessCodesQuery } from '../services/organization/organization.service';
 
 export interface IAccessCode {
   id: string;
@@ -78,7 +78,7 @@ const ViewAccessCodes = () => {
     data: accessCodes,
     error,
     isLoading,
-  } = useGetAccessCodesQuery(
+  } = useAccessCodesQuery(
     rowsPerPage as number,
     page as number,
     orderByColumn as string,

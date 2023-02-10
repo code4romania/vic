@@ -1,7 +1,8 @@
-import { IsString, MaxLength } from 'class-validator';
+import { IsString, MaxLength, MinLength } from 'class-validator';
 
 export class UpdateOrganizationDescriptionDto {
   @IsString()
-  @MaxLength(700)
+  @MinLength(50)
+  @MaxLength(250)
   description: string;
 }
