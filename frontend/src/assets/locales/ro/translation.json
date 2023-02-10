@@ -4,8 +4,6 @@
     "name": "Nume",
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
-    "email": "Email",
-    "phone": "Telefon",
     "address": "Adresa",
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
@@ -20,16 +18,14 @@
     "cancel": "Anuleaza",
     "years_old": "{{age}} de ani",
     "sex": "Sex {{sex_type}}",
-    "back": "Inapoi"
+    "sex_male": "Barbatesc",
+    "sex_female": "Feminin",
+    "back": "Inapoi",
+    "phone": "Telefon",
+    "email": "Email de contact"
   },
   "confirmation": {
-    "delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
-    "phone": "Telefon",
-    "email": "Email de contact",
-    "sex": {
-      "male": "Barbatesc",
-      "female": "Feminin"
-    }
+    "delete": "Esti sigur ca doresti stergerea acestui {{item}}?"
   },
   "header": {
     "login": "Login",
