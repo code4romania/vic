@@ -43,6 +43,11 @@
   },
   "division": {
     "members": "Membri",
+    "entity": {
+      "branch": "Filiala",
+      "role": "Rol",
+      "department": "Departament"
+    },
     "table": {
       "title": {
         "branch": "Filiale si sucursale",
@@ -57,21 +62,18 @@
       "pattern": "Numele are un format invalid"
     },
     "modal": {
-      "branch": "filiala",
-      "department": "departament",
-      "role": "rol",
       "delete": {
         "title": "Sterge {{division}}",
         "success": "{{division}} stearsa cu succes"
       }
     },
-    "success": {
-      "add": "Divizie adaugata cu succes",
-      "edit": "Divizie actualizata cu succes"
+    "messages": {
+      "add": "{{division}} adaugata cu succes",
+      "edit": "{{division}} actualizata cu succes"
     },
     "errors": {
-      "ORGANIZATION_STRUCTURE_001": "Nu exista divizie cu acest nume",
-      "ORGANIZATION_STRUCTURE_002": "Exista deja o divizie cu acest nume"
+      "ORGANIZATION_STRUCTURE_001": "Nu exista structura organizationala cu acest nume",
+      "ORGANIZATION_STRUCTURE_002": "Exista deja o structura organizationala cu acest nume"
     }
   },
   "organization": {

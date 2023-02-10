@@ -25,9 +25,12 @@ export const useDivisionsQuery = (
 };
 
 export const useAddDivisionMutation = () => {
-  return useMutation((name: string) => addDivision(name), {
-    onError: (error: AxiosError<IBusinessException<DIVISION_ERRORS>>) => Promise.resolve(error),
-  });
+  return useMutation(
+    ({ name, type }: { name: string; type: DivisionType }) => addDivision(name, type),
+    {
+      onError: (error: AxiosError<IBusinessException<DIVISION_ERRORS>>) => Promise.resolve(error),
+    },
+  );
 };
 
 export const useEditDivisionMutation = () => {
