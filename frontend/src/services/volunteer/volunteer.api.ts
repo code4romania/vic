@@ -1,8 +1,8 @@
 import { Sex } from '../../common/enums/sex.enum';
-import { IAccessRequest } from '../../common/interfaces/access-request.interface';
+import { IAccessRequestDetails } from '../../common/interfaces/access-request.interface';
 // import API from '../api';
 
-export const getAccessRequest = async (id: string): Promise<IAccessRequest> => {
+export const getAccessRequest = async (id: string): Promise<IAccessRequestDetails> => {
   console.log('id', id);
   // return API.get(`/volunteers/access-request/${id}`).then((res) => res.data);
   return Promise.resolve({

@@ -6,7 +6,7 @@ import Dashboard from '../pages/Dashboard';
 import EditOrganization from '../pages/EditOrganization';
 import Login from '../pages/Login';
 import Organization from '../pages/Organization';
-import RegistrationRequests from '../pages/RegistrationRequests';
+import RegistrationRequests from '../pages/AccessRequests';
 import AccessCodes from '../pages/AccesCodes';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';

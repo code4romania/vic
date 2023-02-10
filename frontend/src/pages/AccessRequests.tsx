@@ -20,7 +20,9 @@ import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
 import { PaginationConfig } from '../common/constants/pagination';
-import EmptyContent from '../components/EmptyContent';
+import { formatDate } from '../common/utils/utils';
+import { useErrorToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 export interface IAccessRequest {
   id: string;
@@ -29,21 +31,22 @@ export interface IAccessRequest {
   address: string;
   email: string;
   phone: string;
-  createdOn: string;
-  rejectedOn?: string;
+  createdOn: Date;
+  updatedOn?: Date;
 }
 
-export enum FilterType {
-  Pending = 'pending',
-  Rejected = 'rejected',
+export enum RequestStatus {
+  PENDING = 'pending',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
 }
 
-const RegistrationRequestsTabs: SelectItem<FilterType>[] = [
-  { key: FilterType.Pending, value: i18n.t('registration_requests:options.requests') },
-  { key: FilterType.Rejected, value: i18n.t('registration_requests:options.rejected_requests') },
+const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
+  { key: RequestStatus.PENDING, value: i18n.t('registration_requests:tabs.requests') },
+  { key: RequestStatus.REJECTED, value: i18n.t('registration_requests:tabs.rejected_requests') },
 ];
 
-const PendingRequestsTableHeader = [
+const PendingAccessRequestsTableHeader = [
   {
     id: 'name',
     name: i18n.t('general:name'),
@@ -71,26 +74,60 @@ const PendingRequestsTableHeader = [
     id: 'createdOn',
     name: i18n.t('registration_requests:date'),
     sortable: true,
-    selector: (row: IAccessRequest) => row.createdOn,
+    selector: (row: IAccessRequest) => formatDate(row.createdOn),
   },
 ];
 
-const RejectedRequestsTableHeader = [
-  ...PendingRequestsTableHeader,
+const RejectedAccessRequestsTableHeader = [
+  ...PendingAccessRequestsTableHeader,
   {
     id: 'rejectedDate',
     name: i18n.t('registration_requests:rejected_date'),
     sortable: true,
-    cell: (row: IAccessRequest) => <div data-tag="allowRowEvents">{row.rejectedOn}</div>,
+    selector: (row: IAccessRequest) => formatDate(row.updatedOn || new Date()),
   },
 ];
 
-const RegistrationRequests = () => {
-  const [filterStatus, setFilterStatus] = useState<FilterType>(FilterType.Pending);
+const AccessRequests = () => {
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.PENDING);
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+
+  const {
+    data: accessRequests,
+    isLoading: isAccessRequestsLoading,
+    error: accessCodeRequestError,
+  } = useRegistrationRequestsQuery(
+    requestStatus,
+    rowsPerPage as number,
+    page as number,
+    orderByColumn,
+    orderDirection,
+  );
+
+  useEffect(() => {
+    if (accessRequests?.meta) {
+      setPage(accessRequests.meta.currentPage);
+      setRowsPerPage(accessRequests.meta.itemsPerPage);
+      setOrderByColumn(accessRequests.meta.orderByColumn);
+      setOrderDirection(accessRequests.meta.orderDirection);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (accessCodeRequestError)
+      useErrorToast(
+        InternalErrors.ACCESS_CODE_ERRORS.getError(
+          accessCodeRequestError.response?.data.code_error,
+        ),
+      );
+  }, [accessCodeRequestError]);
+
+  const onTabClick = (tab: RequestStatus) => {
+    setRequestStatus(tab);
+  };
 
   // row actions
   const onView = (row: IAccessRequest) => {
@@ -110,10 +147,8 @@ const RegistrationRequests = () => {
   };
 
   // menu items
-  const buildRegistrationRequestsActionColumn = (
-    filterStatus: FilterType,
-  ): TableColumn<IAccessRequest> => {
-    const registrationRequestsMenuItems = [
+  const buildPendingAccessRequestsActionColumn = (): TableColumn<IAccessRequest> => {
+    const pendingAccessRequestsMenuItems = [
       {
         label: i18n.t('registration_requests:modal.view'),
         icon: <EyeIcon className="menu-icon" />,
@@ -132,7 +167,18 @@ const RegistrationRequests = () => {
       },
     ];
 
-    const rejectedRequestsMenuItems = [
+    return {
+      name: '',
+      cell: (row: IAccessRequest) => (
+        <Popover<IAccessRequest> row={row} items={pendingAccessRequestsMenuItems} />
+      ),
+      width: '50px',
+      allowOverflow: true,
+    };
+  };
+
+  const buildRejectedAccessRequestsActionColumn = (): TableColumn<IAccessRequest> => {
+    const rejectedAccessRequestsMenuItems = [
       {
         label: i18n.t('registration_requests:modal.view'),
         icon: <EyeIcon className="menu-icon" />,
@@ -149,14 +195,7 @@ const RegistrationRequests = () => {
     return {
       name: '',
       cell: (row: IAccessRequest) => (
-        <Popover<IAccessRequest>
-          row={row}
-          items={
-            filterStatus === FilterType.Pending
-              ? registrationRequestsMenuItems
-              : rejectedRequestsMenuItems
-          }
-        />
+        <Popover<IAccessRequest> row={row} items={rejectedAccessRequestsMenuItems} />
       ),
       width: '50px',
       allowOverflow: true,
@@ -172,35 +211,10 @@ const RegistrationRequests = () => {
     );
   };
 
-  const {
-    data: registrationRequests,
-    isLoading: isRegistrationRequestsLoading,
-    error: registrationRequestsError,
-  } = useRegistrationRequestsQuery(
-    filterStatus,
-    rowsPerPage as number,
-    page as number,
-    orderByColumn,
-    orderDirection,
-  );
-
-  useEffect(() => {
-    if (registrationRequests?.meta) {
-      setPage(registrationRequests.meta.currentPage);
-      setRowsPerPage(registrationRequests.meta.itemsPerPage);
-      setOrderByColumn(registrationRequests.meta.orderByColumn);
-      setOrderDirection(registrationRequests.meta.orderDirection);
-    }
-  }, []);
-
-  const handleTabClick = (key: FilterType) => {
-    setFilterStatus(key);
-  };
-
   return (
     <PageLayout>
-      <h1>{i18n.t('registration_requests:title')}</h1>
-      <Tabs<FilterType> tabs={RegistrationRequestsTabs} onClick={handleTabClick}>
+      <h1>{i18n.t('side_menu:options.volunteers.registration_requests')}</h1>
+      <Tabs<RequestStatus> tabs={AccessRequestsTabs} onClick={onTabClick}>
         <Card>
           <CardHeader>
             <Button
@@ -211,28 +225,36 @@ const RegistrationRequests = () => {
             />
           </CardHeader>
           <CardBody>
-            {registrationRequestsError && (
-              <EmptyContent description={i18n.t('registration_requests:errors.no_data')} />
-            )}
-            {registrationRequests && (
+            {requestStatus === RequestStatus.PENDING && (
               <DataTableComponent
-                columns={
-                  filterStatus === FilterType.Pending
-                    ? [
-                        ...PendingRequestsTableHeader,
-                        buildRegistrationRequestsActionColumn(filterStatus),
-                      ]
-                    : [
-                        ...RejectedRequestsTableHeader,
-                        buildRegistrationRequestsActionColumn(filterStatus),
-                      ]
-                }
-                data={registrationRequests?.items}
-                loading={!!isRegistrationRequestsLoading}
+                columns={[
+                  ...PendingAccessRequestsTableHeader,
+                  buildPendingAccessRequestsActionColumn(),
+                ]}
+                data={accessRequests?.items}
+                loading={isAccessRequestsLoading}
                 pagination
                 paginationPerPage={rowsPerPage}
                 paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
-                paginationTotalRows={registrationRequests?.meta?.totalItems}
+                paginationTotalRows={accessRequests?.meta?.totalItems}
+                paginationDefaultPage={page}
+                onChangeRowsPerPage={setRowsPerPage}
+                onChangePage={setPage}
+                onSort={onSort}
+              />
+            )}
+            {requestStatus === RequestStatus.REJECTED && (
+              <DataTableComponent
+                columns={[
+                  ...RejectedAccessRequestsTableHeader,
+                  buildRejectedAccessRequestsActionColumn(),
+                ]}
+                data={accessRequests?.items}
+                loading={isAccessRequestsLoading}
+                pagination
+                paginationPerPage={rowsPerPage}
+                paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
+                paginationTotalRows={accessRequests?.meta?.totalItems}
                 paginationDefaultPage={page}
                 onChangeRowsPerPage={setRowsPerPage}
                 onChangePage={setPage}
@@ -246,4 +268,4 @@ const RegistrationRequests = () => {
   );
 };
 
-export default RegistrationRequests;
+export default AccessRequests;
