@@ -7,7 +7,6 @@ import LoadingContent from './LoadingContent';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 
 interface DataTableProps<T> {
-  className?: string;
   columns: TableColumn<T>[];
   data?: T[];
   loading?: boolean;
@@ -25,7 +24,6 @@ interface DataTableProps<T> {
 }
 
 const DataTableComponent = <T extends object>({
-  className,
   columns,
   data,
   loading,
@@ -42,38 +40,36 @@ const DataTableComponent = <T extends object>({
   defaultSortAsc,
 }: DataTableProps<T>) => {
   return (
-    <div className={className}>
-      <DataTable
-        className={classNames(
-          !loading && data?.length ? 'border-cool-gray-200' : '',
-          `rdt_TableWrapper ${className}`,
-        )}
-        noHeader
-        columns={columns}
-        data={data || []}
-        progressPending={loading}
-        pagination={pagination}
-        paginationServer={pagination}
-        paginationComponentOptions={{
-          rowsPerPageText: (i18n.t('pagination:rows_per_page') as string) || '',
-          rangeSeparatorText: (i18n.t('pagination:range_separator_text') as string) || '',
-        }}
-        paginationDefaultPage={paginationDefaultPage}
-        responsive
-        sortIcon={<ChevronUpDownIcon />}
-        sortServer={sortServer}
-        onSort={onSort}
-        paginationTotalRows={paginationTotalRows}
-        paginationPerPage={paginationPerPage}
-        paginationRowsPerPageOptions={paginationRowsPerPageOptions}
-        onChangePage={onChangePage}
-        onChangeRowsPerPage={onChangeRowsPerPage}
-        noDataComponent={<EmptyContent description={i18n.t('general:error.load_entries')} />}
-        progressComponent={<LoadingContent />}
-        defaultSortFieldId={defaultSortFieldId}
-        defaultSortAsc={defaultSortAsc}
-      />
-    </div>
+    <DataTable
+      className={classNames(
+        !loading && data?.length ? 'border-cool-gray-200' : '',
+        `rdt_TableWrapper`,
+      )}
+      noHeader
+      columns={columns}
+      data={data || []}
+      progressPending={loading}
+      pagination={pagination}
+      paginationServer={pagination}
+      paginationComponentOptions={{
+        rowsPerPageText: (i18n.t('pagination:rows_per_page') as string) || '',
+        rangeSeparatorText: (i18n.t('pagination:range_separator_text') as string) || '',
+      }}
+      paginationDefaultPage={paginationDefaultPage}
+      responsive
+      sortIcon={<ChevronUpDownIcon />}
+      sortServer={sortServer}
+      onSort={onSort}
+      paginationTotalRows={paginationTotalRows}
+      paginationPerPage={paginationPerPage}
+      paginationRowsPerPageOptions={paginationRowsPerPageOptions}
+      onChangePage={onChangePage}
+      onChangeRowsPerPage={onChangeRowsPerPage}
+      noDataComponent={<EmptyContent description={i18n.t('general:empty_table')} />}
+      progressComponent={<LoadingContent />}
+      defaultSortFieldId={defaultSortFieldId}
+      defaultSortAsc={defaultSortAsc}
+    />
   );
 };
 

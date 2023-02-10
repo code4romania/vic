@@ -3,6 +3,7 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import AccessRequest from '../pages/AccessRequest';
 import Dashboard from '../pages/Dashboard';
+import EditOrganization from '../pages/EditOrganization';
 import Login from '../pages/Login';
 import Organization from '../pages/Organization';
 import PrivateRoute from './PrivateRoute';
@@ -17,7 +18,7 @@ const Router = () => {
           <Route index element={<Dashboard />}></Route>
           <Route path="organization" element={<Outlet />}>
             <Route index element={<Organization />} />
-            <Route path="edit" element={<div>Edit page to be added</div>} />
+            <Route path="edit" element={<EditOrganization />} />
           </Route>
           <Route path="volunteers" element={<Outlet />}>
             <Route path="requests" element={<AccessRequest />} />
