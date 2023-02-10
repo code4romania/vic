@@ -25,6 +25,7 @@ export class AdminUserTransformer {
     return {
       ...UserTransformer.fromEntity(user),
       organizationId,
+      id: entity.id,
     };
   }
 
