@@ -112,13 +112,15 @@ const Divisions = ({
         onClick: onView,
       },
       {
-        label: i18n.t('general:edit', { item: i18n.t(`division:modal.${divisionType}`) }),
+        label: i18n.t('general:edit', {
+          item: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
+        }),
         icon: <PencilIcon className="menu-icon" />,
         onClick: onEdit,
       },
       {
         label: i18n.t('division:modal.delete.title', {
-          division: i18n.t(`division:modal.${divisionType}`),
+          division: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
         }),
         icon: <TrashIcon className="menu-icon" />,
         onClick: onDelete,
@@ -161,7 +163,7 @@ const Divisions = ({
           // show success message
           useSuccessToast(
             i18n.t('division:delete.success', {
-              division: i18n.t(`division:modal.${divisionType}`),
+              division: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
             }),
           );
           // refresh table
@@ -171,7 +173,7 @@ const Divisions = ({
           // show error message
           useErrorToast(
             i18n.t('division:errors.delete', {
-              division: i18n.t(`division:errors.${divisionType}`),
+              division: i18n.t(`division:errors.${divisionType.toLocaleLowerCase()}`),
             }),
           );
         },
@@ -210,7 +212,9 @@ const Divisions = ({
           <h3>{i18n.t(`division:table.title.${divisionType.toLocaleLowerCase()}`)}</h3>
           <Button
             className="btn-outline-secondary"
-            label={i18n.t('general:add', { item: i18n.t(`division:modal.${divisionType}`) })}
+            label={i18n.t('general:add', {
+              item: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
+            })}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
           />
@@ -233,7 +237,9 @@ const Divisions = ({
       </Card>
       {isAddModalOpen && (
         <DivisionInputModal
-          title={i18n.t('general:add', { item: i18n.t(`division:modal.${divisionType}`) })}
+          title={i18n.t('general:add', {
+            item: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
+          })}
           divisionType={divisionType}
           onClose={closeAddModal}
           onSubmit={addDivision}
@@ -241,7 +247,9 @@ const Divisions = ({
       )}
       {isEditModalOpen && (
         <DivisionInputModal
-          title={i18n.t('general:edit', { item: i18n.t(`division:modal.${divisionType}`) })}
+          title={i18n.t('general:edit', {
+            item: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
+          })}
           divisionType={divisionType}
           onClose={closeEditModal}
           onSubmit={editDivision}
@@ -250,10 +258,10 @@ const Divisions = ({
       {selectedIdForDeletion && (
         <ConfirmationModal
           title={i18n.t('division:modal.delete.title', {
-            division: i18n.t(`division:modal.${divisionType}`),
+            division: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
           })}
           description={i18n.t('confirmation:delete', {
-            item: i18n.t(`division:modal.${divisionType}`),
+            item: i18n.t(`division:modal.${divisionType.toLocaleLowerCase()}`),
           })}
           confirmBtnLabel={i18n.t('general:delete')}
           confirmBtnClassName="btn-danger"

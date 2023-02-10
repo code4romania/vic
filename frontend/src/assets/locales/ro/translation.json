@@ -59,9 +59,9 @@
       "pattern": "Numele are un format invalid"
     },
     "modal": {
-      "branches": "filiala",
-      "departments": "departament",
-      "roles": "rol",
+      "branch": "filiala",
+      "department": "departament",
+      "role": "rol",
       "delete": {
         "title": "Sterge {{division}}",
         "success": "{{division}} stearsa cu succes"
