@@ -4,8 +4,6 @@
     "name": "Nume",
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
-    "email": "Email",
-    "phone": "Telefon",
     "address": "Adresa",
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
@@ -20,7 +18,15 @@
       "unknown": "A aparut o eroare necunoscuta",
       "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
     },
-    "cancel": "Anuleaza"
+    "cancel": "Anuleaza",
+    "years_old": "{{age}} ani",
+    "sex": "Sex {{sex_type}}",
+    "sex_male": "Barbatesc",
+    "sex_female": "Feminin",
+    "phone": "Telefon",
+    "email": "Email de contact",
+    "availability": "Valabilitate",
+    "uses": "Utilizari"
   },
   "confirmation": {
     "delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
@@ -39,12 +45,35 @@
   "side_menu": {
     "options": {
       "dashboard": "Dashboard",
-      "organization": "Structura ONG"
+      "organization": "Structura ONG",
+      "access_codes": "Coduri de acces",
+      "volunteers": {
+        "name": "Voluntari",
+        "access_requests": "Cereri de inscriere"
+      }
     },
     "collapse": "Restrange meniul"
   },
+  "volunteer": {
+    "registration": {
+      "title": "Cerere de inscriere",
+      "form": "Formular inscriere",
+      "answer": "Raspunsul voluntarului",
+      "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
+      "found_location": "De unde ai aflat de organizatie?",
+      "motivation": "Ce te motiveaza sa fii voluntar?"
+    },
+    "errors": {
+      "VOL_001": "Nu s-a putut incarca cererea voluntarului"
+    }
+  },
   "division": {
     "members": "Membri",
+    "entity": {
+      "branch": "Filiala",
+      "role": "Rol",
+      "department": "Departament"
+    },
     "table": {
       "title": {
         "branch": "Filiale si sucursale",
@@ -59,19 +88,19 @@
       "pattern": "Numele are un format invalid"
     },
     "modal": {
-      "branch": "filiala",
-      "department": "departament",
-      "role": "rol",
       "delete": {
         "title": "Sterge {{division}}",
         "success": "{{division}} stearsa cu succes"
       }
     },
+    "messages": {
+      "add": "{{division}} adaugata cu succes",
+      "edit": "{{division}} actualizata cu succes"
+    },
     "errors": {
       "delete": "Eroare la stergerea {{division}}",
-      "branches": "filialei",
-      "departments": "departamentului",
-      "roles": "rolului"
+      "ORGANIZATION_STRUCTURE_001": "Nu exista structura organizationala cu acest nume",
+      "ORGANIZATION_STRUCTURE_002": "Exista deja o structura organizationala cu acest nume"
     }
   },
   "organization": {
@@ -105,6 +134,7 @@
   },
   "access_codes": {
     "name": "Cod acces",
+    "create": "Creeaza cod nou",
     "form": {
       "title": "Informatii cod acces",
       "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
