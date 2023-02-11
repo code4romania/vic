@@ -37,9 +37,7 @@ export class OrganizationStructureRepositoryService
     const accessCodeEntities = await this.structureRepository.find({
       where: { ...findOptions },
       relations: {
-        adminUser: {
-          user: true,
-        },
+        createdBy: true,
       },
     });
 
@@ -52,9 +50,7 @@ export class OrganizationStructureRepositoryService
     const structure = await this.structureRepository.findOne({
       where: { ...findOptions },
       relations: {
-        adminUser: {
-          user: true,
-        },
+        createdBy: true,
       },
     });
 
