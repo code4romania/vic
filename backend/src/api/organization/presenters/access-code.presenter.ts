@@ -9,7 +9,10 @@ export class AccessCodePresenter {
     this.startDate = accessCode.startDate;
     this.endDate = accessCode.endDate;
     this.usageCount = accessCode.usageCount;
-    this.createdBy = accessCode.createdBy;
+    this.createdBy = {
+      id: accessCode.createdBy.id,
+      name: accessCode.createdBy.name,
+    };
     this.createdOn = accessCode.createdOn;
   }
 

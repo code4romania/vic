@@ -42,9 +42,7 @@ export class AccessCodeRepositoryService implements IAccessCodeRepository {
     const accessCodeEntity = await this.accessCodeRepository.findOne({
       where: { ...findOptions },
       relations: {
-        adminUser: {
-          user: true,
-        },
+        createdBy: true,
       },
     });
 
@@ -59,9 +57,7 @@ export class AccessCodeRepositoryService implements IAccessCodeRepository {
     const accessCodeEntities = await this.accessCodeRepository.find({
       where: { ...findOptions },
       relations: {
-        adminUser: {
-          user: true,
-        },
+        createdBy: true,
       },
     });
 
