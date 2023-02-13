@@ -32,7 +32,7 @@ export interface IAccessRequest {
   email: string;
   phone: string;
   createdOn: Date;
-  solvedOn?: Date;
+  updatedOn?: Date;
 }
 
 export enum RequestStatus {
@@ -84,7 +84,7 @@ const RejectedAccessRequestsTableHeader = [
     id: 'rejectedDate',
     name: i18n.t('registration_requests:rejected_date'),
     sortable: true,
-    selector: (row: IAccessRequest) => formatDate(row.solvedOn || new Date()),
+    selector: (row: IAccessRequest) => formatDate(row.updatedOn || new Date()),
   },
 ];
 
