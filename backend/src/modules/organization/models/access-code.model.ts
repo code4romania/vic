@@ -1,5 +1,6 @@
 import { OneOf } from 'src/common/helpers/typescript-extends';
 import { IBaseModel } from 'src/common/interfaces/base.model';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { AccessCodeEntity } from '../entities/access-code.entity';
 
 export interface IAccessCodeModel extends IBaseModel {
@@ -7,9 +8,7 @@ export interface IAccessCodeModel extends IBaseModel {
   code: string;
   startDate: Date;
   endDate?: Date;
-  // TODO: maybe use a AdminUserModel? Because we already strip the data in presenter
-  // And it seems confusing to create submodels here?
-  createdBy: { id: string; name: string };
+  createdBy: IAdminUserModel;
   usageCount: number;
   organizationId?: string;
 }
@@ -45,10 +44,7 @@ export class AccessCodeTransformer {
       code: entity.code,
       startDate: entity.startDate,
       endDate: entity.endDate,
-      createdBy: {
-        id: entity.adminUser?.id,
-        name: entity.adminUser?.user?.name,
-      },
+      createdBy: entity.createdBy,
       usageCount: entity.usageCount,
       organizationId: entity.organizationId,
       updatedOn: entity.updatedOn,
@@ -61,7 +57,7 @@ export class AccessCodeTransformer {
     entity.code = model.code;
     entity.startDate = model.startDate;
     entity.endDate = model.endDate;
-    entity.createdBy = model.createdById;
+    entity.createdById = model.createdById;
     entity.organizationId = model.organizationId;
     return entity;
   }

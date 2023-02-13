@@ -84,15 +84,15 @@ export class GetUserProfileUseCaseService
       });
     }
 
-    // // check if there is already a user with the same data
-    const dbUser = await this.userService.findUser([
+    // check if there is already a user with the same data
+    const dbUser = await this.userService.findAdminUser([
       {
         email: user.email,
       },
       { phone: user.phone },
     ]);
 
-    // // there is already an user with the same phone number and email
+    // there is already an user with the same phone number and email
     if (dbUser) {
       this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
     }

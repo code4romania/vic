@@ -22,9 +22,7 @@ import { CreateAccessCodeDto } from './dto/create-access-code.dto';
 import { UpdateAccessCodeDto } from './dto/update-access-code.dto';
 import { AccessCodePresenter } from './presenters/access-code.presenter';
 
-// @Roles(Role.ADMIN)
 @UseGuards(WebJwtAuthGuard)
-// @UsePipes(new UuidValidationPipe())
 @Controller('access-code')
 export class AccessCodeController {
   constructor(
