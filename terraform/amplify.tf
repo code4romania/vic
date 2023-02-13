@@ -21,7 +21,7 @@ resource "aws_amplify_app" "amplify_app" {
 
 resource "aws_amplify_branch" "branch" {
   app_id      = aws_amplify_app.amplify_app.id
-  branch_name = "main" #  var.env == "production" ? "main" : "develop"
+  branch_name = "main"
   stage       = var.env == "production" ? "PRODUCTION" : "BETA"
   framework   = "React"
 
