@@ -18,5 +18,4 @@ export const ROUTES: IRoute[] = [
     href: 'volunteers/requests',
     icon: UsersIcon,
   },
-  { id: 4, name: 'Editare coduri access', href: 'access-codes/edit', icon: SunIcon },
 ];

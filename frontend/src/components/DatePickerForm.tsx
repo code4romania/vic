@@ -1,4 +1,3 @@
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import React, { SyntheticEvent } from 'react';
 import DatePickerInput from './DatePickerInput';
 
@@ -13,6 +12,7 @@ interface DatePickerFormProps {
   onChange: (date: Date | null, event: SyntheticEvent<Date, Event> | undefined) => void;
   value?: Date;
   id?: string;
+  disabled?: boolean;
 }
 
 const DatePickerForm = ({
@@ -29,8 +29,8 @@ const DatePickerForm = ({
       <div className="mt-1 rounded-md">
         <DatePickerInput onChange={onChange} placeholder={placeholder} value={value} {...props} />
         {error && (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
+          <div className="pr-3 flex items-center pointer-events-none">
+            <p className="text-red-500">{error}</p>
           </div>
         )}
       </div>

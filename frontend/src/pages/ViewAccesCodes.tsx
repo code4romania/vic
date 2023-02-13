@@ -1,6 +1,7 @@
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
+import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { PaginationConfig } from '../common/constants/pagination';
 import { OrderDirection } from '../common/enums/order-direction.enum';
@@ -74,6 +75,7 @@ const ViewAccessCodes = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+  const navigate = useNavigate();
 
   const {
     data: accessCodes,
@@ -119,12 +121,12 @@ const ViewAccessCodes = () => {
 
   // component actions
   const onAdd = () => {
-    alert('Not yet implemented');
+    navigate('add');
   };
 
   // row actions
   const onEdit = (row: IAccessCode) => {
-    alert(`Not yet implemented, ${row}`);
+    navigate(`edit/${row.id}`);
   };
 
   const onDelete = (row: IAccessCode) => {

@@ -12,7 +12,11 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { REGEX } from '../common/constants/patterns';
 import { useForm } from 'react-hook-form';
-import { useUpdateAccessCodeMutation } from '../services/organization/organization.service';
+import { useCreateAccessCodesMutation } from '../services/organization/organization.service';
+import { useErrorToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
+import LoadingContent from '../components/LoadingContent';
+import EmptyContent from '../components/EmptyContent';
 
 const validationSchema = yup.object({
   code: yup
@@ -25,10 +29,14 @@ const validationSchema = yup.object({
   availabilityEnd: yup.date().optional(),
 });
 
-const EditAccessCode = () => {
+const AddAccessCode = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: updateAccessCodeMutation, error, isLoading } = useUpdateAccessCodeMutation();
+  const {
+    mutateAsync: createAccessCodeMutation,
+    error,
+    isLoading,
+  } = useCreateAccessCodesMutation();
 
   const {
     handleSubmit,
@@ -46,6 +54,15 @@ const EditAccessCode = () => {
 
   const onSave = (inputData: AccessCodeFormTypes) => {
     console.log(inputData);
+    createAccessCodeMutation(
+      { code: inputData.code, startDate: inputData.startDate, endDate: inputData.endDate },
+      {
+        onError: () =>
+          useErrorToast(
+            InternalErrors.ORGANIZATION_ERRORS.getError(error?.response?.data.code_error),
+          ),
+      },
+    );
   };
 
   return (
@@ -57,23 +74,27 @@ const EditAccessCode = () => {
           icon={<ChevronLeftIcon className="h-5 w-5" />}
           onClick={onNavigateBack}
         />
-        <h1>{i18n.t('general:edit', { item: i18n.t('access_codes:name').toLocaleLowerCase() })}</h1>
+        <h1>{i18n.t('general:add', { item: i18n.t('access_codes:name').toLocaleLowerCase() })}</h1>
       </div>
-      <Card>
-        <CardHeader>
-          <h3>{i18n.t('access_codes:name')}</h3>
-          <Button
-            label={i18n.t('confirmation:save')}
-            className="btn-primary"
-            onClick={handleSubmit(onSave)}
-          />
-        </CardHeader>
-        <CardBody>
-          <AccessCodeForm control={control} errors={errors} disabled={true} />
-        </CardBody>
-      </Card>
+      {isLoading && <LoadingContent />}
+      {error && <EmptyContent description={i18n.t('general:error.load_entries')} />}
+      {!isLoading && !error && (
+        <Card>
+          <CardHeader>
+            <h3>{i18n.t('access_codes:name')}</h3>
+            <Button
+              label={i18n.t('confirmation:save')}
+              className="btn-primary"
+              onClick={handleSubmit(onSave)}
+            />
+          </CardHeader>
+          <CardBody>
+            <AccessCodeForm control={control} errors={errors} />
+          </CardBody>
+        </Card>
+      )}
     </PageLayout>
   );
 };
 
-export default EditAccessCode;
+export default AddAccessCode;

@@ -13,6 +13,10 @@
     "save_changes": "Salveaza modificari",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
+    "validation": {
+      "pattern": "Numele are un format invalid",
+      "required": "Campul este obligatoriu"
+    },
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
       "unknown": "A aparut o eroare necunoscuta",
@@ -84,8 +88,7 @@
     "form": {
       "required": "Campul este obligatoriu",
       "max": "Numele poate sa aiba maxim 20 de caractere",
-      "min": "Numele poate sa aiba minim 2 caractere",
-      "pattern": "Numele are un format invalid"
+      "min": "Numele poate sa aiba minim 2 caractere"
     },
     "modal": {
       "delete": {
@@ -142,7 +145,12 @@
       "availability_end": "Data final valabilitate"
     },
     "validation": {
-      "code": {}
+      "min": "Numele poate sa aiba minim 2 caractere",
+      "max": "Numele poate sa aiba maxin 10 caractere"
+    },
+    "errorr": {
+      "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",
+      "ACCESS_CODE_002": "Exista deja un cod de acces cu acest nume"
     }
   }
 }

@@ -25,10 +25,10 @@ const schema = yup
   .object({
     name: yup
       .string()
-      .required(`${i18n.t('division:form.required')}`)
+      .required(`${i18n.t('general:validation.required')}`)
       .min(2, `${i18n.t('division:form.min')}`)
       .max(20, `${i18n.t('division:form.max')}`)
-      .matches(REGEX.NAME_REGEX, `${i18n.t('division:form.pattern')}`),
+      .matches(REGEX.NAME_REGEX, `${i18n.t('general:validation.pattern')}`),
   })
   .required();
 

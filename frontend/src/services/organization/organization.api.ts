@@ -46,3 +46,15 @@ export const getAccessCodes = async (
     };
   });
 };
+
+export const createAccessCode = async (
+  name: string,
+  startDate: Date,
+  endDate?: Date,
+): Promise<IAccessCode> => {
+  return API.post('access-code', { name, startDate, endDate }).then((res) => res.data);
+};
+
+export const updateAccessCode = async (id: string, endDate?: Date): Promise<IAccessCode> => {
+  return API.patch(`access-code/${id}`, { endDate }).then((res) => res.data);
+};

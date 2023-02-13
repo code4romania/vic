@@ -10,6 +10,7 @@ import Organization from '../pages/Organization';
 import ViewAccessCodes from '../pages/ViewAccesCodes';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
+import AddAccessCode from '../pages/AddAccessCode';
 
 const Router = () => {
   return (
@@ -22,8 +23,11 @@ const Router = () => {
             <Route index element={<Organization />} />
             <Route path="edit" element={<EditOrganization />} />
           </Route>
-          <Route path="access-codes/edit" element={<EditAccessCode />} />
-          <Route path="volunteers/access-codes" element={<ViewAccessCodes />} />
+          <Route path="volunteers/access-codes" element={<Outlet />}>
+            <Route index element={<ViewAccessCodes />} />
+            <Route path="add" element={<AddAccessCode />} />
+            <Route path="edit/:id" element={<EditAccessCode />} />
+          </Route>
           <Route path="volunteers/requests" element={<div>To be implemented...</div>} />
           <Route path="volunteers/requests/:id" element={<AccessRequest />} />
         </Route>

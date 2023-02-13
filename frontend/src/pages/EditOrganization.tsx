@@ -24,7 +24,7 @@ const schema = yup
   .object({
     description: yup
       .string()
-      .required(`${i18n.t('general:required')}`)
+      .required(`${i18n.t('general:validation.required')}`)
       .min(50, `${i18n.t('edit_organization:form.min')}`)
       .max(250, `${i18n.t('edit_organization:form.max')}`),
   })
