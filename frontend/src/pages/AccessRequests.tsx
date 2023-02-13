@@ -32,7 +32,7 @@ export interface IAccessRequest {
   email: string;
   phone: string;
   createdOn: Date;
-  updatedOn?: Date;
+  solvedOn?: Date;
 }
 
 export enum RequestStatus {
@@ -84,7 +84,7 @@ const RejectedAccessRequestsTableHeader = [
     id: 'rejectedDate',
     name: i18n.t('registration_requests:rejected_date'),
     sortable: true,
-    selector: (row: IAccessRequest) => formatDate(row.updatedOn || new Date()),
+    selector: (row: IAccessRequest) => formatDate(row.solvedOn || new Date()),
   },
 ];
 
@@ -213,14 +213,14 @@ const AccessRequests = () => {
 
   return (
     <PageLayout>
-      <h1>{i18n.t('side_menu:options.volunteers.registration_requests')}</h1>
+      <h1>{i18n.t('side_menu:options.volunteers.access_requests')}</h1>
       <Tabs<RequestStatus> tabs={AccessRequestsTabs} onClick={onTabClick}>
         <Card>
           <CardHeader>
             <Button
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-              className="btn-outline-secondary"
+              className="btn-outline-secondary ml-auto"
               onClick={() => alert('Not implemented')}
             />
           </CardHeader>

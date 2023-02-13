@@ -8,12 +8,18 @@ export const ROUTES: IRoute[] = [
   { id: 2, name: i18n.t('side_menu:options.volunteers.main'), href: 'volunteers', icon: UsersIcon },
   {
     id: 3,
-    name: i18n.t('side_menu:options.access_codes'),
-    href: 'volunteers/access-codes',
+    name: i18n.t('side_menu:options.volunteers.list'),
+    href: 'volunteers',
     icon: UsersIcon,
   },
   {
     id: 4,
+    name: i18n.t('side_menu:options.volunteers.access_codes'),
+    href: 'volunteers/access-codes',
+    icon: UsersIcon,
+  },
+  {
+    id: 5,
     name: i18n.t('side_menu:options.volunteers.access_requests'),
     href: 'volunteers/requests',
     icon: UsersIcon,

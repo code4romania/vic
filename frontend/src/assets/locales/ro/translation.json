@@ -47,8 +47,9 @@
       "dashboard": "Dashboard",
       "organization": "Structura ONG",
       "volunteers": {
+        "main": "Voluntari",
         "list": "Listă voluntari",
-        "registration_requests": "Cereri de înscriere",
+        "access_requests": "Cereri de înscriere",
         "access_codes": "Coduri de acces"
       },
       "access_codes": "Coduri de acces"
