@@ -1,3 +1,5 @@
+console.log('import.meta.env.VITE_AWS_REGION', import.meta.env.VITE_AWS_REGION);
+
 export const AMPLIFY_CONFIG = {
   Auth: {
     region: import.meta.env.VITE_AWS_REGION,
