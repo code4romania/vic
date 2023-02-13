@@ -13,6 +13,7 @@
     "save_changes": "Salveaza modificari",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
+    "contact_data": "Date contact",
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
       "unknown": "A aparut o eroare necunoscuta",
@@ -133,5 +134,26 @@
   "access_codes": {
     "name": "Cod acces",
     "create": "Creeaza cod nou"
+  },
+  "volunteers": {
+    "department_and_role": "Departament si rol",
+    "location": "Locatie voluntar",
+    "archived_from": "Arhivat din",
+    "blocked_date": "Data blocarii",
+    "tabs": {
+      "active": "Voluntari activi",
+      "archived": "Voluntari arhivati",
+      "blocked": "Utilizatori blocati"
+    },
+    "modal": {
+      "view": "Vizualizează profil",
+      "archive": "Arhivează voluntar",
+      "activate": "Reactivează voluntar",
+      "delete": "Sterge din ONG",
+      "block": "Blochează voluntar"
+    },
+    "errors": {
+      "VOL_001": "Nu s-au putut incarca voluntarii"
+    }
   }
 }
