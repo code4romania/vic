@@ -19,10 +19,12 @@ resource "aws_amplify_app" "amplify_app" {
   }
 }
 
+  # branch_name = var.env == "production" ? "main" : "develop"
+  # stage       = var.env == "production" ? "PRODUCTION" : "BETA"
 resource "aws_amplify_branch" "branch" {
   app_id      = aws_amplify_app.amplify_app.id
   branch_name = "main"
-  stage       = var.env == "production" ? "PRODUCTION" : "BETA"
+  stage       = "BETA"
   framework   = "React"
 
   enable_auto_build = true
