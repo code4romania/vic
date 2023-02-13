@@ -34,7 +34,7 @@ export class AdminUserRepositoryService implements IAdminUserRepository {
 
   public async find(options: IFindAdminUserModel): Promise<IAdminUserModel> {
     const userEntity = await this.adminUserRepository.findOne({
-      where: { ...options },
+      where: options,
     });
 
     // return user model
