@@ -30,12 +30,18 @@ resource "aws_amplify_branch" "branch" {
   environment_variables = {
     AMPLIFY_DIFF_DEPLOY            = false
     AMPLIFY_MONOREPO_APP_ROOT      = "frontend"
-    REACT_APP_API_URL              = "https://${aws_apprunner_service.backend.service_url}"
-    REACT_APP_AWS_REGION           = var.region
-    REACT_APP_COGNITO_OAUTH_DOMAIN = "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.region}.amazoncognito.com"
-    REACT_APP_FRONTEND_URL         = "https://${local.frontend_domain}"
-    REACT_APP_USER_POOL_CLIENT_ID  = aws_cognito_user_pool_client.onghub_client.id
-    REACT_APP_USER_POOL_ID         = aws_cognito_user_pool.pool.id
+    # VITE_API_URL                  = "https://${aws_apprunner_service.backend.service_url}"
+    # VITE_AWS_REGION               = var.region
+    # VITE_COGNITO_OAUTH_DOMAIN     = "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.region}.amazoncognito.com"
+    # VITE_APP_FRONTEND_URL         = "https://${local.frontend_domain}"
+    # VITE_USER_POOL_CLIENT_ID      = aws_cognito_user_pool_client.onghub_client.id
+    # VITE_USER_POOL_ID             = aws_cognito_user_pool.pool.id
+    VITE_API_URL                   = "https://${aws_apprunner_service.backend.service_url}"
+    VITE_AWS_REGION                = "eu-central-1"
+    VITE_COGNITO_OAUTH_DOMAIN      = "onghub-auth.auth.eu-central-1.amazoncognito.com"
+    # VITE_APP_FRONTEND_URL         = "https://${local.frontend_domain}"
+    VITE_USER_POOL_CLIENT_ID       = "6t6smhu23khucipd6d7kn8brbl"
+    VITE_USER_POOL_ID              = "eu-central-1_tyLzpvQsq"
   }
 }
 
