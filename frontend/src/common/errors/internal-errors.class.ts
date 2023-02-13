@@ -1,3 +1,4 @@
+import { AccessCodeError } from './entities/access-request.errors';
 import { DivisionError } from './entities/division.errors';
 import { OrganizationError } from './entities/organization.errors';
 import { VolunteerError } from './entities/volunteer.errors';
@@ -9,4 +10,5 @@ export class InternalErrors {
   public static DIVISION_ERRORS = DivisionError.getInstance();
   public static VOLUNTEER_ERRORS = VolunteerError.getInstance();
   public static VOLUNTEERS_ERRORS = VolunteersErrors.getInstance();
+  public static ACCESS_CODE_ERRORS = AccessCodeError.getInstance();
 }
