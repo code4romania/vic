@@ -10,7 +10,7 @@
     "view": "Vizualizeaza",
     "edit": "Editeaza {{item}}",
     "delete": "Sterge",
-    "location": "Location",
+    "location": "Locatie",
     "back": "Inapoi",
     "save_changes": "Salveaza modificari",
     "description": "Descriere",
@@ -134,7 +134,7 @@
     "rows_per_page": "Randuri pe pagina",
     "range_separator_text": "din"
   },
-  "registration_requests": {
+  "access_requests": {
     "date": "Data cerere acces",
     "rejected_date": "Data respingere",
     "contact": "Date contact",

@@ -3,7 +3,7 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 // import API from '../api';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 
-export const getRegistrationRequests = async (
+export const getAccessRequests = async (
   filterStatus: string,
   limit: number,
   page: number,

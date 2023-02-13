@@ -14,7 +14,7 @@ import {
   XMarkIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
-import { useRegistrationRequestsQuery } from '../services/registration-requests/registration-requests.service';
+import { useAccessRequestsQuery } from '../services/access-requests/access-requests.service';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
@@ -23,6 +23,8 @@ import { PaginationConfig } from '../common/constants/pagination';
 import { formatDate } from '../common/utils/utils';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { RequestStatus } from '../common/enums/request-status.enum';
+import MediaCell from '../components/MediaCell';
 
 export interface IAccessRequest {
   id: string;
@@ -35,15 +37,9 @@ export interface IAccessRequest {
   updatedOn?: Date;
 }
 
-export enum RequestStatus {
-  PENDING = 'pending',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
-}
-
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
-  { key: RequestStatus.PENDING, value: i18n.t('registration_requests:tabs.requests') },
-  { key: RequestStatus.REJECTED, value: i18n.t('registration_requests:tabs.rejected_requests') },
+  { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
+  { key: RequestStatus.REJECTED, value: i18n.t('access_requests:tabs.rejected_requests') },
 ];
 
 const PendingAccessRequestsTableHeader = [
@@ -52,15 +48,12 @@ const PendingAccessRequestsTableHeader = [
     name: i18n.t('general:name'),
     sortable: true,
     cell: (row: IAccessRequest) => (
-      <div className="flex items-center gap-3 shrink-0">
-        <img src={row.logo} className="w-10 h-10 logo" alt={`${row.name} picture`} />
-        <small className="font-robotoBold">{row.name}</small>
-      </div>
+      <MediaCell logo={row.logo} name={'aksjdhakjshdkasjh kdadkahs kdhaks kdha skhdk  askadkskh'} />
     ),
   },
   {
     id: 'contact',
-    name: i18n.t('registration_requests:contact'),
+    name: i18n.t('access_requests:contact'),
     sortable: true,
     selector: (row: IAccessRequest) => `${row.email}\n${row.phone}`,
   },
@@ -72,7 +65,7 @@ const PendingAccessRequestsTableHeader = [
   },
   {
     id: 'createdOn',
-    name: i18n.t('registration_requests:date'),
+    name: i18n.t('access_requests:date'),
     sortable: true,
     selector: (row: IAccessRequest) => formatDate(row.createdOn),
   },
@@ -82,7 +75,7 @@ const RejectedAccessRequestsTableHeader = [
   ...PendingAccessRequestsTableHeader,
   {
     id: 'rejectedDate',
-    name: i18n.t('registration_requests:rejected_date'),
+    name: i18n.t('access_requests:rejected_date'),
     sortable: true,
     selector: (row: IAccessRequest) => formatDate(row.updatedOn || new Date()),
   },
@@ -99,7 +92,7 @@ const AccessRequests = () => {
     data: accessRequests,
     isLoading: isAccessRequestsLoading,
     error: accessCodeRequestError,
-  } = useRegistrationRequestsQuery(
+  } = useAccessRequestsQuery(
     requestStatus,
     rowsPerPage as number,
     page as number,
@@ -150,17 +143,17 @@ const AccessRequests = () => {
   const buildPendingAccessRequestsActionColumn = (): TableColumn<IAccessRequest> => {
     const pendingAccessRequestsMenuItems = [
       {
-        label: i18n.t('registration_requests:modal.view'),
+        label: i18n.t('access_requests:modal.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
       {
-        label: i18n.t('registration_requests:modal.approve'),
+        label: i18n.t('access_requests:modal.approve'),
         icon: <CheckIcon className="menu-icon" />,
         onClick: onApprove,
       },
       {
-        label: i18n.t('registration_requests:modal.reject'),
+        label: i18n.t('access_requests:modal.reject'),
         icon: <XMarkIcon className="menu-icon" />,
         onClick: onReject,
         alert: true,
@@ -180,12 +173,12 @@ const AccessRequests = () => {
   const buildRejectedAccessRequestsActionColumn = (): TableColumn<IAccessRequest> => {
     const rejectedAccessRequestsMenuItems = [
       {
-        label: i18n.t('registration_requests:modal.view'),
+        label: i18n.t('access_requests:modal.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
       {
-        label: i18n.t('registration_requests:modal.delete'),
+        label: i18n.t('access_requests:modal.delete'),
         icon: <TrashIcon className="menu-icon" />,
         onClick: onDelete,
         alert: true,
