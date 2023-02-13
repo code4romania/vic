@@ -1,13 +1,14 @@
 import {
-  IAccessCodeModel,
-  ICreateAccessCodeModel,
-  IFindAccessCodeModel,
-  IUpdateAccessCodeModel,
-} from '../models/access-code.model';
+  CreateAccessRequestModel,
+  FindAccessRequestModel,
+  IAccessRequestModel,
+  UpdateAccessRequestModel,
+} from '../model/access-request.model';
 
 export interface IAccessRequestRepository {
-  create(newAccessCode: ICreateAccessCodeModel): Promise<IAccessCodeModel>;
-  update(updateAccessCode: IUpdateAccessCodeModel): Promise<IAccessCodeModel>;
-  find(findOptions: IFindAccessCodeModel): Promise<IAccessCodeModel>;
-  delete(id: string): Promise<IAccessCodeModel>;
+  create(newRequest: CreateAccessRequestModel): Promise<IAccessRequestModel>;
+  update(updates: UpdateAccessRequestModel): Promise<IAccessRequestModel>;
+  find(findOptions: FindAccessRequestModel): Promise<IAccessRequestModel>;
+  findAll(findOptions: unknown): Promise<IAccessRequestModel[]>;
+  delete(id: string): Promise<IAccessRequestModel>;
 }

@@ -1,70 +1,56 @@
-import { OneOf } from 'src/common/helpers/typescript-extends';
 import { IBaseModel } from 'src/common/interfaces/base.model';
-import { AccessCodeEntity } from '../entities/access-code.entity';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
+import { AccessRequestEntity } from '../entities/access-request.entity';
 import { AccessRequestStatus } from '../enums/access-request-status.enum';
 
 export interface IAccessRequestModel extends IBaseModel {
   id: string;
   status: AccessRequestStatus;
-  rejectionReason: string;
+  rejectionReason?: string;
   answers: IAccessRequestQA[];
-  organizationId?: string;
+  // Relations
+  requestedBy: IRegularUserModel;
+  updatedBy: IAdminUserModel;
+  organizationId: string;
 }
 
 export interface IAccessRequestQA {
   question: string;
   answer: string;
 }
-('');
 
-export type ICreateAccessCodeModel = Pick<
-  IAccessCodeModel,
-  'code' | 'startDate' | 'endDate'
-> & { createdById: string; organizationId: string };
+export type CreateAccessRequestModel = Pick<
+  IAccessRequestModel,
+  'answers' | 'organizationId'
+> & { requestedById: string };
 
-export type IFindAccessCodeModel = Partial<
-  Pick<IAccessCodeModel, 'id' | 'code' | 'organizationId'>
->;
+export type UpdateAccessRequestModel = Pick<
+  IAccessRequestModel,
+  'id' | 'status' | 'rejectionReason'
+> & { updatedById: string };
 
-export type IFindAllAccessCodeModel = Required<
-  Pick<IAccessCodeModel, 'organizationId'>
->;
+export type FindAccessRequestModel = Pick<IAccessRequestModel, 'id'>;
 
-type IUpdateAccessCodeEndDate = Required<
-  Pick<IAccessCodeModel, 'id' | 'endDate'>
->;
-type IUpdateAccessCodeUsageCount = Required<
-  Pick<IAccessCodeModel, 'id' | 'usageCount'>
->;
-
-export type IUpdateAccessCodeModel = OneOf<
-  [IUpdateAccessCodeEndDate, IUpdateAccessCodeUsageCount]
->;
-
-export class AccessCodeTransformer {
-  static fromEntity(entity: AccessCodeEntity): IAccessCodeModel {
+export class AccessRequestTransformer {
+  static fromEntity(entity: AccessRequestEntity): IAccessRequestModel {
     return {
       id: entity.id,
-      code: entity.code,
-      startDate: entity.startDate,
-      endDate: entity.endDate,
-      createdBy: {
-        id: entity.adminUser?.id,
-        name: entity.adminUser?.user?.name,
-      },
-      usageCount: entity.usageCount,
+      status: entity.status,
+      rejectionReason: entity.rejectionReason,
+      answers: entity.answers,
+      requestedBy: entity.requestedBy,
+      updatedBy: entity.updatedBy,
       organizationId: entity.organizationId,
       updatedOn: entity.updatedOn,
       createdOn: entity.createdOn,
     };
   }
 
-  static toEntity(model: ICreateAccessCodeModel): AccessCodeEntity {
-    const entity = new AccessCodeEntity();
-    entity.code = model.code;
-    entity.startDate = model.startDate;
-    entity.endDate = model.endDate;
-    entity.createdBy = model.createdById;
+  static toEntity(model: CreateAccessRequestModel): AccessRequestEntity {
+    const entity = new AccessRequestEntity();
+    entity.answers = model.answers;
+    entity.requestedById = model.requestedById;
     entity.organizationId = model.organizationId;
     return entity;
   }

@@ -1,8 +1,9 @@
-import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
-import { AdminUserEntity } from 'src/modules/user/entities/admin-user.entity';
-import { VolunteerUserEntity } from 'src/modules/user/entities/volunteer-user.entity';
+import {
+  AdminUserEntity,
+  RegularUserEntity,
+} from 'src/modules/user/entities/user.entity';
 
 import {
   Column,
@@ -13,36 +14,40 @@ import {
   Unique,
 } from 'typeorm';
 import { AccessRequestStatus } from '../enums/access-request-status.enum';
+import { IAccessRequestQA } from '../model/access-request.model';
 
-@Unique('one-request-per-org-volunteer', ['volunteerUser', 'organization'])
+// @Unique: Only one "pending" request, "requestedBy" a user for a "organization"
 @Entity({ name: 'access_request' })
 export class AccessRequestEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'text', name: 'status' })
+  @Column({
+    type: 'text',
+    name: 'status',
+    default: AccessRequestStatus.PENDING,
+  })
   status: AccessRequestStatus;
 
-  @Column({ type: 'text', name: 'rejection_reason' })
+  @Column({ type: 'text', name: 'rejection_reason', nullable: true })
   rejectionReason: string;
 
-  @Column({ type: 'jsonb', name: 'rejection_reason' })
-  answers: { question: string; answer: string }[]; // TODO: create model
+  @Column({ type: 'jsonb', name: 'answers' })
+  answers: IAccessRequestQA[];
 
   @Column({ type: 'string', name: 'updated_by' })
-  updatedBy: string; // TODO: updated everytime a new update is made
+  updatedById: string;
 
   @ManyToOne(() => AdminUserEntity)
   @JoinColumn({ name: 'updated_by' })
-  adminUser: AdminUserEntity;
+  updatedBy: AdminUserEntity;
 
-  /** volunteerUserId: The requester **/
-  @Column({ type: 'string', name: 'volunteer_user_id' })
-  volunteerUserId: string;
+  @Column({ type: 'string', name: 'requested_by' })
+  requestedById: string;
 
-  @ManyToOne(() => VolunteerUserEntity)
-  @JoinColumn({ name: 'volunteer_user_id' })
-  volunteerUser: VolunteerUserEntity;
+  @ManyToOne(() => RegularUserEntity)
+  @JoinColumn({ name: 'requested_by' })
+  requestedBy: RegularUserEntity;
 
   @Column({
     type: 'varchar',

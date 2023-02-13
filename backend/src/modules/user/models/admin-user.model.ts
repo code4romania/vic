@@ -1,14 +1,6 @@
 import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
 import { AdminUserEntity } from '../entities/user.entity';
-
-export interface IUserModel {
-  id: string;
-  cognitoId: string;
-  name: string;
-  email: string;
-  phone: string;
-  // type: UserType;
-}
+import { IUserModel } from './base-user.model';
 
 export interface IAdminUserModel extends IUserModel {
   organizationId: string;
