@@ -71,16 +71,16 @@ export class ExceptionsFilter implements ExceptionFilter {
       this.logger.error(
         `End Request for ${request.path}`,
         `method=${request.method} status=${status} code_error=${
-          message.code_error ? message.code_error : null
-        } message=${message.message ? message.message : null}`,
+          message?.code_error ? message.code_error : null
+        } message=${message?.message ? message.message : null}`,
         exception?.stack,
       );
     } else {
       this.logger.warn(
         `End Request for ${request.path}`,
         `method=${request.method} status=${status} code_error=${
-          message.code_error ? message.code_error : null
-        } message=${message.message ? message.message : null}`,
+          message?.code_error ? message.code_error : null
+        } message=${message?.message ? message.message : null}`,
       );
     }
   }

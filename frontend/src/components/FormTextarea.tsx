@@ -28,7 +28,7 @@ const FormTextarea = ({
         errorMessage
           ? 'border border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500'
           : '',
-        className,
+        className || '',
       )}
       defaultValue={defaultValue}
       {...props}

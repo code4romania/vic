@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
-import { AdminUserEntity } from 'src/modules/user/entities/admin-user.entity';
+import { AdminUserEntity } from 'src/modules/user/entities/user.entity';
 
 import {
   Column,
@@ -31,11 +31,11 @@ export class AccessCodeEntity extends BaseEntity {
   usageCount: number;
 
   @Column({ type: 'string', name: 'created_by' })
-  createdBy: string;
+  createdById: string;
 
   @ManyToOne(() => AdminUserEntity)
   @JoinColumn({ name: 'created_by' })
-  adminUser: AdminUserEntity;
+  createdBy: AdminUserEntity;
 
   @Exclude()
   @Column({

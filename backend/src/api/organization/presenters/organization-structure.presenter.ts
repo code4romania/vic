@@ -9,7 +9,10 @@ export class OrganizationStructurePresenter {
     this.name = structure.name;
     this.type = structure.type;
     this.numberOfMembers = structure.members;
-    this.createdBy = structure.createdBy;
+    this.createdBy = {
+      id: structure.createdBy.id,
+      name: structure.createdBy.name,
+    };
     this.createdOn = structure.createdOn;
   }
 
