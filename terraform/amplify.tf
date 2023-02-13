@@ -41,7 +41,7 @@ resource "aws_amplify_branch" "branch" {
     VITE_API_URL                   = "https://${aws_apprunner_service.backend.service_url}"
     VITE_AWS_REGION                = "eu-central-1"
     VITE_COGNITO_OAUTH_DOMAIN      = "onghub-auth.auth.eu-central-1.amazoncognito.com"
-    VITE_APP_FRONTEND_URL          = "https://${local.frontend_domain}"
+    VITE_APP_FRONTEND_URL          = "https://${local.frontend_domain}/"
     VITE_USER_POOL_CLIENT_ID       = "6t6smhu23khucipd6d7kn8brbl"
     VITE_USER_POOL_ID              = "eu-central-1_tyLzpvQsq"
   }
