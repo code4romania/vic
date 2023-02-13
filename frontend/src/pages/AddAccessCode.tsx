@@ -16,7 +16,6 @@ import { useCreateAccessCodesMutation } from '../services/organization/organizat
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
-import EmptyContent from '../components/EmptyContent';
 
 const validationSchema = yup.object({
   code: yup
@@ -25,18 +24,14 @@ const validationSchema = yup.object({
     .min(2, `${i18n.t('access_codes:validation.min')}`)
     .max(10, `${i18n.t('access_codes:validation.max')}`)
     .matches(REGEX.NAME_REGEX, `${i18n.t('general:validation:pattern')}`),
-  availabilityStart: yup.date().required(`${i18n.t('general:validation.required')}`),
-  availabilityEnd: yup.date().optional(),
+  startDate: yup.date().required(`${i18n.t('general:validation.required')}`),
+  endDate: yup.date().optional(),
 });
 
 const AddAccessCode = () => {
   const navigate = useNavigate();
 
-  const {
-    mutateAsync: createAccessCodeMutation,
-    error,
-    isLoading,
-  } = useCreateAccessCodesMutation();
+  const { mutateAsync: createAccessCodeMutation, isLoading } = useCreateAccessCodesMutation();
 
   const {
     handleSubmit,
@@ -57,7 +52,7 @@ const AddAccessCode = () => {
     createAccessCodeMutation(
       { code: inputData.code, startDate: inputData.startDate, endDate: inputData.endDate },
       {
-        onError: () =>
+        onError: (error) =>
           useErrorToast(
             InternalErrors.ORGANIZATION_ERRORS.getError(error?.response?.data.code_error),
           ),
@@ -77,8 +72,7 @@ const AddAccessCode = () => {
         <h1>{i18n.t('general:add', { item: i18n.t('access_codes:name').toLocaleLowerCase() })}</h1>
       </div>
       {isLoading && <LoadingContent />}
-      {error && <EmptyContent description={i18n.t('general:error.load_entries')} />}
-      {!isLoading && !error && (
+      {!isLoading && (
         <Card>
           <CardHeader>
             <h3>{i18n.t('access_codes:name')}</h3>

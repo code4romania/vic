@@ -13,6 +13,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { REGEX } from '../common/constants/patterns';
 import { useForm } from 'react-hook-form';
 import { useUpdateAccessCodeMutation } from '../services/organization/organization.service';
+import { useErrorToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
+import LoadingContent from '../components/LoadingContent';
 
 const validationSchema = yup.object({
   code: yup
@@ -21,14 +24,14 @@ const validationSchema = yup.object({
     .min(2, `${i18n.t('access_codes:validation.min')}`)
     .max(10, `${i18n.t('access_codes:validation.max')}`)
     .matches(REGEX.NAME_REGEX, `${i18n.t('general:validation:pattern')}`),
-  availabilityStart: yup.date().required(`${i18n.t('general:validation.required')}`),
-  availabilityEnd: yup.date().optional(),
+  startDate: yup.date().required(`${i18n.t('general:validation.required')}`),
+  endDate: yup.date().optional(),
 });
 
 const EditAccessCode = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: updateAccessCodeMutation, error, isLoading } = useUpdateAccessCodeMutation();
+  const { mutateAsync: updateAccessCodeMutation, isLoading } = useUpdateAccessCodeMutation();
 
   const {
     handleSubmit,
@@ -46,6 +49,15 @@ const EditAccessCode = () => {
 
   const onSave = (inputData: AccessCodeFormTypes) => {
     console.log(inputData);
+    updateAccessCodeMutation(
+      { id: '1', endDate: inputData.endDate },
+      {
+        onError: (error) =>
+          useErrorToast(
+            InternalErrors.ORGANIZATION_ERRORS.getError(error.response?.data.code_error),
+          ),
+      },
+    );
   };
 
   return (
@@ -59,19 +71,22 @@ const EditAccessCode = () => {
         />
         <h1>{i18n.t('general:edit', { item: i18n.t('access_codes:name').toLocaleLowerCase() })}</h1>
       </div>
-      <Card>
-        <CardHeader>
-          <h3>{i18n.t('access_codes:name')}</h3>
-          <Button
-            label={i18n.t('confirmation:save')}
-            className="btn-primary"
-            onClick={handleSubmit(onSave)}
-          />
-        </CardHeader>
-        <CardBody>
-          <AccessCodeForm control={control} errors={errors} disabled={true} />
-        </CardBody>
-      </Card>
+      {isLoading && <LoadingContent />}
+      {!isLoading && (
+        <Card>
+          <CardHeader>
+            <h3>{i18n.t('access_codes:name')}</h3>
+            <Button
+              label={i18n.t('confirmation:save')}
+              className="btn-primary"
+              onClick={handleSubmit(onSave)}
+            />
+          </CardHeader>
+          <CardBody>
+            <AccessCodeForm control={control} errors={errors} disabled={true} />
+          </CardBody>
+        </Card>
+      )}
     </PageLayout>
   );
 };
