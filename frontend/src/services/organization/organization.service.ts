@@ -5,6 +5,7 @@ import { ORGANIZATION_ERRORS } from '../../common/errors/entities/organization.e
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import {
   createAccessCode,
+  getAccessCode,
   getAccessCodes,
   getOrganization,
   updateAccessCode,
@@ -39,6 +40,10 @@ export const useAccessCodesQuery = (
     () => getAccessCodes(limit, page, orderBy, orderDirection),
     { enabled: !!(limit && page) },
   );
+};
+
+export const useAccessCodeQuery = (id: string) => {
+  return useQuery(['access-code', id], () => getAccessCode(id), { enabled: !!id });
 };
 
 export const useCreateAccessCodesMutation = () => {

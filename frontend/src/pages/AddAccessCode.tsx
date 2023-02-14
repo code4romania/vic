@@ -48,7 +48,6 @@ const AddAccessCode = () => {
   };
 
   const onSave = (inputData: AccessCodeFormTypes) => {
-    console.log(inputData);
     createAccessCodeMutation(
       { code: inputData.code, startDate: inputData.startDate, endDate: inputData.endDate },
       {

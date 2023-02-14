@@ -21,30 +21,11 @@ export const getAccessCodes = async (
   orderDirection?: OrderDirection,
 ): Promise<IPaginatedEntity<IAccessCode>> => {
   console.log('limit, page, orderBy, orderDirection', limit, page, orderBy, orderDirection);
-  return API.get(`/access-code`).then((res) => {
-    return {
-      items: [
-        {
-          id: 'aa',
-          code: '1123',
-          startDate: new Date(),
-          endDate: new Date(),
-          usageCount: 10,
-          createdOn: new Date(),
-          createdBy: { id: 'as', name: 'ajskadhs' },
-        },
-      ],
-      meta: {
-        currentPage: 1,
-        itemCount: 1,
-        itemsPerPage: 10,
-        totalItems: res.data.length,
-        totalPages: 1,
-        orderByColumn: 'name',
-        orderDirection: OrderDirection.ASC,
-      },
-    };
-  });
+  return API.get('access-code').then((res) => res.data);
+};
+
+export const getAccessCode = async (id: string): Promise<IAccessCode> => {
+  return API.get(`access-code/${id}`).then((res) => res.data);
 };
 
 export const createAccessCode = async (

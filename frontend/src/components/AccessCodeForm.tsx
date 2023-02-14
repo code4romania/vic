@@ -1,6 +1,7 @@
-import React from 'react';
-import { Control, Controller, DeepRequired, FieldErrorsImpl } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { Control, Controller, DeepRequired, FieldErrorsImpl, UseFormReset } from 'react-hook-form';
 import i18n from '../common/config/i18n';
+import { IAccessCode } from '../pages/AccesCodes';
 import DatePickerForm from './DatePickerForm';
 import FormInput from './FormInput';
 
@@ -8,6 +9,8 @@ interface AccessCodeFormProps {
   control: Control<AccessCodeFormTypes, object>;
   errors: FieldErrorsImpl<DeepRequired<AccessCodeFormTypes>>;
   disabled?: boolean;
+  accessCode?: IAccessCode;
+  reset?: UseFormReset<AccessCodeFormTypes>;
 }
 
 export type AccessCodeFormTypes = {
@@ -16,7 +19,11 @@ export type AccessCodeFormTypes = {
   endDate?: Date;
 };
 
-const AccessCodeForm = ({ control, errors, disabled }: AccessCodeFormProps) => {
+const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: AccessCodeFormProps) => {
+  useEffect(() => {
+    if (accessCode && reset) reset(accessCode);
+  }, [accessCode, reset]);
+
   return (
     <form className="py-6 text">
       <div className="flex flex-col gap-4 justify-center">
@@ -49,8 +56,8 @@ const AccessCodeForm = ({ control, errors, disabled }: AccessCodeFormProps) => {
           render={({ field: { onChange, value } }) => {
             return (
               <DatePickerForm
-                name="availabilityStart"
-                label={i18n.t('access_codes:form.availability_start') as string}
+                name="startDate"
+                label={i18n.t('access_codes:form.start_date') as string}
                 onChange={onChange}
                 value={value}
                 error={errors['startDate']?.message}
@@ -66,8 +73,8 @@ const AccessCodeForm = ({ control, errors, disabled }: AccessCodeFormProps) => {
           render={({ field: { onChange, value } }) => {
             return (
               <DatePickerForm
-                name="availabilityEnd"
-                label={i18n.t('access_codes:form.availability_end') as string}
+                name="endDate"
+                label={i18n.t('access_codes:form.end_date') as string}
                 onChange={onChange}
                 value={value}
                 error={errors['endDate']?.message}

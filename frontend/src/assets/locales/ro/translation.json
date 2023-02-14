@@ -163,8 +163,8 @@
     "form": {
       "title": "Informatii cod acces",
       "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
-      "availability_start": "Data inceput valabiliatate*",
-      "availability_end": "Data final valabilitate"
+      "start_date": "Data inceput valabiliatate*",
+      "end_date": "Data final valabilitate"
     },
     "validation": {
       "min": "Numele poate sa aiba minim 2 caractere",

@@ -1,6 +1,6 @@
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import AccessCodeForm, { AccessCodeFormTypes } from '../components/AccessCodeForm';
 import Button from '../components/Button';
@@ -12,7 +12,10 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { REGEX } from '../common/constants/patterns';
 import { useForm } from 'react-hook-form';
-import { useUpdateAccessCodeMutation } from '../services/organization/organization.service';
+import {
+  useAccessCodeQuery,
+  useUpdateAccessCodeMutation,
+} from '../services/organization/organization.service';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
@@ -30,13 +33,16 @@ const validationSchema = yup.object({
 
 const EditAccessCode = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
 
+  const { data: accessCode } = useAccessCodeQuery(id as string);
   const { mutateAsync: updateAccessCodeMutation, isLoading } = useUpdateAccessCodeMutation();
 
   const {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<AccessCodeFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -48,16 +54,17 @@ const EditAccessCode = () => {
   };
 
   const onSave = (inputData: AccessCodeFormTypes) => {
-    console.log(inputData);
-    updateAccessCodeMutation(
-      { id: '1', endDate: inputData.endDate },
-      {
-        onError: (error) =>
-          useErrorToast(
-            InternalErrors.ORGANIZATION_ERRORS.getError(error.response?.data.code_error),
-          ),
-      },
-    );
+    if (accessCode) {
+      updateAccessCodeMutation(
+        { id: accessCode.id, endDate: inputData.endDate },
+        {
+          onError: (error) =>
+            useErrorToast(
+              InternalErrors.ORGANIZATION_ERRORS.getError(error.response?.data.code_error),
+            ),
+        },
+      );
+    }
   };
 
   return (
@@ -83,7 +90,13 @@ const EditAccessCode = () => {
             />
           </CardHeader>
           <CardBody>
-            <AccessCodeForm control={control} errors={errors} disabled={true} />
+            <AccessCodeForm
+              control={control}
+              errors={errors}
+              disabled={true}
+              accessCode={accessCode}
+              reset={reset}
+            />
           </CardBody>
         </Card>
       )}
