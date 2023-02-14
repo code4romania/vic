@@ -12,6 +12,7 @@
     "delete": "Sterge",
     "location": "Locatie",
     "back": "Inapoi",
+    "send": "Trimite",
     "save_changes": "Salveaza modificari",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
@@ -142,7 +143,7 @@
       "requests": "Cereri",
       "rejected_requests": "Cereri respinse"
     },
-    "modal": {
+    "popover": {
       "view": "Vizualizeaza aplicare",
       "approve": "Aprobă cerere",
       "reject": "Respinge cerere",
@@ -155,5 +156,15 @@
   "access_codes": {
     "name": "Cod acces",
     "create": "Creeaza cod nou"
+  },
+  "reject_modal": {
+    "title": "Argumentează refuzul",
+    "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
+    "send": "Trimite fără mesaj",
+    "form": {
+      "max": "Mesajul trebuie sa aiba maxim 225 de caractere",
+      "min": "Mesajul trebuie sa aiba minim 50 caractere",
+      "error": "Refuzarea cererii a esuat"
+    }
   }
 }

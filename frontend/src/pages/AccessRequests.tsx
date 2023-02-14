@@ -26,7 +26,12 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { RequestStatus } from '../common/enums/request-status.enum';
 import MediaCell from '../components/MediaCell';
 import { useNavigate } from 'react-router-dom';
-import { useApproveAccessRequestMutation } from '../services/volunteer/volunteer.service';
+import {
+  useApproveAccessRequestMutation,
+  useDeleteAccessRequestMutation,
+  useRejectAccessRequestMutation,
+} from '../services/volunteer/volunteer.service';
+import RejectTextareaModal from '../components/RejectTextareaModal';
 
 export interface IAccessRequest {
   id: string;
@@ -85,6 +90,8 @@ const RejectedAccessRequestsTableHeader = [
 
 const AccessRequests = () => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.PENDING);
+  const [showReject, setShowReject] = useState<null | IAccessRequest>(null);
+  //pagination state
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
@@ -104,7 +111,12 @@ const AccessRequests = () => {
     orderDirection,
   );
 
-  const { mutateAsync: approveAccessRequestMutation } = useApproveAccessRequestMutation();
+  const { mutateAsync: approveAccessRequestMutation, error: approveAccessRequestError } =
+    useApproveAccessRequestMutation();
+  const { mutateAsync: rejectAccessRequestMutation, error: rejectAccessRequestError } =
+    useRejectAccessRequestMutation();
+  const { mutateAsync: deleteAccessRequestMutation, error: deleteAccessRequestError } =
+    useDeleteAccessRequestMutation();
 
   useEffect(() => {
     if (accessRequests?.meta) {
@@ -122,7 +134,33 @@ const AccessRequests = () => {
           accessCodeRequestError.response?.data.code_error,
         ),
       );
-  }, [accessCodeRequestError]);
+
+    if (approveAccessRequestError)
+      useErrorToast(
+        InternalErrors.VOLUNTEER_ERRORS.getError(
+          approveAccessRequestError.response?.data.code_error,
+        ),
+      );
+
+    if (rejectAccessRequestError)
+      useErrorToast(
+        InternalErrors.VOLUNTEER_ERRORS.getError(
+          rejectAccessRequestError.response?.data.code_error,
+        ),
+      );
+
+    if (deleteAccessRequestError)
+      useErrorToast(
+        InternalErrors.VOLUNTEER_ERRORS.getError(
+          deleteAccessRequestError.response?.data.code_error,
+        ),
+      );
+  }, [
+    accessCodeRequestError,
+    approveAccessRequestError,
+    rejectAccessRequestError,
+    deleteAccessRequestError,
+  ]);
 
   const onTabClick = (tab: RequestStatus) => {
     setRequestStatus(tab);
@@ -138,28 +176,28 @@ const AccessRequests = () => {
   };
 
   const onReject = (row: IAccessRequest) => {
-    alert(`Not yet implemented, ${row}`);
+    setShowReject(row);
   };
 
   const onDelete = (row: IAccessRequest) => {
-    alert(`Not yet implemented, ${row}`);
+    deleteAccessRequestMutation(row.id);
   };
 
   // menu items
   const buildPendingAccessRequestsActionColumn = (): TableColumn<IAccessRequest> => {
     const pendingAccessRequestsMenuItems = [
       {
-        label: i18n.t('access_requests:modal.view'),
+        label: i18n.t('access_requests:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
       {
-        label: i18n.t('access_requests:modal.approve'),
+        label: i18n.t('access_requests:popover.approve'),
         icon: <CheckIcon className="menu-icon" />,
         onClick: onApprove,
       },
       {
-        label: i18n.t('access_requests:modal.reject'),
+        label: i18n.t('access_requests:popover.reject'),
         icon: <XMarkIcon className="menu-icon" />,
         onClick: onReject,
         alert: true,
@@ -179,12 +217,12 @@ const AccessRequests = () => {
   const buildRejectedAccessRequestsActionColumn = (): TableColumn<IAccessRequest> => {
     const rejectedAccessRequestsMenuItems = [
       {
-        label: i18n.t('access_requests:modal.view'),
+        label: i18n.t('access_requests:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
       {
-        label: i18n.t('access_requests:modal.delete'),
+        label: i18n.t('access_requests:popover.delete'),
         icon: <TrashIcon className="menu-icon" />,
         onClick: onDelete,
         alert: true,
@@ -210,8 +248,28 @@ const AccessRequests = () => {
     );
   };
 
+  const closeModal = () => {
+    setShowReject(null);
+  };
+
+  const confirmModal = (rejectMessage: string) => {
+    if (showReject)
+      rejectAccessRequestMutation({
+        id: showReject.id,
+        rejectReason: rejectMessage ? rejectMessage : '',
+      });
+  };
+
   return (
     <PageLayout>
+      {showReject && (
+        <RejectTextareaModal
+          label={i18n.t('reject_modal:description')}
+          title={i18n.t('reject_modal:title')}
+          onClose={closeModal}
+          onConfirm={confirmModal}
+        />
+      )}
       <h1>{i18n.t('side_menu:options.volunteers.access_requests')}</h1>
       <Tabs<RequestStatus> tabs={AccessRequestsTabs} onClick={onTabClick}>
         <Card>
