@@ -69,16 +69,18 @@ export class ExceptionsFilter implements ExceptionFilter {
   ): void {
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
       this.logger.error(
-        `End Request for ${request.path}`,
-        `method=${request.method} status=${status} code_error=${
+        `End Request for ${request.path} method=${
+          request.method
+        } status=${status} code_error=${
           message?.code_error ? message.code_error : null
         } message=${message?.message ? message.message : null}`,
         exception?.stack,
       );
     } else {
       this.logger.warn(
-        `End Request for ${request.path}`,
-        `method=${request.method} status=${status} code_error=${
+        `End Request for ${request.path} method=${
+          request.method
+        } status=${status} code_error=${
           message?.code_error ? message.code_error : null
         } message=${message?.message ? message.message : null}`,
       );
