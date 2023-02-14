@@ -15,7 +15,6 @@ import {
   NoSymbolIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import { useVolunteersQuery } from '../services/volunteers/volunteers.service';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
@@ -25,6 +24,8 @@ import { formatDate } from '../common/utils/utils';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
+import { useVolunteersQuery } from '../services/volunteer/volunteer.service';
+import PageHeader from '../components/PageHeader';
 
 export interface IVolunteer {
   id: string;
@@ -64,7 +65,7 @@ const ActiveVolunteersTableHeader = [
     name: i18n.t('general:name'),
     sortable: true,
     cell: (row: IVolunteer) => (
-      <MediaCell logo={row.profilePicture} name={row.name} branch={row.branch} />
+      <MediaCell logo={row.profilePicture} title={row.name} subtitle={row.branch} />
     ),
   },
   {
@@ -81,7 +82,7 @@ const ActiveVolunteersTableHeader = [
   },
   {
     id: 'contact',
-    name: i18n.t('general:contact_data'),
+    name: i18n.t('general:contact'),
     sortable: true,
     selector: (row: IVolunteer) => `${row.email}\n${row.phone}`,
   },
@@ -138,7 +139,7 @@ const Volunteers = () => {
   useEffect(() => {
     if (volunteersError)
       useErrorToast(
-        InternalErrors.VOLUNTEERS_ERRORS.getError(volunteersError.response?.data.code_error),
+        InternalErrors.VOLUNTEER_ERRORS.getError(volunteersError.response?.data.code_error),
       );
   }, [volunteersError]);
 
@@ -260,7 +261,7 @@ const Volunteers = () => {
 
   return (
     <PageLayout>
-      <h1>{i18n.t('side_menu:options.volunteers.list')}</h1>
+      <PageHeader>{i18n.t('side_menu:options.volunteers_list')}</PageHeader>
       <Tabs<VolunteerStatus> tabs={VolunteersTabs} onClick={onTabClick}>
         <Card>
           <CardHeader>
