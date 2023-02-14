@@ -183,8 +183,7 @@
   @apply bg-cool-gray-50 text-sm text-cool-gray-900 border-cool-gray-300;
 }
 
-.rdt_TableHeadRow > .rdt_TableCol > div,
-a {
+.rdt_TableHeadRow > .rdt_TableCol > div {
   @apply py-3.5 pl-2 pr-3 font-bold;
 }
 

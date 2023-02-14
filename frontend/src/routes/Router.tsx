@@ -11,6 +11,7 @@ import RegistrationRequests from '../pages/AccessRequests';
 import AccessCodes from '../pages/AccesCodes';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
+import Volunteers from '../pages/Volunteers';
 import AddAccessCode from '../pages/AddAccessCode';
 
 const Router = () => {
@@ -24,13 +25,16 @@ const Router = () => {
             <Route index element={<Organization />} />
             <Route path="edit" element={<EditOrganization />} />
           </Route>
-          <Route path="volunteers/access-codes" element={<Outlet />}>
-            <Route index element={<AccessCodes />} />
-            <Route path="add" element={<AddAccessCode />} />
-            <Route path="edit/:id" element={<EditAccessCode />} />
+          <Route path="volunteers" element={<Outlet />}>
+            <Route index element={<Volunteers />} />
+            <Route path="access-codes" element={<Outlet />}>
+              <Route index element={<AccessCodes />} />
+              <Route path="add" element={<AddAccessCode />} />
+              <Route path="edit/:id" element={<EditAccessCode />} />
+            </Route>
+            <Route path="requests" element={<RegistrationRequests />} />
+            <Route path="requests/:id" element={<AccessRequest />} />
           </Route>
-          <Route path="volunteers/requests" element={<RegistrationRequests />} />
-          <Route path="volunteers/requests/:id" element={<AccessRequest />} />
         </Route>
       </Routes>
     </BrowserRouter>
