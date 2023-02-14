@@ -11,7 +11,6 @@ import {
   ArrowDownTrayIcon,
   EyeIcon,
   XMarkIcon,
-  TrashIcon,
   PauseCircleIcon,
   NoSymbolIcon,
   CheckCircleIcon,
@@ -48,14 +47,14 @@ export interface IVolunteer {
 
 export enum VolunteerStatus {
   ACTIVE = 'active',
-  BLOCKED = 'blocked',
   ARCHIVED = 'archived',
+  BLOCKED = 'blocked',
 }
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
-  { key: VolunteerStatus.BLOCKED, value: i18n.t('volunteers:tabs.blocked') },
   { key: VolunteerStatus.ARCHIVED, value: i18n.t('volunteers:tabs.archived') },
+  { key: VolunteerStatus.BLOCKED, value: i18n.t('volunteers:tabs.blocked') },
 ];
 
 const ActiveVolunteersTableHeader = [
@@ -239,15 +238,9 @@ const Volunteers = () => {
   const buildBlockedVolunteersActionColumn = (): TableColumn<IVolunteer> => {
     const blockedVolunteersMenuItems = [
       {
-        label: i18n.t('registration_requests:modal.view'),
+        label: i18n.t('volunteers:modal.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
-      },
-      {
-        label: i18n.t('registration_requests:modal.delete'),
-        icon: <TrashIcon className="menu-icon" />,
-        onClick: onDelete,
-        alert: true,
       },
     ];
 
@@ -272,14 +265,15 @@ const Volunteers = () => {
 
   return (
     <PageLayout>
-      <h1>{i18n.t('side_menu:options.volunteers.access_requests')}</h1>
+      <h1>{i18n.t('side_menu:options.volunteers.list')}</h1>
       <Tabs<VolunteerStatus> tabs={VolunteersTabs} onClick={onTabClick}>
         <Card>
           <CardHeader>
+            <h2>{i18n.t(`volunteers:tabs.${volunteerStatus}`)}</h2>
             <Button
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-              className="btn-outline-secondary ml-auto"
+              className="btn-outline-secondary"
               onClick={() => alert('Not implemented')}
             />
           </CardHeader>
