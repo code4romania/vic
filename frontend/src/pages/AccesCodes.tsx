@@ -65,7 +65,11 @@ const AccessCodeTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    cell: (row: IAccessCode) => <a>{row.createdBy.name}</a>,
+    cell: (row: IAccessCode) => (
+      <div>
+        <a>{row.createdBy.name}</a>
+      </div>
+    ),
   },
 ];
 

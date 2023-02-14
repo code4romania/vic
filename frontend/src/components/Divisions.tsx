@@ -65,7 +65,11 @@ export const DivisionTableHeader = [
     name: i18n.t('general:created_by'),
     sortable: true,
     minWidth: '10rem',
-    cell: (row: IDivision) => <a>{row.createdBy.name}</a>,
+    cell: (row: IDivision) => (
+      <div>
+        <a>{row.createdBy.name}</a>
+      </div>
+    ),
   },
   {
     id: 'createdOn',
