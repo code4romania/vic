@@ -1,6 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
 
+import { version } from '../../../package.json';
+
 @Controller('public')
 export class PublicController {
   @SkipThrottle()
@@ -12,6 +14,6 @@ export class PublicController {
   @SkipThrottle()
   @Get('version')
   version(): string {
-    return process.env.npm_package_version;
+    return version;
   }
 }
