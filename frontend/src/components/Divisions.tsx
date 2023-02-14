@@ -23,6 +23,7 @@ import {
 } from '../services/division/division.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import CellLayout from '../layouts/CellLayout';
 
 export enum DivisionType {
   BRANCH = 'Branch',
@@ -66,9 +67,9 @@ export const DivisionTableHeader = [
     sortable: true,
     minWidth: '10rem',
     cell: (row: IDivision) => (
-      <div>
+      <CellLayout>
         <a>{row.createdBy.name}</a>
-      </div>
+      </CellLayout>
     ),
   },
   {
