@@ -5,22 +5,22 @@ import { IRoute } from '../interfaces/route.interface';
 export const ROUTES: IRoute[] = [
   { id: 0, name: i18n.t('side_menu:options.dashboard'), href: '', icon: RectangleGroupIcon },
   { id: 1, name: i18n.t('side_menu:options.organization'), href: 'organization', icon: SunIcon },
-  { id: 2, name: i18n.t('side_menu:options.volunteers.main'), href: 'volunteers', icon: UsersIcon },
+  { id: 2, name: i18n.t('side_menu:options.volunteers'), href: 'volunteers', icon: UsersIcon },
   {
     id: 3,
-    name: i18n.t('side_menu:options.volunteers.list'),
+    name: i18n.t('side_menu:options.volunteers_list'),
     href: 'volunteers',
     icon: UsersIcon,
   },
   {
     id: 4,
-    name: i18n.t('side_menu:options.volunteers.access_codes'),
+    name: i18n.t('side_menu:options.access_codes'),
     href: 'volunteers/access-codes',
     icon: UsersIcon,
   },
   {
     id: 5,
-    name: i18n.t('side_menu:options.volunteers.access_requests'),
+    name: i18n.t('side_menu:options.access_requests'),
     href: 'volunteers/requests',
     icon: UsersIcon,
   },

@@ -15,6 +15,7 @@
     "save_changes": "Salveaza modificari",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
+    "contact": "Date contact",
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
       "unknown": "A aparut o eroare necunoscuta",
@@ -46,12 +47,9 @@
     "options": {
       "dashboard": "Dashboard",
       "organization": "Structura ONG",
-      "volunteers": {
-        "main": "Voluntari",
-        "list": "Listă voluntari",
-        "access_requests": "Cereri de înscriere",
-        "access_codes": "Coduri de acces"
-      },
+      "volunteers": "Voluntari",
+      "volunteers_list": "Listă voluntari",
+      "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces"
     },
     "collapse": "Restrange meniul"
@@ -137,7 +135,6 @@
   "access_requests": {
     "date": "Data cerere acces",
     "rejected_date": "Data respingere",
-    "contact": "Date contact",
     "tabs": {
       "requests": "Cereri",
       "rejected_requests": "Cereri respinse"
@@ -155,5 +152,24 @@
   "access_codes": {
     "name": "Cod acces",
     "create": "Creeaza cod nou"
+  },
+  "volunteers": {
+    "department_and_role": "Departament si rol",
+    "location": "Locatie voluntar",
+    "archived_from": "Arhivat din",
+    "blocked_date": "Data blocarii",
+    "tabs": {
+      "active": "Voluntari activi",
+      "archived": "Voluntari arhivati",
+      "blocked": "Voluntari blocati"
+    },
+    "modal": {
+      "view": "Vizualizează profil",
+      "archive": "Arhivează voluntar",
+      "activate": "Reactivează voluntar",
+      "delete": "Sterge din ONG",
+      "block": "Blochează voluntar"
+    },
+    "errors": {}
   }
 }

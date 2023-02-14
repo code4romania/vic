@@ -10,6 +10,7 @@ import RegistrationRequests from '../pages/AccessRequests';
 import AccessCodes from '../pages/AccesCodes';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
+import Volunteers from '../pages/Volunteers';
 
 const Router = () => {
   return (
@@ -22,9 +23,12 @@ const Router = () => {
             <Route index element={<Organization />} />
             <Route path="edit" element={<EditOrganization />} />
           </Route>
-          <Route path="volunteers/access-codes" element={<AccessCodes />} />
-          <Route path="volunteers/requests" element={<RegistrationRequests />} />
-          <Route path="volunteers/requests/:id" element={<AccessRequest />} />
+          <Route path="volunteers" element={<Outlet />}>
+            <Route index element={<Volunteers />} />
+            <Route path="access-codes" element={<AccessCodes />} />
+            <Route path="requests" element={<RegistrationRequests />} />
+            <Route path="requests/:id" element={<AccessRequest />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

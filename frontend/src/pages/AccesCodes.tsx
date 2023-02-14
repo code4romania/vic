@@ -13,6 +13,7 @@ import DataTableComponent from '../components/DataTableComponent';
 import Popover from '../components/Popover';
 import { useErrorToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
+import CellLayout from '../layouts/CellLayout';
 import PageLayout from '../layouts/PageLayout';
 import { useAccessCodesQuery } from '../services/organization/organization.service';
 
@@ -65,7 +66,11 @@ const AccessCodeTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    cell: (row: IAccessCode) => <a>{row.createdBy.name}</a>,
+    cell: (row: IAccessCode) => (
+      <CellLayout>
+        <a>{row.createdBy.name}</a>
+      </CellLayout>
+    ),
   },
 ];
 
