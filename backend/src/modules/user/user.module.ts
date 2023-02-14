@@ -1,25 +1,18 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AdminUserEntity } from './entities/admin-user.entity';
-import { UserEntity } from './entities/user.entity';
+import {
+  AdminUserEntity,
+  RegularUserEntity,
+  UserEntity,
+} from './entities/user.entity';
 import { AdminUserRepositoryService } from './repositories/admin-user.repository';
-import { VolunteerUserEntity } from './entities/volunteer-user.entity';
-import { UserRepositoryService } from './repositories/user.repository';
 import { UserFacadeService } from './services/user-facade.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      UserEntity,
-      AdminUserEntity,
-      VolunteerUserEntity,
-    ]),
+    TypeOrmModule.forFeature([UserEntity, AdminUserEntity, RegularUserEntity]),
   ],
-  providers: [
-    UserRepositoryService,
-    UserFacadeService,
-    AdminUserRepositoryService,
-  ],
+  providers: [UserFacadeService, AdminUserRepositoryService],
   exports: [UserFacadeService],
 })
 export class UserModule {}

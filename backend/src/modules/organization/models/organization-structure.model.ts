@@ -1,4 +1,5 @@
 import { IBaseModel } from 'src/common/interfaces/base.model';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
 import { OrganizationStructureType } from '../enums/organization-structure-type.enum';
 
@@ -6,9 +7,8 @@ export interface IOrganizationStructureModel extends IBaseModel {
   id: string;
   name: string;
   type: OrganizationStructureType;
-
   members: number; // No of members in the structure
-  createdBy: { id: string; name: string }; // TODO: @birloiflorian refactor to use IAdminUser. Here we put the entire object and we pick what we need in presenter.
+  createdBy: IAdminUserModel;
   organizationId?: string;
 }
 
@@ -39,10 +39,7 @@ export class OrganizationStructureTransformer {
       name: entity.name,
       type: entity.type,
       members: 0, // TODO: to be implemented when we have the VolunteerOrganization relation
-      createdBy: {
-        id: entity.adminUser?.id,
-        name: entity.adminUser?.user?.name,
-      },
+      createdBy: entity.createdBy,
       organizationId: entity.organizationId,
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,
@@ -55,7 +52,7 @@ export class OrganizationStructureTransformer {
     const entity = new OrganizationStructureEntity();
     entity.name = model.name;
     entity.type = model.type;
-    entity.createdBy = model.createdById;
+    entity.createdById = model.createdById;
     entity.organizationId = model.organizationId;
     return entity;
   }

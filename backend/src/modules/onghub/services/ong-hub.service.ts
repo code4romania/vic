@@ -23,11 +23,10 @@ export class OngHubService {
 
   // This should be called on first user login where there is no data related to the user an it's organization in the TEO DB.
   public async getUserAndOrganizationDataFromOngHub(
-    cognito_user_id: string,
     access_token: string,
   ): Promise<IUserWithOrganizationModel> {
     const request$ = this.httpService.get(
-      `${this.configService.get('ONG_HUB_API')}api/ong-user/${cognito_user_id}`,
+      `${this.configService.get('ONG_HUB_API')}api/ong-user`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,

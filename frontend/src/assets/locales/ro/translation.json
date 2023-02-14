@@ -1,5 +1,6 @@
 {
   "general": {
+    "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "name": "Nume",
     "created_on": "Data crearii",
@@ -9,6 +10,7 @@
     "view": "Vizualizeaza",
     "edit": "Editeaza {{item}}",
     "delete": "Sterge",
+    "location": "Locatie",
     "back": "Inapoi",
     "save_changes": "Salveaza modificari",
     "description": "Descriere",
@@ -50,11 +52,13 @@
     "options": {
       "dashboard": "Dashboard",
       "organization": "Structura ONG",
-      "access_codes": "Coduri de acces",
       "volunteers": {
-        "name": "Voluntari",
-        "access_requests": "Cereri de inscriere"
-      }
+        "main": "Voluntari",
+        "list": "Listă voluntari",
+        "access_requests": "Cereri de înscriere",
+        "access_codes": "Coduri de acces"
+      },
+      "access_codes": "Coduri de acces"
     },
     "collapse": "Restrange meniul"
   },
@@ -134,6 +138,24 @@
   "pagination": {
     "rows_per_page": "Randuri pe pagina",
     "range_separator_text": "din"
+  },
+  "access_requests": {
+    "date": "Data cerere acces",
+    "rejected_date": "Data respingere",
+    "contact": "Date contact",
+    "tabs": {
+      "requests": "Cereri",
+      "rejected_requests": "Cereri respinse"
+    },
+    "modal": {
+      "view": "Vizualizeaza aplicare",
+      "approve": "Aprobă cerere",
+      "reject": "Respinge cerere",
+      "delete": "Sterge din listă"
+    },
+    "errors": {
+      "no_data": "Nu s-au putut incarca cererile de inscriere"
+    }
   },
   "access_codes": {
     "name": "Cod acces",

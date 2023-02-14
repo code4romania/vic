@@ -16,6 +16,7 @@ resource "aws_apprunner_service" "backend" {
       image_configuration {
         runtime_environment_variables = {
           ONGHUB_URL     = "https://${local.frontend_domain}"
+          ONG_HUB_API    = "https://onghub-api.wearetribus.com/"
           ENCRYPTION_KEY = random_password.encryption_key.result
           NODE_ENV       = var.env
           PORT           = "80"
@@ -24,9 +25,12 @@ resource "aws_apprunner_service" "backend" {
           COGNITO_REGION_MOBILE       = var.region
           COGNITO_USER_POOL_ID_MOBILE = aws_cognito_user_pool.pool.id
 
-          COGNITO_REGION_WEB       = var.region
-          COGNITO_CLIENT_ID_WEB    = var.onghub_cognito_client_id
-          COGNITO_USER_POOL_ID_WEB = var.onghub_cognito_user_pool_id
+          # COGNITO_REGION_WEB       = var.region
+          # COGNITO_CLIENT_ID_WEB    = var.onghub_cognito_client_id
+          # COGNITO_USER_POOL_ID_WEB = var.onghub_cognito_user_pool_id
+          COGNITO_REGION_WEB       = "eu-central-1"
+          COGNITO_CLIENT_ID_WEB    = "6t6smhu23khucipd6d7kn8brbl"
+          COGNITO_USER_POOL_ID_WEB = "eu-central-1_tyLzpvQsq"
 
           DATABASE_HOST     = aws_db_instance.db_instance.address
           DATABASE_PORT     = aws_db_instance.db_instance.port

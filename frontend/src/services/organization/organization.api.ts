@@ -2,7 +2,7 @@ import API from '../api';
 import { IOrganization } from '../../components/OrganizationProfile';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { IAccessCode } from '../../pages/ViewAccesCodes';
+import { IAccessCode } from '../../pages/AccesCodes';
 
 export const getOrganization = async (): Promise<IOrganization> => {
   return API.get(`/organization`).then((res) => res.data);

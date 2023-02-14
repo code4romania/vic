@@ -70,7 +70,7 @@ const AccessCodeTableHeader = [
   },
 ];
 
-const ViewAccessCodes = () => {
+const AccessCodes = () => {
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
@@ -194,4 +194,4 @@ const ViewAccessCodes = () => {
   );
 };
 
-export default ViewAccessCodes;
+export default AccessCodes;

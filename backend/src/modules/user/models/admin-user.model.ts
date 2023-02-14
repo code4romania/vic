@@ -1,45 +1,44 @@
-import { AdminUserEntity } from '../entities/admin-user.entity';
-import { UserType } from '../enums/user-type.enum';
-import {
-  ICreateUserModel,
-  IUserModel,
-  UserTransformer,
-  IFindUserModel,
-} from './user.model';
+import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
+import { AdminUserEntity } from '../entities/user.entity';
+
+export interface IUserModel {
+  id: string;
+  cognitoId: string;
+  name: string;
+  email: string;
+  phone: string;
+  // type: UserType;
+}
 
 export interface IAdminUserModel extends IUserModel {
   organizationId: string;
 }
 
-export type ICreateAdminUserModel = Omit<ICreateUserModel, 'type'> & {
-  organizationId: string;
-};
+export type ICreateAdminUserModel = Omit<IAdminUserModel, 'id'>;
 
-export type IFindAdminUserModel = Partial<
-  IFindUserModel & Pick<IAdminUserModel, 'organizationId'>
->;
+export type IFindAdminUserModel =
+  | Partial<IAdminUserModel>
+  | ArrayOfPropetyType<IAdminUserModel>;
 
 export class AdminUserTransformer {
   static fromEntity(entity: AdminUserEntity): IAdminUserModel {
-    const { organizationId, user } = entity;
     return {
-      ...UserTransformer.fromEntity(user),
-      organizationId,
       id: entity.id,
+      cognitoId: entity.cognitoId,
+      email: entity.email,
+      phone: entity.phone,
+      name: entity.name,
+      organizationId: entity.organizationId,
     };
   }
 
   static toEntity(model: ICreateAdminUserModel): AdminUserEntity {
-    // create user entity
-    const { organizationId, ...userModel } = model;
-    const userEntity = UserTransformer.toEntity({
-      ...userModel,
-      type: UserType.ADMIN,
-    });
-    // create admin entity
     const entity = new AdminUserEntity();
-    entity.organizationId = organizationId;
-    entity.user = userEntity;
+    entity.cognitoId = model.cognitoId;
+    entity.name = model.name;
+    entity.email = model.email;
+    entity.phone = model.phone;
+    entity.organizationId = model.organizationId;
     return entity;
   }
 }

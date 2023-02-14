@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AdminUserEntity } from '../entities/admin-user.entity';
+import { AdminUserEntity } from '../entities/user.entity';
 import { IAdminUserRepository } from '../interfaces/admin-user-repository.interface';
 import {
   AdminUserTransformer,
@@ -32,21 +32,9 @@ export class AdminUserRepositoryService implements IAdminUserRepository {
     return AdminUserTransformer.fromEntity(adminUserEntity);
   }
 
-  public async find(
-    options: Partial<IFindAdminUserModel>,
-  ): Promise<IAdminUserModel> {
-    // separate the user conditions from the admin user conditions
-    const { organizationId, id, ...user } = options;
-
+  public async find(options: IFindAdminUserModel): Promise<IAdminUserModel> {
     const userEntity = await this.adminUserRepository.findOne({
-      where: {
-        user,
-        organizationId,
-        id,
-      },
-      relations: {
-        user: true,
-      },
+      where: options,
     });
 
     // return user model
