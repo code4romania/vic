@@ -16,7 +16,7 @@ resource "aws_apprunner_service" "backend" {
       image_configuration {
         runtime_environment_variables = {
           ONGHUB_URL     = "https://${local.frontend_domain}"
-          ONG_HUB_API    = "https://onghub-api.wearetribus.com/"
+          ONG_HUB_API    = "https://pesttkqqym.eu-west-1.awsapprunner.com/"
           ENCRYPTION_KEY = random_password.encryption_key.result
           NODE_ENV       = var.env
           PORT           = "80"
