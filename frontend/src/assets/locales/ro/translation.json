@@ -175,7 +175,7 @@
       "block": "Blochează voluntar"
     },
     "errors": {
-      "VOL_001": "Nu s-au putut incarca voluntarii"
+      "VOLS_001": "Nu s-au putut incarca voluntarii"
     }
   }
 }

@@ -2,7 +2,7 @@ import i18n from '../../config/i18n';
 import { ErrorClass } from '../base-error.class';
 
 export enum VOLUNTEERS_ERRORS {
-  VOL_001 = 'VOL_001,',
+  VOLS_001 = 'VOLS_001,',
 }
 
 export class VolunteersErrors extends ErrorClass<VOLUNTEERS_ERRORS> {
@@ -10,7 +10,7 @@ export class VolunteersErrors extends ErrorClass<VOLUNTEERS_ERRORS> {
 
   private constructor() {
     super({
-      [VOLUNTEERS_ERRORS.VOL_001]: i18n.t('volunteer:errors.VOL_001'),
+      [VOLUNTEERS_ERRORS.VOLS_001]: i18n.t('volunteers:errors.VOLS_001'),
     });
   }
 
