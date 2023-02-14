@@ -17,6 +17,9 @@ export const getVolunteers = async (
     items: [
       {
         id: '1',
+        city: 'Ciorogarla',
+        county: 'Ilfov',
+        name: 'Nume varianta 1',
         organization: 'Red Cross',
         profilePicture: 'logo.svg',
         role: 'Volunteer',
@@ -34,6 +37,9 @@ export const getVolunteers = async (
       {
         id: '2',
         organization: 'Red Cross',
+        name: 'Gigica',
+        city: 'Ciorogarla',
+        county: 'Ilfov',
         profilePicture: 'logo.svg',
         role: 'Team Lead',
         department: 'Disaster Relief',
@@ -50,6 +56,9 @@ export const getVolunteers = async (
       {
         id: '3',
         organization: 'Red Cross',
+        city: 'Ciorogarla',
+        county: 'Ilfov',
+        name: 'Stefanut',
         profilePicture: 'logo.svg',
         role: 'Volunteer',
         department: 'Disaster Relief',

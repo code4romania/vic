@@ -47,9 +47,7 @@ const PendingAccessRequestsTableHeader = [
     id: 'name',
     name: i18n.t('general:name'),
     sortable: true,
-    cell: (row: IAccessRequest) => (
-      <MediaCell logo={row.logo} name={'aksjdhakjshdkasjh kdadkahs kdhaks kdha skhdk  askadkskh'} />
-    ),
+    cell: (row: IAccessRequest) => <MediaCell logo={row.logo} name={row.name} />,
   },
   {
     id: 'contact',

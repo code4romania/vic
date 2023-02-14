@@ -24,6 +24,7 @@ import { PaginationConfig } from '../common/constants/pagination';
 import { formatDate } from '../common/utils/utils';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import MediaCell from '../components/MediaCell';
 
 export interface IVolunteer {
   id: string;
@@ -63,13 +64,7 @@ const ActiveVolunteersTableHeader = [
     name: i18n.t('general:name'),
     sortable: true,
     cell: (row: IVolunteer) => (
-      <div className="flex items-center gap-3 shrink-0">
-        <img src={row.profilePicture} className="w-10 h-10 logo" alt={`${row.name} picture`} />
-        <div className="flex flex-col gap-1">
-          <small className="font-robotoBold">{row.name}</small>
-          <small>{row.branch}</small>
-        </div>
-      </div>
+      <MediaCell logo={row.profilePicture} name={row.name} branch={row.branch} />
     ),
   },
   {
