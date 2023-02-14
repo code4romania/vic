@@ -25,6 +25,8 @@ import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { RequestStatus } from '../common/enums/request-status.enum';
 import MediaCell from '../components/MediaCell';
+import { useNavigate } from 'react-router-dom';
+import { useApproveAccessRequestMutation } from '../services/volunteer/volunteer.service';
 
 export interface IAccessRequest {
   id: string;
@@ -88,6 +90,8 @@ const AccessRequests = () => {
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
 
+  const navigate = useNavigate();
+
   const {
     data: accessRequests,
     isLoading: isAccessRequestsLoading,
@@ -99,6 +103,8 @@ const AccessRequests = () => {
     orderByColumn,
     orderDirection,
   );
+
+  const { mutateAsync: approveAccessRequestMutation } = useApproveAccessRequestMutation();
 
   useEffect(() => {
     if (accessRequests?.meta) {
@@ -124,11 +130,11 @@ const AccessRequests = () => {
 
   // row actions
   const onView = (row: IAccessRequest) => {
-    alert(`Not yet implemented, ${row}`);
+    navigate(row.id);
   };
 
   const onApprove = (row: IAccessRequest) => {
-    console.log(`Not yet implemented, ${row}`);
+    approveAccessRequestMutation(row.id);
   };
 
   const onReject = (row: IAccessRequest) => {

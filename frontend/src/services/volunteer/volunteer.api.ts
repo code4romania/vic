@@ -1,6 +1,6 @@
 import { Sex } from '../../common/enums/sex.enum';
 import { IAccessRequestDetails } from '../../common/interfaces/access-request.interface';
-// import API from '../api';
+import API from '../api';
 
 export const getAccessRequest = async (id: string): Promise<IAccessRequestDetails> => {
   console.log('id', id);
@@ -17,4 +17,21 @@ export const getAccessRequest = async (id: string): Promise<IAccessRequestDetail
     createdOn: new Date(),
     answers: ['Dog ate my homework', 'Cat ate my homework'],
   });
+};
+
+export const approveAccessRequest = async (id: string): Promise<IAccessRequestDetails> => {
+  return API.patch(`/volunteers/access-request/${id}/approve`).then((res) => res.data);
+};
+
+export const rejectAccessRequest = async (
+  id: string,
+  rejectReason: string,
+): Promise<IAccessRequestDetails> => {
+  return API.patch(`/volunteers/access-request/${id}/reject`, { rejectReason }).then(
+    (res) => res.data,
+  );
+};
+
+export const deleteAccessRequest = async (id: string): Promise<void> => {
+  return API.delete(`/volunteers/access-request/${id}`).then((res) => res.data);
 };
