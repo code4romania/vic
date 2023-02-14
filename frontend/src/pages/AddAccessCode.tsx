@@ -1,4 +1,3 @@
-import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
@@ -16,15 +15,29 @@ import { useCreateAccessCodesMutation } from '../services/organization/organizat
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
+import PageHeader from '../components/PageHeader';
 
 const validationSchema = yup.object({
   code: yup
     .string()
-    .required(`${i18n.t('general:validation.required')}`)
-    .min(2, `${i18n.t('access_codes:validation.min')}`)
-    .max(10, `${i18n.t('access_codes:validation.max')}`)
-    .matches(REGEX.NAME_REGEX, `${i18n.t('general:validation:pattern')}`),
-  startDate: yup.date().required(`${i18n.t('general:validation.required')}`),
+    .required(`${i18n.t('general:validation.required', { field: i18n.t('general:fields.code') })}`)
+    .min(
+      2,
+      `${i18n.t('general:validation.min', { field: i18n.t('general:fields.code'), value: '2' })}`,
+    )
+    .max(
+      10,
+      `${i18n.t('general:validation.max', { field: i18n.t('general:fields.code'), value: '10' })}`,
+    )
+    .matches(
+      REGEX.NAME_REGEX,
+      `${i18n.t('general:validation:pattern', { field: i18n.t('general:fields.code') })}`,
+    ),
+  startDate: yup
+    .date()
+    .required(
+      `${i18n.t('general:validation.required_f', { field: i18n.t('general:fields.start_date') })}`,
+    ),
   endDate: yup.date().optional(),
 });
 
@@ -44,39 +57,30 @@ const AddAccessCode = () => {
   });
 
   const onNavigateBack = () => {
-    navigate(-1);
+    navigate('/volunteers/access-codes');
   };
 
   const onSave = (inputData: AccessCodeFormTypes) => {
-    createAccessCodeMutation(
-      { code: inputData.code, startDate: inputData.startDate, endDate: inputData.endDate },
-      {
-        onError: (error) =>
-          useErrorToast(
-            InternalErrors.ORGANIZATION_ERRORS.getError(error?.response?.data.code_error),
-          ),
-      },
-    );
+    createAccessCodeMutation(inputData, {
+      onError: (error) =>
+        useErrorToast(
+          InternalErrors.ORGANIZATION_ERRORS.getError(error?.response?.data.code_error),
+        ),
+    });
   };
 
   return (
     <PageLayout>
-      <div className="flex flex-row gap-4">
-        <Button
-          className="btn-secondary"
-          label={i18n.t('general:back')}
-          icon={<ChevronLeftIcon className="h-5 w-5" />}
-          onClick={onNavigateBack}
-        />
-        <h1>{i18n.t('general:add', { item: i18n.t('access_codes:name').toLocaleLowerCase() })}</h1>
-      </div>
+      <PageHeader onBackButtonPress={onNavigateBack}>
+        {i18n.t('general:add', { item: i18n.t('access_codes:name').toLocaleLowerCase() })}
+      </PageHeader>
       {isLoading && <LoadingContent />}
       {!isLoading && (
         <Card>
           <CardHeader>
             <h3>{i18n.t('access_codes:name')}</h3>
             <Button
-              label={i18n.t('confirmation:save')}
+              label={i18n.t('general:save_changes')}
               className="btn-primary"
               onClick={handleSubmit(onSave)}
             />

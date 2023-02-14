@@ -17,8 +17,11 @@
     "required": "Campul este obligatoriu",
     "contact": "Date contact",
     "validation": {
-      "pattern": "Numele are un format invalid",
-      "required": "Campul este obligatoriu"
+      "pattern": "{{field}} are un format invalid",
+      "required": "{{field}} este obligatoriu",
+      "required_f": "{{field}} este obligatorie",
+      "min": "{{field}} poate sa aiba minim {{value}} caractere",
+      "max": "{{field}} poate sa aiba maxim {{value}} caractere"
     },
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
@@ -33,12 +36,16 @@
     "phone": "Telefon",
     "email": "Email de contact",
     "availability": "Valabilitate",
-    "uses": "Utilizari"
+    "uses": "Utilizari",
+    "fields": {
+      "description": "Descrierea",
+      "name": "Numele",
+      "code": "Codul",
+      "start_date": "Data de inceput"
+    }
   },
   "confirmation": {
-    "delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
-    "back": "Inapoi",
-    "save": "Salveaza modificari"
+    "delete": "Esti sigur ca doresti stergerea acestui {{item}}?"
   },
   "header": {
     "login": "Login",
@@ -87,11 +94,6 @@
         "role": "Roluri"
       }
     },
-    "form": {
-      "required": "Campul este obligatoriu",
-      "max": "Numele poate sa aiba maxim 20 de caractere",
-      "min": "Numele poate sa aiba minim 2 caractere"
-    },
     "modal": {
       "delete": {
         "title": "Sterge {{division}}",
@@ -125,8 +127,6 @@
     "card_title": "Editează profil organizație",
     "teo_description": "Descrierea organizatiei in TEO",
     "form": {
-      "max": "Descrierea trebuie sa aiba maxim 250 de caractere",
-      "min": "Descrierea trebuie sa aiba minim 50 caractere",
       "description_error": "Actualizarea descrierii a esuat"
     },
     "messages": {
@@ -162,10 +162,6 @@
       "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
       "start_date": "Data inceput valabiliatate*",
       "end_date": "Data final valabilitate"
-    },
-    "validation": {
-      "min": "Numele poate sa aiba minim 2 caractere",
-      "max": "Numele poate sa aiba maxin 10 caractere"
     },
     "errorr": {
       "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",

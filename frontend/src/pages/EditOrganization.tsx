@@ -24,9 +24,25 @@ const schema = yup
   .object({
     description: yup
       .string()
-      .required(`${i18n.t('general:validation.required')}`)
-      .min(50, `${i18n.t('edit_organization:form.min')}`)
-      .max(250, `${i18n.t('edit_organization:form.max')}`),
+      .required(
+        `${i18n.t('general:validation.required_f', {
+          field: i18n.t('general:fields.description'),
+        })}`,
+      )
+      .min(
+        50,
+        `${i18n.t('general:validation.min', {
+          field: i18n.t('general:fields.description'),
+          value: '50',
+        })}`,
+      )
+      .max(
+        250,
+        `${i18n.t('general:validation.max', {
+          field: i18n.t('general:fields.description'),
+          value: '250',
+        })}`,
+      ),
   })
   .required();
 

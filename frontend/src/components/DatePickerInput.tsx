@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-interface DatePickerInputProps {
+export interface DatePickerInputProps {
   name?: string;
   placeholder?: string;
   defaultValue?: string;

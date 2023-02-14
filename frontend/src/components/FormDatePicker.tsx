@@ -1,28 +1,20 @@
-import React, { SyntheticEvent } from 'react';
-import DatePickerInput from './DatePickerInput';
+import React from 'react';
+import DatePickerInput, { DatePickerInputProps } from './DatePickerInput';
 
-interface DatePickerFormProps {
+interface FormDatePickerProps extends DatePickerInputProps {
   label?: string;
-  name?: string;
-  placeholder?: string;
-  defaultValue?: string;
-  minDate?: Date;
-  maxDate?: Date;
   error?: string;
-  onChange: (date: Date | null, event: SyntheticEvent<Date, Event> | undefined) => void;
-  value?: Date;
-  id?: string;
   disabled?: boolean;
 }
 
-const DatePickerForm = ({
+const FormDatePicker = ({
   label,
   placeholder,
   onChange,
   value,
   error,
   ...props
-}: DatePickerFormProps) => {
+}: FormDatePickerProps) => {
   return (
     <div className="relative w-full">
       {label && <label htmlFor={props?.id}>{label}</label>}
@@ -38,4 +30,4 @@ const DatePickerForm = ({
   );
 };
 
-export default DatePickerForm;
+export default FormDatePicker;

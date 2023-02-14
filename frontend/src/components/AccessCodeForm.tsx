@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl, UseFormReset } from 'react-hook-form';
 import i18n from '../common/config/i18n';
 import { IAccessCode } from '../pages/AccesCodes';
-import DatePickerForm from './DatePickerForm';
+import FormDatePicker from './FormDatePicker';
 import FormInput from './FormInput';
 
 interface AccessCodeFormProps {
@@ -55,7 +55,7 @@ const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: Access
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <DatePickerForm
+              <FormDatePicker
                 name="startDate"
                 label={i18n.t('access_codes:form.start_date') as string}
                 onChange={onChange}
@@ -72,7 +72,7 @@ const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: Access
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <DatePickerForm
+              <FormDatePicker
                 name="endDate"
                 label={i18n.t('access_codes:form.end_date') as string}
                 onChange={onChange}
