@@ -19,6 +19,8 @@ import { GetAllOrganizationStructureUseCase } from './organization/organization-
 import { UpdateOrganizationStructureUseCase } from './organization/organization-structure/update-organization-structure.usecase';
 import { UpdateOrganizationDescriptionUseCaseService } from './organization/update-organization-description.usecase';
 import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
+import { ApproveAccessRequestUseCase } from './access-request/approve-access-request.usecase';
+import { RejectAccessRequestUseCase } from './access-request/reject-access-request.usecase';
 
 @Module({
   imports: [
@@ -49,6 +51,8 @@ import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
     CreateAccessRequestUseCase,
     GetAccessRequestUseCase,
     DeleteAccessRequestUseCase,
+    ApproveAccessRequestUseCase,
+    RejectAccessRequestUseCase,
   ],
   exports: [
     // Organization
@@ -71,6 +75,8 @@ import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
     CreateAccessRequestUseCase,
     GetAccessRequestUseCase,
     DeleteAccessRequestUseCase,
+    ApproveAccessRequestUseCase,
+    RejectAccessRequestUseCase,
   ],
 })
 export class UseCaseModule {}

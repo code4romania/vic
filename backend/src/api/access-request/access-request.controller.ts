@@ -11,10 +11,11 @@ import { GetAccessRequestUseCase } from 'src/usecases/access-request/get-access-
 import { RejectAccessRequestUseCase } from 'src/usecases/access-request/reject-access-request.usecase';
 import { RejectAccessRequestDto } from './dto/reject-access-request.dto';
 import { AccessRequestPresenter } from './presenters/access-request.presenter';
+import { AccessRequestGuard } from './guards/access-request.guard';
 
-@UseGuards(WebJwtAuthGuard)
-@Controller('access-code')
-export class AccessCodeController {
+@UseGuards(WebJwtAuthGuard, AccessRequestGuard)
+@Controller('access-request')
+export class AccessRequestController {
   constructor(
     private readonly getAccessRequestUseCase: GetAccessRequestUseCase,
     private readonly approveAccessRequestUseCase: ApproveAccessRequestUseCase,
