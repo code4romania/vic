@@ -1,3 +1,4 @@
+import { OneOf } from 'src/common/helpers/typescript-extends';
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
@@ -25,10 +26,19 @@ export type CreateAccessRequestModel = Pick<
   'answers' | 'organizationId'
 > & { requestedById: string };
 
-export type UpdateAccessRequestModel = Pick<
-  IAccessRequestModel,
-  'id' | 'status' | 'rejectionReason'
-> & { updatedById: string };
+export type ApproveAccessRequestModel = Pick<IAccessRequestModel, 'id'> & {
+  updatedById: string;
+};
+
+export type RejectAccessRequestModel = Pick<IAccessRequestModel, 'id'> & {
+  updatedById: string;
+  rejectionReason?: string;
+};
+
+export type UpdateAccessRequestModel = OneOf<
+  [ApproveAccessRequestModel, RejectAccessRequestModel]
+> &
+  Pick<IAccessRequestModel, 'status'>;
 
 export type FindAccessRequestModel = Partial<
   Pick<IAccessRequestModel, 'id' | 'organizationId' | 'status'>

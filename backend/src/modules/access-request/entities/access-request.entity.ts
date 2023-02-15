@@ -11,7 +11,6 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Unique,
 } from 'typeorm';
 import { AccessRequestStatus } from '../enums/access-request-status.enum';
 import { IAccessRequestQA } from '../model/access-request.model';

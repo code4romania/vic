@@ -4,6 +4,7 @@ export enum AccessRequestsExceptionCodes {
   ACCESS_REQUEST_001 = 'ACCESS_REQUEST_001',
   ACCESS_REQUEST_002 = 'ACCESS_REQUEST_002',
   ACCESS_REQUEST_003 = 'ACCESS_REQUEST_003',
+  ACCESS_REQUEST_004 = 'ACCESS_REQUEST_004',
 }
 
 type AccessRequestExceptionCodeType = keyof typeof AccessRequestsExceptionCodes;
@@ -25,5 +26,10 @@ export const AccessRequestExceptionMessages: Record<
   [AccessRequestsExceptionCodes.ACCESS_REQUEST_003]: {
     code_error: AccessRequestsExceptionCodes.ACCESS_REQUEST_003,
     message: 'Access Request must be in status REJECTED to allow deletion.',
+  },
+  [AccessRequestsExceptionCodes.ACCESS_REQUEST_004]: {
+    code_error: AccessRequestsExceptionCodes.ACCESS_REQUEST_004,
+    message:
+      'Access Request must be in PENDING status to allow approval/rejection.',
   },
 };
