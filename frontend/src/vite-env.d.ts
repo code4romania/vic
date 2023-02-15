@@ -8,3 +8,5 @@ interface ImportMetaEnv {
   readonly VITE_USER_POOL_CLIENT_ID: string;
   readonly VITE_COGNITO_OAUTH_DOMAIN: string;
 }
+
+declare const APP_VERSION: string;
