@@ -31,7 +31,7 @@ export interface IAccessCode {
 const AccessCodeTableHeader = [
   {
     id: 'name',
-    name: i18n.t('access_codes:name'),
+    name: i18n.t('access_code:name'),
     sortable: true,
     grow: 1,
     minWidth: '5rem',
@@ -169,14 +169,14 @@ const AccessCodes = () => {
           <h1>{i18n.t('side_menu:options.access_codes')}</h1>
           <Button
             className="btn-primary"
-            label={i18n.t('access_codes:create')}
+            label={i18n.t('access_code:create')}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
           />
         </div>
         <Card>
           <CardHeader>
-            <h3>{i18n.t('side_menu:options.access_codes')}</h3>
+            <h3 className="font-titilliumBold">{i18n.t('side_menu:options.access_codes')}</h3>
           </CardHeader>
           <CardBody>
             <DataTableComponent<IAccessCode>

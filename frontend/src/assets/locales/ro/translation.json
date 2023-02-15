@@ -16,13 +16,6 @@
     "description": "Descriere",
     "required": "Campul este obligatoriu",
     "contact": "Date contact",
-    "validation": {
-      "pattern": "{{field}} are un format invalid",
-      "required": "{{field}} este obligatoriu",
-      "required_f": "{{field}} este obligatorie",
-      "min": "{{field}} poate sa aiba minim {{value}} caractere",
-      "max": "{{field}} poate sa aiba maxim {{value}} caractere"
-    },
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
       "unknown": "A aparut o eroare necunoscuta",
@@ -37,15 +30,7 @@
     "email": "Email de contact",
     "availability": "Valabilitate",
     "uses": "Utilizari",
-    "fields": {
-      "description": "Descrierea",
-      "name": "Numele",
-      "code": "Codul",
-      "start_date": "Data de inceput"
-    }
-  },
-  "confirmation": {
-    "delete": "Esti sigur ca doresti stergerea acestui {{item}}?"
+    "confirm_delete": "Esti sigur ca doresti stergerea acestui {{item}}?"
   },
   "header": {
     "login": "Login",
@@ -80,6 +65,25 @@
       "VOL_001": "Nu s-a putut incarca cererea voluntarului"
     }
   },
+  "volunteers": {
+    "department_and_role": "Departament si rol",
+    "location": "Locatie voluntar",
+    "archived_from": "Arhivat din",
+    "blocked_date": "Data blocarii",
+    "tabs": {
+      "active": "Voluntari activi",
+      "archived": "Voluntari arhivati",
+      "blocked": "Voluntari blocati"
+    },
+    "modal": {
+      "view": "Vizualizează profil",
+      "archive": "Arhivează voluntar",
+      "activate": "Reactivează voluntar",
+      "delete": "Sterge din ONG",
+      "block": "Blochează voluntar"
+    },
+    "errors": {}
+  },
   "division": {
     "members": "Membri",
     "entity": {
@@ -104,6 +108,14 @@
       "add": "{{division}} adaugata cu succes",
       "edit": "{{division}} actualizata cu succes"
     },
+    "form": {
+      "name": {
+        "required": "Numele este obligatoriu",
+        "min": "Numele poate sa aiba minim {{value}} caractere",
+        "max": "Numele poate sa aiba maxim {{value}} caractere",
+        "pattern": "Numele are un format invalid"
+      }
+    },
     "errors": {
       "delete": "Eroare la stergerea {{division}}",
       "ORGANIZATION_STRUCTURE_001": "Nu exista structura organizationala cu acest nume",
@@ -111,26 +123,30 @@
     }
   },
   "organization": {
-    "title": "Profil organizație",
+    "title": {
+      "view": "Profil organizație",
+      "edit": "Editare profil",
+      "card": "Editează profil organizație"
+    },
     "subtitle": "Datele sunt preluate din ONGHub.",
     "logo": "Logo organizație",
     "name": "Denumire organizație",
     "description": "Descriere organizație",
+    "teo_description": "Descrierea organizatiei in TEO",
     "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poti alege sa formulezi o descriere specifica pentru aplicatia TEO, prin care sa atragi cat mai multi voluntari, sau sa folosesti descrierea organizatiei asa cum se regaseste in ONGHub.",
     "errors": {
       "ORG_001": "Organizatia nu a fost gasita",
       "no_data": "Nu s-au putut incarca datele organizatiei"
-    }
-  },
-  "edit_organization": {
-    "title": "Editare profil",
-    "card_title": "Editează profil organizație",
-    "teo_description": "Descrierea organizatiei in TEO",
-    "form": {
-      "description_error": "Actualizarea descrierii a esuat"
     },
-    "messages": {
-      "submit": "Descrierea organizatiei a fost actualizata"
+    "form": {
+      "description": {
+        "required": "Descrierea este obligatoriu",
+        "min": "Descrierea poate sa aiba minim {{value}} caractere",
+        "max": "Descrierea poate sa aiba maxim {{value}} caractere"
+      }
+    },
+    "submit": {
+      "success": "Descrierea organizatiei a fost actualizata"
     }
   },
   "pagination": {
@@ -154,37 +170,27 @@
       "no_data": "Nu s-au putut incarca cererile de inscriere"
     }
   },
-  "access_codes": {
+  "access_code": {
     "name": "Cod acces",
     "create": "Creeaza cod nou",
+    "title": "Informatii cod acces",
+    "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
+    "start_date": "Data inceput valabiliatate*",
+    "end_date": "Data final valabilitate",
     "form": {
-      "title": "Informatii cod acces",
-      "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
-      "start_date": "Data inceput valabiliatate*",
-      "end_date": "Data final valabilitate"
+      "code": {
+        "required": "Codul este obligatoriu",
+        "min": "Codul poate sa aiba minim {{value}} caractere",
+        "max": "Codul poate sa aiba maxim {{value}} caractere",
+        "pattern": "Codul are un format invalid"
+      },
+      "start_date": {
+        "required": "Data de inceput este obligatorie"
+      }
     },
     "errorr": {
       "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",
       "ACCESS_CODE_002": "Exista deja un cod de acces cu acest nume"
     }
-  },
-  "volunteers": {
-    "department_and_role": "Departament si rol",
-    "location": "Locatie voluntar",
-    "archived_from": "Arhivat din",
-    "blocked_date": "Data blocarii",
-    "tabs": {
-      "active": "Voluntari activi",
-      "archived": "Voluntari arhivati",
-      "blocked": "Voluntari blocati"
-    },
-    "modal": {
-      "view": "Vizualizează profil",
-      "archive": "Arhivează voluntar",
-      "activate": "Reactivează voluntar",
-      "delete": "Sterge din ONG",
-      "block": "Blochează voluntar"
-    },
-    "errors": {}
   }
 }

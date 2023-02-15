@@ -88,6 +88,10 @@
   input:disabled {
     @apply bg-cool-gray-200 text-cool-gray-500 cursor-auto;
   }
+
+  form {
+    @apply flex flex-col gap-6;
+  }
 }
 
 @layer components {

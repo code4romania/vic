@@ -20,24 +20,21 @@ import PageHeader from '../components/PageHeader';
 const validationSchema = yup.object({
   code: yup
     .string()
-    .required(`${i18n.t('general:validation.required', { field: i18n.t('general:fields.code') })}`)
+    .required(`${i18n.t('access_code:form.code.required')}`)
     .min(
       2,
-      `${i18n.t('general:validation.min', { field: i18n.t('general:fields.code'), value: '2' })}`,
+      `${i18n.t('access_code:form.code.min', {
+        value: '2',
+      })}`,
     )
     .max(
       10,
-      `${i18n.t('general:validation.max', { field: i18n.t('general:fields.code'), value: '10' })}`,
+      `${i18n.t('access_code:form.code.max', {
+        value: '10',
+      })}`,
     )
-    .matches(
-      REGEX.NAME_REGEX,
-      `${i18n.t('general:validation:pattern', { field: i18n.t('general:fields.code') })}`,
-    ),
-  startDate: yup
-    .date()
-    .required(
-      `${i18n.t('general:validation.required_f', { field: i18n.t('general:fields.start_date') })}`,
-    ),
+    .matches(REGEX.NAME_REGEX, `${i18n.t('access_code:form.code.pattern')}`),
+  startDate: yup.date().required(`${i18n.t('access_code:form.start_date.required')}`),
   endDate: yup.date().optional(),
 });
 
@@ -72,13 +69,13 @@ const AddAccessCode = () => {
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={onNavigateBack}>
-        {i18n.t('general:add', { item: i18n.t('access_codes:name').toLocaleLowerCase() })}
+        {i18n.t('general:add', { item: i18n.t('access_code:name').toLocaleLowerCase() })}
       </PageHeader>
       {isLoading && <LoadingContent />}
       {!isLoading && (
         <Card>
           <CardHeader>
-            <h3>{i18n.t('access_codes:name')}</h3>
+            <h4 className="text-sm sm:text-xl">{i18n.t('access_code:name')}</h4>
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"

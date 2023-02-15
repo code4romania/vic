@@ -301,7 +301,7 @@ const Divisions = ({
           title={i18n.t('division:modal.delete.title', {
             division: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
           })}
-          description={i18n.t('confirmation:delete', {
+          description={i18n.t('general:confirm_delete', {
             item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
           })}
           confirmBtnLabel={i18n.t('general:delete')}

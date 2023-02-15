@@ -19,27 +19,23 @@ import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import PageHeader from '../components/PageHeader';
+import FormLayout from '../layouts/FormLayout';
+import Paragraph from '../components/Paragraph';
 
 const schema = yup
   .object({
     description: yup
       .string()
-      .required(
-        `${i18n.t('general:validation.required_f', {
-          field: i18n.t('general:fields.description'),
-        })}`,
-      )
+      .required(`${i18n.t('organization:form.description.required')}`)
       .min(
         50,
-        `${i18n.t('general:validation.min', {
-          field: i18n.t('general:fields.description'),
+        `${i18n.t('organization:form.description.min', {
           value: '50',
         })}`,
       )
       .max(
         250,
-        `${i18n.t('general:validation.max', {
-          field: i18n.t('general:fields.description'),
+        `${i18n.t('organization:form.description.max', {
           value: '250',
         })}`,
       ),
@@ -86,7 +82,7 @@ const EditOrganization = () => {
   const onSubmit = ({ description }: OrganizationFormType) => {
     updateOrganizationDescription(description, {
       onSuccess: () => {
-        useSuccessToast(i18n.t('edit_organization:messages.submit'));
+        useSuccessToast(i18n.t('organization:submit.success'));
         navigate('/organization', { replace: true });
       },
     });
@@ -109,7 +105,7 @@ const EditOrganization = () => {
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={navigate.bind(null, -1)}>
-        {i18n.t('edit_organization:title')}
+        {i18n.t('organization:title.edit')}
       </PageHeader>
       {(isOrganizationLoading || isUpdateDescriptionLoading) && <LoadingContent />}
       {organizationError && !organization && (
@@ -118,7 +114,7 @@ const EditOrganization = () => {
       {organization && !isUpdateDescriptionLoading && !isOrganizationLoading && (
         <Card>
           <CardHeader>
-            <h2>{i18n.t('edit_organization:card_title')}</h2>
+            <h2>{i18n.t('organization:title.card')}</h2>
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"
@@ -126,13 +122,10 @@ const EditOrganization = () => {
             />
           </CardHeader>
           <CardBody>
-            <div className="flex flex-col gap-6 w-full lg:w-[80%] mx-auto sm:pt-4 pb-16">
-              <div className="flex flex-col gap-2">
-                <h2>{i18n.t('organization:description')}</h2>
-                <p className="text-cool-gray-500">
-                  {i18n.t('organization:description_placeholder')}
-                </p>
-              </div>
+            <FormLayout>
+              <Paragraph title={i18n.t('organization:description')}>
+                {i18n.t('organization:description_placeholder')}
+              </Paragraph>
               <form>
                 <Controller
                   name="description"
@@ -141,7 +134,7 @@ const EditOrganization = () => {
                   render={({ field: { onChange, value } }) => {
                     return (
                       <FormTextarea
-                        label={i18n.t('edit_organization:teo_description')}
+                        label={i18n.t('organization:teo_description')}
                         defaultValue={value}
                         onChange={onChange}
                         errorMessage={errors.description?.message as string}
@@ -150,7 +143,7 @@ const EditOrganization = () => {
                   }}
                 />
               </form>
-            </div>
+            </FormLayout>
           </CardBody>
         </Card>
       )}

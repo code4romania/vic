@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl, UseFormReset } from 'react-hook-form';
 import i18n from '../common/config/i18n';
+import FormLayout from '../layouts/FormLayout';
 import { IAccessCode } from '../pages/AccesCodes';
 import FormDatePicker from './FormDatePicker';
 import FormInput from './FormInput';
+import Paragraph from './Paragraph';
 
 interface AccessCodeFormProps {
   control: Control<AccessCodeFormTypes, object>;
@@ -25,10 +27,9 @@ const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: Access
   }, [accessCode, reset]);
 
   return (
-    <form className="py-6 text">
-      <div className="flex flex-col gap-4 justify-center">
-        <h3>{i18n.t('access_codes:form.title')}</h3>
-        <p className="text-cool-gray-500">{i18n.t('access_codes:form.description')}</p>
+    <FormLayout>
+      <Paragraph title={i18n.t('access_code:title')}>{i18n.t('access_code:description')}</Paragraph>
+      <form>
         <Controller
           key="code"
           name="code"
@@ -40,7 +41,7 @@ const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: Access
                 readOnly={false}
                 value={value}
                 errorMessage={errors['code']?.message}
-                label={`${i18n.t('access_codes:name')}*`}
+                label={`${i18n.t('access_code:name')}*`}
                 onChange={onChange}
                 aria-invalid={errors['code']?.message ? 'true' : 'false'}
                 id="access-code-form__code"
@@ -57,7 +58,7 @@ const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: Access
             return (
               <FormDatePicker
                 name="startDate"
-                label={i18n.t('access_codes:form.start_date') as string}
+                label={i18n.t('access_code:start_date') as string}
                 onChange={onChange}
                 value={value}
                 error={errors['startDate']?.message}
@@ -74,7 +75,7 @@ const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: Access
             return (
               <FormDatePicker
                 name="endDate"
-                label={i18n.t('access_codes:form.end_date') as string}
+                label={i18n.t('access_code:end_date') as string}
                 onChange={onChange}
                 value={value}
                 error={errors['endDate']?.message}
@@ -82,8 +83,8 @@ const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: Access
             );
           }}
         />
-      </div>
-    </form>
+      </form>
+    </FormLayout>
   );
 };
 

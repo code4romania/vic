@@ -62,13 +62,13 @@ const EditAccessCode = () => {
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={onNavigateBack}>
-        {i18n.t('general:edit', { item: i18n.t('access_codes:name').toLocaleLowerCase() })}
+        {i18n.t('general:edit', { item: i18n.t('access_code:name').toLocaleLowerCase() })}
       </PageHeader>
       {isLoading && <LoadingContent />}
       {!isLoading && (
         <Card>
           <CardHeader>
-            <h3>{i18n.t('access_codes:name')}</h3>
+            <h4 className="text-sm sm:text-xl">{i18n.t('access_code:name')}</h4>
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"
