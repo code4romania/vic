@@ -13,6 +13,8 @@
     "location": "Locatie",
     "back": "Inapoi",
     "send": "Trimite",
+    "reject": "Respinge",
+    "approve": "Aprobă",
     "save_changes": "Salveaza modificari",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
@@ -58,6 +60,7 @@
   "volunteer": {
     "registration": {
       "title": "Cerere de inscriere",
+      "edit_status": "Această cerere de înscriere necesită aprobare",
       "form": "Formular inscriere",
       "answer": "Raspunsul voluntarului",
       "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
