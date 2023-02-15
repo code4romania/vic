@@ -57,12 +57,12 @@ export class AccessRequestRepository implements IAccessRequestRepository {
     return AccessRequestTransformer.fromEntity(accessRequestEntity);
   }
 
-  async delete(id: string): Promise<IAccessRequestModel> {
+  async delete(id: string): Promise<string> {
     const accessRequest = await this.accessRequestRepository.findOneBy({ id });
 
     if (accessRequest) {
-      const toRemove = await this.accessRequestRepository.remove(accessRequest);
-      return AccessRequestTransformer.fromEntity(toRemove);
+      await this.accessRequestRepository.remove(accessRequest);
+      return id;
     }
 
     return null;

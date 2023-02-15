@@ -10,5 +10,5 @@ export interface IAccessRequestRepository {
   update(updates: UpdateAccessRequestModel): Promise<IAccessRequestModel>;
   find(findOptions: FindAccessRequestModel): Promise<IAccessRequestModel>;
   findAll(findOptions: unknown): Promise<IAccessRequestModel[]>;
-  delete(id: string): Promise<IAccessRequestModel>;
+  delete(id: string): Promise<string>;
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { AccessRequestStatus } from 'src/modules/access-request/enums/access-request-status.enum';
-import { OrganizationStructureExceptionMessages } from 'src/modules/access-request/exceptions/access-request.exceptions';
+import { AccessRequestExceptionMessages } from 'src/modules/access-request/exceptions/access-request.exceptions';
 import {
   CreateAccessRequestModel,
   IAccessRequestModel,
@@ -31,7 +31,7 @@ export class CreateAccessRequestUseCase
 
     if (existingRequest) {
       this.exceptionService.badRequestException(
-        OrganizationStructureExceptionMessages.ACCESS_REQUEST_001,
+        AccessRequestExceptionMessages.ACCESS_REQUEST_001,
       );
     }
 

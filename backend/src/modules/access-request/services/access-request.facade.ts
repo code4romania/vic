@@ -33,7 +33,7 @@ export class AccessRequestFacade {
   }
 
   // TODO: check in usecase if the status is "REJECTED" otherwise error
-  async delete(id: string): Promise<IAccessRequestModel> {
+  async delete(id: string): Promise<string> {
     return this.accessRequestRepository.delete(id);
   }
 }

@@ -9,6 +9,9 @@ import { DeleteAccessCodeUseCase } from './access-code/delete-access-code.usecas
 import { GetAccessCodeUseCase } from './access-code/get-access-code.usecase';
 import { GetAllAccessCodeUseCase } from './access-code/get-all-access-codes.usecase';
 import { UpdateAccessCodeUseCase } from './access-code/update-access-code.usecase';
+import { CreateAccessRequestUseCase } from './access-request/create-access-request.usecase';
+import { DeleteAccessRequestUseCase } from './access-request/delete-access-request.usecase';
+import { GetAccessRequestUseCase } from './access-request/get-access-request.usecase';
 import { GetOrganizationUseCaseService } from './organization/get-organization.usecase';
 import { CreateOrganizationStructureUseCase } from './organization/organization-structure/create-organization-structure.usecase';
 import { DeleteOrganizationStructureUseCase } from './organization/organization-structure/delete-organization-structure.usecase';
@@ -42,6 +45,10 @@ import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
     UpdateOrganizationStructureUseCase,
     // User
     GetUserProfileUseCaseService,
+    // Access Requests
+    CreateAccessRequestUseCase,
+    GetAccessRequestUseCase,
+    DeleteAccessRequestUseCase,
   ],
   exports: [
     // Organization
@@ -60,6 +67,10 @@ import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
     UpdateOrganizationStructureUseCase,
     // user
     GetUserProfileUseCaseService,
+    // Access Requests
+    CreateAccessRequestUseCase,
+    GetAccessRequestUseCase,
+    DeleteAccessRequestUseCase,
   ],
 })
 export class UseCaseModule {}
