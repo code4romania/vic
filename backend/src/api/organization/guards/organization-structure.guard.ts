@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { AdminUserEntity } from 'src/modules/user/entities/user.entity';
 import { GetOneOrganizationStructureUseCase } from 'src/usecases/organization/organization-structure/get-one-organization-structure.usecase';
-import { IOrganizationStructureModel } from '../models/organization-structure.model';
+import { IOrganizationStructureModel } from '../../../modules/organization/models/organization-structure.model';
 
 @Injectable()
 export class OrganizationStructureGuard implements CanActivate {

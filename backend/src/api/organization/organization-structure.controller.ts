@@ -21,7 +21,7 @@ import { UpdateOrganizationStructureUseCase } from 'src/usecases/organization/or
 import { CreateOrganizationStructureDto } from './dto/create-org-structure.dto';
 import { UpdateOrganizationStructureDto } from './dto/update-org-structure.dto';
 import { OrganizationStructurePresenter } from './presenters/organization-structure.presenter';
-import { OrganizationStructureGuard } from 'src/modules/organization/guards/organization-structure.guard';
+import { OrganizationStructureGuard } from 'src/api/organization/guards/organization-structure.guard';
 
 // @Roles(Role.ADMIN)
 @UseGuards(WebJwtAuthGuard, OrganizationStructureGuard)
