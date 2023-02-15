@@ -21,9 +21,10 @@ import { UpdateOrganizationStructureUseCase } from 'src/usecases/organization/or
 import { CreateOrganizationStructureDto } from './dto/create-org-structure.dto';
 import { UpdateOrganizationStructureDto } from './dto/update-org-structure.dto';
 import { OrganizationStructurePresenter } from './presenters/organization-structure.presenter';
+import { OrganizationStructureGuard } from 'src/modules/organization/guards/organization-structure.guard';
 
 // @Roles(Role.ADMIN)
-@UseGuards(WebJwtAuthGuard)
+@UseGuards(WebJwtAuthGuard, OrganizationStructureGuard)
 @Controller('organization-structure')
 export class OrganizationStructureController {
   constructor(
@@ -80,10 +81,7 @@ export class OrganizationStructureController {
 
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
-  async delete(
-    @Param('id', UuidValidationPipe) id: string,
-  ): Promise<OrganizationStructurePresenter> {
-    const removed = await this.deleteStructureUsecase.execute(id);
-    return new OrganizationStructurePresenter(removed);
+  async delete(@Param('id', UuidValidationPipe) id: string): Promise<string> {
+    return this.deleteStructureUsecase.execute(id);
   }
 }
