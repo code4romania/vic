@@ -47,7 +47,7 @@ const validationSchema = yup.object({
 const AddAccessCode = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: createAccessCodeMutation, isLoading } = useCreateAccessCodesMutation();
+  const { mutateAsync: createAccessCode, isLoading } = useCreateAccessCodesMutation();
 
   const {
     handleSubmit,
@@ -60,15 +60,19 @@ const AddAccessCode = () => {
   });
 
   const onNavigateBack = () => {
-    navigate('/volunteers/access-codes');
+    navigate('/volunteers/access-codes', { replace: true });
   };
 
-  const onSave = (inputData: AccessCodeFormTypes) => {
-    createAccessCodeMutation(inputData, {
-      onError: (error) =>
+  const onSubmit = (formValues: AccessCodeFormTypes) => {
+    createAccessCode(formValues, {
+      onError: (error) => {
         useErrorToast(
           InternalErrors.ORGANIZATION_ERRORS.getError(error?.response?.data.code_error),
-        ),
+        );
+      },
+      onSuccess: () => {
+        onNavigateBack();
+      },
     });
   };
 
@@ -85,7 +89,7 @@ const AddAccessCode = () => {
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"
-              onClick={handleSubmit(onSave)}
+              onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>
           <CardBody>

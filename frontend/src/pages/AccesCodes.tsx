@@ -43,7 +43,7 @@ const AccessCodeTableHeader = [
     sortable: true,
     grow: 2,
     minWidth: '10rem',
-    selector: (row: IAccessCode) => `${formatDate(row.startDate)} - ${formatDate(row.endDate)}`,
+    selector: (row: IAccessCode) => `${formatDate(row.startDate)} -\n${formatDate(row.endDate)}`,
   },
   {
     id: 'uses',

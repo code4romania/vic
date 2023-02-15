@@ -20,7 +20,10 @@ import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
 
 const validationSchema = yup.object({
-  endDate: yup.date().optional(),
+  endDate: yup
+    .date()
+    .typeError(`${i18n.t('general:invalid_date')}`)
+    .optional(),
 });
 
 const EditAccessCode = () => {
@@ -28,7 +31,7 @@ const EditAccessCode = () => {
   const { id } = useParams();
 
   const { data: accessCode } = useAccessCodeQuery(id as string);
-  const { mutateAsync: updateAccessCodeMutation, isLoading } = useUpdateAccessCodeMutation();
+  const { mutateAsync: updateAccessCode, isLoading } = useUpdateAccessCodeMutation();
 
   const {
     handleSubmit,
@@ -45,15 +48,19 @@ const EditAccessCode = () => {
     navigate('/volunteers/access-codes');
   };
 
-  const onSave = (inputData: AccessCodeFormTypes) => {
+  const onSubmit = ({ endDate }: AccessCodeFormTypes) => {
     if (accessCode) {
-      updateAccessCodeMutation(
-        { id: accessCode.id, endDate: inputData.endDate },
+      updateAccessCode(
+        { id: accessCode.id, endDate },
         {
-          onError: (error) =>
+          onError: (error) => {
             useErrorToast(
               InternalErrors.ORGANIZATION_ERRORS.getError(error.response?.data.code_error),
-            ),
+            );
+          },
+          onSuccess: () => {
+            onNavigateBack();
+          },
         },
       );
     }
@@ -72,7 +79,7 @@ const EditAccessCode = () => {
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"
-              onClick={handleSubmit(onSave)}
+              onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>
           <CardBody>

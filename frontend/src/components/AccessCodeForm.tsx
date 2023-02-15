@@ -23,7 +23,12 @@ export type AccessCodeFormTypes = {
 
 const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: AccessCodeFormProps) => {
   useEffect(() => {
-    if (accessCode && reset) reset(accessCode);
+    if (accessCode && reset)
+      reset({
+        ...accessCode,
+        startDate: new Date(accessCode.startDate),
+        endDate: accessCode.endDate ? new Date(accessCode.endDate) : accessCode.endDate,
+      });
   }, [accessCode, reset]);
 
   return (

@@ -3,6 +3,7 @@ import { useQuery, useMutation } from 'react-query';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ORGANIZATION_ERRORS } from '../../common/errors/entities/organization.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
+import { AccessCodeFormTypes } from '../../components/AccessCodeForm';
 import {
   createAccessCode,
   getAccessCode,
@@ -47,14 +48,9 @@ export const useAccessCodeQuery = (id: string) => {
 };
 
 export const useCreateAccessCodesMutation = () => {
-  return useMutation(
-    ({ code, startDate, endDate }: { code: string; startDate: Date; endDate?: Date }) =>
-      createAccessCode(code, startDate, endDate),
-    {
-      onError: (error: AxiosError<IBusinessException<ORGANIZATION_ERRORS>>) =>
-        Promise.resolve(error),
-    },
-  );
+  return useMutation((accessCode: AccessCodeFormTypes) => createAccessCode(accessCode), {
+    onError: (error: AxiosError<IBusinessException<ORGANIZATION_ERRORS>>) => Promise.resolve(error),
+  });
 };
 
 export const useUpdateAccessCodeMutation = () => {
