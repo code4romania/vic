@@ -54,6 +54,7 @@
     "collapse": "Restrange meniul"
   },
   "volunteer": {
+    "title": "Vizualizare profil",
     "registration": {
       "title": "Cerere de inscriere",
       "form": "Formular inscriere",
