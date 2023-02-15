@@ -11,7 +11,7 @@ interface RejectTextareaModalProps {
   title: string;
   label: string;
   onClose: () => void;
-  onConfirm: (rejectMessage: string) => void;
+  onConfirm: (rejectMessage?: string) => void;
 }
 
 export type RejectTextareaType = {
@@ -28,8 +28,13 @@ const schema = yup
   .required();
 
 const RejectTextareaModal = ({ title, label, onClose, onConfirm }: RejectTextareaModalProps) => {
-  const onSubmit = (data: { rejectMessage: string }) => {
+  const onSubmitWithMessage = (data: { rejectMessage: string }) => {
     onConfirm(data.rejectMessage);
+    onClose();
+  };
+
+  const onSubmitWithoutMessage = () => {
+    onConfirm();
     onClose();
   };
 
@@ -68,12 +73,12 @@ const RejectTextareaModal = ({ title, label, onClose, onConfirm }: RejectTextare
           <Button
             label={i18n.t('reject_modal:send')}
             className="btn-outline-secondary w-full sm:w-20"
-            onClick={handleSubmit(onSubmit)}
+            onClick={handleSubmit(onSubmitWithoutMessage)}
           />
           <Button
             label={i18n.t('general:send')}
             className="btn-primary w-full sm:w-20"
-            onClick={handleSubmit(onSubmit)}
+            onClick={handleSubmit(onSubmitWithMessage)}
           />
         </div>
       </div>

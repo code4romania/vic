@@ -32,6 +32,7 @@ import {
   useRejectAccessRequestMutation,
 } from '../services/volunteer/volunteer.service';
 import RejectTextareaModal from '../components/RejectTextareaModal';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 export interface IAccessRequest {
   id: string;
@@ -90,7 +91,12 @@ const RejectedAccessRequestsTableHeader = [
 
 const AccessRequests = () => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.PENDING);
-  const [showReject, setShowReject] = useState<null | IAccessRequest>(null);
+  const [showRejectAccessRequest, setShowRejectAccessRequest] = useState<null | IAccessRequest>(
+    null,
+  );
+  const [showDeleteAccessRequest, setShowDeleteAccessRequest] = useState<null | IAccessRequest>(
+    null,
+  );
   //pagination state
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
@@ -111,12 +117,21 @@ const AccessRequests = () => {
     orderDirection,
   );
 
-  const { mutateAsync: approveAccessRequestMutation, error: approveAccessRequestError } =
-    useApproveAccessRequestMutation();
-  const { mutateAsync: rejectAccessRequestMutation, error: rejectAccessRequestError } =
-    useRejectAccessRequestMutation();
-  const { mutateAsync: deleteAccessRequestMutation, error: deleteAccessRequestError } =
-    useDeleteAccessRequestMutation();
+  const {
+    mutateAsync: approveAccessRequestMutation,
+    error: approveAccessRequestError,
+    isLoading: isApproveAccessRequestLoading,
+  } = useApproveAccessRequestMutation();
+  const {
+    mutateAsync: rejectAccessRequestMutation,
+    error: rejectAccessRequestError,
+    isLoading: isRejectAccessRequestLoading,
+  } = useRejectAccessRequestMutation();
+  const {
+    mutateAsync: deleteAccessRequestMutation,
+    error: deleteAccessRequestError,
+    isLoading: isDeleteAccessRequestLoading,
+  } = useDeleteAccessRequestMutation();
 
   useEffect(() => {
     if (accessRequests?.meta) {
@@ -127,6 +142,7 @@ const AccessRequests = () => {
     }
   }, []);
 
+  //Error handling for Mutations and Query
   useEffect(() => {
     if (accessCodeRequestError)
       useErrorToast(
@@ -176,11 +192,11 @@ const AccessRequests = () => {
   };
 
   const onReject = (row: IAccessRequest) => {
-    setShowReject(row);
+    setShowRejectAccessRequest(row);
   };
 
   const onDelete = (row: IAccessRequest) => {
-    deleteAccessRequestMutation(row.id);
+    setShowDeleteAccessRequest(row);
   };
 
   // menu items
@@ -248,26 +264,45 @@ const AccessRequests = () => {
     );
   };
 
-  const closeModal = () => {
-    setShowReject(null);
+  const closeRejectModal = () => {
+    setShowRejectAccessRequest(null);
   };
 
-  const confirmModal = (rejectMessage: string) => {
-    if (showReject)
+  const closeDeleteModal = () => {
+    setShowDeleteAccessRequest(null);
+  };
+
+  const confirmReject = (rejectMessage?: string) => {
+    if (showRejectAccessRequest)
       rejectAccessRequestMutation({
-        id: showReject.id,
-        rejectReason: rejectMessage ? rejectMessage : '',
+        id: showRejectAccessRequest.id,
+        rejectMessage,
       });
+  };
+
+  const confirmDelete = () => {
+    if (showDeleteAccessRequest) deleteAccessRequestMutation(showDeleteAccessRequest.id);
+    closeDeleteModal();
   };
 
   return (
     <PageLayout>
-      {showReject && (
+      {showRejectAccessRequest && (
         <RejectTextareaModal
           label={i18n.t('reject_modal:description')}
           title={i18n.t('reject_modal:title')}
-          onClose={closeModal}
-          onConfirm={confirmModal}
+          onClose={closeRejectModal}
+          onConfirm={confirmReject}
+        />
+      )}
+      {showDeleteAccessRequest && (
+        <ConfirmationModal
+          title={i18n.t('access_requests:confirmation_modal.title')}
+          description={i18n.t('access_requests:confirmation_modal.description')}
+          confirmBtnLabel={i18n.t('access_requests:confirmation_modal.button_label')}
+          onClose={closeDeleteModal}
+          onConfirm={confirmDelete}
+          confirmBtnClassName="btn-danger"
         />
       )}
       <h1>{i18n.t('side_menu:options.volunteers.access_requests')}</h1>
@@ -289,7 +324,12 @@ const AccessRequests = () => {
                   buildPendingAccessRequestsActionColumn(),
                 ]}
                 data={accessRequests?.items}
-                loading={isAccessRequestsLoading}
+                loading={
+                  isAccessRequestsLoading ||
+                  isApproveAccessRequestLoading ||
+                  isDeleteAccessRequestLoading ||
+                  isRejectAccessRequestLoading
+                }
                 pagination
                 paginationPerPage={rowsPerPage}
                 paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
@@ -307,7 +347,12 @@ const AccessRequests = () => {
                   buildRejectedAccessRequestsActionColumn(),
                 ]}
                 data={accessRequests?.items}
-                loading={isAccessRequestsLoading}
+                loading={
+                  isAccessRequestsLoading ||
+                  isApproveAccessRequestLoading ||
+                  isDeleteAccessRequestLoading ||
+                  isRejectAccessRequestLoading
+                }
                 pagination
                 paginationPerPage={rowsPerPage}
                 paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}

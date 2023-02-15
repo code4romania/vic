@@ -25,8 +25,8 @@ export const useApproveAccessRequestMutation = () => {
 export const useRejectAccessRequestMutation = () => {
   return useMutation(
     ['volunteer'],
-    ({ id, rejectReason }: { id: string; rejectReason: string }) =>
-      rejectAccessRequest(id, rejectReason),
+    ({ id, rejectMessage }: { id: string; rejectMessage?: string }) =>
+      rejectAccessRequest(id, rejectMessage),
     {
       onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
     },

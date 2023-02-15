@@ -25,9 +25,9 @@ export const approveAccessRequest = async (id: string): Promise<IAccessRequestDe
 
 export const rejectAccessRequest = async (
   id: string,
-  rejectReason: string,
+  rejectMessage?: string,
 ): Promise<IAccessRequestDetails> => {
-  return API.patch(`/volunteers/access-request/${id}/reject`, { rejectReason }).then(
+  return API.patch(`/volunteers/access-request/${id}/reject`, { rejectMessage }).then(
     (res) => res.data,
   );
 };

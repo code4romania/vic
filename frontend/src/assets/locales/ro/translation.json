@@ -151,6 +151,11 @@
     },
     "errors": {
       "no_data": "Nu s-au putut incarca cererile de inscriere"
+    },
+    "confirmation_modal": {
+      "title": "Sigur doriți să ștergeți această solicitare de înregistrare?",
+      "description": "Această acțiune va șterge definitiv această solicitare și toate informațiile asociate acesteia",
+      "button_label": "Sterge solicitarea"
     }
   },
   "access_codes": {
