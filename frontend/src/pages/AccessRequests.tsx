@@ -33,6 +33,7 @@ import {
 } from '../services/volunteer/volunteer.service';
 import RejectTextareaModal from '../components/RejectTextareaModal';
 import ConfirmationModal from '../components/ConfirmationModal';
+import PageHeader from '../components/PageHeader';
 
 export interface IAccessRequest {
   id: string;
@@ -55,13 +56,11 @@ const PendingAccessRequestsTableHeader = [
     id: 'name',
     name: i18n.t('general:name'),
     sortable: true,
-    cell: (row: IAccessRequest) => (
-      <MediaCell logo={row.logo} name={'aksjdhakjshdkasjh kdadkahs kdhaks kdha skhdk  askadkskh'} />
-    ),
+    cell: (row: IAccessRequest) => <MediaCell logo={row.logo} title={row.name} />,
   },
   {
     id: 'contact',
-    name: i18n.t('access_requests:contact'),
+    name: i18n.t('general:contact'),
     sortable: true,
     selector: (row: IAccessRequest) => `${row.email}\n${row.phone}`,
   },
@@ -305,7 +304,7 @@ const AccessRequests = () => {
           confirmBtnClassName="btn-danger"
         />
       )}
-      <h1>{i18n.t('side_menu:options.volunteers.access_requests')}</h1>
+      <PageHeader>{i18n.t('side_menu:options.access_requests')}</PageHeader>
       <Tabs<RequestStatus> tabs={AccessRequestsTabs} onClick={onTabClick}>
         <Card>
           <CardHeader>
