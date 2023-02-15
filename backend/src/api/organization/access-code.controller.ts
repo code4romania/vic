@@ -21,8 +21,9 @@ import { UpdateAccessCodeUseCase } from 'src/usecases/access-code/update-access-
 import { CreateAccessCodeDto } from './dto/create-access-code.dto';
 import { UpdateAccessCodeDto } from './dto/update-access-code.dto';
 import { AccessCodePresenter } from './presenters/access-code.presenter';
+import { AccessCodeGuard } from './guards/access-code.guard';
 
-@UseGuards(WebJwtAuthGuard)
+@UseGuards(WebJwtAuthGuard, AccessCodeGuard)
 @Controller('access-code')
 export class AccessCodeController {
   constructor(
@@ -87,12 +88,7 @@ export class AccessCodeController {
 
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
-  async delete(
-    @Param('accessCodeId', UuidValidationPipe) accessCodeId: string,
-  ): Promise<AccessCodePresenter> {
-    const accessCodeModel = await this.deleteAccessCodeUseCase.execute(
-      accessCodeId,
-    );
-    return new AccessCodePresenter(accessCodeModel);
+  async delete(@Param('id', UuidValidationPipe) id: string): Promise<string> {
+    return this.deleteAccessCodeUseCase.execute(id);
   }
 }
