@@ -44,7 +44,10 @@ export const useAccessCodesQuery = (
 };
 
 export const useAccessCodeQuery = (id: string) => {
-  return useQuery(['access-code', id], () => getAccessCode(id), { enabled: !!id });
+  return useQuery(['access-code', id], () => getAccessCode(id), {
+    enabled: !!id,
+    onError: (error: AxiosError<IBusinessException<ORGANIZATION_ERRORS>>) => error,
+  });
 };
 
 export const useCreateAccessCodesMutation = () => {

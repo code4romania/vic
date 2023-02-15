@@ -189,7 +189,13 @@
         "required": "Data de inceput este obligatorie"
       }
     },
-    "errorr": {
+    "submit": {
+      "success": {
+        "add": "Codul de acces a fost creat",
+        "edit": "Codul de acces a fost modificat"
+      }
+    },
+    "errors": {
       "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",
       "ACCESS_CODE_002": "Exista deja un cod de acces cu acest nume"
     }

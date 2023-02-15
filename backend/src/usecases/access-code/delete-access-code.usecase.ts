@@ -15,7 +15,7 @@ export class DeleteAccessCodeUseCase
   ) {}
 
   public async execute(id: string): Promise<IAccessCodeModel> {
-    const accessCode = this.accessCodeFacade.delete(id);
+    const accessCode = await this.accessCodeFacade.delete(id);
 
     if (!accessCode) {
       this.exceptionService.notFoundException(

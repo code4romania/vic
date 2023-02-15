@@ -12,7 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { REGEX } from '../common/constants/patterns';
 import { useForm } from 'react-hook-form';
 import { useCreateAccessCodesMutation } from '../services/organization/organization.service';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
@@ -71,6 +71,7 @@ const AddAccessCode = () => {
         );
       },
       onSuccess: () => {
+        useSuccessToast(i18n.t('access_code:submit.success.add'));
         onNavigateBack();
       },
     });

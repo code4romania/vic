@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import AccessCodeForm, { AccessCodeFormTypes } from '../components/AccessCodeForm';
@@ -14,7 +14,7 @@ import {
   useAccessCodeQuery,
   useUpdateAccessCodeMutation,
 } from '../services/organization/organization.service';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
@@ -30,7 +30,7 @@ const EditAccessCode = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { data: accessCode } = useAccessCodeQuery(id as string);
+  const { data: accessCode, error: accessCodeError } = useAccessCodeQuery(id as string);
   const { mutateAsync: updateAccessCode, isLoading } = useUpdateAccessCodeMutation();
 
   const {
@@ -43,6 +43,16 @@ const EditAccessCode = () => {
     reValidateMode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
+
+  useEffect(() => {
+    if (accessCodeError) {
+      // error while retrieving the access code data from the database
+      useErrorToast(
+        InternalErrors.ORGANIZATION_ERRORS.getError(accessCodeError.response?.data.code_error),
+      );
+      onNavigateBack();
+    }
+  }, [accessCodeError]);
 
   const onNavigateBack = () => {
     navigate('/volunteers/access-codes');
@@ -59,6 +69,7 @@ const EditAccessCode = () => {
             );
           },
           onSuccess: () => {
+            useSuccessToast(i18n.t('access_code:submit.success.edit'));
             onNavigateBack();
           },
         },
