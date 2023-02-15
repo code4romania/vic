@@ -38,7 +38,7 @@ export class OrganizationStructureFacade {
     return this.organizationStructureRepository.update(updateAccessCodeModel);
   }
 
-  public async delete(id: string): Promise<IOrganizationStructureModel> {
+  public async delete(id: string): Promise<string> {
     return this.organizationStructureRepository.delete(id);
   }
 }
