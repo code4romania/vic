@@ -11,20 +11,7 @@ export const getDivisions = async (
   orderDirection?: OrderDirection,
 ): Promise<IPaginatedEntity<IDivision>> => {
   console.log('limit, page, orderBy, orderDirection', limit, page, orderBy, orderDirection);
-  return API.get(`/organization-structure/${type}`).then((res) => {
-    return {
-      items: res.data,
-      meta: {
-        currentPage: 1,
-        itemCount: 1,
-        itemsPerPage: 10,
-        totalItems: res.data.length,
-        totalPages: 1,
-        orderByColumn: 'name',
-        orderDirection: OrderDirection.ASC,
-      },
-    };
-  });
+  return API.get(`/organization-structure/${type}`).then((res) => res.data);
 };
 
 export const deleteDivision = async (id: string): Promise<void> => {

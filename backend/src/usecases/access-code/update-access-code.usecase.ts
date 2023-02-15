@@ -20,7 +20,7 @@ export class UpdateAccessCodeUseCase
   public async execute(
     updateAccessCodeModel: IUpdateAccessCodeModel,
   ): Promise<IAccessCodeModel> {
-    const updated = this.accessCodeFacade.update(updateAccessCodeModel);
+    const updated = await this.accessCodeFacade.update(updateAccessCodeModel);
 
     if (!updated) {
       this.exceptionService.notFoundException(
