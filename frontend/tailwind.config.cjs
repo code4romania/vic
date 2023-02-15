@@ -78,6 +78,9 @@ module.exports = {
       aspectRatio: {
         square: '1/1',
       },
+      screens: {
+        xs: '400px',
+      },
     },
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio')],

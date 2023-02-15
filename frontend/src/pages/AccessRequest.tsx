@@ -39,14 +39,14 @@ const AccessRequest = () => {
       {accessRequest && !isLoading && (
         <>
           {accessRequest.status === RequestStatus.PENDING && (
-            <div className="flex justify-between items-center py-4 px-8 overflow-hidden bg-white rounded-lg shadow-section">
+            <div className="flex flex-col sm:flex-row justify-between items-center py-4 px-4 gap-4 sm:px-8 overflow-hidden bg-white rounded-lg shadow-section">
               <div className="flex gap-2 items-center">
-                <ExclamationTriangleIcon className="h-7 w-7 text-yellow-900" />
+                <ExclamationTriangleIcon className="h-7 w-7 text-yellow-900 shrink-0" />
                 <h2>{i18n.t('volunteer:registration.edit_status')}</h2>
               </div>
-              <div className="flex gap-4">
-                <Button label={i18n.t('general:reject')} className="btn-danger" />
-                <Button label={i18n.t('general:approve')} className="btn-primary" />
+              <div className="flex xs:flex-row flex-col gap-4 w-full xs:w-auto">
+                <Button label={i18n.t('general:reject')} className="btn-danger w-full xs:w-20" />
+                <Button label={i18n.t('general:approve')} className="btn-primary w-full xs:w-20" />
               </div>
             </div>
           )}
