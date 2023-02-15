@@ -30,7 +30,8 @@
     "email": "Email de contact",
     "availability": "Valabilitate",
     "uses": "Utilizari",
-    "confirm_delete": "Esti sigur ca doresti stergerea acestui {{item}}?"
+    "confirm_delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
+    "invalid_date": "Va rugam sa introduceti o data"
   },
   "header": {
     "login": "Login",

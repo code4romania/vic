@@ -34,8 +34,14 @@ const validationSchema = yup.object({
       })}`,
     )
     .matches(REGEX.NAME_REGEX, `${i18n.t('access_code:form.code.pattern')}`),
-  startDate: yup.date().required(`${i18n.t('access_code:form.start_date.required')}`),
-  endDate: yup.date().optional(),
+  startDate: yup
+    .date()
+    .typeError(`${i18n.t('general:invalid_date')}`)
+    .required(`${i18n.t('access_code:form.start_date.required')}`),
+  endDate: yup
+    .date()
+    .typeError(`${i18n.t('general:invalid_date')}`)
+    .optional(),
 });
 
 const AddAccessCode = () => {
