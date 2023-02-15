@@ -8,6 +8,8 @@ import FormInput from './FormInput';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import FormTextarea from './FormTextarea';
 import { useNavigate } from 'react-router';
+import FormLayout from '../layouts/FormLayout';
+import Paragraph from './Paragraph';
 
 export interface IOrganization {
   id: string;
@@ -33,7 +35,7 @@ const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
   return (
     <Card>
       <CardHeader>
-        <h2>{i18n.t('organization:title')}</h2>
+        <h2>{i18n.t('organization:title.view')}</h2>
         <Button
           className="btn-outline-secondary w-20"
           label={i18n.t('general:edit', { item: '' })}
@@ -42,11 +44,10 @@ const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
         />
       </CardHeader>
       <CardBody>
-        <div className="flex flex-col gap-6 w-full lg:w-[80%] mx-auto pt-4 pb-16">
-          <div className="flex flex-col gap-1">
-            <h2>{i18n.t('organization:title')}</h2>
-            <p className="text-cool-gray-500">{i18n.t('organization:subtitle')}</p>
-          </div>
+        <FormLayout>
+          <Paragraph title={i18n.t('organization:title.view')}>
+            {i18n.t('organization:subtitle')}
+          </Paragraph>
           <div className="flex flex-col gap-1">
             <small className="text-cool-gray-500">{i18n.t('organization:logo')}</small>
             <img
@@ -60,16 +61,15 @@ const OrganizationProfile = ({ organization }: OrganizationProfileProps) => {
           <FormInput label={i18n.t('general:phone')} value={organization.phone} readOnly />
           <FormInput label={i18n.t('general:address')} value={organization.address} readOnly />
           <hr className="border-cool-gray-200" />
-          <div className="flex flex-col gap-2">
-            <h2>{i18n.t('organization:description')}</h2>
-            <p className="text-cool-gray-500">{i18n.t('organization:description_placeholder')}</p>
-          </div>
+          <Paragraph title={i18n.t('organization:description')}>
+            {i18n.t('organization:description_placeholder')}
+          </Paragraph>
           <FormTextarea
             label={i18n.t('general:description')}
             defaultValue={organization.description}
             readOnly
           />
-        </div>
+        </FormLayout>
       </CardBody>
     </Card>
   );

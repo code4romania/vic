@@ -98,10 +98,12 @@ resource "aws_cognito_user_pool_client" "onghub_client" {
 
   callback_urls = [
     "https://${local.frontend_domain}",
+    "http://localhost:3000"
     # "https://${aws_amplify_app.amplify_app.default_domain}",
   ]
   logout_urls = [
     "https://${local.frontend_domain}",
+    "http://localhost:3000"
     # "https://${aws_amplify_app.amplify_app.default_domain}",
   ]
 

@@ -28,7 +28,6 @@ export const getAccessRequests = async (
       },
     ],
     meta: {
-      status: filterStatus,
       currentPage: page,
       itemCount: 3,
       itemsPerPage: limit,

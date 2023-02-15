@@ -15,6 +15,7 @@ import { GetAllOrganizationStructureUseCase } from './organization/organization-
 import { UpdateOrganizationStructureUseCase } from './organization/organization-structure/update-organization-structure.usecase';
 import { UpdateOrganizationDescriptionUseCaseService } from './organization/update-organization-description.usecase';
 import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
+import { GetOneOrganizationStructureUseCase } from './organization/organization-structure/get-one-organization-structure.usecase';
 
 @Module({
   imports: [ExceptionsModule, OrganizationModule, OngHubModule, UserModule],
@@ -31,6 +32,7 @@ import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
     // Organization structure
     CreateOrganizationStructureUseCase,
     GetAllOrganizationStructureUseCase,
+    GetOneOrganizationStructureUseCase,
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
     // User
@@ -49,6 +51,7 @@ import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
     // Organization Structure
     CreateOrganizationStructureUseCase,
     GetAllOrganizationStructureUseCase,
+    GetOneOrganizationStructureUseCase,
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
     // user

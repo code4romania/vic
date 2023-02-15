@@ -1,6 +1,7 @@
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
+import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { PaginationConfig } from '../common/constants/pagination';
 import { OrderDirection } from '../common/enums/order-direction.enum';
@@ -30,7 +31,7 @@ export interface IAccessCode {
 const AccessCodeTableHeader = [
   {
     id: 'name',
-    name: i18n.t('access_codes:name'),
+    name: i18n.t('access_code:name'),
     sortable: true,
     grow: 1,
     minWidth: '5rem',
@@ -42,7 +43,7 @@ const AccessCodeTableHeader = [
     sortable: true,
     grow: 2,
     minWidth: '10rem',
-    selector: (row: IAccessCode) => `${formatDate(row.startDate)} - ${formatDate(row.endDate)}`,
+    selector: (row: IAccessCode) => `${formatDate(row.startDate)} -\n${formatDate(row.endDate)}`,
   },
   {
     id: 'uses',
@@ -79,6 +80,7 @@ const AccessCodes = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+  const navigate = useNavigate();
 
   const {
     data: accessCodes,
@@ -124,12 +126,12 @@ const AccessCodes = () => {
 
   // component actions
   const onAdd = () => {
-    alert('Not yet implemented');
+    navigate('add');
   };
 
   // row actions
   const onEdit = (row: IAccessCode) => {
-    alert(`Not yet implemented, ${row}`);
+    navigate(`edit/${row.id}`);
   };
 
   const onDelete = (row: IAccessCode) => {
@@ -167,14 +169,14 @@ const AccessCodes = () => {
           <h1>{i18n.t('side_menu:options.access_codes')}</h1>
           <Button
             className="btn-primary"
-            label={i18n.t('access_codes:create')}
+            label={i18n.t('access_code:create')}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
           />
         </div>
         <Card>
           <CardHeader>
-            <h3>{i18n.t('side_menu:options.access_codes')}</h3>
+            <h3 className="font-titilliumBold">{i18n.t('side_menu:options.access_codes')}</h3>
           </CardHeader>
           <CardBody>
             <DataTableComponent<IAccessCode>

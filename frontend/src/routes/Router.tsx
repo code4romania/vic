@@ -4,6 +4,7 @@ import MainLayout from '../layouts/MainLayout';
 import AccessRequest from '../pages/AccessRequest';
 import Dashboard from '../pages/Dashboard';
 import EditOrganization from '../pages/EditOrganization';
+import EditAccessCode from '../pages/EditAccessCode';
 import Login from '../pages/Login';
 import Organization from '../pages/Organization';
 import RegistrationRequests from '../pages/AccessRequests';
@@ -11,6 +12,7 @@ import AccessCodes from '../pages/AccesCodes';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import Volunteers from '../pages/Volunteers';
+import AddAccessCode from '../pages/AddAccessCode';
 
 const Router = () => {
   return (
@@ -25,7 +27,11 @@ const Router = () => {
           </Route>
           <Route path="volunteers" element={<Outlet />}>
             <Route index element={<Volunteers />} />
-            <Route path="access-codes" element={<AccessCodes />} />
+            <Route path="access-codes" element={<Outlet />}>
+              <Route index element={<AccessCodes />} />
+              <Route path="add" element={<AddAccessCode />} />
+              <Route path="edit/:id" element={<EditAccessCode />} />
+            </Route>
             <Route path="requests" element={<RegistrationRequests />} />
             <Route path="requests/:id" element={<AccessRequest />} />
           </Route>
