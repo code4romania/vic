@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
-import { PaginationConfig } from '../common/constants/pagination';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { IUser } from '../common/interfaces/user.interface';
 import { formatDate } from '../common/utils/utils';
@@ -185,7 +184,6 @@ const AccessCodes = () => {
               loading={isLoading}
               pagination
               paginationPerPage={accessCodes?.meta?.itemsPerPage}
-              paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
               paginationTotalRows={accessCodes?.meta?.totalItems}
               paginationDefaultPage={page}
               onChangeRowsPerPage={onRowsPerPageChange}
