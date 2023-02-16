@@ -6,6 +6,7 @@
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
     "address": "Adresa",
+    "status": "Status",
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
     "edit": "Editeaza {{item}}",
@@ -55,6 +56,14 @@
   },
   "volunteer": {
     "title": "Vizualizare profil",
+    "card_title": "Informatii voluntar",
+    "name": "Voluntar {{status}}",
+    "teo_date": "Adaugat in TEO la",
+    "status": {
+      "active": "activ",
+      "archived": "arhivat",
+      "blocked": "blocat"
+    },
     "registration": {
       "title": "Cerere de inscriere",
       "form": "Formular inscriere",

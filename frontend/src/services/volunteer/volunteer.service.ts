@@ -5,7 +5,7 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { VOLUNTEER_ERRORS } from '../../common/errors/entities/volunteer.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { VolunteerStatus } from '../../pages/Volunteers';
-import { getAccessRequest, getVolunteers } from './volunteer.api';
+import { getAccessRequest, getVolunteer, getVolunteers } from './volunteer.api';
 
 export const useAcceesRequestQuery = (id: string) => {
   return useQuery(['access-request', id], () => getAccessRequest(id), {
@@ -29,4 +29,11 @@ export const useVolunteersQuery = (
       onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
     },
   );
+};
+
+export const useVolunteerQuery = (id: string) => {
+  return useQuery(['volunteer', id], () => getVolunteer(id), {
+    enabled: !!id,
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
 };

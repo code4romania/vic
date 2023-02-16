@@ -26,11 +26,14 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import { useVolunteersQuery } from '../services/volunteer/volunteer.service';
 import PageHeader from '../components/PageHeader';
+import { Sex } from '../common/enums/sex.enum';
 
 export interface IVolunteer {
   id: string;
   name: string;
   city: string;
+  age: number;
+  sex: Sex;
   county: string;
   organization: string;
   profilePicture: string;
@@ -45,6 +48,7 @@ export interface IVolunteer {
   blockedOn: Date;
   archivedBy: string;
   blockedBy: string;
+  createdOn: Date;
 }
 
 export enum VolunteerStatus {

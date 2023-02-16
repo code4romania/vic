@@ -38,6 +38,8 @@ export const getVolunteers = async (
         id: '1',
         city: 'Ciorogarla',
         county: 'Ilfov',
+        age: 30,
+        sex: Sex.MALE,
         name: 'Nume varianta 1',
         organization: 'Red Cross',
         profilePicture: 'logo.svg',
@@ -52,11 +54,14 @@ export const getVolunteers = async (
         blockedOn: new Date(),
         archivedBy: 'Mircea',
         blockedBy: 'Ionica',
+        createdOn: new Date('2021-02-01'),
       },
       {
         id: '2',
         organization: 'Red Cross',
         name: 'Gigica',
+        age: 30,
+        sex: Sex.MALE,
         city: 'Ciorogarla',
         county: 'Ilfov',
         profilePicture: 'logo.svg',
@@ -71,12 +76,15 @@ export const getVolunteers = async (
         blockedOn: new Date(),
         archivedBy: 'Mircea',
         blockedBy: 'Ionica',
+        createdOn: new Date('2017-11-01'),
       },
       {
         id: '3',
         organization: 'Red Cross',
         city: 'Ciorogarla',
         county: 'Ilfov',
+        age: 30,
+        sex: Sex.MALE,
         name: 'Stefanut',
         profilePicture: 'logo.svg',
         role: 'Volunteer',
@@ -90,6 +98,7 @@ export const getVolunteers = async (
         blockedOn: new Date(),
         archivedBy: 'Mircea',
         blockedBy: 'Ionica',
+        createdOn: new Date('2028-01-01'),
       },
     ],
     meta: {
@@ -102,5 +111,31 @@ export const getVolunteers = async (
       orderByColumn: orderBy || 'name',
       orderDirection: orderDirection || OrderDirection.ASC,
     },
+  });
+};
+
+export const getVolunteer = async (id: string): Promise<IVolunteer> => {
+  // return API.get(`volunteers/${id}`).then((res) => res.data);
+  return Promise.resolve({
+    id,
+    name: 'John Doe',
+    city: 'New York',
+    age: 30,
+    sex: Sex.MALE,
+    county: 'US',
+    organization: 'Red Cross',
+    profilePicture: 'https://i.pravatar.cc/300',
+    role: 'Volunteer',
+    department: 'Disaster Relief',
+    branch: 'New York',
+    startedOn: new Date('2016-03-04'),
+    email: 'johndoe@example.com',
+    phone: '+1 123 456 7890',
+    status: VolunteerStatus.ARCHIVED,
+    archivedOn: new Date('2022-01-01'),
+    blockedOn: new Date('2022-01-01'),
+    archivedBy: 'mircea',
+    blockedBy: 'ion',
+    createdOn: new Date('2022-01-01'),
   });
 };
