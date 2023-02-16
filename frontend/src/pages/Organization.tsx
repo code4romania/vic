@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import OrganizationProfile from '../components/OrganizationProfile';
 import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
 import { useOrganizationQuery } from '../services/organization/organization.service';
@@ -12,6 +11,16 @@ import { DivisionType } from '../common/enums/division-type.enum';
 import Tabs from '../components/Tabs';
 import DivisionTable from '../components/DivisionTable';
 import { SelectItem } from '../components/Select';
+import { useNavigate } from 'react-router-dom';
+import Card from '../layouts/CardLayout';
+import CardHeader from '../components/CardHeader';
+import Button from '../components/Button';
+import { PencilIcon } from '@heroicons/react/24/outline';
+import CardBody from '../components/CardBody';
+import FormLayout from '../layouts/FormLayout';
+import Paragraph from '../components/Paragraph';
+import FormInput from '../components/FormInput';
+import FormTextarea from '../components/FormTextarea';
 
 export const DivisionsTabs: SelectItem<DivisionType>[] = [
   { key: DivisionType.BRANCH, value: i18n.t(`division:table.title.branch`) },
@@ -21,6 +30,7 @@ export const DivisionsTabs: SelectItem<DivisionType>[] = [
 
 const Organization = () => {
   const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.BRANCH);
+  const navigate = useNavigate();
 
   const {
     data: organization,
@@ -43,10 +53,16 @@ const Organization = () => {
     setDivisionType(DivisionsTabs.find((tab) => tab.key === id)?.key as DivisionType);
   };
 
+  const onEditButtonClick = () => {
+    navigate('edit');
+  };
+
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.organization')}</PageHeader>
-      {organization && <OrganizationProfile organization={organization} />}
+      {/* fetching organization data */}
+      {isOrganizationLoading && <LoadingContent />}
+      {/* error while fetching organization data */}
       {organizationError && (
         <EmptyContent
           description={InternalErrors.ORGANIZATION_ERRORS.getError(
@@ -54,7 +70,49 @@ const Organization = () => {
           )}
         />
       )}
-      {isOrganizationLoading && <LoadingContent />}
+      {/* show organization data */}
+      {organization && (
+        <Card>
+          <CardHeader>
+            <h2>{i18n.t('organization:title.view')}</h2>
+            <Button
+              className="btn-outline-secondary w-20"
+              label={i18n.t('general:edit', { item: '' })}
+              icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
+              onClick={onEditButtonClick}
+            />
+          </CardHeader>
+          <CardBody>
+            <FormLayout>
+              <Paragraph title={i18n.t('organization:title.view')}>
+                {i18n.t('organization:subtitle')}
+              </Paragraph>
+              <div className="flex flex-col gap-1">
+                <small className="text-cool-gray-500">{i18n.t('organization:logo')}</small>
+                <img
+                  src={organization.logo || 'logo.svg'}
+                  alt="Organization Logo"
+                  className="h-28 object-contain self-start p-2"
+                />
+              </div>
+              <FormInput label={i18n.t('organization:name')} value={organization.name} readOnly />
+              <FormInput label={i18n.t('general:email')} value={organization.email} readOnly />
+              <FormInput label={i18n.t('general:phone')} value={organization.phone} readOnly />
+              <FormInput label={i18n.t('general:address')} value={organization.address} readOnly />
+              <hr className="border-cool-gray-200" />
+              <Paragraph title={i18n.t('organization:description')}>
+                {i18n.t('organization:description_placeholder')}
+              </Paragraph>
+              <FormTextarea
+                label={i18n.t('general:description')}
+                defaultValue={organization.description}
+                readOnly
+              />
+            </FormLayout>
+          </CardBody>
+        </Card>
+      )}
+      {/* organization structure tables */}
       <Tabs<DivisionType> tabs={DivisionsTabs} onClick={onTabClick}>
         {divisionType === DivisionType.BRANCH && <DivisionTable type={DivisionType.BRANCH} />}
         {divisionType === DivisionType.DEPARTMENT && (
