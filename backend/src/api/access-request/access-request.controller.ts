@@ -1,7 +1,7 @@
 import { Body } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { ApiParam } from '@nestjs/swagger';
+import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
@@ -12,15 +12,42 @@ import { RejectAccessRequestUseCase } from 'src/usecases/access-request/reject-a
 import { RejectAccessRequestDto } from './dto/reject-access-request.dto';
 import { AccessRequestPresenter } from './presenters/access-request.presenter';
 import { AccessRequestGuard } from './guards/access-request.guard';
+import { DeleteAccessRequestUseCase } from 'src/usecases/access-request/delete-access-request.usecase';
+import { GetManyNewAccessRequestsUseCase } from 'src/usecases/access-request/get-many-new-access-requests.usecase';
+import { GetManyRejectedAccessRequestsUseCase } from 'src/usecases/access-request/get-many-rejected-access-requests.usecase';
 
 @UseGuards(WebJwtAuthGuard, AccessRequestGuard)
 @Controller('access-request')
 export class AccessRequestController {
   constructor(
     private readonly getAccessRequestUseCase: GetAccessRequestUseCase,
+    private readonly getManyNewAccessRequestsUseCase: GetManyNewAccessRequestsUseCase,
+    private readonly getManyRejectedAccessRequestsUseCase: GetManyRejectedAccessRequestsUseCase,
     private readonly approveAccessRequestUseCase: ApproveAccessRequestUseCase,
     private readonly rejectAccessRequestUseCase: RejectAccessRequestUseCase,
+    private readonly deleteAccessRequestUseCase: DeleteAccessRequestUseCase,
   ) {}
+
+  @Get('/new')
+  async getNew(
+    @ExtractUser() user: IAdminUserModel,
+  ): Promise<AccessRequestPresenter[]> {
+    const accessRequests = await this.getManyNewAccessRequestsUseCase.execute({
+      organizationId: user.organizationId,
+    });
+    return accessRequests.map((request) => new AccessRequestPresenter(request));
+  }
+
+  @Get('/rejected')
+  async getRejected(
+    @ExtractUser() user: IAdminUserModel,
+  ): Promise<AccessRequestPresenter[]> {
+    const accessRequests =
+      await this.getManyRejectedAccessRequestsUseCase.execute({
+        organizationId: user.organizationId,
+      });
+    return accessRequests.map((request) => new AccessRequestPresenter(request));
+  }
 
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
@@ -47,6 +74,7 @@ export class AccessRequestController {
   }
 
   @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: RejectAccessRequestDto })
   @Post(':id/reject')
   async reject(
     @ExtractUser() user: IAdminUserModel,
@@ -59,5 +87,14 @@ export class AccessRequestController {
       rejectionReason: rejectionReason,
     });
     return new AccessRequestPresenter(accessRequest);
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @Post(':id')
+  async delete(
+    @ExtractUser() user: IAdminUserModel,
+    @Param('id', UuidValidationPipe) accessRequestId: string,
+  ): Promise<string> {
+    return this.deleteAccessRequestUseCase.execute(accessRequestId);
   }
 }

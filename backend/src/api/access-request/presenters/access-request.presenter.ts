@@ -15,10 +15,12 @@ export class AccessRequestPresenter {
     this.rejectionReason = accessRequest.rejectionReason;
     this.answers = accessRequest.answers;
     this.requestedBy = accessRequest.requestedBy;
-    this.updatedBy = {
-      id: accessRequest.updatedBy.id,
-      name: accessRequest.updatedBy.name,
-    };
+    this.updatedBy = accessRequest.updatedBy
+      ? {
+          id: accessRequest.updatedBy.id,
+          name: accessRequest.updatedBy.name,
+        }
+      : undefined;
     this.createdOn = accessRequest.createdOn;
     this.updatedOn = accessRequest.updatedOn;
   }

@@ -21,6 +21,8 @@ import { UpdateOrganizationDescriptionUseCaseService } from './organization/upda
 import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
 import { ApproveAccessRequestUseCase } from './access-request/approve-access-request.usecase';
 import { RejectAccessRequestUseCase } from './access-request/reject-access-request.usecase';
+import { GetManyNewAccessRequestsUseCase } from './access-request/get-many-new-access-requests.usecase';
+import { GetManyRejectedAccessRequestsUseCase } from './access-request/get-many-rejected-access-requests.usecase';
 
 @Module({
   imports: [
@@ -48,6 +50,8 @@ import { RejectAccessRequestUseCase } from './access-request/reject-access-reque
     // User
     GetUserProfileUseCaseService,
     // Access Requests
+    GetManyNewAccessRequestsUseCase,
+    GetManyRejectedAccessRequestsUseCase,
     CreateAccessRequestUseCase,
     GetAccessRequestUseCase,
     DeleteAccessRequestUseCase,
@@ -72,6 +76,8 @@ import { RejectAccessRequestUseCase } from './access-request/reject-access-reque
     // user
     GetUserProfileUseCaseService,
     // Access Requests
+    GetManyNewAccessRequestsUseCase,
+    GetManyRejectedAccessRequestsUseCase,
     CreateAccessRequestUseCase,
     GetAccessRequestUseCase,
     DeleteAccessRequestUseCase,

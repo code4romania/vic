@@ -6,7 +6,8 @@ import { IAccessRequestRepository } from '../interfaces/access-request-repositor
 import {
   AccessRequestTransformer,
   CreateAccessRequestModel,
-  FindAccessRequestModel,
+  FindAccessRequestOptions,
+  FindManyAccessRequestsOptions,
   IAccessRequestModel,
   UpdateAccessRequestModel,
 } from '../model/access-request.model';
@@ -18,12 +19,22 @@ export class AccessRequestRepository implements IAccessRequestRepository {
     private readonly accessRequestRepository: Repository<AccessRequestEntity>,
   ) {}
 
-  findAll(findOptions: unknown): Promise<IAccessRequestModel[]> {
-    throw new Error('Method not implemented.');
+  async findAll(
+    findOptions: FindManyAccessRequestsOptions,
+  ): Promise<IAccessRequestModel[]> {
+    const requests = await this.accessRequestRepository.find({
+      where: { ...findOptions },
+      relations: {
+        updatedBy: true,
+        requestedBy: true,
+      },
+    });
+
+    return requests.map(AccessRequestTransformer.fromEntity);
   }
 
   async find(
-    findOptions: FindAccessRequestModel,
+    findOptions: FindAccessRequestOptions,
   ): Promise<IAccessRequestModel> {
     const accessRequest = await this.accessRequestRepository.findOne({
       where: { ...findOptions },

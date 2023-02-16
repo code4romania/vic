@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
   CreateAccessRequestModel,
-  FindAccessRequestModel,
+  FindAccessRequestOptions,
+  FindManyAccessRequestsOptions,
   IAccessRequestModel,
   UpdateAccessRequestModel,
 } from '../model/access-request.model';
@@ -13,8 +14,14 @@ export class AccessRequestFacade {
     private readonly accessRequestRepository: AccessRequestRepository,
   ) {}
 
+  async findAll(
+    findOptions: FindManyAccessRequestsOptions,
+  ): Promise<IAccessRequestModel[]> {
+    return this.accessRequestRepository.findAll(findOptions);
+  }
+
   async find(
-    findOptions: FindAccessRequestModel,
+    findOptions: FindAccessRequestOptions,
   ): Promise<IAccessRequestModel> {
     return this.accessRequestRepository.find(findOptions);
   }

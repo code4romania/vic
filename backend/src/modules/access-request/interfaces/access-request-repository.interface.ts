@@ -1,6 +1,7 @@
 import {
   CreateAccessRequestModel,
-  FindAccessRequestModel,
+  FindAccessRequestOptions,
+  FindManyAccessRequestsOptions,
   IAccessRequestModel,
   UpdateAccessRequestModel,
 } from '../model/access-request.model';
@@ -8,7 +9,9 @@ import {
 export interface IAccessRequestRepository {
   create(newRequest: CreateAccessRequestModel): Promise<IAccessRequestModel>;
   update(updates: UpdateAccessRequestModel): Promise<IAccessRequestModel>;
-  find(findOptions: FindAccessRequestModel): Promise<IAccessRequestModel>;
-  findAll(findOptions: unknown): Promise<IAccessRequestModel[]>;
+  find(findOptions: FindAccessRequestOptions): Promise<IAccessRequestModel>;
+  findAll(
+    findOptions: FindManyAccessRequestsOptions,
+  ): Promise<IAccessRequestModel[]>;
   delete(id: string): Promise<string>;
 }

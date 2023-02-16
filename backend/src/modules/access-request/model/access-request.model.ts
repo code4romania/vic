@@ -40,9 +40,13 @@ export type UpdateAccessRequestModel = OneOf<
 > &
   Pick<IAccessRequestModel, 'status'>;
 
-export type FindAccessRequestModel = Partial<
+export type FindAccessRequestOptions = Partial<
   Pick<IAccessRequestModel, 'id' | 'organizationId' | 'status'>
 > & { requestedById?: string };
+
+export type FindManyAccessRequestsOptions = Partial<
+  Pick<IAccessRequestModel, 'organizationId' | 'status'>
+>;
 
 export class AccessRequestTransformer {
   static fromEntity(entity: AccessRequestEntity): IAccessRequestModel {
