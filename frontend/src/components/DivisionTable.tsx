@@ -1,50 +1,28 @@
-import React, { useState } from 'react';
-import { IUser } from '../common/interfaces/user.interface';
-import i18n from '../common/config/i18n';
-import { formatDate } from '../common/utils/utils';
-import Card from '../layouts/CardLayout';
-import CardHeader from './CardHeader';
-import CardBody from './CardBody';
 import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
-import Button from './Button';
-import DataTableComponent from './DataTableComponent';
-import { PaginationConfig } from '../common/constants/pagination';
+import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
-import Popover from './Popover';
-import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
-import Tabs from './Tabs';
-import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
-import { SelectItem } from './Select';
-import ConfirmationModal from './ConfirmationModal';
+import i18n from '../common/config/i18n';
+import { DivisionType } from '../common/enums/division-type.enum';
+import { OrderDirection } from '../common/enums/order-direction.enum';
+import { InternalErrors } from '../common/errors/internal-errors.class';
+import { IDivision } from '../common/interfaces/division.interface';
+import { formatDate } from '../common/utils/utils';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import Card from '../layouts/CardLayout';
+import CellLayout from '../layouts/CellLayout';
 import {
   useAddDivisionMutation,
-  useEditDivisionMutation,
   useDeleteDivisionMutation,
+  useDivisionsQuery,
+  useEditDivisionMutation,
 } from '../services/division/division.service';
-import { useErrorToast, useSuccessToast } from '../hooks/useToast';
-import { InternalErrors } from '../common/errors/internal-errors.class';
-import CellLayout from '../layouts/CellLayout';
-
-export enum DivisionType {
-  BRANCH = 'Branch',
-  DEPARTMENT = 'Department',
-  ROLE = 'Role',
-}
-
-export interface IDivision {
-  id: string;
-  name: string;
-  type: DivisionType;
-  createdBy: IUser;
-  numberOfMembers: number;
-  createdOn: Date;
-}
-
-export const DivisionsTabs: SelectItem<DivisionType>[] = [
-  { key: DivisionType.BRANCH, value: i18n.t(`division:table.title.branch`) },
-  { key: DivisionType.DEPARTMENT, value: i18n.t('division:table.title.department') },
-  { key: DivisionType.ROLE, value: i18n.t('division:table.title.role') },
-];
+import Button from './Button';
+import CardBody from './CardBody';
+import CardHeader from './CardHeader';
+import ConfirmationModal from './ConfirmationModal';
+import DataTableComponent from './DataTableComponent';
+import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
+import Popover from './Popover';
 
 export const DivisionTableHeader = [
   {
@@ -57,7 +35,6 @@ export const DivisionTableHeader = [
   {
     id: 'membersCount',
     name: i18n.t('division:members'),
-    sortable: true,
     minWidth: '2rem',
     selector: (row: IDivision) => row.numberOfMembers,
   },
@@ -81,32 +58,25 @@ export const DivisionTableHeader = [
   },
 ];
 
-interface DivisionsProps {
-  isLoading: boolean;
-  divisionType: DivisionType;
-  data?: IPaginatedEntity<IDivision>;
-  page?: number;
-  onSort: (column: TableColumn<IDivision>, direction: SortOrder) => void;
-  onChangePage: (newPage: number) => void;
-  onRowsPerPageChange: (rows: number) => void;
-  onTabChange: (id: DivisionType) => void;
-  onRefetch: () => void;
+interface DivisionTableProps {
+  type: DivisionType;
 }
 
-const Divisions = ({
-  data,
-  isLoading,
-  divisionType,
-  page,
-  onSort,
-  onChangePage,
-  onRowsPerPageChange,
-  onTabChange,
-  onRefetch,
-}: DivisionsProps) => {
+const DivisionTable = ({ type }: DivisionTableProps) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [selectedDivisionForUpdate, setSelectedDivisionForUpdate] = useState<IDivision>();
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
+  const [rowsPerPage, setRowsPerPage] = useState<number>();
+  const [orderByColumn, setOrderByColumn] = useState<string>();
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+  const [page, setPage] = useState<number>();
+
+  const {
+    data: divisions,
+    isLoading: isFetchingDivisions,
+    error: divisionError,
+    refetch,
+  } = useDivisionsQuery(rowsPerPage as number, page as number, type, orderByColumn, orderDirection);
 
   const { mutateAsync: addDivisionMutation, isLoading: addDivisionMutationLoading } =
     useAddDivisionMutation();
@@ -117,25 +87,40 @@ const Divisions = ({
   const { mutateAsync: deleteDivision, isLoading: deleteDivisionMutationLoading } =
     useDeleteDivisionMutation();
 
+  useEffect(() => {
+    if (divisions?.meta) {
+      setPage(divisions.meta.currentPage);
+      setRowsPerPage(divisions.meta.itemsPerPage);
+      setOrderByColumn(divisions.meta.orderByColumn);
+      setOrderDirection(divisions.meta.orderDirection);
+    }
+  }, []);
+
+  // error handling
+  useEffect(() => {
+    // map error messages for DIVISIONS fetch
+    if (divisionError) {
+      useErrorToast(
+        InternalErrors.DIVISION_ERRORS.getError(divisionError.response?.data.code_error),
+      );
+    }
+  }, [divisionError]);
+
   // menu items
   const buildDivisionActionColumn = (): TableColumn<IDivision> => {
     const divisionMenuItems = [
       {
-        label: i18n.t('general:view'),
+        label: i18n.t('division:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
       {
-        label: i18n.t('general:edit', {
-          item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
-        }),
+        label: i18n.t('division:popover.edit'),
         icon: <PencilIcon className="menu-icon" />,
         onClick: onEdit,
       },
       {
-        label: i18n.t('division:modal.delete.title', {
-          division: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
-        }),
+        label: i18n.t('general:delete'),
         icon: <TrashIcon className="menu-icon" />,
         onClick: onDelete,
         alert: true,
@@ -148,6 +133,24 @@ const Divisions = ({
       width: '50px',
       allowOverflow: true,
     };
+  };
+
+  // pagination
+  const onRowsPerPageChange = (rows: number) => {
+    setRowsPerPage(rows);
+  };
+
+  const onChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const onSort = (column: TableColumn<IDivision>, direction: SortOrder) => {
+    setOrderByColumn(column.id as string);
+    setOrderDirection(
+      direction.toLocaleUpperCase() === OrderDirection.ASC
+        ? OrderDirection.ASC
+        : OrderDirection.DESC,
+    );
   };
 
   // simple actions
@@ -170,15 +173,11 @@ const Divisions = ({
   // add division
   const onSubmitDivision = ({ name }: DivisionFormTypes) => {
     addDivisionMutation(
-      { name, type: divisionType },
+      { name, type },
       {
         onSuccess: () => {
-          useSuccessToast(
-            i18n.t('division:messages.add', {
-              division: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
-            }),
-          );
-          onRefetch();
+          useSuccessToast(i18n.t(`division:submit.success.${type.toLocaleLowerCase()}.add`));
+          refetch();
         },
         onError: (error) => {
           useErrorToast(InternalErrors.DIVISION_ERRORS.getError(error.response?.data.code_error));
@@ -197,12 +196,8 @@ const Divisions = ({
         { id: selectedDivisionForUpdate.id, name: inputData.name },
         {
           onSuccess: () => {
-            useSuccessToast(
-              i18n.t('division:messages.edit', {
-                division: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
-              }),
-            );
-            onRefetch();
+            useSuccessToast(i18n.t(`division:submit.success.${type.toLocaleLowerCase()}.edit`));
+            refetch();
           },
           onError: (error) => {
             useErrorToast(
@@ -223,13 +218,9 @@ const Divisions = ({
       deleteDivision(selectedIdForDeletion, {
         onSuccess: () => {
           // show success message
-          useSuccessToast(
-            i18n.t('division:modal.delete.success', {
-              division: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
-            }),
-          );
+          useSuccessToast(i18n.t(`division:submit.success.${type.toLocaleLowerCase()}.delete`));
           // refresh table
-          onRefetch();
+          refetch();
         },
         onError: (error) => {
           useErrorToast(InternalErrors.DIVISION_ERRORS.getError(error.response?.data.code_error));
@@ -243,14 +234,14 @@ const Divisions = ({
   };
 
   return (
-    <Tabs<DivisionType> tabs={DivisionsTabs} onClick={onTabChange}>
+    <>
       <Card>
         <CardHeader>
-          <h3>{i18n.t(`division:table.title.${divisionType.toLocaleLowerCase()}`)}</h3>
+          <h3>{i18n.t(`division:table.title.${type.toLocaleLowerCase()}`)}</h3>
           <Button
             className="btn-outline-secondary"
             label={i18n.t('general:add', {
-              item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+              item: i18n.t(`division:entity.${type.toLocaleLowerCase()}`),
             })}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
@@ -259,17 +250,16 @@ const Divisions = ({
         <CardBody>
           <DataTableComponent<IDivision>
             columns={[...DivisionTableHeader, buildDivisionActionColumn()]}
-            data={data?.items}
+            data={divisions?.items}
             loading={
-              isLoading ||
+              isFetchingDivisions ||
               addDivisionMutationLoading ||
               editDivisionMutationLoading ||
               deleteDivisionMutationLoading
             }
             pagination
-            paginationPerPage={data?.meta?.itemsPerPage}
-            paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
-            paginationTotalRows={data?.meta?.totalItems}
+            paginationPerPage={divisions?.meta?.itemsPerPage}
+            paginationTotalRows={divisions?.meta?.totalItems}
             paginationDefaultPage={page}
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
@@ -280,17 +270,17 @@ const Divisions = ({
       {isAddModalOpen && (
         <DivisionInputModal
           title={i18n.t('general:add', {
-            item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+            item: i18n.t(`division:entity.${type.toLocaleLowerCase()}`),
           })}
-          divisionType={divisionType}
+          divisionType={type}
           onClose={setIsAddModalOpen.bind(null, false)}
           onSubmit={onSubmitDivision}
         />
       )}
       {selectedDivisionForUpdate && (
         <DivisionInputModal
-          title={i18n.t('general:edit', { item: i18n.t(`division:modal.${divisionType}`) })}
-          divisionType={divisionType}
+          title={i18n.t('general:edit', { item: i18n.t(`division:modal.${type}`) })}
+          divisionType={type}
           onClose={setSelectedDivisionForUpdate.bind(null, undefined)}
           onSubmit={onUpdateDivision}
           defaultValue={selectedDivisionForUpdate.name}
@@ -299,10 +289,10 @@ const Divisions = ({
       {selectedIdForDeletion && (
         <ConfirmationModal
           title={i18n.t('division:modal.delete.title', {
-            division: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+            division: i18n.t(`division:entity.${type.toLocaleLowerCase()}`),
           })}
           description={i18n.t('general:confirm_delete', {
-            item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+            item: i18n.t(`division:entity.${type.toLocaleLowerCase()}`),
           })}
           confirmBtnLabel={i18n.t('general:delete')}
           confirmBtnClassName="btn-danger"
@@ -310,8 +300,8 @@ const Divisions = ({
           onConfirm={onDeleteDivision}
         />
       )}
-    </Tabs>
+    </>
   );
 };
 
-export default Divisions;
+export default DivisionTable;
