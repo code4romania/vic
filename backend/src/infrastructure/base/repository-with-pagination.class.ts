@@ -28,7 +28,7 @@ export interface IPaginationConfig<T> {
   searchableColumns: string[];
   defaultSortBy: string;
   defaultOrderDirection: OrderDirection;
-  selectColumns: FindOptionsSelect<T>;
+  selectColumns?: FindOptionsSelect<T>;
   relations: FindOptionsRelations<T>;
   rangeColumn?: string | [string, string];
 }
@@ -159,7 +159,7 @@ export abstract class RepositoryWithPagination<T>
 
     // full query
     const query: FindManyOptions<T> = {
-      select: config.selectColumns,
+      select: config.selectColumns || {},
       relations: config.relations,
       order: orderOptions,
       take: limit,
