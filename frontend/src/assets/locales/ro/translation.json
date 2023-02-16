@@ -31,7 +31,8 @@
     "availability": "Valabilitate",
     "uses": "Utilizari",
     "confirm_delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
-    "invalid_date": "Va rugam sa introduceti o data"
+    "invalid_date": "Va rugam sa introduceti o data",
+    "unlimited": "nelimitat"
   },
   "header": {
     "login": "Login",

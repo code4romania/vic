@@ -29,7 +29,7 @@ export interface IAccessCode {
 
 const AccessCodeTableHeader = [
   {
-    id: 'name',
+    id: 'code',
     name: i18n.t('access_code:name'),
     sortable: true,
     grow: 1,
@@ -37,15 +37,18 @@ const AccessCodeTableHeader = [
     selector: (row: IAccessCode) => row.code,
   },
   {
-    id: 'availability',
+    id: 'startDate',
     name: i18n.t('general:availability'),
     sortable: true,
     grow: 2,
     minWidth: '10rem',
-    selector: (row: IAccessCode) => `${formatDate(row.startDate)} -\n${formatDate(row.endDate)}`,
+    selector: (row: IAccessCode) =>
+      `${formatDate(row.startDate)} -\n${
+        row.endDate ? `${formatDate(row.endDate)}` : i18n.t('general:unlimited')
+      }`,
   },
   {
-    id: 'uses',
+    id: 'usageCount',
     name: i18n.t('general:uses'),
     sortable: true,
     grow: 1,
@@ -85,12 +88,7 @@ const AccessCodes = () => {
     data: accessCodes,
     error,
     isLoading,
-  } = useAccessCodesQuery(
-    rowsPerPage as number,
-    page as number,
-    orderByColumn as string,
-    orderDirection as OrderDirection,
-  );
+  } = useAccessCodesQuery(rowsPerPage as number, page as number, orderByColumn, orderDirection);
 
   useEffect(() => {
     if (accessCodes?.meta) {
