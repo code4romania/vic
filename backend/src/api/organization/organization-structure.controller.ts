@@ -6,9 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
@@ -22,6 +23,8 @@ import { CreateOrganizationStructureDto } from './dto/create-org-structure.dto';
 import { UpdateOrganizationStructureDto } from './dto/update-org-structure.dto';
 import { OrganizationStructurePresenter } from './presenters/organization-structure.presenter';
 import { OrganizationStructureGuard } from 'src/api/organization/guards/organization-structure.guard';
+import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 
 // @Roles(Role.ADMIN)
 @UseGuards(WebJwtAuthGuard, OrganizationStructureGuard)
@@ -35,19 +38,25 @@ export class OrganizationStructureController {
   ) {}
 
   @ApiParam({ name: 'type', type: String, enum: OrganizationStructureType })
+  @ApiQuery({ type: () => BasePaginationFilterDto })
   @Get(':type')
   async getAll(
     @Param('type') type: OrganizationStructureType,
+    @Query() filters: BasePaginationFilterDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
-  ): Promise<OrganizationStructurePresenter[]> {
+  ): Promise<Pagination<OrganizationStructurePresenter>> {
     const accessCodes = await this.getAllStructureUsecase.execute({
+      ...filters,
       type,
       organizationId,
     });
 
-    return accessCodes.map(
-      (accessCode) => new OrganizationStructurePresenter(accessCode),
-    );
+    return {
+      ...accessCodes,
+      items: accessCodes.items.map(
+        (item) => new OrganizationStructurePresenter(item),
+      ),
+    };
   }
 
   @ApiBody({ type: CreateOrganizationStructureDto })
