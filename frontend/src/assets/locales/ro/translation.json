@@ -10,6 +10,8 @@
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
     "edit": "Editeaza {{item}}",
+    "block": "Blocheaza {{item}}",
+    "archive": "Arhivează {{item}}",
     "delete": "Sterge",
     "location": "Locatie",
     "back": "Inapoi",
@@ -57,6 +59,7 @@
   "volunteer": {
     "title": "Vizualizare profil",
     "card_title": "Informatii voluntar",
+    "branch": "Filială sau sucursală",
     "name": "Voluntar {{status}}",
     "teo_date": "Adaugat in TEO la",
     "status": {

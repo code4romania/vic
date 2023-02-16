@@ -14,6 +14,7 @@ import PublicRoute from './PublicRoute';
 import Volunteers from '../pages/Volunteers';
 import AddAccessCode from '../pages/AddAccessCode';
 import Volunteer from '../pages/Volunteer';
+import EditVolunteer from '../pages/EditVolunteer';
 
 const Router = () => {
   return (
@@ -29,6 +30,7 @@ const Router = () => {
           <Route path="volunteers" element={<Outlet />}>
             <Route index element={<Volunteers />} />
             <Route path=":id" element={<Volunteer />} />
+            <Route path=":id/edit" element={<EditVolunteer />} />
             <Route path="access-codes" element={<Outlet />}>
               <Route index element={<AccessCodes />} />
               <Route path="add" element={<AddAccessCode />} />

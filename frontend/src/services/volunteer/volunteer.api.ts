@@ -2,8 +2,9 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { Sex } from '../../common/enums/sex.enum';
 import { IAccessRequestDetails } from '../../common/interfaces/access-request.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { VolunteerFormData } from '../../pages/EditVolunteer';
 import { IVolunteer, VolunteerStatus } from '../../pages/Volunteers';
-// import API from '../api';
+import API from '../api';
 
 export const getAccessRequest = async (id: string): Promise<IAccessRequestDetails> => {
   console.log('id', id);
@@ -138,4 +139,8 @@ export const getVolunteer = async (id: string): Promise<IVolunteer> => {
     blockedBy: 'ion',
     createdOn: new Date('2022-01-01'),
   });
+};
+
+export const updateVolunteer = async (id: string, data: VolunteerFormData): Promise<IVolunteer> => {
+  return API.patch(`volunteers/${id}/edit`, data).then((res) => res.data);
 };
