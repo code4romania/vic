@@ -6,13 +6,18 @@ import {
   UserEntity,
 } from './entities/user.entity';
 import { AdminUserRepositoryService } from './repositories/admin-user.repository';
+import { RegularUserRepositoryService } from './repositories/regular-user.repository';
 import { UserFacadeService } from './services/user-facade.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity, AdminUserEntity, RegularUserEntity]),
   ],
-  providers: [UserFacadeService, AdminUserRepositoryService],
+  providers: [
+    UserFacadeService,
+    AdminUserRepositoryService,
+    RegularUserRepositoryService,
+  ],
   exports: [UserFacadeService],
 })
 export class UserModule {}

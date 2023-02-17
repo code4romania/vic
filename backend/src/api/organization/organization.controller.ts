@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
@@ -9,6 +9,7 @@ import { UpdateOrganizationDescriptionDto } from './dto/update-organization-desc
 import { IOrganizationPresenter } from './presenters/organization-presenter.interface';
 
 // @Roles(Role.ADMIN)
+@ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
 @Controller('organization')
 export class OrganizationController {

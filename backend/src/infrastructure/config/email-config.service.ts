@@ -1,6 +1,5 @@
 import { MailerOptions } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -25,7 +24,7 @@ export class EmailConfigService {
       preview: true,
       template: {
         dir: __dirname + '/../../modules/mail/templates',
-        adapter: new HandlebarsAdapter({ asset_url: this.createAssetUrl }),
+        // adapter: new HandlebarsAdapter({ asset_url: () => '/' }),
         options: {
           strict: true,
         },
@@ -40,10 +39,4 @@ export class EmailConfigService {
       },
     };
   }
-
-  createAssetUrl = (assetName: string) => {
-    return `${this.configService.get(
-      'AWS_S3_BUCKET_NAME_PUBLIC',
-    )}/${assetName}`;
-  };
 }

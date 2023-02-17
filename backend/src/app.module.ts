@@ -12,6 +12,7 @@ import { JsonBodyMiddleware } from './infrastructure/middleware/json-body.middlw
 import { RawBodyMiddleware } from './infrastructure/middleware/raw-body.middleware';
 import { AuthenticationModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import { UserModule } from './modules/user/user.module';
 import {
   CacheProviderModule,
@@ -23,7 +24,7 @@ import {
 @Module({
   imports: [
     // Configuration modules
-    LoggerModule.forRoot(PinoLoggerConfig),
+    // LoggerModule.forRoot(PinoLoggerConfig),
     ConfigModule.forRoot({ validate, isGlobal: true }),
     EventEmitterModule.forRoot(),
     // Providers
@@ -35,6 +36,7 @@ import {
     MailModule,
     AuthenticationModule,
     UserModule,
+    NotificationsModule,
     // API
     ApiModule,
   ],

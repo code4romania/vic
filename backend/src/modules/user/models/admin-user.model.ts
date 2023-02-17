@@ -1,14 +1,5 @@
-import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
 import { AdminUserEntity } from '../entities/user.entity';
-
-export interface IUserModel {
-  id: string;
-  cognitoId: string;
-  name: string;
-  email: string;
-  phone: string;
-  // type: UserType;
-}
+import { IUserModel } from './base-user.model';
 
 export interface IAdminUserModel extends IUserModel {
   organizationId: string;
@@ -18,7 +9,7 @@ export type ICreateAdminUserModel = Omit<IAdminUserModel, 'id'>;
 
 export type IFindAdminUserModel =
   | Partial<IAdminUserModel>
-  | ArrayOfPropetyType<IAdminUserModel>;
+  | Partial<IAdminUserModel>[];
 
 export class AdminUserTransformer {
   static fromEntity(entity: AdminUserEntity): IAdminUserModel {
