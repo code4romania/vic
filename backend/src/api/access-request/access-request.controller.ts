@@ -1,7 +1,7 @@
-import { Body } from '@nestjs/common';
+import { Body, Delete } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
@@ -16,6 +16,7 @@ import { DeleteAccessRequestUseCase } from 'src/usecases/access-request/delete-a
 import { GetManyNewAccessRequestsUseCase } from 'src/usecases/access-request/get-many-new-access-requests.usecase';
 import { GetManyRejectedAccessRequestsUseCase } from 'src/usecases/access-request/get-many-rejected-access-requests.usecase';
 
+@ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, AccessRequestGuard)
 @Controller('access-request')
 export class AccessRequestController {
@@ -90,7 +91,7 @@ export class AccessRequestController {
   }
 
   @ApiParam({ name: 'id', type: 'string' })
-  @Post(':id')
+  @Delete(':id')
   async delete(
     @ExtractUser() user: IAdminUserModel,
     @Param('id', UuidValidationPipe) accessRequestId: string,

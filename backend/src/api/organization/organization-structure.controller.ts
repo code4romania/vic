@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
@@ -23,6 +23,7 @@ import { UpdateOrganizationStructureDto } from './dto/update-org-structure.dto';
 import { OrganizationStructurePresenter } from './presenters/organization-structure.presenter';
 
 // @Roles(Role.ADMIN)
+@ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
 @Controller('organization-structure')
 export class OrganizationStructureController {
