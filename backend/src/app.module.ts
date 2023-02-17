@@ -23,7 +23,7 @@ import {
 @Module({
   imports: [
     // Configuration modules
-    LoggerModule.forRoot(PinoLoggerConfig),
+    // LoggerModule.forRoot(PinoLoggerConfig),
     ConfigModule.forRoot({ validate, isGlobal: true }),
     EventEmitterModule.forRoot(),
     // Providers

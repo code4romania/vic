@@ -19,7 +19,7 @@ async function bootstrap(): Promise<void> {
 
   app.useGlobalFilters(new ExceptionsFilter());
 
-  app.useLogger(app.get(Logger));
+  // app.useLogger(app.get(Logger));
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -41,7 +41,11 @@ async function bootstrap(): Promise<void> {
       .addBearerAuth()
       .build();
     const document = SwaggerModule.createDocument(app, options);
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('api', app, document, {
+      swaggerOptions: {
+        persistAuthorization: true,
+      },
+    });
   }
 
   const PORT = +process.env.PORT || 3001;
