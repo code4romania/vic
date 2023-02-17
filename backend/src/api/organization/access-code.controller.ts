@@ -46,7 +46,7 @@ export class AccessCodeController {
     return accessCodes.map((accessCode) => new AccessCodePresenter(accessCode));
   }
 
-  @ApiParam({ name: 'accessCodeId', type: 'string' })
+  @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   async getOne(
     @Param('id', UuidValidationPipe) accessCodeId: string,
