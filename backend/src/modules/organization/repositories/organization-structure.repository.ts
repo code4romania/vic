@@ -68,12 +68,12 @@ export class OrganizationStructureRepositoryService
     return this.find({ id });
   }
 
-  async delete(id: string): Promise<IOrganizationStructureModel> {
+  async delete(id: string): Promise<string> {
     const structure = await this.structureRepository.findOneBy({ id });
 
     if (structure) {
-      const removed = await this.structureRepository.remove(structure);
-      return OrganizationStructureTransformer.fromEntity(removed);
+      await this.structureRepository.remove(structure);
+      return id;
     }
 
     return null;

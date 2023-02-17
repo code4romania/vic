@@ -15,5 +15,5 @@ export interface IOrganizationStructureRepository {
   update(
     updates: IUpdateOrganizationStructureModel,
   ): Promise<IOrganizationStructureModel>;
-  delete(id: string): Promise<IOrganizationStructureModel>;
+  delete(id: string): Promise<string>;
 }

@@ -18,9 +18,18 @@ variable "github_access_token" {
   type = string
 }
 
-variable "onghub_cognito_client_id" {
+variable "onghub_congito_region" {
   type = string
 }
+
+variable "onghub_cognito_oauth_domain" {
+  type = string
+}
+
+variable "onghub_cognito_teo_client_id" {
+  type = string
+}
+
 variable "onghub_cognito_user_pool_id" {
   type = string
 }

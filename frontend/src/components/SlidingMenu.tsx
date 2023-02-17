@@ -90,6 +90,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
                             onClick={onMenuItemClick}
                           />
                         ))}
+                        <div className="text-white text-xs fixed bottom-4">{`v${APP_VERSION}`}</div>
                       </nav>
                     </div>
                   </div>

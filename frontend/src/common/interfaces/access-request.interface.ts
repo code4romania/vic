@@ -1,6 +1,6 @@
 import { Sex } from '../enums/sex.enum';
 
-export interface IAccessRequest {
+export interface IAccessRequestDetails {
   id: string;
   name: string;
   logo: string;

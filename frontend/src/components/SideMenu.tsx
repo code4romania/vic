@@ -48,6 +48,7 @@ const SideMenu = () => {
           onClick={setIsNarrow.bind(null, !isNarrow)}
         />
       </div>
+      <div className="text-white text-xs">{`v${APP_VERSION}`}</div>
     </nav>
   );
 };

@@ -43,10 +43,7 @@ export class GetUserProfileUseCaseService
     );
     // scenario where the user doesn't exist and we need to retrieve it from the ONG Hub
     const userWithOrganization =
-      await this.ongHubService.getUserAndOrganizationDataFromOngHub(
-        cognitoUserId,
-        token,
-      );
+      await this.ongHubService.getUserAndOrganizationDataFromOngHub(token);
 
     // check if there was any error with the request
     if (!userWithOrganization) {

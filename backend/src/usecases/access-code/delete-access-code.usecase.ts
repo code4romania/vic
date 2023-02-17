@@ -2,20 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { AccessCodeExceptionMessages } from 'src/modules/organization/exceptions/access-codes.exceptions';
-import { IAccessCodeModel } from 'src/modules/organization/models/access-code.model';
 import { AccessCodeFacade } from 'src/modules/organization/services/access-code.facade';
 
 @Injectable()
-export class DeleteAccessCodeUseCase
-  implements IUseCaseService<IAccessCodeModel>
-{
+export class DeleteAccessCodeUseCase implements IUseCaseService<string> {
   constructor(
     private readonly accessCodeFacade: AccessCodeFacade,
     private readonly exceptionService: ExceptionsService,
   ) {}
 
-  public async execute(id: string): Promise<IAccessCodeModel> {
-    const accessCode = this.accessCodeFacade.delete(id);
+  public async execute(id: string): Promise<string> {
+    const accessCode = await this.accessCodeFacade.delete(id);
 
     if (!accessCode) {
       this.exceptionService.notFoundException(
