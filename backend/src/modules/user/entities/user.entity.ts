@@ -17,7 +17,7 @@ export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'text', name: 'cognito_id' })
+  @Column({ type: 'text', unique: true, name: 'cognito_id' })
   cognitoId: string;
 
   @Column({ type: 'text', name: 'name' })
