@@ -21,7 +21,7 @@ import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
 import { PaginationConfig } from '../common/constants/pagination';
 import { formatDate } from '../common/utils/utils';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { RequestStatus } from '../common/enums/request-status.enum';
 import MediaCell from '../components/MediaCell';
@@ -108,6 +108,7 @@ const AccessRequests = () => {
     data: accessRequests,
     isLoading: isAccessRequestsLoading,
     error: accessCodeRequestError,
+    refetch,
   } = useAccessRequestsQuery(
     requestStatus,
     rowsPerPage as number,
@@ -187,7 +188,16 @@ const AccessRequests = () => {
   };
 
   const onApprove = (row: IAccessRequest) => {
-    approveAccessRequestMutation(row.id);
+    approveAccessRequestMutation(row.id, {
+      onSuccess: () => {
+        useSuccessToast(
+          i18n.t('volunteer:registration.confirmation_message', {
+            option: i18n.t('volunteer:registration.confirmation_options.approved'),
+          }),
+        );
+        refetch();
+      },
+    });
   };
 
   const onReject = (row: IAccessRequest) => {
@@ -273,14 +283,36 @@ const AccessRequests = () => {
 
   const confirmReject = (rejectMessage?: string) => {
     if (showRejectAccessRequest)
-      rejectAccessRequestMutation({
-        id: showRejectAccessRequest.id,
-        rejectMessage,
-      });
+      rejectAccessRequestMutation(
+        {
+          id: showRejectAccessRequest.id,
+          rejectMessage,
+        },
+        {
+          onSuccess: () => {
+            useSuccessToast(
+              i18n.t('volunteer:registration.confirmation_message', {
+                option: i18n.t('volunteer:registration.confirmation_options.rejected'),
+              }),
+            );
+            refetch();
+          },
+        },
+      );
   };
 
   const confirmDelete = () => {
-    if (showDeleteAccessRequest) deleteAccessRequestMutation(showDeleteAccessRequest.id);
+    if (showDeleteAccessRequest)
+      deleteAccessRequestMutation(showDeleteAccessRequest.id, {
+        onSuccess: () => {
+          useSuccessToast(
+            i18n.t('volunteer:registration.confirmation_message', {
+              option: i18n.t('volunteer:registration.confirmation_options.deleted'),
+            }),
+          );
+          refetch();
+        },
+      });
     closeDeleteModal();
   };
 

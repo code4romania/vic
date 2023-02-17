@@ -64,7 +64,13 @@
       "answer": "Raspunsul voluntarului",
       "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
       "found_location": "De unde ai aflat de organizatie?",
-      "motivation": "Ce te motiveaza sa fii voluntar?"
+      "motivation": "Ce te motiveaza sa fii voluntar?",
+      "confirmation_message": "Cererea de inscriere a fost {{option}}",
+      "confirmation_options": {
+        "approved": "aprobata",
+        "deleted": "stearsa",
+        "rejected": "respinsa"
+      }
     },
     "errors": {
       "VOL_001": "Nu s-a putut incarca cererea voluntarului"
