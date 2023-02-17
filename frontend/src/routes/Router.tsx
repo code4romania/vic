@@ -34,7 +34,7 @@ const Router = () => {
             <Route path="access-codes" element={<Outlet />}>
               <Route index element={<AccessCodes />} />
               <Route path="add" element={<AddAccessCode />} />
-              <Route path="edit/:id" element={<EditAccessCode />} />
+              <Route path=":id/edit" element={<EditAccessCode />} />
             </Route>
             <Route path="requests" element={<RegistrationRequests />} />
             <Route path="requests/:id" element={<AccessRequest />} />

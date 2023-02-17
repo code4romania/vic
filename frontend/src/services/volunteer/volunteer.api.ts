@@ -4,7 +4,7 @@ import { IAccessRequestDetails } from '../../common/interfaces/access-request.in
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { VolunteerFormData } from '../../pages/EditVolunteer';
 import { IVolunteer, VolunteerStatus } from '../../pages/Volunteers';
-import API from '../api';
+// import API from '../api';
 
 export const getAccessRequest = async (id: string): Promise<IAccessRequestDetails> => {
   console.log('id', id);
@@ -142,5 +142,33 @@ export const getVolunteer = async (id: string): Promise<IVolunteer> => {
 };
 
 export const updateVolunteer = async (id: string, data: VolunteerFormData): Promise<IVolunteer> => {
-  return API.patch(`volunteers/${id}/edit`, data).then((res) => res.data);
+  console.log({
+    ...data,
+    branch: data.branch.value,
+    role: data.role.value,
+    department: data.department.value,
+  });
+  // return API.patch(`volunteers/${id}/edit`, { ...data, branch: data.branch.value, role: data.role.value, department: data.department.value }).then((res) => res.data);
+  return Promise.resolve({
+    id,
+    name: 'John Doe',
+    city: 'New York',
+    age: 30,
+    sex: Sex.MALE,
+    county: 'US',
+    organization: 'Red Cross',
+    profilePicture: 'https://i.pravatar.cc/300',
+    role: 'Volunteer',
+    department: 'Disaster Relief',
+    branch: 'New York',
+    startedOn: new Date('2016-03-04'),
+    email: 'johndoe@example.com',
+    phone: '+1 123 456 7890',
+    status: VolunteerStatus.ARCHIVED,
+    archivedOn: new Date('2022-01-01'),
+    blockedOn: new Date('2022-01-01'),
+    archivedBy: 'mircea',
+    blockedBy: 'ion',
+    createdOn: new Date('2022-01-01'),
+  });
 };

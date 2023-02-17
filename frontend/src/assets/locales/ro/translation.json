@@ -22,7 +22,8 @@
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
       "unknown": "A aparut o eroare necunoscuta",
-      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
+      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}",
+      "email": "Emailul trebuie sa aiba un format valid"
     },
     "cancel": "Anuleaza",
     "years_old": "{{age}} ani",
@@ -74,6 +75,9 @@
       "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
       "found_location": "De unde ai aflat de organizatie?",
       "motivation": "Ce te motiveaza sa fii voluntar?"
+    },
+    "submit": {
+      "success": "Informatiile voluntarului au fost modificate cu succes"
     },
     "errors": {
       "VOL_001": "Nu s-a putut incarca cererea voluntarului"
