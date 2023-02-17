@@ -17,8 +17,9 @@ export class JoinNGOListener {
     console.log(payload);
     // TODO: 1. Retrieve the user data
     // TODO: 2. Throw exception if user not found
+    // TODO: 3. Send push notification to user
 
-    // TODO: 3. Send mail to user with link to the volunteer profile for the organization
+    // TODO: 4. Send mail to user with link to the volunteer profile for the organization
     await this.mailService.sendEmail({
       to: 'user@test.com', //user email
       text: 'Approved',
@@ -34,8 +35,9 @@ export class JoinNGOListener {
     console.log(payload);
     // TODO: 1. Retrieve the user data
     // TODO: 2. Throw exception if user not found
+    // TODO: 3. Send push notification to user
 
-    // TODO: 3. Send mail to user with link to the organization
+    // TODO: 4. Send mail to user with link to the organization
     await this.mailService.sendEmail({
       to: 'user@test.com', // user email
       text: 'Rejected',
@@ -51,8 +53,9 @@ export class JoinNGOListener {
     console.log(payload);
     // TODO: 1. Retrieve the user data
     // TODO: 2. Throw exception if user not found
+    // TODO: 3. Send push notification to user
 
-    // TODO: 3. Send mail to ?
+    // TODO: 4. Send mail to ?
     await this.mailService.sendEmail({
       to: 'test@test.com',
       text: 'Archived',

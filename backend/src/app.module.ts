@@ -2,8 +2,10 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { LoggerModule } from 'nestjs-pino';
 import { ApiModule } from './api/api.module';
 import { validate } from './infrastructure/config/environment-config';
+import { PinoLoggerConfig } from './infrastructure/config/logging.config';
 import { RolesGuard } from './infrastructure/guards/roles.guard';
 import { ThrottlerGuardByIP } from './infrastructure/guards/throttler.guard';
 import { JsonBodyMiddleware } from './infrastructure/middleware/json-body.middlware';
@@ -22,7 +24,7 @@ import {
 @Module({
   imports: [
     // Configuration modules
-    // LoggerModule.forRoot(PinoLoggerConfig),
+    LoggerModule.forRoot(PinoLoggerConfig),
     ConfigModule.forRoot({ validate, isGlobal: true }),
     EventEmitterModule.forRoot(),
     // Providers

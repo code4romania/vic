@@ -15,8 +15,9 @@ export class NGOEventListener {
     // TODO: 2. Throw exception if user not found
     // TODO: 3. Retrieve event data
     // TODO: 4. Throw exception if event not found
+    // TODO: 5. Send push notification to user
 
-    // TODO: 5. Send mail to user with link to the event
+    // TODO: 6. Send mail to user with link to the event
     await this.mailService.sendEmail({
       to: 'user@test.com', //user email
       text: 'Approved',

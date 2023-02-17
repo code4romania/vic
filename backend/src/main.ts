@@ -6,6 +6,7 @@ import { AppModule } from './app.module';
 import { Environment } from './infrastructure/config/environment-config';
 import { ExceptionsFilter } from './infrastructure/filters/exception.filter';
 import { createQueueMonitoring } from './infrastructure/config/create-bull-board';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
@@ -18,7 +19,7 @@ async function bootstrap(): Promise<void> {
 
   app.useGlobalFilters(new ExceptionsFilter());
 
-  // app.useLogger(app.get(Logger));
+  app.useLogger(app.get(Logger));
 
   app.useGlobalPipes(
     new ValidationPipe({

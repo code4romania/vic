@@ -22,13 +22,13 @@ export class EmailConfigService {
         from: '"No Reply" <no-reply@localhost>',
       },
       preview: true,
-      // template: {
-      //   dir: __dirname + '/../../modules/mail/templates',
-      //   adapter: new HandlebarsAdapter({ asset_url: this.createAssetUrl }),
-      //   options: {
-      //     strict: true,
-      //   },
-      // },
+      template: {
+        dir: __dirname + '/../../modules/mail/templates',
+        // adapter: new HandlebarsAdapter({ asset_url: () => '/' }),
+        options: {
+          strict: true,
+        },
+      },
       options: {
         partials: {
           dir: __dirname + '/../../modules/mail/templates/' + 'partials',
@@ -39,10 +39,4 @@ export class EmailConfigService {
       },
     };
   }
-
-  createAssetUrl = (assetName: string): string => {
-    return `${this.configService.get(
-      'AWS_S3_BUCKET_NAME_PUBLIC',
-    )}/${assetName}`;
-  };
 }
