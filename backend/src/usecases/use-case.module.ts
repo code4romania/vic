@@ -23,6 +23,7 @@ import { ApproveAccessRequestUseCase } from './access-request/approve-access-req
 import { RejectAccessRequestUseCase } from './access-request/reject-access-request.usecase';
 import { GetManyNewAccessRequestsUseCase } from './access-request/get-many-new-access-requests.usecase';
 import { GetManyRejectedAccessRequestsUseCase } from './access-request/get-many-rejected-access-requests.usecase';
+import { CreateRegularUsereUseCaseService } from './user/create-regular-user.usecase';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { GetManyRejectedAccessRequestsUseCase } from './access-request/get-many-
     UpdateOrganizationStructureUseCase,
     // User
     GetUserProfileUseCaseService,
+    CreateRegularUsereUseCaseService,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -75,6 +77,7 @@ import { GetManyRejectedAccessRequestsUseCase } from './access-request/get-many-
     UpdateOrganizationStructureUseCase,
     // user
     GetUserProfileUseCaseService,
+    CreateRegularUsereUseCaseService,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,

@@ -34,7 +34,7 @@ export class AccessRequestEntity extends BaseEntity {
   @Column({ type: 'jsonb', name: 'answers' })
   answers: IAccessRequestQA[];
 
-  @Column({ type: 'string', name: 'updated_by' })
+  @Column({ type: 'string', name: 'updated_by', nullable: true })
   updatedById: string;
 
   @ManyToOne(() => AdminUserEntity)

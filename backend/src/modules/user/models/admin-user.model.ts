@@ -1,4 +1,3 @@
-import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
 import { AdminUserEntity } from '../entities/user.entity';
 import { IUserModel } from './base-user.model';
 
@@ -10,7 +9,7 @@ export type ICreateAdminUserModel = Omit<IAdminUserModel, 'id'>;
 
 export type IFindAdminUserModel =
   | Partial<IAdminUserModel>
-  | ArrayOfPropetyType<IAdminUserModel>;
+  | Partial<IAdminUserModel>[];
 
 export class AdminUserTransformer {
   static fromEntity(entity: AdminUserEntity): IAdminUserModel {
