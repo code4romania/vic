@@ -32,7 +32,13 @@
     "uses": "Utilizari",
     "confirm_delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
     "invalid_date": "Va rugam sa introduceti o data",
-    "unlimited": "nelimitat"
+    "unlimited": "nelimitat",
+    "search": "Cauta...",
+    "filters": {
+      "show": "Filtre",
+      "reset": "Reseteaza filtre",
+      "hide": "Ascunde filtre"
+    }
   },
   "header": {
     "login": "Login",

@@ -7,7 +7,7 @@ import i18n from '../common/config/i18n';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { REGEX } from '../common/constants/patterns';
 import FormInput from './FormInput';
-import { DivisionType } from './Divisions';
+import { DivisionType } from '../common/enums/division-type.enum';
 
 interface DivisionInputModalProps {
   title: string;

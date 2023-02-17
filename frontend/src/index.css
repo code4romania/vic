@@ -89,6 +89,10 @@
     @apply bg-cool-gray-200 text-cool-gray-500 cursor-auto;
   }
 
+  input#search__filter {
+    @apply pl-10;
+  }
+
   form {
     @apply flex flex-col gap-6;
   }
