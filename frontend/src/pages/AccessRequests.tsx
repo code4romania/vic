@@ -25,6 +25,10 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { RequestStatus } from '../common/enums/request-status.enum';
 import MediaCell from '../components/MediaCell';
 import PageHeader from '../components/PageHeader';
+import DataTableFilters from '../components/DataTableFilters';
+import DateRangePicker from '../components/DateRangePicker';
+import Filter from '../components/Filter';
+import ServerSelect from '../components/ServerSelect';
 
 export interface IAccessRequest {
   id: string;
@@ -206,6 +210,35 @@ const AccessRequests = () => {
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.access_requests')}</PageHeader>
       <Tabs<RequestStatus> tabs={AccessRequestsTabs} onClick={onTabClick}>
+        <DataTableFilters onSearch={console.log} onResetFilters={() => {}}>
+          <Filter>
+            <DateRangePicker
+              label={'Perioada cerere access'}
+              onChange={console.log}
+              value={undefined}
+              id="access_period"
+            />
+          </Filter>
+          <Filter>
+            <DateRangePicker
+              label={'Perioada respingere'}
+              onChange={console.log}
+              value={undefined}
+              id="rejection_period"
+            />
+          </Filter>
+          <Filter>
+            <ServerSelect
+              id="location"
+              label="Locatie"
+              value={{ key: 'test', value: 'test' }}
+              loadOptions={(value: string) => {
+                console.log('value', value);
+                return Promise.resolve([]);
+              }}
+            />
+          </Filter>
+        </DataTableFilters>
         <Card>
           <CardHeader>
             <Button

@@ -38,7 +38,8 @@
       "show": "Filtre",
       "reset": "Reseteaza filtre",
       "hide": "Ascunde filtre"
-    }
+    },
+    "select_interval": "Selecteaza interval"
   },
   "header": {
     "login": "Login",

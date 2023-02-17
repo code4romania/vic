@@ -78,7 +78,11 @@ const DataTableFilters = ({
           />
         </div>
       </CardHeader>
-      {filtersCollapsed && <CardBody>{children}</CardBody>}
+      {filtersCollapsed && (
+        <CardBody>
+          <div className="flex gap-2 md:gap-x-6 md:gap-y-4 flex-wrap">{children}</div>
+        </CardBody>
+      )}
     </Card>
   );
 };
