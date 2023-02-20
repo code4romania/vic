@@ -12,6 +12,9 @@
     "delete": "Sterge",
     "location": "Locatie",
     "back": "Inapoi",
+    "send": "Trimite",
+    "reject": "Respinge",
+    "approve": "Aprobă",
     "save_changes": "Salveaza modificari",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
@@ -56,11 +59,18 @@
   "volunteer": {
     "registration": {
       "title": "Cerere de inscriere",
+      "edit_status": "Această cerere de înscriere necesită aprobare",
       "form": "Formular inscriere",
       "answer": "Raspunsul voluntarului",
       "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
       "found_location": "De unde ai aflat de organizatie?",
-      "motivation": "Ce te motiveaza sa fii voluntar?"
+      "motivation": "Ce te motiveaza sa fii voluntar?",
+      "confirmation_message": "Cererea de inscriere a fost {{option}}",
+      "confirmation_options": {
+        "approved": "aprobata",
+        "deleted": "stearsa",
+        "rejected": "respinsa"
+      }
     },
     "errors": {
       "VOL_001": "Nu s-a putut incarca cererea voluntarului"
@@ -161,14 +171,23 @@
       "requests": "Cereri",
       "rejected_requests": "Cereri respinse"
     },
-    "modal": {
+    "popover": {
       "view": "Vizualizeaza aplicare",
       "approve": "Aprobă cerere",
       "reject": "Respinge cerere",
       "delete": "Sterge din listă"
     },
     "errors": {
-      "no_data": "Nu s-au putut incarca cererile de inscriere"
+      "no_data": "Nu s-au putut incarca cererile de inscriere",
+      "ACCESS_REQUEST_001": "Exista deja o cerere pentru organization dumneavoastra",
+      "ACCESS_REQUEST_002": "Cererea nu a fost gasita",
+      "ACCESS_REQUEST_003": "Cererea trebuie sa fie respinsa pentru a putea fi stearsa",
+      "ACCESS_REQUEST_004": "Cererea nu este in starea potrivita"
+    },
+    "confirmation_modal": {
+      "title": "Sigur doriți să ștergeți această solicitare de înregistrare?",
+      "description": "Această acțiune va șterge definitiv această solicitare și toate informațiile asociate acesteia",
+      "button_label": "Sterge solicitarea"
     }
   },
   "access_code": {
@@ -198,6 +217,23 @@
     "errors": {
       "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",
       "ACCESS_CODE_002": "Exista deja un cod de acces cu acest nume"
+    },
+    "modal": {
+      "view": "Vizualizează profil",
+      "archive": "Arhivează voluntar",
+      "activate": "Reactivează voluntar",
+      "delete": "Sterge din ONG",
+      "block": "Blochează voluntar"
+    }
+  },
+  "reject_modal": {
+    "title": "Argumentează refuzul",
+    "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
+    "send": "Trimite fără mesaj",
+    "form": {
+      "max": "Mesajul trebuie sa aiba maxim 225 de caractere",
+      "min": "Mesajul trebuie sa aiba minim 50 caractere",
+      "error": "Refuzarea cererii a esuat"
     }
   }
 }
