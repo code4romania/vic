@@ -13,6 +13,7 @@ import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import Volunteers from '../pages/Volunteers';
 import AddAccessCode from '../pages/AddAccessCode';
+import ActivityCategories from '../pages/ActivityCategories';
 
 const Router = () => {
   return (
@@ -34,6 +35,10 @@ const Router = () => {
             </Route>
             <Route path="requests" element={<RegistrationRequests />} />
             <Route path="requests/:id" element={<AccessRequest />} />
+          </Route>
+          <Route path="activity-categories" element={<Outlet />}>
+            <Route index element={<ActivityCategories />} />
+            <Route path="add" element={<p>Add activity category</p>} />
           </Route>
         </Route>
       </Routes>

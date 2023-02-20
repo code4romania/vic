@@ -1,5 +1,7 @@
 import i18n from '../config/i18n';
 import { RectangleGroupIcon, SunIcon, UsersIcon } from '@heroicons/react/24/outline';
+import { PuzzlePieceIcon } from '@heroicons/react/24/solid';
+
 import { IRoute } from '../interfaces/route.interface';
 
 export const ROUTES: IRoute[] = [
@@ -23,5 +25,11 @@ export const ROUTES: IRoute[] = [
     name: i18n.t('side_menu:options.access_requests'),
     href: 'volunteers/requests',
     icon: UsersIcon,
+  },
+  {
+    id: 6,
+    name: i18n.t('side_menu:options.activity_categories'),
+    href: 'activity-categories',
+    icon: PuzzlePieceIcon,
   },
 ];
