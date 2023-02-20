@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
 import { PaginationConfig } from '../../common/constants/pagination';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { ACEESS_CODE_ERRORS } from '../../common/errors/entities/access-request.errors';
+import { ACCESS_REQUEST_ERRORS } from '../../common/errors/entities/access-request.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import {
   approveAccessRequest,
@@ -24,7 +24,7 @@ export const useNewAccessRequestsQuery = (
     () => getNewAccessRequests(limit, page, orderBy, orderDirection),
     {
       enabled: !!(limit && page),
-      onError: (error: AxiosError<IBusinessException<ACEESS_CODE_ERRORS>>) => error,
+      onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) => error,
     },
   );
 };
@@ -40,14 +40,15 @@ export const useRejectedAccessRequestsQuery = (
     () => getRejectedAccessRequests(limit, page, orderBy, orderDirection),
     {
       enabled: !!(limit && page),
-      onError: (error: AxiosError<IBusinessException<ACEESS_CODE_ERRORS>>) => error,
+      onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) => error,
     },
   );
 };
 
 export const useApproveAccessRequestMutation = () => {
   return useMutation(['access-request'], (id: string) => approveAccessRequest(id), {
-    onError: (error: AxiosError<IBusinessException<ACEESS_CODE_ERRORS>>) => Promise.resolve(error),
+    onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) =>
+      Promise.resolve(error),
   });
 };
 
@@ -57,7 +58,7 @@ export const useRejectAccessRequestMutation = () => {
     ({ id, rejectMessage }: { id: string; rejectMessage?: string }) =>
       rejectAccessRequest(id, rejectMessage),
     {
-      onError: (error: AxiosError<IBusinessException<ACEESS_CODE_ERRORS>>) =>
+      onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) =>
         Promise.resolve(error),
     },
   );
@@ -66,12 +67,13 @@ export const useRejectAccessRequestMutation = () => {
 export const useAccessRequestQuery = (id: string) => {
   return useQuery(['access-requests', id], () => getAccessRequest(id), {
     enabled: !!id,
-    onError: (error: AxiosError<IBusinessException<ACEESS_CODE_ERRORS>>) => error,
+    onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) => error,
   });
 };
 
 export const useDeleteAccessRequestMutation = () => {
   return useMutation(['access-request'], (id: string) => deleteAccessRequest(id), {
-    onError: (error: AxiosError<IBusinessException<ACEESS_CODE_ERRORS>>) => Promise.resolve(error),
+    onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) =>
+      Promise.resolve(error),
   });
 };

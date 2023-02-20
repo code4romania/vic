@@ -12,7 +12,6 @@ import { UseQueryResult } from 'react-query';
 import i18n from '../common/config/i18n';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { RequestStatus } from '../common/enums/request-status.enum';
-import { ACEESS_CODE_ERRORS } from '../common/errors/entities/access-request.errors';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IAccessRequest } from '../common/interfaces/access-request.interface';
 import { IBusinessException } from '../common/interfaces/business-exception.interface';
@@ -40,6 +39,7 @@ import {
 import RejectTextareaModal from '../components/RejectTextareaModal';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { useNavigate } from 'react-router-dom';
+import { ACCESS_REQUEST_ERRORS } from '../common/errors/entities/access-request.errors';
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
   { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
@@ -93,7 +93,7 @@ interface AccessRequestTable {
     orderDirection?: OrderDirection,
   ) => UseQueryResult<
     IPaginatedEntity<IAccessRequest>,
-    AxiosError<IBusinessException<ACEESS_CODE_ERRORS>>
+    AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>
   >;
   status: RequestStatus;
 }
@@ -134,7 +134,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
   useEffect(() => {
     if (accessCodeRequestError)
       useErrorToast(
-        InternalErrors.ACCESS_CODE_ERRORS.getError(
+        InternalErrors.ACCESS_REQUEST_ERRORS.getError(
           accessCodeRequestError.response?.data.code_error,
         ),
       );
@@ -234,7 +234,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
         refetch();
       },
       onError: (error) => {
-        InternalErrors.ACCESS_CODE_ERRORS.getError(error.response?.data.code_error);
+        InternalErrors.ACCESS_REQUEST_ERRORS.getError(error.response?.data.code_error);
       },
     });
   };
@@ -256,7 +256,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
             refetch();
           },
           onError: (error) => {
-            InternalErrors.ACCESS_CODE_ERRORS.getError(error.response?.data.code_error);
+            InternalErrors.ACCESS_REQUEST_ERRORS.getError(error.response?.data.code_error);
           },
           onSettled: () => {
             setShowRejectAccessRequest(null);
@@ -277,7 +277,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
           refetch();
         },
         onError: (error) => {
-          InternalErrors.ACCESS_CODE_ERRORS.getError(error.response?.data.code_error);
+          InternalErrors.ACCESS_REQUEST_ERRORS.getError(error.response?.data.code_error);
         },
         onSettled: () => {
           setShowDeleteAccessRequest(null);

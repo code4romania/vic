@@ -1,19 +1,19 @@
 import { ErrorClass } from '../base-error.class';
 
-export enum ACEESS_CODE_ERRORS {}
+export enum ACCESS_REQUEST_ERRORS {}
 
-export class AccessCodeError extends ErrorClass<ACEESS_CODE_ERRORS> {
-  private static instance: AccessCodeError;
+export class AccessRequestError extends ErrorClass<ACCESS_REQUEST_ERRORS> {
+  private static instance: AccessRequestError;
 
   private constructor() {
     super({});
   }
 
-  public static getInstance(): AccessCodeError {
-    if (!AccessCodeError.instance) {
-      AccessCodeError.instance = new AccessCodeError();
+  public static getInstance(): AccessRequestError {
+    if (!AccessRequestError.instance) {
+      AccessRequestError.instance = new AccessRequestError();
     }
 
-    return AccessCodeError.instance;
+    return AccessRequestError.instance;
   }
 }

@@ -1,10 +1,7 @@
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import API from '../api';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import {
-  IAccessRequest,
-  IAccessRequestDetails,
-} from '../../common/interfaces/access-request.interface';
+import { IAccessRequest } from '../../common/interfaces/access-request.interface';
 
 export const getNewAccessRequests = async (
   limit: number,
@@ -46,21 +43,21 @@ export const getRejectedAccessRequests = async (
   }));
 };
 
-export const getAccessRequest = async (id: string): Promise<IAccessRequestDetails> => {
+export const getAccessRequest = async (id: string): Promise<IAccessRequest> => {
   return API.get(`/access-request/${id}`).then((res) => res.data);
 };
 
-export const approveAccessRequest = async (id: string): Promise<IAccessRequestDetails> => {
+export const approveAccessRequest = async (id: string): Promise<IAccessRequest> => {
   return API.post(`/access-request/${id}/approve`).then((res) => res.data);
 };
 
 export const rejectAccessRequest = async (
   id: string,
   rejectionReason?: string,
-): Promise<IAccessRequestDetails> => {
+): Promise<IAccessRequest> => {
   return API.post(`/access-request/${id}/reject`, { rejectionReason }).then((res) => res.data);
 };
 
-export const deleteAccessRequest = async (id: string): Promise<IAccessRequestDetails> => {
+export const deleteAccessRequest = async (id: string): Promise<IAccessRequest> => {
   return API.delete(`/access-request/${id}`).then((res) => res.data);
 };

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
-
 import i18n from '../common/config/i18n';
 import { RequestStatus } from '../common/enums/request-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -22,9 +21,12 @@ import {
 } from '../services/access-requests/access-requests.service';
 
 const AccessRequest = () => {
-  const [showRejectModal, setShowRejectModal] = useState(false);
+  // navigation state
   const navigate = useNavigate();
   const { id } = useParams();
+
+  // modal state
+  const [showRejectModal, setShowRejectModal] = useState(false);
 
   const {
     data: accessRequest,
@@ -47,13 +49,15 @@ const AccessRequest = () => {
   useEffect(() => {
     if (accessRequestError) {
       useErrorToast(
-        InternalErrors.ACCESS_CODE_ERRORS.getError(accessRequestError?.response?.data.code_error),
+        InternalErrors.ACCESS_REQUEST_ERRORS.getError(
+          accessRequestError?.response?.data.code_error,
+        ),
       );
     }
 
     if (rejectAccessRequestError) {
       useErrorToast(
-        InternalErrors.ACCESS_CODE_ERRORS.getError(
+        InternalErrors.ACCESS_REQUEST_ERRORS.getError(
           rejectAccessRequestError?.response?.data.code_error,
         ),
       );
@@ -61,7 +65,7 @@ const AccessRequest = () => {
 
     if (approveAccessRequestError) {
       useErrorToast(
-        InternalErrors.ACCESS_CODE_ERRORS.getError(
+        InternalErrors.ACCESS_REQUEST_ERRORS.getError(
           approveAccessRequestError?.response?.data.code_error,
         ),
       );
@@ -127,18 +131,18 @@ const AccessRequest = () => {
             <div className="w-full flex flex-col lg:flex-row gap-4">
               <div className="w-full lg:w-1/3 xl:w-1/4">
                 <ProfileCard
-                  name={accessRequest.name}
-                  age={accessRequest.age}
-                  sex={accessRequest.sex}
-                  location={accessRequest.location}
-                  logo={accessRequest.logo}
+                  name={accessRequest.requestedBy.name}
+                  birthday={accessRequest.requestedBy.birthday}
+                  sex={accessRequest.requestedBy.sex}
+                  location={accessRequest.requestedBy.address || ''}
+                  logo={accessRequest.requestedBy.profilePicture || ''}
                 />
               </div>
               <div className="w-full lg:w-2/3 xl:w-3/4">
                 <VolunteerRequest
-                  email={accessRequest.email}
+                  email={accessRequest.requestedBy.email}
                   createdOn={accessRequest.createdOn}
-                  phone={accessRequest.phone}
+                  phone={accessRequest.requestedBy.phone}
                   answers={accessRequest.answers}
                 />
               </div>
