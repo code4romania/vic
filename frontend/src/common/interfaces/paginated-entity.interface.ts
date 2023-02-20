@@ -6,8 +6,8 @@ interface IPaginationMeta {
   itemsPerPage: number;
   totalItems: number;
   totalPages: number;
-  orderByColumn: string;
-  orderDirection: OrderDirection;
+  orderByColumn?: string;
+  orderDirection?: OrderDirection;
 }
 
 export interface IPaginatedEntity<T> {

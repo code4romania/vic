@@ -1,50 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import PageLayout from '../layouts/PageLayout';
-import Card from '../layouts/CardLayout';
-import CardHeader from '../components/CardHeader';
-import CardBody from '../components/CardBody';
-import Button from '../components/Button';
-import Tabs from '../components/Tabs';
-import DataTableComponent from '../components/DataTableComponent';
-import i18n from '../common/config/i18n';
 import {
   ArrowDownTrayIcon,
   CheckIcon,
   EyeIcon,
-  XMarkIcon,
   TrashIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { useAccessRequestsQuery } from '../services/access-requests/access-requests.service';
+import { AxiosError } from 'axios';
 import { SortOrder, TableColumn } from 'react-data-table-component';
-import Popover from '../components/Popover';
+import { UseQueryResult } from 'react-query';
+import i18n from '../common/config/i18n';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { SelectItem } from '../components/Select';
-import { PaginationConfig } from '../common/constants/pagination';
-import { formatDate } from '../common/utils/utils';
-import { useErrorToast, useSuccessToast } from '../hooks/useToast';
-import { InternalErrors } from '../common/errors/internal-errors.class';
 import { RequestStatus } from '../common/enums/request-status.enum';
+import { ACEESS_CODE_ERRORS } from '../common/errors/entities/access-request.errors';
+import { InternalErrors } from '../common/errors/internal-errors.class';
+import { IAccessRequest } from '../common/interfaces/access-request.interface';
+import { IBusinessException } from '../common/interfaces/business-exception.interface';
+import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
+import { formatDate } from '../common/utils/utils';
+import Button from '../components/Button';
+import CardBody from '../components/CardBody';
+import CardHeader from '../components/CardHeader';
+import DataTableComponent from '../components/DataTableComponent';
 import MediaCell from '../components/MediaCell';
-import { useNavigate } from 'react-router-dom';
+import PageHeader from '../components/PageHeader';
+import Popover from '../components/Popover';
+import { SelectItem } from '../components/Select';
+import Tabs from '../components/Tabs';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import Card from '../layouts/CardLayout';
+import PageLayout from '../layouts/PageLayout';
 import {
   useApproveAccessRequestMutation,
   useDeleteAccessRequestMutation,
+  useNewAccessRequestsQuery,
   useRejectAccessRequestMutation,
-} from '../services/volunteer/volunteer.service';
+  useRejectedAccessRequestsQuery,
+} from '../services/access-requests/access-requests.service';
 import RejectTextareaModal from '../components/RejectTextareaModal';
 import ConfirmationModal from '../components/ConfirmationModal';
-import PageHeader from '../components/PageHeader';
-
-export interface IAccessRequest {
-  id: string;
-  logo: string;
-  name: string;
-  address: string;
-  email: string;
-  phone: string;
-  createdOn: Date;
-  updatedOn?: Date;
-}
+import { useNavigate } from 'react-router-dom';
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
   { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
@@ -53,22 +48,24 @@ const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
 
 const PendingAccessRequestsTableHeader = [
   {
-    id: 'name',
+    id: 'requestedBy.name',
     name: i18n.t('general:name'),
     sortable: true,
-    cell: (row: IAccessRequest) => <MediaCell logo={row.logo} title={row.name} />,
+    cell: (row: IAccessRequest) => (
+      <MediaCell logo={row.requestedBy.profilePicture || ''} title={row.requestedBy.name} />
+    ),
   },
   {
-    id: 'contact',
+    id: 'requestedBy.email',
     name: i18n.t('general:contact'),
     sortable: true,
-    selector: (row: IAccessRequest) => `${row.email}\n${row.phone}`,
+    selector: (row: IAccessRequest) => `${row.requestedBy.email}\n${row.requestedBy.phone}`,
   },
   {
-    id: 'location',
+    id: 'requestedBy.address',
     name: i18n.t('general:location'),
     sortable: true,
-    selector: (row: IAccessRequest) => row.address,
+    selector: (row: IAccessRequest) => row.requestedBy.address || '',
   },
   {
     id: 'createdOn',
@@ -88,61 +85,52 @@ const RejectedAccessRequestsTableHeader = [
   },
 ];
 
-const AccessRequests = () => {
-  const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.PENDING);
+interface AccessRequestTable {
+  useAccessRequests: (
+    rowsPerPage: number,
+    page: number,
+    orderByColumn?: string,
+    orderDirection?: OrderDirection,
+  ) => UseQueryResult<
+    IPaginatedEntity<IAccessRequest>,
+    AxiosError<IBusinessException<ACEESS_CODE_ERRORS>>
+  >;
+  status: RequestStatus;
+}
+
+const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) => {
+  const navigate = useNavigate();
+  // pagination state
+  const [page, setPage] = useState<number>();
+  const [rowsPerPage, setRowsPerPage] = useState<number>();
+  const [orderByColumn, setOrderByColumn] = useState<string>();
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+  // confirmation modals
   const [showRejectAccessRequest, setShowRejectAccessRequest] = useState<null | IAccessRequest>(
     null,
   );
   const [showDeleteAccessRequest, setShowDeleteAccessRequest] = useState<null | IAccessRequest>(
     null,
   );
-  //pagination state
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
 
-  const navigate = useNavigate();
-
+  // access requests query
   const {
     data: accessRequests,
     isLoading: isAccessRequestsLoading,
     error: accessCodeRequestError,
     refetch,
-  } = useAccessRequestsQuery(
-    requestStatus,
-    rowsPerPage as number,
-    page as number,
-    orderByColumn,
-    orderDirection,
-  );
+  } = useAccessRequests(rowsPerPage as number, page as number, orderByColumn, orderDirection);
 
-  const {
-    mutateAsync: approveAccessRequestMutation,
-    error: approveAccessRequestError,
-    isLoading: isApproveAccessRequestLoading,
-  } = useApproveAccessRequestMutation();
-  const {
-    mutateAsync: rejectAccessRequestMutation,
-    error: rejectAccessRequestError,
-    isLoading: isRejectAccessRequestLoading,
-  } = useRejectAccessRequestMutation();
-  const {
-    mutateAsync: deleteAccessRequestMutation,
-    error: deleteAccessRequestError,
-    isLoading: isDeleteAccessRequestLoading,
-  } = useDeleteAccessRequestMutation();
+  // actions
+  const { mutateAsync: approveAccessRequest, isLoading: isApprovingRequest } =
+    useApproveAccessRequestMutation();
 
-  useEffect(() => {
-    if (accessRequests?.meta) {
-      setPage(accessRequests.meta.currentPage);
-      setRowsPerPage(accessRequests.meta.itemsPerPage);
-      setOrderByColumn(accessRequests.meta.orderByColumn);
-      setOrderDirection(accessRequests.meta.orderDirection);
-    }
-  }, []);
+  const { mutateAsync: rejectAccessRequest, isLoading: isRejectingAccessRequest } =
+    useRejectAccessRequestMutation();
 
-  //Error handling for Mutations and Query
+  const { mutateAsync: deleteAccessRequest, isLoading: isDeletingAccessRequest } =
+    useDeleteAccessRequestMutation();
+
   useEffect(() => {
     if (accessCodeRequestError)
       useErrorToast(
@@ -150,63 +138,7 @@ const AccessRequests = () => {
           accessCodeRequestError.response?.data.code_error,
         ),
       );
-
-    if (approveAccessRequestError)
-      useErrorToast(
-        InternalErrors.VOLUNTEER_ERRORS.getError(
-          approveAccessRequestError.response?.data.code_error,
-        ),
-      );
-
-    if (rejectAccessRequestError)
-      useErrorToast(
-        InternalErrors.VOLUNTEER_ERRORS.getError(
-          rejectAccessRequestError.response?.data.code_error,
-        ),
-      );
-
-    if (deleteAccessRequestError)
-      useErrorToast(
-        InternalErrors.VOLUNTEER_ERRORS.getError(
-          deleteAccessRequestError.response?.data.code_error,
-        ),
-      );
-  }, [
-    accessCodeRequestError,
-    approveAccessRequestError,
-    rejectAccessRequestError,
-    deleteAccessRequestError,
-  ]);
-
-  const onTabClick = (tab: RequestStatus) => {
-    setRequestStatus(tab);
-  };
-
-  // row actions
-  const onView = (row: IAccessRequest) => {
-    navigate(row.id);
-  };
-
-  const onApprove = (row: IAccessRequest) => {
-    approveAccessRequestMutation(row.id, {
-      onSuccess: () => {
-        useSuccessToast(
-          i18n.t('volunteer:registration.confirmation_message', {
-            option: i18n.t('volunteer:registration.confirmation_options.approved'),
-          }),
-        );
-        refetch();
-      },
-    });
-  };
-
-  const onReject = (row: IAccessRequest) => {
-    setShowRejectAccessRequest(row);
-  };
-
-  const onDelete = (row: IAccessRequest) => {
-    setShowDeleteAccessRequest(row);
-  };
+  }, [accessCodeRequestError]);
 
   // menu items
   const buildPendingAccessRequestsActionColumn = (): TableColumn<IAccessRequest> => {
@@ -264,6 +196,11 @@ const AccessRequests = () => {
     };
   };
 
+  const buildAccessRequestActionColumns = () =>
+    status === RequestStatus.REJECTED
+      ? buildRejectedAccessRequestsActionColumn()
+      : buildPendingAccessRequestsActionColumn();
+
   const onSort = (column: TableColumn<IAccessRequest>, direction: SortOrder) => {
     setOrderByColumn(column.id as string);
     setOrderDirection(
@@ -273,17 +210,38 @@ const AccessRequests = () => {
     );
   };
 
-  const closeRejectModal = () => {
-    setShowRejectAccessRequest(null);
+  // row actions
+  const onView = (row: IAccessRequest) => {
+    navigate(row.id);
   };
 
-  const closeDeleteModal = () => {
-    setShowDeleteAccessRequest(null);
+  const onReject = (row: IAccessRequest) => {
+    setShowRejectAccessRequest(row);
+  };
+
+  const onDelete = (row: IAccessRequest) => {
+    setShowDeleteAccessRequest(row);
+  };
+
+  const onApprove = (row: IAccessRequest) => {
+    approveAccessRequest(row.id, {
+      onSuccess: () => {
+        useSuccessToast(
+          i18n.t('volunteer:registration.confirmation_message', {
+            option: i18n.t('volunteer:registration.confirmation_options.approved'),
+          }),
+        );
+        refetch();
+      },
+      onError: (error) => {
+        InternalErrors.ACCESS_CODE_ERRORS.getError(error.response?.data.code_error);
+      },
+    });
   };
 
   const confirmReject = (rejectMessage?: string) => {
     if (showRejectAccessRequest)
-      rejectAccessRequestMutation(
+      rejectAccessRequest(
         {
           id: showRejectAccessRequest.id,
           rejectMessage,
@@ -297,13 +255,19 @@ const AccessRequests = () => {
             );
             refetch();
           },
+          onError: (error) => {
+            InternalErrors.ACCESS_CODE_ERRORS.getError(error.response?.data.code_error);
+          },
+          onSettled: () => {
+            setShowRejectAccessRequest(null);
+          },
         },
       );
   };
 
   const confirmDelete = () => {
     if (showDeleteAccessRequest)
-      deleteAccessRequestMutation(showDeleteAccessRequest.id, {
+      deleteAccessRequest(showDeleteAccessRequest.id, {
         onSuccess: () => {
           useSuccessToast(
             i18n.t('volunteer:registration.confirmation_message', {
@@ -312,17 +276,54 @@ const AccessRequests = () => {
           );
           refetch();
         },
+        onError: (error) => {
+          InternalErrors.ACCESS_CODE_ERRORS.getError(error.response?.data.code_error);
+        },
+        onSettled: () => {
+          setShowDeleteAccessRequest(null);
+        },
       });
-    closeDeleteModal();
   };
 
   return (
-    <PageLayout>
+    <Card>
+      <CardHeader>
+        <Button
+          label={i18n.t('general:download_table')}
+          icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+          className="btn-outline-secondary ml-auto"
+          onClick={() => alert('Not implemented')}
+        />
+      </CardHeader>
+      <CardBody>
+        <DataTableComponent
+          columns={[
+            ...(status === RequestStatus.REJECTED
+              ? RejectedAccessRequestsTableHeader
+              : PendingAccessRequestsTableHeader),
+            buildAccessRequestActionColumns(),
+          ]}
+          data={accessRequests?.items}
+          loading={
+            isAccessRequestsLoading ||
+            isApprovingRequest ||
+            isRejectingAccessRequest ||
+            isDeletingAccessRequest
+          }
+          pagination
+          paginationPerPage={rowsPerPage}
+          paginationTotalRows={accessRequests?.meta?.totalItems}
+          paginationDefaultPage={page}
+          onChangeRowsPerPage={setRowsPerPage}
+          onChangePage={setPage}
+          onSort={onSort}
+        />
+      </CardBody>
       {showRejectAccessRequest && (
         <RejectTextareaModal
           label={i18n.t('reject_modal:description')}
           title={i18n.t('reject_modal:title')}
-          onClose={closeRejectModal}
+          onClose={setShowRejectAccessRequest.bind(null, null)}
           onConfirm={confirmReject}
         />
       )}
@@ -331,71 +332,38 @@ const AccessRequests = () => {
           title={i18n.t('access_requests:confirmation_modal.title')}
           description={i18n.t('access_requests:confirmation_modal.description')}
           confirmBtnLabel={i18n.t('access_requests:confirmation_modal.button_label')}
-          onClose={closeDeleteModal}
+          onClose={setShowDeleteAccessRequest.bind(null, null)}
           onConfirm={confirmDelete}
           confirmBtnClassName="btn-danger"
         />
       )}
+    </Card>
+  );
+};
+
+const AccessRequests = () => {
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.PENDING);
+
+  const onTabClick = (tab: RequestStatus) => {
+    setRequestStatus(tab);
+  };
+
+  return (
+    <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.access_requests')}</PageHeader>
       <Tabs<RequestStatus> tabs={AccessRequestsTabs} onClick={onTabClick}>
-        <Card>
-          <CardHeader>
-            <Button
-              label={i18n.t('general:download_table')}
-              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-              className="btn-outline-secondary ml-auto"
-              onClick={() => alert('Not implemented')}
-            />
-          </CardHeader>
-          <CardBody>
-            {requestStatus === RequestStatus.PENDING && (
-              <DataTableComponent
-                columns={[
-                  ...PendingAccessRequestsTableHeader,
-                  buildPendingAccessRequestsActionColumn(),
-                ]}
-                data={accessRequests?.items}
-                loading={
-                  isAccessRequestsLoading ||
-                  isApproveAccessRequestLoading ||
-                  isDeleteAccessRequestLoading ||
-                  isRejectAccessRequestLoading
-                }
-                pagination
-                paginationPerPage={rowsPerPage}
-                paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
-                paginationTotalRows={accessRequests?.meta?.totalItems}
-                paginationDefaultPage={page}
-                onChangeRowsPerPage={setRowsPerPage}
-                onChangePage={setPage}
-                onSort={onSort}
-              />
-            )}
-            {requestStatus === RequestStatus.REJECTED && (
-              <DataTableComponent
-                columns={[
-                  ...RejectedAccessRequestsTableHeader,
-                  buildRejectedAccessRequestsActionColumn(),
-                ]}
-                data={accessRequests?.items}
-                loading={
-                  isAccessRequestsLoading ||
-                  isApproveAccessRequestLoading ||
-                  isDeleteAccessRequestLoading ||
-                  isRejectAccessRequestLoading
-                }
-                pagination
-                paginationPerPage={rowsPerPage}
-                paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
-                paginationTotalRows={accessRequests?.meta?.totalItems}
-                paginationDefaultPage={page}
-                onChangeRowsPerPage={setRowsPerPage}
-                onChangePage={setPage}
-                onSort={onSort}
-              />
-            )}
-          </CardBody>
-        </Card>
+        {requestStatus === RequestStatus.PENDING && (
+          <AccessRequestTable
+            useAccessRequests={useNewAccessRequestsQuery}
+            status={requestStatus}
+          />
+        )}
+        {requestStatus === RequestStatus.REJECTED && (
+          <AccessRequestTable
+            useAccessRequests={useRejectedAccessRequestsQuery}
+            status={requestStatus}
+          />
+        )}
       </Tabs>
     </PageLayout>
   );

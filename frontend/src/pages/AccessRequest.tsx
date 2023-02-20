@@ -13,13 +13,13 @@ import ProfileCard from '../components/ProfileCard';
 import VolunteerRequest from '../components/VolunteerRequest';
 import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
-import {
-  useAcceesRequestQuery,
-  useRejectAccessRequestMutation,
-  useApproveAccessRequestMutation,
-} from '../services/volunteer/volunteer.service';
 import Button from '../components/Button';
 import RejectTextareaModal from '../components/RejectTextareaModal';
+import {
+  useAccessRequestQuery,
+  useApproveAccessRequestMutation,
+  useRejectAccessRequestMutation,
+} from '../services/access-requests/access-requests.service';
 
 const AccessRequest = () => {
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -30,12 +30,14 @@ const AccessRequest = () => {
     data: accessRequest,
     error: accessRequestError,
     isLoading: isAccessRequestLoading,
-  } = useAcceesRequestQuery(id as string);
+  } = useAccessRequestQuery(id as string);
+
   const {
     mutateAsync: rejectAccessRequestMutation,
     error: rejectAccessRequestError,
     isLoading: isRejectAccessRequestLoading,
   } = useRejectAccessRequestMutation();
+
   const {
     mutateAsync: approveAccessRequestMutation,
     error: approveAccessRequestError,
@@ -45,13 +47,13 @@ const AccessRequest = () => {
   useEffect(() => {
     if (accessRequestError) {
       useErrorToast(
-        InternalErrors.VOLUNTEER_ERRORS.getError(accessRequestError?.response?.data.code_error),
+        InternalErrors.ACCESS_CODE_ERRORS.getError(accessRequestError?.response?.data.code_error),
       );
     }
 
     if (rejectAccessRequestError) {
       useErrorToast(
-        InternalErrors.VOLUNTEER_ERRORS.getError(
+        InternalErrors.ACCESS_CODE_ERRORS.getError(
           rejectAccessRequestError?.response?.data.code_error,
         ),
       );
@@ -59,7 +61,7 @@ const AccessRequest = () => {
 
     if (approveAccessRequestError) {
       useErrorToast(
-        InternalErrors.VOLUNTEER_ERRORS.getError(
+        InternalErrors.ACCESS_CODE_ERRORS.getError(
           approveAccessRequestError?.response?.data.code_error,
         ),
       );
