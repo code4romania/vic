@@ -178,6 +178,11 @@
     "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
     "start_date": "Data inceput valabiliatate*",
     "end_date": "Data final valabilitate",
+    "modal": {
+      "title": "Sigur doriți să ștergeți acest eveniment?",
+      "description": "Această acțiune va șterge definitiv acest cod de acces și toate informațiile asociate acestuia",
+      "delete": "{{item}} sters cu succes"
+    },
     "form": {
       "code": {
         "required": "Codul este obligatoriu",
@@ -196,6 +201,7 @@
       }
     },
     "errors": {
+      "delete": "codului de acces",
       "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",
       "ACCESS_CODE_002": "Exista deja un cod de acces cu acest nume"
     }

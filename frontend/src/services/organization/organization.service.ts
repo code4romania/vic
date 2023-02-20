@@ -6,6 +6,7 @@ import { IBusinessException } from '../../common/interfaces/business-exception.i
 import { AccessCodeFormTypes } from '../../components/AccessCodeForm';
 import {
   createAccessCode,
+  deleteAccessCode,
   getAccessCode,
   getAccessCodes,
   getOrganization,
@@ -64,4 +65,10 @@ export const useUpdateAccessCodeMutation = () => {
         Promise.resolve(error),
     },
   );
+};
+
+export const useDeleteAccessCodeMutation = () => {
+  return useMutation(['access_code'], (id: string) => deleteAccessCode(id), {
+    onError: (error: AxiosError<IBusinessException<ORGANIZATION_ERRORS>>) => Promise.resolve(error),
+  });
 };
