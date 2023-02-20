@@ -10,7 +10,7 @@ import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
 import ProfileCard from '../components/ProfileCard';
 import VolunteerRequest from '../components/VolunteerRequest';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
 import Button from '../components/Button';
 import RejectTextareaModal from '../components/RejectTextareaModal';
@@ -34,17 +34,11 @@ const AccessRequest = () => {
     isLoading: isAccessRequestLoading,
   } = useAccessRequestQuery(id as string);
 
-  const {
-    mutateAsync: rejectAccessRequestMutation,
-    error: rejectAccessRequestError,
-    isLoading: isRejectAccessRequestLoading,
-  } = useRejectAccessRequestMutation();
+  const { mutateAsync: rejectAccessRequestMutation, isLoading: isRejectAccessRequestLoading } =
+    useRejectAccessRequestMutation();
 
-  const {
-    mutateAsync: approveAccessRequestMutation,
-    error: approveAccessRequestError,
-    isLoading: isApproveAccessRequestLoading,
-  } = useApproveAccessRequestMutation();
+  const { mutateAsync: approveAccessRequestMutation, isLoading: isApproveAccessRequestLoading } =
+    useApproveAccessRequestMutation();
 
   useEffect(() => {
     if (accessRequestError) {
@@ -54,35 +48,50 @@ const AccessRequest = () => {
         ),
       );
     }
-
-    if (rejectAccessRequestError) {
-      useErrorToast(
-        InternalErrors.ACCESS_REQUEST_ERRORS.getError(
-          rejectAccessRequestError?.response?.data.code_error,
-        ),
-      );
-    }
-
-    if (approveAccessRequestError) {
-      useErrorToast(
-        InternalErrors.ACCESS_REQUEST_ERRORS.getError(
-          approveAccessRequestError?.response?.data.code_error,
-        ),
-      );
-    }
-  }, [accessRequestError, rejectAccessRequestError, approveAccessRequestError]);
+  }, [accessRequestError]);
 
   const navigateBack = () => {
     navigate('/volunteers/requests', { replace: true });
   };
 
   const approveAccessRequest = () => {
-    if (accessRequest) approveAccessRequestMutation(accessRequest.id);
+    if (accessRequest)
+      approveAccessRequestMutation(accessRequest.id, {
+        onSuccess: () => {
+          useSuccessToast(
+            i18n.t('volunteer:registration.confirmation_message', {
+              option: i18n.t('volunteer:registration.confirmation_options.approved'),
+            }),
+          );
+          navigateBack();
+        },
+        onError: (error) => {
+          InternalErrors.ACCESS_REQUEST_ERRORS.getError(error?.response?.data.code_error);
+        },
+      });
   };
 
   const confirmReject = (rejectMessage?: string) => {
-    if (accessRequest) rejectAccessRequestMutation({ id: accessRequest.id, rejectMessage });
-    setShowRejectModal(false);
+    if (accessRequest)
+      rejectAccessRequestMutation(
+        { id: accessRequest.id, rejectMessage },
+        {
+          onSuccess: () => {
+            useSuccessToast(
+              i18n.t('volunteer:registration.confirmation_message', {
+                option: i18n.t('volunteer:registration.confirmation_options.rejected'),
+              }),
+            );
+            navigateBack();
+          },
+          onError: (error) => {
+            InternalErrors.ACCESS_REQUEST_ERRORS.getError(error?.response?.data.code_error);
+          },
+          onSettled: () => {
+            setShowRejectModal(false);
+          },
+        },
+      );
   };
 
   return (

@@ -178,7 +178,11 @@
       "delete": "Sterge din listă"
     },
     "errors": {
-      "no_data": "Nu s-au putut incarca cererile de inscriere"
+      "no_data": "Nu s-au putut incarca cererile de inscriere",
+      "ACCESS_REQUEST_001": "Exista deja o cerere pentru organization dumneavoastra",
+      "ACCESS_REQUEST_002": "Cererea nu a fost gasita",
+      "ACCESS_REQUEST_003": "Cererea trebuie sa fie respinsa pentru a putea fi stearsa",
+      "ACCESS_REQUEST_004": "Cererea nu este in starea potrivita"
     },
     "confirmation_modal": {
       "title": "Sigur doriți să ștergeți această solicitare de înregistrare?",
