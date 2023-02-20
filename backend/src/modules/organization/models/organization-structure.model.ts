@@ -10,7 +10,7 @@ export interface IOrganizationStructureModel extends IBaseModel {
   type: OrganizationStructureType;
   members: number; // No of members in the structure
   createdBy: IAdminUserModel;
-  organizationId?: string;
+  organizationId: string;
 }
 
 export type ICreateOrganizationStructureModel = Required<

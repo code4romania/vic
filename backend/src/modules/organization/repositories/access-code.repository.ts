@@ -93,12 +93,12 @@ export class AccessCodeRepositoryService
     return accessCodeEntities.map(AccessCodeTransformer.fromEntity);
   }
 
-  async delete(id: string): Promise<IAccessCodeModel> {
+  async delete(id: string): Promise<string> {
     const accessCodeEntity = await this.accessCodeRepository.findOneBy({ id });
 
     if (accessCodeEntity) {
-      const removed = await this.accessCodeRepository.remove(accessCodeEntity);
-      return AccessCodeTransformer.fromEntity(removed);
+      await this.accessCodeRepository.remove(accessCodeEntity);
+      return id;
     }
 
     return null;

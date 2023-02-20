@@ -17,5 +17,5 @@ export interface IAccessCodeRepository
   findMany(
     findOptions: IFindAllAccessCodeModel,
   ): Promise<Pagination<IAccessCodeModel>>;
-  delete(id: string): Promise<IAccessCodeModel>;
+  delete(id: string): Promise<string>;
 }

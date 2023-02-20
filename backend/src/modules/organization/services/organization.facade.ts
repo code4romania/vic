@@ -18,7 +18,7 @@ export class OrganizationFacadeService {
   public async findOrganization(
     options:
       | Partial<IFindOrganizationModel>
-      | ArrayOfPropetyType<IFindOrganizationModel>,
+      | Partial<IFindOrganizationModel>[], // TODO move in model
   ): Promise<IOrganizationModel> {
     return this.organizationRepository.find(options);
   }

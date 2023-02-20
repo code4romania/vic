@@ -39,7 +39,7 @@ export class AccessCodeFacade {
     return this.accessCodeRepository.create(createAccessCodeModel);
   }
 
-  public async delete(id: string): Promise<IAccessCodeModel> {
+  public async delete(id: string): Promise<string> {
     return this.accessCodeRepository.delete(id);
   }
 }
