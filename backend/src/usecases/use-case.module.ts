@@ -25,6 +25,7 @@ import { GetManyNewAccessRequestsUseCase } from './access-request/get-many-new-a
 import { GetManyRejectedAccessRequestsUseCase } from './access-request/get-many-rejected-access-requests.usecase';
 import { CreateRegularUsereUseCaseService } from './user/create-regular-user.usecase';
 import { GetOneOrganizationStructureUseCase } from './organization/organization-structure/get-one-organization-structure.usecase';
+import { ActivityTypeModule } from 'src/modules/activity-type/activity-type.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { GetOneOrganizationStructureUseCase } from './organization/organization-
     OngHubModule,
     UserModule,
     AccessRequestModule,
+    ActivityTypeModule,
   ],
   providers: [
     // Organization
