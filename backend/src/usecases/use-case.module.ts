@@ -25,6 +25,12 @@ import { GetManyNewAccessRequestsUseCase } from './access-request/get-many-new-a
 import { GetManyRejectedAccessRequestsUseCase } from './access-request/get-many-rejected-access-requests.usecase';
 import { CreateRegularUsereUseCaseService } from './user/create-regular-user.usecase';
 import { GetOneOrganizationStructureUseCase } from './organization/organization-structure/get-one-organization-structure.usecase';
+import { AnnouncementModule } from 'src/modules/announcement/announcement.module';
+import { GetOneAnnouncementUseCase } from './announcement/get-one-announcement.usecase';
+import { GetAllAnnouncementUseCase } from './announcement/get-all-announcement.usecase';
+import { CreateAnnouncementUseCase } from './announcement/create-announcement.usecase';
+import { UpdateAnnouncementUseCase } from './announcement/update-announcement.usecase';
+import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.usecase';
 
 @Module({
   imports: [
@@ -33,6 +39,7 @@ import { GetOneOrganizationStructureUseCase } from './organization/organization-
     OngHubModule,
     UserModule,
     AccessRequestModule,
+    AnnouncementModule,
   ],
   providers: [
     // Organization
@@ -61,6 +68,12 @@ import { GetOneOrganizationStructureUseCase } from './organization/organization-
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    // Announcement
+    GetOneAnnouncementUseCase,
+    GetAllAnnouncementUseCase,
+    CreateAnnouncementUseCase,
+    UpdateAnnouncementUseCase,
+    DeleteAnnouncementUseCase,
   ],
   exports: [
     // Organization
@@ -89,6 +102,12 @@ import { GetOneOrganizationStructureUseCase } from './organization/organization-
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    // Announcement
+    GetOneAnnouncementUseCase,
+    GetAllAnnouncementUseCase,
+    CreateAnnouncementUseCase,
+    UpdateAnnouncementUseCase,
+    DeleteAnnouncementUseCase,
   ],
 })
 export class UseCaseModule {}

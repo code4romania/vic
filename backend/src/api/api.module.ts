@@ -8,6 +8,7 @@ import { OrganizationController } from './organization/organization.controller';
 import { AccessRequestController } from './access-request/access-request.controller';
 import { MobileRegularUserController } from './_mobile/user/user.controller';
 import { MobileAccessRequestController } from './_mobile/access-request/access-request.controller';
+import { AnnouncementController } from './announcement/announcement.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -18,6 +19,7 @@ import { MobileAccessRequestController } from './_mobile/access-request/access-r
     AccessCodeController,
     OrganizationStructureController,
     AccessRequestController,
+    AnnouncementController,
     // Mobile
     MobileRegularUserController,
     MobileAccessRequestController,
