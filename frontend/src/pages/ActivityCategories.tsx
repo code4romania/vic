@@ -12,6 +12,8 @@ import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import ActivityButton from '../components/ActivityButton';
+import { HomeIcon } from '@heroicons/react/24/outline';
 
 export enum CategoryStatus {
   ACTIVE = 'active',
@@ -50,6 +52,10 @@ const ActivityCategories = () => {
     navigate('add');
   };
 
+  const handleActivityClick = (id: string) => {
+    navigate(`edit/${id}`);
+  };
+
   return (
     <PageLayout>
       <div className="flex items-center justify-between">
@@ -68,9 +74,16 @@ const ActivityCategories = () => {
             <h2>{i18n.t('side_menu:options.activity_categories')}</h2>
           </CardHeader>
           <CardBody>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               {activityCategories.map((activity: IActivityCategory) => (
-                <div key={activity.id}></div>
+                <ActivityButton
+                  key={activity.id}
+                  id={activity.id}
+                  status={activity.status}
+                  icon={<HomeIcon className="w-6 h-6" />}
+                  name={activity.name}
+                  onClick={handleActivityClick}
+                />
               ))}
             </div>
           </CardBody>

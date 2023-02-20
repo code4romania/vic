@@ -39,6 +39,7 @@ const Router = () => {
           <Route path="activity-categories" element={<Outlet />}>
             <Route index element={<ActivityCategories />} />
             <Route path="add" element={<p>Add activity category</p>} />
+            <Route path="edit/:id" element={<p>Edit activity</p>} />
           </Route>
         </Route>
       </Routes>
