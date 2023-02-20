@@ -16,7 +16,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.configService.get('DATABASE_NAME'),
       migrations: ['dist/migrations/*.js'],
       autoLoadEntities: true,
-      migrationsRun: true,
+      migrationsRun: false,
       synchronize: false, // never set it to TRUE in production
       subscribers: [],
       logging: parseInt(this.configService.get('TYPEORM_DEBUG')) ? true : false,
