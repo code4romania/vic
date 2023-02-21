@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
-import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
-  IPaginationConfig,
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
@@ -78,19 +76,6 @@ export class AccessCodeRepositoryService
     return accessCodeEntity
       ? AccessCodeTransformer.fromEntity(accessCodeEntity)
       : null;
-  }
-
-  async findAll(
-    findOptions: IFindAllAccessCodeModel /* INSERT FILTERING OPTIONS */,
-  ): Promise<IAccessCodeModel[]> {
-    const accessCodeEntities = await this.accessCodeRepository.find({
-      where: { ...findOptions },
-      relations: {
-        createdBy: true,
-      },
-    });
-
-    return accessCodeEntities.map(AccessCodeTransformer.fromEntity);
   }
 
   async delete(id: string): Promise<string> {
