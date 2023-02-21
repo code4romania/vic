@@ -224,6 +224,7 @@
   display: none;
 }
 
+/* toast overrides */
 .Toastify__toast {
   @apply font-roboto !important;
   @apply sm:text-sm lg:text-base text-xs;
@@ -235,4 +236,25 @@
 
 .Toastify__toast-theme--colored.Toastify__toast--error {
   @apply bg-red-500 !important;
+}
+
+/* react select overrides */
+.reactselect__control {
+  @apply rounded-md text-sm font-roboto font-normal focus:border-indigo-500 focus:border-2 border border-cool-gray-200 !important;
+}
+
+.reactselect__value-container {
+  @apply py-1.5 px-3 !important;
+}
+
+.reactselect__loading-indicator {
+  @apply flex items-center justify-center max-w-[4rem] m-0 !important;
+}
+
+.reactselect__loading-indicator > span {
+  @apply h-1.5 w-1.5 ml-1;
+}
+
+.reactselect__multi-value__remove > svg {
+  @apply w-4 h-4 text-base;
 }

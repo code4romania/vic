@@ -42,6 +42,7 @@ import { useNavigate } from 'react-router-dom';
 import { ACCESS_REQUEST_ERRORS } from '../common/errors/entities/access-request.errors';
 import DataTableFilters from '../components/DataTableFilters';
 import DateRangePicker from '../components/DateRangePicker';
+import ServerSelect from '../components/ServerSelect';
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
   { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
@@ -305,6 +306,15 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     console.log('reset filters');
   };
 
+  const loadOptionsCitiesSerch = async (searchWord: string) => {
+    console.log('search', searchWord);
+    return Promise.resolve([
+      { label: '1', value: 'a' },
+      { label: '2', value: 'b' },
+      { label: '3', value: 'c' },
+    ]);
+  };
+
   return (
     <>
       <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
@@ -313,6 +323,12 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
           onChange={setCreatedOnRange}
           value={createdOnRange.length > 0 ? createdOnRange : undefined}
           id="created-on-range__picker"
+        />
+        <ServerSelect
+          id="city__select"
+          label={i18n.t('general:location')}
+          value={{ label: '', value: '' }}
+          loadOptions={loadOptionsCitiesSerch}
         />
       </DataTableFilters>
       <Card>
