@@ -105,17 +105,19 @@ const Organization = () => {
         />
       )}
       {isOrganizationLoading && <LoadingContent />}
-      <Divisions
-        isLoading={isFetchingDivision}
-        divisionType={divisionType}
-        data={division}
-        onTabChange={onTabClick}
-        onSort={onSort}
-        page={page}
-        onChangePage={onChangePage}
-        onRowsPerPageChange={onRowsPerPageChange}
-        onRefetch={onRefetch}
-      />
+      {!organizationError && !isOrganizationLoading && (
+        <Divisions
+          isLoading={isFetchingDivision}
+          divisionType={divisionType}
+          data={division}
+          onTabChange={onTabClick}
+          onSort={onSort}
+          page={page}
+          onChangePage={onChangePage}
+          onRowsPerPageChange={onRowsPerPageChange}
+          onRefetch={onRefetch}
+        />
+      )}
     </PageLayout>
   );
 };
