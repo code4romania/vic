@@ -13,7 +13,6 @@ import LoadingContent from '../components/LoadingContent';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import ActivityButton from '../components/ActivityButton';
-import { HomeIcon } from '@heroicons/react/24/outline';
 
 export enum CategoryStatus {
   ACTIVE = 'active',
@@ -80,7 +79,7 @@ const ActivityCategories = () => {
                   key={activity.id}
                   id={activity.id}
                   status={activity.status}
-                  icon={<HomeIcon className="w-6 h-6" />}
+                  icon={activity.icon}
                   name={activity.name}
                   onClick={handleActivityClick}
                 />
