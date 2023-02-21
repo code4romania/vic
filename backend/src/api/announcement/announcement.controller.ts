@@ -18,7 +18,6 @@ import { CreateAnnouncementUseCase } from 'src/usecases/announcement/create-anno
 import { DeleteAnnouncementUseCase } from 'src/usecases/announcement/delete-announcement.usecase';
 import { GetAllAnnouncementUseCase } from 'src/usecases/announcement/get-all-announcement.usecase';
 import { UpdateAnnouncementUseCase } from 'src/usecases/announcement/update-announcement.usecase';
-import { GetOneOrganizationStructureUseCase } from 'src/usecases/organization/organization-structure/get-one-organization-structure.usecase';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
 import { AnnouncementGuard } from './guards/announcement.guard';
@@ -33,7 +32,6 @@ export class AnnouncementController {
     private readonly createAnnouncementUseCase: CreateAnnouncementUseCase,
     private readonly updateAnnouncementUseCase: UpdateAnnouncementUseCase,
     private readonly deleteAnnouncementUseCase: DeleteAnnouncementUseCase,
-    private readonly getOneOrganizationStructureUseCase: GetOneOrganizationStructureUseCase,
   ) {}
 
   @Get()
@@ -55,16 +53,9 @@ export class AnnouncementController {
     @Body() createAnnouncementDto: CreateAnnouncementDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<AnnouncementPresenter> {
-    const targets = await Promise.all(
-      createAnnouncementDto.targets.map(
-        async (target) =>
-          await this.getOneOrganizationStructureUseCase.execute({ id: target }),
-      ),
-    );
     const announcement = await this.createAnnouncementUseCase.execute({
       ...createAnnouncementDto,
       organizationId,
-      targets: targets,
       publishedOn:
         createAnnouncementDto.status === AnnouncementStatus.PUBLISHED
           ? new Date()
@@ -80,17 +71,12 @@ export class AnnouncementController {
   async update(
     @Param('id', UuidValidationPipe) id: string,
     @Body() updateAnnouncementDto: UpdateAnnouncementDto,
+    @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<AnnouncementPresenter> {
-    const targets = await Promise.all(
-      updateAnnouncementDto.targets.map(
-        async (target) =>
-          await this.getOneOrganizationStructureUseCase.execute({ id: target }),
-      ),
-    );
     const announcement = await this.updateAnnouncementUseCase.execute({
       ...updateAnnouncementDto,
       id,
-      targets: targets,
+      organizationId,
       publishedOn:
         updateAnnouncementDto.status === AnnouncementStatus.PUBLISHED
           ? new Date()

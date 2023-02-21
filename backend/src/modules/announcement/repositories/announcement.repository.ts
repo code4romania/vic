@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { OrganizationStructureEntity } from 'src/modules/organization/entities/organization-structure.entity';
 import { Repository } from 'typeorm';
 import { AnnouncementEntity } from '../entities/announcement.entity';
 import { IAnnouncementRepository } from '../interfaces/announcement-repository.interface';
@@ -57,8 +58,16 @@ export class AnnouncementRepositoryService implements IAnnouncementRepository {
 
   async update({
     id,
+    targetsIds,
     ...updates
   }: IUpdateAnnouncementModel): Promise<IAnnouncementModel> {
+    const announcement = await this.find({ id });
+
+    await this.announcementRepository
+      .createQueryBuilder()
+      .relation(OrganizationStructureEntity, 'targets')
+      .of(announcement)
+      .addAndRemove(targetsIds, announcement.targets);
     await this.announcementRepository.update({ id }, { ...updates });
 
     return this.find({ id });

@@ -11,39 +11,31 @@ export interface IAnnouncementModel extends IBaseModel {
   name: string;
   description: string;
   status: AnnouncementStatus;
-  publishedOn: Date | null;
   organizationId: string;
-  targets: IOrganizationStructureModel[] | null;
+  publishedOn?: Date;
+  targets?: IOrganizationStructureModel[];
 }
 
-export type ICreateAnnouncementModel = Required<
-  Pick<
-    IAnnouncementModel,
-    | 'name'
-    | 'description'
-    | 'status'
-    | 'publishedOn'
-    | 'organizationId'
-    | 'targets'
-  >
->;
+export type ICreateAnnouncementModel = Omit<
+  IAnnouncementModel,
+  'id' | 'updatedOn' | 'createdOn'
+> & {
+  targetsIds: string[];
+};
 
-export type IUpdateAnnouncementModel = Required<
-  Pick<
-    IAnnouncementModel,
-    'id' | 'name' | 'description' | 'status' | 'publishedOn' | 'targets'
-  >
->;
+export type IUpdateAnnouncementModel = Omit<
+  IAnnouncementModel,
+  'updatedOn' | 'createdOn'
+> & {
+  targetsIds: string[];
+};
 
 export type IFindAnnouncementModel = Partial<
-  Pick<
-    IAnnouncementModel,
-    'id' | 'name' | 'status' | 'organizationId' | 'targets'
-  >
+  Pick<IAnnouncementModel, 'id' | 'organizationId'>
 >;
 
 export type IFindAllAnnouncementModel = Partial<
-  Pick<IAnnouncementModel, 'status' | 'organizationId' | 'targets'>
+  Pick<IAnnouncementModel, 'status' | 'organizationId'>
 >;
 
 export class AnnouncementStructureTransformer {
@@ -69,11 +61,8 @@ export class AnnouncementStructureTransformer {
     entity.status = model.status;
     entity.publishedOn = model.publishedOn;
     entity.organizationId = model.organizationId;
-    entity.targets = model.targets?.map((target) =>
-      OrganizationStructureTransformer.toEntity({
-        ...target,
-        createdById: target.createdBy.id,
-      }),
+    entity.targets = model.targetsIds.map(
+      OrganizationStructureTransformer.toEntity,
     );
 
     return entity;

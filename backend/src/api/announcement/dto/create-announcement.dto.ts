@@ -25,5 +25,5 @@ export class CreateAnnouncementDto {
   status: AnnouncementStatus;
 
   @IsArray()
-  targets: string[];
+  targetsIds: string[];
 }

@@ -41,16 +41,6 @@ export class AnnouncementEntity extends BaseEntity {
   organization: OrganizationEntity;
 
   @ManyToMany(() => OrganizationStructureEntity)
-  @JoinTable({
-    name: 'announcement_to_organization_structure',
-    joinColumn: {
-      name: 'announcement_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'organization_structure_id',
-      referencedColumnName: 'id',
-    },
-  })
+  @JoinTable()
   targets: OrganizationStructureEntity[];
 }
