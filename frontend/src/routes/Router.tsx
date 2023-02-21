@@ -15,6 +15,7 @@ import Volunteers from '../pages/Volunteers';
 import AddAccessCode from '../pages/AddAccessCode';
 import ActivityCategories from '../pages/ActivityCategories';
 import EditActivity from '../pages/EditActivity';
+import AddActivity from '../pages/AddActivity';
 
 const Router = () => {
   return (
@@ -39,7 +40,7 @@ const Router = () => {
           </Route>
           <Route path="activity-categories" element={<Outlet />}>
             <Route index element={<ActivityCategories />} />
-            <Route path="add" element={<p>Add activity category</p>} />
+            <Route path="add" element={<AddActivity />} />
             <Route path="edit/:id" element={<EditActivity />} />
           </Route>
         </Route>

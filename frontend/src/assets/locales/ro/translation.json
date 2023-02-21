@@ -6,6 +6,10 @@
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
     "category": "Categorie",
+    "select": "Selecteaza {{item}}",
+    "choose": "Alege {{item}}",
+    "image": "Imagine",
+    "activity": "Activitate",
     "address": "Adresa",
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
@@ -239,6 +243,8 @@
     }
   },
   "activity_categories": {
-    "info": "Categoria a fost arhivată"
+    "info": "Categoria a fost arhivată",
+    "type": "Denumire tip activitate",
+    "type_placeholder": "Denumire"
   }
 }
