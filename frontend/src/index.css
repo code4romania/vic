@@ -184,11 +184,11 @@
 
 /* data table overrides */
 .rdt_TableHeadRow > .rdt_TableCol {
-  @apply bg-cool-gray-50 text-sm text-cool-gray-900 border-cool-gray-300;
+  @apply bg-cool-gray-50 text-sm text-cool-gray-800 border-cool-gray-300;
 }
 
 .rdt_TableHeadRow > .rdt_TableCol > div {
-  @apply py-3.5 pl-2 pr-3 font-bold;
+  @apply py-3.5 px-2.5 text-sm font-titilliumBold;
 }
 
 .rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
