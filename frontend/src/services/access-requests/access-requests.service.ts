@@ -18,10 +18,13 @@ export const useNewAccessRequestsQuery = (
   page: number = PaginationConfig.defaultPage,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  search?: string,
+  start?: Date,
+  end?: Date,
 ) => {
   return useQuery(
-    ['new-access-requests', limit, page, orderBy, orderDirection],
-    () => getNewAccessRequests(limit, page, orderBy, orderDirection),
+    ['new-access-requests', limit, page, orderBy, orderDirection, search, start, end],
+    () => getNewAccessRequests(limit, page, orderBy, orderDirection, search, start, end),
     {
       enabled: !!(limit && page),
       onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) => error,
@@ -34,10 +37,13 @@ export const useRejectedAccessRequestsQuery = (
   page: number = PaginationConfig.defaultPage,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  search?: string,
+  start?: Date,
+  end?: Date,
 ) => {
   return useQuery(
-    ['rejected-access-requests', limit, page, orderBy, orderDirection],
-    () => getRejectedAccessRequests(limit, page, orderBy, orderDirection),
+    ['rejected-access-requests', limit, page, orderBy, orderDirection, search, start, end],
+    () => getRejectedAccessRequests(limit, page, orderBy, orderDirection, search, start, end),
     {
       enabled: !!(limit && page),
       onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) => error,

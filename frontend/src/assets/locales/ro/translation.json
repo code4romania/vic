@@ -197,6 +197,9 @@
       "requests": "Cereri",
       "rejected_requests": "Cereri respinse"
     },
+    "filters": {
+      "access_request_range": "Perioada cerere access"
+    },
     "popover": {
       "view": "Vizualizeaza aplicare",
       "approve": "Aprobă cerere",

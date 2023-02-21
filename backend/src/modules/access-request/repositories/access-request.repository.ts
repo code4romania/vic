@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import {
+  Pagination,
+  RepositoryWithPagination,
+} from 'src/infrastructure/base/repository-with-pagination.class';
 import { Repository } from 'typeorm';
 import { AccessRequestEntity } from '../entities/access-request.entity';
 import { IAccessRequestRepository } from '../interfaces/access-request-repository.interface';
@@ -13,24 +18,38 @@ import {
 } from '../model/access-request.model';
 
 @Injectable()
-export class AccessRequestRepository implements IAccessRequestRepository {
+export class AccessRequestRepository
+  extends RepositoryWithPagination<AccessRequestEntity>
+  implements IAccessRequestRepository
+{
   constructor(
     @InjectRepository(AccessRequestEntity)
     private readonly accessRequestRepository: Repository<AccessRequestEntity>,
-  ) {}
+  ) {
+    super(accessRequestRepository);
+  }
 
-  async findAll(
+  async findMany(
     findOptions: FindManyAccessRequestsOptions,
-  ): Promise<IAccessRequestModel[]> {
-    const requests = await this.accessRequestRepository.find({
-      where: { ...findOptions },
-      relations: {
-        updatedBy: true,
-        requestedBy: true,
+  ): Promise<Pagination<IAccessRequestModel>> {
+    return this.findManyPaginated(
+      {
+        searchableColumns: [
+          'requestedBy.name',
+          'requestedBy.email',
+          'requestedBy.phone',
+        ],
+        defaultSortBy: 'createdOn',
+        defaultOrderDirection: OrderDirection.DESC,
+        relations: {
+          updatedBy: true,
+          requestedBy: true,
+        },
+        rangeColumn: 'createdOn',
       },
-    });
-
-    return requests.map(AccessRequestTransformer.fromEntity);
+      findOptions,
+      AccessRequestTransformer.fromEntity,
+    );
   }
 
   async find(
