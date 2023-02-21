@@ -56,7 +56,6 @@ export class AnnouncementPresenter {
   @ApiProperty({
     description: 'Targets of the Announcement',
     nullable: true,
-    example: 'Departament Comunicare',
   })
   targets: IOrganizationStructureModel[];
 

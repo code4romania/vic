@@ -40,7 +40,7 @@ export class AnnouncementEntity extends BaseEntity {
   @JoinColumn({ name: 'organization_id' })
   organization: OrganizationEntity;
 
-  @ManyToMany(() => OrganizationStructureEntity, { nullable: true })
+  @ManyToMany(() => OrganizationStructureEntity)
   @JoinTable({
     name: 'announcement_to_organization_structure',
     joinColumn: {

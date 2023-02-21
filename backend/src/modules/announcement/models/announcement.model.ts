@@ -69,7 +69,7 @@ export class AnnouncementStructureTransformer {
     entity.status = model.status;
     entity.publishedOn = model.publishedOn;
     entity.organizationId = model.organizationId;
-    entity.targets = model.targets.map((target) =>
+    entity.targets = model.targets?.map((target) =>
       OrganizationStructureTransformer.toEntity({
         ...target,
         createdById: target.createdBy.id,

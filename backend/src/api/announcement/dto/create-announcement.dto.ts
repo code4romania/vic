@@ -1,5 +1,5 @@
 import {
-  IsDate,
+  IsArray,
   IsEnum,
   IsString,
   Matches,
@@ -8,7 +8,6 @@ import {
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns';
 import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
-import { IOrganizationStructureModel } from 'src/modules/organization/models/organization-structure.model';
 
 export class CreateAnnouncementDto {
   @IsString()
@@ -25,8 +24,6 @@ export class CreateAnnouncementDto {
   @IsEnum(AnnouncementStatus)
   status: AnnouncementStatus;
 
-  @IsDate()
-  publishedOn: Date | null;
-
-  targets: IOrganizationStructureModel[];
+  @IsArray()
+  targets: string[];
 }
