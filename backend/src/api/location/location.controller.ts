@@ -1,8 +1,9 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { GetCitiesUseCase } from 'src/usecases/location/get-citties.usecase';
 import { GetCountiesUseCase } from 'src/usecases/location/get-counties.usecase';
+import { GetCityDto } from './dto/get-city.dto';
 import { CityPresenter } from './presenters/city.presenter';
 import { CountyPresenter } from './presenters/county.presenter';
 
@@ -16,8 +17,8 @@ export class LocationController {
   ) {}
 
   @Get('city')
-  async getCities(): Promise<CityPresenter[]> {
-    const cities = await this.getCitiesUseCase.execute();
+  async getCities(@Query() { search }: GetCityDto): Promise<CityPresenter[]> {
+    const cities = await this.getCitiesUseCase.execute(search);
     return cities.map((city) => new CityPresenter(city));
   }
 

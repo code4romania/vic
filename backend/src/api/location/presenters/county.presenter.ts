@@ -6,6 +6,7 @@ export class CountyPresenter {
   constructor(county: ICountyModel) {
     this.id = county.id;
     this.name = county.name;
+    this.abbreviation = county.abbreviation;
   }
 
   @Expose()
@@ -21,4 +22,11 @@ export class CountyPresenter {
     example: 'Bucuresti',
   })
   name: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The county abbreviation',
+    example: 'VS',
+  })
+  abbreviation: string;
 }

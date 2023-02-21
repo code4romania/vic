@@ -7,7 +7,7 @@ import { LocationFacade } from 'src/modules/location/services/location.facade';
 export class GetCitiesUseCase implements IUseCaseService<ICityModel[]> {
   constructor(private readonly locationFacade: LocationFacade) {}
 
-  public async execute(): Promise<ICityModel[]> {
-    return this.locationFacade.findCities();
+  public async execute(searchWord: string): Promise<ICityModel[]> {
+    return this.locationFacade.findCities(searchWord);
   }
 }

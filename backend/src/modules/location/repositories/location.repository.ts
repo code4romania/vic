@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { CityEntity } from '../entities/city.entity';
 import { CountyEntity } from '../entities/county.entity';
 import { ILocationRepository } from '../interfaces/location-repository.interface';
@@ -21,8 +21,14 @@ export class LocationRepositoryService implements ILocationRepository {
     return countyEntities.map(CountyTransformer.fromEntity);
   }
 
-  async findCities(): Promise<ICityModel[]> {
-    const cityEntities = await this.cityRepository.find();
+  // This will only find the cities which start with the search word
+  async findCities(searchWord: string): Promise<ICityModel[]> {
+    const cityEntities = await this.cityRepository.find({
+      where: { name: ILike(`${searchWord}%`) },
+      relations: {
+        county: true,
+      },
+    });
     return cityEntities.map(CityTransformer.fromEntity);
   }
 }

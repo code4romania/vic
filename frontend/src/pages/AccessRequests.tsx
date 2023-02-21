@@ -42,7 +42,8 @@ import { useNavigate } from 'react-router-dom';
 import { ACCESS_REQUEST_ERRORS } from '../common/errors/entities/access-request.errors';
 import DataTableFilters from '../components/DataTableFilters';
 import DateRangePicker from '../components/DateRangePicker';
-import ServerSelect from '../components/ServerSelect';
+import LocationSelect from '../containers/LocationSelect';
+import { ListItem } from '../common/interfaces/list-item.interface';
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
   { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
@@ -97,6 +98,7 @@ interface AccessRequestTable {
     search?: string,
     start?: Date,
     end?: Date,
+    location?: string,
   ) => UseQueryResult<
     IPaginatedEntity<IAccessRequest>,
     AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>
@@ -114,6 +116,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
   // filters
   const [searchWord, setSearchWord] = useState<string>();
   const [createdOnRange, setCreatedOnRange] = useState<Date[]>([]);
+  const [location, setLocation] = useState<ListItem>();
   // confirmation modals
   const [showRejectAccessRequest, setShowRejectAccessRequest] = useState<null | IAccessRequest>(
     null,
@@ -136,6 +139,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     searchWord,
     createdOnRange[0],
     createdOnRange[1],
+    location?.value,
   );
 
   // actions
@@ -306,15 +310,6 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     console.log('reset filters');
   };
 
-  const loadOptionsCitiesSerch = async (searchWord: string) => {
-    console.log('search', searchWord);
-    return Promise.resolve([
-      { label: '1', value: 'a' },
-      { label: '2', value: 'b' },
-      { label: '3', value: 'c' },
-    ]);
-  };
-
   return (
     <>
       <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
@@ -324,12 +319,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
           value={createdOnRange.length > 0 ? createdOnRange : undefined}
           id="created-on-range__picker"
         />
-        <ServerSelect
-          id="city__select"
-          label={i18n.t('general:location')}
-          value={{ label: '', value: '' }}
-          loadOptions={loadOptionsCitiesSerch}
-        />
+        <LocationSelect label={i18n.t('general:location')} onSelect={setLocation} />
       </DataTableFilters>
       <Card>
         <CardHeader>

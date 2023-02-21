@@ -7,8 +7,8 @@ import { LocationRepositoryService } from '../repositories/location.repository';
 export class LocationFacade {
   constructor(private readonly locationRepository: LocationRepositoryService) {}
 
-  public async findCities(): Promise<ICityModel[]> {
-    return this.locationRepository.findCities();
+  public async findCities(searchWord: string): Promise<ICityModel[]> {
+    return this.locationRepository.findCities(searchWord);
   }
 
   public async findCounties(): Promise<ICountyModel[]> {

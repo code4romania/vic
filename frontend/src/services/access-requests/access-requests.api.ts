@@ -11,9 +11,10 @@ export const getNewAccessRequests = async (
   search?: string,
   start?: Date,
   end?: Date,
+  location?: string,
 ): Promise<IPaginatedEntity<IAccessRequest>> => {
   return API.get('/access-request/new', {
-    params: { limit, page, orderBy, orderDirection, search, start, end },
+    params: { limit, page, orderBy, orderDirection, search, start, end, location },
   }).then((res) => res.data);
 };
 
@@ -25,9 +26,10 @@ export const getRejectedAccessRequests = async (
   search?: string,
   start?: Date,
   end?: Date,
+  location?: string,
 ): Promise<IPaginatedEntity<IAccessRequest>> => {
   return API.get('/access-request/rejected', {
-    params: { limit, page, orderBy, orderDirection, search, start, end },
+    params: { limit, page, orderBy, orderDirection, search, start, end, location },
   }).then((res) => res.data);
 };
 

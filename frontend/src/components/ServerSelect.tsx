@@ -2,10 +2,11 @@
 import React, { ComponentPropsWithoutRef, ReactNode, useEffect, useMemo, useState } from 'react';
 import debounce from 'lodash.debounce';
 import AsyncSelect from 'react-select/async';
+import { ListItem } from '../common/interfaces/list-item.interface';
 
 export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select'>, 'value'> {
   label: string;
-  value: { label: string; value: string };
+  value?: ListItem;
   isMulti?: boolean;
   helper?: ReactNode;
   isClearable?: boolean;
@@ -23,7 +24,7 @@ const ServerSelect = ({
   isClearable,
   helper,
 }: ServerSelectProps) => {
-  const [defaultValue, setDefaultValue] = useState<{ label: string; value: string }>();
+  const [defaultValue, setDefaultValue] = useState<ListItem>();
 
   // cleanup any side effects of deounce
   useEffect(() => {
