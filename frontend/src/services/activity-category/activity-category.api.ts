@@ -68,12 +68,6 @@ export const updateActivityCategory = async (
 export const createActivityCategory = async (
   data: ActivityCategoryFormTypes,
 ): Promise<IActivityCategory> => {
-  console.log({
-    ...data,
-    department: data.department?.key,
-    branch: data.branch?.key,
-    role: data.role?.key,
-  });
   return API.post(`/activity-categories`, {
     ...data,
     department: data.department?.key,
