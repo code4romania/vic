@@ -40,7 +40,7 @@ export class CreateAnnouncementUseCase
           new SendAnnouncementEvent(
             announcement.organizationId,
             announcement.id,
-            announcement.targets.map((target) => target.id),
+            announcement.targets?.map((target) => target.id),
           ),
         );
       }

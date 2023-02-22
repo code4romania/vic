@@ -58,7 +58,7 @@ export class UpdateAnnouncementUseCase
           new SendAnnouncementEvent(
             updatedAnnouncement.organizationId,
             updatedAnnouncement.id,
-            updatedAnnouncement.targets.map((target) => target.id),
+            updatedAnnouncement.targets?.map((target) => target.id),
           ),
         );
       }
