@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
@@ -23,6 +23,7 @@ import { UpdateAccessCodeDto } from './dto/update-access-code.dto';
 import { AccessCodePresenter } from './presenters/access-code.presenter';
 import { AccessCodeGuard } from './guards/access-code.guard';
 
+@ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, AccessCodeGuard)
 @Controller('access-code')
 export class AccessCodeController {
@@ -45,7 +46,7 @@ export class AccessCodeController {
     return accessCodes.map((accessCode) => new AccessCodePresenter(accessCode));
   }
 
-  @ApiParam({ name: 'accessCodeId', type: 'string' })
+  @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   async getOne(
     @Param('id', UuidValidationPipe) accessCodeId: string,

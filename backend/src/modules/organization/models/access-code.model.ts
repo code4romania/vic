@@ -10,7 +10,7 @@ export interface IAccessCodeModel extends IBaseModel {
   endDate?: Date;
   createdBy: IAdminUserModel;
   usageCount: number;
-  organizationId?: string;
+  organizationId: string;
 }
 
 export type ICreateAccessCodeModel = Pick<

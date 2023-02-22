@@ -1,18 +1,19 @@
 import React from 'react';
 import i18n from '../common/config/i18n';
 import { Sex } from '../common/enums/sex.enum';
+import { calculateAge } from '../common/utils/utils';
 import Card from '../layouts/CardLayout';
 import CardBody from './CardBody';
 
 interface ProfileCardProps {
   name: string;
   logo: string;
-  age: number;
+  birthday: Date;
   sex: Sex;
   location: string;
 }
 
-const ProfileCard = ({ name, logo, age, sex, location }: ProfileCardProps) => {
+const ProfileCard = ({ name, logo, birthday, sex, location }: ProfileCardProps) => {
   return (
     <Card>
       <CardBody>
@@ -23,7 +24,9 @@ const ProfileCard = ({ name, logo, age, sex, location }: ProfileCardProps) => {
             alt="Profile picture"
             className="logo w-32 lg:w-44 border-white border-4 shadow-blur"
           />
-          <small className="text-cool-gray-500">{i18n.t('general:years_old', { age })}</small>
+          <small className="text-cool-gray-500">
+            {i18n.t('general:years_old', { age: calculateAge(new Date(birthday)) })}
+          </small>
           <small className="text-cool-gray-500">
             {i18n.t('general:sex', { sex_type: i18n.t('general:sex', { context: sex }) })}
           </small>

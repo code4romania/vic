@@ -11,4 +11,5 @@ export interface IUser {
   birthday: Date;
   sex: Sex;
   createdOn: Date;
+  updatedOn: Date;
 }

@@ -41,6 +41,8 @@ const ActiveVolunteersTableHeader = [
     id: 'name',
     name: i18n.t('general:name'),
     sortable: true,
+    grow: 2,
+    minWidth: '10rem',
     cell: (row: IVolunteer) => (
       <MediaCell
         logo={row.createdBy?.profilePicture || ''}
@@ -53,18 +55,24 @@ const ActiveVolunteersTableHeader = [
     id: 'department',
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
+    grow: 1,
+    minWidth: '5rem',
     selector: (row: IVolunteer) => `${row.role.name}\n${row.department.name}`,
   },
   {
     id: 'location',
     name: i18n.t('volunteers:location'),
     sortable: true,
+    grow: 1,
+    minWidth: '5rem',
     selector: () => `Iasi, jud Iasi`, // TODO: TBD
   },
   {
     id: 'contact',
     name: i18n.t('general:contact'),
     sortable: true,
+    grow: 1,
+    minWidth: '5rem',
     selector: (row: IVolunteer) => `${row.email}\n${row.phone}`,
   },
 ];
