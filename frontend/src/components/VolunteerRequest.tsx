@@ -5,12 +5,13 @@ import CardHeader from './CardHeader';
 import i18n from '../common/config/i18n';
 import FormReadOnlyElement from './FormReadOnlyElement';
 import { formatDate } from '../common/utils/utils';
+import { IQuestionAnswer } from '../common/interfaces/access-request.interface';
 
 interface VolunteerRequestProps {
   email: string;
   phone: string;
   createdOn: Date;
-  answers: string[];
+  answers: IQuestionAnswer[];
 }
 
 const VolunteerRequest = ({ email, phone, createdOn, answers }: VolunteerRequestProps) => {
@@ -36,11 +37,11 @@ const VolunteerRequest = ({ email, phone, createdOn, answers }: VolunteerRequest
             </div>
             <div className="flex flex-col gap-5">
               <FormReadOnlyElement
-                value={answers[0]}
+                value={answers[0].answer}
                 label={i18n.t('volunteer:registration.found_location')}
               />
               <FormReadOnlyElement
-                value={answers[1]}
+                value={answers[1].answer}
                 label={i18n.t('volunteer:registration.motivation')}
               />
             </div>
