@@ -23,13 +23,13 @@ const Volunteer = () => {
     }
   }, [error]);
 
-  const navigateBack = () => {
+  const onBackButtonPress = () => {
     navigate('/volunteers', { replace: true });
   };
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={navigateBack}>{i18n.t('volunteer:title')}</PageHeader>
+      <PageHeader onBackButtonPress={onBackButtonPress}>{i18n.t('volunteer:title')}</PageHeader>
       {isLoading && <LoadingContent />}
       {volunteer && !isLoading && (
         <div className="w-full flex flex-col lg:flex-row gap-4">

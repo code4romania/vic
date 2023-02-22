@@ -23,13 +23,13 @@ const AccessRequest = () => {
     }
   }, [error]);
 
-  const navigateBack = () => {
+  const onBackButtonPress = () => {
     navigate('/volunteers/requests', { replace: true });
   };
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={navigateBack}>
+      <PageHeader onBackButtonPress={onBackButtonPress}>
         {i18n.t('volunteer:registration.title')}
       </PageHeader>
       {isLoading && <LoadingContent />}

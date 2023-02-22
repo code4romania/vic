@@ -72,7 +72,7 @@ const VolunteerProfile = ({
 
             <FormReadOnlyElement
               value={formatDate(createdOn)}
-              label={i18n.t('volunteer:teo_date')}
+              label={i18n.t('volunteer:volunteer_from')}
             />
           </div>
         </div>
