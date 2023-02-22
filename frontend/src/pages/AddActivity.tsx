@@ -13,7 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import FormInput from '../components/FormInput';
 import Select, { SelectItem } from '../components/Select';
-import { useCreateActivityCategoryMutation } from '../services/activity-category/activity-categories.service';
+import { useCreateActivityCategoryMutation } from '../services/activity-category/activity-category.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';

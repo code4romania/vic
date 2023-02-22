@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
 import CardBody from '../components/CardBody';
-import { useActivityCategoriesQuery } from '../services/activity-category/activity-categories.service';
+import { useActivityCategoriesQuery } from '../services/activity-category/activity-category.service';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
 import { useErrorToast } from '../hooks/useToast';

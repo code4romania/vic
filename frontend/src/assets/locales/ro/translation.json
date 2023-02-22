@@ -243,7 +243,12 @@
     }
   },
   "activity_categories": {
-    "info": "Categoria a fost arhivată",
+    "success": "Categoria a fost {{status}}",
+    "status_options": {
+      "archived": "Arhivata",
+      "activated": "Activata",
+      "updated": "Actualizata"
+    },
     "type": "Denumire tip activitate",
     "type_placeholder": "Denumire"
   }
