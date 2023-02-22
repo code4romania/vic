@@ -12,7 +12,6 @@ import {
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
-import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
@@ -25,6 +24,10 @@ import { CreateAccessCodeDto } from './dto/create-access-code.dto';
 import { UpdateAccessCodeDto } from './dto/update-access-code.dto';
 import { AccessCodePresenter } from './presenters/access-code.presenter';
 import { AccessCodeGuard } from './guards/access-code.guard';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, AccessCodeGuard)
@@ -39,22 +42,23 @@ export class AccessCodeController {
   ) {}
 
   @Get()
+  @ApiPaginatedResponse(AccessCodePresenter)
   @ApiQuery({ type: () => BasePaginationFilterDto })
   async getAll(
     @Query() filters: BasePaginationFilterDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
-  ): Promise<Pagination<AccessCodePresenter>> {
+  ): Promise<PaginatedPresenter<AccessCodePresenter>> {
     const accessCodes = await this.findAllAccessCodeUseCase.execute({
       ...filters,
       organizationId,
     });
 
-    return {
+    return new PaginatedPresenter<AccessCodePresenter>({
       ...accessCodes,
       items: accessCodes.items.map(
         (accessCode) => new AccessCodePresenter(accessCode),
       ),
-    };
+    });
   }
 
   @ApiParam({ name: 'id', type: 'string' })

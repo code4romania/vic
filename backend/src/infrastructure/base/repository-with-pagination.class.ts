@@ -16,7 +16,7 @@ import { IBasePaginationFilterModel } from './base-pagination-filter.model';
 import { DATE_CONSTANTS } from 'src/common/constants/constants';
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
 
-interface IPaginationMeta {
+export interface IPaginationMeta {
   itemCount: number;
   totalItems: number;
   itemsPerPage: number;
