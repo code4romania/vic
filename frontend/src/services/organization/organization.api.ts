@@ -48,6 +48,6 @@ export const updateAccessCode = async (id: string, endDate?: Date): Promise<IAcc
   return API.patch(`access-code/${id}`, { endDate }).then((res) => res.data);
 };
 
-export const deleteAccessCode = async (id: string): Promise<void> => {
+export const deleteAccessCode = async (id: string): Promise<string> => {
   return API.delete(`access-code/${id}`).then((res) => res.data);
 };

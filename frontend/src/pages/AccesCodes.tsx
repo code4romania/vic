@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { PaginationConfig } from '../common/constants/pagination';
 import { OrderDirection } from '../common/enums/order-direction.enum';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IUser } from '../common/interfaces/user.interface';
 import { formatDate } from '../common/utils/utils';
 import Button from '../components/Button';
@@ -99,11 +100,8 @@ const AccessCodes = () => {
     orderDirection as OrderDirection,
   );
 
-  const {
-    mutateAsync: deleteAccessCode,
-    error: deleteAccessCodeError,
-    isLoading: isDeleteAccessCodeLoading,
-  } = useDeleteAccessCodeMutation();
+  const { mutateAsync: deleteAccessCode, isLoading: isDeleteAccessCodeLoading } =
+    useDeleteAccessCodeMutation();
 
   useEffect(() => {
     if (accessCodes?.meta) {
@@ -116,11 +114,7 @@ const AccessCodes = () => {
 
   useEffect(() => {
     if (accessCodesError) useErrorToast(i18n.t('general:error.load_entries'));
-    if (deleteAccessCodeError)
-      useErrorToast(
-        i18n.t('division:errors.delete', { division: i18n.t('access_code:errors.delete') }),
-      );
-  }, [accessCodesError, deleteAccessCodeError]);
+  }, [accessCodesError]);
 
   // pagination
   const onRowsPerPageChange = (rows: number) => {
@@ -179,30 +173,26 @@ const AccessCodes = () => {
   };
 
   const confirmDelete = () => {
-    if (showDeleteAccessCode)
+    if (showDeleteAccessCode) {
       deleteAccessCode(showDeleteAccessCode.id, {
         onSuccess: () => {
-          useSuccessToast(i18n.t('access_code:modal.delete', { item: i18n.t('access_code:name') }));
+          useSuccessToast(i18n.t('access_code:modal.delete'));
           refetch();
         },
+        onError: (error) => {
+          useErrorToast(
+            InternalErrors.ORGANIZATION_ERRORS.getError(error?.response?.data.code_error),
+          );
+        },
+        onSettled: () => {
+          setShowDeleteAccessCode(null);
+        },
       });
-    setShowDeleteAccessCode(null);
+    }
   };
 
   return (
     <PageLayout>
-      {showDeleteAccessCode && (
-        <ConfirmationModal
-          title={i18n.t('access_code:modal.title')}
-          description={i18n.t('access_code:modal.description')}
-          confirmBtnLabel={i18n.t('division:modal.delete.title', {
-            division: i18n.t('access_code:name').toLowerCase(),
-          })}
-          confirmBtnClassName="btn-danger"
-          onClose={setShowDeleteAccessCode.bind(null, null)}
-          onConfirm={confirmDelete}
-        />
-      )}
       <div className="flex flex-col gap-6">
         <div className="flex flex-row justify-between">
           <h1>{i18n.t('side_menu:options.access_codes')}</h1>
@@ -234,6 +224,18 @@ const AccessCodes = () => {
           </CardBody>
         </Card>
       </div>
+      {showDeleteAccessCode && (
+        <ConfirmationModal
+          title={i18n.t('access_code:modal.title')}
+          description={i18n.t('access_code:modal.description')}
+          confirmBtnLabel={i18n.t('division:modal.delete.title', {
+            division: i18n.t('access_code:name').toLowerCase(),
+          })}
+          confirmBtnClassName="btn-danger"
+          onClose={setShowDeleteAccessCode.bind(null, null)}
+          onConfirm={confirmDelete}
+        />
+      )}
     </PageLayout>
   );
 };

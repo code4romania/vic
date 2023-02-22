@@ -68,7 +68,7 @@ export const useUpdateAccessCodeMutation = () => {
 };
 
 export const useDeleteAccessCodeMutation = () => {
-  return useMutation(['access_code'], (id: string) => deleteAccessCode(id), {
+  return useMutation((id: string) => deleteAccessCode(id), {
     onError: (error: AxiosError<IBusinessException<ORGANIZATION_ERRORS>>) => Promise.resolve(error),
   });
 };

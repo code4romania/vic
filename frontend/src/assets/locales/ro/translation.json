@@ -179,9 +179,9 @@
     "start_date": "Data inceput valabiliatate*",
     "end_date": "Data final valabilitate",
     "modal": {
-      "title": "Sigur doriți să ștergeți acest eveniment?",
+      "title": "Sigur doriți să ștergeți acestui cod?",
       "description": "Această acțiune va șterge definitiv acest cod de acces și toate informațiile asociate acestuia",
-      "delete": "{{item}} sters cu succes"
+      "delete": "Codul de access a fost sters cu succes"
     },
     "form": {
       "code": {
@@ -201,7 +201,6 @@
       }
     },
     "errors": {
-      "delete": "codului de acces",
       "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",
       "ACCESS_CODE_002": "Exista deja un cod de acces cu acest nume"
     }
