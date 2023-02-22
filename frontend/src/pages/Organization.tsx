@@ -95,10 +95,26 @@ const Organization = () => {
                   className="h-28 object-contain self-start p-2"
                 />
               </div>
-              <FormInput label={i18n.t('organization:name')} value={organization.name} readOnly />
-              <FormInput label={i18n.t('general:email')} value={organization.email} readOnly />
-              <FormInput label={i18n.t('general:phone')} value={organization.phone} readOnly />
-              <FormInput label={i18n.t('general:address')} value={organization.address} readOnly />
+              <FormInput
+                label={i18n.t('organization:name') || ''}
+                value={organization.name}
+                readOnly
+              />
+              <FormInput
+                label={i18n.t('general:email') || ''}
+                value={organization.email}
+                readOnly
+              />
+              <FormInput
+                label={i18n.t('general:phone') || ''}
+                value={organization.phone}
+                readOnly
+              />
+              <FormInput
+                label={i18n.t('general:address') || ''}
+                value={organization.address}
+                readOnly
+              />
               <hr className="border-cool-gray-200" />
               <Paragraph title={i18n.t('organization:description')}>
                 {i18n.t('organization:description_placeholder')}
