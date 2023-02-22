@@ -15,8 +15,11 @@ import { AccessRequestGuard } from './guards/access-request.guard';
 import { DeleteAccessRequestUseCase } from 'src/usecases/access-request/delete-access-request.usecase';
 import { GetManyNewAccessRequestsUseCase } from 'src/usecases/access-request/get-many-new-access-requests.usecase';
 import { GetManyRejectedAccessRequestsUseCase } from 'src/usecases/access-request/get-many-rejected-access-requests.usecase';
-import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { GetAccessRequestsDto } from './dto/get-access-requests.dto';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, AccessRequestGuard)
@@ -32,10 +35,11 @@ export class AccessRequestController {
   ) {}
 
   @Get('/new')
+  @ApiPaginatedResponse(AccessRequestPresenter)
   async getNew(
     @Query() filters: GetAccessRequestsDto,
     @ExtractUser() user: IAdminUserModel,
-  ): Promise<Pagination<AccessRequestPresenter>> {
+  ): Promise<PaginatedPresenter<AccessRequestPresenter>> {
     const { locationId, ...others } = filters;
     const accessRequests = await this.getManyNewAccessRequestsUseCase.execute({
       ...others,
@@ -49,19 +53,20 @@ export class AccessRequestController {
       organizationId: user.organizationId,
     });
 
-    return {
+    return new PaginatedPresenter({
       ...accessRequests,
       items: accessRequests.items.map(
         (accessRequest) => new AccessRequestPresenter(accessRequest),
       ),
-    };
+    });
   }
 
   @Get('/rejected')
+  @ApiPaginatedResponse(AccessRequestPresenter)
   async getRejected(
     @Query() filters: GetAccessRequestsDto,
     @ExtractUser() user: IAdminUserModel,
-  ): Promise<Pagination<AccessRequestPresenter>> {
+  ): Promise<PaginatedPresenter<AccessRequestPresenter>> {
     const { locationId, ...others } = filters;
     const accessRequests =
       await this.getManyRejectedAccessRequestsUseCase.execute({
@@ -76,12 +81,12 @@ export class AccessRequestController {
         organizationId: user.organizationId,
       });
 
-    return {
+    return new PaginatedPresenter({
       ...accessRequests,
       items: accessRequests.items.map(
         (accessRequest) => new AccessRequestPresenter(accessRequest),
       ),
-    };
+    });
   }
 
   @ApiParam({ name: 'id', type: 'string' })

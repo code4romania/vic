@@ -43,7 +43,7 @@ export class AccessCodeController {
 
   @Get()
   @ApiPaginatedResponse(AccessCodePresenter)
-  @ApiQuery({ type: () => BasePaginationFilterDto })
+  @ApiQuery({ type: BasePaginationFilterDto })
   async getAll(
     @Query() filters: BasePaginationFilterDto,
     @ExtractUser() { organizationId }: IAdminUserModel,

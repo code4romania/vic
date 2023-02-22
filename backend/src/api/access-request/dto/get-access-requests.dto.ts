@@ -4,5 +4,5 @@ import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination
 export class GetAccessRequestsDto extends BasePaginationFilterDto {
   @IsNumber()
   @IsOptional()
-  locationId: number;
+  locationId?: number;
 }
