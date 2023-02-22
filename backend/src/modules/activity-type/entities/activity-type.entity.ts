@@ -67,7 +67,6 @@ export class ActivityTypeEntity extends BaseEntity {
 
   @Column({
     type: 'varchar',
-    nullable: true,
     name: 'organization_id',
   })
   organizationId: string;

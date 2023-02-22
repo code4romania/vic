@@ -4,7 +4,10 @@ import {
   IOrganizationStructureModel,
   OrganizationStructureTransformer,
 } from 'src/modules/organization/models/organization-structure.model';
-import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
+import {
+  IOrganizationModel,
+  OrganizationTransformer,
+} from 'src/modules/organization/models/organization.model';
 import { ActivityTypeEntity } from '../entities/activity-type.entity';
 import { ActivityTypeStatus } from '../enums/activity-type-status.enum';
 
@@ -29,10 +32,9 @@ export type CreateActivityTypeOptions = Pick<
   roleId?: string;
 };
 
-export type UpdateActivityTypeDataOptions = Pick<
-  IActivityTypeModel,
-  'id' | 'name' | 'icon'
-> & {
+export type UpdateActivityTypeDataOptions = Pick<IActivityTypeModel, 'id'> & {
+  name?: string;
+  icons?: string;
   branchId?: string;
   departmentId?: string;
   roleId?: string;
@@ -62,7 +64,7 @@ export class ActivityTypeTransformer {
       name: entity.name,
       icon: entity.icon,
       status: entity.status,
-      organization: entity.organization,
+      organization: OrganizationTransformer.fromEntity(entity.organization),
       branch: entity.branch
         ? OrganizationStructureTransformer.fromEntity(entity.branch)
         : null,
