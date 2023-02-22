@@ -4,6 +4,7 @@ import { IUser } from './user.interface';
 
 export interface IVolunteer {
   id: string;
+  createdOn: Date;
   createdBy: IUser;
   role: Pick<IDivision, 'id' | 'name'>;
   department: Pick<IDivision, 'id' | 'name'>;

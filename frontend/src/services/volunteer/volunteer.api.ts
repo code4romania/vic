@@ -38,6 +38,7 @@ export const getVolunteers = async (
     items: [
       {
         id: '1',
+        createdOn: new Date(),
         createdBy: {
           id: '1',
           name: 'Florian',
@@ -76,6 +77,7 @@ export const getVolunteer = async (id: string): Promise<IVolunteer> => {
   // return API.get(`volunteers/${id}`).then((res) => res.data);
   return Promise.resolve({
     id: id,
+    createdOn: new Date(),
     createdBy: {
       id: '1',
       name: 'Florian',

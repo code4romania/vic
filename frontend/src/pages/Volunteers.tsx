@@ -28,6 +28,7 @@ import { useVolunteersQuery } from '../services/volunteer/volunteer.service';
 import PageHeader from '../components/PageHeader';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
+import { useNavigate } from 'react-router-dom';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
@@ -89,6 +90,8 @@ const BlockedVolunteersTableHeader = [
 ];
 
 const Volunteers = () => {
+  const navigate = useNavigate();
+
   const [volunteerStatus, setVolunteerStatus] = useState<VolunteerStatus>(VolunteerStatus.ACTIVE);
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
@@ -129,7 +132,7 @@ const Volunteers = () => {
 
   // row actions
   const onView = (row: IVolunteer) => {
-    alert(`Not yet implemented, ${row}`);
+    navigate(`${row.id}`);
   };
 
   const onArchive = (row: IVolunteer) => {
