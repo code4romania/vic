@@ -4,6 +4,8 @@ import { ACTIVITY_CATEGORY_ERRORS } from '../../common/errors/entities/activty-c
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { ActivityCategoryFormTypes } from '../../pages/AddActivity';
 import {
+  activateActivityCategory,
+  archiveActivityCategory,
   createActivityCategory,
   getActivityCategories,
   getActivityCategory,
@@ -38,4 +40,18 @@ export const useUpdateActivityCategoryMutation = () => {
         Promise.resolve(error),
     },
   );
+};
+
+export const useActivateActivityCategory = () => {
+  return useMutation((id: string) => activateActivityCategory(id), {
+    onError: (error: AxiosError<IBusinessException<ACTIVITY_CATEGORY_ERRORS>>) =>
+      Promise.resolve(error),
+  });
+};
+
+export const useArchiveActivityCategory = () => {
+  return useMutation((id: string) => archiveActivityCategory(id), {
+    onError: (error: AxiosError<IBusinessException<ACTIVITY_CATEGORY_ERRORS>>) =>
+      Promise.resolve(error),
+  });
 };

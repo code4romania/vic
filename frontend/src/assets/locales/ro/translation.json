@@ -244,6 +244,10 @@
   },
   "activity_categories": {
     "success": "Categoria a fost {{status}}",
+    "button": {
+      "active": "Arhiveaza categorie",
+      "disabled": "Activeaza categorie"
+    },
     "status_options": {
       "archived": "Arhivata",
       "activated": "Activata",

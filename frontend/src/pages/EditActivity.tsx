@@ -14,13 +14,16 @@ import * as yup from 'yup';
 import FormInput from '../components/FormInput';
 import Select, { SelectItem } from '../components/Select';
 import {
+  useActivateActivityCategory,
   useActivityCategoryQuery,
+  useArchiveActivityCategory,
   useUpdateActivityCategoryMutation,
 } from '../services/activity-category/activity-category.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
 import EmptyContent from '../components/EmptyContent';
+import { CategoryStatus } from './ActivityCategories';
 
 export type ActivityCategoryFormTypes = {
   name: string;
@@ -56,6 +59,8 @@ const EditActivity = () => {
   } = useActivityCategoryQuery(id as string);
   const { mutateAsync: updateActivityCategory, isLoading: isUpdateActivityCategoryLoading } =
     useUpdateActivityCategoryMutation();
+  const { mutateAsync: activateActivityCategory } = useActivateActivityCategory();
+  const { mutateAsync: archiveActivityCategory } = useArchiveActivityCategory();
 
   const {
     handleSubmit,
@@ -103,6 +108,40 @@ const EditActivity = () => {
       );
   };
 
+  const changeStatus = () => {
+    if (activityCategory?.status === CategoryStatus.ACTIVE) {
+      archiveActivityCategory(activityCategory.id, {
+        onSuccess: () => {
+          useSuccessToast(
+            i18n.t('activity_categories:success', {
+              status: i18n.t('activity_categories:status_options.archived').toLowerCase(),
+            }),
+          );
+        },
+        onError: (error) => {
+          useErrorToast(
+            InternalErrors.ACTIVITY_CATEGORY_ERRORS.getError(error.response?.data.code_error),
+          );
+        },
+      });
+    } else if (activityCategory?.status === CategoryStatus.DISABLED) {
+      activateActivityCategory(activityCategory.id, {
+        onSuccess: () => {
+          useSuccessToast(
+            i18n.t('activity_categories:success', {
+              status: i18n.t('activity_categories:status_options.activated').toLowerCase(),
+            }),
+          );
+        },
+        onError: (error) => {
+          useErrorToast(
+            InternalErrors.ACTIVITY_CATEGORY_ERRORS.getError(error.response?.data.code_error),
+          );
+        },
+      });
+    }
+  };
+
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={navigateBack}>
@@ -113,6 +152,11 @@ const EditActivity = () => {
         <Card>
           <CardHeader>
             <h2>{`${i18n.t('general:category')} ${i18n.t('general:activity').toLowerCase()}`}</h2>
+            <Button
+              label={i18n.t(`activity_categories:button.${activityCategory.status}`)}
+              className="btn-outline-secondary"
+              onClick={changeStatus}
+            />
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"
