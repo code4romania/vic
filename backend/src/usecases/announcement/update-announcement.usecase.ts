@@ -1,5 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { IError } from 'src/common/exceptions/exceptions.interface';
+import { JSONStringifyError } from 'src/common/helpers/stringify-error';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
@@ -63,15 +65,20 @@ export class UpdateAnnouncementUseCase
 
       return updatedAnnouncement;
     } catch (error) {
+      // create new error object to log
+      const loggedError: IError<IUpdateAnnouncementModel> = {
+        error: JSONStringifyError(error),
+        businessError: AnnouncementExceptionMessages.ANNOUNCEMENT_003,
+        data: updateData,
+      };
+
+      // log the created error
+      this.logger.error(loggedError);
+
+      // throw excepition for failing to update the announcement
       this.exceptionsService.internalServerErrorException(
         AnnouncementExceptionMessages.ANNOUNCEMENT_003,
       );
-
-      this.logger.error({
-        error,
-        ...AnnouncementExceptionMessages.ANNOUNCEMENT_003,
-        updateData,
-      });
     }
   }
 }

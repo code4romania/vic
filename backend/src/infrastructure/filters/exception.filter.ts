@@ -7,7 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { IError } from 'src/common/exceptions/exceptions.interface';
+import { IBusinessError } from 'src/common/exceptions/exceptions.interface';
 import { TypeORMError } from 'typeorm';
 
 @Catch()
@@ -21,7 +21,7 @@ export class ExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     // define error message
-    let message: IError;
+    let message: IBusinessError;
 
     // set default status
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -29,7 +29,7 @@ export class ExceptionsFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       // handle http exceptions
       status = exception.getStatus();
-      message = exception.getResponse() as IError;
+      message = exception.getResponse() as IBusinessError;
     } else if (exception instanceof TypeORMError) {
       // handle typeorm errors
       status = HttpStatus.UNPROCESSABLE_ENTITY;
@@ -63,7 +63,7 @@ export class ExceptionsFilter implements ExceptionFilter {
 
   private logMessage(
     request: Request,
-    message: IError,
+    message: IBusinessError,
     status: number,
     exception: HttpException | TypeORMError | TypeError,
   ): void {

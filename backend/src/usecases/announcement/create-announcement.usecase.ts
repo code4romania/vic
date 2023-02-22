@@ -1,5 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { IError } from 'src/common/exceptions/exceptions.interface';
+import { JSONStringifyError } from 'src/common/helpers/stringify-error';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
@@ -45,15 +47,20 @@ export class CreateAnnouncementUseCase
 
       return announcement;
     } catch (error) {
+      // create new error object to log
+      const loggedError: IError<ICreateAnnouncementModel> = {
+        error: JSONStringifyError(error),
+        businessError: AnnouncementExceptionMessages.ANNOUNCEMENT_002,
+        data: createData,
+      };
+
+      // log the created error
+      this.logger.error(loggedError);
+
+      // throw excepition for failing to create the announcement
       this.exceptionsService.internalServerErrorException(
         AnnouncementExceptionMessages.ANNOUNCEMENT_002,
       );
-
-      this.logger.error({
-        error,
-        ...AnnouncementExceptionMessages.ANNOUNCEMENT_002,
-        createData,
-      });
     }
   }
 }

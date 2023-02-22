@@ -8,6 +8,10 @@ import { OrganizationFacadeService } from 'src/modules/organization/services/org
 import { OrganizationExceptionMessages } from 'src/modules/organization/exceptions/exceptions';
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { IError } from 'src/common/exceptions/exceptions.interface';
+import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
+import { JSONStringifyError } from 'src/common/helpers/stringify-error';
+import { IUserModel } from 'src/modules/user/models/base-user.model';
 
 @Injectable()
 export class GetUserProfileUseCaseService
@@ -71,17 +75,20 @@ export class GetUserProfileUseCaseService
         );
       }
     } catch (error) {
+      // create new error object to log
+      const loggedError: IError<IOrganizationModel> = {
+        error: JSONStringifyError(error),
+        businessError: OrganizationExceptionMessages.ORG_003,
+        data: organization,
+      };
+
+      // log the error and the payload
+      this.logger.error(loggedError);
+
       // throw bad server exception for failing to save the organization
       this.exceptionService.internalServerErrorException(
         OrganizationExceptionMessages.ORG_003,
       );
-
-      // log the error and the payload
-      this.logger.error({
-        error,
-        ...OrganizationExceptionMessages.ORG_003,
-        organization,
-      });
     }
 
     // check if there is already a user with the same data
@@ -107,20 +114,23 @@ export class GetUserProfileUseCaseService
       // return newly created
       return adminUser;
     } catch (error) {
+      // create new error object to log
+      const loggedError: IError<IUserModel> = {
+        error: JSONStringifyError(error),
+        businessError: UserExceptionMessages.USER_002,
+        data: {
+          ...user,
+          organizationId: dbOrganization.id,
+        },
+      };
+
+      // log the error and the payload
+      this.logger.error(loggedError);
+
       // throw bad server exception for failing to save the organization
       this.exceptionService.internalServerErrorException(
         UserExceptionMessages.USER_002,
       );
-
-      // log the error and the payload
-      this.logger.debug({
-        ...UserExceptionMessages.USER_002,
-        error,
-        user: {
-          ...user,
-          organizationId: dbOrganization.id,
-        },
-      });
     }
   }
 }

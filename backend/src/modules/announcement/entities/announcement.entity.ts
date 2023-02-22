@@ -40,7 +40,9 @@ export class AnnouncementEntity extends BaseEntity {
   @JoinColumn({ name: 'organization_id' })
   organization: OrganizationEntity;
 
-  @ManyToMany(() => OrganizationStructureEntity)
+  @ManyToMany(() => OrganizationStructureEntity, {
+    eager: true,
+  })
   @JoinTable()
   targets: OrganizationStructureEntity[];
 }
