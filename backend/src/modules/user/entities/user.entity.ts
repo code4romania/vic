@@ -1,10 +1,12 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
+import { CityEntity } from 'src/modules/location/entities/city.entity';
 import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
 import {
   ChildEntity,
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   TableInheritance,
@@ -54,4 +56,15 @@ export class RegularUserEntity extends UserEntity {
 
   @Column({ type: 'text', name: 'profile_picture', nullable: true })
   profilePicture: string;
+
+  @Column({
+    type: 'integer',
+    nullable: true,
+    name: 'location_id',
+  })
+  locationId: number;
+
+  @ManyToOne(() => CityEntity)
+  @JoinColumn({ name: 'location_id' })
+  location: CityEntity;
 }

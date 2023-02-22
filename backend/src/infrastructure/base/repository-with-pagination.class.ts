@@ -43,9 +43,12 @@ export abstract class RepositoryWithPagination<T>
 {
   constructor(private readonly repository: Repository<T>) {}
 
-  public async findManyPaginated<TModel>(
+  public async findManyPaginated<
+    TModel,
+    TFindOptions extends IBasePaginationFilterModel,
+  >(
     config: IPaginationConfig<T>,
-    options: IBasePaginationFilterModel,
+    options: TFindOptions,
     toModel: (entity: T) => TModel,
   ): Promise<Pagination<TModel>> {
     const {
@@ -61,7 +64,7 @@ export abstract class RepositoryWithPagination<T>
 
     // filters (and where)
     const orWhereQuery = [];
-    let andWherQuery = filters;
+    let andWherQuery = filters || {};
 
     // handle range
     if (config.rangeColumn) {

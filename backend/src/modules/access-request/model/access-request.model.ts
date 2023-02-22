@@ -2,7 +2,10 @@ import { OneOf } from 'src/common/helpers/typescript-extends';
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
-import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
+import {
+  FindRegularUserOptions,
+  IRegularUserModel,
+} from 'src/modules/user/models/regular-user.model';
 import { AccessRequestEntity } from '../entities/access-request.entity';
 import { AccessRequestStatus } from '../enums/access-request-status.enum';
 
@@ -46,7 +49,11 @@ export type FindAccessRequestOptions = Partial<
 > & { requestedById?: string };
 
 export type FindManyAccessRequestsOptions = IBasePaginationFilterModel &
-  Partial<Pick<IAccessRequestModel, 'organizationId' | 'status'>>;
+  Partial<
+    Pick<IAccessRequestModel, 'organizationId' | 'status'> & {
+      requestedBy: FindRegularUserOptions;
+    }
+  >;
 
 export class AccessRequestTransformer {
   static fromEntity(entity: AccessRequestEntity): IAccessRequestModel {

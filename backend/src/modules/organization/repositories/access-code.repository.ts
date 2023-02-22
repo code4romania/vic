@@ -51,7 +51,7 @@ export class AccessCodeRepositoryService
   async findMany(
     findOptions: IFindAllAccessCodeModel,
   ): Promise<Pagination<IAccessCodeModel>> {
-    return this.findManyPaginated(
+    return this.findManyPaginated<IAccessCodeModel, IFindAllAccessCodeModel>(
       {
         searchableColumns: [],
         defaultSortBy: 'createdOn',

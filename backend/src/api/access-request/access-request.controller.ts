@@ -16,7 +16,7 @@ import { DeleteAccessRequestUseCase } from 'src/usecases/access-request/delete-a
 import { GetManyNewAccessRequestsUseCase } from 'src/usecases/access-request/get-many-new-access-requests.usecase';
 import { GetManyRejectedAccessRequestsUseCase } from 'src/usecases/access-request/get-many-rejected-access-requests.usecase';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
-import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
+import { GetAccessRequestsDto } from './dto/get-access-requests.dto';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, AccessRequestGuard)
@@ -33,11 +33,19 @@ export class AccessRequestController {
 
   @Get('/new')
   async getNew(
-    @Query() filters: BasePaginationFilterDto,
+    @Query() filters: GetAccessRequestsDto,
     @ExtractUser() user: IAdminUserModel,
   ): Promise<Pagination<AccessRequestPresenter>> {
+    const { locationId, ...others } = filters;
     const accessRequests = await this.getManyNewAccessRequestsUseCase.execute({
-      ...filters,
+      ...others,
+      ...(locationId
+        ? {
+            requestedBy: {
+              locationId,
+            },
+          }
+        : {}),
       organizationId: user.organizationId,
     });
 
@@ -51,12 +59,20 @@ export class AccessRequestController {
 
   @Get('/rejected')
   async getRejected(
-    @Query() filters: BasePaginationFilterDto,
+    @Query() filters: GetAccessRequestsDto,
     @ExtractUser() user: IAdminUserModel,
   ): Promise<Pagination<AccessRequestPresenter>> {
+    const { locationId, ...others } = filters;
     const accessRequests =
       await this.getManyRejectedAccessRequestsUseCase.execute({
-        ...filters,
+        ...others,
+        ...(locationId
+          ? {
+              requestedBy: {
+                locationId,
+              },
+            }
+          : {}),
         organizationId: user.organizationId,
       });
 

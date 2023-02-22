@@ -57,7 +57,10 @@ export class OrganizationStructureRepositoryService
   async findMany(
     options: IFindAllOrganizationStructureModel,
   ): Promise<Pagination<IOrganizationStructureModel>> {
-    return this.findManyPaginated<IOrganizationStructureModel>(
+    return this.findManyPaginated<
+      IOrganizationStructureModel,
+      IFindAllOrganizationStructureModel
+    >(
       {
         searchableColumns: [],
         defaultSortBy: 'name',

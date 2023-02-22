@@ -32,7 +32,10 @@ export class AccessRequestRepository
   async findMany(
     findOptions: FindManyAccessRequestsOptions,
   ): Promise<Pagination<IAccessRequestModel>> {
-    return this.findManyPaginated(
+    return this.findManyPaginated<
+      IAccessRequestModel,
+      FindManyAccessRequestsOptions
+    >(
       {
         searchableColumns: [
           'requestedBy.name',
@@ -43,7 +46,9 @@ export class AccessRequestRepository
         defaultOrderDirection: OrderDirection.DESC,
         relations: {
           updatedBy: true,
-          requestedBy: true,
+          requestedBy: {
+            location: true,
+          },
         },
         rangeColumn: 'createdOn',
       },

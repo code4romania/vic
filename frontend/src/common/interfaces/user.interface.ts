@@ -1,4 +1,5 @@
 import { Sex } from '../enums/sex.enum';
+import { ICity } from './city.interface';
 
 export interface IUser {
   id: string;
@@ -6,7 +7,7 @@ export interface IUser {
   email: string;
   phone: string;
   profilePicture?: string;
-  address?: string;
+  location?: ICity;
   birthday: Date;
   sex: Sex;
   createdOn: Date;
