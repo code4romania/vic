@@ -26,32 +26,9 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import { useVolunteersQuery } from '../services/volunteer/volunteer.service';
 import PageHeader from '../components/PageHeader';
-
-export interface IVolunteer {
-  id: string;
-  name: string;
-  city: string;
-  county: string;
-  organization: string;
-  profilePicture: string;
-  role: string;
-  department: string;
-  branch: string;
-  startedOn: Date;
-  email: string;
-  phone: string;
-  status: VolunteerStatus;
-  archivedOn: Date;
-  blockedOn: Date;
-  archivedBy: string;
-  blockedBy: string;
-}
-
-export enum VolunteerStatus {
-  ACTIVE = 'active',
-  ARCHIVED = 'archived',
-  BLOCKED = 'blocked',
-}
+import { IVolunteer } from '../common/interfaces/volunteer.interface';
+import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
+import { useNavigate } from 'react-router-dom';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
@@ -64,26 +41,38 @@ const ActiveVolunteersTableHeader = [
     id: 'name',
     name: i18n.t('general:name'),
     sortable: true,
+    grow: 2,
+    minWidth: '10rem',
     cell: (row: IVolunteer) => (
-      <MediaCell logo={row.profilePicture} title={row.name} subtitle={row.branch} />
+      <MediaCell
+        logo={row.createdBy?.profilePicture || ''}
+        title={row.createdBy.name}
+        subtitle={'Voluntar Iasi'} // TODO: TBD
+      />
     ),
   },
   {
     id: 'department',
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
-    selector: (row: IVolunteer) => `${row.role}\n${row.department}`,
+    grow: 1,
+    minWidth: '5rem',
+    selector: (row: IVolunteer) => `${row.role.name}\n${row.department.name}`,
   },
   {
     id: 'location',
     name: i18n.t('volunteers:location'),
     sortable: true,
-    selector: (row: IVolunteer) => `${row.city}, jud ${row.county}`,
+    grow: 1,
+    minWidth: '5rem',
+    selector: () => `Iasi, jud Iasi`, // TODO: TBD
   },
   {
     id: 'contact',
     name: i18n.t('general:contact'),
     sortable: true,
+    grow: 1,
+    minWidth: '5rem',
     selector: (row: IVolunteer) => `${row.email}\n${row.phone}`,
   },
 ];
@@ -94,7 +83,7 @@ const ArchivedVolunteersTableHeader = [
     id: 'archivedDate',
     name: i18n.t('volunteers:archived_from'),
     sortable: true,
-    selector: (row: IVolunteer) => formatDate(row.archivedOn),
+    selector: (row: IVolunteer) => (row.archivedOn ? formatDate(row.archivedOn) : '-'),
   },
 ];
 
@@ -104,11 +93,13 @@ const BlockedVolunteersTableHeader = [
     id: 'blockedDate',
     name: i18n.t('volunteers:blocked_date'),
     sortable: true,
-    selector: (row: IVolunteer) => formatDate(row.blockedOn),
+    selector: (row: IVolunteer) => (row.blockedOn ? formatDate(formatDate(row.blockedOn)) : '-'),
   },
 ];
 
 const Volunteers = () => {
+  const navigate = useNavigate();
+
   const [volunteerStatus, setVolunteerStatus] = useState<VolunteerStatus>(VolunteerStatus.ACTIVE);
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
@@ -149,7 +140,7 @@ const Volunteers = () => {
 
   // row actions
   const onView = (row: IVolunteer) => {
-    alert(`Not yet implemented, ${row}`);
+    navigate(`${row.id}`);
   };
 
   const onArchive = (row: IVolunteer) => {

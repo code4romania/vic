@@ -5,18 +5,23 @@ import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { PaginationConfig } from '../common/constants/pagination';
 import { OrderDirection } from '../common/enums/order-direction.enum';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IUser } from '../common/interfaces/user.interface';
 import { formatDate } from '../common/utils/utils';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
+import ConfirmationModal from '../components/ConfirmationModal';
 import DataTableComponent from '../components/DataTableComponent';
 import Popover from '../components/Popover';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import CellLayout from '../layouts/CellLayout';
 import PageLayout from '../layouts/PageLayout';
-import { useAccessCodesQuery } from '../services/organization/organization.service';
+import {
+  useAccessCodesQuery,
+  useDeleteAccessCodeMutation,
+} from '../services/organization/organization.service';
 
 export interface IAccessCode {
   id: string;
@@ -76,6 +81,7 @@ const AccessCodeTableHeader = [
 ];
 
 const AccessCodes = () => {
+  const [showDeleteAccessCode, setShowDeleteAccessCode] = useState<null | IAccessCode>();
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
@@ -84,14 +90,18 @@ const AccessCodes = () => {
 
   const {
     data: accessCodes,
-    error,
-    isLoading,
+    error: accessCodesError,
+    isLoading: isAccessCodesLoading,
+    refetch,
   } = useAccessCodesQuery(
     rowsPerPage as number,
     page as number,
     orderByColumn as string,
     orderDirection as OrderDirection,
   );
+
+  const { mutateAsync: deleteAccessCode, isLoading: isDeleteAccessCodeLoading } =
+    useDeleteAccessCodeMutation();
 
   useEffect(() => {
     if (accessCodes?.meta) {
@@ -103,8 +113,8 @@ const AccessCodes = () => {
   }, []);
 
   useEffect(() => {
-    if (error) useErrorToast(i18n.t('general:error.load_entries'));
-  }, [error]);
+    if (accessCodesError) useErrorToast(i18n.t('general:error.load_entries'));
+  }, [accessCodesError]);
 
   // pagination
   const onRowsPerPageChange = (rows: number) => {
@@ -135,7 +145,7 @@ const AccessCodes = () => {
   };
 
   const onDelete = (row: IAccessCode) => {
-    alert(`Not yet implemented, ${row}`);
+    setShowDeleteAccessCode(row);
   };
 
   // menu items
@@ -162,6 +172,25 @@ const AccessCodes = () => {
     };
   };
 
+  const confirmDelete = () => {
+    if (showDeleteAccessCode) {
+      deleteAccessCode(showDeleteAccessCode.id, {
+        onSuccess: () => {
+          useSuccessToast(i18n.t('access_code:modal.delete'));
+          refetch();
+        },
+        onError: (error) => {
+          useErrorToast(
+            InternalErrors.ORGANIZATION_ERRORS.getError(error?.response?.data.code_error),
+          );
+        },
+        onSettled: () => {
+          setShowDeleteAccessCode(null);
+        },
+      });
+    }
+  };
+
   return (
     <PageLayout>
       <div className="flex flex-col gap-6">
@@ -182,7 +211,7 @@ const AccessCodes = () => {
             <DataTableComponent<IAccessCode>
               data={accessCodes?.items}
               columns={[...AccessCodeTableHeader, buildAccessCodeActionColumn()]}
-              loading={isLoading}
+              loading={isAccessCodesLoading || isDeleteAccessCodeLoading}
               pagination
               paginationPerPage={accessCodes?.meta?.itemsPerPage}
               paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
@@ -195,6 +224,18 @@ const AccessCodes = () => {
           </CardBody>
         </Card>
       </div>
+      {showDeleteAccessCode && (
+        <ConfirmationModal
+          title={i18n.t('access_code:modal.title')}
+          description={i18n.t('access_code:modal.description')}
+          confirmBtnLabel={i18n.t('division:modal.delete.title', {
+            division: i18n.t('access_code:name').toLowerCase(),
+          })}
+          confirmBtnClassName="btn-danger"
+          onClose={setShowDeleteAccessCode.bind(null, null)}
+          onConfirm={confirmDelete}
+        />
+      )}
     </PageLayout>
   );
 };
