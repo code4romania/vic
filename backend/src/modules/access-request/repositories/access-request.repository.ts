@@ -47,7 +47,9 @@ export class AccessRequestRepository
         relations: {
           updatedBy: true,
           requestedBy: {
-            location: true,
+            location: {
+              county: true,
+            },
           },
         },
         rangeColumn: 'createdOn',

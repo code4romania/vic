@@ -59,7 +59,7 @@ const ServerSelect = ({
         onChange={onChange as any}
         isClearable={isClearable}
         isMulti={isMulti}
-        value={defaultValue}
+        value={defaultValue || null}
       />
       {helper}
     </div>

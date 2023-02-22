@@ -69,7 +69,8 @@ const PendingAccessRequestsTableHeader = [
     id: 'requestedBy.location.name',
     name: i18n.t('general:location'),
     sortable: true,
-    selector: (row: IAccessRequest) => row.requestedBy.location?.name || '',
+    selector: (row: IAccessRequest) =>
+      `${row.requestedBy.location?.name}, ${row.requestedBy.location?.county?.abbreviation}`,
   },
   {
     id: 'createdOn',
@@ -307,7 +308,8 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
   };
 
   const onResetFilters = () => {
-    console.log('reset filters');
+    setCreatedOnRange([]);
+    setLocation(undefined);
   };
 
   return (
@@ -319,7 +321,11 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
           value={createdOnRange.length > 0 ? createdOnRange : undefined}
           id="created-on-range__picker"
         />
-        <LocationSelect label={i18n.t('general:location')} onSelect={setLocation} />
+        <LocationSelect
+          label={i18n.t('general:location')}
+          onSelect={setLocation}
+          defaultValue={location}
+        />
       </DataTableFilters>
       <Card>
         <CardHeader>
