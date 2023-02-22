@@ -26,36 +26,8 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import { useVolunteersQuery } from '../services/volunteer/volunteer.service';
 import PageHeader from '../components/PageHeader';
-import { Sex } from '../common/enums/sex.enum';
-
-export interface IVolunteer {
-  id: string;
-  name: string;
-  city: string;
-  age: number;
-  sex: Sex;
-  county: string;
-  organization: string;
-  profilePicture: string;
-  role: string;
-  department: string;
-  branch: string;
-  startedOn: Date;
-  email: string;
-  phone: string;
-  status: VolunteerStatus;
-  archivedOn: Date;
-  blockedOn: Date;
-  archivedBy: string;
-  blockedBy: string;
-  createdOn: Date;
-}
-
-export enum VolunteerStatus {
-  ACTIVE = 'active',
-  ARCHIVED = 'archived',
-  BLOCKED = 'blocked',
-}
+import { IVolunteer } from '../common/interfaces/volunteer.interface';
+import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
@@ -69,20 +41,24 @@ const ActiveVolunteersTableHeader = [
     name: i18n.t('general:name'),
     sortable: true,
     cell: (row: IVolunteer) => (
-      <MediaCell logo={row.profilePicture} title={row.name} subtitle={row.branch} />
+      <MediaCell
+        logo={row.createdBy?.profilePicture || ''}
+        title={row.createdBy.name}
+        subtitle={'Voluntar Iasi'} // TODO: TBD
+      />
     ),
   },
   {
     id: 'department',
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
-    selector: (row: IVolunteer) => `${row.role}\n${row.department}`,
+    selector: (row: IVolunteer) => `${row.role.name}\n${row.department.name}`,
   },
   {
     id: 'location',
     name: i18n.t('volunteers:location'),
     sortable: true,
-    selector: (row: IVolunteer) => `${row.city}, jud ${row.county}`,
+    selector: () => `Iasi, jud Iasi`, // TODO: TBD
   },
   {
     id: 'contact',
@@ -98,7 +74,7 @@ const ArchivedVolunteersTableHeader = [
     id: 'archivedDate',
     name: i18n.t('volunteers:archived_from'),
     sortable: true,
-    selector: (row: IVolunteer) => formatDate(row.archivedOn),
+    selector: (row: IVolunteer) => (row.archivedOn ? formatDate(row.archivedOn) : '-'),
   },
 ];
 
@@ -108,7 +84,7 @@ const BlockedVolunteersTableHeader = [
     id: 'blockedDate',
     name: i18n.t('volunteers:blocked_date'),
     sortable: true,
-    selector: (row: IVolunteer) => formatDate(row.blockedOn),
+    selector: (row: IVolunteer) => (row.blockedOn ? formatDate(formatDate(row.blockedOn)) : '-'),
   },
 ];
 
