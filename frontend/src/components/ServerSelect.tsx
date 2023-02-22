@@ -13,6 +13,8 @@ export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select
   loadOptions: (search: string) => void;
 }
 
+// TODO: set correct types for loadOptions and onChange methods
+// TODO: set correct styling for server select
 const ServerSelect = ({
   id,
   isMulti,
