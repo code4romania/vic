@@ -68,7 +68,7 @@ const DataTableFilters = ({
             placeholder={i18n.t('general:search').toString()}
           />
         </div>
-        <div className="w-full items-center justify-end gap-1 md:gap-4 flex flex-2">
+        <div className="w-full items-center justify-end gap-1 md:gap-4 flex flex-1">
           {filtersCollapsed && (
             <Button
               type="button"
@@ -91,7 +91,9 @@ const DataTableFilters = ({
       </CardHeader>
       {filtersCollapsed && (
         <CardBody>
-          <div className="grid grid-cols-3 gap-2">{children}</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            {children}
+          </div>
         </CardBody>
       )}
     </Card>

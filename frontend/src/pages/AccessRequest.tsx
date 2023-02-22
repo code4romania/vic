@@ -143,7 +143,7 @@ const AccessRequest = () => {
                   name={accessRequest.requestedBy.name}
                   birthday={accessRequest.requestedBy.birthday}
                   sex={accessRequest.requestedBy.sex}
-                  location={accessRequest.requestedBy.address || ''}
+                  location={accessRequest.requestedBy.location?.name || ''}
                   logo={accessRequest.requestedBy.profilePicture || ''}
                 />
               </div>
