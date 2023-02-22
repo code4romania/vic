@@ -1,11 +1,16 @@
 import {
   CreateActivityTypeOptions,
-  IActivityType,
+  FindActivityTypeOptions,
+  FindManyActivityTypeOptions,
+  IActivityTypeModel,
+  UpdateActivityTypeOptions,
 } from '../models/activity-type.model';
 
 export interface IActivityTypeRepository {
-  create(newActivityType: CreateActivityTypeOptions): Promise<IActivityType>;
-  //   update(updates: IUpdateAccessCodeModel): Promise<IActivityType>;
-  //   find(options: IFindAccessCodeModel): Promise<IActivityType>;
-  //   delete(id: string): Promise<string>;
+  create(
+    newActivityType: CreateActivityTypeOptions,
+  ): Promise<IActivityTypeModel>;
+  update(updates: UpdateActivityTypeOptions): Promise<IActivityTypeModel>;
+  find(options: FindActivityTypeOptions): Promise<IActivityTypeModel>;
+  findAll(options: FindManyActivityTypeOptions): Promise<IActivityTypeModel[]>;
 }

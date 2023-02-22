@@ -26,6 +26,12 @@ import { GetManyRejectedAccessRequestsUseCase } from './access-request/get-many-
 import { CreateRegularUsereUseCaseService } from './user/create-regular-user.usecase';
 import { GetOneOrganizationStructureUseCase } from './organization/organization-structure/get-one-organization-structure.usecase';
 import { ActivityTypeModule } from 'src/modules/activity-type/activity-type.module';
+import { CreateActivityTypeUseCase } from './activity-type/create-activity-type.usecase';
+import { UpdateActivityTypeUseCase } from './activity-type/update-activity-type.usecase';
+import { ActivateActivityTypeUseCase } from './activity-type/activate-activity-type.usecase';
+import { ArchiveActivityTypeUseCase } from './activity-type/archive-activity-type.usecase';
+import { GetOneActivityTypeUseCase } from './activity-type/get-one-activity-type.usecase';
+import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-type.usecase';
 
 @Module({
   imports: [
@@ -63,6 +69,13 @@ import { ActivityTypeModule } from 'src/modules/activity-type/activity-type.modu
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    // Activity Types
+    CreateActivityTypeUseCase,
+    UpdateActivityTypeUseCase,
+    ActivateActivityTypeUseCase,
+    ArchiveActivityTypeUseCase,
+    GetOneActivityTypeUseCase,
+    GetManyActivityTypeUseCase,
   ],
   exports: [
     // Organization
@@ -91,6 +104,13 @@ import { ActivityTypeModule } from 'src/modules/activity-type/activity-type.modu
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    // Activity Types
+    CreateActivityTypeUseCase,
+    UpdateActivityTypeUseCase,
+    ActivateActivityTypeUseCase,
+    ArchiveActivityTypeUseCase,
+    GetOneActivityTypeUseCase,
+    GetManyActivityTypeUseCase,
   ],
 })
 export class UseCaseModule {}

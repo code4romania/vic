@@ -24,7 +24,12 @@ export class ActivityTypeEntity extends BaseEntity {
   @Column({ type: 'text', name: 'icon' })
   icon: string;
 
-  @Column({ type: 'enum', enum: ActivityTypeStatus, name: 'status' })
+  @Column({
+    type: 'enum',
+    enum: ActivityTypeStatus,
+    name: 'status',
+    default: ActivityTypeStatus.ACTIVE,
+  })
   status: ActivityTypeStatus;
 
   @Column({
