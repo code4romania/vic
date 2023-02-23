@@ -10,7 +10,7 @@ export const useActivityTypesQuery = () => {
   });
 };
 
-export const useCreateActivityCategoryMutation = () => {
+export const useCreateActivityTypeMutation = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return useMutation((data: any) => createActivityType(data), {
     onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) =>

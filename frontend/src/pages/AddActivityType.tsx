@@ -13,10 +13,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import FormInput from '../components/FormInput';
 import Select, { SelectItem } from '../components/Select';
-import { useCreateActivityCategoryMutation } from '../services/activity-category/activity-categories.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
+import { useCreateActivityTypeMutation } from '../services/activity-type/activity-type.service';
 
 export type ActivityCategoryFormTypes = {
   name: string;
@@ -41,11 +41,11 @@ const schema = yup
   })
   .required();
 
-const AddActivity = () => {
+const AddActivityType = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: createActivityCategory, isLoading: isCreateActivityCategoryLoading } =
-    useCreateActivityCategoryMutation();
+  const { mutateAsync: createActivityType, isLoading: isCreatingActivityType } =
+    useCreateActivityTypeMutation();
 
   const {
     handleSubmit,
@@ -58,11 +58,11 @@ const AddActivity = () => {
   });
 
   const navigateBack = () => {
-    navigate('/activity-categories', { replace: true });
+    navigate('/activity-types', { replace: true });
   };
 
-  const saveChanges = (data: ActivityCategoryFormTypes) => {
-    createActivityCategory(data, {
+  const onSubmit = (data: ActivityCategoryFormTypes) => {
+    createActivityType(data, {
       onSuccess: () => {
         useSuccessToast(
           i18n.t('division:messages.add', {
@@ -73,7 +73,7 @@ const AddActivity = () => {
       },
       onError: (error) => {
         useErrorToast(
-          InternalErrors.ACTIVITY_CATEGORY_ERRORS.getError(error.response?.data.code_error),
+          InternalErrors.ACTIVITY_TYPE_ERRORS.getError(error.response?.data.code_error),
         );
       },
     });
@@ -84,15 +84,15 @@ const AddActivity = () => {
       <PageHeader onBackButtonPress={navigateBack}>
         {i18n.t('general:add', { item: '' })}
       </PageHeader>
-      {isCreateActivityCategoryLoading && <LoadingContent />}
-      {!isCreateActivityCategoryLoading && (
+      {isCreatingActivityType && <LoadingContent />}
+      {!isCreatingActivityType && (
         <Card>
           <CardHeader>
             <h2>{`${i18n.t('general:category')} ${i18n.t('general:activity').toLowerCase()}`}</h2>
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"
-              onClick={handleSubmit(saveChanges)}
+              onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>
           <CardBody>
@@ -110,8 +110,8 @@ const AddActivity = () => {
                         readOnly={false}
                         value={value}
                         errorMessage={errors['name']?.message as string}
-                        label={i18n.t('activity_categories:type')}
-                        placeholder={`${i18n.t('activity_categories:type_placeholder')}`}
+                        label={i18n.t('activity_types:form.name.label')}
+                        placeholder={`${i18n.t('activity_types:form.name.placeholder')}`}
                         onChange={onChange}
                         aria-invalid={errors['name']?.message ? 'true' : 'false'}
                         id="add-activity-form__name"
@@ -215,4 +215,4 @@ const AddActivity = () => {
   );
 };
 
-export default AddActivity;
+export default AddActivityType;
