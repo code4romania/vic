@@ -28,6 +28,13 @@ import { GetOneOrganizationStructureUseCase } from './organization/organization-
 import { LocationModule } from 'src/modules/location/location.module';
 import { GetCitiesUseCase } from './location/get-citties.usecase';
 import { GetCountiesUseCase } from './location/get-counties.usecase';
+import { ActivityTypeModule } from 'src/modules/activity-type/activity-type.module';
+import { CreateActivityTypeUseCase } from './activity-type/create-activity-type.usecase';
+import { UpdateActivityTypeUseCase } from './activity-type/update-activity-type.usecase';
+import { ActivateActivityTypeUseCase } from './activity-type/activate-activity-type.usecase';
+import { ArchiveActivityTypeUseCase } from './activity-type/archive-activity-type.usecase';
+import { GetOneActivityTypeUseCase } from './activity-type/get-one-activity-type.usecase';
+import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-type.usecase';
 
 @Module({
   imports: [
@@ -37,6 +44,7 @@ import { GetCountiesUseCase } from './location/get-counties.usecase';
     UserModule,
     AccessRequestModule,
     LocationModule,
+    ActivityTypeModule,
   ],
   providers: [
     // Organization
@@ -68,6 +76,13 @@ import { GetCountiesUseCase } from './location/get-counties.usecase';
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
+    // Activity Types
+    CreateActivityTypeUseCase,
+    UpdateActivityTypeUseCase,
+    ActivateActivityTypeUseCase,
+    ArchiveActivityTypeUseCase,
+    GetOneActivityTypeUseCase,
+    GetManyActivityTypeUseCase,
   ],
   exports: [
     // Organization
@@ -99,6 +114,13 @@ import { GetCountiesUseCase } from './location/get-counties.usecase';
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
+    // Activity Types
+    CreateActivityTypeUseCase,
+    UpdateActivityTypeUseCase,
+    ActivateActivityTypeUseCase,
+    ArchiveActivityTypeUseCase,
+    GetOneActivityTypeUseCase,
+    GetManyActivityTypeUseCase,
   ],
 })
 export class UseCaseModule {}

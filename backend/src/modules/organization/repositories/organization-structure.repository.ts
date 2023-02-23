@@ -44,7 +44,7 @@ export class OrganizationStructureRepositoryService
     findOptions: IFindOrganizationStructureModel,
   ): Promise<IOrganizationStructureModel> {
     const structure = await this.structureRepository.findOne({
-      where: { ...findOptions },
+      where: findOptions,
       relations: {
         createdBy: true,
       },

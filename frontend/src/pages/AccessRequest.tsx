@@ -50,7 +50,7 @@ const AccessRequest = () => {
     }
   }, [accessRequestError]);
 
-  const navigateBack = () => {
+  const onBackButtonPress = () => {
     navigate('/volunteers/requests', { replace: true });
   };
 
@@ -63,7 +63,7 @@ const AccessRequest = () => {
               option: i18n.t('volunteer:registration.confirmation_options.approved'),
             }),
           );
-          navigateBack();
+          onBackButtonPress();
         },
         onError: (error) => {
           InternalErrors.ACCESS_REQUEST_ERRORS.getError(error?.response?.data.code_error);
@@ -82,7 +82,7 @@ const AccessRequest = () => {
                 option: i18n.t('volunteer:registration.confirmation_options.rejected'),
               }),
             );
-            navigateBack();
+            onBackButtonPress();
           },
           onError: (error) => {
             InternalErrors.ACCESS_REQUEST_ERRORS.getError(error?.response?.data.code_error);
@@ -96,15 +96,7 @@ const AccessRequest = () => {
 
   return (
     <PageLayout>
-      {showRejectModal && (
-        <RejectTextareaModal
-          label={i18n.t('reject_modal:description')}
-          title={i18n.t('reject_modal:title')}
-          onClose={setShowRejectModal.bind(null, false)}
-          onConfirm={confirmReject}
-        />
-      )}
-      <PageHeader onBackButtonPress={navigateBack}>
+      <PageHeader onBackButtonPress={onBackButtonPress}>
         {i18n.t('volunteer:registration.title')}
       </PageHeader>
       {(isAccessRequestLoading ||
@@ -164,6 +156,14 @@ const AccessRequest = () => {
         !isAccessRequestLoading && (
           <EmptyContent description={i18n.t('general:error.load_entries')} />
         )}
+      {showRejectModal && (
+        <RejectTextareaModal
+          label={i18n.t('reject_modal:description')}
+          title={i18n.t('reject_modal:title')}
+          onClose={setShowRejectModal.bind(null, false)}
+          onConfirm={confirmReject}
+        />
+      )}
     </PageLayout>
   );
 };
