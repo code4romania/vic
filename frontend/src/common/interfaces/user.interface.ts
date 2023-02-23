@@ -7,6 +7,7 @@ export interface IUser {
   phone: string;
   profilePicture?: string;
   address?: string;
+  location?: unknown;
   birthday: Date;
   sex: Sex;
   createdOn: Date;

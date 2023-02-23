@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 import { differenceInYears, format } from 'date-fns';
 
 export const classNames = (...classes: string[]) => {
