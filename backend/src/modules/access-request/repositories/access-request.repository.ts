@@ -38,6 +38,8 @@ export class AccessRequestRepository
     } & IBasePaginationFilterModel = {
       ...findOptions,
       filters: {
+        status: findOptions.status,
+        organizationId: findOptions.organizationId,
         ...(findOptions.locationId
           ? {
               requestedBy: {

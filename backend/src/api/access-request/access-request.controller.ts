@@ -40,16 +40,8 @@ export class AccessRequestController {
     @Query() filters: GetAccessRequestsDto,
     @ExtractUser() user: IAdminUserModel,
   ): Promise<PaginatedPresenter<AccessRequestPresenter>> {
-    const { locationId, ...others } = filters;
     const accessRequests = await this.getManyNewAccessRequestsUseCase.execute({
-      ...others,
-      ...(locationId
-        ? {
-            requestedBy: {
-              locationId,
-            },
-          }
-        : {}),
+      ...filters,
       organizationId: user.organizationId,
     });
 
@@ -67,17 +59,9 @@ export class AccessRequestController {
     @Query() filters: GetAccessRequestsDto,
     @ExtractUser() user: IAdminUserModel,
   ): Promise<PaginatedPresenter<AccessRequestPresenter>> {
-    const { locationId, ...others } = filters;
     const accessRequests =
       await this.getManyRejectedAccessRequestsUseCase.execute({
-        ...others,
-        ...(locationId
-          ? {
-              requestedBy: {
-                locationId,
-              },
-            }
-          : {}),
+        ...filters,
         organizationId: user.organizationId,
       });
 
