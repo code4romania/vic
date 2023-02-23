@@ -36,7 +36,7 @@ export interface IDivision {
   name: string;
   type: DivisionType;
   createdBy: IUser;
-  numberOfMembers: number;
+  members: number;
   createdOn: Date;
 }
 
@@ -59,7 +59,7 @@ export const DivisionTableHeader = [
     name: i18n.t('division:members'),
     sortable: true,
     minWidth: '2rem',
-    selector: (row: IDivision) => row.numberOfMembers,
+    selector: (row: IDivision) => row.members,
   },
   {
     id: 'createdBy.name',

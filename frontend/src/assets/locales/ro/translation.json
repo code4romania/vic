@@ -55,6 +55,7 @@
       "volunteers_list": "Listă voluntari",
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
+      "announcements": "Anunturi",
       "activity_types": "Categorii activitati"
     },
     "collapse": "Restrange meniul"
@@ -245,6 +246,19 @@
       "min": "Mesajul trebuie sa aiba minim 50 caractere",
       "error": "Refuzarea cererii a esuat"
     }
+  },
+  "announcements": {
+    "title": "Istoric anunturi",
+    "name": "anunt",
+    "header": {
+      "name": "Titlu anunt",
+      "updated_on": "Editat pe",
+      "status": "Status afisare",
+      "published_on": "Publicat la",
+      "target": "Target"
+    },
+    "publish": "Publica",
+    "all_organization": "Toata organizatia"
   },
   "activity_types": {
     "info": "Categoria a fost arhivată",

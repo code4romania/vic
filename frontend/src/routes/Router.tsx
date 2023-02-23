@@ -13,6 +13,7 @@ import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import Volunteers from '../pages/Volunteers';
 import AddAccessCode from '../pages/AddAccessCode';
+import Announcements from '../pages/Announcements';
 import Volunteer from '../pages/Volunteer';
 import ActivityTypes from '../pages/ActivityTypes';
 
@@ -37,6 +38,9 @@ const Router = () => {
             </Route>
             <Route path="requests" element={<RegistrationRequests />} />
             <Route path="requests/:id" element={<AccessRequest />} />
+          </Route>
+          <Route path="announcements" element={<Outlet />}>
+            <Route index element={<Announcements />} />
           </Route>
           <Route path="activity-types" element={<Outlet />}>
             <Route index element={<ActivityTypes />} />
