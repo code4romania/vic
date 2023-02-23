@@ -61,7 +61,7 @@ const DivisionInputModal = ({
 
   return (
     <Modal title={title} onClose={onClose}>
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <Controller
           key="name"
           name="name"

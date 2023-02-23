@@ -7,6 +7,7 @@
     "add": "Adauga {{item}}",
     "category": "Categorie",
     "address": "Adresa",
+    "status": "Status",
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
     "edit": "Editeaza {{item}}",
@@ -59,6 +60,15 @@
     "collapse": "Restrange meniul"
   },
   "volunteer": {
+    "title": "Vizualizare profil",
+    "card_title": "Informatii voluntar",
+    "name": "Voluntar {{status}}",
+    "volunteer_from": "Adaugat in TEO la",
+    "status": {
+      "active": "activ",
+      "archived": "arhivat",
+      "blocked": "blocat"
+    },
     "registration": {
       "title": "Cerere de inscriere",
       "edit_status": "Această cerere de înscriere necesită aprobare",
@@ -199,6 +209,11 @@
     "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
     "start_date": "Data inceput valabiliatate*",
     "end_date": "Data final valabilitate",
+    "modal": {
+      "title": "Sigur doriți să ștergeți acestui cod?",
+      "description": "Această acțiune va șterge definitiv acest cod de acces și toate informațiile asociate acestuia",
+      "delete": "Codul de access a fost sters cu succes"
+    },
     "form": {
       "code": {
         "required": "Codul este obligatoriu",
