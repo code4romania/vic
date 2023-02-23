@@ -13,8 +13,8 @@ import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import Volunteers from '../pages/Volunteers';
 import AddAccessCode from '../pages/AddAccessCode';
-import ActivityCategories from '../pages/ActivityCategories';
 import Volunteer from '../pages/Volunteer';
+import ActivityTypes from '../pages/ActivityTypes';
 
 const Router = () => {
   return (
@@ -38,8 +38,8 @@ const Router = () => {
             <Route path="requests" element={<RegistrationRequests />} />
             <Route path="requests/:id" element={<AccessRequest />} />
           </Route>
-          <Route path="activity-categories" element={<Outlet />}>
-            <Route index element={<ActivityCategories />} />
+          <Route path="activity-types" element={<Outlet />}>
+            <Route index element={<ActivityTypes />} />
             <Route path="add" element={<p>Add activity category</p>} />
             <Route path="edit/:id" element={<p>Edit activity</p>} />
           </Route>

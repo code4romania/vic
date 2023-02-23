@@ -7,41 +7,27 @@ import { useNavigate } from 'react-router';
 import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
 import CardBody from '../components/CardBody';
-import { useActivityCategoriesQuery } from '../services/activity-category/activity-categories.service';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import ActivityButton from '../components/ActivityButton';
+import { useActivityTypesQuery } from '../services/activity-type/activity-type.service';
+import { IActivityType } from '../common/interfaces/activity-type.interface';
 
-export enum CategoryStatus {
-  ACTIVE = 'active',
-  DISABLED = 'disabled',
-}
-
-export interface IActivityCategory {
-  id: string;
-  name: string;
-  icon: string;
-  role: string;
-  department: string;
-  branch: string;
-  status: CategoryStatus;
-}
-
-const ActivityCategories = () => {
+const ActivityTypes = () => {
   const navigate = useNavigate();
 
   const {
     data: activityCategories,
     error: activityCategoriesError,
     isLoading: isActivityCategoriesLoading,
-  } = useActivityCategoriesQuery();
+  } = useActivityTypesQuery();
 
   useEffect(() => {
     if (activityCategoriesError)
       useErrorToast(
-        InternalErrors.ACTIVITY_CATEGORY_ERRORS.getError(
+        InternalErrors.ACTIVITY_TYPE_ERRORS.getError(
           activityCategoriesError.response?.data.code_error,
         ),
       );
@@ -74,7 +60,7 @@ const ActivityCategories = () => {
           </CardHeader>
           <CardBody>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-              {activityCategories.map((activity: IActivityCategory) => (
+              {activityCategories.map((activity: IActivityType) => (
                 <ActivityButton
                   key={activity.id}
                   id={activity.id}
@@ -95,4 +81,4 @@ const ActivityCategories = () => {
   );
 };
 
-export default ActivityCategories;
+export default ActivityTypes;

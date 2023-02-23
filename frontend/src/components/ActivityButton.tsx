@@ -1,14 +1,14 @@
 import React from 'react';
 import { ChevronRightIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid';
-import { CategoryStatus } from '../pages/ActivityCategories';
 import i18n from '../common/config/i18n';
+import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
 
 interface ActivityButtonProps {
   key: string;
   icon: string;
   id: string;
   name: string;
-  status: CategoryStatus;
+  status: ActivityTypeStatus;
   onClick: (id: string) => void;
 }
 
@@ -28,7 +28,7 @@ const ActivityButton = ({ icon, id, name, onClick, status }: ActivityButtonProps
       </div>
       <div className="flex gap-1 items-center">
         <p className="text-left">{name}</p>
-        {status === CategoryStatus.DISABLED && (
+        {status === ActivityTypeStatus.ARCHIVED && (
           <ExclamationCircleIcon
             className="h-6 w-6 text-red-500 shrink-0"
             title={`${i18n.t('activity_categories:info')}`}

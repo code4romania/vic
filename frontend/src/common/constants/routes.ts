@@ -29,7 +29,7 @@ export const ROUTES: IRoute[] = [
   {
     id: 6,
     name: i18n.t('side_menu:options.activity_categories'),
-    href: 'activity-categories',
+    href: 'activity-types',
     icon: PuzzlePieceIcon,
   },
 ];
