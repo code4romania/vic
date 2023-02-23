@@ -11,6 +11,7 @@
     "image": "Imagine",
     "activity": "Activitate",
     "address": "Adresa",
+    "status": "Status",
     "empty_table": "Nu exista date in tabel",
     "view": "Vizualizeaza",
     "edit": "Editeaza {{item}}",
@@ -58,11 +59,20 @@
       "volunteers_list": "Listă voluntari",
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
-      "activity_categories": "Categorii activitati"
+      "activity_types": "Categorii activitati"
     },
     "collapse": "Restrange meniul"
   },
   "volunteer": {
+    "title": "Vizualizare profil",
+    "card_title": "Informatii voluntar",
+    "name": "Voluntar {{status}}",
+    "volunteer_from": "Adaugat in TEO la",
+    "status": {
+      "active": "activ",
+      "archived": "arhivat",
+      "blocked": "blocat"
+    },
     "registration": {
       "title": "Cerere de inscriere",
       "edit_status": "Această cerere de înscriere necesită aprobare",
@@ -203,6 +213,11 @@
     "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
     "start_date": "Data inceput valabiliatate*",
     "end_date": "Data final valabilitate",
+    "modal": {
+      "title": "Sigur doriți să ștergeți acestui cod?",
+      "description": "Această acțiune va șterge definitiv acest cod de acces și toate informațiile asociate acestuia",
+      "delete": "Codul de access a fost sters cu succes"
+    },
     "form": {
       "code": {
         "required": "Codul este obligatoriu",
@@ -223,13 +238,6 @@
     "errors": {
       "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",
       "ACCESS_CODE_002": "Exista deja un cod de acces cu acest nume"
-    },
-    "modal": {
-      "view": "Vizualizează profil",
-      "archive": "Arhivează voluntar",
-      "activate": "Reactivează voluntar",
-      "delete": "Sterge din ONG",
-      "block": "Blochează voluntar"
     }
   },
   "reject_modal": {
@@ -242,9 +250,15 @@
       "error": "Refuzarea cererii a esuat"
     }
   },
-  "activity_categories": {
+  "activity_types": {
     "info": "Categoria a fost arhivată",
     "type": "Denumire tip activitate",
-    "type_placeholder": "Denumire"
+    "type_placeholder": "Denumire",
+    "errors": {
+      "ACTIVITY_TYPE_001": "Categoria nu a fost gasita",
+      "ACTIVITY_TYPE_002": "Exista deja o categorie cu aceste date pentru organizatia dumneavoastra",
+      "ACTIVITY_TYPE_003": "Categoria nu este in statusul potrivit",
+      "ACTIVITY_TYPE_004": "Nu s-a putut creea categoria"
+    }
   }
 }
