@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   ICreateOrganizationStructureModel,
   IFindAllOrganizationStructureModel,
@@ -16,8 +17,8 @@ export class OrganizationStructureFacade {
 
   public async findAll(
     findOptions: IFindAllOrganizationStructureModel,
-  ): Promise<IOrganizationStructureModel[]> {
-    return this.organizationStructureRepository.findAll(findOptions);
+  ): Promise<Pagination<IOrganizationStructureModel>> {
+    return this.organizationStructureRepository.findMany(findOptions);
   }
 
   public async find(

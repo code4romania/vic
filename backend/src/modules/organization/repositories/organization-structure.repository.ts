@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
+import {
+  Pagination,
+  RepositoryWithPagination,
+} from 'src/infrastructure/base/repository-with-pagination.class';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
 import { IOrganizationStructureRepository } from '../interfaces/organization-structure-repository.interface';
 import {
@@ -14,12 +20,15 @@ import {
 
 @Injectable()
 export class OrganizationStructureRepositoryService
+  extends RepositoryWithPagination<OrganizationStructureEntity>
   implements IOrganizationStructureRepository
 {
   constructor(
     @InjectRepository(OrganizationStructureEntity)
     private readonly structureRepository: Repository<OrganizationStructureEntity>,
-  ) {}
+  ) {
+    super(structureRepository);
+  }
 
   async create(
     newStructure: ICreateOrganizationStructureModel,
@@ -29,19 +38,6 @@ export class OrganizationStructureRepositoryService
     );
 
     return this.find({ id: structure.id });
-  }
-
-  async findAll(
-    findOptions: IFindAllOrganizationStructureModel /* INSERT FILTERING OPTIONS */,
-  ): Promise<IOrganizationStructureModel[]> {
-    const accessCodeEntities = await this.structureRepository.find({
-      where: { ...findOptions },
-      relations: {
-        createdBy: true,
-      },
-    });
-
-    return accessCodeEntities.map(OrganizationStructureTransformer.fromEntity);
   }
 
   async find(
@@ -57,6 +53,32 @@ export class OrganizationStructureRepositoryService
     return structure
       ? OrganizationStructureTransformer.fromEntity(structure)
       : null;
+  }
+
+  async findMany(
+    findOptions: IFindAllOrganizationStructureModel,
+  ): Promise<Pagination<IOrganizationStructureModel>> {
+    const options: {
+      filters: FindOptionsWhere<OrganizationStructureEntity>;
+    } & IBasePaginationFilterModel = {
+      ...findOptions,
+      filters: {
+        organizationId: findOptions.organizationId,
+        type: findOptions.type,
+      },
+    };
+    return this.findManyPaginated<IOrganizationStructureModel>(
+      {
+        searchableColumns: [],
+        defaultSortBy: 'name',
+        defaultOrderDirection: OrderDirection.ASC,
+        relations: {
+          createdBy: true,
+        },
+      },
+      options,
+      OrganizationStructureTransformer.fromEntity,
+    );
   }
 
   async update({
