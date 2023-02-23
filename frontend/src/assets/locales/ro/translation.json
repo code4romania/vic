@@ -247,6 +247,12 @@
     }
   },
   "activity_types": {
-    "info": "Categoria a fost arhivată"
+    "info": "Categoria a fost arhivată",
+    "errors": {
+      "ACTIVITY_TYPE_001": "Categoria nu a fost gasita",
+      "ACTIVITY_TYPE_002": "Exista deja o categorie cu aceste date pentru organizatia dumneavoastra",
+      "ACTIVITY_TYPE_003": "Categoria nu este in statusul potrivit",
+      "ACTIVITY_TYPE_004": "Nu s-a putut creea categoria"
+    }
   }
 }
