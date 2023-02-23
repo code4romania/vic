@@ -12,14 +12,14 @@ export class CityPresenter {
 
   @Expose()
   @ApiProperty({
-    description: 'The county id',
+    description: 'The city id',
     example: '1',
   })
   id: number;
 
   @Expose()
   @ApiProperty({
-    description: 'The county name',
+    description: 'The city name',
     example: 'Bucuresti',
   })
   name: string;
