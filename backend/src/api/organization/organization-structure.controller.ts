@@ -9,7 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
@@ -24,7 +24,6 @@ import { UpdateOrganizationStructureDto } from './dto/update-org-structure.dto';
 import { OrganizationStructurePresenter } from './presenters/organization-structure.presenter';
 import { OrganizationStructureGuard } from 'src/api/organization/guards/organization-structure.guard';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
-import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   ApiPaginatedResponse,
   PaginatedPresenter,
@@ -43,7 +42,6 @@ export class OrganizationStructureController {
   ) {}
 
   @ApiParam({ name: 'type', type: String, enum: OrganizationStructureType })
-  @ApiQuery({ type: () => BasePaginationFilterDto })
   @ApiPaginatedResponse(OrganizationStructurePresenter)
   @Get(':type')
   async getAll(

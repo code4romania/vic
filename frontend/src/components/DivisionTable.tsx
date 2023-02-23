@@ -68,7 +68,7 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
   const [page, setPage] = useState<number>();
 
   const {
@@ -86,15 +86,6 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
 
   const { mutateAsync: deleteDivision, isLoading: deleteDivisionMutationLoading } =
     useDeleteDivisionMutation();
-
-  useEffect(() => {
-    if (divisions?.meta) {
-      setPage(divisions.meta.currentPage);
-      setRowsPerPage(divisions.meta.itemsPerPage);
-      setOrderByColumn(divisions.meta.orderByColumn);
-      setOrderDirection(divisions.meta.orderDirection);
-    }
-  }, []);
 
   // error handling
   useEffect(() => {
