@@ -5,6 +5,7 @@
     "name": "Nume",
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
+    "category": "Categorie",
     "address": "Adresa",
     "status": "Status",
     "empty_table": "Nu exista date in tabel",
@@ -53,7 +54,8 @@
       "volunteers": "Voluntari",
       "volunteers_list": "Listă voluntari",
       "access_requests": "Cereri de înscriere",
-      "access_codes": "Coduri de acces"
+      "access_codes": "Coduri de acces",
+      "activity_types": "Categorii activitati"
     },
     "collapse": "Restrange meniul"
   },
@@ -232,13 +234,6 @@
     "errors": {
       "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",
       "ACCESS_CODE_002": "Exista deja un cod de acces cu acest nume"
-    },
-    "modal": {
-      "view": "Vizualizează profil",
-      "archive": "Arhivează voluntar",
-      "activate": "Reactivează voluntar",
-      "delete": "Sterge din ONG",
-      "block": "Blochează voluntar"
     }
   },
   "reject_modal": {
@@ -249,6 +244,15 @@
       "max": "Mesajul trebuie sa aiba maxim 225 de caractere",
       "min": "Mesajul trebuie sa aiba minim 50 caractere",
       "error": "Refuzarea cererii a esuat"
+    }
+  },
+  "activity_types": {
+    "info": "Categoria a fost arhivată",
+    "errors": {
+      "ACTIVITY_TYPE_001": "Categoria nu a fost gasita",
+      "ACTIVITY_TYPE_002": "Exista deja o categorie cu aceste date pentru organizatia dumneavoastra",
+      "ACTIVITY_TYPE_003": "Categoria nu este in statusul potrivit",
+      "ACTIVITY_TYPE_004": "Nu s-a putut creea categoria"
     }
   }
 }
