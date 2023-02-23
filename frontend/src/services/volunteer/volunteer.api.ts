@@ -1,6 +1,8 @@
 import { OrderDirection } from '../../common/enums/order-direction.enum';
+import { Sex } from '../../common/enums/sex.enum';
+import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { IVolunteer, VolunteerStatus } from '../../pages/Volunteers';
+import { IVolunteer } from '../../common/interfaces/volunteer.interface';
 // import API from '../api';
 
 export const getVolunteers = async (
@@ -13,64 +15,32 @@ export const getVolunteers = async (
   // return API.get('/volunteers', {
   //   params: { limit, page, filterStatus, orderBy, orderDirection },
   // }).then((res) => res.data);
+
   return Promise.resolve({
     items: [
       {
         id: '1',
-        city: 'Ciorogarla',
-        county: 'Ilfov',
-        name: 'Nume varianta 1',
-        organization: 'Red Cross',
-        profilePicture: 'logo.svg',
-        role: 'Volunteer',
-        department: 'Disaster Relief',
-        branch: 'New York',
-        startedOn: new Date('2022-01-01'),
-        email: 'volunteer1@redcross.org',
-        phone: '+1 123 456 7890',
+        createdOn: new Date(),
+        createdBy: {
+          id: '1',
+          name: 'Florian',
+          email: 'florian@email.com',
+          phone: '+40765555555',
+          profilePicture:
+            'https://images.pexels.com/photos/6195084/pexels-photo-6195084.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          location: 'Iasi, jus Iasi',
+          birthday: new Date('2022-01-01'),
+          sex: Sex.MALE,
+          createdOn: new Date('2022-01-01'),
+          updatedOn: new Date('2022-01-01'),
+        },
+        role: { id: '1', name: 'Prof' },
+        department: { id: '1', name: 'Dep' },
+        branch: { id: '1', name: 'Iasi' },
+        startedOn: new Date(),
+        email: 'florian@email.com',
+        phone: '+40765555555',
         status: VolunteerStatus.ACTIVE,
-        archivedOn: new Date(),
-        blockedOn: new Date(),
-        archivedBy: 'Mircea',
-        blockedBy: 'Ionica',
-      },
-      {
-        id: '2',
-        organization: 'Red Cross',
-        name: 'Gigica',
-        city: 'Ciorogarla',
-        county: 'Ilfov',
-        profilePicture: 'logo.svg',
-        role: 'Team Lead',
-        department: 'Disaster Relief',
-        branch: 'Los Angeles',
-        startedOn: new Date('2022-02-01'),
-        email: 'volunteer2@redcross.org',
-        phone: '+1 123 456 7891',
-        status: VolunteerStatus.ACTIVE,
-        archivedOn: new Date(),
-        blockedOn: new Date(),
-        archivedBy: 'Mircea',
-        blockedBy: 'Ionica',
-      },
-      {
-        id: '3',
-        organization: 'Red Cross',
-        city: 'Ciorogarla',
-        county: 'Ilfov',
-        name: 'Stefanut',
-        profilePicture: 'logo.svg',
-        role: 'Volunteer',
-        department: 'Disaster Relief',
-        branch: 'Chicago',
-        startedOn: new Date('2022-03-01'),
-        email: 'volunteer3@redcross.org',
-        phone: '+1 123 456 7892',
-        status: VolunteerStatus.ACTIVE,
-        archivedOn: new Date(),
-        blockedOn: new Date(),
-        archivedBy: 'Mircea',
-        blockedBy: 'Ionica',
       },
     ],
     meta: {
@@ -83,5 +53,33 @@ export const getVolunteers = async (
       orderByColumn: orderBy || 'name',
       orderDirection: orderDirection || OrderDirection.ASC,
     },
+  });
+};
+
+export const getVolunteer = async (id: string): Promise<IVolunteer> => {
+  // return API.get(`volunteers/${id}`).then((res) => res.data);
+  return Promise.resolve({
+    id: id,
+    createdOn: new Date(),
+    createdBy: {
+      id: '1',
+      name: 'Florian',
+      email: 'florian@email.com',
+      phone: '+40765555555',
+      profilePicture:
+        'https://images.pexels.com/photos/6195084/pexels-photo-6195084.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      location: 'Iasi, jus Iasi',
+      birthday: new Date('2022-01-01'),
+      sex: Sex.MALE,
+      createdOn: new Date('2022-01-01'),
+      updatedOn: new Date('2022-01-01'),
+    },
+    role: { id: '1', name: 'Prof' },
+    department: { id: '1', name: 'Dep' },
+    branch: { id: '1', name: 'Iasi' },
+    startedOn: new Date(),
+    email: 'florian@email.com',
+    phone: '+40765555555',
+    status: VolunteerStatus.ACTIVE,
   });
 };

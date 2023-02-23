@@ -47,3 +47,7 @@ export const createAccessCode = async (accessCode: AccessCodeFormTypes): Promise
 export const updateAccessCode = async (id: string, endDate?: Date): Promise<IAccessCode> => {
   return API.patch(`access-code/${id}`, { endDate }).then((res) => res.data);
 };
+
+export const deleteAccessCode = async (id: string): Promise<string> => {
+  return API.delete(`access-code/${id}`).then((res) => res.data);
+};
