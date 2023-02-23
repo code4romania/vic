@@ -1,11 +1,11 @@
 import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
-import { VOLUNTEER_ERRORS } from '../../common/errors/entities/volunteer.errors';
-import { IBusinessException } from '../../common/interfaces/business-exception.interface';
-import { getVolunteers } from './volunteer.api';
 import { PaginationConfig } from '../../common/constants/pagination';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { VolunteerStatus } from '../../pages/Volunteers';
+import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
+import { VOLUNTEER_ERRORS } from '../../common/errors/entities/volunteer.errors';
+import { IBusinessException } from '../../common/interfaces/business-exception.interface';
+import { getVolunteer, getVolunteers } from './volunteer.api';
 
 export const useVolunteersQuery = (
   filterStatus: VolunteerStatus,
@@ -22,4 +22,11 @@ export const useVolunteersQuery = (
       onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
     },
   );
+};
+
+export const useVolunteerQuery = (id: string) => {
+  return useQuery(['volunteer', id], () => getVolunteer(id), {
+    enabled: !!id,
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
 };
