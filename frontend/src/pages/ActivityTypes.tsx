@@ -44,7 +44,7 @@ const ActivityTypes = () => {
   return (
     <PageLayout>
       <div className="flex items-center justify-between">
-        <h1>{i18n.t('side_menu:options.activity_categories')}</h1>
+        <h1>{i18n.t('side_menu:options.activity_types')}</h1>
         <Button
           label={i18n.t('general:add', { item: i18n.t('general:category').toLowerCase() })}
           className="btn-primary"
@@ -56,7 +56,7 @@ const ActivityTypes = () => {
       {activityCategories && !isActivityCategoriesLoading && (
         <Card>
           <CardHeader>
-            <h2>{i18n.t('side_menu:options.activity_categories')}</h2>
+            <h2>{i18n.t('side_menu:options.activity_types')}</h2>
           </CardHeader>
           <CardBody>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

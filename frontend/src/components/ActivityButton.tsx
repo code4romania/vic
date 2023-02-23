@@ -31,7 +31,7 @@ const ActivityButton = ({ icon, id, name, onClick, status }: ActivityButtonProps
         {status === ActivityTypeStatus.ARCHIVED && (
           <ExclamationCircleIcon
             className="h-6 w-6 text-red-500 shrink-0"
-            title={`${i18n.t('activity_categories:info')}`}
+            title={`${i18n.t('activity_types:info')}`}
           />
         )}
       </div>
