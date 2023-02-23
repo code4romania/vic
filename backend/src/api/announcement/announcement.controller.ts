@@ -16,6 +16,7 @@ import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateAnnouncementUseCase } from 'src/usecases/announcement/create-announcement.usecase';
 import { DeleteAnnouncementUseCase } from 'src/usecases/announcement/delete-announcement.usecase';
 import { GetAllAnnouncementUseCase } from 'src/usecases/announcement/get-all-announcement.usecase';
+import { GetOneAnnouncementUseCase } from 'src/usecases/announcement/get-one-announcement.usecase';
 import { UpdateAnnouncementUseCase } from 'src/usecases/announcement/update-announcement.usecase';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
@@ -31,6 +32,7 @@ export class AnnouncementController {
     private readonly createAnnouncementUseCase: CreateAnnouncementUseCase,
     private readonly updateAnnouncementUseCase: UpdateAnnouncementUseCase,
     private readonly deleteAnnouncementUseCase: DeleteAnnouncementUseCase,
+    private readonly getOneAnnouncementUseCase: GetOneAnnouncementUseCase,
   ) {}
 
   @Get()
@@ -44,6 +46,14 @@ export class AnnouncementController {
     return announcements.map(
       (announcement) => new AnnouncementPresenter(announcement),
     );
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @Get(':id')
+  async getOne(@Param('id') id: string): Promise<AnnouncementPresenter> {
+    const announcement = await this.getOneAnnouncementUseCase.execute({ id });
+
+    return new AnnouncementPresenter(announcement);
   }
 
   @ApiBody({ type: CreateAnnouncementDto })
