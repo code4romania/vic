@@ -6,6 +6,7 @@ import {
   FindOptionsOrder,
   FindOptionsRelations,
   FindOptionsSelect,
+  FindOptionsWhere,
   ILike,
   LessThanOrEqual,
   MoreThanOrEqual,
@@ -15,6 +16,7 @@ import { format } from 'date-fns';
 import { IBasePaginationFilterModel } from './base-pagination-filter.model';
 import { DATE_CONSTANTS } from 'src/common/constants/constants';
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
+import { BaseEntity } from './base-entity';
 
 export interface IPaginationMeta {
   itemCount: number;
@@ -38,17 +40,14 @@ export interface Pagination<T> {
   meta: IPaginationMeta;
 }
 
-export abstract class RepositoryWithPagination<T>
+export abstract class RepositoryWithPagination<T extends BaseEntity>
   implements IRepositoryWithPagination<T>
 {
   constructor(private readonly repository: Repository<T>) {}
 
-  public async findManyPaginated<
-    TModel,
-    TFindOptions extends IBasePaginationFilterModel,
-  >(
+  public async findManyPaginated<TModel>(
     config: IPaginationConfig<T>,
-    options: TFindOptions,
+    options: { filters: FindOptionsWhere<T> } & IBasePaginationFilterModel,
     toModel: (entity: T) => TModel,
   ): Promise<Pagination<TModel>> {
     const {
@@ -59,7 +58,7 @@ export abstract class RepositoryWithPagination<T>
       orderDirection,
       start,
       end,
-      ...filters
+      filters,
     } = options;
 
     // filters (and where)
@@ -245,7 +244,7 @@ export abstract class RepositoryWithPagination<T>
     );
   };
 
-  private checkOneIntervalComprisesAnother = (
+  private checkOneIntervalComprisesAnother = <T>(
     startDateColumn: string,
     endDateColumn: string,
     from: Date | string,

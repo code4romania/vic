@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { AccessCodeEntity } from '../entities/access-code.entity';
 import { IAccessCodeRepository } from '../interfaces/access-code-repository.interface';
 import {
@@ -51,7 +52,16 @@ export class AccessCodeRepositoryService
   async findMany(
     findOptions: IFindAllAccessCodeModel,
   ): Promise<Pagination<IAccessCodeModel>> {
-    return this.findManyPaginated<IAccessCodeModel, IFindAllAccessCodeModel>(
+    const options: {
+      filters: FindOptionsWhere<AccessCodeEntity>;
+    } & IBasePaginationFilterModel = {
+      ...findOptions,
+      filters: {
+        organizationId: findOptions.organizationId,
+      },
+    };
+
+    return this.findManyPaginated<IAccessCodeModel>(
       {
         searchableColumns: [],
         defaultSortBy: 'createdOn',
@@ -60,7 +70,7 @@ export class AccessCodeRepositoryService
           createdBy: true,
         },
       },
-      findOptions,
+      options,
       AccessCodeTransformer.fromEntity,
     );
   }

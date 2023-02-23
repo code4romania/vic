@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
 import { IOrganizationStructureRepository } from '../interfaces/organization-structure-repository.interface';
 import {
@@ -55,12 +56,18 @@ export class OrganizationStructureRepositoryService
   }
 
   async findMany(
-    options: IFindAllOrganizationStructureModel,
+    findOptions: IFindAllOrganizationStructureModel,
   ): Promise<Pagination<IOrganizationStructureModel>> {
-    return this.findManyPaginated<
-      IOrganizationStructureModel,
-      IFindAllOrganizationStructureModel
-    >(
+    const options: {
+      filters: FindOptionsWhere<OrganizationStructureEntity>;
+    } & IBasePaginationFilterModel = {
+      ...findOptions,
+      filters: {
+        organizationId: findOptions.organizationId,
+        type: findOptions.type,
+      },
+    };
+    return this.findManyPaginated<IOrganizationStructureModel>(
       {
         searchableColumns: [],
         defaultSortBy: 'name',
