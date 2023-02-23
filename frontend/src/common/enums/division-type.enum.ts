@@ -1,5 +1,5 @@
 export enum DivisionType {
-  BRANCH = 'Branch',
-  DEPARTMENT = 'Department',
-  ROLE = 'Role',
+  BRANCH = 'branch',
+  DEPARTMENT = 'department',
+  ROLE = 'role',
 }

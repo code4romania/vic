@@ -176,7 +176,7 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
       { name, type },
       {
         onSuccess: () => {
-          useSuccessToast(i18n.t(`division:submit.success.${type.toLocaleLowerCase()}.add`));
+          useSuccessToast(i18n.t(`division:submit.success.${type}.add`));
           refetch();
         },
         onError: (error) => {
@@ -196,7 +196,7 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
         { id: selectedDivisionForUpdate.id, name: inputData.name },
         {
           onSuccess: () => {
-            useSuccessToast(i18n.t(`division:submit.success.${type.toLocaleLowerCase()}.edit`));
+            useSuccessToast(i18n.t(`division:submit.success.${type}.edit`));
             refetch();
           },
           onError: (error) => {
@@ -218,7 +218,7 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
       deleteDivision(selectedIdForDeletion, {
         onSuccess: () => {
           // show success message
-          useSuccessToast(i18n.t(`division:submit.success.${type.toLocaleLowerCase()}.delete`));
+          useSuccessToast(i18n.t(`division:submit.success.${type}.delete`));
           // refresh table
           refetch();
         },
@@ -237,11 +237,11 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
     <>
       <Card>
         <CardHeader>
-          <h3>{i18n.t(`division:table.title.${type.toLocaleLowerCase()}`)}</h3>
+          <h3>{i18n.t(`division:table.title.${type}`)}</h3>
           <Button
             className="btn-outline-secondary"
             label={i18n.t('general:add', {
-              item: i18n.t(`division:entity.${type.toLocaleLowerCase()}`),
+              item: i18n.t(`division:entity.${type}`),
             })}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
@@ -270,7 +270,7 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
       {isAddModalOpen && (
         <DivisionInputModal
           title={i18n.t('general:add', {
-            item: i18n.t(`division:entity.${type.toLocaleLowerCase()}`),
+            item: i18n.t(`division:entity.${type}`),
           })}
           divisionType={type}
           onClose={setIsAddModalOpen.bind(null, false)}
@@ -289,10 +289,10 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
       {selectedIdForDeletion && (
         <ConfirmationModal
           title={i18n.t('division:modal.delete.title', {
-            division: i18n.t(`division:entity.${type.toLocaleLowerCase()}`),
+            division: i18n.t(`division:entity.${type}`),
           })}
           description={i18n.t('general:confirm_delete', {
-            item: i18n.t(`division:entity.${type.toLocaleLowerCase()}`),
+            item: i18n.t(`division:entity.${type}`),
           })}
           confirmBtnLabel={i18n.t('general:delete')}
           confirmBtnClassName="btn-danger"

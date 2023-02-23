@@ -73,9 +73,7 @@ const DivisionInputModal = ({
                 errorMessage={errors['name']?.message}
                 readOnly={false}
                 value={value}
-                label={`${i18n.t('general:name')} ${i18n.t(
-                  `division:entity.${divisionType.toLocaleLowerCase()}`,
-                )}`}
+                label={`${i18n.t('general:name')} ${i18n.t(`division:entity.${divisionType}`)}`}
                 onChange={onChange}
                 aria-invalid={errors['name']?.message ? 'true' : 'false'}
               />
@@ -86,7 +84,7 @@ const DivisionInputModal = ({
       <div className="flex flex-row-reverse">
         <Button
           label={i18n.t('general:add', {
-            item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+            item: i18n.t(`division:entity.${divisionType}`),
           })}
           className="btn-primary"
           onClick={handleSubmit(onSubmit)}
