@@ -152,16 +152,18 @@ const EditActivity = () => {
         <Card>
           <CardHeader>
             <h2>{`${i18n.t('general:category')} ${i18n.t('general:activity').toLowerCase()}`}</h2>
-            <Button
-              label={i18n.t(`activity_categories:button.${activityCategory.status}`)}
-              className="btn-outline-secondary"
-              onClick={changeStatus}
-            />
-            <Button
-              label={i18n.t('general:save_changes')}
-              className="btn-primary"
-              onClick={handleSubmit(saveChanges)}
-            />
+            <div className="flex gap-4 flex-wrap justify-self-center max-xs:w-full">
+              <Button
+                label={i18n.t(`activity_categories:button.${activityCategory.status}`)}
+                className="btn-outline-secondary max-sm:w-full "
+                onClick={changeStatus}
+              />
+              <Button
+                label={i18n.t('general:save_changes')}
+                className="btn-primary max-sm:w-full"
+                onClick={handleSubmit(saveChanges)}
+              />
+            </div>
           </CardHeader>
           <CardBody>
             <FormLayout>
