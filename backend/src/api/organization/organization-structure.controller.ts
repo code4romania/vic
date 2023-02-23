@@ -25,6 +25,10 @@ import { OrganizationStructurePresenter } from './presenters/organization-struct
 import { OrganizationStructureGuard } from 'src/api/organization/guards/organization-structure.guard';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
 
 // @Roles(Role.ADMIN)
 @ApiBearerAuth()
@@ -40,24 +44,25 @@ export class OrganizationStructureController {
 
   @ApiParam({ name: 'type', type: String, enum: OrganizationStructureType })
   @ApiQuery({ type: () => BasePaginationFilterDto })
+  @ApiPaginatedResponse(OrganizationStructurePresenter)
   @Get(':type')
   async getAll(
     @Param('type') type: OrganizationStructureType,
     @Query() filters: BasePaginationFilterDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
-  ): Promise<Pagination<OrganizationStructurePresenter>> {
+  ): Promise<PaginatedPresenter<OrganizationStructurePresenter>> {
     const accessCodes = await this.getAllStructureUsecase.execute({
       ...filters,
       type,
       organizationId,
     });
 
-    return {
+    return new PaginatedPresenter({
       ...accessCodes,
       items: accessCodes.items.map(
-        (item) => new OrganizationStructurePresenter(item),
+        (accessCode) => new OrganizationStructurePresenter(accessCode),
       ),
-    };
+    });
   }
 
   @ApiBody({ type: CreateOrganizationStructureDto })
