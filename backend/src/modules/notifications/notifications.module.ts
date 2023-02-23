@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ExceptionsModule } from 'src/infrastructure/exceptions/exceptions.module';
 import { UseCaseModule } from 'src/usecases/use-case.module';
 import { MailModule } from '../mail/mail.module';
 import { JoinNGOListener } from './listeners/join-ngo.listener';
@@ -8,7 +7,7 @@ import { OthersListener } from './listeners/others.listener';
 import { VolunteerHoursListener } from './listeners/volunteer-hours.listener';
 
 @Module({
-  imports: [MailModule, UseCaseModule, ExceptionsModule],
+  imports: [MailModule, UseCaseModule],
   providers: [
     JoinNGOListener,
     NGOEventListener,

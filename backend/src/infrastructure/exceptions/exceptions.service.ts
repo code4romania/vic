@@ -6,26 +6,23 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import {
-  IException,
-  IBusinessError,
-} from 'src/common/exceptions/exceptions.interface';
+import { IException, IError } from 'src/common/exceptions/exceptions.interface';
 
 @Injectable()
 export class ExceptionsService implements IException {
-  badRequestException(data: IBusinessError): void {
+  badRequestException(data: IError): void {
     throw new BadRequestException(data);
   }
-  internalServerErrorException(data: IBusinessError): void {
+  internalServerErrorException(data: IError): void {
     throw new InternalServerErrorException(data);
   }
-  forbiddenException(data: IBusinessError): void {
+  forbiddenException(data: IError): void {
     throw new ForbiddenException(data);
   }
-  unauthorizedException(data: IBusinessError): void {
+  unauthorizedException(data: IError): void {
     throw new UnauthorizedException(data);
   }
-  notFoundException(data: IBusinessError): void {
+  notFoundException(data: IError): void {
     throw new NotFoundException(data);
   }
 }

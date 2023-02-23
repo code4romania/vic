@@ -9,7 +9,6 @@ import { OrganizationExceptionMessages } from 'src/modules/organization/exceptio
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { IError } from 'src/common/exceptions/exceptions.interface';
-import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
 import { JSONStringifyError } from 'src/common/helpers/stringify-error';
 import { IUserModel } from 'src/modules/user/models/base-user.model';
 
@@ -75,15 +74,12 @@ export class GetUserProfileUseCaseService
         );
       }
     } catch (error) {
-      // create new error object to log
-      const loggedError: IError<IOrganizationModel> = {
-        error: JSONStringifyError(error),
-        businessError: OrganizationExceptionMessages.ORG_003,
-        data: organization,
-      };
-
       // log the error and the payload
-      this.logger.error(loggedError);
+      this.logger.error({
+        error,
+        ...OrganizationExceptionMessages.ORG_003,
+        organization,
+      });
 
       // throw bad server exception for failing to save the organization
       this.exceptionService.internalServerErrorException(
@@ -114,18 +110,15 @@ export class GetUserProfileUseCaseService
       // return newly created
       return adminUser;
     } catch (error) {
-      // create new error object to log
-      const loggedError: IError<IUserModel> = {
-        error: JSONStringifyError(error),
-        businessError: UserExceptionMessages.USER_002,
-        data: {
+      // log the error and the payload
+      this.logger.debug({
+        error,
+        ...UserExceptionMessages.USER_002,
+        user: {
           ...user,
           organizationId: dbOrganization.id,
         },
-      };
-
-      // log the error and the payload
-      this.logger.error(loggedError);
+      });
 
       // throw bad server exception for failing to save the organization
       this.exceptionService.internalServerErrorException(

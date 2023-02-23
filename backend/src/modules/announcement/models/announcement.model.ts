@@ -23,12 +23,11 @@ export type ICreateAnnouncementModel = Omit<
   targetsIds: string[];
 };
 
-export type IUpdateAnnouncementModel = Omit<
-  IAnnouncementModel,
-  'updatedOn' | 'createdOn'
-> & {
-  targetsIds: string[];
-};
+export type IUpdateAnnouncementModel = Partial<
+  Omit<IAnnouncementModel, 'organizationId' | 'updatedOn' | 'createdOn'> & {
+    targetsIds: string[];
+  }
+>;
 
 export type IFindAnnouncementModel = Partial<
   Pick<IAnnouncementModel, 'id' | 'organizationId'>
@@ -47,7 +46,7 @@ export class AnnouncementStructureTransformer {
       status: entity.status,
       publishedOn: entity.publishedOn,
       organizationId: entity.organizationId,
-      targets: entity.targets.map(OrganizationStructureTransformer.fromEntity),
+      targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,
     };
@@ -61,7 +60,7 @@ export class AnnouncementStructureTransformer {
     entity.status = model.status;
     entity.publishedOn = model.publishedOn;
     entity.organizationId = model.organizationId;
-    entity.targets = model.targetsIds.map(
+    entity.targets = model.targetsIds?.map(
       OrganizationStructureTransformer.toEntity,
     );
 

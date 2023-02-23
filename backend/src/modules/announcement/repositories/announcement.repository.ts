@@ -61,7 +61,7 @@ export class AnnouncementRepositoryService implements IAnnouncementRepository {
     targetsIds,
     ...updates
   }: IUpdateAnnouncementModel): Promise<IAnnouncementModel> {
-    const targets = targetsIds.map(OrganizationStructureTransformer.toEntity);
+    const targets = targetsIds?.map(OrganizationStructureTransformer.toEntity);
 
     const toUpdate = await this.announcementRepository.preload({
       id,

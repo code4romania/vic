@@ -11,7 +11,6 @@ import {
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
-import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateAnnouncementUseCase } from 'src/usecases/announcement/create-announcement.usecase';
@@ -56,10 +55,6 @@ export class AnnouncementController {
     const announcement = await this.createAnnouncementUseCase.execute({
       ...createAnnouncementDto,
       organizationId,
-      publishedOn:
-        createAnnouncementDto.status === AnnouncementStatus.PUBLISHED
-          ? new Date()
-          : null,
     });
 
     return new AnnouncementPresenter(announcement);
@@ -71,16 +66,10 @@ export class AnnouncementController {
   async update(
     @Param('id', UuidValidationPipe) id: string,
     @Body() updateAnnouncementDto: UpdateAnnouncementDto,
-    @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<AnnouncementPresenter> {
     const announcement = await this.updateAnnouncementUseCase.execute({
       ...updateAnnouncementDto,
       id,
-      organizationId,
-      publishedOn:
-        updateAnnouncementDto.status === AnnouncementStatus.PUBLISHED
-          ? new Date()
-          : null,
     });
 
     return new AnnouncementPresenter(announcement);

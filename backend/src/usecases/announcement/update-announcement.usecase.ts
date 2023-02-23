@@ -1,7 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { IError } from 'src/common/exceptions/exceptions.interface';
-import { JSONStringifyError } from 'src/common/helpers/stringify-error';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
@@ -18,8 +16,6 @@ import SendAnnouncementEvent from 'src/modules/notifications/events/others/send-
 export class UpdateAnnouncementUseCase
   implements IUseCaseService<IAnnouncementModel>
 {
-  private readonly logger = new Logger(UpdateAnnouncementUseCase.name);
-
   constructor(
     private readonly announcementFacade: AnnouncementFacade,
     private readonly exceptionsService: ExceptionsService,
@@ -45,40 +41,25 @@ export class UpdateAnnouncementUseCase
       );
     }
 
-    try {
-      // 3. Update the announcement
-      const updatedAnnouncement = await this.announcementFacade.update(
-        updateData,
-      );
+    // 3. Update the announcement
+    const updatedAnnouncement = await this.announcementFacade.update({
+      publishedOn:
+        updateData.status === AnnouncementStatus.PUBLISHED ? new Date() : null,
+      ...updateData,
+    });
 
-      // 4. Send email to targets if announcement is published
-      if (updatedAnnouncement.status === AnnouncementStatus.PUBLISHED) {
-        this.eventEmitter.emit(
-          EVENTS.OTHER.SEND_ANNOUNCEMENT,
-          new SendAnnouncementEvent(
-            updatedAnnouncement.organizationId,
-            updatedAnnouncement.id,
-            updatedAnnouncement.targets?.map((target) => target.id),
-          ),
-        );
-      }
-
-      return updatedAnnouncement;
-    } catch (error) {
-      // create new error object to log
-      const loggedError: IError<IUpdateAnnouncementModel> = {
-        error: JSONStringifyError(error),
-        businessError: AnnouncementExceptionMessages.ANNOUNCEMENT_003,
-        data: updateData,
-      };
-
-      // log the created error
-      this.logger.error(loggedError);
-
-      // throw excepition for failing to update the announcement
-      this.exceptionsService.internalServerErrorException(
-        AnnouncementExceptionMessages.ANNOUNCEMENT_003,
+    // 4. Send email to targets if announcement is published
+    if (updatedAnnouncement.status === AnnouncementStatus.PUBLISHED) {
+      this.eventEmitter.emit(
+        EVENTS.OTHER.SEND_ANNOUNCEMENT,
+        new SendAnnouncementEvent(
+          updatedAnnouncement.organizationId,
+          updatedAnnouncement.id,
+          updatedAnnouncement.targets?.map((target) => target.id),
+        ),
       );
     }
+
+    return updatedAnnouncement;
   }
 }
