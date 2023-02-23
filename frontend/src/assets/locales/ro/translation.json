@@ -247,7 +247,7 @@
       "error": "Refuzarea cererii a esuat"
     }
   },
-  "announcements": {
+  "announcement": {
     "title": "Istoric anunturi",
     "name": "anunt",
     "header": {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PageHeader from '../components/PageHeader';
 import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
@@ -10,11 +10,15 @@ import { PlusIcon } from '@heroicons/react/24/solid';
 import DataTableComponent from '../components/DataTableComponent';
 import { IAnnouncement } from '../common/interfaces/announcement.interface';
 import CellLayout from '../layouts/CellLayout';
-import { TableColumn } from 'react-data-table-component';
+import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { formatDate } from '../common/utils/utils';
+import { useGetAllAnnouncementsQuery } from '../services/announcement/announcement.service';
+import { OrderDirection } from '../common/enums/order-direction.enum';
+import { PaginationConfig } from '../common/constants/pagination';
+// import { useErrorToast } from '../hooks/useToast';
 
 const AnnouncementTableHeader = [
   {
@@ -72,6 +76,37 @@ const AnnouncementTableHeader = [
 ];
 
 const Announcements = () => {
+  const [page, setPage] = useState<number>();
+  const [rowsPerPage, setRowsPerPage] = useState<number>();
+  const [orderByColumn, setOrderByColumn] = useState<string>();
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+
+  const {
+    data: announcements,
+    isLoading,
+    // error,
+  } = useGetAllAnnouncementsQuery(
+    rowsPerPage as number,
+    page as number,
+    orderByColumn,
+    orderDirection,
+  );
+
+  useEffect(() => {
+    if (announcements?.meta) {
+      setPage(announcements.meta.currentPage);
+      setRowsPerPage(announcements.meta.itemsPerPage);
+      setOrderByColumn(announcements.meta.orderByColumn);
+      setOrderDirection(announcements.meta.orderDirection);
+    }
+  });
+
+  // useEffect(() => {
+  //   if (error) {
+  //     useErrorToast(error);
+  //   }
+  // });
+
   const buildAnnouncementActionColumn = (): TableColumn<IAnnouncement> => {
     const announcementMenuItems = [
       {
@@ -118,6 +153,24 @@ const Announcements = () => {
     alert('Not yet implemented');
   };
 
+  // pagination
+  const onChangeRowsPerPage = (rows: number) => {
+    setRowsPerPage(rows);
+  };
+
+  const onChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const onSort = (column: TableColumn<IAnnouncement>, direction: SortOrder) => {
+    setOrderByColumn(column.id as string);
+    setOrderDirection(
+      direction.toLocaleUpperCase() === OrderDirection.ASC
+        ? OrderDirection.ASC
+        : OrderDirection.DESC,
+    );
+  };
+
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.announcements')}</PageHeader>
@@ -134,7 +187,16 @@ const Announcements = () => {
         <CardBody>
           <DataTableComponent<IAnnouncement>
             columns={[...AnnouncementTableHeader, buildAnnouncementActionColumn()]}
+            data={announcements?.items}
             pagination
+            loading={isLoading}
+            paginationPerPage={announcements?.meta.itemsPerPage}
+            paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
+            paginationTotalRows={announcements?.meta.totalItems}
+            paginationDefaultPage={page}
+            onChangeRowsPerPage={onChangeRowsPerPage}
+            onChangePage={onChangePage}
+            onSort={onSort}
           />
         </CardBody>
       </Card>
