@@ -106,15 +106,6 @@ const AccessCodes = () => {
     useDeleteAccessCodeMutation();
 
   useEffect(() => {
-    if (accessCodes?.meta) {
-      setPage(accessCodes.meta.currentPage);
-      setRowsPerPage(accessCodes.meta.itemsPerPage);
-      setOrderByColumn(accessCodes.meta.orderByColumn);
-      setOrderDirection(accessCodes.meta.orderDirection);
-    }
-  }, []);
-
-  useEffect(() => {
     if (accessCodesError) useErrorToast(i18n.t('general:error.load_entries'));
   }, [accessCodesError]);
 

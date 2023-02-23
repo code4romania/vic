@@ -9,7 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
@@ -43,7 +43,6 @@ export class AccessCodeController {
 
   @Get()
   @ApiPaginatedResponse(AccessCodePresenter)
-  @ApiQuery({ type: BasePaginationFilterDto })
   async getAll(
     @Query() filters: BasePaginationFilterDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
