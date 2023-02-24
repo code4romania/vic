@@ -8,19 +8,14 @@ export const getNewAccessRequests = async (
   page: number,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  search?: string,
+  start?: Date,
+  end?: Date,
+  locationId?: string,
 ): Promise<IPaginatedEntity<IAccessRequest>> => {
   return API.get('/access-request/new', {
-    params: { limit, page, orderBy, orderDirection },
-  }).then((res) => ({
-    items: res.data,
-    meta: {
-      itemCount: 1,
-      itemsPerPage: 5,
-      totalItems: 1,
-      totalPages: 1,
-      currentPage: 1,
-    },
-  }));
+    params: { limit, page, orderBy, orderDirection, search, start, end, locationId },
+  }).then((res) => res.data);
 };
 
 export const getRejectedAccessRequests = async (
@@ -28,19 +23,14 @@ export const getRejectedAccessRequests = async (
   page: number,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  search?: string,
+  start?: Date,
+  end?: Date,
+  locationId?: string,
 ): Promise<IPaginatedEntity<IAccessRequest>> => {
   return API.get('/access-request/rejected', {
-    params: { limit, page, orderBy, orderDirection },
-  }).then((res) => ({
-    items: res.data,
-    meta: {
-      itemCount: 1,
-      itemsPerPage: 5,
-      totalItems: 1,
-      totalPages: 1,
-      currentPage: 1,
-    },
-  }));
+    params: { limit, page, orderBy, orderDirection, search, start, end, locationId },
+  }).then((res) => res.data);
 };
 
 export const getAccessRequest = async (id: string): Promise<IAccessRequest> => {
