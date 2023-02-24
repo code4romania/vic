@@ -54,11 +54,7 @@ const AddActivityType = () => {
   const onSubmit = (data: ActivityCategoryFormTypes) => {
     createActivityType(data, {
       onSuccess: () => {
-        useSuccessToast(
-          i18n.t('division:messages.add', {
-            division: i18n.t('general:activity'),
-          }),
-        );
+        useSuccessToast(i18n.t('activity_types:form.submit.add'));
         navigateBack();
       },
       onError: (error) => {

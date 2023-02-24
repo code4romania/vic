@@ -13,7 +13,7 @@ import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import Volunteers from '../pages/Volunteers';
 import AddAccessCode from '../pages/AddAccessCode';
-import EditActivity from '../pages/EditActivity';
+import EditActivityType from '../pages/EditActivityType';
 import Volunteer from '../pages/Volunteer';
 import AddActivityType from '../pages/AddActivityType';
 import ActivityTypes from '../pages/ActivityTypes';
@@ -43,7 +43,7 @@ const Router = () => {
           <Route path="activity-types" element={<Outlet />}>
             <Route index element={<ActivityTypes />} />
             <Route path="add" element={<AddActivityType />} />
-            <Route path="edit/:id" element={<EditActivity />} />
+            <Route path="edit/:id" element={<EditActivityType />} />
           </Route>
         </Route>
       </Routes>
