@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
+import {
+  Pagination,
+  RepositoryWithPagination,
+} from 'src/infrastructure/base/repository-with-pagination.class';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { AccessRequestEntity } from '../entities/access-request.entity';
 import { IAccessRequestRepository } from '../interfaces/access-request-repository.interface';
 import {
@@ -13,24 +19,59 @@ import {
 } from '../model/access-request.model';
 
 @Injectable()
-export class AccessRequestRepository implements IAccessRequestRepository {
+export class AccessRequestRepository
+  extends RepositoryWithPagination<AccessRequestEntity>
+  implements IAccessRequestRepository
+{
   constructor(
     @InjectRepository(AccessRequestEntity)
     private readonly accessRequestRepository: Repository<AccessRequestEntity>,
-  ) {}
+  ) {
+    super(accessRequestRepository);
+  }
 
-  async findAll(
+  async findMany(
     findOptions: FindManyAccessRequestsOptions,
-  ): Promise<IAccessRequestModel[]> {
-    const requests = await this.accessRequestRepository.find({
-      where: { ...findOptions },
-      relations: {
-        updatedBy: true,
-        requestedBy: true,
+  ): Promise<Pagination<IAccessRequestModel>> {
+    const options: {
+      filters: FindOptionsWhere<AccessRequestEntity>;
+    } & IBasePaginationFilterModel = {
+      ...findOptions,
+      filters: {
+        status: findOptions.status,
+        organizationId: findOptions.organizationId,
+        ...(findOptions.locationId
+          ? {
+              requestedBy: {
+                locationId: findOptions.locationId,
+              },
+            }
+          : {}),
       },
-    });
+    };
 
-    return requests.map(AccessRequestTransformer.fromEntity);
+    return this.findManyPaginated<IAccessRequestModel>(
+      {
+        searchableColumns: [
+          'requestedBy.name',
+          'requestedBy.email',
+          'requestedBy.phone',
+        ],
+        defaultSortBy: 'createdOn',
+        defaultOrderDirection: OrderDirection.DESC,
+        relations: {
+          updatedBy: true,
+          requestedBy: {
+            location: {
+              county: true,
+            },
+          },
+        },
+        rangeColumn: 'createdOn',
+      },
+      options,
+      AccessRequestTransformer.fromEntity,
+    );
   }
 
   async find(

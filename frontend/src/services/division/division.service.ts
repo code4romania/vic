@@ -1,10 +1,10 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
 import { PaginationConfig } from '../../common/constants/pagination';
+import { DivisionType } from '../../common/enums/division-type.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { DIVISION_ERRORS } from '../../common/errors/entities/division.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
-import { DivisionType } from '../../components/Divisions';
 import { addDivision, deleteDivision, getDivisions, editDivision } from './division.api';
 
 export const useDivisionsQuery = (

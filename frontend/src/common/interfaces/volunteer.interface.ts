@@ -1,5 +1,5 @@
-import { IDivision } from '../../components/Divisions';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
+import { IDivision } from './division.interface';
 import { IUser } from './user.interface';
 
 export interface IVolunteer {

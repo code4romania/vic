@@ -1,6 +1,6 @@
-import { IDivision } from '../../components/Divisions';
 import { ActivityTypeStatus } from '../enums/activity-type-status.enum';
 import { IBaseEntity } from './base-entity.interface';
+import { IDivision } from './division.interface';
 
 export interface IActivityType extends IBaseEntity {
   id: string;

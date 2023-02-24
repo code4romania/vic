@@ -25,6 +25,9 @@ import { GetManyNewAccessRequestsUseCase } from './access-request/get-many-new-a
 import { GetManyRejectedAccessRequestsUseCase } from './access-request/get-many-rejected-access-requests.usecase';
 import { CreateRegularUsereUseCaseService } from './user/create-regular-user.usecase';
 import { GetOneOrganizationStructureUseCase } from './organization/organization-structure/get-one-organization-structure.usecase';
+import { LocationModule } from 'src/modules/location/location.module';
+import { GetCitiesUseCase } from './location/get-citties.usecase';
+import { GetCountiesUseCase } from './location/get-counties.usecase';
 import { ActivityTypeModule } from 'src/modules/activity-type/activity-type.module';
 import { CreateActivityTypeUseCase } from './activity-type/create-activity-type.usecase';
 import { UpdateActivityTypeUseCase } from './activity-type/update-activity-type.usecase';
@@ -40,6 +43,7 @@ import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-typ
     OngHubModule,
     UserModule,
     AccessRequestModule,
+    LocationModule,
     ActivityTypeModule,
   ],
   providers: [
@@ -69,6 +73,9 @@ import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-typ
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    // Location
+    GetCitiesUseCase,
+    GetCountiesUseCase,
     // Activity Types
     CreateActivityTypeUseCase,
     UpdateActivityTypeUseCase,
@@ -104,6 +111,9 @@ import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-typ
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    // Location
+    GetCitiesUseCase,
+    GetCountiesUseCase,
     // Activity Types
     CreateActivityTypeUseCase,
     UpdateActivityTypeUseCase,

@@ -19,7 +19,6 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
-import { PaginationConfig } from '../common/constants/pagination';
 import { formatDate } from '../common/utils/utils';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -272,7 +271,6 @@ const Volunteers = () => {
                 loading={isVolunteersLoading}
                 pagination
                 paginationPerPage={rowsPerPage}
-                paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
                 paginationTotalRows={volunteers?.meta?.totalItems}
                 paginationDefaultPage={page}
                 onChangeRowsPerPage={setRowsPerPage}
@@ -287,7 +285,6 @@ const Volunteers = () => {
                 loading={isVolunteersLoading}
                 pagination
                 paginationPerPage={rowsPerPage}
-                paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
                 paginationTotalRows={volunteers?.meta?.totalItems}
                 paginationDefaultPage={page}
                 onChangeRowsPerPage={setRowsPerPage}
@@ -302,7 +299,6 @@ const Volunteers = () => {
                 loading={isVolunteersLoading}
                 pagination
                 paginationPerPage={rowsPerPage}
-                paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
                 paginationTotalRows={volunteers?.meta?.totalItems}
                 paginationDefaultPage={page}
                 onChangeRowsPerPage={setRowsPerPage}

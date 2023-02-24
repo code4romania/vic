@@ -1,6 +1,7 @@
+import { DivisionType } from '../../common/enums/division-type.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
+import { IDivision } from '../../common/interfaces/division.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { DivisionType, IDivision } from '../../components/Divisions';
 import API from '../api';
 
 export const getDivisions = async (
@@ -10,8 +11,9 @@ export const getDivisions = async (
   orderBy?: string,
   orderDirection?: OrderDirection,
 ): Promise<IPaginatedEntity<IDivision>> => {
-  console.log('limit, page, orderBy, orderDirection', limit, page, orderBy, orderDirection);
-  return API.get(`/organization-structure/${type}`).then((res) => res.data);
+  return API.get(`/organization-structure/${type}`, {
+    params: { limit, page, orderBy, orderDirection },
+  }).then((res) => res.data);
 };
 
 export const deleteDivision = async (id: string): Promise<void> => {
