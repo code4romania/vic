@@ -6,15 +6,16 @@ import { ROUTES } from '../common/constants/routes';
 import { classNames } from '../common/utils/utils';
 import { IRoute } from '../common/interfaces/route.interface';
 import MenuItem from './MenuItem';
+import MenuLink from './MenuLink';
 
 const SideMenu = () => {
   const navigate = useNavigate();
   const [isNarrow, setIsNarrow] = useState<boolean>(false);
-  const [currentMenuItemId, setCurrentMenuItemId] = useState<number>(0);
+  const [currentMenuItem, setCurrentMenuItem] = useState<IRoute>(ROUTES[0]);
   const { t } = useTranslation('side_menu');
 
   const onMenuItemClick = (item: IRoute) => {
-    setCurrentMenuItemId(item.id);
+    setCurrentMenuItem(item);
     navigate(`${item.href}`);
   };
 
@@ -30,13 +31,13 @@ const SideMenu = () => {
         <MenuItem
           key={item.id}
           item={item}
-          active={item.id === currentMenuItemId}
+          currentMenuItem={currentMenuItem}
           isNarrow={isNarrow}
           onClick={onMenuItemClick}
         />
       ))}
       <div className="pt-60 space-y-4">
-        <MenuItem
+        <MenuLink
           item={{
             id: -1,
             name: t('collapse'),
