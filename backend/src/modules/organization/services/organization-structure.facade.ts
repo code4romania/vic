@@ -3,7 +3,7 @@ import { Pagination } from 'src/infrastructure/base/repository-with-pagination.c
 import { OrganizationStructureType } from '../enums/organization-structure-type.enum';
 import {
   ICreateOrganizationStructureModel,
-  IFindAllOrganizationStructureModel,
+  IFindAllOrganizationStructurePaginatedModel,
   IFindOrganizationStructureModel,
   IOrganizationStructureModel,
   IUpdateOrganizationStructureModel,
@@ -17,7 +17,7 @@ export class OrganizationStructureFacade {
   ) {}
 
   public async findMany(
-    findOptions: IFindAllOrganizationStructureModel,
+    findOptions: IFindAllOrganizationStructurePaginatedModel,
   ): Promise<Pagination<IOrganizationStructureModel>> {
     return this.organizationStructureRepository.findMany(findOptions);
   }
@@ -26,7 +26,10 @@ export class OrganizationStructureFacade {
     type: OrganizationStructureType,
     organizationId: string,
   ): Promise<IOrganizationStructureModel[]> {
-    return this.organizationStructureRepository.findAll(type, organizationId);
+    return this.organizationStructureRepository.findAll({
+      type,
+      organizationId,
+    });
   }
 
   public async find(

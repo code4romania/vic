@@ -8,11 +8,11 @@ import {
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
-import { OrganizationStructureType } from '../enums/organization-structure-type.enum';
 import { IOrganizationStructureRepository } from '../interfaces/organization-structure-repository.interface';
 import {
   ICreateOrganizationStructureModel,
   IFindAllOrganizationStructureModel,
+  IFindAllOrganizationStructurePaginatedModel,
   IFindOrganizationStructureModel,
   IOrganizationStructureModel,
   IUpdateOrganizationStructureModel,
@@ -57,7 +57,7 @@ export class OrganizationStructureRepositoryService
   }
 
   async findMany(
-    findOptions: IFindAllOrganizationStructureModel,
+    findOptions: IFindAllOrganizationStructurePaginatedModel,
   ): Promise<Pagination<IOrganizationStructureModel>> {
     const options: {
       filters: FindOptionsWhere<OrganizationStructureEntity>;
@@ -83,11 +83,10 @@ export class OrganizationStructureRepositoryService
   }
 
   async findAll(
-    type: OrganizationStructureType,
-    organizationId: string,
+    options: IFindAllOrganizationStructureModel,
   ): Promise<IOrganizationStructureModel[]> {
     const structures = await this.structureRepository.find({
-      where: { type, organizationId },
+      where: options,
     });
 
     return structures.map(OrganizationStructureTransformer.fromEntity);
