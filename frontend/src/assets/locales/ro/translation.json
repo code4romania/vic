@@ -36,7 +36,15 @@
     "availability": "Valabilitate",
     "uses": "Utilizari",
     "confirm_delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
-    "invalid_date": "Va rugam sa introduceti o data"
+    "invalid_date": "Va rugam sa introduceti o data",
+    "unlimited": "nelimitat",
+    "search": "Cauta...",
+    "filters": {
+      "show": "Filtre",
+      "reset": "Reseteaza filtre",
+      "hide": "Ascunde filtre"
+    },
+    "select_interval": "Selecteaza interval"
   },
   "header": {
     "login": "Login",
@@ -124,13 +132,27 @@
     },
     "modal": {
       "delete": {
-        "title": "Sterge {{division}}",
-        "success": "{{division}} stearsa cu succes"
+        "title": "Sterge {{division}}"
       }
     },
-    "messages": {
-      "add": "{{division}} adaugata cu succes",
-      "edit": "{{division}} actualizata cu succes"
+    "submit": {
+      "success": {
+        "branch": {
+          "add": "Filiala a fost adaugata",
+          "edit": "Filiala actualizata",
+          "delete": "Filiala a fost stearsa"
+        },
+        "department": {
+          "add": "Departamanetul a fost adaugat",
+          "edit": "Departamanetul a fost actualizat",
+          "delete": "Departamentul a fost stears"
+        },
+        "role": {
+          "add": "Rolul a fost adaugat",
+          "edit": "Rolul a fost actualizat",
+          "delete": "Rolul a fost stears"
+        }
+      }
     },
     "form": {
       "name": {
@@ -144,6 +166,10 @@
       "delete": "Eroare la stergerea {{division}}",
       "ORGANIZATION_STRUCTURE_001": "Nu exista structura organizationala cu acest nume",
       "ORGANIZATION_STRUCTURE_002": "Exista deja o structura organizationala cu acest nume"
+    },
+    "popover": {
+      "view": "Vizualizeaza lista membri",
+      "edit": "Editeaza denumire"
     }
   },
   "organization": {
@@ -183,6 +209,9 @@
     "tabs": {
       "requests": "Cereri",
       "rejected_requests": "Cereri respinse"
+    },
+    "filters": {
+      "access_request_range": "Perioada cerere access"
     },
     "popover": {
       "view": "Vizualizeaza aplicare",
