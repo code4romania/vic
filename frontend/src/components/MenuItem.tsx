@@ -11,7 +11,23 @@ interface MenuItemProps {
 
 const MenuItem = ({ item, currentMenuItem, isNarrow, onClick }: MenuItemProps) => {
   return item.childRoutes ? (
-    <div></div>
+    <div>
+      <MenuLink
+        item={item}
+        active={item.id === currentMenuItem.id}
+        isNarrow={isNarrow}
+        onClick={onClick}
+      />
+      {item.childRoutes.map((childRoute) => (
+        <MenuLink
+          key={childRoute.id}
+          item={childRoute}
+          active={childRoute.id === currentMenuItem.id}
+          isNarrow={isNarrow}
+          onClick={onClick}
+        />
+      ))}
+    </div>
   ) : (
     <MenuLink
       item={item}
