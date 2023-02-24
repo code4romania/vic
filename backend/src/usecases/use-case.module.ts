@@ -37,7 +37,7 @@ import { GetOneActivityTypeUseCase } from './activity-type/get-one-activity-type
 import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-type.usecase';
 import { AnnouncementModule } from 'src/modules/announcement/announcement.module';
 import { GetOneAnnouncementUseCase } from './announcement/get-one-announcement.usecase';
-import { GetAllAnnouncementUseCase } from './announcement/get-all-announcement.usecase';
+import { GetManyAnnouncementUseCase } from './announcement/get-many-announcement.usecase';
 import { CreateAnnouncementUseCase } from './announcement/create-announcement.usecase';
 import { UpdateAnnouncementUseCase } from './announcement/update-announcement.usecase';
 import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.usecase';
@@ -92,7 +92,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     GetManyActivityTypeUseCase,
     // Announcement
     GetOneAnnouncementUseCase,
-    GetAllAnnouncementUseCase,
+    GetManyAnnouncementUseCase,
     CreateAnnouncementUseCase,
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
@@ -136,7 +136,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     GetManyActivityTypeUseCase,
     // Announcement
     GetOneAnnouncementUseCase,
-    GetAllAnnouncementUseCase,
+    GetManyAnnouncementUseCase,
     CreateAnnouncementUseCase,
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,

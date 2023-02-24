@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   IAnnouncementModel,
   ICreateAnnouncementModel,
@@ -20,10 +21,10 @@ export class AnnouncementFacade {
     return this.announcementRepository.find(findOptions);
   }
 
-  public async findAll(
+  public async findMany(
     findOptions: IFindAllAnnouncementModel,
-  ): Promise<IAnnouncementModel[]> {
-    return this.announcementRepository.findAll(findOptions);
+  ): Promise<Pagination<IAnnouncementModel>> {
+    return this.announcementRepository.findMany(findOptions);
   }
 
   public async create(

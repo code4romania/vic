@@ -37,7 +37,7 @@ export class UpdateAnnouncementUseCase
     // 2. Only drafts can be edited/published
     if (announcementToUpdate.status !== AnnouncementStatus.DRAFT) {
       this.exceptionsService.badRequestException(
-        AnnouncementExceptionMessages.ANNOUNCEMENT_005,
+        AnnouncementExceptionMessages.ANNOUNCEMENT_002,
       );
     }
 

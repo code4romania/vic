@@ -6,16 +6,22 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
+import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateAnnouncementUseCase } from 'src/usecases/announcement/create-announcement.usecase';
 import { DeleteAnnouncementUseCase } from 'src/usecases/announcement/delete-announcement.usecase';
-import { GetAllAnnouncementUseCase } from 'src/usecases/announcement/get-all-announcement.usecase';
+import { GetManyAnnouncementUseCase } from 'src/usecases/announcement/get-many-announcement.usecase';
 import { GetOneAnnouncementUseCase } from 'src/usecases/announcement/get-one-announcement.usecase';
 import { UpdateAnnouncementUseCase } from 'src/usecases/announcement/update-announcement.usecase';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
@@ -28,7 +34,7 @@ import { AnnouncementPresenter } from './presenters/announcement.presenter';
 @Controller('announcement')
 export class AnnouncementController {
   constructor(
-    private readonly getAllAnnouncementUseCase: GetAllAnnouncementUseCase,
+    private readonly getManyAnnouncementUseCase: GetManyAnnouncementUseCase,
     private readonly createAnnouncementUseCase: CreateAnnouncementUseCase,
     private readonly updateAnnouncementUseCase: UpdateAnnouncementUseCase,
     private readonly deleteAnnouncementUseCase: DeleteAnnouncementUseCase,
@@ -36,16 +42,22 @@ export class AnnouncementController {
   ) {}
 
   @Get()
+  @ApiPaginatedResponse(AnnouncementPresenter)
   async getAll(
+    @Query() filters: BasePaginationFilterDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
-  ): Promise<AnnouncementPresenter[]> {
-    const announcements = await this.getAllAnnouncementUseCase.execute({
+  ): Promise<PaginatedPresenter<AnnouncementPresenter>> {
+    const announcements = await this.getManyAnnouncementUseCase.execute({
+      ...filters,
       organizationId,
     });
 
-    return announcements.map(
-      (announcement) => new AnnouncementPresenter(announcement),
-    );
+    return new PaginatedPresenter<AnnouncementPresenter>({
+      ...announcements,
+      items: announcements.items.map(
+        (announcement) => new AnnouncementPresenter(announcement),
+      ),
+    });
   }
 
   @ApiParam({ name: 'id', type: 'string' })

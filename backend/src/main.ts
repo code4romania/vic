@@ -6,7 +6,7 @@ import { AppModule } from './app.module';
 import { Environment } from './infrastructure/config/environment-config';
 import { ExceptionsFilter } from './infrastructure/filters/exception.filter';
 import { createQueueMonitoring } from './infrastructure/config/create-bull-board';
-import { Logger } from 'nestjs-pino';
+import { useContainer } from 'class-validator';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
@@ -19,8 +19,6 @@ async function bootstrap(): Promise<void> {
 
   app.useGlobalFilters(new ExceptionsFilter());
 
-  // app.useLogger(app.get(Logger));
-
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -29,6 +27,8 @@ async function bootstrap(): Promise<void> {
       forbidNonWhitelisted: false,
     }),
   );
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   app.use('/admin/queues', createQueueMonitoring(app).getRouter());
 

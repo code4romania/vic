@@ -9,6 +9,7 @@ import {
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import SendAnnouncementEvent from 'src/modules/notifications/events/others/send-announcement.event';
+import { GetOneOrganizationStructureUseCase } from '../organization/organization-structure/get-one-organization-structure.usecase';
 
 @Injectable()
 export class CreateAnnouncementUseCase
@@ -17,13 +18,23 @@ export class CreateAnnouncementUseCase
   constructor(
     private readonly announcementFacade: AnnouncementFacade,
     private readonly eventEmitter: EventEmitter2,
+    private readonly getOneOrganizationStructureUseCase: GetOneOrganizationStructureUseCase,
   ) {}
 
   public async execute(
     createData: ICreateAnnouncementModel,
   ): Promise<IAnnouncementModel> {
     // 1. Create announcement
+    let totalNumberOfVolunteers = 0;
+    createData.targetsIds.forEach(async (targetId) => {
+      const target = await this.getOneOrganizationStructureUseCase.execute({
+        id: targetId,
+      });
+      totalNumberOfVolunteers += 1;
+    });
+
     const announcement = await this.announcementFacade.create({
+      volunteerTargets: totalNumberOfVolunteers,
       publishedOn:
         createData.status === AnnouncementStatus.PUBLISHED ? new Date() : null,
       ...createData,
