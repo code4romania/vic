@@ -6,7 +6,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { IsOnlyDepartments } from 'src/common/decorators/is-only-departments.decorator';
+// import { IsOnlyDepartments } from 'src/common/decorators/is-only-departments.decorator';
 import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
 
 export class CreateAnnouncementDto {
@@ -25,6 +25,6 @@ export class CreateAnnouncementDto {
 
   @IsArray()
   @IsOptional()
-  @IsOnlyDepartments()
+  // @IsOnlyDepartments()
   targetsIds?: string[];
 }

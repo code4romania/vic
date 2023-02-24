@@ -11,11 +11,11 @@ import { MobileAccessRequestController } from './_mobile/access-request/access-r
 import { LocationController } from './location/location.controller';
 import { ActivityTypeController } from './activity-type/activity-type.controller';
 import { AnnouncementController } from './announcement/announcement.controller';
-import { ValidateOrganizationStructureRule } from 'src/common/decorators/is-only-departments.decorator';
+// import { ValidateOrganizationStructureRule } from 'src/common/decorators/is-only-departments.decorator';
 
 @Module({
   imports: [UseCaseModule],
-  providers: [ValidateOrganizationStructureRule],
+  // providers: [ValidateOrganizationStructureRule],
   controllers: [
     PublicController,
     OrganizationController,
