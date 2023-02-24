@@ -71,15 +71,13 @@ const ActivityTypeForm = ({ control, errors }: AccessCodeFormProps) => {
         control={control}
         render={({ field: { onChange, value } }) => {
           return (
-            <div className="flex flex-col gap-1">
-              <OrganizationStructureSelect
-                label={`${i18n.t('division:entity.branch')}`}
-                placeholder={`${i18n.t('general:select', { item: '' })}`}
-                onChange={onChange}
-                defaultValue={value}
-                type={DivisionType.BRANCH}
-              />
-            </div>
+            <OrganizationStructureSelect
+              label={`${i18n.t('division:entity.branch')}`}
+              placeholder={`${i18n.t('general:select', { item: '' })}`}
+              onChange={onChange}
+              defaultValue={value}
+              type={DivisionType.BRANCH}
+            />
           );
         }}
       />
@@ -89,15 +87,13 @@ const ActivityTypeForm = ({ control, errors }: AccessCodeFormProps) => {
         control={control}
         render={({ field: { onChange, value } }) => {
           return (
-            <div className="flex flex-col gap-1">
-              <OrganizationStructureSelect
-                label={`${i18n.t('division:entity.department')}`}
-                placeholder={`${i18n.t('general:select', { item: '' })}`}
-                onChange={onChange}
-                defaultValue={value}
-                type={DivisionType.DEPARTMENT}
-              />
-            </div>
+            <OrganizationStructureSelect
+              label={`${i18n.t('division:entity.department')}`}
+              placeholder={`${i18n.t('general:select', { item: '' })}`}
+              onChange={onChange}
+              defaultValue={value}
+              type={DivisionType.DEPARTMENT}
+            />
           );
         }}
       />
@@ -107,15 +103,13 @@ const ActivityTypeForm = ({ control, errors }: AccessCodeFormProps) => {
         control={control}
         render={({ field: { onChange, value } }) => {
           return (
-            <div className="flex flex-col gap-1">
-              <OrganizationStructureSelect
-                label={`${i18n.t('division:entity.role')}`}
-                placeholder={`${i18n.t('general:select', { item: '' })}`}
-                onChange={onChange}
-                defaultValue={value}
-                type={DivisionType.ROLE}
-              />
-            </div>
+            <OrganizationStructureSelect
+              label={`${i18n.t('division:entity.role')}`}
+              placeholder={`${i18n.t('general:select', { item: '' })}`}
+              onChange={onChange}
+              defaultValue={value}
+              type={DivisionType.ROLE}
+            />
           );
         }}
       />

@@ -1,4 +1,5 @@
 import { IActivityType } from '../../common/interfaces/activity-type.interface';
+import { ActivityCategoryFormTypes } from '../../components/ActivityTypeForm';
 import API from '../api';
 
 export const getActivityTypes = async (): Promise<IActivityType[]> => {
@@ -17,12 +18,14 @@ export const getActivityType = async (id: string): Promise<IActivityType> => {
 //   return API.patch(`/activity-type/${id}`, { data }).then((res) => res.data);
 // };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const createActivityType = async (data: any): Promise<IActivityType> => {
+export const createActivityType = async (
+  data: ActivityCategoryFormTypes,
+): Promise<IActivityType> => {
+  const { department, role, branch, ...payload } = data;
   return API.post(`/activity-type`, {
-    ...data,
-    department: data.department?.key,
-    branch: data.branch?.key,
-    role: data.role?.key,
+    ...payload,
+    departmentId: department?.key,
+    branchId: branch?.key,
+    roleId: role?.key,
   }).then((res) => res.data);
 };

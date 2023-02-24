@@ -2,6 +2,7 @@ import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
 import { ACTIVITY_TYPE_ERRORS } from '../../common/errors/entities/activty-type.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
+import { ActivityCategoryFormTypes } from '../../components/ActivityTypeForm';
 import { createActivityType, getActivityTypes } from './activity-type.api';
 
 export const useActivityTypesQuery = () => {
@@ -11,8 +12,7 @@ export const useActivityTypesQuery = () => {
 };
 
 export const useCreateActivityTypeMutation = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return useMutation((data: any) => createActivityType(data), {
+  return useMutation((data: ActivityCategoryFormTypes) => createActivityType(data), {
     onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) =>
       Promise.resolve(error),
   });
