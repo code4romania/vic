@@ -8,7 +8,7 @@
     "category": "Categorie",
     "address": "Adresa",
     "status": "Status",
-    "empty_table": "Nu exista date in tabel",
+    "empty_table": "Nu exista informatii de afisat",
     "view": "Vizualizeaza",
     "edit": "Editeaza {{item}}",
     "delete": "Sterge",
