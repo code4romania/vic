@@ -8,16 +8,16 @@ interface OrganizationStructureSelectProps extends Omit<SelectProps<string>, 'op
   type: DivisionType;
 }
 
+export const mapDivisionListItemToSelectItem = (item: IDivisionListItem): SelectItem<string> => ({
+  key: item.id,
+  value: item.name,
+});
+
 const OrganizationStructureSelect = ({
   type,
   ...selectProps
 }: OrganizationStructureSelectProps) => {
   const { data: divisionListItems } = useDivisionsListItemsQuery(type);
-
-  const mapDivisionListItemToSelectItem = (item: IDivisionListItem): SelectItem<string> => ({
-    key: item.id,
-    value: item.name,
-  });
 
   return (
     <Select

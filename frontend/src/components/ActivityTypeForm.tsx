@@ -75,7 +75,7 @@ const ActivityTypeForm = ({ control, errors }: AccessCodeFormProps) => {
               label={`${i18n.t('division:entity.branch')}`}
               placeholder={`${i18n.t('general:select', { item: '' })}`}
               onChange={onChange}
-              defaultValue={value}
+              selected={value}
               type={DivisionType.BRANCH}
             />
           );
@@ -91,7 +91,7 @@ const ActivityTypeForm = ({ control, errors }: AccessCodeFormProps) => {
               label={`${i18n.t('division:entity.department')}`}
               placeholder={`${i18n.t('general:select', { item: '' })}`}
               onChange={onChange}
-              defaultValue={value}
+              selected={value}
               type={DivisionType.DEPARTMENT}
             />
           );
@@ -107,7 +107,7 @@ const ActivityTypeForm = ({ control, errors }: AccessCodeFormProps) => {
               label={`${i18n.t('division:entity.role')}`}
               placeholder={`${i18n.t('general:select', { item: '' })}`}
               onChange={onChange}
-              defaultValue={value}
+              selected={value}
               type={DivisionType.ROLE}
             />
           );

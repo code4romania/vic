@@ -288,6 +288,10 @@
         "min": "Denumirea poate sa aiba minim {{value}} caractere",
         "max": "Denumirea poate sa aiba maxim {{value}} caractere",
         "placeholder": "Denumire"
+      },
+      "submit": {
+        "add": "Categorie adaugata cu success",
+        "update": "Categoria a fost modificata"
       }
     },
     "errors": {
