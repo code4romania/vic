@@ -12,13 +12,12 @@ import { IAnnouncement } from '../common/interfaces/announcement.interface';
 import CellLayout from '../layouts/CellLayout';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { EnvelopeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { formatDate } from '../common/utils/utils';
 import { useGetAllAnnouncementsQuery } from '../services/announcement/announcement.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { PaginationConfig } from '../common/constants/pagination';
-// import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast } from '../hooks/useToast';
 
 const AnnouncementTableHeader = [
   {
@@ -36,8 +35,8 @@ const AnnouncementTableHeader = [
     cell: (row: IAnnouncement) => (
       <CellLayout>
         <div className="flex flex-row gap-2">
-          <span className="h-2 w-2 border-solid bg-green-500 rounded-full" />
-          <p>{row.status}</p>
+          <span className="h-2 w-2 border-solid bg-green-500 rounded-full self-center" />
+          <p>{i18n.t(`announcement:status.${row.status}`)}</p>
         </div>
       </CellLayout>
     ),
@@ -57,7 +56,7 @@ const AnnouncementTableHeader = [
     selector: (row: IAnnouncement) => formatDate(row.publishedOn),
   },
   {
-    id: 'target',
+    id: 'targets',
     name: i18n.t('announcement:header.target'),
     sortable: true,
     minWidth: '10rem',
@@ -84,7 +83,7 @@ const Announcements = () => {
   const {
     data: announcements,
     isLoading,
-    // error,
+    error,
   } = useGetAllAnnouncementsQuery(
     rowsPerPage as number,
     page as number,
@@ -101,17 +100,17 @@ const Announcements = () => {
     }
   });
 
-  // useEffect(() => {
-  //   if (error) {
-  //     useErrorToast(error);
-  //   }
-  // });
+  useEffect(() => {
+    if (error) {
+      useErrorToast('eroare');
+    }
+  });
 
   const buildAnnouncementActionColumn = (): TableColumn<IAnnouncement> => {
     const announcementMenuItems = [
       {
         label: i18n.t('announcement:publish'),
-        icon: '',
+        icon: <EnvelopeIcon className="menu-icon" />,
         onClick: onPublish,
       },
       {
@@ -123,6 +122,7 @@ const Announcements = () => {
         label: i18n.t('general:delete', { item: '' }),
         icon: <TrashIcon className="menu-icon" />,
         onClick: onDelete,
+        alert: true,
       },
     ];
 
@@ -141,16 +141,16 @@ const Announcements = () => {
     alert('Not yet implemented');
   };
 
-  const onPublish = () => {
-    alert('Not yet implemented');
+  const onPublish = (row: IAnnouncement) => {
+    alert(`Not yet implemented, ${row.name}`);
   };
 
-  const onEdit = () => {
-    alert('Not yet implemented');
+  const onEdit = (row: IAnnouncement) => {
+    alert(`Not yet implemented, ${row.name}`);
   };
 
-  const onDelete = () => {
-    alert('Not yet implemented');
+  const onDelete = (row: IAnnouncement) => {
+    alert(`Not yet implemented, ${row.name}`);
   };
 
   // pagination
@@ -176,11 +176,11 @@ const Announcements = () => {
       <PageHeader>{i18n.t('side_menu:options.announcements')}</PageHeader>
       <Card>
         <CardHeader>
-          <h3>{i18n.t('announcements:title')}</h3>
+          <h3>{i18n.t('announcement:title')}</h3>
           <Button
             icon={<PlusIcon className="h-5 w-5" />}
             className="btn-primary"
-            label={i18n.t('general:add', { item: i18n.t('announcements:name') })}
+            label={i18n.t('general:add', { item: i18n.t('announcement:name') })}
             onClick={onAdd}
           />
         </CardHeader>
@@ -191,7 +191,6 @@ const Announcements = () => {
             pagination
             loading={isLoading}
             paginationPerPage={announcements?.meta.itemsPerPage}
-            paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             paginationTotalRows={announcements?.meta.totalItems}
             paginationDefaultPage={page}
             onChangeRowsPerPage={onChangeRowsPerPage}

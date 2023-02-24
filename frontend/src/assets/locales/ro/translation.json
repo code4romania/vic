@@ -287,7 +287,11 @@
       "target": "Target"
     },
     "publish": "Publica",
-    "all_organization": "Toata organizatia"
+    "all_organization": "Toata organizatia",
+    "status": {
+      "draft": "Draft",
+      "published": "Publicat"
+    }
   },
   "activity_types": {
     "info": "Categoria a fost arhivată",
