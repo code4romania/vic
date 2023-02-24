@@ -12,7 +12,7 @@
     "activity": "Activitate",
     "address": "Adresa",
     "status": "Status",
-    "empty_table": "Nu exista date in tabel",
+    "empty_table": "Nu exista informatii de afisat",
     "view": "Vizualizeaza",
     "edit": "Editeaza {{item}}",
     "delete": "Sterge",
@@ -40,7 +40,15 @@
     "availability": "Valabilitate",
     "uses": "Utilizari",
     "confirm_delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
-    "invalid_date": "Va rugam sa introduceti o data"
+    "invalid_date": "Va rugam sa introduceti o data",
+    "unlimited": "nelimitat",
+    "search": "Cauta...",
+    "filters": {
+      "show": "Filtre",
+      "reset": "Reseteaza filtre",
+      "hide": "Ascunde filtre"
+    },
+    "select_interval": "Selecteaza interval"
   },
   "header": {
     "login": "Login",
@@ -59,7 +67,7 @@
       "volunteers_list": "Listă voluntari",
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
-      "activity_categories": "Categorii activitati"
+      "activity_types": "Categorii activitati"
     },
     "collapse": "Restrange meniul"
   },
@@ -127,13 +135,27 @@
     },
     "modal": {
       "delete": {
-        "title": "Sterge {{division}}",
-        "success": "{{division}} stearsa cu succes"
+        "title": "Sterge {{division}}"
       }
     },
-    "messages": {
-      "add": "{{division}} adaugata cu succes",
-      "edit": "{{division}} actualizata cu succes"
+    "submit": {
+      "success": {
+        "branch": {
+          "add": "Filiala a fost adaugata",
+          "edit": "Filiala actualizata",
+          "delete": "Filiala a fost stearsa"
+        },
+        "department": {
+          "add": "Departamanetul a fost adaugat",
+          "edit": "Departamanetul a fost actualizat",
+          "delete": "Departamentul a fost stears"
+        },
+        "role": {
+          "add": "Rolul a fost adaugat",
+          "edit": "Rolul a fost actualizat",
+          "delete": "Rolul a fost stears"
+        }
+      }
     },
     "form": {
       "name": {
@@ -147,6 +169,10 @@
       "delete": "Eroare la stergerea {{division}}",
       "ORGANIZATION_STRUCTURE_001": "Nu exista structura organizationala cu acest nume",
       "ORGANIZATION_STRUCTURE_002": "Exista deja o structura organizationala cu acest nume"
+    },
+    "popover": {
+      "view": "Vizualizeaza lista membri",
+      "edit": "Editeaza denumire"
     }
   },
   "organization": {
@@ -186,6 +212,9 @@
     "tabs": {
       "requests": "Cereri",
       "rejected_requests": "Cereri respinse"
+    },
+    "filters": {
+      "access_request_range": "Perioada cerere access"
     },
     "popover": {
       "view": "Vizualizeaza aplicare",
@@ -238,13 +267,6 @@
     "errors": {
       "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",
       "ACCESS_CODE_002": "Exista deja un cod de acces cu acest nume"
-    },
-    "modal": {
-      "view": "Vizualizează profil",
-      "archive": "Arhivează voluntar",
-      "activate": "Reactivează voluntar",
-      "delete": "Sterge din ONG",
-      "block": "Blochează voluntar"
     }
   },
   "reject_modal": {
@@ -257,14 +279,22 @@
       "error": "Refuzarea cererii a esuat"
     }
   },
-  "activity_categories": {
-    "success": "Categoria a fost {{status}}",
-    "status_options": {
-      "archived": "Arhivata",
-      "activated": "Activata",
-      "updated": "Actualizata"
+  "activity_types": {
+    "info": "Categoria a fost arhivată",
+    "form": {
+      "name": {
+        "label": "Denumire tip activitate*",
+        "required": "Denumirea este obligatorie",
+        "min": "Denumirea poate sa aiba minim {{value}} caractere",
+        "max": "Denumirea poate sa aiba maxim {{value}} caractere",
+        "placeholder": "Denumire"
+      }
     },
-    "type": "Denumire tip activitate",
-    "type_placeholder": "Denumire"
+    "errors": {
+      "ACTIVITY_TYPE_001": "Categoria nu a fost gasita",
+      "ACTIVITY_TYPE_002": "Exista deja o categorie cu aceste date pentru organizatia dumneavoastra",
+      "ACTIVITY_TYPE_003": "Categoria nu este in statusul potrivit",
+      "ACTIVITY_TYPE_004": "Nu s-a putut creea categoria"
+    }
   }
 }

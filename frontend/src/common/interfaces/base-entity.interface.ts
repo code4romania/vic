@@ -1,3 +1,4 @@
 export interface IBaseEntity {
-  id: string;
+  createdOn: Date;
+  updatedOn: Date;
 }

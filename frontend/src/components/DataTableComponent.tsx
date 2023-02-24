@@ -5,6 +5,7 @@ import i18n from '../common/config/i18n';
 import EmptyContent from './EmptyContent';
 import LoadingContent from './LoadingContent';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
+import { PaginationConfig } from '../common/constants/pagination';
 
 interface DataTableProps<T> {
   columns: TableColumn<T>[];
@@ -13,7 +14,6 @@ interface DataTableProps<T> {
   pagination?: boolean;
   sortServer?: boolean;
   paginationPerPage?: number;
-  paginationRowsPerPageOptions?: number[];
   paginationTotalRows?: number;
   paginationDefaultPage?: number;
   onChangePage?: (page: number) => void;
@@ -30,7 +30,6 @@ const DataTableComponent = <T extends object>({
   pagination,
   sortServer,
   paginationPerPage,
-  paginationRowsPerPageOptions,
   paginationTotalRows,
   paginationDefaultPage,
   onSort,
@@ -62,7 +61,7 @@ const DataTableComponent = <T extends object>({
       onSort={onSort}
       paginationTotalRows={paginationTotalRows}
       paginationPerPage={paginationPerPage}
-      paginationRowsPerPageOptions={paginationRowsPerPageOptions}
+      paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
       onChangePage={onChangePage}
       onChangeRowsPerPage={onChangeRowsPerPage}
       noDataComponent={<EmptyContent description={i18n.t('general:empty_table')} />}

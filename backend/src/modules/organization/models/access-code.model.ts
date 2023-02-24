@@ -1,5 +1,6 @@
 import { OneOf } from 'src/common/helpers/typescript-extends';
 import { IBaseModel } from 'src/common/interfaces/base.model';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { AccessCodeEntity } from '../entities/access-code.entity';
 
@@ -22,9 +23,8 @@ export type IFindAccessCodeModel = Partial<
   Pick<IAccessCodeModel, 'id' | 'code' | 'organizationId'>
 >;
 
-export type IFindAllAccessCodeModel = Required<
-  Pick<IAccessCodeModel, 'organizationId'>
->;
+export type IFindAllAccessCodeModel = IBasePaginationFilterModel &
+  Required<Pick<IAccessCodeModel, 'organizationId'>>;
 
 type IUpdateAccessCodeEndDate = Required<
   Pick<IAccessCodeModel, 'id' | 'endDate'>
