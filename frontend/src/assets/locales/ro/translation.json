@@ -283,7 +283,10 @@
     "info": "Categoria a fost arhivată",
     "form": {
       "name": {
-        "label": "Denumire tip activitate",
+        "label": "Denumire tip activitate*",
+        "required": "Denumirea este obligatorie",
+        "min": "Denumirea poate sa aiba minim {{value}} caractere",
+        "max": "Denumirea poate sa aiba maxim {{value}} caractere",
         "placeholder": "Denumire"
       }
     },

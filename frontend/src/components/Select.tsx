@@ -7,7 +7,7 @@ export interface SelectItem<T> {
   value: string;
   key: T;
 }
-interface SelectProps<T> {
+export interface SelectProps<T> {
   label?: string;
   options: SelectItem<T>[];
   onChange: (item: SelectItem<T>) => void;

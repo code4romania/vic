@@ -1,6 +1,7 @@
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
+import { OrganizationStructureType } from '../enums/organization-structure-type.enum';
 import {
   ICreateOrganizationStructureModel,
   IFindAllOrganizationStructureModel,
@@ -20,4 +21,8 @@ export interface IOrganizationStructureRepository
   findMany(
     options: IFindAllOrganizationStructureModel,
   ): Promise<Pagination<IOrganizationStructureModel>>;
+  findAll(
+    type: OrganizationStructureType,
+    organizationId: string,
+  ): Promise<IOrganizationStructureModel[]>;
 }

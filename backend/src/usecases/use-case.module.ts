@@ -35,6 +35,7 @@ import { ActivateActivityTypeUseCase } from './activity-type/activate-activity-t
 import { ArchiveActivityTypeUseCase } from './activity-type/archive-activity-type.usecase';
 import { GetOneActivityTypeUseCase } from './activity-type/get-one-activity-type.usecase';
 import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-type.usecase';
+import { GetAllOrganizationStructureByTypeUseCase } from './organization/organization-structure/get-all-organization-structure-by-type.usecase';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-typ
     GetOneOrganizationStructureUseCase,
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
+    GetAllOrganizationStructureByTypeUseCase,
     // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
@@ -100,6 +102,7 @@ import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-typ
     GetOneOrganizationStructureUseCase,
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
+    GetAllOrganizationStructureByTypeUseCase,
     // user
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,

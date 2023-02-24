@@ -18,6 +18,6 @@ export class GetAllOrganizationStructureUseCase
   public async execute(
     findOptions: IFindAllOrganizationStructureModel,
   ): Promise<Pagination<IOrganizationStructureModel>> {
-    return this.organizationStructureFacade.findAll(findOptions);
+    return this.organizationStructureFacade.findMany(findOptions);
   }
 }

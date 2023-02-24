@@ -20,11 +20,11 @@ const schema = yup
   .object({
     name: yup
       .string()
-      .required(`${i18n.t('division:form.name.required')}`)
-      .min(2, `${i18n.t('division:form.name.min', { value: '2' })}`)
+      .required(`${i18n.t('activity_types:form.name.required')}`)
+      .min(2, `${i18n.t('activity_types:form.name.min', { value: '2' })}`)
       .max(
-        20,
-        `${i18n.t('division:form.name.max', {
+        50,
+        `${i18n.t('activity_types:form.name.max', {
           value: '50',
         })}`,
       ),

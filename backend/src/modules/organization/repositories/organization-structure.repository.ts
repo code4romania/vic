@@ -8,6 +8,7 @@ import {
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
+import { OrganizationStructureType } from '../enums/organization-structure-type.enum';
 import { IOrganizationStructureRepository } from '../interfaces/organization-structure-repository.interface';
 import {
   ICreateOrganizationStructureModel,
@@ -79,6 +80,17 @@ export class OrganizationStructureRepositoryService
       options,
       OrganizationStructureTransformer.fromEntity,
     );
+  }
+
+  async findAll(
+    type: OrganizationStructureType,
+    organizationId: string,
+  ): Promise<IOrganizationStructureModel[]> {
+    const structures = await this.structureRepository.find({
+      where: { type, organizationId },
+    });
+
+    return structures.map(OrganizationStructureTransformer.fromEntity);
   }
 
   async update({
