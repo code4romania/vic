@@ -5,7 +5,13 @@ import { DivisionType } from '../../common/enums/division-type.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { DIVISION_ERRORS } from '../../common/errors/entities/division.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
-import { addDivision, deleteDivision, getDivisions, editDivision } from './division.api';
+import {
+  addDivision,
+  deleteDivision,
+  getDivisions,
+  editDivision,
+  getDivisionsListItems,
+} from './division.api';
 
 export const useDivisionsQuery = (
   limit: number = PaginationConfig.defaultRowsPerPage,
@@ -20,6 +26,20 @@ export const useDivisionsQuery = (
     {
       enabled: !!(limit && page && divisionType),
       onError: (error: AxiosError<IBusinessException<DIVISION_ERRORS>>) => error,
+    },
+  );
+};
+
+export const useDivisionsListItemsQuery = (divisionType: DivisionType) => {
+  return useQuery(
+    ['divisions-list-items', divisionType],
+    () => getDivisionsListItems(divisionType),
+    {
+      enabled: !!divisionType,
+      cacheTime: 1000000,
+      onError: (error) =>
+        // TODO: improve this
+        console.error('Error while loading organization structure list item data', error),
     },
   );
 };

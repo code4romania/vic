@@ -69,11 +69,13 @@ const ActivityTypes = () => {
                 />
               ))}
             </div>
+            {activityTypes.length === 0 && !isFetchingActivityTypes && (
+              <div className="flex items-center justify-center">
+                <EmptyContent description={i18n.t('general:empty_table')} />
+              </div>
+            )}
           </CardBody>
         </Card>
-      )}
-      {!activityTypes && !isFetchingActivityTypes && (
-        <EmptyContent description={i18n.t('general:error.load_entries')} />
       )}
     </PageLayout>
   );
