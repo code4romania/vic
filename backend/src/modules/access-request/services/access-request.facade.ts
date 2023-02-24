@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   CreateAccessRequestModel,
   FindAccessRequestOptions,
@@ -14,10 +15,10 @@ export class AccessRequestFacade {
     private readonly accessRequestRepository: AccessRequestRepository,
   ) {}
 
-  async findAll(
+  async findMany(
     findOptions: FindManyAccessRequestsOptions,
-  ): Promise<IAccessRequestModel[]> {
-    return this.accessRequestRepository.findAll(findOptions);
+  ): Promise<Pagination<IAccessRequestModel>> {
+    return this.accessRequestRepository.findMany(findOptions);
   }
 
   async find(

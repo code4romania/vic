@@ -14,7 +14,7 @@ export interface DatePickerInputProps {
   id?: string;
 }
 
-const DatePickerInput = ({ placeholder, onChange, value, ...props }: DatePickerInputProps) => {
+const DatePickerInput = ({ placeholder, onChange, value, id, ...props }: DatePickerInputProps) => {
   return (
     <DatePicker
       {...props}
@@ -23,7 +23,7 @@ const DatePickerInput = ({ placeholder, onChange, value, ...props }: DatePickerI
       dateFormat="dd.MM.yyyy"
       selected={value}
       placeholderText={placeholder}
-      id={props.id}
+      id={id}
     />
   );
 };
