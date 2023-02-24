@@ -3,7 +3,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
-  IsOptional,
+  IsNumber,
   IsString,
 } from 'class-validator';
 import { SEX } from 'src/modules/user/enums/user.enum';
@@ -30,4 +30,7 @@ export class CreateRegularUserDto {
 
   @IsEnum(SEX)
   sex: SEX;
+
+  @IsNumber()
+  locationId: number;
 }
