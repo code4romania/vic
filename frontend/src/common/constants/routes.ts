@@ -36,4 +36,27 @@ export const ROUTES: IRoute[] = [
     href: 'activity-types',
     icon: PuzzlePieceIcon,
   },
+  {
+    id: 4,
+    name: i18n.t('side_menu:options.volunteers'),
+    href: 'volunteers',
+    icon: UsersIcon,
+    childRoutes: [
+      {
+        id: 41,
+        name: i18n.t('side_menu:options.volunteers_list'),
+        href: 'volunteers',
+      },
+      {
+        id: 42,
+        name: i18n.t('side_menu:options.access_codes'),
+        href: 'volunteers/access-codes',
+      },
+      {
+        id: 43,
+        name: i18n.t('side_menu:options.access_requests'),
+        href: 'volunteers/requests',
+      },
+    ],
+  },
 ];

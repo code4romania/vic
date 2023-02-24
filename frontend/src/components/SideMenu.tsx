@@ -1,22 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from '@heroicons/react/24/outline';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ROUTES } from '../common/constants/routes';
 import { classNames } from '../common/utils/utils';
-import { IRoute } from '../common/interfaces/route.interface';
+import { IChildRoute, IRoute } from '../common/interfaces/route.interface';
 import MenuItem from './MenuItem';
 import MenuLink from './MenuLink';
 
 const SideMenu = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [isNarrow, setIsNarrow] = useState<boolean>(false);
-  const [currentMenuItem, setCurrentMenuItem] = useState<IRoute>(ROUTES[0]);
+  const [activeParentRoute, setActiveParentRoute] = useState<IRoute>(ROUTES[0]);
+  const [activeSubRoute, setActiveSubRoute] = useState<IChildRoute | null>(null);
   const { t } = useTranslation('side_menu');
 
-  const onMenuItemClick = (item: IRoute) => {
-    setCurrentMenuItem(item);
-    navigate(`${item.href}`);
+  useEffect(() => {
+    console.log(activeSubRoute, activeParentRoute);
+  }, [activeSubRoute, activeParentRoute]);
+
+  const onMenuItemClick = (item: IRoute, childRoute?: IChildRoute) => {
+    setActiveParentRoute(item);
+
+    if (item.childRoutes && !childRoute) {
+      setActiveSubRoute(item.childRoutes[0]);
+    }
+
+    // if (!item.childRoutes && item.icon) {
+    //   setActiveSubRoute(null);
+    //   navigate(`${item.href}`);
+    // } else if (item.childRoutes && !childRoute) {
+    //   setActiveSubRoute(item.childRoutes[0]);
+    // } else if (childRoute) {
+    //   setActiveSubRoute(childRoute);
+    //   navigate(`${item.href}`);
+    // }
   };
 
   return (
@@ -31,7 +49,8 @@ const SideMenu = () => {
         <MenuItem
           key={item.id}
           item={item}
-          currentMenuItem={currentMenuItem}
+          activeParentRoute={activeParentRoute}
+          activeSubRoute={activeSubRoute}
           isNarrow={isNarrow}
           onClick={onMenuItemClick}
         />
