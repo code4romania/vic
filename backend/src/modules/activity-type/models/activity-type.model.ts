@@ -65,15 +65,11 @@ export class ActivityTypeTransformer {
       icon: entity.icon,
       status: entity.status,
       organization: OrganizationTransformer.fromEntity(entity.organization),
-      branch: entity.branch
-        ? OrganizationStructureTransformer.fromEntity(entity.branch)
-        : null,
-      department: entity.department
-        ? OrganizationStructureTransformer.fromEntity(entity.department)
-        : null,
-      role: entity.role
-        ? OrganizationStructureTransformer.fromEntity(entity.role)
-        : null,
+      branch: OrganizationStructureTransformer.fromEntity(entity.branch),
+      department: OrganizationStructureTransformer.fromEntity(
+        entity.department,
+      ),
+      role: OrganizationStructureTransformer.fromEntity(entity.role),
       updatedOn: entity.updatedOn,
       createdOn: entity.createdOn,
     };
