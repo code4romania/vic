@@ -4,6 +4,7 @@ import { OrganizationStructureEntity } from '../entities/organization-structure.
 import {
   ICreateOrganizationStructureModel,
   IFindAllOrganizationStructureModel,
+  IFindAllOrganizationStructurePaginatedModel,
   IOrganizationStructureModel,
   IUpdateOrganizationStructureModel,
 } from '../models/organization-structure.model';
@@ -18,6 +19,9 @@ export interface IOrganizationStructureRepository
   ): Promise<IOrganizationStructureModel>;
   delete(id: string): Promise<string>;
   findMany(
-    options: IFindAllOrganizationStructureModel,
+    options: IFindAllOrganizationStructurePaginatedModel,
   ): Promise<Pagination<IOrganizationStructureModel>>;
+  findAll(
+    options: IFindAllOrganizationStructureModel,
+  ): Promise<IOrganizationStructureModel[]>;
 }
