@@ -58,7 +58,7 @@ export class AnnouncementRepositoryService
 
     return this.findManyPaginated<IAnnouncementModel>(
       {
-        searchableColumns: [],
+        searchableColumns: ['name'],
         defaultSortBy: 'name',
         defaultOrderDirection: OrderDirection.ASC,
         relations: {

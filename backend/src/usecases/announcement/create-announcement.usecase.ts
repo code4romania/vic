@@ -37,7 +37,10 @@ export class CreateAnnouncementUseCase
       );
 
     const filteredtargets = departments.filter((department) => {
-      if (createData.targetsIds.includes(department.id)) {
+      if (
+        createData.targetsIds.includes(department.id) ||
+        createData.targetsIds.length === 0
+      ) {
         targetedVolunteers += department.members;
         return true;
       }
