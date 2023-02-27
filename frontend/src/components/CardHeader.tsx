@@ -5,7 +5,7 @@ interface CardHeaderProps {
 }
 
 const CardHeader = ({ children }: CardHeaderProps) => (
-  <div className="h-[70px] w-full sm:px-8 px-4 py-4 flex flex-row items-center justify-between gap-1 sm:gap-4">
+  <div className="min-h-[70px] w-full sm:px-8 px-4 py-4 gap-4 flex flex-col sm:flex-row items-center justify-between">
     {children}
   </div>
 );
