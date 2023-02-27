@@ -28,6 +28,8 @@ import {
   ApiPaginatedResponse,
   PaginatedPresenter,
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
+import { GetAllOrganizationStructureByTypeUseCase } from 'src/usecases/organization/organization-structure/get-all-organization-structure-by-type.usecase';
+import { OrganizationStructureListItemPresenter } from './presenters/organization-structure-list-item.presenter';
 
 // @Roles(Role.ADMIN)
 @ApiBearerAuth()
@@ -39,12 +41,13 @@ export class OrganizationStructureController {
     private readonly getAllStructureUsecase: GetAllOrganizationStructureUseCase,
     private readonly deleteStructureUsecase: DeleteOrganizationStructureUseCase,
     private readonly updateStructureUsecase: UpdateOrganizationStructureUseCase,
+    private readonly getAllStructureByTypeUseCase: GetAllOrganizationStructureByTypeUseCase,
   ) {}
 
   @ApiParam({ name: 'type', type: String, enum: OrganizationStructureType })
   @ApiPaginatedResponse(OrganizationStructurePresenter)
   @Get(':type')
-  async getAll(
+  async getAllPaginated(
     @Param('type') type: OrganizationStructureType,
     @Query() filters: BasePaginationFilterDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
@@ -61,6 +64,21 @@ export class OrganizationStructureController {
         (accessCode) => new OrganizationStructurePresenter(accessCode),
       ),
     });
+  }
+
+  // TODO: Add cacheing on this one
+  @ApiParam({ name: 'type', type: String, enum: OrganizationStructureType })
+  @Get(':type/all')
+  async getAll(
+    @Param('type') type: OrganizationStructureType,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<OrganizationStructureListItemPresenter[]> {
+    const organizationStructures =
+      await this.getAllStructureByTypeUseCase.execute(type, organizationId);
+
+    return organizationStructures.map(
+      (structure) => new OrganizationStructureListItemPresenter(structure),
+    );
   }
 
   @ApiBody({ type: CreateOrganizationStructureDto })
