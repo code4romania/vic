@@ -19,6 +19,8 @@ export class VolunteerProfileRepositoryService
   constructor(
     @InjectRepository(VolunteerProfileEntity)
     private readonly volunteerProfileRepository: Repository<VolunteerProfileEntity>,
+    @InjectRepository(VolunteerEntity)
+    private readonly volunteerRepository: Repository<VolunteerEntity>,
   ) {}
 
   async create(
@@ -26,6 +28,12 @@ export class VolunteerProfileRepositoryService
   ): Promise<IVolunteerProfileModel> {
     const profile = await this.volunteerProfileRepository.save(
       VolunteerProfileModelTransformer.toEntity(newProfile),
+    );
+
+    // Update Volunteer with the volunteerProfileId
+    await this.volunteerRepository.update(
+      { id: newProfile.volunteerId },
+      { volunteerProfileId: profile.id },
     );
 
     return this.find(profile.id);

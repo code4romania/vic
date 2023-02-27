@@ -22,6 +22,7 @@ export type CreateVolunteerProfileOptions = Pick<
   IVolunteerProfileModel,
   'email' | 'phone'
 > & {
+  volunteerId: string;
   activeSince?: Date;
   branchId?: string;
   departmentId?: string;
@@ -31,24 +32,24 @@ export type CreateVolunteerProfileOptions = Pick<
 // export type FindVolunteerOptions = Partial<IVolunteerProfileModel>;
 
 export class VolunteerProfileModelTransformer {
-  static fromEntity(volunteer: VolunteerProfileEntity): IVolunteerProfileModel {
-    if (!volunteer) return null;
+  static fromEntity(profile: VolunteerProfileEntity): IVolunteerProfileModel {
+    if (!profile) return null;
     return {
-      id: volunteer.id,
-      email: volunteer.email,
-      phone: volunteer.phone,
-      activeSince: volunteer.activeSince,
+      id: profile.id,
+      email: profile.email,
+      phone: profile.phone,
+      activeSince: profile.activeSince,
 
       // Relations
-      role: OrganizationStructureTransformer.fromEntity(volunteer.role),
-      branch: OrganizationStructureTransformer.fromEntity(volunteer.branch),
+      role: OrganizationStructureTransformer.fromEntity(profile.role),
+      branch: OrganizationStructureTransformer.fromEntity(profile.branch),
       department: OrganizationStructureTransformer.fromEntity(
-        volunteer.department,
+        profile.department,
       ),
 
       // Base
-      updatedOn: volunteer.updatedOn,
-      createdOn: volunteer.createdOn,
+      updatedOn: profile.updatedOn,
+      createdOn: profile.createdOn,
     };
   }
 

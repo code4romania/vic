@@ -38,6 +38,8 @@ import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-typ
 import { GetAllOrganizationStructureByTypeUseCase } from './organization/organization-structure/get-all-organization-structure-by-type.usecase';
 import { VolunteerModule } from 'src/modules/volunteer/volunteer.module';
 import { GetOneRegularUserUseCaseService } from './user/get-one-regular-user.usecase';
+import { CreateVolunteerUseCase } from './volunteer/create-volunteer.usecase';
+import { GetOneVolunteerUsecase } from './volunteer/get-one-volunteer.usecase';
 
 @Module({
   imports: [
@@ -90,6 +92,8 @@ import { GetOneRegularUserUseCaseService } from './user/get-one-regular-user.use
     GetOneActivityTypeUseCase,
     GetManyActivityTypeUseCase,
     // Volunteers
+    GetOneVolunteerUsecase,
+    CreateVolunteerUseCase,
   ],
   exports: [
     // Organization
@@ -130,6 +134,9 @@ import { GetOneRegularUserUseCaseService } from './user/get-one-regular-user.use
     ArchiveActivityTypeUseCase,
     GetOneActivityTypeUseCase,
     GetManyActivityTypeUseCase,
+    // Volunteers
+    GetOneVolunteerUsecase,
+    CreateVolunteerUseCase,
   ],
 })
 export class UseCaseModule {}

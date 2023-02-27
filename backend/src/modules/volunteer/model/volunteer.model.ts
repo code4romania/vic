@@ -17,6 +17,10 @@ import {
 } from 'src/modules/user/models/regular-user.model';
 import { VolunteerEntity } from '../entities/volunteer.entity';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
+import {
+  IVolunteerProfileModel,
+  VolunteerProfileModelTransformer,
+} from './volunteer-profile.model';
 
 export interface IVolunteerModel extends IBaseModel {
   id: string;
@@ -26,6 +30,7 @@ export interface IVolunteerModel extends IBaseModel {
   blockedOn: Date;
 
   // Relations
+  volunteerProfile: IVolunteerProfileModel;
   archivedBy: IAdminUserModel; // If the user leaves the organization, archivedBy will be null
   blockedBy: IAdminUserModel;
   organization: IOrganizationModel;
@@ -56,6 +61,9 @@ export class VolunteerModelTransformer {
       blockedBy: AdminUserTransformer.fromEntity(volunteer.blockedBy),
 
       // Relations
+      volunteerProfile: VolunteerProfileModelTransformer.fromEntity(
+        volunteer.volunteerProfile,
+      ),
       organization: OrganizationTransformer.fromEntity(volunteer.organization),
       user: RegularUserTransformer.fromEntity(volunteer.user),
 

@@ -23,31 +23,21 @@ export class CreateVolunteerUseCase
 
   public async execute(data: CreateVolunteerOptions): Promise<IVolunteerModel> {
     // 1. Check if the user and the organization exists
-    const user = await this.getOneRegularUserUseCaseService.execute(
-      data.userId,
-    );
-    const organization = await this.getOrganizationUseCaseService.execute(
-      data.organizationId,
-    );
+    await this.getOneRegularUserUseCaseService.execute(data.userId);
+    await this.getOrganizationUseCaseService.execute(data.organizationId);
+
     // 2. Check if the user is already a volunteer of the given organization
-    // const existingVolunteer = this.volunteerFacade.find({
-    //   userId: data.userId,
-    //   organizationId: data.userId,
-    // });
+    const existingVolunteer = await this.volunteerFacade.find({
+      userId: data.userId,
+      organizationId: data.userId,
+    });
 
-    // if (existingVolunteer) {
-    //   throw this.exceptionService.badRequestException(
-    //     VolunteerExceptionMessages.VOLUNTEER_002,
-    //   );
-    // }
+    if (existingVolunteer) {
+      throw this.exceptionService.badRequestException(
+        VolunteerExceptionMessages.VOLUNTEER_002,
+      );
+    }
 
-    // Check if the user has an accepted access request or an access code is provided
-    // Check if the user has the personal identity data completed
-    // Check if the branch/department/role exist and are part of the given organization
-
-    // return this.volunteerFacade.create(data);
-    return null;
+    return this.volunteerFacade.create(data);
   }
 }
-
-// TODO: need a "rejoin" organization API? To reuse the same volunteerProfile
