@@ -1,6 +1,7 @@
 import React from 'react';
 import { IChildRoute, IRoute } from '../common/interfaces/route.interface';
 import MenuLink from './MenuLink';
+import { classNames } from '../common/utils/utils';
 
 interface MenuItemProps {
   item: IRoute;
@@ -22,7 +23,9 @@ const MenuItem = ({
   };
 
   return item.childRoutes ? (
-    <div>
+    <div
+      className={classNames(item.id === activeParentRoute.id ? 'pb-4' : '', 'flex flex-col gap-2')}
+    >
       <MenuLink
         item={item}
         active={item.id === activeParentRoute.id}
