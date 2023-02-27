@@ -10,13 +10,18 @@ export const getActivityType = async (id: string): Promise<IActivityType> => {
   return API.get(`/activity-type/${id}`).then((res) => res.data);
 };
 
-// export const updateActivityType = async (
-//   id: string,
-//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   data: any,
-// ): Promise<IActivityType> => {
-//   return API.patch(`/activity-type/${id}`, { data }).then((res) => res.data);
-// };
+export const updateActivityType = async (
+  id: string,
+  data: Partial<ActivityCategoryFormTypes>,
+): Promise<IActivityType> => {
+  const { department, role, branch, ...payload } = data;
+  return API.patch(`/activity-type/${id}`, {
+    ...payload,
+    ...(department ? { departmentId: department?.key } : {}),
+    ...(role ? { roleId: role?.key } : {}),
+    ...(branch ? { branchId: branch?.key } : {}),
+  }).then((res) => res.data);
+};
 
 export const createActivityType = async (
   data: ActivityCategoryFormTypes,
