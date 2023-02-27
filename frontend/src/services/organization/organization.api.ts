@@ -1,9 +1,9 @@
 import API from '../api';
-import { IOrganization } from '../../components/OrganizationProfile';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { IAccessCode } from '../../pages/AccesCodes';
 import { AccessCodeFormTypes } from '../../components/AccessCodeForm';
+import { IOrganization } from '../../common/interfaces/organization.interface';
 
 export const getOrganization = async (): Promise<IOrganization> => {
   return API.get(`/organization`).then((res) => res.data);
@@ -21,19 +21,9 @@ export const getAccessCodes = async (
   orderBy?: string,
   orderDirection?: OrderDirection,
 ): Promise<IPaginatedEntity<IAccessCode>> => {
-  console.log('limit, page, orderBy, orderDirection', limit, page, orderBy, orderDirection);
-  return API.get('access-code').then((res) => ({
-    items: res.data,
-    meta: {
-      currentPage: page,
-      itemCount: 3,
-      itemsPerPage: limit,
-      totalItems: 7,
-      totalPages: 2,
-      orderByColumn: orderBy || 'name',
-      orderDirection: orderDirection || OrderDirection.ASC,
-    },
-  }));
+  return API.get('access-code', { params: { limit, page, orderBy, orderDirection } }).then(
+    (res) => res.data,
+  );
 };
 
 export const getAccessCode = async (id: string): Promise<IAccessCode> => {
@@ -46,4 +36,8 @@ export const createAccessCode = async (accessCode: AccessCodeFormTypes): Promise
 
 export const updateAccessCode = async (id: string, endDate?: Date): Promise<IAccessCode> => {
   return API.patch(`access-code/${id}`, { endDate }).then((res) => res.data);
+};
+
+export const deleteAccessCode = async (id: string): Promise<string> => {
+  return API.delete(`access-code/${id}`).then((res) => res.data);
 };

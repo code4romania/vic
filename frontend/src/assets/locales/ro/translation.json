@@ -5,9 +5,14 @@
     "name": "Nume",
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
+    "category": "Categorie",
+    "select": "Selecteaza {{item}}",
+    "choose": "Alege {{item}}",
+    "image": "Imagine",
+    "activity": "Activitate",
     "address": "Adresa",
     "status": "Status",
-    "empty_table": "Nu exista date in tabel",
+    "empty_table": "Nu exista informatii de afisat",
     "view": "Vizualizeaza",
     "edit": "Editeaza {{item}}",
     "block": "Blocheaza {{item}}",
@@ -15,6 +20,9 @@
     "delete": "Sterge",
     "location": "Locatie",
     "back": "Inapoi",
+    "send": "Trimite",
+    "reject": "Respinge",
+    "approve": "Aprobă",
     "save_changes": "Salveaza modificari",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
@@ -35,7 +43,15 @@
     "availability": "Valabilitate",
     "uses": "Utilizari",
     "confirm_delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
-    "invalid_date": "Va rugam sa introduceti o data"
+    "invalid_date": "Va rugam sa introduceti o data",
+    "unlimited": "nelimitat",
+    "search": "Cauta...",
+    "filters": {
+      "show": "Filtre",
+      "reset": "Reseteaza filtre",
+      "hide": "Ascunde filtre"
+    },
+    "select_interval": "Selecteaza interval"
   },
   "header": {
     "login": "Login",
@@ -53,7 +69,8 @@
       "volunteers": "Voluntari",
       "volunteers_list": "Listă voluntari",
       "access_requests": "Cereri de înscriere",
-      "access_codes": "Coduri de acces"
+      "access_codes": "Coduri de acces",
+      "activity_types": "Categorii activitati"
     },
     "collapse": "Restrange meniul"
   },
@@ -62,7 +79,7 @@
     "card_title": "Informatii voluntar",
     "branch": "Filială sau sucursală",
     "name": "Voluntar {{status}}",
-    "teo_date": "Adaugat in TEO la",
+    "volunteer_from": "Adaugat in TEO la",
     "status": {
       "active": "activ",
       "archived": "arhivat",
@@ -70,11 +87,18 @@
     },
     "registration": {
       "title": "Cerere de inscriere",
+      "edit_status": "Această cerere de înscriere necesită aprobare",
       "form": "Formular inscriere",
       "answer": "Raspunsul voluntarului",
       "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
       "found_location": "De unde ai aflat de organizatie?",
-      "motivation": "Ce te motiveaza sa fii voluntar?"
+      "motivation": "Ce te motiveaza sa fii voluntar?",
+      "confirmation_message": "Cererea de inscriere a fost {{option}}",
+      "confirmation_options": {
+        "approved": "aprobata",
+        "deleted": "stearsa",
+        "rejected": "respinsa"
+      }
     },
     "submit": {
       "success": "Informatiile voluntarului au fost modificate cu succes"
@@ -118,13 +142,27 @@
     },
     "modal": {
       "delete": {
-        "title": "Sterge {{division}}",
-        "success": "{{division}} stearsa cu succes"
+        "title": "Sterge {{division}}"
       }
     },
-    "messages": {
-      "add": "{{division}} adaugata cu succes",
-      "edit": "{{division}} actualizata cu succes"
+    "submit": {
+      "success": {
+        "branch": {
+          "add": "Filiala a fost adaugata",
+          "edit": "Filiala actualizata",
+          "delete": "Filiala a fost stearsa"
+        },
+        "department": {
+          "add": "Departamanetul a fost adaugat",
+          "edit": "Departamanetul a fost actualizat",
+          "delete": "Departamentul a fost stears"
+        },
+        "role": {
+          "add": "Rolul a fost adaugat",
+          "edit": "Rolul a fost actualizat",
+          "delete": "Rolul a fost stears"
+        }
+      }
     },
     "form": {
       "name": {
@@ -138,6 +176,10 @@
       "delete": "Eroare la stergerea {{division}}",
       "ORGANIZATION_STRUCTURE_001": "Nu exista structura organizationala cu acest nume",
       "ORGANIZATION_STRUCTURE_002": "Exista deja o structura organizationala cu acest nume"
+    },
+    "popover": {
+      "view": "Vizualizeaza lista membri",
+      "edit": "Editeaza denumire"
     }
   },
   "organization": {
@@ -178,14 +220,26 @@
       "requests": "Cereri",
       "rejected_requests": "Cereri respinse"
     },
-    "modal": {
+    "filters": {
+      "access_request_range": "Perioada cerere access"
+    },
+    "popover": {
       "view": "Vizualizeaza aplicare",
       "approve": "Aprobă cerere",
       "reject": "Respinge cerere",
       "delete": "Sterge din listă"
     },
     "errors": {
-      "no_data": "Nu s-au putut incarca cererile de inscriere"
+      "no_data": "Nu s-au putut incarca cererile de inscriere",
+      "ACCESS_REQUEST_001": "Exista deja o cerere pentru organization dumneavoastra",
+      "ACCESS_REQUEST_002": "Cererea nu a fost gasita",
+      "ACCESS_REQUEST_003": "Cererea trebuie sa fie respinsa pentru a putea fi stearsa",
+      "ACCESS_REQUEST_004": "Cererea nu este in starea potrivita"
+    },
+    "confirmation_modal": {
+      "title": "Sigur doriți să ștergeți această solicitare de înregistrare?",
+      "description": "Această acțiune va șterge definitiv această solicitare și toate informațiile asociate acesteia",
+      "button_label": "Sterge solicitarea"
     }
   },
   "access_code": {
@@ -195,6 +249,11 @@
     "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
     "start_date": "Data inceput valabiliatate*",
     "end_date": "Data final valabilitate",
+    "modal": {
+      "title": "Sigur doriți să ștergeți acestui cod?",
+      "description": "Această acțiune va șterge definitiv acest cod de acces și toate informațiile asociate acestuia",
+      "delete": "Codul de access a fost sters cu succes"
+    },
     "form": {
       "code": {
         "required": "Codul este obligatoriu",
@@ -215,6 +274,44 @@
     "errors": {
       "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",
       "ACCESS_CODE_002": "Exista deja un cod de acces cu acest nume"
+    }
+  },
+  "reject_modal": {
+    "title": "Argumentează refuzul",
+    "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
+    "send": "Trimite fără mesaj",
+    "form": {
+      "max": "Mesajul trebuie sa aiba maxim 225 de caractere",
+      "min": "Mesajul trebuie sa aiba minim 50 caractere",
+      "error": "Refuzarea cererii a esuat"
+    }
+  },
+  "activity_types": {
+    "info": "Categoria a fost arhivată",
+    "form": {
+      "name": {
+        "label": "Denumire tip activitate*",
+        "required": "Denumirea este obligatorie",
+        "min": "Denumirea poate sa aiba minim {{value}} caractere",
+        "max": "Denumirea poate sa aiba maxim {{value}} caractere",
+        "placeholder": "Denumire"
+      },
+      "submit": {
+        "add": "Categorie adaugata cu success",
+        "update": "Categoria a fost modificata",
+        "activate": "Categoria a fost activata",
+        "archive": "Categoria a fost arhivata"
+      }
+    },
+    "actions": {
+      "activate": "Activeaza categorie",
+      "archive": "Arhiveaza categorie"
+    },
+    "errors": {
+      "ACTIVITY_TYPE_001": "Categoria nu a fost gasita",
+      "ACTIVITY_TYPE_002": "Exista deja o categorie cu aceste date pentru organizatia dumneavoastra",
+      "ACTIVITY_TYPE_003": "Categoria nu este in statusul potrivit",
+      "ACTIVITY_TYPE_004": "Nu s-a putut creea categoria"
     }
   }
 }

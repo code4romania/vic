@@ -29,7 +29,7 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
       <nav className="w-full flex justify-between items-center">
         <div className="flex gap-4">
           {isAuthenticated && (
-            <div className="flex md:hidden items-center">
+            <div className="flex xl:hidden items-center">
               <button
                 id="side_menu__open-btn"
                 aria-label="Menu"

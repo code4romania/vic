@@ -1,14 +1,17 @@
-import { Sex } from '../enums/sex.enum';
+import { RequestStatus } from '../enums/request-status.enum';
+import { IUser } from './user.interface';
 
-export interface IAccessRequestDetails {
+export interface IQuestionAnswer {
+  answer: string;
+  question: string;
+}
+
+export interface IAccessRequest {
   id: string;
-  name: string;
-  logo: string;
-  age: number;
-  sex: Sex;
-  location: string;
-  email: string;
-  phone: string;
   createdOn: Date;
-  answers: string[];
+  updatedOn?: Date;
+  rejectionReason?: string;
+  requestedBy: IUser;
+  status: RequestStatus;
+  answers: IQuestionAnswer[];
 }

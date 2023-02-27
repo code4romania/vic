@@ -5,10 +5,10 @@ import CardHeader from './CardHeader';
 import i18n from '../common/config/i18n';
 import FormReadOnlyElement from './FormReadOnlyElement';
 import { formatDate } from '../common/utils/utils';
-import { VolunteerStatus } from '../pages/Volunteers';
 import Button from './Button';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
+import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 
 interface VolunteerProfileProps {
   email: string;
@@ -53,7 +53,7 @@ const VolunteerProfile = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <FormReadOnlyElement value={email} label={i18n.t('general:email')} />
             <FormReadOnlyElement value={phone} label={i18n.t('general:phone')} />
-            <hr className="border-cool-gray-200 col-span-2" />
+            <hr className="border-cool-gray-200 col-span-full" />
             <FormReadOnlyElement value={branch} label={i18n.t('division:entity.branch')} />
             <FormReadOnlyElement
               value={`${i18n.t(`volunteer:name`, {
@@ -72,7 +72,7 @@ const VolunteerProfile = ({
 
             <FormReadOnlyElement
               value={formatDate(createdOn)}
-              label={i18n.t('volunteer:teo_date')}
+              label={i18n.t('volunteer:volunteer_from')}
             />
           </div>
         </div>

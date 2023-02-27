@@ -6,6 +6,7 @@ import { IBusinessException } from '../../common/interfaces/business-exception.i
 import { AccessCodeFormTypes } from '../../components/AccessCodeForm';
 import {
   createAccessCode,
+  deleteAccessCode,
   getAccessCode,
   getAccessCodes,
   getOrganization,
@@ -36,10 +37,8 @@ export const useAccessCodesQuery = (
   orderBy?: string,
   orderDirection?: OrderDirection,
 ) => {
-  return useQuery(
-    ['access-codes', limit, page, orderBy, orderDirection],
-    () => getAccessCodes(limit, page, orderBy, orderDirection),
-    { enabled: !!(limit && page) },
+  return useQuery(['access-codes', limit, page, orderBy, orderDirection], () =>
+    getAccessCodes(limit, page, orderBy, orderDirection),
   );
 };
 
@@ -64,4 +63,10 @@ export const useUpdateAccessCodeMutation = () => {
         Promise.resolve(error),
     },
   );
+};
+
+export const useDeleteAccessCodeMutation = () => {
+  return useMutation((id: string) => deleteAccessCode(id), {
+    onError: (error: AxiosError<IBusinessException<ORGANIZATION_ERRORS>>) => Promise.resolve(error),
+  });
 };

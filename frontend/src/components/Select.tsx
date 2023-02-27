@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, ReactNode } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { classNames } from '../common/utils/utils';
@@ -7,31 +7,27 @@ export interface SelectItem<T> {
   value: string;
   key: T;
 }
-interface SelectProps<T> {
+export interface SelectProps<T> {
   label?: string;
   options: SelectItem<T>[];
   onChange: (item: SelectItem<T>) => void;
-  defaultValue?: SelectItem<T>;
+  selected?: SelectItem<T>;
   placeholder?: string;
+  helper?: ReactNode;
 }
 
 const Select = <T extends React.Key>({
   label,
   options,
   onChange,
-  defaultValue,
+  selected,
   placeholder,
+  helper,
 }: SelectProps<T>) => {
-  const [selected, setSelected] = useState<SelectItem<T> | undefined>(defaultValue);
-
-  useEffect(() => {
-    if (selected) onChange(selected);
-  }, [selected]);
-
   return (
-    <Listbox defaultValue={selected} onChange={setSelected}>
+    <Listbox defaultValue={selected} onChange={onChange}>
       {({ open }) => (
-        <>
+        <div className="flex gap-1 flex-col">
           {label && (
             <Listbox.Label className="block font-medium text-cool-gray-800 pb-1 sm:text-sm lg:text-base text-xs">
               {label}
@@ -91,7 +87,8 @@ const Select = <T extends React.Key>({
               </Listbox.Options>
             </Transition>
           </div>
-        </>
+          {helper}
+        </div>
       )}
     </Listbox>
   );
