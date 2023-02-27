@@ -14,13 +14,13 @@ import {
 
 export const useActivityTypesQuery = (
   search?: string,
-  branch?: string,
-  department?: string,
-  role?: string,
+  branchId?: string,
+  departmentId?: string,
+  roleId?: string,
 ) => {
   return useQuery(
-    ['activity-types', search, branch, department, role],
-    () => getActivityTypes(search, branch, department, role),
+    ['activity-types', search, branchId, departmentId, roleId],
+    () => getActivityTypes(search, branchId, departmentId, roleId),
     {
       onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) => error,
     },
