@@ -30,8 +30,7 @@
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
       "unknown": "A aparut o eroare necunoscuta",
-      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}",
-      "email": "Emailul trebuie sa aiba un format valid"
+      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
     },
     "cancel": "Anuleaza",
     "years_old": "{{age}} ani",
@@ -77,7 +76,6 @@
   "volunteer": {
     "title": "Vizualizare profil",
     "card_title": "Informatii voluntar",
-    "branch": "Filială sau sucursală",
     "name": "Voluntar {{status}}",
     "volunteer_from": "Adaugat in TEO la",
     "status": {
@@ -109,7 +107,8 @@
       },
       "email": {
         "label": "Email de contact*",
-        "required": "Email-ul de contact este obligatoriu"
+        "required": "Email-ul de contact este obligatoriu",
+        "pattern": "Emailul trebuie sa aiba un format valid"
       },
       "branch": {
         "label": "Filiala sau sucursala"

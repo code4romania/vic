@@ -40,7 +40,7 @@ export type VolunteerFormTypes = {
 const schema = yup.object({
   email: yup
     .string()
-    .email(`${i18n.t('general:error.email')}`)
+    .email(`${i18n.t('volunteer:form.email.pattern')}`)
     .required(`${i18n.t('volunteer:form.email.required')}`),
   startedOn: yup.date().typeError(`${i18n.t('general:invalid_date')}`),
 });
