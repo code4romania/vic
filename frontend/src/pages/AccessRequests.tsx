@@ -70,7 +70,9 @@ const PendingAccessRequestsTableHeader = [
     name: i18n.t('general:location'),
     sortable: true,
     selector: (row: IAccessRequest) =>
-      `${row.requestedBy.location?.name}, ${row.requestedBy.location?.county?.abbreviation}`,
+      row.requestedBy.location
+        ? `${row.requestedBy.location?.name}, ${row.requestedBy.location?.county?.abbreviation}`
+        : '',
   },
   {
     id: 'createdOn',

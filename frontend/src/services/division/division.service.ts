@@ -1,6 +1,5 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { PaginationConfig } from '../../common/constants/pagination';
 import { DivisionType } from '../../common/enums/division-type.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { DIVISION_ERRORS } from '../../common/errors/entities/division.errors';
@@ -14,8 +13,8 @@ import {
 } from './division.api';
 
 export const useDivisionsQuery = (
-  limit: number = PaginationConfig.defaultRowsPerPage,
-  page: number = PaginationConfig.defaultPage,
+  limit: number,
+  page: number,
   divisionType: DivisionType,
   orderBy?: string,
   orderDirection?: OrderDirection,
@@ -24,7 +23,7 @@ export const useDivisionsQuery = (
     ['divisions', limit, page, divisionType, orderBy, orderDirection],
     () => getDivisions(limit, page, divisionType, orderBy, orderDirection),
     {
-      enabled: !!(limit && page && divisionType),
+      enabled: !!divisionType,
       onError: (error: AxiosError<IBusinessException<DIVISION_ERRORS>>) => error,
     },
   );
