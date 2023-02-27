@@ -34,3 +34,11 @@ export const createActivityType = async (
     roleId: role?.key,
   }).then((res) => res.data);
 };
+
+export const activateActivityType = async (id: string): Promise<IActivityType> => {
+  return API.patch(`/activity-type/${id}/activate`).then((res) => res.data);
+};
+
+export const archiveActivityType = async (id: string): Promise<IActivityType> => {
+  return API.patch(`/activity-type/${id}/archive`).then((res) => res.data);
+};

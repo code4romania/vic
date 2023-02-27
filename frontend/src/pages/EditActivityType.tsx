@@ -16,11 +16,15 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
 import EmptyContent from '../components/EmptyContent';
 import {
+  useActivateActivityTypeMutation,
   useActivityTypeQuery,
+  useArchiveActivityTypeMutation,
   useUpdateActivityTypeMutation,
 } from '../services/activity-type/activity-type.service';
 import ActivityTypeForm from '../components/ActivityTypeForm';
 import { mapDivisionListItemToSelectItem } from '../containers/OrganizationStructureSelect';
+import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
+import { ArchiveBoxIcon, ArchiveBoxXMarkIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline';
 
 export type ActivityCategoryFormTypes = {
   name: string;
@@ -59,6 +63,10 @@ const EditActivityType = () => {
   // mutation
   const { mutateAsync: updateActivityType, isLoading: isUpdateingActivityType } =
     useUpdateActivityTypeMutation();
+  const { mutateAsync: activateActivityType, isLoading: isActivatingActivityType } =
+    useActivateActivityTypeMutation();
+  const { mutateAsync: archiveActivityType, isLoading: isArchivingActivityType } =
+    useArchiveActivityTypeMutation();
 
   const {
     handleSubmit,
@@ -115,27 +123,85 @@ const EditActivityType = () => {
       );
   };
 
+  const onActivateActivityType = () => {
+    if (activityType) {
+      activateActivityType(activityType.id, {
+        onSuccess: () => {
+          useSuccessToast(i18n.t('activity_types:form.submit.activate'));
+          onBackButtonPress();
+        },
+        onError: (error) => {
+          useErrorToast(
+            InternalErrors.ACTIVITY_TYPE_ERRORS.getError(error.response?.data.code_error),
+          );
+        },
+      });
+    }
+  };
+
+  const onArchiveActivityType = () => {
+    if (activityType) {
+      archiveActivityType(activityType.id, {
+        onSuccess: () => {
+          useSuccessToast(i18n.t('activity_types:form.submit.archive'));
+          onBackButtonPress();
+        },
+        onError: (error) => {
+          useErrorToast(
+            InternalErrors.ACTIVITY_TYPE_ERRORS.getError(error.response?.data.code_error),
+          );
+        },
+      });
+    }
+  };
+
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={onBackButtonPress}>
         {i18n.t('general:edit', { item: '' })}
       </PageHeader>
-      {(isFetchingActivityType || isUpdateingActivityType) && <LoadingContent />}
-      {activityType && !isFetchingActivityType && !isUpdateingActivityType && (
-        <Card>
-          <CardHeader>
-            <h2>{`${i18n.t('general:category')} ${i18n.t('general:activity').toLowerCase()}`}</h2>
-            <Button
-              label={i18n.t('general:save_changes')}
-              className="btn-primary"
-              onClick={handleSubmit(onSubmit)}
-            />
-          </CardHeader>
-          <CardBody>
-            <ActivityTypeForm control={control} errors={errors} />
-          </CardBody>
-        </Card>
-      )}
+      {(isFetchingActivityType ||
+        isUpdateingActivityType ||
+        isActivatingActivityType ||
+        isArchivingActivityType) && <LoadingContent />}
+      {activityType &&
+        !isFetchingActivityType &&
+        !isUpdateingActivityType &&
+        !isActivatingActivityType &&
+        !isArchivingActivityType && (
+          <Card>
+            <CardHeader>
+              <h2>{`${i18n.t('general:category')} ${i18n.t('general:activity').toLowerCase()}`}</h2>
+              <div className="flex flex-row gap-2 sm:gap-4">
+                {activityType.status === ActivityTypeStatus.ARCHIVED && (
+                  <Button
+                    label={i18n.t(`activity_types:actions.activate`)}
+                    className="btn-outline-secondary"
+                    icon={<ArchiveBoxXMarkIcon className="h-5 w-5 sm:hidden" />}
+                    onClick={onActivateActivityType}
+                  />
+                )}
+                {activityType.status === ActivityTypeStatus.ACTIVE && (
+                  <Button
+                    label={i18n.t(`activity_types:actions.archive`)}
+                    className="btn-outline-secondary"
+                    icon={<ArchiveBoxIcon className="h-5 w-5 sm:hidden" />}
+                    onClick={onArchiveActivityType}
+                  />
+                )}
+                <Button
+                  label={i18n.t('general:save_changes')}
+                  className="btn-primary"
+                  icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
+                  onClick={handleSubmit(onSubmit)}
+                />
+              </div>
+            </CardHeader>
+            <CardBody>
+              <ActivityTypeForm control={control} errors={errors} />
+            </CardBody>
+          </Card>
+        )}
       {!activityType && !isFetchingActivityType && !isUpdateingActivityType && (
         <EmptyContent description={i18n.t('general:error.load_entries')} />
       )}
