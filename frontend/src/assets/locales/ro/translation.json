@@ -291,8 +291,14 @@
       },
       "submit": {
         "add": "Categorie adaugata cu success",
-        "update": "Categoria a fost modificata"
+        "update": "Categoria a fost modificata",
+        "activate": "Categoria a fost activata",
+        "archive": "Categoria a fost arhivata"
       }
+    },
+    "actions": {
+      "activate": "Activeaza categorie",
+      "archive": "Arhiveaza categorie"
     },
     "errors": {
       "ACTIVITY_TYPE_001": "Categoria nu a fost gasita",
