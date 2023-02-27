@@ -24,7 +24,10 @@ const MenuItem = ({
 
   return item.childRoutes ? (
     <div
-      className={classNames(item.id === activeParentRoute.id ? 'pb-4' : '', 'flex flex-col gap-2')}
+      className={classNames(
+        item.id === activeParentRoute.id && !isNarrow ? 'pb-4' : '',
+        'flex flex-col gap-2',
+      )}
     >
       <MenuLink
         item={item}
@@ -33,6 +36,7 @@ const MenuItem = ({
         onClick={onClick}
       />
       {item.id === activeParentRoute.id &&
+        !isNarrow &&
         item.childRoutes.map((childRoute) => (
           <MenuLink
             key={childRoute.id}
