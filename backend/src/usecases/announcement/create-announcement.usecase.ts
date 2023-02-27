@@ -37,10 +37,7 @@ export class CreateAnnouncementUseCase
       );
 
     const filteredtargets = departments.filter((department) => {
-      if (
-        createData.targetsIds.includes(department.id) ||
-        createData.targetsIds.length === 0
-      ) {
+      if (createData.targetsIds.includes(department.id)) {
         targetedVolunteers += department.members;
         return true;
       }
@@ -52,9 +49,15 @@ export class CreateAnnouncementUseCase
       );
     }
 
+    if (createData.targetsIds.length === 0) {
+      departments.forEach(
+        (department) => (targetedVolunteers += department.members),
+      );
+    }
+
     // 2. Create announcement
     const announcement = await this.announcementFacade.create({
-      volunteerTargets: targetedVolunteers,
+      targetedVolunteers,
       publishedOn:
         createData.status === AnnouncementStatus.PUBLISHED ? new Date() : null,
       ...createData,
