@@ -46,6 +46,6 @@ export class AnnouncementEntity extends BaseEntity {
   @JoinTable()
   targets: OrganizationStructureEntity[];
 
-  @Column({ type: 'integer', name: 'volunteer_targets', default: 0 })
-  volunteerTargets: number;
+  @Column({ type: 'integer', name: 'targeted_volunteers', default: 0 })
+  targetedVolunteers: number;
 }

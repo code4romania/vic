@@ -69,7 +69,7 @@ export class UpdateAnnouncementUseCase
     const updatedAnnouncement = await this.announcementFacade.update({
       publishedOn:
         updateData.status === AnnouncementStatus.PUBLISHED ? new Date() : null,
-      volunteerTargets: targetedVolunteers,
+      targetedVolunteers,
       ...updateData,
     });
 

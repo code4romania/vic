@@ -59,7 +59,7 @@ export class AnnouncementPresenter {
       OrganizationStructureToAnnouncementPresenter.fromAnnouncement,
     );
     this.updatedOn = announcement.updatedOn;
-    this.volunteerTargets = announcement.volunteerTargets;
+    this.targetedVolunteers = announcement.targetedVolunteers;
   }
 
   @Expose()
@@ -118,5 +118,5 @@ export class AnnouncementPresenter {
     description: 'Total number of volunteers being targeted',
     example: 100,
   })
-  volunteerTargets: number;
+  targetedVolunteers: number;
 }

@@ -15,7 +15,7 @@ export interface IAnnouncementModel extends IBaseModel {
   organizationId: string;
   publishedOn?: Date;
   targets?: IOrganizationStructureModel[];
-  volunteerTargets?: number;
+  targetedVolunteers?: number;
 }
 
 export type ICreateAnnouncementModel = Omit<
@@ -50,7 +50,7 @@ export class AnnouncementStructureTransformer {
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,
-      volunteerTargets: entity.volunteerTargets,
+      targetedVolunteers: entity.targetedVolunteers,
     };
   }
 
@@ -65,7 +65,7 @@ export class AnnouncementStructureTransformer {
     entity.targets = model.targetsIds?.map(
       OrganizationStructureTransformer.toEntity,
     );
-    entity.volunteerTargets = model.volunteerTargets;
+    entity.targetedVolunteers = model.targetedVolunteers;
 
     return entity;
   }
