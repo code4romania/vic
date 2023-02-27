@@ -14,7 +14,7 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { EnvelopeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
-import { formatDate } from '../common/utils/utils';
+import { formatDate, formatDateWithTime } from '../common/utils/utils';
 import { useGetAllAnnouncementsQuery } from '../services/announcement/announcement.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useErrorToast } from '../hooks/useToast';
@@ -26,6 +26,13 @@ const AnnouncementTableHeader = [
     sortable: true,
     minWidth: '10rem',
     selector: (row: IAnnouncement) => row.name,
+  },
+  {
+    id: 'updatedOn',
+    name: i18n.t('announcement:header.updated_on'),
+    sortable: true,
+    minWidth: '5rem',
+    selector: (row: IAnnouncement) => formatDate(row.updatedOn),
   },
   {
     id: 'status',
@@ -42,18 +49,11 @@ const AnnouncementTableHeader = [
     ),
   },
   {
-    id: 'updatedOn',
-    name: i18n.t('announcement:header.updated_on'),
-    sortable: true,
-    minWidth: '5rem',
-    selector: (row: IAnnouncement) => formatDate(row.updatedOn),
-  },
-  {
     id: 'publishedOn',
     name: i18n.t('announcement:header.published_on'),
     sortable: true,
     minWidth: '5rem',
-    selector: (row: IAnnouncement) => formatDate(row.publishedOn),
+    selector: (row: IAnnouncement) => formatDateWithTime(row.publishedOn).slice(0, 17),
   },
   {
     id: 'targets',
@@ -62,13 +62,15 @@ const AnnouncementTableHeader = [
     minWidth: '10rem',
     cell: (row: IAnnouncement) => (
       <CellLayout>
-        {row.targets
-          ? row.targets.map((target) => (
-              <p key={target.id}>
-                {target.name} ({target.members})
-              </p>
-            ))
-          : i18n.t('announcement:all_organization')}
+        {row.targets.length !== 0 ? (
+          row.targets.map((target) => (
+            <p key={target.id}>
+              {target.name} ({target.members})
+            </p>
+          ))
+        ) : (
+          <p>{i18n.t('announcement:all_organization')}</p>
+        )}
       </CellLayout>
     ),
   },

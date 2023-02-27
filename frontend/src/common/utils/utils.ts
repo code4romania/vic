@@ -7,6 +7,9 @@ export const classNames = (...classes: string[]) => {
 export const formatDate = (value: Date | string | null): string =>
   value ? format(new Date(value), 'd/L/y') : '-';
 
+export const formatDateWithTime = (value: Date | string | null): string =>
+  value ? `${new Date(value).toLocaleString()}` : '-';
+
 export const calculateAge = (birthday: Date) => {
   return differenceInYears(new Date(), birthday);
 };
