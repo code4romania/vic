@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   IAnnouncementModel,
   IFindAllAnnouncementModel,
@@ -7,14 +8,14 @@ import {
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 
 @Injectable()
-export class GetAllAnnouncementUseCase
-  implements IUseCaseService<IAnnouncementModel[]>
+export class GetManyAnnouncementUseCase
+  implements IUseCaseService<Pagination<IAnnouncementModel>>
 {
   constructor(private readonly announcementFacade: AnnouncementFacade) {}
 
   public async execute(
     findOptions: IFindAllAnnouncementModel,
-  ): Promise<IAnnouncementModel[]> {
-    return this.announcementFacade.findAll(findOptions);
+  ): Promise<Pagination<IAnnouncementModel>> {
+    return this.announcementFacade.findMany(findOptions);
   }
 }

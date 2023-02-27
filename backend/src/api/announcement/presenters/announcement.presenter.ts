@@ -59,6 +59,7 @@ export class AnnouncementPresenter {
       OrganizationStructureToAnnouncementPresenter.fromAnnouncement,
     );
     this.updatedOn = announcement.updatedOn;
+    this.volunteerTargets = announcement.volunteerTargets;
   }
 
   @Expose()
@@ -111,4 +112,11 @@ export class AnnouncementPresenter {
     example: '2020-05-12T23:50:21.817Z',
   })
   updatedOn: Date;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Total number of volunteers being targeted',
+    example: 100,
+  })
+  volunteerTargets: number;
 }

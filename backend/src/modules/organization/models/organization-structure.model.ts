@@ -27,8 +27,13 @@ export type IFindOrganizationStructureModel = Partial<
   Pick<IOrganizationStructureModel, 'id' | 'name' | 'type' | 'organizationId'>
 >;
 
-export type IFindAllOrganizationStructureModel = IBasePaginationFilterModel &
-  Required<Pick<IOrganizationStructureModel, 'organizationId' | 'type'>>;
+export type IFindAllOrganizationStructurePaginatedModel =
+  IBasePaginationFilterModel &
+    Required<Pick<IOrganizationStructureModel, 'organizationId' | 'type'>>;
+
+export type IFindAllOrganizationStructureModel =
+  | Partial<IOrganizationStructureModel>
+  | Partial<IOrganizationStructureModel>[];
 
 export class OrganizationStructureTransformer {
   static fromEntity(

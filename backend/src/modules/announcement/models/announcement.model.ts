@@ -1,4 +1,5 @@
 import { IBaseModel } from 'src/common/interfaces/base.model';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   IOrganizationStructureModel,
   OrganizationStructureTransformer,
@@ -14,17 +15,18 @@ export interface IAnnouncementModel extends IBaseModel {
   organizationId: string;
   publishedOn?: Date;
   targets?: IOrganizationStructureModel[];
+  volunteerTargets?: number;
 }
 
 export type ICreateAnnouncementModel = Omit<
   IAnnouncementModel,
   'id' | 'updatedOn' | 'createdOn'
 > & {
-  targetsIds: string[];
+  targetsIds?: string[];
 };
 
 export type IUpdateAnnouncementModel = Partial<
-  Omit<IAnnouncementModel, 'organizationId' | 'updatedOn' | 'createdOn'> & {
+  Omit<IAnnouncementModel, 'updatedOn' | 'createdOn'> & {
     targetsIds: string[];
   }
 >;
@@ -33,9 +35,8 @@ export type IFindAnnouncementModel = Partial<
   Pick<IAnnouncementModel, 'id' | 'organizationId'>
 >;
 
-export type IFindAllAnnouncementModel = Partial<
-  Pick<IAnnouncementModel, 'status' | 'organizationId'>
->;
+export type IFindAllAnnouncementModel = IBasePaginationFilterModel &
+  Partial<Pick<IAnnouncementModel, 'status' | 'organizationId'>>;
 
 export class AnnouncementStructureTransformer {
   static fromEntity(entity: AnnouncementEntity): IAnnouncementModel {
@@ -49,6 +50,7 @@ export class AnnouncementStructureTransformer {
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,
+      volunteerTargets: entity.volunteerTargets,
     };
   }
 
@@ -63,6 +65,7 @@ export class AnnouncementStructureTransformer {
     entity.targets = model.targetsIds?.map(
       OrganizationStructureTransformer.toEntity,
     );
+    entity.volunteerTargets = model.volunteerTargets;
 
     return entity;
   }

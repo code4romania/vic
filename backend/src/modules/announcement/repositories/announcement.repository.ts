@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
+import {
+  Pagination,
+  RepositoryWithPagination,
+} from 'src/infrastructure/base/repository-with-pagination.class';
 import { OrganizationStructureTransformer } from 'src/modules/organization/models/organization-structure.model';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { AnnouncementEntity } from '../entities/announcement.entity';
 import { IAnnouncementRepository } from '../interfaces/announcement-repository.interface';
 import {
@@ -14,11 +20,16 @@ import {
 } from '../models/announcement.model';
 
 @Injectable()
-export class AnnouncementRepositoryService implements IAnnouncementRepository {
+export class AnnouncementRepositoryService
+  extends RepositoryWithPagination<AnnouncementEntity>
+  implements IAnnouncementRepository
+{
   constructor(
     @InjectRepository(AnnouncementEntity)
     private readonly announcementRepository: Repository<AnnouncementEntity>,
-  ) {}
+  ) {
+    super(announcementRepository);
+  }
 
   async find(findOptions: IFindAnnouncementModel): Promise<IAnnouncementModel> {
     const announcement = await this.announcementRepository.findOne({
@@ -33,17 +44,30 @@ export class AnnouncementRepositoryService implements IAnnouncementRepository {
       : null;
   }
 
-  async findAll(
+  async findMany(
     findOptions: IFindAllAnnouncementModel,
-  ): Promise<IAnnouncementModel[]> {
-    const announcements = await this.announcementRepository.find({
-      where: { ...findOptions },
-      relations: {
-        targets: true,
+  ): Promise<Pagination<IAnnouncementModel>> {
+    const options: {
+      filters: FindOptionsWhere<AnnouncementEntity>;
+    } & IBasePaginationFilterModel = {
+      ...findOptions,
+      filters: {
+        organizationId: findOptions.organizationId,
       },
-    });
+    };
 
-    return announcements.map(AnnouncementStructureTransformer.fromEntity);
+    return this.findManyPaginated<IAnnouncementModel>(
+      {
+        searchableColumns: ['name'],
+        defaultSortBy: 'name',
+        defaultOrderDirection: OrderDirection.ASC,
+        relations: {
+          targets: true,
+        },
+      },
+      options,
+      AnnouncementStructureTransformer.fromEntity,
+    );
   }
 
   async create(

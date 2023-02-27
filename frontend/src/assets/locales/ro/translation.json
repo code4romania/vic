@@ -6,11 +6,17 @@
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
     "category": "Categorie",
+    "select": "Selecteaza {{item}}",
+    "choose": "Alege {{item}}",
+    "image": "Imagine",
+    "activity": "Activitate",
     "address": "Adresa",
     "status": "Status",
-    "empty_table": "Nu exista date in tabel",
+    "empty_table": "Nu exista informatii de afisat",
     "view": "Vizualizeaza",
     "edit": "Editeaza {{item}}",
+    "block": "Blocheaza {{item}}",
+    "archive": "Arhivează {{item}}",
     "delete": "Sterge",
     "location": "Locatie",
     "back": "Inapoi",
@@ -95,6 +101,31 @@
     },
     "errors": {
       "VOL_001": "Nu s-a putut incarca cererea voluntarului"
+    },
+    "form": {
+      "name": {
+        "label": "Nume voluntar*"
+      },
+      "email": {
+        "label": "Email de contact*",
+        "required": "Email-ul de contact este obligatoriu",
+        "pattern": "Emailul trebuie sa aiba un format valid"
+      },
+      "branch": {
+        "label": "Filiala sau sucursala"
+      },
+      "department": {
+        "label": "Departament"
+      },
+      "role": {
+        "label": "Rol"
+      },
+      "started_on": {
+        "label": "Voluntar din"
+      },
+      "submit": {
+        "edit": "Datele voluntarului au fost modificate"
+      }
     }
   },
   "volunteers": {
@@ -295,6 +326,25 @@
   },
   "activity_types": {
     "info": "Categoria a fost arhivată",
+    "form": {
+      "name": {
+        "label": "Denumire tip activitate*",
+        "required": "Denumirea este obligatorie",
+        "min": "Denumirea poate sa aiba minim {{value}} caractere",
+        "max": "Denumirea poate sa aiba maxim {{value}} caractere",
+        "placeholder": "Denumire"
+      },
+      "submit": {
+        "add": "Categorie adaugata cu success",
+        "update": "Categoria a fost modificata",
+        "activate": "Categoria a fost activata",
+        "archive": "Categoria a fost arhivata"
+      }
+    },
+    "actions": {
+      "activate": "Activeaza categorie",
+      "archive": "Arhiveaza categorie"
+    },
     "errors": {
       "ACTIVITY_TYPE_001": "Categoria nu a fost gasita",
       "ACTIVITY_TYPE_002": "Exista deja o categorie cu aceste date pentru organizatia dumneavoastra",

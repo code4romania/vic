@@ -134,7 +134,7 @@ const AccessCodes = () => {
 
   // row actions
   const onEdit = (row: IAccessCode) => {
-    navigate(`edit/${row.id}`);
+    navigate(`${row.id}/edit`);
   };
 
   const onDelete = (row: IAccessCode) => {

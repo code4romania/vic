@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
-  IFindAllOrganizationStructureModel,
+  IFindAllOrganizationStructurePaginatedModel,
   IOrganizationStructureModel,
 } from 'src/modules/organization/models/organization-structure.model';
 import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
@@ -16,8 +16,8 @@ export class GetAllOrganizationStructureUseCase
   ) {}
 
   public async execute(
-    findOptions: IFindAllOrganizationStructureModel,
+    findOptions: IFindAllOrganizationStructurePaginatedModel,
   ): Promise<Pagination<IOrganizationStructureModel>> {
-    return this.organizationStructureFacade.findAll(findOptions);
+    return this.organizationStructureFacade.findMany(findOptions);
   }
 }

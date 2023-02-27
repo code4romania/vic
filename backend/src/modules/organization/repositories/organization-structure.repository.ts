@@ -12,6 +12,7 @@ import { IOrganizationStructureRepository } from '../interfaces/organization-str
 import {
   ICreateOrganizationStructureModel,
   IFindAllOrganizationStructureModel,
+  IFindAllOrganizationStructurePaginatedModel,
   IFindOrganizationStructureModel,
   IOrganizationStructureModel,
   IUpdateOrganizationStructureModel,
@@ -56,7 +57,7 @@ export class OrganizationStructureRepositoryService
   }
 
   async findMany(
-    findOptions: IFindAllOrganizationStructureModel,
+    findOptions: IFindAllOrganizationStructurePaginatedModel,
   ): Promise<Pagination<IOrganizationStructureModel>> {
     const options: {
       filters: FindOptionsWhere<OrganizationStructureEntity>;
@@ -79,6 +80,16 @@ export class OrganizationStructureRepositoryService
       options,
       OrganizationStructureTransformer.fromEntity,
     );
+  }
+
+  async findAll(
+    options: IFindAllOrganizationStructureModel,
+  ): Promise<IOrganizationStructureModel[]> {
+    const structures = await this.structureRepository.find({
+      where: options,
+    });
+
+    return structures.map(OrganizationStructureTransformer.fromEntity);
   }
 
   async update({

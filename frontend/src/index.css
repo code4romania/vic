@@ -104,7 +104,7 @@
   }
 
   .btn {
-    @apply flex items-center justify-center rounded-md min-w-fit w-20 py-2.5 gap-x-2 whitespace-pre-wrap font-medium text-xs sm:text-sm font-robotoMedium disabled:opacity-50;
+    @apply flex items-center justify-center rounded-md min-w-fit py-2.5 gap-x-2 whitespace-pre-wrap font-medium text-xs sm:text-sm font-robotoMedium disabled:opacity-50;
 
     padding-inline: 17px;
   }

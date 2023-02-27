@@ -35,9 +35,10 @@ import { ActivateActivityTypeUseCase } from './activity-type/activate-activity-t
 import { ArchiveActivityTypeUseCase } from './activity-type/archive-activity-type.usecase';
 import { GetOneActivityTypeUseCase } from './activity-type/get-one-activity-type.usecase';
 import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-type.usecase';
+import { GetAllOrganizationStructureByTypeUseCase } from './organization/organization-structure/get-all-organization-structure-by-type.usecase';
 import { AnnouncementModule } from 'src/modules/announcement/announcement.module';
 import { GetOneAnnouncementUseCase } from './announcement/get-one-announcement.usecase';
-import { GetAllAnnouncementUseCase } from './announcement/get-all-announcement.usecase';
+import { GetManyAnnouncementUseCase } from './announcement/get-many-announcement.usecase';
 import { CreateAnnouncementUseCase } from './announcement/create-announcement.usecase';
 import { UpdateAnnouncementUseCase } from './announcement/update-announcement.usecase';
 import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.usecase';
@@ -69,6 +70,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     GetOneOrganizationStructureUseCase,
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
+    GetAllOrganizationStructureByTypeUseCase,
     // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
@@ -92,7 +94,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     GetManyActivityTypeUseCase,
     // Announcement
     GetOneAnnouncementUseCase,
-    GetAllAnnouncementUseCase,
+    GetManyAnnouncementUseCase,
     CreateAnnouncementUseCase,
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
@@ -113,6 +115,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     GetOneOrganizationStructureUseCase,
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
+    GetAllOrganizationStructureByTypeUseCase,
     // user
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
@@ -136,7 +139,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     GetManyActivityTypeUseCase,
     // Announcement
     GetOneAnnouncementUseCase,
-    GetAllAnnouncementUseCase,
+    GetManyAnnouncementUseCase,
     CreateAnnouncementUseCase,
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
