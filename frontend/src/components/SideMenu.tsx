@@ -39,17 +39,10 @@ const SideMenu = () => {
   }, [location]);
 
   const onMenuItemClick = (item: IRoute, childRoute?: IChildRoute) => {
-    setActiveParentRoute(item);
-
-    if (item.childRoutes && !childRoute) {
-      setActiveSubRoute(item.childRoutes[0]);
-      navigate(`${item.href}`);
-    } else if (!item.childRoutes && item.icon) {
-      setActiveSubRoute(null);
-      navigate(`${item.href}`);
-    } else if (childRoute) {
-      setActiveSubRoute(childRoute);
+    if (childRoute) {
       navigate(`${childRoute.href}`);
+    } else {
+      navigate(`${item.href}`);
     }
   };
 

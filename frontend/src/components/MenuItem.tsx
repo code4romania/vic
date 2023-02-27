@@ -6,17 +6,17 @@ import { classNames } from '../common/utils/utils';
 interface MenuItemProps {
   item: IRoute;
   activeParentRoute: IRoute;
+  activeSubRoute?: IChildRoute | null;
   isNarrow?: boolean;
   onClick: (item: IRoute, childRoute?: IChildRoute) => void;
-  activeSubRoute?: IChildRoute | null;
 }
 
 const MenuItem = ({
   item,
   activeParentRoute,
+  activeSubRoute,
   isNarrow,
   onClick,
-  activeSubRoute,
 }: MenuItemProps) => {
   const onChildRouteClick = (childRoute: IRoute) => {
     onClick(item, childRoute);
