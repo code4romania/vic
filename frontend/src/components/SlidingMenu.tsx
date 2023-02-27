@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IChildRoute, IRoute } from '../common/interfaces/route.interface';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../common/utils/utils';
@@ -14,28 +14,37 @@ interface SlidingMenuProps {
 
 export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuProps) {
   const navigate = useNavigate();
-  // const [currentMenuItemId, setCurrentMenuItemId] = useState<number>(0);
-
-  // const onMenuItemClick = (item: IRoute) => {
-  //   setSlidingMenuOpen(false);
-  //   setCurrentMenuItemId(item.id);
-  //   navigate(`${item.href}`);
-  // };
+  const location = useLocation();
   const [activeParentRoute, setActiveParentRoute] = useState<IRoute>(ROUTES[0]);
   const [activeSubRoute, setActiveSubRoute] = useState<IChildRoute | null>(null);
 
-  const onMenuItemClick = (item: IRoute, childRoute?: IChildRoute) => {
-    setActiveParentRoute(item);
+  useEffect(() => {
+    const splittedLocation = location.pathname.split('/');
+    const parentRoute = ROUTES.find((route) => route.href === splittedLocation[1]);
 
-    if (item.childRoutes && !childRoute) {
-      setActiveSubRoute(item.childRoutes[0]);
-      navigate(`${item.href}`);
-    } else if (!item.childRoutes && item.icon) {
+    if (parentRoute?.childRoutes?.length) {
+      const subRoute = parentRoute.childRoutes.find((childRoute) =>
+        childRoute.href.includes(splittedLocation[2]),
+      );
+
+      if (subRoute) {
+        setActiveSubRoute(subRoute);
+      } else {
+        setActiveSubRoute(parentRoute.childRoutes[0]);
+      }
+
+      setActiveParentRoute(parentRoute);
+    } else if (parentRoute) {
+      setActiveParentRoute(parentRoute);
       setActiveSubRoute(null);
-      navigate(`${item.href}`);
-    } else if (childRoute) {
-      setActiveSubRoute(childRoute);
+    }
+  }, [location]);
+
+  const onMenuItemClick = (item: IRoute, childRoute?: IChildRoute) => {
+    if (childRoute) {
       navigate(`${childRoute.href}`);
+    } else {
+      navigate(`${item.href}`);
     }
 
     setSlidingMenuOpen(false);
