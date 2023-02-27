@@ -10,24 +10,20 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
+import { VolunteerProfileEntity } from './volunteer-profile.entity';
 
 // TODO: BR: Status Archived + ArchivedBy = null => volunteer leaved the org
 
-@Unique('user_per_organization', ['user', 'organization']) // TODO: recheck
+@Unique('user_in_organization', ['user', 'organization']) // TODO: recheck
 @Entity({ name: 'volunteer' })
 export class VolunteerEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ type: 'text', name: 'email' })
-  email: string;
-
-  @Column({ type: 'text', name: 'phone' })
-  phone: string;
 
   @Column({
     type: 'enum',
@@ -36,21 +32,20 @@ export class VolunteerEntity extends BaseEntity {
   })
   status: VolunteerStatus;
 
-  @Column({ type: 'timestamptz', name: 'active_since', default: new Date() })
-  activeSince: Date;
-
   @Column({ type: 'timestamptz', name: 'archived_on' })
   archivedOn: Date;
 
   @Column({ type: 'timestamptz', name: 'blocked_on' })
   blockedOn: Date;
 
-  @Column({ type: 'string', name: 'user_id' })
-  userId: string;
+  @Column({ type: 'varchar', name: 'volunteer_profile_id', nullable: true })
+  volunteerProfileId: string;
 
-  @ManyToOne(() => RegularUserEntity)
-  @JoinColumn({ name: 'user_id' })
-  user: RegularUserEntity;
+  // TODO: include acceessCodeId and accessRequestId?
+
+  @OneToOne(() => VolunteerProfileEntity)
+  @JoinColumn({ name: 'volunteer_profile_id' })
+  volunteerProfile: VolunteerProfileEntity;
 
   @Column({ type: 'string', name: 'archived_by', nullable: true })
   archivedById: string;
@@ -66,38 +61,12 @@ export class VolunteerEntity extends BaseEntity {
   @JoinColumn({ name: 'blocked_by' })
   blockedBy: AdminUserEntity;
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    name: 'branch_id',
-  })
-  branchId: string;
+  @Column({ type: 'string', name: 'user_id' })
+  userId: string;
 
-  @ManyToOne(() => OrganizationStructureEntity)
-  @JoinColumn({ name: 'branch_id' })
-  branch: OrganizationStructureEntity;
-
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    name: 'department_id',
-  })
-  departmentId: string;
-
-  @ManyToOne(() => OrganizationStructureEntity)
-  @JoinColumn({ name: 'department_id' })
-  department: OrganizationStructureEntity;
-
-  @Column({
-    type: 'varchar',
-    nullable: true,
-    name: 'role_id',
-  })
-  roleId: string;
-
-  @ManyToOne(() => OrganizationStructureEntity)
-  @JoinColumn({ name: 'role_id' })
-  role: OrganizationStructureEntity;
+  @ManyToOne(() => RegularUserEntity)
+  @JoinColumn({ name: 'user_id' })
+  user: RegularUserEntity;
 
   @Column({ type: 'varchar', name: 'organization_id' })
   organizationId: string;

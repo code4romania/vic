@@ -36,6 +36,8 @@ import { ArchiveActivityTypeUseCase } from './activity-type/archive-activity-typ
 import { GetOneActivityTypeUseCase } from './activity-type/get-one-activity-type.usecase';
 import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-type.usecase';
 import { GetAllOrganizationStructureByTypeUseCase } from './organization/organization-structure/get-all-organization-structure-by-type.usecase';
+import { VolunteerModule } from 'src/modules/volunteer/volunteer.module';
+import { GetOneRegularUserUseCaseService } from './user/get-one-regular-user.usecase';
 
 @Module({
   imports: [
@@ -46,6 +48,7 @@ import { GetAllOrganizationStructureByTypeUseCase } from './organization/organiz
     AccessRequestModule,
     LocationModule,
     ActivityTypeModule,
+    VolunteerModule,
   ],
   providers: [
     // Organization
@@ -67,6 +70,7 @@ import { GetAllOrganizationStructureByTypeUseCase } from './organization/organiz
     // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
+    GetOneRegularUserUseCaseService,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -85,6 +89,7 @@ import { GetAllOrganizationStructureByTypeUseCase } from './organization/organiz
     ArchiveActivityTypeUseCase,
     GetOneActivityTypeUseCase,
     GetManyActivityTypeUseCase,
+    // Volunteers
   ],
   exports: [
     // Organization
@@ -106,6 +111,7 @@ import { GetAllOrganizationStructureByTypeUseCase } from './organization/organiz
     // user
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
+    GetOneRegularUserUseCaseService,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
