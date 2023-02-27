@@ -26,7 +26,7 @@ export type ICreateAnnouncementModel = Omit<
 };
 
 export type IUpdateAnnouncementModel = Partial<
-  Omit<IAnnouncementModel, 'organizationId' | 'updatedOn' | 'createdOn'> & {
+  Omit<IAnnouncementModel, 'updatedOn' | 'createdOn'> & {
     targetsIds: string[];
   }
 >;

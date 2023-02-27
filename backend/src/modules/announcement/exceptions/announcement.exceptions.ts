@@ -3,6 +3,7 @@ import { BusinessException } from 'src/common/interfaces/business-exception.inte
 export enum AnnouncementExceptionCodes {
   ANNOUNCEMENT_001 = 'ANNOUNCEMENT_001',
   ANNOUNCEMENT_002 = 'ANNOUNCEMENT_002',
+  ANNOUNCEMENT_003 = 'ANNOUNCEMENT_003',
 }
 
 type AnnouncementExceptionCodeType = keyof typeof AnnouncementExceptionCodes;
@@ -18,5 +19,9 @@ export const AnnouncementExceptionMessages: Record<
   [AnnouncementExceptionCodes.ANNOUNCEMENT_002]: {
     code_error: AnnouncementExceptionCodes.ANNOUNCEMENT_002,
     message: 'A published announcement cannot be modified',
+  },
+  [AnnouncementExceptionCodes.ANNOUNCEMENT_003]: {
+    code_error: AnnouncementExceptionCodes.ANNOUNCEMENT_003,
+    message: 'Only departments can be chosen',
   },
 };

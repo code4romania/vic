@@ -28,8 +28,8 @@ export class CreateAnnouncementUseCase
   public async execute(
     createData: ICreateAnnouncementModel,
   ): Promise<IAnnouncementModel> {
-    // 1. Create announcement
-    const totalNumberOfVolunteers = 0;
+    // 1. Check if only departments were chosen and calculate the total number of volunteers
+    let targetedVolunteers = 0;
     const departments =
       await this.getAllOrganizationStructureByTypeUseCase.execute(
         OrganizationStructureType.DEPARTMENT,
@@ -37,23 +37,27 @@ export class CreateAnnouncementUseCase
       );
 
     const filteredtargets = departments.filter((department) => {
-      createData.targetsIds.includes(department.id);
+      if (createData.targetsIds.includes(department.id)) {
+        targetedVolunteers += department.members;
+        return true;
+      }
     });
 
     if (filteredtargets.length !== createData.targetsIds.length) {
       this.exceptionsService.badRequestException(
-        AnnouncementExceptionMessages.ANNOUNCEMENT_001,
+        AnnouncementExceptionMessages.ANNOUNCEMENT_003,
       );
     }
 
+    // 2. Create announcement
     const announcement = await this.announcementFacade.create({
-      volunteerTargets: totalNumberOfVolunteers,
+      volunteerTargets: targetedVolunteers,
       publishedOn:
         createData.status === AnnouncementStatus.PUBLISHED ? new Date() : null,
       ...createData,
     });
 
-    // 2. Send email to targets if announcement is published
+    // 3. Send email to targets if announcement is published
     if (announcement.status === AnnouncementStatus.PUBLISHED) {
       this.eventEmitter.emit(
         EVENTS.OTHER.SEND_ANNOUNCEMENT,

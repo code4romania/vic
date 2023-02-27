@@ -11,6 +11,8 @@ import {
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import SendAnnouncementEvent from 'src/modules/notifications/events/others/send-announcement.event';
+import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
+import { GetAllOrganizationStructureByTypeUseCase } from '../organization/organization-structure/get-all-organization-structure-by-type.usecase';
 
 @Injectable()
 export class UpdateAnnouncementUseCase
@@ -20,6 +22,7 @@ export class UpdateAnnouncementUseCase
     private readonly announcementFacade: AnnouncementFacade,
     private readonly exceptionsService: ExceptionsService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly getAllOrganizationStructureByTypeUseCase: GetAllOrganizationStructureByTypeUseCase,
   ) {}
 
   public async execute(
@@ -41,14 +44,36 @@ export class UpdateAnnouncementUseCase
       );
     }
 
-    // 3. Update the announcement
+    // 3. Check if only departments were chosen and calculate the new total number of volunteers
+    let targetedVolunteers = 0;
+    const departments =
+      await this.getAllOrganizationStructureByTypeUseCase.execute(
+        OrganizationStructureType.DEPARTMENT,
+        updateData.organizationId,
+      );
+
+    const filteredtargets = departments.filter((department) => {
+      if (updateData.targetsIds.includes(department.id)) {
+        targetedVolunteers += department.members;
+        return true;
+      }
+    });
+
+    if (filteredtargets.length !== updateData.targetsIds.length) {
+      this.exceptionsService.badRequestException(
+        AnnouncementExceptionMessages.ANNOUNCEMENT_003,
+      );
+    }
+
+    // 4. Update the announcement
     const updatedAnnouncement = await this.announcementFacade.update({
       publishedOn:
         updateData.status === AnnouncementStatus.PUBLISHED ? new Date() : null,
+      volunteerTargets: targetedVolunteers,
       ...updateData,
     });
 
-    // 4. Send email to targets if announcement is published
+    // 5. Send email to targets if announcement is published
     if (updatedAnnouncement.status === AnnouncementStatus.PUBLISHED) {
       this.eventEmitter.emit(
         EVENTS.OTHER.SEND_ANNOUNCEMENT,
