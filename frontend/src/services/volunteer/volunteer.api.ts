@@ -2,7 +2,7 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { Sex } from '../../common/enums/sex.enum';
 import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { VolunteerFormData } from '../../pages/EditVolunteer';
+import { VolunteerFormTypes } from '../../pages/EditVolunteer';
 import { IVolunteer } from '../../common/interfaces/volunteer.interface';
 // import API from '../api';
 
@@ -101,7 +101,10 @@ export const getVolunteer = async (id: string): Promise<IVolunteer> => {
   });
 };
 
-export const updateVolunteer = async (id: string, data: VolunteerFormData): Promise<IVolunteer> => {
+export const updateVolunteer = async (
+  id: string,
+  data: VolunteerFormTypes,
+): Promise<IVolunteer> => {
   console.log({
     ...data,
     branch: data.branch.value,

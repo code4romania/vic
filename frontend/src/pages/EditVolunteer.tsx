@@ -10,7 +10,7 @@ import CardHeader from '../components/CardHeader';
 import FormDatePicker from '../components/FormDatePicker';
 import FormInput from '../components/FormInput';
 import PageHeader from '../components/PageHeader';
-import Select, { SelectItem } from '../components/Select';
+import { SelectItem } from '../components/Select';
 import Card from '../layouts/CardLayout';
 import FormLayout from '../layouts/FormLayout';
 import PageLayout from '../layouts/PageLayout';
@@ -22,8 +22,14 @@ import LoadingContent from '../components/LoadingContent';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import EmptyContent from '../components/EmptyContent';
+import OrganizationStructureSelect, {
+  mapDivisionListItemToSelectItem,
+} from '../containers/OrganizationStructureSelect';
+import { DivisionType } from '../common/enums/division-type.enum';
+import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 
-export type VolunteerFormData = {
+export type VolunteerFormTypes = {
+  name: string;
   email: string;
   branch: SelectItem<string>;
   role: SelectItem<string>;
@@ -32,8 +38,11 @@ export type VolunteerFormData = {
 };
 
 const schema = yup.object({
-  email: yup.string().email(`${i18n.t('general:error.email')}`),
-  startedOn: yup.date().required(),
+  email: yup
+    .string()
+    .email(`${i18n.t('general:error.email')}`)
+    .required(`${i18n.t('volunteer:form.email.required')}`),
+  startedOn: yup.date().typeError(`${i18n.t('general:invalid_date')}`),
 });
 
 const EditVolunteer = () => {
@@ -45,17 +54,16 @@ const EditVolunteer = () => {
     error: volunteerError,
     isLoading: isVolunteerLoading,
   } = useVolunteerQuery(id as string);
-  const {
-    mutateAsync: updateVolunteer,
-    error: updateVolunteerError,
-    isLoading: isUpdateVolunteerLoading,
-  } = useUpdateVolunteerMutation();
+
+  const { mutateAsync: updateVolunteer, isLoading: isUpdateVolunteerLoading } =
+    useUpdateVolunteerMutation();
 
   const {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<VolunteerFormData>({
+    reset,
+  } = useForm<VolunteerFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
@@ -67,27 +75,40 @@ const EditVolunteer = () => {
         InternalErrors.VOLUNTEER_ERRORS.getError(volunteerError?.response?.data.code_error),
       );
     }
+  }, [volunteerError]);
 
-    if (updateVolunteerError) {
-      useErrorToast(
-        InternalErrors.VOLUNTEER_ERRORS.getError(volunteerError?.response?.data.code_error),
-      );
+  useEffect(() => {
+    // init form data
+    if (volunteer) {
+      const { role, department, branch, ...data } = volunteer;
+      // preload form data
+      reset({
+        ...data,
+        name: data.createdBy.name,
+        ...(branch ? { branch: mapDivisionListItemToSelectItem(branch) } : {}),
+        ...(department ? { department: mapDivisionListItemToSelectItem(department) } : {}),
+        ...(role ? { role: mapDivisionListItemToSelectItem(role) } : {}),
+      });
     }
-  }, [volunteerError, updateVolunteerError]);
+  }, [volunteer]);
 
-  const navigateBack = () => {
+  const onBackButtonPress = () => {
     navigate(`/volunteers/${id}`, { replace: true });
   };
 
-  const onSubmit = (data: VolunteerFormData) => {
-    console.log(data);
+  const onSubmit = (data: VolunteerFormTypes) => {
     if (volunteer)
       updateVolunteer(
         { id: volunteer.id, data },
         {
           onSuccess: () => {
-            useSuccessToast(i18n.t('volunteer:submit.success'));
-            navigateBack();
+            useSuccessToast(i18n.t('volunteer:form.submit.edit'));
+            onBackButtonPress();
+          },
+          onError: (error) => {
+            useErrorToast(
+              InternalErrors.VOLUNTEER_ERRORS.getError(error?.response?.data.code_error),
+            );
           },
         },
       );
@@ -95,7 +116,7 @@ const EditVolunteer = () => {
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={navigateBack}>
+      <PageHeader onBackButtonPress={onBackButtonPress}>
         {i18n.t('general:edit', { item: '' })}
       </PageHeader>
       {(isVolunteerLoading || isUpdateVolunteerLoading) && <LoadingContent />}
@@ -106,30 +127,38 @@ const EditVolunteer = () => {
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary shrink-0"
+              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
               onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>
           <CardBody>
             <FormLayout>
               <form className="max-w-[30rem] relative left-1/2 -translate-x-1/2">
-                <FormInput
-                  type="text"
-                  disabled
-                  label={`${i18n.t('general:name')} ${i18n
-                    .t('volunteer:name', { status: '' })
-                    .toLowerCase()}`}
-                  value={volunteer?.name}
+                <Controller
+                  name="name"
+                  key="name"
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <FormInput
+                        type="text"
+                        disabled
+                        label={`${i18n.t('volunteer:form.name.label')}`}
+                        value={value}
+                        onChange={onChange}
+                      />
+                    );
+                  }}
                 />
                 <Controller
                   name="email"
                   key="email"
                   control={control}
-                  defaultValue={volunteer.email}
                   render={({ field: { onChange, value } }) => {
                     return (
                       <FormInput
                         type="email"
-                        label={i18n.t('general:email')}
+                        label={`${i18n.t('volunteer:form.email.label')}`}
                         value={value}
                         onChange={onChange}
                         errorMessage={errors.email?.message as string}
@@ -142,45 +171,15 @@ const EditVolunteer = () => {
                   name="branch"
                   key="branch"
                   control={control}
-                  defaultValue={{ value: volunteer.branch, key: volunteer.branch }}
                   render={({ field: { onChange, value } }) => {
                     return (
-                      <div className="flex flex-col gap-1">
-                        <Select
-                          label={`${i18n.t('volunteer:branch')}`}
-                          onChange={onChange}
-                          defaultValue={value}
-                          options={[
-                            { value: volunteer.branch, key: volunteer.branch },
-                            { value: 'Otelul', key: 'otelul' },
-                            { value: 'Galati', key: 'galati' },
-                            { value: 'Carpati', key: 'carpati' },
-                          ]}
-                        />
-                      </div>
-                    );
-                  }}
-                />
-                <Controller
-                  name="role"
-                  key="role"
-                  control={control}
-                  defaultValue={{ value: volunteer.role, key: volunteer.role }}
-                  render={({ field: { onChange, value } }) => {
-                    return (
-                      <div className="flex flex-col gap-1">
-                        <Select
-                          label={`${i18n.t('division:entity.role')}`}
-                          onChange={onChange}
-                          defaultValue={value}
-                          options={[
-                            { value: volunteer.role, key: volunteer.role },
-                            { value: 'Alba', key: 'alba' },
-                            { value: 'Zapada', key: 'zapada' },
-                            { value: 'Scufita', key: 'scufita' },
-                          ]}
-                        />
-                      </div>
+                      <OrganizationStructureSelect
+                        label={`${i18n.t('volunteer:form.branch.label')}`}
+                        placeholder={`${i18n.t('general:select', { item: '' })}`}
+                        onChange={onChange}
+                        selected={value}
+                        type={DivisionType.BRANCH}
+                      />
                     );
                   }}
                 />
@@ -188,22 +187,31 @@ const EditVolunteer = () => {
                   name="department"
                   key="department"
                   control={control}
-                  defaultValue={{ value: volunteer.department, key: volunteer.department }}
                   render={({ field: { onChange, value } }) => {
                     return (
-                      <div className="flex flex-col gap-1">
-                        <Select
-                          label={`${i18n.t('division:entity.department')}`}
-                          onChange={onChange}
-                          defaultValue={value}
-                          options={[
-                            { value: volunteer.department, key: volunteer.department },
-                            { value: 'Caine', key: 'caine' },
-                            { value: 'Dog', key: 'dog' },
-                            { value: 'Hot Dog', key: 'hot' },
-                          ]}
-                        />
-                      </div>
+                      <OrganizationStructureSelect
+                        label={`${i18n.t('volunteer:form.department.label')}`}
+                        placeholder={`${i18n.t('general:select', { item: '' })}`}
+                        onChange={onChange}
+                        selected={value}
+                        type={DivisionType.DEPARTMENT}
+                      />
+                    );
+                  }}
+                />
+                <Controller
+                  name="role"
+                  key="role"
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <OrganizationStructureSelect
+                        label={`${i18n.t('volunteer:form.role.label')}`}
+                        placeholder={`${i18n.t('general:select', { item: '' })}`}
+                        onChange={onChange}
+                        selected={value}
+                        type={DivisionType.ROLE}
+                      />
                     );
                   }}
                 />
@@ -212,13 +220,10 @@ const EditVolunteer = () => {
                   name="startedOn"
                   key="startedOn"
                   control={control}
-                  defaultValue={volunteer.startedOn}
                   render={({ field: { onChange, value } }) => {
                     return (
                       <FormDatePicker
-                        label={`${i18n.t('volunteer:name', {
-                          status: i18n.t('pagination:range_separator_text'),
-                        })}`}
+                        label={`${i18n.t('volunteer:form.started_on.label')}`}
                         onChange={onChange}
                         value={value}
                       />

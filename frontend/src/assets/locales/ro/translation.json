@@ -100,11 +100,32 @@
         "rejected": "respinsa"
       }
     },
-    "submit": {
-      "success": "Informatiile voluntarului au fost modificate cu succes"
-    },
     "errors": {
       "VOL_001": "Nu s-a putut incarca cererea voluntarului"
+    },
+    "form": {
+      "name": {
+        "label": "Nume voluntar*"
+      },
+      "email": {
+        "label": "Email de contact*",
+        "required": "Email-ul de contact este obligatoriu"
+      },
+      "branch": {
+        "label": "Filiala sau sucursala"
+      },
+      "department": {
+        "label": "Departament"
+      },
+      "role": {
+        "label": "Rol"
+      },
+      "started_on": {
+        "label": "Voluntar din"
+      },
+      "submit": {
+        "edit": "Datele voluntarului au fost modificate"
+      }
     }
   },
   "volunteers": {
