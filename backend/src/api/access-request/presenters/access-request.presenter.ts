@@ -48,6 +48,13 @@ export class AccessRequestPresenter {
   @ApiProperty({
     description: 'Questions and answers of the user for the current request.',
     required: false,
+    example: [
+      { question: 'De unde ai auzit de noi?', answer: 'Internet' },
+      {
+        question: 'Ce motiveaza inscrierea?',
+        answer: 'Sunt un voluntar dedicat',
+      },
+    ],
   })
   answers: IAccessRequestQA[];
 

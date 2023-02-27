@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
@@ -22,6 +23,13 @@ import { CreateOrganizationStructureDto } from './dto/create-org-structure.dto';
 import { UpdateOrganizationStructureDto } from './dto/update-org-structure.dto';
 import { OrganizationStructurePresenter } from './presenters/organization-structure.presenter';
 import { OrganizationStructureGuard } from 'src/api/organization/guards/organization-structure.guard';
+import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
+import { GetAllOrganizationStructureByTypeUseCase } from 'src/usecases/organization/organization-structure/get-all-organization-structure-by-type.usecase';
+import { OrganizationStructureListItemPresenter } from './presenters/organization-structure-list-item.presenter';
 
 // @Roles(Role.ADMIN)
 @ApiBearerAuth()
@@ -33,21 +41,43 @@ export class OrganizationStructureController {
     private readonly getAllStructureUsecase: GetAllOrganizationStructureUseCase,
     private readonly deleteStructureUsecase: DeleteOrganizationStructureUseCase,
     private readonly updateStructureUsecase: UpdateOrganizationStructureUseCase,
+    private readonly getAllStructureByTypeUseCase: GetAllOrganizationStructureByTypeUseCase,
   ) {}
 
   @ApiParam({ name: 'type', type: String, enum: OrganizationStructureType })
+  @ApiPaginatedResponse(OrganizationStructurePresenter)
   @Get(':type')
-  async getAll(
+  async getAllPaginated(
     @Param('type') type: OrganizationStructureType,
+    @Query() filters: BasePaginationFilterDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
-  ): Promise<OrganizationStructurePresenter[]> {
+  ): Promise<PaginatedPresenter<OrganizationStructurePresenter>> {
     const accessCodes = await this.getAllStructureUsecase.execute({
+      ...filters,
       type,
       organizationId,
     });
 
-    return accessCodes.map(
-      (accessCode) => new OrganizationStructurePresenter(accessCode),
+    return new PaginatedPresenter({
+      ...accessCodes,
+      items: accessCodes.items.map(
+        (accessCode) => new OrganizationStructurePresenter(accessCode),
+      ),
+    });
+  }
+
+  // TODO: Add cacheing on this one
+  @ApiParam({ name: 'type', type: String, enum: OrganizationStructureType })
+  @Get(':type/all')
+  async getAll(
+    @Param('type') type: OrganizationStructureType,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<OrganizationStructureListItemPresenter[]> {
+    const organizationStructures =
+      await this.getAllStructureByTypeUseCase.execute(type, organizationId);
+
+    return organizationStructures.map(
+      (structure) => new OrganizationStructureListItemPresenter(structure),
     );
   }
 

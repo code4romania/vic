@@ -28,7 +28,15 @@ export const getVolunteers = async (
           phone: '+40765555555',
           profilePicture:
             'https://images.pexels.com/photos/6195084/pexels-photo-6195084.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-          location: 'Iasi, jus Iasi',
+          location: {
+            id: 1,
+            name: 'Iasi',
+            county: {
+              id: 1,
+              abbreviation: 'VS',
+              name: 'Vaslui',
+            },
+          },
           birthday: new Date('2022-01-01'),
           sex: Sex.MALE,
           createdOn: new Date('2022-01-01'),
@@ -68,7 +76,15 @@ export const getVolunteer = async (id: string): Promise<IVolunteer> => {
       phone: '+40765555555',
       profilePicture:
         'https://images.pexels.com/photos/6195084/pexels-photo-6195084.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      location: 'Iasi, jus Iasi',
+      location: {
+        id: 1,
+        name: 'Iasi',
+        county: {
+          id: 1,
+          abbreviation: 'VS',
+          name: 'Vaslui',
+        },
+      },
       birthday: new Date('2022-01-01'),
       sex: Sex.MALE,
       createdOn: new Date('2022-01-01'),

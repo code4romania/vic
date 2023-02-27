@@ -1,14 +1,14 @@
-import { IDivision } from '../../components/Divisions';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
+import { IDivisionListItem } from './division.interface';
 import { IUser } from './user.interface';
 
 export interface IVolunteer {
   id: string;
   createdOn: Date;
   createdBy: IUser;
-  role: Pick<IDivision, 'id' | 'name'>;
-  department: Pick<IDivision, 'id' | 'name'>;
-  branch: Pick<IDivision, 'id' | 'name'>;
+  role: IDivisionListItem;
+  department: IDivisionListItem;
+  branch: IDivisionListItem;
   startedOn: Date;
   email: string;
   phone: string;

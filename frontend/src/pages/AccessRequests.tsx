@@ -40,6 +40,10 @@ import RejectTextareaModal from '../components/RejectTextareaModal';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { useNavigate } from 'react-router-dom';
 import { ACCESS_REQUEST_ERRORS } from '../common/errors/entities/access-request.errors';
+import DataTableFilters from '../components/DataTableFilters';
+import DateRangePicker from '../components/DateRangePicker';
+import LocationSelect from '../containers/LocationSelect';
+import { ListItem } from '../common/interfaces/list-item.interface';
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
   { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
@@ -62,10 +66,13 @@ const PendingAccessRequestsTableHeader = [
     selector: (row: IAccessRequest) => `${row.requestedBy.email}\n${row.requestedBy.phone}`,
   },
   {
-    id: 'requestedBy.address',
+    id: 'requestedBy.location.name',
     name: i18n.t('general:location'),
     sortable: true,
-    selector: (row: IAccessRequest) => row.requestedBy.address || '',
+    selector: (row: IAccessRequest) =>
+      row.requestedBy.location
+        ? `${row.requestedBy.location?.name}, ${row.requestedBy.location?.county?.abbreviation}`
+        : '',
   },
   {
     id: 'createdOn',
@@ -91,6 +98,10 @@ interface AccessRequestTable {
     page: number,
     orderByColumn?: string,
     orderDirection?: OrderDirection,
+    search?: string,
+    start?: Date,
+    end?: Date,
+    location?: string,
   ) => UseQueryResult<
     IPaginatedEntity<IAccessRequest>,
     AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>
@@ -105,6 +116,10 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+  // filters
+  const [searchWord, setSearchWord] = useState<string>();
+  const [createdOnRange, setCreatedOnRange] = useState<Date[]>([]);
+  const [location, setLocation] = useState<ListItem>();
   // confirmation modals
   const [showRejectAccessRequest, setShowRejectAccessRequest] = useState<null | IAccessRequest>(
     null,
@@ -119,7 +134,16 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     isLoading: isAccessRequestsLoading,
     error: accessCodeRequestError,
     refetch,
-  } = useAccessRequests(rowsPerPage as number, page as number, orderByColumn, orderDirection);
+  } = useAccessRequests(
+    rowsPerPage as number,
+    page as number,
+    orderByColumn,
+    orderDirection,
+    searchWord,
+    createdOnRange[0],
+    createdOnRange[1],
+    location?.value,
+  );
 
   // actions
   const { mutateAsync: approveAccessRequest, isLoading: isApprovingRequest } =
@@ -285,59 +309,79 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
       });
   };
 
+  const onResetFilters = () => {
+    setCreatedOnRange([]);
+    setLocation(undefined);
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <Button
-          label={i18n.t('general:download_table')}
-          icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-          className="btn-outline-secondary ml-auto"
-          onClick={() => alert('Not implemented')}
+    <>
+      <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
+        <DateRangePicker
+          label={i18n.t('access_requests:filters.access_request_range')}
+          onChange={setCreatedOnRange}
+          value={createdOnRange.length > 0 ? createdOnRange : undefined}
+          id="created-on-range__picker"
         />
-      </CardHeader>
-      <CardBody>
-        <DataTableComponent
-          columns={[
-            ...(status === RequestStatus.REJECTED
-              ? RejectedAccessRequestsTableHeader
-              : PendingAccessRequestsTableHeader),
-            buildAccessRequestActionColumns(),
-          ]}
-          data={accessRequests?.items}
-          loading={
-            isAccessRequestsLoading ||
-            isApprovingRequest ||
-            isRejectingAccessRequest ||
-            isDeletingAccessRequest
-          }
-          pagination
-          paginationPerPage={rowsPerPage}
-          paginationTotalRows={accessRequests?.meta?.totalItems}
-          paginationDefaultPage={page}
-          onChangeRowsPerPage={setRowsPerPage}
-          onChangePage={setPage}
-          onSort={onSort}
+        <LocationSelect
+          label={i18n.t('general:location')}
+          onSelect={setLocation}
+          defaultValue={location}
         />
-      </CardBody>
-      {showRejectAccessRequest && (
-        <RejectTextareaModal
-          label={i18n.t('reject_modal:description')}
-          title={i18n.t('reject_modal:title')}
-          onClose={setShowRejectAccessRequest.bind(null, null)}
-          onConfirm={confirmReject}
-        />
-      )}
-      {showDeleteAccessRequest && (
-        <ConfirmationModal
-          title={i18n.t('access_requests:confirmation_modal.title')}
-          description={i18n.t('access_requests:confirmation_modal.description')}
-          confirmBtnLabel={i18n.t('access_requests:confirmation_modal.button_label')}
-          onClose={setShowDeleteAccessRequest.bind(null, null)}
-          onConfirm={confirmDelete}
-          confirmBtnClassName="btn-danger"
-        />
-      )}
-    </Card>
+      </DataTableFilters>
+      <Card>
+        <CardHeader>
+          <Button
+            label={i18n.t('general:download_table')}
+            icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+            className="btn-outline-secondary ml-auto"
+            onClick={() => alert('Not implemented')}
+          />
+        </CardHeader>
+        <CardBody>
+          <DataTableComponent
+            columns={[
+              ...(status === RequestStatus.REJECTED
+                ? RejectedAccessRequestsTableHeader
+                : PendingAccessRequestsTableHeader),
+              buildAccessRequestActionColumns(),
+            ]}
+            data={accessRequests?.items}
+            loading={
+              isAccessRequestsLoading ||
+              isApprovingRequest ||
+              isRejectingAccessRequest ||
+              isDeletingAccessRequest
+            }
+            pagination
+            paginationPerPage={rowsPerPage}
+            paginationTotalRows={accessRequests?.meta?.totalItems}
+            paginationDefaultPage={page}
+            onChangeRowsPerPage={setRowsPerPage}
+            onChangePage={setPage}
+            onSort={onSort}
+          />
+        </CardBody>
+        {showRejectAccessRequest && (
+          <RejectTextareaModal
+            label={i18n.t('reject_modal:description')}
+            title={i18n.t('reject_modal:title')}
+            onClose={setShowRejectAccessRequest.bind(null, null)}
+            onConfirm={confirmReject}
+          />
+        )}
+        {showDeleteAccessRequest && (
+          <ConfirmationModal
+            title={i18n.t('access_requests:confirmation_modal.title')}
+            description={i18n.t('access_requests:confirmation_modal.description')}
+            confirmBtnLabel={i18n.t('access_requests:confirmation_modal.button_label')}
+            onClose={setShowDeleteAccessRequest.bind(null, null)}
+            onConfirm={confirmDelete}
+            confirmBtnClassName="btn-danger"
+          />
+        )}
+      </Card>
+    </>
   );
 };
 
@@ -353,10 +397,12 @@ const AccessRequests = () => {
       <PageHeader>{i18n.t('side_menu:options.access_requests')}</PageHeader>
       <Tabs<RequestStatus> tabs={AccessRequestsTabs} onClick={onTabClick}>
         {requestStatus === RequestStatus.PENDING && (
-          <AccessRequestTable
-            useAccessRequests={useNewAccessRequestsQuery}
-            status={requestStatus}
-          />
+          <>
+            <AccessRequestTable
+              useAccessRequests={useNewAccessRequestsQuery}
+              status={requestStatus}
+            />
+          </>
         )}
         {requestStatus === RequestStatus.REJECTED && (
           <AccessRequestTable

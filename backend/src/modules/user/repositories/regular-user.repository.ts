@@ -30,6 +30,9 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
   async find(options: FindRegularUserOptions): Promise<IRegularUserModel> {
     const userEntity = await this.regularUserRepository.findOne({
       where: options,
+      relations: {
+        location: true,
+      },
     });
 
     return userEntity ? RegularUserTransformer.fromEntity(userEntity) : null;
