@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from '@heroicons/react/24/outline';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ROUTES } from '../common/constants/routes';
 import { classNames } from '../common/utils/utils';
@@ -9,7 +9,7 @@ import MenuItem from './MenuItem';
 import MenuLink from './MenuLink';
 
 const SideMenu = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [isNarrow, setIsNarrow] = useState<boolean>(false);
   const [activeParentRoute, setActiveParentRoute] = useState<IRoute>(ROUTES[0]);
   const [activeSubRoute, setActiveSubRoute] = useState<IChildRoute | null>(null);
@@ -24,17 +24,14 @@ const SideMenu = () => {
 
     if (item.childRoutes && !childRoute) {
       setActiveSubRoute(item.childRoutes[0]);
+      navigate(`${item.href}`);
+    } else if (!item.childRoutes && item.icon) {
+      setActiveSubRoute(null);
+      navigate(`${item.href}`);
+    } else if (childRoute) {
+      setActiveSubRoute(childRoute);
+      navigate(`${childRoute.href}`);
     }
-
-    // if (!item.childRoutes && item.icon) {
-    //   setActiveSubRoute(null);
-    //   navigate(`${item.href}`);
-    // } else if (item.childRoutes && !childRoute) {
-    //   setActiveSubRoute(item.childRoutes[0]);
-    // } else if (childRoute) {
-    //   setActiveSubRoute(childRoute);
-    //   navigate(`${item.href}`);
-    // }
   };
 
   return (
