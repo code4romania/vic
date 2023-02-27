@@ -15,10 +15,6 @@ const SideMenu = () => {
   const [activeSubRoute, setActiveSubRoute] = useState<IChildRoute | null>(null);
   const { t } = useTranslation('side_menu');
 
-  useEffect(() => {
-    console.log(activeSubRoute, activeParentRoute);
-  }, [activeSubRoute, activeParentRoute]);
-
   const onMenuItemClick = (item: IRoute, childRoute?: IChildRoute) => {
     setActiveParentRoute(item);
 
