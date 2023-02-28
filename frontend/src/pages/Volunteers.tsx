@@ -18,21 +18,46 @@ import {
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { SelectItem } from '../components/Select';
+import Select, { SelectItem } from '../components/Select';
 import { formatDate } from '../common/utils/utils';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import { useVolunteersQuery } from '../services/volunteer/volunteer.service';
 import PageHeader from '../components/PageHeader';
-import { IVolunteer } from '../common/interfaces/volunteer.interface';
+import { AgeRangeEnum, IVolunteer } from '../common/interfaces/volunteer.interface';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { useNavigate } from 'react-router-dom';
+import DataTableFilters from '../components/DataTableFilters';
+import DateRangePicker from '../components/DateRangePicker';
+import LocationSelect from '../containers/LocationSelect';
+import { ListItem } from '../common/interfaces/list-item.interface';
+import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
+import { DivisionType } from '../common/enums/division-type.enum';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
   { key: VolunteerStatus.ARCHIVED, value: i18n.t('volunteers:tabs.archived') },
   { key: VolunteerStatus.BLOCKED, value: i18n.t('volunteers:tabs.blocked') },
+];
+
+const AgeRangeOptions: SelectItem<AgeRangeEnum>[] = [
+  {
+    key: AgeRangeEnum['0_18'],
+    value: '0-18',
+  },
+  {
+    key: AgeRangeEnum['18_30'],
+    value: '18-30',
+  },
+  {
+    key: AgeRangeEnum['30_50'],
+    value: '30-50',
+  },
+  {
+    key: AgeRangeEnum.OVER_50,
+    value: '>50',
+  },
 ];
 
 const ActiveVolunteersTableHeader = [
@@ -104,6 +129,14 @@ const Volunteers = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+  // filters
+  const [searchWord, setSearchWord] = useState<string>();
+  const [createdOnRange, setCreatedOnRange] = useState<Date[]>([]);
+  const [location, setLocation] = useState<ListItem>();
+  const [branch, setBranch] = useState<SelectItem<string>>();
+  const [department, setDepartment] = useState<SelectItem<string>>();
+  const [role, setRole] = useState<SelectItem<string>>();
+  const [age, setAge] = useState<SelectItem<AgeRangeEnum>>();
 
   const {
     data: volunteers,
@@ -115,6 +148,14 @@ const Volunteers = () => {
     page as number,
     orderByColumn,
     orderDirection,
+    searchWord,
+    age?.key,
+    branch?.key,
+    department?.key,
+    role?.key,
+    location?.value,
+    createdOnRange[0],
+    createdOnRange[1],
   );
 
   useEffect(() => {
@@ -249,9 +290,60 @@ const Volunteers = () => {
     );
   };
 
+  const onResetFilters = () => {
+    setCreatedOnRange([]);
+    setLocation(undefined);
+    setBranch(undefined);
+    setDepartment(undefined);
+    setRole(undefined);
+    setAge(undefined);
+    setSearchWord(undefined);
+  };
+
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.volunteers_list')}</PageHeader>
+      <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
+        <DateRangePicker
+          label={i18n.t('access_requests:filters.access_request_range')}
+          onChange={setCreatedOnRange}
+          value={createdOnRange.length > 0 ? createdOnRange : undefined}
+          id="created-on-range__picker"
+        />
+        <OrganizationStructureSelect
+          label={`${i18n.t('division:entity.branch')}`}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+          onChange={setBranch}
+          selected={branch}
+          type={DivisionType.BRANCH}
+        />
+        <OrganizationStructureSelect
+          label={`${i18n.t('division:entity.department')}`}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+          onChange={setDepartment}
+          selected={department}
+          type={DivisionType.DEPARTMENT}
+        />
+        <OrganizationStructureSelect
+          label={`${i18n.t('division:entity.role')}`}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+          onChange={setRole}
+          selected={role}
+          type={DivisionType.ROLE}
+        />
+        <LocationSelect
+          label={i18n.t('general:location')}
+          onSelect={setLocation}
+          defaultValue={location}
+        />
+        <Select
+          label={`${i18n.t('general:age')}`}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+          options={AgeRangeOptions}
+          onChange={setAge}
+          selected={age}
+        />
+      </DataTableFilters>
       <Tabs<VolunteerStatus> tabs={VolunteersTabs} onClick={onTabClick}>
         <Card>
           <CardHeader>

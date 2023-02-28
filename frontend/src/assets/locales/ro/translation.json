@@ -3,6 +3,7 @@
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "name": "Nume",
+    "age": "Vârsta",
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
     "category": "Categorie",

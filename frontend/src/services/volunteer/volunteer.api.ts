@@ -3,7 +3,7 @@ import { Sex } from '../../common/enums/sex.enum';
 import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { VolunteerFormTypes } from '../../pages/EditVolunteer';
-import { IVolunteer } from '../../common/interfaces/volunteer.interface';
+import { AgeRangeEnum, IVolunteer } from '../../common/interfaces/volunteer.interface';
 // import API from '../api';
 
 export const getVolunteers = async (
@@ -12,11 +12,19 @@ export const getVolunteers = async (
   page: number,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  search?: string,
+  age?: AgeRangeEnum,
+  branchId?: string,
+  departmentId?: string,
+  roleId?: string,
+  locationId?: string,
+  start?: Date,
+  end?: Date,
 ): Promise<IPaginatedEntity<IVolunteer>> => {
   // return API.get('/volunteers', {
-  //   params: { limit, page, filterStatus, orderBy, orderDirection },
+  //   params: { limit, page, filterStatus, orderBy, orderDirection, search, age, branchId, departmentId, roleId, locationId, start, end },
   // }).then((res) => res.data);
-
+  console.log(age, branchId, departmentId, roleId, locationId, search, start, end);
   return Promise.resolve({
     items: [
       {
