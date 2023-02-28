@@ -69,7 +69,9 @@ const AnnouncementTableHeader = [
             ({row.targetedVolunteers}) {row.targets.map((target) => `, ${target.name}`)}
           </p>
         ) : (
-          <p>{i18n.t('announcement:all_organization')}</p>
+          <p>
+            ({row.targetedVolunteers}) {i18n.t('announcement:all_organization')}
+          </p>
         )}
       </CellLayout>
     ),
