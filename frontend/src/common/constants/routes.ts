@@ -38,7 +38,7 @@ export const ROUTES: IRoute[] = [
     icon: PuzzlePieceIcon,
   },
   {
-    id: 7,
+    id: 4,
     name: i18n.t('side_menu:options.announcements'),
     href: 'announcements',
     icon: MegaphoneIcon,
