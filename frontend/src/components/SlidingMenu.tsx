@@ -41,12 +41,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
   }, [location]);
 
   const onMenuItemClick = (item: IRoute, childRoute?: IChildRoute) => {
-    if (childRoute) {
-      navigate(`${childRoute.href}`);
-    } else {
-      navigate(`${item.href}`);
-    }
-
+    navigate(childRoute ? `${childRoute.href}` : `${item.href}`);
     setSlidingMenuOpen(false);
   };
 
