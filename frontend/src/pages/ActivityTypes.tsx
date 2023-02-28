@@ -22,7 +22,7 @@ import { SelectItem } from '../components/Select';
 const ActivityTypes = () => {
   // navigation
   const navigate = useNavigate();
-  //filters
+  // filters
   const [search, setSearch] = useState<string>();
   const [branch, setBranch] = useState<SelectItem<string>>();
   const [department, setDepartment] = useState<SelectItem<string>>();
@@ -51,16 +51,6 @@ const ActivityTypes = () => {
     navigate(`edit/${id}`);
   };
 
-  const onBranchChange = (item: SelectItem<string>) => {
-    setBranch(item);
-  };
-  const onDepartmentChange = (item: SelectItem<string>) => {
-    setDepartment(item);
-  };
-  const onRoleChange = (item: SelectItem<string>) => {
-    setRole(item);
-  };
-
   const onResetFilters = () => {
     setBranch(undefined);
     setDepartment(undefined);
@@ -83,21 +73,21 @@ const ActivityTypes = () => {
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.branch')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={onBranchChange}
+          onChange={setBranch}
           selected={branch}
           type={DivisionType.BRANCH}
         />
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.department')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={onDepartmentChange}
+          onChange={setDepartment}
           selected={department}
           type={DivisionType.DEPARTMENT}
         />
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.role')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={onRoleChange}
+          onChange={setRole}
           selected={role}
           type={DivisionType.ROLE}
         />
