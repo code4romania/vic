@@ -5,7 +5,7 @@ import { ANNOUNCEMENT_ERRORS } from '../../common/errors/entities/announcement.e
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { getAnnouncements } from './announcement.api';
 
-export const useGetAllAnnouncementsQuery = (
+export const useAnnouncementsQuery = (
   limit: number,
   page: number,
   orderBy?: string,
@@ -15,7 +15,6 @@ export const useGetAllAnnouncementsQuery = (
     ['announcement', limit, page, orderBy, orderDirection],
     () => getAnnouncements(limit, page, orderBy, orderDirection),
     {
-      enabled: !!(limit && page),
       onError: (error: AxiosError<IBusinessException<ANNOUNCEMENT_ERRORS>>) => error,
     },
   );

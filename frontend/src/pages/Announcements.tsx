@@ -15,7 +15,7 @@ import Popover from '../components/Popover';
 import { EnvelopeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { formatDate, formatDateWithTime } from '../common/utils/utils';
-import { useGetAllAnnouncementsQuery } from '../services/announcement/announcement.service';
+import { useAnnouncementsQuery } from '../services/announcement/announcement.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -96,21 +96,7 @@ const Announcements = () => {
     data: announcements,
     isLoading: getAnnouncementsLoading,
     error: getAnnouncementsError,
-  } = useGetAllAnnouncementsQuery(
-    rowsPerPage as number,
-    page as number,
-    orderByColumn,
-    orderDirection,
-  );
-
-  useEffect(() => {
-    if (announcements?.meta) {
-      setPage(announcements.meta.currentPage);
-      setRowsPerPage(announcements.meta.itemsPerPage);
-      setOrderByColumn(announcements.meta.orderByColumn);
-      setOrderDirection(announcements.meta.orderDirection);
-    }
-  });
+  } = useAnnouncementsQuery(rowsPerPage as number, page as number, orderByColumn, orderDirection);
 
   useEffect(() => {
     if (getAnnouncementsError) {
@@ -120,7 +106,7 @@ const Announcements = () => {
         ),
       );
     }
-  });
+  }, [getAnnouncementsError]);
 
   const buildAnnouncementActionColumn = (): TableColumn<IAnnouncement> => {
     const announcementDraftMenuItems = [
