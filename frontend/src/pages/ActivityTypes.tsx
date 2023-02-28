@@ -14,10 +14,10 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useActivityTypesQuery } from '../services/activity-type/activity-type.service';
 import { IActivityType } from '../common/interfaces/activity-type.interface';
 import ActivityType from '../components/ActivityType';
-import DataTableFilters from '../components/DataTableFilters';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
 import { SelectItem } from '../components/Select';
+import DataTableFilters from '../components/DataTableFilters';
 
 const ActivityTypes = () => {
   // navigation
@@ -69,7 +69,7 @@ const ActivityTypes = () => {
           onClick={onAddActivityType}
         />
       </div>
-      <DataTableFilters onSearch={setSearch} onResetFilters={onResetFilters}>
+      <DataTableFilters onSearch={setSearch} searchValue={search} onResetFilters={onResetFilters}>
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.branch')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
