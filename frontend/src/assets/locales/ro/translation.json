@@ -267,7 +267,7 @@
     "create": "Creeaza cod nou",
     "title": "Informatii cod acces",
     "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
-    "start_date": "Data inceput valabiliatate*",
+    "start_date": "Data inceput valabilitate*",
     "end_date": "Data final valabilitate",
     "modal": {
       "title": "Sigur doriți să ștergeți acestui cod?",

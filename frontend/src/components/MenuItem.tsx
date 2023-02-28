@@ -1,36 +1,59 @@
 import React from 'react';
-import { IRoute } from '../common/interfaces/route.interface';
+import { IChildRoute, IRoute } from '../common/interfaces/route.interface';
+import MenuLink from './MenuLink';
 import { classNames } from '../common/utils/utils';
 
 interface MenuItemProps {
   item: IRoute;
-  active: boolean;
+  activeParentRoute: IRoute;
+  activeSubRoute?: IChildRoute | null;
   isNarrow?: boolean;
-  onClick: (item: IRoute) => void;
+  onClick: (item: IRoute, childRoute?: IChildRoute) => void;
 }
 
-const MenuItem = ({ item, active, isNarrow, onClick }: MenuItemProps) => {
-  return (
-    <a
-      id={`${item.name}__menu-item`}
-      aria-label={item.name}
+const MenuItem = ({
+  item,
+  activeParentRoute,
+  activeSubRoute,
+  isNarrow,
+  onClick,
+}: MenuItemProps) => {
+  const onChildRouteClick = (childRoute: IRoute) => {
+    onClick(item, childRoute);
+  };
+
+  return item.childRoutes ? (
+    <div
       className={classNames(
-        active ? 'bg-turquoise/[0.15] text-turquoise' : 'text-gray-50',
-        isNarrow ? 'justify-center px-0 space-x-0' : 'px-4 space-x-5 ',
-        'h-10 flex items-center px-2 py-2 font-medium rounded-md hover:bg-turquoise/[0.15]  hover:text-turquoise',
+        item.id === activeParentRoute.id && !isNarrow ? 'pb-4' : '',
+        'flex flex-col gap-2',
       )}
-      onClick={onClick.bind(null, item)}
     >
-      <item.icon className="w-6 h-6" />
-      <span
-        className={classNames(
-          isNarrow ? '-translate-x-2 hidden' : '',
-          'transition-transform duration-50 whitespace-nowrap',
-        )}
-      >
-        {item.name}
-      </span>
-    </a>
+      <MenuLink
+        item={item}
+        active={item.id === activeParentRoute.id}
+        isNarrow={isNarrow}
+        onClick={onClick}
+      />
+      {item.id === activeParentRoute.id &&
+        !isNarrow &&
+        item.childRoutes.map((childRoute) => (
+          <MenuLink
+            key={childRoute.id}
+            item={childRoute}
+            active={childRoute.id === activeSubRoute?.id}
+            isNarrow={isNarrow}
+            onClick={onChildRouteClick}
+          />
+        ))}
+    </div>
+  ) : (
+    <MenuLink
+      item={item}
+      active={item.id === activeParentRoute.id}
+      isNarrow={isNarrow}
+      onClick={onClick}
+    />
   );
 };
 
