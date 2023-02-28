@@ -20,7 +20,7 @@ import { GetManyActivityTypeUseCase } from 'src/usecases/activity-type/get-all-a
 import { GetOneActivityTypeUseCase } from 'src/usecases/activity-type/get-one-activity-type.usecase';
 import { UpdateActivityTypeUseCase } from 'src/usecases/activity-type/update-activity-type.usecase';
 import { CreateActivityTypeDto } from './dto/create-activity-type.dto';
-import { GetActivityTypeDto } from './dto/get-activity-types.dto';
+import { GetActivityTypesDto } from './dto/get-activity-types.dto';
 import { UpdateActivityTypeDto } from './dto/update-activity-type.dto';
 import { ActivityTypeGuard } from './guards/activity-type.guard';
 import { ActivityTypePresenter } from './presenters/activity-type.presenter';
@@ -41,7 +41,7 @@ export class ActivityTypeController {
   @Get()
   async getMany(
     @ExtractUser() user: IAdminUserModel,
-    @Query() activityTypeFilters: GetActivityTypeDto,
+    @Query() activityTypeFilters: GetActivityTypesDto,
   ): Promise<ActivityTypePresenter[]> {
     const activityTypes = await this.getManyActivityTypeUseCase.execute({
       organizationId: user.organizationId,

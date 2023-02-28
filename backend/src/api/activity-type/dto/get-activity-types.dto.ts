@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class GetActivityTypeDto {
+export class GetActivityTypesDto {
   @IsString()
   @IsOptional()
   branchId?: string;
