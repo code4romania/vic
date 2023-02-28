@@ -18,6 +18,7 @@ import { formatDate, formatDateWithTime } from '../common/utils/utils';
 import { useGetAllAnnouncementsQuery } from '../services/announcement/announcement.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useErrorToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const mapTargetsToString = (announcement: IAnnouncement) => {
   return `(${announcement.targetedVolunteers}) ${announcement.targets.map(
@@ -93,8 +94,8 @@ const Announcements = () => {
 
   const {
     data: announcements,
-    isLoading,
-    error,
+    isLoading: getAnnouncementsLoading,
+    error: getAnnouncementsError,
   } = useGetAllAnnouncementsQuery(
     rowsPerPage as number,
     page as number,
@@ -112,13 +113,17 @@ const Announcements = () => {
   });
 
   useEffect(() => {
-    if (error) {
-      useErrorToast('eroare');
+    if (getAnnouncementsError) {
+      useErrorToast(
+        InternalErrors.ANNOUNCEMENT_ERRORS.getError(
+          getAnnouncementsError.response?.data.code_error,
+        ),
+      );
     }
   });
 
   const buildAnnouncementActionColumn = (): TableColumn<IAnnouncement> => {
-    const announcementMenuItems = [
+    const announcementDraftMenuItems = [
       {
         label: i18n.t('announcement:publish'),
         icon: <EnvelopeIcon className="menu-icon" />,
@@ -137,12 +142,27 @@ const Announcements = () => {
       },
     ];
 
+    const announcementPublishedMenuItems = [
+      {
+        label: i18n.t('general:delete', { item: '' }),
+        icon: <TrashIcon className="menu-icon" />,
+        onClick: onDelete,
+        alert: true,
+      },
+    ];
+
     return {
       name: '',
-      cell: (row: IAnnouncement) =>
-        row.status === AnnouncementStatus.DRAFT && (
-          <Popover<IAnnouncement> row={row} items={announcementMenuItems} />
-        ),
+      cell: (row: IAnnouncement) => (
+        <Popover<IAnnouncement>
+          row={row}
+          items={
+            row.status === AnnouncementStatus.PUBLISHED
+              ? announcementPublishedMenuItems
+              : announcementDraftMenuItems
+          }
+        />
+      ),
       width: '50px',
       allowOverflow: true,
     };
@@ -200,7 +220,7 @@ const Announcements = () => {
             columns={[...AnnouncementTableHeader, buildAnnouncementActionColumn()]}
             data={announcements?.items}
             pagination
-            loading={isLoading}
+            loading={getAnnouncementsLoading}
             paginationPerPage={announcements?.meta.itemsPerPage}
             paginationTotalRows={announcements?.meta.totalItems}
             paginationDefaultPage={page}
