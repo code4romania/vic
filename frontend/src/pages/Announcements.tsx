@@ -42,7 +42,11 @@ const AnnouncementTableHeader = [
     cell: (row: IAnnouncement) => (
       <CellLayout>
         <div className="flex flex-row gap-2">
-          <span className="h-2 w-2 border-solid bg-green-500 rounded-full self-center" />
+          <span
+            className={`h-2 w-2 border-solid ${
+              row.status === AnnouncementStatus.PUBLISHED ? 'bg-green-500' : 'bg-yellow-500'
+            } rounded-full self-center`}
+          />
           <p>{i18n.t(`announcement:status.${row.status}`)}</p>
         </div>
       </CellLayout>
