@@ -56,7 +56,8 @@
     @apply font-titilliumBold;
   }
 
-  input[type='text'],
+  input,
+  [type='text'],
   [type='email'],
   [type='url'],
   [type='password'],
