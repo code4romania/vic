@@ -303,48 +303,48 @@ const Volunteers = () => {
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.volunteers_list')}</PageHeader>
-      <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
-        <DateRangePicker
-          label={i18n.t('access_requests:filters.access_request_range')}
-          onChange={setCreatedOnRange}
-          value={createdOnRange.length > 0 ? createdOnRange : undefined}
-          id="created-on-range__picker"
-        />
-        <OrganizationStructureSelect
-          label={`${i18n.t('division:entity.branch')}`}
-          placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setBranch}
-          selected={branch}
-          type={DivisionType.BRANCH}
-        />
-        <OrganizationStructureSelect
-          label={`${i18n.t('division:entity.department')}`}
-          placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setDepartment}
-          selected={department}
-          type={DivisionType.DEPARTMENT}
-        />
-        <OrganizationStructureSelect
-          label={`${i18n.t('division:entity.role')}`}
-          placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setRole}
-          selected={role}
-          type={DivisionType.ROLE}
-        />
-        <LocationSelect
-          label={i18n.t('general:location')}
-          onSelect={setLocation}
-          defaultValue={location}
-        />
-        <Select
-          label={`${i18n.t('general:age')}`}
-          placeholder={`${i18n.t('general:select', { item: '' })}`}
-          options={AgeRangeOptions}
-          onChange={setAge}
-          selected={age}
-        />
-      </DataTableFilters>
       <Tabs<VolunteerStatus> tabs={VolunteersTabs} onClick={onTabClick}>
+        <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
+          <DateRangePicker
+            label={i18n.t('access_requests:filters.access_request_range')}
+            onChange={setCreatedOnRange}
+            value={createdOnRange.length > 0 ? createdOnRange : undefined}
+            id="created-on-range__picker"
+          />
+          <OrganizationStructureSelect
+            label={`${i18n.t('division:entity.branch')}`}
+            placeholder={`${i18n.t('general:select', { item: '' })}`}
+            onChange={setBranch}
+            selected={branch}
+            type={DivisionType.BRANCH}
+          />
+          <OrganizationStructureSelect
+            label={`${i18n.t('division:entity.department')}`}
+            placeholder={`${i18n.t('general:select', { item: '' })}`}
+            onChange={setDepartment}
+            selected={department}
+            type={DivisionType.DEPARTMENT}
+          />
+          <OrganizationStructureSelect
+            label={`${i18n.t('division:entity.role')}`}
+            placeholder={`${i18n.t('general:select', { item: '' })}`}
+            onChange={setRole}
+            selected={role}
+            type={DivisionType.ROLE}
+          />
+          <LocationSelect
+            label={i18n.t('general:location')}
+            onSelect={setLocation}
+            defaultValue={location}
+          />
+          <Select
+            label={`${i18n.t('general:age')}`}
+            placeholder={`${i18n.t('general:select', { item: '' })}`}
+            options={AgeRangeOptions}
+            onChange={setAge}
+            selected={age}
+          />
+        </DataTableFilters>
         <Card>
           <CardHeader>
             <h2>{i18n.t(`volunteers:tabs.${volunteerStatus}`)}</h2>
