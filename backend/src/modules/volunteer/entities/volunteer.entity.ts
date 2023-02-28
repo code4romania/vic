@@ -1,5 +1,4 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
-import { OrganizationStructureEntity } from 'src/modules/organization/entities/organization-structure.entity';
 import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
 import {
   AdminUserEntity,

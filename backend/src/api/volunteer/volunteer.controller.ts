@@ -9,7 +9,10 @@ import {
 import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
-import { PaginatedPresenter } from 'src/infrastructure/presenters/generic-paginated.presenter';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetManyVolunteersUseCase } from 'src/usecases/volunteer/get-many-volunteers.usecase';
@@ -34,20 +37,21 @@ export class VolunteerController {
   ) {}
 
   @Get()
-  // @ApiPaginatedResponse(AccessRequestPresenter)
+  @ApiPaginatedResponse(VolunteerPresenter)
   async getMany(
     @Query() filters: GetVolunteersDto,
     @ExtractUser() user: IAdminUserModel,
-  ): Promise<PaginatedPresenter<unknown>> {
-    const volunteers = await this.getManyVolunteersUsecase.execute(
-      user.organizationId,
-    );
+  ): Promise<PaginatedPresenter<VolunteerPresenter>> {
+    const volunteers = await this.getManyVolunteersUsecase.execute({
+      organizationId: user.organizationId,
+      ...filters,
+    });
 
     return new PaginatedPresenter({
       ...volunteers,
-      // items: volunteers.items.map(
-      //   (accessRequest) => new AccessRequestPresenter(accessRequest),
-      // ),
+      items: volunteers.items.map(
+        (volunteer) => new VolunteerPresenter(volunteer),
+      ),
     });
   }
 

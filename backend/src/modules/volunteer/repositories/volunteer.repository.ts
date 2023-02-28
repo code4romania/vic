@@ -1,10 +1,16 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { RepositoryWithPagination } from 'src/infrastructure/base/repository-with-pagination.class';
-import { Repository } from 'typeorm';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
+import {
+  Pagination,
+  RepositoryWithPagination,
+} from 'src/infrastructure/base/repository-with-pagination.class';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { VolunteerEntity } from '../entities/volunteer.entity';
 import { IVolunteerRepository } from '../intefaces/volunteer-repository.interface';
 import {
   CreateVolunteerOptions,
+  FindManyVolunteersOptions,
   FindVolunteerOptions,
   IVolunteerModel,
   UpdateVolunteerOptions,
@@ -20,6 +26,62 @@ export class VolunteerRepositoryService
     private readonly volunteerRepository: Repository<VolunteerEntity>,
   ) {
     super(volunteerRepository);
+  }
+
+  async findMany(
+    findOptions: FindManyVolunteersOptions,
+  ): Promise<Pagination<IVolunteerModel>> {
+    const options: {
+      filters: FindOptionsWhere<VolunteerEntity>;
+    } & IBasePaginationFilterModel = {
+      ...findOptions,
+      filters: {
+        status: findOptions.status,
+        ...(findOptions.branchId ||
+        findOptions.departmentId ||
+        findOptions.roleId
+          ? {
+              volunteerProfile: {
+                ...(findOptions.branchId
+                  ? { branchId: findOptions.branchId }
+                  : {}),
+                ...(findOptions.departmentId
+                  ? { departmentId: findOptions.departmentId }
+                  : {}),
+                ...(findOptions.roleId ? { roleId: findOptions.roleId } : {}),
+              },
+            }
+          : {}),
+        ...(findOptions.locationId
+          ? {
+              user: {
+                locationId: findOptions.locationId,
+              },
+            }
+          : {}),
+      },
+      // TODO: map age
+    };
+
+    return this.findManyPaginated<IVolunteerModel>(
+      {
+        searchableColumns: [
+          'user.name',
+          'volunteerProfile.email',
+          'volunteerProfile.phone',
+        ],
+        defaultSortBy: 'createdOn',
+        defaultOrderDirection: OrderDirection.DESC,
+        relations: {
+          volunteerProfile: true,
+          user: true,
+          organization: true,
+        },
+        rangeColumn: 'createdOn',
+      },
+      options,
+      VolunteerModelTransformer.fromEntity,
+    );
   }
 
   async update({

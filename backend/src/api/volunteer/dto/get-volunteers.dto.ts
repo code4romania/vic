@@ -4,6 +4,9 @@ import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 
 export class GetVolunteersDto extends BasePaginationFilterDto {
+  @IsEnum(VolunteerStatus)
+  status: VolunteerStatus;
+
   @IsEnum(AgeRangeEnum)
   @IsOptional()
   age?: AgeRangeEnum;
@@ -23,8 +26,4 @@ export class GetVolunteersDto extends BasePaginationFilterDto {
   @IsNumber()
   @IsOptional()
   locationId?: number;
-
-  @IsEnum(VolunteerStatus)
-  @IsOptional()
-  status?: VolunteerStatus;
 }
