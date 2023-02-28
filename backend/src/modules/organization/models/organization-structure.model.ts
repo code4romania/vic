@@ -1,4 +1,5 @@
 import { IBaseModel } from 'src/common/interfaces/base.model';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
 import { OrganizationStructureType } from '../enums/organization-structure-type.enum';
@@ -26,9 +27,13 @@ export type IFindOrganizationStructureModel = Partial<
   Pick<IOrganizationStructureModel, 'id' | 'name' | 'type' | 'organizationId'>
 >;
 
-export type IFindAllOrganizationStructureModel = Required<
-  Pick<IOrganizationStructureModel, 'organizationId' | 'type'>
->;
+export type IFindAllOrganizationStructurePaginatedModel =
+  IBasePaginationFilterModel &
+    Required<Pick<IOrganizationStructureModel, 'organizationId' | 'type'>>;
+
+export type IFindAllOrganizationStructureModel =
+  | Partial<IOrganizationStructureModel>
+  | Partial<IOrganizationStructureModel>[];
 
 export class OrganizationStructureTransformer {
   static fromEntity(

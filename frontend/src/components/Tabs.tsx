@@ -34,7 +34,7 @@ const Tabs = <T extends React.Key>({ children, tabs, onClick, defaultTab }: Tabs
         ))}
       </nav>
       <div className="lg:hidden">
-        <Select options={tabs} onChange={onTabClick} defaultValue={activeTab} />
+        <Select options={tabs} onChange={onTabClick} selected={activeTab} />
       </div>
       {children}
     </div>

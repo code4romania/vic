@@ -7,7 +7,7 @@ import i18n from '../common/config/i18n';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { REGEX } from '../common/constants/patterns';
 import FormInput from './FormInput';
-import { DivisionType } from './Divisions';
+import { DivisionType } from '../common/enums/division-type.enum';
 
 interface DivisionInputModalProps {
   title: string;
@@ -73,9 +73,7 @@ const DivisionInputModal = ({
                 errorMessage={errors['name']?.message}
                 readOnly={false}
                 value={value}
-                label={`${i18n.t('general:name')} ${i18n.t(
-                  `division:entity.${divisionType.toLocaleLowerCase()}`,
-                )}`}
+                label={`${i18n.t('general:name')} ${i18n.t(`division:entity.${divisionType}`)}`}
                 onChange={onChange}
                 aria-invalid={errors['name']?.message ? 'true' : 'false'}
               />
@@ -86,7 +84,7 @@ const DivisionInputModal = ({
       <div className="flex flex-row-reverse">
         <Button
           label={i18n.t('general:add', {
-            item: i18n.t(`division:entity.${divisionType.toLocaleLowerCase()}`),
+            item: i18n.t(`division:entity.${divisionType}`),
           })}
           className="btn-primary"
           onClick={handleSubmit(onSubmit)}

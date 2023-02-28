@@ -37,10 +37,8 @@ export const useAccessCodesQuery = (
   orderBy?: string,
   orderDirection?: OrderDirection,
 ) => {
-  return useQuery(
-    ['access-codes', limit, page, orderBy, orderDirection],
-    () => getAccessCodes(limit, page, orderBy, orderDirection),
-    { enabled: !!(limit && page) },
+  return useQuery(['access-codes', limit, page, orderBy, orderDirection], () =>
+    getAccessCodes(limit, page, orderBy, orderDirection),
   );
 };
 

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
-import { PaginationConfig } from '../common/constants/pagination';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IUser } from '../common/interfaces/user.interface';
@@ -35,7 +34,7 @@ export interface IAccessCode {
 
 const AccessCodeTableHeader = [
   {
-    id: 'name',
+    id: 'code',
     name: i18n.t('access_code:name'),
     sortable: true,
     grow: 1,
@@ -43,15 +42,18 @@ const AccessCodeTableHeader = [
     selector: (row: IAccessCode) => row.code,
   },
   {
-    id: 'availability',
+    id: 'startDate',
     name: i18n.t('general:availability'),
     sortable: true,
     grow: 2,
     minWidth: '10rem',
-    selector: (row: IAccessCode) => `${formatDate(row.startDate)} -\n${formatDate(row.endDate)}`,
+    selector: (row: IAccessCode) =>
+      `${formatDate(row.startDate)} -\n${
+        row.endDate ? `${formatDate(row.endDate)}` : i18n.t('general:unlimited')
+      }`,
   },
   {
-    id: 'uses',
+    id: 'usageCount',
     name: i18n.t('general:uses'),
     sortable: true,
     grow: 1,
@@ -104,15 +106,6 @@ const AccessCodes = () => {
     useDeleteAccessCodeMutation();
 
   useEffect(() => {
-    if (accessCodes?.meta) {
-      setPage(accessCodes.meta.currentPage);
-      setRowsPerPage(accessCodes.meta.itemsPerPage);
-      setOrderByColumn(accessCodes.meta.orderByColumn);
-      setOrderDirection(accessCodes.meta.orderDirection);
-    }
-  }, []);
-
-  useEffect(() => {
     if (accessCodesError) useErrorToast(i18n.t('general:error.load_entries'));
   }, [accessCodesError]);
 
@@ -141,7 +134,7 @@ const AccessCodes = () => {
 
   // row actions
   const onEdit = (row: IAccessCode) => {
-    navigate(`edit/${row.id}`);
+    navigate(`${row.id}/edit`);
   };
 
   const onDelete = (row: IAccessCode) => {
@@ -214,7 +207,6 @@ const AccessCodes = () => {
               loading={isAccessCodesLoading || isDeleteAccessCodeLoading}
               pagination
               paginationPerPage={accessCodes?.meta?.itemsPerPage}
-              paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
               paginationTotalRows={accessCodes?.meta?.totalItems}
               paginationDefaultPage={page}
               onChangeRowsPerPage={onRowsPerPageChange}
