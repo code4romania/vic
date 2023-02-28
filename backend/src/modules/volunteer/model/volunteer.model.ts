@@ -1,9 +1,7 @@
+import { AgeRangeEnum } from 'src/common/enums/age-range.enum';
 import { OneOf } from 'src/common/helpers/typescript-extends';
 import { IBaseModel } from 'src/common/interfaces/base.model';
-import {
-  IOrganizationStructureModel,
-  OrganizationStructureTransformer,
-} from 'src/modules/organization/models/organization-structure.model';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   IOrganizationModel,
   OrganizationTransformer,
@@ -49,11 +47,13 @@ export type ArchiveVolunteerOptions = {
   archivedOn: Date;
   archivedById: string;
 };
+
 export type BlockVolunteerOptions = {
   status: VolunteerStatus.BLOCKED;
   blockedOn: Date;
   blockedById: string;
 };
+
 export type ActivateVolunteerOptions = {
   status: VolunteerStatus.ACTIVE;
   blockedOn: null;
@@ -61,6 +61,7 @@ export type ActivateVolunteerOptions = {
   archivedOn: null;
   archivedById: null;
 };
+
 export type UpdateVolunteerOptions = Pick<IVolunteerModel, 'id'> &
   OneOf<
     [ArchiveVolunteerOptions, BlockVolunteerOptions, ActivateVolunteerOptions]
@@ -70,6 +71,19 @@ export type FindVolunteerOptions = Partial<IVolunteerModel> & {
   userId?: IVolunteerModel['user']['id'];
   organizationId?: IVolunteerModel['organization']['id'];
 };
+
+export type FindManyVolunteersOptions = Pick<
+  FindVolunteerOptions,
+  'status' | 'organizationId'
+> &
+  Partial<{
+    locationId: number;
+    branchId: string;
+    departmentId: string;
+    roleId: string;
+    age: AgeRangeEnum;
+  }> &
+  IBasePaginationFilterModel;
 
 export class VolunteerModelTransformer {
   static fromEntity(volunteer: VolunteerEntity): IVolunteerModel {

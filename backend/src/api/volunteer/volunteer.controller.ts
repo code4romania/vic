@@ -1,9 +1,22 @@
-import { Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { GetManyVolunteersUseCase } from 'src/usecases/volunteer/get-many-volunteers.usecase';
+import { GetVolunteersDto } from './dto/get-volunteers.dto';
 import { ActivateVolunteerUsecase } from 'src/usecases/volunteer/activate-volunteer.usecase';
 import { ArchiveVolunteerUsecase } from 'src/usecases/volunteer/archive-volunteer.usescase';
 import { BlockVolunteerUsecase } from 'src/usecases/volunteer/block-volunteer.usecase';
@@ -17,10 +30,30 @@ import { VolunteerPresenter } from './presenters/volunteer.presenter';
 export class VolunteerController {
   constructor(
     private readonly getOneVolunteerUsecase: GetOneVolunteerUsecase,
+    private readonly getManyVolunteersUsecase: GetManyVolunteersUseCase,
     private readonly blockVolunteerUsecase: BlockVolunteerUsecase,
     private readonly activateVolunteerUsecase: ActivateVolunteerUsecase,
     private readonly archiveVolunteerUsecase: ArchiveVolunteerUsecase,
   ) {}
+
+  @Get()
+  @ApiPaginatedResponse(VolunteerPresenter)
+  async getMany(
+    @Query() filters: GetVolunteersDto,
+    @ExtractUser() user: IAdminUserModel,
+  ): Promise<PaginatedPresenter<VolunteerPresenter>> {
+    const volunteers = await this.getManyVolunteersUsecase.execute({
+      organizationId: user.organizationId,
+      ...filters,
+    });
+
+    return new PaginatedPresenter({
+      ...volunteers,
+      items: volunteers.items.map(
+        (volunteer) => new VolunteerPresenter(volunteer),
+      ),
+    });
+  }
 
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
