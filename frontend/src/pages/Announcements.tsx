@@ -25,7 +25,7 @@ const AnnouncementTableHeader = [
     name: i18n.t('announcement:header.name'),
     sortable: true,
     minWidth: '10rem',
-    selector: (row: IAnnouncement) => row.name,
+    cell: (row: IAnnouncement) => <p>{row.name}</p>,
   },
   {
     id: 'updatedOn',
@@ -58,16 +58,13 @@ const AnnouncementTableHeader = [
   {
     id: 'targets',
     name: i18n.t('announcement:header.target'),
-    sortable: true,
     minWidth: '10rem',
     cell: (row: IAnnouncement) => (
       <CellLayout>
         {row.targets.length !== 0 ? (
-          row.targets.map((target) => (
-            <p key={target.id}>
-              {target.name} ({target.members})
-            </p>
-          ))
+          <p>
+            ({row.targetedVolunteers}) {row.targets.map((target) => `, ${target.name}`)}
+          </p>
         ) : (
           <p>{i18n.t('announcement:all_organization')}</p>
         )}

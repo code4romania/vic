@@ -1,5 +1,5 @@
-import { IDivision } from '../../components/Divisions';
 import { AnnouncementStatus } from '../enums/announcement-status.enum';
+import { IDivision } from './division.interface';
 
 export interface IAnnouncement {
   id: string;
@@ -9,4 +9,5 @@ export interface IAnnouncement {
   publishedOn: Date | null;
   targets: Omit<IDivision, 'createdBy' | 'createdOn'>[];
   updatedOn: Date;
+  targetedVolunteers: number;
 }
