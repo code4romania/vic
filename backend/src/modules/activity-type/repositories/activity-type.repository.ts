@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { ILike, Repository } from 'typeorm';
 import { ActivityTypeEntity } from '../entities/activity-type.entity';
 import { IActivityTypeRepository } from '../interfaces/activity-type-repository.interface';
 import {
@@ -57,13 +58,20 @@ export class ActivityTypeRepositoryService implements IActivityTypeRepository {
   async findAll(
     options: FindManyActivityTypeOptions,
   ): Promise<IActivityTypeModel[]> {
+    const { search, ...filters } = options;
     const activityTypes = await this.activityTypeRepository.find({
-      where: options,
+      where: {
+        ...filters,
+        ...(search ? { name: ILike(`%${search}%`) } : {}),
+      },
       relations: {
         organization: true,
         branch: true,
         department: true,
         role: true,
+      },
+      order: {
+        name: OrderDirection.ASC,
       },
     });
 

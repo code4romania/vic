@@ -53,8 +53,14 @@ export type FindActivityTypeOptions = Partial<
   organizationId?: string;
 };
 
-export type FindManyActivityTypeOptions = Partial<IActivityTypeModel> & {
+export type FindManyActivityTypeOptions = Partial<
+  Omit<IActivityTypeModel, 'branch' | 'department' | 'role' | 'organization'>
+> & {
   organizationId?: string;
+  search?: string;
+  departmentId?: string;
+  roleId?: string;
+  branchId?: string;
 };
 
 export class ActivityTypeTransformer {
