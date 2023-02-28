@@ -13,6 +13,7 @@ export type IFindAdminUserModel =
 
 export class AdminUserTransformer {
   static fromEntity(entity: AdminUserEntity): IAdminUserModel {
+    if (!entity) return null;
     return {
       id: entity.id,
       cognitoId: entity.cognitoId,

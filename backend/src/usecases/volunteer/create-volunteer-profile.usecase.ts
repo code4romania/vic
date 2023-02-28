@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { ActivityTypeExceptionMessages } from 'src/modules/activity-type/exceptions/activity-type.exceptions';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import {
@@ -27,13 +26,13 @@ export class CreateVolunteerProfileUseCase
     data: CreateVolunteerProfileOptions,
   ): Promise<IVolunteerProfileModel> {
     // 1. Check if the volunteer exists
-    const volunteer = await this.getOneVolunteerUsecase.execute({
-      id: data.volunteerId,
-    });
+    const volunteer = await this.getOneVolunteerUsecase.execute(
+      data.volunteerId,
+    );
 
     // 2. Check if the profile already exists
     if (volunteer.volunteerProfile) {
-      throw this.exceptionService.badRequestException(
+      this.exceptionService.badRequestException(
         VolunteerExceptionMessages.VOLUNTEER_PROFILE_001,
       );
     }

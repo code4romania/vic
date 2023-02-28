@@ -59,7 +59,7 @@ export class VolunteerProfileModelTransformer {
     const entity = new VolunteerProfileEntity();
     entity.email = volunteer.email;
     entity.phone = volunteer.phone;
-    entity.activeSince = volunteer.activeSince;
+    entity.activeSince = volunteer.activeSince ?? new Date();
     entity.branchId = volunteer.branchId;
     entity.departmentId = volunteer.departmentId;
     entity.roleId = volunteer.roleId;

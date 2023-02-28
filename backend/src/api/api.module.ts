@@ -10,6 +10,8 @@ import { MobileRegularUserController } from './_mobile/user/user.controller';
 import { MobileAccessRequestController } from './_mobile/access-request/access-request.controller';
 import { LocationController } from './location/location.controller';
 import { ActivityTypeController } from './activity-type/activity-type.controller';
+import { VolunteerController } from './volunteer/volunteer.controller';
+import { MobileVolunteerController } from './_mobile/volunteer/volunteer.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -22,9 +24,11 @@ import { ActivityTypeController } from './activity-type/activity-type.controller
     AccessRequestController,
     LocationController,
     ActivityTypeController,
+    VolunteerController,
     // Mobile
     MobileRegularUserController,
     MobileAccessRequestController,
+    MobileVolunteerController,
   ],
 })
 export class ApiModule {}

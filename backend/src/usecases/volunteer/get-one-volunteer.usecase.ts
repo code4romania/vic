@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
-import {
-  FindVolunteerOptions,
-  IVolunteerModel,
-} from 'src/modules/volunteer/model/volunteer.model';
+import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
 @Injectable()
@@ -17,10 +14,8 @@ export class GetOneVolunteerUsecase
     private readonly exceptionService: ExceptionsService,
   ) {}
 
-  public async execute(
-    options: FindVolunteerOptions,
-  ): Promise<IVolunteerModel> {
-    const volunteer = await this.volunteerFacade.find(options);
+  public async execute(id: string): Promise<IVolunteerModel> {
+    const volunteer = await this.volunteerFacade.find({ id });
 
     if (!volunteer) {
       this.exceptionService.notFoundException(

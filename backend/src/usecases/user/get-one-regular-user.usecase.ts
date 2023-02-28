@@ -17,7 +17,7 @@ export class GetOneRegularUserUseCaseService
   async execute(id: string): Promise<IRegularUserModel> {
     const user = await this.userService.findRegularUser({ id });
 
-    if (user) {
+    if (!user) {
       this.exceptionService.notFoundException(UserExceptionMessages.USER_001);
     }
 

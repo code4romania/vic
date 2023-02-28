@@ -29,13 +29,14 @@ export class VolunteerEntity extends BaseEntity {
     type: 'enum',
     enum: VolunteerStatus,
     name: 'status',
+    default: VolunteerStatus.ACTIVE,
   })
   status: VolunteerStatus;
 
-  @Column({ type: 'timestamptz', name: 'archived_on' })
+  @Column({ type: 'timestamptz', name: 'archived_on', nullable: true })
   archivedOn: Date;
 
-  @Column({ type: 'timestamptz', name: 'blocked_on' })
+  @Column({ type: 'timestamptz', name: 'blocked_on', nullable: true })
   blockedOn: Date;
 
   @Column({ type: 'varchar', name: 'volunteer_profile_id', nullable: true })

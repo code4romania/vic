@@ -1,6 +1,8 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IAccessCodeModel } from 'src/modules/organization/models/access-code.model';
+import { UserPresenter } from 'src/api/_mobile/user/presenters/user-basic.presenter';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 export class AccessCodePresenter {
   constructor(accessCode: IAccessCodeModel) {
@@ -9,10 +11,9 @@ export class AccessCodePresenter {
     this.startDate = accessCode.startDate;
     this.endDate = accessCode.endDate;
     this.usageCount = accessCode.usageCount;
-    this.createdBy = {
-      id: accessCode.createdBy.id,
-      name: accessCode.createdBy.name,
-    };
+    this.createdBy = accessCode.createdBy
+      ? new UserPresenter(accessCode.createdBy)
+      : null;
     this.createdOn = accessCode.createdOn;
   }
 
@@ -50,7 +51,7 @@ export class AccessCodePresenter {
 
   @Expose()
   @ApiProperty({ description: 'The Admin User who created the code' }) // TODO: how to annotate this properly?
-  createdBy: { id: string; name: string };
+  createdBy: UserPresenter<IAdminUserModel>;
 
   @Expose()
   @ApiProperty({ description: 'Date of creation' })

@@ -19,7 +19,7 @@ export class VolunteerProfileEntity extends BaseEntity {
   @Column({ type: 'text', name: 'phone' })
   phone: string;
 
-  @Column({ type: 'timestamptz', name: 'active_since', default: new Date() })
+  @Column({ type: 'timestamptz', name: 'active_since', nullable: true })
   activeSince: Date;
 
   @Column({

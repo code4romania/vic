@@ -33,7 +33,7 @@ export class CreateVolunteerUseCase
     });
 
     if (existingVolunteer) {
-      throw this.exceptionService.badRequestException(
+      this.exceptionService.badRequestException(
         VolunteerExceptionMessages.VOLUNTEER_002,
       );
     }
