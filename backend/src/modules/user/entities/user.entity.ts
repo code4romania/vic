@@ -7,7 +7,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   TableInheritance,
 } from 'typeorm';
@@ -41,7 +40,7 @@ export class AdminUserEntity extends UserEntity {
   })
   organizationId: string;
 
-  @OneToOne(() => OrganizationEntity)
+  @ManyToOne(() => OrganizationEntity)
   @JoinColumn({ name: 'organization_id' })
   organization: OrganizationEntity;
 }
