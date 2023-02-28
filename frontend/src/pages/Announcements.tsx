@@ -19,6 +19,12 @@ import { useGetAllAnnouncementsQuery } from '../services/announcement/announceme
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useErrorToast } from '../hooks/useToast';
 
+const mapTargetsToString = (announcement: IAnnouncement) => {
+  return `(${announcement.targetedVolunteers}) ${announcement.targets.map(
+    (target) => ` ${target.name}`,
+  )}`;
+};
+
 const AnnouncementTableHeader = [
   {
     id: 'name',
@@ -66,11 +72,8 @@ const AnnouncementTableHeader = [
     cell: (row: IAnnouncement) => (
       <CellLayout>
         {row.targets.length !== 0 ? (
-          <p
-            title={`(${row.targetedVolunteers}) ${row.targets.map((target) => `${target.name}`)}`}
-            className="text-overflow"
-          >
-            ({row.targetedVolunteers}) {row.targets.map((target) => `, ${target.name}`)}
+          <p title={mapTargetsToString(row)} className="text-overflow">
+            {mapTargetsToString(row)}
           </p>
         ) : (
           <p>
