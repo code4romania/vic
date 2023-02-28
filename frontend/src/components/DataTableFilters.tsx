@@ -29,8 +29,8 @@ const DataTableFilters = ({
   const [searchWord, setSearchWord] = useState<string>('');
 
   useEffect(() => {
-    if (searchValue === null) setSearchWord('');
-  }, [searchValue]);
+    setSearchWord(searchValue || '');
+  }, []);
 
   // cleanup any side effects of deounce
   useEffect(() => {
@@ -42,6 +42,7 @@ const DataTableFilters = ({
   const resetFilters = () => {
     onResetFilters();
     setFiltersCollapsed(true);
+    setSearchWord('');
   };
 
   const onSearchValueChange = (value: string) => {
