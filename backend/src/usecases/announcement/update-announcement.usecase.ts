@@ -52,17 +52,19 @@ export class UpdateAnnouncementUseCase
         updateData.organizationId,
       );
 
-    const filteredtargets = departments.filter((department) => {
-      if (updateData.targetsIds.includes(department.id)) {
-        targetedVolunteers += department.members;
-        return true;
-      }
-    });
+    if (updateData.targetsIds) {
+      const filteredtargets = departments.filter((department) => {
+        if (updateData.targetsIds.includes(department.id)) {
+          targetedVolunteers += department.members;
+          return true;
+        }
+      });
 
-    if (filteredtargets.length !== updateData.targetsIds.length) {
-      this.exceptionsService.badRequestException(
-        AnnouncementExceptionMessages.ANNOUNCEMENT_003,
-      );
+      if (filteredtargets.length !== updateData.targetsIds.length) {
+        this.exceptionsService.badRequestException(
+          AnnouncementExceptionMessages.ANNOUNCEMENT_003,
+        );
+      }
     }
 
     // 4. Update the announcement
