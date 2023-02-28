@@ -3,6 +3,8 @@ import { BusinessException } from 'src/common/interfaces/business-exception.inte
 enum VolunteerExceptionCodes {
   VOLUNTEER_001 = 'VOLUNTEER_001',
   VOLUNTEER_002 = 'VOLUNTEER_002',
+  VOLUNTEER_003 = 'VOLUNTEER_003',
+  VOLUNTEER_004 = 'VOLUNTEER_004',
 
   // Profile
   VOLUNTEER_PROFILE_001 = 'VOLUNTEER_PROFILE_001',
@@ -24,6 +26,14 @@ export const VolunteerExceptionMessages: Record<
     code_error: VolunteerExceptionCodes.VOLUNTEER_002,
     message:
       'The user is already part of the organization (no matter the status).',
+  },
+  [VolunteerExceptionCodes.VOLUNTEER_003]: {
+    code_error: VolunteerExceptionCodes.VOLUNTEER_003,
+    message: 'Only ACTIVE volunteers can be archived',
+  },
+  [VolunteerExceptionCodes.VOLUNTEER_004]: {
+    code_error: VolunteerExceptionCodes.VOLUNTEER_004,
+    message: 'Only ARCHIVED volunteers can be activated.',
   },
   [VolunteerExceptionCodes.VOLUNTEER_PROFILE_001]: {
     code_error: VolunteerExceptionCodes.VOLUNTEER_PROFILE_001,

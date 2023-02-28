@@ -41,6 +41,9 @@ import { GetOneRegularUserUseCaseService } from './user/get-one-regular-user.use
 import { CreateVolunteerUseCase } from './volunteer/create-volunteer.usecase';
 import { GetOneVolunteerUsecase } from './volunteer/get-one-volunteer.usecase';
 import { CreateVolunteerProfileUseCase } from './volunteer/create-volunteer-profile.usecase';
+import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase';
+import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
+import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
 
 @Module({
   imports: [
@@ -95,6 +98,9 @@ import { CreateVolunteerProfileUseCase } from './volunteer/create-volunteer-prof
     // Volunteers
     GetOneVolunteerUsecase,
     CreateVolunteerUseCase,
+    ArchiveVolunteerUsecase,
+    BlockVolunteerUsecase,
+    ActivateVolunteerUsecase,
     CreateVolunteerProfileUseCase,
   ],
   exports: [
@@ -139,6 +145,9 @@ import { CreateVolunteerProfileUseCase } from './volunteer/create-volunteer-prof
     // Volunteers
     GetOneVolunteerUsecase,
     CreateVolunteerUseCase,
+    ArchiveVolunteerUsecase,
+    BlockVolunteerUsecase,
+    ActivateVolunteerUsecase,
     CreateVolunteerProfileUseCase,
   ],
 })

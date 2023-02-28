@@ -13,10 +13,14 @@ export class VolunteerPresenter {
     this.status = volunteer.status;
 
     this.archivedOn = volunteer.archivedOn;
-    this.archivedBy = volunteer.archivedBy;
+    this.archivedBy = volunteer.archivedBy
+      ? new UserPresenter(volunteer.archivedBy)
+      : null;
 
     this.blockedOn = volunteer.blockedOn;
-    this.blockedBy = volunteer.blockedBy;
+    this.blockedBy = volunteer.blockedBy
+      ? new UserPresenter(volunteer.blockedBy)
+      : null;
 
     this.profile = volunteer.volunteerProfile
       ? new VolunteerProfilePresenter(volunteer.volunteerProfile)

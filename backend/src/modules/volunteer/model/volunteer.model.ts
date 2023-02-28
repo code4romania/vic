@@ -1,3 +1,4 @@
+import { OneOf } from 'src/common/helpers/typescript-extends';
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import {
   IOrganizationStructureModel,
@@ -41,6 +42,29 @@ export type CreateVolunteerOptions = {
   userId: IVolunteerModel['user']['id'];
   organizationId: IVolunteerModel['organization']['id'];
 };
+
+// TODO: @birloiflorian are these too confusing?
+export type ArchiveVolunteerOptions = {
+  status: VolunteerStatus.ARCHIVED;
+  archivedOn: Date;
+  archivedById: string;
+};
+export type BlockVolunteerOptions = {
+  status: VolunteerStatus.BLOCKED;
+  blockedOn: Date;
+  blockedById: string;
+};
+export type ActivateVolunteerOptions = {
+  status: VolunteerStatus.ACTIVE;
+  blockedOn: null;
+  blockedById: null;
+  archivedOn: null;
+  archivedById: null;
+};
+export type UpdateVolunteerOptions = Pick<IVolunteerModel, 'id'> &
+  OneOf<
+    [ArchiveVolunteerOptions, BlockVolunteerOptions, ActivateVolunteerOptions]
+  >;
 
 export type FindVolunteerOptions = Partial<IVolunteerModel> & {
   userId?: IVolunteerModel['user']['id'];
