@@ -7,6 +7,7 @@ import {
   CreateVolunteerOptions,
   FindVolunteerOptions,
   IVolunteerModel,
+  UpdateVolunteerOptions,
   VolunteerModelTransformer,
 } from '../model/volunteer.model';
 
@@ -19,6 +20,15 @@ export class VolunteerRepositoryService
     private readonly volunteerRepository: Repository<VolunteerEntity>,
   ) {
     super(volunteerRepository);
+  }
+
+  async update({
+    id,
+    ...updates
+  }: UpdateVolunteerOptions): Promise<IVolunteerModel> {
+    await this.volunteerRepository.update({ id }, updates);
+
+    return this.find({ id });
   }
 
   async create(newVolunteer: CreateVolunteerOptions): Promise<IVolunteerModel> {

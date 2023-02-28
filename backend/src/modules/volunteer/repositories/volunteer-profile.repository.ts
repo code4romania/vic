@@ -10,6 +10,7 @@ import {
 import {
   CreateVolunteerProfileOptions,
   IVolunteerProfileModel,
+  UpdateVolunteerProfileOptions,
   VolunteerProfileModelTransformer,
 } from '../model/volunteer-profile.model';
 
@@ -22,6 +23,15 @@ export class VolunteerProfileRepositoryService
     @InjectRepository(VolunteerEntity)
     private readonly volunteerRepository: Repository<VolunteerEntity>,
   ) {}
+
+  async update({
+    id,
+    ...updates
+  }: UpdateVolunteerProfileOptions): Promise<IVolunteerProfileModel> {
+    await this.volunteerProfileRepository.update({ id }, updates);
+
+    return this.find(id);
+  }
 
   async create(
     newProfile: CreateVolunteerProfileOptions,

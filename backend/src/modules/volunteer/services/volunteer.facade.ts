@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FindRegularUserOptions } from 'src/modules/user/models/regular-user.model';
+import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import {
   CreateVolunteerProfileOptions,
   IVolunteerProfileModel,
@@ -8,6 +9,9 @@ import {
   CreateVolunteerOptions,
   FindVolunteerOptions,
   IVolunteerModel,
+  ArchiveVolunteerOptions,
+  BlockVolunteerOptions,
+  UpdateVolunteerOptions,
 } from '../model/volunteer.model';
 import { VolunteerProfileRepositoryService } from '../repositories/volunteer-profile.repository';
 import { VolunteerRepositoryService } from '../repositories/volunteer.repository';
@@ -27,6 +31,39 @@ export class VolunteerFacade {
 
   public find(options: FindVolunteerOptions): Promise<IVolunteerModel> {
     return this.volunteerRepository.find(options);
+  }
+
+  public archive(
+    options: Pick<UpdateVolunteerOptions, 'id' | 'archivedById'>,
+  ): Promise<IVolunteerModel> {
+    return this.volunteerRepository.update({
+      id: options.id,
+      archivedById: options.archivedById,
+      archivedOn: new Date(),
+      status: VolunteerStatus.ARCHIVED,
+    });
+  }
+
+  public block(
+    options: Pick<UpdateVolunteerOptions, 'id' | 'blockedById'>,
+  ): Promise<IVolunteerModel> {
+    return this.volunteerRepository.update({
+      id: options.id,
+      blockedById: options.blockedById,
+      blockedOn: new Date(),
+      status: VolunteerStatus.BLOCKED,
+    });
+  }
+
+  public activate(id: string): Promise<IVolunteerModel> {
+    return this.volunteerRepository.update({
+      id,
+      archivedById: null,
+      archivedOn: null,
+      blockedById: null,
+      blockedOn: null,
+      status: VolunteerStatus.ACTIVE,
+    });
   }
 
   async createProfile(

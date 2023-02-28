@@ -3,15 +3,18 @@ import { VolunteerEntity } from '../entities/volunteer.entity';
 import {
   CreateVolunteerProfileOptions,
   IVolunteerProfileModel,
+  UpdateVolunteerProfileOptions,
 } from '../model/volunteer-profile.model';
 import {
   CreateVolunteerOptions,
   IVolunteerModel,
+  UpdateVolunteerOptions,
 } from '../model/volunteer.model';
 
 export interface IVolunteerRepository
   extends IRepositoryWithPagination<VolunteerEntity> {
   create(newVolunteer: CreateVolunteerOptions): Promise<IVolunteerModel>;
+  update(updates: UpdateVolunteerOptions): Promise<IVolunteerModel>;
 }
 
 export interface IVolunteerProfileRepository {
@@ -19,4 +22,7 @@ export interface IVolunteerProfileRepository {
     newProfile: CreateVolunteerProfileOptions,
   ): Promise<IVolunteerProfileModel>;
   find(id: string): Promise<IVolunteerProfileModel>;
+  update(
+    updates: UpdateVolunteerProfileOptions,
+  ): Promise<IVolunteerProfileModel>;
 }

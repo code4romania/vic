@@ -42,6 +42,9 @@ import { CreateVolunteerUseCase } from './volunteer/create-volunteer.usecase';
 import { GetOneVolunteerUsecase } from './volunteer/get-one-volunteer.usecase';
 import { CreateVolunteerProfileUseCase } from './volunteer/create-volunteer-profile.usecase';
 import { GetManyVolunteersUseCase } from './volunteer/get-many-volunteers.usecase';
+import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase';
+import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
+import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
 
 @Module({
   imports: [
@@ -96,6 +99,9 @@ import { GetManyVolunteersUseCase } from './volunteer/get-many-volunteers.usecas
     // Volunteers
     GetOneVolunteerUsecase,
     CreateVolunteerUseCase,
+    ArchiveVolunteerUsecase,
+    BlockVolunteerUsecase,
+    ActivateVolunteerUsecase,
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
   ],
@@ -141,6 +147,9 @@ import { GetManyVolunteersUseCase } from './volunteer/get-many-volunteers.usecas
     // Volunteers
     GetOneVolunteerUsecase,
     CreateVolunteerUseCase,
+    ArchiveVolunteerUsecase,
+    BlockVolunteerUsecase,
+    ActivateVolunteerUsecase,
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
   ],

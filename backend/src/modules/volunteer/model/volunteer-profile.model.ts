@@ -29,6 +29,11 @@ export type CreateVolunteerProfileOptions = Pick<
   roleId?: string;
 };
 
+export type UpdateVolunteerProfileOptions = Omit<
+  CreateVolunteerProfileOptions,
+  'volunteerId'
+> & { id: string };
+
 // export type FindVolunteerOptions = Partial<IVolunteerProfileModel>;
 
 export class VolunteerProfileModelTransformer {

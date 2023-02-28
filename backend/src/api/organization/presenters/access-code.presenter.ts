@@ -50,7 +50,7 @@ export class AccessCodePresenter {
   usageCount: number;
 
   @Expose()
-  @ApiProperty({ description: 'The Admin User who created the code' }) // TODO: how to annotate this properly?
+  @ApiProperty({ description: 'The Admin User who created the code' })
   createdBy: UserPresenter<IAdminUserModel>;
 
   @Expose()
