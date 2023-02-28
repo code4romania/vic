@@ -25,7 +25,7 @@ const AnnouncementTableHeader = [
     name: i18n.t('announcement:header.name'),
     sortable: true,
     minWidth: '10rem',
-    cell: (row: IAnnouncement) => <p>{row.name}</p>,
+    selector: (row: IAnnouncement) => row.name,
   },
   {
     id: 'updatedOn',
@@ -62,7 +62,10 @@ const AnnouncementTableHeader = [
     cell: (row: IAnnouncement) => (
       <CellLayout>
         {row.targets.length !== 0 ? (
-          <p>
+          <p
+            title={`(${row.targetedVolunteers}) ${row.targets.map((target) => `${target.name}`)}`}
+            className="text-overflow"
+          >
             ({row.targetedVolunteers}) {row.targets.map((target) => `, ${target.name}`)}
           </p>
         ) : (

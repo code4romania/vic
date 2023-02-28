@@ -144,6 +144,14 @@
   .menu-icon {
     @apply flex-shrink-0 h-5 w-5;
   }
+
+  .text-overflow {
+    @apply overflow-hidden text-ellipsis;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
 }
 
 @font-face {
@@ -196,11 +204,7 @@
 }
 
 .rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
-  @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-xs sm:text-sm font-normal text-cool-gray-700 overflow-hidden text-ellipsis;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-xs sm:text-sm font-normal text-cool-gray-700 overflow-hidden;
 }
 
 .rdt_TableBody > div:last-of-type {
