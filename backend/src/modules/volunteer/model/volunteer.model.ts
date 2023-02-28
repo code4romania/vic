@@ -1,9 +1,5 @@
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import {
-  IOrganizationStructureModel,
-  OrganizationStructureTransformer,
-} from 'src/modules/organization/models/organization-structure.model';
-import {
   IOrganizationModel,
   OrganizationTransformer,
 } from 'src/modules/organization/models/organization.model';
