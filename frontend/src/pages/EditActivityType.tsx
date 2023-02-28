@@ -24,6 +24,7 @@ import {
 import ActivityTypeForm from '../components/ActivityTypeForm';
 import { mapDivisionListItemToSelectItem } from '../containers/OrganizationStructureSelect';
 import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
+import { ArchiveBoxIcon, ArchiveBoxXMarkIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline';
 
 export type ActivityCategoryFormTypes = {
   name: string;
@@ -171,11 +172,12 @@ const EditActivityType = () => {
           <Card>
             <CardHeader>
               <h2>{`${i18n.t('general:category')} ${i18n.t('general:activity').toLowerCase()}`}</h2>
-              <div className="flex flex-col w-full max-w-xs sm:max-w-none sm:w-auto sm:flex-row gap-4">
+              <div className="flex flex-row gap-2 sm:gap-4">
                 {activityType.status === ActivityTypeStatus.ARCHIVED && (
                   <Button
                     label={i18n.t(`activity_types:actions.activate`)}
                     className="btn-outline-secondary"
+                    icon={<ArchiveBoxXMarkIcon className="h-5 w-5 sm:hidden" />}
                     onClick={onActivateActivityType}
                   />
                 )}
@@ -183,12 +185,14 @@ const EditActivityType = () => {
                   <Button
                     label={i18n.t(`activity_types:actions.archive`)}
                     className="btn-outline-secondary"
+                    icon={<ArchiveBoxIcon className="h-5 w-5 sm:hidden" />}
                     onClick={onArchiveActivityType}
                   />
                 )}
                 <Button
                   label={i18n.t('general:save_changes')}
                   className="btn-primary"
+                  icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
                   onClick={handleSubmit(onSubmit)}
                 />
               </div>
