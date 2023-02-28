@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { IError } from 'src/common/exceptions/exceptions.interface';
+import { JSONStringifyError } from 'src/common/helpers/utils';
 import { TypeORMError } from 'typeorm';
 
 @Catch()
@@ -41,7 +42,7 @@ export class ExceptionsFilter implements ExceptionFilter {
       // handle type errors
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = {
-        message: exception.message,
+        message: JSONStringifyError(exception),
         code_error: null,
       };
     } else {
