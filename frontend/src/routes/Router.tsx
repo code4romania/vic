@@ -19,6 +19,7 @@ import Volunteer from '../pages/Volunteer';
 import EditVolunteer from '../pages/EditVolunteer';
 import AddActivityType from '../pages/AddActivityType';
 import ActivityTypes from '../pages/ActivityTypes';
+import AddAnnouncement from '../pages/AddAnnouncement';
 
 const Router = () => {
   return (
@@ -45,6 +46,7 @@ const Router = () => {
           </Route>
           <Route path="announcements" element={<Outlet />}>
             <Route index element={<Announcements />} />
+            <Route path="add" element={<AddAnnouncement />} />
           </Route>
           <Route path="activity-types" element={<Outlet />}>
             <Route index element={<ActivityTypes />} />

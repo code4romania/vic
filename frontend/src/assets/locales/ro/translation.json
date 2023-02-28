@@ -310,6 +310,7 @@
   "announcement": {
     "title": "Istoric anunturi",
     "name": "anunt",
+    "save_draft": "Salveaza ca draft",
     "header": {
       "name": "Titlu anunt",
       "updated_on": "Editat pe",
@@ -322,6 +323,24 @@
     "status": {
       "draft": "Draft",
       "published": "Publicat"
+    },
+    "form": {
+      "title": "Anunt",
+      "name": {
+        "required": "Numele anuntului este obligatoriu",
+        "min": "Numele anuntului poate sa aiba minim {{value}} caractere",
+        "max": "Numele anuntului poate sa aiba maxim {{value}} caractere"
+      },
+      "description": {
+        "label": "Continut anunt",
+        "required": "Descrierea anuntului este obligatorie",
+        "min": "Descrierea poate sa aiba minim {{value}} caractere",
+        "max": "Descrierea anuntului poate sa aiba maxim {{value}} caractere"
+      }
+    },
+    "success": {
+      "create_draft": "Anunt draft creat cu succes",
+      "create_publish": "Anunt creat si publicat cu succes"
     }
   },
   "activity_types": {

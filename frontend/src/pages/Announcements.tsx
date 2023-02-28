@@ -19,6 +19,7 @@ import { useAnnouncementsQuery } from '../services/announcement/announcement.ser
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useNavigate } from 'react-router-dom';
 
 const mapTargetsToString = (announcement: IAnnouncement) => {
   return `(${announcement.targetedVolunteers}) ${announcement.targets.map(
@@ -92,6 +93,8 @@ const Announcements = () => {
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
 
+  const navigate = useNavigate();
+
   const {
     data: announcements,
     isLoading: getAnnouncementsLoading,
@@ -155,7 +158,7 @@ const Announcements = () => {
   };
 
   const onAdd = () => {
-    alert('Not yet implemented');
+    navigate('add');
   };
 
   const onPublish = (row: IAnnouncement) => {

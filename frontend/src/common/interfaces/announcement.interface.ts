@@ -11,3 +11,10 @@ export interface IAnnouncement {
   updatedOn: Date;
   targetedVolunteers: number;
 }
+
+export interface ISaveAnnouncement {
+  name: string;
+  description: string;
+  status: AnnouncementStatus;
+  targetsIds: string[];
+}
