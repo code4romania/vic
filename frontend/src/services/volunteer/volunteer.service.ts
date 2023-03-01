@@ -1,11 +1,11 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
 import { PaginationConfig } from '../../common/constants/pagination';
+import { AgeRangeEnum } from '../../common/enums/age-range.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
 import { VOLUNTEER_ERRORS } from '../../common/errors/entities/volunteer.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
-import { AgeRangeEnum } from '../../common/interfaces/volunteer.interface';
 import { VolunteerFormTypes } from '../../pages/EditVolunteer';
 import { getVolunteer, getVolunteers, updateVolunteer } from './volunteer.api';
 

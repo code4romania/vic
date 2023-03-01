@@ -3,8 +3,9 @@ import { Sex } from '../../common/enums/sex.enum';
 import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { VolunteerFormTypes } from '../../pages/EditVolunteer';
-import { AgeRangeEnum, IVolunteer } from '../../common/interfaces/volunteer.interface';
+import { IVolunteer } from '../../common/interfaces/volunteer.interface';
 import API from '../api';
+import { AgeRangeEnum } from '../../common/enums/age-range.enum';
 
 export const getVolunteers = async (
   filterStatus: VolunteerStatus,

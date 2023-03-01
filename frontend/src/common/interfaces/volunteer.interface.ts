@@ -18,10 +18,3 @@ export interface IVolunteer {
   archivedBy?: Pick<IUser, 'id' | 'name'>;
   blockedBy?: Pick<IUser, 'id' | 'name'>;
 }
-
-export enum AgeRangeEnum {
-  '0_18' = '0-18',
-  '18_30' = '18-30',
-  '30_50' = '30-50',
-  'OVER_50' = '50+',
-}

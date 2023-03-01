@@ -25,7 +25,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import { useVolunteersQuery } from '../services/volunteer/volunteer.service';
 import PageHeader from '../components/PageHeader';
-import { AgeRangeEnum, IVolunteer } from '../common/interfaces/volunteer.interface';
+import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { useNavigate } from 'react-router-dom';
 import DataTableFilters from '../components/DataTableFilters';
@@ -34,6 +34,7 @@ import LocationSelect from '../containers/LocationSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
+import { AgeRangeEnum } from '../common/enums/age-range.enum';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
