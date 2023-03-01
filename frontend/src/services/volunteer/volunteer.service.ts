@@ -10,7 +10,7 @@ import { VolunteerFormTypes } from '../../pages/EditVolunteer';
 import { getVolunteer, getVolunteers, updateVolunteer } from './volunteer.api';
 
 export const useVolunteersQuery = (
-  filterStatus: VolunteerStatus,
+  status: VolunteerStatus,
   limit: number = PaginationConfig.defaultRowsPerPage,
   page: number = PaginationConfig.defaultPage,
   orderBy?: string,
@@ -27,7 +27,7 @@ export const useVolunteersQuery = (
   return useQuery(
     [
       'volunteers',
-      filterStatus,
+      status,
       limit,
       page,
       orderBy,
@@ -43,7 +43,7 @@ export const useVolunteersQuery = (
     ],
     () =>
       getVolunteers(
-        filterStatus,
+        status,
         limit,
         page,
         orderBy,
@@ -58,7 +58,7 @@ export const useVolunteersQuery = (
         end,
       ),
     {
-      enabled: !!(filterStatus && limit && page),
+      enabled: !!status,
       onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
     },
   );

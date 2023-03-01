@@ -70,8 +70,9 @@ const ActiveVolunteersTableHeader = [
     minWidth: '10rem',
     cell: (row: IVolunteer) => (
       <MediaCell
-        logo={row.createdBy?.profilePicture || ''}
-        title={row.createdBy.name}
+        // logo={row.user?.profilePicture || ''}
+        logo={''}
+        title={row.user.name}
         subtitle={'Voluntar Iasi'} // TODO: TBD
       />
     ),
@@ -82,7 +83,10 @@ const ActiveVolunteersTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IVolunteer) => `${row.role.name}\n${row.department.name}`,
+    selector: (row: IVolunteer) =>
+      `${row.profile?.role?.name || ''}${row.profile?.role && row.profile?.department ? '\n' : ''}${
+        row.profile?.department?.name || ''
+      }`,
   },
   {
     id: 'location',
@@ -98,7 +102,7 @@ const ActiveVolunteersTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IVolunteer) => `${row.email}\n${row.phone}`,
+    selector: (row: IVolunteer) => `${row.profile?.email}\n${row.profile?.phone}`,
   },
 ];
 
@@ -307,7 +311,7 @@ const Volunteers = () => {
       <Tabs<VolunteerStatus> tabs={VolunteersTabs} onClick={onTabClick}>
         <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
           <DateRangePicker
-            label={i18n.t('access_requests:filters.access_request_range')}
+            label={i18n.t('volunteers:filters.active_since_range')}
             onChange={setCreatedOnRange}
             value={createdOnRange.length > 0 ? createdOnRange : undefined}
             id="created-on-range__picker"

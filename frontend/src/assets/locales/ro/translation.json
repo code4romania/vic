@@ -138,6 +138,9 @@
       "archived": "Voluntari arhivati",
       "blocked": "Voluntari blocati"
     },
+    "filters": {
+      "active_since_range": "Perioada activitate"
+    },
     "modal": {
       "view": "Vizualizează profil",
       "archive": "Arhivează voluntar",
