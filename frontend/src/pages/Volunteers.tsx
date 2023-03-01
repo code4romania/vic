@@ -18,7 +18,7 @@ import {
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { SelectItem } from '../components/Select';
+import Select, { SelectItem } from '../components/Select';
 import { formatDate } from '../common/utils/utils';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -33,6 +33,13 @@ import PageHeader from '../components/PageHeader';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { useNavigate } from 'react-router-dom';
+import DataTableFilters from '../components/DataTableFilters';
+import DateRangePicker from '../components/DateRangePicker';
+import LocationSelect from '../containers/LocationSelect';
+import { ListItem } from '../common/interfaces/list-item.interface';
+import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
+import { DivisionType } from '../common/enums/division-type.enum';
+import { AgeRangeEnum } from '../common/enums/age-range.enum';
 import ConfirmationModal from '../components/ConfirmationModal';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
@@ -41,52 +48,75 @@ const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.BLOCKED, value: i18n.t('volunteers:tabs.blocked') },
 ];
 
+const AgeRangeOptions: SelectItem<AgeRangeEnum>[] = [
+  {
+    key: AgeRangeEnum['0_18'],
+    value: '0-18',
+  },
+  {
+    key: AgeRangeEnum['18_30'],
+    value: '18-30',
+  },
+  {
+    key: AgeRangeEnum['30_50'],
+    value: '30-50',
+  },
+  {
+    key: AgeRangeEnum.OVER_50,
+    value: '>50',
+  },
+];
+
 const ActiveVolunteersTableHeader = [
   {
-    id: 'name',
+    id: 'user.name',
     name: i18n.t('general:name'),
     sortable: true,
     grow: 2,
     minWidth: '10rem',
     cell: (row: IVolunteer) => (
       <MediaCell
-        logo={row.createdBy?.profilePicture || ''}
-        title={row.createdBy.name}
-        subtitle={'Voluntar Iasi'} // TODO: TBD
+        logo={row.user?.profilePicture || ''}
+        title={row.user.name}
+        subtitle={row.profile?.branch?.name || ''}
       />
     ),
   },
   {
-    id: 'department',
+    id: 'volunteerProfile.department.name',
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IVolunteer) => `${row.role.name}\n${row.department.name}`,
+    selector: (row: IVolunteer) =>
+      `${row.profile?.role?.name || ''}${row.profile?.role && row.profile?.department ? '\n' : ''}${
+        row.profile?.department?.name || ''
+      }`,
   },
   {
-    id: 'location',
+    id: 'user.location.name',
     name: i18n.t('volunteers:location'),
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: () => `Iasi, jud Iasi`, // TODO: TBD
+    selector: (row: IVolunteer) =>
+      `${row.user.location?.name}, ${row.user.location?.county.abbreviation}`,
   },
   {
-    id: 'contact',
+    id: 'volunteerProfile.email',
     name: i18n.t('general:contact'),
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IVolunteer) => `${row.email}\n${row.phone}`,
+    selector: (row: IVolunteer) => `${row.profile?.email}\n${row.profile?.phone}`,
   },
 ];
 
 const ArchivedVolunteersTableHeader = [
   ...ActiveVolunteersTableHeader,
   {
-    id: 'archivedDate',
-    name: i18n.t('volunteers:archived_from'),
+    id: 'archivedOn',
+    name: i18n.t('volunteers:archived_on'),
     sortable: true,
     selector: (row: IVolunteer) => (row.archivedOn ? formatDate(row.archivedOn) : '-'),
   },
@@ -95,8 +125,8 @@ const ArchivedVolunteersTableHeader = [
 const BlockedVolunteersTableHeader = [
   ...ActiveVolunteersTableHeader,
   {
-    id: 'blockedDate',
-    name: i18n.t('volunteers:blocked_date'),
+    id: 'blockedOn',
+    name: i18n.t('volunteers:blocked_on'),
     sortable: true,
     selector: (row: IVolunteer) => (row.blockedOn ? formatDate(formatDate(row.blockedOn)) : '-'),
   },
@@ -110,8 +140,16 @@ const Volunteers = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
-  //Modal
-  const [showBlockVolunteer, setShowBlockVolunteer] = useState<null | IVolunteer>();
+  // Modal
+  const [blockVolunteerCandidate, setBlockVolunteerCandidate] = useState<null | IVolunteer>();
+  // filters
+  const [searchWord, setSearchWord] = useState<string>();
+  const [createdOnRange, setCreatedOnRange] = useState<Date[]>([]);
+  const [location, setLocation] = useState<ListItem>();
+  const [branch, setBranch] = useState<SelectItem<string>>();
+  const [department, setDepartment] = useState<SelectItem<string>>();
+  const [role, setRole] = useState<SelectItem<string>>();
+  const [age, setAge] = useState<SelectItem<AgeRangeEnum>>();
 
   const {
     data: volunteers,
@@ -124,6 +162,14 @@ const Volunteers = () => {
     page as number,
     orderByColumn,
     orderDirection,
+    searchWord,
+    age?.key,
+    branch?.key,
+    department?.key,
+    role?.key,
+    location?.value,
+    createdOnRange[0],
+    createdOnRange[1],
   );
 
   //actions
@@ -192,7 +238,7 @@ const Volunteers = () => {
   };
 
   const onBlock = (row: IVolunteer) => {
-    setShowBlockVolunteer(row);
+    setBlockVolunteerCandidate(row);
   };
 
   const onDelete = (row: IVolunteer) => {
@@ -295,12 +341,12 @@ const Volunteers = () => {
   };
 
   const onCloseBlockModal = () => {
-    setShowBlockVolunteer(null);
+    setBlockVolunteerCandidate(null);
   };
 
   const onConfirmBlockModal = () => {
-    if (showBlockVolunteer)
-      blockVolunteer(showBlockVolunteer.id, {
+    if (blockVolunteerCandidate)
+      blockVolunteer(blockVolunteerCandidate.id, {
         onSuccess: () => {
           useSuccessToast(
             i18n.t('volunteers:submit.success', { status: i18n.t('volunteers:status.blocked') }),
@@ -311,15 +357,66 @@ const Volunteers = () => {
           useErrorToast(InternalErrors.VOLUNTEER_ERRORS.getError(error.response?.data.code_error));
         },
         onSettled: () => {
-          setShowBlockVolunteer(null);
+          setBlockVolunteerCandidate(null);
         },
       });
+  };
+
+  const onResetFilters = () => {
+    setCreatedOnRange([]);
+    setLocation(undefined);
+    setBranch(undefined);
+    setDepartment(undefined);
+    setRole(undefined);
+    setAge(undefined);
+    setSearchWord(undefined);
   };
 
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.volunteers_list')}</PageHeader>
       <Tabs<VolunteerStatus> tabs={VolunteersTabs} onClick={onTabClick}>
+        <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
+          <DateRangePicker
+            label={i18n.t('volunteers:filters.active_since_range')}
+            onChange={setCreatedOnRange}
+            value={createdOnRange.length > 0 ? createdOnRange : undefined}
+            id="created-on-range__picker"
+          />
+          <OrganizationStructureSelect
+            label={`${i18n.t('division:entity.branch')}`}
+            placeholder={`${i18n.t('general:select', { item: '' })}`}
+            onChange={setBranch}
+            selected={branch}
+            type={DivisionType.BRANCH}
+          />
+          <OrganizationStructureSelect
+            label={`${i18n.t('division:entity.department')}`}
+            placeholder={`${i18n.t('general:select', { item: '' })}`}
+            onChange={setDepartment}
+            selected={department}
+            type={DivisionType.DEPARTMENT}
+          />
+          <OrganizationStructureSelect
+            label={`${i18n.t('division:entity.role')}`}
+            placeholder={`${i18n.t('general:select', { item: '' })}`}
+            onChange={setRole}
+            selected={role}
+            type={DivisionType.ROLE}
+          />
+          <LocationSelect
+            label={i18n.t('general:location')}
+            onSelect={setLocation}
+            defaultValue={location}
+          />
+          <Select
+            label={`${i18n.t('general:age')}`}
+            placeholder={`${i18n.t('general:select', { item: '' })}`}
+            options={AgeRangeOptions}
+            onChange={setAge}
+            selected={age}
+          />
+        </DataTableFilters>
         <Card>
           <CardHeader>
             <h2>{i18n.t(`volunteers:tabs.${volunteerStatus}`)}</h2>
@@ -376,7 +473,7 @@ const Volunteers = () => {
           </CardBody>
         </Card>
       </Tabs>
-      {showBlockVolunteer && (
+      {blockVolunteerCandidate && (
         <ConfirmationModal
           title={i18n.t('volunteers:block_modal.title')}
           description={i18n.t('volunteers:block_modal.description')}

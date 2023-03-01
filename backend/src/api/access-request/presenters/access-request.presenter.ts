@@ -5,9 +5,9 @@ import {
   IAccessRequestQA,
 } from 'src/modules/access-request/model/access-request.model';
 import { AccessRequestStatus } from 'src/modules/access-request/enums/access-request-status.enum';
-import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { UserPresenter } from 'src/api/_mobile/user/presenters/user-basic.presenter';
+import { RegularUserPresenter } from 'src/api/auth/presenters/user.presenter';
 
 export class AccessRequestPresenter {
   constructor(accessRequest: IAccessRequestModel) {
@@ -16,7 +16,7 @@ export class AccessRequestPresenter {
     this.rejectionReason = accessRequest.rejectionReason;
     this.answers = accessRequest.answers;
     this.requestedBy = accessRequest.requestedBy
-      ? new UserPresenter(accessRequest.requestedBy)
+      ? new RegularUserPresenter(accessRequest.requestedBy)
       : null;
     this.updatedBy = accessRequest.updatedBy
       ? new UserPresenter(accessRequest.updatedBy)
@@ -60,7 +60,7 @@ export class AccessRequestPresenter {
 
   @Expose()
   @ApiProperty({ description: 'The user who made the request.' })
-  requestedBy: UserPresenter<IRegularUserModel>;
+  requestedBy: RegularUserPresenter;
 
   @Expose()
   @ApiProperty({ description: 'The user who made the request.' })

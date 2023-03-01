@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
 import { PaginationConfig } from '../../common/constants/pagination';
+import { AgeRangeEnum } from '../../common/enums/age-range.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
 import { VOLUNTEER_ERRORS } from '../../common/errors/entities/volunteer.errors';
@@ -16,17 +17,55 @@ import {
 import { VolunteerFormTypes } from '../../pages/EditVolunteer';
 
 export const useVolunteersQuery = (
-  filterStatus: VolunteerStatus,
+  status: VolunteerStatus,
   limit: number = PaginationConfig.defaultRowsPerPage,
   page: number = PaginationConfig.defaultPage,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  search?: string,
+  age?: AgeRangeEnum,
+  branchId?: string,
+  departmentId?: string,
+  roleId?: string,
+  locationId?: string,
+  start?: Date,
+  end?: Date,
 ) => {
   return useQuery(
-    ['volunteers', filterStatus, limit, page, orderBy, orderDirection],
-    () => getVolunteers(filterStatus, limit, page, orderBy, orderDirection),
+    [
+      'volunteers',
+      status,
+      limit,
+      page,
+      orderBy,
+      orderDirection,
+      search,
+      age,
+      branchId,
+      departmentId,
+      roleId,
+      locationId,
+      start,
+      end,
+    ],
+    () =>
+      getVolunteers(
+        status,
+        limit,
+        page,
+        orderBy,
+        orderDirection,
+        search,
+        age,
+        branchId,
+        departmentId,
+        roleId,
+        locationId,
+        start,
+        end,
+      ),
     {
-      enabled: !!(filterStatus && limit && page),
+      enabled: !!status,
       onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
     },
   );
