@@ -139,12 +139,6 @@
       "archived": "Voluntari arhivati",
       "blocked": "Voluntari blocati"
     },
-    "status": {
-      "reactivated": "reactivat",
-      "archived": "arhivat",
-      "blocked": "blocat",
-      "deleted": "sters"
-    },
     "filters": {
       "active_since_range": "Perioada activitate"
     },
@@ -155,11 +149,17 @@
       "delete": "Sterge din ONG",
       "block": "Blochează voluntar"
     },
-    "block_modal": {
-      "title": "Esti sigur ca doresti blocarea acestui voluntar?",
-      "description": "Această acțiune va bloca definitiv acest voluntar"
+    "modal": {
+      "block": {
+        "title": "Esti sigur ca doresti blocarea acestui voluntar?",
+        "description": "Această acțiune va bloca definitiv acest voluntar"
+      }
     },
-    "submit": { "success": "Utilizatorul a fost {{status}}" },
+    "submit": {
+      "archive": "Voluntarul a fost arhivat",
+      "activate": "Voluntarul a fost actiat",
+      "block": "Voluntarul a fost blocat"
+    },
     "errors": {}
   },
   "division": {

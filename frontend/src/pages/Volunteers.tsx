@@ -175,19 +175,12 @@ const Volunteers = () => {
   //actions
   const { mutateAsync: archiveVolunteer, isLoading: isArchivingVolunteer } =
     useArchiveVolunteerMutation();
+
   const { mutateAsync: activateVolunteer, isLoading: isActivatingVolunteer } =
     useActivateVolunteerMutation();
+
   const { mutateAsync: blockVolunteer, isLoading: isBlockingVolunteer } =
     useBlockVolunteerMutation();
-
-  useEffect(() => {
-    if (volunteers?.meta) {
-      setPage(volunteers.meta.currentPage);
-      setRowsPerPage(volunteers.meta.itemsPerPage);
-      setOrderByColumn(volunteers.meta.orderByColumn);
-      setOrderDirection(volunteers.meta.orderDirection);
-    }
-  }, []);
 
   useEffect(() => {
     if (volunteersError)
@@ -198,51 +191,6 @@ const Volunteers = () => {
 
   const onTabClick = (tab: VolunteerStatus) => {
     setVolunteerStatus(tab);
-  };
-
-  // row actions
-  const onView = (row: IVolunteer) => {
-    navigate(`${row.id}`);
-  };
-
-  const onArchive = (row: IVolunteer) => {
-    archiveVolunteer(row.id, {
-      onSuccess: () => {
-        useSuccessToast(
-          i18n.t('volunteers:submit.success', {
-            status: i18n.t('volunteers:status.archived'),
-          }),
-        );
-        refetch();
-      },
-      onError: (error) => {
-        useErrorToast(InternalErrors.VOLUNTEER_ERRORS.getError(error.response?.data.code_error));
-      },
-    });
-  };
-
-  const onActivate = (row: IVolunteer) => {
-    activateVolunteer(row.id, {
-      onSuccess: () => {
-        useSuccessToast(
-          i18n.t('volunteers:submit.success', {
-            status: i18n.t('volunteers:status.reactivated'),
-          }),
-        );
-        refetch();
-      },
-      onError: (error) => {
-        useErrorToast(InternalErrors.VOLUNTEER_ERRORS.getError(error.response?.data.code_error));
-      },
-    });
-  };
-
-  const onBlock = (row: IVolunteer) => {
-    setBlockVolunteerCandidate(row);
-  };
-
-  const onDelete = (row: IVolunteer) => {
-    alert(`Not yet implemented, ${row}`);
   };
 
   // menu items
@@ -331,6 +279,43 @@ const Volunteers = () => {
     };
   };
 
+  // row actions
+  const onView = (row: IVolunteer) => {
+    navigate(`${row.id}`);
+  };
+
+  const onArchive = (row: IVolunteer) => {
+    archiveVolunteer(row.id, {
+      onSuccess: () => {
+        useSuccessToast(i18n.t('volunteers:submit.archive'));
+        refetch();
+      },
+      onError: (error) => {
+        useErrorToast(InternalErrors.VOLUNTEER_ERRORS.getError(error.response?.data.code_error));
+      },
+    });
+  };
+
+  const onActivate = (row: IVolunteer) => {
+    activateVolunteer(row.id, {
+      onSuccess: () => {
+        useSuccessToast(i18n.t('volunteers:submit.activate'));
+        refetch();
+      },
+      onError: (error) => {
+        useErrorToast(InternalErrors.VOLUNTEER_ERRORS.getError(error.response?.data.code_error));
+      },
+    });
+  };
+
+  const onBlock = (row: IVolunteer) => {
+    setBlockVolunteerCandidate(row);
+  };
+
+  const onDelete = (row: IVolunteer) => {
+    alert(`Not yet implemented, ${row}`);
+  };
+
   const onSort = (column: TableColumn<IVolunteer>, direction: SortOrder) => {
     setOrderByColumn(column.id as string);
     setOrderDirection(
@@ -340,17 +325,11 @@ const Volunteers = () => {
     );
   };
 
-  const onCloseBlockModal = () => {
-    setBlockVolunteerCandidate(null);
-  };
-
   const onConfirmBlockModal = () => {
     if (blockVolunteerCandidate)
       blockVolunteer(blockVolunteerCandidate.id, {
         onSuccess: () => {
-          useSuccessToast(
-            i18n.t('volunteers:submit.success', { status: i18n.t('volunteers:status.blocked') }),
-          );
+          useSuccessToast(i18n.t('volunteers:submit.block'));
           refetch();
         },
         onError: (error) => {
@@ -475,11 +454,11 @@ const Volunteers = () => {
       </Tabs>
       {blockVolunteerCandidate && (
         <ConfirmationModal
-          title={i18n.t('volunteers:block_modal.title')}
-          description={i18n.t('volunteers:block_modal.description')}
+          title={i18n.t('volunteers:modal.block.title')}
+          description={i18n.t('volunteers:modal.block.description')}
           confirmBtnLabel={i18n.t('volunteers:popover.block')}
           confirmBtnClassName="btn-danger"
-          onClose={onCloseBlockModal}
+          onClose={setBlockVolunteerCandidate.bind(null, null)}
           onConfirm={onConfirmBlockModal}
         />
       )}
