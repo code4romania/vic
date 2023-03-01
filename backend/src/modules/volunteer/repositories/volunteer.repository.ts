@@ -46,6 +46,7 @@ export class VolunteerRepositoryService
     } & IBasePaginationFilterModel = {
       ...findOptions,
       filters: {
+        organizationId: findOptions.organizationId,
         status: findOptions.status,
         ...(findOptions.branchId ||
         findOptions.departmentId ||
@@ -98,6 +99,8 @@ export class VolunteerRepositoryService
           },
           user: true,
           organization: true,
+          blockedBy: true,
+          archivedBy: true,
         },
         rangeColumn: 'volunteerProfile.activeSince',
       },
