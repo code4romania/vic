@@ -26,7 +26,7 @@ import OrganizationStructureSelect, {
   mapDivisionListItemToSelectItem,
 } from '../containers/OrganizationStructureSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
-import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
+import { CloudArrowUpIcon, NoSymbolIcon, PauseCircleIcon } from '@heroicons/react/24/outline';
 
 export type VolunteerFormTypes = {
   name: string;
@@ -124,12 +124,26 @@ const EditVolunteer = () => {
         <Card>
           <CardHeader>
             <h2>{i18n.t('volunteer:card_title')}</h2>
-            <Button
-              label={i18n.t('general:save_changes')}
-              className="btn-primary shrink-0"
-              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
-              onClick={handleSubmit(onSubmit)}
-            />
+            <div className="flex flex-row gap-2 md:gap-4">
+              <Button
+                label={i18n.t('general:block', { item: '' })}
+                className="btn-outline-secondary shrink-0"
+                icon={<NoSymbolIcon className="h-5 w-5 sm:hidden" />}
+                onClick={handleSubmit(onSubmit)}
+              />
+              <Button
+                label={i18n.t('general:archive', { item: '' })}
+                className="btn-outline-secondary shrink-0"
+                icon={<PauseCircleIcon className="h-5 w-5 sm:hidden" />}
+                onClick={handleSubmit(onSubmit)}
+              />
+              <Button
+                label={i18n.t('general:save_changes')}
+                className="btn-primary shrink-0"
+                icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
+                onClick={handleSubmit(onSubmit)}
+              />
+            </div>
           </CardHeader>
           <CardBody>
             <FormLayout>
