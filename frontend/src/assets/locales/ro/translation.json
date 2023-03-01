@@ -131,8 +131,8 @@
   "volunteers": {
     "department_and_role": "Departament si rol",
     "location": "Locatie voluntar",
-    "archived_from": "Arhivat din",
-    "blocked_date": "Data blocarii",
+    "archived_on": "Arhivat din",
+    "blocked_on": "Data blocarii",
     "tabs": {
       "active": "Voluntari activi",
       "archived": "Voluntari arhivati",

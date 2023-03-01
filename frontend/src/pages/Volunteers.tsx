@@ -93,7 +93,8 @@ const ActiveVolunteersTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IVolunteer) => `${row.user.location?.name}`,
+    selector: (row: IVolunteer) =>
+      `${row.user.location?.name}, ${row.user.location?.county.abbreviation}`,
   },
   {
     id: 'volunteerProfile.email',
