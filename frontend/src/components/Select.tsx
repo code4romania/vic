@@ -29,7 +29,7 @@ const Select = <T extends React.Key>({
       {({ open }) => (
         <div className="flex gap-1 flex-col">
           {label && (
-            <Listbox.Label className="block font-medium text-cool-gray-800 pb-1 sm:text-sm lg:text-base text-xs">
+            <Listbox.Label className="block font-medium text-cool-gray-800 sm:text-sm lg:text-base text-xs">
               {label}
             </Listbox.Label>
           )}
