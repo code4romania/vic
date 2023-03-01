@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import i18n from '../common/config/i18n';
 import Button from '../components/Button';
 import PageLayout from '../layouts/PageLayout';
@@ -14,17 +14,26 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useActivityTypesQuery } from '../services/activity-type/activity-type.service';
 import { IActivityType } from '../common/interfaces/activity-type.interface';
 import ActivityType from '../components/ActivityType';
+import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
+import { DivisionType } from '../common/enums/division-type.enum';
+import { SelectItem } from '../components/Select';
+import DataTableFilters from '../components/DataTableFilters';
 
 const ActivityTypes = () => {
   // navigation
   const navigate = useNavigate();
+  // filters
+  const [search, setSearch] = useState<string>();
+  const [branch, setBranch] = useState<SelectItem<string>>();
+  const [department, setDepartment] = useState<SelectItem<string>>();
+  const [role, setRole] = useState<SelectItem<string>>();
 
   // data fetching
   const {
     data: activityTypes,
     error: activityTypesError,
     isLoading: isFetchingActivityTypes,
-  } = useActivityTypesQuery();
+  } = useActivityTypesQuery(search, branch?.key, department?.key, role?.key);
 
   // error handling
   useEffect(() => {
@@ -42,6 +51,13 @@ const ActivityTypes = () => {
     navigate(`edit/${id}`);
   };
 
+  const onResetFilters = () => {
+    setBranch(undefined);
+    setDepartment(undefined);
+    setRole(undefined);
+    setSearch(undefined);
+  };
+
   return (
     <PageLayout>
       <div className="flex items-center justify-between">
@@ -53,6 +69,29 @@ const ActivityTypes = () => {
           onClick={onAddActivityType}
         />
       </div>
+      <DataTableFilters onSearch={setSearch} searchValue={search} onResetFilters={onResetFilters}>
+        <OrganizationStructureSelect
+          label={`${i18n.t('division:entity.branch')}`}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+          onChange={setBranch}
+          selected={branch}
+          type={DivisionType.BRANCH}
+        />
+        <OrganizationStructureSelect
+          label={`${i18n.t('division:entity.department')}`}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+          onChange={setDepartment}
+          selected={department}
+          type={DivisionType.DEPARTMENT}
+        />
+        <OrganizationStructureSelect
+          label={`${i18n.t('division:entity.role')}`}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+          onChange={setRole}
+          selected={role}
+          type={DivisionType.ROLE}
+        />
+      </DataTableFilters>
       {isFetchingActivityTypes && <LoadingContent />}
       {activityTypes && !isFetchingActivityTypes && (
         <Card>
