@@ -12,7 +12,7 @@ import { IAnnouncement } from '../common/interfaces/announcement.interface';
 import CellLayout from '../layouts/CellLayout';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
-import { EnvelopeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { formatDate, formatDateWithTime } from '../common/utils/utils';
 import { useAnnouncementsQuery } from '../services/announcement/announcement.service';
@@ -111,14 +111,20 @@ const Announcements = () => {
   const buildAnnouncementActionColumn = (): TableColumn<IAnnouncement> => {
     const announcementDraftMenuItems = [
       {
-        label: i18n.t('announcement:publish'),
-        icon: <EnvelopeIcon className="menu-icon" />,
-        onClick: onPublish,
+        label: i18n.t('general:view'),
+        icon: <EyeIcon className="menu-icon" />,
+        onClick: onViewOne,
       },
       {
         label: i18n.t('general:edit', { item: '' }),
         icon: <PencilIcon className="menu-icon" />,
         onClick: onEdit,
+      },
+      {
+        label: i18n.t('announcement:publish'),
+        icon: <CheckIcon className="menu-icon" />,
+        onClick: onPublish,
+        primary: true,
       },
       {
         label: i18n.t('general:delete', { item: '' }),
@@ -129,6 +135,11 @@ const Announcements = () => {
     ];
 
     const announcementPublishedMenuItems = [
+      {
+        label: i18n.t('general:view'),
+        icon: <EyeIcon className="menu-icon" />,
+        onClick: onViewOne,
+      },
       {
         label: i18n.t('general:delete', { item: '' }),
         icon: <TrashIcon className="menu-icon" />,
@@ -156,6 +167,10 @@ const Announcements = () => {
 
   const onAdd = () => {
     alert('Not yet implemented');
+  };
+
+  const onViewOne = (row: IAnnouncement) => {
+    alert(`Not yet implemented, ${row.name}`);
   };
 
   const onPublish = (row: IAnnouncement) => {
