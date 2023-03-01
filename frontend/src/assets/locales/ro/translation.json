@@ -3,6 +3,7 @@
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "name": "Nume",
+    "age": "Vârsta",
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
     "category": "Categorie",
@@ -130,12 +131,15 @@
   "volunteers": {
     "department_and_role": "Departament si rol",
     "location": "Locatie voluntar",
-    "archived_from": "Arhivat din",
-    "blocked_date": "Data blocarii",
+    "archived_on": "Arhivat din",
+    "blocked_on": "Data blocarii",
     "tabs": {
       "active": "Voluntari activi",
       "archived": "Voluntari arhivati",
       "blocked": "Voluntari blocati"
+    },
+    "filters": {
+      "active_since_range": "Perioada activitate"
     },
     "modal": {
       "view": "Vizualizează profil",

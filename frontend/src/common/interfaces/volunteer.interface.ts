@@ -5,16 +5,22 @@ import { IUser } from './user.interface';
 export interface IVolunteer {
   id: string;
   createdOn: Date;
-  createdBy: IUser;
-  role: IDivisionListItem;
-  department: IDivisionListItem;
-  branch: IDivisionListItem;
-  startedOn: Date;
-  email: string;
-  phone: string;
+  updatedOn: Date;
+  user: IUser;
   status: VolunteerStatus;
   archivedOn?: Date;
   blockedOn?: Date;
   archivedBy?: Pick<IUser, 'id' | 'name'>;
   blockedBy?: Pick<IUser, 'id' | 'name'>;
+  organizationId: string;
+  profile?: IVolunteerProfile;
+}
+
+interface IVolunteerProfile {
+  email: string;
+  phone: string;
+  activeSince: Date;
+  role?: IDivisionListItem;
+  department?: IDivisionListItem;
+  branch?: IDivisionListItem;
 }

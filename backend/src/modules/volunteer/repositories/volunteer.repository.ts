@@ -98,7 +98,11 @@ export class VolunteerRepositoryService
             department: true,
             role: true,
           },
-          user: true,
+          user: {
+            location: {
+              county: true,
+            },
+          },
           organization: true,
           blockedBy: true,
           archivedBy: true,

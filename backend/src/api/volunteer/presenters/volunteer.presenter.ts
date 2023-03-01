@@ -6,6 +6,7 @@ import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { VolunteerProfilePresenter } from './volunteer-profile.presenter';
 import { UserPresenter } from 'src/api/_mobile/user/presenters/user-basic.presenter';
+import { RegularUserPresenter } from 'src/api/auth/presenters/user.presenter';
 
 export class VolunteerPresenter {
   constructor(volunteer: IVolunteerModel) {
@@ -26,7 +27,7 @@ export class VolunteerPresenter {
       ? new VolunteerProfilePresenter(volunteer.volunteerProfile)
       : null;
     this.organizationId = volunteer.organization.id;
-    this.user = new UserPresenter(volunteer.user);
+    this.user = new RegularUserPresenter(volunteer.user);
 
     this.createdOn = volunteer.createdOn;
     this.updatedOn = volunteer.updatedOn;
