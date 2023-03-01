@@ -73,11 +73,15 @@ export class VolunteerRepositoryService
         defaultSortBy: 'createdOn',
         defaultOrderDirection: OrderDirection.DESC,
         relations: {
-          volunteerProfile: true,
+          volunteerProfile: {
+            branch: true,
+            department: true,
+            role: true,
+          },
           user: true,
           organization: true,
         },
-        rangeColumn: 'createdOn',
+        rangeColumn: 'volunteerProfile.activeSince',
       },
       options,
       VolunteerModelTransformer.fromEntity,
