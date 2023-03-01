@@ -15,11 +15,17 @@ import Popover from '../components/Popover';
 import { CheckIcon, EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { formatDate, formatDateWithTime } from '../common/utils/utils';
-import { useAnnouncementsQuery } from '../services/announcement/announcement.service';
+import {
+  useAnnouncementQuery,
+  useAnnouncementsQuery,
+  useDeleteAnnouncementMutation,
+  useUpdateAnnouncementMutation,
+} from '../services/announcement/announcement.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 const mapTargetsToString = (announcement: IAnnouncement) => {
   return `(${announcement.targetedVolunteers}) ${announcement.targets.map(
@@ -92,24 +98,32 @@ const Announcements = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+  const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
 
   const navigate = useNavigate();
+  const { id } = useParams();
 
+  const { data: announcement, isLoading: isAnnouncementLoading } = useAnnouncementQuery(
+    id as string,
+  );
   const {
     data: announcements,
-    isLoading: getAnnouncementsLoading,
-    error: getAnnouncementsError,
+    isLoading: isAnnouncementsLoading,
+    error: announcementsError,
+    refetch,
   } = useAnnouncementsQuery(rowsPerPage as number, page as number, orderByColumn, orderDirection);
+  const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
+    useUpdateAnnouncementMutation();
+  const { mutateAsync: deleteAnnouncement, isLoading: isDeleteAnnouncementLoading } =
+    useDeleteAnnouncementMutation();
 
   useEffect(() => {
-    if (getAnnouncementsError) {
+    if (announcementsError) {
       useErrorToast(
-        InternalErrors.ANNOUNCEMENT_ERRORS.getError(
-          getAnnouncementsError.response?.data.code_error,
-        ),
+        InternalErrors.ANNOUNCEMENT_ERRORS.getError(announcementsError.response?.data.code_error),
       );
     }
-  }, [getAnnouncementsError]);
+  }, [announcementsError]);
 
   const buildAnnouncementActionColumn = (): TableColumn<IAnnouncement> => {
     const announcementDraftMenuItems = [
@@ -176,16 +190,55 @@ const Announcements = () => {
     alert(`Not yet implemented, ${row.name}`);
   };
 
-  const onPublish = (row: IAnnouncement) => {
-    alert(`Not yet implemented, ${row.name}`);
+  const onPublish = () => {
+    if (announcement) {
+      updateAnnouncement(
+        {
+          id: announcement?.id,
+          updateData: {
+            status: AnnouncementStatus.PUBLISHED,
+          },
+        },
+        {
+          onSuccess: () => {
+            useSuccessToast(i18n.t('announcement:success.create_publish'));
+            refetch();
+          },
+          onError: (error) => {
+            useErrorToast(
+              InternalErrors.ANNOUNCEMENT_ERRORS.getError(error.response?.data.code_error),
+            );
+          },
+        },
+      );
+    }
   };
 
   const onEdit = (row: IAnnouncement) => {
-    alert(`Not yet implemented, ${row.name}`);
+    navigate(`${row.id}/edit`);
   };
 
   const onDelete = (row: IAnnouncement) => {
-    alert(`Not yet implemented, ${row.name}`);
+    setSelectedIdForDeletion(row.id);
+  };
+
+  const onDeleteAnnouncement = () => {
+    if (selectedIdForDeletion) {
+      deleteAnnouncement(selectedIdForDeletion, {
+        onSuccess: () => {
+          useSuccessToast(i18n.t('announcement:success.delete'));
+          refetch();
+        },
+        onError: (error) => {
+          useErrorToast(
+            InternalErrors.ANNOUNCEMENT_ERRORS.getError(error.response?.data.code_error),
+          );
+        },
+        onSettled: () => {
+          setSelectedIdForDeletion(undefined);
+        },
+      });
+    }
   };
 
   // pagination
@@ -224,7 +277,12 @@ const Announcements = () => {
             columns={[...AnnouncementTableHeader, buildAnnouncementActionColumn()]}
             data={announcements?.items}
             pagination
-            loading={getAnnouncementsLoading}
+            loading={
+              isAnnouncementsLoading ||
+              isAnnouncementLoading ||
+              isUpdateAnnouncementLoading ||
+              isDeleteAnnouncementLoading
+            }
             paginationPerPage={announcements?.meta.itemsPerPage}
             paginationTotalRows={announcements?.meta.totalItems}
             paginationDefaultPage={page}
@@ -234,6 +292,16 @@ const Announcements = () => {
           />
         </CardBody>
       </Card>
+      {selectedIdForDeletion && (
+        <ConfirmationModal
+          title={i18n.t('announcement:modal.title')}
+          description={i18n.t('announcement:modal.description')}
+          confirmBtnLabel={i18n.t('general:delete')}
+          confirmBtnClassName="btn-danger"
+          onClose={setSelectedIdForDeletion.bind(null, undefined)}
+          onConfirm={onDeleteAnnouncement}
+        />
+      )}
     </PageLayout>
   );
 };

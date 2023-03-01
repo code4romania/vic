@@ -42,7 +42,7 @@ export const useCreateAnnouncementMutation = () => {
 
 export const useUpdateAnnouncementMutation = () => {
   return useMutation(
-    ({ id, updateData }: { id: string; updateData: ISaveAnnouncement }) =>
+    ({ id, updateData }: { id: string; updateData: Partial<ISaveAnnouncement> }) =>
       updateAnnouncement(id, updateData),
     {
       onError: (error: AxiosError<IBusinessException<ANNOUNCEMENT_ERRORS>>) =>

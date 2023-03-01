@@ -1,10 +1,10 @@
 import React from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl } from 'react-hook-form';
 import i18n from '../common/config/i18n';
-import { IDivision } from '../common/interfaces/division.interface';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from './FormInput';
 import FormTextarea from './FormTextarea';
+import { SelectItem } from './Select';
 
 interface AnnouncementFormProps {
   control: Control<AnnouncementFormTypes, object>;
@@ -14,7 +14,7 @@ interface AnnouncementFormProps {
 export type AnnouncementFormTypes = {
   name: string;
   description: string;
-  targets: IDivision[];
+  targets: SelectItem<string>[];
 };
 
 const AnnouncementForm = ({ control, errors }: AnnouncementFormProps) => {

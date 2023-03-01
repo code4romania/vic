@@ -24,7 +24,7 @@ export const addAnnouncement = async (createData: ISaveAnnouncement): Promise<IA
 
 export const updateAnnouncement = async (
   id: string,
-  updateData: ISaveAnnouncement,
+  updateData: Partial<ISaveAnnouncement>,
 ): Promise<IAnnouncement> => {
   return API.patch(`/announcement/${id}`, updateData).then((res) => res.data);
 };

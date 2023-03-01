@@ -1,6 +1,7 @@
 import React from 'react';
 import { DivisionType } from '../common/enums/division-type.enum';
 import { IDivisionListItem } from '../common/interfaces/division.interface';
+import MultiSelect from '../components/MultiSelect';
 import Select, { SelectItem, SelectProps } from '../components/Select';
 import { useDivisionsListItemsQuery } from '../services/division/division.service';
 
@@ -13,7 +14,7 @@ export const mapDivisionListItemToSelectItem = (item: IDivisionListItem): Select
   value: item.name,
 });
 
-const OrganizationStructureSelect = ({
+export const OrganizationStructureSelect = ({
   type,
   ...selectProps
 }: OrganizationStructureSelectProps) => {
@@ -31,4 +32,20 @@ const OrganizationStructureSelect = ({
   );
 };
 
-export default OrganizationStructureSelect;
+export const OrganizationStructureMultiSelect = ({
+  type,
+  ...selectProps
+}: OrganizationStructureSelectProps) => {
+  const { data: divisionListItems } = useDivisionsListItemsQuery(type);
+
+  return (
+    <MultiSelect
+      {...selectProps}
+      options={
+        divisionListItems && divisionListItems?.length > 0
+          ? divisionListItems?.map(mapDivisionListItemToSelectItem)
+          : []
+      }
+    />
+  );
+};

@@ -340,7 +340,12 @@
     },
     "success": {
       "create_draft": "Anunt draft creat cu succes",
-      "create_publish": "Anunt creat si publicat cu succes"
+      "create_publish": "Anunt creat si publicat cu succes",
+      "delete": "Anunt sters cu succes"
+    },
+    "modal": {
+      "title": "Esti sigur ca doresti stergerea anuntului?",
+      "description": "Aceasta actiune va sterge definitiv acest anunt si toate informatiile asociate lui."
     }
   },
   "activity_types": {
