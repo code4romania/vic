@@ -9,6 +9,7 @@ enum VolunteerExceptionCodes {
   // Profile
   VOLUNTEER_PROFILE_001 = 'VOLUNTEER_PROFILE_001',
   VOLUNTEER_PROFILE_002 = 'VOLUNTEER_PROFILE_002',
+  VOLUNTEER_PROFILE_003 = 'VOLUNTEER_PROFILE_003',
 }
 
 type VolunteerExceptionCodeType = keyof typeof VolunteerExceptionCodes;
@@ -42,5 +43,10 @@ export const VolunteerExceptionMessages: Record<
   [VolunteerExceptionCodes.VOLUNTEER_PROFILE_002]: {
     code_error: VolunteerExceptionCodes.VOLUNTEER_PROFILE_002,
     message: 'Wrong branch/department/role.',
+  },
+  [VolunteerExceptionCodes.VOLUNTEER_PROFILE_003]: {
+    code_error: VolunteerExceptionCodes.VOLUNTEER_PROFILE_003,
+    message:
+      'Volunteer does not have a profile to be updated. Create one first.',
   },
 };

@@ -106,7 +106,11 @@ export class VolunteerRepositoryService
     const volunteer = await this.volunteerRepository.findOne({
       where: options,
       relations: {
-        volunteerProfile: true,
+        volunteerProfile: {
+          branch: true,
+          department: true,
+          role: true,
+        },
         archivedBy: true,
         blockedBy: true,
         organization: true,

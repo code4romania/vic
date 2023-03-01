@@ -4,6 +4,7 @@ import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import {
   CreateVolunteerProfileOptions,
   IVolunteerProfileModel,
+  UpdateVolunteerProfileOptions,
 } from '../model/volunteer-profile.model';
 import {
   CreateVolunteerOptions,
@@ -79,5 +80,12 @@ export class VolunteerFacade {
 
   async findProfile(id: string): Promise<IVolunteerProfileModel> {
     return this.volunteerProfileRepositoryService.find(id);
+  }
+
+  async updateProfile(
+    id: string,
+    updates: UpdateVolunteerProfileOptions,
+  ): Promise<IVolunteerProfileModel> {
+    return this.volunteerProfileRepositoryService.update(id, updates);
   }
 }
