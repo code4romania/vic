@@ -20,10 +20,15 @@ import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import Select, { SelectItem } from '../components/Select';
 import { formatDate } from '../common/utils/utils';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
-import { useVolunteersQuery } from '../services/volunteer/volunteer.service';
+import {
+  useActivateVolunteerMutation,
+  useArchiveVolunteerMutation,
+  useBlockVolunteerMutation,
+  useVolunteersQuery,
+} from '../services/volunteer/volunteer.service';
 import PageHeader from '../components/PageHeader';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
@@ -35,6 +40,7 @@ import { ListItem } from '../common/interfaces/list-item.interface';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
 import { AgeRangeEnum } from '../common/enums/age-range.enum';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
@@ -134,6 +140,8 @@ const Volunteers = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+  // Modal
+  const [blockVolunteerCandidate, setBlockVolunteerCandidate] = useState<null | IVolunteer>();
   // filters
   const [searchWord, setSearchWord] = useState<string>();
   const [createdOnRange, setCreatedOnRange] = useState<Date[]>([]);
@@ -147,6 +155,7 @@ const Volunteers = () => {
     data: volunteers,
     isLoading: isVolunteersLoading,
     error: volunteersError,
+    refetch,
   } = useVolunteersQuery(
     volunteerStatus,
     rowsPerPage as number,
@@ -163,14 +172,15 @@ const Volunteers = () => {
     createdOnRange[1],
   );
 
-  useEffect(() => {
-    if (volunteers?.meta) {
-      setPage(volunteers.meta.currentPage);
-      setRowsPerPage(volunteers.meta.itemsPerPage);
-      setOrderByColumn(volunteers.meta.orderByColumn);
-      setOrderDirection(volunteers.meta.orderDirection);
-    }
-  }, []);
+  //actions
+  const { mutateAsync: archiveVolunteer, isLoading: isArchivingVolunteer } =
+    useArchiveVolunteerMutation();
+
+  const { mutateAsync: activateVolunteer, isLoading: isActivatingVolunteer } =
+    useActivateVolunteerMutation();
+
+  const { mutateAsync: blockVolunteer, isLoading: isBlockingVolunteer } =
+    useBlockVolunteerMutation();
 
   useEffect(() => {
     if (volunteersError)
@@ -183,38 +193,21 @@ const Volunteers = () => {
     setVolunteerStatus(tab);
   };
 
-  // row actions
-  const onView = (row: IVolunteer) => {
-    navigate(`${row.id}`);
-  };
-
-  const onArchive = (row: IVolunteer) => {
-    console.log(`Not yet implemented, ${row}`);
-  };
-
-  const onBlock = (row: IVolunteer) => {
-    alert(`Not yet implemented, ${row}`);
-  };
-
-  const onDelete = (row: IVolunteer) => {
-    alert(`Not yet implemented, ${row}`);
-  };
-
   // menu items
   const buildActiveVolunteersActionColumn = (): TableColumn<IVolunteer> => {
     const activeVolunteersMenuItems = [
       {
-        label: i18n.t('volunteers:modal.view'),
+        label: i18n.t('volunteers:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
       {
-        label: i18n.t('volunteers:modal.archive'),
+        label: i18n.t('volunteers:popover.archive'),
         icon: <PauseCircleIcon className="menu-icon" />,
         onClick: onArchive,
       },
       {
-        label: i18n.t('volunteers:modal.block'),
+        label: i18n.t('volunteers:popover.block'),
         icon: <NoSymbolIcon className="menu-icon" />,
         onClick: onBlock,
         alert: true,
@@ -234,23 +227,23 @@ const Volunteers = () => {
   const buildArchivedVolunteersActionColumn = (): TableColumn<IVolunteer> => {
     const archivedVolunteersMenuItems = [
       {
-        label: i18n.t('volunteers:modal.view'),
+        label: i18n.t('volunteers:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
       {
-        label: i18n.t('volunteers:modal.activate'),
+        label: i18n.t('volunteers:popover.activate'),
         icon: <CheckCircleIcon className="menu-icon" />,
-        onClick: onArchive,
+        onClick: onActivate,
       },
       {
-        label: i18n.t('volunteers:modal.delete'),
+        label: i18n.t('volunteers:popover.delete'),
         icon: <XMarkIcon className="menu-icon" />,
         onClick: onDelete,
         alert: true,
       },
       {
-        label: i18n.t('volunteers:modal.block'),
+        label: i18n.t('volunteers:popover.block'),
         icon: <NoSymbolIcon className="menu-icon" />,
         onClick: onBlock,
         alert: true,
@@ -270,7 +263,7 @@ const Volunteers = () => {
   const buildBlockedVolunteersActionColumn = (): TableColumn<IVolunteer> => {
     const blockedVolunteersMenuItems = [
       {
-        label: i18n.t('volunteers:modal.view'),
+        label: i18n.t('volunteers:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
@@ -286,6 +279,43 @@ const Volunteers = () => {
     };
   };
 
+  // row actions
+  const onView = (row: IVolunteer) => {
+    navigate(`${row.id}`);
+  };
+
+  const onArchive = (row: IVolunteer) => {
+    archiveVolunteer(row.id, {
+      onSuccess: () => {
+        useSuccessToast(i18n.t('volunteers:submit.archive'));
+        refetch();
+      },
+      onError: (error) => {
+        useErrorToast(InternalErrors.VOLUNTEER_ERRORS.getError(error.response?.data.code_error));
+      },
+    });
+  };
+
+  const onActivate = (row: IVolunteer) => {
+    activateVolunteer(row.id, {
+      onSuccess: () => {
+        useSuccessToast(i18n.t('volunteers:submit.activate'));
+        refetch();
+      },
+      onError: (error) => {
+        useErrorToast(InternalErrors.VOLUNTEER_ERRORS.getError(error.response?.data.code_error));
+      },
+    });
+  };
+
+  const onBlock = (row: IVolunteer) => {
+    setBlockVolunteerCandidate(row);
+  };
+
+  const onDelete = (row: IVolunteer) => {
+    alert(`Not yet implemented, ${row}`);
+  };
+
   const onSort = (column: TableColumn<IVolunteer>, direction: SortOrder) => {
     setOrderByColumn(column.id as string);
     setOrderDirection(
@@ -293,6 +323,22 @@ const Volunteers = () => {
         ? OrderDirection.ASC
         : OrderDirection.DESC,
     );
+  };
+
+  const onConfirmBlockModal = () => {
+    if (blockVolunteerCandidate)
+      blockVolunteer(blockVolunteerCandidate.id, {
+        onSuccess: () => {
+          useSuccessToast(i18n.t('volunteers:submit.block'));
+          refetch();
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.VOLUNTEER_ERRORS.getError(error.response?.data.code_error));
+        },
+        onSettled: () => {
+          setBlockVolunteerCandidate(null);
+        },
+      });
   };
 
   const onResetFilters = () => {
@@ -365,7 +411,7 @@ const Volunteers = () => {
               <DataTableComponent
                 columns={[...ActiveVolunteersTableHeader, buildActiveVolunteersActionColumn()]}
                 data={volunteers?.items}
-                loading={isVolunteersLoading}
+                loading={isVolunteersLoading || isArchivingVolunteer || isBlockingVolunteer}
                 pagination
                 paginationPerPage={rowsPerPage}
                 paginationTotalRows={volunteers?.meta?.totalItems}
@@ -379,7 +425,7 @@ const Volunteers = () => {
               <DataTableComponent
                 columns={[...ArchivedVolunteersTableHeader, buildArchivedVolunteersActionColumn()]}
                 data={volunteers?.items}
-                loading={isVolunteersLoading}
+                loading={isVolunteersLoading || isActivatingVolunteer || isBlockingVolunteer}
                 pagination
                 paginationPerPage={rowsPerPage}
                 paginationTotalRows={volunteers?.meta?.totalItems}
@@ -406,6 +452,16 @@ const Volunteers = () => {
           </CardBody>
         </Card>
       </Tabs>
+      {blockVolunteerCandidate && (
+        <ConfirmationModal
+          title={i18n.t('volunteers:modal.block.title')}
+          description={i18n.t('volunteers:modal.block.description')}
+          confirmBtnLabel={i18n.t('volunteers:popover.block')}
+          confirmBtnClassName="btn-danger"
+          onClose={setBlockVolunteerCandidate.bind(null, null)}
+          onConfirm={onConfirmBlockModal}
+        />
+      )}
     </PageLayout>
   );
 };
