@@ -109,37 +109,5 @@ export const activateVolunteer = async (id: string): Promise<IVolunteer> => {
 };
 
 export const blockVolunteer = async (id: string): Promise<IVolunteer> => {
-  // return API.patch(`volunteer/${id}/block`).then((res) => res.data);
-  return Promise.resolve({
-    id: id,
-    createdOn: new Date(),
-    createdBy: {
-      id: '1',
-      name: 'Florian',
-      email: 'florian@email.com',
-      phone: '+40765555555',
-      profilePicture:
-        'https://images.pexels.com/photos/6195084/pexels-photo-6195084.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      location: {
-        id: 1,
-        name: 'Iasi',
-        county: {
-          id: 1,
-          abbreviation: 'VS',
-          name: 'Vaslui',
-        },
-      },
-      birthday: new Date('2022-01-01'),
-      sex: Sex.MALE,
-      createdOn: new Date('2022-01-01'),
-      updatedOn: new Date('2022-01-01'),
-    },
-    role: { id: '1', name: 'Prof' },
-    department: { id: '1', name: 'Dep' },
-    branch: { id: '1', name: 'Iasi' },
-    startedOn: new Date(),
-    email: 'florian@email.com',
-    phone: '+40765555555',
-    status: VolunteerStatus.ACTIVE,
-  });
+  return API.patch(`volunteer/${id}/block`).then((res) => res.data);
 };

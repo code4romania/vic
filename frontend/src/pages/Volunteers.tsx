@@ -131,7 +131,8 @@ const Volunteers = () => {
     useArchiveVolunteerMutation();
   const { mutateAsync: activateVolunteer, isLoading: isActivatingVolunteer } =
     useActivateVolunteerMutation();
-  const { mutateAsync: blockVolunteer } = useBlockVolunteerMutation();
+  const { mutateAsync: blockVolunteer, isLoading: isBlockingVolunteer } =
+    useBlockVolunteerMutation();
 
   useEffect(() => {
     if (volunteers?.meta) {
@@ -162,8 +163,8 @@ const Volunteers = () => {
     archiveVolunteer(row.id, {
       onSuccess: () => {
         useSuccessToast(
-          i18n.t('volunteers:modal.success', {
-            option: i18n.t('volunteers:status.archived'),
+          i18n.t('volunteers:submit.success', {
+            status: i18n.t('volunteers:status.archived'),
           }),
         );
         refetch();
@@ -178,8 +179,8 @@ const Volunteers = () => {
     activateVolunteer(row.id, {
       onSuccess: () => {
         useSuccessToast(
-          i18n.t('volunteers:modal.success', {
-            status: i18n.t('volunteers:status.activated'),
+          i18n.t('volunteers:submit.success', {
+            status: i18n.t('volunteers:status.reactivated'),
           }),
         );
         refetch();
@@ -334,7 +335,7 @@ const Volunteers = () => {
               <DataTableComponent
                 columns={[...ActiveVolunteersTableHeader, buildActiveVolunteersActionColumn()]}
                 data={volunteers?.items}
-                loading={isVolunteersLoading || isArchivingVolunteer}
+                loading={isVolunteersLoading || isArchivingVolunteer || isBlockingVolunteer}
                 pagination
                 paginationPerPage={rowsPerPage}
                 paginationTotalRows={volunteers?.meta?.totalItems}
@@ -348,7 +349,7 @@ const Volunteers = () => {
               <DataTableComponent
                 columns={[...ArchivedVolunteersTableHeader, buildArchivedVolunteersActionColumn()]}
                 data={volunteers?.items}
-                loading={isVolunteersLoading || isActivatingVolunteer}
+                loading={isVolunteersLoading || isActivatingVolunteer || isBlockingVolunteer}
                 pagination
                 paginationPerPage={rowsPerPage}
                 paginationTotalRows={volunteers?.meta?.totalItems}
