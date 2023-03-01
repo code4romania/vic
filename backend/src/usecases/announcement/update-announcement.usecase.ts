@@ -12,6 +12,8 @@ import { AnnouncementFacade } from 'src/modules/announcement/services/announceme
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import SendAnnouncementEvent from 'src/modules/notifications/events/others/send-announcement.event';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
+import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetAllOrganizationStructureByTypeUseCase } from '../organization/organization-structure/get-all-organization-structure-by-type.usecase';
 
 @Injectable()
@@ -23,6 +25,7 @@ export class UpdateAnnouncementUseCase
     private readonly exceptionsService: ExceptionsService,
     private readonly eventEmitter: EventEmitter2,
     private readonly getAllOrganizationStructureByTypeUseCase: GetAllOrganizationStructureByTypeUseCase,
+    private readonly volunteerFacade: VolunteerFacade,
   ) {}
 
   public async execute(
@@ -46,16 +49,17 @@ export class UpdateAnnouncementUseCase
 
     // 3. Check if only departments were chosen and calculate the new total number of volunteers
     let targetedVolunteers = 0;
-    const departments =
-      await this.getAllOrganizationStructureByTypeUseCase.execute(
-        OrganizationStructureType.DEPARTMENT,
-        updateData.organizationId,
-      );
 
-    if (updateData.targetsIds) {
+    if (updateData.targetsIds.length !== 0) {
+      const departments =
+        await this.getAllOrganizationStructureByTypeUseCase.execute(
+          OrganizationStructureType.DEPARTMENT,
+          updateData.organizationId,
+        );
+
       const filteredtargets = departments.filter((department) => {
         if (updateData.targetsIds.includes(department.id)) {
-          targetedVolunteers += department.members;
+          targetedVolunteers = department.members;
           return true;
         }
       });
@@ -65,6 +69,15 @@ export class UpdateAnnouncementUseCase
           AnnouncementExceptionMessages.ANNOUNCEMENT_003,
         );
       }
+    }
+
+    if (updateData.targetsIds.length === 0) {
+      targetedVolunteers = await this.volunteerFacade.count({
+        where: {
+          organizationId: updateData.organizationId,
+          status: VolunteerStatus.ACTIVE,
+        },
+      });
     }
 
     // 4. Update the announcement

@@ -29,8 +29,8 @@ const DataTableFilters = ({
   const [searchWord, setSearchWord] = useState<string>('');
 
   useEffect(() => {
-    if (searchValue === null) setSearchWord('');
-  }, [searchValue]);
+    setSearchWord(searchValue || '');
+  }, []);
 
   // cleanup any side effects of deounce
   useEffect(() => {
@@ -42,6 +42,7 @@ const DataTableFilters = ({
   const resetFilters = () => {
     onResetFilters();
     setFiltersCollapsed(true);
+    setSearchWord('');
   };
 
   const onSearchValueChange = (value: string) => {
@@ -91,7 +92,7 @@ const DataTableFilters = ({
       </CardHeader>
       {filtersCollapsed && (
         <CardBody>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-6">
             {children}
           </div>
         </CardBody>

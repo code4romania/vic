@@ -36,6 +36,16 @@ import { ArchiveActivityTypeUseCase } from './activity-type/archive-activity-typ
 import { GetOneActivityTypeUseCase } from './activity-type/get-one-activity-type.usecase';
 import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-type.usecase';
 import { GetAllOrganizationStructureByTypeUseCase } from './organization/organization-structure/get-all-organization-structure-by-type.usecase';
+import { VolunteerModule } from 'src/modules/volunteer/volunteer.module';
+import { GetOneRegularUserUseCaseService } from './user/get-one-regular-user.usecase';
+import { CreateVolunteerUseCase } from './volunteer/create-volunteer.usecase';
+import { GetOneVolunteerUsecase } from './volunteer/get-one-volunteer.usecase';
+import { CreateVolunteerProfileUseCase } from './volunteer/create-volunteer-profile.usecase';
+import { GetManyVolunteersUseCase } from './volunteer/get-many-volunteers.usecase';
+import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase';
+import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
+import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
+import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-profile.usecase';
 import { AnnouncementModule } from 'src/modules/announcement/announcement.module';
 import { GetOneAnnouncementUseCase } from './announcement/get-one-announcement.usecase';
 import { GetManyAnnouncementUseCase } from './announcement/get-many-announcement.usecase';
@@ -52,6 +62,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     AccessRequestModule,
     LocationModule,
     ActivityTypeModule,
+    VolunteerModule,
     AnnouncementModule,
   ],
   providers: [
@@ -74,6 +85,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
+    GetOneRegularUserUseCaseService,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -92,6 +104,15 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     ArchiveActivityTypeUseCase,
     GetOneActivityTypeUseCase,
     GetManyActivityTypeUseCase,
+    // Volunteers
+    GetOneVolunteerUsecase,
+    CreateVolunteerUseCase,
+    ArchiveVolunteerUsecase,
+    BlockVolunteerUsecase,
+    ActivateVolunteerUsecase,
+    CreateVolunteerProfileUseCase,
+    GetManyVolunteersUseCase,
+    UpdateVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -119,6 +140,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     // user
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
+    GetOneRegularUserUseCaseService,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -137,6 +159,15 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     ArchiveActivityTypeUseCase,
     GetOneActivityTypeUseCase,
     GetManyActivityTypeUseCase,
+    // Volunteers
+    GetOneVolunteerUsecase,
+    CreateVolunteerUseCase,
+    ArchiveVolunteerUsecase,
+    BlockVolunteerUsecase,
+    ActivateVolunteerUsecase,
+    CreateVolunteerProfileUseCase,
+    GetManyVolunteersUseCase,
+    UpdateVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,

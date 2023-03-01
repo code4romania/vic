@@ -13,7 +13,7 @@ import {
 import { SEX, UserType } from '../enums/user.enum';
 
 @Entity({ name: 'user' })
-@TableInheritance({ column: { type: 'varchar', name: 'type', enum: UserType } })
+@TableInheritance({ column: { type: 'varchar', name: 'type', enum: UserType } }) // TODO: can include type in the entity response from the db?
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

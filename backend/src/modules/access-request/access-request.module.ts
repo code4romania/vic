@@ -9,8 +9,8 @@ import { AccessRequestFacade } from './services/access-request.facade';
   providers: [
     // Repositories
     AccessRequestRepository,
-    AccessRequestFacade,
     // Facades
+    AccessRequestFacade,
   ],
   exports: [
     // Export only facades!

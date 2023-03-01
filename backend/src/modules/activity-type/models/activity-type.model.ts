@@ -53,8 +53,14 @@ export type FindActivityTypeOptions = Partial<
   organizationId?: string;
 };
 
-export type FindManyActivityTypeOptions = Partial<IActivityTypeModel> & {
+export type FindManyActivityTypeOptions = Partial<
+  Omit<IActivityTypeModel, 'branch' | 'department' | 'role' | 'organization'>
+> & {
   organizationId?: string;
+  search?: string;
+  departmentId?: string;
+  roleId?: string;
+  branchId?: string;
 };
 
 export class ActivityTypeTransformer {
@@ -65,15 +71,11 @@ export class ActivityTypeTransformer {
       icon: entity.icon,
       status: entity.status,
       organization: OrganizationTransformer.fromEntity(entity.organization),
-      branch: entity.branch
-        ? OrganizationStructureTransformer.fromEntity(entity.branch)
-        : null,
-      department: entity.department
-        ? OrganizationStructureTransformer.fromEntity(entity.department)
-        : null,
-      role: entity.role
-        ? OrganizationStructureTransformer.fromEntity(entity.role)
-        : null,
+      branch: OrganizationStructureTransformer.fromEntity(entity.branch),
+      department: OrganizationStructureTransformer.fromEntity(
+        entity.department,
+      ),
+      role: OrganizationStructureTransformer.fromEntity(entity.role),
       updatedOn: entity.updatedOn,
       createdOn: entity.createdOn,
     };
