@@ -28,6 +28,7 @@ export interface IVolunteerProfileRepository {
   ): Promise<IVolunteerProfileModel>;
   find(id: string): Promise<IVolunteerProfileModel>;
   update(
+    id: string,
     updates: UpdateVolunteerProfileOptions,
   ): Promise<IVolunteerProfileModel>;
 }

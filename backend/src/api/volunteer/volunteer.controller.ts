@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
@@ -6,7 +7,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import {
@@ -23,6 +24,8 @@ import { BlockVolunteerUsecase } from 'src/usecases/volunteer/block-volunteer.us
 import { GetOneVolunteerUsecase } from 'src/usecases/volunteer/get-one-volunteer.usecase';
 import { VolunteerGuard } from './guards/volunteer.guard';
 import { VolunteerPresenter } from './presenters/volunteer.presenter';
+import { UpdateVolunteerProfileDto } from '../_mobile/volunteer/dto/update-volunteer-profile.dto';
+import { UpdateVolunteerProfileUsecase } from 'src/usecases/volunteer/update-volunteer-profile.usecase';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, VolunteerGuard)
@@ -34,6 +37,7 @@ export class VolunteerController {
     private readonly blockVolunteerUsecase: BlockVolunteerUsecase,
     private readonly activateVolunteerUsecase: ActivateVolunteerUsecase,
     private readonly archiveVolunteerUsecase: ArchiveVolunteerUsecase,
+    private readonly updateVolunteerProfileUsecase: UpdateVolunteerProfileUsecase,
   ) {}
 
   @Get()
@@ -96,6 +100,20 @@ export class VolunteerController {
     @Param('id', UuidValidationPipe) volunteerId: string,
   ): Promise<VolunteerPresenter> {
     const volunteer = await this.activateVolunteerUsecase.execute(volunteerId);
+    return new VolunteerPresenter(volunteer);
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: UpdateVolunteerProfileDto })
+  @Patch(':id')
+  async update(
+    @Param('id', UuidValidationPipe) volunteerId: string,
+    @Body() updatesDTO: UpdateVolunteerProfileDto,
+  ): Promise<VolunteerPresenter> {
+    const volunteer = await this.updateVolunteerProfileUsecase.execute(
+      volunteerId,
+      updatesDTO,
+    );
     return new VolunteerPresenter(volunteer);
   }
 }
