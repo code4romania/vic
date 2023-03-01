@@ -106,7 +106,7 @@ export class AccessRequestRepository
       AccessRequestTransformer.toEntity(newRequest),
     );
 
-    return AccessRequestTransformer.fromEntity(accessRequestEntity);
+    return this.find({ id: accessRequestEntity.id });
   }
 
   async delete(id: string): Promise<string> {
