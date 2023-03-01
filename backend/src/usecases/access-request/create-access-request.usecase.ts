@@ -12,6 +12,8 @@ import { OrganizationExceptionMessages } from 'src/modules/organization/exceptio
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
+import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
+import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
 @Injectable()
 export class CreateAccessRequestUseCase
@@ -21,6 +23,7 @@ export class CreateAccessRequestUseCase
     private readonly accessRequestFacade: AccessRequestFacade,
     private readonly organizationFacade: OrganizationFacadeService,
     private readonly userFacade: UserFacadeService,
+    private readonly volunteerFacade: VolunteerFacade,
 
     private readonly exceptionService: ExceptionsService,
   ) {}
@@ -38,6 +41,10 @@ export class CreateAccessRequestUseCase
     }
 
     // ========================================================================
+    // TODO: check if the user has the identity data completed, otherwise throw
+    // ========================================================================
+
+    // ========================================================================
     // 1. Check if the organization exists
     const organization = await this.organizationFacade.findOrganization({
       id: createRequestModel.organizationId,
@@ -49,7 +56,17 @@ export class CreateAccessRequestUseCase
       );
     }
     // ========================================================================
-    // TODO 2. Check if the user is already part of organization (isVolunteer)
+    // 2. Check if the user is already part of organization (isVolunteer)
+    const existingVolunteer = await this.volunteerFacade.find({
+      userId: user.id,
+      organizationId: organization.id,
+    });
+
+    if (existingVolunteer) {
+      throw this.exceptionService.badRequestException(
+        VolunteerExceptionMessages.VOLUNTEER_002,
+      );
+    }
     // ========================================================================
     // 3. Search if there is another request for the: same "USER", "ORGANIZATION" and status "PENDING"
     const existingRequest = await this.accessRequestFacade.find({

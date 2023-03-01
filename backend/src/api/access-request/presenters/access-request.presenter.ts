@@ -7,6 +7,7 @@ import {
 import { AccessRequestStatus } from 'src/modules/access-request/enums/access-request-status.enum';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { UserPresenter } from 'src/api/_mobile/user/presenters/user-basic.presenter';
 
 export class AccessRequestPresenter {
   constructor(accessRequest: IAccessRequestModel) {
@@ -14,13 +15,12 @@ export class AccessRequestPresenter {
     this.status = accessRequest.status;
     this.rejectionReason = accessRequest.rejectionReason;
     this.answers = accessRequest.answers;
-    this.requestedBy = accessRequest.requestedBy;
+    this.requestedBy = accessRequest.requestedBy
+      ? new UserPresenter(accessRequest.requestedBy)
+      : null;
     this.updatedBy = accessRequest.updatedBy
-      ? {
-          id: accessRequest.updatedBy.id,
-          name: accessRequest.updatedBy.name,
-        }
-      : undefined;
+      ? new UserPresenter(accessRequest.updatedBy)
+      : null;
     this.createdOn = accessRequest.createdOn;
     this.updatedOn = accessRequest.updatedOn;
   }
@@ -60,11 +60,11 @@ export class AccessRequestPresenter {
 
   @Expose()
   @ApiProperty({ description: 'The user who made the request.' })
-  requestedBy: IRegularUserModel;
+  requestedBy: UserPresenter<IRegularUserModel>;
 
   @Expose()
   @ApiProperty({ description: 'The user who made the request.' })
-  updatedBy: Pick<IAdminUserModel, 'id' | 'name'>;
+  updatedBy: UserPresenter<IAdminUserModel>;
 
   @Expose()
   @ApiProperty({ description: 'Date of creation' })

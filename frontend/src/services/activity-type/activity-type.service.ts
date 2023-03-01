@@ -12,10 +12,19 @@ import {
   updateActivityType,
 } from './activity-type.api';
 
-export const useActivityTypesQuery = () => {
-  return useQuery(['activity-types'], () => getActivityTypes(), {
-    onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) => error,
-  });
+export const useActivityTypesQuery = (
+  search?: string,
+  branchId?: string,
+  departmentId?: string,
+  roleId?: string,
+) => {
+  return useQuery(
+    ['activity-types', search, branchId, departmentId, roleId],
+    () => getActivityTypes(search, branchId, departmentId, roleId),
+    {
+      onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) => error,
+    },
+  );
 };
 
 export const useActivityTypeQuery = (id: string) => {

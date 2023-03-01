@@ -1,6 +1,6 @@
 import { BusinessException } from 'src/common/interfaces/business-exception.interface';
 
-export enum AccessCodeExceptionCodes {
+enum AccessCodeExceptionCodes {
   ACCESS_CODE_001 = 'ACCESS_CODE_001',
   ACCESS_CODE_002 = 'ACCESS_CODE_002',
 }
