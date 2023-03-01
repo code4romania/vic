@@ -6,7 +6,7 @@ export interface IVolunteer {
   id: string;
   createdOn: Date;
   updatedOn: Date;
-  user: Pick<IUser, 'id' | 'name'>;
+  user: IUser;
   status: VolunteerStatus;
   archivedOn?: Date;
   blockedOn?: Date;

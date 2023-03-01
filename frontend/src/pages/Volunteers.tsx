@@ -63,22 +63,21 @@ const AgeRangeOptions: SelectItem<AgeRangeEnum>[] = [
 
 const ActiveVolunteersTableHeader = [
   {
-    id: 'name',
+    id: 'user.name',
     name: i18n.t('general:name'),
     sortable: true,
     grow: 2,
     minWidth: '10rem',
     cell: (row: IVolunteer) => (
       <MediaCell
-        // logo={row.user?.profilePicture || ''}
-        logo={''}
+        logo={row.user?.profilePicture || ''}
         title={row.user.name}
-        subtitle={'Voluntar Iasi'} // TODO: TBD
+        subtitle={row.profile?.branch?.name || ''}
       />
     ),
   },
   {
-    id: 'department',
+    id: 'volunteerProfile.department.name',
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
     grow: 1,
@@ -89,15 +88,15 @@ const ActiveVolunteersTableHeader = [
       }`,
   },
   {
-    id: 'location',
+    id: 'user.location.name',
     name: i18n.t('volunteers:location'),
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: () => `Iasi, jud Iasi`, // TODO: TBD
+    selector: (row: IVolunteer) => `${row.user.location?.name}`,
   },
   {
-    id: 'contact',
+    id: 'volunteerProfile.email',
     name: i18n.t('general:contact'),
     sortable: true,
     grow: 1,
@@ -109,8 +108,8 @@ const ActiveVolunteersTableHeader = [
 const ArchivedVolunteersTableHeader = [
   ...ActiveVolunteersTableHeader,
   {
-    id: 'archivedDate',
-    name: i18n.t('volunteers:archived_from'),
+    id: 'archivedOn',
+    name: i18n.t('volunteers:archived_on'),
     sortable: true,
     selector: (row: IVolunteer) => (row.archivedOn ? formatDate(row.archivedOn) : '-'),
   },
@@ -119,8 +118,8 @@ const ArchivedVolunteersTableHeader = [
 const BlockedVolunteersTableHeader = [
   ...ActiveVolunteersTableHeader,
   {
-    id: 'blockedDate',
-    name: i18n.t('volunteers:blocked_date'),
+    id: 'blockedOn',
+    name: i18n.t('volunteers:blocked_on'),
     sortable: true,
     selector: (row: IVolunteer) => (row.blockedOn ? formatDate(formatDate(row.blockedOn)) : '-'),
   },
