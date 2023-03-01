@@ -1,11 +1,17 @@
 import { AxiosError } from 'axios';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { PaginationConfig } from '../../common/constants/pagination';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
 import { VOLUNTEER_ERRORS } from '../../common/errors/entities/volunteer.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
-import { getVolunteer, getVolunteers } from './volunteer.api';
+import {
+  activateVolunteer,
+  archiveVolunteer,
+  blockVolunteer,
+  getVolunteer,
+  getVolunteers,
+} from './volunteer.api';
 
 export const useVolunteersQuery = (
   filterStatus: VolunteerStatus,
@@ -28,5 +34,23 @@ export const useVolunteerQuery = (id: string) => {
   return useQuery(['volunteer', id], () => getVolunteer(id), {
     enabled: !!id,
     onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
+};
+
+export const useArchiveVolunteerMutation = () => {
+  return useMutation((id: string) => archiveVolunteer(id), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
+  });
+};
+
+export const useActivateVolunteerMutation = () => {
+  return useMutation((id: string) => activateVolunteer(id), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
+  });
+};
+
+export const useBlockVolunteerMutation = () => {
+  return useMutation((id: string) => blockVolunteer(id), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
   });
 };

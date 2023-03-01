@@ -18,3 +18,4 @@ export interface IVolunteer {
   archivedBy?: Pick<IUser, 'id' | 'name'>;
   blockedBy?: Pick<IUser, 'id' | 'name'>;
 }
+//TO DO: create interface for achivedBy and blockedBy

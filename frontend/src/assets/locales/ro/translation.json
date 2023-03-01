@@ -2,6 +2,7 @@
   "general": {
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
+    "user": "Utilizator",
     "name": "Nume",
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
@@ -105,18 +106,29 @@
     "location": "Locatie voluntar",
     "archived_from": "Arhivat din",
     "blocked_date": "Data blocarii",
+    "status": {
+      "reactivated": "reactivat",
+      "archived": "arhivat",
+      "blocked": "blocat",
+      "deleted": "sters"
+    },
     "tabs": {
       "active": "Voluntari activi",
       "archived": "Voluntari arhivati",
       "blocked": "Voluntari blocati"
     },
-    "modal": {
+    "popover": {
       "view": "Vizualizează profil",
       "archive": "Arhivează voluntar",
       "activate": "Reactivează voluntar",
       "delete": "Sterge din ONG",
       "block": "Blochează voluntar"
     },
+    "block_modal": {
+      "title": "Esti sigur ca doresti blocarea acestui voluntar?",
+      "description": "Această acțiune va bloca definitiv acest voluntar"
+    },
+    "submit": { "success": "Utilizatorul a fost {{status}}" },
     "errors": {}
   },
   "division": {
