@@ -8,6 +8,7 @@ import {
   IAccessRequestModel,
 } from 'src/modules/access-request/model/access-request.model';
 import { AccessRequestFacade } from 'src/modules/access-request/services/access-request.facade';
+import { CreateVolunteerUseCase } from '../volunteer/create-volunteer.usecase';
 
 @Injectable()
 export class ApproveAccessRequestUseCase
@@ -15,6 +16,7 @@ export class ApproveAccessRequestUseCase
 {
   constructor(
     private readonly accessRequestFacade: AccessRequestFacade,
+    private readonly createVolunteerUseCase: CreateVolunteerUseCase,
     private readonly exceptionService: ExceptionsService,
   ) {}
 
@@ -38,7 +40,12 @@ export class ApproveAccessRequestUseCase
       );
     }
 
-    // TODO: 1. create volunteer user for the organization
+    // Create volunteer user for the organization
+    await this.createVolunteerUseCase.execute({
+      organizationId: accessRequest.organizationId,
+      userId: accessRequest.requestedBy?.id,
+    });
+
     // TODO: 2. send email and notification
 
     return this.accessRequestFacade.update({

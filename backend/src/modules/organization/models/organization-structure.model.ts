@@ -39,6 +39,7 @@ export class OrganizationStructureTransformer {
   static fromEntity(
     entity: OrganizationStructureEntity,
   ): IOrganizationStructureModel {
+    if (!entity) return null;
     return {
       id: entity.id,
       name: entity.name,

@@ -2,43 +2,7 @@ import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IActivityTypeModel } from 'src/modules/activity-type/models/activity-type.model';
 import { ActivityTypeStatus } from 'src/modules/activity-type/enums/activity-type-status.enum';
-import { IOrganizationStructureModel } from 'src/modules/organization/models/organization-structure.model';
-import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
-
-class OrganizationStructureToActivityPresenter {
-  @Expose()
-  @ApiProperty({
-    description: 'The uuid of the Organization Structure',
-    example: '525dcdf9-4117-443e-a0c3-bf652cdc5c1b',
-  })
-  id: string;
-
-  @Expose()
-  @ApiProperty({
-    description: 'The name of the Organization Structure',
-    example: 'Financial',
-  })
-  name: string;
-
-  @Expose()
-  @ApiProperty({
-    description: 'Type of the structure (branch/department/role)',
-    enum: OrganizationStructureType,
-    examples: Object.values(OrganizationStructureType),
-  })
-  type: OrganizationStructureType;
-
-  static fromActivityType(
-    structure: IOrganizationStructureModel,
-  ): OrganizationStructureToActivityPresenter {
-    if (!structure) return null;
-    return {
-      id: structure.id,
-      name: structure.name,
-      type: structure.type,
-    };
-  }
-}
+import { OrganizationStructureListItemPresenter } from 'src/api/organization/presenters/organization-structure-list-item.presenter';
 
 export class ActivityTypePresenter {
   constructor(activityType: IActivityTypeModel) {
@@ -46,15 +10,15 @@ export class ActivityTypePresenter {
     this.name = activityType.name;
     this.icon = activityType.icon;
     this.status = activityType.status;
-    this.branch = OrganizationStructureToActivityPresenter.fromActivityType(
-      activityType.branch,
-    );
-    this.department = OrganizationStructureToActivityPresenter.fromActivityType(
-      activityType.department,
-    );
-    this.role = OrganizationStructureToActivityPresenter.fromActivityType(
-      activityType.role,
-    );
+    this.branch = activityType.branch
+      ? new OrganizationStructureListItemPresenter(activityType.branch)
+      : null;
+    this.department = activityType.department
+      ? new OrganizationStructureListItemPresenter(activityType.department)
+      : null;
+    this.role = activityType.role
+      ? new OrganizationStructureListItemPresenter(activityType.role)
+      : null;
     this.createdOn = activityType.createdOn;
     this.updatedOn = activityType.updatedOn;
   }
@@ -83,16 +47,16 @@ export class ActivityTypePresenter {
   status: ActivityTypeStatus;
 
   @Expose()
-  @ApiProperty({ type: OrganizationStructureToActivityPresenter })
-  branch: OrganizationStructureToActivityPresenter;
+  @ApiProperty({ type: OrganizationStructureListItemPresenter })
+  branch: OrganizationStructureListItemPresenter;
 
   @Expose()
-  @ApiProperty({ type: OrganizationStructureToActivityPresenter })
-  department: OrganizationStructureToActivityPresenter;
+  @ApiProperty({ type: OrganizationStructureListItemPresenter })
+  department: OrganizationStructureListItemPresenter;
 
   @Expose()
-  @ApiProperty({ type: OrganizationStructureToActivityPresenter })
-  role: OrganizationStructureToActivityPresenter;
+  @ApiProperty({ type: OrganizationStructureListItemPresenter })
+  role: OrganizationStructureListItemPresenter;
 
   @Expose()
   @ApiProperty({ description: 'Date of creation' })

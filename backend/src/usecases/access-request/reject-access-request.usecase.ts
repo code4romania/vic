@@ -8,7 +8,6 @@ import {
   RejectAccessRequestModel,
 } from 'src/modules/access-request/model/access-request.model';
 import { AccessRequestFacade } from 'src/modules/access-request/services/access-request.facade';
-
 @Injectable()
 export class RejectAccessRequestUseCase
   implements IUseCaseService<IAccessRequestModel>
@@ -38,7 +37,6 @@ export class RejectAccessRequestUseCase
       );
     }
 
-    // TODO: 1. create volunteer user for the organization
     // TODO: 2. send email and notification
 
     return this.accessRequestFacade.update({

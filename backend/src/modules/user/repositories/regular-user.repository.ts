@@ -20,11 +20,11 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
   async create(
     userModel: CreateRegularUserOptions,
   ): Promise<IRegularUserModel> {
-    const newUser = RegularUserTransformer.toEntity(userModel);
+    const newUserEntity = await this.regularUserRepository.save(
+      RegularUserTransformer.toEntity(userModel),
+    );
 
-    const newUserEntity = await this.regularUserRepository.save(newUser);
-
-    return RegularUserTransformer.fromEntity(newUserEntity);
+    return this.find({ id: newUserEntity.id });
   }
 
   async find(options: FindRegularUserOptions): Promise<IRegularUserModel> {

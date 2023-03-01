@@ -36,6 +36,16 @@ import { ArchiveActivityTypeUseCase } from './activity-type/archive-activity-typ
 import { GetOneActivityTypeUseCase } from './activity-type/get-one-activity-type.usecase';
 import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-type.usecase';
 import { GetAllOrganizationStructureByTypeUseCase } from './organization/organization-structure/get-all-organization-structure-by-type.usecase';
+import { VolunteerModule } from 'src/modules/volunteer/volunteer.module';
+import { GetOneRegularUserUseCaseService } from './user/get-one-regular-user.usecase';
+import { CreateVolunteerUseCase } from './volunteer/create-volunteer.usecase';
+import { GetOneVolunteerUsecase } from './volunteer/get-one-volunteer.usecase';
+import { CreateVolunteerProfileUseCase } from './volunteer/create-volunteer-profile.usecase';
+import { GetManyVolunteersUseCase } from './volunteer/get-many-volunteers.usecase';
+import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase';
+import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
+import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
+import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-profile.usecase';
 
 @Module({
   imports: [
@@ -46,6 +56,7 @@ import { GetAllOrganizationStructureByTypeUseCase } from './organization/organiz
     AccessRequestModule,
     LocationModule,
     ActivityTypeModule,
+    VolunteerModule,
   ],
   providers: [
     // Organization
@@ -67,6 +78,7 @@ import { GetAllOrganizationStructureByTypeUseCase } from './organization/organiz
     // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
+    GetOneRegularUserUseCaseService,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -85,6 +97,15 @@ import { GetAllOrganizationStructureByTypeUseCase } from './organization/organiz
     ArchiveActivityTypeUseCase,
     GetOneActivityTypeUseCase,
     GetManyActivityTypeUseCase,
+    // Volunteers
+    GetOneVolunteerUsecase,
+    CreateVolunteerUseCase,
+    ArchiveVolunteerUsecase,
+    BlockVolunteerUsecase,
+    ActivateVolunteerUsecase,
+    CreateVolunteerProfileUseCase,
+    GetManyVolunteersUseCase,
+    UpdateVolunteerProfileUsecase,
   ],
   exports: [
     // Organization
@@ -106,6 +127,7 @@ import { GetAllOrganizationStructureByTypeUseCase } from './organization/organiz
     // user
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
+    GetOneRegularUserUseCaseService,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -124,6 +146,15 @@ import { GetAllOrganizationStructureByTypeUseCase } from './organization/organiz
     ArchiveActivityTypeUseCase,
     GetOneActivityTypeUseCase,
     GetManyActivityTypeUseCase,
+    // Volunteers
+    GetOneVolunteerUsecase,
+    CreateVolunteerUseCase,
+    ArchiveVolunteerUsecase,
+    BlockVolunteerUsecase,
+    ActivateVolunteerUsecase,
+    CreateVolunteerProfileUseCase,
+    GetManyVolunteersUseCase,
+    UpdateVolunteerProfileUsecase,
   ],
 })
 export class UseCaseModule {}

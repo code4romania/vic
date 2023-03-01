@@ -1,12 +1,18 @@
 import { OneOf } from 'src/common/helpers/typescript-extends';
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
-import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import {
-  FindRegularUserOptions,
+  AdminUserEntity,
+  RegularUserEntity,
+} from 'src/modules/user/entities/user.entity';
+import {
+  AdminUserTransformer,
+  IAdminUserModel,
+} from 'src/modules/user/models/admin-user.model';
+import {
   IRegularUserModel,
+  RegularUserTransformer,
 } from 'src/modules/user/models/regular-user.model';
-import { FindOptionsWhere } from 'typeorm';
 import { AccessRequestEntity } from '../entities/access-request.entity';
 import { AccessRequestStatus } from '../enums/access-request-status.enum';
 
@@ -63,8 +69,8 @@ export class AccessRequestTransformer {
       status: entity.status,
       rejectionReason: entity.rejectionReason,
       answers: entity.answers,
-      requestedBy: entity.requestedBy,
-      updatedBy: entity.updatedBy,
+      requestedBy: RegularUserTransformer.fromEntity(entity.requestedBy),
+      updatedBy: AdminUserTransformer.fromEntity(entity.updatedBy),
       organizationId: entity.organizationId,
       updatedOn: entity.updatedOn,
       createdOn: entity.createdOn,
