@@ -15,6 +15,7 @@ import Volunteers from '../pages/Volunteers';
 import AddAccessCode from '../pages/AddAccessCode';
 import EditActivityType from '../pages/EditActivityType';
 import Volunteer from '../pages/Volunteer';
+import EditVolunteer from '../pages/EditVolunteer';
 import AddActivityType from '../pages/AddActivityType';
 import ActivityTypes from '../pages/ActivityTypes';
 
@@ -32,10 +33,11 @@ const Router = () => {
           <Route path="volunteers" element={<Outlet />}>
             <Route index element={<Volunteers />} />
             <Route path=":id" element={<Volunteer />} />
+            <Route path=":id/edit" element={<EditVolunteer />} />
             <Route path="access-codes" element={<Outlet />}>
               <Route index element={<AccessCodes />} />
               <Route path="add" element={<AddAccessCode />} />
-              <Route path="edit/:id" element={<EditAccessCode />} />
+              <Route path=":id/edit" element={<EditAccessCode />} />
             </Route>
             <Route path="requests" element={<RegistrationRequests />} />
             <Route path="requests/:id" element={<AccessRequest />} />

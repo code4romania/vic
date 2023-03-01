@@ -16,6 +16,8 @@
     "empty_table": "Nu exista informatii de afisat",
     "view": "Vizualizeaza",
     "edit": "Editeaza {{item}}",
+    "block": "Blocheaza {{item}}",
+    "archive": "Arhivează {{item}}",
     "delete": "Sterge",
     "location": "Locatie",
     "back": "Inapoi",
@@ -99,6 +101,31 @@
     },
     "errors": {
       "VOL_001": "Nu s-a putut incarca cererea voluntarului"
+    },
+    "form": {
+      "name": {
+        "label": "Nume voluntar*"
+      },
+      "email": {
+        "label": "Email de contact*",
+        "required": "Email-ul de contact este obligatoriu",
+        "pattern": "Emailul trebuie sa aiba un format valid"
+      },
+      "branch": {
+        "label": "Filiala sau sucursala"
+      },
+      "department": {
+        "label": "Departament"
+      },
+      "role": {
+        "label": "Rol"
+      },
+      "started_on": {
+        "label": "Voluntar din"
+      },
+      "submit": {
+        "edit": "Datele voluntarului au fost modificate"
+      }
     }
   },
   "volunteers": {
@@ -252,7 +279,7 @@
     "create": "Creeaza cod nou",
     "title": "Informatii cod acces",
     "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
-    "start_date": "Data inceput valabiliatate*",
+    "start_date": "Data inceput valabilitate*",
     "end_date": "Data final valabilitate",
     "modal": {
       "title": "Sigur doriți să ștergeți acestui cod?",
@@ -303,8 +330,14 @@
       },
       "submit": {
         "add": "Categorie adaugata cu success",
-        "update": "Categoria a fost modificata"
+        "update": "Categoria a fost modificata",
+        "activate": "Categoria a fost activata",
+        "archive": "Categoria a fost arhivata"
       }
+    },
+    "actions": {
+      "activate": "Activeaza categorie",
+      "archive": "Arhiveaza categorie"
     },
     "errors": {
       "ACTIVITY_TYPE_001": "Categoria nu a fost gasita",

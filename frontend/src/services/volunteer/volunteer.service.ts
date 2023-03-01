@@ -11,7 +11,9 @@ import {
   blockVolunteer,
   getVolunteer,
   getVolunteers,
+  updateVolunteer,
 } from './volunteer.api';
+import { VolunteerFormTypes } from '../../pages/EditVolunteer';
 
 export const useVolunteersQuery = (
   filterStatus: VolunteerStatus,
@@ -53,4 +55,13 @@ export const useBlockVolunteerMutation = () => {
   return useMutation((id: string) => blockVolunteer(id), {
     onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
   });
+};
+
+export const useUpdateVolunteerMutation = () => {
+  return useMutation(
+    ({ id, data }: { id: string; data: VolunteerFormTypes }) => updateVolunteer(id, data),
+    {
+      onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
+    },
+  );
 };

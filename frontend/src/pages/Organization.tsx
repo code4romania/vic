@@ -136,7 +136,6 @@ const Organization = () => {
         )}
         {divisionType === DivisionType.ROLE && <DivisionTable type={DivisionType.ROLE} />}
       </Tabs>
-      ;
     </PageLayout>
   );
 };

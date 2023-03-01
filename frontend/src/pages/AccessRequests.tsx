@@ -70,7 +70,9 @@ const PendingAccessRequestsTableHeader = [
     name: i18n.t('general:location'),
     sortable: true,
     selector: (row: IAccessRequest) =>
-      `${row.requestedBy.location?.name}, ${row.requestedBy.location?.county?.abbreviation}`,
+      row.requestedBy.location
+        ? `${row.requestedBy.location?.name}, ${row.requestedBy.location?.county?.abbreviation}`
+        : '',
   },
   {
     id: 'createdOn',
@@ -310,11 +312,16 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
   const onResetFilters = () => {
     setCreatedOnRange([]);
     setLocation(undefined);
+    setSearchWord(undefined);
   };
 
   return (
     <>
-      <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
+      <DataTableFilters
+        onSearch={setSearchWord}
+        searchValue={searchWord}
+        onResetFilters={onResetFilters}
+      >
         <DateRangePicker
           label={i18n.t('access_requests:filters.access_request_range')}
           onChange={setCreatedOnRange}

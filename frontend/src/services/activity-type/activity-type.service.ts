@@ -4,16 +4,27 @@ import { ACTIVITY_TYPE_ERRORS } from '../../common/errors/entities/activty-type.
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { ActivityCategoryFormTypes } from '../../components/ActivityTypeForm';
 import {
+  activateActivityType,
+  archiveActivityType,
   createActivityType,
   getActivityType,
   getActivityTypes,
   updateActivityType,
 } from './activity-type.api';
 
-export const useActivityTypesQuery = () => {
-  return useQuery(['activity-types'], () => getActivityTypes(), {
-    onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) => error,
-  });
+export const useActivityTypesQuery = (
+  search?: string,
+  branchId?: string,
+  departmentId?: string,
+  roleId?: string,
+) => {
+  return useQuery(
+    ['activity-types', search, branchId, departmentId, roleId],
+    () => getActivityTypes(search, branchId, departmentId, roleId),
+    {
+      onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) => error,
+    },
+  );
 };
 
 export const useActivityTypeQuery = (id: string) => {
@@ -38,4 +49,18 @@ export const useUpdateActivityTypeMutation = () => {
         Promise.resolve(error),
     },
   );
+};
+
+export const useActivateActivityTypeMutation = () => {
+  return useMutation((id: string) => activateActivityType(id), {
+    onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) =>
+      Promise.resolve(error),
+  });
+};
+
+export const useArchiveActivityTypeMutation = () => {
+  return useMutation((id: string) => archiveActivityType(id), {
+    onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) =>
+      Promise.resolve(error),
+  });
 };

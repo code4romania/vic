@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { ActivityTypeExceptionMessages } from 'src/modules/activity-type/exceptions/activity-type.exceptions';
 import {
   FindManyActivityTypeOptions,
   IActivityTypeModel,
@@ -12,10 +10,7 @@ import { ActivityTypeFacade } from 'src/modules/activity-type/services/activity-
 export class GetManyActivityTypeUseCase
   implements IUseCaseService<IActivityTypeModel[]>
 {
-  constructor(
-    private readonly activityTypeFacade: ActivityTypeFacade,
-    private readonly exceptionService: ExceptionsService,
-  ) {}
+  constructor(private readonly activityTypeFacade: ActivityTypeFacade) {}
 
   public async execute(
     options: FindManyActivityTypeOptions,
