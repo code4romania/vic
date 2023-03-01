@@ -1,11 +1,21 @@
 import { InjectRepository } from '@nestjs/typeorm';
+import { format, subYears } from 'date-fns';
+import { DATE_CONSTANTS } from 'src/common/constants/constants';
+import { AgeRangeEnum } from 'src/common/enums/age-range.enum';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import {
+  Between,
+  FindOperator,
+  FindOptionsWhere,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { VolunteerEntity } from '../entities/volunteer.entity';
 import { IVolunteerRepository } from '../intefaces/volunteer-repository.interface';
 import {
@@ -52,15 +62,23 @@ export class VolunteerRepositoryService
               },
             }
           : {}),
-        ...(findOptions.locationId
+        ...(findOptions.locationId || findOptions.age
           ? {
               user: {
-                locationId: findOptions.locationId,
+                ...(findOptions.locationId
+                  ? { locationId: findOptions.locationId }
+                  : {}),
+                ...(findOptions.age
+                  ? {
+                      birthday: this.mapAgeRangeToBirthdayFindOptionsOperator(
+                        findOptions.age,
+                      ),
+                    }
+                  : {}),
               },
             }
           : {}),
-      },
-      // TODO: map age
+      } as FindOptionsWhere<VolunteerEntity>,
     };
 
     return this.findManyPaginated<IVolunteerModel>(
@@ -119,5 +137,37 @@ export class VolunteerRepositoryService
     });
 
     return VolunteerModelTransformer.fromEntity(volunteer);
+  }
+
+  private mapAgeRangeToBirthdayFindOptionsOperator(
+    ageRange: AgeRangeEnum,
+  ): FindOperator<string> {
+    let findOperator: FindOperator<string>;
+    switch (ageRange) {
+      case AgeRangeEnum['0_18']:
+        findOperator = MoreThanOrEqual(
+          format(subYears(new Date(), 18), DATE_CONSTANTS.YYYY_MM_DD),
+        );
+        break;
+      case AgeRangeEnum['18_30']:
+        findOperator = Between(
+          format(subYears(new Date(), 30), DATE_CONSTANTS.YYYY_MM_DD),
+          format(subYears(new Date(), 19), DATE_CONSTANTS.YYYY_MM_DD),
+        );
+        break;
+      case AgeRangeEnum['30_50']:
+        findOperator = Between(
+          format(subYears(new Date(), 50), DATE_CONSTANTS.YYYY_MM_DD),
+          format(subYears(new Date(), 31), DATE_CONSTANTS.YYYY_MM_DD),
+        );
+        break;
+      case AgeRangeEnum['OVER_50']:
+        findOperator = LessThanOrEqual(
+          format(subYears(new Date(), 50), DATE_CONSTANTS.YYYY_MM_DD),
+        );
+        break;
+    }
+
+    return findOperator;
   }
 }
