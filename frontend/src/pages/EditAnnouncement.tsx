@@ -13,6 +13,7 @@ import CardHeader from '../components/CardHeader';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
+import { mapDivisionListItemToMultiSelectItem } from '../containers/OrganizationStructureMultiSelect';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
@@ -51,11 +52,22 @@ const EditAnnouncement = () => {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<AnnouncementFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
+
+  useEffect(() => {
+    if (announcement) {
+      reset({
+        name: announcement.name,
+        description: announcement.description,
+        targets: announcement.targets.map(mapDivisionListItemToMultiSelectItem),
+      });
+    }
+  }, [announcement]);
 
   useEffect(() => {
     if (announcementError)
@@ -70,7 +82,7 @@ const EditAnnouncement = () => {
 
   const onSaveDraft = (formValues: AnnouncementFormTypes) => {
     if (announcement) {
-      const targetsIds = formValues.targets ? formValues.targets.map((target) => target.id) : [];
+      const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
       updateAnnouncement(
         {
           id: announcement.id,
@@ -98,7 +110,7 @@ const EditAnnouncement = () => {
 
   const onPublish = (formValues: AnnouncementFormTypes) => {
     if (announcement) {
-      const targetsIds = formValues.targets ? formValues.targets.map((target) => target.id) : [];
+      const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
       updateAnnouncement(
         {
           id: announcement?.id,

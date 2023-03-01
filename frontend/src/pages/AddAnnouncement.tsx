@@ -51,7 +51,7 @@ const AddAnnouncement = () => {
   };
 
   const onSaveDraft = (formValues: AnnouncementFormTypes) => {
-    const targetsIds = formValues.targets ? formValues.targets.map((target) => target.id) : [];
+    const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
     createAnnouncement(
       {
         name: formValues.name,
@@ -74,7 +74,7 @@ const AddAnnouncement = () => {
   };
 
   const onPublish = (formValues: AnnouncementFormTypes) => {
-    const targetsIds = formValues.targets ? formValues.targets.map((target) => target.id) : [];
+    const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
     createAnnouncement(
       {
         name: formValues.name,

@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import Select, { ActionMeta, MultiValue } from 'react-select';
-import { SelectItem } from './Select';
+import { IDivisionMultiListItem } from '../containers/OrganizationStructureMultiSelect';
 
 interface MultiSelectProps {
   onChange: (
-    newValue: MultiValue<SelectItem<string>>,
-    actionMeta: ActionMeta<SelectItem<string>>,
+    newValue: MultiValue<IDivisionMultiListItem>,
+    actionMeta: ActionMeta<IDivisionMultiListItem>,
   ) => void;
-  value: SelectItem<string>[];
-  options: SelectItem<string>[];
+  value: IDivisionMultiListItem[];
+  options: IDivisionMultiListItem[];
 }
 
 const MultiSelect = ({ onChange, value, options }: MultiSelectProps) => {
-  const [defaultValue, setDefaultValue] = useState<SelectItem<string>[]>([]);
+  const [defaultValue, setDefaultValue] = useState<IDivisionMultiListItem[]>([]);
 
   useEffect(() => {
     setDefaultValue(value);
@@ -21,6 +21,7 @@ const MultiSelect = ({ onChange, value, options }: MultiSelectProps) => {
   return (
     <div>
       <Select
+        closeMenuOnSelect={false}
         classNamePrefix="reactselect"
         isClearable={true}
         isMulti={true}

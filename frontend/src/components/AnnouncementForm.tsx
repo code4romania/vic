@@ -1,10 +1,14 @@
 import React from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl } from 'react-hook-form';
 import i18n from '../common/config/i18n';
+import { DivisionType } from '../common/enums/division-type.enum';
+import {
+  IDivisionMultiListItem,
+  OrganizationStructureMultiSelect,
+} from '../containers/OrganizationStructureMultiSelect';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from './FormInput';
 import FormTextarea from './FormTextarea';
-import { SelectItem } from './Select';
 
 interface AnnouncementFormProps {
   control: Control<AnnouncementFormTypes, object>;
@@ -14,7 +18,7 @@ interface AnnouncementFormProps {
 export type AnnouncementFormTypes = {
   name: string;
   description: string;
-  targets: SelectItem<string>[];
+  targets: IDivisionMultiListItem[];
 };
 
 const AnnouncementForm = ({ control, errors }: AnnouncementFormProps) => {
@@ -51,6 +55,20 @@ const AnnouncementForm = ({ control, errors }: AnnouncementFormProps) => {
                 onChange={onChange}
                 errorMessage={errors.description?.message}
                 label={`${i18n.t('announcement:form.description.label')}`}
+              />
+            );
+          }}
+        />
+        <Controller
+          key="targets"
+          name="targets"
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <OrganizationStructureMultiSelect
+                type={DivisionType.DEPARTMENT}
+                value={value}
+                onChange={onChange}
               />
             );
           }}
