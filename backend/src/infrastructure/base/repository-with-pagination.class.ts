@@ -45,6 +45,7 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
 {
   constructor(private readonly repository: Repository<T>) {}
 
+  // TODO: improve range logic
   public async findManyPaginated<TModel>(
     config: IPaginationConfig<T>,
     options: { filters: FindOptionsWhere<T> } & IBasePaginationFilterModel,
@@ -73,7 +74,7 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
         if (typeof config.rangeColumn === 'string') {
           andWherQuery = {
             ...andWherQuery,
-            [config.rangeColumn]: this.betweenDates(start, end),
+            ...this.buildRangeQuery(config.rangeColumn, start, end),
           };
         }
 
@@ -100,9 +101,7 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
           // get all results which have the range column value smaller than the the start value
           andWherQuery = {
             ...andWherQuery,
-            [config.rangeColumn]: MoreThanOrEqual(
-              format(start, DATE_CONSTANTS.YYYY_MM_DD),
-            ),
+            ...this.buildRangeQuery(config.rangeColumn, start, end),
           };
         }
 
@@ -124,9 +123,7 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
           // get all results which have the range column value bigger than the the start value
           andWherQuery = {
             ...andWherQuery,
-            [config.rangeColumn]: LessThanOrEqual(
-              format(end, DATE_CONSTANTS.YYYY_MM_DD),
-            ),
+            ...this.buildRangeQuery(config.rangeColumn, start, end),
           };
         }
         // validate 2 range columns
@@ -202,6 +199,40 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
 
     return query as FindOptionsSelect<T>;
   };
+
+  private buildRangeQuery = (
+    option: string,
+    start: Date,
+    end: Date,
+  ): FindOptionsSelect<T> => {
+    const optionValues = option.split('.');
+    const query =
+      optionValues.length === 1
+        ? { [option]: this.setRangeSelector(start, end) }
+        : {
+            [optionValues[0]]: this.buildRangeQuery(
+              optionValues.slice(1).join('.'),
+              start,
+              end,
+            ),
+          };
+
+    return query as FindOptionsSelect<T>;
+  };
+
+  private setRangeSelector(start?: Date, end?: Date): FindOperator<string> {
+    if (start && end) {
+      return this.betweenDates(start, end);
+    }
+
+    if (start) {
+      return MoreThanOrEqual(format(start, DATE_CONSTANTS.YYYY_MM_DD));
+    }
+
+    if (end) {
+      return LessThanOrEqual(format(end, DATE_CONSTANTS.YYYY_MM_DD));
+    }
+  }
 
   private buildOrderQuery = (
     orderBy: string,
