@@ -10,6 +10,7 @@ import {
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   Between,
+  FindManyOptions,
   FindOperator,
   FindOptionsWhere,
   LessThanOrEqual,
@@ -144,6 +145,18 @@ export class VolunteerRepositoryService
     });
 
     return VolunteerModelTransformer.fromEntity(volunteer);
+  }
+
+  async count(options: FindManyOptions<VolunteerEntity>): Promise<number> {
+    return this.volunteerRepository.count(options);
+  }
+
+  async getMany(
+    options: FindOptionsWhere<VolunteerEntity>,
+  ): Promise<IVolunteerModel[]> {
+    const volunteers = await this.volunteerRepository.findBy(options);
+
+    return volunteers.map(VolunteerModelTransformer.fromEntity);
   }
 
   private mapAgeRangeToBirthdayFindOptionsOperator(

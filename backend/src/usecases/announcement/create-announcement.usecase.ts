@@ -12,6 +12,8 @@ import { AnnouncementFacade } from 'src/modules/announcement/services/announceme
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import SendAnnouncementEvent from 'src/modules/notifications/events/others/send-announcement.event';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
+import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetAllOrganizationStructureByTypeUseCase } from '../organization/organization-structure/get-all-organization-structure-by-type.usecase';
 
 @Injectable()
@@ -23,6 +25,7 @@ export class CreateAnnouncementUseCase
     private readonly eventEmitter: EventEmitter2,
     private readonly getAllOrganizationStructureByTypeUseCase: GetAllOrganizationStructureByTypeUseCase,
     private readonly exceptionsService: ExceptionsService,
+    private readonly volunteerFacade: VolunteerFacade,
   ) {}
 
   public async execute(
@@ -30,29 +33,34 @@ export class CreateAnnouncementUseCase
   ): Promise<IAnnouncementModel> {
     // 1. Check if only departments were chosen and calculate the total number of volunteers
     let targetedVolunteers = 0;
-    const departments =
-      await this.getAllOrganizationStructureByTypeUseCase.execute(
-        OrganizationStructureType.DEPARTMENT,
-        createData.organizationId,
-      );
+    if (createData.targetsIds.length !== 0) {
+      const departments =
+        await this.getAllOrganizationStructureByTypeUseCase.execute(
+          OrganizationStructureType.DEPARTMENT,
+          createData.organizationId,
+        );
 
-    const filteredtargets = departments.filter((department) => {
-      if (createData.targetsIds.includes(department.id)) {
-        targetedVolunteers += department.members;
-        return true;
+      const filteredtargets = departments.filter((department) => {
+        if (createData.targetsIds.includes(department.id)) {
+          targetedVolunteers += department.members;
+          return true;
+        }
+      });
+
+      if (filteredtargets.length !== createData.targetsIds.length) {
+        this.exceptionsService.badRequestException(
+          AnnouncementExceptionMessages.ANNOUNCEMENT_003,
+        );
       }
-    });
-
-    if (filteredtargets.length !== createData.targetsIds.length) {
-      this.exceptionsService.badRequestException(
-        AnnouncementExceptionMessages.ANNOUNCEMENT_003,
-      );
     }
 
     if (createData.targetsIds.length === 0) {
-      departments.forEach(
-        (department) => (targetedVolunteers += department.members),
-      );
+      targetedVolunteers = await this.volunteerFacade.count({
+        where: {
+          organizationId: createData.organizationId,
+          status: VolunteerStatus.ACTIVE,
+        },
+      });
     }
 
     // 2. Create announcement
