@@ -125,16 +125,17 @@ const EditVolunteer = () => {
           <CardHeader>
             <h2>{i18n.t('volunteer:card_title')}</h2>
             <div className="flex flex-row gap-2 md:gap-4">
+              {/* If sm:hidden md:block is added on the first 2 buttons tablet version looks good */}
               <Button
                 label={i18n.t('general:block', { item: '' })}
                 className="btn-outline-secondary shrink-0"
-                icon={<NoSymbolIcon className="h-5 w-5 sm:hidden" />}
+                icon={<NoSymbolIcon className="h-5 w-5" />}
                 onClick={handleSubmit(onSubmit)}
               />
               <Button
                 label={i18n.t('general:archive', { item: '' })}
                 className="btn-outline-secondary shrink-0"
-                icon={<PauseCircleIcon className="h-5 w-5 sm:hidden" />}
+                icon={<PauseCircleIcon className="h-5 w-5" />}
                 onClick={handleSubmit(onSubmit)}
               />
               <Button
