@@ -140,10 +140,14 @@ export class VolunteerRepositoryService
           department: true,
           role: true,
         },
+        user: {
+          location: {
+            county: true,
+          },
+        },
         archivedBy: true,
         blockedBy: true,
         organization: true,
-        user: true,
       },
     });
 
