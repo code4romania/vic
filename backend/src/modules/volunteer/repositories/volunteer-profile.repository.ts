@@ -1,12 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { RepositoryWithPagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { Repository } from 'typeorm';
 import { VolunteerProfileEntity } from '../entities/volunteer-profile.entity';
 import { VolunteerEntity } from '../entities/volunteer.entity';
-import {
-  IVolunteerProfileRepository,
-  IVolunteerRepository,
-} from '../intefaces/volunteer-repository.interface';
+import { IVolunteerProfileRepository } from '../intefaces/volunteer-repository.interface';
 import {
   CreateVolunteerProfileOptions,
   IVolunteerProfileModel,
@@ -24,10 +20,10 @@ export class VolunteerProfileRepositoryService
     private readonly volunteerRepository: Repository<VolunteerEntity>,
   ) {}
 
-  async update({
-    id,
-    ...updates
-  }: UpdateVolunteerProfileOptions): Promise<IVolunteerProfileModel> {
+  async update(
+    id: string,
+    updates: UpdateVolunteerProfileOptions,
+  ): Promise<IVolunteerProfileModel> {
     await this.volunteerProfileRepository.update({ id }, updates);
 
     return this.find(id);

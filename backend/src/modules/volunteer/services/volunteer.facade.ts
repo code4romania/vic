@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { FindRegularUserOptions } from 'src/modules/user/models/regular-user.model';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import {
   CreateVolunteerProfileOptions,
   IVolunteerProfileModel,
+  UpdateVolunteerProfileOptions,
 } from '../model/volunteer-profile.model';
 import {
   CreateVolunteerOptions,
+  FindManyVolunteersOptions,
   FindVolunteerOptions,
   IVolunteerModel,
-  ArchiveVolunteerOptions,
-  BlockVolunteerOptions,
   UpdateVolunteerOptions,
 } from '../model/volunteer.model';
 import { VolunteerProfileRepositoryService } from '../repositories/volunteer-profile.repository';
@@ -31,6 +31,12 @@ export class VolunteerFacade {
 
   public find(options: FindVolunteerOptions): Promise<IVolunteerModel> {
     return this.volunteerRepository.find(options);
+  }
+
+  public findMany(
+    options: FindManyVolunteersOptions,
+  ): Promise<Pagination<IVolunteerModel>> {
+    return this.volunteerRepository.findMany(options);
   }
 
   public archive(
@@ -74,5 +80,12 @@ export class VolunteerFacade {
 
   async findProfile(id: string): Promise<IVolunteerProfileModel> {
     return this.volunteerProfileRepositoryService.find(id);
+  }
+
+  async updateProfile(
+    id: string,
+    updates: UpdateVolunteerProfileOptions,
+  ): Promise<IVolunteerProfileModel> {
+    return this.volunteerProfileRepositoryService.update(id, updates);
   }
 }

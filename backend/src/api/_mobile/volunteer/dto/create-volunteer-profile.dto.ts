@@ -17,6 +17,7 @@ export class CreateVolunteerProfileDto {
   phone: string;
 
   @IsDate()
+  @IsOptional()
   activeSince: Date;
 
   @IsUUID()
