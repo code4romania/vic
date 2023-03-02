@@ -89,9 +89,11 @@ const ActiveVolunteersTableHeader = [
     grow: 1,
     minWidth: '5rem',
     selector: (row: IVolunteer) =>
-      `${row.profile?.role?.name || ''}${row.profile?.role && row.profile?.department ? '\n' : ''}${
-        row.profile?.department?.name || ''
-      }`,
+      row.profile
+        ? `${row.profile?.role?.name || ''}${
+            row.profile?.role && row.profile?.department ? '\n' : ''
+          }${row.profile?.department?.name || ''}`
+        : '-',
   },
   {
     id: 'user.location.name',
@@ -108,7 +110,8 @@ const ActiveVolunteersTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IVolunteer) => `${row.profile?.email}\n${row.profile?.phone}`,
+    selector: (row: IVolunteer) =>
+      row.profile ? `${row.profile?.email}\n${row.profile?.phone}` : '-',
   },
 ];
 

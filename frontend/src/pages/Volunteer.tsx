@@ -9,13 +9,13 @@ import ProfileCard from '../components/ProfileCard';
 import VolunteerProfile from '../components/VolunteerProfile';
 import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
-import { useVolunteerQuery } from '../services/volunteer/volunteer.service';
+import { useVolunteer } from '../services/volunteer/volunteer.service';
 
 const Volunteer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { data: volunteer, isLoading, error } = useVolunteerQuery(id as string);
+  const { data: volunteer, isLoading, error } = useVolunteer(id as string);
 
   useEffect(() => {
     if (error) {
