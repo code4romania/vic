@@ -3,6 +3,7 @@
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "user": "Utilizator",
+    "close": "Inchide",
     "name": "Nume",
     "age": "Vârsta",
     "created_on": "Data crearii",
@@ -11,6 +12,8 @@
     "select": "Selecteaza {{item}}",
     "choose": "Alege {{item}}",
     "image": "Imagine",
+    "reason": "Motiv",
+    "unspecified": "Nespecificat",
     "activity": "Activitate",
     "address": "Adresa",
     "status": "Status",
@@ -260,6 +263,7 @@
   "access_requests": {
     "date": "Data cerere acces",
     "rejected_date": "Data respingere",
+    "rejected_message": "Această cerere de înscriere a fost respinsă la {{date}}",
     "tabs": {
       "requests": "Cereri",
       "rejected_requests": "Cereri respinse"
