@@ -16,7 +16,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IAccessRequest } from '../common/interfaces/access-request.interface';
 import { IBusinessException } from '../common/interfaces/business-exception.interface';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
-import { formatDate } from '../common/utils/utils';
+import { formatDate, formatLocation } from '../common/utils/utils';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
@@ -69,10 +69,7 @@ const PendingAccessRequestsTableHeader = [
     id: 'requestedBy.location.name',
     name: i18n.t('general:location'),
     sortable: true,
-    selector: (row: IAccessRequest) =>
-      row.requestedBy.location
-        ? `${row.requestedBy.location?.name}, ${row.requestedBy.location?.county?.abbreviation}`
-        : '',
+    selector: (row: IAccessRequest) => formatLocation(row.requestedBy.location),
   },
   {
     id: 'createdOn',

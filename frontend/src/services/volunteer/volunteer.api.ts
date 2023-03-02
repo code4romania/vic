@@ -48,17 +48,11 @@ export const updateVolunteer = async (
   id: string,
   data: VolunteerFormTypes,
 ): Promise<IVolunteer> => {
-  console.log({
-    ...data,
-    branch: data.branch.value,
-    role: data.role.value,
-    department: data.department.value,
-  });
   return API.patch(`volunteer/${id}`, {
     ...data,
-    branch: data.branch.value,
-    role: data.role.value,
-    department: data.department.value,
+    branchId: data.branch?.key,
+    roleId: data.role?.key,
+    departmentId: data.department?.key,
   }).then((res) => res.data);
 };
 

@@ -3,6 +3,7 @@
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "user": "Utilizator",
+    "close": "Inchide",
     "name": "Nume",
     "age": "Vârsta",
     "created_on": "Data crearii",
@@ -11,6 +12,8 @@
     "select": "Selecteaza {{item}}",
     "choose": "Alege {{item}}",
     "image": "Imagine",
+    "reason": "Motiv",
+    "unspecified": "Nespecificat",
     "activity": "Activitate",
     "address": "Adresa",
     "status": "Status",
@@ -160,7 +163,15 @@
       "activate": "Voluntarul a fost actiat",
       "block": "Voluntarul a fost blocat"
     },
-    "errors": {}
+    "errors": {
+      "VOLUNTEER_001": "Voluntarul nu a fost gasit",
+      "VOLUNTEER_002": "Utilizatorul este deja parte din organizatie",
+      "VOLUNTEER_003": "Doar voluntarii activi pot fi arhivati",
+      "VOLUNTEER_004": "Doar voluntarii arhivati poti reactivati",
+      "VOLUNTEER_PROFILE_001": "Voluntarul are deja un profil",
+      "VOLUNTEER_PROFILE_002": "Rol/Departament/Filiala eronate",
+      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil pentru a fi updatat. Creaza unul inainte de a face modificarile."
+    }
   },
   "division": {
     "members": "Membri",
@@ -252,6 +263,7 @@
   "access_requests": {
     "date": "Data cerere acces",
     "rejected_date": "Data respingere",
+    "rejected_message": "Această cerere de înscriere a fost respinsă la {{date}}",
     "tabs": {
       "requests": "Cereri",
       "rejected_requests": "Cereri respinse"
@@ -317,6 +329,7 @@
     "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
     "send": "Trimite fără mesaj",
     "form": {
+      "required": "Mesajul este obligatoriu",
       "max": "Mesajul trebuie sa aiba maxim 225 de caractere",
       "min": "Mesajul trebuie sa aiba minim 50 caractere",
       "error": "Refuzarea cererii a esuat"

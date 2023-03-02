@@ -22,6 +22,7 @@ const schema = yup
   .object({
     rejectMessage: yup
       .string()
+      .required(`${i18n.t('reject_modal:form.required')}`)
       .min(50, `${i18n.t('reject_modal:form.min')}`)
       .max(225, `${i18n.t('reject_modal:form.max')}`),
   })
@@ -73,7 +74,7 @@ const RejectTextareaModal = ({ title, label, onClose, onConfirm }: RejectTextare
           <Button
             label={i18n.t('reject_modal:send')}
             className="btn-outline-secondary w-full sm:w-20"
-            onClick={handleSubmit(onSubmitWithoutMessage)}
+            onClick={onSubmitWithoutMessage}
           />
           <Button
             label={i18n.t('general:send')}
