@@ -14,7 +14,7 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { CheckIcon, EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
-import { formatDate, formatDateWithTime } from '../common/utils/utils';
+import { formatDate, formatDateWithTime, mapTargetsToString } from '../common/utils/utils';
 import {
   useAnnouncementsQuery,
   useDeleteAnnouncementMutation,
@@ -25,12 +25,6 @@ import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../components/ConfirmationModal';
-
-const mapTargetsToString = (announcement: IAnnouncement) => {
-  return `(${announcement.targetedVolunteers}) ${announcement.targets.map(
-    (target) => ` ${target.name}`,
-  )}`;
-};
 
 const AnnouncementTableHeader = [
   {
@@ -182,7 +176,7 @@ const Announcements = () => {
   };
 
   const onViewOne = (row: IAnnouncement) => {
-    alert(`Not yet implemented, ${row.name}`);
+    navigate(`${row.id}`);
   };
 
   const onPublish = (row: IAnnouncement) => {

@@ -131,7 +131,7 @@
   }
 
   .btn-text-danger {
-    @apply btn text-red hover:text-red-700 active:text-red-800 focus:shadow-yellow focus:outline-0;
+    @apply btn border border-cool-gray-300 text-red hover:text-red-700 active:text-red-800 focus:shadow-yellow focus:outline-0;
   }
 
   .input-style {
