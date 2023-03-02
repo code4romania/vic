@@ -19,7 +19,7 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import Select, { SelectItem } from '../components/Select';
-import { formatDate } from '../common/utils/utils';
+import { formatDate, formatLocation } from '../common/utils/utils';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
@@ -89,9 +89,11 @@ const ActiveVolunteersTableHeader = [
     grow: 1,
     minWidth: '5rem',
     selector: (row: IVolunteer) =>
-      `${row.profile?.role?.name || ''}${row.profile?.role && row.profile?.department ? '\n' : ''}${
-        row.profile?.department?.name || ''
-      }`,
+      row.profile
+        ? `${row.profile?.role?.name || ''}${
+            row.profile?.role && row.profile?.department ? '\n' : ''
+          }${row.profile?.department?.name || ''}`
+        : '-',
   },
   {
     id: 'user.location.name',
@@ -99,8 +101,7 @@ const ActiveVolunteersTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IVolunteer) =>
-      `${row.user.location?.name}, ${row.user.location?.county.abbreviation}`,
+    selector: (row: IVolunteer) => formatLocation(row.user.location),
   },
   {
     id: 'volunteerProfile.email',
@@ -108,7 +109,8 @@ const ActiveVolunteersTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IVolunteer) => `${row.profile?.email}\n${row.profile?.phone}`,
+    selector: (row: IVolunteer) =>
+      row.profile ? `${row.profile?.email}\n${row.profile?.phone}` : '-',
   },
 ];
 

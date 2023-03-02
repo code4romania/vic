@@ -160,7 +160,15 @@
       "activate": "Voluntarul a fost actiat",
       "block": "Voluntarul a fost blocat"
     },
-    "errors": {}
+    "errors": {
+      "VOLUNTEER_001": "Voluntarul nu a fost gasit",
+      "VOLUNTEER_002": "Utilizatorul este deja parte din organizatie",
+      "VOLUNTEER_003": "Doar voluntarii activi pot fi arhivati",
+      "VOLUNTEER_004": "Doar voluntarii arhivati poti reactivati",
+      "VOLUNTEER_PROFILE_001": "Voluntarul are deja un profil",
+      "VOLUNTEER_PROFILE_002": "Rol/Departament/Filiala eronate",
+      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil pentru a fi updatat. Creaza unul inainte de a face modificarile."
+    }
   },
   "division": {
     "members": "Membri",

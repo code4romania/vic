@@ -81,7 +81,11 @@ export class AccessRequestRepository
       where: { ...findOptions },
       relations: {
         updatedBy: true,
-        requestedBy: true,
+        requestedBy: {
+          location: {
+            county: true,
+          },
+        },
       },
     });
 
