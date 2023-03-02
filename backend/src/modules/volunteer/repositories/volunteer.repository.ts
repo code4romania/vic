@@ -97,7 +97,11 @@ export class VolunteerRepositoryService
             department: true,
             role: true,
           },
-          user: true,
+          user: {
+            location: {
+              county: true,
+            },
+          },
           organization: true,
           blockedBy: true,
           archivedBy: true,
@@ -136,10 +140,14 @@ export class VolunteerRepositoryService
           department: true,
           role: true,
         },
+        user: {
+          location: {
+            county: true,
+          },
+        },
         archivedBy: true,
         blockedBy: true,
         organization: true,
-        user: true,
       },
     });
 

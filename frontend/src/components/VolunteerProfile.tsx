@@ -13,11 +13,11 @@ import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 interface VolunteerProfileProps {
   email: string;
   phone: string;
-  branch: string;
   status: VolunteerStatus;
-  department: string;
-  startedOn: Date;
-  role: string;
+  startedOn?: Date;
+  role?: string;
+  department?: string;
+  branch?: string;
   createdOn: Date;
 }
 
@@ -63,13 +63,12 @@ const VolunteerProfile = ({
             />
             <FormReadOnlyElement value={department} label={i18n.t('division:entity.department')} />
             <FormReadOnlyElement
-              value={formatDate(startedOn)}
+              value={startedOn ? formatDate(startedOn) : '-'}
               label={i18n.t('volunteer:name', {
                 status: i18n.t('pagination:range_separator_text'),
               })}
             />
             <FormReadOnlyElement value={role} label={i18n.t('division:entity.role')} />
-
             <FormReadOnlyElement
               value={formatDate(createdOn)}
               label={i18n.t('volunteer:volunteer_from')}

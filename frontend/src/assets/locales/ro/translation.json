@@ -2,7 +2,9 @@
   "general": {
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
+    "user": "Utilizator",
     "name": "Nume",
+    "age": "Vârsta",
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
     "category": "Categorie",
@@ -130,21 +132,43 @@
   "volunteers": {
     "department_and_role": "Departament si rol",
     "location": "Locatie voluntar",
-    "archived_from": "Arhivat din",
-    "blocked_date": "Data blocarii",
+    "archived_on": "Arhivat din",
+    "blocked_on": "Data blocarii",
     "tabs": {
       "active": "Voluntari activi",
       "archived": "Voluntari arhivati",
       "blocked": "Voluntari blocati"
     },
-    "modal": {
+    "filters": {
+      "active_since_range": "Perioada activitate"
+    },
+    "popover": {
       "view": "Vizualizează profil",
       "archive": "Arhivează voluntar",
       "activate": "Reactivează voluntar",
       "delete": "Sterge din ONG",
       "block": "Blochează voluntar"
     },
-    "errors": {}
+    "modal": {
+      "block": {
+        "title": "Esti sigur ca doresti blocarea acestui voluntar?",
+        "description": "Această acțiune va bloca definitiv acest voluntar"
+      }
+    },
+    "submit": {
+      "archive": "Voluntarul a fost arhivat",
+      "activate": "Voluntarul a fost actiat",
+      "block": "Voluntarul a fost blocat"
+    },
+    "errors": {
+      "VOLUNTEER_001": "Voluntarul nu a fost gasit",
+      "VOLUNTEER_002": "Utilizatorul este deja parte din organizatie",
+      "VOLUNTEER_003": "Doar voluntarii activi pot fi arhivati",
+      "VOLUNTEER_004": "Doar voluntarii arhivati poti reactivati",
+      "VOLUNTEER_PROFILE_001": "Voluntarul are deja un profil",
+      "VOLUNTEER_PROFILE_002": "Rol/Departament/Filiala eronate",
+      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil pentru a fi updatat. Creaza unul inainte de a face modificarile."
+    }
   },
   "division": {
     "members": "Membri",

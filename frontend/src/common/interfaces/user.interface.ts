@@ -7,7 +7,7 @@ export interface IUser {
   email: string;
   phone: string;
   profilePicture?: string;
-  location?: ICity;
+  location: ICity;
   birthday: Date;
   sex: Sex;
   createdOn: Date;
