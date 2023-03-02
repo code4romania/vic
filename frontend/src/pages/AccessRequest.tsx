@@ -28,7 +28,6 @@ const AccessRequest = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [showRejectInfo, setShowRejectInfo] = useState(true);
   // modal state
   const [showRejectModal, setShowRejectModal] = useState(false);
 
@@ -134,25 +133,24 @@ const AccessRequest = () => {
                 </div>
               </div>
             )}
-            {accessRequest.status === RequestStatus.REJECTED && showRejectInfo && (
+            {accessRequest.status === RequestStatus.REJECTED && (
               <Card>
                 <CardBody>
-                  <div className="flex gap-1 sm:gap-2 items-center">
-                    <XMarkIcon
-                      className="w-6 h-6 text-red-600 cursor-pointer hover:text-red-300 shrink-0"
-                      onClick={setShowRejectInfo.bind(null, false)}
-                    />
-                    <h2>
-                      {i18n.t('access_requests:rejected_message', {
-                        date: formatDate(accessRequest.updatedOn),
-                      })}
-                    </h2>
+                  <div className="flex flex-col gap-2 sm:gap-4 py-2">
+                    <div className="flex gap-1 sm:gap-2 items-center">
+                      <XMarkIcon className="w-6 h-6 text-red-600" />
+                      <h2>
+                        {i18n.t('access_requests:rejected_message', {
+                          date: formatDate(accessRequest.updatedOn),
+                        })}
+                      </h2>
+                    </div>
+                    <p>{`${i18n.t('general:reason')}: ${
+                      accessRequest.rejectionReason
+                        ? accessRequest.rejectionReason
+                        : i18n.t('general:unspecified').toLowerCase()
+                    }`}</p>
                   </div>
-                  <p className="mt-2 sm:mt-4">{`${i18n.t('general:reason')}: ${
-                    accessRequest.rejectionReason
-                      ? accessRequest.rejectionReason
-                      : i18n.t('general:unspecified').toLowerCase()
-                  }`}</p>
                 </CardBody>
               </Card>
             )}
