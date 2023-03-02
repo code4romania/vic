@@ -9,13 +9,13 @@ import ProfileCard from '../components/ProfileCard';
 import VolunteerProfile from '../components/VolunteerProfile';
 import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
-import { useVolunteerQuery } from '../services/volunteer/volunteer.service';
+import { useVolunteer } from '../services/volunteer/volunteer.service';
 
 const Volunteer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { data: volunteer, isLoading, error } = useVolunteerQuery(id as string);
+  const { data: volunteer, isLoading, error } = useVolunteer(id as string);
 
   useEffect(() => {
     if (error) {
@@ -38,23 +38,21 @@ const Volunteer = () => {
               name={volunteer.user.name}
               birthday={volunteer.user.birthday}
               sex={volunteer.user.sex}
-              location={`${volunteer.user.location?.name}, ${volunteer.user.location?.county.abbreviation}`}
+              location={volunteer.user.location}
               logo={volunteer.user.profilePicture || ''}
             />
           </div>
           <div className="w-full lg:w-2/3 xl:w-3/4">
-            {volunteer.profile && (
-              <VolunteerProfile
-                email={volunteer.profile?.email}
-                phone={volunteer.profile?.phone}
-                branch={volunteer.profile?.branch?.name}
-                status={volunteer.status}
-                department={volunteer.profile?.department?.name}
-                startedOn={volunteer.profile?.activeSince}
-                role={volunteer.profile?.role?.name}
-                createdOn={volunteer.createdOn}
-              />
-            )}
+            <VolunteerProfile
+              email={volunteer.profile?.email || '-'}
+              phone={volunteer.profile?.phone || '-'}
+              branch={volunteer.profile?.branch?.name}
+              status={volunteer.status}
+              department={volunteer.profile?.department?.name}
+              startedOn={volunteer.profile?.activeSince}
+              role={volunteer.profile?.role?.name}
+              createdOn={volunteer.createdOn}
+            />
           </div>
         </div>
       )}
