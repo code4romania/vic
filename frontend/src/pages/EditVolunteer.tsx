@@ -80,14 +80,16 @@ const EditVolunteer = () => {
   useEffect(() => {
     // init form data
     if (volunteer) {
-      const { role, department, branch, ...data } = volunteer;
+      const { profile, ...data } = volunteer;
       // preload form data
       reset({
         ...data,
-        name: data.createdBy.name,
-        ...(branch ? { branch: mapDivisionListItemToSelectItem(branch) } : {}),
-        ...(department ? { department: mapDivisionListItemToSelectItem(department) } : {}),
-        ...(role ? { role: mapDivisionListItemToSelectItem(role) } : {}),
+        name: data.user.name,
+        ...(profile?.branch ? { branch: mapDivisionListItemToSelectItem(profile?.branch) } : {}),
+        ...(profile?.department
+          ? { department: mapDivisionListItemToSelectItem(profile?.department) }
+          : {}),
+        ...(profile?.role ? { role: mapDivisionListItemToSelectItem(profile?.role) } : {}),
       });
     }
   }, [volunteer]);

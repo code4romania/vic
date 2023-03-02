@@ -13,11 +13,11 @@ import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 interface VolunteerProfileProps {
   email: string;
   phone: string;
-  branch: string;
   status: VolunteerStatus;
-  department: string;
   startedOn: Date;
-  role: string;
+  role?: string;
+  department?: string;
+  branch?: string;
   createdOn: Date;
 }
 

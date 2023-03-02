@@ -29,7 +29,7 @@ export class VolunteerProfileEntity extends BaseEntity {
   })
   branchId: string;
 
-  @ManyToOne(() => OrganizationStructureEntity)
+  @ManyToOne(() => OrganizationStructureEntity, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'branch_id' })
   branch: OrganizationStructureEntity;
 
@@ -40,7 +40,7 @@ export class VolunteerProfileEntity extends BaseEntity {
   })
   departmentId: string;
 
-  @ManyToOne(() => OrganizationStructureEntity)
+  @ManyToOne(() => OrganizationStructureEntity, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'department_id' })
   department: OrganizationStructureEntity;
 
@@ -51,7 +51,7 @@ export class VolunteerProfileEntity extends BaseEntity {
   })
   roleId: string;
 
-  @ManyToOne(() => OrganizationStructureEntity)
+  @ManyToOne(() => OrganizationStructureEntity, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'role_id' })
   role: OrganizationStructureEntity;
 }
