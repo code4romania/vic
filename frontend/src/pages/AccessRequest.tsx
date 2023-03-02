@@ -135,7 +135,7 @@ const AccessRequest = () => {
                   name={accessRequest.requestedBy.name}
                   birthday={accessRequest.requestedBy.birthday}
                   sex={accessRequest.requestedBy.sex}
-                  location={accessRequest.requestedBy.location?.name || ''}
+                  location={accessRequest.requestedBy.location}
                   logo={accessRequest.requestedBy.profilePicture || ''}
                 />
               </div>

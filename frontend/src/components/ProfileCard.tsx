@@ -1,6 +1,7 @@
 import React from 'react';
 import i18n from '../common/config/i18n';
 import { Sex } from '../common/enums/sex.enum';
+import { ICity } from '../common/interfaces/city.interface';
 import { calculateAge } from '../common/utils/utils';
 import Card from '../layouts/CardLayout';
 import CardBody from './CardBody';
@@ -10,7 +11,7 @@ interface ProfileCardProps {
   logo: string;
   birthday: Date;
   sex: Sex;
-  location: string;
+  location: ICity;
 }
 
 const ProfileCard = ({ name, logo, birthday, sex, location }: ProfileCardProps) => {
@@ -30,7 +31,9 @@ const ProfileCard = ({ name, logo, birthday, sex, location }: ProfileCardProps) 
           <small className="text-cool-gray-500">
             {i18n.t('general:sex', { sex_type: i18n.t('general:sex', { context: sex }) })}
           </small>
-          <small className="text-cool-gray-500">{location}</small>
+          <small className="text-cool-gray-500">
+            {location ? `${location.name}, ${location.county.abbreviation}` : '-'}
+          </small>
         </div>
       </CardBody>
     </Card>

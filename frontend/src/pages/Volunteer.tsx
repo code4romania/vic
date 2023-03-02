@@ -38,7 +38,7 @@ const Volunteer = () => {
               name={volunteer.user.name}
               birthday={volunteer.user.birthday}
               sex={volunteer.user.sex}
-              location={`${volunteer.user.location?.name}, ${volunteer.user.location?.county.abbreviation}`}
+              location={volunteer.user.location}
               logo={volunteer.user.profilePicture || ''}
             />
           </div>

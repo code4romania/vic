@@ -72,7 +72,7 @@ const PendingAccessRequestsTableHeader = [
     selector: (row: IAccessRequest) =>
       row.requestedBy.location
         ? `${row.requestedBy.location?.name}, ${row.requestedBy.location?.county?.abbreviation}`
-        : '',
+        : '-',
   },
   {
     id: 'createdOn',
