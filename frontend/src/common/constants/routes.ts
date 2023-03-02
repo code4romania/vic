@@ -36,4 +36,10 @@ export const ROUTES: IRoute[] = [
     href: 'activity-types',
     icon: PuzzlePieceIcon,
   },
+  {
+    id: 4,
+    name: i18n.t('side_menu:options.events'),
+    href: 'events',
+    icon: PuzzlePieceIcon,
+  },
 ];
