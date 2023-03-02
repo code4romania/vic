@@ -19,12 +19,16 @@ import {
   useApproveAccessRequestMutation,
   useRejectAccessRequestMutation,
 } from '../services/access-requests/access-requests.service';
+import Card from '../layouts/CardLayout';
+import CardBody from '../components/CardBody';
+import { formatDate } from '../common/utils/utils';
 
 const AccessRequest = () => {
   // navigation state
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const [showRejectInfo, setShowRejectInfo] = useState(true);
   // modal state
   const [showRejectModal, setShowRejectModal] = useState(false);
 
@@ -128,6 +132,28 @@ const AccessRequest = () => {
                   />
                 </div>
               </div>
+            )}
+            {accessRequest.status === RequestStatus.REJECTED && showRejectInfo && (
+              <Card>
+                <CardBody>
+                  <div className="flex gap-1 sm:gap-2 items-center">
+                    <XMarkIcon
+                      className="w-6 h-6 text-red-600 cursor-pointer hover:text-red-300 shrink-0"
+                      onClick={setShowRejectInfo.bind(null, false)}
+                    />
+                    <h2>
+                      {i18n.t('access_requests:rejected_message', {
+                        date: formatDate(accessRequest.updatedOn),
+                      })}
+                    </h2>
+                  </div>
+                  <p className="mt-2 sm:mt-4">{`${i18n.t('general:reason')}: ${
+                    accessRequest.rejectionReason
+                      ? accessRequest.rejectionReason
+                      : i18n.t('general:unspecified').toLowerCase()
+                  }`}</p>
+                </CardBody>
+              </Card>
             )}
             <div className="w-full flex flex-col lg:flex-row gap-4">
               <div className="w-full lg:w-1/3 xl:w-1/4">
