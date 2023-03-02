@@ -40,6 +40,8 @@ const AddAnnouncement = () => {
     handleSubmit,
     control,
     formState: { errors },
+    resetField,
+    register,
   } = useForm<AnnouncementFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -120,7 +122,12 @@ const AddAnnouncement = () => {
             </div>
           </CardHeader>
           <CardBody>
-            <AnnouncementForm control={control} errors={errors} />
+            <AnnouncementForm
+              control={control}
+              errors={errors}
+              resetField={resetField}
+              register={register}
+            />
           </CardBody>
         </Card>
       )}

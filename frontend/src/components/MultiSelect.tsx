@@ -9,9 +9,10 @@ interface MultiSelectProps {
   ) => void;
   value: IDivisionMultiListItem[];
   options: IDivisionMultiListItem[];
+  placeholder?: string;
 }
 
-const MultiSelect = ({ onChange, value, options }: MultiSelectProps) => {
+const MultiSelect = ({ onChange, value, options, placeholder }: MultiSelectProps) => {
   const [defaultValue, setDefaultValue] = useState<IDivisionMultiListItem[]>([]);
 
   useEffect(() => {
@@ -21,12 +22,12 @@ const MultiSelect = ({ onChange, value, options }: MultiSelectProps) => {
   return (
     <div>
       <Select
+        placeholder={placeholder}
         closeMenuOnSelect={false}
         classNamePrefix="reactselect"
-        isClearable={true}
         isMulti={true}
         onChange={onChange}
-        defaultValue={defaultValue}
+        value={defaultValue}
         options={options}
       />
     </div>

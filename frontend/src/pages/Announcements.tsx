@@ -16,7 +16,6 @@ import { CheckIcon, EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/o
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { formatDate, formatDateWithTime } from '../common/utils/utils';
 import {
-  useAnnouncementQuery,
   useAnnouncementsQuery,
   useDeleteAnnouncementMutation,
   useUpdateAnnouncementMutation,
@@ -24,7 +23,7 @@ import {
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../components/ConfirmationModal';
 
 const mapTargetsToString = (announcement: IAnnouncement) => {
@@ -101,11 +100,7 @@ const Announcements = () => {
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
 
   const navigate = useNavigate();
-  const { id } = useParams();
 
-  const { data: announcement, isLoading: isAnnouncementLoading } = useAnnouncementQuery(
-    id as string,
-  );
   const {
     data: announcements,
     isLoading: isAnnouncementsLoading,
@@ -190,28 +185,28 @@ const Announcements = () => {
     alert(`Not yet implemented, ${row.name}`);
   };
 
-  const onPublish = () => {
-    if (announcement) {
-      updateAnnouncement(
-        {
-          id: announcement?.id,
-          updateData: {
-            status: AnnouncementStatus.PUBLISHED,
-          },
+  const onPublish = (row: IAnnouncement) => {
+    const targetsIds = row.targets ? row.targets.map((row) => row.id) : [];
+    updateAnnouncement(
+      {
+        id: row.id,
+        updateData: {
+          status: AnnouncementStatus.PUBLISHED,
+          targetsIds,
         },
-        {
-          onSuccess: () => {
-            useSuccessToast(i18n.t('announcement:success.create_publish'));
-            refetch();
-          },
-          onError: (error) => {
-            useErrorToast(
-              InternalErrors.ANNOUNCEMENT_ERRORS.getError(error.response?.data.code_error),
-            );
-          },
+      },
+      {
+        onSuccess: () => {
+          useSuccessToast(i18n.t('announcement:success.create_publish'));
+          refetch();
         },
-      );
-    }
+        onError: (error) => {
+          useErrorToast(
+            InternalErrors.ANNOUNCEMENT_ERRORS.getError(error.response?.data.code_error),
+          );
+        },
+      },
+    );
   };
 
   const onEdit = (row: IAnnouncement) => {
@@ -278,10 +273,7 @@ const Announcements = () => {
             data={announcements?.items}
             pagination
             loading={
-              isAnnouncementsLoading ||
-              isAnnouncementLoading ||
-              isUpdateAnnouncementLoading ||
-              isDeleteAnnouncementLoading
+              isAnnouncementsLoading || isUpdateAnnouncementLoading || isDeleteAnnouncementLoading
             }
             paginationPerPage={announcements?.meta.itemsPerPage}
             paginationTotalRows={announcements?.meta.totalItems}

@@ -345,13 +345,18 @@
       "name": {
         "required": "Numele anuntului este obligatoriu",
         "min": "Numele anuntului poate sa aiba minim {{value}} caractere",
-        "max": "Numele anuntului poate sa aiba maxim {{value}} caractere"
+        "max": "Numele anuntului poate sa aiba maxim {{value}} caractere",
+        "placeholder": "Introdu titlul anuntului"
       },
       "description": {
         "label": "Continut anunt",
         "required": "Descrierea anuntului este obligatorie",
         "min": "Descrierea poate sa aiba minim {{value}} caractere",
-        "max": "Descrierea anuntului poate sa aiba maxim {{value}} caractere"
+        "max": "Descrierea anuntului poate sa aiba maxim {{value}} caractere",
+        "placeholder": "Introdu continutul anuntului"
+      },
+      "target": {
+        "placeholder": "Alege toate variantele care se aplica"
       }
     },
     "success": {
