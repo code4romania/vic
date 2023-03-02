@@ -63,7 +63,7 @@ const VolunteerProfile = ({
             />
             <FormReadOnlyElement value={department} label={i18n.t('division:entity.department')} />
             <FormReadOnlyElement
-              value={startedOn ? formatDate(startedOn) : ''}
+              value={startedOn ? formatDate(startedOn) : '-'}
               label={i18n.t('volunteer:name', {
                 status: i18n.t('pagination:range_separator_text'),
               })}
