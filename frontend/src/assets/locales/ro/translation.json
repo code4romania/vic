@@ -2,6 +2,7 @@
   "general": {
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
+    "user": "Utilizator",
     "name": "Nume",
     "age": "Vârsta",
     "created_on": "Data crearii",
@@ -142,12 +143,23 @@
     "filters": {
       "active_since_range": "Perioada activitate"
     },
-    "modal": {
+    "popover": {
       "view": "Vizualizează profil",
       "archive": "Arhivează voluntar",
       "activate": "Reactivează voluntar",
       "delete": "Sterge din ONG",
       "block": "Blochează voluntar"
+    },
+    "modal": {
+      "block": {
+        "title": "Esti sigur ca doresti blocarea acestui voluntar?",
+        "description": "Această acțiune va bloca definitiv acest voluntar"
+      }
+    },
+    "submit": {
+      "archive": "Voluntarul a fost arhivat",
+      "activate": "Voluntarul a fost actiat",
+      "block": "Voluntarul a fost blocat"
     },
     "errors": {}
   },

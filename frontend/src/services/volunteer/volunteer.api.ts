@@ -61,3 +61,15 @@ export const updateVolunteer = async (
     department: data.department.value,
   }).then((res) => res.data);
 };
+
+export const archiveVolunteer = async (id: string): Promise<IVolunteer> => {
+  return API.patch(`volunteer/${id}/archive`).then((res) => res.data);
+};
+
+export const activateVolunteer = async (id: string): Promise<IVolunteer> => {
+  return API.patch(`volunteer/${id}/activate`).then((res) => res.data);
+};
+
+export const blockVolunteer = async (id: string): Promise<IVolunteer> => {
+  return API.patch(`volunteer/${id}/block`).then((res) => res.data);
+};

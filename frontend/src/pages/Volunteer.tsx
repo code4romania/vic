@@ -35,24 +35,26 @@ const Volunteer = () => {
         <div className="w-full flex flex-col lg:flex-row gap-4">
           <div className="w-full lg:w-1/3 xl:w-1/4">
             <ProfileCard
-              name={volunteer.createdBy.name}
-              birthday={volunteer.createdBy.birthday}
-              sex={volunteer.createdBy.sex}
-              location={'Iasi, jud. Iasi'} // TODO: TBD
-              logo={volunteer.createdBy.profilePicture || ''}
+              name={volunteer.user.name}
+              birthday={volunteer.user.birthday}
+              sex={volunteer.user.sex}
+              location={`${volunteer.user.location?.name}, ${volunteer.user.location?.county.abbreviation}`}
+              logo={volunteer.user.profilePicture || ''}
             />
           </div>
           <div className="w-full lg:w-2/3 xl:w-3/4">
-            <VolunteerProfile
-              email={volunteer.email}
-              phone={volunteer.phone}
-              branch={volunteer.branch.name}
-              status={volunteer.status}
-              department={volunteer.department.name}
-              startedOn={volunteer.startedOn}
-              role={volunteer.role.name}
-              createdOn={volunteer.createdOn}
-            />
+            {volunteer.profile && (
+              <VolunteerProfile
+                email={volunteer.profile?.email}
+                phone={volunteer.profile?.phone}
+                branch={volunteer.profile?.branch?.name}
+                status={volunteer.status}
+                department={volunteer.profile?.department?.name}
+                startedOn={volunteer.profile?.activeSince}
+                role={volunteer.profile?.role?.name}
+                createdOn={volunteer.createdOn}
+              />
+            )}
           </div>
         </div>
       )}
