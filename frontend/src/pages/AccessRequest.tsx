@@ -36,6 +36,7 @@ const AccessRequest = () => {
     data: accessRequest,
     error: accessRequestError,
     isLoading: isAccessRequestLoading,
+    refetch,
   } = useAccessRequestQuery(id as string);
 
   const { mutateAsync: rejectAccessRequestMutation, isLoading: isRejectAccessRequestLoading } =
@@ -86,7 +87,7 @@ const AccessRequest = () => {
                 option: i18n.t('volunteer:registration.confirmation_options.rejected'),
               }),
             );
-            onBackButtonPress();
+            refetch();
           },
           onError: (error) => {
             InternalErrors.ACCESS_REQUEST_ERRORS.getError(error?.response?.data.code_error);
