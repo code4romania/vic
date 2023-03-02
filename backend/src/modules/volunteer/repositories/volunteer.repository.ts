@@ -13,11 +13,13 @@ import {
   FindManyOptions,
   FindOperator,
   FindOptionsWhere,
+  In,
   LessThanOrEqual,
   MoreThanOrEqual,
   Repository,
 } from 'typeorm';
 import { VolunteerEntity } from '../entities/volunteer.entity';
+import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { IVolunteerRepository } from '../intefaces/volunteer-repository.interface';
 import {
   CreateVolunteerOptions,
@@ -114,6 +116,24 @@ export class VolunteerRepositoryService
     );
   }
 
+  async findAllActiveByDepartmentIds(
+    departmentIds: string[],
+  ): Promise<IVolunteerModel[]> {
+    const volunteers = await this.volunteerRepository.find({
+      where: {
+        status: VolunteerStatus.ACTIVE,
+        volunteerProfile: {
+          departmentId: In(departmentIds),
+        },
+      },
+      relations: {
+        volunteerProfile: true,
+      },
+    });
+
+    return volunteers.map(VolunteerModelTransformer.fromEntity);
+  }
+
   async update({
     id,
     ...updates
@@ -157,14 +177,6 @@ export class VolunteerRepositoryService
 
   async count(options: FindManyOptions<VolunteerEntity>): Promise<number> {
     return this.volunteerRepository.count(options);
-  }
-
-  async getMany(
-    options: FindOptionsWhere<VolunteerEntity>,
-  ): Promise<IVolunteerModel[]> {
-    const volunteers = await this.volunteerRepository.findBy(options);
-
-    return volunteers.map(VolunteerModelTransformer.fromEntity);
   }
 
   private mapAgeRangeToBirthdayFindOptionsOperator(

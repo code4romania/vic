@@ -12,9 +12,10 @@ import { AnnouncementFacade } from 'src/modules/announcement/services/announceme
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import SendAnnouncementEvent from 'src/modules/notifications/events/others/send-announcement.event';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
+import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
-import { GetAllOrganizationStructureByTypeUseCase } from '../organization/organization-structure/get-all-organization-structure-by-type.usecase';
+import { GetOneAnnouncementUseCase } from './get-one-announcement.usecase';
 
 @Injectable()
 export class UpdateAnnouncementUseCase
@@ -24,16 +25,18 @@ export class UpdateAnnouncementUseCase
     private readonly announcementFacade: AnnouncementFacade,
     private readonly exceptionsService: ExceptionsService,
     private readonly eventEmitter: EventEmitter2,
-    private readonly getAllOrganizationStructureByTypeUseCase: GetAllOrganizationStructureByTypeUseCase,
     private readonly volunteerFacade: VolunteerFacade,
+    private readonly getOneAnnouncementUseCase: GetOneAnnouncementUseCase,
+    private readonly organizationStructureFacade: OrganizationStructureFacade,
   ) {}
 
   public async execute(
+    id: string,
     updateData: IUpdateAnnouncementModel,
   ): Promise<IAnnouncementModel> {
     // 1. Check if the announcement exists
-    const announcementToUpdate = await this.announcementFacade.find({
-      id: updateData.id,
+    const announcementToUpdate = await this.getOneAnnouncementUseCase.execute({
+      id,
     });
     if (!announcementToUpdate) {
       this.exceptionsService.notFoundException(
@@ -50,28 +53,23 @@ export class UpdateAnnouncementUseCase
     // 3. Check if only departments were chosen and calculate the new total number of volunteers
     let targetedVolunteers = 0;
 
-    if (updateData.targetsIds.length !== 0) {
-      const departments =
-        await this.getAllOrganizationStructureByTypeUseCase.execute(
-          OrganizationStructureType.DEPARTMENT,
-          updateData.organizationId,
-        );
-
-      const filteredtargets = departments.filter((department) => {
-        if (updateData.targetsIds.includes(department.id)) {
-          targetedVolunteers = department.members;
-          return true;
-        }
+    if (!updateData.targetsIds?.length) {
+      const departments = await this.organizationStructureFacade.findAll({
+        ids: updateData.targetsIds,
+        type: OrganizationStructureType.DEPARTMENT,
+        organizationId: updateData.organizationId,
       });
 
-      if (filteredtargets.length !== updateData.targetsIds.length) {
+      if (departments.length !== updateData.targetsIds.length) {
         this.exceptionsService.badRequestException(
           AnnouncementExceptionMessages.ANNOUNCEMENT_003,
         );
       }
-    }
 
-    if (updateData.targetsIds.length === 0) {
+      departments.map(
+        (department) => (targetedVolunteers += department.members),
+      );
+    } else {
       targetedVolunteers = await this.volunteerFacade.count({
         where: {
           organizationId: updateData.organizationId,
@@ -81,11 +79,14 @@ export class UpdateAnnouncementUseCase
     }
 
     // 4. Update the announcement
-    const updatedAnnouncement = await this.announcementFacade.update({
+    const updatedAnnouncement = await this.announcementFacade.update(id, {
+      ...updateData,
       publishedOn:
         updateData.status === AnnouncementStatus.PUBLISHED ? new Date() : null,
-      targetedVolunteers,
-      ...updateData,
+      targetedVolunteers:
+        targetedVolunteers !== 0
+          ? targetedVolunteers
+          : updateData.targetedVolunteers,
     });
 
     // 5. Send email to targets if announcement is published

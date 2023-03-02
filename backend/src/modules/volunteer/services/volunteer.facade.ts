@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
-import { FindManyOptions, FindOptionsWhere } from 'typeorm';
+import { FindManyOptions } from 'typeorm';
 import { VolunteerEntity } from '../entities/volunteer.entity';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import {
@@ -39,6 +39,12 @@ export class VolunteerFacade {
     options: FindManyVolunteersOptions,
   ): Promise<Pagination<IVolunteerModel>> {
     return this.volunteerRepository.findMany(options);
+  }
+
+  async findAllActiveByDepartmentIds(
+    ids: string[],
+  ): Promise<IVolunteerModel[]> {
+    return this.volunteerRepository.findAllActiveByDepartmentIds(ids);
   }
 
   public archive(
@@ -93,11 +99,5 @@ export class VolunteerFacade {
 
   async count(options: FindManyOptions<VolunteerEntity>): Promise<number> {
     return this.volunteerRepository.count(options);
-  }
-
-  async getMany(
-    options: FindOptionsWhere<VolunteerEntity>,
-  ): Promise<IVolunteerModel[]> {
-    return this.volunteerRepository.getMany(options);
   }
 }

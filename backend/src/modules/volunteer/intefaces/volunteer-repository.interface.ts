@@ -20,6 +20,9 @@ export interface IVolunteerRepository
   findMany(
     findOptions: FindManyVolunteersOptions,
   ): Promise<Pagination<IVolunteerModel>>;
+  findAllActiveByDepartmentIds(
+    departmentIds: string[],
+  ): Promise<IVolunteerModel[]>;
 }
 
 export interface IVolunteerProfileRepository {

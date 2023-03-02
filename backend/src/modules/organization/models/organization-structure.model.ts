@@ -32,7 +32,7 @@ export type IFindAllOrganizationStructurePaginatedModel =
     Required<Pick<IOrganizationStructureModel, 'organizationId' | 'type'>>;
 
 export type IFindAllOrganizationStructureModel =
-  | Partial<IOrganizationStructureModel>
+  | Partial<IOrganizationStructureModel & { ids: string[] }>
   | Partial<IOrganizationStructureModel>[];
 
 export class OrganizationStructureTransformer {
