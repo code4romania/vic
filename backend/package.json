@@ -1,6 +1,6 @@
 {
   "name": "teo-backend",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "",
   "author": "",
   "private": true,
@@ -57,7 +57,7 @@
     "pino-http": "^8.3.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.11",
+    "typeorm": "^0.4.01",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
