@@ -46,6 +46,9 @@ export class Announcement1677153298464 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "announcement_targets_organization_structure" ADD CONSTRAINT "FK_e17282ab0fe6924f453939bb513" FOREIGN KEY ("organizationStructureId") REFERENCES "organization_structure"("id") ON DELETE CASCADE ON UPDATE CASCADE`,
     );
+    await queryRunner.query(
+      `ALTER TABLE "announcement" ADD "targeted_volunteers" integer NOT NULL DEFAULT '0'`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

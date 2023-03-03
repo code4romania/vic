@@ -23,9 +23,9 @@ const validationSchema = yup.object({
     .string()
     .required(`${i18n.t('access_code:form.code.required')}`)
     .min(
-      2,
+      4,
       `${i18n.t('access_code:form.code.min', {
-        value: '2',
+        value: '4',
       })}`,
     )
     .max(

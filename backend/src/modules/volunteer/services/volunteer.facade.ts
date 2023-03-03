@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
-import { FindManyOptions, FindOptionsWhere } from 'typeorm';
-import { VolunteerEntity } from '../entities/volunteer.entity';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import {
   CreateVolunteerProfileOptions,
@@ -9,6 +7,7 @@ import {
   UpdateVolunteerProfileOptions,
 } from '../model/volunteer-profile.model';
 import {
+  CountVolunteerOptions,
   CreateVolunteerOptions,
   FindManyVolunteersOptions,
   FindVolunteerOptions,
@@ -39,6 +38,12 @@ export class VolunteerFacade {
     options: FindManyVolunteersOptions,
   ): Promise<Pagination<IVolunteerModel>> {
     return this.volunteerRepository.findMany(options);
+  }
+
+  async findAllActiveByDepartmentIds(
+    ids: string[],
+  ): Promise<IVolunteerModel[]> {
+    return this.volunteerRepository.findAllActiveByDepartmentIds(ids);
   }
 
   public archive(
@@ -91,13 +96,7 @@ export class VolunteerFacade {
     return this.volunteerProfileRepositoryService.update(id, updates);
   }
 
-  async count(options: FindManyOptions<VolunteerEntity>): Promise<number> {
+  async count(options: CountVolunteerOptions): Promise<number> {
     return this.volunteerRepository.count(options);
-  }
-
-  async getMany(
-    options: FindOptionsWhere<VolunteerEntity>,
-  ): Promise<IVolunteerModel[]> {
-    return this.volunteerRepository.getMany(options);
   }
 }

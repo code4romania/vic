@@ -42,6 +42,7 @@ export class AnnouncementEntity extends BaseEntity {
 
   @ManyToMany(() => OrganizationStructureEntity, {
     eager: true,
+    onDelete: 'SET NULL',
   })
   @JoinTable()
   targets: OrganizationStructureEntity[];

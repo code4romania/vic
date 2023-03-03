@@ -8,9 +8,6 @@ import { OrganizationFacadeService } from 'src/modules/organization/services/org
 import { OrganizationExceptionMessages } from 'src/modules/organization/exceptions/exceptions';
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
-import { IError } from 'src/common/exceptions/exceptions.interface';
-import { JSONStringifyError } from 'src/common/helpers/stringify-error';
-import { IUserModel } from 'src/modules/user/models/base-user.model';
 
 @Injectable()
 export class GetUserProfileUseCaseService

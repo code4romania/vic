@@ -59,7 +59,7 @@ export class AnnouncementRepositoryService
     return this.findManyPaginated<IAnnouncementModel>(
       {
         searchableColumns: ['name'],
-        defaultSortBy: 'name',
+        defaultSortBy: 'updatedOn',
         defaultOrderDirection: OrderDirection.ASC,
         relations: {
           targets: true,
@@ -80,11 +80,10 @@ export class AnnouncementRepositoryService
     return this.find({ id: announcement.id });
   }
 
-  async update({
-    id,
-    targetsIds,
-    ...updates
-  }: IUpdateAnnouncementModel): Promise<IAnnouncementModel> {
+  async update(
+    id: string,
+    { targetsIds, ...updates }: IUpdateAnnouncementModel,
+  ): Promise<IAnnouncementModel> {
     const targets = targetsIds?.map(OrganizationStructureTransformer.toEntity);
 
     const toUpdate = await this.announcementRepository.preload({

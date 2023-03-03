@@ -14,7 +14,10 @@ export interface IAnnouncementRepository
   create(
     newAnnouncement: ICreateAnnouncementModel,
   ): Promise<IAnnouncementModel>;
-  update(updates: IUpdateAnnouncementModel): Promise<IAnnouncementModel>;
+  update(
+    id: string,
+    updates: IUpdateAnnouncementModel,
+  ): Promise<IAnnouncementModel>;
   find(findOptions: IFindAnnouncementModel): Promise<IAnnouncementModel>;
   findMany(
     findOptions: IFindAllAnnouncementModel,

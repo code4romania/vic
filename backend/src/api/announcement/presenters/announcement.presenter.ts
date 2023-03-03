@@ -6,6 +6,13 @@ import { OrganizationStructureType } from 'src/modules/organization/enums/organi
 import { IOrganizationStructureModel } from 'src/modules/organization/models/organization-structure.model';
 
 class OrganizationStructureToAnnouncementPresenter {
+  constructor(structure: IOrganizationStructureModel) {
+    this.id = structure.id;
+    this.name = structure.name;
+    this.type = structure.type;
+    this.numberOfMembers = structure.members;
+  }
+
   @Expose()
   @ApiProperty({
     description: 'The uuid of the Organization Structure',
@@ -33,19 +40,7 @@ class OrganizationStructureToAnnouncementPresenter {
     description: 'Number of members belonging to the organization structure',
     example: 20,
   })
-  members: number;
-
-  static fromAnnouncement(
-    structure: IOrganizationStructureModel,
-  ): OrganizationStructureToAnnouncementPresenter {
-    if (!structure) return null;
-    return {
-      id: structure.id,
-      name: structure.name,
-      type: structure.type,
-      members: structure.members,
-    };
-  }
+  numberOfMembers: number;
 }
 
 export class AnnouncementPresenter {
@@ -56,7 +51,7 @@ export class AnnouncementPresenter {
     this.status = announcement.status;
     this.publishedOn = announcement.publishedOn;
     this.targets = announcement.targets.map(
-      OrganizationStructureToAnnouncementPresenter.fromAnnouncement,
+      (target) => new OrganizationStructureToAnnouncementPresenter(target),
     );
     this.updatedOn = announcement.updatedOn;
     this.targetedVolunteers = announcement.targetedVolunteers;

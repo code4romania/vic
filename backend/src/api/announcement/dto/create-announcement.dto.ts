@@ -1,7 +1,6 @@
 import {
   IsArray,
   IsEnum,
-  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -23,6 +22,5 @@ export class CreateAnnouncementDto {
   status: AnnouncementStatus;
 
   @IsArray()
-  @IsOptional()
-  targetsIds?: string[];
+  targetsIds: string[];
 }

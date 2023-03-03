@@ -71,7 +71,7 @@ export const useVolunteersQuery = (
   );
 };
 
-export const useVolunteerQuery = (id: string) => {
+export const useVolunteer = (id: string) => {
   return useQuery(['volunteer', id], () => getVolunteer(id), {
     enabled: !!id,
     onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,

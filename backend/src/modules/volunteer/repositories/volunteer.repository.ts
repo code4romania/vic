@@ -10,16 +10,18 @@ import {
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   Between,
-  FindManyOptions,
   FindOperator,
   FindOptionsWhere,
+  In,
   LessThanOrEqual,
   MoreThanOrEqual,
   Repository,
 } from 'typeorm';
 import { VolunteerEntity } from '../entities/volunteer.entity';
+import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { IVolunteerRepository } from '../intefaces/volunteer-repository.interface';
 import {
+  CountVolunteerOptions,
   CreateVolunteerOptions,
   FindManyVolunteersOptions,
   FindVolunteerOptions,
@@ -114,6 +116,24 @@ export class VolunteerRepositoryService
     );
   }
 
+  async findAllActiveByDepartmentIds(
+    departmentIds: string[],
+  ): Promise<IVolunteerModel[]> {
+    const volunteers = await this.volunteerRepository.find({
+      where: {
+        status: VolunteerStatus.ACTIVE,
+        volunteerProfile: {
+          departmentId: In(departmentIds),
+        },
+      },
+      relations: {
+        volunteerProfile: true,
+      },
+    });
+
+    return volunteers.map(VolunteerModelTransformer.fromEntity);
+  }
+
   async update({
     id,
     ...updates
@@ -141,26 +161,22 @@ export class VolunteerRepositoryService
           department: true,
           role: true,
         },
+        user: {
+          location: {
+            county: true,
+          },
+        },
         archivedBy: true,
         blockedBy: true,
         organization: true,
-        user: true,
       },
     });
 
     return VolunteerModelTransformer.fromEntity(volunteer);
   }
 
-  async count(options: FindManyOptions<VolunteerEntity>): Promise<number> {
-    return this.volunteerRepository.count(options);
-  }
-
-  async getMany(
-    options: FindOptionsWhere<VolunteerEntity>,
-  ): Promise<IVolunteerModel[]> {
-    const volunteers = await this.volunteerRepository.findBy(options);
-
-    return volunteers.map(VolunteerModelTransformer.fromEntity);
+  async count(options: CountVolunteerOptions): Promise<number> {
+    return this.volunteerRepository.count({ where: options });
   }
 
   private mapAgeRangeToBirthdayFindOptionsOperator(

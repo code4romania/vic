@@ -14,10 +14,7 @@ import { SelectItem } from '../components/Select';
 import Card from '../layouts/CardLayout';
 import FormLayout from '../layouts/FormLayout';
 import PageLayout from '../layouts/PageLayout';
-import {
-  useUpdateVolunteerMutation,
-  useVolunteerQuery,
-} from '../services/volunteer/volunteer.service';
+import { useUpdateVolunteerMutation, useVolunteer } from '../services/volunteer/volunteer.service';
 import LoadingContent from '../components/LoadingContent';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -31,10 +28,10 @@ import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 export type VolunteerFormTypes = {
   name: string;
   email: string;
-  branch: SelectItem<string>;
-  role: SelectItem<string>;
-  department: SelectItem<string>;
-  startedOn: Date;
+  branch?: SelectItem<string>;
+  role?: SelectItem<string>;
+  department?: SelectItem<string>;
+  activeSince?: Date;
 };
 
 const schema = yup.object({
@@ -42,7 +39,7 @@ const schema = yup.object({
     .string()
     .email(`${i18n.t('volunteer:form.email.pattern')}`)
     .required(`${i18n.t('volunteer:form.email.required')}`),
-  startedOn: yup.date().typeError(`${i18n.t('general:invalid_date')}`),
+  activeSince: yup.date().typeError(`${i18n.t('general:invalid_date')}`),
 });
 
 const EditVolunteer = () => {
@@ -53,7 +50,7 @@ const EditVolunteer = () => {
     data: volunteer,
     error: volunteerError,
     isLoading: isVolunteerLoading,
-  } = useVolunteerQuery(id as string);
+  } = useVolunteer(id as string);
 
   const { mutateAsync: updateVolunteer, isLoading: isUpdateVolunteerLoading } =
     useUpdateVolunteerMutation();
@@ -83,8 +80,9 @@ const EditVolunteer = () => {
       const { profile, ...data } = volunteer;
       // preload form data
       reset({
-        ...data,
         name: data.user.name,
+        email: profile?.email,
+        activeSince: profile?.activeSince ? new Date(profile?.activeSince) : undefined,
         ...(profile?.branch ? { branch: mapDivisionListItemToSelectItem(profile?.branch) } : {}),
         ...(profile?.department
           ? { department: mapDivisionListItemToSelectItem(profile?.department) }
@@ -219,8 +217,8 @@ const EditVolunteer = () => {
                 />
                 <hr className="border-cool-gray-200" />
                 <Controller
-                  name="startedOn"
-                  key="startedOn"
+                  name="activeSince"
+                  key="activeSince"
                   control={control}
                   render={({ field: { onChange, value } }) => {
                     return (

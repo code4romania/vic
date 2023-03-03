@@ -12,9 +12,9 @@ import { AnnouncementFacade } from 'src/modules/announcement/services/announceme
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import SendAnnouncementEvent from 'src/modules/notifications/events/others/send-announcement.event';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
+import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
-import { GetAllOrganizationStructureByTypeUseCase } from '../organization/organization-structure/get-all-organization-structure-by-type.usecase';
 
 @Injectable()
 export class CreateAnnouncementUseCase
@@ -23,9 +23,9 @@ export class CreateAnnouncementUseCase
   constructor(
     private readonly announcementFacade: AnnouncementFacade,
     private readonly eventEmitter: EventEmitter2,
-    private readonly getAllOrganizationStructureByTypeUseCase: GetAllOrganizationStructureByTypeUseCase,
     private readonly exceptionsService: ExceptionsService,
     private readonly volunteerFacade: VolunteerFacade,
+    private readonly organizationStructureFacade: OrganizationStructureFacade,
   ) {}
 
   public async execute(
@@ -33,42 +33,41 @@ export class CreateAnnouncementUseCase
   ): Promise<IAnnouncementModel> {
     // 1. Check if only departments were chosen and calculate the total number of volunteers
     let targetedVolunteers = 0;
-    if (createData.targetsIds.length !== 0) {
-      const departments =
-        await this.getAllOrganizationStructureByTypeUseCase.execute(
-          OrganizationStructureType.DEPARTMENT,
-          createData.organizationId,
-        );
 
-      const filteredtargets = departments.filter((department) => {
-        if (createData.targetsIds.includes(department.id)) {
-          targetedVolunteers += department.members;
-          return true;
-        }
+    if (createData.targetsIds?.length) {
+      targetedVolunteers = await this.volunteerFacade.count({
+        organizationId: createData.organizationId,
+        status: VolunteerStatus.ACTIVE,
       });
+    } else {
+      const departments = await this.organizationStructureFacade.findAll(
+        createData.targetsIds.map((id) => ({
+          id,
+          type: OrganizationStructureType.DEPARTMENT,
+          organizationId: createData.organizationId,
+        })),
+      );
 
-      if (filteredtargets.length !== createData.targetsIds.length) {
+      if (departments.length !== createData.targetsIds.length) {
         this.exceptionsService.badRequestException(
           AnnouncementExceptionMessages.ANNOUNCEMENT_003,
         );
       }
-    }
 
-    if (createData.targetsIds.length === 0) {
-      targetedVolunteers = await this.volunteerFacade.count({
-        where: {
-          organizationId: createData.organizationId,
-          status: VolunteerStatus.ACTIVE,
-        },
-      });
+      departments.map(
+        (department) => (targetedVolunteers += department.members),
+      );
     }
 
     // 2. Create announcement
     const announcement = await this.announcementFacade.create({
-      targetedVolunteers,
+      ...createData,
+      targetedVolunteers:
+        targetedVolunteers !== 0
+          ? targetedVolunteers
+          : createData.targetedVolunteers,
       publishedOn:
         createData.status === AnnouncementStatus.PUBLISHED ? new Date() : null,
-      ...createData,
     });
 
     // 3. Send email to targets if announcement is published

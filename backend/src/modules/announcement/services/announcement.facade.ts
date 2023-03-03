@@ -34,9 +34,10 @@ export class AnnouncementFacade {
   }
 
   public async update(
+    id: string,
     updateAnnouncementModel: IUpdateAnnouncementModel,
   ): Promise<IAnnouncementModel> {
-    return this.announcementRepository.update(updateAnnouncementModel);
+    return this.announcementRepository.update(id, updateAnnouncementModel);
   }
 
   public async delete(id: string): Promise<string> {

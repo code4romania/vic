@@ -9,7 +9,7 @@ export interface IQuestionAnswer {
 export interface IAccessRequest {
   id: string;
   createdOn: Date;
-  updatedOn?: Date;
+  updatedOn: Date;
   rejectionReason?: string;
   requestedBy: IUser;
   status: RequestStatus;

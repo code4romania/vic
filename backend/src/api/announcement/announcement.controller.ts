@@ -90,10 +90,9 @@ export class AnnouncementController {
     @Body() updateAnnouncementDto: UpdateAnnouncementDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<AnnouncementPresenter> {
-    const announcement = await this.updateAnnouncementUseCase.execute({
+    const announcement = await this.updateAnnouncementUseCase.execute(id, {
       ...updateAnnouncementDto,
       organizationId,
-      id,
     });
 
     return new AnnouncementPresenter(announcement);
