@@ -10,7 +10,6 @@ import {
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   Between,
-  FindManyOptions,
   FindOperator,
   FindOptionsWhere,
   In,
@@ -22,6 +21,7 @@ import { VolunteerEntity } from '../entities/volunteer.entity';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { IVolunteerRepository } from '../intefaces/volunteer-repository.interface';
 import {
+  CountVolunteerOptions,
   CreateVolunteerOptions,
   FindManyVolunteersOptions,
   FindVolunteerOptions,
@@ -175,8 +175,8 @@ export class VolunteerRepositoryService
     return VolunteerModelTransformer.fromEntity(volunteer);
   }
 
-  async count(options: FindManyOptions<VolunteerEntity>): Promise<number> {
-    return this.volunteerRepository.count(options);
+  async count(options: CountVolunteerOptions): Promise<number> {
+    return this.volunteerRepository.count({ where: options });
   }
 
   private mapAgeRangeToBirthdayFindOptionsOperator(

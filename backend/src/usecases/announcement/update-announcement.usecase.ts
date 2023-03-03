@@ -53,12 +53,14 @@ export class UpdateAnnouncementUseCase
     // 3. Check if only departments were chosen and calculate the new total number of volunteers
     let targetedVolunteers = 0;
 
-    if (!updateData.targetsIds?.length) {
-      const departments = await this.organizationStructureFacade.findAll({
-        ids: updateData.targetsIds,
-        type: OrganizationStructureType.DEPARTMENT,
-        organizationId: updateData.organizationId,
-      });
+    if (updateData.targetsIds?.length) {
+      const departments = await this.organizationStructureFacade.findAll(
+        updateData.targetsIds.map((id) => ({
+          id,
+          type: OrganizationStructureType.DEPARTMENT,
+          organizationId: updateData.organizationId,
+        })),
+      );
 
       if (departments.length !== updateData.targetsIds.length) {
         this.exceptionsService.badRequestException(
@@ -71,10 +73,8 @@ export class UpdateAnnouncementUseCase
       );
     } else {
       targetedVolunteers = await this.volunteerFacade.count({
-        where: {
-          organizationId: updateData.organizationId,
-          status: VolunteerStatus.ACTIVE,
-        },
+        organizationId: updateData.organizationId,
+        status: VolunteerStatus.ACTIVE,
       });
     }
 

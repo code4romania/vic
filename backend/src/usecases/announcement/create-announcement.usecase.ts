@@ -34,19 +34,19 @@ export class CreateAnnouncementUseCase
     // 1. Check if only departments were chosen and calculate the total number of volunteers
     let targetedVolunteers = 0;
 
-    if (!createData.targetsIds?.length) {
+    if (createData.targetsIds?.length) {
       targetedVolunteers = await this.volunteerFacade.count({
-        where: {
-          organizationId: createData.organizationId,
-          status: VolunteerStatus.ACTIVE,
-        },
+        organizationId: createData.organizationId,
+        status: VolunteerStatus.ACTIVE,
       });
     } else {
-      const departments = await this.organizationStructureFacade.findAll({
-        ids: createData.targetsIds,
-        type: OrganizationStructureType.DEPARTMENT,
-        organizationId: createData.organizationId,
-      });
+      const departments = await this.organizationStructureFacade.findAll(
+        createData.targetsIds.map((id) => ({
+          id,
+          type: OrganizationStructureType.DEPARTMENT,
+          organizationId: createData.organizationId,
+        })),
+      );
 
       if (departments.length !== createData.targetsIds.length) {
         this.exceptionsService.badRequestException(

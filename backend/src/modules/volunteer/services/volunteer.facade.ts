@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
-import { FindManyOptions } from 'typeorm';
-import { VolunteerEntity } from '../entities/volunteer.entity';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import {
   CreateVolunteerProfileOptions,
@@ -9,6 +7,7 @@ import {
   UpdateVolunteerProfileOptions,
 } from '../model/volunteer-profile.model';
 import {
+  CountVolunteerOptions,
   CreateVolunteerOptions,
   FindManyVolunteersOptions,
   FindVolunteerOptions,
@@ -97,7 +96,7 @@ export class VolunteerFacade {
     return this.volunteerProfileRepositoryService.update(id, updates);
   }
 
-  async count(options: FindManyOptions<VolunteerEntity>): Promise<number> {
+  async count(options: CountVolunteerOptions): Promise<number> {
     return this.volunteerRepository.count(options);
   }
 }
