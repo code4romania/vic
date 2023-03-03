@@ -1,5 +1,6 @@
 import { differenceInYears, format, isSameDay } from 'date-fns';
 import { ICity } from '../interfaces/city.interface';
+import { IEvent } from '../interfaces/event.interface';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
@@ -10,6 +11,12 @@ export const formatDotDate = (value: Date | string): string => format(new Date(v
 
 export const calculateAge = (birthday: Date) => {
   return differenceInYears(new Date(), birthday);
+};
+
+export const mapTargetsToString = (announcement: IEvent) => {
+  return `(${announcement.targetedVolunteers}) ${announcement.targets.map(
+    (target) => ` ${target.name}`,
+  )}`;
 };
 
 export const formatLocation = (location: ICity): string =>

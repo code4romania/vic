@@ -24,10 +24,11 @@ import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { EventsTabsStatus } from '../common/enums/event-status.enum';
 import { useEventsQuery } from '../services/event/event.service';
-import { formatEventDate } from '../common/utils/utils';
+import { formatEventDate, mapTargetsToString } from '../common/utils/utils';
 import MediaEventCell from '../components/MediaEventCell';
 import MediaStatusCell from '../components/MediaStatusCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
+import CellLayout from '../layouts/CellLayout';
 
 const EventsTabs: SelectItem<EventsTabsStatus>[] = [
   { key: EventsTabsStatus.OPEN, value: i18n.t('side_menu:options.events') },
@@ -51,7 +52,19 @@ const OpenEventsTableHeader = [
     id: 'event.target',
     name: i18n.t('general:target'),
     sortable: true,
-    selector: (row: IEvent) => row.target[0].name,
+    cell: (row: IEvent) => (
+      <CellLayout>
+        {row.targets.length !== 0 ? (
+          <p title={mapTargetsToString(row)} className="text-overflow">
+            {mapTargetsToString(row)}
+          </p>
+        ) : (
+          <p>
+            ({row.targetedVolunteers}) {i18n.t('general:all_organization')}
+          </p>
+        )}
+      </CellLayout>
+    ),
   },
   {
     id: 'event.answers',
@@ -87,7 +100,19 @@ const PastEventsTableHeader = [
     id: 'event.target',
     name: i18n.t('general:target'),
     sortable: true,
-    selector: (row: IEvent) => row.target[0].name,
+    cell: (row: IEvent) => (
+      <CellLayout>
+        {row.targets.length !== 0 ? (
+          <p title={mapTargetsToString(row)} className="text-overflow">
+            {mapTargetsToString(row)}
+          </p>
+        ) : (
+          <p>
+            ({row.targetedVolunteers}) {i18n.t('general:all_organization')}
+          </p>
+        )}
+      </CellLayout>
+    ),
   },
   {
     id: 'event.answers',

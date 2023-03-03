@@ -9,7 +9,8 @@ export interface IEvent {
   name: string;
   startDate: Date;
   endDate?: Date;
-  target: Array<{ id: string; name: string; type: OrganizationStructureType; members: number }>;
+  targets: Array<{ id: string; name: string; type: OrganizationStructureType; members: number }>;
+  targetedVolunteers: number;
   rsvp: { yes: number; no: number };
   displayStatus: 'draft' | 'published' | 'archived';
   reportedHours: string;

@@ -27,20 +27,14 @@ export const getEvents = async (
         name: 'Annual Company Conference',
         startDate: new Date('2023-09-24T09:12:00'),
         endDate: new Date('2023-09-24T17:32:00'),
-        target: [
+        targetedVolunteers: 75,
+        targets: [
           { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
           {
             id: '2',
             name: 'San Francisco Branch',
             type: OrganizationStructureType.BRANCH,
             members: 18,
-          },
-          { id: '3', name: 'London Branch', type: OrganizationStructureType.BRANCH, members: 20 },
-          {
-            id: '4',
-            name: 'Singapore Branch',
-            type: OrganizationStructureType.BRANCH,
-            members: 12,
           },
         ],
         rsvp: { yes: 75, no: 10 },
@@ -52,20 +46,14 @@ export const getEvents = async (
         logo: 'logo.svg',
         startDate: new Date('2023-09-24T09:12:00'),
         endDate: new Date('2023-09-24T17:32:00'),
-        target: [
+        targetedVolunteers: 75,
+        targets: [
           { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
           {
             id: '2',
             name: 'San Francisco Branch',
             type: OrganizationStructureType.BRANCH,
             members: 18,
-          },
-          { id: '3', name: 'London Branch', type: OrganizationStructureType.BRANCH, members: 20 },
-          {
-            id: '4',
-            name: 'Singapore Branch',
-            type: OrganizationStructureType.BRANCH,
-            members: 12,
           },
         ],
         rsvp: { yes: 75, no: 10 },
@@ -76,22 +64,8 @@ export const getEvents = async (
         name: 'Ciclism',
         startDate: new Date('2023-09-24T09:12:00'),
         endDate: new Date('2023-09-24T17:32:00'),
-        target: [
-          { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
-          {
-            id: '2',
-            name: 'San Francisco Branch',
-            type: OrganizationStructureType.BRANCH,
-            members: 18,
-          },
-          { id: '3', name: 'London Branch', type: OrganizationStructureType.BRANCH, members: 20 },
-          {
-            id: '4',
-            name: 'Singapore Branch',
-            type: OrganizationStructureType.BRANCH,
-            members: 12,
-          },
-        ],
+        targetedVolunteers: 75,
+        targets: [],
         rsvp: { yes: 75, no: 10 },
         displayStatus: 'published',
         reportedHours: '16 hours',

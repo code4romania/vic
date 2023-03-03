@@ -11,6 +11,7 @@
     "target": "Target",
     "answers": "Răspunsuri",
     "created_on": "Data crearii",
+    "all_organization": "Toata organizatia",
     "event": "Eveniment",
     "add": "Adauga {{item}}",
     "category": "Categorie",
