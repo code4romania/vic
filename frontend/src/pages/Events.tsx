@@ -147,23 +147,23 @@ const Events = () => {
 
   // row actions
   const onView = (row: IEvent) => {
-    console.log('not implemented', row);
+    alert(`not implemented! Selected: ${row.name}`);
   };
 
   const onDraft = (row: IEvent) => {
-    console.log('not implemented', row);
+    alert(`not implemented! Selected: ${row.name}`);
   };
 
   const onArchive = (row: IEvent) => {
-    console.log('not implemented', row);
+    alert(`not implemented! Selected: ${row.name}`);
   };
 
   const onEdit = (row: IEvent) => {
-    console.log('not implemented', row);
+    alert(`not implemented! Selected: ${row.name}`);
   };
 
   const onDelete = (row: IEvent) => {
-    console.log('not implemented', row);
+    alert(`not implemented! Selected: ${row.name}`);
   };
 
   // menu items
