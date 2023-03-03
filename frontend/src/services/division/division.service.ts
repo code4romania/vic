@@ -35,10 +35,11 @@ export const useDivisionsListItemsQuery = (divisionType: DivisionType) => {
     () => getDivisionsListItems(divisionType),
     {
       enabled: !!divisionType,
-      cacheTime: 1000000,
-      onError: (error) =>
-        // TODO: improve this
-        console.error('Error while loading organization structure list item data', error),
+      // cacheTime: 1000000,
+      // onError: (error) =>
+      //   // TODO: improve this
+      //   console.error('Error while loading organization structure list item data', error),
+      onError: (error: AxiosError<IBusinessException<DIVISION_ERRORS>>) => error,
     },
   );
 };

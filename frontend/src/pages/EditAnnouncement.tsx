@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
+import { DivisionType } from '../common/enums/division-type.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import AnnouncementForm, { AnnouncementFormTypes } from '../components/AnnouncementForm';
 import Button from '../components/Button';
@@ -12,8 +13,8 @@ import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
+import { mapItemToMultiListItem } from '../components/MultiSelect';
 import PageHeader from '../components/PageHeader';
-import { mapDivisionListItemToMultiSelectItem } from '../containers/OrganizationStructureMultiSelect';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
@@ -21,12 +22,13 @@ import {
   useAnnouncementQuery,
   useUpdateAnnouncementMutation,
 } from '../services/announcement/announcement.service';
+import { useDivisionsListItemsQuery } from '../services/division/division.service';
 
 const validationSchema = yup.object({
   name: yup
     .string()
     .required(`${i18n.t('announcement:form.name.required')}`)
-    .min(2, `${i18n.t('announcement:form.name.min', { value: '20' })}`)
+    .min(2, `${i18n.t('announcement:form.name.min', { value: '2' })}`)
     .max(30, `${i18n.t('announcement:form.name.max', { value: '30' })}`),
   description: yup
     .string()
@@ -45,6 +47,11 @@ const EditAnnouncement = () => {
     isLoading: isAnnouncementLoading,
     error: announcementError,
   } = useAnnouncementQuery(id as string);
+  const {
+    data: divisionListItems,
+    error: divisionListItemsError,
+    isLoading: isDivisionListItemsLoading,
+  } = useDivisionsListItemsQuery(DivisionType.DEPARTMENT);
   const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
     useUpdateAnnouncementMutation();
 
@@ -54,7 +61,7 @@ const EditAnnouncement = () => {
     formState: { errors },
     reset,
     resetField,
-    register,
+    watch,
   } = useForm<AnnouncementFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -66,7 +73,8 @@ const EditAnnouncement = () => {
       reset({
         name: announcement.name,
         description: announcement.description,
-        targets: announcement.targets.map(mapDivisionListItemToMultiSelectItem),
+        targets: announcement.targets.map(mapItemToMultiListItem),
+        isAllOrganization: announcement.targets ? false : true,
       });
     }
   }, [announcement]);
@@ -76,7 +84,12 @@ const EditAnnouncement = () => {
       useErrorToast(
         InternalErrors.ANNOUNCEMENT_ERRORS.getError(announcementError.response?.data.code_error),
       );
-  }, [announcementError]);
+    if (divisionListItemsError) {
+      useErrorToast(
+        InternalErrors.DIVISION_ERRORS.getError(divisionListItemsError.response?.data.code_error),
+      );
+    }
+  }, [announcementError, divisionListItemsError]);
 
   const onNavigateBack = () => {
     navigate('/announcements', { replace: true });
@@ -84,7 +97,9 @@ const EditAnnouncement = () => {
 
   const onSaveDraft = (formValues: AnnouncementFormTypes) => {
     if (announcement) {
-      const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
+      const targetsIds = !formValues.isAllOrganization
+        ? formValues.targets.map((target) => target.value)
+        : [];
       updateAnnouncement(
         {
           id: announcement.id,
@@ -112,7 +127,9 @@ const EditAnnouncement = () => {
 
   const onPublish = (formValues: AnnouncementFormTypes) => {
     if (announcement) {
-      const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
+      const targetsIds = !formValues.isAllOrganization
+        ? formValues.targets.map((target) => target.value)
+        : [];
       updateAnnouncement(
         {
           id: announcement?.id,
@@ -141,10 +158,12 @@ const EditAnnouncement = () => {
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={onNavigateBack}>
-        {i18n.t('general:add', { item: i18n.t('announcement:name') })}
+        {i18n.t('general:edit', { item: i18n.t('announcement:name') })}
       </PageHeader>
-      {isAnnouncementLoading && isUpdateAnnouncementLoading && <LoadingContent />}
-      {!isUpdateAnnouncementLoading && !isAnnouncementLoading && (
+      {isAnnouncementLoading && isUpdateAnnouncementLoading && isDivisionListItemsLoading && (
+        <LoadingContent />
+      )}
+      {!isUpdateAnnouncementLoading && !isAnnouncementLoading && !isDivisionListItemsLoading && (
         <Card>
           <CardHeader>
             <h4 className="text-sm sm:text-xl">{i18n.t('announcement:form.title')}</h4>
@@ -163,17 +182,21 @@ const EditAnnouncement = () => {
           </CardHeader>
           <CardBody>
             <AnnouncementForm
+              options={divisionListItems?.map(mapItemToMultiListItem)}
               control={control}
               errors={errors}
               resetField={resetField}
-              register={register}
+              watch={watch}
             />
           </CardBody>
         </Card>
       )}
-      {!announcement && !isAnnouncementLoading && !isUpdateAnnouncementLoading && (
-        <EmptyContent description={i18n.t('general:error.load_entries')} />
-      )}
+      {!announcement &&
+        !isAnnouncementLoading &&
+        !isUpdateAnnouncementLoading &&
+        !isDivisionListItemsLoading && (
+          <EmptyContent description={i18n.t('general:error.load_entries')} />
+        )}
     </PageLayout>
   );
 };

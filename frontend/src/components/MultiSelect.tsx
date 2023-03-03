@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import Select, { ActionMeta, MultiValue } from 'react-select';
-import { IDivisionMultiListItem } from '../containers/OrganizationStructureMultiSelect';
+
+export interface IMultiListItem {
+  value: string;
+  label: string;
+}
+
+export function mapItemToMultiListItem<T extends { id: string; name: string }>(
+  item: T,
+): IMultiListItem {
+  return {
+    value: item.id,
+    label: item.name,
+  };
+}
 
 interface MultiSelectProps {
-  onChange: (
-    newValue: MultiValue<IDivisionMultiListItem>,
-    actionMeta: ActionMeta<IDivisionMultiListItem>,
-  ) => void;
-  value: IDivisionMultiListItem[];
-  options: IDivisionMultiListItem[];
+  onChange: (newValue: MultiValue<IMultiListItem>, actionMeta: ActionMeta<IMultiListItem>) => void;
+  value: IMultiListItem[];
+  options?: IMultiListItem[];
   placeholder?: string;
 }
 
 const MultiSelect = ({ onChange, value, options, placeholder }: MultiSelectProps) => {
-  const [defaultValue, setDefaultValue] = useState<IDivisionMultiListItem[]>([]);
+  const [defaultValue, setDefaultValue] = useState<IMultiListItem[]>([]);
 
   useEffect(() => {
     setDefaultValue(value);

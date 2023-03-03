@@ -4,33 +4,43 @@ import {
   Controller,
   DeepRequired,
   FieldErrorsImpl,
-  UseFormRegister,
   UseFormResetField,
+  UseFormWatch,
 } from 'react-hook-form';
 import i18n from '../common/config/i18n';
-import { DivisionType } from '../common/enums/division-type.enum';
-import {
-  IDivisionMultiListItem,
-  OrganizationStructureMultiSelect,
-} from '../containers/OrganizationStructureMultiSelect';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from './FormInput';
 import FormTextarea from './FormTextarea';
+import MultiSelect, { IMultiListItem } from './MultiSelect';
 
 interface AnnouncementFormProps {
+  options?: IMultiListItem[];
   control: Control<AnnouncementFormTypes, object>;
   errors: FieldErrorsImpl<DeepRequired<AnnouncementFormTypes>>;
   resetField: UseFormResetField<AnnouncementFormTypes>;
-  register: UseFormRegister<AnnouncementFormTypes>;
+  watch: UseFormWatch<AnnouncementFormTypes>;
 }
 
 export type AnnouncementFormTypes = {
   name: string;
   description: string;
-  targets: IDivisionMultiListItem[];
+  targets: IMultiListItem[];
+  isAllOrganization?: boolean;
 };
 
-const AnnouncementForm = ({ control, errors, resetField, register }: AnnouncementFormProps) => {
+const AnnouncementForm = ({
+  options,
+  control,
+  errors,
+  resetField,
+  watch,
+}: AnnouncementFormProps) => {
+  const isAllOrganization = watch('isAllOrganization');
+
+  React.useEffect(() => {
+    if (isAllOrganization) resetField('targets');
+  }, [isAllOrganization]);
+
   return (
     <FormLayout>
       <form>
@@ -70,24 +80,44 @@ const AnnouncementForm = ({ control, errors, resetField, register }: Announcemen
             );
           }}
         />
-        <Controller
-          key="targets"
-          name="targets"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <OrganizationStructureMultiSelect
-                label={i18n.t('announcement:header.target')}
-                placeholder={`${i18n.t('announcement:form.target.placeholder')}`}
-                type={DivisionType.DEPARTMENT}
-                value={value}
-                onChange={onChange}
-                resetField={resetField}
-                register={register}
-              />
-            );
-          }}
-        />
+        <div className="flex flex-col gap-1">
+          <label>{i18n.t('announcement:header.target')}</label>
+          {!isAllOrganization && (
+            <Controller
+              key="targets"
+              name="targets"
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <MultiSelect
+                    options={options}
+                    placeholder={`${i18n.t('announcement:form.target.placeholder')}`}
+                    value={value || []}
+                    onChange={onChange}
+                  />
+                );
+              }}
+            />
+          )}
+          <Controller
+            key="isAllOrganization"
+            name="isAllOrganization"
+            control={control}
+            render={({ field: { onChange } }) => {
+              return (
+                <div className="flex flex-row gap-3">
+                  <input
+                    className="self-center rounded-[4px] border-cool-gray-300"
+                    type="checkbox"
+                    checked={isAllOrganization}
+                    onChange={onChange}
+                  />
+                  <label>{i18n.t('announcement:all_organization')}</label>
+                </div>
+              );
+            }}
+          />
+        </div>
       </form>
     </FormLayout>
   );

@@ -5,23 +5,26 @@ import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
+import { DivisionType } from '../common/enums/division-type.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import AnnouncementForm, { AnnouncementFormTypes } from '../components/AnnouncementForm';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
 import LoadingContent from '../components/LoadingContent';
+import { mapItemToMultiListItem } from '../components/MultiSelect';
 import PageHeader from '../components/PageHeader';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { useCreateAnnouncementMutation } from '../services/announcement/announcement.service';
+import { useDivisionsListItemsQuery } from '../services/division/division.service';
 
 const validationSchema = yup.object({
   name: yup
     .string()
     .required(`${i18n.t('announcement:form.name.required')}`)
-    .min(2, `${i18n.t('announcement:form.name.min', { value: '20' })}`)
+    .min(2, `${i18n.t('announcement:form.name.min', { value: '2' })}`)
     .max(30, `${i18n.t('announcement:form.name.max', { value: '30' })}`),
   description: yup
     .string()
@@ -34,6 +37,11 @@ const validationSchema = yup.object({
 const AddAnnouncement = () => {
   const navigate = useNavigate();
 
+  const {
+    data: divisionListItems,
+    error: divisionListItemsError,
+    isLoading: isDivisionListItemsLoading,
+  } = useDivisionsListItemsQuery(DivisionType.DEPARTMENT);
   const { mutateAsync: createAnnouncement, isLoading } = useCreateAnnouncementMutation();
 
   const {
@@ -41,19 +49,28 @@ const AddAnnouncement = () => {
     control,
     formState: { errors },
     resetField,
-    register,
+    watch,
   } = useForm<AnnouncementFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
 
+  React.useEffect(() => {
+    if (divisionListItemsError)
+      useErrorToast(
+        InternalErrors.DIVISION_ERRORS.getError(divisionListItemsError.response?.data.code_error),
+      );
+  }, [divisionListItemsError]);
+
   const onNavigateBack = () => {
     navigate('/announcements', { replace: true });
   };
 
   const onSaveDraft = (formValues: AnnouncementFormTypes) => {
-    const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
+    const targetsIds = !formValues.isAllOrganization
+      ? formValues.targets.map((target) => target.value)
+      : [];
     createAnnouncement(
       {
         name: formValues.name,
@@ -76,7 +93,9 @@ const AddAnnouncement = () => {
   };
 
   const onPublish = (formValues: AnnouncementFormTypes) => {
-    const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
+    const targetsIds = !formValues.isAllOrganization
+      ? formValues.targets.map((target) => target.value)
+      : [];
     createAnnouncement(
       {
         name: formValues.name,
@@ -103,8 +122,8 @@ const AddAnnouncement = () => {
       <PageHeader onBackButtonPress={onNavigateBack}>
         {i18n.t('general:add', { item: i18n.t('announcement:name') })}
       </PageHeader>
-      {isLoading && <LoadingContent />}
-      {!isLoading && (
+      {isLoading && isDivisionListItemsLoading && <LoadingContent />}
+      {!isLoading && !isDivisionListItemsLoading && (
         <Card>
           <CardHeader>
             <h4 className="text-sm sm:text-xl">{i18n.t('announcement:form.title')}</h4>
@@ -123,10 +142,11 @@ const AddAnnouncement = () => {
           </CardHeader>
           <CardBody>
             <AnnouncementForm
+              options={divisionListItems?.map(mapItemToMultiListItem)}
               control={control}
               errors={errors}
               resetField={resetField}
-              register={register}
+              watch={watch}
             />
           </CardBody>
         </Card>

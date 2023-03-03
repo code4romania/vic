@@ -35,11 +35,6 @@ export class CreateAnnouncementUseCase
     let targetedVolunteers = 0;
 
     if (createData.targetsIds?.length) {
-      targetedVolunteers = await this.volunteerFacade.count({
-        organizationId: createData.organizationId,
-        status: VolunteerStatus.ACTIVE,
-      });
-    } else {
       const departments = await this.organizationStructureFacade.findAll(
         createData.targetsIds.map((id) => ({
           id,
@@ -57,6 +52,11 @@ export class CreateAnnouncementUseCase
       departments.map(
         (department) => (targetedVolunteers += department.members),
       );
+    } else {
+      targetedVolunteers = await this.volunteerFacade.count({
+        organizationId: createData.organizationId,
+        status: VolunteerStatus.ACTIVE,
+      });
     }
 
     // 2. Create announcement

@@ -121,17 +121,19 @@ const Announcement = () => {
                 label={i18n.t('general:delete')}
                 onClick={onDelete}
               />
-              <Button
-                className="btn-outline-secondary"
-                label={i18n.t('general:edit', { item: '' })}
-                icon={<PencilIcon className="menu-icon" />}
-                onClick={onEdit}
-              />
-              <Button
-                className="btn-primary"
-                label={i18n.t('announcement:publish')}
-                onClick={onPublish}
-              />
+              <div>
+                <Button
+                  className="btn-outline-secondary"
+                  label={i18n.t('general:edit', { item: '' })}
+                  icon={<PencilIcon className="menu-icon" />}
+                  onClick={onEdit}
+                />
+                <Button
+                  className="btn-primary"
+                  label={i18n.t('announcement:publish')}
+                  onClick={onPublish}
+                />
+              </div>
             </div>
           </CardHeader>
           <CardBody>
