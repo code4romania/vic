@@ -4,6 +4,8 @@
     "created_by": "Creat de",
     "user": "Utilizator",
     "name": "Nume",
+    "people": "Persoane",
+    "hours": "Ore",
     "age": "Vârsta",
     "date": "Data",
     "target": "Target",
@@ -367,11 +369,18 @@
     "past_events": "Evenimente încheiate",
     "status": "Status afisare",
     "hours": "Ore raportate",
+    "participate": "participă",
+    "not_participate": "nu participă",
     "popover": {
       "view": "Vizualizează detalii",
-      "draf": "Muta in draft",
+      "draft": "Muta in draft",
       "archive": "Arhiveaza eveniment",
       "delete": "Sterge eveniment"
+    },
+    "display_status": {
+      "draft": "Draft",
+      "published": "Publicat",
+      "archived": "Arhivat"
     }
   }
 }

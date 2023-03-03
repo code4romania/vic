@@ -5,6 +5,7 @@ export enum OrganizationStructureType {
 }
 
 export interface IEvent {
+  logo?: string;
   name: string;
   startDate: Date;
   endDate?: Date;

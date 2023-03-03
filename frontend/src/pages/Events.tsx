@@ -16,7 +16,6 @@ import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
 import DataTableComponent from '../components/DataTableComponent';
-import MediaCell from '../components/MediaCell';
 import PageHeader from '../components/PageHeader';
 import Popover from '../components/Popover';
 import { SelectItem } from '../components/Select';
@@ -26,6 +25,9 @@ import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { EventsTabsStatus } from '../common/enums/event-status.enum';
 import { useEventsQuery } from '../services/event/event.service';
+import { formatEventDate } from '../common/utils/utils';
+import MediaEventCell from '../components/MediaEventCell';
+import MediaStatusCell from '../components/MediaStatusCell';
 
 const EventsTabs: SelectItem<EventsTabsStatus>[] = [
   { key: EventsTabsStatus.OPEN, value: i18n.t('side_menu:options.events') },
@@ -37,13 +39,13 @@ const OpenEventsTableHeader = [
     id: 'event.name',
     name: i18n.t('general:event'),
     sortable: true,
-    cell: (row: IEvent) => <MediaCell logo={''} title={row.name} />,
+    cell: (row: IEvent) => <MediaEventCell logo={row.logo} title={row.name} />,
   },
   {
     id: 'event.date',
     name: i18n.t('general:date'),
     sortable: true,
-    selector: (row: IEvent) => `${row.startDate}\n${row.endDate}`,
+    selector: (row: IEvent) => formatEventDate(row.startDate, row.endDate),
   },
   {
     id: 'event.target',
@@ -55,13 +57,16 @@ const OpenEventsTableHeader = [
     id: 'event.answers',
     name: i18n.t('general:answers'),
     sortable: true,
-    selector: (row: IEvent) => row.rsvp.yes,
+    selector: (row: IEvent) =>
+      `${row.rsvp.yes} ${i18n.t('events:participate')}\n${row.rsvp.no} ${i18n.t(
+        'events:not_participate',
+      )}`,
   },
   {
     id: 'event.status',
-    name: i18n.t('event:status'),
+    name: i18n.t('events:status'),
     sortable: true,
-    selector: (row: IEvent) => row.displayStatus,
+    cell: (row: IEvent) => <MediaStatusCell status={row.displayStatus} />,
   },
 ];
 
@@ -70,13 +75,13 @@ const PastEventsTableHeader = [
     id: 'event.name',
     name: i18n.t('general:event'),
     sortable: true,
-    cell: (row: IEvent) => <MediaCell logo={''} title={row.name} />,
+    cell: (row: IEvent) => <MediaEventCell logo={row.logo} title={row.name} />,
   },
   {
     id: 'event.date',
     name: i18n.t('general:date'),
     sortable: true,
-    selector: (row: IEvent) => `${row.startDate}\n${row.endDate}`,
+    selector: (row: IEvent) => formatEventDate(row.startDate, row.endDate),
   },
   {
     id: 'event.target',
@@ -88,19 +93,25 @@ const PastEventsTableHeader = [
     id: 'event.answers',
     name: i18n.t('general:answers'),
     sortable: true,
-    selector: (row: IEvent) => row.rsvp.yes,
+    selector: (row: IEvent) =>
+      `${row.rsvp.yes} ${i18n.t('events:participate')}\n${row.rsvp.no} ${i18n.t(
+        'events:not_participate',
+      )}`,
   },
   {
     id: 'reportedHours',
     name: i18n.t('events:hours'),
     sortable: true,
-    selector: (row: IEvent) => row.displayStatus,
+    selector: (row: IEvent) =>
+      `${row.rsvp.yes} ${i18n.t('general:people').toLowerCase()}\n${row.rsvp.no} ${i18n
+        .t('general:hours')
+        .toLowerCase()}`,
   },
   {
     id: 'event.status',
-    name: i18n.t('event:status'),
+    name: i18n.t('events:status'),
     sortable: true,
-    selector: (row: IEvent) => row.displayStatus,
+    cell: (row: IEvent) => <MediaStatusCell status={row.displayStatus} />,
   },
 ];
 
@@ -243,8 +254,7 @@ const Events = () => {
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.events')}</PageHeader>
       <Tabs<EventsTabsStatus> tabs={EventsTabs} onClick={onTabClick}>
-        {tabsStatus === EventsTabsStatus.OPEN && <EventsTable status={tabsStatus} />}
-        {tabsStatus === EventsTabsStatus.PAST && <EventsTable status={tabsStatus} />}
+        <EventsTable status={tabsStatus} />
       </Tabs>
     </PageLayout>
   );
