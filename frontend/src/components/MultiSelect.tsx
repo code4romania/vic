@@ -20,9 +20,10 @@ interface MultiSelectProps {
   value: IMultiListItem[];
   options?: IMultiListItem[];
   placeholder?: string;
+  label?: string;
 }
 
-const MultiSelect = ({ onChange, value, options, placeholder }: MultiSelectProps) => {
+const MultiSelect = ({ onChange, value, options, placeholder, label }: MultiSelectProps) => {
   const [defaultValue, setDefaultValue] = useState<IMultiListItem[]>([]);
 
   useEffect(() => {
@@ -30,7 +31,8 @@ const MultiSelect = ({ onChange, value, options, placeholder }: MultiSelectProps
   }, [value]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-1">
+      <label>{label}</label>
       <Select
         placeholder={placeholder}
         closeMenuOnSelect={false}

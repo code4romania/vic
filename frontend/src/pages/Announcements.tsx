@@ -275,6 +275,7 @@ const Announcements = () => {
             onChangeRowsPerPage={onChangeRowsPerPage}
             onChangePage={onChangePage}
             onSort={onSort}
+            defaultSortAsc={false}
           />
         </CardBody>
       </Card>

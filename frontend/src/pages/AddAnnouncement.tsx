@@ -45,8 +45,6 @@ const AddAnnouncement = () => {
     handleSubmit,
     control,
     formState: { errors },
-    resetField,
-    watch,
   } = useForm<AnnouncementFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -58,9 +56,7 @@ const AddAnnouncement = () => {
   };
 
   const onSaveDraft = (formValues: AnnouncementFormTypes) => {
-    const targetsIds = !formValues.isAllOrganization
-      ? formValues.targets.map((target) => target.value)
-      : [];
+    const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
     createAnnouncement(
       {
         name: formValues.name,
@@ -83,9 +79,7 @@ const AddAnnouncement = () => {
   };
 
   const onPublish = (formValues: AnnouncementFormTypes) => {
-    const targetsIds = !formValues.isAllOrganization
-      ? formValues.targets.map((target) => target.value)
-      : [];
+    const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
     createAnnouncement(
       {
         name: formValues.name,
@@ -135,8 +129,6 @@ const AddAnnouncement = () => {
               options={divisionListItems?.map(mapItemToMultiListItem)}
               control={control}
               errors={errors}
-              resetField={resetField}
-              watch={watch}
             />
           </CardBody>
         </Card>

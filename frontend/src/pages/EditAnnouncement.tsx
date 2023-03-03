@@ -57,8 +57,6 @@ const EditAnnouncement = () => {
     control,
     formState: { errors },
     reset,
-    resetField,
-    watch,
   } = useForm<AnnouncementFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -71,7 +69,6 @@ const EditAnnouncement = () => {
         name: announcement.name,
         description: announcement.description,
         targets: announcement.targets.map(mapItemToMultiListItem),
-        isAllOrganization: announcement.targets ? false : true,
       });
     }
   }, [announcement]);
@@ -89,9 +86,7 @@ const EditAnnouncement = () => {
 
   const onSaveDraft = (formValues: AnnouncementFormTypes) => {
     if (announcement) {
-      const targetsIds = !formValues.isAllOrganization
-        ? formValues.targets.map((target) => target.value)
-        : [];
+      const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
       updateAnnouncement(
         {
           id: announcement.id,
@@ -119,9 +114,7 @@ const EditAnnouncement = () => {
 
   const onPublish = (formValues: AnnouncementFormTypes) => {
     if (announcement) {
-      const targetsIds = !formValues.isAllOrganization
-        ? formValues.targets.map((target) => target.value)
-        : [];
+      const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
       updateAnnouncement(
         {
           id: announcement?.id,
@@ -177,8 +170,6 @@ const EditAnnouncement = () => {
               options={divisionListItems?.map(mapItemToMultiListItem)}
               control={control}
               errors={errors}
-              resetField={resetField}
-              watch={watch}
             />
           </CardBody>
         </Card>

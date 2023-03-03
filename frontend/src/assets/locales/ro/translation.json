@@ -369,7 +369,8 @@
         "placeholder": "Introdu continutul anuntului"
       },
       "target": {
-        "placeholder": "Alege toate variantele care se aplica"
+        "placeholder": "Alege toate variantele care se aplica",
+        "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata"
       }
     },
     "success": {

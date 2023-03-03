@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Control,
-  Controller,
-  DeepRequired,
-  FieldErrorsImpl,
-  UseFormResetField,
-  UseFormWatch,
-} from 'react-hook-form';
+import { Control, Controller, DeepRequired, FieldErrorsImpl } from 'react-hook-form';
 import i18n from '../common/config/i18n';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from './FormInput';
@@ -17,30 +10,15 @@ interface AnnouncementFormProps {
   options?: IMultiListItem[];
   control: Control<AnnouncementFormTypes, object>;
   errors: FieldErrorsImpl<DeepRequired<AnnouncementFormTypes>>;
-  resetField: UseFormResetField<AnnouncementFormTypes>;
-  watch: UseFormWatch<AnnouncementFormTypes>;
 }
 
 export type AnnouncementFormTypes = {
   name: string;
   description: string;
   targets: IMultiListItem[];
-  isAllOrganization?: boolean;
 };
 
-const AnnouncementForm = ({
-  options,
-  control,
-  errors,
-  resetField,
-  watch,
-}: AnnouncementFormProps) => {
-  const isAllOrganization = watch('isAllOrganization');
-
-  React.useEffect(() => {
-    if (isAllOrganization) resetField('targets');
-  }, [isAllOrganization]);
-
+const AnnouncementForm = ({ options, control, errors }: AnnouncementFormProps) => {
   return (
     <FormLayout>
       <form>
@@ -81,42 +59,23 @@ const AnnouncementForm = ({
           }}
         />
         <div className="flex flex-col gap-1">
-          <label>{i18n.t('announcement:header.target')}</label>
-          {!isAllOrganization && (
-            <Controller
-              key="targets"
-              name="targets"
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <MultiSelect
-                    options={options}
-                    placeholder={`${i18n.t('announcement:form.target.placeholder')}`}
-                    value={value || []}
-                    onChange={onChange}
-                  />
-                );
-              }}
-            />
-          )}
           <Controller
-            key="isAllOrganization"
-            name="isAllOrganization"
+            key="targets"
+            name="targets"
             control={control}
-            render={({ field: { onChange } }) => {
+            render={({ field: { onChange, value } }) => {
               return (
-                <div className="flex flex-row gap-3">
-                  <input
-                    className="self-center rounded-[4px] border-cool-gray-300"
-                    type="checkbox"
-                    checked={isAllOrganization}
-                    onChange={onChange}
-                  />
-                  <label>{i18n.t('announcement:all_organization')}</label>
-                </div>
+                <MultiSelect
+                  label={`${i18n.t('announcement:header.target')}`}
+                  options={options}
+                  placeholder={`${i18n.t('announcement:form.target.placeholder')}`}
+                  value={value || []}
+                  onChange={onChange}
+                />
               );
             }}
           />
+          <small>{i18n.t('announcement:form.target.disclaimer')}</small>
         </div>
       </form>
     </FormLayout>
