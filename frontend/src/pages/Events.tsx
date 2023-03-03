@@ -16,7 +16,6 @@ import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
 import DataTableComponent from '../components/DataTableComponent';
-import PageHeader from '../components/PageHeader';
 import Popover from '../components/Popover';
 import { SelectItem } from '../components/Select';
 import Tabs from '../components/Tabs';
@@ -28,6 +27,7 @@ import { useEventsQuery } from '../services/event/event.service';
 import { formatEventDate } from '../common/utils/utils';
 import MediaEventCell from '../components/MediaEventCell';
 import MediaStatusCell from '../components/MediaStatusCell';
+import PageHeaderAdd from '../components/PageHeaderAdd';
 
 const EventsTabs: SelectItem<EventsTabsStatus>[] = [
   { key: EventsTabsStatus.OPEN, value: i18n.t('side_menu:options.events') },
@@ -214,9 +214,18 @@ const Events = () => {
     );
   };
 
+  const onAddEvent = () => {
+    alert('not implemented');
+  };
+
   return (
     <PageLayout>
-      <PageHeader>{i18n.t('side_menu:options.events')}</PageHeader>
+      <PageHeaderAdd
+        label={`${i18n.t('general:add', { item: i18n.t('general:event').toLowerCase() })}`}
+        onAddButtonPress={onAddEvent}
+      >
+        {i18n.t('side_menu:options.events')}
+      </PageHeaderAdd>
       <Tabs<EventsTabsStatus> tabs={EventsTabs} onClick={onTabClick}>
         <Card>
           <CardHeader>
