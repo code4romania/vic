@@ -47,11 +47,8 @@ const EditAnnouncement = () => {
     isLoading: isAnnouncementLoading,
     error: announcementError,
   } = useAnnouncementQuery(id as string);
-  const {
-    data: divisionListItems,
-    error: divisionListItemsError,
-    isLoading: isDivisionListItemsLoading,
-  } = useDivisionsListItemsQuery(DivisionType.DEPARTMENT);
+  const { data: divisionListItems, isLoading: isDivisionListItemsLoading } =
+    useDivisionsListItemsQuery(DivisionType.DEPARTMENT);
   const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
     useUpdateAnnouncementMutation();
 
@@ -84,12 +81,7 @@ const EditAnnouncement = () => {
       useErrorToast(
         InternalErrors.ANNOUNCEMENT_ERRORS.getError(announcementError.response?.data.code_error),
       );
-    if (divisionListItemsError) {
-      useErrorToast(
-        InternalErrors.DIVISION_ERRORS.getError(divisionListItemsError.response?.data.code_error),
-      );
-    }
-  }, [announcementError, divisionListItemsError]);
+  }, [announcementError]);
 
   const onNavigateBack = () => {
     navigate('/announcements', { replace: true });

@@ -37,11 +37,8 @@ const validationSchema = yup.object({
 const AddAnnouncement = () => {
   const navigate = useNavigate();
 
-  const {
-    data: divisionListItems,
-    error: divisionListItemsError,
-    isLoading: isDivisionListItemsLoading,
-  } = useDivisionsListItemsQuery(DivisionType.DEPARTMENT);
+  const { data: divisionListItems, isLoading: isDivisionListItemsLoading } =
+    useDivisionsListItemsQuery(DivisionType.DEPARTMENT);
   const { mutateAsync: createAnnouncement, isLoading } = useCreateAnnouncementMutation();
 
   const {
@@ -55,13 +52,6 @@ const AddAnnouncement = () => {
     reValidateMode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
-
-  React.useEffect(() => {
-    if (divisionListItemsError)
-      useErrorToast(
-        InternalErrors.DIVISION_ERRORS.getError(divisionListItemsError.response?.data.code_error),
-      );
-  }, [divisionListItemsError]);
 
   const onNavigateBack = () => {
     navigate('/announcements', { replace: true });
