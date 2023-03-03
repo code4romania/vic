@@ -1,12 +1,17 @@
+import i18n from '../../config/i18n';
 import { ErrorClass } from '../base-error.class';
 
-export enum ANNOUNCEMENT_ERRORS {}
+export enum ANNOUNCEMENT_ERRORS {
+  ANNOUNCEMENT_001 = 'ANNOUNCEMENT_001',
+}
 
 export class AnnouncementError extends ErrorClass<ANNOUNCEMENT_ERRORS> {
   private static instance: AnnouncementError;
 
   private constructor() {
-    super({});
+    super({
+      [ANNOUNCEMENT_ERRORS.ANNOUNCEMENT_001]: i18n.t('announcement:error.ANNOUNCEMENT_001'),
+    });
   }
 
   public static getInstance(): AnnouncementError {
