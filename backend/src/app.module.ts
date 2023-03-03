@@ -17,7 +17,7 @@ import {
   DatabaseProviderModule,
   QueueProviderModule,
   ThrottleModule,
-} from './providers';
+} from './infrastructure/providers';
 
 @Module({
   imports: [
