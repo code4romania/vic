@@ -115,11 +115,8 @@ const PastEventsTableHeader = [
   },
 ];
 
-interface EventsTable {
-  status: EventsTabsStatus;
-}
-
-const EventsTable = ({ status }: EventsTable) => {
+const Events = () => {
+  const [tabsStatus, setTabsStatus] = useState<EventsTabsStatus>(EventsTabsStatus.OPEN);
   // pagination state
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
@@ -131,12 +128,43 @@ const EventsTable = ({ status }: EventsTable) => {
     data: events,
     isLoading: isEventsLoading,
     error: eventsError,
-  } = useEventsQuery(rowsPerPage as number, page as number, status, orderByColumn, orderDirection);
+  } = useEventsQuery(
+    rowsPerPage as number,
+    page as number,
+    tabsStatus,
+    orderByColumn,
+    orderDirection,
+  );
 
   useEffect(() => {
     if (eventsError)
       useErrorToast(InternalErrors.EVENT_ERRORS.getError(eventsError.response?.data.code_error));
   }, [eventsError]);
+
+  const onTabClick = (tab: EventsTabsStatus) => {
+    setTabsStatus(tab);
+  };
+
+  // row actions
+  const onView = (row: IEvent) => {
+    console.log('not implemented', row);
+  };
+
+  const onDraft = (row: IEvent) => {
+    console.log('not implemented', row);
+  };
+
+  const onArchive = (row: IEvent) => {
+    console.log('not implemented', row);
+  };
+
+  const onEdit = (row: IEvent) => {
+    console.log('not implemented', row);
+  };
+
+  const onDelete = (row: IEvent) => {
+    console.log('not implemented', row);
+  };
 
   // menu items
   const buildEventsActionColumn = (): TableColumn<IEvent> => {
@@ -186,75 +214,44 @@ const EventsTable = ({ status }: EventsTable) => {
     );
   };
 
-  // row actions
-  const onView = (row: IEvent) => {
-    console.log('not implemented', row);
-  };
-
-  const onDraft = (row: IEvent) => {
-    console.log('not implemented', row);
-  };
-
-  const onArchive = (row: IEvent) => {
-    console.log('not implemented', row);
-  };
-
-  const onEdit = (row: IEvent) => {
-    console.log('not implemented', row);
-  };
-
-  const onDelete = (row: IEvent) => {
-    console.log('not implemented', row);
-  };
-
-  return (
-    <Card>
-      <CardHeader>
-        <h2>
-          {status === EventsTabsStatus.OPEN
-            ? i18n.t('side_menu:options.events')
-            : i18n.t('events:past_events')}
-        </h2>
-        <Button
-          label={i18n.t('general:download_table')}
-          icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-          className="btn-outline-secondary ml-auto"
-          onClick={() => alert('Not implemented')}
-        />
-      </CardHeader>
-      <CardBody>
-        <DataTableComponent
-          columns={[
-            ...(status === EventsTabsStatus.PAST ? PastEventsTableHeader : OpenEventsTableHeader),
-            buildEventsActionColumn(),
-          ]}
-          data={events?.items}
-          loading={isEventsLoading}
-          pagination
-          paginationPerPage={rowsPerPage}
-          paginationTotalRows={events?.meta?.totalItems}
-          paginationDefaultPage={page}
-          onChangeRowsPerPage={setRowsPerPage}
-          onChangePage={setPage}
-          onSort={onSort}
-        />
-      </CardBody>
-    </Card>
-  );
-};
-
-const Events = () => {
-  const [tabsStatus, setTabsStatus] = useState<EventsTabsStatus>(EventsTabsStatus.OPEN);
-
-  const onTabClick = (tab: EventsTabsStatus) => {
-    setTabsStatus(tab);
-  };
-
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.events')}</PageHeader>
       <Tabs<EventsTabsStatus> tabs={EventsTabs} onClick={onTabClick}>
-        <EventsTable status={tabsStatus} />
+        <Card>
+          <CardHeader>
+            <h2>
+              {tabsStatus === EventsTabsStatus.OPEN
+                ? i18n.t('side_menu:options.events')
+                : i18n.t('events:past_events')}
+            </h2>
+            <Button
+              label={i18n.t('general:download_table')}
+              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+              className="btn-outline-secondary ml-auto"
+              onClick={() => alert('Not implemented')}
+            />
+          </CardHeader>
+          <CardBody>
+            <DataTableComponent
+              columns={[
+                ...(tabsStatus === EventsTabsStatus.PAST
+                  ? PastEventsTableHeader
+                  : OpenEventsTableHeader),
+                buildEventsActionColumn(),
+              ]}
+              data={events?.items}
+              loading={isEventsLoading}
+              pagination
+              paginationPerPage={rowsPerPage}
+              paginationTotalRows={events?.meta?.totalItems}
+              paginationDefaultPage={page}
+              onChangeRowsPerPage={setRowsPerPage}
+              onChangePage={setPage}
+              onSort={onSort}
+            />
+          </CardBody>
+        </Card>
       </Tabs>
     </PageLayout>
   );
