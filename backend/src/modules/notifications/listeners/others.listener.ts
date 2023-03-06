@@ -30,8 +30,8 @@ export class OthersListener {
     const targetsMails: string[] = [];
     if (targetIds.length === 0) {
       const volunteers = await this.getManyVolunteersUseCase.execute({
-        limit: 9999,
-        page: 1,
+        limit: 0,
+        page: 0,
         organizationId,
         status: VolunteerStatus.ACTIVE,
       });
