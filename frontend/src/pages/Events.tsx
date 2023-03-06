@@ -29,6 +29,7 @@ import MediaEventCell from '../components/MediaEventCell';
 import MediaStatusCell from '../components/MediaStatusCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
 import CellLayout from '../layouts/CellLayout';
+import { useNavigate } from 'react-router-dom';
 
 const EventsTabs: SelectItem<EventsTabsStatus>[] = [
   { key: EventsTabsStatus.OPEN, value: i18n.t('side_menu:options.events') },
@@ -148,6 +149,8 @@ const Events = () => {
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
 
+  const navigate = useNavigate();
+
   // access requests query
   const {
     data: events,
@@ -172,7 +175,7 @@ const Events = () => {
 
   // row actions
   const onView = (row: IEvent) => {
-    alert(`not implemented! Selected: ${row.name}`);
+    navigate(`${row.id}`, { replace: true });
   };
 
   const onDraft = (row: IEvent) => {

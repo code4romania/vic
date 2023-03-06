@@ -24,6 +24,7 @@ export const getEvents = async (
   return Promise.resolve({
     items: [
       {
+        id: '121212211',
         name: 'Annual Company Conference',
         startDate: new Date('2023-09-24T09:12:00'),
         endDate: new Date('2023-09-24T17:32:00'),
@@ -42,6 +43,7 @@ export const getEvents = async (
         reportedHours: '16 hours',
       },
       {
+        id: '122881',
         name: 'Maraton',
         logo: 'logo.svg',
         startDate: new Date('2023-09-24T09:12:00'),
@@ -61,6 +63,7 @@ export const getEvents = async (
         reportedHours: '16 hours',
       },
       {
+        id: '855468',
         name: 'Ciclism',
         startDate: new Date('2023-09-24T09:12:00'),
         endDate: new Date('2023-09-24T17:32:00'),

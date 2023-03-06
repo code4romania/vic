@@ -372,6 +372,8 @@
     "hours": "Ore raportate",
     "participate": "participă",
     "not_participate": "nu participă",
+    "details": "Detalii eveniment",
+    "responses_list": "Lista raspunsuri",
     "popover": {
       "view": "Vizualizează detalii",
       "draft": "Muta in draft",

@@ -19,6 +19,7 @@ import EditVolunteer from '../pages/EditVolunteer';
 import AddActivityType from '../pages/AddActivityType';
 import ActivityTypes from '../pages/ActivityTypes';
 import Events from '../pages/Events';
+import Event from '../pages/Event';
 
 const Router = () => {
   return (
@@ -50,6 +51,7 @@ const Router = () => {
           </Route>
           <Route path="events" element={<Outlet />}>
             <Route index element={<Events />} />
+            <Route path=":id" element={<Event />} />
           </Route>
         </Route>
       </Routes>
