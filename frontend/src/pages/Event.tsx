@@ -9,7 +9,12 @@ import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
 import { useEventQuery } from '../services/event/event.service';
 import Button from '../components/Button';
-import { PencilIcon } from '@heroicons/react/24/outline';
+import { CalendarIcon, PencilIcon } from '@heroicons/react/24/outline';
+import CardBody from '../components/CardBody';
+import FormLayout from '../layouts/FormLayout';
+import StartingSection from '../components/StartingSection';
+import FormReadOnlyElement from '../components/FormReadOnlyElement';
+import { formatEventDate, mapTargetsToString } from '../common/utils/utils';
 
 enum TabsStatus {
   EVENT = 'event',
@@ -83,12 +88,59 @@ const Event = () => {
                 ) : (
                   <Button
                     className="btn-primary"
-                    label={i18n.t('general:publish')}
+                    label={i18n.t('general:publish', { context: event.displayStatus })}
                     onClick={onPublish}
                   />
                 )}
               </div>
             </CardHeader>
+            <CardBody>
+              <FormLayout>
+                <StartingSection
+                  title={`${i18n.t(`events:${event.displayStatus}.subtitle`)}`}
+                  subtitle={`${i18n.t(`events:${event.displayStatus}.description`)}`}
+                />
+                <hr className="border-cool-gray-200 mb-2 mt-10" />
+
+                <h3>{i18n.t('events:details')}</h3>
+                <FormReadOnlyElement label={i18n.t('events:form.name.label')} value={event.name} />
+                <FormReadOnlyElement
+                  label={i18n.t('events:form.start_date.label')}
+                  value={`${formatEventDate(event.startDate)}`}
+                />
+                <FormReadOnlyElement
+                  label={i18n.t('events:form.end_date.label')}
+                  value={event.endDate ? `${formatEventDate(event.endDate)}` : '-'}
+                />
+                <FormReadOnlyElement
+                  label={i18n.t('events:form.location.label')}
+                  value={event.location}
+                />
+                <FormReadOnlyElement
+                  label={i18n.t('events:form.target.label')}
+                  value={mapTargetsToString(event)}
+                />
+                <FormReadOnlyElement
+                  label={i18n.t('events:form.description.label')}
+                  value={event.description}
+                />
+                <div className="flex gap-2.5 flex-col">
+                  <small className="text-cool-gray-500">{i18n.t('events:form.logo.label')}</small>
+                  {event.logo ? (
+                    <img
+                      src={event.logo}
+                      className="w-20 h-20 logo text-transparent"
+                      alt={`${event.name} picture`}
+                    />
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-cool-gray-100 grid place-items-center shrink-0">
+                      <CalendarIcon className="h-12 w-12 text-gray-500" />
+                    </div>
+                  )}
+                </div>
+                <hr className="border-cool-gray-200 mb-2 mt-10" />
+              </FormLayout>
+            </CardBody>
           </Card>
         )}
       </Tabs>

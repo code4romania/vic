@@ -28,6 +28,9 @@ export const getEvents = async (
         name: 'Annual Company Conference',
         startDate: new Date('2023-09-24T09:12:00'),
         endDate: new Date('2023-09-24T17:32:00'),
+        description:
+          'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
+        location: 'Sediu Piata Alba Iulia, sala 02',
         targetedVolunteers: 75,
         targets: [
           { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
@@ -46,6 +49,9 @@ export const getEvents = async (
         id: '122881',
         name: 'Maraton',
         logo: 'logo.svg',
+        location: 'Sediu Piata Alba Iulia, sala 02',
+        description:
+          'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
         startDate: new Date('2023-09-24T09:12:00'),
         endDate: new Date('2023-09-24T17:32:00'),
         targetedVolunteers: 75,
@@ -67,6 +73,9 @@ export const getEvents = async (
         name: 'Ciclism',
         startDate: new Date('2023-09-24T09:12:00'),
         endDate: new Date('2023-09-24T17:32:00'),
+        description:
+          'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
+        location: 'Sediu Piata Alba Iulia, sala 02',
         targetedVolunteers: 75,
         targets: [],
         rsvp: { yes: 75, no: 10 },
@@ -89,9 +98,12 @@ export const getEvent = async (id: string): Promise<IEvent> => {
   return Promise.resolve({
     id,
     name: 'Maraton',
-    logo: 'logo.svg',
+    logo: '',
+    description:
+      'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
     startDate: new Date('2023-09-24T09:12:00'),
     endDate: new Date('2023-09-24T17:32:00'),
+    location: 'Sediu Piata Alba Iulia, sala 02',
     targetedVolunteers: 75,
     targets: [
       { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },

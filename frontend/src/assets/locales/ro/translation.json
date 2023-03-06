@@ -375,6 +375,18 @@
     "not_participate": "nu participă",
     "details": "Detalii eveniment",
     "responses_list": "Lista raspunsuri",
+    "draft": {
+      "subtitle": "Evenimentul nu este publicat (draft)",
+      "description": "Ai draft evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+    },
+    "published": {
+      "subtitle": "Evenimentul este publicat",
+      "description": "Ai publicat evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+    },
+    "archived": {
+      "subtitle": "Evenimentul este arhivat",
+      "description": "Ai arhivat evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+    },
     "popover": {
       "view": "Vizualizează detalii",
       "draft": "Muta in draft",
@@ -385,6 +397,35 @@
       "draft": "Draft",
       "published": "Publicat",
       "archived": "Arhivat"
+    },
+    "form": {
+      "name": { "label": "Denumire eveniment*" },
+      "start_date": { "label": "Data inceput*" },
+      "end_date": { "label": "Data final" },
+      "location": { "label": "Locatie" },
+      "target": { "label": "Target" },
+      "description": { "label": "Descriere eveniment" },
+      "logo": { "label": "Imagine eveniment", "button_label": "Încarcă imagine" },
+      "noting": {
+        "label": "Înscriere eveniment",
+        "description": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi."
+      },
+      "mention": {
+        "label": "Mentiune",
+        "descripiton": "Adresează o intrebare voluntarilor.",
+        "empty": "Nicio mentiune."
+      },
+      "task": {
+        "title": "Taskuri asociate evenimentului",
+        "description": "Alege taskurile specifice din lista organizatiei.",
+        "label": "Alege taskuri",
+        "tasks": "Taskuri"
+      },
+      "observation": {
+        "title": "Observație (vizibil doar pentru administrator)",
+        "description": "Notează informații despre eveniment dacă este cazul, vizibile doar pentru tine.",
+        "label": "Observație"
+      }
     }
   }
 }
