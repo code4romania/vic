@@ -28,6 +28,7 @@ export const getEvents = async (
         name: 'Annual Company Conference',
         startDate: new Date('2023-09-24T09:12:00'),
         endDate: new Date('2023-09-24T17:32:00'),
+        mention: 'Ala bala portocala',
         description:
           'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
         location: 'Sediu Piata Alba Iulia, sala 02',
@@ -116,6 +117,8 @@ export const getEvent = async (id: string): Promise<IEvent> => {
     ],
     rsvp: { yes: 75, no: 10 },
     displayStatus: 'published',
+    observation:
+      'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
     reportedHours: '16 hours',
   });
 };

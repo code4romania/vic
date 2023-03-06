@@ -408,6 +408,8 @@
       "logo": { "label": "Imagine eveniment", "button_label": "Încarcă imagine" },
       "noting": {
         "label": "Înscriere eveniment",
+        "simple": "Simplă (fără mențiuni)",
+        "mention": "Cu mențiune",
         "description": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi."
       },
       "mention": {

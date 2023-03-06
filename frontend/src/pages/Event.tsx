@@ -139,6 +139,43 @@ const Event = () => {
                   )}
                 </div>
                 <hr className="border-cool-gray-200 mb-2 mt-10" />
+
+                <h3>{i18n.t('events:form.noting.label')}</h3>
+                <FormReadOnlyElement
+                  label={i18n.t('events:form.noting.label')}
+                  value={`${
+                    event.mention
+                      ? i18n.t('events:form.noting.mention')
+                      : i18n.t('events:form.noting.simple')
+                  }`}
+                />
+                <FormReadOnlyElement
+                  label={i18n.t('events:form.mention.label')}
+                  value={event.mention ? event.mention : `${i18n.t('events:form.mention.empty')}`}
+                />
+                <hr className="border-cool-gray-200 mb-2 mt-10" />
+
+                <h3>{i18n.t('events:form.task.title')}</h3>
+                <div className="flex gap-2.5 flex-col">
+                  <small className="text-cool-gray-500">{i18n.t('events:form.task.tasks')}</small>
+                  <div className="flex gap-2 flex-wrap">
+                    {event.targets.map((target) => (
+                      <div
+                        key={target.id}
+                        className="h-7 rounded-xl bg-gray-100 shadow-sm px-3 grid place-items-center"
+                      >
+                        <small>{target.name}</small>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <hr className="border-cool-gray-200 mb-2 mt-10" />
+
+                <h3>{i18n.t('events:form.observation.title')}</h3>
+                <FormReadOnlyElement
+                  label={i18n.t('events:form.observation.label')}
+                  value={event.observation}
+                />
               </FormLayout>
             </CardBody>
           </Card>
