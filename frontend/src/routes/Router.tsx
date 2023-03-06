@@ -52,6 +52,7 @@ const Router = () => {
           <Route path="events" element={<Outlet />}>
             <Route index element={<Events />} />
             <Route path=":id" element={<Event />} />
+            <Route path=":id/edit" element={<div>Edit page</div>} />
           </Route>
         </Route>
       </Routes>

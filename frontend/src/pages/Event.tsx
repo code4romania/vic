@@ -62,7 +62,7 @@ const Event = () => {
   };
 
   const onEdit = () => {
-    alert('not yet implemented');
+    navigate(`/events/${id}/edit`, { replace: true });
   };
 
   const onArchive = () => {
