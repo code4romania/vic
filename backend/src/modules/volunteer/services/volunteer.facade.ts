@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { IVolunteerDownload } from 'src/common/interfaces/volunteer-download.interface';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import {
@@ -37,6 +38,12 @@ export class VolunteerFacade {
     options: FindManyVolunteersOptions,
   ): Promise<Pagination<IVolunteerModel>> {
     return this.volunteerRepository.findMany(options);
+  }
+
+  public getManyForDownload(
+    findOptions: FindManyVolunteersOptions,
+  ): Promise<IVolunteerDownload[]> {
+    return this.volunteerRepository.getManyForDownload(findOptions);
   }
 
   public archive(

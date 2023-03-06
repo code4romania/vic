@@ -46,6 +46,7 @@ import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase'
 import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
 import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
 import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-profile.usecase';
+import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-download-volunteer.usecase';
 
 @Module({
   imports: [
@@ -106,6 +107,7 @@ import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-prof
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    GetVolunteersForDownloadUseCase,
   ],
   exports: [
     // Organization
@@ -155,6 +157,7 @@ import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-prof
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    GetVolunteersForDownloadUseCase,
   ],
 })
 export class UseCaseModule {}

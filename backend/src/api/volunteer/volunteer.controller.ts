@@ -2,9 +2,11 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   Param,
   Patch,
   Query,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
@@ -26,6 +28,10 @@ import { VolunteerGuard } from './guards/volunteer.guard';
 import { VolunteerPresenter } from './presenters/volunteer.presenter';
 import { UpdateVolunteerProfileDto } from '../_mobile/volunteer/dto/update-volunteer-profile.dto';
 import { UpdateVolunteerProfileUsecase } from 'src/usecases/volunteer/update-volunteer-profile.usecase';
+import { jsonToExcelBuffer } from 'src/common/helpers/utils';
+import { IVolunteerDownload } from 'src/common/interfaces/volunteer-download.interface';
+import { GetVolunteersForDownloadUseCase } from 'src/usecases/volunteer/get-many-for-download-volunteer.usecase';
+import { Response } from 'express';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, VolunteerGuard)
@@ -38,6 +44,7 @@ export class VolunteerController {
     private readonly activateVolunteerUsecase: ActivateVolunteerUsecase,
     private readonly archiveVolunteerUsecase: ArchiveVolunteerUsecase,
     private readonly updateVolunteerProfileUsecase: UpdateVolunteerProfileUsecase,
+    private readonly getVolunteersForDownloadUseCase: GetVolunteersForDownloadUseCase,
   ) {}
 
   @Get()
@@ -57,6 +64,25 @@ export class VolunteerController {
         (volunteer) => new VolunteerPresenter(volunteer),
       ),
     });
+  }
+
+  @Get('download')
+  @Header(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  )
+  @Header('Content-Disposition', 'attachment; filename="Voluntari.xlsx"')
+  async downloadAccessRequests(
+    @Res({ passthrough: true }) res: Response,
+    @ExtractUser() user: IAdminUserModel,
+    @Query() filters: GetVolunteersDto,
+  ): Promise<void> {
+    const data = await this.getVolunteersForDownloadUseCase.execute({
+      ...filters,
+      organizationId: user.organizationId,
+    });
+
+    res.end(jsonToExcelBuffer<IVolunteerDownload>(data, 'Voluntari'));
   }
 
   @ApiParam({ name: 'id', type: 'string' })

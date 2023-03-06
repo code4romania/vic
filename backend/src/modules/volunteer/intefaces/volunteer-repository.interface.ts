@@ -1,4 +1,5 @@
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
+import { IVolunteerDownload } from 'src/common/interfaces/volunteer-download.interface';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { VolunteerEntity } from '../entities/volunteer.entity';
 import {
@@ -20,6 +21,9 @@ export interface IVolunteerRepository
   findMany(
     findOptions: FindManyVolunteersOptions,
   ): Promise<Pagination<IVolunteerModel>>;
+  getManyForDownload(
+    findOptions: FindManyVolunteersOptions,
+  ): Promise<IVolunteerDownload[]>;
 }
 
 export interface IVolunteerProfileRepository {
