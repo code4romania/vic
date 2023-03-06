@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { IAccessRequestDownload } from 'src/common/interfaces/access-request-download.interface';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   CreateAccessRequestModel,
@@ -19,6 +20,12 @@ export class AccessRequestFacade {
     findOptions: FindManyAccessRequestsOptions,
   ): Promise<Pagination<IAccessRequestModel>> {
     return this.accessRequestRepository.findMany(findOptions);
+  }
+
+  async getManyForDownload(
+    findOptions: FindManyAccessRequestsOptions,
+  ): Promise<IAccessRequestDownload[]> {
+    return this.accessRequestRepository.getManyForDownload(findOptions);
   }
 
   async find(

@@ -1,3 +1,4 @@
+import { IAccessRequestDownload } from 'src/common/interfaces/access-request-download.interface';
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { AccessRequestEntity } from '../entities/access-request.entity';
@@ -18,4 +19,7 @@ export interface IAccessRequestRepository
     findOptions: FindManyAccessRequestsOptions,
   ): Promise<Pagination<IAccessRequestModel>>;
   delete(id: string): Promise<string>;
+  getManyForDownload(
+    findOptions: FindAccessRequestOptions,
+  ): Promise<IAccessRequestDownload[]>;
 }
