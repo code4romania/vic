@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import PageHeader from '../components/PageHeader';
@@ -9,12 +9,22 @@ import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
 import { useEventQuery } from '../services/event/event.service';
 import Button from '../components/Button';
-import { CalendarIcon, PencilIcon } from '@heroicons/react/24/outline';
+import {
+  ArchiveBoxIcon,
+  CalendarIcon,
+  CloudArrowUpIcon,
+  PencilIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
 import CardBody from '../components/CardBody';
 import FormLayout from '../layouts/FormLayout';
 import StartingSection from '../components/StartingSection';
 import FormReadOnlyElement from '../components/FormReadOnlyElement';
 import { formatEventDate, mapTargetsToString } from '../common/utils/utils';
+import LoadingContent from '../components/LoadingContent';
+import EmptyContent from '../components/EmptyContent';
+import { useErrorToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 enum TabsStatus {
   EVENT = 'event',
@@ -31,7 +41,13 @@ const Event = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { data: event } = useEventQuery(id as string);
+  const { data: event, isLoading, error } = useEventQuery(id as string);
+
+  useEffect(() => {
+    if (error) {
+      useErrorToast(InternalErrors.EVENT_ERRORS.getError(error?.response?.data.code_error));
+    }
+  }, [error]);
 
   const navigateBack = () => {
     navigate('/events', { replace: true });
@@ -61,7 +77,7 @@ const Event = () => {
     <PageLayout>
       <PageHeader onBackButtonPress={navigateBack}>{i18n.t('general:view')}</PageHeader>
       <Tabs<TabsStatus> tabs={EventTabs} onClick={onTabClick}>
-        {tabsStatus === TabsStatus.EVENT && event && (
+        {tabsStatus === TabsStatus.EVENT && event && !isLoading && (
           <Card>
             <CardHeader>
               <h2>{i18n.t('events:details')}</h2>
@@ -70,6 +86,7 @@ const Event = () => {
                   <Button
                     className="btn-outline-danger"
                     label={i18n.t('general:delete')}
+                    icon={<TrashIcon className="h-5 w-5 sm:hidden" aria-hidden="true" />}
                     onClick={onDelete}
                   />
                 )}
@@ -83,12 +100,14 @@ const Event = () => {
                   <Button
                     className="btn-outline-secondary"
                     label={i18n.t('general:archive', { item: '' })}
+                    icon={<ArchiveBoxIcon className="h-5 w-5 sm:hidden" />}
                     onClick={onArchive}
                   />
                 ) : (
                   <Button
                     className="btn-primary"
                     label={i18n.t('general:publish', { context: event.displayStatus })}
+                    icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
                     onClick={onPublish}
                   />
                 )}
@@ -177,6 +196,30 @@ const Event = () => {
                   value={event.observation}
                 />
               </FormLayout>
+            </CardBody>
+          </Card>
+        )}
+        {tabsStatus === TabsStatus.EVENT && isLoading && (
+          <Card>
+            <CardHeader>
+              <h2>{i18n.t('events:details')}</h2>
+            </CardHeader>
+            <CardBody>
+              <div className="flex items-center justify-center min-h-screen">
+                <LoadingContent />
+              </div>
+            </CardBody>
+          </Card>
+        )}
+        {tabsStatus === TabsStatus.EVENT && !event && !isLoading && (
+          <Card>
+            <CardHeader>
+              <h2>{i18n.t('events:details')}</h2>
+            </CardHeader>
+            <CardBody>
+              <div className="flex items-center justify-center min-h-screen">
+                <EmptyContent description={i18n.t('general:error.load_entries')} />
+              </div>
             </CardBody>
           </Card>
         )}

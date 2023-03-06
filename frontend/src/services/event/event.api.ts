@@ -116,7 +116,7 @@ export const getEvent = async (id: string): Promise<IEvent> => {
       },
     ],
     rsvp: { yes: 75, no: 10 },
-    displayStatus: 'published',
+    displayStatus: 'draft',
     observation:
       'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
     reportedHours: '16 hours',
