@@ -1,47 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { OrganizationStructureListItemPresenter } from 'src/api/organization/presenters/organization-structure-list-item.presenter';
 import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
 import { IAnnouncementModel } from 'src/modules/announcement/models/announcement.model';
-import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
-import { IOrganizationStructureModel } from 'src/modules/organization/models/organization-structure.model';
-
-class OrganizationStructureToAnnouncementPresenter {
-  constructor(structure: IOrganizationStructureModel) {
-    this.id = structure.id;
-    this.name = structure.name;
-    this.type = structure.type;
-    this.numberOfMembers = structure.members;
-  }
-
-  @Expose()
-  @ApiProperty({
-    description: 'The uuid of the Organization Structure',
-    example: '525dcdf9-4117-443e-a0c3-bf652cdc5c1b',
-  })
-  id: string;
-
-  @Expose()
-  @ApiProperty({
-    description: 'The name of the OrganizationStructure',
-    example: 'Financial',
-  })
-  name: string;
-
-  @Expose()
-  @ApiProperty({
-    description: 'The type of the structure (branch/department/role)',
-    enum: OrganizationStructureType,
-    examples: Object.values(OrganizationStructureType),
-  })
-  type: OrganizationStructureType;
-
-  @Expose()
-  @ApiProperty({
-    description: 'Number of members belonging to the organization structure',
-    example: 20,
-  })
-  numberOfMembers: number;
-}
 
 export class AnnouncementPresenter {
   constructor(announcement: IAnnouncementModel) {
@@ -51,7 +12,7 @@ export class AnnouncementPresenter {
     this.status = announcement.status;
     this.publishedOn = announcement.publishedOn;
     this.targets = announcement.targets.map(
-      (target) => new OrganizationStructureToAnnouncementPresenter(target),
+      (target) => new OrganizationStructureListItemPresenter(target),
     );
     this.updatedOn = announcement.updatedOn;
     this.targetedVolunteers = announcement.targetedVolunteers;
@@ -96,10 +57,10 @@ export class AnnouncementPresenter {
 
   @Expose()
   @ApiProperty({
-    type: OrganizationStructureToAnnouncementPresenter,
+    type: OrganizationStructureListItemPresenter,
     isArray: true,
   })
-  targets: OrganizationStructureToAnnouncementPresenter[];
+  targets: OrganizationStructureListItemPresenter[];
 
   @Expose()
   @ApiProperty({

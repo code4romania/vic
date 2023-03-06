@@ -6,6 +6,7 @@ export class OrganizationStructureListItemPresenter {
   constructor(structure: IOrganizationStructureModel) {
     this.id = structure.id;
     this.name = structure.name;
+    this.numberOfMembers = structure.members;
   }
 
   @Expose()
@@ -21,4 +22,12 @@ export class OrganizationStructureListItemPresenter {
     example: 'Financial',
   })
   name: string;
+
+  @Expose()
+  @ApiProperty({
+    description:
+      'The total number of members belonging to the Organization Structure',
+    example: '20',
+  })
+  numberOfMembers: number;
 }
