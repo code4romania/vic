@@ -4,7 +4,7 @@ import { EventsTabsStatus } from '../../common/enums/event-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { EVENT_ERRORS } from '../../common/errors/entities/event.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
-import { getEvents } from './event.api';
+import { getEvent, getEvents } from './event.api';
 
 export const useEventsQuery = (
   rowsPerPage: number,
@@ -20,4 +20,10 @@ export const useEventsQuery = (
       onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => error,
     },
   );
+};
+
+export const useEventQuery = (id: string) => {
+  return useQuery(['event', id], () => getEvent(id), {
+    onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => error,
+  });
 };

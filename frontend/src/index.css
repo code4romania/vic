@@ -126,6 +126,10 @@
     @apply btn border border-cool-gray-300 text-cool-gray-900 bg-white hover:bg-cool-gray-50 active:bg-cool-gray-100 focus:shadow-blue focus:outline-0;
   }
 
+  .btn-outline-danger {
+    @apply btn border border-cool-gray-300 text-red-600 bg-white hover:bg-cool-gray-50 active:bg-cool-gray-100 focus:shadow-yellow focus:outline-0;
+  }
+
   .btn-text-primary {
     @apply btn text-turquoise hover:text-turquoise-700 active:text-turquoise-800 focus:shadow-yellow focus:outline-0;
   }

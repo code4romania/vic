@@ -83,3 +83,27 @@ export const getEvents = async (
     },
   });
 };
+
+export const getEvent = async (id: string): Promise<IEvent> => {
+  // return API.get(`events/${id}`).then((res) => res.data);
+  return Promise.resolve({
+    id,
+    name: 'Maraton',
+    logo: 'logo.svg',
+    startDate: new Date('2023-09-24T09:12:00'),
+    endDate: new Date('2023-09-24T17:32:00'),
+    targetedVolunteers: 75,
+    targets: [
+      { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
+      {
+        id: '2',
+        name: 'San Francisco Branch',
+        type: OrganizationStructureType.BRANCH,
+        members: 18,
+      },
+    ],
+    rsvp: { yes: 75, no: 10 },
+    displayStatus: 'published',
+    reportedHours: '16 hours',
+  });
+};
