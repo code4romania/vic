@@ -41,6 +41,7 @@ import OrganizationStructureSelect from '../containers/OrganizationStructureSele
 import { DivisionType } from '../common/enums/division-type.enum';
 import { AgeRangeEnum } from '../common/enums/age-range.enum';
 import ConfirmationModal from '../components/ConfirmationModal';
+import { getVolunteersForDownload } from '../services/volunteer/volunteer.api';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
@@ -353,6 +354,30 @@ const Volunteers = () => {
     setSearchWord(undefined);
   };
 
+  const onExport = async () => {
+    const { data: volunteersData } = await getVolunteersForDownload(
+      volunteerStatus,
+      orderByColumn,
+      orderDirection,
+      searchWord,
+      age?.key,
+      branch?.key,
+      department?.key,
+      role?.key,
+      location?.value,
+      createdOnRange[0],
+      createdOnRange[1],
+    );
+
+    const url = URL.createObjectURL(new Blob([volunteersData]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Voluntari.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.volunteers_list')}</PageHeader>
@@ -405,7 +430,7 @@ const Volunteers = () => {
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
               className="btn-outline-secondary"
-              onClick={() => alert('Not implemented')}
+              onClick={onExport}
             />
           </CardHeader>
           <CardBody>
