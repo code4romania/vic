@@ -24,6 +24,7 @@ import { AccessRequestStatus } from 'src/modules/access-request/enums/access-req
 import { Response } from 'express';
 import { GetAccessRequestsForDownloadUseCase } from 'src/usecases/access-request/download-access-requests.usecase';
 import { jsonToExcelBuffer } from 'src/common/helpers/utils';
+import { IAccessRequestDownload } from 'src/common/interfaces/access-request-download.interface';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, AccessRequestGuard)
@@ -97,7 +98,7 @@ export class AccessRequestController {
       status,
     );
 
-    res.end(jsonToExcelBuffer(data, 'Cereri-Acces'));
+    res.end(jsonToExcelBuffer<IAccessRequestDownload>(data, 'Cereri-Acces'));
   }
 
   @ApiParam({ name: 'id', type: 'string' })
