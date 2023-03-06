@@ -11,6 +11,7 @@ import {
   LessThanOrEqual,
   MoreThanOrEqual,
   Repository,
+  SelectQueryBuilder,
 } from 'typeorm';
 import { format } from 'date-fns';
 import { IBasePaginationFilterModel } from './base-pagination-filter.model';
@@ -44,6 +45,33 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
   implements IRepositoryWithPagination<T>
 {
   constructor(private readonly repository: Repository<T>) {}
+
+  public async findManyPaginatedQuery<TModel>(
+    query: SelectQueryBuilder<T>,
+    options: IBasePaginationFilterModel,
+    toModel: (entity: T) => TModel,
+  ): Promise<Pagination<TModel>> {
+    const { limit, page, orderBy, orderDirection } = options;
+
+    // [T[], totalItems]
+    const response = await query
+      .orderBy(`${orderBy}`, orderDirection)
+      .take(limit)
+      .skip((page - 1) * limit)
+      .getManyAndCount();
+
+    // query items + the pagination meta
+    return {
+      items: response[0].map(toModel),
+      meta: {
+        itemCount: response[0].length,
+        totalItems: response[1],
+        itemsPerPage: limit,
+        totalPages: Math.ceil(response[1] / limit),
+        currentPage: page,
+      },
+    };
+  }
 
   // TODO: improve range logic
   public async findManyPaginated<TModel>(
