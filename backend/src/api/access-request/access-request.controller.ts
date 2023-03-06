@@ -1,7 +1,7 @@
 import { Body, Delete, Header, Query, Res } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
@@ -79,8 +79,6 @@ export class AccessRequestController {
     });
   }
 
-  @ApiQuery({ name: 'filters', type: GetAccessRequestsDto })
-  @ApiQuery({ name: 'status', enum: AccessRequestStatus })
   @Get('/download')
   @Header(
     'Content-Type',

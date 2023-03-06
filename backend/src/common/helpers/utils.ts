@@ -1,4 +1,3 @@
-import { differenceInYears, format } from 'date-fns';
 import * as XLSX from 'xlsx';
 
 export function JSONStringifyError(value: Error): string {
@@ -26,10 +25,3 @@ export function jsonToExcelBuffer<T>(
 
   return XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
 }
-
-export const calculateAge = (birthday: Date): number => {
-  return differenceInYears(new Date(), birthday);
-};
-
-export const formatDate = (value: Date | string): string =>
-  format(new Date(value), 'dd/LL/y');
