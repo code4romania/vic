@@ -106,7 +106,7 @@ const Event = () => {
                 ) : (
                   <Button
                     className="btn-primary"
-                    label={i18n.t('general:publish', { context: event.displayStatus })}
+                    label={i18n.t('general:publish')}
                     icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
                     onClick={onPublish}
                   />
