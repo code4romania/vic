@@ -72,7 +72,7 @@ export const getVolunteersForDownload = async (
     },
     responseType: 'arraybuffer',
   }).then((res) => {
-    return { data: res.data, headers: res.headers };
+    return { data: res.data, headers: res.headers as AxiosResponseHeaders };
   });
 };
 
