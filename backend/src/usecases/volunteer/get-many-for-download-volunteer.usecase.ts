@@ -13,6 +13,29 @@ export class GetVolunteersForDownloadUseCase
   public async execute(
     findOptions: FindManyVolunteersOptions,
   ): Promise<IVolunteerDownload[]> {
-    return this.volunteerFacade.getManyForDownload(findOptions);
+    const volunteers = await this.volunteerFacade.findMany({
+      ...findOptions,
+      limit: 0,
+      page: 0,
+    });
+
+    return volunteers.items.map((volunteer): IVolunteerDownload => {
+      return {
+        Nume: volunteer.user.name,
+        'Data nasterii': volunteer.user.birthday,
+        Locatie:
+          volunteer.user.location.name +
+          ', jud ' +
+          volunteer.user.location.county.name,
+        Email: volunteer.volunteerProfile.email,
+        Telefon: volunteer.volunteerProfile.phone,
+        'Perioada activitate': volunteer.volunteerProfile.activeSince,
+        'Nume filiala': volunteer.volunteerProfile.branch?.name,
+        'Nume departament': volunteer.volunteerProfile.department?.name,
+        'Nume rol': volunteer.volunteerProfile.role?.name,
+        'Arhivat din': volunteer.archivedOn,
+        'Data blocarii': volunteer.blockedOn,
+      };
+    });
   }
 }

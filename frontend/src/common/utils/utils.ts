@@ -13,12 +13,3 @@ export const calculateAge = (birthday: Date) => {
 
 export const formatLocation = (location: ICity): string =>
   location ? `${location.name}, ${location.county?.abbreviation}` : '-';
-
-export const triggerDownload = (url: string) => {
-  const link = document.createElement('a');
-  link.href = url;
-  link.download;
-  document.body.appendChild(link);
-  link.click();
-  link?.parentNode?.removeChild(link);
-};
