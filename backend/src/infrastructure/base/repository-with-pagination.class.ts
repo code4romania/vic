@@ -59,13 +59,12 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
      https://github.com/typeorm/typeorm/issues/8605
    * 
    */
-  public async findManyPaginatedQuery<TModel>(
+  public async paginateQuery<TModel>(
     query: SelectQueryBuilder<T>,
-    options: IBasePaginationFilterModel,
+    limit: number,
+    page: number,
     toModel: (entity: T) => TModel,
   ): Promise<Pagination<TModel>> {
-    const { limit, page } = options;
-
     // [T[], totalItems]
     const response = await query
       .limit(limit) // take will add a distinct entity_id a the begining of the query which will interfeer with ordering bt agregate count column
@@ -85,7 +84,21 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
     };
   }
 
-  // TODO: improve range logic
+  protected buildOrderByQuery = (orderBy: string, prefix: string): string => {
+    // if order by is undefined skip
+    if (!orderBy) return orderBy;
+
+    // if orderBy contains field from relation entity leave it as is otherwise add entity prefix
+    return orderBy.split('.').length > 1 ? orderBy : `${prefix}.${orderBy}`;
+  };
+
+  /**
+   * @deprecated use paginateQuery instead
+   * @param config
+   * @param options
+   * @param toModel
+   * @returns
+   */
   public async findManyPaginated<TModel>(
     config: IPaginationConfig<T>,
     options: { filters: FindOptionsWhere<T> } & IBasePaginationFilterModel,
