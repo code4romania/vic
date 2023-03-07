@@ -1,6 +1,7 @@
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 import {
   Between,
+  Brackets,
   FindManyOptions,
   FindOperator,
   FindOptionsOrder,
@@ -59,7 +60,7 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
      https://github.com/typeorm/typeorm/issues/8605
    * 
    */
-  public async paginateQuery<TModel>(
+  protected async paginateQuery<TModel>(
     query: SelectQueryBuilder<T>,
     limit: number,
     page: number,
@@ -91,6 +92,19 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
     // if orderBy contains field from relation entity leave it as is otherwise add entity prefix
     return orderBy.split('.').length > 1 ? orderBy : `${prefix}.${orderBy}`;
   };
+
+  protected buildBracketSearchQuery(
+    searchColumns: string[],
+    search: string,
+  ): Brackets {
+    return new Brackets((qb) => {
+      searchColumns.forEach((column) =>
+        qb.orWhere(`${column} ILIKE :search`, {
+          search: `%${search}%`,
+        }),
+      );
+    });
+  }
 
   /**
    * @deprecated use paginateQuery instead
