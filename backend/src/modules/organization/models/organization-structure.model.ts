@@ -54,12 +54,21 @@ export class OrganizationStructureTransformer {
 
   static toEntity(
     model: ICreateOrganizationStructureModel,
+  ): OrganizationStructureEntity;
+  static toEntity(id: string): OrganizationStructureEntity;
+  static toEntity(
+    model: ICreateOrganizationStructureModel | string,
   ): OrganizationStructureEntity {
     const entity = new OrganizationStructureEntity();
-    entity.name = model.name;
-    entity.type = model.type;
-    entity.createdById = model.createdById;
-    entity.organizationId = model.organizationId;
+    if (typeof model === 'object') {
+      entity.name = model.name;
+      entity.type = model.type;
+      entity.createdById = model.createdById;
+      entity.organizationId = model.organizationId;
+    } else {
+      // used for ManyToMany relations to generate entity like object
+      entity.id = model;
+    }
     return entity;
   }
 }

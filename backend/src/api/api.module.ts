@@ -12,6 +12,7 @@ import { LocationController } from './location/location.controller';
 import { ActivityTypeController } from './activity-type/activity-type.controller';
 import { VolunteerController } from './volunteer/volunteer.controller';
 import { MobileVolunteerController } from './_mobile/volunteer/volunteer.controller';
+import { EventController } from './event/event.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -25,6 +26,7 @@ import { MobileVolunteerController } from './_mobile/volunteer/volunteer.control
     LocationController,
     ActivityTypeController,
     VolunteerController,
+    EventController,
     // Mobile
     MobileRegularUserController,
     MobileAccessRequestController,

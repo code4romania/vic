@@ -41,7 +41,6 @@ export type CreateVolunteerOptions = {
   organizationId: IVolunteerModel['organization']['id'];
 };
 
-// TODO: @birloiflorian are these too confusing?
 export type ArchiveVolunteerOptions = {
   status: VolunteerStatus.ARCHIVED;
   archivedOn: Date;

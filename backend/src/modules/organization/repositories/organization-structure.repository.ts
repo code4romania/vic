@@ -111,4 +111,18 @@ export class OrganizationStructureRepositoryService
 
     return null;
   }
+
+  public async exists(
+    ids: string[],
+    options: IFindOrganizationStructureModel,
+  ): Promise<boolean> {
+    const query = ids.map((id) => ({ id, ...options }));
+    const data = await this.findAll(query);
+
+    if (data.length !== ids.length) {
+      return false;
+    }
+
+    return true;
+  }
 }

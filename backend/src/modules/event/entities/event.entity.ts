@@ -1,0 +1,85 @@
+import { BaseEntity } from 'src/infrastructure/base/base-entity';
+import { ActivityTypeEntity } from 'src/modules/activity-type/entities/activity-type.entity';
+import { OrganizationStructureEntity } from 'src/modules/organization/entities/organization-structure.entity';
+import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
+
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { EventAttendOptions } from '../enums/event-attendance-options.enum';
+import { EventStatus } from '../enums/event-status.enum';
+
+@Entity({ name: 'event' })
+export class EventEntity extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ type: 'text', name: 'name' })
+  name: string;
+
+  @Column({ type: 'text', name: 'description' })
+  description: string;
+
+  @Column({ type: 'timestamptz', name: 'start_date' })
+  startDate: Date;
+
+  @Column({ type: 'timestamptz', name: 'end_date', nullable: true })
+  endDate?: Date;
+
+  @Column({ type: 'text', name: 'location' })
+  location: string;
+
+  @Column({ type: 'boolean', name: 'is_public' })
+  isPublic: boolean;
+
+  // TODO: add image
+
+  @Column({
+    type: 'enum',
+    enum: EventStatus,
+    name: 'status',
+    default: EventStatus.PUBLISHED,
+  })
+  status: EventStatus;
+
+  @Column({
+    type: 'enum',
+    enum: EventAttendOptions,
+    name: 'attendance_type',
+    default: EventAttendOptions.SIMPLE,
+  })
+  attendanceType: EventAttendOptions;
+
+  @Column({ type: 'text', name: 'attendance_mention', nullable: true })
+  attendanceMention: string;
+
+  @Column({ type: 'text', name: 'observation', nullable: true })
+  observation: string;
+
+  @Column({
+    type: 'varchar',
+    name: 'organization_id',
+  })
+  organizationId: string;
+
+  @ManyToOne(() => OrganizationEntity)
+  @JoinColumn({ name: 'organization_id' })
+  organization: OrganizationEntity;
+
+  @ManyToMany(() => OrganizationStructureEntity, {
+    onDelete: 'SET NULL',
+    nullable: true,
+  })
+  @JoinTable()
+  targets: OrganizationStructureEntity[];
+
+  @ManyToMany(() => ActivityTypeEntity, { onDelete: 'SET NULL' })
+  @JoinTable()
+  tasks: ActivityTypeEntity[];
+}

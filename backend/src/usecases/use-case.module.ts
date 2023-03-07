@@ -46,6 +46,13 @@ import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase'
 import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
 import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
 import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-profile.usecase';
+import { EventModule } from 'src/modules/event/event.module';
+import { CreateEventUseCase } from './event/create-event.usecase';
+import { GetOneEventUseCase } from './event/get-one-event.usecase';
+import { UpdateEventUseCase } from './event/update-event.usecase';
+import { PublishEventUseCase } from './event/publish-event.usecase';
+import { ArchiveEventUseCase } from './event/archive-event.usecase';
+import { DeleteEventUseCase } from './event/delete-event.usecase';
 
 @Module({
   imports: [
@@ -57,6 +64,7 @@ import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-prof
     LocationModule,
     ActivityTypeModule,
     VolunteerModule,
+    EventModule,
   ],
   providers: [
     // Organization
@@ -106,6 +114,13 @@ import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-prof
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    // Events
+    CreateEventUseCase,
+    GetOneEventUseCase,
+    UpdateEventUseCase,
+    DeleteEventUseCase,
+    PublishEventUseCase,
+    ArchiveEventUseCase,
   ],
   exports: [
     // Organization
@@ -155,6 +170,14 @@ import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-prof
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    CreateEventUseCase,
+    // Events
+    CreateEventUseCase,
+    GetOneEventUseCase,
+    UpdateEventUseCase,
+    DeleteEventUseCase,
+    PublishEventUseCase,
+    ArchiveEventUseCase,
   ],
 })
 export class UseCaseModule {}
