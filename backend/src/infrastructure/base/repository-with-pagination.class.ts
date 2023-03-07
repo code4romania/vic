@@ -106,6 +106,26 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
     });
   }
 
+  protected addRangeConditionToQuery(
+    query: SelectQueryBuilder<T>,
+    column: string,
+    start: Date,
+    end?: Date,
+  ): SelectQueryBuilder<T> {
+    if (end) {
+      query.andWhere(`${column} BETWEEN :start AND :end`, {
+        start: format(start, DATE_CONSTANTS.YYYY_MM_DD),
+        end: format(end, DATE_CONSTANTS.YYYY_MM_DD),
+      });
+    } else {
+      query.andWhere(`${column} >= :start`, {
+        start: format(start, DATE_CONSTANTS.YYYY_MM_DD),
+      });
+    }
+
+    return query;
+  }
+
   /**
    * @deprecated use paginateQuery instead
    * @param config
