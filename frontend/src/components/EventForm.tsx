@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl, UseFormReset } from 'react-hook-form';
 import i18n from '../common/config/i18n';
 import { IEvent } from '../common/interfaces/event.interface';
@@ -6,8 +6,40 @@ import FormLayout from '../layouts/FormLayout';
 import FormDatePicker from './FormDatePicker';
 import FormInput from './FormInput';
 import FormInputImg from './FormInputImg';
+import FormRadios from './FormRadios';
 import FormTextarea from './FormTextarea';
 import MultiSelect, { IMultiListItem } from './MultiSelect';
+
+export enum AttendanceType {
+  SIMPLE = 'simple',
+  MENTION = 'mention',
+}
+
+export enum TargetType {
+  PUBLIC = 'public',
+  ALL = 'all',
+  SELECT = 'select',
+}
+
+const TargetRadioOptions = [
+  {
+    key: TargetType.PUBLIC,
+    label: i18n.t('events:form.target.public'),
+  },
+  {
+    key: TargetType.ALL,
+    label: i18n.t('events:form.target.all'),
+  },
+  {
+    key: TargetType.SELECT,
+    label: i18n.t('general:select', { item: i18n.t('volunteer:form.department.label') }),
+  },
+];
+
+const RadioOptions = [
+  { key: AttendanceType.SIMPLE, label: i18n.t('events:form.noting.simple') },
+  { key: AttendanceType.MENTION, label: i18n.t('events:form.noting.mention') },
+];
 
 interface EventFormProps {
   control: Control<EventFormTypes, object>;
@@ -15,32 +47,55 @@ interface EventFormProps {
   disabled?: boolean;
   event?: IEvent;
   reset?: UseFormReset<EventFormTypes>;
-  targetsOptions: IMultiListItem[];
+  targetOptions: IMultiListItem[];
+  taskOpitons: IMultiListItem[];
 }
 
 export type EventFormTypes = {
   name: string;
   startDate: Date;
+  isPublic: TargetType;
   endDate?: Date;
   location?: string;
   targets: IMultiListItem[];
   description: string;
   logo?: string;
   mention?: string;
+  attendanceType: AttendanceType;
+  attendanceMention: string;
   tasks: [];
   observation?: string;
 };
 
-const EventForm = ({ control, errors, disabled, event, reset, targetsOptions }: EventFormProps) => {
+const EventForm = ({
+  control,
+  errors,
+  disabled,
+  event,
+  reset,
+  targetOptions,
+  taskOpitons,
+}: EventFormProps) => {
+  const [showSelect, setShowSelect] = useState<TargetType>();
+  const [attendanceStatus, setAttendanceStatus] = useState<AttendanceType>(AttendanceType.SIMPLE);
+
   useEffect(() => {
     if (event && reset)
       reset({
         ...event,
-        targets: [...targetsOptions],
+        targets: [...targetOptions],
         startDate: new Date(event.startDate),
         endDate: event.endDate ? new Date(event.endDate) : event.endDate,
       });
   }, [event, reset]);
+
+  const onRadioClick = (e) => {
+    setShowSelect(e.target.value);
+  };
+
+  const onAttendanceRadioClick = (e) => {
+    setAttendanceStatus(e.target.value);
+  };
 
   return (
     <FormLayout>
@@ -122,22 +177,43 @@ const EventForm = ({ control, errors, disabled, event, reset, targetsOptions }: 
         />
         <div className="flex flex-col gap-1">
           <Controller
+            key="isPublic"
+            name="isPublic"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <FormRadios
+                  name="isPublic"
+                  readOnly={false}
+                  options={TargetRadioOptions}
+                  value={value}
+                  errorMessage={errors['isPublic']?.message}
+                  label={`${i18n.t('events:form.target.label')}`}
+                  onChange={onChange}
+                  onClick={onRadioClick}
+                  aria-invalid={errors['location']?.message ? 'true' : 'false'}
+                  disabled={disabled}
+                  defaultValue={value || TargetType.PUBLIC}
+                />
+              );
+            }}
+          />
+          <Controller
             key="targets"
             name="targets"
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
                 <MultiSelect
-                  label={`${i18n.t('events:form.target.label')}`}
-                  options={targetsOptions}
+                  options={targetOptions}
                   placeholder={`${i18n.t('events:form.target.placeholder')}`}
-                  value={value || []}
+                  value={value}
                   onChange={onChange}
+                  isDisabled={showSelect !== TargetType.SELECT}
                 />
               );
             }}
           />
-          <small>{i18n.t('events:form.target.disclaimer')}</small>
         </div>
         <Controller
           name="description"
@@ -159,7 +235,6 @@ const EventForm = ({ control, errors, disabled, event, reset, targetsOptions }: 
           key="logo"
           control={control}
           render={({ field: { onChange, value } }) => {
-            console.log(value);
             return (
               <FormInputImg
                 value={value}
@@ -167,6 +242,97 @@ const EventForm = ({ control, errors, disabled, event, reset, targetsOptions }: 
                 label={`${i18n.t('events:form.logo.label')}`}
                 onChange={onChange}
                 aria-invalid={errors['logo']?.message ? 'true' : 'false'}
+              />
+            );
+          }}
+        />
+        <hr className="border-cool-gray-200 mb-2 mt-10" />
+        <div className="flex gap-2.5 flex-col">
+          <h3>{i18n.t('events:form.noting.label')}</h3>
+          <small className="text-cool-gray-500">{i18n.t('events:form.noting.description')}</small>
+        </div>
+        <Controller
+          key="attendanceType"
+          name="attendanceType"
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <FormRadios
+                name="attendanceType"
+                readOnly={false}
+                options={RadioOptions}
+                value={value}
+                errorMessage={errors['attendanceType']?.message}
+                label={`${i18n.t('events:form.noting.label')}`}
+                onClick={onAttendanceRadioClick}
+                onChange={onChange}
+                aria-invalid={errors['location']?.message ? 'true' : 'false'}
+                disabled={disabled}
+                defaultValue={attendanceStatus}
+              />
+            );
+          }}
+        />
+        <Controller
+          key="attendanceMention"
+          name="attendanceMention"
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <FormTextarea
+                label={i18n.t('events:form.mention.label')}
+                defaultValue={value}
+                onChange={onChange}
+                errorMessage={errors['attendanceMention']?.message}
+                disabled={attendanceStatus === AttendanceType.SIMPLE}
+                helper={
+                  <small className="text-cool-gray-500">
+                    {i18n.t('events:form.mention.description')}
+                  </small>
+                }
+              />
+            );
+          }}
+        />
+        <hr className="border-cool-gray-200 mb-2 mt-10" />
+        <div className="flex gap-2.5 flex-col">
+          <h3>{i18n.t('events:form.task.title')}</h3>
+          <small className="text-cool-gray-500">{i18n.t('events:form.task.description')}</small>
+        </div>
+        <Controller
+          key="tasks"
+          name="tasks"
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <MultiSelect
+                label={`${i18n.t('events:form.task.label')}`}
+                options={taskOpitons}
+                placeholder={`${i18n.t('events:form.target.placeholder')}`}
+                value={value}
+                onChange={onChange}
+              />
+            );
+          }}
+        />
+        <hr className="border-cool-gray-200 mb-2 mt-10" />
+        <div className="flex gap-2.5 flex-col">
+          <h3>{i18n.t('events:form.observation.title')}</h3>
+          <small className="text-cool-gray-500">
+            {i18n.t('events:form.observation.description')}
+          </small>
+        </div>
+        <Controller
+          key="observation"
+          name="observation"
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <FormTextarea
+                label={i18n.t('events:form.observation.label')}
+                defaultValue={value}
+                onChange={onChange}
+                errorMessage={errors['observation']?.message}
               />
             );
           }}

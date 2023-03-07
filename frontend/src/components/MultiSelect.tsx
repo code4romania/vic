@@ -21,9 +21,17 @@ interface MultiSelectProps {
   options?: IMultiListItem[];
   placeholder?: string;
   label?: string;
+  isDisabled?: boolean;
 }
 
-const MultiSelect = ({ onChange, value, options, placeholder, label }: MultiSelectProps) => {
+const MultiSelect = ({
+  onChange,
+  value,
+  options,
+  placeholder,
+  label,
+  isDisabled,
+}: MultiSelectProps) => {
   const [defaultValue, setDefaultValue] = useState<IMultiListItem[]>([]);
 
   useEffect(() => {
@@ -41,6 +49,7 @@ const MultiSelect = ({ onChange, value, options, placeholder, label }: MultiSele
         onChange={onChange}
         value={defaultValue}
         options={options}
+        isDisabled={isDisabled}
       />
     </div>
   );

@@ -406,6 +406,8 @@
       "location": { "label": "Locatie" },
       "target": {
         "label": "Target",
+        "public": "Eveniment public",
+        "all": "Toata organizatia",
         "placeholder": "Alege toate variantele care se aplica",
         "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata"
       },
@@ -419,7 +421,7 @@
       },
       "mention": {
         "label": "Mentiune",
-        "descripiton": "Adresează o intrebare voluntarilor.",
+        "description": "Adresează o intrebare voluntarilor.",
         "empty": "Nicio mentiune."
       },
       "task": {

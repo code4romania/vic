@@ -16,6 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useDivisionsListItemsQuery } from '../services/division/division.service';
 import { mapItemToMultiListItem } from '../components/MultiSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
+import { useActivityTypesQuery } from '../services/activity-type/activity-type.service';
 
 const validationSchema = yup.object({
   name: yup
@@ -36,6 +37,7 @@ const AddEvent = () => {
 
   const { data: divisionListItems, isLoading: isDivisionListItemsLoading } =
     useDivisionsListItemsQuery(DivisionType.DEPARTMENT);
+  const { data: activityTypes } = useActivityTypesQuery();
 
   const {
     // handleSubmit,
@@ -84,11 +86,12 @@ const AddEvent = () => {
           </div>
         </CardHeader>
         <CardBody>
-          {divisionListItems && (
+          {divisionListItems && activityTypes && (
             <EventForm
               control={control}
               errors={errors}
-              targetsOptions={divisionListItems.map(mapItemToMultiListItem)}
+              targetOptions={divisionListItems.map(mapItemToMultiListItem)}
+              taskOpitons={activityTypes.map(mapItemToMultiListItem)}
             />
           )}
         </CardBody>

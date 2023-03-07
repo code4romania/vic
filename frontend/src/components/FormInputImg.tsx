@@ -12,9 +12,9 @@ const FormInputImg = ({
   errorMessage,
   label,
   value,
+  onChange,
   className,
   helper,
-  ...props
 }: FormInputImgProps) => {
   return (
     <div className="flex gap-5 items-center flex-wrap">
@@ -41,7 +41,8 @@ const FormInputImg = ({
         type="file"
         accept="image/png, image/jpeg"
         id={`${label}__input`}
-        {...props}
+        value={value}
+        onChange={onChange}
         className="hidden"
       />
       {errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
