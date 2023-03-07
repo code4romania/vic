@@ -34,6 +34,7 @@
     "reject": "Respinge",
     "approve": "Aprobă",
     "save_changes": "Salveaza modificari",
+    "save_as_draft": "Salveaza ca draft",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
     "contact": "Date contact",
@@ -399,11 +400,15 @@
       "archived": "Arhivat"
     },
     "form": {
-      "name": { "label": "Denumire eveniment*" },
-      "start_date": { "label": "Data inceput*" },
+      "name": { "label": "Denumire eveniment" },
+      "start_date": { "label": "Data inceput" },
       "end_date": { "label": "Data final" },
       "location": { "label": "Locatie" },
-      "target": { "label": "Target" },
+      "target": {
+        "label": "Target",
+        "placeholder": "Alege toate variantele care se aplica",
+        "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata"
+      },
       "description": { "label": "Descriere eveniment" },
       "logo": { "label": "Imagine eveniment", "button_label": "Încarcă imagine" },
       "noting": {

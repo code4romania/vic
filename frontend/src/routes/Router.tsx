@@ -20,6 +20,7 @@ import AddActivityType from '../pages/AddActivityType';
 import ActivityTypes from '../pages/ActivityTypes';
 import Events from '../pages/Events';
 import Event from '../pages/Event';
+import AddEvent from '../pages/AddEvent';
 
 const Router = () => {
   return (
@@ -53,6 +54,7 @@ const Router = () => {
             <Route index element={<Events />} />
             <Route path=":id" element={<Event />} />
             <Route path=":id/edit" element={<div>Edit page</div>} />
+            <Route path="add" element={<AddEvent />} />
           </Route>
         </Route>
       </Routes>

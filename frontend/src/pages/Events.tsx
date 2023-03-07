@@ -243,7 +243,7 @@ const Events = () => {
   };
 
   const onAddEvent = () => {
-    alert('not implemented');
+    navigate('/events/add');
   };
 
   return (
