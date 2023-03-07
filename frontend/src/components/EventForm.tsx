@@ -9,6 +9,7 @@ import FormInputImg from './FormInputImg';
 import FormRadios from './FormRadios';
 import FormTextarea from './FormTextarea';
 import MultiSelect, { IMultiListItem } from './MultiSelect';
+import StartingFormSection from './StartingFormSection';
 
 export enum AttendanceType {
   SIMPLE = 'simple',
@@ -247,10 +248,10 @@ const EventForm = ({
           }}
         />
         <hr className="border-cool-gray-200 mb-2 mt-10" />
-        <div className="flex gap-2.5 flex-col">
-          <h3>{i18n.t('events:form.noting.label')}</h3>
-          <small className="text-cool-gray-500">{i18n.t('events:form.noting.description')}</small>
-        </div>
+        <StartingFormSection
+          title={i18n.t('events:form.noting.label')}
+          description={i18n.t('events:form.noting.description')}
+        />
         <Controller
           key="attendanceType"
           name="attendanceType"
@@ -295,10 +296,10 @@ const EventForm = ({
           }}
         />
         <hr className="border-cool-gray-200 mb-2 mt-10" />
-        <div className="flex gap-2.5 flex-col">
-          <h3>{i18n.t('events:form.task.title')}</h3>
-          <small className="text-cool-gray-500">{i18n.t('events:form.task.description')}</small>
-        </div>
+        <StartingFormSection
+          title={i18n.t('events:form.task.title')}
+          description={i18n.t('events:form.task.description')}
+        />
         <Controller
           key="tasks"
           name="tasks"
@@ -316,12 +317,10 @@ const EventForm = ({
           }}
         />
         <hr className="border-cool-gray-200 mb-2 mt-10" />
-        <div className="flex gap-2.5 flex-col">
-          <h3>{i18n.t('events:form.observation.title')}</h3>
-          <small className="text-cool-gray-500">
-            {i18n.t('events:form.observation.description')}
-          </small>
-        </div>
+        <StartingFormSection
+          title={i18n.t('events:form.observation.title')}
+          description={i18n.t('events:form.observation.description')}
+        />
         <Controller
           key="observation"
           name="observation"
