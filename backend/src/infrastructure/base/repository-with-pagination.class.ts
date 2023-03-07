@@ -46,18 +46,30 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
 {
   constructor(private readonly repository: Repository<T>) {}
 
+  /**
+   *  OBS 1: This method uses limit and offset instead of skip and take because these methods uses query based method for selection (https://github.com/nestjsx/nestjs-typeorm-paginate/issues/576#issuecomment-1102374870) which is more performant
+   *  OBS 2: Using limit and offset requiers more attention when writing the query as using joins there will be situations when the data is duplicated and there will be wrong results (https://github.com/typeorm/typeorm/issues/4742#issuecomment-783857414)
+   *  OBS 3: Using take and skip will add an additional distinctAlias with the entity id and your query will become the from case, this will make it impossible to orderBy any aggragate column (count, sum, avg) (https://github.com/typeorm/typeorm/issues/2912#issuecomment-442659018)
+   *  OBS 4: When sorting by aggregate columns (sum, count) we should use the name of the aggragate column with double quotes without the entity prefix (https://github.com/typeorm/typeorm/issues/6561#issuecomment-863646482), there seems to be a bug in typeorm
+   * 
+   * Link to issues:
+     https://github.com/typeorm/typeorm/issues/4742#issuecomment-783857414
+     https://github.com/typeorm/typeorm/issues/747
+     https://github.com/typeorm/typeorm/issues/6561
+     https://github.com/typeorm/typeorm/issues/8605
+   * 
+   */
   public async findManyPaginatedQuery<TModel>(
     query: SelectQueryBuilder<T>,
     options: IBasePaginationFilterModel,
     toModel: (entity: T) => TModel,
   ): Promise<Pagination<TModel>> {
-    const { limit, page, orderBy, orderDirection } = options;
+    const { limit, page } = options;
 
     // [T[], totalItems]
     const response = await query
-      .orderBy(`${orderBy}`, orderDirection)
-      .take(limit)
-      .skip((page - 1) * limit)
+      .limit(limit) // take will add a distinct entity_id a the begining of the query which will interfeer with ordering bt agregate count column
+      .offset((page - 1) * limit) // skip will add a distinct entity_id a the begining of the query which will interfeer with ordering bt agregate count column
       .getManyAndCount();
 
     // query items + the pagination meta

@@ -5,6 +5,7 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
+import { VolunteerProfileEntity } from 'src/modules/volunteer/entities/volunteer-profile.entity';
 import { Repository } from 'typeorm';
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
 import { OrganizationStructureType } from '../enums/organization-structure-type.enum';
@@ -59,7 +60,7 @@ export class OrganizationStructureRepositoryService
   async findMany(
     findOptions: IFindAllOrganizationStructurePaginatedModel,
   ): Promise<Pagination<IOrganizationStructureModel>> {
-    const { type, organizationId } = findOptions;
+    const { type, organizationId, orderBy, orderDirection } = findOptions;
 
     const query = this.structureRepository
       .createQueryBuilder('structure')
@@ -68,28 +69,42 @@ export class OrganizationStructureRepositoryService
         'structure.createdBy',
         'createdBy',
       )
-      .leftJoinAndSelect(
-        `structure.${this.getPropertyByType(type)}`,
-        `${this.getPropertyByType(type)}`,
-      )
       .loadRelationCountAndMap(
         'structure.numberOfMembers',
         `structure.${this.getPropertyByType(type)}`,
-        'numberOfMembers',
       )
       .select()
+      .addSelect((subQuery) => {
+        return subQuery
+          .select('COUNT(vp.id)', 'numberOfMembers')
+          .from(VolunteerProfileEntity, 'vp')
+          .where(
+            `vp.${OrganizationStructureType.BRANCH.toLocaleLowerCase()}.id = structure.id`,
+          );
+      }, 'numberOfMembers')
       .where(
         'structure.type = :type AND structure.organizationId = :organizationId',
         { type, organizationId },
+      )
+      .groupBy(`structure.id, createdBy.id`)
+      .orderBy(
+        `${
+          orderBy === 'numberOfMembers'
+            ? '"numberOfMembers"'
+            : this.buildOrderByQuery('structure', orderBy) || 'structure.name'
+        }`,
+        orderDirection || OrderDirection.ASC,
       );
+
+    // Order by
+    // 1. For relations and maps check if orderBy field contains "."
+    // 1.1 if it has then send it as is
+    // 1.2 if not prefix it with the entity prefix
+    // 2. For aggregate columns such as SUM, COUNT
 
     return this.findManyPaginatedQuery(
       query,
-      {
-        ...findOptions,
-        orderBy: findOptions.orderBy || 'name',
-        orderDirection: findOptions.orderDirection || OrderDirection.ASC,
-      },
+      findOptions,
       OrganizationStructureTransformer.fromEntity,
     );
   }
@@ -140,4 +155,12 @@ export class OrganizationStructureRepositoryService
 
     return property;
   }
+
+  private buildOrderByQuery = (prefix: string, orderBy?: string): string => {
+    // if order by is undefined skip
+    if (!orderBy) return orderBy;
+
+    // if orderBy contains field from relation entity leave it as is otherwise add entity prefix
+    return orderBy.split('.').length > 1 ? orderBy : `${prefix}.${orderBy}`;
+  };
 }
