@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
-import { IAccessRequestDownload } from 'src/common/interfaces/access-request-download.interface';
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   Pagination,
@@ -73,33 +72,6 @@ export class AccessRequestRepository
       options,
       AccessRequestTransformer.fromEntity,
     );
-  }
-
-  async getManyForDownload(
-    findOptions: FindAccessRequestOptions,
-  ): Promise<IAccessRequestDownload[]> {
-    const accessRequests = await this.findMany({
-      ...findOptions,
-      limit: 0,
-      page: 0,
-    });
-
-    return accessRequests.items.map((accessRequest): IAccessRequestDownload => {
-      return {
-        Nume: accessRequest.requestedBy.name,
-        'Data nasterii': accessRequest.requestedBy.birthday,
-        Sex: accessRequest.requestedBy.sex,
-        Email: accessRequest.requestedBy.email,
-        Telefon: accessRequest.requestedBy.phone,
-        Locatie:
-          accessRequest.requestedBy.location.name +
-          ', jud. ' +
-          accessRequest.requestedBy.location.county.name,
-        'Data creare cerere': accessRequest.createdOn,
-        'Data refuz cerere': accessRequest.updatedOn,
-        'Motivul refuzului': accessRequest.rejectionReason,
-      };
-    });
   }
 
   async find(

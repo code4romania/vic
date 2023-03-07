@@ -15,9 +15,28 @@ export class GetAccessRequestsForDownloadUseCase
     findOptions: FindManyAccessRequestsOptions,
     status: AccessRequestStatus,
   ): Promise<IAccessRequestDownload[]> {
-    return this.accessRequestFacade.getManyForDownload({
+    const accessRequests = await this.accessRequestFacade.findMany({
       ...findOptions,
       status,
+      limit: 0,
+      page: 0,
+    });
+
+    return accessRequests.items.map((accessRequest): IAccessRequestDownload => {
+      return {
+        Nume: accessRequest.requestedBy.name,
+        'Data nasterii': accessRequest.requestedBy.birthday,
+        Sex: accessRequest.requestedBy.sex,
+        Email: accessRequest.requestedBy.email,
+        Telefon: accessRequest.requestedBy.phone,
+        Locatie:
+          accessRequest.requestedBy.location.name +
+          ', jud. ' +
+          accessRequest.requestedBy.location.county.name,
+        'Data creare cerere': accessRequest.createdOn,
+        'Data refuz cerere': accessRequest.updatedOn,
+        'Motivul refuzului': accessRequest.rejectionReason,
+      };
     });
   }
 }
