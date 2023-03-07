@@ -66,7 +66,7 @@ const PendingAccessRequestsTableHeader = [
     selector: (row: IAccessRequest) => `${row.requestedBy.email}\n${row.requestedBy.phone}`,
   },
   {
-    id: 'requestedBy.location.name',
+    id: 'location.name',
     name: i18n.t('general:location'),
     sortable: true,
     selector: (row: IAccessRequest) => formatLocation(row.requestedBy.location),
