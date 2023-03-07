@@ -96,9 +96,11 @@ interface AccessRequestTable {
     orderByColumn?: string,
     orderDirection?: OrderDirection,
     search?: string,
-    start?: Date,
-    end?: Date,
+    createdOnStart?: Date,
+    createdOnEnd?: Date,
     location?: string,
+    rejectedOnStart?: Date,
+    rejectedOnEnd?: Date,
   ) => UseQueryResult<
     IPaginatedEntity<IAccessRequest>,
     AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>
@@ -116,6 +118,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
   // filters
   const [searchWord, setSearchWord] = useState<string>();
   const [createdOnRange, setCreatedOnRange] = useState<Date[]>([]);
+  const [rejectedOnRange, setRejectedOnRange] = useState<Date[]>([]);
   const [location, setLocation] = useState<ListItem>();
   // confirmation modals
   const [showRejectAccessRequest, setShowRejectAccessRequest] = useState<null | IAccessRequest>(
@@ -140,6 +143,8 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     createdOnRange[0],
     createdOnRange[1],
     location?.value,
+    rejectedOnRange[0],
+    rejectedOnRange[1],
   );
 
   // actions
@@ -308,6 +313,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
 
   const onResetFilters = () => {
     setCreatedOnRange([]);
+    setRejectedOnRange([]);
     setLocation(undefined);
     setSearchWord(undefined);
   };
@@ -325,6 +331,14 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
           value={createdOnRange.length > 0 ? createdOnRange : undefined}
           id="created-on-range__picker"
         />
+        {status === RequestStatus.REJECTED && (
+          <DateRangePicker
+            label={i18n.t('access_requests:filters.access_request_rejected_range')}
+            onChange={setRejectedOnRange}
+            value={rejectedOnRange.length > 0 ? rejectedOnRange : undefined}
+            id="rejected-on-range__picker"
+          />
+        )}
         <LocationSelect
           label={i18n.t('general:location')}
           onSelect={setLocation}

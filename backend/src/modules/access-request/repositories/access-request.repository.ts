@@ -39,12 +39,16 @@ export class AccessRequestRepository
       status,
       locationId,
       search,
+      createdOnEnd,
+      createdOnStart,
+      rejectedOnStart,
+      rejectedOnEnd,
     } = findOptions;
 
-    const query = this.accessRequestRepository
-      .createQueryBuilder('ac')
-      .leftJoinAndMapOne('ac.updatedBy', 'ac.updatedBy', 'updatedBy')
-      .leftJoinAndMapOne('ac.requestedBy', 'ac.requestedBy', 'requestedBy')
+    let query = this.accessRequestRepository
+      .createQueryBuilder('ar')
+      .leftJoinAndMapOne('ar.updatedBy', 'ar.updatedBy', 'updatedBy')
+      .leftJoinAndMapOne('ar.requestedBy', 'ar.requestedBy', 'requestedBy')
       .leftJoinAndMapOne(
         'requestedBy.location',
         'requestedBy.location',
@@ -52,12 +56,12 @@ export class AccessRequestRepository
       )
       .leftJoinAndMapOne('location.county', 'location.county', 'county')
       .select()
-      .where('ac.organizationId = :organizationId AND ac.status = :status', {
+      .where('ar.organizationId = :organizationId AND ar.status = :status', {
         organizationId,
         status,
       })
       .orderBy(
-        this.buildOrderByQuery(orderBy || 'createdOn', 'ac'),
+        this.buildOrderByQuery(orderBy || 'createdOn', 'ar'),
         orderDirection || OrderDirection.ASC,
       );
 
@@ -74,6 +78,26 @@ export class AccessRequestRepository
     // location filter
     if (locationId) {
       query.andWhere('location.id = :locationId', { locationId });
+    }
+
+    // created on range filter
+    if (createdOnStart) {
+      query = this.addRangeConditionToQuery(
+        query,
+        'ar.createdOn',
+        createdOnStart,
+        createdOnEnd,
+      );
+    }
+
+    // rejected on range filter
+    if (rejectedOnStart) {
+      query = this.addRangeConditionToQuery(
+        query,
+        'ar.updatedOn',
+        rejectedOnStart,
+        rejectedOnEnd,
+      );
     }
 
     return this.paginateQuery(

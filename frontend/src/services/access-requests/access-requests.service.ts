@@ -18,13 +18,33 @@ export const useNewAccessRequestsQuery = (
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
-  start?: Date,
-  end?: Date,
+  createdOnStart?: Date,
+  createdOnEnd?: Date,
   location?: string,
 ) => {
   return useQuery(
-    ['new-access-requests', limit, page, orderBy, orderDirection, search, start, end, location],
-    () => getNewAccessRequests(limit, page, orderBy, orderDirection, search, start, end, location),
+    [
+      'new-access-requests',
+      limit,
+      page,
+      orderBy,
+      orderDirection,
+      search,
+      createdOnStart,
+      createdOnEnd,
+      location,
+    ],
+    () =>
+      getNewAccessRequests(
+        limit,
+        page,
+        orderBy,
+        orderDirection,
+        search,
+        createdOnStart,
+        createdOnEnd,
+        location,
+      ),
     {
       onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) => error,
     },
@@ -37,9 +57,11 @@ export const useRejectedAccessRequestsQuery = (
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
-  start?: Date,
-  end?: Date,
+  createdOnStart?: Date,
+  createdOnEnd?: Date,
   location?: string,
+  rejectedOnStart?: Date,
+  rejectedOnEnd?: Date,
 ) => {
   return useQuery(
     [
@@ -49,12 +71,23 @@ export const useRejectedAccessRequestsQuery = (
       orderBy,
       orderDirection,
       search,
-      start,
-      end,
+      createdOnStart,
+      createdOnEnd,
       location,
     ],
     () =>
-      getRejectedAccessRequests(limit, page, orderBy, orderDirection, search, start, end, location),
+      getRejectedAccessRequests(
+        limit,
+        page,
+        orderBy,
+        orderDirection,
+        search,
+        createdOnStart,
+        createdOnEnd,
+        location,
+        rejectedOnStart,
+        rejectedOnEnd,
+      ),
     {
       onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) => error,
     },
