@@ -91,20 +91,15 @@ export class OrganizationStructureRepositoryService
         `${
           orderBy === 'numberOfMembers'
             ? '"numberOfMembers"'
-            : this.buildOrderByQuery('structure', orderBy) || 'structure.name'
+            : this.buildOrderByQuery(orderBy || 'name', 'structure')
         }`,
         orderDirection || OrderDirection.ASC,
       );
 
-    // Order by
-    // 1. For relations and maps check if orderBy field contains "."
-    // 1.1 if it has then send it as is
-    // 1.2 if not prefix it with the entity prefix
-    // 2. For aggregate columns such as SUM, COUNT
-
-    return this.findManyPaginatedQuery(
+    return this.paginateQuery(
       query,
-      findOptions,
+      findOptions.limit,
+      findOptions.page,
       OrganizationStructureTransformer.fromEntity,
     );
   }
@@ -155,12 +150,4 @@ export class OrganizationStructureRepositoryService
 
     return property;
   }
-
-  private buildOrderByQuery = (prefix: string, orderBy?: string): string => {
-    // if order by is undefined skip
-    if (!orderBy) return orderBy;
-
-    // if orderBy contains field from relation entity leave it as is otherwise add entity prefix
-    return orderBy.split('.').length > 1 ? orderBy : `${prefix}.${orderBy}`;
-  };
 }
