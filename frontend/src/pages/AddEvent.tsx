@@ -78,11 +78,7 @@ const AddEvent = () => {
     navigate('/events', { replace: true });
   };
 
-  const onSaveAsDraft = () => {
-    alert('not yet implemented');
-  };
-
-  const onPublish = (data: EventFormTypes) => {
+  const submitValues = (data: EventFormTypes, status: 'published' | 'draft') => {
     addEvent(
       {
         ...data,
@@ -90,7 +86,7 @@ const AddEvent = () => {
         targetsIds:
           data.isPublic === TargetType.SELECT ? data.targetsIds.map((target) => target.value) : [],
         tasksIds: data.tasksIds.map((task) => task.value),
-        status: 'published',
+        status,
       },
       {
         onSuccess: () => {
@@ -102,6 +98,14 @@ const AddEvent = () => {
         },
       },
     );
+  };
+
+  const onSaveAsDraft = (data: EventFormTypes) => {
+    submitValues(data, 'draft');
+  };
+
+  const onPublish = (data: EventFormTypes) => {
+    submitValues(data, 'published');
   };
 
   return (
@@ -121,7 +125,7 @@ const AddEvent = () => {
                 className="btn-outline-secondary"
                 label={i18n.t('general:save_as_draft')}
                 icon={<DocumentIcon className="h-5 w-5 text-cool-gray-500 sm:hidden" />}
-                onClick={onSaveAsDraft}
+                onClick={handleSubmit(onSaveAsDraft)}
               />
               <Button
                 className="btn-primary"
