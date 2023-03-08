@@ -19,7 +19,7 @@ export interface IEventModel extends IBaseModel {
   id: string;
   name: string;
   description: string;
-  location: string;
+  location?: string;
 
   startDate: Date;
   endDate?: Date;

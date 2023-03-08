@@ -86,7 +86,7 @@ export class EventPresenter {
   attendanceMention?: string;
 
   @Expose()
-  @ApiProperty({ description: 'The reason for the rejection.' })
+  @ApiProperty({ description: 'Event observations.' })
   observation?: string;
 
   @Expose()

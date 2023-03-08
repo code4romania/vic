@@ -32,10 +32,10 @@ export class EventEntity extends BaseEntity {
   @Column({ type: 'timestamptz', name: 'end_date', nullable: true })
   endDate?: Date;
 
-  @Column({ type: 'text', name: 'location' })
-  location: string;
+  @Column({ type: 'text', name: 'location', nullable: true })
+  location?: string;
 
-  @Column({ type: 'boolean', name: 'is_public' })
+  @Column({ type: 'boolean', name: 'is_public', default: false })
   isPublic: boolean;
 
   // TODO: add image

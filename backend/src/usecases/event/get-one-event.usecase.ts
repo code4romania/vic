@@ -13,14 +13,14 @@ export class GetOneEventUseCase implements IUseCaseService<IEventModel> {
   ) {}
 
   public async execute(id: string): Promise<IEventModel> {
-    const activityType = await this.eventFacade.find(id);
+    const event = await this.eventFacade.find(id);
 
-    if (!activityType) {
+    if (!event) {
       this.exceptionService.badRequestException(
         EventExceptionMessages.EVENT_001,
       );
     }
 
-    return activityType;
+    return event;
   }
 }

@@ -66,7 +66,7 @@ export class EventRepository implements IEventRepository {
       },
     });
 
-    return eventEntity ? EventModelTransformer.fromEntity(eventEntity) : null;
+    return EventModelTransformer.fromEntity(eventEntity);
   }
 
   async delete(id: string): Promise<string> {

@@ -11,7 +11,7 @@ export class EventDDL1678090623438 implements MigrationInterface {
       `CREATE TYPE "public"."event_attendance_type_enum" AS ENUM('simple', 'mention')`,
     );
     await queryRunner.query(
-      `CREATE TABLE "event" ("deleted_on" TIMESTAMP WITH TIME ZONE, "created_on" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_on" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" text NOT NULL, "description" text NOT NULL, "start_date" TIMESTAMP WITH TIME ZONE NOT NULL, "end_date" TIMESTAMP WITH TIME ZONE, "location" text NOT NULL, "is_public" boolean NOT NULL, "status" "public"."event_status_enum" NOT NULL DEFAULT 'published', "attendance_type" "public"."event_attendance_type_enum" NOT NULL DEFAULT 'simple', "attendance_mention" text, "observation" text, "organization_id" uuid NOT NULL, CONSTRAINT "PK_30c2f3bbaf6d34a55f8ae6e4614" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "event" ("deleted_on" TIMESTAMP WITH TIME ZONE, "created_on" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_on" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" text NOT NULL, "description" text NOT NULL, "start_date" TIMESTAMP WITH TIME ZONE NOT NULL, "end_date" TIMESTAMP WITH TIME ZONE, "location" text, "is_public" boolean NOT NULL DEFAULT 'false', "status" "public"."event_status_enum" NOT NULL DEFAULT 'published', "attendance_type" "public"."event_attendance_type_enum" NOT NULL DEFAULT 'simple', "attendance_mention" text, "observation" text, "organization_id" uuid NOT NULL, CONSTRAINT "PK_30c2f3bbaf6d34a55f8ae6e4614" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE INDEX "IDX_0ccaecd3c8ac5ff63f2fbe62ff" ON "event" ("created_on") `,

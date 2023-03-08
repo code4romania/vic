@@ -25,6 +25,7 @@ export class CreateEventDto {
   description: string;
 
   @IsString()
+  @IsOptional()
   @MinLength(2)
   @MaxLength(500)
   location: string;
@@ -47,7 +48,7 @@ export class CreateEventDto {
 
   @IsString()
   @MinLength(2)
-  @MaxLength(1500)
+  @MaxLength(250)
   @ValidateIf((o) => o.attendanceType === EventAttendOptions.MENTION)
   attendanceMention: string;
 

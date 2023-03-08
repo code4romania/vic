@@ -51,8 +51,12 @@ export class UpdateEventUseCase implements IUseCaseService<IEventModel> {
         );
       }
     }
-    // 4. Check if the target is correct
-    if (data.targetsIds?.length) {
+
+    // 4.1. For public events, target must be null
+    if (data.isPublic) {
+      data.targetsIds = undefined;
+    } else if (data.targetsIds?.length) {
+      // 4.2 Check if the target is correct
       const targetExists = await this.organizationStructureFacade.exists(
         data.targetsIds,
         {
