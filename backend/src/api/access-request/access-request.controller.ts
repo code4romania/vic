@@ -23,7 +23,7 @@ import {
 import { Response } from 'express';
 import { GetAccessRequestsForDownloadUseCase } from 'src/usecases/access-request/download-access-requests.usecase';
 import { jsonToExcelBuffer } from 'src/common/helpers/utils';
-import { IAccessRequestDownload } from 'src/common/interfaces/access-request-download.interface';
+import { IAccessRequestDownload } from 'src/modules/access-request/interfaces/access-request-download.interface';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, AccessRequestGuard)
