@@ -37,7 +37,7 @@ import { GetOneActivityTypeUseCase } from './activity-type/get-one-activity-type
 import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-type.usecase';
 import { GetAllOrganizationStructureByTypeUseCase } from './organization/organization-structure/get-all-organization-structure-by-type.usecase';
 import { VolunteerModule } from 'src/modules/volunteer/volunteer.module';
-import { GetOneRegularUserUseCaseService } from './user/get-one-regular-user.usecase';
+import { GetOneRegularUserUseCase } from './user/get-one-regular-user.usecase';
 import { CreateVolunteerUseCase } from './volunteer/create-volunteer.usecase';
 import { GetOneVolunteerUsecase } from './volunteer/get-one-volunteer.usecase';
 import { CreateVolunteerProfileUseCase } from './volunteer/create-volunteer-profile.usecase';
@@ -53,6 +53,9 @@ import { UpdateEventUseCase } from './event/update-event.usecase';
 import { PublishEventUseCase } from './event/publish-event.usecase';
 import { ArchiveEventUseCase } from './event/archive-event.usecase';
 import { DeleteEventUseCase } from './event/delete-event.usecase';
+import { CreateEventRSVPUseCase } from './event/RSVP/create-rsvp.usecase';
+import { GetOneEventRSVPUseCase } from './event/RSVP/get-one-rsvp.usecase';
+import { DeleteEventRSVPUseCase } from './event/RSVP/delete-rsvp.usecase';
 
 @Module({
   imports: [
@@ -86,7 +89,7 @@ import { DeleteEventUseCase } from './event/delete-event.usecase';
     // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
-    GetOneRegularUserUseCaseService,
+    GetOneRegularUserUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -121,6 +124,9 @@ import { DeleteEventUseCase } from './event/delete-event.usecase';
     DeleteEventUseCase,
     PublishEventUseCase,
     ArchiveEventUseCase,
+    CreateEventRSVPUseCase,
+    GetOneEventRSVPUseCase,
+    DeleteEventRSVPUseCase,
   ],
   exports: [
     // Organization
@@ -142,7 +148,7 @@ import { DeleteEventUseCase } from './event/delete-event.usecase';
     // user
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
-    GetOneRegularUserUseCaseService,
+    GetOneRegularUserUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -178,6 +184,9 @@ import { DeleteEventUseCase } from './event/delete-event.usecase';
     DeleteEventUseCase,
     PublishEventUseCase,
     ArchiveEventUseCase,
+    CreateEventRSVPUseCase,
+    GetOneEventRSVPUseCase,
+    DeleteEventRSVPUseCase,
   ],
 })
 export class UseCaseModule {}

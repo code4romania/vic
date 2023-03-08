@@ -93,4 +93,7 @@ export class EventController {
   delete(@Param('id', UuidValidationPipe) eventId: string): Promise<string> {
     return this.deleteEventUseCase.execute(eventId);
   }
+
+  // TODO: @birloiflorian get all RSVP for event
+  // @GET(':id/rsvp') + filters
 }

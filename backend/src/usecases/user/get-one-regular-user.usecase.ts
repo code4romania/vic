@@ -6,7 +6,7 @@ import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.serv
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 
 @Injectable()
-export class GetOneRegularUserUseCaseService
+export class GetOneRegularUserUseCase
   implements IUseCaseService<IRegularUserModel>
 {
   constructor(
