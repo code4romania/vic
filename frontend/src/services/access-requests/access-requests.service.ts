@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
+import { PaginationConfig } from '../../common/constants/pagination';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ACCESS_REQUEST_ERRORS } from '../../common/errors/entities/access-request.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
@@ -13,8 +14,8 @@ import {
 } from './access-requests.api';
 
 export const useNewAccessRequestsQuery = (
-  limit: number,
-  page: number,
+  limit: number = PaginationConfig.defaultRowsPerPage,
+  page: number = PaginationConfig.defaultPage,
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
@@ -52,8 +53,8 @@ export const useNewAccessRequestsQuery = (
 };
 
 export const useRejectedAccessRequestsQuery = (
-  limit: number,
-  page: number,
+  limit: number = PaginationConfig.defaultRowsPerPage,
+  page: number = PaginationConfig.defaultPage,
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
@@ -74,6 +75,8 @@ export const useRejectedAccessRequestsQuery = (
       createdOnStart,
       createdOnEnd,
       location,
+      rejectedOnStart,
+      rejectedOnEnd,
     ],
     () =>
       getRejectedAccessRequests(

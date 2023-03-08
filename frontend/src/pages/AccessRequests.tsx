@@ -416,14 +416,14 @@ const AccessRequests = () => {
           <>
             <AccessRequestTable
               useAccessRequests={useNewAccessRequestsQuery}
-              status={requestStatus}
+              status={RequestStatus.PENDING}
             />
           </>
         )}
         {requestStatus === RequestStatus.REJECTED && (
           <AccessRequestTable
             useAccessRequests={useRejectedAccessRequestsQuery}
-            status={requestStatus}
+            status={RequestStatus.REJECTED}
           />
         )}
       </Tabs>
