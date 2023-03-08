@@ -32,11 +32,12 @@ export class GetAccessRequestsForDownloadUseCase
           ', jud. ' +
           accessRequest.requestedBy.location.county.name,
         'Data creare cerere': accessRequest.createdOn,
-        'Data refuz cerere':
-          accessRequest.status === AccessRequestStatus.REJECTED
-            ? accessRequest.updatedOn
-            : undefined,
-        'Motivul refuzului': accessRequest.rejectionReason,
+        ...(accessRequest.status === AccessRequestStatus.REJECTED
+          ? {
+              'Data refuz cerere': accessRequest.updatedOn,
+              'Motivul refuzului': accessRequest.rejectionReason,
+            }
+          : {}),
       };
     });
   }
