@@ -5,9 +5,9 @@ export interface IVolunteerDownload {
   Email: string;
   Telefon: string;
   'Perioada activitate': Date;
-  'Nume filiala': string;
-  'Nume departament': string;
-  'Nume rol': string;
+  'Nume filiala'?: string;
+  'Nume departament'?: string;
+  'Nume rol'?: string;
   'Arhivat din'?: Date;
   'Data blocarii'?: Date;
 }

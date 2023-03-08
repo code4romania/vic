@@ -29,7 +29,7 @@ import { VolunteerPresenter } from './presenters/volunteer.presenter';
 import { UpdateVolunteerProfileDto } from '../_mobile/volunteer/dto/update-volunteer-profile.dto';
 import { UpdateVolunteerProfileUsecase } from 'src/usecases/volunteer/update-volunteer-profile.usecase';
 import { jsonToExcelBuffer } from 'src/common/helpers/utils';
-import { IVolunteerDownload } from 'src/common/interfaces/volunteer-download.interface';
+import { IVolunteerDownload } from 'src/modules/volunteer/intefaces/volunteer-download.interface';
 import { GetVolunteersForDownloadUseCase } from 'src/usecases/volunteer/get-many-for-download-volunteer.usecase';
 import { Response } from 'express';
 

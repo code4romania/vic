@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
-import { IVolunteerDownload } from 'src/common/interfaces/volunteer-download.interface';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
+import { IVolunteerDownload } from 'src/modules/volunteer/intefaces/volunteer-download.interface';
 import { FindManyVolunteersOptions } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
@@ -30,11 +31,21 @@ export class GetVolunteersForDownloadUseCase
         Email: volunteer.volunteerProfile.email,
         Telefon: volunteer.volunteerProfile.phone,
         'Perioada activitate': volunteer.volunteerProfile.activeSince,
-        'Nume filiala': volunteer.volunteerProfile.branch?.name,
-        'Nume departament': volunteer.volunteerProfile.department?.name,
-        'Nume rol': volunteer.volunteerProfile.role?.name,
-        'Arhivat din': volunteer.archivedOn,
-        'Data blocarii': volunteer.blockedOn,
+        ...(volunteer.volunteerProfile.branch
+          ? { 'Nume filiala': volunteer.volunteerProfile.branch.name }
+          : {}),
+        ...(volunteer.volunteerProfile.department
+          ? { 'Nume departament': volunteer.volunteerProfile.department.name }
+          : {}),
+        ...(volunteer.volunteerProfile.role
+          ? { 'Nume rol': volunteer.volunteerProfile.role.name }
+          : {}),
+        ...(volunteer.status === VolunteerStatus.ARCHIVED
+          ? { 'Arhivat din': volunteer.archivedOn }
+          : {}),
+        ...(volunteer.status === VolunteerStatus.BLOCKED
+          ? { 'Data blocarii': volunteer.blockedOn }
+          : {}),
       };
     });
   }
