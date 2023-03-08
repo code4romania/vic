@@ -46,6 +46,7 @@ import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase'
 import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
 import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
 import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-profile.usecase';
+import { GetAccessRequestsForDownloadUseCase } from './access-request/download-access-requests.usecase';
 import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-download-volunteer.usecase';
 
 @Module({
@@ -88,6 +89,7 @@ import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-downlo
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    GetAccessRequestsForDownloadUseCase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -126,7 +128,7 @@ import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-downlo
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
     GetAllOrganizationStructureByTypeUseCase,
-    // user
+    // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCaseService,
@@ -138,6 +140,7 @@ import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-downlo
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    GetAccessRequestsForDownloadUseCase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,

@@ -44,6 +44,7 @@ import DataTableFilters from '../components/DataTableFilters';
 import DateRangePicker from '../components/DateRangePicker';
 import LocationSelect from '../containers/LocationSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
+import { downloadAccessRequests } from '../services/access-requests/access-requests.api';
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
   { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
@@ -312,6 +313,26 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     setSearchWord(undefined);
   };
 
+  const onExport = async () => {
+    const { data: downloadAccessRequestsData } = await downloadAccessRequests(
+      status,
+      orderByColumn,
+      orderDirection,
+      searchWord,
+      createdOnRange[0],
+      createdOnRange[1],
+      location?.value,
+    );
+
+    const url = URL.createObjectURL(new Blob([downloadAccessRequestsData]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Cereri-acces.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
   return (
     <>
       <DataTableFilters
@@ -337,7 +358,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
             label={i18n.t('general:download_table')}
             icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
             className="btn-outline-secondary ml-auto"
-            onClick={() => alert('Not implemented')}
+            onClick={onExport}
           />
         </CardHeader>
         <CardBody>
