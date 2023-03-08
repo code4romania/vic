@@ -83,20 +83,20 @@ const ActiveVolunteersTableHeader = [
     ),
   },
   {
-    id: 'volunteerProfile.department.name',
+    id: 'department.name',
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
     grow: 1,
     minWidth: '5rem',
     selector: (row: IVolunteer) =>
-      row.profile
+      row.profile?.department || row?.profile?.role
         ? `${row.profile?.role?.name || ''}${
             row.profile?.role && row.profile?.department ? '\n' : ''
           }${row.profile?.department?.name || ''}`
         : '-',
   },
   {
-    id: 'user.location.name',
+    id: 'location.name',
     name: i18n.t('volunteers:location'),
     sortable: true,
     grow: 1,

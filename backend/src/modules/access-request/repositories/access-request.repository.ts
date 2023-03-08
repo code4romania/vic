@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
-import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { AccessRequestEntity } from '../entities/access-request.entity';
 import { IAccessRequestRepository } from '../interfaces/access-request-repository.interface';
 import {
@@ -33,43 +32,78 @@ export class AccessRequestRepository
   async findMany(
     findOptions: FindManyAccessRequestsOptions,
   ): Promise<Pagination<IAccessRequestModel>> {
-    const options: {
-      filters: FindOptionsWhere<AccessRequestEntity>;
-    } & IBasePaginationFilterModel = {
-      ...findOptions,
-      filters: {
-        status: findOptions.status,
-        organizationId: findOptions.organizationId,
-        ...(findOptions.locationId
-          ? {
-              requestedBy: {
-                locationId: findOptions.locationId,
-              },
-            }
-          : {}),
-      },
-    };
+    const {
+      orderBy,
+      orderDirection,
+      organizationId,
+      status,
+      locationId,
+      search,
+      createdOnEnd,
+      createdOnStart,
+      rejectedOnStart,
+      rejectedOnEnd,
+    } = findOptions;
 
-    return this.findManyPaginated<IAccessRequestModel>(
-      {
-        searchableColumns: [
-          'requestedBy.name',
-          'requestedBy.email',
-          'requestedBy.phone',
-        ],
-        defaultSortBy: 'createdOn',
-        defaultOrderDirection: OrderDirection.DESC,
-        relations: {
-          updatedBy: true,
-          requestedBy: {
-            location: {
-              county: true,
-            },
-          },
-        },
-        rangeColumn: 'createdOn',
-      },
-      options,
+    let query = this.accessRequestRepository
+      .createQueryBuilder('ar')
+      .leftJoinAndMapOne('ar.updatedBy', 'ar.updatedBy', 'updatedBy')
+      .leftJoinAndMapOne('ar.requestedBy', 'ar.requestedBy', 'requestedBy')
+      .leftJoinAndMapOne(
+        'requestedBy.location',
+        'requestedBy.location',
+        'location',
+      )
+      .leftJoinAndMapOne('location.county', 'location.county', 'county')
+      .select()
+      .where('ar.organizationId = :organizationId AND ar.status = :status', {
+        organizationId,
+        status,
+      })
+      .orderBy(
+        this.buildOrderByQuery(orderBy || 'createdOn', 'ar'),
+        orderDirection || OrderDirection.ASC,
+      );
+
+    // search filter
+    if (search) {
+      query.andWhere(
+        this.buildBracketSearchQuery(
+          ['requestedBy.name', 'requestedBy.email', 'requestedBy.phone'],
+          search,
+        ),
+      );
+    }
+
+    // location filter
+    if (locationId) {
+      query.andWhere('location.id = :locationId', { locationId });
+    }
+
+    // created on range filter
+    if (createdOnStart) {
+      query = this.addRangeConditionToQuery(
+        query,
+        'ar.createdOn',
+        createdOnStart,
+        createdOnEnd,
+      );
+    }
+
+    // rejected on range filter
+    if (rejectedOnStart) {
+      query = this.addRangeConditionToQuery(
+        query,
+        'ar.updatedOn',
+        rejectedOnStart,
+        rejectedOnEnd,
+      );
+    }
+
+    return this.paginateQuery(
+      query,
+      findOptions.limit,
+      findOptions.page,
       AccessRequestTransformer.fromEntity,
     );
   }

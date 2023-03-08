@@ -52,6 +52,7 @@ import { GetManyAnnouncementUseCase } from './announcement/get-many-announcement
 import { CreateAnnouncementUseCase } from './announcement/create-announcement.usecase';
 import { UpdateAnnouncementUseCase } from './announcement/update-announcement.usecase';
 import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.usecase';
+import { GetAccessRequestsForDownloadUseCase } from './access-request/download-access-requests.usecase';
 
 @Module({
   imports: [
@@ -94,6 +95,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    GetAccessRequestsForDownloadUseCase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -137,7 +139,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
     GetAllOrganizationStructureByTypeUseCase,
-    // user
+    // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCaseService,
@@ -149,6 +151,7 @@ import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.us
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    GetAccessRequestsForDownloadUseCase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
