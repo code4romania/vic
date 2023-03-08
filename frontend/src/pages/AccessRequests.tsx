@@ -82,7 +82,7 @@ const PendingAccessRequestsTableHeader = [
 const RejectedAccessRequestsTableHeader = [
   ...PendingAccessRequestsTableHeader,
   {
-    id: 'rejectedDate',
+    id: 'updatedOn',
     name: i18n.t('access_requests:rejected_date'),
     sortable: true,
     selector: (row: IAccessRequest) => formatDate(row.updatedOn || new Date()),
