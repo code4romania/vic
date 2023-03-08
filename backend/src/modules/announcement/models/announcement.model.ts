@@ -18,25 +18,25 @@ export interface IAnnouncementModel extends IBaseModel {
   targetedVolunteers?: number;
 }
 
-export type ICreateAnnouncementModel = Omit<
+export type CreateAnnouncementModel = Omit<
   IAnnouncementModel,
   'id' | 'updatedOn' | 'createdOn'
 > & {
   targetsIds?: string[];
 };
 
-export type IUpdateAnnouncementModel = Partial<
+export type UpdateAnnouncementModel = Partial<
   Omit<IAnnouncementModel, 'id' | 'updatedOn' | 'createdOn'> & {
     targetsIds: string[];
   }
 >;
 
-export type IFindAnnouncementModel = Partial<
+export type FindAnnouncementModel = Partial<
   Pick<IAnnouncementModel, 'id' | 'organizationId'>
 >;
 
-export type IFindAllAnnouncementModel = IBasePaginationFilterModel &
-  Partial<Pick<IAnnouncementModel, 'status' | 'organizationId'>>;
+export type FindManyAnnouncementModel = IBasePaginationFilterModel &
+  Partial<Pick<IAnnouncementModel, 'organizationId'>>;
 
 export class AnnouncementStructureTransformer {
   static fromEntity(entity: AnnouncementEntity): IAnnouncementModel {
@@ -54,7 +54,7 @@ export class AnnouncementStructureTransformer {
     };
   }
 
-  static toEntity(model: ICreateAnnouncementModel): AnnouncementEntity {
+  static toEntity(model: CreateAnnouncementModel): AnnouncementEntity {
     const entity = new AnnouncementEntity();
 
     entity.name = model.name;

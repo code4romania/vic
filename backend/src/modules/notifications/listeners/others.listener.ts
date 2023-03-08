@@ -28,8 +28,9 @@ export class OthersListener {
 
     // 2. Retrieve the target data
     const targetsMails: string[] = [];
+    let volunteers;
     if (targetIds.length === 0) {
-      const volunteers = await this.getManyVolunteersUseCase.execute({
+      volunteers = await this.getManyVolunteersUseCase.execute({
         limit: 0,
         page: 0,
         organizationId,
@@ -40,8 +41,9 @@ export class OthersListener {
         targetsMails.push(volunteer.volunteerProfile.email),
       );
     } else {
-      const volunteers =
-        await this.volunteerFacade.findAllActiveByDepartmentIds(targetIds);
+      volunteers = await this.volunteerFacade.findAllActiveByDepartmentIds(
+        targetIds,
+      );
 
       volunteers.map((volunteer) =>
         targetsMails.push(volunteer.volunteerProfile.email),

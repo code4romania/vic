@@ -6,7 +6,7 @@ import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-
 import { AnnouncementExceptionMessages } from 'src/modules/announcement/exceptions/announcement.exceptions';
 import {
   IAnnouncementModel,
-  ICreateAnnouncementModel,
+  CreateAnnouncementModel,
 } from 'src/modules/announcement/models/announcement.model';
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
@@ -29,7 +29,7 @@ export class CreateAnnouncementUseCase
   ) {}
 
   public async execute(
-    createData: ICreateAnnouncementModel,
+    createData: CreateAnnouncementModel,
   ): Promise<IAnnouncementModel> {
     // 1. Check if only departments were chosen and calculate the total number of volunteers
     let targetedVolunteers = 0;
@@ -49,7 +49,7 @@ export class CreateAnnouncementUseCase
         );
       }
 
-      departments.map(
+      departments.forEach(
         (department) => (targetedVolunteers += department.members),
       );
     } else {
@@ -62,10 +62,7 @@ export class CreateAnnouncementUseCase
     // 2. Create announcement
     const announcement = await this.announcementFacade.create({
       ...createData,
-      targetedVolunteers:
-        targetedVolunteers !== 0
-          ? targetedVolunteers
-          : createData.targetedVolunteers,
+      targetedVolunteers,
       publishedOn:
         createData.status === AnnouncementStatus.PUBLISHED ? new Date() : null,
     });

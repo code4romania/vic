@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   IAnnouncementModel,
-  ICreateAnnouncementModel,
-  IFindAllAnnouncementModel,
-  IFindAnnouncementModel,
-  IUpdateAnnouncementModel,
+  CreateAnnouncementModel,
+  FindManyAnnouncementModel,
+  FindAnnouncementModel,
+  UpdateAnnouncementModel,
 } from '../models/announcement.model';
 import { AnnouncementRepositoryService } from '../repositories/announcement.repository';
 
@@ -16,26 +16,26 @@ export class AnnouncementFacade {
   ) {}
 
   public async find(
-    findOptions: IFindAnnouncementModel,
+    findOptions: FindAnnouncementModel,
   ): Promise<IAnnouncementModel> {
     return this.announcementRepository.find(findOptions);
   }
 
   public async findMany(
-    findOptions: IFindAllAnnouncementModel,
+    findOptions: FindManyAnnouncementModel,
   ): Promise<Pagination<IAnnouncementModel>> {
     return this.announcementRepository.findMany(findOptions);
   }
 
   public async create(
-    createAnnouncementModel: ICreateAnnouncementModel,
+    createAnnouncementModel: CreateAnnouncementModel,
   ): Promise<IAnnouncementModel> {
     return this.announcementRepository.create(createAnnouncementModel);
   }
 
   public async update(
     id: string,
-    updateAnnouncementModel: IUpdateAnnouncementModel,
+    updateAnnouncementModel: UpdateAnnouncementModel,
   ): Promise<IAnnouncementModel> {
     return this.announcementRepository.update(id, updateAnnouncementModel);
   }

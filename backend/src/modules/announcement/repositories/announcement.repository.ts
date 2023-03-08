@@ -1,22 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
-import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import { OrganizationStructureTransformer } from 'src/modules/organization/models/organization-structure.model';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { AnnouncementEntity } from '../entities/announcement.entity';
 import { IAnnouncementRepository } from '../interfaces/announcement-repository.interface';
 import {
   AnnouncementStructureTransformer,
   IAnnouncementModel,
-  ICreateAnnouncementModel,
-  IFindAllAnnouncementModel,
-  IFindAnnouncementModel,
-  IUpdateAnnouncementModel,
+  CreateAnnouncementModel,
+  FindManyAnnouncementModel,
+  FindAnnouncementModel,
+  UpdateAnnouncementModel,
 } from '../models/announcement.model';
 
 @Injectable()
@@ -31,7 +30,7 @@ export class AnnouncementRepositoryService
     super(announcementRepository);
   }
 
-  async find(findOptions: IFindAnnouncementModel): Promise<IAnnouncementModel> {
+  async find(findOptions: FindAnnouncementModel): Promise<IAnnouncementModel> {
     const announcement = await this.announcementRepository.findOne({
       where: { ...findOptions },
       relations: {
@@ -45,33 +44,43 @@ export class AnnouncementRepositoryService
   }
 
   async findMany(
-    findOptions: IFindAllAnnouncementModel,
+    findOptions: FindManyAnnouncementModel,
   ): Promise<Pagination<IAnnouncementModel>> {
-    const options: {
-      filters: FindOptionsWhere<AnnouncementEntity>;
-    } & IBasePaginationFilterModel = {
-      ...findOptions,
-      filters: {
-        organizationId: findOptions.organizationId,
-      },
-    };
+    const { orderBy, orderDirection, organizationId, search } = findOptions;
 
-    return this.findManyPaginated<IAnnouncementModel>(
-      {
-        searchableColumns: ['name'],
-        defaultSortBy: 'updatedOn',
-        defaultOrderDirection: OrderDirection.ASC,
-        relations: {
-          targets: true,
-        },
-      },
-      options,
+    // create query
+    const query = this.announcementRepository
+      .createQueryBuilder('announcement')
+      .leftJoinAndMapMany(
+        'announcement.targets',
+        'announcement.targets',
+        'targets',
+      )
+      .select()
+      .where('announcement.organizationId = :organizationId', {
+        organizationId,
+      })
+      .orderBy(
+        this.buildOrderByQuery(orderBy || 'createdOn', 'announcement'),
+        orderDirection || OrderDirection.DESC,
+      );
+
+    if (search) {
+      query.andWhere(
+        this.buildBracketSearchQuery(['announcement.name'], search),
+      );
+    }
+
+    return this.paginateQuery(
+      query,
+      findOptions.limit,
+      findOptions.page,
       AnnouncementStructureTransformer.fromEntity,
     );
   }
 
   async create(
-    newAnnouncement: ICreateAnnouncementModel,
+    newAnnouncement: CreateAnnouncementModel,
   ): Promise<IAnnouncementModel> {
     const announcement = await this.announcementRepository.save(
       AnnouncementStructureTransformer.toEntity(newAnnouncement),
@@ -82,7 +91,7 @@ export class AnnouncementRepositoryService
 
   async update(
     id: string,
-    { targetsIds, ...updates }: IUpdateAnnouncementModel,
+    { targetsIds, ...updates }: UpdateAnnouncementModel,
   ): Promise<IAnnouncementModel> {
     const targets = targetsIds?.map(OrganizationStructureTransformer.toEntity);
 

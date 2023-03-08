@@ -4,7 +4,7 @@ import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.serv
 import { AnnouncementExceptionMessages } from 'src/modules/announcement/exceptions/announcement.exceptions';
 import {
   IAnnouncementModel,
-  IFindAnnouncementModel,
+  FindAnnouncementModel,
 } from 'src/modules/announcement/models/announcement.model';
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 
@@ -18,7 +18,7 @@ export class GetOneAnnouncementUseCase
   ) {}
 
   public async execute(
-    findOptions: IFindAnnouncementModel,
+    findOptions: FindAnnouncementModel,
   ): Promise<IAnnouncementModel> {
     const announcement = await this.announcementFacade.find(findOptions);
 

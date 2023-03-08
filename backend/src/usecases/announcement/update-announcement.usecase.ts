@@ -6,7 +6,7 @@ import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-
 import { AnnouncementExceptionMessages } from 'src/modules/announcement/exceptions/announcement.exceptions';
 import {
   IAnnouncementModel,
-  IUpdateAnnouncementModel,
+  UpdateAnnouncementModel,
 } from 'src/modules/announcement/models/announcement.model';
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
@@ -32,7 +32,7 @@ export class UpdateAnnouncementUseCase
 
   public async execute(
     id: string,
-    updateData: IUpdateAnnouncementModel,
+    updateData: UpdateAnnouncementModel,
   ): Promise<IAnnouncementModel> {
     // 1. Check if the announcement exists
     const announcementToUpdate = await this.getOneAnnouncementUseCase.execute({
