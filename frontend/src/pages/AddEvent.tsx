@@ -55,8 +55,8 @@ const AddEvent = () => {
 
   const { data: divisionListItems, isLoading: isDivisionListItemsLoading } =
     useDivisionsListItemsQuery(DivisionType.DEPARTMENT);
-  const { data: activityTypes } = useActivityTypesQuery();
-  const { mutateAsync: addEvent } = useAddEventMutation();
+  const { data: activityTypes, isLoading: isActivityTypesLoading } = useActivityTypesQuery();
+  const { mutateAsync: addEvent, isLoading: isAddEventLoading } = useAddEventMutation();
 
   const {
     handleSubmit,
@@ -109,36 +109,40 @@ const AddEvent = () => {
       <PageHeader onBackButtonPress={navigateBack}>
         {i18n.t('general:add', { item: '' })}
       </PageHeader>
-      {isDivisionListItemsLoading && <LoadingContent />}
-      <Card>
-        <CardHeader>
-          <h2>{i18n.t('general:event')}</h2>
-          <div className="flex flex-row gap-2 sm:gap-4">
-            <Button
-              className="btn-outline-secondary"
-              label={i18n.t('general:save_as_draft')}
-              icon={<DocumentIcon className="h-5 w-5 text-cool-gray-500 sm:hidden" />}
-              onClick={onSaveAsDraft}
-            />
-            <Button
-              className="btn-primary"
-              label={i18n.t('general:publish')}
-              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
-              onClick={handleSubmit(onPublish)}
-            />
-          </div>
-        </CardHeader>
-        <CardBody>
-          {divisionListItems && activityTypes && (
-            <EventForm
-              control={control}
-              errors={errors}
-              targetOptions={divisionListItems.map(mapItemToMultiListItem)}
-              taskOpitons={activityTypes.map(mapItemToMultiListItem)}
-            />
-          )}
-        </CardBody>
-      </Card>
+      {isDivisionListItemsLoading && isActivityTypesLoading && isAddEventLoading && (
+        <LoadingContent />
+      )}
+      {!isDivisionListItemsLoading && !isActivityTypesLoading && !isAddEventLoading && (
+        <Card>
+          <CardHeader>
+            <h2>{i18n.t('general:event')}</h2>
+            <div className="flex flex-row gap-2 sm:gap-4">
+              <Button
+                className="btn-outline-secondary"
+                label={i18n.t('general:save_as_draft')}
+                icon={<DocumentIcon className="h-5 w-5 text-cool-gray-500 sm:hidden" />}
+                onClick={onSaveAsDraft}
+              />
+              <Button
+                className="btn-primary"
+                label={i18n.t('general:publish')}
+                icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
+                onClick={handleSubmit(onPublish)}
+              />
+            </div>
+          </CardHeader>
+          <CardBody>
+            {divisionListItems && activityTypes && (
+              <EventForm
+                control={control}
+                errors={errors}
+                targetOptions={divisionListItems.map(mapItemToMultiListItem)}
+                taskOpitons={activityTypes.map(mapItemToMultiListItem)}
+              />
+            )}
+          </CardBody>
+        </Card>
+      )}
     </PageLayout>
   );
 };
