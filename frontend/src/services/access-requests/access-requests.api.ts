@@ -37,6 +37,7 @@ export const getRejectedAccessRequests = async (
   }).then((res) => res.data);
 };
 
+// TODO: turn parameters into an interface
 export const downloadAccessRequests = async (
   status: RequestStatus,
   orderBy?: string,

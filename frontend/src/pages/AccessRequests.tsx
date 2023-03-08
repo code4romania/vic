@@ -327,7 +327,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     const url = URL.createObjectURL(new Blob([downloadAccessRequestsData]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'Cereri-acces.xlsx');
+    link.setAttribute('download', 'Cereri-Acces.xlsx');
     document.body.appendChild(link);
     link.click();
     link.remove();
