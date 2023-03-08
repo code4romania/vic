@@ -31,15 +31,9 @@ export class GetVolunteersForDownloadUseCase
         Email: volunteer.volunteerProfile.email,
         Telefon: volunteer.volunteerProfile.phone,
         'Perioada activitate': volunteer.volunteerProfile.activeSince,
-        ...(volunteer.volunteerProfile.branch
-          ? { 'Nume filiala': volunteer.volunteerProfile.branch.name }
-          : {}),
-        ...(volunteer.volunteerProfile.department
-          ? { 'Nume departament': volunteer.volunteerProfile.department.name }
-          : {}),
-        ...(volunteer.volunteerProfile.role
-          ? { 'Nume rol': volunteer.volunteerProfile.role.name }
-          : {}),
+        'Nume filiala': volunteer.volunteerProfile.branch?.name,
+        'Nume departament': volunteer.volunteerProfile.department?.name,
+        'Nume rol': volunteer.volunteerProfile.role.name,
         ...(volunteer.status === VolunteerStatus.ARCHIVED
           ? { 'Arhivat din': volunteer.archivedOn }
           : {}),
