@@ -6,14 +6,14 @@ export enum OrganizationStructureType {
 
 export interface IEvent {
   id: string;
-  logo?: string;
   name: string;
+  startDate: Date;
+  endDate?: Date;
   location?: string;
+  logo?: string;
   description: string;
   mention?: string;
   observation?: string;
-  startDate: Date;
-  endDate?: Date;
   targets: Array<{ id: string; name: string; type: OrganizationStructureType; members: number }>;
   targetedVolunteers: number;
   rsvp: { yes: number; no: number };

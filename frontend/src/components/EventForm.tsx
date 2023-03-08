@@ -58,13 +58,13 @@ export type EventFormTypes = {
   isPublic: TargetType;
   endDate?: Date;
   location?: string;
-  targets: IMultiListItem[];
+  targetsIds: IMultiListItem[];
   description: string;
   logo?: string;
   mention?: string;
   attendanceType: AttendanceType;
   attendanceMention: string;
-  tasks: [];
+  tasksIds: IMultiListItem[];
   observation?: string;
 };
 
@@ -84,25 +84,32 @@ const EventForm = ({
     if (event && reset)
       reset({
         ...event,
-        targets: [...targetOptions],
+        targetsIds: [...targetOptions],
         startDate: new Date(event.startDate),
         endDate: event.endDate ? new Date(event.endDate) : event.endDate,
       });
   }, [event, reset]);
 
-  const onRadioClick = (e) => {
-    setShowSelect(e.target.value);
+  // const onRadioClick = (e: React.MouseEvent<HTMLInputElement>) => {
+  //   setShowSelect(
+  //     TargetType[(e.target as HTMLInputElement).value.toUpperCase() as keyof typeof TargetType],
+  //   );
+  // };
+
+  const onRadioClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    const targetType = (e.currentTarget as HTMLInputElement).value as TargetType;
+    setShowSelect(targetType);
   };
 
-  const onAttendanceRadioClick = (e) => {
-    setAttendanceStatus(e.target.value);
+  const onAttendanceRadioClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    const attendanceStatus = (e.currentTarget as HTMLInputElement).value as AttendanceType;
+    setAttendanceStatus(attendanceStatus);
   };
 
   return (
     <FormLayout>
       <form>
         <h3>{i18n.t('events:details')}</h3>
-
         <Controller
           key="name"
           name="name"
@@ -131,11 +138,15 @@ const EventForm = ({
             return (
               <FormDatePicker
                 name="startDate"
-                label={`${i18n.t('events:form.start_date.label')}`}
+                label={`${i18n.t('events:form.start_date.label')}*`}
                 onChange={onChange}
                 value={value}
                 error={errors['startDate']?.message}
                 disabled={disabled}
+                dateFormat="dd.MM.yyyy, HH:mm"
+                showTimeSelect
+                timeIntervals={15}
+                timeFormat="HH:mm"
               />
             );
           }}
@@ -152,6 +163,10 @@ const EventForm = ({
                 onChange={onChange}
                 value={value}
                 error={errors['endDate']?.message}
+                dateFormat="dd.MM.yyyy, HH:mm"
+                showTimeSelect
+                timeIntervals={15}
+                timeFormat="HH:mm"
               />
             );
           }}
@@ -167,7 +182,7 @@ const EventForm = ({
                 readOnly={false}
                 value={value}
                 errorMessage={errors['location']?.message}
-                label={`${i18n.t('events:form.location.label')}*`}
+                label={`${i18n.t('events:form.location.label')}`}
                 onChange={onChange}
                 aria-invalid={errors['location']?.message ? 'true' : 'false'}
                 id="events-form__name"
@@ -200,8 +215,8 @@ const EventForm = ({
             }}
           />
           <Controller
-            key="targets"
-            name="targets"
+            key="targetsIds"
+            name="targetsIds"
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
@@ -223,7 +238,7 @@ const EventForm = ({
           render={({ field: { onChange, value } }) => {
             return (
               <FormTextarea
-                label={i18n.t('events:form.description.label')}
+                label={`${i18n.t('events:form.description.label')}*`}
                 defaultValue={value}
                 onChange={onChange}
                 errorMessage={errors['description']?.message}
@@ -301,17 +316,18 @@ const EventForm = ({
           description={i18n.t('events:form.task.description')}
         />
         <Controller
-          key="tasks"
-          name="tasks"
+          key="tasksIds"
+          name="tasksIds"
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
               <MultiSelect
-                label={`${i18n.t('events:form.task.label')}`}
+                label={`${i18n.t('events:form.task.label')}*`}
                 options={taskOpitons}
                 placeholder={`${i18n.t('events:form.target.placeholder')}`}
                 value={value}
                 onChange={onChange}
+                helper={<p className="text-red-500">{errors['tasksIds']?.message}</p>}
               />
             );
           }}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import Select, { ActionMeta, MultiValue } from 'react-select';
 
 export interface IMultiListItem {
@@ -22,6 +22,7 @@ interface MultiSelectProps {
   placeholder?: string;
   label?: string;
   isDisabled?: boolean;
+  helper?: ReactNode;
 }
 
 const MultiSelect = ({
@@ -31,6 +32,7 @@ const MultiSelect = ({
   placeholder,
   label,
   isDisabled,
+  helper,
 }: MultiSelectProps) => {
   const [defaultValue, setDefaultValue] = useState<IMultiListItem[]>([]);
 
@@ -51,6 +53,7 @@ const MultiSelect = ({
         options={options}
         isDisabled={isDisabled}
       />
+      {helper}
     </div>
   );
 };

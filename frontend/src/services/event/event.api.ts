@@ -2,7 +2,24 @@ import { EventsTabsStatus } from '../../common/enums/event-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent, OrganizationStructureType } from '../../common/interfaces/event.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-// import API from '../api';
+import { AttendanceType } from '../../components/EventForm';
+import API from '../api';
+
+export interface IAddEventData {
+  name: string;
+  startDate: Date;
+  endDate?: Date;
+  location?: string;
+  isPublic: boolean;
+  targetsIds: string[];
+  description: string;
+  logo?: string;
+  attendanceType: AttendanceType;
+  attendanceMention: string;
+  tasksIds: string[];
+  observation?: string;
+  status: 'draft' | 'published';
+}
 
 export const getEvents = async (
   rowsPerPage: number,
@@ -121,4 +138,9 @@ export const getEvent = async (id: string): Promise<IEvent> => {
       'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
     reportedHours: '16 hours',
   });
+};
+
+export const addEvent = async (data: IAddEventData): Promise<IEvent> => {
+  console.log(data);
+  return API.post('events', { ...data }).then((res) => res.data);
 };

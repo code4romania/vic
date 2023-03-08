@@ -7,29 +7,47 @@ import PageLayout from '../layouts/PageLayout';
 import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
 import Button from '../components/Button';
-import { CloudArrowUpIcon, PencilIcon } from '@heroicons/react/24/outline';
+import { CloudArrowUpIcon, DocumentIcon } from '@heroicons/react/24/outline';
 import CardBody from '../components/CardBody';
 import LoadingContent from '../components/LoadingContent';
-import EventForm, { EventFormTypes } from '../components/EventForm';
+import EventForm, { AttendanceType, EventFormTypes, TargetType } from '../components/EventForm';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDivisionsListItemsQuery } from '../services/division/division.service';
 import { mapItemToMultiListItem } from '../components/MultiSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
 import { useActivityTypesQuery } from '../services/activity-type/activity-type.service';
+import { useAddEventMutation } from '../services/event/event.service';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const validationSchema = yup.object({
   name: yup
     .string()
-    .required(`${i18n.t('announcement:form.name.required')}`)
-    .min(2, `${i18n.t('announcement:form.name.min', { value: '2' })}`)
-    .max(30, `${i18n.t('announcement:form.name.max', { value: '30' })}`),
+    .required(`${i18n.t('division:form.name.required')}`)
+    .min(2, `${i18n.t('division:form.name.min', { value: '2' })}`)
+    .max(50, `${i18n.t('division:form.name.max', { value: '50' })}`),
+  startDate: yup.date().required(`${i18n.t('access_code:form.start_date.required')}`),
+  location: yup
+    .string()
+    .min(2, `${i18n.t('events:form.location.min', { value: '2' })}`)
+    .max(500, `${i18n.t('events:form.location.max', { value: '500' })}`),
   description: yup
     .string()
-    .required(`${i18n.t('announcement:form.description.required')}`)
-    .min(2, `${i18n.t('announcement:form.description.min', { value: '2' })}`)
-    .max(1000, `${i18n.t('announcement:form.description.max', { value: '1000' })}`),
-  targets: yup.array().optional(),
+    .required(`${i18n.t('organization:form.description.required')}`)
+    .min(2, `${i18n.t('organization:form.description.min', { value: '2' })}`)
+    .max(1500, `${i18n.t('organization:form.description.max', { value: '1500' })}`),
+  targetsIds: yup.array(),
+  attendanceType: yup.string().oneOf(Object.values(AttendanceType)),
+  attendanceMention: yup
+    .string()
+    .min(2, `${i18n.t('events:form.mention.min', { value: '2' })}`)
+    .max(1500, `${i18n.t('events:form.mention.max', { value: '1500' })}`),
+  observation: yup
+    .string()
+    .min(2, `${i18n.t('events:form.observation.min', { value: '2' })}`)
+    .max(1500, `${i18n.t('events:form.observation.max', { value: '1500' })}`),
+  tasksIds: yup.array().required(`${i18n.t('events:form.task.required')}`),
 });
 
 const AddEvent = () => {
@@ -38,15 +56,22 @@ const AddEvent = () => {
   const { data: divisionListItems, isLoading: isDivisionListItemsLoading } =
     useDivisionsListItemsQuery(DivisionType.DEPARTMENT);
   const { data: activityTypes } = useActivityTypesQuery();
+  const { mutateAsync: addEvent } = useAddEventMutation();
 
   const {
-    // handleSubmit,
+    handleSubmit,
     control,
     formState: { errors },
   } = useForm<EventFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(validationSchema),
+    defaultValues: {
+      name: '',
+      logo: '',
+      isPublic: TargetType.PUBLIC,
+      attendanceType: AttendanceType.SIMPLE,
+    },
   });
 
   const navigateBack = () => {
@@ -57,8 +82,26 @@ const AddEvent = () => {
     alert('not yet implemented');
   };
 
-  const onPublish = () => {
-    alert('not yet implemented');
+  const onPublish = (data: EventFormTypes) => {
+    addEvent(
+      {
+        ...data,
+        isPublic: data.isPublic === TargetType.PUBLIC,
+        targetsIds:
+          data.isPublic === TargetType.SELECT ? data.targetsIds.map((target) => target.value) : [],
+        tasksIds: data.tasksIds.map((task) => task.value),
+        status: 'published',
+      },
+      {
+        onSuccess: () => {
+          useSuccessToast(i18n.t('activity_types:form.submit.add'));
+          navigateBack();
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error));
+        },
+      },
+    );
   };
 
   return (
@@ -74,14 +117,14 @@ const AddEvent = () => {
             <Button
               className="btn-outline-secondary"
               label={i18n.t('general:save_as_draft')}
-              icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
+              icon={<DocumentIcon className="h-5 w-5 text-cool-gray-500 sm:hidden" />}
               onClick={onSaveAsDraft}
             />
             <Button
               className="btn-primary"
               label={i18n.t('general:publish')}
               icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
-              onClick={onPublish}
+              onClick={handleSubmit(onPublish)}
             />
           </div>
         </CardHeader>

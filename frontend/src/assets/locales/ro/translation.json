@@ -254,7 +254,7 @@
     },
     "form": {
       "description": {
-        "required": "Descrierea este obligatoriu",
+        "required": "Descrierea este obligatorie",
         "min": "Descrierea poate sa aiba minim {{value}} caractere",
         "max": "Descrierea poate sa aiba maxim {{value}} caractere"
       }
@@ -403,7 +403,11 @@
       "name": { "label": "Denumire eveniment" },
       "start_date": { "label": "Data inceput" },
       "end_date": { "label": "Data final" },
-      "location": { "label": "Locatie" },
+      "location": {
+        "label": "Locatie",
+        "min": "Locatia poate sa aiba minim {{value}} caractere",
+        "max": "Locatia poate sa aiba maxim {{value}} caractere"
+      },
       "target": {
         "label": "Target",
         "public": "Eveniment public",
@@ -422,18 +426,23 @@
       "mention": {
         "label": "Mentiune",
         "description": "Adresează o intrebare voluntarilor.",
-        "empty": "Nicio mentiune."
+        "empty": "Nicio mentiune.",
+        "min": "Mentiunea poate sa aiba minim {{value}} caractere",
+        "max": "Mentiunea poate sa aiba maxim {{value}} caractere"
       },
       "task": {
         "title": "Taskuri asociate evenimentului",
         "description": "Alege taskurile specifice din lista organizatiei.",
         "label": "Alege taskuri",
-        "tasks": "Taskuri"
+        "tasks": "Taskuri",
+        "required": "Alegerea taskurilor este obligatorie."
       },
       "observation": {
         "title": "Observație (vizibil doar pentru administrator)",
         "description": "Notează informații despre eveniment dacă este cazul, vizibile doar pentru tine.",
-        "label": "Observație"
+        "label": "Observație",
+        "min": "Observația poate sa aiba minim {{value}} caractere",
+        "max": "Observația poate sa aiba maxim {{value}} caractere"
       }
     }
   }
