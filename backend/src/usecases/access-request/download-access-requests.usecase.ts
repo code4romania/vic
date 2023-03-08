@@ -13,11 +13,9 @@ export class GetAccessRequestsForDownloadUseCase
 
   public async execute(
     findOptions: FindManyAccessRequestsOptions,
-    status: AccessRequestStatus,
   ): Promise<IAccessRequestDownload[]> {
     const accessRequests = await this.accessRequestFacade.findMany({
       ...findOptions,
-      status,
       limit: 0,
       page: 0,
     });
@@ -34,7 +32,10 @@ export class GetAccessRequestsForDownloadUseCase
           ', jud. ' +
           accessRequest.requestedBy.location.county.name,
         'Data creare cerere': accessRequest.createdOn,
-        'Data refuz cerere': accessRequest.updatedOn,
+        'Data refuz cerere':
+          accessRequest.status === AccessRequestStatus.REJECTED
+            ? accessRequest.updatedOn
+            : undefined,
         'Motivul refuzului': accessRequest.rejectionReason,
       };
     });

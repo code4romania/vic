@@ -20,7 +20,6 @@ import {
   ApiPaginatedResponse,
   PaginatedPresenter,
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
-import { AccessRequestStatus } from 'src/modules/access-request/enums/access-request-status.enum';
 import { Response } from 'express';
 import { GetAccessRequestsForDownloadUseCase } from 'src/usecases/access-request/download-access-requests.usecase';
 import { jsonToExcelBuffer } from 'src/common/helpers/utils';
@@ -89,12 +88,11 @@ export class AccessRequestController {
     @Res({ passthrough: true }) res: Response,
     @ExtractUser() user: IAdminUserModel,
     @Query() filters: GetAccessRequestsDto,
-    @Query() status: AccessRequestStatus,
   ): Promise<void> {
-    const data = await this.getAccessRequestsForDownloadUseCase.execute(
-      { ...filters, organizationId: user.organizationId },
-      status,
-    );
+    const data = await this.getAccessRequestsForDownloadUseCase.execute({
+      ...filters,
+      organizationId: user.organizationId,
+    });
 
     res.end(jsonToExcelBuffer<IAccessRequestDownload>(data, 'Cereri-Acces'));
   }
