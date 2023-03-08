@@ -112,14 +112,15 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
     start: Date,
     end?: Date,
   ): SelectQueryBuilder<T> {
+    const prefix = column.split('.').join('');
     if (end) {
-      query.andWhere(`${column} BETWEEN :start AND :end`, {
-        start: format(start, DATE_CONSTANTS.YYYY_MM_DD),
-        end: format(end, DATE_CONSTANTS.YYYY_MM_DD),
+      query.andWhere(`${column} BETWEEN :${prefix}Start AND :${prefix}End`, {
+        [`${prefix}Start`]: format(start, DATE_CONSTANTS.YYYY_MM_DD),
+        [`${prefix}End`]: format(end, DATE_CONSTANTS.YYYY_MM_DD),
       });
     } else {
-      query.andWhere(`${column} >= :start`, {
-        start: format(start, DATE_CONSTANTS.YYYY_MM_DD),
+      query.andWhere(`${column} >= :${prefix}Start`, {
+        [`${prefix}Start`]: format(start, DATE_CONSTANTS.YYYY_MM_DD),
       });
     }
 

@@ -1,4 +1,10 @@
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { AgeRangeEnum } from 'src/common/enums/age-range.enum';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
@@ -26,4 +32,12 @@ export class GetVolunteersDto extends BasePaginationFilterDto {
   @IsNumber()
   @IsOptional()
   locationId?: number;
+
+  @IsDate()
+  @IsOptional()
+  activeSinceStart?: Date;
+
+  @IsDate()
+  @IsOptional()
+  activeSinceEnd?: Date;
 }
