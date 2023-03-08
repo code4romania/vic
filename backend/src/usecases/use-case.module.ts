@@ -46,6 +46,7 @@ import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase'
 import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
 import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
 import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-profile.usecase';
+import { GetAccessRequestsForDownloadUseCase } from './access-request/download-access-requests.usecase';
 
 @Module({
   imports: [
@@ -87,6 +88,7 @@ import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-prof
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    GetAccessRequestsForDownloadUseCase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -124,7 +126,7 @@ import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-prof
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
     GetAllOrganizationStructureByTypeUseCase,
-    // user
+    // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCaseService,
@@ -136,6 +138,7 @@ import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-prof
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    GetAccessRequestsForDownloadUseCase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,

@@ -23,7 +23,7 @@ const ActivityType = ({ activityType, onClick }: ActivityTypeProps) => {
       <div className="h-12 w-12 grid place-items-center rounded-full bg-cool-gray-100 shrink-0">
         <img
           src={activityType.icon}
-          className="w-6 h-6"
+          className="w-6 h-6 text-transparent"
           alt={`${activityType.name} activity icon`}
         />
       </div>
