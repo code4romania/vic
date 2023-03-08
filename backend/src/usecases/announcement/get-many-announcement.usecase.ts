@@ -3,7 +3,7 @@ import { IUseCaseService } from 'src/common/interfaces/use-case-service.interfac
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   IAnnouncementModel,
-  IFindAllAnnouncementModel,
+  FindManyAnnouncementModel,
 } from 'src/modules/announcement/models/announcement.model';
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 
@@ -14,7 +14,7 @@ export class GetManyAnnouncementUseCase
   constructor(private readonly announcementFacade: AnnouncementFacade) {}
 
   public async execute(
-    findOptions: IFindAllAnnouncementModel,
+    findOptions: FindManyAnnouncementModel,
   ): Promise<Pagination<IAnnouncementModel>> {
     return this.announcementFacade.findMany(findOptions);
   }

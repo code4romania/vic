@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import API from '../api';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IAccessRequest } from '../../common/interfaces/access-request.interface';
+import { AxiosResponseHeaders } from 'axios';
+import { RequestStatus } from '../../common/enums/request-status.enum';
 
 export const getNewAccessRequests = async (
   limit: number,
@@ -9,12 +13,21 @@ export const getNewAccessRequests = async (
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
-  start?: Date,
-  end?: Date,
+  createdOnStart?: Date,
+  createdOnEnd?: Date,
   locationId?: string,
 ): Promise<IPaginatedEntity<IAccessRequest>> => {
   return API.get('/access-request/new', {
-    params: { limit, page, orderBy, orderDirection, search, start, end, locationId },
+    params: {
+      limit,
+      page,
+      orderBy,
+      orderDirection,
+      search,
+      createdOnStart,
+      createdOnEnd,
+      locationId,
+    },
   }).then((res) => res.data);
 };
 
@@ -24,13 +37,51 @@ export const getRejectedAccessRequests = async (
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
+  createdOnStart?: Date,
+  createdOnEnd?: Date,
+  locationId?: string,
+  rejectedOnStart?: Date,
+  rejectedOnEnd?: Date,
+): Promise<IPaginatedEntity<IAccessRequest>> => {
+  return API.get('/access-request/rejected', {
+    params: {
+      limit,
+      page,
+      orderBy,
+      orderDirection,
+      search,
+      createdOnStart,
+      createdOnEnd,
+      locationId,
+      rejectedOnStart,
+      rejectedOnEnd,
+    },
+  }).then((res) => res.data);
+};
+
+export const downloadAccessRequests = async (
+  status: RequestStatus,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+  search?: string,
   start?: Date,
   end?: Date,
   locationId?: string,
-): Promise<IPaginatedEntity<IAccessRequest>> => {
-  return API.get('/access-request/rejected', {
-    params: { limit, page, orderBy, orderDirection, search, start, end, locationId },
-  }).then((res) => res.data);
+): Promise<{ data: any; headers: AxiosResponseHeaders }> => {
+  return API.get('/access-request/download', {
+    params: {
+      status,
+      orderBy,
+      orderDirection,
+      search,
+      start,
+      end,
+      locationId,
+    },
+    responseType: 'arraybuffer',
+  }).then((res) => {
+    return { data: res.data, headers: res.headers as AxiosResponseHeaders };
+  });
 };
 
 export const getAccessRequest = async (id: string): Promise<IAccessRequest> => {

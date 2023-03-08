@@ -5,7 +5,5 @@ export interface IBasePaginationFilterModel {
   page: number;
   search?: string;
   orderBy?: string;
-  start?: Date;
-  end?: Date;
   orderDirection?: OrderDirection;
 }

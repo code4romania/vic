@@ -1,4 +1,4 @@
-import { Body, Delete, Query } from '@nestjs/common';
+import { Body, Delete, Header, Query, Res } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
@@ -20,6 +20,10 @@ import {
   ApiPaginatedResponse,
   PaginatedPresenter,
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
+import { Response } from 'express';
+import { GetAccessRequestsForDownloadUseCase } from 'src/usecases/access-request/download-access-requests.usecase';
+import { jsonToExcelBuffer } from 'src/common/helpers/utils';
+import { IAccessRequestDownload } from 'src/modules/access-request/interfaces/access-request-download.interface';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, AccessRequestGuard)
@@ -32,6 +36,7 @@ export class AccessRequestController {
     private readonly approveAccessRequestUseCase: ApproveAccessRequestUseCase,
     private readonly rejectAccessRequestUseCase: RejectAccessRequestUseCase,
     private readonly deleteAccessRequestUseCase: DeleteAccessRequestUseCase,
+    private readonly getAccessRequestsForDownloadUseCase: GetAccessRequestsForDownloadUseCase,
   ) {}
 
   @Get('/new')
@@ -71,6 +76,25 @@ export class AccessRequestController {
         (accessRequest) => new AccessRequestPresenter(accessRequest),
       ),
     });
+  }
+
+  @Get('/download')
+  @Header(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  )
+  @Header('Content-Disposition', 'attachment; filename="Cereri-Acces.xlsx"')
+  async downloadAccessRequests(
+    @Res({ passthrough: true }) res: Response,
+    @ExtractUser() user: IAdminUserModel,
+    @Query() filters: GetAccessRequestsDto,
+  ): Promise<void> {
+    const data = await this.getAccessRequestsForDownloadUseCase.execute({
+      ...filters,
+      organizationId: user.organizationId,
+    });
+
+    res.end(jsonToExcelBuffer<IAccessRequestDownload>(data, 'Cereri-Acces'));
   }
 
   @ApiParam({ name: 'id', type: 'string' })

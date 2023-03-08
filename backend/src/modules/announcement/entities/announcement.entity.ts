@@ -27,7 +27,7 @@ export class AnnouncementEntity extends BaseEntity {
   status: AnnouncementStatus;
 
   @Column({
-    type: 'timestamp with time zone',
+    type: 'timestamptz',
     name: 'published_on',
     nullable: true,
   })
@@ -42,7 +42,6 @@ export class AnnouncementEntity extends BaseEntity {
 
   @ManyToMany(() => OrganizationStructureEntity, {
     eager: true,
-    onDelete: 'SET NULL',
   })
   @JoinTable()
   targets: OrganizationStructureEntity[];

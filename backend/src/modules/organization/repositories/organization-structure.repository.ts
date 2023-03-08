@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
-import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { VolunteerProfileEntity } from 'src/modules/volunteer/entities/volunteer-profile.entity';
+import { Repository } from 'typeorm';
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
+import { OrganizationStructureType } from '../enums/organization-structure-type.enum';
 import { IOrganizationStructureRepository } from '../interfaces/organization-structure-repository.interface';
 import {
   ICreateOrganizationStructureModel,
@@ -59,25 +60,46 @@ export class OrganizationStructureRepositoryService
   async findMany(
     findOptions: IFindAllOrganizationStructurePaginatedModel,
   ): Promise<Pagination<IOrganizationStructureModel>> {
-    const options: {
-      filters: FindOptionsWhere<OrganizationStructureEntity>;
-    } & IBasePaginationFilterModel = {
-      ...findOptions,
-      filters: {
-        organizationId: findOptions.organizationId,
-        type: findOptions.type,
-      },
-    };
-    return this.findManyPaginated<IOrganizationStructureModel>(
-      {
-        searchableColumns: [],
-        defaultSortBy: 'name',
-        defaultOrderDirection: OrderDirection.ASC,
-        relations: {
-          createdBy: true,
-        },
-      },
-      options,
+    const { type, organizationId, orderBy, orderDirection } = findOptions;
+
+    const query = this.structureRepository
+      .createQueryBuilder('structure')
+      .leftJoinAndMapOne(
+        'structure.createdBy',
+        'structure.createdBy',
+        'createdBy',
+      )
+      .loadRelationCountAndMap(
+        'structure.numberOfMembers',
+        `structure.${this.getPropertyByType(type)}`,
+      )
+      .select()
+      .addSelect((subQuery) => {
+        return subQuery
+          .select('COUNT(vp.id)', 'numberOfMembers')
+          .from(VolunteerProfileEntity, 'vp')
+          .where(
+            `vp.${OrganizationStructureType.BRANCH.toLocaleLowerCase()}.id = structure.id`,
+          );
+      }, 'numberOfMembers')
+      .where(
+        'structure.type = :type AND structure.organizationId = :organizationId',
+        { type, organizationId },
+      )
+      .groupBy(`structure.id, createdBy.id`)
+      .orderBy(
+        `${
+          orderBy === 'numberOfMembers'
+            ? '"numberOfMembers"'
+            : this.buildOrderByQuery(orderBy || 'name', 'structure')
+        }`,
+        orderDirection || OrderDirection.ASC,
+      );
+
+    return this.paginateQuery(
+      query,
+      findOptions.limit,
+      findOptions.page,
       OrganizationStructureTransformer.fromEntity,
     );
   }
@@ -110,5 +132,22 @@ export class OrganizationStructureRepositoryService
     }
 
     return null;
+  }
+
+  private getPropertyByType(type: OrganizationStructureType): string {
+    let property = 'volunteerProfileBranches';
+    switch (type) {
+      case OrganizationStructureType.BRANCH:
+        property = 'volunteerProfileBranches';
+        break;
+      case OrganizationStructureType.DEPARTMENT:
+        property = 'volunteerProfileDepartments';
+        break;
+      case OrganizationStructureType.ROLE:
+        property = 'volunteerProfileRoles';
+        break;
+    }
+
+    return property;
   }
 }

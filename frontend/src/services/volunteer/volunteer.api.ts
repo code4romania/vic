@@ -18,8 +18,8 @@ export const getVolunteers = async (
   departmentId?: string,
   roleId?: string,
   locationId?: string,
-  start?: Date,
-  end?: Date,
+  activeSinceStart?: Date,
+  activeSinceEnd?: Date,
 ): Promise<IPaginatedEntity<IVolunteer>> => {
   return API.get('/volunteer', {
     params: {
@@ -34,8 +34,8 @@ export const getVolunteers = async (
       departmentId,
       roleId,
       locationId,
-      start,
-      end,
+      activeSinceStart,
+      activeSinceEnd,
     },
   }).then((res) => res.data);
 };

@@ -270,7 +270,8 @@
       "rejected_requests": "Cereri respinse"
     },
     "filters": {
-      "access_request_range": "Perioada cerere access"
+      "access_request_range": "Perioada cerere access",
+      "access_request_rejected_range": "Perioada respingere"
     },
     "popover": {
       "view": "Vizualizeaza aplicare",
