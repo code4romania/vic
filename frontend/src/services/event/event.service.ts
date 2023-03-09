@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { EventsTabsStatus } from '../../common/enums/event-status.enum';
+import { EventsTabs } from '../../common/enums/events-tabs.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { EVENT_ERRORS } from '../../common/errors/entities/event.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
@@ -9,7 +9,7 @@ import { addEvent, editEvent, getEvent, getEvents, IAddEventData } from './event
 export const useEventsQuery = (
   rowsPerPage: number,
   page: number,
-  tabsStatus: EventsTabsStatus,
+  tabsStatus: EventsTabs,
   orderByColumn?: string,
   orderDirection?: OrderDirection,
 ) => {

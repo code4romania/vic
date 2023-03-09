@@ -1,8 +1,10 @@
-import { EventsTabsStatus } from '../../common/enums/event-status.enum';
+import { EventsTabs } from '../../common/enums/events-tabs.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { IEvent, OrganizationStructureType } from '../../common/interfaces/event.interface';
+import { IEvent } from '../../common/interfaces/event.interface';
+import { DivisionType } from '../../common/enums/division-type.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { AttendanceType } from '../../components/EventForm';
+import { EventStatus } from '../../common/enums/event-status';
 // import API from '../api';
 
 export interface IAddEventData {
@@ -18,13 +20,13 @@ export interface IAddEventData {
   attendanceMention?: string;
   tasksIds: string[];
   observation?: string;
-  status: 'draft' | 'published' | 'archived';
+  status: EventStatus;
 }
 
 export const getEvents = async (
   rowsPerPage: number,
   page: number,
-  tabsStatus: EventsTabsStatus,
+  tabsStatus: EventsTabs,
   orderByColumn?: string,
   orderDirection?: OrderDirection,
 ): Promise<IPaginatedEntity<IEvent>> => {
@@ -54,11 +56,11 @@ export const getEvents = async (
         location: 'Sediu Piata Alba Iulia, sala 02',
         targetedVolunteers: 75,
         targets: [
-          { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
+          { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
           {
             id: '2',
             name: 'San Francisco Branch',
-            type: OrganizationStructureType.BRANCH,
+            type: DivisionType.BRANCH,
             members: 18,
           },
         ],
@@ -70,7 +72,7 @@ export const getEvents = async (
           },
         ],
         rsvp: { yes: 75, no: 10 },
-        status: 'published',
+        status: EventStatus.ARCHIVED,
         reportedHours: '16 hours',
       },
       {
@@ -87,11 +89,11 @@ export const getEvents = async (
         attendanceMention: 'Acesta mentiunea este frumoasa',
         targetedVolunteers: 75,
         targets: [
-          { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
+          { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
           {
             id: '2',
             name: 'San Francisco Branch',
-            type: OrganizationStructureType.BRANCH,
+            type: DivisionType.BRANCH,
             members: 18,
           },
         ],
@@ -103,7 +105,7 @@ export const getEvents = async (
           },
         ],
         rsvp: { yes: 75, no: 10 },
-        status: 'published',
+        status: EventStatus.PUBLISHED,
         reportedHours: '16 hours',
       },
       {
@@ -127,7 +129,7 @@ export const getEvents = async (
           },
         ],
         rsvp: { yes: 75, no: 10 },
-        status: 'published',
+        status: EventStatus.DRAFT,
         reportedHours: '16 hours',
       },
     ],
@@ -157,11 +159,11 @@ export const getEvent = async (id: string): Promise<IEvent> => {
     attendanceMention: 'Acesta mentiunea este frumoasa',
     targetedVolunteers: 75,
     targets: [
-      { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
+      { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
       {
         id: '2',
         name: 'San Francisco Branch',
-        type: OrganizationStructureType.BRANCH,
+        type: DivisionType.BRANCH,
         members: 18,
       },
     ],
@@ -173,7 +175,7 @@ export const getEvent = async (id: string): Promise<IEvent> => {
       },
     ],
     rsvp: { yes: 75, no: 10 },
-    status: 'draft',
+    status: EventStatus.DRAFT,
     observation:
       'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
     reportedHours: '16 hours',
@@ -197,11 +199,11 @@ export const addEvent = async (data: IAddEventData): Promise<IEvent> => {
     attendanceMention: 'Acesta mentiunea este frumoasa',
     targetedVolunteers: 75,
     targets: [
-      { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
+      { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
       {
         id: '2',
         name: 'San Francisco Branch',
-        type: OrganizationStructureType.BRANCH,
+        type: DivisionType.BRANCH,
         members: 18,
       },
     ],
@@ -213,7 +215,7 @@ export const addEvent = async (data: IAddEventData): Promise<IEvent> => {
       },
     ],
     rsvp: { yes: 75, no: 10 },
-    status: 'draft',
+    status: EventStatus.DRAFT,
     observation:
       'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
     reportedHours: '16 hours',
@@ -240,11 +242,11 @@ export const editEvent = async (
     attendanceMention: 'Acesta mentiunea este frumoasa',
     targetedVolunteers: 75,
     targets: [
-      { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
+      { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
       {
         id: '2',
         name: 'San Francisco Branch',
-        type: OrganizationStructureType.BRANCH,
+        type: DivisionType.BRANCH,
         members: 18,
       },
     ],
@@ -256,7 +258,7 @@ export const editEvent = async (
       },
     ],
     rsvp: { yes: 75, no: 10 },
-    status: 'draft',
+    status: EventStatus.DRAFT,
     observation:
       'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
     reportedHours: '16 hours',
