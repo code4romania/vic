@@ -3,6 +3,8 @@ import { ErrorClass } from '../base-error.class';
 
 export enum ANNOUNCEMENT_ERRORS {
   ANNOUNCEMENT_001 = 'ANNOUNCEMENT_001',
+  ANNOUNCEMENT_002 = 'ANNOUNCEMENT_002',
+  ANNOUNCEMENT_003 = 'ANNOUNCEMENT_003',
 }
 
 export class AnnouncementError extends ErrorClass<ANNOUNCEMENT_ERRORS> {
@@ -11,6 +13,8 @@ export class AnnouncementError extends ErrorClass<ANNOUNCEMENT_ERRORS> {
   private constructor() {
     super({
       [ANNOUNCEMENT_ERRORS.ANNOUNCEMENT_001]: i18n.t('announcement:error.ANNOUNCEMENT_001'),
+      [ANNOUNCEMENT_ERRORS.ANNOUNCEMENT_002]: i18n.t('announcement:error.ANNOUNCEMENT_002'),
+      [ANNOUNCEMENT_ERRORS.ANNOUNCEMENT_003]: i18n.t('announcement:error.ANNOUNCEMENT_003'),
     });
   }
 

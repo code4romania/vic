@@ -416,7 +416,9 @@
       "description": "Aceasta actiune va sterge definitiv acest anunt si toate informatiile asociate lui."
     },
     "error": {
-      "ANNOUNCEMENT_001": "Anuntul nu a fost gasit"
+      "ANNOUNCEMENT_001": "Anuntul nu a fost gasit",
+      "ANNOUNCEMENT_002": "Anuntul este deja publicat si nu poate fi modificat",
+      "ANNOUNCEMENT_003": "Selectie departament incorecta, doar departamentele pot fi alese ca target"
     }
   }
 }
