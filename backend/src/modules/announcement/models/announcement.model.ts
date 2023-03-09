@@ -26,7 +26,8 @@ export type CreateAnnouncementOptions = Pick<
 };
 
 export type UpdateAnnouncementOptions = Partial<
-  CreateAnnouncementOptions & Pick<IAnnouncementModel, 'publishedOn'>
+  Omit<CreateAnnouncementOptions, 'organizationId'> &
+    Pick<IAnnouncementModel, 'publishedOn'>
 >;
 
 export type FindAnnouncementOptions = Partial<
