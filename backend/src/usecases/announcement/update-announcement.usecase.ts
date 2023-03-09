@@ -6,7 +6,7 @@ import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-
 import { AnnouncementExceptionMessages } from 'src/modules/announcement/exceptions/announcement.exceptions';
 import {
   IAnnouncementModel,
-  UpdateAnnouncementModel,
+  UpdateAnnouncementOptions,
 } from 'src/modules/announcement/models/announcement.model';
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
@@ -32,17 +32,13 @@ export class UpdateAnnouncementUseCase
 
   public async execute(
     id: string,
-    updateData: UpdateAnnouncementModel,
+    updateData: UpdateAnnouncementOptions,
   ): Promise<IAnnouncementModel> {
     // 1. Check if the announcement exists
     const announcementToUpdate = await this.getOneAnnouncementUseCase.execute({
       id,
     });
-    if (!announcementToUpdate) {
-      this.exceptionsService.notFoundException(
-        AnnouncementExceptionMessages.ANNOUNCEMENT_001,
-      );
-    }
+
     // 2. Only drafts can be edited/published
     if (announcementToUpdate.status !== AnnouncementStatus.DRAFT) {
       this.exceptionsService.badRequestException(
@@ -54,13 +50,11 @@ export class UpdateAnnouncementUseCase
     let targetedVolunteers = 0;
 
     if (updateData.targetsIds?.length) {
-      const departments = await this.organizationStructureFacade.findAll(
-        updateData.targetsIds.map((id) => ({
-          id,
-          type: OrganizationStructureType.DEPARTMENT,
-          organizationId: updateData.organizationId,
-        })),
-      );
+      const departments = await this.organizationStructureFacade.findAllByIds({
+        ids: updateData.targetsIds,
+        type: OrganizationStructureType.DEPARTMENT,
+        organizationId: updateData.organizationId,
+      });
 
       if (departments.length !== updateData.targetsIds.length) {
         this.exceptionsService.badRequestException(
@@ -68,7 +62,7 @@ export class UpdateAnnouncementUseCase
         );
       }
 
-      departments.map(
+      departments.forEach(
         (department) => (targetedVolunteers += department.members),
       );
     } else {
@@ -86,7 +80,7 @@ export class UpdateAnnouncementUseCase
       targetedVolunteers:
         targetedVolunteers !== 0
           ? targetedVolunteers
-          : updateData.targetedVolunteers,
+          : announcementToUpdate.targetedVolunteers, // TODO: this needs rework
     });
 
     // 5. Send email to targets if announcement is published
@@ -96,7 +90,7 @@ export class UpdateAnnouncementUseCase
         new SendAnnouncementEvent(
           updatedAnnouncement.organizationId,
           updatedAnnouncement.id,
-          updatedAnnouncement.targets?.map((target) => target.id),
+          updatedAnnouncement.targets?.map((target) => target.id), // TODO: recheck this
         ),
       );
     }

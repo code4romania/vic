@@ -3,6 +3,7 @@ import { Pagination } from 'src/infrastructure/base/repository-with-pagination.c
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
 import {
   ICreateOrganizationStructureModel,
+  IFindAllOrganizationStructureByIdsOptions,
   IFindAllOrganizationStructureModel,
   IFindAllOrganizationStructurePaginatedModel,
   IOrganizationStructureModel,
@@ -23,5 +24,8 @@ export interface IOrganizationStructureRepository
   ): Promise<Pagination<IOrganizationStructureModel>>;
   findAll(
     options: IFindAllOrganizationStructureModel,
+  ): Promise<IOrganizationStructureModel[]>;
+  findAllByIds(
+    options: IFindAllOrganizationStructureByIdsOptions,
   ): Promise<IOrganizationStructureModel[]>;
 }

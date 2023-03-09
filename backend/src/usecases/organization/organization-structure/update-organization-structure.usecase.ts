@@ -33,7 +33,6 @@ export class UpdateOrganizationStructureUseCase
 
     // 2. Find if there is any duplicate (Organization - Type - Name)
     const duplicate = await this.organizationStructureFacade.find({
-      // id: Not(data.id), // TODO: open task to check how to add FindOptions here
       type: toUpdate.type,
       organizationId: toUpdate.organizationId,
       name: data.name,

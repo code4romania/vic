@@ -35,6 +35,13 @@ export type IFindAllOrganizationStructureModel =
   | Partial<IOrganizationStructureModel>
   | Partial<IOrganizationStructureModel>[];
 
+export type IFindAllOrganizationStructureByIdsOptions = Pick<
+  IOrganizationStructureModel,
+  'type' | 'organizationId'
+> & {
+  ids: string[];
+};
+
 export class OrganizationStructureTransformer {
   static fromEntity(
     entity: OrganizationStructureEntity & { numberOfMembers?: number },
@@ -66,6 +73,7 @@ export class OrganizationStructureTransformer {
       entity.createdById = model.createdById;
       entity.organizationId = model.organizationId;
     } else {
+      // used for ManyToMany relations to generate entity like object
       entity.id = model;
     }
     return entity;

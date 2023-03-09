@@ -3,8 +3,8 @@ import { IUseCaseService } from 'src/common/interfaces/use-case-service.interfac
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { AnnouncementExceptionMessages } from 'src/modules/announcement/exceptions/announcement.exceptions';
 import {
+  FindAnnouncementOptions,
   IAnnouncementModel,
-  FindAnnouncementModel,
 } from 'src/modules/announcement/models/announcement.model';
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 
@@ -18,7 +18,7 @@ export class GetOneAnnouncementUseCase
   ) {}
 
   public async execute(
-    findOptions: FindAnnouncementModel,
+    findOptions: FindAnnouncementOptions,
   ): Promise<IAnnouncementModel> {
     const announcement = await this.announcementFacade.find(findOptions);
 

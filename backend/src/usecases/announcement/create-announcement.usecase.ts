@@ -5,8 +5,8 @@ import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.serv
 import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
 import { AnnouncementExceptionMessages } from 'src/modules/announcement/exceptions/announcement.exceptions';
 import {
+  CreateAnnouncementOptions,
   IAnnouncementModel,
-  CreateAnnouncementModel,
 } from 'src/modules/announcement/models/announcement.model';
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
@@ -29,21 +29,19 @@ export class CreateAnnouncementUseCase
   ) {}
 
   public async execute(
-    createData: CreateAnnouncementModel,
+    announcement: CreateAnnouncementOptions,
   ): Promise<IAnnouncementModel> {
     // 1. Check if only departments were chosen and calculate the total number of volunteers
     let targetedVolunteers = 0;
 
-    if (createData.targetsIds?.length) {
-      const departments = await this.organizationStructureFacade.findAll(
-        createData.targetsIds.map((id) => ({
-          id,
-          type: OrganizationStructureType.DEPARTMENT,
-          organizationId: createData.organizationId,
-        })),
-      );
+    if (announcement.targetsIds?.length) {
+      const departments = await this.organizationStructureFacade.findAllByIds({
+        ids: announcement.targetsIds,
+        type: OrganizationStructureType.DEPARTMENT,
+        organizationId: announcement.organizationId,
+      });
 
-      if (departments.length !== createData.targetsIds.length) {
+      if (departments.length !== announcement.targetsIds.length) {
         this.exceptionsService.badRequestException(
           AnnouncementExceptionMessages.ANNOUNCEMENT_003,
         );
@@ -54,31 +52,29 @@ export class CreateAnnouncementUseCase
       );
     } else {
       targetedVolunteers = await this.volunteerFacade.count({
-        organizationId: createData.organizationId,
+        organizationId: announcement.organizationId,
         status: VolunteerStatus.ACTIVE,
       });
     }
 
     // 2. Create announcement
-    const announcement = await this.announcementFacade.create({
-      ...createData,
+    const newAnouncement = await this.announcementFacade.create({
+      ...announcement,
       targetedVolunteers,
-      publishedOn:
-        createData.status === AnnouncementStatus.PUBLISHED ? new Date() : null,
     });
 
     // 3. Send email to targets if announcement is published
-    if (announcement.status === AnnouncementStatus.PUBLISHED) {
+    if (newAnouncement.status === AnnouncementStatus.PUBLISHED) {
       this.eventEmitter.emit(
         EVENTS.OTHER.SEND_ANNOUNCEMENT,
         new SendAnnouncementEvent(
-          announcement.organizationId,
-          announcement.id,
-          announcement.targets?.map((target) => target.id),
+          newAnouncement.organizationId,
+          newAnouncement.id,
+          announcement.targetsIds,
         ),
       );
     }
 
-    return announcement;
+    return newAnouncement;
   }
 }

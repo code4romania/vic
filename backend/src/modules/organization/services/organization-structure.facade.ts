@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   ICreateOrganizationStructureModel,
+  IFindAllOrganizationStructureByIdsOptions,
   IFindAllOrganizationStructureModel,
   IFindAllOrganizationStructurePaginatedModel,
   IFindOrganizationStructureModel,
@@ -28,6 +29,12 @@ export class OrganizationStructureFacade {
     return this.organizationStructureRepository.findAll(options);
   }
 
+  public async findAllByIds(
+    options: IFindAllOrganizationStructureByIdsOptions,
+  ): Promise<IOrganizationStructureModel[]> {
+    return this.organizationStructureRepository.findAllByIds(options);
+  }
+
   public async find(
     findOptions: IFindOrganizationStructureModel,
   ): Promise<IOrganizationStructureModel> {
@@ -48,5 +55,12 @@ export class OrganizationStructureFacade {
 
   public async delete(id: string): Promise<string> {
     return this.organizationStructureRepository.delete(id);
+  }
+
+  public async exists(
+    ids: string[],
+    options: IFindOrganizationStructureModel,
+  ): Promise<boolean> {
+    return this.organizationStructureRepository.exists(ids, options);
   }
 }

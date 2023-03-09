@@ -11,11 +11,11 @@ import { AnnouncementEntity } from '../entities/announcement.entity';
 import { IAnnouncementRepository } from '../interfaces/announcement-repository.interface';
 import {
   AnnouncementStructureTransformer,
+  CreateAnnouncementOptions,
+  FindAnnouncementOptions,
+  FindManyAnnouncementOptions,
   IAnnouncementModel,
-  CreateAnnouncementModel,
-  FindManyAnnouncementModel,
-  FindAnnouncementModel,
-  UpdateAnnouncementModel,
+  UpdateAnnouncementOptions,
 } from '../models/announcement.model';
 
 @Injectable()
@@ -30,9 +30,11 @@ export class AnnouncementRepositoryService
     super(announcementRepository);
   }
 
-  async find(findOptions: FindAnnouncementModel): Promise<IAnnouncementModel> {
+  async find(
+    findOptions: FindAnnouncementOptions,
+  ): Promise<IAnnouncementModel> {
     const announcement = await this.announcementRepository.findOne({
-      where: { ...findOptions },
+      where: findOptions,
       relations: {
         targets: true,
       },
@@ -44,7 +46,7 @@ export class AnnouncementRepositoryService
   }
 
   async findMany(
-    findOptions: FindManyAnnouncementModel,
+    findOptions: FindManyAnnouncementOptions,
   ): Promise<Pagination<IAnnouncementModel>> {
     const { orderBy, orderDirection, organizationId, search } = findOptions;
 
@@ -80,7 +82,7 @@ export class AnnouncementRepositoryService
   }
 
   async create(
-    newAnnouncement: CreateAnnouncementModel,
+    newAnnouncement: CreateAnnouncementOptions,
   ): Promise<IAnnouncementModel> {
     const announcement = await this.announcementRepository.save(
       AnnouncementStructureTransformer.toEntity(newAnnouncement),
@@ -91,7 +93,7 @@ export class AnnouncementRepositoryService
 
   async update(
     id: string,
-    { targetsIds, ...updates }: UpdateAnnouncementModel,
+    { targetsIds, ...updates }: UpdateAnnouncementOptions,
   ): Promise<IAnnouncementModel> {
     const targets = targetsIds?.map(OrganizationStructureTransformer.toEntity);
 

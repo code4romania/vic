@@ -3,22 +3,22 @@ import { Pagination } from 'src/infrastructure/base/repository-with-pagination.c
 import { AnnouncementEntity } from '../entities/announcement.entity';
 import {
   IAnnouncementModel,
-  CreateAnnouncementModel,
-  FindManyAnnouncementModel,
-  FindAnnouncementModel,
-  UpdateAnnouncementModel,
+  CreateAnnouncementOptions,
+  FindAnnouncementOptions,
+  FindManyAnnouncementOptions,
+  UpdateAnnouncementOptions,
 } from '../models/announcement.model';
 
 export interface IAnnouncementRepository
   extends IRepositoryWithPagination<AnnouncementEntity> {
-  create(newAnnouncement: CreateAnnouncementModel): Promise<IAnnouncementModel>;
+  create(newAnnouncement: FindAnnouncementOptions): Promise<IAnnouncementModel>;
   update(
     id: string,
-    updates: UpdateAnnouncementModel,
+    updates: UpdateAnnouncementOptions,
   ): Promise<IAnnouncementModel>;
-  find(findOptions: FindAnnouncementModel): Promise<IAnnouncementModel>;
+  find(findOptions: CreateAnnouncementOptions): Promise<IAnnouncementModel>;
   findMany(
-    findOptions: FindManyAnnouncementModel,
+    findOptions: FindManyAnnouncementOptions,
   ): Promise<Pagination<IAnnouncementModel>>;
   delete(id: string): Promise<string>;
 }
