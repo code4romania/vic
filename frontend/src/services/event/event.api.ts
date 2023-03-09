@@ -1,4 +1,4 @@
-import { EventsTabsStatus } from '../../common/enums/event-status.enum';
+import { EventsTabs } from '../../common/enums/events-tabs.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent, OrganizationStructureType } from '../../common/interfaces/event.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -7,7 +7,7 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 export const getEvents = async (
   rowsPerPage: number,
   page: number,
-  tabsStatus: EventsTabsStatus,
+  tabsStatus: EventsTabs,
   orderByColumn?: string,
   orderDirection?: OrderDirection,
 ): Promise<IPaginatedEntity<IEvent>> => {

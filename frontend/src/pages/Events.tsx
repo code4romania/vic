@@ -22,7 +22,7 @@ import Tabs from '../components/Tabs';
 import { useErrorToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
-import { EventsTabsStatus } from '../common/enums/event-status.enum';
+import { EventsTabs } from '../common/enums/events-tabs.enum';
 import { useEventsQuery } from '../services/event/event.service';
 import { formatEventDate, mapTargetsToString } from '../common/utils/utils';
 import MediaEventCell from '../components/MediaEventCell';
@@ -30,9 +30,9 @@ import MediaStatusCell from '../components/MediaStatusCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
 import CellLayout from '../layouts/CellLayout';
 
-const EventsTabs: SelectItem<EventsTabsStatus>[] = [
-  { key: EventsTabsStatus.OPEN, value: i18n.t('side_menu:options.events') },
-  { key: EventsTabsStatus.PAST, value: i18n.t('events:past_events') },
+const EventsTabsOptions: SelectItem<EventsTabs>[] = [
+  { key: EventsTabs.OPEN, value: i18n.t('side_menu:options.events') },
+  { key: EventsTabs.PAST, value: i18n.t('events:past_events') },
 ];
 
 const OpenEventsTableHeader = [
@@ -141,7 +141,7 @@ const PastEventsTableHeader = [
 ];
 
 const Events = () => {
-  const [tabsStatus, setTabsStatus] = useState<EventsTabsStatus>(EventsTabsStatus.OPEN);
+  const [tabsStatus, setTabsStatus] = useState<EventsTabs>(EventsTabs.OPEN);
   // pagination state
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
@@ -166,7 +166,7 @@ const Events = () => {
       useErrorToast(InternalErrors.EVENT_ERRORS.getError(eventsError.response?.data.code_error));
   }, [eventsError]);
 
-  const onTabClick = (tab: EventsTabsStatus) => {
+  const onTabClick = (tab: EventsTabs) => {
     setTabsStatus(tab);
   };
 
@@ -251,11 +251,11 @@ const Events = () => {
       >
         {i18n.t('side_menu:options.events')}
       </PageHeaderAdd>
-      <Tabs<EventsTabsStatus> tabs={EventsTabs} onClick={onTabClick}>
+      <Tabs<EventsTabs> tabs={EventsTabsOptions} onClick={onTabClick}>
         <Card>
           <CardHeader>
             <h2>
-              {tabsStatus === EventsTabsStatus.OPEN
+              {tabsStatus === EventsTabs.OPEN
                 ? i18n.t('side_menu:options.events')
                 : i18n.t('events:past_events')}
             </h2>
@@ -269,9 +269,7 @@ const Events = () => {
           <CardBody>
             <DataTableComponent
               columns={[
-                ...(tabsStatus === EventsTabsStatus.PAST
-                  ? PastEventsTableHeader
-                  : OpenEventsTableHeader),
+                ...(tabsStatus === EventsTabs.PAST ? PastEventsTableHeader : OpenEventsTableHeader),
                 buildEventsActionColumn(),
               ]}
               data={events?.items}
