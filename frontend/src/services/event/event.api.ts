@@ -1,6 +1,7 @@
 import { EventsTabs } from '../../common/enums/events-tabs.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { IEvent, OrganizationStructureType } from '../../common/interfaces/event.interface';
+import { IEvent } from '../../common/interfaces/event.interface';
+import { DivisionType } from '../../common/enums/division-type.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 // import API from '../api';
 
@@ -29,11 +30,11 @@ export const getEvents = async (
         endDate: new Date('2023-09-24T17:32:00'),
         targetedVolunteers: 75,
         targets: [
-          { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
+          { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
           {
             id: '2',
             name: 'San Francisco Branch',
-            type: OrganizationStructureType.BRANCH,
+            type: DivisionType.BRANCH,
             members: 18,
           },
         ],
@@ -48,11 +49,11 @@ export const getEvents = async (
         endDate: new Date('2023-09-24T17:32:00'),
         targetedVolunteers: 75,
         targets: [
-          { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
+          { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
           {
             id: '2',
             name: 'San Francisco Branch',
-            type: OrganizationStructureType.BRANCH,
+            type: DivisionType.BRANCH,
             members: 18,
           },
         ],
