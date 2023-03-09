@@ -54,13 +54,11 @@ export class UpdateAnnouncementUseCase
     let targetedVolunteers = 0;
 
     if (updateData.targetsIds?.length) {
-      const departments = await this.organizationStructureFacade.findAll(
-        updateData.targetsIds.map((id) => ({
-          id,
-          type: OrganizationStructureType.DEPARTMENT,
-          organizationId: updateData.organizationId,
-        })),
-      );
+      const departments = await this.organizationStructureFacade.findAllByIds({
+        ids: updateData.targetsIds,
+        type: OrganizationStructureType.DEPARTMENT,
+        organizationId: updateData.organizationId,
+      });
 
       if (departments.length !== updateData.targetsIds.length) {
         this.exceptionsService.badRequestException(
@@ -68,7 +66,7 @@ export class UpdateAnnouncementUseCase
         );
       }
 
-      departments.map(
+      departments.forEach(
         (department) => (targetedVolunteers += department.members),
       );
     } else {
@@ -86,7 +84,7 @@ export class UpdateAnnouncementUseCase
       targetedVolunteers:
         targetedVolunteers !== 0
           ? targetedVolunteers
-          : updateData.targetedVolunteers,
+          : announcementToUpdate.targetedVolunteers,
     });
 
     // 5. Send email to targets if announcement is published

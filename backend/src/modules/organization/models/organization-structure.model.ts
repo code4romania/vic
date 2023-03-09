@@ -35,6 +35,13 @@ export type IFindAllOrganizationStructureModel =
   | Partial<IOrganizationStructureModel>
   | Partial<IOrganizationStructureModel>[];
 
+export type IFindAllOrganizationStructureByIds = Pick<
+  IOrganizationStructureModel,
+  'type' | 'organizationId'
+> & {
+  ids: string[];
+};
+
 export class OrganizationStructureTransformer {
   static fromEntity(
     entity: OrganizationStructureEntity & { numberOfMembers?: number },

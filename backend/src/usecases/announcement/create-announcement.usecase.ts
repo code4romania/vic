@@ -35,13 +35,11 @@ export class CreateAnnouncementUseCase
     let targetedVolunteers = 0;
 
     if (createData.targetsIds?.length) {
-      const departments = await this.organizationStructureFacade.findAll(
-        createData.targetsIds.map((id) => ({
-          id,
-          type: OrganizationStructureType.DEPARTMENT,
-          organizationId: createData.organizationId,
-        })),
-      );
+      const departments = await this.organizationStructureFacade.findAllByIds({
+        ids: createData.targetsIds,
+        type: OrganizationStructureType.DEPARTMENT,
+        organizationId: createData.organizationId,
+      });
 
       if (departments.length !== createData.targetsIds.length) {
         this.exceptionsService.badRequestException(
