@@ -26,7 +26,7 @@ import { EventsTabs } from '../common/enums/events-tabs.enum';
 import { useEventsQuery } from '../services/event/event.service';
 import { formatEventDate, mapTargetsToString } from '../common/utils/utils';
 import MediaEventCell from '../components/MediaEventCell';
-import MediaStatusCell from '../components/MediaStatusCell';
+import StatusCell from '../components/StatusCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
 import CellLayout from '../layouts/CellLayout';
 
@@ -79,7 +79,7 @@ const OpenEventsTableHeader = [
     id: 'event.status',
     name: i18n.t('events:status'),
     sortable: true,
-    cell: (row: IEvent) => <MediaStatusCell status={row.status} />,
+    cell: (row: IEvent) => <StatusCell status={row.status} />,
   },
 ];
 
@@ -136,7 +136,7 @@ const PastEventsTableHeader = [
     id: 'event.status',
     name: i18n.t('events:status'),
     sortable: true,
-    cell: (row: IEvent) => <MediaStatusCell status={row.status} />,
+    cell: (row: IEvent) => <StatusCell status={row.status} />,
   },
 ];
 
