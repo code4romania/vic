@@ -56,4 +56,11 @@ export class OrganizationStructureFacade {
   public async delete(id: string): Promise<string> {
     return this.organizationStructureRepository.delete(id);
   }
+
+  public async exists(
+    ids: string[],
+    options: IFindOrganizationStructureModel,
+  ): Promise<boolean> {
+    return this.organizationStructureRepository.exists(ids, options);
+  }
 }

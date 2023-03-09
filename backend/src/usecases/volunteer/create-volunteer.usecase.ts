@@ -8,7 +8,7 @@ import {
 } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
-import { GetOneRegularUserUseCaseService } from '../user/get-one-regular-user.usecase';
+import { GetOneRegularUserUseCase } from '../user/get-one-regular-user.usecase';
 
 @Injectable()
 export class CreateVolunteerUseCase
@@ -16,7 +16,7 @@ export class CreateVolunteerUseCase
 {
   constructor(
     private readonly volunteerFacade: VolunteerFacade,
-    private readonly getOneRegularUserUseCaseService: GetOneRegularUserUseCaseService,
+    private readonly getOneRegularUserUseCaseService: GetOneRegularUserUseCase,
     private readonly getOrganizationUseCaseService: GetOrganizationUseCaseService,
     private readonly exceptionService: ExceptionsService,
   ) {}

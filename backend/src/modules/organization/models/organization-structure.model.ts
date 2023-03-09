@@ -73,6 +73,7 @@ export class OrganizationStructureTransformer {
       entity.createdById = model.createdById;
       entity.organizationId = model.organizationId;
     } else {
+      // used for ManyToMany relations to generate entity like object
       entity.id = model;
     }
     return entity;

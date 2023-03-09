@@ -17,7 +17,6 @@ import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { VolunteerProfileEntity } from './volunteer-profile.entity';
 
 // TODO: BR: Status Archived + ArchivedBy = null => volunteer leaved the org
-
 @Unique('user_in_organization', ['user', 'organization']) // TODO: recheck
 @Entity({ name: 'volunteer' })
 export class VolunteerEntity extends BaseEntity {

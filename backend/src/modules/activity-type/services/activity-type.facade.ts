@@ -28,7 +28,7 @@ export class ActivityTypeFacade {
   }
 
   public async findAll(
-    options: FindManyActivityTypeOptions,
+    options: FindManyActivityTypeOptions | FindManyActivityTypeOptions[],
   ): Promise<IActivityTypeModel[]> {
     return this.activityTypeRepository.findAll(options);
   }
@@ -51,5 +51,12 @@ export class ActivityTypeFacade {
       id,
       status: ActivityTypeStatus.ACTIVE,
     });
+  }
+
+  async exists(
+    ids: string[],
+    options: FindActivityTypeOptions,
+  ): Promise<boolean> {
+    return this.activityTypeRepository.exists(ids, options);
   }
 }
