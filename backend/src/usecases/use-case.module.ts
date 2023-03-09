@@ -46,6 +46,12 @@ import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase'
 import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
 import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
 import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-profile.usecase';
+import { AnnouncementModule } from 'src/modules/announcement/announcement.module';
+import { GetOneAnnouncementUseCase } from './announcement/get-one-announcement.usecase';
+import { GetManyAnnouncementUseCase } from './announcement/get-many-announcement.usecase';
+import { CreateAnnouncementUseCase } from './announcement/create-announcement.usecase';
+import { UpdateAnnouncementUseCase } from './announcement/update-announcement.usecase';
+import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.usecase';
 import { EventModule } from 'src/modules/event/event.module';
 import { CreateEventUseCase } from './event/create-event.usecase';
 import { GetOneEventUseCase } from './event/get-one-event.usecase';
@@ -68,6 +74,7 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/download-a
     LocationModule,
     ActivityTypeModule,
     VolunteerModule,
+    AnnouncementModule,
     EventModule,
   ],
   providers: [
@@ -119,6 +126,12 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/download-a
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    // Announcement
+    GetOneAnnouncementUseCase,
+    GetManyAnnouncementUseCase,
+    CreateAnnouncementUseCase,
+    UpdateAnnouncementUseCase,
+    DeleteAnnouncementUseCase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,
@@ -179,6 +192,12 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/download-a
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    // Announcement
+    GetOneAnnouncementUseCase,
+    GetManyAnnouncementUseCase,
+    CreateAnnouncementUseCase,
+    UpdateAnnouncementUseCase,
+    DeleteAnnouncementUseCase,
     CreateEventUseCase,
     // Events
     CreateEventUseCase,

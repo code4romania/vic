@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
-import { OrganizationStructureType } from '../enums/organization-structure-type.enum';
 import {
   ICreateOrganizationStructureModel,
+  IFindAllOrganizationStructureByIdsOptions,
   IFindAllOrganizationStructureModel,
   IFindAllOrganizationStructurePaginatedModel,
   IFindOrganizationStructureModel,
@@ -27,6 +27,12 @@ export class OrganizationStructureFacade {
     options: IFindAllOrganizationStructureModel,
   ): Promise<IOrganizationStructureModel[]> {
     return this.organizationStructureRepository.findAll(options);
+  }
+
+  public async findAllByIds(
+    options: IFindAllOrganizationStructureByIdsOptions,
+  ): Promise<IOrganizationStructureModel[]> {
+    return this.organizationStructureRepository.findAllByIds(options);
   }
 
   public async find(

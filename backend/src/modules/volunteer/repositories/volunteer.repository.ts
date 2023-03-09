@@ -7,10 +7,12 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import { In, Repository, SelectQueryBuilder } from 'typeorm';
 import { VolunteerEntity } from '../entities/volunteer.entity';
+import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { IVolunteerRepository } from '../intefaces/volunteer-repository.interface';
 import {
+  CountVolunteerOptions,
   CreateVolunteerOptions,
   FindManyVolunteersOptions,
   FindVolunteerOptions,
@@ -153,6 +155,24 @@ export class VolunteerRepositoryService
     );
   }
 
+  async findAllActiveByDepartmentIds(
+    departmentIds: string[],
+  ): Promise<IVolunteerModel[]> {
+    const volunteers = await this.volunteerRepository.find({
+      where: {
+        status: VolunteerStatus.ACTIVE,
+        volunteerProfile: {
+          departmentId: In(departmentIds),
+        },
+      },
+      relations: {
+        volunteerProfile: true,
+      },
+    });
+
+    return volunteers.map(VolunteerModelTransformer.fromEntity);
+  }
+
   async update({
     id,
     ...updates
@@ -192,6 +212,10 @@ export class VolunteerRepositoryService
     });
 
     return VolunteerModelTransformer.fromEntity(volunteer);
+  }
+
+  async count(options: CountVolunteerOptions): Promise<number> {
+    return this.volunteerRepository.count({ where: options });
   }
 
   private addAgeRangeConditionToQuery(

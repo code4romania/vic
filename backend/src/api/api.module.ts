@@ -12,6 +12,7 @@ import { LocationController } from './location/location.controller';
 import { ActivityTypeController } from './activity-type/activity-type.controller';
 import { VolunteerController } from './volunteer/volunteer.controller';
 import { MobileVolunteerController } from './_mobile/volunteer/volunteer.controller';
+import { AnnouncementController } from './announcement/announcement.controller';
 import { EventController } from './event/event.controller';
 import { MobileEventController } from './_mobile/event/event.controller';
 
@@ -27,6 +28,7 @@ import { MobileEventController } from './_mobile/event/event.controller';
     LocationController,
     ActivityTypeController,
     VolunteerController,
+    AnnouncementController,
     EventController,
     // Mobile
     MobileRegularUserController,

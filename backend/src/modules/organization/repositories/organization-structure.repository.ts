@@ -12,6 +12,7 @@ import { OrganizationStructureType } from '../enums/organization-structure-type.
 import { IOrganizationStructureRepository } from '../interfaces/organization-structure-repository.interface';
 import {
   ICreateOrganizationStructureModel,
+  IFindAllOrganizationStructureByIdsOptions,
   IFindAllOrganizationStructureModel,
   IFindAllOrganizationStructurePaginatedModel,
   IFindOrganizationStructureModel,
@@ -110,6 +111,28 @@ export class OrganizationStructureRepositoryService
     const structures = await this.structureRepository.find({
       where: options,
     });
+
+    return structures.map(OrganizationStructureTransformer.fromEntity);
+  }
+
+  async findAllByIds(
+    options: IFindAllOrganizationStructureByIdsOptions,
+  ): Promise<IOrganizationStructureModel[]> {
+    const { ids, type, organizationId } = options;
+
+    const structures = await this.structureRepository
+      .createQueryBuilder('structure')
+      .loadRelationCountAndMap(
+        'structure.numberOfMembers',
+        `structure.${this.getPropertyByType(type)}`,
+      )
+      .select()
+      .where(
+        'structure.type = :type AND structure.organizationId = :organizationId AND structure.id IN (:...ids)',
+        { type, organizationId, ids },
+      )
+      .groupBy(`structure.id, createdBy.id`)
+      .getMany();
 
     return structures.map(OrganizationStructureTransformer.fromEntity);
   }

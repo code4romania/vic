@@ -84,6 +84,10 @@ export type FindManyVolunteersOptions = Pick<IVolunteerModel, 'status'> & {
   }> &
   IBasePaginationFilterModel;
 
+export type CountVolunteerOptions = Pick<IVolunteerModel, 'status'> & {
+  organizationId: string;
+};
+
 export class VolunteerModelTransformer {
   static fromEntity(volunteer: VolunteerEntity): IVolunteerModel {
     if (!volunteer) return null;
