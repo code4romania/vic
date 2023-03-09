@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
+  CreateAnnouncementOptions,
+  FindAnnouncementOptions,
+  FindManyAnnouncementOptions,
   IAnnouncementModel,
-  CreateAnnouncementModel,
-  FindManyAnnouncementModel,
-  FindAnnouncementModel,
-  UpdateAnnouncementModel,
+  UpdateAnnouncementOptions,
 } from '../models/announcement.model';
 import { AnnouncementRepositoryService } from '../repositories/announcement.repository';
 
@@ -16,28 +16,28 @@ export class AnnouncementFacade {
   ) {}
 
   public async find(
-    findOptions: FindAnnouncementModel,
+    findOptions: FindAnnouncementOptions,
   ): Promise<IAnnouncementModel> {
     return this.announcementRepository.find(findOptions);
   }
 
   public async findMany(
-    findOptions: FindManyAnnouncementModel,
+    findOptions: FindManyAnnouncementOptions,
   ): Promise<Pagination<IAnnouncementModel>> {
     return this.announcementRepository.findMany(findOptions);
   }
 
   public async create(
-    createAnnouncementModel: CreateAnnouncementModel,
+    newAnouncement: CreateAnnouncementOptions,
   ): Promise<IAnnouncementModel> {
-    return this.announcementRepository.create(createAnnouncementModel);
+    return this.announcementRepository.create(newAnouncement);
   }
 
   public async update(
     id: string,
-    updateAnnouncementModel: UpdateAnnouncementModel,
+    updatedAnouncement: UpdateAnnouncementOptions,
   ): Promise<IAnnouncementModel> {
-    return this.announcementRepository.update(id, updateAnnouncementModel);
+    return this.announcementRepository.update(id, updatedAnouncement);
   }
 
   public async delete(id: string): Promise<string> {

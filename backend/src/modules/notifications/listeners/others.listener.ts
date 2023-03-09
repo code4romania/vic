@@ -17,19 +17,16 @@ export class OthersListener {
   ) {}
 
   @OnEvent(EVENTS.OTHER.SEND_ANNOUNCEMENT)
-  async sendSendAnnouncementEvent(
-    payload: SendAnnouncementEvent,
-  ): Promise<void> {
+  async sendAnnouncementEvent(payload: SendAnnouncementEvent): Promise<void> {
     const { organizationId, announcementId, targetIds } = payload;
     // 1. Retrive the announcement data
-    const announcement = await this.getOneAnnouncementUseCase.execute({
+    await this.getOneAnnouncementUseCase.execute({
       id: announcementId,
       organizationId,
     });
 
     // 2. Retrieve the target data
-    const targetsMails: string[] = [];
-    let volunteers: IVolunteerModel[];
+    let volunteers: IVolunteerModel[] = [];
     if (targetIds.length === 0) {
       volunteers = (
         await this.getManyVolunteersUseCase.execute({
@@ -45,8 +42,10 @@ export class OthersListener {
       );
     }
 
-    volunteers.map((volunteer) =>
-      targetsMails.push(volunteer.volunteerProfile.email),
+    // 3. get all volunteers email
+    const targetMails: string[] = [];
+    volunteers.forEach((volunteer) =>
+      targetMails.push(volunteer.volunteerProfile.email),
     );
     // TODO: 3. Send push notification to target with announcement link
   }

@@ -18,24 +18,22 @@ export interface IAnnouncementModel extends IBaseModel {
   targetedVolunteers?: number;
 }
 
-export type CreateAnnouncementModel = Omit<
+export type CreateAnnouncementOptions = Pick<
   IAnnouncementModel,
-  'id' | 'updatedOn' | 'createdOn'
+  'name' | 'description' | 'status' | 'organizationId' | 'targetedVolunteers'
 > & {
   targetsIds?: string[];
 };
 
-export type UpdateAnnouncementModel = Partial<
-  Omit<IAnnouncementModel, 'id' | 'updatedOn' | 'createdOn'> & {
-    targetsIds: string[];
-  }
+export type UpdateAnnouncementOptions = Partial<
+  CreateAnnouncementOptions & Pick<IAnnouncementModel, 'publishedOn'>
 >;
 
-export type FindAnnouncementModel = Partial<
+export type FindAnnouncementOptions = Partial<
   Pick<IAnnouncementModel, 'id' | 'organizationId'>
 >;
 
-export type FindManyAnnouncementModel = IBasePaginationFilterModel &
+export type FindManyAnnouncementOptions = IBasePaginationFilterModel &
   Partial<Pick<IAnnouncementModel, 'organizationId'>>;
 
 export class AnnouncementStructureTransformer {
@@ -54,13 +52,14 @@ export class AnnouncementStructureTransformer {
     };
   }
 
-  static toEntity(model: CreateAnnouncementModel): AnnouncementEntity {
+  static toEntity(model: CreateAnnouncementOptions): AnnouncementEntity {
     const entity = new AnnouncementEntity();
 
     entity.name = model.name;
     entity.description = model.description;
     entity.status = model.status;
-    entity.publishedOn = model.publishedOn;
+    entity.publishedOn =
+      model.status === AnnouncementStatus.PUBLISHED ? new Date() : null;
     entity.organizationId = model.organizationId;
     entity.targets = model.targetsIds?.map(
       OrganizationStructureTransformer.toEntity,

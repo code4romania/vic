@@ -35,7 +35,7 @@ export type IFindAllOrganizationStructureModel =
   | Partial<IOrganizationStructureModel>
   | Partial<IOrganizationStructureModel>[];
 
-export type IFindAllOrganizationStructureByIds = Pick<
+export type IFindAllOrganizationStructureByIdsOptions = Pick<
   IOrganizationStructureModel,
   'type' | 'organizationId'
 > & {
