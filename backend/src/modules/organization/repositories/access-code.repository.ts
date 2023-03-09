@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
-import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { AccessCodeEntity } from '../entities/access-code.entity';
 import { IAccessCodeRepository } from '../interfaces/access-code-repository.interface';
 import {
@@ -52,25 +51,23 @@ export class AccessCodeRepositoryService
   async findMany(
     findOptions: IFindAllAccessCodeModel,
   ): Promise<Pagination<IAccessCodeModel>> {
-    const options: {
-      filters: FindOptionsWhere<AccessCodeEntity>;
-    } & IBasePaginationFilterModel = {
-      ...findOptions,
-      filters: {
-        organizationId: findOptions.organizationId,
-      },
-    };
+    const { orderBy, orderDirection, organizationId } = findOptions;
 
-    return this.findManyPaginated<IAccessCodeModel>(
-      {
-        searchableColumns: [],
-        defaultSortBy: 'createdOn',
-        defaultOrderDirection: OrderDirection.DESC,
-        relations: {
-          createdBy: true,
-        },
-      },
-      options,
+    // create query
+    const query = this.accessCodeRepository
+      .createQueryBuilder('code')
+      .leftJoinAndMapOne('code.createdBy', 'code.createdBy', 'createdBy')
+      .select()
+      .where('code.organizationId = :organizationId', { organizationId })
+      .orderBy(
+        this.buildOrderByQuery(orderBy || 'createdOn', 'code'),
+        orderDirection || OrderDirection.ASC,
+      );
+
+    return this.paginateQuery(
+      query,
+      findOptions.limit,
+      findOptions.page,
       AccessCodeTransformer.fromEntity,
     );
   }

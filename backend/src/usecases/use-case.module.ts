@@ -56,6 +56,7 @@ import { DeleteEventUseCase } from './event/delete-event.usecase';
 import { CreateEventRSVPUseCase } from './event/RSVP/create-rsvp.usecase';
 import { GetOneEventRSVPUseCase } from './event/RSVP/get-one-rsvp.usecase';
 import { DeleteEventRSVPUseCase } from './event/RSVP/delete-rsvp.usecase';
+import { GetAccessRequestsForDownloadUseCase } from './access-request/download-access-requests.usecase';
 
 @Module({
   imports: [
@@ -98,6 +99,7 @@ import { DeleteEventRSVPUseCase } from './event/RSVP/delete-rsvp.usecase';
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    GetAccessRequestsForDownloadUseCase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -145,7 +147,7 @@ import { DeleteEventRSVPUseCase } from './event/RSVP/delete-rsvp.usecase';
     DeleteOrganizationStructureUseCase,
     UpdateOrganizationStructureUseCase,
     GetAllOrganizationStructureByTypeUseCase,
-    // user
+    // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
@@ -157,6 +159,7 @@ import { DeleteEventRSVPUseCase } from './event/RSVP/delete-rsvp.usecase';
     DeleteAccessRequestUseCase,
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
+    GetAccessRequestsForDownloadUseCase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
