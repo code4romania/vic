@@ -14,6 +14,8 @@ import {
 import { EventEntity } from '../entities/event.entity';
 import { EventAttendOptions } from '../enums/event-attendance-options.enum';
 import { EventStatus } from '../enums/event-status.enum';
+import { IBasePaginationFilterModel } from '../../../infrastructure/base/base-pagination-filter.model';
+import { EventTime } from '../enums/event-time.enum';
 
 export interface IEventModel extends IBaseModel {
   id: string;
@@ -61,6 +63,14 @@ export type UpdateEventOptions = Partial<
 >;
 
 export type UpdateStatusOptions = EventStatus.PUBLISHED | EventStatus.ARCHIVED;
+
+export type FindManyEventOptions = Omit<
+  IBasePaginationFilterModel,
+  'search'
+> & {
+  organizationId: IOrganizationModel['id'];
+  eventTime: EventTime;
+};
 
 export class EventModelTransformer {
   static fromEntity(entity: EventEntity): IEventModel {

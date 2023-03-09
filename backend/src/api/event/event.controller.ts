@@ -6,20 +6,27 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { ArchiveEventUseCase } from 'src/usecases/event/archive-event.usecase';
 import { CreateEventUseCase } from 'src/usecases/event/create-event.usecase';
 import { DeleteEventUseCase } from 'src/usecases/event/delete-event.usecase';
+import { GetManyEventUseCase } from 'src/usecases/event/get-many-event.usecase';
 import { GetOneEventUseCase } from 'src/usecases/event/get-one-event.usecase';
 import { PublishEventUseCase } from 'src/usecases/event/publish-event.usecase';
 import { UpdateEventUseCase } from 'src/usecases/event/update-event.usecase';
 import { CreateEventDto } from './dto/create-event.dto';
+import { GetManyEventDto } from './dto/get-many-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventGuard } from './guards/event.guard';
 import { EventPresenter } from './presenters/event.presenter';
@@ -36,9 +43,9 @@ export class EventController {
     private readonly deleteEventUseCase: DeleteEventUseCase,
     private readonly archiveEventUseCase: ArchiveEventUseCase,
     private readonly publishEventUseCase: PublishEventUseCase,
+    private readonly getManyEventUseCase: GetManyEventUseCase,
   ) {}
 
-  @ApiBody({ type: CreateEventDto })
   @Post()
   async create(
     @Body() createEventDto: CreateEventDto,
@@ -49,6 +56,23 @@ export class EventController {
       organizationId: adminUser.organizationId,
     });
     return new EventPresenter(event);
+  }
+
+  @Get()
+  @ApiPaginatedResponse(EventPresenter)
+  async getMany(
+    @Query() filters: GetManyEventDto,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<PaginatedPresenter<EventPresenter>> {
+    const events = await this.getManyEventUseCase.execute({
+      ...filters,
+      organizationId,
+    });
+
+    return new PaginatedPresenter({
+      ...events,
+      items: events.items.map((event) => new EventPresenter(event)),
+    });
   }
 
   @ApiBody({ type: UpdateEventDto })

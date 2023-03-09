@@ -1,5 +1,7 @@
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   CreateEventOptions,
+  FindManyEventOptions,
   IEventModel,
   UpdateEventOptions,
   UpdateStatusOptions,
@@ -11,4 +13,5 @@ export interface IEventRepository {
   updateStatus(id: string, status: UpdateStatusOptions): Promise<IEventModel>;
   find(id: string): Promise<IEventModel>;
   delete(id: string): Promise<string>;
+  getMany(findOptions: FindManyEventOptions): Promise<Pagination<IEventModel>>;
 }

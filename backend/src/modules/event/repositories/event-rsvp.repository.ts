@@ -6,6 +6,7 @@ import { IEventRSVPRepository } from '../interfaces/event-rsvp-repository.interf
 import {
   CreateEventRSVPOptions,
   EventRSVPModelTransformer,
+  FindAllEventRSVPOptions,
   FindEventRSVPOptions,
   IEventRSVPModel,
   UpdateEventRSVPOptions,
@@ -38,6 +39,14 @@ export class EventRSVPRepository implements IEventRSVPRepository {
     return eventEntity
       ? EventRSVPModelTransformer.fromEntity(eventEntity)
       : null;
+  }
+
+  async findAll(
+    findOptions: FindAllEventRSVPOptions,
+  ): Promise<IEventRSVPModel[]> {
+    const eventRSVPs = await this.rsvpRepository.find({ where: findOptions });
+
+    return eventRSVPs.map(EventRSVPModelTransformer.fromEntity);
   }
 
   async update(

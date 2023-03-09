@@ -30,6 +30,10 @@ export type FindEventRSVPOptions = Partial<
     Pick<CreateEventRSVPOptions, 'eventId' | 'userId'>
 >;
 
+export type FindAllEventRSVPOptions = {
+  eventId: IEventRSVPModel['event']['id'];
+};
+
 export class EventRSVPModelTransformer {
   static fromEntity(entity: EventRSVPEntity): IEventRSVPModel {
     if (!entity) return null;

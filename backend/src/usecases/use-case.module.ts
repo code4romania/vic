@@ -63,6 +63,7 @@ import { CreateEventRSVPUseCase } from './event/RSVP/create-rsvp.usecase';
 import { GetOneEventRSVPUseCase } from './event/RSVP/get-one-rsvp.usecase';
 import { DeleteEventRSVPUseCase } from './event/RSVP/delete-rsvp.usecase';
 import { GetAccessRequestsForDownloadUseCase } from './access-request/download-access-requests.usecase';
+import { GetManyEventUseCase } from './event/get-many-event.usecase';
 
 @Module({
   imports: [
@@ -142,6 +143,7 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/download-a
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
     DeleteEventRSVPUseCase,
+    GetManyEventUseCase,
   ],
   exports: [
     // Organization
@@ -209,6 +211,7 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/download-a
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
     DeleteEventRSVPUseCase,
+    GetManyEventUseCase,
   ],
 })
 export class UseCaseModule {}
