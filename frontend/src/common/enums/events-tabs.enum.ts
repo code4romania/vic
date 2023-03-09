@@ -1,4 +1,4 @@
-export enum EventsTabsStatus {
+export enum EventsTabs {
   OPEN = 'open',
   PAST = 'past',
 }

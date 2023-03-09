@@ -1,8 +1,5 @@
-export enum OrganizationStructureType {
-  BRANCH = 'branch',
-  DEPARTMENT = 'department',
-  ROLE = 'role',
-}
+import { DivisionType } from '../enums/division-type.enum';
+import { EventStatus } from '../enums/event-status';
 
 export interface IEvent {
   id: string;
@@ -14,9 +11,9 @@ export interface IEvent {
   observation?: string;
   startDate: Date;
   endDate?: Date;
-  targets: Array<{ id: string; name: string; type: OrganizationStructureType; members: number }>;
+  targets: Array<{ id: string; name: string; type: DivisionType; members: number }>;
   targetedVolunteers: number;
   rsvp: { yes: number; no: number };
-  displayStatus: 'draft' | 'published' | 'archived';
+  status: EventStatus;
   reportedHours: string;
 }

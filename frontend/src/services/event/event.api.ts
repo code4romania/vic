@@ -1,13 +1,15 @@
-import { EventsTabsStatus } from '../../common/enums/event-status.enum';
+import { EventsTabs } from '../../common/enums/events-tabs.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { IEvent, OrganizationStructureType } from '../../common/interfaces/event.interface';
+import { IEvent } from '../../common/interfaces/event.interface';
+import { DivisionType } from '../../common/enums/division-type.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { EventStatus } from '../../common/enums/event-status';
 // import API from '../api';
 
 export const getEvents = async (
   rowsPerPage: number,
   page: number,
-  tabsStatus: EventsTabsStatus,
+  tabsStatus: EventsTabs,
   orderByColumn?: string,
   orderDirection?: OrderDirection,
 ): Promise<IPaginatedEntity<IEvent>> => {
@@ -34,16 +36,16 @@ export const getEvents = async (
         location: 'Sediu Piata Alba Iulia, sala 02',
         targetedVolunteers: 75,
         targets: [
-          { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
+          { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
           {
             id: '2',
             name: 'San Francisco Branch',
-            type: OrganizationStructureType.BRANCH,
+            type: DivisionType.BRANCH,
             members: 18,
           },
         ],
         rsvp: { yes: 75, no: 10 },
-        displayStatus: 'published',
+        status: EventStatus.ARCHIVED,
         reportedHours: '16 hours',
       },
       {
@@ -57,16 +59,16 @@ export const getEvents = async (
         endDate: new Date('2023-09-24T17:32:00'),
         targetedVolunteers: 75,
         targets: [
-          { id: '1', name: 'New York Branch', type: OrganizationStructureType.BRANCH, members: 25 },
+          { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
           {
             id: '2',
             name: 'San Francisco Branch',
-            type: OrganizationStructureType.BRANCH,
+            type: DivisionType.BRANCH,
             members: 18,
           },
         ],
         rsvp: { yes: 75, no: 10 },
-        displayStatus: 'published',
+        status: EventStatus.PUBLISHED,
         reportedHours: '16 hours',
       },
       {
@@ -80,7 +82,7 @@ export const getEvents = async (
         targetedVolunteers: 75,
         targets: [],
         rsvp: { yes: 75, no: 10 },
-        displayStatus: 'published',
+        status: EventStatus.DRAFT,
         reportedHours: '16 hours',
       },
     ],
