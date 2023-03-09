@@ -33,14 +33,12 @@ export class AccessRequestFacade {
     return this.accessRequestRepository.update(updates);
   }
 
-  // TODO: check in usecase if the the "requestedBy + organizationId" is unique with status PENDING, otherwise error
   async create(
     newRequest: CreateAccessRequestModel,
   ): Promise<IAccessRequestModel> {
     return this.accessRequestRepository.create(newRequest);
   }
 
-  // TODO: check in usecase if the status is "REJECTED" otherwise error
   async delete(id: string): Promise<string> {
     return this.accessRequestRepository.delete(id);
   }

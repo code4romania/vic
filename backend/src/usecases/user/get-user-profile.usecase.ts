@@ -109,8 +109,8 @@ export class GetUserProfileUseCaseService
     } catch (error) {
       // log the error and the payload
       this.logger.debug({
-        ...UserExceptionMessages.USER_002,
         error,
+        ...UserExceptionMessages.USER_002,
         user: {
           ...user,
           organizationId: dbOrganization.id,

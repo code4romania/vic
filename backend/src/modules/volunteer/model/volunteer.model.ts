@@ -41,7 +41,6 @@ export type CreateVolunteerOptions = {
   organizationId: IVolunteerModel['organization']['id'];
 };
 
-// TODO: @birloiflorian are these too confusing?
 export type ArchiveVolunteerOptions = {
   status: VolunteerStatus.ARCHIVED;
   archivedOn: Date;
@@ -84,6 +83,10 @@ export type FindManyVolunteersOptions = Pick<IVolunteerModel, 'status'> & {
     activeSinceEnd: Date;
   }> &
   IBasePaginationFilterModel;
+
+export type CountVolunteerOptions = Pick<IVolunteerModel, 'status'> & {
+  organizationId: string;
+};
 
 export class VolunteerModelTransformer {
   static fromEntity(volunteer: VolunteerEntity): IVolunteerModel {

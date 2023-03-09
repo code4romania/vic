@@ -37,7 +37,7 @@ import { GetOneActivityTypeUseCase } from './activity-type/get-one-activity-type
 import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-type.usecase';
 import { GetAllOrganizationStructureByTypeUseCase } from './organization/organization-structure/get-all-organization-structure-by-type.usecase';
 import { VolunteerModule } from 'src/modules/volunteer/volunteer.module';
-import { GetOneRegularUserUseCaseService } from './user/get-one-regular-user.usecase';
+import { GetOneRegularUserUseCase } from './user/get-one-regular-user.usecase';
 import { CreateVolunteerUseCase } from './volunteer/create-volunteer.usecase';
 import { GetOneVolunteerUsecase } from './volunteer/get-one-volunteer.usecase';
 import { CreateVolunteerProfileUseCase } from './volunteer/create-volunteer-profile.usecase';
@@ -46,6 +46,22 @@ import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase'
 import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
 import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
 import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-profile.usecase';
+import { AnnouncementModule } from 'src/modules/announcement/announcement.module';
+import { GetOneAnnouncementUseCase } from './announcement/get-one-announcement.usecase';
+import { GetManyAnnouncementUseCase } from './announcement/get-many-announcement.usecase';
+import { CreateAnnouncementUseCase } from './announcement/create-announcement.usecase';
+import { UpdateAnnouncementUseCase } from './announcement/update-announcement.usecase';
+import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.usecase';
+import { EventModule } from 'src/modules/event/event.module';
+import { CreateEventUseCase } from './event/create-event.usecase';
+import { GetOneEventUseCase } from './event/get-one-event.usecase';
+import { UpdateEventUseCase } from './event/update-event.usecase';
+import { PublishEventUseCase } from './event/publish-event.usecase';
+import { ArchiveEventUseCase } from './event/archive-event.usecase';
+import { DeleteEventUseCase } from './event/delete-event.usecase';
+import { CreateEventRSVPUseCase } from './event/RSVP/create-rsvp.usecase';
+import { GetOneEventRSVPUseCase } from './event/RSVP/get-one-rsvp.usecase';
+import { DeleteEventRSVPUseCase } from './event/RSVP/delete-rsvp.usecase';
 import { GetAccessRequestsForDownloadUseCase } from './access-request/get-many-for-download-access-requests.usecase';
 import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-download-volunteer.usecase';
 
@@ -59,6 +75,8 @@ import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-downlo
     LocationModule,
     ActivityTypeModule,
     VolunteerModule,
+    AnnouncementModule,
+    EventModule,
   ],
   providers: [
     // Organization
@@ -80,7 +98,7 @@ import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-downlo
     // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
-    GetOneRegularUserUseCaseService,
+    GetOneRegularUserUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -110,6 +128,22 @@ import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-downlo
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    // Announcement
+    GetOneAnnouncementUseCase,
+    GetManyAnnouncementUseCase,
+    CreateAnnouncementUseCase,
+    UpdateAnnouncementUseCase,
+    DeleteAnnouncementUseCase,
+    // Events
+    CreateEventUseCase,
+    GetOneEventUseCase,
+    UpdateEventUseCase,
+    DeleteEventUseCase,
+    PublishEventUseCase,
+    ArchiveEventUseCase,
+    CreateEventRSVPUseCase,
+    GetOneEventRSVPUseCase,
+    DeleteEventRSVPUseCase,
   ],
   exports: [
     // Organization
@@ -131,7 +165,7 @@ import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-downlo
     // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
-    GetOneRegularUserUseCaseService,
+    GetOneRegularUserUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -161,6 +195,23 @@ import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-downlo
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    // Announcement
+    GetOneAnnouncementUseCase,
+    GetManyAnnouncementUseCase,
+    CreateAnnouncementUseCase,
+    UpdateAnnouncementUseCase,
+    DeleteAnnouncementUseCase,
+    CreateEventUseCase,
+    // Events
+    CreateEventUseCase,
+    GetOneEventUseCase,
+    UpdateEventUseCase,
+    DeleteEventUseCase,
+    PublishEventUseCase,
+    ArchiveEventUseCase,
+    CreateEventRSVPUseCase,
+    GetOneEventRSVPUseCase,
+    DeleteEventRSVPUseCase,
   ],
 })
 export class UseCaseModule {}

@@ -7,6 +7,7 @@ import {
   UpdateVolunteerProfileOptions,
 } from '../model/volunteer-profile.model';
 import {
+  CountVolunteerOptions,
   CreateVolunteerOptions,
   FindManyVolunteersOptions,
   FindVolunteerOptions,
@@ -37,6 +38,12 @@ export class VolunteerFacade {
     options: FindManyVolunteersOptions,
   ): Promise<Pagination<IVolunteerModel>> {
     return this.volunteerRepository.findMany(options);
+  }
+
+  async findAllActiveByDepartmentIds(
+    ids: string[],
+  ): Promise<IVolunteerModel[]> {
+    return this.volunteerRepository.findAllActiveByDepartmentIds(ids);
   }
 
   public archive(
@@ -87,5 +94,9 @@ export class VolunteerFacade {
     updates: UpdateVolunteerProfileOptions,
   ): Promise<IVolunteerProfileModel> {
     return this.volunteerProfileRepositoryService.update(id, updates);
+  }
+
+  async count(options: CountVolunteerOptions): Promise<number> {
+    return this.volunteerRepository.count(options);
   }
 }

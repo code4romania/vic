@@ -23,6 +23,7 @@ export type FindRegularUserOptions =
 
 export class RegularUserTransformer {
   static fromEntity(entity: RegularUserEntity): IRegularUserModel {
+    if (!entity) return null;
     return {
       id: entity.id,
       cognitoId: entity.cognitoId,

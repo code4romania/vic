@@ -21,6 +21,7 @@ export class OrganizationTransformer {
   static fromEntity(
     organizationEntity: OrganizationEntity,
   ): IOrganizationModel {
+    if (!organizationEntity) return null;
     return {
       id: organizationEntity.id,
       name: organizationEntity.name,
