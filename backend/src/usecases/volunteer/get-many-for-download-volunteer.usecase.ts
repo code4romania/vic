@@ -33,7 +33,7 @@ export class GetVolunteersForDownloadUseCase
         'Perioada activitate': volunteer.volunteerProfile.activeSince,
         'Nume filiala': volunteer.volunteerProfile.branch?.name,
         'Nume departament': volunteer.volunteerProfile.department?.name,
-        'Nume rol': volunteer.volunteerProfile.role.name,
+        'Nume rol': volunteer.volunteerProfile.role?.name,
         ...(volunteer.status === VolunteerStatus.ARCHIVED
           ? { 'Arhivat din': volunteer.archivedOn }
           : {}),

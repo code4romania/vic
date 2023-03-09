@@ -46,7 +46,7 @@ import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase'
 import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
 import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
 import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-profile.usecase';
-import { GetAccessRequestsForDownloadUseCase } from './access-request/download-access-requests.usecase';
+import { GetAccessRequestsForDownloadUseCase } from './access-request/get-many-for-download-access-requests.usecase';
 import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-download-volunteer.usecase';
 
 @Module({

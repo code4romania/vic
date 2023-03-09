@@ -23,6 +23,7 @@ export class GetAccessRequestsDto extends BasePaginationFilterDto {
   @IsDate()
   rejectedOnEnd?: Date;
 
+  @IsOptional()
   @IsEnum(AccessRequestStatus)
   status?: AccessRequestStatus;
 }
