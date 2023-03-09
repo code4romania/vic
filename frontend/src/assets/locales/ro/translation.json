@@ -403,6 +403,11 @@
       "name": { "label": "Denumire eveniment" },
       "start_date": { "label": "Data inceput" },
       "end_date": { "label": "Data final" },
+      "submit": {
+        "published": "Evenimentul a fost publicat cu succes",
+        "draft": "Evenimentul a fost salvat ca draft cu succes",
+        "edit": "Evenimentul a fost modificat cu succes"
+      },
       "location": {
         "label": "Locatie",
         "min": "Locatia poate sa aiba minim {{value}} caractere",

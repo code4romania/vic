@@ -86,7 +86,8 @@
     @apply text-cool-gray-500;
   }
 
-  input:disabled {
+  input:disabled,
+  textarea:disabled {
     @apply bg-cool-gray-200 text-cool-gray-500 cursor-auto;
   }
 

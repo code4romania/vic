@@ -21,6 +21,7 @@ import ActivityTypes from '../pages/ActivityTypes';
 import Events from '../pages/Events';
 import Event from '../pages/Event';
 import AddEvent from '../pages/AddEvent';
+import EditEvent from '../pages/EditEvent';
 
 const Router = () => {
   return (
@@ -53,7 +54,7 @@ const Router = () => {
           <Route path="events" element={<Outlet />}>
             <Route index element={<Events />} />
             <Route path=":id" element={<Event />} />
-            <Route path=":id/edit" element={<div>Edit page</div>} />
+            <Route path=":id/edit" element={<EditEvent />} />
             <Route path="add" element={<AddEvent />} />
           </Route>
         </Route>

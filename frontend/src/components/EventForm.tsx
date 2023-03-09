@@ -8,7 +8,7 @@ import FormInput from './FormInput';
 import FormInputImg from './FormInputImg';
 import FormRadios from './FormRadios';
 import FormTextarea from './FormTextarea';
-import MultiSelect, { IMultiListItem } from './MultiSelect';
+import MultiSelect, { IMultiListItem, mapItemToMultiListItem } from './MultiSelect';
 import StartingFormSection from './StartingFormSection';
 
 export enum AttendanceType {
@@ -48,7 +48,7 @@ interface EventFormProps {
   disabled?: boolean;
   event?: IEvent;
   reset?: UseFormReset<EventFormTypes>;
-  targetOptions: IMultiListItem[];
+  targetOptions?: IMultiListItem[];
   taskOpitons: IMultiListItem[];
 }
 
@@ -63,7 +63,7 @@ export type EventFormTypes = {
   logo?: string;
   mention?: string;
   attendanceType: AttendanceType;
-  attendanceMention: string;
+  attendanceMention?: string;
   tasksIds: IMultiListItem[];
   observation?: string;
 };
@@ -78,25 +78,35 @@ const EventForm = ({
   taskOpitons,
 }: EventFormProps) => {
   const [showSelect, setShowSelect] = useState<TargetType>();
-  const [attendanceStatus, setAttendanceStatus] = useState<AttendanceType>(AttendanceType.SIMPLE);
+  const [attendanceStatus, setAttendanceStatus] = useState<AttendanceType>(
+    event?.attendanceType || AttendanceType.SIMPLE,
+  );
 
   useEffect(() => {
     if (event && reset)
       reset({
-        ...event,
-        targetsIds: [...targetOptions],
+        name: event.name,
         startDate: new Date(event.startDate),
         endDate: event.endDate ? new Date(event.endDate) : event.endDate,
+        location: event.location,
+        isPublic: event.isPublic ? TargetType.PUBLIC : TargetType.SELECT,
+        targetsIds: [...event.targets.map(mapItemToMultiListItem)],
+        description: event.description,
+        logo: event.logo,
+        attendanceType: event.attendanceType,
+        attendanceMention: event.attendanceMention,
+        tasksIds: [...event.tasks.map(mapItemToMultiListItem)],
+        observation: event.observation,
       });
   }, [event, reset]);
 
-  // const onRadioClick = (e: React.MouseEvent<HTMLInputElement>) => {
+  // const onTargetRadioClick = (e: React.MouseEvent<HTMLInputElement>) => {
   //   setShowSelect(
   //     TargetType[(e.target as HTMLInputElement).value.toUpperCase() as keyof typeof TargetType],
   //   );
   // };
 
-  const onRadioClick = (e: React.MouseEvent<HTMLInputElement>) => {
+  const onTargetRadioClick = (e: React.MouseEvent<HTMLInputElement>) => {
     const targetType = (e.currentTarget as HTMLInputElement).value as TargetType;
     setShowSelect(targetType);
   };
@@ -125,7 +135,6 @@ const EventForm = ({
                 onChange={onChange}
                 aria-invalid={errors['name']?.message ? 'true' : 'false'}
                 id="events-form__name"
-                disabled={disabled}
               />
             );
           }}
@@ -142,7 +151,6 @@ const EventForm = ({
                 onChange={onChange}
                 value={value}
                 error={errors['startDate']?.message}
-                disabled={disabled}
                 dateFormat="dd.MM.yyyy, HH:mm"
                 showTimeSelect
                 timeIntervals={15}
@@ -186,7 +194,6 @@ const EventForm = ({
                 onChange={onChange}
                 aria-invalid={errors['location']?.message ? 'true' : 'false'}
                 id="events-form__name"
-                disabled={disabled}
               />
             );
           }}
@@ -206,7 +213,7 @@ const EventForm = ({
                   errorMessage={errors['isPublic']?.message}
                   label={`${i18n.t('events:form.target.label')}`}
                   onChange={onChange}
-                  onClick={onRadioClick}
+                  onClick={onTargetRadioClick}
                   aria-invalid={errors['location']?.message ? 'true' : 'false'}
                   disabled={disabled}
                   defaultValue={value || TargetType.PUBLIC}
@@ -283,7 +290,6 @@ const EventForm = ({
                 onClick={onAttendanceRadioClick}
                 onChange={onChange}
                 aria-invalid={errors['location']?.message ? 'true' : 'false'}
-                disabled={disabled}
                 defaultValue={attendanceStatus}
               />
             );

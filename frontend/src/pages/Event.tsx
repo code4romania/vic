@@ -96,7 +96,7 @@ const Event = () => {
                   icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
                   onClick={onEdit}
                 />
-                {event.displayStatus === 'published' ? (
+                {event.status === 'published' ? (
                   <Button
                     className="btn-outline-secondary"
                     label={i18n.t('general:archive', { item: '' })}
@@ -106,7 +106,7 @@ const Event = () => {
                 ) : (
                   <Button
                     className="btn-primary"
-                    label={i18n.t('general:publish', { context: event.displayStatus })}
+                    label={i18n.t('general:publish', { context: event.status })}
                     icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
                     onClick={onPublish}
                   />
@@ -116,8 +116,8 @@ const Event = () => {
             <CardBody>
               <FormLayout>
                 <StartingSection
-                  title={`${i18n.t(`events:${event.displayStatus}.subtitle`)}`}
-                  subtitle={`${i18n.t(`events:${event.displayStatus}.description`)}`}
+                  title={`${i18n.t(`events:${event.status}.subtitle`)}`}
+                  subtitle={`${i18n.t(`events:${event.status}.description`)}`}
                 />
                 <hr className="border-cool-gray-200 mb-2 mt-10" />
 

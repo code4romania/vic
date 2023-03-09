@@ -187,7 +187,7 @@ const Events = () => {
   };
 
   const onEdit = (row: IEvent) => {
-    alert(`not implemented! Selected: ${row.name}`);
+    navigate(`${row.id}/edit`, { replace: true });
   };
 
   const onDelete = (row: IEvent) => {
