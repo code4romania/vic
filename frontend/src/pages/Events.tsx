@@ -25,7 +25,7 @@ import PageLayout from '../layouts/PageLayout';
 import { EventsTabs } from '../common/enums/events-tabs.enum';
 import { useEventsQuery } from '../services/event/event.service';
 import { formatEventDate, mapTargetsToString } from '../common/utils/utils';
-import MediaEventCell from '../components/MediaEventCell';
+import MediaCell from '../components/MediaCell';
 import StatusCell from '../components/StatusCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
 import CellLayout from '../layouts/CellLayout';
@@ -40,7 +40,7 @@ const OpenEventsTableHeader = [
     id: 'event.name',
     name: i18n.t('general:event'),
     sortable: true,
-    cell: (row: IEvent) => <MediaEventCell logo={row.logo} title={row.name} />,
+    cell: (row: IEvent) => <MediaCell logo={row.logo} title={row.name} />,
   },
   {
     id: 'event.date',
@@ -88,7 +88,7 @@ const PastEventsTableHeader = [
     id: 'event.name',
     name: i18n.t('general:event'),
     sortable: true,
-    cell: (row: IEvent) => <MediaEventCell logo={row.logo} title={row.name} />,
+    cell: (row: IEvent) => <MediaCell logo={row.logo} title={row.name} />,
   },
   {
     id: 'event.date',
