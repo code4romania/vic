@@ -81,14 +81,24 @@ export class ActivityTypeTransformer {
     };
   }
 
-  static toEntity(model: CreateActivityTypeOptions): ActivityTypeEntity {
+  static toEntity(model: CreateActivityTypeOptions): ActivityTypeEntity;
+  static toEntity(id: string): ActivityTypeEntity;
+
+  static toEntity(
+    model: CreateActivityTypeOptions | string,
+  ): ActivityTypeEntity {
     const entity = new ActivityTypeEntity();
-    entity.name = model.name;
-    entity.icon = model.icon;
-    entity.branchId = model.branchId;
-    entity.departmentId = model.departmentId;
-    entity.roleId = model.roleId;
-    entity.organizationId = model.organizationId;
+    if (typeof model === 'object') {
+      entity.name = model.name;
+      entity.icon = model.icon;
+      entity.branchId = model.branchId;
+      entity.departmentId = model.departmentId;
+      entity.roleId = model.roleId;
+      entity.organizationId = model.organizationId;
+    } else {
+      // used for ManyToMany relations to generate entity like object
+      entity.id = model;
+    }
     return entity;
   }
 }

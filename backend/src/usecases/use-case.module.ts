@@ -37,7 +37,7 @@ import { GetOneActivityTypeUseCase } from './activity-type/get-one-activity-type
 import { GetManyActivityTypeUseCase } from './activity-type/get-all-activity-type.usecase';
 import { GetAllOrganizationStructureByTypeUseCase } from './organization/organization-structure/get-all-organization-structure-by-type.usecase';
 import { VolunteerModule } from 'src/modules/volunteer/volunteer.module';
-import { GetOneRegularUserUseCaseService } from './user/get-one-regular-user.usecase';
+import { GetOneRegularUserUseCase } from './user/get-one-regular-user.usecase';
 import { CreateVolunteerUseCase } from './volunteer/create-volunteer.usecase';
 import { GetOneVolunteerUsecase } from './volunteer/get-one-volunteer.usecase';
 import { CreateVolunteerProfileUseCase } from './volunteer/create-volunteer-profile.usecase';
@@ -46,6 +46,16 @@ import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase'
 import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
 import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
 import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-profile.usecase';
+import { EventModule } from 'src/modules/event/event.module';
+import { CreateEventUseCase } from './event/create-event.usecase';
+import { GetOneEventUseCase } from './event/get-one-event.usecase';
+import { UpdateEventUseCase } from './event/update-event.usecase';
+import { PublishEventUseCase } from './event/publish-event.usecase';
+import { ArchiveEventUseCase } from './event/archive-event.usecase';
+import { DeleteEventUseCase } from './event/delete-event.usecase';
+import { CreateEventRSVPUseCase } from './event/RSVP/create-rsvp.usecase';
+import { GetOneEventRSVPUseCase } from './event/RSVP/get-one-rsvp.usecase';
+import { DeleteEventRSVPUseCase } from './event/RSVP/delete-rsvp.usecase';
 import { GetAccessRequestsForDownloadUseCase } from './access-request/download-access-requests.usecase';
 
 @Module({
@@ -58,6 +68,7 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/download-a
     LocationModule,
     ActivityTypeModule,
     VolunteerModule,
+    EventModule,
   ],
   providers: [
     // Organization
@@ -79,7 +90,7 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/download-a
     // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
-    GetOneRegularUserUseCaseService,
+    GetOneRegularUserUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -108,6 +119,16 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/download-a
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    // Events
+    CreateEventUseCase,
+    GetOneEventUseCase,
+    UpdateEventUseCase,
+    DeleteEventUseCase,
+    PublishEventUseCase,
+    ArchiveEventUseCase,
+    CreateEventRSVPUseCase,
+    GetOneEventRSVPUseCase,
+    DeleteEventRSVPUseCase,
   ],
   exports: [
     // Organization
@@ -129,7 +150,7 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/download-a
     // User
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
-    GetOneRegularUserUseCaseService,
+    GetOneRegularUserUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -158,6 +179,17 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/download-a
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    CreateEventUseCase,
+    // Events
+    CreateEventUseCase,
+    GetOneEventUseCase,
+    UpdateEventUseCase,
+    DeleteEventUseCase,
+    PublishEventUseCase,
+    ArchiveEventUseCase,
+    CreateEventRSVPUseCase,
+    GetOneEventRSVPUseCase,
+    DeleteEventRSVPUseCase,
   ],
 })
 export class UseCaseModule {}
