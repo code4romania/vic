@@ -80,6 +80,8 @@ export type FindManyVolunteersOptions = Pick<IVolunteerModel, 'status'> & {
     departmentId: string;
     roleId: string;
     age: AgeRangeEnum;
+    activeSinceStart: Date;
+    activeSinceEnd: Date;
   }> &
   IBasePaginationFilterModel;
 

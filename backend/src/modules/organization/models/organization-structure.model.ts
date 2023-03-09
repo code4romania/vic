@@ -37,14 +37,14 @@ export type IFindAllOrganizationStructureModel =
 
 export class OrganizationStructureTransformer {
   static fromEntity(
-    entity: OrganizationStructureEntity,
+    entity: OrganizationStructureEntity & { numberOfMembers?: number },
   ): IOrganizationStructureModel {
     if (!entity) return null;
     return {
       id: entity.id,
       name: entity.name,
       type: entity.type,
-      members: 0, // TODO: to be implemented when we have the VolunteerOrganization relation
+      members: entity.numberOfMembers || 0,
       createdBy: entity.createdBy,
       organizationId: entity.organizationId,
       createdOn: entity.createdOn,
