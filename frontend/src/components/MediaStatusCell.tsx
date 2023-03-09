@@ -1,15 +1,16 @@
 import React from 'react';
 import i18n from '../common/config/i18n';
+import { EventStatus } from '../common/enums/event-status';
 import { classNames } from '../common/utils/utils';
 
 const MapColors = {
-  draft: 'bg-yellow-500',
-  published: 'bg-green-500',
-  archived: 'bg-red-500',
+  [EventStatus.DRAFT]: 'bg-yellow-500',
+  [EventStatus.PUBLISHED]: 'bg-green-500',
+  [EventStatus.ARCHIVED]: 'bg-red-500',
 };
 
 interface MediaCellProps {
-  status: 'draft' | 'published' | 'archived';
+  status: EventStatus;
 }
 
 const MediaStatusCell = ({ status }: MediaCellProps) => (

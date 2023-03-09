@@ -79,7 +79,7 @@ const OpenEventsTableHeader = [
     id: 'event.status',
     name: i18n.t('events:status'),
     sortable: true,
-    cell: (row: IEvent) => <MediaStatusCell status={row.displayStatus} />,
+    cell: (row: IEvent) => <MediaStatusCell status={row.status} />,
   },
 ];
 
@@ -136,7 +136,7 @@ const PastEventsTableHeader = [
     id: 'event.status',
     name: i18n.t('events:status'),
     sortable: true,
-    cell: (row: IEvent) => <MediaStatusCell status={row.displayStatus} />,
+    cell: (row: IEvent) => <MediaStatusCell status={row.status} />,
   },
 ];
 

@@ -3,6 +3,7 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent } from '../../common/interfaces/event.interface';
 import { DivisionType } from '../../common/enums/division-type.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { EventStatus } from '../../common/enums/event-status';
 // import API from '../api';
 
 export const getEvents = async (
@@ -39,7 +40,7 @@ export const getEvents = async (
           },
         ],
         rsvp: { yes: 75, no: 10 },
-        displayStatus: 'published',
+        status: EventStatus.ARCHIVED,
         reportedHours: '16 hours',
       },
       {
@@ -58,7 +59,7 @@ export const getEvents = async (
           },
         ],
         rsvp: { yes: 75, no: 10 },
-        displayStatus: 'published',
+        status: EventStatus.PUBLISHED,
         reportedHours: '16 hours',
       },
       {
@@ -68,7 +69,7 @@ export const getEvents = async (
         targetedVolunteers: 75,
         targets: [],
         rsvp: { yes: 75, no: 10 },
-        displayStatus: 'published',
+        status: EventStatus.DRAFT,
         reportedHours: '16 hours',
       },
     ],
