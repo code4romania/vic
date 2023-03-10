@@ -13,7 +13,7 @@ import {
   getDivisionsListItems,
 } from './division.api';
 
-export const useDivisionsQuery = (
+export const useDivisions = (
   limit: number = PaginationConfig.defaultRowsPerPage,
   page: number = PaginationConfig.defaultPage,
   divisionType: DivisionType,
@@ -30,7 +30,7 @@ export const useDivisionsQuery = (
   );
 };
 
-export const useDivisionsListItemsQuery = (divisionType: DivisionType) => {
+export const useDivisionsListItems = (divisionType: DivisionType) => {
   return useQuery(
     ['divisions-list-items', divisionType],
     () => getDivisionsListItems(divisionType),

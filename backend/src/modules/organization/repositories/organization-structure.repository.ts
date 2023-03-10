@@ -131,7 +131,7 @@ export class OrganizationStructureRepositoryService
         'structure.type = :type AND structure.organizationId = :organizationId AND structure.id IN (:...ids)',
         { type, organizationId, ids },
       )
-      .groupBy(`structure.id, createdBy.id`)
+      .groupBy(`structure.id, structure.createdBy.id`)
       .getMany();
 
     return structures.map(OrganizationStructureTransformer.fromEntity);

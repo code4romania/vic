@@ -369,7 +369,7 @@ const Volunteers = () => {
       createdOnRange[1],
     );
 
-    downloadExcel(volunteersData, i18n.t('volunteers:download'));
+    downloadExcel(volunteersData as BlobPart, i18n.t('volunteers:download'));
   };
 
   return (

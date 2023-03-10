@@ -1,21 +1,16 @@
 import React from 'react';
 import { DivisionType } from '../common/enums/division-type.enum';
 import { mapDivisionListItemToSelectItem } from '../common/utils/utils';
-import Select, { SelectProps } from '../components/Select';
+import MultiSelect, { MultiSelectProps } from '../components/MultiSelect';
 import { useDivisionsListItems } from '../services/division/division.service';
 
-interface OrganizationStructureSelectProps extends Omit<SelectProps<string>, 'options'> {
-  type: DivisionType;
-}
+type TargetsMultiSelectProps = Omit<MultiSelectProps, 'options'>;
 
-const OrganizationStructureSelect = ({
-  type,
-  ...selectProps
-}: OrganizationStructureSelectProps) => {
-  const { data: divisionListItems } = useDivisionsListItems(type);
+const TargetsMultiSelect = (selectProps: TargetsMultiSelectProps) => {
+  const { data: divisionListItems } = useDivisionsListItems(DivisionType.DEPARTMENT);
 
   return (
-    <Select
+    <MultiSelect
       {...selectProps}
       options={
         divisionListItems && divisionListItems?.length > 0
@@ -26,4 +21,4 @@ const OrganizationStructureSelect = ({
   );
 };
 
-export default OrganizationStructureSelect;
+export default TargetsMultiSelect;
