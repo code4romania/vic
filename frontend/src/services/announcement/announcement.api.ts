@@ -1,6 +1,7 @@
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { IAnnouncement, ISaveAnnouncement } from '../../common/interfaces/announcement.interface';
+import { IAnnouncement } from '../../common/interfaces/announcement.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { AnnouncementFormTypes } from '../../components/AnnouncementForm';
 import API from '../api';
 
 export const getAnnouncements = async (
@@ -18,13 +19,19 @@ export const getAnnouncement = async (id: string): Promise<IAnnouncement> => {
   return API.get(`/announcement/${id}`).then((res) => res.data);
 };
 
-export const addAnnouncement = async (createData: ISaveAnnouncement): Promise<IAnnouncement> => {
-  return API.post(`/announcement`, createData).then((res) => res.data);
+export const addAnnouncement = async (
+  anouncement: AnnouncementFormTypes,
+): Promise<IAnnouncement> => {
+  const { targets, ...anouncementPayload } = anouncement;
+  return API.post(`/announcement`, {
+    ...anouncementPayload,
+    ...(targets?.length > 0 ? { targetsIds: targets.map((target) => target.key) } : {}),
+  }).then((res) => res.data);
 };
 
 export const updateAnnouncement = async (
   id: string,
-  updateData: Partial<ISaveAnnouncement>,
+  updateData: Partial<AnnouncementFormTypes>,
 ): Promise<IAnnouncement> => {
   return API.patch(`/announcement/${id}`, updateData).then((res) => res.data);
 };

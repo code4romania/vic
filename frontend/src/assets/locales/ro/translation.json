@@ -56,7 +56,8 @@
       "hide": "Ascunde filtre"
     },
     "select_interval": "Selecteaza interval",
-    "publish": "Publica"
+    "publish": "Publica",
+    "save_draft": "Salveaza ca draft"
   },
   "header": {
     "login": "Login",
@@ -371,9 +372,9 @@
     "name": "anunt",
     "header": {
       "name": "Titlu anunt",
-      "updated_on": "Editat pe",
+      "updated_on": "Editat la",
       "status": "Status afisare",
-      "published_on": "Publicat pe",
+      "published_on": "Publicat la",
       "target": "Target"
     },
     "all_organization": "Toata organizatia",
@@ -397,14 +398,12 @@
         "placeholder": "Introdu continutul anuntului"
       },
       "target": {
+        "label": "Target",
         "placeholder": "Alege toate variantele care se aplica",
         "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata"
       }
     },
     "submit": {
-      "actions": {
-        "draft": "Salveaza ca draft"
-      },
       "messages": {
         "draft": "Anunt draft creat cu succes",
         "publish": "Anunt creat si publicat cu succes",

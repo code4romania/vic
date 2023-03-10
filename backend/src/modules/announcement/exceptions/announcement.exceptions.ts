@@ -4,6 +4,7 @@ export enum AnnouncementExceptionCodes {
   ANNOUNCEMENT_001 = 'ANNOUNCEMENT_001',
   ANNOUNCEMENT_002 = 'ANNOUNCEMENT_002',
   ANNOUNCEMENT_003 = 'ANNOUNCEMENT_003',
+  ANNOUNCEMENT_004 = 'ANNOUNCEMENT_004',
 }
 
 type AnnouncementExceptionCodeType = keyof typeof AnnouncementExceptionCodes;
@@ -23,5 +24,9 @@ export const AnnouncementExceptionMessages: Record<
   [AnnouncementExceptionCodes.ANNOUNCEMENT_003]: {
     code_error: AnnouncementExceptionCodes.ANNOUNCEMENT_003,
     message: 'Only departments can be chosen',
+  },
+  [AnnouncementExceptionCodes.ANNOUNCEMENT_004]: {
+    code_error: AnnouncementExceptionCodes.ANNOUNCEMENT_004,
+    message: 'Error while sending the anouncement notifications',
   },
 };

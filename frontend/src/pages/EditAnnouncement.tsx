@@ -5,7 +5,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
-import { DivisionType } from '../common/enums/division-type.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import AnnouncementForm, { AnnouncementFormTypes } from '../components/AnnouncementForm';
 import Button from '../components/Button';
@@ -13,16 +12,14 @@ import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
-import { mapItemToMultiListItem } from '../components/MultiSelect';
 import PageHeader from '../components/PageHeader';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import {
-  useAnnouncementQuery,
+  useAnnouncement,
   useUpdateAnnouncementMutation,
 } from '../services/announcement/announcement.service';
-import { useDivisionsListItemsQuery } from '../services/division/division.service';
 
 const validationSchema = yup.object({
   name: yup
@@ -46,9 +43,8 @@ const EditAnnouncement = () => {
     data: announcement,
     isLoading: isAnnouncementLoading,
     error: announcementError,
-  } = useAnnouncementQuery(id as string);
-  const { data: divisionListItems, isLoading: isDivisionListItemsLoading } =
-    useDivisionsListItemsQuery(DivisionType.DEPARTMENT);
+  } = useAnnouncement(id as string);
+
   const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
     useUpdateAnnouncementMutation();
 
@@ -68,7 +64,7 @@ const EditAnnouncement = () => {
       reset({
         name: announcement.name,
         description: announcement.description,
-        targets: announcement.targets.map(mapItemToMultiListItem),
+        // targets: announcement.targets.map(mapItemToMultiListItem),
       });
     }
   }, [announcement]);
@@ -86,7 +82,6 @@ const EditAnnouncement = () => {
 
   const onSaveDraft = (formValues: AnnouncementFormTypes) => {
     if (announcement) {
-      const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
       updateAnnouncement(
         {
           id: announcement.id,
@@ -94,7 +89,6 @@ const EditAnnouncement = () => {
             name: formValues.name,
             description: formValues.description,
             status: AnnouncementStatus.DRAFT,
-            targetsIds,
           },
         },
         {
@@ -114,7 +108,6 @@ const EditAnnouncement = () => {
 
   const onPublish = (formValues: AnnouncementFormTypes) => {
     if (announcement) {
-      const targetsIds = formValues.targets ? formValues.targets.map((target) => target.value) : [];
       updateAnnouncement(
         {
           id: announcement?.id,
@@ -122,7 +115,6 @@ const EditAnnouncement = () => {
             name: formValues.name,
             description: formValues.description,
             status: AnnouncementStatus.PUBLISHED,
-            targetsIds,
           },
         },
         {
@@ -145,10 +137,8 @@ const EditAnnouncement = () => {
       <PageHeader onBackButtonPress={onNavigateBack}>
         {i18n.t('general:edit', { item: i18n.t('announcement:name') })}
       </PageHeader>
-      {isAnnouncementLoading && isUpdateAnnouncementLoading && isDivisionListItemsLoading && (
-        <LoadingContent />
-      )}
-      {!isUpdateAnnouncementLoading && !isAnnouncementLoading && !isDivisionListItemsLoading && (
+      {isAnnouncementLoading && isUpdateAnnouncementLoading && <LoadingContent />}
+      {!isUpdateAnnouncementLoading && !isAnnouncementLoading && (
         <Card>
           <CardHeader>
             <h4 className="text-sm sm:text-xl">{i18n.t('announcement:form.title')}</h4>
@@ -167,19 +157,16 @@ const EditAnnouncement = () => {
           </CardHeader>
           <CardBody>
             <AnnouncementForm
-              options={divisionListItems?.map(mapItemToMultiListItem)}
+              // options={divisionListItems?.map(mapItemToMultiListItem)}
               control={control}
               errors={errors}
             />
           </CardBody>
         </Card>
       )}
-      {!announcement &&
-        !isAnnouncementLoading &&
-        !isUpdateAnnouncementLoading &&
-        !isDivisionListItemsLoading && (
-          <EmptyContent description={i18n.t('general:error.load_entries')} />
-        )}
+      {!announcement && !isAnnouncementLoading && !isUpdateAnnouncementLoading && (
+        <EmptyContent description={i18n.t('general:error.load_entries')} />
+      )}
     </PageLayout>
   );
 };

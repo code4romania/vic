@@ -6,15 +6,8 @@ export interface IAnnouncement {
   name: string;
   description: string;
   status: AnnouncementStatus;
-  publishedOn: Date | null;
+  publishedOn?: Date;
   targets: IDivisionListItem[];
   updatedOn: Date;
   targetedVolunteers: number;
-}
-
-export interface ISaveAnnouncement {
-  name: string;
-  description: string;
-  status: AnnouncementStatus;
-  targetsIds: string[];
 }

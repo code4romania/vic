@@ -1,13 +1,14 @@
 import React from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl } from 'react-hook-form';
 import i18n from '../common/config/i18n';
+import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from './FormInput';
+import FormSelect from './FormSelect';
 import FormTextarea from './FormTextarea';
-import MultiSelect, { IMultiListItem } from './MultiSelect';
+import { SelectItem } from './Select';
 
 interface AnnouncementFormProps {
-  options?: IMultiListItem[];
   control: Control<AnnouncementFormTypes, object>;
   errors: FieldErrorsImpl<DeepRequired<AnnouncementFormTypes>>;
 }
@@ -15,10 +16,11 @@ interface AnnouncementFormProps {
 export type AnnouncementFormTypes = {
   name: string;
   description: string;
-  targets: IMultiListItem[];
+  targets: SelectItem<string>[];
+  status?: AnnouncementStatus;
 };
 
-const AnnouncementForm = ({ options, control, errors }: AnnouncementFormProps) => {
+const AnnouncementForm = ({ control, errors }: AnnouncementFormProps) => {
   return (
     <FormLayout>
       <form>
@@ -54,29 +56,28 @@ const AnnouncementForm = ({ options, control, errors }: AnnouncementFormProps) =
                 errorMessage={errors.description?.message}
                 label={`${i18n.t('announcement:form.description.label')}`}
                 placeholder={`${i18n.t('announcement:form.description.placeholder')}`}
+                id="announcement-form__description"
               />
             );
           }}
         />
-        <div className="flex flex-col gap-1">
-          <Controller
-            key="targets"
-            name="targets"
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <MultiSelect
-                  label={`${i18n.t('announcement:header.target')}`}
-                  options={options}
-                  placeholder={`${i18n.t('announcement:form.target.placeholder')}`}
-                  value={value || []}
-                  onChange={onChange}
-                />
-              );
-            }}
-          />
-          <small>{i18n.t('announcement:form.target.disclaimer')}</small>
-        </div>
+        <Controller
+          key="targets"
+          name="targets"
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <FormSelect
+                label={`${i18n.t('announcement:form.target.label')}`}
+                placeholder={`${i18n.t('announcement:form.target.placeholder')}`}
+                onChange={onChange}
+                selected={value}
+                errorMessage={errors.targets?.message}
+                helper={i18n.t('announcement:form.target.disclaimer')}
+              />
+            );
+          }}
+        />
       </form>
     </FormLayout>
   );
