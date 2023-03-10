@@ -5,6 +5,7 @@ import { VolunteerFormTypes } from '../../pages/EditVolunteer';
 import { IVolunteer } from '../../common/interfaces/volunteer.interface';
 import API from '../api';
 import { AgeRangeEnum } from '../../common/enums/age-range.enum';
+import { AxiosResponseHeaders } from 'axios';
 
 export const getVolunteers = async (
   status: VolunteerStatus,
@@ -38,6 +39,39 @@ export const getVolunteers = async (
       activeSinceEnd,
     },
   }).then((res) => res.data);
+};
+
+export const getVolunteersForDownload = async (
+  status: VolunteerStatus,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+  search?: string,
+  age?: AgeRangeEnum,
+  branchId?: string,
+  departmentId?: string,
+  roleId?: string,
+  locationId?: string,
+  start?: Date,
+  end?: Date,
+): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
+  return API.get('volunteer/download', {
+    params: {
+      status,
+      orderBy,
+      orderDirection,
+      search,
+      age,
+      branchId,
+      departmentId,
+      roleId,
+      locationId,
+      start,
+      end,
+    },
+    responseType: 'arraybuffer',
+  }).then((res) => {
+    return { data: res.data, headers: res.headers as AxiosResponseHeaders };
+  });
 };
 
 export const getVolunteer = async (id: string): Promise<IVolunteer> => {

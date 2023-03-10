@@ -13,3 +13,13 @@ export const calculateAge = (birthday: Date) => {
 
 export const formatLocation = (location: ICity): string =>
   location ? `${location.name}, ${location.county?.abbreviation}` : '-';
+
+export const downloadExcel = (data: BlobPart, name: string): void => {
+  const url = URL.createObjectURL(new Blob([data]));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', name);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+};
