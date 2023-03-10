@@ -36,6 +36,7 @@ import PageHeaderAdd from '../components/PageHeaderAdd';
 import CellLayout from '../layouts/CellLayout';
 import { useNavigate } from 'react-router-dom';
 import { EventStatus } from '../common/enums/event-status';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 const EventsTabsOptions: SelectItem<EventsTabs>[] = [
   { key: EventsTabs.OPEN, value: i18n.t('side_menu:options.events') },
@@ -144,6 +145,7 @@ const PastEventsTableHeader = [
 ];
 
 const Events = () => {
+  const [showDeleteEvent, setShowDeleteEvent] = useState<null | IEvent>();
   const [tabsStatus, setTabsStatus] = useState<EventsTabs>(EventsTabs.OPEN);
   // pagination state
   const [page, setPage] = useState<number>();
@@ -214,7 +216,23 @@ const Events = () => {
   };
 
   const onDelete = (row: IEvent) => {
-    alert(`not implemented! Selected: ${row.name}`);
+    setShowDeleteEvent(row);
+  };
+
+  const confirmDelete = () => {
+    if (showDeleteEvent)
+      deleteEvent(showDeleteEvent.id, {
+        onSuccess: () => {
+          useSuccessToast('events:modal.delete');
+          refetch();
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error));
+        },
+        onSettled: () => {
+          setShowDeleteEvent(null);
+        },
+      });
   };
 
   // menu items
@@ -327,7 +345,7 @@ const Events = () => {
                 buildEventsActionColumn(),
               ]}
               data={events?.items}
-              loading={isEventsLoading}
+              loading={isEventsLoading || isArchivingEvent || isDeletingEvent || isPublishingEvent}
               pagination
               paginationPerPage={rowsPerPage}
               paginationTotalRows={events?.meta?.totalItems}
@@ -339,6 +357,18 @@ const Events = () => {
           </CardBody>
         </Card>
       </Tabs>
+      {showDeleteEvent && (
+        <ConfirmationModal
+          title={i18n.t('events:modal.title')}
+          description={i18n.t('events:modal.description_name', { name: showDeleteEvent.name })}
+          confirmBtnLabel={i18n.t('division:modal.delete.title', {
+            division: i18n.t('general:event').toLowerCase(),
+          })}
+          confirmBtnClassName="btn-danger"
+          onClose={setShowDeleteEvent.bind(null, null)}
+          onConfirm={confirmDelete}
+        />
+      )}
     </PageLayout>
   );
 };
