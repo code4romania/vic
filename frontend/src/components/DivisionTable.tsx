@@ -33,8 +33,9 @@ export const DivisionTableHeader = [
     selector: (row: IDivision) => row.name,
   },
   {
-    id: 'membersCount',
+    id: 'numberOfMembers',
     name: i18n.t('division:members'),
+    sortable: true,
     minWidth: '2rem',
     selector: (row: IDivision) => row.numberOfMembers,
   },

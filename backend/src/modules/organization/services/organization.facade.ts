@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
 import { IOrganizationRepository } from '../interfaces/organization-repository.interface';
 import {
   ICreateOrganizationModel,

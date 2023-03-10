@@ -35,16 +35,23 @@ export type IFindAllOrganizationStructureModel =
   | Partial<IOrganizationStructureModel>
   | Partial<IOrganizationStructureModel>[];
 
+export type IFindAllOrganizationStructureByIdsOptions = Pick<
+  IOrganizationStructureModel,
+  'type' | 'organizationId'
+> & {
+  ids: string[];
+};
+
 export class OrganizationStructureTransformer {
   static fromEntity(
-    entity: OrganizationStructureEntity,
+    entity: OrganizationStructureEntity & { numberOfMembers?: number },
   ): IOrganizationStructureModel {
     if (!entity) return null;
     return {
       id: entity.id,
       name: entity.name,
       type: entity.type,
-      members: 0, // TODO: to be implemented when we have the VolunteerOrganization relation
+      members: entity.numberOfMembers || 0,
       createdBy: entity.createdBy,
       organizationId: entity.organizationId,
       createdOn: entity.createdOn,
@@ -54,12 +61,21 @@ export class OrganizationStructureTransformer {
 
   static toEntity(
     model: ICreateOrganizationStructureModel,
+  ): OrganizationStructureEntity;
+  static toEntity(id: string): OrganizationStructureEntity;
+  static toEntity(
+    model: ICreateOrganizationStructureModel | string,
   ): OrganizationStructureEntity {
     const entity = new OrganizationStructureEntity();
-    entity.name = model.name;
-    entity.type = model.type;
-    entity.createdById = model.createdById;
-    entity.organizationId = model.organizationId;
+    if (typeof model === 'object') {
+      entity.name = model.name;
+      entity.type = model.type;
+      entity.createdById = model.createdById;
+      entity.organizationId = model.organizationId;
+    } else {
+      // used for ManyToMany relations to generate entity like object
+      entity.id = model;
+    }
     return entity;
   }
 }

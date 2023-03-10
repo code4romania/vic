@@ -7,6 +7,7 @@ import {
   UpdateVolunteerProfileOptions,
 } from '../model/volunteer-profile.model';
 import {
+  CountVolunteerOptions,
   CreateVolunteerOptions,
   FindManyVolunteersOptions,
   IVolunteerModel,
@@ -20,6 +21,10 @@ export interface IVolunteerRepository
   findMany(
     findOptions: FindManyVolunteersOptions,
   ): Promise<Pagination<IVolunteerModel>>;
+  findAllActiveByDepartmentIds(
+    departmentIds: string[],
+  ): Promise<IVolunteerModel[]>;
+  count(options: CountVolunteerOptions): Promise<number>;
 }
 
 export interface IVolunteerProfileRepository {

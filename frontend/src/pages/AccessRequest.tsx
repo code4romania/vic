@@ -19,6 +19,9 @@ import {
   useApproveAccessRequestMutation,
   useRejectAccessRequestMutation,
 } from '../services/access-requests/access-requests.service';
+import Card from '../layouts/CardLayout';
+import CardBody from '../components/CardBody';
+import { formatDate } from '../common/utils/utils';
 
 const AccessRequest = () => {
   // navigation state
@@ -32,6 +35,7 @@ const AccessRequest = () => {
     data: accessRequest,
     error: accessRequestError,
     isLoading: isAccessRequestLoading,
+    refetch,
   } = useAccessRequestQuery(id as string);
 
   const { mutateAsync: rejectAccessRequestMutation, isLoading: isRejectAccessRequestLoading } =
@@ -82,7 +86,7 @@ const AccessRequest = () => {
                 option: i18n.t('volunteer:registration.confirmation_options.rejected'),
               }),
             );
-            onBackButtonPress();
+            refetch();
           },
           onError: (error) => {
             InternalErrors.ACCESS_REQUEST_ERRORS.getError(error?.response?.data.code_error);
@@ -128,6 +132,27 @@ const AccessRequest = () => {
                   />
                 </div>
               </div>
+            )}
+            {accessRequest.status === RequestStatus.REJECTED && (
+              <Card>
+                <CardBody>
+                  <div className="flex flex-col gap-2 sm:gap-4 py-2">
+                    <div className="flex gap-1 sm:gap-2 items-center">
+                      <XMarkIcon className="w-6 h-6 text-red-600" />
+                      <h2>
+                        {i18n.t('access_requests:rejected_message', {
+                          date: formatDate(accessRequest.updatedOn),
+                        })}
+                      </h2>
+                    </div>
+                    <p>{`${i18n.t('general:reason')}: ${
+                      accessRequest.rejectionReason
+                        ? accessRequest.rejectionReason
+                        : i18n.t('general:unspecified').toLowerCase()
+                    }`}</p>
+                  </div>
+                </CardBody>
+              </Card>
             )}
             <div className="w-full flex flex-col lg:flex-row gap-4">
               <div className="w-full lg:w-1/3 xl:w-1/4">

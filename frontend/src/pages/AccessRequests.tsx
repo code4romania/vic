@@ -16,7 +16,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IAccessRequest } from '../common/interfaces/access-request.interface';
 import { IBusinessException } from '../common/interfaces/business-exception.interface';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
-import { formatDate, formatLocation } from '../common/utils/utils';
+import { downloadExcel, formatDate, formatLocation } from '../common/utils/utils';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
@@ -44,6 +44,7 @@ import DataTableFilters from '../components/DataTableFilters';
 import DateRangePicker from '../components/DateRangePicker';
 import LocationSelect from '../containers/LocationSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
+import { downloadAccessRequests } from '../services/access-requests/access-requests.api';
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
   { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
@@ -66,7 +67,7 @@ const PendingAccessRequestsTableHeader = [
     selector: (row: IAccessRequest) => `${row.requestedBy.email}\n${row.requestedBy.phone}`,
   },
   {
-    id: 'requestedBy.location.name',
+    id: 'location.name',
     name: i18n.t('general:location'),
     sortable: true,
     selector: (row: IAccessRequest) => formatLocation(row.requestedBy.location),
@@ -82,7 +83,7 @@ const PendingAccessRequestsTableHeader = [
 const RejectedAccessRequestsTableHeader = [
   ...PendingAccessRequestsTableHeader,
   {
-    id: 'rejectedDate',
+    id: 'updatedOn',
     name: i18n.t('access_requests:rejected_date'),
     sortable: true,
     selector: (row: IAccessRequest) => formatDate(row.updatedOn || new Date()),
@@ -96,9 +97,11 @@ interface AccessRequestTable {
     orderByColumn?: string,
     orderDirection?: OrderDirection,
     search?: string,
-    start?: Date,
-    end?: Date,
+    createdOnStart?: Date,
+    createdOnEnd?: Date,
     location?: string,
+    rejectedOnStart?: Date,
+    rejectedOnEnd?: Date,
   ) => UseQueryResult<
     IPaginatedEntity<IAccessRequest>,
     AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>
@@ -116,6 +119,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
   // filters
   const [searchWord, setSearchWord] = useState<string>();
   const [createdOnRange, setCreatedOnRange] = useState<Date[]>([]);
+  const [rejectedOnRange, setRejectedOnRange] = useState<Date[]>([]);
   const [location, setLocation] = useState<ListItem>();
   // confirmation modals
   const [showRejectAccessRequest, setShowRejectAccessRequest] = useState<null | IAccessRequest>(
@@ -140,6 +144,8 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     createdOnRange[0],
     createdOnRange[1],
     location?.value,
+    rejectedOnRange[0],
+    rejectedOnRange[1],
   );
 
   // actions
@@ -308,8 +314,23 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
 
   const onResetFilters = () => {
     setCreatedOnRange([]);
+    setRejectedOnRange([]);
     setLocation(undefined);
     setSearchWord(undefined);
+  };
+
+  const onExport = async () => {
+    const { data: accessRequestsData } = await downloadAccessRequests(
+      status,
+      orderByColumn,
+      orderDirection,
+      searchWord,
+      createdOnRange[0],
+      createdOnRange[1],
+      location?.value,
+    );
+
+    downloadExcel(accessRequestsData, i18n.t('access_requests:download'));
   };
 
   return (
@@ -325,6 +346,14 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
           value={createdOnRange.length > 0 ? createdOnRange : undefined}
           id="created-on-range__picker"
         />
+        {status === RequestStatus.REJECTED && (
+          <DateRangePicker
+            label={i18n.t('access_requests:filters.access_request_rejected_range')}
+            onChange={setRejectedOnRange}
+            value={rejectedOnRange.length > 0 ? rejectedOnRange : undefined}
+            id="rejected-on-range__picker"
+          />
+        )}
         <LocationSelect
           label={i18n.t('general:location')}
           onSelect={setLocation}
@@ -337,7 +366,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
             label={i18n.t('general:download_table')}
             icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
             className="btn-outline-secondary ml-auto"
-            onClick={() => alert('Not implemented')}
+            onClick={onExport}
           />
         </CardHeader>
         <CardBody>
@@ -402,14 +431,14 @@ const AccessRequests = () => {
           <>
             <AccessRequestTable
               useAccessRequests={useNewAccessRequestsQuery}
-              status={requestStatus}
+              status={RequestStatus.PENDING}
             />
           </>
         )}
         {requestStatus === RequestStatus.REJECTED && (
           <AccessRequestTable
             useAccessRequests={useRejectedAccessRequestsQuery}
-            status={requestStatus}
+            status={RequestStatus.REJECTED}
           />
         )}
       </Tabs>

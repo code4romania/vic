@@ -57,8 +57,9 @@
     "pino-http": "^8.3.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.4.01",
-    "uuid": "^9.0.0"
+    "typeorm": "^0.3.11",
+    "uuid": "^9.0.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

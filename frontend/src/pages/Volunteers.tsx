@@ -19,7 +19,7 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import Select, { SelectItem } from '../components/Select';
-import { formatDate, formatLocation } from '../common/utils/utils';
+import { downloadExcel, formatDate, formatLocation } from '../common/utils/utils';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
@@ -41,6 +41,7 @@ import OrganizationStructureSelect from '../containers/OrganizationStructureSele
 import { DivisionType } from '../common/enums/division-type.enum';
 import { AgeRangeEnum } from '../common/enums/age-range.enum';
 import ConfirmationModal from '../components/ConfirmationModal';
+import { getVolunteersForDownload } from '../services/volunteer/volunteer.api';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
@@ -83,20 +84,20 @@ const ActiveVolunteersTableHeader = [
     ),
   },
   {
-    id: 'volunteerProfile.department.name',
+    id: 'department.name',
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
     grow: 1,
     minWidth: '5rem',
     selector: (row: IVolunteer) =>
-      row.profile
+      row.profile?.department || row?.profile?.role
         ? `${row.profile?.role?.name || ''}${
             row.profile?.role && row.profile?.department ? '\n' : ''
           }${row.profile?.department?.name || ''}`
         : '-',
   },
   {
-    id: 'user.location.name',
+    id: 'location.name',
     name: i18n.t('volunteers:location'),
     sortable: true,
     grow: 1,
@@ -353,6 +354,24 @@ const Volunteers = () => {
     setSearchWord(undefined);
   };
 
+  const onExport = async () => {
+    const { data: volunteersData } = await getVolunteersForDownload(
+      volunteerStatus,
+      orderByColumn,
+      orderDirection,
+      searchWord,
+      age?.key,
+      branch?.key,
+      department?.key,
+      role?.key,
+      location?.value,
+      createdOnRange[0],
+      createdOnRange[1],
+    );
+
+    downloadExcel(volunteersData, i18n.t('volunteers:download'));
+  };
+
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.volunteers_list')}</PageHeader>
@@ -405,7 +424,7 @@ const Volunteers = () => {
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
               className="btn-outline-secondary"
-              onClick={() => alert('Not implemented')}
+              onClick={onExport}
             />
           </CardHeader>
           <CardBody>

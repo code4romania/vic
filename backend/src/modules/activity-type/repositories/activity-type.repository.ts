@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
-import { ILike, Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsWhere,
+  ILike,
+  In,
+  Repository,
+} from 'typeorm';
 import { ActivityTypeEntity } from '../entities/activity-type.entity';
 import { IActivityTypeRepository } from '../interfaces/activity-type-repository.interface';
 import {
@@ -56,14 +62,17 @@ export class ActivityTypeRepositoryService implements IActivityTypeRepository {
   }
 
   async findAll(
-    options: FindManyActivityTypeOptions,
+    options: FindManyActivityTypeOptions | FindManyActivityTypeOptions[],
   ): Promise<IActivityTypeModel[]> {
-    const { search, ...filters } = options;
+    options = Array.isArray(options) ? options : [options];
+
+    const mapOptions = options.map((option) => ({
+      ...option,
+      ...(option.search ? { name: ILike(`%${option.search}%`) } : {}),
+    }));
+
     const activityTypes = await this.activityTypeRepository.find({
-      where: {
-        ...filters,
-        ...(search ? { name: ILike(`%${search}%`) } : {}),
-      },
+      where: mapOptions,
       relations: {
         organization: true,
         branch: true,
@@ -76,5 +85,19 @@ export class ActivityTypeRepositoryService implements IActivityTypeRepository {
     });
 
     return activityTypes.map(ActivityTypeTransformer.fromEntity);
+  }
+
+  async exists(
+    ids: string[],
+    options: FindActivityTypeOptions,
+  ): Promise<boolean> {
+    const query = ids.map((id) => ({ id, ...options }));
+    const data = await this.findAll(query);
+
+    if (data.length !== ids.length) {
+      return false;
+    }
+
+    return true;
   }
 }

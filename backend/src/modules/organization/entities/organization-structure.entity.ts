@@ -1,10 +1,12 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import { AdminUserEntity } from 'src/modules/user/entities/user.entity';
+import { VolunteerProfileEntity } from 'src/modules/volunteer/entities/volunteer-profile.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -48,4 +50,13 @@ export class OrganizationStructureEntity extends BaseEntity {
   @ManyToOne(() => OrganizationEntity)
   @JoinColumn({ name: 'organization_id' })
   organization: OrganizationEntity;
+
+  @OneToMany(() => VolunteerProfileEntity, (profile) => profile.branch)
+  volunteerProfileBranches: VolunteerProfileEntity[];
+
+  @OneToMany(() => VolunteerProfileEntity, (profile) => profile.department)
+  volunteerProfileDepartments: VolunteerProfileEntity[];
+
+  @OneToMany(() => VolunteerProfileEntity, (profile) => profile.role)
+  volunteerProfileRoles: VolunteerProfileEntity[];
 }

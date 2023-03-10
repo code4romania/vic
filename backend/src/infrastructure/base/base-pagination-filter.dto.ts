@@ -1,11 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsDate,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 
 export class BasePaginationFilterDto {
@@ -24,14 +18,6 @@ export class BasePaginationFilterDto {
   @IsOptional()
   @IsString()
   orderBy?: string;
-
-  @IsOptional()
-  @IsDate()
-  start?: Date;
-
-  @IsOptional()
-  @IsDate()
-  end?: Date;
 
   @IsOptional()
   @IsEnum(OrderDirection)

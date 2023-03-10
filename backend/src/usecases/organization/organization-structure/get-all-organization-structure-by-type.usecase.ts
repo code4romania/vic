@@ -16,6 +16,6 @@ export class GetAllOrganizationStructureByTypeUseCase
     type: OrganizationStructureType,
     organizationId: string,
   ): Promise<IOrganizationStructureModel[]> {
-    return this.organizationStructureFacade.findAll(type, organizationId);
+    return this.organizationStructureFacade.findAll({ type, organizationId });
   }
 }
