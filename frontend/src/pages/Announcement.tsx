@@ -1,5 +1,5 @@
-import { PencilIcon } from '@heroicons/react/24/outline';
-import React from 'react';
+import { PaperAirplaneIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
@@ -24,8 +24,10 @@ import {
 } from '../services/announcement/announcement.service';
 
 const Announcement = () => {
-  const [selectedIdForDeletion, setSelectedIdForDeletion] = React.useState<string>();
+  const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
+
   const navigate = useNavigate();
+
   const { id } = useParams();
 
   const {
@@ -33,19 +35,21 @@ const Announcement = () => {
     isLoading: isAnnouncementLoading,
     error: announcementError,
   } = useAnnouncement(id as string);
+
   const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
     useUpdateAnnouncementMutation();
+
   const { mutateAsync: deleteAnnouncement, isLoading: isDeleteAnnouncementLoading } =
     useDeleteAnnouncementMutation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (announcementError)
       useErrorToast(
         InternalErrors.ANNOUNCEMENT_ERRORS.getError(announcementError.response?.data.code_error),
       );
   }, [announcementError]);
 
-  const onNavigateBack = () => {
+  const onBackButtonPress = () => {
     navigate('/announcements');
   };
 
@@ -60,8 +64,8 @@ const Announcement = () => {
         },
         {
           onSuccess: () => {
-            onNavigateBack();
-            useSuccessToast(i18n.t('announcement:success.create_publish'));
+            onBackButtonPress();
+            useSuccessToast(i18n.t('announcement:submit.messages.publish'));
           },
           onError: (error) => {
             useErrorToast(
@@ -85,8 +89,8 @@ const Announcement = () => {
     if (selectedIdForDeletion) {
       deleteAnnouncement(selectedIdForDeletion, {
         onSuccess: () => {
-          useSuccessToast(i18n.t('announcement:success.delete'));
-          onNavigateBack();
+          useSuccessToast(i18n.t('announcement:submit.messages.delete'));
+          onBackButtonPress();
         },
         onError: (error) => {
           useErrorToast(
@@ -102,7 +106,7 @@ const Announcement = () => {
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={onNavigateBack}>{i18n.t('general:view')}</PageHeader>
+      <PageHeader onBackButtonPress={onBackButtonPress}>{i18n.t('general:view')}</PageHeader>
       {isAnnouncementLoading && isUpdateAnnouncementLoading && isDeleteAnnouncementLoading && (
         <LoadingContent />
       )}
@@ -110,27 +114,29 @@ const Announcement = () => {
       {announcement && (
         <Card>
           <CardHeader>
-            <h1>{i18n.t('announcement:form.title')}</h1>
-            <div className="flex flex-row gap-3">
+            <h4 className="text-sm sm:text-xl">{i18n.t('announcement:form.title')}</h4>
+            <div className="flex flex-row gap-4">
               <Button
                 className="btn-text-danger"
+                icon={<TrashIcon className="menu-icon" />}
                 label={i18n.t('general:delete')}
                 onClick={onDelete}
               />
               {announcement.status === AnnouncementStatus.DRAFT && (
-                <div className="flex flex-row gap-3">
-                  <Button
-                    className="btn-outline-secondary"
-                    label={i18n.t('general:edit', { item: '' })}
-                    icon={<PencilIcon className="menu-icon" />}
-                    onClick={onEdit}
-                  />
-                  <Button
-                    className="btn-primary"
-                    label={i18n.t('announcement:publish')}
-                    onClick={onPublish}
-                  />
-                </div>
+                <Button
+                  className="btn-outline-secondary"
+                  label={i18n.t('general:edit', { item: '' })}
+                  icon={<PencilIcon className="menu-icon" />}
+                  onClick={onEdit}
+                />
+              )}
+              {announcement.status === AnnouncementStatus.DRAFT && (
+                <Button
+                  className="btn-primary"
+                  icon={<PaperAirplaneIcon className="h-5 w-5" />}
+                  label={i18n.t('general:publish')}
+                  onClick={onPublish}
+                />
               )}
             </div>
           </CardHeader>

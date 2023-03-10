@@ -219,7 +219,7 @@ const Announcements = () => {
     if (selectedIdForDeletion) {
       deleteAnnouncement(selectedIdForDeletion, {
         onSuccess: () => {
-          useSuccessToast(i18n.t('announcement:success.delete'));
+          useSuccessToast(i18n.t('announcement:submit.messages.delete'));
           refetch();
         },
         onError: (error) => {

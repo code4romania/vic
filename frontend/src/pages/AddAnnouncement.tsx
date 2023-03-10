@@ -16,6 +16,7 @@ import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { useCreateAnnouncementMutation } from '../services/announcement/announcement.service';
+import { BookmarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 const validationSchema = yup.object({
   name: yup
@@ -87,11 +88,13 @@ const AddAnnouncement = () => {
             <div className="flex flex-row gap-4">
               <Button
                 label={i18n.t('general:save_draft')}
+                icon={<BookmarkIcon className="h-5 w-5" />}
                 className="btn-outline-secondary"
                 onClick={handleSubmit(onSaveDraft)}
               />
               <Button
                 label={i18n.t('general:send')}
+                icon={<PaperAirplaneIcon className="h-5 w-5" />}
                 className="btn-primary"
                 onClick={handleSubmit(onPublish)}
               />
