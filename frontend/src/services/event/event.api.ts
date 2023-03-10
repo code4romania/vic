@@ -5,7 +5,7 @@ import { DivisionType } from '../../common/enums/division-type.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { AttendanceType } from '../../components/EventForm';
 import { EventStatus } from '../../common/enums/event-status';
-// import API from '../api';
+import API from '../api';
 
 export interface IAddEventData {
   name: string;
@@ -158,7 +158,7 @@ export const getEvents = async (
 };
 
 export const getEvent = async (id: string): Promise<IEvent> => {
-  // return API.get(`events/${id}`).then((res) => res.data);
+  // return API.get(`/events/${id}`).then((res) => res.data);
   return Promise.resolve({
     id,
     name: 'Maraton',
@@ -189,7 +189,7 @@ export const getEvent = async (id: string): Promise<IEvent> => {
       },
     ],
     rsvp: { yes: 75, no: 10 },
-    status: EventStatus.DRAFT,
+    status: EventStatus.PUBLISHED,
     observation:
       'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
     reportedHours: '16 hours',
@@ -198,7 +198,7 @@ export const getEvent = async (id: string): Promise<IEvent> => {
 
 export const addEvent = async (data: IAddEventData): Promise<IEvent> => {
   console.log(data);
-  // return API.post('events', { ...data }).then((res) => res.data);
+  // return API.post('/events', { ...data }).then((res) => res.data);
   return Promise.resolve({
     id: '1',
     name: 'Maraton',
@@ -241,7 +241,7 @@ export const editEvent = async (
   data: Omit<IAddEventData, 'status'>,
 ): Promise<IEvent> => {
   console.log(data);
-  // return API.patch(`events/${id}`, { ...data }).then((res) => res.data);
+  // return API.patch(`/events/${id}`, { ...data }).then((res) => res.data);
   return Promise.resolve({
     id,
     name: 'Maraton',
@@ -277,4 +277,16 @@ export const editEvent = async (
       'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
     reportedHours: '16 hours',
   });
+};
+
+export const archiveEvent = async (id: string): Promise<IEvent> => {
+  return API.patch(`/event/${id}/archive`).then((res) => res.data);
+};
+
+export const publishEvent = async (id: string): Promise<IEvent> => {
+  return API.patch(`/event/${id}/publish`).then((res) => res.data);
+};
+
+export const deleteEvent = async (id: string): Promise<IEvent> => {
+  return API.delete(`/event/${id}`).then((res) => res.data);
 };

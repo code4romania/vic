@@ -4,7 +4,16 @@ import { EventsTabs } from '../../common/enums/events-tabs.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { EVENT_ERRORS } from '../../common/errors/entities/event.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
-import { addEvent, editEvent, getEvent, getEvents, IAddEventData } from './event.api';
+import {
+  addEvent,
+  archiveEvent,
+  deleteEvent,
+  editEvent,
+  getEvent,
+  getEvents,
+  IAddEventData,
+  publishEvent,
+} from './event.api';
 
 export const useEventsQuery = (
   rowsPerPage: number,
@@ -41,4 +50,22 @@ export const useEditEventMutation = () => {
       onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
     },
   );
+};
+
+export const useArchiveEventMutation = () => {
+  return useMutation((id: string) => archiveEvent(id), {
+    onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
+  });
+};
+
+export const usePublishEventMutation = () => {
+  return useMutation((id: string) => publishEvent(id), {
+    onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
+  });
+};
+
+export const useDeleteEventMutation = () => {
+  return useMutation((id: string) => deleteEvent(id), {
+    onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
+  });
 };
