@@ -1,4 +1,4 @@
-import { Body, Delete, Header, Query, Res } from '@nestjs/common';
+import { Body, Delete, Query, Header, Res } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
@@ -21,7 +21,7 @@ import {
   PaginatedPresenter,
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { Response } from 'express';
-import { GetAccessRequestsForDownloadUseCase } from 'src/usecases/access-request/download-access-requests.usecase';
+import { GetAccessRequestsForDownloadUseCase } from 'src/usecases/access-request/get-many-for-download-access-requests.usecase';
 import { jsonToExcelBuffer } from 'src/common/helpers/utils';
 import { IAccessRequestDownload } from 'src/modules/access-request/interfaces/access-request-download.interface';
 

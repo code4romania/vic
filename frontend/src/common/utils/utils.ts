@@ -28,3 +28,13 @@ export const mapDivisionListItemToSelectItem = (item: IDivisionListItem): Select
   key: item.id,
   value: item.name,
 });
+
+export const downloadExcel = (data: BlobPart, name: string): void => {
+  const url = URL.createObjectURL(new Blob([data]));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', name);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+};

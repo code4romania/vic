@@ -174,7 +174,8 @@
       "VOLUNTEER_PROFILE_001": "Voluntarul are deja un profil",
       "VOLUNTEER_PROFILE_002": "Rol/Departament/Filiala eronate",
       "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil pentru a fi updatat. Creaza unul inainte de a face modificarile."
-    }
+    },
+    "download": "Voluntari.xlsx"
   },
   "division": {
     "members": "Membri",
@@ -292,7 +293,8 @@
       "title": "Sigur doriți să ștergeți această solicitare de înregistrare?",
       "description": "Această acțiune va șterge definitiv această solicitare și toate informațiile asociate acesteia",
       "button_label": "Sterge solicitarea"
-    }
+    },
+    "download": "Cereri-Acces.xlsx"
   },
   "access_code": {
     "name": "Cod acces",
