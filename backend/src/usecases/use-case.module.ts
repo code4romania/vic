@@ -62,7 +62,8 @@ import { DeleteEventUseCase } from './event/delete-event.usecase';
 import { CreateEventRSVPUseCase } from './event/RSVP/create-rsvp.usecase';
 import { GetOneEventRSVPUseCase } from './event/RSVP/get-one-rsvp.usecase';
 import { DeleteEventRSVPUseCase } from './event/RSVP/delete-rsvp.usecase';
-import { GetAccessRequestsForDownloadUseCase } from './access-request/download-access-requests.usecase';
+import { GetAccessRequestsForDownloadUseCase } from './access-request/get-many-for-download-access-requests.usecase';
+import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-download-volunteer.usecase';
 import { GetManyEventUseCase } from './event/get-many-event.usecase';
 
 @Module({
@@ -127,6 +128,7 @@ import { GetManyEventUseCase } from './event/get-many-event.usecase';
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    GetVolunteersForDownloadUseCase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -194,6 +196,7 @@ import { GetManyEventUseCase } from './event/get-many-event.usecase';
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    GetVolunteersForDownloadUseCase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
