@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -55,7 +53,7 @@ export const getVolunteersForDownload = async (
   locationId?: string,
   start?: Date,
   end?: Date,
-): Promise<{ data: any; headers: AxiosResponseHeaders }> => {
+): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
   return API.get('volunteer/download', {
     params: {
       status,
