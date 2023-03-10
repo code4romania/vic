@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   ArrowDownTrayIcon,
-  DocumentIcon,
+  CloudArrowUpIcon,
   DocumentMinusIcon,
   EyeIcon,
   PencilIcon,
@@ -29,6 +29,7 @@ import MediaCell from '../components/MediaCell';
 import StatusCell from '../components/StatusCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
 import CellLayout from '../layouts/CellLayout';
+import { EventStatus } from '../common/enums/event-status';
 
 const EventsTabsOptions: SelectItem<EventsTabs>[] = [
   { key: EventsTabs.OPEN, value: i18n.t('side_menu:options.events') },
@@ -175,7 +176,7 @@ const Events = () => {
     alert(`not implemented! Selected: ${row.name}`);
   };
 
-  const onDraft = (row: IEvent) => {
+  const onPublish = (row: IEvent) => {
     alert(`not implemented! Selected: ${row.name}`);
   };
 
@@ -193,7 +194,7 @@ const Events = () => {
 
   // menu items
   const buildEventsActionColumn = (): TableColumn<IEvent> => {
-    const EventsActionColumns = [
+    const EventsArchiveActionColumns = [
       {
         label: i18n.t('events:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
@@ -203,11 +204,6 @@ const Events = () => {
         label: i18n.t('general:edit', { item: '' }),
         icon: <PencilIcon className="menu-icon" />,
         onClick: onEdit,
-      },
-      {
-        label: i18n.t('events:popover.draft'),
-        icon: <DocumentIcon className="menu-icon" />,
-        onClick: onDraft,
       },
       {
         label: i18n.t('events:popover.archive'),
@@ -222,9 +218,42 @@ const Events = () => {
       },
     ];
 
+    const EventsPublishActionColumns = [
+      {
+        label: i18n.t('events:popover.view'),
+        icon: <EyeIcon className="menu-icon" />,
+        onClick: onView,
+      },
+      {
+        label: i18n.t('general:edit', { item: '' }),
+        icon: <PencilIcon className="menu-icon" />,
+        onClick: onEdit,
+      },
+      {
+        label: i18n.t('events:popover.publish'),
+        icon: <CloudArrowUpIcon className="menu-icon" />,
+        onClick: onPublish,
+      },
+      {
+        label: i18n.t('events:popover.delete'),
+        icon: <TrashIcon className="menu-icon" />,
+        onClick: onDelete,
+        alert: true,
+      },
+    ];
+
     return {
       name: '',
-      cell: (row: IEvent) => <Popover<IEvent> row={row} items={EventsActionColumns} />,
+      cell: (row: IEvent) => (
+        <Popover<IEvent>
+          row={row}
+          items={
+            row.status === EventStatus.PUBLISHED
+              ? EventsArchiveActionColumns
+              : EventsPublishActionColumns
+          }
+        />
+      ),
       width: '50px',
       allowOverflow: true,
     };

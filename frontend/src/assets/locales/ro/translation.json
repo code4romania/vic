@@ -374,7 +374,7 @@
     "not_participate": "nu participă",
     "popover": {
       "view": "Vizualizează detalii",
-      "draft": "Muta in draft",
+      "publish": "Publica",
       "archive": "Arhiveaza eveniment",
       "delete": "Sterge eveniment"
     },
