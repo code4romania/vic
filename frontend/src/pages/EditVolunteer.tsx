@@ -19,11 +19,10 @@ import LoadingContent from '../components/LoadingContent';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import EmptyContent from '../components/EmptyContent';
-import OrganizationStructureSelect, {
-  mapDivisionListItemToSelectItem,
-} from '../containers/OrganizationStructureSelect';
+import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
+import { mapDivisionListItemToSelectItem } from '../common/utils/utils';
 
 export type VolunteerFormTypes = {
   name: string;
