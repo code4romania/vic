@@ -18,6 +18,7 @@ import { useActivityTypesQuery } from '../services/activity-type/activity-type.s
 import { useEditEventMutation, useEventQuery } from '../services/event/event.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { EventStatus } from '../common/enums/event-status';
 
 const validationSchema = yup.object({
   name: yup
@@ -120,7 +121,7 @@ const EditEvent = () => {
                 taskOpitons={activityTypes.map(mapItemToMultiListItem)}
                 event={event}
                 reset={reset}
-                disabled={true}
+                disabled={event?.status !== EventStatus.DRAFT}
               />
             )}
           </CardBody>
