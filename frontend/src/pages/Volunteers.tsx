@@ -19,7 +19,7 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import Select, { SelectItem } from '../components/Select';
-import { formatDate, formatLocation } from '../common/utils/utils';
+import { downloadExcel, formatDate, formatLocation } from '../common/utils/utils';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
@@ -369,13 +369,7 @@ const Volunteers = () => {
       createdOnRange[1],
     );
 
-    const url = URL.createObjectURL(new Blob([volunteersData]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'Voluntari.xlsx');
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+    downloadExcel(volunteersData, i18n.t('volunteers:download'));
   };
 
   return (

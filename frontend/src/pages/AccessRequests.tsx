@@ -16,7 +16,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IAccessRequest } from '../common/interfaces/access-request.interface';
 import { IBusinessException } from '../common/interfaces/business-exception.interface';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
-import { formatDate, formatLocation } from '../common/utils/utils';
+import { downloadExcel, formatDate, formatLocation } from '../common/utils/utils';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
@@ -320,7 +320,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
   };
 
   const onExport = async () => {
-    const { data: downloadAccessRequestsData } = await downloadAccessRequests(
+    const { data: accessRequestsData } = await downloadAccessRequests(
       status,
       orderByColumn,
       orderDirection,
@@ -330,13 +330,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
       location?.value,
     );
 
-    const url = URL.createObjectURL(new Blob([downloadAccessRequestsData]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'Cereri-Acces.xlsx');
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+    downloadExcel(accessRequestsData, i18n.t('access_requests:download'));
   };
 
   return (

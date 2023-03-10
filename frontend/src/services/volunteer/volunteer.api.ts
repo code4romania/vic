@@ -43,7 +43,6 @@ export const getVolunteers = async (
   }).then((res) => res.data);
 };
 
-// TODO: turn the parameters into an interface
 export const getVolunteersForDownload = async (
   status: VolunteerStatus,
   orderBy?: string,
