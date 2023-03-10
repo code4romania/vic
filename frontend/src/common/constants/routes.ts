@@ -3,6 +3,7 @@ import { RectangleGroupIcon, SunIcon, UsersIcon } from '@heroicons/react/24/outl
 import { PuzzlePieceIcon } from '@heroicons/react/24/solid';
 
 import { IRoute } from '../interfaces/route.interface';
+import { MegaphoneIcon } from '@heroicons/react/24/solid';
 
 export const ROUTES: IRoute[] = [
   { id: 0, name: i18n.t('side_menu:options.dashboard'), href: '', icon: RectangleGroupIcon },
@@ -35,5 +36,11 @@ export const ROUTES: IRoute[] = [
     name: i18n.t('side_menu:options.activity_types'),
     href: 'activity-types',
     icon: PuzzlePieceIcon,
+  },
+  {
+    id: 4,
+    name: i18n.t('side_menu:options.announcements'),
+    href: 'announcements',
+    icon: MegaphoneIcon,
   },
 ];

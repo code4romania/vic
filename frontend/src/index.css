@@ -131,7 +131,7 @@
   }
 
   .btn-text-danger {
-    @apply btn text-red hover:text-red-700 active:text-red-800 focus:shadow-yellow focus:outline-0;
+    @apply btn border border-cool-gray-300 text-red hover:text-red-700 active:text-red-800 focus:shadow-yellow focus:outline-0;
   }
 
   .input-style {
@@ -144,6 +144,14 @@
 
   .menu-icon {
     @apply flex-shrink-0 h-5 w-5;
+  }
+
+  .text-overflow {
+    @apply overflow-hidden text-ellipsis;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 }
 
@@ -197,7 +205,7 @@
 }
 
 .rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
-  @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-xs sm:text-sm font-normal text-cool-gray-700;
+  @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-xs sm:text-sm font-normal text-cool-gray-700 overflow-hidden;
 }
 
 .rdt_TableBody > div:last-of-type {
@@ -241,7 +249,7 @@
 
 /* react select overrides */
 .reactselect__control {
-  @apply rounded-md text-sm font-roboto font-normal focus:border-indigo-500 focus:border-2 border border-cool-gray-200 !important;
+  @apply max-w-[37rem] rounded-md text-sm font-roboto font-normal focus:border-indigo-500 focus:border-2 border border-cool-gray-200 !important;
 }
 
 .reactselect__value-container {
@@ -258,4 +266,8 @@
 
 .reactselect__multi-value__remove > svg {
   @apply w-4 h-4 text-base;
+}
+
+.reactselect__menu {
+  @apply max-w-[37rem];
 }

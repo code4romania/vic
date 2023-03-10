@@ -13,7 +13,7 @@ import CellLayout from '../layouts/CellLayout';
 import {
   useAddDivisionMutation,
   useDeleteDivisionMutation,
-  useDivisionsQuery,
+  useDivisions,
   useEditDivisionMutation,
 } from '../services/division/division.service';
 import Button from './Button';
@@ -77,7 +77,7 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
     isLoading: isFetchingDivisions,
     error: divisionError,
     refetch,
-  } = useDivisionsQuery(rowsPerPage as number, page as number, type, orderByColumn, orderDirection);
+  } = useDivisions(rowsPerPage as number, page as number, type, orderByColumn, orderDirection);
 
   const { mutateAsync: addDivisionMutation, isLoading: addDivisionMutationLoading } =
     useAddDivisionMutation();

@@ -22,9 +22,9 @@ import {
   useUpdateActivityTypeMutation,
 } from '../services/activity-type/activity-type.service';
 import ActivityTypeForm from '../components/ActivityTypeForm';
-import { mapDivisionListItemToSelectItem } from '../containers/OrganizationStructureSelect';
 import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
 import { ArchiveBoxIcon, ArchiveBoxXMarkIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline';
+import { mapDivisionListItemToSelectItem } from '../common/utils/utils';
 
 export type ActivityCategoryFormTypes = {
   name: string;
