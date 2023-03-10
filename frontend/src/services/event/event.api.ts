@@ -3,8 +3,8 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent } from '../../common/interfaces/event.interface';
 import { DivisionType } from '../../common/enums/division-type.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { AttendanceType } from '../../components/EventForm';
 import { EventStatus } from '../../common/enums/event-status';
+import { AttendanceType } from '../../common/enums/attendance-type.enum';
 // import API from '../api';
 
 export interface IAddEventData {

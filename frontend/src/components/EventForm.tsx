@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl, UseFormReset } from 'react-hook-form';
 import i18n from '../common/config/i18n';
+import { AttendanceType } from '../common/enums/attendance-type.enum';
 import { IEvent } from '../common/interfaces/event.interface';
 import FormLayout from '../layouts/FormLayout';
 import FormDatePicker from './FormDatePicker';
@@ -10,11 +11,6 @@ import FormRadios from './FormRadios';
 import FormTextarea from './FormTextarea';
 import MultiSelect, { IMultiListItem, mapItemToMultiListItem } from './MultiSelect';
 import StartingFormSection from './StartingFormSection';
-
-export enum AttendanceType {
-  SIMPLE = 'simple',
-  MENTION = 'mention',
-}
 
 export enum TargetType {
   PUBLIC = 'public',

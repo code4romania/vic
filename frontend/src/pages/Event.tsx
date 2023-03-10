@@ -20,12 +20,12 @@ import CardBody from '../components/CardBody';
 import FormLayout from '../layouts/FormLayout';
 import StartingSection from '../components/StartingSection';
 import FormReadOnlyElement from '../components/FormReadOnlyElement';
-import { formatEventDate, mapEventTargetsToString } from '../common/utils/utils';
+import { formatEventDate } from '../common/utils/utils';
 import LoadingContent from '../components/LoadingContent';
 import EmptyContent from '../components/EmptyContent';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { AttendanceType } from '../components/EventForm';
+import { AttendanceType } from '../common/enums/attendance-type.enum';
 
 enum TabsStatus {
   EVENT = 'event',

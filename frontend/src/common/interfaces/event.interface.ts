@@ -1,10 +1,6 @@
+import { AttendanceType } from '../enums/attendance-type.enum';
 import { DivisionType } from '../enums/division-type.enum';
 import { EventStatus } from '../enums/event-status';
-
-export enum AttendanceType {
-  SIMPLE = 'simple',
-  MENTION = 'mention',
-}
 
 export interface IEvent {
   id: string;

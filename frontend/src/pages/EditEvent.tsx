@@ -10,15 +10,15 @@ import Button from '../components/Button';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import CardBody from '../components/CardBody';
 import LoadingContent from '../components/LoadingContent';
-import EventForm, { AttendanceType, EventFormTypes, TargetType } from '../components/EventForm';
+import EventForm, { EventFormTypes, TargetType } from '../components/EventForm';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { mapItemToMultiListItem } from '../components/MultiSelect';
 import { useActivityTypesQuery } from '../services/activity-type/activity-type.service';
 import { useEditEventMutation, useEventQuery } from '../services/event/event.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { EventStatus } from '../common/enums/event-status';
+import { AttendanceType } from '../common/enums/attendance-type.enum';
 
 const validationSchema = yup.object({
   name: yup
