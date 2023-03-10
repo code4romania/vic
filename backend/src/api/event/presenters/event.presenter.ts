@@ -32,6 +32,13 @@ export class EventPresenter {
       (task) => new ActivityTypeListItemPresenter(task),
     );
 
+    this.attending = event.eventRSVPs.filter(
+      (eventRSVP) => eventRSVP.going,
+    ).length;
+    this.notAttending = event.eventRSVPs.filter(
+      (eventRSVP) => !eventRSVP.going,
+    ).length;
+
     this.createdOn = event.createdOn;
     this.updatedOn = event.updatedOn;
   }
@@ -112,6 +119,14 @@ export class EventPresenter {
     isArray: true,
   })
   tasks: ActivityTypeListItemPresenter[];
+
+  @Expose()
+  @ApiProperty({ description: 'The number of volunteers attending' })
+  attending: number;
+
+  @Expose()
+  @ApiProperty({ description: 'The number of volunteers not attending' })
+  notAttending: number;
 
   @Expose()
   @ApiProperty({ description: 'Date of creation' })

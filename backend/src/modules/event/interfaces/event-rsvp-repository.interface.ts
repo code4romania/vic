@@ -1,6 +1,5 @@
 import {
   CreateEventRSVPOptions,
-  FindAllEventRSVPOptions,
   FindEventRSVPOptions,
   IEventRSVPModel,
   UpdateEventRSVPOptions,
@@ -11,5 +10,4 @@ export interface IEventRSVPRepository {
   update(id: string, updates: UpdateEventRSVPOptions): Promise<IEventRSVPModel>;
   find(findOptions: FindEventRSVPOptions): Promise<IEventRSVPModel>;
   delete(id: string): Promise<string>;
-  findAll(findOptions: FindAllEventRSVPOptions): Promise<IEventRSVPModel[]>;
 }

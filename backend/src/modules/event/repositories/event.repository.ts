@@ -41,6 +41,7 @@ export class EventRepository
       .createQueryBuilder('event')
       .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
       .leftJoinAndMapMany('event.tasks', 'event.tasks', 'tasks')
+      .leftJoinAndMapMany('event.eventRSVPs', 'event.eventRSVPs', 'eventRSVPs')
       .select()
       .where('event.organizationId = :organizationId', { organizationId })
       .orderBy(

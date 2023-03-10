@@ -3,7 +3,6 @@ import { Pagination } from 'src/infrastructure/base/repository-with-pagination.c
 import { EventStatus } from '../enums/event-status.enum';
 import {
   CreateEventRSVPOptions,
-  FindAllEventRSVPOptions,
   FindEventRSVPOptions,
   IEventRSVPModel,
   UpdateEventRSVPOptions,
@@ -60,12 +59,6 @@ export class EventFacade {
 
   async findRSVP(findOptions: FindEventRSVPOptions): Promise<IEventRSVPModel> {
     return this.rsvpRepository.find(findOptions);
-  }
-
-  async findAllRSVP(
-    findOptions: FindAllEventRSVPOptions,
-  ): Promise<IEventRSVPModel[]> {
-    return this.rsvpRepository.findAll(findOptions);
   }
 
   async updateRSVP(
