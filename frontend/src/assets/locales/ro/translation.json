@@ -36,7 +36,6 @@
     "reject": "Respinge",
     "approve": "Aprobă",
     "save_changes": "Salveaza modificari",
-    "save_as_draft": "Salveaza ca draft",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
     "contact": "Date contact",
@@ -459,6 +458,14 @@
         "min": "Observația poate sa aiba minim {{value}} caractere",
         "max": "Observația poate sa aiba maxim {{value}} caractere"
       }
+    },
+    "errors": {
+      "EVENT_001": "Evenimentul nu a fost gasit",
+      "EVENT_002": "Departamentele target nu au fost gasite",
+      "EVENT_003": "Task-urile nu sunt corecte",
+      "EVENT_004": "Nu putem modifica target audience pentru evenimentele publicate",
+      "EVENT_005": "Doar evenimentele DRAFT sau ARHIVATE pot fi publicate",
+      "EVENT_006": "Doar evenimentele publicate pot fi arhivate"
     }
   },
   "announcement": {
