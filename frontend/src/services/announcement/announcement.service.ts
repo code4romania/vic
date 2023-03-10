@@ -18,10 +18,11 @@ export const useAnnouncements = (
   page: number = PaginationConfig.defaultPage,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  searchWord?: string,
 ) => {
   return useQuery(
-    ['announcement', limit, page, orderBy, orderDirection],
-    () => getAnnouncements(limit, page, orderBy, orderDirection),
+    ['announcement', limit, page, orderBy, orderDirection, searchWord],
+    () => getAnnouncements(limit, page, orderBy, orderDirection, searchWord),
     {
       onError: (error: AxiosError<IBusinessException<ANNOUNCEMENT_ERRORS>>) => error,
     },

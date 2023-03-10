@@ -27,6 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
+import DataTableFilters from '../components/DataTableFilters';
 
 const StatusMarkerColorMapper = {
   [AnnouncementStatus.PUBLISHED]: 'bg-green-500',
@@ -97,6 +98,9 @@ const Announcements = () => {
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
 
+  // filters
+  const [searchWord, setSearchWord] = useState<string>();
+
   const navigate = useNavigate();
 
   const {
@@ -104,7 +108,7 @@ const Announcements = () => {
     isLoading: isAnnouncementsLoading,
     error: announcementsError,
     refetch,
-  } = useAnnouncements(rowsPerPage, page, orderByColumn, orderDirection);
+  } = useAnnouncements(rowsPerPage, page, orderByColumn, orderDirection, searchWord);
 
   const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
     useUpdateAnnouncementMutation();
@@ -252,9 +256,14 @@ const Announcements = () => {
     );
   };
 
+  const onResetFilters = () => {
+    setSearchWord(undefined);
+  };
+
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.announcements')}</PageHeader>
+      <DataTableFilters onResetFilters={onResetFilters} onSearch={setSearchWord}></DataTableFilters>
       <Card>
         <CardHeader>
           <h3>{i18n.t('announcement:title')}</h3>
