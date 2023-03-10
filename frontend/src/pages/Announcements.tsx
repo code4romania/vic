@@ -40,7 +40,11 @@ const AnnouncementTableHeader = [
     sortable: true,
     grow: 3,
     minWidth: '15rem',
-    selector: (row: IAnnouncement) => row.name,
+    cell: (row: IAnnouncement) => (
+      <CellLayout>
+        <small className="font-robotoBold text-overflow">{row.name}</small>
+      </CellLayout>
+    ),
   },
   {
     id: 'updatedOn',
@@ -73,13 +77,14 @@ const AnnouncementTableHeader = [
     selector: (row: IAnnouncement) => formatDateWithTime(row.publishedOn),
   },
   {
-    id: 'targets',
+    id: 'targetedVolunteers',
     name: i18n.t('announcement:header.target'),
     minWidth: '10rem',
+    sortable: true,
     grow: 2,
     cell: (row: IAnnouncement) => (
       <CellLayout>
-        <Targets targets={row.targets} />
+        <Targets volunteersCount={row.targetedVolunteers} targets={row.targets} />
       </CellLayout>
     ),
   },

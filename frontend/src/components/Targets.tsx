@@ -5,22 +5,20 @@ import { arrayOfNamesToString } from '../common/utils/utils';
 
 interface TargetsProps {
   targets: IDivisionListItem[];
+  volunteersCount?: number;
 }
 
-const Targets = ({ targets }: TargetsProps) => {
-  const targetsString = arrayOfNamesToString(targets, ' ');
+const Targets = ({ targets, volunteersCount }: TargetsProps) => {
+  const targetsString = arrayOfNamesToString(targets, ', ');
 
   return (
     <>
       {targets.length !== 0 ? (
         <small title={targetsString} className="text-overflow">
-          {targetsString}
+          {volunteersCount ? `(${volunteersCount}) ${targetsString}` : targetsString}
         </small>
       ) : (
-        <small>
-          {i18n.t('announcement:all_organization')}
-          {/* ({row.targetedVolunteers}) {i18n.t('announcement:all_organization')} */}
-        </small>
+        <small>{i18n.t('announcement:all_organization')}</small>
       )}
     </>
   );
