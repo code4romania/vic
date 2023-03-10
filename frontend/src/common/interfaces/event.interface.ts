@@ -15,13 +15,11 @@ export interface IEvent {
   logo?: string;
   isPublic: boolean;
   description: string;
-  mention?: string;
   observation?: string;
   attendanceType: AttendanceType;
   attendanceMention: string;
   tasks: Array<{ id: string; name: string }>;
   targets: Array<{ id: string; name: string; type: DivisionType; members: number }>;
-  targetedVolunteers: number;
   rsvp: { yes: number; no: number };
   status: EventStatus;
   reportedHours: string;

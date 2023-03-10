@@ -20,6 +20,7 @@ import { useActivityTypesQuery } from '../services/activity-type/activity-type.s
 import { useAddEventMutation } from '../services/event/event.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { EventStatus } from '../common/enums/event-status';
 
 const validationSchema = yup.object({
   name: yup
@@ -31,7 +32,7 @@ const validationSchema = yup.object({
   location: yup
     .string()
     .min(2, `${i18n.t('events:form.location.min', { value: '2' })}`)
-    .max(500, `${i18n.t('events:form.location.max', { value: '500' })}`),
+    .max(300, `${i18n.t('events:form.location.max', { value: '300' })}`),
   description: yup
     .string()
     .required(`${i18n.t('organization:form.description.required')}`)
@@ -42,7 +43,7 @@ const validationSchema = yup.object({
   attendanceMention: yup
     .string()
     .min(2, `${i18n.t('events:form.mention.min', { value: '2' })}`)
-    .max(1500, `${i18n.t('events:form.mention.max', { value: '1500' })}`),
+    .max(250, `${i18n.t('events:form.mention.max', { value: '250' })}`),
   observation: yup
     .string()
     .min(2, `${i18n.t('events:form.observation.min', { value: '2' })}`)
@@ -78,7 +79,7 @@ const AddEvent = () => {
     navigate('/events', { replace: true });
   };
 
-  const submitValues = (data: EventFormTypes, status: 'published' | 'draft') => {
+  const submitValues = (data: EventFormTypes, status: EventStatus) => {
     addEvent(
       {
         ...data,
@@ -101,11 +102,11 @@ const AddEvent = () => {
   };
 
   const onSaveAsDraft = (data: EventFormTypes) => {
-    submitValues(data, 'draft');
+    submitValues(data, EventStatus.DRAFT);
   };
 
   const onPublish = (data: EventFormTypes) => {
-    submitValues(data, 'published');
+    submitValues(data, EventStatus.PUBLISHED);
   };
 
   return (

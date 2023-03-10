@@ -63,6 +63,20 @@ export const getEvents = async (
             type: DivisionType.BRANCH,
             members: 18,
           },
+          { id: '3', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
+          {
+            id: '4',
+            name: 'San Francisco Branch',
+            type: DivisionType.BRANCH,
+            members: 18,
+          },
+          { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
+          {
+            id: '5',
+            name: 'San Francisco Branch',
+            type: DivisionType.BRANCH,
+            members: 18,
+          },
         ],
         tasks: [
           { id: '1', name: 'Ciclism' },
@@ -155,8 +169,8 @@ export const getEvent = async (id: string): Promise<IEvent> => {
     endDate: new Date('2023-09-24T17:32:00'),
     location: 'Sediu Piata Alba Iulia, sala 02',
     isPublic: true,
-    attendanceType: AttendanceType.MENTION,
-    attendanceMention: 'Acesta mentiunea este frumoasa',
+    attendanceType: AttendanceType.SIMPLE,
+    attendanceMention: '',
     targetedVolunteers: 75,
     targets: [
       { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },

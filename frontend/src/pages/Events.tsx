@@ -24,7 +24,7 @@ import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { EventsTabs } from '../common/enums/events-tabs.enum';
 import { useEventsQuery } from '../services/event/event.service';
-import { formatEventDate, mapTargetsToString } from '../common/utils/utils';
+import { formatEventDate, mapEventTargetsToString } from '../common/utils/utils';
 import MediaCell from '../components/MediaCell';
 import StatusCell from '../components/StatusCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
@@ -57,13 +57,11 @@ const OpenEventsTableHeader = [
     cell: (row: IEvent) => (
       <CellLayout>
         {row.targets.length !== 0 ? (
-          <p title={mapTargetsToString(row)} className="text-overflow">
-            {mapTargetsToString(row)}
+          <p title={mapEventTargetsToString(row)} className="truncate">
+            {row.targets.length === 1 ? row.targets[0].name : `${row.targets[0].name}...`}
           </p>
         ) : (
-          <p>
-            ({row.targetedVolunteers}) {i18n.t('general:all_organization')}
-          </p>
+          <p title={mapEventTargetsToString(row)}>{i18n.t('general:all_organization')}</p>
         )}
       </CellLayout>
     ),
@@ -105,13 +103,11 @@ const PastEventsTableHeader = [
     cell: (row: IEvent) => (
       <CellLayout>
         {row.targets.length !== 0 ? (
-          <p title={mapTargetsToString(row)} className="text-overflow">
-            {mapTargetsToString(row)}
+          <p title={mapEventTargetsToString(row)} className="truncate">
+            {row.targets.length === 1 ? row.targets[0].name : `${row.targets[0].name}...`}
           </p>
         ) : (
-          <p>
-            ({row.targetedVolunteers}) {i18n.t('general:all_organization')}
-          </p>
+          <p title={mapEventTargetsToString(row)}>{i18n.t('general:all_organization')}</p>
         )}
       </CellLayout>
     ),

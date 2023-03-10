@@ -20,11 +20,12 @@ import CardBody from '../components/CardBody';
 import FormLayout from '../layouts/FormLayout';
 import StartingSection from '../components/StartingSection';
 import FormReadOnlyElement from '../components/FormReadOnlyElement';
-import { formatEventDate, mapTargetsToString } from '../common/utils/utils';
+import { formatEventDate, mapEventTargetsToString } from '../common/utils/utils';
 import LoadingContent from '../components/LoadingContent';
 import EmptyContent from '../components/EmptyContent';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { AttendanceType } from '../components/EventForm';
 
 enum TabsStatus {
   EVENT = 'event',
@@ -137,7 +138,7 @@ const Event = () => {
                 />
                 <FormReadOnlyElement
                   label={i18n.t('events:form.target.label')}
-                  value={mapTargetsToString(event)}
+                  value={mapEventTargetsToString(event)}
                 />
                 <FormReadOnlyElement
                   label={i18n.t('events:form.description.label')}
@@ -163,14 +164,18 @@ const Event = () => {
                 <FormReadOnlyElement
                   label={i18n.t('events:form.noting.label')}
                   value={`${
-                    event.mention
+                    event.attendanceType === AttendanceType.MENTION
                       ? i18n.t('events:form.noting.mention')
                       : i18n.t('events:form.noting.simple')
                   }`}
                 />
                 <FormReadOnlyElement
                   label={i18n.t('events:form.mention.label')}
-                  value={event.mention ? event.mention : `${i18n.t('events:form.mention.empty')}`}
+                  value={
+                    event.attendanceMention
+                      ? event.attendanceMention
+                      : `${i18n.t('events:form.mention.empty')}`
+                  }
                 />
                 <hr className="border-cool-gray-200 mb-2 mt-10" />
 
@@ -178,12 +183,12 @@ const Event = () => {
                 <div className="flex gap-2.5 flex-col">
                   <small className="text-cool-gray-500">{i18n.t('events:form.task.tasks')}</small>
                   <div className="flex gap-2 flex-wrap">
-                    {event.targets.map((target) => (
+                    {event.tasks.map((tasks) => (
                       <div
-                        key={target.id}
+                        key={tasks.id}
                         className="h-7 rounded-xl bg-gray-100 shadow-sm px-3 grid place-items-center"
                       >
-                        <small>{target.name}</small>
+                        <small>{tasks.name}</small>
                       </div>
                     ))}
                   </div>

@@ -13,10 +13,8 @@ export const calculateAge = (birthday: Date) => {
   return differenceInYears(new Date(), birthday);
 };
 
-export const mapTargetsToString = (announcement: IEvent) => {
-  return `(${announcement.targetedVolunteers}) ${announcement.targets.map(
-    (target) => ` ${target.name}`,
-  )}`;
+export const mapEventTargetsToString = (event: IEvent) => {
+  return `${event.targets.map((target) => ` ${target.name}`)}`;
 };
 
 export const formatLocation = (location: ICity): string =>
