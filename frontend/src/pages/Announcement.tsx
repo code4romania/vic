@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { formatDate, mapTargetsToString } from '../common/utils/utils';
+import { arrayOfNamesToString, formatDate } from '../common/utils/utils';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
@@ -18,7 +18,7 @@ import Card from '../layouts/CardLayout';
 import FormLayout from '../layouts/FormLayout';
 import PageLayout from '../layouts/PageLayout';
 import {
-  useAnnouncementQuery,
+  useAnnouncement,
   useDeleteAnnouncementMutation,
   useUpdateAnnouncementMutation,
 } from '../services/announcement/announcement.service';
@@ -32,7 +32,7 @@ const Announcement = () => {
     data: announcement,
     isLoading: isAnnouncementLoading,
     error: announcementError,
-  } = useAnnouncementQuery(id as string);
+  } = useAnnouncement(id as string);
   const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
     useUpdateAnnouncementMutation();
   const { mutateAsync: deleteAnnouncement, isLoading: isDeleteAnnouncementLoading } =
@@ -51,15 +51,11 @@ const Announcement = () => {
 
   const onPublish = () => {
     if (announcement) {
-      const targetsIds = announcement.targets
-        ? announcement.targets.map((target) => target.id)
-        : [];
       updateAnnouncement(
         {
           id: announcement.id,
           updateData: {
             status: AnnouncementStatus.PUBLISHED,
-            targetsIds,
           },
         },
         {
@@ -152,13 +148,11 @@ const Announcement = () => {
               />
               <FormInput
                 label={`${i18n.t('announcement:header.target')}`}
-                value={
+                value={`(${announcement.targetedVolunteers}) ${
                   announcement.targets.length !== 0
-                    ? mapTargetsToString(announcement)
-                    : `(${announcement.targetedVolunteers}) ${i18n.t(
-                        'announcement:all_organization',
-                      )}`
-                }
+                    ? arrayOfNamesToString(announcement.targets, ' ')
+                    : i18n.t('announcement:all_organization')
+                }`}
                 readOnly
               />
               <hr className="border-cool-gray-200" />

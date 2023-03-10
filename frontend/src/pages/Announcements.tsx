@@ -14,9 +14,9 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { CheckIcon, EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
-import { formatDate, formatDateWithTime, mapTargetsToString } from '../common/utils/utils';
+import { formatDate, formatDateWithTime } from '../common/utils/utils';
 import {
-  useAnnouncementsQuery,
+  useAnnouncements,
   useDeleteAnnouncementMutation,
   useUpdateAnnouncementMutation,
 } from '../services/announcement/announcement.service';
@@ -25,19 +25,28 @@ import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../components/ConfirmationModal';
+import StatusWithMarker from '../components/StatusWithMarker';
+import Targets from '../components/Targets';
+
+const StatusMarkerColorMapper = {
+  [AnnouncementStatus.PUBLISHED]: 'bg-green-500',
+  [AnnouncementStatus.DRAFT]: 'bg-yellow-500',
+};
 
 const AnnouncementTableHeader = [
   {
     id: 'name',
     name: i18n.t('announcement:header.name'),
     sortable: true,
-    minWidth: '10rem',
+    grow: 3,
+    minWidth: '15rem',
     selector: (row: IAnnouncement) => row.name,
   },
   {
     id: 'updatedOn',
     name: i18n.t('announcement:header.updated_on'),
     sortable: true,
+    grow: 1,
     minWidth: '5rem',
     selector: (row: IAnnouncement) => formatDate(row.updatedOn),
   },
@@ -45,17 +54,13 @@ const AnnouncementTableHeader = [
     id: 'status',
     name: i18n.t('announcement:header.status'),
     sortable: true,
-    minWidth: '2rem',
+    grow: 1,
+    minWidth: '5rem',
     cell: (row: IAnnouncement) => (
       <CellLayout>
-        <div className="flex flex-row gap-2">
-          <span
-            className={`h-2 w-2 border-solid ${
-              row.status === AnnouncementStatus.PUBLISHED ? 'bg-green-500' : 'bg-yellow-500'
-            } rounded-full self-center`}
-          />
-          <p>{i18n.t(`announcement:status.${row.status}`)}</p>
-        </div>
+        <StatusWithMarker markerColor={StatusMarkerColorMapper[row.status]}>
+          {i18n.t(`announcement:status.${row.status}`)}
+        </StatusWithMarker>
       </CellLayout>
     ),
   },
@@ -63,24 +68,18 @@ const AnnouncementTableHeader = [
     id: 'publishedOn',
     name: i18n.t('announcement:header.published_on'),
     sortable: true,
-    minWidth: '5rem',
-    selector: (row: IAnnouncement) => formatDateWithTime(row.publishedOn).slice(0, 17),
+    grow: 1,
+    minWidth: '10rem',
+    selector: (row: IAnnouncement) => formatDateWithTime(row.publishedOn),
   },
   {
     id: 'targets',
     name: i18n.t('announcement:header.target'),
     minWidth: '10rem',
+    grow: 2,
     cell: (row: IAnnouncement) => (
       <CellLayout>
-        {row.targets.length !== 0 ? (
-          <p title={mapTargetsToString(row)} className="text-overflow">
-            {mapTargetsToString(row)}
-          </p>
-        ) : (
-          <p>
-            ({row.targetedVolunteers}) {i18n.t('announcement:all_organization')}
-          </p>
-        )}
+        <Targets targets={row.targets} />
       </CellLayout>
     ),
   },
@@ -100,9 +99,11 @@ const Announcements = () => {
     isLoading: isAnnouncementsLoading,
     error: announcementsError,
     refetch,
-  } = useAnnouncementsQuery(rowsPerPage as number, page as number, orderByColumn, orderDirection);
+  } = useAnnouncements(rowsPerPage, page, orderByColumn, orderDirection);
+
   const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
     useUpdateAnnouncementMutation();
+
   const { mutateAsync: deleteAnnouncement, isLoading: isDeleteAnnouncementLoading } =
     useDeleteAnnouncementMutation();
 
@@ -127,7 +128,7 @@ const Announcements = () => {
         onClick: onEdit,
       },
       {
-        label: i18n.t('announcement:publish'),
+        label: i18n.t('general:publish'),
         icon: <CheckIcon className="menu-icon" />,
         onClick: onPublish,
         primary: true,
@@ -175,18 +176,20 @@ const Announcements = () => {
     navigate('add');
   };
 
+  const onEdit = (row: IAnnouncement) => {
+    navigate(`${row.id}/edit`);
+  };
+
   const onViewOne = (row: IAnnouncement) => {
     navigate(`${row.id}`);
   };
 
   const onPublish = (row: IAnnouncement) => {
-    const targetsIds = row.targets ? row.targets.map((row) => row.id) : [];
     updateAnnouncement(
       {
         id: row.id,
         updateData: {
           status: AnnouncementStatus.PUBLISHED,
-          targetsIds,
         },
       },
       {
@@ -201,10 +204,6 @@ const Announcements = () => {
         },
       },
     );
-  };
-
-  const onEdit = (row: IAnnouncement) => {
-    navigate(`${row.id}/edit`);
   };
 
   const onDelete = (row: IAnnouncement) => {
