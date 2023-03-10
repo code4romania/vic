@@ -7,7 +7,12 @@ import Tabs from '../components/Tabs';
 import { SelectItem } from '../components/Select';
 import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
-import { useEventQuery } from '../services/event/event.service';
+import {
+  useArchiveEventMutation,
+  useDeleteEventMutation,
+  useEventQuery,
+  usePublishEventMutation,
+} from '../services/event/event.service';
 import Button from '../components/Button';
 import {
   ArchiveBoxIcon,
@@ -23,7 +28,7 @@ import FormReadOnlyElement from '../components/FormReadOnlyElement';
 import { formatEventDate, mapEventTargetsToString } from '../common/utils/utils';
 import LoadingContent from '../components/LoadingContent';
 import EmptyContent from '../components/EmptyContent';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { AttendanceType } from '../components/EventForm';
 
@@ -43,6 +48,9 @@ const Event = () => {
   const { id } = useParams();
 
   const { data: event, isLoading, error } = useEventQuery(id as string);
+  const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
+  const { mutateAsync: publishEvent, isLoading: isPublishingEvent } = usePublishEventMutation();
+  const { mutateAsync: deleteEvent, isLoading: isDeletingEvent } = useDeleteEventMutation();
 
   useEffect(() => {
     if (error) {
@@ -67,11 +75,29 @@ const Event = () => {
   };
 
   const onArchive = () => {
-    alert('not yet implemented');
+    if (event)
+      archiveEvent(event.id, {
+        onSuccess: () => {
+          useSuccessToast('events:form.submit.archived');
+          navigateBack();
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error));
+        },
+      });
   };
 
   const onPublish = () => {
-    alert('not yet implemented');
+    if (event)
+      publishEvent(event.id, {
+        onSuccess: () => {
+          useSuccessToast('events:form.submit.published');
+          navigateBack();
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error));
+        },
+      });
   };
 
   return (

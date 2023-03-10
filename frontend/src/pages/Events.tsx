@@ -19,11 +19,16 @@ import DataTableComponent from '../components/DataTableComponent';
 import Popover from '../components/Popover';
 import { SelectItem } from '../components/Select';
 import Tabs from '../components/Tabs';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { EventsTabs } from '../common/enums/events-tabs.enum';
-import { useEventsQuery } from '../services/event/event.service';
+import {
+  useArchiveEventMutation,
+  useDeleteEventMutation,
+  useEventsQuery,
+  usePublishEventMutation,
+} from '../services/event/event.service';
 import { formatEventDate, mapEventTargetsToString } from '../common/utils/utils';
 import MediaCell from '../components/MediaCell';
 import StatusCell from '../components/StatusCell';
@@ -153,6 +158,7 @@ const Events = () => {
     data: events,
     isLoading: isEventsLoading,
     error: eventsError,
+    refetch,
   } = useEventsQuery(
     rowsPerPage as number,
     page as number,
@@ -160,6 +166,10 @@ const Events = () => {
     orderByColumn,
     orderDirection,
   );
+  // actions
+  const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
+  const { mutateAsync: publishEvent, isLoading: isPublishingEvent } = usePublishEventMutation();
+  const { mutateAsync: deleteEvent, isLoading: isDeletingEvent } = useDeleteEventMutation();
 
   useEffect(() => {
     if (eventsError)
@@ -176,11 +186,27 @@ const Events = () => {
   };
 
   const onPublish = (row: IEvent) => {
-    alert(`not implemented! Selected: ${row.name}`);
+    publishEvent(row.id, {
+      onSuccess: () => {
+        useSuccessToast('events:form.submit.published');
+        refetch();
+      },
+      onError: (error) => {
+        useErrorToast(InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error));
+      },
+    });
   };
 
   const onArchive = (row: IEvent) => {
-    alert(`not implemented! Selected: ${row.name}`);
+    archiveEvent(row.id, {
+      onSuccess: () => {
+        useSuccessToast('events:form.submit.archived');
+        refetch();
+      },
+      onError: (error) => {
+        useErrorToast(InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error));
+      },
+    });
   };
 
   const onEdit = (row: IEvent) => {

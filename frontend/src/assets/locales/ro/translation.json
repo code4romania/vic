@@ -414,7 +414,8 @@
       "submit": {
         "published": "Evenimentul a fost publicat cu succes",
         "draft": "Evenimentul a fost salvat ca draft cu succes",
-        "edit": "Evenimentul a fost modificat cu succes"
+        "edit": "Evenimentul a fost modificat cu succes",
+        "archived": "Evenimentul a fost arhivat cu succes"
       },
       "location": {
         "label": "Locatie",
