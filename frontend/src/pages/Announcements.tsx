@@ -59,7 +59,7 @@ const AnnouncementTableHeader = [
     name: i18n.t('announcement:header.status'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '7rem',
     cell: (row: IAnnouncement) => (
       <CellLayout>
         <StatusWithMarker markerColor={StatusMarkerColorMapper[row.status]}>
@@ -199,7 +199,7 @@ const Announcements = () => {
       },
       {
         onSuccess: () => {
-          useSuccessToast(i18n.t('announcement:success.create_publish'));
+          useSuccessToast(i18n.t('announcement:submit.messages.publish'));
           refetch();
         },
         onError: (error) => {

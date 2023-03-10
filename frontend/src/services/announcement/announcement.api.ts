@@ -33,7 +33,11 @@ export const updateAnnouncement = async (
   id: string,
   updateData: Partial<AnnouncementFormTypes>,
 ): Promise<IAnnouncement> => {
-  return API.patch(`/announcement/${id}`, updateData).then((res) => res.data);
+  const { targets, ...anouncementPayload } = updateData;
+  return API.patch(`/announcement/${id}`, {
+    ...anouncementPayload,
+    ...(targets && targets?.length > 0 ? { targetsIds: targets.map((target) => target.key) } : {}),
+  }).then((res) => res.data);
 };
 
 export const deleteAnnouncement = async (id: string): Promise<string> => {

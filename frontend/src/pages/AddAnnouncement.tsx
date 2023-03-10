@@ -18,7 +18,7 @@ import PageLayout from '../layouts/PageLayout';
 import { useCreateAnnouncementMutation } from '../services/announcement/announcement.service';
 import { BookmarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
-const validationSchema = yup.object({
+export const anouncementFormValidationSchema = yup.object({
   name: yup
     .string()
     .required(`${i18n.t('announcement:form.name.required')}`)
@@ -44,7 +44,7 @@ const AddAnnouncement = () => {
   } = useForm<AnnouncementFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(anouncementFormValidationSchema),
   });
 
   const onBackButtonPress = () => {

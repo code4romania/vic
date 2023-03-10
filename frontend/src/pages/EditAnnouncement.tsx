@@ -1,11 +1,12 @@
+import { BookmarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { mapDivisionListItemToSelectItem } from '../common/utils/utils';
 import AnnouncementForm, { AnnouncementFormTypes } from '../components/AnnouncementForm';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
@@ -20,20 +21,7 @@ import {
   useAnnouncement,
   useUpdateAnnouncementMutation,
 } from '../services/announcement/announcement.service';
-
-const validationSchema = yup.object({
-  name: yup
-    .string()
-    .required(`${i18n.t('announcement:form.name.required')}`)
-    .min(2, `${i18n.t('announcement:form.name.min', { value: '2' })}`)
-    .max(30, `${i18n.t('announcement:form.name.max', { value: '30' })}`),
-  description: yup
-    .string()
-    .required(`${i18n.t('announcement:form.description.required')}`)
-    .min(2, `${i18n.t('announcement:form.description.min', { value: '2' })}`)
-    .max(1000, `${i18n.t('announcement:form.description.max', { value: '1000' })}`),
-  targets: yup.array().optional(),
-});
+import { anouncementFormValidationSchema } from './AddAnnouncement';
 
 const EditAnnouncement = () => {
   const navigate = useNavigate();
@@ -56,15 +44,16 @@ const EditAnnouncement = () => {
   } = useForm<AnnouncementFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(anouncementFormValidationSchema),
   });
 
   useEffect(() => {
     if (announcement) {
+      const { targets, ...anouncementFormData } = announcement;
       reset({
-        name: announcement.name,
-        description: announcement.description,
-        // targets: announcement.targets.map(mapItemToMultiListItem),
+        name: anouncementFormData.name,
+        description: anouncementFormData.description,
+        ...(targets ? { targets: targets.map(mapDivisionListItemToSelectItem) } : {}),
       });
     }
   }, [announcement]);
@@ -76,51 +65,25 @@ const EditAnnouncement = () => {
       );
   }, [announcementError]);
 
-  const onNavigateBack = () => {
+  const onBackButtonPress = () => {
     navigate('/announcements', { replace: true });
   };
 
-  const onSaveDraft = (formValues: AnnouncementFormTypes) => {
-    if (announcement) {
-      updateAnnouncement(
-        {
-          id: announcement.id,
-          updateData: {
-            name: formValues.name,
-            description: formValues.description,
-            status: AnnouncementStatus.DRAFT,
-          },
-        },
-        {
-          onSuccess: () => {
-            useSuccessToast(i18n.t('announcement:success.create_draft'));
-            onNavigateBack();
-          },
-          onError: (error) => {
-            useErrorToast(
-              InternalErrors.ANNOUNCEMENT_ERRORS.getError(error.response?.data.code_error),
-            );
-          },
-        },
-      );
-    }
-  };
-
-  const onPublish = (formValues: AnnouncementFormTypes) => {
+  const onSubmit = (formValues: AnnouncementFormTypes) => {
     if (announcement) {
       updateAnnouncement(
         {
           id: announcement?.id,
-          updateData: {
-            name: formValues.name,
-            description: formValues.description,
-            status: AnnouncementStatus.PUBLISHED,
-          },
+          updateData: formValues,
         },
         {
           onSuccess: () => {
-            useSuccessToast(i18n.t('announcement:success.create_publish'));
-            onNavigateBack();
+            useSuccessToast(
+              formValues.status === AnnouncementStatus.DRAFT
+                ? i18n.t('announcement:submit.messages.draft')
+                : i18n.t('announcement:submit.messages.publish'),
+            );
+            onBackButtonPress();
           },
           onError: (error) => {
             useErrorToast(
@@ -132,9 +95,17 @@ const EditAnnouncement = () => {
     }
   };
 
+  const onSaveDraft = (formValues: AnnouncementFormTypes) => {
+    onSubmit({ ...formValues, status: AnnouncementStatus.DRAFT });
+  };
+
+  const onPublish = (formValues: AnnouncementFormTypes) => {
+    onSubmit({ ...formValues, status: AnnouncementStatus.PUBLISHED });
+  };
+
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={onNavigateBack}>
+      <PageHeader onBackButtonPress={onBackButtonPress}>
         {i18n.t('general:edit', { item: i18n.t('announcement:name') })}
       </PageHeader>
       {isAnnouncementLoading && isUpdateAnnouncementLoading && <LoadingContent />}
@@ -144,23 +115,21 @@ const EditAnnouncement = () => {
             <h4 className="text-sm sm:text-xl">{i18n.t('announcement:form.title')}</h4>
             <div className="flex flex-row gap-4">
               <Button
-                label={i18n.t('announcement:save_draft')}
+                label={i18n.t('general:save_draft')}
+                icon={<BookmarkIcon className="h-5 w-5" />}
                 className="btn-outline-secondary"
                 onClick={handleSubmit(onSaveDraft)}
               />
               <Button
                 label={i18n.t('general:send')}
+                icon={<PaperAirplaneIcon className="h-5 w-5" />}
                 className="btn-primary"
                 onClick={handleSubmit(onPublish)}
               />
             </div>
           </CardHeader>
           <CardBody>
-            <AnnouncementForm
-              // options={divisionListItems?.map(mapItemToMultiListItem)}
-              control={control}
-              errors={errors}
-            />
+            <AnnouncementForm control={control} errors={errors} />
           </CardBody>
         </Card>
       )}
