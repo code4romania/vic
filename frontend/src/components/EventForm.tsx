@@ -6,10 +6,10 @@ import { IEvent } from '../common/interfaces/event.interface';
 import FormLayout from '../layouts/FormLayout';
 import FormDatePicker from './FormDatePicker';
 import FormInput from './FormInput';
-import FormInputImg from './FormInputImg';
-import FormRadios from './FormRadios';
+import FormInputImg from './FormUploadFile';
+import FormRadios from './FormRadioGroup';
 import FormTextarea from './FormTextarea';
-import MultiSelect, { IMultiListItem, mapItemToMultiListItem } from './MultiSelect';
+import MultiSelect from './MultiSelect';
 import StartingFormSection from './StartingFormSection';
 
 export enum TargetType {
