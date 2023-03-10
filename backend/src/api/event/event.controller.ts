@@ -46,18 +46,6 @@ export class EventController {
     private readonly getManyEventUseCase: GetManyEventUseCase,
   ) {}
 
-  @Post()
-  async create(
-    @Body() createEventDto: CreateEventDto,
-    @ExtractUser() adminUser: IAdminUserModel,
-  ): Promise<EventPresenter> {
-    const event = await this.createEventUsecase.execute({
-      ...createEventDto,
-      organizationId: adminUser.organizationId,
-    });
-    return new EventPresenter(event);
-  }
-
   @Get()
   @ApiPaginatedResponse(EventPresenter)
   async getMany(
@@ -73,6 +61,18 @@ export class EventController {
       ...events,
       items: events.items.map((event) => new EventPresenter(event)),
     });
+  }
+
+  @Post()
+  async create(
+    @Body() createEventDto: CreateEventDto,
+    @ExtractUser() adminUser: IAdminUserModel,
+  ): Promise<EventPresenter> {
+    const event = await this.createEventUsecase.execute({
+      ...createEventDto,
+      organizationId: adminUser.organizationId,
+    });
+    return new EventPresenter(event);
   }
 
   @ApiBody({ type: UpdateEventDto })

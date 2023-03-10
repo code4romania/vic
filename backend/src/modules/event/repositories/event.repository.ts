@@ -49,12 +49,12 @@ export class EventRepository
       );
 
     const currentDate = new Date();
-    if (eventTime === EventTime.CURRENT) {
+    if (eventTime === EventTime.OPEN) {
       query.andWhere('event.endDate > :currentDate', {
         currentDate,
       });
     } else {
-      query.andWhere('event.endDate < :currentDate', {
+      query.andWhere('event.endDate <= :currentDate', {
         currentDate,
       });
     }

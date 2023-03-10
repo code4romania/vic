@@ -1,4 +1,4 @@
 export enum EventTime {
-  CURRENT = 'current',
+  OPEN = 'open',
   PAST = 'past',
 }
