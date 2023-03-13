@@ -64,7 +64,8 @@
       "reset": "Reseteaza filtre",
       "hide": "Ascunde filtre"
     },
-    "select_interval": "Selecteaza interval"
+    "select_interval": "Selecteaza interval",
+    "save_draft": "Salveaza ca draft"
   },
   "header": {
     "login": "Login",
@@ -84,6 +85,7 @@
       "volunteers_list": "Listă voluntari",
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
+      "announcements": "Anunturi",
       "activity_types": "Categorii activitati"
     },
     "collapse": "Restrange meniul"
@@ -464,6 +466,59 @@
         "min": "Observația poate sa aiba minim {{value}} caractere",
         "max": "Observația poate sa aiba maxim {{value}} caractere"
       }
+    }
+  },
+  "announcement": {
+    "title": "Istoric anunturi",
+    "name": "anunt",
+    "header": {
+      "name": "Titlu anunt",
+      "updated_on": "Editat la",
+      "status": "Status afisare",
+      "published_on": "Publicat la",
+      "target": "Target"
+    },
+    "all_organization": "Toata organizatia",
+    "status": {
+      "draft": "Draft",
+      "published": "Publicat"
+    },
+    "form": {
+      "title": "Anunt",
+      "name": {
+        "required": "Numele anuntului este obligatoriu",
+        "min": "Numele anuntului poate sa aiba minim {{value}} caractere",
+        "max": "Numele anuntului poate sa aiba maxim {{value}} caractere",
+        "placeholder": "Introdu titlul anuntului"
+      },
+      "description": {
+        "label": "Continut anunt",
+        "required": "Descrierea anuntului este obligatorie",
+        "min": "Descrierea poate sa aiba minim {{value}} caractere",
+        "max": "Descrierea anuntului poate sa aiba maxim {{value}} caractere",
+        "placeholder": "Introdu continutul anuntului"
+      },
+      "target": {
+        "label": "Target",
+        "placeholder": "Alege toate variantele care se aplica",
+        "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata"
+      }
+    },
+    "submit": {
+      "messages": {
+        "draft": "Anunt draft creat cu succes",
+        "publish": "Anunt creat si publicat cu succes",
+        "delete": "Anunt sters cu succes"
+      }
+    },
+    "modal": {
+      "title": "Esti sigur ca doresti stergerea anuntului?",
+      "description": "Aceasta actiune va sterge definitiv acest anunt si toate informatiile asociate lui."
+    },
+    "error": {
+      "ANNOUNCEMENT_001": "Anuntul nu a fost gasit",
+      "ANNOUNCEMENT_002": "Anuntul este deja publicat si nu poate fi modificat",
+      "ANNOUNCEMENT_003": "Selectie departament incorecta, doar departamentele pot fi alese ca target"
     }
   }
 }

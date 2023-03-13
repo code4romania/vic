@@ -1,45 +1,19 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import Select, { ActionMeta, MultiValue } from 'react-select';
-
-export interface IMultiListItem {
-  value: string;
-  label: string;
-}
-
-export function mapItemToMultiListItem<T extends { id: string; name: string }>(
-  item: T,
-): IMultiListItem {
-  return {
-    value: item.id,
-    label: item.name,
-  };
-}
-
-interface MultiSelectProps {
-  onChange: (newValue: MultiValue<IMultiListItem>, actionMeta: ActionMeta<IMultiListItem>) => void;
-  value: IMultiListItem[];
-  options?: IMultiListItem[];
-  placeholder?: string;
-  label?: string;
-  isDisabled?: boolean;
-  helper?: ReactNode;
+import React from 'react';
+import Select from 'react-select';
+import { SelectItem, SelectProps } from './Select';
+export interface MultiSelectProps extends Omit<SelectProps<string>, 'onChange' | 'selected'> {
+  onChange: (items: SelectItem<string>[]) => void;
+  selected?: SelectItem<string>[];
 }
 
 const MultiSelect = ({
-  onChange,
-  value,
+  selected,
   options,
   placeholder,
   label,
-  isDisabled,
+  onChange,
   helper,
 }: MultiSelectProps) => {
-  const [defaultValue, setDefaultValue] = useState<IMultiListItem[]>([]);
-
-  useEffect(() => {
-    setDefaultValue(value);
-  }, [value]);
-
   return (
     <div className="flex flex-col gap-1">
       <label>{label}</label>
@@ -48,10 +22,11 @@ const MultiSelect = ({
         closeMenuOnSelect={false}
         classNamePrefix="reactselect"
         isMulti={true}
-        onChange={onChange}
-        value={defaultValue}
+        onChange={onChange as never}
+        value={selected}
         options={options}
-        isDisabled={isDisabled}
+        getOptionLabel={(option) => option.value}
+        getOptionValue={(option) => option.key}
       />
       {helper}
     </div>

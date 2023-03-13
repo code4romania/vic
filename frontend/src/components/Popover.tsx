@@ -8,6 +8,7 @@ interface PopoverItem<T> {
   label: string;
   onClick: (row: T) => void;
   alert?: boolean;
+  primary?: boolean;
 }
 
 interface PopoverProps<T> {
@@ -44,10 +45,10 @@ const Popover = <T extends object>({ row, items }: PopoverProps<T>) => {
             <PopoverHeadlessui.Panel className="absolute right-0 z-10 mt-2 px-0 w-44 sm:w-56 min-w-fit">
               <div className="rounded-lg shadow-section overflow-hidden">
                 <div className="bg-white">
-                  {items.map(({ icon, label, onClick, alert }) => (
+                  {items.map(({ icon, label, onClick, alert, primary }) => (
                     <label
                       className={classNames(
-                        alert ? 'text-red-700' : 'text-cool-gray-700',
+                        alert ? 'text-red-700' : primary ? 'text-green-500' : 'text-cool-gray-700',
                         `py-2 px-4 flex gap-1 items-center hover:bg-cool-gray-100 transition ease-in-out cursor-pointer`,
                       )}
                       key={label}
