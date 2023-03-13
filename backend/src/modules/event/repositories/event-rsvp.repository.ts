@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
-import { RepositoryWithPagination } from 'src/infrastructure/base/repository-with-pagination.class';
+import {
+  Pagination,
+  RepositoryWithPagination,
+} from 'src/infrastructure/base/repository-with-pagination.class';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { VolunteerProfileEntity } from 'src/modules/volunteer/entities/volunteer-profile.entity';
 import { Repository } from 'typeorm';
@@ -70,7 +73,9 @@ export class EventRSVPRepository
     return null;
   }
 
-  async findMany(findOptions: FindManyEventRSVPOptions): Promise<unknown> {
+  async findMany(
+    findOptions: FindManyEventRSVPOptions,
+  ): Promise<Pagination<IEventRSVPModel>> {
     let query = this.rsvpRepository
       .createQueryBuilder('rsvp')
       .leftJoinAndMapOne('rsvp.user', 'rsvp.user', 'user')
