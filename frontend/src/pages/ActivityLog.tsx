@@ -20,6 +20,7 @@ import { useActivityLogsQuery } from '../services/acitivity-log/activity-log.ser
 import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from '../components/StatusWithMarker';
+import { useNavigate } from 'react-router';
 
 export enum ActivityLogTabs {
   PENDING = 'pending',
@@ -31,99 +32,8 @@ const ActivityLogTabsOptions: SelectItem<ActivityLogTabs>[] = [
   { key: ActivityLogTabs.PAST, value: i18n.t('activity_log:past') },
 ];
 
-const PendingActivityLogTableHeader = [
-  {
-    id: 'activityLog.task',
-    name: 'Task',
-    sortable: true,
-    grow: 2,
-    minWidth: '10rem',
-    cell: (row: IActivityLog) => <MediaCell logo={row.task?.icon || ''} title={row.task.name} />,
-  },
-  {
-    id: 'activityLog.hours',
-    name: i18n.t('general:hours'),
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    selector: (row: IActivityLog) => `${row.hours}h`,
-  },
-  {
-    id: 'activityLog.execution',
-    name: i18n.t('activity_log:execution_date'),
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    selector: (row: IActivityLog) => formatDate(row.execution_date),
-  },
-  {
-    id: 'activityLog.volunteerName',
-    name: i18n.t('volunteer:name', { status: '' }),
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    selector: (row: IActivityLog) => row.volunteer.name,
-  },
-  {
-    id: 'activityLog.registration',
-    name: i18n.t('activity_log:registration_date'),
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    selector: (row: IActivityLog) => formatDate(row.registration_date),
-  },
-];
-
-const PastActivityLogTableHeader = [
-  {
-    id: 'activityLog.task',
-    name: 'Task',
-    sortable: true,
-    grow: 2,
-    minWidth: '10rem',
-    cell: (row: IActivityLog) => <MediaCell logo={row.task?.icon || ''} title={row.task.name} />,
-  },
-  {
-    id: 'activityLog.hours',
-    name: i18n.t('general:hours'),
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    selector: (row: IActivityLog) => `${row.hours}h`,
-  },
-  {
-    id: 'activityLog.execution',
-    name: i18n.t('activity_log:execution_date'),
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    selector: (row: IActivityLog) => formatDate(row.execution_date),
-  },
-  {
-    id: 'activityLog.volunteerName',
-    name: i18n.t('volunteer:name', { status: '' }),
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    selector: (row: IActivityLog) => row.volunteer.name,
-  },
-  {
-    id: 'activityLog.registration',
-    name: i18n.t('activity_log:status'),
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    cell: (row: IActivityLog) => (
-      <CellLayout>
-        <StatusWithMarker markerColor={ActivityLogStatusMarkerColorMapper[row.status]}>
-          {i18n.t(`events:display_status.${row.status}`)}
-        </StatusWithMarker>
-      </CellLayout>
-    ),
-  },
-];
-
 const ActivityLog = () => {
+  const navigate = useNavigate();
   const [tabsStatus, setTabsStatus] = useState<ActivityLogTabs>(ActivityLogTabs.PENDING);
   // pagination state
   const [page, setPage] = useState<number>();
@@ -149,6 +59,10 @@ const ActivityLog = () => {
         InternalErrors.ACTIVITY_LOG_ERRORS.getError(activityLogsError.response?.data.code_error),
       );
   }, [activityLogsError]);
+
+  const onVolunteerClick = (id: string) => {
+    navigate(`/volunteers/${id}`);
+  };
 
   const onTabClick = (tab: ActivityLogTabs) => {
     setTabsStatus(tab);
@@ -192,6 +106,106 @@ const ActivityLog = () => {
     alert('not yet implemented');
   };
 
+  const PendingActivityLogTableHeader = [
+    {
+      id: 'activityLog.task',
+      name: 'Task',
+      sortable: true,
+      grow: 2,
+      minWidth: '10rem',
+      cell: (row: IActivityLog) => <MediaCell logo={row.task?.icon || ''} title={row.task.name} />,
+    },
+    {
+      id: 'activityLog.hours',
+      name: i18n.t('general:hours'),
+      sortable: true,
+      grow: 1,
+      minWidth: '5rem',
+      selector: (row: IActivityLog) => `${row.hours}h`,
+    },
+    {
+      id: 'activityLog.execution',
+      name: i18n.t('activity_log:execution_date'),
+      sortable: true,
+      grow: 1,
+      minWidth: '5rem',
+      selector: (row: IActivityLog) => formatDate(row.execution_date),
+    },
+    {
+      id: 'activityLog.volunteer',
+      name: i18n.t('volunteer:name', { status: '' }),
+      sortable: true,
+      grow: 1,
+      minWidth: '5rem',
+      cell: (row: IActivityLog) => (
+        <CellLayout>
+          <a onClick={onVolunteerClick.bind(null, row.volunteer.id)}>{row.volunteer.name}</a>
+        </CellLayout>
+      ),
+    },
+    {
+      id: 'activityLog.registration',
+      name: i18n.t('activity_log:registration_date'),
+      sortable: true,
+      grow: 1,
+      minWidth: '5rem',
+      selector: (row: IActivityLog) => formatDate(row.registration_date),
+    },
+  ];
+
+  const PastActivityLogTableHeader = [
+    {
+      id: 'activityLog.task',
+      name: 'Task',
+      sortable: true,
+      grow: 2,
+      minWidth: '10rem',
+      cell: (row: IActivityLog) => <MediaCell logo={row.task?.icon || ''} title={row.task.name} />,
+    },
+    {
+      id: 'activityLog.hours',
+      name: i18n.t('general:hours'),
+      sortable: true,
+      grow: 1,
+      minWidth: '5rem',
+      selector: (row: IActivityLog) => `${row.hours}h`,
+    },
+    {
+      id: 'activityLog.execution',
+      name: i18n.t('activity_log:execution_date'),
+      sortable: true,
+      grow: 1,
+      minWidth: '5rem',
+      selector: (row: IActivityLog) => formatDate(row.execution_date),
+    },
+    {
+      id: 'activityLog.volunteer',
+      name: i18n.t('volunteer:name', { status: '' }),
+      sortable: true,
+      grow: 1,
+      minWidth: '5rem',
+      cell: (row: IActivityLog) => (
+        <CellLayout>
+          <a onClick={onVolunteerClick.bind(null, row.volunteer.id)}>{row.volunteer.name}</a>
+        </CellLayout>
+      ),
+    },
+    {
+      id: 'activityLog.status',
+      name: i18n.t('activity_log:status'),
+      sortable: true,
+      grow: 1,
+      minWidth: '5rem',
+      cell: (row: IActivityLog) => (
+        <CellLayout>
+          <StatusWithMarker markerColor={ActivityLogStatusMarkerColorMapper[row.status]}>
+            {i18n.t(`activity_log:display_status.${row.status}`)}
+          </StatusWithMarker>
+        </CellLayout>
+      ),
+    },
+  ];
+
   return (
     <PageLayout>
       <PageHeaderAdd onAddButtonPress={onAddButtonPress} label={i18n.t('activity_log:add')}>
@@ -200,28 +214,35 @@ const ActivityLog = () => {
       <Tabs<ActivityLogTabs> tabs={ActivityLogTabsOptions} onClick={onTabClick}>
         <Card>
           <CardHeader>
-            <h2>{i18n.t(`side_menu:options.activity_log`)}</h2>
+            <h2>
+              {tabsStatus === ActivityLogTabs.PENDING
+                ? i18n.t('activity_log:pending_header', {
+                    hours: activityLogs?.count.pending || '-',
+                  })
+                : `${i18n.t('activity_log:past_header', {
+                    hours: activityLogs?.count.approved || '-',
+                    rejected: activityLogs?.count.rejected || '-',
+                  })}`}
+            </h2>
           </CardHeader>
           <CardBody>
-            {
-              <DataTableComponent
-                columns={[
-                  ...(tabsStatus === ActivityLogTabs.PENDING
-                    ? PendingActivityLogTableHeader
-                    : PastActivityLogTableHeader),
-                  buildActivityLogActionColumn(),
-                ]}
-                data={activityLogs?.items}
-                loading={isActivityLogsLoading}
-                pagination
-                paginationPerPage={rowsPerPage}
-                paginationTotalRows={activityLogs?.meta?.totalItems}
-                paginationDefaultPage={page}
-                onChangeRowsPerPage={setRowsPerPage}
-                onChangePage={setPage}
-                onSort={onSort}
-              />
-            }
+            <DataTableComponent
+              columns={[
+                ...(tabsStatus === ActivityLogTabs.PENDING
+                  ? PendingActivityLogTableHeader
+                  : PastActivityLogTableHeader),
+                buildActivityLogActionColumn(),
+              ]}
+              data={activityLogs?.items}
+              loading={isActivityLogsLoading}
+              pagination
+              paginationPerPage={rowsPerPage}
+              paginationTotalRows={activityLogs?.meta?.totalItems}
+              paginationDefaultPage={page}
+              onChangeRowsPerPage={setRowsPerPage}
+              onChangePage={setPage}
+              onSort={onSort}
+            />
           </CardBody>
         </Card>
       </Tabs>

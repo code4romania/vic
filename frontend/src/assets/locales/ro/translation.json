@@ -426,13 +426,20 @@
   },
   "activity_log": {
     "pending": "Solicitări de aprobare",
+    "pending_header": "{{hours}} ore în curs de aprobare",
     "past": "Istoric ore de voluntariat",
+    "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
     "add": "Înregistrează ore",
     "execution_date": "Data efectuării",
     "registration_date": "Data inregistrarii",
+    "display_status": {
+      "rejected": "Respins",
+      "approved": "Aprobat",
+      "pending": "Pending"
+    },
     "status": "Status aprobare",
     "popover": {
-      "view": "Vizualizează fișă de activitate"
+      "view": "Fișă de activitate"
     },
     "errors": {
       "no_data": "Nu s-au putut incarca orele de voluntariat"

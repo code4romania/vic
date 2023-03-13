@@ -5,13 +5,21 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 import { ActivityLogTabs } from '../../pages/ActivityLog';
 // import API from '../api';
 
+interface IPaginatedActivityLog extends IPaginatedEntity<IActivityLog> {
+  count: {
+    pending?: number;
+    rejected?: number;
+    approved?: number;
+  };
+}
+
 export const getActivityLogs = async (
   rowsPerPage: number,
   page: number,
   tabsStatus: ActivityLogTabs,
   orderByColumn?: string,
   orderDirection?: OrderDirection,
-): Promise<IPaginatedEntity<IActivityLog>> => {
+): Promise<IPaginatedActivityLog> => {
   // return API.get('activity-log', {
   //   params: {
   //     type: tabsStatus,
@@ -36,7 +44,7 @@ export const getActivityLogs = async (
           id: '123',
           name: 'John Doe',
         },
-        status: ActivityLogStatus.PENDING,
+        status: ActivityLogStatus.REJECTED,
         registration_date: new Date('2023-03-11'),
       },
       {
@@ -64,6 +72,11 @@ export const getActivityLogs = async (
       totalPages: 10,
       orderByColumn: 'execution_date',
       orderDirection: OrderDirection.DESC,
+    },
+    count: {
+      pending: 55,
+      rejected: 1132,
+      approved: 532,
     },
   });
 };
