@@ -22,6 +22,7 @@ import ActivityTypes from '../pages/ActivityTypes';
 import AddAnnouncement from '../pages/AddAnnouncement';
 import EditAnnouncement from '../pages/EditAnnouncement';
 import Announcement from '../pages/Announcement';
+import ActivityLog from '../pages/ActivityLog';
 
 const Router = () => {
   return (
@@ -56,6 +57,9 @@ const Router = () => {
             <Route index element={<ActivityTypes />} />
             <Route path="add" element={<AddActivityType />} />
             <Route path="edit/:id" element={<EditActivityType />} />
+          </Route>
+          <Route path="activity-log" element={<Outlet />}>
+            <Route index element={<ActivityLog />} />
           </Route>
         </Route>
       </Routes>

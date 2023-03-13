@@ -1,5 +1,6 @@
 import { differenceInYears, format } from 'date-fns';
 import { SelectItem } from '../../components/Select';
+import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 import { ICity } from '../interfaces/city.interface';
 import { IDivisionListItem } from '../interfaces/division.interface';
 
@@ -37,4 +38,10 @@ export const downloadExcel = (data: BlobPart, name: string): void => {
   document.body.appendChild(link);
   link.click();
   link.remove();
+};
+
+export const ActivityLogStatusMarkerColorMapper = {
+  [ActivityLogStatus.APPROVED]: 'bg-green-500',
+  [ActivityLogStatus.REJECTED]: 'bg-red-500',
+  [ActivityLogStatus.PENDING]: 'bg-yellow-500',
 };

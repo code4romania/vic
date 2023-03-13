@@ -6,6 +6,7 @@
     "close": "Inchide",
     "name": "Nume",
     "age": "Vârsta",
+    "hours": "Ore",
     "created_on": "Data crearii",
     "add": "Adauga {{item}}",
     "category": "Categorie",
@@ -77,7 +78,8 @@
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
       "announcements": "Anunturi",
-      "activity_types": "Categorii activitati"
+      "activity_types": "Categorii activitati",
+      "activity_log": "Ore de voluntariat"
     },
     "collapse": "Restrange meniul"
   },
@@ -420,6 +422,20 @@
       "ANNOUNCEMENT_001": "Anuntul nu a fost gasit",
       "ANNOUNCEMENT_002": "Anuntul este deja publicat si nu poate fi modificat",
       "ANNOUNCEMENT_003": "Selectie departament incorecta, doar departamentele pot fi alese ca target"
+    }
+  },
+  "activity_log": {
+    "pending": "Solicitări de aprobare",
+    "past": "Istoric ore de voluntariat",
+    "add": "Înregistrează ore",
+    "execution_date": "Data efectuării",
+    "registration_date": "Data inregistrarii",
+    "status": "Status aprobare",
+    "popover": {
+      "view": "Vizualizează fișă de activitate"
+    },
+    "errors": {
+      "no_data": "Nu s-au putut incarca orele de voluntariat"
     }
   }
 }
