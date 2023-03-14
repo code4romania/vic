@@ -9,7 +9,7 @@ import { ActivityTypeTransformer } from 'src/modules/activity-type/models/activi
 import { OrganizationStructureTransformer } from 'src/modules/organization/models/organization-structure.model';
 import { Repository } from 'typeorm';
 import { EventEntity } from '../entities/event.entity';
-import { EventTime } from '../enums/event-time.enum';
+import { EventState } from '../enums/event-time.enum';
 import { IEventRepository } from '../interfaces/event-repository.interface';
 import {
   CreateEventOptions,
@@ -36,11 +36,10 @@ export class EventRepository
   async getMany(
     findOptions: FindManyEventOptions,
   ): Promise<Pagination<IEventsListItemModel>> {
-    const { eventTime, organizationId, orderBy, orderDirection } = findOptions;
+    const { eventState, organizationId, orderBy, orderDirection } = findOptions;
 
     const query = this.eventRepository
       .createQueryBuilder('event')
-      .where('event.organizationId = :organizationId', { organizationId })
       .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
       .loadRelationCountAndMap(
         'event.going',
@@ -61,19 +60,24 @@ export class EventRepository
         'event.endDate',
         'event.status',
         'event.isPublic',
+        'event.organizationId',
         'targets.id',
         'targets.name', // TODO: need number of members per target, create a View
       ])
+      .where('event.organizationId = :organizationId', { organizationId })
       .orderBy(
         this.buildOrderByQuery(orderBy || 'createdOn', 'event'),
         orderDirection || OrderDirection.ASC,
       );
 
     const currentDate = new Date();
-    if (eventTime === EventTime.OPEN) {
-      query.andWhere('event.endDate > :currentDate OR event.endDate IS NULL', {
-        currentDate,
-      });
+    if (eventState === EventState.OPEN) {
+      query.andWhere(
+        '(event.endDate > :currentDate OR event.endDate IS NULL)',
+        {
+          currentDate,
+        },
+      );
     } else {
       query.andWhere('event.endDate <= :currentDate', {
         currentDate,
