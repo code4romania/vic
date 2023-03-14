@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import * as yup from 'yup';
@@ -14,8 +14,8 @@ import EventForm, { EventFormTypes, TargetType } from '../components/EventForm';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAddEventMutation } from '../services/event/event.service';
-// import { useErrorToast, useSuccessToast } from '../hooks/useToast';
-// import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 import { EventStatus } from '../common/enums/event-status';
 import { AttendanceType } from '../common/enums/attendance-type.enum';
 
@@ -63,8 +63,7 @@ const validationSchema = yup.object({
 
 const AddEvent = () => {
   const navigate = useNavigate();
-  // const { mutateAsync: addEvent, isLoading: isAddEventLoading } = useAddEventMutation();
-  const { isLoading: isAddEventLoading } = useAddEventMutation();
+  const { mutateAsync: addEvent, isLoading: isAddEventLoading } = useAddEventMutation();
 
   const {
     handleSubmit,
@@ -86,35 +85,24 @@ const AddEvent = () => {
     navigate('/events', { replace: true });
   };
 
-  const submitValues = (data: EventFormTypes, status: EventStatus) => {
-    console.log('submit', data);
-    console.log('status', status);
-    // addEvent(
-    //   {
-    //     ...data,
-    //   },
-    //   {
-    //     onSuccess: () => {
-    //       useSuccessToast(i18n.t(`events:form.submit.${status}`));
-    //       navigateBack();
-    //     },
-    //     onError: (error) => {
-    //       useErrorToast(InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error));
-    //     },
-    //   },
-    // );
+  const submitValues = (data: EventFormTypes) => {
+    addEvent(data, {
+      onSuccess: () => {
+        useSuccessToast(i18n.t(`events:form.submit.${data.status}`));
+        navigateBack();
+      },
+      onError: (error) => {
+        useErrorToast(InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error));
+      },
+    });
   };
 
-  useEffect(() => {
-    console.log('errors', errors);
-  }, [errors]);
-
   const onSaveAsDraft = (data: EventFormTypes) => {
-    submitValues(data, EventStatus.DRAFT);
+    submitValues({ ...data, status: EventStatus.DRAFT });
   };
 
   const onPublish = (data: EventFormTypes) => {
-    submitValues(data, EventStatus.PUBLISHED);
+    submitValues({ ...data, status: EventStatus.PUBLISHED });
   };
 
   return (

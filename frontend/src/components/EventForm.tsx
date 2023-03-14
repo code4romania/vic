@@ -15,10 +15,12 @@ import FormInput from './FormInput';
 import FormUploadFile from './FormUploadFile';
 import FormTextarea from './FormTextarea';
 import { SelectItem } from './Select';
-import FormSelect from './FormSelect';
 import FormRadioGroup from './FormRadioGroup';
 import Paragraph from './Paragraph';
 import { DATE_FORMAT } from '../common/constants/patterns';
+import TargetsMultiSelect from '../containers/TargetsMultiSelect';
+import ActivityTypesSelect from '../containers/ActivityTypesSelect';
+import { EventStatus } from '../common/enums/event-status';
 
 export enum TargetType {
   PUBLIC = 'public',
@@ -64,10 +66,10 @@ export type EventFormTypes = {
   endDate?: Date;
   location?: string;
   logo?: string;
-  mention?: string;
   attendanceType: AttendanceType;
   attendanceMention?: string;
   observation?: string;
+  status?: EventStatus;
 };
 
 const EventForm = ({ control, errors, disabled, watch, resetField }: EventFormProps) => {
@@ -190,12 +192,18 @@ const EventForm = ({ control, errors, disabled, watch, resetField }: EventFormPr
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <FormSelect
+              <TargetsMultiSelect
                 placeholder={`${i18n.t('events:form.target.placeholder')}`}
                 onChange={onChange}
                 selected={value}
-                errorMessage={errors.targets?.message}
                 isDisabled={targetType !== TargetType.SELECT}
+                helper={
+                  errors.targets?.message ? (
+                    <p className="text-red-500">{errors.targets?.message}</p>
+                  ) : (
+                    i18n.t('announcement:form.target.disclaimer')
+                  )
+                }
               />
             );
           }}
@@ -284,12 +292,20 @@ const EventForm = ({ control, errors, disabled, watch, resetField }: EventFormPr
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <FormSelect
+              <ActivityTypesSelect
                 label={`${i18n.t('events:form.task.label')}*`}
                 placeholder={`${i18n.t('events:form.target.placeholder')}`}
                 selected={value}
                 onChange={onChange}
-                errorMessage={errors.tasks?.message}
+                helper={
+                  errors.tasks?.message ? (
+                    <p className="text-red-500">{errors.tasks?.message}</p>
+                  ) : (
+                    <small className="text-cool-gray-500">
+                      {i18n.t('events:form.task.helper')}
+                    </small>
+                  )
+                }
               />
             );
           }}

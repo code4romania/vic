@@ -452,7 +452,8 @@
         "description": "Alege taskurile specifice din lista organizatiei.",
         "label": "Alege taskuri",
         "tasks": "Taskuri",
-        "required": "Alegerea taskurilor este obligatorie."
+        "required": "Alegerea taskurilor este obligatorie.",
+        "helper": "Lorem ipsum. Alege din lista"
       },
       "observation": {
         "title": "Observație (vizibil doar pentru administrator)",
