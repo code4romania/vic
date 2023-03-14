@@ -1,7 +1,7 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { useNavigate } from 'react-router-dom';
-import { IRoute } from '../common/interfaces/route.interface';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { IChildRoute, IRoute } from '../common/interfaces/route.interface';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../common/utils/utils';
 import { ROUTES } from '../common/constants/routes';
@@ -14,12 +14,35 @@ interface SlidingMenuProps {
 
 export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuProps) {
   const navigate = useNavigate();
-  const [currentMenuItemId, setCurrentMenuItemId] = useState<number>(0);
+  const location = useLocation();
+  const [activeParentRoute, setActiveParentRoute] = useState<IRoute>(ROUTES[0]);
+  const [activeSubRoute, setActiveSubRoute] = useState<IChildRoute | null>(null);
 
-  const onMenuItemClick = (item: IRoute) => {
+  useEffect(() => {
+    const splittedLocation = location.pathname.split('/');
+    const parentRoute = ROUTES.find((route) => route.href === splittedLocation[1]);
+
+    if (parentRoute?.childRoutes?.length) {
+      const subRoute = parentRoute.childRoutes.find((childRoute) =>
+        childRoute.href.includes(splittedLocation[2]),
+      );
+
+      if (subRoute) {
+        setActiveSubRoute(subRoute);
+      } else {
+        setActiveSubRoute(parentRoute.childRoutes[0]);
+      }
+
+      setActiveParentRoute(parentRoute);
+    } else if (parentRoute) {
+      setActiveParentRoute(parentRoute);
+      setActiveSubRoute(null);
+    }
+  }, [location]);
+
+  const onMenuItemClick = (item: IRoute, childRoute?: IChildRoute) => {
+    navigate(childRoute ? `${childRoute.href}` : `${item.href}`);
     setSlidingMenuOpen(false);
-    setCurrentMenuItemId(item.id);
-    navigate(`${item.href}`);
   };
 
   return (
@@ -85,11 +108,13 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
                           <MenuItem
                             key={item.id}
                             item={item}
-                            active={item.id === currentMenuItemId}
+                            activeParentRoute={activeParentRoute}
+                            activeSubRoute={activeSubRoute}
                             isNarrow={false}
                             onClick={onMenuItemClick}
                           />
                         ))}
+                        <div className="text-white text-xs fixed bottom-4">{`v${APP_VERSION}`}</div>
                       </nav>
                     </div>
                   </div>

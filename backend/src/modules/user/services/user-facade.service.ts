@@ -1,17 +1,22 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { IAdminUserRepository } from '../interfaces/admin-user-repository.interface';
+import { Injectable } from '@nestjs/common';
 import {
   IAdminUserModel,
   ICreateAdminUserModel,
   IFindAdminUserModel,
 } from '../models/admin-user.model';
+import {
+  CreateRegularUserOptions,
+  FindRegularUserOptions,
+  IRegularUserModel,
+} from '../models/regular-user.model';
 import { AdminUserRepositoryService } from '../repositories/admin-user.repository';
+import { RegularUserRepositoryService } from '../repositories/regular-user.repository';
 
 @Injectable()
 export class UserFacadeService {
   constructor(
-    @Inject(AdminUserRepositoryService)
-    private readonly adminUserRepository: IAdminUserRepository,
+    private readonly adminUserRepository: AdminUserRepositoryService,
+    private readonly regularUserRepository: RegularUserRepositoryService,
   ) {}
 
   public async findAdminUser(
@@ -24,5 +29,17 @@ export class UserFacadeService {
     adminUserModel: ICreateAdminUserModel,
   ): Promise<IAdminUserModel> {
     return this.adminUserRepository.create(adminUserModel);
+  }
+
+  public async createRegularUser(
+    regularUser: CreateRegularUserOptions,
+  ): Promise<IRegularUserModel> {
+    return this.regularUserRepository.create(regularUser);
+  }
+
+  public async findRegularUser(
+    options: FindRegularUserOptions,
+  ): Promise<IRegularUserModel> {
+    return this.regularUserRepository.find(options);
   }
 }

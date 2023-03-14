@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import {
+  Pagination,
+  RepositoryWithPagination,
+} from 'src/infrastructure/base/repository-with-pagination.class';
 import { Repository } from 'typeorm';
 import { AccessCodeEntity } from '../entities/access-code.entity';
 import { IAccessCodeRepository } from '../interfaces/access-code-repository.interface';
@@ -13,11 +18,16 @@ import {
 } from '../models/access-code.model';
 
 @Injectable()
-export class AccessCodeRepositoryService implements IAccessCodeRepository {
+export class AccessCodeRepositoryService
+  extends RepositoryWithPagination<AccessCodeEntity>
+  implements IAccessCodeRepository
+{
   constructor(
     @InjectRepository(AccessCodeEntity)
     private readonly accessCodeRepository: Repository<AccessCodeEntity>,
-  ) {}
+  ) {
+    super(accessCodeRepository);
+  }
 
   async create(
     newAccessCode: ICreateAccessCodeModel,
@@ -38,6 +48,30 @@ export class AccessCodeRepositoryService implements IAccessCodeRepository {
     return this.find({ id });
   }
 
+  async findMany(
+    findOptions: IFindAllAccessCodeModel,
+  ): Promise<Pagination<IAccessCodeModel>> {
+    const { orderBy, orderDirection, organizationId } = findOptions;
+
+    // create query
+    const query = this.accessCodeRepository
+      .createQueryBuilder('code')
+      .leftJoinAndMapOne('code.createdBy', 'code.createdBy', 'createdBy')
+      .select()
+      .where('code.organizationId = :organizationId', { organizationId })
+      .orderBy(
+        this.buildOrderByQuery(orderBy || 'createdOn', 'code'),
+        orderDirection || OrderDirection.ASC,
+      );
+
+    return this.paginateQuery(
+      query,
+      findOptions.limit,
+      findOptions.page,
+      AccessCodeTransformer.fromEntity,
+    );
+  }
+
   async find(findOptions: IFindAccessCodeModel): Promise<IAccessCodeModel> {
     const accessCodeEntity = await this.accessCodeRepository.findOne({
       where: { ...findOptions },
@@ -51,25 +85,12 @@ export class AccessCodeRepositoryService implements IAccessCodeRepository {
       : null;
   }
 
-  async findAll(
-    findOptions: IFindAllAccessCodeModel /* INSERT FILTERING OPTIONS */,
-  ): Promise<IAccessCodeModel[]> {
-    const accessCodeEntities = await this.accessCodeRepository.find({
-      where: { ...findOptions },
-      relations: {
-        createdBy: true,
-      },
-    });
-
-    return accessCodeEntities.map(AccessCodeTransformer.fromEntity);
-  }
-
-  async delete(id: string): Promise<IAccessCodeModel> {
+  async delete(id: string): Promise<string> {
     const accessCodeEntity = await this.accessCodeRepository.findOneBy({ id });
 
     if (accessCodeEntity) {
-      const removed = await this.accessCodeRepository.remove(accessCodeEntity);
-      return AccessCodeTransformer.fromEntity(removed);
+      await this.accessCodeRepository.remove(accessCodeEntity);
+      return id;
     }
 
     return null;

@@ -6,10 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
+import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
@@ -21,8 +23,14 @@ import { UpdateAccessCodeUseCase } from 'src/usecases/access-code/update-access-
 import { CreateAccessCodeDto } from './dto/create-access-code.dto';
 import { UpdateAccessCodeDto } from './dto/update-access-code.dto';
 import { AccessCodePresenter } from './presenters/access-code.presenter';
+import { AccessCodeGuard } from './guards/access-code.guard';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
 
-@UseGuards(WebJwtAuthGuard)
+@ApiBearerAuth()
+@UseGuards(WebJwtAuthGuard, AccessCodeGuard)
 @Controller('access-code')
 export class AccessCodeController {
   constructor(
@@ -34,17 +42,25 @@ export class AccessCodeController {
   ) {}
 
   @Get()
+  @ApiPaginatedResponse(AccessCodePresenter)
   async getAll(
+    @Query() filters: BasePaginationFilterDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
-  ): Promise<AccessCodePresenter[]> {
+  ): Promise<PaginatedPresenter<AccessCodePresenter>> {
     const accessCodes = await this.findAllAccessCodeUseCase.execute({
+      ...filters,
       organizationId,
     });
 
-    return accessCodes.map((accessCode) => new AccessCodePresenter(accessCode));
+    return new PaginatedPresenter<AccessCodePresenter>({
+      ...accessCodes,
+      items: accessCodes.items.map(
+        (accessCode) => new AccessCodePresenter(accessCode),
+      ),
+    });
   }
 
-  @ApiParam({ name: 'accessCodeId', type: 'string' })
+  @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   async getOne(
     @Param('id', UuidValidationPipe) accessCodeId: string,
@@ -87,12 +103,7 @@ export class AccessCodeController {
 
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
-  async delete(
-    @Param('accessCodeId', UuidValidationPipe) accessCodeId: string,
-  ): Promise<AccessCodePresenter> {
-    const accessCodeModel = await this.deleteAccessCodeUseCase.execute(
-      accessCodeId,
-    );
-    return new AccessCodePresenter(accessCodeModel);
+  async delete(@Param('id', UuidValidationPipe) id: string): Promise<string> {
+    return this.deleteAccessCodeUseCase.execute(id);
   }
 }

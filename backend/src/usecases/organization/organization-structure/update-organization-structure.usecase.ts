@@ -38,7 +38,7 @@ export class UpdateOrganizationStructureUseCase
       name: data.name,
     });
 
-    if (duplicate) {
+    if (duplicate && duplicate.id !== toUpdate.id) {
       this.exceptionService.badRequestException(
         OrganizationStructureExceptionMessages.ORGANIZATION_STRUCTURE_002,
       );

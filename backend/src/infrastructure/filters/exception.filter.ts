@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { IError } from 'src/common/exceptions/exceptions.interface';
+import { JSONStringifyError } from 'src/common/helpers/utils';
 import { TypeORMError } from 'typeorm';
 
 @Catch()
@@ -41,7 +42,7 @@ export class ExceptionsFilter implements ExceptionFilter {
       // handle type errors
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = {
-        message: exception.message,
+        message: JSONStringifyError(exception),
         code_error: null,
       };
     } else {
@@ -69,16 +70,18 @@ export class ExceptionsFilter implements ExceptionFilter {
   ): void {
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
       this.logger.error(
-        `End Request for ${request.path}`,
-        `method=${request.method} status=${status} code_error=${
+        `End Request for ${request.path} method=${
+          request.method
+        } status=${status} code_error=${
           message?.code_error ? message.code_error : null
         } message=${message?.message ? message.message : null}`,
         exception?.stack,
       );
     } else {
       this.logger.warn(
-        `End Request for ${request.path}`,
-        `method=${request.method} status=${status} code_error=${
+        `End Request for ${request.path} method=${
+          request.method
+        } status=${status} code_error=${
           message?.code_error ? message.code_error : null
         } message=${message?.message ? message.message : null}`,
       );

@@ -13,7 +13,7 @@ export class GetAccessCodeUseCase implements IUseCaseService<IAccessCodeModel> {
   ) {}
 
   public async execute(id: string): Promise<IAccessCodeModel> {
-    const accessCode = this.accessCodeFacade.find({ id });
+    const accessCode = await this.accessCodeFacade.find({ id });
 
     if (!accessCode) {
       this.exceptionService.notFoundException(

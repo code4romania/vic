@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
 import { IOrganizationRepository } from '../interfaces/organization-repository.interface';
 import {
   ICreateOrganizationModel,
@@ -18,7 +17,7 @@ export class OrganizationFacadeService {
   public async findOrganization(
     options:
       | Partial<IFindOrganizationModel>
-      | ArrayOfPropetyType<IFindOrganizationModel>,
+      | Partial<IFindOrganizationModel>[], // TODO move in model
   ): Promise<IOrganizationModel> {
     return this.organizationRepository.find(options);
   }

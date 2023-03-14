@@ -1,23 +1,24 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
+import { CityEntity } from 'src/modules/location/entities/city.entity';
 import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
 import {
   ChildEntity,
   Column,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   TableInheritance,
 } from 'typeorm';
 import { SEX, UserType } from '../enums/user.enum';
 
 @Entity({ name: 'user' })
-@TableInheritance({ column: { type: 'varchar', name: 'type', enum: UserType } })
+@TableInheritance({ column: { type: 'varchar', name: 'type', enum: UserType } }) // TODO: can include type in the entity response from the db?
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'text', name: 'cognito_id' })
+  @Column({ type: 'text', unique: true, name: 'cognito_id' })
   cognitoId: string;
 
   @Column({ type: 'text', name: 'name' })
@@ -39,7 +40,7 @@ export class AdminUserEntity extends UserEntity {
   })
   organizationId: string;
 
-  @OneToOne(() => OrganizationEntity)
+  @ManyToOne(() => OrganizationEntity)
   @JoinColumn({ name: 'organization_id' })
   organization: OrganizationEntity;
 }
@@ -54,4 +55,15 @@ export class RegularUserEntity extends UserEntity {
 
   @Column({ type: 'text', name: 'profile_picture', nullable: true })
   profilePicture: string;
+
+  @Column({
+    type: 'integer',
+    nullable: true,
+    name: 'location_id',
+  })
+  locationId: number;
+
+  @ManyToOne(() => CityEntity)
+  @JoinColumn({ name: 'location_id' })
+  location: CityEntity;
 }

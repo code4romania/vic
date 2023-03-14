@@ -1,19 +1,31 @@
+import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
+import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
 import {
   ICreateOrganizationStructureModel,
+  IFindAllOrganizationStructureByIdsOptions,
   IFindAllOrganizationStructureModel,
+  IFindAllOrganizationStructurePaginatedModel,
   IOrganizationStructureModel,
   IUpdateOrganizationStructureModel,
 } from '../models/organization-structure.model';
 
-export interface IOrganizationStructureRepository {
+export interface IOrganizationStructureRepository
+  extends IRepositoryWithPagination<OrganizationStructureEntity> {
   create(
     newStructure: ICreateOrganizationStructureModel,
   ): Promise<IOrganizationStructureModel>;
-  findAll(
-    findOptions: IFindAllOrganizationStructureModel,
-  ): Promise<IOrganizationStructureModel[]>;
   update(
     updates: IUpdateOrganizationStructureModel,
   ): Promise<IOrganizationStructureModel>;
-  delete(id: string): Promise<IOrganizationStructureModel>;
+  delete(id: string): Promise<string>;
+  findMany(
+    options: IFindAllOrganizationStructurePaginatedModel,
+  ): Promise<Pagination<IOrganizationStructureModel>>;
+  findAll(
+    options: IFindAllOrganizationStructureModel,
+  ): Promise<IOrganizationStructureModel[]>;
+  findAllByIds(
+    options: IFindAllOrganizationStructureByIdsOptions,
+  ): Promise<IOrganizationStructureModel[]>;
 }

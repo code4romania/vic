@@ -1,21 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from '@heroicons/react/24/outline';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ROUTES } from '../common/constants/routes';
 import { classNames } from '../common/utils/utils';
-import { IRoute } from '../common/interfaces/route.interface';
+import { IChildRoute, IRoute } from '../common/interfaces/route.interface';
 import MenuItem from './MenuItem';
+import MenuLink from './MenuLink';
 
 const SideMenu = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isNarrow, setIsNarrow] = useState<boolean>(false);
-  const [currentMenuItemId, setCurrentMenuItemId] = useState<number>(0);
+  const [activeParentRoute, setActiveParentRoute] = useState<IRoute>(ROUTES[0]);
+  const [activeSubRoute, setActiveSubRoute] = useState<IChildRoute | null>(null);
   const { t } = useTranslation('side_menu');
 
-  const onMenuItemClick = (item: IRoute) => {
-    setCurrentMenuItemId(item.id);
-    navigate(`${item.href}`);
+  useEffect(() => {
+    const splittedLocation = location.pathname.split('/');
+    const parentRoute = ROUTES.find((route) => route.href === splittedLocation[1]);
+
+    if (parentRoute?.childRoutes?.length) {
+      const subRoute = parentRoute.childRoutes.find((childRoute) =>
+        childRoute.href.includes(splittedLocation[2]),
+      );
+
+      if (subRoute) {
+        setActiveSubRoute(subRoute);
+      } else {
+        setActiveSubRoute(parentRoute.childRoutes[0]);
+      }
+
+      setActiveParentRoute(parentRoute);
+    } else if (parentRoute) {
+      setActiveParentRoute(parentRoute);
+      setActiveSubRoute(null);
+    }
+  }, [location]);
+
+  const onMenuItemClick = (item: IRoute, childRoute?: IChildRoute) => {
+    navigate(childRoute ? `${childRoute.href}` : `${item.href}`);
   };
 
   return (
@@ -30,13 +54,14 @@ const SideMenu = () => {
         <MenuItem
           key={item.id}
           item={item}
-          active={item.id === currentMenuItemId}
+          activeParentRoute={activeParentRoute}
+          activeSubRoute={activeSubRoute}
           isNarrow={isNarrow}
           onClick={onMenuItemClick}
         />
       ))}
       <div className="pt-60 space-y-4">
-        <MenuItem
+        <MenuLink
           item={{
             id: -1,
             name: t('collapse'),
@@ -48,6 +73,7 @@ const SideMenu = () => {
           onClick={setIsNarrow.bind(null, !isNarrow)}
         />
       </div>
+      <div className="text-white text-xs">{`v${APP_VERSION}`}</div>
     </nav>
   );
 };

@@ -1,21 +1,26 @@
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
+import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
-import { PaginationConfig } from '../common/constants/pagination';
 import { OrderDirection } from '../common/enums/order-direction.enum';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IUser } from '../common/interfaces/user.interface';
 import { formatDate } from '../common/utils/utils';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
+import ConfirmationModal from '../components/ConfirmationModal';
 import DataTableComponent from '../components/DataTableComponent';
 import Popover from '../components/Popover';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import CellLayout from '../layouts/CellLayout';
 import PageLayout from '../layouts/PageLayout';
-import { useAccessCodesQuery } from '../services/organization/organization.service';
+import {
+  useAccessCodesQuery,
+  useDeleteAccessCodeMutation,
+} from '../services/organization/organization.service';
 
 export interface IAccessCode {
   id: string;
@@ -29,23 +34,26 @@ export interface IAccessCode {
 
 const AccessCodeTableHeader = [
   {
-    id: 'name',
-    name: i18n.t('access_codes:name'),
+    id: 'code',
+    name: i18n.t('access_code:name'),
     sortable: true,
     grow: 1,
     minWidth: '5rem',
     selector: (row: IAccessCode) => row.code,
   },
   {
-    id: 'availability',
+    id: 'startDate',
     name: i18n.t('general:availability'),
     sortable: true,
     grow: 2,
     minWidth: '10rem',
-    selector: (row: IAccessCode) => `${formatDate(row.startDate)} - ${formatDate(row.endDate)}`,
+    selector: (row: IAccessCode) =>
+      `${formatDate(row.startDate)} -\n${
+        row.endDate ? `${formatDate(row.endDate)}` : i18n.t('general:unlimited')
+      }`,
   },
   {
-    id: 'uses',
+    id: 'usageCount',
     name: i18n.t('general:uses'),
     sortable: true,
     grow: 1,
@@ -75,15 +83,18 @@ const AccessCodeTableHeader = [
 ];
 
 const AccessCodes = () => {
+  const [showDeleteAccessCode, setShowDeleteAccessCode] = useState<null | IAccessCode>();
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+  const navigate = useNavigate();
 
   const {
     data: accessCodes,
-    error,
-    isLoading,
+    error: accessCodesError,
+    isLoading: isAccessCodesLoading,
+    refetch,
   } = useAccessCodesQuery(
     rowsPerPage as number,
     page as number,
@@ -91,18 +102,12 @@ const AccessCodes = () => {
     orderDirection as OrderDirection,
   );
 
-  useEffect(() => {
-    if (accessCodes?.meta) {
-      setPage(accessCodes.meta.currentPage);
-      setRowsPerPage(accessCodes.meta.itemsPerPage);
-      setOrderByColumn(accessCodes.meta.orderByColumn);
-      setOrderDirection(accessCodes.meta.orderDirection);
-    }
-  }, []);
+  const { mutateAsync: deleteAccessCode, isLoading: isDeleteAccessCodeLoading } =
+    useDeleteAccessCodeMutation();
 
   useEffect(() => {
-    if (error) useErrorToast(i18n.t('general:error.load_entries'));
-  }, [error]);
+    if (accessCodesError) useErrorToast(i18n.t('general:error.load_entries'));
+  }, [accessCodesError]);
 
   // pagination
   const onRowsPerPageChange = (rows: number) => {
@@ -124,16 +129,16 @@ const AccessCodes = () => {
 
   // component actions
   const onAdd = () => {
-    alert('Not yet implemented');
+    navigate('add');
   };
 
   // row actions
   const onEdit = (row: IAccessCode) => {
-    alert(`Not yet implemented, ${row}`);
+    navigate(`${row.id}/edit`);
   };
 
   const onDelete = (row: IAccessCode) => {
-    alert(`Not yet implemented, ${row}`);
+    setShowDeleteAccessCode(row);
   };
 
   // menu items
@@ -160,6 +165,25 @@ const AccessCodes = () => {
     };
   };
 
+  const confirmDelete = () => {
+    if (showDeleteAccessCode) {
+      deleteAccessCode(showDeleteAccessCode.id, {
+        onSuccess: () => {
+          useSuccessToast(i18n.t('access_code:modal.delete'));
+          refetch();
+        },
+        onError: (error) => {
+          useErrorToast(
+            InternalErrors.ORGANIZATION_ERRORS.getError(error?.response?.data.code_error),
+          );
+        },
+        onSettled: () => {
+          setShowDeleteAccessCode(null);
+        },
+      });
+    }
+  };
+
   return (
     <PageLayout>
       <div className="flex flex-col gap-6">
@@ -167,23 +191,22 @@ const AccessCodes = () => {
           <h1>{i18n.t('side_menu:options.access_codes')}</h1>
           <Button
             className="btn-primary"
-            label={i18n.t('access_codes:create')}
+            label={i18n.t('access_code:create')}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
           />
         </div>
         <Card>
           <CardHeader>
-            <h3>{i18n.t('side_menu:options.access_codes')}</h3>
+            <h3 className="font-titilliumBold">{i18n.t('side_menu:options.access_codes')}</h3>
           </CardHeader>
           <CardBody>
             <DataTableComponent<IAccessCode>
               data={accessCodes?.items}
               columns={[...AccessCodeTableHeader, buildAccessCodeActionColumn()]}
-              loading={isLoading}
+              loading={isAccessCodesLoading || isDeleteAccessCodeLoading}
               pagination
               paginationPerPage={accessCodes?.meta?.itemsPerPage}
-              paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
               paginationTotalRows={accessCodes?.meta?.totalItems}
               paginationDefaultPage={page}
               onChangeRowsPerPage={onRowsPerPageChange}
@@ -193,6 +216,18 @@ const AccessCodes = () => {
           </CardBody>
         </Card>
       </div>
+      {showDeleteAccessCode && (
+        <ConfirmationModal
+          title={i18n.t('access_code:modal.title')}
+          description={i18n.t('access_code:modal.description')}
+          confirmBtnLabel={i18n.t('division:modal.delete.title', {
+            division: i18n.t('access_code:name').toLowerCase(),
+          })}
+          confirmBtnClassName="btn-danger"
+          onClose={setShowDeleteAccessCode.bind(null, null)}
+          onConfirm={confirmDelete}
+        />
+      )}
     </PageLayout>
   );
 };

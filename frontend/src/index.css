@@ -56,7 +56,8 @@
     @apply font-titilliumBold;
   }
 
-  input[type='text'],
+  input,
+  [type='text'],
   [type='email'],
   [type='url'],
   [type='password'],
@@ -71,7 +72,7 @@
   [multiple],
   textarea,
   select {
-    @apply text-cool-gray-900 rounded-md border border-cool-gray-200 py-2.5 px-3 bg-white max-w-[30rem] h-fit cursor-text outline-0 shadow-sm text-sm font-roboto font-normal focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500;
+    @apply text-cool-gray-900 rounded-md border border-cool-gray-200 py-2.5 px-3 bg-white max-w-[37rem] h-fit cursor-text outline-0 shadow-sm text-sm font-roboto font-normal focus:ring-indigo-500 focus:ring-1 focus:border-indigo-500;
 
     padding-inline: 0.813rem;
     word-break: break-word;
@@ -88,6 +89,14 @@
   input:disabled {
     @apply bg-cool-gray-200 text-cool-gray-500 cursor-auto;
   }
+
+  input#search__filter {
+    @apply pl-10 w-4/5 min-w-[9rem] max-w-lg;
+  }
+
+  form {
+    @apply flex flex-col gap-6;
+  }
 }
 
 @layer components {
@@ -96,7 +105,7 @@
   }
 
   .btn {
-    @apply flex items-center justify-center rounded-md min-w-fit w-20 py-2.5 gap-x-2 whitespace-pre-wrap font-medium text-xs sm:text-sm font-robotoMedium disabled:opacity-50;
+    @apply flex items-center justify-center rounded-md min-w-fit py-2.5 gap-x-2 whitespace-pre-wrap font-medium text-xs sm:text-sm font-robotoMedium disabled:opacity-50;
 
     padding-inline: 17px;
   }
@@ -122,7 +131,7 @@
   }
 
   .btn-text-danger {
-    @apply btn text-red hover:text-red-700 active:text-red-800 focus:shadow-yellow focus:outline-0;
+    @apply btn border border-cool-gray-300 text-red hover:text-red-700 active:text-red-800 focus:shadow-yellow focus:outline-0;
   }
 
   .input-style {
@@ -135,6 +144,14 @@
 
   .menu-icon {
     @apply flex-shrink-0 h-5 w-5;
+  }
+
+  .text-overflow {
+    @apply overflow-hidden text-ellipsis;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 }
 
@@ -180,15 +197,15 @@
 
 /* data table overrides */
 .rdt_TableHeadRow > .rdt_TableCol {
-  @apply bg-cool-gray-50 text-sm text-cool-gray-900 border-cool-gray-300;
+  @apply bg-cool-gray-50 text-sm text-cool-gray-800 border-cool-gray-300;
 }
 
 .rdt_TableHeadRow > .rdt_TableCol > div {
-  @apply py-3.5 pl-2 pr-3 font-bold;
+  @apply py-3.5 px-2.5 text-sm font-titilliumBold;
 }
 
 .rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
-  @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-xs sm:text-sm font-normal text-cool-gray-700;
+  @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-xs sm:text-sm font-normal text-cool-gray-700 overflow-hidden;
 }
 
 .rdt_TableBody > div:last-of-type {
@@ -216,6 +233,7 @@
   display: none;
 }
 
+/* toast overrides */
 .Toastify__toast {
   @apply font-roboto !important;
   @apply sm:text-sm lg:text-base text-xs;
@@ -227,4 +245,29 @@
 
 .Toastify__toast-theme--colored.Toastify__toast--error {
   @apply bg-red-500 !important;
+}
+
+/* react select overrides */
+.reactselect__control {
+  @apply max-w-[37rem] rounded-md text-sm font-roboto font-normal focus:border-indigo-500 focus:border-2 border border-cool-gray-200 !important;
+}
+
+.reactselect__value-container {
+  @apply py-1.5 px-3 !important;
+}
+
+.reactselect__loading-indicator {
+  @apply flex items-center justify-center max-w-[4rem] m-0 !important;
+}
+
+.reactselect__loading-indicator > span {
+  @apply h-1.5 w-1.5 ml-1;
+}
+
+.reactselect__multi-value__remove > svg {
+  @apply w-4 h-4 text-base;
+}
+
+.reactselect__menu {
+  @apply max-w-[37rem];
 }

@@ -71,17 +71,17 @@ export class GetUserProfileUseCaseService
         );
       }
     } catch (error) {
-      // throw bad server exception for failing to save the organization
-      this.exceptionService.internalServerErrorException(
-        OrganizationExceptionMessages.ORG_003,
-      );
-
       // log the error and the payload
       this.logger.error({
         error,
         ...OrganizationExceptionMessages.ORG_003,
         organization,
       });
+
+      // throw bad server exception for failing to save the organization
+      this.exceptionService.internalServerErrorException(
+        OrganizationExceptionMessages.ORG_003,
+      );
     }
 
     // check if there is already a user with the same data
@@ -107,20 +107,20 @@ export class GetUserProfileUseCaseService
       // return newly created
       return adminUser;
     } catch (error) {
-      // throw bad server exception for failing to save the organization
-      this.exceptionService.internalServerErrorException(
-        UserExceptionMessages.USER_002,
-      );
-
       // log the error and the payload
       this.logger.debug({
-        ...UserExceptionMessages.USER_002,
         error,
+        ...UserExceptionMessages.USER_002,
         user: {
           ...user,
           organizationId: dbOrganization.id,
         },
       });
+
+      // throw bad server exception for failing to save the organization
+      this.exceptionService.internalServerErrorException(
+        UserExceptionMessages.USER_002,
+      );
     }
   }
 }

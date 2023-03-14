@@ -1,5 +1,3 @@
-console.log('import meta', import.meta.env);
-
 export const AMPLIFY_CONFIG = {
   Auth: {
     region: import.meta.env.VITE_AWS_REGION,
@@ -14,5 +12,3 @@ export const AMPLIFY_CONFIG = {
     responseType: 'code', // or 'token', note that REFRESH token will only be generated when the responseType is code
   },
 };
-
-console.log('AMPLIFY_CONFIG', AMPLIFY_CONFIG);

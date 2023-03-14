@@ -2,28 +2,27 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { LoggerModule } from 'nestjs-pino';
 import { ApiModule } from './api/api.module';
 import { validate } from './infrastructure/config/environment-config';
-import { PinoLoggerConfig } from './infrastructure/config/logging.config';
 import { RolesGuard } from './infrastructure/guards/roles.guard';
 import { ThrottlerGuardByIP } from './infrastructure/guards/throttler.guard';
 import { JsonBodyMiddleware } from './infrastructure/middleware/json-body.middlware';
 import { RawBodyMiddleware } from './infrastructure/middleware/raw-body.middleware';
 import { AuthenticationModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import { UserModule } from './modules/user/user.module';
 import {
   CacheProviderModule,
   DatabaseProviderModule,
   QueueProviderModule,
   ThrottleModule,
-} from './providers';
+} from './infrastructure/providers';
 
 @Module({
   imports: [
     // Configuration modules
-    LoggerModule.forRoot(PinoLoggerConfig),
+    // LoggerModule.forRoot(PinoLoggerConfig),
     ConfigModule.forRoot({ validate, isGlobal: true }),
     EventEmitterModule.forRoot(),
     // Providers
@@ -35,6 +34,7 @@ import {
     MailModule,
     AuthenticationModule,
     UserModule,
+    NotificationsModule,
     // API
     ApiModule,
   ],

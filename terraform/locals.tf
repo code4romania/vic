@@ -7,7 +7,7 @@ locals {
 
   image = {
     repo = data.aws_ecr_repository.ecr.repository_url
-    tag  = "develop"
+    tag  = "main"
   }
 
   vpc = {

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   IAccessCodeModel,
   ICreateAccessCodeModel,
@@ -16,8 +17,8 @@ export class AccessCodeFacade {
 
   public async findAll(
     findOptions: IFindAllAccessCodeModel,
-  ): Promise<IAccessCodeModel[]> {
-    return this.accessCodeRepository.findAll(findOptions);
+  ): Promise<Pagination<IAccessCodeModel>> {
+    return this.accessCodeRepository.findMany(findOptions);
   }
 
   public async find(
@@ -38,7 +39,7 @@ export class AccessCodeFacade {
     return this.accessCodeRepository.create(createAccessCodeModel);
   }
 
-  public async delete(id: string): Promise<IAccessCodeModel> {
+  public async delete(id: string): Promise<string> {
     return this.accessCodeRepository.delete(id);
   }
 }
