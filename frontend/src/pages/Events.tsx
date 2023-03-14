@@ -22,7 +22,7 @@ import Tabs from '../components/Tabs';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
-import { EventsTabs } from '../common/enums/events-tabs.enum';
+import { EventState } from '../common/enums/event-state.enum';
 import {
   useArchiveEventMutation,
   useDeleteEventMutation,
@@ -40,28 +40,27 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
 
-const EventsTabsOptions: SelectItem<EventsTabs>[] = [
-  { key: EventsTabs.OPEN, value: i18n.t('side_menu:options.events') },
-  { key: EventsTabs.PAST, value: i18n.t('events:past_events') },
+const EventsTabsOptions: SelectItem<EventState>[] = [
+  { key: EventState.OPEN, value: i18n.t('side_menu:options.events') },
+  { key: EventState.PAST, value: i18n.t('events:past_events') },
 ];
 
 const OpenEventsTableHeader = [
   {
-    id: 'event.name',
+    id: 'name',
     name: i18n.t('general:event'),
     sortable: true,
     cell: (row: IEvent) => <MediaCell logo={row.logo} title={row.name} />,
   },
   {
-    id: 'event.date',
+    id: 'startDate',
     name: i18n.t('general:date'),
     sortable: true,
     selector: (row: IEvent) => formatEventDate(row.startDate, row.endDate),
   },
   {
-    id: 'event.target',
+    id: 'target',
     name: i18n.t('general:target'),
-    sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
         <Targets targets={row.targets} />
@@ -69,16 +68,15 @@ const OpenEventsTableHeader = [
     ),
   },
   {
-    id: 'event.answers',
+    id: 'going',
     name: i18n.t('general:answers'),
-    sortable: true,
     selector: (row: IEvent) =>
-      `${row.rsvp.yes} ${i18n.t('events:participate')}\n${row.rsvp.no} ${i18n.t(
+      `${row.going || 0} ${i18n.t('events:participate')}\n${row.notGoing || 0} ${i18n.t(
         'events:not_participate',
       )}`,
   },
   {
-    id: 'event.status',
+    id: 'status',
     name: i18n.t('events:status'),
     sortable: true,
     cell: (row: IEvent) => (
@@ -93,19 +91,19 @@ const OpenEventsTableHeader = [
 
 const PastEventsTableHeader = [
   {
-    id: 'event.name',
+    id: 'name',
     name: i18n.t('general:event'),
     sortable: true,
     cell: (row: IEvent) => <MediaCell logo={row.logo} title={row.name} />,
   },
   {
-    id: 'event.date',
+    id: 'startDate',
     name: i18n.t('general:date'),
     sortable: true,
     selector: (row: IEvent) => formatEventDate(row.startDate, row.endDate),
   },
   {
-    id: 'event.target',
+    id: 'target',
     name: i18n.t('general:target'),
     sortable: true,
     cell: (row: IEvent) => (
@@ -115,25 +113,23 @@ const PastEventsTableHeader = [
     ),
   },
   {
-    id: 'event.answers',
+    id: 'going',
     name: i18n.t('general:answers'),
-    sortable: true,
     selector: (row: IEvent) =>
-      `${row.rsvp.yes} ${i18n.t('events:participate')}\n${row.rsvp.no} ${i18n.t(
+      `${row.going || 0} ${i18n.t('events:participate')}\n${row.notGoing || 0} ${i18n.t(
         'events:not_participate',
       )}`,
   },
   {
-    id: 'reportedHours',
+    id: 'going',
     name: i18n.t('events:hours'),
-    sortable: true,
     selector: (row: IEvent) =>
-      `${row.rsvp.yes} ${i18n.t('general:people').toLowerCase()}\n${row.rsvp.no} ${i18n
+      `${row.going || 0} ${i18n.t('general:people').toLowerCase()}\n${row.notGoing || 0} ${i18n
         .t('general:hours')
         .toLowerCase()}`,
   },
   {
-    id: 'event.status',
+    id: 'status',
     name: i18n.t('events:status'),
     sortable: true,
     cell: (row: IEvent) => (
@@ -148,7 +144,7 @@ const PastEventsTableHeader = [
 
 const Events = () => {
   const [showDeleteEvent, setShowDeleteEvent] = useState<null | IEvent>();
-  const [tabsStatus, setTabsStatus] = useState<EventsTabs>(EventsTabs.OPEN);
+  const [tabsStatus, setTabsStatus] = useState<EventState>(EventState.OPEN);
   // pagination state
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
@@ -180,7 +176,7 @@ const Events = () => {
       useErrorToast(InternalErrors.EVENT_ERRORS.getError(eventsError.response?.data.code_error));
   }, [eventsError]);
 
-  const onTabClick = (tab: EventsTabs) => {
+  const onTabClick = (tab: EventState) => {
     setTabsStatus(tab);
   };
 
@@ -325,11 +321,11 @@ const Events = () => {
       >
         {i18n.t('side_menu:options.events')}
       </PageHeaderAdd>
-      <Tabs<EventsTabs> tabs={EventsTabsOptions} onClick={onTabClick}>
+      <Tabs<EventState> tabs={EventsTabsOptions} onClick={onTabClick}>
         <Card>
           <CardHeader>
             <h2>
-              {tabsStatus === EventsTabs.OPEN
+              {tabsStatus === EventState.OPEN
                 ? i18n.t('side_menu:options.events')
                 : i18n.t('events:past_events')}
             </h2>
@@ -343,7 +339,7 @@ const Events = () => {
           <CardBody>
             <DataTableComponent
               columns={[
-                ...(tabsStatus === EventsTabs.PAST ? PastEventsTableHeader : OpenEventsTableHeader),
+                ...(tabsStatus === EventState.PAST ? PastEventsTableHeader : OpenEventsTableHeader),
                 buildEventsActionColumn(),
               ]}
               data={events?.items}

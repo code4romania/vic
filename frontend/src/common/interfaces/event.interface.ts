@@ -18,4 +18,6 @@ export interface IEvent {
   targets: IDivisionListItem[];
   rsvp: { yes: number; no: number };
   status: EventStatus;
+  going?: number;
+  notGoing?: number;
 }
