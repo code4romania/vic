@@ -1,38 +1,42 @@
 import React from 'react';
+import { classNames, formatDate } from '../common/utils/utils';
 import DatePickerInput, { DatePickerInputProps } from './DatePickerInput';
+import FormReadOnlyElement from './FormReadOnlyElement';
 
 interface FormDatePickerProps extends DatePickerInputProps {
   label?: string;
-  error?: string;
+  errorMessage?: string;
   disabled?: boolean;
 }
 
 const FormDatePicker = ({
-  label,
   placeholder,
   onChange,
   value,
-  error,
+  errorMessage,
+  helper,
+  readOnly,
+  label,
   ...props
 }: FormDatePickerProps) => {
-  return (
-    <div className="relative w-full">
-      {label && <label htmlFor={props?.id}>{label}</label>}
-      <div className="mt-1 rounded-md">
-        <DatePickerInput
-          {...props}
-          onChange={onChange}
-          placeholder={placeholder}
-          value={value}
-          aria-invalid={error ? 'true' : 'false'}
-        />
-        {error && (
-          <div className="pr-3 flex items-center pointer-events-none">
-            <p className="text-red-500">{error}</p>
-          </div>
-        )}
-      </div>
-    </div>
+  return readOnly ? (
+    <FormReadOnlyElement label={label || ''} value={value ? formatDate(value) : '-'} />
+  ) : (
+    <DatePickerInput
+      {...props}
+      className={classNames(
+        errorMessage
+          ? 'border border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500'
+          : '',
+        errorMessage || '',
+      )}
+      label={label}
+      onChange={onChange}
+      placeholder={placeholder}
+      value={value}
+      aria-invalid={errorMessage ? 'true' : 'false'}
+      helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
+    />
   );
 };
 

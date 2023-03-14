@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
-import { Control, Controller, DeepRequired, FieldErrorsImpl, UseFormWatch } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import {
+  Control,
+  Controller,
+  DeepRequired,
+  FieldErrorsImpl,
+  UseFormResetField,
+  UseFormWatch,
+} from 'react-hook-form';
 import i18n from '../common/config/i18n';
 import { AttendanceType } from '../common/enums/attendance-type.enum';
 import FormLayout from '../layouts/FormLayout';
@@ -44,6 +51,7 @@ interface EventFormProps {
   errors: FieldErrorsImpl<DeepRequired<EventFormTypes>>;
   watch?: UseFormWatch<EventFormTypes>;
   disabled?: boolean;
+  resetField?: UseFormResetField<EventFormTypes>;
 }
 
 export type EventFormTypes = {
@@ -62,18 +70,21 @@ export type EventFormTypes = {
   observation?: string;
 };
 
-const EventForm = ({ control, errors, disabled, watch }: EventFormProps) => {
-  // const [showSelect, setShowSelect] = useState<TargetType>();
+const EventForm = ({ control, errors, disabled, watch, resetField }: EventFormProps) => {
+  const targetType = watch && watch('targetType');
+  const attendanceType = watch && watch('attendanceType');
 
-  // const onTargetRadioClick = (e: React.MouseEvent<HTMLInputElement>) => {
-  //   const targetType = (e.currentTarget as HTMLInputElement).value as TargetType;
-  //   setShowSelect(targetType);
-  // };
+  useEffect(() => {
+    if (attendanceType === AttendanceType.SIMPLE) {
+      resetField && resetField('attendanceMention');
+    }
+  }, [attendanceType]);
 
-  // const onAttendanceRadioClick = (e: React.MouseEvent<HTMLInputElement>) => {
-  //   const attendanceStatus = (e.currentTarget as HTMLInputElement).value as AttendanceType;
-  //   setAttendanceStatus(attendanceStatus);
-  // };
+  useEffect(() => {
+    if (targetType !== TargetType.SELECT) {
+      resetField && resetField('targets');
+    }
+  }, [targetType]);
 
   return (
     <FormLayout>
@@ -106,7 +117,7 @@ const EventForm = ({ control, errors, disabled, watch }: EventFormProps) => {
                 label={`${i18n.t('events:form.start_date.label')}*`}
                 onChange={onChange}
                 value={value}
-                error={errors.startDate?.message}
+                errorMessage={errors.startDate?.message}
                 dateFormat={DATE_FORMAT.DD_MM_YY_HH_MM}
                 showTimeSelect
                 timeIntervals={15}
@@ -126,7 +137,7 @@ const EventForm = ({ control, errors, disabled, watch }: EventFormProps) => {
                 label={i18n.t('events:form.end_date.label') as string}
                 onChange={onChange}
                 value={value}
-                error={errors.endDate?.message}
+                errorMessage={errors.endDate?.message}
                 dateFormat={DATE_FORMAT.DD_MM_YY_HH_MM}
                 showTimeSelect
                 timeIntervals={15}
@@ -167,9 +178,8 @@ const EventForm = ({ control, errors, disabled, watch }: EventFormProps) => {
                 errorMessage={errors.targetType?.message}
                 label={`${i18n.t('events:form.target.label')}`}
                 onChange={onChange}
-                // onClick={onTargetRadioClick}
                 disabled={disabled}
-                defaultValue={value || TargetType.PUBLIC}
+                defaultValue={value}
               />
             );
           }}
@@ -185,7 +195,7 @@ const EventForm = ({ control, errors, disabled, watch }: EventFormProps) => {
                 onChange={onChange}
                 selected={value}
                 errorMessage={errors.targets?.message}
-                // isDisabled={showSelect !== TargetType.SELECT}
+                isDisabled={targetType !== TargetType.SELECT}
               />
             );
           }}
@@ -237,9 +247,8 @@ const EventForm = ({ control, errors, disabled, watch }: EventFormProps) => {
                 value={value}
                 errorMessage={errors.attendanceType?.message}
                 label={`${i18n.t('events:form.noting.label')}`}
-                // onClick={onAttendanceRadioClick}
                 onChange={onChange}
-                // defaultValue={attendanceStatus}
+                defaultValue={value}
               />
             );
           }}
@@ -255,7 +264,7 @@ const EventForm = ({ control, errors, disabled, watch }: EventFormProps) => {
                 defaultValue={value}
                 onChange={onChange}
                 errorMessage={errors.attendanceMention?.message}
-                // disabled={attendanceStatus === AttendanceType.SIMPLE}
+                disabled={attendanceType === AttendanceType.SIMPLE}
                 helper={
                   <small className="text-cool-gray-500">
                     {i18n.t('events:form.mention.description')}

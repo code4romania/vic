@@ -40,13 +40,20 @@ const validationSchema = yup.object({
     .min(2, `${i18n.t('organization:form.description.min', { value: '2' })}`)
     .max(1500, `${i18n.t('organization:form.description.max', { value: '1500' })}`),
   targetType: yup.string().required(),
-  targets: yup.array(),
+  targets: yup.array().when('targetType', {
+    is: TargetType.SELECT,
+    then: yup.array().required(`${i18n.t('events:form.target.required')}`),
+  }),
   logo: yup.string().optional(),
   attendanceType: yup.string().oneOf(Object.values(AttendanceType)),
   attendanceMention: yup
     .string()
     .min(2, `${i18n.t('events:form.mention.min', { value: '2' })}`)
-    .max(250, `${i18n.t('events:form.mention.max', { value: '250' })}`),
+    .max(250, `${i18n.t('events:form.mention.max', { value: '250' })}`)
+    .when('attendanceType', {
+      is: AttendanceType.MENTION,
+      then: yup.string().required(`${i18n.t('events:form.mention.required')}`),
+    }),
   tasks: yup.array().required(`${i18n.t('events:form.task.required')}`),
   observation: yup
     .string()
@@ -64,6 +71,7 @@ const AddEvent = () => {
     control,
     formState: { errors },
     watch,
+    resetField,
   } = useForm<EventFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -135,7 +143,7 @@ const AddEvent = () => {
             </div>
           </CardHeader>
           <CardBody>
-            <EventForm control={control} errors={errors} watch={watch} />
+            <EventForm control={control} errors={errors} watch={watch} resetField={resetField} />
           </CardBody>
         </Card>
       )}

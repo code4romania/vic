@@ -65,7 +65,7 @@ const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: Access
                 label={i18n.t('access_code:start_date') as string}
                 onChange={onChange}
                 value={value}
-                error={errors['startDate']?.message}
+                errorMessage={errors['startDate']?.message}
                 disabled={disabled}
               />
             );
@@ -82,7 +82,7 @@ const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: Access
                 label={i18n.t('access_code:end_date') as string}
                 onChange={onChange}
                 value={value}
-                error={errors['endDate']?.message}
+                errorMessage={errors['endDate']?.message}
               />
             );
           }}

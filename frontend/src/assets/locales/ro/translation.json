@@ -427,8 +427,10 @@
         "public": "Eveniment public",
         "all": "Toata organizatia",
         "placeholder": "Alege toate variantele care se aplica",
-        "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata"
+        "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata",
+        "required": "Departamentele sunt obligatorii"
       },
+
       "description": { "label": "Descriere eveniment" },
       "logo": { "label": "Imagine eveniment", "button_label": "Încarcă imagine" },
       "noting": {
@@ -441,6 +443,7 @@
         "label": "Mentiune",
         "description": "Adresează o intrebare voluntarilor.",
         "empty": "Nicio mentiune.",
+        "required": "Mentiunea este obligatorie",
         "min": "Mentiunea poate sa aiba minim {{value}} caractere",
         "max": "Mentiunea poate sa aiba maxim {{value}} caractere"
       },

@@ -15,12 +15,12 @@ export class EventError extends ErrorClass<EVENT_ERRORS> {
 
   private constructor() {
     super({
-      [EVENT_ERRORS.EVENT_001]: i18n.t('event:errors.EVENT_001'),
-      [EVENT_ERRORS.EVENT_002]: i18n.t('event:errors.EVENT_002'),
-      [EVENT_ERRORS.EVENT_003]: i18n.t('event:errors.EVENT_003'),
-      [EVENT_ERRORS.EVENT_004]: i18n.t('event:errors.EVENT_003'),
-      [EVENT_ERRORS.EVENT_005]: i18n.t('event:errors.EVENT_003'),
-      [EVENT_ERRORS.EVENT_006]: i18n.t('event:errors.EVENT_003'),
+      [EVENT_ERRORS.EVENT_001]: i18n.t('events:errors.EVENT_001'),
+      [EVENT_ERRORS.EVENT_002]: i18n.t('events:errors.EVENT_002'),
+      [EVENT_ERRORS.EVENT_003]: i18n.t('events:errors.EVENT_003'),
+      [EVENT_ERRORS.EVENT_004]: i18n.t('events:errors.EVENT_004'),
+      [EVENT_ERRORS.EVENT_005]: i18n.t('events:errors.EVENT_005'),
+      [EVENT_ERRORS.EVENT_006]: i18n.t('events:errors.EVENT_006'),
     });
   }
 
