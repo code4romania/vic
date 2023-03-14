@@ -16,11 +16,15 @@ import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
-import { useActivityLogsQuery } from '../services/acitivity-log/activity-log.service';
+import {
+  useActivityLogQuery,
+  useActivityLogsQuery,
+} from '../services/acitivity-log/activity-log.service';
 import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from '../components/StatusWithMarker';
 import { useNavigate } from 'react-router';
+import SidePanel from '../components/SidePanel';
 
 export enum ActivityLogTabs {
   PENDING = 'pending',
@@ -34,6 +38,7 @@ const ActivityLogTabsOptions: SelectItem<ActivityLogTabs>[] = [
 
 const ActivityLog = () => {
   const navigate = useNavigate();
+  const [showActivitySheet, setShowActivitySheet] = useState<string>();
   const [tabsStatus, setTabsStatus] = useState<ActivityLogTabs>(ActivityLogTabs.PENDING);
   // pagination state
   const [page, setPage] = useState<number>();
@@ -52,6 +57,8 @@ const ActivityLog = () => {
     orderByColumn,
     orderDirection,
   );
+
+  const { data: activityLog } = useActivityLogQuery(showActivitySheet as string);
 
   useEffect(() => {
     if (activityLogsError)
@@ -90,7 +97,7 @@ const ActivityLog = () => {
 
   // row actions
   const onView = (row: IActivityLog) => {
-    alert(`not yet implemented ${row.id}`);
+    setShowActivitySheet(row.id);
   };
 
   const onSort = (column: TableColumn<IActivityLog>, direction: SortOrder) => {
@@ -129,7 +136,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.execution_date),
+      selector: (row: IActivityLog) => formatDate(row.executionDate),
     },
     {
       id: 'activityLog.volunteer',
@@ -149,7 +156,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.registration_date),
+      selector: (row: IActivityLog) => formatDate(row.registrationDate),
     },
   ];
 
@@ -176,7 +183,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.execution_date),
+      selector: (row: IActivityLog) => formatDate(row.executionDate),
     },
     {
       id: 'activityLog.volunteer',
@@ -246,6 +253,11 @@ const ActivityLog = () => {
           </CardBody>
         </Card>
       </Tabs>
+      {activityLog && (
+        <SidePanel onClose={setShowActivitySheet.bind(null, undefined)} title="Eu sunt title">
+          <div>merge</div>
+        </SidePanel>
+      )}
     </PageLayout>
   );
 };

@@ -39,13 +39,13 @@ export const getActivityLogs = async (
           name: 'Planting trees',
         },
         hours: 3,
-        execution_date: new Date('2023-03-10'),
+        executionDate: new Date('2023-03-10'),
         volunteer: {
           id: '123',
           name: 'John Doe',
         },
         status: ActivityLogStatus.REJECTED,
-        registration_date: new Date('2023-03-11'),
+        registrationDate: new Date('2023-03-11'),
       },
       {
         id: '2',
@@ -54,13 +54,13 @@ export const getActivityLogs = async (
           name: 'Volunteering at hospital',
         },
         hours: 5,
-        execution_date: new Date('2023-03-08'),
+        executionDate: new Date('2023-03-08'),
         volunteer: {
           id: '456',
           name: 'Jane Smith',
         },
         status: ActivityLogStatus.APPROVED,
-        registration_date: new Date('2023-03-09'),
+        registrationDate: new Date('2023-03-09'),
       },
       // ... more activity logs
     ],
@@ -70,7 +70,7 @@ export const getActivityLogs = async (
       itemsPerPage: 5,
       totalItems: 2,
       totalPages: 10,
-      orderByColumn: 'execution_date',
+      orderByColumn: 'executionDate',
       orderDirection: OrderDirection.DESC,
     },
     count: {
@@ -78,5 +78,28 @@ export const getActivityLogs = async (
       rejected: 1132,
       approved: 532,
     },
+  });
+};
+
+export const getActivityLog = async (id: string): Promise<IActivityLog> => {
+  // return API.get(`activity-log/${id}`).then((res) => res.data);
+  return Promise.resolve({
+    id,
+    task: {
+      icon: '🌳',
+      name: 'Planting trees',
+    },
+    hours: 3,
+    executionDate: new Date('2023-03-10'),
+    volunteer: {
+      id: '123',
+      name: 'John Doe',
+    },
+    status: ActivityLogStatus.REJECTED,
+    registrationDate: new Date('2023-03-11'),
+    event: { id: '222', name: 'Un eveniment frumos' },
+    registeredBy: { id: '22', name: 'Popa Elena Luminita' },
+    approvedBy: { id: '22', name: 'Popa Elena Luminita' },
+    approveDate: new Date('2024-01-02'),
   });
 };
