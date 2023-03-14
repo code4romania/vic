@@ -14,6 +14,7 @@
     "choose": "Alege {{item}}",
     "image": "Imagine",
     "reason": "Motiv",
+    "task": "Task",
     "unspecified": "Nespecificat",
     "activity": "Activitate",
     "address": "Adresa",
@@ -440,6 +441,18 @@
     "status": "Status aprobare",
     "popover": {
       "view": "Fișă de activitate"
+    },
+    "side_panel": {
+      "reject": "Muta in respinse",
+      "approve": "Muta in aprobate",
+      "hours": "Număr ore",
+      "title": "Fișă de activitate",
+      "event": "În cadrul evenimentului",
+      "registered_by": "Înregistrat de",
+      "registration_date": "Dată înregistrare ore",
+      "approve_date": "Dată aprobare ore",
+      "reject_date": "Dată respingere ore",
+      "mention": "Mentiuni"
     },
     "errors": {
       "no_data": "Nu s-au putut incarca orele de voluntariat"

@@ -47,6 +47,7 @@ const Modal = ({ children, title, onClose }: ModalProps) => {
                     className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
                     onClick={onClose}
                     aria-label="close-modal"
+                    type="button"
                   >
                     <XMarkIcon className="h-6 w-6" />
                   </button>

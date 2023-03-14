@@ -24,7 +24,7 @@ import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from '../components/StatusWithMarker';
 import { useNavigate } from 'react-router';
-import SidePanel from '../components/SidePanel';
+import SideSheet from '../components/SideSheet';
 
 export enum ActivityLogTabs {
   PENDING = 'pending',
@@ -116,7 +116,7 @@ const ActivityLog = () => {
   const PendingActivityLogTableHeader = [
     {
       id: 'activityLog.task',
-      name: 'Task',
+      name: i18n.t('general:task'),
       sortable: true,
       grow: 2,
       minWidth: '10rem',
@@ -213,6 +213,14 @@ const ActivityLog = () => {
     },
   ];
 
+  const onReject = (id: string) => {
+    alert(`not yet implemented ${id}`);
+  };
+
+  const onApprove = (id: string) => {
+    alert(`not yet implemented ${id}`);
+  };
+
   return (
     <PageLayout>
       <PageHeaderAdd onAddButtonPress={onAddButtonPress} label={i18n.t('activity_log:add')}>
@@ -253,11 +261,15 @@ const ActivityLog = () => {
           </CardBody>
         </Card>
       </Tabs>
-      {activityLog && (
-        <SidePanel onClose={setShowActivitySheet.bind(null, undefined)} title="Eu sunt title">
-          <div>merge</div>
-        </SidePanel>
-      )}
+
+      <SideSheet
+        onClose={setShowActivitySheet.bind(null, undefined)}
+        onEdit={() => console.log('edit clicked')}
+        isOpen={!!showActivitySheet}
+        activityLog={activityLog}
+        onApprove={onApprove}
+        onReject={onReject}
+      ></SideSheet>
     </PageLayout>
   );
 };
