@@ -385,6 +385,7 @@
     "not_participate": "nu participă",
     "details": "Detalii eveniment",
     "responses_list": "Lista raspunsuri",
+    "observation": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi.",
     "draft": {
       "subtitle": "Evenimentul nu este publicat (draft)",
       "description": "Ai draft evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "

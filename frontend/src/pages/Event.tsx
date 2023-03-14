@@ -18,7 +18,7 @@ import {
 } from '@heroicons/react/24/outline';
 import CardBody from '../components/CardBody';
 import FormLayout from '../layouts/FormLayout';
-import StartingSection from '../components/StartingSection';
+import Paragraph from '../components/Paragraph';
 import FormReadOnlyElement from '../components/FormReadOnlyElement';
 import { formatEventDate } from '../common/utils/utils';
 import LoadingContent from '../components/LoadingContent';
@@ -26,19 +26,20 @@ import EmptyContent from '../components/EmptyContent';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { AttendanceType } from '../common/enums/attendance-type.enum';
+import { EventStatus } from '../common/enums/event-status';
 
-enum TabsStatus {
+enum EventTab {
   EVENT = 'event',
   RESPONSES = 'responses',
 }
 
-const EventTabs: SelectItem<TabsStatus>[] = [
-  { key: TabsStatus.EVENT, value: i18n.t('events:details') },
-  { key: TabsStatus.RESPONSES, value: i18n.t('events:responses_list') },
+const EventTabs: SelectItem<EventTab>[] = [
+  { key: EventTab.EVENT, value: i18n.t('events:details') },
+  { key: EventTab.RESPONSES, value: i18n.t('events:responses_list') },
 ];
 
 const Event = () => {
-  const [tabsStatus, setTabsStatus] = useState<TabsStatus>(TabsStatus.EVENT);
+  const [tabsStatus, setTabsStatus] = useState<EventTab>(EventTab.EVENT);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -54,7 +55,7 @@ const Event = () => {
     navigate('/events', { replace: true });
   };
 
-  const onTabClick = (tab: TabsStatus) => {
+  const onTabClick = (tab: EventTab) => {
     setTabsStatus(tab);
   };
 
@@ -77,27 +78,25 @@ const Event = () => {
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={navigateBack}>{i18n.t('general:view')}</PageHeader>
-      <Tabs<TabsStatus> tabs={EventTabs} onClick={onTabClick}>
-        {tabsStatus === TabsStatus.EVENT && event && !isLoading && (
+      <Tabs<EventTab> tabs={EventTabs} onClick={onTabClick}>
+        {tabsStatus === EventTab.EVENT && event && !isLoading && (
           <Card>
             <CardHeader>
               <h2>{i18n.t('events:details')}</h2>
               <div className="flex flex-row gap-2 sm:gap-4">
-                {event.reportedHours && (
-                  <Button
-                    className="btn-outline-danger"
-                    label={i18n.t('general:delete')}
-                    icon={<TrashIcon className="h-5 w-5 sm:hidden" aria-hidden="true" />}
-                    onClick={onDelete}
-                  />
-                )}
+                <Button
+                  className="btn-outline-danger"
+                  label={i18n.t('general:delete')}
+                  icon={<TrashIcon className="h-5 w-5 sm:hidden" aria-hidden="true" />}
+                  onClick={onDelete}
+                />
                 <Button
                   className="btn-outline-secondary"
                   label={i18n.t('general:edit', { item: '' })}
                   icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
                   onClick={onEdit}
                 />
-                {event.status === 'published' ? (
+                {event.status === EventStatus.PUBLISHED ? (
                   <Button
                     className="btn-outline-secondary"
                     label={i18n.t('general:archive', { item: '' })}
@@ -116,13 +115,13 @@ const Event = () => {
             </CardHeader>
             <CardBody>
               <FormLayout>
-                <StartingSection
-                  title={`${i18n.t(`events:${event.status}.subtitle`)}`}
-                  subtitle={`${i18n.t(`events:${event.status}.description`)}`}
-                />
+                <Paragraph title={`${i18n.t(`events:${event.status}.subtitle`)}`}>
+                  {i18n.t(`events:${event.status}.description`)}
+                </Paragraph>
                 <hr className="border-cool-gray-200 mb-2 mt-10" />
-
-                <h3>{i18n.t('events:details')}</h3>
+                <Paragraph title={`${i18n.t('events:details')}`}>
+                  {i18n.t(`events:observation`)}
+                </Paragraph>
                 <FormReadOnlyElement label={i18n.t('events:form.name.label')} value={event.name} />
                 <FormReadOnlyElement
                   label={i18n.t('events:form.start_date.label')}
@@ -138,7 +137,9 @@ const Event = () => {
                 />
                 <FormReadOnlyElement
                   label={i18n.t('events:form.target.label')}
-                  value={mapEventTargetsToString(event)}
+                  value={event.targets
+                    ?.map((target) => `${target.name} (${target.numberOfMembers})`)
+                    .join(', ')}
                 />
                 <FormReadOnlyElement
                   label={i18n.t('events:form.description.label')}
@@ -204,7 +205,7 @@ const Event = () => {
             </CardBody>
           </Card>
         )}
-        {tabsStatus === TabsStatus.EVENT && isLoading && (
+        {tabsStatus === EventTab.EVENT && isLoading && (
           <Card>
             <CardHeader>
               <h2>{i18n.t('events:details')}</h2>
@@ -216,7 +217,7 @@ const Event = () => {
             </CardBody>
           </Card>
         )}
-        {tabsStatus === TabsStatus.EVENT && !event && !isLoading && (
+        {tabsStatus === EventTab.EVENT && !event && !isLoading && (
           <Card>
             <CardHeader>
               <h2>{i18n.t('events:details')}</h2>
