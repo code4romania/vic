@@ -1,14 +1,18 @@
 import { differenceInYears, format, isSameDay } from 'date-fns';
 import { ICity } from '../interfaces/city.interface';
-import { IEvent } from '../interfaces/event.interface';
-import { SelectItem } from '../../components/Select';
 import { IDivisionListItem } from '../interfaces/division.interface';
+import { SelectItem } from '../../components/Select';
+import { AnnouncementStatus } from '../enums/announcement-status.enum';
+import { EventStatus } from '../enums/event-status';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
 };
 
-export const formatDotDate = (value: Date | string): string => format(new Date(value), 'dd.LL.y');
+/**
+ * FORMATTERS
+ */
+
 export const formatDate = (value?: Date | string | null): string =>
   value ? format(new Date(value), 'dd.LL.y') : '-';
 
@@ -17,10 +21,6 @@ export const formatDateWithTime = (value?: Date | string | null): string =>
 
 export const calculateAge = (birthday: Date) => {
   return differenceInYears(new Date(), birthday);
-};
-
-export const mapEventTargetsToString = (event: IEvent) => {
-  return `${event.targets.map((target) => ` ${target.name}`)}`;
 };
 
 export const arrayOfNamesToString = (array: { name: string }[], separator: string): string => {
@@ -35,19 +35,13 @@ export const getHoursAndMinutes = (value: Date | string): string =>
 
 export const formatEventDate = (startDate: Date, endDate?: Date): string => {
   return !endDate
-    ? `${formatDotDate(startDate)}, ${getHoursAndMinutes(startDate)}`
+    ? `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}`
     : isSameDay(startDate, endDate)
-    ? `${formatDotDate(startDate)}, ${getHoursAndMinutes(startDate)}-\n${getHoursAndMinutes(
-        endDate,
-      )}`
-    : `${formatDotDate(startDate)}, ${getHoursAndMinutes(startDate)}-\n${formatDotDate(
+    ? `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}-\n${getHoursAndMinutes(endDate)}`
+    : `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}-\n${formatDate(
         endDate,
       )}, ${getHoursAndMinutes(endDate)}`;
 };
-export const mapDivisionListItemToSelectItem = (item: IDivisionListItem): SelectItem<string> => ({
-  key: item.id,
-  value: item.name,
-});
 
 export const downloadExcel = (data: BlobPart, name: string): void => {
   const url = URL.createObjectURL(new Blob([data]));
@@ -58,3 +52,23 @@ export const downloadExcel = (data: BlobPart, name: string): void => {
   link.click();
   link.remove();
 };
+
+/**
+ * MAPPERS
+ */
+
+export const AnouncementStatusMarkerColorMapper = {
+  [AnnouncementStatus.PUBLISHED]: 'bg-green-500',
+  [AnnouncementStatus.DRAFT]: 'bg-yellow-500',
+};
+
+export const EventStatusMarkerColorMapper = {
+  [EventStatus.DRAFT]: 'bg-yellow-500',
+  [EventStatus.PUBLISHED]: 'bg-green-500',
+  [EventStatus.ARCHIVED]: 'bg-red-500',
+};
+
+export const mapDivisionListItemToSelectItem = (item: IDivisionListItem): SelectItem<string> => ({
+  key: item.id,
+  value: item.name,
+});

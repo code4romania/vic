@@ -29,14 +29,16 @@ import {
   useEventsQuery,
   usePublishEventMutation,
 } from '../services/event/event.service';
-import { formatEventDate, mapEventTargetsToString } from '../common/utils/utils';
+import { formatEventDate } from '../common/utils/utils';
+import { EventStatusMarkerColorMapper } from '../common/utils/utils';
 import MediaCell from '../components/MediaCell';
-import StatusCell from '../components/StatusCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
 import CellLayout from '../layouts/CellLayout';
 import { useNavigate } from 'react-router-dom';
 import { EventStatus } from '../common/enums/event-status';
 import ConfirmationModal from '../components/ConfirmationModal';
+import StatusWithMarker from '../components/StatusWithMarker';
+import Targets from '../components/Targets';
 
 const EventsTabsOptions: SelectItem<EventsTabs>[] = [
   { key: EventsTabs.OPEN, value: i18n.t('side_menu:options.events') },
@@ -62,13 +64,7 @@ const OpenEventsTableHeader = [
     sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
-        {row.targets.length !== 0 ? (
-          <p title={mapEventTargetsToString(row)} className="truncate">
-            {row.targets.length === 1 ? row.targets[0].name : `${row.targets[0].name}...`}
-          </p>
-        ) : (
-          <p title={mapEventTargetsToString(row)}>{i18n.t('general:all_organization')}</p>
-        )}
+        <Targets targets={row.targets} />
       </CellLayout>
     ),
   },
@@ -85,7 +81,13 @@ const OpenEventsTableHeader = [
     id: 'event.status',
     name: i18n.t('events:status'),
     sortable: true,
-    cell: (row: IEvent) => <StatusCell status={row.status} />,
+    cell: (row: IEvent) => (
+      <CellLayout>
+        <StatusWithMarker markerColor={EventStatusMarkerColorMapper[row.status]}>
+          {i18n.t(`events:display_status.${row.status}`)}
+        </StatusWithMarker>
+      </CellLayout>
+    ),
   },
 ];
 
@@ -108,13 +110,7 @@ const PastEventsTableHeader = [
     sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
-        {row.targets.length !== 0 ? (
-          <p title={mapEventTargetsToString(row)} className="truncate">
-            {row.targets.length === 1 ? row.targets[0].name : `${row.targets[0].name}...`}
-          </p>
-        ) : (
-          <p title={mapEventTargetsToString(row)}>{i18n.t('general:all_organization')}</p>
-        )}
+        <Targets targets={row.targets} />
       </CellLayout>
     ),
   },
@@ -140,7 +136,13 @@ const PastEventsTableHeader = [
     id: 'event.status',
     name: i18n.t('events:status'),
     sortable: true,
-    cell: (row: IEvent) => <StatusCell status={row.status} />,
+    cell: (row: IEvent) => (
+      <CellLayout>
+        <StatusWithMarker markerColor={EventStatusMarkerColorMapper[row.status]}>
+          {i18n.t(`events:display_status.${row.status}`)}
+        </StatusWithMarker>
+      </CellLayout>
+    ),
   },
 ];
 

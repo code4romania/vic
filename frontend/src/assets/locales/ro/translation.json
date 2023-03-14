@@ -15,7 +15,6 @@
     "all_organization": "Toata organizatia",
     "event": "Eveniment",
     "add": "Adauga {{item}}",
-    "publish": "Publică",
     "category": "Categorie",
     "select": "Selecteaza {{item}}",
     "choose": "Alege {{item}}",
@@ -37,7 +36,6 @@
     "reject": "Respinge",
     "approve": "Aprobă",
     "save_changes": "Salveaza modificari",
-    "save_as_draft": "Salveaza ca draft",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
     "contact": "Date contact",
@@ -386,6 +384,7 @@
     "not_participate": "nu participă",
     "details": "Detalii eveniment",
     "responses_list": "Lista raspunsuri",
+    "observation": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi.",
     "draft": {
       "subtitle": "Evenimentul nu este publicat (draft)",
       "description": "Ai draft evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
@@ -435,8 +434,10 @@
         "public": "Eveniment public",
         "all": "Toata organizatia",
         "placeholder": "Alege toate variantele care se aplica",
-        "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata"
+        "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata",
+        "required": "Departamentele sunt obligatorii"
       },
+
       "description": { "label": "Descriere eveniment" },
       "logo": { "label": "Imagine eveniment", "button_label": "Încarcă imagine" },
       "noting": {
@@ -449,6 +450,7 @@
         "label": "Mentiune",
         "description": "Adresează o intrebare voluntarilor.",
         "empty": "Nicio mentiune.",
+        "required": "Mentiunea este obligatorie",
         "min": "Mentiunea poate sa aiba minim {{value}} caractere",
         "max": "Mentiunea poate sa aiba maxim {{value}} caractere"
       },
@@ -457,7 +459,8 @@
         "description": "Alege taskurile specifice din lista organizatiei.",
         "label": "Alege taskuri",
         "tasks": "Taskuri",
-        "required": "Alegerea taskurilor este obligatorie."
+        "required": "Alegerea taskurilor este obligatorie.",
+        "helper": "Lorem ipsum. Alege din lista"
       },
       "observation": {
         "title": "Observație (vizibil doar pentru administrator)",
@@ -466,6 +469,14 @@
         "min": "Observația poate sa aiba minim {{value}} caractere",
         "max": "Observația poate sa aiba maxim {{value}} caractere"
       }
+    },
+    "errors": {
+      "EVENT_001": "Evenimentul nu a fost gasit",
+      "EVENT_002": "Departamentele target nu au fost gasite",
+      "EVENT_003": "Task-urile nu sunt corecte",
+      "EVENT_004": "Nu putem modifica target audience pentru evenimentele publicate",
+      "EVENT_005": "Doar evenimentele DRAFT sau ARHIVATE pot fi publicate",
+      "EVENT_006": "Doar evenimentele publicate pot fi arhivate"
     }
   },
   "announcement": {

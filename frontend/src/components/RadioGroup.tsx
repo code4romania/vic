@@ -1,25 +1,26 @@
 import React, { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { SelectItem } from './Select';
 
-export interface InputsRadioProps extends ComponentPropsWithoutRef<'input'> {
-  options: { key: string; label: string }[];
+export interface RadioGroupProps extends ComponentPropsWithoutRef<'input'> {
+  options: SelectItem<string>[];
   label?: string;
   helper?: ReactNode;
 }
 
-const InputsRadio = ({ options, helper, label, defaultValue, ...props }: InputsRadioProps) => {
+const RadioGroup = ({ options, helper, label, defaultValue, ...props }: RadioGroupProps) => {
   return (
     <div className="flex gap-1 flex-col">
       {label && <label>{label}</label>}
       {options.map((radio) => (
         <div key={radio.key} className="flex gap-1 sm:gap-2 items-center">
           <input
-            type="radio"
-            id={`${radio.label}__input`}
             {...props}
+            type="radio"
+            id={`${radio.value}__input`}
             value={radio.key}
             checked={radio.key === defaultValue}
           />
-          <label htmlFor={`${radio.label}__input`}>{radio.label}</label>
+          <label htmlFor={`${radio.value}__input`}>{radio.value}</label>
         </div>
       ))}
       {helper}
@@ -27,4 +28,4 @@ const InputsRadio = ({ options, helper, label, defaultValue, ...props }: InputsR
   );
 };
 
-export default InputsRadio;
+export default RadioGroup;

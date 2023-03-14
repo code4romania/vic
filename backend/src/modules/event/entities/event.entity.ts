@@ -10,10 +10,12 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { EventAttendOptions } from '../enums/event-attendance-options.enum';
 import { EventStatus } from '../enums/event-status.enum';
+import { EventRSVPEntity } from './event-rsvp.entity';
 
 @Entity({ name: 'event' })
 export class EventEntity extends BaseEntity {
@@ -82,4 +84,7 @@ export class EventEntity extends BaseEntity {
   @ManyToMany(() => ActivityTypeEntity, { onDelete: 'SET NULL' })
   @JoinTable()
   tasks: ActivityTypeEntity[];
+
+  @OneToMany(() => EventRSVPEntity, (eventRSVP) => eventRSVP.event)
+  eventRSVPs: EventRSVPEntity[];
 }

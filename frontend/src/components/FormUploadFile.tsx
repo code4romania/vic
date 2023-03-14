@@ -4,18 +4,18 @@ import { classNames } from '../common/utils/utils';
 import i18n from '../common/config/i18n';
 import { CalendarIcon, PhotoIcon } from '@heroicons/react/24/outline';
 
-interface FormInputImgProps extends InputProps {
+interface FormUploadFileProps extends InputProps {
   errorMessage?: string;
 }
 
-const FormInputImg = ({
+const FormUploadFile = ({
   errorMessage,
   label,
   value,
   onChange,
   className,
   helper,
-}: FormInputImgProps) => {
+}: FormUploadFileProps) => {
   return (
     <div className="flex gap-5 items-center flex-wrap">
       <div className="w-20 h-20 rounded-full bg-cool-gray-100 grid place-items-center shrink-0">
@@ -44,10 +44,11 @@ const FormInputImg = ({
         value={value}
         onChange={onChange}
         className="hidden"
+        aria-invalid={errorMessage ? 'true' : 'false'}
       />
       {errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
     </div>
   );
 };
 
-export default FormInputImg;
+export default FormUploadFile;

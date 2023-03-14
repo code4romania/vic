@@ -49,6 +49,13 @@ export class Announcement1677153298464 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "announcement" ADD "targeted_volunteers" integer NOT NULL DEFAULT '0'`,
     );
+    // should this be removed and just alter the existing FK on creation?
+    await queryRunner.query(
+      `ALTER TABLE "announcement_targets_organization_structure" DROP CONSTRAINT "FK_159513eff2a776b332518cd09b4"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "announcement_targets_organization_structure" ADD CONSTRAINT "FK_159513eff2a776b332518cd09b4" FOREIGN KEY ("announcementId") REFERENCES "announcement"("id") ON DELETE SET NULL ON UPDATE CASCADE`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

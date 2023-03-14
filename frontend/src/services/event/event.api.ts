@@ -3,25 +3,25 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent } from '../../common/interfaces/event.interface';
 import { DivisionType } from '../../common/enums/division-type.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { AttendanceType } from '../../components/EventForm';
 import { EventStatus } from '../../common/enums/event-status';
+import { AttendanceType } from '../../common/enums/attendance-type.enum';
+import { EventFormTypes, TargetType } from '../../components/EventForm';
 import API from '../api';
 
-export interface IAddEventData {
-  name: string;
-  startDate: Date;
-  endDate?: Date;
-  location?: string;
-  isPublic: boolean;
-  targetsIds: string[];
-  description: string;
-  logo?: string;
-  attendanceType: AttendanceType;
-  attendanceMention?: string;
-  tasksIds: string[];
-  observation?: string;
-  status: EventStatus;
-}
+export const addEvent = async (data: EventFormTypes): Promise<IEvent> => {
+  return API.post('event', { ...formatEventPayload(data) }).then((res) => res.data);
+};
+
+export const editEvent = async (
+  id: string,
+  data: Omit<EventFormTypes, 'status'>,
+): Promise<IEvent> => {
+  return API.patch(`event/${id}`, { ...formatEventPayload(data) }).then((res) => res.data);
+};
+
+export const getEvent = async (id: string): Promise<IEvent> => {
+  return API.get(`event/${id}`).then((res) => res.data);
+};
 
 export const getEvents = async (
   rowsPerPage: number,
@@ -157,126 +157,16 @@ export const getEvents = async (
   });
 };
 
-export const getEvent = async (id: string): Promise<IEvent> => {
-  // return API.get(`/events/${id}`).then((res) => res.data);
-  return Promise.resolve({
-    id,
-    name: 'Maraton',
-    logo: '',
-    description:
-      'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
-    startDate: new Date('2023-09-24T09:12:00'),
-    endDate: new Date('2023-09-24T17:32:00'),
-    location: 'Sediu Piata Alba Iulia, sala 02',
-    isPublic: true,
-    attendanceType: AttendanceType.SIMPLE,
-    attendanceMention: '',
-    targetedVolunteers: 75,
-    targets: [
-      { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
-      {
-        id: '2',
-        name: 'San Francisco Branch',
-        type: DivisionType.BRANCH,
-        members: 18,
-      },
-    ],
-    tasks: [
-      { id: '1', name: 'Ciclism' },
-      {
-        id: '2',
-        name: 'Pescuit',
-      },
-    ],
-    rsvp: { yes: 75, no: 10 },
-    status: EventStatus.PUBLISHED,
-    observation:
-      'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
-    reportedHours: '16 hours',
-  });
-};
-
-export const addEvent = async (data: IAddEventData): Promise<IEvent> => {
-  console.log(data);
-  // return API.post('/events', { ...data }).then((res) => res.data);
-  return Promise.resolve({
-    id: '1',
-    name: 'Maraton',
-    logo: '',
-    description:
-      'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
-    startDate: new Date('2023-09-24T09:12:00'),
-    endDate: new Date('2023-09-24T17:32:00'),
-    location: 'Sediu Piata Alba Iulia, sala 02',
-    isPublic: true,
-    attendanceType: AttendanceType.MENTION,
-    attendanceMention: 'Acesta mentiunea este frumoasa',
-    targetedVolunteers: 75,
-    targets: [
-      { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
-      {
-        id: '2',
-        name: 'San Francisco Branch',
-        type: DivisionType.BRANCH,
-        members: 18,
-      },
-    ],
-    tasks: [
-      { id: '1', name: 'Ciclism' },
-      {
-        id: '2',
-        name: 'Pescuit',
-      },
-    ],
-    rsvp: { yes: 75, no: 10 },
-    status: EventStatus.DRAFT,
-    observation:
-      'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
-    reportedHours: '16 hours',
-  });
-};
-
-export const editEvent = async (
-  id: string,
-  data: Omit<IAddEventData, 'status'>,
-): Promise<IEvent> => {
-  console.log(data);
-  // return API.patch(`/events/${id}`, { ...data }).then((res) => res.data);
-  return Promise.resolve({
-    id,
-    name: 'Maraton',
-    logo: '',
-    description:
-      'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
-    startDate: new Date('2023-09-24T09:12:00'),
-    endDate: new Date('2023-09-24T17:32:00'),
-    location: 'Sediu Piata Alba Iulia, sala 02',
-    isPublic: true,
-    attendanceType: AttendanceType.MENTION,
-    attendanceMention: 'Acesta mentiunea este frumoasa',
-    targetedVolunteers: 75,
-    targets: [
-      { id: '1', name: 'New York Branch', type: DivisionType.BRANCH, members: 25 },
-      {
-        id: '2',
-        name: 'San Francisco Branch',
-        type: DivisionType.BRANCH,
-        members: 18,
-      },
-    ],
-    tasks: [
-      { id: '1', name: 'Ciclism' },
-      {
-        id: '2',
-        name: 'Pescuit',
-      },
-    ],
-    rsvp: { yes: 75, no: 10 },
-    status: EventStatus.DRAFT,
-    observation:
-      'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem.',
-    reportedHours: '16 hours',
-  });
+const formatEventPayload = (data: EventFormTypes): object => {
+  const { targets, tasks, targetType, ...payload } = data;
+  return {
+    ...payload,
+    tasksIds: tasks.map((task) => task.key),
+    isPublic: targetType === TargetType.PUBLIC,
+    ...(targetType === TargetType.SELECT
+      ? { targetsIds: targets.map((target) => target.key) }
+      : {}),
+  };
 };
 
 export const archiveEvent = async (id: string): Promise<IEvent> => {
