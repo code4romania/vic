@@ -129,7 +129,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.execution_date),
+      selector: (row: IActivityLog) => formatDate(row.executionDate),
     },
     {
       id: 'activityLog.volunteer',
@@ -149,7 +149,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.registration_date),
+      selector: (row: IActivityLog) => formatDate(row.registrationDate),
     },
   ];
 
@@ -176,7 +176,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.execution_date),
+      selector: (row: IActivityLog) => formatDate(row.executionDate),
     },
     {
       id: 'activityLog.volunteer',

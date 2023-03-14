@@ -6,8 +6,8 @@ export interface IActivityLog {
   id: string;
   task: Pick<IActivityType, 'icon' | 'name'>;
   hours: number;
-  execution_date: Date;
+  executionDate: Date;
   volunteer: Pick<IUser, 'id' | 'name'>;
   status: ActivityLogStatus;
-  registration_date?: Date;
+  registrationDate?: Date;
 }

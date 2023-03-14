@@ -39,13 +39,13 @@ export const getActivityLogs = async (
           name: 'Planting trees',
         },
         hours: 3,
-        execution_date: new Date('2023-03-10'),
+        executionDate: new Date('2023-03-10'),
         volunteer: {
           id: '123',
           name: 'John Doe',
         },
         status: ActivityLogStatus.REJECTED,
-        registration_date: new Date('2023-03-11'),
+        registrationDate: new Date('2023-03-11'),
       },
       {
         id: '2',
@@ -54,13 +54,13 @@ export const getActivityLogs = async (
           name: 'Volunteering at hospital',
         },
         hours: 5,
-        execution_date: new Date('2023-03-08'),
+        executionDate: new Date('2023-03-08'),
         volunteer: {
           id: '456',
           name: 'Jane Smith',
         },
         status: ActivityLogStatus.APPROVED,
-        registration_date: new Date('2023-03-09'),
+        registrationDate: new Date('2023-03-09'),
       },
       // ... more activity logs
     ],
@@ -70,7 +70,7 @@ export const getActivityLogs = async (
       itemsPerPage: 5,
       totalItems: 2,
       totalPages: 10,
-      orderByColumn: 'execution_date',
+      orderByColumn: 'executionDate',
       orderDirection: OrderDirection.DESC,
     },
     count: {
