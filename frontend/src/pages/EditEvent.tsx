@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
-import * as yup from 'yup';
 import PageHeader from '../components/PageHeader';
 import PageLayout from '../layouts/PageLayout';
 import Card from '../layouts/CardLayout';
@@ -13,60 +12,43 @@ import LoadingContent from '../components/LoadingContent';
 import EventForm, { EventFormTypes, TargetType } from '../components/EventForm';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useActivityTypesQuery } from '../services/activity-type/activity-type.service';
 import { useEditEventMutation, useEventQuery } from '../services/event/event.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { EventStatus } from '../common/enums/event-status';
-import { AttendanceType } from '../common/enums/attendance-type.enum';
-
-const validationSchema = yup.object({
-  name: yup
-    .string()
-    .required(`${i18n.t('division:form.name.required')}`)
-    .min(2, `${i18n.t('division:form.name.min', { value: '2' })}`)
-    .max(50, `${i18n.t('division:form.name.max', { value: '50' })}`),
-  startDate: yup.date().required(`${i18n.t('access_code:form.start_date.required')}`),
-  location: yup
-    .string()
-    .min(2, `${i18n.t('events:form.location.min', { value: '2' })}`)
-    .max(500, `${i18n.t('events:form.location.max', { value: '500' })}`),
-  description: yup
-    .string()
-    .required(`${i18n.t('organization:form.description.required')}`)
-    .min(2, `${i18n.t('organization:form.description.min', { value: '2' })}`)
-    .max(1500, `${i18n.t('organization:form.description.max', { value: '1500' })}`),
-  targetsIds: yup.array(),
-  attendanceType: yup.string().oneOf(Object.values(AttendanceType)),
-  attendanceMention: yup
-    .string()
-    .min(2, `${i18n.t('events:form.mention.min', { value: '2' })}`)
-    .max(1500, `${i18n.t('events:form.mention.max', { value: '1500' })}`),
-  observation: yup
-    .string()
-    .min(2, `${i18n.t('events:form.observation.min', { value: '2' })}`)
-    .max(1500, `${i18n.t('events:form.observation.max', { value: '1500' })}`),
-  tasksIds: yup.array().required(`${i18n.t('events:form.task.required')}`),
-});
+import { eventValidationSchema } from './AddEvent';
+import { mapDivisionListItemToSelectItem } from '../common/utils/utils';
 
 const EditEvent = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
   const { data: event } = useEventQuery(id as string);
-  const { data: activityTypes, isLoading: isActivityTypesLoading } = useActivityTypesQuery();
   const { mutateAsync: editEvent, isLoading: isEditEventLoading } = useEditEventMutation();
 
   const {
     handleSubmit,
     control,
     formState: { errors },
+    watch,
+    resetField,
     reset,
   } = useForm<EventFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(eventValidationSchema),
   });
+
+  useEffect(() => {
+    if (event)
+      reset({
+        ...event,
+        startDate: new Date(event.startDate),
+        endDate: event.endDate ? new Date(event.endDate) : event.endDate,
+        targetType: event.isPublic ? TargetType.PUBLIC : TargetType.SELECT,
+        targets: !event.isPublic ? [...event.targets.map(mapDivisionListItemToSelectItem)] : [],
+        tasks: [...event.tasks.map(mapDivisionListItemToSelectItem)],
+      });
+  }, [event]);
 
   const navigateBack = () => {
     navigate('/events', { replace: true });
@@ -77,12 +59,7 @@ const EditEvent = () => {
       editEvent(
         {
           id: event.id,
-          data: {
-            ...data,
-            isPublic: data.isPublic === TargetType.PUBLIC,
-            targetsIds: data.targetsIds.map((target) => target.value),
-            tasksIds: data.tasksIds.map((task) => task.value),
-          },
+          data,
         },
         {
           onSuccess: () => {
@@ -101,8 +78,8 @@ const EditEvent = () => {
       <PageHeader onBackButtonPress={navigateBack}>
         {i18n.t('general:edit', { item: '' })}
       </PageHeader>
-      {isActivityTypesLoading && isEditEventLoading && <LoadingContent />}
-      {!isActivityTypesLoading && !isEditEventLoading && (
+      {isEditEventLoading && <LoadingContent />}
+      {!isEditEventLoading && (
         <Card>
           <CardHeader>
             <h2>{i18n.t('general:event')}</h2>
@@ -114,16 +91,7 @@ const EditEvent = () => {
             />
           </CardHeader>
           <CardBody>
-            {activityTypes && (
-              <EventForm
-                control={control}
-                errors={errors}
-                taskOpitons={activityTypes.map(mapItemToMultiListItem)}
-                event={event}
-                reset={reset}
-                disabled={event?.status !== EventStatus.DRAFT}
-              />
-            )}
+            <EventForm control={control} errors={errors} watch={watch} resetField={resetField} />
           </CardBody>
         </Card>
       )}

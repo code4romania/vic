@@ -19,7 +19,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { EventStatus } from '../common/enums/event-status';
 import { AttendanceType } from '../common/enums/attendance-type.enum';
 
-const validationSchema = yup.object({
+export const eventValidationSchema = yup.object({
   name: yup
     .string()
     .required(`${i18n.t('division:form.name.required')}`)
@@ -50,6 +50,7 @@ const validationSchema = yup.object({
     .string()
     .min(2, `${i18n.t('events:form.mention.min', { value: '2' })}`)
     .max(250, `${i18n.t('events:form.mention.max', { value: '250' })}`)
+    .nullable()
     .when('attendanceType', {
       is: AttendanceType.MENTION,
       then: yup.string().required(`${i18n.t('events:form.mention.required')}`),
@@ -58,7 +59,8 @@ const validationSchema = yup.object({
   observation: yup
     .string()
     .min(2, `${i18n.t('events:form.observation.min', { value: '2' })}`)
-    .max(1500, `${i18n.t('events:form.observation.max', { value: '1500' })}`),
+    .max(1500, `${i18n.t('events:form.observation.max', { value: '1500' })}`)
+    .nullable(),
 });
 
 const AddEvent = () => {
@@ -74,7 +76,7 @@ const AddEvent = () => {
   } = useForm<EventFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(eventValidationSchema),
     defaultValues: {
       targetType: TargetType.PUBLIC,
       attendanceType: AttendanceType.SIMPLE,
