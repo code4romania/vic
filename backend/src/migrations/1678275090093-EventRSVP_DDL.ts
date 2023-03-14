@@ -11,7 +11,7 @@ export class EventRSVP_DDL1678275090093 implements MigrationInterface {
       `CREATE INDEX "IDX_73883711d73221708472098dec" ON "event_rsvp" ("created_on") `,
     );
     await queryRunner.query(
-      `ALTER TABLE "event_rsvp" ADD CONSTRAINT "FK_8062a5e2bde78e576ff7c66a98a" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "event_rsvp" ADD CONSTRAINT "FK_8062a5e2bde78e576ff7c66a98a" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "event_rsvp" ADD CONSTRAINT "FK_994865e8225d3917e3b8287a198" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
