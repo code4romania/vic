@@ -75,7 +75,6 @@ const DivisionInputModal = ({
                 value={value}
                 label={`${i18n.t('general:name')} ${i18n.t(`division:entity.${divisionType}`)}`}
                 onChange={onChange}
-                aria-invalid={errors['name']?.message ? 'true' : 'false'}
               />
             );
           }}

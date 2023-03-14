@@ -38,7 +38,6 @@ const AnnouncementForm = ({ control, errors }: AnnouncementFormProps) => {
                 label={`${i18n.t('announcement:header.name')}`}
                 placeholder={`${i18n.t('announcement:form.name.placeholder')}`}
                 onChange={onChange}
-                aria-invalid={errors.name?.message ? 'true' : 'false'}
                 id="announcement-form__name"
               />
             );

@@ -48,7 +48,6 @@ const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: Access
                 errorMessage={errors['code']?.message}
                 label={`${i18n.t('access_code:name')}*`}
                 onChange={onChange}
-                aria-invalid={errors['code']?.message ? 'true' : 'false'}
                 id="access-code-form__code"
                 disabled={disabled}
               />

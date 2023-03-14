@@ -4,7 +4,8 @@ import { EventsTabs } from '../../common/enums/events-tabs.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { EVENT_ERRORS } from '../../common/errors/entities/event.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
-import { addEvent, editEvent, getEvent, getEvents, IAddEventData } from './event.api';
+import { EventFormTypes } from '../../components/EventForm';
+import { addEvent, editEvent, getEvent, getEvents } from './event.api';
 
 export const useEventsQuery = (
   rowsPerPage: number,
@@ -29,14 +30,14 @@ export const useEventQuery = (id: string) => {
 };
 
 export const useAddEventMutation = () => {
-  return useMutation((data: IAddEventData) => addEvent(data), {
+  return useMutation((data: EventFormTypes) => addEvent(data), {
     onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
   });
 };
 
 export const useEditEventMutation = () => {
   return useMutation(
-    ({ id, data }: { id: string; data: Omit<IAddEventData, 'status'> }) => editEvent(id, data),
+    ({ id, data }: { id: string; data: Omit<EventFormTypes, 'status'> }) => editEvent(id, data),
     {
       onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
     },

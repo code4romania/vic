@@ -19,7 +19,13 @@ const FormDatePicker = ({
     <div className="relative w-full">
       {label && <label htmlFor={props?.id}>{label}</label>}
       <div className="mt-1 rounded-md">
-        <DatePickerInput onChange={onChange} placeholder={placeholder} value={value} {...props} />
+        <DatePickerInput
+          {...props}
+          onChange={onChange}
+          placeholder={placeholder}
+          value={value}
+          aria-invalid={error ? 'true' : 'false'}
+        />
         {error && (
           <div className="pr-3 flex items-center pointer-events-none">
             <p className="text-red-500">{error}</p>

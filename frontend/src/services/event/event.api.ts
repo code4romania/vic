@@ -7,22 +7,6 @@ import { EventStatus } from '../../common/enums/event-status';
 import { AttendanceType } from '../../common/enums/attendance-type.enum';
 // import API from '../api';
 
-export interface IAddEventData {
-  name: string;
-  startDate: Date;
-  endDate?: Date;
-  location?: string;
-  isPublic: boolean;
-  targetsIds: string[];
-  description: string;
-  logo?: string;
-  attendanceType: AttendanceType;
-  attendanceMention?: string;
-  tasksIds: string[];
-  observation?: string;
-  status: EventStatus;
-}
-
 export const getEvents = async (
   rowsPerPage: number,
   page: number,
@@ -196,7 +180,7 @@ export const getEvent = async (id: string): Promise<IEvent> => {
   });
 };
 
-export const addEvent = async (data: IAddEventData): Promise<IEvent> => {
+export const addEvent = async (data: unknown): Promise<IEvent> => {
   console.log(data);
   // return API.post('events', { ...data }).then((res) => res.data);
   return Promise.resolve({
@@ -236,10 +220,7 @@ export const addEvent = async (data: IAddEventData): Promise<IEvent> => {
   });
 };
 
-export const editEvent = async (
-  id: string,
-  data: Omit<IAddEventData, 'status'>,
-): Promise<IEvent> => {
+export const editEvent = async (id: string, data: Omit<unknown, 'status'>): Promise<IEvent> => {
   console.log(data);
   // return API.patch(`events/${id}`, { ...data }).then((res) => res.data);
   return Promise.resolve({

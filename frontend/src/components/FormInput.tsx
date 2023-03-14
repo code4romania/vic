@@ -31,6 +31,7 @@ const FormInput = ({
           : '',
         className || '',
       )}
+      aria-invalid={errorMessage ? 'true' : 'false'}
       {...props}
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
     />

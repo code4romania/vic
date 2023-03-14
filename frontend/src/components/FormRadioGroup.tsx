@@ -34,6 +34,7 @@ const FormRadioGroup = ({
           : '',
         className || '',
       )}
+      aria-invalid={errorMessage ? 'true' : 'false'}
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
     />
   );

@@ -44,6 +44,7 @@ const FormUploadFile = ({
         value={value}
         onChange={onChange}
         className="hidden"
+        aria-invalid={errorMessage ? 'true' : 'false'}
       />
       {errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
     </div>
