@@ -16,6 +16,7 @@ import {
   EventModelTransformer,
   FindManyEventOptions,
   IEventModel,
+  IEventsListItemModel,
   UpdateEventOptions,
   UpdateStatusOptions,
 } from '../models/event.model';
@@ -34,16 +35,35 @@ export class EventRepository
 
   async getMany(
     findOptions: FindManyEventOptions,
-  ): Promise<Pagination<IEventModel>> {
+  ): Promise<Pagination<IEventsListItemModel>> {
     const { eventTime, organizationId, orderBy, orderDirection } = findOptions;
 
     const query = this.eventRepository
       .createQueryBuilder('event')
-      .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
-      .leftJoinAndMapMany('event.tasks', 'event.tasks', 'tasks')
-      .leftJoinAndMapMany('event.eventRSVPs', 'event.eventRSVPs', 'eventRSVPs')
-      .select()
       .where('event.organizationId = :organizationId', { organizationId })
+      .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
+      .loadRelationCountAndMap(
+        'event.going',
+        'event.eventRSVPs',
+        'eventRSVPs',
+        (qb) => qb.where(`"eventRSVPs"."going" = 'true'`),
+      )
+      .loadRelationCountAndMap(
+        'event.notGoing',
+        'event.eventRSVPs',
+        'eventRSVPs',
+        (qb) => qb.where(`"eventRSVPs"."going" = 'false'`),
+      )
+      .select([
+        'event.id',
+        'event.name',
+        'event.startDate',
+        'event.endDate',
+        'event.status',
+        'event.isPublic',
+        'targets.id',
+        'targets.name', // TODO: need number of members per target, create a View
+      ])
       .orderBy(
         this.buildOrderByQuery(orderBy || 'createdOn', 'event'),
         orderDirection || OrderDirection.ASC,
@@ -51,7 +71,7 @@ export class EventRepository
 
     const currentDate = new Date();
     if (eventTime === EventTime.OPEN) {
-      query.andWhere('event.endDate > :currentDate', {
+      query.andWhere('event.endDate > :currentDate OR event.endDate IS NULL', {
         currentDate,
       });
     } else {
@@ -64,7 +84,7 @@ export class EventRepository
       query,
       findOptions.limit,
       findOptions.page,
-      EventModelTransformer.fromEntity,
+      EventModelTransformer.fromEntityToEventItem,
     );
   }
 

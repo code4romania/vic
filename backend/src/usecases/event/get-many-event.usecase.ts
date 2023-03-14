@@ -3,19 +3,19 @@ import { IUseCaseService } from 'src/common/interfaces/use-case-service.interfac
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   FindManyEventOptions,
-  IEventModel,
+  IEventsListItemModel,
 } from 'src/modules/event/models/event.model';
 import { EventFacade } from 'src/modules/event/services/event.facade';
 
 @Injectable()
 export class GetManyEventUseCase
-  implements IUseCaseService<Pagination<IEventModel>>
+  implements IUseCaseService<Pagination<IEventsListItemModel>>
 {
   constructor(private readonly eventFacade: EventFacade) {}
 
   async execute(
     findOptions: FindManyEventOptions,
-  ): Promise<Pagination<IEventModel>> {
+  ): Promise<Pagination<IEventsListItemModel>> {
     return this.eventFacade.getMany(findOptions);
   }
 }

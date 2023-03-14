@@ -39,8 +39,15 @@ export interface IEventModel extends IBaseModel {
   organization: IOrganizationModel;
   targets?: IOrganizationStructureModel[];
   tasks: IActivityTypeModel[];
+}
 
-  eventRSVPs: IEventRSVPModel[];
+export interface IEventsListItemModel
+  extends Pick<
+    IEventModel,
+    'id' | 'name' | 'startDate' | 'endDate' | 'status' | 'isPublic' | 'targets'
+  > {
+  going: number;
+  notGoing: number;
 }
 
 export type CreateEventOptions = Pick<
@@ -76,6 +83,28 @@ export type FindManyEventOptions = Omit<
 };
 
 export class EventModelTransformer {
+  static fromEntityToEventItem(
+    entity: EventEntity & { going: number; notGoing: number },
+  ): IEventsListItemModel {
+    if (!entity) return null;
+
+    return {
+      id: entity.id,
+      name: entity.name,
+      startDate: entity.startDate,
+      endDate: entity.endDate,
+
+      status: entity.status,
+      isPublic: entity.isPublic,
+
+      going: entity.going,
+      notGoing: entity.notGoing,
+
+      // image: entity.image
+      targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
+    };
+  }
+
   static fromEntity(entity: EventEntity): IEventModel {
     if (!entity) return null;
 
@@ -99,7 +128,6 @@ export class EventModelTransformer {
       organization: OrganizationTransformer.fromEntity(entity.organization),
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
       tasks: entity.tasks?.map(ActivityTypeTransformer.fromEntity),
-      eventRSVPs: entity.eventRSVPs.map(EventRSVPModelTransformer.fromEntity),
 
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,

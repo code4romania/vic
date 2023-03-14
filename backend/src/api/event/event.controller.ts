@@ -29,6 +29,7 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { GetManyEventDto } from './dto/get-many-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventGuard } from './guards/event.guard';
+import { EventListItemPresenter } from './presenters/event-list-item.presenter';
 import { EventPresenter } from './presenters/event.presenter';
 
 // @Roles(Role.ADMIN)
@@ -47,11 +48,11 @@ export class EventController {
   ) {}
 
   @Get()
-  @ApiPaginatedResponse(EventPresenter)
+  @ApiPaginatedResponse(EventListItemPresenter)
   async getMany(
     @Query() filters: GetManyEventDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
-  ): Promise<PaginatedPresenter<EventPresenter>> {
+  ): Promise<PaginatedPresenter<EventListItemPresenter>> {
     const events = await this.getManyEventUseCase.execute({
       ...filters,
       organizationId,
@@ -59,7 +60,7 @@ export class EventController {
 
     return new PaginatedPresenter({
       ...events,
-      items: events.items.map((event) => new EventPresenter(event)),
+      items: events.items.map((event) => new EventListItemPresenter(event)),
     });
   }
 

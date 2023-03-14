@@ -11,6 +11,7 @@ import {
   CreateEventOptions,
   FindManyEventOptions,
   IEventModel,
+  IEventsListItemModel,
   UpdateEventOptions,
 } from '../models/event.model';
 import { EventRSVPRepository } from '../repositories/event-rsvp.repository';
@@ -33,7 +34,7 @@ export class EventFacade {
 
   async getMany(
     findOptions: FindManyEventOptions,
-  ): Promise<Pagination<IEventModel>> {
+  ): Promise<Pagination<IEventsListItemModel>> {
     return this.eventRepository.getMany(findOptions);
   }
 
