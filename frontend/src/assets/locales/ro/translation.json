@@ -5,8 +5,15 @@
     "user": "Utilizator",
     "close": "Inchide",
     "name": "Nume",
+    "people": "Persoane",
+    "hours": "Ore",
     "age": "Vârsta",
+    "date": "Data",
+    "target": "Target",
+    "answers": "Răspunsuri",
     "created_on": "Data crearii",
+    "all_organization": "Toata organizatia",
+    "event": "Eveniment",
     "add": "Adauga {{item}}",
     "category": "Categorie",
     "select": "Selecteaza {{item}}",
@@ -73,6 +80,7 @@
       "dashboard": "Dashboard",
       "organization": "Structura ONG",
       "volunteers": "Voluntari",
+      "events": "Evenimente",
       "volunteers_list": "Listă voluntari",
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
@@ -251,7 +259,7 @@
     },
     "form": {
       "description": {
-        "required": "Descrierea este obligatoriu",
+        "required": "Descrierea este obligatorie",
         "min": "Descrierea poate sa aiba minim {{value}} caractere",
         "max": "Descrierea poate sa aiba maxim {{value}} caractere"
       }
@@ -367,6 +375,102 @@
       "ACTIVITY_TYPE_002": "Exista deja o categorie cu aceste date pentru organizatia dumneavoastra",
       "ACTIVITY_TYPE_003": "Categoria nu este in statusul potrivit",
       "ACTIVITY_TYPE_004": "Nu s-a putut creea categoria"
+    }
+  },
+  "events": {
+    "past_events": "Evenimente încheiate",
+    "status": "Status afisare",
+    "hours": "Ore raportate",
+    "participate": "participă",
+    "not_participate": "nu participă",
+    "details": "Detalii eveniment",
+    "responses_list": "Lista raspunsuri",
+    "observation": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi.",
+    "draft": {
+      "subtitle": "Evenimentul nu este publicat (draft)",
+      "description": "Ai draft evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+    },
+    "published": {
+      "subtitle": "Evenimentul este publicat",
+      "description": "Ai publicat evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+    },
+    "archived": {
+      "subtitle": "Evenimentul este arhivat",
+      "description": "Ai arhivat evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+    },
+    "popover": {
+      "view": "Vizualizează detalii",
+      "publish": "Publica",
+      "archive": "Arhiveaza eveniment",
+      "delete": "Sterge eveniment"
+    },
+    "display_status": {
+      "draft": "Draft",
+      "published": "Publicat",
+      "archived": "Arhivat"
+    },
+    "form": {
+      "name": { "label": "Denumire eveniment" },
+      "start_date": { "label": "Data inceput" },
+      "end_date": { "label": "Data final" },
+      "submit": {
+        "published": "Evenimentul a fost publicat cu succes",
+        "draft": "Evenimentul a fost salvat ca draft cu succes",
+        "edit": "Evenimentul a fost modificat cu succes"
+      },
+      "location": {
+        "label": "Locatie",
+        "min": "Locatia poate sa aiba minim {{value}} caractere",
+        "max": "Locatia poate sa aiba maxim {{value}} caractere"
+      },
+      "target": {
+        "label": "Target",
+        "public": "Eveniment public",
+        "all": "Toata organizatia",
+        "placeholder": "Alege toate variantele care se aplica",
+        "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata",
+        "required": "Departamentele sunt obligatorii"
+      },
+
+      "description": { "label": "Descriere eveniment" },
+      "logo": { "label": "Imagine eveniment", "button_label": "Încarcă imagine" },
+      "noting": {
+        "label": "Înscriere eveniment",
+        "simple": "Simplă (fără mențiuni)",
+        "mention": "Cu mențiune",
+        "description": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi."
+      },
+      "mention": {
+        "label": "Mentiune",
+        "description": "Adresează o intrebare voluntarilor.",
+        "empty": "Nicio mentiune.",
+        "required": "Mentiunea este obligatorie",
+        "min": "Mentiunea poate sa aiba minim {{value}} caractere",
+        "max": "Mentiunea poate sa aiba maxim {{value}} caractere"
+      },
+      "task": {
+        "title": "Taskuri asociate evenimentului",
+        "description": "Alege taskurile specifice din lista organizatiei.",
+        "label": "Alege taskuri",
+        "tasks": "Taskuri",
+        "required": "Alegerea taskurilor este obligatorie.",
+        "helper": "Lorem ipsum. Alege din lista"
+      },
+      "observation": {
+        "title": "Observație (vizibil doar pentru administrator)",
+        "description": "Notează informații despre eveniment dacă este cazul, vizibile doar pentru tine.",
+        "label": "Observație",
+        "min": "Observația poate sa aiba minim {{value}} caractere",
+        "max": "Observația poate sa aiba maxim {{value}} caractere"
+      }
+    },
+    "errors": {
+      "EVENT_001": "Evenimentul nu a fost gasit",
+      "EVENT_002": "Departamentele target nu au fost gasite",
+      "EVENT_003": "Task-urile nu sunt corecte",
+      "EVENT_004": "Nu putem modifica target audience pentru evenimentele publicate",
+      "EVENT_005": "Doar evenimentele DRAFT sau ARHIVATE pot fi publicate",
+      "EVENT_006": "Doar evenimentele publicate pot fi arhivate"
     }
   },
   "announcement": {

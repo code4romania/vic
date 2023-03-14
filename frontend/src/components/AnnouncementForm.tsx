@@ -2,9 +2,9 @@ import React from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl } from 'react-hook-form';
 import i18n from '../common/config/i18n';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
+import TargetsMultiSelect from '../containers/TargetsMultiSelect';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from './FormInput';
-import FormSelect from './FormSelect';
 import FormTextarea from './FormTextarea';
 import { SelectItem } from './Select';
 
@@ -38,7 +38,6 @@ const AnnouncementForm = ({ control, errors }: AnnouncementFormProps) => {
                 label={`${i18n.t('announcement:header.name')}`}
                 placeholder={`${i18n.t('announcement:form.name.placeholder')}`}
                 onChange={onChange}
-                aria-invalid={errors.name?.message ? 'true' : 'false'}
                 id="announcement-form__name"
               />
             );
@@ -67,13 +66,18 @@ const AnnouncementForm = ({ control, errors }: AnnouncementFormProps) => {
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <FormSelect
+              <TargetsMultiSelect
                 label={`${i18n.t('announcement:form.target.label')}`}
                 placeholder={`${i18n.t('announcement:form.target.placeholder')}`}
                 onChange={onChange}
                 selected={value}
-                errorMessage={errors.targets?.message}
-                helper={i18n.t('announcement:form.target.disclaimer')}
+                helper={
+                  errors.targets?.message ? (
+                    <p className="text-red-500">{errors.targets?.message}</p>
+                  ) : (
+                    i18n.t('announcement:form.target.disclaimer')
+                  )
+                }
               />
             );
           }}
