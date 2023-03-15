@@ -50,17 +50,24 @@ const OpenEventsTableHeader = [
     id: 'name',
     name: i18n.t('general:event'),
     sortable: true,
-    cell: (row: IEvent) => <MediaCell logo={row.logo} title={row.name} />,
+    minWidth: '10rem',
+    grow: 2,
+    cell: (row: IEvent) => <MediaCell logo={row.image} title={row.name} />,
   },
   {
     id: 'startDate',
     name: i18n.t('general:date'),
+    minWidth: '11rem',
+    grow: 1,
     sortable: true,
     selector: (row: IEvent) => formatEventDate(row.startDate, row.endDate),
   },
   {
     id: 'target',
     name: i18n.t('general:target'),
+    minWidth: '10rem',
+    grow: 1,
+    sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
         <Targets targets={row.targets} />
@@ -70,6 +77,8 @@ const OpenEventsTableHeader = [
   {
     id: 'going',
     name: i18n.t('general:answers'),
+    minWidth: '9rem',
+    grow: 1,
     selector: (row: IEvent) =>
       `${row.going || 0} ${i18n.t('events:participate')}\n${row.notGoing || 0} ${i18n.t(
         'events:not_participate',
@@ -78,6 +87,8 @@ const OpenEventsTableHeader = [
   {
     id: 'status',
     name: i18n.t('events:status'),
+    minWidth: '5rem',
+    grow: 1,
     sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
@@ -93,18 +104,24 @@ const PastEventsTableHeader = [
   {
     id: 'name',
     name: i18n.t('general:event'),
+    minWidth: '10rem',
+    grow: 2,
     sortable: true,
-    cell: (row: IEvent) => <MediaCell logo={row.logo} title={row.name} />,
+    cell: (row: IEvent) => <MediaCell logo={row.image} title={row.name} />,
   },
   {
     id: 'startDate',
     name: i18n.t('general:date'),
+    minWidth: '11rem',
+    grow: 1,
     sortable: true,
     selector: (row: IEvent) => formatEventDate(row.startDate, row.endDate),
   },
   {
     id: 'target',
     name: i18n.t('general:target'),
+    minWidth: '10rem',
+    grow: 1,
     sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
@@ -115,18 +132,22 @@ const PastEventsTableHeader = [
   {
     id: 'going',
     name: i18n.t('general:answers'),
+    minWidth: '9rem',
+    grow: 1,
     selector: (row: IEvent) =>
       `${row.going || 0} ${i18n.t('events:participate')}\n${row.notGoing || 0} ${i18n.t(
         'events:not_participate',
       )}`,
   },
   {
-    id: 'going',
+    id: 'hours',
     name: i18n.t('events:hours'),
-    selector: (row: IEvent) =>
-      `${row.going || 0} ${i18n.t('general:people').toLowerCase()}\n${row.notGoing || 0} ${i18n
+    minWidth: '5rem',
+    grow: 1,
+    selector: () =>
+      `${0} ${i18n.t('general:people').toLowerCase()}\n${0} ${i18n
         .t('general:hours')
-        .toLowerCase()}`,
+        .toLowerCase()}`, // TODO: add logged hours
   },
   {
     id: 'status',

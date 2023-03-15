@@ -5,17 +5,16 @@ import { arrayOfNamesToString } from '../common/utils/utils';
 
 interface TargetsProps {
   targets: IDivisionListItem[];
-  volunteersCount?: number;
 }
 
-const Targets = ({ targets, volunteersCount }: TargetsProps) => {
+const Targets = ({ targets }: TargetsProps) => {
   const targetsString = arrayOfNamesToString(targets, ', ');
 
   return (
     <>
       {targets.length !== 0 ? (
         <small title={targetsString} className="text-overflow">
-          {volunteersCount ? `(${volunteersCount}) ${targetsString}` : targetsString}
+          {targetsString}
         </small>
       ) : (
         <small>{i18n.t('announcement:all_organization')}</small>

@@ -83,7 +83,7 @@ const AnnouncementTableHeader = [
     grow: 2,
     cell: (row: IAnnouncement) => (
       <CellLayout>
-        <Targets volunteersCount={row.targetedVolunteers} targets={row.targets} />
+        <Targets targets={row.targets} />
       </CellLayout>
     ),
   },

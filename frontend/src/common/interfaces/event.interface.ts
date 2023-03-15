@@ -8,7 +8,7 @@ export interface IEvent {
   startDate: Date;
   endDate?: Date;
   location?: string;
-  logo?: string;
+  image?: string;
   isPublic: boolean;
   description: string;
   observation?: string;
