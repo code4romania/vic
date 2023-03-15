@@ -57,13 +57,13 @@
     "invalid_date": "Va rugam sa introduceti o data",
     "unlimited": "nelimitat",
     "search": "Cauta...",
+    "publish": "Publica",
     "filters": {
       "show": "Filtre",
       "reset": "Reseteaza filtre",
       "hide": "Ascunde filtre"
     },
     "select_interval": "Selecteaza interval",
-    "publish": "Publica",
     "save_draft": "Salveaza ca draft"
   },
   "header": {
@@ -312,7 +312,7 @@
     "start_date": "Data inceput valabilitate*",
     "end_date": "Data final valabilitate",
     "modal": {
-      "title": "Sigur doriți să ștergeți acestui cod?",
+      "title": "Sigur doriți ștergerea acestui cod?",
       "description": "Această acțiune va șterge definitiv acest cod de acces și toate informațiile asociate acestuia",
       "delete": "Codul de access a fost sters cu succes"
     },
@@ -409,6 +409,12 @@
       "published": "Publicat",
       "archived": "Arhivat"
     },
+    "modal": {
+      "title": "Sigur doriți ștergerea acestui eveniment?",
+      "description": "Această acțiune va șterge definitiv acest eveniment și toate informațiile asociate acestuia",
+      "description_name": "Această acțiune va șterge definitiv evenimentul '{{name}}' și toate informațiile asociate acestuia",
+      "delete": "Evenimentul a fost sters cu succes"
+    },
     "form": {
       "name": { "label": "Denumire eveniment" },
       "start_date": { "label": "Data inceput" },
@@ -416,7 +422,8 @@
       "submit": {
         "published": "Evenimentul a fost publicat cu succes",
         "draft": "Evenimentul a fost salvat ca draft cu succes",
-        "edit": "Evenimentul a fost modificat cu succes"
+        "edit": "Evenimentul a fost modificat cu succes",
+        "archived": "Evenimentul a fost arhivat cu succes"
       },
       "location": {
         "label": "Locatie",

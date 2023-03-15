@@ -52,8 +52,9 @@ interface EventFormProps {
   control: Control<EventFormTypes, object>;
   errors: FieldErrorsImpl<DeepRequired<EventFormTypes>>;
   watch?: UseFormWatch<EventFormTypes>;
-  disabled?: boolean;
   resetField?: UseFormResetField<EventFormTypes>;
+  isEditForm?: boolean;
+  eventStatus?: EventStatus;
 }
 
 export type EventFormTypes = {
@@ -72,7 +73,14 @@ export type EventFormTypes = {
   status?: EventStatus;
 };
 
-const EventForm = ({ control, errors, disabled, watch, resetField }: EventFormProps) => {
+const EventForm = ({
+  control,
+  errors,
+  watch,
+  resetField,
+  isEditForm,
+  eventStatus,
+}: EventFormProps) => {
   const targetType = watch && watch('targetType');
   const attendanceType = watch && watch('attendanceType');
 
@@ -166,48 +174,54 @@ const EventForm = ({ control, errors, disabled, watch, resetField }: EventFormPr
             );
           }}
         />
-        <Controller
-          key="targetType"
-          name="targetType"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <FormRadioGroup
-                name="targetType"
-                readOnly={false}
-                options={TargetRadioOptions}
-                value={value}
-                errorMessage={errors.targetType?.message}
-                label={`${i18n.t('events:form.target.label')}`}
-                onChange={onChange}
-                disabled={disabled}
-                defaultValue={value}
-              />
-            );
-          }}
-        />
-        <Controller
-          key="targets"
-          name="targets"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <TargetsMultiSelect
-                placeholder={`${i18n.t('events:form.target.placeholder')}`}
-                onChange={onChange}
-                selected={value}
-                isDisabled={targetType !== TargetType.SELECT}
-                helper={
-                  errors.targets?.message ? (
-                    <p className="text-red-500">{errors.targets?.message}</p>
-                  ) : (
-                    i18n.t('announcement:form.target.disclaimer')
-                  )
-                }
-              />
-            );
-          }}
-        />
+        <div className="flex flex-col gap-2">
+          <Controller
+            key="targetType"
+            name="targetType"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <FormRadioGroup
+                  name="targetType"
+                  readOnly={false}
+                  options={TargetRadioOptions}
+                  value={value}
+                  errorMessage={errors.targetType?.message}
+                  label={`${i18n.t('events:form.target.label')}`}
+                  onChange={onChange}
+                  disabled={isEditForm && eventStatus !== EventStatus.DRAFT}
+                  defaultValue={value}
+                />
+              );
+            }}
+          />
+          <Controller
+            key="targets"
+            name="targets"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <TargetsMultiSelect
+                  placeholder={`${i18n.t('events:form.target.placeholder')}`}
+                  onChange={onChange}
+                  selected={value}
+                  isDisabled={
+                    isEditForm
+                      ? eventStatus !== EventStatus.DRAFT || targetType !== TargetType.SELECT
+                      : targetType !== TargetType.SELECT
+                  }
+                  helper={
+                    errors.targets?.message ? (
+                      <p className="text-red-500">{errors.targets?.message}</p>
+                    ) : (
+                      i18n.t('announcement:form.target.disclaimer')
+                    )
+                  }
+                />
+              );
+            }}
+          />
+        </div>
         <Controller
           name="description"
           key="description"

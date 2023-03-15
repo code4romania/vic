@@ -1,7 +1,7 @@
 import { differenceInYears, format, isSameDay } from 'date-fns';
 import { ICity } from '../interfaces/city.interface';
-import { SelectItem } from '../../components/Select';
 import { IDivisionListItem } from '../interfaces/division.interface';
+import { SelectItem } from '../../components/Select';
 import { AnnouncementStatus } from '../enums/announcement-status.enum';
 import { EventStatus } from '../enums/event-status';
 
@@ -34,13 +34,22 @@ export const getHoursAndMinutes = (value: Date | string): string =>
   format(new Date(value), 'hh:mm');
 
 export const formatEventDate = (startDate: Date, endDate?: Date): string => {
-  return !endDate
-    ? `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}`
-    : isSameDay(startDate, endDate)
-    ? `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}-\n${getHoursAndMinutes(endDate)}`
-    : `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}-\n${formatDate(
+  let eventDate = '';
+  if (!endDate) {
+    eventDate = `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}`;
+  } else {
+    if (isSameDay(new Date(startDate), new Date(endDate))) {
+      eventDate = `${formatDate(startDate)}, ${getHoursAndMinutes(
+        startDate,
+      )}-\n${getHoursAndMinutes(endDate)}`;
+    } else {
+      eventDate = `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}-\n${formatDate(
         endDate,
       )}, ${getHoursAndMinutes(endDate)}`;
+    }
+  }
+
+  return eventDate;
 };
 
 export const downloadExcel = (data: BlobPart, name: string): void => {

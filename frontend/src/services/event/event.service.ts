@@ -1,22 +1,31 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { EventsTabs } from '../../common/enums/events-tabs.enum';
+import { PaginationConfig } from '../../common/constants/pagination';
+import { EventState } from '../../common/enums/event-state.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { EVENT_ERRORS } from '../../common/errors/entities/event.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { EventFormTypes } from '../../components/EventForm';
-import { addEvent, editEvent, getEvent, getEvents } from './event.api';
+import {
+  addEvent,
+  archiveEvent,
+  deleteEvent,
+  editEvent,
+  getEvent,
+  getEvents,
+  publishEvent,
+} from './event.api';
 
 export const useEventsQuery = (
-  rowsPerPage: number,
-  page: number,
-  tabsStatus: EventsTabs,
+  limit: number = PaginationConfig.defaultRowsPerPage,
+  page: number = PaginationConfig.defaultPage,
+  eventState: EventState,
   orderByColumn?: string,
   orderDirection?: OrderDirection,
 ) => {
   return useQuery(
-    ['events', rowsPerPage, page, orderByColumn, orderDirection, tabsStatus],
-    () => getEvents(rowsPerPage, page, tabsStatus, orderByColumn, orderDirection),
+    ['events', limit, page, orderByColumn, orderDirection, eventState],
+    () => getEvents(limit, page, eventState, orderByColumn, orderDirection),
     {
       onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => error,
     },
@@ -42,4 +51,22 @@ export const useEditEventMutation = () => {
       onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
     },
   );
+};
+
+export const useArchiveEventMutation = () => {
+  return useMutation((id: string) => archiveEvent(id), {
+    onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
+  });
+};
+
+export const usePublishEventMutation = () => {
+  return useMutation((id: string) => publishEvent(id), {
+    onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
+  });
+};
+
+export const useDeleteEventMutation = () => {
+  return useMutation((id: string) => deleteEvent(id), {
+    onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
+  });
 };
