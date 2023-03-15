@@ -31,7 +31,7 @@ export class EventRSVPPresenter {
   mention: string;
 
   @Expose()
-  @ApiProperty({ description: 'The description of the Event' })
+  @ApiProperty({ description: 'The username' })
   userName: string;
 
   @Expose()
