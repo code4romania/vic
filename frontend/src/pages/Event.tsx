@@ -16,6 +16,7 @@ import {
 import Button from '../components/Button';
 import {
   ArchiveBoxIcon,
+  ArrowDownTrayIcon,
   CloudArrowUpIcon,
   PencilIcon,
   TrashIcon,
@@ -33,6 +34,10 @@ import { EventStatus } from '../common/enums/event-status';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { IEvent } from '../common/interfaces/event.interface';
 import { AttendanceType } from '../common/enums/attendance-type.enum';
+import DataTableComponent from '../components/DataTableComponent';
+import MediaCell from '../components/MediaCell';
+import { OrderDirection } from '../common/enums/order-direction.enum';
+import { SortOrder, TableColumn } from 'react-data-table-component';
 
 enum EventTab {
   EVENT = 'event',
@@ -42,6 +47,40 @@ enum EventTab {
 const EventTabs: SelectItem<EventTab>[] = [
   { key: EventTab.EVENT, value: i18n.t('events:details') },
   { key: EventTab.RESPONSES, value: i18n.t('events:responses_list') },
+];
+
+const TableHeader = [
+  {
+    id: 'name',
+    name: i18n.t('general:name'),
+    sortable: true,
+    minWidth: '10rem',
+    grow: 2,
+    cell: (row: IEvent) => <MediaCell logo={row.image} title={row.name} />,
+  },
+  {
+    id: 'answer',
+    name: i18n.t('general:answer'),
+    minWidth: '11rem',
+    grow: 1,
+    sortable: true,
+    selector: (row: IEvent) => `${row}`,
+  },
+  {
+    id: 'volunteer',
+    name: i18n.t('events:volunteer'),
+    minWidth: '10rem',
+    grow: 1,
+    sortable: true,
+    selector: (row: IEvent) => `${row}`,
+  },
+  {
+    id: 'mention',
+    name: i18n.t('events:form.mention.label'),
+    minWidth: '9rem',
+    grow: 1,
+    selector: (row: IEvent) => `${row}`,
+  },
 ];
 
 interface EventDetailsProps {
@@ -176,6 +215,11 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
 const Event = () => {
   const [showDeleteEvent, setShowDeleteEvent] = useState<boolean>();
   const [tabsStatus, setTabsStatus] = useState<EventTab>(EventTab.EVENT);
+  // pagination state
+  const [page, setPage] = useState<number>();
+  const [rowsPerPage, setRowsPerPage] = useState<number>();
+  const [orderByColumn, setOrderByColumn] = useState<string>();
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -248,6 +292,15 @@ const Event = () => {
       });
   };
 
+  const onSort = (column: TableColumn<IAccessCode>, direction: SortOrder) => {
+    setOrderByColumn(column.id as string);
+    setOrderDirection(
+      direction.toLocaleUpperCase() === OrderDirection.ASC
+        ? OrderDirection.ASC
+        : OrderDirection.DESC,
+    );
+  };
+
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={navigateBack}>{i18n.t('general:view')}</PageHeader>
@@ -299,7 +352,35 @@ const Event = () => {
             )}
           </>
         )}
-        {tabsStatus === EventTab.RESPONSES && <div>Not implemented</div>}
+        {tabsStatus === EventTab.RESPONSES && (
+          <Card>
+            <CardHeader>
+              <h2>{i18n.t('events:responses_list')}</h2>
+              <Button
+                label={i18n.t('general:download_table')}
+                icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+                className="btn-outline-secondary ml-auto"
+                onClick={() => alert('Not implemented')}
+              />
+            </CardHeader>
+            <CardBody>
+              <DataTableComponent
+                columns={TableHeader}
+                data={events?.items}
+                loading={
+                  isEventsLoading || isArchivingEvent || isDeletingEvent || isPublishingEvent
+                }
+                pagination
+                paginationPerPage={rowsPerPage}
+                paginationTotalRows={events?.meta?.totalItems}
+                paginationDefaultPage={page}
+                onChangeRowsPerPage={setRowsPerPage}
+                onChangePage={setPage}
+                onSort={onSort}
+              />
+            </CardBody>
+          </Card>
+        )}
       </Tabs>
     </PageLayout>
   );

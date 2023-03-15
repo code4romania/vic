@@ -1,5 +1,7 @@
 {
   "general": {
+    "yes": "Da",
+    "no": "Nu",
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "user": "Utilizator",
@@ -11,6 +13,7 @@
     "date": "Data",
     "target": "Target",
     "answers": "Răspunsuri",
+    "answer": "Răspuns",
     "created_on": "Data crearii",
     "all_organization": "Toata organizatia",
     "event": "Eveniment",
@@ -384,6 +387,7 @@
     "participate": "participă",
     "not_participate": "nu participă",
     "details": "Detalii eveniment",
+    "volunteer": "Voluntar in organizatie",
     "responses_list": "Lista raspunsuri",
     "observation": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi.",
     "draft": {
