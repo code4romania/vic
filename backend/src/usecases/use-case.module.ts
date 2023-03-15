@@ -65,6 +65,7 @@ import { DeleteEventRSVPUseCase } from './event/RSVP/delete-rsvp.usecase';
 import { GetAccessRequestsForDownloadUseCase } from './access-request/get-many-for-download-access-requests.usecase';
 import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-download-volunteer.usecase';
 import { GetManyEventUseCase } from './event/get-many-event.usecase';
+import { GetManyForDownloadEventUseCase } from './event/get-many-for-download-event.usecase';
 
 @Module({
   imports: [
@@ -146,6 +147,7 @@ import { GetManyEventUseCase } from './event/get-many-event.usecase';
     GetOneEventRSVPUseCase,
     DeleteEventRSVPUseCase,
     GetManyEventUseCase,
+    GetManyForDownloadEventUseCase,
   ],
   exports: [
     // Organization
@@ -215,6 +217,7 @@ import { GetManyEventUseCase } from './event/get-many-event.usecase';
     GetOneEventRSVPUseCase,
     DeleteEventRSVPUseCase,
     GetManyEventUseCase,
+    GetManyForDownloadEventUseCase,
   ],
 })
 export class UseCaseModule {}

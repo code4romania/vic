@@ -478,7 +478,9 @@
       "EVENT_004": "Nu putem modifica target audience pentru evenimentele publicate",
       "EVENT_005": "Doar evenimentele DRAFT sau ARHIVATE pot fi publicate",
       "EVENT_006": "Doar evenimentele publicate pot fi arhivate"
-    }
+    },
+    "download_open": "Evenimente active.xlsx",
+    "download_past": "Evenimente incheiate.xlsx"
   },
   "announcement": {
     "title": "Istoric anunturi",

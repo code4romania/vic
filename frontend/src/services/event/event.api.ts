@@ -1,3 +1,4 @@
+import { AxiosResponseHeaders } from 'axios';
 import { EventState } from '../../common/enums/event-state.enum';
 import { EventStatus } from '../../common/enums/event-status';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
@@ -37,6 +38,23 @@ export const getEvents = async (
       orderDirection,
     },
   }).then((res) => res.data);
+};
+
+export const getEventsForDownload = async (
+  eventState: EventState,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
+  return API.get('event/download', {
+    params: {
+      eventState,
+      orderBy,
+      orderDirection,
+    },
+    responseType: 'arraybuffer',
+  }).then((res) => {
+    return { data: res.data, headers: res.headers as AxiosResponseHeaders };
+  });
 };
 
 const formatAddEventPayload = (data: EventFormTypes): object => {

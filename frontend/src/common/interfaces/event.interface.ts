@@ -16,7 +16,6 @@ export interface IEvent {
   attendanceMention: string;
   tasks: IDivisionListItem[];
   targets: IDivisionListItem[];
-  rsvp: { yes: number; no: number };
   status: EventStatus;
   going?: number;
   notGoing?: number;
