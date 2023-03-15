@@ -13,6 +13,8 @@ export class EventRSVPPresenter {
 
     this.createdOn = rsvp.createdOn;
     this.updatedOn = rsvp.updatedOn;
+
+    this.volunteerId = rsvp.volunteerId;
   }
 
   @Expose()
@@ -41,4 +43,8 @@ export class EventRSVPPresenter {
   @Expose()
   @ApiProperty({ description: 'Date of approval/rejection' })
   updatedOn: Date;
+
+  @Expose()
+  @ApiProperty({ description: 'Volunteer Id' })
+  volunteerId: string;
 }
