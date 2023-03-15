@@ -1,12 +1,14 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import { CityEntity } from 'src/modules/location/entities/city.entity';
 import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
+import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import {
   ChildEntity,
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   TableInheritance,
 } from 'typeorm';
@@ -66,4 +68,7 @@ export class RegularUserEntity extends UserEntity {
   @ManyToOne(() => CityEntity)
   @JoinColumn({ name: 'location_id' })
   location: CityEntity;
+
+  @OneToMany(() => VolunteerEntity, (volunteer) => volunteer.user)
+  volunteer: VolunteerEntity[];
 }
