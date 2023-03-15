@@ -35,7 +35,7 @@ const SidePanel = ({ isOpen, onClose, children }: SidePanelProps) => {
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto relative w-screen max-w-xs xl:max-w-md flex h-full flex-col overflow-y-scroll py-6 bg-white  shadow-xl gap-5">
+                <Dialog.Panel className="pointer-events-auto relative w-screen max-w-xs xl:max-w-md flex h-full flex-col py-6 bg-white  shadow-xl gap-5">
                   {children}
                 </Dialog.Panel>
               </Transition.Child>

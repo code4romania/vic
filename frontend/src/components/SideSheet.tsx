@@ -67,7 +67,7 @@ const SideSheet = ({
       {!activityLog && <LoadingContent />}
       {activityLog && (
         <>
-          <div className="grow px-6 flex flex-col gap-8">
+          <div className="grow px-6 flex flex-col gap-8 pb-24 overflow-y-scroll">
             <FormReadOnlyName
               label={i18n.t('volunteer:name', { status: '' })}
               value={activityLog.volunteer.name}
@@ -133,7 +133,7 @@ const SideSheet = ({
               </>
             )}
           </div>
-          <footer className="px-6 pt-6 flex flex-row-reverse gap-4 border-t">
+          <footer className="p-6 flex flex-row-reverse gap-4 border-t w-screen max-w-xs xl:max-w-md fixed bottom-0 right-0 bg-white">
             {activityLog.status === ActivityLogStatus.PENDING && (
               <>
                 <Button
