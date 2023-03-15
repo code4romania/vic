@@ -384,8 +384,8 @@
     "past_events": "Evenimente încheiate",
     "status": "Status afisare",
     "hours": "Ore raportate",
-    "participate": "participă",
-    "not_participate": "nu participă",
+    "participate": "Participă",
+    "not_participate": "Nu participă",
     "details": "Detalii eveniment",
     "volunteer": "Voluntar in organizatie",
     "responses_list": "Lista raspunsuri",
@@ -452,7 +452,7 @@
         "description": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi."
       },
       "mention": {
-        "label": "Mentiune",
+        "label": "Mențiune",
         "description": "Adresează o intrebare voluntarilor.",
         "empty": "Nicio mentiune.",
         "required": "Mentiunea este obligatorie",

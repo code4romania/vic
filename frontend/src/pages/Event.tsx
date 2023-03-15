@@ -12,6 +12,7 @@ import {
   useDeleteEventMutation,
   useEventQuery,
   usePublishEventMutation,
+  useRsvpsQuery,
 } from '../services/event/event.service';
 import Button from '../components/Button';
 import {
@@ -38,6 +39,7 @@ import DataTableComponent from '../components/DataTableComponent';
 import MediaCell from '../components/MediaCell';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SortOrder, TableColumn } from 'react-data-table-component';
+import { IRsvp } from '../common/interfaces/rsvp.interface';
 
 enum EventTab {
   EVENT = 'event',
@@ -56,7 +58,7 @@ const TableHeader = [
     sortable: true,
     minWidth: '10rem',
     grow: 2,
-    cell: (row: IEvent) => <MediaCell logo={row.image} title={row.name} />,
+    cell: (row: IRsvp) => <MediaCell logo={row.logo} title={row.userName} />,
   },
   {
     id: 'answer',
@@ -64,7 +66,8 @@ const TableHeader = [
     minWidth: '11rem',
     grow: 1,
     sortable: true,
-    selector: (row: IEvent) => `${row}`,
+    selector: (row: IRsvp) =>
+      row.going ? i18n.t('events:participate') : i18n.t('events:not_participate'),
   },
   {
     id: 'volunteer',
@@ -72,14 +75,14 @@ const TableHeader = [
     minWidth: '10rem',
     grow: 1,
     sortable: true,
-    selector: (row: IEvent) => `${row}`,
+    selector: (row: IRsvp) => (row.volunteerId ? i18n.t('general:yes') : i18n.t('general:no')),
   },
   {
     id: 'mention',
     name: i18n.t('events:form.mention.label'),
     minWidth: '9rem',
     grow: 1,
-    selector: (row: IEvent) => `${row}`,
+    selector: (row: IRsvp) => (row.mention ? row.mention : '-'),
   },
 ];
 
@@ -224,6 +227,11 @@ const Event = () => {
   const { id } = useParams();
 
   const { data: event, isLoading, error } = useEventQuery(id as string);
+  const {
+    data: rsvps,
+    isLoading: isRsvpsLoading,
+    error: rsvpsError,
+  } = useRsvpsQuery(id as string, rowsPerPage, page, orderByColumn, orderDirection);
   const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
   const { mutateAsync: publishEvent, isLoading: isPublishingEvent } = usePublishEventMutation();
   const { mutateAsync: deleteEvent, isLoading: isDeletingEvent } = useDeleteEventMutation();
@@ -232,7 +240,10 @@ const Event = () => {
     if (error) {
       useErrorToast(InternalErrors.EVENT_ERRORS.getError(error?.response?.data.code_error));
     }
-  }, [error]);
+    if (rsvpsError) {
+      useErrorToast(InternalErrors.EVENT_ERRORS.getError(rsvpsError?.response?.data.code_error));
+    }
+  }, [error, rsvpsError]);
 
   const navigateBack = () => {
     navigate('/events', { replace: true });
@@ -292,7 +303,7 @@ const Event = () => {
       });
   };
 
-  const onSort = (column: TableColumn<IAccessCode>, direction: SortOrder) => {
+  const onSort = (column: TableColumn<IRsvp>, direction: SortOrder) => {
     setOrderByColumn(column.id as string);
     setOrderDirection(
       direction.toLocaleUpperCase() === OrderDirection.ASC
@@ -366,13 +377,11 @@ const Event = () => {
             <CardBody>
               <DataTableComponent
                 columns={TableHeader}
-                data={events?.items}
-                loading={
-                  isEventsLoading || isArchivingEvent || isDeletingEvent || isPublishingEvent
-                }
+                data={rsvps?.items}
+                loading={isRsvpsLoading}
                 pagination
                 paginationPerPage={rowsPerPage}
-                paginationTotalRows={events?.meta?.totalItems}
+                paginationTotalRows={rsvps?.meta?.totalItems}
                 paginationDefaultPage={page}
                 onChangeRowsPerPage={setRowsPerPage}
                 onChangePage={setPage}

@@ -3,6 +3,7 @@ import { EventStatus } from '../../common/enums/event-status';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent } from '../../common/interfaces/event.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { IRsvp } from '../../common/interfaces/rsvp.interface';
 import { EventFormTypes, TargetType } from '../../components/EventForm';
 import API from '../api';
 
@@ -37,6 +38,73 @@ export const getEvents = async (
       orderDirection,
     },
   }).then((res) => res.data);
+};
+
+export const getRsvps = async (
+  id: string,
+  limit: number,
+  page: number,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+): Promise<IPaginatedEntity<IRsvp>> => {
+  // return API.get(`/event/${id}/rsvp`, {
+  //   params: {
+  //     limit,
+  //     page,
+  //     orderBy,
+  //     orderDirection,
+  //   },
+  // });
+  console.log(id, limit, page, orderBy, orderDirection);
+  return Promise.resolve({
+    items: [
+      {
+        id: '1',
+        going: true,
+        mention: 'Excited to attend!',
+        userName: 'John Doe',
+        createdOn: new Date('2022-03-14'),
+        updatedOn: new Date('2022-03-14'),
+        logo: 'https://example.com/logo.png',
+        volunteerId: '23232',
+      },
+      {
+        id: '2',
+        going: false,
+        mention: 'Unfortunately cannot make it.',
+        userName: 'JaneSmith',
+        createdOn: new Date('2022-03-12'),
+        updatedOn: new Date('2022-03-13'),
+      },
+      {
+        id: '3',
+        going: true,
+        mention: 'Looking forward to it!',
+        userName: 'BobJohnson',
+        createdOn: new Date('2022-03-10'),
+        updatedOn: new Date('2022-03-11'),
+        logo: 'https://example.com/logo.png',
+      },
+      {
+        id: '4',
+        going: true,
+        mention: "Can't wait!",
+        userName: 'AliceLee',
+        createdOn: new Date('2022-03-09'),
+        updatedOn: new Date('2022-03-15'),
+        logo: 'https://example.com/logo.png',
+      },
+    ],
+    meta: {
+      currentPage: 1,
+      itemCount: 10,
+      itemsPerPage: 20,
+      totalItems: 200,
+      totalPages: 10,
+      orderByColumn: 'createdAt',
+      orderDirection: OrderDirection.DESC,
+    },
+  });
 };
 
 const formatAddEventPayload = (data: EventFormTypes): object => {
