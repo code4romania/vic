@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { useQuery, useMutation } from 'react-query';
+import { PaginationConfig } from '../../common/constants/pagination';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ORGANIZATION_ERRORS } from '../../common/errors/entities/organization.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
@@ -32,10 +33,10 @@ export const useUpdateOrganizationDescriptionMutation = () => {
 };
 
 export const useAccessCodesQuery = (
-  limit: number,
-  page: number,
-  orderBy?: string,
-  orderDirection?: OrderDirection,
+  limit: number = PaginationConfig.defaultRowsPerPage,
+  page: number = PaginationConfig.defaultPage,
+  orderBy = 'code',
+  orderDirection: OrderDirection = OrderDirection.ASC,
 ) => {
   return useQuery(['access-codes', limit, page, orderBy, orderDirection], () =>
     getAccessCodes(limit, page, orderBy, orderDirection),
