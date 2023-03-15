@@ -58,14 +58,20 @@ const ActivityLog = () => {
     orderDirection,
   );
 
-  const { data: activityLog } = useActivityLogQuery(showActivitySheet as string);
+  const { data: activityLog, error: activityLogError } = useActivityLogQuery(
+    showActivitySheet as string,
+  );
 
   useEffect(() => {
     if (activityLogsError)
       useErrorToast(
         InternalErrors.ACTIVITY_LOG_ERRORS.getError(activityLogsError.response?.data.code_error),
       );
-  }, [activityLogsError]);
+    if (activityLogError)
+      useErrorToast(
+        InternalErrors.ACTIVITY_LOG_ERRORS.getError(activityLogError.response?.data.code_error),
+      );
+  }, [activityLogsError, activityLogError]);
 
   const onVolunteerClick = (id: string) => {
     navigate(`/volunteers/${id}`);
@@ -221,6 +227,10 @@ const ActivityLog = () => {
     alert(`not yet implemented ${id}`);
   };
 
+  const onEdit = () => {
+    if (activityLog) alert(`not yet implemented ${activityLog.id}`);
+  };
+
   return (
     <PageLayout>
       <PageHeaderAdd onAddButtonPress={onAddButtonPress} label={i18n.t('activity_log:add')}>
@@ -264,7 +274,7 @@ const ActivityLog = () => {
 
       <SideSheet
         onClose={setShowActivitySheet.bind(null, undefined)}
-        onEdit={() => console.log('edit clicked')}
+        onEdit={onEdit}
         isOpen={!!showActivitySheet}
         activityLog={activityLog}
         onApprove={onApprove}
