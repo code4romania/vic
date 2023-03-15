@@ -10,12 +10,12 @@ export const getAnnouncements = async (
   page: number,
   orderBy?: string,
   orderDirection?: OrderDirection,
-  searchWord?: string,
+  search?: string,
   status?: AnnouncementStatus,
   targetsIds?: string[],
 ): Promise<IPaginatedEntity<IAnnouncement>> => {
   return API.get('/announcement', {
-    params: { limit, page, orderBy, orderDirection, searchWord, status, targetsIds },
+    params: { limit, page, orderBy, orderDirection, search, status, targetsIds },
   }).then((res) => res.data);
 };
 
