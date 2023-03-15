@@ -450,8 +450,11 @@
       "event": "În cadrul evenimentului",
       "registered_by": "Înregistrat de",
       "registration_date": "Dată înregistrare ore",
+      "approved_by": "Aprobat de",
       "approve_date": "Dată aprobare ore",
+      "rejected_by": "Respins de",
       "reject_date": "Dată respingere ore",
+      "reject_reason": "Motiv respingere",
       "mention": "Mentiuni"
     },
     "errors": {

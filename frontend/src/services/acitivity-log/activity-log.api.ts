@@ -95,11 +95,15 @@ export const getActivityLog = async (id: string): Promise<IActivityLog> => {
       id: '123',
       name: 'John Doe',
     },
-    status: ActivityLogStatus.APPROVED,
+    status: ActivityLogStatus.PENDING,
     registrationDate: new Date('2023-03-11'),
     event: { id: '222', name: 'Un eveniment frumos' },
     registeredBy: { id: '22', name: 'Popa Elena Luminita' },
     approvedBy: { id: '22', name: 'Popa Elena Luminita' },
     approveDate: new Date('2024-01-02'),
+    mention: 'Face mamaliga buna',
+    rejectedBy: { id: '22', name: 'Popa Elena Luminita' },
+    rejectDate: new Date('2024-01-02'),
+    rejectReason: 'Ca asa am vrut eu',
   });
 };

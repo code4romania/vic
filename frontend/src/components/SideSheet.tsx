@@ -9,6 +9,7 @@ import { formatDate } from '../common/utils/utils';
 import Button from './Button';
 import FormReadOnlyElement from './FormReadOnlyElement';
 import FormReadOnlyName from './FormReadOnlyName';
+import LoadingContent from './LoadingContent';
 import SidePanel from './SidePanel';
 
 interface SideSheetProps {
@@ -17,7 +18,7 @@ interface SideSheetProps {
   onEdit: () => void;
   onReject: (id: string) => void;
   onApprove: (id: string) => void;
-  activityLog?: IActivityLog;
+  activityLog: IActivityLog | undefined;
 }
 
 const SideSheet = ({
@@ -30,8 +31,12 @@ const SideSheet = ({
 }: SideSheetProps) => {
   const navigate = useNavigate();
 
-  const onVolunteerClick = (id: string) => {
-    navigate(`/volunteers/${id}`);
+  const onVolunteerClick = () => {
+    if (activityLog) navigate(`/volunteers/${activityLog.volunteer.id}`);
+  };
+
+  const onEventClick = () => {
+    if (activityLog) navigate(`/events/${activityLog.event?.id}`);
   };
 
   return (
@@ -59,20 +64,15 @@ const SideSheet = ({
           </button>
         </div>
       </div>
+      {!activityLog && <LoadingContent />}
       {activityLog && (
         <>
           <div className="grow px-6 flex flex-col gap-8">
             <FormReadOnlyName
               label={i18n.t('volunteer:name', { status: '' })}
               value={activityLog.volunteer.name}
-              onClick={onVolunteerClick.bind(null, activityLog.volunteer.id)}
+              onClick={onVolunteerClick}
             />
-            <div className="flex gap-2.5 flex-col">
-              <small className="text-cool-gray-500">
-                {i18n.t('volunteer:name', { status: '' })}
-              </small>
-              <a>{activityLog.volunteer.name}</a>
-            </div>
             <FormReadOnlyElement label={i18n.t('general:task')} value={activityLog.task.name} />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.hours')}
@@ -81,6 +81,11 @@ const SideSheet = ({
             <FormReadOnlyElement
               label={i18n.t('activity_log:execution_date')}
               value={formatDate(activityLog.executionDate)}
+            />
+            <FormReadOnlyName
+              label={i18n.t('activity_log:side_panel.event')}
+              value={activityLog.event?.name}
+              onClick={onEventClick}
             />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.event')}
@@ -91,7 +96,7 @@ const SideSheet = ({
               value={activityLog.mention}
             />
             <hr />
-            <FormReadOnlyElement
+            <FormReadOnlyName
               label={i18n.t('activity_log:side_panel.registered_by')}
               value={activityLog.registeredBy?.name}
             />
@@ -99,6 +104,34 @@ const SideSheet = ({
               label={i18n.t('activity_log:side_panel.registration_date')}
               value={formatDate(activityLog.registrationDate)}
             />
+            {activityLog.status === ActivityLogStatus.APPROVED && (
+              <>
+                <FormReadOnlyName
+                  label={i18n.t('activity_log:side_panel.approved_by')}
+                  value={activityLog.approvedBy?.name}
+                />
+                <FormReadOnlyElement
+                  label={i18n.t('activity_log:side_panel.approve_date')}
+                  value={formatDate(activityLog.approveDate)}
+                />
+              </>
+            )}
+            {activityLog.status === ActivityLogStatus.REJECTED && (
+              <>
+                <FormReadOnlyName
+                  label={i18n.t('activity_log:side_panel.rejected_by')}
+                  value={activityLog.rejectedBy?.name}
+                />
+                <FormReadOnlyElement
+                  label={i18n.t('activity_log:side_panel.reject_date')}
+                  value={formatDate(activityLog.rejectDate)}
+                />
+                <FormReadOnlyElement
+                  label={i18n.t('activity_log:side_panel.reject_reason')}
+                  value={activityLog.rejectReason}
+                />
+              </>
+            )}
           </div>
           <footer className="px-6 pt-6 flex flex-row-reverse gap-4 border-t">
             {activityLog.status === ActivityLogStatus.PENDING && (
