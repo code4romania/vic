@@ -209,7 +209,7 @@ const Events = () => {
   const onPublish = (row: IEvent) => {
     publishEvent(row.id, {
       onSuccess: () => {
-        useSuccessToast('events:form.submit.published');
+        useSuccessToast(`${i18n.t('events:form.submit.published')}`);
         refetch();
       },
       onError: (error) => {
@@ -221,7 +221,7 @@ const Events = () => {
   const onArchive = (row: IEvent) => {
     archiveEvent(row.id, {
       onSuccess: () => {
-        useSuccessToast('events:form.submit.archived');
+        useSuccessToast(`${i18n.t('events:form.submit.archived')}`);
         refetch();
       },
       onError: (error) => {
@@ -242,7 +242,7 @@ const Events = () => {
     if (showDeleteEvent)
       deleteEvent(showDeleteEvent.id, {
         onSuccess: () => {
-          useSuccessToast('events:modal.delete');
+          useSuccessToast(`${i18n.t('events:modal.delete')}`);
           refetch();
         },
         onError: (error) => {
