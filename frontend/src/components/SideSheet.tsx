@@ -133,7 +133,7 @@ const SideSheet = ({
               </>
             )}
           </div>
-          <footer className="p-6 flex flex-row-reverse gap-4 border-t w-screen max-w-xs xl:max-w-md fixed bottom-0 right-0 bg-white">
+          <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full  fixed bottom-0 right-0 bg-white">
             {activityLog.status === ActivityLogStatus.PENDING && (
               <>
                 <Button
