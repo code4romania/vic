@@ -4,7 +4,7 @@ import i18n from '../common/config/i18n';
 import PageHeader from '../components/PageHeader';
 import PageLayout from '../layouts/PageLayout';
 import Tabs from '../components/Tabs';
-import { SelectItem } from '../components/Select';
+import Select, { SelectItem } from '../components/Select';
 import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
 import {
@@ -40,6 +40,9 @@ import MediaCell from '../components/MediaCell';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { IRsvp } from '../common/interfaces/rsvp.interface';
+import DataTableFilters from '../components/DataTableFilters';
+import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
+import { DivisionType } from '../common/enums/division-type.enum';
 
 enum EventTab {
   EVENT = 'event',
@@ -223,6 +226,13 @@ const Event = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+  // filters
+  const [search, setSearch] = useState<string>();
+  const [branch, setBranch] = useState<SelectItem<string>>();
+  const [department, setDepartment] = useState<SelectItem<string>>();
+  const [role, setRole] = useState<SelectItem<string>>();
+  const [going, setGoing] = useState<SelectItem<string>>();
+
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -231,7 +241,18 @@ const Event = () => {
     data: rsvps,
     isLoading: isRsvpsLoading,
     error: rsvpsError,
-  } = useRsvpsQuery(id as string, rowsPerPage, page, orderByColumn, orderDirection);
+  } = useRsvpsQuery(
+    id as string,
+    rowsPerPage,
+    page,
+    orderByColumn,
+    orderDirection,
+    search,
+    branch?.key,
+    department?.key,
+    role?.key,
+    !!going?.key,
+  );
   const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
   const { mutateAsync: publishEvent, isLoading: isPublishingEvent } = usePublishEventMutation();
   const { mutateAsync: deleteEvent, isLoading: isDeletingEvent } = useDeleteEventMutation();
@@ -312,6 +333,14 @@ const Event = () => {
     );
   };
 
+  const onResetFilters = () => {
+    setBranch(undefined);
+    setDepartment(undefined);
+    setRole(undefined);
+    setSearch(undefined);
+    setGoing(undefined);
+  };
+
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={navigateBack}>{i18n.t('general:view')}</PageHeader>
@@ -364,31 +393,70 @@ const Event = () => {
           </>
         )}
         {tabsStatus === EventTab.RESPONSES && (
-          <Card>
-            <CardHeader>
-              <h2>{i18n.t('events:responses_list')}</h2>
-              <Button
-                label={i18n.t('general:download_table')}
-                icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-                className="btn-outline-secondary ml-auto"
-                onClick={() => alert('Not implemented')}
+          <>
+            <DataTableFilters
+              onSearch={setSearch}
+              searchValue={search}
+              onResetFilters={onResetFilters}
+            >
+              <OrganizationStructureSelect
+                label={`${i18n.t('division:entity.branch')}`}
+                placeholder={`${i18n.t('general:select', { item: '' })}`}
+                onChange={setBranch}
+                selected={branch}
+                type={DivisionType.BRANCH}
               />
-            </CardHeader>
-            <CardBody>
-              <DataTableComponent
-                columns={TableHeader}
-                data={rsvps?.items}
-                loading={isRsvpsLoading}
-                pagination
-                paginationPerPage={rowsPerPage}
-                paginationTotalRows={rsvps?.meta?.totalItems}
-                paginationDefaultPage={page}
-                onChangeRowsPerPage={setRowsPerPage}
-                onChangePage={setPage}
-                onSort={onSort}
+              <OrganizationStructureSelect
+                label={`${i18n.t('division:entity.department')}`}
+                placeholder={`${i18n.t('general:select', { item: '' })}`}
+                onChange={setDepartment}
+                selected={department}
+                type={DivisionType.DEPARTMENT}
               />
-            </CardBody>
-          </Card>
+              <OrganizationStructureSelect
+                label={`${i18n.t('division:entity.role')}`}
+                placeholder={`${i18n.t('general:select', { item: '' })}`}
+                onChange={setRole}
+                selected={role}
+                type={DivisionType.ROLE}
+              />
+              <Select
+                label={`${i18n.t('general:answer')}`}
+                placeholder={`${i18n.t('general:select', { item: '' })}`}
+                onChange={(item: SelectItem<string>) => setGoing(item)}
+                selected={going}
+                options={[
+                  { key: 'going', value: i18n.t('events:participate') },
+                  { key: '', value: i18n.t('events:not_participate') },
+                ]}
+              />
+            </DataTableFilters>
+            <Card>
+              <CardHeader>
+                <h2>{i18n.t('events:responses_list')}</h2>
+                <Button
+                  label={i18n.t('general:download_table')}
+                  icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+                  className="btn-outline-secondary ml-auto"
+                  onClick={() => alert('Not implemented')}
+                />
+              </CardHeader>
+              <CardBody>
+                <DataTableComponent
+                  columns={TableHeader}
+                  data={rsvps?.items}
+                  loading={isRsvpsLoading}
+                  pagination
+                  paginationPerPage={rowsPerPage}
+                  paginationTotalRows={rsvps?.meta?.totalItems}
+                  paginationDefaultPage={page}
+                  onChangeRowsPerPage={setRowsPerPage}
+                  onChangePage={setPage}
+                  onSort={onSort}
+                />
+              </CardBody>
+            </Card>
+          </>
         )}
       </Tabs>
     </PageLayout>
