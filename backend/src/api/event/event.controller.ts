@@ -21,6 +21,7 @@ import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { ArchiveEventUseCase } from 'src/usecases/event/archive-event.usecase';
 import { CreateEventUseCase } from 'src/usecases/event/create-event.usecase';
 import { DeleteEventUseCase } from 'src/usecases/event/delete-event.usecase';
+import { GetManyEventUseCase } from 'src/usecases/event/get-many-event.usecase';
 import { GetOneEventUseCase } from 'src/usecases/event/get-one-event.usecase';
 import { PublishEventUseCase } from 'src/usecases/event/publish-event.usecase';
 import { GetManyEventRSVPUseCase } from 'src/usecases/event/RSVP/get-many-rsvp.usecase';
@@ -30,6 +31,8 @@ import { GetPaginatedEventRSVPsDto } from './dto/get-paginated-event-rsvp.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventGuard } from './guards/event.guard';
 import { EventRSVPPresenter } from './presenters/event-rsvp.presenter';
+import { GetManyEventDto } from './dto/get-many-event.dto';
+import { EventListItemPresenter } from './presenters/event-list-item.presenter';
 import { EventPresenter } from './presenters/event.presenter';
 
 // @Roles(Role.ADMIN)
@@ -45,9 +48,26 @@ export class EventController {
     private readonly archiveEventUseCase: ArchiveEventUseCase,
     private readonly publishEventUseCase: PublishEventUseCase,
     private readonly getManyEventRSVPUsecase: GetManyEventRSVPUseCase,
+    private readonly getManyEventUseCase: GetManyEventUseCase,
   ) {}
 
-  @ApiBody({ type: CreateEventDto })
+  @Get()
+  @ApiPaginatedResponse(EventListItemPresenter)
+  async getMany(
+    @Query() filters: GetManyEventDto,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<PaginatedPresenter<EventListItemPresenter>> {
+    const events = await this.getManyEventUseCase.execute({
+      ...filters,
+      organizationId,
+    });
+
+    return new PaginatedPresenter({
+      ...events,
+      items: events.items.map((event) => new EventListItemPresenter(event)),
+    });
+  }
+
   @Post()
   async create(
     @Body() createEventDto: CreateEventDto,

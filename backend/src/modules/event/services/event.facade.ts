@@ -10,7 +10,9 @@ import {
 } from '../models/event-rsvp.model';
 import {
   CreateEventOptions,
+  FindManyEventOptions,
   IEventModel,
+  IEventsListItemModel,
   UpdateEventOptions,
 } from '../models/event.model';
 import { EventRSVPRepository } from '../repositories/event-rsvp.repository';
@@ -29,6 +31,12 @@ export class EventFacade {
 
   async find(id: string): Promise<IEventModel> {
     return this.eventRepository.find(id);
+  }
+
+  async getMany(
+    findOptions: FindManyEventOptions,
+  ): Promise<Pagination<IEventsListItemModel>> {
+    return this.eventRepository.getMany(findOptions);
   }
 
   async update(id: string, updates: UpdateEventOptions): Promise<IEventModel> {
