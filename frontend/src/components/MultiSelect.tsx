@@ -4,6 +4,7 @@ import { SelectItem, SelectProps } from './Select';
 export interface MultiSelectProps extends Omit<SelectProps<string>, 'onChange' | 'selected'> {
   onChange: (items: SelectItem<string>[]) => void;
   selected?: SelectItem<string>[];
+  isDisabled?: boolean;
 }
 
 const MultiSelect = ({
@@ -13,6 +14,7 @@ const MultiSelect = ({
   label,
   onChange,
   helper,
+  isDisabled,
 }: MultiSelectProps) => {
   return (
     <div className="flex flex-col gap-1">
@@ -25,6 +27,8 @@ const MultiSelect = ({
         onChange={onChange as never}
         value={selected}
         options={options}
+        isDisabled={isDisabled}
+        isClearable
         getOptionLabel={(option) => option.value}
         getOptionValue={(option) => option.key}
       />

@@ -14,6 +14,9 @@ import {
 import { EventEntity } from '../entities/event.entity';
 import { EventAttendOptions } from '../enums/event-attendance-options.enum';
 import { EventStatus } from '../enums/event-status.enum';
+import { IBasePaginationFilterModel } from '../../../infrastructure/base/base-pagination-filter.model';
+import { EventState } from '../enums/event-time.enum';
+import { EventRSVPModelTransformer, IEventRSVPModel } from './event-rsvp.model';
 
 export interface IEventModel extends IBaseModel {
   id: string;
@@ -36,6 +39,15 @@ export interface IEventModel extends IBaseModel {
   organization: IOrganizationModel;
   targets?: IOrganizationStructureModel[];
   tasks: IActivityTypeModel[];
+}
+
+export interface IEventsListItemModel
+  extends Pick<
+    IEventModel,
+    'id' | 'name' | 'startDate' | 'endDate' | 'status' | 'isPublic' | 'targets'
+  > {
+  going: number;
+  notGoing: number;
 }
 
 export type CreateEventOptions = Pick<
@@ -62,7 +74,34 @@ export type UpdateEventOptions = Partial<
 
 export type UpdateStatusOptions = EventStatus.PUBLISHED | EventStatus.ARCHIVED;
 
+export type FindManyEventOptions = {
+  organizationId: IOrganizationModel['id'];
+  eventState: EventState;
+} & IBasePaginationFilterModel;
+
 export class EventModelTransformer {
+  static fromEntityToEventItem(
+    entity: EventEntity & { going: number; notGoing: number },
+  ): IEventsListItemModel {
+    if (!entity) return null;
+
+    return {
+      id: entity.id,
+      name: entity.name,
+      startDate: entity.startDate,
+      endDate: entity.endDate,
+
+      status: entity.status,
+      isPublic: entity.isPublic,
+
+      going: entity.going,
+      notGoing: entity.notGoing,
+
+      // image: entity.image
+      targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
+    };
+  }
+
   static fromEntity(entity: EventEntity): IEventModel {
     if (!entity) return null;
 

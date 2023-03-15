@@ -21,9 +21,9 @@ const FormSelect = ({
     <FormReadOnlyElement label={label || ''} value={selected?.length ? selected.join(', ') : '-'} />
   ) : (
     <TargetsMultiSelect
+      {...props}
       label={label}
       selected={selected}
-      {...props}
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
     />
   );

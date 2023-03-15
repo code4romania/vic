@@ -14,7 +14,11 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { CheckIcon, EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
-import { formatDate, formatDateWithTime } from '../common/utils/utils';
+import {
+  AnouncementStatusMarkerColorMapper,
+  formatDate,
+  formatDateWithTime,
+} from '../common/utils/utils';
 import {
   useAnnouncements,
   useDeleteAnnouncementMutation,
@@ -41,11 +45,6 @@ const StatusOptions: SelectItem<AnnouncementStatus>[] = [
     value: i18n.t('announcement:status.published'),
   },
 ];
-
-const StatusMarkerColorMapper = {
-  [AnnouncementStatus.PUBLISHED]: 'bg-green-500',
-  [AnnouncementStatus.DRAFT]: 'bg-yellow-500',
-};
 
 const AnnouncementTableHeader = [
   {
@@ -76,7 +75,7 @@ const AnnouncementTableHeader = [
     minWidth: '7rem',
     cell: (row: IAnnouncement) => (
       <CellLayout>
-        <StatusWithMarker markerColor={StatusMarkerColorMapper[row.status]}>
+        <StatusWithMarker markerColor={AnouncementStatusMarkerColorMapper[row.status]}>
           {i18n.t(`announcement:status.${row.status}`)}
         </StatusWithMarker>
       </CellLayout>
@@ -98,7 +97,7 @@ const AnnouncementTableHeader = [
     grow: 2,
     cell: (row: IAnnouncement) => (
       <CellLayout>
-        <Targets volunteersCount={row.targetedVolunteers} targets={row.targets} />
+        <Targets targets={row.targets} />
       </CellLayout>
     ),
   },
