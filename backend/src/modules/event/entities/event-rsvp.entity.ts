@@ -29,7 +29,9 @@ export class EventRSVPEntity extends BaseEntity {
   })
   eventId: string;
 
-  @ManyToOne(() => EventEntity)
+  @ManyToOne(() => EventEntity, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'event_id' })
   event: EventEntity;
 

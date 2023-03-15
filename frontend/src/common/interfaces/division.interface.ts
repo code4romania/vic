@@ -10,4 +10,4 @@ export interface IDivision {
   createdOn: Date;
 }
 
-export type IDivisionListItem = Pick<IDivision, 'id' | 'name'>;
+export type IDivisionListItem = Pick<IDivision, 'id' | 'name'> & { numberOfMembers?: number };

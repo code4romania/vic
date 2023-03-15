@@ -1,30 +1,33 @@
 import React from 'react';
-import Input, { InputProps } from './Input';
 import { classNames } from '../common/utils/utils';
 import FormReadOnlyElement from './FormReadOnlyElement';
+import RadioGroup, { RadioGroupProps } from './RadioGroup';
 
-interface FormInputProps extends InputProps {
+interface FormRadiosProps extends RadioGroupProps {
   errorMessage?: string;
 }
 
-const FormInput = ({
+const FormRadioGroup = ({
   errorMessage,
   readOnly,
-  value,
   label,
+  value,
+  options,
   className,
   helper,
   ...props
-}: FormInputProps) => {
+}: FormRadiosProps) => {
   return readOnly ? (
     <FormReadOnlyElement
       label={label || ''}
       value={value instanceof Array ? value.join(', ') : value}
     />
   ) : (
-    <Input
-      value={value}
+    <RadioGroup
+      {...props}
+      options={options}
       label={label}
+      value={value}
       className={classNames(
         errorMessage
           ? 'border border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500'
@@ -32,10 +35,9 @@ const FormInput = ({
         className || '',
       )}
       aria-invalid={errorMessage ? 'true' : 'false'}
-      {...props}
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
     />
   );
 };
 
-export default FormInput;
+export default FormRadioGroup;
