@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import i18n from '../common/config/i18n';
-import Button from '../components/Button';
 import PageLayout from '../layouts/PageLayout';
-import { PlusIcon } from '@heroicons/react/24/solid';
 import { useNavigate } from 'react-router';
 import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
@@ -18,6 +16,7 @@ import OrganizationStructureSelect from '../containers/OrganizationStructureSele
 import { DivisionType } from '../common/enums/division-type.enum';
 import { SelectItem } from '../components/Select';
 import DataTableFilters from '../components/DataTableFilters';
+import PageHeaderAdd from '../components/PageHeaderAdd';
 
 const ActivityTypes = () => {
   // navigation
@@ -60,15 +59,12 @@ const ActivityTypes = () => {
 
   return (
     <PageLayout>
-      <div className="flex items-center justify-between">
-        <h1>{i18n.t('side_menu:options.activity_types')}</h1>
-        <Button
-          label={i18n.t('general:add', { item: i18n.t('general:category').toLowerCase() })}
-          className="btn-primary"
-          icon={<PlusIcon className="h-5 w-5" />}
-          onClick={onAddActivityType}
-        />
-      </div>
+      <PageHeaderAdd
+        label={`${i18n.t('general:add', { item: i18n.t('general:category').toLowerCase() })}`}
+        onAddButtonPress={onAddActivityType}
+      >
+        {i18n.t('side_menu:options.activity_types')}
+      </PageHeaderAdd>
       <DataTableFilters onSearch={setSearch} searchValue={search} onResetFilters={onResetFilters}>
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.branch')}`}
