@@ -3,8 +3,6 @@ import './App.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import AuthContextProvider from './contexts/auth/AuthContextProvider';
 import Router from './routes/Router';
-import { QueryParamProvider } from 'use-query-params';
-import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import { toast, ToastContainer } from 'react-toastify';
 import { Amplify, Auth } from 'aws-amplify';
 import { AMPLIFY_CONFIG } from './common/config/amplify';
@@ -40,9 +38,7 @@ const App = () => (
         closeOnClick
         rtl={false}
       />
-      <QueryParamProvider adapter={ReactRouter6Adapter}>
-        <Router />
-      </QueryParamProvider>
+      <Router />
     </AuthContextProvider>
   </QueryClientProvider>
 );

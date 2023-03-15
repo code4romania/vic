@@ -21,6 +21,16 @@ import {
   useAccessCodesQuery,
   useDeleteAccessCodeMutation,
 } from '../services/organization/organization.service';
+import { useQueryParams } from 'use-query-params';
+import { NumberParam, StringParam } from 'use-query-params';
+import { PaginationConfig } from '../common/constants/pagination';
+
+export const ACCESS_CODES_QUERY_PARAMS = {
+  page: NumberParam,
+  limit: NumberParam,
+  orderBy: StringParam,
+  orderDirection: StringParam,
+};
 
 export interface IAccessCode {
   id: string;
@@ -84,26 +94,44 @@ const AccessCodeTableHeader = [
 
 const AccessCodes = () => {
   const [showDeleteAccessCode, setShowDeleteAccessCode] = useState<null | IAccessCode>();
+  // navigate
+  const navigate = useNavigate();
+  // filters
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
-  const navigate = useNavigate();
+
+  // query params
+  const [queryParams, setQueryParams] = useQueryParams(ACCESS_CODES_QUERY_PARAMS);
 
   const {
     data: accessCodes,
     error: accessCodesError,
     isLoading: isAccessCodesLoading,
     refetch,
-  } = useAccessCodesQuery(
-    rowsPerPage as number,
-    page as number,
-    orderByColumn as string,
-    orderDirection as OrderDirection,
-  );
+  } = useAccessCodesQuery(rowsPerPage, page, orderByColumn, orderDirection);
 
   const { mutateAsync: deleteAccessCode, isLoading: isDeleteAccessCodeLoading } =
     useDeleteAccessCodeMutation();
+
+  // init state from params
+  useEffect(() => {
+    setPage(queryParams?.page || undefined);
+    setOrderDirection((queryParams?.orderDirection as OrderDirection) || undefined);
+    setOrderByColumn(queryParams?.orderBy || undefined);
+    setRowsPerPage(queryParams?.limit || undefined);
+  }, []);
+
+  // update query values
+  useEffect(() => {
+    setQueryParams({
+      page: page || PaginationConfig.defaultPage,
+      limit: rowsPerPage || PaginationConfig.defaultRowsPerPage,
+      orderBy: orderByColumn || 'code',
+      orderDirection: orderDirection || OrderDirection.ASC,
+    });
+  }, [page, rowsPerPage, orderByColumn, orderDirection]);
 
   useEffect(() => {
     if (accessCodesError) useErrorToast(i18n.t('general:error.load_entries'));

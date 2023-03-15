@@ -26,49 +26,53 @@ import EditEvent from '../pages/EditEvent';
 import AddAnnouncement from '../pages/AddAnnouncement';
 import EditAnnouncement from '../pages/EditAnnouncement';
 import Announcement from '../pages/Announcement';
+import { QueryParamProvider } from 'use-query-params';
+import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<PublicRoute element={<Login />} />} />
-        <Route path="/" element={<PrivateRoute element={<MainLayout />} />}>
-          <Route index element={<Dashboard />}></Route>
-          <Route path="organization" element={<Outlet />}>
-            <Route index element={<Organization />} />
-            <Route path="edit" element={<EditOrganization />} />
-          </Route>
-          <Route path="volunteers" element={<Outlet />}>
-            <Route index element={<Volunteers />} />
-            <Route path=":id" element={<Volunteer />} />
-            <Route path=":id/edit" element={<EditVolunteer />} />
-            <Route path="access-codes" element={<Outlet />}>
-              <Route index element={<AccessCodes />} />
-              <Route path="add" element={<AddAccessCode />} />
-              <Route path=":id/edit" element={<EditAccessCode />} />
+      <QueryParamProvider adapter={ReactRouter6Adapter}>
+        <Routes>
+          <Route path="/login" element={<PublicRoute element={<Login />} />} />
+          <Route path="/" element={<PrivateRoute element={<MainLayout />} />}>
+            <Route index element={<Dashboard />}></Route>
+            <Route path="organization" element={<Outlet />}>
+              <Route index element={<Organization />} />
+              <Route path="edit" element={<EditOrganization />} />
             </Route>
-            <Route path="requests" element={<RegistrationRequests />} />
-            <Route path="requests/:id" element={<AccessRequest />} />
+            <Route path="volunteers" element={<Outlet />}>
+              <Route index element={<Volunteers />} />
+              <Route path=":id" element={<Volunteer />} />
+              <Route path=":id/edit" element={<EditVolunteer />} />
+              <Route path="access-codes" element={<Outlet />}>
+                <Route index element={<AccessCodes />} />
+                <Route path="add" element={<AddAccessCode />} />
+                <Route path=":id/edit" element={<EditAccessCode />} />
+              </Route>
+              <Route path="requests" element={<RegistrationRequests />} />
+              <Route path="requests/:id" element={<AccessRequest />} />
+            </Route>
+            <Route path="announcements" element={<Outlet />}>
+              <Route index element={<Announcements />} />
+              <Route path="add" element={<AddAnnouncement />} />
+              <Route path=":id/edit" element={<EditAnnouncement />} />
+              <Route path=":id" element={<Announcement />} />
+            </Route>
+            <Route path="activity-types" element={<Outlet />}>
+              <Route index element={<ActivityTypes />} />
+              <Route path="add" element={<AddActivityType />} />
+              <Route path="edit/:id" element={<EditActivityType />} />
+            </Route>
+            <Route path="events" element={<Outlet />}>
+              <Route index element={<Events />} />
+              <Route path=":id" element={<Event />} />
+              <Route path=":id/edit" element={<EditEvent />} />
+              <Route path="add" element={<AddEvent />} />
+            </Route>
           </Route>
-          <Route path="announcements" element={<Outlet />}>
-            <Route index element={<Announcements />} />
-            <Route path="add" element={<AddAnnouncement />} />
-            <Route path=":id/edit" element={<EditAnnouncement />} />
-            <Route path=":id" element={<Announcement />} />
-          </Route>
-          <Route path="activity-types" element={<Outlet />}>
-            <Route index element={<ActivityTypes />} />
-            <Route path="add" element={<AddActivityType />} />
-            <Route path="edit/:id" element={<EditActivityType />} />
-          </Route>
-          <Route path="events" element={<Outlet />}>
-            <Route index element={<Events />} />
-            <Route path=":id" element={<Event />} />
-            <Route path=":id/edit" element={<EditEvent />} />
-            <Route path="add" element={<AddEvent />} />
-          </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </QueryParamProvider>
     </BrowserRouter>
   );
 };
