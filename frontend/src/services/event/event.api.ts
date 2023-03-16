@@ -1,5 +1,6 @@
 import { EventState } from '../../common/enums/event-state.enum';
 import { EventStatus } from '../../common/enums/event-status';
+import { GoingStatus } from '../../common/enums/going.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent } from '../../common/interfaces/event.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -50,7 +51,7 @@ export const getRsvps = async (
   branchId?: string,
   departmentId?: string,
   roleId?: string,
-  going?: boolean,
+  going?: string,
 ): Promise<IPaginatedEntity<IRsvp>> => {
   // return API.get(`/event/${id}/rsvp`, {
   //   params: {
@@ -62,7 +63,7 @@ export const getRsvps = async (
   //     branchId,
   //     departmentId,
   //     roleId,
-  //     going,
+  //     going === undefined ? going : going === GoingStatus.GOING,
   //   },
   // });
   console.log(
@@ -75,7 +76,7 @@ export const getRsvps = async (
     branchId,
     departmentId,
     roleId,
-    going,
+    going === undefined ? going : going === GoingStatus.GOING,
   );
   return Promise.resolve({
     items: [

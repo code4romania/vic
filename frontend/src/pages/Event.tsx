@@ -43,6 +43,7 @@ import { IRsvp } from '../common/interfaces/rsvp.interface';
 import DataTableFilters from '../components/DataTableFilters';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
+import { GoingStatus } from '../common/enums/going.enum';
 
 enum EventTab {
   EVENT = 'event',
@@ -56,7 +57,7 @@ const EventTabs: SelectItem<EventTab>[] = [
 
 const TableHeader = [
   {
-    id: 'name',
+    id: 'userName',
     name: i18n.t('general:name'),
     sortable: true,
     minWidth: '10rem',
@@ -64,7 +65,7 @@ const TableHeader = [
     cell: (row: IRsvp) => <MediaCell logo={row.logo} title={row.userName} />,
   },
   {
-    id: 'answer',
+    id: 'going',
     name: i18n.t('general:answer'),
     minWidth: '11rem',
     grow: 1,
@@ -73,7 +74,7 @@ const TableHeader = [
       row.going ? i18n.t('events:participate') : i18n.t('events:not_participate'),
   },
   {
-    id: 'volunteer',
+    id: 'volunteerId',
     name: i18n.t('events:volunteer'),
     minWidth: '10rem',
     grow: 1,
@@ -251,7 +252,7 @@ const Event = () => {
     branch?.key,
     department?.key,
     role?.key,
-    !!going?.key,
+    going?.key,
   );
   const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
   const { mutateAsync: publishEvent, isLoading: isPublishingEvent } = usePublishEventMutation();
@@ -426,8 +427,8 @@ const Event = () => {
                 onChange={(item: SelectItem<string>) => setGoing(item)}
                 selected={going}
                 options={[
-                  { key: 'going', value: i18n.t('events:participate') },
-                  { key: '', value: i18n.t('events:not_participate') },
+                  { key: GoingStatus.GOING, value: i18n.t('events:participate') },
+                  { key: GoingStatus.NOTGOING, value: i18n.t('events:not_participate') },
                 ]}
               />
             </DataTableFilters>

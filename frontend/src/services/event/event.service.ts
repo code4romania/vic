@@ -43,7 +43,7 @@ export const useRsvpsQuery = (
   branchId?: string,
   departmentId?: string,
   roleId?: string,
-  going?: boolean,
+  going?: string,
 ) => {
   return useQuery(
     [
