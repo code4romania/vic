@@ -1,5 +1,5 @@
 import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import i18n from '../common/config/i18n';
 import { DivisionType } from '../common/enums/division-type.enum';
@@ -13,7 +13,6 @@ import CellLayout from '../layouts/CellLayout';
 import {
   useAddDivisionMutation,
   useDeleteDivisionMutation,
-  useDivisions,
   useEditDivisionMutation,
 } from '../services/division/division.service';
 import Button from './Button';
@@ -23,6 +22,9 @@ import ConfirmationModal from './ConfirmationModal';
 import DataTableComponent from './DataTableComponent';
 import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 import Popover from './Popover';
+import { useQueryParams } from 'use-query-params';
+import { DIVISIONS_QUERY_PARAMS } from '../pages/Organization';
+import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 
 export const DivisionTableHeader = [
   {
@@ -61,23 +63,18 @@ export const DivisionTableHeader = [
 
 interface DivisionTableProps {
   type: DivisionType;
+  isFetchingDivisions: boolean;
+  divisions?: IPaginatedEntity<IDivision>;
+  refetch: () => void;
 }
 
-const DivisionTable = ({ type }: DivisionTableProps) => {
+const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: DivisionTableProps) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [selectedDivisionForUpdate, setSelectedDivisionForUpdate] = useState<IDivision>();
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
-  const [page, setPage] = useState<number>();
 
-  const {
-    data: divisions,
-    isLoading: isFetchingDivisions,
-    error: divisionError,
-    refetch,
-  } = useDivisions(rowsPerPage as number, page as number, type, orderByColumn, orderDirection);
+  // query params
+  const [queryParams, setQueryParams] = useQueryParams(DIVISIONS_QUERY_PARAMS);
 
   const { mutateAsync: addDivisionMutation, isLoading: addDivisionMutationLoading } =
     useAddDivisionMutation();
@@ -87,16 +84,6 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
 
   const { mutateAsync: deleteDivision, isLoading: deleteDivisionMutationLoading } =
     useDeleteDivisionMutation();
-
-  // error handling
-  useEffect(() => {
-    // map error messages for DIVISIONS fetch
-    if (divisionError) {
-      useErrorToast(
-        InternalErrors.DIVISION_ERRORS.getError(divisionError.response?.data.code_error),
-      );
-    }
-  }, [divisionError]);
 
   // menu items
   const buildDivisionActionColumn = (): TableColumn<IDivision> => {
@@ -129,20 +116,27 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
 
   // pagination
   const onRowsPerPageChange = (rows: number) => {
-    setRowsPerPage(rows);
+    setQueryParams({
+      ...queryParams,
+      limit: rows,
+    });
   };
 
   const onChangePage = (newPage: number) => {
-    setPage(newPage);
+    setQueryParams({
+      ...queryParams,
+      page: newPage,
+    });
   };
 
   const onSort = (column: TableColumn<IDivision>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
+    setQueryParams({
+      orderBy: column.id as string,
+      orderDirection:
+        direction.toLocaleUpperCase() === OrderDirection.ASC
+          ? OrderDirection.ASC
+          : OrderDirection.DESC,
+    });
   };
 
   // simple actions
@@ -252,7 +246,7 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
             pagination
             paginationPerPage={divisions?.meta?.itemsPerPage}
             paginationTotalRows={divisions?.meta?.totalItems}
-            paginationDefaultPage={page}
+            paginationDefaultPage={queryParams.page as number}
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}
