@@ -63,9 +63,9 @@ export const getRsvps = async (
   //     branchId,
   //     departmentId,
   //     roleId,
-  //     going === undefined ? going : going === GoingStatus.GOING,
+  //     going: going === undefined ? going : going === GoingStatus.GOING,
   //   },
-  // });
+  // }).then((res) => res.data);
   console.log(
     id,
     limit,
