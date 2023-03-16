@@ -11,6 +11,8 @@ export class EventPresenter {
     this.id = event.id;
 
     this.name = event.name;
+    this.image =
+      'https://emoji.slack-edge.com/TFMSWR5JT/dragos/584b8f200c433c5e.jpg';
     this.description = event.description;
     this.location = event.location;
     this.startDate = event.startDate;
@@ -44,6 +46,10 @@ export class EventPresenter {
   @Expose()
   @ApiProperty({ description: 'The name of the Event' })
   name: string;
+
+  @Expose()
+  @ApiProperty({ description: 'The image of the Event' })
+  image: string;
 
   @Expose()
   @ApiProperty({ description: 'The description of the Event' })

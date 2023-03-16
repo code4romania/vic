@@ -71,8 +71,10 @@ export class ActivityTypeRepositoryService implements IActivityTypeRepository {
       ...(option.search ? { name: ILike(`%${option.search}%`) } : {}),
     }));
 
+    const whereOptions = mapOptions.length !== 0 ? mapOptions : {};
+
     const activityTypes = await this.activityTypeRepository.find({
-      where: mapOptions,
+      where: whereOptions,
       relations: {
         organization: true,
         branch: true,

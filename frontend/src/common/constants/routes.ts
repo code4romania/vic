@@ -1,6 +1,6 @@
 import i18n from '../config/i18n';
 import { RectangleGroupIcon, SunIcon, UsersIcon } from '@heroicons/react/24/outline';
-import { ClockIcon, PuzzlePieceIcon } from '@heroicons/react/24/solid';
+import { ClockIcon, PuzzlePieceIcon, CalendarIcon } from '@heroicons/react/24/solid';
 
 import { IRoute } from '../interfaces/route.interface';
 import { MegaphoneIcon } from '@heroicons/react/24/solid';
@@ -39,6 +39,12 @@ export const ROUTES: IRoute[] = [
   },
   {
     id: 4,
+    name: i18n.t('side_menu:options.events'),
+    href: 'events',
+    icon: CalendarIcon,
+  },
+  {
+    id: 5,
     name: i18n.t('side_menu:options.announcements'),
     href: 'announcements',
     icon: MegaphoneIcon,

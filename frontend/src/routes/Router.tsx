@@ -19,6 +19,10 @@ import Volunteer from '../pages/Volunteer';
 import EditVolunteer from '../pages/EditVolunteer';
 import AddActivityType from '../pages/AddActivityType';
 import ActivityTypes from '../pages/ActivityTypes';
+import Events from '../pages/Events';
+import Event from '../pages/Event';
+import AddEvent from '../pages/AddEvent';
+import EditEvent from '../pages/EditEvent';
 import AddAnnouncement from '../pages/AddAnnouncement';
 import EditAnnouncement from '../pages/EditAnnouncement';
 import Announcement from '../pages/Announcement';
@@ -57,6 +61,12 @@ const Router = () => {
             <Route index element={<ActivityTypes />} />
             <Route path="add" element={<AddActivityType />} />
             <Route path="edit/:id" element={<EditActivityType />} />
+          </Route>
+          <Route path="events" element={<Outlet />}>
+            <Route index element={<Events />} />
+            <Route path=":id" element={<Event />} />
+            <Route path=":id/edit" element={<EditEvent />} />
+            <Route path="add" element={<AddEvent />} />
           </Route>
           <Route path="activity-log" element={<Outlet />}>
             <Route index element={<ActivityLog />} />

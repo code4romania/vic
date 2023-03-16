@@ -36,7 +36,6 @@ const ActivityTypeForm = ({ control, errors }: AccessCodeFormProps) => {
               label={i18n.t('activity_types:form.name.label').toString()}
               placeholder={`${i18n.t('activity_types:form.name.placeholder')}`}
               onChange={onChange}
-              aria-invalid={errors['name']?.message ? 'true' : 'false'}
               id="add-activity-form__name"
             />
           );
@@ -59,7 +58,6 @@ const ActivityTypeForm = ({ control, errors }: AccessCodeFormProps) => {
                 })
                 .toString()}
               onChange={onChange}
-              aria-invalid={errors['icon']?.message ? 'true' : 'false'}
               id="add-activity-form__icon"
             />
           );

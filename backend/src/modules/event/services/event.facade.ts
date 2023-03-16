@@ -1,14 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { EventStatus } from '../enums/event-status.enum';
 import {
   CreateEventRSVPOptions,
   FindEventRSVPOptions,
+  FindManyEventRSVPOptions,
   IEventRSVPModel,
   UpdateEventRSVPOptions,
 } from '../models/event-rsvp.model';
 import {
   CreateEventOptions,
+  FindManyEventOptions,
   IEventModel,
+  IEventsListItemModel,
   UpdateEventOptions,
 } from '../models/event.model';
 import { EventRSVPRepository } from '../repositories/event-rsvp.repository';
@@ -27,6 +31,12 @@ export class EventFacade {
 
   async find(id: string): Promise<IEventModel> {
     return this.eventRepository.find(id);
+  }
+
+  async getMany(
+    findOptions: FindManyEventOptions,
+  ): Promise<Pagination<IEventsListItemModel>> {
+    return this.eventRepository.getMany(findOptions);
   }
 
   async update(id: string, updates: UpdateEventOptions): Promise<IEventModel> {
@@ -62,5 +72,11 @@ export class EventFacade {
 
   async deleteRSVP(id: string): Promise<string> {
     return this.rsvpRepository.delete(id);
+  }
+
+  async findManyRSVP(
+    findOptions: FindManyEventRSVPOptions,
+  ): Promise<Pagination<IEventRSVPModel>> {
+    return this.rsvpRepository.findMany(findOptions);
   }
 }
