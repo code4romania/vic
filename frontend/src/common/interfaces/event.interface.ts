@@ -8,7 +8,7 @@ export interface IEvent {
   startDate: Date;
   endDate?: Date;
   location?: string;
-  logo?: string;
+  image?: string;
   isPublic: boolean;
   description: string;
   observation?: string;
@@ -18,4 +18,6 @@ export interface IEvent {
   targets: IDivisionListItem[];
   rsvp: { yes: number; no: number };
   status: EventStatus;
+  going?: number;
+  notGoing?: number;
 }

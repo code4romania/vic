@@ -39,14 +39,25 @@ const EditEvent = () => {
   });
 
   useEffect(() => {
+    // init form data
     if (event)
       reset({
-        ...event,
+        attendanceType: event.attendanceType,
+        attendanceMention: event.attendanceMention || undefined,
+        observation: event.observation || undefined,
+        name: event.name,
+        location: event.location || undefined,
+        description: event.description,
         startDate: new Date(event.startDate),
-        endDate: event.endDate ? new Date(event.endDate) : event.endDate,
-        targetType: event.isPublic ? TargetType.PUBLIC : TargetType.SELECT,
+        endDate: event.endDate ? new Date(event.endDate) : undefined,
+        targetType: event.isPublic
+          ? TargetType.PUBLIC
+          : event.targets?.length > 0
+          ? TargetType.SELECT
+          : TargetType.ALL,
         targets: !event.isPublic ? [...event.targets.map(mapDivisionListItemToSelectItem)] : [],
         tasks: [...event.tasks.map(mapDivisionListItemToSelectItem)],
+        status: event.status,
       });
   }, [event]);
 
@@ -91,7 +102,14 @@ const EditEvent = () => {
             />
           </CardHeader>
           <CardBody>
-            <EventForm control={control} errors={errors} watch={watch} resetField={resetField} />
+            <EventForm
+              control={control}
+              errors={errors}
+              watch={watch}
+              resetField={resetField}
+              isEditForm
+              eventStatus={event?.status}
+            />
           </CardBody>
         </Card>
       )}

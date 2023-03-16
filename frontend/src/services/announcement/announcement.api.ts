@@ -1,3 +1,4 @@
+import { AnnouncementStatus } from '../../common/enums/announcement-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IAnnouncement } from '../../common/interfaces/announcement.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -9,9 +10,12 @@ export const getAnnouncements = async (
   page: number,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  search?: string,
+  status?: AnnouncementStatus,
+  targetsIds?: string[],
 ): Promise<IPaginatedEntity<IAnnouncement>> => {
   return API.get('/announcement', {
-    params: { limit, page, orderBy, orderDirection },
+    params: { limit, page, orderBy, orderDirection, search, status, targetsIds },
   }).then((res) => res.data);
 };
 
