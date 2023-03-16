@@ -22,14 +22,10 @@ import {
   useDeleteAccessCodeMutation,
 } from '../services/organization/organization.service';
 import { useQueryParams } from 'use-query-params';
-import { NumberParam, StringParam } from 'use-query-params';
-import { PaginationConfig } from '../common/constants/pagination';
+import { PaginationConfig, DEFAULT_QUERY_PARAMS } from '../common/constants/pagination';
 
 export const ACCESS_CODES_QUERY_PARAMS = {
-  page: NumberParam,
-  limit: NumberParam,
-  orderBy: StringParam,
-  orderDirection: StringParam,
+  ...DEFAULT_QUERY_PARAMS,
 };
 
 export interface IAccessCode {
