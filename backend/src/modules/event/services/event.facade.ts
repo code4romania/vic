@@ -10,6 +10,7 @@ import {
 import {
   CreateEventOptions,
   FindManyEventOptions,
+  FindOneEventOptions,
   IEventModel,
   IEventsListItemModel,
   UpdateEventOptions,
@@ -28,8 +29,8 @@ export class EventFacade {
     return this.eventRepository.create(newEvent);
   }
 
-  async find(id: string): Promise<IEventModel> {
-    return this.eventRepository.find(id);
+  async find(findOptions: FindOneEventOptions): Promise<IEventModel> {
+    return this.eventRepository.find(findOptions);
   }
 
   async getMany(

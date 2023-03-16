@@ -91,7 +91,7 @@ export class EventController {
   async getOne(
     @Param('id', UuidValidationPipe) eventId: string,
   ): Promise<EventPresenter> {
-    const event = await this.getOneEventUsecase.execute(eventId);
+    const event = await this.getOneEventUsecase.execute({ id: eventId });
     return new EventPresenter(event);
   }
 

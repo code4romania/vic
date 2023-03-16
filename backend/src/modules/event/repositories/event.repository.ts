@@ -15,6 +15,7 @@ import {
   CreateEventOptions,
   EventModelTransformer,
   FindManyEventOptions,
+  FindOneEventOptions,
   IEventModel,
   IEventsListItemModel,
   UpdateEventOptions,
@@ -97,7 +98,7 @@ export class EventRepository
       EventModelTransformer.toEntity(newEvent),
     );
 
-    return this.find(eventEntity.id);
+    return this.find({ id: eventEntity.id });
   }
 
   async update(
@@ -116,7 +117,7 @@ export class EventRepository
 
     await this.eventRepository.save(toUpdate);
 
-    return this.find(id);
+    return this.find({ id });
   }
 
   async updateStatus(
@@ -125,12 +126,12 @@ export class EventRepository
   ): Promise<IEventModel> {
     await this.eventRepository.update({ id }, { status });
 
-    return this.find(id);
+    return this.find({ id });
   }
 
-  async find(id: string): Promise<IEventModel> {
+  async find(findOptions: FindOneEventOptions): Promise<IEventModel> {
     const eventEntity = await this.eventRepository.findOne({
-      where: { id },
+      where: findOptions,
       relations: {
         organization: true,
         targets: true,
