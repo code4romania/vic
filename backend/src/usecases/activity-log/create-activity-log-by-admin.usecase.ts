@@ -9,6 +9,7 @@ import { ActivityLogFacade } from 'src/modules/activity-log/services/activity-lo
 import { ActivityTypeExceptionMessages } from 'src/modules/activity-type/exceptions/activity-type.exceptions';
 import { ActivityTypeFacade } from 'src/modules/activity-type/services/activity-type.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneEventUseCase } from '../event/get-one-event.usecase';
@@ -34,6 +35,7 @@ export class CreateActivityLogByAdmin
     const volunteer = await this.volunteerFacade.find({
       id: newLogRequestDto.volunteerId,
       organizationId: admin.organizationId,
+      status: VolunteerStatus.ACTIVE,
     });
 
     if (!volunteer) {

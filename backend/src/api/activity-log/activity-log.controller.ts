@@ -27,11 +27,12 @@ import { CreateActivityLogByAdminDto } from './dto/create-activity-log-by-admin.
 import { GetManyActivityLogsDto } from './dto/get-many-activity-logs.dto';
 import { RejectActivityLogDto } from './dto/reject-activity-log.dto';
 import { UpdateActivityLogDto } from './dto/update-activity-log.dto';
+import { ActivityLogGuard } from './guards/activity-log.guard';
 import { ActivityLogListItemPresenter } from './presenters/activity-log-list-item.presenter';
 import { ActivityLogPresenter } from './presenters/activity-log.presenter';
 
 @ApiBearerAuth()
-@UseGuards(WebJwtAuthGuard)
+@UseGuards(WebJwtAuthGuard, ActivityLogGuard)
 @Controller('activity-log')
 export class ActivityLogController {
   constructor(

@@ -25,10 +25,9 @@ export class ActivityLogListItemPresenter {
       : null;
 
     this.activityType = log.activityType
-      ? {
-          ...new IdAndNamePresenter(log.activityType),
-          icon: log.activityType.icon,
-        }
+      ? new ActivityTypeListItemWithIconPresenter(
+          log.activityType as IActivityTypeModel,
+        )
       : null;
 
     this.event = log.event ? new IdAndNamePresenter(log.event) : null;
