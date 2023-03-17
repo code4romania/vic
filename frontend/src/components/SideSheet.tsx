@@ -73,7 +73,10 @@ const SideSheet = ({
               value={activityLog.volunteer.name}
               onClick={onVolunteerClick}
             />
-            <FormReadOnlyElement label={i18n.t('general:task')} value={activityLog.task.name} />
+            <FormReadOnlyElement
+              label={i18n.t('general:task')}
+              value={activityLog.activityType.name}
+            />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.hours')}
               value={activityLog.hours}
@@ -93,16 +96,16 @@ const SideSheet = ({
             />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.mention')}
-              value={activityLog.mention}
+              value={activityLog.mentions}
             />
             <hr />
             <FormReadOnlyName
-              label={i18n.t('activity_log:side_panel.registered_by')}
-              value={activityLog.registeredBy?.name}
+              label={i18n.t('activity_log:side_panel.created_by')}
+              value={activityLog.createdByAdmin?.name}
             />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.registration_date')}
-              value={formatDate(activityLog.registrationDate)}
+              value={formatDate(activityLog.createdOn)}
             />
             {activityLog.status === ActivityLogStatus.APPROVED && (
               <>
@@ -112,7 +115,7 @@ const SideSheet = ({
                 />
                 <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.approve_date')}
-                  value={formatDate(activityLog.approveDate)}
+                  value={formatDate(activityLog.approvedOn)}
                 />
               </>
             )}
@@ -124,11 +127,11 @@ const SideSheet = ({
                 />
                 <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.reject_date')}
-                  value={formatDate(activityLog.rejectDate)}
+                  value={formatDate(activityLog.rejectedOn)}
                 />
                 <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.reject_reason')}
-                  value={activityLog.rejectReason}
+                  value={activityLog.rejectionReason}
                 />
               </>
             )}

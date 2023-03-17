@@ -6,16 +6,16 @@ export interface IActivityLog {
   id: string;
   date: Date;
   hours: number;
-  task: Pick<IActivityType, 'icon' | 'name'>;
-  volunteer: Pick<IUser, 'id' | 'name'>;
   status: ActivityLogStatus;
-  registrationDate?: Date;
-  mention?: string;
-  registeredBy?: Pick<IUser, 'id' | 'name'>;
+  mentions?: string;
+  volunteer: Pick<IUser, 'id' | 'name'>;
+  createdByAdmin?: Pick<IUser, 'id' | 'name'>;
+  activityType: Pick<IActivityType, 'id' | 'name'> & { icon?: string };
   event?: { id: string; name: string };
-  approvedBy?: Pick<IUser, 'id' | 'name'>;
+  rejectionReason?: string;
+  rejectedOn?: Date;
   rejectedBy?: Pick<IUser, 'id' | 'name'>;
-  rejectDate?: Date;
-  approveDate?: Date;
-  rejectReason?: string;
+  createdOn?: Date;
+  approvedBy?: Pick<IUser, 'id' | 'name'>;
+  approvedOn?: Date;
 }

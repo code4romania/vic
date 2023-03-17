@@ -5,6 +5,8 @@ import { ICity } from '../interfaces/city.interface';
 import { IDivisionListItem } from '../interfaces/division.interface';
 import { AnnouncementStatus } from '../enums/announcement-status.enum';
 import { EventStatus } from '../enums/event-status';
+import { IUser } from '../interfaces/user.interface';
+import { ListItem } from '../interfaces/list-item.interface';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
@@ -87,4 +89,9 @@ export const ActivityLogStatusMarkerColorMapper = {
 export const mapDivisionListItemToSelectItem = (item: IDivisionListItem): SelectItem<string> => ({
   key: item.id,
   value: item.name,
+});
+
+export const mapUserToListItem = (user: Pick<IUser, 'id' | 'name'>): ListItem => ({
+  label: user.name,
+  value: user.id,
 });

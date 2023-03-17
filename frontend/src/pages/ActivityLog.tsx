@@ -121,15 +121,17 @@ const ActivityLog = () => {
 
   const PendingActivityLogTableHeader = [
     {
-      id: 'activityLog.task',
+      id: 'activityType',
       name: i18n.t('general:task'),
       sortable: true,
       grow: 2,
       minWidth: '10rem',
-      cell: (row: IActivityLog) => <MediaCell logo={row.task?.icon || ''} title={row.task.name} />,
+      cell: (row: IActivityLog) => (
+        <MediaCell logo={row.activityType?.icon || ''} title={row.activityType.name} />
+      ),
     },
     {
-      id: 'activityLog.hours',
+      id: 'hours',
       name: i18n.t('general:hours'),
       sortable: true,
       grow: 1,
@@ -145,7 +147,7 @@ const ActivityLog = () => {
       selector: (row: IActivityLog) => formatDate(row.date),
     },
     {
-      id: 'activityLog.volunteer',
+      id: 'volunteer',
       name: i18n.t('volunteer:name', { status: '' }),
       sortable: true,
       grow: 1,
@@ -157,26 +159,28 @@ const ActivityLog = () => {
       ),
     },
     {
-      id: 'activityLog.registration',
+      id: 'createdOn',
       name: i18n.t('activity_log:registration_date'),
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.registrationDate),
+      selector: (row: IActivityLog) => formatDate(row.createdOn),
     },
   ];
 
   const PastActivityLogTableHeader = [
     {
-      id: 'activityLog.task',
+      id: 'activityType',
       name: 'Task',
       sortable: true,
       grow: 2,
       minWidth: '10rem',
-      cell: (row: IActivityLog) => <MediaCell logo={row.task?.icon || ''} title={row.task.name} />,
+      cell: (row: IActivityLog) => (
+        <MediaCell logo={row.activityType?.icon || ''} title={row.activityType.name} />
+      ),
     },
     {
-      id: 'activityLog.hours',
+      id: 'hours',
       name: i18n.t('general:hours'),
       sortable: true,
       grow: 1,
@@ -192,7 +196,7 @@ const ActivityLog = () => {
       selector: (row: IActivityLog) => formatDate(row.date),
     },
     {
-      id: 'activityLog.volunteer',
+      id: 'volunteer',
       name: i18n.t('volunteer:name', { status: '' }),
       sortable: true,
       grow: 1,
@@ -204,7 +208,7 @@ const ActivityLog = () => {
       ),
     },
     {
-      id: 'activityLog.status',
+      id: 'status',
       name: i18n.t('activity_log:status'),
       sortable: true,
       grow: 1,

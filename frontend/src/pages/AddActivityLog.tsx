@@ -23,9 +23,12 @@ const schema = yup
     task: yup.object().required(`${i18n.t('activity_log:form.task.required')}`),
     hours: yup
       .number()
-      .min(1)
+      .typeError(`${i18n.t('activity_log:form.hours.required')}`)
+      .integer(`${i18n.t('activity_log:form.hours.integer')}`)
+      .min(1, `${i18n.t('activity_log:form.hours.min')}`)
       .required(`${i18n.t('activity_log:form.hours.required')}`),
     date: yup.date().required(`${i18n.t('activity_log:form.date.required')}`),
+    mentions: yup.string().max(300, `${i18n.t('events:form.mention.max', { value: '300' })}`),
   })
   .required();
 

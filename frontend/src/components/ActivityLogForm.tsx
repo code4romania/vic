@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl, UseFormReset } from 'react-hook-form';
 import i18n from '../common/config/i18n';
 import { IActivityLog } from '../common/interfaces/activity-log.interface';
@@ -27,23 +27,7 @@ export type ActivityLogFormTypes = {
   task: ListItem;
 };
 
-const ActivityLogForm = ({
-  control,
-  errors,
-  disabled,
-  activityLog,
-  reset,
-}: ActivityLogFormProps) => {
-  useEffect(() => {
-    if (activityLog && reset)
-      // reset({
-      //   ...activityLog,
-      //   executionDate: new Date(activityLog.executionDate),
-      //   endDate: accessCode.endDate ? new Date(accessCode.endDate) : accessCode.endDate,
-      // });
-      console.log(activityLog);
-  }, [activityLog, reset]);
-
+const ActivityLogForm = ({ control, errors, disabled }: ActivityLogFormProps) => {
   return (
     <FormLayout>
       <p className="text-cool-gray-500">{i18n.t('activity_log:form.description')}</p>

@@ -35,9 +35,9 @@ export const getActivityLogs = async (
     items: [
       {
         id: '1',
-        task: {
-          icon: '🌳',
+        activityType: {
           name: 'Planting trees',
+          id: '22',
         },
         hours: 3,
         date: new Date('2023-03-10'),
@@ -46,13 +46,14 @@ export const getActivityLogs = async (
           name: 'John Doe',
         },
         status: ActivityLogStatus.REJECTED,
-        registrationDate: new Date('2023-03-11'),
+        createdOn: new Date('2023-03-11'),
       },
       {
         id: '2',
-        task: {
+        activityType: {
           icon: '🏥',
           name: 'Volunteering at hospital',
+          id: '22',
         },
         hours: 5,
         date: new Date('2023-03-08'),
@@ -61,7 +62,7 @@ export const getActivityLogs = async (
           name: 'Jane Smith',
         },
         status: ActivityLogStatus.APPROVED,
-        registrationDate: new Date('2023-03-09'),
+        createdOn: new Date('2023-03-09'),
       },
       // ... more activity logs
     ],
@@ -86,9 +87,9 @@ export const getActivityLog = async (id: string): Promise<IActivityLog> => {
   // return API.get(`activity-log/${id}`).then((res) => res.data);
   return Promise.resolve({
     id,
-    task: {
-      icon: '🌳',
+    activityType: {
       name: 'Planting trees',
+      id: '22',
     },
     hours: 3,
     date: new Date('2023-03-10'),
@@ -96,16 +97,16 @@ export const getActivityLog = async (id: string): Promise<IActivityLog> => {
       id: '123',
       name: 'John Doe',
     },
-    status: ActivityLogStatus.APPROVED,
-    registrationDate: new Date('2023-03-11'),
+    status: ActivityLogStatus.PENDING,
+    createdOn: new Date('2023-03-11'),
     event: { id: '222', name: 'Un eveniment frumos' },
-    registeredBy: { id: '22', name: 'Popa Elena Luminita' },
+    createdByAdmin: { id: '22', name: 'Popa Elena Luminita' },
     approvedBy: { id: '22', name: 'Popa Elena Luminita' },
-    approveDate: new Date('2024-01-02'),
-    mention: 'Face mamaliga buna',
+    approvedOn: new Date('2024-01-02'),
+    mentions: 'Face mamaliga buna',
     rejectedBy: { id: '22', name: 'Popa Elena Luminita' },
-    rejectDate: new Date('2024-01-02'),
-    rejectReason: 'Ca asa am vrut eu',
+    rejectedOn: new Date('2024-01-02'),
+    rejectionReason: 'Ca asa am vrut eu',
   });
 };
 

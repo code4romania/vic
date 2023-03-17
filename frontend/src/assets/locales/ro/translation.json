@@ -559,7 +559,7 @@
       "hours": "Număr ore",
       "title": "Fișă de activitate",
       "event": "În cadrul evenimentului",
-      "registered_by": "Înregistrat de",
+      "created_by": "Înregistrat de",
       "registration_date": "Dată înregistrare ore",
       "approved_by": "Aprobat de",
       "approve_date": "Dată aprobare ore",
@@ -580,7 +580,9 @@
         "required": "Data este obligatorie"
       },
       "hours": {
-        "required": "Numarul de ore este obligatoriu"
+        "required": "Numarul de ore este obligatoriu",
+        "min": "Numarul de ore trebuie sa fie mai mare ca 0",
+        "integer": "Numarul de ore trebuie sa fie intreg"
       },
       "submit": {
         "messages": {
