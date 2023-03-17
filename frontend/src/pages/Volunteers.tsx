@@ -131,7 +131,7 @@ const BlockedVolunteersTableHeader = [
     id: 'blockedOn',
     name: i18n.t('volunteers:blocked_on'),
     sortable: true,
-    selector: (row: IVolunteer) => (row.blockedOn ? formatDate(formatDate(row.blockedOn)) : '-'),
+    selector: (row: IVolunteer) => (row.blockedOn ? formatDate(row.blockedOn) : '-'),
   },
 ];
 

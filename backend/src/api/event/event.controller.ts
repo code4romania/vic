@@ -28,11 +28,14 @@ import { DeleteEventUseCase } from 'src/usecases/event/delete-event.usecase';
 import { GetManyEventUseCase } from 'src/usecases/event/get-many-event.usecase';
 import { GetOneEventUseCase } from 'src/usecases/event/get-one-event.usecase';
 import { PublishEventUseCase } from 'src/usecases/event/publish-event.usecase';
+import { GetManyEventRSVPUseCase } from 'src/usecases/event/RSVP/get-many-rsvp.usecase';
 import { UpdateEventUseCase } from 'src/usecases/event/update-event.usecase';
 import { CreateEventDto } from './dto/create-event.dto';
-import { GetManyEventDto } from './dto/get-many-event.dto';
+import { GetPaginatedEventRSVPsDto } from './dto/get-paginated-event-rsvp.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventGuard } from './guards/event.guard';
+import { EventRSVPPresenter } from './presenters/event-rsvp.presenter';
+import { GetManyEventDto } from './dto/get-many-event.dto';
 import { EventListItemPresenter } from './presenters/event-list-item.presenter';
 import { EventPresenter } from './presenters/event.presenter';
 import { Response } from 'express';
@@ -50,6 +53,7 @@ export class EventController {
     private readonly deleteEventUseCase: DeleteEventUseCase,
     private readonly archiveEventUseCase: ArchiveEventUseCase,
     private readonly publishEventUseCase: PublishEventUseCase,
+    private readonly getManyEventRSVPUsecase: GetManyEventRSVPUseCase,
     private readonly getManyEventUseCase: GetManyEventUseCase,
     private readonly getManyForDownloadEventUseCase: GetManyForDownloadEventUseCase,
   ) {}
@@ -117,7 +121,7 @@ export class EventController {
   async getOne(
     @Param('id', UuidValidationPipe) eventId: string,
   ): Promise<EventPresenter> {
-    const event = await this.getOneEventUsecase.execute(eventId);
+    const event = await this.getOneEventUsecase.execute({ id: eventId });
     return new EventPresenter(event);
   }
 
@@ -145,6 +149,21 @@ export class EventController {
     return this.deleteEventUseCase.execute(eventId);
   }
 
-  // TODO: @birloiflorian get all RSVP for event
-  // @GET(':id/rsvp') + filters
+  @Get(':id/rsvp')
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiPaginatedResponse(EventRSVPPresenter)
+  async getManyRSVP(
+    @Query() filters: GetPaginatedEventRSVPsDto,
+    @Param('id', UuidValidationPipe) eventId: string,
+  ): Promise<PaginatedPresenter<EventRSVPPresenter>> {
+    const rsvps = await this.getManyEventRSVPUsecase.execute({
+      ...filters,
+      eventId,
+    });
+
+    return new PaginatedPresenter({
+      ...rsvps,
+      items: rsvps.items.map((rsvp) => new EventRSVPPresenter(rsvp)),
+    });
+  }
 }

@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
 import { PaginationConfig } from '../../common/constants/pagination';
+import { AnnouncementStatus } from '../../common/enums/announcement-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ANNOUNCEMENT_ERRORS } from '../../common/errors/entities/announcement.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
@@ -18,10 +19,13 @@ export const useAnnouncements = (
   page: number = PaginationConfig.defaultPage,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  searchWord?: string,
+  status?: AnnouncementStatus,
+  targetsIds?: string[],
 ) => {
   return useQuery(
-    ['announcement', limit, page, orderBy, orderDirection],
-    () => getAnnouncements(limit, page, orderBy, orderDirection),
+    ['announcement', limit, page, orderBy, orderDirection, searchWord, status, targetsIds],
+    () => getAnnouncements(limit, page, orderBy, orderDirection, searchWord, status, targetsIds),
     {
       onError: (error: AxiosError<IBusinessException<ANNOUNCEMENT_ERRORS>>) => error,
     },

@@ -16,7 +16,9 @@ export class EventGuard implements CanActivate {
     if (!user) return false;
     if (!eventId) return true; // Skip endpoints without IDs
 
-    const event: IEventModel = await this.getOneEventUseCase.execute(eventId);
+    const event: IEventModel = await this.getOneEventUseCase.execute({
+      id: eventId,
+    });
 
     if (event?.organization?.id !== user.organizationId) return false;
 

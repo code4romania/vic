@@ -31,6 +31,20 @@ import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
+import DataTableFilters from '../components/DataTableFilters';
+import Select, { SelectItem } from '../components/Select';
+import TargetsMultiSelect from '../containers/TargetsMultiSelect';
+
+const StatusOptions: SelectItem<AnnouncementStatus>[] = [
+  {
+    key: AnnouncementStatus.DRAFT,
+    value: i18n.t('announcement:status.draft'),
+  },
+  {
+    key: AnnouncementStatus.PUBLISHED,
+    value: i18n.t('announcement:status.published'),
+  },
+];
 
 const AnnouncementTableHeader = [
   {
@@ -96,6 +110,11 @@ const Announcements = () => {
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
 
+  // filters
+  const [searchWord, setSearchWord] = useState<string>();
+  const [status, setStatus] = useState<SelectItem<AnnouncementStatus>>();
+  const [targetsIds, setTargetsIds] = useState<SelectItem<string>[]>([]);
+
   const navigate = useNavigate();
 
   const {
@@ -103,7 +122,15 @@ const Announcements = () => {
     isLoading: isAnnouncementsLoading,
     error: announcementsError,
     refetch,
-  } = useAnnouncements(rowsPerPage, page, orderByColumn, orderDirection);
+  } = useAnnouncements(
+    rowsPerPage,
+    page,
+    orderByColumn,
+    orderDirection,
+    searchWord,
+    status?.key,
+    targetsIds.map((targetId) => targetId.key),
+  );
 
   const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
     useUpdateAnnouncementMutation();
@@ -251,9 +278,30 @@ const Announcements = () => {
     );
   };
 
+  const onResetFilters = () => {
+    setSearchWord(undefined);
+    setStatus(undefined);
+    setTargetsIds([]);
+  };
+
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.announcements')}</PageHeader>
+      <DataTableFilters onResetFilters={onResetFilters} onSearch={setSearchWord}>
+        <Select
+          label={`${i18n.t('general:status')}`}
+          onChange={setStatus}
+          options={StatusOptions}
+          selected={status}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+        />
+        <TargetsMultiSelect
+          onChange={setTargetsIds}
+          selected={targetsIds}
+          label={`${i18n.t('announcement:header.target')}`}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+        />
+      </DataTableFilters>
       <Card>
         <CardHeader>
           <h3>{i18n.t('announcement:title')}</h3>

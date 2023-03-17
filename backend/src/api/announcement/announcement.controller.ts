@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
-import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import {
   ApiPaginatedResponse,
@@ -25,6 +24,7 @@ import { GetManyAnnouncementUseCase } from 'src/usecases/announcement/get-many-a
 import { GetOneAnnouncementUseCase } from 'src/usecases/announcement/get-one-announcement.usecase';
 import { UpdateAnnouncementUseCase } from 'src/usecases/announcement/update-announcement.usecase';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
+import { GetManyAnnouncementDto } from './dto/get-many-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
 import { AnnouncementGuard } from './guards/announcement.guard';
 import { AnnouncementPresenter } from './presenters/announcement.presenter';
@@ -44,7 +44,7 @@ export class AnnouncementController {
   @Get()
   @ApiPaginatedResponse(AnnouncementPresenter)
   async getAll(
-    @Query() filters: BasePaginationFilterDto,
+    @Query() filters: GetManyAnnouncementDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<PaginatedPresenter<AnnouncementPresenter>> {
     const announcements = await this.getManyAnnouncementUseCase.execute({

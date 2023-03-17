@@ -2,6 +2,7 @@ import { Pagination } from 'src/infrastructure/base/repository-with-pagination.c
 import {
   CreateEventOptions,
   FindManyEventOptions,
+  FindOneEventOptions,
   IEventModel,
   IEventsListItemModel,
   UpdateEventOptions,
@@ -12,7 +13,7 @@ export interface IEventRepository {
   create(newEvent: CreateEventOptions): Promise<IEventModel>;
   update(id: string, updates: UpdateEventOptions): Promise<IEventModel>;
   updateStatus(id: string, status: UpdateStatusOptions): Promise<IEventModel>;
-  find(id: string): Promise<IEventModel>;
+  find(findOptions: FindOneEventOptions): Promise<IEventModel>;
   delete(id: string): Promise<string>;
   getMany(
     findOptions: FindManyEventOptions,
