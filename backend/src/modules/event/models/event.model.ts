@@ -68,6 +68,10 @@ export type CreateEventOptions = Pick<
   tasksIds: string[];
 };
 
+export type FindOneEventOptions = Pick<IActivityTypeModel, 'id'> & {
+  organizationId?: string;
+};
+
 export type UpdateEventOptions = Partial<
   Omit<CreateEventOptions, 'status' | 'organizationId'>
 >;

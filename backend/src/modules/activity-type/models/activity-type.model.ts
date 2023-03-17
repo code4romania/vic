@@ -65,6 +65,7 @@ export type FindManyActivityTypeOptions = Partial<
 
 export class ActivityTypeTransformer {
   static fromEntity(entity: ActivityTypeEntity): IActivityTypeModel {
+    if (!entity) return null;
     return {
       id: entity.id,
       name: entity.name,
