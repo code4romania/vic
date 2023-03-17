@@ -80,9 +80,9 @@ const OpenEventsTableHeader = [
     minWidth: '9rem',
     grow: 1,
     selector: (row: IEvent) =>
-      `${row.going || 0} ${i18n.t('events:participate')}\n${row.notGoing || 0} ${i18n.t(
-        'events:not_participate',
-      )}`,
+      `${row.going || 0} ${i18n.t('events:participate').toLowerCase()}\n${row.notGoing || 0} ${i18n
+        .t('events:not_participate')
+        .toLowerCase()}`,
   },
   {
     id: 'status',
@@ -135,9 +135,9 @@ const PastEventsTableHeader = [
     minWidth: '9rem',
     grow: 1,
     selector: (row: IEvent) =>
-      `${row.going || 0} ${i18n.t('events:participate')}\n${row.notGoing || 0} ${i18n.t(
-        'events:not_participate',
-      )}`,
+      `${row.going || 0} ${i18n.t('events:participate').toLowerCase()}\n${row.notGoing || 0} ${i18n
+        .t('events:not_participate')
+        .toLowerCase()}`,
   },
   {
     id: 'hours',
