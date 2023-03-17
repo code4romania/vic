@@ -116,7 +116,7 @@ const ActivityLog = () => {
   };
 
   const onAddButtonPress = () => {
-    alert('not yet implemented');
+    navigate('add');
   };
 
   const PendingActivityLogTableHeader = [
@@ -137,12 +137,12 @@ const ActivityLog = () => {
       selector: (row: IActivityLog) => `${row.hours}h`,
     },
     {
-      id: 'activityLog.execution',
-      name: i18n.t('activity_log:execution_date'),
+      id: 'date',
+      name: i18n.t('activity_log:date'),
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.executionDate),
+      selector: (row: IActivityLog) => formatDate(row.date),
     },
     {
       id: 'activityLog.volunteer',
@@ -184,12 +184,12 @@ const ActivityLog = () => {
       selector: (row: IActivityLog) => `${row.hours}h`,
     },
     {
-      id: 'activityLog.execution',
-      name: i18n.t('activity_log:execution_date'),
+      id: 'date',
+      name: i18n.t('activity_log:date'),
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.executionDate),
+      selector: (row: IActivityLog) => formatDate(row.date),
     },
     {
       id: 'activityLog.volunteer',

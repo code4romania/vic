@@ -1,0 +1,90 @@
+import React from 'react';
+import PageHeader from '../components/PageHeader';
+import PageLayout from '../layouts/PageLayout';
+import { useNavigate } from 'react-router-dom';
+import i18n from '../common/config/i18n';
+import CardHeader from '../components/CardHeader';
+import Card from '../layouts/CardLayout';
+import CardBody from '../components/CardBody';
+import Button from '../components/Button';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
+import LoadingContent from '../components/LoadingContent';
+import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
+import ActivityLogForm, { ActivityLogFormTypes } from '../components/ActivityLogForm';
+import { useAddActivityLogMutation } from '../services/acitivity-log/activity-log.service';
+
+const schema = yup
+  .object({
+    volunteer: yup.object().required(`${i18n.t('activity_log:form.volunteer.required')}`),
+    task: yup.object().required(`${i18n.t('activity_log:form.task.required')}`),
+    hours: yup
+      .number()
+      .min(1)
+      .required(`${i18n.t('activity_log:form.hours.required')}`),
+    date: yup.date().required(`${i18n.t('activity_log:form.date.required')}`),
+  })
+  .required();
+
+const AddActivityLog = () => {
+  const navigate = useNavigate();
+
+  const { mutateAsync: addActivityLog, isLoading: isActivityLogAdding } =
+    useAddActivityLogMutation();
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<ActivityLogFormTypes>({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(schema),
+  });
+
+  const navigateBack = () => {
+    navigate('/activity-log', { replace: true });
+  };
+
+  const onSubmit = (data: ActivityLogFormTypes) => {
+    addActivityLog(data, {
+      onSuccess: () => {
+        useSuccessToast(i18n.t('activity_log:form.submit.messages.add'));
+        navigateBack();
+      },
+      onError: (error) => {
+        useErrorToast(InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error));
+      },
+    });
+  };
+
+  return (
+    <PageLayout>
+      <PageHeader onBackButtonPress={navigateBack}>
+        {i18n.t('general:add', { item: '' })}
+      </PageHeader>
+      {isActivityLogAdding && <LoadingContent />}
+      {!isActivityLogAdding && (
+        <Card>
+          <CardHeader>
+            <h2>{i18n.t('side_menu:options.activity_log')}</h2>
+            <Button
+              label={i18n.t('general:save')}
+              className="btn-primary"
+              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
+              onClick={handleSubmit(onSubmit)}
+            />
+          </CardHeader>
+          <CardBody>
+            <ActivityLogForm control={control} errors={errors} />
+          </CardBody>
+        </Card>
+      )}
+    </PageLayout>
+  );
+};
+
+export default AddActivityLog;

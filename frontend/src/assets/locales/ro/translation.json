@@ -15,6 +15,7 @@
     "all_organization": "Toata organizatia",
     "event": "Eveniment",
     "add": "Adauga {{item}}",
+    "save": "Salvează",
     "category": "Categorie",
     "select": "Selecteaza {{item}}",
     "choose": "Alege {{item}}",
@@ -541,7 +542,7 @@
     "past": "Istoric ore de voluntariat",
     "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
     "add": "Înregistrează ore",
-    "execution_date": "Data efectuării",
+    "date": "Data efectuării",
     "registration_date": "Data inregistrarii",
     "display_status": {
       "rejected": "Respins",
@@ -565,7 +566,28 @@
       "rejected_by": "Respins de",
       "reject_date": "Dată respingere ore",
       "reject_reason": "Motiv respingere",
-      "mention": "Mentiuni"
+      "mention": "Mentiune"
+    },
+    "form": {
+      "description": "Alege evenimentul pentru care dorești să adaugi ore de voluntariat",
+      "volunteer": {
+        "required": "Alegerea voluntarului este obligatorie"
+      },
+      "task": {
+        "required": "Alegerea taskului este obligatorie"
+      },
+      "date": {
+        "required": "Data este obligatorie"
+      },
+      "hours": {
+        "required": "Numarul de ore este obligatoriu"
+      },
+      "submit": {
+        "messages": {
+          "add": "Orele de voluntariat au fost adaugate cu succes",
+          "edit": "Datele privind orele de voluntariat au fost modificate cu succes"
+        }
+      }
     },
     "errors": {
       "no_data": "Nu s-au putut incarca orele de voluntariat"

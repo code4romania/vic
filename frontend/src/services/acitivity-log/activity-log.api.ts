@@ -2,6 +2,7 @@ import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IActivityLog } from '../../common/interfaces/activity-log.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import { ActivityLogTabs } from '../../pages/ActivityLog';
 // import API from '../api';
 
@@ -39,7 +40,7 @@ export const getActivityLogs = async (
           name: 'Planting trees',
         },
         hours: 3,
-        executionDate: new Date('2023-03-10'),
+        date: new Date('2023-03-10'),
         volunteer: {
           id: '123',
           name: 'John Doe',
@@ -54,7 +55,7 @@ export const getActivityLogs = async (
           name: 'Volunteering at hospital',
         },
         hours: 5,
-        executionDate: new Date('2023-03-08'),
+        date: new Date('2023-03-08'),
         volunteer: {
           id: '456',
           name: 'Jane Smith',
@@ -70,7 +71,7 @@ export const getActivityLogs = async (
       itemsPerPage: 5,
       totalItems: 2,
       totalPages: 10,
-      orderByColumn: 'executionDate',
+      orderByColumn: 'date',
       orderDirection: OrderDirection.DESC,
     },
     count: {
@@ -90,7 +91,7 @@ export const getActivityLog = async (id: string): Promise<IActivityLog> => {
       name: 'Planting trees',
     },
     hours: 3,
-    executionDate: new Date('2023-03-10'),
+    date: new Date('2023-03-10'),
     volunteer: {
       id: '123',
       name: 'John Doe',
@@ -107,3 +108,19 @@ export const getActivityLog = async (id: string): Promise<IActivityLog> => {
     rejectReason: 'Ca asa am vrut eu',
   });
 };
+
+export const addActivityLog = async (data: ActivityLogFormTypes): Promise<void> => {
+  // return API.post(`/activity-log`, { ...formatAddActivityLogPayload(data) });
+  console.log(data);
+  return Promise.resolve();
+};
+
+// const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {
+//   const { volunteer, task, event, ...payload } = data;
+//   return {
+//     ...payload,
+//     volunteerId: volunteer.value,
+//     activityTypeId: task.value,
+//     eventId: event?.value,
+//   };
+// };

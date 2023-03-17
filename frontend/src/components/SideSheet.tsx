@@ -79,8 +79,8 @@ const SideSheet = ({
               value={activityLog.hours}
             />
             <FormReadOnlyElement
-              label={i18n.t('activity_log:execution_date')}
-              value={formatDate(activityLog.executionDate)}
+              label={i18n.t('activity_log:date')}
+              value={formatDate(activityLog.date)}
             />
             <FormReadOnlyName
               label={i18n.t('activity_log:side_panel.event')}

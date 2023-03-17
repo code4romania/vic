@@ -4,9 +4,9 @@ import { IUser } from './user.interface';
 
 export interface IActivityLog {
   id: string;
-  task: Pick<IActivityType, 'icon' | 'name'>;
+  date: Date;
   hours: number;
-  executionDate: Date;
+  task: Pick<IActivityType, 'icon' | 'name'>;
   volunteer: Pick<IUser, 'id' | 'name'>;
   status: ActivityLogStatus;
   registrationDate?: Date;

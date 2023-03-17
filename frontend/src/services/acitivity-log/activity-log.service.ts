@@ -1,10 +1,11 @@
 import { AxiosError } from 'axios';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ACTIVITY_LOG_ERRORS } from '../../common/errors/entities/activity-log.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
+import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import { ActivityLogTabs } from '../../pages/ActivityLog';
-import { getActivityLog, getActivityLogs } from './activity-log.api';
+import { addActivityLog, getActivityLog, getActivityLogs } from './activity-log.api';
 
 export const useActivityLogsQuery = (
   rowsPerPage: number,
@@ -26,5 +27,11 @@ export const useActivityLogQuery = (id: string) => {
   return useQuery(['activity-log', id], () => getActivityLog(id), {
     enabled: !!id,
     onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) => error,
+  });
+};
+
+export const useAddActivityLogMutation = () => {
+  return useMutation((data: ActivityLogFormTypes) => addActivityLog(data), {
+    onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) => Promise.resolve(error),
   });
 };
