@@ -1,6 +1,6 @@
 import { EventState } from '../../common/enums/event-state.enum';
 import { EventStatus } from '../../common/enums/event-status';
-import { GoingStatus } from '../../common/enums/going.enum';
+import { RsvpEnum } from '../../common/enums/rsvp.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent } from '../../common/interfaces/event.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -53,80 +53,19 @@ export const getRsvps = async (
   roleId?: string,
   going?: string,
 ): Promise<IPaginatedEntity<IRsvp>> => {
-  // return API.get(`/event/${id}/rsvp`, {
-  //   params: {
-  //     limit,
-  //     page,
-  //     orderBy,
-  //     orderDirection,
-  //     search,
-  //     branchId,
-  //     departmentId,
-  //     roleId,
-  //     going: going === undefined ? going : going === GoingStatus.GOING,
-  //   },
-  // }).then((res) => res.data);
-  console.log(
-    id,
-    limit,
-    page,
-    orderBy,
-    orderDirection,
-    search,
-    branchId,
-    departmentId,
-    roleId,
-    going === undefined ? going : going === GoingStatus.GOING,
-  );
-  return Promise.resolve({
-    items: [
-      {
-        id: '1',
-        going: true,
-        mention: 'Excited to attend!',
-        userName: 'John Doe',
-        createdOn: new Date('2022-03-14'),
-        updatedOn: new Date('2022-03-14'),
-        logo: 'https://example.com/logo.png',
-        volunteerId: '23232',
-      },
-      {
-        id: '2',
-        going: false,
-        mention: 'Unfortunately cannot make it.',
-        userName: 'JaneSmith',
-        createdOn: new Date('2022-03-12'),
-        updatedOn: new Date('2022-03-13'),
-      },
-      {
-        id: '3',
-        going: true,
-        mention: 'Looking forward to it!',
-        userName: 'BobJohnson',
-        createdOn: new Date('2022-03-10'),
-        updatedOn: new Date('2022-03-11'),
-        logo: 'https://example.com/logo.png',
-      },
-      {
-        id: '4',
-        going: true,
-        mention: "Can't wait!",
-        userName: 'AliceLee',
-        createdOn: new Date('2022-03-09'),
-        updatedOn: new Date('2022-03-15'),
-        logo: 'https://example.com/logo.png',
-      },
-    ],
-    meta: {
-      currentPage: 1,
-      itemCount: 10,
-      itemsPerPage: 20,
-      totalItems: 200,
-      totalPages: 10,
-      orderByColumn: 'createdAt',
-      orderDirection: OrderDirection.DESC,
+  return API.get(`/event/${id}/rsvp`, {
+    params: {
+      limit,
+      page,
+      orderBy,
+      orderDirection,
+      search,
+      branchId,
+      departmentId,
+      roleId,
+      going: going === undefined ? going : going === RsvpEnum.GOING,
     },
-  });
+  }).then((res) => res.data);
 };
 
 const formatAddEventPayload = (data: EventFormTypes): object => {

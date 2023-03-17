@@ -43,7 +43,7 @@ import { IRsvp } from '../common/interfaces/rsvp.interface';
 import DataTableFilters from '../components/DataTableFilters';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
-import { GoingStatus } from '../common/enums/going.enum';
+import { RsvpEnum } from '../common/enums/rsvp.enum';
 
 enum EventTab {
   EVENT = 'event',
@@ -57,7 +57,7 @@ const EventTabs: SelectItem<EventTab>[] = [
 
 const TableHeader = [
   {
-    id: 'userName',
+    id: 'user.name',
     name: i18n.t('general:name'),
     sortable: true,
     minWidth: '10rem',
@@ -78,7 +78,6 @@ const TableHeader = [
     name: i18n.t('events:volunteer'),
     minWidth: '10rem',
     grow: 1,
-    sortable: true,
     selector: (row: IRsvp) => (row.volunteerId ? i18n.t('general:yes') : i18n.t('general:no')),
   },
   {
@@ -86,6 +85,7 @@ const TableHeader = [
     name: i18n.t('events:form.mention.label'),
     minWidth: '9rem',
     grow: 1,
+    sortable: true,
     selector: (row: IRsvp) => (row.mention ? row.mention : '-'),
   },
 ];
@@ -427,8 +427,8 @@ const Event = () => {
                 onChange={(item: SelectItem<string>) => setGoing(item)}
                 selected={going}
                 options={[
-                  { key: GoingStatus.GOING, value: i18n.t('events:participate') },
-                  { key: GoingStatus.NOTGOING, value: i18n.t('events:not_participate') },
+                  { key: RsvpEnum.GOING, value: i18n.t('events:participate') },
+                  { key: RsvpEnum.NOT_GOING, value: i18n.t('events:not_participate') },
                 ]}
               />
             </DataTableFilters>
