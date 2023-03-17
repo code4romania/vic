@@ -92,11 +92,6 @@ const AccessCodes = () => {
   const [showDeleteAccessCode, setShowDeleteAccessCode] = useState<null | IAccessCode>();
   // navigate
   const navigate = useNavigate();
-  // filters
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
 
   // query params
   const [queryParams, setQueryParams] = useQueryParams(ACCESS_CODES_QUERY_PARAMS);
@@ -106,28 +101,26 @@ const AccessCodes = () => {
     error: accessCodesError,
     isLoading: isAccessCodesLoading,
     refetch,
-  } = useAccessCodesQuery(rowsPerPage, page, orderByColumn, orderDirection);
+  } = useAccessCodesQuery(
+    queryParams?.limit as number,
+    queryParams?.page as number,
+    queryParams?.orderBy as string,
+    queryParams?.orderDirection as OrderDirection,
+  );
 
   const { mutateAsync: deleteAccessCode, isLoading: isDeleteAccessCodeLoading } =
     useDeleteAccessCodeMutation();
 
-  // init state from params
+  // init query
   useEffect(() => {
-    setPage(queryParams?.page || undefined);
-    setOrderDirection((queryParams?.orderDirection as OrderDirection) || undefined);
-    setOrderByColumn(queryParams?.orderBy || undefined);
-    setRowsPerPage(queryParams?.limit || undefined);
-  }, []);
-
-  // update query values
-  useEffect(() => {
+    // init query params
     setQueryParams({
-      page: page || PaginationConfig.defaultPage,
-      limit: rowsPerPage || PaginationConfig.defaultRowsPerPage,
-      orderBy: orderByColumn || 'code',
-      orderDirection: orderDirection || OrderDirection.ASC,
+      limit: queryParams?.limit || PaginationConfig.defaultRowsPerPage,
+      page: queryParams?.page || PaginationConfig.defaultPage,
+      orderBy: queryParams?.orderBy || 'code',
+      orderDirection: queryParams?.orderDirection || OrderDirection.ASC,
     });
-  }, [page, rowsPerPage, orderByColumn, orderDirection]);
+  }, []);
 
   useEffect(() => {
     if (accessCodesError) useErrorToast(i18n.t('general:error.load_entries'));
@@ -135,20 +128,27 @@ const AccessCodes = () => {
 
   // pagination
   const onRowsPerPageChange = (rows: number) => {
-    setRowsPerPage(rows);
+    setQueryParams({
+      ...queryParams,
+      limit: rows,
+    });
   };
 
   const onChangePage = (newPage: number) => {
-    setPage(newPage);
+    setQueryParams({
+      ...queryParams,
+      page: newPage,
+    });
   };
 
   const onSort = (column: TableColumn<IAccessCode>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
+    setQueryParams({
+      orderBy: column.id as string,
+      orderDirection:
+        direction.toLocaleUpperCase() === OrderDirection.ASC
+          ? OrderDirection.ASC
+          : OrderDirection.DESC,
+    });
   };
 
   // component actions
@@ -232,7 +232,7 @@ const AccessCodes = () => {
               pagination
               paginationPerPage={accessCodes?.meta?.itemsPerPage}
               paginationTotalRows={accessCodes?.meta?.totalItems}
-              paginationDefaultPage={page}
+              paginationDefaultPage={queryParams.page as number}
               onChangeRowsPerPage={onRowsPerPageChange}
               onChangePage={onChangePage}
               onSort={onSort}

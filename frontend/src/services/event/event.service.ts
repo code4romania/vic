@@ -1,6 +1,5 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { PaginationConfig } from '../../common/constants/pagination';
 import { EventState } from '../../common/enums/event-state.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { EVENT_ERRORS } from '../../common/errors/entities/event.errors';
@@ -17,8 +16,8 @@ import {
 } from './event.api';
 
 export const useEventsQuery = (
-  limit: number = PaginationConfig.defaultRowsPerPage,
-  page: number = PaginationConfig.defaultPage,
+  limit: number,
+  page: number,
   eventState: EventState,
   orderByColumn?: string,
   orderDirection?: OrderDirection,
@@ -27,6 +26,7 @@ export const useEventsQuery = (
     ['events', limit, page, orderByColumn, orderDirection, eventState],
     () => getEvents(limit, page, eventState, orderByColumn, orderDirection),
     {
+      enabled: !!(limit && page && eventState),
       onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => error,
     },
   );
