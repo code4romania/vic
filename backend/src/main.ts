@@ -32,8 +32,8 @@ async function bootstrap(): Promise<void> {
   // Create swagger module only local or development
   if (!(process.env.NODE_ENV === Environment.Production)) {
     const options = new DocumentBuilder()
-      .setTitle('ONG Hub backend')
-      .setDescription('ONG Hub backend')
+      .setTitle('TEO API Documentation')
+      .setDescription('TEO API Documentation')
       .setVersion('1.0')
       .addBearerAuth()
       .build();

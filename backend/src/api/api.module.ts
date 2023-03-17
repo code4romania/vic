@@ -15,6 +15,7 @@ import { MobileVolunteerController } from './_mobile/volunteer/volunteer.control
 import { AnnouncementController } from './announcement/announcement.controller';
 import { EventController } from './event/event.controller';
 import { MobileEventController } from './_mobile/event/event.controller';
+import { ActivityLogController } from './activity-log/activity-log.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -30,6 +31,7 @@ import { MobileEventController } from './_mobile/event/event.controller';
     VolunteerController,
     AnnouncementController,
     EventController,
+    ActivityLogController,
     // Mobile
     MobileRegularUserController,
     MobileAccessRequestController,

@@ -17,7 +17,7 @@ export class ArchiveEventUseCase implements IUseCaseService<IEventModel> {
 
   public async execute(id: string): Promise<IEventModel> {
     // 1. Find the event to publish
-    const event = await this.getOneEventUseCase.execute(id);
+    const event = await this.getOneEventUseCase.execute({ id });
 
     // 2. Can't publish an already published event
     if (event.status === EventStatus.ARCHIVED) {

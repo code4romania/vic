@@ -29,7 +29,7 @@ export class UpdateEventUseCase implements IUseCaseService<IEventModel> {
     data: UpdateEventOptions,
   ): Promise<IEventModel> {
     // 1. Find the event to update
-    const event = await this.getOneEventUseCase.execute(id);
+    const event = await this.getOneEventUseCase.execute({ id });
 
     // 2. Don't allow visibility changes if the status is PUBLISHED
     if (

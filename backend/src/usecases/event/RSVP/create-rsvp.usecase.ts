@@ -27,7 +27,7 @@ export class CreateEventRSVPUseCase
 
   public async execute(data: CreateEventRSVPOptions): Promise<IEventRSVPModel> {
     // 1. Check if the event and the user exists
-    const event = await this.getOneEventUseCase.execute(data.eventId);
+    const event = await this.getOneEventUseCase.execute({ id: data.eventId });
     await this.getOneRegularUserUseCase.execute(data.userId);
 
     if (!event.isPublic) {
