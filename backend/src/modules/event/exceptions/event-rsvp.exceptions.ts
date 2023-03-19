@@ -5,6 +5,7 @@ export enum EventsRSVPExceptionCodes {
   EVENT_RSVP_002 = 'EVENT_RSVP_002',
   EVENT_RSVP_003 = 'EVENT_RSVP_003',
   EVENT_RSVP_004 = 'EVENT_RSVP_004',
+  EVENT_RSVP_005 = 'EVENT_RSVP_005',
 }
 
 type EventRSVPExceptionCodeType = keyof typeof EventsRSVPExceptionCodes;
@@ -30,5 +31,10 @@ export const EventRSVPExceptionMessages: Record<
   [EventsRSVPExceptionCodes.EVENT_RSVP_004]: {
     code_error: EventsRSVPExceptionCodes.EVENT_RSVP_004,
     message: 'The mention is mandatory for this event.',
+  },
+  [EventsRSVPExceptionCodes.EVENT_RSVP_005]: {
+    code_error: EventsRSVPExceptionCodes.EVENT_RSVP_005,
+    message:
+      'You must complete your Volunteer Profile in order to respond to an event as volunteer.',
   },
 };

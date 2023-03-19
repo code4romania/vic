@@ -35,22 +35,28 @@ export class CreateEventRSVPUseCase
       organizationId: event.organization.id,
     });
 
-    // 2. Only ACTIVE volunteers can join events. In case the user is already a volunteer and is BLOCKED/ARCHIVED.
-    // Not volunteers will pass this validation for public events
-    if (volunteer && volunteer.status !== VolunteerStatus.ACTIVE) {
-      this.exceptionsService.badRequestException(
-        EventRSVPExceptionMessages.EVENT_RSVP_003,
-      );
+    if (volunteer) {
+      // 2. Only ACTIVE volunteers can join events. In case the user is already a volunteer and is BLOCKED or ARCHIVED. Non-volunteers will pass this validation for public events
+      if (volunteer.status !== VolunteerStatus.ACTIVE) {
+        this.exceptionsService.badRequestException(
+          EventRSVPExceptionMessages.EVENT_RSVP_003,
+        );
+      } else if (!volunteer.volunteerProfile) {
+        // 3. Volunteers must have the profile completed to RSVP.
+        this.exceptionsService.badRequestException(
+          EventRSVPExceptionMessages.EVENT_RSVP_005,
+        );
+      }
     }
 
-    // 3. For "private" events, check if the USER is VOLUNTEER in the ORGANIZATION of the EVENT
+    // 4. For "private" events, check if the USER is VOLUNTEER in the ORGANIZATION of the EVENT
     if (!event.isPublic && !volunteer) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_002,
       );
     }
 
-    // 3. Check if userId and eventId is unique in RSVP, if exists, update only the "going" response
+    // 5. Check if userId and eventId is unique in RSVP, if exists, update only the "going" response
     const existingRSVP = await this.eventFacade.findRSVP({
       userId: data.userId,
       eventId: data.eventId,
@@ -62,13 +68,13 @@ export class CreateEventRSVPUseCase
         : this.eventFacade.updateRSVP(existingRSVP.id, { going: data.going });
     }
 
-    // 4. Check if event requires mention and that mention is present
+    // 6. Check if event requires mention and that mention is present
     if (event.attendanceType === EventAttendOptions.MENTION && !data.mention) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_004,
       );
     } else if (event.attendanceType === EventAttendOptions.SIMPLE) {
-      // 4.1. Simple events does not need mentions
+      // 6.1. Simple events does not need mentions
       data.mention = null;
     }
 
