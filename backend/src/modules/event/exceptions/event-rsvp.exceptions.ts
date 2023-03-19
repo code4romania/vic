@@ -6,6 +6,7 @@ export enum EventsRSVPExceptionCodes {
   EVENT_RSVP_003 = 'EVENT_RSVP_003',
   EVENT_RSVP_004 = 'EVENT_RSVP_004',
   EVENT_RSVP_005 = 'EVENT_RSVP_005',
+  EVENT_RSVP_006 = 'EVENT_RSVP_006',
 }
 
 type EventRSVPExceptionCodeType = keyof typeof EventsRSVPExceptionCodes;
@@ -36,5 +37,9 @@ export const EventRSVPExceptionMessages: Record<
     code_error: EventsRSVPExceptionCodes.EVENT_RSVP_005,
     message:
       'You must complete your Volunteer Profile in order to respond to an event as volunteer.',
+  },
+  [EventsRSVPExceptionCodes.EVENT_RSVP_006]: {
+    code_error: EventsRSVPExceptionCodes.EVENT_RSVP_006,
+    message: 'This event cannot be attended because is not PUBLISHED.',
   },
 };
