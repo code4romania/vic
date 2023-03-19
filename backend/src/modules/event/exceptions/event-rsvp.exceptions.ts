@@ -25,7 +25,7 @@ export const EventRSVPExceptionMessages: Record<
   },
   [EventsRSVPExceptionCodes.EVENT_RSVP_003]: {
     code_error: EventsRSVPExceptionCodes.EVENT_RSVP_003,
-    message: 'You need to be an active volunteer to join a private event.',
+    message: 'Only ACTIVE volunteers can join events.',
   },
   [EventsRSVPExceptionCodes.EVENT_RSVP_004]: {
     code_error: EventsRSVPExceptionCodes.EVENT_RSVP_004,

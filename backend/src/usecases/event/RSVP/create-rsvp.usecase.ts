@@ -30,22 +30,24 @@ export class CreateEventRSVPUseCase
     const event = await this.getOneEventUseCase.execute({ id: data.eventId });
     await this.getOneRegularUserUseCase.execute(data.userId);
 
-    if (!event.isPublic) {
-      const volunteer = await this.volunteerFacade.find({
-        userId: data.userId,
-        organizationId: event.organization.id,
-      });
-      if (!volunteer) {
-        // 2. For "private" events, check if the userId is volunteer in the organization of the event
-        this.exceptionsService.badRequestException(
-          EventRSVPExceptionMessages.EVENT_RSVP_002,
-        );
-      } else if (volunteer.status !== VolunteerStatus.ACTIVE) {
-        // 3. For "private" events, if the volunteer exists, check if is active)
-        this.exceptionsService.badRequestException(
-          EventRSVPExceptionMessages.EVENT_RSVP_003,
-        );
-      }
+    const volunteer = await this.volunteerFacade.find({
+      userId: data.userId,
+      organizationId: event.organization.id,
+    });
+
+    // 2. Only ACTIVE volunteers can join events. In case the user is already a volunteer and is BLOCKED/ARCHIVED.
+    // Not volunteers will pass this validation for public events
+    if (volunteer && volunteer.status !== VolunteerStatus.ACTIVE) {
+      this.exceptionsService.badRequestException(
+        EventRSVPExceptionMessages.EVENT_RSVP_003,
+      );
+    }
+
+    // 3. For "private" events, check if the USER is VOLUNTEER in the ORGANIZATION of the EVENT
+    if (!event.isPublic && !volunteer) {
+      this.exceptionsService.badRequestException(
+        EventRSVPExceptionMessages.EVENT_RSVP_002,
+      );
     }
 
     // 3. Check if userId and eventId is unique in RSVP, if exists, update only the "going" response
