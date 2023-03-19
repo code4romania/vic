@@ -61,10 +61,13 @@ export class CreateEventRSVPUseCase
     }
 
     // 4. Check if event requires mention and that mention is present
-    if (event.attendanceType === EventAttendOptions.MENTION) {
+    if (event.attendanceType === EventAttendOptions.MENTION && !data.mention) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_004,
       );
+    } else if (event.attendanceType === EventAttendOptions.SIMPLE) {
+      // 4.1. Simple events does not need mentions
+      data.mention = null;
     }
 
     return this.eventFacade.createRSVP(data);
