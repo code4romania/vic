@@ -1,16 +1,16 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
+import { ActivityLogResolutionStatus } from '../../common/enums/activity-log-resolution-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ACTIVITY_LOG_ERRORS } from '../../common/errors/entities/activity-log.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
-import { ActivityLogTabs } from '../../pages/ActivityLog';
 import { addActivityLog, getActivityLog, getActivityLogs } from './activity-log.api';
 
 export const useActivityLogsQuery = (
   rowsPerPage: number,
   page: number,
-  tabsStatus: ActivityLogTabs,
+  tabsStatus: ActivityLogResolutionStatus,
   orderByColumn?: string,
   orderDirection?: OrderDirection,
 ) => {

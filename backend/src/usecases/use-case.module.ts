@@ -66,6 +66,14 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/get-many-f
 import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-download-volunteer.usecase';
 import { GetManyEventRSVPUseCase } from './event/RSVP/get-many-rsvp.usecase';
 import { GetManyEventUseCase } from './event/get-many-event.usecase';
+import { GetManyForDownloadEventUseCase } from './event/get-many-for-download-event.usecase';
+import { CreateActivityLogByAdmin } from './activity-log/create-activity-log-by-admin.usecase';
+import { ActivityLogModule } from 'src/modules/activity-log/activity-log.module';
+import { GetOneActivityLogUsecase } from './activity-log/get-one-activity-log.usecase';
+import { UpdateActivityLogUsecase } from './activity-log/update-activity-log.usecase';
+import { ApproveActivityLogUsecase } from './activity-log/approve-activity-log.usecase';
+import { RejectActivityLogUsecase } from './activity-log/reject-activity-log.usecase';
+import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-logs.usecase';
 
 @Module({
   imports: [
@@ -79,6 +87,7 @@ import { GetManyEventUseCase } from './event/get-many-event.usecase';
     VolunteerModule,
     AnnouncementModule,
     EventModule,
+    ActivityLogModule,
   ],
   providers: [
     // Organization
@@ -149,6 +158,14 @@ import { GetManyEventUseCase } from './event/get-many-event.usecase';
     DeleteEventRSVPUseCase,
     GetManyEventRSVPUseCase,
     GetManyEventUseCase,
+    GetManyForDownloadEventUseCase,
+    // Activity Log
+    CreateActivityLogByAdmin,
+    GetOneActivityLogUsecase,
+    UpdateActivityLogUsecase,
+    ApproveActivityLogUsecase,
+    RejectActivityLogUsecase,
+    GetManyActivityLogsUsecase,
   ],
   exports: [
     // Organization
@@ -220,6 +237,14 @@ import { GetManyEventUseCase } from './event/get-many-event.usecase';
     DeleteEventRSVPUseCase,
     GetManyEventRSVPUseCase,
     GetManyEventUseCase,
+    GetManyForDownloadEventUseCase,
+    // Activity Log
+    CreateActivityLogByAdmin,
+    GetOneActivityLogUsecase,
+    UpdateActivityLogUsecase,
+    ApproveActivityLogUsecase,
+    RejectActivityLogUsecase,
+    GetManyActivityLogsUsecase,
   ],
 })
 export class UseCaseModule {}

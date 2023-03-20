@@ -1,8 +1,11 @@
+import { AxiosResponseHeaders } from 'axios';
 import { EventState } from '../../common/enums/event-state.enum';
 import { EventStatus } from '../../common/enums/event-status';
+import { RsvpEnum } from '../../common/enums/rsvp.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent } from '../../common/interfaces/event.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { IRsvp } from '../../common/interfaces/rsvp.interface';
 import { EventFormTypes, TargetType } from '../../components/EventForm';
 import API from '../api';
 
@@ -37,6 +40,50 @@ export const getEvents = async (
       orderBy,
       orderDirection,
       search,
+    },
+  }).then((res) => res.data);
+};
+
+export const getEventsForDownload = async (
+  eventState: EventState,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
+  return API.get('event/download', {
+    params: {
+      eventState,
+      orderBy,
+      orderDirection,
+    },
+    responseType: 'arraybuffer',
+  }).then((res) => {
+    return { data: res.data, headers: res.headers as AxiosResponseHeaders };
+  });
+};
+
+export const getRsvps = async (
+  id: string,
+  limit: number,
+  page: number,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+  search?: string,
+  branchId?: string,
+  departmentId?: string,
+  roleId?: string,
+  going?: string,
+): Promise<IPaginatedEntity<IRsvp>> => {
+  return API.get(`/event/${id}/rsvp`, {
+    params: {
+      limit,
+      page,
+      orderBy,
+      orderDirection,
+      search,
+      branchId,
+      departmentId,
+      roleId,
+      going: going === undefined ? going : going === RsvpEnum.GOING,
     },
   }).then((res) => res.data);
 };
