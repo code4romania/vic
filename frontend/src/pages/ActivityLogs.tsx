@@ -32,7 +32,7 @@ const ActivityLogTabsOptions: SelectItem<ActivityLogTabs>[] = [
   { key: ActivityLogTabs.PAST, value: i18n.t('activity_log:past') },
 ];
 
-const ActivityLog = () => {
+const ActivityLogs = () => {
   const navigate = useNavigate();
   const [tabsStatus, setTabsStatus] = useState<ActivityLogTabs>(ActivityLogTabs.PENDING);
   // pagination state
@@ -256,4 +256,4 @@ const ActivityLog = () => {
   );
 };
 
-export default ActivityLog;
+export default ActivityLogs;

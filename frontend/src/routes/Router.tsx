@@ -26,7 +26,7 @@ import EditEvent from '../pages/EditEvent';
 import AddAnnouncement from '../pages/AddAnnouncement';
 import EditAnnouncement from '../pages/EditAnnouncement';
 import Announcement from '../pages/Announcement';
-import ActivityLog from '../pages/ActivityLog';
+import ActivityLogs from '../pages/ActivityLogs';
 
 const Router = () => {
   return (
@@ -69,7 +69,7 @@ const Router = () => {
             <Route path="add" element={<AddEvent />} />
           </Route>
           <Route path="activity-log" element={<Outlet />}>
-            <Route index element={<ActivityLog />} />
+            <Route index element={<ActivityLogs />} />
           </Route>
         </Route>
       </Routes>
