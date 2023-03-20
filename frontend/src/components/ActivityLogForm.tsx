@@ -1,7 +1,6 @@
 import React from 'react';
-import { Control, Controller, DeepRequired, FieldErrorsImpl, UseFormReset } from 'react-hook-form';
+import { Control, Controller, DeepRequired, FieldErrorsImpl } from 'react-hook-form';
 import i18n from '../common/config/i18n';
-import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import FormLayout from '../layouts/FormLayout';
 import VolunteerSelect from '../containers/VolunteerSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
@@ -13,9 +12,6 @@ import TaskSelect from '../containers/TaskSelect';
 interface ActivityLogFormProps {
   control: Control<ActivityLogFormTypes, object>;
   errors: FieldErrorsImpl<DeepRequired<ActivityLogFormTypes>>;
-  disabled?: boolean;
-  activityLog?: IActivityLog;
-  reset?: UseFormReset<ActivityLogFormTypes>;
 }
 
 export type ActivityLogFormTypes = {
@@ -27,7 +23,7 @@ export type ActivityLogFormTypes = {
   task: ListItem;
 };
 
-const ActivityLogForm = ({ control, errors, disabled }: ActivityLogFormProps) => {
+const ActivityLogForm = ({ control, errors }: ActivityLogFormProps) => {
   return (
     <FormLayout>
       <p className="text-cool-gray-500">{i18n.t('activity_log:form.description')}</p>
@@ -77,7 +73,6 @@ const ActivityLogForm = ({ control, errors, disabled }: ActivityLogFormProps) =>
             );
           }}
         />
-
         <Controller
           key="date"
           name="date"
@@ -90,7 +85,6 @@ const ActivityLogForm = ({ control, errors, disabled }: ActivityLogFormProps) =>
                 onChange={onChange}
                 value={value}
                 errorMessage={errors['date']?.message}
-                disabled={disabled}
               />
             );
           }}

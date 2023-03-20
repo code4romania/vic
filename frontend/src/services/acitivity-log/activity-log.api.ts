@@ -2,6 +2,7 @@ import { ActivityLogResolutionStatus } from '../../common/enums/activity-log-res
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IActivityLogListItem } from '../../common/interfaces/activity-log.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import API from '../api';
 
 export const getActivityLogs = async (
@@ -26,18 +27,16 @@ export const getActivityLog = async (id: string): Promise<unknown> => {
   return API.get(`activity-log/${id}`).then((res) => res.data);
 };
 
-export const addActivityLog = async (data: unknown): Promise<void> => {
-  // return API.post(`/activity-log`, { ...formatAddActivityLogPayload(data) });
-  console.log(data);
-  return Promise.resolve();
+export const addActivityLog = async (data: ActivityLogFormTypes): Promise<void> => {
+  return API.post(`/activity-log`, { ...formatAddActivityLogPayload(data) });
 };
 
-// const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {
-//   const { volunteer, task, event, ...payload } = data;
-//   return {
-//     ...payload,
-//     volunteerId: volunteer.value,
-//     activityTypeId: task.value,
-//     eventId: event?.value,
-//   };
-// };
+const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {
+  const { volunteer, task, event, ...payload } = data;
+  return {
+    ...payload,
+    volunteerId: volunteer.value,
+    activityTypeId: task.value,
+    ...(event ? { eventId: event.value } : {}),
+  };
+};

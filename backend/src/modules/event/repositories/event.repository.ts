@@ -37,7 +37,8 @@ export class EventRepository
   async getMany(
     findOptions: FindManyEventOptions,
   ): Promise<Pagination<IEventsListItemModel>> {
-    const { eventState, organizationId, orderBy, orderDirection } = findOptions;
+    const { eventState, organizationId, orderBy, orderDirection, search } =
+      findOptions;
 
     const query = this.eventRepository
       .createQueryBuilder('event')
@@ -85,6 +86,10 @@ export class EventRepository
           currentDate,
         });
       }
+    }
+
+    if (search) {
+      query.andWhere(this.buildBracketSearchQuery(['event.name'], search));
     }
 
     return this.paginateQuery(
