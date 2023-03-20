@@ -4,21 +4,13 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 import { ActivityLogTabs } from '../../pages/ActivityLogs';
 import API from '../api';
 
-interface IPaginatedActivityLog extends IPaginatedEntity<IActivityLogListItem> {
-  count: {
-    pending?: number;
-    rejected?: number;
-    approved?: number;
-  };
-}
-
 export const getActivityLogs = async (
   rowsPerPage: number,
   page: number,
   tabsStatus: ActivityLogTabs,
   orderByColumn?: string,
   orderDirection?: OrderDirection,
-): Promise<IPaginatedActivityLog> => {
+): Promise<IPaginatedEntity<IActivityLogListItem>> => {
   return API.get('activity-log', {
     params: {
       type: tabsStatus,
