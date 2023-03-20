@@ -1,8 +1,8 @@
 import { differenceInYears, format, isSameDay } from 'date-fns';
+import { SelectItem } from '../../components/Select';
 import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 import { ICity } from '../interfaces/city.interface';
 import { IDivisionListItem } from '../interfaces/division.interface';
-import { SelectItem } from '../../components/Select';
 import { AnnouncementStatus } from '../enums/announcement-status.enum';
 import { EventStatus } from '../enums/event-status';
 

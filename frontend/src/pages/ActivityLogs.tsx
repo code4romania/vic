@@ -16,12 +16,16 @@ import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
-import { useActivityLogsQuery } from '../services/acitivity-log/activity-log.service';
-import { IActivityLogListItem } from '../common/interfaces/activity-log.interface';
+import {
+  useActivityLogQuery,
+  useActivityLogsQuery,
+} from '../services/acitivity-log/activity-log.service';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from '../components/StatusWithMarker';
 import { useNavigate } from 'react-router';
+import { IActivityLogListItem } from '../common/interfaces/activity-log.interface';
 import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
+import ActivityLogSidePanel from '../components/ActivityLogSidePanel';
 
 const ActivityLogTabsOptions: SelectItem<ActivityLogResolutionStatus>[] = [
   { key: ActivityLogResolutionStatus.NEW, value: i18n.t('activity_log:pending') },
@@ -30,6 +34,7 @@ const ActivityLogTabsOptions: SelectItem<ActivityLogResolutionStatus>[] = [
 
 const ActivityLogs = () => {
   const navigate = useNavigate();
+  const [selectedActivityLog, setSelectedActivityLog] = useState<string>();
   const [tabsStatus, setTabsStatus] = useState<ActivityLogResolutionStatus>(
     ActivityLogResolutionStatus.NEW,
   );
@@ -51,12 +56,20 @@ const ActivityLogs = () => {
     orderDirection,
   );
 
+  const { data: activityLog, error: activityLogError } = useActivityLogQuery(
+    selectedActivityLog as string,
+  );
+
   useEffect(() => {
     if (activityLogsError)
       useErrorToast(
         InternalErrors.ACTIVITY_LOG_ERRORS.getError(activityLogsError.response?.data.code_error),
       );
-  }, [activityLogsError]);
+    if (activityLogError)
+      useErrorToast(
+        InternalErrors.ACTIVITY_LOG_ERRORS.getError(activityLogError.response?.data.code_error),
+      );
+  }, [activityLogsError, activityLogError]);
 
   // menu items
   const buildActivityLogActionColumn = (): TableColumn<IActivityLogListItem> => {
@@ -192,6 +205,22 @@ const ActivityLogs = () => {
     },
   ];
 
+  const onReject = (id: string) => {
+    alert(`not yet implemented ${id}`);
+  };
+
+  const onApprove = (id: string) => {
+    alert(`not yet implemented ${id}`);
+  };
+
+  const onAddButtonPress = () => {
+    navigate('add');
+  };
+
+  const onEdit = () => {
+    alert(`not yet implemented`);
+  };
+
   const onVolunteerClick = (id: string) => {
     navigate(`/volunteers/${id}`);
   };
@@ -202,7 +231,7 @@ const ActivityLogs = () => {
 
   // row actions
   const onView = (row: IActivityLogListItem) => {
-    alert(`not yet implemented ${row.id}`);
+    setSelectedActivityLog(row.id);
   };
 
   const onSort = (column: TableColumn<IActivityLogListItem>, direction: SortOrder) => {
@@ -212,10 +241,6 @@ const ActivityLogs = () => {
         ? OrderDirection.ASC
         : OrderDirection.DESC,
     );
-  };
-
-  const onAddButtonPress = () => {
-    alert('not yet implemented');
   };
 
   return (
@@ -259,6 +284,15 @@ const ActivityLogs = () => {
           </CardBody>
         </Card>
       </Tabs>
+
+      <ActivityLogSidePanel
+        onClose={setSelectedActivityLog.bind(null, undefined)}
+        onEdit={onEdit}
+        isOpen={!!selectedActivityLog}
+        activityLog={activityLog}
+        onApprove={onApprove}
+        onReject={onReject}
+      />
     </PageLayout>
   );
 };

@@ -8,8 +8,8 @@
     "close": "Inchide",
     "name": "Nume",
     "people": "Persoane",
-    "hours": "Ore",
     "age": "Vârsta",
+    "hours": "Ore",
     "date": "Data",
     "target": "Target",
     "answers": "Răspunsuri",
@@ -23,6 +23,7 @@
     "choose": "Alege {{item}}",
     "image": "Imagine",
     "reason": "Motiv",
+    "task": "Task",
     "unspecified": "Nespecificat",
     "activity": "Activitate",
     "address": "Adresa",
@@ -560,6 +561,44 @@
     "status": "Status aprobare",
     "popover": {
       "view": "Fișă de activitate"
+    },
+    "side_panel": {
+      "reject": "Muta in respinse",
+      "approve": "Muta in aprobate",
+      "hours": "Număr ore",
+      "title": "Fișă de activitate",
+      "event": "În cadrul evenimentului",
+      "created_by": "Înregistrat de",
+      "registration_date": "Dată înregistrare ore",
+      "approved_by": "Aprobat de",
+      "approve_date": "Dată aprobare ore",
+      "rejected_by": "Respins de",
+      "reject_date": "Dată respingere ore",
+      "reject_reason": "Motiv respingere",
+      "mention": "Mentiune"
+    },
+    "form": {
+      "description": "Alege evenimentul pentru care dorești să adaugi ore de voluntariat",
+      "volunteer": {
+        "required": "Alegerea voluntarului este obligatorie"
+      },
+      "task": {
+        "required": "Alegerea taskului este obligatorie"
+      },
+      "date": {
+        "required": "Data este obligatorie"
+      },
+      "hours": {
+        "required": "Numarul de ore este obligatoriu",
+        "min": "Numarul de ore trebuie sa fie mai mare ca 0",
+        "integer": "Numarul de ore trebuie sa fie intreg"
+      },
+      "submit": {
+        "messages": {
+          "add": "Orele de voluntariat au fost adaugate cu succes",
+          "edit": "Datele privind orele de voluntariat au fost modificate cu succes"
+        }
+      }
     },
     "errors": {
       "no_data": "Nu s-au putut incarca orele de voluntariat",

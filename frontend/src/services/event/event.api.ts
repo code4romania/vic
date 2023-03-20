@@ -27,9 +27,10 @@ export const getEvent = async (id: string): Promise<IEvent> => {
 export const getEvents = async (
   limit: number,
   page: number,
-  eventState: EventState,
+  eventState?: EventState,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  search?: string,
 ): Promise<IPaginatedEntity<IEvent>> => {
   return API.get('/event', {
     params: {
@@ -38,6 +39,7 @@ export const getEvents = async (
       page,
       orderBy,
       orderDirection,
+      search,
     },
   }).then((res) => res.data);
 };

@@ -79,7 +79,7 @@ export type UpdateStatusOptions = EventStatus.PUBLISHED | EventStatus.ARCHIVED;
 
 export type FindManyEventOptions = {
   organizationId: IOrganizationModel['id'];
-  eventState: EventState;
+  eventState?: EventState;
 } & IBasePaginationFilterModel;
 
 export class EventModelTransformer {
