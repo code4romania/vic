@@ -4,12 +4,14 @@ import { EventStatus } from '../enums/event-status.enum';
 import {
   CreateEventRSVPOptions,
   FindEventRSVPOptions,
+  FindManyEventRSVPOptions,
   IEventRSVPModel,
   UpdateEventRSVPOptions,
 } from '../models/event-rsvp.model';
 import {
   CreateEventOptions,
   FindManyEventOptions,
+  FindOneEventOptions,
   IEventModel,
   IEventsListItemModel,
   UpdateEventOptions,
@@ -28,8 +30,8 @@ export class EventFacade {
     return this.eventRepository.create(newEvent);
   }
 
-  async find(id: string): Promise<IEventModel> {
-    return this.eventRepository.find(id);
+  async find(findOptions: FindOneEventOptions): Promise<IEventModel> {
+    return this.eventRepository.find(findOptions);
   }
 
   async getMany(
@@ -71,5 +73,11 @@ export class EventFacade {
 
   async deleteRSVP(id: string): Promise<string> {
     return this.rsvpRepository.delete(id);
+  }
+
+  async findManyRSVP(
+    findOptions: FindManyEventRSVPOptions,
+  ): Promise<Pagination<IEventRSVPModel>> {
+    return this.rsvpRepository.findMany(findOptions);
   }
 }

@@ -1,16 +1,19 @@
 {
   "general": {
+    "yes": "Da",
+    "no": "Nu",
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "user": "Utilizator",
     "close": "Inchide",
     "name": "Nume",
     "people": "Persoane",
-    "hours": "Ore",
     "age": "Vârsta",
+    "hours": "Ore",
     "date": "Data",
     "target": "Target",
     "answers": "Răspunsuri",
+    "answer": "Răspuns",
     "created_on": "Data crearii",
     "all_organization": "Toata organizatia",
     "event": "Eveniment",
@@ -20,6 +23,7 @@
     "choose": "Alege {{item}}",
     "image": "Imagine",
     "reason": "Motiv",
+    "task": "Task",
     "unspecified": "Nespecificat",
     "activity": "Activitate",
     "address": "Adresa",
@@ -85,7 +89,8 @@
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
       "announcements": "Anunturi",
-      "activity_types": "Categorii activitati"
+      "activity_types": "Categorii activitati",
+      "activity_log": "Ore de voluntariat"
     },
     "collapse": "Restrange meniul"
   },
@@ -381,9 +386,10 @@
     "past_events": "Evenimente încheiate",
     "status": "Status afisare",
     "hours": "Ore raportate",
-    "participate": "participă",
-    "not_participate": "nu participă",
+    "participate": "Participă",
+    "not_participate": "Nu participă",
     "details": "Detalii eveniment",
+    "volunteer": "Voluntar in organizatie",
     "responses_list": "Lista raspunsuri",
     "observation": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi.",
     "draft": {
@@ -448,7 +454,7 @@
         "description": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi."
       },
       "mention": {
-        "label": "Mentiune",
+        "label": "Mențiune",
         "description": "Adresează o intrebare voluntarilor.",
         "empty": "Nicio mentiune.",
         "required": "Mentiunea este obligatorie",
@@ -478,7 +484,9 @@
       "EVENT_004": "Nu putem modifica target audience pentru evenimentele publicate",
       "EVENT_005": "Doar evenimentele DRAFT sau ARHIVATE pot fi publicate",
       "EVENT_006": "Doar evenimentele publicate pot fi arhivate"
-    }
+    },
+    "download_open": "Evenimente active.xlsx",
+    "download_past": "Evenimente incheiate.xlsx"
   },
   "announcement": {
     "title": "Istoric anunturi",
@@ -531,6 +539,72 @@
       "ANNOUNCEMENT_001": "Anuntul nu a fost gasit",
       "ANNOUNCEMENT_002": "Anuntul este deja publicat si nu poate fi modificat",
       "ANNOUNCEMENT_003": "Selectie departament incorecta, doar departamentele pot fi alese ca target"
+    }
+  },
+  "activity_log": {
+    "pending": "Solicitări de aprobare",
+    "pending_header": "{{hours}} ore în curs de aprobare",
+    "past": "Istoric ore de voluntariat",
+    "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
+    "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+    "add": "Înregistrează ore",
+    "header": {
+      "task": "Task",
+      "execution_date": "Data efectuării",
+      "registration_date": "Data inregistrarii"
+    },
+    "display_status": {
+      "rejected": "Respins",
+      "approved": "Aprobat",
+      "pending": "Pending"
+    },
+    "status": "Status aprobare",
+    "popover": {
+      "view": "Fișă de activitate"
+    },
+    "side_panel": {
+      "reject": "Muta in respinse",
+      "approve": "Muta in aprobate",
+      "hours": "Număr ore",
+      "title": "Fișă de activitate",
+      "event": "În cadrul evenimentului",
+      "created_by": "Înregistrat de",
+      "registration_date": "Dată înregistrare ore",
+      "approved_by": "Aprobat de",
+      "approve_date": "Dată aprobare ore",
+      "rejected_by": "Respins de",
+      "reject_date": "Dată respingere ore",
+      "reject_reason": "Motiv respingere",
+      "mention": "Mentiune"
+    },
+    "form": {
+      "description": "Alege evenimentul pentru care dorești să adaugi ore de voluntariat",
+      "volunteer": {
+        "required": "Alegerea voluntarului este obligatorie"
+      },
+      "task": {
+        "required": "Alegerea taskului este obligatorie"
+      },
+      "date": {
+        "required": "Data este obligatorie"
+      },
+      "hours": {
+        "required": "Numarul de ore este obligatoriu",
+        "min": "Numarul de ore trebuie sa fie mai mare ca 0",
+        "integer": "Numarul de ore trebuie sa fie intreg"
+      },
+      "submit": {
+        "messages": {
+          "add": "Orele de voluntariat au fost adaugate cu succes",
+          "edit": "Datele privind orele de voluntariat au fost modificate cu succes"
+        }
+      }
+    },
+    "errors": {
+      "no_data": "Nu s-au putut incarca orele de voluntariat",
+      "ACTIVITY_LOG_001": "Activitatea nu a fost gasita!",
+      "ACTIVITY_LOG_002": "Voluntarul trebuie sa aiba profil pentru a loga ore",
+      "ACTIVITY_LOG_003": "Nu se poat face modificari pe request-uri in status-ul Aprobat sau Respins"
     }
   }
 }

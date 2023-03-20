@@ -15,6 +15,7 @@ import {
   CreateEventOptions,
   EventModelTransformer,
   FindManyEventOptions,
+  FindOneEventOptions,
   IEventModel,
   IEventsListItemModel,
   UpdateEventOptions,
@@ -36,7 +37,8 @@ export class EventRepository
   async getMany(
     findOptions: FindManyEventOptions,
   ): Promise<Pagination<IEventsListItemModel>> {
-    const { eventState, organizationId, orderBy, orderDirection } = findOptions;
+    const { eventState, organizationId, orderBy, orderDirection, search } =
+      findOptions;
 
     const query = this.eventRepository
       .createQueryBuilder('event')
@@ -70,18 +72,24 @@ export class EventRepository
         orderDirection || OrderDirection.ASC,
       );
 
-    const currentDate = new Date();
-    if (eventState === EventState.OPEN) {
-      query.andWhere(
-        '(event.endDate > :currentDate OR event.endDate IS NULL)',
-        {
+    if (eventState) {
+      const currentDate = new Date();
+      if (eventState === EventState.OPEN) {
+        query.andWhere(
+          '(event.endDate > :currentDate OR event.endDate IS NULL)',
+          {
+            currentDate,
+          },
+        );
+      } else {
+        query.andWhere('event.endDate <= :currentDate', {
           currentDate,
-        },
-      );
-    } else {
-      query.andWhere('event.endDate <= :currentDate', {
-        currentDate,
-      });
+        });
+      }
+    }
+
+    if (search) {
+      query.andWhere(this.buildBracketSearchQuery(['event.name'], search));
     }
 
     return this.paginateQuery(
@@ -97,7 +105,7 @@ export class EventRepository
       EventModelTransformer.toEntity(newEvent),
     );
 
-    return this.find(eventEntity.id);
+    return this.find({ id: eventEntity.id });
   }
 
   async update(
@@ -116,7 +124,7 @@ export class EventRepository
 
     await this.eventRepository.save(toUpdate);
 
-    return this.find(id);
+    return this.find({ id });
   }
 
   async updateStatus(
@@ -125,12 +133,12 @@ export class EventRepository
   ): Promise<IEventModel> {
     await this.eventRepository.update({ id }, { status });
 
-    return this.find(id);
+    return this.find({ id });
   }
 
-  async find(id: string): Promise<IEventModel> {
+  async find(findOptions: FindOneEventOptions): Promise<IEventModel> {
     const eventEntity = await this.eventRepository.findOne({
-      where: { id },
+      where: findOptions,
       relations: {
         organization: true,
         targets: true,

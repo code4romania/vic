@@ -13,6 +13,7 @@ import {
   editEvent,
   getEvent,
   getEvents,
+  getRsvps,
   publishEvent,
 } from './event.api';
 
@@ -28,6 +29,52 @@ export const useEventsQuery = (
     () => getEvents(limit, page, eventState, orderByColumn, orderDirection),
     {
       onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => error,
+    },
+  );
+};
+
+export const useRsvpsQuery = (
+  id: string,
+  limit: number = PaginationConfig.defaultRowsPerPage,
+  page: number = PaginationConfig.defaultPage,
+  orderByColumn?: string,
+  orderDirection?: OrderDirection,
+  search?: string,
+  branchId?: string,
+  departmentId?: string,
+  roleId?: string,
+  going?: string,
+) => {
+  return useQuery(
+    [
+      'rsvp',
+      id,
+      limit,
+      page,
+      orderByColumn,
+      orderDirection,
+      search,
+      branchId,
+      departmentId,
+      roleId,
+      going,
+    ],
+    () =>
+      getRsvps(
+        id,
+        limit,
+        page,
+        orderByColumn,
+        orderDirection,
+        search,
+        branchId,
+        departmentId,
+        roleId,
+        going,
+      ),
+    {
+      onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => error,
+      enabled: !!id,
     },
   );
 };

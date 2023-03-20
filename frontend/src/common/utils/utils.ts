@@ -1,7 +1,8 @@
 import { differenceInYears, format, isSameDay } from 'date-fns';
+import { SelectItem } from '../../components/Select';
+import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 import { ICity } from '../interfaces/city.interface';
 import { IDivisionListItem } from '../interfaces/division.interface';
-import { SelectItem } from '../../components/Select';
 import { AnnouncementStatus } from '../enums/announcement-status.enum';
 import { EventStatus } from '../enums/event-status';
 
@@ -75,6 +76,12 @@ export const EventStatusMarkerColorMapper = {
   [EventStatus.DRAFT]: 'bg-yellow-500',
   [EventStatus.PUBLISHED]: 'bg-green-500',
   [EventStatus.ARCHIVED]: 'bg-red-500',
+};
+
+export const ActivityLogStatusMarkerColorMapper = {
+  [ActivityLogStatus.APPROVED]: 'bg-green-500',
+  [ActivityLogStatus.REJECTED]: 'bg-red-500',
+  [ActivityLogStatus.PENDING]: 'bg-yellow-500',
 };
 
 export const mapDivisionListItemToSelectItem = (item: IDivisionListItem): SelectItem<string> => ({
