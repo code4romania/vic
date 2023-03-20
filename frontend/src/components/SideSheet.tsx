@@ -8,7 +8,6 @@ import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import { formatDate } from '../common/utils/utils';
 import Button from './Button';
 import FormReadOnlyElement from './FormReadOnlyElement';
-import FormReadOnlyName from './FormReadOnlyName';
 import LoadingContent from './LoadingContent';
 import SidePanel from './SidePanel';
 
@@ -68,7 +67,7 @@ const SideSheet = ({
       {activityLog && (
         <>
           <div className="grow px-6 flex flex-col gap-8 pb-24 overflow-y-scroll">
-            <FormReadOnlyName
+            <FormReadOnlyElement
               label={i18n.t('volunteer:name', { status: '' })}
               value={activityLog.volunteer.name}
               onClick={onVolunteerClick}
@@ -85,7 +84,7 @@ const SideSheet = ({
               label={i18n.t('activity_log:date')}
               value={formatDate(activityLog.date)}
             />
-            <FormReadOnlyName
+            <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.event')}
               value={activityLog.event?.name}
               onClick={onEventClick}
@@ -99,7 +98,7 @@ const SideSheet = ({
               value={activityLog.mentions}
             />
             <hr />
-            <FormReadOnlyName
+            <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.created_by')}
               value={activityLog.createdByAdmin?.name}
             />
@@ -109,7 +108,7 @@ const SideSheet = ({
             />
             {activityLog.status === ActivityLogStatus.APPROVED && (
               <>
-                <FormReadOnlyName
+                <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.approved_by')}
                   value={activityLog.approvedBy?.name}
                 />
@@ -121,7 +120,7 @@ const SideSheet = ({
             )}
             {activityLog.status === ActivityLogStatus.REJECTED && (
               <>
-                <FormReadOnlyName
+                <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.rejected_by')}
                   value={activityLog.rejectedBy?.name}
                 />
