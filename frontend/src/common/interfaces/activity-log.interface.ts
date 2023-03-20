@@ -1,13 +1,15 @@
 import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 import { IActivityType } from './activity-type.interface';
+import { IEvent } from './event.interface';
 import { IUser } from './user.interface';
 
-export interface IActivityLog {
+export interface IActivityLogListItem {
   id: string;
-  task: Pick<IActivityType, 'icon' | 'name'>;
+  date: Date;
   hours: number;
-  executionDate: Date;
-  volunteer: Pick<IUser, 'id' | 'name'>;
   status: ActivityLogStatus;
-  registrationDate?: Date;
+  volunteer?: Pick<IUser, 'id' | 'name'>;
+  task?: Pick<IActivityType, 'id' | 'icon' | 'name'>;
+  event?: Pick<IEvent, 'id' | 'name'>;
+  createdOn: Date;
 }

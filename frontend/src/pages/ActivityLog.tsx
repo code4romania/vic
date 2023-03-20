@@ -17,7 +17,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
 import { useActivityLogsQuery } from '../services/acitivity-log/activity-log.service';
-import { IActivityLog } from '../common/interfaces/activity-log.interface';
+import { IActivityLogListItem } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from '../components/StatusWithMarker';
 import { useNavigate } from 'react-router';
@@ -69,7 +69,7 @@ const ActivityLog = () => {
   };
 
   // menu items
-  const buildActivityLogActionColumn = (): TableColumn<IActivityLog> => {
+  const buildActivityLogActionColumn = (): TableColumn<IActivityLogListItem> => {
     const activeVolunteersMenuItems = [
       {
         label: i18n.t('activity_log:popover.view'),
@@ -80,8 +80,8 @@ const ActivityLog = () => {
 
     return {
       name: '',
-      cell: (row: IActivityLog) => (
-        <Popover<IActivityLog> row={row} items={activeVolunteersMenuItems} />
+      cell: (row: IActivityLogListItem) => (
+        <Popover<IActivityLogListItem> row={row} items={activeVolunteersMenuItems} />
       ),
       width: '50px',
       allowOverflow: true,
@@ -89,11 +89,11 @@ const ActivityLog = () => {
   };
 
   // row actions
-  const onView = (row: IActivityLog) => {
+  const onView = (row: IActivityLogListItem) => {
     alert(`not yet implemented ${row.id}`);
   };
 
-  const onSort = (column: TableColumn<IActivityLog>, direction: SortOrder) => {
+  const onSort = (column: TableColumn<IActivityLogListItem>, direction: SortOrder) => {
     setOrderByColumn(column.id as string);
     setOrderDirection(
       direction.toLocaleUpperCase() === OrderDirection.ASC
@@ -113,7 +113,9 @@ const ActivityLog = () => {
       sortable: true,
       grow: 2,
       minWidth: '10rem',
-      cell: (row: IActivityLog) => <MediaCell logo={row.task?.icon || ''} title={row.task.name} />,
+      cell: (row: IActivityLogListItem) => (
+        <MediaCell logo={row.task?.icon || ''} title={row.task?.name || ''} />
+      ),
     },
     {
       id: 'activityLog.hours',
@@ -121,7 +123,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => `${row.hours}h`,
+      selector: (row: IActivityLogListItem) => `${row.hours}h`,
     },
     {
       id: 'activityLog.execution',
@@ -129,7 +131,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.executionDate),
+      selector: (row: IActivityLogListItem) => formatDate(row?.createdOn),
     },
     {
       id: 'activityLog.volunteer',
@@ -137,11 +139,12 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      cell: (row: IActivityLog) => (
-        <CellLayout>
-          <a onClick={onVolunteerClick.bind(null, row.volunteer.id)}>{row.volunteer.name}</a>
-        </CellLayout>
-      ),
+      cell: (row: IActivityLogListItem) =>
+        row.volunteer && (
+          <CellLayout>
+            <a onClick={onVolunteerClick.bind(null, row.volunteer.id)}>{row.volunteer.name}</a>
+          </CellLayout>
+        ),
     },
     {
       id: 'activityLog.registration',
@@ -149,7 +152,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.registrationDate),
+      selector: (row: IActivityLogListItem) => formatDate(row.createdOn),
     },
   ];
 
@@ -160,7 +163,9 @@ const ActivityLog = () => {
       sortable: true,
       grow: 2,
       minWidth: '10rem',
-      cell: (row: IActivityLog) => <MediaCell logo={row.task?.icon || ''} title={row.task.name} />,
+      cell: (row: IActivityLogListItem) => (
+        <MediaCell logo={row.task?.icon || ''} title={row.task?.name || ''} />
+      ),
     },
     {
       id: 'activityLog.hours',
@@ -168,7 +173,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => `${row.hours}h`,
+      selector: (row: IActivityLogListItem) => `${row.hours}h`,
     },
     {
       id: 'activityLog.execution',
@@ -176,7 +181,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      selector: (row: IActivityLog) => formatDate(row.executionDate),
+      selector: (row: IActivityLogListItem) => formatDate(row.createdOn),
     },
     {
       id: 'activityLog.volunteer',
@@ -184,11 +189,12 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      cell: (row: IActivityLog) => (
-        <CellLayout>
-          <a onClick={onVolunteerClick.bind(null, row.volunteer.id)}>{row.volunteer.name}</a>
-        </CellLayout>
-      ),
+      cell: (row: IActivityLogListItem) =>
+        row.volunteer && (
+          <CellLayout>
+            <a onClick={onVolunteerClick.bind(null, row.volunteer?.id)}>{row.volunteer?.name}</a>
+          </CellLayout>
+        ),
     },
     {
       id: 'activityLog.status',
@@ -196,7 +202,7 @@ const ActivityLog = () => {
       sortable: true,
       grow: 1,
       minWidth: '5rem',
-      cell: (row: IActivityLog) => (
+      cell: (row: IActivityLogListItem) => (
         <CellLayout>
           <StatusWithMarker markerColor={ActivityLogStatusMarkerColorMapper[row.status]}>
             {i18n.t(`activity_log:display_status.${row.status}`)}
