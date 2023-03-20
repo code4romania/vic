@@ -213,6 +213,10 @@ const ActivityLogs = () => {
     alert(`not yet implemented ${id}`);
   };
 
+  const onAddButtonPress = () => {
+    navigate('add');
+  };
+
   const onEdit = () => {
     alert(`not yet implemented`);
   };
@@ -237,10 +241,6 @@ const ActivityLogs = () => {
         ? OrderDirection.ASC
         : OrderDirection.DESC,
     );
-  };
-
-  const onAddButtonPress = () => {
-    alert('not yet implemented');
   };
 
   return (
