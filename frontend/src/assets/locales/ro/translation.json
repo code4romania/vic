@@ -546,8 +546,11 @@
     "past": "Istoric ore de voluntariat",
     "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
     "add": "Înregistrează ore",
-    "execution_date": "Data efectuării",
-    "registration_date": "Data inregistrarii",
+    "header": {
+      "task": "Task",
+      "execution_date": "Data efectuării",
+      "registration_date": "Data inregistrarii"
+    },
     "display_status": {
       "rejected": "Respins",
       "approved": "Aprobat",

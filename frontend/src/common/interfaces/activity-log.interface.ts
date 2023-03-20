@@ -8,8 +8,8 @@ export interface IActivityLogListItem {
   date: Date;
   hours: number;
   status: ActivityLogStatus;
-  volunteer?: Pick<IUser, 'id' | 'name'>;
-  task?: Pick<IActivityType, 'id' | 'icon' | 'name'>;
+  volunteer: Pick<IUser, 'id' | 'name'>;
+  activityType: Pick<IActivityType, 'id' | 'icon' | 'name'>;
   event?: Pick<IEvent, 'id' | 'name'>;
   createdOn: Date;
 }

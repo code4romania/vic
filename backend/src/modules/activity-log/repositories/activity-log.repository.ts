@@ -89,7 +89,10 @@ export class ActivityLogRepositoryService
         },
       )
       .orderBy(
-        this.buildOrderByQuery(findOptions.orderBy || 'createdOn', 'event'),
+        this.buildOrderByQuery(
+          findOptions.orderBy || 'createdOn',
+          'activityLog',
+        ),
         findOptions.orderDirection || OrderDirection.ASC,
       );
 
