@@ -93,10 +93,6 @@ const SideSheet = ({
               onClick={onEventClick}
             />
             <FormReadOnlyElement
-              label={i18n.t('activity_log:side_panel.event')}
-              value={activityLog.event?.name}
-            />
-            <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.mention')}
               value={activityLog.mentions}
             />
