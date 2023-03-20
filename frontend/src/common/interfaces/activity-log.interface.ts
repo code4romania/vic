@@ -13,3 +13,13 @@ export interface IActivityLogListItem {
   event?: Pick<IEvent, 'id' | 'name'>;
   createdOn: Date;
 }
+
+export interface IActivityLog extends IActivityLogListItem {
+  mentions: string;
+  createdByAdmin?: Pick<IUser, 'id' | 'name'>;
+  rejectionReason?: string;
+  rejectedOn?: Date;
+  rejectedBy?: Pick<IUser, 'id' | 'name'>;
+  approvedOn?: Date;
+  approvedBy?: Pick<IUser, 'id' | 'name'>;
+}
