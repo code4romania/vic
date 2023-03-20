@@ -88,7 +88,8 @@
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
       "announcements": "Anunturi",
-      "activity_types": "Categorii activitati"
+      "activity_types": "Categorii activitati",
+      "activity_log": "Ore de voluntariat"
     },
     "collapse": "Restrange meniul"
   },
@@ -537,6 +538,34 @@
       "ANNOUNCEMENT_001": "Anuntul nu a fost gasit",
       "ANNOUNCEMENT_002": "Anuntul este deja publicat si nu poate fi modificat",
       "ANNOUNCEMENT_003": "Selectie departament incorecta, doar departamentele pot fi alese ca target"
+    }
+  },
+  "activity_log": {
+    "pending": "Solicitări de aprobare",
+    "pending_header": "{{hours}} ore în curs de aprobare",
+    "past": "Istoric ore de voluntariat",
+    "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
+    "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+    "add": "Înregistrează ore",
+    "header": {
+      "task": "Task",
+      "execution_date": "Data efectuării",
+      "registration_date": "Data inregistrarii"
+    },
+    "display_status": {
+      "rejected": "Respins",
+      "approved": "Aprobat",
+      "pending": "Pending"
+    },
+    "status": "Status aprobare",
+    "popover": {
+      "view": "Fișă de activitate"
+    },
+    "errors": {
+      "no_data": "Nu s-au putut incarca orele de voluntariat",
+      "ACTIVITY_LOG_001": "Activitatea nu a fost gasita!",
+      "ACTIVITY_LOG_002": "Voluntarul trebuie sa aiba profil pentru a loga ore",
+      "ACTIVITY_LOG_003": "Nu se poat face modificari pe request-uri in status-ul Aprobat sau Respins"
     }
   }
 }
