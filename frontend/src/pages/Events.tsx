@@ -342,8 +342,6 @@ const Events = () => {
       orderDirection,
     );
 
-    console.log(tabsStatus);
-
     downloadExcel(eventsData as BlobPart, i18n.t('events:download', { context: tabsStatus }));
   };
 
