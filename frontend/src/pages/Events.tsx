@@ -29,7 +29,7 @@ import {
   useEventsQuery,
   usePublishEventMutation,
 } from '../services/event/event.service';
-import { formatEventDate } from '../common/utils/utils';
+import { downloadExcel, formatEventDate } from '../common/utils/utils';
 import { EventStatusMarkerColorMapper } from '../common/utils/utils';
 import MediaCell from '../components/MediaCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
@@ -39,6 +39,7 @@ import { EventStatus } from '../common/enums/event-status';
 import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
+import { getEventsForDownload } from '../services/event/event.api';
 
 const EventsTabsOptions: SelectItem<EventState>[] = [
   { key: EventState.OPEN, value: i18n.t('side_menu:options.events') },
@@ -80,9 +81,9 @@ const OpenEventsTableHeader = [
     minWidth: '9rem',
     grow: 1,
     selector: (row: IEvent) =>
-      `${row.going || 0} ${i18n.t('events:participate')}\n${row.notGoing || 0} ${i18n.t(
-        'events:not_participate',
-      )}`,
+      `${row.going || 0} ${i18n.t('events:participate').toLowerCase()}\n${row.notGoing || 0} ${i18n
+        .t('events:not_participate')
+        .toLowerCase()}`,
   },
   {
     id: 'status',
@@ -135,9 +136,9 @@ const PastEventsTableHeader = [
     minWidth: '9rem',
     grow: 1,
     selector: (row: IEvent) =>
-      `${row.going || 0} ${i18n.t('events:participate')}\n${row.notGoing || 0} ${i18n.t(
-        'events:not_participate',
-      )}`,
+      `${row.going || 0} ${i18n.t('events:participate').toLowerCase()}\n${row.notGoing || 0} ${i18n
+        .t('events:not_participate')
+        .toLowerCase()}`,
   },
   {
     id: 'hours',
@@ -334,6 +335,16 @@ const Events = () => {
     navigate('/events/add');
   };
 
+  const onExport = async () => {
+    const { data: eventsData } = await getEventsForDownload(
+      tabsStatus,
+      orderByColumn,
+      orderDirection,
+    );
+
+    downloadExcel(eventsData as BlobPart, i18n.t('events:download', { context: tabsStatus }));
+  };
+
   return (
     <PageLayout>
       <PageHeaderAdd
@@ -354,7 +365,7 @@ const Events = () => {
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
               className="btn-outline-secondary ml-auto"
-              onClick={() => alert('Not implemented')}
+              onClick={onExport}
             />
           </CardHeader>
           <CardBody>

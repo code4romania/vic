@@ -1,5 +1,7 @@
 {
   "general": {
+    "yes": "Da",
+    "no": "Nu",
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "user": "Utilizator",
@@ -11,6 +13,7 @@
     "date": "Data",
     "target": "Target",
     "answers": "Răspunsuri",
+    "answer": "Răspuns",
     "created_on": "Data crearii",
     "all_organization": "Toata organizatia",
     "event": "Eveniment",
@@ -382,9 +385,10 @@
     "past_events": "Evenimente încheiate",
     "status": "Status afisare",
     "hours": "Ore raportate",
-    "participate": "participă",
-    "not_participate": "nu participă",
+    "participate": "Participă",
+    "not_participate": "Nu participă",
     "details": "Detalii eveniment",
+    "volunteer": "Voluntar in organizatie",
     "responses_list": "Lista raspunsuri",
     "observation": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi.",
     "draft": {
@@ -449,7 +453,7 @@
         "description": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi."
       },
       "mention": {
-        "label": "Mentiune",
+        "label": "Mențiune",
         "description": "Adresează o intrebare voluntarilor.",
         "empty": "Nicio mentiune.",
         "required": "Mentiunea este obligatorie",
@@ -479,7 +483,9 @@
       "EVENT_004": "Nu putem modifica target audience pentru evenimentele publicate",
       "EVENT_005": "Doar evenimentele DRAFT sau ARHIVATE pot fi publicate",
       "EVENT_006": "Doar evenimentele publicate pot fi arhivate"
-    }
+    },
+    "download_open": "Evenimente active.xlsx",
+    "download_past": "Evenimente incheiate.xlsx"
   },
   "announcement": {
     "title": "Istoric anunturi",
