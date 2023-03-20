@@ -223,6 +223,7 @@ const ActivityLogs = () => {
       <PageHeaderAdd onAddButtonPress={onAddButtonPress} label={i18n.t('activity_log:add')}>
         {i18n.t('side_menu:options.activity_log')}
       </PageHeaderAdd>
+      <p className="text-cool-gray-500">{i18n.t('activity_log:description')}</p>
       <Tabs<ActivityLogResolutionStatus> tabs={ActivityLogTabsOptions} onClick={onTabClick}>
         <Card>
           <CardHeader>
