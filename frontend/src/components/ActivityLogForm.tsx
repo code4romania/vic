@@ -1,7 +1,6 @@
 import React from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl, UseFormReset } from 'react-hook-form';
 import i18n from '../common/config/i18n';
-import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import FormLayout from '../layouts/FormLayout';
 import VolunteerSelect from '../containers/VolunteerSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
@@ -14,39 +13,40 @@ interface ActivityLogFormProps {
   control: Control<ActivityLogFormTypes, object>;
   errors: FieldErrorsImpl<DeepRequired<ActivityLogFormTypes>>;
   disabled?: boolean;
-  activityLog?: IActivityLog;
   reset?: UseFormReset<ActivityLogFormTypes>;
 }
 
 export type ActivityLogFormTypes = {
   date: Date;
   hours: number;
-  mentions: string;
+  mentions?: string;
   volunteer: ListItem;
-  event: ListItem;
+  event?: ListItem;
   task: ListItem;
 };
 
 const ActivityLogForm = ({ control, errors, disabled }: ActivityLogFormProps) => {
   return (
     <FormLayout>
-      <p className="text-cool-gray-500">{i18n.t('activity_log:form.description')}</p>
+      {!disabled && <p className="text-cool-gray-500">{i18n.t('activity_log:form.description')}</p>}
       <form>
-        <Controller
-          key="volunteer"
-          name="volunteer"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <VolunteerSelect
-                defaultValue={value}
-                onSelect={onChange}
-                label={i18n.t('volunteer:name', { status: '' })}
-                errorMessage={errors['volunteer']?.message}
-              />
-            );
-          }}
-        />
+        {!disabled && (
+          <Controller
+            key="volunteer"
+            name="volunteer"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <VolunteerSelect
+                  defaultValue={value}
+                  onSelect={onChange}
+                  label={i18n.t('volunteer:name', { status: '' })}
+                  errorMessage={errors['volunteer']?.message}
+                />
+              );
+            }}
+          />
+        )}
         <Controller
           key="event"
           name="event"
@@ -90,7 +90,6 @@ const ActivityLogForm = ({ control, errors, disabled }: ActivityLogFormProps) =>
                 onChange={onChange}
                 value={value}
                 errorMessage={errors['date']?.message}
-                disabled={disabled}
               />
             );
           }}

@@ -40,6 +40,7 @@ export const getActivityLogs = async (
           id: '22',
         },
         hours: 3,
+        event: { id: '121', name: 'Ciclism' },
         date: new Date('2023-03-10'),
         volunteer: {
           id: '123',
@@ -99,7 +100,7 @@ export const getActivityLog = async (id: string): Promise<IActivityLog> => {
     },
     status: ActivityLogStatus.PENDING,
     createdOn: new Date('2023-03-11'),
-    event: { id: '222', name: 'Un eveniment frumos' },
+    // event: { id: '222', name: 'Un eveniment frumos' },
     createdByAdmin: { id: '22', name: 'Popa Elena Luminita' },
     approvedBy: { id: '22', name: 'Popa Elena Luminita' },
     approvedOn: new Date('2024-01-02'),
@@ -125,3 +126,19 @@ export const addActivityLog = async (data: ActivityLogFormTypes): Promise<void> 
 //     eventId: event?.value,
 //   };
 // };
+
+const formatEditActivityLogPayload = (data: ActivityLogFormTypes): object => {
+  const { volunteer, task, event, ...payload } = data;
+  volunteer;
+
+  return {
+    ...payload,
+    activityTypeId: task.value,
+    eventId: event?.value,
+  };
+};
+export const editActivityLog = (id: string, data: ActivityLogFormTypes): Promise<void> => {
+  console.log({ ...formatEditActivityLogPayload(data) });
+  // return API.patch(`/activity-log/${id}`, { ...formatEditActivityLogPayload(data) });
+  return Promise.resolve();
+};

@@ -46,14 +46,16 @@ const SideSheet = ({
           {i18n.t('activity_log:side_panel.title')}
         </h3>
         <div className="flex gap-2">
-          <button
-            className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
-            onClick={onEdit}
-            aria-label="edit-activity-log"
-            type="button"
-          >
-            <PencilIcon className="h-5 w-5" />
-          </button>
+          {activityLog?.status === ActivityLogStatus.PENDING && (
+            <button
+              className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
+              onClick={onEdit}
+              aria-label="edit-activity-log"
+              type="button"
+            >
+              <PencilIcon className="h-5 w-5" />
+            </button>
+          )}
           <button
             className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
             onClick={onClose}
@@ -67,7 +69,7 @@ const SideSheet = ({
       {!activityLog && <LoadingContent />}
       {activityLog && (
         <>
-          <div className="grow px-6 flex flex-col gap-8 pb-24 overflow-y-scroll">
+          <div className="grow px-6 flex flex-col gap-8 pb-24 overflow-y-auto">
             <FormReadOnlyName
               label={i18n.t('volunteer:name', { status: '' })}
               value={activityLog.volunteer.name}

@@ -5,7 +5,12 @@ import { ACTIVITY_LOG_ERRORS } from '../../common/errors/entities/activity-log.e
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import { ActivityLogTabs } from '../../pages/ActivityLog';
-import { addActivityLog, getActivityLog, getActivityLogs } from './activity-log.api';
+import {
+  addActivityLog,
+  editActivityLog,
+  getActivityLog,
+  getActivityLogs,
+} from './activity-log.api';
 
 export const useActivityLogsQuery = (
   rowsPerPage: number,
@@ -34,4 +39,14 @@ export const useAddActivityLogMutation = () => {
   return useMutation((data: ActivityLogFormTypes) => addActivityLog(data), {
     onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) => Promise.resolve(error),
   });
+};
+
+export const useEditActivityLogMutation = () => {
+  return useMutation(
+    ({ id, data }: { id: string; data: ActivityLogFormTypes }) => editActivityLog(id, data),
+    {
+      onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) =>
+        Promise.resolve(error),
+    },
+  );
 };

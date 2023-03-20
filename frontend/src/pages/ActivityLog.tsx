@@ -12,19 +12,22 @@ import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
 import { ActivityLogStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
 import {
   useActivityLogQuery,
   useActivityLogsQuery,
-} from '../services/acitivity-log/activity-log.service';
+  useEditActivityLogMutation,
+} from '../services/activity-log/activity-log.service';
 import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from '../components/StatusWithMarker';
 import { useNavigate } from 'react-router';
 import SideSheet from '../components/SideSheet';
+import EditActivityLog from '../components/EditActivityLog';
+import { ActivityLogFormTypes } from '../components/ActivityLogForm';
 
 export enum ActivityLogTabs {
   PENDING = 'pending',
@@ -39,6 +42,7 @@ const ActivityLogTabsOptions: SelectItem<ActivityLogTabs>[] = [
 const ActivityLog = () => {
   const navigate = useNavigate();
   const [showActivitySheet, setShowActivitySheet] = useState<string>();
+  const [showEditActivityLog, setShowEditActivityLog] = useState<boolean>();
   const [tabsStatus, setTabsStatus] = useState<ActivityLogTabs>(ActivityLogTabs.PENDING);
   // pagination state
   const [page, setPage] = useState<number>();
@@ -50,6 +54,7 @@ const ActivityLog = () => {
     data: activityLogs,
     isLoading: isActivityLogsLoading,
     error: activityLogsError,
+    refetch,
   } = useActivityLogsQuery(
     rowsPerPage as number,
     page as number,
@@ -61,6 +66,8 @@ const ActivityLog = () => {
   const { data: activityLog, error: activityLogError } = useActivityLogQuery(
     showActivitySheet as string,
   );
+  const { mutateAsync: editActivityLog, isLoading: isEditActivityLogLoading } =
+    useEditActivityLogMutation();
 
   useEffect(() => {
     if (activityLogsError)
@@ -127,7 +134,11 @@ const ActivityLog = () => {
       grow: 2,
       minWidth: '10rem',
       cell: (row: IActivityLog) => (
-        <MediaCell logo={row.activityType?.icon || ''} title={row.activityType.name} />
+        <MediaCell
+          logo={row.activityType?.icon || ''}
+          title={row.activityType.name}
+          subtitle={row.event?.name}
+        />
       ),
     },
     {
@@ -176,7 +187,11 @@ const ActivityLog = () => {
       grow: 2,
       minWidth: '10rem',
       cell: (row: IActivityLog) => (
-        <MediaCell logo={row.activityType?.icon || ''} title={row.activityType.name} />
+        <MediaCell
+          logo={row.activityType?.icon || ''}
+          title={row.activityType.name}
+          subtitle={row.event?.name}
+        />
       ),
     },
     {
@@ -232,7 +247,27 @@ const ActivityLog = () => {
   };
 
   const onEdit = () => {
-    if (activityLog) alert(`not yet implemented ${activityLog.id}`);
+    if (activityLog) setShowEditActivityLog(true);
+  };
+
+  const onSave = (data: ActivityLogFormTypes) => {
+    if (activityLog)
+      editActivityLog(
+        { id: activityLog.id, data },
+        {
+          onSuccess: () => {
+            useSuccessToast(i18n.t('activity_log:form.submit.messages.edit'));
+            setShowEditActivityLog(false);
+            setShowActivitySheet(undefined);
+            refetch();
+          },
+          onError: (error) => {
+            useErrorToast(
+              InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error),
+            );
+          },
+        },
+      );
   };
 
   return (
@@ -283,7 +318,14 @@ const ActivityLog = () => {
         activityLog={activityLog}
         onApprove={onApprove}
         onReject={onReject}
-      ></SideSheet>
+      />
+      <EditActivityLog
+        onClose={setShowEditActivityLog.bind(null, false)}
+        isOpen={!!showEditActivityLog}
+        onSave={onSave}
+        activityLog={activityLog}
+        isEditActivitiyLoading={isEditActivityLogLoading}
+      />
     </PageLayout>
   );
 };
