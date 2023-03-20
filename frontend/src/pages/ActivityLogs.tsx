@@ -23,9 +23,9 @@ import {
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from '../components/StatusWithMarker';
 import { useNavigate } from 'react-router';
-import SideSheet from '../components/SideSheet';
 import { IActivityLogListItem } from '../common/interfaces/activity-log.interface';
 import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
+import ActivityLogSidePanel from '../components/ActivityLogSidePanel';
 
 const ActivityLogTabsOptions: SelectItem<ActivityLogResolutionStatus>[] = [
   { key: ActivityLogResolutionStatus.NEW, value: i18n.t('activity_log:pending') },
@@ -34,7 +34,7 @@ const ActivityLogTabsOptions: SelectItem<ActivityLogResolutionStatus>[] = [
 
 const ActivityLogs = () => {
   const navigate = useNavigate();
-  const [showActivitySheet, setShowActivitySheet] = useState<string>();
+  const [selectedActivityLog, setSelectedActivityLog] = useState<string>();
   const [tabsStatus, setTabsStatus] = useState<ActivityLogResolutionStatus>(
     ActivityLogResolutionStatus.NEW,
   );
@@ -57,7 +57,7 @@ const ActivityLogs = () => {
   );
 
   const { data: activityLog, error: activityLogError } = useActivityLogQuery(
-    showActivitySheet as string,
+    selectedActivityLog as string,
   );
 
   useEffect(() => {
@@ -231,7 +231,7 @@ const ActivityLogs = () => {
 
   // row actions
   const onView = (row: IActivityLogListItem) => {
-    alert(`not yet implemented ${row.id}`);
+    setSelectedActivityLog(row.id);
   };
 
   const onSort = (column: TableColumn<IActivityLogListItem>, direction: SortOrder) => {
@@ -285,14 +285,14 @@ const ActivityLogs = () => {
         </Card>
       </Tabs>
 
-      <SideSheet
-        onClose={setShowActivitySheet.bind(null, undefined)}
+      <ActivityLogSidePanel
+        onClose={setSelectedActivityLog.bind(null, undefined)}
         onEdit={onEdit}
-        isOpen={!!showActivitySheet}
+        isOpen={!!selectedActivityLog}
         activityLog={activityLog}
         onApprove={onApprove}
         onReject={onReject}
-      ></SideSheet>
+      />
     </PageLayout>
   );
 };

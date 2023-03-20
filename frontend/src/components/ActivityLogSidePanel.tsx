@@ -11,7 +11,7 @@ import FormReadOnlyElement from './FormReadOnlyElement';
 import LoadingContent from './LoadingContent';
 import SidePanel from './SidePanel';
 
-interface SideSheetProps {
+interface ActivityLogSidePanelProps {
   isOpen: boolean;
   onClose: () => void;
   onEdit: () => void;
@@ -20,14 +20,14 @@ interface SideSheetProps {
   activityLog: IActivityLog | undefined;
 }
 
-const SideSheet = ({
+const ActivityLogSidePanel = ({
   isOpen,
   onClose,
   onEdit,
   onReject,
   onApprove,
   activityLog,
-}: SideSheetProps) => {
+}: ActivityLogSidePanelProps) => {
   const navigate = useNavigate();
 
   const onVolunteerClick = () => {
@@ -40,7 +40,7 @@ const SideSheet = ({
 
   return (
     <SidePanel isOpen={isOpen} onClose={onClose}>
-      <div className="flex justify-between items-center text-center sm:text-left px-6">
+      <div className="flex justify-between items-center text-center sm:text-left">
         <h3 className="sm:text-lg lg:text-xl leading-6 font-robotoBold truncate">
           {i18n.t('activity_log:side_panel.title')}
         </h3>
@@ -66,7 +66,7 @@ const SideSheet = ({
       {!activityLog && <LoadingContent />}
       {activityLog && (
         <>
-          <div className="grow px-6 flex flex-col gap-8 pb-24 overflow-y-scroll">
+          <div className="grow flex flex-col gap-6 pb-24 overflow-y-scroll">
             <FormReadOnlyElement
               label={i18n.t('volunteer:name', { status: '' })}
               value={activityLog.volunteer.name}
@@ -75,23 +75,20 @@ const SideSheet = ({
             <FormReadOnlyElement
               label={i18n.t('general:task')}
               value={activityLog.activityType.name}
+              onClick={() => {}}
             />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.hours')}
               value={activityLog.hours}
             />
             <FormReadOnlyElement
-              label={i18n.t('activity_log:date')}
+              label={i18n.t('activity_log:header.execution_date')}
               value={formatDate(activityLog.date)}
             />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.event')}
               value={activityLog.event?.name}
               onClick={onEventClick}
-            />
-            <FormReadOnlyElement
-              label={i18n.t('activity_log:side_panel.event')}
-              value={activityLog.event?.name}
             />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.mention')}
@@ -101,6 +98,7 @@ const SideSheet = ({
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.created_by')}
               value={activityLog.createdByAdmin?.name}
+              onClick={() => {}}
             />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.registration_date')}
@@ -111,6 +109,7 @@ const SideSheet = ({
                 <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.approved_by')}
                   value={activityLog.approvedBy?.name}
+                  onClick={() => {}}
                 />
                 <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.approve_date')}
@@ -123,6 +122,7 @@ const SideSheet = ({
                 <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.rejected_by')}
                   value={activityLog.rejectedBy?.name}
+                  onClick={() => {}}
                 />
                 <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.reject_date')}
@@ -183,4 +183,4 @@ const SideSheet = ({
   );
 };
 
-export default SideSheet;
+export default ActivityLogSidePanel;
