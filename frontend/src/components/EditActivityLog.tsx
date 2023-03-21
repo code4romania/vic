@@ -53,7 +53,7 @@ const EditActivityLog = ({
 
   return (
     <SidePanel isOpen={isOpen} onClose={onClose}>
-      <div className="flex items-center gap-1 text-center sm:text-left px-6">
+      <div className="flex items-center gap-1 text-center sm:text-left">
         <button
           className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
           onClick={onClose}
@@ -69,7 +69,7 @@ const EditActivityLog = ({
       {!activityLog && isEditActivitiyLoading && <LoadingContent />}
       {activityLog && !isEditActivitiyLoading && (
         <>
-          <div className="grow px-6 flex flex-col gap-8 pb-24 overflow-y-auto">
+          <div className="grow flex flex-col gap-6 pb-24 overflow-y-auto">
             <ActivityLogForm control={control} errors={errors} disabled />
           </div>
           <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full  fixed bottom-0 right-0 bg-white">
