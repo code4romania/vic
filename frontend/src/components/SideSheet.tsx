@@ -19,6 +19,7 @@ interface SideSheetProps {
   onReject: (id: string) => void;
   onApprove: (id: string) => void;
   activityLog: IActivityLog | undefined;
+  isLoading: boolean;
 }
 
 const SideSheet = ({
@@ -28,6 +29,7 @@ const SideSheet = ({
   onReject,
   onApprove,
   activityLog,
+  isLoading,
 }: SideSheetProps) => {
   const navigate = useNavigate();
 
@@ -66,8 +68,8 @@ const SideSheet = ({
           </button>
         </div>
       </div>
-      {!activityLog && <LoadingContent />}
-      {activityLog && (
+      {!activityLog && isLoading && <LoadingContent />}
+      {activityLog && !isLoading && (
         <>
           <div className="grow px-6 flex flex-col gap-8 pb-24 overflow-y-auto">
             <FormReadOnlyName
@@ -169,7 +171,7 @@ const SideSheet = ({
               <Button
                 label={i18n.t('activity_log:side_panel.approve')}
                 className="btn-primary"
-                onClick={onReject.bind(null, activityLog.id)}
+                onClick={onApprove.bind(null, activityLog.id)}
                 aria-label={`${i18n.t('general:reject')}`}
                 icon={<CheckIcon className="h-5 w-5" />}
                 type="button"

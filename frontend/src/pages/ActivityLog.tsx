@@ -19,7 +19,9 @@ import PageHeaderAdd from '../components/PageHeaderAdd';
 import {
   useActivityLogQuery,
   useActivityLogsQuery,
+  useApproveActivityLogMutation,
   useEditActivityLogMutation,
+  useRejectActivityLogMutation,
 } from '../services/activity-log/activity-log.service';
 import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
@@ -28,22 +30,24 @@ import { useNavigate } from 'react-router';
 import SideSheet from '../components/SideSheet';
 import EditActivityLog from '../components/EditActivityLog';
 import { ActivityLogFormTypes } from '../components/ActivityLogForm';
+import RejectTextareaModal from '../components/RejectTextareaModal';
 
 export enum ActivityLogTabs {
-  PENDING = 'pending',
-  PAST = 'past',
+  NEW = 'new',
+  SOLVED = 'solved',
 }
 
 const ActivityLogTabsOptions: SelectItem<ActivityLogTabs>[] = [
-  { key: ActivityLogTabs.PENDING, value: i18n.t('activity_log:pending') },
-  { key: ActivityLogTabs.PAST, value: i18n.t('activity_log:past') },
+  { key: ActivityLogTabs.NEW, value: i18n.t('activity_log:pending') },
+  { key: ActivityLogTabs.SOLVED, value: i18n.t('activity_log:past') },
 ];
 
 const ActivityLog = () => {
   const navigate = useNavigate();
   const [showActivitySheet, setShowActivitySheet] = useState<string>();
   const [showEditActivityLog, setShowEditActivityLog] = useState<boolean>();
-  const [tabsStatus, setTabsStatus] = useState<ActivityLogTabs>(ActivityLogTabs.PENDING);
+  const [showRejectModal, setShowRejectModal] = useState<string>();
+  const [tabsStatus, setTabsStatus] = useState<ActivityLogTabs>(ActivityLogTabs.NEW);
   // pagination state
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
@@ -68,6 +72,10 @@ const ActivityLog = () => {
   );
   const { mutateAsync: editActivityLog, isLoading: isEditActivityLogLoading } =
     useEditActivityLogMutation();
+  const { mutateAsync: approveActivityLog, isLoading: isApproveLoading } =
+    useApproveActivityLogMutation();
+  const { mutateAsync: rejectActivityLog, isLoading: isRejectLoading } =
+    useRejectActivityLogMutation();
 
   useEffect(() => {
     if (activityLogsError)
@@ -239,11 +247,21 @@ const ActivityLog = () => {
   ];
 
   const onReject = (id: string) => {
-    alert(`not yet implemented ${id}`);
+    setShowRejectModal(id);
   };
 
   const onApprove = (id: string) => {
-    alert(`not yet implemented ${id}`);
+    approveActivityLog(id, {
+      onSuccess: () => {
+        useSuccessToast(i18n.t('activity_log:form.submit.messages.approve'));
+        setShowActivitySheet(undefined);
+        setShowEditActivityLog(false);
+        refetch();
+      },
+      onError: (error) => {
+        useErrorToast(InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error));
+      },
+    });
   };
 
   const onEdit = () => {
@@ -270,6 +288,28 @@ const ActivityLog = () => {
       );
   };
 
+  const onConfirmRejectModal = (rejectionReason?: string) => {
+    if (showRejectModal)
+      rejectActivityLog(
+        { id: showRejectModal, rejectionReason },
+        {
+          onSuccess: () => {
+            useSuccessToast(i18n.t('activity_log:form.submit.messages.reject'));
+            setShowActivitySheet(undefined);
+            refetch();
+          },
+          onError: (error) => {
+            useErrorToast(
+              InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error),
+            );
+          },
+          onSettled: () => {
+            setShowRejectModal(undefined);
+          },
+        },
+      );
+  };
+
   return (
     <PageLayout>
       <PageHeaderAdd onAddButtonPress={onAddButtonPress} label={i18n.t('activity_log:add')}>
@@ -279,20 +319,20 @@ const ActivityLog = () => {
         <Card>
           <CardHeader>
             <h2>
-              {tabsStatus === ActivityLogTabs.PENDING
+              {tabsStatus === ActivityLogTabs.NEW
                 ? i18n.t('activity_log:pending_header', {
-                    hours: activityLogs?.count.pending || '-',
+                    hours: activityLogs?.count?.pending || '-',
                   })
                 : `${i18n.t('activity_log:past_header', {
-                    hours: activityLogs?.count.approved || '-',
-                    rejected: activityLogs?.count.rejected || '-',
+                    hours: activityLogs?.count?.approved || '-',
+                    rejected: activityLogs?.count?.rejected || '-',
                   })}`}
             </h2>
           </CardHeader>
           <CardBody>
             <DataTableComponent
               columns={[
-                ...(tabsStatus === ActivityLogTabs.PENDING
+                ...(tabsStatus === ActivityLogTabs.NEW
                   ? PendingActivityLogTableHeader
                   : PastActivityLogTableHeader),
                 buildActivityLogActionColumn(),
@@ -318,6 +358,7 @@ const ActivityLog = () => {
         activityLog={activityLog}
         onApprove={onApprove}
         onReject={onReject}
+        isLoading={isApproveLoading || isRejectLoading || isEditActivityLogLoading}
       />
       <EditActivityLog
         onClose={setShowEditActivityLog.bind(null, false)}
@@ -326,6 +367,14 @@ const ActivityLog = () => {
         activityLog={activityLog}
         isEditActivitiyLoading={isEditActivityLogLoading}
       />
+      {showRejectModal && (
+        <RejectTextareaModal
+          label={i18n.t('activity_log:modal.description')}
+          title={i18n.t('activity_log:modal.title')}
+          onClose={setShowRejectModal.bind(null, undefined)}
+          onConfirm={onConfirmRejectModal}
+        />
+      )}
     </PageLayout>
   );
 };

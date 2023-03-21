@@ -553,6 +553,11 @@
     "popover": {
       "view": "Fișă de activitate"
     },
+    "modal": {
+      "title": "Argumentează respingere",
+      "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
+      "reject": "Respinge fără mesaj "
+    },
     "side_panel": {
       "reject": "Muta in respinse",
       "approve": "Muta in aprobate",
@@ -587,7 +592,9 @@
       "submit": {
         "messages": {
           "add": "Orele de voluntariat au fost adaugate cu succes",
-          "edit": "Datele privind orele de voluntariat au fost modificate cu succes"
+          "edit": "Datele privind orele de voluntariat au fost modificate cu succes",
+          "approve": "Orele de voluntariat au fost aprobate",
+          "reject": "Orele de voluntariat au fost respinse"
         }
       }
     },

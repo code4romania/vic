@@ -7,9 +7,11 @@ import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import { ActivityLogTabs } from '../../pages/ActivityLog';
 import {
   addActivityLog,
+  approveActivityLog,
   editActivityLog,
   getActivityLog,
   getActivityLogs,
+  rejectActivityLog,
 } from './activity-log.api';
 
 export const useActivityLogsQuery = (
@@ -44,6 +46,23 @@ export const useAddActivityLogMutation = () => {
 export const useEditActivityLogMutation = () => {
   return useMutation(
     ({ id, data }: { id: string; data: ActivityLogFormTypes }) => editActivityLog(id, data),
+    {
+      onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) =>
+        Promise.resolve(error),
+    },
+  );
+};
+
+export const useApproveActivityLogMutation = () => {
+  return useMutation((id: string) => approveActivityLog(id), {
+    onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) => Promise.resolve(error),
+  });
+};
+
+export const useRejectActivityLogMutation = () => {
+  return useMutation(
+    ({ id, rejectionReason }: { id: string; rejectionReason?: string }) =>
+      rejectActivityLog(id, rejectionReason),
     {
       onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) =>
         Promise.resolve(error),
