@@ -11,11 +11,7 @@ import FormReadOnlyElement from './FormReadOnlyElement';
 import LoadingContent from './LoadingContent';
 import SidePanel from './SidePanel';
 
-<<<<<<<< HEAD:frontend/src/components/ActivityLog.tsx
-interface ActivityLogProps {
-========
 interface ActivityLogSidePanelProps {
->>>>>>>> develop:frontend/src/components/ActivityLogSidePanel.tsx
   isOpen: boolean;
   onClose: () => void;
   onEdit: () => void;
@@ -25,23 +21,15 @@ interface ActivityLogSidePanelProps {
   isLoading: boolean;
 }
 
-<<<<<<<< HEAD:frontend/src/components/ActivityLog.tsx
-const ActivityLog = ({
-========
 const ActivityLogSidePanel = ({
->>>>>>>> develop:frontend/src/components/ActivityLogSidePanel.tsx
   isOpen,
   onClose,
   onEdit,
   onReject,
   onApprove,
   activityLog,
-<<<<<<<< HEAD:frontend/src/components/ActivityLog.tsx
   isLoading,
-}: ActivityLogProps) => {
-========
 }: ActivityLogSidePanelProps) => {
->>>>>>>> develop:frontend/src/components/ActivityLogSidePanel.tsx
   const navigate = useNavigate();
 
   const onVolunteerClick = () => {
@@ -82,13 +70,8 @@ const ActivityLogSidePanel = ({
       {!activityLog && isLoading && <LoadingContent />}
       {activityLog && !isLoading && (
         <>
-<<<<<<<< HEAD:frontend/src/components/ActivityLog.tsx
           <div className="grow px-6 flex flex-col gap-8 pb-24 overflow-y-auto">
-            <FormReadOnlyName
-========
-          <div className="grow flex flex-col gap-6 pb-24 overflow-y-scroll">
             <FormReadOnlyElement
->>>>>>>> develop:frontend/src/components/ActivityLogSidePanel.tsx
               label={i18n.t('volunteer:name', { status: '' })}
               value={activityLog.volunteer.name}
               onClick={onVolunteerClick}
@@ -107,14 +90,11 @@ const ActivityLogSidePanel = ({
               value={formatDate(activityLog.date)}
             />
             <FormReadOnlyElement
-<<<<<<<< HEAD:frontend/src/components/ActivityLog.tsx
-========
               label={i18n.t('activity_log:side_panel.event')}
               value={activityLog.event?.name}
               onClick={onEventClick}
             />
             <FormReadOnlyElement
->>>>>>>> develop:frontend/src/components/ActivityLogSidePanel.tsx
               label={i18n.t('activity_log:side_panel.mention')}
               value={activityLog.mentions}
             />
@@ -207,8 +187,4 @@ const ActivityLogSidePanel = ({
   );
 };
 
-<<<<<<<< HEAD:frontend/src/components/ActivityLog.tsx
-export default ActivityLog;
-========
 export default ActivityLogSidePanel;
->>>>>>>> develop:frontend/src/components/ActivityLogSidePanel.tsx
