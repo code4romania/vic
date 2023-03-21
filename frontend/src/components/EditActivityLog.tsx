@@ -53,7 +53,7 @@ const EditActivityLog = ({
 
   return (
     <SidePanel isOpen={isOpen} onClose={onClose}>
-      <div className="flex items-center gap-1 text-center sm:text-left">
+      <div className="flex items-center gap-1 text-center sm:text-left px-6">
         <button
           className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
           onClick={onClose}

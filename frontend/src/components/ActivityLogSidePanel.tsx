@@ -42,7 +42,7 @@ const ActivityLogSidePanel = ({
 
   return (
     <SidePanel isOpen={isOpen} onClose={onClose}>
-      <div className="flex justify-between items-center text-center sm:text-left">
+      <div className="flex justify-between items-center text-center sm:text-left px-6">
         <h3 className="sm:text-lg lg:text-xl leading-6 font-robotoBold truncate">
           {i18n.t('activity_log:side_panel.title')}
         </h3>
@@ -70,7 +70,7 @@ const ActivityLogSidePanel = ({
       {!activityLog && isLoading && <LoadingContent />}
       {activityLog && !isLoading && (
         <>
-          <div className="grow flex flex-col gap-6 pb-24 overflow-y-auto">
+          <div className="grow flex flex-col gap-6 pb-24 px-6 overflow-y-auto">
             <FormReadOnlyElement
               label={i18n.t('volunteer:name', { status: '' })}
               value={activityLog.volunteer.name}
