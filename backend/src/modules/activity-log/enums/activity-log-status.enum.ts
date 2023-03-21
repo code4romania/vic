@@ -5,6 +5,6 @@ export enum ActivityLogStatus {
 }
 
 export enum ActivityLogStatusForSolvedLogs {
-  APPROVED = ActivityLogStatus.APPROVED,
-  REJECTED = ActivityLogStatus.REJECTED,
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
 }
