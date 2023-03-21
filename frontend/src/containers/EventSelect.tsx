@@ -17,7 +17,7 @@ const EventSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Ev
   // load events from the database
   const loadEvents = async (search: string): Promise<ListItem[]> => {
     try {
-      const events = await getEvents(5, 1, undefined, 'name', OrderDirection.ASC, search);
+      const events = await getEvents(0, 0, undefined, 'name', OrderDirection.ASC, search);
 
       // map events to server select data type
       return events.items.map((event) => ({

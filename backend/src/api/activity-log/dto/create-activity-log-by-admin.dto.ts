@@ -7,7 +7,6 @@ import {
   Max,
   MaxLength,
   Min,
-  MinLength,
 } from 'class-validator';
 
 export class CreateActivityLogByAdminDto {
@@ -21,7 +20,6 @@ export class CreateActivityLogByAdminDto {
 
   @IsString()
   @IsOptional()
-  @MinLength(2)
   @MaxLength(300)
   mentions?: string;
 
@@ -29,7 +27,8 @@ export class CreateActivityLogByAdminDto {
   volunteerId: string;
 
   @IsUUID()
-  eventId: string;
+  @IsOptional()
+  eventId?: string;
 
   @IsUUID()
   activityTypeId: string;

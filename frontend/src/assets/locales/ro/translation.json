@@ -1,5 +1,7 @@
 {
   "general": {
+    "yes": "Da",
+    "no": "Nu",
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "user": "Utilizator",
@@ -11,11 +13,11 @@
     "date": "Data",
     "target": "Target",
     "answers": "Răspunsuri",
+    "answer": "Răspuns",
     "created_on": "Data crearii",
     "all_organization": "Toata organizatia",
     "event": "Eveniment",
     "add": "Adauga {{item}}",
-    "save": "Salvează",
     "category": "Categorie",
     "select": "Selecteaza {{item}}",
     "choose": "Alege {{item}}",
@@ -384,9 +386,10 @@
     "past_events": "Evenimente încheiate",
     "status": "Status afisare",
     "hours": "Ore raportate",
-    "participate": "participă",
-    "not_participate": "nu participă",
+    "participate": "Participă",
+    "not_participate": "Nu participă",
     "details": "Detalii eveniment",
+    "volunteer": "Voluntar in organizatie",
     "responses_list": "Lista raspunsuri",
     "observation": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi.",
     "draft": {
@@ -451,7 +454,7 @@
         "description": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi."
       },
       "mention": {
-        "label": "Mentiune",
+        "label": "Mențiune",
         "description": "Adresează o intrebare voluntarilor.",
         "empty": "Nicio mentiune.",
         "required": "Mentiunea este obligatorie",
@@ -481,7 +484,9 @@
       "EVENT_004": "Nu putem modifica target audience pentru evenimentele publicate",
       "EVENT_005": "Doar evenimentele DRAFT sau ARHIVATE pot fi publicate",
       "EVENT_006": "Doar evenimentele publicate pot fi arhivate"
-    }
+    },
+    "download_open": "Evenimente active.xlsx",
+    "download_past": "Evenimente incheiate.xlsx"
   },
   "announcement": {
     "title": "Istoric anunturi",
@@ -541,9 +546,13 @@
     "pending_header": "{{hours}} ore în curs de aprobare",
     "past": "Istoric ore de voluntariat",
     "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
+    "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
     "add": "Înregistrează ore",
-    "date": "Data efectuării",
-    "registration_date": "Data inregistrarii",
+    "header": {
+      "task": "Task",
+      "execution_date": "Data efectuării",
+      "registration_date": "Data inregistrarii"
+    },
     "display_status": {
       "rejected": "Respins",
       "approved": "Aprobat",
@@ -599,7 +608,10 @@
       }
     },
     "errors": {
-      "no_data": "Nu s-au putut incarca orele de voluntariat"
+      "no_data": "Nu s-au putut incarca orele de voluntariat",
+      "ACTIVITY_LOG_001": "Activitatea nu a fost gasita!",
+      "ACTIVITY_LOG_002": "Voluntarul trebuie sa aiba profil pentru a loga ore",
+      "ACTIVITY_LOG_003": "Nu se poat face modificari pe request-uri in status-ul Aprobat sau Respins"
     }
   }
 }

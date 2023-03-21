@@ -26,8 +26,8 @@ const VolunteerSelect = ({
     try {
       const volunteers = await getVolunteers(
         VolunteerStatus.ACTIVE,
-        5,
-        1,
+        0,
+        0,
         'user.name',
         OrderDirection.ASC,
         search,

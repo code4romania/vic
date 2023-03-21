@@ -27,7 +27,10 @@ export const activityLogValidationSchema = yup
       .integer(`${i18n.t('activity_log:form.hours.integer')}`)
       .min(1, `${i18n.t('activity_log:form.hours.min')}`)
       .required(`${i18n.t('activity_log:form.hours.required')}`),
-    date: yup.date().required(`${i18n.t('activity_log:form.date.required')}`),
+    date: yup
+      .date()
+      .required(`${i18n.t('activity_log:form.date.required')}`)
+      .typeError(`${i18n.t('general:invalid_date')}`),
     mentions: yup.string().max(300, `${i18n.t('events:form.mention.max', { value: '300' })}`),
   })
   .required();
@@ -35,7 +38,7 @@ export const activityLogValidationSchema = yup
 const AddActivityLog = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: addActivityLog, isLoading: isActivityLogAdding } =
+  const { mutateAsync: addActivityLog, isLoading: isAddingActivityLog } =
     useAddActivityLogMutation();
 
   const {
@@ -69,13 +72,13 @@ const AddActivityLog = () => {
       <PageHeader onBackButtonPress={navigateBack}>
         {i18n.t('general:add', { item: '' })}
       </PageHeader>
-      {isActivityLogAdding && <LoadingContent />}
-      {!isActivityLogAdding && (
+      {isAddingActivityLog && <LoadingContent />}
+      {!isAddingActivityLog && (
         <Card>
           <CardHeader>
             <h2>{i18n.t('side_menu:options.activity_log')}</h2>
             <Button
-              label={i18n.t('general:save')}
+              label={i18n.t('general:save_changes')}
               className="btn-primary"
               icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
               onClick={handleSubmit(onSubmit)}

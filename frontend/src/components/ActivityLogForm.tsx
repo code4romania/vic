@@ -77,7 +77,6 @@ const ActivityLogForm = ({ control, errors, disabled }: ActivityLogFormProps) =>
             );
           }}
         />
-
         <Controller
           key="date"
           name="date"
