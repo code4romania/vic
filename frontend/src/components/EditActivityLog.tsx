@@ -42,7 +42,7 @@ const EditActivityLog = ({
     // init form data
     if (activityLog)
       reset({
-        date: activityLog.date,
+        date: new Date(activityLog.date),
         hours: activityLog.hours,
         mentions: activityLog.mentions,
         volunteer: mapUserToListItem(activityLog.volunteer),

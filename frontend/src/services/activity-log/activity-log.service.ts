@@ -4,7 +4,7 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ACTIVITY_LOG_ERRORS } from '../../common/errors/entities/activity-log.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
-import { ActivityLogTabs } from '../../pages/ActivityLog';
+import { ActivityLogTabs } from '../../pages/ActivityLogs';
 import {
   addActivityLog,
   approveActivityLog,

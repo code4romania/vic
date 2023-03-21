@@ -12,7 +12,7 @@ import FormReadOnlyName from './FormReadOnlyName';
 import LoadingContent from './LoadingContent';
 import SidePanel from './SidePanel';
 
-interface SideSheetProps {
+interface ActivityLogProps {
   isOpen: boolean;
   onClose: () => void;
   onEdit: () => void;
@@ -22,7 +22,7 @@ interface SideSheetProps {
   isLoading: boolean;
 }
 
-const SideSheet = ({
+const ActivityLog = ({
   isOpen,
   onClose,
   onEdit,
@@ -30,7 +30,7 @@ const SideSheet = ({
   onApprove,
   activityLog,
   isLoading,
-}: SideSheetProps) => {
+}: ActivityLogProps) => {
   const navigate = useNavigate();
 
   const onVolunteerClick = () => {
@@ -184,4 +184,4 @@ const SideSheet = ({
   );
 };
 
-export default SideSheet;
+export default ActivityLog;

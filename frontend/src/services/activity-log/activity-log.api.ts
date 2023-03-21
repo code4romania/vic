@@ -3,7 +3,7 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IActivityLog } from '../../common/interfaces/activity-log.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
-import { ActivityLogTabs } from '../../pages/ActivityLog';
+import { ActivityLogTabs } from '../../pages/ActivityLogs';
 import API from '../api';
 
 interface IPaginatedActivityLog extends IPaginatedEntity<IActivityLog> {

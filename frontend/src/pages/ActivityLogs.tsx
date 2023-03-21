@@ -27,7 +27,7 @@ import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from '../components/StatusWithMarker';
 import { useNavigate } from 'react-router';
-import SideSheet from '../components/SideSheet';
+import ActivityLog from '../components/ActivityLog';
 import EditActivityLog from '../components/EditActivityLog';
 import { ActivityLogFormTypes } from '../components/ActivityLogForm';
 import RejectTextareaModal from '../components/RejectTextareaModal';
@@ -42,7 +42,7 @@ const ActivityLogTabsOptions: SelectItem<ActivityLogTabs>[] = [
   { key: ActivityLogTabs.SOLVED, value: i18n.t('activity_log:past') },
 ];
 
-const ActivityLog = () => {
+const ActivityLogs = () => {
   const navigate = useNavigate();
   const [showActivitySheet, setShowActivitySheet] = useState<string>();
   const [showEditActivityLog, setShowEditActivityLog] = useState<boolean>();
@@ -351,7 +351,7 @@ const ActivityLog = () => {
         </Card>
       </Tabs>
 
-      <SideSheet
+      <ActivityLog
         onClose={setShowActivitySheet.bind(null, undefined)}
         onEdit={onEdit}
         isOpen={!!showActivitySheet}
@@ -379,4 +379,4 @@ const ActivityLog = () => {
   );
 };
 
-export default ActivityLog;
+export default ActivityLogs;
