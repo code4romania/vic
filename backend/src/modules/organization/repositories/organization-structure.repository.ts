@@ -6,6 +6,8 @@ import {
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import { VolunteerProfileEntity } from 'src/modules/volunteer/entities/volunteer-profile.entity';
+import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { Repository } from 'typeorm';
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
 import { OrganizationStructureType } from '../enums/organization-structure-type.enum';
@@ -73,14 +75,28 @@ export class OrganizationStructureRepositoryService
       .loadRelationCountAndMap(
         'structure.numberOfMembers',
         `structure.${this.getPropertyByType(type)}`,
+        'numberOfMembers',
+        (qb) =>
+          qb
+            .innerJoin(VolunteerEntity, 'v')
+            .where(
+              `"v"."status" = :status AND "v"."volunteer_profile_id" = "numberOfMembers"."id"`,
+              {
+                status: VolunteerStatus.ACTIVE,
+              },
+            ),
       )
       .select()
       .addSelect((subQuery) => {
         return subQuery
           .select('COUNT(vp.id)', 'numberOfMembers')
           .from(VolunteerProfileEntity, 'vp')
+          .innerJoin(VolunteerEntity, 'v')
           .where(
-            `vp.${OrganizationStructureType.BRANCH.toLocaleLowerCase()}.id = structure.id`,
+            `vp.${OrganizationStructureType.BRANCH.toLocaleLowerCase()}.id = structure.id AND v.status = :status AND vp.id = v.volunteerProfileId`,
+            {
+              status: VolunteerStatus.ACTIVE,
+            },
           );
       }, 'numberOfMembers')
       .where(
