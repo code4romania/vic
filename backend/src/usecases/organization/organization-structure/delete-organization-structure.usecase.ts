@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { ObjectDiff } from 'src/common/helpers/object-diff';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { DeleteResourceEvent } from 'src/modules/actions-archive/events/base.events';
-import { ORGANIZATION_STRUCTURE_EVENTS } from 'src/modules/actions-archive/modules/organization-structure/organization-structure.model';
-import { ActionsArchiveFacade } from 'src/modules/actions-archive/organization-structure.facade';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { OrganizationStructureExceptionMessages } from 'src/modules/organization/exceptions/organization-structure.exceptions';
 import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOneOrganizationStructureUseCase } from './get-one-organization-structure.usecase';
+import { ActionsType } from 'src/modules/actions-archive/enums/action-types.enum';
+import { ActionsResourceType } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 
 @Injectable()
 export class DeleteOrganizationStructureUseCase
@@ -34,14 +34,13 @@ export class DeleteOrganizationStructureUseCase
       );
     }
 
-    this.actionsArchiveFacade.trackEvent(
-      ORGANIZATION_STRUCTURE_EVENTS.DELETE,
-      new DeleteResourceEvent(
-        removed,
-        admin,
-        ObjectDiff.diff(toRemove, undefined),
-      ),
-    );
+    this.actionsArchiveFacade.trackEvent({
+      actionType: ActionsType.DELETE,
+      resourceType: ActionsResourceType.ORG_STRUCTURE,
+      resourceId: toRemove.id,
+      author: admin,
+      changes: ObjectDiff.diff(toRemove, undefined),
+    });
 
     return removed;
   }

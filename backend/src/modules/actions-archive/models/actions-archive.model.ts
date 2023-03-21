@@ -1,43 +1,33 @@
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { ActionsArchiveEntity } from '../entities/actions-archive.entity';
+import { ActionsResourceType } from '../enums/action-resource-types.enum';
+import { ActionsType } from '../enums/action-types.enum';
 
-export enum ActionsArchiveType {
-  CREATE = 'create',
-  UPDATE = 'update',
-  DELETE = 'delete',
-}
+export const TRACK_ACTION_EVENT = 'track.action';
 
-export enum ActionsResourceType {
-  ORG_STRUCTURE = 'organization_structure',
-  ORG_PROFILE = 'organization_profile',
-  ACCESS_REQUEST = 'access_request',
-  VOLUNTEERS = 'volunteers',
-  ACTIVITY_LOG = 'activity_log',
-  ACTIVITY_TYPE = 'activity_type',
-  EVENTS = 'events',
-  ANNOUNCEMENTS = 'announcements',
-}
-
-export type RegisterActionModel = {
-  action: ActionsArchiveType;
-  authorId: string;
-  organizationId: string;
+export interface ITrackActionEventModel {
+  actionType: ActionsType;
+  author: IAdminUserModel;
   resourceType: ActionsResourceType;
   resourceId: string;
+  changes: unknown;
+}
 
-  diff?: unknown;
-};
+export type CreateActionArchiveOptions = Pick<
+  ITrackActionEventModel,
+  'actionType' | 'resourceType' | 'resourceId' | 'changes'
+> & { authorId: string };
 
 export class ActionsArchiveTransformer {
-  static toEntity(action: RegisterActionModel): ActionsArchiveEntity {
+  static toEntity(action: CreateActionArchiveOptions): ActionsArchiveEntity {
     const entity = new ActionsArchiveEntity();
 
-    entity.action = action.action;
+    entity.action = action.actionType;
     entity.authorId = action.authorId;
-    entity.organizationId = action.organizationId;
     entity.resourceType = action.resourceType;
     entity.resourceId = action.resourceId;
 
-    entity.diff = action.diff;
+    entity.changes = action.changes;
 
     return entity;
   }

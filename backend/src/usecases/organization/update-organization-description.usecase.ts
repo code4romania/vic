@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ObjectDiff } from 'src/common/helpers/object-diff';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
-import { UpdateResourceEvent } from 'src/modules/actions-archive/events/base.events';
-import { ORGANIZATION_PROFILE_EVENTS } from 'src/modules/actions-archive/modules/organization-profile/organization-profile.model';
-import { ORGANIZATION_STRUCTURE_EVENTS } from 'src/modules/actions-archive/modules/organization-structure/organization-structure.model';
-import { ActionsArchiveFacade } from 'src/modules/actions-archive/organization-structure.facade';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOrganizationUseCaseService } from './get-organization.usecase';
+import { ActionsType } from 'src/modules/actions-archive/enums/action-types.enum';
+import { ActionsResourceType } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 
 @Injectable()
 export class UpdateOrganizationDescriptionUseCaseService
@@ -36,15 +35,14 @@ export class UpdateOrganizationDescriptionUseCaseService
         description,
       );
 
-    // 3. Track event
-    this.actionsArchiveFacade.trackEvent(
-      ORGANIZATION_PROFILE_EVENTS.UPDATE,
-      new UpdateResourceEvent(
-        updated.id,
-        admin,
-        ObjectDiff.diff(toUpdate, updated),
-      ),
-    );
+    // 3. Track action
+    this.actionsArchiveFacade.trackEvent({
+      actionType: ActionsType.UPDATE,
+      resourceType: ActionsResourceType.ORG_PROFILE,
+      resourceId: updated.id,
+      author: admin,
+      changes: ObjectDiff.diff(toUpdate, updated),
+    });
 
     // return organization with updated fields
     return updated;

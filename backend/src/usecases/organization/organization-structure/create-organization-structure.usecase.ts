@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
+import { ObjectDiff } from 'src/common/helpers/object-diff';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { ActionsArchiveFacade } from 'src/modules/actions-archive/organization-structure.facade';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { ActionsResourceType } from 'src/modules/actions-archive/enums/action-resource-types.enum';
+import { ActionsType } from 'src/modules/actions-archive/enums/action-types.enum';
 import { OrganizationStructureExceptionMessages } from 'src/modules/organization/exceptions/organization-structure.exceptions';
 import {
   ICreateOrganizationStructureModel,
   IOrganizationStructureModel,
 } from 'src/modules/organization/models/organization-structure.model';
 import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
-import { ORGANIZATION_STRUCTURE_EVENTS } from 'src/modules/actions-archive/modules/organization-structure/organization-structure.model';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
-import { CreateResourceEvent } from 'src/modules/actions-archive/events/base.events';
 @Injectable()
 export class CreateOrganizationStructureUseCase
   implements IUseCaseService<IOrganizationStructureModel>
@@ -39,10 +40,15 @@ export class CreateOrganizationStructureUseCase
 
     const created = await this.organizationStructureFacade.create(data);
 
-    this.actionsArchiveFacade.trackEvent(
-      ORGANIZATION_STRUCTURE_EVENTS.CREATE,
-      new CreateResourceEvent(created.id, admin),
-    );
+    // @birloiflorian ma gandeam sa facem o clasa abstracta care sa injecteze actionsArchive si sa faca trackEvent intern, iar noi pe super() sa-i trimitem actionType si resourceType
+    // iar aici doar apelam trackEvent (care vine din clasa abstracta) cu resourceId, author, changes
+    this.actionsArchiveFacade.trackEvent({
+      actionType: ActionsType.CREATE,
+      resourceType: ActionsResourceType.ORG_STRUCTURE,
+      resourceId: created.id,
+      author: admin,
+      changes: ObjectDiff.diff(undefined, created),
+    });
 
     return created;
   }

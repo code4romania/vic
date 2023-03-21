@@ -2,9 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ObjectDiff } from 'src/common/helpers/object-diff';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { UpdateResourceEvent } from 'src/modules/actions-archive/events/base.events';
-import { ORGANIZATION_STRUCTURE_EVENTS } from 'src/modules/actions-archive/modules/organization-structure/organization-structure.model';
-import { ActionsArchiveFacade } from 'src/modules/actions-archive/organization-structure.facade';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { OrganizationStructureExceptionMessages } from 'src/modules/organization/exceptions/organization-structure.exceptions';
 import {
   IOrganizationStructureModel,
@@ -12,6 +10,8 @@ import {
 } from 'src/modules/organization/models/organization-structure.model';
 import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { ActionsType } from 'src/modules/actions-archive/enums/action-types.enum';
+import { ActionsResourceType } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 
 @Injectable()
 export class UpdateOrganizationStructureUseCase
@@ -53,14 +53,13 @@ export class UpdateOrganizationStructureUseCase
 
     const updated = await this.organizationStructureFacade.update(data);
 
-    this.actionsArchiveFacade.trackEvent(
-      ORGANIZATION_STRUCTURE_EVENTS.EDIT,
-      new UpdateResourceEvent(
-        updated.id,
-        admin,
-        ObjectDiff.diff(toUpdate, updated),
-      ),
-    );
+    this.actionsArchiveFacade.trackEvent({
+      actionType: ActionsType.UPDATE,
+      resourceType: ActionsResourceType.ORG_STRUCTURE,
+      resourceId: updated.id,
+      author: admin,
+      changes: ObjectDiff.diff(toUpdate, updated),
+    });
 
     return updated;
   }
