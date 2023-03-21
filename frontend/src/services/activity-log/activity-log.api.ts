@@ -52,9 +52,7 @@ const formatEditActivityLogPayload = (data: ActivityLogFormTypes): object => {
   };
 };
 export const editActivityLog = (id: string, data: ActivityLogFormTypes): Promise<void> => {
-  console.log({ ...formatEditActivityLogPayload(data) });
-  // return API.patch(`/activity-log/${id}`, { ...formatEditActivityLogPayload(data) });
-  return Promise.resolve();
+  return API.patch(`/activity-log/${id}`, { ...formatEditActivityLogPayload(data) });
 };
 
 export const approveActivityLog = (id: string): Promise<void> => {
@@ -62,5 +60,6 @@ export const approveActivityLog = (id: string): Promise<void> => {
 };
 
 export const rejectActivityLog = (id: string, rejectionReason?: string): Promise<void> => {
+  console.log(rejectionReason);
   return API.patch(`/activity-log/${id}/reject`, { rejectionReason });
 };

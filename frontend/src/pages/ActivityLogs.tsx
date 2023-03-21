@@ -292,7 +292,6 @@ const ActivityLogs = () => {
           },
         },
       );
-    alert(`not yet implemented`);
   };
 
   const onVolunteerClick = (id: string) => {
@@ -381,6 +380,7 @@ const ActivityLogs = () => {
           title={i18n.t('activity_log:modal.title')}
           onClose={setShowRejectModal.bind(null, undefined)}
           onConfirm={onConfirmRejectModal}
+          danger
         />
       )}
     </PageLayout>

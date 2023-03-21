@@ -70,7 +70,7 @@ const ActivityLogSidePanel = ({
       {!activityLog && isLoading && <LoadingContent />}
       {activityLog && !isLoading && (
         <>
-          <div className="grow px-6 flex flex-col gap-8 pb-24 overflow-y-auto">
+          <div className="grow flex flex-col gap-6 pb-24 overflow-y-auto">
             <FormReadOnlyElement
               label={i18n.t('volunteer:name', { status: '' })}
               value={activityLog.volunteer.name}

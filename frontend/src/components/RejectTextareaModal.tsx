@@ -12,6 +12,7 @@ interface RejectTextareaModalProps {
   label: string;
   onClose: () => void;
   onConfirm: (rejectMessage?: string) => void;
+  danger?: boolean;
 }
 
 export type RejectTextareaType = {
@@ -28,7 +29,13 @@ const schema = yup
   })
   .required();
 
-const RejectTextareaModal = ({ title, label, onClose, onConfirm }: RejectTextareaModalProps) => {
+const RejectTextareaModal = ({
+  title,
+  label,
+  onClose,
+  onConfirm,
+  danger,
+}: RejectTextareaModalProps) => {
   const onSubmitWithMessage = (data: { rejectMessage: string }) => {
     onConfirm(data.rejectMessage);
     onClose();
@@ -72,13 +79,13 @@ const RejectTextareaModal = ({ title, label, onClose, onConfirm }: RejectTextare
         </form>
         <div className="flex flex-col-reverse sm:flex-row gap-4 justify-end">
           <Button
-            label={i18n.t('reject_modal:send')}
+            label={danger ? i18n.t('activity_log:modal.reject') : i18n.t('reject_modal:send')}
             className="btn-outline-secondary w-full sm:w-20"
             onClick={onSubmitWithoutMessage}
           />
           <Button
-            label={i18n.t('general:send')}
-            className="btn-primary w-full sm:w-20"
+            label={danger ? i18n.t('general:reject') : i18n.t('general:send')}
+            className={`${danger ? 'btn-danger' : 'btn-primary'} w-full sm:w-20`}
             onClick={handleSubmit(onSubmitWithMessage)}
           />
         </div>
