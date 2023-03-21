@@ -7,6 +7,7 @@ export enum EventsRSVPExceptionCodes {
   EVENT_RSVP_004 = 'EVENT_RSVP_004',
   EVENT_RSVP_005 = 'EVENT_RSVP_005',
   EVENT_RSVP_006 = 'EVENT_RSVP_006',
+  EVENT_RSVP_007 = 'EVENT_RSVP_007',
 }
 
 type EventRSVPExceptionCodeType = keyof typeof EventsRSVPExceptionCodes;
@@ -41,5 +42,9 @@ export const EventRSVPExceptionMessages: Record<
   [EventsRSVPExceptionCodes.EVENT_RSVP_006]: {
     code_error: EventsRSVPExceptionCodes.EVENT_RSVP_006,
     message: 'This event cannot be attended because is not PUBLISHED.',
+  },
+  [EventsRSVPExceptionCodes.EVENT_RSVP_007]: {
+    code_error: EventsRSVPExceptionCodes.EVENT_RSVP_007,
+    message: 'You cannot respond to passed events',
   },
 };
