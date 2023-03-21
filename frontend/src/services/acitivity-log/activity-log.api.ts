@@ -1,4 +1,5 @@
 import { ActivityLogResolutionStatus } from '../../common/enums/activity-log-resolution-status.enum';
+import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IActivityLog, IActivityLogListItem } from '../../common/interfaces/activity-log.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -11,6 +12,8 @@ export const getActivityLogs = async (
   resolutionStatus: ActivityLogResolutionStatus,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  search?: string,
+  status?: ActivityLogStatus,
 ): Promise<IPaginatedEntity<IActivityLogListItem>> => {
   return API.get('activity-log', {
     params: {
@@ -19,6 +22,8 @@ export const getActivityLogs = async (
       page,
       orderBy,
       orderDirection,
+      search,
+      status,
     },
   }).then((res) => res.data);
 };

@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
 import { ActivityLogResolutionStatus } from '../../common/enums/activity-log-resolution-status.enum';
+import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ACTIVITY_LOG_ERRORS } from '../../common/errors/entities/activity-log.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
@@ -13,10 +14,13 @@ export const useActivityLogsQuery = (
   tabsStatus: ActivityLogResolutionStatus,
   orderByColumn?: string,
   orderDirection?: OrderDirection,
+  search?: string,
+  status?: ActivityLogStatus,
 ) => {
   return useQuery(
-    ['activity-logs', rowsPerPage, page, orderByColumn, orderDirection, tabsStatus],
-    () => getActivityLogs(rowsPerPage, page, tabsStatus, orderByColumn, orderDirection),
+    ['activity-logs', rowsPerPage, page, orderByColumn, orderDirection, tabsStatus, search, status],
+    () =>
+      getActivityLogs(rowsPerPage, page, tabsStatus, orderByColumn, orderDirection, search, status),
     {
       onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) => error,
     },

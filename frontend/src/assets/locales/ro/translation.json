@@ -562,6 +562,7 @@
     "popover": {
       "view": "Fișă de activitate"
     },
+    "filters": { "execution": "Perioada efectuare task", "registration": "Perioada inregistrare" },
     "side_panel": {
       "reject": "Muta in respinse",
       "approve": "Muta in aprobate",
