@@ -69,6 +69,10 @@ const ActivityLogs = () => {
     orderDirection,
     searchWord,
     status?.key,
+    executionDateRange[0],
+    executionDateRange[1],
+    registrationDateRange[0],
+    registrationDateRange[1],
   );
 
   const { data: activityLog, error: activityLogError } = useActivityLogQuery(
@@ -260,6 +264,8 @@ const ActivityLogs = () => {
 
   const onResetFilters = () => {
     setExecutionDateRange([]);
+    setRegistrationDateRange([]);
+    setStatus(undefined);
     setSearchWord(undefined);
   };
 

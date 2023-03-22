@@ -14,6 +14,10 @@ export const getActivityLogs = async (
   orderDirection?: OrderDirection,
   search?: string,
   status?: ActivityLogStatus,
+  executionDateStart?: Date,
+  executionDateEnd?: Date,
+  registrationDateStart?: Date,
+  registrationDateEnd?: Date,
 ): Promise<IPaginatedEntity<IActivityLogListItem>> => {
   return API.get('activity-log', {
     params: {
@@ -24,6 +28,10 @@ export const getActivityLogs = async (
       orderDirection,
       search,
       status,
+      executionDateStart,
+      executionDateEnd,
+      registrationDateStart,
+      registrationDateEnd,
     },
   }).then((res) => res.data);
 };
