@@ -90,8 +90,8 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
     const prefix = column.split('.').join('');
     if (end) {
       query.andWhere(`${column} BETWEEN :${prefix}Start AND :${prefix}End`, {
-        [`${prefix}Start`]: format(start, DATE_CONSTANTS.YYYY_MM_DD),
-        [`${prefix}End`]: format(end, DATE_CONSTANTS.YYYY_MM_DD),
+        [`${prefix}Start`]: format(start, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
+        [`${prefix}End`]: format(end, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
       });
     } else {
       query.andWhere(`${column} >= :${prefix}Start`, {

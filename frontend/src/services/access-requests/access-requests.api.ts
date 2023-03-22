@@ -6,6 +6,7 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IAccessRequest } from '../../common/interfaces/access-request.interface';
 import { AxiosResponseHeaders } from 'axios';
 import { RequestStatus } from '../../common/enums/request-status.enum';
+import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils/utils';
 
 export const getNewAccessRequests = async (
   limit: number,
@@ -24,8 +25,8 @@ export const getNewAccessRequests = async (
       orderBy,
       orderDirection,
       search,
-      createdOnStart,
-      createdOnEnd,
+      ...(createdOnStart ? { createdOnStart: formatStartDateISO9075(createdOnStart) } : {}),
+      ...(createdOnEnd ? { createdOnEnd: formatEndDateISO9075(createdOnEnd) } : {}),
       locationId,
     },
   }).then((res) => res.data);
@@ -50,11 +51,11 @@ export const getRejectedAccessRequests = async (
       orderBy,
       orderDirection,
       search,
-      createdOnStart,
-      createdOnEnd,
       locationId,
-      rejectedOnStart,
-      rejectedOnEnd,
+      ...(createdOnStart ? { createdOnStart: formatStartDateISO9075(createdOnStart) } : {}),
+      ...(createdOnEnd ? { createdOnEnd: formatEndDateISO9075(createdOnEnd) } : {}),
+      ...(rejectedOnStart ? { rejectedOnStart: formatStartDateISO9075(rejectedOnStart) } : {}),
+      ...(rejectedOnEnd ? { rejectedOnEnd: formatEndDateISO9075(rejectedOnEnd) } : {}),
     },
   }).then((res) => res.data);
 };

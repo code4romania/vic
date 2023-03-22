@@ -6,6 +6,7 @@ import { IVolunteer } from '../../common/interfaces/volunteer.interface';
 import API from '../api';
 import { AgeRangeEnum } from '../../common/enums/age-range.enum';
 import { AxiosResponseHeaders } from 'axios';
+import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils/utils';
 
 export const getVolunteers = async (
   status: VolunteerStatus,
@@ -35,8 +36,8 @@ export const getVolunteers = async (
       departmentId,
       roleId,
       locationId,
-      activeSinceStart,
-      activeSinceEnd,
+      ...(activeSinceStart ? { activeSinceStart: formatStartDateISO9075(activeSinceStart) } : {}),
+      ...(activeSinceEnd ? { activeSinceEnd: formatEndDateISO9075(activeSinceEnd) } : {}),
     },
   }).then((res) => res.data);
 };

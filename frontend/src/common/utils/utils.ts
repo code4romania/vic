@@ -1,4 +1,4 @@
-import { differenceInYears, format, isSameDay } from 'date-fns';
+import { differenceInYears, endOfDay, format, formatISO9075, isSameDay } from 'date-fns';
 import { SelectItem } from '../../components/Select';
 import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 import { ICity } from '../interfaces/city.interface';
@@ -62,6 +62,10 @@ export const downloadExcel = (data: BlobPart, name: string): void => {
   link.click();
   link.remove();
 };
+
+export const formatStartDateISO9075 = (startDate: Date) => formatISO9075(startDate);
+
+export const formatEndDateISO9075 = (endDate: Date) => formatISO9075(endOfDay(endDate));
 
 /**
  * MAPPERS
