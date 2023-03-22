@@ -32,7 +32,7 @@ export const formatLocation = (location: ICity): string =>
   location ? `${location.name}, ${location.county?.abbreviation}` : '-';
 
 export const getHoursAndMinutes = (value: Date | string): string =>
-  format(new Date(value), 'hh:mm');
+  format(new Date(value), 'HH:mm');
 
 export const formatEventDate = (startDate: Date, endDate?: Date): string => {
   let eventDate = '';
