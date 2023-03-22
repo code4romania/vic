@@ -328,6 +328,8 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
       createdOnRange[0],
       createdOnRange[1],
       location?.value,
+      rejectedOnRange[0],
+      rejectedOnRange[1],
     );
 
     downloadExcel(accessRequestsData, i18n.t('access_requests:download'));

@@ -52,8 +52,8 @@ export const getVolunteersForDownload = async (
   departmentId?: string,
   roleId?: string,
   locationId?: string,
-  start?: Date,
-  end?: Date,
+  activeSinceStart?: Date,
+  activeSinceEnd?: Date,
 ): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
   return API.get('volunteer/download', {
     params: {
@@ -66,8 +66,8 @@ export const getVolunteersForDownload = async (
       departmentId,
       roleId,
       locationId,
-      start,
-      end,
+      ...(activeSinceStart ? { activeSinceStart: formatStartDateISO9075(activeSinceStart) } : {}),
+      ...(activeSinceEnd ? { activeSinceEnd: formatEndDateISO9075(activeSinceEnd) } : {}),
     },
     responseType: 'arraybuffer',
   }).then((res) => {

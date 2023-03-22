@@ -65,9 +65,11 @@ export const downloadAccessRequests = async (
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
-  start?: Date,
-  end?: Date,
+  createdOnStart?: Date,
+  createdOnEnd?: Date,
   locationId?: string,
+  rejectedOnStart?: Date,
+  rejectedOnEnd?: Date,
 ): Promise<{ data: any; headers: AxiosResponseHeaders }> => {
   return API.get('/access-request/download', {
     params: {
@@ -75,8 +77,10 @@ export const downloadAccessRequests = async (
       orderBy,
       orderDirection,
       search,
-      start,
-      end,
+      ...(createdOnStart ? { createdOnStart: formatStartDateISO9075(createdOnStart) } : {}),
+      ...(createdOnEnd ? { createdOnEnd: formatEndDateISO9075(createdOnEnd) } : {}),
+      ...(rejectedOnStart ? { rejectedOnStart: formatStartDateISO9075(rejectedOnStart) } : {}),
+      ...(rejectedOnEnd ? { rejectedOnEnd: formatEndDateISO9075(rejectedOnEnd) } : {}),
       locationId,
     },
     responseType: 'arraybuffer',
