@@ -339,10 +339,6 @@ const Events = () => {
     };
   };
 
-  const onAddEvent = () => {
-    navigate('/events/add');
-  };
-
   const onExport = async () => {
     const { data: eventsData } = await getEventsForDownload(
       queryParams?.tabsStatus as EventState,
@@ -354,6 +350,10 @@ const Events = () => {
       eventsData as BlobPart,
       i18n.t('events:download', { context: queryParams?.tabsStatus }),
     );
+  };
+
+  const onAddEvent = () => {
+    navigate('/events/add');
   };
 
   // pagination

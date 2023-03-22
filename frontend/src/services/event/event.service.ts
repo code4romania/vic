@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
+import { PaginationConfig } from '../../common/constants/pagination';
 import { EventState } from '../../common/enums/event-state.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { EVENT_ERRORS } from '../../common/errors/entities/event.errors';
