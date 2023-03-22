@@ -62,6 +62,7 @@ export class EventRepository
         'event.endDate',
         'event.status',
         'event.isPublic',
+        'event.createdOn',
         'event.organizationId',
         'targets.id',
         'targets.name', // TODO: need number of members per target, create a View

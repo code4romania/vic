@@ -43,8 +43,8 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
   ): Promise<Pagination<TModel>> {
     // [T[], totalItems]
     const response = await query
-      .limit(limit) // take will add a distinct entity_id a the begining of the query which will interfeer with ordering bt agregate count column
-      .offset((page - 1) * limit) // skip will add a distinct entity_id a the begining of the query which will interfeer with ordering bt agregate count column
+      .take(limit) // take will add a distinct entity_id a the begining of the query which will interfeer with ordering bt agregate count column
+      .skip((page - 1) * limit) // skip will add a distinct entity_id a the begining of the query which will interfeer with ordering bt agregate count column
       .getManyAndCount();
 
     // query items + the pagination meta

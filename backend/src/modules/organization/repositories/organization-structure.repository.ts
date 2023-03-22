@@ -73,16 +73,17 @@ export class OrganizationStructureRepositoryService
       .loadRelationCountAndMap(
         'structure.numberOfMembers',
         `structure.${this.getPropertyByType(type)}`,
+        'numberOfMembers',
       )
       .select()
       .addSelect((subQuery) => {
         return subQuery
-          .select('COUNT(vp.id)', 'numberOfMembers')
+          .select('COUNT(vp.id)', 'membersCount')
           .from(VolunteerProfileEntity, 'vp')
           .where(
             `vp.${OrganizationStructureType.BRANCH.toLocaleLowerCase()}.id = structure.id`,
           );
-      }, 'numberOfMembers')
+      }, 'members')
       .where(
         'structure.type = :type AND structure.organizationId = :organizationId',
         { type, organizationId },
@@ -91,7 +92,7 @@ export class OrganizationStructureRepositoryService
       .orderBy(
         `${
           orderBy === 'numberOfMembers'
-            ? '"numberOfMembers"'
+            ? 'members'
             : this.buildOrderByQuery(orderBy || 'name', 'structure')
         }`,
         orderDirection || OrderDirection.ASC,
