@@ -63,13 +63,37 @@ const ActivityTypes = () => {
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
-    setQueryParams({});
+    setQueryParams({ branch: null, search: null, department: null, role: null });
   };
 
   const onSearch = (search: string) => {
     setQueryParams({
       ...queryParams,
-      search,
+      search: search || null,
+    });
+  };
+
+  const onSetBranchFilter = (branch: SelectItem<string>) => {
+    setBranch(branch);
+    setQueryParams({
+      ...queryParams,
+      branch: branch?.value || null,
+    });
+  };
+
+  const onSetDepartmentFilter = (department: SelectItem<string>) => {
+    setDepartment(department);
+    setQueryParams({
+      ...queryParams,
+      department: department?.value || null,
+    });
+  };
+
+  const onSetRoleFilter = (role: SelectItem<string>) => {
+    setRole(role);
+    setQueryParams({
+      ...queryParams,
+      role: role?.value || null,
     });
   };
 
@@ -89,22 +113,22 @@ const ActivityTypes = () => {
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.branch')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setBranch}
-          selected={branch}
+          onChange={onSetBranchFilter}
+          selected={branch || queryParams?.branch}
           type={DivisionType.BRANCH}
         />
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.department')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setDepartment}
-          selected={department}
+          onChange={onSetDepartmentFilter}
+          selected={department || queryParams?.department}
           type={DivisionType.DEPARTMENT}
         />
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.role')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setRole}
-          selected={role}
+          onChange={onSetRoleFilter}
+          selected={role || queryParams?.role}
           type={DivisionType.ROLE}
         />
       </DataTableFilters>
