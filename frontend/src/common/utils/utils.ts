@@ -4,6 +4,7 @@ import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 import { ICity } from '../interfaces/city.interface';
 import { IDivisionListItem } from '../interfaces/division.interface';
 import { AnnouncementStatus } from '../enums/announcement-status.enum';
+import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { EventStatus } from '../enums/event-status';
 
 export const classNames = (...classes: string[]) => {
@@ -66,6 +67,11 @@ export const downloadExcel = (data: BlobPart, name: string): void => {
 /**
  * MAPPERS
  */
+export const VolunteerProfileStatusTextColorMapper = {
+  [VolunteerStatus.ACTIVE]: '',
+  [VolunteerStatus.ARCHIVED]: 'text-yellow-600',
+  [VolunteerStatus.BLOCKED]: 'text-red-600',
+};
 
 export const AnouncementStatusMarkerColorMapper = {
   [AnnouncementStatus.PUBLISHED]: 'bg-green-500',
