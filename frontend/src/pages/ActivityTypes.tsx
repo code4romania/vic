@@ -17,22 +17,31 @@ import { DivisionType } from '../common/enums/division-type.enum';
 import { SelectItem } from '../components/Select';
 import DataTableFilters from '../components/DataTableFilters';
 import PageHeaderAdd from '../components/PageHeaderAdd';
+import { StringParam, useQueryParams } from 'use-query-params';
+
+export const ACTIVITY_TYPES_QUERY_PARAMS = {
+  search: StringParam,
+  branch: StringParam,
+  department: StringParam,
+  role: StringParam,
+};
 
 const ActivityTypes = () => {
   // navigation
   const navigate = useNavigate();
   // filters
-  const [search, setSearch] = useState<string>();
   const [branch, setBranch] = useState<SelectItem<string>>();
   const [department, setDepartment] = useState<SelectItem<string>>();
   const [role, setRole] = useState<SelectItem<string>>();
+  // query params
+  const [queryParams, setQueryParams] = useQueryParams(ACTIVITY_TYPES_QUERY_PARAMS);
 
   // data fetching
   const {
     data: activityTypes,
     error: activityTypesError,
     isLoading: isFetchingActivityTypes,
-  } = useActivityTypesQuery(search, branch?.key, department?.key, role?.key);
+  } = useActivityTypesQuery(queryParams?.search as string, branch?.key, department?.key, role?.key);
 
   // error handling
   useEffect(() => {
@@ -54,7 +63,14 @@ const ActivityTypes = () => {
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
-    setSearch(undefined);
+    setQueryParams({});
+  };
+
+  const onSearch = (search: string) => {
+    setQueryParams({
+      ...queryParams,
+      search,
+    });
   };
 
   return (
@@ -65,7 +81,11 @@ const ActivityTypes = () => {
       >
         {i18n.t('side_menu:options.activity_types')}
       </PageHeaderAdd>
-      <DataTableFilters onSearch={setSearch} searchValue={search} onResetFilters={onResetFilters}>
+      <DataTableFilters
+        onSearch={onSearch}
+        searchValue={queryParams?.search}
+        onResetFilters={onResetFilters}
+      >
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.branch')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
