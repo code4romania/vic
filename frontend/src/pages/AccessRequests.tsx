@@ -46,7 +46,7 @@ import LocationSelect from '../containers/LocationSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { downloadAccessRequests } from '../services/access-requests/access-requests.api';
 import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
-import { DateParam, StringParam, useQueryParams } from 'use-query-params';
+import { ArrayParam, DateParam, StringParam, useQueryParams } from 'use-query-params';
 
 export const ACCESS_REQUESTS_QUERY_PARAMS = {
   ...DEFAULT_QUERY_PARAMS,
@@ -56,6 +56,7 @@ export const ACCESS_REQUESTS_QUERY_PARAMS = {
   createdOnEnd: DateParam,
   rejectedOnEnd: DateParam,
   rejectedOnStart: DateParam,
+  location: ArrayParam,
 };
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
@@ -364,6 +365,13 @@ const AccessRequestTable = ({ useAccessRequests }: AccessRequestTable) => {
     });
   };
 
+  const onLocationChange = (location: ListItem) => {
+    setLocation(location);
+    setQueryParams({
+      location: location.label.split(', '),
+    });
+  };
+
   const onResetFilters = () => {
     setLocation(undefined);
     setQueryParams({
@@ -372,6 +380,7 @@ const AccessRequestTable = ({ useAccessRequests }: AccessRequestTable) => {
       rejectedOnStart: null,
       createdOnEnd: null,
       createdOnStart: null,
+      location: null,
     });
   };
 
@@ -420,8 +429,9 @@ const AccessRequestTable = ({ useAccessRequests }: AccessRequestTable) => {
         )}
         <LocationSelect
           label={i18n.t('general:location')}
-          onSelect={setLocation}
+          onSelect={onLocationChange}
           defaultValue={location}
+          queryValue={(queryParams?.location as string[]) || undefined}
         />
       </DataTableFilters>
       <Card>
