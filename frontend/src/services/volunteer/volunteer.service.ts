@@ -1,6 +1,5 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { PaginationConfig } from '../../common/constants/pagination';
 import { AgeRangeEnum } from '../../common/enums/age-range.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
@@ -18,8 +17,8 @@ import { VolunteerFormTypes } from '../../pages/EditVolunteer';
 
 export const useVolunteersQuery = (
   status: VolunteerStatus,
-  limit: number = PaginationConfig.defaultRowsPerPage,
-  page: number = PaginationConfig.defaultPage,
+  limit: number,
+  page: number,
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
@@ -65,7 +64,7 @@ export const useVolunteersQuery = (
         end,
       ),
     {
-      enabled: !!status,
+      enabled: !!(status && limit && page),
       onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
     },
   );

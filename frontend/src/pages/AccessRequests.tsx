@@ -241,7 +241,7 @@ const AccessRequestTable = ({ useAccessRequests }: AccessRequestTable) => {
   };
 
   const buildAccessRequestActionColumns = () =>
-    status === RequestStatus.REJECTED
+    queryParams?.status === RequestStatus.REJECTED
       ? buildRejectedAccessRequestsActionColumn()
       : buildPendingAccessRequestsActionColumn();
 
