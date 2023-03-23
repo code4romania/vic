@@ -68,7 +68,6 @@ const ActivityTypes = () => {
 
   const onSearch = (search: string) => {
     setQueryParams({
-      ...queryParams,
       search: search || null,
     });
   };
@@ -76,7 +75,6 @@ const ActivityTypes = () => {
   const onSetBranchFilter = (branch: SelectItem<string>) => {
     setBranch(branch);
     setQueryParams({
-      ...queryParams,
       branch: branch?.value || null,
     });
   };
@@ -84,7 +82,6 @@ const ActivityTypes = () => {
   const onSetDepartmentFilter = (department: SelectItem<string>) => {
     setDepartment(department);
     setQueryParams({
-      ...queryParams,
       department: department?.value || null,
     });
   };
@@ -92,7 +89,6 @@ const ActivityTypes = () => {
   const onSetRoleFilter = (role: SelectItem<string>) => {
     setRole(role);
     setQueryParams({
-      ...queryParams,
       role: role?.value || null,
     });
   };

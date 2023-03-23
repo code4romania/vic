@@ -117,14 +117,12 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
   // pagination
   const onRowsPerPageChange = (rows: number) => {
     setQueryParams({
-      ...queryParams,
       limit: rows,
     });
   };
 
   const onChangePage = (newPage: number) => {
     setQueryParams({
-      ...queryParams,
       page: newPage,
     });
   };

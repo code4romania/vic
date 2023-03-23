@@ -32,8 +32,18 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
 import DataTableFilters from '../components/DataTableFilters';
-import Select, { SelectItem } from '../components/Select';
+import { SelectItem } from '../components/Select';
 import TargetsMultiSelect from '../containers/TargetsMultiSelect';
+import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
+import { ArrayParam, StringParam, useQueryParams } from 'use-query-params';
+import StatusSelectFilter from '../containers/StatusSelectFilter';
+
+export const ANNOUNCEMENTS_QUERY_PARAMS = {
+  ...DEFAULT_QUERY_PARAMS,
+  search: StringParam,
+  status: StringParam,
+  targets: ArrayParam,
+};
 
 const StatusOptions: SelectItem<AnnouncementStatus>[] = [
   {
@@ -104,16 +114,13 @@ const AnnouncementTableHeader = [
 ];
 
 const Announcements = () => {
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
 
   // filters
-  const [searchWord, setSearchWord] = useState<string>();
-  const [status, setStatus] = useState<SelectItem<AnnouncementStatus>>();
   const [targetsIds, setTargetsIds] = useState<SelectItem<string>[]>([]);
+
+  // query params
+  const [queryParams, setQueryParams] = useQueryParams(ANNOUNCEMENTS_QUERY_PARAMS);
 
   const navigate = useNavigate();
 
@@ -123,12 +130,12 @@ const Announcements = () => {
     error: announcementsError,
     refetch,
   } = useAnnouncements(
-    rowsPerPage,
-    page,
-    orderByColumn,
-    orderDirection,
-    searchWord,
-    status?.key,
+    queryParams?.limit as number,
+    queryParams?.page as number,
+    queryParams?.orderBy as string,
+    queryParams?.orderDirection as OrderDirection,
+    queryParams?.search as string,
+    StatusOptions.find((option) => option.value === queryParams?.status)?.key,
     targetsIds.map((targetId) => targetId.key),
   );
 
@@ -145,6 +152,17 @@ const Announcements = () => {
       );
     }
   }, [announcementsError]);
+
+  // init query
+  useEffect(() => {
+    // init query params
+    setQueryParams({
+      limit: queryParams?.limit || PaginationConfig.defaultRowsPerPage,
+      page: queryParams?.page || PaginationConfig.defaultPage,
+      orderBy: queryParams?.orderBy || 'name',
+      orderDirection: queryParams?.orderDirection || OrderDirection.ASC,
+    });
+  }, []);
 
   const buildAnnouncementActionColumn = (): TableColumn<IAnnouncement> => {
     const announcementDraftMenuItems = [
@@ -261,38 +279,58 @@ const Announcements = () => {
   };
 
   // pagination
-  const onChangeRowsPerPage = (rows: number) => {
-    setRowsPerPage(rows);
+  const onRowsPerPageChange = (rows: number) => {
+    setQueryParams({
+      limit: rows,
+    });
   };
 
   const onChangePage = (newPage: number) => {
-    setPage(newPage);
+    setQueryParams({
+      page: newPage,
+    });
   };
 
   const onSort = (column: TableColumn<IAnnouncement>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
+    setQueryParams({
+      orderBy: column.id as string,
+      orderDirection:
+        direction.toLocaleUpperCase() === OrderDirection.ASC
+          ? OrderDirection.ASC
+          : OrderDirection.DESC,
+    });
+  };
+
+  const onSearch = (search: string) => {
+    setQueryParams({
+      search: search || null,
+    });
+  };
+
+  const onStatusChange = (status: SelectItem<AnnouncementStatus>) => {
+    setQueryParams({
+      status: status.value || null,
+    });
   };
 
   const onResetFilters = () => {
-    setSearchWord(undefined);
-    setStatus(undefined);
     setTargetsIds([]);
+    setQueryParams({ search: null, targets: null, status: null });
   };
 
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.announcements')}</PageHeader>
-      <DataTableFilters onResetFilters={onResetFilters} onSearch={setSearchWord}>
-        <Select
+      <DataTableFilters
+        onResetFilters={onResetFilters}
+        onSearch={onSearch}
+        searchValue={queryParams?.search}
+      >
+        <StatusSelectFilter
           label={`${i18n.t('general:status')}`}
-          onChange={setStatus}
+          onChange={onStatusChange}
           options={StatusOptions}
-          selected={status}
+          selected={queryParams?.status as AnnouncementStatus}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
         />
         <TargetsMultiSelect
@@ -320,10 +358,10 @@ const Announcements = () => {
             loading={
               isAnnouncementsLoading || isUpdateAnnouncementLoading || isDeleteAnnouncementLoading
             }
-            paginationPerPage={announcements?.meta.itemsPerPage}
-            paginationTotalRows={announcements?.meta.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={onChangeRowsPerPage}
+            paginationPerPage={announcements?.meta?.itemsPerPage}
+            paginationTotalRows={announcements?.meta?.totalItems}
+            paginationDefaultPage={queryParams.page as number}
+            onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}
             defaultSortAsc={false}
