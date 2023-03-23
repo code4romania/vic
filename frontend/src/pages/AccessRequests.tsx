@@ -45,6 +45,18 @@ import DateRangePicker from '../components/DateRangePicker';
 import LocationSelect from '../containers/LocationSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { downloadAccessRequests } from '../services/access-requests/access-requests.api';
+import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
+import { DateParam, StringParam, useQueryParams } from 'use-query-params';
+
+export const ACCESS_REQUESTS_QUERY_PARAMS = {
+  ...DEFAULT_QUERY_PARAMS,
+  status: StringParam,
+  search: StringParam,
+  createdOnStart: DateParam,
+  createdOnEnd: DateParam,
+  rejectedOnEnd: DateParam,
+  rejectedOnStart: DateParam,
+};
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
   { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
@@ -106,20 +118,13 @@ interface AccessRequestTable {
     IPaginatedEntity<IAccessRequest>,
     AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>
   >;
-  status: RequestStatus;
 }
 
-const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) => {
+const AccessRequestTable = ({ useAccessRequests }: AccessRequestTable) => {
   const navigate = useNavigate();
   // pagination state
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+  const [queryParams, setQueryParams] = useQueryParams(ACCESS_REQUESTS_QUERY_PARAMS);
   // filters
-  const [searchWord, setSearchWord] = useState<string>();
-  const [createdOnRange, setCreatedOnRange] = useState<Date[]>([]);
-  const [rejectedOnRange, setRejectedOnRange] = useState<Date[]>([]);
   const [location, setLocation] = useState<ListItem>();
   // confirmation modals
   const [showRejectAccessRequest, setShowRejectAccessRequest] = useState<null | IAccessRequest>(
@@ -136,16 +141,16 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     error: accessCodeRequestError,
     refetch,
   } = useAccessRequests(
-    rowsPerPage as number,
-    page as number,
-    orderByColumn,
-    orderDirection,
-    searchWord,
-    createdOnRange[0],
-    createdOnRange[1],
+    queryParams?.limit as number,
+    queryParams?.page as number,
+    queryParams?.orderBy as string,
+    queryParams?.orderDirection as OrderDirection,
+    queryParams?.search as string,
+    queryParams?.createdOnStart as Date,
+    queryParams?.createdOnEnd as Date,
     location?.value,
-    rejectedOnRange[0],
-    rejectedOnRange[1],
+    queryParams?.rejectedOnStart as Date,
+    queryParams?.rejectedOnEnd as Date,
   );
 
   // actions
@@ -157,6 +162,17 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
 
   const { mutateAsync: deleteAccessRequest, isLoading: isDeletingAccessRequest } =
     useDeleteAccessRequestMutation();
+
+  // init query
+  useEffect(() => {
+    // init query params
+    setQueryParams({
+      limit: queryParams?.limit || PaginationConfig.defaultRowsPerPage,
+      page: queryParams?.page || PaginationConfig.defaultPage,
+      orderBy: queryParams?.orderBy || 'requestedBy.name',
+      orderDirection: queryParams?.orderDirection || OrderDirection.ASC,
+    });
+  }, []);
 
   useEffect(() => {
     if (accessCodeRequestError)
@@ -228,13 +244,29 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
       ? buildRejectedAccessRequestsActionColumn()
       : buildPendingAccessRequestsActionColumn();
 
+  // pagination
+  const onRowsPerPageChange = (rows: number) => {
+    setQueryParams({
+      ...queryParams,
+      limit: rows,
+    });
+  };
+
+  const onChangePage = (newPage: number) => {
+    setQueryParams({
+      ...queryParams,
+      page: newPage,
+    });
+  };
+
   const onSort = (column: TableColumn<IAccessRequest>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
+    setQueryParams({
+      orderBy: column.id as string,
+      orderDirection:
+        direction.toLocaleUpperCase() === OrderDirection.ASC
+          ? OrderDirection.ASC
+          : OrderDirection.DESC,
+    });
   };
 
   // row actions
@@ -312,21 +344,45 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
       });
   };
 
+  const onSearch = (search: string) => {
+    setQueryParams({
+      search: search || null,
+    });
+  };
+
+  const onCreatedOnRangeChange = (range: Date[]) => {
+    setQueryParams({
+      createdOnStart: range[0] || null,
+      createdOnEnd: range[1] || null,
+    });
+  };
+
+  const onRejectedOnRangeChange = (range: Date[]) => {
+    setQueryParams({
+      rejectedOnStart: range[0] || null,
+      rejectedOnEnd: range[1] || null,
+    });
+  };
+
   const onResetFilters = () => {
-    setCreatedOnRange([]);
-    setRejectedOnRange([]);
     setLocation(undefined);
-    setSearchWord(undefined);
+    setQueryParams({
+      search: null,
+      rejectedOnEnd: null,
+      rejectedOnStart: null,
+      createdOnEnd: null,
+      createdOnStart: null,
+    });
   };
 
   const onExport = async () => {
     const { data: accessRequestsData } = await downloadAccessRequests(
-      status,
-      orderByColumn,
-      orderDirection,
-      searchWord,
-      createdOnRange[0],
-      createdOnRange[1],
+      queryParams?.status as RequestStatus,
+      queryParams?.orderBy as string,
+      queryParams?.orderDirection as OrderDirection,
+      queryParams?.search as string,
+      queryParams?.createdOnStart as Date,
+      queryParams?.createdOnEnd as Date,
       location?.value,
     );
 
@@ -336,21 +392,29 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
   return (
     <>
       <DataTableFilters
-        onSearch={setSearchWord}
-        searchValue={searchWord}
+        onSearch={onSearch}
+        searchValue={queryParams?.search}
         onResetFilters={onResetFilters}
       >
         <DateRangePicker
           label={i18n.t('access_requests:filters.access_request_range')}
-          onChange={setCreatedOnRange}
-          value={createdOnRange.length > 0 ? createdOnRange : undefined}
+          onChange={onCreatedOnRangeChange}
+          value={
+            queryParams?.createdOnStart && queryParams?.createdOnEnd
+              ? [queryParams?.createdOnStart, queryParams?.createdOnEnd]
+              : undefined
+          }
           id="created-on-range__picker"
         />
-        {status === RequestStatus.REJECTED && (
+        {queryParams?.status === RequestStatus.REJECTED && (
           <DateRangePicker
             label={i18n.t('access_requests:filters.access_request_rejected_range')}
-            onChange={setRejectedOnRange}
-            value={rejectedOnRange.length > 0 ? rejectedOnRange : undefined}
+            onChange={onRejectedOnRangeChange}
+            value={
+              queryParams?.rejectedOnStart && queryParams?.rejectedOnEnd
+                ? [queryParams?.rejectedOnStart, queryParams?.rejectedOnEnd]
+                : undefined
+            }
             id="rejected-on-range__picker"
           />
         )}
@@ -372,7 +436,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
         <CardBody>
           <DataTableComponent
             columns={[
-              ...(status === RequestStatus.REJECTED
+              ...(queryParams?.status === RequestStatus.REJECTED
                 ? RejectedAccessRequestsTableHeader
                 : PendingAccessRequestsTableHeader),
               buildAccessRequestActionColumns(),
@@ -385,11 +449,11 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
               isDeletingAccessRequest
             }
             pagination
-            paginationPerPage={rowsPerPage}
+            paginationPerPage={accessRequests?.meta?.itemsPerPage}
             paginationTotalRows={accessRequests?.meta?.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={setRowsPerPage}
-            onChangePage={setPage}
+            paginationDefaultPage={queryParams.page as number}
+            onChangeRowsPerPage={onRowsPerPageChange}
+            onChangePage={onChangePage}
             onSort={onSort}
           />
         </CardBody>
@@ -417,29 +481,39 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
 };
 
 const AccessRequests = () => {
-  const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.PENDING);
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>();
+
+  // query params
+  const [queryParams, setQueryParams] = useQueryParams(ACCESS_REQUESTS_QUERY_PARAMS);
+
+  useEffect(() => {
+    setRequestStatus((queryParams?.status as RequestStatus) || RequestStatus.PENDING);
+  }, []);
 
   const onTabClick = (tab: RequestStatus) => {
+    setQueryParams({ status: tab });
     setRequestStatus(tab);
   };
 
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.access_requests')}</PageHeader>
-      <Tabs<RequestStatus> tabs={AccessRequestsTabs} onClick={onTabClick}>
+      <Tabs<RequestStatus>
+        tabs={AccessRequestsTabs}
+        onClick={onTabClick}
+        defaultTab={
+          queryParams?.status
+            ? AccessRequestsTabs.find((tab) => tab.key === queryParams?.status)
+            : AccessRequestsTabs[0]
+        }
+      >
         {requestStatus === RequestStatus.PENDING && (
           <>
-            <AccessRequestTable
-              useAccessRequests={useNewAccessRequestsQuery}
-              status={RequestStatus.PENDING}
-            />
+            <AccessRequestTable useAccessRequests={useNewAccessRequestsQuery} />
           </>
         )}
         {requestStatus === RequestStatus.REJECTED && (
-          <AccessRequestTable
-            useAccessRequests={useRejectedAccessRequestsQuery}
-            status={RequestStatus.REJECTED}
-          />
+          <AccessRequestTable useAccessRequests={useRejectedAccessRequestsQuery} />
         )}
       </Tabs>
     </PageLayout>
