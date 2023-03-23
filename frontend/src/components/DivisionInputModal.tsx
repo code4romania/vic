@@ -73,7 +73,7 @@ const DivisionInputModal = ({
                 errorMessage={errors['name']?.message}
                 readOnly={false}
                 value={value}
-                label={`${i18n.t('general:name')} ${i18n
+                label={`${i18n.t('activity_types:form.name.placeholder')} ${i18n
                   .t(`division:entity.${divisionType}`)
                   .toLowerCase()}`}
                 onChange={onChange}
