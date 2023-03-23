@@ -9,23 +9,11 @@ interface FormSelectProps extends Omit<MultiSelectProps, 'options'> {
 }
 
 // TODO: this should support also single select
-const FormSelect = ({
-  errorMessage,
-  helper,
-  label,
-  selected,
-  readOnly,
-  ...props
-}: FormSelectProps) => {
+const FormSelect = ({ label, selected, readOnly, ...props }: FormSelectProps) => {
   return readOnly ? (
     <FormReadOnlyElement label={label || ''} value={selected?.length ? selected.join(', ') : '-'} />
   ) : (
-    <TargetsMultiSelect
-      {...props}
-      label={label}
-      selected={selected}
-      helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
-    />
+    <TargetsMultiSelect {...props} label={label} selected={selected} />
   );
 };
 

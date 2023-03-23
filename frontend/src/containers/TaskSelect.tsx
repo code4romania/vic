@@ -38,7 +38,8 @@ const TaskSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Tas
       value={defaultValue}
       loadOptions={loadTasks}
       onChange={onSelect as any}
-      helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
+      helper={helper}
+      errorMessage={errorMessage}
     />
   );
 };

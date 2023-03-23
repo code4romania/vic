@@ -39,7 +39,8 @@ const EventSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Ev
       value={defaultValue}
       loadOptions={loadEvents}
       onChange={onSelect as any}
-      helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
+      helper={helper}
+      errorMessage={errorMessage}
     />
   );
 };

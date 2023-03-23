@@ -10,6 +10,7 @@ export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select
   isMulti?: boolean;
   helper?: ReactNode;
   isClearable?: boolean;
+  errorMessage?: string;
   loadOptions: (search: string) => void;
 }
 
@@ -25,6 +26,7 @@ const ServerSelect = ({
   label,
   isClearable,
   helper,
+  errorMessage,
 }: ServerSelectProps) => {
   const [defaultValue, setDefaultValue] = useState<ListItem>();
 
@@ -55,6 +57,13 @@ const ServerSelect = ({
       <AsyncSelect
         id={`${id}__select`}
         cacheOptions
+        classNames={{
+          control: (state) => {
+            if (errorMessage && state.isFocused) return 'error-and-focused';
+            if (errorMessage) return 'error';
+            return '';
+          },
+        }}
         placeholder={placeholder}
         classNamePrefix="reactselect"
         loadOptions={onSearch as any}
@@ -63,7 +72,7 @@ const ServerSelect = ({
         isMulti={isMulti}
         value={defaultValue || null}
       />
-      {helper}
+      {errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
     </div>
   );
 };
