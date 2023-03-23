@@ -33,10 +33,10 @@ import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
 import DataTableFilters from '../components/DataTableFilters';
 import { SelectItem } from '../components/Select';
-import TargetsMultiSelect from '../containers/TargetsMultiSelect';
 import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
 import { ArrayParam, StringParam, useQueryParams } from 'use-query-params';
 import StatusSelectFilter from '../containers/StatusSelectFilter';
+import TargetsMultiSelectFilter from '../containers/TargetsMultiSelectFilter';
 
 export const ANNOUNCEMENTS_QUERY_PARAMS = {
   ...DEFAULT_QUERY_PARAMS,
@@ -318,6 +318,13 @@ const Announcements = () => {
     setQueryParams({ search: null, targets: null, status: null });
   };
 
+  const onTargetsChange = (selectedTargets: SelectItem<string>[]) => {
+    setTargetsIds(selectedTargets || []);
+    setQueryParams({
+      targets: selectedTargets?.map((item) => item.value) || null,
+    });
+  };
+
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.announcements')}</PageHeader>
@@ -333,9 +340,10 @@ const Announcements = () => {
           selected={queryParams?.status as AnnouncementStatus}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
         />
-        <TargetsMultiSelect
-          onChange={setTargetsIds}
-          selected={targetsIds}
+        <TargetsMultiSelectFilter
+          onChange={onTargetsChange}
+          selection={targetsIds}
+          selectedValues={queryParams?.targets as string[]}
           label={`${i18n.t('announcement:header.target')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
         />
