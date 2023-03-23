@@ -4,7 +4,7 @@ import CardBody from './CardBody';
 import CardHeader from './CardHeader';
 import i18n from '../common/config/i18n';
 import FormReadOnlyElement from './FormReadOnlyElement';
-import { formatDate } from '../common/utils/utils';
+import { formatDate, VolunteerProfileStatusTextColorMapper } from '../common/utils/utils';
 import Button from './Button';
 import { PencilIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
@@ -55,12 +55,14 @@ const VolunteerProfile = ({
             <FormReadOnlyElement value={phone} label={i18n.t('general:phone')} />
             <hr className="border-cool-gray-200 col-span-full" />
             <FormReadOnlyElement value={branch} label={i18n.t('division:entity.branch')} />
-            <FormReadOnlyElement
-              value={`${i18n.t(`volunteer:name`, {
-                status: i18n.t(`volunteer:status.${status}`),
-              })}`}
-              label={`${i18n.t('general:status')} in TEO`}
-            />
+            <div className="flex gap-2.5 flex-col">
+              <small className="text-cool-gray-500">{`${i18n.t('general:status')} in TEO`}</small>
+              <p className={`${VolunteerProfileStatusTextColorMapper[status]}`}>
+                {i18n.t(`volunteer:name`, {
+                  status: i18n.t(`volunteer:status.${status}`),
+                })}
+              </p>
+            </div>
             <FormReadOnlyElement value={department} label={i18n.t('division:entity.department')} />
             <FormReadOnlyElement
               value={startedOn ? formatDate(startedOn) : '-'}
