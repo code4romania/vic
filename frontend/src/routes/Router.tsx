@@ -26,8 +26,8 @@ import EditEvent from '../pages/EditEvent';
 import AddAnnouncement from '../pages/AddAnnouncement';
 import EditAnnouncement from '../pages/EditAnnouncement';
 import Announcement from '../pages/Announcement';
-import AddActivityLog from '../pages/AddActivityLog';
 import ActivityLogs from '../pages/ActivityLogs';
+import AddActivityLog from '../pages/AddActivityLog';
 
 const Router = () => {
   return (

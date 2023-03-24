@@ -233,7 +233,7 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
           <Button
             className="btn-outline-secondary"
             label={i18n.t('general:add', {
-              item: i18n.t(`division:entity.${type}`),
+              item: i18n.t(`division:entity.${type}`).toLowerCase(),
             })}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
@@ -262,7 +262,7 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
       {isAddModalOpen && (
         <DivisionInputModal
           title={i18n.t('general:add', {
-            item: i18n.t(`division:entity.${type}`),
+            item: i18n.t(`division:entity.${type}`).toLowerCase(),
           })}
           divisionType={type}
           onClose={setIsAddModalOpen.bind(null, false)}
@@ -271,7 +271,7 @@ const DivisionTable = ({ type }: DivisionTableProps) => {
       )}
       {selectedDivisionForUpdate && (
         <DivisionInputModal
-          title={i18n.t('general:edit', { item: i18n.t(`division:modal.${type}`) })}
+          title={i18n.t('general:edit', { item: i18n.t(`division:entity.${type}`).toLowerCase() })}
           divisionType={type}
           onClose={setSelectedDivisionForUpdate.bind(null, undefined)}
           onSubmit={onUpdateDivision}

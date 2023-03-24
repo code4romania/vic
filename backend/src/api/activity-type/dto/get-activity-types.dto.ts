@@ -1,4 +1,5 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { ActivityTypeStatus } from 'src/modules/activity-type/enums/activity-type-status.enum';
 
 export class GetActivityTypesDto {
   @IsString()
@@ -16,4 +17,8 @@ export class GetActivityTypesDto {
   @IsString()
   @IsOptional()
   search?: string;
+
+  @IsEnum(ActivityTypeStatus)
+  @IsOptional()
+  status?: ActivityTypeStatus;
 }

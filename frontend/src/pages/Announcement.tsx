@@ -4,7 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { arrayOfNamesToString, formatDate } from '../common/utils/utils';
+import {
+  AnouncementStatusMarkerColorMapper,
+  arrayOfNamesToString,
+  formatDate,
+} from '../common/utils/utils';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
@@ -13,6 +17,7 @@ import EmptyContent from '../components/EmptyContent';
 import FormInput from '../components/FormInput';
 import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
+import StatusWithMarker from '../components/StatusWithMarker';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import FormLayout from '../layouts/FormLayout';
@@ -162,11 +167,14 @@ const Announcement = () => {
                 readOnly
               />
               <hr className="border-cool-gray-200" />
-              <FormInput
-                label={`${i18n.t('announcement:header.status')}`}
-                value={`${i18n.t(`announcement:status.${announcement.status}`)}`}
-                readOnly
-              />
+              <div className="flex gap-2.5 flex-col">
+                <small className="text-cool-gray-500">{i18n.t('announcement:header.status')}</small>
+                <StatusWithMarker
+                  markerColor={AnouncementStatusMarkerColorMapper[announcement.status]}
+                >
+                  {i18n.t(`announcement:status.${announcement.status}`)}
+                </StatusWithMarker>
+              </div>
               {announcement.publishedOn && (
                 <FormInput
                   label={`${i18n.t('announcement:header.published_on')}`}
