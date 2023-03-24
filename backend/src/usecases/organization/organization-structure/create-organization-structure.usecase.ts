@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ObjectDiff } from 'src/common/helpers/object-diff';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
-import { ActionsResourceType } from 'src/modules/actions-archive/enums/action-resource-types.enum';
-import { ActionsType } from 'src/modules/actions-archive/enums/action-types.enum';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { OrganizationStructureExceptionMessages } from 'src/modules/organization/exceptions/organization-structure.exceptions';
 import {
   ICreateOrganizationStructureModel,
@@ -40,15 +38,15 @@ export class CreateOrganizationStructureUseCase
 
     const created = await this.organizationStructureFacade.create(data);
 
-    // @birloiflorian ma gandeam sa facem o clasa abstracta care sa injecteze actionsArchive si sa faca trackEvent intern, iar noi pe super() sa-i trimitem actionType si resourceType
-    // iar aici doar apelam trackEvent (care vine din clasa abstracta) cu resourceId, author, changes
-    this.actionsArchiveFacade.trackEvent({
-      actionType: ActionsType.CREATE,
-      resourceType: ActionsResourceType.ORG_STRUCTURE,
-      resourceId: created.id,
-      author: admin,
-      changes: ObjectDiff.diff(undefined, created),
-    });
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CREATE_ORGANIZATION_STRUCTURE,
+      {
+        organizationStructureId: created.id,
+        organizationStructureName: created.name,
+        organizationStructureType: created.type,
+      },
+      admin,
+    );
 
     return created;
   }

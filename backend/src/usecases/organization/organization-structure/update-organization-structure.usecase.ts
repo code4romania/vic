@@ -10,8 +10,7 @@ import {
 } from 'src/modules/organization/models/organization-structure.model';
 import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
-import { ActionsType } from 'src/modules/actions-archive/enums/action-types.enum';
-import { ActionsResourceType } from 'src/modules/actions-archive/enums/action-resource-types.enum';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 
 @Injectable()
 export class UpdateOrganizationStructureUseCase
@@ -53,13 +52,15 @@ export class UpdateOrganizationStructureUseCase
 
     const updated = await this.organizationStructureFacade.update(data);
 
-    this.actionsArchiveFacade.trackEvent({
-      actionType: ActionsType.UPDATE,
-      resourceType: ActionsResourceType.ORG_STRUCTURE,
-      resourceId: updated.id,
-      author: admin,
-      changes: ObjectDiff.diff(toUpdate, updated),
-    });
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.UPDATE_ORGANIZATION_STRUCTURE,
+      {
+        organizationStructureId: updated.id,
+        organizationStructureName: updated.name,
+        organizationStructureType: updated.type,
+      },
+      admin,
+    );
 
     return updated;
   }

@@ -7,7 +7,7 @@ import { ActionsArchiveEntity } from '../entities/actions-archive.entity';
 import { ActivityLogExceptionMessages } from '../exceptions/actions-archive.exceptions';
 import {
   ActionsArchiveTransformer,
-  ITrackActionEventModel,
+  CreateActionArchiveOptions,
   TRACK_ACTION_EVENT,
 } from '../models/actions-archive.model';
 
@@ -21,14 +21,13 @@ export class ActionsArchiveEventListener {
   ) {}
 
   @OnEvent(TRACK_ACTION_EVENT)
-  async onEvent(event: ITrackActionEventModel): Promise<void> {
+  async onEvent(event: CreateActionArchiveOptions): Promise<void> {
     try {
       await this.actionsArchiveEntity.save(
         ActionsArchiveTransformer.toEntity({
-          actionType: event.actionType,
-          authorId: event.author.id,
-          resourceType: event.resourceType,
-          resourceId: event.resourceId,
+          eventName: event.eventName,
+          eventData: event.eventData,
+          author: event.author,
           changes: event.changes,
         }),
       );

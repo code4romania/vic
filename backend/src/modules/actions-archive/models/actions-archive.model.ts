@@ -1,31 +1,34 @@
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { ActionsArchiveEntity } from '../entities/actions-archive.entity';
-import { ActionsResourceType } from '../enums/action-resource-types.enum';
-import { ActionsType } from '../enums/action-types.enum';
+import {
+  TrackedEventData,
+  TrackedEventName,
+} from '../enums/action-resource-types.enum';
 
 export const TRACK_ACTION_EVENT = 'track.action';
 
 export interface ITrackActionEventModel {
-  actionType: ActionsType;
   author: IAdminUserModel;
-  resourceType: ActionsResourceType;
-  resourceId: string;
-  changes: unknown;
+
+  eventName: TrackedEventName;
+  eventData: TrackedEventData[TrackedEventName];
+
+  changes?: unknown;
 }
 
 export type CreateActionArchiveOptions = Pick<
   ITrackActionEventModel,
-  'actionType' | 'resourceType' | 'resourceId' | 'changes'
-> & { authorId: string };
+  'eventName' | 'eventData' | 'author' | 'changes'
+>;
 
 export class ActionsArchiveTransformer {
   static toEntity(action: CreateActionArchiveOptions): ActionsArchiveEntity {
     const entity = new ActionsArchiveEntity();
 
-    entity.action = action.actionType;
-    entity.authorId = action.authorId;
-    entity.resourceType = action.resourceType;
-    entity.resourceId = action.resourceId;
+    entity.eventName = action.eventName;
+    entity.eventData = action.eventData;
+
+    entity.authorId = action.author.id;
 
     entity.changes = action.changes;
 

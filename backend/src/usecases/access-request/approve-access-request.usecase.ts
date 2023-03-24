@@ -8,6 +8,8 @@ import {
   IAccessRequestModel,
 } from 'src/modules/access-request/model/access-request.model';
 import { AccessRequestFacade } from 'src/modules/access-request/services/access-request.facade';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateVolunteerUseCase } from '../volunteer/create-volunteer.usecase';
 
 @Injectable()
@@ -17,11 +19,13 @@ export class ApproveAccessRequestUseCase
   constructor(
     private readonly accessRequestFacade: AccessRequestFacade,
     private readonly createVolunteerUseCase: CreateVolunteerUseCase,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly exceptionService: ExceptionsService,
   ) {}
 
   public async execute(
     updates: ApproveAccessRequestModel,
+    admin: IAdminUserModel,
   ): Promise<IAccessRequestModel> {
     const accessRequest = await this.accessRequestFacade.find({
       id: updates.id,
@@ -48,9 +52,14 @@ export class ApproveAccessRequestUseCase
 
     // TODO: 2. send email and notification
 
-    return this.accessRequestFacade.update({
+    const updated = await this.accessRequestFacade.update({
       ...updates,
       status: AccessRequestStatus.APPROVED,
     });
+
+    // Track action
+    // this.actionsArchiveFacade.trackEvent();
+
+    return updated;
   }
 }

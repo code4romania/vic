@@ -8,7 +8,7 @@ import { OrganizationStructureFacade } from 'src/modules/organization/services/o
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOneOrganizationStructureUseCase } from './get-one-organization-structure.usecase';
 import { ActionsType } from 'src/modules/actions-archive/enums/action-types.enum';
-import { ActionsResourceType } from 'src/modules/actions-archive/enums/action-resource-types.enum';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 
 @Injectable()
 export class DeleteOrganizationStructureUseCase
@@ -34,13 +34,15 @@ export class DeleteOrganizationStructureUseCase
       );
     }
 
-    this.actionsArchiveFacade.trackEvent({
-      actionType: ActionsType.DELETE,
-      resourceType: ActionsResourceType.ORG_STRUCTURE,
-      resourceId: toRemove.id,
-      author: admin,
-      changes: ObjectDiff.diff(toRemove, undefined),
-    });
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.DELETE_ORGANIZATION_STRUCTURE,
+      {
+        organizationStructureId: toRemove.id,
+        organizationStructureName: toRemove.name,
+        organizationStructureType: toRemove.type,
+      },
+      admin,
+    );
 
     return removed;
   }

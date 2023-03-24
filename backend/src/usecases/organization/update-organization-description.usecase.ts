@@ -6,8 +6,7 @@ import { IOrganizationModel } from 'src/modules/organization/models/organization
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOrganizationUseCaseService } from './get-organization.usecase';
-import { ActionsType } from 'src/modules/actions-archive/enums/action-types.enum';
-import { ActionsResourceType } from 'src/modules/actions-archive/enums/action-resource-types.enum';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 
 @Injectable()
 export class UpdateOrganizationDescriptionUseCaseService
@@ -36,13 +35,15 @@ export class UpdateOrganizationDescriptionUseCaseService
       );
 
     // 3. Track action
-    this.actionsArchiveFacade.trackEvent({
-      actionType: ActionsType.UPDATE,
-      resourceType: ActionsResourceType.ORG_PROFILE,
-      resourceId: updated.id,
-      author: admin,
-      changes: ObjectDiff.diff(toUpdate, updated),
-    });
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.UPDATE_ORGANIZATION_PROFILE,
+      {
+        organizationId: toUpdate.id,
+        organizationName: toUpdate.name,
+      },
+      admin,
+      ObjectDiff.diff(toUpdate, updated),
+    );
 
     // return organization with updated fields
     return updated;

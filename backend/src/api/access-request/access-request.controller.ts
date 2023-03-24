@@ -111,13 +111,16 @@ export class AccessRequestController {
   @ApiParam({ name: 'id', type: 'string' })
   @Post(':id/approve')
   async approve(
-    @ExtractUser() user: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
     @Param('id', UuidValidationPipe) accessRequestId: string,
   ): Promise<AccessRequestPresenter> {
-    const accessRequest = await this.approveAccessRequestUseCase.execute({
-      id: accessRequestId,
-      updatedById: user.id,
-    });
+    const accessRequest = await this.approveAccessRequestUseCase.execute(
+      {
+        id: accessRequestId,
+        updatedById: admin.id,
+      },
+      admin,
+    );
     return new AccessRequestPresenter(accessRequest);
   }
 
@@ -125,24 +128,27 @@ export class AccessRequestController {
   @ApiBody({ type: RejectAccessRequestDto })
   @Post(':id/reject')
   async reject(
-    @ExtractUser() user: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
     @Body() { rejectionReason }: RejectAccessRequestDto,
     @Param('id', UuidValidationPipe) accessRequestId: string,
   ): Promise<AccessRequestPresenter> {
-    const accessRequest = await this.rejectAccessRequestUseCase.execute({
-      id: accessRequestId,
-      updatedById: user.id,
-      rejectionReason: rejectionReason,
-    });
+    const accessRequest = await this.rejectAccessRequestUseCase.execute(
+      {
+        id: accessRequestId,
+        updatedById: admin.id,
+        rejectionReason: rejectionReason,
+      },
+      admin,
+    );
     return new AccessRequestPresenter(accessRequest);
   }
 
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
   async delete(
-    @ExtractUser() user: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
     @Param('id', UuidValidationPipe) accessRequestId: string,
   ): Promise<string> {
-    return this.deleteAccessRequestUseCase.execute(accessRequestId);
+    return this.deleteAccessRequestUseCase.execute(accessRequestId, admin);
   }
 }
