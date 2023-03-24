@@ -1,5 +1,5 @@
 import React from 'react';
-import { Control, Controller, DeepRequired, FieldErrorsImpl, UseFormReset } from 'react-hook-form';
+import { Control, Controller, DeepRequired, FieldErrorsImpl } from 'react-hook-form';
 import i18n from '../common/config/i18n';
 import FormLayout from '../layouts/FormLayout';
 import VolunteerSelect from '../containers/VolunteerSelect';
@@ -13,7 +13,6 @@ interface ActivityLogFormProps {
   control: Control<ActivityLogFormTypes, object>;
   errors: FieldErrorsImpl<DeepRequired<ActivityLogFormTypes>>;
   disabled?: boolean;
-  reset?: UseFormReset<ActivityLogFormTypes>;
 }
 
 export type ActivityLogFormTypes = {

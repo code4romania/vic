@@ -1,36 +1,46 @@
 import { CheckIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/solid';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import { formatDate } from '../common/utils/utils';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import {
+  useApproveActivityLogMutation,
+  useRejectActivityLogMutation,
+} from '../services/activity-log/activity-log.service';
 import Button from './Button';
 import FormReadOnlyElement from './FormReadOnlyElement';
 import LoadingContent from './LoadingContent';
+import RejectTextareaModal from './RejectTextareaModal';
 import SidePanel from './SidePanel';
 
 interface ActivityLogSidePanelProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (shouldRefetch?: boolean) => void;
   onEdit: () => void;
-  onReject: (id: string) => void;
-  onApprove: (id: string) => void;
-  activityLog: IActivityLog | undefined;
-  isLoading: boolean;
+  activityLog?: IActivityLog;
 }
 
 const ActivityLogSidePanel = ({
   isOpen,
   onClose,
   onEdit,
-  onReject,
-  onApprove,
   activityLog,
-  isLoading,
 }: ActivityLogSidePanelProps) => {
   const navigate = useNavigate();
+
+  // reject modal state
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState<boolean>(false);
+
+  // mutations
+  const { mutateAsync: approveActivityLog, isLoading: isApproveLoading } =
+    useApproveActivityLogMutation();
+  const { mutateAsync: rejectActivityLog, isLoading: isRejectLoading } =
+    useRejectActivityLogMutation();
 
   const onVolunteerClick = () => {
     if (activityLog) navigate(`/volunteers/${activityLog.volunteer.id}`);
@@ -38,6 +48,39 @@ const ActivityLogSidePanel = ({
 
   const onEventClick = () => {
     if (activityLog) navigate(`/events/${activityLog.event?.id}`);
+  };
+
+  const onApprove = (id: string) => {
+    approveActivityLog(id, {
+      onSuccess: () => {
+        useSuccessToast(i18n.t('activity_log:form.submit.messages.approve'));
+        onClose(true);
+      },
+      onError: (error) => {
+        useErrorToast(InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error));
+      },
+    });
+  };
+
+  const onConfirmRejectModal = (rejectionReason?: string) => {
+    if (activityLog)
+      rejectActivityLog(
+        { id: activityLog?.id, rejectionReason },
+        {
+          onSuccess: () => {
+            useSuccessToast(i18n.t('activity_log:form.submit.messages.reject'));
+            onClose(true);
+          },
+          onError: (error) => {
+            useErrorToast(
+              InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error),
+            );
+          },
+          onSettled: () => {
+            setIsRejectModalOpen(false);
+          },
+        },
+      );
   };
 
   return (
@@ -59,7 +102,7 @@ const ActivityLogSidePanel = ({
           )}
           <button
             className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
-            onClick={onClose}
+            onClick={onClose.bind(null, false)}
             aria-label="close-modal"
             type="button"
           >
@@ -67,8 +110,8 @@ const ActivityLogSidePanel = ({
           </button>
         </div>
       </div>
-      {!activityLog && isLoading && <LoadingContent />}
-      {activityLog && !isLoading && (
+      {(isApproveLoading || isRejectLoading) && <LoadingContent />}
+      {activityLog && !isApproveLoading && !isRejectLoading && (
         <>
           <div className="grow flex flex-col gap-6 pb-24 px-6 overflow-y-auto">
             <FormReadOnlyElement
@@ -153,7 +196,7 @@ const ActivityLogSidePanel = ({
                 <Button
                   label={i18n.t('general:reject')}
                   className="btn-text-danger"
-                  onClick={onReject.bind(null, activityLog.id)}
+                  onClick={setIsRejectModalOpen.bind(null, true)}
                   aria-label={`${i18n.t('general:reject')}`}
                   icon={<XMarkIcon className="h-5 w-5" />}
                   type="button"
@@ -164,7 +207,7 @@ const ActivityLogSidePanel = ({
               <Button
                 label={i18n.t('activity_log:side_panel.reject')}
                 className="btn-text-danger"
-                onClick={onReject.bind(null, activityLog.id)}
+                onClick={setIsRejectModalOpen.bind(null, true)}
                 aria-label={`${i18n.t('general:reject')}`}
                 icon={<XMarkIcon className="h-5 w-5" />}
                 type="button"
@@ -182,6 +225,15 @@ const ActivityLogSidePanel = ({
             )}
           </footer>
         </>
+      )}
+      {isRejectModalOpen && (
+        <RejectTextareaModal
+          label={i18n.t('activity_log:modal.description')}
+          title={i18n.t('activity_log:modal.title')}
+          onClose={setIsRejectModalOpen.bind(null, false)}
+          onConfirm={onConfirmRejectModal}
+          danger
+        />
       )}
     </SidePanel>
   );

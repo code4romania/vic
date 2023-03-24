@@ -11,22 +11,17 @@ import { mapUserToListItem } from '../common/utils/utils';
 import SidePanel from './SidePanel';
 import { useForm } from 'react-hook-form';
 import { ActivityLogFormTypes } from '../components/ActivityLogForm';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useEditActivityLogMutation } from '../services/activity-log/activity-log.service';
 
 interface EditActivityLogProps {
   isOpen: boolean;
-  onClose: () => void;
-  onSave: (data: ActivityLogFormTypes) => void;
+  onClose: (shouldRefetch?: boolean) => void;
   activityLog: IActivityLog | undefined;
-  isEditActivitiyLoading: boolean;
 }
 
-const EditActivityLog = ({
-  isOpen,
-  onClose,
-  onSave,
-  activityLog,
-  isEditActivitiyLoading,
-}: EditActivityLogProps) => {
+const EditActivityLog = ({ isOpen, onClose, activityLog }: EditActivityLogProps) => {
   const {
     handleSubmit,
     control,
@@ -37,6 +32,10 @@ const EditActivityLog = ({
     reValidateMode: 'onChange',
     resolver: yupResolver(activityLogValidationSchema),
   });
+
+  // mutations
+  const { mutateAsync: editActivityLog, isLoading: isEditActivityLogLoading } =
+    useEditActivityLogMutation();
 
   useEffect(() => {
     // init form data
@@ -51,12 +50,30 @@ const EditActivityLog = ({
       });
   }, [activityLog]);
 
+  const onSave = (data: ActivityLogFormTypes) => {
+    if (activityLog)
+      editActivityLog(
+        { id: activityLog.id, data },
+        {
+          onSuccess: () => {
+            useSuccessToast(i18n.t('activity_log:form.submit.messages.edit'));
+            onClose(true);
+          },
+          onError: (error) => {
+            useErrorToast(
+              InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error),
+            );
+          },
+        },
+      );
+  };
+
   return (
     <SidePanel isOpen={isOpen} onClose={onClose}>
       <div className="flex items-center gap-1 text-center sm:text-left px-6">
         <button
           className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
-          onClick={onClose}
+          onClick={onClose.bind(null, false)}
           aria-label="close-modal"
           type="button"
         >
@@ -66,8 +83,8 @@ const EditActivityLog = ({
           {i18n.t('activity_log:side_panel.title')}
         </h3>
       </div>
-      {!activityLog && isEditActivitiyLoading && <LoadingContent />}
-      {activityLog && !isEditActivitiyLoading && (
+      {!activityLog && isEditActivityLogLoading && <LoadingContent />}
+      {activityLog && !isEditActivityLogLoading && (
         <>
           <div className="grow flex flex-col gap-6 pb-24 overflow-y-auto">
             <ActivityLogForm control={control} errors={errors} disabled />

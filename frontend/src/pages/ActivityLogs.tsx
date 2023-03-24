@@ -12,31 +12,20 @@ import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
 import { ActivityLogStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
-import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
 import {
   useActivityLogQuery,
   useActivityLogsQuery,
-  useApproveActivityLogMutation,
-  useEditActivityLogMutation,
-  useRejectActivityLogMutation,
 } from '../services/activity-log/activity-log.service';
 import { IActivityLogListItem } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from '../components/StatusWithMarker';
 import { useNavigate } from 'react-router';
 import EditActivityLog from '../components/EditActivityLog';
-import { ActivityLogFormTypes } from '../components/ActivityLogForm';
-import RejectTextareaModal from '../components/RejectTextareaModal';
 import ActivityLogSidePanel from '../components/ActivityLogSidePanel';
-
-export enum ActivityLogTabs {
-  NEW = 'new',
-  SOLVED = 'solved',
-}
-
 import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
 
 const ActivityLogTabsOptions: SelectItem<ActivityLogResolutionStatus>[] = [
@@ -44,20 +33,142 @@ const ActivityLogTabsOptions: SelectItem<ActivityLogResolutionStatus>[] = [
   { key: ActivityLogResolutionStatus.SOLVED, value: i18n.t('activity_log:past') },
 ];
 
+const PendingActivityLogTableHeader = [
+  {
+    id: 'activityType.name',
+    name: i18n.t('activity_log:header.task'),
+    sortable: true,
+    grow: 3,
+    minWidth: '10rem',
+    cell: (row: IActivityLogListItem) => (
+      <MediaCell
+        logo={row.activityType?.icon}
+        title={row.activityType.name}
+        subtitle={row.event?.name || ''}
+      />
+    ),
+  },
+  {
+    id: 'hours',
+    name: i18n.t('general:hours'),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    selector: (row: IActivityLogListItem) => `${row.hours}h`,
+  },
+  {
+    id: 'date',
+    name: i18n.t('activity_log:header.execution_date'),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    selector: (row: IActivityLogListItem) => formatDate(row?.date),
+  },
+  {
+    id: 'user.name',
+    name: i18n.t('volunteer:name', { status: '' }),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    cell: (row: IActivityLogListItem) =>
+      row.volunteer && (
+        <CellLayout>
+          <a>{row.volunteer.name}</a>
+        </CellLayout>
+      ),
+  },
+  {
+    id: 'createdOn',
+    name: i18n.t('activity_log:header.registration_date'),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    selector: (row: IActivityLogListItem) => formatDate(row.createdOn),
+  },
+];
+
+const PastActivityLogTableHeader = [
+  {
+    id: 'activityType.name',
+    name: i18n.t('activity_log:header.task'),
+    sortable: true,
+    grow: 3,
+    minWidth: '10rem',
+    cell: (row: IActivityLogListItem) => (
+      <MediaCell
+        logo={row.activityType?.icon}
+        title={row.activityType.name}
+        subtitle={row.event?.name || ''}
+      />
+    ),
+  },
+  {
+    id: 'hours',
+    name: i18n.t('general:hours'),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    selector: (row: IActivityLogListItem) => `${row.hours}h`,
+  },
+  {
+    id: 'date',
+    name: i18n.t('activity_log:header.execution_date'),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    selector: (row: IActivityLogListItem) => formatDate(row.date),
+  },
+  {
+    id: 'user.name',
+    name: i18n.t('volunteer:name', { status: '' }),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    cell: (row: IActivityLogListItem) =>
+      row.volunteer && (
+        <CellLayout>
+          <a>{row.volunteer?.name}</a>
+        </CellLayout>
+      ),
+  },
+  {
+    id: 'status',
+    name: i18n.t('activity_log:status'),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    cell: (row: IActivityLogListItem) => (
+      <CellLayout>
+        <StatusWithMarker markerColor={ActivityLogStatusMarkerColorMapper[row.status]}>
+          {i18n.t(`activity_log:display_status.${row.status}`)}
+        </StatusWithMarker>
+      </CellLayout>
+    ),
+  },
+];
+
 const ActivityLogs = () => {
+  // routing
   const navigate = useNavigate();
-  const [tabsStatus, setTabsStatus] = useState<ActivityLogResolutionStatus>(
+  // active tab
+  const [activeTab, setActiveTab] = useState<ActivityLogResolutionStatus>(
     ActivityLogResolutionStatus.NEW,
   );
-  const [selectedActivityLog, setSelectedActivityLog] = useState<string>();
-  const [showEditActivityLog, setShowEditActivityLog] = useState<boolean>();
-  const [showRejectModal, setShowRejectModal] = useState<string>();
   // pagination state
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
 
+  // selected activity log id
+  const [selectedActivityLog, setSelectedActivityLog] = useState<string | null>(null);
+  // side panel state
+  const [isViewActivityLogSidePanelOpen, setIsViewActivityLogSidePanelOpen] =
+    useState<boolean>(false);
+  const [isEditctivityLogSidePanelOpen, setIsEditActivityLogSidePanelOpen] =
+    useState<boolean>(false);
+
+  // get all query
   const {
     data: activityLogs,
     isLoading: isActivityLogsLoading,
@@ -66,21 +177,17 @@ const ActivityLogs = () => {
   } = useActivityLogsQuery(
     rowsPerPage as number,
     page as number,
-    tabsStatus,
+    activeTab,
     orderByColumn,
     orderDirection,
   );
 
+  // get one query
   const { data: activityLog, error: activityLogError } = useActivityLogQuery(
     selectedActivityLog as string,
   );
-  const { mutateAsync: editActivityLog, isLoading: isEditActivityLogLoading } =
-    useEditActivityLogMutation();
-  const { mutateAsync: approveActivityLog, isLoading: isApproveLoading } =
-    useApproveActivityLogMutation();
-  const { mutateAsync: rejectActivityLog, isLoading: isRejectLoading } =
-    useRejectActivityLogMutation();
 
+  // query error handling
   useEffect(() => {
     if (activityLogsError)
       useErrorToast(
@@ -112,201 +219,37 @@ const ActivityLogs = () => {
     };
   };
 
-  const PendingActivityLogTableHeader = [
-    {
-      id: 'activityType.name',
-      name: i18n.t('activity_log:header.task'),
-      sortable: true,
-      grow: 3,
-      minWidth: '10rem',
-      cell: (row: IActivityLogListItem) => (
-        <MediaCell
-          logo={row.activityType?.icon}
-          title={row.activityType.name}
-          subtitle={row.event?.name || ''}
-        />
-      ),
-    },
-    {
-      id: 'hours',
-      name: i18n.t('general:hours'),
-      sortable: true,
-      grow: 1,
-      minWidth: '5rem',
-      selector: (row: IActivityLogListItem) => `${row.hours}h`,
-    },
-    {
-      id: 'date',
-      name: i18n.t('activity_log:header.execution_date'),
-      sortable: true,
-      grow: 1,
-      minWidth: '5rem',
-      selector: (row: IActivityLogListItem) => formatDate(row?.date),
-    },
-    {
-      id: 'user.name',
-      name: i18n.t('volunteer:name', { status: '' }),
-      sortable: true,
-      grow: 1,
-      minWidth: '5rem',
-      cell: (row: IActivityLogListItem) =>
-        row.volunteer && (
-          <CellLayout>
-            <a onClick={onVolunteerClick.bind(null, row.volunteer.id)}>{row.volunteer.name}</a>
-          </CellLayout>
-        ),
-    },
-    {
-      id: 'createdOn',
-      name: i18n.t('activity_log:header.registration_date'),
-      sortable: true,
-      grow: 1,
-      minWidth: '5rem',
-      selector: (row: IActivityLogListItem) => formatDate(row.createdOn),
-    },
-  ];
-
-  const PastActivityLogTableHeader = [
-    {
-      id: 'activityType.name',
-      name: i18n.t('activity_log:header.task'),
-      sortable: true,
-      grow: 3,
-      minWidth: '10rem',
-      cell: (row: IActivityLogListItem) => (
-        <MediaCell
-          logo={row.activityType?.icon}
-          title={row.activityType.name}
-          subtitle={row.event?.name || ''}
-        />
-      ),
-    },
-    {
-      id: 'hours',
-      name: i18n.t('general:hours'),
-      sortable: true,
-      grow: 1,
-      minWidth: '5rem',
-      selector: (row: IActivityLogListItem) => `${row.hours}h`,
-    },
-    {
-      id: 'date',
-      name: i18n.t('activity_log:header.execution_date'),
-      sortable: true,
-      grow: 1,
-      minWidth: '5rem',
-      selector: (row: IActivityLogListItem) => formatDate(row.date),
-    },
-    {
-      id: 'user.name',
-      name: i18n.t('volunteer:name', { status: '' }),
-      sortable: true,
-      grow: 1,
-      minWidth: '5rem',
-      cell: (row: IActivityLogListItem) =>
-        row.volunteer && (
-          <CellLayout>
-            <a onClick={onVolunteerClick.bind(null, row.volunteer?.id)}>{row.volunteer?.name}</a>
-          </CellLayout>
-        ),
-    },
-    {
-      id: 'status',
-      name: i18n.t('activity_log:status'),
-      sortable: true,
-      grow: 1,
-      minWidth: '5rem',
-      cell: (row: IActivityLogListItem) => (
-        <CellLayout>
-          <StatusWithMarker markerColor={ActivityLogStatusMarkerColorMapper[row.status]}>
-            {i18n.t(`activity_log:display_status.${row.status}`)}
-          </StatusWithMarker>
-        </CellLayout>
-      ),
-    },
-  ];
-
-  const onReject = (id: string) => {
-    setShowRejectModal(id);
-  };
-
-  const onApprove = (id: string) => {
-    approveActivityLog(id, {
-      onSuccess: () => {
-        useSuccessToast(i18n.t('activity_log:form.submit.messages.approve'));
-        setSelectedActivityLog(undefined);
-        setShowEditActivityLog(false);
-        refetch();
-      },
-      onError: (error) => {
-        useErrorToast(InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error));
-      },
-    });
-  };
-
   const onAddButtonPress = () => {
     navigate('add');
   };
 
+  const onView = (row: IActivityLogListItem) => {
+    setSelectedActivityLog(row.id);
+    setIsViewActivityLogSidePanelOpen(true);
+  };
+
   const onEdit = () => {
-    if (activityLog) setShowEditActivityLog(true);
+    setIsViewActivityLogSidePanelOpen(false);
+    setIsEditActivityLogSidePanelOpen(true);
   };
 
-  const onSave = (data: ActivityLogFormTypes) => {
-    if (activityLog)
-      editActivityLog(
-        { id: activityLog.id, data },
-        {
-          onSuccess: () => {
-            useSuccessToast(i18n.t('activity_log:form.submit.messages.edit'));
-            setShowEditActivityLog(false);
-            setSelectedActivityLog(undefined);
-            refetch();
-          },
-          onError: (error) => {
-            useErrorToast(
-              InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error),
-            );
-          },
-        },
-      );
-  };
-
-  const onConfirmRejectModal = (rejectionReason?: string) => {
-    if (showRejectModal)
-      rejectActivityLog(
-        { id: showRejectModal, rejectionReason },
-        {
-          onSuccess: () => {
-            useSuccessToast(i18n.t('activity_log:form.submit.messages.reject'));
-            setSelectedActivityLog(undefined);
-            refetch();
-          },
-          onError: (error) => {
-            useErrorToast(
-              InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error),
-            );
-          },
-          onSettled: () => {
-            setShowRejectModal(undefined);
-          },
-        },
-      );
-  };
-
-  const onVolunteerClick = (id: string) => {
-    navigate(`/volunteers/${id}`);
+  const onCloseEditSidePanel = (shouldRefetch?: boolean) => {
+    setIsViewActivityLogSidePanelOpen(true);
+    setIsEditActivityLogSidePanelOpen(false);
+    if (shouldRefetch) refetch();
   };
 
   const onTabClick = (tab: ActivityLogResolutionStatus) => {
-    setTabsStatus(tab);
+    setActiveTab(tab);
   };
 
-  // row actions
-  const onView = (row: IActivityLogListItem) => {
-    setSelectedActivityLog(row.id);
+  const onCloseSidePanel = (shouldRefetch?: boolean) => {
+    setIsViewActivityLogSidePanelOpen(false);
+    setSelectedActivityLog(null);
+    if (shouldRefetch) refetch();
   };
 
+  // pagination
   const onSort = (column: TableColumn<IActivityLogListItem>, direction: SortOrder) => {
     setOrderByColumn(column.id as string);
     setOrderDirection(
@@ -339,7 +282,7 @@ const ActivityLogs = () => {
           <CardBody>
             <DataTableComponent
               columns={[
-                ...(tabsStatus === ActivityLogResolutionStatus.NEW
+                ...(activeTab === ActivityLogResolutionStatus.NEW
                   ? PendingActivityLogTableHeader
                   : PastActivityLogTableHeader),
                 buildActivityLogActionColumn(),
@@ -357,32 +300,17 @@ const ActivityLogs = () => {
           </CardBody>
         </Card>
       </Tabs>
-
       <ActivityLogSidePanel
-        onClose={setSelectedActivityLog.bind(null, undefined)}
+        onClose={onCloseSidePanel}
         onEdit={onEdit}
-        isOpen={!!selectedActivityLog}
+        isOpen={isViewActivityLogSidePanelOpen}
         activityLog={activityLog}
-        onApprove={onApprove}
-        onReject={onReject}
-        isLoading={isApproveLoading || isRejectLoading || isEditActivityLogLoading}
       />
       <EditActivityLog
-        onClose={setShowEditActivityLog.bind(null, false)}
-        isOpen={!!showEditActivityLog}
-        onSave={onSave}
+        onClose={onCloseEditSidePanel}
+        isOpen={isEditctivityLogSidePanelOpen}
         activityLog={activityLog}
-        isEditActivitiyLoading={isEditActivityLogLoading}
       />
-      {showRejectModal && (
-        <RejectTextareaModal
-          label={i18n.t('activity_log:modal.description')}
-          title={i18n.t('activity_log:modal.title')}
-          onClose={setShowRejectModal.bind(null, undefined)}
-          onConfirm={onConfirmRejectModal}
-          danger
-        />
-      )}
     </PageLayout>
   );
 };
