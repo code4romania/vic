@@ -8,6 +8,9 @@ export enum TrackedEventName {
   CREATE_ORGANIZATION_STRUCTURE = 'CREATE_ORGANIZATION_STRUCTURE',
   UPDATE_ORGANIZATION_STRUCTURE = 'UPDATE_ORGANIZATION_STRUCTURE',
   DELETE_ORGANIZATION_STRUCTURE = 'DELETE_ORGANIZATION_STRUCTURE',
+
+  // Access Request
+  APPROVE_ACCESS_REQUEST = 'APPROVE_ACCESS_REQUEST',
 }
 
 export interface TrackedEventData {
@@ -32,5 +35,10 @@ export interface TrackedEventData {
     organizationStructureName: string;
     organizationStructureId: string;
     organizationStructureType: OrganizationStructureType;
+  };
+  [TrackedEventName.APPROVE_ACCESS_REQUEST]: {
+    userId: string;
+    userName: string;
+    volunteerId: string;
   };
 }

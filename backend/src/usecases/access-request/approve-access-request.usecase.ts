@@ -9,6 +9,7 @@ import {
 } from 'src/modules/access-request/model/access-request.model';
 import { AccessRequestFacade } from 'src/modules/access-request/services/access-request.facade';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateVolunteerUseCase } from '../volunteer/create-volunteer.usecase';
 
@@ -45,7 +46,7 @@ export class ApproveAccessRequestUseCase
     }
 
     // Create volunteer user for the organization
-    await this.createVolunteerUseCase.execute({
+    const volunteer = await this.createVolunteerUseCase.execute({
       organizationId: accessRequest.organizationId,
       userId: accessRequest.requestedBy?.id,
     });
@@ -58,7 +59,15 @@ export class ApproveAccessRequestUseCase
     });
 
     // Track action
-    // this.actionsArchiveFacade.trackEvent();
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.APPROVE_ACCESS_REQUEST,
+      {
+        userName: accessRequest.requestedBy?.name,
+        userId: accessRequest.requestedBy?.id,
+        volunteerId: volunteer.id,
+      },
+      admin,
+    );
 
     return updated;
   }
