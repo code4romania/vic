@@ -5,8 +5,10 @@
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "user": "Utilizator",
+    "save": "Salveaza",
     "close": "Inchide",
     "name": "Nume",
+    "save": "Salvează",
     "people": "Persoane",
     "age": "Vârsta",
     "hours": "Ore",
@@ -17,9 +19,9 @@
     "created_on": "Data crearii",
     "all_organization": "Toata organizatia",
     "event": "Eveniment",
-    "add": "Adauga {{item}}",
+    "add": "Adaugă {{item}}",
     "category": "Categorie",
-    "select": "Selecteaza {{item}}",
+    "select": "Selectează {{item}}",
     "choose": "Alege {{item}}",
     "image": "Imagine",
     "reason": "Motiv",
@@ -30,8 +32,8 @@
     "status": "Status",
     "empty_table": "Nu exista informatii de afisat",
     "view": "Vizualizeaza",
-    "edit": "Editeaza {{item}}",
-    "block": "Blocheaza {{item}}",
+    "edit": "Editează {{item}}",
+    "block": "Blochează {{item}}",
     "archive": "Arhivează {{item}}",
     "delete": "Sterge",
     "location": "Locatie",
@@ -193,7 +195,7 @@
   "division": {
     "members": "Membri",
     "entity": {
-      "branch": "Filiala",
+      "branch": "Filială",
       "role": "Rol",
       "department": "Departament"
     },
@@ -394,11 +396,11 @@
     "observation": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi.",
     "draft": {
       "subtitle": "Evenimentul nu este publicat (draft)",
-      "description": "Ai draft evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+      "description": "Ai salvat ca draft evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
     },
     "published": {
       "subtitle": "Evenimentul este publicat",
-      "description": "Ai publicat evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+      "description": "Ai publicat evenimentul, deci voluntarii il pot vizualiza in aplicatia mobila. "
     },
     "archived": {
       "subtitle": "Evenimentul este arhivat",
@@ -562,6 +564,12 @@
     "popover": {
       "view": "Fișă de activitate"
     },
+    "filters": { "execution": "Perioada efectuare task", "registration": "Perioada inregistrare" },
+    "modal": {
+      "title": "Argumentează respingere",
+      "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
+      "reject": "Respinge fără mesaj "
+    },
     "side_panel": {
       "reject": "Muta in respinse",
       "approve": "Muta in aprobate",
@@ -596,7 +604,9 @@
       "submit": {
         "messages": {
           "add": "Orele de voluntariat au fost adaugate cu succes",
-          "edit": "Datele privind orele de voluntariat au fost modificate cu succes"
+          "edit": "Datele privind orele de voluntariat au fost modificate cu succes",
+          "approve": "Orele de voluntariat au fost aprobate",
+          "reject": "Orele de voluntariat au fost respinse"
         }
       }
     },

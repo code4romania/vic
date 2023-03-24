@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { compareAsc } from 'date-fns';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { EventAttendOptions } from 'src/modules/event/enums/event-attendance-options.enum';
@@ -36,7 +37,14 @@ export class CreateEventRSVPUseCase
       );
     }
 
-    // 2. Check if the user to attend, exists
+    // 2. check if the event has passed
+    if (event.endDate && compareAsc(new Date(event.endDate), new Date()) < 1) {
+      this.exceptionsService.badRequestException(
+        EventRSVPExceptionMessages.EVENT_RSVP_007,
+      );
+    }
+
+    // 3. Check if the user to attend, exists
     await this.getOneRegularUserUseCase.execute(data.userId);
 
     const volunteer = await this.volunteerFacade.find({
@@ -45,27 +53,27 @@ export class CreateEventRSVPUseCase
     });
 
     if (volunteer) {
-      // 3. Only ACTIVE volunteers can join events. In case the user is already a volunteer and is BLOCKED or ARCHIVED. Non-volunteers will pass this validation for public events
+      // 4. Only ACTIVE volunteers can join events. In case the user is already a volunteer and is BLOCKED or ARCHIVED. Non-volunteers will pass this validation for public events
       if (volunteer.status !== VolunteerStatus.ACTIVE) {
         this.exceptionsService.badRequestException(
           EventRSVPExceptionMessages.EVENT_RSVP_003,
         );
       } else if (!volunteer.volunteerProfile) {
-        // 4. Volunteers must have the profile completed to RSVP.
+        // 5. Volunteers must have the profile completed to RSVP.
         this.exceptionsService.badRequestException(
           EventRSVPExceptionMessages.EVENT_RSVP_005,
         );
       }
     }
 
-    // 5. For "private" events, check if the USER is VOLUNTEER in the ORGANIZATION of the EVENT
+    // 6. For "private" events, check if the USER is VOLUNTEER in the ORGANIZATION of the EVENT
     if (!event.isPublic && !volunteer) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_002,
       );
     }
 
-    // 6. Check if userId and eventId is unique in RSVP, if exists, update only the "going" response
+    // 7. Check if userId and eventId is unique in RSVP, if exists, update only the "going" response
     const existingRSVP = await this.eventFacade.findRSVP({
       userId: data.userId,
       eventId: data.eventId,
@@ -77,13 +85,13 @@ export class CreateEventRSVPUseCase
         : this.eventFacade.updateRSVP(existingRSVP.id, { going: data.going });
     }
 
-    // 7. Check if event requires mention and that mention is present
+    // 8. Check if event requires mention and that mention is present
     if (event.attendanceType === EventAttendOptions.MENTION && !data.mention) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_004,
       );
     } else if (event.attendanceType === EventAttendOptions.SIMPLE) {
-      // 7.1. Simple events does not need mentions
+      // 8.1. Simple events does not need mentions
       data.mention = null;
     }
 

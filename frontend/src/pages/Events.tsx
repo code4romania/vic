@@ -68,10 +68,9 @@ const OpenEventsTableHeader = [
     name: i18n.t('general:target'),
     minWidth: '10rem',
     grow: 1,
-    sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
-        <Targets targets={row.targets} />
+        <Targets targets={row.targets} isPublic={row.isPublic} />
       </CellLayout>
     ),
   },
@@ -123,10 +122,9 @@ const PastEventsTableHeader = [
     name: i18n.t('general:target'),
     minWidth: '10rem',
     grow: 1,
-    sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
-        <Targets targets={row.targets} />
+        <Targets targets={row.targets} isPublic={row.isPublic} />
       </CellLayout>
     ),
   },

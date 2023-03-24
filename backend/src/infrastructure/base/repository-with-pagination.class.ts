@@ -43,8 +43,8 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
   ): Promise<Pagination<TModel>> {
     // [T[], totalItems]
     const response = await query
-      .limit(limit) // take will add a distinct entity_id a the begining of the query which will interfeer with ordering bt agregate count column
-      .offset((page - 1) * limit) // skip will add a distinct entity_id a the begining of the query which will interfeer with ordering bt agregate count column
+      .take(limit) // take will add a distinct entity_id a the begining of the query which will interfeer with ordering bt agregate count column
+      .skip((page - 1) * limit) // skip will add a distinct entity_id a the begining of the query which will interfeer with ordering bt agregate count column
       .getManyAndCount();
 
     // query items + the pagination meta
@@ -90,8 +90,8 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
     const prefix = column.split('.').join('');
     if (end) {
       query.andWhere(`${column} BETWEEN :${prefix}Start AND :${prefix}End`, {
-        [`${prefix}Start`]: format(start, DATE_CONSTANTS.YYYY_MM_DD),
-        [`${prefix}End`]: format(end, DATE_CONSTANTS.YYYY_MM_DD),
+        [`${prefix}Start`]: format(start, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
+        [`${prefix}End`]: format(end, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
       });
     } else {
       query.andWhere(`${column} >= :${prefix}Start`, {
