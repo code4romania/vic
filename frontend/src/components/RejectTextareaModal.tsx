@@ -12,7 +12,9 @@ interface RejectTextareaModalProps {
   label: string;
   onClose: () => void;
   onConfirm: (rejectMessage?: string) => void;
-  danger?: boolean;
+  primaryBtnClassName?: string;
+  primaryBtnLabel?: string;
+  secondaryBtnLabel?: string;
 }
 
 export type RejectTextareaType = {
@@ -34,7 +36,9 @@ const RejectTextareaModal = ({
   label,
   onClose,
   onConfirm,
-  danger,
+  primaryBtnClassName,
+  primaryBtnLabel,
+  secondaryBtnLabel,
 }: RejectTextareaModalProps) => {
   const onSubmitWithMessage = (data: { rejectMessage: string }) => {
     onConfirm(data.rejectMessage);
@@ -50,7 +54,6 @@ const RejectTextareaModal = ({
     handleSubmit,
     formState: { errors },
     control,
-    // reset,
   } = useForm<RejectTextareaType>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -79,13 +82,15 @@ const RejectTextareaModal = ({
         </form>
         <div className="flex flex-col-reverse sm:flex-row gap-4 justify-end">
           <Button
-            label={danger ? i18n.t('activity_log:modal.reject') : i18n.t('reject_modal:send')}
+            label={secondaryBtnLabel ? secondaryBtnLabel : i18n.t('reject_modal:send')}
             className="btn-outline-secondary w-full sm:w-20"
             onClick={onSubmitWithoutMessage}
           />
           <Button
-            label={danger ? i18n.t('general:reject') : i18n.t('general:send')}
-            className={`${danger ? 'btn-danger' : 'btn-primary'} w-full sm:w-20`}
+            label={primaryBtnLabel ? primaryBtnLabel : i18n.t('general:send')}
+            className={`${
+              primaryBtnClassName ? primaryBtnClassName : 'btn-primary'
+            } w-full sm:w-20`}
             onClick={handleSubmit(onSubmitWithMessage)}
           />
         </div>

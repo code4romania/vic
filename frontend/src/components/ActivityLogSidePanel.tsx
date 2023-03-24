@@ -232,7 +232,9 @@ const ActivityLogSidePanel = ({
           title={i18n.t('activity_log:modal.title')}
           onClose={setIsRejectModalOpen.bind(null, false)}
           onConfirm={onConfirmRejectModal}
-          danger
+          secondaryBtnLabel={`${i18n.t('activity_log:modal.reject')}`}
+          primaryBtnLabel={`${i18n.t('general:reject')}`}
+          primaryBtnClassName="btn-danger"
         />
       )}
     </SidePanel>
