@@ -282,11 +282,9 @@
 }
 
 div.reactselect__control.error-and-focused {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 1px #ef4444;
+  @apply border-red-500 shadow-error;
 }
 
 div.reactselect__control.error {
-  border-color: #ef4444;
-  box-shadow: none;
+  @apply border-red-500 shadow-none;
 }

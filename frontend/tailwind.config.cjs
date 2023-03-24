@@ -68,6 +68,7 @@ module.exports = {
         section: '0px 2px 10px rgba(0, 0, 0, 0.1)',
         yellow: '0 1px 2px #0000000d, 0 0 0 2px #fff, 0 0 0 4px #ffde33;',
         blue: '0 1px 2px #0000000d, 0 0 0 2px #fff, 0 0 0 4px #6366f1;',
+        error: '0 0 0 1px #ef4444',
       },
       borderWidth: {
         1: '1px',
