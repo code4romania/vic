@@ -89,7 +89,7 @@ export class OrganizationStructureRepositoryService
       .select()
       .addSelect((subQuery) => {
         return subQuery
-          .select('COUNT(vp.id)', 'numberOfMembers')
+          .select('COUNT(vp.id)', 'membersCount')
           .from(VolunteerProfileEntity, 'vp')
           .innerJoin(VolunteerEntity, 'v')
           .where(
@@ -98,7 +98,7 @@ export class OrganizationStructureRepositoryService
               status: VolunteerStatus.ACTIVE,
             },
           );
-      }, 'numberOfMembers')
+      }, 'members')
       .where(
         'structure.type = :type AND structure.organizationId = :organizationId',
         { type, organizationId },
@@ -107,7 +107,7 @@ export class OrganizationStructureRepositoryService
       .orderBy(
         `${
           orderBy === 'numberOfMembers'
-            ? '"numberOfMembers"'
+            ? 'members'
             : this.buildOrderByQuery(orderBy || 'name', 'structure')
         }`,
         orderDirection || OrderDirection.ASC,
