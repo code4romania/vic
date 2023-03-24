@@ -78,6 +78,7 @@ export class CreateActivityLogByAdmin
       createdByAdminId: admin.id,
       approvedById: admin.id,
       approvedOn: new Date(),
+      organizationId: admin.organizationId,
     });
   }
 }
