@@ -1,5 +1,6 @@
 import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import i18n from '../common/config/i18n';
 import { DivisionType } from '../common/enums/division-type.enum';
@@ -72,6 +73,8 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [selectedDivisionForUpdate, setSelectedDivisionForUpdate] = useState<IDivision>();
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
+
+  const navigate = useNavigate();
 
   // query params
   const [queryParams, setQueryParams] = useQueryParams(DIVISIONS_QUERY_PARAMS);
@@ -147,7 +150,9 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
   };
 
   const onView = (row: IDivision) => {
-    alert(`Not yet implemented, ${row}`);
+    navigate(
+      `/volunteers?limit=10&page=1&orderDirection=ASC&volunteerStatus=active&orderBy=user.name&${row.type}=${row.name}`,
+    );
   };
 
   const onDelete = (row: IDivision) => {
