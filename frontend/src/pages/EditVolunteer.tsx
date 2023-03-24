@@ -38,7 +38,11 @@ const schema = yup.object({
     .string()
     .email(`${i18n.t('volunteer:form.email.pattern')}`)
     .required(`${i18n.t('volunteer:form.email.required')}`),
-  activeSince: yup.date().typeError(`${i18n.t('general:invalid_date')}`),
+  activeSince: yup
+    .date()
+    .nullable()
+    .optional()
+    .typeError(`${i18n.t('general:invalid_date')}`),
 });
 
 const EditVolunteer = () => {

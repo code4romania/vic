@@ -4,7 +4,9 @@ import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 import { ICity } from '../interfaces/city.interface';
 import { IDivisionListItem } from '../interfaces/division.interface';
 import { AnnouncementStatus } from '../enums/announcement-status.enum';
+import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { EventStatus } from '../enums/event-status';
+import { ListItem } from '../interfaces/list-item.interface';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
@@ -32,7 +34,7 @@ export const formatLocation = (location: ICity): string =>
   location ? `${location.name}, ${location.county?.abbreviation}` : '-';
 
 export const getHoursAndMinutes = (value: Date | string): string =>
-  format(new Date(value), 'hh:mm');
+  format(new Date(value), 'HH:mm');
 
 export const formatEventDate = (startDate: Date, endDate?: Date): string => {
   let eventDate = '';
@@ -70,6 +72,11 @@ export const formatEndDateISO9075 = (endDate: Date) => formatISO9075(endOfDay(en
 /**
  * MAPPERS
  */
+export const VolunteerProfileStatusTextColorMapper = {
+  [VolunteerStatus.ACTIVE]: '',
+  [VolunteerStatus.ARCHIVED]: 'text-yellow-600',
+  [VolunteerStatus.BLOCKED]: 'text-red-600',
+};
 
 export const AnouncementStatusMarkerColorMapper = {
   [AnnouncementStatus.PUBLISHED]: 'bg-green-500',
@@ -91,4 +98,9 @@ export const ActivityLogStatusMarkerColorMapper = {
 export const mapDivisionListItemToSelectItem = (item: IDivisionListItem): SelectItem<string> => ({
   key: item.id,
   value: item.name,
+});
+
+export const mapUserToListItem = (item: IDivisionListItem): ListItem => ({
+  label: item.name,
+  value: item.id,
 });

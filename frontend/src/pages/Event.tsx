@@ -151,7 +151,13 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
         <FormReadOnlyElement label={i18n.t('events:form.location.label')} value={event.location} />
         <FormReadOnlyElement
           label={i18n.t('events:form.target.label')}
-          value={event.targets?.map((target) => `${target.name}`).join(', ')}
+          value={
+            event.isPublic
+              ? `${i18n.t('events:form.target.public')}`
+              : event.targets.length === 0
+              ? `${i18n.t('announcement:all_organization')}`
+              : event.targets?.map((target) => `${target.name}`).join(', ')
+          }
         />
         <FormReadOnlyElement
           label={i18n.t('events:form.description.label')}

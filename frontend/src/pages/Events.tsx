@@ -70,7 +70,7 @@ const OpenEventsTableHeader = [
     grow: 1,
     cell: (row: IEvent) => (
       <CellLayout>
-        <Targets targets={row.targets} />
+        <Targets targets={row.targets} isPublic={row.isPublic} />
       </CellLayout>
     ),
   },
@@ -124,7 +124,7 @@ const PastEventsTableHeader = [
     grow: 1,
     cell: (row: IEvent) => (
       <CellLayout>
-        <Targets targets={row.targets} />
+        <Targets targets={row.targets} isPublic={row.isPublic} />
       </CellLayout>
     ),
   },
