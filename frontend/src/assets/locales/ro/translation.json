@@ -564,6 +564,7 @@
     "popover": {
       "view": "Fișă de activitate"
     },
+    "filters": { "execution": "Perioada efectuare task", "registration": "Perioada inregistrare" },
     "modal": {
       "title": "Argumentează respingere",
       "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",

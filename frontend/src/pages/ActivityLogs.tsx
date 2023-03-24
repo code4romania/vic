@@ -10,7 +10,7 @@ import { EyeIcon } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { SelectItem } from '../components/Select';
+import Select, { SelectItem } from '../components/Select';
 import { ActivityLogStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -26,11 +26,19 @@ import StatusWithMarker from '../components/StatusWithMarker';
 import { useNavigate } from 'react-router';
 import EditActivityLog from '../components/EditActivityLog';
 import ActivityLogSidePanel from '../components/ActivityLogSidePanel';
+import DataTableFilters from '../components/DataTableFilters';
+import DateRangePicker from '../components/DateRangePicker';
+import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
 
 const ActivityLogTabsOptions: SelectItem<ActivityLogResolutionStatus>[] = [
   { key: ActivityLogResolutionStatus.NEW, value: i18n.t('activity_log:pending') },
   { key: ActivityLogResolutionStatus.SOLVED, value: i18n.t('activity_log:past') },
+];
+
+const StatusOptions: SelectItem<ActivityLogStatus>[] = [
+  { key: ActivityLogStatus.APPROVED, value: i18n.t('activity_log:display_status.approved') },
+  { key: ActivityLogStatus.REJECTED, value: i18n.t('activity_log:display_status.rejected') },
 ];
 
 const PendingActivityLogTableHeader = [
@@ -159,6 +167,11 @@ const ActivityLogs = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+  // filters
+  const [searchWord, setSearchWord] = useState<string>();
+  const [executionDateRange, setExecutionDateRange] = useState<Date[]>([]);
+  const [registrationDateRange, setRegistrationDateRange] = useState<Date[]>([]);
+  const [status, setStatus] = useState<SelectItem<ActivityLogStatus>>();
 
   // selected activity log id
   const [selectedActivityLog, setSelectedActivityLog] = useState<string | null>(null);
@@ -180,6 +193,12 @@ const ActivityLogs = () => {
     activeTab,
     orderByColumn,
     orderDirection,
+    searchWord,
+    status?.key,
+    executionDateRange[0],
+    executionDateRange[1],
+    registrationDateRange[0],
+    registrationDateRange[1],
   );
 
   // get one query
@@ -259,6 +278,13 @@ const ActivityLogs = () => {
     );
   };
 
+  const onResetFilters = () => {
+    setExecutionDateRange([]);
+    setRegistrationDateRange([]);
+    setStatus(undefined);
+    setSearchWord(undefined);
+  };
+
   return (
     <PageLayout>
       <PageHeaderAdd onAddButtonPress={onAddButtonPress} label={i18n.t('activity_log:add')}>
@@ -266,6 +292,31 @@ const ActivityLogs = () => {
       </PageHeaderAdd>
       <p className="text-cool-gray-500">{i18n.t('activity_log:description')}</p>
       <Tabs<ActivityLogResolutionStatus> tabs={ActivityLogTabsOptions} onClick={onTabClick}>
+        <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
+          <DateRangePicker
+            label={i18n.t('activity_log:filters.execution')}
+            onChange={setExecutionDateRange}
+            value={executionDateRange.length > 0 ? executionDateRange : undefined}
+            id="execution-on-range__picker"
+          />
+          {activeTab === ActivityLogResolutionStatus.NEW && (
+            <DateRangePicker
+              label={i18n.t('activity_log:filters.registration')}
+              onChange={setRegistrationDateRange}
+              value={registrationDateRange.length > 0 ? registrationDateRange : undefined}
+              id="registration-on-range__picker"
+            />
+          )}
+          {activeTab === ActivityLogResolutionStatus.SOLVED && (
+            <Select
+              label={`${i18n.t('activity_log:status')}`}
+              placeholder={`${i18n.t('general:select', { item: '' })}`}
+              options={StatusOptions}
+              onChange={setStatus}
+              selected={status}
+            />
+          )}
+        </DataTableFilters>
         <Card>
           <CardHeader>
             {/* <h2>
