@@ -43,7 +43,7 @@ const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) =
           />
         </div>
         <DatePicker
-          className="block w-full pr-10 border-cool-gray-300 shadow-sm rounded-md focus:ring-turquoise-500 focus:border-turquoise-500 sm:text-sm lg:text-base text-xs leading-loose"
+          className="block w-full pr-10 border-cool-gray-200 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose max-w-[37rem]"
           selectsRange={true}
           startDate={startDate}
           endDate={endDate}
