@@ -31,11 +31,34 @@ export const addActivityLog = async (data: ActivityLogFormTypes): Promise<void> 
   return API.post(`activity-log`, { ...formatAddActivityLogPayload(data) });
 };
 
+export const editActivityLog = (id: string, data: ActivityLogFormTypes): Promise<void> => {
+  return API.patch(`/activity-log/${id}`, { ...formatEditActivityLogPayload(data) });
+};
+
+export const approveActivityLog = (id: string): Promise<void> => {
+  return API.patch(`/activity-log/${id}/approve`);
+};
+
+export const rejectActivityLog = (id: string, rejectionReason?: string): Promise<void> => {
+  return API.patch(`/activity-log/${id}/reject`, { rejectionReason });
+};
+
 const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {
   const { volunteer, task, event, ...payload } = data;
   return {
     ...payload,
     volunteerId: volunteer.value,
+    activityTypeId: task.value,
+    ...(event ? { eventId: event.value } : {}),
+  };
+};
+
+const formatEditActivityLogPayload = (data: ActivityLogFormTypes): object => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { volunteer, task, event, ...payload } = data;
+
+  return {
+    ...payload,
     activityTypeId: task.value,
     ...(event ? { eventId: event.value } : {}),
   };

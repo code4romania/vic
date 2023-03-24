@@ -6,6 +6,7 @@ import { IDivisionListItem } from '../interfaces/division.interface';
 import { AnnouncementStatus } from '../enums/announcement-status.enum';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { EventStatus } from '../enums/event-status';
+import { ListItem } from '../interfaces/list-item.interface';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
@@ -93,4 +94,9 @@ export const ActivityLogStatusMarkerColorMapper = {
 export const mapDivisionListItemToSelectItem = (item: IDivisionListItem): SelectItem<string> => ({
   key: item.id,
   value: item.name,
+});
+
+export const mapUserToListItem = (item: IDivisionListItem): ListItem => ({
+  label: item.name,
+  value: item.id,
 });
