@@ -281,19 +281,23 @@
   @apply max-w-[37rem];
 }
 
-div.reactselect__control.error-and-focused {
+div.reactselect__control.error-and-focused,
+div.reactselect__control.error-and-focused:hover {
   @apply border-red-500 shadow-error;
 }
 
-div.reactselect__control.error {
+div.reactselect__control.error,
+div.reactselect__control.error:hover {
   @apply border-red-500 shadow-none;
 }
 
-div.reactselect__control.focused {
+div.reactselect__control.focused,
+div.reactselect__control.focused:hover {
   @apply border-indigo-500 shadow-focused;
 }
 
-div.reactselect__control {
+div.reactselect__control,
+div.reactselect__control:hover {
   @apply border-cool-gray-200 py-[1px];
 }
 
