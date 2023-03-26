@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
@@ -16,11 +18,12 @@ export class ArchiveVolunteerUsecase
     private readonly volunteerFacade: VolunteerFacade,
     private readonly getOneVolunteerUsecase: GetOneVolunteerUsecase,
     private readonly exceptionService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
     volunteerId: string,
-    adminUser: IAdminUserModel,
+    admin: IAdminUserModel,
   ): Promise<IVolunteerModel> {
     const volunteer = await this.getOneVolunteerUsecase.execute(volunteerId);
 
@@ -30,9 +33,23 @@ export class ArchiveVolunteerUsecase
       );
     }
 
-    return this.volunteerFacade.archive({
+    const archived = await this.volunteerFacade.archive({
       id: volunteerId,
-      archivedById: adminUser.id,
+      archivedById: admin.id,
     });
+
+    // Track event
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CHANGE_VOLUNTEER_STATUS,
+      {
+        volunteerId: volunteer.id,
+        volunteerName: volunteer.user?.name,
+        oldStatus: volunteer.status,
+        newStatus: archived.status,
+      },
+      admin,
+    );
+
+    return archived;
   }
 }
