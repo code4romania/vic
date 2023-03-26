@@ -1,3 +1,4 @@
+import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 
@@ -18,6 +19,10 @@ export enum TrackedEventName {
   // Volunteers
   CHANGE_VOLUNTEER_STATUS = 'CHANGE_VOLUNTEER_STATUS',
   UPDATE_VOLUNTEER_PROFILE = 'UPDATE_VOLUNTEER_PROFILE',
+
+  // Activity Log
+  REGISTER_ACTIVITY_LOG = 'REGISTER_ACTIVITY_LOG',
+  CHANGE_ACTIVITY_LOG_STATUS = 'CHANGE_ACTIVITY_LOG_STATUS',
 }
 
 export interface TrackedEventData {
@@ -72,5 +77,20 @@ export interface TrackedEventData {
   [TrackedEventName.UPDATE_VOLUNTEER_PROFILE]: {
     volunteerId: string;
     volunteerName: string;
+  };
+
+  // Activity Log
+  [TrackedEventName.REGISTER_ACTIVITY_LOG]: {
+    activityLogId: string;
+    volunteerId: string;
+    volunteerName: string;
+  };
+
+  [TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS]: {
+    activityLogId: string;
+    volunteerId: string;
+    volunteerName: string;
+    oldStatus: ActivityLogStatus;
+    newStatus: ActivityLogStatus;
   };
 }

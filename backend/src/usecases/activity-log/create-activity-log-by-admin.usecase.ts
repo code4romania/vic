@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateActivityLogByAdminDto } from 'src/api/activity-log/dto/create-activity-log-by-admin.dto';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { ActivityLogExceptionMessages } from 'src/modules/activity-log/exceptions/activity-log.exceptions';
 import { IActivityLogModel } from 'src/modules/activity-log/models/activity-log.model';
@@ -25,6 +27,7 @@ export class CreateActivityLogByAdmin
     private readonly volunteerFacade: VolunteerFacade,
 
     private readonly exceptionService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
@@ -65,7 +68,7 @@ export class CreateActivityLogByAdmin
 
     // ========================================================================
     // 4. Create the log. An Activity Log created by an Admin, is automatically approved
-    return this.activityLogFacade.create({
+    const created = await this.activityLogFacade.create({
       date: newLogRequestDto.date,
       hours: newLogRequestDto.hours,
       mentions: newLogRequestDto.mentions,
@@ -79,5 +82,17 @@ export class CreateActivityLogByAdmin
       approvedById: admin.id,
       approvedOn: new Date(),
     });
+
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.REGISTER_ACTIVITY_LOG,
+      {
+        activityLogId: created.id,
+        volunteerId: volunteer.id,
+        volunteerName: volunteer.user?.name,
+      },
+      admin,
+    );
+
+    return created;
   }
 }
