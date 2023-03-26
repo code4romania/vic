@@ -29,7 +29,7 @@ import {
   useEventsQuery,
   usePublishEventMutation,
 } from '../services/event/event.service';
-import { formatEventDate } from '../common/utils/utils';
+import { downloadExcel, formatEventDate } from '../common/utils/utils';
 import { EventStatusMarkerColorMapper } from '../common/utils/utils';
 import MediaCell from '../components/MediaCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
@@ -39,6 +39,7 @@ import { EventStatus } from '../common/enums/event-status';
 import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
+import { getEventsForDownload } from '../services/event/event.api';
 
 const EventsTabsOptions: SelectItem<EventState>[] = [
   { key: EventState.OPEN, value: i18n.t('side_menu:options.events') },
@@ -67,10 +68,9 @@ const OpenEventsTableHeader = [
     name: i18n.t('general:target'),
     minWidth: '10rem',
     grow: 1,
-    sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
-        <Targets targets={row.targets} />
+        <Targets targets={row.targets} isPublic={row.isPublic} />
       </CellLayout>
     ),
   },
@@ -122,10 +122,9 @@ const PastEventsTableHeader = [
     name: i18n.t('general:target'),
     minWidth: '10rem',
     grow: 1,
-    sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
-        <Targets targets={row.targets} />
+        <Targets targets={row.targets} isPublic={row.isPublic} />
       </CellLayout>
     ),
   },
@@ -334,6 +333,16 @@ const Events = () => {
     navigate('/events/add');
   };
 
+  const onExport = async () => {
+    const { data: eventsData } = await getEventsForDownload(
+      tabsStatus,
+      orderByColumn,
+      orderDirection,
+    );
+
+    downloadExcel(eventsData as BlobPart, i18n.t('events:download', { context: tabsStatus }));
+  };
+
   return (
     <PageLayout>
       <PageHeaderAdd
@@ -354,7 +363,7 @@ const Events = () => {
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
               className="btn-outline-secondary ml-auto"
-              onClick={() => alert('Not implemented')}
+              onClick={onExport}
             />
           </CardHeader>
           <CardBody>

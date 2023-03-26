@@ -37,7 +37,8 @@ export class EventRepository
   async getMany(
     findOptions: FindManyEventOptions,
   ): Promise<Pagination<IEventsListItemModel>> {
-    const { eventState, organizationId, orderBy, orderDirection } = findOptions;
+    const { eventState, organizationId, orderBy, orderDirection, search } =
+      findOptions;
 
     const query = this.eventRepository
       .createQueryBuilder('event')
@@ -61,6 +62,7 @@ export class EventRepository
         'event.endDate',
         'event.status',
         'event.isPublic',
+        'event.createdOn',
         'event.organizationId',
         'targets.id',
         'targets.name', // TODO: need number of members per target, create a View
@@ -71,18 +73,24 @@ export class EventRepository
         orderDirection || OrderDirection.ASC,
       );
 
-    const currentDate = new Date();
-    if (eventState === EventState.OPEN) {
-      query.andWhere(
-        '(event.endDate > :currentDate OR event.endDate IS NULL)',
-        {
+    if (eventState) {
+      const currentDate = new Date();
+      if (eventState === EventState.OPEN) {
+        query.andWhere(
+          '(event.endDate > :currentDate OR event.endDate IS NULL)',
+          {
+            currentDate,
+          },
+        );
+      } else {
+        query.andWhere('event.endDate <= :currentDate', {
           currentDate,
-        },
-      );
-    } else {
-      query.andWhere('event.endDate <= :currentDate', {
-        currentDate,
-      });
+        });
+      }
+    }
+
+    if (search) {
+      query.andWhere(this.buildBracketSearchQuery(['event.name'], search));
     }
 
     return this.paginateQuery(

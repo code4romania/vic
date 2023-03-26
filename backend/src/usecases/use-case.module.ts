@@ -66,6 +66,7 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/get-many-f
 import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-download-volunteer.usecase';
 import { GetManyEventRSVPUseCase } from './event/RSVP/get-many-rsvp.usecase';
 import { GetManyEventUseCase } from './event/get-many-event.usecase';
+import { GetManyForDownloadEventUseCase } from './event/get-many-for-download-event.usecase';
 import { CreateActivityLogByAdmin } from './activity-log/create-activity-log-by-admin.usecase';
 import { ActivityLogModule } from 'src/modules/activity-log/activity-log.module';
 import { GetOneActivityLogUsecase } from './activity-log/get-one-activity-log.usecase';
@@ -159,6 +160,7 @@ import { ActionsArchiveModule } from 'src/modules/actions-archive/actions-archiv
     DeleteEventRSVPUseCase,
     GetManyEventRSVPUseCase,
     GetManyEventUseCase,
+    GetManyForDownloadEventUseCase,
     // Activity Log
     CreateActivityLogByAdmin,
     GetOneActivityLogUsecase,
@@ -237,6 +239,7 @@ import { ActionsArchiveModule } from 'src/modules/actions-archive/actions-archiv
     DeleteEventRSVPUseCase,
     GetManyEventRSVPUseCase,
     GetManyEventUseCase,
+    GetManyForDownloadEventUseCase,
     // Activity Log
     CreateActivityLogByAdmin,
     GetOneActivityLogUsecase,

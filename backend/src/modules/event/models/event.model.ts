@@ -16,7 +16,6 @@ import { EventAttendOptions } from '../enums/event-attendance-options.enum';
 import { EventStatus } from '../enums/event-status.enum';
 import { IBasePaginationFilterModel } from '../../../infrastructure/base/base-pagination-filter.model';
 import { EventState } from '../enums/event-time.enum';
-import { EventRSVPModelTransformer, IEventRSVPModel } from './event-rsvp.model';
 
 export interface IEventModel extends IBaseModel {
   id: string;
@@ -80,7 +79,7 @@ export type UpdateStatusOptions = EventStatus.PUBLISHED | EventStatus.ARCHIVED;
 
 export type FindManyEventOptions = {
   organizationId: IOrganizationModel['id'];
-  eventState: EventState;
+  eventState?: EventState;
 } & IBasePaginationFilterModel;
 
 export class EventModelTransformer {

@@ -38,11 +38,6 @@ export class ActivityLogRepositoryService
       .createQueryBuilder('activityLog')
       .leftJoinAndMapOne('activityLog.event', 'activityLog.event', 'event')
       .leftJoinAndMapOne(
-        'event.organization',
-        'event.organization',
-        'organization',
-      )
-      .leftJoinAndMapOne(
         'activityLog.volunteer',
         'activityLog.volunteer',
         'volunteer',
@@ -82,14 +77,14 @@ export class ActivityLogRepositoryService
         'activityType.name',
         'activityType.icon',
       ])
-      .where(
-        'event.organizationId = :organizationId AND activityLog.event_id = event.id',
-        {
-          organizationId: findOptions.organizationId,
-        },
-      )
+      .where('activityLog.organizationId = :organizationId', {
+        organizationId: findOptions.organizationId,
+      })
       .orderBy(
-        this.buildOrderByQuery(findOptions.orderBy || 'createdOn', 'event'),
+        this.buildOrderByQuery(
+          findOptions.orderBy || 'createdOn',
+          'activityLog',
+        ),
         findOptions.orderDirection || OrderDirection.ASC,
       );
 

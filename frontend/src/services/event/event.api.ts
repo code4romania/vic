@@ -1,3 +1,4 @@
+import { AxiosResponseHeaders } from 'axios';
 import { EventState } from '../../common/enums/event-state.enum';
 import { EventStatus } from '../../common/enums/event-status';
 import { RsvpEnum } from '../../common/enums/rsvp.enum';
@@ -26,9 +27,10 @@ export const getEvent = async (id: string): Promise<IEvent> => {
 export const getEvents = async (
   limit: number,
   page: number,
-  eventState: EventState,
+  eventState?: EventState,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  search?: string,
 ): Promise<IPaginatedEntity<IEvent>> => {
   return API.get('/event', {
     params: {
@@ -37,8 +39,26 @@ export const getEvents = async (
       page,
       orderBy,
       orderDirection,
+      search,
     },
   }).then((res) => res.data);
+};
+
+export const getEventsForDownload = async (
+  eventState: EventState,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
+  return API.get('event/download', {
+    params: {
+      eventState,
+      orderBy,
+      orderDirection,
+    },
+    responseType: 'arraybuffer',
+  }).then((res) => {
+    return { data: res.data, headers: res.headers as AxiosResponseHeaders };
+  });
 };
 
 export const getRsvps = async (

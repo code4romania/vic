@@ -66,9 +66,10 @@ export class ActivityTypeRepositoryService implements IActivityTypeRepository {
   ): Promise<IActivityTypeModel[]> {
     options = Array.isArray(options) ? options : [options];
 
-    const mapOptions = options.map((option) => ({
-      ...option,
-      ...(option.search ? { name: ILike(`%${option.search}%`) } : {}),
+    const mapOptions = options.map(({ search, status, ...others }) => ({
+      ...others,
+      ...(search ? { name: ILike(`%${search}%`) } : {}),
+      ...(status ? { status } : {}),
     }));
 
     const whereOptions = mapOptions.length !== 0 ? mapOptions : {};
