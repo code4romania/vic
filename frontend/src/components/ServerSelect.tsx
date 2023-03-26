@@ -53,7 +53,14 @@ const ServerSelect = ({
 
   return (
     <div className="flex gap-1 flex-col">
-      {label && <label htmlFor={`${label}__select`}>{label}</label>}
+      {label && (
+        <label
+          className="block font-medium text-cool-gray-800 sm:text-sm lg:text-base text-xs"
+          htmlFor={`${label}__select`}
+        >
+          {label}
+        </label>
+      )}
       <AsyncSelect
         id={`${id}__select`}
         cacheOptions
@@ -61,6 +68,7 @@ const ServerSelect = ({
           control: (state) => {
             if (errorMessage && state.isFocused) return 'error-and-focused';
             if (errorMessage) return 'error';
+            if (state.isFocused) return 'focused';
             return '';
           },
         }}

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
+import i18n from '../common/config/i18n';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { ListItem } from '../common/interfaces/list-item.interface';
@@ -54,6 +55,7 @@ const VolunteerSelect = ({
       loadOptions={loadVolunteers}
       onChange={onSelect as any}
       helper={helper}
+      placeholder={`${i18n.t('general:select', { item: '' })}`}
       errorMessage={errorMessage}
     />
   );

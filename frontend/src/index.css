@@ -288,3 +288,15 @@ div.reactselect__control.error-and-focused {
 div.reactselect__control.error {
   @apply border-red-500 shadow-none;
 }
+
+div.reactselect__control.focused {
+  @apply border-indigo-500 shadow-focused;
+}
+
+div.reactselect__control {
+  @apply border-cool-gray-200 py-[1px];
+}
+
+div.reactselect__placeholder {
+  @apply text-base;
+}

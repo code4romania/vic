@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
+import i18n from '../common/config/i18n';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import ServerSelect from '../components/ServerSelect';
 import { getActivityTypes } from '../services/activity-type/activity-type.api';
@@ -39,6 +40,7 @@ const TaskSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Tas
       loadOptions={loadTasks}
       onChange={onSelect as any}
       helper={helper}
+      placeholder={`${i18n.t('general:select', { item: '' })}`}
       errorMessage={errorMessage}
     />
   );
