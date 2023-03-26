@@ -9,6 +9,7 @@ import {
 } from 'src/modules/access-request/model/access-request.model';
 import { AccessRequestFacade } from 'src/modules/access-request/services/access-request.facade';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 @Injectable()
 export class RejectAccessRequestUseCase
@@ -48,14 +49,16 @@ export class RejectAccessRequestUseCase
       status: AccessRequestStatus.REJECTED,
     });
 
-    // Track action
-    // this.actionsArchiveFacade.trackEvent({
-    //   actionType: ActionsType.UPDATE,
-    //   resourceType: ActionsResourceType.ACCESS_REQUEST,
-    //   resourceId: updated.id,
-    //   author: admin,
-    //   changes: ObjectDiff.diff(accessRequest, updated),
-    // });
+    // Track event
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.REJECT_ACCESS_REQUEST,
+      {
+        accessRequestId: accessRequest.id,
+        userName: accessRequest.requestedBy?.name,
+        userId: accessRequest.requestedBy?.id,
+      },
+      admin,
+    );
 
     return updated;
   }

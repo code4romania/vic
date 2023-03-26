@@ -11,6 +11,8 @@ export enum TrackedEventName {
 
   // Access Request
   APPROVE_ACCESS_REQUEST = 'APPROVE_ACCESS_REQUEST',
+  REJECT_ACCESS_REQUEST = 'REJECT_ACCESS_REQUEST',
+  DELETE_ACCESS_REQUEST = 'DELETE_ACCESS_REQUEST',
 }
 
 export interface TrackedEventData {
@@ -19,7 +21,6 @@ export interface TrackedEventData {
     organizationId: string;
     organizationName: string;
   };
-
   // Organization Structure
   [TrackedEventName.CREATE_ORGANIZATION_STRUCTURE]: {
     organizationStructureName: string;
@@ -37,8 +38,19 @@ export interface TrackedEventData {
     organizationStructureType: OrganizationStructureType;
   };
   [TrackedEventName.APPROVE_ACCESS_REQUEST]: {
+    accessRequestId: string;
     userId: string;
     userName: string;
     volunteerId: string;
+  };
+  [TrackedEventName.REJECT_ACCESS_REQUEST]: {
+    accessRequestId: string;
+    userId: string;
+    userName: string;
+  };
+  [TrackedEventName.DELETE_ACCESS_REQUEST]: {
+    accessRequestId: string;
+    userId: string;
+    userName: string;
   };
 }

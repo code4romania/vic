@@ -58,10 +58,11 @@ export class ApproveAccessRequestUseCase
       status: AccessRequestStatus.APPROVED,
     });
 
-    // Track action
+    // Track event
     this.actionsArchiveFacade.trackEvent(
       TrackedEventName.APPROVE_ACCESS_REQUEST,
       {
+        accessRequestId: accessRequest.id,
         userName: accessRequest.requestedBy?.name,
         userId: accessRequest.requestedBy?.id,
         volunteerId: volunteer.id,

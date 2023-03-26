@@ -5,6 +5,7 @@ import { AccessRequestStatus } from 'src/modules/access-request/enums/access-req
 import { AccessRequestExceptionMessages } from 'src/modules/access-request/exceptions/access-request.exceptions';
 import { AccessRequestFacade } from 'src/modules/access-request/services/access-request.facade';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 @Injectable()
@@ -33,14 +34,16 @@ export class DeleteAccessRequestUseCase implements IUseCaseService<string> {
 
     const deleted = await this.accessRequestFacade.delete(id);
 
-    // Track action
-    // this.actionsArchiveFacade.trackEvent({
-    //   actionType: ActionsType.DELETE,
-    //   resourceType: ActionsResourceType.ACCESS_REQUEST,
-    //   resourceId: deleted,
-    //   author: admin,
-    //   changes: ObjectDiff.diff(accessRequest, undefined),
-    // });
+    // Track event
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.DELETE_ACCESS_REQUEST,
+      {
+        accessRequestId: accessRequest.id,
+        userName: accessRequest.requestedBy?.name,
+        userId: accessRequest.requestedBy?.id,
+      },
+      admin,
+    );
 
     return deleted;
   }
