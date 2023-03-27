@@ -50,11 +50,14 @@ export class CreateActivityLogByAdmin
         ActivityLogExceptionMessages.ACTIVITY_LOG_002,
       );
     }
-    // 2. Check if the event exists in the organization
-    await this.getOneEventUsecase.execute({
-      id: newLogRequestDto.eventId,
-      organizationId: admin.organizationId,
-    });
+    // 2. Check if the event exists in the organization if provided
+    if (newLogRequestDto.eventId) {
+      await this.getOneEventUsecase.execute({
+        id: newLogRequestDto.eventId,
+        organizationId: admin.organizationId,
+      });
+    }
+
     // 3. Check if the task exists in the organization
     const taskExists = await this.activityTypeFacade.exists(
       [newLogRequestDto.activityTypeId],
@@ -73,7 +76,7 @@ export class CreateActivityLogByAdmin
       hours: newLogRequestDto.hours,
       mentions: newLogRequestDto.mentions,
       volunteerId: newLogRequestDto.volunteerId,
-      eventId: newLogRequestDto.eventId,
+      eventId: newLogRequestDto.eventId || null,
       activityTypeId: newLogRequestDto.activityTypeId,
 
       status: ActivityLogStatus.APPROVED,
