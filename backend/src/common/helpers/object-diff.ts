@@ -31,10 +31,7 @@ export class ObjectDiff {
         continue;
       }
 
-      const mapValue: unknown = this.diff(
-        original[key],
-        updated[key] ?? undefined,
-      );
+      const mapValue: unknown = this.diff(original[key], updated[key]);
       foundKeys[key] = true;
       if (mapValue) {
         diff[key] = mapValue;

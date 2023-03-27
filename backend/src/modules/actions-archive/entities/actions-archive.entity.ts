@@ -1,6 +1,6 @@
+import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import { AdminUserEntity } from 'src/modules/user/entities/user.entity';
 import {
-  BaseEntity,
   Column,
   Entity,
   JoinColumn,

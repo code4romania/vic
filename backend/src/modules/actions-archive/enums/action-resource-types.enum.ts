@@ -1,5 +1,6 @@
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { ActivityTypeStatus } from 'src/modules/activity-type/enums/activity-type-status.enum';
+import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 
@@ -29,6 +30,12 @@ export enum TrackedEventName {
   CREATE_ACTIVITY_TYPE = 'CREATE_ACTIVITY_TYPE',
   UPDATE_ACTIVITY_TYPE = 'UPDATE_ACTIVITY_TYPE',
   CHANGE_ACTIVITY_TYPE_STATUS = 'CHANGE_ACTIVITY_TYPE_STATUS',
+
+  // Events
+  CREATE_EVENT = 'CREATE_EVENT',
+  UPDATE_EVENT = 'UPDATE_EVENT',
+  DELETE_EVENT = 'DELETE_EVENT',
+  CHANGE_EVENT_STATUS = 'CHANGE_EVENT_STATUS',
 }
 
 export interface TrackedEventData {
@@ -113,5 +120,26 @@ export interface TrackedEventData {
     activityTypeName: string;
     oldStatus: ActivityTypeStatus;
     newStatus: ActivityTypeStatus;
+  };
+
+  // Events
+  [TrackedEventName.CREATE_EVENT]: {
+    eventId: string;
+    eventName: string;
+    status: EventStatus; // Folosit sa zicem "Eventul a fost creat cu statusul 'draft' sau 'published'"
+  };
+  [TrackedEventName.UPDATE_EVENT]: {
+    eventId: string;
+    eventName: string;
+  };
+  [TrackedEventName.DELETE_EVENT]: {
+    eventId: string;
+    eventName: string;
+  };
+  [TrackedEventName.CHANGE_EVENT_STATUS]: {
+    eventId: string;
+    eventName: string;
+    oldStatus: EventStatus;
+    newStatus: EventStatus;
   };
 }
