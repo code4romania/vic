@@ -1,5 +1,6 @@
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { ActivityTypeStatus } from 'src/modules/activity-type/enums/activity-type-status.enum';
+import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
@@ -36,6 +37,11 @@ export enum TrackedEventName {
   UPDATE_EVENT = 'UPDATE_EVENT',
   DELETE_EVENT = 'DELETE_EVENT',
   CHANGE_EVENT_STATUS = 'CHANGE_EVENT_STATUS',
+
+  // Announcements
+  CREATE_ANNOUNCEMENT = 'CREATE_ANNOUNCEMENT',
+  DELETE_ANNOUNCEMENT = 'DELETE_ANNOUNCEMENT',
+  PUBLISH_ANNOUNCEMENT = 'PUBLISH_ANNOUNCEMENT',
 }
 
 export interface TrackedEventData {
@@ -141,5 +147,20 @@ export interface TrackedEventData {
     eventName: string;
     oldStatus: EventStatus;
     newStatus: EventStatus;
+  };
+
+  // Announcement
+  [TrackedEventName.CREATE_ANNOUNCEMENT]: {
+    announcementId: string;
+    announcementTitle: string;
+    status: AnnouncementStatus;
+  };
+  [TrackedEventName.PUBLISH_ANNOUNCEMENT]: {
+    announcementId: string;
+    announcementTitle: string;
+  };
+  [TrackedEventName.DELETE_ANNOUNCEMENT]: {
+    announcementId: string;
+    announcementTitle: string;
   };
 }
