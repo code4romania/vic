@@ -60,6 +60,7 @@ export class UpdateOrganizationStructureUseCase
         organizationStructureType: updated.type,
       },
       admin,
+      ObjectDiff.diff(toUpdate, updated),
     );
 
     return updated;
