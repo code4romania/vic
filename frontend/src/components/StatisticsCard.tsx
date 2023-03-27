@@ -1,5 +1,6 @@
 import React from 'react';
 import { ReactNode } from 'react';
+import i18n from '../common/config/i18n';
 
 interface StatisticsCardProps {
   label: string;
@@ -16,12 +17,19 @@ const StatisticsCard = ({ label, value, action, icon, info }: StatisticsCardProp
         {icon}
         <div className="flex flex-col gap-2 shrink-[80]">
           <p className="text-cool-gray-500 leading-5">{label}</p>
-          <div className="flex flex-wrap gap-2 items-end">
-            <p className="text-4xl leading-8 font-semibold ">{value}</p>
-            <span className="bg-yellow-200 h-7 leading-7 rounded-xl px-2.5 whitespace-nowrap">
-              {info}
+          {value && label && (
+            <div className="flex flex-wrap gap-2 items-end">
+              <p className="text-4xl leading-8 font-semibold ">{value}</p>
+              <span className="bg-yellow-200 h-7 leading-7 rounded-xl px-2.5 whitespace-nowrap">
+                {info}
+              </span>
+            </div>
+          )}
+          {(!value || !label) && (
+            <span className="flex items-center text-center sm:text-sm lg:text-base text-xs h-8">
+              {i18n.t('general:error.load_entries')}
             </span>
-          </div>
+          )}
         </div>
       </div>
       {action && (
