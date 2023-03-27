@@ -7,6 +7,7 @@ import API from '../api';
 import { AgeRangeEnum } from '../../common/enums/age-range.enum';
 import { AxiosResponseHeaders } from 'axios';
 import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils/utils';
+import { IVolunteerStatistics } from '../../common/interfaces/volunteer-statistics.interface';
 
 export const getVolunteers = async (
   status: VolunteerStatus,
@@ -101,4 +102,10 @@ export const activateVolunteer = async (id: string): Promise<IVolunteer> => {
 
 export const blockVolunteer = async (id: string): Promise<IVolunteer> => {
   return API.patch(`volunteer/${id}/block`).then((res) => res.data);
+};
+
+//Volunteer Statistics
+export const getVolunteerStatistics = async (): Promise<IVolunteerStatistics> => {
+  // return API.get('to be determined').then((res) => res.data);
+  return Promise.resolve({ volunteers: '97573', requests: '820' });
 };

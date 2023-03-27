@@ -5,7 +5,6 @@
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "user": "Utilizator",
-    "save": "Salveaza",
     "close": "Inchide",
     "name": "Nume",
     "save": "Salvează",
@@ -616,5 +615,12 @@
       "ACTIVITY_LOG_002": "Voluntarul trebuie sa aiba profil pentru a loga ore",
       "ACTIVITY_LOG_003": "Nu se poat face modificari pe request-uri in status-ul Aprobat sau Respins"
     }
+  },
+  "statistics_card": {
+    "activity_log": {
+      "label": "Vezi ore care asteapta aprobare",
+      "info": "{{value}} ore in asteptare"
+    },
+    "volunteer": { "label": "Vezi solicitari", "info": "{{value}} solicitari de inscriere" }
   }
 }

@@ -12,6 +12,7 @@ import {
   blockVolunteer,
   getVolunteer,
   getVolunteers,
+  getVolunteerStatistics,
   updateVolunteer,
 } from './volunteer.api';
 import { VolunteerFormTypes } from '../../pages/EditVolunteer';
@@ -103,4 +104,11 @@ export const useUpdateVolunteerMutation = () => {
       onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
     },
   );
+};
+
+//Volunteer Statistics
+export const useVolunteerStatisticsQuery = () => {
+  return useQuery(['volunteer-statistics'], () => getVolunteerStatistics(), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
 };
