@@ -41,7 +41,6 @@ import { EventPresenter } from './presenters/event.presenter';
 import { Response } from 'express';
 import { GetManyForDownloadEventUseCase } from 'src/usecases/event/get-many-for-download-event.usecase';
 
-// @Roles(Role.ADMIN)
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, EventGuard)
 @Controller('event')
