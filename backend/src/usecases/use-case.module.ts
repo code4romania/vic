@@ -74,6 +74,7 @@ import { UpdateActivityLogUsecase } from './activity-log/update-activity-log.use
 import { ApproveActivityLogUsecase } from './activity-log/approve-activity-log.usecase';
 import { RejectActivityLogUsecase } from './activity-log/reject-activity-log.usecase';
 import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-logs.usecase';
+import { GetManyAdminUsersUseCase } from './user/get-many-admin-users.usecase';
 import { ActionsArchiveModule } from 'src/modules/actions-archive/actions-archive.module';
 import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions-archive.usecase';
 
@@ -113,6 +114,7 @@ import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
+    GetManyAdminUsersUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -193,6 +195,7 @@ import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
+    GetManyAdminUsersUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,

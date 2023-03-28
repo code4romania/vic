@@ -1,3 +1,4 @@
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import { AdminUserEntity } from '../entities/user.entity';
 import { IUserModel } from './base-user.model';
 
@@ -10,6 +11,10 @@ export type ICreateAdminUserModel = Omit<IAdminUserModel, 'id'>;
 export type IFindAdminUserModel =
   | Partial<IAdminUserModel>
   | Partial<IAdminUserModel>[];
+
+export type FindManyAdminUserOptions = {
+  organizationId: IAdminUserModel['organizationId'];
+} & IBasePaginationFilterModel;
 
 export class AdminUserTransformer {
   static fromEntity(entity: AdminUserEntity): IAdminUserModel {

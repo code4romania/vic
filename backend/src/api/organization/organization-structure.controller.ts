@@ -52,16 +52,16 @@ export class OrganizationStructureController {
     @Query() filters: BasePaginationFilterDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<PaginatedPresenter<OrganizationStructurePresenter>> {
-    const accessCodes = await this.getAllStructureUsecase.execute({
+    const structures = await this.getAllStructureUsecase.execute({
       ...filters,
       type,
       organizationId,
     });
 
     return new PaginatedPresenter({
-      ...accessCodes,
-      items: accessCodes.items.map(
-        (accessCode) => new OrganizationStructurePresenter(accessCode),
+      ...structures,
+      items: structures.items.map(
+        (structure) => new OrganizationStructurePresenter(structure),
       ),
     });
   }
