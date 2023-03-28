@@ -42,6 +42,7 @@ const validationSchema = yup.object({
   endDate: yup
     .date()
     .typeError(`${i18n.t('general:invalid_date')}`)
+    .nullable()
     .optional(),
 });
 
