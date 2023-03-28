@@ -85,14 +85,17 @@ export class OrganizationStructureController {
   @Post()
   async create(
     @Body() { name, type }: CreateOrganizationStructureDto,
-    @ExtractUser() { organizationId, id }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<OrganizationStructurePresenter> {
-    const structure = await this.createStructureUsecase.execute({
-      name,
-      type,
-      organizationId: organizationId,
-      createdById: id,
-    });
+    const structure = await this.createStructureUsecase.execute(
+      {
+        name,
+        type,
+        organizationId: admin.organizationId,
+        createdById: admin.id,
+      },
+      admin,
+    );
     return new OrganizationStructurePresenter(structure);
   }
 
@@ -102,17 +105,24 @@ export class OrganizationStructureController {
   async update(
     @Param('id', UuidValidationPipe) id: string,
     @Body() { name }: UpdateOrganizationStructureDto,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<OrganizationStructurePresenter> {
-    const accessCodeModel = await this.updateStructureUsecase.execute({
-      id,
-      name,
-    });
+    const accessCodeModel = await this.updateStructureUsecase.execute(
+      {
+        id,
+        name,
+      },
+      admin,
+    );
     return new OrganizationStructurePresenter(accessCodeModel);
   }
 
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
-  async delete(@Param('id', UuidValidationPipe) id: string): Promise<string> {
-    return this.deleteStructureUsecase.execute(id);
+  async delete(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<string> {
+    return this.deleteStructureUsecase.execute(id, admin);
   }
 }

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
@@ -10,17 +12,32 @@ export class BlockVolunteerUsecase implements IUseCaseService<IVolunteerModel> {
   constructor(
     private readonly volunteerFacade: VolunteerFacade,
     private readonly getOneVolunteerUsecase: GetOneVolunteerUsecase,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
     volunteerId: string,
-    adminUser: IAdminUserModel,
+    admin: IAdminUserModel,
   ): Promise<IVolunteerModel> {
-    await this.getOneVolunteerUsecase.execute(volunteerId);
+    const volunteer = await this.getOneVolunteerUsecase.execute(volunteerId);
 
-    return this.volunteerFacade.block({
+    const blocked = await this.volunteerFacade.block({
       id: volunteerId,
-      blockedById: adminUser.id,
+      blockedById: admin.id,
     });
+
+    // Track event
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CHANGE_VOLUNTEER_STATUS,
+      {
+        volunteerId: volunteer.id,
+        volunteerName: volunteer.user?.name,
+        oldStatus: volunteer.status,
+        newStatus: blocked.status,
+      },
+      admin,
+    );
+
+    return blocked;
   }
 }

@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { ObjectDiff } from 'src/common/helpers/object-diff';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { ActivityTypeFacade } from 'src/modules/activity-type/services/activity-type.facade';
 import { EventAttendOptions } from 'src/modules/event/enums/event-attendance-options.enum';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
@@ -12,6 +15,7 @@ import {
 import { EventFacade } from 'src/modules/event/services/event.facade';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
 import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOneEventUseCase } from './get-one-event.usecase';
 
 @Injectable()
@@ -22,11 +26,13 @@ export class UpdateEventUseCase implements IUseCaseService<IEventModel> {
     private readonly organizationStructureFacade: OrganizationStructureFacade,
     private readonly activityTypeFacade: ActivityTypeFacade,
     private readonly exceptionsService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
     id: string,
     data: UpdateEventOptions,
+    admin: IAdminUserModel,
   ): Promise<IEventModel> {
     // 1. Find the event to update
     const event = await this.getOneEventUseCase.execute({ id });
@@ -76,6 +82,18 @@ export class UpdateEventUseCase implements IUseCaseService<IEventModel> {
       data.attendanceMention = undefined;
     }
 
-    return this.eventFacade.update(id, data);
+    const updated = await this.eventFacade.update(id, data);
+
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.UPDATE_EVENT,
+      {
+        eventId: updated.id,
+        eventName: updated.name,
+      },
+      admin,
+      ObjectDiff.diff(event, updated),
+    );
+
+    return updated;
   }
 }

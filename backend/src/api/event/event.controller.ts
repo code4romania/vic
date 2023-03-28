@@ -98,10 +98,13 @@ export class EventController {
     @Body() createEventDto: CreateEventDto,
     @ExtractUser() adminUser: IAdminUserModel,
   ): Promise<EventPresenter> {
-    const event = await this.createEventUsecase.execute({
-      ...createEventDto,
-      organizationId: adminUser.organizationId,
-    });
+    const event = await this.createEventUsecase.execute(
+      {
+        ...createEventDto,
+        organizationId: adminUser.organizationId,
+      },
+      adminUser,
+    );
     return new EventPresenter(event);
   }
 
@@ -110,8 +113,13 @@ export class EventController {
   async update(
     @Param('id', UuidValidationPipe) eventId: string,
     @Body() updatesDto: UpdateEventDto,
+    @ExtractUser() adminUser: IAdminUserModel,
   ): Promise<EventPresenter> {
-    const event = await this.updateEventUseCase.execute(eventId, updatesDto);
+    const event = await this.updateEventUseCase.execute(
+      eventId,
+      updatesDto,
+      adminUser,
+    );
     return new EventPresenter(event);
   }
 
@@ -128,8 +136,9 @@ export class EventController {
   @Patch(':id/archive')
   async archive(
     @Param('id', UuidValidationPipe) eventId: string,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<EventPresenter> {
-    const event = await this.archiveEventUseCase.execute(eventId);
+    const event = await this.archiveEventUseCase.execute(eventId, admin);
     return new EventPresenter(event);
   }
 
@@ -137,15 +146,19 @@ export class EventController {
   @Patch(':id/publish')
   async publish(
     @Param('id', UuidValidationPipe) eventId: string,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<EventPresenter> {
-    const event = await this.publishEventUseCase.execute(eventId);
+    const event = await this.publishEventUseCase.execute(eventId, admin);
     return new EventPresenter(event);
   }
 
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
-  delete(@Param('id', UuidValidationPipe) eventId: string): Promise<string> {
-    return this.deleteEventUseCase.execute(eventId);
+  delete(
+    @Param('id', UuidValidationPipe) eventId: string,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<string> {
+    return this.deleteEventUseCase.execute(eventId, admin);
   }
 
   @Get(':id/rsvp')

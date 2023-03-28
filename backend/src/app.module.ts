@@ -24,7 +24,12 @@ import {
     // Configuration modules
     // LoggerModule.forRoot(PinoLoggerConfig),
     ConfigModule.forRoot({ validate, isGlobal: true }),
-    EventEmitterModule.forRoot(),
+    EventEmitterModule.forRoot({
+      // set this to `true` to use wildcards
+      wildcard: true,
+      // the delimiter used to segment namespaces
+      delimiter: '.',
+    }),
     // Providers
     DatabaseProviderModule,
     CacheProviderModule,
@@ -35,6 +40,7 @@ import {
     AuthenticationModule,
     UserModule,
     NotificationsModule,
+
     // API
     ApiModule,
   ],

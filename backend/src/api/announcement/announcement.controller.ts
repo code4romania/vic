@@ -72,12 +72,15 @@ export class AnnouncementController {
   @Post()
   async create(
     @Body() createAnnouncementDto: CreateAnnouncementDto,
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<AnnouncementPresenter> {
-    const announcement = await this.createAnnouncementUseCase.execute({
-      ...createAnnouncementDto,
-      organizationId,
-    });
+    const announcement = await this.createAnnouncementUseCase.execute(
+      {
+        ...createAnnouncementDto,
+        organizationId: admin.organizationId,
+      },
+      admin,
+    );
 
     return new AnnouncementPresenter(announcement);
   }
@@ -88,19 +91,26 @@ export class AnnouncementController {
   async update(
     @Param('id', UuidValidationPipe) id: string,
     @Body() updateAnnouncementDto: UpdateAnnouncementDto,
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<AnnouncementPresenter> {
-    const announcement = await this.updateAnnouncementUseCase.execute(id, {
-      ...updateAnnouncementDto,
-      organizationId,
-    });
+    const announcement = await this.updateAnnouncementUseCase.execute(
+      id,
+      {
+        ...updateAnnouncementDto,
+        organizationId: admin.organizationId,
+      },
+      admin,
+    );
 
     return new AnnouncementPresenter(announcement);
   }
 
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
-  async delete(@Param('id', UuidValidationPipe) id: string): Promise<string> {
-    return this.deleteAnnouncementUseCase.execute(id);
+  async delete(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<string> {
+    return this.deleteAnnouncementUseCase.execute(id, admin);
   }
 }
