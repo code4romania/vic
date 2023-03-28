@@ -8,17 +8,22 @@ import {
   RejectAccessRequestModel,
 } from 'src/modules/access-request/model/access-request.model';
 import { AccessRequestFacade } from 'src/modules/access-request/services/access-request.facade';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 @Injectable()
 export class RejectAccessRequestUseCase
   implements IUseCaseService<IAccessRequestModel>
 {
   constructor(
     private readonly accessRequestFacade: AccessRequestFacade,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly exceptionService: ExceptionsService,
   ) {}
 
   public async execute(
     updates: RejectAccessRequestModel,
+    admin: IAdminUserModel,
   ): Promise<IAccessRequestModel> {
     const accessRequest = await this.accessRequestFacade.find({
       id: updates.id,
@@ -39,9 +44,22 @@ export class RejectAccessRequestUseCase
 
     // TODO: 2. send email and notification
 
-    return this.accessRequestFacade.update({
+    const updated = await this.accessRequestFacade.update({
       ...updates,
       status: AccessRequestStatus.REJECTED,
     });
+
+    // Track event
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.REJECT_ACCESS_REQUEST,
+      {
+        accessRequestId: accessRequest.id,
+        userName: accessRequest.requestedBy?.name,
+        userId: accessRequest.requestedBy?.id,
+      },
+      admin,
+    );
+
+    return updated;
   }
 }

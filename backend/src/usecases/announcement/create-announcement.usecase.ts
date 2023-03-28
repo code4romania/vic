@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
 import { AnnouncementExceptionMessages } from 'src/modules/announcement/exceptions/announcement.exceptions';
 import {
@@ -13,6 +15,7 @@ import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import SendAnnouncementEvent from 'src/modules/notifications/events/others/send-announcement.event';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
 import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
@@ -26,10 +29,12 @@ export class CreateAnnouncementUseCase
     private readonly exceptionsService: ExceptionsService,
     private readonly volunteerFacade: VolunteerFacade,
     private readonly organizationStructureFacade: OrganizationStructureFacade,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
     announcement: CreateAnnouncementOptions,
+    admin: IAdminUserModel,
   ): Promise<IAnnouncementModel> {
     // 1. Check if only departments were chosen and calculate the total number of volunteers
     let targetedVolunteers = 0;
@@ -74,6 +79,17 @@ export class CreateAnnouncementUseCase
         ),
       );
     }
+
+    // Track event
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CREATE_ANNOUNCEMENT,
+      {
+        announcementId: newAnouncement.id,
+        announcementTitle: newAnouncement.name,
+        status: newAnouncement.status,
+      },
+      admin,
+    );
 
     return newAnouncement;
   }

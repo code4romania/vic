@@ -74,6 +74,8 @@ import { UpdateActivityLogUsecase } from './activity-log/update-activity-log.use
 import { ApproveActivityLogUsecase } from './activity-log/approve-activity-log.usecase';
 import { RejectActivityLogUsecase } from './activity-log/reject-activity-log.usecase';
 import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-logs.usecase';
+import { ActionsArchiveModule } from 'src/modules/actions-archive/actions-archive.module';
+import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions-archive.usecase';
 
 @Module({
   imports: [
@@ -88,6 +90,7 @@ import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-log
     AnnouncementModule,
     EventModule,
     ActivityLogModule,
+    ActionsArchiveModule,
   ],
   providers: [
     // Organization
@@ -166,6 +169,8 @@ import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-log
     ApproveActivityLogUsecase,
     RejectActivityLogUsecase,
     GetManyActivityLogsUsecase,
+    // Actions Archive
+    GetManyActionsArchiveUseCase,
   ],
   exports: [
     // Organization
@@ -245,6 +250,8 @@ import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-log
     ApproveActivityLogUsecase,
     RejectActivityLogUsecase,
     GetManyActivityLogsUsecase,
+    // Actions Archive
+    GetManyActionsArchiveUseCase,
   ],
 })
 export class UseCaseModule {}
