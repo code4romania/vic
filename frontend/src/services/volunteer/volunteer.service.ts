@@ -11,6 +11,7 @@ import {
   archiveVolunteer,
   blockVolunteer,
   getVolunteer,
+  getVolunteerLineChart,
   getVolunteers,
   getVolunteerStatistics,
   updateVolunteer,
@@ -109,6 +110,13 @@ export const useUpdateVolunteerMutation = () => {
 //Volunteer Statistics
 export const useVolunteerStatisticsQuery = () => {
   return useQuery(['volunteer-statistics'], () => getVolunteerStatistics(), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
+};
+
+//Volunteer Line Chart
+export const useVolunteerLineChartQuery = (filter: string) => {
+  return useQuery(['volunteer-line-chart', filter], () => getVolunteerLineChart(filter), {
     onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
   });
 };

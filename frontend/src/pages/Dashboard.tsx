@@ -7,6 +7,7 @@ import PageLayout from '../layouts/PageLayout';
 import PageHeader from '../components/PageHeader';
 import ActivityLogStatisticsCard from '../components/ActivityLogStatisticsCard';
 import VolunteerStatisticsCard from '../components/VolunteerStatisticsCard';
+import LineChartCard from '../components/LineChartCard';
 
 const Dashboard = () => {
   // for testing purpose only
@@ -33,6 +34,7 @@ const Dashboard = () => {
           </CardBody>
         </Card>
       </div>
+      <LineChartCard />
     </PageLayout>
   );
 };

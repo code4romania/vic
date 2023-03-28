@@ -11,6 +11,9 @@
     "people": "Persoane",
     "age": "Vârsta",
     "hours": "Ore",
+    "daily": "Zilnic",
+    "monthly": "Lunar",
+    "yearly": "Anual",
     "date": "Data",
     "target": "Target",
     "answers": "Răspunsuri",
@@ -622,5 +625,8 @@
       "info": "{{value}} ore in asteptare"
     },
     "volunteer": { "label": "Vezi solicitari", "info": "{{value}} solicitari de inscriere" }
+  },
+  "line_chart": {
+    "title": "Număr voluntari"
   }
 }
