@@ -276,3 +276,11 @@
 .reactselect__menu {
   @apply max-w-[37rem];
 }
+
+ul.recharts-default-legend {
+  @apply flex justify-center gap-2 sm:gap-7 flex-wrap;
+}
+
+li.recharts-legend-item {
+  @apply flex items-center !important;
+}

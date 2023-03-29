@@ -628,5 +628,8 @@
   },
   "line_chart": {
     "title": "Număr voluntari"
+  },
+  "pie_chart": {
+    "title": "Statistici voluntari organizatie"
   }
 }

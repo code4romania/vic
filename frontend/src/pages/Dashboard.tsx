@@ -13,14 +13,15 @@ const Dashboard = () => {
     <PageLayout>
       <PageHeader>Dashboard</PageHeader>
       <div className="flex gap-6 xl:gap-12 flex-col md:flex-row">
-        <div className="flex gap-6 flex-wrap">
+        <div className="flex gap-6 flex-wrap md:self-start">
           <ActivityLogStatisticsCard />
           <VolunteerStatisticsCard />
         </div>
-        {/* <PieChartCard /> */}
+        <div className="grow w-full">
+          <PieChartCard />
+        </div>
       </div>
       <LineChartCard />
-      <PieChartCard />
     </PageLayout>
   );
 };

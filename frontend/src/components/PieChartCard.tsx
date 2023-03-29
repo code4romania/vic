@@ -12,7 +12,6 @@ import { useVolunteerPieChartQuery } from '../services/volunteer/volunteer.servi
 import EmptyContent from './EmptyContent';
 import LoadingContent from './LoadingContent';
 import PieChart from './PieChart';
-import StatusWithMarker from './StatusWithMarker';
 
 const PieChartCard = () => {
   const [chartFilter, setChartFilter] = useState<SelectItem<PieChartOption>>(
@@ -24,24 +23,29 @@ const PieChartCard = () => {
   return (
     <Card>
       <CardHeader>
-        <h4>{i18n.t('line_chart:title')}</h4>
+        <h2>{i18n.t('pie_chart:title')}</h2>
         <Select
           options={PIE_CHART_FILTER_OPTIONS}
           onChange={setChartFilter}
           selected={chartFilter}
         />
       </CardHeader>
-      <div className="h-[600px] w-full sm:px-8 px-4 py-8">
+      <div className="max-xs:h-[350px] max-sm:h-[400px] h-[600px] w-full sm:px-8 px-4 py-8">
         {data && (
           <>
             <PieChart data={data} />
-            <div className="flex gap-3 justify-center">
+            <div className="flex max-xs:gap-1 gap-3 justify-center flex-wrap">
               {data.map((item, index) => (
-                <StatusWithMarker key={index} markerColor={PIE_CHART_LEGEND_COLORS[index]}>
-                  {chartFilter.key === PieChartOption.AGE
-                    ? i18n.t('general:years_old', { age: item.name })
-                    : i18n.t('general:sex', { sex_type: i18n.t(`general:${item.name}`) })}
-                </StatusWithMarker>
+                <div className="flex flex-row gap-1" key={index}>
+                  <span
+                    className={`h-3.5 w-3.5 border-solid ${PIE_CHART_LEGEND_COLORS[index]} rounded-full self-center`}
+                  />
+                  <small>
+                    {chartFilter.key === PieChartOption.AGE
+                      ? i18n.t('general:years_old', { age: item.name })
+                      : i18n.t('general:sex', { sex_type: i18n.t(`general:${item.name}`) })}
+                  </small>
+                </div>
               ))}
             </div>
           </>

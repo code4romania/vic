@@ -185,9 +185,9 @@ export const getVolunteerPieChart = async (filter: PieChartOption) => {
   console.log(filter);
   return filter === PieChartOption.AGE
     ? [
-        { name: '15-20', value: 278 },
+        { name: '15-20', value: 1378 },
         { name: '20-25', value: 872 },
-        { name: '25+', value: 2105 },
+        { name: '25+', value: 1005 },
       ]
     : [
         { name: 'sex_male', value: 1525 },

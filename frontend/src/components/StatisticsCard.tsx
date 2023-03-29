@@ -12,7 +12,7 @@ interface StatisticsCardProps {
 
 const StatisticsCard = ({ label, value, action, icon, info }: StatisticsCardProps) => {
   return (
-    <div className="rounded-lg shadow-section bg-white max-w-full min-w-fit grow">
+    <div className="rounded-lg shadow-section bg-white max-w-full min-w-fit grow h-fit">
       <div className="flex sm:gap-5 gap-2 sm:p-6 p-3 items-center">
         {icon}
         <div className="flex flex-col gap-2 shrink-[80]">
