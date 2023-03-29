@@ -1,9 +1,9 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IActivityLogCountByStatus } from 'src/modules/activity-log/models/activity-log.model';
+import { IActivityLogCountHoursByStatus } from 'src/modules/activity-log/models/activity-log.model';
 
 export class ActivityLogCountersPresenter {
-  constructor(log: IActivityLogCountByStatus) {
+  constructor(log: IActivityLogCountHoursByStatus) {
     this.pending = log.pending;
     this.approved = log.approved;
     this.rejected = log.rejected;

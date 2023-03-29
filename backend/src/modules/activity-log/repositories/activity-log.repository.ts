@@ -14,7 +14,7 @@ import {
   ActivityLogModelTransformer,
   CreateActivityLogByAdminOptions,
   FindManyActivityLogsOptions,
-  IActivityLogCountByStatus,
+  IActivityLogCountHoursByStatus,
   IActivityLogListItemModel,
   IActivityLogModel,
   UpdateActivityLogOptions,
@@ -203,21 +203,28 @@ export class ActivityLogRepositoryService
     return this.find(id);
   }
 
-  async count(organizationId: string): Promise<IActivityLogCountByStatus> {
-    const counters: { status: ActivityLogStatus; count: number }[] =
-      await this.activityLogRepo
-        .createQueryBuilder('activityLog')
-        .select('activityLog.status', 'status')
-        .addSelect('COUNT(activityLog.id)', 'count')
-        .groupBy('activityLog.status')
-        .where('activityLog.organizationId = :organizationId', {
-          organizationId,
-        })
-        .getRawMany();
+  async countHourByStatus(
+    organizationId: string,
+  ): Promise<IActivityLogCountHoursByStatus> {
+    const counters: {
+      status: ActivityLogStatus;
+      count: number;
+      hours: number;
+    }[] = await this.activityLogRepo
+      .createQueryBuilder('activityLog')
+      .select('activityLog.status', 'status')
+      .addSelect('activityLog.hours', 'hours')
+      .addSelect('COUNT(activityLog.id)', 'count')
+      .groupBy('activityLog.status')
+      .addGroupBy('activityLog.hours')
+      .where('activityLog.organizationId = :organizationId', {
+        organizationId,
+      })
+      .getRawMany();
 
     return counters.reduce(
       (acc, curr) => {
-        acc[curr.status] = curr.count;
+        acc[curr.status] += curr.hours;
         return acc;
       },
       {

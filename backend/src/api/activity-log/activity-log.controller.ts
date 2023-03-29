@@ -62,7 +62,7 @@ export class ActivityLogController {
   }
 
   @Get('counters')
-  async getCountByStatus(
+  async getCountHoursByStatus(
     @ExtractUser() admin: IAdminUserModel,
   ): Promise<ActivityLogCountersPresenter> {
     const counters = await this.getActivityLogCountersUsecase.execute(
