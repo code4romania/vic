@@ -5,13 +5,15 @@ import CardBody from './CardBody';
 import CardHeader from './CardHeader';
 import LineChart from './LineChart';
 import Select, { SelectItem } from './Select';
-import { LINE_CHART_FILTER_OPTIONS } from '../common/constants/line-chart-options';
+import { LineChartOption, LINE_CHART_FILTER_OPTIONS } from '../common/constants/line-chart-options';
 import { useVolunteerLineChartQuery } from '../services/volunteer/volunteer.service';
 import EmptyContent from './EmptyContent';
 import LoadingContent from './LoadingContent';
 
 const LineChartCard = () => {
-  const [chartFilter, setChartFilter] = useState<SelectItem<string>>(LINE_CHART_FILTER_OPTIONS[0]);
+  const [chartFilter, setChartFilter] = useState<SelectItem<LineChartOption>>(
+    LINE_CHART_FILTER_OPTIONS[0],
+  );
 
   const { data, isLoading } = useVolunteerLineChartQuery(chartFilter.key);
 

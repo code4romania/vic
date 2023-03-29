@@ -9,6 +9,8 @@ import { AxiosResponseHeaders } from 'axios';
 import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils/utils';
 import { IVolunteerStatistics } from '../../common/interfaces/volunteer-statistics.interface';
 import { DataSet } from '../../components/LineChart';
+import { PieChartOption } from '../../common/constants/pie-chart-options';
+import { LineChartOption } from '../../common/constants/line-chart-options';
 
 export const getVolunteers = async (
   status: VolunteerStatus,
@@ -112,7 +114,7 @@ export const getVolunteerStatistics = async (): Promise<IVolunteerStatistics> =>
 };
 
 //Volunteer Line Chart
-export const getVolunteerLineChart = async (filter: string): Promise<DataSet[]> => {
+export const getVolunteerLineChart = async (filter: LineChartOption): Promise<DataSet[]> => {
   // return API.get('to be determined', {params: {filter}}).then((res) => res.data);
   console.log(filter);
   return filter === 'monthly'
@@ -175,4 +177,20 @@ export const getVolunteerLineChart = async (filter: string): Promise<DataSet[]> 
         { name: '29 Jan', active: 6976, archived: 666 },
         { name: '30 Jan', active: 7198, archived: 688 },
       ]);
+};
+
+//Volunteer Pie Chart
+export const getVolunteerPieChart = async (filter: PieChartOption) => {
+  // return API.get('to be determined', {params: {filter}}).then((res) => res.data);
+  console.log(filter);
+  return filter === PieChartOption.AGE
+    ? [
+        { name: '15-20', value: 278 },
+        { name: '20-25', value: 872 },
+        { name: '25+', value: 2105 },
+      ]
+    : [
+        { name: 'sex_male', value: 1525 },
+        { name: 'sex_female', value: 1718 },
+      ];
 };
