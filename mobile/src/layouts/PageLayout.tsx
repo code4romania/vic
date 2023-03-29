@@ -5,6 +5,7 @@ import {
   Icon,
   TopNavigationAction,
 } from "@ui-kitten/components";
+import { StyleSheet } from "react-native";
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -29,10 +30,12 @@ export const PageLayout = ({
         )
       }
     />
-    <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      {children}
-    </Layout>
+    <Layout style={styles.layout}>{children}</Layout>
   </>
 );
+
+const styles = StyleSheet.create({
+  layout: { flex: 1, justifyContent: "center", alignItems: "center" },
+});
 
 export default PageLayout;
