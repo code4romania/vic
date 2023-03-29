@@ -19,6 +19,7 @@ import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { ApproveActivityLogUsecase } from 'src/usecases/activity-log/approve-activity-log.usecase';
 import { CreateActivityLogByAdmin } from 'src/usecases/activity-log/create-activity-log-by-admin.usecase';
+import { GetActivityLogCountersUsecase } from 'src/usecases/activity-log/get-activity-log-counters.usecase';
 import { GetManyActivityLogsUsecase } from 'src/usecases/activity-log/get-many-activity-logs.usecase';
 import { GetOneActivityLogUsecase } from 'src/usecases/activity-log/get-one-activity-log.usecase';
 import { RejectActivityLogUsecase } from 'src/usecases/activity-log/reject-activity-log.usecase';
@@ -28,6 +29,7 @@ import { GetManyActivityLogsDto } from './dto/get-many-activity-logs.dto';
 import { RejectActivityLogDto } from './dto/reject-activity-log.dto';
 import { UpdateActivityLogDto } from './dto/update-activity-log.dto';
 import { ActivityLogGuard } from './guards/activity-log.guard';
+import { ActivityLogCountersPresenter } from './presenters/activity-log-counters.presenter';
 import { ActivityLogListItemPresenter } from './presenters/activity-log-list-item.presenter';
 import { ActivityLogPresenter } from './presenters/activity-log.presenter';
 
@@ -42,6 +44,7 @@ export class ActivityLogController {
     private readonly updateActivityLogUsecase: UpdateActivityLogUsecase,
     private readonly approveActivityLogUsecase: ApproveActivityLogUsecase,
     private readonly rejectActivityLogUsecase: RejectActivityLogUsecase,
+    private readonly getActivityLogCountersUsecase: GetActivityLogCountersUsecase,
   ) {}
 
   @ApiBody({ type: CreateActivityLogByAdminDto })
@@ -56,6 +59,16 @@ export class ActivityLogController {
     );
 
     return new ActivityLogPresenter(log);
+  }
+
+  @Get('counters')
+  async getCountByStatus(
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<ActivityLogCountersPresenter> {
+    const counters = await this.getActivityLogCountersUsecase.execute(
+      admin.organizationId,
+    );
+    return new ActivityLogCountersPresenter(counters);
   }
 
   @ApiParam({ name: 'id', type: 'string' })

@@ -3,6 +3,7 @@ import { Pagination } from 'src/infrastructure/base/repository-with-pagination.c
 import {
   CreateActivityLogByAdminOptions,
   FindManyActivityLogsOptions,
+  IActivityLogCountByStatus,
   IActivityLogListItemModel,
   IActivityLogModel,
   UpdateActivityLogOptions,
@@ -36,5 +37,9 @@ export class ActivityLogFacade {
     updates: UpdateActivityLogOptions,
   ): Promise<IActivityLogModel> {
     return this.activityLogRepository.update(id, updates);
+  }
+
+  async count(organizationId: string): Promise<IActivityLogCountByStatus> {
+    return this.activityLogRepository.count(organizationId);
   }
 }
