@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { SafeAreaView } from "react-native";
 import {
   Layout,
   TopNavigation,
@@ -20,7 +19,7 @@ export const PageLayout = ({
   title,
   onBackButtonPress,
 }: PageLayoutProps) => (
-  <SafeAreaView style={{ flex: 1 }}>
+  <>
     <TopNavigation
       title={title}
       alignment="start"
@@ -33,7 +32,7 @@ export const PageLayout = ({
     <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       {children}
     </Layout>
-  </SafeAreaView>
+  </>
 );
 
 export default PageLayout;
