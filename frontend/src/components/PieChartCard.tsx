@@ -52,12 +52,12 @@ const PieChartCard = () => {
         )}
 
         {!data && !isLoading && (
-          <div className="h-[500px] text-center py-6">
+          <div className="max-xs:h-[350px] max-sm:h-[400px] h-[600px] text-center py-6">
             <EmptyContent description={i18n.t('general:error.load_entries')} />
           </div>
         )}
         {isLoading && (
-          <div className="h-[500px] text-center py-6">
+          <div className="max-xs:h-[350px] max-sm:h-[400px] h-[600px] text-center py-6">
             <LoadingContent />
           </div>
         )}
