@@ -1,0 +1,39 @@
+{
+  "name": "teo-mobile",
+  "version": "0.0.1",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@eva-design/eva": "^2.1.1",
+    "@react-navigation/native": "^6.1.6",
+    "@react-navigation/native-stack": "^6.9.12",
+    "@ui-kitten/components": "^5.1.2",
+    "@ui-kitten/eva-icons": "^5.1.2",
+    "expo": "^48.0.9",
+    "expo-font": "~11.1.1",
+    "expo-status-bar": "~1.4.4",
+    "react": "18.2.0",
+    "react-native": "0.71.4",
+    "react-native-safe-area-context": "4.5.0",
+    "react-native-screens": "~3.20.0",
+    "react-native-svg": "13.4.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.21.3",
+    "@types/react": "~18.0.14",
+    "typescript": "^4.9.4"
+  },
+  "overrides": {
+    "expo": {
+      "babel-preset-expo": {
+        "babel-plugin-module-resolver": "^5.0.0"
+      }
+    }
+  },
+  "private": true
+}
