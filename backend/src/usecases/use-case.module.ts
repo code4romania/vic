@@ -77,6 +77,7 @@ import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-log
 import { GetManyAdminUsersUseCase } from './user/get-many-admin-users.usecase';
 import { ActionsArchiveModule } from 'src/modules/actions-archive/actions-archive.module';
 import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions-archive.usecase';
+import { GetActivityLogCountersUsecase } from './activity-log/get-activity-log-counters.usecase';
 
 @Module({
   imports: [
@@ -171,6 +172,7 @@ import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions
     ApproveActivityLogUsecase,
     RejectActivityLogUsecase,
     GetManyActivityLogsUsecase,
+    GetActivityLogCountersUsecase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
   ],
@@ -253,6 +255,7 @@ import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions
     ApproveActivityLogUsecase,
     RejectActivityLogUsecase,
     GetManyActivityLogsUsecase,
+    GetActivityLogCountersUsecase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
   ],

@@ -61,6 +61,12 @@ export interface IActivityLogListItemModel {
   activityType: Pick<IActivityTypeModel, 'id' | 'name' | 'icon'>;
 }
 
+export type IActivityLogCountHoursByStatus = {
+  [ActivityLogStatus.PENDING]: number;
+  [ActivityLogStatus.APPROVED]: number;
+  [ActivityLogStatus.REJECTED]: number;
+};
+
 export type CreateActivityLogByAdminOptions = Pick<
   IActivityLogModel,
   'date' | 'hours' | 'mentions' | 'status' | 'approvedOn'
