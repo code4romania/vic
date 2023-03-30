@@ -5,7 +5,7 @@ import { OrderDirection } from '../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import ServerSelect from '../components/ServerSelect';
-import { getVolunteers } from '../services/volunteer/volunteer.api';
+import { getVolunteerListItems } from '../services/volunteer/volunteer.api';
 
 export interface VolunteerSelectProps {
   label: string;
@@ -25,19 +25,17 @@ const VolunteerSelect = ({
   // load volunteers from the database
   const loadVolunteers = async (search: string): Promise<ListItem[]> => {
     try {
-      const volunteers = await getVolunteers(
-        VolunteerStatus.ACTIVE,
-        0,
-        0,
-        'user.name',
-        OrderDirection.ASC,
+      const volunteers = await getVolunteerListItems({
         search,
-      );
+        status: VolunteerStatus.ACTIVE,
+        orderBy: 'user.name',
+        orderDirection: OrderDirection.ASC,
+      });
 
       // map volunteers to server select data type
       return volunteers.items.map((volunteer) => ({
         value: volunteer.id,
-        label: volunteer.user.name,
+        label: volunteer.name,
       }));
     } catch (error) {
       // show error

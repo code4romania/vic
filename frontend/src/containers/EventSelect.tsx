@@ -4,7 +4,7 @@ import i18n from '../common/config/i18n';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import ServerSelect from '../components/ServerSelect';
-import { getEvents } from '../services/event/event.api';
+import { getEventListItems } from '../services/event/event.api';
 
 export interface EventSelectProps {
   label: string;
@@ -18,7 +18,11 @@ const EventSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Ev
   // load events from the database
   const loadEvents = async (search: string): Promise<ListItem[]> => {
     try {
-      const events = await getEvents(0, 0, undefined, 'name', OrderDirection.ASC, search);
+      const events = await getEventListItems({
+        search,
+        orderBy: 'name',
+        orderDirection: OrderDirection.ASC,
+      });
 
       // map events to server select data type
       return events.items.map((event) => ({

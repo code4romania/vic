@@ -4,12 +4,11 @@ import React, {
   ComponentPropsWithoutRef,
   ReactNode,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
-import debounce from 'lodash.debounce';
 import AsyncSelect from 'react-select/async';
 import { ListItem } from '../common/interfaces/list-item.interface';
+import { debouncePromise } from '../common/utils/utils';
 
 export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select'>, 'value'> {
   label: string;
@@ -37,22 +36,9 @@ const ServerSelect = ({
 }: ServerSelectProps) => {
   const [defaultValue, setDefaultValue] = useState<ListItem>();
 
-  // cleanup any side effects of deounce
-  useEffect(() => {
-    return () => {
-      debouncedLoadOptions.cancel();
-    };
-  }, []);
-
   const onSearch = (inputValue: string) => (inputValue?.length >= 3 ? loadOptions(inputValue) : []);
 
-  const debouncedLoadOptions = useMemo(
-    () =>
-      debounce(onSearch, 500, {
-        leading: true,
-      }),
-    [],
-  );
+  const debouncedLoadOptions = debouncePromise(onSearch, 500);
 
   useEffect(() => {
     setDefaultValue(value);
@@ -74,7 +60,7 @@ const ServerSelect = ({
         }}
         placeholder={placeholder}
         classNamePrefix="reactselect"
-        loadOptions={onSearch as any}
+        loadOptions={debouncedLoadOptions as any}
         onChange={onChange as any}
         isClearable={isClearable}
         isMulti={isMulti}
