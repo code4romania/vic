@@ -62,7 +62,7 @@ const PendingActivityLogTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IActivityLogListItem) => `${row.hours}h`,
+    cell: (row: IActivityLogListItem) => <CellLayout>{`${row.hours}h`}</CellLayout>,
   },
   {
     id: 'date',
