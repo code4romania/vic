@@ -131,7 +131,6 @@ export const deleteEvent = async (id: string): Promise<IEvent> => {
 //Listing events
 export const getEventListItems = async (params: {
   search?: string;
-  eventState?: EventState;
   orderBy?: string;
   orderDirection?: OrderDirection;
 }): Promise<IPaginatedEntity<Pick<IEvent, 'id' | 'name'>>> => {

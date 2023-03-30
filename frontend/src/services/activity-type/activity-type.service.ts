@@ -69,23 +69,9 @@ export const useArchiveActivityTypeMutation = () => {
 };
 
 // //Listing activity type
-
-export const useActivityTypeListItemsQuery = (params: {
-  branchId?: string;
-  departmentId?: string;
-  roleId?: string;
-  search?: string;
-  status?: ActivityTypeStatus;
-}) => {
+export const useActivityTypeListItemsQuery = (params: { status?: ActivityTypeStatus }) => {
   return useQuery(
-    [
-      'activity-type-list-items',
-      params.branchId,
-      params.departmentId,
-      params.roleId,
-      params.search,
-      params.status,
-    ],
+    ['activity-type-list-items', params.status],
     () => getActivityTypeListItems(params),
     {
       onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) => error,

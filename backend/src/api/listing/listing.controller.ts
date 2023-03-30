@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 import {
@@ -16,7 +16,6 @@ import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { GetManyActivityTypeUseCase } from 'src/usecases/activity-type/get-all-activity-type.usecase';
 import { GetManyEventUseCase } from 'src/usecases/event/get-many-event.usecase';
-import { GetAllOrganizationStructureByTypeUseCase } from 'src/usecases/organization/organization-structure/get-all-organization-structure-by-type.usecase';
 import { GetAllOrganizationStructureUseCase } from 'src/usecases/organization/organization-structure/get-all-organization-structure.usecase';
 import { GetManyAdminUsersUseCase } from 'src/usecases/user/get-many-admin-users.usecase';
 import { GetManyVolunteersUseCase } from 'src/usecases/volunteer/get-many-volunteers.usecase';
