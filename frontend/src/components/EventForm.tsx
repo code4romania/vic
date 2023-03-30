@@ -312,9 +312,15 @@ const EventForm = ({
                 selected={value}
                 onChange={onChange}
                 helper={
-                  <small className="text-cool-gray-500">{i18n.t('events:form.task.helper')}</small>
+                  errors.tasks?.message ? (
+                    <p className="text-red-500">{errors.tasks?.message}</p>
+                  ) : (
+                    <small className="text-cool-gray-500">
+                      {i18n.t('events:form.task.helper')}
+                    </small>
+                  )
                 }
-                errorMessage={errors.tasks?.message}
+                aria-invalid={!!errors.tasks?.message}
               />
             );
           }}

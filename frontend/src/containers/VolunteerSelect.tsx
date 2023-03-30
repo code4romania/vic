@@ -54,9 +54,9 @@ const VolunteerSelect = ({
       value={defaultValue}
       loadOptions={loadVolunteers}
       onChange={onSelect as any}
-      helper={helper}
+      helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
       placeholder={`${i18n.t('general:select', { item: '' })}`}
-      errorMessage={errorMessage}
+      aria-invalid={!!errorMessage}
     />
   );
 };

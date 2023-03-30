@@ -41,6 +41,7 @@ const TaskSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Tas
       onChange={onSelect as any}
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
       placeholder={`${i18n.t('general:select', { item: '' })}`}
+      aria-invalid={!!errorMessage}
     />
   );
 };

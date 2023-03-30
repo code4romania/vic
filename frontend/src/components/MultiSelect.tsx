@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { AriaAttributes } from 'react';
 import Select from 'react-select';
 import { SelectItem, SelectProps } from './Select';
 export interface MultiSelectProps extends Omit<SelectProps<string>, 'onChange' | 'selected'> {
   onChange: (items: SelectItem<string>[]) => void;
   selected?: SelectItem<string>[];
   isDisabled?: boolean;
-  errorMessage?: string;
+  /** Indicate if the value entered in the field is invalid **/
+  'aria-invalid'?: AriaAttributes['aria-invalid'];
 }
 
 const MultiSelect = ({
@@ -16,7 +17,7 @@ const MultiSelect = ({
   onChange,
   helper,
   isDisabled,
-  errorMessage,
+  ...props
 }: MultiSelectProps) => {
   return (
     <div className="flex flex-col gap-1">
@@ -27,8 +28,8 @@ const MultiSelect = ({
         classNamePrefix="reactselect"
         classNames={{
           control: (state) => {
-            if (errorMessage && state.isFocused) return 'error-and-focused';
-            if (errorMessage) return 'error';
+            if (props['aria-invalid'] && state.isFocused) return 'error-and-focused';
+            if (props['aria-invalid']) return 'error';
             return '';
           },
         }}
@@ -41,7 +42,7 @@ const MultiSelect = ({
         getOptionLabel={(option) => option.value}
         getOptionValue={(option) => option.key}
       />
-      {errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
+      {helper}
     </div>
   );
 };
