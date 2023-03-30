@@ -39,9 +39,8 @@ const TaskSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Tas
       value={defaultValue}
       loadOptions={loadTasks}
       onChange={onSelect as any}
-      helper={helper}
+      helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
       placeholder={`${i18n.t('general:select', { item: '' })}`}
-      errorMessage={errorMessage}
     />
   );
 };

@@ -40,9 +40,9 @@ const EventSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Ev
       value={defaultValue}
       loadOptions={loadEvents}
       onChange={onSelect as any}
-      helper={helper}
+      helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
       placeholder={`${i18n.t('general:select', { item: '' })}`}
-      errorMessage={errorMessage}
+      aria-invalid={!!errorMessage}
     />
   );
 };

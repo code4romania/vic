@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { ComponentPropsWithoutRef, ReactNode, useEffect, useMemo, useState } from 'react';
+import React, {
+  AriaAttributes,
+  ComponentPropsWithoutRef,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import debounce from 'lodash.debounce';
 import AsyncSelect from 'react-select/async';
 import { ListItem } from '../common/interfaces/list-item.interface';
@@ -10,12 +17,12 @@ export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select
   isMulti?: boolean;
   helper?: ReactNode;
   isClearable?: boolean;
-  errorMessage?: string;
   loadOptions: (search: string) => void;
+  /** Indicate if the value entered in the field is invalid **/
+  'aria-invalid'?: AriaAttributes['aria-invalid'];
 }
 
 // TODO: set correct types for loadOptions and onChange methods
-// TODO: set correct styling for server select
 const ServerSelect = ({
   id,
   isMulti,
@@ -26,7 +33,7 @@ const ServerSelect = ({
   label,
   isClearable,
   helper,
-  errorMessage,
+  ...props
 }: ServerSelectProps) => {
   const [defaultValue, setDefaultValue] = useState<ListItem>();
 
@@ -53,21 +60,14 @@ const ServerSelect = ({
 
   return (
     <div className="flex gap-1 flex-col">
-      {label && (
-        <label
-          className="block font-medium text-cool-gray-800 sm:text-sm lg:text-base text-xs"
-          htmlFor={`${label}__select`}
-        >
-          {label}
-        </label>
-      )}
+      {label && <label htmlFor={`${label}__select`}>{label}</label>}
       <AsyncSelect
         id={`${id}__select`}
         cacheOptions
         classNames={{
           control: (state) => {
-            if (errorMessage && state.isFocused) return 'error-and-focused';
-            if (errorMessage) return 'error';
+            if (props['aria-invalid'] && state.isFocused) return 'error-and-focused';
+            if (props['aria-invalid']) return 'error';
             if (state.isFocused) return 'focused';
             return '';
           },
@@ -80,7 +80,7 @@ const ServerSelect = ({
         isMulti={isMulti}
         value={defaultValue || null}
       />
-      {errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
+      {helper}
     </div>
   );
 };
