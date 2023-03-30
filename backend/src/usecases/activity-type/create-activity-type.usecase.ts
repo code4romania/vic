@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { ActivityTypeExceptionMessages } from 'src/modules/activity-type/exceptions/activity-type.exceptions';
 import {
   CreateActivityTypeOptions,
@@ -8,7 +10,7 @@ import {
 } from 'src/modules/activity-type/models/activity-type.model';
 import { ActivityTypeFacade } from 'src/modules/activity-type/services/activity-type.facade';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
-import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOneOrganizationStructureUseCase } from '../organization/organization-structure/get-one-organization-structure.usecase';
 
 @Injectable()
@@ -19,10 +21,12 @@ export class CreateActivityTypeUseCase
     private readonly activityTypeFacade: ActivityTypeFacade,
     private readonly getOneOrganizationStructureUseCase: GetOneOrganizationStructureUseCase,
     private readonly exceptionService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
     newActivityType: CreateActivityTypeOptions,
+    admin: IAdminUserModel,
   ): Promise<IActivityTypeModel> {
     const activityType = await this.activityTypeFacade.find({
       name: newActivityType.name,
@@ -61,6 +65,17 @@ export class CreateActivityTypeUseCase
       );
     }
 
-    return this.activityTypeFacade.create(newActivityType);
+    const created = await this.activityTypeFacade.create(newActivityType);
+
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CREATE_ACTIVITY_TYPE,
+      {
+        activityTypeId: created.id,
+        activityTypeName: created.name,
+      },
+      admin,
+    );
+
+    return created;
   }
 }
