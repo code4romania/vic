@@ -61,7 +61,7 @@ const OpenEventsTableHeader = [
     minWidth: '11rem',
     grow: 1,
     sortable: true,
-    selector: (row: IEvent) => formatEventDate(row.startDate, row.endDate),
+    cell: (row: IEvent) => <CellLayout>{formatEventDate(row.startDate, row.endDate)}</CellLayout>,
   },
   {
     id: 'target',
@@ -115,7 +115,7 @@ const PastEventsTableHeader = [
     minWidth: '11rem',
     grow: 1,
     sortable: true,
-    selector: (row: IEvent) => formatEventDate(row.startDate, row.endDate),
+    cell: (row: IEvent) => <CellLayout>{formatEventDate(row.startDate, row.endDate)}</CellLayout>,
   },
   {
     id: 'target',
@@ -143,10 +143,11 @@ const PastEventsTableHeader = [
     name: i18n.t('events:hours'),
     minWidth: '5rem',
     grow: 1,
-    selector: () =>
-      `${0} ${i18n.t('general:people').toLowerCase()}\n${0} ${i18n
+    cell: () => (
+      <CellLayout>{`${0} ${i18n.t('general:people').toLowerCase()}\n${0} ${i18n
         .t('general:hours')
-        .toLowerCase()}`, // TODO: add logged hours
+        .toLowerCase()}`}</CellLayout>
+    ),
   },
   {
     id: 'status',
