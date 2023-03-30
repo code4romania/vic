@@ -3,6 +3,7 @@ import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IActivityLog, IActivityLogListItem } from '../../common/interfaces/activity-log.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils/utils';
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import API from '../api';
 
@@ -28,10 +29,16 @@ export const getActivityLogs = async (
       orderDirection,
       search,
       status,
-      executionDateStart,
-      executionDateEnd,
-      registrationDateStart,
-      registrationDateEnd,
+      ...(executionDateStart
+        ? { executionDateStart: formatStartDateISO9075(executionDateStart) }
+        : {}),
+      ...(executionDateEnd ? { executionDateEnd: formatEndDateISO9075(executionDateEnd) } : {}),
+      ...(registrationDateStart
+        ? { registrationDateStart: formatStartDateISO9075(registrationDateStart) }
+        : {}),
+      ...(registrationDateEnd
+        ? { registrationDateEnd: formatEndDateISO9075(registrationDateEnd) }
+        : {}),
     },
   }).then((res) => res.data);
 };
