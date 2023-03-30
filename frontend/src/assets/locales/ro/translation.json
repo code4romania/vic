@@ -5,7 +5,6 @@
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "user": "Utilizator",
-    "save": "Salveaza",
     "close": "Inchide",
     "name": "Nume",
     "save": "Salvează",
@@ -92,7 +91,8 @@
       "access_codes": "Coduri de acces",
       "announcements": "Anunturi",
       "activity_types": "Categorii activitati",
-      "activity_log": "Ore de voluntariat"
+      "activity_log": "Ore de voluntariat",
+      "actions_archive": "Arhivă acțiuni"
     },
     "collapse": "Restrange meniul"
   },
