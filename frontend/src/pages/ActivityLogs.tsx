@@ -17,6 +17,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import PageHeaderAdd from '../components/PageHeaderAdd';
 import {
+  useActivityLogCounterQuery,
   useActivityLogQuery,
   useActivityLogsQuery,
 } from '../services/activity-log/activity-log.service';
@@ -200,6 +201,7 @@ const ActivityLogs = () => {
     registrationDateRange[0],
     registrationDateRange[1],
   );
+  const { data: counters } = useActivityLogCounterQuery();
 
   // get one query
   const { data: activityLog, error: activityLogError } = useActivityLogQuery(
@@ -319,16 +321,16 @@ const ActivityLogs = () => {
         </DataTableFilters>
         <Card>
           <CardHeader>
-            {/* <h2>
-              {tabsStatus === ActivityLogTabs.PENDING
+            <h2>
+              {activeTab === ActivityLogResolutionStatus.NEW
                 ? i18n.t('activity_log:pending_header', {
-                    hours: activityLogs?.count?.pending || '-',
+                    hours: counters?.pending ?? '-',
                   })
                 : `${i18n.t('activity_log:past_header', {
-                    hours: activityLogs?.count?.approved || '-',
-                    rejected: activityLogs?.count?.rejected || '-',
+                    hours: counters?.approved ?? '-',
+                    rejected: counters?.rejected ?? '-',
                   })}`}
-            </h2> */}
+            </h2>
           </CardHeader>
           <CardBody>
             <DataTableComponent

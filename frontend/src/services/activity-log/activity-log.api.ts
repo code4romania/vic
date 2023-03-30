@@ -44,16 +44,24 @@ export const addActivityLog = async (data: ActivityLogFormTypes): Promise<void> 
   return API.post(`activity-log`, { ...formatAddActivityLogPayload(data) });
 };
 
-export const editActivityLog = (id: string, data: ActivityLogFormTypes): Promise<void> => {
+export const editActivityLog = async (id: string, data: ActivityLogFormTypes): Promise<void> => {
   return API.patch(`/activity-log/${id}`, { ...formatEditActivityLogPayload(data) });
 };
 
-export const approveActivityLog = (id: string): Promise<void> => {
+export const approveActivityLog = async (id: string): Promise<void> => {
   return API.patch(`/activity-log/${id}/approve`);
 };
 
-export const rejectActivityLog = (id: string, rejectionReason?: string): Promise<void> => {
+export const rejectActivityLog = async (id: string, rejectionReason?: string): Promise<void> => {
   return API.patch(`/activity-log/${id}/reject`, { rejectionReason });
+};
+
+export const getActivityLogCounter = async (): Promise<{
+  pending: number;
+  approved: number;
+  rejected: number;
+}> => {
+  return API.get('/activity-log/counters').then((res) => res.data);
 };
 
 const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {

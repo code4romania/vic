@@ -11,6 +11,7 @@ import {
   approveActivityLog,
   editActivityLog,
   getActivityLog,
+  getActivityLogCounter,
   getActivityLogs,
   rejectActivityLog,
 } from './activity-log.api';
@@ -66,6 +67,12 @@ export const useActivityLogsQuery = (
 export const useActivityLogQuery = (id: string) => {
   return useQuery(['activity-log', id], () => getActivityLog(id), {
     enabled: !!id,
+    onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) => error,
+  });
+};
+
+export const useActivityLogCounterQuery = () => {
+  return useQuery(['activity-log-counter'], () => getActivityLogCounter(), {
     onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) => error,
   });
 };
