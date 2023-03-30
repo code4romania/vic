@@ -51,3 +51,14 @@ export const activateActivityType = async (id: string): Promise<IActivityType> =
 export const archiveActivityType = async (id: string): Promise<IActivityType> => {
   return API.patch(`/activity-type/${id}/archive`).then((res) => res.data);
 };
+
+//Listing activity type
+export const getActivityTypeListItems = async (params: {
+  branchId?: string;
+  departmentId?: string;
+  roleId?: string;
+  search?: string;
+  status?: ActivityTypeStatus;
+}): Promise<{ id: string; name: string }[]> => {
+  return API.get('/listing/activity-types', { params }).then((res) => res.data);
+};

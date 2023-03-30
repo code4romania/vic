@@ -102,3 +102,20 @@ export const activateVolunteer = async (id: string): Promise<IVolunteer> => {
 export const blockVolunteer = async (id: string): Promise<IVolunteer> => {
   return API.patch(`volunteer/${id}/block`).then((res) => res.data);
 };
+
+//Listing volunteers
+export const getVolunteerListItems = async (params: {
+  status: VolunteerStatus;
+  search?: string;
+  orderBy?: string;
+  orderDirection?: OrderDirection;
+  age?: AgeRangeEnum;
+  branchId?: string;
+  departmentId?: string;
+  roleId?: string;
+  locationId?: string;
+  activeSinceStart?: Date;
+  activeSinceEnd?: Date;
+}): Promise<IPaginatedEntity<{ id: string; name: string }>> => {
+  return API.get('/listing/volunteers', { params }).then((res) => res.data);
+};

@@ -127,3 +127,13 @@ export const publishEvent = async (id: string): Promise<IEvent> => {
 export const deleteEvent = async (id: string): Promise<IEvent> => {
   return API.delete(`/event/${id}`).then((res) => res.data);
 };
+
+//Listing events
+export const getEventListItems = async (params: {
+  search?: string;
+  eventState?: EventState;
+  orderBy?: string;
+  orderDirection?: OrderDirection;
+}): Promise<IPaginatedEntity<Pick<IEvent, 'id' | 'name'>>> => {
+  return API.get('/listing/events', { params }).then((res) => res.data);
+};
