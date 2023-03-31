@@ -12,6 +12,7 @@ import {
   editActivityLog,
   getActivityLog,
   getActivityLogs,
+  getActivityLogStatistics,
   rejectActivityLog,
 } from './activity-log.api';
 
@@ -101,4 +102,11 @@ export const useRejectActivityLogMutation = () => {
         Promise.resolve(error),
     },
   );
+};
+
+//Activity Log Statistics
+export const useActivityLogStatisticsQuery = () => {
+  return useQuery(['activity-log-statistics'], () => getActivityLogStatistics(), {
+    onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) => error,
+  });
 };
