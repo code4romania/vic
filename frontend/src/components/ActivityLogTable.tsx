@@ -4,7 +4,7 @@ import CardHeader from './CardHeader';
 import CardBody from './CardBody';
 import DataTableComponent from './DataTableComponent';
 import i18n from '../common/config/i18n';
-import { EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon, EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from './Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
@@ -29,6 +29,8 @@ import DateRangePicker from './DateRangePicker';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
 import Button from './Button';
+import AdminSelect from '../containers/AdminSelect';
+import { ListItem } from '../common/interfaces/list-item.interface';
 
 const StatusOptions: SelectItem<ActivityLogStatus>[] = [
   { key: ActivityLogStatus.APPROVED, value: i18n.t('activity_log:display_status.approved') },
@@ -124,9 +126,10 @@ const PastActivityLogTableHeader = [
 ];
 
 const ActivityLogTable = ({
-  activeTab,
+  resolutionStatus,
+  volunteerId,
 }: {
-  activeTab: ActivityLogResolutionStatus;
+  resolutionStatus: ActivityLogResolutionStatus;
   volunteerId: string;
 }) => {
   // routing
@@ -140,6 +143,7 @@ const ActivityLogTable = ({
   const [searchWord, setSearchWord] = useState<string>();
   const [executionDateRange, setExecutionDateRange] = useState<Date[]>([]);
   const [registrationDateRange, setRegistrationDateRange] = useState<Date[]>([]);
+  const [approvedOrRejectedBy, setApprovedOrRejectedBy] = useState<ListItem>();
   const [status, setStatus] = useState<SelectItem<ActivityLogStatus>>();
 
   // selected activity log id
@@ -156,19 +160,21 @@ const ActivityLogTable = ({
     isLoading: isActivityLogsLoading,
     error: activityLogsError,
     refetch,
-  } = useActivityLogsQuery(
-    rowsPerPage as number,
-    page as number,
-    activeTab,
-    orderByColumn,
+  } = useActivityLogsQuery({
+    limit: rowsPerPage as number,
+    page: page as number,
+    resolutionStatus: resolutionStatus,
+    orderBy: orderByColumn,
+    volunteerId,
     orderDirection,
-    searchWord,
-    status?.key,
-    executionDateRange[0],
-    executionDateRange[1],
-    registrationDateRange[0],
-    registrationDateRange[1],
-  );
+    approvedOrRejectedById: approvedOrRejectedBy?.value,
+    search: searchWord,
+    status: status?.key,
+    executionDateStart: executionDateRange[0],
+    executionDateEnd: executionDateRange[1],
+    registrationDateStart: registrationDateRange[0],
+    registrationDateEnd: registrationDateRange[1],
+  });
   const { data: counters } = useActivityLogCounterQuery();
 
   // get one query
@@ -244,11 +250,16 @@ const ActivityLogTable = ({
     );
   };
 
+  const onExport = () => {
+    alert('not yet implemented');
+  };
+
   const onResetFilters = () => {
     setExecutionDateRange([]);
     setRegistrationDateRange([]);
     setStatus(undefined);
     setSearchWord(undefined);
+    setApprovedOrRejectedBy(undefined);
   };
 
   return (
@@ -260,7 +271,7 @@ const ActivityLogTable = ({
           value={executionDateRange.length > 0 ? executionDateRange : undefined}
           id="execution-on-range__picker"
         />
-        {activeTab === ActivityLogResolutionStatus.NEW && (
+        {resolutionStatus === ActivityLogResolutionStatus.NEW && (
           <DateRangePicker
             label={i18n.t('activity_log:filters.registration')}
             onChange={setRegistrationDateRange}
@@ -268,20 +279,27 @@ const ActivityLogTable = ({
             id="registration-on-range__picker"
           />
         )}
-        {activeTab === ActivityLogResolutionStatus.SOLVED && (
-          <Select
-            label={`${i18n.t('activity_log:status')}`}
-            placeholder={`${i18n.t('general:select', { item: '' })}`}
-            options={StatusOptions}
-            onChange={setStatus}
-            selected={status}
-          />
+        {resolutionStatus === ActivityLogResolutionStatus.SOLVED && (
+          <>
+            <Select
+              label={`${i18n.t('activity_log:status')}`}
+              placeholder={`${i18n.t('general:select', { item: '' })}`}
+              options={StatusOptions}
+              onChange={setStatus}
+              selected={status}
+            />
+            <AdminSelect
+              label={i18n.t('activity_log:filters.approved_rejected')}
+              onSelect={setApprovedOrRejectedBy}
+              defaultValue={approvedOrRejectedBy}
+            />
+          </>
         )}
       </DataTableFilters>
       <Card>
         <CardHeader>
           <h2>
-            {activeTab === ActivityLogResolutionStatus.NEW
+            {resolutionStatus === ActivityLogResolutionStatus.NEW
               ? i18n.t('activity_log:pending_header', {
                   hours: counters?.pending ?? '-',
                 })
@@ -290,20 +308,31 @@ const ActivityLogTable = ({
                   rejected: counters?.rejected ?? '-',
                 })}`}
           </h2>
-          {activeTab === ActivityLogResolutionStatus.SOLVED && (
-            <Button
-              label={i18n.t('activity_log:add')}
-              className="btn-primary"
-              icon={<PlusIcon className="h-5 w-5" />}
-              onClick={onAddButtonPress}
-              type="button"
-            />
+          {resolutionStatus === ActivityLogResolutionStatus.SOLVED && (
+            <div className="flex gap-2 lg:gap-6 flex-wrap">
+              <Button
+                label={i18n.t('general:download_table')}
+                className="btn-outline-secondary grow"
+                icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+                onClick={onExport}
+                aria-label={`${i18n.t('activity_log:download')}`}
+                type="button"
+              />
+              <Button
+                label={i18n.t('activity_log:add')}
+                className="btn-primary grow"
+                icon={<PlusIcon className="h-5 w-5" />}
+                onClick={onAddButtonPress}
+                aria-label={`${i18n.t('activity_log:add')}`}
+                type="button"
+              />
+            </div>
           )}
         </CardHeader>
         <CardBody>
           <DataTableComponent
             columns={[
-              ...(activeTab === ActivityLogResolutionStatus.NEW
+              ...(resolutionStatus === ActivityLogResolutionStatus.NEW
                 ? PendingActivityLogTableHeader
                 : PastActivityLogTableHeader),
               buildActivityLogActionColumn(),

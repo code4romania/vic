@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import i18n from '../common/config/i18n';
+import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import ActivityLogTable from '../components/ActivityLogTable';
 import EmptyContent from '../components/EmptyContent';
@@ -72,15 +73,24 @@ const Volunteer = () => {
           </div>
         </div>
       )}
-      <Tabs<TabsOptions> tabs={VolunteerTabsOptons} onClick={setActiveTab}>
-        {(activeTab === TabsOptions.NEW || activeTab === TabsOptions.SOLVED) && (
-          <ActivityLogTable activeTab={activeTab} />
-        )}
-        {activeTab === TabsOptions.ARCHIVE && <div>Actions Archive to be added</div>}
-      </Tabs>
       {!volunteer && !isLoading && (
         <EmptyContent description={i18n.t('general:error.load_entries')} />
       )}
+      <Tabs<TabsOptions> tabs={VolunteerTabsOptons} onClick={setActiveTab}>
+        {activeTab === TabsOptions.NEW && (
+          <ActivityLogTable
+            resolutionStatus={ActivityLogResolutionStatus.NEW}
+            volunteerId={id as string}
+          />
+        )}
+        {activeTab === TabsOptions.SOLVED && (
+          <ActivityLogTable
+            resolutionStatus={ActivityLogResolutionStatus.SOLVED}
+            volunteerId={id as string}
+          />
+        )}
+        {activeTab === TabsOptions.ARCHIVE && <div>Actions Archive to be added</div>}
+      </Tabs>
     </PageLayout>
   );
 };
