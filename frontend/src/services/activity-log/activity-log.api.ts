@@ -87,6 +87,6 @@ const formatEditActivityLogPayload = (data: ActivityLogFormTypes): object => {
 
 //Activity Log Statistics
 export const getActivityLogStatistics = async (): Promise<IActivityLogStatistics> => {
-  return API.get('to be determined').then((res) => res.data);
-  // return Promise.resolve({ totalHours: '571378', approvalHours: '1123' });
+  // return API.get('to be determined').then((res) => res.data);
+  return Promise.resolve({ totalHours: '571378', approvalHours: '1123' });
 };

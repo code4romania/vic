@@ -616,11 +616,13 @@
       "ACTIVITY_LOG_003": "Nu se poat face modificari pe request-uri in status-ul Aprobat sau Respins"
     }
   },
-  "statistics_card": {
-    "activity_log": {
-      "label": "Vezi ore care asteapta aprobare",
-      "info": "{{value}} ore in asteptare"
-    },
-    "volunteer": { "label": "Vezi solicitari", "info": "{{value}} solicitari de inscriere" }
+  "dashboard": {
+    "statistics_card": {
+      "activity_log": {
+        "label": "Vezi ore care asteapta aprobare",
+        "info": "{{value}} ore in asteptare"
+      },
+      "volunteer": { "label": "Vezi solicitari", "info": "{{value}} solicitari de inscriere" }
+    }
   }
 }
