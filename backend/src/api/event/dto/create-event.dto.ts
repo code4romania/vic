@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -31,16 +32,19 @@ export class CreateEventDto {
   location: string;
 
   @IsDate()
+  @Type(() => Date)
   startDate: Date;
 
   @IsDate()
   @IsOptional()
+  @Type(() => Date)
   endDate: Date;
 
   @IsIn([EventStatus.DRAFT, EventStatus.PUBLISHED])
   status: EventStatus.DRAFT | EventStatus.PUBLISHED;
 
   @IsBoolean()
+  @Type(() => Boolean)
   isPublic: boolean;
 
   @IsEnum(EventAttendOptions)

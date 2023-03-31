@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsOptional,
@@ -9,6 +10,7 @@ import {
 
 export class EventRSVPDto {
   @IsBoolean()
+  @Type(() => Boolean)
   going: boolean;
 
   @IsString()

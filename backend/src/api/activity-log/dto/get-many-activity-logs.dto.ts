@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsDate, IsEnum, IsOptional, IsString } from 'class-validator';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 import { ActivityLogResolutionStatus } from 'src/modules/activity-log/enums/activity-log-resolution-status.enum';
@@ -21,18 +22,22 @@ export class GetManyActivityLogsDto extends BasePaginationFilterDto {
 
   @IsDate()
   @IsOptional()
+  @Type(() => Date)
   executionDateStart?: Date;
 
   @IsDate()
   @IsOptional()
+  @Type(() => Date)
   executionDateEnd?: Date;
 
   @IsDate()
   @IsOptional()
+  @Type(() => Date)
   registrationDateStart?: Date;
 
   @IsDate()
   @IsOptional()
+  @Type(() => Date)
   registrationDateEnd?: Date;
 
   @IsString()

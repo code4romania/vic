@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsDate,
   IsEmail,
@@ -18,6 +19,7 @@ export class CreateVolunteerProfileDto {
 
   @IsDate()
   @IsOptional()
+  @Type(() => Date)
   activeSince: Date;
 
   @IsUUID()

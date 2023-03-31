@@ -17,8 +17,6 @@ export class GetPaginatedEventRSVPsDto extends BasePaginationFilterDto {
 
   @IsOptional()
   @IsBoolean()
-  @Transform(({ value }) => {
-    return value === 'true' || value === true || value === 1 || value === '1';
-  })
+  @Transform(({ value }) => value === 'true')
   going?: boolean;
 }
