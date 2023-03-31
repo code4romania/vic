@@ -47,7 +47,7 @@ const PendingActivityLogTableHeader = [
     cell: (row: IActivityLogListItem) => (
       <MediaCell
         logo={row.activityType?.icon}
-        title={row.activityType.name}
+        title={row.activityType?.name || i18n.t('general:other')}
         subtitle={row.event?.name || ''}
       />
     ),
@@ -88,7 +88,7 @@ const PastActivityLogTableHeader = [
     cell: (row: IActivityLogListItem) => (
       <MediaCell
         logo={row.activityType?.icon}
-        title={row.activityType.name}
+        title={row.activityType?.name || i18n.t('general:other')}
         subtitle={row.event?.name || ''}
       />
     ),
