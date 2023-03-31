@@ -8,7 +8,6 @@
     "save": "Salveaza",
     "close": "Inchide",
     "name": "Nume",
-    "save": "Salvează",
     "people": "Persoane",
     "age": "Vârsta",
     "hours": "Ore",
@@ -70,7 +69,8 @@
       "hide": "Ascunde filtre"
     },
     "select_interval": "Selecteaza interval",
-    "save_draft": "Salveaza ca draft"
+    "save_draft": "Salveaza ca draft",
+    "other": "Alta optiune"
   },
   "header": {
     "login": "Login",

@@ -74,7 +74,7 @@ export type CreateActivityLogByAdminOptions = Pick<
   volunteerId: string;
   organizationId: string;
   eventId?: string;
-  activityTypeId: string;
+  activityTypeId?: string;
   createdByAdminId: string;
   approvedById: string;
 };
@@ -133,11 +133,13 @@ export class ActivityLogModelTransformer {
             name: entity.event.name,
           }
         : null,
-      activityType: {
-        id: entity.activityType.id,
-        name: entity.activityType.name,
-        icon: entity.activityType.icon,
-      },
+      activityType: entity.activityType
+        ? {
+            id: entity.activityType.id,
+            name: entity.activityType.name,
+            icon: entity.activityType.icon,
+          }
+        : null,
     };
   }
 

@@ -58,15 +58,18 @@ export class CreateActivityLogByAdmin
       });
     }
 
-    // 3. Check if the task exists in the organization
-    const taskExists = await this.activityTypeFacade.exists(
-      [newLogRequestDto.activityTypeId],
-      { organizationId: admin.organizationId },
-    );
-    if (!taskExists) {
-      this.exceptionService.badRequestException(
-        ActivityTypeExceptionMessages.ACTIVITY_TYPE_001,
+    // if it's not provided is the other scenario
+    if (newLogRequestDto.activityTypeId) {
+      // 3. Check if the task exists in the organization
+      const taskExists = await this.activityTypeFacade.exists(
+        [newLogRequestDto.activityTypeId],
+        { organizationId: admin.organizationId },
       );
+      if (!taskExists) {
+        this.exceptionService.badRequestException(
+          ActivityTypeExceptionMessages.ACTIVITY_TYPE_001,
+        );
+      }
     }
 
     // ========================================================================
@@ -77,7 +80,7 @@ export class CreateActivityLogByAdmin
       mentions: newLogRequestDto.mentions,
       volunteerId: newLogRequestDto.volunteerId,
       eventId: newLogRequestDto.eventId || null,
-      activityTypeId: newLogRequestDto.activityTypeId,
+      activityTypeId: newLogRequestDto.activityTypeId || null,
 
       status: ActivityLogStatus.APPROVED,
 

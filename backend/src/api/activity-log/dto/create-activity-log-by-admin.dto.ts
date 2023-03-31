@@ -31,5 +31,6 @@ export class CreateActivityLogByAdminDto {
   eventId?: string;
 
   @IsUUID()
-  activityTypeId: string;
+  @IsOptional()
+  activityTypeId?: string;
 }

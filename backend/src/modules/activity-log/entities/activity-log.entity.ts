@@ -90,7 +90,7 @@ export class ActivityLogEntity extends BaseEntity {
 
   // ==================== Activity Type =================================
 
-  @Column({ type: 'string', name: 'activity_type_id' })
+  @Column({ type: 'string', name: 'activity_type_id', nullable: true })
   activityTypeId: string;
 
   @ManyToOne(() => ActivityTypeEntity)
