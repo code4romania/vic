@@ -113,6 +113,11 @@ export type FindManyActivityLogsOptions = {
   approvedOrRejectedById?: string;
 } & IBasePaginationFilterModel;
 
+export type FindManyActivityLogCounterOptions = {
+  organizationId: string;
+  volunteerId?: string;
+};
+
 export class ActivityLogModelTransformer {
   static fromEntityToListItem(
     entity: ActivityLogEntity,
