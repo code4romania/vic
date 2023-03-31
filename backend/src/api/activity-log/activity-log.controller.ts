@@ -32,6 +32,7 @@ import { ActivityLogGuard } from './guards/activity-log.guard';
 import { ActivityLogCountersPresenter } from './presenters/activity-log-counters.presenter';
 import { ActivityLogListItemPresenter } from './presenters/activity-log-list-item.presenter';
 import { ActivityLogPresenter } from './presenters/activity-log.presenter';
+import { GetManyActivityLogCountersDto } from './dto/get-many-activity-log-counters.dto';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, ActivityLogGuard)
@@ -63,11 +64,13 @@ export class ActivityLogController {
 
   @Get('counters')
   async getCountHoursByStatus(
+    @Query() { volunteerId }: GetManyActivityLogCountersDto,
     @ExtractUser() admin: IAdminUserModel,
   ): Promise<ActivityLogCountersPresenter> {
-    const counters = await this.getActivityLogCountersUsecase.execute(
-      admin.organizationId,
-    );
+    const counters = await this.getActivityLogCountersUsecase.execute({
+      volunteerId,
+      organizationId: admin.organizationId,
+    });
     return new ActivityLogCountersPresenter(counters);
   }
 

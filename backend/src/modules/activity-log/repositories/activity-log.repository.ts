@@ -13,6 +13,7 @@ import { IActivityLogRepository } from '../interfaces/activity-log-repository.in
 import {
   ActivityLogModelTransformer,
   CreateActivityLogByAdminOptions,
+  FindManyActivityLogCounterOptions,
   FindManyActivityLogsOptions,
   IActivityLogCountHoursByStatus,
   IActivityLogListItemModel,
@@ -204,23 +205,31 @@ export class ActivityLogRepositoryService
   }
 
   async countHourByStatus(
-    organizationId: string,
+    findManyOptions: FindManyActivityLogCounterOptions,
   ): Promise<IActivityLogCountHoursByStatus> {
-    const counters: {
-      status: ActivityLogStatus;
-      count: number;
-      hours: number;
-    }[] = await this.activityLogRepo
+    const { volunteerId, organizationId } = findManyOptions;
+
+    const query = this.activityLogRepo
       .createQueryBuilder('activityLog')
       .select('activityLog.status', 'status')
       .addSelect('activityLog.hours', 'hours')
       .addSelect('COUNT(activityLog.id)', 'count')
       .groupBy('activityLog.status')
-      .addGroupBy('activityLog.hours')
-      .where('activityLog.organizationId = :organizationId', {
+      .addGroupBy('activityLog.hours');
+
+    if (organizationId)
+      query.andWhere('activityLog.organizationId = :organizationId', {
         organizationId,
-      })
-      .getRawMany();
+      });
+
+    if (volunteerId)
+      query.andWhere('activityLog.volunteerId = :volunteerId', { volunteerId });
+
+    const counters: {
+      status: ActivityLogStatus;
+      count: number;
+      hours: number;
+    }[] = await query.getRawMany();
 
     return counters.reduce(
       (acc, curr) => {
