@@ -11,11 +11,15 @@ import {
   archiveVolunteer,
   blockVolunteer,
   getVolunteer,
+  getVolunteerLineChart,
+  getVolunteerPieChart,
   getVolunteers,
   getVolunteerStatistics,
   updateVolunteer,
 } from './volunteer.api';
 import { VolunteerFormTypes } from '../../pages/EditVolunteer';
+import { LineChartOption } from '../../common/constants/line-chart-options';
+import { PieChartOption } from '../../common/constants/pie-chart-options';
 
 export const useVolunteersQuery = (
   status: VolunteerStatus,
@@ -109,6 +113,20 @@ export const useUpdateVolunteerMutation = () => {
 //Volunteer Statistics
 export const useVolunteerStatisticsQuery = () => {
   return useQuery(['volunteer-statistics'], () => getVolunteerStatistics(), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
+};
+
+//Volunteer Line Chart
+export const useVolunteerLineChartQuery = (filter: LineChartOption) => {
+  return useQuery(['volunteer-line-chart', filter], () => getVolunteerLineChart(filter), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
+};
+
+//Volunteer Pie Chart
+export const useVolunteerPieChartQuery = (filter: PieChartOption) => {
+  return useQuery(['volunteer-pie-chart', filter], () => getVolunteerPieChart(filter), {
     onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
   });
 };
