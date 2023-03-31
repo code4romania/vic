@@ -9,7 +9,7 @@ export interface IActivityLogListItem {
   hours: number;
   status: ActivityLogStatus;
   volunteer: Pick<IUser, 'id' | 'name'>;
-  activityType: Pick<IActivityType, 'id' | 'icon' | 'name'>;
+  activityType?: Pick<IActivityType, 'id' | 'icon' | 'name'>;
   event?: Pick<IEvent, 'id' | 'name'>;
   createdOn: Date;
 }

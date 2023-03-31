@@ -121,7 +121,7 @@ const ActivityLogSidePanel = ({
             />
             <FormReadOnlyElement
               label={i18n.t('general:task')}
-              value={activityLog.activityType.name}
+              value={activityLog.activityType?.name || `${i18n.t('general:other')}`}
               onClick={() => {}}
             />
             <FormReadOnlyElement
