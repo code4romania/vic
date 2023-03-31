@@ -7,10 +7,12 @@
     "user": "Utilizator",
     "close": "Inchide",
     "name": "Nume",
-    "save": "Salvează",
     "people": "Persoane",
     "age": "Vârsta",
     "hours": "Ore",
+    "daily": "Zilnic",
+    "monthly": "Lunar",
+    "yearly": "Anual",
     "date": "Data",
     "target": "Target",
     "answers": "Răspunsuri",
@@ -69,7 +71,8 @@
       "hide": "Ascunde filtre"
     },
     "select_interval": "Selecteaza interval",
-    "save_draft": "Salveaza ca draft"
+    "save_draft": "Salveaza ca draft",
+    "other": "Alta optiune"
   },
   "header": {
     "login": "Login",
@@ -620,6 +623,21 @@
       "ACTIVITY_LOG_001": "Activitatea nu a fost gasita!",
       "ACTIVITY_LOG_002": "Voluntarul trebuie sa aiba profil pentru a loga ore",
       "ACTIVITY_LOG_003": "Nu se poat face modificari pe request-uri in status-ul Aprobat sau Respins"
+    }
+  },
+  "dashboard": {
+    "statistics_card": {
+      "activity_log": {
+        "label": "Vezi ore care asteapta aprobare",
+        "info": "{{value}} ore in asteptare"
+      },
+      "volunteer": { "label": "Vezi solicitari", "info": "{{value}} solicitari de inscriere" }
+    },
+    "line_chart": {
+      "title": "Număr voluntari"
+    },
+    "pie_chart": {
+      "title": "Statistici voluntari organizatie"
     }
   }
 }

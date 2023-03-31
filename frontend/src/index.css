@@ -304,3 +304,11 @@ div.reactselect__control:hover {
 div.reactselect__placeholder {
   @apply text-base;
 }
+
+ul.recharts-default-legend {
+  @apply flex justify-center gap-2 sm:gap-7 flex-wrap;
+}
+
+li.recharts-legend-item {
+  @apply flex items-center !important;
+}

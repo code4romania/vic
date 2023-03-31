@@ -1,6 +1,8 @@
+import { CONSTANTS } from '../../common/constants/constants';
 import { ActivityLogResolutionStatus } from '../../common/enums/activity-log-resolution-status.enum';
 import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
+import { IActivityLogStatistics } from '../../common/interfaces/activity-log-statistics.interface';
 import { IActivityLog, IActivityLogListItem } from '../../common/interfaces/activity-log.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils/utils';
@@ -80,7 +82,7 @@ const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {
   return {
     ...payload,
     volunteerId: volunteer.value,
-    activityTypeId: task.value,
+    ...(task.value !== CONSTANTS.OTHER ? { activityTypeId: task.value } : {}),
     ...(event ? { eventId: event.value } : {}),
   };
 };
@@ -91,7 +93,13 @@ const formatEditActivityLogPayload = (data: ActivityLogFormTypes): object => {
 
   return {
     ...payload,
-    activityTypeId: task.value,
+    ...(task.value !== CONSTANTS.OTHER ? { activityTypeId: task.value } : {}),
     ...(event ? { eventId: event.value } : {}),
   };
+};
+
+//Activity Log Statistics
+export const getActivityLogStatistics = async (): Promise<IActivityLogStatistics> => {
+  // return API.get('to be determined').then((res) => res.data);
+  return Promise.resolve({ totalHours: '571378', approvalHours: '1123' });
 };
