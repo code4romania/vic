@@ -88,6 +88,32 @@ export const getRsvps = async (
   }).then((res) => res.data);
 };
 
+export const getEventRSVPsForDownload = async (
+  id: string,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+  search?: string,
+  branchId?: string,
+  departmentId?: string,
+  roleId?: string,
+  going?: string,
+): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
+  return API.get(`event/${id}/rsvp/download`, {
+    params: {
+      orderBy,
+      orderDirection,
+      search,
+      branchId,
+      departmentId,
+      roleId,
+      going: going === undefined ? going : going === RsvpEnum.GOING,
+    },
+    responseType: 'arraybuffer',
+  }).then((res) => {
+    return { data: res.data, headers: res.headers as AxiosResponseHeaders };
+  });
+};
+
 const formatAddEventPayload = (data: EventFormTypes): object => {
   const { targets, tasks, targetType, ...payload } = data;
   return {
