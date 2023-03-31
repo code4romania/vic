@@ -94,7 +94,8 @@
       "access_codes": "Coduri de acces",
       "announcements": "Anunturi",
       "activity_types": "Categorii activitati",
-      "activity_log": "Ore de voluntariat"
+      "activity_log": "Ore de voluntariat",
+      "actions_archive": "Arhivă acțiuni"
     },
     "collapse": "Restrange meniul"
   },
@@ -547,11 +548,12 @@
   },
   "activity_log": {
     "pending": "Solicitări de aprobare",
+    "download": "Descarcă tabel aprobate",
     "pending_header": "{{hours}} ore în curs de aprobare",
     "past": "Istoric ore de voluntariat",
     "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
     "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
-    "add": "Înregistrează ore",
+    "add": "Adauga ore",
     "header": {
       "task": "Task",
       "execution_date": "Data efectuării",
@@ -566,7 +568,11 @@
     "popover": {
       "view": "Fișă de activitate"
     },
-    "filters": { "execution": "Perioada efectuare task", "registration": "Perioada inregistrare" },
+    "filters": {
+      "execution": "Perioada efectuare task",
+      "registration": "Perioada inregistrare",
+      "approved_rejected": "Aprobat/Resprins de"
+    },
     "modal": {
       "title": "Argumentează respingere",
       "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",

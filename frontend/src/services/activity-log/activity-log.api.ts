@@ -9,28 +9,32 @@ import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import API from '../api';
 
-export const getActivityLogs = async (
-  limit: number,
-  page: number,
-  resolutionStatus: ActivityLogResolutionStatus,
-  orderBy?: string,
-  orderDirection?: OrderDirection,
-  search?: string,
-  status?: ActivityLogStatus,
-  executionDateStart?: Date,
-  executionDateEnd?: Date,
-  registrationDateStart?: Date,
-  registrationDateEnd?: Date,
-): Promise<IPaginatedEntity<IActivityLogListItem>> => {
+export interface GetActivityLogsParams {
+  limit: number;
+  page: number;
+  resolutionStatus: ActivityLogResolutionStatus;
+  orderBy?: string;
+  orderDirection?: OrderDirection;
+  volunteerId?: string;
+  approvedOrRejectedById?: string;
+  search?: string;
+  status?: ActivityLogStatus;
+  executionDateStart?: Date;
+  executionDateEnd?: Date;
+  registrationDateStart?: Date;
+  registrationDateEnd?: Date;
+}
+
+export const getActivityLogs = async ({
+  executionDateStart,
+  executionDateEnd,
+  registrationDateStart,
+  registrationDateEnd,
+  ...params
+}: GetActivityLogsParams): Promise<IPaginatedEntity<IActivityLogListItem>> => {
   return API.get('activity-log', {
     params: {
-      resolutionStatus,
-      limit,
-      page,
-      orderBy,
-      orderDirection,
-      search,
-      status,
+      ...params,
       ...(executionDateStart
         ? { executionDateStart: formatStartDateISO9075(executionDateStart) }
         : {}),
@@ -63,6 +67,14 @@ export const approveActivityLog = async (id: string): Promise<void> => {
 
 export const rejectActivityLog = async (id: string, rejectionReason?: string): Promise<void> => {
   return API.patch(`/activity-log/${id}/reject`, { rejectionReason });
+};
+
+export const getActivityLogCounter = async (): Promise<{
+  pending: number;
+  approved: number;
+  rejected: number;
+}> => {
+  return API.get('/activity-log/counters').then((res) => res.data);
 };
 
 const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {
