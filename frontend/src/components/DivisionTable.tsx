@@ -55,7 +55,7 @@ export const DivisionTableHeader = [
     name: i18n.t('general:created_on'),
     sortable: true,
     minWidth: '5rem',
-    selector: (row: IDivision) => formatDate(row.createdOn),
+    cell: (row: IDivision) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
 ];
 

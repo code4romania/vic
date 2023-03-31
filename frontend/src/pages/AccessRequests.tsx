@@ -45,6 +45,7 @@ import DateRangePicker from '../components/DateRangePicker';
 import LocationSelect from '../containers/LocationSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { downloadAccessRequests } from '../services/access-requests/access-requests.api';
+import CellLayout from '../layouts/CellLayout';
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
   { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
@@ -76,7 +77,7 @@ const PendingAccessRequestsTableHeader = [
     id: 'createdOn',
     name: i18n.t('access_requests:date'),
     sortable: true,
-    selector: (row: IAccessRequest) => formatDate(row.createdOn),
+    cell: (row: IAccessRequest) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
 ];
 
@@ -86,7 +87,7 @@ const RejectedAccessRequestsTableHeader = [
     id: 'updatedOn',
     name: i18n.t('access_requests:rejected_date'),
     sortable: true,
-    selector: (row: IAccessRequest) => formatDate(row.updatedOn || new Date()),
+    cell: (row: IAccessRequest) => <CellLayout>{formatDate(row.updatedOn)}</CellLayout>,
   },
 ];
 

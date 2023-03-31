@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { RejectActivityLogDto } from 'src/api/activity-log/dto/reject-activity-log.dto';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { IActivityLogModel } from 'src/modules/activity-log/models/activity-log.model';
 import { ActivityLogFacade } from 'src/modules/activity-log/services/activity-log.facade';
@@ -14,6 +16,7 @@ export class RejectActivityLogUsecase
   constructor(
     private readonly getOneActivityLogUsecase: GetOneActivityLogUsecase,
     private readonly activityLogFacade: ActivityLogFacade,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
@@ -28,7 +31,7 @@ export class RejectActivityLogUsecase
       return log;
     }
 
-    return this.activityLogFacade.update(id, {
+    const rejected = await this.activityLogFacade.update(id, {
       status: ActivityLogStatus.REJECTED,
       approvedById: null,
       approvedOn: null,
@@ -36,5 +39,20 @@ export class RejectActivityLogUsecase
       rejectedOn: new Date(),
       rejectionReason,
     });
+
+    // Track the event
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS,
+      {
+        activityLogId: log.id,
+        volunteerId: log.volunteer?.id,
+        volunteerName: log.volunteer?.user?.name,
+        oldStatus: log.status,
+        newStatus: rejected.status,
+      },
+      admin,
+    );
+
+    return rejected;
   }
 }

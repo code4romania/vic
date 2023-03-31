@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { differenceInYears, endOfDay, format, formatISO9075, isSameDay } from 'date-fns';
 import { SelectItem } from '../../components/Select';
 import { ActivityLogStatus } from '../enums/activity-log.status.enum';
@@ -10,6 +11,20 @@ import { ListItem } from '../interfaces/list-item.interface';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
+};
+
+export const debouncePromise = (fn: any, delay: number) => {
+  let timeoutId: any = null;
+  return function (...args: any) {
+    return new Promise((resolve) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        resolve(fn(...args));
+      }, delay);
+    });
+  };
 };
 
 /**
