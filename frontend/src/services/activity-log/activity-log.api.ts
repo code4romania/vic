@@ -4,6 +4,7 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IActivityLogStatistics } from '../../common/interfaces/activity-log-statistics.interface';
 import { IActivityLog, IActivityLogListItem } from '../../common/interfaces/activity-log.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils/utils';
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import API from '../api';
 
@@ -29,10 +30,16 @@ export const getActivityLogs = async (
       orderDirection,
       search,
       status,
-      executionDateStart,
-      executionDateEnd,
-      registrationDateStart,
-      registrationDateEnd,
+      ...(executionDateStart
+        ? { executionDateStart: formatStartDateISO9075(executionDateStart) }
+        : {}),
+      ...(executionDateEnd ? { executionDateEnd: formatEndDateISO9075(executionDateEnd) } : {}),
+      ...(registrationDateStart
+        ? { registrationDateStart: formatStartDateISO9075(registrationDateStart) }
+        : {}),
+      ...(registrationDateEnd
+        ? { registrationDateEnd: formatEndDateISO9075(registrationDateEnd) }
+        : {}),
     },
   }).then((res) => res.data);
 };
@@ -80,6 +87,6 @@ const formatEditActivityLogPayload = (data: ActivityLogFormTypes): object => {
 
 //Activity Log Statistics
 export const getActivityLogStatistics = async (): Promise<IActivityLogStatistics> => {
-  return API.get('to be determined').then((res) => res.data);
-  // return Promise.resolve({ totalHours: '571378', approvalHours: '1123' });
+  // return API.get('to be determined').then((res) => res.data);
+  return Promise.resolve({ totalHours: '571378', approvalHours: '1123' });
 };

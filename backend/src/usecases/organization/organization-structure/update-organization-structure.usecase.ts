@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { ObjectDiff } from 'src/common/helpers/object-diff';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { OrganizationStructureExceptionMessages } from 'src/modules/organization/exceptions/organization-structure.exceptions';
 import {
   IOrganizationStructureModel,
   IUpdateOrganizationStructureModel,
 } from 'src/modules/organization/models/organization-structure.model';
 import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 
 @Injectable()
 export class UpdateOrganizationStructureUseCase
@@ -14,11 +18,13 @@ export class UpdateOrganizationStructureUseCase
 {
   constructor(
     private readonly organizationStructureFacade: OrganizationStructureFacade,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly exceptionService: ExceptionsService,
   ) {}
 
   public async execute(
     data: IUpdateOrganizationStructureModel,
+    admin: IAdminUserModel,
   ): Promise<IOrganizationStructureModel> {
     // 1. Find the record to be updated for duplicate check
     const toUpdate = await this.organizationStructureFacade.find({
@@ -44,6 +50,19 @@ export class UpdateOrganizationStructureUseCase
       );
     }
 
-    return this.organizationStructureFacade.update(data);
+    const updated = await this.organizationStructureFacade.update(data);
+
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.UPDATE_ORGANIZATION_STRUCTURE,
+      {
+        organizationStructureId: updated.id,
+        organizationStructureName: updated.name,
+        organizationStructureType: updated.type,
+      },
+      admin,
+      ObjectDiff.diff(toUpdate, updated),
+    );
+
+    return updated;
   }
 }

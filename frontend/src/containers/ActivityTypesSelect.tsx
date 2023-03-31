@@ -2,18 +2,14 @@ import React from 'react';
 import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
 import { mapDivisionListItemToSelectItem } from '../common/utils/utils';
 import MultiSelect, { MultiSelectProps } from '../components/MultiSelect';
-import { useActivityTypesQuery } from '../services/activity-type/activity-type.service';
+import { useActivityTypeListItemsQuery } from '../services/activity-type/activity-type.service';
 
 type ActivityTypesSelectProps = Omit<MultiSelectProps, 'options'>;
 
 const ActivityTypesSelect = (selectProps: ActivityTypesSelectProps) => {
-  const { data: divisionListItems } = useActivityTypesQuery(
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    ActivityTypeStatus.ACTIVE,
-  );
+  const { data: divisionListItems } = useActivityTypeListItemsQuery({
+    status: ActivityTypeStatus.ACTIVE,
+  });
 
   return (
     <MultiSelect

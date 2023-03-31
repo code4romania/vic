@@ -28,12 +28,12 @@ export class OrganizationController {
   @ApiBody({ type: UpdateOrganizationDescriptionDto })
   @Patch()
   patchOrganization(
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
     @Body() { description }: UpdateOrganizationDescriptionDto,
   ): Promise<OrganizationPresenter> {
     return this.updateOrganizationDescriptionUseCase.execute(
-      organizationId,
       description,
+      admin,
     );
   }
 }

@@ -1,6 +1,7 @@
-import { IsDate } from 'class-validator';
+import { IsDate, ValidateIf } from 'class-validator';
 
 export class UpdateAccessCodeDto {
   @IsDate()
-  endDate: Date;
+  @ValidateIf((_, value) => value !== null)
+  endDate: Date | null;
 }

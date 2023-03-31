@@ -42,6 +42,7 @@ import { DivisionType } from '../common/enums/division-type.enum';
 import { AgeRangeEnum } from '../common/enums/age-range.enum';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { getVolunteersForDownload } from '../services/volunteer/volunteer.api';
+import CellLayout from '../layouts/CellLayout';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
@@ -121,7 +122,9 @@ const ArchivedVolunteersTableHeader = [
     id: 'archivedOn',
     name: i18n.t('volunteers:archived_on'),
     sortable: true,
-    selector: (row: IVolunteer) => (row.archivedOn ? formatDate(row.archivedOn) : '-'),
+    cell: (row: IVolunteer) => (
+      <CellLayout>{row.archivedOn ? formatDate(row.archivedOn) : '-'}</CellLayout>
+    ),
   },
 ];
 
@@ -131,7 +134,9 @@ const BlockedVolunteersTableHeader = [
     id: 'blockedOn',
     name: i18n.t('volunteers:blocked_on'),
     sortable: true,
-    selector: (row: IVolunteer) => (row.blockedOn ? formatDate(row.blockedOn) : '-'),
+    cell: (row: IVolunteer) => (
+      <CellLayout>{row.blockedOn ? formatDate(row.blockedOn) : '-'}</CellLayout>
+    ),
   },
 ];
 

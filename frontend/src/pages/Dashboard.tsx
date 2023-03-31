@@ -7,8 +7,6 @@ import LineChartCard from '../components/LineChartCard';
 import PieChartCard from '../components/PieChartCard';
 
 const Dashboard = () => {
-  // for testing purpose only
-
   return (
     <PageLayout>
       <PageHeader>Dashboard</PageHeader>

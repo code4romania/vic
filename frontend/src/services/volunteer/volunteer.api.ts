@@ -107,13 +107,20 @@ export const blockVolunteer = async (id: string): Promise<IVolunteer> => {
   return API.patch(`volunteer/${id}/block`).then((res) => res.data);
 };
 
-//Volunteer Statistics
+export const getVolunteerListItems = async (params: {
+  status: VolunteerStatus;
+  search?: string;
+  orderBy?: string;
+  orderDirection?: OrderDirection;
+}): Promise<IPaginatedEntity<{ id: string; name: string }>> => {
+  return API.get('/listing/volunteers', { params }).then((res) => res.data);
+};
+
 export const getVolunteerStatistics = async (): Promise<IVolunteerStatistics> => {
   // return API.get('to be determined').then((res) => res.data);
   return Promise.resolve({ volunteers: '97573', requests: '820' });
 };
 
-//Volunteer Line Chart
 export const getVolunteerLineChart = async (filter: LineChartOption): Promise<DataSet[]> => {
   // return API.get('to be determined', {params: {filter}}).then((res) => res.data);
   console.log(filter);
