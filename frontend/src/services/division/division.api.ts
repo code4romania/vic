@@ -16,8 +16,10 @@ export const getDivisions = async (
   }).then((res) => res.data);
 };
 
-export const getDivisionsListItems = async (type: DivisionType): Promise<IDivisionListItem[]> => {
-  return API.get(`/organization-structure/${type}/all`).then((res) => res.data);
+export const getDivisionsListItems = async (
+  type: DivisionType,
+): Promise<IPaginatedEntity<Pick<IDivisionListItem, 'id' | 'name' | 'numberOfMembers'>>> => {
+  return API.get(`/listing/structures/${type}`).then((res) => res.data);
 };
 
 export const deleteDivision = async (id: string): Promise<void> => {

@@ -254,7 +254,11 @@
 
 /* react select overrides */
 .reactselect__control {
-  @apply max-w-[37rem] rounded-md text-sm font-roboto font-normal focus:border-indigo-500 focus:border-2 border border-cool-gray-200 !important;
+  @apply max-w-[37rem] rounded-md text-sm font-roboto font-normal  !important;
+}
+
+.reactselect__input:focus {
+  @apply ring-0 shadow-none;
 }
 
 .reactselect__value-container {
@@ -275,4 +279,28 @@
 
 .reactselect__menu {
   @apply max-w-[37rem];
+}
+
+div.reactselect__control.error-and-focused,
+div.reactselect__control.error-and-focused:hover {
+  @apply border-red-500 shadow-error;
+}
+
+div.reactselect__control.error,
+div.reactselect__control.error:hover {
+  @apply border-red-500 shadow-none;
+}
+
+div.reactselect__control.focused,
+div.reactselect__control.focused:hover {
+  @apply border-indigo-500 shadow-focused;
+}
+
+div.reactselect__control,
+div.reactselect__control:hover {
+  @apply border-cool-gray-200 py-[1px];
+}
+
+div.reactselect__placeholder {
+  @apply text-base;
 }

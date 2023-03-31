@@ -9,6 +9,7 @@ import {
   archiveActivityType,
   createActivityType,
   getActivityType,
+  getActivityTypeListItems,
   getActivityTypes,
   updateActivityType,
 } from './activity-type.api';
@@ -65,4 +66,15 @@ export const useArchiveActivityTypeMutation = () => {
     onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) =>
       Promise.resolve(error),
   });
+};
+
+// //Listing activity type
+export const useActivityTypeListItemsQuery = (params: { status?: ActivityTypeStatus }) => {
+  return useQuery(
+    ['activity-type-list-items', params.status],
+    () => getActivityTypeListItems(params),
+    {
+      onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) => error,
+    },
+  );
 };

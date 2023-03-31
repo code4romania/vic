@@ -14,6 +14,7 @@ import {
   ActivityLogModelTransformer,
   CreateActivityLogByAdminOptions,
   FindManyActivityLogsOptions,
+  IActivityLogCountHoursByStatus,
   IActivityLogListItemModel,
   IActivityLogModel,
   UpdateActivityLogOptions,
@@ -200,5 +201,37 @@ export class ActivityLogRepositoryService
     await this.activityLogRepo.update({ id }, { ...updates });
 
     return this.find(id);
+  }
+
+  async countHourByStatus(
+    organizationId: string,
+  ): Promise<IActivityLogCountHoursByStatus> {
+    const counters: {
+      status: ActivityLogStatus;
+      count: number;
+      hours: number;
+    }[] = await this.activityLogRepo
+      .createQueryBuilder('activityLog')
+      .select('activityLog.status', 'status')
+      .addSelect('activityLog.hours', 'hours')
+      .addSelect('COUNT(activityLog.id)', 'count')
+      .groupBy('activityLog.status')
+      .addGroupBy('activityLog.hours')
+      .where('activityLog.organizationId = :organizationId', {
+        organizationId,
+      })
+      .getRawMany();
+
+    return counters.reduce(
+      (acc, curr) => {
+        acc[curr.status] += curr.hours;
+        return acc;
+      },
+      {
+        pending: 0,
+        approved: 0,
+        rejected: 0,
+      },
+    );
   }
 }
