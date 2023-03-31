@@ -3,9 +3,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
-import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { VolunteerProfilePresenter } from './volunteer-profile.presenter';
 import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
+import { RegularUserPresenter } from 'src/api/auth/presenters/user.presenter';
 
 export class VolunteerPresenter {
   constructor(volunteer: IVolunteerModel) {
@@ -26,7 +26,7 @@ export class VolunteerPresenter {
       ? new VolunteerProfilePresenter(volunteer.volunteerProfile)
       : null;
     this.organizationId = volunteer.organization.id;
-    this.user = new IdAndNamePresenter<IRegularUserModel>(volunteer.user);
+    this.user = new RegularUserPresenter(volunteer.user);
 
     this.createdOn = volunteer.createdOn;
     this.updatedOn = volunteer.updatedOn;
@@ -59,7 +59,7 @@ export class VolunteerPresenter {
   @ApiProperty({
     description: 'User which is a volunteer in relation with the organization',
   })
-  user: IdAndNamePresenter<IRegularUserModel>;
+  user: RegularUserPresenter;
 
   @Expose()
   @ApiProperty({ description: 'Date when the volunteer was archived' })
