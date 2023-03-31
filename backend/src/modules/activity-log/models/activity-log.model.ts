@@ -37,7 +37,7 @@ export interface IActivityLogModel extends IBaseModel {
 
   volunteer: IVolunteerModel;
   event?: IEventModel;
-  activityType: IActivityTypeModel;
+  activityType?: IActivityTypeModel;
   createdByAdmin?: IAdminUserModel; // In case is created by an Admin, will automatically be solved by the same admin
 
   approvedBy?: IAdminUserModel;
