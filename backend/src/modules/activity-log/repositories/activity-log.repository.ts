@@ -215,10 +215,8 @@ export class ActivityLogRepositoryService
       .addSelect('activityLog.hours', 'hours')
       .addSelect('COUNT(activityLog.id)', 'count')
       .groupBy('activityLog.status')
-      .addGroupBy('activityLog.hours');
-
-    if (organizationId)
-      query.andWhere('activityLog.organizationId = :organizationId', {
+      .addGroupBy('activityLog.hours')
+      .where('activityLog.organizationId = :organizationId', {
         organizationId,
       });
 

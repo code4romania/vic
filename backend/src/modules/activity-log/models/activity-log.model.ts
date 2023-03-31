@@ -114,8 +114,8 @@ export type FindManyActivityLogsOptions = {
 } & IBasePaginationFilterModel;
 
 export type FindManyActivityLogCounterOptions = {
+  organizationId: string;
   volunteerId?: string;
-  organizationId?: string;
 };
 
 export class ActivityLogModelTransformer {
