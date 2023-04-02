@@ -25,7 +25,7 @@ import { DashboardFilterInterval } from '../enums/dashboard-filter-interval.enum
   
   --returns the latest status for each day
   select 
-      to_char(date_trunc('day', daily_status.day), 'DD Mon') as date,
+      daily_status.day as date,
       daily_status.status,
       case 
           when daily_status.status is not null 
@@ -64,7 +64,7 @@ import { DashboardFilterInterval } from '../enums/dashboard-filter-interval.enum
   union all 
   --returns the latest status for each month
   select 
-      to_char(date_trunc('month', monthly_status.month), 'Mon YYYY') as date,
+      monthly_status.month as date,
       monthly_status.status,
       case 
           when monthly_status.status is not null 
@@ -102,7 +102,7 @@ import { DashboardFilterInterval } from '../enums/dashboard-filter-interval.enum
   union all
   --returns the latest status for each year
   select 
-      to_char(date_trunc('year', yearly_status.year), 'YYYY') as date,
+      yearly_status.year as date,
       yearly_status.status,
       case 
           when yearly_status.status is not null 

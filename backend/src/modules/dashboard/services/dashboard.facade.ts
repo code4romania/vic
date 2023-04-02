@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
   FindDashboardVolunteerStatusChartOptions,
-  IDashboardVolunteerStatusChart,
+  IDashboardVolunteerStatusTimeseries,
 } from '../model/dashboard.model';
 import { DashboardVolunteerStatusRepository } from '../repositories/dashboard-volunteer-status.repository';
 
@@ -13,7 +13,7 @@ export class DashboardFacade {
 
   public findDashboardVolunteerStatusTimeseries(
     findOptions: FindDashboardVolunteerStatusChartOptions,
-  ): Promise<IDashboardVolunteerStatusChart[]> {
+  ): Promise<IDashboardVolunteerStatusTimeseries[]> {
     return this.dashboardVolunteerStatusRepository.findMany(findOptions);
   }
 }

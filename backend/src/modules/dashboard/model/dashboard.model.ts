@@ -10,6 +10,12 @@ export interface IDashboardVolunteerStatusChart {
   organizationId: string;
 }
 
+export interface IDashboardVolunteerStatusTimeseries {
+  date: string;
+  active: number;
+  archived: number;
+}
+
 export type FindDashboardVolunteerStatusChartOptions = {
   organizationId: string;
   interval: DashboardFilterInterval;
