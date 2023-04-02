@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import PageLayout from '../layouts/PageLayout';
 import Card from '../layouts/CardLayout';
-import CardHeader from '../components/CardHeader';
-import CardBody from '../components/CardBody';
-import Tabs from '../components/Tabs';
-import DataTableComponent from '../components/DataTableComponent';
+import CardHeader from './CardHeader';
+import CardBody from './CardBody';
+import DataTableComponent from './DataTableComponent';
 import i18n from '../common/config/i18n';
-import { ArrowDownTrayIcon, EyeIcon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon, EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
-import Popover from '../components/Popover';
+import Popover from './Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import Select, { SelectItem } from '../components/Select';
+import Select, { SelectItem } from './Select';
 import { ActivityLogStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import MediaCell from '../components/MediaCell';
-import PageHeaderAdd from '../components/PageHeaderAdd';
+import MediaCell from './MediaCell';
 import {
   useActivityLogCounterQuery,
   useActivityLogQuery,
@@ -23,22 +20,17 @@ import {
 } from '../services/activity-log/activity-log.service';
 import { IActivityLogListItem } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
-import StatusWithMarker from '../components/StatusWithMarker';
+import StatusWithMarker from './StatusWithMarker';
 import { useNavigate } from 'react-router';
-import EditActivityLog from '../components/EditActivityLog';
-import ActivityLogSidePanel from '../components/ActivityLogSidePanel';
-import DataTableFilters from '../components/DataTableFilters';
-import DateRangePicker from '../components/DateRangePicker';
+import EditActivityLog from './EditActivityLog';
+import ActivityLogSidePanel from './ActivityLogSidePanel';
+import DataTableFilters from './DataTableFilters';
+import DateRangePicker from './DateRangePicker';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
+import Button from './Button';
 import AdminSelect from '../containers/AdminSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
-import Button from '../components/Button';
-
-const ActivityLogTabsOptions: SelectItem<ActivityLogResolutionStatus>[] = [
-  { key: ActivityLogResolutionStatus.NEW, value: i18n.t('activity_log:pending') },
-  { key: ActivityLogResolutionStatus.SOLVED, value: i18n.t('activity_log:past') },
-];
 
 const StatusOptions: SelectItem<ActivityLogStatus>[] = [
   { key: ActivityLogStatus.APPROVED, value: i18n.t('activity_log:display_status.approved') },
@@ -66,7 +58,7 @@ const PendingActivityLogTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    cell: (row: IActivityLogListItem) => <CellLayout>{`${row.hours}h`}</CellLayout>,
+    selector: (row: IActivityLogListItem) => `${row.hours}h`,
   },
   {
     id: 'date',
@@ -74,20 +66,7 @@ const PendingActivityLogTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row?.date)}</CellLayout>,
-  },
-  {
-    id: 'user.name',
-    name: i18n.t('volunteer:name', { status: '' }),
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    cell: (row: IActivityLogListItem) =>
-      row.volunteer && (
-        <CellLayout>
-          <a>{row.volunteer.name}</a>
-        </CellLayout>
-      ),
+    selector: (row: IActivityLogListItem) => formatDate(row?.date),
   },
   {
     id: 'createdOn',
@@ -95,7 +74,7 @@ const PendingActivityLogTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
+    selector: (row: IActivityLogListItem) => formatDate(row.createdOn),
   },
 ];
 
@@ -120,7 +99,7 @@ const PastActivityLogTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    cell: (row: IActivityLogListItem) => <CellLayout>{`${row.hours}h`}</CellLayout>,
+    selector: (row: IActivityLogListItem) => `${row.hours}h`,
   },
   {
     id: 'date',
@@ -128,20 +107,7 @@ const PastActivityLogTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row.date)}</CellLayout>,
-  },
-  {
-    id: 'user.name',
-    name: i18n.t('volunteer:name', { status: '' }),
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    cell: (row: IActivityLogListItem) =>
-      row.volunteer && (
-        <CellLayout>
-          <a>{row.volunteer?.name}</a>
-        </CellLayout>
-      ),
+    selector: (row: IActivityLogListItem) => formatDate(row.date),
   },
   {
     id: 'status',
@@ -159,13 +125,15 @@ const PastActivityLogTableHeader = [
   },
 ];
 
-const ActivityLogs = () => {
+const ActivityLogTable = ({
+  resolutionStatus,
+  volunteerId,
+}: {
+  resolutionStatus: ActivityLogResolutionStatus;
+  volunteerId: string;
+}) => {
   // routing
   const navigate = useNavigate();
-  // active tab
-  const [activeTab, setActiveTab] = useState<ActivityLogResolutionStatus>(
-    ActivityLogResolutionStatus.NEW,
-  );
   // pagination state
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
@@ -195,8 +163,9 @@ const ActivityLogs = () => {
   } = useActivityLogsQuery({
     limit: rowsPerPage as number,
     page: page as number,
-    resolutionStatus: activeTab,
+    resolutionStatus: resolutionStatus,
     orderBy: orderByColumn,
+    volunteerId,
     orderDirection,
     approvedOrRejectedById: approvedOrRejectedBy?.value,
     search: searchWord,
@@ -246,7 +215,7 @@ const ActivityLogs = () => {
   };
 
   const onAddButtonPress = () => {
-    navigate('add');
+    navigate('/activity-log/add');
   };
 
   const onView = (row: IActivityLogListItem) => {
@@ -263,10 +232,6 @@ const ActivityLogs = () => {
     setIsViewActivityLogSidePanelOpen(true);
     setIsEditActivityLogSidePanelOpen(false);
     if (shouldRefetch) refetch();
-  };
-
-  const onTabClick = (tab: ActivityLogResolutionStatus) => {
-    setActiveTab(tab);
   };
 
   const onCloseSidePanel = (shouldRefetch?: boolean) => {
@@ -298,86 +263,92 @@ const ActivityLogs = () => {
   };
 
   return (
-    <PageLayout>
-      <PageHeaderAdd onAddButtonPress={onAddButtonPress} label={i18n.t('activity_log:add')}>
-        {i18n.t('side_menu:options.activity_log')}
-      </PageHeaderAdd>
-      <p className="text-cool-gray-500">{i18n.t('activity_log:description')}</p>
-      <Tabs<ActivityLogResolutionStatus> tabs={ActivityLogTabsOptions} onClick={onTabClick}>
-        <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
+    <>
+      <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
+        <DateRangePicker
+          label={i18n.t('activity_log:filters.execution')}
+          onChange={setExecutionDateRange}
+          value={executionDateRange.length > 0 ? executionDateRange : undefined}
+          id="execution-on-range__picker"
+        />
+        {resolutionStatus === ActivityLogResolutionStatus.NEW && (
           <DateRangePicker
-            label={i18n.t('activity_log:filters.execution')}
-            onChange={setExecutionDateRange}
-            value={executionDateRange.length > 0 ? executionDateRange : undefined}
-            id="execution-on-range__picker"
+            label={i18n.t('activity_log:filters.registration')}
+            onChange={setRegistrationDateRange}
+            value={registrationDateRange.length > 0 ? registrationDateRange : undefined}
+            id="registration-on-range__picker"
           />
-          {activeTab === ActivityLogResolutionStatus.NEW && (
-            <DateRangePicker
-              label={i18n.t('activity_log:filters.registration')}
-              onChange={setRegistrationDateRange}
-              value={registrationDateRange.length > 0 ? registrationDateRange : undefined}
-              id="registration-on-range__picker"
+        )}
+        {resolutionStatus === ActivityLogResolutionStatus.SOLVED && (
+          <>
+            <Select
+              label={`${i18n.t('activity_log:status')}`}
+              placeholder={`${i18n.t('general:select', { item: '' })}`}
+              options={StatusOptions}
+              onChange={setStatus}
+              selected={status}
             />
-          )}
-          {activeTab === ActivityLogResolutionStatus.SOLVED && (
-            <>
-              <Select
-                label={`${i18n.t('activity_log:status')}`}
-                placeholder={`${i18n.t('general:select', { item: '' })}`}
-                options={StatusOptions}
-                onChange={setStatus}
-                selected={status}
-              />
-              <AdminSelect
-                label={i18n.t('activity_log:filters.approved_rejected')}
-                onSelect={setApprovedOrRejectedBy}
-                defaultValue={approvedOrRejectedBy}
-              />
-            </>
-          )}
-        </DataTableFilters>
-        <Card>
-          <CardHeader>
-            <h2>
-              {activeTab === ActivityLogResolutionStatus.NEW
-                ? i18n.t('activity_log:pending_header', {
-                    hours: counters?.pending ?? '-',
-                  })
-                : `${i18n.t('activity_log:past_header', {
-                    hours: counters?.approved ?? '-',
-                    rejected: counters?.rejected ?? '-',
-                  })}`}
-            </h2>
-            {activeTab === ActivityLogResolutionStatus.SOLVED && (
+            <AdminSelect
+              label={i18n.t('activity_log:filters.approved_rejected')}
+              onSelect={setApprovedOrRejectedBy}
+              defaultValue={approvedOrRejectedBy}
+            />
+          </>
+        )}
+      </DataTableFilters>
+      <Card>
+        <CardHeader>
+          <h2>
+            {resolutionStatus === ActivityLogResolutionStatus.NEW
+              ? i18n.t('activity_log:pending_header', {
+                  hours: counters?.pending ?? '-',
+                })
+              : `${i18n.t('activity_log:past_header', {
+                  hours: counters?.approved ?? '-',
+                  rejected: counters?.rejected ?? '-',
+                })}`}
+          </h2>
+          {resolutionStatus === ActivityLogResolutionStatus.SOLVED && (
+            <div className="flex gap-2 lg:gap-6 flex-wrap">
               <Button
-                label={i18n.t('activity_log:download')}
-                className="btn-outline-secondary"
+                label={i18n.t('general:download_table')}
+                className="btn-outline-secondary grow"
                 icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
                 onClick={onExport}
+                aria-label={`${i18n.t('activity_log:download')}`}
+                type="button"
               />
-            )}
-          </CardHeader>
-          <CardBody>
-            <DataTableComponent
-              columns={[
-                ...(activeTab === ActivityLogResolutionStatus.NEW
-                  ? PendingActivityLogTableHeader
-                  : PastActivityLogTableHeader),
-                buildActivityLogActionColumn(),
-              ]}
-              data={activityLogs?.items}
-              loading={isActivityLogsLoading}
-              pagination
-              paginationPerPage={rowsPerPage}
-              paginationTotalRows={activityLogs?.meta?.totalItems}
-              paginationDefaultPage={page}
-              onChangeRowsPerPage={setRowsPerPage}
-              onChangePage={setPage}
-              onSort={onSort}
-            />
-          </CardBody>
-        </Card>
-      </Tabs>
+              <Button
+                label={i18n.t('activity_log:add')}
+                className="btn-primary grow"
+                icon={<PlusIcon className="h-5 w-5" />}
+                onClick={onAddButtonPress}
+                aria-label={`${i18n.t('activity_log:add')}`}
+                type="button"
+              />
+            </div>
+          )}
+        </CardHeader>
+        <CardBody>
+          <DataTableComponent
+            columns={[
+              ...(resolutionStatus === ActivityLogResolutionStatus.NEW
+                ? PendingActivityLogTableHeader
+                : PastActivityLogTableHeader),
+              buildActivityLogActionColumn(),
+            ]}
+            data={activityLogs?.items}
+            loading={isActivityLogsLoading}
+            pagination
+            paginationPerPage={rowsPerPage}
+            paginationTotalRows={activityLogs?.meta?.totalItems}
+            paginationDefaultPage={page}
+            onChangeRowsPerPage={setRowsPerPage}
+            onChangePage={setPage}
+            onSort={onSort}
+          />
+        </CardBody>
+      </Card>
       <ActivityLogSidePanel
         onClose={onCloseSidePanel}
         onEdit={onEdit}
@@ -389,8 +360,8 @@ const ActivityLogs = () => {
         isOpen={isEditctivityLogSidePanelOpen}
         activityLog={activityLog}
       />
-    </PageLayout>
+    </>
   );
 };
 
-export default ActivityLogs;
+export default ActivityLogTable;

@@ -37,7 +37,7 @@ export interface IActivityLogModel extends IBaseModel {
 
   volunteer: IVolunteerModel;
   event?: IEventModel;
-  activityType: IActivityTypeModel;
+  activityType?: IActivityTypeModel;
   createdByAdmin?: IAdminUserModel; // In case is created by an Admin, will automatically be solved by the same admin
 
   approvedBy?: IAdminUserModel;
@@ -74,7 +74,7 @@ export type CreateActivityLogByAdminOptions = Pick<
   volunteerId: string;
   organizationId: string;
   eventId?: string;
-  activityTypeId: string;
+  activityTypeId?: string;
   createdByAdminId: string;
   approvedById: string;
 };
@@ -113,6 +113,11 @@ export type FindManyActivityLogsOptions = {
   approvedOrRejectedById?: string;
 } & IBasePaginationFilterModel;
 
+export type FindManyActivityLogCounterOptions = {
+  organizationId: string;
+  volunteerId?: string;
+};
+
 export class ActivityLogModelTransformer {
   static fromEntityToListItem(
     entity: ActivityLogEntity,
@@ -133,11 +138,13 @@ export class ActivityLogModelTransformer {
             name: entity.event.name,
           }
         : null,
-      activityType: {
-        id: entity.activityType.id,
-        name: entity.activityType.name,
-        icon: entity.activityType.icon,
-      },
+      activityType: entity.activityType
+        ? {
+            id: entity.activityType.id,
+            name: entity.activityType.name,
+            icon: entity.activityType.icon,
+          }
+        : null,
     };
   }
 
