@@ -133,7 +133,8 @@ import { DashboardFilterInterval } from '../enums/dashboard-filter-interval.enum
       where date_trunc('year', year_series.year) > date_trunc('year', (current_date - 365*5))
       ) yearly_status
   where yearly_status.rnk=1
-  group by yearly_status.year, yearly_status.status, yearly_status.organization_id`,
+  group by yearly_status.year, yearly_status.status, yearly_status.organization_id
+  `,
 })
 export class DashboardVolunteerStatusView {
   @ViewColumn()
