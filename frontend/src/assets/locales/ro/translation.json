@@ -629,6 +629,9 @@
     "card_title": "Istoric acțiuni",
     "area": "Tip Actiune",
     "author": "Autor",
+    "filters": {
+      "execution": "Perioada efectuare actiune"
+    },
     "UPDATE_ORGANIZATION_PROFILE": {
       "label": "Update Organization Profile",
       "description": "Descrierea organizatiei {{organizationName}} a fost modificata."

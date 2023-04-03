@@ -14,6 +14,8 @@ import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { useActionsQuery } from '../services/actions/actions.service';
 import { PaginationConfig } from '../common/constants/pagination';
+import DataTableFilters from '../components/DataTableFilters';
+import DateRangePicker from '../components/DateRangePicker';
 
 const TableHeader = [
   {
@@ -57,12 +59,23 @@ const ActionsArchive = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(PaginationConfig.defaultRowsPerPage);
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+  // filters
+  const [searchWord, setSearchWord] = useState<string>();
+  const [actionDateRange, setActionDateRange] = useState<Date[]>([]);
 
   const {
     data: actions,
     isLoading: isActionsLoading,
     error: actionsError,
-  } = useActionsQuery({ orderBy: orderByColumn, orderDirection, page, limit: rowsPerPage });
+  } = useActionsQuery({
+    orderBy: orderByColumn,
+    orderDirection,
+    page,
+    limit: rowsPerPage,
+    search: searchWord,
+    actionStartDate: actionDateRange[0],
+    actionEndDate: actionDateRange[1],
+  });
 
   useEffect(() => {
     if (actionsError)
@@ -78,9 +91,22 @@ const ActionsArchive = () => {
     );
   };
 
+  const onResetFilters = () => {
+    setSearchWord(undefined);
+    setActionDateRange([]);
+  };
+
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.actions_archive')}</PageHeader>
+      <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
+        <DateRangePicker
+          label={i18n.t('actions_archive:filters.execution')}
+          onChange={setActionDateRange}
+          value={actionDateRange.length > 0 ? actionDateRange : undefined}
+          id="execution-on-range__picker"
+        />
+      </DataTableFilters>
       <Card>
         <CardHeader>
           <h2>{i18n.t(`actions_archive:card_title`)}</h2>
