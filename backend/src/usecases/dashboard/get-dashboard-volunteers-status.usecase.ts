@@ -9,7 +9,9 @@ export class GetDashboardVolunteersStatusUseCase
 {
   constructor(private readonly dashboardFacade: DashboardFacade) {}
 
-  public async execute(): Promise<IDashboardVolunteersStatus> {
-    return this.dashboardFacade.countVolunteersStatus();
+  public async execute(
+    organizationId: string,
+  ): Promise<IDashboardVolunteersStatus> {
+    return this.dashboardFacade.countVolunteersStatus(organizationId);
   }
 }

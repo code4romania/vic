@@ -9,7 +9,9 @@ export class GetDashboardVolunteersHoursUseCase
 {
   constructor(private readonly dashboardFacade: DashboardFacade) {}
 
-  public async execute(): Promise<IDashboardVolunteersHours> {
-    return this.dashboardFacade.countVolunteersHours();
+  public async execute(
+    organizationId: string,
+  ): Promise<IDashboardVolunteersHours> {
+    return this.dashboardFacade.countVolunteersHours(organizationId);
   }
 }

@@ -28,8 +28,8 @@ export interface IDashboardVolunteersHours {
 }
 
 export interface IDashboardVolunteersStatus {
-  active: number;
-  pending: number;
+  activeVolunteers: number;
+  pendingRequest: number;
 }
 
 export type FindDashboardVolunteerStatusChartOptions = {

@@ -117,7 +117,9 @@ export class DashboardRepository implements IDashboardRepository {
     return query.getRawMany();
   }
 
-  countVolunteersHours(): Promise<IDashboardVolunteersHours> {
+  countVolunteersHours(
+    organizationId: string,
+  ): Promise<IDashboardVolunteersHours> {
     return this.activityLogRepository
       .createQueryBuilder('activityLog')
       .select(
@@ -128,6 +130,7 @@ export class DashboardRepository implements IDashboardRepository {
         'SUM(CASE WHEN activityLog.status = :pending THEN activityLog.hours ELSE 0 END)',
         'pending',
       )
+      .where('activityLog.organizationId = :organizationId', { organizationId })
       .setParameters({
         approved: ActivityLogStatus.APPROVED,
         pending: ActivityLogStatus.PENDING,
@@ -135,22 +138,28 @@ export class DashboardRepository implements IDashboardRepository {
       .getRawOne();
   }
 
-  async countVolunteersStatus(): Promise<IDashboardVolunteersStatus> {
+  async countVolunteersStatus(
+    organizationId: string,
+  ): Promise<IDashboardVolunteersStatus> {
     const activeVolunteersCount = await this.volunteerRepository
       .createQueryBuilder('volunteer')
-      .where('volunteer.status = :status', { status: VolunteerStatus.ACTIVE })
+      .where('volunteer.organizationId = :organizationId', { organizationId })
+      .andWhere('volunteer.status = :status', {
+        status: VolunteerStatus.ACTIVE,
+      })
       .getCount();
 
     const pendingAccessRequestsCount = await this.accessRequestRepository
       .createQueryBuilder('request')
-      .where('request.status = :status', {
+      .where('request.organizationId = :organizationId', { organizationId })
+      .andWhere('request.status = :status', {
         status: AccessRequestStatus.PENDING,
       })
       .getCount();
 
     return {
-      active: activeVolunteersCount,
-      pending: pendingAccessRequestsCount,
+      activeVolunteers: activeVolunteersCount,
+      pendingRequest: pendingAccessRequestsCount,
     };
   }
 }

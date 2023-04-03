@@ -29,11 +29,15 @@ export class DashboardFacade {
     );
   }
 
-  async countVolunteersHours(): Promise<IDashboardVolunteersHours> {
-    return this.dashboardRepository.countVolunteersHours();
+  async countVolunteersHours(
+    organizationId: string,
+  ): Promise<IDashboardVolunteersHours> {
+    return this.dashboardRepository.countVolunteersHours(organizationId);
   }
 
-  async countVolunteersStatus(): Promise<IDashboardVolunteersStatus> {
-    return this.dashboardRepository.countVolunteersStatus();
+  async countVolunteersStatus(
+    organizationId: string,
+  ): Promise<IDashboardVolunteersStatus> {
+    return this.dashboardRepository.countVolunteersStatus(organizationId);
   }
 }

@@ -14,6 +14,10 @@ export interface IDashboardRepository {
   findVolunteersStatisticsGrouped(
     findOptions: FindDashboardVolunteersGrouped,
   ): Promise<IDashaboardVolunteersGrouped[]>;
-  countVolunteersHours(): Promise<IDashboardVolunteersHours>;
-  countVolunteersStatus(): Promise<IDashboardVolunteersStatus>;
+  countVolunteersHours(
+    organizationId: string,
+  ): Promise<IDashboardVolunteersHours>;
+  countVolunteersStatus(
+    organizationId: string,
+  ): Promise<IDashboardVolunteersStatus>;
 }

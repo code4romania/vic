@@ -4,19 +4,19 @@ import { IDashboardVolunteersStatus } from 'src/modules/dashboard/model/dashboar
 
 export class VolunteerStatusPresenter {
   constructor(data: IDashboardVolunteersStatus) {
-    this.active = data.active;
-    this.pending = data.pending;
+    this.activeVolunteers = data.activeVolunteers;
+    this.pendingRequest = data.pendingRequest;
   }
 
   @Expose()
   @ApiProperty({
     description: 'Number of active volunteers',
   })
-  active: number;
+  activeVolunteers: number;
 
   @Expose()
   @ApiProperty({
     description: 'Number of pending access requests',
   })
-  pending: number;
+  pendingRequest: number;
 }
