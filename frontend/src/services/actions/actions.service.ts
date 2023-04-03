@@ -6,6 +6,8 @@ import { IBusinessException } from '../../common/interfaces/business-exception.i
 import { getActions } from './actions.api';
 
 export const useActionsQuery = (params: {
+  page: number;
+  limit: number;
   search?: string;
   orderBy?: string;
   orderDirection?: OrderDirection;
@@ -16,6 +18,8 @@ export const useActionsQuery = (params: {
   return useQuery(
     [
       'actions',
+      params.page,
+      params.limit,
       params.search,
       params.orderBy,
       params.orderDirection,

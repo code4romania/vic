@@ -628,21 +628,28 @@
   "actions_archive": {
     "card_title": "Istoric acțiuni",
     "area": "Tip Actiune",
+    "author": "Autor",
     "UPDATE_ORGANIZATION_PROFILE": {
       "label": "Update Organization Profile",
       "description": "Descrierea organizatiei {{organizationName}} a fost modificata."
     },
     "CREATE_ORGANIZATION_STRUCTURE": {
       "label": "Create Organization Structure",
-      "description": "A fost creata {{organizationStructureType}} cu numele {{organizationStructureName}}."
+      "branch": "A fost creata filiala cu numele {{organizationStructureName}}.",
+      "department": "A fost creat departamentul cu numele {{organizationStructureName}}.",
+      "role": "A fost creat rolul cu numele {{organizationStructureName}}."
     },
     "UPDATE_ORGANIZATION_STRUCTURE": {
       "label": "Update Organization Structure",
-      "description": "A fost modificat numele {{organizationStructureType}} din {{organizationStructureNameInitial}} in {{organizationStructureNameFinal}}."
+      "branch": "A fost modificat numele filialei din {{organizationStructureNameInitial}} in {{organizationStructureNameFinal}}.",
+      "department": "A fost modificat numele departamentului din {{organizationStructureNameInitial}} in {{organizationStructureNameFinal}}.",
+      "role": "A fost modificat numele rolului din {{organizationStructureNameInitial}} in {{organizationStructureNameFinal}}."
     },
     "DELETE_ORGANIZATION_STRUCTURE": {
       "label": "Delete Organization Structure",
-      "description": "{{organizationStructureType}} cu numele {{organizationStructureName}} a fost sters."
+      "branch": "Filiala cu numele {{organizationStructureName}} a fost stearsa.",
+      "department": "Departamentul cu numele {{organizationStructureName}} a fost sters.",
+      "role": "Rolul cu numele {{organizationStructureName}} a fost sters."
     },
     "APPROVE_ACCESS_REQUEST": {
       "label": "Approve Access Request",
@@ -670,7 +677,8 @@
     },
     "CHANGE_ACTIVITY_LOG_STATUS": {
       "label": "Change Activity Log Status",
-      "description": "Orele de volunatriat pentru {{volunteerName}} au fost {{newState}}"
+      "rejected": "Orele de volunatriat pentru {{volunteerName}} au fost respinse",
+      "approved": "Orele de volunatriat pentru {{volunteerName}} au fost aprobate"
     },
     "CREATE_ACTIVITY_TYPE": {
       "label": "Create Activity Type",
@@ -698,7 +706,7 @@
     },
     "CHANGE_EVENT_STATUS": {
       "label": "Change Event Status",
-      "description": "Statusul evenimentului pentru {{eventName}} a fost schimbat din {{oldStatus}} in {newStatus}."
+      "description": "Statusul evenimentului pentru {{eventName}} a fost schimbat din {{oldStatus}} in {{newStatus}}."
     },
     "CREATE_ANNOUNCEMENT": {
       "label": "Create Announcement",

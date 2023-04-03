@@ -8,6 +8,9 @@ import { AnnouncementStatus } from '../enums/announcement-status.enum';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { EventStatus } from '../enums/event-status';
 import { ListItem } from '../interfaces/list-item.interface';
+import { TrackedEventName } from '../enums/actions.enum';
+import { IEventData } from '../interfaces/action.interface';
+import i18n from '../config/i18n';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
@@ -119,3 +122,55 @@ export const mapUserToListItem = (item: IDivisionListItem): ListItem => ({
   label: item.name,
   value: item.id,
 });
+
+export const mapEventDataToActionDescription = (
+  eventName: TrackedEventName,
+  eventData: IEventData,
+  changes: object,
+): string => {
+  switch (eventName) {
+    //Organization Structure
+    case TrackedEventName.UPDATE_ORGANIZATION_PROFILE:
+      return `${i18n.t(`actions_archive:${eventName}.description`, { ...eventData })}`;
+    case TrackedEventName.CREATE_ORGANIZATION_STRUCTURE:
+      return `${i18n.t(`actions_archive:${eventName}.${eventData.organizationStructureType}`, {
+        organizationStructureName: eventData.organizationStructureName,
+      })}`;
+    case TrackedEventName.UPDATE_ORGANIZATION_STRUCTURE:
+      return `${i18n.t(`actions_archive:${eventName}.${eventData.organizationStructureType}`, {
+        organizationStructureNameInitial: changes.name.original,
+        organizationStructureNameFinal: changes.name.updated,
+      })}`;
+    case TrackedEventName.DELETE_ORGANIZATION_STRUCTURE:
+      return `${i18n.t(`actions_archive:${eventName}.${eventData.organizationStructureType}`, {
+        ...eventData,
+      })}`;
+
+    //Activity Log
+    case TrackedEventName.REGISTER_ACTIVITY_LOG:
+      return `${i18n.t(`actions_archive:${eventName}.description`, { ...eventData })}`;
+    case TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS:
+      return `${i18n.t(`actions_archive:${eventName}.${eventData.newStatus}`, { ...eventData })}`;
+
+    //Access Requests, Volunteer, Activity type, Event, Announcement
+    case TrackedEventName.APPROVE_ACCESS_REQUEST:
+    case TrackedEventName.REJECT_ACCESS_REQUEST:
+    case TrackedEventName.DELETE_ACCESS_REQUEST:
+    case TrackedEventName.CHANGE_VOLUNTEER_STATUS:
+    case TrackedEventName.UPDATE_VOLUNTEER_PROFILE:
+    case TrackedEventName.CREATE_ACTIVITY_TYPE:
+    case TrackedEventName.UPDATE_ACTIVITY_TYPE:
+    case TrackedEventName.CHANGE_ACTIVITY_TYPE_STATUS:
+    case TrackedEventName.CREATE_EVENT:
+    case TrackedEventName.UPDATE_EVENT:
+    case TrackedEventName.DELETE_EVENT:
+    case TrackedEventName.CHANGE_EVENT_STATUS:
+    case TrackedEventName.CREATE_ANNOUNCEMENT:
+    case TrackedEventName.PUBLISH_ANNOUNCEMENT:
+    case TrackedEventName.DELETE_ANNOUNCEMENT:
+      return `${i18n.t(`actions_archive:${eventName}.description`, { ...eventData })}`;
+
+    default:
+      return '-';
+  }
+};

@@ -4,6 +4,8 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 import API from '../api';
 
 export const getActions = (params: {
+  page: number;
+  limit: number;
   search?: string;
   orderBy?: string;
   orderDirection?: OrderDirection;
