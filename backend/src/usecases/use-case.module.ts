@@ -80,6 +80,7 @@ import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions
 import { GetActivityLogCountersUsecase } from './activity-log/get-activity-log-counters.usecase';
 import { DashboardModule } from 'src/modules/dashboard/dashboard.module';
 import { GetDashboardVolunteerStatusTimeseriesUsecase } from './dashboard/get-dashboard-volunteer-status-timeseries.usecase';
+import { GetDashboardVolunteerGroupedUsecase } from './dashboard/get-dashboard-volunteers-grouped.usecase';
 
 @Module({
   imports: [
@@ -180,6 +181,7 @@ import { GetDashboardVolunteerStatusTimeseriesUsecase } from './dashboard/get-da
     GetManyActionsArchiveUseCase,
     // Dashboard
     GetDashboardVolunteerStatusTimeseriesUsecase,
+    GetDashboardVolunteerGroupedUsecase,
   ],
   exports: [
     // Organization
@@ -265,6 +267,7 @@ import { GetDashboardVolunteerStatusTimeseriesUsecase } from './dashboard/get-da
     GetManyActionsArchiveUseCase,
     // Dashboard
     GetDashboardVolunteerStatusTimeseriesUsecase,
+    GetDashboardVolunteerGroupedUsecase,
   ],
 })
 export class UseCaseModule {}

@@ -1,5 +1,6 @@
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { DashboardFilterInterval } from '../enums/dashboard-filter-interval.enum';
+import { DashboardFilteringGroups } from '../enums/dashboard-filtering-groups.enum';
 
 export interface IDashboardVolunteerStatusChart {
   date: string;
@@ -16,7 +17,17 @@ export interface IDashboardVolunteerStatusTimeseries {
   archived: number;
 }
 
+export interface IDashaboardVolunteersGrouped {
+  name: string;
+  count: number;
+}
+
 export type FindDashboardVolunteerStatusChartOptions = {
   organizationId: string;
   interval: DashboardFilterInterval;
+};
+
+export type FindDashboardVolunteersGrouped = {
+  organizationId: string;
+  group: DashboardFilteringGroups;
 };

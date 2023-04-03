@@ -3,8 +3,8 @@ import {
   IDashboardVolunteerStatusTimeseries,
 } from '../model/dashboard.model';
 
-export interface IDashboardVolunteerStatusRepository {
-  findMany(
+export interface IDashboardRepository {
+  findDashboardVolunteerStatusTimeseries(
     findOptions: FindDashboardVolunteerStatusChartOptions,
   ): Promise<IDashboardVolunteerStatusTimeseries[]>;
 }
