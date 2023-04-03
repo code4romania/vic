@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import {
   IsDate,
   IsNumber,
@@ -12,13 +11,11 @@ import {
 
 export class CreateActivityLogByAdminDto {
   @IsDate()
-  @Type(() => Date)
   date: Date;
 
   @IsNumber()
   @Min(1)
   @Max(1000)
-  @Type(() => Number)
   hours: number;
 
   @IsString()

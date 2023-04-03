@@ -42,6 +42,7 @@ import { Response } from 'express';
 import { GetManyForDownloadEventUseCase } from 'src/usecases/event/get-many-for-download-event.usecase';
 import { GetManyForDownloadEventRSVPUseCase } from 'src/usecases/event/RSVP/get-many-for-download-rsvp.usecase';
 import { IEventRSVPDownload } from 'src/modules/event/interfaces/event-rsvp-download.interface';
+import { RSVPGoingEnum } from 'src/modules/event/enums/rsvp-going.enum';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, EventGuard)
@@ -173,6 +174,7 @@ export class EventController {
   ): Promise<PaginatedPresenter<EventRSVPPresenter>> {
     const rsvps = await this.getManyEventRSVPUsecase.execute({
       ...filters,
+      going: filters.going ? filters.going === RSVPGoingEnum.YES : undefined,
       eventId,
     });
 
@@ -196,6 +198,7 @@ export class EventController {
   ): Promise<void> {
     const data = await this.getManyForDownloadEventRSVPUseCase.execute({
       ...filters,
+      going: filters.going ? filters.going === RSVPGoingEnum.YES : undefined,
       eventId,
     });
 

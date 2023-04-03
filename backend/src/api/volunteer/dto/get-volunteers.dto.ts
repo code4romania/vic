@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import {
   IsDate,
   IsEnum,
@@ -32,16 +31,13 @@ export class GetVolunteersDto extends BasePaginationFilterDto {
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   locationId?: number;
 
   @IsDate()
   @IsOptional()
-  @Type(() => Date)
   activeSinceStart?: Date;
 
   @IsDate()
   @IsOptional()
-  @Type(() => Date)
   activeSinceEnd?: Date;
 }

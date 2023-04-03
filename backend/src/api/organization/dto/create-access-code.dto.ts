@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import {
   IsDate,
   IsOptional,
@@ -14,11 +13,9 @@ export class CreateAccessCodeDto {
   code: string;
 
   @IsDate()
-  @Type(() => Date)
   startDate: Date;
 
   @IsDate()
   @IsOptional()
-  @Type(() => Date)
   endDate?: Date;
 }

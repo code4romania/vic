@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import {
   IsDate,
   IsEmail,
@@ -27,13 +26,11 @@ export class CreateRegularUserDto {
   cognitoId: string;
 
   @IsDate()
-  @Type(() => Date)
   birthday: Date;
 
   @IsEnum(SEX)
   sex: SEX;
 
   @IsNumber()
-  @Type(() => Number)
   locationId: number;
 }

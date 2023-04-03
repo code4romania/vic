@@ -43,7 +43,7 @@ import { IRsvp } from '../common/interfaces/rsvp.interface';
 import DataTableFilters from '../components/DataTableFilters';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
-import { RsvpEnum } from '../common/enums/rsvp.enum';
+import { RSVPGoingEnum } from '../common/enums/rsvp.enum';
 import { getEventRSVPsForDownload } from '../services/event/event.api';
 
 enum EventTab {
@@ -449,8 +449,8 @@ const Event = () => {
                 onChange={(item: SelectItem<string>) => setGoing(item)}
                 selected={going}
                 options={[
-                  { key: RsvpEnum.GOING, value: i18n.t('events:participate') },
-                  { key: RsvpEnum.NOT_GOING, value: i18n.t('events:not_participate') },
+                  { key: RSVPGoingEnum.YES, value: i18n.t('events:participate') },
+                  { key: RSVPGoingEnum.NO, value: i18n.t('events:not_participate') },
                 ]}
               />
             </DataTableFilters>

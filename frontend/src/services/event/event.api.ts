@@ -1,7 +1,6 @@
 import { AxiosResponseHeaders } from 'axios';
 import { EventState } from '../../common/enums/event-state.enum';
 import { EventStatus } from '../../common/enums/event-status';
-import { RsvpEnum } from '../../common/enums/rsvp.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent } from '../../common/interfaces/event.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -83,7 +82,7 @@ export const getRsvps = async (
       branchId,
       departmentId,
       roleId,
-      going: going === undefined ? going : going === RsvpEnum.GOING,
+      going,
     },
   }).then((res) => res.data);
 };
@@ -106,7 +105,7 @@ export const getEventRSVPsForDownload = async (
       branchId,
       departmentId,
       roleId,
-      going: going === undefined ? going : going === RsvpEnum.GOING,
+      going,
     },
     responseType: 'arraybuffer',
   }).then((res) => {
