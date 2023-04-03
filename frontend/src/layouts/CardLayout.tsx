@@ -5,7 +5,7 @@ interface CardProps {
 }
 
 const Card = ({ children }: CardProps) => (
-  <div className="overflow-visible bg-white rounded-lg flex flex-col divide-y divide-cool-gray-200 gap-0 shadow-section">
+  <div className="overflow-visible bg-white rounded-lg flex flex-col divide-y divide-cool-gray-200 gap-0 shadow-section grow">
     {children}
   </div>
 );

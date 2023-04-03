@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
+import { ActivityTypeStatus } from '../../common/enums/activity-type-status.enum';
 import { ACTIVITY_TYPE_ERRORS } from '../../common/errors/entities/activty-type.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { ActivityCategoryFormTypes } from '../../components/ActivityTypeForm';
@@ -8,6 +9,7 @@ import {
   archiveActivityType,
   createActivityType,
   getActivityType,
+  getActivityTypeListItems,
   getActivityTypes,
   updateActivityType,
 } from './activity-type.api';
@@ -17,10 +19,11 @@ export const useActivityTypesQuery = (
   branchId?: string,
   departmentId?: string,
   roleId?: string,
+  status?: ActivityTypeStatus,
 ) => {
   return useQuery(
-    ['activity-types', search, branchId, departmentId, roleId],
-    () => getActivityTypes(search, branchId, departmentId, roleId),
+    ['activity-types', search, branchId, departmentId, roleId, status],
+    () => getActivityTypes(search, branchId, departmentId, roleId, status),
     {
       onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) => error,
     },
@@ -63,4 +66,15 @@ export const useArchiveActivityTypeMutation = () => {
     onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) =>
       Promise.resolve(error),
   });
+};
+
+// //Listing activity type
+export const useActivityTypeListItemsQuery = (params: { status?: ActivityTypeStatus }) => {
+  return useQuery(
+    ['activity-type-list-items', params.status],
+    () => getActivityTypeListItems(params),
+    {
+      onError: (error: AxiosError<IBusinessException<ACTIVITY_TYPE_ERRORS>>) => error,
+    },
+  );
 };

@@ -57,7 +57,7 @@ export const DivisionTableHeader = [
     name: i18n.t('general:created_on'),
     sortable: true,
     minWidth: '5rem',
-    selector: (row: IDivision) => formatDate(row.createdOn),
+    cell: (row: IDivision) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
 ];
 
@@ -225,7 +225,7 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
           <Button
             className="btn-outline-secondary"
             label={i18n.t('general:add', {
-              item: i18n.t(`division:entity.${type}`),
+              item: i18n.t(`division:entity.${type}`).toLowerCase(),
             })}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
@@ -254,7 +254,7 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
       {isAddModalOpen && (
         <DivisionInputModal
           title={i18n.t('general:add', {
-            item: i18n.t(`division:entity.${type}`),
+            item: i18n.t(`division:entity.${type}`).toLowerCase(),
           })}
           divisionType={type}
           onClose={setIsAddModalOpen.bind(null, false)}
@@ -263,7 +263,7 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
       )}
       {selectedDivisionForUpdate && (
         <DivisionInputModal
-          title={i18n.t('general:edit', { item: i18n.t(`division:modal.${type}`) })}
+          title={i18n.t('general:edit', { item: i18n.t(`division:entity.${type}`).toLowerCase() })}
           divisionType={type}
           onClose={setSelectedDivisionForUpdate.bind(null, undefined)}
           onSubmit={onUpdateDivision}

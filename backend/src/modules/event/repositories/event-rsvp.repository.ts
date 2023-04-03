@@ -79,22 +79,10 @@ export class EventRSVPRepository
     let query = this.rsvpRepository
       .createQueryBuilder('rsvp')
       .leftJoinAndMapOne('rsvp.user', 'rsvp.user', 'user')
-      .leftJoinAndMapOne(
-        'rsvp.event',
-        'rsvp.event',
-        'event',
-        'event.id = :eventId',
-        {
-          eventId: findOptions.eventId,
-        },
-      )
-      .leftJoinAndMapMany(
-        'user.volunteer',
-        VolunteerEntity,
-        'volunteer',
-        'volunteer.organizationId = event.organizationId AND volunteer.user_id = user.id',
-      )
+      .leftJoinAndMapOne('rsvp.event', 'rsvp.event', 'event')
+      .leftJoinAndMapMany('user.volunteer', 'user.volunteer', 'volunteer')
       .select()
+      .where('event.id = :eventId', { eventId: findOptions.eventId })
       .orderBy(
         this.buildOrderByQuery(findOptions.orderBy || 'user.name', 'rsvp'),
         findOptions.orderDirection || OrderDirection.ASC,
@@ -123,9 +111,8 @@ export class EventRSVPRepository
       // Need to filter by users who are volunteers in the organization who created the event
       query = query.leftJoinAndMapOne(
         'volunteer.volunteerProfile',
-        VolunteerProfileEntity,
+        'volunteer.volunteerProfile',
         'volunteerProfile',
-        'volunteer.volunteerProfileId = volunteerProfile.id',
       );
       if (findOptions.roleId) {
         query.andWhere('volunteerProfile.roleId = :roleId', {

@@ -45,6 +45,7 @@ import { getVolunteersForDownload } from '../services/volunteer/volunteer.api';
 import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
 import { ArrayParam, DateParam, StringParam, useQueryParams } from 'use-query-params';
 import StatusSelectFilter from '../containers/StatusSelectFilter';
+import CellLayout from '../layouts/CellLayout';
 
 export const VOLUNTEERS_QUERY_PARAMS = {
   ...DEFAULT_QUERY_PARAMS,
@@ -137,7 +138,9 @@ const ArchivedVolunteersTableHeader = [
     id: 'archivedOn',
     name: i18n.t('volunteers:archived_on'),
     sortable: true,
-    selector: (row: IVolunteer) => (row.archivedOn ? formatDate(row.archivedOn) : '-'),
+    cell: (row: IVolunteer) => (
+      <CellLayout>{row.archivedOn ? formatDate(row.archivedOn) : '-'}</CellLayout>
+    ),
   },
 ];
 
@@ -147,7 +150,9 @@ const BlockedVolunteersTableHeader = [
     id: 'blockedOn',
     name: i18n.t('volunteers:blocked_on'),
     sortable: true,
-    selector: (row: IVolunteer) => (row.blockedOn ? formatDate(row.blockedOn) : '-'),
+    cell: (row: IVolunteer) => (
+      <CellLayout>{row.blockedOn ? formatDate(row.blockedOn) : '-'}</CellLayout>
+    ),
   },
 ];
 

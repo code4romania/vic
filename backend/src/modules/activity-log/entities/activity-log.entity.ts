@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import { ActivityTypeEntity } from 'src/modules/activity-type/entities/activity-type.entity';
 import { EventEntity } from 'src/modules/event/entities/event.entity';
+import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
 import { AdminUserEntity } from 'src/modules/user/entities/user.entity';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import {
@@ -89,10 +90,22 @@ export class ActivityLogEntity extends BaseEntity {
 
   // ==================== Activity Type =================================
 
-  @Column({ type: 'string', name: 'activity_type_id' })
+  @Column({ type: 'string', name: 'activity_type_id', nullable: true })
   activityTypeId: string;
 
   @ManyToOne(() => ActivityTypeEntity)
   @JoinColumn({ name: 'activity_type_id' })
   activityType: ActivityTypeEntity;
+
+  // ==================== Organization =================================
+
+  @Column({
+    type: 'varchar',
+    name: 'organization_id',
+  })
+  organizationId: string;
+
+  @ManyToOne(() => OrganizationEntity)
+  @JoinColumn({ name: 'organization_id' })
+  organization: OrganizationEntity;
 }

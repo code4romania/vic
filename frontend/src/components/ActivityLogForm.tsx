@@ -12,37 +12,40 @@ import TaskSelect from '../containers/TaskSelect';
 interface ActivityLogFormProps {
   control: Control<ActivityLogFormTypes, object>;
   errors: FieldErrorsImpl<DeepRequired<ActivityLogFormTypes>>;
+  disabled?: boolean;
 }
 
 export type ActivityLogFormTypes = {
   date: Date;
   hours: number;
-  mentions: string;
+  mentions?: string;
   volunteer: ListItem;
-  event: ListItem;
+  event?: ListItem;
   task: ListItem;
 };
 
-const ActivityLogForm = ({ control, errors }: ActivityLogFormProps) => {
+const ActivityLogForm = ({ control, errors, disabled }: ActivityLogFormProps) => {
   return (
     <FormLayout>
-      <p className="text-cool-gray-500">{i18n.t('activity_log:form.description')}</p>
+      {!disabled && <p className="text-cool-gray-500">{i18n.t('activity_log:form.description')}</p>}
       <form>
-        <Controller
-          key="volunteer"
-          name="volunteer"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <VolunteerSelect
-                defaultValue={value}
-                onSelect={onChange}
-                label={i18n.t('volunteer:name', { status: '' })}
-                errorMessage={errors['volunteer']?.message}
-              />
-            );
-          }}
-        />
+        {!disabled && (
+          <Controller
+            key="volunteer"
+            name="volunteer"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <VolunteerSelect
+                  defaultValue={value}
+                  onSelect={onChange}
+                  label={i18n.t('volunteer:name', { status: '' })}
+                  errorMessage={errors['volunteer']?.message}
+                />
+              );
+            }}
+          />
+        )}
         <Controller
           key="event"
           name="event"

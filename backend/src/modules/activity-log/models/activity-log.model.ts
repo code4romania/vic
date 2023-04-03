@@ -9,6 +9,7 @@ import {
   EventModelTransformer,
   IEventModel,
 } from 'src/modules/event/models/event.model';
+import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
 import {
   AdminUserTransformer,
   IAdminUserModel,
@@ -36,7 +37,7 @@ export interface IActivityLogModel extends IBaseModel {
 
   volunteer: IVolunteerModel;
   event?: IEventModel;
-  activityType: IActivityTypeModel;
+  activityType?: IActivityTypeModel;
   createdByAdmin?: IAdminUserModel; // In case is created by an Admin, will automatically be solved by the same admin
 
   approvedBy?: IAdminUserModel;
@@ -44,6 +45,8 @@ export interface IActivityLogModel extends IBaseModel {
 
   rejectedBy?: IAdminUserModel;
   rejectedOn?: Date;
+
+  organization: IOrganizationModel;
 }
 
 export interface IActivityLogListItemModel {
@@ -58,13 +61,20 @@ export interface IActivityLogListItemModel {
   activityType: Pick<IActivityTypeModel, 'id' | 'name' | 'icon'>;
 }
 
+export type IActivityLogCountHoursByStatus = {
+  [ActivityLogStatus.PENDING]: number;
+  [ActivityLogStatus.APPROVED]: number;
+  [ActivityLogStatus.REJECTED]: number;
+};
+
 export type CreateActivityLogByAdminOptions = Pick<
   IActivityLogModel,
   'date' | 'hours' | 'mentions' | 'status' | 'approvedOn'
 > & {
   volunteerId: string;
+  organizationId: string;
   eventId?: string;
-  activityTypeId: string;
+  activityTypeId?: string;
   createdByAdminId: string;
   approvedById: string;
 };
@@ -103,6 +113,11 @@ export type FindManyActivityLogsOptions = {
   approvedOrRejectedById?: string;
 } & IBasePaginationFilterModel;
 
+export type FindManyActivityLogCounterOptions = {
+  organizationId: string;
+  volunteerId?: string;
+};
+
 export class ActivityLogModelTransformer {
   static fromEntityToListItem(
     entity: ActivityLogEntity,
@@ -117,15 +132,19 @@ export class ActivityLogModelTransformer {
         id: entity.volunteer.id,
         name: entity.volunteer?.user?.name,
       },
-      event: {
-        id: entity.event.id,
-        name: entity.event.name,
-      },
-      activityType: {
-        id: entity.activityType.id,
-        name: entity.activityType.name,
-        icon: entity.activityType.icon,
-      },
+      event: entity.event
+        ? {
+            id: entity.event.id,
+            name: entity.event.name,
+          }
+        : null,
+      activityType: entity.activityType
+        ? {
+            id: entity.activityType.id,
+            name: entity.activityType.name,
+            icon: entity.activityType.icon,
+          }
+        : null,
     };
   }
 
@@ -151,6 +170,8 @@ export class ActivityLogModelTransformer {
 
       updatedOn: entity.updatedOn,
       createdOn: entity.createdOn,
+
+      organization: entity.organization,
     };
   }
 
@@ -170,6 +191,7 @@ export class ActivityLogModelTransformer {
     entity.volunteerId = newLog.volunteerId;
     entity.eventId = newLog.eventId;
     entity.activityTypeId = newLog.activityTypeId;
+    entity.organizationId = newLog.organizationId;
 
     return entity;
   }

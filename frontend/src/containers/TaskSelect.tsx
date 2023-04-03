@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
+import i18n from '../common/config/i18n';
+import { CONSTANTS } from '../common/constants/constants';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import ServerSelect from '../components/ServerSelect';
 import { getActivityTypes } from '../services/activity-type/activity-type.api';
@@ -19,10 +21,13 @@ const TaskSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Tas
       const tasks = await getActivityTypes(search);
 
       // map volunteers to server select data type
-      return tasks.map((task) => ({
+      const results = tasks.map((task) => ({
         value: task.id,
         label: task.name,
       }));
+
+      // add "Other" at the end
+      return [...results, { value: CONSTANTS.OTHER, label: i18n.t('general:other') }];
     } catch (error) {
       // show error
       console.error(error);
@@ -39,6 +44,8 @@ const TaskSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Tas
       loadOptions={loadTasks}
       onChange={onSelect as any}
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
+      placeholder={`${i18n.t('general:select', { item: '' })}`}
+      aria-invalid={!!errorMessage}
     />
   );
 };

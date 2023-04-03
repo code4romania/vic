@@ -53,10 +53,11 @@ const AccessCodeTableHeader = [
     sortable: true,
     grow: 2,
     minWidth: '10rem',
-    selector: (row: IAccessCode) =>
-      `${formatDate(row.startDate)} -\n${
+    cell: (row: IAccessCode) => (
+      <CellLayout>{`${formatDate(row.startDate)} -\n${
         row.endDate ? `${formatDate(row.endDate)}` : i18n.t('general:unlimited')
-      }`,
+      }`}</CellLayout>
+    ),
   },
   {
     id: 'usageCount',
@@ -72,7 +73,7 @@ const AccessCodeTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IAccessCode) => formatDate(row.createdOn),
+    cell: (row: IAccessCode) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
   {
     id: 'createdBy.name',

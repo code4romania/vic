@@ -320,6 +320,7 @@ const EventForm = ({
                     </small>
                   )
                 }
+                aria-invalid={!!errors.tasks?.message}
               />
             );
           }}

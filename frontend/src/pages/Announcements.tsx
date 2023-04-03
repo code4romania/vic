@@ -75,7 +75,7 @@ const AnnouncementTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IAnnouncement) => formatDate(row.updatedOn),
+    cell: (row: IAnnouncement) => <CellLayout>{formatDate(row.updatedOn)}</CellLayout>,
   },
   {
     id: 'status',
@@ -97,7 +97,7 @@ const AnnouncementTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '10rem',
-    selector: (row: IAnnouncement) => formatDateWithTime(row.publishedOn),
+    cell: (row: IAnnouncement) => <CellLayout>{formatDateWithTime(row.publishedOn)}</CellLayout>,
   },
   {
     id: 'targetedVolunteers',

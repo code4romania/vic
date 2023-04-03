@@ -73,7 +73,9 @@ const DivisionInputModal = ({
                 errorMessage={errors['name']?.message}
                 readOnly={false}
                 value={value}
-                label={`${i18n.t('general:name')} ${i18n.t(`division:entity.${divisionType}`)}`}
+                label={`${i18n.t('activity_types:form.name.placeholder')} ${i18n
+                  .t(`division:entity.${divisionType}`)
+                  .toLowerCase()}`}
                 onChange={onChange}
               />
             );
@@ -82,9 +84,7 @@ const DivisionInputModal = ({
       </form>
       <div className="flex flex-row-reverse">
         <Button
-          label={i18n.t('general:add', {
-            item: i18n.t(`division:entity.${divisionType}`),
-          })}
+          label={i18n.t('general:save')}
           className="btn-primary"
           onClick={handleSubmit(onSubmit)}
         />

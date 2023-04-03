@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
+import i18n from '../common/config/i18n';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import ServerSelect from '../components/ServerSelect';
 import { getCities } from '../services/location/location.api';
@@ -62,6 +63,7 @@ const LocationSelect = ({ label, defaultValue, queryValue, onSelect }: LocationS
       label={label}
       value={defaultValue || querySelectItem}
       loadOptions={loadCities}
+      placeholder={`${i18n.t('general:select', { item: '' })}`}
       onChange={onSelect as any}
     />
   );

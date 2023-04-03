@@ -33,8 +33,8 @@ const OrganizationStructureSelect = ({
       onChange={onChange}
       selected={(selected as SelectItem<string>) || undefined}
       options={
-        divisionListItems && divisionListItems?.length > 0
-          ? divisionListItems?.map(mapDivisionListItemToSelectItem)
+        divisionListItems && divisionListItems.items?.length > 0
+          ? divisionListItems.items?.map(mapDivisionListItemToSelectItem)
           : []
       }
     />

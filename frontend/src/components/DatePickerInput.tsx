@@ -32,18 +32,22 @@ const DatePickerInput = ({
   return (
     <div className="flex gap-1 flex-col">
       {label && <label htmlFor={`${label}__datepicker`}>{label}</label>}
-      <DatePicker
-        {...props}
-        className={classNames(
-          className || '',
-          'block w-full pr-10 border-cool-gray-300 shadow-sm rounded-md focus:ring-turquoise-500 focus:border-turquoise-500 sm:text-sm lg:text-base text-xs leading-loose',
-        )}
-        onChange={onChange}
-        dateFormat={dateFormat ? dateFormat : 'dd.MM.yyyy'}
-        selected={value}
-        placeholderText={placeholder}
-        id={id}
-      />
+      {/* Keep this div wrapper because DatePicker adds a div immediately after him when it's focused and gap-1 it's added*/}
+      <div>
+        <DatePicker
+          {...props}
+          className={classNames(
+            className || '',
+            'block w-full pr-10 border-cool-gray-200 shadow-sm rounded-md sm:text-sm lg:text-base text-xs leading-loose max-w-[37rem]',
+          )}
+          onChange={onChange}
+          dateFormat={dateFormat ? dateFormat : 'dd.MM.yyyy'}
+          selected={value}
+          placeholderText={placeholder}
+          id={id}
+        />
+      </div>
+
       {helper}
     </div>
   );

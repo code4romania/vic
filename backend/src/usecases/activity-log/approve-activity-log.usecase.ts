@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { IActivityLogModel } from 'src/modules/activity-log/models/activity-log.model';
 import { ActivityLogFacade } from 'src/modules/activity-log/services/activity-log.facade';
@@ -13,6 +15,7 @@ export class ApproveActivityLogUsecase
   constructor(
     private readonly getOneActivityLogUsecase: GetOneActivityLogUsecase,
     private readonly activityLogFacade: ActivityLogFacade,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
@@ -26,7 +29,7 @@ export class ApproveActivityLogUsecase
       return log;
     }
 
-    return this.activityLogFacade.update(id, {
+    const approved = await this.activityLogFacade.update(id, {
       status: ActivityLogStatus.APPROVED,
       approvedById: admin.id,
       approvedOn: new Date(),
@@ -34,5 +37,19 @@ export class ApproveActivityLogUsecase
       rejectedOn: null,
       rejectionReason: null,
     });
+
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS,
+      {
+        activityLogId: log.id,
+        volunteerId: log.volunteer?.id,
+        volunteerName: log.volunteer?.user?.name,
+        oldStatus: log.status,
+        newStatus: approved.status,
+      },
+      admin,
+    );
+
+    return approved;
   }
 }

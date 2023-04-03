@@ -47,6 +47,7 @@ import { ListItem } from '../common/interfaces/list-item.interface';
 import { downloadAccessRequests } from '../services/access-requests/access-requests.api';
 import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
 import { ArrayParam, DateParam, StringParam, useQueryParams } from 'use-query-params';
+import CellLayout from '../layouts/CellLayout';
 
 export const ACCESS_REQUESTS_QUERY_PARAMS = {
   ...DEFAULT_QUERY_PARAMS,
@@ -89,7 +90,7 @@ const PendingAccessRequestsTableHeader = [
     id: 'createdOn',
     name: i18n.t('access_requests:date'),
     sortable: true,
-    selector: (row: IAccessRequest) => formatDate(row.createdOn),
+    cell: (row: IAccessRequest) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
 ];
 
@@ -99,7 +100,7 @@ const RejectedAccessRequestsTableHeader = [
     id: 'updatedOn',
     name: i18n.t('access_requests:rejected_date'),
     sortable: true,
-    selector: (row: IAccessRequest) => formatDate(row.updatedOn || new Date()),
+    cell: (row: IAccessRequest) => <CellLayout>{formatDate(row.updatedOn)}</CellLayout>,
   },
 ];
 
@@ -393,6 +394,8 @@ const AccessRequestTable = ({ useAccessRequests }: AccessRequestTable) => {
       queryParams?.createdOnStart as Date,
       queryParams?.createdOnEnd as Date,
       location?.value,
+      queryParams?.rejectedOnStart,
+      queryParams?.rejectedOnEnd,
     );
 
     downloadExcel(accessRequestsData, i18n.t('access_requests:download'));
