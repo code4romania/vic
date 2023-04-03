@@ -3,9 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
-import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { VolunteerProfilePresenter } from './volunteer-profile.presenter';
-import { UserPresenter } from 'src/api/_mobile/user/presenters/user-basic.presenter';
+import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
 import { RegularUserPresenter } from 'src/api/auth/presenters/user.presenter';
 
 export class VolunteerPresenter {
@@ -15,12 +14,12 @@ export class VolunteerPresenter {
 
     this.archivedOn = volunteer.archivedOn;
     this.archivedBy = volunteer.archivedBy
-      ? new UserPresenter(volunteer.archivedBy)
+      ? new IdAndNamePresenter<IAdminUserModel>(volunteer.archivedBy)
       : null;
 
     this.blockedOn = volunteer.blockedOn;
     this.blockedBy = volunteer.blockedBy
-      ? new UserPresenter(volunteer.blockedBy)
+      ? new IdAndNamePresenter<IAdminUserModel>(volunteer.blockedBy)
       : null;
 
     this.profile = volunteer.volunteerProfile
@@ -60,7 +59,7 @@ export class VolunteerPresenter {
   @ApiProperty({
     description: 'User which is a volunteer in relation with the organization',
   })
-  user: UserPresenter<IRegularUserModel>;
+  user: RegularUserPresenter;
 
   @Expose()
   @ApiProperty({ description: 'Date when the volunteer was archived' })
@@ -68,7 +67,7 @@ export class VolunteerPresenter {
 
   @Expose()
   @ApiProperty({ description: 'Admin who archived the volunteer' })
-  archivedBy: UserPresenter<IAdminUserModel>;
+  archivedBy: IdAndNamePresenter<IAdminUserModel>;
 
   @Expose()
   @ApiProperty({ description: 'Date when the volunteer was blocked' })
@@ -76,7 +75,7 @@ export class VolunteerPresenter {
 
   @Expose()
   @ApiProperty({ description: 'Admin who blocked the volunteer' })
-  blockedBy: UserPresenter<IAdminUserModel>;
+  blockedBy: IdAndNamePresenter<IAdminUserModel>;
 
   @Expose()
   @ApiProperty({ description: 'Date of creation' })

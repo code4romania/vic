@@ -14,6 +14,7 @@ import { ActivityLogFormTypes } from '../components/ActivityLogForm';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useEditActivityLogMutation } from '../services/activity-log/activity-log.service';
+import { CONSTANTS } from '../common/constants/constants';
 
 interface EditActivityLogProps {
   isOpen: boolean;
@@ -45,7 +46,9 @@ const EditActivityLog = ({ isOpen, onClose, activityLog }: EditActivityLogProps)
         hours: activityLog.hours,
         mentions: activityLog.mentions,
         volunteer: mapUserToListItem(activityLog.volunteer),
-        task: mapUserToListItem(activityLog.activityType),
+        task: activityLog.activityType
+          ? mapUserToListItem(activityLog.activityType)
+          : { value: CONSTANTS.OTHER, label: `${i18n.t('general:other')}` },
         event: activityLog.event ? mapUserToListItem(activityLog.event) : undefined,
       });
   }, [activityLog]);
