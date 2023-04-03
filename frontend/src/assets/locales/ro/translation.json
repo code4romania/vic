@@ -491,7 +491,8 @@
       "EVENT_006": "Doar evenimentele publicate pot fi arhivate"
     },
     "download_open": "Evenimente active.xlsx",
-    "download_past": "Evenimente incheiate.xlsx"
+    "download_past": "Evenimente incheiate.xlsx",
+    "download_rsvp": "Lista raspunsuri.xlsx"
   },
   "announcement": {
     "title": "Istoric anunturi",

@@ -40,6 +40,9 @@ import { EventListItemPresenter } from './presenters/event-list-item.presenter';
 import { EventPresenter } from './presenters/event.presenter';
 import { Response } from 'express';
 import { GetManyForDownloadEventUseCase } from 'src/usecases/event/get-many-for-download-event.usecase';
+import { GetManyForDownloadEventRSVPUseCase } from 'src/usecases/event/RSVP/get-many-for-download-rsvp.usecase';
+import { IEventRSVPDownload } from 'src/modules/event/interfaces/event-rsvp-download.interface';
+import { RSVPGoingEnum } from 'src/modules/event/enums/rsvp-going.enum';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, EventGuard)
@@ -55,6 +58,7 @@ export class EventController {
     private readonly getManyEventRSVPUsecase: GetManyEventRSVPUseCase,
     private readonly getManyEventUseCase: GetManyEventUseCase,
     private readonly getManyForDownloadEventUseCase: GetManyForDownloadEventUseCase,
+    private readonly getManyForDownloadEventRSVPUseCase: GetManyForDownloadEventRSVPUseCase,
   ) {}
 
   @Get()
@@ -80,7 +84,7 @@ export class EventController {
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   )
   @Header('Content-Disposition', 'attachment; filename="Evenimente.xlsx"')
-  async downloadAccessRequests(
+  async downloadEvents(
     @Res({ passthrough: true }) res: Response,
     @ExtractUser() user: IAdminUserModel,
     @Query() filters: GetManyEventDto,
@@ -170,6 +174,7 @@ export class EventController {
   ): Promise<PaginatedPresenter<EventRSVPPresenter>> {
     const rsvps = await this.getManyEventRSVPUsecase.execute({
       ...filters,
+      going: filters.going ? filters.going === RSVPGoingEnum.YES : undefined,
       eventId,
     });
 
@@ -177,5 +182,26 @@ export class EventController {
       ...rsvps,
       items: rsvps.items.map((rsvp) => new EventRSVPPresenter(rsvp)),
     });
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @Get(':id/rsvp/download')
+  @Header(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  )
+  @Header('Content-Disposition', 'attachment; filename="Lista raspunsuri.xlsx"')
+  async downloadEventRSVPs(
+    @Param('id', UuidValidationPipe) eventId: string,
+    @Res({ passthrough: true }) res: Response,
+    @Query() filters: GetPaginatedEventRSVPsDto,
+  ): Promise<void> {
+    const data = await this.getManyForDownloadEventRSVPUseCase.execute({
+      ...filters,
+      going: filters.going ? filters.going === RSVPGoingEnum.YES : undefined,
+      eventId,
+    });
+
+    res.end(jsonToExcelBuffer<IEventRSVPDownload>(data, 'Lista raspunsuri'));
   }
 }
