@@ -81,6 +81,8 @@ import { GetActivityLogCountersUsecase } from './activity-log/get-activity-log-c
 import { DashboardModule } from 'src/modules/dashboard/dashboard.module';
 import { GetDashboardVolunteerStatusTimeseriesUsecase } from './dashboard/get-dashboard-volunteer-status-timeseries.usecase';
 import { GetDashboardVolunteerGroupedUsecase } from './dashboard/get-dashboard-volunteers-grouped.usecase';
+import { GetDashboardVolunteersHoursUseCase } from './dashboard/get-dashboard-volunteers-hours.usecase';
+import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-volunteers-status.usecase';
 
 @Module({
   imports: [
@@ -182,6 +184,8 @@ import { GetDashboardVolunteerGroupedUsecase } from './dashboard/get-dashboard-v
     // Dashboard
     GetDashboardVolunteerStatusTimeseriesUsecase,
     GetDashboardVolunteerGroupedUsecase,
+    GetDashboardVolunteersHoursUseCase,
+    GetDashboardVolunteersStatusUseCase,
   ],
   exports: [
     // Organization
@@ -268,6 +272,8 @@ import { GetDashboardVolunteerGroupedUsecase } from './dashboard/get-dashboard-v
     // Dashboard
     GetDashboardVolunteerStatusTimeseriesUsecase,
     GetDashboardVolunteerGroupedUsecase,
+    GetDashboardVolunteersHoursUseCase,
+    GetDashboardVolunteersStatusUseCase,
   ],
 })
 export class UseCaseModule {}

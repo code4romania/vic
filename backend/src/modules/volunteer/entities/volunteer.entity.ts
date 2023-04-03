@@ -9,12 +9,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { VolunteerProfileEntity } from './volunteer-profile.entity';
+import { AccessRequestEntity } from 'src/modules/access-request/entities/access-request.entity';
 
 // TODO: BR: Status Archived + ArchivedBy = null => volunteer leaved the org
 @Unique('user_in_organization', ['user', 'organization']) // TODO: recheck
@@ -73,4 +75,10 @@ export class VolunteerEntity extends BaseEntity {
   @ManyToOne(() => OrganizationEntity)
   @JoinColumn({ name: 'organization_id' })
   organization: OrganizationEntity;
+
+  @OneToMany(
+    () => AccessRequestEntity,
+    (accessRequest) => accessRequest.requestedBy,
+  )
+  accessRequests: AccessRequestEntity[];
 }

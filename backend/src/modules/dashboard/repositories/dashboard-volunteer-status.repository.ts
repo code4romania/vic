@@ -11,8 +11,14 @@ import {
   FindDashboardVolunteersGrouped,
   FindDashboardVolunteerStatusChartOptions,
   IDashaboardVolunteersGrouped,
+  IDashboardVolunteersHours,
+  IDashboardVolunteersStatus,
   IDashboardVolunteerStatusTimeseries,
 } from '../model/dashboard.model';
+import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
+import { ActivityLogEntity } from 'src/modules/activity-log/entities/activity-log.entity';
+import { AccessRequestEntity } from 'src/modules/access-request/entities/access-request.entity';
+import { AccessRequestStatus } from 'src/modules/access-request/enums/access-request-status.enum';
 
 @Injectable()
 export class DashboardRepository implements IDashboardRepository {
@@ -21,6 +27,10 @@ export class DashboardRepository implements IDashboardRepository {
     private readonly dashboardVolunteerStatusRepository: Repository<DashboardVolunteerStatusView>,
     @InjectRepository(VolunteerEntity)
     private readonly volunteerRepository: Repository<VolunteerEntity>,
+    @InjectRepository(ActivityLogEntity)
+    private readonly activityLogRepository: Repository<ActivityLogEntity>,
+    @InjectRepository(AccessRequestEntity)
+    private readonly accessRequestRepository: Repository<AccessRequestEntity>,
   ) {}
 
   findDashboardVolunteerStatusTimeseries(
@@ -105,5 +115,42 @@ export class DashboardRepository implements IDashboardRepository {
     }
 
     return query.getRawMany();
+  }
+
+  countVolunteersHours(): Promise<IDashboardVolunteersHours> {
+    return this.activityLogRepository
+      .createQueryBuilder('activityLog')
+      .select(
+        'SUM(CASE WHEN activityLog.status = :approved THEN activityLog.hours ELSE 0 END)',
+        'approved',
+      )
+      .addSelect(
+        'SUM(CASE WHEN activityLog.status = :pending THEN activityLog.hours ELSE 0 END)',
+        'pending',
+      )
+      .setParameters({
+        approved: ActivityLogStatus.APPROVED,
+        pending: ActivityLogStatus.PENDING,
+      })
+      .getRawOne();
+  }
+
+  async countVolunteersStatus(): Promise<IDashboardVolunteersStatus> {
+    const activeVolunteersCount = await this.volunteerRepository
+      .createQueryBuilder('volunteer')
+      .where('volunteer.status = :status', { status: VolunteerStatus.ACTIVE })
+      .getCount();
+
+    const pendingAccessRequestsCount = await this.accessRequestRepository
+      .createQueryBuilder('request')
+      .where('request.status = :status', {
+        status: AccessRequestStatus.PENDING,
+      })
+      .getCount();
+
+    return {
+      active: activeVolunteersCount,
+      pending: pendingAccessRequestsCount,
+    };
   }
 }

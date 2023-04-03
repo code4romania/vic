@@ -22,6 +22,16 @@ export interface IDashaboardVolunteersGrouped {
   count: number;
 }
 
+export interface IDashboardVolunteersHours {
+  approved: number;
+  pending: number;
+}
+
+export interface IDashboardVolunteersStatus {
+  active: number;
+  pending: number;
+}
+
 export type FindDashboardVolunteerStatusChartOptions = {
   organizationId: string;
   interval: DashboardFilterInterval;

@@ -9,6 +9,10 @@ import { GetVolunteerStatusTimeseriesDto } from './dto/get-volunteer-status-time
 import { GetVolunteersGroupedDto } from './dto/get-volunteers-grouped.dto';
 import { VolunteerStatusTimeseriesPresenter } from './presenters/volunteer-status-timeseries.presenter';
 import { VolunteersGroupedPresenter } from './presenters/volunteers-grouped.presenter';
+import { GetDashboardVolunteersHoursUseCase } from 'src/usecases/dashboard/get-dashboard-volunteers-hours.usecase';
+import { VolunteerHoursPresenter } from './presenters/volunteer-hours.presenter';
+import { VolunteerStatusPresenter } from './presenters/volunteer-status.presenter';
+import { GetDashboardVolunteersStatusUseCase } from 'src/usecases/dashboard/get-dashboard-volunteers-status.usecase';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -17,6 +21,8 @@ export class DashboardController {
   constructor(
     private readonly getDashboardVolunteerStatusTimeseriesUsecase: GetDashboardVolunteerStatusTimeseriesUsecase,
     private readonly getDashboardVolunteerGroupedUsecase: GetDashboardVolunteerGroupedUsecase,
+    private readonly getDashboardVolunteerHoursUseCase: GetDashboardVolunteersHoursUseCase,
+    private readonly getDashboardVolunteerStatusUseCase: GetDashboardVolunteersStatusUseCase,
   ) {}
 
   @Get('volunteer-status-timeseries')
@@ -39,5 +45,19 @@ export class DashboardController {
       group,
       organizationId,
     });
+  }
+
+  @Get('volunteer-hours')
+  async getDashboardVolunteerHours(): Promise<VolunteerHoursPresenter> {
+    const data = await this.getDashboardVolunteerHoursUseCase.execute();
+
+    return new VolunteerHoursPresenter(data);
+  }
+
+  @Get('volunteer-status')
+  async getDashboardVolunteerStatus(): Promise<VolunteerStatusPresenter> {
+    const data = await this.getDashboardVolunteerStatusUseCase.execute();
+
+    return new VolunteerStatusPresenter(data);
   }
 }
