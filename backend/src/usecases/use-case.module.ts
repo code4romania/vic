@@ -78,6 +78,7 @@ import { GetManyAdminUsersUseCase } from './user/get-many-admin-users.usecase';
 import { ActionsArchiveModule } from 'src/modules/actions-archive/actions-archive.module';
 import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions-archive.usecase';
 import { GetActivityLogCountersUsecase } from './activity-log/get-activity-log-counters.usecase';
+import { GetManyForDownloadEventRSVPUseCase } from './event/RSVP/get-many-for-download-rsvp.usecase';
 import { DashboardModule } from 'src/modules/dashboard/dashboard.module';
 import { GetDashboardVolunteerStatusTimeseriesUsecase } from './dashboard/get-dashboard-volunteer-status-timeseries.usecase';
 import { GetDashboardVolunteerGroupedUsecase } from './dashboard/get-dashboard-volunteers-grouped.usecase';
@@ -164,13 +165,14 @@ import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-v
     DeleteEventUseCase,
     PublishEventUseCase,
     ArchiveEventUseCase,
+    GetManyForDownloadEventUseCase,
+    GetManyEventUseCase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
     DeleteEventRSVPUseCase,
     GetManyEventRSVPUseCase,
-    GetManyEventUseCase,
-    GetManyForDownloadEventUseCase,
+    GetManyForDownloadEventRSVPUseCase,
     // Activity Log
     CreateActivityLogByAdmin,
     GetOneActivityLogUsecase,
@@ -252,13 +254,14 @@ import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-v
     DeleteEventUseCase,
     PublishEventUseCase,
     ArchiveEventUseCase,
+    GetManyEventUseCase,
+    GetManyForDownloadEventUseCase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
     DeleteEventRSVPUseCase,
     GetManyEventRSVPUseCase,
-    GetManyEventUseCase,
-    GetManyForDownloadEventUseCase,
+    GetManyForDownloadEventRSVPUseCase,
     // Activity Log
     CreateActivityLogByAdmin,
     GetOneActivityLogUsecase,
