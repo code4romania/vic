@@ -5,7 +5,6 @@
     "download_table": "Descarca tabel",
     "created_by": "Creat de",
     "user": "Utilizator",
-    "save": "Salveaza",
     "close": "Inchide",
     "name": "Nume",
     "save": "Salvează",
@@ -92,7 +91,8 @@
       "access_codes": "Coduri de acces",
       "announcements": "Anunturi",
       "activity_types": "Categorii activitati",
-      "activity_log": "Ore de voluntariat"
+      "activity_log": "Ore de voluntariat",
+      "actions_archive": "Arhivă acțiuni"
     },
     "collapse": "Restrange meniul"
   },
@@ -615,6 +615,94 @@
       "ACTIVITY_LOG_001": "Activitatea nu a fost gasita!",
       "ACTIVITY_LOG_002": "Voluntarul trebuie sa aiba profil pentru a loga ore",
       "ACTIVITY_LOG_003": "Nu se poat face modificari pe request-uri in status-ul Aprobat sau Respins"
+    }
+  },
+  "actions_archive": {
+    "card_title": "Istoric acțiuni",
+    "area": "Tip Actiune",
+    "UPDATE_ORGANIZATION_PROFILE": {
+      "label": "Update Organization Profile",
+      "description": "Descrierea organizatiei {{organizationName}} a fost modificata."
+    },
+    "CREATE_ORGANIZATION_STRUCTURE": {
+      "label": "Create Organization Structure",
+      "description": "A fost creata {{organizationStructureType}} cu numele {{organizationStructureName}}."
+    },
+    "UPDATE_ORGANIZATION_STRUCTURE": {
+      "label": "Update Organization Structure",
+      "description": "A fost modificat numele {{organizationStructureType}} din {{organizationStructureNameInitial}} in {{organizationStructureNameFinal}}."
+    },
+    "DELETE_ORGANIZATION_STRUCTURE": {
+      "label": "Delete Organization Structure",
+      "description": "{{organizationStructureType}} cu numele {{organizationStructureName}} a fost sters."
+    },
+    "APPROVE_ACCESS_REQUEST": {
+      "label": "Approve Access Request",
+      "description": "Requestul pentru voluntarul {{userName}} a fost aprobat."
+    },
+    "REJECT_ACCESS_REQUEST": {
+      "label": "Reject Access Request",
+      "description": "Requestul pentru voluntarul {{userName}} a fost respins."
+    },
+    "DELETE_ACCESS_REQUEST": {
+      "label": "Delete Access Request",
+      "description": "Requestul pentru voluntarul {{userName}} a fost sters."
+    },
+    "CHANGE_VOLUNTEER_STATUS": {
+      "label": "Change Volunteer Status",
+      "description": "Statusul pentru voluntarul {{volunteerName}} a fost schimbat din {{oldStatus}} in {{newStatus}}."
+    },
+    "UPDATE_VOLUNTEER_PROFILE": {
+      "label": "Update Volunteer Profile",
+      "description": "Profilul voluntarului {{volunteerName}} a fost modificat."
+    },
+    "REGISTER_ACTIVITY_LOG": {
+      "label": "Register Activity Log",
+      "description": "Voluntarul {{volunteerName}} a logat ore de voluntariat."
+    },
+    "CHANGE_ACTIVITY_LOG_STATUS": {
+      "label": "Change Activity Log Status",
+      "description": "Orele de volunatriat pentru {{volunteerName}} au fost {{newState}}"
+    },
+    "CREATE_ACTIVITY_TYPE": {
+      "label": "Create Activity Type",
+      "description": "Categoria de activitate {{activityTypeName}} a fost creata."
+    },
+    "UPDATE_ACTIVITY_TYPE": {
+      "label": "Update Activity Type",
+      "description": "Categoria de activitate {{activityTypeName}} a fost modificata."
+    },
+    "CHANGE_ACTIVITY_TYPE_STATUS": {
+      "label": "Change Activity Type Status",
+      "description": "Statusul categoriei de activitate {{activityTypeName}} a fost schimbat din {{oldStatus}} in {{newStatus}}."
+    },
+    "CREATE_EVENT": {
+      "label": "Create Event",
+      "description": "Evenimentul {{eventName}} a fost creat."
+    },
+    "UPDATE_EVENT": {
+      "label": "Update Event",
+      "description": "Evenimentul {{eventName}} a fost modificat."
+    },
+    "DELETE_EVENT": {
+      "label": "Delete Event",
+      "description": "Evenimentul {{eventName}} a fost sters."
+    },
+    "CHANGE_EVENT_STATUS": {
+      "label": "Change Event Status",
+      "description": "Statusul evenimentului pentru {{eventName}} a fost schimbat din {{oldStatus}} in {newStatus}."
+    },
+    "CREATE_ANNOUNCEMENT": {
+      "label": "Create Announcement",
+      "description": "Anuntul {{announcementTitle}} a fost creat."
+    },
+    "DELETE_ANNOUNCEMENT": {
+      "label": "Delete Announcement",
+      "description": "Anuntul {{announcementTitle}} a fost sters."
+    },
+    "PUBLISH_ANNOUNCEMENT": {
+      "label": "Publish Announcement",
+      "description": "Anuntul {{announcementTitle}} a fost publicat."
     }
   }
 }

@@ -7,6 +7,7 @@ import { DivisionError } from './entities/division.errors';
 import { OrganizationError } from './entities/organization.errors';
 import { VolunteerError } from './entities/volunteer.errors';
 import { EventError } from './entities/event.errors';
+import { ActionsError } from './entities/actions.errors';
 
 // Here we list all the group of errors for every page
 export class InternalErrors {
@@ -19,4 +20,5 @@ export class InternalErrors {
   public static EVENT_ERRORS = EventError.getInstance();
   public static ANNOUNCEMENT_ERRORS = AnnouncementError.getInstance();
   public static ACTIVITY_LOG_ERRORS = ActivityLogError.getInstance();
+  public static ACTIONS_ERRORS = ActionsError.getInstance();
 }
