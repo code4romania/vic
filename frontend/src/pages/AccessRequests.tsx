@@ -394,8 +394,8 @@ const AccessRequestTable = ({ useAccessRequests }: AccessRequestTable) => {
       queryParams?.createdOnStart as Date,
       queryParams?.createdOnEnd as Date,
       location?.value,
-      queryParams?.rejectedOnStart,
-      queryParams?.rejectedOnEnd,
+      queryParams?.rejectedOnStart as Date,
+      queryParams?.rejectedOnEnd as Date,
     );
 
     downloadExcel(accessRequestsData, i18n.t('access_requests:download'));

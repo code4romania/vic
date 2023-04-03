@@ -20,7 +20,7 @@ const OrganizationStructureSelect = ({
 
   // handle scenario where selected comes as string from query param
   if (typeof selected === 'string') {
-    const defaultItem = divisionListItems?.find((item) => item.name === selected);
+    const defaultItem = divisionListItems?.items.find((item) => item.name === selected);
     if (defaultItem) {
       selected = mapDivisionListItemToSelectItem(defaultItem);
       onChange(selected);

@@ -29,8 +29,8 @@ const TargetsMultiSelect = ({
       selection?.length === 0 &&
       divisionListItems
     ) {
-      filteredSelection = divisionListItems
-        ?.filter((item) => selectedValues?.includes(item.name))
+      filteredSelection = divisionListItems?.items
+        .filter((item) => selectedValues?.includes(item.name))
         .map(mapDivisionListItemToSelectItem);
       onChange(filteredSelection as SelectItem<string>[]);
     }
@@ -43,8 +43,8 @@ const TargetsMultiSelect = ({
       selected={(selectedItems as SelectItem<string>[]) || []}
       onChange={onChange}
       options={
-        divisionListItems && divisionListItems?.length > 0
-          ? divisionListItems?.map(mapDivisionListItemToSelectItem)
+        divisionListItems && divisionListItems?.items.length > 0
+          ? divisionListItems?.items.map(mapDivisionListItemToSelectItem)
           : []
       }
     />
