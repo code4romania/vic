@@ -24,6 +24,8 @@ export class EventListItemPresenter {
 
     this.going = event.going;
     this.notGoing = event.notGoing;
+
+    this.activityLogged = event.activityLogged;
   }
 
   @Expose()
@@ -75,4 +77,15 @@ export class EventListItemPresenter {
   @Expose()
   @ApiProperty({ description: 'The name volunteers not going' })
   notGoing: number;
+
+  @Expose()
+  @ApiProperty({
+    description:
+      'Activity logged for this event, containing total hours and total number of distinct volunteers',
+    example: {
+      totalHours: 10,
+      volunteers: 2,
+    },
+  })
+  activityLogged: { totalHours: number; volunteers: number };
 }
