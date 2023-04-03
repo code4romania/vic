@@ -7,10 +7,12 @@
     "user": "Utilizator",
     "close": "Inchide",
     "name": "Nume",
-    "save": "Salvează",
     "people": "Persoane",
     "age": "Vârsta",
     "hours": "Ore",
+    "daily": "Zilnic",
+    "monthly": "Lunar",
+    "yearly": "Anual",
     "date": "Data",
     "target": "Target",
     "answers": "Răspunsuri",
@@ -69,7 +71,8 @@
       "hide": "Ascunde filtre"
     },
     "select_interval": "Selecteaza interval",
-    "save_draft": "Salveaza ca draft"
+    "save_draft": "Salveaza ca draft",
+    "other": "Alta optiune"
   },
   "header": {
     "login": "Login",
@@ -545,11 +548,12 @@
   },
   "activity_log": {
     "pending": "Solicitări de aprobare",
+    "download": "Descarcă tabel aprobate",
     "pending_header": "{{hours}} ore în curs de aprobare",
     "past": "Istoric ore de voluntariat",
     "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
     "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
-    "add": "Înregistrează ore",
+    "add": "Adauga ore",
     "header": {
       "task": "Task",
       "execution_date": "Data efectuării",
@@ -564,7 +568,11 @@
     "popover": {
       "view": "Fișă de activitate"
     },
-    "filters": { "execution": "Perioada efectuare task", "registration": "Perioada inregistrare" },
+    "filters": {
+      "execution": "Perioada efectuare task",
+      "registration": "Perioada inregistrare",
+      "approved_rejected": "Aprobat/Resprins de"
+    },
     "modal": {
       "title": "Argumentează respingere",
       "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
@@ -703,6 +711,21 @@
     "PUBLISH_ANNOUNCEMENT": {
       "label": "Publish Announcement",
       "description": "Anuntul {{announcementTitle}} a fost publicat."
+    }
+  },
+  "dashboard": {
+    "statistics_card": {
+      "activity_log": {
+        "label": "Vezi ore care asteapta aprobare",
+        "info": "{{value}} ore in asteptare"
+      },
+      "volunteer": { "label": "Vezi solicitari", "info": "{{value}} solicitari de inscriere" }
+    },
+    "line_chart": {
+      "title": "Număr voluntari"
+    },
+    "pie_chart": {
+      "title": "Statistici voluntari organizatie"
     }
   }
 }
