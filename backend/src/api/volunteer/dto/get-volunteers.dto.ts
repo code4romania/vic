@@ -19,15 +19,15 @@ export class GetVolunteersDto extends BasePaginationFilterDto {
 
   @IsString()
   @IsOptional()
-  branchId?: string;
+  branch?: string;
 
   @IsString()
   @IsOptional()
-  departmentId?: string;
+  department?: string;
 
   @IsString()
   @IsOptional()
-  roleId?: string;
+  role?: string;
 
   @IsNumber()
   @IsOptional()

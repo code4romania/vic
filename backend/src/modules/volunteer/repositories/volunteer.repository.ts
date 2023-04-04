@@ -41,9 +41,9 @@ export class VolunteerRepositoryService
       organizationId,
       status,
       search,
-      branchId,
-      departmentId,
-      roleId,
+      branch,
+      department,
+      role,
       locationId,
       age,
       activeSinceStart,
@@ -111,20 +111,20 @@ export class VolunteerRepositoryService
     }
 
     // branch
-    if (branchId) {
-      query.andWhere('volunteerProfile.branchId = :branchId', { branchId });
+    if (branch) {
+      query.andWhere('branch.name = :branch', { branch });
     }
 
     // department
-    if (departmentId) {
-      query.andWhere('volunteerProfile.departmentId = :departmentId', {
-        departmentId,
+    if (department) {
+      query.andWhere('department.name = :department', {
+        department,
       });
     }
 
     // branch
-    if (roleId) {
-      query.andWhere('volunteerProfile.roleId = :roleId', { roleId });
+    if (role) {
+      query.andWhere('role.name = :role', { role });
     }
 
     // location
