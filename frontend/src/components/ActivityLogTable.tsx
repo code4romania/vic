@@ -257,9 +257,13 @@ const ActivityLogTable = ({
 
   const onExport = async () => {
     const { data: activityLogsData } = await getActivityLogsForDownload({
+      limit: rowsPerPage as number,
+      page: page as number,
+      resolutionStatus,
       orderBy: orderByColumn,
       orderDirection,
       search: searchWord,
+      status: status?.key,
       executionDateStart: executionDateRange[0],
       executionDateEnd: executionDateRange[1],
       volunteerId: volunteerId,
@@ -329,7 +333,7 @@ const ActivityLogTable = ({
                 className="btn-outline-secondary grow"
                 icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
                 onClick={onExport}
-                aria-label={`${i18n.t('activity_log:download')}`}
+                aria-label={`${i18n.t('general:download_table')}`}
                 type="button"
               />
               <Button

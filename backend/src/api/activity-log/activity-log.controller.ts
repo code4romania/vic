@@ -36,7 +36,6 @@ import { ActivityLogListItemPresenter } from './presenters/activity-log-list-ite
 import { ActivityLogPresenter } from './presenters/activity-log.presenter';
 import { GetManyActivityLogCountersDto } from './dto/get-many-activity-log-counters.dto';
 import { Response } from 'express';
-import { DownloadActivityLogsDto } from './dto/download-activity-logs';
 import { GetManyForDownloadActivityLogUseCase } from 'src/usecases/activity-log/get-many-for-download-activity-log.usecase';
 import { jsonToExcelBuffer } from 'src/common/helpers/utils';
 import { IActivityLogDownload } from 'src/modules/activity-log/interfaces/activity-log-download.interface';
@@ -93,7 +92,7 @@ export class ActivityLogController {
   )
   async downloadApprovedActivityLogs(
     @Res({ passthrough: true }) res: Response,
-    @Query() filters: DownloadActivityLogsDto,
+    @Query() filters: GetManyActivityLogsDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<void> {
     const data = await this.getManyForDownloadActivityLogUseCase.execute({

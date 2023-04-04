@@ -292,9 +292,13 @@ const ActivityLogs = () => {
 
   const onExport = async () => {
     const { data: activityLogsData } = await getActivityLogsForDownload({
+      limit: rowsPerPage as number,
+      page: page as number,
+      resolutionStatus: activeTab,
       orderBy: orderByColumn,
       orderDirection,
       search: searchWord,
+      status: status?.key,
       approvedOrRejectedById: approvedOrRejectedBy?.value,
       executionDateStart: executionDateRange[0],
       executionDateEnd: executionDateRange[1],
@@ -364,7 +368,7 @@ const ActivityLogs = () => {
             </h2>
             {activeTab === ActivityLogResolutionStatus.SOLVED && (
               <Button
-                label={i18n.t('activity_log:download')}
+                label={i18n.t('general:download_table')}
                 className="btn-outline-secondary"
                 icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
                 onClick={onExport}

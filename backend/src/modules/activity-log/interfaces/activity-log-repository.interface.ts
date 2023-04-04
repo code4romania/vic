@@ -2,10 +2,8 @@ import { Pagination } from 'src/infrastructure/base/repository-with-pagination.c
 import {
   CreateActivityLogByAdminOptions,
   FindManyActivityLogCounterOptions,
-  FindManyActivityLogsDownloadOptions,
   FindManyActivityLogsOptions,
   IActivityLogCountHoursByStatus,
-  IActivityLogDownloadModel,
   IActivityLogListItemModel,
   IActivityLogModel,
   UpdateActivityLogOptions,
@@ -24,7 +22,4 @@ export interface IActivityLogRepository {
   countHourByStatus(
     findManyOptions: FindManyActivityLogCounterOptions,
   ): Promise<IActivityLogCountHoursByStatus>;
-  findManyForDownload(
-    findOptions: FindManyActivityLogsDownloadOptions,
-  ): Promise<Pagination<IActivityLogDownloadModel>>;
 }

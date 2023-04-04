@@ -549,7 +549,6 @@
   },
   "activity_log": {
     "pending": "Solicitări de aprobare",
-    "download": "Descarcă tabel aprobate",
     "pending_header": "{{hours}} ore în curs de aprobare",
     "past": "Istoric ore de voluntariat",
     "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",

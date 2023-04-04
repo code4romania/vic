@@ -5,9 +5,11 @@ export interface IActivityLogDownload {
   'Data participarii': Date;
   'Numele voluntarului': string;
   Mentiuni: string;
-  'Inregistrat de': string;
+  'Inregistrata de': string;
   'Data inregistrarii': Date;
-  'Aprobat de': string;
-  'Data aprobarii': Date;
+  'Aprobata de'?: string;
+  'Respinsa de'?: string;
+  'Data aprobarii'?: Date;
+  'Data respingerii'?: Date;
   Status?: string;
 }

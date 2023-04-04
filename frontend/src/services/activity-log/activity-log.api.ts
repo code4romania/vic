@@ -51,22 +51,30 @@ export const getActivityLogs = async ({
 };
 
 export const getActivityLogsForDownload = async ({
+  limit,
+  page,
+  resolutionStatus,
   orderBy,
   orderDirection,
   search,
+  status,
   approvedOrRejectedById,
   executionDateStart,
   executionDateEnd,
   volunteerId,
-}: Omit<GetActivityLogsParams, 'limit' | 'page' | 'resolutionStatus'>): Promise<{
+}: GetActivityLogsParams): Promise<{
   data: unknown;
   headers: AxiosResponseHeaders;
 }> => {
   return API.get('activity-log/download', {
     params: {
+      limit,
+      page,
+      resolutionStatus,
       orderBy,
       orderDirection,
       search,
+      status,
       approvedOrRejectedById,
       executionDateStart,
       executionDateEnd,
