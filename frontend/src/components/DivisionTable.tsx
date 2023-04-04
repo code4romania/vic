@@ -133,6 +133,7 @@ const DivisionTable = ({ query, setQuery }: DivisionTableProps) => {
   const onRowsPerPageChange = (rows: number) => {
     setQuery({
       limit: rows,
+      page: 1,
     });
   };
 
@@ -257,7 +258,7 @@ const DivisionTable = ({ query, setQuery }: DivisionTableProps) => {
               deleteDivisionMutationLoading
             }
             pagination
-            paginationPerPage={divisions?.meta?.itemsPerPage}
+            paginationPerPage={query.limit}
             paginationTotalRows={divisions?.meta?.totalItems}
             paginationDefaultPage={query.page as number}
             onChangeRowsPerPage={onRowsPerPageChange}

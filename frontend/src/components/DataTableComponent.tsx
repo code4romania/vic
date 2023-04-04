@@ -54,7 +54,7 @@ const DataTableComponent = <T extends object>({
         rowsPerPageText: (i18n.t('pagination:rows_per_page') as string) || '',
         rangeSeparatorText: (i18n.t('pagination:range_separator_text') as string) || '',
       }}
-      paginationDefaultPage={paginationDefaultPage || PaginationConfig.defaultPage}
+      paginationDefaultPage={paginationDefaultPage}
       responsive
       sortIcon={<ChevronUpDownIcon />}
       sortServer={sortServer}
