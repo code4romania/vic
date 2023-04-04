@@ -79,6 +79,11 @@ import { ActionsArchiveModule } from 'src/modules/actions-archive/actions-archiv
 import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions-archive.usecase';
 import { GetActivityLogCountersUsecase } from './activity-log/get-activity-log-counters.usecase';
 import { GetManyForDownloadEventRSVPUseCase } from './event/RSVP/get-many-for-download-rsvp.usecase';
+import { DashboardModule } from 'src/modules/dashboard/dashboard.module';
+import { GetDashboardVolunteerStatusTimeseriesUsecase } from './dashboard/get-dashboard-volunteer-status-timeseries.usecase';
+import { GetDashboardVolunteerGroupedUsecase } from './dashboard/get-dashboard-volunteers-grouped.usecase';
+import { GetDashboardVolunteersHoursUseCase } from './dashboard/get-dashboard-volunteers-hours.usecase';
+import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-volunteers-status.usecase';
 
 @Module({
   imports: [
@@ -94,6 +99,7 @@ import { GetManyForDownloadEventRSVPUseCase } from './event/RSVP/get-many-for-do
     EventModule,
     ActivityLogModule,
     ActionsArchiveModule,
+    DashboardModule,
   ],
   providers: [
     // Organization
@@ -177,6 +183,11 @@ import { GetManyForDownloadEventRSVPUseCase } from './event/RSVP/get-many-for-do
     GetActivityLogCountersUsecase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
+    // Dashboard
+    GetDashboardVolunteerStatusTimeseriesUsecase,
+    GetDashboardVolunteerGroupedUsecase,
+    GetDashboardVolunteersHoursUseCase,
+    GetDashboardVolunteersStatusUseCase,
   ],
   exports: [
     // Organization
@@ -261,6 +272,11 @@ import { GetManyForDownloadEventRSVPUseCase } from './event/RSVP/get-many-for-do
     GetActivityLogCountersUsecase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
+    // Dashboard
+    GetDashboardVolunteerStatusTimeseriesUsecase,
+    GetDashboardVolunteerGroupedUsecase,
+    GetDashboardVolunteersHoursUseCase,
+    GetDashboardVolunteersStatusUseCase,
   ],
 })
 export class UseCaseModule {}

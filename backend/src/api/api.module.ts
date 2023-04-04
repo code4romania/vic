@@ -18,6 +18,7 @@ import { MobileEventController } from './_mobile/event/event.controller';
 import { ActivityLogController } from './activity-log/activity-log.controller';
 import { ListingController } from './listing/listing.controller';
 import { ActionsArchiveController } from './actions-archive/actions-archive.controller';
+import { DashboardController } from './dashboard/dashboard.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -36,6 +37,7 @@ import { ActionsArchiveController } from './actions-archive/actions-archive.cont
     ActivityLogController,
     ListingController,
     ActionsArchiveController,
+    DashboardController,
     // Mobile
     MobileRegularUserController,
     MobileAccessRequestController,
