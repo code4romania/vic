@@ -19,7 +19,7 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
-import { downloadExcel, formatDate, formatLocation } from '../common/utils/utils';
+import { AgeRangeOptions, downloadExcel, formatDate, formatLocation } from '../common/utils/utils';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
@@ -42,47 +42,14 @@ import { DivisionType } from '../common/enums/division-type.enum';
 import { AgeRangeEnum } from '../common/enums/age-range.enum';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { getVolunteersForDownload } from '../services/volunteer/volunteer.api';
-import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
-import { ArrayParam, DateParam, StringParam, useQueryParams } from 'use-query-params';
 import StatusSelectFilter from '../containers/StatusSelectFilter';
 import CellLayout from '../layouts/CellLayout';
-
-export const VOLUNTEERS_QUERY_PARAMS = {
-  ...DEFAULT_QUERY_PARAMS,
-  volunteerStatus: StringParam,
-  search: StringParam,
-  branch: StringParam,
-  department: StringParam,
-  role: StringParam,
-  createdOnStart: DateParam,
-  createdOnEnd: DateParam,
-  age: StringParam,
-  location: ArrayParam,
-};
+import { VolunteerProps } from '../containers/query/VolunteersWithQueryParams';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
   { key: VolunteerStatus.ARCHIVED, value: i18n.t('volunteers:tabs.archived') },
   { key: VolunteerStatus.BLOCKED, value: i18n.t('volunteers:tabs.blocked') },
-];
-
-const AgeRangeOptions: SelectItem<AgeRangeEnum>[] = [
-  {
-    key: AgeRangeEnum['0_18'],
-    value: '0-18',
-  },
-  {
-    key: AgeRangeEnum['18_30'],
-    value: '18-30',
-  },
-  {
-    key: AgeRangeEnum['30_50'],
-    value: '30-50',
-  },
-  {
-    key: AgeRangeEnum.OVER_50,
-    value: '>50',
-  },
 ];
 
 const ActiveVolunteersTableHeader = [
@@ -156,11 +123,8 @@ const BlockedVolunteersTableHeader = [
   },
 ];
 
-const Volunteers = () => {
+const Volunteers = ({ query, setQuery }: VolunteerProps) => {
   const navigate = useNavigate();
-
-  const [queryParams, setQueryParams] = useQueryParams(VOLUNTEERS_QUERY_PARAMS);
-
   // Modal
   const [blockVolunteerCandidate, setBlockVolunteerCandidate] = useState<null | IVolunteer>();
   // filters
@@ -175,19 +139,19 @@ const Volunteers = () => {
     error: volunteersError,
     refetch,
   } = useVolunteersQuery(
-    queryParams?.volunteerStatus as VolunteerStatus,
-    queryParams?.limit as number,
-    queryParams?.page as number,
-    queryParams?.orderBy as string,
-    queryParams?.orderDirection as OrderDirection,
-    queryParams?.search as string,
-    AgeRangeOptions.find((option) => option.value === queryParams?.age)?.key,
-    branch?.key,
-    department?.key,
-    role?.key,
+    query?.volunteerStatus as VolunteerStatus,
+    query?.limit as number,
+    query?.page as number,
+    query?.orderBy as string,
+    query?.orderDirection as OrderDirection,
+    query?.search as string,
+    undefined,
+    query?.branch,
+    query?.department,
+    query?.role,
     location?.value,
-    queryParams?.createdOnStart as Date,
-    queryParams?.createdOnEnd as Date,
+    query?.createdOnStart as Date,
+    query?.createdOnEnd as Date,
   );
 
   //actions
@@ -207,22 +171,9 @@ const Volunteers = () => {
       );
   }, [volunteersError]);
 
-  // init query
-  useEffect(() => {
-    // init query params
-    setQueryParams({
-      limit: queryParams?.limit || PaginationConfig.defaultRowsPerPage,
-      page: queryParams?.page || PaginationConfig.defaultPage,
-      orderBy: queryParams?.orderBy || 'user.name',
-      orderDirection: queryParams?.orderDirection || OrderDirection.ASC,
-      volunteerStatus: queryParams?.volunteerStatus || VolunteerStatus.ACTIVE,
-    });
-  }, []);
-
   const onTabClick = (tab: VolunteerStatus) => {
-    setQueryParams({
-      volunteerStatus: tab,
-    });
+    // reset filter queries on tab click
+    setQuery({ volunteerStatus: tab }, 'push');
   };
 
   // menu items
@@ -365,23 +316,21 @@ const Volunteers = () => {
   };
 
   // pagination
-  const onRowsPerPageChange = (rows: number) => {
-    setQueryParams({
-      ...queryParams,
-      limit: rows,
+  const onRowsPerPageChange = (limit: number) => {
+    setQuery({
+      limit,
       page: 1,
     });
   };
 
-  const onChangePage = (newPage: number) => {
-    setQueryParams({
-      ...queryParams,
-      page: newPage,
+  const onChangePage = (page: number) => {
+    setQuery({
+      page,
     });
   };
 
   const onSort = (column: TableColumn<IVolunteer>, direction: SortOrder) => {
-    setQueryParams({
+    setQuery({
       orderBy: column.id as string,
       orderDirection:
         direction.toLocaleUpperCase() === OrderDirection.ASC
@@ -391,49 +340,49 @@ const Volunteers = () => {
   };
 
   const onSearch = (search: string) => {
-    setQueryParams({
-      search: search || null,
+    setQuery({
+      search,
     });
   };
 
   const onSetBranchFilter = (branch: SelectItem<string>) => {
     setBranch(branch);
-    setQueryParams({
-      branch: branch?.value || null,
+    setQuery({
+      branch: branch?.value,
     });
   };
 
   const onSetDepartmentFilter = (department: SelectItem<string>) => {
     setDepartment(department);
-    setQueryParams({
-      department: department?.value || null,
+    setQuery({
+      department: department?.value,
     });
   };
 
   const onSetRoleFilter = (role: SelectItem<string>) => {
     setRole(role);
-    setQueryParams({
-      role: role?.value || null,
+    setQuery({
+      role: role?.value,
     });
   };
 
-  const onCreatedOnRangeChange = (range: Date[]) => {
-    setQueryParams({
-      createdOnStart: range[0] || null,
-      createdOnEnd: range[1] || null,
+  const onCreatedOnRangeChange = ([createdOnStart, createdOnEnd]: Date[]) => {
+    setQuery({
+      createdOnStart,
+      createdOnEnd,
     });
   };
 
   const onLocationChange = (location: ListItem) => {
     setLocation(location);
-    setQueryParams({
+    setQuery({
       location: location.label.split(', '),
     });
   };
 
   const onAgeRangeChange = (selectedRange: SelectItem<AgeRangeEnum>) => {
-    setQueryParams({
-      age: selectedRange.value || null,
+    setQuery({
+      age: selectedRange.value,
     });
   };
 
@@ -442,31 +391,22 @@ const Volunteers = () => {
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
-    setQueryParams({
-      search: null,
-      branch: null,
-      department: null,
-      role: null,
-      createdOnEnd: null,
-      createdOnStart: null,
-      age: null,
-      location: null,
-    });
+    setQuery({ volunteerStatus: query.volunteerStatus }, 'push');
   };
 
   const onExport = async () => {
     const { data: volunteersData } = await getVolunteersForDownload(
-      queryParams?.volunteerStatus as VolunteerStatus,
-      queryParams?.orderBy as string,
-      queryParams?.orderDirection as OrderDirection,
-      queryParams?.search as string,
-      AgeRangeOptions.find((option) => option.value === queryParams?.age)?.key,
-      branch?.key,
-      department?.key,
-      role?.key,
+      query?.volunteerStatus as VolunteerStatus,
+      query?.orderBy as string,
+      query?.orderDirection as OrderDirection,
+      query?.search as string,
+      undefined,
+      query?.branch,
+      query?.department,
+      query?.role,
       location?.value,
-      queryParams?.createdOnStart as Date,
-      queryParams?.createdOnEnd as Date,
+      query?.createdOnStart as Date,
+      query?.createdOnEnd as Date,
     );
 
     downloadExcel(volunteersData as BlobPart, i18n.t('volunteers:download'));
@@ -479,22 +419,22 @@ const Volunteers = () => {
         tabs={VolunteersTabs}
         onClick={onTabClick}
         defaultTab={
-          queryParams?.volunteerStatus
-            ? VolunteersTabs.find((tab) => tab.key === queryParams?.volunteerStatus)
+          query?.volunteerStatus
+            ? VolunteersTabs.find((tab) => tab.key === query?.volunteerStatus)
             : VolunteersTabs[0]
         }
       >
         <DataTableFilters
           onSearch={onSearch}
-          searchValue={queryParams?.search}
+          searchValue={query?.search}
           onResetFilters={onResetFilters}
         >
           <DateRangePicker
             label={i18n.t('volunteers:filters.active_since_range')}
             onChange={onCreatedOnRangeChange}
             value={
-              queryParams?.createdOnStart && queryParams?.createdOnEnd
-                ? [queryParams?.createdOnStart, queryParams?.createdOnEnd]
+              query?.createdOnStart && query?.createdOnEnd
+                ? [query?.createdOnStart, query?.createdOnEnd]
                 : undefined
             }
             id="created-on-range__picker"
@@ -503,21 +443,24 @@ const Volunteers = () => {
             label={`${i18n.t('division:entity.branch')}`}
             placeholder={`${i18n.t('general:select', { item: '' })}`}
             onChange={onSetBranchFilter}
-            selected={branch || queryParams?.branch}
+            selected={branch}
+            defaultValue={query.branch}
             type={DivisionType.BRANCH}
           />
           <OrganizationStructureSelect
             label={`${i18n.t('division:entity.department')}`}
             placeholder={`${i18n.t('general:select', { item: '' })}`}
             onChange={onSetDepartmentFilter}
-            selected={department || queryParams?.department}
+            selected={department}
+            defaultValue={query.department}
             type={DivisionType.DEPARTMENT}
           />
           <OrganizationStructureSelect
             label={`${i18n.t('division:entity.role')}`}
             placeholder={`${i18n.t('general:select', { item: '' })}`}
             onChange={onSetRoleFilter}
-            selected={role || queryParams?.role}
+            selected={role}
+            defaultValue={query.role}
             type={DivisionType.ROLE}
           />
           <LocationSelect
@@ -530,12 +473,12 @@ const Volunteers = () => {
             placeholder={`${i18n.t('general:select', { item: '' })}`}
             options={AgeRangeOptions}
             onChange={onAgeRangeChange}
-            selected={queryParams?.age as AgeRangeEnum}
+            selected={query?.age as AgeRangeEnum}
           />
         </DataTableFilters>
         <Card>
           <CardHeader>
-            <h2>{i18n.t(`volunteers:tabs.${queryParams?.volunteerStatus}`)}</h2>
+            <h2>{i18n.t(`volunteers:tabs.${query?.volunteerStatus}`)}</h2>
             <Button
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
@@ -544,7 +487,7 @@ const Volunteers = () => {
             />
           </CardHeader>
           <CardBody>
-            {queryParams?.volunteerStatus === VolunteerStatus.ACTIVE && (
+            {query?.volunteerStatus === VolunteerStatus.ACTIVE && (
               <DataTableComponent
                 columns={[...ActiveVolunteersTableHeader, buildActiveVolunteersActionColumn()]}
                 data={volunteers?.items}
@@ -552,13 +495,13 @@ const Volunteers = () => {
                 pagination
                 paginationPerPage={volunteers?.meta?.itemsPerPage}
                 paginationTotalRows={volunteers?.meta?.totalItems}
-                paginationDefaultPage={queryParams.page as number}
+                paginationDefaultPage={query.page as number}
                 onChangeRowsPerPage={onRowsPerPageChange}
                 onChangePage={onChangePage}
                 onSort={onSort}
               />
             )}
-            {queryParams?.volunteerStatus === VolunteerStatus.ARCHIVED && (
+            {query?.volunteerStatus === VolunteerStatus.ARCHIVED && (
               <DataTableComponent
                 columns={[...ArchivedVolunteersTableHeader, buildArchivedVolunteersActionColumn()]}
                 data={volunteers?.items}
@@ -566,13 +509,13 @@ const Volunteers = () => {
                 pagination
                 paginationPerPage={volunteers?.meta?.itemsPerPage}
                 paginationTotalRows={volunteers?.meta?.totalItems}
-                paginationDefaultPage={queryParams.page as number}
+                paginationDefaultPage={query.page as number}
                 onChangeRowsPerPage={onRowsPerPageChange}
                 onChangePage={onChangePage}
                 onSort={onSort}
               />
             )}
-            {queryParams?.volunteerStatus === VolunteerStatus.BLOCKED && (
+            {query?.volunteerStatus === VolunteerStatus.BLOCKED && (
               <DataTableComponent
                 columns={[...BlockedVolunteersTableHeader, buildBlockedVolunteersActionColumn()]}
                 data={volunteers?.items}
@@ -580,7 +523,7 @@ const Volunteers = () => {
                 pagination
                 paginationPerPage={volunteers?.meta?.itemsPerPage}
                 paginationTotalRows={volunteers?.meta?.totalItems}
-                paginationDefaultPage={queryParams.page as number}
+                paginationDefaultPage={query.page as number}
                 onChangeRowsPerPage={onRowsPerPageChange}
                 onChangePage={onChangePage}
                 onSort={onSort}

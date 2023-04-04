@@ -11,7 +11,7 @@ import RegistrationRequests from '../pages/AccessRequests';
 import AccessCodes from '../pages/AccesCodes';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import Volunteers from '../pages/Volunteers';
+import Volunteers from '../containers/query/VolunteersWithQueryParams';
 import AddAccessCode from '../pages/AddAccessCode';
 import EditActivityType from '../pages/EditActivityType';
 import Announcements from '../pages/Announcements';
