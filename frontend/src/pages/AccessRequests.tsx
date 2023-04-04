@@ -138,8 +138,8 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     error: accessCodeRequestError,
     refetch,
   } = useAccessRequests(
-    rowsPerPage as number,
-    page as number,
+    (rowsPerPage as number) || PaginationConfig.defaultRowsPerPage,
+    (page as number) || PaginationConfig.defaultPage,
     orderByColumn,
     orderDirection,
     searchWord,
@@ -371,7 +371,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
         <LocationSelect
           label={i18n.t('general:location')}
           onSelect={setLocation}
-          defaultValue={location}
+          value={location}
         />
       </DataTableFilters>
       <Card>

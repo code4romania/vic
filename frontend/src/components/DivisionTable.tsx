@@ -65,7 +65,6 @@ const DivisionTable = ({ query, setQuery }: DivisionTableProps) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [selectedDivisionForUpdate, setSelectedDivisionForUpdate] = useState<IDivision>();
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
-  // console.log('query', query);
 
   // divisions query
   const {

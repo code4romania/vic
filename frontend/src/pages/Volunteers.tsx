@@ -523,8 +523,7 @@ const Volunteers = () => {
           <LocationSelect
             label={i18n.t('general:location')}
             onSelect={onLocationChange}
-            defaultValue={location}
-            queryValue={(queryParams?.location as string[]) || undefined}
+            value={location}
           />
           <StatusSelectFilter
             label={`${i18n.t('general:age')}`}
