@@ -11,7 +11,11 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import Select, { SelectItem } from '../components/Select';
-import { ActivityLogStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
+import {
+  ActivityLogStatusMarkerColorMapper,
+  downloadExcel,
+  formatDate,
+} from '../common/utils/utils';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
@@ -34,6 +38,7 @@ import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolu
 import AdminSelect from '../containers/AdminSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import Button from '../components/Button';
+import { getApprovedActivityLogsForDownload } from '../services/activity-log/activity-log.api';
 
 const ActivityLogTabsOptions: SelectItem<ActivityLogResolutionStatus>[] = [
   { key: ActivityLogResolutionStatus.NEW, value: i18n.t('activity_log:pending') },
@@ -285,8 +290,17 @@ const ActivityLogs = () => {
     );
   };
 
-  const onExport = () => {
-    alert('not yet implemented');
+  const onExport = async () => {
+    const { data: activityLogsData } = await getApprovedActivityLogsForDownload({
+      orderBy: orderByColumn,
+      orderDirection,
+      search: searchWord,
+      approvedOrRejectedById: approvedOrRejectedBy?.value,
+      executionDateStart: executionDateRange[0],
+      executionDateEnd: executionDateRange[1],
+    });
+
+    downloadExcel(activityLogsData as BlobPart, i18n.t('activity_log:download_file_name'));
   };
 
   const onResetFilters = () => {

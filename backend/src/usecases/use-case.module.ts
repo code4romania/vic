@@ -79,6 +79,7 @@ import { ActionsArchiveModule } from 'src/modules/actions-archive/actions-archiv
 import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions-archive.usecase';
 import { GetActivityLogCountersUsecase } from './activity-log/get-activity-log-counters.usecase';
 import { GetManyForDownloadEventRSVPUseCase } from './event/RSVP/get-many-for-download-rsvp.usecase';
+import { GetManyForDownloadActivityLogUseCase } from './activity-log/get-many-for-download-activity-log.usecase';
 
 @Module({
   imports: [
@@ -175,6 +176,7 @@ import { GetManyForDownloadEventRSVPUseCase } from './event/RSVP/get-many-for-do
     RejectActivityLogUsecase,
     GetManyActivityLogsUsecase,
     GetActivityLogCountersUsecase,
+    GetManyForDownloadActivityLogUseCase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
   ],
@@ -259,6 +261,7 @@ import { GetManyForDownloadEventRSVPUseCase } from './event/RSVP/get-many-for-do
     RejectActivityLogUsecase,
     GetManyActivityLogsUsecase,
     GetActivityLogCountersUsecase,
+    GetManyForDownloadActivityLogUseCase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
   ],

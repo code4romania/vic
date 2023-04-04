@@ -3,8 +3,10 @@ import { Pagination } from 'src/infrastructure/base/repository-with-pagination.c
 import {
   CreateActivityLogByAdminOptions,
   FindManyActivityLogCounterOptions,
+  FindManyActivityLogsDownloadOptions,
   FindManyActivityLogsOptions,
   IActivityLogCountHoursByStatus,
+  IActivityLogDownloadModel,
   IActivityLogListItemModel,
   IActivityLogModel,
   UpdateActivityLogOptions,
@@ -31,6 +33,12 @@ export class ActivityLogFacade {
     findOptions: FindManyActivityLogsOptions,
   ): Promise<Pagination<IActivityLogListItemModel>> {
     return this.activityLogRepository.findMany(findOptions);
+  }
+
+  async findManyForDownload(
+    findOptions: FindManyActivityLogsDownloadOptions,
+  ): Promise<Pagination<IActivityLogDownloadModel>> {
+    return this.activityLogRepository.findManyForDownload(findOptions);
   }
 
   async update(

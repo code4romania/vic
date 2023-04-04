@@ -14,8 +14,10 @@ import {
   ActivityLogModelTransformer,
   CreateActivityLogByAdminOptions,
   FindManyActivityLogCounterOptions,
+  FindManyActivityLogsDownloadOptions,
   FindManyActivityLogsOptions,
   IActivityLogCountHoursByStatus,
+  IActivityLogDownloadModel,
   IActivityLogListItemModel,
   IActivityLogModel,
   UpdateActivityLogOptions,
@@ -162,6 +164,100 @@ export class ActivityLogRepositoryService
       findOptions.limit,
       findOptions.page,
       ActivityLogModelTransformer.fromEntityToListItem,
+    );
+  }
+
+  async findManyForDownload(
+    findOptions: FindManyActivityLogsDownloadOptions,
+  ): Promise<Pagination<IActivityLogDownloadModel>> {
+    let query = this.activityLogRepo // TODO: strong type queries to use only the resulting select
+      .createQueryBuilder('activityLog')
+      .leftJoinAndMapOne('activityLog.event', 'activityLog.event', 'event')
+      .leftJoinAndMapOne(
+        'activityLog.volunteer',
+        'activityLog.volunteer',
+        'volunteer',
+      )
+      .leftJoinAndMapOne('volunteer.user', 'volunteer.user', 'user')
+      .leftJoinAndMapOne(
+        'activityLog.activityType',
+        'activityLog.activityType',
+        'activityType',
+      )
+      .leftJoinAndMapOne(
+        'activityLog.rejectedBy',
+        'activityLog.rejectedBy',
+        'rejectedBy',
+      )
+      .leftJoinAndMapOne(
+        'activityLog.approvedBy',
+        'activityLog.approvedBy',
+        'approvedBy',
+      )
+      .leftJoinAndMapOne(
+        'activityLog.createdByAdmin',
+        'activityLog.createdByAdmin',
+        'createdByAdmin',
+      )
+      .select([
+        'activityLog.date',
+        'activityLog.hours',
+        'activityLog.mentions',
+        'activityLog.createdOn',
+        'activityLog.approvedOn',
+        'volunteer.id',
+        'user.name',
+        'event.name',
+        'activityType.name',
+        'approvedBy.name',
+        'createdByAdmin.name',
+      ])
+      .where('activityLog.organizationId = :organizationId', {
+        organizationId: findOptions.organizationId,
+      })
+      .andWhere('activityLog.status = :status', {
+        status: ActivityLogStatus.APPROVED,
+      })
+      .orderBy(
+        this.buildOrderByQuery(
+          findOptions.orderBy || 'createdOn',
+          'activityLog',
+        ),
+        findOptions.orderDirection || OrderDirection.ASC,
+      );
+
+    if (findOptions.search) {
+      query.andWhere(
+        this.buildBracketSearchQuery(
+          ['activityType.name', 'user.name', 'event.name'],
+          findOptions.search,
+        ),
+      );
+    }
+
+    if (findOptions.approvedOrRejectedById) {
+      query.andWhere(
+        '(activityLog.approvedById = :approvedOrRejectedById OR activityLog.rejectedById = :approvedOrRejectedById)',
+        {
+          approvedOrRejectedById: findOptions.approvedOrRejectedById,
+        },
+      );
+    }
+
+    if (findOptions.executionDateStart) {
+      query = this.addRangeConditionToQuery(
+        query,
+        'activityLog.date',
+        findOptions.executionDateStart,
+        findOptions.executionDateEnd,
+      );
+    }
+
+    return this.paginateQuery(
+      query,
+      0,
+      0,
+      ActivityLogModelTransformer.fromEntityToDownloadItem,
     );
   }
 

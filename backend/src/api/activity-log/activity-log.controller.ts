@@ -2,10 +2,12 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   Param,
   Patch,
   Post,
   Query,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
@@ -33,6 +35,11 @@ import { ActivityLogCountersPresenter } from './presenters/activity-log-counters
 import { ActivityLogListItemPresenter } from './presenters/activity-log-list-item.presenter';
 import { ActivityLogPresenter } from './presenters/activity-log.presenter';
 import { GetManyActivityLogCountersDto } from './dto/get-many-activity-log-counters.dto';
+import { Response } from 'express';
+import { DownloadActivityLogsDto } from './dto/download-activity-logs';
+import { GetManyForDownloadActivityLogUseCase } from 'src/usecases/activity-log/get-many-for-download-activity-log.usecase';
+import { jsonToExcelBuffer } from 'src/common/helpers/utils';
+import { IActivityLogDownload } from 'src/modules/activity-log/interfaces/activity-log-download.interface';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, ActivityLogGuard)
@@ -46,6 +53,7 @@ export class ActivityLogController {
     private readonly approveActivityLogUsecase: ApproveActivityLogUsecase,
     private readonly rejectActivityLogUsecase: RejectActivityLogUsecase,
     private readonly getActivityLogCountersUsecase: GetActivityLogCountersUsecase,
+    private readonly getManyForDownloadActivityLogUseCase: GetManyForDownloadActivityLogUseCase,
   ) {}
 
   @ApiBody({ type: CreateActivityLogByAdminDto })
@@ -72,6 +80,33 @@ export class ActivityLogController {
       organizationId: admin.organizationId,
     });
     return new ActivityLogCountersPresenter(counters);
+  }
+
+  @Get('download')
+  @Header(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  )
+  @Header(
+    'Content-Disposition',
+    'attachment; filename="Istoric ore de voluntariat.xlsx"',
+  )
+  async downloadApprovedActivityLogs(
+    @Res({ passthrough: true }) res: Response,
+    @Query() filters: DownloadActivityLogsDto,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<void> {
+    const data = await this.getManyForDownloadActivityLogUseCase.execute({
+      ...filters,
+      organizationId,
+    });
+
+    res.end(
+      jsonToExcelBuffer<IActivityLogDownload>(
+        data,
+        'Istoric ore de voluntariat.xlsx',
+      ),
+    );
   }
 
   @ApiParam({ name: 'id', type: 'string' })

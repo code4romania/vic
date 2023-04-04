@@ -1,3 +1,4 @@
+import { AxiosResponseHeaders } from 'axios';
 import { CONSTANTS } from '../../common/constants/constants';
 import { ActivityLogResolutionStatus } from '../../common/enums/activity-log-resolution-status.enum';
 import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
@@ -47,6 +48,32 @@ export const getActivityLogs = async ({
         : {}),
     },
   }).then((res) => res.data);
+};
+
+export const getApprovedActivityLogsForDownload = async ({
+  orderBy,
+  orderDirection,
+  search,
+  approvedOrRejectedById,
+  executionDateStart,
+  executionDateEnd,
+}: Omit<GetActivityLogsParams, 'limit' | 'page' | 'resolutionStatus'>): Promise<{
+  data: unknown;
+  headers: AxiosResponseHeaders;
+}> => {
+  return API.get('activity-log/download', {
+    params: {
+      orderBy,
+      orderDirection,
+      search,
+      approvedOrRejectedById,
+      executionDateStart,
+      executionDateEnd,
+    },
+    responseType: 'arraybuffer',
+  }).then((res) => {
+    return { data: res.data, headers: res.headers as AxiosResponseHeaders };
+  });
 };
 
 export const getActivityLog = async (id: string): Promise<IActivityLog> => {

@@ -61,6 +61,20 @@ export interface IActivityLogListItemModel {
   activityType: Pick<IActivityTypeModel, 'id' | 'name' | 'icon'>;
 }
 
+export interface IActivityLogDownloadModel {
+  hours: number;
+  date: Date;
+  mentions: string;
+  createdOn: Date;
+  approvedOn: Date;
+  // Relations
+  volunteer: Pick<IRegularUserModel, 'name'>;
+  event?: Pick<IEventModel, 'name'>;
+  activityType: Pick<IActivityTypeModel, 'name'>;
+  createdByAdmin?: Pick<IAdminUserModel, 'name'>;
+  approvedBy: Pick<IAdminUserModel, 'name'>;
+}
+
 export type IActivityLogCountHoursByStatus = {
   [ActivityLogStatus.PENDING]: number;
   [ActivityLogStatus.APPROVED]: number;
@@ -113,6 +127,15 @@ export type FindManyActivityLogsOptions = {
   approvedOrRejectedById?: string;
 } & IBasePaginationFilterModel;
 
+export type FindManyActivityLogsDownloadOptions = {
+  organizationId: string;
+
+  executionDateStart?: Date;
+  executionDateEnd?: Date;
+
+  approvedOrRejectedById?: string;
+} & Omit<IBasePaginationFilterModel, 'limit' | 'page'>;
+
 export type FindManyActivityLogCounterOptions = {
   organizationId: string;
   volunteerId?: string;
@@ -145,6 +168,35 @@ export class ActivityLogModelTransformer {
             icon: entity.activityType.icon,
           }
         : null,
+    };
+  }
+
+  static fromEntityToDownloadItem(
+    entity: ActivityLogEntity,
+  ): IActivityLogDownloadModel {
+    return {
+      hours: entity.hours,
+      date: entity.date,
+      mentions: entity.mentions,
+      approvedOn: entity.approvedOn,
+      createdOn: entity.createdOn,
+      volunteer: {
+        name: entity.volunteer?.user?.name,
+      },
+      event: entity.event
+        ? {
+            name: entity.event.name,
+          }
+        : null,
+      activityType: entity.activityType
+        ? {
+            name: entity.activityType.name,
+          }
+        : null,
+      createdByAdmin: entity.createdByAdmin
+        ? { name: entity.createdByAdmin.name }
+        : null,
+      approvedBy: entity.approvedBy ? { name: entity.approvedBy.name } : null,
     };
   }
 
