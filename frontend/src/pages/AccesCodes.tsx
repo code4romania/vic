@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
+import { PaginationConfig } from '../common/constants/pagination';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IUser } from '../common/interfaces/user.interface';
@@ -21,13 +22,6 @@ import {
   useAccessCodesQuery,
   useDeleteAccessCodeMutation,
 } from '../services/organization/organization.service';
-import { useQueryParams } from 'use-query-params';
-import { PaginationConfig, DEFAULT_QUERY_PARAMS } from '../common/constants/pagination';
-
-export const ACCESS_CODES_QUERY_PARAMS = {
-  ...DEFAULT_QUERY_PARAMS,
-};
-
 export interface IAccessCode {
   id: string;
   code: string;
@@ -91,11 +85,11 @@ const AccessCodeTableHeader = [
 
 const AccessCodes = () => {
   const [showDeleteAccessCode, setShowDeleteAccessCode] = useState<null | IAccessCode>();
-  // navigate
+  const [page, setPage] = useState<number>(PaginationConfig.defaultPage);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PaginationConfig.defaultRowsPerPage);
+  const [orderByColumn, setOrderByColumn] = useState<string>();
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const navigate = useNavigate();
-
-  // query params
-  const [queryParams, setQueryParams] = useQueryParams(ACCESS_CODES_QUERY_PARAMS);
 
   const {
     data: accessCodes,
@@ -103,25 +97,14 @@ const AccessCodes = () => {
     isLoading: isAccessCodesLoading,
     refetch,
   } = useAccessCodesQuery(
-    queryParams?.limit as number,
-    queryParams?.page as number,
-    queryParams?.orderBy as string,
-    queryParams?.orderDirection as OrderDirection,
+    rowsPerPage as number,
+    page as number,
+    orderByColumn as string,
+    orderDirection as OrderDirection,
   );
 
   const { mutateAsync: deleteAccessCode, isLoading: isDeleteAccessCodeLoading } =
     useDeleteAccessCodeMutation();
-
-  // init query
-  useEffect(() => {
-    // init query params
-    setQueryParams({
-      limit: queryParams?.limit || PaginationConfig.defaultRowsPerPage,
-      page: queryParams?.page || PaginationConfig.defaultPage,
-      orderBy: queryParams?.orderBy || 'code',
-      orderDirection: queryParams?.orderDirection || OrderDirection.ASC,
-    });
-  }, []);
 
   useEffect(() => {
     if (accessCodesError) useErrorToast(i18n.t('general:error.load_entries'));
@@ -129,26 +112,21 @@ const AccessCodes = () => {
 
   // pagination
   const onRowsPerPageChange = (rows: number) => {
-    setQueryParams({
-      limit: rows,
-      page: 1,
-    });
+    setRowsPerPage(rows);
+    setPage(1);
   };
 
-  const onChangePage = (newPage: number) => {
-    setQueryParams({
-      page: newPage,
-    });
+  const onChangePage = (page: number) => {
+    setPage(page);
   };
 
   const onSort = (column: TableColumn<IAccessCode>, direction: SortOrder) => {
-    setQueryParams({
-      orderBy: column.id as string,
-      orderDirection:
-        direction.toLocaleUpperCase() === OrderDirection.ASC
-          ? OrderDirection.ASC
-          : OrderDirection.DESC,
-    });
+    setOrderByColumn(column.id as string);
+    setOrderDirection(
+      direction.toLocaleUpperCase() === OrderDirection.ASC
+        ? OrderDirection.ASC
+        : OrderDirection.DESC,
+    );
   };
 
   // component actions
@@ -232,7 +210,7 @@ const AccessCodes = () => {
               pagination
               paginationPerPage={accessCodes?.meta?.itemsPerPage}
               paginationTotalRows={accessCodes?.meta?.totalItems}
-              paginationDefaultPage={queryParams.page as number}
+              paginationDefaultPage={page}
               onChangeRowsPerPage={onRowsPerPageChange}
               onChangePage={onChangePage}
               onSort={onSort}

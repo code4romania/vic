@@ -40,13 +40,7 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
 import { getEventsForDownload } from '../services/event/event.api';
-import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
-import { StringParam, useQueryParams } from 'use-query-params';
-
-export const EVENTS_QUERY_PARAMS = {
-  ...DEFAULT_QUERY_PARAMS,
-  tabsStatus: StringParam,
-};
+import { PaginationConfig } from '../common/constants/pagination';
 
 const EventsTabsOptions: SelectItem<EventState>[] = [
   { key: EventState.OPEN, value: i18n.t('side_menu:options.events') },
@@ -172,9 +166,12 @@ const PastEventsTableHeader = [
 
 const Events = () => {
   const [showDeleteEvent, setShowDeleteEvent] = useState<null | IEvent>();
-
-  // query params
-  const [queryParams, setQueryParams] = useQueryParams(EVENTS_QUERY_PARAMS);
+  const [tabsStatus, setTabsStatus] = useState<EventState>(EventState.OPEN);
+  // pagination state
+  const [page, setPage] = useState<number>(PaginationConfig.defaultPage);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PaginationConfig.defaultRowsPerPage);
+  const [orderByColumn, setOrderByColumn] = useState<string>();
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
 
   const navigate = useNavigate();
 
@@ -185,11 +182,11 @@ const Events = () => {
     error: eventsError,
     refetch,
   } = useEventsQuery(
-    queryParams?.limit as number,
-    queryParams?.page as number,
-    queryParams?.tabsStatus as EventState,
-    queryParams?.orderBy as string,
-    queryParams?.orderDirection as OrderDirection,
+    rowsPerPage as number,
+    page as number,
+    tabsStatus,
+    orderByColumn,
+    orderDirection,
   );
   // actions
   const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
@@ -201,23 +198,8 @@ const Events = () => {
       useErrorToast(InternalErrors.EVENT_ERRORS.getError(eventsError.response?.data.code_error));
   }, [eventsError]);
 
-  // init query
-  useEffect(() => {
-    // init query params
-    setQueryParams({
-      limit: queryParams?.limit || PaginationConfig.defaultRowsPerPage,
-      page: queryParams?.page || PaginationConfig.defaultPage,
-      orderBy: queryParams?.orderBy || 'name',
-      tabsStatus: queryParams?.tabsStatus || EventState.OPEN,
-      orderDirection: queryParams?.orderDirection || OrderDirection.ASC,
-    });
-  }, []);
-
   const onTabClick = (tab: EventState) => {
-    setQueryParams({
-      ...queryParams,
-      tabsStatus: tab,
-    });
+    setTabsStatus(tab);
   };
 
   // row actions
@@ -342,45 +324,25 @@ const Events = () => {
 
   const onExport = async () => {
     const { data: eventsData } = await getEventsForDownload(
-      queryParams?.tabsStatus as EventState,
-      queryParams?.orderBy as string,
-      queryParams?.orderDirection as OrderDirection,
+      tabsStatus,
+      orderByColumn,
+      orderDirection,
     );
 
-    downloadExcel(
-      eventsData as BlobPart,
-      i18n.t('events:download', { context: queryParams?.tabsStatus }),
-    );
+    downloadExcel(eventsData as BlobPart, i18n.t('events:download', { context: tabsStatus }));
   };
 
   const onAddEvent = () => {
     navigate('/events/add');
   };
 
-  // pagination
-  const onRowsPerPageChange = (rows: number) => {
-    setQueryParams({
-      ...queryParams,
-      limit: rows,
-      page: 1,
-    });
-  };
-
-  const onChangePage = (newPage: number) => {
-    setQueryParams({
-      ...queryParams,
-      page: newPage,
-    });
-  };
-
   const onSort = (column: TableColumn<IEvent>, direction: SortOrder) => {
-    setQueryParams({
-      orderBy: column.id as string,
-      orderDirection:
-        direction.toLocaleUpperCase() === OrderDirection.ASC
-          ? OrderDirection.ASC
-          : OrderDirection.DESC,
-    });
+    setOrderByColumn(column.id as string);
+    setOrderDirection(
+      direction.toLocaleUpperCase() === OrderDirection.ASC
+        ? OrderDirection.ASC
+        : OrderDirection.DESC,
+    );
   };
 
   return (
@@ -391,18 +353,11 @@ const Events = () => {
       >
         {i18n.t('side_menu:options.events')}
       </PageHeaderAdd>
-      <Tabs<EventState>
-        tabs={EventsTabsOptions}
-        onClick={onTabClick}
-        defaultTab={
-          EventsTabsOptions.find((tab) => tab.key === queryParams?.tabsStatus) ||
-          EventsTabsOptions[0]
-        }
-      >
+      <Tabs<EventState> tabs={EventsTabsOptions} onClick={onTabClick}>
         <Card>
           <CardHeader>
             <h2>
-              {queryParams?.tabsStatus === EventState.OPEN
+              {tabsStatus === EventState.OPEN
                 ? i18n.t('side_menu:options.events')
                 : i18n.t('events:past_events')}
             </h2>
@@ -416,19 +371,17 @@ const Events = () => {
           <CardBody>
             <DataTableComponent
               columns={[
-                ...(queryParams?.tabsStatus === EventState.PAST
-                  ? PastEventsTableHeader
-                  : OpenEventsTableHeader),
+                ...(tabsStatus === EventState.PAST ? PastEventsTableHeader : OpenEventsTableHeader),
                 buildEventsActionColumn(),
               ]}
               data={events?.items}
               loading={isEventsLoading || isArchivingEvent || isDeletingEvent || isPublishingEvent}
               pagination
-              paginationPerPage={events?.meta?.itemsPerPage}
+              paginationPerPage={rowsPerPage}
               paginationTotalRows={events?.meta?.totalItems}
-              paginationDefaultPage={queryParams.page as number}
-              onChangeRowsPerPage={onRowsPerPageChange}
-              onChangePage={onChangePage}
+              paginationDefaultPage={page}
+              onChangeRowsPerPage={setRowsPerPage}
+              onChangePage={setPage}
               onSort={onSort}
             />
           </CardBody>

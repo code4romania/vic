@@ -33,10 +33,3 @@ export const getPaginationQueryParams = (defaults?: IPaginationQueryParams) => {
     orderDirection: orderDirectionParam,
   };
 };
-
-export const DEFAULT_QUERY_PARAMS = {
-  page: NumberParam,
-  limit: NumberParam,
-  orderBy: StringParam,
-  orderDirection: StringParam,
-};
