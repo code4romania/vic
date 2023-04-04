@@ -5,13 +5,13 @@ import API from '../api';
 
 export const getActivityTypes = async (
   search?: string,
-  branchId?: string,
-  departmentId?: string,
-  roleId?: string,
+  branch?: string,
+  department?: string,
+  role?: string,
   status?: ActivityTypeStatus,
 ): Promise<IActivityType[]> => {
   return API.get('/activity-type', {
-    params: { search, branchId, departmentId, roleId, status },
+    params: { search, branch, department, role, status },
   }).then((res) => res.data);
 };
 

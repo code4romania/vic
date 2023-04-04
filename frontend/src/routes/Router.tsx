@@ -18,7 +18,7 @@ import Announcements from '../pages/Announcements';
 import Volunteer from '../pages/Volunteer';
 import EditVolunteer from '../pages/EditVolunteer';
 import AddActivityType from '../pages/AddActivityType';
-import ActivityTypes from '../pages/ActivityTypes';
+import ActivityTypes from '../containers/query/ActivityTypesWithQueryParams';
 import Events from '../pages/Events';
 import Event from '../pages/Event';
 import AddEvent from '../pages/AddEvent';
