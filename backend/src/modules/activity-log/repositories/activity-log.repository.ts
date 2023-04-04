@@ -215,9 +215,6 @@ export class ActivityLogRepositoryService
       .where('activityLog.organizationId = :organizationId', {
         organizationId: findOptions.organizationId,
       })
-      .andWhere('activityLog.status = :status', {
-        status: ActivityLogStatus.APPROVED,
-      })
       .orderBy(
         this.buildOrderByQuery(
           findOptions.orderBy || 'createdOn',
@@ -225,6 +222,18 @@ export class ActivityLogRepositoryService
         ),
         findOptions.orderDirection || OrderDirection.ASC,
       );
+
+    if (findOptions.volunteerId) {
+      query
+        .andWhere('activityLog.volunteerId = :volunteerId', {
+          volunteerId: findOptions.volunteerId,
+        })
+        .addSelect(['activityLog.status']);
+    } else {
+      query.andWhere('activityLog.status = :status', {
+        status: ActivityLogStatus.APPROVED,
+      });
+    }
 
     if (findOptions.search) {
       query.andWhere(

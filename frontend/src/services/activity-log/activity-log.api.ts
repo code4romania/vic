@@ -50,13 +50,14 @@ export const getActivityLogs = async ({
   }).then((res) => res.data);
 };
 
-export const getApprovedActivityLogsForDownload = async ({
+export const getActivityLogsForDownload = async ({
   orderBy,
   orderDirection,
   search,
   approvedOrRejectedById,
   executionDateStart,
   executionDateEnd,
+  volunteerId,
 }: Omit<GetActivityLogsParams, 'limit' | 'page' | 'resolutionStatus'>): Promise<{
   data: unknown;
   headers: AxiosResponseHeaders;
@@ -69,6 +70,7 @@ export const getApprovedActivityLogsForDownload = async ({
       approvedOrRejectedById,
       executionDateStart,
       executionDateEnd,
+      volunteerId,
     },
     responseType: 'arraybuffer',
   }).then((res) => {

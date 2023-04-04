@@ -67,6 +67,7 @@ export interface IActivityLogDownloadModel {
   mentions: string;
   createdOn: Date;
   approvedOn: Date;
+  status?: string;
   // Relations
   volunteer: Pick<IRegularUserModel, 'name'>;
   event?: Pick<IEventModel, 'name'>;
@@ -130,6 +131,8 @@ export type FindManyActivityLogsOptions = {
 export type FindManyActivityLogsDownloadOptions = {
   organizationId: string;
 
+  volunteerId?: string;
+
   executionDateStart?: Date;
   executionDateEnd?: Date;
 
@@ -178,6 +181,7 @@ export class ActivityLogModelTransformer {
       hours: entity.hours,
       date: entity.date,
       mentions: entity.mentions,
+      status: entity.status,
       approvedOn: entity.approvedOn,
       createdOn: entity.createdOn,
       volunteer: {

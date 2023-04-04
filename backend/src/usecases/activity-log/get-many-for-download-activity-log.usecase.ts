@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
+import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { IActivityLogDownload } from 'src/modules/activity-log/interfaces/activity-log-download.interface';
 import { FindManyActivityLogsDownloadOptions } from 'src/modules/activity-log/models/activity-log.model';
 import { ActivityLogFacade } from 'src/modules/activity-log/services/activity-log.facade';
@@ -30,6 +31,14 @@ export class GetManyForDownloadActivityLogUseCase
         'Data inregistrarii': activityLog.createdOn,
         'Aprobat de': activityLog.approvedBy.name,
         'Data aprobarii': activityLog.approvedOn,
+        ...(activityLog.status
+          ? {
+              Status:
+                activityLog.status === ActivityLogStatus.APPROVED
+                  ? 'Aprobat'
+                  : 'Respins',
+            }
+          : {}),
       };
     });
   }

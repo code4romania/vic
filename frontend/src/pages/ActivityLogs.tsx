@@ -38,7 +38,7 @@ import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolu
 import AdminSelect from '../containers/AdminSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import Button from '../components/Button';
-import { getApprovedActivityLogsForDownload } from '../services/activity-log/activity-log.api';
+import { getActivityLogsForDownload } from '../services/activity-log/activity-log.api';
 
 const ActivityLogTabsOptions: SelectItem<ActivityLogResolutionStatus>[] = [
   { key: ActivityLogResolutionStatus.NEW, value: i18n.t('activity_log:pending') },
@@ -291,7 +291,7 @@ const ActivityLogs = () => {
   };
 
   const onExport = async () => {
-    const { data: activityLogsData } = await getApprovedActivityLogsForDownload({
+    const { data: activityLogsData } = await getActivityLogsForDownload({
       orderBy: orderByColumn,
       orderDirection,
       search: searchWord,

@@ -9,4 +9,5 @@ export interface IActivityLogDownload {
   'Data inregistrarii': Date;
   'Aprobat de': string;
   'Data aprobarii': Date;
+  Status?: string;
 }
