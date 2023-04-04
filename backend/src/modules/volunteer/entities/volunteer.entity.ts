@@ -75,10 +75,4 @@ export class VolunteerEntity extends BaseEntity {
   @ManyToOne(() => OrganizationEntity)
   @JoinColumn({ name: 'organization_id' })
   organization: OrganizationEntity;
-
-  @OneToMany(
-    () => AccessRequestEntity,
-    (accessRequest) => accessRequest.requestedBy,
-  )
-  accessRequests: AccessRequestEntity[];
 }

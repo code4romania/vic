@@ -68,7 +68,6 @@ export class DashboardRepository implements IDashboardRepository {
     const query = this.volunteerRepository
       .createQueryBuilder('v')
       .leftJoin('v.user', 'u')
-      // .select()
       .where('v.organization_id = :orgId', {
         orgId: findOptions.organizationId,
       });

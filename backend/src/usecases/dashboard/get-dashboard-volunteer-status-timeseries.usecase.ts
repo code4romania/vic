@@ -7,7 +7,6 @@ import {
 import { DashboardFacade } from 'src/modules/dashboard/services/dashboard.facade';
 
 @Injectable()
-// implements IUseCaseService<IDashboardVolunteerStatusChart[]>
 export class GetDashboardVolunteerStatusTimeseriesUsecase
   implements IUseCaseService<IDashboardVolunteerStatusTimeseries[]>
 {
