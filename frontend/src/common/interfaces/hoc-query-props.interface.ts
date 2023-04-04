@@ -1,4 +1,4 @@
-type UpdateType = 'pushIn' | 'replace' | 'replaceIn' | 'replace';
+export type UpdateType = 'pushIn' | 'push' | 'replaceIn' | 'replace';
 
 export interface IHOCQueryProps<T> {
   query: T;
