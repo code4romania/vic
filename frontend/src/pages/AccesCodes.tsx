@@ -131,6 +131,7 @@ const AccessCodes = () => {
   const onRowsPerPageChange = (rows: number) => {
     setQueryParams({
       limit: rows,
+      page: 1,
     });
   };
 

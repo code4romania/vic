@@ -369,6 +369,7 @@ const Volunteers = () => {
     setQueryParams({
       ...queryParams,
       limit: rows,
+      page: 1,
     });
   };
 

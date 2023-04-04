@@ -251,6 +251,7 @@ const AccessRequestTable = ({ useAccessRequests }: AccessRequestTable) => {
     setQueryParams({
       ...queryParams,
       limit: rows,
+      page: 1,
     });
   };
 

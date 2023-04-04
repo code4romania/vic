@@ -362,6 +362,7 @@ const Events = () => {
     setQueryParams({
       ...queryParams,
       limit: rows,
+      page: 1,
     });
   };
 
