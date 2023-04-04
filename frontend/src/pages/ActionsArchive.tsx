@@ -16,6 +16,8 @@ import { useActionsQuery } from '../services/actions/actions.service';
 import { PaginationConfig } from '../common/constants/pagination';
 import DataTableFilters from '../components/DataTableFilters';
 import DateRangePicker from '../components/DateRangePicker';
+import AdminSelect from '../containers/AdminSelect';
+import { ListItem } from '../common/interfaces/list-item.interface';
 
 const TableHeader = [
   {
@@ -65,6 +67,7 @@ const ActionsArchive = () => {
   // filters
   const [searchWord, setSearchWord] = useState<string>();
   const [actionDateRange, setActionDateRange] = useState<Date[]>([]);
+  const [authorId, setAuthorId] = useState<ListItem>();
 
   const {
     data: actions,
@@ -78,6 +81,7 @@ const ActionsArchive = () => {
     search: searchWord,
     actionStartDate: actionDateRange[0],
     actionEndDate: actionDateRange[1],
+    authorId: authorId?.value,
   });
 
   useEffect(() => {
@@ -97,6 +101,7 @@ const ActionsArchive = () => {
   const onResetFilters = () => {
     setSearchWord(undefined);
     setActionDateRange([]);
+    setAuthorId(undefined);
   };
 
   return (
@@ -108,6 +113,11 @@ const ActionsArchive = () => {
           onChange={setActionDateRange}
           value={actionDateRange.length > 0 ? actionDateRange : undefined}
           id="execution-on-range__picker"
+        />
+        <AdminSelect
+          label={i18n.t('actions_archive:author')}
+          onSelect={setAuthorId}
+          defaultValue={authorId}
         />
       </DataTableFilters>
       <Card>
