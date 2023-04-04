@@ -25,7 +25,7 @@ const SidePanel = ({ isOpen, onClose, children }: SidePanelProps) => {
 
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
-            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full ">
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-500"
@@ -35,7 +35,7 @@ const SidePanel = ({ isOpen, onClose, children }: SidePanelProps) => {
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto relative w-screen max-w-xs xl:max-w-md flex h-full flex-col py-6 bg-white shadow-xl gap-5">
+                <Dialog.Panel className="pointer-events-auto relative w-screen xs:max-w-xs xl:max-w-md flex h-full flex-col py-6 bg-white shadow-xl gap-5">
                   {children}
                 </Dialog.Panel>
               </Transition.Child>

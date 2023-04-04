@@ -89,7 +89,7 @@ const EditActivityLog = ({ isOpen, onClose, activityLog }: EditActivityLogProps)
       {!activityLog && isEditActivityLogLoading && <LoadingContent />}
       {activityLog && !isEditActivityLogLoading && (
         <>
-          <div className="grow flex flex-col gap-6 pb-24 overflow-y-auto">
+          <div className="grow flex flex-col gap-6 pb-24 overflow-y-auto px-6">
             <ActivityLogForm control={control} errors={errors} disabled />
           </div>
           <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full  fixed bottom-0 right-0 bg-white">
