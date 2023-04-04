@@ -65,7 +65,7 @@ const PendingActivityLogTableHeader = [
     name: i18n.t('activity_log:header.execution_date'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '8rem',
     selector: (row: IActivityLogListItem) => formatDate(row?.date),
   },
   {
@@ -73,7 +73,7 @@ const PendingActivityLogTableHeader = [
     name: i18n.t('activity_log:header.registration_date'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '8rem',
     selector: (row: IActivityLogListItem) => formatDate(row.createdOn),
   },
 ];
@@ -106,7 +106,7 @@ const PastActivityLogTableHeader = [
     name: i18n.t('activity_log:header.execution_date'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '8rem',
     selector: (row: IActivityLogListItem) => formatDate(row.date),
   },
   {
@@ -114,7 +114,7 @@ const PastActivityLogTableHeader = [
     name: i18n.t('activity_log:status'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '8rem',
     cell: (row: IActivityLogListItem) => (
       <CellLayout>
         <StatusWithMarker markerColor={ActivityLogStatusMarkerColorMapper[row.status]}>
