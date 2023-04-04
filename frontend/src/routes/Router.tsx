@@ -6,7 +6,7 @@ import Dashboard from '../pages/Dashboard';
 import EditOrganization from '../pages/EditOrganization';
 import EditAccessCode from '../pages/EditAccessCode';
 import Login from '../pages/Login';
-import Organization from '../pages/Organization';
+import Organization from '../containers/query/OrganizationWithQueryParam';
 import RegistrationRequests from '../pages/AccessRequests';
 import AccessCodes from '../pages/AccesCodes';
 import PrivateRoute from './PrivateRoute';
