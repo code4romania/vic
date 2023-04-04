@@ -39,10 +39,13 @@ const TableHeader = [
     id: 'eventData',
     name: i18n.t('general:description'),
     sortable: false,
-    grow: 1,
-    minWidth: '5rem',
-    selector: (row: IAction) =>
-      mapEventDataToActionDescription(row.eventName, row.eventData, row.changes),
+    grow: 2,
+    minWidth: '10rem',
+    cell: (row: IAction) => (
+      <div className="max-h-32">
+        {mapEventDataToActionDescription(row.eventName, row.eventData, row.changes)}
+      </div>
+    ),
   },
   {
     id: 'createdOn',
