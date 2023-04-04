@@ -44,7 +44,8 @@ export class VolunteerRepositoryService
       branch,
       department,
       role,
-      locationId,
+      city,
+      county,
       age,
       activeSinceStart,
       activeSinceEnd,
@@ -128,8 +129,14 @@ export class VolunteerRepositoryService
     }
 
     // location
-    if (locationId) {
-      query.andWhere('location.id = :locationId', { locationId });
+    if (city && county) {
+      query.andWhere(
+        'location.name = :city AND county.abbreviation = :county',
+        {
+          city,
+          county,
+        },
+      );
     }
 
     // birthday/age

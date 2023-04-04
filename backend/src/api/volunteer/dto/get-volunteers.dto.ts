@@ -1,9 +1,9 @@
 import {
   IsDate,
   IsEnum,
-  IsNumber,
   IsOptional,
   IsString,
+  ValidateIf,
 } from 'class-validator';
 import { AgeRangeEnum } from 'src/common/enums/age-range.enum';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
@@ -29,9 +29,15 @@ export class GetVolunteersDto extends BasePaginationFilterDto {
   @IsOptional()
   role?: string;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  locationId?: number;
+  @ValidateIf((v) => v.county !== undefined)
+  city?: string;
+
+  @IsString()
+  @IsOptional()
+  @ValidateIf((v) => v.city !== undefined)
+  county?: string;
 
   @IsDate()
   @IsOptional()

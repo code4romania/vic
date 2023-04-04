@@ -35,7 +35,7 @@ import DataTableFilters from '../components/DataTableFilters';
 import { SelectItem } from '../components/Select';
 import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
 import { ArrayParam, StringParam, useQueryParams } from 'use-query-params';
-import StatusSelectFilter from '../containers/StatusSelectFilter';
+import StatusSelectFilter from '../containers/SelectFilter';
 import TargetsMultiSelectFilter from '../containers/TargetsMultiSelectFilter';
 
 export const ANNOUNCEMENTS_QUERY_PARAMS = {

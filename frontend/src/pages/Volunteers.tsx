@@ -42,9 +42,9 @@ import { DivisionType } from '../common/enums/division-type.enum';
 import { AgeRangeEnum } from '../common/enums/age-range.enum';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { getVolunteersForDownload } from '../services/volunteer/volunteer.api';
-import StatusSelectFilter from '../containers/StatusSelectFilter';
 import CellLayout from '../layouts/CellLayout';
 import { VolunteerProps } from '../containers/query/VolunteersWithQueryParams';
+import SelectFilter from '../containers/SelectFilter';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
@@ -145,11 +145,12 @@ const Volunteers = ({ query, setQuery }: VolunteerProps) => {
     query?.orderBy as string,
     query?.orderDirection as OrderDirection,
     query?.search as string,
-    undefined,
+    query?.age as AgeRangeEnum,
     query?.branch,
     query?.department,
     query?.role,
-    location?.value,
+    query?.location && query?.location[0],
+    query?.location && query?.location[1],
     query?.createdOnStart as Date,
     query?.createdOnEnd as Date,
   );
@@ -380,9 +381,9 @@ const Volunteers = ({ query, setQuery }: VolunteerProps) => {
     });
   };
 
-  const onAgeRangeChange = (selectedRange: SelectItem<AgeRangeEnum>) => {
+  const onAgeRangeChange = (selectedRange: SelectItem<string>) => {
     setQuery({
-      age: selectedRange.value,
+      age: selectedRange.key,
     });
   };
 
@@ -400,11 +401,12 @@ const Volunteers = ({ query, setQuery }: VolunteerProps) => {
       query?.orderBy as string,
       query?.orderDirection as OrderDirection,
       query?.search as string,
-      undefined,
+      query?.age as AgeRangeEnum,
       query?.branch,
       query?.department,
       query?.role,
-      location?.value,
+      query?.location && query?.location[0],
+      query?.location && query?.location[1],
       query?.createdOnStart as Date,
       query?.createdOnEnd as Date,
     );
@@ -467,13 +469,15 @@ const Volunteers = ({ query, setQuery }: VolunteerProps) => {
             label={i18n.t('general:location')}
             onSelect={onLocationChange}
             value={location}
+            defaultCity={query.location && query.location[0]}
+            defaultCounty={query.location && query.location[1]}
           />
-          <StatusSelectFilter
+          <SelectFilter
             label={`${i18n.t('general:age')}`}
             placeholder={`${i18n.t('general:select', { item: '' })}`}
             options={AgeRangeOptions}
             onChange={onAgeRangeChange}
-            selected={query?.age as AgeRangeEnum}
+            defaultValue={query?.age}
           />
         </DataTableFilters>
         <Card>
