@@ -47,6 +47,11 @@ export interface IEventsListItemModel
   > {
   going: number;
   notGoing: number;
+
+  activityLogged: {
+    totalHours: number;
+    volunteers: number;
+  };
 }
 
 export type CreateEventOptions = Pick<
@@ -88,6 +93,15 @@ export class EventModelTransformer {
   ): IEventsListItemModel {
     if (!entity) return null;
 
+    const logged = entity.activityLogs?.reduce(
+      (acc, curr) => {
+        acc.volunteers[curr.volunteerId] = curr;
+        acc.totalHours += curr.hours;
+        return acc;
+      },
+      { totalHours: 0, volunteers: {} as Record<string, unknown> },
+    );
+
     return {
       id: entity.id,
       name: entity.name,
@@ -102,6 +116,11 @@ export class EventModelTransformer {
 
       // image: entity.image
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
+
+      activityLogged: {
+        totalHours: logged?.totalHours,
+        volunteers: Object.keys(logged?.volunteers).length,
+      },
     };
   }
 

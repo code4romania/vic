@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+import { VolunteerHistorySubscriber } from 'src/modules/volunteer/entities/history/volunteer-history.subscriber';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -18,7 +19,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       autoLoadEntities: true,
       migrationsRun: true,
       synchronize: false, // never set it to TRUE in production
-      subscribers: [],
+      subscribers: [VolunteerHistorySubscriber],
       logging: parseInt(this.configService.get('TYPEORM_DEBUG')) ? true : false,
       ssl:
         this.configService.get('NODE_ENV') === 'local'
