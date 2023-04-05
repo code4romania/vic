@@ -89,7 +89,7 @@ const ActiveVolunteersTableHeader = [
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '9rem',
     selector: (row: IVolunteer) =>
       row.profile?.department || row?.profile?.role
         ? `${row.profile?.role?.name || ''}${

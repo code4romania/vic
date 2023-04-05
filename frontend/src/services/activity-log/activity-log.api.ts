@@ -1,3 +1,4 @@
+import { AxiosResponseHeaders } from 'axios';
 import { CONSTANTS } from '../../common/constants/constants';
 import { ActivityLogResolutionStatus } from '../../common/enums/activity-log-resolution-status.enum';
 import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
@@ -49,6 +50,42 @@ export const getActivityLogs = async ({
   }).then((res) => res.data);
 };
 
+export const getActivityLogsForDownload = async ({
+  limit,
+  page,
+  resolutionStatus,
+  orderBy,
+  orderDirection,
+  search,
+  status,
+  approvedOrRejectedById,
+  executionDateStart,
+  executionDateEnd,
+  volunteerId,
+}: GetActivityLogsParams): Promise<{
+  data: unknown;
+  headers: AxiosResponseHeaders;
+}> => {
+  return API.get('activity-log/download', {
+    params: {
+      limit,
+      page,
+      resolutionStatus,
+      orderBy,
+      orderDirection,
+      search,
+      status,
+      approvedOrRejectedById,
+      executionDateStart,
+      executionDateEnd,
+      volunteerId,
+    },
+    responseType: 'arraybuffer',
+  }).then((res) => {
+    return { data: res.data, headers: res.headers as AxiosResponseHeaders };
+  });
+};
+
 export const getActivityLog = async (id: string): Promise<IActivityLog> => {
   return API.get(`activity-log/${id}`).then((res) => res.data);
 };
@@ -69,12 +106,14 @@ export const rejectActivityLog = async (id: string, rejectionReason?: string): P
   return API.patch(`/activity-log/${id}/reject`, { rejectionReason });
 };
 
-export const getActivityLogCounter = async (): Promise<{
+export const getActivityLogCounter = async (
+  volunteerId?: string,
+): Promise<{
   pending: number;
   approved: number;
   rejected: number;
 }> => {
-  return API.get('/activity-log/counters').then((res) => res.data);
+  return API.get('/activity-log/counters', { params: { volunteerId } }).then((res) => res.data);
 };
 
 const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {

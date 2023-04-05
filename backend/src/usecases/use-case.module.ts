@@ -84,6 +84,7 @@ import { GetDashboardVolunteerStatusTimeseriesUsecase } from './dashboard/get-da
 import { GetDashboardVolunteerGroupedUsecase } from './dashboard/get-dashboard-volunteers-grouped.usecase';
 import { GetDashboardVolunteersHoursUseCase } from './dashboard/get-dashboard-volunteers-hours.usecase';
 import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-volunteers-status.usecase';
+import { GetManyForDownloadActivityLogUseCase } from './activity-log/get-many-for-download-activity-log.usecase';
 
 @Module({
   imports: [
@@ -181,6 +182,7 @@ import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-v
     RejectActivityLogUsecase,
     GetManyActivityLogsUsecase,
     GetActivityLogCountersUsecase,
+    GetManyForDownloadActivityLogUseCase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard
@@ -270,6 +272,7 @@ import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-v
     RejectActivityLogUsecase,
     GetManyActivityLogsUsecase,
     GetActivityLogCountersUsecase,
+    GetManyForDownloadActivityLogUseCase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard

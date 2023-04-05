@@ -28,6 +28,7 @@ import EditAnnouncement from '../pages/EditAnnouncement';
 import Announcement from '../pages/Announcement';
 import ActivityLogs from '../pages/ActivityLogs';
 import AddActivityLog from '../pages/AddActivityLog';
+import ActionsArchive from '../pages/ActionsArchive';
 
 const Router = () => {
   return (
@@ -72,6 +73,9 @@ const Router = () => {
           <Route path="activity-log" element={<Outlet />}>
             <Route index element={<ActivityLogs />} />
             <Route path="add" element={<AddActivityLog />} />
+          </Route>
+          <Route path="actions-archive" element={<Outlet />}>
+            <Route index element={<ActionsArchive />} />
           </Route>
         </Route>
       </Routes>

@@ -69,8 +69,11 @@ export class ActivityLogRepositoryService
         'activityLog.id',
         'activityLog.date',
         'activityLog.hours',
+        'activityLog.mentions',
         'activityLog.status',
         'activityLog.createdOn',
+        'activityLog.approvedOn',
+        'activityLog.rejectedOn',
         'volunteer.id',
         'user.name',
         'event.id',
@@ -78,6 +81,9 @@ export class ActivityLogRepositoryService
         'activityType.id',
         'activityType.name',
         'activityType.icon',
+        'rejectedBy.name',
+        'approvedBy.name',
+        'createdByAdmin.name',
       ])
       .where('activityLog.organizationId = :organizationId', {
         organizationId: findOptions.organizationId,

@@ -45,6 +45,7 @@ import OrganizationStructureSelect from '../containers/OrganizationStructureSele
 import { DivisionType } from '../common/enums/division-type.enum';
 import { RSVPGoingEnum } from '../common/enums/rsvp.enum';
 import { getEventRSVPsForDownload } from '../services/event/event.api';
+import CellLayout from '../layouts/CellLayout';
 
 enum EventTab {
   EVENT = 'event',
@@ -87,7 +88,13 @@ const TableHeader = [
     minWidth: '9rem',
     grow: 1,
     sortable: true,
-    selector: (row: IRsvp) => (row.mention ? row.mention : '-'),
+    cell: (row: IRsvp) => (
+      <CellLayout>
+        <small title={row.mention} className="text-overflow">
+          {row.mention ? row.mention : '-'}
+        </small>
+      </CellLayout>
+    ),
   },
 ];
 
