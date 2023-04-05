@@ -26,7 +26,7 @@ import CardBody from '../components/CardBody';
 import FormLayout from '../layouts/FormLayout';
 import Paragraph from '../components/Paragraph';
 import FormReadOnlyElement from '../components/FormReadOnlyElement';
-import { formatDateWithTime } from '../common/utils/utils';
+import { downloadExcel, formatDateWithTime } from '../common/utils/utils';
 import LoadingContent from '../components/LoadingContent';
 import EmptyContent from '../components/EmptyContent';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
@@ -43,7 +43,8 @@ import { IRsvp } from '../common/interfaces/rsvp.interface';
 import DataTableFilters from '../components/DataTableFilters';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
-import { RsvpEnum } from '../common/enums/rsvp.enum';
+import { RSVPGoingEnum } from '../common/enums/rsvp.enum';
+import { getEventRSVPsForDownload } from '../services/event/event.api';
 
 enum EventTab {
   EVENT = 'event',
@@ -348,6 +349,21 @@ const Event = () => {
     setGoing(undefined);
   };
 
+  const onExportRSVPs = async () => {
+    const { data: eventRSVPsData } = await getEventRSVPsForDownload(
+      id as string,
+      orderByColumn,
+      orderDirection,
+      search,
+      branch?.key,
+      department?.key,
+      role?.key,
+      going?.key,
+    );
+
+    downloadExcel(eventRSVPsData as BlobPart, i18n.t('events:download_rsvp'));
+  };
+
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={navigateBack}>{i18n.t('general:view')}</PageHeader>
@@ -433,8 +449,8 @@ const Event = () => {
                 onChange={(item: SelectItem<string>) => setGoing(item)}
                 selected={going}
                 options={[
-                  { key: RsvpEnum.GOING, value: i18n.t('events:participate') },
-                  { key: RsvpEnum.NOT_GOING, value: i18n.t('events:not_participate') },
+                  { key: RSVPGoingEnum.YES, value: i18n.t('events:participate') },
+                  { key: RSVPGoingEnum.NO, value: i18n.t('events:not_participate') },
                 ]}
               />
             </DataTableFilters>
@@ -445,7 +461,7 @@ const Event = () => {
                   label={i18n.t('general:download_table')}
                   icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
                   className="btn-outline-secondary ml-auto"
-                  onClick={() => alert('Not implemented')}
+                  onClick={onExportRSVPs}
                 />
               </CardHeader>
               <CardBody>

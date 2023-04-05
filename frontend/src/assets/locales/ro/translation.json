@@ -9,6 +9,7 @@
     "name": "Nume",
     "people": "Persoane",
     "age": "Vârsta",
+    "save": "Salvează",
     "hours": "Ore",
     "daily": "Zilnic",
     "monthly": "Lunar",
@@ -492,7 +493,8 @@
       "EVENT_006": "Doar evenimentele publicate pot fi arhivate"
     },
     "download_open": "Evenimente active.xlsx",
-    "download_past": "Evenimente incheiate.xlsx"
+    "download_past": "Evenimente incheiate.xlsx",
+    "download_rsvp": "Lista raspunsuri.xlsx"
   },
   "announcement": {
     "title": "Istoric anunturi",
@@ -549,7 +551,6 @@
   },
   "activity_log": {
     "pending": "Solicitări de aprobare",
-    "download": "Descarcă tabel aprobate",
     "pending_header": "{{hours}} ore în curs de aprobare",
     "past": "Istoric ore de voluntariat",
     "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
@@ -608,6 +609,7 @@
       "hours": {
         "required": "Numarul de ore este obligatoriu",
         "min": "Numarul de ore trebuie sa fie mai mare ca 0",
+        "max": "Numarul de ore trebuie sa fie mai mic ca 1000",
         "integer": "Numarul de ore trebuie sa fie intreg"
       },
       "submit": {
@@ -624,7 +626,8 @@
       "ACTIVITY_LOG_001": "Activitatea nu a fost gasita!",
       "ACTIVITY_LOG_002": "Voluntarul trebuie sa aiba profil pentru a loga ore",
       "ACTIVITY_LOG_003": "Nu se poat face modificari pe request-uri in status-ul Aprobat sau Respins"
-    }
+    },
+    "download_file_name": "Istoric ore de voluntariat.xlsx"
   },
   "dashboard": {
     "statistics_card": {

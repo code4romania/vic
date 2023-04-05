@@ -184,7 +184,11 @@ export class VolunteerRepositoryService
     id,
     ...updates
   }: UpdateVolunteerOptions): Promise<IVolunteerModel> {
-    await this.volunteerRepository.update({ id }, updates);
+    const toUpdate = await this.volunteerRepository.preload({ id, ...updates });
+
+    if (!toUpdate) return null;
+
+    await this.volunteerRepository.save(toUpdate);
 
     return this.find({ id });
   }

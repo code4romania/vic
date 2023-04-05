@@ -1,7 +1,6 @@
 import { AxiosResponseHeaders } from 'axios';
 import { EventState } from '../../common/enums/event-state.enum';
 import { EventStatus } from '../../common/enums/event-status';
-import { RsvpEnum } from '../../common/enums/rsvp.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent } from '../../common/interfaces/event.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -83,9 +82,35 @@ export const getRsvps = async (
       branchId,
       departmentId,
       roleId,
-      going: going === undefined ? going : going === RsvpEnum.GOING,
+      going,
     },
   }).then((res) => res.data);
+};
+
+export const getEventRSVPsForDownload = async (
+  id: string,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+  search?: string,
+  branchId?: string,
+  departmentId?: string,
+  roleId?: string,
+  going?: string,
+): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
+  return API.get(`event/${id}/rsvp/download`, {
+    params: {
+      orderBy,
+      orderDirection,
+      search,
+      branchId,
+      departmentId,
+      roleId,
+      going,
+    },
+    responseType: 'arraybuffer',
+  }).then((res) => {
+    return { data: res.data, headers: res.headers as AxiosResponseHeaders };
+  });
 };
 
 const formatAddEventPayload = (data: EventFormTypes): object => {

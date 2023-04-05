@@ -11,7 +11,11 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import Select, { SelectItem } from '../components/Select';
-import { ActivityLogStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
+import {
+  ActivityLogStatusMarkerColorMapper,
+  downloadExcel,
+  formatDate,
+} from '../common/utils/utils';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
@@ -34,6 +38,7 @@ import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolu
 import AdminSelect from '../containers/AdminSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import Button from '../components/Button';
+import { getActivityLogsForDownload } from '../services/activity-log/activity-log.api';
 
 const ActivityLogTabsOptions: SelectItem<ActivityLogResolutionStatus>[] = [
   { key: ActivityLogResolutionStatus.NEW, value: i18n.t('activity_log:pending') },
@@ -73,7 +78,7 @@ const PendingActivityLogTableHeader = [
     name: i18n.t('activity_log:header.execution_date'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '8rem',
     cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row?.date)}</CellLayout>,
   },
   {
@@ -94,7 +99,7 @@ const PendingActivityLogTableHeader = [
     name: i18n.t('activity_log:header.registration_date'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '8rem',
     cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
 ];
@@ -127,7 +132,7 @@ const PastActivityLogTableHeader = [
     name: i18n.t('activity_log:header.execution_date'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '8rem',
     cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row.date)}</CellLayout>,
   },
   {
@@ -148,7 +153,7 @@ const PastActivityLogTableHeader = [
     name: i18n.t('activity_log:status'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '8rem',
     cell: (row: IActivityLogListItem) => (
       <CellLayout>
         <StatusWithMarker markerColor={ActivityLogStatusMarkerColorMapper[row.status]}>
@@ -290,8 +295,21 @@ const ActivityLogs = () => {
     );
   };
 
-  const onExport = () => {
-    alert('not yet implemented');
+  const onExport = async () => {
+    const { data: activityLogsData } = await getActivityLogsForDownload({
+      limit: rowsPerPage as number,
+      page: page as number,
+      resolutionStatus: activeTab,
+      orderBy: orderByColumn,
+      orderDirection,
+      search: searchWord,
+      status: status?.key,
+      approvedOrRejectedById: approvedOrRejectedBy?.value,
+      executionDateStart: executionDateRange[0],
+      executionDateEnd: executionDateRange[1],
+    });
+
+    downloadExcel(activityLogsData as BlobPart, i18n.t('activity_log:download_file_name'));
   };
 
   const onResetFilters = () => {
@@ -355,7 +373,7 @@ const ActivityLogs = () => {
             </h2>
             {activeTab === ActivityLogResolutionStatus.SOLVED && (
               <Button
-                label={i18n.t('activity_log:download')}
+                label={i18n.t('general:download_table')}
                 className="btn-outline-secondary"
                 icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
                 onClick={onExport}
