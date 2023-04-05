@@ -628,6 +628,105 @@
     },
     "download_file_name": "Istoric ore de voluntariat.xlsx"
   },
+  "actions_archive": {
+    "card_title": "Istoric acțiuni",
+    "area": "Tip Actiune",
+    "author": "Autor",
+    "filters": {
+      "execution": "Perioada efectuare actiune"
+    },
+    "UPDATE_ORGANIZATION_PROFILE": {
+      "label": "Update Organization Profile",
+      "description": "Descrierea organizatiei <inlineLink>{{organizationName}}</inlineLink> a fost modificata."
+    },
+    "CREATE_ORGANIZATION_STRUCTURE": {
+      "label": "Create Organization Structure",
+      "branch": "A fost creata filiala cu numele <inlineLink>{{organizationStructureName}}</inlineLink>.",
+      "department": "A fost creat departamentul cu numele <inlineLink>{{organizationStructureName}}</inlineLink>.",
+      "role": "A fost creat rolul cu numele <inlineLink>{{organizationStructureName}}</inlineLink>."
+    },
+    "UPDATE_ORGANIZATION_STRUCTURE": {
+      "label": "Update Organization Structure",
+      "branch": "A fost modificat numele filialei din {{organizationStructureNameInitial}} in <inlineLink>{{organizationStructureNameFinal}}</inlineLink>.",
+      "department": "A fost modificat numele departamentului din {{organizationStructureNameInitial}} in <inlineLink>{{organizationStructureNameFinal}}</inlineLink>.",
+      "role": "A fost modificat numele rolului din {{organizationStructureNameInitial}} in <inlineLink>{{organizationStructureNameFinal}}</inlineLink>."
+    },
+    "DELETE_ORGANIZATION_STRUCTURE": {
+      "label": "Delete Organization Structure",
+      "branch": "Filiala cu numele {{organizationStructureName}} a fost stearsa.",
+      "department": "Departamentul cu numele {{organizationStructureName}} a fost sters.",
+      "role": "Rolul cu numele {{organizationStructureName}} a fost sters."
+    },
+    "APPROVE_ACCESS_REQUEST": {
+      "label": "Approve Access Request",
+      "description": "Cererea de acces pentru voluntarul <inlineLink>{{userName}}</inlineLink> a fost aprobata."
+    },
+    "REJECT_ACCESS_REQUEST": {
+      "label": "Reject Access Request",
+      "description": "Cererea de acces pentru voluntarul <inlineLink>{{userName}}</inlineLink> a fost respinsa."
+    },
+    "DELETE_ACCESS_REQUEST": {
+      "label": "Delete Access Request",
+      "description": "Cererea de acces pentru voluntarul <inlineLink>{{userName}}</inlineLink> a fost stearsa."
+    },
+    "CHANGE_VOLUNTEER_STATUS": {
+      "label": "Change Volunteer Status",
+      "description": "Statusul pentru voluntarul <inlineLink>{{volunteerName}}</inlineLink> a fost schimbat din {{oldStatus}} in {{newStatus}}."
+    },
+    "UPDATE_VOLUNTEER_PROFILE": {
+      "label": "Update Volunteer Profile",
+      "description": "Profilul voluntarului <inlineLink>{{volunteerName}}</inlineLink> a fost modificat."
+    },
+    "REGISTER_ACTIVITY_LOG": {
+      "label": "Register Activity Log",
+      "description": "Voluntarul <inlineLink>{{volunteerName}}</inlineLink> a logat ore de voluntariat."
+    },
+    "CHANGE_ACTIVITY_LOG_STATUS": {
+      "label": "Change Activity Log Status",
+      "rejected": "Orele de volunatriat pentru <inlineLink>{{volunteerName}}</inlineLink> au fost respinse",
+      "approved": "Orele de volunatriat pentru <inlineLink>{{volunteerName}}</inlineLink> au fost aprobate"
+    },
+    "CREATE_ACTIVITY_TYPE": {
+      "label": "Create Activity Type",
+      "description": "Categoria de activitate <inlineLink>{{activityTypeName}}</inlineLink> a fost creata."
+    },
+    "UPDATE_ACTIVITY_TYPE": {
+      "label": "Update Activity Type",
+      "description": "Categoria de activitate <inlineLink>{{activityTypeName}}</inlineLink> a fost modificata."
+    },
+    "CHANGE_ACTIVITY_TYPE_STATUS": {
+      "label": "Change Activity Type Status",
+      "description": "Statusul categoriei de activitate <inlineLink>{{activityTypeName}}</inlineLink> a fost schimbat din {{oldStatus}} in {{newStatus}}."
+    },
+    "CREATE_EVENT": {
+      "label": "Create Event",
+      "description": "Evenimentul <inlineLink>{{eventName}}</inlineLink> a fost creat."
+    },
+    "UPDATE_EVENT": {
+      "label": "Update Event",
+      "description": "Evenimentul <inlineLink>{{eventName}}</inlineLink> a fost modificat."
+    },
+    "DELETE_EVENT": {
+      "label": "Delete Event",
+      "description": "Evenimentul {{eventName}} a fost sters."
+    },
+    "CHANGE_EVENT_STATUS": {
+      "label": "Change Event Status",
+      "description": "Statusul evenimentului pentru <inlineLink>{{eventName}}</inlineLink> a fost schimbat din {{oldStatus}} in {{newStatus}}."
+    },
+    "CREATE_ANNOUNCEMENT": {
+      "label": "Create Announcement",
+      "description": "Anuntul <inlineLink>{{announcementTitle}}</inlineLink> a fost creat."
+    },
+    "DELETE_ANNOUNCEMENT": {
+      "label": "Delete Announcement",
+      "description": "Anuntul {{announcementTitle}} a fost sters."
+    },
+    "PUBLISH_ANNOUNCEMENT": {
+      "label": "Publish Announcement",
+      "description": "Anuntul <inlineLink>{{announcementTitle}}</inlineLink> a fost publicat."
+    }
+  },
   "dashboard": {
     "statistics_card": {
       "activity_log": {
