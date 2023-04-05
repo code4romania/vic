@@ -550,7 +550,6 @@
   },
   "activity_log": {
     "pending": "Solicitări de aprobare",
-    "download": "Descarcă tabel aprobate",
     "pending_header": "{{hours}} ore în curs de aprobare",
     "past": "Istoric ore de voluntariat",
     "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
@@ -625,7 +624,8 @@
       "ACTIVITY_LOG_001": "Activitatea nu a fost gasita!",
       "ACTIVITY_LOG_002": "Voluntarul trebuie sa aiba profil pentru a loga ore",
       "ACTIVITY_LOG_003": "Nu se poat face modificari pe request-uri in status-ul Aprobat sau Respins"
-    }
+    },
+    "download_file_name": "Istoric ore de voluntariat.xlsx"
   },
   "dashboard": {
     "statistics_card": {

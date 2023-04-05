@@ -55,10 +55,16 @@ export interface IActivityLogListItemModel {
   date: Date;
   status: ActivityLogStatus;
   createdOn: Date;
+  approvedOn?: Date;
+  rejectedOn?: Date;
+  mentions?: string;
   // Relations
   volunteer: Pick<IVolunteerModel, 'id'> & Pick<IRegularUserModel, 'name'>;
   event?: Pick<IEventModel, 'id' | 'name'>;
   activityType: Pick<IActivityTypeModel, 'id' | 'name' | 'icon'>;
+  createdByAdmin?: Pick<IAdminUserModel, 'name'>;
+  approvedBy?: Pick<IAdminUserModel, 'name'>;
+  rejectedBy?: Pick<IAdminUserModel, 'name'>;
 }
 
 export type IActivityLogCountHoursByStatus = {
@@ -126,8 +132,11 @@ export class ActivityLogModelTransformer {
       id: entity.id,
       hours: entity.hours,
       date: entity.date,
+      mentions: entity.mentions,
       status: entity.status,
       createdOn: entity.createdOn,
+      approvedOn: entity.approvedOn,
+      rejectedOn: entity.rejectedOn,
       volunteer: {
         id: entity.volunteer.id,
         name: entity.volunteer?.user?.name,
@@ -145,6 +154,11 @@ export class ActivityLogModelTransformer {
             icon: entity.activityType.icon,
           }
         : null,
+      createdByAdmin: entity.createdByAdmin
+        ? { name: entity.createdByAdmin.name }
+        : null,
+      approvedBy: entity.approvedBy ? { name: entity.approvedBy.name } : null,
+      rejectedBy: entity.rejectedBy ? { name: entity.rejectedBy.name } : null,
     };
   }
 
