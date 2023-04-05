@@ -18,6 +18,7 @@ import DataTableFilters from '../components/DataTableFilters';
 import DateRangePicker from '../components/DateRangePicker';
 import AdminSelect from '../containers/AdminSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
+import CellLayout from '../layouts/CellLayout';
 
 const TableHeader = [
   {
@@ -55,7 +56,7 @@ const TableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IAction) => formatDateWithTime(row.createdOn),
+    cell: (row: IAction) => <CellLayout>{formatDateWithTime(row.createdOn)}</CellLayout>,
   },
 ];
 
