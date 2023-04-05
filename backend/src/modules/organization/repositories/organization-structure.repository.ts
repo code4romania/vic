@@ -93,7 +93,7 @@ export class OrganizationStructureRepositoryService
           .from(VolunteerProfileEntity, 'vp')
           .innerJoin(VolunteerEntity, 'v')
           .where(
-            `vp.${OrganizationStructureType.BRANCH.toLocaleLowerCase()}.id = structure.id AND v.status = :status AND vp.id = v.volunteerProfileId`,
+            `vp.${type}.id = structure.id AND v.status = :status AND vp.id = v.volunteerProfileId`,
             {
               status: VolunteerStatus.ACTIVE,
             },
