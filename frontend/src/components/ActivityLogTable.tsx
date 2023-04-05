@@ -42,7 +42,7 @@ const StatusOptions: SelectItem<ActivityLogStatus>[] = [
   { key: ActivityLogStatus.REJECTED, value: i18n.t('activity_log:display_status.rejected') },
 ];
 
-const PendingActivityLogTableHeader = [
+const PendingVolunteerActivityLogTableHeader = [
   {
     id: 'activityType.name',
     name: i18n.t('activity_log:header.task'),
@@ -83,7 +83,7 @@ const PendingActivityLogTableHeader = [
   },
 ];
 
-const PastActivityLogTableHeader = [
+const PastVolunteerActivityLogTableHeader = [
   {
     id: 'activityType.name',
     name: i18n.t('activity_log:header.task'),
@@ -130,12 +130,126 @@ const PastActivityLogTableHeader = [
   },
 ];
 
+const PendingActivityLogTableHeader = [
+  {
+    id: 'activityType.name',
+    name: i18n.t('activity_log:header.task'),
+    sortable: true,
+    grow: 3,
+    minWidth: '10rem',
+    cell: (row: IActivityLogListItem) => (
+      <MediaCell
+        logo={row.activityType?.icon}
+        title={row.activityType?.name || i18n.t('general:other')}
+        subtitle={row.event?.name || ''}
+      />
+    ),
+  },
+  {
+    id: 'hours',
+    name: i18n.t('general:hours'),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    cell: (row: IActivityLogListItem) => <CellLayout>{`${row.hours}h`}</CellLayout>,
+  },
+  {
+    id: 'date',
+    name: i18n.t('activity_log:header.execution_date'),
+    sortable: true,
+    grow: 1,
+    minWidth: '8rem',
+    cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row?.date)}</CellLayout>,
+  },
+  {
+    id: 'user.name',
+    name: i18n.t('volunteer:name', { status: '' }),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    cell: (row: IActivityLogListItem) =>
+      row.volunteer && (
+        <CellLayout>
+          <a>{row.volunteer.name}</a>
+        </CellLayout>
+      ),
+  },
+  {
+    id: 'createdOn',
+    name: i18n.t('activity_log:header.registration_date'),
+    sortable: true,
+    grow: 1,
+    minWidth: '8rem',
+    cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
+  },
+];
+
+const PastActivityLogTableHeader = [
+  {
+    id: 'activityType.name',
+    name: i18n.t('activity_log:header.task'),
+    sortable: true,
+    grow: 3,
+    minWidth: '10rem',
+    cell: (row: IActivityLogListItem) => (
+      <MediaCell
+        logo={row.activityType?.icon}
+        title={row.activityType?.name || i18n.t('general:other')}
+        subtitle={row.event?.name || ''}
+      />
+    ),
+  },
+  {
+    id: 'hours',
+    name: i18n.t('general:hours'),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    cell: (row: IActivityLogListItem) => <CellLayout>{`${row.hours}h`}</CellLayout>,
+  },
+  {
+    id: 'date',
+    name: i18n.t('activity_log:header.execution_date'),
+    sortable: true,
+    grow: 1,
+    minWidth: '8rem',
+    cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row.date)}</CellLayout>,
+  },
+  {
+    id: 'user.name',
+    name: i18n.t('volunteer:name', { status: '' }),
+    sortable: true,
+    grow: 1,
+    minWidth: '5rem',
+    cell: (row: IActivityLogListItem) =>
+      row.volunteer && (
+        <CellLayout>
+          <a>{row.volunteer?.name}</a>
+        </CellLayout>
+      ),
+  },
+  {
+    id: 'status',
+    name: i18n.t('activity_log:status'),
+    sortable: true,
+    grow: 1,
+    minWidth: '8rem',
+    cell: (row: IActivityLogListItem) => (
+      <CellLayout>
+        <StatusWithMarker markerColor={ActivityLogStatusMarkerColorMapper[row.status]}>
+          {i18n.t(`activity_log:display_status.${row.status}`)}
+        </StatusWithMarker>
+      </CellLayout>
+    ),
+  },
+];
+
 const ActivityLogTable = ({
   resolutionStatus,
   volunteerId,
 }: {
   resolutionStatus: ActivityLogResolutionStatus;
-  volunteerId: string;
+  volunteerId?: string;
 }) => {
   // routing
   const navigate = useNavigate();
@@ -219,6 +333,17 @@ const ActivityLogTable = ({
     };
   };
 
+  const buildActivityLogTableHeader = (): TableColumn<IActivityLogListItem>[] => {
+    if (resolutionStatus === ActivityLogResolutionStatus.NEW && volunteerId) {
+      return PendingVolunteerActivityLogTableHeader;
+    } else if (resolutionStatus === ActivityLogResolutionStatus.SOLVED && volunteerId) {
+      return PastVolunteerActivityLogTableHeader;
+    } else if (resolutionStatus === ActivityLogResolutionStatus.NEW) {
+      return PendingActivityLogTableHeader;
+    }
+    return PastActivityLogTableHeader;
+  };
+
   const onAddButtonPress = () => {
     navigate('/activity-log/add');
   };
@@ -269,6 +394,7 @@ const ActivityLogTable = ({
       orderDirection,
       search: searchWord,
       status: status?.key,
+      approvedOrRejectedById: approvedOrRejectedBy?.value,
       executionDateStart: executionDateRange[0],
       executionDateEnd: executionDateRange[1],
       volunteerId: volunteerId,
@@ -341,25 +467,22 @@ const ActivityLogTable = ({
                 aria-label={`${i18n.t('general:download_table')}`}
                 type="button"
               />
-              <Button
-                label={i18n.t('activity_log:add')}
-                className="btn-primary grow"
-                icon={<PlusIcon className="h-5 w-5" />}
-                onClick={onAddButtonPress}
-                aria-label={`${i18n.t('activity_log:add')}`}
-                type="button"
-              />
+              {volunteerId && (
+                <Button
+                  label={i18n.t('activity_log:add')}
+                  className="btn-primary grow"
+                  icon={<PlusIcon className="h-5 w-5" />}
+                  onClick={onAddButtonPress}
+                  aria-label={`${i18n.t('activity_log:add')}`}
+                  type="button"
+                />
+              )}
             </div>
           )}
         </CardHeader>
         <CardBody>
           <DataTableComponent
-            columns={[
-              ...(resolutionStatus === ActivityLogResolutionStatus.NEW
-                ? PendingActivityLogTableHeader
-                : PastActivityLogTableHeader),
-              buildActivityLogActionColumn(),
-            ]}
+            columns={[...buildActivityLogTableHeader(), buildActivityLogActionColumn()]}
             data={activityLogs?.items}
             loading={isActivityLogsLoading}
             pagination
