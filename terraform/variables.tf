@@ -33,3 +33,8 @@ variable "onghub_cognito_teo_client_id" {
 variable "onghub_cognito_user_pool_id" {
   type = string
 }
+
+variable "onghub_files_bucket_arn" {
+  type    = string
+  default = "arn:aws:s3:::change-me"
+}

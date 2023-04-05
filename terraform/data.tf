@@ -104,4 +104,14 @@ data "aws_iam_policy_document" "bucket_acccess" {
       "${aws_s3_bucket.files.arn}/*"
     ]
   }
+
+  statement {
+    actions = [
+      "s3:GetObject",
+    ]
+
+    resources = [
+      "${var.onghub_files_bucket_arn}/*/logo/*"
+    ]
+  }
 }
