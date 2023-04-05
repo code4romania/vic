@@ -108,6 +108,7 @@ const formatEditEventPayload = (data: EventFormTypes): object => {
     tasksIds: tasks.map((task) => task.key),
     ...(status === EventStatus.DRAFT
       ? {
+          isPublic: targetType === TargetType.PUBLIC,
           ...(targetType === TargetType.SELECT
             ? { targetsIds: targets.map((target) => target.key) }
             : { targetsIds: [] }),
