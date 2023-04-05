@@ -218,10 +218,8 @@ export class ActivityLogRepositoryService
     const query = this.activityLogRepo
       .createQueryBuilder('activityLog')
       .select('activityLog.status', 'status')
-      .addSelect('activityLog.hours', 'hours')
-      .addSelect('COUNT(activityLog.id)', 'count')
+      .addSelect('SUM(activityLog.hours)', 'hours')
       .groupBy('activityLog.status')
-      .addGroupBy('activityLog.hours')
       .where('activityLog.organizationId = :organizationId', {
         organizationId,
       });
@@ -237,7 +235,7 @@ export class ActivityLogRepositoryService
 
     return counters.reduce(
       (acc, curr) => {
-        acc[curr.status] += curr.hours;
+        acc[curr.status] = curr.hours;
         return acc;
       },
       {
