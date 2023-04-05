@@ -1,10 +1,10 @@
-import React from "react";
-import PageLayout from "../layouts/PageLayout";
-import { Text, Button } from "@ui-kitten/components";
+import React from 'react';
+import PageLayout from '../layouts/PageLayout';
+import { Text, Button } from '@ui-kitten/components';
 
 const Login = ({ navigation }: any) => {
   const onLogin = () => {
-    navigation.navigate("Dashboard");
+    navigation.navigate('Dashboard');
   };
 
   return (

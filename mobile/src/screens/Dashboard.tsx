@@ -1,6 +1,6 @@
-import React from "react";
-import PageLayout from "../layouts/PageLayout";
-import { Text } from "@ui-kitten/components";
+import React from 'react';
+import PageLayout from '../layouts/PageLayout';
+import { Text } from '@ui-kitten/components';
 
 const Dashboard = ({ navigation }: any) => {
   const onBackButtonPress = () => {

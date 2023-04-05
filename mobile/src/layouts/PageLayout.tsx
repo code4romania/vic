@@ -1,11 +1,6 @@
-import React, { ReactNode } from "react";
-import {
-  Layout,
-  TopNavigation,
-  Icon,
-  TopNavigationAction,
-} from "@ui-kitten/components";
-import { StyleSheet } from "react-native";
+import React, { ReactNode } from 'react';
+import { Layout, TopNavigation, Icon, TopNavigationAction } from '@ui-kitten/components';
+import { StyleSheet } from 'react-native';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -15,19 +10,13 @@ interface PageLayoutProps {
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />;
 
-export const PageLayout = ({
-  children,
-  title,
-  onBackButtonPress,
-}: PageLayoutProps) => (
+export const PageLayout = ({ children, title, onBackButtonPress }: PageLayoutProps) => (
   <>
     <TopNavigation
       title={title}
       alignment="start"
       accessoryLeft={
-        onBackButtonPress && (
-          <TopNavigationAction icon={BackIcon} onPress={onBackButtonPress} />
-        )
+        onBackButtonPress && <TopNavigationAction icon={BackIcon} onPress={onBackButtonPress} />
       }
     />
     <Layout style={styles.layout}>{children}</Layout>
@@ -35,7 +24,7 @@ export const PageLayout = ({
 );
 
 const styles = StyleSheet.create({
-  layout: { flex: 1, justifyContent: "center", alignItems: "center" },
+  layout: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
 export default PageLayout;
