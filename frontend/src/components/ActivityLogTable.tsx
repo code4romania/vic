@@ -180,7 +180,7 @@ const ActivityLogTable = ({
     registrationDateStart: registrationDateRange[0],
     registrationDateEnd: registrationDateRange[1],
   });
-  const { data: counters } = useActivityLogCounterQuery();
+  const { data: counters } = useActivityLogCounterQuery(volunteerId);
 
   // get one query
   const { data: activityLog, error: activityLogError } = useActivityLogQuery(
