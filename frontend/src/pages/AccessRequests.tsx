@@ -233,7 +233,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
   // pagination
   const onRowsPerPageChange = (rows: number) => {
     setRowsPerPage(rows);
-    setPage(page);
+    setPage(1);
   };
 
   const onChangePage = (newPage: number) => {

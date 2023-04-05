@@ -336,6 +336,11 @@ const Events = () => {
     navigate('/events/add');
   };
 
+  const onRowsPerPageChange = (rows: number) => {
+    setRowsPerPage(rows);
+    setPage(1);
+  };
+
   const onSort = (column: TableColumn<IEvent>, direction: SortOrder) => {
     setOrderByColumn(column.id as string);
     setOrderDirection(
@@ -380,7 +385,7 @@ const Events = () => {
               paginationPerPage={rowsPerPage}
               paginationTotalRows={events?.meta?.totalItems}
               paginationDefaultPage={page}
-              onChangeRowsPerPage={setRowsPerPage}
+              onChangeRowsPerPage={onRowsPerPageChange}
               onChangePage={setPage}
               onSort={onSort}
             />
