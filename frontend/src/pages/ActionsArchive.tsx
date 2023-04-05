@@ -4,7 +4,7 @@ import i18n from '../common/config/i18n';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IAction } from '../common/interfaces/action.interface';
-import { formatDateWithTime, mapEventDataToActionDescription } from '../common/utils/utils';
+import { formatDateWithTime } from '../common/utils/utils';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
 import DataTableComponent from '../components/DataTableComponent';
@@ -19,6 +19,7 @@ import DateRangePicker from '../components/DateRangePicker';
 import AdminSelect from '../containers/AdminSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import CellLayout from '../layouts/CellLayout';
+import { mapEventDataToActionDescription } from '../common/utils/actions-archive.mappings';
 
 const TableHeader = [
   {
@@ -45,9 +46,11 @@ const TableHeader = [
     grow: 2,
     minWidth: '10rem',
     cell: (row: IAction) => (
-      <div className="max-h-32">
-        {mapEventDataToActionDescription(row.eventName, row.eventData, row.changes)}
-      </div>
+      <CellLayout>
+        <div className="max-h-32">
+          {mapEventDataToActionDescription(row.eventName, row.eventData, row.changes)}
+        </div>
+      </CellLayout>
     ),
   },
   {
