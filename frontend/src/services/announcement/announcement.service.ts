@@ -20,11 +20,11 @@ export const useAnnouncements = (
   orderDirection?: OrderDirection,
   searchWord?: string,
   status?: AnnouncementStatus,
-  targetsIds?: string[],
+  targets?: string[],
 ) => {
   return useQuery(
-    ['announcement', limit, page, orderBy, orderDirection, searchWord, status, targetsIds],
-    () => getAnnouncements(limit, page, orderBy, orderDirection, searchWord, status, targetsIds),
+    ['announcement', limit, page, orderBy, orderDirection, searchWord, status, targets],
+    () => getAnnouncements(limit, page, orderBy, orderDirection, searchWord, status, targets),
     {
       onError: (error: AxiosError<IBusinessException<ANNOUNCEMENT_ERRORS>>) => error,
       enabled: !!(limit && page),

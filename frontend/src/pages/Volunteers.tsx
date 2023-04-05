@@ -497,7 +497,7 @@ const Volunteers = ({ query, setQuery }: VolunteerProps) => {
                 data={volunteers?.items}
                 loading={isVolunteersLoading || isArchivingVolunteer || isBlockingVolunteer}
                 pagination
-                paginationPerPage={volunteers?.meta?.itemsPerPage}
+                paginationPerPage={query.limit as number}
                 paginationTotalRows={volunteers?.meta?.totalItems}
                 paginationDefaultPage={query.page as number}
                 onChangeRowsPerPage={onRowsPerPageChange}
@@ -511,7 +511,7 @@ const Volunteers = ({ query, setQuery }: VolunteerProps) => {
                 data={volunteers?.items}
                 loading={isVolunteersLoading || isActivatingVolunteer || isBlockingVolunteer}
                 pagination
-                paginationPerPage={volunteers?.meta?.itemsPerPage}
+                paginationPerPage={query.limit as number}
                 paginationTotalRows={volunteers?.meta?.totalItems}
                 paginationDefaultPage={query.page as number}
                 onChangeRowsPerPage={onRowsPerPageChange}
@@ -525,7 +525,7 @@ const Volunteers = ({ query, setQuery }: VolunteerProps) => {
                 data={volunteers?.items}
                 loading={isVolunteersLoading}
                 pagination
-                paginationPerPage={volunteers?.meta?.itemsPerPage}
+                paginationPerPage={query.limit as number}
                 paginationTotalRows={volunteers?.meta?.totalItems}
                 paginationDefaultPage={query.page as number}
                 onChangeRowsPerPage={onRowsPerPageChange}

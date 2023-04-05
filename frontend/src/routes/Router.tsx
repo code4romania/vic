@@ -14,7 +14,7 @@ import PublicRoute from './PublicRoute';
 import Volunteers from '../containers/query/VolunteersWithQueryParams';
 import AddAccessCode from '../pages/AddAccessCode';
 import EditActivityType from '../pages/EditActivityType';
-import Announcements from '../pages/Announcements';
+import Announcements from '../containers/query/AnnouncementsWithQueryParms';
 import Volunteer from '../pages/Volunteer';
 import EditVolunteer from '../pages/EditVolunteer';
 import AddActivityType from '../pages/AddActivityType';
