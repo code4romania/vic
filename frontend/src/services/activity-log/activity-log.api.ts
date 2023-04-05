@@ -69,12 +69,14 @@ export const rejectActivityLog = async (id: string, rejectionReason?: string): P
   return API.patch(`/activity-log/${id}/reject`, { rejectionReason });
 };
 
-export const getActivityLogCounter = async (): Promise<{
+export const getActivityLogCounter = async (
+  volunteerId?: string,
+): Promise<{
   pending: number;
   approved: number;
   rejected: number;
 }> => {
-  return API.get('/activity-log/counters').then((res) => res.data);
+  return API.get('/activity-log/counters', { params: { volunteerId } }).then((res) => res.data);
 };
 
 const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {
