@@ -63,7 +63,7 @@ const PendingActivityLogTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IActivityLogListItem) => `${row.hours}h`,
+    cell: (row: IActivityLogListItem) => <CellLayout>{`${row.hours}h`}</CellLayout>,
   },
   {
     id: 'date',
@@ -71,7 +71,7 @@ const PendingActivityLogTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '8rem',
-    selector: (row: IActivityLogListItem) => formatDate(row?.date),
+    cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row?.date)}</CellLayout>,
   },
   {
     id: 'createdOn',
@@ -79,7 +79,7 @@ const PendingActivityLogTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '8rem',
-    selector: (row: IActivityLogListItem) => formatDate(row.createdOn),
+    cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
 ];
 
@@ -104,7 +104,7 @@ const PastActivityLogTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IActivityLogListItem) => `${row.hours}h`,
+    cell: (row: IActivityLogListItem) => <CellLayout>{`${row.hours}h`}</CellLayout>,
   },
   {
     id: 'date',
@@ -112,7 +112,7 @@ const PastActivityLogTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '8rem',
-    selector: (row: IActivityLogListItem) => formatDate(row.date),
+    cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row.date)}</CellLayout>,
   },
   {
     id: 'status',
@@ -246,6 +246,11 @@ const ActivityLogTable = ({
   };
 
   // pagination
+  const onRowsPerPageChange = (rows: number) => {
+    setRowsPerPage(rows);
+    setPage(1);
+  };
+
   const onSort = (column: TableColumn<IActivityLogListItem>, direction: SortOrder) => {
     setOrderByColumn(column.id as string);
     setOrderDirection(
@@ -361,7 +366,7 @@ const ActivityLogTable = ({
             paginationPerPage={rowsPerPage}
             paginationTotalRows={activityLogs?.meta?.totalItems}
             paginationDefaultPage={page}
-            onChangeRowsPerPage={setRowsPerPage}
+            onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={setPage}
             onSort={onSort}
           />

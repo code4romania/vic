@@ -34,11 +34,15 @@ export const useUpdateOrganizationDescriptionMutation = () => {
 export const useAccessCodesQuery = (
   limit: number,
   page: number,
-  orderBy?: string,
-  orderDirection?: OrderDirection,
+  orderBy: string,
+  orderDirection: OrderDirection,
 ) => {
-  return useQuery(['access-codes', limit, page, orderBy, orderDirection], () =>
-    getAccessCodes(limit, page, orderBy, orderDirection),
+  return useQuery(
+    ['access-codes', limit, page, orderBy, orderDirection],
+    () => getAccessCodes(limit, page, orderBy, orderDirection),
+    {
+      enabled: !!(limit && page),
+    },
   );
 };
 

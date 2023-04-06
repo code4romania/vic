@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
+import { PaginationConfig } from '../common/constants/pagination';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IUser } from '../common/interfaces/user.interface';
@@ -21,7 +22,6 @@ import {
   useAccessCodesQuery,
   useDeleteAccessCodeMutation,
 } from '../services/organization/organization.service';
-
 export interface IAccessCode {
   id: string;
   code: string;
@@ -85,8 +85,8 @@ const AccessCodeTableHeader = [
 
 const AccessCodes = () => {
   const [showDeleteAccessCode, setShowDeleteAccessCode] = useState<null | IAccessCode>();
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
+  const [page, setPage] = useState<number>(PaginationConfig.defaultPage);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PaginationConfig.defaultRowsPerPage);
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const navigate = useNavigate();
@@ -113,10 +113,11 @@ const AccessCodes = () => {
   // pagination
   const onRowsPerPageChange = (rows: number) => {
     setRowsPerPage(rows);
+    setPage(1);
   };
 
-  const onChangePage = (newPage: number) => {
-    setPage(newPage);
+  const onChangePage = (page: number) => {
+    setPage(page);
   };
 
   const onSort = (column: TableColumn<IAccessCode>, direction: SortOrder) => {

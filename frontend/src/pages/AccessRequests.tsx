@@ -46,6 +46,7 @@ import LocationSelect from '../containers/LocationSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { downloadAccessRequests } from '../services/access-requests/access-requests.api';
 import CellLayout from '../layouts/CellLayout';
+import { PaginationConfig } from '../common/constants/pagination';
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
   { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
@@ -137,8 +138,8 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     error: accessCodeRequestError,
     refetch,
   } = useAccessRequests(
-    rowsPerPage as number,
-    page as number,
+    (rowsPerPage as number) || PaginationConfig.defaultRowsPerPage,
+    (page as number) || PaginationConfig.defaultPage,
     orderByColumn,
     orderDirection,
     searchWord,
@@ -228,6 +229,16 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
     status === RequestStatus.REJECTED
       ? buildRejectedAccessRequestsActionColumn()
       : buildPendingAccessRequestsActionColumn();
+
+  // pagination
+  const onRowsPerPageChange = (rows: number) => {
+    setRowsPerPage(rows);
+    setPage(1);
+  };
+
+  const onChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
 
   const onSort = (column: TableColumn<IAccessRequest>, direction: SortOrder) => {
     setOrderByColumn(column.id as string);
@@ -360,7 +371,7 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
         <LocationSelect
           label={i18n.t('general:location')}
           onSelect={setLocation}
-          defaultValue={location}
+          value={location}
         />
       </DataTableFilters>
       <Card>
@@ -390,9 +401,9 @@ const AccessRequestTable = ({ useAccessRequests, status }: AccessRequestTable) =
             pagination
             paginationPerPage={rowsPerPage}
             paginationTotalRows={accessRequests?.meta?.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={setRowsPerPage}
-            onChangePage={setPage}
+            paginationDefaultPage={page || PaginationConfig.defaultPage}
+            onChangeRowsPerPage={onRowsPerPageChange}
+            onChangePage={onChangePage}
             onSort={onSort}
           />
         </CardBody>
@@ -429,7 +440,11 @@ const AccessRequests = () => {
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.access_requests')}</PageHeader>
-      <Tabs<RequestStatus> tabs={AccessRequestsTabs} onClick={onTabClick}>
+      <Tabs<RequestStatus>
+        tabs={AccessRequestsTabs}
+        onClick={onTabClick}
+        defaultTab={AccessRequestsTabs[0]}
+      >
         {requestStatus === RequestStatus.PENDING && (
           <>
             <AccessRequestTable

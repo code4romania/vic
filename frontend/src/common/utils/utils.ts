@@ -8,6 +8,7 @@ import { AnnouncementStatus } from '../enums/announcement-status.enum';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { EventStatus } from '../enums/event-status';
 import { ListItem } from '../interfaces/list-item.interface';
+import { AgeRangeEnum } from '../enums/age-range.enum';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
@@ -119,3 +120,22 @@ export const mapUserToListItem = (item: IDivisionListItem): ListItem => ({
   label: item.name,
   value: item.id,
 });
+
+export const AgeRangeOptions: SelectItem<AgeRangeEnum>[] = [
+  {
+    key: AgeRangeEnum['0_18'],
+    value: '0-18',
+  },
+  {
+    key: AgeRangeEnum['18_30'],
+    value: '18-30',
+  },
+  {
+    key: AgeRangeEnum['30_50'],
+    value: '30-50',
+  },
+  {
+    key: AgeRangeEnum.OVER_50,
+    value: '>50',
+  },
+];

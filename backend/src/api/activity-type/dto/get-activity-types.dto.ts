@@ -4,15 +4,15 @@ import { ActivityTypeStatus } from 'src/modules/activity-type/enums/activity-typ
 export class GetActivityTypesDto {
   @IsString()
   @IsOptional()
-  branchId?: string;
+  branch?: string;
 
   @IsString()
   @IsOptional()
-  departmentId?: string;
+  department?: string;
 
   @IsString()
   @IsOptional()
-  roleId?: string;
+  role?: string;
 
   @IsString()
   @IsOptional()

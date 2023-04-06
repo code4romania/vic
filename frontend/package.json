@@ -1,7 +1,7 @@
 {
   "name": "teo-frontend",
   "private": true,
-  "version": "0.8.0",
+  "version": "0.8.1",
   "type": "module",
   "scripts": {
     "lint": "eslint . --max-warnings=0",
@@ -30,6 +30,7 @@
     "react-router-dom": "6.7.0",
     "react-select": "^5.7.0",
     "react-toastify": "^9.1.1",
+    "use-query-params": "^2.2.0",
     "recharts": "^2.5.0",
     "yup": "^0.32.11"
   },

@@ -40,6 +40,7 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
 import { getEventsForDownload } from '../services/event/event.api';
+import { PaginationConfig } from '../common/constants/pagination';
 
 const EventsTabsOptions: SelectItem<EventState>[] = [
   { key: EventState.OPEN, value: i18n.t('side_menu:options.events') },
@@ -167,8 +168,8 @@ const Events = () => {
   const [showDeleteEvent, setShowDeleteEvent] = useState<null | IEvent>();
   const [tabsStatus, setTabsStatus] = useState<EventState>(EventState.OPEN);
   // pagination state
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
+  const [page, setPage] = useState<number>(PaginationConfig.defaultPage);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PaginationConfig.defaultRowsPerPage);
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
 
@@ -321,19 +322,6 @@ const Events = () => {
     };
   };
 
-  const onSort = (column: TableColumn<IEvent>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
-  };
-
-  const onAddEvent = () => {
-    navigate('/events/add');
-  };
-
   const onExport = async () => {
     const { data: eventsData } = await getEventsForDownload(
       tabsStatus,
@@ -342,6 +330,24 @@ const Events = () => {
     );
 
     downloadExcel(eventsData as BlobPart, i18n.t('events:download', { context: tabsStatus }));
+  };
+
+  const onAddEvent = () => {
+    navigate('/events/add');
+  };
+
+  const onRowsPerPageChange = (rows: number) => {
+    setRowsPerPage(rows);
+    setPage(1);
+  };
+
+  const onSort = (column: TableColumn<IEvent>, direction: SortOrder) => {
+    setOrderByColumn(column.id as string);
+    setOrderDirection(
+      direction.toLocaleUpperCase() === OrderDirection.ASC
+        ? OrderDirection.ASC
+        : OrderDirection.DESC,
+    );
   };
 
   return (
@@ -379,7 +385,7 @@ const Events = () => {
               paginationPerPage={rowsPerPage}
               paginationTotalRows={events?.meta?.totalItems}
               paginationDefaultPage={page}
-              onChangeRowsPerPage={setRowsPerPage}
+              onChangeRowsPerPage={onRowsPerPageChange}
               onChangePage={setPage}
               onSort={onSort}
             />

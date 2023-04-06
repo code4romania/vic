@@ -32,8 +32,10 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
 import DataTableFilters from '../components/DataTableFilters';
-import Select, { SelectItem } from '../components/Select';
-import TargetsMultiSelect from '../containers/TargetsMultiSelect';
+import { SelectItem } from '../components/Select';
+import { AnnouncementsProps } from '../containers/query/AnnouncementsWithQueryParms';
+import SelectFilter from '../containers/SelectFilter';
+import TargetsMultiSelectFilter from '../containers/TargetsMultiSelectFilter';
 
 const StatusOptions: SelectItem<AnnouncementStatus>[] = [
   {
@@ -103,17 +105,11 @@ const AnnouncementTableHeader = [
   },
 ];
 
-const Announcements = () => {
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
 
   // filters
-  const [searchWord, setSearchWord] = useState<string>();
-  const [status, setStatus] = useState<SelectItem<AnnouncementStatus>>();
-  const [targetsIds, setTargetsIds] = useState<SelectItem<string>[]>([]);
+  const [targets, setTargets] = useState<SelectItem<string>[]>([]);
 
   const navigate = useNavigate();
 
@@ -123,13 +119,13 @@ const Announcements = () => {
     error: announcementsError,
     refetch,
   } = useAnnouncements(
-    rowsPerPage,
-    page,
-    orderByColumn,
-    orderDirection,
-    searchWord,
-    status?.key,
-    targetsIds.map((targetId) => targetId.key),
+    query.limit as number,
+    query.page as number,
+    query.orderBy as string,
+    query.orderDirection as OrderDirection,
+    query.search,
+    query?.status as AnnouncementStatus,
+    query?.targets,
   );
 
   const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
@@ -261,44 +257,71 @@ const Announcements = () => {
   };
 
   // pagination
-  const onChangeRowsPerPage = (rows: number) => {
-    setRowsPerPage(rows);
+  const onRowsPerPageChange = (limit: number) => {
+    setQuery({
+      limit,
+      page: 1,
+    });
   };
 
-  const onChangePage = (newPage: number) => {
-    setPage(newPage);
+  const onChangePage = (page: number) => {
+    setQuery({ page });
+  };
+
+  const onSearch = (search: string) => {
+    setQuery({
+      search,
+    });
+  };
+
+  const onStatusChange = (status: SelectItem<string>) => {
+    setQuery({
+      status: status.key,
+    });
+  };
+
+  const onTargetsChange = (targets: SelectItem<string>[]) => {
+    setTargets(targets);
+    setQuery({
+      targets: targets.map((target) => target.value),
+    });
   };
 
   const onSort = (column: TableColumn<IAnnouncement>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
+    setQuery({
+      orderBy: column.id as string,
+      orderDirection:
+        direction.toLocaleUpperCase() === OrderDirection.ASC
+          ? OrderDirection.ASC
+          : OrderDirection.DESC,
+    });
   };
 
   const onResetFilters = () => {
-    setSearchWord(undefined);
-    setStatus(undefined);
-    setTargetsIds([]);
+    setQuery({}, 'push');
+    setTargets([]);
   };
 
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.announcements')}</PageHeader>
-      <DataTableFilters onResetFilters={onResetFilters} onSearch={setSearchWord}>
-        <Select
+      <DataTableFilters
+        onResetFilters={onResetFilters}
+        onSearch={onSearch}
+        searchValue={query?.search}
+      >
+        <SelectFilter
           label={`${i18n.t('general:status')}`}
-          onChange={setStatus}
+          onChange={onStatusChange}
           options={StatusOptions}
-          selected={status}
+          defaultValue={query.status}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
         />
-        <TargetsMultiSelect
-          onChange={setTargetsIds}
-          selected={targetsIds}
+        <TargetsMultiSelectFilter
+          onChange={onTargetsChange}
+          selected={targets}
           label={`${i18n.t('announcement:header.target')}`}
+          defaultValues={query?.targets}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
         />
       </DataTableFilters>
@@ -320,10 +343,10 @@ const Announcements = () => {
             loading={
               isAnnouncementsLoading || isUpdateAnnouncementLoading || isDeleteAnnouncementLoading
             }
-            paginationPerPage={announcements?.meta.itemsPerPage}
+            paginationPerPage={query.limit}
             paginationTotalRows={announcements?.meta.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={onChangeRowsPerPage}
+            paginationDefaultPage={query.page as number}
+            onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}
             defaultSortAsc={false}

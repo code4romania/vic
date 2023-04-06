@@ -7,6 +7,12 @@ export interface ICityModel {
   county: ICountyModel;
 }
 
+export type FindLocationOptions = {
+  search?: string;
+  city?: string;
+  county?: string;
+};
+
 export class CityTransformer {
   static fromEntity(entity: CityEntity): ICityModel {
     return {

@@ -23,7 +23,7 @@ const PieChartCard = () => {
   return (
     <Card>
       <CardHeader>
-        <h2>{i18n.t('pie_chart:title')}</h2>
+        <h2>{i18n.t('dashboard:pie_chart.title')}</h2>
         <Select
           options={PIE_CHART_FILTER_OPTIONS}
           onChange={setChartFilter}

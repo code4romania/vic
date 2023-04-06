@@ -6,19 +6,19 @@ import Dashboard from '../pages/Dashboard';
 import EditOrganization from '../pages/EditOrganization';
 import EditAccessCode from '../pages/EditAccessCode';
 import Login from '../pages/Login';
-import Organization from '../pages/Organization';
+import Organization from '../containers/query/OrganizationWithQueryParam';
 import RegistrationRequests from '../pages/AccessRequests';
 import AccessCodes from '../pages/AccesCodes';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import Volunteers from '../pages/Volunteers';
+import Volunteers from '../containers/query/VolunteersWithQueryParams';
 import AddAccessCode from '../pages/AddAccessCode';
 import EditActivityType from '../pages/EditActivityType';
-import Announcements from '../pages/Announcements';
+import Announcements from '../containers/query/AnnouncementsWithQueryParms';
 import Volunteer from '../pages/Volunteer';
 import EditVolunteer from '../pages/EditVolunteer';
 import AddActivityType from '../pages/AddActivityType';
-import ActivityTypes from '../pages/ActivityTypes';
+import ActivityTypes from '../containers/query/ActivityTypesWithQueryParams';
 import Events from '../pages/Events';
 import Event from '../pages/Event';
 import AddEvent from '../pages/AddEvent';
@@ -28,57 +28,61 @@ import EditAnnouncement from '../pages/EditAnnouncement';
 import Announcement from '../pages/Announcement';
 import ActivityLogs from '../pages/ActivityLogs';
 import AddActivityLog from '../pages/AddActivityLog';
+import { QueryParamProvider } from 'use-query-params';
+import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import ActionsArchive from '../pages/ActionsArchive';
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<PublicRoute element={<Login />} />} />
-        <Route path="/" element={<PrivateRoute element={<MainLayout />} />}>
-          <Route index element={<Dashboard />}></Route>
-          <Route path="organization" element={<Outlet />}>
-            <Route index element={<Organization />} />
-            <Route path="edit" element={<EditOrganization />} />
-          </Route>
-          <Route path="volunteers" element={<Outlet />}>
-            <Route index element={<Volunteers />} />
-            <Route path=":id" element={<Volunteer />} />
-            <Route path=":id/edit" element={<EditVolunteer />} />
-            <Route path="access-codes" element={<Outlet />}>
-              <Route index element={<AccessCodes />} />
-              <Route path="add" element={<AddAccessCode />} />
-              <Route path=":id/edit" element={<EditAccessCode />} />
+      <QueryParamProvider adapter={ReactRouter6Adapter}>
+        <Routes>
+          <Route path="/login" element={<PublicRoute element={<Login />} />} />
+          <Route path="/" element={<PrivateRoute element={<MainLayout />} />}>
+            <Route index element={<Dashboard />}></Route>
+            <Route path="organization" element={<Outlet />}>
+              <Route index element={<Organization />} />
+              <Route path="edit" element={<EditOrganization />} />
             </Route>
-            <Route path="requests" element={<RegistrationRequests />} />
-            <Route path="requests/:id" element={<AccessRequest />} />
+            <Route path="volunteers" element={<Outlet />}>
+              <Route index element={<Volunteers />} />
+              <Route path=":id" element={<Volunteer />} />
+              <Route path=":id/edit" element={<EditVolunteer />} />
+              <Route path="access-codes" element={<Outlet />}>
+                <Route index element={<AccessCodes />} />
+                <Route path="add" element={<AddAccessCode />} />
+                <Route path=":id/edit" element={<EditAccessCode />} />
+              </Route>
+              <Route path="requests" element={<RegistrationRequests />} />
+              <Route path="requests/:id" element={<AccessRequest />} />
+            </Route>
+            <Route path="announcements" element={<Outlet />}>
+              <Route index element={<Announcements />} />
+              <Route path="add" element={<AddAnnouncement />} />
+              <Route path=":id/edit" element={<EditAnnouncement />} />
+              <Route path=":id" element={<Announcement />} />
+            </Route>
+            <Route path="activity-types" element={<Outlet />}>
+              <Route index element={<ActivityTypes />} />
+              <Route path="add" element={<AddActivityType />} />
+              <Route path="edit/:id" element={<EditActivityType />} />
+            </Route>
+            <Route path="events" element={<Outlet />}>
+              <Route index element={<Events />} />
+              <Route path=":id" element={<Event />} />
+              <Route path=":id/edit" element={<EditEvent />} />
+              <Route path="add" element={<AddEvent />} />
+            </Route>
+            <Route path="activity-log" element={<Outlet />}>
+              <Route index element={<ActivityLogs />} />
+              <Route path="add" element={<AddActivityLog />} />
+            </Route>
+            <Route path="actions-archive" element={<Outlet />}>
+              <Route index element={<ActionsArchive />} />
+            </Route>
           </Route>
-          <Route path="announcements" element={<Outlet />}>
-            <Route index element={<Announcements />} />
-            <Route path="add" element={<AddAnnouncement />} />
-            <Route path=":id/edit" element={<EditAnnouncement />} />
-            <Route path=":id" element={<Announcement />} />
-          </Route>
-          <Route path="activity-types" element={<Outlet />}>
-            <Route index element={<ActivityTypes />} />
-            <Route path="add" element={<AddActivityType />} />
-            <Route path="edit/:id" element={<EditActivityType />} />
-          </Route>
-          <Route path="events" element={<Outlet />}>
-            <Route index element={<Events />} />
-            <Route path=":id" element={<Event />} />
-            <Route path=":id/edit" element={<EditEvent />} />
-            <Route path="add" element={<AddEvent />} />
-          </Route>
-          <Route path="activity-log" element={<Outlet />}>
-            <Route index element={<ActivityLogs />} />
-            <Route path="add" element={<AddActivityLog />} />
-          </Route>
-          <Route path="actions-archive" element={<Outlet />}>
-            <Route index element={<ActionsArchive />} />
-          </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </QueryParamProvider>
     </BrowserRouter>
   );
 };

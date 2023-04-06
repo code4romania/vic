@@ -20,7 +20,7 @@ const LineChartCard = () => {
   return (
     <Card>
       <CardHeader>
-        <h2>{i18n.t('line_chart:title')}</h2>
+        <h2>{i18n.t('dashboard:line_chart.title')}</h2>
         <Select
           options={LINE_CHART_FILTER_OPTIONS}
           onChange={setChartFilter}

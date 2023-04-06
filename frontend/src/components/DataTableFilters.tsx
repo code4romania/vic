@@ -11,6 +11,7 @@ import CardBody from './CardBody';
 import CardHeader from './CardHeader';
 import debouce from 'lodash.debounce';
 import Input from './Input';
+import { classNames } from '../common/utils/utils';
 
 interface DataTableFiltersProps {
   children?: React.ReactNode;
@@ -90,13 +91,13 @@ const DataTableFilters = ({
           />
         </div>
       </CardHeader>
-      {filtersCollapsed && (
+      <div className={classNames(filtersCollapsed ? '' : 'hidden')}>
         <CardBody>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-6">
             {children}
           </div>
         </CardBody>
-      )}
+      </div>
     </Card>
   );
 };

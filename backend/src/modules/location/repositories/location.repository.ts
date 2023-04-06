@@ -4,7 +4,11 @@ import { ILike, Repository } from 'typeorm';
 import { CityEntity } from '../entities/city.entity';
 import { CountyEntity } from '../entities/county.entity';
 import { ILocationRepository } from '../interfaces/location-repository.interface';
-import { CityTransformer, ICityModel } from '../model/city.model';
+import {
+  CityTransformer,
+  FindLocationOptions,
+  ICityModel,
+} from '../model/city.model';
 import { CountyTransformer, ICountyModel } from '../model/county.model';
 
 @Injectable()
@@ -22,9 +26,15 @@ export class LocationRepositoryService implements ILocationRepository {
   }
 
   // This will only find the cities which start with the search word
-  async findCities(searchWord: string): Promise<ICityModel[]> {
+  async findCities(options: FindLocationOptions): Promise<ICityModel[]> {
+    const { search, city, county } = options;
     const cityEntities = await this.cityRepository.find({
-      where: { name: ILike(`${searchWord}%`) },
+      where: {
+        name: ILike(`${search}%`),
+        ...(city && county
+          ? { county: { abbreviation: county }, name: city }
+          : {}),
+      },
       relations: {
         county: true,
       },

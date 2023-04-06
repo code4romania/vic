@@ -17,12 +17,12 @@ import { DivisionType } from '../common/enums/division-type.enum';
 import { SelectItem } from '../components/Select';
 import DataTableFilters from '../components/DataTableFilters';
 import PageHeaderAdd from '../components/PageHeaderAdd';
+import { ActivityTypesProps } from '../containers/query/ActivityTypesWithQueryParams';
 
-const ActivityTypes = () => {
+const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
   // navigation
   const navigate = useNavigate();
   // filters
-  const [search, setSearch] = useState<string>();
   const [branch, setBranch] = useState<SelectItem<string>>();
   const [department, setDepartment] = useState<SelectItem<string>>();
   const [role, setRole] = useState<SelectItem<string>>();
@@ -32,7 +32,7 @@ const ActivityTypes = () => {
     data: activityTypes,
     error: activityTypesError,
     isLoading: isFetchingActivityTypes,
-  } = useActivityTypesQuery(search, branch?.key, department?.key, role?.key);
+  } = useActivityTypesQuery(query?.search as string, query?.branch, query?.department, query?.role);
 
   // error handling
   useEffect(() => {
@@ -54,7 +54,34 @@ const ActivityTypes = () => {
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
-    setSearch(undefined);
+    setQuery({}, 'push');
+  };
+
+  const onSearch = (search: string) => {
+    setQuery({
+      search,
+    });
+  };
+
+  const onSetBranchFilter = (branch: SelectItem<string>) => {
+    setBranch(branch);
+    setQuery({
+      branch: branch?.value,
+    });
+  };
+
+  const onSetDepartmentFilter = (department: SelectItem<string>) => {
+    setDepartment(department);
+    setQuery({
+      department: department?.value,
+    });
+  };
+
+  const onSetRoleFilter = (role: SelectItem<string>) => {
+    setRole(role);
+    setQuery({
+      role: role?.value,
+    });
   };
 
   return (
@@ -65,26 +92,33 @@ const ActivityTypes = () => {
       >
         {i18n.t('side_menu:options.activity_types')}
       </PageHeaderAdd>
-      <DataTableFilters onSearch={setSearch} searchValue={search} onResetFilters={onResetFilters}>
+      <DataTableFilters
+        onSearch={onSearch}
+        searchValue={query?.search}
+        onResetFilters={onResetFilters}
+      >
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.branch')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setBranch}
+          onChange={onSetBranchFilter}
           selected={branch}
+          defaultValue={query.branch}
           type={DivisionType.BRANCH}
         />
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.department')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setDepartment}
+          onChange={onSetDepartmentFilter}
           selected={department}
+          defaultValue={query.department}
           type={DivisionType.DEPARTMENT}
         />
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.role')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setRole}
+          onChange={onSetRoleFilter}
           selected={role}
+          defaultValue={query.role}
           type={DivisionType.ROLE}
         />
       </DataTableFilters>

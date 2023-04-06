@@ -9,5 +9,5 @@ export class GetManyAnnouncementDto extends BasePaginationFilterDto {
 
   @IsArray()
   @IsOptional()
-  targetsIds?: string[];
+  targets?: string[];
 }

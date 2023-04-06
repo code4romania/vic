@@ -280,6 +280,11 @@ const ActivityLogs = () => {
     if (shouldRefetch) refetch();
   };
 
+  const onRowsPerPageChange = (rows: number) => {
+    setRowsPerPage(rows);
+    setPage(1);
+  };
+
   // pagination
   const onSort = (column: TableColumn<IActivityLogListItem>, direction: SortOrder) => {
     setOrderByColumn(column.id as string);
@@ -389,7 +394,7 @@ const ActivityLogs = () => {
               paginationPerPage={rowsPerPage}
               paginationTotalRows={activityLogs?.meta?.totalItems}
               paginationDefaultPage={page}
-              onChangeRowsPerPage={setRowsPerPage}
+              onChangeRowsPerPage={onRowsPerPageChange}
               onChangePage={setPage}
               onSort={onSort}
             />

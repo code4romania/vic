@@ -58,9 +58,9 @@ export type FindManyActivityTypeOptions = Partial<
 > & {
   organizationId?: string;
   search?: string;
-  departmentId?: string;
-  roleId?: string;
-  branchId?: string;
+  department?: string;
+  role?: string;
+  branch?: string;
 };
 
 export class ActivityTypeTransformer {
