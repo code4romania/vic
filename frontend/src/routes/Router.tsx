@@ -77,9 +77,9 @@ const Router = () => {
               <Route index element={<ActivityLogs />} />
               <Route path="add" element={<AddActivityLog />} />
             </Route>
-          </Route>
-          <Route path="actions-archive" element={<Outlet />}>
-            <Route index element={<ActionsArchive />} />
+            <Route path="actions-archive" element={<Outlet />}>
+              <Route index element={<ActionsArchive />} />
+            </Route>
           </Route>
         </Routes>
       </QueryParamProvider>
