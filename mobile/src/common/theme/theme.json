@@ -65,6 +65,7 @@
   "text-control-color": "#FFFFFF",
   "text-hint-color": "#1F2937",
   "text-disabled-color": "#1F2937",
+  "text-primary-color": "$color-primary-500",
   "background-basic-color-1": "#FFFFFF",
   "background-basic-color-2": "#F7F9FC",
   "background-basic-color-3": "#EDF1F7",

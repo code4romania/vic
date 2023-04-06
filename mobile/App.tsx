@@ -5,7 +5,8 @@ import { default as theme } from './src/common/theme/theme.json';
 import { default as mapping } from './src/common/theme/mappings.json';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as Font from 'expo-font';
-import { AppNavigator } from './src/routes/Navigation';
+// import { AppNavigator } from './src/routes/Navigation';
+import { TabsNavigator } from './src/routes/Tabs';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 
@@ -28,7 +29,7 @@ export default () => {
       <ApplicationProvider {...eva} theme={{ ...theme }} customMapping={mapping}>
         {/* Add marginTop for android devices as SafeAreaView is iOS Only */}
         <SafeAreaView style={styles.container}>
-          <AppNavigator />
+          <TabsNavigator />
         </SafeAreaView>
         <ExpoStatusBar style="auto" />
       </ApplicationProvider>
