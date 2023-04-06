@@ -48,8 +48,8 @@ export const useActivityLogQuery = (id: string) => {
   });
 };
 
-export const useActivityLogCounterQuery = () => {
-  return useQuery(['activity-log-counter'], () => getActivityLogCounter(), {
+export const useActivityLogCounterQuery = (volunteerId?: string) => {
+  return useQuery(['activity-log-counter', volunteerId], () => getActivityLogCounter(volunteerId), {
     onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) => error,
   });
 };

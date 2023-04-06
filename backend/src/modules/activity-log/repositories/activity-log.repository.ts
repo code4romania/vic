@@ -69,8 +69,11 @@ export class ActivityLogRepositoryService
         'activityLog.id',
         'activityLog.date',
         'activityLog.hours',
+        'activityLog.mentions',
         'activityLog.status',
         'activityLog.createdOn',
+        'activityLog.approvedOn',
+        'activityLog.rejectedOn',
         'volunteer.id',
         'user.name',
         'event.id',
@@ -78,6 +81,9 @@ export class ActivityLogRepositoryService
         'activityType.id',
         'activityType.name',
         'activityType.icon',
+        'rejectedBy.name',
+        'approvedBy.name',
+        'createdByAdmin.name',
       ])
       .where('activityLog.organizationId = :organizationId', {
         organizationId: findOptions.organizationId,
@@ -212,10 +218,8 @@ export class ActivityLogRepositoryService
     const query = this.activityLogRepo
       .createQueryBuilder('activityLog')
       .select('activityLog.status', 'status')
-      .addSelect('activityLog.hours', 'hours')
-      .addSelect('COUNT(activityLog.id)', 'count')
+      .addSelect('SUM(activityLog.hours)', 'hours')
       .groupBy('activityLog.status')
-      .addGroupBy('activityLog.hours')
       .where('activityLog.organizationId = :organizationId', {
         organizationId,
       });
@@ -231,7 +235,7 @@ export class ActivityLogRepositoryService
 
     return counters.reduce(
       (acc, curr) => {
-        acc[curr.status] += curr.hours;
+        acc[curr.status] = curr.hours;
         return acc;
       },
       {

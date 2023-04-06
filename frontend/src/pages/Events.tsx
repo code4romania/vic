@@ -144,10 +144,10 @@ const PastEventsTableHeader = [
     name: i18n.t('events:hours'),
     minWidth: '5rem',
     grow: 1,
-    cell: () => (
-      <CellLayout>{`${0} ${i18n.t('general:people').toLowerCase()}\n${0} ${i18n
-        .t('general:hours')
-        .toLowerCase()}`}</CellLayout>
+    cell: (row: IEvent) => (
+      <CellLayout>{`${row.activityLogged?.volunteers} ${i18n.t('general:people').toLowerCase()}\n${
+        row.activityLogged?.totalHours
+      } ${i18n.t('general:hours').toLowerCase()}`}</CellLayout>
     ),
   },
   {

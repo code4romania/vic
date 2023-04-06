@@ -30,6 +30,7 @@ import ActivityLogs from '../pages/ActivityLogs';
 import AddActivityLog from '../pages/AddActivityLog';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
+import ActionsArchive from '../pages/ActionsArchive';
 
 const Router = () => {
   return (
@@ -76,6 +77,9 @@ const Router = () => {
               <Route index element={<ActivityLogs />} />
               <Route path="add" element={<AddActivityLog />} />
             </Route>
+          </Route>
+          <Route path="actions-archive" element={<Outlet />}>
+            <Route index element={<ActionsArchive />} />
           </Route>
         </Routes>
       </QueryParamProvider>

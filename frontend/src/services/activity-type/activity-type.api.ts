@@ -55,6 +55,7 @@ export const archiveActivityType = async (id: string): Promise<IActivityType> =>
 //Listing activity type
 export const getActivityTypeListItems = async (params: {
   status?: ActivityTypeStatus;
+  search?: string;
 }): Promise<{ id: string; name: string }[]> => {
   return API.get('/listing/activity-types', { params }).then((res) => res.data);
 };

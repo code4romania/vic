@@ -1,5 +1,5 @@
-import { Transform } from 'class-transformer';
-import { IsBoolean, IsOptional, IsUUID } from 'class-validator';
+import { IsEnum, IsOptional, IsUUID } from 'class-validator';
+import { RSVPGoingEnum } from 'src/modules/event/enums/rsvp-going.enum';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 
 export class GetPaginatedEventRSVPsDto extends BasePaginationFilterDto {
@@ -16,7 +16,6 @@ export class GetPaginatedEventRSVPsDto extends BasePaginationFilterDto {
   roleId?: string;
 
   @IsOptional()
-  @IsBoolean()
-  @Transform(({ value }) => value === 'true')
-  going?: boolean;
+  @IsEnum(RSVPGoingEnum)
+  going?: RSVPGoingEnum;
 }

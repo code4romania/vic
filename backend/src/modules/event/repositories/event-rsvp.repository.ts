@@ -80,7 +80,12 @@ export class EventRSVPRepository
       .createQueryBuilder('rsvp')
       .leftJoinAndMapOne('rsvp.user', 'rsvp.user', 'user')
       .leftJoinAndMapOne('rsvp.event', 'rsvp.event', 'event')
-      .leftJoinAndMapMany('user.volunteer', 'user.volunteer', 'volunteer')
+      .leftJoinAndMapMany(
+        'user.volunteer',
+        'user.volunteer',
+        'volunteer',
+        'volunteer.organizationId = event.organizationId',
+      )
       .select()
       .where('event.id = :eventId', { eventId: findOptions.eventId })
       .orderBy(
