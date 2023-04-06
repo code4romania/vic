@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
-import { PaginationConfig } from '../common/constants/pagination';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IUser } from '../common/interfaces/user.interface';
@@ -22,6 +21,7 @@ import {
   useAccessCodesQuery,
   useDeleteAccessCodeMutation,
 } from '../services/organization/organization.service';
+import { AccessCodesProps } from '../containers/query/AccessCodesWithQueryParams';
 export interface IAccessCode {
   id: string;
   code: string;
@@ -83,12 +83,8 @@ const AccessCodeTableHeader = [
   },
 ];
 
-const AccessCodes = () => {
+const AccessCodes = ({ query, setQuery }: AccessCodesProps) => {
   const [showDeleteAccessCode, setShowDeleteAccessCode] = useState<null | IAccessCode>();
-  const [page, setPage] = useState<number>(PaginationConfig.defaultPage);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(PaginationConfig.defaultRowsPerPage);
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const navigate = useNavigate();
 
   const {
@@ -97,10 +93,10 @@ const AccessCodes = () => {
     isLoading: isAccessCodesLoading,
     refetch,
   } = useAccessCodesQuery(
-    rowsPerPage as number,
-    page as number,
-    orderByColumn as string,
-    orderDirection as OrderDirection,
+    query?.limit as number,
+    query?.page as number,
+    query?.orderBy as string,
+    query?.orderDirection as OrderDirection,
   );
 
   const { mutateAsync: deleteAccessCode, isLoading: isDeleteAccessCodeLoading } =
@@ -111,22 +107,25 @@ const AccessCodes = () => {
   }, [accessCodesError]);
 
   // pagination
-  const onRowsPerPageChange = (rows: number) => {
-    setRowsPerPage(rows);
-    setPage(1);
+  const onRowsPerPageChange = (limit: number) => {
+    setQuery({
+      limit,
+      page: 1,
+    });
   };
 
   const onChangePage = (page: number) => {
-    setPage(page);
+    setQuery({ page });
   };
 
   const onSort = (column: TableColumn<IAccessCode>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
+    setQuery({
+      orderBy: column.id as string,
+      orderDirection:
+        direction.toLocaleUpperCase() === OrderDirection.ASC
+          ? OrderDirection.ASC
+          : OrderDirection.DESC,
+    });
   };
 
   // component actions
@@ -208,9 +207,9 @@ const AccessCodes = () => {
               columns={[...AccessCodeTableHeader, buildAccessCodeActionColumn()]}
               loading={isAccessCodesLoading || isDeleteAccessCodeLoading}
               pagination
-              paginationPerPage={accessCodes?.meta?.itemsPerPage}
+              paginationPerPage={query.limit as number}
               paginationTotalRows={accessCodes?.meta?.totalItems}
-              paginationDefaultPage={page}
+              paginationDefaultPage={query.page as number}
               onChangeRowsPerPage={onRowsPerPageChange}
               onChangePage={onChangePage}
               onSort={onSort}

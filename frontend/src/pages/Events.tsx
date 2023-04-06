@@ -40,7 +40,7 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
 import { getEventsForDownload } from '../services/event/event.api';
-import { PaginationConfig } from '../common/constants/pagination';
+import { EventsProps } from '../containers/query/EventsWithQueryParams';
 
 const EventsTabsOptions: SelectItem<EventState>[] = [
   { key: EventState.OPEN, value: i18n.t('side_menu:options.events') },
@@ -164,14 +164,8 @@ const PastEventsTableHeader = [
   },
 ];
 
-const Events = () => {
+const Events = ({ query, setQuery }: EventsProps) => {
   const [showDeleteEvent, setShowDeleteEvent] = useState<null | IEvent>();
-  const [tabsStatus, setTabsStatus] = useState<EventState>(EventState.OPEN);
-  // pagination state
-  const [page, setPage] = useState<number>(PaginationConfig.defaultPage);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(PaginationConfig.defaultRowsPerPage);
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
 
   const navigate = useNavigate();
 
@@ -182,11 +176,11 @@ const Events = () => {
     error: eventsError,
     refetch,
   } = useEventsQuery(
-    rowsPerPage as number,
-    page as number,
-    tabsStatus,
-    orderByColumn,
-    orderDirection,
+    query.limit as number,
+    query.page as number,
+    query.eventState as EventState,
+    query.orderBy,
+    query.orderDirection as OrderDirection,
   );
   // actions
   const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
@@ -199,7 +193,8 @@ const Events = () => {
   }, [eventsError]);
 
   const onTabClick = (tab: EventState) => {
-    setTabsStatus(tab);
+    // reset filter queries on tab click
+    setQuery({ eventState: tab }, 'push');
   };
 
   // row actions
@@ -324,30 +319,39 @@ const Events = () => {
 
   const onExport = async () => {
     const { data: eventsData } = await getEventsForDownload(
-      tabsStatus,
-      orderByColumn,
-      orderDirection,
+      query.eventState as EventState,
+      query.orderBy,
+      query.orderDirection as OrderDirection,
     );
 
-    downloadExcel(eventsData as BlobPart, i18n.t('events:download', { context: tabsStatus }));
+    downloadExcel(eventsData as BlobPart, i18n.t('events:download', { context: query.eventState }));
   };
 
   const onAddEvent = () => {
     navigate('/events/add');
   };
 
-  const onRowsPerPageChange = (rows: number) => {
-    setRowsPerPage(rows);
-    setPage(1);
+  const onRowsPerPageChange = (limit: number) => {
+    setQuery({
+      limit,
+      page: 1,
+    });
+  };
+
+  const onChangePage = (page: number) => {
+    setQuery({
+      page,
+    });
   };
 
   const onSort = (column: TableColumn<IEvent>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
+    setQuery({
+      orderBy: column.id as string,
+      orderDirection:
+        direction.toLocaleUpperCase() === OrderDirection.ASC
+          ? OrderDirection.ASC
+          : OrderDirection.DESC,
+    });
   };
 
   return (
@@ -358,11 +362,19 @@ const Events = () => {
       >
         {i18n.t('side_menu:options.events')}
       </PageHeaderAdd>
-      <Tabs<EventState> tabs={EventsTabsOptions} onClick={onTabClick}>
+      <Tabs<EventState>
+        tabs={EventsTabsOptions}
+        onClick={onTabClick}
+        defaultTab={
+          query?.eventState
+            ? EventsTabsOptions.find((tab) => tab.key === query?.eventState)
+            : EventsTabsOptions[0]
+        }
+      >
         <Card>
           <CardHeader>
             <h2>
-              {tabsStatus === EventState.OPEN
+              {query.eventState === EventState.OPEN
                 ? i18n.t('side_menu:options.events')
                 : i18n.t('events:past_events')}
             </h2>
@@ -376,17 +388,19 @@ const Events = () => {
           <CardBody>
             <DataTableComponent
               columns={[
-                ...(tabsStatus === EventState.PAST ? PastEventsTableHeader : OpenEventsTableHeader),
+                ...(query.eventState === EventState.PAST
+                  ? PastEventsTableHeader
+                  : OpenEventsTableHeader),
                 buildEventsActionColumn(),
               ]}
               data={events?.items}
               loading={isEventsLoading || isArchivingEvent || isDeletingEvent || isPublishingEvent}
               pagination
-              paginationPerPage={rowsPerPage}
+              paginationPerPage={query.limit}
               paginationTotalRows={events?.meta?.totalItems}
-              paginationDefaultPage={page}
+              paginationDefaultPage={query.page}
               onChangeRowsPerPage={onRowsPerPageChange}
-              onChangePage={setPage}
+              onChangePage={onChangePage}
               onSort={onSort}
             />
           </CardBody>
