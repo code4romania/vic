@@ -72,7 +72,7 @@ const ActionsArchive = ({ query, setQuery }: ActionsArchiveProps) => {
     isLoading: isActionsLoading,
     error: actionsError,
   } = useActionsQuery({
-    orderBy: query.orderBy,
+    orderBy: query?.orderBy,
     orderDirection: query.orderDirection as OrderDirection,
     page: query.page as number,
     limit: query.limit as number,
