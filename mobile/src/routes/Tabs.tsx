@@ -1,24 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Layout, BottomNavigation, BottomNavigationTab, Text, Icon } from '@ui-kitten/components';
+import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
+import Home from '../screens/Home';
+import Events from '../screens/Events';
+import Organizations from '../screens/Organizations';
+import Settings from '../screens/Settings';
+import Volunteer from '../screens/Volunteer';
 
 const { Navigator, Screen } = createBottomTabNavigator();
-
-const TestScreen = (props: any) => {
-  console.log('render', props.name);
-
-  useEffect(() => {
-    console.log('on init');
-  }, []);
-
-  return (
-    <Layout style={styles.screenContainer}>
-      <Text category="h1">{props.name}</Text>
-    </Layout>
-  );
-};
 
 const HomeIcon = (props: any) => <Icon {...props} name="home" />;
 const SunIcon = (props: any) => <Icon {...props} name="sun" />;
@@ -45,27 +35,23 @@ const BottomTabBar = ({ navigation, state }: any) => {
   );
 };
 
-const Home = (props: any) => <TestScreen {...props} name="Acasa" />;
-const Volunteer = (props: any) => <TestScreen {...props} name="Voluntar" />;
-const Events = (props: any) => <TestScreen {...props} name="Evenimente" />;
-const Search = (props: any) => <TestScreen {...props} name="Cauta" />;
-const Settings = (props: any) => <TestScreen {...props} name="Setari cont" />;
+const HomeComponent = (props: any) => <Home {...props} name="Acasa" />;
+const VolunteerComponent = (props: any) => <Volunteer {...props} name="Voluntar" />;
+const EventsComponent = (props: any) => <Events {...props} name="Evenimente" />;
+const SearchComponent = (props: any) => <Organizations {...props} name="Cauta" />;
+const SettingsComponent = (props: any) => <Settings {...props} name="Setari cont" />;
 
-const TabNavigator = () => (
+const Tabs = () => (
   <Navigator screenOptions={{ headerShown: false, lazy: true }} tabBar={BottomTabBar}>
-    <Screen name="home" component={Home} />
-    <Screen name="volunteer" component={Volunteer} />
-    <Screen name="events" component={Events} />
-    <Screen name="search" component={Search} />
-    <Screen name="settings" component={Settings} />
+    <Screen name="dashboard" component={HomeComponent} />
+    <Screen name="volunteer" component={VolunteerComponent} />
+    <Screen name="events" component={EventsComponent} />
+    <Screen name="search" component={SearchComponent} />
+    <Screen name="settings" component={SettingsComponent} />
   </Navigator>
 );
 
-export const TabsNavigator = () => (
-  <NavigationContainer>
-    <TabNavigator />
-  </NavigationContainer>
-);
+export default Tabs;
 
 const styles = StyleSheet.create({
   screenContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
