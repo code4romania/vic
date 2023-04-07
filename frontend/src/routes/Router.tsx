@@ -15,7 +15,7 @@ import Volunteers from '../containers/query/VolunteersWithQueryParams';
 import AddAccessCode from '../pages/AddAccessCode';
 import EditActivityType from '../pages/EditActivityType';
 import Announcements from '../containers/query/AnnouncementsWithQueryParms';
-import Volunteer from '../pages/Volunteer';
+import Volunteer from '../containers/query/VolunteerWithQueryParams';
 import EditVolunteer from '../pages/EditVolunteer';
 import AddActivityType from '../pages/AddActivityType';
 import ActivityTypes from '../containers/query/ActivityTypesWithQueryParams';

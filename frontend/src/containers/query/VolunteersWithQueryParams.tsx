@@ -21,7 +21,7 @@ export interface VolunteersQueryProps extends IPaginationQueryParams {
   location?: string[];
 }
 
-export type VolunteerProps = IHOCQueryProps<VolunteersQueryProps>;
+export type VolunteersProps = IHOCQueryProps<VolunteersQueryProps>;
 
 // set page default params
 const DEFAULT_QUERY_PARAMS = getPaginationQueryParams({ orderBy: 'user.name' });

@@ -9,9 +9,11 @@ import { IHOCQueryProps } from '../../common/interfaces/hoc-query-props.interfac
 import ActivityLogTable from '../../components/ActivityLogTable';
 import { ActivityLogResolutionStatus } from '../../common/enums/activity-log-resolution-status.enum';
 import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
+import { VolunteerTabsOptions } from '../../pages/Volunteer';
 
 export interface ActivityLogTableQueryProps extends IPaginationQueryParams {
   resolutionStatus?: ActivityLogResolutionStatus;
+  activeTab?: VolunteerTabsOptions;
   search?: string;
   status?: ActivityLogStatus;
   executionDateStart?: Date;
@@ -34,11 +36,15 @@ const ActivityLogTableWithQueryParams = ({
   volunteerId?: string;
 }) => {
   // set request status default
-  const ResolutionStatusParam = withDefault(StringParam, ActivityLogResolutionStatus.NEW);
+  const ResolutionStatusParam = withDefault(
+    StringParam,
+    resolutionStatus || ActivityLogResolutionStatus.NEW,
+  );
   // set query config
   const queryConfig = {
     ...DEFAULT_QUERY_PARAMS,
     resolutionStatus: ResolutionStatusParam,
+    activeTab: StringParam,
     search: StringParam,
     status: StringParam,
     executionDateStart: DateParam,

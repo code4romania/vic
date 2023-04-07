@@ -442,6 +442,11 @@ const ActivityLogTable = ({
   const onResetFilters = () => {
     setStatus(undefined);
     setApprovedOrRejectedBy(undefined);
+    if (volunteerId) {
+      setQuery({ activeTab: query.activeTab }, 'push');
+    } else {
+      setQuery({ resolutionStatus: query.resolutionStatus }, 'push');
+    }
   };
 
   return (
