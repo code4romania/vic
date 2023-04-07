@@ -30,7 +30,7 @@ import ActivityLogs from '../containers/query/ActivityLogsWithQueryParams';
 import AddActivityLog from '../pages/AddActivityLog';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
-import ActionsArchive from '../pages/ActionsArchive';
+import ActionsArchive from '../containers/query/ActionsArchiveWithQueryParams';
 
 const Router = () => {
   return (
