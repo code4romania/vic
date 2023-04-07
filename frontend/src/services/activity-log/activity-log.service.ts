@@ -32,7 +32,7 @@ export const useActivityLogsQuery = (params: GetActivityLogsParams) => {
       params.registrationDateStart,
       params.registrationDateEnd,
       params.volunteerId,
-      params.approvedOrRejectedById,
+      params.approvedOrRejectedBy,
     ],
     () => getActivityLogs(params),
     {

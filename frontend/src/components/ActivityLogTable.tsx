@@ -36,6 +36,7 @@ import Button from './Button';
 import AdminSelect from '../containers/AdminSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { getActivityLogsForDownload } from '../services/activity-log/activity-log.api';
+import { ActivityLogTableBasicProps } from '../containers/query/ActivityLogTableWithQueryParams';
 
 const StatusOptions: SelectItem<ActivityLogStatus>[] = [
   { key: ActivityLogStatus.APPROVED, value: i18n.t('activity_log:display_status.approved') },
@@ -244,24 +245,20 @@ const PastActivityLogTableHeader = [
   },
 ];
 
+interface ActivityLogTableProps extends ActivityLogTableBasicProps {
+  resolutionStatus: ActivityLogResolutionStatus;
+  volunteerId?: string;
+}
+
 const ActivityLogTable = ({
   resolutionStatus,
   volunteerId,
-}: {
-  resolutionStatus: ActivityLogResolutionStatus;
-  volunteerId?: string;
-}) => {
+  query,
+  setQuery,
+}: ActivityLogTableProps) => {
   // routing
   const navigate = useNavigate();
-  // pagination state
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   // filters
-  const [searchWord, setSearchWord] = useState<string>();
-  const [executionDateRange, setExecutionDateRange] = useState<Date[]>([]);
-  const [registrationDateRange, setRegistrationDateRange] = useState<Date[]>([]);
   const [approvedOrRejectedBy, setApprovedOrRejectedBy] = useState<ListItem>();
   const [status, setStatus] = useState<SelectItem<ActivityLogStatus>>();
 
@@ -280,19 +277,19 @@ const ActivityLogTable = ({
     error: activityLogsError,
     refetch,
   } = useActivityLogsQuery({
-    limit: rowsPerPage as number,
-    page: page as number,
-    resolutionStatus: resolutionStatus,
-    orderBy: orderByColumn,
+    limit: query.limit as number,
+    page: query.page as number,
+    resolutionStatus: query.resolutionStatus as ActivityLogResolutionStatus,
+    orderBy: query.orderBy,
     volunteerId,
-    orderDirection,
-    approvedOrRejectedById: approvedOrRejectedBy?.value,
-    search: searchWord,
-    status: status?.key,
-    executionDateStart: executionDateRange[0],
-    executionDateEnd: executionDateRange[1],
-    registrationDateStart: registrationDateRange[0],
-    registrationDateEnd: registrationDateRange[1],
+    orderDirection: query.orderDirection as OrderDirection,
+    approvedOrRejectedBy: query.approvedOrRejectedBy,
+    search: query.search,
+    status: query.status,
+    executionDateStart: query.executionDateStart,
+    executionDateEnd: query.executionDateEnd,
+    registrationDateStart: query.registrationDateStart,
+    registrationDateEnd: query.registrationDateEnd,
   });
   const { data: counters } = useActivityLogCounterQuery(volunteerId);
 
@@ -371,32 +368,71 @@ const ActivityLogTable = ({
   };
 
   // pagination
-  const onRowsPerPageChange = (rows: number) => {
-    setRowsPerPage(rows);
-    setPage(1);
+  const onRowsPerPageChange = (limit: number) => {
+    setQuery({
+      limit,
+      page: 1,
+    });
+  };
+
+  const onChangePage = (page: number) => {
+    setQuery({
+      page,
+    });
   };
 
   const onSort = (column: TableColumn<IActivityLogListItem>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
+    setQuery({
+      orderBy: column.id as string,
+      orderDirection:
+        direction.toLocaleUpperCase() === OrderDirection.ASC
+          ? OrderDirection.ASC
+          : OrderDirection.DESC,
+    });
+  };
+
+  const onSearch = (search: string) => {
+    setQuery({
+      search,
+    });
+  };
+
+  const onStatusChange = (status: SelectItem<ActivityLogStatus>) => {
+    setStatus(status);
+    setQuery({ status: status.key });
+  };
+
+  const onExecutionOnRangeChange = ([executionDateStart, executionDateEnd]: Date[]) => {
+    setQuery({
+      executionDateStart,
+      executionDateEnd,
+    });
+  };
+
+  const onRegistrationOnRangeChange = ([registrationDateStart, registrationDateEnd]: Date[]) => {
+    setQuery({
+      registrationDateStart,
+      registrationDateEnd,
+    });
+  };
+
+  const onApprovedOrRejectedByChange = (admin: ListItem) => {
+    setApprovedOrRejectedBy(admin);
+    setQuery({ approvedOrRejectedBy: admin.label });
   };
 
   const onExport = async () => {
     const { data: activityLogsData } = await getActivityLogsForDownload({
-      limit: rowsPerPage as number,
-      page: page as number,
+      limit: query.limit as number,
+      page: query.page as number,
       resolutionStatus,
-      orderBy: orderByColumn,
-      orderDirection,
-      search: searchWord,
-      status: status?.key,
-      approvedOrRejectedById: approvedOrRejectedBy?.value,
-      executionDateStart: executionDateRange[0],
-      executionDateEnd: executionDateRange[1],
+      orderBy: query.orderBy,
+      orderDirection: query.orderDirection as OrderDirection,
+      search: query.search,
+      status: query.status,
+      approvedOrRejectedBy: query.approvedOrRejectedBy,
+      executionDateStart: query.executionDateStart,
+      executionDateEnd: query.executionDateEnd,
       volunteerId: volunteerId,
     });
 
@@ -404,27 +440,36 @@ const ActivityLogTable = ({
   };
 
   const onResetFilters = () => {
-    setExecutionDateRange([]);
-    setRegistrationDateRange([]);
     setStatus(undefined);
-    setSearchWord(undefined);
     setApprovedOrRejectedBy(undefined);
   };
 
   return (
     <>
-      <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
+      <DataTableFilters
+        onSearch={onSearch}
+        searchValue={query?.search}
+        onResetFilters={onResetFilters}
+      >
         <DateRangePicker
           label={i18n.t('activity_log:filters.execution')}
-          onChange={setExecutionDateRange}
-          value={executionDateRange.length > 0 ? executionDateRange : undefined}
+          onChange={onExecutionOnRangeChange}
+          value={
+            query?.executionDateStart && query?.executionDateEnd
+              ? [query?.executionDateStart, query?.executionDateEnd]
+              : undefined
+          }
           id="execution-on-range__picker"
         />
         {resolutionStatus === ActivityLogResolutionStatus.NEW && (
           <DateRangePicker
             label={i18n.t('activity_log:filters.registration')}
-            onChange={setRegistrationDateRange}
-            value={registrationDateRange.length > 0 ? registrationDateRange : undefined}
+            onChange={onRegistrationOnRangeChange}
+            value={
+              query?.registrationDateStart && query?.registrationDateEnd
+                ? [query?.registrationDateStart, query?.registrationDateEnd]
+                : undefined
+            }
             id="registration-on-range__picker"
           />
         )}
@@ -434,13 +479,19 @@ const ActivityLogTable = ({
               label={`${i18n.t('activity_log:status')}`}
               placeholder={`${i18n.t('general:select', { item: '' })}`}
               options={StatusOptions}
-              onChange={setStatus}
-              selected={status}
+              onChange={onStatusChange}
+              selected={
+                query.status ? StatusOptions.find((option) => option.key === query.status) : status
+              }
             />
             <AdminSelect
               label={i18n.t('activity_log:filters.approved_rejected')}
-              onSelect={setApprovedOrRejectedBy}
-              defaultValue={approvedOrRejectedBy}
+              onSelect={onApprovedOrRejectedByChange}
+              defaultValue={
+                query.approvedOrRejectedBy
+                  ? { value: 'something dumb', label: query.approvedOrRejectedBy }
+                  : approvedOrRejectedBy
+              }
             />
           </>
         )}
@@ -486,11 +537,11 @@ const ActivityLogTable = ({
             data={activityLogs?.items}
             loading={isActivityLogsLoading}
             pagination
-            paginationPerPage={rowsPerPage}
+            paginationPerPage={query.limit}
             paginationTotalRows={activityLogs?.meta?.totalItems}
-            paginationDefaultPage={page}
+            paginationDefaultPage={query.page}
             onChangeRowsPerPage={onRowsPerPageChange}
-            onChangePage={setPage}
+            onChangePage={onChangePage}
             onSort={onSort}
           />
         </CardBody>

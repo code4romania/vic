@@ -26,7 +26,7 @@ import EditEvent from '../pages/EditEvent';
 import AddAnnouncement from '../pages/AddAnnouncement';
 import EditAnnouncement from '../pages/EditAnnouncement';
 import Announcement from '../pages/Announcement';
-import ActivityLogs from '../pages/ActivityLogs';
+import ActivityLogs from '../containers/query/ActivityLogsWithQueryParams';
 import AddActivityLog from '../pages/AddActivityLog';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
