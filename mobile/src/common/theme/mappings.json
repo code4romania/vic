@@ -1,0 +1,34 @@
+{
+  "strict": {
+    "text-font-family": "roboto-regular",
+
+    "text-heading-1-font-size": 24,
+    "text-heading-1-font-weight": "800",
+    "text-heading-1-font-family": "titilium-web",
+
+    "text-heading-2-font-size": 18,
+    "text-heading-2-font-weight": "800",
+    "text-heading-2-font-family": "titilium-web",
+
+    "text-heading-3-font-size": 16,
+    "text-heading-3-font-weight": "800",
+    "text-heading-3-font-family": "titilium-web",
+
+    "text-paragraph-1-font-size": 16,
+    "text-paragraph-1-font-weight": "400",
+    "text-paragraph-1-font-family": "roboto-regular",
+
+    "text-label-font-size": 16,
+    "text-label-font-weight": "600",
+    "text-label-font-family": "roboto-medium",
+
+    "text-subtitle-1-font-size": 14,
+    "text-subtitle-1-font-weight": "600",
+    "text-subtitle-1-font-family": "roboto-regular",
+
+    "text-caption-1-font-size": 14,
+    "text-caption-1-font-weight": "400",
+    "text-caption-1-font-family": "roboto-medium"
+  },
+  "components": {}
+}
