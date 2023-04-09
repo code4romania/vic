@@ -79,7 +79,7 @@ const ActionsArchive = ({ query, setQuery }: ActionsArchiveProps) => {
     search: query.search,
     actionStartDate: query.actionStartDate,
     actionEndDate: query.actionEndDate,
-    authorId: query.author,
+    author: query.author,
   });
 
   useEffect(() => {
