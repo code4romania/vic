@@ -10,7 +10,7 @@ export const getActions = (params: {
   search?: string;
   orderBy?: string;
   orderDirection?: OrderDirection;
-  authorId?: string;
+  author?: string;
   actionStartDate?: Date;
   actionEndDate?: Date;
 }): Promise<IPaginatedEntity<IAction>> => {

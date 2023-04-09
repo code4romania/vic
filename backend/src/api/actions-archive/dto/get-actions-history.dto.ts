@@ -4,7 +4,7 @@ import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination
 export class GetManyActionsArchiveDto extends BasePaginationFilterDto {
   @IsString()
   @IsOptional()
-  authorId?: string;
+  author?: string;
 
   @IsDate()
   @IsOptional()

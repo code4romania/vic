@@ -116,7 +116,7 @@ export type FindManyActivityLogsOptions = {
 
   status?: ActivityLogStatusForSolvedLogs;
 
-  approvedOrRejectedById?: string;
+  approvedOrRejectedBy?: string;
 } & IBasePaginationFilterModel;
 
 export type FindManyActivityLogCounterOptions = {

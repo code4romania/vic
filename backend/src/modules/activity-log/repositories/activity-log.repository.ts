@@ -136,11 +136,11 @@ export class ActivityLogRepositoryService
       }
     }
 
-    if (findOptions.approvedOrRejectedById) {
+    if (findOptions.approvedOrRejectedBy) {
       query.andWhere(
-        '(activityLog.approvedById = :approvedOrRejectedById OR activityLog.rejectedById = :approvedOrRejectedById)',
+        '(approvedBy.name = :approvedOrRejectedBy OR rejectedBy.name = :approvedOrRejectedBy)',
         {
-          approvedOrRejectedById: findOptions.approvedOrRejectedById,
+          approvedOrRejectedBy: findOptions.approvedOrRejectedBy,
         },
       );
     }

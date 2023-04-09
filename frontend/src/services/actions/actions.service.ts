@@ -11,7 +11,7 @@ export const useActionsQuery = (params: {
   search?: string;
   orderBy?: string;
   orderDirection?: OrderDirection;
-  authorId?: string;
+  author?: string;
   actionStartDate?: Date;
   actionEndDate?: Date;
 }) => {
@@ -23,7 +23,7 @@ export const useActionsQuery = (params: {
       params.search,
       params.orderBy,
       params.orderDirection,
-      params.authorId,
+      params.author,
       params.actionStartDate,
       params.actionEndDate,
     ],
