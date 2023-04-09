@@ -1,11 +1,23 @@
-import { IsDate, IsEnum, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsOptional,
+  IsString,
+  ValidateIf,
+} from 'class-validator';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 import { AccessRequestStatus } from 'src/modules/access-request/enums/access-request-status.enum';
 
 export class GetAccessRequestsDto extends BasePaginationFilterDto {
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  locationId?: number;
+  @ValidateIf((v) => v.county !== undefined)
+  city?: string;
+
+  @IsString()
+  @IsOptional()
+  @ValidateIf((v) => v.city !== undefined)
+  county?: string;
 
   @IsOptional()
   @IsDate()

@@ -13,13 +13,13 @@ import { useErrorToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { useActionsQuery } from '../services/actions/actions.service';
-import { PaginationConfig } from '../common/constants/pagination';
 import DataTableFilters from '../components/DataTableFilters';
 import DateRangePicker from '../components/DateRangePicker';
 import AdminSelect from '../containers/AdminSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import CellLayout from '../layouts/CellLayout';
 import { mapEventDataToActionDescription } from '../common/utils/actions-archive.mappings';
+import { ActionsArchiveProps } from '../containers/query/ActionsArchiveWithQueryParams';
 
 const TableHeader = [
   {
@@ -63,29 +63,23 @@ const TableHeader = [
   },
 ];
 
-const ActionsArchive = () => {
-  const [page, setPage] = useState<number>(PaginationConfig.defaultPage);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(PaginationConfig.defaultRowsPerPage);
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+const ActionsArchive = ({ query, setQuery }: ActionsArchiveProps) => {
   // filters
-  const [searchWord, setSearchWord] = useState<string>();
-  const [actionDateRange, setActionDateRange] = useState<Date[]>([]);
-  const [authorId, setAuthorId] = useState<ListItem>();
+  const [author, setAuthor] = useState<ListItem>();
 
   const {
     data: actions,
     isLoading: isActionsLoading,
     error: actionsError,
   } = useActionsQuery({
-    orderBy: orderByColumn,
-    orderDirection,
-    page,
-    limit: rowsPerPage,
-    search: searchWord,
-    actionStartDate: actionDateRange[0],
-    actionEndDate: actionDateRange[1],
-    authorId: authorId?.value,
+    orderBy: query?.orderBy,
+    orderDirection: query.orderDirection as OrderDirection,
+    page: query.page as number,
+    limit: query.limit as number,
+    search: query.search,
+    actionStartDate: query.actionStartDate,
+    actionEndDate: query.actionEndDate,
+    author: query.author,
   });
 
   useEffect(() => {
@@ -94,34 +88,73 @@ const ActionsArchive = () => {
   }, [actionsError]);
 
   const onSort = (column: TableColumn<IAction>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
+    setQuery({
+      orderBy: column.id as string,
+      orderDirection:
+        direction.toLocaleUpperCase() === OrderDirection.ASC
+          ? OrderDirection.ASC
+          : OrderDirection.DESC,
+    });
+  };
+
+  const onChangePage = (page: number) => {
+    setQuery({
+      page,
+    });
+  };
+
+  const onRowsPerPageChange = (limit: number) => {
+    setQuery({
+      limit,
+      page: 1,
+    });
+  };
+
+  const onSearch = (search: string) => {
+    setQuery({
+      search,
+    });
+  };
+
+  const onActionDateRangeChange = ([actionStartDate, actionEndDate]: Date[]) => {
+    setQuery({
+      actionStartDate,
+      actionEndDate,
+    });
+  };
+
+  const onAuthorChange = (admin: ListItem) => {
+    setAuthor(admin);
+    setQuery({ author: admin.label });
   };
 
   const onResetFilters = () => {
-    setSearchWord(undefined);
-    setActionDateRange([]);
-    setAuthorId(undefined);
+    setAuthor(undefined);
+    setQuery({}, 'push');
   };
 
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.actions_archive')}</PageHeader>
-      <DataTableFilters onSearch={setSearchWord} onResetFilters={onResetFilters}>
+      <DataTableFilters
+        onSearch={onSearch}
+        searchValue={query?.search}
+        onResetFilters={onResetFilters}
+      >
         <DateRangePicker
           label={i18n.t('actions_archive:filters.execution')}
-          onChange={setActionDateRange}
-          value={actionDateRange.length > 0 ? actionDateRange : undefined}
+          onChange={onActionDateRangeChange}
+          value={
+            query?.actionStartDate && query?.actionEndDate
+              ? [query?.actionStartDate, query?.actionEndDate]
+              : undefined
+          }
           id="execution-on-range__picker"
         />
         <AdminSelect
           label={i18n.t('actions_archive:author')}
-          onSelect={setAuthorId}
-          defaultValue={authorId}
+          onSelect={onAuthorChange}
+          defaultValue={author}
         />
       </DataTableFilters>
       <Card>
@@ -134,11 +167,11 @@ const ActionsArchive = () => {
             data={actions?.items}
             loading={isActionsLoading}
             pagination
-            paginationPerPage={rowsPerPage}
+            paginationPerPage={query.limit}
             paginationTotalRows={actions?.meta?.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={setRowsPerPage}
-            onChangePage={setPage}
+            paginationDefaultPage={query.page}
+            onChangeRowsPerPage={onRowsPerPageChange}
+            onChangePage={onChangePage}
             onSort={onSort}
           />
         </CardBody>

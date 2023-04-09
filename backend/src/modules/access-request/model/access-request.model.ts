@@ -57,7 +57,8 @@ export type FindAccessRequestOptions = Partial<
 
 export type FindManyAccessRequestsOptions = Partial<
   Pick<IAccessRequestModel, 'organizationId' | 'status'> & {
-    locationId: number;
+    city?: string;
+    county?: string;
     createdOnStart?: Date;
     createdOnEnd?: Date;
     rejectedOnStart?: Date;

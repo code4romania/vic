@@ -16,7 +16,8 @@ export const getNewAccessRequests = async (
   search?: string,
   createdOnStart?: Date,
   createdOnEnd?: Date,
-  locationId?: string,
+  city?: string,
+  county?: string,
 ): Promise<IPaginatedEntity<IAccessRequest>> => {
   return API.get('/access-request/new', {
     params: {
@@ -27,7 +28,8 @@ export const getNewAccessRequests = async (
       search,
       ...(createdOnStart ? { createdOnStart: formatStartDateISO9075(createdOnStart) } : {}),
       ...(createdOnEnd ? { createdOnEnd: formatEndDateISO9075(createdOnEnd) } : {}),
-      locationId,
+      city,
+      county,
     },
   }).then((res) => res.data);
 };
@@ -40,7 +42,8 @@ export const getRejectedAccessRequests = async (
   search?: string,
   createdOnStart?: Date,
   createdOnEnd?: Date,
-  locationId?: string,
+  city?: string,
+  county?: string,
   rejectedOnStart?: Date,
   rejectedOnEnd?: Date,
 ): Promise<IPaginatedEntity<IAccessRequest>> => {
@@ -51,7 +54,8 @@ export const getRejectedAccessRequests = async (
       orderBy,
       orderDirection,
       search,
-      locationId,
+      city,
+      county,
       ...(createdOnStart ? { createdOnStart: formatStartDateISO9075(createdOnStart) } : {}),
       ...(createdOnEnd ? { createdOnEnd: formatEndDateISO9075(createdOnEnd) } : {}),
       ...(rejectedOnStart ? { rejectedOnStart: formatStartDateISO9075(rejectedOnStart) } : {}),

@@ -20,7 +20,8 @@ export const useNewAccessRequestsQuery = (
   search?: string,
   createdOnStart?: Date,
   createdOnEnd?: Date,
-  location?: string,
+  city?: string,
+  county?: string,
 ) => {
   return useQuery(
     [
@@ -32,7 +33,8 @@ export const useNewAccessRequestsQuery = (
       search,
       createdOnStart,
       createdOnEnd,
-      location,
+      city,
+      county,
     ],
     () =>
       getNewAccessRequests(
@@ -43,7 +45,8 @@ export const useNewAccessRequestsQuery = (
         search,
         createdOnStart,
         createdOnEnd,
-        location,
+        city,
+        county,
       ),
     {
       onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) => error,
@@ -60,7 +63,8 @@ export const useRejectedAccessRequestsQuery = (
   search?: string,
   createdOnStart?: Date,
   createdOnEnd?: Date,
-  location?: string,
+  city?: string,
+  county?: string,
   rejectedOnStart?: Date,
   rejectedOnEnd?: Date,
 ) => {
@@ -77,6 +81,8 @@ export const useRejectedAccessRequestsQuery = (
       location,
       rejectedOnStart,
       rejectedOnEnd,
+      city,
+      county,
     ],
     () =>
       getRejectedAccessRequests(
@@ -87,7 +93,8 @@ export const useRejectedAccessRequestsQuery = (
         search,
         createdOnStart,
         createdOnEnd,
-        location,
+        city,
+        county,
         rejectedOnStart,
         rejectedOnEnd,
       ),

@@ -47,9 +47,9 @@ export class ActionsArchiveRepository
         findOptions.orderDirection || OrderDirection.ASC,
       );
 
-    if (findOptions.authorId) {
-      query.andWhere('author.id = :authorId', {
-        authorId: findOptions.authorId,
+    if (findOptions.author) {
+      query.andWhere('author.name = :author', {
+        authorId: findOptions.author,
       });
     }
 

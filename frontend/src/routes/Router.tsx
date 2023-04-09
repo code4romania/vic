@@ -7,30 +7,30 @@ import EditOrganization from '../pages/EditOrganization';
 import EditAccessCode from '../pages/EditAccessCode';
 import Login from '../pages/Login';
 import Organization from '../containers/query/OrganizationWithQueryParam';
-import RegistrationRequests from '../pages/AccessRequests';
-import AccessCodes from '../pages/AccesCodes';
+import RegistrationRequests from '../containers/query/AccessRequestsWithQueryParams';
+import AccessCodes from '../containers/query/AccessCodesWithQueryParams';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import Volunteers from '../containers/query/VolunteersWithQueryParams';
 import AddAccessCode from '../pages/AddAccessCode';
 import EditActivityType from '../pages/EditActivityType';
 import Announcements from '../containers/query/AnnouncementsWithQueryParms';
-import Volunteer from '../pages/Volunteer';
+import Volunteer from '../containers/query/VolunteerWithQueryParams';
 import EditVolunteer from '../pages/EditVolunteer';
 import AddActivityType from '../pages/AddActivityType';
 import ActivityTypes from '../containers/query/ActivityTypesWithQueryParams';
-import Events from '../pages/Events';
+import Events from '../containers/query/EventsWithQueryParams';
 import Event from '../pages/Event';
 import AddEvent from '../pages/AddEvent';
 import EditEvent from '../pages/EditEvent';
 import AddAnnouncement from '../pages/AddAnnouncement';
 import EditAnnouncement from '../pages/EditAnnouncement';
 import Announcement from '../pages/Announcement';
-import ActivityLogs from '../pages/ActivityLogs';
+import ActivityLogs from '../containers/query/ActivityLogsWithQueryParams';
 import AddActivityLog from '../pages/AddActivityLog';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
-import ActionsArchive from '../pages/ActionsArchive';
+import ActionsArchive from '../containers/query/ActionsArchiveWithQueryParams';
 
 const Router = () => {
   return (

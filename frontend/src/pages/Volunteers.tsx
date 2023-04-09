@@ -43,7 +43,7 @@ import { AgeRangeEnum } from '../common/enums/age-range.enum';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { getVolunteersForDownload } from '../services/volunteer/volunteer.api';
 import CellLayout from '../layouts/CellLayout';
-import { VolunteerProps } from '../containers/query/VolunteersWithQueryParams';
+import { VolunteersProps } from '../containers/query/VolunteersWithQueryParams';
 import SelectFilter from '../containers/SelectFilter';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
@@ -123,7 +123,7 @@ const BlockedVolunteersTableHeader = [
   },
 ];
 
-const Volunteers = ({ query, setQuery }: VolunteerProps) => {
+const Volunteers = ({ query, setQuery }: VolunteersProps) => {
   const navigate = useNavigate();
   // Modal
   const [blockVolunteerCandidate, setBlockVolunteerCandidate] = useState<null | IVolunteer>();

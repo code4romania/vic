@@ -17,7 +17,7 @@ export interface GetActivityLogsParams {
   orderBy?: string;
   orderDirection?: OrderDirection;
   volunteerId?: string;
-  approvedOrRejectedById?: string;
+  approvedOrRejectedBy?: string;
   search?: string;
   status?: ActivityLogStatus;
   executionDateStart?: Date;
@@ -58,7 +58,7 @@ export const getActivityLogsForDownload = async ({
   orderDirection,
   search,
   status,
-  approvedOrRejectedById,
+  approvedOrRejectedBy,
   executionDateStart,
   executionDateEnd,
   volunteerId,
@@ -75,7 +75,7 @@ export const getActivityLogsForDownload = async ({
       orderDirection,
       search,
       status,
-      approvedOrRejectedById,
+      approvedOrRejectedBy,
       executionDateStart,
       executionDateEnd,
       volunteerId,
