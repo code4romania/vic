@@ -33,8 +33,8 @@ import { EventStatus } from '../common/enums/event-status';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { IEvent } from '../common/interfaces/event.interface';
 import { AttendanceType } from '../common/enums/attendance-type.enum';
-import RsvpTable from '../components/RsvpTable';
 import { EventProps } from '../containers/query/EventWithQueryParams';
+import RsvpTableWithQueryParams from '../containers/query/RsvpTableWithQueryParams';
 
 export enum EventTab {
   EVENT = 'event',
@@ -313,7 +313,9 @@ const Event = ({ query, setQuery }: EventProps) => {
             )}
           </>
         )}
-        {query?.activeTab === EventTab.RESPONSES && <RsvpTable eventId={id as string} />}
+        {query?.activeTab === EventTab.RESPONSES && (
+          <RsvpTableWithQueryParams eventId={id as string} />
+        )}
       </Tabs>
     </PageLayout>
   );

@@ -21,6 +21,7 @@ import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import i18n from '../common/config/i18n';
 import { useRsvpsQuery } from '../services/event/event.service';
 import CardBody from './CardBody';
+import { RsvpTableBasicProps } from '../containers/query/RsvpTableWithQueryParams';
 
 const TableHeader = [
   {
@@ -63,18 +64,20 @@ const TableHeader = [
   },
 ];
 
-const RsvpTable = ({ eventId }: { eventId: string }) => {
-  // pagination state
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+const ResponseSelectOptions = [
+  { key: RSVPGoingEnum.YES, value: i18n.t('events:participate') },
+  { key: RSVPGoingEnum.NO, value: i18n.t('events:not_participate') },
+];
+
+interface RsvpTableProps extends RsvpTableBasicProps {
+  eventId: string;
+}
+
+const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
   // filters
-  const [search, setSearch] = useState<string>();
   const [branch, setBranch] = useState<SelectItem<string>>();
   const [department, setDepartment] = useState<SelectItem<string>>();
   const [role, setRole] = useState<SelectItem<string>>();
-  const [going, setGoing] = useState<SelectItem<string>>();
 
   const {
     data: rsvps,
@@ -82,15 +85,15 @@ const RsvpTable = ({ eventId }: { eventId: string }) => {
     error: rsvpsError,
   } = useRsvpsQuery(
     eventId,
-    rowsPerPage,
-    page,
-    orderByColumn,
-    orderDirection,
-    search,
-    branch?.key,
-    department?.key,
-    role?.key,
-    going?.key,
+    query.limit,
+    query.page,
+    query.orderBy,
+    query.orderDirection as OrderDirection,
+    query.search,
+    query?.branch,
+    query?.department,
+    query?.role,
+    query.going,
   );
 
   useEffect(() => {
@@ -100,70 +103,119 @@ const RsvpTable = ({ eventId }: { eventId: string }) => {
   }, [rsvpsError]);
 
   const onSort = (column: TableColumn<IRsvp>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
+    setQuery({
+      orderBy: column.id as string,
+      orderDirection:
+        direction.toLocaleUpperCase() === OrderDirection.ASC
+          ? OrderDirection.ASC
+          : OrderDirection.DESC,
+    });
+  };
+
+  const onResponseChange = (response: SelectItem<RSVPGoingEnum>) => {
+    setQuery({ going: response.key });
   };
 
   const onResetFilters = () => {
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
-    setSearch(undefined);
-    setGoing(undefined);
+    setQuery({ activeTab: query.activeTab }, 'push');
   };
 
   const onExportRSVPs = async () => {
     const { data: eventRSVPsData } = await getEventRSVPsForDownload(
       eventId,
-      orderByColumn,
-      orderDirection,
-      search,
-      branch?.key,
-      department?.key,
-      role?.key,
-      going?.key,
+      query.orderBy,
+      query.orderDirection as OrderDirection,
+      query.search,
+      query?.branch,
+      query?.department,
+      query?.role,
+      query.going,
     );
 
     downloadExcel(eventRSVPsData as BlobPart, i18n.t('events:download_rsvp'));
   };
 
+  const onSetBranchFilter = (branch: SelectItem<string>) => {
+    setBranch(branch);
+    setQuery({
+      branch: branch?.value,
+    });
+  };
+
+  const onSetDepartmentFilter = (department: SelectItem<string>) => {
+    setDepartment(department);
+    setQuery({
+      department: department?.value,
+    });
+  };
+
+  const onSetRoleFilter = (role: SelectItem<string>) => {
+    setRole(role);
+    setQuery({
+      role: role?.value,
+    });
+  };
+
+  // pagination
+  const onRowsPerPageChange = (limit: number) => {
+    setQuery({
+      limit,
+      page: 1,
+    });
+  };
+
+  const onChangePage = (page: number) => {
+    setQuery({
+      page,
+    });
+  };
+
+  const onSearch = (search: string) => {
+    setQuery({
+      search,
+    });
+  };
+
   return (
     <>
-      <DataTableFilters onSearch={setSearch} searchValue={search} onResetFilters={onResetFilters}>
+      <DataTableFilters
+        onSearch={onSearch}
+        searchValue={query?.search}
+        onResetFilters={onResetFilters}
+      >
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.branch')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setBranch}
+          onChange={onSetBranchFilter}
           selected={branch}
+          defaultValue={query.branch}
           type={DivisionType.BRANCH}
         />
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.department')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setDepartment}
+          onChange={onSetDepartmentFilter}
           selected={department}
+          defaultValue={query.department}
           type={DivisionType.DEPARTMENT}
         />
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.role')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={setRole}
+          onChange={onSetRoleFilter}
           selected={role}
+          defaultValue={query.role}
           type={DivisionType.ROLE}
         />
         <Select
           label={`${i18n.t('general:answer')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
-          onChange={(item: SelectItem<string>) => setGoing(item)}
-          selected={going}
-          options={[
-            { key: RSVPGoingEnum.YES, value: i18n.t('events:participate') },
-            { key: RSVPGoingEnum.NO, value: i18n.t('events:not_participate') },
-          ]}
+          onChange={onResponseChange}
+          selected={ResponseSelectOptions.find((option) => option.key === query.going)}
+          options={ResponseSelectOptions}
         />
       </DataTableFilters>
       <Card>
@@ -182,11 +234,11 @@ const RsvpTable = ({ eventId }: { eventId: string }) => {
             data={rsvps?.items}
             loading={isRsvpsLoading}
             pagination
-            paginationPerPage={rowsPerPage}
+            paginationPerPage={query.limit}
             paginationTotalRows={rsvps?.meta?.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={setRowsPerPage}
-            onChangePage={setPage}
+            paginationDefaultPage={query.page}
+            onChangeRowsPerPage={onRowsPerPageChange}
+            onChangePage={onChangePage}
             onSort={onSort}
           />
         </CardBody>
