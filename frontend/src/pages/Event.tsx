@@ -34,8 +34,9 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import { IEvent } from '../common/interfaces/event.interface';
 import { AttendanceType } from '../common/enums/attendance-type.enum';
 import RsvpTable from '../components/RsvpTable';
+import { EventProps } from '../containers/query/EventWithQueryParams';
 
-enum EventTab {
+export enum EventTab {
   EVENT = 'event',
   RESPONSES = 'responses',
 }
@@ -180,9 +181,8 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
   </Card>
 );
 
-const Event = () => {
+const Event = ({ query, setQuery }: EventProps) => {
   const [showDeleteEvent, setShowDeleteEvent] = useState<boolean>();
-  const [tabsStatus, setTabsStatus] = useState<EventTab>(EventTab.EVENT);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -204,7 +204,8 @@ const Event = () => {
   };
 
   const onTabClick = (tab: EventTab) => {
-    setTabsStatus(tab);
+    // reset filter queries on tab click
+    setQuery({ activeTab: tab }, 'push');
   };
 
   const onDelete = () => {
@@ -260,8 +261,12 @@ const Event = () => {
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={navigateBack}>{i18n.t('general:view')}</PageHeader>
-      <Tabs<EventTab> tabs={EventTabs} onClick={onTabClick}>
-        {tabsStatus === EventTab.EVENT && (
+      <Tabs<EventTab>
+        tabs={EventTabs}
+        onClick={onTabClick}
+        defaultTab={EventTabs.find((option) => option.key === query.activeTab)}
+      >
+        {query?.activeTab === EventTab.EVENT && (
           <>
             {isLoading || isPublishingEvent || isArchivingEvent || isDeletingEvent ? (
               <Card>
@@ -308,7 +313,7 @@ const Event = () => {
             )}
           </>
         )}
-        {tabsStatus === EventTab.RESPONSES && <RsvpTable eventId={id as string} />}
+        {query?.activeTab === EventTab.RESPONSES && <RsvpTable eventId={id as string} />}
       </Tabs>
     </PageLayout>
   );
