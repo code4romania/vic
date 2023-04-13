@@ -37,6 +37,7 @@ import AdminSelect from '../containers/AdminSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { getActivityLogsForDownload } from '../services/activity-log/activity-log.api';
 import { ActivityLogTableBasicProps } from '../containers/query/ActivityLogTableWithQueryParams';
+import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 
 const StatusOptions: SelectItem<ActivityLogStatus>[] = [
   { key: ActivityLogStatus.APPROVED, value: i18n.t('activity_log:display_status.approved') },
@@ -248,11 +249,13 @@ const PastActivityLogTableHeader = [
 interface ActivityLogTableProps extends ActivityLogTableBasicProps {
   resolutionStatus: ActivityLogResolutionStatus;
   volunteerId?: string;
+  volunteerStatus?: VolunteerStatus;
 }
 
 const ActivityLogTable = ({
   resolutionStatus,
   volunteerId,
+  volunteerStatus,
   query,
   setQuery,
 }: ActivityLogTableProps) => {
@@ -531,6 +534,7 @@ const ActivityLogTable = ({
                   onClick={onAddButtonPress}
                   aria-label={`${i18n.t('activity_log:add')}`}
                   type="button"
+                  disabled={volunteerStatus !== VolunteerStatus.ACTIVE}
                 />
               )}
             </div>
