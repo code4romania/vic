@@ -28,6 +28,7 @@ const PieChartCard = () => {
           options={PIE_CHART_FILTER_OPTIONS}
           onChange={setChartFilter}
           selected={chartFilter}
+          minWidth
         />
       </CardHeader>
       <div className="max-xs:h-[350px] max-sm:h-[400px] h-[600px] w-full sm:px-8 px-4 py-8">
