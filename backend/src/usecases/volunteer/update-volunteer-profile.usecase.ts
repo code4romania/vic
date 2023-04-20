@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { ObjectDiff } from 'src/common/helpers/object-diff';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { UpdateVolunteerProfileOptions } from 'src/modules/volunteer/model/volunteer-profile.model';
 import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
@@ -15,11 +19,13 @@ export class UpdateVolunteerProfileUsecase
     private readonly volunteerFacade: VolunteerFacade,
     private readonly getOneVolunteerUsecase: GetOneVolunteerUsecase,
     private readonly exceptionService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
     volunteerId: string,
     updates: UpdateVolunteerProfileOptions,
+    admin: IAdminUserModel,
   ): Promise<IVolunteerModel> {
     const volunteer = await this.getOneVolunteerUsecase.execute(volunteerId);
 
@@ -34,6 +40,19 @@ export class UpdateVolunteerProfileUsecase
       updates,
     );
 
-    return this.getOneVolunteerUsecase.execute(volunteerId);
+    const updated = await this.getOneVolunteerUsecase.execute(volunteerId);
+
+    // Track event
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.UPDATE_VOLUNTEER_PROFILE,
+      {
+        volunteerId: volunteer.id,
+        volunteerName: volunteer.user?.name,
+      },
+      admin,
+      ObjectDiff.diff(volunteer.volunteerProfile, updated.volunteerProfile),
+    );
+
+    return updated;
   }
 }

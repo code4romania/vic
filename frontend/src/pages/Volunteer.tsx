@@ -1,21 +1,42 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import i18n from '../common/config/i18n';
+import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
 import ProfileCard from '../components/ProfileCard';
+import { SelectItem } from '../components/Select';
+import Tabs from '../components/Tabs';
 import VolunteerProfile from '../components/VolunteerProfile';
 import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
 import { useVolunteer } from '../services/volunteer/volunteer.service';
+import { VolunteerProps } from '../containers/query/VolunteerWithQueryParams';
+import ActivityLogTableWithQueryParams from '../containers/query/ActivityLogTableWithQueryParams';
 
-const Volunteer = () => {
+export enum VolunteerTabsOptions {
+  ARCHIVE = 'archive',
+  NEW = 'new',
+  SOLVED = 'solved',
+}
+
+const VolunteerTabsOptons: SelectItem<VolunteerTabsOptions>[] = [
+  { key: VolunteerTabsOptions.ARCHIVE, value: i18n.t('side_menu:options.actions_archive') },
+  { key: VolunteerTabsOptions.NEW, value: i18n.t('activity_log:pending') },
+  { key: VolunteerTabsOptions.SOLVED, value: i18n.t('activity_log:past') },
+];
+
+const Volunteer = ({ query, setQuery }: VolunteerProps) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
   const { data: volunteer, isLoading, error } = useVolunteer(id as string);
+
+  const onTabClick = (tab: VolunteerTabsOptions) => {
+    setQuery({ activeTab: tab }, 'push');
+  };
 
   useEffect(() => {
     if (error) {
@@ -59,6 +80,27 @@ const Volunteer = () => {
       {!volunteer && !isLoading && (
         <EmptyContent description={i18n.t('general:error.load_entries')} />
       )}
+      <Tabs<VolunteerTabsOptions>
+        tabs={VolunteerTabsOptons}
+        onClick={onTabClick}
+        defaultTab={VolunteerTabsOptons.find((option) => option.key === query.activeTab)}
+      >
+        {query?.activeTab === VolunteerTabsOptions.NEW && (
+          <ActivityLogTableWithQueryParams
+            resolutionStatus={ActivityLogResolutionStatus.NEW}
+            volunteerId={id as string}
+          />
+        )}
+        {query?.activeTab === VolunteerTabsOptions.SOLVED && (
+          <ActivityLogTableWithQueryParams
+            resolutionStatus={ActivityLogResolutionStatus.SOLVED}
+            volunteerId={id as string}
+          />
+        )}
+        {query?.activeTab === VolunteerTabsOptions.ARCHIVE && (
+          <div>Actions Archive to be added</div>
+        )}
+      </Tabs>
     </PageLayout>
   );
 };

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
+  FindManyAdminUserOptions,
   IAdminUserModel,
   ICreateAdminUserModel,
   IFindAdminUserModel,
@@ -23,6 +25,12 @@ export class UserFacadeService {
     options: IFindAdminUserModel,
   ): Promise<IAdminUserModel> {
     return this.adminUserRepository.find(options);
+  }
+
+  public async findManyAdminUsers(
+    options: FindManyAdminUserOptions,
+  ): Promise<Pagination<IAdminUserModel>> {
+    return this.adminUserRepository.findMany(options);
   }
 
   public async createAdmin(

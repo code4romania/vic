@@ -6,30 +6,31 @@ import Dashboard from '../pages/Dashboard';
 import EditOrganization from '../pages/EditOrganization';
 import EditAccessCode from '../pages/EditAccessCode';
 import Login from '../pages/Login';
-import Organization from '../pages/Organization';
-import RegistrationRequests from '../pages/AccessRequests';
-import AccessCodes from '../pages/AccesCodes';
+import Organization from '../containers/query/OrganizationWithQueryParam';
+import RegistrationRequests from '../containers/query/AccessRequestsWithQueryParams';
+import AccessCodes from '../containers/query/AccessCodesWithQueryParams';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import Volunteers from '../pages/Volunteers';
+import Volunteers from '../containers/query/VolunteersWithQueryParams';
 import AddAccessCode from '../pages/AddAccessCode';
 import EditActivityType from '../pages/EditActivityType';
-import Announcements from '../pages/Announcements';
-import Volunteer from '../pages/Volunteer';
+import Announcements from '../containers/query/AnnouncementsWithQueryParms';
+import Volunteer from '../containers/query/VolunteerWithQueryParams';
 import EditVolunteer from '../pages/EditVolunteer';
 import AddActivityType from '../pages/AddActivityType';
-import ActivityTypes from '../pages/ActivityTypes';
-import Events from '../pages/Events';
+import ActivityTypes from '../containers/query/ActivityTypesWithQueryParams';
+import Events from '../containers/query/EventsWithQueryParams';
 import Event from '../pages/Event';
 import AddEvent from '../pages/AddEvent';
 import EditEvent from '../pages/EditEvent';
 import AddAnnouncement from '../pages/AddAnnouncement';
 import EditAnnouncement from '../pages/EditAnnouncement';
 import Announcement from '../pages/Announcement';
+import ActivityLogs from '../containers/query/ActivityLogsWithQueryParams';
 import AddActivityLog from '../pages/AddActivityLog';
-import ActivityLogs from '../pages/ActivityLogs';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
+import ActionsArchive from '../containers/query/ActionsArchiveWithQueryParams';
 
 const Router = () => {
   return (
@@ -75,6 +76,9 @@ const Router = () => {
             <Route path="activity-log" element={<Outlet />}>
               <Route index element={<ActivityLogs />} />
               <Route path="add" element={<AddActivityLog />} />
+            </Route>
+            <Route path="actions-archive" element={<Outlet />}>
+              <Route index element={<ActionsArchive />} />
             </Route>
           </Route>
         </Routes>

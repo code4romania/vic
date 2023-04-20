@@ -6,8 +6,8 @@ import {
 } from 'src/modules/access-request/model/access-request.model';
 import { AccessRequestStatus } from 'src/modules/access-request/enums/access-request-status.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
-import { UserPresenter } from 'src/api/_mobile/user/presenters/user-basic.presenter';
 import { RegularUserPresenter } from 'src/api/auth/presenters/user.presenter';
+import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
 
 export class AccessRequestPresenter {
   constructor(accessRequest: IAccessRequestModel) {
@@ -19,7 +19,7 @@ export class AccessRequestPresenter {
       ? new RegularUserPresenter(accessRequest.requestedBy)
       : null;
     this.updatedBy = accessRequest.updatedBy
-      ? new UserPresenter(accessRequest.updatedBy)
+      ? new IdAndNamePresenter<IAdminUserModel>(accessRequest.updatedBy)
       : null;
     this.createdOn = accessRequest.createdOn;
     this.updatedOn = accessRequest.updatedOn;
@@ -64,7 +64,7 @@ export class AccessRequestPresenter {
 
   @Expose()
   @ApiProperty({ description: 'The user who made the request.' })
-  updatedBy: UserPresenter<IAdminUserModel>;
+  updatedBy: IdAndNamePresenter<IAdminUserModel>;
 
   @Expose()
   @ApiProperty({ description: 'Date of creation' })

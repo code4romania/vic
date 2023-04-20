@@ -33,17 +33,9 @@ import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
 import DataTableFilters from '../components/DataTableFilters';
 import { SelectItem } from '../components/Select';
-import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
-import { ArrayParam, StringParam, useQueryParams } from 'use-query-params';
-import StatusSelectFilter from '../containers/StatusSelectFilter';
+import { AnnouncementsProps } from '../containers/query/AnnouncementsWithQueryParms';
+import SelectFilter from '../containers/SelectFilter';
 import TargetsMultiSelectFilter from '../containers/TargetsMultiSelectFilter';
-
-export const ANNOUNCEMENTS_QUERY_PARAMS = {
-  ...DEFAULT_QUERY_PARAMS,
-  search: StringParam,
-  status: StringParam,
-  targets: ArrayParam,
-};
 
 const StatusOptions: SelectItem<AnnouncementStatus>[] = [
   {
@@ -75,7 +67,7 @@ const AnnouncementTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IAnnouncement) => formatDate(row.updatedOn),
+    cell: (row: IAnnouncement) => <CellLayout>{formatDate(row.updatedOn)}</CellLayout>,
   },
   {
     id: 'status',
@@ -97,7 +89,7 @@ const AnnouncementTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '10rem',
-    selector: (row: IAnnouncement) => formatDateWithTime(row.publishedOn),
+    cell: (row: IAnnouncement) => <CellLayout>{formatDateWithTime(row.publishedOn)}</CellLayout>,
   },
   {
     id: 'targetedVolunteers',
@@ -107,20 +99,17 @@ const AnnouncementTableHeader = [
     grow: 2,
     cell: (row: IAnnouncement) => (
       <CellLayout>
-        <Targets targets={row.targets} />
+        <Targets targets={row.targets} targetedMembers={row.targetedVolunteers} />
       </CellLayout>
     ),
   },
 ];
 
-const Announcements = () => {
+const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
 
   // filters
-  const [targetsIds, setTargetsIds] = useState<SelectItem<string>[]>([]);
-
-  // query params
-  const [queryParams, setQueryParams] = useQueryParams(ANNOUNCEMENTS_QUERY_PARAMS);
+  const [targets, setTargets] = useState<SelectItem<string>[]>([]);
 
   const navigate = useNavigate();
 
@@ -130,13 +119,13 @@ const Announcements = () => {
     error: announcementsError,
     refetch,
   } = useAnnouncements(
-    queryParams?.limit as number,
-    queryParams?.page as number,
-    queryParams?.orderBy as string,
-    queryParams?.orderDirection as OrderDirection,
-    queryParams?.search as string,
-    StatusOptions.find((option) => option.value === queryParams?.status)?.key,
-    targetsIds.map((targetId) => targetId.key),
+    query.limit as number,
+    query.page as number,
+    query.orderBy as string,
+    query.orderDirection as OrderDirection,
+    query.search,
+    query?.status as AnnouncementStatus,
+    query?.targets,
   );
 
   const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
@@ -152,17 +141,6 @@ const Announcements = () => {
       );
     }
   }, [announcementsError]);
-
-  // init query
-  useEffect(() => {
-    // init query params
-    setQueryParams({
-      limit: queryParams?.limit || PaginationConfig.defaultRowsPerPage,
-      page: queryParams?.page || PaginationConfig.defaultPage,
-      orderBy: queryParams?.orderBy || 'name',
-      orderDirection: queryParams?.orderDirection || OrderDirection.ASC,
-    });
-  }, []);
 
   const buildAnnouncementActionColumn = (): TableColumn<IAnnouncement> => {
     const announcementDraftMenuItems = [
@@ -279,20 +257,38 @@ const Announcements = () => {
   };
 
   // pagination
-  const onRowsPerPageChange = (rows: number) => {
-    setQueryParams({
-      limit: rows,
+  const onRowsPerPageChange = (limit: number) => {
+    setQuery({
+      limit,
+      page: 1,
     });
   };
 
-  const onChangePage = (newPage: number) => {
-    setQueryParams({
-      page: newPage,
+  const onChangePage = (page: number) => {
+    setQuery({ page });
+  };
+
+  const onSearch = (search: string) => {
+    setQuery({
+      search,
+    });
+  };
+
+  const onStatusChange = (status: SelectItem<string>) => {
+    setQuery({
+      status: status.key,
+    });
+  };
+
+  const onTargetsChange = (targets: SelectItem<string>[]) => {
+    setTargets(targets);
+    setQuery({
+      targets: targets.map((target) => target.value),
     });
   };
 
   const onSort = (column: TableColumn<IAnnouncement>, direction: SortOrder) => {
-    setQueryParams({
+    setQuery({
       orderBy: column.id as string,
       orderDirection:
         direction.toLocaleUpperCase() === OrderDirection.ASC
@@ -301,28 +297,9 @@ const Announcements = () => {
     });
   };
 
-  const onSearch = (search: string) => {
-    setQueryParams({
-      search: search || null,
-    });
-  };
-
-  const onStatusChange = (status: SelectItem<AnnouncementStatus>) => {
-    setQueryParams({
-      status: status.value || null,
-    });
-  };
-
   const onResetFilters = () => {
-    setTargetsIds([]);
-    setQueryParams({ search: null, targets: null, status: null });
-  };
-
-  const onTargetsChange = (selectedTargets: SelectItem<string>[]) => {
-    setTargetsIds(selectedTargets || []);
-    setQueryParams({
-      targets: selectedTargets?.map((item) => item.value) || null,
-    });
+    setQuery({}, 'push');
+    setTargets([]);
   };
 
   return (
@@ -331,20 +308,20 @@ const Announcements = () => {
       <DataTableFilters
         onResetFilters={onResetFilters}
         onSearch={onSearch}
-        searchValue={queryParams?.search}
+        searchValue={query?.search}
       >
-        <StatusSelectFilter
+        <SelectFilter
           label={`${i18n.t('general:status')}`}
           onChange={onStatusChange}
           options={StatusOptions}
-          selected={queryParams?.status as AnnouncementStatus}
+          defaultValue={query.status}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
         />
         <TargetsMultiSelectFilter
           onChange={onTargetsChange}
-          selection={targetsIds}
-          selectedValues={queryParams?.targets as string[]}
+          selected={targets}
           label={`${i18n.t('announcement:header.target')}`}
+          defaultValues={query?.targets}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
         />
       </DataTableFilters>
@@ -366,9 +343,9 @@ const Announcements = () => {
             loading={
               isAnnouncementsLoading || isUpdateAnnouncementLoading || isDeleteAnnouncementLoading
             }
-            paginationPerPage={announcements?.meta?.itemsPerPage}
-            paginationTotalRows={announcements?.meta?.totalItems}
-            paginationDefaultPage={queryParams.page as number}
+            paginationPerPage={query.limit}
+            paginationTotalRows={announcements?.meta.totalItems}
+            paginationDefaultPage={query.page as number}
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}

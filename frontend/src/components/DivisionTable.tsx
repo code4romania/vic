@@ -1,6 +1,5 @@
 import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import i18n from '../common/config/i18n';
 import { DivisionType } from '../common/enums/division-type.enum';
@@ -8,12 +7,14 @@ import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IDivision } from '../common/interfaces/division.interface';
 import { formatDate } from '../common/utils/utils';
+import { DivisionTableProps } from '../containers/query/DivisionTableWithQueryParams';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import CellLayout from '../layouts/CellLayout';
 import {
   useAddDivisionMutation,
   useDeleteDivisionMutation,
+  useDivisions,
   useEditDivisionMutation,
 } from '../services/division/division.service';
 import Button from './Button';
@@ -23,9 +24,7 @@ import ConfirmationModal from './ConfirmationModal';
 import DataTableComponent from './DataTableComponent';
 import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 import Popover from './Popover';
-import { useQueryParams } from 'use-query-params';
-import { DIVISIONS_QUERY_PARAMS } from '../pages/Organization';
-import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
+import { useNavigate } from 'react-router';
 
 export const DivisionTableHeader = [
   {
@@ -58,27 +57,33 @@ export const DivisionTableHeader = [
     name: i18n.t('general:created_on'),
     sortable: true,
     minWidth: '5rem',
-    selector: (row: IDivision) => formatDate(row.createdOn),
+    cell: (row: IDivision) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
 ];
 
-interface DivisionTableProps {
-  type: DivisionType;
-  isFetchingDivisions: boolean;
-  divisions?: IPaginatedEntity<IDivision>;
-  refetch: () => void;
-}
-
-const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: DivisionTableProps) => {
+const DivisionTable = ({ query, setQuery }: DivisionTableProps) => {
+  // modals states
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [selectedDivisionForUpdate, setSelectedDivisionForUpdate] = useState<IDivision>();
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
 
   const navigate = useNavigate();
 
-  // query params
-  const [queryParams, setQueryParams] = useQueryParams(DIVISIONS_QUERY_PARAMS);
+  // divisions query
+  const {
+    data: divisions,
+    isLoading: isFetchingDivisions,
+    error: divisionError,
+    refetch,
+  } = useDivisions(
+    query?.limit as number,
+    query?.page as number,
+    query?.type as DivisionType,
+    query?.orderBy as string,
+    query?.orderDirection as OrderDirection,
+  );
 
+  // division mutation
   const { mutateAsync: addDivisionMutation, isLoading: addDivisionMutationLoading } =
     useAddDivisionMutation();
 
@@ -87,6 +92,15 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
 
   const { mutateAsync: deleteDivision, isLoading: deleteDivisionMutationLoading } =
     useDeleteDivisionMutation();
+
+  useEffect(() => {
+    // map error messages for DIVISIONS fetch
+    if (divisionError) {
+      useErrorToast(
+        InternalErrors.DIVISION_ERRORS.getError(divisionError.response?.data.code_error),
+      );
+    }
+  }, [divisionError]);
 
   // menu items
   const buildDivisionActionColumn = (): TableColumn<IDivision> => {
@@ -119,19 +133,20 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
 
   // pagination
   const onRowsPerPageChange = (rows: number) => {
-    setQueryParams({
+    setQuery({
       limit: rows,
+      page: 1,
     });
   };
 
   const onChangePage = (newPage: number) => {
-    setQueryParams({
+    setQuery({
       page: newPage,
     });
   };
 
   const onSort = (column: TableColumn<IDivision>, direction: SortOrder) => {
-    setQueryParams({
+    setQuery({
       orderBy: column.id as string,
       orderDirection:
         direction.toLocaleUpperCase() === OrderDirection.ASC
@@ -162,10 +177,10 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
   // add division
   const onSubmitDivision = ({ name }: DivisionFormTypes) => {
     addDivisionMutation(
-      { name, type },
+      { name, type: query?.type as DivisionType },
       {
         onSuccess: () => {
-          useSuccessToast(i18n.t(`division:submit.success.${type}.add`));
+          useSuccessToast(i18n.t(`division:submit.success.${query.type}.add`));
           refetch();
         },
         onError: (error) => {
@@ -185,7 +200,7 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
         { id: selectedDivisionForUpdate.id, name: inputData.name },
         {
           onSuccess: () => {
-            useSuccessToast(i18n.t(`division:submit.success.${type}.edit`));
+            useSuccessToast(i18n.t(`division:submit.success.${query.type}.edit`));
             refetch();
           },
           onError: (error) => {
@@ -207,7 +222,7 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
       deleteDivision(selectedIdForDeletion, {
         onSuccess: () => {
           // show success message
-          useSuccessToast(i18n.t(`division:submit.success.${type}.delete`));
+          useSuccessToast(i18n.t(`division:submit.success.${query.type}.delete`));
           // refresh table
           refetch();
         },
@@ -226,11 +241,11 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
     <>
       <Card>
         <CardHeader>
-          <h3>{i18n.t(`division:table.title.${type}`)}</h3>
+          <h3>{i18n.t(`division:table.title.${query.type}`)}</h3>
           <Button
             className="btn-outline-secondary"
             label={i18n.t('general:add', {
-              item: i18n.t(`division:entity.${type}`),
+              item: i18n.t(`division:entity.${query.type}`).toLowerCase(),
             })}
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAdd}
@@ -247,9 +262,9 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
               deleteDivisionMutationLoading
             }
             pagination
-            paginationPerPage={divisions?.meta?.itemsPerPage}
+            paginationPerPage={query.limit}
             paginationTotalRows={divisions?.meta?.totalItems}
-            paginationDefaultPage={queryParams.page as number}
+            paginationDefaultPage={query.page as number}
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}
@@ -259,17 +274,19 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
       {isAddModalOpen && (
         <DivisionInputModal
           title={i18n.t('general:add', {
-            item: i18n.t(`division:entity.${type}`),
+            item: i18n.t(`division:entity.${query.type}`).toLowerCase(),
           })}
-          divisionType={type}
+          divisionType={query.type as DivisionType}
           onClose={setIsAddModalOpen.bind(null, false)}
           onSubmit={onSubmitDivision}
         />
       )}
       {selectedDivisionForUpdate && (
         <DivisionInputModal
-          title={i18n.t('general:edit', { item: i18n.t(`division:modal.${type}`) })}
-          divisionType={type}
+          title={i18n.t('general:edit', {
+            item: i18n.t(`division:entity.${query.type}`).toLowerCase(),
+          })}
+          divisionType={query.type as DivisionType}
           onClose={setSelectedDivisionForUpdate.bind(null, undefined)}
           onSubmit={onUpdateDivision}
           defaultValue={selectedDivisionForUpdate.name}
@@ -278,10 +295,10 @@ const DivisionTable = ({ type, divisions, isFetchingDivisions, refetch }: Divisi
       {selectedIdForDeletion && (
         <ConfirmationModal
           title={i18n.t('division:modal.delete.title', {
-            division: i18n.t(`division:entity.${type}`),
+            division: i18n.t(`division:entity.${query.type}`),
           })}
           description={i18n.t('general:confirm_delete', {
-            item: i18n.t(`division:entity.${type}`),
+            item: i18n.t(`division:entity.${query.type}`),
           })}
           confirmBtnLabel={i18n.t('general:delete')}
           confirmBtnClassName="btn-danger"

@@ -48,14 +48,8 @@ export class AnnouncementRepositoryService
   async findMany(
     findOptions: FindManyAnnouncementOptions,
   ): Promise<Pagination<IAnnouncementModel>> {
-    const {
-      orderBy,
-      orderDirection,
-      organizationId,
-      search,
-      targetsIds,
-      status,
-    } = findOptions;
+    const { orderBy, orderDirection, organizationId, search, targets, status } =
+      findOptions;
 
     // create query
     const query = this.announcementRepository
@@ -84,12 +78,12 @@ export class AnnouncementRepositoryService
       query.andWhere('announcement.status = :status', { status });
     }
 
-    if (targetsIds) {
+    if (targets) {
       query.innerJoin(
         'announcement.targets',
         'target',
-        'target.id IN (:...ids)',
-        { ids: targetsIds },
+        'target.name IN (:...targets)',
+        { targets },
       );
     }
 

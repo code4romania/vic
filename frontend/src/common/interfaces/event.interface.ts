@@ -19,4 +19,5 @@ export interface IEvent {
   status: EventStatus;
   going?: number;
   notGoing?: number;
+  activityLogged?: { totalHours: number; volunteers: number };
 }

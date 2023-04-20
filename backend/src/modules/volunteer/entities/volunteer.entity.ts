@@ -9,12 +9,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { VolunteerProfileEntity } from './volunteer-profile.entity';
+import { AccessRequestEntity } from 'src/modules/access-request/entities/access-request.entity';
 
 // TODO: BR: Status Archived + ArchivedBy = null => volunteer leaved the org
 @Unique('user_in_organization', ['user', 'organization']) // TODO: recheck
@@ -46,21 +48,21 @@ export class VolunteerEntity extends BaseEntity {
   @JoinColumn({ name: 'volunteer_profile_id' })
   volunteerProfile: VolunteerProfileEntity;
 
-  @Column({ type: 'string', name: 'archived_by', nullable: true })
+  @Column({ type: 'varchar', name: 'archived_by', nullable: true })
   archivedById: string;
 
   @ManyToOne(() => AdminUserEntity)
   @JoinColumn({ name: 'archived_by' })
   archivedBy: AdminUserEntity;
 
-  @Column({ type: 'string', name: 'blocked_by', nullable: true })
+  @Column({ type: 'varchar', name: 'blocked_by', nullable: true })
   blockedById: string;
 
   @ManyToOne(() => AdminUserEntity)
   @JoinColumn({ name: 'blocked_by' })
   blockedBy: AdminUserEntity;
 
-  @Column({ type: 'string', name: 'user_id' })
+  @Column({ type: 'varchar', name: 'user_id' })
   userId: string;
 
   @ManyToOne(() => RegularUserEntity)

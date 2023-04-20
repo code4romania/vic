@@ -43,6 +43,11 @@ export class EventRepository
     const query = this.eventRepository
       .createQueryBuilder('event')
       .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
+      .leftJoinAndMapMany(
+        'event.activityLogs',
+        'event.activityLogs',
+        'activityLog',
+      )
       .loadRelationCountAndMap(
         'event.going',
         'event.eventRSVPs',
@@ -55,6 +60,7 @@ export class EventRepository
         'eventRSVPs',
         (qb) => qb.where(`"eventRSVPs"."going" = 'false'`),
       )
+
       .select([
         'event.id',
         'event.name',
@@ -62,9 +68,13 @@ export class EventRepository
         'event.endDate',
         'event.status',
         'event.isPublic',
+        'event.createdOn',
         'event.organizationId',
         'targets.id',
         'targets.name', // TODO: need number of members per target, create a View
+        'activityLog.volunteerId',
+        'activityLog.id',
+        'activityLog.hours',
       ])
       .where('event.organizationId = :organizationId', { organizationId })
       .orderBy(

@@ -1,54 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { DivisionType } from '../common/enums/division-type.enum';
 import { mapDivisionListItemToSelectItem } from '../common/utils/utils';
 import MultiSelect, { MultiSelectProps } from '../components/MultiSelect';
-import { SelectItem } from '../components/Select';
 import { useDivisionsListItems } from '../services/division/division.service';
 
-interface TargetsMultiSelectFilterProps extends Omit<MultiSelectProps, 'options' | 'selected'> {
-  selectedValues?: string[] | null;
-  selection?: SelectItem<string>[];
+interface TargetsMultiSelectFilterProps extends Omit<MultiSelectProps, 'options'> {
+  defaultValues?: string[];
 }
 
-const TargetsMultiSelect = ({
-  selectedValues,
-  selection,
+const TargetsMultiSelectFilter = ({
   onChange,
+  defaultValues,
+  selected,
   ...props
 }: TargetsMultiSelectFilterProps) => {
   const { data: divisionListItems } = useDivisionsListItems(DivisionType.DEPARTMENT);
-  const [selectedItems, setSelectedItems] = useState<SelectItem<string>[]>([]);
 
   // on init filter if there are query values we get we map them to select items
   useEffect(() => {
-    let filteredSelection = selection;
     // check if elements come as values rather than selections
-    if (
-      selectedValues &&
-      selectedValues?.length > 0 &&
-      selection?.length === 0 &&
-      divisionListItems
-    ) {
-      filteredSelection = divisionListItems
-        ?.filter((item) => selectedValues?.includes(item.name))
+    if (defaultValues && defaultValues.length > 0 && selected?.length === 0 && divisionListItems) {
+      const defaultSelection = divisionListItems?.items
+        .filter((item) => defaultValues?.includes(item.name))
         .map(mapDivisionListItemToSelectItem);
-      onChange(filteredSelection as SelectItem<string>[]);
+      onChange(defaultSelection);
     }
-    setSelectedItems(filteredSelection || []);
-  }, [selectedValues, divisionListItems]);
+  }, [divisionListItems]);
 
   return (
     <MultiSelect
       {...props}
-      selected={(selectedItems as SelectItem<string>[]) || []}
       onChange={onChange}
+      selected={selected}
       options={
-        divisionListItems && divisionListItems?.length > 0
-          ? divisionListItems?.map(mapDivisionListItemToSelectItem)
+        divisionListItems && divisionListItems?.items.length > 0
+          ? divisionListItems?.items.map(mapDivisionListItemToSelectItem)
           : []
       }
     />
   );
 };
 
-export default TargetsMultiSelect;
+export default TargetsMultiSelectFilter;

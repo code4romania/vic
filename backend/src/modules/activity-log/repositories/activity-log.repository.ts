@@ -13,7 +13,9 @@ import { IActivityLogRepository } from '../interfaces/activity-log-repository.in
 import {
   ActivityLogModelTransformer,
   CreateActivityLogByAdminOptions,
+  FindManyActivityLogCounterOptions,
   FindManyActivityLogsOptions,
+  IActivityLogCountHoursByStatus,
   IActivityLogListItemModel,
   IActivityLogModel,
   UpdateActivityLogOptions,
@@ -37,11 +39,6 @@ export class ActivityLogRepositoryService
     let query = this.activityLogRepo // TODO: strong type queries to use only the resulting select
       .createQueryBuilder('activityLog')
       .leftJoinAndMapOne('activityLog.event', 'activityLog.event', 'event')
-      .leftJoinAndMapOne(
-        'event.organization',
-        'event.organization',
-        'organization',
-      )
       .leftJoinAndMapOne(
         'activityLog.volunteer',
         'activityLog.volunteer',
@@ -72,8 +69,11 @@ export class ActivityLogRepositoryService
         'activityLog.id',
         'activityLog.date',
         'activityLog.hours',
+        'activityLog.mentions',
         'activityLog.status',
         'activityLog.createdOn',
+        'activityLog.approvedOn',
+        'activityLog.rejectedOn',
         'volunteer.id',
         'user.name',
         'event.id',
@@ -81,13 +81,13 @@ export class ActivityLogRepositoryService
         'activityType.id',
         'activityType.name',
         'activityType.icon',
+        'rejectedBy.name',
+        'approvedBy.name',
+        'createdByAdmin.name',
       ])
-      .where(
-        'event.organizationId = :organizationId AND activityLog.event_id = event.id',
-        {
-          organizationId: findOptions.organizationId,
-        },
-      )
+      .where('activityLog.organizationId = :organizationId', {
+        organizationId: findOptions.organizationId,
+      })
       .orderBy(
         this.buildOrderByQuery(
           findOptions.orderBy || 'createdOn',
@@ -136,11 +136,11 @@ export class ActivityLogRepositoryService
       }
     }
 
-    if (findOptions.approvedOrRejectedById) {
+    if (findOptions.approvedOrRejectedBy) {
       query.andWhere(
-        '(activityLog.approvedById = :approvedOrRejectedById OR activityLog.rejectedById = :approvedOrRejectedById)',
+        '(approvedBy.name = :approvedOrRejectedBy OR rejectedBy.name = :approvedOrRejectedBy)',
         {
-          approvedOrRejectedById: findOptions.approvedOrRejectedById,
+          approvedOrRejectedBy: findOptions.approvedOrRejectedBy,
         },
       );
     }
@@ -208,5 +208,41 @@ export class ActivityLogRepositoryService
     await this.activityLogRepo.update({ id }, { ...updates });
 
     return this.find(id);
+  }
+
+  async countHourByStatus(
+    findManyOptions: FindManyActivityLogCounterOptions,
+  ): Promise<IActivityLogCountHoursByStatus> {
+    const { volunteerId, organizationId } = findManyOptions;
+
+    const query = this.activityLogRepo
+      .createQueryBuilder('activityLog')
+      .select('activityLog.status', 'status')
+      .addSelect('SUM(activityLog.hours)', 'hours')
+      .groupBy('activityLog.status')
+      .where('activityLog.organizationId = :organizationId', {
+        organizationId,
+      });
+
+    if (volunteerId)
+      query.andWhere('activityLog.volunteerId = :volunteerId', { volunteerId });
+
+    const counters: {
+      status: ActivityLogStatus;
+      count: number;
+      hours: number;
+    }[] = await query.getRawMany();
+
+    return counters.reduce(
+      (acc, curr) => {
+        acc[curr.status] = curr.hours;
+        return acc;
+      },
+      {
+        pending: 0,
+        approved: 0,
+        rejected: 0,
+      },
+    );
   }
 }

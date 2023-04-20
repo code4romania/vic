@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
 import { useOrganizationQuery } from '../services/organization/organization.service';
@@ -9,7 +9,6 @@ import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
 import { DivisionType } from '../common/enums/division-type.enum';
 import Tabs from '../components/Tabs';
-import DivisionTable from '../components/DivisionTable';
 import { SelectItem } from '../components/Select';
 import { useNavigate } from 'react-router-dom';
 import Card from '../layouts/CardLayout';
@@ -21,15 +20,8 @@ import FormLayout from '../layouts/FormLayout';
 import Paragraph from '../components/Paragraph';
 import FormInput from '../components/FormInput';
 import FormTextarea from '../components/FormTextarea';
-import { useDivisions } from '../services/division/division.service';
-import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
-import { useQueryParams, StringParam } from 'use-query-params';
-import { OrderDirection } from '../common/enums/order-direction.enum';
-
-export const DIVISIONS_QUERY_PARAMS = {
-  ...DEFAULT_QUERY_PARAMS,
-  type: StringParam,
-};
+import DivisionTable from '../containers/query/DivisionTableWithQueryParams';
+import { OrganizationTableProps } from '../containers/query/OrganizationWithQueryParam';
 
 export const DivisionsTabs: SelectItem<DivisionType>[] = [
   { key: DivisionType.BRANCH, value: i18n.t(`division:table.title.branch`) },
@@ -37,13 +29,7 @@ export const DivisionsTabs: SelectItem<DivisionType>[] = [
   { key: DivisionType.ROLE, value: i18n.t('division:table.title.role') },
 ];
 
-const Organization = () => {
-  // query params
-  const [queryParams, setQueryParams] = useQueryParams(DIVISIONS_QUERY_PARAMS);
-
-  const [divisionType, setDivisionType] = useState<DivisionType>(
-    (queryParams?.type as DivisionType) || DivisionType.BRANCH,
-  );
+const Organization = ({ query, setQuery }: OrganizationTableProps) => {
   const navigate = useNavigate();
 
   const {
@@ -51,31 +37,6 @@ const Organization = () => {
     error: organizationError,
     isLoading: isOrganizationLoading,
   } = useOrganizationQuery();
-
-  const {
-    data: divisions,
-    isLoading: isFetchingDivisions,
-    error: divisionError,
-    refetch,
-  } = useDivisions(
-    queryParams?.limit as number,
-    queryParams?.page as number,
-    queryParams?.type as DivisionType,
-    queryParams?.orderBy as string,
-    queryParams?.orderDirection as OrderDirection,
-  );
-
-  // init query
-  useEffect(() => {
-    // init query params
-    setQueryParams({
-      limit: queryParams?.limit || PaginationConfig.defaultRowsPerPage,
-      page: queryParams?.page || PaginationConfig.defaultPage,
-      type: queryParams?.type || divisionType,
-      orderBy: queryParams?.orderBy || 'name',
-      orderDirection: queryParams?.orderDirection || OrderDirection.ASC,
-    });
-  }, []);
 
   // error handling
   useEffect(() => {
@@ -86,20 +47,11 @@ const Organization = () => {
         'organization_error',
       );
     }
-
-    // map error messages for DIVISIONS fetch
-    if (divisionError) {
-      useErrorToast(
-        InternalErrors.DIVISION_ERRORS.getError(divisionError.response?.data.code_error),
-      );
-    }
-  }, [organizationError, divisionError]);
+  }, [organizationError]);
 
   const onTabClick = (id: DivisionType) => {
     const selectedTab = DivisionsTabs.find((tab) => tab.key === id)?.key as DivisionType;
-    setDivisionType(selectedTab);
-    setQueryParams({
-      ...queryParams,
+    setQuery({
       type: selectedTab,
     });
   };
@@ -183,14 +135,11 @@ const Organization = () => {
       <Tabs<DivisionType>
         tabs={DivisionsTabs}
         onClick={onTabClick}
-        defaultTab={DivisionsTabs.find((tab) => tab.key === divisionType)}
+        defaultTab={DivisionsTabs.find((tab) => tab.key === query.type)}
       >
-        <DivisionTable
-          type={divisionType}
-          divisions={divisions}
-          isFetchingDivisions={isFetchingDivisions}
-          refetch={refetch}
-        />
+        {query.type === DivisionType.BRANCH && <DivisionTable type={DivisionType.BRANCH} />}
+        {query.type === DivisionType.DEPARTMENT && <DivisionTable type={DivisionType.DEPARTMENT} />}
+        {query.type === DivisionType.ROLE && <DivisionTable type={DivisionType.ROLE} />}
       </Tabs>
     </PageLayout>
   );

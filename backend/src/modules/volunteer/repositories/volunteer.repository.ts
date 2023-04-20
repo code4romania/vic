@@ -41,10 +41,11 @@ export class VolunteerRepositoryService
       organizationId,
       status,
       search,
-      branchId,
-      departmentId,
-      roleId,
-      locationId,
+      branch,
+      department,
+      role,
+      city,
+      county,
       age,
       activeSinceStart,
       activeSinceEnd,
@@ -111,25 +112,31 @@ export class VolunteerRepositoryService
     }
 
     // branch
-    if (branchId) {
-      query.andWhere('volunteerProfile.branchId = :branchId', { branchId });
+    if (branch) {
+      query.andWhere('branch.name = :branch', { branch });
     }
 
     // department
-    if (departmentId) {
-      query.andWhere('volunteerProfile.departmentId = :departmentId', {
-        departmentId,
+    if (department) {
+      query.andWhere('department.name = :department', {
+        department,
       });
     }
 
     // branch
-    if (roleId) {
-      query.andWhere('volunteerProfile.roleId = :roleId', { roleId });
+    if (role) {
+      query.andWhere('role.name = :role', { role });
     }
 
     // location
-    if (locationId) {
-      query.andWhere('location.id = :locationId', { locationId });
+    if (city && county) {
+      query.andWhere(
+        'location.name = :city AND county.abbreviation = :county',
+        {
+          city,
+          county,
+        },
+      );
     }
 
     // birthday/age
@@ -177,7 +184,11 @@ export class VolunteerRepositoryService
     id,
     ...updates
   }: UpdateVolunteerOptions): Promise<IVolunteerModel> {
-    await this.volunteerRepository.update({ id }, updates);
+    const toUpdate = await this.volunteerRepository.preload({ id, ...updates });
+
+    if (!toUpdate) return null;
+
+    await this.volunteerRepository.save(toUpdate);
 
     return this.find({ id });
   }

@@ -40,13 +40,7 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
 import { getEventsForDownload } from '../services/event/event.api';
-import { DEFAULT_QUERY_PARAMS, PaginationConfig } from '../common/constants/pagination';
-import { StringParam, useQueryParams } from 'use-query-params';
-
-export const EVENTS_QUERY_PARAMS = {
-  ...DEFAULT_QUERY_PARAMS,
-  tabsStatus: StringParam,
-};
+import { EventsProps } from '../containers/query/EventsWithQueryParams';
 
 const EventsTabsOptions: SelectItem<EventState>[] = [
   { key: EventState.OPEN, value: i18n.t('side_menu:options.events') },
@@ -68,7 +62,7 @@ const OpenEventsTableHeader = [
     minWidth: '11rem',
     grow: 1,
     sortable: true,
-    selector: (row: IEvent) => formatEventDate(row.startDate, row.endDate),
+    cell: (row: IEvent) => <CellLayout>{formatEventDate(row.startDate, row.endDate)}</CellLayout>,
   },
   {
     id: 'target',
@@ -77,7 +71,7 @@ const OpenEventsTableHeader = [
     grow: 1,
     cell: (row: IEvent) => (
       <CellLayout>
-        <Targets targets={row.targets} />
+        <Targets targets={row.targets} isPublic={row.isPublic} />
       </CellLayout>
     ),
   },
@@ -122,7 +116,7 @@ const PastEventsTableHeader = [
     minWidth: '11rem',
     grow: 1,
     sortable: true,
-    selector: (row: IEvent) => formatEventDate(row.startDate, row.endDate),
+    cell: (row: IEvent) => <CellLayout>{formatEventDate(row.startDate, row.endDate)}</CellLayout>,
   },
   {
     id: 'target',
@@ -131,7 +125,7 @@ const PastEventsTableHeader = [
     grow: 1,
     cell: (row: IEvent) => (
       <CellLayout>
-        <Targets targets={row.targets} />
+        <Targets targets={row.targets} isPublic={row.isPublic} />
       </CellLayout>
     ),
   },
@@ -150,10 +144,11 @@ const PastEventsTableHeader = [
     name: i18n.t('events:hours'),
     minWidth: '5rem',
     grow: 1,
-    selector: () =>
-      `${0} ${i18n.t('general:people').toLowerCase()}\n${0} ${i18n
-        .t('general:hours')
-        .toLowerCase()}`, // TODO: add logged hours
+    cell: (row: IEvent) => (
+      <CellLayout>{`${row.activityLogged?.volunteers} ${i18n.t('general:people').toLowerCase()}\n${
+        row.activityLogged?.totalHours
+      } ${i18n.t('general:hours').toLowerCase()}`}</CellLayout>
+    ),
   },
   {
     id: 'status',
@@ -169,11 +164,8 @@ const PastEventsTableHeader = [
   },
 ];
 
-const Events = () => {
+const Events = ({ query, setQuery }: EventsProps) => {
   const [showDeleteEvent, setShowDeleteEvent] = useState<null | IEvent>();
-
-  // query params
-  const [queryParams, setQueryParams] = useQueryParams(EVENTS_QUERY_PARAMS);
 
   const navigate = useNavigate();
 
@@ -184,11 +176,11 @@ const Events = () => {
     error: eventsError,
     refetch,
   } = useEventsQuery(
-    queryParams?.limit as number,
-    queryParams?.page as number,
-    queryParams?.tabsStatus as EventState,
-    queryParams?.orderBy as string,
-    queryParams?.orderDirection as OrderDirection,
+    query.limit as number,
+    query.page as number,
+    query.eventState as EventState,
+    query.orderBy,
+    query.orderDirection as OrderDirection,
   );
   // actions
   const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
@@ -200,23 +192,9 @@ const Events = () => {
       useErrorToast(InternalErrors.EVENT_ERRORS.getError(eventsError.response?.data.code_error));
   }, [eventsError]);
 
-  // init query
-  useEffect(() => {
-    // init query params
-    setQueryParams({
-      limit: queryParams?.limit || PaginationConfig.defaultRowsPerPage,
-      page: queryParams?.page || PaginationConfig.defaultPage,
-      orderBy: queryParams?.orderBy || 'name',
-      tabsStatus: queryParams?.tabsStatus || EventState.OPEN,
-      orderDirection: queryParams?.orderDirection || OrderDirection.ASC,
-    });
-  }, []);
-
   const onTabClick = (tab: EventState) => {
-    setQueryParams({
-      ...queryParams,
-      tabsStatus: tab,
-    });
+    // reset filter queries on tab click
+    setQuery({ eventState: tab }, 'push');
   };
 
   // row actions
@@ -341,38 +319,33 @@ const Events = () => {
 
   const onExport = async () => {
     const { data: eventsData } = await getEventsForDownload(
-      queryParams?.tabsStatus as EventState,
-      queryParams?.orderBy as string,
-      queryParams?.orderDirection as OrderDirection,
+      query.eventState as EventState,
+      query.orderBy,
+      query.orderDirection as OrderDirection,
     );
 
-    downloadExcel(
-      eventsData as BlobPart,
-      i18n.t('events:download', { context: queryParams?.tabsStatus }),
-    );
+    downloadExcel(eventsData as BlobPart, i18n.t('events:download', { context: query.eventState }));
   };
 
   const onAddEvent = () => {
     navigate('/events/add');
   };
 
-  // pagination
-  const onRowsPerPageChange = (rows: number) => {
-    setQueryParams({
-      ...queryParams,
-      limit: rows,
+  const onRowsPerPageChange = (limit: number) => {
+    setQuery({
+      limit,
+      page: 1,
     });
   };
 
-  const onChangePage = (newPage: number) => {
-    setQueryParams({
-      ...queryParams,
-      page: newPage,
+  const onChangePage = (page: number) => {
+    setQuery({
+      page,
     });
   };
 
   const onSort = (column: TableColumn<IEvent>, direction: SortOrder) => {
-    setQueryParams({
+    setQuery({
       orderBy: column.id as string,
       orderDirection:
         direction.toLocaleUpperCase() === OrderDirection.ASC
@@ -393,14 +366,15 @@ const Events = () => {
         tabs={EventsTabsOptions}
         onClick={onTabClick}
         defaultTab={
-          EventsTabsOptions.find((tab) => tab.key === queryParams?.tabsStatus) ||
-          EventsTabsOptions[0]
+          query?.eventState
+            ? EventsTabsOptions.find((tab) => tab.key === query?.eventState)
+            : EventsTabsOptions[0]
         }
       >
         <Card>
           <CardHeader>
             <h2>
-              {queryParams?.tabsStatus === EventState.OPEN
+              {query.eventState === EventState.OPEN
                 ? i18n.t('side_menu:options.events')
                 : i18n.t('events:past_events')}
             </h2>
@@ -414,7 +388,7 @@ const Events = () => {
           <CardBody>
             <DataTableComponent
               columns={[
-                ...(queryParams?.tabsStatus === EventState.PAST
+                ...(query.eventState === EventState.PAST
                   ? PastEventsTableHeader
                   : OpenEventsTableHeader),
                 buildEventsActionColumn(),
@@ -422,9 +396,9 @@ const Events = () => {
               data={events?.items}
               loading={isEventsLoading || isArchivingEvent || isDeletingEvent || isPublishingEvent}
               pagination
-              paginationPerPage={events?.meta?.itemsPerPage}
+              paginationPerPage={query.limit}
               paginationTotalRows={events?.meta?.totalItems}
-              paginationDefaultPage={queryParams.page as number}
+              paginationDefaultPage={query.page}
               onChangeRowsPerPage={onRowsPerPageChange}
               onChangePage={onChangePage}
               onSort={onSort}

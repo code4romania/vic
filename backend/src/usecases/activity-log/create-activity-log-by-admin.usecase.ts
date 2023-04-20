@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateActivityLogByAdminDto } from 'src/api/activity-log/dto/create-activity-log-by-admin.dto';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { ActivityLogExceptionMessages } from 'src/modules/activity-log/exceptions/activity-log.exceptions';
 import { IActivityLogModel } from 'src/modules/activity-log/models/activity-log.model';
@@ -25,6 +27,7 @@ export class CreateActivityLogByAdmin
     private readonly volunteerFacade: VolunteerFacade,
 
     private readonly exceptionService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
@@ -47,37 +50,56 @@ export class CreateActivityLogByAdmin
         ActivityLogExceptionMessages.ACTIVITY_LOG_002,
       );
     }
-    // 2. Check if the event exists in the organization
-    await this.getOneEventUsecase.execute({
-      id: newLogRequestDto.eventId,
-      organizationId: admin.organizationId,
-    });
-    // 3. Check if the task exists in the organization
-    const taskExists = await this.activityTypeFacade.exists(
-      [newLogRequestDto.activityTypeId],
-      { organizationId: admin.organizationId },
-    );
-    if (!taskExists) {
-      this.exceptionService.badRequestException(
-        ActivityTypeExceptionMessages.ACTIVITY_TYPE_001,
+    // 2. Check if the event exists in the organization if provided
+    if (newLogRequestDto.eventId) {
+      await this.getOneEventUsecase.execute({
+        id: newLogRequestDto.eventId,
+        organizationId: admin.organizationId,
+      });
+    }
+
+    // if it's not provided is the other scenario
+    if (newLogRequestDto.activityTypeId) {
+      // 3. Check if the task exists in the organization
+      const taskExists = await this.activityTypeFacade.exists(
+        [newLogRequestDto.activityTypeId],
+        { organizationId: admin.organizationId },
       );
+      if (!taskExists) {
+        this.exceptionService.badRequestException(
+          ActivityTypeExceptionMessages.ACTIVITY_TYPE_001,
+        );
+      }
     }
 
     // ========================================================================
     // 4. Create the log. An Activity Log created by an Admin, is automatically approved
-    return this.activityLogFacade.create({
+    const created = await this.activityLogFacade.create({
       date: newLogRequestDto.date,
       hours: newLogRequestDto.hours,
       mentions: newLogRequestDto.mentions,
       volunteerId: newLogRequestDto.volunteerId,
-      eventId: newLogRequestDto.eventId,
-      activityTypeId: newLogRequestDto.activityTypeId,
+      eventId: newLogRequestDto.eventId || null,
+      activityTypeId: newLogRequestDto.activityTypeId || null,
 
       status: ActivityLogStatus.APPROVED,
 
       createdByAdminId: admin.id,
       approvedById: admin.id,
       approvedOn: new Date(),
+      organizationId: admin.organizationId,
     });
+
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.REGISTER_ACTIVITY_LOG,
+      {
+        activityLogId: created.id,
+        volunteerId: volunteer.id,
+        volunteerName: volunteer.user?.name,
+      },
+      admin,
+    );
+
+    return created;
   }
 }

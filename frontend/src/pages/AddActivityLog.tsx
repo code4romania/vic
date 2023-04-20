@@ -15,9 +15,9 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import ActivityLogForm, { ActivityLogFormTypes } from '../components/ActivityLogForm';
-import { useAddActivityLogMutation } from '../services/acitivity-log/activity-log.service';
+import { useAddActivityLogMutation } from '../services/activity-log/activity-log.service';
 
-const schema = yup
+export const activityLogValidationSchema = yup
   .object({
     volunteer: yup.object().required(`${i18n.t('activity_log:form.volunteer.required')}`),
     task: yup.object().required(`${i18n.t('activity_log:form.task.required')}`),
@@ -26,6 +26,7 @@ const schema = yup
       .typeError(`${i18n.t('activity_log:form.hours.required')}`)
       .integer(`${i18n.t('activity_log:form.hours.integer')}`)
       .min(1, `${i18n.t('activity_log:form.hours.min')}`)
+      .max(1000, `${i18n.t('activity_log:form.hours.max')}`)
       .required(`${i18n.t('activity_log:form.hours.required')}`),
     date: yup
       .date()
@@ -48,7 +49,7 @@ const AddActivityLog = () => {
   } = useForm<ActivityLogFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(activityLogValidationSchema),
   });
 
   const navigateBack = () => {

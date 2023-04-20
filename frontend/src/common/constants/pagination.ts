@@ -1,4 +1,5 @@
-import { NumberParam, StringParam } from 'use-query-params';
+import { NumberParam, StringParam, withDefault } from 'use-query-params';
+import { OrderDirection } from '../enums/order-direction.enum';
 
 export const PaginationConfig = {
   rowsPerPageOptions: [5, 10, 15, 20],
@@ -6,9 +7,29 @@ export const PaginationConfig = {
   defaultPage: 1,
 };
 
-export const DEFAULT_QUERY_PARAMS = {
-  page: NumberParam,
-  limit: NumberParam,
-  orderBy: StringParam,
-  orderDirection: StringParam,
+export interface IPaginationQueryParams {
+  page?: number;
+  limit?: number;
+  orderBy?: string;
+  orderDirection?: string;
+}
+
+export const getPaginationQueryParams = (defaults?: IPaginationQueryParams) => {
+  const pageParam = withDefault(NumberParam, defaults?.page || PaginationConfig.defaultPage);
+  const limitParam = withDefault(
+    NumberParam,
+    defaults?.limit || PaginationConfig.defaultRowsPerPage,
+  );
+  const orderByParam = withDefault(StringParam, defaults?.orderBy);
+  const orderDirectionParam = withDefault(
+    StringParam,
+    defaults?.orderDirection || OrderDirection.ASC,
+  );
+
+  return {
+    page: pageParam,
+    limit: limitParam,
+    orderBy: orderByParam,
+    orderDirection: orderDirectionParam,
+  };
 };

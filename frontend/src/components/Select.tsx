@@ -34,7 +34,7 @@ const Select = <T extends React.Key>({
             </Listbox.Label>
           )}
           <div className="relative">
-            <Listbox.Button className="h-[44px] bg-white relative w-full border border-cool-gray-200 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm disabled:bg-cool-gray-100">
+            <Listbox.Button className="h-[44px] max-w-[37rem] bg-white relative w-full border border-cool-gray-200 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm disabled:bg-cool-gray-100">
               <span className="block truncate lg:text-base text-sm">
                 {selected ? (
                   <span className="text-cool-gray-800 font-normal sm:text-sm lg:text-base text-xs">
@@ -57,6 +57,17 @@ const Select = <T extends React.Key>({
               leaveTo="opacity-0"
             >
               <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 sm:text-sm lg:text-base text-xs ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none">
+                {(options.length === 0 || !options) && (
+                  <Listbox.Option
+                    className={
+                      'cursor-default select-none text-center relative py-2 pl-3 pr-9 text-cool-gray-500'
+                    }
+                    value
+                    disabled
+                  >
+                    <span className="block truncate lg:text-base text-sm">No options</span>
+                  </Listbox.Option>
+                )}
                 {options.map((item) => (
                   <Listbox.Option
                     key={item.key}

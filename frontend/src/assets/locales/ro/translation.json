@@ -9,7 +9,11 @@
     "name": "Nume",
     "people": "Persoane",
     "age": "Vârsta",
+    "save": "Salvează",
     "hours": "Ore",
+    "daily": "Zilnic",
+    "monthly": "Lunar",
+    "yearly": "Anual",
     "date": "Data",
     "target": "Target",
     "answers": "Răspunsuri",
@@ -17,9 +21,9 @@
     "created_on": "Data crearii",
     "all_organization": "Toata organizatia",
     "event": "Eveniment",
-    "add": "Adauga {{item}}",
+    "add": "Adaugă {{item}}",
     "category": "Categorie",
-    "select": "Selecteaza {{item}}",
+    "select": "Selectează {{item}}",
     "choose": "Alege {{item}}",
     "image": "Imagine",
     "reason": "Motiv",
@@ -30,8 +34,8 @@
     "status": "Status",
     "empty_table": "Nu exista informatii de afisat",
     "view": "Vizualizeaza",
-    "edit": "Editeaza {{item}}",
-    "block": "Blocheaza {{item}}",
+    "edit": "Editează {{item}}",
+    "block": "Blochează {{item}}",
     "archive": "Arhivează {{item}}",
     "delete": "Sterge",
     "location": "Locatie",
@@ -40,6 +44,7 @@
     "reject": "Respinge",
     "approve": "Aprobă",
     "save_changes": "Salveaza modificari",
+    "save": "Salveaza",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
     "contact": "Date contact",
@@ -68,7 +73,8 @@
       "hide": "Ascunde filtre"
     },
     "select_interval": "Selecteaza interval",
-    "save_draft": "Salveaza ca draft"
+    "save_draft": "Salveaza ca draft",
+    "other": "Alta optiune"
   },
   "header": {
     "login": "Login",
@@ -90,7 +96,8 @@
       "access_codes": "Coduri de acces",
       "announcements": "Anunturi",
       "activity_types": "Categorii activitati",
-      "activity_log": "Ore de voluntariat"
+      "activity_log": "Ore de voluntariat",
+      "actions_archive": "Arhivă acțiuni"
     },
     "collapse": "Restrange meniul"
   },
@@ -193,7 +200,7 @@
   "division": {
     "members": "Membri",
     "entity": {
-      "branch": "Filiala",
+      "branch": "Filială",
       "role": "Rol",
       "department": "Departament"
     },
@@ -394,11 +401,11 @@
     "observation": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi.",
     "draft": {
       "subtitle": "Evenimentul nu este publicat (draft)",
-      "description": "Ai draft evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+      "description": "Ai salvat ca draft evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
     },
     "published": {
       "subtitle": "Evenimentul este publicat",
-      "description": "Ai publicat evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+      "description": "Ai publicat evenimentul, deci voluntarii il pot vizualiza in aplicatia mobila. "
     },
     "archived": {
       "subtitle": "Evenimentul este arhivat",
@@ -486,7 +493,8 @@
       "EVENT_006": "Doar evenimentele publicate pot fi arhivate"
     },
     "download_open": "Evenimente active.xlsx",
-    "download_past": "Evenimente incheiate.xlsx"
+    "download_past": "Evenimente incheiate.xlsx",
+    "download_rsvp": "Lista raspunsuri.xlsx"
   },
   "announcement": {
     "title": "Istoric anunturi",
@@ -547,7 +555,7 @@
     "past": "Istoric ore de voluntariat",
     "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
     "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
-    "add": "Înregistrează ore",
+    "add": "Adauga ore",
     "header": {
       "task": "Task",
       "execution_date": "Data efectuării",
@@ -561,6 +569,16 @@
     "status": "Status aprobare",
     "popover": {
       "view": "Fișă de activitate"
+    },
+    "filters": {
+      "execution": "Perioada efectuare task",
+      "registration": "Perioada inregistrare",
+      "approved_rejected": "Aprobat/Resprins de"
+    },
+    "modal": {
+      "title": "Argumentează respingere",
+      "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
+      "reject": "Respinge fără mesaj "
     },
     "side_panel": {
       "reject": "Muta in respinse",
@@ -591,12 +609,15 @@
       "hours": {
         "required": "Numarul de ore este obligatoriu",
         "min": "Numarul de ore trebuie sa fie mai mare ca 0",
+        "max": "Numarul de ore trebuie sa fie mai mic ca 1000",
         "integer": "Numarul de ore trebuie sa fie intreg"
       },
       "submit": {
         "messages": {
           "add": "Orele de voluntariat au fost adaugate cu succes",
-          "edit": "Datele privind orele de voluntariat au fost modificate cu succes"
+          "edit": "Datele privind orele de voluntariat au fost modificate cu succes",
+          "approve": "Orele de voluntariat au fost aprobate",
+          "reject": "Orele de voluntariat au fost respinse"
         }
       }
     },
@@ -605,6 +626,121 @@
       "ACTIVITY_LOG_001": "Activitatea nu a fost gasita!",
       "ACTIVITY_LOG_002": "Voluntarul trebuie sa aiba profil pentru a loga ore",
       "ACTIVITY_LOG_003": "Nu se poat face modificari pe request-uri in status-ul Aprobat sau Respins"
+    },
+    "download_file_name": "Istoric ore de voluntariat.xlsx"
+  },
+  "actions_archive": {
+    "card_title": "Istoric acțiuni",
+    "area": "Tip Actiune",
+    "author": "Autor",
+    "filters": {
+      "execution": "Perioada efectuare actiune"
+    },
+    "UPDATE_ORGANIZATION_PROFILE": {
+      "label": "Update Organization Profile",
+      "description": "Descrierea organizatiei <inlineLink>{{organizationName}}</inlineLink> a fost modificata."
+    },
+    "CREATE_ORGANIZATION_STRUCTURE": {
+      "label": "Create Organization Structure",
+      "branch": "A fost creata filiala cu numele <inlineLink>{{organizationStructureName}}</inlineLink>.",
+      "department": "A fost creat departamentul cu numele <inlineLink>{{organizationStructureName}}</inlineLink>.",
+      "role": "A fost creat rolul cu numele <inlineLink>{{organizationStructureName}}</inlineLink>."
+    },
+    "UPDATE_ORGANIZATION_STRUCTURE": {
+      "label": "Update Organization Structure",
+      "branch": "A fost modificat numele filialei din {{organizationStructureNameInitial}} in <inlineLink>{{organizationStructureNameFinal}}</inlineLink>.",
+      "department": "A fost modificat numele departamentului din {{organizationStructureNameInitial}} in <inlineLink>{{organizationStructureNameFinal}}</inlineLink>.",
+      "role": "A fost modificat numele rolului din {{organizationStructureNameInitial}} in <inlineLink>{{organizationStructureNameFinal}}</inlineLink>."
+    },
+    "DELETE_ORGANIZATION_STRUCTURE": {
+      "label": "Delete Organization Structure",
+      "branch": "Filiala cu numele {{organizationStructureName}} a fost stearsa.",
+      "department": "Departamentul cu numele {{organizationStructureName}} a fost sters.",
+      "role": "Rolul cu numele {{organizationStructureName}} a fost sters."
+    },
+    "APPROVE_ACCESS_REQUEST": {
+      "label": "Approve Access Request",
+      "description": "Cererea de acces pentru voluntarul <inlineLink>{{userName}}</inlineLink> a fost aprobata."
+    },
+    "REJECT_ACCESS_REQUEST": {
+      "label": "Reject Access Request",
+      "description": "Cererea de acces pentru voluntarul <inlineLink>{{userName}}</inlineLink> a fost respinsa."
+    },
+    "DELETE_ACCESS_REQUEST": {
+      "label": "Delete Access Request",
+      "description": "Cererea de acces pentru voluntarul <inlineLink>{{userName}}</inlineLink> a fost stearsa."
+    },
+    "CHANGE_VOLUNTEER_STATUS": {
+      "label": "Change Volunteer Status",
+      "description": "Statusul pentru voluntarul <inlineLink>{{volunteerName}}</inlineLink> a fost schimbat din {{oldStatus}} in {{newStatus}}."
+    },
+    "UPDATE_VOLUNTEER_PROFILE": {
+      "label": "Update Volunteer Profile",
+      "description": "Profilul voluntarului <inlineLink>{{volunteerName}}</inlineLink> a fost modificat."
+    },
+    "REGISTER_ACTIVITY_LOG": {
+      "label": "Register Activity Log",
+      "description": "Voluntarul <inlineLink>{{volunteerName}}</inlineLink> a logat ore de voluntariat."
+    },
+    "CHANGE_ACTIVITY_LOG_STATUS": {
+      "label": "Change Activity Log Status",
+      "rejected": "Orele de volunatriat pentru <inlineLink>{{volunteerName}}</inlineLink> au fost respinse",
+      "approved": "Orele de volunatriat pentru <inlineLink>{{volunteerName}}</inlineLink> au fost aprobate"
+    },
+    "CREATE_ACTIVITY_TYPE": {
+      "label": "Create Activity Type",
+      "description": "Categoria de activitate <inlineLink>{{activityTypeName}}</inlineLink> a fost creata."
+    },
+    "UPDATE_ACTIVITY_TYPE": {
+      "label": "Update Activity Type",
+      "description": "Categoria de activitate <inlineLink>{{activityTypeName}}</inlineLink> a fost modificata."
+    },
+    "CHANGE_ACTIVITY_TYPE_STATUS": {
+      "label": "Change Activity Type Status",
+      "description": "Statusul categoriei de activitate <inlineLink>{{activityTypeName}}</inlineLink> a fost schimbat din {{oldStatus}} in {{newStatus}}."
+    },
+    "CREATE_EVENT": {
+      "label": "Create Event",
+      "description": "Evenimentul <inlineLink>{{eventName}}</inlineLink> a fost creat."
+    },
+    "UPDATE_EVENT": {
+      "label": "Update Event",
+      "description": "Evenimentul <inlineLink>{{eventName}}</inlineLink> a fost modificat."
+    },
+    "DELETE_EVENT": {
+      "label": "Delete Event",
+      "description": "Evenimentul {{eventName}} a fost sters."
+    },
+    "CHANGE_EVENT_STATUS": {
+      "label": "Change Event Status",
+      "description": "Statusul evenimentului pentru <inlineLink>{{eventName}}</inlineLink> a fost schimbat din {{oldStatus}} in {{newStatus}}."
+    },
+    "CREATE_ANNOUNCEMENT": {
+      "label": "Create Announcement",
+      "description": "Anuntul <inlineLink>{{announcementTitle}}</inlineLink> a fost creat."
+    },
+    "DELETE_ANNOUNCEMENT": {
+      "label": "Delete Announcement",
+      "description": "Anuntul {{announcementTitle}} a fost sters."
+    },
+    "PUBLISH_ANNOUNCEMENT": {
+      "label": "Publish Announcement",
+      "description": "Anuntul <inlineLink>{{announcementTitle}}</inlineLink> a fost publicat."
+    }
+  },
+  "dashboard": {
+    "statistics_card": {
+      "activity_log": {
+        "label": "Vezi ore care asteapta aprobare",
+        "info": "{{value}} ore in asteptare"
+      },
+      "volunteer": { "label": "Vezi solicitari", "info": "{{value}} solicitari de inscriere" }
+    },
+    "line_chart": {
+      "title": "Număr voluntari"
+    },
+    "pie_chart": {
+      "title": "Statistici voluntari organizatie"
     }
   }
 }

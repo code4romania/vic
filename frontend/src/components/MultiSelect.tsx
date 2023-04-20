@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { AriaAttributes } from 'react';
 import Select from 'react-select';
 import { SelectItem, SelectProps } from './Select';
 export interface MultiSelectProps extends Omit<SelectProps<string>, 'onChange' | 'selected'> {
   onChange: (items: SelectItem<string>[]) => void;
   selected?: SelectItem<string>[];
   isDisabled?: boolean;
+  /** Indicate if the value entered in the field is invalid **/
+  'aria-invalid'?: AriaAttributes['aria-invalid'];
 }
 
 const MultiSelect = ({
@@ -15,6 +17,7 @@ const MultiSelect = ({
   onChange,
   helper,
   isDisabled,
+  ...props
 }: MultiSelectProps) => {
   return (
     <div className="flex flex-col gap-1">
@@ -23,6 +26,13 @@ const MultiSelect = ({
         placeholder={placeholder}
         closeMenuOnSelect={false}
         classNamePrefix="reactselect"
+        classNames={{
+          control: (state) => {
+            if (props['aria-invalid'] && state.isFocused) return 'error-and-focused';
+            if (props['aria-invalid']) return 'error';
+            return '';
+          },
+        }}
         isMulti={true}
         onChange={onChange as never}
         value={selected}

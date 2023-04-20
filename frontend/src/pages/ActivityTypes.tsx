@@ -17,31 +17,22 @@ import { DivisionType } from '../common/enums/division-type.enum';
 import { SelectItem } from '../components/Select';
 import DataTableFilters from '../components/DataTableFilters';
 import PageHeaderAdd from '../components/PageHeaderAdd';
-import { StringParam, useQueryParams } from 'use-query-params';
+import { ActivityTypesProps } from '../containers/query/ActivityTypesWithQueryParams';
 
-export const ACTIVITY_TYPES_QUERY_PARAMS = {
-  search: StringParam,
-  branch: StringParam,
-  department: StringParam,
-  role: StringParam,
-};
-
-const ActivityTypes = () => {
+const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
   // navigation
   const navigate = useNavigate();
   // filters
   const [branch, setBranch] = useState<SelectItem<string>>();
   const [department, setDepartment] = useState<SelectItem<string>>();
   const [role, setRole] = useState<SelectItem<string>>();
-  // query params
-  const [queryParams, setQueryParams] = useQueryParams(ACTIVITY_TYPES_QUERY_PARAMS);
 
   // data fetching
   const {
     data: activityTypes,
     error: activityTypesError,
     isLoading: isFetchingActivityTypes,
-  } = useActivityTypesQuery(queryParams?.search as string, branch?.key, department?.key, role?.key);
+  } = useActivityTypesQuery(query?.search as string, query?.branch, query?.department, query?.role);
 
   // error handling
   useEffect(() => {
@@ -63,33 +54,33 @@ const ActivityTypes = () => {
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
-    setQueryParams({ branch: null, search: null, department: null, role: null });
+    setQuery({}, 'push');
   };
 
   const onSearch = (search: string) => {
-    setQueryParams({
-      search: search || null,
+    setQuery({
+      search,
     });
   };
 
   const onSetBranchFilter = (branch: SelectItem<string>) => {
     setBranch(branch);
-    setQueryParams({
-      branch: branch?.value || null,
+    setQuery({
+      branch: branch?.value,
     });
   };
 
   const onSetDepartmentFilter = (department: SelectItem<string>) => {
     setDepartment(department);
-    setQueryParams({
-      department: department?.value || null,
+    setQuery({
+      department: department?.value,
     });
   };
 
   const onSetRoleFilter = (role: SelectItem<string>) => {
     setRole(role);
-    setQueryParams({
-      role: role?.value || null,
+    setQuery({
+      role: role?.value,
     });
   };
 
@@ -103,28 +94,31 @@ const ActivityTypes = () => {
       </PageHeaderAdd>
       <DataTableFilters
         onSearch={onSearch}
-        searchValue={queryParams?.search}
+        searchValue={query?.search}
         onResetFilters={onResetFilters}
       >
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.branch')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
           onChange={onSetBranchFilter}
-          selected={branch || queryParams?.branch}
+          selected={branch}
+          defaultValue={query.branch}
           type={DivisionType.BRANCH}
         />
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.department')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
           onChange={onSetDepartmentFilter}
-          selected={department || queryParams?.department}
+          selected={department}
+          defaultValue={query.department}
           type={DivisionType.DEPARTMENT}
         />
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.role')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
           onChange={onSetRoleFilter}
-          selected={role || queryParams?.role}
+          selected={role}
+          defaultValue={query.role}
           type={DivisionType.ROLE}
         />
       </DataTableFilters>
