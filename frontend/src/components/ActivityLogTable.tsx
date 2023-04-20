@@ -165,7 +165,7 @@ const PendingActivityLogTableHeader = [
     name: i18n.t('volunteer:name', { status: '' }),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '10rem',
     cell: (row: IActivityLogListItem) =>
       row.volunteer && (
         <CellLayout>
@@ -219,7 +219,7 @@ const PastActivityLogTableHeader = [
     name: i18n.t('volunteer:name', { status: '' }),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '10rem',
     cell: (row: IActivityLogListItem) =>
       row.volunteer && (
         <CellLayout>
