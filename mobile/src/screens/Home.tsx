@@ -1,8 +1,10 @@
 import React from 'react';
 import { Layout, Text } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
-import { Button } from '@ui-kitten/components';
+import Button from '../components/Button';
+import { Button as KittenButton } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';
+import { ButtonType } from '../common/enums/button-type.enum';
 
 const Home = ({ navigation }: any) => {
   console.log('Home');
@@ -15,8 +17,8 @@ const Home = ({ navigation }: any) => {
   return (
     <Layout style={styles.layout}>
       <Text category="h1">Dashboard</Text>
-      <Button onPress={logout}>logout</Button>
-      <Button onPress={onViewNewsButtonPress}>View News</Button>
+      <KittenButton onPress={logout}>logout</KittenButton>
+      <Button onPress={onViewNewsButtonPress} label="View News" type={ButtonType.DANGER} />
     </Layout>
   );
 };
