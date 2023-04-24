@@ -26,11 +26,9 @@ const SectionWrapper = ({ title, children, icon, action }: SectionWrapperProps) 
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: '100%',
     gap: 18,
     flexDirection: 'column',
-    backgroundColor: 'red',
   },
   sectionHeader: {
     flexDirection: 'row',
