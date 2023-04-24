@@ -18,6 +18,10 @@
     "text-paragraph-1-font-weight": "400",
     "text-paragraph-1-font-family": "roboto-regular",
 
+    "text-paragraph-2-font-size": 16,
+    "text-paragraph-2-font-weight": "500",
+    "text-paragraph-2-font-family": "roboto-regular",
+
     "text-label-font-size": 16,
     "text-label-font-weight": "600",
     "text-label-font-family": "roboto-medium",
