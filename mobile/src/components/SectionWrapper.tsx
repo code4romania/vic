@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: 18,
     flexDirection: 'column',
+    paddingLeft: 16,
   },
   sectionHeader: {
     flexDirection: 'row',
