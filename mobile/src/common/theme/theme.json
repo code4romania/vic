@@ -61,7 +61,7 @@
   "color-basic-transparent-400": "rgba(128, 128, 128, 0.32)",
   "color-basic-transparent-500": "rgba(128, 128, 128, 0.4)",
   "color-basic-transparent-600": "rgba(128, 128, 128, 0.48)",
-  "text-basic-color": "#6B7280",
+  "text-basic-color": "#1F2937",
   "text-control-color": "#FFFFFF",
   "text-info-color": "#1F2937",
   "text-hint-color": "#1F2937",
@@ -84,5 +84,6 @@
   "color-primary-disabled-border": "$color-primary-disabled",
   "color-success-transparent-default-border": "$color-success-500",
   "color-success-default-border": "$color-success-500",
-  "color-danger-default-border": "$color-danger-500"
+  "color-danger-default-border": "$color-danger-500",
+  "turquoise-50": "#EBFDFD"
 }
