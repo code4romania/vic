@@ -1,4 +1,4 @@
 export interface IVolunteerStatistics {
-  volunteers: string;
-  requests: string;
+  activeVolunteers: string;
+  pendingRequest: string;
 }

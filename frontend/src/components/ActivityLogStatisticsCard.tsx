@@ -12,11 +12,11 @@ const ActivityLogStatisticsCard = () => {
   return (
     <StatisticsCard
       label={i18n.t('side_menu:options.activity_log')}
-      value={data?.totalHours || '0'}
-      info={i18n.t('dashboard:statistics_card.activity_log.info', { value: data?.approvalHours })}
+      value={data?.approved || 'N/A'}
+      info={i18n.t('dashboard:statistics_card.activity_log.info', { value: data?.pending })}
       action={{
         label: i18n.t('dashboard:statistics_card.activity_log.label', {
-          value: data?.approvalHours,
+          value: data?.pending,
         }),
         onClick: () => navigate('/activity-log'),
       }}
