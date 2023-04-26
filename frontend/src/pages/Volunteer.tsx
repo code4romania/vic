@@ -89,12 +89,14 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
           <ActivityLogTableWithQueryParams
             resolutionStatus={ActivityLogResolutionStatus.NEW}
             volunteerId={id as string}
+            volunteerStatus={volunteer?.status}
           />
         )}
         {query?.activeTab === VolunteerTabsOptions.SOLVED && (
           <ActivityLogTableWithQueryParams
             resolutionStatus={ActivityLogResolutionStatus.SOLVED}
             volunteerId={id as string}
+            volunteerStatus={volunteer?.status}
           />
         )}
         {query?.activeTab === VolunteerTabsOptions.ARCHIVE && (

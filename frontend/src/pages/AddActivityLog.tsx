@@ -79,7 +79,7 @@ const AddActivityLog = () => {
           <CardHeader>
             <h2>{i18n.t('side_menu:options.activity_log')}</h2>
             <Button
-              label={i18n.t('general:save_changes')}
+              label={i18n.t('general:save')}
               className="btn-primary"
               icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
               onClick={handleSubmit(onSubmit)}
