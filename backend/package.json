@@ -1,6 +1,6 @@
 {
   "name": "teo-backend",
-  "version": "0.6.0",
+  "version": "0.8.2",
   "description": "",
   "author": "",
   "private": true,
@@ -26,6 +26,7 @@
     "migration:show": "npm run typeorm -- migration:show"
   },
   "dependencies": {
+    "@anchan828/typeorm-history": "1.0.38",
     "@bull-board/api": "^4.11.0",
     "@bull-board/express": "^4.11.0",
     "@nestjs-modules/mailer": "^1.8.1",

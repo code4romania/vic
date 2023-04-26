@@ -65,13 +65,16 @@ export class ActivityTypeController {
   @ApiBody({ type: CreateActivityTypeDto })
   @Post()
   async create(
-    @ExtractUser() user: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
     @Body() newActivityType: CreateActivityTypeDto,
   ): Promise<ActivityTypePresenter> {
-    const activityType = await this.createActivityTypeUseCase.execute({
-      organizationId: user.organizationId,
-      ...newActivityType,
-    });
+    const activityType = await this.createActivityTypeUseCase.execute(
+      {
+        organizationId: admin.organizationId,
+        ...newActivityType,
+      },
+      admin,
+    );
     return new ActivityTypePresenter(activityType);
   }
 
@@ -81,11 +84,15 @@ export class ActivityTypeController {
   async update(
     @Param('id', UuidValidationPipe) activityTypeId: string,
     @Body() newActivityType: UpdateActivityTypeDto,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<ActivityTypePresenter> {
-    const activityType = await this.updateActivityTypeUseCase.execute({
-      id: activityTypeId,
-      ...newActivityType,
-    });
+    const activityType = await this.updateActivityTypeUseCase.execute(
+      {
+        id: activityTypeId,
+        ...newActivityType,
+      },
+      admin,
+    );
     return new ActivityTypePresenter(activityType);
   }
 
@@ -93,9 +100,11 @@ export class ActivityTypeController {
   @Patch(':id/archive')
   async archive(
     @Param('id', UuidValidationPipe) activityTypeId: string,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<ActivityTypePresenter> {
     const activityType = await this.archiveActivityTypeUseCase.execute(
       activityTypeId,
+      admin,
     );
     return new ActivityTypePresenter(activityType);
   }
@@ -104,9 +113,11 @@ export class ActivityTypeController {
   @Patch(':id/activate')
   async activate(
     @Param('id', UuidValidationPipe) activityTypeId: string,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<ActivityTypePresenter> {
     const activityType = await this.activateActivityTypeUseCase.execute(
       activityTypeId,
+      admin,
     );
     return new ActivityTypePresenter(activityType);
   }

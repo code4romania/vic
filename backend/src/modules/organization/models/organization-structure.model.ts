@@ -1,6 +1,9 @@
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
-import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import {
+  AdminUserTransformer,
+  IAdminUserModel,
+} from 'src/modules/user/models/admin-user.model';
 import { OrganizationStructureEntity } from '../entities/organization-structure.entity';
 import { OrganizationStructureType } from '../enums/organization-structure-type.enum';
 
@@ -52,7 +55,7 @@ export class OrganizationStructureTransformer {
       name: entity.name,
       type: entity.type,
       members: entity.numberOfMembers || 0,
-      createdBy: entity.createdBy,
+      createdBy: AdminUserTransformer.fromEntity(entity.createdBy),
       organizationId: entity.organizationId,
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,

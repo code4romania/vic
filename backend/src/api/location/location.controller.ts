@@ -17,8 +17,14 @@ export class LocationController {
   ) {}
 
   @Get('city')
-  async getCities(@Query() { search }: GetCityDto): Promise<CityPresenter[]> {
-    const cities = await this.getCitiesUseCase.execute(search);
+  async getCities(
+    @Query() { search, city, county }: GetCityDto,
+  ): Promise<CityPresenter[]> {
+    const cities = await this.getCitiesUseCase.execute({
+      search,
+      city,
+      county,
+    });
     return cities.map((city) => new CityPresenter(city));
   }
 

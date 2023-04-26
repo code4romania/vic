@@ -37,7 +37,8 @@ export class AccessRequestRepository
       orderDirection,
       organizationId,
       status,
-      locationId,
+      city,
+      county,
       search,
       createdOnEnd,
       createdOnStart,
@@ -76,8 +77,14 @@ export class AccessRequestRepository
     }
 
     // location filter
-    if (locationId) {
-      query.andWhere('location.id = :locationId', { locationId });
+    if (city && county) {
+      query.andWhere(
+        'location.name = :city AND county.abbreviation = :county',
+        {
+          city,
+          county,
+        },
+      );
     }
 
     // created on range filter

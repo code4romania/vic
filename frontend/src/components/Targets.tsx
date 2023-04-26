@@ -5,19 +5,27 @@ import { arrayOfNamesToString } from '../common/utils/utils';
 
 interface TargetsProps {
   targets: IDivisionListItem[];
+  isPublic?: boolean;
+  targetedMembers?: number;
 }
 
-const Targets = ({ targets }: TargetsProps) => {
+const Targets = ({ targets, isPublic, targetedMembers }: TargetsProps) => {
   const targetsString = arrayOfNamesToString(targets, ', ');
 
   return (
     <>
-      {targets.length !== 0 ? (
-        <small title={targetsString} className="text-overflow">
-          {targetsString}
-        </small>
+      {isPublic ? (
+        <small>{i18n.t('events:form.target.public')}</small>
       ) : (
-        <small>{i18n.t('announcement:all_organization')}</small>
+        <>
+          {targets.length !== 0 ? (
+            <small title={targetsString} className="text-overflow">
+              {targetedMembers ? `(${targetedMembers}) ${targetsString}` : targetsString}
+            </small>
+          ) : (
+            <small>{i18n.t('announcement:all_organization')}</small>
+          )}
+        </>
       )}
     </>
   );

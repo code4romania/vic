@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   CreateActivityLogByAdminOptions,
+  FindManyActivityLogCounterOptions,
   FindManyActivityLogsOptions,
+  IActivityLogCountHoursByStatus,
   IActivityLogListItemModel,
   IActivityLogModel,
   UpdateActivityLogOptions,
@@ -36,5 +38,11 @@ export class ActivityLogFacade {
     updates: UpdateActivityLogOptions,
   ): Promise<IActivityLogModel> {
     return this.activityLogRepository.update(id, updates);
+  }
+
+  async countHoursByStatus(
+    findManyOptions: FindManyActivityLogCounterOptions,
+  ): Promise<IActivityLogCountHoursByStatus> {
+    return this.activityLogRepository.countHourByStatus(findManyOptions);
   }
 }

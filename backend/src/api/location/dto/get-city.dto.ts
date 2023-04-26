@@ -5,4 +5,12 @@ export class GetCityDto {
   @IsOptional()
   @MinLength(3)
   search: string;
+
+  @IsString()
+  @IsOptional()
+  city: string;
+
+  @IsString()
+  @IsOptional()
+  county: string;
 }

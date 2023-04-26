@@ -1,13 +1,31 @@
-import { differenceInYears, format, isSameDay } from 'date-fns';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { differenceInYears, endOfDay, format, formatISO9075, isSameDay } from 'date-fns';
 import { SelectItem } from '../../components/Select';
 import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 import { ICity } from '../interfaces/city.interface';
 import { IDivisionListItem } from '../interfaces/division.interface';
 import { AnnouncementStatus } from '../enums/announcement-status.enum';
+import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { EventStatus } from '../enums/event-status';
+import { ListItem } from '../interfaces/list-item.interface';
+import { AgeRangeEnum } from '../enums/age-range.enum';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
+};
+
+export const debouncePromise = (fn: any, delay: number) => {
+  let timeoutId: any = null;
+  return function (...args: any) {
+    return new Promise((resolve) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        resolve(fn(...args));
+      }, delay);
+    });
+  };
 };
 
 /**
@@ -32,7 +50,7 @@ export const formatLocation = (location: ICity): string =>
   location ? `${location.name}, ${location.county?.abbreviation}` : '-';
 
 export const getHoursAndMinutes = (value: Date | string): string =>
-  format(new Date(value), 'hh:mm');
+  format(new Date(value), 'HH:mm');
 
 export const formatEventDate = (startDate: Date, endDate?: Date): string => {
   let eventDate = '';
@@ -63,9 +81,18 @@ export const downloadExcel = (data: BlobPart, name: string): void => {
   link.remove();
 };
 
+export const formatStartDateISO9075 = (startDate: Date) => formatISO9075(startDate);
+
+export const formatEndDateISO9075 = (endDate: Date) => formatISO9075(endOfDay(endDate));
+
 /**
  * MAPPERS
  */
+export const VolunteerProfileStatusTextColorMapper = {
+  [VolunteerStatus.ACTIVE]: '',
+  [VolunteerStatus.ARCHIVED]: 'text-yellow-600',
+  [VolunteerStatus.BLOCKED]: 'text-red-600',
+};
 
 export const AnouncementStatusMarkerColorMapper = {
   [AnnouncementStatus.PUBLISHED]: 'bg-green-500',
@@ -88,3 +115,27 @@ export const mapDivisionListItemToSelectItem = (item: IDivisionListItem): Select
   key: item.id,
   value: item.name,
 });
+
+export const mapUserToListItem = (item: IDivisionListItem): ListItem => ({
+  label: item.name,
+  value: item.id,
+});
+
+export const AgeRangeOptions: SelectItem<AgeRangeEnum>[] = [
+  {
+    key: AgeRangeEnum['0_18'],
+    value: '0-18',
+  },
+  {
+    key: AgeRangeEnum['18_30'],
+    value: '18-30',
+  },
+  {
+    key: AgeRangeEnum['30_50'],
+    value: '30-50',
+  },
+  {
+    key: AgeRangeEnum.OVER_50,
+    value: '>50',
+  },
+];

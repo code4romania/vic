@@ -1,13 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
-import {
-  FindManyOptions,
-  FindOptionsWhere,
-  ILike,
-  In,
-  Repository,
-} from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { ActivityTypeEntity } from '../entities/activity-type.entity';
 import { IActivityTypeRepository } from '../interfaces/activity-type-repository.interface';
 import {
@@ -66,10 +60,16 @@ export class ActivityTypeRepositoryService implements IActivityTypeRepository {
   ): Promise<IActivityTypeModel[]> {
     options = Array.isArray(options) ? options : [options];
 
-    const mapOptions = options.map(({ search, ...others }) => ({
-      ...others,
-      ...(search ? { name: ILike(`%${search}%`) } : {}),
-    }));
+    const mapOptions = options.map(
+      ({ search, status, branch, role, department, ...others }) => ({
+        ...others,
+        ...(search ? { name: ILike(`%${search}%`) } : {}),
+        ...(status ? { status } : {}),
+        ...(branch ? { branch: { name: branch } } : {}),
+        ...(department ? { department: { name: department } } : {}),
+        ...(role ? { role: { name: role } } : {}),
+      }),
+    );
 
     const whereOptions = mapOptions.length !== 0 ? mapOptions : {};
 

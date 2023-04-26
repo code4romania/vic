@@ -124,8 +124,12 @@ export class VolunteerController {
   @Patch(':id/activate')
   async activate(
     @Param('id', UuidValidationPipe) volunteerId: string,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<VolunteerPresenter> {
-    const volunteer = await this.activateVolunteerUsecase.execute(volunteerId);
+    const volunteer = await this.activateVolunteerUsecase.execute(
+      volunteerId,
+      admin,
+    );
     return new VolunteerPresenter(volunteer);
   }
 
@@ -135,10 +139,12 @@ export class VolunteerController {
   async update(
     @Param('id', UuidValidationPipe) volunteerId: string,
     @Body() updatesDTO: UpdateVolunteerProfileDto,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<VolunteerPresenter> {
     const volunteer = await this.updateVolunteerProfileUsecase.execute(
       volunteerId,
       updatesDTO,
+      admin,
     );
     return new VolunteerPresenter(volunteer);
   }

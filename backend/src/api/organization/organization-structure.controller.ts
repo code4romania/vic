@@ -29,7 +29,6 @@ import {
   PaginatedPresenter,
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { GetAllOrganizationStructureByTypeUseCase } from 'src/usecases/organization/organization-structure/get-all-organization-structure-by-type.usecase';
-import { OrganizationStructureListItemPresenter } from './presenters/organization-structure-list-item.presenter';
 
 // @Roles(Role.ADMIN)
 @ApiBearerAuth()
@@ -52,47 +51,35 @@ export class OrganizationStructureController {
     @Query() filters: BasePaginationFilterDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<PaginatedPresenter<OrganizationStructurePresenter>> {
-    const accessCodes = await this.getAllStructureUsecase.execute({
+    const structures = await this.getAllStructureUsecase.execute({
       ...filters,
       type,
       organizationId,
     });
 
     return new PaginatedPresenter({
-      ...accessCodes,
-      items: accessCodes.items.map(
-        (accessCode) => new OrganizationStructurePresenter(accessCode),
+      ...structures,
+      items: structures.items.map(
+        (structure) => new OrganizationStructurePresenter(structure),
       ),
     });
-  }
-
-  // TODO: Add cacheing on this one
-  @ApiParam({ name: 'type', type: String, enum: OrganizationStructureType })
-  @Get(':type/all')
-  async getAll(
-    @Param('type') type: OrganizationStructureType,
-    @ExtractUser() { organizationId }: IAdminUserModel,
-  ): Promise<OrganizationStructureListItemPresenter[]> {
-    const organizationStructures =
-      await this.getAllStructureByTypeUseCase.execute(type, organizationId);
-
-    return organizationStructures.map(
-      (structure) => new OrganizationStructureListItemPresenter(structure),
-    );
   }
 
   @ApiBody({ type: CreateOrganizationStructureDto })
   @Post()
   async create(
     @Body() { name, type }: CreateOrganizationStructureDto,
-    @ExtractUser() { organizationId, id }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<OrganizationStructurePresenter> {
-    const structure = await this.createStructureUsecase.execute({
-      name,
-      type,
-      organizationId: organizationId,
-      createdById: id,
-    });
+    const structure = await this.createStructureUsecase.execute(
+      {
+        name,
+        type,
+        organizationId: admin.organizationId,
+        createdById: admin.id,
+      },
+      admin,
+    );
     return new OrganizationStructurePresenter(structure);
   }
 
@@ -102,17 +89,24 @@ export class OrganizationStructureController {
   async update(
     @Param('id', UuidValidationPipe) id: string,
     @Body() { name }: UpdateOrganizationStructureDto,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<OrganizationStructurePresenter> {
-    const accessCodeModel = await this.updateStructureUsecase.execute({
-      id,
-      name,
-    });
+    const accessCodeModel = await this.updateStructureUsecase.execute(
+      {
+        id,
+        name,
+      },
+      admin,
+    );
     return new OrganizationStructurePresenter(accessCodeModel);
   }
 
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
-  async delete(@Param('id', UuidValidationPipe) id: string): Promise<string> {
-    return this.deleteStructureUsecase.execute(id);
+  async delete(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<string> {
+    return this.deleteStructureUsecase.execute(id, admin);
   }
 }

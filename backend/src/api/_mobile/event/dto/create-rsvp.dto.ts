@@ -1,4 +1,11 @@
-import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
+import {
+  IsBoolean,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class EventRSVPDto {
   @IsBoolean()
@@ -6,7 +13,9 @@ export class EventRSVPDto {
 
   @IsString()
   @IsOptional()
-  mention: string; // TODO: mandatory for events with "mention" to be checked in usecase
+  @MinLength(2)
+  @MaxLength(250)
+  mention: string;
 
   @IsUUID() // TODO: remove and get it from token when we have it
   userId: string;

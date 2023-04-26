@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ICityModel } from '../model/city.model';
+import { FindLocationOptions, ICityModel } from '../model/city.model';
 import { ICountyModel } from '../model/county.model';
 import { LocationRepositoryService } from '../repositories/location.repository';
 
@@ -7,8 +7,8 @@ import { LocationRepositoryService } from '../repositories/location.repository';
 export class LocationFacade {
   constructor(private readonly locationRepository: LocationRepositoryService) {}
 
-  public async findCities(searchWord: string): Promise<ICityModel[]> {
-    return this.locationRepository.findCities(searchWord);
+  public async findCities(options: FindLocationOptions): Promise<ICityModel[]> {
+    return this.locationRepository.findCities(options);
   }
 
   public async findCounties(): Promise<ICountyModel[]> {

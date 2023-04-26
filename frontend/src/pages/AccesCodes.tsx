@@ -21,7 +21,7 @@ import {
   useAccessCodesQuery,
   useDeleteAccessCodeMutation,
 } from '../services/organization/organization.service';
-
+import { AccessCodesProps } from '../containers/query/AccessCodesWithQueryParams';
 export interface IAccessCode {
   id: string;
   code: string;
@@ -47,10 +47,11 @@ const AccessCodeTableHeader = [
     sortable: true,
     grow: 2,
     minWidth: '10rem',
-    selector: (row: IAccessCode) =>
-      `${formatDate(row.startDate)} -\n${
+    cell: (row: IAccessCode) => (
+      <CellLayout>{`${formatDate(row.startDate)} -\n${
         row.endDate ? `${formatDate(row.endDate)}` : i18n.t('general:unlimited')
-      }`,
+      }`}</CellLayout>
+    ),
   },
   {
     id: 'usageCount',
@@ -66,7 +67,7 @@ const AccessCodeTableHeader = [
     sortable: true,
     grow: 1,
     minWidth: '5rem',
-    selector: (row: IAccessCode) => formatDate(row.createdOn),
+    cell: (row: IAccessCode) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
   {
     id: 'createdBy.name',
@@ -82,12 +83,8 @@ const AccessCodeTableHeader = [
   },
 ];
 
-const AccessCodes = () => {
+const AccessCodes = ({ query, setQuery }: AccessCodesProps) => {
   const [showDeleteAccessCode, setShowDeleteAccessCode] = useState<null | IAccessCode>();
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const navigate = useNavigate();
 
   const {
@@ -96,10 +93,10 @@ const AccessCodes = () => {
     isLoading: isAccessCodesLoading,
     refetch,
   } = useAccessCodesQuery(
-    rowsPerPage as number,
-    page as number,
-    orderByColumn as string,
-    orderDirection as OrderDirection,
+    query?.limit as number,
+    query?.page as number,
+    query?.orderBy as string,
+    query?.orderDirection as OrderDirection,
   );
 
   const { mutateAsync: deleteAccessCode, isLoading: isDeleteAccessCodeLoading } =
@@ -110,21 +107,25 @@ const AccessCodes = () => {
   }, [accessCodesError]);
 
   // pagination
-  const onRowsPerPageChange = (rows: number) => {
-    setRowsPerPage(rows);
+  const onRowsPerPageChange = (limit: number) => {
+    setQuery({
+      limit,
+      page: 1,
+    });
   };
 
-  const onChangePage = (newPage: number) => {
-    setPage(newPage);
+  const onChangePage = (page: number) => {
+    setQuery({ page });
   };
 
   const onSort = (column: TableColumn<IAccessCode>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
+    setQuery({
+      orderBy: column.id as string,
+      orderDirection:
+        direction.toLocaleUpperCase() === OrderDirection.ASC
+          ? OrderDirection.ASC
+          : OrderDirection.DESC,
+    });
   };
 
   // component actions
@@ -206,9 +207,9 @@ const AccessCodes = () => {
               columns={[...AccessCodeTableHeader, buildAccessCodeActionColumn()]}
               loading={isAccessCodesLoading || isDeleteAccessCodeLoading}
               pagination
-              paginationPerPage={accessCodes?.meta?.itemsPerPage}
+              paginationPerPage={query.limit as number}
               paginationTotalRows={accessCodes?.meta?.totalItems}
-              paginationDefaultPage={page}
+              paginationDefaultPage={query.page as number}
               onChangeRowsPerPage={onRowsPerPageChange}
               onChangePage={onChangePage}
               onSort={onSort}

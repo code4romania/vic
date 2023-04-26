@@ -1,32 +1,27 @@
 import React from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { useTranslation } from 'react-i18next';
-import CardBody from '../components/CardBody';
-import CardHeader from '../components/CardHeader';
-import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
+import PageHeader from '../components/PageHeader';
+import ActivityLogStatisticsCard from '../components/ActivityLogStatisticsCard';
+import VolunteerStatisticsCard from '../components/VolunteerStatisticsCard';
+import LineChartCard from '../components/LineChartCard';
+import PieChartCard from '../components/PieChartCard';
 
 const Dashboard = () => {
-  // for testing purpose only
-  const { t } = useTranslation('general');
-
   return (
     <PageLayout>
-      This is the Dashboard
-      <h1>Translation test {t('test')}</h1>
-      <Card>
-        <CardHeader>
-          <h4>Test header</h4>
-          <XMarkIcon className="h-6 w-6" />
-        </CardHeader>
-        <CardBody>
-          <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem eius quia necessitatibus
-            voluptate mollitia blanditiis voluptatum modi corrupti natus numquam, expedita, tempore
-            ex! Impedit omnis beatae, ducimus dolor at dolorem.
+      <PageHeader>Dashboard</PageHeader>
+      <div className="flex flex-col gap-y-6 md:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-6 md:gap-y-8 lg:gap-8">
+          <div className="flex flex-col sm:flex-row lg:flex-col gap-6 md:self-start">
+            <ActivityLogStatisticsCard />
+            <VolunteerStatisticsCard />
           </div>
-        </CardBody>
-      </Card>
+          <div className="grow w-full lg:col-span-2 ">
+            <PieChartCard />
+          </div>
+        </div>
+        <LineChartCard />
+      </div>
     </PageLayout>
   );
 };

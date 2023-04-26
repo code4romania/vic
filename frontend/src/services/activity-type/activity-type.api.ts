@@ -1,16 +1,18 @@
+import { ActivityTypeStatus } from '../../common/enums/activity-type-status.enum';
 import { IActivityType } from '../../common/interfaces/activity-type.interface';
 import { ActivityCategoryFormTypes } from '../../components/ActivityTypeForm';
 import API from '../api';
 
 export const getActivityTypes = async (
   search?: string,
-  branchId?: string,
-  departmentId?: string,
-  roleId?: string,
+  branch?: string,
+  department?: string,
+  role?: string,
+  status?: ActivityTypeStatus,
 ): Promise<IActivityType[]> => {
-  return API.get('/activity-type', { params: { search, branchId, departmentId, roleId } }).then(
-    (res) => res.data,
-  );
+  return API.get('/activity-type', {
+    params: { search, branch, department, role, status },
+  }).then((res) => res.data);
 };
 
 export const getActivityType = async (id: string): Promise<IActivityType> => {
@@ -48,4 +50,12 @@ export const activateActivityType = async (id: string): Promise<IActivityType> =
 
 export const archiveActivityType = async (id: string): Promise<IActivityType> => {
   return API.patch(`/activity-type/${id}/archive`).then((res) => res.data);
+};
+
+//Listing activity type
+export const getActivityTypeListItems = async (params: {
+  status?: ActivityTypeStatus;
+  search?: string;
+}): Promise<{ id: string; name: string }[]> => {
+  return API.get('/listing/activity-types', { params }).then((res) => res.data);
 };

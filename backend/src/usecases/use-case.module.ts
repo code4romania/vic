@@ -74,6 +74,17 @@ import { UpdateActivityLogUsecase } from './activity-log/update-activity-log.use
 import { ApproveActivityLogUsecase } from './activity-log/approve-activity-log.usecase';
 import { RejectActivityLogUsecase } from './activity-log/reject-activity-log.usecase';
 import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-logs.usecase';
+import { GetManyAdminUsersUseCase } from './user/get-many-admin-users.usecase';
+import { ActionsArchiveModule } from 'src/modules/actions-archive/actions-archive.module';
+import { GetManyActionsArchiveUseCase } from './actions-archive/get-many-actions-archive.usecase';
+import { GetActivityLogCountersUsecase } from './activity-log/get-activity-log-counters.usecase';
+import { GetManyForDownloadEventRSVPUseCase } from './event/RSVP/get-many-for-download-rsvp.usecase';
+import { DashboardModule } from 'src/modules/dashboard/dashboard.module';
+import { GetDashboardVolunteerStatusTimeseriesUsecase } from './dashboard/get-dashboard-volunteer-status-timeseries.usecase';
+import { GetDashboardVolunteerGroupedUsecase } from './dashboard/get-dashboard-volunteers-grouped.usecase';
+import { GetDashboardVolunteersHoursUseCase } from './dashboard/get-dashboard-volunteers-hours.usecase';
+import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-volunteers-status.usecase';
+import { GetManyForDownloadActivityLogUseCase } from './activity-log/get-many-for-download-activity-log.usecase';
 
 @Module({
   imports: [
@@ -88,6 +99,8 @@ import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-log
     AnnouncementModule,
     EventModule,
     ActivityLogModule,
+    ActionsArchiveModule,
+    DashboardModule,
   ],
   providers: [
     // Organization
@@ -110,6 +123,7 @@ import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-log
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
+    GetManyAdminUsersUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -152,13 +166,14 @@ import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-log
     DeleteEventUseCase,
     PublishEventUseCase,
     ArchiveEventUseCase,
+    GetManyForDownloadEventUseCase,
+    GetManyEventUseCase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
     DeleteEventRSVPUseCase,
     GetManyEventRSVPUseCase,
-    GetManyEventUseCase,
-    GetManyForDownloadEventUseCase,
+    GetManyForDownloadEventRSVPUseCase,
     // Activity Log
     CreateActivityLogByAdmin,
     GetOneActivityLogUsecase,
@@ -166,6 +181,15 @@ import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-log
     ApproveActivityLogUsecase,
     RejectActivityLogUsecase,
     GetManyActivityLogsUsecase,
+    GetActivityLogCountersUsecase,
+    GetManyForDownloadActivityLogUseCase,
+    // Actions Archive
+    GetManyActionsArchiveUseCase,
+    // Dashboard
+    GetDashboardVolunteerStatusTimeseriesUsecase,
+    GetDashboardVolunteerGroupedUsecase,
+    GetDashboardVolunteersHoursUseCase,
+    GetDashboardVolunteersStatusUseCase,
   ],
   exports: [
     // Organization
@@ -188,6 +212,7 @@ import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-log
     GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
+    GetManyAdminUsersUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -231,13 +256,14 @@ import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-log
     DeleteEventUseCase,
     PublishEventUseCase,
     ArchiveEventUseCase,
+    GetManyEventUseCase,
+    GetManyForDownloadEventUseCase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
     DeleteEventRSVPUseCase,
     GetManyEventRSVPUseCase,
-    GetManyEventUseCase,
-    GetManyForDownloadEventUseCase,
+    GetManyForDownloadEventRSVPUseCase,
     // Activity Log
     CreateActivityLogByAdmin,
     GetOneActivityLogUsecase,
@@ -245,6 +271,15 @@ import { GetManyActivityLogsUsecase } from './activity-log/get-many-activity-log
     ApproveActivityLogUsecase,
     RejectActivityLogUsecase,
     GetManyActivityLogsUsecase,
+    GetActivityLogCountersUsecase,
+    GetManyForDownloadActivityLogUseCase,
+    // Actions Archive
+    GetManyActionsArchiveUseCase,
+    // Dashboard
+    GetDashboardVolunteerStatusTimeseriesUsecase,
+    GetDashboardVolunteerGroupedUsecase,
+    GetDashboardVolunteersHoursUseCase,
+    GetDashboardVolunteersStatusUseCase,
   ],
 })
 export class UseCaseModule {}

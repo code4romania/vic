@@ -1,6 +1,5 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { PaginationConfig } from '../../common/constants/pagination';
 import { AgeRangeEnum } from '../../common/enums/age-range.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
@@ -11,23 +10,29 @@ import {
   archiveVolunteer,
   blockVolunteer,
   getVolunteer,
+  getVolunteerLineChart,
+  getVolunteerPieChart,
   getVolunteers,
+  getVolunteerStatistics,
   updateVolunteer,
 } from './volunteer.api';
 import { VolunteerFormTypes } from '../../pages/EditVolunteer';
+import { LineChartOption } from '../../common/constants/line-chart-options';
+import { PieChartOption } from '../../common/constants/pie-chart-options';
 
 export const useVolunteersQuery = (
   status: VolunteerStatus,
-  limit: number = PaginationConfig.defaultRowsPerPage,
-  page: number = PaginationConfig.defaultPage,
+  limit: number,
+  page: number,
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
   age?: AgeRangeEnum,
-  branchId?: string,
-  departmentId?: string,
-  roleId?: string,
-  locationId?: string,
+  branch?: string,
+  department?: string,
+  role?: string,
+  city?: string,
+  county?: string,
   start?: Date,
   end?: Date,
 ) => {
@@ -41,10 +46,11 @@ export const useVolunteersQuery = (
       orderDirection,
       search,
       age,
-      branchId,
-      departmentId,
-      roleId,
-      locationId,
+      branch,
+      department,
+      role,
+      city,
+      county,
       start,
       end,
     ],
@@ -57,15 +63,16 @@ export const useVolunteersQuery = (
         orderDirection,
         search,
         age,
-        branchId,
-        departmentId,
-        roleId,
-        locationId,
+        branch,
+        department,
+        role,
+        city,
+        county,
         start,
         end,
       ),
     {
-      enabled: !!status,
+      enabled: !!(status && limit && page),
       onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
     },
   );
@@ -103,4 +110,25 @@ export const useUpdateVolunteerMutation = () => {
       onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
     },
   );
+};
+
+//Volunteer Statistics
+export const useVolunteerStatisticsQuery = () => {
+  return useQuery(['volunteer-statistics'], () => getVolunteerStatistics(), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
+};
+
+//Volunteer Line Chart
+export const useVolunteerLineChartQuery = (filter: LineChartOption) => {
+  return useQuery(['volunteer-line-chart', filter], () => getVolunteerLineChart(filter), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
+};
+
+//Volunteer Pie Chart
+export const useVolunteerPieChartQuery = (filter: PieChartOption) => {
+  return useQuery(['volunteer-pie-chart', filter], () => getVolunteerPieChart(filter), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
 };

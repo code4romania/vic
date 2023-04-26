@@ -12,10 +12,10 @@ export const getAnnouncements = async (
   orderDirection?: OrderDirection,
   search?: string,
   status?: AnnouncementStatus,
-  targetsIds?: string[],
+  targets?: string[],
 ): Promise<IPaginatedEntity<IAnnouncement>> => {
   return API.get('/announcement', {
-    params: { limit, page, orderBy, orderDirection, search, status, targetsIds },
+    params: { limit, page, orderBy, orderDirection, search, status, targets },
   }).then((res) => res.data);
 };
 
@@ -40,7 +40,7 @@ export const updateAnnouncement = async (
   const { targets, ...anouncementPayload } = updateData;
   return API.patch(`/announcement/${id}`, {
     ...anouncementPayload,
-    ...(targets && targets?.length > 0 ? { targetsIds: targets.map((target) => target.key) } : {}),
+    targetsIds: targets?.map((target) => target.key) || [],
   }).then((res) => res.data);
 };
 

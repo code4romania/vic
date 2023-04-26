@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
+import { ActivityLogEntity } from 'src/modules/activity-log/entities/activity-log.entity';
 import { ActivityTypeEntity } from 'src/modules/activity-type/entities/activity-type.entity';
 import { OrganizationStructureEntity } from 'src/modules/organization/entities/organization-structure.entity';
 import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
@@ -87,4 +88,7 @@ export class EventEntity extends BaseEntity {
 
   @OneToMany(() => EventRSVPEntity, (eventRSVP) => eventRSVP.event)
   eventRSVPs: EventRSVPEntity[];
+
+  @OneToMany(() => ActivityLogEntity, (activityLog) => activityLog.event)
+  activityLogs: ActivityLogEntity[];
 }

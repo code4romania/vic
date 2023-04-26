@@ -9,6 +9,7 @@ import {
   EventModelTransformer,
   IEventModel,
 } from 'src/modules/event/models/event.model';
+import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
 import {
   AdminUserTransformer,
   IAdminUserModel,
@@ -36,7 +37,7 @@ export interface IActivityLogModel extends IBaseModel {
 
   volunteer: IVolunteerModel;
   event?: IEventModel;
-  activityType: IActivityTypeModel;
+  activityType?: IActivityTypeModel;
   createdByAdmin?: IAdminUserModel; // In case is created by an Admin, will automatically be solved by the same admin
 
   approvedBy?: IAdminUserModel;
@@ -44,6 +45,8 @@ export interface IActivityLogModel extends IBaseModel {
 
   rejectedBy?: IAdminUserModel;
   rejectedOn?: Date;
+
+  organization: IOrganizationModel;
 }
 
 export interface IActivityLogListItemModel {
@@ -52,19 +55,32 @@ export interface IActivityLogListItemModel {
   date: Date;
   status: ActivityLogStatus;
   createdOn: Date;
+  approvedOn?: Date;
+  rejectedOn?: Date;
+  mentions?: string;
   // Relations
   volunteer: Pick<IVolunteerModel, 'id'> & Pick<IRegularUserModel, 'name'>;
   event?: Pick<IEventModel, 'id' | 'name'>;
   activityType: Pick<IActivityTypeModel, 'id' | 'name' | 'icon'>;
+  createdByAdmin?: Pick<IAdminUserModel, 'name'>;
+  approvedBy?: Pick<IAdminUserModel, 'name'>;
+  rejectedBy?: Pick<IAdminUserModel, 'name'>;
 }
+
+export type IActivityLogCountHoursByStatus = {
+  [ActivityLogStatus.PENDING]: number;
+  [ActivityLogStatus.APPROVED]: number;
+  [ActivityLogStatus.REJECTED]: number;
+};
 
 export type CreateActivityLogByAdminOptions = Pick<
   IActivityLogModel,
   'date' | 'hours' | 'mentions' | 'status' | 'approvedOn'
 > & {
   volunteerId: string;
+  organizationId: string;
   eventId?: string;
-  activityTypeId: string;
+  activityTypeId?: string;
   createdByAdminId: string;
   approvedById: string;
 };
@@ -100,8 +116,13 @@ export type FindManyActivityLogsOptions = {
 
   status?: ActivityLogStatusForSolvedLogs;
 
-  approvedOrRejectedById?: string;
+  approvedOrRejectedBy?: string;
 } & IBasePaginationFilterModel;
+
+export type FindManyActivityLogCounterOptions = {
+  organizationId: string;
+  volunteerId?: string;
+};
 
 export class ActivityLogModelTransformer {
   static fromEntityToListItem(
@@ -111,21 +132,33 @@ export class ActivityLogModelTransformer {
       id: entity.id,
       hours: entity.hours,
       date: entity.date,
+      mentions: entity.mentions,
       status: entity.status,
       createdOn: entity.createdOn,
+      approvedOn: entity.approvedOn,
+      rejectedOn: entity.rejectedOn,
       volunteer: {
         id: entity.volunteer.id,
         name: entity.volunteer?.user?.name,
       },
-      event: {
-        id: entity.event.id,
-        name: entity.event.name,
-      },
-      activityType: {
-        id: entity.activityType.id,
-        name: entity.activityType.name,
-        icon: entity.activityType.icon,
-      },
+      event: entity.event
+        ? {
+            id: entity.event.id,
+            name: entity.event.name,
+          }
+        : null,
+      activityType: entity.activityType
+        ? {
+            id: entity.activityType.id,
+            name: entity.activityType.name,
+            icon: entity.activityType.icon,
+          }
+        : null,
+      createdByAdmin: entity.createdByAdmin
+        ? { name: entity.createdByAdmin.name }
+        : null,
+      approvedBy: entity.approvedBy ? { name: entity.approvedBy.name } : null,
+      rejectedBy: entity.rejectedBy ? { name: entity.rejectedBy.name } : null,
     };
   }
 
@@ -151,6 +184,8 @@ export class ActivityLogModelTransformer {
 
       updatedOn: entity.updatedOn,
       createdOn: entity.createdOn,
+
+      organization: entity.organization,
     };
   }
 
@@ -170,6 +205,7 @@ export class ActivityLogModelTransformer {
     entity.volunteerId = newLog.volunteerId;
     entity.eventId = newLog.eventId;
     entity.activityTypeId = newLog.activityTypeId;
+    entity.organizationId = newLog.organizationId;
 
     return entity;
   }

@@ -1,6 +1,5 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { PaginationConfig } from '../../common/constants/pagination';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ACCESS_REQUEST_ERRORS } from '../../common/errors/entities/access-request.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
@@ -14,14 +13,15 @@ import {
 } from './access-requests.api';
 
 export const useNewAccessRequestsQuery = (
-  limit: number = PaginationConfig.defaultRowsPerPage,
-  page: number = PaginationConfig.defaultPage,
+  limit: number,
+  page: number,
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
   createdOnStart?: Date,
   createdOnEnd?: Date,
-  location?: string,
+  city?: string,
+  county?: string,
 ) => {
   return useQuery(
     [
@@ -33,7 +33,8 @@ export const useNewAccessRequestsQuery = (
       search,
       createdOnStart,
       createdOnEnd,
-      location,
+      city,
+      county,
     ],
     () =>
       getNewAccessRequests(
@@ -44,23 +45,26 @@ export const useNewAccessRequestsQuery = (
         search,
         createdOnStart,
         createdOnEnd,
-        location,
+        city,
+        county,
       ),
     {
       onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) => error,
+      enabled: !!(limit && page),
     },
   );
 };
 
 export const useRejectedAccessRequestsQuery = (
-  limit: number = PaginationConfig.defaultRowsPerPage,
-  page: number = PaginationConfig.defaultPage,
+  limit: number,
+  page: number,
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
   createdOnStart?: Date,
   createdOnEnd?: Date,
-  location?: string,
+  city?: string,
+  county?: string,
   rejectedOnStart?: Date,
   rejectedOnEnd?: Date,
 ) => {
@@ -77,6 +81,8 @@ export const useRejectedAccessRequestsQuery = (
       location,
       rejectedOnStart,
       rejectedOnEnd,
+      city,
+      county,
     ],
     () =>
       getRejectedAccessRequests(
@@ -87,12 +93,14 @@ export const useRejectedAccessRequestsQuery = (
         search,
         createdOnStart,
         createdOnEnd,
-        location,
+        city,
+        county,
         rejectedOnStart,
         rejectedOnEnd,
       ),
     {
       onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) => error,
+      enabled: !!(limit && page),
     },
   );
 };

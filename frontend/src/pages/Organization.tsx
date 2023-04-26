@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
 import { useOrganizationQuery } from '../services/organization/organization.service';
@@ -9,7 +9,6 @@ import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
 import { DivisionType } from '../common/enums/division-type.enum';
 import Tabs from '../components/Tabs';
-import DivisionTable from '../components/DivisionTable';
 import { SelectItem } from '../components/Select';
 import { useNavigate } from 'react-router-dom';
 import Card from '../layouts/CardLayout';
@@ -21,6 +20,8 @@ import FormLayout from '../layouts/FormLayout';
 import Paragraph from '../components/Paragraph';
 import FormInput from '../components/FormInput';
 import FormTextarea from '../components/FormTextarea';
+import DivisionTable from '../containers/query/DivisionTableWithQueryParams';
+import { OrganizationTableProps } from '../containers/query/OrganizationWithQueryParam';
 
 export const DivisionsTabs: SelectItem<DivisionType>[] = [
   { key: DivisionType.BRANCH, value: i18n.t(`division:table.title.branch`) },
@@ -28,8 +29,7 @@ export const DivisionsTabs: SelectItem<DivisionType>[] = [
   { key: DivisionType.ROLE, value: i18n.t('division:table.title.role') },
 ];
 
-const Organization = () => {
-  const [divisionType, setDivisionType] = useState<DivisionType>(DivisionType.BRANCH);
+const Organization = ({ query, setQuery }: OrganizationTableProps) => {
   const navigate = useNavigate();
 
   const {
@@ -50,7 +50,10 @@ const Organization = () => {
   }, [organizationError]);
 
   const onTabClick = (id: DivisionType) => {
-    setDivisionType(DivisionsTabs.find((tab) => tab.key === id)?.key as DivisionType);
+    const selectedTab = DivisionsTabs.find((tab) => tab.key === id)?.key as DivisionType;
+    setQuery({
+      type: selectedTab,
+    });
   };
 
   const onEditButtonClick = () => {
@@ -129,12 +132,14 @@ const Organization = () => {
         </Card>
       )}
       {/* organization structure tables */}
-      <Tabs<DivisionType> tabs={DivisionsTabs} onClick={onTabClick}>
-        {divisionType === DivisionType.BRANCH && <DivisionTable type={DivisionType.BRANCH} />}
-        {divisionType === DivisionType.DEPARTMENT && (
-          <DivisionTable type={DivisionType.DEPARTMENT} />
-        )}
-        {divisionType === DivisionType.ROLE && <DivisionTable type={DivisionType.ROLE} />}
+      <Tabs<DivisionType>
+        tabs={DivisionsTabs}
+        onClick={onTabClick}
+        defaultTab={DivisionsTabs.find((tab) => tab.key === query.type)}
+      >
+        {query.type === DivisionType.BRANCH && <DivisionTable type={DivisionType.BRANCH} />}
+        {query.type === DivisionType.DEPARTMENT && <DivisionTable type={DivisionType.DEPARTMENT} />}
+        {query.type === DivisionType.ROLE && <DivisionTable type={DivisionType.ROLE} />}
       </Tabs>
     </PageLayout>
   );

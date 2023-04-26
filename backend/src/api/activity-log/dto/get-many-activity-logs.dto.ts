@@ -37,5 +37,5 @@ export class GetManyActivityLogsDto extends BasePaginationFilterDto {
 
   @IsString()
   @IsOptional()
-  approvedOrRejectedById?: string;
+  approvedOrRejectedBy?: string;
 }
