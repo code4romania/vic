@@ -1,4 +1,4 @@
 export interface IActivityLogStatistics {
-  totalHours: string;
-  approvalHours: string;
+  approved: string;
+  pending: string;
 }

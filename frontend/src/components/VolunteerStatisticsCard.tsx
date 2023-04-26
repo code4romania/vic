@@ -12,8 +12,8 @@ const VolunteerStatisticsCard = () => {
   return (
     <StatisticsCard
       label={i18n.t('volunteers:tabs.active')}
-      value={data?.volunteers || 'N/A'}
-      info={i18n.t('dashboard:statistics_card.volunteer.info', { value: data?.requests })}
+      value={data?.activeVolunteers || 'N/A'}
+      info={i18n.t('dashboard:statistics_card.volunteer.info', { value: data?.pendingRequest })}
       action={{
         label: i18n.t('dashboard:statistics_card.volunteer.label'),
         onClick: () => navigate('/volunteers/requests'),

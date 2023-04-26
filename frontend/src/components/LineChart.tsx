@@ -46,7 +46,7 @@ const LineChart = ({ data, margin, tooltipLabelStyle, tooltipItemStyle }: LineCh
         >
           <CartesianGrid vertical={false} />
           <XAxis dataKey={LINE_CHART_OPTIONS.DATA_KEYS.NAME} interval="preserveStartEnd" />
-          <YAxis orientation="right" tickLine={false} axisLine={false} />
+          <YAxis orientation="right" tickLine={false} axisLine={false} allowDecimals={false} />
           <Tooltip separator=" " labelStyle={tooltipLabelStyle} itemStyle={tooltipItemStyle} />
           <Legend iconType="circle" />
           <Line
