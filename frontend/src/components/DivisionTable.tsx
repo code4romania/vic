@@ -24,6 +24,7 @@ import ConfirmationModal from './ConfirmationModal';
 import DataTableComponent from './DataTableComponent';
 import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 import Popover from './Popover';
+import { useNavigate } from 'react-router';
 
 export const DivisionTableHeader = [
   {
@@ -65,6 +66,8 @@ const DivisionTable = ({ query, setQuery }: DivisionTableProps) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [selectedDivisionForUpdate, setSelectedDivisionForUpdate] = useState<IDivision>();
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
+
+  const navigate = useNavigate();
 
   // divisions query
   const {
@@ -162,7 +165,7 @@ const DivisionTable = ({ query, setQuery }: DivisionTableProps) => {
   };
 
   const onView = (row: IDivision) => {
-    alert(`Not yet implemented, ${row}`);
+    navigate(`/volunteers?${row.type}=${row.name}`);
   };
 
   const onDelete = (row: IDivision) => {
