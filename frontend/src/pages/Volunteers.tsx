@@ -175,6 +175,10 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
   const onTabClick = (tab: VolunteerStatus) => {
     // reset filter queries on tab click
     setQuery({ volunteerStatus: tab }, 'push');
+    setBranch(undefined);
+    setDepartment(undefined);
+    setRole(undefined);
+    setLocation(undefined);
   };
 
   // menu items

@@ -44,6 +44,7 @@ const AccessCodeTableHeader = [
     id: 'startDate',
     name: i18n.t('general:availability'),
     sortable: true,
+    grow: 1,
     minWidth: '5rem',
     cell: (row: IAccessCode) => (
       <CellLayout>{`${formatDate(row.startDate)} -\n${

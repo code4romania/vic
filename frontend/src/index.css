@@ -106,13 +106,13 @@
   }
 
   .btn {
-    @apply flex items-center justify-center rounded-md min-w-fit py-2.5 gap-x-2 whitespace-pre-wrap font-medium text-xs sm:text-sm font-robotoMedium disabled:opacity-50;
+    @apply flex items-center justify-center rounded-md min-w-fit py-2.5 gap-x-2 whitespace-pre-wrap font-medium text-xs sm:text-sm font-robotoMedium disabled:opacity-50 disabled:cursor-default;
 
     padding-inline: 17px;
   }
 
   .btn-primary {
-    @apply btn text-white bg-turquoise hover:bg-turquoise-700 active:bg-turquoise-800 focus:shadow-yellow focus:outline-0;
+    @apply btn text-white bg-turquoise hover:bg-turquoise-700 active:bg-turquoise-800 focus:shadow-yellow focus:outline-0 disabled:bg-turquoise;
   }
 
   .btn-danger {

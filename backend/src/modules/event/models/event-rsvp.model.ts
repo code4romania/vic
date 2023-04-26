@@ -35,9 +35,9 @@ export type FindEventRSVPOptions = Partial<
 
 export type FindManyEventRSVPOptions = Partial<
   Pick<IEventRSVPModel, 'going'> & {
-    branchId: string;
-    departmentId: string;
-    roleId: string;
+    branch: string;
+    department: string;
+    role: string;
   }
 > & { eventId: string } & IBasePaginationFilterModel;
 
