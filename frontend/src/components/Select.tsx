@@ -14,6 +14,7 @@ export interface SelectProps<T> {
   selected?: SelectItem<T>;
   placeholder?: string;
   helper?: ReactNode;
+  minWidth?: boolean;
 }
 
 const Select = <T extends React.Key>({
@@ -23,6 +24,7 @@ const Select = <T extends React.Key>({
   selected,
   placeholder,
   helper,
+  minWidth,
 }: SelectProps<T>) => {
   return (
     <Listbox defaultValue={selected} onChange={onChange}>
@@ -34,7 +36,11 @@ const Select = <T extends React.Key>({
             </Listbox.Label>
           )}
           <div className="relative">
-            <Listbox.Button className="h-[44px] max-w-[37rem] bg-white relative w-full border border-cool-gray-200 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm disabled:bg-cool-gray-100">
+            <Listbox.Button
+              className={`h-[44px] ${
+                minWidth ? 'min-w-[90px] md:min-w-[100px]' : ''
+              } max-w-[37rem] bg-white relative w-full border border-cool-gray-200 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm disabled:bg-cool-gray-100`}
+            >
               <span className="block truncate lg:text-base text-sm">
                 {selected ? (
                   <span className="text-cool-gray-800 font-normal sm:text-sm lg:text-base text-xs">

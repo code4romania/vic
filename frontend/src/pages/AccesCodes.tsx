@@ -37,7 +37,6 @@ const AccessCodeTableHeader = [
     id: 'code',
     name: i18n.t('access_code:name'),
     sortable: true,
-    grow: 1,
     minWidth: '5rem',
     selector: (row: IAccessCode) => row.code,
   },
@@ -57,7 +56,6 @@ const AccessCodeTableHeader = [
     id: 'usageCount',
     name: i18n.t('general:uses'),
     sortable: true,
-    grow: 1,
     minWidth: '2rem',
     selector: (row: IAccessCode) => row.usageCount,
   },
@@ -65,15 +63,13 @@ const AccessCodeTableHeader = [
     id: 'createdOn',
     name: i18n.t('general:created_on'),
     sortable: true,
-    grow: 1,
-    minWidth: '5rem',
+    minWidth: '8rem',
     cell: (row: IAccessCode) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
   {
     id: 'createdBy.name',
     name: i18n.t('general:created_by'),
     sortable: true,
-    grow: 1,
     minWidth: '5rem',
     cell: (row: IAccessCode) => (
       <CellLayout>

@@ -66,7 +66,7 @@ const AnnouncementTableHeader = [
     name: i18n.t('announcement:header.updated_on'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '8rem',
     cell: (row: IAnnouncement) => <CellLayout>{formatDate(row.updatedOn)}</CellLayout>,
   },
   {

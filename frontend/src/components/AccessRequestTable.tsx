@@ -76,6 +76,7 @@ const PendingAccessRequestsTableHeader = [
     id: 'requestedBy.email',
     name: i18n.t('general:contact'),
     sortable: true,
+    minWidth: '14rem',
     selector: (row: IAccessRequest) => `${row.requestedBy.email}\n${row.requestedBy.phone}`,
   },
   {
