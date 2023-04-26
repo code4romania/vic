@@ -165,9 +165,7 @@ const DivisionTable = ({ query, setQuery }: DivisionTableProps) => {
   };
 
   const onView = (row: IDivision) => {
-    navigate(
-      `/volunteers?limit=10&page=1&orderDirection=ASC&volunteerStatus=active&orderBy=user.name&${row.type}=${row.name}`,
-    );
+    navigate(`/volunteers?${row.type}=${row.name}`);
   };
 
   const onDelete = (row: IDivision) => {
