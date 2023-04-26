@@ -9,7 +9,7 @@ import { RSVPGoingEnum } from '../common/enums/rsvp.enum';
 import { getEventRSVPsForDownload } from '../services/event/event.api';
 import DataTableComponent from './DataTableComponent';
 import DataTableFilters from './DataTableFilters';
-import Select, { SelectItem } from './Select';
+import { SelectItem } from './Select';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import CellLayout from '../layouts/CellLayout';
@@ -22,6 +22,7 @@ import i18n from '../common/config/i18n';
 import { useRsvpsQuery } from '../services/event/event.service';
 import CardBody from './CardBody';
 import { RsvpTableBasicProps } from '../containers/query/RsvpTableWithQueryParams';
+import SelectFilter from '../containers/SelectFilter';
 
 const TableHeader = [
   {
@@ -64,7 +65,7 @@ const TableHeader = [
   },
 ];
 
-const ResponseSelectOptions = [
+const ResponseSelectOptions: SelectItem<RSVPGoingEnum>[] = [
   { key: RSVPGoingEnum.YES, value: i18n.t('events:participate') },
   { key: RSVPGoingEnum.NO, value: i18n.t('events:not_participate') },
 ];
@@ -112,8 +113,8 @@ const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
     });
   };
 
-  const onResponseChange = (response: SelectItem<RSVPGoingEnum>) => {
-    setQuery({ going: response.key });
+  const onResponseChange = (response: SelectItem<string>) => {
+    setQuery({ going: response.key as RSVPGoingEnum });
   };
 
   const onResetFilters = () => {
@@ -210,12 +211,12 @@ const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
           defaultValue={query.role}
           type={DivisionType.ROLE}
         />
-        <Select
+        <SelectFilter
           label={`${i18n.t('general:answer')}`}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
           onChange={onResponseChange}
-          selected={ResponseSelectOptions.find((option) => option.key === query.going)}
           options={ResponseSelectOptions}
+          defaultValue={query.going}
         />
       </DataTableFilters>
       <Card>
