@@ -24,6 +24,7 @@ import ConfirmationModal from './ConfirmationModal';
 import DataTableComponent from './DataTableComponent';
 import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 import Popover from './Popover';
+import LinkCell from './LinkCell';
 
 export const DivisionTableHeader = [
   {
@@ -46,9 +47,11 @@ export const DivisionTableHeader = [
     sortable: true,
     minWidth: '10rem',
     cell: (row: IDivision) => (
-      <CellLayout>
-        <a>{row.createdBy.name}</a>
-      </CellLayout>
+      <LinkCell
+        href={`/actions-archive?orderDirection=ASC&page=1&limit=10&author=${row.createdBy.name}`}
+      >
+        {row.createdBy.name}
+      </LinkCell>
     ),
   },
   {

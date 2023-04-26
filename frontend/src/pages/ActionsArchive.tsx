@@ -154,7 +154,7 @@ const ActionsArchive = ({ query, setQuery }: ActionsArchiveProps) => {
         <AdminSelect
           label={i18n.t('actions_archive:author')}
           onSelect={onAuthorChange}
-          defaultValue={author}
+          defaultValue={query.author ? { value: 'something dumb', label: query.author } : author}
         />
       </DataTableFilters>
       <Card>

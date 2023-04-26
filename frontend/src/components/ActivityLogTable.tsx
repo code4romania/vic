@@ -37,6 +37,7 @@ import AdminSelect from '../containers/AdminSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { getActivityLogsForDownload } from '../services/activity-log/activity-log.api';
 import { ActivityLogTableBasicProps } from '../containers/query/ActivityLogTableWithQueryParams';
+import LinkCell from './LinkCell';
 
 const StatusOptions: SelectItem<ActivityLogStatus>[] = [
   { key: ActivityLogStatus.APPROVED, value: i18n.t('activity_log:display_status.approved') },
@@ -170,9 +171,7 @@ const PendingActivityLogTableHeader = [
     minWidth: '5rem',
     cell: (row: IActivityLogListItem) =>
       row.volunteer && (
-        <CellLayout>
-          <a>{row.volunteer.name}</a>
-        </CellLayout>
+        <LinkCell href={`/volunteers/${row.volunteer.id}`}>{row.volunteer.name}</LinkCell>
       ),
   },
   {
@@ -224,9 +223,7 @@ const PastActivityLogTableHeader = [
     minWidth: '5rem',
     cell: (row: IActivityLogListItem) =>
       row.volunteer && (
-        <CellLayout>
-          <a>{row.volunteer?.name}</a>
-        </CellLayout>
+        <LinkCell href={`/volunteers/${row.volunteer.id}`}>{row.volunteer.name}</LinkCell>
       ),
   },
   {
