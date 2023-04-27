@@ -9,6 +9,7 @@ import {
   UpdateVolunteerProfileOptions,
   VolunteerProfileModelTransformer,
 } from '../model/volunteer-profile.model';
+import { VolunteerRepositoryService } from './volunteer.repository';
 
 export class VolunteerProfileRepositoryService
   implements IVolunteerProfileRepository
@@ -18,6 +19,7 @@ export class VolunteerProfileRepositoryService
     private readonly volunteerProfileRepository: Repository<VolunteerProfileEntity>,
     @InjectRepository(VolunteerEntity)
     private readonly volunteerRepository: Repository<VolunteerEntity>,
+    private readonly volunteerRepositoryService: VolunteerRepositoryService,
   ) {}
 
   async update(
@@ -37,10 +39,10 @@ export class VolunteerProfileRepositoryService
     );
 
     // Update Volunteer with the volunteerProfileId
-    await this.volunteerRepository.update(
-      { id: newProfile.volunteerId },
-      { volunteerProfileId: profile.id },
-    );
+    await this.volunteerRepositoryService.update({
+      id: newProfile.volunteerId,
+      volunteerProfileId: profile.id,
+    });
 
     return this.find(profile.id);
   }
