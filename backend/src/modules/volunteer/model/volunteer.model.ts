@@ -61,9 +61,18 @@ export type ActivateVolunteerOptions = {
   archivedById: null;
 };
 
+export type UpdateVolunteerProfileIdOptions = {
+  volunteerProfileId: IVolunteerProfileModel['id'];
+};
+
 export type UpdateVolunteerOptions = Pick<IVolunteerModel, 'id'> &
   OneOf<
-    [ArchiveVolunteerOptions, BlockVolunteerOptions, ActivateVolunteerOptions]
+    [
+      ArchiveVolunteerOptions,
+      BlockVolunteerOptions,
+      ActivateVolunteerOptions,
+      UpdateVolunteerProfileIdOptions,
+    ]
   >;
 
 export type FindVolunteerOptions = Partial<IVolunteerModel> & {
