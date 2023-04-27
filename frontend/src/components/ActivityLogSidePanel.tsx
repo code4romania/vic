@@ -65,21 +65,14 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
 
   const onAprroveOrRejectByClick = () => {
     if (activityLog?.status === ActivityLogStatus.APPROVED) {
-      navigate(
-        `/actions-archive?orderDirection=ASC&page=1&limit=10&author=${activityLog.approvedBy?.name}`,
-      );
+      navigate(`/actions-archive?author=${activityLog.approvedBy?.name}`);
     } else if (activityLog?.status === ActivityLogStatus.REJECTED) {
-      navigate(
-        `/actions-archive?orderDirection=ASC&page=1&limit=10&author=${activityLog?.rejectedBy?.name}`,
-      );
+      navigate(`/actions-archive?author=${activityLog?.rejectedBy?.name}`);
     }
   };
 
   const onAdminClick = () => {
-    if (activityLog)
-      navigate(
-        `/actions-archive?orderDirection=ASC&page=1&limit=10&author=${activityLog.createdByAdmin?.name}`,
-      );
+    if (activityLog) navigate(`/actions-archive?author=${activityLog.createdByAdmin?.name}`);
   };
 
   const onApprove = (id: string) => {

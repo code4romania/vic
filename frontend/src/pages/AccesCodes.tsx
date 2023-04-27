@@ -73,9 +73,7 @@ const AccessCodeTableHeader = [
     sortable: true,
     minWidth: '5rem',
     cell: (row: IAccessCode) => (
-      <LinkCell
-        href={`/actions-archive?orderDirection=ASC&page=1&limit=10&author=${row.createdBy.name}`}
-      >
+      <LinkCell href={`/actions-archive?author=${row.createdBy.name}`}>
         {row.createdBy.name}
       </LinkCell>
     ),

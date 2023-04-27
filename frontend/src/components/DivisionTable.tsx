@@ -48,9 +48,7 @@ export const DivisionTableHeader = [
     sortable: true,
     minWidth: '10rem',
     cell: (row: IDivision) => (
-      <LinkCell
-        href={`/actions-archive?orderDirection=ASC&page=1&limit=10&author=${row.createdBy.name}`}
-      >
+      <LinkCell href={`/actions-archive?author=${row.createdBy.name}`}>
         {row.createdBy.name}
       </LinkCell>
     ),

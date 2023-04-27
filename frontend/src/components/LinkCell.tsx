@@ -16,7 +16,9 @@ const LinkCell = ({ href, children }: LinkCellProps) => {
 
   return (
     <CellLayout>
-      <a onClick={onLinkClick}>{children}</a>
+      <a onClick={onLinkClick} className="text-xs sm:text-sm">
+        {children}
+      </a>
     </CellLayout>
   );
 };
