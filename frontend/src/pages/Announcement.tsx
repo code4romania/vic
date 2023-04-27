@@ -161,7 +161,7 @@ const Announcement = () => {
                 label={`${i18n.t('announcement:header.target')}`}
                 value={`(${announcement.targetedVolunteers}) ${
                   announcement.targets.length !== 0
-                    ? arrayOfNamesToString(announcement.targets, ' ')
+                    ? arrayOfNamesToString(announcement.targets, ', ')
                     : i18n.t('announcement:all_organization')
                 }`}
                 readOnly

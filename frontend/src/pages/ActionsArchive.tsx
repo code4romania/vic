@@ -44,7 +44,7 @@ const TableHeader = [
     name: i18n.t('general:description'),
     sortable: false,
     grow: 2,
-    minWidth: '10rem',
+    minWidth: '15rem',
     cell: (row: IAction) => (
       <CellLayout>
         <div className="max-h-32">
@@ -58,7 +58,7 @@ const TableHeader = [
     name: i18n.t('general:date'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '10rem',
     cell: (row: IAction) => <CellLayout>{formatDateWithTime(row.createdOn)}</CellLayout>,
   },
 ];

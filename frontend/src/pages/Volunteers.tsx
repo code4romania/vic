@@ -57,8 +57,8 @@ const ActiveVolunteersTableHeader = [
     id: 'user.name',
     name: i18n.t('general:name'),
     sortable: true,
-    grow: 2,
-    minWidth: '10rem',
+    grow: 1,
+    minWidth: '5rem',
     cell: (row: IVolunteer) => (
       <MediaCell
         logo={row.user?.profilePicture || ''}
@@ -93,7 +93,7 @@ const ActiveVolunteersTableHeader = [
     name: i18n.t('general:contact'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '14rem',
     selector: (row: IVolunteer) =>
       row.profile ? `${row.profile?.email}\n${row.profile?.phone}` : '-',
   },
@@ -175,6 +175,10 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
   const onTabClick = (tab: VolunteerStatus) => {
     // reset filter queries on tab click
     setQuery({ volunteerStatus: tab }, 'push');
+    setBranch(undefined);
+    setDepartment(undefined);
+    setRole(undefined);
+    setLocation(undefined);
   };
 
   // menu items

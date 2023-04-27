@@ -10,6 +10,7 @@ import ActivityLogTable from '../../components/ActivityLogTable';
 import { ActivityLogResolutionStatus } from '../../common/enums/activity-log-resolution-status.enum';
 import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
 import { VolunteerTabsOptions } from '../../pages/Volunteer';
+import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
 
 export interface ActivityLogTableQueryProps extends IPaginationQueryParams {
   resolutionStatus?: ActivityLogResolutionStatus;
@@ -31,9 +32,11 @@ const DEFAULT_QUERY_PARAMS = getPaginationQueryParams();
 const ActivityLogTableWithQueryParams = ({
   resolutionStatus,
   volunteerId,
+  volunteerStatus,
 }: {
   resolutionStatus?: ActivityLogResolutionStatus;
   volunteerId?: string;
+  volunteerStatus?: VolunteerStatus;
 }) => {
   // set request status default
   const ResolutionStatusParam = withDefault(
@@ -62,6 +65,7 @@ const ActivityLogTableWithQueryParams = ({
             {...props}
             resolutionStatus={resolutionStatus}
             volunteerId={volunteerId}
+            volunteerStatus={volunteerStatus}
           />
         );
       }}

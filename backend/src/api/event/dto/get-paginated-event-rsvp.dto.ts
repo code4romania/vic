@@ -1,19 +1,19 @@
-import { IsEnum, IsOptional, IsUUID } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { RSVPGoingEnum } from 'src/modules/event/enums/rsvp-going.enum';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 
 export class GetPaginatedEventRSVPsDto extends BasePaginationFilterDto {
   @IsOptional()
-  @IsUUID()
-  branchId?: string;
+  @IsString()
+  branch?: string;
 
   @IsOptional()
-  @IsUUID()
-  departmentId?: string;
+  @IsString()
+  department?: string;
 
   @IsOptional()
-  @IsUUID()
-  roleId?: string;
+  @IsString()
+  role?: string;
 
   @IsOptional()
   @IsEnum(RSVPGoingEnum)

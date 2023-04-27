@@ -5,8 +5,6 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
-import { VolunteerProfileEntity } from 'src/modules/volunteer/entities/volunteer-profile.entity';
 import { Repository } from 'typeorm';
 import { EventRSVPEntity } from '../entities/event-rsvp.entity';
 import { IEventRSVPRepository } from '../interfaces/event-rsvp-repository.interface';
@@ -108,30 +106,43 @@ export class EventRSVPRepository
       );
     }
 
-    if (
-      findOptions.branchId ||
-      findOptions.departmentId ||
-      findOptions.roleId
-    ) {
+    if (findOptions.branch || findOptions.department || findOptions.role) {
       // Need to filter by users who are volunteers in the organization who created the event
-      query = query.leftJoinAndMapOne(
-        'volunteer.volunteerProfile',
-        'volunteer.volunteerProfile',
-        'volunteerProfile',
-      );
-      if (findOptions.roleId) {
-        query.andWhere('volunteerProfile.roleId = :roleId', {
-          roleId: findOptions.roleId,
+      query = query
+        .leftJoinAndMapOne(
+          'volunteer.volunteerProfile',
+          'volunteer.volunteerProfile',
+          'volunteerProfile',
+        )
+        .leftJoinAndMapOne(
+          'volunteerProfile.branch',
+          'volunteerProfile.branch',
+          'branch',
+        )
+        .leftJoinAndMapOne(
+          'volunteerProfile.role',
+          'volunteerProfile.role',
+          'role',
+        )
+        .leftJoinAndMapOne(
+          'volunteerProfile.department',
+          'volunteerProfile.department',
+          'department',
+        );
+
+      if (findOptions.role) {
+        query.andWhere('role.name = :role', {
+          role: findOptions.role,
         });
       }
-      if (findOptions.departmentId) {
-        query.andWhere('volunteerProfile.departmentId = :departmentId', {
-          departmentId: findOptions.departmentId,
+      if (findOptions.department) {
+        query.andWhere('department.name = :department', {
+          department: findOptions.department,
         });
       }
-      if (findOptions.branchId) {
-        query.andWhere('volunteerProfile.branchId = :branchId', {
-          branchId: findOptions.branchId,
+      if (findOptions.branch) {
+        query.andWhere('branch.name = :branch', {
+          branch: findOptions.branch,
         });
       }
     }

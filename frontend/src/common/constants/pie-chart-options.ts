@@ -1,8 +1,8 @@
 import i18n from '../config/i18n';
 
 export enum PieChartOption {
-  AGE = 'age',
-  SEX = 'sex',
+  AGE = 'AGE',
+  SEX = 'SEX',
 }
 
 export const PIE_CHART_COLORS = ['#06B5C0', '#C4FBFF', '#246F6F'];

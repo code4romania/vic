@@ -20,7 +20,7 @@ import EditVolunteer from '../pages/EditVolunteer';
 import AddActivityType from '../pages/AddActivityType';
 import ActivityTypes from '../containers/query/ActivityTypesWithQueryParams';
 import Events from '../containers/query/EventsWithQueryParams';
-import Event from '../pages/Event';
+import Event from '../containers/query/EventWithQueryParams';
 import AddEvent from '../pages/AddEvent';
 import EditEvent from '../pages/EditEvent';
 import AddAnnouncement from '../pages/AddAnnouncement';

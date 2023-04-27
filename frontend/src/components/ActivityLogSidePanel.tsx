@@ -1,14 +1,14 @@
 import { CheckIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/solid';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { IActivityLog } from '../common/interfaces/activity-log.interface';
 import { formatDate } from '../common/utils/utils';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import {
+  useActivityLogQuery,
   useApproveActivityLogMutation,
   useRejectActivityLogMutation,
 } from '../services/activity-log/activity-log.service';
@@ -17,21 +17,20 @@ import FormReadOnlyElement from './FormReadOnlyElement';
 import LoadingContent from './LoadingContent';
 import RejectTextareaModal from './RejectTextareaModal';
 import SidePanel from './SidePanel';
+import EditActivityLog from './EditActivityLog';
 
 interface ActivityLogSidePanelProps {
   isOpen: boolean;
   onClose: (shouldRefetch?: boolean) => void;
-  onEdit: () => void;
-  activityLog?: IActivityLog;
+  activityLogId?: string;
 }
 
-const ActivityLogSidePanel = ({
-  isOpen,
-  onClose,
-  onEdit,
-  activityLog,
-}: ActivityLogSidePanelProps) => {
+const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSidePanelProps) => {
   const navigate = useNavigate();
+
+  const [isEditctivityLogSidePanelOpen, setIsEditActivityLogSidePanelOpen] =
+    useState<boolean>(false);
+  const [shouldActivityLogListRefetch, setShouldActivityLogListRefeth] = useState<boolean>(false);
 
   // reject modal state
   const [isRejectModalOpen, setIsRejectModalOpen] = useState<boolean>(false);
@@ -41,6 +40,20 @@ const ActivityLogSidePanel = ({
     useApproveActivityLogMutation();
   const { mutateAsync: rejectActivityLog, isLoading: isRejectLoading } =
     useRejectActivityLogMutation();
+  // get one query
+  const {
+    data: activityLog,
+    error: activityLogError,
+    refetch,
+  } = useActivityLogQuery(activityLogId as string);
+
+  // query error handling
+  useEffect(() => {
+    if (activityLogError)
+      useErrorToast(
+        InternalErrors.ACTIVITY_LOG_ERRORS.getError(activityLogError.response?.data.code_error),
+      );
+  }, [activityLogError]);
 
   const onVolunteerClick = () => {
     if (activityLog) navigate(`/volunteers/${activityLog.volunteer.id}`);
@@ -102,8 +115,24 @@ const ActivityLogSidePanel = ({
       );
   };
 
+  const onCloseEditSidePanel = (shouldRefetch?: boolean) => {
+    setIsEditActivityLogSidePanelOpen(false);
+    if (shouldRefetch) {
+      refetch();
+      setShouldActivityLogListRefeth(true);
+    }
+  };
+
+  const onEdit = () => {
+    setIsEditActivityLogSidePanelOpen(true);
+  };
+
+  const onCloseSidePanel = () => {
+    onClose(shouldActivityLogListRefetch);
+  };
+
   return (
-    <SidePanel isOpen={isOpen} onClose={onClose}>
+    <SidePanel isOpen={isOpen} onClose={onCloseSidePanel}>
       <div className="flex justify-between items-center text-center sm:text-left px-6">
         <h3 className="sm:text-lg lg:text-xl leading-6 font-robotoBold truncate">
           {i18n.t('activity_log:side_panel.title')}
@@ -121,7 +150,7 @@ const ActivityLogSidePanel = ({
           )}
           <button
             className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
-            onClick={onClose.bind(null, false)}
+            onClick={onCloseSidePanel}
             aria-label="close-modal"
             type="button"
           >
@@ -245,6 +274,11 @@ const ActivityLogSidePanel = ({
           </footer>
         </>
       )}
+      <EditActivityLog
+        onClose={onCloseEditSidePanel}
+        isOpen={isEditctivityLogSidePanelOpen}
+        activityLog={activityLog}
+      />
       {isRejectModalOpen && (
         <RejectTextareaModal
           label={i18n.t('activity_log:modal.description')}

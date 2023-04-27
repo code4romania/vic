@@ -4,7 +4,7 @@ import i18n from '../common/config/i18n';
 import PageHeader from '../components/PageHeader';
 import PageLayout from '../layouts/PageLayout';
 import Tabs from '../components/Tabs';
-import Select, { SelectItem } from '../components/Select';
+import { SelectItem } from '../components/Select';
 import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
 import {
@@ -12,12 +12,10 @@ import {
   useDeleteEventMutation,
   useEventQuery,
   usePublishEventMutation,
-  useRsvpsQuery,
 } from '../services/event/event.service';
 import Button from '../components/Button';
 import {
   ArchiveBoxIcon,
-  ArrowDownTrayIcon,
   CloudArrowUpIcon,
   PencilIcon,
   TrashIcon,
@@ -26,7 +24,7 @@ import CardBody from '../components/CardBody';
 import FormLayout from '../layouts/FormLayout';
 import Paragraph from '../components/Paragraph';
 import FormReadOnlyElement from '../components/FormReadOnlyElement';
-import { downloadExcel, formatDateWithTime } from '../common/utils/utils';
+import { formatDateWithTime } from '../common/utils/utils';
 import LoadingContent from '../components/LoadingContent';
 import EmptyContent from '../components/EmptyContent';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
@@ -35,19 +33,10 @@ import { EventStatus } from '../common/enums/event-status';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { IEvent } from '../common/interfaces/event.interface';
 import { AttendanceType } from '../common/enums/attendance-type.enum';
-import DataTableComponent from '../components/DataTableComponent';
-import MediaCell from '../components/MediaCell';
-import { OrderDirection } from '../common/enums/order-direction.enum';
-import { SortOrder, TableColumn } from 'react-data-table-component';
-import { IRsvp } from '../common/interfaces/rsvp.interface';
-import DataTableFilters from '../components/DataTableFilters';
-import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
-import { DivisionType } from '../common/enums/division-type.enum';
-import { RSVPGoingEnum } from '../common/enums/rsvp.enum';
-import { getEventRSVPsForDownload } from '../services/event/event.api';
-import CellLayout from '../layouts/CellLayout';
+import { EventProps } from '../containers/query/EventWithQueryParams';
+import RsvpTableWithQueryParams from '../containers/query/RsvpTableWithQueryParams';
 
-enum EventTab {
+export enum EventTab {
   EVENT = 'event',
   RESPONSES = 'responses',
 }
@@ -55,47 +44,6 @@ enum EventTab {
 const EventTabs: SelectItem<EventTab>[] = [
   { key: EventTab.EVENT, value: i18n.t('events:details') },
   { key: EventTab.RESPONSES, value: i18n.t('events:responses_list') },
-];
-
-const TableHeader = [
-  {
-    id: 'user.name',
-    name: i18n.t('general:name'),
-    sortable: true,
-    minWidth: '10rem',
-    grow: 2,
-    cell: (row: IRsvp) => <MediaCell logo={row.logo} title={row.userName} />,
-  },
-  {
-    id: 'going',
-    name: i18n.t('general:answer'),
-    minWidth: '11rem',
-    grow: 1,
-    sortable: true,
-    selector: (row: IRsvp) =>
-      row.going ? i18n.t('events:participate') : i18n.t('events:not_participate'),
-  },
-  {
-    id: 'volunteerId',
-    name: i18n.t('events:volunteer'),
-    minWidth: '10rem',
-    grow: 1,
-    selector: (row: IRsvp) => (row.volunteerId ? i18n.t('general:yes') : i18n.t('general:no')),
-  },
-  {
-    id: 'mention',
-    name: i18n.t('events:form.mention.label'),
-    minWidth: '9rem',
-    grow: 1,
-    sortable: true,
-    cell: (row: IRsvp) => (
-      <CellLayout>
-        <small title={row.mention} className="text-overflow">
-          {row.mention ? row.mention : '-'}
-        </small>
-      </CellLayout>
-    ),
-  },
 ];
 
 interface EventDetailsProps {
@@ -233,41 +181,14 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
   </Card>
 );
 
-const Event = () => {
+const Event = ({ query, setQuery }: EventProps) => {
   const [showDeleteEvent, setShowDeleteEvent] = useState<boolean>();
-  const [tabsStatus, setTabsStatus] = useState<EventTab>(EventTab.EVENT);
-  // pagination state
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
-  // filters
-  const [search, setSearch] = useState<string>();
-  const [branch, setBranch] = useState<SelectItem<string>>();
-  const [department, setDepartment] = useState<SelectItem<string>>();
-  const [role, setRole] = useState<SelectItem<string>>();
-  const [going, setGoing] = useState<SelectItem<string>>();
 
   const navigate = useNavigate();
   const { id } = useParams();
 
   const { data: event, isLoading, error } = useEventQuery(id as string);
-  const {
-    data: rsvps,
-    isLoading: isRsvpsLoading,
-    error: rsvpsError,
-  } = useRsvpsQuery(
-    id as string,
-    rowsPerPage,
-    page,
-    orderByColumn,
-    orderDirection,
-    search,
-    branch?.key,
-    department?.key,
-    role?.key,
-    going?.key,
-  );
+
   const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
   const { mutateAsync: publishEvent, isLoading: isPublishingEvent } = usePublishEventMutation();
   const { mutateAsync: deleteEvent, isLoading: isDeletingEvent } = useDeleteEventMutation();
@@ -276,17 +197,15 @@ const Event = () => {
     if (error) {
       useErrorToast(InternalErrors.EVENT_ERRORS.getError(error?.response?.data.code_error));
     }
-    if (rsvpsError) {
-      useErrorToast(InternalErrors.EVENT_ERRORS.getError(rsvpsError?.response?.data.code_error));
-    }
-  }, [error, rsvpsError]);
+  }, [error]);
 
   const navigateBack = () => {
     navigate('/events', { replace: true });
   };
 
   const onTabClick = (tab: EventTab) => {
-    setTabsStatus(tab);
+    // reset filter queries on tab click
+    setQuery({ activeTab: tab }, 'push');
   };
 
   const onDelete = () => {
@@ -339,43 +258,15 @@ const Event = () => {
       });
   };
 
-  const onSort = (column: TableColumn<IRsvp>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
-  };
-
-  const onResetFilters = () => {
-    setBranch(undefined);
-    setDepartment(undefined);
-    setRole(undefined);
-    setSearch(undefined);
-    setGoing(undefined);
-  };
-
-  const onExportRSVPs = async () => {
-    const { data: eventRSVPsData } = await getEventRSVPsForDownload(
-      id as string,
-      orderByColumn,
-      orderDirection,
-      search,
-      branch?.key,
-      department?.key,
-      role?.key,
-      going?.key,
-    );
-
-    downloadExcel(eventRSVPsData as BlobPart, i18n.t('events:download_rsvp'));
-  };
-
   return (
     <PageLayout>
       <PageHeader onBackButtonPress={navigateBack}>{i18n.t('general:view')}</PageHeader>
-      <Tabs<EventTab> tabs={EventTabs} onClick={onTabClick}>
-        {tabsStatus === EventTab.EVENT && (
+      <Tabs<EventTab>
+        tabs={EventTabs}
+        onClick={onTabClick}
+        defaultTab={EventTabs.find((option) => option.key === query.activeTab)}
+      >
+        {query?.activeTab === EventTab.EVENT && (
           <>
             {isLoading || isPublishingEvent || isArchivingEvent || isDeletingEvent ? (
               <Card>
@@ -422,71 +313,8 @@ const Event = () => {
             )}
           </>
         )}
-        {tabsStatus === EventTab.RESPONSES && (
-          <>
-            <DataTableFilters
-              onSearch={setSearch}
-              searchValue={search}
-              onResetFilters={onResetFilters}
-            >
-              <OrganizationStructureSelect
-                label={`${i18n.t('division:entity.branch')}`}
-                placeholder={`${i18n.t('general:select', { item: '' })}`}
-                onChange={setBranch}
-                selected={branch}
-                type={DivisionType.BRANCH}
-              />
-              <OrganizationStructureSelect
-                label={`${i18n.t('division:entity.department')}`}
-                placeholder={`${i18n.t('general:select', { item: '' })}`}
-                onChange={setDepartment}
-                selected={department}
-                type={DivisionType.DEPARTMENT}
-              />
-              <OrganizationStructureSelect
-                label={`${i18n.t('division:entity.role')}`}
-                placeholder={`${i18n.t('general:select', { item: '' })}`}
-                onChange={setRole}
-                selected={role}
-                type={DivisionType.ROLE}
-              />
-              <Select
-                label={`${i18n.t('general:answer')}`}
-                placeholder={`${i18n.t('general:select', { item: '' })}`}
-                onChange={(item: SelectItem<string>) => setGoing(item)}
-                selected={going}
-                options={[
-                  { key: RSVPGoingEnum.YES, value: i18n.t('events:participate') },
-                  { key: RSVPGoingEnum.NO, value: i18n.t('events:not_participate') },
-                ]}
-              />
-            </DataTableFilters>
-            <Card>
-              <CardHeader>
-                <h2>{i18n.t('events:responses_list')}</h2>
-                <Button
-                  label={i18n.t('general:download_table')}
-                  icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-                  className="btn-outline-secondary ml-auto"
-                  onClick={onExportRSVPs}
-                />
-              </CardHeader>
-              <CardBody>
-                <DataTableComponent
-                  columns={TableHeader}
-                  data={rsvps?.items}
-                  loading={isRsvpsLoading}
-                  pagination
-                  paginationPerPage={rowsPerPage}
-                  paginationTotalRows={rsvps?.meta?.totalItems}
-                  paginationDefaultPage={page}
-                  onChangeRowsPerPage={setRowsPerPage}
-                  onChangePage={setPage}
-                  onSort={onSort}
-                />
-              </CardBody>
-            </Card>
-          </>
+        {query?.activeTab === EventTab.RESPONSES && (
+          <RsvpTableWithQueryParams eventId={id as string} />
         )}
       </Tabs>
     </PageLayout>

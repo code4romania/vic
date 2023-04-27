@@ -19,14 +19,12 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from './MediaCell';
 import {
   useActivityLogCounterQuery,
-  useActivityLogQuery,
   useActivityLogsQuery,
 } from '../services/activity-log/activity-log.service';
 import { IActivityLogListItem } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from './StatusWithMarker';
 import { useNavigate } from 'react-router';
-import EditActivityLog from './EditActivityLog';
 import ActivityLogSidePanel from './ActivityLogSidePanel';
 import DataTableFilters from './DataTableFilters';
 import DateRangePicker from './DateRangePicker';
@@ -38,6 +36,7 @@ import { ListItem } from '../common/interfaces/list-item.interface';
 import { getActivityLogsForDownload } from '../services/activity-log/activity-log.api';
 import { ActivityLogTableBasicProps } from '../containers/query/ActivityLogTableWithQueryParams';
 import LinkCell from './LinkCell';
+import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 
 const StatusOptions: SelectItem<ActivityLogStatus>[] = [
   { key: ActivityLogStatus.APPROVED, value: i18n.t('activity_log:display_status.approved') },
@@ -168,7 +167,7 @@ const PendingActivityLogTableHeader = [
     name: i18n.t('volunteer:name', { status: '' }),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '10rem',
     cell: (row: IActivityLogListItem) =>
       row.volunteer && (
         <LinkCell href={`/volunteers/${row.volunteer.id}`}>{row.volunteer.name}</LinkCell>
@@ -220,7 +219,7 @@ const PastActivityLogTableHeader = [
     name: i18n.t('volunteer:name', { status: '' }),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '10rem',
     cell: (row: IActivityLogListItem) =>
       row.volunteer && (
         <LinkCell href={`/volunteers/${row.volunteer.id}`}>{row.volunteer.name}</LinkCell>
@@ -245,11 +244,13 @@ const PastActivityLogTableHeader = [
 interface ActivityLogTableProps extends ActivityLogTableBasicProps {
   resolutionStatus: ActivityLogResolutionStatus;
   volunteerId?: string;
+  volunteerStatus?: VolunteerStatus;
 }
 
 const ActivityLogTable = ({
   resolutionStatus,
   volunteerId,
+  volunteerStatus,
   query,
   setQuery,
 }: ActivityLogTableProps) => {
@@ -260,11 +261,9 @@ const ActivityLogTable = ({
   const [status, setStatus] = useState<SelectItem<ActivityLogStatus>>();
 
   // selected activity log id
-  const [selectedActivityLog, setSelectedActivityLog] = useState<string | null>(null);
+  const [selectedActivityLog, setSelectedActivityLog] = useState<string>();
   // side panel state
   const [isViewActivityLogSidePanelOpen, setIsViewActivityLogSidePanelOpen] =
-    useState<boolean>(false);
-  const [isEditctivityLogSidePanelOpen, setIsEditActivityLogSidePanelOpen] =
     useState<boolean>(false);
 
   // get all query
@@ -290,22 +289,13 @@ const ActivityLogTable = ({
   });
   const { data: counters } = useActivityLogCounterQuery(volunteerId);
 
-  // get one query
-  const { data: activityLog, error: activityLogError } = useActivityLogQuery(
-    selectedActivityLog as string,
-  );
-
   // query error handling
   useEffect(() => {
     if (activityLogsError)
       useErrorToast(
         InternalErrors.ACTIVITY_LOG_ERRORS.getError(activityLogsError.response?.data.code_error),
       );
-    if (activityLogError)
-      useErrorToast(
-        InternalErrors.ACTIVITY_LOG_ERRORS.getError(activityLogError.response?.data.code_error),
-      );
-  }, [activityLogsError, activityLogError]);
+  }, [activityLogsError]);
 
   // menu items
   const buildActivityLogActionColumn = (): TableColumn<IActivityLogListItem> => {
@@ -347,20 +337,9 @@ const ActivityLogTable = ({
     setIsViewActivityLogSidePanelOpen(true);
   };
 
-  const onEdit = () => {
-    setIsViewActivityLogSidePanelOpen(false);
-    setIsEditActivityLogSidePanelOpen(true);
-  };
-
-  const onCloseEditSidePanel = (shouldRefetch?: boolean) => {
-    setIsViewActivityLogSidePanelOpen(true);
-    setIsEditActivityLogSidePanelOpen(false);
-    if (shouldRefetch) refetch();
-  };
-
   const onCloseSidePanel = (shouldRefetch?: boolean) => {
     setIsViewActivityLogSidePanelOpen(false);
-    setSelectedActivityLog(null);
+    setSelectedActivityLog(undefined);
     if (shouldRefetch) refetch();
   };
 
@@ -528,6 +507,7 @@ const ActivityLogTable = ({
                   onClick={onAddButtonPress}
                   aria-label={`${i18n.t('activity_log:add')}`}
                   type="button"
+                  disabled={volunteerStatus !== VolunteerStatus.ACTIVE}
                 />
               )}
             </div>
@@ -550,14 +530,8 @@ const ActivityLogTable = ({
       </Card>
       <ActivityLogSidePanel
         onClose={onCloseSidePanel}
-        onEdit={onEdit}
         isOpen={isViewActivityLogSidePanelOpen}
-        activityLog={activityLog}
-      />
-      <EditActivityLog
-        onClose={onCloseEditSidePanel}
-        isOpen={isEditctivityLogSidePanelOpen}
-        activityLog={activityLog}
+        activityLogId={selectedActivityLog}
       />
     </>
   );
