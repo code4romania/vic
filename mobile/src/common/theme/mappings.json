@@ -10,13 +10,21 @@
     "text-heading-2-font-weight": "800",
     "text-heading-2-font-family": "titilium-web",
 
-    "text-heading-3-font-size": 16,
-    "text-heading-3-font-weight": "800",
+    "text-heading-3-font-size": 18,
+    "text-heading-3-font-weight": "600",
     "text-heading-3-font-family": "titilium-web",
+
+    "text-heading-4-font-size": 16,
+    "text-heading-4-font-weight": "800",
+    "text-heading-4-font-family": "titilium-web",
 
     "text-paragraph-1-font-size": 16,
     "text-paragraph-1-font-weight": "400",
     "text-paragraph-1-font-family": "roboto-regular",
+
+    "text-paragraph-2-font-size": 16,
+    "text-paragraph-2-font-weight": "500",
+    "text-paragraph-2-font-family": "roboto-medium",
 
     "text-label-font-size": 16,
     "text-label-font-weight": "600",
