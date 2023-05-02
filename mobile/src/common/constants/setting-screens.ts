@@ -8,7 +8,7 @@ import { SETTINGS_ROUTES } from '../enums/setting-routes';
 
 export const SETTING_SCREENS = [
   { icon: user, label: 'Date cont', route: SETTINGS_ROUTES.ACCOUNT_DATA },
-  { icon: identification, label: 'Date identitate', route: SETTINGS_ROUTES.ACCOUNT_DATA },
+  { icon: identification, label: 'Date identitate', route: SETTINGS_ROUTES.IDENTITY_DATA },
   { icon: key, label: 'Schimbă parola', route: SETTINGS_ROUTES.CHANGE_PASSWORD },
   { icon: bell, label: 'Setări notificări', route: SETTINGS_ROUTES.NOTIFICATIONS_SETTINGS },
   { icon: information, label: 'Informații', route: SETTINGS_ROUTES.INFORMATION },
