@@ -1,54 +1,62 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Text } from '@ui-kitten/components';
-import { Image, ScrollView, StyleSheet, View, TouchableHighlight } from 'react-native';
+import { List, Text, Divider } from '@ui-kitten/components';
+import { Image, StyleSheet, View, TouchableHighlight } from 'react-native';
 //SVG
 import { SvgXml } from 'react-native-svg';
 import { SETTING_SCREENS } from '../common/constants/setting-screens';
+import { SETTINGS_ROUTES } from '../common/enums/setting-routes';
+
+interface IListItem {
+  icon: string;
+  label: string;
+  route: string;
+}
 
 const Settings = ({ navigation }: any) => {
-  console.log('Settings');
-
-  const navigateTo = (route: string) => {
-    navigation.navigate(route);
+  const handleItemPress = (route: string) => {
+    if (route === SETTINGS_ROUTES.INFORMATION) {
+      console.log('navigate to url');
+    } else if (route === SETTINGS_ROUTES.LOGOUT) {
+      console.log('log out');
+    } else {
+      navigation.navigate(route);
+    }
   };
+
+  const renderItem = ({ item }: { item: IListItem }) => (
+    <TouchableHighlight
+      onPress={() => handleItemPress(item.route)}
+      activeOpacity={1}
+      underlayColor="#F9F9F9"
+    >
+      <View style={styles.screen}>
+        <View style={styles.iconWrapper}>
+          <SvgXml xml={item.icon} />
+        </View>
+        <Text category="label" appearance="hint">
+          {item.label}
+        </Text>
+      </View>
+    </TouchableHighlight>
+  );
 
   return (
     <PageLayout title="Settings">
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.profileContainer}>
-            <Image source={{ uri: 'https://picsum.photos/200/300' }} style={styles.image} />
-            <Text category="h2" appearance="hint">
-              Andreea Popa
-            </Text>
-          </View>
-          <View>
-            {SETTING_SCREENS.map((screen, index) => (
-              <TouchableHighlight
-                onPress={() => navigateTo(screen.route)}
-                activeOpacity={1}
-                underlayColor="#F9F9F9"
-              >
-                <View
-                  key={screen.label}
-                  style={[
-                    styles.screen,
-                    index === SETTING_SCREENS.length - 1 ? {} : styles.borderBottom,
-                  ]}
-                >
-                  <View style={styles.iconWrapper}>
-                    <SvgXml xml={screen.icon} />
-                  </View>
-                  <Text category="label" appearance="hint">
-                    {screen.label}
-                  </Text>
-                </View>
-              </TouchableHighlight>
-            ))}
-          </View>
+      <View style={styles.container}>
+        <View style={styles.profileContainer}>
+          <Image source={{ uri: 'https://picsum.photos/200/300' }} style={styles.image} />
+          <Text category="h2" appearance="hint">
+            Andreea Popa
+          </Text>
         </View>
-      </ScrollView>
+        <List
+          data={SETTING_SCREENS}
+          ItemSeparatorComponent={Divider}
+          renderItem={renderItem}
+          style={styles.list}
+        />
+      </View>
     </PageLayout>
   );
 };
@@ -59,6 +67,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
+  },
+  list: {
+    backgroundColor: 'white',
   },
   image: { width: 48, height: 48, borderRadius: 100 },
   profileContainer: {
@@ -71,18 +82,14 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 100,
-    backgroundColor: '#F3F4F6',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#F3F4F6',
   },
   screen: {
     paddingVertical: 16,
     gap: 16,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  borderBottom: {
-    borderBottomWidth: 1,
-    borderColor: '#E5E7EB',
   },
 });
