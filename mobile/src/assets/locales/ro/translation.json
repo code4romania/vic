@@ -1,5 +1,15 @@
 {
   "general": {
-    "current_month": "Luna asta"
+    "current_month": "Luna asta",
+    "volunteers": "Voluntari"
+  },
+  "organization_profile": {
+    "title": "Profil organizație",
+    "description": "Despre organizație",
+    "email": "Email de contact",
+    "phone": "Telefon",
+    "address": "Adresa sediu",
+    "area": "Arie de desfasurare a activitatii",
+    "events": "Evenimente deschise"
   }
 }

@@ -5,6 +5,7 @@ import { StyleSheet, View, ScrollView, Image } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import EventPresenter from '../components/EventPresenter';
 import SectionWrapper from '../components/SectionWrapper';
+import i18n from '../common/config/i18n';
 
 const organization = {
   name: 'Asociatia ZEN',
@@ -31,8 +32,12 @@ const OrganizationProfile = ({ navigation }: any) => {
     navigation.navigate('join-organization');
   };
 
+  const onEventPress = () => {
+    console.log('event pressed');
+  };
+
   return (
-    <PageLayout title="Profil Organizatie" onBackButtonPress={navigation.goBack}>
+    <PageLayout title={i18n.t('organization_profile:title')} onBackButtonPress={navigation.goBack}>
       <ScrollView>
         <Layout style={styles.layout}>
           <View style={styles.nameSection}>
@@ -41,28 +46,44 @@ const OrganizationProfile = ({ navigation }: any) => {
               <Text category="h2" appearance="hint">
                 {organization.name}
               </Text>
-              <Text category="c1">{organization.volunteers} voluntari</Text>
+              <Text category="c1">
+                {organization.volunteers} {i18n.t('general:volunteers').toLowerCase()}
+              </Text>
             </View>
           </View>
           <View style={styles.readOnlyContainer}>
-            <ReadOnlyElement label="Despre organizație" text={organization.description} />
-            <ReadOnlyElement label="Email de contact" text={organization.email} />
-            <ReadOnlyElement label="Telefon" text={organization.phone} />
-            <ReadOnlyElement label="Adresa sediu" text={organization.address} />
-            <ReadOnlyElement label="Arie de desfasurare a activitatii" text={organization.area} />
+            <ReadOnlyElement
+              label={i18n.t('organization_profile:description')}
+              text={organization.description}
+            />
+            <ReadOnlyElement
+              label={i18n.t('organization_profile:email')}
+              text={organization.email}
+            />
+            <ReadOnlyElement
+              label={i18n.t('organization_profile:phone')}
+              text={organization.phone}
+            />
+            <ReadOnlyElement
+              label={i18n.t('organization_profile:address')}
+              text={organization.address}
+            />
+            <ReadOnlyElement label={i18n.t('organization_profile:area')} text={organization.area} />
           </View>
-          <SectionWrapper title="Evenimente deschise">
+          <SectionWrapper title={i18n.t('organization_profile:events')}>
             <EventPresenter
               date={event.date}
               divison={event.division}
               location={event.location}
               title={event.title}
+              onPress={onEventPress}
             />
             <EventPresenter
               date={event.date}
               divison={event.division}
               location={event.location}
               title={event.title}
+              onPress={onEventPress}
             />
           </SectionWrapper>
           <Button onPress={onJoinOrganizationButtonPress}>Join</Button>

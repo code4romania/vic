@@ -1,6 +1,6 @@
 import { Text } from '@ui-kitten/components';
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 //SVG
 import clockSvg from '../assets/svg/clock';
 import locationSvg from '../assets/svg/location';
@@ -13,31 +13,34 @@ interface EventPresenterProps {
   date: string;
   location: string;
   divison: string;
+  onPress: () => void;
 }
 
-const EventPresenter = ({ title, date, location, divison }: EventPresenterProps) => {
+const EventPresenter = ({ title, date, location, divison, onPress }: EventPresenterProps) => {
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.eventImg} />
-      <View style={styles.textContainer}>
-        <Text category="h3" appearance="hint">
-          {title}
-        </Text>
-        <View style={styles.section}>
-          <IconSvg icon={clockSvg} size={10} fill="#9CA3AF" />
-          <Text>{date}</Text>
+    <TouchableHighlight onPress={onPress} underlayColor="#F9F9F9">
+      <View style={styles.container}>
+        <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.eventImg} />
+        <View style={styles.textContainer}>
+          <Text category="h3" appearance="hint">
+            {title}
+          </Text>
+          <View style={styles.section}>
+            <IconSvg icon={clockSvg} size={10} fill="#9CA3AF" />
+            <Text>{date}</Text>
+          </View>
+          <View style={styles.section}>
+            <SvgXml xml={locationSvg} />
+            <Text>{location}</Text>
+          </View>
+          <View style={styles.section}>
+            <SvgXml xml={usersSvg} />
+            <Text>{divison}</Text>
+          </View>
         </View>
-        <View style={styles.section}>
-          <SvgXml xml={locationSvg} />
-          <Text>{location}</Text>
-        </View>
-        <View style={styles.section}>
-          <SvgXml xml={usersSvg} />
-          <Text>{divison}</Text>
-        </View>
+        <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.organizationImg} />
       </View>
-      <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.organizationImg} />
-    </View>
+    </TouchableHighlight>
   );
 };
 
