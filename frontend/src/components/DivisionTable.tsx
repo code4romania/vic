@@ -24,6 +24,7 @@ import ConfirmationModal from './ConfirmationModal';
 import DataTableComponent from './DataTableComponent';
 import DivisionInputModal, { DivisionFormTypes } from './DivisionInputModal';
 import Popover from './Popover';
+import LinkCell from './LinkCell';
 import { useNavigate } from 'react-router';
 
 export const DivisionTableHeader = [
@@ -47,9 +48,9 @@ export const DivisionTableHeader = [
     sortable: true,
     minWidth: '10rem',
     cell: (row: IDivision) => (
-      <CellLayout>
-        <a>{row.createdBy.name}</a>
-      </CellLayout>
+      <LinkCell href={`/actions-archive?author=${row.createdBy.name}`}>
+        {row.createdBy.name}
+      </LinkCell>
     ),
   },
   {
