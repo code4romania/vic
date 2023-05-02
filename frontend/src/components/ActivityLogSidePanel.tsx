@@ -63,6 +63,18 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
     if (activityLog) navigate(`/events/${activityLog.event?.id}`);
   };
 
+  const onAprroveOrRejectByClick = () => {
+    if (activityLog?.status === ActivityLogStatus.APPROVED) {
+      navigate(`/actions-archive?author=${activityLog.approvedBy?.name}`);
+    } else if (activityLog?.status === ActivityLogStatus.REJECTED) {
+      navigate(`/actions-archive?author=${activityLog?.rejectedBy?.name}`);
+    }
+  };
+
+  const onAdminClick = () => {
+    if (activityLog) navigate(`/actions-archive?author=${activityLog.createdByAdmin?.name}`);
+  };
+
   const onApprove = (id: string) => {
     approveActivityLog(id, {
       onSuccess: () => {
@@ -174,7 +186,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.created_by')}
               value={activityLog.createdByAdmin?.name}
-              onClick={() => {}}
+              onClick={onAdminClick}
             />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.registration_date')}
@@ -185,7 +197,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
                 <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.approved_by')}
                   value={activityLog.approvedBy?.name}
-                  onClick={() => {}}
+                  onClick={onAprroveOrRejectByClick}
                 />
                 <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.approve_date')}
@@ -198,7 +210,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
                 <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.rejected_by')}
                   value={activityLog.rejectedBy?.name}
-                  onClick={() => {}}
+                  onClick={onAprroveOrRejectByClick}
                 />
                 <FormReadOnlyElement
                   label={i18n.t('activity_log:side_panel.reject_date')}
