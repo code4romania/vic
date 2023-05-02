@@ -1,24 +1,18 @@
 import React, { ReactNode } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text } from '@ui-kitten/components';
+import SectionHeader from './SectionHeader';
 
 interface SectionWrapperProps {
   title: string;
-  children: ReactNode;
   icon?: ReactNode;
   action?: ReactNode;
+  children: ReactNode;
 }
 
-const SectionWrapper = ({ title, children, icon, action }: SectionWrapperProps) => {
+const SectionWrapper = ({ children, ...sectionHeaderProps }: SectionWrapperProps) => {
   return (
     <View style={styles.container}>
-      <View style={styles.sectionHeader}>
-        {icon}
-        <Text category="p2" status="info">
-          {title}
-        </Text>
-        {action}
-      </View>
+      <SectionHeader {...sectionHeaderProps} />
       {children}
     </View>
   );
@@ -27,14 +21,8 @@ const SectionWrapper = ({ title, children, icon, action }: SectionWrapperProps) 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    gap: 18,
+    gap: 16,
     flexDirection: 'column',
-    paddingLeft: 16,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
   },
 });
 

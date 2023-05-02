@@ -10,7 +10,8 @@ const Separator = () => <View style={styles.separator} />;
 const News = ({ navigation }: any) => {
   console.log('News');
 
-  const getItem = (data, index) => {
+  const getItem = (data: unknown, index: number) => {
+    console.log('data', data);
     return {
       id: Math.random().toString(12).substring(0),
       title: `Item ${index + 1}`,
@@ -18,16 +19,20 @@ const News = ({ navigation }: any) => {
   };
 
   const getItemCount = (data: unknown) => {
+    console.log('data', data);
     return 50;
   };
 
-  const renderItem = ({ item }) => (
-    <NewsListItem
-      icon={<SvgXml xml={LogoSvg} width={24} height={24} />}
-      title="Important! Ne vedem maine la 10!"
-      subtitle="La 10:30 este plecarea, nu intarziati!"
-    />
-  );
+  const renderItem = ({ item }: { item: unknown }) => {
+    console.log('item', item);
+    return (
+      <NewsListItem
+        icon={<SvgXml xml={LogoSvg} width={24} height={24} />}
+        title="Important! Ne vedem maine la 10!"
+        subtitle="La 10:30 este plecarea, nu intarziati!"
+      />
+    );
+  };
 
   return (
     <PageLayout title="News" onBackButtonPress={navigation.goBack}>

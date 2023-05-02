@@ -1,62 +1,57 @@
 import React from 'react';
-import SectionWrapper from './SectionWrapper';
-import { SvgXml } from 'react-native-svg';
-import StatisticComponent from './StatisticComponent';
-import { ScrollView, StyleSheet } from 'react-native';
-//SVG
 import StarSvg from '../assets/svg/star';
 import ClockSvg from '../assets/svg/clock';
 import CalendarSvg from '../assets/svg/calendar';
 import DocumentSvg from '../assets/svg/document';
+import { useTranslation } from 'react-i18next';
+import HorizontalCarousel from '../components/HorizontalCarousel';
+import StatisticsCard from './StatisticsCard';
+import SectionWrapper from '../components/SectionWrapper';
+import IconSvg from './IconSvg';
 
-const ThisMonthSection = () => {
+const Statistics = () => {
+  const { t } = useTranslation('general');
   return (
-    <SectionWrapper title="Luna asta" icon={<SvgXml xml={StarSvg} width={20} height={20} />}>
-      <ScrollView horizontal={true} contentContainerStyle={styles.scrollView}>
-        <StatisticComponent
-          icon={<SvgXml xml={CalendarSvg} />}
+    <SectionWrapper title={t('current_month')} icon={<IconSvg icon={StarSvg} size={20} />}>
+      <HorizontalCarousel>
+        <StatisticsCard
+          icon={<IconSvg icon={CalendarSvg} size={56} />}
           title="3 evenimente"
           subtitle="luna asta"
           backgroundColor="turquoise-50"
           onPress={() => console.log('statistic comp 1 pressed')}
         />
-        <StatisticComponent
-          icon={<SvgXml xml={ClockSvg} />}
+        <StatisticsCard
+          icon={<IconSvg icon={ClockSvg} size={56} />}
           title="3 evenimente"
           subtitle="luna asta"
           backgroundColor="turquoise-50"
           onPress={() => console.log('statistic comp 2 pressed')}
         />
-        <StatisticComponent
-          icon={<SvgXml xml={DocumentSvg} />}
+        <StatisticsCard
+          icon={<IconSvg icon={DocumentSvg} size={56} />}
           title="3 evenimente"
           subtitle="luna asta"
           backgroundColor="turquoise-50"
           onPress={() => console.log('statistic comp 3 pressed')}
         />
-        <StatisticComponent
-          icon={<SvgXml xml={ClockSvg} />}
+        <StatisticsCard
+          icon={<IconSvg icon={ClockSvg} size={56} />}
           title="3 evenimente"
           subtitle="luna asta"
           backgroundColor="turquoise-50"
           onPress={() => console.log('statistic comp 4 pressed')}
         />
-        <StatisticComponent
-          icon={<SvgXml xml={CalendarSvg} />}
+        <StatisticsCard
+          icon={<IconSvg icon={CalendarSvg} size={56} />}
           title="3 evenimente"
           subtitle="luna asta"
           backgroundColor="turquoise-50"
           onPress={() => console.log('statistic comp 5 pressed')}
         />
-      </ScrollView>
+      </HorizontalCarousel>
     </SectionWrapper>
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    gap: 16,
-  },
-});
-
-export default ThisMonthSection;
+export default Statistics;
