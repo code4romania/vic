@@ -5,12 +5,21 @@ import key from '../../assets/svg/key';
 import logout from '../../assets/svg/logout';
 import user from '../../assets/svg/user';
 import { SETTINGS_ROUTES } from '../enums/setting-routes';
+import i18n from '../config/i18n';
 
 export const SETTING_SCREENS = [
-  { icon: user, label: 'Date cont', route: SETTINGS_ROUTES.ACCOUNT_DATA },
-  { icon: identification, label: 'Date identitate', route: SETTINGS_ROUTES.IDENTITY_DATA },
-  { icon: key, label: 'Schimbă parola', route: SETTINGS_ROUTES.CHANGE_PASSWORD },
-  { icon: bell, label: 'Setări notificări', route: SETTINGS_ROUTES.NOTIFICATIONS_SETTINGS },
-  { icon: information, label: 'Informații', route: SETTINGS_ROUTES.INFORMATION },
+  { icon: user, label: i18n.t('settings:account'), route: SETTINGS_ROUTES.ACCOUNT_DATA },
+  {
+    icon: identification,
+    label: i18n.t('settings:identity'),
+    route: SETTINGS_ROUTES.IDENTITY_DATA,
+  },
+  { icon: key, label: i18n.t('settings:password'), route: SETTINGS_ROUTES.CHANGE_PASSWORD },
+  {
+    icon: bell,
+    label: i18n.t('settings:notification'),
+    route: SETTINGS_ROUTES.NOTIFICATIONS_SETTINGS,
+  },
+  { icon: information, label: i18n.t('settings:information'), route: SETTINGS_ROUTES.INFORMATION },
   { icon: logout, label: 'Log out', route: SETTINGS_ROUTES.LOGOUT },
 ];

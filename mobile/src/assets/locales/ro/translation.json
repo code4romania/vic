@@ -1,5 +1,13 @@
 {
   "general": {
     "current_month": "Luna asta"
+  },
+  "settings": {
+    "title": "Setări cont",
+    "account": "Date cont",
+    "identity": "Date identitate",
+    "password": "Schimbă parola",
+    "notification": "Setări notificări",
+    "information": "Informații"
   }
 }
