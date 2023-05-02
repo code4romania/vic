@@ -26,5 +26,5 @@ export const PageLayout = ({ children, title, onBackButtonPress }: PageLayoutPro
 export default PageLayout;
 
 const styles = StyleSheet.create({
-  layout: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  layout: { flex: 1 },
 });
