@@ -22,7 +22,7 @@ const Statistics = () => {
           onPress={() => console.log('statistic comp 1 pressed')}
         />
         <StatisticsCard
-          icon={<IconSvg icon={ClockSvg} size={56} />}
+          icon={<IconSvg icon={ClockSvg} size={56} fill="#12B6B6" />}
           title="3 evenimente"
           subtitle="luna asta"
           backgroundColor="turquoise-50"

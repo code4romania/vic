@@ -1,11 +1,10 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Button, Layout, Text } from '@ui-kitten/components';
-import { StyleSheet, View, ScrollView } from 'react-native';
-import { SvgXml } from 'react-native-svg';
-import LogoSvg from '../assets/svg/logo.js';
+import { StyleSheet, View, ScrollView, Image } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import EventPresenter from '../components/EventPresenter';
+import SectionWrapper from '../components/SectionWrapper';
 
 const organization = {
   name: 'Asociatia ZEN',
@@ -37,9 +36,7 @@ const OrganizationProfile = ({ navigation }: any) => {
       <ScrollView>
         <Layout style={styles.layout}>
           <View style={styles.nameSection}>
-            <View style={styles.organizationPictureContainer}>
-              <SvgXml xml={LogoSvg} />
-            </View>
+            <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.organizationImg} />
             <View style={styles.nameContainer}>
               <Text category="h2" appearance="hint">
                 {organization.name}
@@ -54,18 +51,20 @@ const OrganizationProfile = ({ navigation }: any) => {
             <ReadOnlyElement label="Adresa sediu" text={organization.address} />
             <ReadOnlyElement label="Arie de desfasurare a activitatii" text={organization.area} />
           </View>
-          <EventPresenter
-            date={event.date}
-            divison={event.division}
-            location={event.location}
-            title={event.title}
-          />
-          <EventPresenter
-            date={event.date}
-            divison={event.division}
-            location={event.location}
-            title={event.title}
-          />
+          <SectionWrapper title="Evenimente deschise">
+            <EventPresenter
+              date={event.date}
+              divison={event.division}
+              location={event.location}
+              title={event.title}
+            />
+            <EventPresenter
+              date={event.date}
+              divison={event.division}
+              location={event.location}
+              title={event.title}
+            />
+          </SectionWrapper>
           <Button onPress={onJoinOrganizationButtonPress}>Join</Button>
         </Layout>
       </ScrollView>
@@ -91,9 +90,10 @@ const styles = StyleSheet.create({
   readOnlyContainer: {
     gap: 16,
   },
-  organizationPictureContainer: {
+  organizationImg: {
     width: 138,
     height: 138,
+    borderRadius: 150,
     alignItems: 'center',
     justifyContent: 'center',
   },

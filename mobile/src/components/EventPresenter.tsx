@@ -6,6 +6,7 @@ import clockSvg from '../assets/svg/clock';
 import locationSvg from '../assets/svg/location';
 import usersSvg from '../assets/svg/users';
 import { SvgXml } from 'react-native-svg';
+import IconSvg from './IconSvg';
 
 interface EventPresenterProps {
   title: string;
@@ -23,7 +24,7 @@ const EventPresenter = ({ title, date, location, divison }: EventPresenterProps)
           {title}
         </Text>
         <View style={styles.section}>
-          <SvgXml xml={clockSvg} />
+          <IconSvg icon={clockSvg} size={10} fill="#9CA3AF" />
           <Text>{date}</Text>
         </View>
         <View style={styles.section}>
