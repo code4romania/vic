@@ -14,17 +14,15 @@ const Button = ({ label, onPress, type }: ButtonProps) => {
   const styles = useStyleSheet(themedStyles(type));
 
   return (
-    <TouchableOpacity>
-      <ButtonKitten
-        onPress={onPress}
-        style={styles.button}
-        status={type === ButtonType.DANGER ? 'danger' : 'success'}
-        appearance={type === ButtonType.SECONDARY ? 'outline' : 'filled'}
-        size="large"
-      >
-        {label}
-      </ButtonKitten>
-    </TouchableOpacity>
+    <ButtonKitten
+      onPress={onPress}
+      style={styles.button}
+      status={type === ButtonType.DANGER ? 'danger' : 'success'}
+      appearance={type === ButtonType.SECONDARY ? 'outline' : 'filled'}
+      size="large"
+    >
+      {label}
+    </ButtonKitten>
   );
 };
 
@@ -47,7 +45,6 @@ const themedStyles = (type: ButtonType) =>
       borderRadius: 100,
       paddingVertical: 15,
       paddingHorizontal: 30,
-      backgroundColor: ButtonBackgroundColorMapper[type],
       ...(type === ButtonType.SECONDARY ? {} : shadow),
     },
   });

@@ -1,6 +1,7 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Button, Text } from '@ui-kitten/components';
+import NoVolunteerProfile from './NoVolunteerProfile';
 
 const Volunteer = ({ navigation }: any) => {
   console.log('Volunteer');
@@ -17,13 +18,15 @@ const Volunteer = ({ navigation }: any) => {
     navigation.navigate('activity-logs');
   };
 
-  return (
+  return false ? (
     <PageLayout title="Volunteer">
       <Text category="h1">Volunteer</Text>
       <Button onPress={onViewOrganizationButtonPress}>View Organization</Button>
       <Button onPress={onViewVolunteerProfilenButtonPress}>View Volunteer Profile</Button>
       <Button onPress={onViewAtivityLogsButtonPress}>View Logs</Button>
     </PageLayout>
+  ) : (
+    <NoVolunteerProfile />
   );
 };
 
