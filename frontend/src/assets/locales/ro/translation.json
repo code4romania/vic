@@ -134,6 +134,7 @@
       },
       "email": {
         "label": "Email de contact*",
+        "max": "Emailul trebuie sa aibe maxim 75 de caractere",
         "required": "Email-ul de contact este obligatoriu",
         "pattern": "Emailul trebuie sa aiba un format valid"
       },
