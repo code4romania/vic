@@ -49,7 +49,7 @@ export class ActionsArchiveRepository
 
     if (findOptions.author) {
       query.andWhere('author.name = :author', {
-        authorId: findOptions.author,
+        author: findOptions.author,
       });
     }
 
