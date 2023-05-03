@@ -49,8 +49,15 @@ export class ActionsArchiveRepository
 
     if (findOptions.author) {
       query.andWhere('author.name = :author', {
-        authorId: findOptions.author,
+        author: findOptions.author,
       });
+    }
+
+    if (findOptions.search) {
+      query.where(
+        `exists (select 1 from jsonb_each_text(actionsArchive.eventData) as kv where kv.value ilike :search) OR exists (select 1 from jsonb_each_text(actionsArchive.changes) as kv where kv.value ilike :search)`,
+        { search: `%${findOptions.search}%` },
+      );
     }
 
     if (findOptions.actionStartDate) {

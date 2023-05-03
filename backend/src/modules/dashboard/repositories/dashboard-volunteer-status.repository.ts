@@ -83,7 +83,14 @@ export class DashboardRepository implements IDashboardRepository {
             'END',
           'name',
         )
-        .groupBy('u.birthday, v.organization_id');
+        .groupBy(
+          'CASE ' +
+            "WHEN extract(year from age(u.birthday)) BETWEEN 15 AND 20 THEN '15-20' " +
+            "WHEN extract(year from age(u.birthday)) BETWEEN 21 AND 25 THEN '21-25' " +
+            "ELSE '25+' " +
+            'END',
+        )
+        .addGroupBy('v.organization_id');
     }
 
     if (findOptions.group === DashboardFilteringGroups.SEX) {

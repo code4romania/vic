@@ -8,6 +8,7 @@ export enum EVENT_ERRORS {
   EVENT_004 = 'EVENT_004',
   EVENT_005 = 'EVENT_005',
   EVENT_006 = 'EVENT_006',
+  EVENT_007 = 'EVENT_007',
 }
 
 export class EventError extends ErrorClass<EVENT_ERRORS> {
@@ -21,6 +22,7 @@ export class EventError extends ErrorClass<EVENT_ERRORS> {
       [EVENT_ERRORS.EVENT_004]: i18n.t('events:errors.EVENT_004'),
       [EVENT_ERRORS.EVENT_005]: i18n.t('events:errors.EVENT_005'),
       [EVENT_ERRORS.EVENT_006]: i18n.t('events:errors.EVENT_006'),
+      [EVENT_ERRORS.EVENT_007]: i18n.t('events:errors.EVENT_007'),
     });
   }
 
