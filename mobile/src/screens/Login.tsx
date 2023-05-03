@@ -2,6 +2,7 @@ import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text, Button } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
+import i18n from '../common/config/i18n';
 
 const Login = ({ navigation }: any) => {
   console.log('Login');
@@ -12,7 +13,7 @@ const Login = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout title="Login" onBackButtonPress={navigation.goBack}>
+    <PageLayout title={i18n.t('login:title')} onBackButtonPress={navigation.goBack}>
       <Text category="h2">Login</Text>
       <Button onPress={login}>Login</Button>
       <Button onPress={onForgotPasswordButtonPress}>Forgot Password</Button>

@@ -1,6 +1,7 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Button, Text } from '@ui-kitten/components';
+import i18n from '../common/config/i18n';
 
 const Organizations = ({ navigation }: any) => {
   console.log('Organizations');
@@ -10,7 +11,7 @@ const Organizations = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout title="Organizations">
+    <PageLayout title={i18n.t('general:organizations')}>
       <Text category="h1">Organizations</Text>
       <Button onPress={onViewOrganizationProfileButtonPress}>View Organization Profile</Button>
     </PageLayout>
