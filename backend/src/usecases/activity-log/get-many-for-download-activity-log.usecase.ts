@@ -26,10 +26,10 @@ export class GetManyForDownloadActivityLogUseCase
         'Nume eveniment': activityLog.event?.name,
         'Numar ore': activityLog.hours,
         'Data participarii': activityLog.date,
-        'Numele voluntarului': activityLog.volunteer.name,
+        'Numele voluntarului': activityLog.volunteer?.name,
         Mentiuni: activityLog.mentions,
         'Inregistrata de':
-          activityLog.createdByAdmin.name || activityLog.volunteer.name,
+          activityLog.createdByAdmin?.name || activityLog.volunteer?.name,
         'Data inregistrarii': activityLog.createdOn,
         Status:
           activityLog.status === ActivityLogStatus.APPROVED
@@ -37,13 +37,13 @@ export class GetManyForDownloadActivityLogUseCase
             : 'Respins',
         ...(activityLog.approvedBy
           ? {
-              'Aprobata de': activityLog.approvedBy.name,
+              'Aprobata de': activityLog.approvedBy?.name,
               'Data aprobarii': activityLog.approvedOn,
             }
           : {}),
         ...(activityLog.rejectedBy
           ? {
-              'Respinsa de': activityLog.rejectedBy.name,
+              'Respinsa de': activityLog.rejectedBy?.name,
               'Data respingerii': activityLog.rejectedOn,
             }
           : {}),
