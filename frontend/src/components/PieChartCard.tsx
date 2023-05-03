@@ -34,7 +34,7 @@ const PieChartCard = () => {
       <div className="max-xs:h-[350px] max-sm:h-[400px] h-[600px] w-full sm:px-8 px-4 py-8">
         {data && (
           <>
-            <PieChart data={data} />
+            <PieChart data={data.map((item) => ({ name: item.name, value: +item.count }))} />
             <div className="flex max-xs:gap-1 gap-3 justify-center flex-wrap">
               {data.map((item, index) => (
                 <div className="flex flex-row gap-1" key={index}>

@@ -20,10 +20,16 @@ const Targets = ({ targets, isPublic, targetedMembers }: TargetsProps) => {
         <>
           {targets.length !== 0 ? (
             <small title={targetsString} className="text-overflow">
-              {targetedMembers ? `(${targetedMembers}) ${targetsString}` : targetsString}
+              {targetedMembers !== null && targetedMembers != undefined
+                ? `${targetsString} (${targetedMembers})`
+                : targetsString}
             </small>
           ) : (
-            <small>{i18n.t('announcement:all_organization')}</small>
+            <small>
+              {targetedMembers !== null && targetedMembers != undefined
+                ? `${i18n.t('announcement:all_organization')} (${targetedMembers})`
+                : i18n.t('announcement:all_organization')}
+            </small>
           )}
         </>
       )}

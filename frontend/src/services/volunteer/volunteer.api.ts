@@ -131,16 +131,8 @@ export const getVolunteerLineChart = async (interval: LineChartOption): Promise<
 };
 
 //Volunteer Pie Chart
-export const getVolunteerPieChart = async (group: PieChartOption) => {
-  // return API.get('/dashboard/volunteer-grouped', { params: { group } }).then((res) => res.data);
-  return group === PieChartOption.AGE
-    ? [
-        { name: '15-20', value: 123 },
-        { name: '20-25', value: 200 },
-        { name: '25+', value: 1005 },
-      ]
-    : [
-        { name: 'male', value: 121 },
-        { name: 'female', value: 1718 },
-      ];
+export const getVolunteerPieChart = async (
+  group: PieChartOption,
+): Promise<{ count: string; name: string }[]> => {
+  return API.get('/dashboard/volunteer-grouped', { params: { group } }).then((res) => res.data);
 };
