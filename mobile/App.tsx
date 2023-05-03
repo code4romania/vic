@@ -11,6 +11,7 @@ import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import AuthContextProvider from './src/contexts/auth/AuthContextProvider';
 import Router from './src/routes/Router';
+import './src/common/config/i18n';
 
 export default () => {
   // init fonts

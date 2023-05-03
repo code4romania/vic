@@ -29,7 +29,7 @@ const ProfileCard = ({ name, logo, birthday, sex, location }: ProfileCardProps) 
             {i18n.t('general:years_old', { age: calculateAge(new Date(birthday)) })}
           </small>
           <small className="text-cool-gray-500">
-            {i18n.t('general:sex', { sex_type: i18n.t('general:sex', { context: sex }) })}
+            {i18n.t('general:sex', { sex_type: i18n.t(`general:${sex}`) })}
           </small>
           <small className="text-cool-gray-500">{formatLocation(location)}</small>
         </div>
