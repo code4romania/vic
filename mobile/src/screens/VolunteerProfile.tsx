@@ -3,7 +3,7 @@ import PageLayout from '../layouts/PageLayout';
 import { Button, Text } from '@ui-kitten/components';
 
 const VolunteerProfile = ({ navigation }: any) => {
-  console.log('VolunteerProfile');
+  console.log('VolunteerProfile', navigation);
 
   const onEditVolunteerProfileButtonPress = () => {
     navigation.navigate('edit-volunteer');
