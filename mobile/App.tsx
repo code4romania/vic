@@ -12,6 +12,7 @@ import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import AuthContextProvider from './src/contexts/auth/AuthContextProvider';
 import Router from './src/routes/Router';
 import './src/common/config/i18n';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 export default () => {
   // init fonts
@@ -34,7 +35,9 @@ export default () => {
         <SafeAreaView style={styles.container}>
           <AuthContextProvider>
             <NavigationContainer>
-              <Router />
+              <BottomSheetModalProvider>
+                <Router />
+              </BottomSheetModalProvider>
             </NavigationContainer>
           </AuthContextProvider>
         </SafeAreaView>
