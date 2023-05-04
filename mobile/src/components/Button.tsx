@@ -1,8 +1,6 @@
 import React from 'react';
 import { Button as ButtonKitten, StyleService, useStyleSheet } from '@ui-kitten/components';
-import { TouchableOpacity } from 'react-native';
 import { ButtonType } from '../common/enums/button-type.enum';
-import { ButtonBackgroundColorMapper } from '../common/utils/utils';
 
 interface ButtonProps {
   label: string;
