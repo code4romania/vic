@@ -360,6 +360,7 @@ const AccessRequestTable = ({
       query.createdOnStart,
       query.createdOnEnd,
       query?.location && query?.location[0],
+      query?.location && query?.location[1],
       query.rejectedOnStart,
       query.rejectedOnEnd,
     );

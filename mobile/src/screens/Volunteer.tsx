@@ -3,10 +3,11 @@ import PageLayout from '../layouts/PageLayout';
 import { Button, Text } from '@ui-kitten/components';
 
 const Volunteer = ({ navigation }: any) => {
-  console.log('Volunteer');
+  console.log('Volunteer', navigation);
 
   const onViewOrganizationButtonPress = () => {
-    navigation.navigate('organization');
+    // navigation.navigate('organization');
+    navigation.openDrawer();
   };
 
   const onViewVolunteerProfilenButtonPress = () => {

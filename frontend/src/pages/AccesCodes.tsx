@@ -22,6 +22,7 @@ import {
   useDeleteAccessCodeMutation,
 } from '../services/organization/organization.service';
 import { AccessCodesProps } from '../containers/query/AccessCodesWithQueryParams';
+import LinkCell from '../components/LinkCell';
 export interface IAccessCode {
   id: string;
   code: string;
@@ -72,9 +73,9 @@ const AccessCodeTableHeader = [
     sortable: true,
     minWidth: '5rem',
     cell: (row: IAccessCode) => (
-      <CellLayout>
-        <a>{row.createdBy.name}</a>
-      </CellLayout>
+      <LinkCell href={`/actions-archive?author=${row.createdBy.name}`}>
+        {row.createdBy.name}
+      </LinkCell>
     ),
   },
 ];
