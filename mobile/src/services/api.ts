@@ -1,5 +1,5 @@
-// import { Auth } from 'aws-amplify';
-import axios from 'axios';
+import { Auth } from 'aws-amplify';
+import axios, { AxiosRequestHeaders } from 'axios';
 import Constants from 'expo-constants';
 
 // https://vitejs.dev/guide/env-and-mode.html
@@ -11,32 +11,29 @@ const API = axios.create({
   },
 });
 
-// API.interceptors.request.use(async (request) => {
-//   console.log('aici');
-//   // add auth header with jwt if account is logged in and request is to the api url
-//   try {
-//     const user = await Auth.currentAuthenticatedUser();
-//     console.log('user', user);
+API.interceptors.request.use(async (request) => {
+  // add auth header with jwt if account is logged in and request is to the api url
+  try {
+    const user = await Auth.currentAuthenticatedUser();
 
-//     if (!request.headers) {
-//       request.headers = {} as AxiosRequestHeaders;
-//     }
+    if (!request.headers) {
+      request.headers = {} as AxiosRequestHeaders;
+    }
 
-//     if (user?.getSignInUserSession()) {
-//       request.headers.Authorization = `Bearer ${user
-//         .getSignInUserSession()
-//         .getAccessToken()
-//         .getJwtToken()}`;
-//     }
-//   } catch (err) {
-//     console.log('err', err);
-//     // User not authenticated. May be a public API.
-//     // Catches "The user is not authenticated".
-//     return request;
-//   }
+    if (user?.getSignInUserSession()) {
+      request.headers.Authorization = `Bearer ${user
+        .getSignInUserSession()
+        .getAccessToken()
+        .getJwtToken()}`;
+    }
+  } catch (err) {
+    // User not authenticated. May be a public API.
+    // Catches "The user is not authenticated".
+    return request;
+  }
 
-//   return request;
-// });
+  return request;
+});
 
 API.interceptors.response.use(
   async (response) => {

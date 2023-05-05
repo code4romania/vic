@@ -1,5 +1,11 @@
 {
   "general": {
     "current_month": "Luna asta"
+  },
+  "page_headers": {
+    "login": "Autentificare"
+  },
+  "login": {
+    "paragraph": "Introduceți e-mailul și parola pentru a intra în cont."
   }
 }
