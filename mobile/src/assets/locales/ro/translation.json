@@ -7,6 +7,7 @@
     "event": "Eveniment",
     "news": "Ultimele noutati",
     "organizations": "Organizatii",
+    "volunteers": "{{number}} voluntari",
     "active_volunteers": "voluntari activi",
     "updates": "actualizări",
     "edit": "Editează {{item}}",
