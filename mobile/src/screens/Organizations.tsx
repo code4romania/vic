@@ -2,6 +2,7 @@ import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text, List, Avatar, Divider } from '@ui-kitten/components';
 import { Pressable, StyleSheet, View } from 'react-native';
+import i18n from '../common/config/i18n';
 
 const organizations = [
   { logo: 'https://picsum.photos/200', name: 'Asociatia ZEN', volunteers: 1200 },
@@ -30,11 +31,11 @@ const Organizations = ({ navigation }: any) => {
         onPress={onViewOrganizationProfileButtonPress}
       >
         <View style={styles.renderItem}>
-          <Avatar source={{ uri: item.logo }} size="large" />
+          <Avatar source={{ uri: item.logo }} size="large" style={styles.avatar} />
           <View style={styles.textWrapper}>
             <Text category="label">{item.name}</Text>
             <Text category="c1" appearance="hint">
-              {item.name}
+              {`${i18n.t('general:volunteers', { number: item.volunteers })}`}
             </Text>
           </View>
         </View>
@@ -43,7 +44,7 @@ const Organizations = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout title="Organizations">
+    <PageLayout title={i18n.t('general:organizations')}>
       <List
         data={organizations}
         renderItem={renderItem}
@@ -60,14 +61,13 @@ const styles = StyleSheet.create({
   list: {
     backgroundColor: '#fff',
   },
+  avatar: { borderWidth: 1, borderColor: '#EFF0F3' },
   textWrapper: {
     gap: 4,
   },
   renderItem: {
     gap: 16,
     paddingVertical: 16,
-    paddingHorizontal: 0,
-    backgroundColor: 'transparent',
     flexDirection: 'row',
     alignItems: 'center',
   },

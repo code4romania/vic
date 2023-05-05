@@ -4,6 +4,7 @@ import { VirtualizedList, View, StyleSheet } from 'react-native';
 import NewsListItem from '../components/NewsListItem';
 import { SvgXml } from 'react-native-svg';
 import LogoSvg from '../assets/svg/logo.js';
+import i18n from '../common/config/i18n';
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -35,7 +36,7 @@ const News = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout title="News" onBackButtonPress={navigation.goBack}>
+    <PageLayout title={i18n.t('general:news')} onBackButtonPress={navigation.goBack}>
       <VirtualizedList
         getItem={getItem}
         getItemCount={getItemCount}

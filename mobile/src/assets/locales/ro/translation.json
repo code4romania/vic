@@ -1,5 +1,38 @@
 {
   "general": {
-    "current_month": "Luna asta"
+    "current_month": "Luna asta",
+    "see_all": "Vezi toate",
+    "latest_news": "Ultimele noutăți",
+    "about_teo": "Despre TEO",
+    "event": "Eveniment",
+    "news": "Ultimele noutati",
+    "organizations": "Organizatii",
+    "active_volunteers": "voluntari activi",
+    "updates": "actualizări",
+    "edit": "Editează {{item}}",
+    "add": "Adaugă {{item}}",
+    "join": "Alătură-te"
+  },
+  "activity_log": {
+    "title": "Ore de voluntariat",
+    "log": "Ore înregistrate"
+  },
+  "volunteer": {
+    "profile": "Profil voluntar"
+  },
+  "register": {
+    "title": "Creare cont"
+  },
+  "login": {
+    "title": "Autentificare",
+    "reset_password": "Resetare parolă"
+  },
+  "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
+  "tabs": {
+    "home": "Acasă",
+    "volunteer": "Voluntar",
+    "events": "Evenimente",
+    "search": "Caută",
+    "account_settings": "Setări cont"
   }
 }
