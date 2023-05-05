@@ -7,6 +7,7 @@ import LogoSvg from '../assets/svg/logo.js';
 import NewsListItem from './NewsListItem';
 import IconSvg from './IconSvg';
 import { Button, withStyles } from '@ui-kitten/components';
+import i18n from '../common/config/i18n';
 
 interface LatestNewsProps {
   navigation: any;
@@ -20,7 +21,7 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
 
   return (
     <SectionWrapper
-      title="Ultimele noutăți"
+      title={i18n.t('general:latest_news')}
       icon={<IconSvg icon={SpeakerphoneSvg} size={20} />}
       action={
         <Button
@@ -30,7 +31,7 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
           status="success"
           onPress={onViewNewsButtonPress}
         >
-          vezi toate
+          {`${i18n.t('general:see_all')}`}
         </Button>
       }
     >
