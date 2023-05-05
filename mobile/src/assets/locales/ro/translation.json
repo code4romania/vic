@@ -1,5 +1,7 @@
 {
   "general": {
-    "current_month": "Luna asta"
+    "current_month": "Luna asta",
+    "my_organizations": "Organizațiile mele",
+    "join_organization": "Alătură-te unei organizații"
   }
 }

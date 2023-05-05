@@ -5,9 +5,12 @@ import { Button, Text } from '@ui-kitten/components';
 const Volunteer = ({ navigation }: any) => {
   console.log('Volunteer', navigation);
 
-  const onViewOrganizationButtonPress = () => {
-    // navigation.navigate('organization');
+  const onShowDrawerPress = () => {
     navigation.openDrawer();
+  };
+
+  const onViewOrganizationButtonPress = () => {
+    navigation.navigate('organization');
   };
 
   const onViewVolunteerProfilenButtonPress = () => {
@@ -21,6 +24,7 @@ const Volunteer = ({ navigation }: any) => {
   return (
     <PageLayout title="Volunteer">
       <Text category="h1">Volunteer</Text>
+      <Button onPress={onShowDrawerPress}>SHOW DRAWER</Button>
       <Button onPress={onViewOrganizationButtonPress}>View Organization</Button>
       <Button onPress={onViewVolunteerProfilenButtonPress}>View Volunteer Profile</Button>
       <Button onPress={onViewAtivityLogsButtonPress}>View Logs</Button>
