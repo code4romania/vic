@@ -11,6 +11,13 @@
     "updates": "actualizări",
     "edit": "Editează {{item}}",
     "add": "Adaugă {{item}}",
+    "sex": "Sex {{type}}",
+    "male": "Masculin",
+    "female": "Feminin",
+    "role": "Rol",
+    "department": "Departament",
+    "branch": "Filiala",
+    "phone": "Telefon",
     "join": "Alătură-te"
   },
   "activity_log": {
@@ -18,7 +25,13 @@
     "log": "Ore înregistrate"
   },
   "volunteer": {
-    "profile": "Profil voluntar"
+    "profile": "Profil voluntar",
+    "age": "{{years}} de ani",
+    "county": ", jud {{name}}",
+    "information": "Informatii voluntar",
+    "email": "Email de contact",
+    "active_since": "Voluntar din",
+    "created_on": "Înregistrat în TEO din"
   },
   "register": {
     "title": "Creare cont"

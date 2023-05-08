@@ -6,17 +6,27 @@ interface PageLayoutProps {
   children: ReactNode;
   title: string;
   onBackButtonPress?: () => void;
+  onEditButtonPress?: () => void;
 }
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />;
+const EditIcon = (props: any) => <Icon {...props} name="edit-outline" />;
 
-export const PageLayout = ({ children, title, onBackButtonPress }: PageLayoutProps) => (
+export const PageLayout = ({
+  children,
+  title,
+  onBackButtonPress,
+  onEditButtonPress,
+}: PageLayoutProps) => (
   <>
     <TopNavigation
       title={title}
       alignment="start"
       accessoryLeft={
         onBackButtonPress && <TopNavigationAction icon={BackIcon} onPress={onBackButtonPress} />
+      }
+      accessoryRight={
+        onEditButtonPress && <TopNavigationAction icon={EditIcon} onPress={onEditButtonPress} />
       }
     />
     <Layout style={styles.layout}>{children}</Layout>
@@ -26,5 +36,5 @@ export const PageLayout = ({ children, title, onBackButtonPress }: PageLayoutPro
 export default PageLayout;
 
 const styles = StyleSheet.create({
-  layout: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  layout: { flex: 1, padding: 16 },
 });

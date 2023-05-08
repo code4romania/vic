@@ -1,6 +1,7 @@
 // utils
 // add mappings and other helper methods
 
+import { format } from 'date-fns';
 import { ButtonType } from '../enums/button-type.enum';
 
 export const ButtonBackgroundColorMapper = {
@@ -16,3 +17,6 @@ export const applyCardShadow = (theme: any) => ({
   shadowRadius: 2,
   elevation: 2, // android only
 });
+
+export const formatDate = (value?: Date | string | null): string =>
+  value ? format(new Date(value), 'dd/LL/y') : '-';
