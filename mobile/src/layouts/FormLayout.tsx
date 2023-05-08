@@ -12,5 +12,5 @@ const FormLayout = ({ children }: FormLayoutProps) => {
 export default FormLayout;
 
 const styles = StyleSheet.create({
-  layout: { gap: 16 },
+  layout: { gap: 16, paddingBottom: 32 },
 });

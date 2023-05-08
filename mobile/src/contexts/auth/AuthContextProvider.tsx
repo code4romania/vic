@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { AuthContext } from './AuthContext';
+import { AuthContext, SignInOptions, SignUpOptions } from './AuthContext';
 import { Auth } from 'aws-amplify';
-import API from '../../services/api';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [userName, setUserName] = useState<string>('');
 
   useEffect(() => {
     initProfile();
@@ -23,15 +23,50 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const login = async ({ email, password }: { email: string; password: string }) => {
+  const login = async ({ username, password }: SignInOptions) => {
     try {
-      const user = await Auth.signIn(email, password);
+      const user = await Auth.signIn(username, password);
       console.log('user', JSON.stringify(user));
       setIsAuthenticated(true);
-      const result = await API.get('/mobile/user');
-      console.log('result', result);
     } catch (error) {
       console.log('error signing in', error);
+    }
+  };
+
+  const signUp = async ({ username, password, phoneNumber }: SignUpOptions) => {
+    try {
+      const { user } = await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email: username, // optional
+          phone_number: phoneNumber, // optional - E.164 number convention
+          // other custom attributes
+        },
+        autoSignIn: {
+          // optional - enables auto sign in after user is confirmed
+          enabled: true,
+        },
+      });
+      // save username for confirmation
+      // TBD: if this is the best approach
+      setUserName(username);
+      console.log(user);
+    } catch (error) {
+      console.log('error signing up:', error);
+      throw error;
+    }
+  };
+
+  const confirmSignUp = async (code: string) => {
+    try {
+      console.log('code', code);
+      console.log('userName', userName);
+      const result = await Auth.confirmSignUp(userName, code);
+      console.log('result', result);
+    } catch (error) {
+      console.log('error on confirm', error);
+      throw error;
     }
   };
 
@@ -40,7 +75,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, signUp, confirmSignUp }}>
       {children}
     </AuthContext.Provider>
   );

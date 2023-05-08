@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Icon } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
@@ -8,32 +8,52 @@ import FormInput from '../components/FormInput';
 import { useForm } from 'react-hook-form';
 import { TouchableWithoutFeedback } from 'react-native';
 import Paragraph from '../components/Paragraph';
+import * as yup from 'yup';
+import i18n from '../common/config/i18n';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-const emailRules = {
-  required: 'Email is required',
-  minLength: {
-    value: 2,
-    message: 'Email must be at least 2 characters',
-  },
-  maxLength: {
-    value: 50,
-    message: 'Email must not exceed 50 characters',
-  },
+export type LoginFormTypes = {
+  username: string;
+  password: string;
 };
+
+const schema = yup
+  .object({
+    username: yup
+      .string()
+      .email(`${i18n.t('login:form.email.pattern')}`)
+      .required(`${i18n.t('login:form.email.required')}`),
+
+    password: yup.string().required(`${i18n.t('login:form.password.required')}`),
+  })
+  .required();
 
 const Login = ({ navigation }: any) => {
   const { login } = useAuth();
-  const { t } = useTranslation('page_headers');
-  const [secureTextEntry, setSecureTextEntry] = React.useState(true);
+  const { t } = useTranslation('login');
+  const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<LoginFormTypes>({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(schema),
+  });
 
-  const onSubmit = (credentials: any) => {
-    console.log('credentials', credentials);
-    login(credentials);
+  const onSubmit = async (credentials: LoginFormTypes) => {
+    try {
+      setIsLoading(true);
+      console.log('credentials', credentials);
+      await login(credentials);
+    } catch (error) {
+      console.log('error on login');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderPasswordEyeIcon = (props: any): React.ReactElement => (
@@ -44,32 +64,33 @@ const Login = ({ navigation }: any) => {
 
   return (
     <PageLayout
-      title={t('login')}
+      title={t('title')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
-        primaryActionLabel: 'Intra in cont',
+        primaryActionLabel: t('submit'),
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
+        loading: isLoading,
       }}
     >
       <FormLayout>
-        <Paragraph>{`${t('login:paragraph')}`}</Paragraph>
+        <Paragraph>{`${t('paragraph')}`}</Paragraph>
         <FormInput
-          control={control}
-          name="email"
-          label="Email"
-          placeholder="Enter your email"
-          rules={emailRules}
-          error={errors.email}
+          control={control as any}
+          name="username"
+          label={t('form.email.label')}
+          placeholder={t('form.email.placeholder')}
+          error={errors.username}
+          disabled={isLoading}
         />
         <FormInput
-          control={control}
+          control={control as any}
           name="password"
-          label="Password"
-          placeholder="Enter your password"
-          rules={{}}
-          secureTextEntry={secureTextEntry}
+          label={t('form.password.label')}
+          placeholder={t('form.password.placeholder')}
           error={errors.password}
           accessoryRight={renderPasswordEyeIcon}
+          secureTextEntry={secureTextEntry}
+          disabled={isLoading}
         />
       </FormLayout>
     </PageLayout>

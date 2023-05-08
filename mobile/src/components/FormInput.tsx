@@ -1,14 +1,13 @@
 import React from 'react';
 import { Input, InputProps, Text } from '@ui-kitten/components';
 import { Control, Controller } from 'react-hook-form';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Keyboard } from 'react-native';
 
 interface FormInputProps extends InputProps {
   control: Control<Record<string, any>>;
   name: string;
   label: string;
   placeholder: string;
-  rules: Object;
   secureTextEntry?: boolean;
   error: any;
 }
@@ -18,18 +17,20 @@ const FormInput: React.FC<FormInputProps> = ({
   name,
   label,
   placeholder,
-  rules,
   secureTextEntry = false,
   error,
   ...rest
 }: FormInputProps) => {
+  const handleKeyboardDismiss = () => {
+    Keyboard.dismiss();
+  };
+
   return (
     <View style={styles.container}>
       <Text category="p1">{label}</Text>
       <Controller
         control={control}
         name={name}
-        rules={rules}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             placeholder={placeholder}
@@ -38,6 +39,7 @@ const FormInput: React.FC<FormInputProps> = ({
             onChangeText={onChange}
             value={value}
             {...rest}
+            onSubmitEditing={handleKeyboardDismiss}
           />
         )}
         defaultValue=""
