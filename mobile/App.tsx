@@ -14,6 +14,7 @@ import Router from './src/routes/Router';
 import { Amplify } from 'aws-amplify';
 import './src/common/config/i18n';
 import { AMPLIFY_CONFIG } from './src/common/config/amplify';
+import Toast from 'react-native-toast-message';
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG);
@@ -45,6 +46,7 @@ export default () => {
         </SafeAreaView>
         <ExpoStatusBar style="auto" />
       </ApplicationProvider>
+      <Toast />
     </>
   );
 };

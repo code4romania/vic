@@ -34,7 +34,7 @@ const ValidateAccount = ({ navigation }: any) => {
     handleSubmit,
     formState: { errors },
   } = useForm<ValidateAccountFormTypes>({
-    mode: 'onChange',
+    mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });

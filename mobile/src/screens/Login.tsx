@@ -39,7 +39,7 @@ const Login = ({ navigation }: any) => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormTypes>({
-    mode: 'onChange',
+    mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });

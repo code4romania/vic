@@ -50,7 +50,7 @@ const CreateAccount = ({ navigation }: any) => {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormTypes>({
-    mode: 'onChange',
+    mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });

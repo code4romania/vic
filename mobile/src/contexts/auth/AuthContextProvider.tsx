@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AuthContext, SignInOptions, SignUpOptions } from './AuthContext';
 import { Auth } from 'aws-amplify';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -13,8 +14,9 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const initProfile = async () => {
     try {
       // this will throw error if user is not authenticated
-      const res = await Auth.currentAuthenticatedUser();
-      console.log('res', res);
+      await Auth.currentAuthenticatedUser();
+      // if the user is authenticated will auto login
+      setIsAuthenticated(true);
     } catch (error) {
       // https://github.com/aws-amplify/amplify-js/blob/6caccc7b4/packages/auth/src/Auth.ts#L1705
       // here are just error strings validating user pool config and if user is authenticated
@@ -25,10 +27,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async ({ username, password }: SignInOptions) => {
     try {
-      const user = await Auth.signIn(username, password);
-      console.log('user', JSON.stringify(user));
+      await Auth.signIn(username, password);
       setIsAuthenticated(true);
     } catch (error) {
+      Toast.show({ type: 'error', text1: 'Error while loging in' });
       console.log('error signing in', error);
     }
   };
@@ -53,6 +55,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       setUserName(username);
       console.log(user);
     } catch (error) {
+      Toast.show({ type: 'error', text1: 'Error while signing up' });
       console.log('error signing up:', error);
       throw error;
     }
@@ -60,18 +63,22 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const confirmSignUp = async (code: string) => {
     try {
-      console.log('code', code);
-      console.log('userName', userName);
-      const result = await Auth.confirmSignUp(userName, code);
-      console.log('result', result);
+      await Auth.confirmSignUp(userName, code);
     } catch (error) {
-      console.log('error on confirm', error);
+      // TODO: handle user has been disabled and other errors scenarios
+      Toast.show({ type: 'error', text1: 'Error while confirming sign up' });
+      console.log('error on confirms', error);
       throw error;
     }
   };
 
   const logout = async () => {
-    setIsAuthenticated(false);
+    try {
+      setIsAuthenticated(false);
+      await Auth.signOut({ global: true });
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
   };
 
   return (
