@@ -22,20 +22,24 @@ const EventPresenter = ({ title, date, location, divison, onPress }: EventPresen
       <View style={styles.container}>
         <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.eventImg} />
         <View style={styles.textContainer}>
-          <Text category="h3" appearance="hint">
-            {title}
-          </Text>
+          <Text category="p2">{title}</Text>
           <View style={styles.section}>
             <IconSvg icon={clockSvg} size={10} fill="#9CA3AF" />
-            <Text>{date}</Text>
+            <Text category="c1" appearance="hint">
+              {date}
+            </Text>
           </View>
           <View style={styles.section}>
             <SvgXml xml={locationSvg} />
-            <Text>{location}</Text>
+            <Text category="c1" appearance="hint">
+              {location}
+            </Text>
           </View>
           <View style={styles.section}>
             <SvgXml xml={usersSvg} />
-            <Text>{divison}</Text>
+            <Text category="c1" appearance="hint">
+              {divison}
+            </Text>
           </View>
         </View>
         <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.organizationImg} />

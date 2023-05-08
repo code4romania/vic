@@ -4,16 +4,16 @@ import { StyleSheet, View } from 'react-native';
 
 interface ReadOnlyElementProps {
   label: string;
-  text: string;
+  value?: string;
 }
 
-const ReadOnlyElement = ({ label, text }: ReadOnlyElementProps) => {
+const ReadOnlyElement = ({ label, value }: ReadOnlyElementProps) => {
   return (
     <View style={styles.container}>
-      <Text category="c1">{label}</Text>
-      <Text category="p1" appearance="hint">
-        {text}
+      <Text category="c1" appearance="hint">
+        {label}
       </Text>
+      <Text category="p1">{value || '-'}</Text>
     </View>
   );
 };

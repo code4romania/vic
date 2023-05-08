@@ -1,13 +1,15 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Button, Layout, Text } from '@ui-kitten/components';
-import { StyleSheet, View, ScrollView, Image } from 'react-native';
+import { Button, Layout } from '@ui-kitten/components';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import EventPresenter from '../components/EventPresenter';
 import SectionWrapper from '../components/SectionWrapper';
 import i18n from '../common/config/i18n';
+import ProfileIntro from '../components/ProfileIntro';
 
 const organization = {
+  logo: 'https://picsum.photos/200',
   name: 'Asociatia ZEN',
   volunteers: '1200',
   description:
@@ -40,35 +42,32 @@ const OrganizationProfile = ({ navigation }: any) => {
     <PageLayout title={i18n.t('organization_profile:title')} onBackButtonPress={navigation.goBack}>
       <ScrollView>
         <Layout style={styles.layout}>
-          <View style={styles.nameSection}>
-            <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.organizationImg} />
-            <View style={styles.nameContainer}>
-              <Text category="h2" appearance="hint">
-                {organization.name}
-              </Text>
-              <Text category="c1">
-                {organization.volunteers} {i18n.t('general:volunteers').toLowerCase()}
-              </Text>
-            </View>
-          </View>
+          <ProfileIntro
+            uri={organization.logo}
+            name={organization.name}
+            description={`${organization.volunteers} ${i18n.t('general:volunteers').toLowerCase()}`}
+          />
           <View style={styles.readOnlyContainer}>
             <ReadOnlyElement
               label={i18n.t('organization_profile:description')}
-              text={organization.description}
+              value={organization.description}
             />
             <ReadOnlyElement
               label={i18n.t('organization_profile:email')}
-              text={organization.email}
+              value={organization.email}
             />
             <ReadOnlyElement
               label={i18n.t('organization_profile:phone')}
-              text={organization.phone}
+              value={organization.phone}
             />
             <ReadOnlyElement
               label={i18n.t('organization_profile:address')}
-              text={organization.address}
+              value={organization.address}
             />
-            <ReadOnlyElement label={i18n.t('organization_profile:area')} text={organization.area} />
+            <ReadOnlyElement
+              label={i18n.t('organization_profile:area')}
+              value={organization.area}
+            />
           </View>
           <SectionWrapper title={i18n.t('organization_profile:events')}>
             <EventPresenter
@@ -100,22 +99,7 @@ const styles = StyleSheet.create({
     gap: 24,
     paddingHorizontal: 16,
   },
-  nameSection: {
-    gap: 24,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  nameContainer: {
-    gap: 16,
-  },
   readOnlyContainer: {
     gap: 16,
-  },
-  organizationImg: {
-    width: 138,
-    height: 138,
-    borderRadius: 150,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
