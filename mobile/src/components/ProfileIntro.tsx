@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   imageWrapper: {
     shadowColor: '#303C6C',
     shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 3,
   },
