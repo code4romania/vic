@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 24,
-    marginBottom: 24,
   },
   textContainer: {
     gap: 16,

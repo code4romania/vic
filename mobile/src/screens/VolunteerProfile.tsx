@@ -80,6 +80,7 @@ export default VolunteerProfile;
 
 const themedStyles = StyleService.create({
   profileContent: {
+    marginTop: 32,
     gap: 16,
   },
 });
