@@ -95,12 +95,5 @@
   "cool-gray-600": "#4B5563",
   "cool-gray-700": "#374151",
   "cool-gray-800": "#1F2937",
-  "cool-gray-900": "#121620",
-  "component": {
-    "avatar": {
-      "sizes": {
-        "giant": 138
-      }
-    }
-  }
+  "cool-gray-900": "#121620"
 }

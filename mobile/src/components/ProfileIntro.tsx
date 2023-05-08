@@ -1,6 +1,6 @@
-import { StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import { Text } from '@ui-kitten/components';
 import React from 'react';
-import { Image, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 interface ProfileIntroProps {
   uri: string;
@@ -9,8 +9,6 @@ interface ProfileIntroProps {
 }
 
 const ProfileIntro = ({ uri, name, description }: ProfileIntroProps) => {
-  const styles = useStyleSheet(themedStyles);
-
   return (
     <View style={styles.container}>
       <View style={styles.imageWrapper}>
@@ -18,7 +16,7 @@ const ProfileIntro = ({ uri, name, description }: ProfileIntroProps) => {
       </View>
       <View style={styles.textContainer}>
         <Text category="h2">{name}</Text>
-        <Text category="c1" appearance="hint">
+        <Text category="c1" appearance="hint" style={styles.description}>
           {description}
         </Text>
       </View>
@@ -28,7 +26,7 @@ const ProfileIntro = ({ uri, name, description }: ProfileIntroProps) => {
 
 export default ProfileIntro;
 
-const themedStyles = StyleService.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -49,5 +47,8 @@ const themedStyles = StyleService.create({
     borderRadius: 70,
     width: 138,
     height: 138,
+  },
+  description: {
+    lineHeight: 20,
   },
 });
