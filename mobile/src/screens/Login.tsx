@@ -1,22 +1,98 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Text, Button } from '@ui-kitten/components';
+import { Icon } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from 'react-i18next';
+import FormLayout from '../layouts/FormLayout';
+import FormInput from '../components/FormInput';
+import { useForm } from 'react-hook-form';
+import { TouchableWithoutFeedback } from 'react-native';
+import Paragraph from '../components/Paragraph';
+import * as yup from 'yup';
 import i18n from '../common/config/i18n';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+export type LoginFormTypes = {
+  username: string;
+  password: string;
+};
+
+const schema = yup
+  .object({
+    username: yup
+      .string()
+      .email(`${i18n.t('login:form.email.pattern')}`)
+      .required(`${i18n.t('login:form.email.required')}`),
+
+    password: yup.string().required(`${i18n.t('login:form.password.required')}`),
+  })
+  .required();
 
 const Login = ({ navigation }: any) => {
-  console.log('Login');
   const { login } = useAuth();
+  const { t } = useTranslation('login');
+  const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const onForgotPasswordButtonPress = () => {
-    navigation.navigate('forgot-password');
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormTypes>({
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = async (credentials: LoginFormTypes) => {
+    try {
+      setIsLoading(true);
+      console.log('credentials', credentials);
+      await login(credentials);
+    } catch (error) {
+      console.log('error on login');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+  const renderPasswordEyeIcon = (props: any): React.ReactElement => (
+    <TouchableWithoutFeedback onPress={setSecureTextEntry.bind(null, !secureTextEntry)}>
+      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+    </TouchableWithoutFeedback>
+  );
+
   return (
-    <PageLayout title={i18n.t('login:title')} onBackButtonPress={navigation.goBack}>
-      <Text category="h2">Login</Text>
-      <Button onPress={login}>Login</Button>
-      <Button onPress={onForgotPasswordButtonPress}>Forgot Password</Button>
+    <PageLayout
+      title={t('title')}
+      onBackButtonPress={navigation.goBack}
+      actionsOptions={{
+        primaryActionLabel: t('submit'),
+        onPrimaryActionButtonClick: handleSubmit(onSubmit),
+        loading: isLoading,
+      }}
+    >
+      <FormLayout>
+        <Paragraph>{`${t('paragraph')}`}</Paragraph>
+        <FormInput
+          control={control as any}
+          name="username"
+          label={t('form.email.label')}
+          placeholder={t('form.email.placeholder')}
+          error={errors.username}
+          disabled={isLoading}
+        />
+        <FormInput
+          control={control as any}
+          name="password"
+          label={t('form.password.label')}
+          placeholder={t('form.password.placeholder')}
+          error={errors.password}
+          accessoryRight={renderPasswordEyeIcon}
+          secureTextEntry={secureTextEntry}
+          disabled={isLoading}
+        />
+      </FormLayout>
     </PageLayout>
   );
 };
