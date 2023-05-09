@@ -64,7 +64,7 @@
   "text-basic-color": "#1F2937",
   "text-control-color": "#FFFFFF",
   "text-info-color": "#1F2937",
-  "text-hint-color": "#1F2937",
+  "text-hint-color": "$cool-gray-500",
   "text-disabled-color": "#1F2937",
   "text-primary-color": "$color-primary-500",
   "text-success-color": "$color-success-500",
@@ -103,5 +103,6 @@
   "cool-gray-600": "#4B5563",
   "cool-gray-700": "#374151",
   "cool-gray-800": "#1F2937",
-  "cool-gray-900": "#121620"
+  "cool-gray-900": "#121620",
+  "dark-purple": "#280056"
 }

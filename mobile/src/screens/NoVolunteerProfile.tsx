@@ -19,15 +19,13 @@ const NoVolunteerProfile = () => {
     <PageLayout title="">
       <Layout style={styles.container}>
         <SvgXml xml={SadFaceSvg} style={styles.svg} />
-        <Text category="h3" style={styles.noOrgAdded}>{`${i18n.t('general:no_org_added')}`}</Text>
-        <Text style={styles.description}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a
-          varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut
-          ex efficitur tristique.
-        </Text>
+        <Text category="h3" style={styles.noOrgAdded}>{`${i18n.t('volunteer:no_org_added')}`}</Text>
+        <Text style={styles.description} appearance="hint">{`${i18n.t(
+          'volunteer:no_org_description',
+        )}`}</Text>
         <Button
           type={ButtonType.PRIMARY}
-          label="Adaugă organizație"
+          label={i18n.t('general:add', { item: i18n.t('general:organization').toLowerCase() })}
           onPress={onAddOrganizationPress}
         />
       </Layout>
