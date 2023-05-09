@@ -7,22 +7,26 @@ import SunSvg from '../assets/svg/sun';
 import UserGroupSvg from '../assets/svg/user-group';
 import IconSvg from './IconSvg';
 import HorizontalCarousel from './HorizontalCarousel';
+import i18n from '../common/config/i18n';
 
 const AboutTeo = () => {
   return (
-    <SectionWrapper title="Despre TEO" icon={<IconSvg icon={EllipseSvg} size={20} />}>
+    <SectionWrapper
+      title={i18n.t('general:about_teo')}
+      icon={<IconSvg icon={EllipseSvg} size={20} />}
+    >
       <HorizontalCarousel>
         <StatisticsCard
           icon={<IconSvg icon={SunSvg} size={56} />}
           title="2500"
-          subtitle="voluntari activi"
+          subtitle={i18n.t('general:active_volunteers')}
           backgroundColor="turquoise-50"
           onPress={() => console.log('statistic comp 1 pressed')}
         />
         <StatisticsCard
           icon={<IconSvg icon={UserGroupSvg} size={56} />}
           title="210"
-          subtitle="organizații"
+          subtitle={i18n.t('general:organizations').toLowerCase()}
           backgroundColor="turquoise-50"
           onPress={() => console.log('statistic comp 2 pressed')}
         />

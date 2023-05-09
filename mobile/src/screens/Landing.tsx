@@ -13,10 +13,10 @@ const Landing = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout title="Landing">
+    <PageLayout title="">
       <Text category="h2">Landing</Text>
-      <Button onPress={onLoginButtonPress}>Go to Login</Button>
-      <Button onPress={onRegisterButtonPress}>Go to Register</Button>
+      <Button onPress={onRegisterButtonPress}>Sign Up</Button>
+      <Button onPress={onLoginButtonPress}>Autentificate</Button>
     </PageLayout>
   );
 };

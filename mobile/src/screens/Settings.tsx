@@ -1,12 +1,11 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { List, Text, Divider } from '@ui-kitten/components';
-import { Image, StyleSheet, View, TouchableHighlight } from 'react-native';
-//SVG
+import { Image, View, TouchableHighlight, StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { SETTING_SCREENS } from '../common/constants/setting-screens';
 import { SETTINGS_ROUTES } from '../common/enums/setting-routes';
 import i18n from '../common/config/i18n';
+import { Text, Divider, List } from '@ui-kitten/components';
 
 interface IListItem {
   icon: string;

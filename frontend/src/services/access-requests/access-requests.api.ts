@@ -71,7 +71,8 @@ export const downloadAccessRequests = async (
   search?: string,
   createdOnStart?: Date,
   createdOnEnd?: Date,
-  locationId?: string,
+  city?: string,
+  county?: string,
   rejectedOnStart?: Date,
   rejectedOnEnd?: Date,
 ): Promise<{ data: any; headers: AxiosResponseHeaders }> => {
@@ -85,7 +86,8 @@ export const downloadAccessRequests = async (
       ...(createdOnEnd ? { createdOnEnd: formatEndDateISO9075(createdOnEnd) } : {}),
       ...(rejectedOnStart ? { rejectedOnStart: formatStartDateISO9075(rejectedOnStart) } : {}),
       ...(rejectedOnEnd ? { rejectedOnEnd: formatEndDateISO9075(rejectedOnEnd) } : {}),
-      locationId,
+      city,
+      county,
     },
     responseType: 'arraybuffer',
   }).then((res) => {

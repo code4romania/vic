@@ -134,6 +134,7 @@
       },
       "email": {
         "label": "Email de contact*",
+        "max": "Emailul trebuie sa aibe maxim 75 de caractere",
         "required": "Email-ul de contact este obligatoriu",
         "pattern": "Emailul trebuie sa aiba un format valid"
       },
@@ -489,7 +490,8 @@
       "EVENT_003": "Task-urile nu sunt corecte",
       "EVENT_004": "Nu putem modifica target audience pentru evenimentele publicate",
       "EVENT_005": "Doar evenimentele DRAFT sau ARHIVATE pot fi publicate",
-      "EVENT_006": "Doar evenimentele publicate pot fi arhivate"
+      "EVENT_006": "Doar evenimentele publicate pot fi arhivate",
+      "EVENT_007": "Aceste eveniment are ore de voluntariat inregistrate si nu poate fi sters!"
     },
     "download_open": "Evenimente active.xlsx",
     "download_past": "Evenimente incheiate.xlsx",
