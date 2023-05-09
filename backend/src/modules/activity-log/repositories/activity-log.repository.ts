@@ -13,6 +13,7 @@ import { IActivityLogRepository } from '../interfaces/activity-log-repository.in
 import {
   ActivityLogModelTransformer,
   CreateActivityLogByAdminOptions,
+  FindActivityLogCountOptions,
   FindManyActivityLogCounterOptions,
   FindManyActivityLogsOptions,
   IActivityLogCountHoursByStatus,
@@ -244,5 +245,11 @@ export class ActivityLogRepositoryService
         rejected: 0,
       },
     );
+  }
+
+  async countActivityLogs(
+    findOptions: FindActivityLogCountOptions,
+  ): Promise<number> {
+    return this.activityLogRepo.countBy(findOptions);
   }
 }

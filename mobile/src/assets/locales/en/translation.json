@@ -1,5 +1,67 @@
 {
   "general": {
-    "current_month": "Luna asta"
+    "current_month": "Luna asta",
+    "continue": "Continua"
+  },
+  "login": {
+    "title": "Autentificare",
+    "paragraph": "Introduceți e-mailul și parola pentru a intra în cont.",
+    "submit": "Intra in cont",
+    "form": {
+      "email": {
+        "label": "Email*",
+        "placeholder": "Introduceti emailul",
+        "required": "Email-ul este obligatoriu",
+        "pattern": "Formatul email-ului nu este valid"
+      },
+      "password": {
+        "label": "Parola*",
+        "placeholder": "Introduceti parola",
+        "required": "Parola este obligatorie"
+      }
+    }
+  },
+  "register": {
+    "title": "Creare cont",
+    "create_account": {
+      "heading": "Date cont",
+      "paragraph": "Completați câmpurile de mai jos pentru înregistrare",
+      "form": {
+        "email": {
+          "label": "Email*",
+          "placeholder": "Introduceti emailul",
+          "required": "Email-ul este obligatoriu",
+          "pattern": "Formatul email-ului nu este valid"
+        },
+        "phone": {
+          "label": "Telefon*",
+          "placeholder": "Introduceti telefonul",
+          "required": "Telefonul este obligatoriu"
+        },
+        "password": {
+          "label": "Parola*",
+          "placeholder": "Introduceti parola",
+          "required": "Parola este obligatorie"
+        },
+        "confirm_password": {
+          "label": "Confirma parola*",
+          "placeholder": "Confirmati parola",
+          "required": "Parola este obligatorie",
+          "match": "Parolele trebuie sa fie identice"
+        }
+      }
+    },
+    "validate_account": {
+      "heading": "Verificare code primit pe email",
+      "paragraph": "Completați câmpurile de mai jos pentru înregistrare.",
+      "form": {
+        "code": {
+          "label": "Introdu codul primit prin sms*",
+          "placeholder": "Introdu codul primit prin sms",
+          "required": "Codul este obligatoriu",
+          "length": "Codul trebuie sa aiba o lungime de 6 caractere"
+        }
+      }
+    }
   }
 }

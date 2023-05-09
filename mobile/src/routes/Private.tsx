@@ -13,14 +13,14 @@ import News from '../screens/News';
 import Organization from '../screens/Organization';
 import OrganizationProfile from '../screens/OrganizationProfile';
 import VolunteerProfile from '../screens/VolunteerProfile';
-import Tabs from './Tabs';
+import DrawerNavigator from './Drawer';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
 const Private = () => (
   <Navigator screenOptions={{ headerShown: false }}>
     <Group>
-      <Screen name="home" component={Tabs} />
+      <Screen name="home" component={DrawerNavigator} />
       <Screen name="news" component={News} />
       <Screen name="organization" component={Organization} />
       <Screen name="volunteer-profile" component={VolunteerProfile} />

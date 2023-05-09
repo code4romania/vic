@@ -75,6 +75,10 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
     if (activityLog) navigate(`/actions-archive?author=${activityLog.createdByAdmin?.name}`);
   };
 
+  const onTaskClick = () => {
+    if (activityLog) navigate(`/activity-types/edit/${activityLog.activityType?.id}`);
+  };
+
   const onApprove = (id: string) => {
     approveActivityLog(id, {
       onSuccess: () => {
@@ -163,7 +167,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
             <FormReadOnlyElement
               label={i18n.t('general:task')}
               value={activityLog.activityType?.name || `${i18n.t('general:other')}`}
-              onClick={() => {}}
+              onClick={onTaskClick}
             />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.hours')}

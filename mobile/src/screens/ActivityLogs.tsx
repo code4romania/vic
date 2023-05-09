@@ -1,6 +1,7 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Button, Text } from '@ui-kitten/components';
+import i18n from '../common/config/i18n';
 
 const ActivityLogs = ({ navigation }: any) => {
   console.log('ActivityLogs');
@@ -14,7 +15,7 @@ const ActivityLogs = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout title="Ore de voluntariar" onBackButtonPress={navigation.goBack}>
+    <PageLayout title={i18n.t('activity_log:title')} onBackButtonPress={navigation.goBack}>
       <Text category="h1">ActivityLogs</Text>
       <Button onPress={onAddActivityLogButtonPress}>Add</Button>
       <Button onPress={onViewActivityLogButtonPress}>View</Button>
