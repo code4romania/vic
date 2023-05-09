@@ -60,23 +60,23 @@
       "paragraph": "Completați câmpurile de mai jos pentru înregistrare",
       "form": {
         "email": {
-          "label": "Email*",
+          "label": "Email",
           "placeholder": "Introduceti emailul",
           "required": "Email-ul este obligatoriu",
           "pattern": "Formatul email-ului nu este valid"
         },
         "phone": {
-          "label": "Telefon*",
+          "label": "Telefon",
           "placeholder": "Introduceti telefonul",
           "required": "Telefonul este obligatoriu"
         },
         "password": {
-          "label": "Parola*",
+          "label": "Parola",
           "placeholder": "Introduceti parola",
           "required": "Parola este obligatorie"
         },
         "confirm_password": {
-          "label": "Confirma parola*",
+          "label": "Confirma parola",
           "placeholder": "Confirmati parola",
           "required": "Parola este obligatorie",
           "match": "Parolele trebuie sa fie identice"
