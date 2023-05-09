@@ -89,5 +89,13 @@
         }
       }
     }
+  },
+  "settings": {
+    "title": "Setări cont",
+    "heading": "Date cont",
+    "identity": "Date identitate",
+    "password": "Schimbă parola",
+    "notification": "Setări notificări",
+    "information": "Informații"
   }
 }
