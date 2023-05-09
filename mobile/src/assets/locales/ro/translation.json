@@ -12,7 +12,13 @@
     "edit": "Editează {{item}}",
     "add": "Adaugă {{item}}",
     "join": "Alătură-te",
+    "register": "Înregistrează-te",
     "continue": "Continua"
+  },
+  "landing": {
+    "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
+    "registered": "Ai deja cont?",
+    "login": "Autentifică-te"
   },
   "activity_log": {
     "title": "Ore de voluntariat",

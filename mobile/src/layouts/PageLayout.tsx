@@ -55,7 +55,11 @@ export const PageLayout = ({
           style={styles.keyboardAvoidingContainer}
           keyboardVerticalOffset={100} // This is the distance between the top of the user screen and the react native view - because we have put the avoiding view after the navigation
         >
-          <ScrollView style={styles.childrenContainer} keyboardShouldPersistTaps={'always'}>
+          <ScrollView
+            style={styles.childrenContainer}
+            keyboardShouldPersistTaps={'always'}
+            bounces={false}
+          >
             {children}
           </ScrollView>
         </KeyboardAvoidingView>
