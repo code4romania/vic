@@ -88,14 +88,14 @@
           "length": "Codul trebuie sa aiba o lungime de 6 caractere"
         }
       }
-    },
-    "settings": {
-      "title": "Setări cont",
-      "heading": "Date cont",
-      "identity": "Date identitate",
-      "password": "Schimbă parola",
-      "notification": "Setări notificări",
-      "information": "Informații"
     }
+  },
+  "settings": {
+    "title": "Setări cont",
+    "heading": "Date cont",
+    "identity": "Date identitate",
+    "password": "Schimbă parola",
+    "notification": "Setări notificări",
+    "information": "Informații"
   }
 }

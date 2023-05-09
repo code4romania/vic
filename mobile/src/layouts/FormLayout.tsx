@@ -1,12 +1,24 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 interface FormLayoutProps {
   children: React.ReactNode;
 }
 
 const FormLayout = ({ children }: FormLayoutProps) => {
-  return <View style={styles.layout}>{children}</View>;
+  return (
+    <ScrollView
+      automaticallyAdjustKeyboardInsets={true}
+      bounces={false}
+      bouncesZoom={false}
+      alwaysBounceHorizontal={false}
+      alwaysBounceVertical={false}
+      showsVerticalScrollIndicator={false}
+      style={styles.layout}
+    >
+      {children}
+    </ScrollView>
+  );
 };
 
 export default FormLayout;
