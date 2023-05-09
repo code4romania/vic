@@ -6,6 +6,7 @@ import { SETTING_SCREENS } from '../common/constants/setting-screens';
 import { SETTINGS_ROUTES } from '../common/enums/setting-routes';
 import { Text, Divider, List } from '@ui-kitten/components';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../hooks/useAuth';
 
 interface IListItem {
   icon: string;
@@ -15,12 +16,13 @@ interface IListItem {
 
 const Settings = ({ navigation }: any) => {
   const { t } = useTranslation('settings');
+  const { logout } = useAuth();
 
   const handleItemPress = (route: string) => {
     if (route === SETTINGS_ROUTES.INFORMATION) {
       console.log('navigate to url');
     } else if (route === SETTINGS_ROUTES.LOGOUT) {
-      console.log('log out');
+      logout();
     } else {
       navigation.navigate(route);
     }
