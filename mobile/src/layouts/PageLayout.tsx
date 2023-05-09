@@ -38,15 +38,17 @@ export const PageLayout = ({
   onBackButtonPress,
   actionsOptions,
 }: PageLayoutProps) => {
+  const renderLeftControl = () => {
+    if (!onBackButtonPress) {
+      return <></>;
+    }
+
+    return <TopNavigationAction icon={BackIcon} onPress={onBackButtonPress} />;
+  };
+
   return (
     <>
-      <TopNavigation
-        title={title}
-        alignment="start"
-        accessoryLeft={
-          onBackButtonPress && <TopNavigationAction icon={BackIcon} onPress={onBackButtonPress} />
-        }
-      />
+      <TopNavigation title={title} alignment="start" accessoryLeft={renderLeftControl} />
       <Layout style={styles.layout}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
