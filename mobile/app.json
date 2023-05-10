@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "teo-mobile",
-    "slug": "teo-mobile",
+    "slug": "teo",
     "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
@@ -15,19 +15,27 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.commitglobal.teo"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.commitglobal.teo"
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"
     },
     "plugins": [
       "expo-localization"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "bcbf432c-f07a-4373-a9f1-f67f6281932e"
+      }
+    },
+    "owner": "randrewz"
   }
 }
