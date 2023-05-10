@@ -72,6 +72,7 @@ const ValidateAccount = ({ navigation }: any) => {
           placeholder={t('validate_account.form.code.placeholder')}
           error={errors.code}
           disabled={isLoading}
+          required={true}
           keyboardType="phone-pad"
         />
       </FormLayout>
