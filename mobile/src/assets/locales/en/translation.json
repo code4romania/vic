@@ -7,6 +7,7 @@
     "event": "Eveniment",
     "news": "Ultimele noutati",
     "organizations": "Organizatii",
+    "organization": "Organizatie",
     "active_volunteers": "voluntari activi",
     "updates": "actualizări",
     "edit": "Editează {{item}}",
@@ -19,7 +20,11 @@
     "log": "Ore înregistrate"
   },
   "volunteer": {
-    "profile": "Profil voluntar"
+    "profile": "Profil voluntar",
+    "no_org_added": "Nu ai adăugat încă nicio organizație",
+    "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
+    "my_organizations": "Organizațiile mele",
+    "join_organization": "Alătură-te unei organizații"
   },
   "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
   "tabs": {
