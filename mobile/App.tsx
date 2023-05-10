@@ -13,9 +13,10 @@ import AuthContextProvider from './src/contexts/auth/AuthContextProvider';
 import Router from './src/routes/Router';
 import { Amplify } from 'aws-amplify';
 import './src/common/config/i18n';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+
 import { AMPLIFY_CONFIG } from './src/common/config/amplify';
 import Toast from 'react-native-toast-message';
+import BottomSheetContainer from './src/components/BottomSheetContainer';
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG);
@@ -41,9 +42,8 @@ export default () => {
         <SafeAreaView style={styles.container}>
           <AuthContextProvider>
             <NavigationContainer>
-              <BottomSheetModalProvider>
-                <Router />
-              </BottomSheetModalProvider>
+              <Router />
+              <BottomSheetContainer />
             </NavigationContainer>
           </AuthContextProvider>
         </SafeAreaView>
