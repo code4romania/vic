@@ -23,7 +23,7 @@ const Volunteer = ({ navigation }: any) => {
     navigation.navigate('activity-logs');
   };
 
-  return false ? (
+  return true ? (
     <PageLayout title={i18n.t('tabs:volunteer')}>
       <Text category="h1">Volunteer</Text>
       <Button onPress={onShowDrawerPress}>SHOW DRAWER</Button>
