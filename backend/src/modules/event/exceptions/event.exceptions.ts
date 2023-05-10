@@ -7,6 +7,7 @@ export enum EventsExceptionCodes {
   EVENT_004 = 'EVENT_004',
   EVENT_005 = 'EVENT_005',
   EVENT_006 = 'EVENT_006',
+  EVENT_007 = 'EVENT_007',
 }
 
 type EventExceptionCodeType = keyof typeof EventsExceptionCodes;
@@ -39,5 +40,9 @@ export const EventExceptionMessages: Record<
   [EventsExceptionCodes.EVENT_006]: {
     code_error: EventsExceptionCodes.EVENT_006,
     message: 'Only PUBLISHED events can be ARCHIVED.',
+  },
+  [EventsExceptionCodes.EVENT_007]: {
+    code_error: EventsExceptionCodes.EVENT_007,
+    message: 'Cannot delete an event with logged hours.',
   },
 };

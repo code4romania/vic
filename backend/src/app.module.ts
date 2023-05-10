@@ -18,6 +18,7 @@ import {
   QueueProviderModule,
   ThrottleModule,
 } from './infrastructure/providers';
+import { S3ProviderModule } from './infrastructure/providers/s3/s3-provider.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import {
     CacheProviderModule,
     QueueProviderModule,
     ThrottleModule,
+    S3ProviderModule,
     // Modules
     MailModule,
     AuthenticationModule,
