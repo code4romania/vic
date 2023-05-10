@@ -7,7 +7,7 @@ import {
   Button,
   Spinner,
 } from '@ui-kitten/components';
-import { View, ScrollView, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
+import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
@@ -53,15 +53,9 @@ export const PageLayout = ({
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.keyboardAvoidingContainer}
-          keyboardVerticalOffset={100} // This is the distance between the top of the user screen and the react native view - because we have put the avoiding view after the navigation
+          keyboardVerticalOffset={-100} // This is the distance between the top of the user screen and the react native view - because we have put the avoiding view after the navigation
         >
-          <ScrollView
-            style={styles.childrenContainer}
-            keyboardShouldPersistTaps={'always'}
-            bounces={false}
-          >
-            {children}
-          </ScrollView>
+          <View style={styles.childrenContainer}>{children}</View>
         </KeyboardAvoidingView>
 
         {actionsOptions && (

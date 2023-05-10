@@ -83,8 +83,16 @@
   "color-primary-focus-border": "$color-primary-700",
   "color-primary-active-border": "$color-primary-active",
   "color-primary-disabled-border": "$color-primary-disabled",
-  "color-success-transparent-default-border": "$color-success-500",
+  "color-success-default": "$color-success-500",
   "color-success-default-border": "$color-success-500",
+  "color-success-active": "#2E8D8E",
+  "color-success-active-border": "#2E8D8E",
+  "color-success-transparent-default": "#FFFFFF",
+  "color-success-transparent-active": "#F3F4F6",
+  "color-success-transparent-default-border": "$color-success-500",
+  "color-danger-default": "$color-danger-500",
+  "color-danger-active": "#D42424",
+  "color-danger-active-border": "#D42424",
   "color-danger-default-border": "$color-danger-500",
   "color-danger-default": "$color-danger-500",
   "border-basic-color-4": "$cool-gray-200",
@@ -98,5 +106,6 @@
   "cool-gray-600": "#4B5563",
   "cool-gray-700": "#374151",
   "cool-gray-800": "#1F2937",
-  "cool-gray-900": "#121620"
+  "cool-gray-900": "#121620",
+  "dark-purple": "#280056"
 }
