@@ -80,6 +80,7 @@ const Login = ({ navigation }: any) => {
           placeholder={t('form.email.placeholder')}
           error={errors.username}
           disabled={isLoading}
+          required={true}
         />
         <FormInput
           control={control as any}
@@ -90,6 +91,7 @@ const Login = ({ navigation }: any) => {
           accessoryRight={renderPasswordEyeIcon}
           secureTextEntry={secureTextEntry}
           disabled={isLoading}
+          required={true}
         />
       </FormLayout>
     </PageLayout>
