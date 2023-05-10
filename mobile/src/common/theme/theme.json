@@ -107,5 +107,6 @@
   "cool-gray-700": "#374151",
   "cool-gray-800": "#1F2937",
   "cool-gray-900": "#121620",
-  "dark-purple": "#280056"
+  "dark-purple": "#280056",
+  "input-shadow-color": "rgba(40, 0, 86, 0.24)"
 }
