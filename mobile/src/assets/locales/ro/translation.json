@@ -14,11 +14,12 @@
     "add": "Adaugă {{item}}",
     "join": "Alătură-te",
     "register": "Înregistrează-te",
-    "continue": "Continua"
+    "continue": "Continuă"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
     "registered": "Ai deja cont?",
+    "email": "E-mail sau telefon",
     "login": "Autentifică-te"
   },
   "activity_log": {
@@ -44,13 +45,13 @@
     "submit": "Intra in cont",
     "form": {
       "email": {
-        "label": "Email*",
+        "label": "Email",
         "placeholder": "Introduceti emailul",
         "required": "Email-ul este obligatoriu",
         "pattern": "Formatul email-ului nu este valid"
       },
       "password": {
-        "label": "Parola*",
+        "label": "Parola",
         "placeholder": "Introduceti parola",
         "required": "Parola este obligatorie"
       }
