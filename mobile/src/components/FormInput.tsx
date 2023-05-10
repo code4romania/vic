@@ -33,7 +33,7 @@ const FormInput: React.FC<FormInputProps> = ({
     <View style={styles.container}>
       <Text category="p1">
         {label}
-        {required && <Text status={error ? 'danger' : 'basic'}>*</Text>}
+        {required ? <Text status={error ? 'danger' : 'basic'}>*</Text> : ''}
       </Text>
       <Controller
         control={control}
@@ -47,13 +47,18 @@ const FormInput: React.FC<FormInputProps> = ({
             value={value}
             status={error ? 'danger' : 'basic'}
             textStyle={error ? styles.redText : {}}
+            style={styles.input}
             {...rest}
             onSubmitEditing={handleKeyboardDismiss}
           />
         )}
         defaultValue=""
       />
-      {error && <Text status={error ? 'danger' : 'basic'}>{error.message}</Text>}
+      {error && (
+        <Text category="c1" status={error ? 'danger' : 'basic'}>
+          {error.message}
+        </Text>
+      )}
     </View>
   );
 };
@@ -66,5 +71,12 @@ const themedStyles = StyleService.create({
   },
   redText: {
     color: '$color-danger-500',
+  },
+  input: {
+    shadowColor: 'rgba(40, 0, 86, 0.24)',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 1,
   },
 });
