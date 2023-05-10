@@ -56,12 +56,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: '$cool-gray-200',
   },
   section: {
     gap: 8,
     flexDirection: 'row',
     alignItems: 'center',
+    height: 20,
   },
   eventImg: {
     width: 48,
