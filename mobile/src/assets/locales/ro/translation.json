@@ -92,8 +92,8 @@
       "paragraph": "Completați câmpurile de mai jos pentru înregistrare.",
       "form": {
         "code": {
-          "label": "Introdu codul primit prin sms",
-          "placeholder": "Introdu codul primit prin sms",
+          "label": "Introdu codul primit prin email",
+          "placeholder": "Introdu codul primit prin email",
           "required": "Codul este obligatoriu",
           "length": "Codul trebuie sa aiba o lungime de 6 caractere"
         }
