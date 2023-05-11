@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  IndexPath,
-  Select,
-  SelectItem,
-  SelectProps,
+  Datepicker,
+  DatepickerProps,
+  Icon,
+  IconElement,
   StyleService,
   Text,
   useStyleSheet,
@@ -11,14 +11,8 @@ import {
 import { Control, Controller } from 'react-hook-form';
 import { View } from 'react-native';
 
-export interface ISelectItem {
-  label: string;
-  key: string;
-}
-
-interface FormSelectProps extends SelectProps {
+interface FormDatepickerProps extends DatepickerProps {
   control: Control<Record<string, any>>;
-  options: ISelectItem[];
   name: string;
   label: string;
   placeholder: string;
@@ -26,16 +20,18 @@ interface FormSelectProps extends SelectProps {
   required?: boolean;
 }
 
-const FormSelect: React.FC<FormSelectProps> = ({
+const CalendarIcon = (props: any): IconElement => <Icon {...props} name="calendar-outline" />;
+
+//Add min or max props to date picker in order to let user select year
+const FormDatePicker: React.FC<FormDatepickerProps> = ({
   control,
-  options,
   name,
   label,
   placeholder,
   error,
   required,
   ...rest
-}: FormSelectProps) => {
+}: FormDatepickerProps) => {
   const styles = useStyleSheet(themedStyles);
 
   return (
@@ -48,21 +44,16 @@ const FormSelect: React.FC<FormSelectProps> = ({
         control={control}
         name={name}
         render={({ field: { onChange, onBlur, value } }) => (
-          <Select
+          <Datepicker
             placeholder={placeholder}
-            status={error ? 'danger' : 'basic'}
-            value={options.find((option) => option.key === value)?.label}
-            onSelect={(selectedItem: IndexPath | IndexPath[]) => {
-              onChange(options[(selectedItem as IndexPath).row].key);
-            }}
-            style={styles.select}
+            date={value}
+            onSelect={onChange}
             onBlur={onBlur}
+            status={error ? 'danger' : 'basic'}
+            style={styles.input}
+            accessoryRight={CalendarIcon}
             {...rest}
-          >
-            {options.map((option) => (
-              <SelectItem key={option.key} title={option.label} />
-            ))}
-          </Select>
+          />
         )}
         defaultValue=""
       />
@@ -75,13 +66,13 @@ const FormSelect: React.FC<FormSelectProps> = ({
   );
 };
 
-export default FormSelect;
+export default FormDatePicker;
 
 const themedStyles = StyleService.create({
   container: {
     gap: 4,
   },
-  select: {
+  input: {
     shadowColor: '$input-shadow-color',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
