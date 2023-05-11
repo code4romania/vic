@@ -1,11 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { AuthContext, SignInOptions, SignUpOptions } from './AuthContext';
 import { Auth } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import i18n from '../../common/config/i18n';
+import { useUserProfile } from '../../services/user/user.service';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>('');
+  const { mutate: getUserProfile } = useUserProfile();
 
   useEffect(() => {
     initProfile();
@@ -16,11 +20,21 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       // this will throw error if user is not authenticated
       await Auth.currentAuthenticatedUser();
       // if the user is authenticated will auto login
-      setIsAuthenticated(true);
+      // request profile from the database
+      getUserProfile(undefined, {
+        onSuccess: () => {
+          setIsAuthenticated(true);
+        },
+        onError: (error: any) => {
+          // if the profile doesn't exists redirect to the the create account page
+          console.log('[Profile]:', JSON.stringify(error));
+          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+        },
+      });
     } catch (error) {
       // https://github.com/aws-amplify/amplify-js/blob/6caccc7b4/packages/auth/src/Auth.ts#L1705
       // here are just error strings validating user pool config and if user is authenticated
-      console.debug('[Cognito] error while loging in:', error);
+      console.debug('[Cognito][Init]:', error);
       // setIsLoading(false);
     }
   };
@@ -29,34 +43,50 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       await Auth.signIn(username, password);
       setIsAuthenticated(true);
-    } catch (error) {
-      Toast.show({ type: 'error', text1: 'Error while loging in' });
-      console.log('error signing in', error);
+    } catch (error: any) {
+      console.log('[Auth][Login]:', JSON.stringify(error));
+      // Handle scenario where user is created in cognito but not activated
+      if (error.code === 'UserNotConfirmedException') {
+        // send event to confirm account to login screen
+        throw { confirmAccount: true };
+      } else {
+        // show any other error
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
+      }
     }
   };
 
   const signUp = async ({ username, password, phoneNumber }: SignUpOptions) => {
     try {
-      const { user } = await Auth.signUp({
+      await Auth.signUp({
         username,
         password,
         attributes: {
-          email: username, // optional
-          phone_number: phoneNumber, // optional - E.164 number convention
-          // other custom attributes
+          email: username,
+          phone_number: phoneNumber, // E.164 number convention
         },
         autoSignIn: {
           // optional - enables auto sign in after user is confirmed
           enabled: true,
         },
       });
+
       // save username for confirmation
       // TBD: if this is the best approach
       setUserName(username);
-      console.log(user);
-    } catch (error) {
-      Toast.show({ type: 'error', text1: 'Error while signing up' });
-      console.log('error signing up:', error);
+    } catch (error: any) {
+      console.log('[Auth][Signup]:', JSON.stringify(error));
+      if (error.code === 'UsernameExistsException') {
+        Toast.show({
+          type: 'error',
+          text1: `${i18n.t('auth:errors.username_exists')}`,
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: `${i18n.t('auth:errors.signup')}`,
+        });
+      }
       throw error;
     }
   };
@@ -65,10 +95,18 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       await Auth.confirmSignUp(userName, code);
     } catch (error) {
-      // TODO: handle user has been disabled and other errors scenarios
-      Toast.show({ type: 'error', text1: 'Error while confirming sign up' });
-      console.log('error on confirms', error);
+      console.log('[Auth][Signup][Confirm]:', JSON.stringify(error));
+      Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.signup')}` });
       throw error;
+    }
+  };
+
+  const resendConfirmationCode = async (username: string): Promise<void> => {
+    try {
+      await Auth.resendSignUp(username);
+    } catch (error) {
+      console.log('[Auth][Signup][Resend_Code]:', JSON.stringify(error));
+      Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.resend_code')}` });
     }
   };
 
@@ -77,12 +115,14 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAuthenticated(false);
       await Auth.signOut({ global: true });
     } catch (error) {
-      console.log('error signing out: ', error);
+      console.log('[Auth][SignOut]:', JSON.stringify(error));
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, signUp, confirmSignUp }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, login, logout, signUp, confirmSignUp, resendConfirmationCode }}
+    >
       {children}
     </AuthContext.Provider>
   );

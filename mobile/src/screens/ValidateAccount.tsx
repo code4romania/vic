@@ -44,7 +44,7 @@ const ValidateAccount = ({ navigation }: any) => {
       setIsLoading(true);
       await confirmSignUp(code);
       console.log('account has been validated');
-      navigation.goBack();
+      navigation.replace('create-user');
     } catch (error) {
       console.log('error on confirm signup');
     } finally {
