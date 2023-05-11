@@ -1,7 +1,7 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Text, List, Avatar, Divider } from '@ui-kitten/components';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Text, List, Avatar, Divider, useStyleSheet, StyleService } from '@ui-kitten/components';
+import { Pressable, View } from 'react-native';
 import i18n from '../common/config/i18n';
 
 const organizations = [
@@ -15,6 +15,7 @@ const organizations = [
 
 const Organizations = ({ navigation }: any) => {
   console.log('Organizations');
+  const styles = useStyleSheet(themedStyles);
 
   const onViewOrganizationProfileButtonPress = () => {
     navigation.navigate('organization-profile');
@@ -25,7 +26,7 @@ const Organizations = ({ navigation }: any) => {
       <Pressable
         style={({ pressed }) => [
           {
-            backgroundColor: pressed ? '#d9d9d9' : '#fff',
+            backgroundColor: pressed ? '#d9d9d9' : 'white',
           },
         ]}
         onPress={onViewOrganizationProfileButtonPress}
@@ -33,7 +34,7 @@ const Organizations = ({ navigation }: any) => {
         <View style={styles.renderItem}>
           <Avatar source={{ uri: item.logo }} size="large" style={styles.avatar} />
           <View style={styles.textWrapper}>
-            <Text category="label">{item.name}</Text>
+            <Text category="p2">{item.name}</Text>
             <Text category="c1" appearance="hint">
               {`${i18n.t('general:volunteers', { number: item.volunteers })}`}
             </Text>
@@ -57,11 +58,11 @@ const Organizations = ({ navigation }: any) => {
 
 export default Organizations;
 
-const styles = StyleSheet.create({
+const themedStyles = StyleService.create({
   list: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
-  avatar: { borderWidth: 1, borderColor: '#EFF0F3' },
+  avatar: { borderWidth: 1, borderColor: '$cool-gray-200' },
   textWrapper: {
     gap: 4,
   },
