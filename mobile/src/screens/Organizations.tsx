@@ -1,7 +1,7 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text, List, Avatar, Divider, useStyleSheet, StyleService } from '@ui-kitten/components';
-import { Pressable, View } from 'react-native';
+import { ImageStyle, Pressable, View } from 'react-native';
 import i18n from '../common/config/i18n';
 
 const organizations = [
@@ -32,7 +32,7 @@ const Organizations = ({ navigation }: any) => {
         onPress={onViewOrganizationProfileButtonPress}
       >
         <View style={styles.renderItem}>
-          <Avatar source={{ uri: item.logo }} size="large" style={styles.avatar} />
+          <Avatar source={{ uri: item.logo }} size="large" style={styles.avatar as ImageStyle} />
           <View style={styles.textWrapper}>
             <Text category="p2">{item.name}</Text>
             <Text category="c1" appearance="hint">
@@ -60,7 +60,7 @@ export default Organizations;
 
 const themedStyles = StyleService.create({
   list: {
-    backgroundColor: 'white',
+    backgroundColor: '$text-control-color',
   },
   avatar: { borderWidth: 1, borderColor: '$cool-gray-200' },
   textWrapper: {
