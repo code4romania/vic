@@ -97,6 +97,7 @@
   "color-danger-default": "$color-danger-500",
   "border-basic-color-4": "$cool-gray-200",
   "turquoise-50": "#EBFDFD",
+  "turquoise-300": "#A7E2E2",
   "cool-gray-50": "#F9FAFB",
   "cool-gray-100": "#F3F4F6",
   "cool-gray-200": "#E5E7EB",
@@ -108,5 +109,6 @@
   "cool-gray-800": "#1F2937",
   "cool-gray-900": "#121620",
   "dark-purple": "#280056",
-  "input-shadow-color": "rgba(40, 0, 86, 0.24)"
+  "input-shadow-color": "rgba(40, 0, 86, 0.24)",
+  "drawer-background": "#09636B"
 }
