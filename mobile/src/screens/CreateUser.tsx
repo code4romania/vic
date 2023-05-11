@@ -5,6 +5,7 @@ import Paragraph from '../components/Paragraph';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { Text } from '@ui-kitten/components';
+import { useCreateUserProfileMutation } from '../services/user/user.service';
 
 export type UserFormTypes = {
   firstName: string;
@@ -17,22 +18,23 @@ export type UserFormTypes = {
 
 const CreateUser = ({ navigation }: any) => {
   const { t } = useTranslation('register');
+  const { mutate: createUserProfile, isLoading } = useCreateUserProfileMutation();
 
   const {
     // control,
     // handleSubmit,
-    formState: { errors },
+    // formState: { errors },
   } = useForm<UserFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
   });
 
-  console.log('errors', errors);
-
   const onSubmit = async (userPayload: UserFormTypes) => {
-    console.log('userPayload', userPayload);
     // TODO: this should redirect you to the dashboard
-    navigation.replace('login');
+    createUserProfile(userPayload, {
+      onSuccess: () => navigation.replace('login'),
+      onError: (error) => console.log('error', error),
+    });
   };
 
   return (
@@ -42,6 +44,7 @@ const CreateUser = ({ navigation }: any) => {
       actionsOptions={{
         primaryActionLabel: t('general:continue'),
         onPrimaryActionButtonClick: onSubmit,
+        loading: isLoading,
       }}
     >
       <FormLayout>

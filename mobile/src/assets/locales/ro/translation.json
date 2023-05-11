@@ -20,7 +20,8 @@
       "unauthorizeed": "Userul sau parola sunt gresite",
       "username_exists": "Exista deja un utilizator cu aceasta adresa de email",
       "signup": "Eroare la inregistrare",
-      "resend_code": "Eroare la trimiterea codului de confirmare"
+      "resend_code": "Eroare la trimiterea codului de confirmare",
+      "init_profile": "Eroare la incarcarea profilului"
     }
   },
   "activity_log": {

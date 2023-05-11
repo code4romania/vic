@@ -15,9 +15,24 @@ import { Amplify } from 'aws-amplify';
 import './src/common/config/i18n';
 import { AMPLIFY_CONFIG } from './src/common/config/amplify';
 import Toast from 'react-native-toast-message';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG);
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+      staleTime: 0, // DEFAULT: 0 seconds
+      cacheTime: 300000, // DEFAULT: 5 minutes (300000 ms)
+      refetchOnMount: true,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: 'always',
+      suspense: false,
+    },
+  },
+});
 
 export default () => {
   // init fonts
@@ -38,11 +53,13 @@ export default () => {
       <ApplicationProvider {...eva} theme={{ ...theme }} customMapping={mapping}>
         {/* Add marginTop for android devices as SafeAreaView is iOS Only */}
         <SafeAreaView style={styles.container}>
-          <AuthContextProvider>
-            <NavigationContainer>
-              <Router />
-            </NavigationContainer>
-          </AuthContextProvider>
+          <QueryClientProvider client={queryClient}>
+            <AuthContextProvider>
+              <NavigationContainer>
+                <Router />
+              </NavigationContainer>
+            </AuthContextProvider>
+          </QueryClientProvider>
         </SafeAreaView>
         <ExpoStatusBar style="auto" />
       </ApplicationProvider>
