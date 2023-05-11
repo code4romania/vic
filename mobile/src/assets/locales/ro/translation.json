@@ -15,6 +15,14 @@
     "join": "Alătură-te",
     "continue": "Continua"
   },
+  "auth": {
+    "errors": {
+      "unauthorizeed": "Userul sau parola sunt gresite",
+      "username_exists": "Exista deja un utilizator cu aceasta adresa de email",
+      "signup": "Eroare la inregistrare",
+      "resend_code": "Eroare la trimiterea codului de confirmare"
+    }
+  },
   "activity_log": {
     "title": "Ore de voluntariat",
     "log": "Ore înregistrate"
@@ -93,6 +101,10 @@
           "length": "Codul trebuie sa aiba o lungime de 6 caractere"
         }
       }
+    },
+    "create_user": {
+      "heading": "Date utilizator",
+      "paragraph": "Completați câmpurile de mai jos pentru finalizarea inregistrarii."
     }
   },
   "settings": {

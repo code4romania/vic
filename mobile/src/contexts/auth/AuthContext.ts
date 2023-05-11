@@ -16,6 +16,7 @@ interface AuthContextProps {
   login: (credentials: SignInOptions) => void;
   signUp: (options: SignUpOptions) => void;
   confirmSignUp: (code: string) => void;
+  resendConfirmationCode: (username: string) => void;
   logout: () => void;
 }
 
@@ -24,5 +25,6 @@ export const AuthContext = createContext<AuthContextProps>({
   login: () => {},
   signUp: (options: SignUpOptions) => {},
   confirmSignUp: (code: string) => {},
+  resendConfirmationCode: (username: string) => {},
   logout: () => {},
 });

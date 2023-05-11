@@ -29,7 +29,7 @@ const schema = yup
   .required();
 
 const Login = ({ navigation }: any) => {
-  const { login } = useAuth();
+  const { login, resendConfirmationCode } = useAuth();
   const { t } = useTranslation('login');
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -49,8 +49,24 @@ const Login = ({ navigation }: any) => {
       setIsLoading(true);
       console.log('credentials', credentials);
       await login(credentials);
-    } catch (error) {
-      console.log('error on login');
+      setIsLoading(false);
+    } catch (error: any) {
+      // the user is created in cognito but the email/phone number is not verified
+      if (error.confirmAccount) {
+        // resend validation email
+        onRevalidateAccount(credentials.username);
+      } else {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const onRevalidateAccount = async (username: string) => {
+    try {
+      await resendConfirmationCode(username);
+      navigation.navigate('validate-account');
+    } catch (error: any) {
+      // here we do noting and error will be thrown from the context
     } finally {
       setIsLoading(false);
     }

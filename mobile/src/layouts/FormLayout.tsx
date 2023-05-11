@@ -14,7 +14,7 @@ const FormLayout = ({ children }: FormLayoutProps) => {
       alwaysBounceHorizontal={false}
       alwaysBounceVertical={false}
       showsVerticalScrollIndicator={false}
-      style={styles.layout}
+      contentContainerStyle={styles.layout}
     >
       {children}
     </ScrollView>
