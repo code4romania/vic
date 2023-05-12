@@ -121,20 +121,19 @@
         "first_name": {
           "label": "Prenume",
           "placeholder": "Introdu prenumele",
-          "required": "Prenumele este obligatoriu"
+          "required": "Prenumele este obligatoriu",
+          "min": "Prenumele poate sa aiba minim {{value}} caractere",
+          "max": "Prenumele poate sa aiba maxim {{value}} caractere"
         },
         "last_name": {
           "label": "Nume",
           "placeholder": "Introdu numele de familie",
-          "required": "Numele de faimilie este obligatoriu"
+          "required": "Numele de faimilie este obligatoriu",
+          "min": "Numele poate sa aiba minim {{value}} caractere",
+          "max": "Numele poate sa aiba maxim {{value}} caractere"
         },
-        "county": {
-          "label": "Județ",
-          "placeholder": "Alege Județ"
-        },
-        "city": {
-          "label": "Oras",
-          "placeholder": "Alege Oras"
+        "location": {
+          "label": "Locație"
         },
         "birth_date": {
           "label": "Data nașterii"
