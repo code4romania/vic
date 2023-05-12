@@ -13,6 +13,10 @@ import News from '../screens/News';
 import Organization from '../screens/Organization';
 import OrganizationProfile from '../screens/OrganizationProfile';
 import VolunteerProfile from '../screens/VolunteerProfile';
+import AccountData from '../screens/AccountData';
+import IdentityData from '../screens/IdentityData';
+import ChangePassword from '../screens/ChangePassword';
+import NotificationsSettings from '../screens/NotificationsSettings';
 import DrawerNavigator from './Drawer';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
@@ -29,6 +33,10 @@ const Private = () => (
       <Screen name="join-organization" component={JoinOrganization} />
       <Screen name="event" component={Event} />
       <Screen name="join-event" component={JoinEvent} />
+      <Screen name="account-data" component={AccountData} />
+      <Screen name="identity-data" component={IdentityData} />
+      <Screen name="change-password" component={ChangePassword} />
+      <Screen name="notifications-settings" component={NotificationsSettings} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
       <Screen name="leave-organization" component={LeaveOrganization} />

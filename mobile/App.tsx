@@ -12,10 +12,31 @@ import { Platform, SafeAreaView, StatusBar, StyleSheet, View, Text } from 'react
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import AuthContextProvider from './src/contexts/auth/AuthContextProvider';
 import Router from './src/routes/Router';
+import { Amplify } from 'aws-amplify';
 import './src/common/config/i18n';
+import { AMPLIFY_CONFIG } from './src/common/config/amplify';
+import Toast from 'react-native-toast-message';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+
+// Configure Amplify for Login
+Amplify.configure(AMPLIFY_CONFIG);
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+      staleTime: 0, // DEFAULT: 0 seconds
+      cacheTime: 300000, // DEFAULT: 5 minutes (300000 ms)
+      refetchOnMount: true,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: 'always',
+      suspense: false,
+    },
+  },
+});
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -73,27 +94,17 @@ export default () => {
       <ApplicationProvider {...eva} theme={{ ...theme }} customMapping={mapping}>
         {/* Add marginTop for android devices as SafeAreaView is iOS Only */}
         <SafeAreaView style={styles.container}>
-          <AuthContextProvider>
-            <NavigationContainer>
-              <Router />
-              <Text>Your expo push token: {expoPushToken}</Text>
-              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Text>Title3: {notification && notification.request.content.title} </Text>
-                <Text>Body: {notification && notification.request.content.body}</Text>
-                <Text>
-                  Data: {notification && JSON.stringify(notification.request.content.data)}
-                </Text>
-              </View>
-              <Button
-                onPress={async () => {
-                  await schedulePushNotification();
-                }}
-              />
-            </NavigationContainer>
-          </AuthContextProvider>
+          <QueryClientProvider client={queryClient}>
+            <AuthContextProvider>
+              <NavigationContainer>
+                <Router />
+              </NavigationContainer>
+            </AuthContextProvider>
+          </QueryClientProvider>
         </SafeAreaView>
         <ExpoStatusBar style="auto" />
       </ApplicationProvider>
+      <Toast />
     </>
   ) : (
     <View></View>
