@@ -1,8 +1,8 @@
 import { ConfigurableModuleBuilder } from '@nestjs/common';
-import { S3ModuleOptions } from './s3.interfaces';
+import { ExpoPushNotificationsModuleOptions } from './expo-push-notifications.interfaces';
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } =
-  new ConfigurableModuleBuilder<S3ModuleOptions>()
+  new ConfigurableModuleBuilder<ExpoPushNotificationsModuleOptions>()
     .setExtras(
       {
         isGlobal: true,
@@ -12,5 +12,5 @@ export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } =
         global: extras.isGlobal,
       }),
     )
-    .setFactoryMethodName('createS3ConfigOptions')
+    .setFactoryMethodName('createExpoPushNotificationsConfigOptions')
     .build();

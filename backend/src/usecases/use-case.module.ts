@@ -86,6 +86,8 @@ import { GetDashboardVolunteersHoursUseCase } from './dashboard/get-dashboard-vo
 import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-volunteers-status.usecase';
 import { GetManyForDownloadActivityLogUseCase } from './activity-log/get-many-for-download-activity-log.usecase';
 import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-count.usecase';
+import { RegisterDevicePushTokenUseCase } from './push-notifications/register-device-push-token.usecase';
+import { NotificationsModule } from 'src/modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -102,6 +104,7 @@ import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-coun
     ActivityLogModule,
     ActionsArchiveModule,
     DashboardModule,
+    NotificationsModule,
   ],
   providers: [
     // Organization
@@ -192,6 +195,8 @@ import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-coun
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    // Push Notifications
+    RegisterDevicePushTokenUseCase,
   ],
   exports: [
     // Organization
@@ -283,6 +288,8 @@ import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-coun
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    // Push Notifications
+    RegisterDevicePushTokenUseCase,
   ],
 })
 export class UseCaseModule {}

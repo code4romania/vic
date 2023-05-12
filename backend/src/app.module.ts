@@ -19,6 +19,7 @@ import {
   ThrottleModule,
 } from './infrastructure/providers';
 import { S3ProviderModule } from './infrastructure/providers/s3/s3-provider.module';
+import { ExpoPushNotificationsProviderModule } from './infrastructure/providers/expo-push-notifications/expo-push-notifications-provider.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { S3ProviderModule } from './infrastructure/providers/s3/s3-provider.modu
     QueueProviderModule,
     ThrottleModule,
     S3ProviderModule,
+    ExpoPushNotificationsProviderModule,
     // Modules
     MailModule,
     AuthenticationModule,
