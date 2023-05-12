@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import FormLayout from '../layouts/FormLayout';
-import Paragraph from '../components/Paragraph';
 import FormInput from '../components/FormInput';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
@@ -90,7 +89,7 @@ const CreateAccount = ({ navigation }: any) => {
     >
       <FormLayout>
         <Text category="h3">{`${t('create_account.heading')}`}</Text>
-        <Paragraph>{`${t('create_account.paragraph')}`}</Paragraph>
+        <Text appearance="hint">{`${t('create_account.paragraph')}`}</Text>
         <FormInput
           control={control as any}
           name="email"
@@ -98,6 +97,7 @@ const CreateAccount = ({ navigation }: any) => {
           placeholder={t('create_account.form.email.placeholder')}
           error={errors.email}
           disabled={isLoading}
+          required={true}
         />
         <FormInput
           control={control as any}
@@ -107,6 +107,7 @@ const CreateAccount = ({ navigation }: any) => {
           error={errors.phone}
           disabled={isLoading}
           keyboardType="phone-pad"
+          required={true}
         />
         <FormInput
           control={control as any}
@@ -117,6 +118,7 @@ const CreateAccount = ({ navigation }: any) => {
           accessoryRight={renderPasswordEyeIcon}
           secureTextEntry={secureTextEntry}
           disabled={isLoading}
+          required={true}
         />
         <FormInput
           control={control as any}
@@ -127,6 +129,7 @@ const CreateAccount = ({ navigation }: any) => {
           accessoryRight={renderPasswordEyeIcon}
           secureTextEntry={secureTextEntry}
           disabled={isLoading}
+          required={true}
         />
       </FormLayout>
     </PageLayout>

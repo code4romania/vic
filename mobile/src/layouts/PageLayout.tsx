@@ -1,13 +1,8 @@
 import React, { ReactNode } from 'react';
-import {
-  Layout,
-  TopNavigation,
-  Icon,
-  TopNavigationAction,
-  Button,
-  Spinner,
-} from '@ui-kitten/components';
+import { Layout, TopNavigation, Icon, TopNavigationAction, Spinner } from '@ui-kitten/components';
+import Button from '../components/Button';
 import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
+import { ButtonType } from '../common/enums/button-type.enum';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
@@ -65,7 +60,9 @@ export const PageLayout = ({
             ) : (
               <Button
                 onPress={actionsOptions.onPrimaryActionButtonClick}
-              >{`${actionsOptions.primaryActionLabel}`}</Button>
+                label={`${actionsOptions.primaryActionLabel}`}
+                type={ButtonType.PRIMARY}
+              />
             )}
           </View>
         )}

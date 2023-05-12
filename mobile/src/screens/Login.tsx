@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Icon } from '@ui-kitten/components';
+import { Icon, Text } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from '../components/FormInput';
 import { useForm } from 'react-hook-form';
 import { TouchableWithoutFeedback } from 'react-native';
-import Paragraph from '../components/Paragraph';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -89,7 +88,7 @@ const Login = ({ navigation }: any) => {
       }}
     >
       <FormLayout>
-        <Paragraph>{`${t('paragraph')}`}</Paragraph>
+        <Text appearance="hint">{`${t('paragraph')}`}</Text>
         <FormInput
           control={control as any}
           name="username"
@@ -97,6 +96,7 @@ const Login = ({ navigation }: any) => {
           placeholder={t('form.email.placeholder')}
           error={errors.username}
           disabled={isLoading}
+          required={true}
         />
         <FormInput
           control={control as any}
@@ -107,6 +107,7 @@ const Login = ({ navigation }: any) => {
           accessoryRight={renderPasswordEyeIcon}
           secureTextEntry={secureTextEntry}
           disabled={isLoading}
+          required={true}
         />
       </FormLayout>
     </PageLayout>

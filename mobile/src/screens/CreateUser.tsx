@@ -1,7 +1,6 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import FormLayout from '../layouts/FormLayout';
-import Paragraph from '../components/Paragraph';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { Text } from '@ui-kitten/components';
@@ -49,7 +48,7 @@ const CreateUser = ({ navigation }: any) => {
     >
       <FormLayout>
         <Text category="h3">{`${t('create_account.heading')}`}</Text>
-        <Paragraph>{`${t('create_account.paragraph')}`}</Paragraph>
+        <Text appearance="hint">{`${t('create_account.paragraph')}`}</Text>
       </FormLayout>
     </PageLayout>
   );

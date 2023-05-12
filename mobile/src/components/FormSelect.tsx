@@ -1,33 +1,42 @@
 import React from 'react';
-import { Input, InputProps, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import {
+  IndexPath,
+  Select,
+  SelectItem,
+  SelectProps,
+  StyleService,
+  Text,
+  useStyleSheet,
+} from '@ui-kitten/components';
 import { Control, Controller } from 'react-hook-form';
-import { View, Keyboard } from 'react-native';
+import { View } from 'react-native';
 
-interface FormInputProps extends InputProps {
+export interface ISelectItem {
+  label: string;
+  key: string;
+}
+
+interface FormSelectProps extends SelectProps {
   control: Control<Record<string, any>>;
+  options: ISelectItem[];
   name: string;
   label: string;
   placeholder: string;
-  secureTextEntry?: boolean;
   error: any;
   required?: boolean;
 }
 
-const FormInput: React.FC<FormInputProps> = ({
+const FormSelect: React.FC<FormSelectProps> = ({
   control,
+  options,
   name,
   label,
   placeholder,
-  secureTextEntry = false,
   error,
   required,
   ...rest
-}: FormInputProps) => {
+}: FormSelectProps) => {
   const styles = useStyleSheet(themedStyles);
-
-  const handleKeyboardDismiss = () => {
-    Keyboard.dismiss();
-  };
 
   return (
     <View style={styles.container}>
@@ -39,18 +48,21 @@ const FormInput: React.FC<FormInputProps> = ({
         control={control}
         name={name}
         render={({ field: { onChange, onBlur, value } }) => (
-          <Input
+          <Select
             placeholder={placeholder}
-            secureTextEntry={secureTextEntry}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
             status={error ? 'danger' : 'basic'}
-            textStyle={error ? styles.redText : {}}
-            style={styles.input}
+            value={options.find((option) => option.key === value)?.label}
+            onSelect={(selectedItem: IndexPath | IndexPath[]) => {
+              onChange(options[(selectedItem as IndexPath).row].key);
+            }}
+            style={styles.select}
+            onBlur={onBlur}
             {...rest}
-            onSubmitEditing={handleKeyboardDismiss}
-          />
+          >
+            {options.map((option) => (
+              <SelectItem key={option.key} title={option.label} />
+            ))}
+          </Select>
         )}
         defaultValue=""
       />
@@ -63,16 +75,13 @@ const FormInput: React.FC<FormInputProps> = ({
   );
 };
 
-export default FormInput;
+export default FormSelect;
 
 const themedStyles = StyleService.create({
   container: {
     gap: 4,
   },
-  redText: {
-    color: '$color-danger-500',
-  },
-  input: {
+  select: {
     shadowColor: '$input-shadow-color',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
