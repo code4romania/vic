@@ -13,6 +13,9 @@
     "edit": "Editează {{item}}",
     "add": "Adaugă {{item}}",
     "select": "Selectează",
+    "sex": "Sex {{sex_type}}",
+    "male": "Barbatesc",
+    "female": "Feminin",
     "join": "Alătură-te",
     "register": "Înregistrează-te",
     "continue": "Continuă"
@@ -113,7 +116,30 @@
     },
     "create_user": {
       "heading": "Date utilizator",
-      "paragraph": "Completați câmpurile de mai jos pentru finalizarea inregistrarii."
+      "paragraph": "Completați câmpurile de mai jos pentru finalizarea inregistrarii.",
+      "form": {
+        "first_name": {
+          "label": "Prenume",
+          "placeholder": "Introdu prenumele",
+          "required": "Prenumele este obligatoriu"
+        },
+        "last_name": {
+          "label": "Nume",
+          "placeholder": "Introdu numele de familie",
+          "required": "Numele de faimilie este obligatoriu"
+        },
+        "county": {
+          "label": "Județ",
+          "placeholder": "Alege Județ"
+        },
+        "city": {
+          "label": "Oras",
+          "placeholder": "Alege Oras"
+        },
+        "birth_date": {
+          "label": "Data nașterii"
+        }
+      }
     }
   },
   "settings": {
