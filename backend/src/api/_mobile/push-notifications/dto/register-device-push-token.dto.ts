@@ -1,15 +1,6 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
-export class RegisterDevicePushTokenDto {
-  @IsString()
-  @IsNotEmpty()
-  deviceId: string;
-
-  @IsEmail()
+export class RegisterPushTokenDto {
   @IsNotEmpty()
   token: string;
-
-  @IsString()
-  @IsNotEmpty()
-  userId: string;
 }

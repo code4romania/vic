@@ -16,20 +16,28 @@ export class RegisterDevicePushTokenUseCase
     private readonly pushNotificationService: PushNotificationsFacade,
   ) {}
 
-  async execute(createPushTokenOptions: CreatePushTokenOptions): Promise<void> {
-    // 1. Check if the token already exists in the database with *deviceId* and *userId* combination
+  async execute(
+    createPushTokenOptions: CreatePushTokenOptions,
+  ): Promise<IPushTokenModel> {
+    // 1. Check if the token already exists in the database
     const existingToken = await this.pushNotificationService.find({
-      deviceId: createPushTokenOptions.deviceId,
-      userId: createPushTokenOptions.userId,
+      token: createPushTokenOptions.token,
     });
-    // 2. If it does and the data is the same, return the token
-    if (existingToken && existingToken.token === createPushTokenOptions.token) {
-      return;
+    // 1.1. If it doesn't exist, create it
+    if (!existingToken) {
+      return this.pushNotificationService.create({
+        ...createPushTokenOptions,
+      });
     }
-    // 3. If it does and the data is different or doesn't exist, create/update the token
-    this.pushNotificationService.createOrUpdate(existingToken.id, {
-      ...existingToken,
-      ...createPushTokenOptions,
-    });
+    // 1.2. If it does and the userId is the same, just update timestamp to track stale tokens
+    if (existingToken.userId === createPushTokenOptions.userId) {
+      return this.pushNotificationService.update(existingToken.id, {});
+    } else {
+      // 1.3. If it does and the userId is different, update userId and timestamp (only 1 user per device to receive notifications)
+      return this.pushNotificationService.update(existingToken.id, {
+        ...existingToken,
+        userId: createPushTokenOptions.userId,
+      });
+    }
   }
 }

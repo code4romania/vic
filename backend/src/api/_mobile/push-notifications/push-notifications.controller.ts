@@ -1,8 +1,10 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
-import { RegisterDevicePushTokenDto } from './dto/register-device-push-token.dto';
+import { RegisterPushTokenDto } from './dto/register-device-push-token.dto';
 import { RegisterDevicePushTokenUseCase } from 'src/usecases/push-notifications/register-device-push-token.usecase';
+import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
+import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { IPushTokenModel } from 'src/modules/notifications/models/push-token.model';
 
 @ApiBearerAuth()
@@ -13,9 +15,15 @@ export class MobilePushNotificationsController {
     private registerDevicePushTokenUseCase: RegisterDevicePushTokenUseCase,
   ) {}
 
-  @ApiBody({ type: RegisterDevicePushTokenDto })
+  @ApiBody({ type: RegisterPushTokenDto })
   @Post()
-  async create(@Body() newToken: RegisterDevicePushTokenDto): Promise<void> {
-    return this.registerDevicePushTokenUseCase.execute(newToken);
+  async create(
+    @ExtractUser() user: IRegularUserModel,
+    @Body() newToken: RegisterPushTokenDto,
+  ): Promise<IPushTokenModel> {
+    return this.registerDevicePushTokenUseCase.execute({
+      ...newToken,
+      userId: user.id,
+    });
   }
 }

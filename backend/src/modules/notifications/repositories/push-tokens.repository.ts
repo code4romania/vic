@@ -34,7 +34,7 @@ export class PushTokensRepository implements IPushTokensRepository {
     return entities.map(PushTokenModelTransformer.fromEntity);
   }
 
-  async createOrUpdate(
+  async update(
     id: string,
     updates: Partial<IPushTokenModel>,
   ): Promise<IPushTokenModel> {
@@ -43,9 +43,11 @@ export class PushTokensRepository implements IPushTokensRepository {
       ...updates,
     });
 
-    const createdOrUpdated = await this.pushTokensRepository.save(toUpdate);
+    if (!toUpdate) return null;
 
-    return this.find({ id: createdOrUpdated.id });
+    const updated = await this.pushTokensRepository.save(toUpdate);
+
+    return this.find({ id: updated.id });
   }
 
   async create(

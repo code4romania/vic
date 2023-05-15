@@ -32,11 +32,11 @@ export class PushNotificationsFacade {
     return this.pushTokensRepository.findMany(findOptions);
   }
 
-  async createOrUpdate(
+  async update(
     id: string,
     updates: Partial<IPushTokenModel>,
   ): Promise<IPushTokenModel> {
-    return this.pushTokensRepository.createOrUpdate(id, updates);
+    return this.pushTokensRepository.update(id, updates);
   }
 
   async create(

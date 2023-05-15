@@ -7,13 +7,14 @@ import {
   getCognitoProperty,
 } from '../../../infrastructure/config/cognito.config';
 import { AUTH_STRATEGIES } from '../auth.constants';
+import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 
 @Injectable()
 export class MobileJwtStrategy extends PassportStrategy(
   Strategy,
   AUTH_STRATEGIES.MOBILE,
 ) {
-  constructor() {
+  constructor(private readonly userService: UserFacadeService) {
     super({
       secretOrKeyProvider: passportJwtSecret({
         cache: true,
@@ -32,7 +33,13 @@ export class MobileJwtStrategy extends PassportStrategy(
     });
   }
 
-  public async validate(token: { username: string }) {
-    return { user: 'test', token };
+  public async validate(reqUser: { username: string }): Promise<unknown> {
+    console.log('here');
+    const user = await this.userService.findRegularUser({
+      cognitoId: reqUser.username,
+    });
+
+    // if the user is not found we assume has successfully registered in Cognito but does not yet have a profile
+    return user || { cognitoId: reqUser.username };
   }
 }
