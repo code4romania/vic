@@ -15,39 +15,17 @@ import { SexOptions } from '../common/constants/sex-options';
 import FormDatePicker from '../components/FormDatePicker';
 import { yupResolver } from '@hookform/resolvers/yup';
 import i18n from '../common/config/i18n';
-
-const LocationOptions = [
-  {
-    label: 'ABRUD',
-    key: '515100',
-  },
-  {
-    label: 'ABRUD-SAT',
-    key: '515101',
-  },
-  {
-    label: 'ACHIMETESTI',
-    key: '517066',
-  },
-  {
-    label: 'ACMARIU',
-    key: '517161',
-  },
-  {
-    label: 'AIUD',
-    key: '515200',
-  },
-  {
-    label: 'AIUDUL DE SUS',
-    key: '515201',
-  },
-];
+import CountySelect from '../containers/CountySelect';
+import CitySelect from '../containers/CitySelect';
+import { Auth } from 'aws-amplify';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export type UserFormTypes = {
   firstName: string;
   lastName: string;
-  location: string;
-  birthDate: Date;
+  countyId: number;
+  cityId: number;
+  birthday: Date;
   sex: Sex;
 };
 
@@ -84,6 +62,7 @@ const CreateUser = ({ navigation }: any) => {
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<UserFormTypes>({
     mode: 'onSubmit',
@@ -91,21 +70,34 @@ const CreateUser = ({ navigation }: any) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (userPayload: UserFormTypes) => {
-    console.log(
-      userPayload.firstName,
-      userPayload.lastName,
-      userPayload.birthDate,
-      userPayload.sex,
-      userPayload.location,
-    );
-    // TODO: this should redirect you to the dashboard
-    createUserProfile(userPayload, {
-      onSuccess: (profile: IUserProfile) => {
-        setUserProfile(profile);
-      },
-      onError: (error) => console.log('error', error),
-    });
+  const watchCountyId = watch('countyId');
+
+  const onSubmit = async ({ cityId, ...userPayload }: UserFormTypes) => {
+    try {
+      // get user phone and email data from aws
+      const user = await Auth.currentAuthenticatedUser();
+
+      // create new user payload
+      const newUser = {
+        ...userPayload,
+        locationId: cityId,
+        email: user.attributes.email,
+        phone: user.attributes.phone_number,
+        cognitoId: user.username,
+      };
+
+      // create new profile
+      createUserProfile(newUser, {
+        onSuccess: (profile: IUserProfile) => {
+          // update profile in context
+          setUserProfile(profile);
+        },
+        onError: () =>
+          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` }),
+      });
+    } catch (error) {
+      Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+    }
   };
 
   return (
@@ -137,21 +129,28 @@ const CreateUser = ({ navigation }: any) => {
           error={errors.lastName}
           required={true}
         />
-        <FormSelect
+        <CountySelect
           control={control as any}
-          name="location"
-          label={t('create_user.form.location.label')}
-          error={errors.location}
+          name="countyId"
+          label={t('create_user.form.county.label')}
+          error={errors.countyId}
           placeholder={t('general:select')}
-          options={LocationOptions}
+        />
+        <CitySelect
+          control={control as any}
+          name="cityId"
+          label={t('create_user.form.city.label')}
+          error={errors.cityId}
+          placeholder={t('general:select')}
+          countyId={watchCountyId}
         />
         <FormDatePicker
           control={control as any}
           placeholder={t('general:select')}
-          label={t('create_user.form.birth_date.label')}
+          label={t('create_user.form.birthday.label')}
           min={new Date(1900, 0, 0)}
-          name="birthDate"
-          error={errors.birthDate}
+          name="birthday"
+          error={errors.birthday}
         />
         <FormSelect
           control={control as any}

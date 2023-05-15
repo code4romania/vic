@@ -43,7 +43,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error: any) {
       console.log('[Auth][Login]:', JSON.stringify(error));
       // Handle scenario where user is created in cognito but not activated
-      if (error.code === 'UserNotConfirmedException') {
+      if (
+        error.code === 'UserNotConfirmedException' ||
+        error.message === 'UserNotConfirmedException'
+      ) {
         // send event to confirm account to login screen
         throw { confirmAccount: true };
       } else {
@@ -126,7 +129,11 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       onError: (error: any) => {
         // if the profile doesn't exists redirect to the the create account page
         console.log('[Profile]:', JSON.stringify(error));
-        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+        if (error.response.status === 404) {
+          throw new Error('UserNotConfirmedException');
+        } else {
+          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+        }
       },
     });
   };

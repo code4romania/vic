@@ -6,6 +6,7 @@ import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UserPresenter } from './presenters/user.presenter';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
+import { GetOneRegularUserUseCase } from 'src/usecases/user/get-one-regular-user.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -13,6 +14,7 @@ import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 export class MobileRegularUserController {
   constructor(
     private createRegularUsereUseCaseService: CreateRegularUsereUseCaseService,
+    private getOneRegularUserUseCase: GetOneRegularUserUseCase,
   ) {}
 
   @ApiBody({ type: CreateRegularUserDto })
@@ -33,6 +35,9 @@ export class MobileRegularUserController {
   async getProfile(
     @ExtractUser() user: IRegularUserModel,
   ): Promise<UserPresenter> {
-    return new UserPresenter(user);
+    const regularUser = await this.getOneRegularUserUseCase.execute({
+      cognitoId: user.cognitoId,
+    });
+    return new UserPresenter(regularUser);
   }
 }

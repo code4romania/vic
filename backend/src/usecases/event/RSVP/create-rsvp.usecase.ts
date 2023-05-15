@@ -45,7 +45,7 @@ export class CreateEventRSVPUseCase
     }
 
     // 3. Check if the user to attend, exists
-    await this.getOneRegularUserUseCase.execute(data.userId);
+    await this.getOneRegularUserUseCase.execute({ id: data.userId });
 
     const volunteer = await this.volunteerFacade.find({
       userId: data.userId,

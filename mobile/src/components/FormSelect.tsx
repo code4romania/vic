@@ -13,10 +13,10 @@ import { View } from 'react-native';
 
 export interface ISelectItem {
   label: string;
-  key: string;
+  key: string | number;
 }
 
-interface FormSelectProps extends SelectProps {
+export interface FormSelectProps extends SelectProps {
   control: Control<Record<string, any>>;
   options: ISelectItem[];
   name: string;

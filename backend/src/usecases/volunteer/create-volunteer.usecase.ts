@@ -23,7 +23,7 @@ export class CreateVolunteerUseCase
 
   public async execute(data: CreateVolunteerOptions): Promise<IVolunteerModel> {
     // 1. Check if the user and the organization exists
-    await this.getOneRegularUserUseCaseService.execute(data.userId);
+    await this.getOneRegularUserUseCaseService.execute({ id: data.userId });
     await this.getOrganizationUseCaseService.execute(data.organizationId);
 
     // 2. Check if the user is already a volunteer of the given organization

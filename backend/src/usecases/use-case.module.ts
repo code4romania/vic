@@ -86,6 +86,7 @@ import { GetDashboardVolunteersHoursUseCase } from './dashboard/get-dashboard-vo
 import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-volunteers-status.usecase';
 import { GetManyForDownloadActivityLogUseCase } from './activity-log/get-many-for-download-activity-log.usecase';
 import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-count.usecase';
+import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.usecase';
 
 @Module({
   imports: [
@@ -137,6 +138,7 @@ import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-coun
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
+    GetCitiesByCountyIdUseCase,
     // Activity Types
     CreateActivityTypeUseCase,
     UpdateActivityTypeUseCase,
@@ -227,6 +229,7 @@ import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-coun
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
+    GetCitiesByCountyIdUseCase,
     // Activity Types
     CreateActivityTypeUseCase,
     UpdateActivityTypeUseCase,
