@@ -1,32 +1,45 @@
 import React from 'react';
 import { Avatar, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 interface TopNavigationCardProps {
   title: string;
   uri: string;
+  onPress: () => void;
 }
 
-const TopNavigationCard = ({ title, uri }: TopNavigationCardProps) => {
+const TopNavigationCard = ({ title, uri, onPress }: TopNavigationCardProps) => {
   const styles = useStyleSheet(themedStyles);
 
   return (
-    <View style={styles.container}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) =>
+        pressed
+          ? [styles.pressed, styles.container, styles.shadow]
+          : [styles.notPressed, styles.container, styles.shadow]
+      }
+    >
       <View style={styles.shadow}>
         <Avatar source={{ uri }} size="small" />
       </View>
       <Text category="h3" appearance="alternative">
         {title}
       </Text>
-    </View>
+    </Pressable>
   );
 };
 
 export default TopNavigationCard;
 
 const themedStyles = StyleService.create({
-  container: {
+  notPressed: {
     backgroundColor: '$color-success-500',
+  },
+  pressed: {
+    backgroundColor: '$color-success-700',
+  },
+  container: {
     paddingVertical: 24,
     paddingLeft: 16,
     flexDirection: 'row',

@@ -30,10 +30,18 @@ const Volunteer = ({ navigation }: any) => {
     navigation.navigate('activity-logs');
   };
 
+  const onTopNavigationCardPress = () => {
+    console.log('top navigation card pressed');
+  };
+
   return true ? (
     <>
       <View style={styles.cardWrapper}>
-        <TopNavigationCard title="Asociatia Zen" uri="https://picsum.photos/200/300" />
+        <TopNavigationCard
+          title="Asociatia Zen"
+          uri="https://picsum.photos/200/300"
+          onPress={onTopNavigationCardPress}
+        />
       </View>
       <View style={styles.container}>
         <Text>{`${i18n.t('volunteer:details')}`}</Text>
