@@ -11,7 +11,11 @@ import { SEX } from 'src/modules/user/enums/user.enum';
 export class CreateRegularUserDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  firstName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 
   @IsEmail()
   @IsNotEmpty()
@@ -25,12 +29,12 @@ export class CreateRegularUserDto {
   @IsNotEmpty()
   cognitoId: string;
 
+  @IsNumber()
+  locationId: number;
+
   @IsDate()
   birthday: Date;
 
   @IsEnum(SEX)
   sex: SEX;
-
-  @IsNumber()
-  locationId: number;
 }

@@ -46,7 +46,6 @@ const Login = ({ navigation }: any) => {
   const onSubmit = async (credentials: LoginFormTypes) => {
     try {
       setIsLoading(true);
-      console.log('credentials', credentials);
       await login(credentials);
       setIsLoading(false);
     } catch (error: any) {
