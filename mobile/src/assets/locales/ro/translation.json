@@ -13,6 +13,9 @@
     "edit": "Editează {{item}}",
     "add": "Adaugă {{item}}",
     "select": "Selectează",
+    "sex": "Sex {{sex_type}}",
+    "male": "Barbatesc",
+    "female": "Feminin",
     "join": "Alătură-te",
     "register": "Înregistrează-te",
     "continue": "Continuă"
@@ -96,6 +99,14 @@
           "placeholder": "Confirmati parola",
           "required": "Parola este obligatorie",
           "match": "Parolele trebuie sa fie identice"
+        },
+        "terms": {
+          "agree": "Sunt de acord cu",
+          "conditions": " Termenii și Condițiile",
+          "and": ", cât și cu",
+          "privacy_policy": " Politica de Confidențialitate",
+          "application": " a aplicației",
+          "required": "Trebuie sa accepti Termenii,Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
         }
       }
     },
@@ -113,7 +124,29 @@
     },
     "create_user": {
       "heading": "Date utilizator",
-      "paragraph": "Completați câmpurile de mai jos pentru finalizarea inregistrarii."
+      "paragraph": "Completați câmpurile de mai jos pentru finalizarea inregistrarii.",
+      "form": {
+        "first_name": {
+          "label": "Prenume",
+          "placeholder": "Introdu prenumele",
+          "required": "Prenumele este obligatoriu",
+          "min": "Prenumele poate sa aiba minim {{value}} caractere",
+          "max": "Prenumele poate sa aiba maxim {{value}} caractere"
+        },
+        "last_name": {
+          "label": "Nume",
+          "placeholder": "Introdu numele de familie",
+          "required": "Numele de faimilie este obligatoriu",
+          "min": "Numele poate sa aiba minim {{value}} caractere",
+          "max": "Numele poate sa aiba maxim {{value}} caractere"
+        },
+        "location": {
+          "label": "Locație"
+        },
+        "birth_date": {
+          "label": "Data nașterii"
+        }
+      }
     }
   },
   "settings": {

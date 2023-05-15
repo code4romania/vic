@@ -26,6 +26,18 @@ interface FormSelectProps extends SelectProps {
   required?: boolean;
 }
 
+const renderSelectedItem = (label: string | undefined, styles: any) => {
+  return label ? () => <Text style={styles.marginHorizontal}>{label}</Text> : label;
+};
+
+const renderPlaceholder = (placeholder: string, styles: any) => {
+  return () => (
+    <Text appearance="hint" style={styles.marginHorizontal}>
+      {placeholder}
+    </Text>
+  );
+};
+
 const FormSelect: React.FC<FormSelectProps> = ({
   control,
   options,
@@ -47,23 +59,32 @@ const FormSelect: React.FC<FormSelectProps> = ({
       <Controller
         control={control}
         name={name}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Select
-            placeholder={placeholder}
-            status={error ? 'danger' : 'basic'}
-            value={options.find((option) => option.key === value)?.label}
-            onSelect={(selectedItem: IndexPath | IndexPath[]) => {
-              onChange(options[(selectedItem as IndexPath).row].key);
-            }}
-            style={styles.select}
-            onBlur={onBlur}
-            {...rest}
-          >
-            {options.map((option) => (
-              <SelectItem key={option.key} title={option.label} />
-            ))}
-          </Select>
-        )}
+        render={({ field: { onChange, onBlur, value } }) => {
+          if (value !== undefined) {
+            value = renderSelectedItem(
+              options.find((option) => option.key === value)?.label,
+              styles,
+            );
+          }
+
+          return (
+            <Select
+              placeholder={renderPlaceholder(placeholder, styles)}
+              status={error ? 'danger' : 'basic'}
+              value={value}
+              onSelect={(selectedItem: IndexPath | IndexPath[]) => {
+                onChange(options[(selectedItem as IndexPath).row].key);
+              }}
+              style={styles.select}
+              onBlur={onBlur}
+              {...rest}
+            >
+              {options.map((option) => (
+                <SelectItem key={option.key} title={option.label} />
+              ))}
+            </Select>
+          );
+        }}
         defaultValue=""
       />
       {error && (
@@ -80,6 +101,9 @@ export default FormSelect;
 const themedStyles = StyleService.create({
   container: {
     gap: 4,
+  },
+  marginHorizontal: {
+    marginHorizontal: 8,
   },
   select: {
     shadowColor: '$input-shadow-color',

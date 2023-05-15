@@ -8,14 +8,18 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import i18n from '../common/config/i18n';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Icon, Text } from '@ui-kitten/components';
+import { CheckBox, Icon, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
+import { View } from 'react-native';
+import InlineLink from '../components/InlineLink';
+import { Controller } from 'react-hook-form';
 
 export type RegisterFormTypes = {
   email: string;
   phone: string;
   password: string;
   confirmPassword: string;
+  terms: boolean;
 };
 
 const schema = yup
@@ -33,16 +37,26 @@ const schema = yup
         `${i18n.t('register:create_account.form.confirm_password.match')}`,
       )
       .required(`${i18n.t('register:create_account.form.confirm_password.required')}`),
+    terms: yup.boolean().oneOf([true], `${i18n.t('register:create_account.form.terms.required')}`),
   })
   .required();
 
 const CreateAccount = ({ navigation }: any) => {
+  const styles = useStyleSheet(themedStyles);
   const { t } = useTranslation('register');
   // auth state
   const { signUp } = useAuth();
   // show hide password text in input
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const onTermsAndConditionsPress = () => {
+    console.log('on terms and conditions pressed');
+  };
+
+  const onPrivacyPolicyPress = () => {
+    console.log('on privacy policy pressed');
+  };
 
   const {
     control,
@@ -131,9 +145,52 @@ const CreateAccount = ({ navigation }: any) => {
           disabled={isLoading}
           required={true}
         />
+
+        {/* Terms and conditions/Privacy Policy */}
+        <View style={styles.termsContainer}>
+          <Controller
+            control={control}
+            name="terms"
+            defaultValue={false}
+            render={({ field: { onChange, value } }) => (
+              <CheckBox
+                checked={value}
+                onChange={onChange}
+                status={errors.terms ? 'danger' : 'basic'}
+              />
+            )}
+          />
+          <View style={styles.termsTextContainer}>
+            <Text>{`${t('create_account.form.terms.agree')}`}</Text>
+            <InlineLink
+              label={t('create_account.form.terms.conditions')}
+              onPress={onTermsAndConditionsPress}
+            />
+            <Text>{`${t('create_account.form.terms.and')}`}</Text>
+            <InlineLink
+              label={t('create_account.form.terms.privacy_policy')}
+              onPress={onPrivacyPolicyPress}
+            />
+            <Text>{`${t('create_account.form.terms.application')}`}</Text>
+          </View>
+        </View>
+        {errors.terms && (
+          <Text category="c1" status="danger">
+            {errors.terms.message}
+          </Text>
+        )}
       </FormLayout>
     </PageLayout>
   );
 };
 
 export default CreateAccount;
+
+const themedStyles = StyleService.create({
+  termsContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  termsTextContainer: { flexDirection: 'row', maxWidth: '90%', flexWrap: 'wrap' },
+});

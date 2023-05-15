@@ -21,6 +21,12 @@ interface FormDatepickerProps extends DatepickerProps {
 }
 
 const CalendarIcon = (props: any): IconElement => <Icon {...props} name="calendar-outline" />;
+const renderPlaceholder = (placeholder: string, styles: any) => () =>
+  (
+    <Text appearance="hint" style={styles.marginHorizontal}>
+      {placeholder}
+    </Text>
+  );
 
 //Add min or max props to date picker in order to let user select year
 const FormDatePicker: React.FC<FormDatepickerProps> = ({
@@ -45,7 +51,7 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
         name={name}
         render={({ field: { onChange, onBlur, value } }) => (
           <Datepicker
-            placeholder={placeholder}
+            placeholder={renderPlaceholder(placeholder, styles)}
             date={value}
             onSelect={onChange}
             onBlur={onBlur}
@@ -71,6 +77,9 @@ export default FormDatePicker;
 const themedStyles = StyleService.create({
   container: {
     gap: 4,
+  },
+  marginHorizontal: {
+    marginHorizontal: 8,
   },
   input: {
     shadowColor: '$input-shadow-color',
