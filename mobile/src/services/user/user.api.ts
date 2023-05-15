@@ -1,4 +1,6 @@
+import { Auth } from 'aws-amplify';
 import { UserFormTypes } from '../../screens/CreateUser';
+import API from '../api';
 
 const dummyData: UserFormTypes = {
   firstName: 'John',
@@ -9,8 +11,17 @@ const dummyData: UserFormTypes = {
   sex: 'Male',
 };
 
-export const createUserProfile = (userProfile: UserFormTypes): Promise<any> => {
-  return Promise.resolve(userProfile);
+export const createUserProfile = async (userProfile: UserFormTypes): Promise<any> => {
+  console.log('userProfile', userProfile);
+  const user = await Auth.currentAuthenticatedUser();
+  return API.post('/mobile/user', {
+    ...dummyData,
+    sex: 'male',
+    locationId: 1,
+    email: user.attributes.email,
+    phone: user.attributes.phone_number,
+    cognitoId: user.username,
+  }).then((res) => res.data);
 };
 
 export const getUserProfile = (): Promise<any> => {

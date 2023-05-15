@@ -11,25 +11,35 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   TableInheritance,
+  Unique,
 } from 'typeorm';
 import { SEX, UserType } from '../enums/user.enum';
 
+export const USER_CONSTRAINTS = {
+  COGNITO_USER_TYPE_EMAIL_UNIQUE: 'cognito-userType-email-unique',
+};
+
 @Entity({ name: 'user' })
+@Unique(USER_CONSTRAINTS.COGNITO_USER_TYPE_EMAIL_UNIQUE, [
+  'cognitoId',
+  'type',
+  'email',
+])
 @TableInheritance({ column: { type: 'varchar', name: 'type', enum: UserType } }) // TODO: can include type in the entity response from the db?
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'text', unique: true, name: 'cognito_id' })
+  @Column({ type: 'text', name: 'cognito_id' })
   cognitoId: string;
 
   @Column({ type: 'text', name: 'name' })
   name: string;
 
-  @Column({ type: 'text', unique: true, name: 'email' })
+  @Column({ type: 'text', name: 'email' })
   email: string;
 
-  @Column({ type: 'text', unique: true, name: 'phone' })
+  @Column({ type: 'text', name: 'phone' })
   phone: string;
 }
 
@@ -49,6 +59,12 @@ export class AdminUserEntity extends UserEntity {
 
 @ChildEntity(UserType.REGULAR)
 export class RegularUserEntity extends UserEntity {
+  @Column({ type: 'text', name: 'first_name' })
+  firstName: string;
+
+  @Column({ type: 'text', name: 'last_name' })
+  lastName: string;
+
   @Column({ type: 'timestamptz', name: 'birthday', nullable: true })
   birthday: Date;
 
