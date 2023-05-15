@@ -115,17 +115,6 @@ const styles = StyleSheet.create({
   container: { flex: 1, marginTop: StatusBar.currentHeight },
 });
 
-async function schedulePushNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You've got mail! 📬",
-      body: 'Here is the notification body',
-      data: { data: 'goes here' },
-    },
-    trigger: { seconds: 1 },
-  });
-}
-
 async function registerForPushNotificationsAsync() {
   let token;
 
@@ -151,7 +140,7 @@ async function registerForPushNotificationsAsync() {
     }
     token = (
       await Notifications.getExpoPushTokenAsync({
-        projectId: 'bcbf432c-f07a-4373-a9f1-f67f6281932e',
+        projectId: 'bcbf432c-f07a-4373-a9f1-f67f6281932e', // TODO update with process.env
       })
     ).data;
     console.log(token);
