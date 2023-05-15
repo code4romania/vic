@@ -9,7 +9,7 @@ import { ButtonType } from '../common/enums/button-type.enum';
 interface ButtonProps extends ButtonKittenProps {
   label: string;
   type: ButtonType;
-  onPress: () => void;
+  onPress: (props?: any) => void;
   eva?: any;
 }
 

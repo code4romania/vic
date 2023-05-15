@@ -1,33 +1,44 @@
 import React from 'react';
-import { Input, InputProps, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import {
+  Datepicker,
+  DatepickerProps,
+  Icon,
+  IconElement,
+  StyleService,
+  Text,
+  useStyleSheet,
+} from '@ui-kitten/components';
 import { Control, Controller } from 'react-hook-form';
-import { View, Keyboard } from 'react-native';
+import { View } from 'react-native';
 
-interface FormInputProps extends InputProps {
+interface FormDatepickerProps extends DatepickerProps {
   control: Control<Record<string, any>>;
   name: string;
   label: string;
   placeholder: string;
-  secureTextEntry?: boolean;
   error: any;
   required?: boolean;
 }
 
-const FormInput: React.FC<FormInputProps> = ({
+const CalendarIcon = (props: any): IconElement => <Icon {...props} name="calendar-outline" />;
+const renderPlaceholder = (placeholder: string, styles: any) => () =>
+  (
+    <Text appearance="hint" style={styles.marginHorizontal}>
+      {placeholder}
+    </Text>
+  );
+
+//Add min or max props to date picker in order to let user select year
+const FormDatePicker: React.FC<FormDatepickerProps> = ({
   control,
   name,
   label,
   placeholder,
-  secureTextEntry = false,
   error,
   required,
   ...rest
-}: FormInputProps) => {
+}: FormDatepickerProps) => {
   const styles = useStyleSheet(themedStyles);
-
-  const handleKeyboardDismiss = () => {
-    Keyboard.dismiss();
-  };
 
   return (
     <View style={styles.container}>
@@ -39,17 +50,15 @@ const FormInput: React.FC<FormInputProps> = ({
         control={control}
         name={name}
         render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            placeholder={placeholder}
-            secureTextEntry={secureTextEntry}
+          <Datepicker
+            placeholder={renderPlaceholder(placeholder, styles)}
+            date={value}
+            onSelect={onChange}
             onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
             status={error ? 'danger' : 'basic'}
-            textStyle={error ? [styles.redText, styles.inputText] : styles.inputText}
             style={styles.input}
+            accessoryRight={CalendarIcon}
             {...rest}
-            onSubmitEditing={handleKeyboardDismiss}
           />
         )}
         defaultValue=""
@@ -63,16 +72,15 @@ const FormInput: React.FC<FormInputProps> = ({
   );
 };
 
-export default FormInput;
+export default FormDatePicker;
 
 const themedStyles = StyleService.create({
   container: {
     gap: 4,
   },
-  redText: {
-    color: '$color-danger-500',
+  marginHorizontal: {
+    marginHorizontal: 8,
   },
-  inputText: { fontSize: 16, fontWeight: '400' },
   input: {
     shadowColor: '$input-shadow-color',
     shadowOffset: { width: 0, height: 1 },

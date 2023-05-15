@@ -7,7 +7,6 @@ import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { useAuth } from '../hooks/useAuth';
 import FormLayout from '../layouts/FormLayout';
-import Paragraph from '../components/Paragraph';
 import FormInput from '../components/FormInput';
 import { Text } from '@ui-kitten/components';
 
@@ -65,7 +64,7 @@ const ValidateAccount = ({ navigation }: any) => {
     >
       <FormLayout>
         <Text category="h3">{`${t('validate_account.heading')}`}</Text>
-        <Paragraph>{`${t('validate_account.paragraph')}`}</Paragraph>
+        <Text appearance="hint">{`${t('validate_account.paragraph')}`}</Text>
         <FormInput
           control={control as any}
           name="code"
@@ -73,6 +72,7 @@ const ValidateAccount = ({ navigation }: any) => {
           placeholder={t('validate_account.form.code.placeholder')}
           error={errors.code}
           disabled={isLoading}
+          required={true}
           keyboardType="phone-pad"
         />
       </FormLayout>
