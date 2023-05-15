@@ -46,7 +46,7 @@ const FormInput: React.FC<FormInputProps> = ({
             onChangeText={onChange}
             value={value}
             status={error ? 'danger' : 'basic'}
-            textStyle={error ? styles.redText : {}}
+            textStyle={error ? [styles.redText, styles.inputText] : styles.inputText}
             style={styles.input}
             {...rest}
             onSubmitEditing={handleKeyboardDismiss}
@@ -72,6 +72,7 @@ const themedStyles = StyleService.create({
   redText: {
     color: '$color-danger-500',
   },
+  inputText: { fontSize: 16, fontWeight: '400' },
   input: {
     shadowColor: '$input-shadow-color',
     shadowOffset: { width: 0, height: 1 },
