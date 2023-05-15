@@ -9,9 +9,12 @@ export interface IPushTokenModel extends IBaseModel {
 }
 
 export type CreatePushTokenOptions = Pick<IPushTokenModel, 'token' | 'userId'>;
+export type DeletePushTokenOptions = Partial<IPushTokenModel>;
 
 export class PushTokenModelTransformer {
   static fromEntity(entity: PushTokensEntity): IPushTokenModel {
+    if (!entity) return null;
+
     return {
       id: entity.id,
       token: entity.token,

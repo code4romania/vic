@@ -88,6 +88,7 @@ import { GetManyForDownloadActivityLogUseCase } from './activity-log/get-many-fo
 import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-count.usecase';
 import { RegisterDevicePushTokenUseCase } from './push-notifications/register-device-push-token.usecase';
 import { NotificationsModule } from 'src/modules/notifications/notifications.module';
+import { UnregisterDevicePushTokenUseCase } from './push-notifications/unregister-device-push-token.usecase';
 
 @Module({
   imports: [
@@ -197,6 +198,7 @@ import { NotificationsModule } from 'src/modules/notifications/notifications.mod
     GetDashboardVolunteersStatusUseCase,
     // Push Notifications
     RegisterDevicePushTokenUseCase,
+    UnregisterDevicePushTokenUseCase,
   ],
   exports: [
     // Organization
@@ -290,6 +292,7 @@ import { NotificationsModule } from 'src/modules/notifications/notifications.mod
     GetDashboardVolunteersStatusUseCase,
     // Push Notifications
     RegisterDevicePushTokenUseCase,
+    UnregisterDevicePushTokenUseCase,
   ],
 })
 export class UseCaseModule {}

@@ -1,5 +1,6 @@
 import {
   CreatePushTokenOptions,
+  DeletePushTokenOptions,
   IPushTokenModel,
 } from './../models/push-token.model';
 
@@ -9,5 +10,5 @@ export interface IPushTokensRepository {
   ): Promise<IPushTokenModel>;
   find(findOptions: Partial<IPushTokenModel>): Promise<IPushTokenModel>;
   findMany(findOptions: Partial<IPushTokenModel>): Promise<IPushTokenModel[]>;
-  delete(id: string): Promise<string>;
+  delete(options: DeletePushTokenOptions): Promise<string>;
 }

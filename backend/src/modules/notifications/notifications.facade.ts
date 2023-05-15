@@ -4,6 +4,7 @@ import { PushTokensRepository } from './repositories/push-tokens.repository';
 import {
   IPushTokenModel,
   CreatePushTokenOptions,
+  DeletePushTokenOptions,
 } from './models/push-token.model';
 import { PushNotificationsService } from './push-notifications.service';
 
@@ -45,7 +46,7 @@ export class PushNotificationsFacade {
     return this.pushTokensRepository.create(createPushToken);
   }
 
-  async delete(id: string): Promise<string> {
-    return this.pushTokensRepository.delete(id);
+  async delete(options: DeletePushTokenOptions): Promise<string> {
+    return this.pushTokensRepository.delete(options);
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { IPushTokensRepository } from '../interfaces/push-tokens-repository.interface';
 import {
   CreatePushTokenOptions,
+  DeletePushTokenOptions,
   IPushTokenModel,
   PushTokenModelTransformer,
 } from '../models/push-token.model';
@@ -60,12 +61,12 @@ export class PushTokensRepository implements IPushTokensRepository {
     return this.find({ id: token.id });
   }
 
-  async delete(id: string): Promise<string> {
-    const token = await this.pushTokensRepository.findOneBy({ id });
+  async delete(options: DeletePushTokenOptions): Promise<string> {
+    const token = await this.pushTokensRepository.findOne({ where: options });
 
     if (token) {
       await this.pushTokensRepository.remove(token);
-      return id;
+      return token.id;
     }
 
     return null;
