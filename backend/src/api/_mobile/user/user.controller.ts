@@ -5,6 +5,7 @@ import { CreateRegularUserDto } from './dto/create-regular-user.dto';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UserPresenter } from './presenters/user.presenter';
+import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -18,19 +19,20 @@ export class MobileRegularUserController {
   @Post()
   async create(
     @Body() newUser: CreateRegularUserDto,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    @ExtractUser() data: any,
+    @ExtractUser() data: IRegularUserModel,
   ): Promise<UserPresenter> {
     const user = await this.createRegularUsereUseCaseService.execute({
       ...newUser,
-      cognitoId: data.token.username,
+      cognitoId: data.cognitoId,
     });
 
     return new UserPresenter(user);
   }
 
-  @Get()
-  async getTestValue(): Promise<string> {
-    return 'It works';
+  @Get('profile')
+  async getProfile(
+    @ExtractUser() user: IRegularUserModel,
+  ): Promise<UserPresenter> {
+    return new UserPresenter(user);
   }
 }

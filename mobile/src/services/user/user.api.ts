@@ -1,6 +1,7 @@
 import { Auth } from 'aws-amplify';
 import { UserFormTypes } from '../../screens/CreateUser';
 import API from '../api';
+import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 
 const dummyData: UserFormTypes = {
   firstName: 'John',
@@ -24,6 +25,6 @@ export const createUserProfile = async (userProfile: UserFormTypes): Promise<any
   }).then((res) => res.data);
 };
 
-export const getUserProfile = (): Promise<any> => {
-  return Promise.resolve(dummyData);
+export const getUserProfile = (): Promise<IUserProfile> => {
+  return API.get('/mobile/user/profile').then((res) => res.data);
 };

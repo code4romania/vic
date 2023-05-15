@@ -14,6 +14,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const { mutate: getUserProfile } = useUserProfile();
 
   useEffect(() => {
+    console.log('[APP Init]');
     initProfile();
   }, []);
 
@@ -26,18 +27,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       // this will throw error if user is not authenticated
       await Auth.currentAuthenticatedUser();
       // if the user is authenticated will auto login
-      // request profile from the database
-      getUserProfile(undefined, {
-        onSuccess: () => {
-          // setIsAuthenticated(true);
-          setUserProfile({ id: 'aaa', name: 'test@email.com' });
-        },
-        onError: (error: any) => {
-          // if the profile doesn't exists redirect to the the create account page
-          console.log('[Profile]:', JSON.stringify(error));
-          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
-        },
-      });
+      await getProfile();
     } catch (error) {
       // https://github.com/aws-amplify/amplify-js/blob/6caccc7b4/packages/auth/src/Auth.ts#L1705
       // here are just error strings validating user pool config and if user is authenticated
@@ -49,8 +39,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async ({ username, password }: SignInOptions) => {
     try {
       await Auth.signIn(username, password);
-      setUserProfile({ id: 'aaa', name: 'test@email.com' });
-      // setIsAuthenticated(true);
+      getProfile();
     } catch (error: any) {
       console.log('[Auth][Login]:', JSON.stringify(error));
       // Handle scenario where user is created in cognito but not activated
@@ -121,10 +110,25 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     try {
       setIsAuthenticated(false);
+      setUserProfile(null);
       await Auth.signOut({ global: true });
     } catch (error) {
       console.log('[Auth][SignOut]:', JSON.stringify(error));
     }
+  };
+
+  const getProfile = async () => {
+    // request profile from the database
+    getUserProfile(undefined, {
+      onSuccess: (profile: IUserProfile) => {
+        setUserProfile(profile);
+      },
+      onError: (error: any) => {
+        // if the profile doesn't exists redirect to the the create account page
+        console.log('[Profile]:', JSON.stringify(error));
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+      },
+    });
   };
 
   return (
