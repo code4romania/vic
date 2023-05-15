@@ -1,5 +1,4 @@
 import React from 'react';
-import PageLayout from '../layouts/PageLayout';
 import { Button, Text } from '@ui-kitten/components';
 import NoVolunteerProfile from './NoVolunteerProfile';
 import i18n from '../common/config/i18n';
@@ -10,6 +9,7 @@ import { View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import volunteerUserSVG from '../assets/svg/volunteer-user';
 import volunteerClockSVG from '../assets/svg/volunteer-clock';
+import TopNavigationCard from '../components/TopNavigationCard';
 
 const Volunteer = ({ navigation }: any) => {
   console.log('Volunteer', navigation);
@@ -31,10 +31,12 @@ const Volunteer = ({ navigation }: any) => {
   };
 
   return true ? (
-    <PageLayout title={i18n.t('tabs:volunteer')}>
+    <>
+      <View style={styles.cardWrapper}>
+        <TopNavigationCard title="Asociatia Zen" uri="https://picsum.photos/200/300" />
+      </View>
       <View style={styles.container}>
         <Text>{`${i18n.t('volunteer:details')}`}</Text>
-        <Button onPress={onShowDrawerPress}>SHOW DRAWER</Button>
         <VolunteerCard
           title={i18n.t('volunteer:menu_items.organization_profile.title')}
           uri="https://picsum.photos/200/300"
@@ -51,8 +53,9 @@ const Volunteer = ({ navigation }: any) => {
           icon={<SvgXml xml={volunteerUserSVG} />}
           onPress={onViewVolunteerProfilenButtonPress}
         />
+        <Button onPress={onShowDrawerPress}>SHOW DRAWER</Button>
       </View>
-    </PageLayout>
+    </>
   ) : (
     <NoVolunteerProfile />
   );
@@ -63,5 +66,12 @@ export default Volunteer;
 const styles = StyleSheet.create({
   container: {
     gap: 16,
+    backgroundColor: 'white',
+    paddingHorizontal: 16,
+    flex: 1,
+  },
+  cardWrapper: {
+    backgroundColor: 'white',
+    paddingBottom: 22,
   },
 });

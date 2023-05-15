@@ -73,6 +73,7 @@
   "text-danger-focus-color": "$color-danger-500",
   "text-danger-color": "$color-danger-500",
   "text-warning-color": "$color-warning-600",
+  "text-alternate-color": "#FFFFFF",
   "background-basic-color-1": "#FFFFFF",
   "background-basic-color-2": "#FFFFFF",
   "background-basic-color-3": "#EDF1F7",

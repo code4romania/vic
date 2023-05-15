@@ -56,8 +56,9 @@ export default VolunteerCard;
 
 const themedStyles = StyleService.create({
   container: {
-    paddingHorizontal: 16,
-    paddingVertical: 20,
+    paddingLeft: 16,
+    paddingRight: 24,
+    height: 75,
     gap: 12,
     flexDirection: 'row',
     alignItems: 'center',
