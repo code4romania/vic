@@ -44,7 +44,16 @@
     "no_org_added": "Nu ai adăugat încă nicio organizație",
     "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
     "my_organizations": "Organizațiile mele",
-    "join_organization": "Alătură-te unei organizații"
+    "join_organization": "Alătură-te unei organizații",
+    "details": "Lorem ipsum. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident.",
+    "menu_items": {
+      "organization_profile": { "title": "Profil organizatie" },
+      "activity_log": {
+        "title": "Ore de voluntariat",
+        "subtitle": "{{number}} ore asteapta aprobare"
+      },
+      "volunteer_profile": { "title": "Profil voluntar" }
+    }
   },
   "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
   "tabs": {

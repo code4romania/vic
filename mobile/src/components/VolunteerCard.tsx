@@ -40,7 +40,9 @@ const VolunteerCard = ({ title, onPress, subtitle, uri, icon }: VolunteerCardPro
           {subtitle && (
             <View style={styles.subtitleContainer}>
               <View style={styles.yellowDot} />
-              <Text status="warning">{subtitle}</Text>
+              <Text status="warning" category="s2">
+                {subtitle}
+              </Text>
             </View>
           )}
         </View>

@@ -6,6 +6,10 @@ import i18n from '../common/config/i18n';
 import VolunteerCard from '../components/VolunteerCard';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
+//SVG
+import { SvgXml } from 'react-native-svg';
+import volunteerUserSVG from '../assets/svg/volunteer-user';
+import volunteerClockSVG from '../assets/svg/volunteer-clock';
 
 const Volunteer = ({ navigation }: any) => {
   console.log('Volunteer', navigation);
@@ -29,16 +33,23 @@ const Volunteer = ({ navigation }: any) => {
   return true ? (
     <PageLayout title={i18n.t('tabs:volunteer')}>
       <View style={styles.container}>
-        <Text>Volunteer</Text>
+        <Text>{`${i18n.t('volunteer:details')}`}</Text>
         <Button onPress={onShowDrawerPress}>SHOW DRAWER</Button>
-        <Button onPress={onViewOrganizationButtonPress}>View Organization</Button>
-        <Button onPress={onViewVolunteerProfilenButtonPress}>View Volunteer Profile</Button>
-        <Button onPress={onViewAtivityLogsButtonPress}>View Logs</Button>
         <VolunteerCard
-          title="Profil organizatie"
+          title={i18n.t('volunteer:menu_items.organization_profile.title')}
           uri="https://picsum.photos/200/300"
-          onPress={() => console.log('volunteer card pressed')}
-          subtitle="2 Documente asteapta raspuns"
+          onPress={onViewOrganizationButtonPress}
+        />
+        <VolunteerCard
+          title={i18n.t('volunteer:menu_items.activity_log.title')}
+          icon={<SvgXml xml={volunteerClockSVG} />}
+          onPress={onViewAtivityLogsButtonPress}
+          subtitle={`${i18n.t('volunteer:menu_items.activity_log.subtitle', { number: 2 })}`}
+        />
+        <VolunteerCard
+          title={i18n.t('volunteer:menu_items.volunteer_profile.title')}
+          icon={<SvgXml xml={volunteerUserSVG} />}
+          onPress={onViewVolunteerProfilenButtonPress}
         />
       </View>
     </PageLayout>
