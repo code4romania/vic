@@ -32,6 +32,7 @@ export class MobilePushNotificationsController {
     });
   }
 
+  @ApiBody({ type: UnregisterPushTokenDto })
   @Delete('unregister')
   async delete(@Body() { token }: UnregisterPushTokenDto): Promise<void> {
     return this.unregisterDevicePushTokenUseCase.execute(token);

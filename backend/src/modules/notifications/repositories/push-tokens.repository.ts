@@ -8,7 +8,7 @@ import {
 } from '../models/push-token.model';
 import { PushTokensEntity } from '../entities/push-tokens.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class PushTokensRepository implements IPushTokensRepository {
@@ -23,6 +23,16 @@ export class PushTokensRepository implements IPushTokensRepository {
     });
 
     return PushTokenModelTransformer.fromEntity(entity);
+  }
+
+  async findByUserIds(userIds: string[]): Promise<string[]> {
+    const tokens = await this.pushTokensRepository.find({
+      select: ['token'],
+      where: {
+        userId: In(userIds),
+      },
+    });
+    return tokens.map(({ token }) => token);
   }
 
   async findMany(

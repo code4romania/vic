@@ -6,7 +6,7 @@ import {
   CreatePushTokenOptions,
   DeletePushTokenOptions,
 } from './models/push-token.model';
-import { PushNotificationsService } from './push-notifications.service';
+import { PushNotificationsService } from './services/push-notifications.service';
 
 @Injectable()
 export class PushNotificationsFacade {
