@@ -8,6 +8,9 @@ import * as yup from 'yup';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from '../components/FormInput';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { SvgXml } from 'react-native-svg';
+import infoSVG from '../assets/svg/info';
+import { StyleSheet } from 'react-native';
 
 const organization = {
   name: 'Asociația ZEN',
@@ -48,6 +51,10 @@ const AccessCode = ({ navigation }: any) => {
     console.log(payload.code);
   };
 
+  const renderIcon = (error: any) => {
+    return error ? () => <SvgXml xml={infoSVG} style={styles.icon} /> : undefined;
+  };
+
   return (
     <PageLayout
       title={i18n.t('access_code:title')}
@@ -67,6 +74,7 @@ const AccessCode = ({ navigation }: any) => {
           label={i18n.t('access_code:title')}
           name="code"
           placeholder={i18n.t('access_code:form.code.placeholder')}
+          accessoryRight={renderIcon(errors?.code)}
         />
       </FormLayout>
     </PageLayout>
@@ -74,3 +82,9 @@ const AccessCode = ({ navigation }: any) => {
 };
 
 export default AccessCode;
+
+const styles = StyleSheet.create({
+  icon: {
+    marginRight: 8,
+  },
+});
