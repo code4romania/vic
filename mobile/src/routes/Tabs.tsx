@@ -15,7 +15,7 @@ const HomeIcon = (props: any) => <Icon {...props} name="home" />;
 const SunIcon = (props: any) => <Icon {...props} name="sun" />;
 const CalendarIcon = (props: any) => <Icon {...props} name="calendar" />;
 const SearchIcon = (props: any) => <Icon {...props} name="search" />;
-const SettingsIcon = (props: any) => <Icon {...props} name="settings-2" />;
+const SettingsIcon = (props: any) => <Icon {...props} name="settings" />;
 
 const BottomTabBar = ({ navigation, state }: any) => {
   const onSelect = (index: number) => navigation.navigate(state.routeNames[index]);

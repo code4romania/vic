@@ -20,7 +20,7 @@ interface FormDatepickerProps extends DatepickerProps {
   required?: boolean;
 }
 
-const CalendarIcon = (props: any): IconElement => <Icon {...props} name="calendar-outline" />;
+const CalendarIcon = (props: any): IconElement => <Icon {...props} name="calendar" />;
 const renderPlaceholder = (placeholder: string, styles: any) => () =>
   (
     <Text appearance="hint" style={styles.marginHorizontal}>
