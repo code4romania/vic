@@ -1,7 +1,7 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
-import { Text } from '@ui-kitten/components';
+import { Icon, Text } from '@ui-kitten/components';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -52,7 +52,7 @@ const AccessCode = ({ navigation }: any) => {
   };
 
   const renderIcon = (error: any) => {
-    return error ? () => <SvgXml xml={infoSVG} style={styles.icon} /> : undefined;
+    return error ? (props: any) => <Icon {...props} name="info" /> : undefined;
   };
 
   return (
