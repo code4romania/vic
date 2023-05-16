@@ -10,6 +10,8 @@ import { REFERRAL } from '../common/enums/refferal.enum';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ReferralOptions } from '../common/constants/referral-options';
+import FormInput from '../components/FormInput';
+import { StyleSheet } from 'react-native';
 
 export type JoinNgoFormTypes = {
   referral: REFERRAL;
@@ -22,7 +24,14 @@ const organization = {
 };
 
 const schema = yup
-  .object({ referral: yup.string().required(), motivation: yup.string().required() })
+  .object({
+    referral: yup.string().required(`${i18n.t('join_ngo:form.referral.required')}`),
+    motivation: yup
+      .string()
+      .required(`${i18n.t('join_ngo:form.motivation.required')}`)
+      .min(2, `${i18n.t('join_ngo:form.motivation.min', { value: 2 })}`)
+      .max(50, `${i18n.t('join_ngo:form.motivation.max', { value: 50 })}`),
+  })
   .required();
 
 const JoinOrganization = ({ navigation }: any) => {
@@ -38,8 +47,8 @@ const JoinOrganization = ({ navigation }: any) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: JoinNgoFormTypes) => {
-    console.log(data.referral, data.motivation);
+  const onSubmit = (payload: any) => {
+    console.log(payload.referral, payload.motivation);
   };
 
   return (
@@ -63,9 +72,25 @@ const JoinOrganization = ({ navigation }: any) => {
           options={ReferralOptions}
           placeholder={i18n.t('general:select')}
         />
+        <FormInput
+          control={control}
+          label={i18n.t('join_ngo:form.motivation.label')}
+          error={errors.motivation}
+          name="motivation"
+          multiline={true}
+          textStyle={styles.textArea}
+          helper={`${i18n.t('join_ngo:form.motivation.helper')}`}
+          placeholder=""
+        />
       </FormLayout>
     </PageLayout>
   );
 };
 
 export default JoinOrganization;
+
+const styles = StyleSheet.create({
+  textArea: {
+    minHeight: 52,
+  },
+});

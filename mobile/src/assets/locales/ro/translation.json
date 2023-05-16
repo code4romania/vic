@@ -159,6 +159,7 @@
     "form": {
       "referral": {
         "label": "De unde ai aflat de noi?",
+        "required": "Acest câmp este obligatoriu",
         "social": "Rețelele de socializare",
         "teo": "Din aplicația TEO",
         "friend": "De la un coleg sau prieten",
@@ -166,8 +167,11 @@
         "other": "Altă opţiune"
       },
       "motivation": {
+        "required": "Acest câmp este obligatoriu",
         "label": "Ce te motivează să fii voluntar?",
-        "description": "Completează câmpul pentru a te înscrie."
+        "min": "Motivatia poate sa aiba minim {{value}} caractere",
+        "max": "Motivatia poate sa aiba maxim {{value}} caractere",
+        "helper": "Completează câmpul pentru a te înscrie."
       }
     }
   },
