@@ -1,5 +1,163 @@
 {
   "general": {
-    "current_month": "Luna asta"
+    "current_month": "Luna asta",
+    "see_all": "Vezi toate",
+    "latest_news": "Ultimele noutăți",
+    "about_teo": "Despre TEO",
+    "event": "Eveniment",
+    "news": "Ultimele noutati",
+    "organizations": "Organizatii",
+    "organization": "Organizatie",
+    "active_volunteers": "voluntari activi",
+    "updates": "actualizări",
+    "edit": "Editează {{item}}",
+    "add": "Adaugă {{item}}",
+    "select": "Selectează",
+    "sex": "Sex {{sex_type}}",
+    "male": "Barbatesc",
+    "female": "Feminin",
+    "join": "Alătură-te",
+    "register": "Înregistrează-te",
+    "continue": "Continuă"
+  },
+  "landing": {
+    "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
+    "registered": "Ai deja cont?",
+    "email": "E-mail sau telefon",
+    "login": "Autentifică-te"
+  },
+  "auth": {
+    "errors": {
+      "unauthorizeed": "Userul sau parola sunt gresite",
+      "username_exists": "Exista deja un utilizator cu aceasta adresa de email",
+      "signup": "Eroare la inregistrare",
+      "resend_code": "Eroare la trimiterea codului de confirmare",
+      "init_profile": "Eroare la incarcarea profilului"
+    }
+  },
+  "activity_log": {
+    "title": "Ore de voluntariat",
+    "log": "Ore înregistrate"
+  },
+  "volunteer": {
+    "profile": "Profil voluntar",
+    "no_org_added": "Nu ai adăugat încă nicio organizație",
+    "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
+    "my_organizations": "Organizațiile mele",
+    "join_organization": "Alătură-te unei organizații"
+  },
+  "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
+  "tabs": {
+    "home": "Acasă",
+    "volunteer": "Voluntar",
+    "events": "Evenimente",
+    "search": "Caută",
+    "account_settings": "Setări cont"
+  },
+  "login": {
+    "title": "Autentificare",
+    "paragraph": "Introduceți e-mailul și parola pentru a intra în cont.",
+    "submit": "Intra in cont",
+    "form": {
+      "email": {
+        "label": "Email",
+        "placeholder": "Introduceti emailul",
+        "required": "Email-ul este obligatoriu",
+        "pattern": "Formatul email-ului nu este valid"
+      },
+      "password": {
+        "label": "Parola",
+        "placeholder": "Introduceti parola",
+        "required": "Parola este obligatorie"
+      }
+    }
+  },
+  "register": {
+    "title": "Creare cont",
+    "create_account": {
+      "heading": "Date cont",
+      "paragraph": "Completați câmpurile de mai jos pentru înregistrare",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Introduceti emailul",
+          "required": "Email-ul este obligatoriu",
+          "pattern": "Formatul email-ului nu este valid"
+        },
+        "phone": {
+          "label": "Telefon",
+          "placeholder": "Introduceti telefonul",
+          "required": "Telefonul este obligatoriu"
+        },
+        "password": {
+          "label": "Parola",
+          "placeholder": "Introduceti parola",
+          "required": "Parola este obligatorie"
+        },
+        "confirm_password": {
+          "label": "Confirma parola",
+          "placeholder": "Confirmati parola",
+          "required": "Parola este obligatorie",
+          "match": "Parolele trebuie sa fie identice"
+        },
+        "terms": {
+          "agree": "Sunt de acord cu",
+          "conditions": " Termenii și Condițiile",
+          "and": ", cât și cu",
+          "privacy_policy": " Politica de Confidențialitate",
+          "application": " a aplicației",
+          "required": "Trebuie sa accepti Termenii,Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
+        }
+      }
+    },
+    "validate_account": {
+      "heading": "Verificare code primit pe email",
+      "paragraph": "Completați câmpurile de mai jos pentru înregistrare.",
+      "form": {
+        "code": {
+          "label": "Introdu codul primit prin email",
+          "placeholder": "Introdu codul primit prin email",
+          "required": "Codul este obligatoriu",
+          "length": "Codul trebuie sa aiba o lungime de 6 caractere"
+        }
+      }
+    },
+    "create_user": {
+      "heading": "Date utilizator",
+      "paragraph": "Completați câmpurile de mai jos pentru finalizarea inregistrarii.",
+      "form": {
+        "first_name": {
+          "label": "Prenume",
+          "placeholder": "Introdu prenumele",
+          "required": "Prenumele este obligatoriu",
+          "min": "Prenumele poate sa aiba minim {{value}} caractere",
+          "max": "Prenumele poate sa aiba maxim {{value}} caractere"
+        },
+        "last_name": {
+          "label": "Nume",
+          "placeholder": "Introdu numele de familie",
+          "required": "Numele de faimilie este obligatoriu",
+          "min": "Numele poate sa aiba minim {{value}} caractere",
+          "max": "Numele poate sa aiba maxim {{value}} caractere"
+        },
+        "county": {
+          "label": "Judet"
+        },
+        "city": {
+          "label": "Oras"
+        },
+        "birthday": {
+          "label": "Data nașterii"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Setări cont",
+    "heading": "Date cont",
+    "identity": "Date identitate",
+    "password": "Schimbă parola",
+    "notification": "Setări notificări",
+    "information": "Informații"
   }
 }

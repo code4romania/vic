@@ -8,7 +8,7 @@ interface ModalLayoutProps {
   onDismiss: () => void;
 }
 
-const CloseIcon = (props: any) => <Icon {...props} name="close" />;
+const CloseIcon = (props: any) => <Icon {...props} name="x" />;
 
 export const ModalLayout = ({ children, title, onDismiss }: ModalLayoutProps) => (
   <>

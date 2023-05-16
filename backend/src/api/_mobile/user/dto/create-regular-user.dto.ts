@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 import { SEX } from 'src/modules/user/enums/user.enum';
@@ -11,7 +12,11 @@ import { SEX } from 'src/modules/user/enums/user.enum';
 export class CreateRegularUserDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  firstName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 
   @IsEmail()
   @IsNotEmpty()
@@ -21,16 +26,15 @@ export class CreateRegularUserDto {
   @IsNotEmpty()
   phone: string; //TODO: check ONGHUb for phone validations if needed
 
-  @IsString()
-  @IsNotEmpty()
-  cognitoId: string;
+  @IsNumber()
+  @IsOptional()
+  locationId: number;
 
   @IsDate()
+  @IsOptional()
   birthday: Date;
 
   @IsEnum(SEX)
+  @IsOptional()
   sex: SEX;
-
-  @IsNumber()
-  locationId: number;
 }

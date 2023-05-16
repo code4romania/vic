@@ -1,53 +1,46 @@
 import React from 'react';
-import { Button as ButtonKitten, StyleService, useStyleSheet } from '@ui-kitten/components';
-import { TouchableOpacity } from 'react-native';
+import {
+  Button as ButtonKitten,
+  ButtonProps as ButtonKittenProps,
+  withStyles,
+} from '@ui-kitten/components';
 import { ButtonType } from '../common/enums/button-type.enum';
-import { ButtonBackgroundColorMapper } from '../common/utils/utils';
 
-interface ButtonProps {
+interface ButtonProps extends ButtonKittenProps {
   label: string;
   type: ButtonType;
-  onPress: () => void;
+  onPress: (props?: any) => void;
+  eva?: any;
 }
 
-const Button = ({ label, onPress, type }: ButtonProps) => {
-  const styles = useStyleSheet(themedStyles(type));
-
+const Button = ({ label, onPress, type, eva }: ButtonProps) => {
   return (
-    <TouchableOpacity>
-      <ButtonKitten
-        onPress={onPress}
-        style={styles.button}
-        status={type === ButtonType.DANGER ? 'danger' : 'success'}
-        appearance={type === ButtonType.SECONDARY ? 'outline' : 'filled'}
-        size="large"
-      >
-        {label}
-      </ButtonKitten>
-    </TouchableOpacity>
+    <ButtonKitten
+      onPress={onPress}
+      style={[eva.style.button, type === ButtonType.SECONDARY ? null : eva.style.shadow]}
+      status={type === ButtonType.DANGER ? 'danger' : 'success'}
+      appearance={type === ButtonType.SECONDARY ? 'outline' : 'filled'}
+      size="large"
+    >
+      {label}
+    </ButtonKitten>
   );
 };
 
-export default Button;
-
-const shadow = {
-  elevation: 4,
-  shadowColor: '#280056',
-  shadowOffset: {
-    width: 0,
-    height: 2,
-  },
-  shadowOpacity: 0.24,
-  shadowRadius: 8,
-};
-
-const themedStyles = (type: ButtonType) =>
-  StyleService.create({
-    button: {
-      borderRadius: 100,
-      paddingVertical: 15,
-      paddingHorizontal: 30,
-      backgroundColor: ButtonBackgroundColorMapper[type],
-      ...(type === ButtonType.SECONDARY ? {} : shadow),
+export default withStyles(Button, () => ({
+  shadow: {
+    elevation: 4,
+    shadowColor: '$dark-purple',
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-  });
+    shadowOpacity: 0.24,
+    shadowRadius: 8,
+  },
+  button: {
+    borderRadius: 100,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+  },
+}));
