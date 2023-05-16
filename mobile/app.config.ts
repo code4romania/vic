@@ -29,6 +29,7 @@ const expoConfig: ExpoConfig = {
   },
   web: {
     favicon: './src/assets/images/favicon.png',
+    build: { babel: { include: ['@ui-kitten/components'] } },
   },
   plugins: ['expo-localization'],
   extra: {
