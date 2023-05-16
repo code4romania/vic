@@ -18,7 +18,8 @@
     "female": "Feminin",
     "join": "Alătură-te",
     "register": "Înregistrează-te",
-    "continue": "Continuă"
+    "continue": "Continuă",
+    "send": "Trimite"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
@@ -149,6 +150,24 @@
         "birthday": {
           "label": "Data nașterii"
         }
+      }
+    }
+  },
+  "join_ngo": {
+    "registration_form": "Formular de înscriere",
+    "complete": "Completează datele de mai jos pentru a te putea înscrie în organizație.",
+    "form": {
+      "referral": {
+        "label": "De unde ai aflat de noi?",
+        "social": "Rețelele de socializare",
+        "teo": "Din aplicația TEO",
+        "friend": "De la un coleg sau prieten",
+        "event": "Dintr-un eveniment",
+        "other": "Altă opţiune"
+      },
+      "motivation": {
+        "label": "Ce te motivează să fii voluntar?",
+        "description": "Completează câmpul pentru a te înscrie."
       }
     }
   },
