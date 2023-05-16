@@ -9,10 +9,15 @@ const OrganizationProfile = ({ navigation }: any) => {
     navigation.navigate('join-organization');
   };
 
+  const onJoinByAccessCode = () => {
+    navigation.navigate('access-code');
+  };
+
   return (
     <PageLayout title="Profil Organizatie" onBackButtonPress={navigation.goBack}>
       <Text category="h1">OrganizationProfile</Text>
       <Button onPress={onJoinOrganizationButtonPress}>Join</Button>
+      <Button onPress={onJoinByAccessCode}>Join By Access Code</Button>
     </PageLayout>
   );
 };

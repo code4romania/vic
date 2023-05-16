@@ -18,6 +18,7 @@ import IdentityData from '../screens/IdentityData';
 import ChangePassword from '../screens/ChangePassword';
 import NotificationsSettings from '../screens/NotificationsSettings';
 import DrawerNavigator from './Drawer';
+import AccessCode from '../screens/AccessCode';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ const Private = () => (
       <Screen name="activity-logs" component={ActivityLogs} />
       <Screen name="organization-profile" component={OrganizationProfile} />
       <Screen name="join-organization" component={JoinOrganization} />
+      <Screen name="access-code" component={AccessCode} />
       <Screen name="event" component={Event} />
       <Screen name="join-event" component={JoinEvent} />
       <Screen name="account-data" component={AccountData} />
