@@ -25,7 +25,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const initProfile = async () => {
     try {
       // this will throw error if user is not authenticated
-      await Auth.currentAuthenticatedUser();
+      await Auth.currentAuthenticatedUser({ bypassCache: true });
       // if the user is authenticated will auto login
       await getProfile();
     } catch (error) {

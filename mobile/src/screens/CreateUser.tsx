@@ -75,7 +75,7 @@ const CreateUser = ({ navigation }: any) => {
   const onSubmit = async ({ cityId, ...userPayload }: UserFormTypes) => {
     try {
       // get user phone and email data from aws
-      const user = await Auth.currentAuthenticatedUser();
+      const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
 
       // create new user payload
       const newUser = {
