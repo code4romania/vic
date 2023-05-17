@@ -8,7 +8,7 @@ import { SETTINGS_ROUTES } from '../enums/setting-routes';
 import i18n from '../config/i18n';
 
 export const SETTING_SCREENS = [
-  { icon: user, label: i18n.t('settings:account'), route: SETTINGS_ROUTES.ACCOUNT_DATA },
+  { icon: user, label: i18n.t('settings:heading'), route: SETTINGS_ROUTES.ACCOUNT_DATA },
   {
     icon: identification,
     label: i18n.t('settings:identity'),
