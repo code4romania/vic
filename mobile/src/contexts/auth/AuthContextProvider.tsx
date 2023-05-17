@@ -95,7 +95,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const confirmSignUp = async (code: string) => {
     try {
-      await Auth.confirmSignUp(userName, code);
+      const signupResponse = await Auth.confirmSignUp(userName, code);
+      Toast.show({ type: 'success', text1: JSON.stringify(signupResponse) });
     } catch (error) {
       console.log('[Auth][Signup][Confirm]:', JSON.stringify(error));
       Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.signup')}` });

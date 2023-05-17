@@ -66,16 +66,15 @@ const CreateUser = ({ navigation }: any) => {
     (async () => {
       const data = await AsyncStorage.getAllKeys();
       setStorageContent(JSON.stringify(data));
-
-      listenToAutoSignInEvent();
     })();
-  }, []);
 
-  const listenToAutoSignInEvent = () => {
-    Hub.listen('auth', (payload: any) => {
+    const unsubscribe = Hub.listen('auth', ({ payload }) => {
       setHubPayload(JSON.stringify(payload));
+      Toast.show({ type: 'error', text1: JSON.stringify(payload) });
     });
-  };
+
+    return unsubscribe();
+  }, []);
 
   const {
     control,
