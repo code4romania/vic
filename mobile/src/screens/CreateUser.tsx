@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import FormLayout from '../layouts/FormLayout';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,7 @@ import CountySelect from '../containers/CountySelect';
 import CitySelect from '../containers/CitySelect';
 import { Auth } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type UserFormTypes = {
   firstName: string;
@@ -58,6 +59,14 @@ const CreateUser = ({ navigation }: any) => {
   const { t } = useTranslation('register');
   const { mutate: createUserProfile, isLoading } = useCreateUserProfileMutation();
   const { setUserProfile } = useAuth();
+  const [storageContent, setStorageContent] = useState<string>('');
+
+  useEffect(() => {
+    (async () => {
+      const data = await AsyncStorage.getAllKeys();
+      setStorageContent(JSON.stringify(data));
+    })();
+  }, []);
 
   const {
     control,
@@ -115,6 +124,7 @@ const CreateUser = ({ navigation }: any) => {
       <FormLayout>
         <Text category="h3">{`${t('create_user.heading')}`}</Text>
         <Text appearance="hint">{`${t('create_user.paragraph')}`}</Text>
+        <Text appearance="hint">{`${storageContent}`}</Text>
         <FormInput
           control={control as any}
           placeholder={t('create_user.form.first_name.placeholder')}
