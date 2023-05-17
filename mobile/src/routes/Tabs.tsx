@@ -7,6 +7,7 @@ import Events from '../screens/Events';
 import Organizations from '../screens/Organizations';
 import Settings from '../screens/Settings';
 import Volunteer from '../screens/Volunteer';
+import i18n from '../common/config/i18n';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -14,7 +15,7 @@ const HomeIcon = (props: any) => <Icon {...props} name="home" />;
 const SunIcon = (props: any) => <Icon {...props} name="sun" />;
 const CalendarIcon = (props: any) => <Icon {...props} name="calendar" />;
 const SearchIcon = (props: any) => <Icon {...props} name="search" />;
-const SettingsIcon = (props: any) => <Icon {...props} name="settings-2" />;
+const SettingsIcon = (props: any) => <Icon {...props} name="settings" />;
 
 const BottomTabBar = ({ navigation, state }: any) => {
   const onSelect = (index: number) => navigation.navigate(state.routeNames[index]);
@@ -26,11 +27,11 @@ const BottomTabBar = ({ navigation, state }: any) => {
       appearance="noIndicator"
       style={styles.tabs}
     >
-      <BottomNavigationTab title="Acasa" icon={HomeIcon} />
-      <BottomNavigationTab title="Voluntar" icon={SunIcon} />
-      <BottomNavigationTab title="Evenimente" icon={CalendarIcon} />
-      <BottomNavigationTab title="Cauta" icon={SearchIcon} />
-      <BottomNavigationTab title="Setari cont" icon={SettingsIcon} />
+      <BottomNavigationTab title={`${i18n.t('tabs:home')}`} icon={HomeIcon} />
+      <BottomNavigationTab title={`${i18n.t('tabs:volunteer')}`} icon={SunIcon} />
+      <BottomNavigationTab title={`${i18n.t('tabs:events')}`} icon={CalendarIcon} />
+      <BottomNavigationTab title={`${i18n.t('tabs:search')}`} icon={SearchIcon} />
+      <BottomNavigationTab title={`${i18n.t('tabs:account_settings')}`} icon={SettingsIcon} />
     </BottomNavigation>
   );
 };

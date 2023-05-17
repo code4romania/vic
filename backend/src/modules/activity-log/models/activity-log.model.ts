@@ -124,6 +124,11 @@ export type FindManyActivityLogCounterOptions = {
   volunteerId?: string;
 };
 
+export type FindActivityLogCountOptions = {
+  eventId: string;
+  organizationId: string;
+};
+
 export class ActivityLogModelTransformer {
   static fromEntityToListItem(
     entity: ActivityLogEntity,
