@@ -7,6 +7,7 @@ import { View } from 'react-native';
 import i18n from '../common/config/i18n';
 import LogInButton from '../components/LogInButton';
 import { ButtonType } from '../common/enums/button-type.enum';
+import Constants from 'expo-constants';
 
 const Landing = ({ navigation }: any) => {
   console.log('Landing');
@@ -23,7 +24,10 @@ const Landing = ({ navigation }: any) => {
       <View style={styles.container}>
         <Image source={require('../assets/images/teo-logo.png')} style={styles.image} />
         <Text category="h1">{`${i18n.t('general:register')}`}</Text>
-        <Text category="c1" style={styles.message}>{`${i18n.t('landing:message')}`}</Text>
+        {/* <Text category="c1" style={styles.message}>{`${i18n.t('landing:message')}`}</Text> */}
+        <Text category="c1" style={styles.message}>
+          {Constants.expoConfig?.extra?.awsRegion}
+        </Text>
         <Button
           onPress={onRegisterButtonPress}
           label={i18n.t('landing:email')}
