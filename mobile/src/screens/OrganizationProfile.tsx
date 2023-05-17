@@ -3,7 +3,7 @@ import PageLayout from '../layouts/PageLayout';
 import { Button, Layout } from '@ui-kitten/components';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
-import EventPresenter from '../components/EventPresenter';
+import EventItem from '../components/EventItem';
 import SectionWrapper from '../components/SectionWrapper';
 import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
@@ -70,14 +70,14 @@ const OrganizationProfile = ({ navigation }: any) => {
             />
           </View>
           <SectionWrapper title={i18n.t('organization_profile:events')}>
-            <EventPresenter
+            <EventItem
               date={event.date}
               divison={event.division}
               location={event.location}
               title={event.title}
               onPress={onEventPress}
             />
-            <EventPresenter
+            <EventItem
               date={event.date}
               divison={event.division}
               location={event.location}
@@ -97,7 +97,6 @@ export default OrganizationProfile;
 const styles = StyleSheet.create({
   layout: {
     gap: 24,
-    paddingHorizontal: 16,
   },
   readOnlyContainer: {
     gap: 16,

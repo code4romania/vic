@@ -8,7 +8,7 @@ import usersSvg from '../assets/svg/users';
 import { SvgXml } from 'react-native-svg';
 import IconSvg from './IconSvg';
 
-interface EventPresenterProps {
+interface EventItemProps {
   title: string;
   date: string;
   location: string;
@@ -16,7 +16,7 @@ interface EventPresenterProps {
   onPress: () => void;
 }
 
-const EventPresenter = ({ title, date, location, divison, onPress }: EventPresenterProps) => {
+const EventItem = ({ title, date, location, divison, onPress }: EventItemProps) => {
   return (
     <TouchableHighlight onPress={onPress} underlayColor="#F9F9F9">
       <View style={styles.container}>
@@ -48,7 +48,7 @@ const EventPresenter = ({ title, date, location, divison, onPress }: EventPresen
   );
 };
 
-export default EventPresenter;
+export default EventItem;
 
 const styles = StyleSheet.create({
   container: {
