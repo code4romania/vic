@@ -9,7 +9,6 @@ import { useAuth } from '../hooks/useAuth';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from '../components/FormInput';
 import { Text } from '@ui-kitten/components';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type ValidateAccountFormTypes = {
   code: string;
@@ -28,7 +27,6 @@ const ValidateAccount = ({ navigation }: any) => {
   const { t } = useTranslation('register');
   const { confirmSignUp } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [storageContent, setStorageContent] = useState<string>('');
 
   const {
     control,
@@ -45,11 +43,7 @@ const ValidateAccount = ({ navigation }: any) => {
       console.log('code', code);
       setIsLoading(true);
       await confirmSignUp(code);
-
-      const content = AsyncStorage.getAllKeys();
-      setStorageContent(JSON.stringify(content));
-      console.log('account has been validated');
-      // navigation.replace('create-user');
+      navigation.replace('create-user');
     } catch (error) {
       console.log('error on confirm signup');
     } finally {
@@ -70,7 +64,6 @@ const ValidateAccount = ({ navigation }: any) => {
       <FormLayout>
         <Text category="h3">{`${t('validate_account.heading')}`}</Text>
         <Text appearance="hint">{`${t('validate_account.paragraph')}`}</Text>
-        <Text appearance="hint">{`${storageContent}`}</Text>
         <FormInput
           control={control as any}
           name="code"

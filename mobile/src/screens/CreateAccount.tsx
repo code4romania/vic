@@ -13,7 +13,6 @@ import { useAuth } from '../hooks/useAuth';
 import { View } from 'react-native';
 import InlineLink from '../components/InlineLink';
 import { Controller } from 'react-hook-form';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export type RegisterFormTypes = {
   email: string;
@@ -75,7 +74,6 @@ const CreateAccount = ({ navigation }: any) => {
     try {
       setIsLoading(true);
       await signUp({ username: email, password, phoneNumber: phone });
-      Toast.show({ type: 'success', text1: 'Done creating account' });
       navigation.replace('validate-account');
     } catch (error) {
       console.log('error');

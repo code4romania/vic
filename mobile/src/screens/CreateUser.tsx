@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import FormLayout from '../layouts/FormLayout';
 import { useTranslation } from 'react-i18next';
@@ -17,9 +17,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import i18n from '../common/config/i18n';
 import CountySelect from '../containers/CountySelect';
 import CitySelect from '../containers/CitySelect';
-import { Auth, Hub } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type UserFormTypes = {
   firstName: string;
@@ -59,22 +58,6 @@ const CreateUser = ({ navigation }: any) => {
   const { t } = useTranslation('register');
   const { mutate: createUserProfile, isLoading } = useCreateUserProfileMutation();
   const { setUserProfile } = useAuth();
-  const [storageContent, setStorageContent] = useState<string>('');
-  const [hubPayload, setHubPayload] = useState<string>('');
-
-  useEffect(() => {
-    (async () => {
-      const data = await AsyncStorage.getAllKeys();
-      setStorageContent(JSON.stringify(data));
-    })();
-
-    const unsubscribe = Hub.listen('auth', ({ payload }) => {
-      setHubPayload(JSON.stringify(payload));
-      Toast.show({ type: 'error', text1: JSON.stringify(payload) });
-    });
-
-    return unsubscribe();
-  }, []);
 
   const {
     control,
@@ -109,14 +92,12 @@ const CreateUser = ({ navigation }: any) => {
           // update profile in context
           setUserProfile(profile);
         },
-        onError: (error: any) => {
-          // Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` }),
-          Toast.show({ type: 'error', text1: JSON.stringify(error) });
+        onError: () => {
+          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
         },
       });
     } catch (error) {
-      Toast.show({ type: 'error', text1: JSON.stringify(error) });
-      // Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+      Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
     }
   };
 
@@ -133,8 +114,6 @@ const CreateUser = ({ navigation }: any) => {
       <FormLayout>
         <Text category="h3">{`${t('create_user.heading')}`}</Text>
         <Text appearance="hint">{`${t('create_user.paragraph')}`}</Text>
-        <Text appearance="hint">{`${storageContent}`}</Text>
-        <Text appearance="hint">{`${hubPayload}`}</Text>
         <FormInput
           control={control as any}
           placeholder={t('create_user.form.first_name.placeholder')}
