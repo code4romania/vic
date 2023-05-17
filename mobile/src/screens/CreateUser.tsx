@@ -92,11 +92,13 @@ const CreateUser = ({ navigation }: any) => {
           // update profile in context
           setUserProfile(profile);
         },
-        onError: () =>
-          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` }),
+        onError: (error: any) =>
+          // Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` }),
+          Toast.show({ type: 'error', text1: JSON.stringify(error) }),
       });
     } catch (error) {
-      Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+      Toast.show({ type: 'error', text1: JSON.stringify(error) });
+      // Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
     }
   };
 

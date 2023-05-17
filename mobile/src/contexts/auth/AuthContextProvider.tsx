@@ -29,6 +29,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       // if the user is authenticated will auto login
       await getProfile();
     } catch (error) {
+      Toast.show({ type: 'error', text1: JSON.stringify(error) });
       // https://github.com/aws-amplify/amplify-js/blob/6caccc7b4/packages/auth/src/Auth.ts#L1705
       // here are just error strings validating user pool config and if user is authenticated
       console.debug('[Cognito][Init]:', error);
@@ -41,18 +42,19 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       await Auth.signIn(username, password);
       getProfile();
     } catch (error: any) {
+      Toast.show({ type: 'error', text1: JSON.stringify(error) });
       console.log('[Auth][Login]:', JSON.stringify(error));
       // Handle scenario where user is created in cognito but not activated
-      if (
-        error.code === 'UserNotConfirmedException' ||
-        error.message === 'UserNotConfirmedException'
-      ) {
-        // send event to confirm account to login screen
-        throw { confirmAccount: true };
-      } else {
-        // show any other error
-        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
-      }
+      // if (
+      //   error.code === 'UserNotConfirmedException' ||
+      //   error.message === 'UserNotConfirmedException'
+      // ) {
+      //   // send event to confirm account to login screen
+      //   throw { confirmAccount: true };
+      // } else {
+      //   // show any other error
+      //   Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
+      // }
     }
   };
 
@@ -128,12 +130,13 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       },
       onError: (error: any) => {
         // if the profile doesn't exists redirect to the the create account page
-        console.log('[Profile]:', JSON.stringify(error));
-        if (error.response.status === 404) {
-          throw new Error('UserNotConfirmedException');
-        } else {
-          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
-        }
+        // console.log('[Profile]:', JSON.stringify(error));
+        // if (error.response.status === 404) {
+        //   throw new Error('UserNotConfirmedException');
+        // } else {
+        //   Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+        // }
+        Toast.show({ type: 'error', text1: JSON.stringify(error) });
       },
     });
   };
