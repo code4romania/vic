@@ -4,6 +4,7 @@ export interface IOrganization {
   email: string;
   phone: string;
   address: string;
+  activityArea: string;
   logo: string;
   description: string;
 }
