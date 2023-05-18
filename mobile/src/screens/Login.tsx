@@ -41,7 +41,6 @@ const Login = ({ navigation }: any) => {
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
-    defaultValues: { username: 'andrew.radulescu@wearetribus.com', password: 'Test1234!' },
   });
 
   const onSubmit = async (credentials: LoginFormTypes) => {

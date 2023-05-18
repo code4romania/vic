@@ -67,7 +67,7 @@ export class ExpoPushNotificationsService {
         );
         allReceipts = { ...allReceipts, ...receipts };
       } catch (error) {
-        console.error(error);
+        this.logger.error(error);
       }
     }
 
