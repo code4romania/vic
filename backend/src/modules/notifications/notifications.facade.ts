@@ -7,6 +7,7 @@ import {
   DeletePushTokenOptions,
 } from './models/push-token.model';
 import { PushNotificationsService } from './services/push-notifications.service';
+import { SendNotificationData } from './models/send-notification-data.model';
 
 @Injectable()
 export class PushNotificationsFacade {
@@ -15,13 +16,9 @@ export class PushNotificationsFacade {
     private readonly pushNotificationsService: PushNotificationsService,
   ) {}
 
-  // send(
-  //   tokens: string[],
-  //   title: string,
-  //   body: string,
-  // ): Promise<ExpoPushTicket[]> {
-  //   return this.pushNotificationsService.send(tokens, title, body);
-  // }
+  send = async (data: SendNotificationData): Promise<void> => {
+    return this.pushNotificationsService.send(data);
+  };
 
   async find(findOptions: Partial<IPushTokenModel>): Promise<IPushTokenModel> {
     return this.pushTokensRepository.find(findOptions);

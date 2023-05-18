@@ -1,15 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
-import {
-  Expo,
-  ExpoPushTicket,
-  ExpoPushReceipt,
-  ExpoPushErrorReceipt,
-} from 'expo-server-sdk';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Expo, ExpoPushTicket, ExpoPushReceipt } from 'expo-server-sdk';
 import { MODULE_OPTIONS_TOKEN } from './expo-push-notifications.module-definition';
 import { ExpoPushNotificationsModuleOptions } from './expo-push-notifications.interfaces';
 
 @Injectable()
 export class ExpoPushNotificationsService {
+  private readonly logger = new Logger(ExpoPushNotificationsService.name);
+
   private expo: Expo;
 
   constructor(
@@ -47,14 +44,9 @@ export class ExpoPushNotificationsService {
     for (const chunk of chunks) {
       try {
         const ticketChunk = await this.expo.sendPushNotificationsAsync(chunk);
-        console.log(ticketChunk);
         tickets.push(...ticketChunk);
-        // NOTE: If a ticket contains an error code in ticket.details.error, you
-        // must handle it appropriately. The error codes are listed in the Expo
-        // documentation:
-        // https://docs.expo.io/push-notifications/sending-notifications/#individual-errors
       } catch (error) {
-        console.error(error);
+        this.logger.error(error);
       }
     }
 
@@ -73,7 +65,7 @@ export class ExpoPushNotificationsService {
         const receipts = await this.expo.getPushNotificationReceiptsAsync(
           chunk,
         );
-        allReceipts = { ...allReceipts, receipts };
+        allReceipts = { ...allReceipts, ...receipts };
       } catch (error) {
         console.error(error);
       }

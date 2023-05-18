@@ -5,6 +5,7 @@ import { PushTokensRepository } from '../repositories/push-tokens.repository';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 import { QUEUES } from 'src/common/constants/constants';
+import { SendNotificationData } from '../models/send-notification-data.model';
 
 @Injectable()
 export class PushNotificationsService {
@@ -20,26 +21,14 @@ export class PushNotificationsService {
     >,
     private readonly expoPushNotificationsService: ExpoPushNotificationsService,
     private readonly pushTokensRepository: PushTokensRepository,
-  ) {
-    setTimeout(() => {
-      this.send(
-        [
-          'f6bf11b1-0524-4034-9f31-c5188ed4f348',
-          '88fc8112-6697-4d76-bdec-324d29f9579c', //
-        ],
-        'Test',
-        'Test',
-      );
-    }, 2000);
-  }
+  ) {}
 
-  send = async (
-    userIds: string[],
-    title: string,
-    body: string,
-  ): Promise<ExpoPushTicket[]> => {
+  send = async ({
+    userIds,
+    title,
+    body,
+  }: SendNotificationData): Promise<void> => {
     // 1. Find all push tokens for the given user ids
-
     const tokens = await this.pushTokensRepository.findByUserIds(userIds);
     // 2. Send the notifications
     const tickets = await this.expoPushNotificationsService.send(
@@ -59,7 +48,6 @@ export class PushNotificationsService {
       delay: 1000 * 60 * 30,
     });
 
-    // 4. Return the tickets
-    return tickets;
+    return;
   };
 }
