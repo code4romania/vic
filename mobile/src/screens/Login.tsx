@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Icon, Text } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
@@ -10,9 +10,6 @@ import { TouchableWithoutFeedback } from 'react-native';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { yupResolver } from '@hookform/resolvers/yup';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Hub } from 'aws-amplify';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 export type LoginFormTypes = {
   username: string;
@@ -35,18 +32,6 @@ const Login = ({ navigation }: any) => {
   const { t } = useTranslation('login');
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [loginResult, setLoginResult] = useState<string>('');
-  const [storageResult, setStorageResult] = useState<string>('');
-  const [loginError, setLoginError] = useState<string>('');
-  const [hubResponse, setHubResponse] = useState<string>('');
-
-  useEffect(() => {
-    // show all auth events
-    Hub.listen('auth', (data) => {
-      Toast.show({ type: 'success', text1: `Hub: ${JSON.stringify(data)}` });
-      setHubResponse(JSON.stringify(data));
-    });
-  }, []);
 
   const {
     control,
@@ -61,18 +46,9 @@ const Login = ({ navigation }: any) => {
   const onSubmit = async (credentials: LoginFormTypes) => {
     try {
       setIsLoading(true);
-      // check the result that comes from aws login
-      const result = await login(credentials);
-      setLoginResult(JSON.stringify(result));
-
-      // check what data we set in AsynStorage
-      const asyncStorageResult = await AsyncStorage.getAllKeys();
-      setStorageResult(JSON.stringify(asyncStorageResult));
-
+      await login(credentials);
       setIsLoading(false);
     } catch (error: any) {
-      // show error
-      setLoginError(JSON.stringify(error));
       // the user is created in cognito but the email/phone number is not verified
       if (error.confirmAccount) {
         // resend validation email
@@ -111,11 +87,7 @@ const Login = ({ navigation }: any) => {
       }}
     >
       <FormLayout>
-        {/* <Text appearance="hint">{`${t('paragraph')}`}</Text> */}
-        <Text appearance="hint">{`login: ${loginResult}`}</Text>
-        <Text appearance="hint">{`storage: ${storageResult}`}</Text>
-        <Text appearance="hint">{`error: ${loginError}`}</Text>
-        <Text appearance="hint">{`Hub: ${hubResponse}`}</Text>
+        <Text appearance="hint">{`${t('paragraph')}`}</Text>
         <FormInput
           control={control as any}
           name="username"
