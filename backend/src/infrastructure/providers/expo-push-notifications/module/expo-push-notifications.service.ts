@@ -1,5 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Expo, ExpoPushTicket } from 'expo-server-sdk';
+import {
+  Expo,
+  ExpoPushTicket,
+  ExpoPushReceipt,
+  ExpoPushErrorReceipt,
+} from 'expo-server-sdk';
 import { MODULE_OPTIONS_TOKEN } from './expo-push-notifications.module-definition';
 import { ExpoPushNotificationsModuleOptions } from './expo-push-notifications.interfaces';
 
@@ -54,5 +59,26 @@ export class ExpoPushNotificationsService {
     }
 
     return tickets;
+  };
+
+  getPushReceipts = async (
+    receiptIds: string[],
+  ): Promise<{ [id: string]: ExpoPushReceipt }> => {
+    const receiptIdChunks =
+      this.expo.chunkPushNotificationReceiptIds(receiptIds);
+    let allReceipts = {};
+
+    for (const chunk of receiptIdChunks) {
+      try {
+        const receipts = await this.expo.getPushNotificationReceiptsAsync(
+          chunk,
+        );
+        allReceipts = { ...allReceipts, receipts };
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    return allReceipts;
   };
 }

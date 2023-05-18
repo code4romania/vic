@@ -11,10 +11,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PushTokensRepository } from './repositories/push-tokens.repository';
 import { PushNotificationsFacade } from './notifications.facade';
 import { UserModule } from '../user/user.module';
+import { BullModule } from '@nestjs/bull';
+import { QUEUES } from 'src/common/constants/constants';
+import { PushTicketsCheckerProcessor } from './services/push-tickets-checker.processor';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([PushTokensEntity]),
+    BullModule.registerQueue({
+      name: QUEUES.PUSH_NOTIFICATIONS_TICKETS,
+    }),
     MailModule,
     VolunteerModule,
     UserModule,
@@ -28,6 +34,8 @@ import { UserModule } from '../user/user.module';
     VolunteerHoursListener,
     OthersListener,
     PushNotificationsService,
+
+    PushTicketsCheckerProcessor,
   ],
   exports: [PushNotificationsFacade],
 })
