@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 3.11.0"
+    "version": ">= 3.12.1"
   },
   "build": {
     "development": {
@@ -8,7 +8,8 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "node": "16.15.1"
     },
     "production": {}
   },

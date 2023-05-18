@@ -140,10 +140,13 @@
           "min": "Numele poate sa aiba minim {{value}} caractere",
           "max": "Numele poate sa aiba maxim {{value}} caractere"
         },
-        "location": {
-          "label": "Locație"
+        "county": {
+          "label": "Judet"
         },
-        "birth_date": {
+        "city": {
+          "label": "Oras"
+        },
+        "birthday": {
           "label": "Data nașterii"
         }
       }

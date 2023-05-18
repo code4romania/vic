@@ -6,11 +6,12 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import i18n from '../../common/config/i18n';
 import { useUserProfile } from '../../services/user/user.service';
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
+import { JSONStringifyError } from '../../common/utils/utils';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [userName, setUserName] = useState<string>('');
   const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
+  const [userName, setUserName] = useState<string>('');
   const { mutate: getUserProfile } = useUserProfile();
 
   useEffect(() => {
@@ -25,27 +26,28 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const initProfile = async () => {
     try {
       // this will throw error if user is not authenticated
-      await Auth.currentAuthenticatedUser();
+      await Auth.currentAuthenticatedUser({ bypassCache: true });
       // if the user is authenticated will auto login
       await getProfile();
-    } catch (error) {
+    } catch (error: any) {
       // https://github.com/aws-amplify/amplify-js/blob/6caccc7b4/packages/auth/src/Auth.ts#L1705
       // here are just error strings validating user pool config and if user is authenticated
-      console.debug('[Cognito][Init]:', error);
-      // setIsLoading(false);
+      console.debug('[Cognito][Init]:', JSONStringifyError(error));
     }
   };
 
   const login = async ({ username, password }: SignInOptions) => {
     try {
       await Auth.signIn(username, password);
-      getProfile();
+      await getProfile();
     } catch (error: any) {
-      console.log('[Auth][Login]:', JSON.stringify(error));
+      console.log('[Auth][Login]:', JSONStringifyError(error));
       // Handle scenario where user is created in cognito but not activated
       if (error.code === 'UserNotConfirmedException') {
         // send event to confirm account to login screen
         throw { confirmAccount: true };
+      } else if (error.code === 'UserNotFoundException') {
+        throw { createUser: true };
       } else {
         // show any other error
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
@@ -72,7 +74,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       // TBD: if this is the best approach
       setUserName(username);
     } catch (error: any) {
-      console.log('[Auth][Signup]:', JSON.stringify(error));
+      console.log('[Auth][Signup]:', JSONStringifyError(error));
       if (error.code === 'UsernameExistsException') {
         Toast.show({
           type: 'error',
@@ -90,9 +92,15 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const confirmSignUp = async (code: string) => {
     try {
-      await Auth.confirmSignUp(userName, code);
-    } catch (error) {
-      console.log('[Auth][Signup][Confirm]:', JSON.stringify(error));
+      let email = userName;
+      if (!email) {
+        const user = await Auth.currentAuthenticatedUser();
+        email = user.attributes.email;
+      }
+
+      await Auth.confirmSignUp(email, code);
+    } catch (error: any) {
+      console.log('[Auth][Signup][Confirm]:', JSONStringifyError(error));
       Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.signup')}` });
       throw error;
     }
@@ -101,8 +109,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const resendConfirmationCode = async (username: string): Promise<void> => {
     try {
       await Auth.resendSignUp(username);
-    } catch (error) {
-      console.log('[Auth][Signup][Resend_Code]:', JSON.stringify(error));
+    } catch (error: any) {
+      console.log('[Auth][Signup][Resend_Code]:', JSONStringifyError(error));
       Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.resend_code')}` });
     }
   };
@@ -112,22 +120,28 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAuthenticated(false);
       setUserProfile(null);
       await Auth.signOut({ global: true });
-    } catch (error) {
-      console.log('[Auth][SignOut]:', JSON.stringify(error));
+    } catch (error: any) {
+      console.log('[Auth][SignOut]:', JSONStringifyError(error));
     }
   };
 
   const getProfile = async () => {
-    // request profile from the database
-    getUserProfile(undefined, {
-      onSuccess: (profile: IUserProfile) => {
-        setUserProfile(profile);
-      },
-      onError: (error: any) => {
-        // if the profile doesn't exists redirect to the the create account page
-        console.log('[Profile]:', JSON.stringify(error));
-        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
-      },
+    return new Promise((resolve, reject) => {
+      getUserProfile(undefined, {
+        onSuccess: (profile: IUserProfile) => {
+          setUserProfile(profile);
+          resolve(profile);
+        },
+        onError: (error: any) => {
+          // if the profile doesn't exists redirect to the the create account page
+          console.log('[Profile]:', JSONStringifyError(error));
+          if (error.response.status === 404) {
+            reject({ code: 'UserNotFoundException' });
+          } else {
+            Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+          }
+        },
+      });
     });
   };
 

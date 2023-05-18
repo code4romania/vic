@@ -89,6 +89,7 @@ import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-coun
 import { RegisterDevicePushTokenUseCase } from './push-notifications/register-device-push-token.usecase';
 import { NotificationsModule } from 'src/modules/notifications/notifications.module';
 import { UnregisterDevicePushTokenUseCase } from './push-notifications/unregister-device-push-token.usecase';
+import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.usecase';
 
 @Module({
   imports: [
@@ -141,6 +142,7 @@ import { UnregisterDevicePushTokenUseCase } from './push-notifications/unregiste
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
+    GetCitiesByCountyIdUseCase,
     // Activity Types
     CreateActivityTypeUseCase,
     UpdateActivityTypeUseCase,
@@ -234,6 +236,7 @@ import { UnregisterDevicePushTokenUseCase } from './push-notifications/unregiste
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
+    GetCitiesByCountyIdUseCase,
     // Activity Types
     CreateActivityTypeUseCase,
     UpdateActivityTypeUseCase,

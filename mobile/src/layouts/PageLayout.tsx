@@ -19,7 +19,7 @@ interface PageLayoutProps {
   actionsOptions?: ActionsOptionsProps;
 }
 
-const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />;
+const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
 
 const LoadingIndicator = (props: any): React.ReactElement => (
   <View style={[props.style, styles.indicator]}>
