@@ -11,6 +11,7 @@ import { JSONStringifyError } from '../../common/utils/utils';
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
+  const [userName, setUserName] = useState<string>('');
   const { mutate: getUserProfile } = useUserProfile();
 
   useEffect(() => {
@@ -68,6 +69,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
           enabled: true,
         },
       });
+
+      // save username for confirmation
+      // TBD: if this is the best approach
+      setUserName(username);
     } catch (error: any) {
       console.log('[Auth][Signup]:', JSONStringifyError(error));
       if (error.code === 'UsernameExistsException') {
@@ -87,8 +92,13 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const confirmSignUp = async (code: string) => {
     try {
-      const user = await Auth.currentAuthenticatedUser();
-      await Auth.confirmSignUp(user.attributes.email, code);
+      let email = userName;
+      if (!email) {
+        const user = await Auth.currentAuthenticatedUser();
+        email = user.attributes.email;
+      }
+
+      await Auth.confirmSignUp(email, code);
     } catch (error: any) {
       console.log('[Auth][Signup][Confirm]:', JSONStringifyError(error));
       Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.signup')}` });
