@@ -9,7 +9,6 @@ import { IPushTokenModel } from 'src/modules/notifications/models/push-token.mod
 import { UnregisterDevicePushTokenUseCase } from 'src/usecases/push-notifications/unregister-device-push-token.usecase';
 import { UnregisterPushTokenDto } from './dto/unregister-push-token.dto';
 
-// TODO: add ownership guard
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
 @Controller('/mobile/push-notifications')
@@ -25,7 +24,6 @@ export class MobilePushNotificationsController {
     @ExtractUser() user: IRegularUserModel,
     @Body() newToken: RegisterPushTokenDto,
   ): Promise<IPushTokenModel> {
-    console.log(user);
     return this.registerDevicePushTokenUseCase.execute({
       ...newToken,
       userId: user.id,
