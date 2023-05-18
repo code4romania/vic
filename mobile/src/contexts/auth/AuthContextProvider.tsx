@@ -44,18 +44,19 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       // getProfile();
     } catch (error: any) {
       console.log('[Auth][Login]:', JSON.stringify(error));
-      // Toast.show({ type: 'error', text1: `Auth: ${JSON.stringify(error)}` });
+      Toast.show({ type: 'error', text1: `Auth: ${JSON.stringify(error)}` });
+      return error;
       // Handle scenario where user is created in cognito but not activated
-      if (
-        error.code === 'UserNotConfirmedException' ||
-        error.message === 'UserNotConfirmedException'
-      ) {
-        // send event to confirm account to login screen
-        throw { confirmAccount: true };
-      } else {
-        // show any other error
-        // Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
-      }
+      // if (
+      //   error.code === 'UserNotConfirmedException' ||
+      //   error.message === 'UserNotConfirmedException'
+      // ) {
+      //   // send event to confirm account to login screen
+      //   throw { confirmAccount: true };
+      // } else {
+      //   // show any other error
+      //   // Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
+      // }
     }
   };
 
