@@ -36,6 +36,17 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   //   }
   // };
 
+  function JSONStringifyError(value: Error): string {
+    if (value instanceof Error) {
+      const error: Record<string, unknown> = {};
+      Object.getOwnPropertyNames(value).forEach(function (propName) {
+        error[propName as keyof Error] = value[propName as keyof Error];
+      });
+      return JSON.stringify(error);
+    }
+    return JSON.stringify(value);
+  }
+
   const login = async ({ username, password }: SignInOptions) => {
     try {
       const result = await Auth.signIn(username, password);
@@ -43,9 +54,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       return result;
       // getProfile();
     } catch (error: any) {
+      console.log('type error: ', JSONStringifyError(error));
       console.log('[Auth][Login]:', JSON.stringify(error));
       Toast.show({ type: 'error', text1: `Auth: ${JSON.stringify(error)}` });
-      return error;
+      return JSONStringifyError(error);
       // Handle scenario where user is created in cognito but not activated
       // if (
       //   error.code === 'UserNotConfirmedException' ||
