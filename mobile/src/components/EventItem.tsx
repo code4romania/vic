@@ -1,12 +1,6 @@
-import { Text } from '@ui-kitten/components';
+import { Avatar, Icon, Text, withStyles } from '@ui-kitten/components';
 import React from 'react';
-import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
-//SVG
-import clockSvg from '../assets/svg/clock';
-import locationSvg from '../assets/svg/location';
-import usersSvg from '../assets/svg/users';
-import { SvgXml } from 'react-native-svg';
-import IconSvg from './IconSvg';
+import { TouchableHighlight, View } from 'react-native';
 
 interface EventItemProps {
   title: string;
@@ -14,49 +8,48 @@ interface EventItemProps {
   location: string;
   divison: string;
   onPress: () => void;
+  eva?: any;
 }
 
-const EventItem = ({ title, date, location, divison, onPress }: EventItemProps) => {
+const EventItem = ({ title, date, location, divison, onPress, eva }: EventItemProps) => {
   return (
-    <TouchableHighlight onPress={onPress} underlayColor="#F9F9F9">
-      <View style={styles.container}>
-        <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.eventImg} />
-        <View style={styles.textContainer}>
+    <TouchableHighlight onPress={onPress} underlayColor={eva.theme['cool-gray-100']}>
+      <View style={eva.style.container}>
+        <Avatar source={{ uri: 'https://picsum.photos/200' }} size="large" />
+        <View style={eva.style.textContainer}>
           <Text category="p2">{title}</Text>
-          <View style={styles.section}>
-            <IconSvg icon={clockSvg} size={10} fill="#9CA3AF" />
+          <View style={eva.style.section}>
+            <Icon name="clock" style={eva.style.icon} />
             <Text category="c1" appearance="hint">
               {date}
             </Text>
           </View>
-          <View style={styles.section}>
-            <SvgXml xml={locationSvg} />
+          <View style={eva.style.section}>
+            <Icon name="map-pin" style={eva.style.icon} />
             <Text category="c1" appearance="hint">
               {location}
             </Text>
           </View>
-          <View style={styles.section}>
-            <SvgXml xml={usersSvg} />
+          <View style={eva.style.section}>
+            <Icon name="users" style={eva.style.icon} />
             <Text category="c1" appearance="hint">
               {divison}
             </Text>
           </View>
         </View>
-        <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.organizationImg} />
+        <Avatar source={{ uri: 'https://picsum.photos/200' }} size={'tiny'} />
       </View>
     </TouchableHighlight>
   );
 };
 
-export default EventItem;
-
-const styles = StyleSheet.create({
+export default withStyles(EventItem, (theme) => ({
   container: {
     gap: 16,
     flexDirection: 'row',
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '$cool-gray-200',
+    borderBottomColor: theme['cool-gray-200'],
   },
   section: {
     gap: 8,
@@ -64,17 +57,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 20,
   },
-  eventImg: {
-    width: 48,
-    height: 48,
-    borderRadius: 100,
-  },
-  organizationImg: {
-    borderRadius: 100,
-    width: 24,
-    height: 24,
-  },
   textContainer: {
     flex: 1,
   },
-});
+  icon: {
+    width: 12,
+    height: 12,
+    tintColor: theme['cool-gray-400'],
+  },
+}));
