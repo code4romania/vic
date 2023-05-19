@@ -18,7 +18,17 @@
     "female": "Feminin",
     "join": "Alătură-te",
     "register": "Înregistrează-te",
-    "continue": "Continuă"
+    "continue": "Continuă",
+    "volunteers": "Voluntari"
+  },
+  "organization_profile": {
+    "title": "Profil organizație",
+    "description": "Despre organizație",
+    "email": "Email de contact",
+    "phone": "Telefon",
+    "address": "Adresa sediu",
+    "area": "Arie de desfasurare a activitatii",
+    "events": "Evenimente deschise"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
