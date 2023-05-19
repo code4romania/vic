@@ -6,6 +6,7 @@ export interface IOrganizationModel {
   email: string;
   phone: string;
   address: string;
+  activityArea: string;
   logo: string;
   description: string;
 }
@@ -28,6 +29,7 @@ export class OrganizationTransformer {
       email: organizationEntity.email,
       phone: organizationEntity.phone,
       address: organizationEntity.address,
+      activityArea: organizationEntity.activityArea,
       logo: organizationEntity.logo,
       description: organizationEntity.description,
     };
@@ -41,6 +43,7 @@ export class OrganizationTransformer {
     organizationEntity.email = organizationModel.email;
     organizationEntity.phone = organizationModel.phone;
     organizationEntity.address = organizationModel.address;
+    organizationEntity.activityArea = organizationModel.activityArea;
     organizationEntity.logo = organizationModel.logo;
     organizationEntity.description = organizationModel.description;
     return organizationEntity;

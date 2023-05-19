@@ -12,5 +12,6 @@ export const AMPLIFY_CONFIG = {
     redirectSignIn: Constants.expoConfig?.extra?.redirectUrl,
     redirectSignOut: Constants.expoConfig?.extra?.redirectUrl,
     responseType: 'code', // or 'token', note that REFRESH token will only be generated when the responseType is code
+    authenticationFlowType: 'USER_PASSWORD_AUTH',
   },
 };

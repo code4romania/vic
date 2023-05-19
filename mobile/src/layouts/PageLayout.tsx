@@ -16,10 +16,12 @@ interface PageLayoutProps {
   children: ReactNode;
   title: string;
   onBackButtonPress?: () => void;
+  onEditButtonPress?: () => void;
   actionsOptions?: ActionsOptionsProps;
 }
 
-const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />;
+const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
+const EditIcon = (props: any) => <Icon {...props} name="edit" />;
 
 const LoadingIndicator = (props: any): React.ReactElement => (
   <View style={[props.style, styles.indicator]}>
@@ -31,6 +33,7 @@ export const PageLayout = ({
   children,
   title,
   onBackButtonPress,
+  onEditButtonPress,
   actionsOptions,
 }: PageLayoutProps) => {
   const renderLeftControl = () => {
@@ -41,9 +44,22 @@ export const PageLayout = ({
     return <TopNavigationAction icon={BackIcon} onPress={onBackButtonPress} />;
   };
 
+  const renderRightControl = () => {
+    if (!onEditButtonPress) {
+      return <></>;
+    }
+
+    return <TopNavigationAction icon={EditIcon} onPress={onEditButtonPress} />;
+  };
+
   return (
     <>
-      <TopNavigation title={title} alignment="start" accessoryLeft={renderLeftControl} />
+      <TopNavigation
+        title={title}
+        alignment="start"
+        accessoryLeft={renderLeftControl}
+        accessoryRight={renderRightControl}
+      />
       <Layout style={styles.layout}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

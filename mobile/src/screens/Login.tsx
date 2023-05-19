@@ -53,6 +53,8 @@ const Login = ({ navigation }: any) => {
       if (error.confirmAccount) {
         // resend validation email
         onRevalidateAccount(credentials.username);
+      } else if (error.createUser) {
+        navigation.navigate('create-user');
       } else {
         setIsLoading(false);
       }
