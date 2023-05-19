@@ -61,7 +61,6 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
             {...rest}
           />
         )}
-        defaultValue=""
       />
       {error && (
         <Text category="c1" status={error ? 'danger' : 'basic'}>
