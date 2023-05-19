@@ -10,6 +10,7 @@ interface FormInputProps extends InputProps {
   placeholder: string;
   secureTextEntry?: boolean;
   error: any;
+  helper?: string;
   required?: boolean;
 }
 
@@ -21,6 +22,7 @@ const FormInput: React.FC<FormInputProps> = ({
   secureTextEntry = false,
   error,
   required,
+  helper,
   ...rest
 }: FormInputProps) => {
   const styles = useStyleSheet(themedStyles);
@@ -46,17 +48,24 @@ const FormInput: React.FC<FormInputProps> = ({
             onChangeText={onChange}
             value={value}
             status={error ? 'danger' : 'basic'}
-            textStyle={error ? [styles.redText, styles.inputText] : styles.inputText}
-            style={styles.input}
+            textStyle={
+              error
+                ? [styles.redText, styles.inputText]
+                : [styles.inputText, rest.disabled ? styles.disabledText : {}]
+            }
             {...rest}
+            style={[styles.input, rest.disabled ? styles.disabledBackground : {}]}
             onSubmitEditing={handleKeyboardDismiss}
           />
         )}
-        defaultValue=""
       />
-      {error && (
-        <Text category="c1" status={error ? 'danger' : 'basic'}>
-          {error.message}
+      {(error || helper) && (
+        <Text
+          category="c1"
+          status={error ? 'danger' : 'basic'}
+          appearance={error ? 'default' : 'hint'}
+        >
+          {error?.message || helper}
         </Text>
       )}
     </View>
@@ -69,6 +78,8 @@ const themedStyles = StyleService.create({
   container: {
     gap: 4,
   },
+  disabledBackground: { backgroundColor: '$cool-gray-100' },
+  disabledText: { color: '$cool-gray-500' },
   redText: {
     color: '$color-danger-500',
   },

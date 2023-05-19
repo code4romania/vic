@@ -18,7 +18,11 @@
     "female": "Feminin",
     "join": "Alătură-te",
     "register": "Înregistrează-te",
-    "continue": "Continuă"
+    "continue": "Continuă",
+    "save": "Salvează",
+    "branch": "Filială",
+    "department": "Departament",
+    "role": "Rol"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
@@ -44,7 +48,23 @@
     "no_org_added": "Nu ai adăugat încă nicio organizație",
     "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
     "my_organizations": "Organizațiile mele",
-    "join_organization": "Alătură-te unei organizații"
+    "join_organization": "Alătură-te unei organizații",
+    "edit": "Editează profil voluntar",
+    "form": {
+      "email": {
+        "label": "Email de contact",
+        "required": "Email-ul este obligatoriu",
+        "pattern": "Formatul email-ului nu este valid"
+      },
+      "phone": {
+        "label": "Telefon",
+        "info": "Nu poti modifica acest câmp."
+      },
+      "active_since": {
+        "label": "Voluntar din",
+        "required": "Data este obligatorie"
+      }
+    }
   },
   "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
   "tabs": {

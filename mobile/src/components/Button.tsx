@@ -39,6 +39,7 @@ export default withStyles(Button, () => ({
     shadowRadius: 8,
   },
   button: {
+    minWidth: 240,
     borderRadius: 100,
     paddingVertical: 15,
     paddingHorizontal: 30,
