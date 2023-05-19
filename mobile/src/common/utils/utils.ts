@@ -1,14 +1,6 @@
 // utils
 // add mappings and other helper methods
 
-import { ButtonType } from '../enums/button-type.enum';
-
-export const ButtonBackgroundColorMapper = {
-  [ButtonType.DANGER]: 'color-danger-500',
-  [ButtonType.PRIMARY]: 'color-primary-500',
-  [ButtonType.SECONDARY]: 'background-basic-color-1',
-};
-
 export const applyCardShadow = (theme: any) => ({
   shadowColor: theme['cool-gray-400'],
   shadowOffset: { width: 0, height: 1 },
@@ -16,3 +8,14 @@ export const applyCardShadow = (theme: any) => ({
   shadowRadius: 2,
   elevation: 2, // android only
 });
+
+export function JSONStringifyError(value: Error): string {
+  if (value instanceof Error) {
+    const error: Record<string, unknown> = {};
+    Object.getOwnPropertyNames(value).forEach(function (propName) {
+      error[propName as keyof Error] = value[propName as keyof Error];
+    });
+    return JSON.stringify(error);
+  }
+  return JSON.stringify(value);
+}

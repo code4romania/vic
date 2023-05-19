@@ -4,4 +4,5 @@ import { ICountyModel } from '../model/county.model';
 export interface ILocationRepository {
   findCounties(): Promise<ICountyModel[]>;
   findCities(options: FindLocationOptions): Promise<ICityModel[]>;
+  findCitiesByCountyId(countyId: number): Promise<ICityModel[]>;
 }

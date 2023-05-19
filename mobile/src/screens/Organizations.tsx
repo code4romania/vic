@@ -36,7 +36,7 @@ const Organizations = ({ navigation }: any) => {
           <View style={styles.textWrapper}>
             <Text category="p2">{item.name}</Text>
             <Text category="c1" appearance="hint">
-              {`${i18n.t('general:volunteers', { number: item.volunteers })}`}
+              {`${i18n.t('organization_profile:volunteers', { number: item.volunteers })}`}
             </Text>
           </View>
         </View>
