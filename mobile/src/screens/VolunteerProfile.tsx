@@ -29,7 +29,7 @@ const volunteer = {
 };
 
 const VolunteerProfile = ({ navigation }: any) => {
-  console.log('VolunteerProfile', navigation);
+  console.log('VolunteerProfile');
   const styles = useStyleSheet(themedStyles);
 
   const onEditVolunteerProfileButtonPress = () => {
@@ -48,7 +48,7 @@ const VolunteerProfile = ({ navigation }: any) => {
           name={volunteer.name}
           description={`${i18n.t('volunteer:age', { years: volunteer.age })}\n${i18n.t(
             'general:sex',
-            { type: i18n.t(`general:${volunteer.sex}`) },
+            { sex_type: i18n.t(`general:${volunteer.sex}`) },
           )}\n${volunteer.city}${i18n.t('volunteer:county', { name: volunteer.county })}`}
         />
         <View style={styles.profileContent}>
