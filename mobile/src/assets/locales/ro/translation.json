@@ -22,7 +22,17 @@
     "save": "Salvează",
     "branch": "Filială",
     "department": "Departament",
-    "role": "Rol"
+    "role": "Rol",
+    "volunteers": "Voluntari"
+  },
+  "organization_profile": {
+    "title": "Profil organizație",
+    "description": "Despre organizație",
+    "email": "Email de contact",
+    "phone": "Telefon",
+    "address": "Adresa sediu",
+    "area": "Arie de desfasurare a activitatii",
+    "events": "Evenimente deschise"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
