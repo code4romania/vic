@@ -62,6 +62,22 @@
     "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
     "my_organizations": "Organizațiile mele",
     "join_organization": "Alătură-te unei organizații",
+    "edit": "Editează profil voluntar",
+    "form": {
+      "email": {
+        "label": "Email de contact",
+        "required": "Email-ul este obligatoriu",
+        "pattern": "Formatul email-ului nu este valid"
+      },
+      "phone": {
+        "label": "Telefon",
+        "info": "Nu poti modifica acest câmp."
+      },
+      "active_since": {
+        "label": "Voluntar din",
+        "required": "Data este obligatorie"
+      }
+    },
     "details": "Lorem ipsum. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident.",
     "menu_items": {
       "organization_profile": { "title": "Profil organizatie" },
