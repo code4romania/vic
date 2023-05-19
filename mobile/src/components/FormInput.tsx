@@ -10,6 +10,7 @@ interface FormInputProps extends InputProps {
   placeholder: string;
   secureTextEntry?: boolean;
   error: any;
+  helper?: string;
   required?: boolean;
 }
 
@@ -20,6 +21,7 @@ const FormInput: React.FC<FormInputProps> = ({
   placeholder,
   secureTextEntry = false,
   error,
+  helper,
   required,
   ...rest
 }: FormInputProps) => {
@@ -46,7 +48,11 @@ const FormInput: React.FC<FormInputProps> = ({
             onChangeText={onChange}
             value={value}
             status={error ? 'danger' : 'basic'}
-            textStyle={error ? [styles.redText, styles.inputText] : styles.inputText}
+            textStyle={
+              error
+                ? [styles.redText, styles.inputText, rest.textStyle]
+                : [styles.inputText, rest.textStyle]
+            }
             style={styles.input}
             {...rest}
             onSubmitEditing={handleKeyboardDismiss}
@@ -54,9 +60,13 @@ const FormInput: React.FC<FormInputProps> = ({
         )}
         defaultValue=""
       />
-      {error && (
-        <Text category="c1" status={error ? 'danger' : 'basic'}>
-          {error.message}
+      {(error || helper) && (
+        <Text
+          category="c1"
+          status={error ? 'danger' : 'basic'}
+          appearance={error ? 'default' : 'hint'}
+        >
+          {error?.message || helper}
         </Text>
       )}
     </View>

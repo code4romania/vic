@@ -23,6 +23,7 @@
     "female": "Feminin",
     "register": "Înregistrează-te",
     "continue": "Continuă",
+    "send": "Trimite",
     "volunteers": "Voluntari"
   },
   "organization_profile": {
@@ -179,6 +180,28 @@
         "birthday": {
           "label": "Data nașterii"
         }
+      }
+    }
+  },
+  "join_ngo": {
+    "registration_form": "Formular de înscriere",
+    "complete": "Completează datele de mai jos pentru a te putea înscrie în organizație.",
+    "form": {
+      "referral": {
+        "label": "De unde ai aflat de noi?",
+        "required": "Acest câmp este obligatoriu",
+        "social": "Rețelele de socializare",
+        "teo": "Din aplicația TEO",
+        "friend": "De la un coleg sau prieten",
+        "event": "Dintr-un eveniment",
+        "other": "Altă opţiune"
+      },
+      "motivation": {
+        "required": "Acest câmp este obligatoriu",
+        "label": "Ce te motivează să fii voluntar?",
+        "min": "Motivatia poate sa aiba minim {{value}} caractere",
+        "max": "Motivatia poate sa aiba maxim {{value}} caractere",
+        "helper": "Completează câmpul pentru a te înscrie."
       }
     }
   },
