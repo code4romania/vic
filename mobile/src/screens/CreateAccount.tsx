@@ -161,10 +161,13 @@ const CreateAccount = ({ navigation }: any) => {
           />
           <View style={styles.termsTextContainer}>
             <Text>{`${t('create_account.form.terms.agree')}`}</Text>
-            <InlineLink
-              label={t('create_account.form.terms.conditions')}
-              onPress={onTermsAndConditionsPress}
-            />
+            <View style={styles.directionRow}>
+              <InlineLink
+                label={t('create_account.form.terms.conditions')}
+                onPress={onTermsAndConditionsPress}
+              />
+              <Text>{', '}</Text>
+            </View>
             <Text>{`${t('create_account.form.terms.and')}`}</Text>
             <InlineLink
               label={t('create_account.form.terms.privacy_policy')}
@@ -192,4 +195,5 @@ const themedStyles = StyleService.create({
     gap: 12,
   },
   termsTextContainer: { flexDirection: 'row', maxWidth: '90%', flexWrap: 'wrap' },
+  directionRow: { flexDirection: 'row' },
 });
