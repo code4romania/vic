@@ -54,6 +54,7 @@ export class UpdateAnnouncementUseCase
     // 3. Check if only departments were chosen and calculate the new total number of volunteers
     let targetedVolunteers = 0;
 
+    // validate if the all the targets are in database as departments for this organizations
     if (updateData.targetsIds?.length) {
       const departments = await this.organizationStructureFacade.findAllByIds({
         ids: updateData.targetsIds,
@@ -66,16 +67,19 @@ export class UpdateAnnouncementUseCase
           AnnouncementExceptionMessages.ANNOUNCEMENT_003,
         );
       }
-
-      departments.forEach(
-        (department) => (targetedVolunteers += department.members),
-      );
-    } else {
-      targetedVolunteers = await this.volunteerFacade.count({
-        organizationId: updateData.organizationId,
-        status: VolunteerStatus.ACTIVE,
-      });
     }
+
+    // count the number of active volunteers for this organization
+    // [Optional] part of the given departments
+    targetedVolunteers = await this.volunteerFacade.count({
+      organizationId: updateData.organizationId,
+      status: VolunteerStatus.ACTIVE,
+      ...(updateData.targetsIds?.length
+        ? {
+            departmentIds: updateData.targetsIds,
+          }
+        : {}),
+    });
 
     // 4. Update the announcement
     const updatedAnnouncement = await this.announcementFacade.update(id, {

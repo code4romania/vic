@@ -96,6 +96,7 @@ export type FindManyVolunteersOptions = Pick<IVolunteerModel, 'status'> & {
 
 export type CountVolunteerOptions = Pick<IVolunteerModel, 'status'> & {
   organizationId: string;
+  departmentIds?: string[];
 };
 
 export class VolunteerModelTransformer {

@@ -226,7 +226,19 @@ export class VolunteerRepositoryService
   }
 
   async count(options: CountVolunteerOptions): Promise<number> {
-    return this.volunteerRepository.count({ where: options });
+    const { departmentIds, ...filters } = options;
+    return this.volunteerRepository.count({
+      where: {
+        ...filters,
+        ...(departmentIds?.length
+          ? {
+              volunteerProfile: {
+                departmentId: In(departmentIds),
+              },
+            }
+          : {}),
+      },
+    });
   }
 
   private addAgeRangeConditionToQuery(
