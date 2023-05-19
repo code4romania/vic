@@ -118,6 +118,11 @@ const Organization = ({ query, setQuery }: OrganizationTableProps) => {
                 value={organization.address}
                 readOnly
               />
+              <FormInput
+                label={i18n.t('general:activity_area') || ''}
+                value={organization.activityArea}
+                readOnly
+              />
               <hr className="border-cool-gray-200" />
               <Paragraph title={i18n.t('organization:description')}>
                 {i18n.t('organization:description_placeholder')}

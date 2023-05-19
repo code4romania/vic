@@ -74,7 +74,6 @@ const CreateAccount = ({ navigation }: any) => {
     try {
       setIsLoading(true);
       await signUp({ username: email, password, phoneNumber: phone });
-      console.log('success');
       navigation.replace('validate-account');
     } catch (error) {
       console.log('error');
