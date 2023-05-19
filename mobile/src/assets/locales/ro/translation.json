@@ -28,7 +28,8 @@
     "phone": "Telefon",
     "address": "Adresa sediu",
     "area": "Arie de desfasurare a activitatii",
-    "events": "Evenimente deschise"
+    "events": "Evenimente deschise",
+    "volunteers": "{{number}} voluntari"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
