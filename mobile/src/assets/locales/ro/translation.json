@@ -12,14 +12,30 @@
     "updates": "actualizări",
     "edit": "Editează {{item}}",
     "add": "Adaugă {{item}}",
+    "role": "Rol",
+    "department": "Departament",
+    "branch": "Filiala",
+    "phone": "Telefon",
+    "join": "Alătură-te",
     "select": "Selectează",
     "sex": "Sex {{sex_type}}",
     "male": "Barbatesc",
     "female": "Feminin",
-    "join": "Alătură-te",
     "register": "Înregistrează-te",
     "continue": "Continuă",
-    "save": "Salvează"
+    "save": "Salvează",
+    "send": "Trimite",
+    "volunteers": "Voluntari"
+  },
+  "organization_profile": {
+    "title": "Profil organizație",
+    "description": "Despre organizație",
+    "email": "Email de contact",
+    "phone": "Telefon",
+    "address": "Adresa sediu",
+    "area": "Arie de desfasurare a activitatii",
+    "events": "Evenimente deschise",
+    "volunteers": "{{number}} voluntari"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
@@ -45,7 +61,22 @@
     "no_org_added": "Nu ai adăugat încă nicio organizație",
     "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
     "my_organizations": "Organizațiile mele",
-    "join_organization": "Alătură-te unei organizații"
+    "join_organization": "Alătură-te unei organizații",
+    "details": "Lorem ipsum. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident.",
+    "menu_items": {
+      "organization_profile": { "title": "Profil organizatie" },
+      "activity_log": {
+        "title": "Ore de voluntariat",
+        "subtitle": "{{number}} ore asteapta aprobare"
+      },
+      "volunteer_profile": { "title": "Profil voluntar" }
+    },
+    "age": "{{years}} de ani",
+    "county": ", jud {{name}}",
+    "information": "Informatii voluntar",
+    "email": "Email de contact",
+    "active_since": "Voluntar din",
+    "created_on": "Înregistrat în TEO din"
   },
   "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
   "tabs": {
@@ -185,6 +216,41 @@
       "expiration_date": {
         "label": "Data expirare",
         "required": "Data expirarii este obligatorie"
+      }
+    }
+  },
+  "access_code": {
+    "title": "Cod de acces",
+    "description": "Dacă ai un cod de acces de la organizatie, introdu-l mai jos pentru a te alatura automat.",
+    "form": {
+      "code": {
+        "placeholder": "Introdu cod",
+        "required": "Codul de acces este obligatoriu",
+        "invalid": "Codul introdus nu este valid.",
+        "min": "Codul poate sa aiba minim {{value}} caractere",
+        "max": "Codul poate sa aiba maxim {{value}} caractere"
+      }
+    }
+  },
+  "join_ngo": {
+    "registration_form": "Formular de înscriere",
+    "complete": "Completează datele de mai jos pentru a te putea înscrie în organizație.",
+    "form": {
+      "referral": {
+        "label": "De unde ai aflat de noi?",
+        "required": "Acest câmp este obligatoriu",
+        "social": "Rețelele de socializare",
+        "teo": "Din aplicația TEO",
+        "friend": "De la un coleg sau prieten",
+        "event": "Dintr-un eveniment",
+        "other": "Altă opţiune"
+      },
+      "motivation": {
+        "required": "Acest câmp este obligatoriu",
+        "label": "Ce te motivează să fii voluntar?",
+        "min": "Motivatia poate sa aiba minim {{value}} caractere",
+        "max": "Motivatia poate sa aiba maxim {{value}} caractere",
+        "helper": "Completează câmpul pentru a te înscrie."
       }
     }
   },

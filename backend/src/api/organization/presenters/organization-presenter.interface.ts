@@ -9,6 +9,7 @@ export class OrganizationPresenter {
     this.email = organization.email;
     this.phone = organization.phone;
     this.address = organization.address;
+    this.activityArea = organization.activityArea;
     this.logo = organization.logo;
     this.description = organization.description;
   }
@@ -44,6 +45,12 @@ export class OrganizationPresenter {
     description: 'The address of the Organization',
   })
   address: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The activity area of the Organization',
+  })
+  activityArea: string;
 
   @Expose()
   @ApiProperty({
