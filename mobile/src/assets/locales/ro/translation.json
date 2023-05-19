@@ -183,6 +183,19 @@
       }
     }
   },
+  "access_code": {
+    "title": "Cod de acces",
+    "description": "Dacă ai un cod de acces de la organizatie, introdu-l mai jos pentru a te alatura automat.",
+    "form": {
+      "code": {
+        "placeholder": "Introdu cod",
+        "required": "Codul de acces este obligatoriu",
+        "invalid": "Codul introdus nu este valid.",
+        "min": "Codul poate sa aiba minim {{value}} caractere",
+        "max": "Codul poate sa aiba maxim {{value}} caractere"
+      }
+    }
+  },
   "join_ngo": {
     "registration_form": "Formular de înscriere",
     "complete": "Completează datele de mai jos pentru a te putea înscrie în organizație.",
