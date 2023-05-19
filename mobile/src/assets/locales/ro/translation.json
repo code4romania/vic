@@ -12,11 +12,15 @@
     "updates": "actualizări",
     "edit": "Editează {{item}}",
     "add": "Adaugă {{item}}",
+    "role": "Rol",
+    "department": "Departament",
+    "branch": "Filiala",
+    "phone": "Telefon",
+    "join": "Alătură-te",
     "select": "Selectează",
     "sex": "Sex {{sex_type}}",
     "male": "Barbatesc",
     "female": "Feminin",
-    "join": "Alătură-te",
     "register": "Înregistrează-te",
     "continue": "Continuă",
     "volunteers": "Voluntari"
@@ -52,10 +56,12 @@
   },
   "volunteer": {
     "profile": "Profil voluntar",
-    "no_org_added": "Nu ai adăugat încă nicio organizație",
-    "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
-    "my_organizations": "Organizațiile mele",
-    "join_organization": "Alătură-te unei organizații"
+    "age": "{{years}} de ani",
+    "county": ", jud {{name}}",
+    "information": "Informatii voluntar",
+    "email": "Email de contact",
+    "active_since": "Voluntar din",
+    "created_on": "Înregistrat în TEO din"
   },
   "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
   "tabs": {
