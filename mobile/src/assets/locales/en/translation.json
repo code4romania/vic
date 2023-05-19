@@ -12,8 +12,19 @@
     "updates": "actualizări",
     "edit": "Editează {{item}}",
     "add": "Adaugă {{item}}",
+    "select": "Selectează",
+    "sex": "Sex {{sex_type}}",
+    "male": "Barbatesc",
+    "female": "Feminin",
     "join": "Alătură-te",
-    "continue": "Continua"
+    "register": "Înregistrează-te",
+    "continue": "Continuă"
+  },
+  "landing": {
+    "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
+    "registered": "Ai deja cont?",
+    "email": "E-mail sau telefon",
+    "login": "Autentifică-te"
   },
   "auth": {
     "errors": {
@@ -49,13 +60,13 @@
     "submit": "Intra in cont",
     "form": {
       "email": {
-        "label": "Email*",
+        "label": "Email",
         "placeholder": "Introduceti emailul",
         "required": "Email-ul este obligatoriu",
         "pattern": "Formatul email-ului nu este valid"
       },
       "password": {
-        "label": "Parola*",
+        "label": "Parola",
         "placeholder": "Introduceti parola",
         "required": "Parola este obligatorie"
       }
@@ -68,26 +79,34 @@
       "paragraph": "Completați câmpurile de mai jos pentru înregistrare",
       "form": {
         "email": {
-          "label": "Email*",
+          "label": "Email",
           "placeholder": "Introduceti emailul",
           "required": "Email-ul este obligatoriu",
           "pattern": "Formatul email-ului nu este valid"
         },
         "phone": {
-          "label": "Telefon*",
+          "label": "Telefon",
           "placeholder": "Introduceti telefonul",
           "required": "Telefonul este obligatoriu"
         },
         "password": {
-          "label": "Parola*",
+          "label": "Parola",
           "placeholder": "Introduceti parola",
           "required": "Parola este obligatorie"
         },
         "confirm_password": {
-          "label": "Confirma parola*",
+          "label": "Confirma parola",
           "placeholder": "Confirmati parola",
           "required": "Parola este obligatorie",
           "match": "Parolele trebuie sa fie identice"
+        },
+        "terms": {
+          "agree": "Sunt de acord cu",
+          "conditions": " Termenii și Condițiile",
+          "and": ", cât și cu",
+          "privacy_policy": " Politica de Confidențialitate",
+          "application": " a aplicației",
+          "required": "Trebuie sa accepti Termenii,Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
         }
       }
     },
@@ -96,8 +115,8 @@
       "paragraph": "Completați câmpurile de mai jos pentru înregistrare.",
       "form": {
         "code": {
-          "label": "Introdu codul primit prin sms*",
-          "placeholder": "Introdu codul primit prin sms",
+          "label": "Introdu codul primit prin email",
+          "placeholder": "Introdu codul primit prin email",
           "required": "Codul este obligatoriu",
           "length": "Codul trebuie sa aiba o lungime de 6 caractere"
         }
@@ -105,7 +124,32 @@
     },
     "create_user": {
       "heading": "Date utilizator",
-      "paragraph": "Completați câmpurile de mai jos pentru finalizarea inregistrarii."
+      "paragraph": "Completați câmpurile de mai jos pentru finalizarea inregistrarii.",
+      "form": {
+        "first_name": {
+          "label": "Prenume",
+          "placeholder": "Introdu prenumele",
+          "required": "Prenumele este obligatoriu",
+          "min": "Prenumele poate sa aiba minim {{value}} caractere",
+          "max": "Prenumele poate sa aiba maxim {{value}} caractere"
+        },
+        "last_name": {
+          "label": "Nume",
+          "placeholder": "Introdu numele de familie",
+          "required": "Numele de faimilie este obligatoriu",
+          "min": "Numele poate sa aiba minim {{value}} caractere",
+          "max": "Numele poate sa aiba maxim {{value}} caractere"
+        },
+        "county": {
+          "label": "Judet"
+        },
+        "city": {
+          "label": "Oras"
+        },
+        "birthday": {
+          "label": "Data nașterii"
+        }
+      }
     }
   },
   "settings": {

@@ -115,5 +115,12 @@
   "cool-gray-900": "#121620",
   "dark-purple": "#280056",
   "input-shadow-color": "rgba(40, 0, 86, 0.24)",
-  "drawer-background": "#09636B"
+  "drawer-background": "#09636B",
+  "component": {
+    "avatar": {
+      "sizes": {
+        "large": 60
+      }
+    }
+  }
 }

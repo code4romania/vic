@@ -23,6 +23,9 @@ export type FindRegularUserOptions =
   | Partial<IRegularUserModel & { locationId: number }>
   | Partial<IRegularUserModel & { locationId: number }>[];
 
+export type FindOneRegularUserOptions = Partial<
+  Pick<IUserModel, 'id' | 'cognitoId'>
+>;
 export class RegularUserTransformer {
   static fromEntity(entity: RegularUserEntity): IRegularUserModel {
     if (!entity) return null;

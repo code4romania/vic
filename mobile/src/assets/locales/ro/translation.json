@@ -12,13 +12,28 @@
     "updates": "actualizări",
     "edit": "Editează {{item}}",
     "add": "Adaugă {{item}}",
+    "role": "Rol",
+    "department": "Departament",
+    "branch": "Filiala",
+    "phone": "Telefon",
+    "join": "Alătură-te",
     "select": "Selectează",
     "sex": "Sex {{sex_type}}",
     "male": "Barbatesc",
     "female": "Feminin",
-    "join": "Alătură-te",
     "register": "Înregistrează-te",
-    "continue": "Continuă"
+    "continue": "Continuă",
+    "volunteers": "Voluntari"
+  },
+  "organization_profile": {
+    "title": "Profil organizație",
+    "description": "Despre organizație",
+    "email": "Email de contact",
+    "phone": "Telefon",
+    "address": "Adresa sediu",
+    "area": "Arie de desfasurare a activitatii",
+    "events": "Evenimente deschise",
+    "volunteers": "{{number}} voluntari"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
@@ -53,7 +68,13 @@
         "subtitle": "{{number}} ore asteapta aprobare"
       },
       "volunteer_profile": { "title": "Profil voluntar" }
-    }
+    },
+    "age": "{{years}} de ani",
+    "county": ", jud {{name}}",
+    "information": "Informatii voluntar",
+    "email": "Email de contact",
+    "active_since": "Voluntar din",
+    "created_on": "Înregistrat în TEO din"
   },
   "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
   "tabs": {
@@ -149,10 +170,13 @@
           "min": "Numele poate sa aiba minim {{value}} caractere",
           "max": "Numele poate sa aiba maxim {{value}} caractere"
         },
-        "location": {
-          "label": "Locație"
+        "county": {
+          "label": "Judet"
         },
-        "birth_date": {
+        "city": {
+          "label": "Oras"
+        },
+        "birthday": {
           "label": "Data nașterii"
         }
       }

@@ -11,6 +11,10 @@ export class LocationFacade {
     return this.locationRepository.findCities(options);
   }
 
+  public async findCitiesByCountyId(countyId: number): Promise<ICityModel[]> {
+    return this.locationRepository.findCitiesByCountyId(countyId);
+  }
+
   public async findCounties(): Promise<ICountyModel[]> {
     return this.locationRepository.findCounties();
   }

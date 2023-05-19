@@ -4,7 +4,6 @@ import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { default as theme } from './src/common/theme/theme.json';
 import { default as mapping } from './src/common/theme/mappings.json';
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
@@ -16,6 +15,7 @@ import './src/common/config/i18n';
 import { AMPLIFY_CONFIG } from './src/common/config/amplify';
 import Toast from 'react-native-toast-message';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { FeatherIconsPack } from './src/common/adapters/feather-icons.adapter';
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG);
@@ -49,7 +49,7 @@ export default () => {
 
   return (
     <>
-      <IconRegistry icons={EvaIconsPack} />
+      <IconRegistry icons={FeatherIconsPack} />
       <ApplicationProvider {...eva} theme={{ ...theme }} customMapping={mapping}>
         {/* Add marginTop for android devices as SafeAreaView is iOS Only */}
         <SafeAreaView style={styles.container}>
