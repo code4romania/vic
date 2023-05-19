@@ -10,6 +10,7 @@ import { TouchableWithoutFeedback } from 'react-native';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { View } from 'react-native';
 
 export type LoginFormTypes = {
   username: string;
@@ -74,7 +75,9 @@ const Login = ({ navigation }: any) => {
 
   const renderPasswordEyeIcon = (props: any): React.ReactElement => (
     <TouchableWithoutFeedback onPress={setSecureTextEntry.bind(null, !secureTextEntry)}>
-      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+      <View>
+        <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+      </View>
     </TouchableWithoutFeedback>
   );
 

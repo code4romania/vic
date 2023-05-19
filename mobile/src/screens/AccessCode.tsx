@@ -8,9 +8,6 @@ import * as yup from 'yup';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from '../components/FormInput';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SvgXml } from 'react-native-svg';
-import infoSVG from '../assets/svg/info';
-import { StyleSheet } from 'react-native';
 
 const organization = {
   name: 'Asociația ZEN',
@@ -82,9 +79,3 @@ const AccessCode = ({ navigation }: any) => {
 };
 
 export default AccessCode;
-
-const styles = StyleSheet.create({
-  icon: {
-    marginRight: 8,
-  },
-});
