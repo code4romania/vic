@@ -41,4 +41,11 @@ export class LocationRepositoryService implements ILocationRepository {
     });
     return cityEntities.map(CityTransformer.fromEntity);
   }
+
+  async findCitiesByCountyId(countyId: number): Promise<ICityModel[]> {
+    const cityEntities = await this.cityRepository.find({
+      where: { countyId },
+    });
+    return cityEntities.map(CityTransformer.fromEntity);
+  }
 }

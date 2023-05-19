@@ -8,11 +8,13 @@ export interface IRegularUserModel extends IUserModel {
   sex: SEX;
   profilePicture?: string;
   location: ICityModel;
+  firstName: string;
+  lastName: string;
 }
 
 export type CreateRegularUserOptions = Omit<
   IRegularUserModel,
-  'id' | 'location'
+  'id' | 'location' | 'name'
 > & {
   locationId: number;
 };
@@ -21,6 +23,9 @@ export type FindRegularUserOptions =
   | Partial<IRegularUserModel & { locationId: number }>
   | Partial<IRegularUserModel & { locationId: number }>[];
 
+export type FindOneRegularUserOptions = Partial<
+  Pick<IUserModel, 'id' | 'cognitoId'>
+>;
 export class RegularUserTransformer {
   static fromEntity(entity: RegularUserEntity): IRegularUserModel {
     if (!entity) return null;
@@ -34,18 +39,22 @@ export class RegularUserTransformer {
       sex: entity.sex,
       profilePicture: entity.profilePicture,
       location: entity.location,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
     };
   }
 
   static toEntity(model: CreateRegularUserOptions): RegularUserEntity {
     const entity = new RegularUserEntity();
     entity.cognitoId = model.cognitoId;
-    entity.name = model.name;
+    entity.name = `${model.firstName} ${model.lastName}`;
     entity.email = model.email;
     entity.phone = model.phone;
     entity.birthday = model.birthday;
     entity.sex = model.sex;
     entity.locationId = model.locationId;
+    entity.firstName = model.firstName;
+    entity.lastName = model.lastName;
     return entity;
   }
 }
