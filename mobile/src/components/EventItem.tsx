@@ -3,17 +3,18 @@ import React from 'react';
 import { TouchableHighlight, View } from 'react-native';
 
 interface EventItemProps {
+  id: string;
   title: string;
   date: string;
   location: string;
   divison: string;
-  onPress: () => void;
+  onPress: (id: string) => void;
   eva?: any;
 }
 
-const EventItem = ({ title, date, location, divison, onPress, eva }: EventItemProps) => {
+const EventItem = ({ id, title, date, location, divison, onPress, eva }: EventItemProps) => {
   return (
-    <TouchableHighlight onPress={onPress} underlayColor={eva.theme['cool-gray-100']}>
+    <TouchableHighlight onPress={onPress.bind(null, id)} underlayColor={eva.theme['cool-gray-100']}>
       <View style={eva.style.container}>
         <Avatar source={{ uri: 'https://picsum.photos/200' }} size="large" />
         <View style={eva.style.textContainer}>

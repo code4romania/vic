@@ -94,7 +94,15 @@
     "active_since": "Voluntar din",
     "created_on": "Înregistrat în TEO din"
   },
-  "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
+  "event": {
+    "join": "Doresc sa particip",
+    "details": "Detalii eveniment",
+    "tabs": {
+      "going": "Particip",
+      "from_my_ngos": "Ale organizațiilor mele",
+      "open": "Deschise"
+    }
+  },
   "tabs": {
     "home": "Acasă",
     "volunteer": "Voluntar",
