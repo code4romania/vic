@@ -90,7 +90,7 @@ export const PageLayout = ({
 export default PageLayout;
 
 const styles = StyleSheet.create({
-  layout: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
+  layout: { flex: 1 },
   keyboardAvoidingContainer: { flex: 1 },
   childrenContainer: { flex: 1, padding: 16 },
   bottomActionContainer: {
