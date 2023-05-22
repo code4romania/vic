@@ -85,7 +85,8 @@ const DrawerItemTitle = withStyles(
 );
 
 const DrawerContent = withStyles(
-  ({ navigation, state, eva }: any) => {
+  // ({ navigation, state, eva }: any) => {
+  ({ navigation, eva }: any) => {
     const isItemActive = () => {
       return eva?.style.activeDrawerItem;
     };
@@ -98,7 +99,7 @@ const DrawerContent = withStyles(
     return (
       <View style={eva?.style.drawerContainer}>
         <Drawer
-          onSelect={(index) => navigation.navigate(state.routeNames[index.row])}
+          // onSelect={(index) => navigation.navigate(state.routeNames[index.row])}
           style={eva?.style.drawer}
           appearance="noDivider"
           header={renderDrawerHeader}
@@ -126,6 +127,10 @@ const DrawerContent = withStyles(
             }
             accessoryLeft={renderAccessoryLeft}
             style={[eva?.style.drawerItem]}
+            onPress={() => {
+              navigation.navigate('join-organization');
+              navigation.closeDrawer();
+            }}
           />
         </Drawer>
       </View>

@@ -75,7 +75,7 @@ const CreateUser = ({ navigation }: any) => {
   const onSubmit = async ({ cityId, ...userPayload }: UserFormTypes) => {
     try {
       // get user phone and email data from aws
-      const user = await Auth.currentAuthenticatedUser();
+      const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
 
       // create new user payload
       const newUser = {
@@ -92,8 +92,9 @@ const CreateUser = ({ navigation }: any) => {
           // update profile in context
           setUserProfile(profile);
         },
-        onError: () =>
-          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` }),
+        onError: () => {
+          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+        },
       });
     } catch (error) {
       Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });

@@ -54,7 +54,7 @@ export class ActionsArchiveRepository
     }
 
     if (findOptions.search) {
-      query.where(
+      query.andWhere(
         `exists (select 1 from jsonb_each_text(actionsArchive.eventData) as kv where kv.value ilike :search) OR exists (select 1 from jsonb_each_text(actionsArchive.changes) as kv where kv.value ilike :search)`,
         { search: `%${findOptions.search}%` },
       );

@@ -67,9 +67,9 @@ export const getRsvps = async (
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
-  branchId?: string,
-  departmentId?: string,
-  roleId?: string,
+  branch?: string,
+  department?: string,
+  role?: string,
   going?: string,
 ): Promise<IPaginatedEntity<IRsvp>> => {
   return API.get(`/event/${id}/rsvp`, {
@@ -79,9 +79,9 @@ export const getRsvps = async (
       orderBy,
       orderDirection,
       search,
-      branchId,
-      departmentId,
-      roleId,
+      branch,
+      department,
+      role,
       going,
     },
   }).then((res) => res.data);
