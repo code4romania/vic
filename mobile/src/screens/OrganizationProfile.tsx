@@ -1,10 +1,9 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Button, Layout } from '@ui-kitten/components';
+import { Button, Divider, Layout, List, Text } from '@ui-kitten/components';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import EventItem from '../components/EventItem';
-import SectionWrapper from '../components/SectionWrapper';
 import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
 
@@ -20,12 +19,22 @@ const organization = {
   area: 'Iasi (jud Iasi), Cluj-Napoca (jud Cluj)',
 };
 
-const event = {
-  date: '12 FEB 2022, 18:00 - 20:00',
-  division: 'Departamentul de fundraising',
-  location: 'Sediu',
-  title: 'Sedinta departament',
-};
+const events = [
+  {
+    id: '1',
+    title: 'Event 1',
+    date: `${new Date(2023, 1, 1)}`,
+    location: 'Sediu',
+    division: 'Departamentul de fundraising',
+  },
+  {
+    id: '2',
+    title: 'Event 2',
+    date: `${new Date(2023, 2, 2)}`,
+    location: 'Sediu 2',
+    division: 'Departamentul de fundraising',
+  },
+];
 
 const OrganizationProfile = ({ navigation }: any) => {
   console.log('OrganizationProfile');
@@ -34,60 +43,61 @@ const OrganizationProfile = ({ navigation }: any) => {
     navigation.navigate('join-organization');
   };
 
-  const onEventPress = () => {
-    console.log('event pressed');
+  const onEventPress = (id: string) => {
+    console.log(`event with id ${id} pressed`);
   };
 
   return (
     <PageLayout title={i18n.t('organization_profile:title')} onBackButtonPress={navigation.goBack}>
-      <ScrollView>
-        <Layout style={styles.layout}>
-          <ProfileIntro
-            uri={organization.logo}
-            name={organization.name}
-            description={`${organization.volunteers} ${i18n.t('general:volunteers').toLowerCase()}`}
+      <List
+        data={events}
+        ListHeaderComponent={
+          <Layout style={styles.layout}>
+            <ProfileIntro
+              uri={organization.logo}
+              name={organization.name}
+              description={`${organization.volunteers} ${i18n
+                .t('general:volunteers')
+                .toLowerCase()}`}
+            />
+            <View style={styles.readOnlyContainer}>
+              <ReadOnlyElement
+                label={i18n.t('organization_profile:description')}
+                value={organization.description}
+              />
+              <ReadOnlyElement
+                label={i18n.t('organization_profile:email')}
+                value={organization.email}
+              />
+              <ReadOnlyElement
+                label={i18n.t('organization_profile:phone')}
+                value={organization.phone}
+              />
+              <ReadOnlyElement
+                label={i18n.t('organization_profile:address')}
+                value={organization.address}
+              />
+              <ReadOnlyElement
+                label={i18n.t('organization_profile:area')}
+                value={organization.area}
+              />
+            </View>
+            <Text category="p2">{`${i18n.t('organization_profile:events')}`}</Text>
+          </Layout>
+        }
+        renderItem={({ item }) => (
+          <EventItem
+            id={item.id}
+            title={item.title}
+            date={item.date}
+            location={item.location}
+            divison={item.division}
+            onPress={onEventPress.bind(null, item.id)}
           />
-          <View style={styles.readOnlyContainer}>
-            <ReadOnlyElement
-              label={i18n.t('organization_profile:description')}
-              value={organization.description}
-            />
-            <ReadOnlyElement
-              label={i18n.t('organization_profile:email')}
-              value={organization.email}
-            />
-            <ReadOnlyElement
-              label={i18n.t('organization_profile:phone')}
-              value={organization.phone}
-            />
-            <ReadOnlyElement
-              label={i18n.t('organization_profile:address')}
-              value={organization.address}
-            />
-            <ReadOnlyElement
-              label={i18n.t('organization_profile:area')}
-              value={organization.area}
-            />
-          </View>
-          <SectionWrapper title={i18n.t('organization_profile:events')}>
-            <EventItem
-              date={event.date}
-              divison={event.division}
-              location={event.location}
-              title={event.title}
-              onPress={onEventPress}
-            />
-            <EventItem
-              date={event.date}
-              divison={event.division}
-              location={event.location}
-              title={event.title}
-              onPress={onEventPress}
-            />
-          </SectionWrapper>
-          <Button onPress={onJoinOrganizationButtonPress}>Join</Button>
-        </Layout>
-      </ScrollView>
+        )}
+        ItemSeparatorComponent={Divider}
+      />
+      <Button onPress={onJoinOrganizationButtonPress}>Join</Button>
     </PageLayout>
   );
 };

@@ -48,9 +48,7 @@ export default withStyles(EventItem, (theme) => ({
   container: {
     gap: 16,
     flexDirection: 'row',
-    paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: theme['cool-gray-200'],
+    paddingVertical: 16,
   },
   section: {
     gap: 8,

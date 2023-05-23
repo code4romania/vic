@@ -5,6 +5,7 @@ import { EventsTabs } from '../common/constants/events-tabs';
 import { StyleSheet, View, VirtualizedList } from 'react-native';
 import Tabs from '../components/Tabs';
 import EventItem from '../components/EventItem';
+import { Divider } from '@ui-kitten/components';
 
 interface Event {
   id: string;
@@ -13,8 +14,6 @@ interface Event {
   location: string;
   division: string;
 }
-
-const Separator = () => <View style={styles.separator} />;
 
 const Events = ({ navigation }: any) => {
   console.log('Events');
@@ -56,7 +55,7 @@ const Events = ({ navigation }: any) => {
               onPress={onEventPress.bind(null, item.id)}
             />
           )}
-          ItemSeparatorComponent={Separator}
+          ItemSeparatorComponent={Divider}
         />
       </Tabs>
     </PageLayout>
@@ -64,5 +63,3 @@ const Events = ({ navigation }: any) => {
 };
 
 export default Events;
-
-const styles = StyleSheet.create({ separator: { height: 16 } });
