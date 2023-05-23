@@ -116,6 +116,7 @@
   "dark-purple": "#280056",
   "input-shadow-color": "rgba(40, 0, 86, 0.24)",
   "drawer-background": "#09636B",
+  "facebook-color": "#355487",
   "component": {
     "avatar": {
       "sizes": {

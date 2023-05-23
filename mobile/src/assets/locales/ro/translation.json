@@ -25,7 +25,8 @@
     "continue": "Continuă",
     "save": "Salvează",
     "send": "Trimite",
-    "volunteers": "Voluntari"
+    "volunteers": "Voluntari",
+    "loading": "Se incarca..."
   },
   "organization_profile": {
     "title": "Profil organizație",
@@ -41,7 +42,12 @@
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
     "registered": "Ai deja cont?",
     "email": "E-mail sau telefon",
-    "login": "Autentifică-te"
+    "login": "Autentifică-te",
+    "social": {
+      "facebook": "Facebook",
+      "apple": "Apple",
+      "google": "Google"
+    }
   },
   "auth": {
     "errors": {
@@ -49,7 +55,8 @@
       "username_exists": "Exista deja un utilizator cu aceasta adresa de email",
       "signup": "Eroare la inregistrare",
       "resend_code": "Eroare la trimiterea codului de confirmare",
-      "init_profile": "Eroare la incarcarea profilului"
+      "init_profile": "Eroare la incarcarea profilului",
+      "login": "Eroare la autentificare, va rugam incercati din nou"
     }
   },
   "activity_log": {

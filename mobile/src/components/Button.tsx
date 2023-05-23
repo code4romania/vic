@@ -6,18 +6,23 @@ import {
 } from '@ui-kitten/components';
 import { ButtonType } from '../common/enums/button-type.enum';
 
-interface ButtonProps extends ButtonKittenProps {
+export interface ButtonProps extends ButtonKittenProps {
   label: string;
   type: ButtonType;
   onPress: (props?: any) => void;
   eva?: any;
 }
 
-const Button = ({ label, onPress, type, eva }: ButtonProps) => {
+const Button = ({ label, onPress, type, eva, ...props }: ButtonProps) => {
   return (
     <ButtonKitten
+      {...props}
       onPress={onPress}
-      style={[eva.style.button, type === ButtonType.SECONDARY ? null : eva.style.shadow]}
+      style={[
+        eva.style.button,
+        type === ButtonType.SECONDARY ? null : eva.style.shadow,
+        props.style,
+      ]}
       status={type === ButtonType.DANGER ? 'danger' : 'success'}
       appearance={type === ButtonType.SECONDARY ? 'outline' : 'filled'}
       size="large"

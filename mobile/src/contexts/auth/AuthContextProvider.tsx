@@ -1,15 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { AuthContext, SignInOptions, SignUpOptions } from './AuthContext';
-import { Auth } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import i18n from '../../common/config/i18n';
 import { useUserProfile } from '../../services/user/user.service';
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 import { JSONStringifyError } from '../../common/utils/utils';
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  // meaning that the user has been validated by cognito but is not in our database
+  const [isUserPending, setIsUserPending] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
   const [userName, setUserName] = useState<string>('');
   const { mutate: getUserProfile } = useUserProfile();
@@ -17,6 +20,23 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     console.log('[APP Init]');
     initProfile();
+
+    const unsubscribe = Hub.listen('auth', ({ payload: { event } }) => {
+      switch (event) {
+        case 'signIn': {
+          // redirect from social sign in done successfully
+          initProfile();
+          break;
+        }
+        case 'signIn_failure': {
+          // error on social sign in
+          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.login')}` });
+          break;
+        }
+      }
+    });
+
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
@@ -25,6 +45,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const initProfile = async () => {
     try {
+      // reset pending user status
+      setIsUserPending(false);
       // this will throw error if user is not authenticated
       await Auth.currentAuthenticatedUser({ bypassCache: true });
       // if the user is authenticated will auto login
@@ -46,12 +68,20 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       if (error.code === 'UserNotConfirmedException') {
         // send event to confirm account to login screen
         throw { confirmAccount: true };
-      } else if (error.code === 'UserNotFoundException') {
-        throw { createUser: true };
       } else {
         // show any other error
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
       }
+    }
+  };
+
+  const loginWithSocial = async (provider: CognitoHostedUIIdentityProvider) => {
+    try {
+      await Auth.federatedSignIn({
+        provider,
+      });
+    } catch (error: any) {
+      console.log('error', JSONStringifyError(error));
     }
   };
 
@@ -136,7 +166,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
           // if the profile doesn't exists redirect to the the create account page
           console.log('[Profile]:', JSONStringifyError(error));
           if (error.response.status === 404) {
-            reject({ code: 'UserNotFoundException' });
+            setIsUserPending(true);
+            reject();
           } else {
             Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
           }
@@ -149,6 +180,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     <AuthContext.Provider
       value={{
         isAuthenticated,
+        isUserPending,
         login,
         logout,
         signUp,
@@ -156,6 +188,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         resendConfirmationCode,
         userProfile,
         setUserProfile,
+        loginWithSocial,
       }}
     >
       {children}

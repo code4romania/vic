@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import FormLayout from '../layouts/FormLayout';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +24,7 @@ export type UserFormTypes = {
   firstName: string;
   lastName: string;
   countyId: number;
+  phone: string;
   cityId: number;
   birthday: Date;
   sex: Sex;
@@ -51,6 +52,7 @@ const schema = yup
           value: '50',
         })}`,
       ),
+    phone: yup.string().required(`${i18n.t('register:create_account.form.phone.required')}`),
   })
   .required();
 
@@ -63,6 +65,7 @@ const CreateUser = ({ navigation }: any) => {
     control,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<UserFormTypes>({
     mode: 'onSubmit',
@@ -71,6 +74,15 @@ const CreateUser = ({ navigation }: any) => {
   });
 
   const watchCountyId = watch('countyId');
+  const phone = watch('phone');
+
+  useEffect(() => {
+    (async () => {
+      // in case the user has registered phone number with AwS prefill it in the form
+      const user = await Auth.currentAuthenticatedUser();
+      reset({ phone: user.attributes.phone_number });
+    })();
+  }, [reset]);
 
   const onSubmit = async ({ cityId, ...userPayload }: UserFormTypes) => {
     try {
@@ -82,7 +94,6 @@ const CreateUser = ({ navigation }: any) => {
         ...userPayload,
         locationId: cityId,
         email: user.attributes.email,
-        phone: user.attributes.phone_number,
         cognitoId: user.username,
       };
 
@@ -119,6 +130,7 @@ const CreateUser = ({ navigation }: any) => {
           placeholder={t('create_user.form.first_name.placeholder')}
           label={t('create_user.form.first_name.label')}
           name="firstName"
+          disabled={isLoading}
           error={errors.firstName}
           required={true}
         />
@@ -128,6 +140,17 @@ const CreateUser = ({ navigation }: any) => {
           label={t('create_user.form.last_name.label')}
           name="lastName"
           error={errors.lastName}
+          disabled={isLoading}
+          required={true}
+        />
+        <FormInput
+          control={control as any}
+          name="phone"
+          label={t('register:create_account.form.phone.label')}
+          placeholder={t('register:create_account.form.phone.placeholder')}
+          error={errors.phone}
+          disabled={isLoading || !!phone}
+          keyboardType="phone-pad"
           required={true}
         />
         <CountySelect
@@ -135,6 +158,7 @@ const CreateUser = ({ navigation }: any) => {
           name="countyId"
           label={t('create_user.form.county.label')}
           error={errors.countyId}
+          disabled={isLoading}
           placeholder={t('general:select')}
         />
         <CitySelect
@@ -142,6 +166,7 @@ const CreateUser = ({ navigation }: any) => {
           name="cityId"
           label={t('create_user.form.city.label')}
           error={errors.cityId}
+          disabled={isLoading}
           placeholder={t('general:select')}
           countyId={watchCountyId}
         />
@@ -150,6 +175,7 @@ const CreateUser = ({ navigation }: any) => {
           placeholder={t('general:select')}
           label={t('create_user.form.birthday.label')}
           min={new Date(1900, 0, 0)}
+          disabled={isLoading}
           name="birthday"
           error={errors.birthday}
         />
@@ -158,6 +184,7 @@ const CreateUser = ({ navigation }: any) => {
           name="sex"
           label={t('general:sex', { sex_type: '' })}
           error={errors.sex}
+          disabled={isLoading}
           placeholder={t('general:select')}
           options={SexOptions}
         />
