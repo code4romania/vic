@@ -47,7 +47,6 @@ const Events = ({ navigation }: any) => {
           getItem={getItem}
           renderItem={({ item }) => (
             <EventItem
-              id={item.id}
               title={item.title}
               date={item.date}
               location={item.location}
