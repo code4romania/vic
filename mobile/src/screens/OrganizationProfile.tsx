@@ -1,11 +1,13 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Button, Divider, Layout, List, Text } from '@ui-kitten/components';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { Divider, Layout, List, Text } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import EventItem from '../components/EventItem';
 import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
+import Button from '../components/Button';
+import { ButtonType } from '../common/enums/button-type.enum';
 
 const organization = {
   logo: 'https://picsum.photos/200',
@@ -97,7 +99,11 @@ const OrganizationProfile = ({ navigation }: any) => {
         )}
         ItemSeparatorComponent={Divider}
       />
-      <Button onPress={onJoinOrganizationButtonPress}>Join</Button>
+      <Button
+        label={i18n.t('organization_profile:join')}
+        type={ButtonType.PRIMARY}
+        onPress={onJoinOrganizationButtonPress}
+      />
     </PageLayout>
   );
 };

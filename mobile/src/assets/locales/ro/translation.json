@@ -35,7 +35,9 @@
     "address": "Adresa sediu",
     "area": "Arie de desfasurare a activitatii",
     "events": "Evenimente deschise",
-    "volunteers": "{{number}} voluntari"
+    "volunteers": "{{number}} voluntari",
+    "join": "Alătură-te organizației",
+    "code": "Ai cod de acces?"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",

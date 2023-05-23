@@ -2,7 +2,7 @@ import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
 import { EventsTabs } from '../common/constants/events-tabs';
-import { StyleSheet, View, VirtualizedList } from 'react-native';
+import { VirtualizedList } from 'react-native';
 import Tabs from '../components/Tabs';
 import EventItem from '../components/EventItem';
 import { Divider } from '@ui-kitten/components';
