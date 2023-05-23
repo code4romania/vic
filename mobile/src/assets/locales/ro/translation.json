@@ -54,7 +54,11 @@
   },
   "activity_log": {
     "title": "Ore de voluntariat",
-    "log": "Ore înregistrate"
+    "log": "Ore înregistrate",
+    "pending": "În așteptare",
+    "approved": "Aprobate",
+    "rejected": "Refuzate",
+    "total": "Total"
   },
   "volunteer": {
     "profile": "Profil voluntar",
