@@ -1,8 +1,6 @@
 import React from 'react';
 import { Button as ButtonKitten, withStyles, Text } from '@ui-kitten/components';
 import { ButtonProps } from './Button';
-import GoogleSvg from '../assets/svg/google';
-import { SvgXml } from 'react-native-svg';
 
 const GoogleButton = ({ label, onPress, eva, ...props }: Omit<ButtonProps, 'type'>) => {
   return (
@@ -12,7 +10,7 @@ const GoogleButton = ({ label, onPress, eva, ...props }: Omit<ButtonProps, 'type
       style={[eva.style.button, eva.style.shadow, props.style]}
       appearance="ghost"
       size="large"
-      accessoryLeft={<SvgXml xml={GoogleSvg} />}
+      // accessoryLeft={<SvgXml xml={GoogleSvg} />}
     >
       {() => (
         <Text style={eva.style.label} category="label">
