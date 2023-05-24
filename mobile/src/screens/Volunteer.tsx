@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text } from '@ui-kitten/components';
+import { Text } from '@ui-kitten/components';
 import NoVolunteerProfile from './NoVolunteerProfile';
 import i18n from '../common/config/i18n';
 import VolunteerCard from '../components/VolunteerCard';
