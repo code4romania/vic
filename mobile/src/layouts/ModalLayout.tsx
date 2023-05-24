@@ -14,32 +14,53 @@ interface ModalLayoutProps {
   children: ReactNode;
   title: string;
   onDismiss: () => void;
+  onEditButtonPress?: () => void;
   actionsOptions?: ActionsOptionsProps;
 }
 
 const CloseIcon = (props: any) => <Icon {...props} name="x" />;
+const EditIcon = (props: any) => <Icon {...props} name="edit" />;
 
-export const ModalLayout = ({ children, title, onDismiss, actionsOptions }: ModalLayoutProps) => (
-  <>
-    <TopNavigation
-      title={title}
-      alignment="start"
-      accessoryLeft={<TopNavigationAction icon={CloseIcon} onPress={onDismiss} />}
-    />
-    <Layout style={styles.layout}>
-      {children}
-      {actionsOptions && (
-        <View style={styles.buttonWrapper}>
-          <Button
-            label={actionsOptions.onActionLabel}
-            onPress={actionsOptions.onActionButtonClick}
-            type={actionsOptions.buttonType}
-          />
-        </View>
-      )}
-    </Layout>
-  </>
-);
+export const ModalLayout = ({
+  children,
+  title,
+  onDismiss,
+  actionsOptions,
+  onEditButtonPress,
+}: ModalLayoutProps) => {
+  const renderLeftControl = () => <TopNavigationAction icon={CloseIcon} onPress={onDismiss} />;
+
+  const renderRightControl = () => {
+    if (!onEditButtonPress) {
+      return <></>;
+    }
+
+    return <TopNavigationAction icon={EditIcon} onPress={onEditButtonPress} />;
+  };
+
+  return (
+    <>
+      <TopNavigation
+        title={title}
+        alignment="start"
+        accessoryLeft={renderLeftControl}
+        accessoryRight={renderRightControl}
+      />
+      <Layout style={styles.layout}>
+        {children}
+        {actionsOptions && (
+          <View style={styles.buttonWrapper}>
+            <Button
+              label={actionsOptions.onActionLabel}
+              onPress={actionsOptions.onActionButtonClick}
+              type={actionsOptions.buttonType}
+            />
+          </View>
+        )}
+      </Layout>
+    </>
+  );
+};
 
 export default ModalLayout;
 
