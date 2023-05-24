@@ -10,13 +10,30 @@ import {
   IOrganizationModel,
   OrganizationTransformer,
 } from '../models/organization.model';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
+import {
+  Pagination,
+  RepositoryWithPagination,
+} from 'src/infrastructure/base/repository-with-pagination.class';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
+import {
+  IOrganizationWithVolunteersModel,
+  OrganizationWithVolunteersTransformer,
+} from '../models/organization-with-volunteers.model';
 
 @Injectable()
-export class OrganizationRepositoryService implements IOrganizationRepository {
+export class OrganizationRepositoryService
+  extends RepositoryWithPagination<OrganizationEntity>
+  implements IOrganizationRepository
+{
   constructor(
     @InjectRepository(OrganizationEntity)
     private readonly organizationRepository: Repository<OrganizationEntity>,
-  ) {}
+  ) {
+    super(organizationRepository);
+  }
 
   public async create(
     organization: ICreateOrganizationModel,
@@ -59,5 +76,41 @@ export class OrganizationRepositoryService implements IOrganizationRepository {
     return organizationEntity
       ? OrganizationTransformer.fromEntity(organizationEntity)
       : null;
+  }
+
+  public async findMany(
+    findOptions: IBasePaginationFilterModel,
+  ): Promise<Pagination<IOrganizationWithVolunteersModel>> {
+    const { orderBy, search, orderDirection } = findOptions;
+
+    const query = this.organizationRepository
+      .createQueryBuilder('organization')
+      .loadRelationCountAndMap(
+        'organization.numberOfVolunteers',
+        `organization.volunteers`,
+        'numberOfVolunteers',
+        (qb) =>
+          qb.innerJoin(VolunteerEntity, 'v').where(`"v"."status" = :status`, {
+            status: VolunteerStatus.ACTIVE,
+          }),
+      )
+      .select()
+      .orderBy(
+        this.buildOrderByQuery(orderBy || 'name', 'organization'),
+        orderDirection || OrderDirection.ASC,
+      );
+
+    if (search) {
+      query.andWhere(
+        this.buildBracketSearchQuery(['organization.name'], search),
+      );
+    }
+
+    return this.paginateQuery(
+      query,
+      findOptions.limit,
+      findOptions.page,
+      OrganizationWithVolunteersTransformer.fromEntity,
+    );
   }
 }
