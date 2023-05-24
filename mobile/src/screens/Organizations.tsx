@@ -56,8 +56,8 @@ const Organizations = ({ navigation }: any) => {
     refetch: reloadOrganizations,
   } = useOrganizations(orderDirection, search);
 
-  const onViewOrganizationProfileButtonPress = () => {
-    navigation.navigate('organization-profile');
+  const onViewOrganizationProfileButtonPress = (organizationId: string) => {
+    navigation.navigate('organization-profile', { organizationId });
   };
 
   const onLoadMore = () => {
@@ -73,7 +73,10 @@ const Organizations = ({ navigation }: any) => {
   };
 
   const onRenderOrganizationListItem = ({ item }: { item: IOrganizationListItem }) => (
-    <OrganizationListItem item={item} onClick={onViewOrganizationProfileButtonPress} />
+    <OrganizationListItem
+      item={item}
+      onClick={onViewOrganizationProfileButtonPress.bind(null, item.id)}
+    />
   );
 
   return (
