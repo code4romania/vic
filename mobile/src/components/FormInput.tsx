@@ -1,7 +1,8 @@
 import React from 'react';
-import { Input, InputProps, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import { InputProps, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import { Control, Controller } from 'react-hook-form';
 import { View, Keyboard } from 'react-native';
+import Input from './Input';
 
 interface FormInputProps extends InputProps {
   control: Control<Record<string, any>>;
@@ -50,11 +51,10 @@ const FormInput: React.FC<FormInputProps> = ({
             status={error ? 'danger' : 'basic'}
             textStyle={
               error
-                ? [styles.redText, styles.inputText]
-                : [styles.inputText, rest.disabled ? styles.disabledText : {}]
+                ? [styles.redText, rest.textStyle]
+                : [rest.textStyle, rest.disabled ? styles.disabledText : {}]
             }
             {...rest}
-            style={[styles.input, rest.disabled ? styles.disabledBackground : {}]}
             onSubmitEditing={handleKeyboardDismiss}
           />
         )}
@@ -78,18 +78,8 @@ const themedStyles = StyleService.create({
   container: {
     gap: 4,
   },
-  disabledBackground: { backgroundColor: '$cool-gray-100' },
   disabledText: { color: '$cool-gray-500' },
   redText: {
     color: '$color-danger-500',
-  },
-  inputText: { fontSize: 16, fontWeight: '400' },
-  input: {
-    shadowColor: '$input-shadow-color',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
-    elevation: 1,
-    borderRadius: 6,
   },
 });

@@ -1,11 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IOrganizationRepository } from '../interfaces/organization-repository.interface';
 import {
+  FindManyOrganizationsOptions,
   ICreateOrganizationModel,
   IFindOrganizationModel,
   IOrganizationModel,
 } from '../models/organization.model';
 import { OrganizationRepositoryService } from '../repositories/organization.repository';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 
 @Injectable()
 export class OrganizationFacadeService {
@@ -33,5 +35,11 @@ export class OrganizationFacadeService {
     organization: ICreateOrganizationModel,
   ): Promise<IOrganizationModel> {
     return this.organizationRepository.create(organization);
+  }
+
+  public async findOrganizations(
+    findOptions: FindManyOrganizationsOptions,
+  ): Promise<Pagination<IOrganizationModel>> {
+    return this.organizationRepository.findMany(findOptions);
   }
 }

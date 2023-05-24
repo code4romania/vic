@@ -26,7 +26,8 @@
     "save": "Salvează",
     "send": "Trimite",
     "volunteers": "Voluntari",
-    "loading": "Se incarca..."
+    "loading": "Se incarca...",
+    "empty_list": "Nu exista rezultate"
   },
   "organization_profile": {
     "title": "Profil organizație",

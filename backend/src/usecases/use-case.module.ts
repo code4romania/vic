@@ -87,6 +87,7 @@ import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-v
 import { GetManyForDownloadActivityLogUseCase } from './activity-log/get-many-for-download-activity-log.usecase';
 import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-count.usecase';
 import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.usecase';
+import { GetOrganizationsUseCase } from './organization/get-organizations.usecase';
 
 @Module({
   imports: [
@@ -108,6 +109,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     // Organization
     GetOrganizationUseCaseService,
     UpdateOrganizationDescriptionUseCaseService,
+    GetOrganizationsUseCase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -199,6 +201,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     // Organization
     GetOrganizationUseCaseService,
     UpdateOrganizationDescriptionUseCaseService,
+    GetOrganizationsUseCase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
