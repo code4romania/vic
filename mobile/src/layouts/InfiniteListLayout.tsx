@@ -1,4 +1,4 @@
-import { Divider, List, StyleService, Text } from '@ui-kitten/components';
+import { Divider, List, StyleService, Text, Spinner } from '@ui-kitten/components';
 import React from 'react';
 import { mapPagesToItems } from '../common/utils/helpers';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
@@ -23,6 +23,12 @@ const ListErrorComponent = ({ errorMessage }: { errorMessage: string }) => {
   );
 };
 
+const LoadingComponent = () => (
+  <View style={styles.loadingContainer}>
+    <Spinner />
+  </View>
+);
+
 interface InfiniteListLayoutProps<T> {
   pages?: IPaginatedEntity<T>[];
   renderItem: any;
@@ -39,21 +45,26 @@ const InfiniteListLayout = <T extends object>({
   errorMessage,
   isLoading,
   refetch,
-}: InfiniteListLayoutProps<T>) => (
-  <List
-    data={mapPagesToItems<T>(pages || [])}
-    renderItem={renderItem}
-    style={styles.list}
-    ItemSeparatorComponent={Divider}
-    onEndReached={loadMore}
-    onEndReachedThreshold={0.1}
-    showsVerticalScrollIndicator={false}
-    refreshing={isLoading}
-    onRefresh={refetch}
-    ListEmptyComponent={!isLoading && !errorMessage ? ListEmptyComponent : <></>}
-    ListFooterComponent={errorMessage ? <ListErrorComponent errorMessage={errorMessage} /> : <></>}
-  />
-);
+}: InfiniteListLayoutProps<T>) =>
+  isLoading ? (
+    <LoadingComponent />
+  ) : (
+    <List
+      data={mapPagesToItems<T>(pages || [])}
+      renderItem={renderItem}
+      style={styles.list}
+      ItemSeparatorComponent={Divider}
+      onEndReached={loadMore}
+      onEndReachedThreshold={0.1}
+      showsVerticalScrollIndicator={false}
+      refreshing={isLoading}
+      onRefresh={refetch}
+      ListEmptyComponent={!errorMessage ? ListEmptyComponent : <></>}
+      ListFooterComponent={
+        errorMessage ? <ListErrorComponent errorMessage={errorMessage} /> : <></>
+      }
+    />
+  );
 
 const styles = StyleService.create({
   list: {
@@ -64,6 +75,11 @@ const styles = StyleService.create({
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 150,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

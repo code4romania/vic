@@ -8,6 +8,7 @@ import {
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { OrganizationEntity } from '../entities/organization.entity';
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
+import { IOrganizationWithVolunteersModel } from '../models/organization-with-volunteers.model';
 
 export interface IOrganizationRepository
   extends IRepositoryWithPagination<OrganizationEntity> {
@@ -20,5 +21,5 @@ export interface IOrganizationRepository
   ): Promise<IOrganizationModel>;
   findMany(
     options: FindManyOrganizationsOptions,
-  ): Promise<Pagination<IOrganizationModel>>;
+  ): Promise<Pagination<IOrganizationWithVolunteersModel>>;
 }

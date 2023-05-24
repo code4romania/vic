@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text, Avatar, useStyleSheet, StyleService, useTheme } from '@ui-kitten/components';
 import { ImageStyle, Pressable, View } from 'react-native';
@@ -7,6 +7,8 @@ import { useOrganizations } from '../services/organization/organization.service'
 import { IOrganizationListItem } from '../common/interfaces/organization-list-item.interface';
 import InfiniteListLayout from '../layouts/InfiniteListLayout';
 import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
+import { OrderDirection } from '../common/enums/order-direction.enum';
+import { useTranslation } from 'react-i18next';
 
 interface OrganizationItemProps {
   item: IOrganizationListItem;
@@ -40,16 +42,19 @@ const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
 
 const Organizations = ({ navigation }: any) => {
   console.log('Organizations');
+  const { t } = useTranslation('organizations');
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+  const [search, setSearch] = useState<string>('');
 
   // organizations query
   const {
     data: organizations,
     error: getOrganizationsError,
-    isLoading: isFetchingOrganizations,
+    isFetching: isFetchingOrganizations,
     fetchNextPage,
     hasNextPage,
     refetch: reloadOrganizations,
-  } = useOrganizations();
+  } = useOrganizations(orderDirection, search);
 
   const onViewOrganizationProfileButtonPress = () => {
     navigation.navigate('organization-profile');
@@ -61,8 +66,10 @@ const Organizations = ({ navigation }: any) => {
     }
   };
 
-  const onSearch = (value: string) => {
-    console.log('values', value);
+  const onSort = () => {
+    setOrderDirection(
+      orderDirection === OrderDirection.ASC ? OrderDirection.DESC : OrderDirection.ASC,
+    );
   };
 
   const onRenderOrganizationListItem = ({ item }: { item: IOrganizationListItem }) => (
@@ -72,9 +79,9 @@ const Organizations = ({ navigation }: any) => {
   return (
     <PageLayout title={i18n.t('general:organizations')}>
       <SearchWithOrderAndFilters
-        placeholder="Denumirea organizatiei"
-        onChange={onSearch}
-        onSort={() => console.log('sort')}
+        placeholder={t('search.placeholder')}
+        onChange={setSearch}
+        onSort={onSort}
         onFilter={() => console.log('filter')}
       />
       <InfiniteListLayout<IOrganizationListItem>
@@ -83,7 +90,7 @@ const Organizations = ({ navigation }: any) => {
         loadMore={onLoadMore}
         isLoading={isFetchingOrganizations}
         refetch={reloadOrganizations}
-        errorMessage={getOrganizationsError ? 'Eroare de test' : ''}
+        errorMessage={getOrganizationsError ? `${t('errors.generic')}` : ''}
       />
     </PageLayout>
   );

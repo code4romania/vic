@@ -16,6 +16,12 @@ import {
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
+import {
+  IOrganizationWithVolunteersModel,
+  OrganizationWithVolunteersTransformer,
+} from '../models/organization-with-volunteers.model';
 
 @Injectable()
 export class OrganizationRepositoryService
@@ -74,22 +80,37 @@ export class OrganizationRepositoryService
 
   public async findMany(
     findOptions: IBasePaginationFilterModel,
-  ): Promise<Pagination<IOrganizationModel>> {
-    const { orderBy, orderDirection } = findOptions;
+  ): Promise<Pagination<IOrganizationWithVolunteersModel>> {
+    const { orderBy, search, orderDirection } = findOptions;
 
     const query = this.organizationRepository
       .createQueryBuilder('organization')
+      .loadRelationCountAndMap(
+        'organization.numberOfVolunteers',
+        `organization.volunteers`,
+        'numberOfVolunteers',
+        (qb) =>
+          qb.innerJoin(VolunteerEntity, 'v').where(`"v"."status" = :status`, {
+            status: VolunteerStatus.ACTIVE,
+          }),
+      )
       .select()
       .orderBy(
         this.buildOrderByQuery(orderBy || 'name', 'organization'),
         orderDirection || OrderDirection.ASC,
       );
 
+    if (search) {
+      query.andWhere(
+        this.buildBracketSearchQuery(['organization.name'], search),
+      );
+    }
+
     return this.paginateQuery(
       query,
       findOptions.limit,
       findOptions.page,
-      OrganizationTransformer.fromEntity,
+      OrganizationWithVolunteersTransformer.fromEntity,
     );
   }
 }

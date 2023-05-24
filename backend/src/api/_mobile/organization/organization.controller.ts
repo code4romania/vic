@@ -1,15 +1,13 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
-import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
-import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { GetOrganizationsUseCase } from 'src/usecases/organization/get-organizations.usecase';
 import {
   ApiPaginatedResponse,
   PaginatedPresenter,
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
-import { OrganizationListItemPresenter } from './presenters/organization-list-item.presenter';
 import { GetManyOrganizationsDto } from './dto/get-many-organizations.dto';
+import { OrganizationWithVolunteersPresenter } from './presenters/organization-with-volunteers.presenter';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -20,19 +18,18 @@ export class MobileOrganizationController {
   ) {}
 
   @Get()
-  @ApiPaginatedResponse(OrganizationListItemPresenter)
+  @ApiPaginatedResponse(OrganizationWithVolunteersPresenter)
   async getAll(
     @Query() filters: GetManyOrganizationsDto,
-    @ExtractUser() user: IRegularUserModel,
-  ): Promise<PaginatedPresenter<OrganizationListItemPresenter>> {
+  ): Promise<PaginatedPresenter<OrganizationWithVolunteersPresenter>> {
     const organizations = await this.getOrganizationsUseCase.execute({
       ...filters,
     });
 
-    return new PaginatedPresenter<OrganizationListItemPresenter>({
+    return new PaginatedPresenter<OrganizationWithVolunteersPresenter>({
       ...organizations,
       items: organizations.items.map(
-        (organization) => new OrganizationListItemPresenter(organization),
+        (organization) => new OrganizationWithVolunteersPresenter(organization),
       ),
     });
   }

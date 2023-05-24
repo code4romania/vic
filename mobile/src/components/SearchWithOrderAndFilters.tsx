@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Keyboard, Pressable, View } from 'react-native';
 import { Icon, IconElement, StyleService, useTheme } from '@ui-kitten/components';
 import Input from './Input';
 import SortSvg from '../assets/svg/sort';
@@ -41,11 +41,15 @@ const SearchWithOrderAndFilters = ({
     }
 
     const timeoutId = setTimeout(() => {
-      onChange(searchValue);
+      searchValue && onChange(searchValue);
     }, debounceTime || 500);
 
     return () => clearTimeout(timeoutId);
   }, [searchValue, onChange, debounceTime]);
+
+  const handleKeyboardDismiss = () => {
+    Keyboard.dismiss();
+  };
 
   const renderClearAllIcon = ({ onPress }: { onPress: () => void }) => {
     return searchValue.length > 0 ? (
@@ -57,6 +61,11 @@ const SearchWithOrderAndFilters = ({
     );
   };
 
+  const onClearInput = () => {
+    setSearchValue('');
+    onChange('');
+  };
+
   return (
     <View style={styles.searchContainer}>
       <View style={styles.inputContainer}>
@@ -64,10 +73,9 @@ const SearchWithOrderAndFilters = ({
           value={searchValue}
           placeholder={placeholder}
           accessoryLeft={SearchIcon}
-          accessoryRight={(props: any) =>
-            renderClearAllIcon({ ...props, onPress: setSearchValue.bind(null, '') })
-          }
+          accessoryRight={(props: any) => renderClearAllIcon({ ...props, onPress: onClearInput })}
           onChangeText={setSearchValue}
+          onSubmitEditing={handleKeyboardDismiss}
         />
       </View>
       <Pressable style={styles.filtersContainer} onPress={onSort}>

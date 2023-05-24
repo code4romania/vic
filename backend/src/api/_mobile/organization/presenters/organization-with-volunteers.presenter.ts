@@ -1,13 +1,13 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
+import { IOrganizationWithVolunteersModel } from 'src/modules/organization/models/organization-with-volunteers.model';
 
-export class OrganizationListItemPresenter {
-  constructor(organization: IOrganizationModel) {
+export class OrganizationWithVolunteersPresenter {
+  constructor(organization: IOrganizationWithVolunteersModel) {
     this.id = organization.id;
     this.name = organization.name;
     this.logo = organization.logo;
-    this.numberOfVolunteers = 0;
+    this.numberOfVolunteers = organization.numberOfVolunteers;
   }
 
   @Expose()

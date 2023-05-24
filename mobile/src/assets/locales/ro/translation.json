@@ -29,6 +29,14 @@
     "loading": "Se incarca...",
     "empty_list": "Nu exista rezultate"
   },
+  "organizations": {
+    "search": {
+      "placeholder": "Denumirea organizatiei"
+    },
+    "errors": {
+      "generic": "Eroare la incarcarea datelor"
+    }
+  },
   "organization_profile": {
     "title": "Profil organizație",
     "description": "Despre organizație",

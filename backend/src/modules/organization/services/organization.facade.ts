@@ -8,6 +8,7 @@ import {
 } from '../models/organization.model';
 import { OrganizationRepositoryService } from '../repositories/organization.repository';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
+import { IOrganizationWithVolunteersModel } from '../models/organization-with-volunteers.model';
 
 @Injectable()
 export class OrganizationFacadeService {
@@ -39,7 +40,7 @@ export class OrganizationFacadeService {
 
   public async findOrganizations(
     findOptions: FindManyOrganizationsOptions,
-  ): Promise<Pagination<IOrganizationModel>> {
+  ): Promise<Pagination<IOrganizationWithVolunteersModel>> {
     return this.organizationRepository.findMany(findOptions);
   }
 }
