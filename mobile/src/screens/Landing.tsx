@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import GoogleButton from '../components/GoogleButton';
 import AppleButton from '../components/AppleButton';
 import FacebookButton from '../components/FacebookButton';
+import * as Linking from 'expo-linking';
 
 const Landing = ({ navigation }: any) => {
   console.log('Landing');
@@ -38,7 +39,8 @@ const Landing = ({ navigation }: any) => {
       <View style={styles.container}>
         <Image source={require('../assets/images/teo-logo.png')} style={styles.image} />
         <Text category="h1">{`${i18n.t('general:register')}`}</Text>
-        <Text category="c1" style={styles.message}>{`${i18n.t('landing:message')}`}</Text>
+        {/* <Text category="c1" style={styles.message}>{`${i18n.t('landing:message')}`}</Text> */}
+        <Text category="c1" style={styles.message}>{`${Linking.createURL('')}`}</Text>
         <View style={styles.buttonsContainer}>
           <Button
             onPress={onRegisterButtonPress}
