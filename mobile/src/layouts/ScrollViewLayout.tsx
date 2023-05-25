@@ -21,12 +21,11 @@ const ScrollViewLayout = ({ children, eva }: ScrollViewLayoutProps) => (
 );
 
 const styles = StyleSheet.create({
-  layout: { flex: 1, gap: 32 },
+  layout: { flex: 1, gap: 24 },
 });
 
 export default withStyles(ScrollViewLayout, (theme) => ({
   background: {
     backgroundColor: theme['color-basic-100'],
-    paddingHorizontal: 16,
   },
 }));

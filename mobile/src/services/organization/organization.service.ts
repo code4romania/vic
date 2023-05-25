@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from 'react-query';
-import { getOrganizations } from './organization.api';
+import { useInfiniteQuery, useQuery } from 'react-query';
+import { getOrganization, getOrganizations } from './organization.api';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 
 export const useOrganizations = (orderDirection: OrderDirection, search: string) => {
@@ -14,4 +14,10 @@ export const useOrganizations = (orderDirection: OrderDirection, search: string)
       },
     },
   );
+};
+
+export const useOrganization = (organizationId: string) => {
+  return useQuery(['organization', organizationId], () => getOrganization(organizationId), {
+    enabled: !!organizationId,
+  });
 };

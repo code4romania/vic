@@ -9,6 +9,7 @@ import InfiniteListLayout from '../layouts/InfiniteListLayout';
 import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useTranslation } from 'react-i18next';
+import { JSONStringifyError } from '../common/utils/utils';
 
 interface OrganizationItemProps {
   item: IOrganizationListItem;
@@ -56,8 +57,8 @@ const Organizations = ({ navigation }: any) => {
     refetch: reloadOrganizations,
   } = useOrganizations(orderDirection, search);
 
-  const onViewOrganizationProfileButtonPress = () => {
-    navigation.navigate('organization-profile');
+  const onViewOrganizationProfileButtonPress = (organizationId: string) => {
+    navigation.navigate('organization-profile', { organizationId });
   };
 
   const onLoadMore = () => {
@@ -73,7 +74,10 @@ const Organizations = ({ navigation }: any) => {
   };
 
   const onRenderOrganizationListItem = ({ item }: { item: IOrganizationListItem }) => (
-    <OrganizationListItem item={item} onClick={onViewOrganizationProfileButtonPress} />
+    <OrganizationListItem
+      item={item}
+      onClick={onViewOrganizationProfileButtonPress.bind(null, item.id)}
+    />
   );
 
   return (
@@ -90,7 +94,11 @@ const Organizations = ({ navigation }: any) => {
         loadMore={onLoadMore}
         isLoading={isFetchingOrganizations}
         refetch={reloadOrganizations}
-        errorMessage={getOrganizationsError ? `${t('errors.generic')}` : ''}
+        errorMessage={
+          getOrganizationsError
+            ? `${JSONStringifyError(getOrganizationsError as Error)}`
+            : `${t('errors.generic')}`
+        }
       />
     </PageLayout>
   );
