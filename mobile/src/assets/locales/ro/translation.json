@@ -45,7 +45,9 @@
     "address": "Adresa sediu",
     "area": "Arie de desfasurare a activitatii",
     "events": "Evenimente deschise",
-    "volunteers": "{{number}} voluntari"
+    "volunteers": "{{number}} voluntari",
+    "join": "Alătură-te organizației",
+    "code": "Ai cod de acces?"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
@@ -113,6 +115,11 @@
   "event": {
     "join": "Doresc sa particip",
     "details": "Detalii eveniment",
+    "tabs": {
+      "going": "Particip",
+      "from_my_ngos": "Ale organizațiilor mele",
+      "open": "Deschise"
+    },
     "reason_page": {
       "introduction": "Lorem ipsum.",
       "form": {
