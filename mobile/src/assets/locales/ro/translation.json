@@ -64,6 +64,11 @@
     "title": "Ore de voluntariat",
     "log": "Ore înregistrate",
     "rejection_reason": "Motiv respingere",
+    "disclaimer": {
+      "approved": "Aprobată la {{date}}",
+      "pending": "Necesita aprobare din partea organizatiei",
+      "rejected": "Respins la {{date}}"
+    },
     "form": {
       "event": {
         "label": "Eveniment"

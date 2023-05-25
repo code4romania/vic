@@ -7,7 +7,8 @@ import FormLayout from '../layouts/FormLayout';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { Divider } from '@ui-kitten/components';
 import { ButtonType } from '../common/enums/button-type.enum';
-import { formatDate } from '../common/utils/utils';
+import { ActivityLogStatusToColorMapper, formatDate } from '../common/utils/utils';
+import Disclaimer from '../components/Disclaimer';
 
 const activityLog = {
   event: 'Titlu eveniment Lorem ipsum',
@@ -17,6 +18,8 @@ const activityLog = {
   mentions:
     'Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.',
   status: ActivityLogStatus.PENDING,
+  approvedOn: `${new Date(2019, 1, 2)}`,
+  rejectedOn: `${new Date(2022, 1, 2)}`,
   rejectionReason:
     'Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat.',
 };
@@ -30,6 +33,21 @@ const ActivityLog = ({ navigation }: any) => {
 
   const onDeleteActivityLog = () => {
     console.log('delete activity log');
+  };
+
+  const generateDisclaimerText = () => {
+    switch (activityLog.status) {
+      case ActivityLogStatus.APPROVED:
+        return i18n.t('activity_log:disclaimer.approved', {
+          date: formatDate(activityLog.approvedOn),
+        });
+      case ActivityLogStatus.PENDING:
+        return i18n.t('activity_log:disclaimer.pending');
+      case ActivityLogStatus.REJECTED:
+        return i18n.t('activity_log:disclaimer.rejected', {
+          date: formatDate(activityLog.rejectedOn),
+        });
+    }
   };
 
   return (
@@ -49,6 +67,10 @@ const ActivityLog = ({ navigation }: any) => {
           : undefined
       }
     >
+      <Disclaimer
+        color={ActivityLogStatusToColorMapper[activityLog.status]}
+        text={generateDisclaimerText()}
+      />
       <FormLayout>
         <OrganizationIdentity uri="https://picsum.photos/200/300" name="Asociația ZEN" />
         <ReadOnlyElement
