@@ -32,6 +32,9 @@
   "organizations": {
     "search": {
       "placeholder": "Denumirea organizatiei"
+    },
+    "errors": {
+      "generic": "Eroare la incarcarea datelor"
     }
   },
   "organization_profile": {
@@ -42,7 +45,10 @@
     "address": "Adresa sediu",
     "area": "Arie de desfasurare a activitatii",
     "events": "Evenimente deschise",
-    "volunteers": "{{number}} voluntari"
+    "volunteers": "{{number}} voluntari",
+    "join": "Alătură-te organizației",
+    "no_events": "Nu sunt evenimente de afisat",
+    "code": "Ai cod de acces?"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
@@ -107,7 +113,15 @@
     "active_since": "Voluntar din",
     "created_on": "Înregistrat în TEO din"
   },
-  "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
+  "event": {
+    "join": "Doresc sa particip",
+    "details": "Detalii eveniment",
+    "tabs": {
+      "going": "Particip",
+      "from_my_ngos": "Ale organizațiilor mele",
+      "open": "Deschise"
+    }
+  },
   "tabs": {
     "home": "Acasă",
     "volunteer": "Voluntar",

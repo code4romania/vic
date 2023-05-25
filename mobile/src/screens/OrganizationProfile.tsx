@@ -1,6 +1,6 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Text } from '@ui-kitten/components';
+import { Divider, Text } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import SectionWrapper from '../components/SectionWrapper';
@@ -11,9 +11,11 @@ import LoadingScreen from '../components/LoadingScreen';
 import { JSONStringifyError } from '../common/utils/utils';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import EventItem from '../components/EventItem';
+import { useTranslation } from 'react-i18next';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   console.log('OrganizationProfile', route.params);
+  const { t } = useTranslation('organization_profile');
 
   const {
     data: organization,
@@ -30,7 +32,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       title={i18n.t('organization_profile:title')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
-        primaryActionLabel: 'Join',
+        primaryActionLabel: t('join'),
         onPrimaryActionButtonClick: onJoinOrganizationButtonPress,
       }}
     >
@@ -71,9 +73,17 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           </View>
           <SectionWrapper title={i18n.t('organization_profile:events')}>
             <ScrollViewLayout>
-              {organization.events.map((event) => (
-                <EventItem event={event} organizationLogo={organization.logo} />
-              ))}
+              <View style={styles.container}>
+                {organization.events.map((event) => (
+                  <View style={styles.container}>
+                    <EventItem event={event} organizationLogo={organization.logo} />
+                    <Divider />
+                  </View>
+                ))}
+                {organization.events.length === 0 && (
+                  <Text category="p1">{`${t('no_events')}`}</Text>
+                )}
+              </View>
             </ScrollViewLayout>
           </SectionWrapper>
         </ScrollViewLayout>

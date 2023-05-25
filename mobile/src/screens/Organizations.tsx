@@ -9,6 +9,7 @@ import InfiniteListLayout from '../layouts/InfiniteListLayout';
 import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useTranslation } from 'react-i18next';
+import { JSONStringifyError } from '../common/utils/utils';
 
 interface OrganizationItemProps {
   item: IOrganizationListItem;
@@ -93,7 +94,11 @@ const Organizations = ({ navigation }: any) => {
         loadMore={onLoadMore}
         isLoading={isFetchingOrganizations}
         refetch={reloadOrganizations}
-        errorMessage={getOrganizationsError ? `${t('errors.generic')}` : ''}
+        errorMessage={
+          getOrganizationsError
+            ? `${JSONStringifyError(getOrganizationsError as Error)}`
+            : `${t('errors.generic')}`
+        }
       />
     </PageLayout>
   );

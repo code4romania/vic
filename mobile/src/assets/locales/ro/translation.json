@@ -47,6 +47,7 @@
     "events": "Evenimente deschise",
     "volunteers": "{{number}} voluntari",
     "join": "Alătură-te organizației",
+    "no_events": "Nu sunt evenimente de afisat",
     "code": "Ai cod de acces?"
   },
   "landing": {

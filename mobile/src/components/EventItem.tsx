@@ -2,6 +2,7 @@ import { Avatar, Icon, Text, withStyles } from '@ui-kitten/components';
 import React from 'react';
 import { View } from 'react-native';
 import { IEventListItem } from '../common/interfaces/event-list-item.interface';
+import { formatEventDate } from '../common/utils/utils';
 
 interface EventItemProps {
   event: IEventListItem;
@@ -18,7 +19,7 @@ const EventItem = ({ event, eva, organizationLogo }: EventItemProps) => {
         <View style={eva.style.section}>
           <Icon name="clock" style={eva.style.icon} />
           <Text category="c1" appearance="hint">
-            {event.startDate.toISOString()}
+            {formatEventDate(event.startDate, event.endDate)}
           </Text>
         </View>
         <View style={eva.style.section}>
@@ -43,7 +44,6 @@ export default withStyles(EventItem, (theme) => ({
   container: {
     gap: 16,
     flexDirection: 'row',
-    paddingVertical: 16,
   },
   section: {
     gap: 8,

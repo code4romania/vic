@@ -27,6 +27,7 @@ import {
   OrganizationWithEventTransformer,
 } from '../models/organization-with-events.model';
 import { EventEntity } from 'src/modules/event/entities/event.entity';
+import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 
 @Injectable()
 export class OrganizationRepositoryService
@@ -138,10 +139,11 @@ export class OrganizationRepositoryService
       .leftJoinAndSelect(
         'organization.events',
         'event',
-        'event.isPublic = :isPublic AND event.startDate > :date',
+        'event.isPublic = :isPublic AND event.startDate > :date AND event.status = :status',
         {
           isPublic: true,
           date: new Date(),
+          status: EventStatus.PUBLISHED,
         },
       )
       .where('organization.id = :organizationId', { organizationId })
