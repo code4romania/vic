@@ -110,7 +110,22 @@
     "active_since": "Voluntar din",
     "created_on": "Înregistrat în TEO din"
   },
-  "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
+  "event": {
+    "join": "Doresc sa particip",
+    "details": "Detalii eveniment",
+    "reason_page": {
+      "introduction": "Lorem ipsum.",
+      "form": {
+        "mention": {
+          "label": "Mențiune",
+          "required": "Mențiunea este obligatorie",
+          "min": "Mențiunea poate să aibă minim {{value}} caractere",
+          "max": "Mențiunea poate să aibă maxim {{value}} caractere",
+          "helper": "Completează câmpul pentru a te înscrie."
+        }
+      }
+    }
+  },
   "tabs": {
     "home": "Acasă",
     "volunteer": "Voluntar",
