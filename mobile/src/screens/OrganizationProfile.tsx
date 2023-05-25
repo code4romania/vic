@@ -3,90 +3,82 @@ import PageLayout from '../layouts/PageLayout';
 import { Button, Layout } from '@ui-kitten/components';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
-import EventItem from '../components/EventItem';
-import SectionWrapper from '../components/SectionWrapper';
+// import EventItem from '../components/EventItem';
+// import SectionWrapper from '../components/SectionWrapper';
 import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
+import { useOrganization } from '../services/organization/organization.service';
 
-const organization = {
-  logo: 'https://picsum.photos/200',
-  name: 'Asociatia ZEN',
-  volunteers: '1200',
-  description:
-    'Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ',
-  email: 'contact@asociatiazen.ro',
-  phone: '0721002100',
-  address: 'strada Luminoasa, nr 5, Cluj-Napoca',
-  area: 'Iasi (jud Iasi), Cluj-Napoca (jud Cluj)',
-};
+const OrganizationProfile = ({ navigation, route }: any) => {
+  console.log('OrganizationProfile', route.params);
 
-const event = {
-  date: '12 FEB 2022, 18:00 - 20:00',
-  division: 'Departamentul de fundraising',
-  location: 'Sediu',
-  title: 'Sedinta departament',
-};
-
-const OrganizationProfile = ({ navigation }: any) => {
-  console.log('OrganizationProfile');
+  const {
+    data: organization,
+    // isLoading: isFetchingOrganization,
+    // error: getOrganizationError,
+  } = useOrganization(route.params.organizationId);
 
   const onJoinOrganizationButtonPress = () => {
     navigation.navigate('join-organization');
   };
 
-  const onEventPress = () => {
-    console.log('event pressed');
-  };
+  // const onEventPress = () => {
+  //   console.log('event pressed');
+  // };
 
   return (
     <PageLayout title={i18n.t('organization_profile:title')} onBackButtonPress={navigation.goBack}>
       <ScrollView>
-        <Layout style={styles.layout}>
-          <ProfileIntro
-            uri={organization.logo}
-            name={organization.name}
-            description={`${organization.volunteers} ${i18n.t('general:volunteers').toLowerCase()}`}
-          />
-          <View style={styles.readOnlyContainer}>
-            <ReadOnlyElement
-              label={i18n.t('organization_profile:description')}
-              value={organization.description}
+        {organization && (
+          <Layout style={styles.layout}>
+            <ProfileIntro
+              uri={organization.logo}
+              name={organization.name}
+              description={`${organization.numberOfVolunteers} ${i18n
+                .t('general:volunteers')
+                .toLowerCase()}`}
             />
-            <ReadOnlyElement
-              label={i18n.t('organization_profile:email')}
-              value={organization.email}
-            />
-            <ReadOnlyElement
-              label={i18n.t('organization_profile:phone')}
-              value={organization.phone}
-            />
-            <ReadOnlyElement
-              label={i18n.t('organization_profile:address')}
-              value={organization.address}
-            />
-            <ReadOnlyElement
-              label={i18n.t('organization_profile:area')}
-              value={organization.area}
-            />
-          </View>
-          <SectionWrapper title={i18n.t('organization_profile:events')}>
-            <EventItem
-              date={event.date}
-              divison={event.division}
-              location={event.location}
-              title={event.title}
-              onPress={onEventPress}
-            />
-            <EventItem
-              date={event.date}
-              divison={event.division}
-              location={event.location}
-              title={event.title}
-              onPress={onEventPress}
-            />
-          </SectionWrapper>
-          <Button onPress={onJoinOrganizationButtonPress}>Join</Button>
-        </Layout>
+            <View style={styles.readOnlyContainer}>
+              <ReadOnlyElement
+                label={i18n.t('organization_profile:description')}
+                value={organization.description}
+              />
+              <ReadOnlyElement
+                label={i18n.t('organization_profile:email')}
+                value={organization.email}
+              />
+              <ReadOnlyElement
+                label={i18n.t('organization_profile:phone')}
+                value={organization.phone}
+              />
+              <ReadOnlyElement
+                label={i18n.t('organization_profile:address')}
+                value={organization.address}
+              />
+              <ReadOnlyElement
+                label={i18n.t('organization_profile:area')}
+                value={organization.activityArea}
+              />
+            </View>
+            {/* <SectionWrapper title={i18n.t('organization_profile:events')}>
+              <EventItem
+                date={event.date}
+                divison={event.division}
+                location={event.location}
+                title={event.title}
+                onPress={onEventPress}
+              />
+              <EventItem
+                date={event.date}
+                divison={event.division}
+                location={event.location}
+                title={event.title}
+                onPress={onEventPress}
+              />
+            </SectionWrapper> */}
+            <Button onPress={onJoinOrganizationButtonPress}>Join</Button>
+          </Layout>
+        )}
       </ScrollView>
     </PageLayout>
   );
