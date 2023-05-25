@@ -97,7 +97,8 @@ const Organizations = ({ navigation }: any) => {
         errorMessage={
           getOrganizationsError
             ? `${JSONStringifyError(getOrganizationsError as Error)}`
-            : `${t('errors.generic')}`
+            : // : `${t('errors.generic')}`
+              ''
         }
       />
     </PageLayout>

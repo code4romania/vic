@@ -75,7 +75,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             <ScrollViewLayout>
               <View style={styles.container}>
                 {organization.events.map((event) => (
-                  <View style={styles.container}>
+                  <View style={styles.container} key={event.id}>
                     <EventItem event={event} organizationLogo={organization.logo} />
                     <Divider />
                   </View>
