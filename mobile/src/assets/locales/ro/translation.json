@@ -124,6 +124,13 @@
   "event": {
     "join": "Doresc sa particip",
     "details": "Detalii eveniment",
+    "date": "Data și ora",
+    "name": "Denumire eveniment",
+    "target": "Target",
+    "location": "Locatie",
+    "description": "Descriere eveniment",
+    "tasks": "Taskuri asociate",
+    "attending": "{{number}} de persoane participă!",
     "tabs": {
       "going": "Particip",
       "from_my_ngos": "Ale organizațiilor mele",
