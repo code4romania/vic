@@ -27,25 +27,37 @@ export class UpdateUserPersonalDataUsecase
       this.exceptionService.notFoundException(UserExceptionMessages.USER_001);
     }
 
+    // 3. check if there is already a identity document number
+    const userPersonalData = await this.userService.findUserPersonalData({
+      identityDocumentNumber: personalData.identityDocumentNumber,
+    });
+
+    // 3.1 Throw unique error
+    if (userPersonalData && userPersonalData.id !== user.userPersonalData.id) {
+      this.exceptionService.badRequestException(UserExceptionMessages.USER_004);
+    }
+
     let userIdentityData = user.userPersonalData;
-    // 3. check if the user has personal data
+    // 4. check if the user has personal data
     if (!user.userPersonalData) {
-      // 3.1 if not create new personal data entity for the user
-      const userPersonalData = await this.userService.createUserPersonalData(
+      // 4.1 if not create new personal data entity for the user
+      userIdentityData = await this.userService.createUserPersonalData(
         personalData,
       );
 
-      // asign the new value to the user
-      userIdentityData = userPersonalData;
+      // 4.2 save the data to the user
+      await this.userService.updateRegularUser(id, {
+        userPersonalData: userIdentityData,
+      });
     } else {
-      // 3.2 update personal data details with the new data
-      userIdentityData = { ...userIdentityData, ...personalData };
+      // 5. udpate personal data
+      userIdentityData = await this.userService.updateUserPersonalData(
+        user.userPersonalData.id,
+        personalData,
+      );
     }
 
-    // 4. save the user
-    await this.userService.updateUserPersonalData(id, userIdentityData);
-
-    // 5. return user
+    // 6. return user
     return this.userService.findRegularUser({ id });
   }
 }

@@ -5,7 +5,7 @@ export class UserPersonalDataEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'text', name: 'identity_document_series', unique: true })
+  @Column({ type: 'text', name: 'identity_document_series' })
   identityDocumentSeries: string;
 
   @Column({ type: 'text', name: 'identity_document_number', unique: true })

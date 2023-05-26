@@ -1,5 +1,6 @@
 import {
   CreateUserPersonalDataOptions,
+  FindUserPersonalDataOptions,
   IUserPersonalDataModel,
 } from '../models/user-personal-data.model';
 
@@ -10,5 +11,8 @@ export interface IUserPersonalDataRepository {
   update(
     id: string,
     userPersonalDataModel: Partial<CreateUserPersonalDataOptions>,
+  ): Promise<IUserPersonalDataModel>;
+  find(
+    findOptions: FindUserPersonalDataOptions,
   ): Promise<IUserPersonalDataModel>;
 }

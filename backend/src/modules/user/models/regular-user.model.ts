@@ -24,6 +24,11 @@ export type CreateRegularUserOptions = Omit<
   locationId: number;
 };
 
+export type UpdateRegularUserOptions = Pick<
+  IRegularUserModel,
+  'userPersonalData'
+>;
+
 export type FindRegularUserOptions =
   | Partial<IRegularUserModel & { locationId: number }>
   | Partial<IRegularUserModel & { locationId: number }>[];

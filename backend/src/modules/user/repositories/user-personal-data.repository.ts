@@ -5,6 +5,7 @@ import { IUserPersonalDataRepository } from '../interfaces/user-personal-data-re
 import { UserPersonalDataEntity } from '../entities/user-personal-data.entity';
 import {
   CreateUserPersonalDataOptions,
+  FindUserPersonalDataOptions,
   IUserPersonalDataModel,
   UserPersonalDataTransformer,
 } from '../models/user-personal-data.model';
@@ -24,7 +25,7 @@ export class UserPersonalDataRepository implements IUserPersonalDataRepository {
         UserPersonalDataTransformer.toEntity(userPersonalDataModel),
       );
 
-    return this.find(newUserPersonalDataEntity.id);
+    return this.find({ id: newUserPersonalDataEntity.id });
   }
 
   public async update(
@@ -37,13 +38,15 @@ export class UserPersonalDataRepository implements IUserPersonalDataRepository {
     });
     await this.userPersonalDataRepository.save(toUpdate);
 
-    return this.find(id);
+    return this.find({ id });
   }
 
-  async find(id: string): Promise<IUserPersonalDataModel> {
+  public async find(
+    findOptios: FindUserPersonalDataOptions,
+  ): Promise<IUserPersonalDataModel> {
     const userPersonalDataEntity =
       await this.userPersonalDataRepository.findOne({
-        where: { id },
+        where: findOptios,
       });
 
     return UserPersonalDataTransformer.fromEntity(userPersonalDataEntity);

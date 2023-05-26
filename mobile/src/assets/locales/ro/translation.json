@@ -315,7 +315,8 @@
   },
   "user": {
     "errors": {
-      "USER_001": "Utilizatorul nu a fost gasit"
+      "USER_001": "Utilizatorul nu a fost gasit",
+      "USER_004": "Acest numar de identificare al utilizatorului exista deja"
     }
   }
 }

@@ -10,6 +10,9 @@ export interface IUserPersonalDataModel {
 }
 
 export type CreateUserPersonalDataOptions = Omit<IUserPersonalDataModel, 'id'>;
+export type FindUserPersonalDataOptions = Partial<
+  Pick<IUserPersonalDataModel, 'id' | 'identityDocumentNumber'>
+>;
 
 export class UserPersonalDataTransformer {
   static fromEntity(entity: UserPersonalDataEntity): IUserPersonalDataModel {

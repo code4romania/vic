@@ -152,6 +152,7 @@ const IdentityData = ({ navigation }: any) => {
           name="identityDocumentIssueDate"
           error={errors.identityDocumentIssueDate}
           placeholder={i18n.t('general:select')}
+          min={new Date(1900, 0, 0)}
           disabled={isUpdateingPersonalData}
         />
         <FormDatePicker
@@ -160,6 +161,7 @@ const IdentityData = ({ navigation }: any) => {
           name="identityDocumentExpirationDate"
           error={errors.identityDocumentExpirationDate}
           placeholder={i18n.t('general:select')}
+          max={new Date(2200, 0, 0)}
           disabled={isUpdateingPersonalData}
         />
       </FormLayout>
