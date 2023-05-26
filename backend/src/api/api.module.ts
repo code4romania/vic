@@ -19,6 +19,7 @@ import { ActivityLogController } from './activity-log/activity-log.controller';
 import { ListingController } from './listing/listing.controller';
 import { ActionsArchiveController } from './actions-archive/actions-archive.controller';
 import { DashboardController } from './dashboard/dashboard.controller';
+import { MobileOrganizationController } from './_mobile/organization/organization.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -43,6 +44,7 @@ import { DashboardController } from './dashboard/dashboard.controller';
     MobileAccessRequestController,
     MobileVolunteerController,
     MobileEventController,
+    MobileOrganizationController,
   ],
 })
 export class ApiModule {}

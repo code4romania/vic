@@ -25,7 +25,22 @@
     "continue": "Continuă",
     "save": "Salvează",
     "send": "Trimite",
-    "volunteers": "Voluntari"
+    "volunteers": "Voluntari",
+    "loading": "Se incarca...",
+    "empty_list": "Nu exista rezultate",
+    "error": {
+      "load_entries": "Eroare la incarcarea datelor",
+      "unknown": "A aparut o eroare necunoscuta",
+      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
+    }
+  },
+  "organizations": {
+    "search": {
+      "placeholder": "Denumirea organizatiei"
+    },
+    "errors": {
+      "generic": "Eroare la incarcarea datelor"
+    }
   },
   "organization_profile": {
     "title": "Profil organizație",
@@ -35,13 +50,24 @@
     "address": "Adresa sediu",
     "area": "Arie de desfasurare a activitatii",
     "events": "Evenimente deschise",
-    "volunteers": "{{number}} voluntari"
+    "volunteers": "{{number}} voluntari",
+    "join": "Alătură-te organizației",
+    "no_events": "Nu sunt evenimente de afisat",
+    "code": "Ai cod de acces?"
+  },
+  "privacy_policy": {
+    "title": "Politica de confidentialitate"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
     "registered": "Ai deja cont?",
     "email": "E-mail sau telefon",
-    "login": "Autentifică-te"
+    "login": "Autentifică-te",
+    "social": {
+      "facebook": "Facebook",
+      "apple": "Apple",
+      "google": "Google"
+    }
   },
   "auth": {
     "errors": {
@@ -49,7 +75,8 @@
       "username_exists": "Exista deja un utilizator cu aceasta adresa de email",
       "signup": "Eroare la inregistrare",
       "resend_code": "Eroare la trimiterea codului de confirmare",
-      "init_profile": "Eroare la incarcarea profilului"
+      "init_profile": "Eroare la incarcarea profilului",
+      "login": "Eroare la autentificare, va rugam incercati din nou"
     }
   },
   "activity_log": {
@@ -103,7 +130,12 @@
     "location": "Locatie",
     "description": "Descriere eveniment",
     "tasks": "Taskuri asociate",
-    "attending": "{{number}} de persoane participă!"
+    "attending": "{{number}} de persoane participă!",
+    "tabs": {
+      "going": "Particip",
+      "from_my_ngos": "Ale organizațiilor mele",
+      "open": "Deschise"
+    }
   },
   "tabs": {
     "home": "Acasă",
@@ -159,11 +191,11 @@
           "match": "Parolele trebuie sa fie identice"
         },
         "terms": {
-          "agree": "Sunt de acord cu",
-          "conditions": " Termenii și Condițiile",
-          "and": ", cât și cu",
-          "privacy_policy": " Politica de Confidențialitate",
-          "application": " a aplicației",
+          "agree": "Sunt de acord cu ",
+          "conditions": "Termenii și Condițiile",
+          "and": "cât și cu ",
+          "privacy_policy": "Politica de Confidențialitate ",
+          "application": "a aplicației",
           "required": "Trebuie sa accepti Termenii,Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
         }
       }
@@ -287,5 +319,11 @@
     "password": "Schimbă parola",
     "notification": "Setări notificări",
     "information": "Informații"
+  },
+  "user": {
+    "errors": {
+      "USER_001": "Utilizatorul nu a fost gasit",
+      "USER_004": "Acest numar de identificare al utilizatorului exista deja"
+    }
   }
 }

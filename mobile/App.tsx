@@ -14,6 +14,7 @@ import { Amplify } from 'aws-amplify';
 import './src/common/config/i18n';
 import { AMPLIFY_CONFIG } from './src/common/config/amplify';
 import Toast from 'react-native-toast-message';
+import { toastConfig } from './src/common/config/toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { FeatherIconsPack } from './src/common/adapters/feather-icons.adapter';
 
@@ -63,7 +64,7 @@ export default () => {
         </SafeAreaView>
         <ExpoStatusBar style="auto" />
       </ApplicationProvider>
-      <Toast />
+      <Toast config={toastConfig} />
     </>
   );
 };

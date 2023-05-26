@@ -1,53 +1,55 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Button, Layout } from '@ui-kitten/components';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { Divider, Text } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
-import EventItem from '../components/EventItem';
 import SectionWrapper from '../components/SectionWrapper';
 import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
+import { useOrganization } from '../services/organization/organization.service';
+import LoadingScreen from '../components/LoadingScreen';
+import { JSONStringifyError } from '../common/utils/utils';
+import ScrollViewLayout from '../layouts/ScrollViewLayout';
+import EventItem from '../components/EventItem';
+import { useTranslation } from 'react-i18next';
 
-const organization = {
-  logo: 'https://picsum.photos/200',
-  name: 'Asociatia ZEN',
-  volunteers: '1200',
-  description:
-    'Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ',
-  email: 'contact@asociatiazen.ro',
-  phone: '0721002100',
-  address: 'strada Luminoasa, nr 5, Cluj-Napoca',
-  area: 'Iasi (jud Iasi), Cluj-Napoca (jud Cluj)',
-};
+const OrganizationProfile = ({ navigation, route }: any) => {
+  console.log('OrganizationProfile', route.params);
+  const { t } = useTranslation('organization_profile');
 
-const event = {
-  date: '12 FEB 2022, 18:00 - 20:00',
-  division: 'Departamentul de fundraising',
-  location: 'Sediu',
-  title: 'Sedinta departament',
-};
-
-const OrganizationProfile = ({ navigation }: any) => {
-  console.log('OrganizationProfile');
+  const {
+    data: organization,
+    isLoading: isFetchingOrganization,
+    error: getOrganizationError,
+  } = useOrganization(route.params.organizationId);
 
   const onJoinOrganizationButtonPress = () => {
     navigation.navigate('join-organization');
   };
 
-  const onEventPress = () => {
-    console.log('event pressed');
-  };
-
   return (
-    <PageLayout title={i18n.t('organization_profile:title')} onBackButtonPress={navigation.goBack}>
-      <ScrollView>
-        <Layout style={styles.layout}>
+    <PageLayout
+      title={i18n.t('organization_profile:title')}
+      onBackButtonPress={navigation.goBack}
+      actionsOptions={{
+        primaryActionLabel: t('join'),
+        onPrimaryActionButtonClick: onJoinOrganizationButtonPress,
+      }}
+    >
+      {isFetchingOrganization && <LoadingScreen />}
+      {!!getOrganizationError && !isFetchingOrganization && (
+        <Text>{JSONStringifyError(getOrganizationError as any)}</Text>
+      )}
+      {!isFetchingOrganization && organization && (
+        <ScrollViewLayout>
           <ProfileIntro
             uri={organization.logo}
             name={organization.name}
-            description={`${organization.volunteers} ${i18n.t('general:volunteers').toLowerCase()}`}
+            description={`${organization.numberOfVolunteers} ${i18n
+              .t('general:volunteers')
+              .toLowerCase()}`}
           />
-          <View style={styles.readOnlyContainer}>
+          <View style={styles.container}>
             <ReadOnlyElement
               label={i18n.t('organization_profile:description')}
               value={organization.description}
@@ -66,28 +68,26 @@ const OrganizationProfile = ({ navigation }: any) => {
             />
             <ReadOnlyElement
               label={i18n.t('organization_profile:area')}
-              value={organization.area}
+              value={organization.activityArea}
             />
           </View>
           <SectionWrapper title={i18n.t('organization_profile:events')}>
-            <EventItem
-              date={event.date}
-              divison={event.division}
-              location={event.location}
-              title={event.title}
-              onPress={onEventPress}
-            />
-            <EventItem
-              date={event.date}
-              divison={event.division}
-              location={event.location}
-              title={event.title}
-              onPress={onEventPress}
-            />
+            <ScrollViewLayout>
+              <View style={styles.container}>
+                {organization.events.map((event) => (
+                  <View style={styles.container} key={event.id}>
+                    <EventItem event={event} organizationLogo={organization.logo} />
+                    <Divider />
+                  </View>
+                ))}
+                {organization.events.length === 0 && (
+                  <Text category="p1">{`${t('no_events')}`}</Text>
+                )}
+              </View>
+            </ScrollViewLayout>
           </SectionWrapper>
-          <Button onPress={onJoinOrganizationButtonPress}>Join</Button>
-        </Layout>
-      </ScrollView>
+        </ScrollViewLayout>
+      )}
     </PageLayout>
   );
 };
@@ -95,10 +95,7 @@ const OrganizationProfile = ({ navigation }: any) => {
 export default OrganizationProfile;
 
 const styles = StyleSheet.create({
-  layout: {
-    gap: 24,
-  },
-  readOnlyContainer: {
+  container: {
     gap: 16,
   },
 });

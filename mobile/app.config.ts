@@ -6,6 +6,7 @@ config(); // Load environment variables from .env file
 const expoConfig: ExpoConfig = {
   name: 'teo',
   slug: 'teo',
+  scheme: 'teo',
   version: '0.0.1',
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',

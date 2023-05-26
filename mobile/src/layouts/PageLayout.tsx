@@ -1,5 +1,12 @@
 import React, { ReactNode } from 'react';
-import { Layout, TopNavigation, Icon, TopNavigationAction, Spinner } from '@ui-kitten/components';
+import {
+  Layout,
+  TopNavigation,
+  Icon,
+  TopNavigationAction,
+  Spinner,
+  Text,
+} from '@ui-kitten/components';
 import Button from '../components/Button';
 import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
 import { ButtonType } from '../common/enums/button-type.enum';
@@ -22,6 +29,12 @@ interface PageLayoutProps {
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
 const EditIcon = (props: any) => <Icon {...props} name="edit" />;
+const renderTitle = (title: string) => () =>
+  (
+    <Text category="h3" style={styles.title}>
+      {title}
+    </Text>
+  );
 
 const LoadingIndicator = (props: any): React.ReactElement => (
   <View style={[props.style, styles.indicator]}>
@@ -55,7 +68,7 @@ export const PageLayout = ({
   return (
     <>
       <TopNavigation
-        title={title}
+        title={renderTitle(title)}
         alignment="start"
         accessoryLeft={renderLeftControl}
         accessoryRight={renderRightControl}
@@ -90,7 +103,7 @@ export const PageLayout = ({
 export default PageLayout;
 
 const styles = StyleSheet.create({
-  layout: { flex: 1 },
+  layout: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
   keyboardAvoidingContainer: { flex: 1 },
   childrenContainer: { flex: 1, padding: 16 },
   bottomActionContainer: {
@@ -109,5 +122,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  title: {
+    paddingHorizontal: 8,
   },
 });
