@@ -312,6 +312,28 @@
       }
     }
   },
+  "create_volunteer": {
+    "heading": "Profilul voluntarului",
+    "description": "Completeaza câmpurile de mai jos pentru înregistrare",
+    "form": {
+      "name": { "label": "Nume complet" },
+      "email": {
+        "label": "E-mail de contact",
+        "required": "Email-ul este obligatoriu",
+        "placeholder": "Introduceți emailul",
+        "pattern": "Formatul email-ului nu este valid"
+      },
+      "checkbox": {
+        "label": "Același ca email cont TEO"
+      },
+      "branch": {
+        "label": "FIlială sau sucursală"
+      },
+      "active_since": {
+        "label": "Voluntar din"
+      }
+    }
+  },
   "settings": {
     "title": "Setări cont",
     "heading": "Date cont",
