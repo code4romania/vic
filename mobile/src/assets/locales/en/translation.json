@@ -317,7 +317,8 @@
     "identity": "Date identitate",
     "password": "Schimbă parola",
     "notification": "Setări notificări",
-    "information": "Informații"
+    "information": "Informații",
+    "account_data": { "picture": "Poza profil", "change_picture": "Schimba poza" }
   },
   "user": {
     "errors": {

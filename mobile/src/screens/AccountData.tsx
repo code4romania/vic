@@ -13,6 +13,7 @@ import CitySelect from '../containers/CitySelect';
 import FormDatePicker from '../components/FormDatePicker';
 import FormSelect from '../components/FormSelect';
 import { SexOptions } from '../common/constants/sex-options';
+import VolunteerPictureSection from '../components/VolunteerPictureSection';
 
 type AccountDataFormTypes = {
   firstName: string;
@@ -97,6 +98,7 @@ const AccountData = ({ navigation }: any) => {
       }}
     >
       <FormLayout>
+        <VolunteerPictureSection />
         <FormInput
           control={control as any}
           name="firstName"
