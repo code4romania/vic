@@ -32,6 +32,7 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
       where: options,
       relations: {
         location: true,
+        userPersonalData: true,
       },
     });
 
