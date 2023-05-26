@@ -22,6 +22,12 @@ import {
   IOrganizationWithVolunteersModel,
   OrganizationWithVolunteersTransformer,
 } from '../models/organization-with-volunteers.model';
+import {
+  IOrganizationWithEventsModel,
+  OrganizationWithEventTransformer,
+} from '../models/organization-with-events.model';
+import { EventEntity } from 'src/modules/event/entities/event.entity';
+import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 
 @Injectable()
 export class OrganizationRepositoryService
@@ -111,6 +117,44 @@ export class OrganizationRepositoryService
       findOptions.limit,
       findOptions.page,
       OrganizationWithVolunteersTransformer.fromEntity,
+    );
+  }
+
+  public async findWithEvents(
+    organizationId: string,
+  ): Promise<IOrganizationWithEventsModel> {
+    // get organization entity by id with upcoming public events
+    const organizationEntity = await this.organizationRepository
+      .createQueryBuilder('organization')
+      .loadRelationCountAndMap(
+        'organization.numberOfVolunteers',
+        `organization.volunteers`,
+        'numberOfVolunteers',
+        (qb) =>
+          qb.innerJoin(VolunteerEntity, 'v').where(`"v"."status" = :status`, {
+            status: VolunteerStatus.ACTIVE,
+          }),
+      )
+      .select()
+      .leftJoinAndSelect(
+        'organization.events',
+        'event',
+        'event.isPublic = :isPublic AND event.startDate > :date AND event.status = :status',
+        {
+          isPublic: true,
+          date: new Date(),
+          status: EventStatus.PUBLISHED,
+        },
+      )
+      .where('organization.id = :organizationId', { organizationId })
+      .getOne();
+
+    // return organization model
+    return OrganizationWithEventTransformer.fromEntity(
+      organizationEntity as OrganizationEntity & {
+        events: EventEntity[];
+        numberOfVolunteers: number;
+      },
     );
   }
 }
