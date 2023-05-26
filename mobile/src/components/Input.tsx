@@ -1,15 +1,24 @@
-import { InputProps, Input as KittenInput, StyleService } from '@ui-kitten/components';
+import {
+  InputProps,
+  Input as KittenInput,
+  StyleService,
+  useStyleSheet,
+} from '@ui-kitten/components';
 import React from 'react';
 
-const Input = (props: InputProps) => (
-  <KittenInput
-    style={[styles.input, props.disabled ? styles.disabledBackground : {}]}
-    textStyle={styles.inputText}
-    {...props}
-  />
-);
+const Input = (props: InputProps) => {
+  const styles = useStyleSheet(themedStyles);
 
-const styles = StyleService.create({
+  return (
+    <KittenInput
+      textStyle={[styles.inputText, props.disabled ? styles.disabledColor : {}]}
+      style={[styles.input, props.disabled ? styles.disabledBackground : {}]}
+      {...props}
+    />
+  );
+};
+
+const themedStyles = StyleService.create({
   input: {
     shadowColor: '$input-shadow-color',
     shadowOffset: { width: 0, height: 1 },
@@ -19,6 +28,7 @@ const styles = StyleService.create({
     borderRadius: 6,
   },
   disabledBackground: { backgroundColor: '$cool-gray-100' },
+  disabledColor: { color: '$cool-gray-500' },
   inputText: { fontSize: 16, fontWeight: '400' },
 });
 
