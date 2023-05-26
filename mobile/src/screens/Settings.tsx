@@ -47,20 +47,18 @@ const Settings = ({ navigation }: any) => {
 
   return (
     <PageLayout title={t('title')}>
-      <View style={styles.container}>
-        <View style={styles.profileContainer}>
-          <Image source={{ uri: 'https://picsum.photos/200/300' }} style={styles.image} />
-          <Text category="h2" appearance="hint">
-            Andreea Popa
-          </Text>
-        </View>
-        <List
-          data={SETTING_SCREENS}
-          ItemSeparatorComponent={Divider}
-          renderItem={renderItem}
-          style={styles.list}
-        />
+      <View style={styles.profileContainer}>
+        <Image source={{ uri: 'https://picsum.photos/200/300' }} style={styles.image} />
+        <Text category="h2" appearance="hint">
+          Andreea Popa
+        </Text>
       </View>
+      <List
+        data={SETTING_SCREENS}
+        ItemSeparatorComponent={Divider}
+        renderItem={renderItem}
+        style={styles.list}
+      />
     </PageLayout>
   );
 };
@@ -68,10 +66,6 @@ const Settings = ({ navigation }: any) => {
 export default Settings;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
   list: {
     backgroundColor: 'white',
   },

@@ -124,7 +124,9 @@
         "label": "Email",
         "placeholder": "Introduceti emailul",
         "required": "Email-ul este obligatoriu",
-        "pattern": "Formatul email-ului nu este valid"
+        "pattern": "Formatul email-ului nu este valid",
+        "min": "Email-ul poate să aibă minim {{value}} caractere",
+        "max": "Email-ul poate să aibă maxim {{value}} caractere"
       },
       "password": {
         "label": "Parola",
@@ -202,14 +204,18 @@
           "max": "Numele poate sa aiba maxim {{value}} caractere"
         },
         "county": {
-          "label": "Judet"
+          "label": "Județ",
+          "required": "Județul este obligatoriu"
         },
         "city": {
-          "label": "Oras"
+          "label": "Oraș",
+          "required": "Orașul este obligatoriu"
         },
         "birthday": {
-          "label": "Data nașterii"
-        }
+          "label": "Data nașterii",
+          "required": "Data nașterii este obligatorie"
+        },
+        "sex": { "required": "Alegerea sexului este obligatorie" }
       }
     }
   },
