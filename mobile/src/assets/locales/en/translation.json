@@ -27,7 +27,12 @@
     "send": "Trimite",
     "volunteers": "Voluntari",
     "loading": "Se incarca...",
-    "empty_list": "Nu exista rezultate"
+    "empty_list": "Nu exista rezultate",
+    "error": {
+      "load_entries": "Eroare la incarcarea datelor",
+      "unknown": "A aparut o eroare necunoscuta",
+      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
+    }
   },
   "organizations": {
     "search": {
@@ -49,6 +54,9 @@
     "join": "Alătură-te organizației",
     "no_events": "Nu sunt evenimente de afisat",
     "code": "Ai cod de acces?"
+  },
+  "privacy_policy": {
+    "title": "Politica de confidentialitate"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
@@ -304,5 +312,11 @@
     "password": "Schimbă parola",
     "notification": "Setări notificări",
     "information": "Informații"
+  },
+  "user": {
+    "errors": {
+      "USER_001": "Utilizatorul nu a fost gasit",
+      "USER_004": "Acest numar de identificare al utilizatorului exista deja"
+    }
   }
 }
