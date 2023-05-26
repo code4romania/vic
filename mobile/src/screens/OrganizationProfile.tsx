@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Divider, Text } from '@ui-kitten/components';
+import { Divider, Text, Modal, Card } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import SectionWrapper from '../components/SectionWrapper';
@@ -12,10 +12,16 @@ import { JSONStringifyError } from '../common/utils/utils';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import EventItem from '../components/EventItem';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../hooks/useAuth';
+import Button from '../components/Button';
+import { ButtonType } from '../common/enums/button-type.enum';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   console.log('OrganizationProfile', route.params);
   const { t } = useTranslation('organization_profile');
+  const [isMissingIdentityModalVisible, setIsMissingIdentityDataModalVisible] =
+    useState<boolean>(false);
+  const { userProfile } = useAuth();
 
   const {
     data: organization,
@@ -24,7 +30,19 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   } = useOrganization(route.params.organizationId);
 
   const onJoinOrganizationButtonPress = () => {
+    if (!userProfile?.userPersonalData) {
+      // 1. if the user doesn't have the identity data filled in show modal
+      setIsMissingIdentityDataModalVisible(true);
+      return;
+    }
+
+    // 2. otherwise go to join organization
     navigation.navigate('join-organization');
+  };
+
+  const onGoToIdentityDataScreen = () => {
+    setIsMissingIdentityDataModalVisible(false);
+    navigation.navigate('identity-data', { shouldGoBack: true });
   };
 
   return (
@@ -88,6 +106,21 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           </SectionWrapper>
         </ScrollViewLayout>
       )}
+      <Modal visible={isMissingIdentityModalVisible}>
+        <Card disabled={true}>
+          <Text>Placeholder modal for bottomsheet which will redirect to identity data screen</Text>
+          <Button
+            label="Completeaza date"
+            type={ButtonType.PRIMARY}
+            onPress={onGoToIdentityDataScreen}
+          />
+          <Button
+            label="Inapoi"
+            type={ButtonType.SECONDARY}
+            onPress={setIsMissingIdentityDataModalVisible.bind(null, false)}
+          />
+        </Card>
+      </Modal>
     </PageLayout>
   );
 };
