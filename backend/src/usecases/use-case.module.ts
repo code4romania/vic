@@ -89,6 +89,7 @@ import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-coun
 import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.usecase';
 import { GetOrganizationsUseCase } from './organization/get-organizations.usecase';
 import { GetOrganizationWithEventsUseCase } from './organization/get-organization-with-events.usecase';
+import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.usecase';
 
 @Module({
   imports: [
@@ -130,6 +131,7 @@ import { GetOrganizationWithEventsUseCase } from './organization/get-organizatio
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
+    UpdateUserPersonalDataUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -223,6 +225,7 @@ import { GetOrganizationWithEventsUseCase } from './organization/get-organizatio
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
+    UpdateUserPersonalDataUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,

@@ -10,15 +10,23 @@ import {
   CreateRegularUserOptions,
   FindRegularUserOptions,
   IRegularUserModel,
+  UpdateRegularUserOptions,
 } from '../models/regular-user.model';
 import { AdminUserRepositoryService } from '../repositories/admin-user.repository';
 import { RegularUserRepositoryService } from '../repositories/regular-user.repository';
+import {
+  CreateUserPersonalDataOptions,
+  FindUserPersonalDataOptions,
+  IUserPersonalDataModel,
+} from '../models/user-personal-data.model';
+import { UserPersonalDataRepository } from '../repositories/user-personal-data.repository';
 
 @Injectable()
 export class UserFacadeService {
   constructor(
     private readonly adminUserRepository: AdminUserRepositoryService,
     private readonly regularUserRepository: RegularUserRepositoryService,
+    private readonly userPersonalDataRepository: UserPersonalDataRepository,
   ) {}
 
   public async findAdminUser(
@@ -45,9 +53,35 @@ export class UserFacadeService {
     return this.regularUserRepository.create(regularUser);
   }
 
+  public async updateRegularUser(
+    id: string,
+    regularUser: UpdateRegularUserOptions,
+  ): Promise<IRegularUserModel> {
+    return this.regularUserRepository.update(id, regularUser);
+  }
+
   public async findRegularUser(
     options: FindRegularUserOptions,
   ): Promise<IRegularUserModel> {
     return this.regularUserRepository.find(options);
+  }
+
+  public async createUserPersonalData(
+    userPersonalDataModel: CreateUserPersonalDataOptions,
+  ): Promise<IUserPersonalDataModel> {
+    return this.userPersonalDataRepository.create(userPersonalDataModel);
+  }
+
+  public async updateUserPersonalData(
+    id: string,
+    updates: Partial<CreateUserPersonalDataOptions>,
+  ): Promise<IUserPersonalDataModel> {
+    return this.userPersonalDataRepository.update(id, updates);
+  }
+
+  public async findUserPersonalData(
+    findOptions: FindUserPersonalDataOptions,
+  ): Promise<IUserPersonalDataModel> {
+    return this.userPersonalDataRepository.find(findOptions);
   }
 }

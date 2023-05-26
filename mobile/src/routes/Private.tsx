@@ -20,6 +20,7 @@ import NotificationsSettings from '../screens/NotificationsSettings';
 import DrawerNavigator from './Drawer';
 import AccessCode from '../screens/AccessCode';
 import CreateVolunteer from '../screens/CreateVolunteer';
+import PrivacyPolicy from '../screens/PrivacyPolicy';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ const Private = () => (
       <Screen name="change-password" component={ChangePassword} />
       <Screen name="notifications-settings" component={NotificationsSettings} />
       <Screen name="create-volunteer" component={CreateVolunteer} />
+      <Screen name="privacy-policy" component={PrivacyPolicy} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
       <Screen name="leave-organization" component={LeaveOrganization} />
