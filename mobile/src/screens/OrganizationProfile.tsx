@@ -18,17 +18,25 @@ import { ButtonType } from '../common/enums/button-type.enum';
 import Disclaimer from '../components/Disclaimer';
 import { OrganizatinVolunteerStatus } from '../common/enums/organization-volunteer-status.enum';
 import { useOrganization } from '../store/organization/organization.selector';
+import { useCancelAccessRequestMutation } from '../services/access-request/access-request.service';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   console.log('OrganizationProfile', route.params);
   const { t } = useTranslation('organization_profile');
+
   const [isMissingIdentityModalVisible, setIsMissingIdentityDataModalVisible] =
     useState<boolean>(false);
+
   const { userProfile } = useAuth();
 
   const { isFetching: isFetchingOrganization, error: getOrganizationError } = useOrganizationQuery(
     route.params.organizationId,
   );
+
+  const { isLoading: isCancelingAccessRequest, mutate: cancelAccessRequest } =
+    useCancelAccessRequestMutation();
 
   const { organization } = useOrganization();
 
@@ -67,6 +75,28 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     navigation.navigate('identity-data', { shouldGoBack: true });
   };
 
+  const onCancelAccessRequest = () => {
+    if (organization) {
+      cancelAccessRequest(
+        { organizationId: organization.id },
+        {
+          onError: (error: any) => {
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.ACCESS_CODE_ERRORS.getError(
+                error.response?.data.code_error,
+              )}`,
+            });
+          },
+        },
+      );
+    }
+  };
+
+  const isLoading = () => {
+    return isCancelingAccessRequest || isFetchingOrganization;
+  };
+
   return (
     <PageLayout
       title={i18n.t('organization_profile:title')}
@@ -76,7 +106,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
         OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
           ? {
               primaryActionLabel: t('cancel_request'),
-              onPrimaryActionButtonClick: () => console.log('cancel me'),
+              onPrimaryActionButtonClick: onCancelAccessRequest,
               primaryBtnType: ButtonType.DANGER,
             }
           : {
@@ -85,7 +115,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
               secondaryActionLabel: `${t('code')}`,
               onSecondaryActionButtonClick: onJoinOrganizationByAccessCodeButtonPress,
             }),
-        loading: isFetchingOrganization,
+        loading: isLoading(),
       }}
     >
       {isFetchingOrganization && <LoadingScreen />}

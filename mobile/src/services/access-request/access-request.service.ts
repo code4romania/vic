@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query';
-import { createAccessRequest } from './access-request.api';
+import { cancelAccessRequest, createAccessRequest } from './access-request.api';
 import useStore from '../../store/store';
 
 interface IQuenstionAnswer {
@@ -20,6 +20,19 @@ export const useCreateAccessrequestMutation = () => {
     {
       onSuccess: () => {
         setOrganizationPending();
+      },
+    },
+  );
+};
+
+export const useCancelAccessRequestMutation = () => {
+  const { resetOrganizationVolunteerStatus } = useStore();
+  return useMutation(
+    ['cancel-access-request'],
+    ({ organizationId }: { organizationId: string }) => cancelAccessRequest(organizationId),
+    {
+      onSuccess: () => {
+        resetOrganizationVolunteerStatus();
       },
     },
   );

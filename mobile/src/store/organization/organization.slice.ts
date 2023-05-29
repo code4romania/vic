@@ -13,6 +13,13 @@ export const organizationSlice = (set: any) => ({
         organizationVolunteerStatus: OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING,
       },
     })),
+  resetOrganizationVolunteerStatus: () =>
+    set((state: any) => ({
+      organization: {
+        ...state.organization,
+        organizationVolunteerStatus: undefined,
+      },
+    })),
 });
 
 export default { organizationSlice };

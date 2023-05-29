@@ -91,6 +91,7 @@ import { GetOrganizationsUseCase } from './organization/get-organizations.usecas
 import { GetOrganizationWithEventsUseCase } from './organization/get-organization-with-events.usecase';
 import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.usecase';
 import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organization-by-access-code.usecase';
+import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
 
 @Module({
   imports: [
@@ -143,6 +144,7 @@ import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organizati
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
     JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -238,6 +240,7 @@ import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organizati
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
     JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,

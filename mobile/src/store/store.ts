@@ -6,6 +6,7 @@ interface OrganizationState {
   organization?: IOrganization;
   setOrganization: (organization: IOrganization) => void;
   setOrganizationPending: () => void;
+  resetOrganizationVolunteerStatus: () => void;
 }
 
 const useStore = create<OrganizationState>()((set: any) => ({ ...organizationSlice(set) }));
