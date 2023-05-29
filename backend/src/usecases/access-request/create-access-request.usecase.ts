@@ -22,30 +22,27 @@ export class CreateAccessRequestUseCase
   constructor(
     private readonly accessRequestFacade: AccessRequestFacade,
     private readonly organizationFacade: OrganizationFacadeService,
-    private readonly userFacade: UserFacadeService,
     private readonly volunteerFacade: VolunteerFacade,
-
+    private readonly userFacade: UserFacadeService,
     private readonly exceptionService: ExceptionsService,
   ) {}
 
   public async execute(
     createRequestModel: CreateAccessRequestModel,
   ): Promise<IAccessRequestModel> {
-    // TODO 0. TEMPORARY: Check if the user exists until we have token
+    // ========================================================================
+    // 1: check if the user has the identity data completed, otherwise throw
+    // ========================================================================
     const user = await this.userFacade.findRegularUser({
       id: createRequestModel.requestedById,
     });
 
-    if (!user) {
-      this.exceptionService.badRequestException(UserExceptionMessages.USER_001);
+    if (!user.userPersonalData) {
+      this.exceptionService.badRequestException(UserExceptionMessages.USER_005);
     }
 
     // ========================================================================
-    // TODO: check if the user has the identity data completed, otherwise throw
-    // ========================================================================
-
-    // ========================================================================
-    // 1. Check if the organization exists
+    // 2. Check if the organization exists
     const organization = await this.organizationFacade.findOrganization({
       id: createRequestModel.organizationId,
     });
@@ -56,7 +53,7 @@ export class CreateAccessRequestUseCase
       );
     }
     // ========================================================================
-    // 2. Check if the user is already part of organization (isVolunteer)
+    // 3. Check if the user is already part of organization (isVolunteer)
     const existingVolunteer = await this.volunteerFacade.find({
       userId: user.id,
       organizationId: organization.id,
@@ -68,7 +65,7 @@ export class CreateAccessRequestUseCase
       );
     }
     // ========================================================================
-    // 3. Search if there is another request for the: same "USER", "ORGANIZATION" and status "PENDING"
+    // 4. Search if there is another request for the: same "USER", "ORGANIZATION" and status "PENDING"
     const existingRequest = await this.accessRequestFacade.find({
       requestedById: createRequestModel.requestedById,
       organizationId: createRequestModel.organizationId,
@@ -82,7 +79,7 @@ export class CreateAccessRequestUseCase
     }
 
     // ========================================================================
-    // 4. Create the request
+    // 5. Create the request
     return this.accessRequestFacade.create(createRequestModel);
   }
 }

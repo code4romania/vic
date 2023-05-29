@@ -37,7 +37,11 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     }
 
     // 2. otherwise go to join organization
-    navigation.navigate('join-organization');
+    navigation.navigate('join-organization', {
+      organizationId: organization?.id,
+      logo: organization?.logo,
+      name: organization?.name,
+    });
   };
 
   const onGoToIdentityDataScreen = () => {

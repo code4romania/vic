@@ -310,6 +310,12 @@
         "max": "Motivatia poate sa aiba maxim {{value}} caractere",
         "helper": "Completează câmpul pentru a te înscrie."
       }
+    },
+    "errors": {
+      "ACCESS_REQUEST_001": "Exista deja un request de access pentru aceasta organizatie",
+      "ORG_001": "Organizatia nu a fost gasita",
+      "VOLUNTEER_002": "Utilizatorul este deja parte a organizatiei",
+      "USER_005": "Utilizatorul nu are datele de identificare completate"
     }
   },
   "create_volunteer": {
