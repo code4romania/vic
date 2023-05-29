@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { AccessRequestStatus } from 'src/modules/access-request/enums/access-request-status.enum';
+import { AccessRequestFacade } from 'src/modules/access-request/services/access-request.facade';
+import { OrganizatinVolunteerStatus } from 'src/modules/organization/enums/organization-volunteer-status.enum';
 import { OrganizationExceptionMessages } from 'src/modules/organization/exceptions/exceptions';
 import { IOrganizationWithEventsModel } from 'src/modules/organization/models/organization-with-events.model';
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
@@ -12,23 +15,37 @@ export class GetOrganizationWithEventsUseCase
   constructor(
     private readonly organizationService: OrganizationFacadeService,
     private readonly exceptionService: ExceptionsService,
+    private readonly accessRequestFacade: AccessRequestFacade,
   ) {}
 
   public async execute(
     organizationId: string,
+    userId: string,
   ): Promise<IOrganizationWithEventsModel> {
-    // Get organization from the database
+    // 1. Get organization from the database
     const organization =
       await this.organizationService.findOrganizationWithEvents(organizationId);
 
-    // If organization is not found throw error
+    // 2. If organization is not found throw error
     if (!organization) {
       this.exceptionService.notFoundException(
         OrganizationExceptionMessages.ORG_001,
       );
     }
 
-    // Send the organization back to the caller
+    // 3. Check if the user has access request pending for this organization
+    const accessRequest = await this.accessRequestFacade.find({
+      organizationId,
+      requestedById: userId,
+      status: AccessRequestStatus.PENDING,
+    });
+
+    if (accessRequest) {
+      organization.organizationVolunteerStatus =
+        OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING;
+    }
+
+    // 4. Send the organization back to the caller
     return organization;
   }
 }

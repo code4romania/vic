@@ -1,6 +1,8 @@
 import { useInfiniteQuery, useQuery } from 'react-query';
 import { getOrganization, getOrganizations } from './organization.api';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
+import useStore from '../../store/store';
+import { IOrganization } from '../../common/interfaces/organization.interface';
 
 export const useOrganizations = (orderDirection: OrderDirection, search: string) => {
   return useInfiniteQuery(
@@ -16,8 +18,13 @@ export const useOrganizations = (orderDirection: OrderDirection, search: string)
   );
 };
 
-export const useOrganization = (organizationId: string) => {
+export const useOrganizationQuery = (organizationId: string) => {
+  const { setOrganization } = useStore();
   return useQuery(['organization', organizationId], () => getOrganization(organizationId), {
+    onSuccess: (data: IOrganization) => {
+      setOrganization(data);
+    },
     enabled: !!organizationId,
+    staleTime: 0,
   });
 };

@@ -52,8 +52,12 @@
     "events": "Evenimente deschise",
     "volunteers": "{{number}} voluntari",
     "join": "Alătură-te organizației",
+    "cancel_request": "Anuleaza cererea",
     "no_events": "Nu sunt evenimente de afisat",
-    "code": "Ai cod de acces?"
+    "code": "Ai cod de acces?",
+    "disclaimer": {
+      "access_request_pending": "Inscrierea ta asteapta aprobare de la organizatie"
+    }
   },
   "privacy_policy": {
     "title": "Politica de confidentialitate"

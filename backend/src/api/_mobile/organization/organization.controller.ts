@@ -11,6 +11,8 @@ import { OrganizationWithVolunteersPresenter } from './presenters/organization-w
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { OrganizationWithEventsPresenter } from './presenters/organization-with-events.presenter';
 import { GetOrganizationWithEventsUseCase } from 'src/usecases/organization/get-organization-with-events.usecase';
+import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
+import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -42,9 +44,11 @@ export class MobileOrganizationController {
   @Get(':id')
   async get(
     @Param('id', UuidValidationPipe) organizationId: string,
+    @ExtractUser() { id }: IRegularUserModel,
   ): Promise<OrganizationWithEventsPresenter> {
     const organization = await this.getOrganizationWithEvents.execute(
       organizationId,
+      id,
     );
     return new OrganizationWithEventsPresenter(organization);
   }

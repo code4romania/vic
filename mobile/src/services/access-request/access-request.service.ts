@@ -1,5 +1,6 @@
 import { useMutation } from 'react-query';
 import { createAccessRequest } from './access-request.api';
+import useStore from '../../store/store';
 
 interface IQuenstionAnswer {
   question: string;
@@ -12,7 +13,14 @@ export interface ICreateAccessRequestPayload {
 }
 
 export const useCreateAccessrequestMutation = () => {
-  return useMutation(['access-request'], (request: ICreateAccessRequestPayload) =>
-    createAccessRequest(request),
+  const { setOrganizationPending } = useStore();
+  return useMutation(
+    ['access-request'],
+    (request: ICreateAccessRequestPayload) => createAccessRequest(request),
+    {
+      onSuccess: () => {
+        setOrganizationPending();
+      },
+    },
   );
 };

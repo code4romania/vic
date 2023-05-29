@@ -4,6 +4,7 @@ import {
   EventModelTransformer,
   IEventModel,
 } from 'src/modules/event/models/event.model';
+import { OrganizatinVolunteerStatus } from '../enums/organization-volunteer-status.enum';
 
 export interface IOrganizationWithEventsModel {
   id: string;
@@ -16,6 +17,7 @@ export interface IOrganizationWithEventsModel {
   description: string;
   numberOfVolunteers: number;
   events: IEventModel[];
+  organizationVolunteerStatus?: OrganizatinVolunteerStatus;
 }
 
 export class OrganizationWithEventTransformer {

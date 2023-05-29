@@ -17,6 +17,7 @@ interface ActionsOptionsProps {
   onPrimaryActionButtonClick: (props: any) => void;
   secondaryActionLabel?: string;
   onSecondaryActionButtonClick?: () => void;
+  primaryBtnType?: ButtonType;
   loading?: boolean;
 }
 
@@ -92,7 +93,7 @@ export const PageLayout = ({
                 <Button
                   onPress={actionsOptions.onPrimaryActionButtonClick}
                   label={`${actionsOptions.primaryActionLabel}`}
-                  type={ButtonType.PRIMARY}
+                  type={actionsOptions.primaryBtnType || ButtonType.PRIMARY}
                 />
                 {actionsOptions.onSecondaryActionButtonClick &&
                   actionsOptions.secondaryActionLabel && (
