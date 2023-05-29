@@ -10,6 +10,7 @@ import {
 import Button from '../components/Button';
 import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
 import { ButtonType } from '../common/enums/button-type.enum';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
@@ -87,11 +88,19 @@ export const PageLayout = ({
             {actionsOptions.loading ? (
               <LoadingIndicator /> // TODO: handle the loading state properly
             ) : (
-              <Button
-                onPress={actionsOptions.onPrimaryActionButtonClick}
-                label={`${actionsOptions.primaryActionLabel}`}
-                type={ButtonType.PRIMARY}
-              />
+              <View style={styles.buttonsContainer}>
+                <Button
+                  onPress={actionsOptions.onPrimaryActionButtonClick}
+                  label={`${actionsOptions.primaryActionLabel}`}
+                  type={ButtonType.PRIMARY}
+                />
+                {actionsOptions.onSecondaryActionButtonClick &&
+                  actionsOptions.secondaryActionLabel && (
+                    <TouchableWithoutFeedback onPress={actionsOptions.onSecondaryActionButtonClick}>
+                      <Text category="p2">{actionsOptions.secondaryActionLabel}</Text>
+                    </TouchableWithoutFeedback>
+                  )}
+              </View>
             )}
           </View>
         )}
@@ -125,5 +134,9 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingHorizontal: 8,
+  },
+  buttonsContainer: {
+    gap: 24,
+    alignItems: 'center',
   },
 });

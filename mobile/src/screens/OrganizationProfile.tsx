@@ -44,6 +44,21 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     });
   };
 
+  const onJoinOrganizationByAccessCodeButtonPress = () => {
+    if (!userProfile?.userPersonalData) {
+      // 1. if the user doesn't have the identity data filled in show modal
+      setIsMissingIdentityDataModalVisible(true);
+      return;
+    }
+
+    // 2. otherwise go to join organization
+    navigation.navigate('join-by-access-code', {
+      organizationId: organization?.id,
+      logo: organization?.logo,
+      name: organization?.name,
+    });
+  };
+
   const onGoToIdentityDataScreen = () => {
     setIsMissingIdentityDataModalVisible(false);
     navigation.navigate('identity-data', { shouldGoBack: true });
@@ -56,6 +71,8 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       actionsOptions={{
         primaryActionLabel: t('join'),
         onPrimaryActionButtonClick: onJoinOrganizationButtonPress,
+        secondaryActionLabel: `${t('code')}`,
+        onSecondaryActionButtonClick: onJoinOrganizationByAccessCodeButtonPress,
       }}
     >
       {isFetchingOrganization && <LoadingScreen />}

@@ -312,8 +312,10 @@
       }
     },
     "errors": {
+      "ACCESS_CODE_001": "Codul de access este invalid",
       "ACCESS_REQUEST_001": "Exista deja un request de access pentru aceasta organizatie",
       "ORG_001": "Organizatia nu a fost gasita",
+      "USER_001": "Utilizatotul nu a fost gasit",
       "VOLUNTEER_002": "Utilizatorul este deja parte a organizatiei",
       "USER_005": "Utilizatorul nu are datele de identificare completate"
     }
