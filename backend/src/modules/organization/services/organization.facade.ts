@@ -47,8 +47,9 @@ export class OrganizationFacadeService {
 
   public async findOrganizationWithEvents(
     organizationId: string,
+    userId: string,
   ): Promise<IOrganizationWithEventsModel> {
-    return this.organizationRepository.findWithEvents(organizationId);
+    return this.organizationRepository.findWithEvents(organizationId, userId);
   }
 
   public async findMyOrganizations(

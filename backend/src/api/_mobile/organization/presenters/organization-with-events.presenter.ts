@@ -3,6 +3,7 @@ import { Expose } from 'class-transformer';
 import { IOrganizationWithEventsModel } from 'src/modules/organization/models/organization-with-events.model';
 import { EventListItemPresenter } from '../../event/presenters/event-list-item.presenter';
 import { OrganizatinVolunteerStatus } from 'src/modules/organization/enums/organization-volunteer-status.enum';
+import { VolunteerPresenter } from 'src/api/volunteer/presenters/volunteer.presenter';
 
 export class OrganizationWithEventsPresenter {
   constructor(organization: IOrganizationWithEventsModel) {
@@ -17,6 +18,9 @@ export class OrganizationWithEventsPresenter {
     this.numberOfVolunteers = organization.numberOfVolunteers;
     this.events = organization.events.map(
       (event) => new EventListItemPresenter(event),
+    );
+    this.volunteers = organization.volunteers.map(
+      (volunteer) => new VolunteerPresenter(volunteer),
     );
     this.organizationVolunteerStatus = organization.organizationVolunteerStatus;
   }
@@ -92,4 +96,11 @@ export class OrganizationWithEventsPresenter {
     isArray: true,
   })
   events: EventListItemPresenter[];
+
+  @Expose()
+  @ApiProperty({
+    type: VolunteerPresenter,
+    isArray: true,
+  })
+  volunteers: VolunteerPresenter[];
 }

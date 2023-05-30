@@ -8,7 +8,7 @@ import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
 import { useOrganizationQuery } from '../services/organization/organization.service';
 import LoadingScreen from '../components/LoadingScreen';
-import { JSONStringifyError } from '../common/utils/utils';
+import { JSONStringifyError, formatDate } from '../common/utils/utils';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import EventItem from '../components/EventItem';
 import { useTranslation } from 'react-i18next';
@@ -120,24 +120,41 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     },
   });
 
+  const renderActionOptions = () => {
+    let options: any = {
+      primaryActionLabel: t('join'),
+      onPrimaryActionButtonClick: onJoinOrganizationButtonPress,
+      secondaryActionLabel: `${t('code')}`,
+      onSecondaryActionButtonClick: onJoinOrganizationByAccessCodeButtonPress,
+    };
+
+    switch (organization?.organizationVolunteerStatus) {
+      case OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING:
+        options = {
+          primaryActionLabel: t('cancel_request'),
+          onPrimaryActionButtonClick: openBottomSheet,
+          primaryBtnType: ButtonType.DANGER,
+        };
+        break;
+      case OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER:
+        options = {
+          primaryActionLabel: t('leave'),
+          onPrimaryActionButtonClick: () => console.log('leave'),
+          primaryBtnType: ButtonType.DANGER,
+        };
+        break;
+    }
+
+    return options;
+  };
+
   return (
     <PageLayout
       title={i18n.t('organization_profile:title')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
-        ...(organization?.organizationVolunteerStatus ===
-        OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
-          ? {
-              primaryActionLabel: t('cancel_request'),
-              onPrimaryActionButtonClick: openBottomSheet,
-              primaryBtnType: ButtonType.DANGER,
-            }
-          : {
-              primaryActionLabel: t('join'),
-              onPrimaryActionButtonClick: onJoinOrganizationButtonPress,
-              secondaryActionLabel: `${t('code')}`,
-              onSecondaryActionButtonClick: onJoinOrganizationByAccessCodeButtonPress,
-            }),
+        ...renderActionOptions(),
+
         loading: isLoading(),
       }}
       bottomSheetOptions={
@@ -154,9 +171,19 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       {!isFetchingOrganization && organization && (
         <>
           {organization?.organizationVolunteerStatus ===
+            OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
+            <Disclaimer
+              text={t('disclaimer.joined_from', {
+                date: formatDate(new Date(organization.volunteers[0].createdOn)),
+              })}
+              color="green"
+            />
+          )}
+          {organization?.organizationVolunteerStatus ===
             OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING && (
             <Disclaimer text={t('disclaimer.access_request_pending')} color="yellow" />
           )}
+
           <ScrollViewLayout>
             <ProfileIntro
               uri={organization.logo}

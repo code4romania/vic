@@ -24,7 +24,10 @@ export class GetOrganizationWithEventsUseCase
   ): Promise<IOrganizationWithEventsModel> {
     // 1. Get organization from the database
     const organization =
-      await this.organizationService.findOrganizationWithEvents(organizationId);
+      await this.organizationService.findOrganizationWithEvents(
+        organizationId,
+        userId,
+      );
 
     // 2. If organization is not found throw error
     if (!organization) {
@@ -43,6 +46,11 @@ export class GetOrganizationWithEventsUseCase
     if (accessRequest) {
       organization.organizationVolunteerStatus =
         OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING;
+    }
+
+    if (organization.volunteers.length > 0) {
+      organization.organizationVolunteerStatus =
+        OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER;
     }
 
     // 4. Send the organization back to the caller

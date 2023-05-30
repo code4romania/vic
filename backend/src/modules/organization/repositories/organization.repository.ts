@@ -122,6 +122,7 @@ export class OrganizationRepositoryService
 
   public async findWithEvents(
     organizationId: string,
+    userId: string,
   ): Promise<IOrganizationWithEventsModel> {
     // get organization entity by id with upcoming public events
     const organizationEntity = await this.organizationRepository
@@ -144,6 +145,15 @@ export class OrganizationRepositoryService
           isPublic: true,
           date: new Date(),
           status: EventStatus.PUBLISHED,
+        },
+      )
+      .leftJoinAndSelect(
+        'organization.volunteers',
+        'volunteer',
+        'volunteer.status = :volunteerStatus AND volunteer.userId = :userId',
+        {
+          volunteerStatus: VolunteerStatus.ACTIVE,
+          userId,
         },
       )
       .where('organization.id = :organizationId', { organizationId })

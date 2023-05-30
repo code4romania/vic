@@ -5,6 +5,10 @@ import {
   IEventModel,
 } from 'src/modules/event/models/event.model';
 import { OrganizatinVolunteerStatus } from '../enums/organization-volunteer-status.enum';
+import {
+  IVolunteerModel,
+  VolunteerModelTransformer,
+} from 'src/modules/volunteer/model/volunteer.model';
 
 export interface IOrganizationWithEventsModel {
   id: string;
@@ -18,6 +22,7 @@ export interface IOrganizationWithEventsModel {
   numberOfVolunteers: number;
   events: IEventModel[];
   organizationVolunteerStatus?: OrganizatinVolunteerStatus;
+  volunteers: IVolunteerModel[];
 }
 
 export class OrganizationWithEventTransformer {
@@ -39,6 +44,9 @@ export class OrganizationWithEventTransformer {
       description: organizationEntity.description,
       numberOfVolunteers: organizationEntity.numberOfVolunteers,
       events: organizationEntity.events.map(EventModelTransformer.fromEntity),
+      volunteers: organizationEntity.volunteers.map(
+        VolunteerModelTransformer.fromEntity,
+      ),
     };
   }
 }

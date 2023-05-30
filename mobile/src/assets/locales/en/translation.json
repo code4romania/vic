@@ -53,11 +53,13 @@
     "events": "Evenimente deschise",
     "volunteers": "{{number}} voluntari",
     "join": "Alătură-te organizației",
+    "leave": "Părăsește organizația",
     "cancel_request": "Anuleaza cererea",
     "no_events": "Nu sunt evenimente de afisat",
     "code": "Ai cod de acces?",
     "disclaimer": {
-      "access_request_pending": "Inscrierea ta asteapta aprobare de la organizatie"
+      "access_request_pending": "Inscrierea ta asteapta aprobare de la organizatie",
+      "joined_from": "Te-ai alaturat din {{date}}"
     },
     "modal": {
       "identity_data_missing": {

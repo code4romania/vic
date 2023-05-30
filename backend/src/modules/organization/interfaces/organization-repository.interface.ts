@@ -20,7 +20,10 @@ export interface IOrganizationRepository
       | Partial<IFindOrganizationModel>
       | ArrayOfPropetyType<IFindOrganizationModel>,
   ): Promise<IOrganizationModel>;
-  findWithEvents(organizationId: string): Promise<IOrganizationWithEventsModel>;
+  findWithEvents(
+    organizationId: string,
+    userId: string,
+  ): Promise<IOrganizationWithEventsModel>;
   findMany(
     options: FindManyOrganizationsOptions,
   ): Promise<Pagination<IOrganizationWithVolunteersModel>>;
