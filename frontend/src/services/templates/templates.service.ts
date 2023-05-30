@@ -1,9 +1,10 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { getTemplates } from './templates.api';
+import { addContractTemplate, getTemplates } from './templates.api';
 import { AxiosError } from 'axios';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { TEMPLATE_ERRORS } from '../../common/errors/entities/template.errors';
+import { AddContractTemplateFormTypes } from '../../pages/AddContractTemplate';
 
 export const useTemplatesQuery = ({
   limit,
@@ -23,3 +24,9 @@ export const useTemplatesQuery = ({
       onError: (error: AxiosError<IBusinessException<TEMPLATE_ERRORS>>) => error,
     },
   );
+
+export const useAddContractTemplateMutation = () => {
+  return useMutation((payload: AddContractTemplateFormTypes) => addContractTemplate(payload), {
+    onError: (error: AxiosError<IBusinessException<TEMPLATE_ERRORS>>) => Promise.resolve(error),
+  });
+};
