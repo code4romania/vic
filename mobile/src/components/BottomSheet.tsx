@@ -20,6 +20,7 @@ export interface BottomSheetProps {
   heading: string;
   paragraph: string;
   primaryAction: {
+    status?: 'success' | 'danger';
     label: string;
     onPress: () => void;
   };
@@ -99,7 +100,11 @@ const BottomSheet = ({
             </Text>
           </View>
           <View style={styles.buttonsContainer}>
-            <Button label={primaryAction.label} onPress={onPrimaryActionClick} />
+            <Button
+              label={primaryAction.label}
+              status={primaryAction.status || 'success'}
+              onPress={onPrimaryActionClick}
+            />
             {secondaryAction && (
               <Button
                 label={secondaryAction?.label}

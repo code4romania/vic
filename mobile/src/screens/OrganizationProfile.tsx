@@ -94,6 +94,32 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     return isCancelingAccessRequest || isFetchingOrganization;
   };
 
+  const renderIdentityDataMissingBottomSheetConfig = () => ({
+    iconType: 'warning' as any,
+    heading: t('modal.identity_data_missing.heading'),
+    paragraph: t('modal.identity_data_missing.paragraph'),
+    primaryAction: {
+      label: t('modal.identity_data_missing.action_label'),
+      onPress: onGoToIdentityDataScreen,
+    },
+    secondaryAction: {
+      label: t('general:back'),
+    },
+  });
+
+  const renderCanceAccessRequestConfirmationBottomSheetConfig = () => ({
+    heading: t('modal.confirm_cancel_request.heading'),
+    paragraph: t('modal.confirm_cancel_request.paragraph'),
+    primaryAction: {
+      status: 'danger' as any,
+      label: t('modal.confirm_cancel_request.action_label'),
+      onPress: onCancelAccessRequest,
+    },
+    secondaryAction: {
+      label: t('general:back'),
+    },
+  });
+
   return (
     <PageLayout
       title={i18n.t('organization_profile:title')}
@@ -103,7 +129,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
         OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
           ? {
               primaryActionLabel: t('cancel_request'),
-              onPrimaryActionButtonClick: onCancelAccessRequest,
+              onPrimaryActionButtonClick: openBottomSheet,
               primaryBtnType: ButtonType.DANGER,
             }
           : {
@@ -114,18 +140,12 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             }),
         loading: isLoading(),
       }}
-      bottomSheetOptions={{
-        iconType: 'warning',
-        heading: t('modal.heading'),
-        paragraph: t('modal.paragraph'),
-        primaryAction: {
-          label: t('modal.action_label'),
-          onPress: onGoToIdentityDataScreen,
-        },
-        secondaryAction: {
-          label: t('general:back'),
-        },
-      }}
+      bottomSheetOptions={
+        organization?.organizationVolunteerStatus !==
+        OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
+          ? renderIdentityDataMissingBottomSheetConfig()
+          : renderCanceAccessRequestConfirmationBottomSheetConfig()
+      }
     >
       {isFetchingOrganization && <LoadingScreen />}
       {!!getOrganizationError && !isFetchingOrganization && (

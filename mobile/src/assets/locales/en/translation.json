@@ -60,9 +60,16 @@
       "access_request_pending": "Inscrierea ta asteapta aprobare de la organizatie"
     },
     "modal": {
-      "heading": "Ups!",
-      "paragraph": "Nu ai completat datele de identitate din Contul meu. Completează pentru a putea să te alături unei organizații.",
-      "action_label": "Completeaza datele"
+      "identity_data_missing": {
+        "heading": "Ups!",
+        "paragraph": "Nu ai completat datele de identitate din Contul meu. Completează pentru a putea să te alături unei organizații.",
+        "action_label": "Completeaza datele"
+      },
+      "confirm_cancel_request": {
+        "heading": "Anulezi cererea de inscriere?",
+        "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Ești sigur că vrei să retragi cererea?",
+        "action_label": "Anuleaza cererea"
+      }
     }
   },
   "privacy_policy": {
