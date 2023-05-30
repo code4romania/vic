@@ -3,6 +3,12 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 import { ITemplateListItem } from '../../common/interfaces/template.interface';
 // import API from '../api';
 
+export const getTemplate = (id: string): Promise<ITemplateListItem> => {
+  console.log(id);
+  // return API.get('').then((res) => res.data);
+  return Promise.resolve({ id: '123123', name: 'Name for template', uses: 1311 });
+};
+
 export const getTemplates = (params: {
   page: number;
   limit: number;
@@ -30,7 +36,13 @@ export const getTemplates = (params: {
 };
 
 export const addContractTemplate = (payload: { name: string; template: object }) => {
-  // return API.post('', { ...payload });
+  // return API.post('', { ...payload }).then((res) => res.data);
   console.log(payload);
+  return Promise.resolve();
+};
+
+export const editContractTemplate = (id: string, payload: { name: string }) => {
+  // return API.patch('', { ...payload }).then((res) => res.data);
+  console.log(id, payload);
   return Promise.resolve();
 };

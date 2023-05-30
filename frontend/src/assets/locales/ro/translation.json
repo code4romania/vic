@@ -772,7 +772,8 @@
         },
         "submit": {
           "messages": {
-            "add": "Template-ul a fost adaugat cu succes"
+            "add": "Template-ul a fost adaugat cu succes",
+            "edit": "Template-ul a fost editat cu succes"
           }
         }
       }

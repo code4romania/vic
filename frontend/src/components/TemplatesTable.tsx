@@ -54,8 +54,8 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
     alert('not yet implemented');
   };
 
-  const onEdit = () => {
-    alert('not yet implemented');
+  const onEdit = (row: ITemplateListItem) => {
+    navigate(`${row.id}/edit`);
   };
 
   const onRemove = () => {
