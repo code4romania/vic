@@ -32,6 +32,7 @@ import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import ActionsArchive from '../containers/query/ActionsArchiveWithQueryParams';
 import Contracts from '../containers/query/ContractsWithQueryParams';
+import AddContract from '../pages/AddContract';
 
 const Router = () => {
   return (
@@ -83,7 +84,10 @@ const Router = () => {
             </Route>
             <Route path="documents" element={<Outlet />}>
               <Route index element={<Navigate to={'contracts'} />} />
-              <Route path="contracts" element={<Contracts />} />
+              <Route path="contracts" element={<Outlet />}>
+                <Route index element={<Contracts />} />
+                <Route path="add" element={<AddContract />} />
+              </Route>
             </Route>
           </Route>
         </Routes>
