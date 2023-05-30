@@ -55,7 +55,6 @@ const BottomSheet = ({
   const onPrimaryActionClick = () => {
     primaryAction.onPress();
     // dismiss
-    close();
     modalRef.current?.dismiss();
   };
 
@@ -65,8 +64,13 @@ const BottomSheet = ({
     }
 
     // dismiss
-    close();
     modalRef.current?.dismiss();
+  };
+
+  const onBottomSheetStateChange = (state: number) => {
+    if (state < 0) {
+      close();
+    }
   };
 
   return (
@@ -75,6 +79,7 @@ const BottomSheet = ({
         ref={modalRef}
         index={1}
         snapPoints={snapPoints}
+        onChange={onBottomSheetStateChange}
         backdropComponent={renderBackdrop}
       >
         <View style={styles.container}>
