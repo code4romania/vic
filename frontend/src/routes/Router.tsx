@@ -83,7 +83,7 @@ const Router = () => {
             </Route>
             <Route path="documents" element={<Outlet />}>
               <Route index element={<Navigate to={'contracts'} />} />
-              <Route index path="contracts" element={<Contracts />} />
+              <Route path="contracts" element={<Contracts />} />
             </Route>
           </Route>
         </Routes>
