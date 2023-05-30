@@ -13,6 +13,8 @@ import { OrganizationWithEventsPresenter } from './presenters/organization-with-
 import { GetOrganizationWithEventsUseCase } from 'src/usecases/organization/get-organization-with-events.usecase';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
+import { OrganizationProfilePresenter } from './presenters/organization-profile.presenter';
+import { GetMyOrganizationsUsecase } from 'src/usecases/organization/get-my-organizations.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -21,6 +23,7 @@ export class MobileOrganizationController {
   constructor(
     private readonly getOrganizationsUseCase: GetOrganizationsUseCase,
     private readonly getOrganizationWithEvents: GetOrganizationWithEventsUseCase,
+    private readonly getMyOrganizationsUsecase: GetMyOrganizationsUsecase,
   ) {}
 
   @Get()
@@ -38,6 +41,17 @@ export class MobileOrganizationController {
         (organization) => new OrganizationWithVolunteersPresenter(organization),
       ),
     });
+  }
+
+  @Get('profiles')
+  async getMyOrganizations(
+    @ExtractUser() { id }: IRegularUserModel,
+  ): Promise<OrganizationProfilePresenter[]> {
+    const organizations = await this.getMyOrganizationsUsecase.execute(id);
+
+    return organizations.map(
+      (organization) => new OrganizationProfilePresenter(organization),
+    );
   }
 
   @ApiParam({ name: 'id', type: 'string' })

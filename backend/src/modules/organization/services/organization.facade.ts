@@ -50,4 +50,10 @@ export class OrganizationFacadeService {
   ): Promise<IOrganizationWithEventsModel> {
     return this.organizationRepository.findWithEvents(organizationId);
   }
+
+  public async findMyOrganizations(
+    userId: string,
+  ): Promise<IOrganizationModel[]> {
+    return this.organizationRepository.findMyOrganizations(userId);
+  }
 }

@@ -24,4 +24,5 @@ export interface IOrganizationRepository
   findMany(
     options: FindManyOrganizationsOptions,
   ): Promise<Pagination<IOrganizationWithVolunteersModel>>;
+  findMyOrganizations(userId: string): Promise<IOrganizationModel[]>;
 }

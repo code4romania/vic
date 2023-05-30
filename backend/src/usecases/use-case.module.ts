@@ -92,6 +92,7 @@ import { GetOrganizationWithEventsUseCase } from './organization/get-organizatio
 import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.usecase';
 import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organization-by-access-code.usecase';
 import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
+import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.usecase';
 
 @Module({
   imports: [
@@ -115,6 +116,7 @@ import { CancelAccessRequestUsecase } from './access-request/cancel-access-reque
     UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -211,6 +213,7 @@ import { CancelAccessRequestUsecase } from './access-request/cancel-access-reque
     UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,

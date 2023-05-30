@@ -157,4 +157,18 @@ export class OrganizationRepositoryService
       },
     );
   }
+
+  public async findMyOrganizations(
+    userId: string,
+  ): Promise<IOrganizationModel[]> {
+    // get all organizations where this user has an active volunteer profile
+    const organizationEntities = await this.organizationRepository.findBy({
+      volunteers: {
+        userId,
+        status: VolunteerStatus.ACTIVE,
+      },
+    });
+
+    return organizationEntities.map(OrganizationTransformer.fromEntity);
+  }
 }
