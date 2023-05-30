@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 import {
   Layout,
   TopNavigation,
@@ -11,6 +11,9 @@ import Button from '../components/Button';
 import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
 import { ButtonType } from '../common/enums/button-type.enum';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetProps } from '../components/BottomSheet';
+import { useBottomSheet } from '../store/bottom-sheet/bottom-sheet.selector';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
@@ -27,6 +30,7 @@ interface PageLayoutProps {
   onBackButtonPress?: () => void;
   onEditButtonPress?: () => void;
   actionsOptions?: ActionsOptionsProps;
+  bottomSheetOptions?: Omit<BottomSheetProps, 'modalRef'>;
 }
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
@@ -50,7 +54,22 @@ export const PageLayout = ({
   onBackButtonPress,
   onEditButtonPress,
   actionsOptions,
+  bottomSheetOptions,
 }: PageLayoutProps) => {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const { isOpen } = useBottomSheet();
+
+  const onBottomSheetOpen = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      onBottomSheetOpen();
+    }
+  }, [isOpen, onBottomSheetOpen]);
+
   const renderLeftControl = () => {
     if (!onBackButtonPress) {
       return <></>;
@@ -93,7 +112,7 @@ export const PageLayout = ({
                 <Button
                   onPress={actionsOptions.onPrimaryActionButtonClick}
                   label={`${actionsOptions.primaryActionLabel}`}
-                  type={actionsOptions.primaryBtnType || ButtonType.PRIMARY}
+                  status={actionsOptions.primaryBtnType || 'primary'}
                 />
                 {actionsOptions.onSecondaryActionButtonClick &&
                   actionsOptions.secondaryActionLabel && (
@@ -106,6 +125,16 @@ export const PageLayout = ({
           </View>
         )}
       </Layout>
+      {bottomSheetOptions && (
+        <BottomSheet
+          iconType={bottomSheetOptions.iconType}
+          modalRef={bottomSheetModalRef}
+          heading={bottomSheetOptions.heading}
+          paragraph={bottomSheetOptions.paragraph}
+          primaryAction={bottomSheetOptions.primaryAction}
+          secondaryAction={bottomSheetOptions.secondaryAction}
+        />
+      )}
     </>
   );
 };
@@ -138,6 +167,10 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     gap: 24,
+    alignItems: 'center',
+  },
+  contentContainer: {
+    flex: 1,
     alignItems: 'center',
   },
 });

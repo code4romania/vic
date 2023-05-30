@@ -32,7 +32,8 @@
       "load_entries": "Eroare la incarcarea datelor",
       "unknown": "A aparut o eroare necunoscuta",
       "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
-    }
+    },
+    "back": "Inapoi"
   },
   "organizations": {
     "search": {
@@ -57,6 +58,11 @@
     "code": "Ai cod de acces?",
     "disclaimer": {
       "access_request_pending": "Inscrierea ta asteapta aprobare de la organizatie"
+    },
+    "modal": {
+      "heading": "Ups!",
+      "paragraph": "Nu ai completat datele de identitate din Contul meu. Completează pentru a putea să te alături unei organizații.",
+      "action_label": "Completeaza datele"
     }
   },
   "privacy_policy": {

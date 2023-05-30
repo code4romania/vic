@@ -33,7 +33,6 @@ export const ModalLayout = ({ children, title, onDismiss, actionsOptions }: Moda
           <Button
             label={actionsOptions.onActionLabel}
             onPress={actionsOptions.onActionButtonClick}
-            type={actionsOptions.buttonType}
           />
         </View>
       )}

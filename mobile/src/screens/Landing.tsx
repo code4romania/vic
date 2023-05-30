@@ -6,7 +6,6 @@ import { Image, Platform, StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import i18n from '../common/config/i18n';
 import LogInButton from '../components/LogInButton';
-import { ButtonType } from '../common/enums/button-type.enum';
 import { useAuth } from '../hooks/useAuth';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import { useTranslation } from 'react-i18next';
@@ -40,11 +39,7 @@ const Landing = ({ navigation }: any) => {
         <Text category="h1">{`${i18n.t('general:register')}`}</Text>
         <Text category="c1" style={styles.message}>{`${i18n.t('landing:message')}`}</Text>
         <View style={styles.buttonsContainer}>
-          <Button
-            onPress={onRegisterButtonPress}
-            label={i18n.t('landing:email')}
-            type={ButtonType.PRIMARY}
-          />
+          <Button onPress={onRegisterButtonPress} label={i18n.t('landing:email')} />
           {Platform.OS === 'ios' && (
             <AppleButton
               onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Apple)}

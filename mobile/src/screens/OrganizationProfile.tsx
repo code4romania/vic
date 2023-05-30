@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Divider, Text, Modal, Card } from '@ui-kitten/components';
+import { Divider, Text } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import SectionWrapper from '../components/SectionWrapper';
@@ -13,7 +13,6 @@ import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import EventItem from '../components/EventItem';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
-import Button from '../components/Button';
 import { ButtonType } from '../common/enums/button-type.enum';
 import Disclaimer from '../components/Disclaimer';
 import { OrganizatinVolunteerStatus } from '../common/enums/organization-volunteer-status.enum';
@@ -21,15 +20,14 @@ import { useOrganization } from '../store/organization/organization.selector';
 import { useCancelAccessRequestMutation } from '../services/access-request/access-request.service';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import useStore from '../store/store';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   console.log('OrganizationProfile', route.params);
   const { t } = useTranslation('organization_profile');
 
-  const [isMissingIdentityModalVisible, setIsMissingIdentityDataModalVisible] =
-    useState<boolean>(false);
-
   const { userProfile } = useAuth();
+  const { open: openBottomSheet } = useStore();
 
   const { isFetching: isFetchingOrganization, error: getOrganizationError } = useOrganizationQuery(
     route.params.organizationId,
@@ -43,7 +41,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   const onJoinOrganizationButtonPress = () => {
     if (!userProfile?.userPersonalData) {
       // 1. if the user doesn't have the identity data filled in show modal
-      setIsMissingIdentityDataModalVisible(true);
+      openBottomSheet();
       return;
     }
 
@@ -58,7 +56,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   const onJoinOrganizationByAccessCodeButtonPress = () => {
     if (!userProfile?.userPersonalData) {
       // 1. if the user doesn't have the identity data filled in show modal
-      setIsMissingIdentityDataModalVisible(true);
+      openBottomSheet();
       return;
     }
 
@@ -71,7 +69,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   };
 
   const onGoToIdentityDataScreen = () => {
-    setIsMissingIdentityDataModalVisible(false);
     navigation.navigate('identity-data', { shouldGoBack: true });
   };
 
@@ -116,6 +113,18 @@ const OrganizationProfile = ({ navigation, route }: any) => {
               onSecondaryActionButtonClick: onJoinOrganizationByAccessCodeButtonPress,
             }),
         loading: isLoading(),
+      }}
+      bottomSheetOptions={{
+        iconType: 'warning',
+        heading: t('modal.heading'),
+        paragraph: t('modal.paragraph'),
+        primaryAction: {
+          label: t('modal.action_label'),
+          onPress: onGoToIdentityDataScreen,
+        },
+        secondaryAction: {
+          label: t('general:back'),
+        },
       }}
     >
       {isFetchingOrganization && <LoadingScreen />}
@@ -176,21 +185,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           </ScrollViewLayout>
         </>
       )}
-      <Modal visible={isMissingIdentityModalVisible}>
-        <Card disabled={true}>
-          <Text>Placeholder modal for bottomsheet which will redirect to identity data screen</Text>
-          <Button
-            label="Completeaza date"
-            type={ButtonType.PRIMARY}
-            onPress={onGoToIdentityDataScreen}
-          />
-          <Button
-            label="Inapoi"
-            type={ButtonType.SECONDARY}
-            onPress={setIsMissingIdentityDataModalVisible.bind(null, false)}
-          />
-        </Card>
-      </Modal>
     </PageLayout>
   );
 };
