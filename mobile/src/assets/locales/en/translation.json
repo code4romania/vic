@@ -305,6 +305,14 @@
         "min": "Codul poate sa aiba minim {{value}} caractere",
         "max": "Codul poate sa aiba maxim {{value}} caractere"
       }
+    },
+    "modal": {
+      "success": {
+        "heading": "Felicitari!",
+        "paragraph": "Codul introdus este corect, și te-ai alăturat cu succes organizației. Pentru a continua, trebuie să completezi profilul tău de voluntar.",
+        "primary_action_label": "Completează profilul de voluntar",
+        "secondary_action_label": "Inchide"
+      }
     }
   },
   "join_ngo": {

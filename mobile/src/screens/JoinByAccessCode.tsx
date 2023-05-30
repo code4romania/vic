@@ -11,6 +11,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useJoinByAccessCodeMutation } from '../services/volunteer/volunteer.service';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useTranslation } from 'react-i18next';
+import useStore from '../store/store';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -32,9 +34,12 @@ const schema = yup
   .required();
 
 const JoinByAccessCode = ({ navigation, route }: any) => {
+  const { t } = useTranslation('access_code');
   const { organizationId, logo, name } = route.params;
   const { isLoading: isJoiningByAccessCode, mutate: joinOrganization } =
     useJoinByAccessCodeMutation();
+
+  const { open: openBottomSheet, close: closeBottomSheet } = useStore();
   console.log('JonByAccessCode', organizationId);
 
   const {
@@ -58,20 +63,25 @@ const JoinByAccessCode = ({ navigation, route }: any) => {
     joinOrganization(joinPayload, {
       onSuccess: () => {
         // show modal which will eventually become bottom sheet
-        Toast.show({
-          type: 'success',
-          text1: 'Requestul a fost facut cu success',
-        });
-        navigation.goBack();
+        openBottomSheet();
       },
       onError: (error: any) => {
-        console.log('error', error);
         Toast.show({
           type: 'error',
           text1: `${InternalErrors.ACCESS_CODE_ERRORS.getError(error.response?.data.code_error)}`,
         });
       },
     });
+  };
+
+  const onCompleteVolunteerProfile = () => {
+    closeBottomSheet();
+    navigation.replace('create-volunteer');
+  };
+
+  const onCloseBottomSheet = () => {
+    closeBottomSheet();
+    navigation.goBack();
   };
 
   return (
@@ -82,6 +92,19 @@ const JoinByAccessCode = ({ navigation, route }: any) => {
         primaryActionLabel: i18n.t('general:join'),
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isJoiningByAccessCode,
+      }}
+      bottomSheetOptions={{
+        iconType: 'success',
+        paragraph: t('modal.success.paragraph'),
+        heading: t('modal.success.heading'),
+        primaryAction: {
+          label: t('modal.success.primary_action_label'),
+          onPress: onCompleteVolunteerProfile,
+        },
+        secondaryAction: {
+          label: t('modal.success.secondary_action_label'),
+          onPress: onCloseBottomSheet,
+        },
       }}
     >
       <FormLayout>
