@@ -15,6 +15,8 @@ import { StyleSheet } from 'react-native';
 import { useCreateAccessrequestMutation } from '../services/access-request/access-request.service';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import Toast from 'react-native-toast-message';
+import { useTranslation } from 'react-i18next';
+import useStore from '../store/store';
 
 export type JoinNgoFormTypes = {
   referral: REFERRAL;
@@ -33,9 +35,12 @@ const schema = yup
   .required();
 
 const JoinOrganization = ({ navigation, route }: any) => {
+  const { t } = useTranslation('join_ngo');
   const { organizationId, logo, name } = route.params;
   const { isLoading: isCreatingAccessRequest, mutate: createAccessRequest } =
     useCreateAccessrequestMutation();
+
+  const { open: openBottomSheet, close: closeBottomSheet } = useStore();
   console.log('JoinOrganization', organizationId);
 
   const {
@@ -62,14 +67,9 @@ const JoinOrganization = ({ navigation, route }: any) => {
     createAccessRequest(accessRequestPayload, {
       onSuccess: () => {
         // show modal which will eventually become bottom sheet
-        Toast.show({
-          type: 'success',
-          text1: 'Requestul a fost facut cu success',
-        });
-        navigation.goBack();
+        openBottomSheet();
       },
       onError: (error: any) => {
-        console.log('error', error);
         Toast.show({
           type: 'error',
           text1: `${InternalErrors.ACCESS_REQUEST_ERRORS.getError(
@@ -80,6 +80,16 @@ const JoinOrganization = ({ navigation, route }: any) => {
     });
   };
 
+  const onSearchNewOrganizations = () => {
+    closeBottomSheet();
+    navigation.navigate('search');
+  };
+
+  const onCloseBottomSheet = () => {
+    closeBottomSheet();
+    navigation.goBack();
+  };
+
   return (
     <PageLayout
       title={i18n.t('general:join')}
@@ -88,6 +98,19 @@ const JoinOrganization = ({ navigation, route }: any) => {
         primaryActionLabel: i18n.t('general:send'),
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isCreatingAccessRequest,
+      }}
+      bottomSheetOptions={{
+        iconType: 'success',
+        paragraph: t('modal.success.paragraph'),
+        heading: t('modal.success.heading'),
+        primaryAction: {
+          label: t('modal.success.primary_action_label'),
+          onPress: onSearchNewOrganizations,
+        },
+        secondaryAction: {
+          label: t('modal.success.secondary_action_label'),
+          onPress: onCloseBottomSheet,
+        },
       }}
     >
       <FormLayout>

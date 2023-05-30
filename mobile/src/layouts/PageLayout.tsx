@@ -125,7 +125,7 @@ export const PageLayout = ({
           </View>
         )}
       </Layout>
-      {bottomSheetOptions && (
+      {bottomSheetOptions && isOpen && (
         <BottomSheet
           iconType={bottomSheetOptions.iconType}
           modalRef={bottomSheetModalRef}

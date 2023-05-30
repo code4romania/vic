@@ -335,6 +335,14 @@
       "USER_001": "Utilizatotul nu a fost gasit",
       "VOLUNTEER_002": "Utilizatorul este deja parte a organizatiei",
       "USER_005": "Utilizatorul nu are datele de identificare completate"
+    },
+    "modal": {
+      "success": {
+        "heading": "Felicitari!",
+        "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Vei primi o notificare îndată ce aceștia vor răspunde.",
+        "primary_action_label": "Cauta alte organizatii",
+        "secondary_action_label": "Inchide"
+      }
     }
   },
   "create_volunteer": {
