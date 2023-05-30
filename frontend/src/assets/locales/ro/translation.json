@@ -769,6 +769,11 @@
           "label": "Încarcă document",
           "required": "Contractul este obligatoriu",
           "format": "Template-ul trebuie sa aiba extensia .pdf sau .doc"
+        },
+        "submit": {
+          "messages": {
+            "add": "Template-ul a fost adaugat cu succes"
+          }
         }
       }
     },

@@ -9,7 +9,7 @@ export const getTemplates = (params: {
   orderBy?: string;
   orderDirection?: OrderDirection;
 }): Promise<IPaginatedEntity<ITemplateListItem>> => {
-  // return API.get('/templates', { params }).then((res) => res.data);
+  // return API.get('', { params }).then((res) => res.data);
   return Promise.resolve({
     items: [
       { id: '1', name: 'Template 1', uses: 5 },
@@ -27,4 +27,10 @@ export const getTemplates = (params: {
       orderDirection: OrderDirection.ASC,
     },
   });
+};
+
+export const addContractTemplate = (payload: { name: string; template: object }) => {
+  // return API.post('', { ...payload });
+  console.log(payload);
+  return Promise.resolve();
 };
