@@ -42,7 +42,7 @@ const renderTitle = (title: string) => () =>
     </Text>
   );
 
-const LoadingIndicator = (props: any): React.ReactElement => (
+export const LoadingIndicator = (props: any): React.ReactElement => (
   <View style={[props.style, styles.indicator]}>
     <Spinner size="medium" />
   </View>

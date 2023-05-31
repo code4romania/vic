@@ -12,6 +12,7 @@ import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { JoinOrganizationByAccessCodeUsecase } from 'src/usecases/volunteer/join-organization-by-access-code.usecase';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
 import { VolunteerPresenter } from 'src/api/volunteer/presenters/volunteer.presenter';
+import { VolunteerMobileGuard } from './guards/volunteer-mobile.guard';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -37,10 +38,10 @@ export class MobileVolunteerController {
     return new VolunteerPresenter(volunteer);
   }
 
+  @UseGuards(VolunteerMobileGuard)
   @ApiBody({ type: CreateVolunteerProfileDto })
   @Post(':id/profile')
   async createProfile(
-    // TODO: add ExtractUser - add guard to check if the userId is in the volunteer
     @Param('id', UuidValidationPipe) volunteerId: string,
     @Body() profileDTO: CreateVolunteerProfileDto,
   ): Promise<VolunteerProfilePresenter> {
@@ -51,7 +52,6 @@ export class MobileVolunteerController {
       branchId: profileDTO.branchId,
       departmentId: profileDTO.departmentId,
       roleId: profileDTO.roleId,
-
       volunteerId: volunteerId,
     });
 

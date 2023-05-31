@@ -356,8 +356,8 @@
     }
   },
   "create_volunteer": {
-    "heading": "Profilul voluntarului",
-    "description": "Completeaza câmpurile de mai jos pentru înregistrare",
+    "heading": "Completează profil voluntar",
+    "paragraph": "Completează profilul tău de voluntar pentru a putea fi contactat și începe să raportezi orele de voluntariat!",
     "form": {
       "name": { "label": "Nume complet" },
       "email": {
@@ -374,6 +374,13 @@
       },
       "active_since": {
         "label": "Voluntar din"
+      },
+      "submit": {
+        "errors": {
+          "VOLUNTEER_001": "Voluntarul nu a fost gasit!",
+          "VOLUNTEER_PROFILE_001": "Voluntarul are deja un profil!",
+          "ORGANIZATION_STRUCTURE_001": "Structura organizationala nu exista"
+        }
       }
     }
   },

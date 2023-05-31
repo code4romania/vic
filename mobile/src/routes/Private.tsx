@@ -41,7 +41,6 @@ const Private = () => (
       <Screen name="identity-data" component={IdentityData} />
       <Screen name="change-password" component={ChangePassword} />
       <Screen name="notifications-settings" component={NotificationsSettings} />
-      <Screen name="create-volunteer" component={CreateVolunteer} />
       <Screen name="privacy-policy" component={PrivacyPolicy} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
@@ -50,6 +49,7 @@ const Private = () => (
       <Screen name="add-activity-log" component={AddActivityLog} />
       <Screen name="view-activity-log" component={ActivityLog} />
       <Screen name="edit-activity-log" component={EditActivityLog} />
+      <Screen name="create-volunteer" component={CreateVolunteer} />
     </Group>
   </Navigator>
 );

@@ -10,5 +10,7 @@ export interface IUserPersonalData {
 export interface IUserProfile {
   id: string;
   name: string;
+  email: string;
+  phone?: string;
   userPersonalData: IUserPersonalData;
 }
