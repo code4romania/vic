@@ -7,6 +7,7 @@ import PageHeader from '../components/PageHeader';
 import { ContractType } from '../common/enums/contract-type.enum';
 import TemplatesTableWithQueryParams from '../containers/query/TemplatesTableWithQueryParams';
 import { ContractsProps } from '../containers/query/ContractsWithQueryParams';
+import ContractsTableWithQueryParams from '../containers/query/ContractsTableWithQueryParams';
 
 const DocumentsTabsOptions: SelectItem<ContractType>[] = [
   { key: ContractType.CONTRACT, value: i18n.t('documents:contracts.list') },
@@ -29,7 +30,7 @@ const Contracts = ({ query, setQuery }: ContractsProps) => {
         onClick={onTabClick}
         defaultTab={DocumentsTabsOptions.find((tab) => tab.key === query?.contractType)}
       >
-        {query?.contractType === ContractType.CONTRACT && <div>{'contracts'}</div>}
+        {query?.contractType === ContractType.CONTRACT && <ContractsTableWithQueryParams />}
         {query?.contractType === ContractType.TEMPLATE && <TemplatesTableWithQueryParams />}
       </Tabs>
     </PageLayout>

@@ -24,6 +24,7 @@
     "add": "Adaugă {{item}}",
     "category": "Categorie",
     "select": "Selectează {{item}}",
+    "download": "Descarcă {{item}}",
     "choose": "Alege {{item}}",
     "image": "Imagine",
     "reason": "Motiv",
@@ -753,10 +754,22 @@
     "download_all": "Descarcă toate",
     "name": "Denumire",
     "contracts": {
+      "total": "{{value}} contracte",
+      "generate": "Generează contract",
+      "download": "Descarcă aprobate",
+      "number": "Numar contract",
       "template": "Template contract",
       "list": "Lista contracte",
       "title": "Contracte de voluntariat",
       "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+      "display_status": {
+        "active": "Activ",
+        "closed": "Incheiat",
+        "not_started": "Neinceput",
+        "validate_ong": "Validare ONG",
+        "validate_volunteer": "Validare Voluntar",
+        "rejected": "Refuzat"
+      },
       "form": {
         "template_name": {
           "label": "Denumire template",

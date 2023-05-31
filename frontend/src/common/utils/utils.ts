@@ -9,6 +9,7 @@ import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { EventStatus } from '../enums/event-status';
 import { ListItem } from '../interfaces/list-item.interface';
 import { AgeRangeEnum } from '../enums/age-range.enum';
+import { ContractStatus } from '../enums/contract-status.enum';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
@@ -103,6 +104,15 @@ export const EventStatusMarkerColorMapper = {
   [EventStatus.DRAFT]: 'bg-yellow-500',
   [EventStatus.PUBLISHED]: 'bg-green-500',
   [EventStatus.ARCHIVED]: 'bg-red-500',
+};
+
+export const ContractStatusMarkerColorMapper = {
+  [ContractStatus.ACTIVE]: 'bg-green-500',
+  [ContractStatus.CLOSED]: 'bg-cool-gray-800',
+  [ContractStatus.NOT_STARTED]: 'bg-blue-500',
+  [ContractStatus.VALIDATE_ONG]: 'bg-yellow-500',
+  [ContractStatus.VALIDATE_VOLUNTEER]: 'bg-yellow-500',
+  [ContractStatus.REJECTED]: 'bg-red-500',
 };
 
 export const ActivityLogStatusMarkerColorMapper = {
