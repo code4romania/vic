@@ -122,6 +122,7 @@ export class OrganizationRepositoryService
 
   public async findWithEvents(
     organizationId: string,
+    userId: string,
   ): Promise<IOrganizationWithEventsModel> {
     // get organization entity by id with upcoming public events
     const organizationEntity = await this.organizationRepository
@@ -146,6 +147,15 @@ export class OrganizationRepositoryService
           status: EventStatus.PUBLISHED,
         },
       )
+      .leftJoinAndSelect(
+        'organization.volunteers',
+        'volunteer',
+        'volunteer.status = :volunteerStatus AND volunteer.userId = :userId',
+        {
+          volunteerStatus: VolunteerStatus.ACTIVE,
+          userId,
+        },
+      )
       .where('organization.id = :organizationId', { organizationId })
       .getOne();
 
@@ -156,5 +166,19 @@ export class OrganizationRepositoryService
         numberOfVolunteers: number;
       },
     );
+  }
+
+  public async findMyOrganizations(
+    userId: string,
+  ): Promise<IOrganizationModel[]> {
+    // get all organizations where this user has an active volunteer profile
+    const organizationEntities = await this.organizationRepository.findBy({
+      volunteers: {
+        userId,
+        status: VolunteerStatus.ACTIVE,
+      },
+    });
+
+    return organizationEntities.map(OrganizationTransformer.fromEntity);
   }
 }

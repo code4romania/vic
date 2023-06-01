@@ -1,31 +1,28 @@
-import React, { useState } from 'react';
-import PageLayout from '../layouts/PageLayout';
+import React, { useEffect } from 'react';
 import FormLayout from '../layouts/FormLayout';
 import i18n from '../common/config/i18n';
-import { useForm, Controller } from 'react-hook-form';
-import { CheckBox, Text } from '@ui-kitten/components';
+import { useForm } from 'react-hook-form';
+import { Text } from '@ui-kitten/components';
 import FormInput from '../components/FormInput';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { StyleSheet } from 'react-native';
-import { View } from 'react-native';
-import FormSelect, { ISelectItem } from '../components/FormSelect';
 import FormDatePicker from '../components/FormDatePicker';
-
-const options: ISelectItem[] = [
-  { key: '13123', label: 'Option1' },
-  { key: '112312', label: 'Option2' },
-  { key: '4323', label: 'Option3' },
-];
+import ModalLayout from '../layouts/ModalLayout';
+import OrganizationIdentity from '../components/OrganizationIdentity';
+import { useAuth } from '../hooks/useAuth';
+import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
+import { OrganizationStructureType } from '../common/enums/organization-structure-type.enum';
+import { useCreateVolunteerProfileMutation } from '../services/volunteer/volunteer.service';
+import { useTranslation } from 'react-i18next';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 type CreateVolunteerFormTypes = {
-  name: string;
   email: string;
-  sameEmail: boolean;
   phone: string;
-  branch: string;
-  department: string;
-  role: string;
+  branchId: string;
+  departmentId: string;
+  roleId: string;
   activeSince: Date;
 };
 
@@ -35,144 +32,132 @@ const schema = yup
       .string()
       .email(`${i18n.t('login:form.email.pattern')}`)
       .required(`${i18n.t('login:form.email.required')}`),
+    phone: yup.string().required(`${i18n.t('register:create_account.form.phone.required')}`),
   })
   .required();
 
-const CreateVolunteer = () => {
-  const [sameEmail, setSameEmail] = useState(false);
-
+const CreateVolunteer = ({ navigation, route }: any) => {
+  const { name, logo, organizationId, volunteerId } = route.params;
+  const { userProfile } = useAuth();
+  const { t } = useTranslation('create_volunteer');
   const {
     control,
     formState: { errors },
     handleSubmit,
-    trigger,
-    setValue,
+    reset,
   } = useForm<CreateVolunteerFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
-    defaultValues: {
-      name: 'Andreea Petrescu',
-      phone: '0712345678',
-    },
   });
 
-  const onCheckBoxChange = (onChange: (value: any) => void) => (value: boolean) => {
-    onChange(value);
-    setSameEmail(value);
-    setValue('email', value ? 'unemail@orice.com' : '');
-    trigger('email');
-  };
+  const { isLoading: isCreatingProfile, mutate: createVolunteerProfile } =
+    useCreateVolunteerProfileMutation();
 
-  const onSubmit = (payload: CreateVolunteerFormTypes) => {
-    console.log(payload);
-  };
+  useEffect(() => {
+    if (userProfile) {
+      reset({ email: userProfile.email, phone: userProfile.phone });
+    }
+  }, [userProfile, reset]);
 
-  const onBackPress = () => {
-    console.log('back pressed');
+  const onSubmit = (profile: CreateVolunteerFormTypes) => {
+    createVolunteerProfile(
+      {
+        profile: {
+          ...profile,
+          roleId: profile.roleId || undefined,
+          departmentId: profile.departmentId || undefined,
+          branchId: profile.branchId || undefined,
+        },
+        volunteerId,
+      },
+      {
+        onError: (error: any) => {
+          Toast.show({
+            type: 'error',
+            text1: `${InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
+              error.response?.data.code_error,
+            )}`,
+          });
+        },
+        onSuccess: () => navigation.navigate('volunteer'),
+      },
+    );
   };
 
   return (
-    <PageLayout
-      title={i18n.t('register:title')}
+    <ModalLayout
+      title={t('heading')}
       actionsOptions={{
-        onPrimaryActionButtonClick: handleSubmit(onSubmit),
-        primaryActionLabel: i18n.t('general:continue'),
+        onActionButtonClick: handleSubmit(onSubmit),
+        actionLabel: i18n.t('general:save'),
+        loading: isCreatingProfile,
       }}
-      onBackButtonPress={onBackPress}
+      onDismiss={navigation.goBack}
     >
       <FormLayout>
-        <Text category="h3">{`${i18n.t('create_volunteer:heading')}`}</Text>
-        <Text appearance="hint">{`${i18n.t('create_volunteer:description')}`}</Text>
-        <FormInput
-          control={control as any}
-          error={errors.name}
-          label={i18n.t('create_volunteer:form.name.label')}
-          name="name"
-          placeholder="Andreea Petrescu"
-          required={true}
-          disabled={true}
-        />
+        <Text appearance="hint">{`${t('paragraph')}`}</Text>
+        <OrganizationIdentity name={name} uri={logo} />
         <FormInput
           control={control as any}
           error={errors.email}
-          label={i18n.t('create_volunteer:form.email.label')}
+          label={t('form.email.label')}
           name="email"
-          placeholder={i18n.t('create_volunteer:form.email.placeholder')}
-          disabled={sameEmail}
+          placeholder={t('form.email.placeholder')}
           required={true}
+          disabled={isCreatingProfile}
         />
-        <View style={styles.checkBoxWrapper}>
-          <Controller
-            control={control}
-            name="sameEmail"
-            defaultValue={false}
-            render={({ field: { onChange, value } }) => (
-              <CheckBox checked={value} onChange={onCheckBoxChange(onChange)}>
-                {() => (
-                  <Text style={styles.label}>{`${i18n.t(
-                    'create_volunteer:form.checkbox.label',
-                  )}`}</Text>
-                )}
-              </CheckBox>
-            )}
-          />
-        </View>
         <FormInput
           control={control as any}
           error={errors.phone}
-          label={i18n.t('general:phone')}
+          label={t('general:phone')}
           name="phone"
           placeholder=""
           required={true}
-          disabled={true}
+          disabled={!!userProfile?.phone || isCreatingProfile}
         />
-        <FormSelect
+        <OrganizationStructureSelect
           control={control as any}
-          error={errors.branch}
-          label={i18n.t('create_volunteer:form.branch.label')}
-          name="branch"
-          options={options}
-          placeholder={i18n.t('general:select')}
+          error={errors.branchId}
+          label={t('form.branch.label')}
+          name="branchId"
+          placeholder={t('general:select')}
+          organizationId={organizationId}
+          type={OrganizationStructureType.BRANCH}
+          disabled={isCreatingProfile}
         />
-        <FormSelect
+        <OrganizationStructureSelect
           control={control as any}
-          error={errors.department}
-          label={i18n.t('general:department')}
-          name="department"
-          options={options}
-          placeholder={i18n.t('general:select')}
+          error={errors.departmentId}
+          label={t('general:department')}
+          name="departmentId"
+          organizationId={organizationId}
+          type={OrganizationStructureType.DEPARTMENT}
+          placeholder={t('general:select')}
+          disabled={isCreatingProfile}
         />
-        <FormSelect
+        <OrganizationStructureSelect
           control={control as any}
-          error={errors.role}
-          label={i18n.t('general:role')}
-          name="role"
-          options={options}
-          placeholder={i18n.t('general:select')}
+          error={errors.roleId}
+          label={t('general:role')}
+          name="roleId"
+          organizationId={organizationId}
+          type={OrganizationStructureType.ROLE}
+          placeholder={t('general:select')}
+          disabled={isCreatingProfile}
         />
         <FormDatePicker
           control={control as any}
           name="activeSince"
           error={errors.activeSince}
-          label={i18n.t('create_volunteer:form.active_since.label')}
-          placeholder={i18n.t('general:select')}
+          label={t('form.active_since.label')}
+          placeholder={t('general:select')}
           min={new Date(1920, 1, 1)}
+          disabled={isCreatingProfile}
         />
       </FormLayout>
-    </PageLayout>
+    </ModalLayout>
   );
 };
 
 export default CreateVolunteer;
-
-const styles = StyleSheet.create({
-  checkBoxWrapper: {
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'center',
-  },
-  label: {
-    marginLeft: 8,
-  },
-});

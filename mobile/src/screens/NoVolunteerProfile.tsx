@@ -6,7 +6,6 @@ import SadFaceSvg from '../assets/svg/sad-face';
 import { StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import i18n from '../common/config/i18n';
-import { ButtonType } from '../common/enums/button-type.enum';
 
 const NoVolunteerProfile = () => {
   console.log('No Volunteer Profile');
@@ -24,7 +23,6 @@ const NoVolunteerProfile = () => {
           'volunteer:no_org_description',
         )}`}</Text>
         <Button
-          type={ButtonType.PRIMARY}
           label={i18n.t('general:add', { item: i18n.t('general:organization').toLowerCase() })}
           onPress={onAddOrganizationPress}
         />

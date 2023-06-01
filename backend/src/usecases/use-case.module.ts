@@ -90,6 +90,9 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
 import { GetOrganizationsUseCase } from './organization/get-organizations.usecase';
 import { GetOrganizationWithEventsUseCase } from './organization/get-organization-with-events.usecase';
 import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.usecase';
+import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organization-by-access-code.usecase';
+import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
+import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.usecase';
 
 @Module({
   imports: [
@@ -113,6 +116,7 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -141,6 +145,8 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -207,6 +213,7 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -235,6 +242,8 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,

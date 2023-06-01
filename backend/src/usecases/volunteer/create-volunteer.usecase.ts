@@ -29,7 +29,7 @@ export class CreateVolunteerUseCase
     // 2. Check if the user is already a volunteer of the given organization
     const existingVolunteer = await this.volunteerFacade.find({
       userId: data.userId,
-      organizationId: data.userId,
+      organizationId: data.organizationId,
     });
 
     if (existingVolunteer) {

@@ -25,8 +25,10 @@ export class VolunteerPresenter {
     this.profile = volunteer.volunteerProfile
       ? new VolunteerProfilePresenter(volunteer.volunteerProfile)
       : null;
-    this.organizationId = volunteer.organization.id;
-    this.user = new RegularUserPresenter(volunteer.user);
+    this.organizationId = volunteer.organization?.id;
+    this.user = volunteer.user
+      ? new RegularUserPresenter(volunteer.user)
+      : null;
 
     this.createdOn = volunteer.createdOn;
     this.updatedOn = volunteer.updatedOn;

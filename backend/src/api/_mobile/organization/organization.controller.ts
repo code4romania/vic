@@ -11,6 +11,10 @@ import { OrganizationWithVolunteersPresenter } from './presenters/organization-w
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { OrganizationWithEventsPresenter } from './presenters/organization-with-events.presenter';
 import { GetOrganizationWithEventsUseCase } from 'src/usecases/organization/get-organization-with-events.usecase';
+import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
+import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
+import { OrganizationProfilePresenter } from './presenters/organization-profile.presenter';
+import { GetMyOrganizationsUsecase } from 'src/usecases/organization/get-my-organizations.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -19,6 +23,7 @@ export class MobileOrganizationController {
   constructor(
     private readonly getOrganizationsUseCase: GetOrganizationsUseCase,
     private readonly getOrganizationWithEvents: GetOrganizationWithEventsUseCase,
+    private readonly getMyOrganizationsUsecase: GetMyOrganizationsUsecase,
   ) {}
 
   @Get()
@@ -38,13 +43,26 @@ export class MobileOrganizationController {
     });
   }
 
+  @Get('profiles')
+  async getMyOrganizations(
+    @ExtractUser() { id }: IRegularUserModel,
+  ): Promise<OrganizationProfilePresenter[]> {
+    const organizations = await this.getMyOrganizationsUsecase.execute(id);
+
+    return organizations.map(
+      (organization) => new OrganizationProfilePresenter(organization),
+    );
+  }
+
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   async get(
     @Param('id', UuidValidationPipe) organizationId: string,
+    @ExtractUser() { id }: IRegularUserModel,
   ): Promise<OrganizationWithEventsPresenter> {
     const organization = await this.getOrganizationWithEvents.execute(
       organizationId,
+      id,
     );
     return new OrganizationWithEventsPresenter(organization);
   }

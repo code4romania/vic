@@ -2,10 +2,6 @@ import { OneOf } from 'src/common/helpers/typescript-extends';
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
-  AdminUserEntity,
-  RegularUserEntity,
-} from 'src/modules/user/entities/user.entity';
-import {
   AdminUserTransformer,
   IAdminUserModel,
 } from 'src/modules/user/models/admin-user.model';
