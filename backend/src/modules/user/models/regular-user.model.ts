@@ -2,6 +2,10 @@ import { ICityModel } from 'src/modules/location/model/city.model';
 import { RegularUserEntity } from '../entities/user.entity';
 import { SEX } from '../enums/user.enum';
 import { IUserModel } from './base-user.model';
+import {
+  IUserPersonalDataModel,
+  UserPersonalDataTransformer,
+} from './user-personal-data.model';
 
 export interface IRegularUserModel extends IUserModel {
   birthday: Date;
@@ -10,6 +14,7 @@ export interface IRegularUserModel extends IUserModel {
   location: ICityModel;
   firstName: string;
   lastName: string;
+  userPersonalData?: IUserPersonalDataModel;
 }
 
 export type CreateRegularUserOptions = Omit<
@@ -18,6 +23,11 @@ export type CreateRegularUserOptions = Omit<
 > & {
   locationId: number;
 };
+
+export type UpdateRegularUserOptions = Pick<
+  IRegularUserModel,
+  'userPersonalData'
+>;
 
 export type FindRegularUserOptions =
   | Partial<IRegularUserModel & { locationId: number }>
@@ -41,6 +51,9 @@ export class RegularUserTransformer {
       location: entity.location,
       firstName: entity.firstName,
       lastName: entity.lastName,
+      userPersonalData: UserPersonalDataTransformer.fromEntity(
+        entity.userPersonalData,
+      ),
     };
   }
 

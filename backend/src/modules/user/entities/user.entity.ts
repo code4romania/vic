@@ -9,11 +9,13 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   TableInheritance,
   Unique,
 } from 'typeorm';
 import { SEX, UserType } from '../enums/user.enum';
+import { UserPersonalDataEntity } from './user-personal-data.entity';
 
 export const USER_CONSTRAINTS = {
   COGNITO_USER_TYPE_EMAIL_UNIQUE: 'cognito-userType-email-unique',
@@ -87,4 +89,11 @@ export class RegularUserEntity extends UserEntity {
 
   @OneToMany(() => VolunteerEntity, (volunteer) => volunteer.user)
   volunteer: VolunteerEntity[];
+
+  @Column({ type: 'varchar', name: 'user_personal_data_id', nullable: true })
+  userPersonalDataId: string;
+
+  @OneToOne(() => UserPersonalDataEntity, { eager: true })
+  @JoinColumn({ name: 'user_personal_data_id' })
+  userPersonalData: UserPersonalDataEntity;
 }

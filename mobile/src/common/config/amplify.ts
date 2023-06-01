@@ -1,4 +1,5 @@
 import Constants from 'expo-constants';
+import * as Linking from 'expo-linking';
 
 export const AMPLIFY_CONFIG = {
   Auth: {
@@ -9,8 +10,8 @@ export const AMPLIFY_CONFIG = {
   oauth: {
     domain: Constants.expoConfig?.extra?.awsDomain,
     scope: ['email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
-    redirectSignIn: Constants.expoConfig?.extra?.redirectUrl,
-    redirectSignOut: Constants.expoConfig?.extra?.redirectUrl,
+    redirectSignIn: Linking.createURL(''),
+    redirectSignOut: Linking.createURL(''),
     responseType: 'code', // or 'token', note that REFRESH token will only be generated when the responseType is code
     authenticationFlowType: 'USER_PASSWORD_AUTH',
   },

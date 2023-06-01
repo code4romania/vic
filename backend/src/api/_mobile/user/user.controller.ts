@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { CreateRegularUsereUseCaseService } from 'src/usecases/user/create-regular-user.usecase';
 import { CreateRegularUserDto } from './dto/create-regular-user.dto';
@@ -7,6 +7,8 @@ import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UserPresenter } from './presenters/user.presenter';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { GetOneRegularUserUseCase } from 'src/usecases/user/get-one-regular-user.usecase';
+import { UpdateUserPersonalDataDto } from './dto/update-user-personal-data.dto';
+import { UpdateUserPersonalDataUsecase } from 'src/usecases/user/update-user-personal-data.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -15,6 +17,7 @@ export class MobileRegularUserController {
   constructor(
     private createRegularUsereUseCaseService: CreateRegularUsereUseCaseService,
     private getOneRegularUserUseCase: GetOneRegularUserUseCase,
+    private updateUserPersonalData: UpdateUserPersonalDataUsecase,
   ) {}
 
   @ApiBody({ type: CreateRegularUserDto })
@@ -39,5 +42,18 @@ export class MobileRegularUserController {
       cognitoId: user.cognitoId,
     });
     return new UserPresenter(regularUser);
+  }
+
+  @ApiBody({ type: UpdateUserPersonalDataDto })
+  @Patch('personal-data')
+  async updatePerosnalData(
+    @Body() userPersonalData: UpdateUserPersonalDataDto,
+    @ExtractUser() regularUser: IRegularUserModel,
+  ): Promise<UserPresenter> {
+    const updatedUser = await this.updateUserPersonalData.execute(
+      regularUser.id,
+      userPersonalData,
+    );
+    return new UserPresenter(updatedUser);
   }
 }

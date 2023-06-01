@@ -85,7 +85,6 @@ const FormSelect: React.FC<FormSelectProps> = ({
             </Select>
           );
         }}
-        defaultValue=""
       />
       {error && (
         <Text category="c1" status={error ? 'danger' : 'basic'}>

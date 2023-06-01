@@ -1,45 +1,42 @@
 import { Avatar, Icon, Text, withStyles } from '@ui-kitten/components';
 import React from 'react';
-import { TouchableHighlight, View } from 'react-native';
+import { View } from 'react-native';
+import { IEventListItem } from '../common/interfaces/event-list-item.interface';
+import { formatEventDate } from '../common/utils/utils';
 
 interface EventItemProps {
-  title: string;
-  date: string;
-  location: string;
-  divison: string;
-  onPress: () => void;
+  event: IEventListItem;
   eva?: any;
+  organizationLogo?: string;
 }
 
-const EventItem = ({ title, date, location, divison, onPress, eva }: EventItemProps) => {
+const EventItem = ({ event, eva, organizationLogo }: EventItemProps) => {
   return (
-    <TouchableHighlight onPress={onPress} underlayColor={eva.theme['cool-gray-100']}>
-      <View style={eva.style.container}>
-        <Avatar source={{ uri: 'https://picsum.photos/200' }} size="large" />
-        <View style={eva.style.textContainer}>
-          <Text category="p2">{title}</Text>
-          <View style={eva.style.section}>
-            <Icon name="clock" style={eva.style.icon} />
-            <Text category="c1" appearance="hint">
-              {date}
-            </Text>
-          </View>
-          <View style={eva.style.section}>
-            <Icon name="map-pin" style={eva.style.icon} />
-            <Text category="c1" appearance="hint">
-              {location}
-            </Text>
-          </View>
-          <View style={eva.style.section}>
-            <Icon name="users" style={eva.style.icon} />
-            <Text category="c1" appearance="hint">
-              {divison}
-            </Text>
-          </View>
+    <View style={eva.style.container}>
+      <Avatar source={{ uri: event.image }} size="large" />
+      <View style={eva.style.textContainer}>
+        <Text category="p2">{event.name}</Text>
+        <View style={eva.style.section}>
+          <Icon name="clock" style={eva.style.icon} />
+          <Text category="c1" appearance="hint">
+            {formatEventDate(event.startDate, event.endDate)}
+          </Text>
         </View>
-        <Avatar source={{ uri: 'https://picsum.photos/200' }} size={'tiny'} />
+        <View style={eva.style.section}>
+          <Icon name="map-pin" style={eva.style.icon} />
+          <Text category="c1" appearance="hint">
+            {event.location}
+          </Text>
+        </View>
+        <View style={eva.style.section}>
+          <Icon name="users" style={eva.style.icon} />
+          <Text category="c1" appearance="hint">
+            {event.isPublic ? 'Eveniment deschis' : ''}
+          </Text>
+        </View>
       </View>
-    </TouchableHighlight>
+      {organizationLogo && <Avatar source={{ uri: organizationLogo }} size={'tiny'} />}
+    </View>
   );
 };
 
@@ -47,9 +44,6 @@ export default withStyles(EventItem, (theme) => ({
   container: {
     gap: 16,
     flexDirection: 'row',
-    paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: theme['cool-gray-200'],
   },
   section: {
     gap: 8,

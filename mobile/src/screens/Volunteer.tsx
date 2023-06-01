@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text } from '@ui-kitten/components';
+import { Text } from '@ui-kitten/components';
 import NoVolunteerProfile from './NoVolunteerProfile';
 import i18n from '../common/config/i18n';
 import VolunteerCard from '../components/VolunteerCard';
@@ -14,10 +14,6 @@ import TopNavigationCard from '../components/TopNavigationCard';
 const Volunteer = ({ navigation }: any) => {
   console.log('Volunteer', navigation);
 
-  const onShowDrawerPress = () => {
-    navigation.openDrawer();
-  };
-
   const onViewOrganizationButtonPress = () => {
     navigation.navigate('organization');
   };
@@ -31,7 +27,7 @@ const Volunteer = ({ navigation }: any) => {
   };
 
   const onTopNavigationCardPress = () => {
-    console.log('top navigation card pressed');
+    navigation.openDrawer();
   };
 
   return true ? (
@@ -61,7 +57,6 @@ const Volunteer = ({ navigation }: any) => {
           icon={<SvgXml xml={volunteerUserSVG} />}
           onPress={onViewVolunteerProfilenButtonPress}
         />
-        <Button onPress={onShowDrawerPress}>SHOW DRAWER</Button>
       </View>
     </>
   ) : (

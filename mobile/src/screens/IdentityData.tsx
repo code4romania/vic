@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text } from '@ui-kitten/components';
 import PageLayout from '../layouts/PageLayout';
 import { useForm } from 'react-hook-form';
@@ -9,53 +9,104 @@ import InlineLink from '../components/InlineLink';
 import FormInput from '../components/FormInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormDatePicker from '../components/FormDatePicker';
+import { useUpdateUserPersonalDataMutation } from '../services/user/user.service';
+import { useAuth } from '../hooks/useAuth';
+import { IUserProfile } from '../common/interfaces/user-profile.interface';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
-type IdentityDataFormTypes = {
-  series: string;
-  number: number;
+export type IdentityDataFormTypes = {
+  identityDocumentSeries: string;
+  identityDocumentNumber: number;
   address: string;
-  issueDate: Date;
-  expirationDate: Date;
+  identityDocumentIssueDate: Date;
+  identityDocumentExpirationDate: Date;
 };
 
 const schema = yup
   .object({
-    series: yup
+    identityDocumentSeries: yup
       .string()
       .required(`${i18n.t('identity_data:form.series.required')}`)
       .length(2, `${i18n.t('identity_data:form.series.length', { number: 2 })}`),
-    number: yup
+    identityDocumentNumber: yup
       .string()
       .required(`${i18n.t('identity_data:form.number.required')}`)
-      .matches(/^[0-9]+$/, `${i18n.t('identity_data:form.number.matches')}`)
       .length(6, `${i18n.t('identity_data:form.number.length', { number: 6 })}`),
     address: yup
       .string()
       .required(`${i18n.t('identity_data:form.address.required')}`)
       .min(2, `${i18n.t('identity_data:form.address.min', { value: 2 })}`)
       .max(100, `${i18n.t('identity_data:form.address.max', { value: 100 })}`),
-    issueDate: yup.date().required(`${i18n.t('identity_data:form.issue_date.required')}`),
-    expirationDate: yup.date().required(`${i18n.t('identity_data:form.expiration_date.required')}`),
+    identityDocumentIssueDate: yup
+      .date()
+      .required(`${i18n.t('identity_data:form.issue_date.required')}`),
+    identityDocumentExpirationDate: yup
+      .date()
+      .required(`${i18n.t('identity_data:form.expiration_date.required')}`),
   })
   .required();
 
-const IdentityData = ({ navigation }: any) => {
+const IdentityData = ({ navigation, route }: any) => {
+  const { userProfile, setUserProfile } = useAuth();
+
   const {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<IdentityDataFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });
 
+  const { isLoading: isUpdateingPersonalData, mutate: updateUserPersonalData } =
+    useUpdateUserPersonalDataMutation();
+
+  useEffect(() => {
+    const { userPersonalData } = userProfile as IUserProfile;
+
+    // here the data can be null on first user creation
+    if (userPersonalData) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...formData } = userPersonalData;
+
+      // init form data with the user profile personal data
+      reset({
+        ...formData,
+        identityDocumentIssueDate: new Date(formData.identityDocumentIssueDate),
+        identityDocumentExpirationDate: new Date(formData.identityDocumentExpirationDate),
+      });
+    }
+  }, [userProfile, reset]);
+
   const onPrivacyPolicyPress = () => {
-    console.log('privacy policy pressed');
+    navigation.navigate('privacy-policy');
   };
 
-  const onSubmit = (payload: IdentityDataFormTypes) => {
-    console.log(payload);
+  const onSubmit = async (payload: IdentityDataFormTypes) => {
+    updateUserPersonalData(
+      {
+        ...payload,
+        identityDocumentSeries: payload.identityDocumentSeries.toLocaleUpperCase(),
+      },
+      {
+        onSuccess: (data: IUserProfile) => {
+          setUserProfile(data);
+          // callback in case we are redirected here from any other place than settings screen
+          if (route?.params?.shouldGoBack) {
+            navigation.goBack();
+          }
+        },
+        onError: (error: any) => {
+          Toast.show({
+            type: 'error',
+            text1: `${InternalErrors.USER_ERRORS.getError(error.response?.data.code_error)}`,
+          });
+        },
+      },
+    );
   };
 
   return (
@@ -65,6 +116,7 @@ const IdentityData = ({ navigation }: any) => {
       actionsOptions={{
         primaryActionLabel: i18n.t('general:save'),
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
+        loading: isUpdateingPersonalData,
       }}
     >
       <FormLayout>
@@ -77,16 +129,19 @@ const IdentityData = ({ navigation }: any) => {
         <FormInput
           control={control as any}
           label={i18n.t('identity_data:form.series.label')}
-          name="series"
-          error={errors.series}
+          name="identityDocumentSeries"
+          error={errors.identityDocumentSeries}
           placeholder={i18n.t('identity_data:form.series.placeholder')}
+          disabled={isUpdateingPersonalData}
         />
         <FormInput
           control={control as any}
           label={i18n.t('identity_data:form.number.label')}
-          name="number"
-          error={errors.number}
+          name="identityDocumentNumber"
+          error={errors.identityDocumentNumber}
           placeholder={i18n.t('identity_data:form.number.placeholder')}
+          keyboardType="phone-pad"
+          disabled={isUpdateingPersonalData}
         />
         <FormInput
           control={control as any}
@@ -95,22 +150,25 @@ const IdentityData = ({ navigation }: any) => {
           error={errors.address}
           placeholder={i18n.t('identity_data:form.address.placeholder')}
           helper={`${i18n.t('identity_data:form.address.helper')}`}
+          disabled={isUpdateingPersonalData}
         />
         <FormDatePicker
           control={control as any}
           label={i18n.t('identity_data:form.issue_date.label')}
-          name="issueDate"
-          error={errors.issueDate}
+          name="identityDocumentIssueDate"
+          error={errors.identityDocumentIssueDate}
           placeholder={i18n.t('general:select')}
           min={new Date(1900, 0, 0)}
+          disabled={isUpdateingPersonalData}
         />
         <FormDatePicker
           control={control as any}
           label={i18n.t('identity_data:form.expiration_date.label')}
-          name="expirationDate"
-          error={errors.expirationDate}
+          name="identityDocumentExpirationDate"
+          error={errors.identityDocumentExpirationDate}
           placeholder={i18n.t('general:select')}
           max={new Date(2200, 0, 0)}
+          disabled={isUpdateingPersonalData}
         />
       </FormLayout>
     </PageLayout>

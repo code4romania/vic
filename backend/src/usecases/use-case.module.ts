@@ -87,6 +87,12 @@ import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-v
 import { GetManyForDownloadActivityLogUseCase } from './activity-log/get-many-for-download-activity-log.usecase';
 import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-count.usecase';
 import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.usecase';
+import { GetOrganizationsUseCase } from './organization/get-organizations.usecase';
+import { GetOrganizationWithEventsUseCase } from './organization/get-organization-with-events.usecase';
+import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.usecase';
+import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organization-by-access-code.usecase';
+import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
+import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.usecase';
 
 @Module({
   imports: [
@@ -108,6 +114,9 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     // Organization
     GetOrganizationUseCaseService,
     UpdateOrganizationDescriptionUseCaseService,
+    GetOrganizationsUseCase,
+    GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -126,6 +135,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
+    UpdateUserPersonalDataUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -135,6 +145,8 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -199,6 +211,9 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     // Organization
     GetOrganizationUseCaseService,
     UpdateOrganizationDescriptionUseCaseService,
+    GetOrganizationsUseCase,
+    GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -217,6 +232,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
+    UpdateUserPersonalDataUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -226,6 +242,8 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
