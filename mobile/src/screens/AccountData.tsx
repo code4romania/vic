@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from '@ui-kitten/components';
 import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
 import FormLayout from '../layouts/FormLayout';
