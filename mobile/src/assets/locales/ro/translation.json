@@ -101,6 +101,10 @@
   "activity_log": {
     "title": "Ore de voluntariat",
     "log": "Ore înregistrate",
+    "pending": "În așteptare",
+    "approved": "Aprobate",
+    "rejected": "Refuzate",
+    "total": "Total",
     "form": {
       "event": {
         "label": "Eveniment"
