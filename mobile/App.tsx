@@ -17,6 +17,7 @@ import Toast from 'react-native-toast-message';
 import { toastConfig } from './src/common/config/toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { FeatherIconsPack } from './src/common/adapters/feather-icons.adapter';
+import OrganizationContextProvider from './src/contexts/organization/OrganizationContextProvider';
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG);
@@ -56,9 +57,11 @@ export default () => {
         <SafeAreaView style={styles.container}>
           <QueryClientProvider client={queryClient}>
             <AuthContextProvider>
-              <NavigationContainer>
-                <Router />
-              </NavigationContainer>
+              <OrganizationContextProvider>
+                <NavigationContainer>
+                  <Router />
+                </NavigationContainer>
+              </OrganizationContextProvider>
             </AuthContextProvider>
           </QueryClientProvider>
         </SafeAreaView>

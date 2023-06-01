@@ -10,9 +10,17 @@ import { SvgXml } from 'react-native-svg';
 import volunteerUserSVG from '../assets/svg/volunteer-user';
 import volunteerClockSVG from '../assets/svg/volunteer-clock';
 import TopNavigationCard from '../components/TopNavigationCard';
+import { useOrganizations } from '../store/organization/organizations.selector';
+import { useMyOrganizationsQuery } from '../services/organization/organization.service';
+import LoadingScreen from '../components/LoadingScreen';
 
 const Volunteer = ({ navigation }: any) => {
-  console.log('Volunteer', navigation);
+  console.log('Volunteer');
+
+  const { isFetching: isLoadingOrganizations } = useMyOrganizationsQuery();
+  const { organizations } = useOrganizations();
+
+  console.log('isLoadingOrganizations', isLoadingOrganizations);
 
   const onViewOrganizationButtonPress = () => {
     navigation.navigate('organization');
@@ -30,7 +38,15 @@ const Volunteer = ({ navigation }: any) => {
     navigation.openDrawer();
   };
 
-  return true ? (
+  const onAddOrganizationPress = () => {
+    navigation.navigate('search');
+  };
+
+  if (isLoadingOrganizations) {
+    return <LoadingScreen />;
+  }
+
+  return organizations.length > 0 ? (
     <>
       <View style={styles.cardWrapper}>
         <TopNavigationCard
@@ -60,7 +76,7 @@ const Volunteer = ({ navigation }: any) => {
       </View>
     </>
   ) : (
-    <NoVolunteerProfile />
+    <NoVolunteerProfile onAddOrganizationPress={onAddOrganizationPress} />
   );
 };
 

@@ -1,3 +1,5 @@
+import { IActiveOrganization } from '../../contexts/organization/OrganizationContext';
+
 export interface IUserPersonalData {
   id: string;
   identityDocumentSeries: string;
@@ -13,4 +15,5 @@ export interface IUserProfile {
   email: string;
   phone?: string;
   userPersonalData: IUserPersonalData;
+  activeOrganization: IActiveOrganization;
 }

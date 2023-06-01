@@ -7,12 +7,12 @@ import { StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import i18n from '../common/config/i18n';
 
-const NoVolunteerProfile = () => {
-  console.log('No Volunteer Profile');
+interface NoVolunteerProfileProps {
+  onAddOrganizationPress: () => void;
+}
 
-  const onAddOrganizationPress = () => {
-    console.log('add organization pressed');
-  };
+const NoVolunteerProfile = ({ onAddOrganizationPress }: NoVolunteerProfileProps) => {
+  console.log('No Volunteer Profile');
 
   return (
     <PageLayout title="">

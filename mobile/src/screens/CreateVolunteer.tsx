@@ -16,6 +16,8 @@ import { useCreateVolunteerProfileMutation } from '../services/volunteer/volunte
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useActiveOrganization } from '../hooks/useActiveOrganization';
+import { IActiveOrganization } from '../contexts/organization/OrganizationContext';
 
 type CreateVolunteerFormTypes = {
   email: string;
@@ -36,8 +38,8 @@ const schema = yup
   })
   .required();
 
-const CreateVolunteer = ({ navigation, route }: any) => {
-  const { name, logo, organizationId, volunteerId } = route.params;
+const CreateVolunteer = ({ navigation }: any) => {
+  const { activeOrganization } = useActiveOrganization();
   const { userProfile } = useAuth();
   const { t } = useTranslation('create_volunteer');
   const {
@@ -61,28 +63,30 @@ const CreateVolunteer = ({ navigation, route }: any) => {
   }, [userProfile, reset]);
 
   const onSubmit = (profile: CreateVolunteerFormTypes) => {
-    createVolunteerProfile(
-      {
-        profile: {
-          ...profile,
-          roleId: profile.roleId || undefined,
-          departmentId: profile.departmentId || undefined,
-          branchId: profile.branchId || undefined,
+    if (activeOrganization) {
+      createVolunteerProfile(
+        {
+          profile: {
+            ...profile,
+            roleId: profile.roleId || undefined,
+            departmentId: profile.departmentId || undefined,
+            branchId: profile.branchId || undefined,
+          },
+          volunteerId: activeOrganization?.volunteerId,
         },
-        volunteerId,
-      },
-      {
-        onError: (error: any) => {
-          Toast.show({
-            type: 'error',
-            text1: `${InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
-              error.response?.data.code_error,
-            )}`,
-          });
+        {
+          onError: (error: any) => {
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
+                error.response?.data.code_error,
+              )}`,
+            });
+          },
+          onSuccess: () => navigation.navigate('volunteer'),
         },
-        onSuccess: () => navigation.navigate('volunteer'),
-      },
-    );
+      );
+    }
   };
 
   return (
@@ -97,7 +101,10 @@ const CreateVolunteer = ({ navigation, route }: any) => {
     >
       <FormLayout>
         <Text appearance="hint">{`${t('paragraph')}`}</Text>
-        <OrganizationIdentity name={name} uri={logo} />
+        <OrganizationIdentity
+          name={activeOrganization?.name || ''}
+          uri={activeOrganization?.logo || ''}
+        />
         <FormInput
           control={control as any}
           error={errors.email}
@@ -122,7 +129,7 @@ const CreateVolunteer = ({ navigation, route }: any) => {
           label={t('form.branch.label')}
           name="branchId"
           placeholder={t('general:select')}
-          organizationId={organizationId}
+          organizationId={(activeOrganization as IActiveOrganization).id}
           type={OrganizationStructureType.BRANCH}
           disabled={isCreatingProfile}
         />
@@ -131,7 +138,7 @@ const CreateVolunteer = ({ navigation, route }: any) => {
           error={errors.departmentId}
           label={t('general:department')}
           name="departmentId"
-          organizationId={organizationId}
+          organizationId={(activeOrganization as IActiveOrganization).id}
           type={OrganizationStructureType.DEPARTMENT}
           placeholder={t('general:select')}
           disabled={isCreatingProfile}
@@ -141,7 +148,7 @@ const CreateVolunteer = ({ navigation, route }: any) => {
           error={errors.roleId}
           label={t('general:role')}
           name="roleId"
-          organizationId={organizationId}
+          organizationId={(activeOrganization as IActiveOrganization).id}
           type={OrganizationStructureType.ROLE}
           placeholder={t('general:select')}
           disabled={isCreatingProfile}

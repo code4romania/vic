@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
 import { Text } from '@ui-kitten/components';
@@ -14,6 +14,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useTranslation } from 'react-i18next';
 import useStore from '../store/store';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
+import { useActiveOrganization } from '../hooks/useActiveOrganization';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -39,10 +40,11 @@ const JoinByAccessCode = ({ navigation, route }: any) => {
   const { organizationId, logo, name } = route.params;
   const { isLoading: isJoiningByAccessCode, mutate: joinOrganization } =
     useJoinByAccessCodeMutation();
-  const [volunteerId, setVolunteerId] = useState<string>();
 
   const { open: openBottomSheet, close: closeBottomSheet } = useStore();
   console.log('JonByAccessCode', organizationId);
+
+  const { setActiveOrganization } = useActiveOrganization();
 
   const {
     control,
@@ -64,7 +66,11 @@ const JoinByAccessCode = ({ navigation, route }: any) => {
     // make the access request
     joinOrganization(joinPayload, {
       onSuccess: (data: IVolunteer) => {
-        setVolunteerId(data.id);
+        // set this as active organization
+        setActiveOrganization({
+          ...data.organization,
+          volunteerId: data.id,
+        });
         // show modal which will eventually become bottom sheet
         openBottomSheet();
       },
@@ -79,7 +85,7 @@ const JoinByAccessCode = ({ navigation, route }: any) => {
 
   const onCompleteVolunteerProfile = () => {
     closeBottomSheet();
-    navigation.navigate('create-volunteer', { organizationId, logo, name, volunteerId });
+    navigation.navigate('create-volunteer');
   };
 
   const onCloseBottomSheet = () => {

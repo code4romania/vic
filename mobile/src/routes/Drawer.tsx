@@ -2,32 +2,31 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Drawer, DrawerItem, Text } from '@ui-kitten/components';
 import Tabs from './Tabs';
-// import { Image, View } from 'react-native';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import i18n from '../common/config/i18n';
 import { withStyles } from '@ui-kitten/components';
 //SVG
 import { SvgXml } from 'react-native-svg';
 import PlusSvg from '../assets/svg/plus';
 import { LiteralUnion } from '@ui-kitten/components/devsupport';
-import { useMyOrganizationsQuery } from '../services/organization/organization.service';
-// import { IOrganizationMenuItem } from '../common/interfaces/organization-menu-item.interface';
+import { useOrganizations } from '../store/organization/organizations.selector';
+import { IOrganizationMenuItem } from '../common/interfaces/organization-menu-item.interface';
 
 const { Navigator, Screen } = createDrawerNavigator();
 
-// const AccessoryImage = ({ logo }: { logo: string }) => {
-//   return (
-//     <Image
-//       source={{ uri: logo }}
-//       // eslint-disable-next-line react-native/no-inline-styles
-//       style={{
-//         width: 40,
-//         height: 40,
-//         borderRadius: 40,
-//       }}
-//     />
-//   );
-// };
+const AccessoryImage = ({ logo }: { logo: string }) => {
+  return (
+    <Image
+      source={{ uri: logo }}
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={{
+        width: 40,
+        height: 40,
+        borderRadius: 40,
+      }}
+    />
+  );
+};
 
 const AccesoryAdd = withStyles(
   ({ eva }: { eva?: any }) => {
@@ -90,8 +89,7 @@ const DrawerItemTitle = withStyles(
 const DrawerContent = withStyles(
   ({ navigation, eva }: any) => {
     // ToDo: handle error
-    const { data: organizations } = useMyOrganizationsQuery();
-    console.log('organizations', organizations);
+    const { organizations } = useOrganizations();
 
     // add accessory
     const renderAccessoryLeft = () => <AccesoryAdd />;
@@ -101,22 +99,22 @@ const DrawerContent = withStyles(
       <DrawerHeader>{`${i18n.t('volunteer:my_organizations')}`}</DrawerHeader>
     );
 
-    // const renderAccessroyLeft = (logo: string) => {
-    //   return <AccessoryImage logo={logo} />;
-    // };
+    const renderAccessroyLeft = (logo: string) => {
+      return <AccessoryImage logo={logo} />;
+    };
 
     return (
       <View style={eva?.style.drawerContainer}>
         <Drawer style={eva?.style.drawer} appearance="noDivider" header={renderDrawerHeader}>
           <>
-            {/* {[]?.map((organization: IOrganizationMenuItem) => (
+            {organizations.map((organization: IOrganizationMenuItem) => (
               <DrawerItem
                 key={organization.id}
                 title={<DrawerItemTitle>{organization.name}</DrawerItemTitle>}
                 accessoryLeft={renderAccessroyLeft.bind(null, organization.logo || '')}
                 style={[eva?.style.drawerItem]}
               />
-            ))} */}
+            ))}
             <DrawerItem
               title={
                 <DrawerItemTitle category="s1">{`${i18n.t(
