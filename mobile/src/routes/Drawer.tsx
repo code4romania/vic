@@ -126,7 +126,7 @@ const DrawerContent = withStyles(
               accessoryLeft={renderAccessoryLeft}
               style={[eva?.style.drawerItem]}
               onPress={() => {
-                navigation.navigate('join-organization');
+                navigation.navigate('search');
                 navigation.closeDrawer();
               }}
             />

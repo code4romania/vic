@@ -31,7 +31,9 @@ const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
       <View style={styles.renderItem}>
         <Avatar source={{ uri: item.logo }} size="large" style={styles.avatar as ImageStyle} />
         <View style={styles.textWrapper}>
-          <Text category="p2">{item.name}</Text>
+          <Text category="p2" numberOfLines={1} ellipsizeMode="tail">
+            {item.name}
+          </Text>
           <Text category="c1" appearance="hint">
             {`${i18n.t('organization_profile:volunteers', { number: item.numberOfVolunteers })}`}
           </Text>
@@ -111,6 +113,7 @@ const themedStyles = StyleService.create({
   avatar: { borderWidth: 1, borderColor: '$cool-gray-200' },
   textWrapper: {
     gap: 4,
+    flexShrink: 2,
   },
   renderItem: {
     gap: 16,
