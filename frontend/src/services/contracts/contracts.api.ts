@@ -9,6 +9,11 @@ export const getContracts = (params: {
   limit: number;
   orderBy?: string;
   orderDirection?: OrderDirection;
+  search?: string;
+  volunteer?: string;
+  startDate?: Date;
+  endDate?: Date;
+  status?: ContractStatus;
 }): Promise<IPaginatedEntity<IContractListItem>> => {
   // return API.get('', { params }).then((res) => res.data);
   console.log(params);

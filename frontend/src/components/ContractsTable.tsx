@@ -18,6 +18,35 @@ import { ContractStatusMarkerColorMapper, formatDate } from '../common/utils/uti
 import LinkCell from './LinkCell';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from './StatusWithMarker';
+import DataTableFilters from './DataTableFilters';
+import VolunteerSelect from '../containers/VolunteerSelect';
+import FormDatePicker from './FormDatePicker';
+import { ListItem } from '../common/interfaces/list-item.interface';
+import Select, { SelectItem } from './Select';
+import { ContractStatus } from '../common/enums/contract-status.enum';
+import StatisticsCard from './StatisticsCard';
+import { useNavigate } from 'react-router-dom';
+
+const StatusOptions: SelectItem<ContractStatus>[] = [
+  { key: ContractStatus.ACTIVE, value: `${i18n.t('documents:contracts.display_status.active')}` },
+  { key: ContractStatus.CLOSED, value: `${i18n.t('documents:contracts.display_status.closed')}` },
+  {
+    key: ContractStatus.NOT_STARTED,
+    value: `${i18n.t('documents:contracts.display_status.not_started')}`,
+  },
+  {
+    key: ContractStatus.REJECTED,
+    value: `${i18n.t('documents:contracts.display_status.rejected')}`,
+  },
+  {
+    key: ContractStatus.VALIDATE_ONG,
+    value: `${i18n.t('documents:contracts.display_status.validate_ong')}`,
+  },
+  {
+    key: ContractStatus.VALIDATE_VOLUNTEER,
+    value: `${i18n.t('documents:contracts.display_status.validate_volunteer')}`,
+  },
+];
 
 const ContractsTableHeader = [
   {
@@ -63,6 +92,8 @@ const ContractsTableHeader = [
 ];
 
 const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
+  const navigate = useNavigate();
+
   const {
     data: contracts,
     isLoading,
@@ -72,6 +103,11 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
     page: query?.page as number,
     orderBy: query?.orderBy as string,
     orderDirection: query?.orderDirection as OrderDirection,
+    search: query?.search,
+    volunteer: query?.volunteer,
+    startDate: query?.startDate,
+    endDate: query?.endDate,
+    status: query?.status as ContractStatus,
   });
 
   // query error handling
@@ -144,8 +180,83 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
     alert('not yet implemented');
   };
 
+  const onStartDateChange = (startDate: Date | null) => {
+    setQuery({ startDate: startDate as Date });
+  };
+
+  const onEndDateChange = (endDate: Date | null) => {
+    setQuery({ endDate: endDate as Date });
+  };
+
+  const onVolunteerChange = (volunteer: ListItem) => {
+    setQuery({ volunteer: volunteer.label });
+  };
+
+  const onResetFilters = () => {
+    setQuery({}, 'push');
+  };
+
+  const onSearch = (search: string) => {
+    setQuery({
+      search,
+    });
+  };
+
+  const onStatusChange = (item: SelectItem<ContractStatus>) => {
+    setQuery({ status: item.key });
+  };
+
+  const onStatisticsClick = () => {
+    navigate('');
+  };
+
   return (
     <>
+      <div className="max-w-[350px]">
+        <StatisticsCard
+          label={i18n.t('documents:contracts.statistics_card.title')}
+          value={'16'}
+          action={{
+            label: i18n.t('documents:contracts.statistics_card.label'),
+            onClick: onStatisticsClick,
+          }}
+        />
+      </div>
+      <DataTableFilters
+        onSearch={onSearch}
+        searchValue={query?.search}
+        onResetFilters={onResetFilters}
+      >
+        <VolunteerSelect
+          defaultValue={
+            query.volunteer ? { value: 'something dumb', label: query.volunteer } : undefined
+          }
+          onSelect={onVolunteerChange}
+          label={i18n.t('volunteer:name', { status: '' })}
+        />
+        <FormDatePicker
+          label={`${i18n.t('documents:contracts.start_date')}`}
+          placeholder={`${i18n.t('general:anytime')}`}
+          onChange={onStartDateChange}
+          value={query.startDate}
+          id="execution-on-range__picker"
+        />
+
+        <FormDatePicker
+          label={`${i18n.t('documents:contracts.end_date')}`}
+          placeholder={`${i18n.t('general:anytime')}`}
+          onChange={onEndDateChange}
+          value={query.endDate}
+          id="registration-on-range__picker"
+        />
+        <Select
+          options={StatusOptions}
+          onChange={onStatusChange}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+          label={`${i18n.t('documents:contracts.status')}`}
+          selected={StatusOptions.find((option) => option.key === query.status)}
+        />
+      </DataTableFilters>
       <Card>
         <CardHeader>
           <h2>{i18n.t('documents:contracts.total', { value: 235 })}</h2>

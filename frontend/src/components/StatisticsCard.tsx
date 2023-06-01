@@ -20,9 +20,11 @@ const StatisticsCard = ({ label, value, action, icon, info }: StatisticsCardProp
             <p className="text-cool-gray-500 leading-5">{label}</p>
             <div className="flex flex-wrap gap-2 items-end">
               <p className="text-4xl leading-8 font-semibold ">{value}</p>
-              <span className="bg-yellow-200 h-7 leading-7 rounded-xl px-2.5 whitespace-nowrap">
-                {info}
-              </span>
+              {info && (
+                <span className="bg-yellow-200 h-7 leading-7 rounded-xl px-2.5 whitespace-nowrap">
+                  {info}
+                </span>
+              )}
             </div>
           </div>
         </div>
