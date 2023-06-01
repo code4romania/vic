@@ -1,11 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTableComponent from './DataTableComponent';
 import CardHeader from './CardHeader';
 import CardBody from './CardBody';
 import Card from '../layouts/CardLayout';
 import { IContractListItem } from '../common/interfaces/contract.interface';
 import i18n from '../common/config/i18n';
-import { ArrowDownTrayIcon, EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowDownTrayIcon,
+  CheckIcon,
+  EyeIcon,
+  PlusIcon,
+  TrashIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useContractsQuery } from '../services/contracts/contracts.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
@@ -26,6 +33,7 @@ import Select, { SelectItem } from './Select';
 import { ContractStatus } from '../common/enums/contract-status.enum';
 import StatisticsCard from './StatisticsCard';
 import { useNavigate } from 'react-router-dom';
+import ContractSidePanel from './ContractSidePanel';
 
 const StatusOptions: SelectItem<ContractStatus>[] = [
   { key: ContractStatus.ACTIVE, value: `${i18n.t('documents:contracts.display_status.active')}` },
@@ -92,12 +100,17 @@ const ContractsTableHeader = [
 ];
 
 const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
+  // selected activity log id
+  const [selectedContract, setSelectedContract] = useState<string>();
+  // side panel state
+  const [isViewContractSidePanelOpen, setIsViewContractSidePanelOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const {
     data: contracts,
     isLoading,
     error,
+    refetch,
   } = useContractsQuery({
     limit: query?.limit as number,
     page: query?.page as number,
@@ -116,11 +129,24 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
       useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
   }, [error]);
 
-  const onView = () => {
-    alert('not yet implemented');
+  const onView = (row: IContractListItem) => {
+    setSelectedContract(row.id);
+    setIsViewContractSidePanelOpen(true);
   };
 
   const onDownloadContract = () => {
+    alert('not yet implemented');
+  };
+
+  const onSignContract = () => {
+    alert('not yet implemented');
+  };
+
+  const onRejectContract = () => {
+    alert('not yet implemented');
+  };
+
+  const onRemove = () => {
     alert('not yet implemented');
   };
 
@@ -138,10 +164,69 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
       },
     ];
 
+    const contractsValidateOngMenuItems = [
+      ...contractsMenuItems,
+      {
+        label: i18n.t('documents:contracts.side_panel.confirm'),
+        icon: <CheckIcon className="menu-icon" />,
+        onClick: onSignContract,
+      },
+      {
+        label: i18n.t('documents:popover.reject'),
+        icon: <XMarkIcon className="menu-icon" />,
+        onClick: onRejectContract,
+      },
+      {
+        label: i18n.t('documents:popover.remove'),
+        icon: <TrashIcon className="menu-icon" />,
+        alert: true,
+        onClick: onRemove,
+      },
+    ];
+
+    const contractsValidateVolunteerMenuItems = [
+      ...contractsMenuItems,
+      {
+        label: i18n.t('documents:popover.remove'),
+        icon: <TrashIcon className="menu-icon" />,
+        alert: true,
+        onClick: onRemove,
+      },
+    ];
+
+    const contractsRejectedMenuItems = [
+      {
+        label: i18n.t('events:popover.view'),
+        icon: <EyeIcon className="menu-icon" />,
+        onClick: onView,
+      },
+      {
+        label: i18n.t('documents:popover.remove_from_list'),
+        icon: <TrashIcon className="menu-icon" />,
+        alert: true,
+        onClick: onRemove,
+      },
+    ];
+
+    const mapContractStatusToPopoverItems = (status: ContractStatus) => {
+      switch (status) {
+        case ContractStatus.ACTIVE:
+        case ContractStatus.CLOSED:
+        case ContractStatus.NOT_STARTED:
+          return contractsMenuItems;
+        case ContractStatus.VALIDATE_ONG:
+          return contractsValidateOngMenuItems;
+        case ContractStatus.VALIDATE_VOLUNTEER:
+          return contractsValidateVolunteerMenuItems;
+        case ContractStatus.REJECTED:
+          return contractsRejectedMenuItems;
+      }
+    };
+
     return {
       name: '',
       cell: (row: IContractListItem) => (
-        <Popover<IContractListItem> row={row} items={contractsMenuItems} />
+        <Popover<IContractListItem> row={row} items={mapContractStatusToPopoverItems(row.status)} />
       ),
       width: '50px',
       allowOverflow: true,
@@ -208,6 +293,12 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
 
   const onStatisticsClick = () => {
     navigate('');
+  };
+
+  const onCloseSidePanel = (shouldRefetch?: boolean) => {
+    setIsViewContractSidePanelOpen(false);
+    setSelectedContract(undefined);
+    if (shouldRefetch) refetch();
   };
 
   return (
@@ -290,6 +381,11 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
           />
         </CardBody>
       </Card>
+      <ContractSidePanel
+        onClose={onCloseSidePanel}
+        isOpen={isViewContractSidePanelOpen}
+        contractId={selectedContract}
+      />
     </>
   );
 };

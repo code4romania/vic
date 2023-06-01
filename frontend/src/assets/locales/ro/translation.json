@@ -767,6 +767,18 @@
       "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
       "start_date": "Data inceput perioada contract",
       "end_date": "Data sfarsit perioada contract",
+      "side_panel": {
+        "period": "Perioada contract",
+        "template": "Template utilizat",
+        "generated_by": "Generat de",
+        "signed": "Semnat fizic",
+        "generated_on": "Data generare",
+        "approved_on": "Data aprobare",
+        "rejected_by": "Refuzat de",
+        "rejected_on": "Data refuzare",
+        "reject": "Refuză",
+        "confirm": "Confirmă și semnează"
+      },
       "statistics_card": {
         "title": "Contracte in curs de validare",
         "label": "Vezi lista"
@@ -795,7 +807,9 @@
         "submit": {
           "messages": {
             "add": "Template-ul a fost adaugat cu succes",
-            "edit": "Template-ul a fost editat cu succes"
+            "edit": "Template-ul a fost editat cu succes",
+            "reject": "Contractul a fost refuzat cu succes",
+            "confirm": "Contractul a fost semnat cu succes"
           }
         }
       }
@@ -803,7 +817,9 @@
     "popover": {
       "edit": "Editeaza titlu template",
       "download": "Descarcă document",
-      "remove": "Elimină"
+      "reject": "Respinge contract",
+      "remove": "Elimină",
+      "remove_from_list": "Elimină din listă"
     },
     "add_template": "Adauga template"
   }
