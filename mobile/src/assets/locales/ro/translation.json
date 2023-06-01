@@ -219,11 +219,15 @@
           "label": "Email",
           "placeholder": "Introduceti emailul",
           "required": "Email-ul este obligatoriu",
+          "min": "Email-ul poate să aibă minim {{value}} caractere",
+          "max": "Email-ul poate să aibă maxim {{value}} caractere",
           "pattern": "Formatul email-ului nu este valid"
         },
         "phone": {
           "label": "Telefon",
           "placeholder": "Introduceti telefonul",
+          "min": "Numărul de telefon poate să aibă minim {{value}} caractere",
+          "max": "Numărul de telefon poate să aibă maxim {{value}} caractere",
           "required": "Telefonul este obligatoriu"
         },
         "password": {
