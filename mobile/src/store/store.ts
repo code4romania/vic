@@ -4,6 +4,13 @@ import { IOrganizationMenuItem } from '../common/interfaces/organization-menu-it
 import { organizationSlice } from './organization/organization.slice';
 import { bottomSheetSlice } from './bottom-sheet/bottom-sheet.slice';
 import { organizationsSlice } from './organization/organizations.slice';
+import { IActiveOrganization } from '../common/interfaces/active-organization.interface';
+import { activeOrganizationSlice } from './organization/active-organization.slice';
+
+interface ActiveOrganizationState {
+  activeOrganization?: IActiveOrganization;
+  setActiveOrganization: (activeOrganization: IActiveOrganization) => void;
+}
 
 interface OrganizationState {
   organization?: IOrganization;
@@ -23,10 +30,13 @@ interface BottomSheetState {
   close: () => void;
 }
 
-const useStore = create<OrganizationState & BottomSheetState & VolunteerState>()((set: any) => ({
+const useStore = create<
+  OrganizationState & BottomSheetState & VolunteerState & ActiveOrganizationState
+>()((set: any) => ({
   ...organizationSlice(set),
   ...bottomSheetSlice(set),
   ...organizationsSlice(set),
+  ...activeOrganizationSlice(set),
 }));
 
 export default useStore;

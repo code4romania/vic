@@ -16,8 +16,8 @@ import { useCreateVolunteerProfileMutation } from '../services/volunteer/volunte
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { useActiveOrganization } from '../hooks/useActiveOrganization';
-import { IActiveOrganization } from '../contexts/organization/OrganizationContext';
+import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import { IActiveOrganization } from '../common/interfaces/active-organization.interface';
 
 type CreateVolunteerFormTypes = {
   email: string;

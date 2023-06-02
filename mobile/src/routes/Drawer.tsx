@@ -11,6 +11,9 @@ import PlusSvg from '../assets/svg/plus';
 import { LiteralUnion } from '@ui-kitten/components/devsupport';
 import { useOrganizations } from '../store/organization/organizations.selector';
 import { IOrganizationMenuItem } from '../common/interfaces/organization-menu-item.interface';
+import { useMyOrganizationsQuery } from '../services/organization/organization.service';
+import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import useStore from '../store/store';
 
 const { Navigator, Screen } = createDrawerNavigator();
 
@@ -88,8 +91,16 @@ const DrawerItemTitle = withStyles(
 
 const DrawerContent = withStyles(
   ({ navigation, eva }: any) => {
-    // ToDo: handle error
+    // Get my organizations
+    const { error } = useMyOrganizationsQuery();
+    console.log('error', error);
+
+    // organizations state
     const { organizations } = useOrganizations();
+    // active organizatio state
+    const { activeOrganization } = useActiveOrganization();
+    // update active organization
+    const { setActiveOrganization } = useStore();
 
     // add accessory
     const renderAccessoryLeft = () => <AccesoryAdd />;
@@ -103,6 +114,11 @@ const DrawerContent = withStyles(
       return <AccessoryImage logo={logo} />;
     };
 
+    const onOrganizationChange = (organization: any) => {
+      setActiveOrganization(organization);
+      navigation.closeDrawer();
+    };
+
     return (
       <View style={eva?.style.drawerContainer}>
         <Drawer style={eva?.style.drawer} appearance="noDivider" header={renderDrawerHeader}>
@@ -112,7 +128,13 @@ const DrawerContent = withStyles(
                 key={organization.id}
                 title={<DrawerItemTitle>{organization.name}</DrawerItemTitle>}
                 accessoryLeft={renderAccessroyLeft.bind(null, organization.logo || '')}
-                style={[eva?.style.drawerItem]}
+                onPress={onOrganizationChange.bind(null, organization)}
+                style={[
+                  eva?.style.drawerItem,
+                  ...(activeOrganization?.id === organization.id
+                    ? [eva?.style.activeDrawerItem]
+                    : []),
+                ]}
               />
             ))}
             <DrawerItem

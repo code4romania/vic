@@ -14,7 +14,6 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useTranslation } from 'react-i18next';
 import useStore from '../store/store';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
-import { useActiveOrganization } from '../hooks/useActiveOrganization';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -41,10 +40,8 @@ const JoinByAccessCode = ({ navigation, route }: any) => {
   const { isLoading: isJoiningByAccessCode, mutate: joinOrganization } =
     useJoinByAccessCodeMutation();
 
-  const { open: openBottomSheet, close: closeBottomSheet } = useStore();
+  const { open: openBottomSheet, close: closeBottomSheet, setActiveOrganization } = useStore();
   console.log('JonByAccessCode', organizationId);
-
-  const { setActiveOrganization } = useActiveOrganization();
 
   const {
     control,

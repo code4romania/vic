@@ -10,17 +10,12 @@ import { SvgXml } from 'react-native-svg';
 import volunteerUserSVG from '../assets/svg/volunteer-user';
 import volunteerClockSVG from '../assets/svg/volunteer-clock';
 import TopNavigationCard from '../components/TopNavigationCard';
-import { useOrganizations } from '../store/organization/organizations.selector';
-import { useMyOrganizationsQuery } from '../services/organization/organization.service';
-import LoadingScreen from '../components/LoadingScreen';
+import { useActiveOrganization } from '../store/organization/active-organization.selector';
 
 const Volunteer = ({ navigation }: any) => {
   console.log('Volunteer');
 
-  const { isFetching: isLoadingOrganizations } = useMyOrganizationsQuery();
-  const { organizations } = useOrganizations();
-
-  console.log('isLoadingOrganizations', isLoadingOrganizations);
+  const { activeOrganization } = useActiveOrganization();
 
   const onViewOrganizationButtonPress = () => {
     navigation.navigate('organization');
@@ -42,16 +37,12 @@ const Volunteer = ({ navigation }: any) => {
     navigation.navigate('search');
   };
 
-  if (isLoadingOrganizations) {
-    return <LoadingScreen />;
-  }
-
-  return organizations.length > 0 ? (
+  return activeOrganization ? (
     <>
       <View style={styles.cardWrapper}>
         <TopNavigationCard
-          title="Asociatia Zen"
-          uri="https://picsum.photos/200/300"
+          title={activeOrganization.name}
+          uri={activeOrganization?.logo || ''}
           onPress={onTopNavigationCardPress}
         />
       </View>
@@ -59,7 +50,7 @@ const Volunteer = ({ navigation }: any) => {
         <Text>{`${i18n.t('volunteer:details')}`}</Text>
         <VolunteerCard
           title={i18n.t('volunteer:menu_items.organization_profile.title')}
-          uri="https://picsum.photos/200/300"
+          uri={activeOrganization?.logo || ''}
           onPress={onViewOrganizationButtonPress}
         />
         <VolunteerCard
