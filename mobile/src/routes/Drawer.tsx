@@ -15,21 +15,18 @@ import { useMyOrganizationsQuery } from '../services/organization/organization.s
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import useStore from '../store/store';
 
-const { Navigator, Screen } = createDrawerNavigator();
-
-const AccessoryImage = ({ logo }: { logo: string }) => {
-  return (
-    <Image
-      source={{ uri: logo }}
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{
-        width: 40,
-        height: 40,
-        borderRadius: 40,
-      }}
-    />
-  );
-};
+const AccessoryImage = withStyles(
+  ({ logo, eva }: { logo?: string; eva?: any }) => {
+    return <Image source={{ uri: logo }} style={eva?.style.image} />;
+  },
+  () => ({
+    image: {
+      width: 40,
+      height: 40,
+      borderRadius: 40,
+    },
+  }),
+);
 
 const AccesoryAdd = withStyles(
   ({ eva }: { eva?: any }) => {
@@ -93,7 +90,7 @@ const DrawerContent = withStyles(
   ({ navigation, eva }: any) => {
     // Get my organizations
     const { error } = useMyOrganizationsQuery();
-    console.log('error', error);
+    console.log('organizations query', error);
 
     // organizations state
     const { organizations } = useOrganizations();
@@ -116,6 +113,11 @@ const DrawerContent = withStyles(
 
     const onOrganizationChange = (organization: any) => {
       setActiveOrganization(organization);
+      navigation.closeDrawer();
+    };
+
+    const onJoinNewOrganization = () => {
+      navigation.navigate('search');
       navigation.closeDrawer();
     };
 
@@ -145,10 +147,7 @@ const DrawerContent = withStyles(
               }
               accessoryLeft={renderAccessoryLeft}
               style={[eva?.style.drawerItem]}
-              onPress={() => {
-                navigation.navigate('join-organization');
-                navigation.closeDrawer();
-              }}
+              onPress={onJoinNewOrganization}
             />
           </>
         </Drawer>
@@ -183,6 +182,9 @@ const DrawerContent = withStyles(
 );
 
 const renderDrawerContent = (props: any) => <DrawerContent {...props} />;
+
+// create drawer navigator on top of the tabs
+const { Navigator, Screen } = createDrawerNavigator();
 
 export const DrawerNavigator = () => (
   <Navigator
