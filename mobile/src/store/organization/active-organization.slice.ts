@@ -1,8 +1,8 @@
-import { IActiveOrganization } from '../../common/interfaces/active-organization.interface';
+import { IOrganizationListItem } from '../../common/interfaces/organization-list-item.interface';
 
 export const activeOrganizationSlice = (set: any) => ({
   activeOrganization: undefined,
-  setActiveOrganization: (activeOrganization: IActiveOrganization) => {
+  setActiveOrganization: (activeOrganization: IOrganizationListItem) => {
     set({ activeOrganization });
   },
 });

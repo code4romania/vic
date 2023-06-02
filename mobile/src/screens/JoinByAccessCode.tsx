@@ -14,6 +14,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useTranslation } from 'react-i18next';
 import useStore from '../store/store';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
+import { useOrganization } from '../store/organization/organization.selector';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -34,14 +35,25 @@ const schema = yup
   })
   .required();
 
-const JoinByAccessCode = ({ navigation, route }: any) => {
+const JoinByAccessCode = ({ navigation }: any) => {
   const { t } = useTranslation('access_code');
-  const { organizationId, logo, name } = route.params;
-  const { isLoading: isJoiningByAccessCode, mutate: joinOrganization } =
-    useJoinByAccessCodeMutation();
-
-  const { open: openBottomSheet, close: closeBottomSheet, setActiveOrganization } = useStore();
-  console.log('JonByAccessCode', organizationId);
+  // get selected organization from state
+  const { organization } = useOrganization();
+  // join by access code
+  const {
+    data: volunteer,
+    isLoading: isJoiningByAccessCode,
+    mutate: joinOrganization,
+  } = useJoinByAccessCodeMutation();
+  // bottom sheet and active organization state
+  const {
+    open: openBottomSheet,
+    close: closeBottomSheet,
+    setActiveOrganization,
+    addOrganization,
+  } = useStore();
+  // generated volunteerId
+  console.log('JoinByAccessCode', organization?.id);
 
   const {
     control,
@@ -56,7 +68,7 @@ const JoinByAccessCode = ({ navigation, route }: any) => {
   const onSubmit = (payload: AccessCodeFormTypes) => {
     // build the access request payload
     const joinPayload = {
-      organizationId,
+      organizationId: organization?.id as string,
       code: payload.code,
     };
 
@@ -66,8 +78,11 @@ const JoinByAccessCode = ({ navigation, route }: any) => {
         // set this as active organization
         setActiveOrganization({
           ...data.organization,
-          volunteerId: data.id,
         });
+
+        // push new organization to my organizations drawer
+        addOrganization(data.organization);
+
         // show modal which will eventually become bottom sheet
         openBottomSheet();
       },
@@ -82,7 +97,9 @@ const JoinByAccessCode = ({ navigation, route }: any) => {
 
   const onCompleteVolunteerProfile = () => {
     closeBottomSheet();
-    navigation.navigate('create-volunteer');
+    navigation.navigate('create-volunteer', {
+      volunteerId: volunteer?.id,
+    });
   };
 
   const onCloseBottomSheet = () => {
@@ -114,7 +131,7 @@ const JoinByAccessCode = ({ navigation, route }: any) => {
       }}
     >
       <FormLayout>
-        <OrganizationIdentity name={name} uri={logo} />
+        <OrganizationIdentity name={organization?.name || ''} uri={organization?.logo || ''} />
         <Text category="p2">{`${i18n.t('access_code:title')}`}</Text>
         <Text appearance="hint">{`${i18n.t('access_code:description')}`}</Text>
         <FormInput

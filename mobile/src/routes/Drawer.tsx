@@ -10,10 +10,10 @@ import { SvgXml } from 'react-native-svg';
 import PlusSvg from '../assets/svg/plus';
 import { LiteralUnion } from '@ui-kitten/components/devsupport';
 import { useOrganizations } from '../store/organization/organizations.selector';
-import { IOrganizationMenuItem } from '../common/interfaces/organization-menu-item.interface';
 import { useMyOrganizationsQuery } from '../services/organization/organization.service';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import useStore from '../store/store';
+import { IOrganizationListItem } from '../common/interfaces/organization-list-item.interface';
 
 const AccessoryImage = withStyles(
   ({ logo, eva }: { logo?: string; eva?: any }) => {
@@ -125,7 +125,7 @@ const DrawerContent = withStyles(
       <View style={eva?.style.drawerContainer}>
         <Drawer style={eva?.style.drawer} appearance="noDivider" header={renderDrawerHeader}>
           <>
-            {organizations.map((organization: IOrganizationMenuItem) => (
+            {organizations.map((organization: IOrganizationListItem) => (
               <DrawerItem
                 key={organization.id}
                 title={<DrawerItemTitle>{organization.name}</DrawerItemTitle>}

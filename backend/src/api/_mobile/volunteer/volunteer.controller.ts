@@ -52,7 +52,7 @@ export class MobileVolunteerController {
       branchId: profileDTO.branchId,
       departmentId: profileDTO.departmentId,
       roleId: profileDTO.roleId,
-      volunteerId: volunteerId,
+      volunteerId,
     });
 
     return new VolunteerProfilePresenter(profile);

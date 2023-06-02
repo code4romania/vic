@@ -1,15 +1,14 @@
 import { create } from 'zustand';
 import { IOrganization } from '../common/interfaces/organization.interface';
-import { IOrganizationMenuItem } from '../common/interfaces/organization-menu-item.interface';
 import { organizationSlice } from './organization/organization.slice';
 import { bottomSheetSlice } from './bottom-sheet/bottom-sheet.slice';
 import { organizationsSlice } from './organization/organizations.slice';
-import { IActiveOrganization } from '../common/interfaces/active-organization.interface';
 import { activeOrganizationSlice } from './organization/active-organization.slice';
+import { IOrganizationListItem } from '../common/interfaces/organization-list-item.interface';
 
 interface ActiveOrganizationState {
-  activeOrganization?: IActiveOrganization;
-  setActiveOrganization: (activeOrganization: IActiveOrganization) => void;
+  activeOrganization?: IOrganizationListItem;
+  setActiveOrganization: (activeOrganization: IOrganizationListItem) => void;
 }
 
 interface OrganizationState {
@@ -20,8 +19,9 @@ interface OrganizationState {
 }
 
 interface VolunteerState {
-  organizations: IOrganizationMenuItem[];
-  setOrganizations: (organizations: IOrganizationMenuItem[]) => void;
+  organizations: IOrganizationListItem[];
+  setOrganizations: (organizations: IOrganizationListItem[]) => void;
+  addOrganization: (organization: IOrganizationListItem) => void;
 }
 
 interface BottomSheetState {

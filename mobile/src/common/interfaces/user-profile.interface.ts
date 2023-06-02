@@ -1,4 +1,4 @@
-import { IActiveOrganization } from '../../contexts/organization/OrganizationContext';
+import { IOrganizationListItem } from './organization-list-item.interface';
 
 export interface IUserPersonalData {
   id: string;
@@ -15,5 +15,5 @@ export interface IUserProfile {
   email: string;
   phone?: string;
   userPersonalData: IUserPersonalData;
-  activeOrganization: IActiveOrganization;
+  activeOrganization: IOrganizationListItem;
 }

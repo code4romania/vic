@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
-import { IActiveOrganization } from '../common/interfaces/active-organization.interface';
+import { IOrganizationListItem } from '../common/interfaces/organization-list-item.interface';
 
 type CreateVolunteerFormTypes = {
   email: string;
@@ -38,10 +38,17 @@ const schema = yup
   })
   .required();
 
-const CreateVolunteer = ({ navigation }: any) => {
-  const { activeOrganization } = useActiveOrganization();
+const CreateVolunteer = ({ navigation, route }: any) => {
+  // get user profile data
   const { userProfile } = useAuth();
+  // get volunteer id
+  const { volunteerId } = route.params;
+  // translations
   const { t } = useTranslation('create_volunteer');
+  // active organization
+  const { activeOrganization } = useActiveOrganization();
+
+  // form
   const {
     control,
     formState: { errors },
@@ -63,30 +70,28 @@ const CreateVolunteer = ({ navigation }: any) => {
   }, [userProfile, reset]);
 
   const onSubmit = (profile: CreateVolunteerFormTypes) => {
-    if (activeOrganization) {
-      createVolunteerProfile(
-        {
-          profile: {
-            ...profile,
-            roleId: profile.roleId || undefined,
-            departmentId: profile.departmentId || undefined,
-            branchId: profile.branchId || undefined,
-          },
-          volunteerId: activeOrganization?.volunteerId,
+    createVolunteerProfile(
+      {
+        profile: {
+          ...profile,
+          roleId: profile.roleId || undefined,
+          departmentId: profile.departmentId || undefined,
+          branchId: profile.branchId || undefined,
         },
-        {
-          onError: (error: any) => {
-            Toast.show({
-              type: 'error',
-              text1: `${InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
-                error.response?.data.code_error,
-              )}`,
-            });
-          },
-          onSuccess: () => navigation.navigate('volunteer'),
+        volunteerId,
+      },
+      {
+        onError: (error: any) => {
+          Toast.show({
+            type: 'error',
+            text1: `${InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
+              error.response?.data.code_error,
+            )}`,
+          });
         },
-      );
-    }
+        onSuccess: () => navigation.navigate('volunteer'),
+      },
+    );
   };
 
   return (
@@ -129,7 +134,7 @@ const CreateVolunteer = ({ navigation }: any) => {
           label={t('form.branch.label')}
           name="branchId"
           placeholder={t('general:select')}
-          organizationId={(activeOrganization as IActiveOrganization).id}
+          organizationId={(activeOrganization as IOrganizationListItem).id}
           type={OrganizationStructureType.BRANCH}
           disabled={isCreatingProfile}
         />
@@ -138,7 +143,7 @@ const CreateVolunteer = ({ navigation }: any) => {
           error={errors.departmentId}
           label={t('general:department')}
           name="departmentId"
-          organizationId={(activeOrganization as IActiveOrganization).id}
+          organizationId={(activeOrganization as IOrganizationListItem).id}
           type={OrganizationStructureType.DEPARTMENT}
           placeholder={t('general:select')}
           disabled={isCreatingProfile}
@@ -148,7 +153,7 @@ const CreateVolunteer = ({ navigation }: any) => {
           error={errors.roleId}
           label={t('general:role')}
           name="roleId"
-          organizationId={(activeOrganization as IActiveOrganization).id}
+          organizationId={(activeOrganization as IOrganizationListItem).id}
           type={OrganizationStructureType.ROLE}
           placeholder={t('general:select')}
           disabled={isCreatingProfile}
