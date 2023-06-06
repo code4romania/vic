@@ -8,16 +8,16 @@ interface TabsProps {
   tabs: ISelectItem[];
   defaultTab?: ISelectItem;
   children: ReactNode;
-  onClick: (id: string | number) => void;
+  onPress: (id: string | number) => void;
 }
 
-const Tabs = ({ children, tabs, onClick, defaultTab }: TabsProps) => {
+const Tabs = ({ children, tabs, onPress, defaultTab }: TabsProps) => {
   const [activeTab, setActiveTab] = useState<ISelectItem>(defaultTab || tabs[0]);
   const styles = useStyleSheet(themedStyles);
 
   const onTabClick = (selected: ISelectItem): void => {
     setActiveTab(selected);
-    onClick(selected.key);
+    onPress(selected.key);
   };
 
   return (

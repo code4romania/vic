@@ -90,17 +90,49 @@
   },
   "auth": {
     "errors": {
-      "unauthorizeed": "Userul sau parola sunt gresite",
-      "username_exists": "Exista deja un utilizator cu aceasta adresa de email",
-      "signup": "Eroare la inregistrare",
+      "unauthorizeed": "Userul sau parola sunt greșite",
+      "username_exists": "Există deja un utilizator cu această adresă de email",
+      "signup": "Eroare la înregistrare",
       "resend_code": "Eroare la trimiterea codului de confirmare",
-      "init_profile": "Eroare la incarcarea profilului",
-      "login": "Eroare la autentificare, va rugam incercati din nou"
+      "init_profile": "Eroare la încărcarea profilului",
+      "login": "Eroare la autentificare, vă rugăm încercați din nou"
     }
   },
   "activity_log": {
     "title": "Ore de voluntariat",
-    "log": "Ore înregistrate"
+    "log": "Ore înregistrate",
+    "pending": "În așteptare",
+    "approved": "Aprobate",
+    "rejected": "Refuzate",
+    "total": "Total",
+    "form": {
+      "event": {
+        "label": "Eveniment"
+      },
+      "task": {
+        "label": "Task",
+        "required": "Alegerea taskului este obligatorie"
+      },
+      "date": {
+        "label": "Data",
+        "required": "Data este obligatorie"
+      },
+      "hours": {
+        "label": "Număr de ore",
+        "number": "Numărul trebuie să conțină doar cifre",
+        "placeholder": "Adaugă numărul de ore",
+        "required": "Numărul de ore este obligatoriu",
+        "min": "Numărul de ore trebuie să fie mai mare ca {{value}}",
+        "max": "Numărul de ore trebuie să fie mai mic ca {{value}}",
+        "integer": "Numărul de ore trebuie să fie intreg"
+      },
+      "mentions": {
+        "label": "Mențiune",
+        "placeholder": "Adaugă mențiune",
+        "min": "Mențiunea poate să aibă minim {{value}} caractere",
+        "max": "Mențiunea poate să aibă maxim {{value}} caractere"
+      }
+    }
   },
   "volunteer": {
     "profile": "Profil voluntar",
@@ -199,11 +231,15 @@
           "label": "Email",
           "placeholder": "Introduceti emailul",
           "required": "Email-ul este obligatoriu",
+          "min": "Email-ul poate să aibă minim {{value}} caractere",
+          "max": "Email-ul poate să aibă maxim {{value}} caractere",
           "pattern": "Formatul email-ului nu este valid"
         },
         "phone": {
           "label": "Telefon",
           "placeholder": "Introduceti telefonul",
+          "min": "Numărul de telefon poate să aibă minim {{value}} caractere",
+          "max": "Numărul de telefon poate să aibă maxim {{value}} caractere",
           "required": "Telefonul este obligatoriu"
         },
         "password": {
