@@ -10,7 +10,10 @@ import { SvgXml } from 'react-native-svg';
 import PlusSvg from '../assets/svg/plus';
 import { LiteralUnion } from '@ui-kitten/components/devsupport';
 import { useOrganizations } from '../store/organization/organizations.selector';
-import { useMyOrganizationsQuery } from '../services/organization/organization.service';
+import {
+  useMyOrganizationsQuery,
+  useSwitchOrganizationMutation,
+} from '../services/organization/organization.service';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import useStore from '../store/store';
 import { IOrganizationListItem } from '../common/interfaces/organization-list-item.interface';
@@ -98,6 +101,8 @@ const DrawerContent = withStyles(
     const { activeOrganization } = useActiveOrganization();
     // update active organization
     const { setActiveOrganization } = useStore();
+    // switch organization
+    const { mutate: switchOrganization } = useSwitchOrganizationMutation();
 
     // add accessory
     const renderAccessoryLeft = () => <AccesoryAdd />;
@@ -111,7 +116,8 @@ const DrawerContent = withStyles(
       return <AccessoryImage logo={logo} />;
     };
 
-    const onOrganizationChange = (organization: any) => {
+    const onOrganizationChange = (organization: IOrganizationListItem) => {
+      switchOrganization({ organizationId: organization.id });
       setActiveOrganization(organization);
       navigation.closeDrawer();
     };

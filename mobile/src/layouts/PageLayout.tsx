@@ -8,9 +8,8 @@ import {
   Text,
 } from '@ui-kitten/components';
 import Button from '../components/Button';
-import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
+import { View, KeyboardAvoidingView, StyleSheet, Platform, Pressable } from 'react-native';
 import { ButtonType } from '../common/enums/button-type.enum';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import BottomSheet, { BottomSheetProps } from '../components/BottomSheet';
 import { useBottomSheet } from '../store/bottom-sheet/bottom-sheet.selector';
@@ -116,9 +115,9 @@ export const PageLayout = ({
                 />
                 {actionsOptions.onSecondaryActionButtonClick &&
                   actionsOptions.secondaryActionLabel && (
-                    <TouchableWithoutFeedback onPress={actionsOptions.onSecondaryActionButtonClick}>
+                    <Pressable onPress={actionsOptions.onSecondaryActionButtonClick}>
                       <Text category="p2">{actionsOptions.secondaryActionLabel}</Text>
-                    </TouchableWithoutFeedback>
+                    </Pressable>
                   )}
               </View>
             )}
