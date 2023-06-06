@@ -8,7 +8,7 @@ import {
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import useStore from '../../store/store';
 import { IOrganization } from '../../common/interfaces/organization.interface';
-import { IOrganizationListItem } from '../../common/interfaces/organization-list-item.interface';
+import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
 
 export const useOrganizations = (orderDirection: OrderDirection, search: string) => {
   return useInfiniteQuery(
@@ -27,7 +27,7 @@ export const useOrganizations = (orderDirection: OrderDirection, search: string)
 export const useMyOrganizationsQuery = () => {
   const { setOrganizations } = useStore();
   return useQuery(['my-organizations'], () => getMyOrganizations(), {
-    onSuccess: (data: IOrganizationListItem[]) => setOrganizations(data),
+    onSuccess: (data: IOrganizationVolunteer[]) => setOrganizations(data),
   });
 };
 

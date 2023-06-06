@@ -78,10 +78,14 @@ const JoinByAccessCode = ({ navigation }: any) => {
         // set this as active organization
         setActiveOrganization({
           ...data.organization,
+          volunteerId: data.id,
         });
 
         // push new organization to my organizations drawer
-        addOrganization(data.organization);
+        addOrganization({
+          ...data.organization,
+          volunteerId: data.id,
+        });
 
         // show modal which will eventually become bottom sheet
         openBottomSheet();

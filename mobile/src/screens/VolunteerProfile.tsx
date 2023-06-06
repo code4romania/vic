@@ -25,14 +25,18 @@ const VolunteerProfile = ({ navigation }: any) => {
   const { activeOrganization } = useActiveOrganization();
   const { volunteer } = useVolunteer();
 
-  console.log('volunteer', volunteer);
-
   const { isLoading: isLoadingProfile, error: volunteerProfileError } = useVolunteerProfile(
-    activeOrganization?.id as string,
+    activeOrganization?.volunteerId as string,
   );
 
   const onEditVolunteerProfileButtonPress = () => {
     navigation.navigate('edit-volunteer');
+  };
+
+  const onCreateVolunteerProfileButtonPress = () => {
+    navigation.navigate('create-volunteer', {
+      volunteerId: activeOrganization?.volunteerId,
+    });
   };
 
   // check if there is an issue with the volunteer profile
@@ -43,7 +47,7 @@ const VolunteerProfile = ({ navigation }: any) => {
     return (
       <PageLayout title={i18n.t('volunteer:profile')} onBackButtonPress={navigation.goBack}>
         <MissingEntity
-          onActionBtnPress={() => console.log('press me')}
+          onActionBtnPress={onCreateVolunteerProfileButtonPress}
           heading={t('missing_profile.heading')}
           paragraph={t('missing_profile.paragraph')}
           actionBtnLabel={t('missing_profile.action_btn')}

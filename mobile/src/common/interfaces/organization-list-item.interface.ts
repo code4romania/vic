@@ -7,3 +7,7 @@ export interface IOrganizationListItem {
 export interface IOrganizationListItemWithNumberOfVolunteers extends IOrganizationListItem {
   numberOfVolunteers: number;
 }
+
+export interface IOrganizationVolunteer extends IOrganizationListItem {
+  volunteerId: string;
+}

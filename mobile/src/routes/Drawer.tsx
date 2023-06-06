@@ -16,7 +16,7 @@ import {
 } from '../services/organization/organization.service';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import useStore from '../store/store';
-import { IOrganizationListItem } from '../common/interfaces/organization-list-item.interface';
+import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
 
 const AccessoryImage = withStyles(
   ({ logo, eva }: { logo?: string; eva?: any }) => {
@@ -97,6 +97,7 @@ const DrawerContent = withStyles(
 
     // organizations state
     const { organizations } = useOrganizations();
+    console.log('organizations', organizations);
     // active organizatio state
     const { activeOrganization } = useActiveOrganization();
     // update active organization
@@ -116,7 +117,7 @@ const DrawerContent = withStyles(
       return <AccessoryImage logo={logo} />;
     };
 
-    const onOrganizationChange = (organization: IOrganizationListItem) => {
+    const onOrganizationChange = (organization: IOrganizationVolunteer) => {
       switchOrganization({ organizationId: organization.id });
       setActiveOrganization(organization);
       navigation.closeDrawer();
@@ -131,7 +132,7 @@ const DrawerContent = withStyles(
       <View style={eva?.style.drawerContainer}>
         <Drawer style={eva?.style.drawer} appearance="noDivider" header={renderDrawerHeader}>
           <>
-            {organizations.map((organization: IOrganizationListItem) => (
+            {organizations.map((organization: IOrganizationVolunteer) => (
               <DrawerItem
                 key={organization.id}
                 title={<DrawerItemTitle>{organization.name}</DrawerItemTitle>}

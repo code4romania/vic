@@ -1,11 +1,11 @@
-import { IOrganizationListItem } from '../../common/interfaces/organization-list-item.interface';
+import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
 
 export const organizationsSlice = (set: any) => ({
   organizations: [],
-  setOrganizations: (organizations: IOrganizationListItem[]) => {
+  setOrganizations: (organizations: IOrganizationVolunteer[]) => {
     set({ organizations });
   },
-  addOrganization: (organization: IOrganizationListItem) =>
+  addOrganization: (organization: IOrganizationVolunteer) =>
     set((state: any) => ({
       organizations: [...state.organizations, organization],
     })),

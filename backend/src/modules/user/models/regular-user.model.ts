@@ -7,9 +7,9 @@ import {
   UserPersonalDataTransformer,
 } from './user-personal-data.model';
 import {
-  IOrganizationModel,
-  OrganizationTransformer,
-} from 'src/modules/organization/models/organization.model';
+  IOrganizationVolunteerModel,
+  OrganizationVolunteerTransformer,
+} from 'src/modules/organization/models/organization-volunteer.models';
 
 export interface IRegularUserModel extends IUserModel {
   birthday: Date;
@@ -19,7 +19,7 @@ export interface IRegularUserModel extends IUserModel {
   firstName: string;
   lastName: string;
   userPersonalData?: IUserPersonalDataModel;
-  activeOrganization?: IOrganizationModel;
+  activeOrganization?: IOrganizationVolunteerModel;
 }
 
 export type CreateRegularUserOptions = Omit<
@@ -42,7 +42,7 @@ export type FindRegularUserOptions =
 
 export type FindOneRegularUserOptions = Partial<
   Pick<IUserModel, 'id' | 'cognitoId'>
->;
+> & { volunteer?: { userId: string } };
 export class RegularUserTransformer {
   static fromEntity(entity: RegularUserEntity): IRegularUserModel {
     if (!entity) return null;
@@ -61,7 +61,7 @@ export class RegularUserTransformer {
       userPersonalData: UserPersonalDataTransformer.fromEntity(
         entity.userPersonalData,
       ),
-      activeOrganization: OrganizationTransformer.fromEntity(
+      activeOrganization: OrganizationVolunteerTransformer.fromEntity(
         entity.activeOrganization,
       ),
     };

@@ -4,13 +4,13 @@ import { organizationSlice } from './organization/organization.slice';
 import { bottomSheetSlice } from './bottom-sheet/bottom-sheet.slice';
 import { organizationsSlice } from './organization/organizations.slice';
 import { activeOrganizationSlice } from './organization/active-organization.slice';
-import { IOrganizationListItem } from '../common/interfaces/organization-list-item.interface';
+import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { volunteerSlice } from './volunteer/volunteer.slice';
 
 interface ActiveOrganizationState {
-  activeOrganization?: IOrganizationListItem;
-  setActiveOrganization: (activeOrganization: IOrganizationListItem) => void;
+  activeOrganization?: IOrganizationVolunteer;
+  setActiveOrganization: (activeOrganization: IOrganizationVolunteer) => void;
 }
 
 interface OrganizationState {
@@ -21,9 +21,9 @@ interface OrganizationState {
 }
 
 interface VolunteerState {
-  organizations: IOrganizationListItem[];
-  setOrganizations: (organizations: IOrganizationListItem[]) => void;
-  addOrganization: (organization: IOrganizationListItem) => void;
+  organizations: IOrganizationVolunteer[];
+  setOrganizations: (organizations: IOrganizationVolunteer[]) => void;
+  addOrganization: (organization: IOrganizationVolunteer) => void;
 }
 
 interface VolunteerProfileState {

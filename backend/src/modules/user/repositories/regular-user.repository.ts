@@ -48,7 +48,9 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
       relations: {
         location: true,
         userPersonalData: true,
-        activeOrganization: true,
+        activeOrganization: {
+          volunteers: true,
+        },
       },
     });
 

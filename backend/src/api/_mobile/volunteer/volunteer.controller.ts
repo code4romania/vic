@@ -28,14 +28,12 @@ export class MobileVolunteerController {
     private readonly updateVolunteerProfileUsecase: UpdateVolunteerProfileUsecase,
   ) {}
 
-  @Get('organization/:id')
+  @Get(':id')
   async getVolunteerProfile(
-    @Param('id', UuidValidationPipe) organizationId: string,
-    @ExtractUser() { id }: IRegularUserModel,
+    @Param('id', UuidValidationPipe) volunteerId: string,
   ): Promise<VolunteerPresenter> {
     const volunteer = await this.getVolunteerProfileUsecase.execute(
-      id,
-      organizationId,
+      volunteerId,
     );
 
     return new VolunteerPresenter(volunteer);

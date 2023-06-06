@@ -14,13 +14,9 @@ export class GetVolunteerProfileUsecase
     private readonly exceptionService: ExceptionsService,
   ) {}
 
-  public async execute(
-    userId: string,
-    organizationId: string,
-  ): Promise<IVolunteerModel> {
+  public async execute(volunteerId: string): Promise<IVolunteerModel> {
     const volunteer = await this.volunteerFacade.find({
-      userId,
-      organizationId,
+      id: volunteerId,
     });
 
     if (!volunteer) {
