@@ -1,4 +1,4 @@
-import { format, isSameDay } from 'date-fns';
+import { differenceInYears, format, isSameDay } from 'date-fns';
 
 export const applyCardShadow = (theme: any) => ({
   shadowColor: theme['cool-gray-400'],
@@ -42,4 +42,8 @@ export const formatEventDate = (startDate: Date, endDate?: Date): string => {
   }
 
   return eventDate;
+};
+
+export const calculateAge = (birthday: Date) => {
+  return differenceInYears(new Date(), new Date(birthday));
 };

@@ -4,6 +4,7 @@ import { ErrorClass } from '../base-error.class';
 export enum VOLUNTEER_PROFILE_ERRORS {
   VOLUNTEER_001 = 'VOLUNTEER_001',
   VOLUNTEER_PROFILE_001 = 'VOLUNTEER_PROFILE_001',
+  VOLUNTEER_PROFILE_003 = 'VOLUNTEER_PROFILE_003',
   ORGANIZATION_STRUCTURE_001 = 'ORGANIZATION_STRUCTURE_001',
 }
 
@@ -20,6 +21,9 @@ export class VolunterProfileErrors extends ErrorClass<VOLUNTEER_PROFILE_ERRORS> 
       ),
       [VOLUNTEER_PROFILE_ERRORS.ORGANIZATION_STRUCTURE_001]: i18n.t(
         'create_volunteer:form.submit.errors.ORGANIZATION_STRUCTURE_001',
+      ),
+      [VOLUNTEER_PROFILE_ERRORS.VOLUNTEER_PROFILE_003]: i18n.t(
+        'volunteer:errors.VOLUNTEER_PROFILE_003',
       ),
     });
   }

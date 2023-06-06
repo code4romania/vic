@@ -1,3 +1,5 @@
+import { Sex } from '../enums/sex.enum';
+import { ICity } from './city.interface';
 import { IOrganizationListItem } from './organization-list-item.interface';
 
 export interface IUserPersonalData {
@@ -14,6 +16,9 @@ export interface IUserProfile {
   name: string;
   email: string;
   phone?: string;
+  birthday: Date;
+  sex: Sex;
+  location?: ICity;
   userPersonalData: IUserPersonalData;
   activeOrganization: IOrganizationListItem;
 }

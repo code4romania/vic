@@ -138,7 +138,11 @@
     "information": "Informatii voluntar",
     "email": "Email de contact",
     "active_since": "Voluntar din",
-    "created_on": "Înregistrat în TEO din"
+    "created_on": "Înregistrat în TEO din",
+    "errors": {
+      "VOLUNTEER_001": "Voluntarul nu a fost gasit!",
+      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creaza unul inainte!"
+    }
   },
   "event": {
     "join": "Doresc sa particip",

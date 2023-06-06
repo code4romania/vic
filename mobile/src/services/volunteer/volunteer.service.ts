@@ -1,5 +1,5 @@
-import { useMutation } from 'react-query';
-import { createVolunteerProfile, joinByAccessCode } from './volunteer.api';
+import { useMutation, useQuery } from 'react-query';
+import { createVolunteerProfile, getVolunteerProfile, joinByAccessCode } from './volunteer.api';
 
 export interface IJoinByAccessCodePayload {
   code: string;
@@ -18,6 +18,14 @@ export interface ICreateVolunteerProfilePayload {
 export const useJoinByAccessCodeMutation = () => {
   return useMutation(['join-by-access-code'], (request: IJoinByAccessCodePayload) =>
     joinByAccessCode(request),
+  );
+};
+
+export const useVolunteerProfile = (organizationId: string) => {
+  return useQuery(
+    ['volunteer-profile', organizationId],
+    () => getVolunteerProfile(organizationId),
+    { enabled: !!organizationId },
   );
 };
 

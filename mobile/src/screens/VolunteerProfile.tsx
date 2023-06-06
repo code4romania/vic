@@ -5,32 +5,24 @@ import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
 import { ScrollView, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
-import { formatDate } from '../common/utils/utils';
+import { calculateAge, formatDate } from '../common/utils/utils';
 import OrganizationIdentity from '../components/OrganizationIdentity';
-
-const volunteer = {
-  logo: 'https://picsum.photos/200',
-  name: 'Andreea Popa',
-  age: 23,
-  sex: 'female',
-  county: 'Iasi',
-  city: 'Aroneanu',
-  email: 'anamaria@gmail.com',
-  phone: '0758996987',
-  role: 'Community manager',
-  department: 'PR și Comunicare',
-  branch: 'margotfoster@example.com',
-  createdOn: new Date(),
-  activeSince: new Date(2012, 5, 3),
-  organization: {
-    name: 'Asociatia ZEN',
-    logo: 'https://picsum.photos/200',
-  },
-};
+import { useVolunteerProfile } from '../services/volunteer/volunteer.service';
+import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import LoadingScreen from '../components/LoadingScreen';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const VolunteerProfile = ({ navigation }: any) => {
   console.log('VolunteerProfile');
   const styles = useStyleSheet(themedStyles);
+
+  const { activeOrganization } = useActiveOrganization();
+
+  const {
+    isLoading: isLoadingProfile,
+    data: volunteerProfile,
+    error: volunteerProfileError,
+  } = useVolunteerProfile(activeOrganization?.id as string);
 
   const onEditVolunteerProfileButtonPress = () => {
     navigation.navigate('edit-volunteer');
@@ -42,36 +34,68 @@ const VolunteerProfile = ({ navigation }: any) => {
       onBackButtonPress={navigation.goBack}
       onEditButtonPress={onEditVolunteerProfileButtonPress}
     >
-      <ScrollView>
-        <ProfileIntro
-          uri={volunteer.logo}
-          name={volunteer.name}
-          description={`${i18n.t('volunteer:age', { years: volunteer.age })}\n${i18n.t(
-            'general:sex',
-            { sex_type: i18n.t(`general:${volunteer.sex}`) },
-          )}\n${volunteer.city}${i18n.t('volunteer:county', { name: volunteer.county })}`}
-        />
-        <View style={styles.profileContent}>
-          <OrganizationIdentity
-            uri={volunteer.organization.logo}
-            name={volunteer.organization.name}
+      {isLoadingProfile && <LoadingScreen />}
+      {volunteerProfile && activeOrganization && (
+        <ScrollView>
+          <ProfileIntro
+            uri={activeOrganization?.logo || ''}
+            name={volunteerProfile?.user.name}
+            description={`${i18n.t('volunteer:age', {
+              years: calculateAge(volunteerProfile.user.birthday),
+            })}\n${i18n.t('general:sex', {
+              sex_type: i18n.t(`general:${volunteerProfile.user.sex}`),
+            })}\n${volunteerProfile.user.location?.name || ''}${i18n.t('volunteer:county', {
+              name: volunteerProfile.user.location?.county.name,
+            })}`}
           />
-          <Text category="p2">{`${i18n.t('volunteer:information')}`}</Text>
-          <ReadOnlyElement label={i18n.t('volunteer:email')} value={volunteer.email} />
-          <ReadOnlyElement label={i18n.t('general:phone')} value={volunteer.phone} />
-          <ReadOnlyElement label={i18n.t('general:role')} value={volunteer.role} />
-          <ReadOnlyElement label={i18n.t('general:department')} value={volunteer.department} />
-          <ReadOnlyElement label={i18n.t('general:branch')} value={volunteer.branch} />
-          <ReadOnlyElement
-            label={i18n.t('volunteer:active_since')}
-            value={formatDate(volunteer.activeSince)}
-          />
-          <ReadOnlyElement
-            label={i18n.t('volunteer:created_on')}
-            value={formatDate(volunteer.createdOn)}
-          />
-        </View>
-      </ScrollView>
+          <View style={styles.profileContent}>
+            <OrganizationIdentity
+              uri={activeOrganization.logo || ''}
+              name={activeOrganization.name}
+            />
+            <Text category="p2">{`${i18n.t('volunteer:information')}`}</Text>
+            <ReadOnlyElement
+              label={i18n.t('volunteer:email')}
+              value={volunteerProfile.profile.email}
+            />
+            <ReadOnlyElement
+              label={i18n.t('general:phone')}
+              value={volunteerProfile.profile.phone}
+            />
+            <ReadOnlyElement
+              label={i18n.t('general:role')}
+              value={volunteerProfile.profile.role?.name}
+            />
+            <ReadOnlyElement
+              label={i18n.t('general:department')}
+              value={volunteerProfile.profile.department?.name}
+            />
+            <ReadOnlyElement
+              label={i18n.t('general:branch')}
+              value={volunteerProfile.profile.branch?.name}
+            />
+            <ReadOnlyElement
+              label={i18n.t('volunteer:active_since')}
+              value={
+                volunteerProfile.profile.activeSince
+                  ? formatDate(volunteerProfile.profile.activeSince)
+                  : '-'
+              }
+            />
+            <ReadOnlyElement
+              label={i18n.t('volunteer:created_on')}
+              value={formatDate(volunteerProfile.createdOn)}
+            />
+          </View>
+        </ScrollView>
+      )}
+      {!!volunteerProfileError && (
+        <Text category="c1">
+          {InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
+            (volunteerProfileError as any).response?.data.code_error,
+          )}
+        </Text>
+      )}
     </PageLayout>
   );
 };

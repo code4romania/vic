@@ -1,4 +1,4 @@
-import { Body, Param, UseGuards } from '@nestjs/common';
+import { Body, Get, Param, UseGuards } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
@@ -13,6 +13,7 @@ import { JoinOrganizationByAccessCodeUsecase } from 'src/usecases/volunteer/join
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
 import { VolunteerPresenter } from 'src/api/volunteer/presenters/volunteer.presenter';
 import { VolunteerMobileGuard } from './guards/volunteer-mobile.guard';
+import { GetVolunteerProfileUsecase } from 'src/usecases/volunteer/get-volunteer-profile.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -21,7 +22,21 @@ export class MobileVolunteerController {
   constructor(
     private readonly createVolunteerProfileUseCase: CreateVolunteerProfileUseCase,
     private readonly joinOrganizationByAccessCodeUsecase: JoinOrganizationByAccessCodeUsecase,
+    private readonly getVolunteerProfileUsecase: GetVolunteerProfileUsecase,
   ) {}
+
+  @Get('organization/:id')
+  async getVolunteerProfile(
+    @Param('id', UuidValidationPipe) organizationId: string,
+    @ExtractUser() { id }: IRegularUserModel,
+  ): Promise<VolunteerPresenter> {
+    const volunteer = await this.getVolunteerProfileUsecase.execute(
+      id,
+      organizationId,
+    );
+
+    return new VolunteerPresenter(volunteer);
+  }
 
   @ApiBody({ type: JoinByAccessCodeDto })
   @Post('access-code')

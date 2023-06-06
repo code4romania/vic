@@ -94,6 +94,7 @@ import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organizati
 import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
 import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.usecase';
 import { SwitchOrganizationUsecase } from './organization/switch-organization.usecase';
+import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.usecase';
 
 @Module({
   imports: [
@@ -170,6 +171,7 @@ import { SwitchOrganizationUsecase } from './organization/switch-organization.us
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -268,6 +270,7 @@ import { SwitchOrganizationUsecase } from './organization/switch-organization.us
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
