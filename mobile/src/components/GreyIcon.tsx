@@ -7,7 +7,7 @@ const GrayIcon = (props: IconProps) => {
 
   return (
     <View style={styles.container}>
-      <Icon {...props} style={styles.icon} />
+      <Icon {...props} style={[styles.icon, props.style]} />
     </View>
   );
 };

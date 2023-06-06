@@ -9,6 +9,7 @@
     "organizations": "Organizatii",
     "organization": "Organizatie",
     "active_volunteers": "voluntari activi",
+    "documents": "Documente",
     "updates": "actualizări",
     "edit": "Editează {{item}}",
     "add": "Adaugă {{item}}",
@@ -419,6 +420,11 @@
         }
       }
     }
+  },
+  "documents": {
+    "description": "Lorem ipsum. Gestioneaza contractele tale din sectiunile de mai jos. Descarca contracte vechi, sau semneaza contractele trimise de organizatie.",
+    "contracts_proposal": "Propunere contract",
+    "contracts_history": "Istoric contracte semnate"
   },
   "settings": {
     "title": "Setări cont",

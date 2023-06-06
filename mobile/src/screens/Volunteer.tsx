@@ -9,6 +9,7 @@ import { View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import volunteerUserSVG from '../assets/svg/volunteer-user';
 import volunteerClockSVG from '../assets/svg/volunteer-clock';
+import volunteerDocumentSVG from '../assets/svg/doc';
 import TopNavigationCard from '../components/TopNavigationCard';
 
 const Volunteer = ({ navigation }: any) => {
@@ -24,6 +25,10 @@ const Volunteer = ({ navigation }: any) => {
 
   const onViewAtivityLogsButtonPress = () => {
     navigation.navigate('activity-logs');
+  };
+
+  const onDocumentsButtonPress = () => {
+    navigation.navigate('documents');
   };
 
   const onTopNavigationCardPress = () => {
@@ -51,6 +56,11 @@ const Volunteer = ({ navigation }: any) => {
           icon={<SvgXml xml={volunteerClockSVG} />}
           onPress={onViewAtivityLogsButtonPress}
           subtitle={`${i18n.t('volunteer:menu_items.activity_log.subtitle', { number: 2 })}`}
+        />
+        <VolunteerCard
+          title={i18n.t('general:documents')}
+          icon={<SvgXml xml={volunteerDocumentSVG} />}
+          onPress={onDocumentsButtonPress}
         />
         <VolunteerCard
           title={i18n.t('volunteer:menu_items.volunteer_profile.title')}
