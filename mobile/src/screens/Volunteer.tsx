@@ -18,7 +18,7 @@ const Volunteer = ({ navigation }: any) => {
   const { activeOrganization } = useActiveOrganization();
 
   const onViewOrganizationButtonPress = () => {
-    navigation.navigate('organization');
+    navigation.navigate('organization-profile', { organizationId: activeOrganization?.id });
   };
 
   const onViewVolunteerProfilenButtonPress = () => {

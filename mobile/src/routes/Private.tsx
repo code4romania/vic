@@ -10,7 +10,6 @@ import JoinEvent from '../screens/JoinEvent';
 import JoinOrganization from '../screens/JoinOrganization';
 import LeaveOrganization from '../screens/LeaveOrganization';
 import News from '../screens/News';
-import Organization from '../screens/Organization';
 import OrganizationProfile from '../screens/OrganizationProfile';
 import VolunteerProfile from '../screens/VolunteerProfile';
 import AccountData from '../screens/AccountData';
@@ -29,7 +28,6 @@ const Private = () => (
     <Group>
       <Screen name="home" component={DrawerNavigator} />
       <Screen name="news" component={News} />
-      <Screen name="organization" component={Organization} />
       <Screen name="volunteer-profile" component={VolunteerProfile} />
       <Screen name="activity-logs" component={ActivityLogs} />
       <Screen name="organization-profile" component={OrganizationProfile} />
