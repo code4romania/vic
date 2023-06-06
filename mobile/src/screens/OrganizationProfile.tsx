@@ -54,6 +54,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   };
 
   const onJoinOrganizationByAccessCodeButtonPress = () => {
+    console.log('here');
     if (!userProfile?.userPersonalData) {
       // 1. if the user doesn't have the identity data filled in show modal
       openBottomSheet();

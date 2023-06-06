@@ -5,6 +5,7 @@ enum VolunteerExceptionCodes {
   VOLUNTEER_002 = 'VOLUNTEER_002',
   VOLUNTEER_003 = 'VOLUNTEER_003',
   VOLUNTEER_004 = 'VOLUNTEER_004',
+  VOLUNTEER_005 = 'VOLUNTEER_005',
 
   // Profile
   VOLUNTEER_PROFILE_001 = 'VOLUNTEER_PROFILE_001',
@@ -48,5 +49,9 @@ export const VolunteerExceptionMessages: Record<
     code_error: VolunteerExceptionCodes.VOLUNTEER_PROFILE_003,
     message:
       'Volunteer does not have a profile to be updated. Create one first.',
+  },
+  [VolunteerExceptionCodes.VOLUNTEER_005]: {
+    code_error: VolunteerExceptionCodes.VOLUNTEER_005,
+    message: 'The user does not have a volunteer profile on this organization',
   },
 };

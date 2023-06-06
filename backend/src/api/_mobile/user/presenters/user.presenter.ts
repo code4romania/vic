@@ -2,6 +2,7 @@ import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { UserPersonalDataPresenter } from './user-personal-data.presenter';
+import { OrganizationProfilePresenter } from '../../organization/presenters/organization-profile.presenter';
 
 export class UserPresenter {
   constructor(user: IRegularUserModel) {
@@ -11,6 +12,9 @@ export class UserPresenter {
     this.phone = user.phone;
     this.userPersonalData = user.userPersonalData
       ? new UserPersonalDataPresenter(user.userPersonalData)
+      : null;
+    this.activeOrganization = user.activeOrganization
+      ? new OrganizationProfilePresenter(user.activeOrganization)
       : null;
   }
 
@@ -47,4 +51,10 @@ export class UserPresenter {
     type: UserPersonalDataPresenter,
   })
   userPersonalData: UserPersonalDataPresenter;
+
+  @Expose()
+  @ApiProperty({
+    type: OrganizationProfilePresenter,
+  })
+  activeOrganization: OrganizationProfilePresenter;
 }

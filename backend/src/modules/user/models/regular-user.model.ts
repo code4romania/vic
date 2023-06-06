@@ -6,6 +6,10 @@ import {
   IUserPersonalDataModel,
   UserPersonalDataTransformer,
 } from './user-personal-data.model';
+import {
+  IOrganizationModel,
+  OrganizationTransformer,
+} from 'src/modules/organization/models/organization.model';
 
 export interface IRegularUserModel extends IUserModel {
   birthday: Date;
@@ -15,6 +19,7 @@ export interface IRegularUserModel extends IUserModel {
   firstName: string;
   lastName: string;
   userPersonalData?: IUserPersonalDataModel;
+  activeOrganization?: IOrganizationModel;
 }
 
 export type CreateRegularUserOptions = Omit<
@@ -27,7 +32,9 @@ export type CreateRegularUserOptions = Omit<
 export type UpdateRegularUserOptions = Pick<
   IRegularUserModel,
   'userPersonalData'
->;
+> & {
+  activeOrganizationId?: string;
+};
 
 export type FindRegularUserOptions =
   | Partial<IRegularUserModel & { locationId: number }>
@@ -53,6 +60,9 @@ export class RegularUserTransformer {
       lastName: entity.lastName,
       userPersonalData: UserPersonalDataTransformer.fromEntity(
         entity.userPersonalData,
+      ),
+      activeOrganization: OrganizationTransformer.fromEntity(
+        entity.activeOrganization,
       ),
     };
   }

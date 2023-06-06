@@ -9,6 +9,7 @@ import {
   TrackedEventData,
   TrackedEventName,
 } from '../enums/action-resource-types.enum';
+import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 
 export const TRACK_ACTION_EVENT = 'track.action';
 
@@ -24,8 +25,10 @@ export interface IActionArchiveModel extends IBaseModel {
 
 export type CreateActionArchiveOptions = Pick<
   IActionArchiveModel,
-  'eventName' | 'eventData' | 'author' | 'changes'
->;
+  'eventName' | 'eventData' | 'changes'
+> & {
+  author: IRegularUserModel | IAdminUserModel;
+};
 
 export type FindManyActionsArchiveOptions = {
   organizationId: string;

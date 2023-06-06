@@ -93,6 +93,8 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
 import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organization-by-access-code.usecase';
 import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
 import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.usecase';
+import { SwitchOrganizationUsecase } from './organization/switch-organization.usecase';
+import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.usecase';
 
 @Module({
   imports: [
@@ -117,6 +119,7 @@ import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.u
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
     GetMyOrganizationsUsecase,
+    SwitchOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -168,6 +171,7 @@ import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.u
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -214,6 +218,7 @@ import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.u
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
     GetMyOrganizationsUsecase,
+    SwitchOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -265,6 +270,7 @@ import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.u
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,

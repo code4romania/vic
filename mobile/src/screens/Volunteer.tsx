@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@ui-kitten/components';
-import NoVolunteerProfile from './NoVolunteerProfile';
+import NoVolunteerProfile from './MissingEntity';
 import i18n from '../common/config/i18n';
 import VolunteerCard from '../components/VolunteerCard';
 import { StyleSheet } from 'react-native';
@@ -10,9 +10,12 @@ import { SvgXml } from 'react-native-svg';
 import volunteerUserSVG from '../assets/svg/volunteer-user';
 import volunteerClockSVG from '../assets/svg/volunteer-clock';
 import TopNavigationCard from '../components/TopNavigationCard';
+import { useActiveOrganization } from '../store/organization/active-organization.selector';
 
 const Volunteer = ({ navigation }: any) => {
-  console.log('Volunteer', navigation);
+  console.log('Volunteer');
+
+  const { activeOrganization } = useActiveOrganization();
 
   const onViewOrganizationButtonPress = () => {
     navigation.navigate('organization');
@@ -30,12 +33,16 @@ const Volunteer = ({ navigation }: any) => {
     navigation.openDrawer();
   };
 
-  return true ? (
+  const onAddOrganizationPress = () => {
+    navigation.navigate('search');
+  };
+
+  return activeOrganization ? (
     <>
       <View style={styles.cardWrapper}>
         <TopNavigationCard
-          title="Asociatia Zen"
-          uri="https://picsum.photos/200/300"
+          title={activeOrganization.name}
+          uri={activeOrganization?.logo || ''}
           onPress={onTopNavigationCardPress}
         />
       </View>
@@ -43,7 +50,7 @@ const Volunteer = ({ navigation }: any) => {
         <Text>{`${i18n.t('volunteer:details')}`}</Text>
         <VolunteerCard
           title={i18n.t('volunteer:menu_items.organization_profile.title')}
-          uri="https://picsum.photos/200/300"
+          uri={activeOrganization?.logo || ''}
           onPress={onViewOrganizationButtonPress}
         />
         <VolunteerCard
@@ -60,7 +67,12 @@ const Volunteer = ({ navigation }: any) => {
       </View>
     </>
   ) : (
-    <NoVolunteerProfile />
+    <NoVolunteerProfile
+      onActionBtnPress={onAddOrganizationPress}
+      heading={i18n.t('volunteer:no_org_added')}
+      paragraph={i18n.t('volunteer:no_org_description')}
+      actionBtnLabel={i18n.t('general:add', { item: i18n.t('general:organization').toLowerCase() })}
+    />
   );
 };
 
