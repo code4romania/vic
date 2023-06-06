@@ -158,7 +158,7 @@ const AccessRequest = () => {
               <div className="w-full lg:w-1/3 xl:w-1/4">
                 <ProfileCard
                   name={accessRequest.requestedBy.name}
-                  birthday={accessRequest.requestedBy.birthday}
+                  age={accessRequest.requestedBy.age}
                   sex={accessRequest.requestedBy.sex}
                   location={accessRequest.requestedBy.location}
                   logo={accessRequest.requestedBy.profilePicture || ''}

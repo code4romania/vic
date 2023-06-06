@@ -141,6 +141,11 @@
     "created_on": "Înregistrat în TEO din",
     "errors": {
       "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creaza unul inainte!"
+    },
+    "missing_profile": {
+      "heading": "Nu ai creat încă un profil de utilizator",
+      "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique. ",
+      "action_btn": "Creaza profil"
     }
   },
   "event": {

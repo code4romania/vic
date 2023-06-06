@@ -1,7 +1,7 @@
-import { Body, Get, Param, UseGuards } from '@nestjs/common';
+import { Body, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { VolunteerProfilePresenter } from 'src/api/volunteer/presenters/volunteer-profile.presenter';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { CreateVolunteerProfileUseCase } from 'src/usecases/volunteer/create-volunteer-profile.usecase';
@@ -14,6 +14,8 @@ import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
 import { VolunteerPresenter } from 'src/api/volunteer/presenters/volunteer.presenter';
 import { VolunteerMobileGuard } from './guards/volunteer-mobile.guard';
 import { GetVolunteerProfileUsecase } from 'src/usecases/volunteer/get-volunteer-profile.usecase';
+import { UpdateVolunteerProfileDto } from './dto/update-volunteer-profile.dto';
+import { UpdateVolunteerProfileUsecase } from 'src/usecases/volunteer/update-volunteer-profile.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -23,6 +25,7 @@ export class MobileVolunteerController {
     private readonly createVolunteerProfileUseCase: CreateVolunteerProfileUseCase,
     private readonly joinOrganizationByAccessCodeUsecase: JoinOrganizationByAccessCodeUsecase,
     private readonly getVolunteerProfileUsecase: GetVolunteerProfileUsecase,
+    private readonly updateVolunteerProfileUsecase: UpdateVolunteerProfileUsecase,
   ) {}
 
   @Get('organization/:id')
@@ -71,5 +74,22 @@ export class MobileVolunteerController {
     });
 
     return new VolunteerProfilePresenter(profile);
+  }
+
+  @UseGuards(VolunteerMobileGuard)
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: UpdateVolunteerProfileDto })
+  @Patch(':id/profile')
+  async update(
+    @Param('id', UuidValidationPipe) volunteerId: string,
+    @Body() updatesDTO: UpdateVolunteerProfileDto,
+    @ExtractUser() user: IRegularUserModel,
+  ): Promise<VolunteerPresenter> {
+    const volunteer = await this.updateVolunteerProfileUsecase.execute(
+      volunteerId,
+      updatesDTO,
+      user,
+    );
+    return new VolunteerPresenter(volunteer);
   }
 }

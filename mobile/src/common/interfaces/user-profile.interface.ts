@@ -16,7 +16,7 @@ export interface IUserProfile {
   name: string;
   email: string;
   phone?: string;
-  birthday: Date;
+  age: number;
   sex: Sex;
   location?: ICity;
   userPersonalData: IUserPersonalData;

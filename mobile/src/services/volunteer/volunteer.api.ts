@@ -16,3 +16,10 @@ export const createVolunteerProfile = async (
 ): Promise<IVolunteer> => {
   return API.post(`/mobile/volunteer/${volunteerId}/profile`, profile).then((res) => res.data);
 };
+
+export const updateVolunteerProfile = async (
+  volunteerId: string,
+  profile: ICreateVolunteerProfilePayload,
+): Promise<IVolunteer> => {
+  return API.patch(`/mobile/volunteer/${volunteerId}/profile`, profile).then((res) => res.data);
+};

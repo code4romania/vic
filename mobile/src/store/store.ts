@@ -5,6 +5,8 @@ import { bottomSheetSlice } from './bottom-sheet/bottom-sheet.slice';
 import { organizationsSlice } from './organization/organizations.slice';
 import { activeOrganizationSlice } from './organization/active-organization.slice';
 import { IOrganizationListItem } from '../common/interfaces/organization-list-item.interface';
+import { IVolunteer } from '../common/interfaces/volunteer.interface';
+import { volunteerSlice } from './volunteer/volunteer.slice';
 
 interface ActiveOrganizationState {
   activeOrganization?: IOrganizationListItem;
@@ -24,6 +26,11 @@ interface VolunteerState {
   addOrganization: (organization: IOrganizationListItem) => void;
 }
 
+interface VolunteerProfileState {
+  volunteer?: IVolunteer;
+  setVolunteer: (volunteer: IVolunteer) => void;
+}
+
 interface BottomSheetState {
   isOpen: boolean;
   open: () => void;
@@ -31,12 +38,17 @@ interface BottomSheetState {
 }
 
 const useStore = create<
-  OrganizationState & BottomSheetState & VolunteerState & ActiveOrganizationState
+  OrganizationState &
+    BottomSheetState &
+    VolunteerState &
+    ActiveOrganizationState &
+    VolunteerProfileState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...bottomSheetSlice(set),
   ...organizationsSlice(set),
   ...activeOrganizationSlice(set),
+  ...volunteerSlice(set),
 }));
 
 export default useStore;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@ui-kitten/components';
-import NoVolunteerProfile from './NoVolunteerProfile';
+import NoVolunteerProfile from './MissingEntity';
 import i18n from '../common/config/i18n';
 import VolunteerCard from '../components/VolunteerCard';
 import { StyleSheet } from 'react-native';
@@ -67,7 +67,12 @@ const Volunteer = ({ navigation }: any) => {
       </View>
     </>
   ) : (
-    <NoVolunteerProfile onAddOrganizationPress={onAddOrganizationPress} />
+    <NoVolunteerProfile
+      onActionBtnPress={onAddOrganizationPress}
+      heading={i18n.t('volunteer:no_org_added')}
+      paragraph={i18n.t('volunteer:no_org_description')}
+      actionBtnLabel={i18n.t('general:add', { item: i18n.t('general:organization').toLowerCase() })}
+    />
   );
 };
 

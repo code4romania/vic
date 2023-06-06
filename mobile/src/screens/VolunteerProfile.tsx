@@ -5,47 +5,71 @@ import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
 import { ScrollView, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
-import { calculateAge, formatDate } from '../common/utils/utils';
+import { formatDate } from '../common/utils/utils';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useVolunteerProfile } from '../services/volunteer/volunteer.service';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import LoadingScreen from '../components/LoadingScreen';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { VOLUNTEER_PROFILE_ERRORS } from '../common/errors/entities/volunteer-profile';
+import MissingEntity from './MissingEntity';
+import { useTranslation } from 'react-i18next';
+import { useVolunteer } from '../store/volunteer/volunteer.selector';
 
 const VolunteerProfile = ({ navigation }: any) => {
   console.log('VolunteerProfile');
   const styles = useStyleSheet(themedStyles);
 
-  const { activeOrganization } = useActiveOrganization();
+  const { t } = useTranslation('volunteer');
 
-  const {
-    isLoading: isLoadingProfile,
-    data: volunteerProfile,
-    error: volunteerProfileError,
-  } = useVolunteerProfile(activeOrganization?.id as string);
+  const { activeOrganization } = useActiveOrganization();
+  const { volunteer } = useVolunteer();
+
+  console.log('volunteer', volunteer);
+
+  const { isLoading: isLoadingProfile, error: volunteerProfileError } = useVolunteerProfile(
+    activeOrganization?.id as string,
+  );
 
   const onEditVolunteerProfileButtonPress = () => {
     navigation.navigate('edit-volunteer');
   };
 
+  // check if there is an issue with the volunteer profile
+  if (
+    (volunteerProfileError as any)?.response?.data.code_error ===
+    VOLUNTEER_PROFILE_ERRORS.VOLUNTEER_PROFILE_003
+  ) {
+    return (
+      <PageLayout title={i18n.t('volunteer:profile')} onBackButtonPress={navigation.goBack}>
+        <MissingEntity
+          onActionBtnPress={() => console.log('press me')}
+          heading={t('missing_profile.heading')}
+          paragraph={t('missing_profile.paragraph')}
+          actionBtnLabel={t('missing_profile.action_btn')}
+        />
+      </PageLayout>
+    );
+  }
+
   return (
     <PageLayout
       title={i18n.t('volunteer:profile')}
       onBackButtonPress={navigation.goBack}
-      onEditButtonPress={onEditVolunteerProfileButtonPress}
+      onEditButtonPress={volunteer && onEditVolunteerProfileButtonPress}
     >
       {isLoadingProfile && <LoadingScreen />}
-      {volunteerProfile && activeOrganization && (
+      {volunteer && activeOrganization && (
         <ScrollView>
           <ProfileIntro
             uri={activeOrganization?.logo || ''}
-            name={volunteerProfile?.user.name}
+            name={volunteer?.user.name}
             description={`${i18n.t('volunteer:age', {
-              years: calculateAge(volunteerProfile.user.birthday),
+              years: volunteer.user.age,
             })}\n${i18n.t('general:sex', {
-              sex_type: i18n.t(`general:${volunteerProfile.user.sex}`),
-            })}\n${volunteerProfile.user.location?.name || ''}${i18n.t('volunteer:county', {
-              name: volunteerProfile.user.location?.county.name,
+              sex_type: i18n.t(`general:${volunteer.user.sex}`),
+            })}\n${volunteer.user.location?.name || ''}${i18n.t('volunteer:county', {
+              name: volunteer.user.location?.county.name,
             })}`}
           />
           <View style={styles.profileContent}>
@@ -54,37 +78,26 @@ const VolunteerProfile = ({ navigation }: any) => {
               name={activeOrganization.name}
             />
             <Text category="p2">{`${i18n.t('volunteer:information')}`}</Text>
-            <ReadOnlyElement
-              label={i18n.t('volunteer:email')}
-              value={volunteerProfile.profile.email}
-            />
-            <ReadOnlyElement
-              label={i18n.t('general:phone')}
-              value={volunteerProfile.profile.phone}
-            />
-            <ReadOnlyElement
-              label={i18n.t('general:role')}
-              value={volunteerProfile.profile.role?.name}
-            />
+            <ReadOnlyElement label={i18n.t('volunteer:email')} value={volunteer.profile.email} />
+            <ReadOnlyElement label={i18n.t('general:phone')} value={volunteer.profile.phone} />
+            <ReadOnlyElement label={i18n.t('general:role')} value={volunteer.profile.role?.name} />
             <ReadOnlyElement
               label={i18n.t('general:department')}
-              value={volunteerProfile.profile.department?.name}
+              value={volunteer.profile.department?.name}
             />
             <ReadOnlyElement
               label={i18n.t('general:branch')}
-              value={volunteerProfile.profile.branch?.name}
+              value={volunteer.profile.branch?.name}
             />
             <ReadOnlyElement
               label={i18n.t('volunteer:active_since')}
               value={
-                volunteerProfile.profile.activeSince
-                  ? formatDate(volunteerProfile.profile.activeSince)
-                  : '-'
+                volunteer.profile.activeSince ? formatDate(volunteer.profile.activeSince) : '-'
               }
             />
             <ReadOnlyElement
               label={i18n.t('volunteer:created_on')}
-              value={formatDate(volunteerProfile.createdOn)}
+              value={formatDate(volunteer.createdOn)}
             />
           </View>
         </ScrollView>
