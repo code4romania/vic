@@ -301,7 +301,7 @@ export class EventRepository
   ): Promise<Pagination<IEventsMobileListItemModel>> {
     const { orderBy, orderDirection, search } = findOptions;
     const updatedQuery = eventQuery.orderBy(
-      this.buildOrderByQuery(orderBy || 'createdOn', 'event'),
+      this.buildOrderByQuery(orderBy || 'name', 'event'),
       orderDirection || OrderDirection.ASC,
     );
 
