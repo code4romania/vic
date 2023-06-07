@@ -17,6 +17,9 @@ import { EventStatus } from '../enums/event-status.enum';
 import { IBasePaginationFilterModel } from '../../../infrastructure/base/base-pagination-filter.model';
 import { EventState } from '../enums/event-time.enum';
 import { EventFilterEnum } from '../enums/event-filter.enum';
+import { IEventRSVPModel } from './event-rsvp.model';
+import { EventRSVPModelTransformer } from './event-rsvp.model';
+import { EventVolunteerStatus } from '../enums/event-volunteer-status.enum';
 
 export interface IEventModel extends IBaseModel {
   id: string;
@@ -39,6 +42,13 @@ export interface IEventModel extends IBaseModel {
   organization: IOrganizationModel;
   targets?: IOrganizationStructureModel[];
   tasks: IActivityTypeModel[];
+  eventRsvps?: IEventRSVPModel[];
+}
+
+export interface IEventWithVolunteerStatus
+  extends Omit<IEventModel, 'eventRsvps'> {
+  volunteerStatus: EventVolunteerStatus;
+  numberOfPersonsGoingToEvent: number;
 }
 
 export interface IEventsListItemModel
@@ -95,6 +105,7 @@ export type CreateEventOptions = Pick<
 };
 
 export type FindOneEventOptions = Pick<IActivityTypeModel, 'id'> & {
+  userId?: string;
   organizationId?: string;
 };
 
@@ -196,6 +207,7 @@ export class EventModelTransformer {
       organization: OrganizationTransformer.fromEntity(entity.organization),
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
       tasks: entity.tasks?.map(ActivityTypeTransformer.fromEntity),
+      eventRsvps: entity.eventRSVPs?.map(EventRSVPModelTransformer.fromEntity),
 
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,

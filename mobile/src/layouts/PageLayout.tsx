@@ -21,6 +21,7 @@ interface ActionsOptionsProps {
   onSecondaryActionButtonClick?: () => void;
   primaryBtnType?: ButtonType;
   loading?: boolean;
+  helperText?: string;
 }
 
 interface PageLayoutProps {
@@ -107,18 +108,23 @@ export const PageLayout = ({
             {actionsOptions.loading ? (
               <LoadingIndicator /> // TODO: handle the loading state properly
             ) : (
-              <View style={styles.buttonsContainer}>
-                <Button
-                  onPress={actionsOptions.onPrimaryActionButtonClick}
-                  label={`${actionsOptions.primaryActionLabel}`}
-                  status={actionsOptions.primaryBtnType || 'primary'}
-                />
-                {actionsOptions.onSecondaryActionButtonClick &&
-                  actionsOptions.secondaryActionLabel && (
-                    <Pressable onPress={actionsOptions.onSecondaryActionButtonClick}>
-                      <Text category="p2">{actionsOptions.secondaryActionLabel}</Text>
-                    </Pressable>
-                  )}
+              <View style={styles.helperContainer}>
+                {actionsOptions.helperText && (
+                  <Text category="p1">{actionsOptions.helperText}</Text>
+                )}
+                <View style={styles.buttonsContainer}>
+                  <Button
+                    onPress={actionsOptions.onPrimaryActionButtonClick}
+                    label={`${actionsOptions.primaryActionLabel}`}
+                    status={actionsOptions.primaryBtnType || 'primary'}
+                  />
+                  {actionsOptions.onSecondaryActionButtonClick &&
+                    actionsOptions.secondaryActionLabel && (
+                      <Pressable onPress={actionsOptions.onSecondaryActionButtonClick}>
+                        <Text category="p2">{actionsOptions.secondaryActionLabel}</Text>
+                      </Pressable>
+                    )}
+                </View>
               </View>
             )}
           </View>
@@ -163,6 +169,10 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingHorizontal: 8,
+  },
+  helperContainer: {
+    gap: 12,
+    alignItems: 'center',
   },
   buttonsContainer: {
     gap: 24,

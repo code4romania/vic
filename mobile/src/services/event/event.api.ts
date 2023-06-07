@@ -1,6 +1,7 @@
 import { EventType } from '../../common/enums/event-type.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEventListItem } from '../../common/interfaces/event-list-item.interface';
+import { IEvent } from '../../common/interfaces/event.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import API from '../api';
 
@@ -11,7 +12,7 @@ interface PaginationQuery {
   eventFilter: EventType;
 }
 
-export const getEvents = ({
+export const getEvents = async ({
   pageParam = 1,
   ...params
 }: PaginationQuery): Promise<IPaginatedEntity<IEventListItem>> => {
@@ -22,4 +23,8 @@ export const getEvents = ({
       ...params,
     },
   }).then((res) => res.data);
+};
+
+export const getEvent = async (eventId: string): Promise<IEvent> => {
+  return API.get(`/mobile/event/${eventId}`).then((res) => res.data);
 };

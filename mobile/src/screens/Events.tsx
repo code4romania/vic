@@ -19,7 +19,7 @@ const EventsTabs: ISelectItem[] = [
   { key: EventType.OPEN, label: i18n.t('events:tabs.open') },
 ];
 
-const Events = () => {
+const Events = ({ navigation }: any) => {
   console.log('Events');
   const { t } = useTranslation('events');
   // order direction filter
@@ -49,8 +49,12 @@ const Events = () => {
     }
   };
 
+  const onEventListItemPress = (eventId: string) => {
+    navigation.navigate('event', { eventId });
+  };
+
   const onRenderEventListItem = ({ item }: { item: IEventListItem }) => (
-    <EventItem event={item} onPress={console.log} />
+    <EventItem event={item} onPress={onEventListItemPress} />
   );
 
   const onSort = () => {

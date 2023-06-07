@@ -24,6 +24,8 @@ import { EventListItemPresenter } from 'src/api/event/presenters/event-list-item
 import { GetMyEventsDto } from './dto/get-my-events.dto';
 import { GetMyEventsUsecase } from 'src/usecases/event/get-my-events.usecase';
 import { MobileEventListItemPresenter } from './presenters/mobile-event-list-item.presenter';
+import { GetOneEventWithVolunteerStatusUsecase } from 'src/usecases/event/get-one-event-with-volunteer-status.usecase';
+import { MobileEventPresenter } from './presenters/mobile-event.presenter';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard) // VolunteerGuard
@@ -33,6 +35,7 @@ export class MobileEventController {
     private readonly createEventRSVPUseCase: CreateEventRSVPUseCase,
     private readonly deleteEventRSVPUseCase: DeleteEventRSVPUseCase,
     private readonly getMyEventsUsecase: GetMyEventsUsecase,
+    private readonly getOneEventWithVolunteerStatus: GetOneEventWithVolunteerStatusUsecase,
   ) {}
 
   @Get()
@@ -52,6 +55,19 @@ export class MobileEventController {
         (event) => new MobileEventListItemPresenter(event),
       ),
     });
+  }
+
+  @Get(':id')
+  async getOne(
+    @Param('id', UuidValidationPipe) eventId: string,
+    @ExtractUser() { id }: IRegularUserModel,
+  ): Promise<MobileEventPresenter> {
+    const event = await this.getOneEventWithVolunteerStatus.execute({
+      id: eventId,
+      userId: id,
+    });
+
+    return new MobileEventPresenter(event);
   }
 
   @ApiBody({ type: EventRSVPDto })

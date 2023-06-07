@@ -189,10 +189,17 @@
     "location": "Locatie",
     "description": "Descriere eveniment",
     "tasks": "Taskuri asociate",
-    "attending": "{{number}} de persoane participă!",
+    "attending": "{{numberOfVolunteer}} de persoane participă!",
     "type": {
       "public": "Eveniment public",
       "all_organization": "Toata organizatia"
+    },
+    "errors": {
+      "EVENT_001": "Evenimentul nu a fost gasit!"
+    },
+    "rsvp": {
+      "going": "Particip",
+      "not_going": "Nu particip"
     }
   },
   "events": {
@@ -204,6 +211,18 @@
       "going": "Particip",
       "organizations": "Ale organizațiilor mele",
       "open": "Deschise"
+    },
+    "reason_page": {
+      "introduction": "Lorem ipsum.",
+      "form": {
+        "mention": {
+          "label": "Mențiune",
+          "required": "Mențiunea este obligatorie",
+          "min": "Mențiunea poate să aibă minim {{value}} caractere",
+          "max": "Mențiunea poate să aibă maxim {{value}} caractere",
+          "helper": "Completează câmpul pentru a te înscrie."
+        }
+      }
     }
   },
   "tabs": {

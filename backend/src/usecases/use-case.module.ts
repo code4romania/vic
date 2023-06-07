@@ -96,6 +96,7 @@ import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.u
 import { SwitchOrganizationUsecase } from './organization/switch-organization.usecase';
 import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.usecase';
 import { GetMyEventsUsecase } from './event/get-my-events.usecase';
+import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-with-volunteer-status.usecase';
 
 @Module({
   imports: [
@@ -189,6 +190,7 @@ import { GetMyEventsUsecase } from './event/get-my-events.usecase';
     GetManyForDownloadEventUseCase,
     GetManyEventUseCase,
     GetMyEventsUsecase,
+    GetOneEventWithVolunteerStatusUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -290,6 +292,7 @@ import { GetMyEventsUsecase } from './event/get-my-events.usecase';
     GetManyEventUseCase,
     GetManyForDownloadEventUseCase,
     GetMyEventsUsecase,
+    GetOneEventWithVolunteerStatusUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,

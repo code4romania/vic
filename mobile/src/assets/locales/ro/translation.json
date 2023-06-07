@@ -189,10 +189,17 @@
     "location": "Locatie",
     "description": "Descriere eveniment",
     "tasks": "Taskuri asociate",
-    "attending": "{{number}} de persoane participă!",
+    "attending": "{{numberOfVolunteer}} de persoane participă!",
     "type": {
       "public": "Eveniment public",
       "all_organization": "Toata organizatia"
+    },
+    "errors": {
+      "EVENT_001": "Evenimentul nu a fost gasit!"
+    },
+    "rsvp": {
+      "going": "Particip",
+      "not_going": "Nu particip"
     }
   },
   "events": {

@@ -1,6 +1,6 @@
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { getEvents } from './event.api';
+import { getEvent, getEvents } from './event.api';
 import { EventType } from '../../common/enums/event-type.enum';
 
 export const useEventsInfiniteQuery = (
@@ -20,3 +20,6 @@ export const useEventsInfiniteQuery = (
     },
   );
 };
+
+export const useEventQuery = (eventId: string) =>
+  useQuery(['event', eventId], () => getEvent(eventId), { enabled: !!eventId });
