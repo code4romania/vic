@@ -1,33 +1,49 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { EventExceptionMessages } from 'src/modules/event/exceptions/event.exceptions';
+import { EventVolunteerStatus } from 'src/modules/event/enums/event-volunteer-status.enum';
 import {
   FindOneEventOptions,
-  IEventsMobileListItemModel,
+  IEventWithVolunteerStatus,
 } from 'src/modules/event/models/event.model';
-import { EventFacade } from 'src/modules/event/services/event.facade';
+import { GetOneEventUseCase } from './get-one-event.usecase';
 
 @Injectable()
 export class GetOneEventWithVolunteerStatusUsecase
-  implements IUseCaseService<IEventsMobileListItemModel>
+  implements IUseCaseService<IEventWithVolunteerStatus>
 {
   constructor(
-    private readonly eventFacade: EventFacade,
+    private readonly getOneEventUseCase: GetOneEventUseCase,
     private readonly exceptionService: ExceptionsService,
   ) {}
 
   public async execute(
     findOptions: FindOneEventOptions,
-  ): Promise<IEventsMobileListItemModel> {
-    const event = await this.eventFacade.find(findOptions);
+  ): Promise<IEventWithVolunteerStatus> {
+    const { userId, ...options } = findOptions;
+    // 1. get event
+    const event = await this.getOneEventUseCase.execute(options);
 
-    if (!event) {
-      this.exceptionService.badRequestException(
-        EventExceptionMessages.EVENT_001,
-      );
-    }
+    // 2. count the number of rsvps going for this event
+    const { eventRsvps, ...rest } = event;
 
-    return event;
+    const numberOfPersonsGoingToEvent = eventRsvps.map(
+      (rsvp) => rsvp.going,
+    ).length;
+
+    // 3.1 check if the user has responded to this event
+    const rsvp = eventRsvps.find((rsvp) => rsvp.user.id === userId);
+    // 3.2 map event status in regards to this volunteer
+    const volunteerStatus = rsvp
+      ? rsvp.going
+        ? EventVolunteerStatus.JOINED
+        : EventVolunteerStatus.DECLINED
+      : EventVolunteerStatus.NO_RESPONSE;
+
+    return {
+      ...rest,
+      volunteerStatus,
+      numberOfPersonsGoingToEvent,
+    };
   }
 }

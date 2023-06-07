@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text } from '@ui-kitten/components';
 import i18n from '../common/config/i18n';
@@ -9,21 +9,33 @@ import ReadOnlyElement from '../components/ReadOnlyElement';
 import TaskPill from '../components/TaskPill';
 import { View } from 'react-native';
 import { useEventQuery } from '../services/event/event.service';
-import { JSONStringifyError } from '../common/utils/utils';
+import { mapEventType } from '../common/utils/helpers';
+import LoadingScreen from '../components/LoadingScreen';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useTranslation } from 'react-i18next';
 
 const Event = ({ navigation, route }: any) => {
   console.log('Event');
+  const { t } = useTranslation('event');
 
   const { eventId } = route.params;
 
   const { data: event, isLoading: isLoadingEvent, error } = useEventQuery(eventId);
-  console.log('event', event);
-  console.log('isLoadingEvent', isLoadingEvent);
-  console.log('getEventError', error);
+
+  useEffect(() => {
+    // if the event request failed go back and show toast
+    if (error) {
+      navigation.goBack();
+      Toast.show({
+        type: 'error',
+        text1: `${InternalErrors.EVENT_ERRORS.getError((error as any).response?.data.code_error)}`,
+      });
+    }
+  }, [error, navigation]);
 
   const onJoinEventButtonPress = () => {
     console.log('partikip');
-    // navigation.navigate('join-event');
   };
 
   return (
@@ -32,27 +44,24 @@ const Event = ({ navigation, route }: any) => {
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         loading: isLoadingEvent,
-        primaryActionLabel: 'Particip',
+        primaryActionLabel: `${t('rsvp.going')}`,
         onPrimaryActionButtonClick: onJoinEventButtonPress,
-        secondaryActionLabel: 'Nu particip',
+        secondaryActionLabel: `${t('rsvp.not_going')}`,
         onSecondaryActionButtonClick: () => console.log('Nu particip'),
+        helperText: `${t('attending', { numberOfVolunteer: event?.numberOfPersonsGoingToEvent })}`,
       }}
     >
-      {!!error && (
-        <Text>
-          <>{JSONStringifyError(error as any)}</>
-        </Text>
-      )}
-      {event && !error && (
+      {isLoadingEvent && <LoadingScreen />}
+      {event && (
         <FormLayout>
           <Image source={{ uri: event.image }} style={styles.image} resizeMode="cover" />
-          <OrganizationIdentity uri={event.image || ''} name={event.organizationName || ''} />
+          <OrganizationIdentity
+            uri={event.organizationLogo || ''}
+            name={event.organizationName || ''}
+          />
           <ReadOnlyElement label={i18n.t('event:date')} value={event.eventInterval} />
           <ReadOnlyElement label={i18n.t('event:name')} value={event.name} />
-          <ReadOnlyElement
-            label={i18n.t('event:target')}
-            value={event.targets?.map((target) => target.name).join(', ')}
-          />
+          <ReadOnlyElement label={i18n.t('event:target')} value={mapEventType(event)} />
           <ReadOnlyElement label={i18n.t('event:location')} value={event.location} />
           <ReadOnlyElement label={i18n.t('event:description')} value={event.description} />
           <View style={styles.container}>

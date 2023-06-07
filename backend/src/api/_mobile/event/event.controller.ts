@@ -64,6 +64,7 @@ export class MobileEventController {
   ): Promise<MobileEventPresenter> {
     const event = await this.getOneEventWithVolunteerStatus.execute({
       id: eventId,
+      userId: id,
     });
 
     return new MobileEventPresenter(event);

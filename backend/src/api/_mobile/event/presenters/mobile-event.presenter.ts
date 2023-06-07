@@ -1,11 +1,13 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IEventsMobileListItemModel } from 'src/modules/event/models/event.model';
+import { IEventWithVolunteerStatus } from 'src/modules/event/models/event.model';
 import { OrganizationStructureListItemPresenter } from 'src/api/organization/presenters/organization-structure-list-item.presenter';
 import { formatEventDate } from '../helpers/event.helper';
+import { EventVolunteerStatus } from 'src/modules/event/enums/event-volunteer-status.enum';
+import { ActivityTypeListItemPresenter } from 'src/api/activity-type/presenters/activity-type-list-item.presenter';
 
 export class MobileEventPresenter {
-  constructor(event: IEventsMobileListItemModel) {
+  constructor(event: IEventWithVolunteerStatus) {
     this.id = event.id;
     this.name = event.name;
     this.image =
@@ -15,17 +17,21 @@ export class MobileEventPresenter {
 
     this.location = event.location;
     this.eventInterval = formatEventDate(event.startDate, event.endDate);
-    this.organizationLogo = event.organizationLogo;
+    this.organizationLogo = event.organization.logo;
 
     this.targets = event.targets?.map(
       (target) => new OrganizationStructureListItemPresenter(target),
     );
 
-    this.organizationName = 'Organizatie de test';
-    this.description = 'Descriere de test';
-    this.tasks = [];
-    this.status = 'status de test';
-    this.numberOfPersonsGoingToEvent = 10;
+    this.organizationName = event.organization.name;
+    this.description = event.description;
+
+    this.tasks = event.tasks?.map(
+      (task) => new ActivityTypeListItemPresenter(task),
+    );
+
+    this.volunteerStatus = event.volunteerStatus;
+    this.numberOfPersonsGoingToEvent = event.numberOfPersonsGoingToEvent;
   }
 
   @Expose()
@@ -73,13 +79,19 @@ export class MobileEventPresenter {
 
   @Expose()
   @ApiProperty({
+    type: ActivityTypeListItemPresenter,
     isArray: true,
   })
-  tasks: { id: string; name: string }[];
+  tasks: ActivityTypeListItemPresenter[];
 
   @Expose()
-  @ApiProperty({ description: 'Event status in relation to the volunteer' })
-  status: string; // event status in relation to the volunteer
+  @ApiProperty({
+    description:
+      'The status of the event in relation to the volunteer making the request',
+    enum: EventVolunteerStatus,
+    examples: Object.values(EventVolunteerStatus),
+  })
+  volunteerStatus: EventVolunteerStatus;
 
   @Expose()
   @ApiProperty({

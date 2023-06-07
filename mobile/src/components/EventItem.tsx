@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { IEventListItem } from '../common/interfaces/event-list-item.interface';
 import PressableContainer from './PressableContainer';
-import { useTranslation } from 'react-i18next';
+import { mapEventType } from '../common/utils/helpers';
 
 interface EventItemProps {
   event: IEventListItem;
@@ -41,38 +41,22 @@ const EventContentRow = withStyles(
   }),
 );
 
-const EventItem = ({ event, onPress }: EventItemProps) => {
-  const { t } = useTranslation('event');
-
-  const mapEventType = (): string => {
-    if (event.isPublic) {
-      return t('type.public');
-    }
-
-    if (!event.isPublic && !event.targets?.length) {
-      return t('type.all_organization');
-    }
-
-    return event.targets?.map((target) => target.name).join(', ') || '';
-  };
-
-  return (
-    <PressableContainer onPress={() => onPress(event.id)}>
-      <View style={styles.container}>
-        <Avatar source={{ uri: event.image }} size="large" />
-        <View style={styles.content}>
-          <Text style={styles.title} category="p2">
-            {event.name}
-          </Text>
-          <EventContentRow icon="clock">{event.eventInterval}</EventContentRow>
-          <EventContentRow icon="map-pin">{event.location}</EventContentRow>
-          <EventContentRow icon="users">{mapEventType()}</EventContentRow>
-        </View>
-        <Avatar source={{ uri: event.organizationLogo }} size={'tiny'} />
+const EventItem = ({ event, onPress }: EventItemProps) => (
+  <PressableContainer onPress={() => onPress(event.id)}>
+    <View style={styles.container}>
+      <Avatar source={{ uri: event.image }} size="large" />
+      <View style={styles.content}>
+        <Text style={styles.title} category="p2">
+          {event.name}
+        </Text>
+        <EventContentRow icon="clock">{event.eventInterval}</EventContentRow>
+        <EventContentRow icon="map-pin">{event.location}</EventContentRow>
+        <EventContentRow icon="users">{mapEventType(event)}</EventContentRow>
       </View>
-    </PressableContainer>
-  );
-};
+      <Avatar source={{ uri: event.organizationLogo }} size={'tiny'} />
+    </View>
+  </PressableContainer>
+);
 
 export default EventItem;
 

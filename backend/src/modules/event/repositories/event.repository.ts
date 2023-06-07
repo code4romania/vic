@@ -158,6 +158,7 @@ export class EventRepository
         organization: true,
         targets: true,
         tasks: true,
+        eventRSVPs: true,
       },
     });
 
