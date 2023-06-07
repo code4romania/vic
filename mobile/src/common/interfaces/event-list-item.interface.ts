@@ -7,4 +7,5 @@ export interface IEventListItem {
   image: string;
   isPublic: boolean;
   eventInterval: string;
+  organizationLogo?: string;
 }

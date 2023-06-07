@@ -7,7 +7,6 @@ import PressableContainer from './PressableContainer';
 interface EventItemProps {
   event: IEventListItem;
   eva?: any;
-  organizationLogo?: string;
   onPress: (eventId: string) => void;
 }
 
@@ -41,7 +40,7 @@ const EventContentRow = withStyles(
   }),
 );
 
-const EventItem = ({ event, organizationLogo, onPress }: EventItemProps) => (
+const EventItem = ({ event, onPress }: EventItemProps) => (
   <PressableContainer onPress={() => onPress(event.id)}>
     <View style={styles.container}>
       <Avatar source={{ uri: event.image }} size="large" />
@@ -53,7 +52,7 @@ const EventItem = ({ event, organizationLogo, onPress }: EventItemProps) => (
         <EventContentRow icon="map-pin">{event.location}</EventContentRow>
         <EventContentRow icon="users">{'HHAHHAHAHA'}</EventContentRow>
       </View>
-      {organizationLogo && <Avatar source={{ uri: organizationLogo }} size={'tiny'} />}
+      <Avatar source={{ uri: event.organizationLogo }} size={'tiny'} />
     </View>
   </PressableContainer>
 );

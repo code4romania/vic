@@ -72,7 +72,9 @@ export type IEventsMobileListItemModel = Pick<
   | 'isPublic'
   | 'targets'
   | 'location'
->;
+> & {
+  organizationLogo?: string;
+};
 
 export type CreateEventOptions = Pick<
   IEventModel,
@@ -167,6 +169,7 @@ export class EventModelTransformer {
 
       // image: entity.image
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
+      organizationLogo: entity.organization?.logo || '',
     };
   }
 

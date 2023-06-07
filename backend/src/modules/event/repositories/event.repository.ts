@@ -179,23 +179,7 @@ export class EventRepository
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
     const { userId, ...filters } = findOptions;
-    const query = this.eventRepository
-      .createQueryBuilder('event')
-      .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
-      .select([
-        'event.id',
-        'event.name',
-        'event.startDate',
-        'event.endDate',
-        'event.status',
-        'event.isPublic',
-        'event.createdOn',
-        'event.organizationId',
-        'event.location',
-        'targets.id',
-        'targets.name',
-      ])
-      .where('event.status = :status', { status: EventStatus.PUBLISHED });
+    const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
     // Get all events in progress from the organizations i am part of or public events
     query.andWhere(
@@ -218,23 +202,7 @@ export class EventRepository
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
     const { userId, ...filters } = findOptions;
-    const query = this.eventRepository
-      .createQueryBuilder('event')
-      .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
-      .select([
-        'event.id',
-        'event.name',
-        'event.startDate',
-        'event.endDate',
-        'event.status',
-        'event.isPublic',
-        'event.createdOn',
-        'event.organizationId',
-        'event.location',
-        'targets.id',
-        'targets.name',
-      ])
-      .where('event.status = :status', { status: EventStatus.PUBLISHED });
+    const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
     // Get all events in progress from the organizations i am part of
     query.andWhere(
@@ -257,26 +225,11 @@ export class EventRepository
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
     const { userId, ...filters } = findOptions;
-    const query = this.eventRepository
-      .createQueryBuilder('event')
-      .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
-      .select([
-        'event.id',
-        'event.name',
-        'event.startDate',
-        'event.endDate',
-        'event.status',
-        'event.isPublic',
-        'event.createdOn',
-        'event.organizationId',
-        'event.location',
-        'targets.id',
-        'targets.name',
-      ])
-      .where(
-        'event.status = :status AND (event.endDate > :currentDate OR event.endDate IS NULL)',
-        { status: EventStatus.PUBLISHED, currentDate: new Date() },
-      );
+    const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
+
+    query.andWhere('(event.endDate > :currentDate OR event.endDate IS NULL)', {
+      currentDate: new Date(),
+    });
 
     // Get all events where i have responded with going
     query.andWhere(
@@ -293,6 +246,32 @@ export class EventRepository
     );
 
     return this.searchOrderAndPaginate(query, filters);
+  }
+
+  private createSelectOpenOrganizationGoingEventsBaseSelectQuery(): SelectQueryBuilder<EventEntity> {
+    return this.eventRepository
+      .createQueryBuilder('event')
+      .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
+      .leftJoinAndMapOne(
+        'event.organization',
+        'event.organization',
+        'organization',
+      )
+      .select([
+        'event.id',
+        'event.name',
+        'event.startDate',
+        'event.endDate',
+        'event.status',
+        'event.isPublic',
+        'event.createdOn',
+        'event.organizationId',
+        'event.location',
+        'targets.id',
+        'targets.name',
+        'organization.logo',
+      ])
+      .where('event.status = :status', { status: EventStatus.PUBLISHED });
   }
 
   private searchOrderAndPaginate(

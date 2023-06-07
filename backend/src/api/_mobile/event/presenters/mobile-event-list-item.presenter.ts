@@ -17,6 +17,7 @@ export class MobileEventListItemPresenter {
 
     this.location = event.location;
     this.eventInterval = this.formatEventDate(event.startDate, event.endDate);
+    this.organizationLogo = event.organizationLogo;
   }
 
   @Expose()
@@ -57,6 +58,10 @@ export class MobileEventListItemPresenter {
   @Expose()
   @ApiProperty({ description: 'The image of the Event' })
   image: string;
+
+  @Expose()
+  @ApiProperty({ description: 'The organization logo for this event' })
+  organizationLogo?: string;
 
   @Expose()
   @ApiProperty({ description: 'Wether the event is public or not' })
