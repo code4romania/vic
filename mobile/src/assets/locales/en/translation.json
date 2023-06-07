@@ -189,7 +189,11 @@
     "location": "Locatie",
     "description": "Descriere eveniment",
     "tasks": "Taskuri asociate",
-    "attending": "{{number}} de persoane participă!"
+    "attending": "{{number}} de persoane participă!",
+    "type": {
+      "public": "Eveniment public",
+      "all_organization": "Toata organizatia"
+    }
   },
   "events": {
     "header": "Evenimente",

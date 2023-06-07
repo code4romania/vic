@@ -2,6 +2,7 @@ import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IEventsMobileListItemModel } from 'src/modules/event/models/event.model';
 import { format, isSameDay } from 'date-fns';
+import { OrganizationStructureListItemPresenter } from 'src/api/organization/presenters/organization-structure-list-item.presenter';
 
 export class MobileEventListItemPresenter {
   constructor(event: IEventsMobileListItemModel) {
@@ -18,6 +19,10 @@ export class MobileEventListItemPresenter {
     this.location = event.location;
     this.eventInterval = this.formatEventDate(event.startDate, event.endDate);
     this.organizationLogo = event.organizationLogo;
+
+    this.targets = event.targets?.map(
+      (target) => new OrganizationStructureListItemPresenter(target),
+    );
   }
 
   @Expose()
@@ -66,6 +71,13 @@ export class MobileEventListItemPresenter {
   @Expose()
   @ApiProperty({ description: 'Wether the event is public or not' })
   isPublic: boolean;
+
+  @Expose()
+  @ApiProperty({
+    type: OrganizationStructureListItemPresenter,
+    isArray: true,
+  })
+  targets: OrganizationStructureListItemPresenter[];
 
   private formatEventDate = (startDate: Date, endDate?: Date): string => {
     let eventDate = '';
