@@ -22,6 +22,7 @@ import CreateVolunteer from '../screens/CreateVolunteer';
 import PrivacyPolicy from '../screens/PrivacyPolicy';
 import JoinByAccessCode from '../screens/JoinByAccessCode';
 import Documents from '../screens/Documents';
+import Contract from '../screens/Contract';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
@@ -44,6 +45,7 @@ const Private = () => (
       <Screen name="notifications-settings" component={NotificationsSettings} />
       <Screen name="privacy-policy" component={PrivacyPolicy} />
       <Screen name="documents" component={Documents} />
+      <Screen name="contract" component={Contract} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
       <Screen name="leave-organization" component={LeaveOrganization} />

@@ -28,6 +28,7 @@ export default withStyles(Disclaimer, () => ({
     gap: 8,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    marginBottom: 16,
   },
   dot: {
     width: 8,

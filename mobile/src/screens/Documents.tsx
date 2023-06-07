@@ -66,12 +66,12 @@ const Data = [
 ];
 
 const Documents = ({ navigation }: any) => {
-  const onContractPress = () => {
-    console.log('contract pressed');
+  const onContractPress = (id: string) => {
+    console.log('contract pressed', id);
   };
 
-  const onPendingContractPress = () => {
-    console.log('pending contract pressed');
+  const onPendingContractPress = (id: string) => {
+    navigation.navigate('contract', { id });
   };
 
   return (
@@ -83,10 +83,12 @@ const Documents = ({ navigation }: any) => {
           sections={Data}
           renderItem={({ item }: { item: IContractListItem }) => (
             <ContractItem
+              id={item.id}
               title={item.name}
               status={item.status}
               startDate={item.startDate}
               endDate={item.endDate}
+              iconRightName={item.status === ContractStatus.PENDING ? 'chevron-right' : 'download'}
               onPress={
                 item.status === ContractStatus.PENDING ? onPendingContractPress : onContractPress
               }

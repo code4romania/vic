@@ -8,18 +8,33 @@ import { ContractStatus } from '../common/enums/contract.status.enum';
 import i18n from '../common/config/i18n';
 
 interface ContractItemProps {
+  id: string;
   title: string;
   status: ContractStatus;
   startDate: Date;
   endDate: Date;
-  onPress: () => void;
+  iconRightName: string;
+  onPress: (id: string) => void;
   eva?: any;
 }
 
-const ContractItem = ({ title, status, startDate, endDate, onPress, eva }: ContractItemProps) => {
+const ContractItem = ({
+  id,
+  title,
+  status,
+  startDate,
+  endDate,
+  iconRightName,
+  onPress,
+  eva,
+}: ContractItemProps) => {
+  const onContractPress = () => {
+    onPress(id);
+  };
+
   return (
     <Pressable
-      onPress={onPress}
+      onPress={onContractPress}
       style={({ pressed }) =>
         pressed
           ? { backgroundColor: eva.theme['cool-gray-50'] }
@@ -52,10 +67,7 @@ const ContractItem = ({ title, status, startDate, endDate, onPress, eva }: Contr
           }`}</Text>
         </View>
         <View style={eva.style.iconWrapper}>
-          <Icon
-            name={status === ContractStatus.PENDING ? 'chevron-right' : 'download'}
-            style={eva.style.icon}
-          />
+          <Icon name={iconRightName} style={eva.style.icon} />
         </View>
       </View>
     </Pressable>

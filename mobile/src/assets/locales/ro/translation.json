@@ -428,6 +428,17 @@
     "contract_status": {
       "active": "activ",
       "closed": "încheiat"
+    },
+    "contract_description_volunteer": "Contractul a fost generat și necesită aprobarea ta. Descarcă modelul de mai jos și citește documentul cu atenție. Te rugăm să printezi o copie a acestuia, pe care să o semnezi, scanezi și încarci aici.",
+    "contract_description_ong": "Ai trimis un document spre semnare. Contractul a fost generat și necesită aprobarea organizației.",
+    "disclaimer_volunteer": "Contractul necesita semnatura ta",
+    "disclaimer_ong": "Contractul necesita semnătura organizației",
+    "upload": "Încarcă contract semnat",
+    "cancel": "Anulează și încarcă altul",
+    "bottom_sheet": {
+      "heading": "Confirmi documentul?",
+      "paragraph": "Ai încărcat documentul",
+      "label": "Trimite spre semnare"
     }
   },
   "settings": {
