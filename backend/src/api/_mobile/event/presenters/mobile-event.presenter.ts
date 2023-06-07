@@ -4,7 +4,7 @@ import { IEventsMobileListItemModel } from 'src/modules/event/models/event.model
 import { OrganizationStructureListItemPresenter } from 'src/api/organization/presenters/organization-structure-list-item.presenter';
 import { formatEventDate } from '../helpers/event.helper';
 
-export class MobileEventListItemPresenter {
+export class MobileEventPresenter {
   constructor(event: IEventsMobileListItemModel) {
     this.id = event.id;
     this.name = event.name;
@@ -20,6 +20,12 @@ export class MobileEventListItemPresenter {
     this.targets = event.targets?.map(
       (target) => new OrganizationStructureListItemPresenter(target),
     );
+
+    this.organizationName = 'Organizatie de test';
+    this.description = 'Descriere de test';
+    this.tasks = [];
+    this.status = 'status de test';
+    this.numberOfPersonsGoingToEvent = 10;
   }
 
   @Expose()
@@ -56,6 +62,31 @@ export class MobileEventListItemPresenter {
   @Expose()
   @ApiProperty({ description: 'The organization logo for this event' })
   organizationLogo?: string;
+
+  @Expose()
+  @ApiProperty({ description: 'The organization name for this event' })
+  organizationName: string;
+
+  @Expose()
+  @ApiProperty({ description: 'Event description' })
+  description: string;
+
+  @Expose()
+  @ApiProperty({
+    isArray: true,
+  })
+  tasks: { id: string; name: string }[];
+
+  @Expose()
+  @ApiProperty({ description: 'Event status in relation to the volunteer' })
+  status: string; // event status in relation to the volunteer
+
+  @Expose()
+  @ApiProperty({
+    description:
+      'Number of volunteers who have responded to join to this event',
+  })
+  numberOfPersonsGoingToEvent: number;
 
   @Expose()
   @ApiProperty({ description: 'Wether the event is public or not' })
