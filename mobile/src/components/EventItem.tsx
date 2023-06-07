@@ -11,6 +11,7 @@ interface EventItemProps {
 }
 
 const EventItem = ({ event, eva, organizationLogo }: EventItemProps) => {
+  console.log('event', event);
   return (
     <View style={eva.style.container}>
       <Avatar source={{ uri: event.image }} size="large" />
@@ -42,8 +43,9 @@ const EventItem = ({ event, eva, organizationLogo }: EventItemProps) => {
 
 export default withStyles(EventItem, (theme) => ({
   container: {
-    gap: 16,
     flexDirection: 'row',
+    gap: 16,
+    paddingVertical: 16,
   },
   section: {
     gap: 8,

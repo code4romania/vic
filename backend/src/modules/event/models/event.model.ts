@@ -43,7 +43,14 @@ export interface IEventModel extends IBaseModel {
 export interface IEventsListItemModel
   extends Pick<
     IEventModel,
-    'id' | 'name' | 'startDate' | 'endDate' | 'status' | 'isPublic' | 'targets'
+    | 'id'
+    | 'name'
+    | 'startDate'
+    | 'endDate'
+    | 'status'
+    | 'isPublic'
+    | 'targets'
+    | 'location'
   > {
   going: number;
   notGoing: number;
@@ -113,6 +120,7 @@ export class EventModelTransformer {
 
       going: entity.going,
       notGoing: entity.notGoing,
+      location: entity.location,
 
       // image: entity.image
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),

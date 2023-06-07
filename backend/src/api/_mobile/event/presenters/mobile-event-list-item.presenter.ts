@@ -2,16 +2,19 @@ import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IEventModel } from 'src/modules/event/models/event.model';
 
-export class EventListItemPresenter {
+export class MobileEventListItemPresenter {
   constructor(event: IEventModel) {
     this.id = event.id;
     this.name = event.name;
-    this.location = event.location;
-    this.startDate = event.startDate;
-    this.endDate = event.endDate;
     this.image =
       'https://emoji.slack-edge.com/TFMSWR5JT/dragos/584b8f200c433c5e.jpg';
+
+    this.startDate = event.startDate;
+    this.endDate = event.endDate;
+
     this.isPublic = event.isPublic;
+
+    this.location = event.location;
   }
 
   @Expose()

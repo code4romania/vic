@@ -10,7 +10,7 @@ import useStore from '../../store/store';
 import { IOrganization } from '../../common/interfaces/organization.interface';
 import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
 
-export const useOrganizations = (orderDirection: OrderDirection, search: string) => {
+export const useOrganizationsInfiniteQuery = (orderDirection: OrderDirection, search: string) => {
   return useInfiniteQuery(
     ['organizations', orderDirection, search],
     ({ pageParam }) => getOrganizations({ pageParam, orderDirection, search }),

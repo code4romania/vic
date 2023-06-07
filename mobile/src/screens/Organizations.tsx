@@ -3,8 +3,8 @@ import PageLayout from '../layouts/PageLayout';
 import { Text, Avatar, useStyleSheet, StyleService, useTheme } from '@ui-kitten/components';
 import { ImageStyle, Pressable, View } from 'react-native';
 import i18n from '../common/config/i18n';
-import { useOrganizations } from '../services/organization/organization.service';
-import { IOrganizationListItem } from '../common/interfaces/organization-list-item.interface';
+import { useOrganizationsInfiniteQuery } from '../services/organization/organization.service';
+import { IOrganizationListItemWithNumberOfVolunteers } from '../common/interfaces/organization-list-item.interface';
 import InfiniteListLayout from '../layouts/InfiniteListLayout';
 import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
 import { OrderDirection } from '../common/enums/order-direction.enum';
@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { JSONStringifyError } from '../common/utils/utils';
 
 interface OrganizationItemProps {
-  item: IOrganizationListItem;
+  item: IOrganizationListItemWithNumberOfVolunteers;
   onClick: () => void;
 }
 
@@ -57,7 +57,7 @@ const Organizations = ({ navigation }: any) => {
     fetchNextPage,
     hasNextPage,
     refetch: reloadOrganizations,
-  } = useOrganizations(orderDirection, search);
+  } = useOrganizationsInfiniteQuery(orderDirection, search);
 
   const onViewOrganizationProfileButtonPress = (organizationId: string) => {
     navigation.navigate('organization-profile', { organizationId });
@@ -75,7 +75,11 @@ const Organizations = ({ navigation }: any) => {
     );
   };
 
-  const onRenderOrganizationListItem = ({ item }: { item: IOrganizationListItem }) => (
+  const onRenderOrganizationListItem = ({
+    item,
+  }: {
+    item: IOrganizationListItemWithNumberOfVolunteers;
+  }) => (
     <OrganizationListItem
       item={item}
       onClick={onViewOrganizationProfileButtonPress.bind(null, item.id)}
@@ -90,7 +94,7 @@ const Organizations = ({ navigation }: any) => {
         onSort={onSort}
         onFilter={() => console.log('filter')}
       />
-      <InfiniteListLayout<IOrganizationListItem>
+      <InfiniteListLayout<IOrganizationListItemWithNumberOfVolunteers>
         pages={organizations?.pages}
         renderItem={onRenderOrganizationListItem}
         loadMore={onLoadMore}

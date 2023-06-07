@@ -1,19 +1,55 @@
-import { Body, Delete, Param, Patch } from '@nestjs/common';
+import {
+  Body,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { CreateEventRSVPUseCase } from 'src/usecases/event/RSVP/create-rsvp.usecase';
 import { DeleteEventRSVPUseCase } from 'src/usecases/event/RSVP/delete-rsvp.usecase';
 import { EventCancelRSVPDto, EventRSVPDto } from './dto/create-rsvp.dto';
+import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
+import { GetManyEventDto } from 'src/api/event/dto/get-many-event.dto';
+import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
+import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
+import { GetManyEventUseCase } from 'src/usecases/event/get-many-event.usecase';
+import { EventListItemPresenter } from 'src/api/event/presenters/event-list-item.presenter';
 
-// TODO: add MobileJwtAuthGuard and VolunteerGuard
 @ApiBearerAuth()
+@UseGuards(MobileJwtAuthGuard) // VolunteerGuard
 @Controller('mobile/event')
 export class MobileEventController {
   constructor(
     private readonly createEventRSVPUseCase: CreateEventRSVPUseCase,
     private readonly deleteEventRSVPUseCase: DeleteEventRSVPUseCase,
+    private readonly getManyEventUseCase: GetManyEventUseCase,
   ) {}
+
+  @Get()
+  @ApiPaginatedResponse(EventListItemPresenter)
+  async getMany(
+    @Query() filters: GetManyEventDto,
+    @ExtractUser() { activeOrganization }: IRegularUserModel,
+  ): Promise<PaginatedPresenter<EventListItemPresenter>> {
+    const events = await this.getManyEventUseCase.execute({
+      ...filters,
+      organizationId: activeOrganization.id,
+    });
+
+    return new PaginatedPresenter({
+      ...events,
+      items: events.items.map((event) => new EventListItemPresenter(event)),
+    });
+  }
 
   @ApiBody({ type: EventRSVPDto })
   @Patch(':id/rsvp')

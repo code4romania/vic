@@ -70,6 +70,7 @@ export class EventRepository
         'event.isPublic',
         'event.createdOn',
         'event.organizationId',
+        'event.location',
         'targets.id',
         'targets.name', // TODO: need number of members per target, create a View
         'activityLog.volunteerId',
