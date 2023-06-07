@@ -57,7 +57,7 @@ const Landing = ({ navigation }: any) => {
         </View>
         <View style={styles.separator} />
         <LogInButton onPress={onLoginButtonPress} />
-        <Text style={styles.version}>v0.6</Text>
+        <Text style={styles.version}>v0.7</Text>
       </View>
     </PageLayout>
   );
