@@ -1,5 +1,5 @@
 export enum EventType {
-  GOING = 'going',
-  MYNGOS = 'myngos',
-  OPEN = 'open',
+  GOING = 'GOING',
+  ORGANIZATIONS = 'ORGANIZATIONS',
+  OPEN = 'OPEN',
 }

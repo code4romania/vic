@@ -2,9 +2,11 @@ import { Pagination } from 'src/infrastructure/base/repository-with-pagination.c
 import {
   CreateEventOptions,
   FindManyEventOptions,
+  FindMyEventsOptions,
   FindOneEventOptions,
   IEventModel,
   IEventsListItemModel,
+  IEventsMobileListItemModel,
   UpdateEventOptions,
   UpdateStatusOptions,
 } from '../models/event.model';
@@ -18,4 +20,13 @@ export interface IEventRepository {
   getMany(
     findOptions: FindManyEventOptions,
   ): Promise<Pagination<IEventsListItemModel>>;
+  findOpenEvents(
+    findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
+  ): Promise<Pagination<IEventsMobileListItemModel>>;
+  findMyOrganizationsEvents(
+    findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
+  ): Promise<Pagination<IEventsMobileListItemModel>>;
+  findGoingEvents(
+    findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
+  ): Promise<Pagination<IEventsMobileListItemModel>>;
 }

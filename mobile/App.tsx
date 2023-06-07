@@ -14,8 +14,10 @@ import { Amplify } from 'aws-amplify';
 import './src/common/config/i18n';
 import { AMPLIFY_CONFIG } from './src/common/config/amplify';
 import Toast from 'react-native-toast-message';
+import { toastConfig } from './src/common/config/toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { FeatherIconsPack } from './src/common/adapters/feather-icons.adapter';
+import * as SplashScreen from 'expo-splash-screen';
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG);
@@ -34,6 +36,9 @@ const queryClient = new QueryClient({
   },
 });
 
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
+
 export default () => {
   // init fonts
   const [fontsLoaded] = Font.useFonts({
@@ -50,7 +55,7 @@ export default () => {
   return (
     <>
       <IconRegistry icons={FeatherIconsPack} />
-      <ApplicationProvider {...eva} theme={{ ...theme }} customMapping={mapping}>
+      <ApplicationProvider {...eva} theme={{ ...theme } as any} customMapping={mapping}>
         {/* Add marginTop for android devices as SafeAreaView is iOS Only */}
         <SafeAreaView style={styles.container}>
           <QueryClientProvider client={queryClient}>
@@ -63,7 +68,7 @@ export default () => {
         </SafeAreaView>
         <ExpoStatusBar style="auto" />
       </ApplicationProvider>
-      <Toast />
+      <Toast config={toastConfig} />
     </>
   );
 };

@@ -13,7 +13,7 @@ const ReadOnlyElement = ({ label, value }: ReadOnlyElementProps) => {
       <Text category="c1" appearance="hint">
         {label}
       </Text>
-      <Text category="p1">{value || '-'}</Text>
+      <Text>{value || '-'}</Text>
     </View>
   );
 };

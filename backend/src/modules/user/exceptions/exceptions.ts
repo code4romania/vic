@@ -4,6 +4,8 @@ export enum UserExceptionCodes {
   USER_001 = 'USER_001',
   USER_002 = 'USER_002',
   USER_003 = 'USER_003',
+  USER_004 = 'USER_004',
+  USER_005 = 'USER_005',
 }
 
 type UserExceptionCodeType = keyof typeof UserExceptionCodes;
@@ -24,5 +26,13 @@ export const UserExceptionMessages: Record<
   [UserExceptionCodes.USER_003]: {
     code_error: UserExceptionCodes.USER_003,
     message: 'There is already an user with the same data',
+  },
+  [UserExceptionCodes.USER_004]: {
+    code_error: UserExceptionCodes.USER_004,
+    message: 'There is already an user with the same ID number',
+  },
+  [UserExceptionCodes.USER_005]: {
+    code_error: UserExceptionCodes.USER_005,
+    message: 'Missing user identity data',
   },
 };

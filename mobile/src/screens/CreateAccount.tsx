@@ -7,10 +7,9 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import i18n from '../common/config/i18n';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { CheckBox, Icon, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import InlineLink from '../components/InlineLink';
 import { Controller } from 'react-hook-form';
 
@@ -85,9 +84,9 @@ const CreateAccount = ({ navigation }: any) => {
   };
 
   const renderPasswordEyeIcon = (props: any): React.ReactElement => (
-    <TouchableWithoutFeedback onPress={setSecureTextEntry.bind(null, !secureTextEntry)}>
+    <Pressable onPress={setSecureTextEntry.bind(null, !secureTextEntry)}>
       <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 
   return (
@@ -161,10 +160,13 @@ const CreateAccount = ({ navigation }: any) => {
           />
           <View style={styles.termsTextContainer}>
             <Text>{`${t('create_account.form.terms.agree')}`}</Text>
-            <InlineLink
-              label={t('create_account.form.terms.conditions')}
-              onPress={onTermsAndConditionsPress}
-            />
+            <View style={styles.directionRow}>
+              <InlineLink
+                label={t('create_account.form.terms.conditions')}
+                onPress={onTermsAndConditionsPress}
+              />
+              <Text>{', '}</Text>
+            </View>
             <Text>{`${t('create_account.form.terms.and')}`}</Text>
             <InlineLink
               label={t('create_account.form.terms.privacy_policy')}
@@ -192,4 +194,5 @@ const themedStyles = StyleService.create({
     gap: 12,
   },
   termsTextContainer: { flexDirection: 'row', maxWidth: '90%', flexWrap: 'wrap' },
+  directionRow: { flexDirection: 'row' },
 });

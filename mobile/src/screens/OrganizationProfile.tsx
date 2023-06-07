@@ -1,68 +1,198 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Divider, Layout, List, Text } from '@ui-kitten/components';
+import { Divider, Text } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
-import EventItem from '../components/EventItem';
+import SectionWrapper from '../components/SectionWrapper';
 import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
-import Button from '../components/Button';
+import { useOrganizationQuery } from '../services/organization/organization.service';
+import LoadingScreen from '../components/LoadingScreen';
+import { JSONStringifyError, formatDate } from '../common/utils/utils';
+import ScrollViewLayout from '../layouts/ScrollViewLayout';
+import EventItem from '../components/EventItem';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../hooks/useAuth';
 import { ButtonType } from '../common/enums/button-type.enum';
+import Disclaimer from '../components/Disclaimer';
+import { OrganizatinVolunteerStatus } from '../common/enums/organization-volunteer-status.enum';
+import { useOrganization } from '../store/organization/organization.selector';
+import { useCancelAccessRequestMutation } from '../services/access-request/access-request.service';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
+import useStore from '../store/store';
 
-const organization = {
-  logo: 'https://picsum.photos/200',
-  name: 'Asociatia ZEN',
-  volunteers: '1200',
-  description:
-    'Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ',
-  email: 'contact@asociatiazen.ro',
-  phone: '0721002100',
-  address: 'strada Luminoasa, nr 5, Cluj-Napoca',
-  area: 'Iasi (jud Iasi), Cluj-Napoca (jud Cluj)',
-};
+const OrganizationProfile = ({ navigation, route }: any) => {
+  console.log('OrganizationProfile', route.params);
+  const { t } = useTranslation('organization_profile');
 
-const events = [
-  {
-    id: '1',
-    title: 'Event 1',
-    date: `${new Date(2023, 1, 1)}`,
-    location: 'Sediu',
-    division: 'Departamentul de fundraising',
-  },
-  {
-    id: '2',
-    title: 'Event 2',
-    date: `${new Date(2023, 2, 2)}`,
-    location: 'Sediu 2',
-    division: 'Departamentul de fundraising',
-  },
-];
+  const { userProfile } = useAuth();
+  const { open: openBottomSheet } = useStore();
 
-const OrganizationProfile = ({ navigation }: any) => {
-  console.log('OrganizationProfile');
+  const { isFetching: isFetchingOrganization, error: getOrganizationError } = useOrganizationQuery(
+    route.params.organizationId,
+  );
+
+  const { isLoading: isCancelingAccessRequest, mutate: cancelAccessRequest } =
+    useCancelAccessRequestMutation();
+
+  const { organization } = useOrganization();
 
   const onJoinOrganizationButtonPress = () => {
-    navigation.navigate('join-organization');
+    if (!userProfile?.userPersonalData) {
+      // 1. if the user doesn't have the identity data filled in show modal
+      openBottomSheet();
+      return;
+    }
+
+    // 2. otherwise go to join organization
+    navigation.navigate('join-organization', {
+      organizationId: organization?.id,
+      logo: organization?.logo,
+      name: organization?.name,
+    });
   };
 
-  const onEventPress = (id: string) => {
-    console.log(`event with id ${id} pressed`);
+  const onJoinOrganizationByAccessCodeButtonPress = () => {
+    if (!userProfile?.userPersonalData) {
+      // 1. if the user doesn't have the identity data filled in show modal
+      openBottomSheet();
+      return;
+    }
+
+    // 2. otherwise go to join organization
+    navigation.navigate('join-by-access-code', {
+      organizationId: organization?.id,
+      logo: organization?.logo,
+      name: organization?.name,
+    });
+  };
+
+  const onGoToIdentityDataScreen = () => {
+    navigation.navigate('identity-data', { shouldGoBack: true });
+  };
+
+  const onCancelAccessRequest = () => {
+    if (organization) {
+      cancelAccessRequest(
+        { organizationId: organization.id },
+        {
+          onError: (error: any) => {
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.ACCESS_CODE_ERRORS.getError(
+                error.response?.data.code_error,
+              )}`,
+            });
+          },
+        },
+      );
+    }
+  };
+
+  const isLoading = () => {
+    return isCancelingAccessRequest || isFetchingOrganization;
+  };
+
+  const renderIdentityDataMissingBottomSheetConfig = () => ({
+    iconType: 'warning' as any,
+    heading: t('modal.identity_data_missing.heading'),
+    paragraph: t('modal.identity_data_missing.paragraph'),
+    primaryAction: {
+      label: t('modal.identity_data_missing.action_label'),
+      onPress: onGoToIdentityDataScreen,
+    },
+    secondaryAction: {
+      label: t('general:back'),
+    },
+  });
+
+  const renderCanceAccessRequestConfirmationBottomSheetConfig = () => ({
+    heading: t('modal.confirm_cancel_request.heading'),
+    paragraph: t('modal.confirm_cancel_request.paragraph'),
+    primaryAction: {
+      status: 'danger' as any,
+      label: t('modal.confirm_cancel_request.action_label'),
+      onPress: onCancelAccessRequest,
+    },
+    secondaryAction: {
+      label: t('general:back'),
+    },
+  });
+
+  const renderActionOptions = () => {
+    let options: any = {
+      primaryActionLabel: t('join'),
+      onPrimaryActionButtonClick: onJoinOrganizationButtonPress,
+      secondaryActionLabel: `${t('code')}`,
+      onSecondaryActionButtonClick: onJoinOrganizationByAccessCodeButtonPress,
+    };
+
+    switch (organization?.organizationVolunteerStatus) {
+      case OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING:
+        options = {
+          primaryActionLabel: t('cancel_request'),
+          onPrimaryActionButtonClick: openBottomSheet,
+          primaryBtnType: ButtonType.DANGER,
+        };
+        break;
+      case OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER:
+        options = {
+          primaryActionLabel: t('leave'),
+          onPrimaryActionButtonClick: () => console.log('leave'),
+          primaryBtnType: ButtonType.DANGER,
+        };
+        break;
+    }
+
+    return options;
   };
 
   return (
-    <PageLayout title={i18n.t('organization_profile:title')} onBackButtonPress={navigation.goBack}>
-      <List
-        data={events}
-        ListHeaderComponent={
-          <Layout style={styles.layout}>
+    <PageLayout
+      title={i18n.t('organization_profile:title')}
+      onBackButtonPress={navigation.goBack}
+      actionsOptions={{
+        ...renderActionOptions(),
+
+        loading: isLoading(),
+      }}
+      bottomSheetOptions={
+        organization?.organizationVolunteerStatus !==
+        OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
+          ? renderIdentityDataMissingBottomSheetConfig()
+          : renderCanceAccessRequestConfirmationBottomSheetConfig()
+      }
+    >
+      {isFetchingOrganization && <LoadingScreen />}
+      {!!getOrganizationError && !isFetchingOrganization && (
+        <Text>{JSONStringifyError(getOrganizationError as any)}</Text>
+      )}
+      {!isFetchingOrganization && organization && (
+        <>
+          {organization?.organizationVolunteerStatus ===
+            OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
+            <Disclaimer
+              text={t('disclaimer.joined_from', {
+                date: formatDate(new Date(organization.volunteers[0].createdOn)),
+              })}
+              color="green"
+            />
+          )}
+          {organization?.organizationVolunteerStatus ===
+            OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING && (
+            <Disclaimer text={t('disclaimer.access_request_pending')} color="yellow" />
+          )}
+
+          <ScrollViewLayout>
             <ProfileIntro
               uri={organization.logo}
               name={organization.name}
-              description={`${organization.volunteers} ${i18n
+              description={`${organization.numberOfVolunteers} ${i18n
                 .t('general:volunteers')
                 .toLowerCase()}`}
             />
-            <View style={styles.readOnlyContainer}>
+            <View style={styles.container}>
               <ReadOnlyElement
                 label={i18n.t('organization_profile:description')}
                 value={organization.description}
@@ -81,28 +211,27 @@ const OrganizationProfile = ({ navigation }: any) => {
               />
               <ReadOnlyElement
                 label={i18n.t('organization_profile:area')}
-                value={organization.area}
+                value={organization.activityArea}
               />
             </View>
-            <Text category="p2">{`${i18n.t('organization_profile:events')}`}</Text>
-          </Layout>
-        }
-        renderItem={({ item }) => (
-          <EventItem
-            title={item.title}
-            date={item.date}
-            location={item.location}
-            divison={item.division}
-            onPress={onEventPress.bind(null, item.id)}
-          />
-        )}
-        ItemSeparatorComponent={Divider}
-      />
-      <Button
-        label={i18n.t('organization_profile:join')}
-        type={ButtonType.PRIMARY}
-        onPress={onJoinOrganizationButtonPress}
-      />
+            <SectionWrapper title={i18n.t('organization_profile:events')}>
+              <ScrollViewLayout>
+                <View style={styles.container}>
+                  {organization.events.map((event) => (
+                    <View style={styles.container} key={event.id}>
+                      <EventItem event={event} organizationLogo={organization.logo} />
+                      <Divider />
+                    </View>
+                  ))}
+                  {organization.events.length === 0 && (
+                    <Text category="p1">{`${t('no_events')}`}</Text>
+                  )}
+                </View>
+              </ScrollViewLayout>
+            </SectionWrapper>
+          </ScrollViewLayout>
+        </>
+      )}
     </PageLayout>
   );
 };
@@ -110,10 +239,7 @@ const OrganizationProfile = ({ navigation }: any) => {
 export default OrganizationProfile;
 
 const styles = StyleSheet.create({
-  layout: {
-    gap: 24,
-  },
-  readOnlyContainer: {
+  container: {
     gap: 16,
   },
 });

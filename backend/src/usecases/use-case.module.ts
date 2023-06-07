@@ -88,6 +88,14 @@ import { GetManyForDownloadActivityLogUseCase } from './activity-log/get-many-fo
 import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-count.usecase';
 import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.usecase';
 import { GetOrganizationsUseCase } from './organization/get-organizations.usecase';
+import { GetOrganizationWithEventsUseCase } from './organization/get-organization-with-events.usecase';
+import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.usecase';
+import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organization-by-access-code.usecase';
+import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
+import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.usecase';
+import { SwitchOrganizationUsecase } from './organization/switch-organization.usecase';
+import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.usecase';
+import { GetMyEventsUsecase } from './event/get-my-events.usecase';
 
 @Module({
   imports: [
@@ -110,6 +118,9 @@ import { GetOrganizationsUseCase } from './organization/get-organizations.usecas
     GetOrganizationUseCaseService,
     UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
+    GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
+    SwitchOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -128,6 +139,7 @@ import { GetOrganizationsUseCase } from './organization/get-organizations.usecas
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
+    UpdateUserPersonalDataUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -137,6 +149,8 @@ import { GetOrganizationsUseCase } from './organization/get-organizations.usecas
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -158,6 +172,7 @@ import { GetOrganizationsUseCase } from './organization/get-organizations.usecas
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -173,6 +188,7 @@ import { GetOrganizationsUseCase } from './organization/get-organizations.usecas
     ArchiveEventUseCase,
     GetManyForDownloadEventUseCase,
     GetManyEventUseCase,
+    GetMyEventsUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -202,6 +218,9 @@ import { GetOrganizationsUseCase } from './organization/get-organizations.usecas
     GetOrganizationUseCaseService,
     UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
+    GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
+    SwitchOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -220,6 +239,7 @@ import { GetOrganizationsUseCase } from './organization/get-organizations.usecas
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
+    UpdateUserPersonalDataUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -229,6 +249,8 @@ import { GetOrganizationsUseCase } from './organization/get-organizations.usecas
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -250,6 +272,7 @@ import { GetOrganizationsUseCase } from './organization/get-organizations.usecas
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -266,6 +289,7 @@ import { GetOrganizationsUseCase } from './organization/get-organizations.usecas
     ArchiveEventUseCase,
     GetManyEventUseCase,
     GetManyForDownloadEventUseCase,
+    GetMyEventsUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,

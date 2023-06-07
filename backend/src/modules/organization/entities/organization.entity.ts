@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
+import { EventEntity } from 'src/modules/event/entities/event.entity';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -30,4 +31,7 @@ export class OrganizationEntity extends BaseEntity {
 
   @OneToMany(() => VolunteerEntity, (volunteer) => volunteer.organization)
   volunteers: VolunteerEntity[];
+
+  @OneToMany(() => EventEntity, (event) => event.organization)
+  events: EventEntity[];
 }

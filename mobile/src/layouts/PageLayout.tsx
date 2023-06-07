@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 import {
   Layout,
   TopNavigation,
@@ -8,14 +8,18 @@ import {
   Text,
 } from '@ui-kitten/components';
 import Button from '../components/Button';
-import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
+import { View, KeyboardAvoidingView, StyleSheet, Platform, Pressable } from 'react-native';
 import { ButtonType } from '../common/enums/button-type.enum';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetProps } from '../components/BottomSheet';
+import { useBottomSheet } from '../store/bottom-sheet/bottom-sheet.selector';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
   onPrimaryActionButtonClick: (props: any) => void;
   secondaryActionLabel?: string;
   onSecondaryActionButtonClick?: () => void;
+  primaryBtnType?: ButtonType;
   loading?: boolean;
 }
 
@@ -25,6 +29,7 @@ interface PageLayoutProps {
   onBackButtonPress?: () => void;
   onEditButtonPress?: () => void;
   actionsOptions?: ActionsOptionsProps;
+  bottomSheetOptions?: Omit<BottomSheetProps, 'modalRef'>;
 }
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
@@ -36,7 +41,7 @@ const renderTitle = (title: string) => () =>
     </Text>
   );
 
-const LoadingIndicator = (props: any): React.ReactElement => (
+export const LoadingIndicator = (props: any): React.ReactElement => (
   <View style={[props.style, styles.indicator]}>
     <Spinner size="medium" />
   </View>
@@ -48,7 +53,22 @@ export const PageLayout = ({
   onBackButtonPress,
   onEditButtonPress,
   actionsOptions,
+  bottomSheetOptions,
 }: PageLayoutProps) => {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const { isOpen } = useBottomSheet();
+
+  const onBottomSheetOpen = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      onBottomSheetOpen();
+    }
+  }, [isOpen, onBottomSheetOpen]);
+
   const renderLeftControl = () => {
     if (!onBackButtonPress) {
       return <></>;
@@ -87,15 +107,33 @@ export const PageLayout = ({
             {actionsOptions.loading ? (
               <LoadingIndicator /> // TODO: handle the loading state properly
             ) : (
-              <Button
-                onPress={actionsOptions.onPrimaryActionButtonClick}
-                label={`${actionsOptions.primaryActionLabel}`}
-                type={ButtonType.PRIMARY}
-              />
+              <View style={styles.buttonsContainer}>
+                <Button
+                  onPress={actionsOptions.onPrimaryActionButtonClick}
+                  label={`${actionsOptions.primaryActionLabel}`}
+                  status={actionsOptions.primaryBtnType || 'primary'}
+                />
+                {actionsOptions.onSecondaryActionButtonClick &&
+                  actionsOptions.secondaryActionLabel && (
+                    <Pressable onPress={actionsOptions.onSecondaryActionButtonClick}>
+                      <Text category="p2">{actionsOptions.secondaryActionLabel}</Text>
+                    </Pressable>
+                  )}
+              </View>
             )}
           </View>
         )}
       </Layout>
+      {bottomSheetOptions && isOpen && (
+        <BottomSheet
+          iconType={bottomSheetOptions.iconType}
+          modalRef={bottomSheetModalRef}
+          heading={bottomSheetOptions.heading}
+          paragraph={bottomSheetOptions.paragraph}
+          primaryAction={bottomSheetOptions.primaryAction}
+          secondaryAction={bottomSheetOptions.secondaryAction}
+        />
+      )}
     </>
   );
 };
@@ -103,7 +141,7 @@ export const PageLayout = ({
 export default PageLayout;
 
 const styles = StyleSheet.create({
-  layout: { flex: 1 },
+  layout: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
   keyboardAvoidingContainer: { flex: 1 },
   childrenContainer: { flex: 1, padding: 16 },
   bottomActionContainer: {
@@ -125,5 +163,13 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingHorizontal: 8,
+  },
+  buttonsContainer: {
+    gap: 24,
+    alignItems: 'center',
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
   },
 });
