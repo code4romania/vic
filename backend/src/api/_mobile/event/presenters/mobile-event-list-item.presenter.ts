@@ -1,6 +1,7 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IEventsMobileListItemModel } from 'src/modules/event/models/event.model';
+import { format, isSameDay } from 'date-fns';
 
 export class MobileEventListItemPresenter {
   constructor(event: IEventsMobileListItemModel) {
@@ -15,6 +16,7 @@ export class MobileEventListItemPresenter {
     this.isPublic = event.isPublic;
 
     this.location = event.location;
+    this.eventInterval = this.formatEventDate(event.startDate, event.endDate);
   }
 
   @Expose()
@@ -46,10 +48,44 @@ export class MobileEventListItemPresenter {
   endDate: Date;
 
   @Expose()
+  @ApiProperty({
+    description:
+      'The interval in which the event occurs, is made of start and end date',
+  })
+  eventInterval: string;
+
+  @Expose()
   @ApiProperty({ description: 'The image of the Event' })
   image: string;
 
   @Expose()
   @ApiProperty({ description: 'Wether the event is public or not' })
   isPublic: boolean;
+
+  private formatEventDate = (startDate: Date, endDate?: Date): string => {
+    let eventDate = '';
+    if (!endDate) {
+      eventDate = `${this.formatDate(startDate)}, ${this.getHoursAndMinutes(
+        startDate,
+      )}`;
+    } else {
+      if (isSameDay(new Date(startDate), new Date(endDate))) {
+        eventDate = `${this.formatDate(startDate)}, ${this.getHoursAndMinutes(
+          startDate,
+        )} - ${this.getHoursAndMinutes(endDate)}`;
+      } else {
+        eventDate = `${this.formatDate(startDate)}, ${this.getHoursAndMinutes(
+          startDate,
+        )} - ${this.formatDate(endDate)}, ${this.getHoursAndMinutes(endDate)}`;
+      }
+    }
+
+    return eventDate;
+  };
+
+  private formatDate = (value?: Date | string | null): string =>
+    value ? format(new Date(value), 'dd MMM yyyy') : '-';
+
+  private getHoursAndMinutes = (value: Date | string): string =>
+    format(new Date(value), 'HH:mm');
 }

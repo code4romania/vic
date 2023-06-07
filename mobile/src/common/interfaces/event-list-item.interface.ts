@@ -6,4 +6,5 @@ export interface IEventListItem {
   endDate: Date;
   image: string;
   isPublic: boolean;
+  eventInterval: string;
 }

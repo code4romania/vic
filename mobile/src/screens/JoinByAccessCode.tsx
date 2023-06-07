@@ -52,8 +52,6 @@ const JoinByAccessCode = ({ navigation }: any) => {
     setActiveOrganization,
     addOrganization,
   } = useStore();
-  // generated volunteerId
-  console.log('JoinByAccessCode', organization?.id);
 
   const {
     control,

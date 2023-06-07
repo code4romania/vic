@@ -97,7 +97,6 @@ const DrawerContent = withStyles(
 
     // organizations state
     const { organizations } = useOrganizations();
-    console.log('organizations', organizations);
     // active organizatio state
     const { activeOrganization } = useActiveOrganization();
     // update active organization

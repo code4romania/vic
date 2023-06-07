@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Text, Avatar, useStyleSheet, StyleService, useTheme } from '@ui-kitten/components';
-import { ImageStyle, Pressable, View } from 'react-native';
+import { Text, Avatar, useStyleSheet, StyleService } from '@ui-kitten/components';
+import { ImageStyle, View } from 'react-native';
 import i18n from '../common/config/i18n';
 import { useOrganizationsInfiniteQuery } from '../services/organization/organization.service';
 import { IOrganizationListItemWithNumberOfVolunteers } from '../common/interfaces/organization-list-item.interface';
@@ -10,6 +10,7 @@ import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useTranslation } from 'react-i18next';
 import { JSONStringifyError } from '../common/utils/utils';
+import PressableContainer from '../components/PressableContainer';
 
 interface OrganizationItemProps {
   item: IOrganizationListItemWithNumberOfVolunteers;
@@ -18,16 +19,8 @@ interface OrganizationItemProps {
 
 const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
   const styles = useStyleSheet(themedStyles);
-  const theme = useTheme();
   return (
-    <Pressable
-      style={({ pressed }) => [
-        {
-          backgroundColor: pressed ? theme['cool-gray-50'] : 'white',
-        },
-      ]}
-      onPress={onClick}
-    >
+    <PressableContainer onPress={onClick}>
       <View style={styles.renderItem}>
         <Avatar source={{ uri: item.logo }} size="large" style={styles.avatar as ImageStyle} />
         <View style={styles.textWrapper}>
@@ -39,7 +32,7 @@ const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
           </Text>
         </View>
       </View>
-    </Pressable>
+    </PressableContainer>
   );
 };
 
@@ -92,7 +85,6 @@ const Organizations = ({ navigation }: any) => {
         placeholder={t('search.placeholder')}
         onChange={setSearch}
         onSort={onSort}
-        onFilter={() => console.log('filter')}
       />
       <InfiniteListLayout<IOrganizationListItemWithNumberOfVolunteers>
         pages={organizations?.pages}
