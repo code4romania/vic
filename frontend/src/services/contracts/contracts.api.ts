@@ -2,6 +2,7 @@ import { ContractStatus } from '../../common/enums/contract-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IContract, IContractListItem } from '../../common/interfaces/contract.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { AddContractFormTypes } from '../../pages/AddContract';
 // import API from '../api';
 
 export const getContracts = (params: {
@@ -98,7 +99,7 @@ export const getContracts = (params: {
   });
 };
 
-export const getContract = async (id: string): Promise<IContract> => {
+export const getContract = (id: string): Promise<IContract> => {
   // return API.get(`/${id}`).then((res) => res.data);
   return Promise.resolve({
     id,
@@ -118,13 +119,19 @@ export const getContract = async (id: string): Promise<IContract> => {
   });
 };
 
-export const rejectContract = async (id: string, rejectionReason?: string): Promise<void> => {
+export const addContract = (data: AddContractFormTypes): Promise<void> => {
+  // return API.post('', { ...data });
+  console.log(data);
+  return Promise.resolve();
+};
+
+export const rejectContract = (id: string, rejectionReason?: string): Promise<void> => {
   // return API.patch(`/documents/contracts/${id}/reject`, { rejectionReason });
   console.log(id, rejectionReason);
   return Promise.resolve();
 };
 
-export const approveContract = async (id: string): Promise<void> => {
+export const approveContract = (id: string): Promise<void> => {
   // return API.patch(`/documents/contracts/${id}/approve`);
   console.log(id);
   return Promise.resolve();

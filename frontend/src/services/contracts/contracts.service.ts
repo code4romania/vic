@@ -1,10 +1,17 @@
 import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { approveContract, getContract, getContracts, rejectContract } from './contracts.api';
+import {
+  addContract,
+  approveContract,
+  getContract,
+  getContracts,
+  rejectContract,
+} from './contracts.api';
 import { AxiosError } from 'axios';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { CONTRACT_ERRORS } from '../../common/errors/entities/contract.errors';
 import { ContractStatus } from '../../common/enums/contract-status.enum';
+import { AddContractFormTypes } from '../../pages/AddContract';
 
 export const useContractsQuery = ({
   limit,
@@ -62,6 +69,12 @@ export const useContractQuery = (id: string) => {
   return useQuery(['contract', id], () => getContract(id), {
     enabled: !!id,
     onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
+  });
+};
+
+export const useAddContractMutation = () => {
+  return useMutation((data: AddContractFormTypes) => addContract(data), {
+    onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
   });
 };
 

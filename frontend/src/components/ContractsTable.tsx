@@ -262,7 +262,7 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
   };
 
   const onAddContract = () => {
-    alert('not yet implemented');
+    navigate('/documents/contracts/add');
   };
 
   const onStartDateChange = (startDate: Date | null) => {

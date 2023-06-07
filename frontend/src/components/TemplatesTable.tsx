@@ -47,7 +47,7 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
   });
 
   const onAddTemplate = () => {
-    navigate('add');
+    navigate('add-template');
   };
 
   const onDownloadAll = () => {
