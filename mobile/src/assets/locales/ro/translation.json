@@ -204,6 +204,18 @@
       "going": "Particip",
       "organizations": "Ale organizațiilor mele",
       "open": "Deschise"
+    },
+    "reason_page": {
+      "introduction": "Lorem ipsum.",
+      "form": {
+        "mention": {
+          "label": "Mențiune",
+          "required": "Mențiunea este obligatorie",
+          "min": "Mențiunea poate să aibă minim {{value}} caractere",
+          "max": "Mențiunea poate să aibă maxim {{value}} caractere",
+          "helper": "Completează câmpul pentru a te înscrie."
+        }
+      }
     }
   },
   "tabs": {
