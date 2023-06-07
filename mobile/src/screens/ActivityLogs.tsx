@@ -50,26 +50,25 @@ const ActivityLogs = ({ navigation }: any) => {
       <View style={styles.organizationIdentityWrapper}>
         <OrganizationIdentity uri="https://picsum.photos/200/300" name="Asociația ZEN" />
       </View>
-      <Tabs tabs={ActivityLogsTabs} onPress={onTabPress}>
-        <Text appearance="hint" style={styles.totalText}>
-          {`${i18n.t('activity_log:total')}`} <Text category="p2">{`${235}h`} </Text>
-        </Text>
-        <VirtualizedList
-          getItemCount={getItemCount}
-          renderItem={({ item }: { item: ActivityLogItem }) => (
-            <LogItem
-              icon={item.icon}
-              title={item.activityName}
-              date={item.date}
-              eventName={item.eventName}
-              duration={item.hoursLogged}
-              onPress={onActivityLogPress.bind(null, item.id)}
-            />
-          )}
-          getItem={getItem}
-          ItemSeparatorComponent={Divider}
-        />
-      </Tabs>
+      <Tabs tabs={ActivityLogsTabs} onPress={onTabPress} />
+      <Text appearance="hint" style={styles.totalText}>
+        {`${i18n.t('activity_log:total')}`} <Text category="p2">{`${235}h`} </Text>
+      </Text>
+      <VirtualizedList
+        getItemCount={getItemCount}
+        renderItem={({ item }: { item: ActivityLogItem }) => (
+          <LogItem
+            icon={item.icon}
+            title={item.activityName}
+            date={item.date}
+            eventName={item.eventName}
+            duration={item.hoursLogged}
+            onPress={onActivityLogPress.bind(null, item.id)}
+          />
+        )}
+        getItem={getItem}
+        ItemSeparatorComponent={Divider}
+      />
       <Button onPress={onAddActivityLogButtonPress} style={styles.addButton}>
         {() => <Icon name="plus" style={styles.addIcon} />}
       </Button>

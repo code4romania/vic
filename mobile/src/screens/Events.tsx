@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
-import { EventsTabs } from '../common/constants/events-tabs';
 import Tabs from '../components/Tabs';
 import EventItem from '../components/EventItem';
 import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
@@ -11,13 +10,24 @@ import InfiniteListLayout from '../layouts/InfiniteListLayout';
 import { IEventListItem } from '../common/interfaces/event-list-item.interface';
 import { useEventsInfiniteQuery } from '../services/event/event.service';
 import { JSONStringifyError } from '../common/utils/utils';
-import { Divider } from '@ui-kitten/components';
+import { EventType } from '../common/enums/event-type.enum';
+import { ISelectItem } from '../components/FormSelect';
+
+const EventsTabs: ISelectItem[] = [
+  { key: EventType.GOING, label: i18n.t('events:tabs.going') },
+  { key: EventType.ORGANIZATIONS, label: i18n.t('events:tabs.organizations') },
+  { key: EventType.OPEN, label: i18n.t('events:tabs.open') },
+];
 
 const Events = () => {
-  const { t } = useTranslation('events');
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
-  const [search, setSearch] = useState<string>('');
   console.log('Events');
+  const { t } = useTranslation('events');
+  // order direction filter
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+  // search filter
+  const [search, setSearch] = useState<string>('');
+  // event tab filter
+  const [eventFilter, setEventFilter] = useState<EventType>(EventType.GOING);
 
   // events query
   const {
@@ -27,10 +37,10 @@ const Events = () => {
     fetchNextPage,
     hasNextPage,
     refetch: reloadEvents,
-  } = useEventsInfiniteQuery(orderDirection, search);
+  } = useEventsInfiniteQuery(orderDirection, search, eventFilter);
 
   const onTabClick = (tabKey: string | number) => {
-    console.log(tabKey);
+    setEventFilter(tabKey as EventType);
   };
 
   const onLoadMore = () => {
@@ -39,7 +49,9 @@ const Events = () => {
     }
   };
 
-  const onRenderEventListItem = ({ item }: { item: IEventListItem }) => <EventItem event={item} />;
+  const onRenderEventListItem = ({ item }: { item: IEventListItem }) => (
+    <EventItem event={item} onPress={console.log} />
+  );
 
   const onSort = () => {
     setOrderDirection(
@@ -48,30 +60,26 @@ const Events = () => {
   };
 
   return (
-    <PageLayout title={i18n.t('tabs:events')}>
-      <Tabs tabs={EventsTabs} onPress={onTabClick}>
-        <>
-          <SearchWithOrderAndFilters
-            placeholder={t('search.placeholder')}
-            onChange={setSearch}
-            onSort={onSort}
-            onFilter={() => console.log('filter')}
-          />
-          <InfiniteListLayout<IEventListItem>
-            pages={events?.pages}
-            renderItem={onRenderEventListItem}
-            loadMore={onLoadMore}
-            isLoading={isFetchingEvents}
-            refetch={reloadEvents}
-            errorMessage={
-              getEventsError
-                ? `${JSONStringifyError(getEventsError as Error)}`
-                : // : `${t('errors.generic')}`
-                  ''
-            }
-          />
-        </>
-      </Tabs>
+    <PageLayout title={t('header')}>
+      <Tabs tabs={EventsTabs} onPress={onTabClick} />
+      <SearchWithOrderAndFilters
+        placeholder={t('search.placeholder')}
+        onChange={setSearch}
+        onSort={onSort}
+      />
+      <InfiniteListLayout<IEventListItem>
+        pages={events?.pages}
+        renderItem={onRenderEventListItem}
+        loadMore={onLoadMore}
+        isLoading={isFetchingEvents}
+        refetch={reloadEvents}
+        errorMessage={
+          getEventsError
+            ? `${JSONStringifyError(getEventsError as Error)}`
+            : // : `${t('errors.generic')}`
+              ''
+        }
+      />
     </PageLayout>
   );
 };

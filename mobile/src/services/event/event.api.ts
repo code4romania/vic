@@ -1,3 +1,4 @@
+import { EventType } from '../../common/enums/event-type.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEventListItem } from '../../common/interfaces/event-list-item.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -7,6 +8,7 @@ interface PaginationQuery {
   pageParam?: number;
   orderDirection: OrderDirection;
   search: string;
+  eventFilter: EventType;
 }
 
 export const getEvents = ({

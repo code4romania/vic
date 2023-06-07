@@ -189,10 +189,16 @@
     "location": "Locatie",
     "description": "Descriere eveniment",
     "tasks": "Taskuri asociate",
-    "attending": "{{number}} de persoane participă!",
+    "attending": "{{number}} de persoane participă!"
+  },
+  "events": {
+    "header": "Evenimente",
+    "search": {
+      "placeholder": "Cauta"
+    },
     "tabs": {
       "going": "Particip",
-      "from_my_ngos": "Ale organizațiilor mele",
+      "organizations": "Ale organizațiilor mele",
       "open": "Deschise"
     }
   },
