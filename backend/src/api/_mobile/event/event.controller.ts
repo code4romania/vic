@@ -18,11 +18,12 @@ import {
   ApiPaginatedResponse,
   PaginatedPresenter,
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
-import { GetManyEventDto } from 'src/api/event/dto/get-many-event.dto';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
-import { GetManyEventUseCase } from 'src/usecases/event/get-many-event.usecase';
 import { EventListItemPresenter } from 'src/api/event/presenters/event-list-item.presenter';
+import { GetMyEventsDto } from './dto/get-my-events.dto';
+import { GetMyEventsUsecase } from 'src/usecases/event/get-my-events.usecase';
+import { MobileEventListItemPresenter } from './presenters/mobile-event-list-item.presenter';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard) // VolunteerGuard
@@ -31,23 +32,25 @@ export class MobileEventController {
   constructor(
     private readonly createEventRSVPUseCase: CreateEventRSVPUseCase,
     private readonly deleteEventRSVPUseCase: DeleteEventRSVPUseCase,
-    private readonly getManyEventUseCase: GetManyEventUseCase,
+    private readonly getMyEventsUsecase: GetMyEventsUsecase,
   ) {}
 
   @Get()
   @ApiPaginatedResponse(EventListItemPresenter)
   async getMany(
-    @Query() filters: GetManyEventDto,
-    @ExtractUser() { activeOrganization }: IRegularUserModel,
-  ): Promise<PaginatedPresenter<EventListItemPresenter>> {
-    const events = await this.getManyEventUseCase.execute({
+    @Query() filters: GetMyEventsDto,
+    @ExtractUser() { id }: IRegularUserModel,
+  ): Promise<PaginatedPresenter<MobileEventListItemPresenter>> {
+    const events = await this.getMyEventsUsecase.execute({
       ...filters,
-      organizationId: activeOrganization.id,
+      userId: id,
     });
 
     return new PaginatedPresenter({
       ...events,
-      items: events.items.map((event) => new EventListItemPresenter(event)),
+      items: events.items.map(
+        (event) => new MobileEventListItemPresenter(event),
+      ),
     });
   }
 

@@ -1,9 +1,9 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IEventModel } from 'src/modules/event/models/event.model';
+import { IEventsMobileListItemModel } from 'src/modules/event/models/event.model';
 
 export class MobileEventListItemPresenter {
-  constructor(event: IEventModel) {
+  constructor(event: IEventsMobileListItemModel) {
     this.id = event.id;
     this.name = event.name;
     this.image =
