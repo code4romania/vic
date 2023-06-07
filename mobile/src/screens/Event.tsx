@@ -35,7 +35,7 @@ const Event = ({ navigation, route }: any) => {
   }, [error, navigation]);
 
   const onJoinEventButtonPress = () => {
-    console.log('partikip');
+    navigation.navigate('join-event', { eventId });
   };
 
   return (

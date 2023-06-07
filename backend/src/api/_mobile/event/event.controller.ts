@@ -73,13 +73,13 @@ export class MobileEventController {
   @ApiBody({ type: EventRSVPDto })
   @Patch(':id/rsvp')
   async createRSVP(
-    // TODO: add ExtractUser to use the id - add guard to check if the userId is volunteer in the organization if the event is not public? or we do it in usecase?
     @Param('id', UuidValidationPipe) eventId: string,
     @Body() rsvpDTO: EventRSVPDto,
+    @ExtractUser() { id }: IRegularUserModel,
   ): Promise<unknown> {
     const rsvp = await this.createEventRSVPUseCase.execute({
       eventId,
-      userId: rsvpDTO.userId, // TODO: replace with userId from token
+      userId: id,
       going: rsvpDTO.going,
       mention: rsvpDTO.mention,
     });
