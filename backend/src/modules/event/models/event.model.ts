@@ -16,6 +16,7 @@ import { EventAttendOptions } from '../enums/event-attendance-options.enum';
 import { EventStatus } from '../enums/event-status.enum';
 import { IBasePaginationFilterModel } from '../../../infrastructure/base/base-pagination-filter.model';
 import { EventState } from '../enums/event-time.enum';
+import { EventFilterEnum } from '../enums/event-filter.enum';
 
 export interface IEventModel extends IBaseModel {
   id: string;
@@ -43,7 +44,14 @@ export interface IEventModel extends IBaseModel {
 export interface IEventsListItemModel
   extends Pick<
     IEventModel,
-    'id' | 'name' | 'startDate' | 'endDate' | 'status' | 'isPublic' | 'targets'
+    | 'id'
+    | 'name'
+    | 'startDate'
+    | 'endDate'
+    | 'status'
+    | 'isPublic'
+    | 'targets'
+    | 'location'
   > {
   going: number;
   notGoing: number;
@@ -53,6 +61,20 @@ export interface IEventsListItemModel
     volunteers: number;
   };
 }
+
+export type IEventsMobileListItemModel = Pick<
+  IEventModel,
+  | 'id'
+  | 'name'
+  | 'startDate'
+  | 'endDate'
+  | 'status'
+  | 'isPublic'
+  | 'targets'
+  | 'location'
+> & {
+  organizationLogo?: string;
+};
 
 export type CreateEventOptions = Pick<
   IEventModel,
@@ -87,6 +109,11 @@ export type FindManyEventOptions = {
   eventState?: EventState;
 } & IBasePaginationFilterModel;
 
+export type FindMyEventsOptions = {
+  userId: string;
+  eventFilter: EventFilterEnum;
+} & IBasePaginationFilterModel;
+
 export class EventModelTransformer {
   static fromEntityToEventItem(
     entity: EventEntity & { going: number; notGoing: number },
@@ -113,6 +140,7 @@ export class EventModelTransformer {
 
       going: entity.going,
       notGoing: entity.notGoing,
+      location: entity.location,
 
       // image: entity.image
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
@@ -121,6 +149,27 @@ export class EventModelTransformer {
         totalHours: logged?.totalHours,
         volunteers: Object.keys(logged?.volunteers).length,
       },
+    };
+  }
+
+  static fromEntityToMobileEventItem(
+    entity: EventEntity,
+  ): IEventsMobileListItemModel {
+    if (!entity) return null;
+
+    return {
+      id: entity.id,
+      name: entity.name,
+      startDate: entity.startDate,
+      endDate: entity.endDate,
+
+      status: entity.status,
+      isPublic: entity.isPublic,
+      location: entity.location,
+
+      // image: entity.image
+      targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
+      organizationLogo: entity.organization?.logo || '',
     };
   }
 

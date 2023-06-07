@@ -95,6 +95,7 @@ import { CancelAccessRequestUsecase } from './access-request/cancel-access-reque
 import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.usecase';
 import { SwitchOrganizationUsecase } from './organization/switch-organization.usecase';
 import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.usecase';
+import { GetMyEventsUsecase } from './event/get-my-events.usecase';
 
 @Module({
   imports: [
@@ -187,6 +188,7 @@ import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.us
     ArchiveEventUseCase,
     GetManyForDownloadEventUseCase,
     GetManyEventUseCase,
+    GetMyEventsUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -287,6 +289,7 @@ import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.us
     ArchiveEventUseCase,
     GetManyEventUseCase,
     GetManyForDownloadEventUseCase,
+    GetMyEventsUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,

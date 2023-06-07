@@ -190,9 +190,19 @@
     "description": "Descriere eveniment",
     "tasks": "Taskuri asociate",
     "attending": "{{number}} de persoane participă!",
+    "type": {
+      "public": "Eveniment public",
+      "all_organization": "Toata organizatia"
+    }
+  },
+  "events": {
+    "header": "Evenimente",
+    "search": {
+      "placeholder": "Cauta"
+    },
     "tabs": {
       "going": "Particip",
-      "from_my_ngos": "Ale organizațiilor mele",
+      "organizations": "Ale organizațiilor mele",
       "open": "Deschise"
     }
   },

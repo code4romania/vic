@@ -1,6 +1,6 @@
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import {
-  IOrganizationListItem,
+  IOrganizationListItemWithNumberOfVolunteers,
   IOrganizationVolunteer,
 } from '../../common/interfaces/organization-list-item.interface';
 import { IOrganization } from '../../common/interfaces/organization.interface';
@@ -17,7 +17,7 @@ interface PaginationQuery {
 export const getOrganizations = ({
   pageParam = 1,
   ...params
-}: PaginationQuery): Promise<IPaginatedEntity<IOrganizationListItem>> => {
+}: PaginationQuery): Promise<IPaginatedEntity<IOrganizationListItemWithNumberOfVolunteers>> => {
   return API.get('/mobile/organization', {
     params: {
       limit: 25,
