@@ -1,5 +1,4 @@
 import React from 'react';
-import PageLayout from '../layouts/PageLayout';
 import { Text } from '@ui-kitten/components';
 import i18n from '../common/config/i18n';
 import FormLayout from '../layouts/FormLayout';
@@ -11,23 +10,15 @@ import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSetRsvpEventMutation } from '../services/event/event.service';
 import useStore from '../store/store';
-import { useEvent } from '../store/event/event.selector';
-import { AttendanceType } from '../common/enums/attendance-type.enum';
+import ModalLayout from '../layouts/ModalLayout';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 type JoinEventFormTypes = {
   mention: string;
 };
 
-const schmeWithOptionalMention = yup
-  .object({
-    mention: yup
-      .string()
-      .min(2, `${i18n.t('event:join.form.mention.min', { value: 2 })}`)
-      .max(250, `${i18n.t('event:join.form.mention.max', { value: 250 })}`),
-  })
-  .required();
-
-const schemWithMandatoryMention = yup
+const schema = yup
   .object({
     mention: yup
       .string()
@@ -44,8 +35,6 @@ const JoinEvent = ({ navigation, route }: any) => {
 
   const { mutate: setRsvpEvent, isLoading } = useSetRsvpEventMutation();
 
-  const { event } = useEvent();
-
   const { joinEvent } = useStore();
 
   const {
@@ -55,11 +44,7 @@ const JoinEvent = ({ navigation, route }: any) => {
   } = useForm<JoinEventFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(
-      event?.attendanceType === AttendanceType.MENTION
-        ? schemWithMandatoryMention
-        : schmeWithOptionalMention,
-    ),
+    resolver: yupResolver(schema),
   });
 
   const onSumit = (payload: JoinEventFormTypes) => {
@@ -78,18 +63,23 @@ const JoinEvent = ({ navigation, route }: any) => {
             joinEvent();
             navigation.goBack();
           },
+          onError: (error: any) =>
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error)}`,
+            }),
         },
       );
     }
   };
 
   return (
-    <PageLayout
+    <ModalLayout
       title={t('join.header')}
-      onBackButtonPress={navigation.goBack}
+      onDismiss={navigation.goBack}
       actionsOptions={{
-        onPrimaryActionButtonClick: handleSubmit(onSumit),
-        primaryActionLabel: i18n.t('general:save'),
+        onActionButtonClick: handleSubmit(onSumit),
+        actionLabel: i18n.t('general:save'),
         loading: isLoading,
       }}
     >
@@ -106,7 +96,7 @@ const JoinEvent = ({ navigation, route }: any) => {
           placeholder=""
         />
       </FormLayout>
-    </PageLayout>
+    </ModalLayout>
   );
 };
 

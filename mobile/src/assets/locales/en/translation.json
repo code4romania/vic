@@ -207,7 +207,14 @@
       "all_organization": "Toata organizatia"
     },
     "errors": {
-      "EVENT_001": "Evenimentul nu a fost gasit!"
+      "EVENT_001": "Evenimentul nu a fost gasit!",
+      "EVENT_RSVP_001": "Nu ati raspuns la acest eveniment",
+      "EVENT_RSVP_006": "Evenimentul nu este inca publicat",
+      "EVENT_RSVP_007": "Evenimentul este incheiat",
+      "EVENT_RSVP_003": "Profilul de voluntar nu este activ",
+      "EVENT_RSVP_005": "Va rugam sa completati profilul de voluntar inainte da a te alatura evenimentului",
+      "EVENT_RSVP_002": "Trebuie sa fii voluntar in organizatie sa poti participa la acest eveniment",
+      "EVENT_RSVP_004": "Pentru acest evenimnent este obligatorie mentiunea"
     },
     "rsvp": {
       "going": "Particip",

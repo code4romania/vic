@@ -22,6 +22,7 @@ import { EventVolunteerStatus } from '../common/enums/event-volunteer-status.enu
 import { ButtonType } from '../common/enums/button-type.enum';
 import { useEvent } from '../store/event/event.selector';
 import useStore from '../store/store';
+import { AttendanceType } from '../common/enums/attendance-type.enum';
 
 const Event = ({ navigation, route }: any) => {
   console.log('Event');
@@ -31,43 +32,62 @@ const Event = ({ navigation, route }: any) => {
 
   const { event } = useEvent();
 
-  const { declineEvent, canceRsvp } = useStore();
+  const { declineEvent, canceRsvp, joinEvent } = useStore();
 
-  const { isLoading: isLoadingEvent, error } = useEventQuery(eventId);
+  const { isFetching: isLoadingEvent, error: getEventError } = useEventQuery(eventId);
 
-  const { mutate: setRsvpEvent, isLoading: isNotAttendingLoading } = useSetRsvpEventMutation();
+  const { mutate: setRsvpEvent, isLoading: isResponding } = useSetRsvpEventMutation();
 
   const { mutate: canceRsvpResponse, isLoading: isCancelingRsvp } = useCancelRsvpMutation();
 
   useEffect(() => {
     // if the event request failed go back and show toast
-    if (error) {
+    if (getEventError) {
       navigation.goBack();
       Toast.show({
         type: 'error',
-        text1: `${InternalErrors.EVENT_ERRORS.getError((error as any).response?.data.code_error)}`,
+        text1: `${InternalErrors.EVENT_ERRORS.getError(
+          (getEventError as any).response?.data.code_error,
+        )}`,
       });
     }
-  }, [error, navigation]);
+  }, [getEventError, navigation]);
 
-  const onJoinEventButtonPress = () => {
-    navigation.navigate('join-event', { eventId });
-  };
-
-  const onNotAttendBtnPress = () => {
-    setRsvpEvent(
-      {
-        eventId,
-        rsvp: {
-          going: false,
+  const onRsvpReponsePress = (going: boolean) => {
+    if (going && event?.attendanceType === AttendanceType.MENTION) {
+      navigation.navigate('join-event', { eventId });
+    } else {
+      setRsvpEvent(
+        {
+          eventId,
+          rsvp: {
+            going,
+          },
         },
-      },
-      { onSuccess: declineEvent },
-    );
+        {
+          onSuccess: going ? joinEvent : declineEvent,
+          onError: (error: any) =>
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error)}`,
+            }),
+        },
+      );
+    }
   };
 
   const onCancelRsvpResponse = () => {
-    canceRsvpResponse({ eventId }, { onSuccess: canceRsvp });
+    canceRsvpResponse(
+      { eventId },
+      {
+        onSuccess: canceRsvp,
+        onError: (error: any) =>
+          Toast.show({
+            type: 'error',
+            text1: `${InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error)}`,
+          }),
+      },
+    );
   };
 
   return (
@@ -75,7 +95,7 @@ const Event = ({ navigation, route }: any) => {
       title={i18n.t('event:details')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
-        loading: isLoadingEvent || isNotAttendingLoading || isCancelingRsvp,
+        loading: isLoadingEvent || isResponding || isCancelingRsvp,
         primaryActionLabel:
           event?.volunteerStatus !== EventVolunteerStatus.NO_RESPONSE
             ? `${t('rsvp.cancel')}`
@@ -83,7 +103,7 @@ const Event = ({ navigation, route }: any) => {
         onPrimaryActionButtonClick:
           event?.volunteerStatus !== EventVolunteerStatus.NO_RESPONSE
             ? onCancelRsvpResponse
-            : onJoinEventButtonPress,
+            : onRsvpReponsePress.bind(null, true),
         primaryBtnType:
           event?.volunteerStatus !== EventVolunteerStatus.NO_RESPONSE
             ? ButtonType.DANGER
@@ -91,14 +111,14 @@ const Event = ({ navigation, route }: any) => {
         ...(event?.volunteerStatus === EventVolunteerStatus.NO_RESPONSE
           ? {
               secondaryActionLabel: `${t('rsvp.not_going')}`,
-              onSecondaryActionButtonClick: onNotAttendBtnPress,
+              onSecondaryActionButtonClick: onRsvpReponsePress.bind(null, false),
             }
           : {}),
         helperText: `${t('attending', { numberOfVolunteer: event?.numberOfPersonsGoingToEvent })}`,
       }}
     >
       {isLoadingEvent && <LoadingScreen />}
-      {event && (
+      {event && !isLoadingEvent && (
         <FormLayout>
           <Image source={{ uri: event.image }} style={styles.image} resizeMode="cover" />
           <OrganizationIdentity
