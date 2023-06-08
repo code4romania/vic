@@ -5,7 +5,6 @@ import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useForm } from 'react-hook-form';
 import FormLayout from '../layouts/FormLayout';
 import * as yup from 'yup';
-import FormSelect, { ISelectItem } from '../components/FormSelect';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormDatePicker from '../components/FormDatePicker';
 import FormInput from '../components/FormInput';
@@ -15,12 +14,7 @@ import { View } from 'react-native';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import { useTranslation } from 'react-i18next';
 import EventSelect from '../containers/EventSelect';
-
-const options: ISelectItem[] = [
-  { key: 33, label: 'Prima optiune' },
-  { key: 123, label: 'A doua optiune' },
-  { key: 31233, label: 'A treia optiune' },
-];
+import ActivityTypeSelect from '../containers/ActivityTypeSelect';
 
 export type AddActivityLogFormTypes = {
   eventId: number;
@@ -92,13 +86,13 @@ const AddActivityLog = ({ navigation }: any) => {
           placeholder={i18n.t('general:select')}
           organizationId={activeOrganization?.id as string}
         />
-        <FormSelect
+        <ActivityTypeSelect
           name="activityTypeId"
           control={control as any}
           error={errors.activityTypeId}
-          options={options}
           label={i18n.t('activity_log:form.task.label')}
           placeholder={i18n.t('general:select')}
+          organizationId={activeOrganization?.id as string}
           required
         />
         <FormDatePicker
