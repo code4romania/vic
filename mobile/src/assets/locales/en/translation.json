@@ -181,7 +181,19 @@
     }
   },
   "event": {
-    "join": "Doresc sa particip",
+    "join": {
+      "header": "Doresc sa particip",
+      "paragraph": "Lorem ispum",
+      "form": {
+        "mention": {
+          "label": "Mențiune",
+          "required": "Mențiunea este obligatorie",
+          "min": "Mențiunea poate să aibă minim {{value}} caractere",
+          "max": "Mențiunea poate să aibă maxim {{value}} caractere",
+          "helper": "Completează câmpul pentru a te înscrie."
+        }
+      }
+    },
     "details": "Detalii eveniment",
     "date": "Data și ora",
     "name": "Denumire eveniment",
@@ -195,11 +207,19 @@
       "all_organization": "Toata organizatia"
     },
     "errors": {
-      "EVENT_001": "Evenimentul nu a fost gasit!"
+      "EVENT_001": "Evenimentul nu a fost gasit!",
+      "EVENT_RSVP_001": "Nu ati raspuns la acest eveniment",
+      "EVENT_RSVP_006": "Evenimentul nu este inca publicat",
+      "EVENT_RSVP_007": "Evenimentul este incheiat",
+      "EVENT_RSVP_003": "Profilul de voluntar nu este activ",
+      "EVENT_RSVP_005": "Va rugam sa completati profilul de voluntar inainte da a te alatura evenimentului",
+      "EVENT_RSVP_002": "Trebuie sa fii voluntar in organizatie sa poti participa la acest eveniment",
+      "EVENT_RSVP_004": "Pentru acest evenimnent este obligatorie mentiunea"
     },
     "rsvp": {
       "going": "Particip",
-      "not_going": "Nu particip"
+      "not_going": "Nu particip",
+      "cancel": "Retrage răspuns"
     }
   },
   "events": {
@@ -211,18 +231,6 @@
       "going": "Particip",
       "organizations": "Ale organizațiilor mele",
       "open": "Deschise"
-    },
-    "reason_page": {
-      "introduction": "Lorem ipsum.",
-      "form": {
-        "mention": {
-          "label": "Mențiune",
-          "required": "Mențiunea este obligatorie",
-          "min": "Mențiunea poate să aibă minim {{value}} caractere",
-          "max": "Mențiunea poate să aibă maxim {{value}} caractere",
-          "helper": "Completează câmpul pentru a te înscrie."
-        }
-      }
     }
   },
   "tabs": {

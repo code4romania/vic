@@ -4,6 +4,7 @@ import { IEventListItem } from '../../common/interfaces/event-list-item.interfac
 import { IEvent } from '../../common/interfaces/event.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import API from '../api';
+import { RsvpResponse } from './event.service';
 
 interface PaginationQuery {
   pageParam?: number;
@@ -27,4 +28,12 @@ export const getEvents = async ({
 
 export const getEvent = async (eventId: string): Promise<IEvent> => {
   return API.get(`/mobile/event/${eventId}`).then((res) => res.data);
+};
+
+export const setRsvpEvent = async (eventId: string, payload: RsvpResponse): Promise<void> => {
+  return API.patch(`/mobile/event/${eventId}/rsvp`, payload).then((res) => res.data);
+};
+
+export const cancelRsvp = async (eventId: string): Promise<void> => {
+  return API.delete(`/mobile/event/${eventId}/rsvp`).then((res) => res.data);
 };

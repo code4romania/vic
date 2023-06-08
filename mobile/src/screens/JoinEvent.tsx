@@ -1,5 +1,4 @@
 import React from 'react';
-import PageLayout from '../layouts/PageLayout';
 import { Text } from '@ui-kitten/components';
 import i18n from '../common/config/i18n';
 import FormLayout from '../layouts/FormLayout';
@@ -8,6 +7,12 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useSetRsvpEventMutation } from '../services/event/event.service';
+import useStore from '../store/store';
+import ModalLayout from '../layouts/ModalLayout';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 type JoinEventFormTypes = {
   mention: string;
@@ -17,14 +22,20 @@ const schema = yup
   .object({
     mention: yup
       .string()
-      .required(`${i18n.t('event:reason_page.form.mention.required')}`)
-      .min(2, `${i18n.t('event:reason_page.form.mention.min', { value: 2 })}`)
-      .max(250, `${i18n.t('event:reason_page.form.mention.max', { value: 250 })}`),
+      .required(`${i18n.t('event:join.form.mention.required')}`)
+      .min(2, `${i18n.t('event:join.form.mention.min', { value: 2 })}`)
+      .max(250, `${i18n.t('event:join.form.mention.max', { value: 250 })}`),
   })
   .required();
 
-const JoinEvent = ({ navigation }: any) => {
+const JoinEvent = ({ navigation, route }: any) => {
   console.log('JoinEvent');
+  const { eventId } = route.params;
+  const { t } = useTranslation('event');
+
+  const { mutate: setRsvpEvent, isLoading } = useSetRsvpEventMutation();
+
+  const { joinEvent } = useStore();
 
   const {
     control,
@@ -37,32 +48,55 @@ const JoinEvent = ({ navigation }: any) => {
   });
 
   const onSumit = (payload: JoinEventFormTypes) => {
-    console.log(payload);
+    if (eventId) {
+      setRsvpEvent(
+        {
+          eventId,
+          rsvp: {
+            going: true,
+            ...payload,
+          },
+        },
+        {
+          onSuccess: () => {
+            // got back and update event
+            joinEvent();
+            navigation.goBack();
+          },
+          onError: (error: any) =>
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error)}`,
+            }),
+        },
+      );
+    }
   };
 
   return (
-    <PageLayout
-      title={i18n.t('event:join')}
-      onBackButtonPress={navigation.goBack}
+    <ModalLayout
+      title={t('join.header')}
+      onDismiss={navigation.goBack}
       actionsOptions={{
-        onPrimaryActionButtonClick: handleSubmit(onSumit),
-        primaryActionLabel: i18n.t('general:save'),
+        onActionButtonClick: handleSubmit(onSumit),
+        actionLabel: i18n.t('general:save'),
+        loading: isLoading,
       }}
     >
       <FormLayout>
-        <Text appearance="hint">{`${i18n.t('event:reason_page.introduction')}`}</Text>
+        <Text appearance="hint">{`${t('join.paragraph')}`}</Text>
         <FormInput
           control={control as any}
           error={errors.mention}
           name="mention"
-          label={i18n.t('event:reason_page.form.mention.label')}
-          helper={`${i18n.t('event:reason_page.form.mention.helper')}`}
+          label={t('join.form.mention.label')}
+          helper={`${t('join.form.mention.helper')}`}
           multiline={true}
           textStyle={styles.textArea}
           placeholder=""
         />
       </FormLayout>
-    </PageLayout>
+    </ModalLayout>
   );
 };
 
