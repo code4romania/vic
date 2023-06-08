@@ -8,6 +8,7 @@ import {
   getPaginationQueryParams,
 } from '../../common/constants/pagination';
 import { ContractStatus } from '../../common/enums/contract-status.enum';
+import { VolunteerTabsOptions } from '../../pages/Volunteer';
 
 export interface ContractsTableQueryProps extends IPaginationQueryParams {
   volunteer?: string;
@@ -15,14 +16,15 @@ export interface ContractsTableQueryProps extends IPaginationQueryParams {
   startDate?: Date;
   endDate?: Date;
   status?: ContractStatus;
+  activeTab?: VolunteerTabsOptions;
 }
 
-export type ContractsTableProps = IHOCQueryProps<ContractsTableQueryProps>;
+export type ContractsTableBasicProps = IHOCQueryProps<ContractsTableQueryProps>;
 
 // set page default params
 const DEFAULT_QUERY_PARAMS = getPaginationQueryParams();
 
-const ContractsTableWithQueryParams = () => {
+const ContractsTableWithQueryParams = ({ volunteerName }: { volunteerName: string }) => {
   const queryConfig = {
     ...DEFAULT_QUERY_PARAMS,
     volunteer: StringParam,
@@ -30,12 +32,13 @@ const ContractsTableWithQueryParams = () => {
     startDate: DateParam,
     endDate: DateParam,
     status: StringParam,
+    activeTab: StringParam,
   };
 
   return (
     <QueryParams config={queryConfig}>
       {(props: any) => {
-        return <ContractsTable {...props} />;
+        return <ContractsTable volunteerName={volunteerName} {...props} />;
       }}
     </QueryParams>
   );
