@@ -15,7 +15,7 @@ export class CreateActivityLogByAdminDto {
 
   @IsNumber()
   @Min(1)
-  @Max(1000)
+  @Max(300)
   hours: number;
 
   @IsString()

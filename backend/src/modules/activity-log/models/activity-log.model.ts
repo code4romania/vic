@@ -85,6 +85,16 @@ export type CreateActivityLogByAdminOptions = Pick<
   approvedById: string;
 };
 
+export type CreateActivityLogByRegularUserOptions = Pick<
+  IActivityLogModel,
+  'date' | 'hours' | 'mentions' | 'status'
+> & {
+  volunteerId: string;
+  organizationId: string;
+  eventId?: string;
+  activityTypeId: string;
+};
+
 type UpdateActivityLogDataOptions = Partial<
   Pick<
     CreateActivityLogByAdminOptions,
@@ -128,6 +138,10 @@ export type FindActivityLogCountOptions = {
   eventId: string;
   organizationId: string;
 };
+
+export type CreateActivityLogOptions = OneOf<
+  [CreateActivityLogByAdminOptions, CreateActivityLogByRegularUserOptions]
+>;
 
 export class ActivityLogModelTransformer {
   static fromEntityToListItem(
@@ -194,7 +208,7 @@ export class ActivityLogModelTransformer {
     };
   }
 
-  static toEntity(newLog: CreateActivityLogByAdminOptions): ActivityLogEntity {
+  static toEntity(newLog: CreateActivityLogOptions): ActivityLogEntity {
     const entity = new ActivityLogEntity();
 
     entity.date = newLog.date;

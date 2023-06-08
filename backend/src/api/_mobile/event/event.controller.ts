@@ -61,6 +61,7 @@ export class MobileEventController {
     });
   }
 
+  // TODO: Volunteer Guard
   @Get('organization/:organizationId')
   async getEventsByOrganizationId(
     @Param('organizationId', UuidValidationPipe) organizationId: string,
