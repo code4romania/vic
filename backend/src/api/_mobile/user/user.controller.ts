@@ -40,9 +40,6 @@ export class MobileRegularUserController {
   ): Promise<UserPresenter> {
     const regularUser = await this.getOneRegularUserUseCase.execute({
       cognitoId: user.cognitoId,
-      volunteer: {
-        userId: user.id,
-      },
     });
     return new UserPresenter(regularUser);
   }

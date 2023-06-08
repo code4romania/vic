@@ -42,7 +42,7 @@ export type FindRegularUserOptions =
 
 export type FindOneRegularUserOptions = Partial<
   Pick<IUserModel, 'id' | 'cognitoId'>
-> & { volunteer?: { userId: string } };
+>;
 export class RegularUserTransformer {
   static fromEntity(entity: RegularUserEntity): IRegularUserModel {
     if (!entity) return null;
