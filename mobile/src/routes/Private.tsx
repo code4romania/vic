@@ -34,7 +34,6 @@ const Private = () => (
       <Screen name="join-organization" component={JoinOrganization} />
       <Screen name="join-by-access-code" component={JoinByAccessCode} />
       <Screen name="event" component={Event} />
-      <Screen name="join-event" component={JoinEvent} />
       <Screen name="account-data" component={AccountData} />
       <Screen name="identity-data" component={IdentityData} />
       <Screen name="change-password" component={ChangePassword} />
@@ -42,6 +41,7 @@ const Private = () => (
       <Screen name="privacy-policy" component={PrivacyPolicy} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
+      <Screen name="join-event" component={JoinEvent} />
       <Screen name="leave-organization" component={LeaveOrganization} />
       <Screen name="edit-volunteer" component={EditVolunteer} />
       <Screen name="add-activity-log" component={AddActivityLog} />
