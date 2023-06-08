@@ -3,6 +3,7 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import {
   addContract,
   approveContract,
+  deleteContract,
   getContract,
   getContracts,
   rejectContract,
@@ -72,6 +73,12 @@ export const useContractQuery = (id: string) => {
   });
 };
 
+export const useDeleteContractMutation = () => {
+  return useMutation(['contract'], (id: string) => deleteContract(id), {
+    onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
+  });
+};
+
 export const useAddContractMutation = () => {
   return useMutation((data: AddContractFormTypes) => addContract(data), {
     onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
@@ -86,8 +93,8 @@ export const useApproveContractMutation = () => {
 
 export const useRejectContractMutation = () => {
   return useMutation(
-    ({ id, rejectionReason }: { id: string; rejectionReason?: string }) =>
-      rejectContract(id, rejectionReason),
+    ({ id, rejectMessage }: { id: string; rejectMessage?: string }) =>
+      rejectContract(id, rejectMessage),
     {
       onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
     },

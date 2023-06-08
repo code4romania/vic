@@ -74,10 +74,10 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
     });
   };
 
-  const onConfirmRejectModal = (rejectionReason?: string) => {
+  const onConfirmRejectModal = (rejectMessage?: string) => {
     if (contract)
       rejectContract(
-        { id: contract?.id, rejectionReason },
+        { id: contract?.id, rejectMessage },
         {
           onSuccess: () => {
             useSuccessToast(i18n.t('documents:contracts.form.submit.messages.reject'));
@@ -225,12 +225,12 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
       )}
       {isRejectModalOpen && (
         <RejectTextareaModal
-          label={i18n.t('activity_log:modal.description')}
-          title={i18n.t('activity_log:modal.title')}
+          label={i18n.t('documents:contracts.reject_modal.description')}
+          title={i18n.t('documents:contracts.reject_modal.title')}
           onClose={setIsRejectModalOpen.bind(null, false)}
           onConfirm={onConfirmRejectModal}
-          secondaryBtnLabel={`${i18n.t('activity_log:modal.reject')}`}
-          primaryBtnLabel={`${i18n.t('general:reject')}`}
+          secondaryBtnLabel={`${i18n.t('documents:contracts.reject_modal.send')}`}
+          primaryBtnLabel={`${i18n.t('documents:contracts.side_panel.reject')}`}
           primaryBtnClassName="btn-danger"
         />
       )}

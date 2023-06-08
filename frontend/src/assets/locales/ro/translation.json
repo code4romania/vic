@@ -755,6 +755,7 @@
   "documents": {
     "download_all": "Descarcă toate",
     "name": "Denumire",
+    "add_template": "Adauga template",
     "contracts": {
       "total": "{{value}} contracte",
       "generate": "Generează contract",
@@ -828,9 +829,24 @@
             "edit": "Template-ul a fost editat cu succes",
             "add_contract": "Contractul a fost trimis cu succes",
             "reject": "Contractul a fost refuzat cu succes",
-            "confirm": "Contractul a fost semnat cu succes"
+            "confirm": "Contractul a fost semnat cu succes",
+            "remove_contract": "Contractul a fost eliminat cu succes",
+            "remove_template": "Template-ul a fost eliminat cu succes"
           }
         }
+      },
+      "confirmation_modal": {
+        "title_contract": "Sigur doriți să ștergeți acest contract?",
+        "description_contract": "Această acțiune va șterge definitiv contractul și toate informațiile asociate acestuia.",
+        "label_contract": "Sterge contractul",
+        "title_template": "Sigur doriți să ștergeți acest template?",
+        "description_template": "Această acțiune va șterge definitiv template-ul și toate informațiile asociate acestuia.",
+        "label_template": "Sterge template-ul"
+      },
+      "reject_modal": {
+        "title": "Argumentează refuzul",
+        "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul contractului.",
+        "send": "Refuză fără mesaj"
       }
     },
     "popover": {
@@ -839,7 +855,6 @@
       "reject": "Respinge contract",
       "remove": "Elimină",
       "remove_from_list": "Elimină din listă"
-    },
-    "add_template": "Adauga template"
+    }
   }
 }

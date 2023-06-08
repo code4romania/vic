@@ -125,9 +125,15 @@ export const addContract = (data: AddContractFormTypes): Promise<void> => {
   return Promise.resolve();
 };
 
-export const rejectContract = (id: string, rejectionReason?: string): Promise<void> => {
-  // return API.patch(`/documents/contracts/${id}/reject`, { rejectionReason });
-  console.log(id, rejectionReason);
+export const deleteContract = (id: string): Promise<void> => {
+  // return API.delete(`/documents/contracts/${id}`).then((res) => res.data);
+  console.log(id);
+  return Promise.resolve();
+};
+
+export const rejectContract = (id: string, rejectMessage?: string): Promise<void> => {
+  // return API.patch(`/documents/contracts/${id}/reject`, { rejectMessage });
+  console.log(id, rejectMessage);
   return Promise.resolve();
 };
 

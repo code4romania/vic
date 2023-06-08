@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '../layouts/CardLayout';
 import CardHeader from './CardHeader';
 import i18n from '../common/config/i18n';
@@ -10,11 +10,15 @@ import Popover from './Popover';
 import { ArrowDownTrayIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { TemplatesTableProps } from '../containers/query/TemplatesTableWithQueryParams';
-import { useTemplatesQuery } from '../services/templates/templates.service';
+import {
+  useDeleteTemplateMutation,
+  useTemplatesQuery,
+} from '../services/templates/templates.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useNavigate } from 'react-router-dom';
+import ConfirmationModal from './ConfirmationModal';
 
 const TemplatesTableHeader = [
   {
@@ -33,12 +37,18 @@ const TemplatesTableHeader = [
 ];
 
 const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
+  const [showDeleteTemplate, setShowDeleteTemplate] = useState<null | ITemplateListItem>(null);
+
   const navigate = useNavigate();
+
+  const { mutateAsync: deleteTemplate, isLoading: isDeletingTemplate } =
+    useDeleteTemplateMutation();
 
   const {
     data: templates,
     isLoading,
     error,
+    refetch,
   } = useTemplatesQuery({
     limit: query?.limit as number,
     page: query?.page as number,
@@ -58,12 +68,28 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
     navigate(`${row.id}/edit`);
   };
 
-  const onRemove = () => {
-    alert('not yet implemented');
+  const onRemove = (row: ITemplateListItem) => {
+    setShowDeleteTemplate(row);
   };
 
   const onDownloadTemplate = () => {
     alert('not yet implemented');
+  };
+
+  const confirmDelete = () => {
+    if (showDeleteTemplate)
+      deleteTemplate(showDeleteTemplate.id, {
+        onSuccess: () => {
+          useSuccessToast(i18n.t('documents:contracts.form.submit.messages.remove_template'));
+          refetch();
+        },
+        onError: (error) => {
+          InternalErrors.TEMPLATE_ERRORS.getError(error.response?.data.code_error);
+        },
+        onSettled: () => {
+          setShowDeleteTemplate(null);
+        },
+      });
   };
 
   const buildTemplateActionColumn = (): TableColumn<ITemplateListItem> => {
@@ -149,7 +175,7 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
         <DataTableComponent
           columns={[...TemplatesTableHeader, buildTemplateActionColumn()]}
           data={templates?.items}
-          loading={isLoading}
+          loading={isLoading || isDeletingTemplate}
           pagination
           paginationPerPage={query.limit}
           paginationTotalRows={templates?.meta?.totalItems}
@@ -159,6 +185,16 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
           onSort={onSort}
         />
       </CardBody>
+      {showDeleteTemplate && (
+        <ConfirmationModal
+          title={i18n.t('documents:contracts.confirmation_modal.title_template')}
+          description={i18n.t('documents:contracts.confirmation_modal.description_template')}
+          confirmBtnLabel={i18n.t('documents:contracts.confirmation_modal.label_template')}
+          onClose={setShowDeleteTemplate.bind(null, null)}
+          onConfirm={confirmDelete}
+          confirmBtnClassName="btn-danger"
+        />
+      )}
     </Card>
   );
 };

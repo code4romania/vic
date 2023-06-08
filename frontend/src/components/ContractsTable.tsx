@@ -14,11 +14,16 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
-import { useContractsQuery } from '../services/contracts/contracts.service';
+import {
+  useApproveContractMutation,
+  useContractsQuery,
+  useDeleteContractMutation,
+  useRejectContractMutation,
+} from '../services/contracts/contracts.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { ContractsTableProps } from '../containers/query/ContractsTableWithQueryParams';
 import Popover from './Popover';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import Button from './Button';
 import { ContractStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
@@ -34,6 +39,8 @@ import { ContractStatus } from '../common/enums/contract-status.enum';
 import StatisticsCard from './StatisticsCard';
 import { useNavigate } from 'react-router-dom';
 import ContractSidePanel from './ContractSidePanel';
+import ConfirmationModal from './ConfirmationModal';
+import RejectTextareaModal from './RejectTextareaModal';
 
 const StatusOptions: SelectItem<ContractStatus>[] = [
   { key: ContractStatus.ACTIVE, value: `${i18n.t('documents:contracts.display_status.active')}` },
@@ -100,15 +107,29 @@ const ContractsTableHeader = [
 ];
 
 const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
-  // selected activity log id
+  // selected contract id
   const [selectedContract, setSelectedContract] = useState<string>();
   // side panel state
   const [isViewContractSidePanelOpen, setIsViewContractSidePanelOpen] = useState<boolean>(false);
+  // confirmation modals
+  const [showRejectContract, setShowRejectContract] = useState<null | IContractListItem>(null);
+  const [showDeleteContract, setShowDeleteContract] = useState<null | IContractListItem>(null);
+
   const navigate = useNavigate();
+
+  //Actions
+  const { mutateAsync: deleteContract, isLoading: isDeletingContract } =
+    useDeleteContractMutation();
+
+  const { mutateAsync: approveContract, isLoading: isApprovingContract } =
+    useApproveContractMutation();
+
+  const { mutateAsync: rejectContract, isLoading: isRejectingContract } =
+    useRejectContractMutation();
 
   const {
     data: contracts,
-    isLoading,
+    isLoading: isContractsLoading,
     error,
     refetch,
   } = useContractsQuery({
@@ -138,16 +159,24 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
     alert('not yet implemented');
   };
 
-  const onSignContract = () => {
-    alert('not yet implemented');
+  const onSignContract = (row: IContractListItem) => {
+    approveContract(row.id, {
+      onSuccess: () => {
+        useSuccessToast(i18n.t('documents:contracts.form.submit.messages.confirm'));
+        refetch();
+      },
+      onError: (error) => {
+        useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+      },
+    });
   };
 
-  const onRejectContract = () => {
-    alert('not yet implemented');
+  const onRejectContract = (row: IContractListItem) => {
+    setShowRejectContract(row);
   };
 
-  const onRemove = () => {
-    alert('not yet implemented');
+  const onRemove = (row: IContractListItem) => {
+    setShowDeleteContract(row);
   };
 
   const buildContractActionColumn = (): TableColumn<IContractListItem> => {
@@ -301,6 +330,44 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
     if (shouldRefetch) refetch();
   };
 
+  const confirmReject = (rejectMessage?: string) => {
+    if (showRejectContract)
+      rejectContract(
+        {
+          id: showRejectContract.id,
+          rejectMessage,
+        },
+        {
+          onSuccess: () => {
+            useSuccessToast(i18n.t('documents:contracts.form.submit.messages.reject'));
+            refetch();
+          },
+          onError: (error) => {
+            InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error);
+          },
+          onSettled: () => {
+            setShowRejectContract(null);
+          },
+        },
+      );
+  };
+
+  const confirmDelete = () => {
+    if (showDeleteContract)
+      deleteContract(showDeleteContract.id, {
+        onSuccess: () => {
+          useSuccessToast(i18n.t('documents:contracts.form.submit.messages.remove_contract'));
+          refetch();
+        },
+        onError: (error) => {
+          InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error);
+        },
+        onSettled: () => {
+          setShowDeleteContract(null);
+        },
+      });
+  };
+
   return (
     <>
       <div className="max-w-[350px]">
@@ -330,7 +397,6 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
           placeholder={`${i18n.t('general:anytime')}`}
           onChange={onStartDateChange}
           value={query.startDate}
-          id="execution-on-range__picker"
         />
 
         <FormDatePicker
@@ -338,7 +404,6 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
           placeholder={`${i18n.t('general:anytime')}`}
           onChange={onEndDateChange}
           value={query.endDate}
-          id="registration-on-range__picker"
         />
         <Select
           options={StatusOptions}
@@ -370,7 +435,9 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
           <DataTableComponent
             columns={[...ContractsTableHeader, buildContractActionColumn()]}
             data={contracts?.items}
-            loading={isLoading}
+            loading={
+              isContractsLoading || isDeletingContract || isRejectingContract || isApprovingContract
+            }
             pagination
             paginationPerPage={query.limit}
             paginationTotalRows={contracts?.meta?.totalItems}
@@ -380,6 +447,27 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
             onSort={onSort}
           />
         </CardBody>
+        {showRejectContract && (
+          <RejectTextareaModal
+            label={i18n.t('documents:contracts.reject_modal.description')}
+            title={i18n.t('documents:contracts.reject_modal.title')}
+            onClose={setShowRejectContract.bind(null, null)}
+            onConfirm={confirmReject}
+            secondaryBtnLabel={`${i18n.t('documents:contracts.reject_modal.send')}`}
+            primaryBtnLabel={`${i18n.t('documents:contracts.side_panel.reject')}`}
+            primaryBtnClassName="btn-danger"
+          />
+        )}
+        {showDeleteContract && (
+          <ConfirmationModal
+            title={i18n.t('documents:contracts.confirmation_modal.title_contract')}
+            description={i18n.t('documents:contracts.confirmation_modal.description_contract')}
+            confirmBtnLabel={i18n.t('documents:contracts.confirmation_modal.label_contract')}
+            onClose={setShowDeleteContract.bind(null, null)}
+            onConfirm={confirmDelete}
+            confirmBtnClassName="btn-danger"
+          />
+        )}
       </Card>
       <ContractSidePanel
         onClose={onCloseSidePanel}
