@@ -120,6 +120,13 @@
       "found_location": "De unde ai aflat de organizatie?",
       "motivation": "Ce te motiveaza sa fii voluntar?",
       "confirmation_message": "Cererea de inscriere a fost {{option}}",
+      "referral": {
+        "social": "Rețelele de socializare",
+        "teo": "Din aplicația TEO",
+        "friend": "De la un coleg sau prieten",
+        "event": "Dintr-un eveniment",
+        "other": "Altă opţiune"
+      },
       "confirmation_options": {
         "approved": "aprobata",
         "deleted": "stearsa",
