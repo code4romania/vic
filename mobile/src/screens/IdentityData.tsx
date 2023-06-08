@@ -27,10 +27,12 @@ const schema = yup
   .object({
     identityDocumentSeries: yup
       .string()
+      .matches(/^[a-zA-Z]+$/, `${i18n.t('identity_data:form.series.matches')}`)
       .required(`${i18n.t('identity_data:form.series.required')}`)
       .length(2, `${i18n.t('identity_data:form.series.length', { number: 2 })}`),
     identityDocumentNumber: yup
       .string()
+      .matches(/^[0-9]+$/, `${i18n.t('identity_data:form.number.matches')}`)
       .required(`${i18n.t('identity_data:form.number.required')}`)
       .length(6, `${i18n.t('identity_data:form.number.length', { number: 6 })}`),
     address: yup

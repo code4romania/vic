@@ -347,6 +347,7 @@
     "form": {
       "series": {
         "label": "Serie document identitate (CI)",
+        "matches": "Seria trebuie sa contina doar litere",
         "placeholder": "Introdu seria (GZ, RX...)",
         "length": "Seria trebuie sa aiba {{number}} caractere",
         "required": "Seria este obligatorie"
@@ -354,7 +355,7 @@
       "number": {
         "label": "Număr document identitate (CI)",
         "placeholder": "Introdu numărul din 6 cifre",
-        "matches": "Trebuie să fie doar cifre",
+        "matches": "Numărul trebuie sa contina doar cifre",
         "length": "Numărul trebuie sa aiba {{number}} caractere",
         "required": "Numărul este obligatoriu"
       },
