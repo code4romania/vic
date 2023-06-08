@@ -17,6 +17,7 @@ import {
   FindManyEventOptions,
   FindMyEventsOptions,
   FindOneEventOptions,
+  FindOngoingAndFinishedEventOptions,
   IEventModel,
   IEventsListItemModel,
   IEventsMobileListItemModel,
@@ -249,6 +250,26 @@ export class EventRepository
     );
 
     return this.searchOrderAndPaginate(query, filters);
+  }
+
+  async findOngoingAndFinishedEvents(
+    findOptions: FindOngoingAndFinishedEventOptions,
+  ): Promise<IEventModel[]> {
+    const { organizationId } = findOptions;
+    const events = await this.eventRepository
+      .createQueryBuilder('event')
+      .select()
+      .where(
+        'event.status = :status AND event.startDate <= :currentDate AND event.organizationId = :organizationId',
+        {
+          status: EventStatus.PUBLISHED,
+          currentDate: new Date(),
+          organizationId,
+        },
+      )
+      .getMany();
+
+    return events.map(EventModelTransformer.fromEntity);
   }
 
   private createSelectOpenOrganizationGoingEventsBaseSelectQuery(): SelectQueryBuilder<EventEntity> {
