@@ -97,6 +97,8 @@ import { SwitchOrganizationUsecase } from './organization/switch-organization.us
 import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.usecase';
 import { GetMyEventsUsecase } from './event/get-my-events.usecase';
 import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-with-volunteer-status.usecase';
+import { CreateActivityLogByRegularUser } from './activity-log/create-activity-log-by-regular-user.usecase';
+import { GetEventsByOrganizationUsecase } from './event/get-events-by-organization.usecase';
 
 @Module({
   imports: [
@@ -191,6 +193,7 @@ import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-wit
     GetManyEventUseCase,
     GetMyEventsUsecase,
     GetOneEventWithVolunteerStatusUsecase,
+    GetEventsByOrganizationUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -207,6 +210,7 @@ import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-wit
     GetActivityLogCountersUsecase,
     GetManyForDownloadActivityLogUseCase,
     GetActivityLogCountUsecase,
+    CreateActivityLogByRegularUser,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard
@@ -293,6 +297,7 @@ import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-wit
     GetManyForDownloadEventUseCase,
     GetMyEventsUsecase,
     GetOneEventWithVolunteerStatusUsecase,
+    GetEventsByOrganizationUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -309,6 +314,7 @@ import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-wit
     GetActivityLogCountersUsecase,
     GetManyForDownloadActivityLogUseCase,
     GetActivityLogCountUsecase,
+    CreateActivityLogByRegularUser,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard

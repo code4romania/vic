@@ -13,6 +13,7 @@ import {
   FindManyEventOptions,
   FindMyEventsOptions,
   FindOneEventOptions,
+  FindOngoingAndFinishedEventOptions,
   IEventModel,
   IEventsListItemModel,
   IEventsMobileListItemModel,
@@ -99,5 +100,11 @@ export class EventFacade {
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
     return this.eventRepository.findGoingEvents(findOptions);
+  }
+
+  async findOngoingAndFinishedEvents(
+    findOptions: FindOngoingAndFinishedEventOptions,
+  ): Promise<IEventModel[]> {
+    return this.eventRepository.findOngoingAndFinishedEvents(findOptions);
   }
 }

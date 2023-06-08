@@ -26,6 +26,9 @@ import { GetMyEventsUsecase } from 'src/usecases/event/get-my-events.usecase';
 import { MobileEventListItemPresenter } from './presenters/mobile-event-list-item.presenter';
 import { GetOneEventWithVolunteerStatusUsecase } from 'src/usecases/event/get-one-event-with-volunteer-status.usecase';
 import { MobileEventPresenter } from './presenters/mobile-event.presenter';
+import { GetEventsByOrganizationUsecase } from 'src/usecases/event/get-events-by-organization.usecase';
+import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
+import { IEventModel } from 'src/modules/event/models/event.model';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard) // VolunteerGuard
@@ -36,6 +39,7 @@ export class MobileEventController {
     private readonly deleteEventRSVPUseCase: DeleteEventRSVPUseCase,
     private readonly getMyEventsUsecase: GetMyEventsUsecase,
     private readonly getOneEventWithVolunteerStatus: GetOneEventWithVolunteerStatusUsecase,
+    private readonly getEventsByOrganization: GetEventsByOrganizationUsecase,
   ) {}
 
   @Get()
@@ -55,6 +59,19 @@ export class MobileEventController {
         (event) => new MobileEventListItemPresenter(event),
       ),
     });
+  }
+
+  @Get('organization/:organizationId')
+  async getEventsByOrganizationId(
+    @Param('organizationId', UuidValidationPipe) organizationId: string,
+    @ExtractUser() { id }: IRegularUserModel,
+  ): Promise<IdAndNamePresenter<IEventModel>[]> {
+    const events = await this.getEventsByOrganization.execute({
+      userId: id,
+      organizationId,
+    });
+
+    return events.map((event) => new IdAndNamePresenter(event));
   }
 
   @Get(':id')

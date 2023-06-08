@@ -2,6 +2,7 @@ import { EventType } from '../../common/enums/event-type.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEventListItem } from '../../common/interfaces/event-list-item.interface';
 import { IEvent } from '../../common/interfaces/event.interface';
+import { IOrganizationStructureItem } from '../../common/interfaces/organization-structure-item.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import API from '../api';
 import { RsvpResponse } from './event.service';
@@ -24,6 +25,12 @@ export const getEvents = async ({
       ...params,
     },
   }).then((res) => res.data);
+};
+
+export const getEventsByOrganizationId = async (
+  organizationId: string,
+): Promise<IOrganizationStructureItem[]> => {
+  return API.get(`/mobile/event/organization/${organizationId}`).then((res) => res.data);
 };
 
 export const getEvent = async (eventId: string): Promise<IEvent> => {

@@ -4,6 +4,7 @@ import {
   FindManyEventOptions,
   FindMyEventsOptions,
   FindOneEventOptions,
+  FindOngoingAndFinishedEventOptions,
   IEventModel,
   IEventsListItemModel,
   IEventsMobileListItemModel,
@@ -29,4 +30,7 @@ export interface IEventRepository {
   findGoingEvents(
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>>;
+  findOngoingAndFinishedEvents(
+    findOptions: FindOngoingAndFinishedEventOptions,
+  ): Promise<IEventModel[]>;
 }

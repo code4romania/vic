@@ -50,7 +50,6 @@ export interface IEventWithVolunteerStatus
   volunteerStatus: EventVolunteerStatus;
   numberOfPersonsGoingToEvent: number;
 }
-
 export interface IEventsListItemModel
   extends Pick<
     IEventModel,
@@ -124,6 +123,11 @@ export type FindMyEventsOptions = {
   userId: string;
   eventFilter: EventFilterEnum;
 } & IBasePaginationFilterModel;
+
+export type FindOngoingAndFinishedEventOptions = {
+  organizationId: string;
+  userId: string;
+};
 
 export class EventModelTransformer {
   static fromEntityToEventItem(
