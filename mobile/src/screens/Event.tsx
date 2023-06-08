@@ -8,12 +8,20 @@ import OrganizationIdentity from '../components/OrganizationIdentity';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import TaskPill from '../components/TaskPill';
 import { View } from 'react-native';
-import { useEventQuery } from '../services/event/event.service';
+import {
+  useCancelRsvpMutation,
+  useEventQuery,
+  useSetRsvpEventMutation,
+} from '../services/event/event.service';
 import { mapEventType } from '../common/utils/helpers';
 import LoadingScreen from '../components/LoadingScreen';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useTranslation } from 'react-i18next';
+import { EventVolunteerStatus } from '../common/enums/event-volunteer-status.enum';
+import { ButtonType } from '../common/enums/button-type.enum';
+import { useEvent } from '../store/event/event.selector';
+import useStore from '../store/store';
 
 const Event = ({ navigation, route }: any) => {
   console.log('Event');
@@ -21,7 +29,15 @@ const Event = ({ navigation, route }: any) => {
 
   const { eventId } = route.params;
 
-  const { data: event, isLoading: isLoadingEvent, error } = useEventQuery(eventId);
+  const { event } = useEvent();
+
+  const { declineEvent, canceRsvp } = useStore();
+
+  const { isLoading: isLoadingEvent, error } = useEventQuery(eventId);
+
+  const { mutate: setRsvpEvent, isLoading: isNotAttendingLoading } = useSetRsvpEventMutation();
+
+  const { mutate: canceRsvpResponse, isLoading: isCancelingRsvp } = useCancelRsvpMutation();
 
   useEffect(() => {
     // if the event request failed go back and show toast
@@ -38,16 +54,46 @@ const Event = ({ navigation, route }: any) => {
     navigation.navigate('join-event', { eventId });
   };
 
+  const onNotAttendBtnPress = () => {
+    setRsvpEvent(
+      {
+        eventId,
+        rsvp: {
+          going: false,
+        },
+      },
+      { onSuccess: declineEvent },
+    );
+  };
+
+  const onCancelRsvpResponse = () => {
+    canceRsvpResponse({ eventId }, { onSuccess: canceRsvp });
+  };
+
   return (
     <PageLayout
       title={i18n.t('event:details')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
-        loading: isLoadingEvent,
-        primaryActionLabel: `${t('rsvp.going')}`,
-        onPrimaryActionButtonClick: onJoinEventButtonPress,
-        secondaryActionLabel: `${t('rsvp.not_going')}`,
-        onSecondaryActionButtonClick: () => console.log('Nu particip'),
+        loading: isLoadingEvent || isNotAttendingLoading || isCancelingRsvp,
+        primaryActionLabel:
+          event?.volunteerStatus !== EventVolunteerStatus.NO_RESPONSE
+            ? `${t('rsvp.cancel')}`
+            : `${t('rsvp.going')}`,
+        onPrimaryActionButtonClick:
+          event?.volunteerStatus !== EventVolunteerStatus.NO_RESPONSE
+            ? onCancelRsvpResponse
+            : onJoinEventButtonPress,
+        primaryBtnType:
+          event?.volunteerStatus !== EventVolunteerStatus.NO_RESPONSE
+            ? ButtonType.DANGER
+            : ButtonType.PRIMARY,
+        ...(event?.volunteerStatus === EventVolunteerStatus.NO_RESPONSE
+          ? {
+              secondaryActionLabel: `${t('rsvp.not_going')}`,
+              onSecondaryActionButtonClick: onNotAttendBtnPress,
+            }
+          : {}),
         helperText: `${t('attending', { numberOfVolunteer: event?.numberOfPersonsGoingToEvent })}`,
       }}
     >

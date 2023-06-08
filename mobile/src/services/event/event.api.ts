@@ -33,3 +33,7 @@ export const getEvent = async (eventId: string): Promise<IEvent> => {
 export const setRsvpEvent = async (eventId: string, payload: RsvpResponse): Promise<void> => {
   return API.patch(`/mobile/event/${eventId}/rsvp`, payload).then((res) => res.data);
 };
+
+export const cancelRsvp = async (eventId: string): Promise<void> => {
+  return API.delete(`/mobile/event/${eventId}/rsvp`).then((res) => res.data);
+};

@@ -5,6 +5,7 @@ import { OrganizationStructureListItemPresenter } from 'src/api/organization/pre
 import { formatEventDate } from '../helpers/event.helper';
 import { EventVolunteerStatus } from 'src/modules/event/enums/event-volunteer-status.enum';
 import { ActivityTypeListItemPresenter } from 'src/api/activity-type/presenters/activity-type-list-item.presenter';
+import { EventAttendOptions } from 'src/modules/event/enums/event-attendance-options.enum';
 
 export class MobileEventPresenter {
   constructor(event: IEventWithVolunteerStatus) {
@@ -32,6 +33,8 @@ export class MobileEventPresenter {
 
     this.volunteerStatus = event.volunteerStatus;
     this.numberOfPersonsGoingToEvent = event.numberOfPersonsGoingToEvent;
+
+    this.attendanceType = event.attendanceType;
   }
 
   @Expose()
@@ -76,6 +79,14 @@ export class MobileEventPresenter {
   @Expose()
   @ApiProperty({ description: 'Event description' })
   description: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The type of attendance',
+    enum: EventAttendOptions,
+    examples: Object.values(EventAttendOptions),
+  })
+  attendanceType: EventAttendOptions;
 
   @Expose()
   @ApiProperty({

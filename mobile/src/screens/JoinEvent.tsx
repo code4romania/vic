@@ -10,12 +10,24 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSetRsvpEventMutation } from '../services/event/event.service';
+import useStore from '../store/store';
+import { useEvent } from '../store/event/event.selector';
+import { AttendanceType } from '../common/enums/attendance-type.enum';
 
 type JoinEventFormTypes = {
   mention: string;
 };
 
-const schema = yup
+const schmeWithOptionalMention = yup
+  .object({
+    mention: yup
+      .string()
+      .min(2, `${i18n.t('event:join.form.mention.min', { value: 2 })}`)
+      .max(250, `${i18n.t('event:join.form.mention.max', { value: 250 })}`),
+  })
+  .required();
+
+const schemWithMandatoryMention = yup
   .object({
     mention: yup
       .string()
@@ -32,6 +44,10 @@ const JoinEvent = ({ navigation, route }: any) => {
 
   const { mutate: setRsvpEvent, isLoading } = useSetRsvpEventMutation();
 
+  const { event } = useEvent();
+
+  const { joinEvent } = useStore();
+
   const {
     control,
     handleSubmit,
@@ -39,7 +55,11 @@ const JoinEvent = ({ navigation, route }: any) => {
   } = useForm<JoinEventFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(
+      event?.attendanceType === AttendanceType.MENTION
+        ? schemWithMandatoryMention
+        : schmeWithOptionalMention,
+    ),
   });
 
   const onSumit = (payload: JoinEventFormTypes) => {
@@ -55,6 +75,7 @@ const JoinEvent = ({ navigation, route }: any) => {
         {
           onSuccess: () => {
             // got back and update event
+            joinEvent();
             navigation.goBack();
           },
         },

@@ -12,7 +12,7 @@ import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { CreateEventRSVPUseCase } from 'src/usecases/event/RSVP/create-rsvp.usecase';
 import { DeleteEventRSVPUseCase } from 'src/usecases/event/RSVP/delete-rsvp.usecase';
-import { EventCancelRSVPDto, EventRSVPDto } from './dto/create-rsvp.dto';
+import { EventRSVPDto } from './dto/create-rsvp.dto';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
 import {
   ApiPaginatedResponse,
@@ -76,23 +76,20 @@ export class MobileEventController {
     @Param('id', UuidValidationPipe) eventId: string,
     @Body() rsvpDTO: EventRSVPDto,
     @ExtractUser() { id }: IRegularUserModel,
-  ): Promise<unknown> {
-    const rsvp = await this.createEventRSVPUseCase.execute({
+  ): Promise<void> {
+    await this.createEventRSVPUseCase.execute({
       eventId,
       userId: id,
       going: rsvpDTO.going,
       mention: rsvpDTO.mention,
     });
-
-    return rsvp.id; // TODO: add presenter when we know what to return
   }
 
-  @ApiBody({ type: EventCancelRSVPDto })
   @Delete(':id/rsvp')
   async cancelRSVP(
     @Param('id', UuidValidationPipe) eventId: string,
-    @Body() rsvpDTO: EventCancelRSVPDto,
+    @ExtractUser() { id }: IRegularUserModel,
   ): Promise<string> {
-    return this.deleteEventRSVPUseCase.execute(eventId, rsvpDTO.userId);
+    return this.deleteEventRSVPUseCase.execute(eventId, id);
   }
 }

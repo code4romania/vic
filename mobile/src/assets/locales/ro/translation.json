@@ -211,7 +211,8 @@
     },
     "rsvp": {
       "going": "Particip",
-      "not_going": "Nu particip"
+      "not_going": "Nu particip",
+      "cancel": "Retrage răspuns"
     }
   },
   "events": {

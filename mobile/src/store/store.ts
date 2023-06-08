@@ -7,6 +7,8 @@ import { activeOrganizationSlice } from './organization/active-organization.slic
 import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { volunteerSlice } from './volunteer/volunteer.slice';
+import { IEvent } from '../common/interfaces/event.interface';
+import { eventSlice } from './event/event.slice';
 
 interface ActiveOrganizationState {
   activeOrganization?: IOrganizationVolunteer;
@@ -31,6 +33,14 @@ interface VolunteerProfileState {
   setVolunteer: (volunteer: IVolunteer) => void;
 }
 
+interface EventState {
+  event?: IEvent;
+  setEvent: (event: IEvent) => void;
+  joinEvent: () => void;
+  canceRsvp: () => void;
+  declineEvent: () => void;
+}
+
 interface BottomSheetState {
   isOpen: boolean;
   open: () => void;
@@ -42,13 +52,15 @@ const useStore = create<
     BottomSheetState &
     VolunteerState &
     ActiveOrganizationState &
-    VolunteerProfileState
+    VolunteerProfileState &
+    EventState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...bottomSheetSlice(set),
   ...organizationsSlice(set),
   ...activeOrganizationSlice(set),
   ...volunteerSlice(set),
+  ...eventSlice(set),
 }));
 
 export default useStore;
