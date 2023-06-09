@@ -1,14 +1,56 @@
-import React from 'react';
-import { Text } from '@ui-kitten/components';
+import React, { useEffect } from 'react';
 import ModalLayout from '../layouts/ModalLayout';
-import i18n from '../common/config/i18n';
+import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
+import { useTranslation } from 'react-i18next';
+import ActivityLogForm, {
+  ActivityLogFormTypes,
+  activityLogSchema,
+} from '../components/ActivityLogForm';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const EditActivityLog = ({ navigation }: any) => {
   console.log('EditActivityLog');
+  const { t } = useTranslation();
+  const { selectedActivityLog } = useActivityLogs();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ActivityLogFormTypes>({
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(activityLogSchema),
+  });
+
+  useEffect(() => {
+    if (selectedActivityLog) {
+      reset({
+        // branchId: volunteer?.profile.branch?.id,
+        date: new Date(),
+        hours: selectedActivityLog.hours.toString(),
+        mentions: selectedActivityLog.mentions,
+      });
+    }
+  }, [selectedActivityLog, reset]);
+
+  const onSubmit = (activityLog: ActivityLogFormTypes) => {
+    console.log('log, ', activityLog);
+  };
 
   return (
-    <ModalLayout title={i18n.t('general:edit', { item: '' })} onDismiss={navigation.goBack}>
-      <Text category="h1">EditActivityLog</Text>
+    <ModalLayout
+      title={t('general:edit', { item: '' })}
+      onDismiss={navigation.goBack}
+      actionsOptions={{
+        actionLabel: t('general:save'),
+        onActionButtonClick: handleSubmit(onSubmit),
+        loading: false,
+      }}
+    >
+      <ActivityLogForm isLoading={false} control={control} errors={errors} />
     </ModalLayout>
   );
 };

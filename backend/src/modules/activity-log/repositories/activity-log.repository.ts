@@ -250,4 +250,15 @@ export class ActivityLogRepositoryService
   ): Promise<number> {
     return this.activityLogRepo.countBy(findOptions);
   }
+
+  async delete(id: string): Promise<string> {
+    const accessRequest = await this.activityLogRepo.findOneBy({ id });
+
+    if (accessRequest) {
+      await this.activityLogRepo.remove(accessRequest);
+      return id;
+    }
+
+    return null;
+  }
 }

@@ -99,6 +99,7 @@ import { GetMyEventsUsecase } from './event/get-my-events.usecase';
 import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-with-volunteer-status.usecase';
 import { CreateActivityLogByRegularUser } from './activity-log/create-activity-log-by-regular-user.usecase';
 import { GetEventsByOrganizationUsecase } from './event/get-events-by-organization.usecase';
+import { CancelActivityLogUsecase } from './activity-log/cancel-activity-log.usecase';
 
 @Module({
   imports: [
@@ -211,6 +212,7 @@ import { GetEventsByOrganizationUsecase } from './event/get-events-by-organizati
     GetManyForDownloadActivityLogUseCase,
     GetActivityLogCountUsecase,
     CreateActivityLogByRegularUser,
+    CancelActivityLogUsecase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard
@@ -315,6 +317,7 @@ import { GetEventsByOrganizationUsecase } from './event/get-events-by-organizati
     GetManyForDownloadActivityLogUseCase,
     GetActivityLogCountUsecase,
     CreateActivityLogByRegularUser,
+    CancelActivityLogUsecase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard

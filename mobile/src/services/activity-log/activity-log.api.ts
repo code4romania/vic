@@ -51,3 +51,7 @@ export const getActivityLogsTotalCounters = async (
 export const getActivityLogById = async (activityLogId: string): Promise<IActivityLog> => {
   return API.get(`/mobile/activity-log/${activityLogId}`).then((res) => res.data);
 };
+
+export const cancelActivityLog = async (activityLogId: string): Promise<void> => {
+  return API.delete(`/mobile/activity-log/${activityLogId}`).then((res) => res.data);
+};

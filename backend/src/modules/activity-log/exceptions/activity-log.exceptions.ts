@@ -4,6 +4,7 @@ enum ActivityLogExceptionCodes {
   ACTIVITY_LOG_001 = 'ACTIVITY_LOG_001',
   ACTIVITY_LOG_002 = 'ACTIVITY_LOG_002',
   ACTIVITY_LOG_003 = 'ACTIVITY_LOG_003',
+  ACTIVITY_LOG_004 = 'ACTIVITY_LOG_004',
 }
 
 type ActivityTypeExceptionCodeType = keyof typeof ActivityLogExceptionCodes;
@@ -23,5 +24,9 @@ export const ActivityLogExceptionMessages: Record<
   [ActivityLogExceptionCodes.ACTIVITY_LOG_003]: {
     code_error: ActivityLogExceptionCodes.ACTIVITY_LOG_003,
     message: 'Could not update APPROVED or REJECTED requests.',
+  },
+  [ActivityLogExceptionCodes.ACTIVITY_LOG_004]: {
+    code_error: ActivityLogExceptionCodes.ACTIVITY_LOG_004,
+    message: 'Could not cancel APPROVED or REJECTED requests.',
   },
 };

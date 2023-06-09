@@ -1,4 +1,4 @@
-import { Body, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { Body, Delete, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
@@ -21,6 +21,7 @@ import { GetActivityLogCountersUsecase } from 'src/usecases/activity-log/get-act
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { GetOneActivityLogUsecase } from 'src/usecases/activity-log/get-one-activity-log.usecase';
 import { MobileActivityLogPresenter } from './presenters/activity-log.presenter';
+import { CancelActivityLogUsecase } from 'src/usecases/activity-log/cancel-activity-log.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -31,6 +32,7 @@ export class MobileActivityLogController {
     private readonly getManyActivityLogsUsecase: GetManyActivityLogsUsecase,
     private readonly getActivityLogCountersUsecase: GetActivityLogCountersUsecase,
     private readonly getOneActivityLogUsecase: GetOneActivityLogUsecase,
+    private readonly cancelActivityLogUsecase: CancelActivityLogUsecase,
   ) {}
 
   // TODO: VolunteerGuard
@@ -74,6 +76,15 @@ export class MobileActivityLogController {
   ): Promise<MobileActivityLogPresenter> {
     const log = await this.getOneActivityLogUsecase.execute(activityLogId);
     return new MobileActivityLogPresenter(log);
+  }
+
+  // TODO: VolunteerGuard
+  @ApiParam({ name: 'id', type: 'string' })
+  @Delete(':id')
+  async cancel(
+    @Param('id', UuidValidationPipe) activityLogId: string,
+  ): Promise<void> {
+    await this.cancelActivityLogUsecase.execute(activityLogId);
   }
 
   @ApiBody({ type: CreateActivityLogByAdminDto })
