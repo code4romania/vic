@@ -1,4 +1,4 @@
-import { Body, UseGuards } from '@nestjs/common';
+import { Body, Get, Query, UseGuards } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
@@ -8,6 +8,13 @@ import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
 import { CreateActivityLogByAdminDto } from 'src/api/activity-log/dto/create-activity-log-by-admin.dto';
 import { ActivityLogPresenter } from 'src/api/activity-log/presenters/activity-log.presenter';
 import { CreateActivityLogByRegularUser } from 'src/usecases/activity-log/create-activity-log-by-regular-user.usecase';
+import { GetActivityLogsForVolunteerDto } from './dto/get-activity-logs-for-volunteer.dto';
+import { GetManyActivityLogsUsecase } from 'src/usecases/activity-log/get-many-activity-logs.usecase';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
+import { MobileActivityLogListItemPresenter } from './presenters/activity-log-list-item-presenter';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -15,7 +22,28 @@ import { CreateActivityLogByRegularUser } from 'src/usecases/activity-log/create
 export class MobileActivityLogController {
   constructor(
     private readonly createActivityLogByRegularUser: CreateActivityLogByRegularUser,
+    private readonly getManyActivityLogsUsecase: GetManyActivityLogsUsecase,
   ) {}
+
+  // TODO: VolunteerGuard
+  @Get()
+  @ApiPaginatedResponse(MobileActivityLogListItemPresenter)
+  async getMany(
+    @Query() filters: GetActivityLogsForVolunteerDto,
+    @ExtractUser() { activeOrganization }: IRegularUserModel,
+  ): Promise<PaginatedPresenter<MobileActivityLogListItemPresenter>> {
+    const logs = await this.getManyActivityLogsUsecase.execute({
+      ...filters,
+      organizationId: activeOrganization.id,
+    });
+
+    return new PaginatedPresenter({
+      ...logs,
+      items: logs.items.map(
+        (log) => new MobileActivityLogListItemPresenter(log),
+      ),
+    });
+  }
 
   @ApiBody({ type: CreateActivityLogByAdminDto })
   @Post()

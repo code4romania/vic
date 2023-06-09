@@ -1,73 +1,111 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Button, Divider, Icon, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import { Button, Icon, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import i18n from '../common/config/i18n';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import Tabs from '../components/Tabs';
-import { ActivityLogsTabs } from '../common/constants/activity-logs-tabs';
-import { View, VirtualizedList } from 'react-native';
+import { View } from 'react-native';
+import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import { useActivityLogsInfiniteQuery } from '../services/activity-log/activity-log.service';
+import { OrderDirection } from '../common/enums/order-direction.enum';
+import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
+import { useTranslation } from 'react-i18next';
+import InfiniteListLayout from '../layouts/InfiniteListLayout';
+import { JSONStringifyError } from '../common/utils/utils';
+import { IActivityLogItem } from '../common/interfaces/activity-log-item.interface';
 import LogItem from '../components/LogItem';
+import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
+import { ISelectItem } from '../components/FormSelect';
 
-interface ActivityLogItem {
-  id: string;
-  icon: string;
-  activityName: string;
-  date: string;
-  eventName: string;
-  hoursLogged: number;
-}
+export const ActivityLogsTabs: ISelectItem[] = [
+  { key: ActivityLogStatus.PENDING, label: i18n.t('activity_logs:tabs.pending') },
+  { key: ActivityLogStatus.APPROVED, label: i18n.t('activity_logs:tabs.approved') },
+  { key: ActivityLogStatus.REJECTED, label: i18n.t('activity_logs:tabs.rejected') },
+];
 
 const ActivityLogs = ({ navigation }: any) => {
   const styles = useStyleSheet(themedStyles);
   console.log('ActivityLogs');
+  // translations
+  const { t } = useTranslation('activity_logs');
+  // order direction filter
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+  // search filter
+  const [search, setSearch] = useState<string>('');
+  // active tab
+  const [status, setStatus] = useState<ActivityLogStatus>(ActivityLogStatus.PENDING);
+  // active organization
+  const { activeOrganization } = useActiveOrganization();
 
-  const getItem = (): ActivityLogItem => ({
-    id: Math.random().toString(12).substring(0),
-    icon: 'heart',
-    activityName: 'Administrare documente de legatura',
-    date: '12.02.2022',
-    eventName: 'Haideti să sortam hainele verzi',
-    hoursLogged: 254,
-  });
-
-  const getItemCount = (_data: unknown) => 50;
+  // events query
+  const {
+    data: activityLogs,
+    error: getActivityLogsError,
+    isFetching: isFetchingActivityLogs,
+    fetchNextPage,
+    hasNextPage,
+    refetch: reloadActivityLogs,
+  } = useActivityLogsInfiniteQuery(orderDirection, search, status);
 
   const onAddActivityLogButtonPress = () => {
     navigation.navigate('add-activity-log');
   };
 
-  const onTabPress = (id: string | number) => {
-    console.log(id);
+  const onTabPress = (activeTab: string | number) => {
+    setStatus(activeTab as ActivityLogStatus);
   };
 
-  const onActivityLogPress = (id: string) => {
-    console.log(`activity log ${id} pressed`);
-    navigation.navigate('view-activity-log', { id });
+  const onLoadMore = () => {
+    if (!isFetchingActivityLogs && hasNextPage) {
+      fetchNextPage();
+    }
   };
+
+  const onSort = () => {
+    setOrderDirection(
+      orderDirection === OrderDirection.ASC ? OrderDirection.DESC : OrderDirection.ASC,
+    );
+  };
+
+  const onEventListItemPress = (eventId: string) => {
+    navigation.navigate('event', { eventId });
+  };
+
+  const onRenderEventListItem = ({ item }: { item: IActivityLogItem }) => (
+    <LogItem activityLog={item} onPress={onEventListItemPress} />
+  );
 
   return (
-    <PageLayout title={i18n.t('activity_log:title')} onBackButtonPress={navigation.goBack}>
-      <View style={styles.organizationIdentityWrapper}>
-        <OrganizationIdentity uri="https://picsum.photos/200/300" name="Asociația ZEN" />
-      </View>
+    <PageLayout title={t('title')} onBackButtonPress={navigation.goBack}>
+      {activeOrganization && (
+        <View style={styles.organizationIdentityWrapper}>
+          <OrganizationIdentity
+            uri={activeOrganization.logo || ''}
+            name={activeOrganization.name}
+          />
+        </View>
+      )}
       <Tabs tabs={ActivityLogsTabs} onPress={onTabPress} />
+      <SearchWithOrderAndFilters
+        placeholder={t('search.placeholder')}
+        onChange={setSearch}
+        onSort={onSort}
+      />
       <Text appearance="hint" style={styles.totalText}>
         {`${i18n.t('activity_log:total')}`} <Text category="p2">{`${235}h`} </Text>
       </Text>
-      <VirtualizedList
-        getItemCount={getItemCount}
-        renderItem={({ item }: { item: ActivityLogItem }) => (
-          <LogItem
-            icon={item.icon}
-            title={item.activityName}
-            date={item.date}
-            eventName={item.eventName}
-            duration={item.hoursLogged}
-            onPress={onActivityLogPress.bind(null, item.id)}
-          />
-        )}
-        getItem={getItem}
-        ItemSeparatorComponent={Divider}
+      <InfiniteListLayout<IActivityLogItem>
+        pages={activityLogs?.pages}
+        renderItem={onRenderEventListItem}
+        loadMore={onLoadMore}
+        isLoading={isFetchingActivityLogs}
+        refetch={reloadActivityLogs}
+        errorMessage={
+          getActivityLogsError
+            ? `${JSONStringifyError(getActivityLogsError as Error)}`
+            : // : `${t('errors.generic')}`
+              ''
+        }
       />
       <Button onPress={onAddActivityLogButtonPress} style={styles.addButton}>
         {() => <Icon name="plus" style={styles.addIcon} />}

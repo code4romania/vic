@@ -1,49 +1,38 @@
-import { Text, withStyles } from '@ui-kitten/components';
+import { Text } from '@ui-kitten/components';
 import React from 'react';
-import { View } from 'react-native';
-import { Pressable } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import GrayIcon from './GreyIcon';
+import { IActivityLogItem } from '../common/interfaces/activity-log-item.interface';
+import PressableContainer from './PressableContainer';
 
 interface LogItemProps {
-  icon: string;
-  title: string;
-  duration: number;
-  date: string;
-  onPress: () => void;
-  eventName?: string;
-  eva?: any;
+  activityLog: IActivityLogItem;
+  onPress: (eventId: string) => void;
 }
 
-const LogItem = ({ icon, title, duration, date, eventName, onPress, eva }: LogItemProps) => {
+const LogItem = ({ activityLog, onPress }: LogItemProps) => {
+  console.log('activityLog', activityLog);
   return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) =>
-        pressed
-          ? { backgroundColor: eva.theme['cool-gray-50'] }
-          : { backgroundColor: eva.theme['cool-basic-100'] }
-      }
-    >
-      <View style={eva.style.container}>
-        <GrayIcon name={icon} />
-        <View style={eva.style.textWrapper}>
+    <PressableContainer onPress={() => onPress(activityLog.id)}>
+      <View style={styles.container}>
+        <GrayIcon name={'heart'} />
+        <View style={styles.textWrapper}>
           <Text category="p2" ellipsizeMode="tail" numberOfLines={1}>
-            {title}
+            {activityLog.activityTypeName}
           </Text>
-          <Text
-            category="c1"
-            appearance="hint"
-            ellipsizeMode="tail"
-            numberOfLines={1}
-          >{`${date} | ${eventName}`}</Text>
+          <Text category="c1" appearance="hint" ellipsizeMode="tail" numberOfLines={1}>{`${
+            activityLog.date
+          }${activityLog.eventName ? ' | ' + activityLog.eventName : ''}`}</Text>
         </View>
-        <Text category="p2">{`${duration}h`}</Text>
+        <Text category="p2">{`${activityLog.hours}h`}</Text>
       </View>
-    </Pressable>
+    </PressableContainer>
   );
 };
 
-export default withStyles(LogItem, () => ({
+export default LogItem;
+
+const styles = StyleSheet.create({
   container: {
     paddingVertical: 16,
     gap: 16,
@@ -51,5 +40,8 @@ export default withStyles(LogItem, () => ({
   },
   textWrapper: {
     flexShrink: 2,
+    flex: 1,
+    justifyContent: 'center',
+    gap: 4,
   },
-}));
+});

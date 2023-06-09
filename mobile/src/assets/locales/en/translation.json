@@ -98,6 +98,17 @@
       "login": "Eroare la autentificare, vă rugăm încercați din nou"
     }
   },
+  "activity_logs": {
+    "title": "Ore de voluntariat",
+    "tabs": {
+      "pending": "In asteptare",
+      "approved": "Aprobate",
+      "rejected": "Refuzate"
+    },
+    "search": {
+      "placeholder": "Cauta"
+    }
+  },
   "activity_log": {
     "title": "Ore de voluntariat",
     "log": "Ore înregistrate",
@@ -208,7 +219,6 @@
     },
     "errors": {
       "EVENT_001": "Evenimentul nu a fost gasit!",
-      "EVENT_RSVP_001": "Nu ati raspuns la acest eveniment",
       "EVENT_RSVP_006": "Evenimentul nu este inca publicat",
       "EVENT_RSVP_007": "Evenimentul este incheiat",
       "EVENT_RSVP_003": "Profilul de voluntar nu este activ",

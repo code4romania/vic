@@ -98,6 +98,17 @@
       "login": "Eroare la autentificare, vă rugăm încercați din nou"
     }
   },
+  "activity_logs": {
+    "title": "Ore de voluntariat",
+    "tabs": {
+      "pending": "In asteptare",
+      "approved": "Aprobate",
+      "rejected": "Refuzate"
+    },
+    "search": {
+      "placeholder": "Cauta"
+    }
+  },
   "activity_log": {
     "title": "Ore de voluntariat",
     "log": "Ore înregistrate",
