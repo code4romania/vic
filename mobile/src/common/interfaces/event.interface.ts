@@ -10,4 +10,5 @@ export interface IEvent extends IEventListItem {
   volunteerStatus: EventVolunteerStatus;
   numberOfPersonsGoingToEvent: number;
   attendanceType: AttendanceType;
+  attendanceMention?: string;
 }

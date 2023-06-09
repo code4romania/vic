@@ -35,7 +35,7 @@ const JoinEvent = ({ navigation, route }: any) => {
 
   const { mutate: setRsvpEvent, isLoading } = useSetRsvpEventMutation();
 
-  const { joinEvent } = useStore();
+  const { joinEvent, event } = useStore();
 
   const {
     control,
@@ -84,7 +84,7 @@ const JoinEvent = ({ navigation, route }: any) => {
       }}
     >
       <FormLayout>
-        <Text appearance="hint">{`${t('join.paragraph')}`}</Text>
+        <Text appearance="hint">{event?.attendanceMention}</Text>
         <FormInput
           control={control as any}
           error={errors.mention}
