@@ -78,12 +78,12 @@ const ActivityLogs = ({ navigation }: any) => {
     );
   };
 
-  const onEventListItemPress = (eventId: string) => {
-    navigation.navigate('event', { eventId });
+  const onActivityLogItemPress = (activityLogId: string) => {
+    navigation.navigate('activity-log', { activityLogId });
   };
 
   const onRenderEventListItem = ({ item }: { item: IActivityLogItem }) => (
-    <LogItem activityLog={item} onPress={onEventListItemPress} />
+    <LogItem activityLog={item} onPress={onActivityLogItemPress} />
   );
 
   return (

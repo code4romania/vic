@@ -1,7 +1,7 @@
-import { Body, Get, Query, UseGuards } from '@nestjs/common';
+import { Body, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
@@ -18,6 +18,9 @@ import { MobileActivityLogListItemPresenter } from './presenters/activity-log-li
 import { GetManyActivityLogCountersDto } from 'src/api/activity-log/dto/get-many-activity-log-counters.dto';
 import { ActivityLogCountersPresenter } from 'src/api/activity-log/presenters/activity-log-counters.presenter';
 import { GetActivityLogCountersUsecase } from 'src/usecases/activity-log/get-activity-log-counters.usecase';
+import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
+import { GetOneActivityLogUsecase } from 'src/usecases/activity-log/get-one-activity-log.usecase';
+import { MobileActivityLogPresenter } from './presenters/activity-log.presenter';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -27,6 +30,7 @@ export class MobileActivityLogController {
     private readonly createActivityLogByRegularUser: CreateActivityLogByRegularUser,
     private readonly getManyActivityLogsUsecase: GetManyActivityLogsUsecase,
     private readonly getActivityLogCountersUsecase: GetActivityLogCountersUsecase,
+    private readonly getOneActivityLogUsecase: GetOneActivityLogUsecase,
   ) {}
 
   // TODO: VolunteerGuard
@@ -60,6 +64,16 @@ export class MobileActivityLogController {
       organizationId: activeOrganization.id,
     });
     return new ActivityLogCountersPresenter(counters);
+  }
+
+  // TODO: VolunteerGuard
+  @ApiParam({ name: 'id', type: 'string' })
+  @Get(':id')
+  async get(
+    @Param('id', UuidValidationPipe) activityLogId: string,
+  ): Promise<MobileActivityLogPresenter> {
+    const log = await this.getOneActivityLogUsecase.execute(activityLogId);
+    return new MobileActivityLogPresenter(log);
   }
 
   @ApiBody({ type: CreateActivityLogByAdminDto })

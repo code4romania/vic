@@ -25,6 +25,7 @@
     "continue": "Continuă",
     "save": "Salvează",
     "send": "Trimite",
+    "delete": "Șterge",
     "volunteers": "Voluntari",
     "loading": "Se incarca...",
     "empty_list": "Nu exista rezultate",
@@ -110,12 +111,13 @@
     }
   },
   "activity_log": {
-    "title": "Ore de voluntariat",
-    "log": "Ore înregistrate",
-    "pending": "În așteptare",
-    "approved": "Aprobate",
-    "rejected": "Refuzate",
-    "total": "Total",
+    "title": "Log",
+    "rejection_reason": "Motiv respingere",
+    "disclaimer": {
+      "approved": "Aprobată la {{date}}",
+      "pending": "Necesita aprobare din partea organizatiei",
+      "rejected": "Respins la {{date}}"
+    },
     "form": {
       "event": {
         "label": "Eveniment"
@@ -138,7 +140,7 @@
         "integer": "Numărul de ore trebuie să fie intreg"
       },
       "mentions": {
-        "label": "Mențiune",
+        "label": "Mențiuni",
         "placeholder": "Adaugă mențiune",
         "min": "Mențiunea poate să aibă minim {{value}} caractere",
         "max": "Mențiunea poate să aibă maxim {{value}} caractere"

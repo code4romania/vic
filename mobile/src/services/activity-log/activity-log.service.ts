@@ -1,6 +1,7 @@
 import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
 import {
   createActivityLog,
+  getActivityLogById,
   getActivityLogs,
   getActivityLogsTotalCounters,
 } from './activity-log.api';
@@ -26,6 +27,12 @@ export const useActivityLogsCounters = (status: ActivityLogStatus, volunteerId: 
       enabled: !!(status && volunteerId),
     },
   );
+};
+
+export const useActivityLogQuery = (activityLogId: string) => {
+  return useQuery(['activity-log', activityLogId], () => getActivityLogById(activityLogId), {
+    enabled: !!activityLogId,
+  });
 };
 
 export const useActivityLogsInfiniteQuery = (

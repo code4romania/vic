@@ -4,102 +4,121 @@ import i18n from '../common/config/i18n';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import FormLayout from '../layouts/FormLayout';
-import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
-import { Divider } from '@ui-kitten/components';
-import { ButtonType } from '../common/enums/button-type.enum';
-import { ActivityLogStatusToColorMapper, formatDate } from '../common/utils/utils';
+import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import { useActivityLogQuery } from '../services/activity-log/activity-log.service';
+import LoadingScreen from '../components/LoadingScreen';
 import Disclaimer from '../components/Disclaimer';
+import { ActivityLogStatusToColorMapper } from '../common/utils/utils';
+import { useTranslation } from 'react-i18next';
+import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
+import { ButtonType } from '../common/enums/button-type.enum';
+import { Divider } from '@ui-kitten/components';
 
-const activityLog = {
-  event: 'Titlu eveniment Lorem ipsum',
-  task: 'Sortare de haine',
-  date: `${new Date(2018, 1, 2)}`,
-  hours: 5,
-  mentions:
-    'Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.',
-  status: ActivityLogStatus.PENDING,
-  approvedOn: `${new Date(2019, 1, 2)}`,
-  rejectedOn: `${new Date(2022, 1, 2)}`,
-  rejectionReason:
-    'Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat.',
-};
-
-const ActivityLog = ({ navigation }: any) => {
+const ActivityLog = ({ navigation, route }: any) => {
   console.log('ActivityLog');
+  // translations
+  const { t } = useTranslation('activity_log');
+
+  const { activityLogId } = route.params;
+
+  // active organization
+  const { activeOrganization } = useActiveOrganization();
+  // activity log query
+  const { isFetching: isLoadingActivityLog, data: activityLog } =
+    useActivityLogQuery(activityLogId);
+
+  const onDeleteLogBtnPress = () => {
+    console.log('delete');
+  };
 
   const onEditActivityLog = () => {
-    navigation.navigate('edit-activity-log');
+    console.log('delete');
   };
 
-  const onDeleteActivityLog = () => {
-    console.log('delete activity log');
-  };
-
-  const generateDisclaimerText = () => {
-    switch (activityLog.status) {
-      case ActivityLogStatus.APPROVED:
-        return i18n.t('activity_log:disclaimer.approved', {
-          date: formatDate(activityLog.approvedOn),
-        });
+  const renderActionOptions = () => {
+    let options: any;
+    switch (activityLog?.status) {
       case ActivityLogStatus.PENDING:
-        return i18n.t('activity_log:disclaimer.pending');
-      case ActivityLogStatus.REJECTED:
-        return i18n.t('activity_log:disclaimer.rejected', {
-          date: formatDate(activityLog.rejectedOn),
-        });
+        options = {
+          actionLabel: t('general:delete'),
+          onActionButtonClick: onDeleteLogBtnPress,
+          buttonType: ButtonType.DANGER,
+          loading: isLoadingActivityLog,
+        };
+        break;
     }
+    return options;
   };
 
   return (
     <ModalLayout
-      title={i18n.t('activity_log:log')}
+      title={t('title')}
       onDismiss={navigation.goBack}
+      actionsOptions={renderActionOptions()}
       onEditButtonPress={
-        activityLog.status === ActivityLogStatus.PENDING ? onEditActivityLog : undefined
-      }
-      actionsOptions={
-        activityLog.status === ActivityLogStatus.PENDING
-          ? {
-              onActionLabel: i18n.t('general:delete'),
-              onActionButtonClick: onDeleteActivityLog,
-              buttonType: ButtonType.DANGER,
-            }
-          : undefined
+        activityLog?.status === ActivityLogStatus.PENDING ? onEditActivityLog : undefined
       }
     >
-      <Disclaimer
-        color={ActivityLogStatusToColorMapper[activityLog.status]}
-        text={generateDisclaimerText()}
-      />
-      <FormLayout>
-        <OrganizationIdentity uri="https://picsum.photos/200/300" name="Asociația ZEN" />
-        <ReadOnlyElement
-          label={i18n.t('activity_log:form.event.label')}
-          value={activityLog.event}
-        />
-        <ReadOnlyElement label={i18n.t('activity_log:form.task.label')} value={activityLog.task} />
-        <ReadOnlyElement
-          label={i18n.t('activity_log:form.date.label')}
-          value={formatDate(activityLog.date)}
-        />
-        <ReadOnlyElement
-          label={i18n.t('activity_log:form.hours.label')}
-          value={`${activityLog.hours}`}
-        />
-        <ReadOnlyElement
-          label={i18n.t('activity_log:form.mentions.label')}
-          value={activityLog.mentions}
-        />
-        {activityLog.status === ActivityLogStatus.REJECTED && (
-          <>
-            <Divider />
-            <ReadOnlyElement
-              label={i18n.t('activity_log:rejection_reason')}
-              value={activityLog.rejectionReason}
+      {isLoadingActivityLog && <LoadingScreen />}
+      {activityLog && !isLoadingActivityLog && (
+        <>
+          {activityLog?.status === ActivityLogStatus.PENDING && (
+            <Disclaimer
+              color={ActivityLogStatusToColorMapper[activityLog?.status]}
+              text={`${t('disclaimer.pending')}`}
             />
-          </>
-        )}
-      </FormLayout>
+          )}
+          {activityLog?.status === ActivityLogStatus.APPROVED && (
+            <Disclaimer
+              color={ActivityLogStatusToColorMapper[activityLog?.status]}
+              text={`${t('disclaimer.approved', { date: activityLog.approvedOn })}`}
+            />
+          )}
+          {activityLog?.status === ActivityLogStatus.REJECTED && (
+            <Disclaimer
+              color={ActivityLogStatusToColorMapper[activityLog?.status]}
+              text={`${t('disclaimer.rejected', { date: activityLog.rejectedOn })}`}
+            />
+          )}
+          <FormLayout>
+            {activeOrganization && (
+              <OrganizationIdentity
+                uri={activeOrganization.logo || ''}
+                name={activeOrganization.name}
+              />
+            )}
+            <ReadOnlyElement
+              label={i18n.t('activity_log:form.event.label')}
+              value={activityLog?.eventName}
+            />
+            <ReadOnlyElement
+              label={i18n.t('activity_log:form.task.label')}
+              value={activityLog?.activityTypeName}
+            />
+            <ReadOnlyElement
+              label={i18n.t('activity_log:form.date.label')}
+              value={activityLog?.date}
+            />
+            <ReadOnlyElement
+              label={i18n.t('activity_log:form.hours.label')}
+              value={`${activityLog?.hours}`}
+            />
+            <ReadOnlyElement
+              label={i18n.t('activity_log:form.mentions.label')}
+              value={activityLog?.mentions}
+            />
+            {activityLog.status === ActivityLogStatus.REJECTED && (
+              <>
+                <Divider />
+                <ReadOnlyElement
+                  label={i18n.t('activity_log:rejection_reason')}
+                  value={activityLog.rejectionReason}
+                />
+              </>
+            )}
+          </FormLayout>
+        </>
+      )}
     </ModalLayout>
   );
 };
