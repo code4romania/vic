@@ -6,7 +6,10 @@ import OrganizationIdentity from '../components/OrganizationIdentity';
 import Tabs from '../components/Tabs';
 import { View } from 'react-native';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
-import { useActivityLogsInfiniteQuery } from '../services/activity-log/activity-log.service';
+import {
+  useActivityLogsCounters,
+  useActivityLogsInfiniteQuery,
+} from '../services/activity-log/activity-log.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +19,7 @@ import { IActivityLogItem } from '../common/interfaces/activity-log-item.interfa
 import LogItem from '../components/LogItem';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { ISelectItem } from '../components/FormSelect';
+import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 
 export const ActivityLogsTabs: ISelectItem[] = [
   { key: ActivityLogStatus.PENDING, label: i18n.t('activity_logs:tabs.pending') },
@@ -36,6 +40,8 @@ const ActivityLogs = ({ navigation }: any) => {
   const [status, setStatus] = useState<ActivityLogStatus>(ActivityLogStatus.PENDING);
   // active organization
   const { activeOrganization } = useActiveOrganization();
+  // counters state
+  const { approvedHours, rejectedHours, pendingHours } = useActivityLogs();
 
   // events query
   const {
@@ -46,6 +52,11 @@ const ActivityLogs = ({ navigation }: any) => {
     hasNextPage,
     refetch: reloadActivityLogs,
   } = useActivityLogsInfiniteQuery(orderDirection, search, status);
+  // counters
+  const { isFetching: isLoadingCounters } = useActivityLogsCounters(
+    status,
+    activeOrganization?.volunteerId as string,
+  ); // TODO: check for error
 
   const onAddActivityLogButtonPress = () => {
     navigation.navigate('add-activity-log');
@@ -91,9 +102,22 @@ const ActivityLogs = ({ navigation }: any) => {
         onChange={setSearch}
         onSort={onSort}
       />
-      <Text appearance="hint" style={styles.totalText}>
-        {`${i18n.t('activity_log:total')}`} <Text category="p2">{`${235}h`} </Text>
-      </Text>
+      {!isLoadingCounters && (
+        <Text appearance="hint" style={styles.totalText}>
+          {`${i18n.t('activity_log:total')}`}{' '}
+          <>
+            {status === ActivityLogStatus.APPROVED && (
+              <Text category="p2">{`${approvedHours}h`} </Text>
+            )}
+            {status === ActivityLogStatus.REJECTED && (
+              <Text category="p2">{`${rejectedHours}h`} </Text>
+            )}
+            {status === ActivityLogStatus.PENDING && (
+              <Text category="p2">{`${pendingHours}h`} </Text>
+            )}
+          </>
+        </Text>
+      )}
       <InfiniteListLayout<IActivityLogItem>
         pages={activityLogs?.pages}
         renderItem={onRenderEventListItem}
@@ -119,6 +143,8 @@ export default ActivityLogs;
 const themedStyles = StyleService.create({
   totalText: {
     textAlign: 'right',
+    paddingTop: 16,
+    paddingBottom: 8,
   },
   organizationIdentityWrapper: {
     marginBottom: 21,

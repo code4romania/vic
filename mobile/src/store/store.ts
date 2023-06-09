@@ -9,6 +9,8 @@ import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { volunteerSlice } from './volunteer/volunteer.slice';
 import { IEvent } from '../common/interfaces/event.interface';
 import { eventSlice } from './event/event.slice';
+import { IActivityLogCounters } from '../common/interfaces/activity-log-counters.interface';
+import { activityLogsSlice } from './activity-log/activity-log.slice';
 
 interface ActiveOrganizationState {
   activeOrganization?: IOrganizationVolunteer;
@@ -41,6 +43,11 @@ interface EventState {
   declineEvent: () => void;
 }
 
+interface ActivityLogState {
+  counters: IActivityLogCounters;
+  setCounters: (counters: IActivityLogCounters) => void;
+}
+
 interface BottomSheetState {
   isOpen: boolean;
   open: () => void;
@@ -53,7 +60,8 @@ const useStore = create<
     VolunteerState &
     ActiveOrganizationState &
     VolunteerProfileState &
-    EventState
+    EventState &
+    ActivityLogState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...bottomSheetSlice(set),
@@ -61,6 +69,7 @@ const useStore = create<
   ...activeOrganizationSlice(set),
   ...volunteerSlice(set),
   ...eventSlice(set),
+  ...activityLogsSlice(set),
 }));
 
 export default useStore;

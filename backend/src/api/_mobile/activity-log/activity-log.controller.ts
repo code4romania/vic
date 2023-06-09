@@ -15,6 +15,9 @@ import {
   PaginatedPresenter,
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { MobileActivityLogListItemPresenter } from './presenters/activity-log-list-item-presenter';
+import { GetManyActivityLogCountersDto } from 'src/api/activity-log/dto/get-many-activity-log-counters.dto';
+import { ActivityLogCountersPresenter } from 'src/api/activity-log/presenters/activity-log-counters.presenter';
+import { GetActivityLogCountersUsecase } from 'src/usecases/activity-log/get-activity-log-counters.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -23,6 +26,7 @@ export class MobileActivityLogController {
   constructor(
     private readonly createActivityLogByRegularUser: CreateActivityLogByRegularUser,
     private readonly getManyActivityLogsUsecase: GetManyActivityLogsUsecase,
+    private readonly getActivityLogCountersUsecase: GetActivityLogCountersUsecase,
   ) {}
 
   // TODO: VolunteerGuard
@@ -43,6 +47,19 @@ export class MobileActivityLogController {
         (log) => new MobileActivityLogListItemPresenter(log),
       ),
     });
+  }
+
+  // TODO: VolunteerGuard
+  @Get('counters')
+  async getCountHoursByStatus(
+    @Query() { volunteerId }: GetManyActivityLogCountersDto,
+    @ExtractUser() { activeOrganization }: IRegularUserModel,
+  ): Promise<ActivityLogCountersPresenter> {
+    const counters = await this.getActivityLogCountersUsecase.execute({
+      volunteerId,
+      organizationId: activeOrganization.id,
+    });
+    return new ActivityLogCountersPresenter(counters);
   }
 
   @ApiBody({ type: CreateActivityLogByAdminDto })
