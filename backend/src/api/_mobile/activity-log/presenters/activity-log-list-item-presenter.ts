@@ -4,7 +4,7 @@ import { IActivityLogListItemModel } from 'src/modules/activity-log/models/activ
 import { format } from 'date-fns';
 
 export class MobileActivityLogListItemPresenter {
-  constructor(log: IActivityLogListItemModel) {
+  constructor(log: Omit<IActivityLogListItemModel, 'volunteer'>) {
     this.id = log.id;
     this.date = format(log.date, 'dd.MM.y');
     this.hours = log.hours;

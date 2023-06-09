@@ -2,6 +2,7 @@ import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IActivityLogCounters } from '../../common/interfaces/activity-log-counters.interface';
 import { IActivityLogItem } from '../../common/interfaces/activity-log-item.interface';
+import { IActivityLog } from '../../common/interfaces/activity-log.interface';
 import { IOrganizationStructureItem } from '../../common/interfaces/organization-structure-item.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ActivityLogFormTypes } from '../../screens/AddActivityLog';
@@ -45,4 +46,8 @@ export const getActivityLogsTotalCounters = async (
   return API.get('/mobile/activity-log/counters', { params: { volunteerId } }).then(
     (res) => res.data,
   );
+};
+
+export const getActivityLogById = async (activityLogId: string): Promise<IActivityLog> => {
+  return API.get(`/mobile/activity-log/${activityLogId}`).then((res) => res.data);
 };

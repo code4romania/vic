@@ -45,7 +45,7 @@ const Private = () => (
       <Screen name="leave-organization" component={LeaveOrganization} />
       <Screen name="edit-volunteer" component={EditVolunteer} />
       <Screen name="add-activity-log" component={AddActivityLog} />
-      <Screen name="view-activity-log" component={ActivityLog} />
+      <Screen name="activity-log" component={ActivityLog} />
       <Screen name="edit-activity-log" component={EditActivityLog} />
       <Screen name="create-volunteer" component={CreateVolunteer} />
     </Group>
