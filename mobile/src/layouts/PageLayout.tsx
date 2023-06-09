@@ -1,15 +1,27 @@
-import React, { ReactNode } from 'react';
-import { Layout, TopNavigation, Icon, TopNavigationAction, Spinner } from '@ui-kitten/components';
+import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
+import {
+  Layout,
+  TopNavigation,
+  Icon,
+  TopNavigationAction,
+  Spinner,
+  Text,
+} from '@ui-kitten/components';
 import Button from '../components/Button';
-import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
+import { View, KeyboardAvoidingView, StyleSheet, Platform, Pressable } from 'react-native';
 import { ButtonType } from '../common/enums/button-type.enum';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetProps } from '../components/BottomSheet';
+import { useBottomSheet } from '../store/bottom-sheet/bottom-sheet.selector';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
   onPrimaryActionButtonClick: (props: any) => void;
   secondaryActionLabel?: string;
   onSecondaryActionButtonClick?: () => void;
+  primaryBtnType?: ButtonType;
   loading?: boolean;
+  helperText?: string;
 }
 
 interface PageLayoutProps {
@@ -18,12 +30,19 @@ interface PageLayoutProps {
   onBackButtonPress?: () => void;
   onEditButtonPress?: () => void;
   actionsOptions?: ActionsOptionsProps;
+  bottomSheetOptions?: Omit<BottomSheetProps, 'modalRef'>;
 }
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
 const EditIcon = (props: any) => <Icon {...props} name="edit" />;
+const renderTitle = (title: string) => () =>
+  (
+    <Text category="h3" style={styles.title}>
+      {title}
+    </Text>
+  );
 
-const LoadingIndicator = (props: any): React.ReactElement => (
+export const LoadingIndicator = (props: any): React.ReactElement => (
   <View style={[props.style, styles.indicator]}>
     <Spinner size="medium" />
   </View>
@@ -35,7 +54,22 @@ export const PageLayout = ({
   onBackButtonPress,
   onEditButtonPress,
   actionsOptions,
+  bottomSheetOptions,
 }: PageLayoutProps) => {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const { isOpen } = useBottomSheet();
+
+  const onBottomSheetOpen = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      onBottomSheetOpen();
+    }
+  }, [isOpen, onBottomSheetOpen]);
+
   const renderLeftControl = () => {
     if (!onBackButtonPress) {
       return <></>;
@@ -55,7 +89,7 @@ export const PageLayout = ({
   return (
     <>
       <TopNavigation
-        title={title}
+        title={renderTitle(title)}
         alignment="start"
         accessoryLeft={renderLeftControl}
         accessoryRight={renderRightControl}
@@ -74,15 +108,38 @@ export const PageLayout = ({
             {actionsOptions.loading ? (
               <LoadingIndicator /> // TODO: handle the loading state properly
             ) : (
-              <Button
-                onPress={actionsOptions.onPrimaryActionButtonClick}
-                label={`${actionsOptions.primaryActionLabel}`}
-                type={ButtonType.PRIMARY}
-              />
+              <View style={styles.helperContainer}>
+                {actionsOptions.helperText && (
+                  <Text category="p1">{actionsOptions.helperText}</Text>
+                )}
+                <View style={styles.buttonsContainer}>
+                  <Button
+                    onPress={actionsOptions.onPrimaryActionButtonClick}
+                    label={`${actionsOptions.primaryActionLabel}`}
+                    status={actionsOptions.primaryBtnType || 'primary'}
+                  />
+                  {actionsOptions.onSecondaryActionButtonClick &&
+                    actionsOptions.secondaryActionLabel && (
+                      <Pressable onPress={actionsOptions.onSecondaryActionButtonClick}>
+                        <Text category="p2">{actionsOptions.secondaryActionLabel}</Text>
+                      </Pressable>
+                    )}
+                </View>
+              </View>
             )}
           </View>
         )}
       </Layout>
+      {bottomSheetOptions && isOpen && (
+        <BottomSheet
+          iconType={bottomSheetOptions.iconType}
+          modalRef={bottomSheetModalRef}
+          heading={bottomSheetOptions.heading}
+          paragraph={bottomSheetOptions.paragraph}
+          primaryAction={bottomSheetOptions.primaryAction}
+          secondaryAction={bottomSheetOptions.secondaryAction}
+        />
+      )}
     </>
   );
 };
@@ -109,5 +166,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  title: {
+    paddingHorizontal: 8,
+  },
+  helperContainer: {
+    gap: 12,
+    alignItems: 'center',
+  },
+  buttonsContainer: {
+    gap: 24,
+    alignItems: 'center',
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
   },
 });

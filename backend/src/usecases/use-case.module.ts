@@ -87,6 +87,18 @@ import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-v
 import { GetManyForDownloadActivityLogUseCase } from './activity-log/get-many-for-download-activity-log.usecase';
 import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-count.usecase';
 import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.usecase';
+import { GetOrganizationsUseCase } from './organization/get-organizations.usecase';
+import { GetOrganizationWithEventsUseCase } from './organization/get-organization-with-events.usecase';
+import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.usecase';
+import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organization-by-access-code.usecase';
+import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
+import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.usecase';
+import { SwitchOrganizationUsecase } from './organization/switch-organization.usecase';
+import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.usecase';
+import { GetMyEventsUsecase } from './event/get-my-events.usecase';
+import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-with-volunteer-status.usecase';
+import { CreateActivityLogByRegularUser } from './activity-log/create-activity-log-by-regular-user.usecase';
+import { GetEventsByOrganizationUsecase } from './event/get-events-by-organization.usecase';
 
 @Module({
   imports: [
@@ -108,6 +120,10 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     // Organization
     GetOrganizationUseCaseService,
     UpdateOrganizationDescriptionUseCaseService,
+    GetOrganizationsUseCase,
+    GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
+    SwitchOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -126,6 +142,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
+    UpdateUserPersonalDataUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -135,6 +152,8 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -156,6 +175,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -171,6 +191,9 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     ArchiveEventUseCase,
     GetManyForDownloadEventUseCase,
     GetManyEventUseCase,
+    GetMyEventsUsecase,
+    GetOneEventWithVolunteerStatusUsecase,
+    GetEventsByOrganizationUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -187,6 +210,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     GetActivityLogCountersUsecase,
     GetManyForDownloadActivityLogUseCase,
     GetActivityLogCountUsecase,
+    CreateActivityLogByRegularUser,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard
@@ -199,6 +223,10 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     // Organization
     GetOrganizationUseCaseService,
     UpdateOrganizationDescriptionUseCaseService,
+    GetOrganizationsUseCase,
+    GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
+    SwitchOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -217,6 +245,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
+    UpdateUserPersonalDataUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -226,6 +255,8 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -247,6 +278,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -263,6 +295,9 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     ArchiveEventUseCase,
     GetManyEventUseCase,
     GetManyForDownloadEventUseCase,
+    GetMyEventsUsecase,
+    GetOneEventWithVolunteerStatusUsecase,
+    GetEventsByOrganizationUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -279,6 +314,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     GetActivityLogCountersUsecase,
     GetManyForDownloadActivityLogUseCase,
     GetActivityLogCountUsecase,
+    CreateActivityLogByRegularUser,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard

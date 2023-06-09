@@ -27,7 +27,22 @@
     "send": "Trimite",
     "delete": "Șterge",
     "volunteers": "Voluntari",
-    "loading": "Se incarca..."
+    "loading": "Se incarca...",
+    "empty_list": "Nu exista rezultate",
+    "error": {
+      "load_entries": "Eroare la incarcarea datelor",
+      "unknown": "A aparut o eroare necunoscuta",
+      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
+    },
+    "back": "Inapoi"
+  },
+  "organizations": {
+    "search": {
+      "placeholder": "Denumirea organizatiei"
+    },
+    "errors": {
+      "generic": "Eroare la incarcarea datelor"
+    }
   },
   "organization_profile": {
     "title": "Profil organizație",
@@ -37,7 +52,31 @@
     "address": "Adresa sediu",
     "area": "Arie de desfasurare a activitatii",
     "events": "Evenimente deschise",
-    "volunteers": "{{number}} voluntari"
+    "volunteers": "{{number}} voluntari",
+    "join": "Alătură-te organizației",
+    "leave": "Părăsește organizația",
+    "cancel_request": "Anuleaza cererea",
+    "no_events": "Nu sunt evenimente de afisat",
+    "code": "Ai cod de acces?",
+    "disclaimer": {
+      "access_request_pending": "Inscrierea ta asteapta aprobare de la organizatie",
+      "joined_from": "Te-ai alaturat din {{date}}"
+    },
+    "modal": {
+      "identity_data_missing": {
+        "heading": "Ups!",
+        "paragraph": "Nu ai completat datele de identitate din Contul meu. Completează pentru a putea să te alături unei organizații.",
+        "action_label": "Completeaza datele"
+      },
+      "confirm_cancel_request": {
+        "heading": "Anulezi cererea de inscriere?",
+        "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Ești sigur că vrei să retragi cererea?",
+        "action_label": "Anuleaza cererea"
+      }
+    }
+  },
+  "privacy_policy": {
+    "title": "Politica de confidentialitate"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
@@ -60,6 +99,17 @@
       "login": "Eroare la autentificare, vă rugăm încercați din nou"
     }
   },
+  "activity_logs": {
+    "title": "Ore de voluntariat",
+    "tabs": {
+      "pending": "In asteptare",
+      "approved": "Aprobate",
+      "rejected": "Refuzate"
+    },
+    "search": {
+      "placeholder": "Cauta"
+    }
+  },
   "activity_log": {
     "title": "Ore de voluntariat",
     "log": "Ore înregistrate",
@@ -69,6 +119,10 @@
       "pending": "Necesita aprobare din partea organizatiei",
       "rejected": "Respins la {{date}}"
     },
+    "pending": "În așteptare",
+    "approved": "Aprobate",
+    "rejected": "Refuzate",
+    "total": "Total",
     "form": {
       "event": {
         "label": "Eveniment"
@@ -134,9 +188,68 @@
     "information": "Informatii voluntar",
     "email": "Email de contact",
     "active_since": "Voluntar din",
-    "created_on": "Înregistrat în TEO din"
+    "created_on": "Înregistrat în TEO din",
+    "errors": {
+      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creaza unul inainte!"
+    },
+    "missing_profile": {
+      "heading": "Nu ai creat încă un profil de utilizator",
+      "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique. ",
+      "action_btn": "Creaza profil"
+    }
   },
-  "event": { "join": "Doresc sa particip", "details": "Detalii eveniment" },
+  "event": {
+    "join": {
+      "header": "Doresc sa particip",
+      "paragraph": "Lorem ispum",
+      "form": {
+        "mention": {
+          "label": "Mențiune",
+          "required": "Mențiunea este obligatorie",
+          "min": "Mențiunea poate să aibă minim {{value}} caractere",
+          "max": "Mențiunea poate să aibă maxim {{value}} caractere",
+          "helper": "Completează câmpul pentru a te înscrie."
+        }
+      }
+    },
+    "details": "Detalii eveniment",
+    "date": "Data și ora",
+    "name": "Denumire eveniment",
+    "target": "Target",
+    "location": "Locatie",
+    "description": "Descriere eveniment",
+    "tasks": "Taskuri asociate",
+    "attending": "{{numberOfVolunteer}} de persoane participă!",
+    "type": {
+      "public": "Eveniment public",
+      "all_organization": "Toata organizatia"
+    },
+    "errors": {
+      "EVENT_001": "Evenimentul nu a fost gasit!",
+      "EVENT_RSVP_006": "Evenimentul nu este inca publicat",
+      "EVENT_RSVP_007": "Evenimentul este incheiat",
+      "EVENT_RSVP_003": "Profilul de voluntar nu este activ",
+      "EVENT_RSVP_005": "Va rugam sa completati profilul de voluntar inainte da a te alatura evenimentului",
+      "EVENT_RSVP_002": "Trebuie sa fii voluntar in organizatie sa poti participa la acest eveniment",
+      "EVENT_RSVP_004": "Pentru acest evenimnent este obligatorie mentiunea"
+    },
+    "rsvp": {
+      "going": "Particip",
+      "not_going": "Nu particip",
+      "cancel": "Retrage răspuns"
+    }
+  },
+  "events": {
+    "header": "Evenimente",
+    "search": {
+      "placeholder": "Cauta"
+    },
+    "tabs": {
+      "going": "Particip",
+      "organizations": "Ale organizațiilor mele",
+      "open": "Deschise"
+    }
+  },
   "tabs": {
     "home": "Acasă",
     "volunteer": "Voluntar",
@@ -172,11 +285,15 @@
           "label": "Email",
           "placeholder": "Introduceti emailul",
           "required": "Email-ul este obligatoriu",
+          "min": "Email-ul poate să aibă minim {{value}} caractere",
+          "max": "Email-ul poate să aibă maxim {{value}} caractere",
           "pattern": "Formatul email-ului nu este valid"
         },
         "phone": {
           "label": "Telefon",
           "placeholder": "Introduceti telefonul",
+          "min": "Numărul de telefon poate să aibă minim {{value}} caractere",
+          "max": "Numărul de telefon poate să aibă maxim {{value}} caractere",
           "required": "Telefonul este obligatoriu"
         },
         "password": {
@@ -191,11 +308,11 @@
           "match": "Parolele trebuie sa fie identice"
         },
         "terms": {
-          "agree": "Sunt de acord cu",
-          "conditions": " Termenii și Condițiile",
-          "and": ", cât și cu",
-          "privacy_policy": " Politica de Confidențialitate",
-          "application": " a aplicației",
+          "agree": "Sunt de acord cu ",
+          "conditions": "Termenii și Condițiile",
+          "and": "cât și cu ",
+          "privacy_policy": "Politica de Confidențialitate ",
+          "application": "a aplicației",
           "required": "Trebuie sa accepti Termenii,Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
         }
       }
@@ -288,6 +405,14 @@
         "min": "Codul poate sa aiba minim {{value}} caractere",
         "max": "Codul poate sa aiba maxim {{value}} caractere"
       }
+    },
+    "modal": {
+      "success": {
+        "heading": "Felicitari!",
+        "paragraph": "Codul introdus este corect, și te-ai alăturat cu succes organizației. Pentru a continua, trebuie să completezi profilul tău de voluntar.",
+        "primary_action_label": "Completează profilul de voluntar",
+        "secondary_action_label": "Inchide"
+      }
     }
   },
   "join_ngo": {
@@ -310,6 +435,51 @@
         "max": "Motivatia poate sa aiba maxim {{value}} caractere",
         "helper": "Completează câmpul pentru a te înscrie."
       }
+    },
+    "errors": {
+      "ACCESS_CODE_001": "Codul de access este invalid",
+      "ACCESS_REQUEST_001": "Exista deja un request de access pentru aceasta organizatie",
+      "ORG_001": "Organizatia nu a fost gasita",
+      "USER_001": "Utilizatotul nu a fost gasit",
+      "VOLUNTEER_002": "Utilizatorul este deja parte a organizatiei",
+      "USER_005": "Utilizatorul nu are datele de identificare completate"
+    },
+    "modal": {
+      "success": {
+        "heading": "Felicitari!",
+        "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Vei primi o notificare îndată ce aceștia vor răspunde.",
+        "primary_action_label": "Cauta alte organizatii",
+        "secondary_action_label": "Inchide"
+      }
+    }
+  },
+  "create_volunteer": {
+    "heading": "Completează profil voluntar",
+    "paragraph": "Completează profilul tău de voluntar pentru a putea fi contactat și începe să raportezi orele de voluntariat!",
+    "form": {
+      "name": { "label": "Nume complet" },
+      "email": {
+        "label": "E-mail de contact",
+        "required": "Email-ul este obligatoriu",
+        "placeholder": "Introduceți emailul",
+        "pattern": "Formatul email-ului nu este valid"
+      },
+      "checkbox": {
+        "label": "Același ca email cont TEO"
+      },
+      "branch": {
+        "label": "FIlială sau sucursală"
+      },
+      "active_since": {
+        "label": "Voluntar din"
+      },
+      "submit": {
+        "errors": {
+          "VOLUNTEER_001": "Voluntarul nu a fost gasit!",
+          "VOLUNTEER_PROFILE_001": "Voluntarul are deja un profil!",
+          "ORGANIZATION_STRUCTURE_001": "Structura organizationala nu exista"
+        }
+      }
     }
   },
   "settings": {
@@ -319,5 +489,11 @@
     "password": "Schimbă parola",
     "notification": "Setări notificări",
     "information": "Informații"
+  },
+  "user": {
+    "errors": {
+      "USER_001": "Utilizatorul nu a fost gasit",
+      "USER_004": "Acest numar de identificare al utilizatorului exista deja"
+    }
   }
 }

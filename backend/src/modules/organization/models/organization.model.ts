@@ -1,3 +1,4 @@
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import { OrganizationEntity } from '../entities/organization.entity';
 
 export interface IOrganizationModel {
@@ -17,6 +18,8 @@ export type IFindOrganizationModel = Pick<
   IOrganizationModel,
   'id' | 'name' | 'email' | 'phone'
 >;
+
+export type FindManyOrganizationsOptions = IBasePaginationFilterModel;
 
 export class OrganizationTransformer {
   static fromEntity(

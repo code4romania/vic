@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { differenceInYears, endOfDay, format, formatISO9075, isSameDay } from 'date-fns';
+import { endOfDay, format, formatISO9075, isSameDay } from 'date-fns';
 import { SelectItem } from '../../components/Select';
 import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 import { ICity } from '../interfaces/city.interface';
@@ -37,10 +37,6 @@ export const formatDate = (value?: Date | string | null): string =>
 
 export const formatDateWithTime = (value?: Date | string | null): string =>
   value ? format(new Date(value), 'dd.LL.y hh:mm') : '-';
-
-export const calculateAge = (birthday: Date) => {
-  return differenceInYears(new Date(), birthday);
-};
 
 export const arrayOfNamesToString = (array: { name: string }[], separator: string): string => {
   return array.map((item) => item.name).join(separator);

@@ -17,6 +17,7 @@ export class EventListItemPresenter {
 
     this.status = event.status;
     this.isPublic = event.isPublic;
+    this.location = event.location;
 
     this.targets = event.targets?.map(
       (target) => new OrganizationStructureListItemPresenter(target),
@@ -38,6 +39,10 @@ export class EventListItemPresenter {
   @Expose()
   @ApiProperty({ description: 'The name of the Event' })
   name: string;
+
+  @Expose()
+  @ApiProperty({ description: 'The location of the Event' })
+  location?: string;
 
   @Expose()
   @ApiProperty({ description: 'The image of the Event' })

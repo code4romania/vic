@@ -21,14 +21,13 @@ const Disclaimer = ({ color, text, eva }: DisclaimerProps) => {
 
 export default withStyles(Disclaimer, () => ({
   container: {
-    height: 40,
-    marginLeft: -16,
-    marginRight: -16,
+    paddingVertical: 10,
+    marginHorizontal: -16,
     paddingLeft: 16,
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 8,
-    marginBottom: 16,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   dot: {
     width: 8,

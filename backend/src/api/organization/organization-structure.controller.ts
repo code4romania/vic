@@ -30,7 +30,6 @@ import {
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { GetAllOrganizationStructureByTypeUseCase } from 'src/usecases/organization/organization-structure/get-all-organization-structure-by-type.usecase';
 
-// @Roles(Role.ADMIN)
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, OrganizationStructureGuard)
 @Controller('organization-structure')

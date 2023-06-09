@@ -15,7 +15,9 @@ const ProfileIntro = ({ uri, name, description }: ProfileIntroProps) => {
         <Image source={{ uri }} style={styles.profileImage} />
       </View>
       <View style={styles.textContainer}>
-        <Text category="h3">{name}</Text>
+        <Text category="h3" numberOfLines={3} ellipsizeMode="tail">
+          {name}
+        </Text>
         <Text category="c1" appearance="hint" style={styles.description}>
           {description}
         </Text>
@@ -34,13 +36,10 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     gap: 16,
+    flexShrink: 2,
   },
   imageWrapper: {
-    shadowColor: '$dark-purple',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 3,
+    borderRadius: 100,
   },
   profileImage: {
     borderRadius: 70,

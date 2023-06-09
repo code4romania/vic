@@ -12,15 +12,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ReferralOptions } from '../common/constants/referral-options';
 import FormInput from '../components/FormInput';
 import { StyleSheet } from 'react-native';
+import { useCreateAccessrequestMutation } from '../services/access-request/access-request.service';
+import { InternalErrors } from '../common/errors/internal-errors.class';
+import Toast from 'react-native-toast-message';
+import { useTranslation } from 'react-i18next';
+import useStore from '../store/store';
 
 export type JoinNgoFormTypes = {
   referral: REFERRAL;
   motivation: string;
-};
-
-const organization = {
-  name: 'Asociația ZEN',
-  logo: 'https://picsum.photos/200/300',
 };
 
 const schema = yup
@@ -34,21 +34,60 @@ const schema = yup
   })
   .required();
 
-const JoinOrganization = ({ navigation }: any) => {
-  console.log('JoinOrganization');
+const JoinOrganization = ({ navigation, route }: any) => {
+  const { t } = useTranslation('join_ngo');
+  const { organizationId, logo, name } = route.params;
+  const { isLoading: isCreatingAccessRequest, mutate: createAccessRequest } =
+    useCreateAccessrequestMutation();
+
+  const { open: openBottomSheet, close: closeBottomSheet } = useStore();
+  console.log('JoinOrganization', organizationId);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<JoinNgoFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (payload: any) => {
-    console.log(payload.referral, payload.motivation);
+  const onSubmit = (payload: JoinNgoFormTypes) => {
+    // build the access request payload
+    const accessRequestPayload = {
+      organizationId,
+      answers: [
+        { question: 'referral', answer: payload.referral },
+        { question: 'motivation', answer: payload.motivation },
+      ],
+    };
+
+    // make the access request
+    createAccessRequest(accessRequestPayload, {
+      onSuccess: () => {
+        // show modal which will eventually become bottom sheet
+        openBottomSheet();
+      },
+      onError: (error: any) => {
+        Toast.show({
+          type: 'error',
+          text1: `${InternalErrors.ACCESS_REQUEST_ERRORS.getError(
+            error.response?.data.code_error,
+          )}`,
+        });
+      },
+    });
+  };
+
+  const onSearchNewOrganizations = () => {
+    closeBottomSheet();
+    navigation.navigate('search');
+  };
+
+  const onCloseBottomSheet = () => {
+    closeBottomSheet();
+    navigation.goBack();
   };
 
   return (
@@ -58,22 +97,37 @@ const JoinOrganization = ({ navigation }: any) => {
       actionsOptions={{
         primaryActionLabel: i18n.t('general:send'),
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
+        loading: isCreatingAccessRequest,
+      }}
+      bottomSheetOptions={{
+        iconType: 'success',
+        paragraph: t('modal.success.paragraph'),
+        heading: t('modal.success.heading'),
+        primaryAction: {
+          label: t('modal.success.primary_action_label'),
+          onPress: onSearchNewOrganizations,
+        },
+        secondaryAction: {
+          label: t('modal.success.secondary_action_label'),
+          onPress: onCloseBottomSheet,
+        },
       }}
     >
       <FormLayout>
-        <OrganizationIdentity uri={organization.logo} name={organization.name} />
+        <OrganizationIdentity uri={logo} name={name} />
         <Text category="p2">{`${i18n.t('join_ngo:registration_form')}`}</Text>
         <Text appearance="hint">{`${i18n.t('join_ngo:complete')}`}</Text>
         <FormSelect
-          control={control}
+          control={control as any}
           label={i18n.t('join_ngo:form.referral.label')}
           error={errors.referral}
           name="referral"
           options={ReferralOptions}
           placeholder={i18n.t('general:select')}
+          disabled={isCreatingAccessRequest}
         />
         <FormInput
-          control={control}
+          control={control as any}
           label={i18n.t('join_ngo:form.motivation.label')}
           error={errors.motivation}
           name="motivation"
@@ -81,6 +135,7 @@ const JoinOrganization = ({ navigation }: any) => {
           textStyle={styles.textArea}
           helper={`${i18n.t('join_ngo:form.motivation.helper')}`}
           placeholder=""
+          disabled={isCreatingAccessRequest}
         />
       </FormLayout>
     </PageLayout>
