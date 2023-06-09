@@ -18,11 +18,11 @@ const LogItem = ({ activityLog, onPress }: LogItemProps) => {
         <GrayIcon name={'heart'} />
         <View style={styles.textWrapper}>
           <Text category="p2" ellipsizeMode="tail" numberOfLines={1}>
-            {activityLog.activityTypeName}
+            {activityLog.activityType.name}
           </Text>
           <Text category="c1" appearance="hint" ellipsizeMode="tail" numberOfLines={1}>{`${
             activityLog.date
-          }${activityLog.eventName ? ' | ' + activityLog.eventName : ''}`}</Text>
+          }${activityLog.event ? ' | ' + activityLog.event.name : ''}`}</Text>
         </View>
         <Text category="p2">{`${activityLog.hours}h`}</Text>
       </View>

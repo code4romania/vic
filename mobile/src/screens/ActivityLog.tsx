@@ -111,11 +111,11 @@ const ActivityLog = ({ navigation, route }: any) => {
             )}
             <ReadOnlyElement
               label={i18n.t('activity_log:form.event.label')}
-              value={activityLog?.eventName}
+              value={activityLog?.event?.name}
             />
             <ReadOnlyElement
               label={i18n.t('activity_log:form.task.label')}
-              value={activityLog?.activityTypeName}
+              value={activityLog?.activityType.name}
             />
             <ReadOnlyElement
               label={i18n.t('activity_log:form.date.label')}

@@ -13,8 +13,8 @@ import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 
 export type ActivityLogFormTypes = {
-  eventId: number;
-  activityTypeId: number;
+  eventId: string;
+  activityTypeId: string;
   date: Date;
   hours: string;
   mentions: string;

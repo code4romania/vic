@@ -32,6 +32,8 @@ const EditActivityLog = ({ navigation }: any) => {
         date: new Date(),
         hours: selectedActivityLog.hours.toString(),
         mentions: selectedActivityLog.mentions,
+        eventId: selectedActivityLog.event?.id,
+        activityTypeId: selectedActivityLog.activityType.id,
       });
     }
   }, [selectedActivityLog, reset]);

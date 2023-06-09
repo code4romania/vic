@@ -5,7 +5,7 @@ import { IActivityLogItem } from '../../common/interfaces/activity-log-item.inte
 import { IActivityLog } from '../../common/interfaces/activity-log.interface';
 import { IOrganizationStructureItem } from '../../common/interfaces/organization-structure-item.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { ActivityLogFormTypes } from '../../screens/AddActivityLog';
+import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import API from '../api';
 
 interface PaginationQuery {
