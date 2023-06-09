@@ -16,6 +16,7 @@ interface ModalLayoutProps {
   children: ReactNode;
   title: string;
   onDismiss: () => void;
+  onEditButtonPress?: () => void;
   actionsOptions?: ActionsOptionsProps;
 }
 
