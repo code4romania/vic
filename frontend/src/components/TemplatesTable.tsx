@@ -67,7 +67,7 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
   };
 
   const buildTemplateActionColumn = (): TableColumn<ITemplateListItem> => {
-    const activeVolunteersMenuItems = [
+    const templateMenuItems = [
       {
         label: i18n.t('documents:popover.edit'),
         icon: <PencilIcon className="menu-icon" />,
@@ -89,7 +89,7 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
     return {
       name: '',
       cell: (row: ITemplateListItem) => (
-        <Popover<ITemplateListItem> row={row} items={activeVolunteersMenuItems} />
+        <Popover<ITemplateListItem> row={row} items={templateMenuItems} />
       ),
       width: '50px',
       allowOverflow: true,

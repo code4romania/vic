@@ -24,6 +24,7 @@
     "add": "Adaugă {{item}}",
     "category": "Categorie",
     "select": "Selectează {{item}}",
+    "download": "Descarcă {{item}}",
     "choose": "Alege {{item}}",
     "image": "Imagine",
     "reason": "Motiv",
@@ -50,6 +51,7 @@
     "description": "Descriere",
     "required": "Campul este obligatoriu",
     "contracts": "Contracte",
+    "anytime": "Oricand",
     "contact": "Date contact",
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
@@ -106,6 +108,7 @@
     "collapse": "Restrange meniul"
   },
   "volunteer": {
+    "all": "Toti voluntarii",
     "title": "Vizualizare profil",
     "card_title": "Informatii voluntar",
     "name": "Voluntar {{status}}",
@@ -753,10 +756,29 @@
     "download_all": "Descarcă toate",
     "name": "Denumire",
     "contracts": {
+      "total": "{{value}} contracte",
+      "generate": "Generează contract",
+      "download": "Descarcă aprobate",
+      "number": "Numar contract",
       "template": "Template contract",
       "list": "Lista contracte",
       "title": "Contracte de voluntariat",
+      "status": "Status contract",
       "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+      "start_date": "Data inceput perioada contract",
+      "end_date": "Data sfarsit perioada contract",
+      "statistics_card": {
+        "title": "Contracte in curs de validare",
+        "label": "Vezi lista"
+      },
+      "display_status": {
+        "active": "Activ",
+        "closed": "Incheiat",
+        "not_started": "Neinceput",
+        "validate_ong": "Validare ONG",
+        "validate_volunteer": "Validare Voluntar",
+        "rejected": "Refuzat"
+      },
       "form": {
         "template_name": {
           "label": "Denumire template",
