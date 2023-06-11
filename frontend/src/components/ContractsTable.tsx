@@ -21,7 +21,7 @@ import {
   useRejectContractMutation,
 } from '../services/contracts/contracts.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { ContractsTableProps } from '../containers/query/ContractsTableWithQueryParams';
+import { ContractsTableBasicProps } from '../containers/query/ContractsTableWithQueryParams';
 import Popover from './Popover';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -41,6 +41,7 @@ import { useNavigate } from 'react-router-dom';
 import ContractSidePanel from './ContractSidePanel';
 import ConfirmationModal from './ConfirmationModal';
 import RejectTextareaModal from './RejectTextareaModal';
+import { VolunteerTabsOptions } from '../pages/Volunteer';
 
 const StatusOptions: SelectItem<ContractStatus>[] = [
   { key: ContractStatus.ACTIVE, value: `${i18n.t('documents:contracts.display_status.active')}` },
@@ -106,7 +107,46 @@ const ContractsTableHeader = [
   },
 ];
 
-const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
+const VolunteerContractsTableHeader = [
+  {
+    id: 'number',
+    name: i18n.t('documents:contracts.number'),
+    sortable: true,
+    grow: 3,
+    selector: (row: IContractListItem) => row.number,
+  },
+  {
+    id: 'status',
+    name: i18n.t('general:status'),
+    minWidth: '11rem',
+    sortable: true,
+    cell: (row: IContractListItem) => (
+      <CellLayout>
+        <StatusWithMarker markerColor={ContractStatusMarkerColorMapper[row.status]}>
+          {i18n.t(`documents:contracts.display_status.${row.status}`)}
+        </StatusWithMarker>
+      </CellLayout>
+    ),
+  },
+  {
+    id: 'startDate',
+    name: i18n.t('events:form.start_date.label'),
+    sortable: true,
+    selector: (row: IContractListItem) => formatDate(row.startDate),
+  },
+  {
+    id: 'endDate',
+    name: i18n.t('events:form.end_date.label'),
+    sortable: true,
+    selector: (row: IContractListItem) => formatDate(row.endDate),
+  },
+];
+
+interface ContractsTableProps extends ContractsTableBasicProps {
+  volunteerName: string;
+}
+
+const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps) => {
   // selected contract id
   const [selectedContract, setSelectedContract] = useState<string>();
   // side panel state
@@ -138,7 +178,7 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
     orderBy: query?.orderBy as string,
     orderDirection: query?.orderDirection as OrderDirection,
     search: query?.search,
-    volunteer: query?.volunteer,
+    volunteer: volunteerName || query?.volunteer,
     startDate: query?.startDate,
     endDate: query?.endDate,
     status: query?.status as ContractStatus,
@@ -262,6 +302,10 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
     };
   };
 
+  const buildContractTableHeader = (): TableColumn<IContractListItem>[] => {
+    return volunteerName ? VolunteerContractsTableHeader : ContractsTableHeader;
+  };
+
   // pagination
   const onRowsPerPageChange = (rows: number) => {
     setQuery({
@@ -307,7 +351,11 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
   };
 
   const onResetFilters = () => {
-    setQuery({}, 'push');
+    if (volunteerName) {
+      setQuery({ activeTab: VolunteerTabsOptions.DOCUMENTS }, 'push');
+    } else {
+      setQuery({}, 'push');
+    }
   };
 
   const onSearch = (search: string) => {
@@ -370,28 +418,32 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
 
   return (
     <>
-      <div className="max-w-[350px]">
-        <StatisticsCard
-          label={i18n.t('documents:contracts.statistics_card.title')}
-          value={'16'}
-          action={{
-            label: i18n.t('documents:contracts.statistics_card.label'),
-            onClick: onStatisticsClick,
-          }}
-        />
-      </div>
+      {!volunteerName && (
+        <div className="max-w-[350px]">
+          <StatisticsCard
+            label={i18n.t('documents:contracts.statistics_card.title')}
+            value={'16'}
+            action={{
+              label: i18n.t('documents:contracts.statistics_card.label'),
+              onClick: onStatisticsClick,
+            }}
+          />
+        </div>
+      )}
       <DataTableFilters
         onSearch={onSearch}
         searchValue={query?.search}
         onResetFilters={onResetFilters}
       >
-        <VolunteerSelect
-          defaultValue={
-            query.volunteer ? { value: 'something dumb', label: query.volunteer } : undefined
-          }
-          onSelect={onVolunteerChange}
-          label={i18n.t('volunteer:name', { status: '' })}
-        />
+        {!volunteerName && (
+          <VolunteerSelect
+            defaultValue={
+              query.volunteer ? { value: 'something dumb', label: query.volunteer } : undefined
+            }
+            onSelect={onVolunteerChange}
+            label={i18n.t('volunteer:name', { status: '' })}
+          />
+        )}
         <FormDatePicker
           label={`${i18n.t('documents:contracts.start_date')}`}
           placeholder={`${i18n.t('general:anytime')}`}
@@ -433,7 +485,7 @@ const ContractsTable = ({ query, setQuery }: ContractsTableProps) => {
         </CardHeader>
         <CardBody>
           <DataTableComponent
-            columns={[...ContractsTableHeader, buildContractActionColumn()]}
+            columns={[...buildContractTableHeader(), buildContractActionColumn()]}
             data={contracts?.items}
             loading={
               isContractsLoading || isDeletingContract || isRejectingContract || isApprovingContract
