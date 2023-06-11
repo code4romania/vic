@@ -10,6 +10,7 @@ import { OrganizationEntity } from '../entities/organization.entity';
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
 import { IOrganizationWithVolunteersModel } from '../models/organization-with-volunteers.model';
 import { IOrganizationWithEventsModel } from '../models/organization-with-events.model';
+import { IOrganizationVolunteerModel } from '../models/organization-volunteer.models';
 
 export interface IOrganizationRepository
   extends IRepositoryWithPagination<OrganizationEntity> {
@@ -27,5 +28,5 @@ export interface IOrganizationRepository
   findMany(
     options: FindManyOrganizationsOptions,
   ): Promise<Pagination<IOrganizationWithVolunteersModel>>;
-  findMyOrganizations(userId: string): Promise<IOrganizationModel[]>;
+  findMyOrganizations(userId: string): Promise<IOrganizationVolunteerModel[]>;
 }

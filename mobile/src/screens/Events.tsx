@@ -1,62 +1,89 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
-import { EventsTabs } from '../common/constants/events-tabs';
-import { VirtualizedList } from 'react-native';
 import Tabs from '../components/Tabs';
 import EventItem from '../components/EventItem';
-import { Divider } from '@ui-kitten/components';
+import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
+import { useTranslation } from 'react-i18next';
+import { OrderDirection } from '../common/enums/order-direction.enum';
+import InfiniteListLayout from '../layouts/InfiniteListLayout';
+import { IEventListItem } from '../common/interfaces/event-list-item.interface';
+import { useEventsInfiniteQuery } from '../services/event/event.service';
+import { JSONStringifyError } from '../common/utils/utils';
+import { EventType } from '../common/enums/event-type.enum';
+import { ISelectItem } from '../components/FormSelect';
 
-interface Event {
-  id: string;
-  title: string;
-  date: string;
-  location: string;
-  division: string;
-}
+const EventsTabs: ISelectItem[] = [
+  { key: EventType.GOING, label: i18n.t('events:tabs.going') },
+  { key: EventType.ORGANIZATIONS, label: i18n.t('events:tabs.organizations') },
+  { key: EventType.OPEN, label: i18n.t('events:tabs.open') },
+];
 
 const Events = ({ navigation }: any) => {
   console.log('Events');
+  const { t } = useTranslation('events');
+  // order direction filter
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+  // search filter
+  const [search, setSearch] = useState<string>('');
+  // event tab filter
+  const [eventFilter, setEventFilter] = useState<EventType>(EventType.GOING);
 
-  const getItem = (_data: unknown, index: number): Event => ({
-    id: Math.random().toString(12).substring(0),
-    title: `Event ${index + 1}`,
-    date: `${new Date(2023, 2, index + 1)}`,
-    location: 'Sediu',
-    division: 'Departamentul de fundraising',
-  });
-
-  const getItemCount = (_data: unknown) => 50;
+  // events query
+  const {
+    data: events,
+    error: getEventsError,
+    isFetching: isFetchingEvents,
+    fetchNextPage,
+    hasNextPage,
+    refetch: reloadEvents,
+  } = useEventsInfiniteQuery(orderDirection, search, eventFilter);
 
   const onTabClick = (tabKey: string | number) => {
-    console.log(tabKey);
+    setEventFilter(tabKey as EventType);
   };
 
-  const onEventPress = (id: string) => {
-    console.log(id);
-    navigation.navigate('event', { id });
+  const onLoadMore = () => {
+    if (!isFetchingEvents && hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  const onEventListItemPress = (eventId: string) => {
+    navigation.navigate('event', { eventId });
+  };
+
+  const onRenderEventListItem = ({ item }: { item: IEventListItem }) => (
+    <EventItem event={item} onPress={onEventListItemPress} />
+  );
+
+  const onSort = () => {
+    setOrderDirection(
+      orderDirection === OrderDirection.ASC ? OrderDirection.DESC : OrderDirection.ASC,
+    );
   };
 
   return (
-    <PageLayout title={i18n.t('tabs:events')}>
-      <Tabs tabs={EventsTabs} onClick={onTabClick}>
-        <VirtualizedList
-          initialNumToRender={4}
-          getItemCount={getItemCount}
-          keyExtractor={(item) => item.id}
-          getItem={getItem}
-          renderItem={({ item }) => (
-            <EventItem
-              title={item.title}
-              date={item.date}
-              location={item.location}
-              divison={item.division}
-              onPress={onEventPress.bind(null, item.id)}
-            />
-          )}
-          ItemSeparatorComponent={Divider}
-        />
-      </Tabs>
+    <PageLayout title={t('header')}>
+      <Tabs tabs={EventsTabs} onPress={onTabClick} />
+      <SearchWithOrderAndFilters
+        placeholder={t('search.placeholder')}
+        onChange={setSearch}
+        onSort={onSort}
+      />
+      <InfiniteListLayout<IEventListItem>
+        pages={events?.pages}
+        renderItem={onRenderEventListItem}
+        loadMore={onLoadMore}
+        isLoading={isFetchingEvents}
+        refetch={reloadEvents}
+        errorMessage={
+          getEventsError
+            ? `${JSONStringifyError(getEventsError as Error)}`
+            : // : `${t('errors.generic')}`
+              ''
+        }
+      />
     </PageLayout>
   );
 };

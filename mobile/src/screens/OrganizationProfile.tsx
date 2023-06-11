@@ -154,7 +154,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         ...renderActionOptions(),
-
         loading: isLoading(),
       }}
       bottomSheetOptions={
@@ -219,7 +218,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                 <View style={styles.container}>
                   {organization.events.map((event) => (
                     <View style={styles.container} key={event.id}>
-                      <EventItem event={event} organizationLogo={organization.logo} />
+                      <EventItem event={event} onPress={console.log} />
                       <Divider />
                     </View>
                   ))}

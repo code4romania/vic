@@ -16,10 +16,12 @@ interface ModalLayoutProps {
   children: ReactNode;
   title: string;
   onDismiss: () => void;
+  onEditButtonPress?: () => void;
   actionsOptions?: ActionsOptionsProps;
 }
 
 const CloseIcon = (props: any) => <Icon {...props} name="x" />;
+const EditIcon = (props: any) => <Icon {...props} name="edit" />;
 const renderTitle = (title: string) => () =>
   (
     <Text category="h3" style={styles.title}>
@@ -27,9 +29,23 @@ const renderTitle = (title: string) => () =>
     </Text>
   );
 
-export const ModalLayout = ({ children, title, onDismiss, actionsOptions }: ModalLayoutProps) => {
+export const ModalLayout = ({
+  children,
+  title,
+  onDismiss,
+  onEditButtonPress,
+  actionsOptions,
+}: ModalLayoutProps) => {
   const renderLeftControl = () => {
     return <TopNavigationAction icon={CloseIcon} onPress={onDismiss} />;
+  };
+
+  const renderRightControl = () => {
+    if (!onEditButtonPress) {
+      return <></>;
+    }
+
+    return <TopNavigationAction icon={EditIcon} onPress={onEditButtonPress} />;
   };
   return (
     <>
@@ -37,6 +53,7 @@ export const ModalLayout = ({ children, title, onDismiss, actionsOptions }: Moda
         title={renderTitle(title)}
         alignment="start"
         accessoryLeft={renderLeftControl}
+        accessoryRight={renderRightControl}
       />
       <Layout style={styles.layout}>
         <KeyboardAvoidingView
@@ -54,6 +71,7 @@ export const ModalLayout = ({ children, title, onDismiss, actionsOptions }: Moda
               <Button
                 label={actionsOptions.actionLabel}
                 onPress={actionsOptions.onActionButtonClick}
+                status={actionsOptions.buttonType || 'primary'}
               />
             )}
           </View>

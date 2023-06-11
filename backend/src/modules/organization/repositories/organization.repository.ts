@@ -28,6 +28,10 @@ import {
 } from '../models/organization-with-events.model';
 import { EventEntity } from 'src/modules/event/entities/event.entity';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
+import {
+  IOrganizationVolunteerModel,
+  OrganizationVolunteerTransformer,
+} from '../models/organization-volunteer.models';
 
 @Injectable()
 export class OrganizationRepositoryService
@@ -170,15 +174,22 @@ export class OrganizationRepositoryService
 
   public async findMyOrganizations(
     userId: string,
-  ): Promise<IOrganizationModel[]> {
+  ): Promise<IOrganizationVolunteerModel[]> {
     // get all organizations where this user has an active volunteer profile
-    const organizationEntities = await this.organizationRepository.findBy({
-      volunteers: {
-        userId,
-        status: VolunteerStatus.ACTIVE,
+    const organizationEntities = await this.organizationRepository.find({
+      where: {
+        volunteers: {
+          userId,
+          status: VolunteerStatus.ACTIVE,
+        },
+      },
+      relations: {
+        volunteers: true,
       },
     });
 
-    return organizationEntities.map(OrganizationTransformer.fromEntity);
+    return organizationEntities.map(
+      OrganizationVolunteerTransformer.fromEntity,
+    );
   }
 }

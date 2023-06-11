@@ -81,9 +81,11 @@ const SearchWithOrderAndFilters = ({
       <Pressable style={styles.filtersContainer} onPress={onSort}>
         <SvgXml xml={SortSvg} style={styles.svg} />
       </Pressable>
-      <Pressable style={styles.filtersContainer} onPress={onFilter}>
-        <SvgXml xml={FiltersSvg} style={styles.svg} />
-      </Pressable>
+      {onFilter && (
+        <Pressable style={styles.filtersContainer} onPress={onFilter}>
+          <SvgXml xml={FiltersSvg} style={styles.svg} />
+        </Pressable>
+      )}
     </View>
   );
 };

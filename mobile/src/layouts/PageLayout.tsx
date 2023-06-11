@@ -8,9 +8,8 @@ import {
   Text,
 } from '@ui-kitten/components';
 import Button from '../components/Button';
-import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
+import { View, KeyboardAvoidingView, StyleSheet, Platform, Pressable } from 'react-native';
 import { ButtonType } from '../common/enums/button-type.enum';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import BottomSheet, { BottomSheetProps } from '../components/BottomSheet';
 import { useBottomSheet } from '../store/bottom-sheet/bottom-sheet.selector';
@@ -22,6 +21,7 @@ interface ActionsOptionsProps {
   onSecondaryActionButtonClick?: () => void;
   primaryBtnType?: ButtonType;
   loading?: boolean;
+  helperText?: string;
 }
 
 interface PageLayoutProps {
@@ -108,18 +108,23 @@ export const PageLayout = ({
             {actionsOptions.loading ? (
               <LoadingIndicator /> // TODO: handle the loading state properly
             ) : (
-              <View style={styles.buttonsContainer}>
-                <Button
-                  onPress={actionsOptions.onPrimaryActionButtonClick}
-                  label={`${actionsOptions.primaryActionLabel}`}
-                  status={actionsOptions.primaryBtnType || 'primary'}
-                />
-                {actionsOptions.onSecondaryActionButtonClick &&
-                  actionsOptions.secondaryActionLabel && (
-                    <TouchableWithoutFeedback onPress={actionsOptions.onSecondaryActionButtonClick}>
-                      <Text category="p2">{actionsOptions.secondaryActionLabel}</Text>
-                    </TouchableWithoutFeedback>
-                  )}
+              <View style={styles.helperContainer}>
+                {actionsOptions.helperText && (
+                  <Text category="p1">{actionsOptions.helperText}</Text>
+                )}
+                <View style={styles.buttonsContainer}>
+                  <Button
+                    onPress={actionsOptions.onPrimaryActionButtonClick}
+                    label={`${actionsOptions.primaryActionLabel}`}
+                    status={actionsOptions.primaryBtnType || 'primary'}
+                  />
+                  {actionsOptions.onSecondaryActionButtonClick &&
+                    actionsOptions.secondaryActionLabel && (
+                      <Pressable onPress={actionsOptions.onSecondaryActionButtonClick}>
+                        <Text category="p2">{actionsOptions.secondaryActionLabel}</Text>
+                      </Pressable>
+                    )}
+                </View>
               </View>
             )}
           </View>
@@ -164,6 +169,10 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingHorizontal: 8,
+  },
+  helperContainer: {
+    gap: 12,
+    alignItems: 'center',
   },
   buttonsContainer: {
     gap: 24,

@@ -9,6 +9,7 @@ import {
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
 import { GetOneRegularUserUseCase } from '../user/get-one-regular-user.usecase';
+import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 
 @Injectable()
 export class CreateVolunteerUseCase
@@ -16,6 +17,7 @@ export class CreateVolunteerUseCase
 {
   constructor(
     private readonly volunteerFacade: VolunteerFacade,
+    private readonly userFacade: UserFacadeService,
     private readonly getOneRegularUserUseCaseService: GetOneRegularUserUseCase,
     private readonly getOrganizationUseCaseService: GetOrganizationUseCaseService,
     private readonly exceptionService: ExceptionsService,
@@ -38,6 +40,14 @@ export class CreateVolunteerUseCase
       );
     }
 
-    return this.volunteerFacade.create(data);
+    // 3. create volunteer
+    const volunteer = await this.volunteerFacade.create(data);
+
+    // 4. set this as active organizations for the user
+    await this.userFacade.updateRegularUser(data.userId, {
+      activeOrganizationId: data.organizationId,
+    });
+
+    return volunteer;
   }
 }

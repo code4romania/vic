@@ -8,6 +8,7 @@
     "close": "Inchide",
     "name": "Nume",
     "people": "Persoane",
+    "contract": "Contract",
     "age": "Vârsta",
     "hours": "Ore",
     "daily": "Zilnic",
@@ -23,6 +24,7 @@
     "add": "Adaugă {{item}}",
     "category": "Categorie",
     "select": "Selectează {{item}}",
+    "download": "Descarcă {{item}}",
     "choose": "Alege {{item}}",
     "image": "Imagine",
     "reason": "Motiv",
@@ -42,11 +44,14 @@
     "back": "Inapoi",
     "send": "Trimite",
     "reject": "Respinge",
+    "templates": "Template-uri",
     "approve": "Aprobă",
     "save_changes": "Salveaza modificari",
     "save": "Salvează",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
+    "contracts": "Contracte",
+    "anytime": "Oricand",
     "contact": "Date contact",
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
@@ -94,6 +99,7 @@
       "volunteers_list": "Listă voluntari",
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
+      "documents": "Documente",
       "announcements": "Anunturi",
       "activity_types": "Categorii activitati",
       "activity_log": "Ore de voluntariat",
@@ -102,6 +108,7 @@
     "collapse": "Restrange meniul"
   },
   "volunteer": {
+    "all": "Toti voluntarii",
     "title": "Vizualizare profil",
     "card_title": "Informatii voluntar",
     "name": "Voluntar {{status}}",
@@ -744,5 +751,76 @@
     "pie_chart": {
       "title": "Statistici voluntari organizatie"
     }
+  },
+  "documents": {
+    "download_all": "Descarcă toate",
+    "name": "Denumire",
+    "contracts": {
+      "total": "{{value}} contracte",
+      "generate": "Generează contract",
+      "download": "Descarcă aprobate",
+      "number": "Numar contract",
+      "template": "Template contract",
+      "list": "Lista contracte",
+      "title": "Contracte de voluntariat",
+      "status": "Status contract",
+      "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+      "start_date": "Data inceput perioada contract",
+      "end_date": "Data sfarsit perioada contract",
+      "side_panel": {
+        "period": "Perioada contract",
+        "template": "Template utilizat",
+        "generated_by": "Generat de",
+        "signed": "Semnat fizic",
+        "generated_on": "Data generare",
+        "approved_on": "Data aprobare",
+        "rejected_by": "Refuzat de",
+        "rejected_on": "Data refuzare",
+        "reject": "Refuză",
+        "confirm": "Confirmă și semnează"
+      },
+      "statistics_card": {
+        "title": "Contracte in curs de validare",
+        "label": "Vezi lista"
+      },
+      "display_status": {
+        "active": "Activ",
+        "closed": "Incheiat",
+        "not_started": "Neinceput",
+        "validate_ong": "Validare ONG",
+        "validate_volunteer": "Validare Voluntar",
+        "rejected": "Refuzat"
+      },
+      "form": {
+        "template_name": {
+          "label": "Denumire template",
+          "placeholder": "Contract 2023",
+          "required": "Denumirea este obligatorie",
+          "min": "Denumirea poate sa aiba minim {{value}} caractere",
+          "max": "Denumirea poate sa aiba maxim {{value}} caractere"
+        },
+        "contract": {
+          "label": "Încarcă document",
+          "required": "Contractul este obligatoriu",
+          "format": "Template-ul trebuie sa aiba extensia .pdf sau .doc"
+        },
+        "submit": {
+          "messages": {
+            "add": "Template-ul a fost adaugat cu succes",
+            "edit": "Template-ul a fost editat cu succes",
+            "reject": "Contractul a fost refuzat cu succes",
+            "confirm": "Contractul a fost semnat cu succes"
+          }
+        }
+      }
+    },
+    "popover": {
+      "edit": "Editeaza titlu template",
+      "download": "Descarcă document",
+      "reject": "Respinge contract",
+      "remove": "Elimină",
+      "remove_from_list": "Elimină din listă"
+    },
+    "add_template": "Adauga template"
   }
 }

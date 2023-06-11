@@ -25,6 +25,7 @@
     "continue": "Continuă",
     "save": "Salvează",
     "send": "Trimite",
+    "delete": "Șterge",
     "volunteers": "Voluntari",
     "loading": "Se incarca...",
     "empty_list": "Nu exista rezultate",
@@ -90,17 +91,61 @@
   },
   "auth": {
     "errors": {
-      "unauthorizeed": "Userul sau parola sunt gresite",
-      "username_exists": "Exista deja un utilizator cu aceasta adresa de email",
-      "signup": "Eroare la inregistrare",
+      "unauthorizeed": "Userul sau parola sunt greșite",
+      "username_exists": "Există deja un utilizator cu această adresă de email",
+      "signup": "Eroare la înregistrare",
       "resend_code": "Eroare la trimiterea codului de confirmare",
-      "init_profile": "Eroare la incarcarea profilului",
-      "login": "Eroare la autentificare, va rugam incercati din nou"
+      "init_profile": "Eroare la încărcarea profilului",
+      "login": "Eroare la autentificare, vă rugăm încercați din nou"
+    }
+  },
+  "activity_logs": {
+    "title": "Ore de voluntariat",
+    "tabs": {
+      "pending": "In asteptare",
+      "approved": "Aprobate",
+      "rejected": "Refuzate"
+    },
+    "search": {
+      "placeholder": "Cauta"
     }
   },
   "activity_log": {
-    "title": "Ore de voluntariat",
-    "log": "Ore înregistrate"
+    "title": "Log",
+    "rejection_reason": "Motiv respingere",
+    "disclaimer": {
+      "approved": "Aprobată la {{date}}",
+      "pending": "Necesita aprobare din partea organizatiei",
+      "rejected": "Respins la {{date}}"
+    },
+    "form": {
+      "event": {
+        "label": "Eveniment"
+      },
+      "task": {
+        "label": "Task",
+        "required": "Alegerea taskului este obligatorie"
+      },
+      "date": {
+        "label": "Data",
+        "required": "Data este obligatorie"
+      },
+      "hours": {
+        "label": "Număr de ore",
+        "number": "Numărul trebuie să conțină doar cifre",
+        "placeholder": "Adaugă numărul de ore",
+        "required": "Numărul de ore este obligatoriu",
+        "min": "Numărul de ore trebuie să fie mai mare ca {{value}}",
+        "max": "Numărul de ore trebuie să fie mai mic ca {{value}}",
+        "integer": "Numărul de ore trebuie să fie intreg"
+      },
+      "mentions": {
+        "label": "Mențiuni",
+        "placeholder": "Adaugă mențiune",
+        "min": "Mențiunea poate să aibă minim {{value}} caractere",
+        "max": "Mențiunea poate să aibă maxim {{value}} caractere"
+      }
+    }
   },
   "volunteer": {
     "profile": "Profil voluntar",
@@ -138,10 +183,30 @@
     "information": "Informatii voluntar",
     "email": "Email de contact",
     "active_since": "Voluntar din",
-    "created_on": "Înregistrat în TEO din"
+    "created_on": "Înregistrat în TEO din",
+    "errors": {
+      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creaza unul inainte!"
+    },
+    "missing_profile": {
+      "heading": "Nu ai creat încă un profil de utilizator",
+      "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique. ",
+      "action_btn": "Creaza profil"
+    }
   },
   "event": {
-    "join": "Doresc sa particip",
+    "join": {
+      "header": "Doresc sa particip",
+      "paragraph": "Lorem ispum",
+      "form": {
+        "mention": {
+          "label": "Mențiune",
+          "required": "Mențiunea este obligatorie",
+          "min": "Mențiunea poate să aibă minim {{value}} caractere",
+          "max": "Mențiunea poate să aibă maxim {{value}} caractere",
+          "helper": "Completează câmpul pentru a te înscrie."
+        }
+      }
+    },
     "details": "Detalii eveniment",
     "date": "Data și ora",
     "name": "Denumire eveniment",
@@ -149,10 +214,34 @@
     "location": "Locatie",
     "description": "Descriere eveniment",
     "tasks": "Taskuri asociate",
-    "attending": "{{number}} de persoane participă!",
+    "attending": "{{numberOfVolunteer}} de persoane participă!",
+    "type": {
+      "public": "Eveniment public",
+      "all_organization": "Toata organizatia"
+    },
+    "errors": {
+      "EVENT_001": "Evenimentul nu a fost gasit!",
+      "EVENT_RSVP_006": "Evenimentul nu este inca publicat",
+      "EVENT_RSVP_007": "Evenimentul este incheiat",
+      "EVENT_RSVP_003": "Profilul de voluntar nu este activ",
+      "EVENT_RSVP_005": "Va rugam sa completati profilul de voluntar inainte da a te alatura evenimentului",
+      "EVENT_RSVP_002": "Trebuie sa fii voluntar in organizatie sa poti participa la acest eveniment",
+      "EVENT_RSVP_004": "Pentru acest evenimnent este obligatorie mentiunea"
+    },
+    "rsvp": {
+      "going": "Particip",
+      "not_going": "Nu particip",
+      "cancel": "Retrage răspuns"
+    }
+  },
+  "events": {
+    "header": "Evenimente",
+    "search": {
+      "placeholder": "Cauta"
+    },
     "tabs": {
       "going": "Particip",
-      "from_my_ngos": "Ale organizațiilor mele",
+      "organizations": "Ale organizațiilor mele",
       "open": "Deschise"
     }
   },
@@ -172,9 +261,7 @@
         "label": "Email",
         "placeholder": "Introduceti emailul",
         "required": "Email-ul este obligatoriu",
-        "pattern": "Formatul email-ului nu este valid",
-        "min": "Email-ul poate să aibă minim {{value}} caractere",
-        "max": "Email-ul poate să aibă maxim {{value}} caractere"
+        "pattern": "Formatul email-ului nu este valid"
       },
       "password": {
         "label": "Parola",
@@ -193,11 +280,15 @@
           "label": "Email",
           "placeholder": "Introduceti emailul",
           "required": "Email-ul este obligatoriu",
+          "min": "Email-ul poate să aibă minim {{value}} caractere",
+          "max": "Email-ul poate să aibă maxim {{value}} caractere",
           "pattern": "Formatul email-ului nu este valid"
         },
         "phone": {
           "label": "Telefon",
           "placeholder": "Introduceti telefonul",
+          "min": "Numărul de telefon poate să aibă minim {{value}} caractere",
+          "max": "Numărul de telefon poate să aibă maxim {{value}} caractere",
           "required": "Telefonul este obligatoriu"
         },
         "password": {
@@ -252,18 +343,14 @@
           "max": "Numele poate sa aiba maxim {{value}} caractere"
         },
         "county": {
-          "label": "Județ",
-          "required": "Județul este obligatoriu"
+          "label": "Judet"
         },
         "city": {
-          "label": "Oraș",
-          "required": "Orașul este obligatoriu"
+          "label": "Oras"
         },
         "birthday": {
-          "label": "Data nașterii",
-          "required": "Data nașterii este obligatorie"
-        },
-        "sex": { "required": "Alegerea sexului este obligatorie" }
+          "label": "Data nașterii"
+        }
       }
     }
   },
@@ -396,8 +483,7 @@
     "identity": "Date identitate",
     "password": "Schimbă parola",
     "notification": "Setări notificări",
-    "information": "Informații",
-    "account_data": { "picture": "Poza profil", "change_picture": "Schimba poza" }
+    "information": "Informații"
   },
   "user": {
     "errors": {

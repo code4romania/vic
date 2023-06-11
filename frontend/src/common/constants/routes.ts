@@ -5,6 +5,7 @@ import {
   PuzzlePieceIcon,
   CalendarIcon,
   ArchiveBoxIcon,
+  DocumentDuplicateIcon,
 } from '@heroicons/react/24/solid';
 
 import { IRoute } from '../interfaces/route.interface';
@@ -56,12 +57,25 @@ export const ROUTES: IRoute[] = [
   },
   {
     id: 6,
+    name: i18n.t('side_menu:options.documents'),
+    href: 'documents',
+    icon: DocumentDuplicateIcon,
+    childRoutes: [
+      {
+        id: 61,
+        name: i18n.t('general:contracts'),
+        href: 'documents/contracts',
+      },
+    ],
+  },
+  {
+    id: 7,
     name: i18n.t('side_menu:options.actions_archive'),
     href: 'actions-archive',
     icon: ArchiveBoxIcon,
   },
   {
-    id: 7,
+    id: 8,
     name: i18n.t('side_menu:options.announcements'),
     href: 'announcements',
     icon: MegaphoneIcon,
