@@ -90,6 +90,15 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
 import { GetOrganizationsUseCase } from './organization/get-organizations.usecase';
 import { GetOrganizationWithEventsUseCase } from './organization/get-organization-with-events.usecase';
 import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.usecase';
+import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organization-by-access-code.usecase';
+import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
+import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.usecase';
+import { SwitchOrganizationUsecase } from './organization/switch-organization.usecase';
+import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.usecase';
+import { GetMyEventsUsecase } from './event/get-my-events.usecase';
+import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-with-volunteer-status.usecase';
+import { CreateActivityLogByRegularUser } from './activity-log/create-activity-log-by-regular-user.usecase';
+import { GetEventsByOrganizationUsecase } from './event/get-events-by-organization.usecase';
 
 @Module({
   imports: [
@@ -113,6 +122,8 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
+    SwitchOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -141,6 +152,8 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -162,6 +175,7 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -177,6 +191,9 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     ArchiveEventUseCase,
     GetManyForDownloadEventUseCase,
     GetManyEventUseCase,
+    GetMyEventsUsecase,
+    GetOneEventWithVolunteerStatusUsecase,
+    GetEventsByOrganizationUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -193,6 +210,7 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     GetActivityLogCountersUsecase,
     GetManyForDownloadActivityLogUseCase,
     GetActivityLogCountUsecase,
+    CreateActivityLogByRegularUser,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard
@@ -207,6 +225,8 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
+    SwitchOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -235,6 +255,8 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -256,6 +278,7 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -272,6 +295,9 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     ArchiveEventUseCase,
     GetManyEventUseCase,
     GetManyForDownloadEventUseCase,
+    GetMyEventsUsecase,
+    GetOneEventWithVolunteerStatusUsecase,
+    GetEventsByOrganizationUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -288,6 +314,7 @@ import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.
     GetActivityLogCountersUsecase,
     GetManyForDownloadActivityLogUseCase,
     GetActivityLogCountUsecase,
+    CreateActivityLogByRegularUser,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard

@@ -10,6 +10,7 @@ import { OrganizationRepositoryService } from '../repositories/organization.repo
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { IOrganizationWithVolunteersModel } from '../models/organization-with-volunteers.model';
 import { IOrganizationWithEventsModel } from '../models/organization-with-events.model';
+import { IOrganizationVolunteerModel } from '../models/organization-volunteer.models';
 
 @Injectable()
 export class OrganizationFacadeService {
@@ -47,7 +48,14 @@ export class OrganizationFacadeService {
 
   public async findOrganizationWithEvents(
     organizationId: string,
+    userId: string,
   ): Promise<IOrganizationWithEventsModel> {
-    return this.organizationRepository.findWithEvents(organizationId);
+    return this.organizationRepository.findWithEvents(organizationId, userId);
+  }
+
+  public async findMyOrganizations(
+    userId: string,
+  ): Promise<IOrganizationVolunteerModel[]> {
+    return this.organizationRepository.findMyOrganizations(userId);
   }
 }

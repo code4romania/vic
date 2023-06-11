@@ -1,4 +1,5 @@
-import { format, isSameDay } from 'date-fns';
+import { format } from 'date-fns';
+import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 
 export const applyCardShadow = (theme: any) => ({
   shadowColor: theme['cool-gray-400'],
@@ -22,24 +23,8 @@ export function JSONStringifyError(value: Error): string {
   return JSON.stringify(value);
 }
 
-export const getHoursAndMinutes = (value: Date | string): string =>
-  format(new Date(value), 'HH:mm');
-
-export const formatEventDate = (startDate: Date, endDate?: Date): string => {
-  let eventDate = '';
-  if (!endDate) {
-    eventDate = `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}`;
-  } else {
-    if (isSameDay(new Date(startDate), new Date(endDate))) {
-      eventDate = `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}-${getHoursAndMinutes(
-        endDate,
-      )}`;
-    } else {
-      eventDate = `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}-${formatDate(
-        endDate,
-      )}, ${getHoursAndMinutes(endDate)}`;
-    }
-  }
-
-  return eventDate;
+export const ActivityLogStatusToColorMapper = {
+  [ActivityLogStatus.APPROVED]: 'green',
+  [ActivityLogStatus.PENDING]: 'yellow',
+  [ActivityLogStatus.REJECTED]: 'red',
 };

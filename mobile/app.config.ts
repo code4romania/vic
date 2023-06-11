@@ -20,6 +20,9 @@ const expoConfig: ExpoConfig = {
   ios: {
     supportsTablet: true,
     bundleIdentifier: 'com.commitglobal.teo',
+    entitlements: {
+      'com.apple.developer.applesignin': ['Default'],
+    },
   },
   android: {
     adaptiveIcon: {

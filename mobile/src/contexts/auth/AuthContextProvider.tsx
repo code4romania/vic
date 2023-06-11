@@ -8,6 +8,8 @@ import { useUserProfile } from '../../services/user/user.service';
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 import { JSONStringifyError } from '../../common/utils/utils';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
+import * as SplashScreen from 'expo-splash-screen';
+import useStore from '../../store/store';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -16,6 +18,9 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
   const [userName, setUserName] = useState<string>('');
   const { mutate: getUserProfile } = useUserProfile();
+
+  // app state
+  const { setActiveOrganization } = useStore();
 
   useEffect(() => {
     console.log('[APP Init]');
@@ -55,6 +60,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       // https://github.com/aws-amplify/amplify-js/blob/6caccc7b4/packages/auth/src/Auth.ts#L1705
       // here are just error strings validating user pool config and if user is authenticated
       console.debug('[Cognito][Init]:', JSONStringifyError(error));
+    } finally {
+      await SplashScreen.hideAsync();
     }
   };
 
@@ -160,6 +167,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       getUserProfile(undefined, {
         onSuccess: (profile: IUserProfile) => {
           setUserProfile(profile);
+          setActiveOrganization(profile.activeOrganization);
           resolve(profile);
         },
         onError: (error: any) => {

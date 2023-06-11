@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IOrganizationWithEventsModel } from 'src/modules/organization/models/organization-with-events.model';
-import { EventListItemPresenter } from '../../event/presenters/event-list-item.presenter';
+import { MobileEventListItemPresenter } from '../../event/presenters/mobile-event-list-item.presenter';
+import { OrganizatinVolunteerStatus } from 'src/modules/organization/enums/organization-volunteer-status.enum';
+import { VolunteerPresenter } from 'src/api/volunteer/presenters/volunteer.presenter';
 
 export class OrganizationWithEventsPresenter {
   constructor(organization: IOrganizationWithEventsModel) {
@@ -15,8 +17,12 @@ export class OrganizationWithEventsPresenter {
     this.description = organization.description;
     this.numberOfVolunteers = organization.numberOfVolunteers;
     this.events = organization.events.map(
-      (event) => new EventListItemPresenter(event),
+      (event) => new MobileEventListItemPresenter(event),
     );
+    this.volunteers = organization.volunteers.map(
+      (volunteer) => new VolunteerPresenter(volunteer),
+    );
+    this.organizationVolunteerStatus = organization.organizationVolunteerStatus;
   }
 
   @Expose()
@@ -78,8 +84,23 @@ export class OrganizationWithEventsPresenter {
 
   @Expose()
   @ApiProperty({
-    type: EventListItemPresenter,
+    description: 'Organization status for this volunteer',
+    enum: OrganizatinVolunteerStatus,
+    examples: Object.values(OrganizatinVolunteerStatus),
+  })
+  organizationVolunteerStatus?: OrganizatinVolunteerStatus;
+
+  @Expose()
+  @ApiProperty({
+    type: MobileEventListItemPresenter,
     isArray: true,
   })
-  events: EventListItemPresenter[];
+  events: MobileEventListItemPresenter[];
+
+  @Expose()
+  @ApiProperty({
+    type: VolunteerPresenter,
+    isArray: true,
+  })
+  volunteers: VolunteerPresenter[];
 }

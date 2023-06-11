@@ -46,6 +46,7 @@ const themedStyles = StyleService.create({
     gap: 12,
     borderBottomRightRadius: 40,
     width: '85%',
+    alignItems: 'center',
   },
   shadow: {
     elevation: 4,
