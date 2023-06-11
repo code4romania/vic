@@ -20,6 +20,7 @@ import DrawerNavigator from './Drawer';
 import CreateVolunteer from '../screens/CreateVolunteer';
 import PrivacyPolicy from '../screens/PrivacyPolicy';
 import JoinByAccessCode from '../screens/JoinByAccessCode';
+import Documents from '../screens/Documents';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
@@ -39,6 +40,7 @@ const Private = () => (
       <Screen name="change-password" component={ChangePassword} />
       <Screen name="notifications-settings" component={NotificationsSettings} />
       <Screen name="privacy-policy" component={PrivacyPolicy} />
+      <Screen name="documents" component={Documents} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
       <Screen name="join-event" component={JoinEvent} />
