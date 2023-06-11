@@ -20,6 +20,9 @@ import { ListingController } from './listing/listing.controller';
 import { ActionsArchiveController } from './actions-archive/actions-archive.controller';
 import { DashboardController } from './dashboard/dashboard.controller';
 import { MobileOrganizationController } from './_mobile/organization/organization.controller';
+import { MobileOrganizationStructureController } from './_mobile/organization/organization-structure.controller';
+import { MobileActivityLogController } from './_mobile/activity-log/activity-log.controller';
+import { MobileActivityTypeController } from './_mobile/activity-type/activity-type.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -45,6 +48,9 @@ import { MobileOrganizationController } from './_mobile/organization/organizatio
     MobileVolunteerController,
     MobileEventController,
     MobileOrganizationController,
+    MobileOrganizationStructureController,
+    MobileActivityLogController,
+    MobileActivityTypeController,
   ],
 })
 export class ApiModule {}

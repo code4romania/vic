@@ -10,6 +10,7 @@ import {
   TRACK_ACTION_EVENT,
 } from './models/actions-archive.model';
 import { ActionsArchiveRepository } from './repositories/actions-archive.repository';
+import { IRegularUserModel } from '../user/models/regular-user.model';
 
 @Injectable()
 export class ActionsArchiveFacade {
@@ -21,7 +22,7 @@ export class ActionsArchiveFacade {
   trackEvent<EventName extends keyof TrackedEventData>(
     eventName: EventName,
     eventData: TrackedEventData[EventName],
-    author: IAdminUserModel,
+    author: IAdminUserModel | IRegularUserModel,
     changes?: unknown,
   ): void {
     const event: CreateActionArchiveOptions = {

@@ -6,6 +6,7 @@ import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { VolunteerProfilePresenter } from './volunteer-profile.presenter';
 import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
 import { RegularUserPresenter } from 'src/api/auth/presenters/user.presenter';
+import { OrganizationProfilePresenter } from 'src/api/_mobile/organization/presenters/organization-profile.presenter';
 
 export class VolunteerPresenter {
   constructor(volunteer: IVolunteerModel) {
@@ -25,8 +26,13 @@ export class VolunteerPresenter {
     this.profile = volunteer.volunteerProfile
       ? new VolunteerProfilePresenter(volunteer.volunteerProfile)
       : null;
-    this.organizationId = volunteer.organization.id;
-    this.user = new RegularUserPresenter(volunteer.user);
+    this.organizationId = volunteer.organization?.id;
+    this.organization = volunteer.organization
+      ? new OrganizationProfilePresenter(volunteer.organization)
+      : null;
+    this.user = volunteer.user
+      ? new RegularUserPresenter(volunteer.user)
+      : null;
 
     this.createdOn = volunteer.createdOn;
     this.updatedOn = volunteer.updatedOn;
@@ -52,11 +58,18 @@ export class VolunteerPresenter {
   profile: VolunteerProfilePresenter;
 
   @Expose()
+  @ApiProperty({
+    type: OrganizationProfilePresenter,
+  })
+  organization: OrganizationProfilePresenter;
+
+  @Expose()
   @ApiProperty({ description: 'The uuid of the organization' })
   organizationId: string;
 
   @Expose()
   @ApiProperty({
+    type: RegularUserPresenter,
     description: 'User which is a volunteer in relation with the organization',
   })
   user: RegularUserPresenter;
