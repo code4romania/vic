@@ -96,4 +96,15 @@ export class RegularUserEntity extends UserEntity {
   @OneToOne(() => UserPersonalDataEntity, { eager: true })
   @JoinColumn({ name: 'user_personal_data_id' })
   userPersonalData: UserPersonalDataEntity;
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    name: 'active_organization_id',
+  })
+  activeOrganizationId: string;
+
+  @ManyToOne(() => OrganizationEntity)
+  @JoinColumn({ name: 'active_organization_id' })
+  activeOrganization: OrganizationEntity;
 }

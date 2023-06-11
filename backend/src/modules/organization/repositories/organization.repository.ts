@@ -28,6 +28,10 @@ import {
 } from '../models/organization-with-events.model';
 import { EventEntity } from 'src/modules/event/entities/event.entity';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
+import {
+  IOrganizationVolunteerModel,
+  OrganizationVolunteerTransformer,
+} from '../models/organization-volunteer.models';
 
 @Injectable()
 export class OrganizationRepositoryService
@@ -122,6 +126,7 @@ export class OrganizationRepositoryService
 
   public async findWithEvents(
     organizationId: string,
+    userId: string,
   ): Promise<IOrganizationWithEventsModel> {
     // get organization entity by id with upcoming public events
     const organizationEntity = await this.organizationRepository
@@ -146,6 +151,15 @@ export class OrganizationRepositoryService
           status: EventStatus.PUBLISHED,
         },
       )
+      .leftJoinAndSelect(
+        'organization.volunteers',
+        'volunteer',
+        'volunteer.status = :volunteerStatus AND volunteer.userId = :userId',
+        {
+          volunteerStatus: VolunteerStatus.ACTIVE,
+          userId,
+        },
+      )
       .where('organization.id = :organizationId', { organizationId })
       .getOne();
 
@@ -155,6 +169,27 @@ export class OrganizationRepositoryService
         events: EventEntity[];
         numberOfVolunteers: number;
       },
+    );
+  }
+
+  public async findMyOrganizations(
+    userId: string,
+  ): Promise<IOrganizationVolunteerModel[]> {
+    // get all organizations where this user has an active volunteer profile
+    const organizationEntities = await this.organizationRepository.find({
+      where: {
+        volunteers: {
+          userId,
+          status: VolunteerStatus.ACTIVE,
+        },
+      },
+      relations: {
+        volunteers: true,
+      },
+    });
+
+    return organizationEntities.map(
+      OrganizationVolunteerTransformer.fromEntity,
     );
   }
 }

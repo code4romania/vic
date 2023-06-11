@@ -1,65 +1,151 @@
-import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
-import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { StyleService, useStyleSheet } from '@ui-kitten/components';
-import { TouchableWithoutFeedback, View } from 'react-native';
+import React, { useMemo } from 'react';
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
+import { Text } from '@ui-kitten/components';
+import { View, StyleSheet } from 'react-native';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { SvgXml } from 'react-native-svg';
+import successIcon from '../assets/svg/success-icon';
+import upsIcon from '../assets/svg/ups-icon';
+import Button from './Button';
+import useStore from '../store/store';
 
-interface BottomSheetProps {
-  children: ReactNode;
-  onDismiss: () => void;
+type BottomSheetIconType = 'success' | 'warning';
+export interface BottomSheetProps {
+  modalRef: React.RefObject<BottomSheetModalMethods>;
+  iconType?: BottomSheetIconType;
+  heading: string;
+  paragraph: string;
+  primaryAction: {
+    status?: 'success' | 'danger';
+    label: string;
+    onPress: () => void;
+  };
+  secondaryAction?: {
+    label: string;
+    onPress?: () => void;
+  };
 }
 
-const BottomSheet = ({ children, onDismiss }: BottomSheetProps) => {
-  const styles = useStyleSheet(themedStyles);
-  // ref
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
+const BottomSheet = ({
+  modalRef,
+  iconType,
+  heading,
+  paragraph,
+  primaryAction,
+  secondaryAction,
+}: BottomSheetProps) => {
+  const { close } = useStore();
   // variables
-  const snapPoints = ['100%'];
+  const snapPoints = useMemo(() => {
+    if (iconType) {
+      return ['30%', '55%'];
+    }
 
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
+    return ['25%', '35%'];
+  }, [iconType]);
 
-  useEffect(() => {
-    handlePresentModalPress();
-  }, [handlePresentModalPress]);
+  // renders
+  const renderBackdrop = (props: any) => (
+    <BottomSheetBackdrop {...props} opacity={0.3} enableTouchThrough={true} />
+  );
+
+  const onPrimaryActionClick = () => {
+    primaryAction.onPress();
+    // dismiss
+    modalRef.current?.dismiss();
+  };
+
+  const onSecondaryActionClick = () => {
+    if (secondaryAction && secondaryAction.onPress) {
+      secondaryAction.onPress();
+    }
+
+    // dismiss
+    modalRef.current?.dismiss();
+  };
+
+  const onBottomSheetStateChange = (state: number) => {
+    if (state < 0) {
+      close();
+    }
+  };
 
   return (
     <BottomSheetModalProvider>
       <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={0}
+        ref={modalRef}
+        index={1}
         snapPoints={snapPoints}
-        backgroundStyle={styles.modal}
-        onDismiss={onDismiss}
-        stackBehavior="push"
-        handleComponent={() => null}
+        onChange={onBottomSheetStateChange}
+        backdropComponent={renderBackdrop}
       >
-        <TouchableWithoutFeedback onPress={onDismiss}>
-          <View style={styles.greyBackground} />
-        </TouchableWithoutFeedback>
-        <View style={styles.childrenWrapper}>{children}</View>
+        <View style={styles.container}>
+          {iconType && (
+            <View style={styles.svgContainer}>
+              <SvgXml
+                xml={iconType === 'success' ? successIcon : upsIcon}
+                height={110}
+                width={110}
+              />
+            </View>
+          )}
+          <View style={styles.textContainer}>
+            <Text category="h1">{heading}</Text>
+            <Text style={styles.paragraph} category="p1" ellipsizeMode="tail" numberOfLines={3}>
+              {paragraph}
+            </Text>
+          </View>
+          <View style={styles.buttonsContainer}>
+            <Button
+              label={primaryAction.label}
+              status={primaryAction.status || 'success'}
+              onPress={onPrimaryActionClick}
+            />
+            {secondaryAction && (
+              <Button
+                label={secondaryAction?.label}
+                appearance="ghost"
+                onPress={onSecondaryActionClick}
+              />
+            )}
+          </View>
+        </View>
       </BottomSheetModal>
     </BottomSheetModalProvider>
   );
 };
 
-const themedStyles = StyleService.create({
-  modal: { backgroundColor: 'color-basic-transparent-600' },
-  greyBackground: {
+export default BottomSheet;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: 24,
+    paddingVertical: 8,
+    paddingHorizontal: 40,
+  },
+  svgContainer: {
     flex: 1,
   },
-  childrenWrapper: {
-    backgroundColor: '#fff',
+  textContainer: {
     flex: 1,
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    paddingHorizontal: 40,
-    paddingTop: 32,
-    paddingBottom: 20,
-    zIndex: 10,
+    gap: 4,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  paragraph: {
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  buttonsContainer: {
+    flex: 1,
+    gap: 16,
+    justifyContent: 'center',
   },
 });
-
-export default BottomSheet;
