@@ -9,22 +9,27 @@ import { withStyles } from '@ui-kitten/components';
 import { SvgXml } from 'react-native-svg';
 import PlusSvg from '../assets/svg/plus';
 import { LiteralUnion } from '@ui-kitten/components/devsupport';
+import { useOrganizations } from '../store/organization/organizations.selector';
+import {
+  useMyOrganizationsQuery,
+  useSwitchOrganizationMutation,
+} from '../services/organization/organization.service';
+import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import useStore from '../store/store';
+import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
 
-const { Navigator, Screen } = createDrawerNavigator();
-
-const AccessoryImage = () => {
-  return (
-    <Image
-      source={{ uri: 'https://picsum.photos/200/300' }}
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{
-        width: 40,
-        height: 40,
-        borderRadius: 40,
-      }}
-    />
-  );
-};
+const AccessoryImage = withStyles(
+  ({ logo, eva }: { logo?: string; eva?: any }) => {
+    return <Image source={{ uri: logo }} style={eva?.style.image} />;
+  },
+  () => ({
+    image: {
+      width: 40,
+      height: 40,
+      borderRadius: 40,
+    },
+  }),
+);
 
 const AccesoryAdd = withStyles(
   ({ eva }: { eva?: any }) => {
@@ -85,53 +90,72 @@ const DrawerItemTitle = withStyles(
 );
 
 const DrawerContent = withStyles(
-  // ({ navigation, state, eva }: any) => {
   ({ navigation, eva }: any) => {
-    const isItemActive = () => {
-      return eva?.style.activeDrawerItem;
-    };
+    // Get my organizations
+    const { error } = useMyOrganizationsQuery();
+    console.log('organizations query', error);
 
+    // organizations state
+    const { organizations } = useOrganizations();
+    // active organizatio state
+    const { activeOrganization } = useActiveOrganization();
+    // update active organization
+    const { setActiveOrganization } = useStore();
+    // switch organization
+    const { mutate: switchOrganization } = useSwitchOrganizationMutation();
+
+    // add accessory
     const renderAccessoryLeft = () => <AccesoryAdd />;
+
+    // drawer header
     const renderDrawerHeader = () => (
       <DrawerHeader>{`${i18n.t('volunteer:my_organizations')}`}</DrawerHeader>
     );
 
+    const renderAccessroyLeft = (logo: string) => {
+      return <AccessoryImage logo={logo} />;
+    };
+
+    const onOrganizationChange = (organization: IOrganizationVolunteer) => {
+      switchOrganization({ organizationId: organization.id });
+      setActiveOrganization(organization);
+      navigation.closeDrawer();
+    };
+
+    const onJoinNewOrganization = () => {
+      navigation.navigate('search');
+      navigation.closeDrawer();
+    };
+
     return (
       <View style={eva?.style.drawerContainer}>
-        <Drawer
-          // onSelect={(index) => navigation.navigate(state.routeNames[index.row])}
-          style={eva?.style.drawer}
-          appearance="noDivider"
-          header={renderDrawerHeader}
-        >
-          <DrawerItem
-            title={<DrawerItemTitle>{'Users'}</DrawerItemTitle>}
-            accessoryLeft={AccessoryImage}
-            style={[eva?.style.drawerItem]}
-          />
-          <DrawerItem
-            title={<DrawerItemTitle>{'Orders'}</DrawerItemTitle>}
-            accessoryLeft={AccessoryImage}
-            style={[eva?.style.drawerItem, isItemActive()]}
-          />
-          <DrawerItem
-            title={<DrawerItemTitle>{'Code4Romania'}</DrawerItemTitle>}
-            accessoryLeft={AccessoryImage}
-            style={[eva?.style.drawerItem]}
-          />
-          <DrawerItem
-            title={
-              <DrawerItemTitle category="s1">{`${i18n.t(
-                'volunteer:join_organization',
-              )}`}</DrawerItemTitle>
-            }
-            accessoryLeft={renderAccessoryLeft}
-            style={[eva?.style.drawerItem]}
-            onPress={() => {
-              navigation.navigate('join-organization');
-              navigation.closeDrawer();
-            }}
-          />
+        <Drawer style={eva?.style.drawer} appearance="noDivider" header={renderDrawerHeader}>
+          <>
+            {organizations.map((organization: IOrganizationVolunteer) => (
+              <DrawerItem
+                key={organization.id}
+                title={<DrawerItemTitle>{organization.name}</DrawerItemTitle>}
+                accessoryLeft={renderAccessroyLeft.bind(null, organization.logo || '')}
+                onPress={onOrganizationChange.bind(null, organization)}
+                style={[
+                  eva?.style.drawerItem,
+                  ...(activeOrganization?.id === organization.id
+                    ? [eva?.style.activeDrawerItem]
+                    : []),
+                ]}
+              />
+            ))}
+            <DrawerItem
+              title={
+                <DrawerItemTitle category="s1">{`${i18n.t(
+                  'volunteer:join_organization',
+                )}`}</DrawerItemTitle>
+              }
+              accessoryLeft={renderAccessoryLeft}
+              style={[eva?.style.drawerItem]}
+              onPress={onJoinNewOrganization}
+            />
+          </>
         </Drawer>
       </View>
     );
@@ -164,6 +188,9 @@ const DrawerContent = withStyles(
 );
 
 const renderDrawerContent = (props: any) => <DrawerContent {...props} />;
+
+// create drawer navigator on top of the tabs
+const { Navigator, Screen } = createDrawerNavigator();
 
 export const DrawerNavigator = () => (
   <Navigator

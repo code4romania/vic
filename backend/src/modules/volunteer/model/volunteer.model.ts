@@ -41,6 +41,12 @@ export type CreateVolunteerOptions = {
   organizationId: IVolunteerModel['organization']['id'];
 };
 
+export type JoinOrganizationByAccessCodeModel = {
+  requestedById: string;
+  code: string;
+  organizationId: string;
+};
+
 export type ArchiveVolunteerOptions = {
   status: VolunteerStatus.ARCHIVED;
   archivedOn: Date;

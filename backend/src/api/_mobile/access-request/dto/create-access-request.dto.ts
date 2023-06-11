@@ -30,10 +30,4 @@ export class CreateAccessRequestDto {
   @IsNotEmpty()
   @IsUUID()
   organizationId: string;
-
-  // TODO: delete the following, only for testing purpose because we don't have token
-  @IsString()
-  @IsNotEmpty()
-  @IsUUID()
-  userId: string;
 }

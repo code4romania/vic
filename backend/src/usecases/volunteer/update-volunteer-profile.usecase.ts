@@ -10,6 +10,7 @@ import { UpdateVolunteerProfileOptions } from 'src/modules/volunteer/model/volun
 import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneVolunteerUsecase } from './get-one-volunteer.usecase';
+import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 
 @Injectable()
 export class UpdateVolunteerProfileUsecase
@@ -25,7 +26,7 @@ export class UpdateVolunteerProfileUsecase
   public async execute(
     volunteerId: string,
     updates: UpdateVolunteerProfileOptions,
-    admin: IAdminUserModel,
+    user: IAdminUserModel | IRegularUserModel,
   ): Promise<IVolunteerModel> {
     const volunteer = await this.getOneVolunteerUsecase.execute(volunteerId);
 
@@ -49,7 +50,7 @@ export class UpdateVolunteerProfileUsecase
         volunteerId: volunteer.id,
         volunteerName: volunteer.user?.name,
       },
-      admin,
+      user,
       ObjectDiff.diff(volunteer.volunteerProfile, updated.volunteerProfile),
     );
 
