@@ -42,11 +42,13 @@
     "back": "Inapoi",
     "send": "Trimite",
     "reject": "Respinge",
+    "templates": "Template-uri",
     "approve": "Aprobă",
     "save_changes": "Salveaza modificari",
     "save": "Salvează",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
+    "contracts": "Contracte",
     "contact": "Date contact",
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
@@ -94,6 +96,7 @@
       "volunteers_list": "Listă voluntari",
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
+      "documents": "Documente",
       "announcements": "Anunturi",
       "activity_types": "Categorii activitati",
       "activity_log": "Ore de voluntariat",
@@ -744,5 +747,20 @@
     "pie_chart": {
       "title": "Statistici voluntari organizatie"
     }
+  },
+  "documents": {
+    "download_all": "Descarcă toate",
+    "name": "Denumire",
+    "contracts": {
+      "list": "Lista contracte",
+      "title": "Contracte de voluntariat",
+      "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
+    },
+    "popover": {
+      "edit": "Editeaza titlu template",
+      "download": "Descarcă document",
+      "remove": "Elimină"
+    },
+    "add_template": "Adauga template"
   }
 }
