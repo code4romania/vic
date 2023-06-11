@@ -1,4 +1,6 @@
+import { OrganizatinVolunteerStatus } from '../enums/organization-volunteer-status.enum';
 import { IEventListItem } from './event-list-item.interface';
+import { IVolunteer } from './volunteer.interface';
 
 export interface IOrganization {
   id: string;
@@ -11,4 +13,6 @@ export interface IOrganization {
   description: string;
   numberOfVolunteers: number;
   events: IEventListItem[];
+  volunteers: IVolunteer[];
+  organizationVolunteerStatus?: OrganizatinVolunteerStatus;
 }

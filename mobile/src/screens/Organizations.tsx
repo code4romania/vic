@@ -1,43 +1,38 @@
 import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Text, Avatar, useStyleSheet, StyleService, useTheme } from '@ui-kitten/components';
-import { ImageStyle, Pressable, View } from 'react-native';
+import { Text, Avatar, useStyleSheet, StyleService } from '@ui-kitten/components';
+import { ImageStyle, View } from 'react-native';
 import i18n from '../common/config/i18n';
-import { useOrganizations } from '../services/organization/organization.service';
-import { IOrganizationListItem } from '../common/interfaces/organization-list-item.interface';
+import { useOrganizationsInfiniteQuery } from '../services/organization/organization.service';
+import { IOrganizationListItemWithNumberOfVolunteers } from '../common/interfaces/organization-list-item.interface';
 import InfiniteListLayout from '../layouts/InfiniteListLayout';
 import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useTranslation } from 'react-i18next';
 import { JSONStringifyError } from '../common/utils/utils';
+import PressableContainer from '../components/PressableContainer';
 
 interface OrganizationItemProps {
-  item: IOrganizationListItem;
+  item: IOrganizationListItemWithNumberOfVolunteers;
   onClick: () => void;
 }
 
 const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
   const styles = useStyleSheet(themedStyles);
-  const theme = useTheme();
   return (
-    <Pressable
-      style={({ pressed }) => [
-        {
-          backgroundColor: pressed ? theme['cool-gray-50'] : 'white',
-        },
-      ]}
-      onPress={onClick}
-    >
+    <PressableContainer onPress={onClick}>
       <View style={styles.renderItem}>
         <Avatar source={{ uri: item.logo }} size="large" style={styles.avatar as ImageStyle} />
         <View style={styles.textWrapper}>
-          <Text category="p2">{item.name}</Text>
+          <Text category="p2" numberOfLines={1} ellipsizeMode="tail">
+            {item.name}
+          </Text>
           <Text category="c1" appearance="hint">
             {`${i18n.t('organization_profile:volunteers', { number: item.numberOfVolunteers })}`}
           </Text>
         </View>
       </View>
-    </Pressable>
+    </PressableContainer>
   );
 };
 
@@ -55,7 +50,7 @@ const Organizations = ({ navigation }: any) => {
     fetchNextPage,
     hasNextPage,
     refetch: reloadOrganizations,
-  } = useOrganizations(orderDirection, search);
+  } = useOrganizationsInfiniteQuery(orderDirection, search);
 
   const onViewOrganizationProfileButtonPress = (organizationId: string) => {
     navigation.navigate('organization-profile', { organizationId });
@@ -73,7 +68,11 @@ const Organizations = ({ navigation }: any) => {
     );
   };
 
-  const onRenderOrganizationListItem = ({ item }: { item: IOrganizationListItem }) => (
+  const onRenderOrganizationListItem = ({
+    item,
+  }: {
+    item: IOrganizationListItemWithNumberOfVolunteers;
+  }) => (
     <OrganizationListItem
       item={item}
       onClick={onViewOrganizationProfileButtonPress.bind(null, item.id)}
@@ -86,9 +85,8 @@ const Organizations = ({ navigation }: any) => {
         placeholder={t('search.placeholder')}
         onChange={setSearch}
         onSort={onSort}
-        onFilter={() => console.log('filter')}
       />
-      <InfiniteListLayout<IOrganizationListItem>
+      <InfiniteListLayout<IOrganizationListItemWithNumberOfVolunteers>
         pages={organizations?.pages}
         renderItem={onRenderOrganizationListItem}
         loadMore={onLoadMore}
@@ -111,6 +109,7 @@ const themedStyles = StyleService.create({
   avatar: { borderWidth: 1, borderColor: '$cool-gray-200' },
   textWrapper: {
     gap: 4,
+    flexShrink: 2,
   },
   renderItem: {
     gap: 16,

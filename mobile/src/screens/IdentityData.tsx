@@ -47,7 +47,7 @@ const schema = yup
   })
   .required();
 
-const IdentityData = ({ navigation }: any) => {
+const IdentityData = ({ navigation, route }: any) => {
   const { userProfile, setUserProfile } = useAuth();
 
   const {
@@ -92,7 +92,13 @@ const IdentityData = ({ navigation }: any) => {
         identityDocumentSeries: payload.identityDocumentSeries.toLocaleUpperCase(),
       },
       {
-        onSuccess: (data: IUserProfile) => setUserProfile(data),
+        onSuccess: (data: IUserProfile) => {
+          setUserProfile(data);
+          // callback in case we are redirected here from any other place than settings screen
+          if (route?.params?.shouldGoBack) {
+            navigation.goBack();
+          }
+        },
         onError: (error: any) => {
           Toast.show({
             type: 'error',

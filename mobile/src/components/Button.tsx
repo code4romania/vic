@@ -4,27 +4,20 @@ import {
   ButtonProps as ButtonKittenProps,
   withStyles,
 } from '@ui-kitten/components';
-import { ButtonType } from '../common/enums/button-type.enum';
 
 export interface ButtonProps extends ButtonKittenProps {
   label: string;
-  type: ButtonType;
   onPress: (props?: any) => void;
   eva?: any;
 }
 
-const Button = ({ label, onPress, type, eva, ...props }: ButtonProps) => {
+const Button = ({ label, onPress, eva, appearance, ...props }: ButtonProps) => {
   return (
     <ButtonKitten
       {...props}
+      appearance={appearance || 'filled'}
       onPress={onPress}
-      style={[
-        eva.style.button,
-        type === ButtonType.SECONDARY ? null : eva.style.shadow,
-        props.style,
-      ]}
-      status={type === ButtonType.DANGER ? 'danger' : 'success'}
-      appearance={type === ButtonType.SECONDARY ? 'outline' : 'filled'}
+      style={[eva.style.button, appearance === 'outline' ? null : eva.style.shadow, props.style]}
       size="large"
     >
       {label}
@@ -32,10 +25,10 @@ const Button = ({ label, onPress, type, eva, ...props }: ButtonProps) => {
   );
 };
 
-export default withStyles(Button, () => ({
+export default withStyles(Button, (theme) => ({
   shadow: {
     elevation: 4,
-    shadowColor: '$dark-purple',
+    shadowColor: theme['dark-purple'],
     shadowOffset: {
       width: 0,
       height: 2,

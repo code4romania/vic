@@ -60,7 +60,7 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
           <div className="w-full lg:w-1/3 xl:w-1/4">
             <ProfileCard
               name={volunteer.user.name}
-              birthday={volunteer.user.birthday}
+              age={volunteer.user.age}
               sex={volunteer.user.sex}
               location={volunteer.user.location}
               logo={volunteer.user.profilePicture || ''}

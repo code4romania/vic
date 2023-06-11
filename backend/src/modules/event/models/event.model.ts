@@ -16,6 +16,10 @@ import { EventAttendOptions } from '../enums/event-attendance-options.enum';
 import { EventStatus } from '../enums/event-status.enum';
 import { IBasePaginationFilterModel } from '../../../infrastructure/base/base-pagination-filter.model';
 import { EventState } from '../enums/event-time.enum';
+import { EventFilterEnum } from '../enums/event-filter.enum';
+import { IEventRSVPModel } from './event-rsvp.model';
+import { EventRSVPModelTransformer } from './event-rsvp.model';
+import { EventVolunteerStatus } from '../enums/event-volunteer-status.enum';
 
 export interface IEventModel extends IBaseModel {
   id: string;
@@ -38,12 +42,25 @@ export interface IEventModel extends IBaseModel {
   organization: IOrganizationModel;
   targets?: IOrganizationStructureModel[];
   tasks: IActivityTypeModel[];
+  eventRsvps?: IEventRSVPModel[];
 }
 
+export interface IEventWithVolunteerStatus
+  extends Omit<IEventModel, 'eventRsvps'> {
+  volunteerStatus: EventVolunteerStatus;
+  numberOfPersonsGoingToEvent: number;
+}
 export interface IEventsListItemModel
   extends Pick<
     IEventModel,
-    'id' | 'name' | 'startDate' | 'endDate' | 'status' | 'isPublic' | 'targets'
+    | 'id'
+    | 'name'
+    | 'startDate'
+    | 'endDate'
+    | 'status'
+    | 'isPublic'
+    | 'targets'
+    | 'location'
   > {
   going: number;
   notGoing: number;
@@ -53,6 +70,20 @@ export interface IEventsListItemModel
     volunteers: number;
   };
 }
+
+export type IEventsMobileListItemModel = Pick<
+  IEventModel,
+  | 'id'
+  | 'name'
+  | 'startDate'
+  | 'endDate'
+  | 'status'
+  | 'isPublic'
+  | 'targets'
+  | 'location'
+> & {
+  organizationLogo?: string;
+};
 
 export type CreateEventOptions = Pick<
   IEventModel,
@@ -73,6 +104,7 @@ export type CreateEventOptions = Pick<
 };
 
 export type FindOneEventOptions = Pick<IActivityTypeModel, 'id'> & {
+  userId?: string;
   organizationId?: string;
 };
 
@@ -86,6 +118,16 @@ export type FindManyEventOptions = {
   organizationId: IOrganizationModel['id'];
   eventState?: EventState;
 } & IBasePaginationFilterModel;
+
+export type FindMyEventsOptions = {
+  userId: string;
+  eventFilter: EventFilterEnum;
+} & IBasePaginationFilterModel;
+
+export type FindOngoingAndFinishedEventOptions = {
+  organizationId: string;
+  userId: string;
+};
 
 export class EventModelTransformer {
   static fromEntityToEventItem(
@@ -113,6 +155,7 @@ export class EventModelTransformer {
 
       going: entity.going,
       notGoing: entity.notGoing,
+      location: entity.location,
 
       // image: entity.image
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
@@ -121,6 +164,27 @@ export class EventModelTransformer {
         totalHours: logged?.totalHours,
         volunteers: Object.keys(logged?.volunteers).length,
       },
+    };
+  }
+
+  static fromEntityToMobileEventItem(
+    entity: EventEntity,
+  ): IEventsMobileListItemModel {
+    if (!entity) return null;
+
+    return {
+      id: entity.id,
+      name: entity.name,
+      startDate: entity.startDate,
+      endDate: entity.endDate,
+
+      status: entity.status,
+      isPublic: entity.isPublic,
+      location: entity.location,
+
+      // image: entity.image
+      targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
+      organizationLogo: entity.organization?.logo || '',
     };
   }
 
@@ -147,6 +211,7 @@ export class EventModelTransformer {
       organization: OrganizationTransformer.fromEntity(entity.organization),
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
       tasks: entity.tasks?.map(ActivityTypeTransformer.fromEntity),
+      eventRsvps: entity.eventRSVPs?.map(EventRSVPModelTransformer.fromEntity),
 
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,
