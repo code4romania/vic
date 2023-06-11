@@ -755,11 +755,12 @@
   "documents": {
     "download_all": "Descarcă toate",
     "name": "Denumire",
+    "add_template": "Adauga template",
     "contracts": {
       "total": "{{value}} contracte",
       "generate": "Generează contract",
       "download": "Descarcă aprobate",
-      "number": "Numar contract",
+      "number": "Număr contract",
       "template": "Template contract",
       "list": "Lista contracte",
       "title": "Contracte de voluntariat",
@@ -792,6 +793,23 @@
         "rejected": "Refuzat"
       },
       "form": {
+        "template": {
+          "label": "Template",
+          "required": "Alegerea template-ului este obligatorie"
+        },
+        "number": {
+          "required": "Numarul este obligatoriu",
+          "positiv": "Numarul trebuie sa fie pozitiv",
+          "type": "Numarul nu este valid",
+          "max": "Numarul trebuie sa aiba maxim 9 cifre",
+          "integer": "Numarul trebuie sa fie intreg"
+        },
+        "start_date": {
+          "required": "Data de inceput este obligatorie"
+        },
+        "end_date": {
+          "required": "Data de final este obligatorie"
+        },
         "template_name": {
           "label": "Denumire template",
           "placeholder": "Contract 2023",
@@ -805,13 +823,30 @@
           "format": "Template-ul trebuie sa aiba extensia .pdf sau .doc"
         },
         "submit": {
+          "label": "Trimite catre voluntar",
           "messages": {
             "add": "Template-ul a fost adaugat cu succes",
             "edit": "Template-ul a fost editat cu succes",
+            "add_contract": "Contractul a fost trimis cu succes",
             "reject": "Contractul a fost refuzat cu succes",
-            "confirm": "Contractul a fost semnat cu succes"
+            "confirm": "Contractul a fost semnat cu succes",
+            "remove_contract": "Contractul a fost eliminat cu succes",
+            "remove_template": "Template-ul a fost eliminat cu succes"
           }
         }
+      },
+      "confirmation_modal": {
+        "title_contract": "Sigur doriți să ștergeți acest contract?",
+        "description_contract": "Această acțiune va șterge definitiv contractul și toate informațiile asociate acestuia.",
+        "label_contract": "Sterge contractul",
+        "title_template": "Sigur doriți să ștergeți acest template?",
+        "description_template": "Această acțiune va șterge definitiv template-ul și toate informațiile asociate acestuia.",
+        "label_template": "Sterge template-ul"
+      },
+      "reject_modal": {
+        "title": "Argumentează refuzul",
+        "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul contractului.",
+        "send": "Refuză fără mesaj"
       }
     },
     "popover": {
@@ -820,7 +855,6 @@
       "reject": "Respinge contract",
       "remove": "Elimină",
       "remove_from_list": "Elimină din listă"
-    },
-    "add_template": "Adauga template"
+    }
   }
 }

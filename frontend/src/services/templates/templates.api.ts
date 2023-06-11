@@ -35,6 +35,12 @@ export const getTemplates = (params: {
   });
 };
 
+export const deleteTemplate = (id: string): Promise<void> => {
+  // return API.delete(`/documents/templates/${id}`).then((res) => res.data);
+  console.log(id);
+  return Promise.resolve();
+};
+
 export const addContractTemplate = (payload: { name: string; template: object }) => {
   // return API.post('', { ...payload }).then((res) => res.data);
   console.log(payload);

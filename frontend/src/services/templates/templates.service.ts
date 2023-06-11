@@ -2,6 +2,7 @@ import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import {
   addContractTemplate,
+  deleteTemplate,
   editContractTemplate,
   getTemplate,
   getTemplates,
@@ -36,6 +37,12 @@ export const useTemplatesQuery = ({
       onError: (error: AxiosError<IBusinessException<TEMPLATE_ERRORS>>) => error,
     },
   );
+
+export const useDeleteTemplateMutation = () => {
+  return useMutation((id: string) => deleteTemplate(id), {
+    onError: (error: AxiosError<IBusinessException<TEMPLATE_ERRORS>>) => Promise.resolve(error),
+  });
+};
 
 export const useAddContractTemplateMutation = () => {
   return useMutation((payload: AddContractTemplateFormTypes) => addContractTemplate(payload), {
