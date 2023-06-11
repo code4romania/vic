@@ -8,6 +8,7 @@
     "close": "Inchide",
     "name": "Nume",
     "people": "Persoane",
+    "contract": "Contract",
     "age": "Vârsta",
     "hours": "Ore",
     "daily": "Zilnic",
@@ -752,9 +753,30 @@
     "download_all": "Descarcă toate",
     "name": "Denumire",
     "contracts": {
+      "template": "Template contract",
       "list": "Lista contracte",
       "title": "Contracte de voluntariat",
-      "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
+      "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+      "form": {
+        "template_name": {
+          "label": "Denumire template",
+          "placeholder": "Contract 2023",
+          "required": "Denumirea este obligatorie",
+          "min": "Denumirea poate sa aiba minim {{value}} caractere",
+          "max": "Denumirea poate sa aiba maxim {{value}} caractere"
+        },
+        "contract": {
+          "label": "Încarcă document",
+          "required": "Contractul este obligatoriu",
+          "format": "Template-ul trebuie sa aiba extensia .pdf sau .doc"
+        },
+        "submit": {
+          "messages": {
+            "add": "Template-ul a fost adaugat cu succes",
+            "edit": "Template-ul a fost editat cu succes"
+          }
+        }
+      }
     },
     "popover": {
       "edit": "Editeaza titlu template",

@@ -14,6 +14,7 @@ import { useTemplatesQuery } from '../services/templates/templates.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useNavigate } from 'react-router-dom';
 
 const TemplatesTableHeader = [
   {
@@ -32,6 +33,8 @@ const TemplatesTableHeader = [
 ];
 
 const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
+  const navigate = useNavigate();
+
   const {
     data: templates,
     isLoading,
@@ -44,15 +47,15 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
   });
 
   const onAddTemplate = () => {
-    alert('not yet implemented');
+    navigate('add');
   };
 
   const onDownloadAll = () => {
     alert('not yet implemented');
   };
 
-  const onEdit = () => {
-    alert('not yet implemented');
+  const onEdit = (row: ITemplateListItem) => {
+    navigate(`${row.id}/edit`);
   };
 
   const onRemove = () => {
