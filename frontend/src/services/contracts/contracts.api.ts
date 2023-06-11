@@ -1,6 +1,6 @@
 import { ContractStatus } from '../../common/enums/contract-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { IContractListItem } from '../../common/interfaces/contract.interface';
+import { IContract, IContractListItem } from '../../common/interfaces/contract.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 // import API from '../api';
 
@@ -20,7 +20,7 @@ export const getContracts = (params: {
   return Promise.resolve({
     items: [
       {
-        id: 1,
+        id: '1',
         number: 12345,
         volunteer: {
           id: 'volunteer1',
@@ -31,7 +31,7 @@ export const getContracts = (params: {
         endDate: new Date('2022-12-31'),
       },
       {
-        id: 2,
+        id: '2',
         number: 67890,
         volunteer: {
           id: 'volunteer2',
@@ -42,7 +42,7 @@ export const getContracts = (params: {
         endDate: new Date('2021-06-30'),
       },
       {
-        id: 3,
+        id: '3',
         number: 54321,
         volunteer: {
           id: 'volunteer3',
@@ -53,7 +53,7 @@ export const getContracts = (params: {
         endDate: new Date('2023-03-31'),
       },
       {
-        id: 4,
+        id: '4',
         number: 98765,
         volunteer: {
           id: 'volunteer4',
@@ -64,7 +64,7 @@ export const getContracts = (params: {
         endDate: new Date('2023-09-30'),
       },
       {
-        id: 5,
+        id: '5',
         number: 13579,
         volunteer: {
           id: 'volunteer5',
@@ -75,7 +75,7 @@ export const getContracts = (params: {
         endDate: new Date('2022-11-30'),
       },
       {
-        id: 6,
+        id: '6',
         number: 24680,
         volunteer: {
           id: 'volunteer6',
@@ -96,4 +96,36 @@ export const getContracts = (params: {
       orderDirection: OrderDirection.ASC,
     },
   });
+};
+
+export const getContract = async (id: string): Promise<IContract> => {
+  // return API.get(`/${id}`).then((res) => res.data);
+  return Promise.resolve({
+    id,
+    number: 12345,
+    volunteer: { id: 'VOL001', name: 'John Doe' },
+    status: ContractStatus.VALIDATE_ONG,
+    startDate: new Date('2023-06-01'),
+    endDate: new Date('2023-12-31'),
+    signed: 'John Doe',
+    template: { id: 'TMPL001', name: 'Volunteer Contract Template' },
+    generatedBy: { id: 'USR001', name: 'Admin User' },
+    generatedOn: new Date('2023-05-30'),
+    // approvedOn: new Date('2023-05-31'),
+    // rejectedBy: { id: 'USR002', name: 'Manager User' },
+    // rejectedOn: new Date('2023-05-31'),
+    // rejectionReason: 'Insufficient experience',
+  });
+};
+
+export const rejectContract = async (id: string, rejectionReason?: string): Promise<void> => {
+  // return API.patch(`/documents/contracts/${id}/reject`, { rejectionReason });
+  console.log(id, rejectionReason);
+  return Promise.resolve();
+};
+
+export const approveContract = async (id: string): Promise<void> => {
+  // return API.patch(`/documents/contracts/${id}/approve`);
+  console.log(id);
+  return Promise.resolve();
 };
