@@ -14,7 +14,8 @@ export type CreateTemplateOptions = Pick<
   'name' | 'organizationId' | 'path'
 >;
 
-export type FindManyTemplatesOptions = IBasePaginationFilterModel;
+export type FindManyTemplatesOptions = IBasePaginationFilterModel &
+  Pick<ITemplateModel, 'organizationId'>;
 
 export class TemplateTransformer {
   static fromEntity(entity: TemplateEntity): ITemplateModel {

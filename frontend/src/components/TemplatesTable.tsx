@@ -5,7 +5,7 @@ import i18n from '../common/config/i18n';
 import CardBody from './CardBody';
 import Button from './Button';
 import DataTableComponent from './DataTableComponent';
-import { ITemplateListItem } from '../common/interfaces/template.interface';
+import { ITemplateListItem } from '../common/interfaces/template-list-item.interface';
 import Popover from './Popover';
 import { ArrowDownTrayIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
@@ -19,20 +19,20 @@ import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from './ConfirmationModal';
+import { useTranslation } from 'react-i18next';
 
 const TemplatesTableHeader = [
   {
     id: 'name',
-    name: i18n.t('documents:name'),
+    name: i18n.t('documents:templates.table.header.name'),
     sortable: true,
     grow: 5,
     selector: (row: ITemplateListItem) => row.name,
   },
   {
     id: 'uses',
-    name: i18n.t('general:uses'),
-    sortable: true,
-    selector: (row: ITemplateListItem) => row.uses,
+    name: i18n.t('documents:templates.table.header.uses'),
+    selector: (row: ITemplateListItem) => row.templateUses,
   },
 ];
 
@@ -40,6 +40,7 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
   const [showDeleteTemplate, setShowDeleteTemplate] = useState<null | ITemplateListItem>(null);
 
   const navigate = useNavigate();
+  const { t } = useTranslation('documents');
 
   const { mutateAsync: deleteTemplate, isLoading: isDeletingTemplate } =
     useDeleteTemplateMutation();
@@ -155,16 +156,16 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
   return (
     <Card>
       <CardHeader>
-        <h2>{i18n.t('general:templates')}</h2>
+        <h2>{t('general:templates')}</h2>
         <div className="flex gap-2 lg:gap-6">
           <Button
-            label={i18n.t('documents:download_all')}
+            label={t('general:download_table')}
             className="btn-outline-secondary"
             icon={<ArrowDownTrayIcon className="h-5 w-5" />}
             onClick={onDownloadAll}
           />
           <Button
-            label={i18n.t('documents:add_template')}
+            label={t('templates.actions.add')}
             className="btn-primary"
             icon={<PlusIcon className="h-5 w-5" />}
             onClick={onAddTemplate}
@@ -187,9 +188,9 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
       </CardBody>
       {showDeleteTemplate && (
         <ConfirmationModal
-          title={i18n.t('documents:contracts.confirmation_modal.title_template')}
-          description={i18n.t('documents:contracts.confirmation_modal.description_template')}
-          confirmBtnLabel={i18n.t('documents:contracts.confirmation_modal.label_template')}
+          title={t('contracts.confirmation_modal.title_template')}
+          description={t('contracts.confirmation_modal.description_template')}
+          confirmBtnLabel={t('contracts.confirmation_modal.label_template')}
           onClose={setShowDeleteTemplate.bind(null, null)}
           onConfirm={confirmDelete}
           confirmBtnClassName="btn-danger"

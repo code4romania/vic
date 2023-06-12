@@ -102,6 +102,7 @@ import { GetEventsByOrganizationUsecase } from './event/get-events-by-organizati
 import { CancelActivityLogUsecase } from './activity-log/cancel-activity-log.usecase';
 import { DocumentsModule } from 'src/modules/documents/documents.module';
 import { CreateTemplateUsecase } from './documents/create-template.usecase';
+import { GetTemplatesUsecase } from './documents/get-templates.usecase';
 
 @Module({
   imports: [
@@ -225,6 +226,7 @@ import { CreateTemplateUsecase } from './documents/create-template.usecase';
     GetDashboardVolunteersStatusUseCase,
     // Templates
     CreateTemplateUsecase,
+    GetTemplatesUsecase,
   ],
   exports: [
     // Organization
@@ -332,6 +334,7 @@ import { CreateTemplateUsecase } from './documents/create-template.usecase';
     GetDashboardVolunteersStatusUseCase,
     // Templates
     CreateTemplateUsecase,
+    GetTemplatesUsecase,
   ],
 })
 export class UseCaseModule {}

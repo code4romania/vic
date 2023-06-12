@@ -8,12 +8,13 @@ import { Repository } from 'typeorm';
 
 import { TemplateEntity } from '../entities/template.entity';
 import { ITemplateRepository } from '../interfaces/template-repository.interface';
-import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   CreateTemplateOptions,
+  FindManyTemplatesOptions,
   ITemplateModel,
   TemplateTransformer,
 } from '../models/template.model';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
 
 @Injectable()
 export class TemplateRepositoryService
@@ -36,9 +37,28 @@ export class TemplateRepositoryService
   }
 
   async findMany(
-    findOptions: IBasePaginationFilterModel,
+    findOptions: FindManyTemplatesOptions,
   ): Promise<Pagination<ITemplateModel>> {
-    throw new Error('Method not implemented.');
+    const { orderBy, orderDirection, organizationId } = findOptions;
+
+    // create query
+    const query = this.templateRepository
+      .createQueryBuilder('template')
+      .select()
+      .where('template.organizationId = :organizationId', {
+        organizationId,
+      })
+      .orderBy(
+        this.buildOrderByQuery(orderBy || 'name', 'template'),
+        orderDirection || OrderDirection.DESC,
+      );
+
+    return this.paginateQuery(
+      query,
+      findOptions.limit,
+      findOptions.page,
+      TemplateTransformer.fromEntity,
+    );
   }
 
   async find(findOptions: { id: string }): Promise<ITemplateModel> {

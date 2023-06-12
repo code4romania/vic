@@ -1,10 +1,11 @@
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { ITemplateListItem } from '../../common/interfaces/template.interface';
+import { ITemplateListItem } from '../../common/interfaces/template-list-item.interface';
+import { ITemplate } from '../../common/interfaces/template.interface';
 import { AddContractTemplateFormTypes } from '../../pages/AddContractTemplate';
 import API from '../api';
 
-export const createTemplate = async (payload: AddContractTemplateFormTypes) => {
+export const createTemplate = async (payload: AddContractTemplateFormTypes): Promise<ITemplate> => {
   const formData = new FormData();
 
   formData.append('name', payload.name);
@@ -15,10 +16,8 @@ export const createTemplate = async (payload: AddContractTemplateFormTypes) => {
   }).then((res) => res.data);
 };
 
-export const getTemplate = (id: string): Promise<ITemplateListItem> => {
-  console.log(id);
-  // return API.get('').then((res) => res.data);
-  return Promise.resolve({ id: '123123', name: 'Name for template', uses: 1311 });
+export const getTemplate = async (id: string): Promise<ITemplate> => {
+  return API.get(`template/${id}`).then((res) => res.data);
 };
 
 export const getTemplates = (params: {
@@ -27,24 +26,7 @@ export const getTemplates = (params: {
   orderBy?: string;
   orderDirection?: OrderDirection;
 }): Promise<IPaginatedEntity<ITemplateListItem>> => {
-  // return API.get('', { params }).then((res) => res.data);
-  return Promise.resolve({
-    items: [
-      { id: '1', name: 'Template 1', uses: 5 },
-      { id: '2', name: 'Template 2', uses: 10 },
-      { id: '3', name: 'Template 3', uses: 3 },
-      // Add more objects as needed
-    ],
-    meta: {
-      currentPage: params.page,
-      itemCount: 3,
-      itemsPerPage: params.limit,
-      totalItems: 3,
-      totalPages: 1,
-      orderByColumn: 'name',
-      orderDirection: OrderDirection.ASC,
-    },
-  });
+  return API.get('template', { params }).then((res) => res.data);
 };
 
 export const deleteTemplate = (id: string): Promise<void> => {
