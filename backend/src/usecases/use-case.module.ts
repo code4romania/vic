@@ -100,6 +100,8 @@ import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-wit
 import { CreateActivityLogByRegularUser } from './activity-log/create-activity-log-by-regular-user.usecase';
 import { GetEventsByOrganizationUsecase } from './event/get-events-by-organization.usecase';
 import { CancelActivityLogUsecase } from './activity-log/cancel-activity-log.usecase';
+import { DocumentsModule } from 'src/modules/documents/documents.module';
+import { CreateTemplateUsecase } from './documents/create-template.usecase';
 
 @Module({
   imports: [
@@ -116,6 +118,7 @@ import { CancelActivityLogUsecase } from './activity-log/cancel-activity-log.use
     ActivityLogModule,
     ActionsArchiveModule,
     DashboardModule,
+    DocumentsModule,
   ],
   providers: [
     // Organization
@@ -220,6 +223,8 @@ import { CancelActivityLogUsecase } from './activity-log/cancel-activity-log.use
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    // Templates
+    CreateTemplateUsecase,
   ],
   exports: [
     // Organization
@@ -325,6 +330,8 @@ import { CancelActivityLogUsecase } from './activity-log/cancel-activity-log.use
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    // Templates
+    CreateTemplateUsecase,
   ],
 })
 export class UseCaseModule {}

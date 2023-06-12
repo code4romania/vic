@@ -30,9 +30,9 @@ const validationSchema = yup
   .object({
     name: yup
       .string()
-      .required(`${i18n.t('documents:contracts.form.template_name.required')}`)
-      .min(2, `${i18n.t('documents:contracts.form.template_name.min', { value: 2 })}`)
-      .max(250, `${i18n.t('documents:contracts.form.template_name.max', { value: 250 })}`),
+      .required(`${i18n.t('documents:template.add.form.name.required')}`)
+      .min(2, `${i18n.t('documents:template.add.form.name.min', { value: 2 })}`)
+      .max(250, `${i18n.t('documents:template.add.form.name.max', { value: 250 })}`),
   })
   .required();
 
@@ -116,10 +116,8 @@ const EditContractTemplate = () => {
                       readOnly={false}
                       value={value}
                       errorMessage={errors['name']?.message as string}
-                      label={i18n.t('documents:contracts.form.template_name.label').toString()}
-                      placeholder={`${i18n.t(
-                        'documents:contracts.form.template_name.placeholder',
-                      )}`}
+                      label={i18n.t('ocuments:template.add.form.name.label').toString()}
+                      placeholder={`${i18n.t('ocuments:template.add.form.name.placeholder')}`}
                       onChange={onChange}
                       id="edit-contract-template-form__name"
                     />

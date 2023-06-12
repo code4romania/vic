@@ -79,7 +79,8 @@
     },
     "select_interval": "Selecteaza interval",
     "save_draft": "Salveaza ca draft",
-    "other": "Alta optiune"
+    "other": "Alta optiune",
+    "add_file": "Adauga fisier aici"
   },
   "header": {
     "login": "Login",
@@ -755,13 +756,11 @@
   "documents": {
     "download_all": "Descarcă toate",
     "name": "Denumire",
-    "add_template": "Adauga template",
     "contracts": {
       "total": "{{value}} contracte",
       "generate": "Generează contract",
       "download": "Descarcă aprobate",
       "number": "Număr contract",
-      "template": "Template contract",
       "list": "Lista contracte",
       "title": "Contracte de voluntariat",
       "status": "Status contract",
@@ -810,22 +809,9 @@
         "end_date": {
           "required": "Data de final este obligatorie"
         },
-        "template_name": {
-          "label": "Denumire template",
-          "placeholder": "Contract 2023",
-          "required": "Denumirea este obligatorie",
-          "min": "Denumirea poate sa aiba minim {{value}} caractere",
-          "max": "Denumirea poate sa aiba maxim {{value}} caractere"
-        },
-        "contract": {
-          "label": "Încarcă document",
-          "required": "Contractul este obligatoriu",
-          "format": "Template-ul trebuie sa aiba extensia .pdf sau .doc"
-        },
         "submit": {
           "label": "Trimite catre voluntar",
           "messages": {
-            "add": "Template-ul a fost adaugat cu succes",
             "edit": "Template-ul a fost editat cu succes",
             "add_contract": "Contractul a fost trimis cu succes",
             "reject": "Contractul a fost refuzat cu succes",
@@ -847,6 +833,32 @@
         "title": "Argumentează refuzul",
         "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul contractului.",
         "send": "Refuză fără mesaj"
+      }
+    },
+    "template": {
+      "add": {
+        "heading": "Adauga template",
+        "card_header": "Template contract",
+        "form": {
+          "name": {
+            "label": "Denumire template",
+            "placeholder": "Contract 2023",
+            "required": "Denumirea este obligatorie",
+            "min": "Denumirea poate sa aiba minim {{value}} caractere",
+            "max": "Denumirea poate sa aiba maxim {{value}} caractere"
+          },
+          "contract": {
+            "label": "Încarcă document",
+            "required": "Contractul este obligatoriu",
+            "format": "Template-ul trebuie sa aiba extensia .pdf sau .doc"
+          },
+          "submit": {
+            "success": "Template-ul a fost creat!",
+            "errors": {
+              "TEMPLATE_001": "Eroare la incarcarea documentului"
+            }
+          }
+        }
       }
     },
     "popover": {

@@ -40,6 +40,9 @@ export type FindManyAnnouncementOptions = IBasePaginationFilterModel &
 
 export class AnnouncementStructureTransformer {
   static fromEntity(entity: AnnouncementEntity): IAnnouncementModel {
+    if (!entity) {
+      return null;
+    }
     return {
       id: entity.id,
       name: entity.name,

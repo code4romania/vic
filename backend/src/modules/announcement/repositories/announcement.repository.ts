@@ -40,9 +40,7 @@ export class AnnouncementRepositoryService
       },
     });
 
-    return announcement
-      ? AnnouncementStructureTransformer.fromEntity(announcement)
-      : null;
+    return AnnouncementStructureTransformer.fromEntity(announcement);
   }
 
   async findMany(

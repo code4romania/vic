@@ -10,7 +10,9 @@ export class TemplateError extends ErrorClass<TEMPLATE_ERRORS> {
 
   private constructor() {
     super({
-      [TEMPLATE_ERRORS.TEMPLATE_001]: i18n.t('volunteers:errors.VOLUNTEER_001'),
+      [TEMPLATE_ERRORS.TEMPLATE_001]: i18n.t(
+        'documents:template.add.form.submit.errors.TEMPLATE_001',
+      ),
     });
   }
 

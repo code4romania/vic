@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import {
-  addContractTemplate,
+  createTemplate,
   deleteTemplate,
   editContractTemplate,
   getTemplate,
@@ -12,6 +12,12 @@ import { IBusinessException } from '../../common/interfaces/business-exception.i
 import { TEMPLATE_ERRORS } from '../../common/errors/entities/template.errors';
 import { AddContractTemplateFormTypes } from '../../pages/AddContractTemplate';
 import { EditContractTemplateFormTypes } from '../../pages/EditContractTemplate';
+
+export const useCreateTemplateMutation = () => {
+  return useMutation((payload: AddContractTemplateFormTypes) => createTemplate(payload), {
+    onError: (error: AxiosError<IBusinessException<TEMPLATE_ERRORS>>) => Promise.resolve(error),
+  });
+};
 
 export const useTemplateQuery = (id: string) =>
   useQuery(['contract-template', id], () => getTemplate(id), {
@@ -40,12 +46,6 @@ export const useTemplatesQuery = ({
 
 export const useDeleteTemplateMutation = () => {
   return useMutation((id: string) => deleteTemplate(id), {
-    onError: (error: AxiosError<IBusinessException<TEMPLATE_ERRORS>>) => Promise.resolve(error),
-  });
-};
-
-export const useAddContractTemplateMutation = () => {
-  return useMutation((payload: AddContractTemplateFormTypes) => addContractTemplate(payload), {
     onError: (error: AxiosError<IBusinessException<TEMPLATE_ERRORS>>) => Promise.resolve(error),
   });
 };
