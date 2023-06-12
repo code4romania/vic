@@ -11,6 +11,7 @@ import { ITemplateRepository } from '../interfaces/template-repository.interface
 import {
   CreateTemplateOptions,
   FindManyTemplatesOptions,
+  FindTemplateOptions,
   ITemplateModel,
   TemplateTransformer,
 } from '../models/template.model';
@@ -61,7 +62,7 @@ export class TemplateRepositoryService
     );
   }
 
-  async find(findOptions: { id: string }): Promise<ITemplateModel> {
+  async find(findOptions: FindTemplateOptions): Promise<ITemplateModel> {
     const template = await this.templateRepository.findOne({
       where: findOptions,
     });

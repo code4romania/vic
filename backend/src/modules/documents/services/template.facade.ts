@@ -5,6 +5,7 @@ import { TemplateRepositoryService } from '../repositories/template.repository';
 import {
   CreateTemplateOptions,
   FindManyTemplatesOptions,
+  FindTemplateOptions,
   ITemplateModel,
 } from '../models/template.model';
 
@@ -22,5 +23,11 @@ export class TemplateFacade {
     newTemplate: CreateTemplateOptions,
   ): Promise<ITemplateModel> {
     return this.templateRepository.create(newTemplate);
+  }
+
+  public async findOne(
+    findOptions: FindTemplateOptions,
+  ): Promise<ITemplateModel> {
+    return this.templateRepository.find(findOptions);
   }
 }

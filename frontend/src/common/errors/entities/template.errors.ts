@@ -3,6 +3,7 @@ import { ErrorClass } from '../base-error.class';
 
 export enum TEMPLATE_ERRORS {
   TEMPLATE_001 = 'TEMPLATE_001',
+  TEMPLATE_002 = 'TEMPLATE_002',
 }
 
 export class TemplateError extends ErrorClass<TEMPLATE_ERRORS> {
@@ -12,6 +13,9 @@ export class TemplateError extends ErrorClass<TEMPLATE_ERRORS> {
     super({
       [TEMPLATE_ERRORS.TEMPLATE_001]: i18n.t(
         'documents:template.add.form.submit.errors.TEMPLATE_001',
+      ),
+      [TEMPLATE_ERRORS.TEMPLATE_002]: i18n.t(
+        'documents:template.edit.form.submit.errors.TEMPLATE_002',
       ),
     });
   }

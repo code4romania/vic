@@ -779,6 +779,19 @@
             }
           }
         }
+      },
+      "edit": {
+        "heading": "Editeaza template",
+        "card_header": "Template contract",
+        "form": {
+          "submit": {
+            "success": "Template-ul a fost updatat!",
+            "errors": {
+              "TEMPLATE_001": "Eroare la incarcarea documentului",
+              "TEMPLATE_002": "Template-ul nu a fost gasit"
+            }
+          }
+        }
       }
     },
     "popover": {

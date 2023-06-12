@@ -2,13 +2,14 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { CreateTemplateOptions } from 'src/modules/documents/models/template.model';
@@ -24,6 +25,7 @@ import { TemplatePresenter } from './presenters/template.presenter';
 import { TemplateListItemPresenter } from './presenters/template-list-item.presenter';
 import { GetTemplatesDto } from './dto/get-templates.dto';
 import { GetTemplatesUsecase } from 'src/usecases/documents/get-templates.usecase';
+import { GetOneTemplateUseCase } from 'src/usecases/documents/get-one-template.usecase';
 
 // TODO: guard for organization template
 @ApiBearerAuth()
@@ -33,6 +35,7 @@ export class TemplateController {
   constructor(
     private readonly createTemplateUsecase: CreateTemplateUsecase,
     private readonly getTemplatesUsecase: GetTemplatesUsecase,
+    private readonly getOneTemplateUsecase: GetOneTemplateUseCase,
   ) {}
 
   @Get()
@@ -71,5 +74,12 @@ export class TemplateController {
     );
 
     return new TemplatePresenter(newTemplate);
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @Get(':id')
+  async getOne(@Param('id') id: string): Promise<TemplatePresenter> {
+    const template = await this.getOneTemplateUsecase.execute({ id });
+    return new TemplatePresenter(template);
   }
 }

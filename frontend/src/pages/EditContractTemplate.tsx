@@ -20,7 +20,7 @@ import {
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
-import EmptyContent from '../components/EmptyContent';
+import { useTranslation } from 'react-i18next';
 
 export type EditContractTemplateFormTypes = {
   name: string;
@@ -37,8 +37,12 @@ const validationSchema = yup
   .required();
 
 const EditContractTemplate = () => {
+  // navigation
   const navigate = useNavigate();
+  // template param
   const { id } = useParams();
+
+  const { t } = useTranslation('documents');
 
   const {
     data: contractTemplate,
@@ -74,7 +78,7 @@ const EditContractTemplate = () => {
         { id: contractTemplate?.id, data },
         {
           onSuccess: () => {
-            useSuccessToast(i18n.t('documents:contracts.form.submit.messages.edit'));
+            useSuccessToast(t('template.edit.form.submit.success'));
             navigateBack();
           },
           onError: (error) => {
@@ -87,16 +91,14 @@ const EditContractTemplate = () => {
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={navigateBack}>
-        {i18n.t('general:edit', { item: '' })}
-      </PageHeader>
+      <PageHeader onBackButtonPress={navigateBack}>{t('template.edit.heading')}</PageHeader>
       {isEditContractTemplateLoading && isContractTemplateLoading && <LoadingContent />}
       {!isEditContractTemplateLoading && !isContractTemplateLoading && (
         <Card>
           <CardHeader>
-            <h2>{i18n.t('documents:contracts.template')}</h2>
+            <h2>{t('template.edit.card_header')}</h2>
             <Button
-              label={i18n.t('general:save')}
+              label={t('general:save')}
               className="btn-primary"
               icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
               onClick={handleSubmit(onSubmit)}
@@ -116,8 +118,8 @@ const EditContractTemplate = () => {
                       readOnly={false}
                       value={value}
                       errorMessage={errors['name']?.message as string}
-                      label={i18n.t('ocuments:template.add.form.name.label').toString()}
-                      placeholder={`${i18n.t('ocuments:template.add.form.name.placeholder')}`}
+                      label={t('template.add.form.name.label').toString()}
+                      placeholder={`${t('template.add.form.name.placeholder')}`}
                       onChange={onChange}
                       id="edit-contract-template-form__name"
                     />
@@ -127,9 +129,6 @@ const EditContractTemplate = () => {
             </FormLayout>
           </CardBody>
         </Card>
-      )}
-      {!contractTemplate && !isContractTemplateLoading && !isEditContractTemplateLoading && (
-        <EmptyContent description={i18n.t('general:error.load_entries')} />
       )}
     </PageLayout>
   );
