@@ -1,5 +1,5 @@
-export interface ITemplateListItem {
+export interface ITemplate {
   id: string;
   name: string;
-  uses: number;
+  path: string;
 }
