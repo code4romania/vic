@@ -1,7 +1,6 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import PageHeader from '../components/PageHeader';
-import i18n from '../common/config/i18n';
 import { useNavigate } from 'react-router-dom';
 import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
@@ -13,43 +12,34 @@ import CardBody from '../components/CardBody';
 import FormInput from '../components/FormInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormLayout from '../layouts/FormLayout';
-import FormFileInput from '../components/FormFileInput';
 import { useAddContractTemplateMutation } from '../services/templates/templates.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
+import { useTranslation } from 'react-i18next';
+import i18n from '../common/config/i18n';
+import FileUpload from '../components/FileUpload';
 
 export type AddContractTemplateFormTypes = {
   name: string;
   template: object;
 };
 
-function isValidFileType(value: string | undefined) {
-  if (!value) return false;
-  const splitted = value.split('.');
-  const lastValue = splitted[splitted.length - 1];
-
-  return lastValue === 'pdf' || lastValue === 'doc';
-}
-
 const validationSchema = yup
   .object({
     name: yup
       .string()
-      .required(`${i18n.t('documents:contracts.form.template_name.required')}`)
-      .min(2, `${i18n.t('documents:contracts.form.template_name.min', { value: 2 })}`)
-      .max(250, `${i18n.t('documents:contracts.form.template_name.max', { value: 250 })}`),
-    template: yup
-      .mixed()
-      .required(`${i18n.t('documents:contracts.form.contract.required')}`)
-      .test('is-valid-type', `${i18n.t('documents:contracts.form.contract.format')}`, (value) =>
-        isValidFileType(value),
-      ),
+      .required(`${i18n.t('documents:template.add.form.name.required')}`)
+      .min(2, `${i18n.t('documents:template.add.form.name.min', { value: 2 })}`)
+      .max(250, `${i18n.t('documents:template.add.form.name.max', { value: 250 })}`),
+    template: yup.mixed().required(`${i18n.t('documents:template.add.form.contract.required')}`),
   })
   .required();
 
 const AddContractTemplate = () => {
   const navigate = useNavigate();
+
+  const { t } = useTranslation('documents');
 
   const { mutateAsync: addContractTemplate, isLoading: isAddingContractTemplate } =
     useAddContractTemplateMutation();
@@ -67,6 +57,7 @@ const AddContractTemplate = () => {
   });
 
   const onSubmit = (payload: AddContractTemplateFormTypes) => {
+    console.log('payload', payload);
     addContractTemplate(payload, {
       onSuccess: () => {
         useSuccessToast(i18n.t('documents:contracts.form.submit.messages.add'));
@@ -80,14 +71,12 @@ const AddContractTemplate = () => {
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={navigateBack}>
-        {i18n.t('general:add', { item: '' })}
-      </PageHeader>
+      <PageHeader onBackButtonPress={navigateBack}>{t('template.add.heading')}</PageHeader>
       {isAddingContractTemplate && <LoadingContent />}
       {!isAddingContractTemplate && (
         <Card>
           <CardHeader>
-            <h2>{i18n.t('documents:contracts.template')}</h2>
+            <h2>{t('template.add.card_header')}</h2>
             <Button
               label={i18n.t('general:save')}
               className="btn-primary"
@@ -108,10 +97,8 @@ const AddContractTemplate = () => {
                       readOnly={false}
                       value={value}
                       errorMessage={errors['name']?.message as string}
-                      label={i18n.t('documents:contracts.form.template_name.label').toString()}
-                      placeholder={`${i18n.t(
-                        'documents:contracts.form.template_name.placeholder',
-                      )}`}
+                      label={t('template.add.form.name.label').toString()}
+                      placeholder={`${t('template.add.form.name.placeholder')}`}
                       onChange={onChange}
                       id="add-contract-template-form__name"
                     />
@@ -122,16 +109,12 @@ const AddContractTemplate = () => {
                 key="template"
                 name="template"
                 control={control}
-                render={({ field: { onChange, value } }) => {
+                render={({ field: { onChange } }) => {
                   return (
-                    <FormFileInput
-                      buttonLabel={`${i18n.t('documents:contracts.form.contract.label')}`}
-                      readOnly={false}
-                      accept=".doc,.pdf"
-                      className={`${value ? 'btn-primary' : 'btn-outline-secondary'} max-w-[150px]`}
-                      errorMessage={errors['template']?.message as string}
-                      label={i18n.t('general:contract').toString()}
+                    <FileUpload
+                      label={t('general:contract').toString()}
                       onChange={onChange}
+                      errorMessage={errors['template']?.message as string}
                     />
                   );
                 }}
