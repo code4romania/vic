@@ -118,6 +118,11 @@
       "pending": "Necesita aprobare din partea organizatiei",
       "rejected": "Respins la {{date}}"
     },
+    "modal": {
+      "title": "Sigur doriți să ștergeți solicitarea privind orele de activitate?",
+      "paragraph": "Această acțiune va șterge definitiv această solicitare și toate informațiile asociate acesteia.",
+      "primary_label": "Ștergeți solicitarea"
+    },
     "form": {
       "event": {
         "label": "Eveniment"

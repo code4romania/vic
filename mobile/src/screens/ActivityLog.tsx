@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ModalLayout from '../layouts/ModalLayout';
 import i18n from '../common/config/i18n';
 import OrganizationIdentity from '../components/OrganizationIdentity';
@@ -18,8 +18,10 @@ import { ButtonType } from '../common/enums/button-type.enum';
 import { Divider } from '@ui-kitten/components';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import Modal from '../components/Modal';
 
 const ActivityLog = ({ navigation, route }: any) => {
+  const [visible, setVisible] = useState(false);
   console.log('ActivityLog');
   // translations
   const { t } = useTranslation('activity_log');
@@ -49,6 +51,9 @@ const ActivityLog = ({ navigation, route }: any) => {
             )}`,
           });
         },
+        onSettled: () => {
+          closeModal();
+        },
       },
     );
   };
@@ -57,13 +62,21 @@ const ActivityLog = ({ navigation, route }: any) => {
     navigation.navigate('edit-activity-log', { activityLogId });
   };
 
+  const showModal = () => {
+    setVisible(true);
+  };
+
+  const closeModal = () => {
+    setVisible(false);
+  };
+
   const renderActionOptions = () => {
     let options: any;
     switch (activityLog?.status) {
       case ActivityLogStatus.PENDING:
         options = {
           actionLabel: t('general:delete'),
-          onActionButtonClick: onDeleteLogBtnPress,
+          onActionButtonClick: showModal,
           buttonType: ButtonType.DANGER,
           loading: isLoadingActivityLog || isCancelingLog,
         };
@@ -141,6 +154,21 @@ const ActivityLog = ({ navigation, route }: any) => {
           </FormLayout>
         </>
       )}
+      <Modal
+        visible={visible}
+        onBackdropPress={closeModal}
+        title={t('modal.title')}
+        paragraph={t('modal.paragraph')}
+        primaryAction={{
+          label: t('modal.primary_label'),
+          onPress: onDeleteLogBtnPress,
+          status: 'danger',
+        }}
+        secondaryAction={{
+          label: t('general:back'),
+          onPress: closeModal,
+        }}
+      />
     </ModalLayout>
   );
 };
