@@ -78,10 +78,12 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
   };
 
   const confirmDelete = () => {
-    if (showDeleteTemplate)
-      deleteTemplate(showDeleteTemplate.id, {
+    if (showDeleteTemplate) {
+      const templateId = showDeleteTemplate.id;
+      setShowDeleteTemplate(null);
+      deleteTemplate(templateId, {
         onSuccess: () => {
-          useSuccessToast(i18n.t('documents:contracts.form.submit.messages.remove_template'));
+          useSuccessToast(t('templates.actions.delete.success'));
           refetch();
         },
         onError: (error) => {
@@ -91,6 +93,7 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
           setShowDeleteTemplate(null);
         },
       });
+    }
   };
 
   const buildTemplateActionColumn = (): TableColumn<ITemplateListItem> => {
@@ -188,9 +191,9 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
       </CardBody>
       {showDeleteTemplate && (
         <ConfirmationModal
-          title={t('contracts.confirmation_modal.title_template')}
-          description={t('contracts.confirmation_modal.description_template')}
-          confirmBtnLabel={t('contracts.confirmation_modal.label_template')}
+          title={t('templates.actions.delete.modal.title')}
+          description={t('templates.actions.delete.modal.content')}
+          confirmBtnLabel={t('templates.actions.delete.modal.action')}
           onClose={setShowDeleteTemplate.bind(null, null)}
           onConfirm={confirmDelete}
           confirmBtnClassName="btn-danger"

@@ -20,4 +20,5 @@ export interface ITemplateRepository
     id: string,
     updatedTemplate: UpdateTemplateOptions,
   ): Promise<ITemplateModel>;
+  delete(id: string): Promise<string>;
 }

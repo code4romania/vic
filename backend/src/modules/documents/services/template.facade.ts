@@ -38,4 +38,8 @@ export class TemplateFacade {
   ): Promise<ITemplateModel> {
     return this.templateRepository.update(id, updatedTemplate);
   }
+
+  public async delete(id: string): Promise<string> {
+    return this.templateRepository.delete(id);
+  }
 }

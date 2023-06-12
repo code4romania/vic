@@ -84,4 +84,15 @@ export class TemplateRepositoryService
 
     return TemplateTransformer.fromEntity(template);
   }
+
+  async delete(id: string): Promise<string> {
+    const template = await this.templateRepository.findOneBy({ id });
+
+    if (template) {
+      await this.templateRepository.remove(template);
+      return id;
+    }
+
+    return null;
+  }
 }

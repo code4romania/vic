@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -30,6 +31,7 @@ import { GetOneTemplateUseCase } from 'src/usecases/documents/get-one-template.u
 import { EditTemplateDto } from './dto/edit-template.dto';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { UpdateTemplateUsecase } from 'src/usecases/documents/update-template.usecase';
+import { DeleteTemplateUseCase } from 'src/usecases/documents/delete-template.usecase';
 
 // TODO: guard for organization template
 @ApiBearerAuth()
@@ -41,6 +43,7 @@ export class TemplateController {
     private readonly getTemplatesUsecase: GetTemplatesUsecase,
     private readonly getOneTemplateUsecase: GetOneTemplateUseCase,
     private readonly updateTemplateUsecase: UpdateTemplateUsecase,
+    private readonly deleteTemplateUsecase: DeleteTemplateUseCase,
   ) {}
 
   @Get()
@@ -101,5 +104,11 @@ export class TemplateController {
   async getOne(@Param('id') id: string): Promise<TemplatePresenter> {
     const template = await this.getOneTemplateUsecase.execute({ id });
     return new TemplatePresenter(template);
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @Delete(':id')
+  async delete(@Param('id', UuidValidationPipe) id: string): Promise<string> {
+    return this.deleteTemplateUsecase.execute(id);
   }
 }

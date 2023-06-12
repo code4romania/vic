@@ -754,7 +754,27 @@
     }
   },
   "documents": {
-    "templates": {},
+    "templates": {
+      "table": {
+        "header": {
+          "name": "Denumire",
+          "uses": "Utilizari"
+        }
+      },
+      "actions": {
+        "delete": {
+          "modal": {
+            "title": "Sigur doriți să ștergeți acest template?",
+            "content": "Această acțiune va șterge definitiv template-ul și toate informațiile asociate acestuia.",
+            "action": "Sterge template-ul"
+          },
+          "success": "Template-ul a fost sters!",
+          "errors": {
+            "TEMPLATE_003": "Eroare la stergerea template-ului!"
+          }
+        }
+      }
+    },
     "template": {
       "add": {
         "heading": "Adauga template",
