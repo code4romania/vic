@@ -1,7 +1,19 @@
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ITemplateListItem } from '../../common/interfaces/template.interface';
-// import API from '../api';
+import { AddContractTemplateFormTypes } from '../../pages/AddContractTemplate';
+import API from '../api';
+
+export const createTemplate = async (payload: AddContractTemplateFormTypes) => {
+  const formData = new FormData();
+
+  formData.append('name', payload.name);
+  formData.append('template', payload.template);
+
+  return API.post('template', payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }).then((res) => res.data);
+};
 
 export const getTemplate = (id: string): Promise<ITemplateListItem> => {
   console.log(id);
@@ -38,12 +50,6 @@ export const getTemplates = (params: {
 export const deleteTemplate = (id: string): Promise<void> => {
   // return API.delete(`/documents/templates/${id}`).then((res) => res.data);
   console.log(id);
-  return Promise.resolve();
-};
-
-export const addContractTemplate = (payload: { name: string; template: object }) => {
-  // return API.post('', { ...payload }).then((res) => res.data);
-  console.log(payload);
   return Promise.resolve();
 };
 

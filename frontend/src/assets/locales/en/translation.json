@@ -812,7 +812,6 @@
         "submit": {
           "label": "Trimite catre voluntar",
           "messages": {
-            "add": "Template-ul a fost adaugat cu succes",
             "edit": "Template-ul a fost editat cu succes",
             "add_contract": "Contractul a fost trimis cu succes",
             "reject": "Contractul a fost refuzat cu succes",
@@ -852,6 +851,9 @@
             "label": "Încarcă document",
             "required": "Contractul este obligatoriu",
             "format": "Template-ul trebuie sa aiba extensia .pdf sau .doc"
+          },
+          "submit": {
+            "success": "Template-ul a fost creat!"
           }
         }
       }

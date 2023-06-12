@@ -12,7 +12,7 @@ import CardBody from '../components/CardBody';
 import FormInput from '../components/FormInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormLayout from '../layouts/FormLayout';
-import { useAddContractTemplateMutation } from '../services/templates/templates.service';
+import { useCreateTemplateMutation } from '../services/templates/templates.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
@@ -22,7 +22,7 @@ import FileUpload from '../components/FileUpload';
 
 export type AddContractTemplateFormTypes = {
   name: string;
-  template: object;
+  template: File;
 };
 
 const validationSchema = yup
@@ -42,9 +42,9 @@ const AddContractTemplate = () => {
   const { t } = useTranslation('documents');
 
   const { mutateAsync: addContractTemplate, isLoading: isAddingContractTemplate } =
-    useAddContractTemplateMutation();
+    useCreateTemplateMutation();
 
-  const navigateBack = () => navigate('/documents/contracts');
+  const navigateBack = () => navigate('/documents/templates');
 
   const {
     handleSubmit,
@@ -57,10 +57,9 @@ const AddContractTemplate = () => {
   });
 
   const onSubmit = (payload: AddContractTemplateFormTypes) => {
-    console.log('payload', payload);
     addContractTemplate(payload, {
       onSuccess: () => {
-        useSuccessToast(i18n.t('documents:contracts.form.submit.messages.add'));
+        useSuccessToast(t('tempalte.add.form.submit.success'));
         navigateBack();
       },
       onError: (error) => {
