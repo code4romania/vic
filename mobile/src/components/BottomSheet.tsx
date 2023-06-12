@@ -5,7 +5,7 @@ import {
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
 import { Text } from '@ui-kitten/components';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { SvgXml } from 'react-native-svg';
 import successIcon from '../assets/svg/success-icon';
@@ -30,6 +30,8 @@ export interface BottomSheetProps {
   };
 }
 
+const isDeviceHeightSmall = Dimensions.get('window').height < 700;
+
 const BottomSheet = ({
   modalRef,
   iconType,
@@ -42,10 +44,10 @@ const BottomSheet = ({
   // variables
   const snapPoints = useMemo(() => {
     if (iconType) {
-      return ['30%', '55%'];
+      return ['30%', isDeviceHeightSmall ? '65%' : '55%'];
     }
 
-    return ['25%', '35%'];
+    return ['25%', isDeviceHeightSmall ? '65%' : '35%'];
   }, [iconType]);
 
   // renders
@@ -83,37 +85,39 @@ const BottomSheet = ({
         onChange={onBottomSheetStateChange}
         backdropComponent={renderBackdrop}
       >
-        <View style={styles.container}>
-          {iconType && (
-            <View style={styles.svgContainer}>
-              <SvgXml
-                xml={iconType === 'success' ? successIcon : upsIcon}
-                height={110}
-                width={110}
-              />
-            </View>
-          )}
-          <View style={styles.textContainer}>
-            <Text category="h1">{heading}</Text>
-            <Text style={styles.paragraph} category="p1" ellipsizeMode="tail" numberOfLines={3}>
-              {paragraph}
-            </Text>
-          </View>
-          <View style={styles.buttonsContainer}>
-            <Button
-              label={primaryAction.label}
-              status={primaryAction.status || 'success'}
-              onPress={onPrimaryActionClick}
-            />
-            {secondaryAction && (
-              <Button
-                label={secondaryAction?.label}
-                appearance="ghost"
-                onPress={onSecondaryActionClick}
-              />
+        <ScrollView>
+          <View style={styles.container}>
+            {iconType && (
+              <View style={styles.svgContainer}>
+                <SvgXml
+                  xml={iconType === 'success' ? successIcon : upsIcon}
+                  height={110}
+                  width={110}
+                />
+              </View>
             )}
+            <View style={styles.textContainer}>
+              <Text category="h1">{heading}</Text>
+              <Text style={styles.paragraph} category="p1">
+                {paragraph}
+              </Text>
+            </View>
+            <View style={styles.buttonsContainer}>
+              <Button
+                label={primaryAction.label}
+                status={primaryAction.status || 'success'}
+                onPress={onPrimaryActionClick}
+              />
+              {secondaryAction && (
+                <Button
+                  label={secondaryAction?.label}
+                  appearance="ghost"
+                  onPress={onSecondaryActionClick}
+                />
+              )}
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </BottomSheetModal>
     </BottomSheetModalProvider>
   );

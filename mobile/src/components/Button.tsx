@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Button as ButtonKitten,
   ButtonProps as ButtonKittenProps,
+  Text,
   withStyles,
 } from '@ui-kitten/components';
 
@@ -17,10 +18,14 @@ const Button = ({ label, onPress, eva, appearance, ...props }: ButtonProps) => {
       {...props}
       appearance={appearance || 'filled'}
       onPress={onPress}
-      style={[eva.style.button, appearance === 'outline' ? null : eva.style.shadow, props.style]}
+      style={[
+        eva.style.button,
+        appearance === 'outline' || appearance === 'ghost' ? null : eva.style.shadow,
+        props.style,
+      ]}
       size="large"
     >
-      {label}
+      {(textProps) => <Text style={[textProps?.style, eva.style.textCenter]}>{label}</Text>}
     </ButtonKitten>
   );
 };
@@ -41,5 +46,8 @@ export default withStyles(Button, (theme) => ({
     borderRadius: 100,
     paddingVertical: 15,
     paddingHorizontal: 30,
+  },
+  textCenter: {
+    textAlign: 'center',
   },
 }));
