@@ -44,7 +44,7 @@ const AddContractTemplate = () => {
   const { mutateAsync: addContractTemplate, isLoading: isAddingContractTemplate } =
     useCreateTemplateMutation();
 
-  const navigateBack = () => navigate('/documents/templates');
+  const navigateBack = () => navigate('/documents?contractType=template');
 
   const {
     handleSubmit,
@@ -59,7 +59,7 @@ const AddContractTemplate = () => {
   const onSubmit = (payload: AddContractTemplateFormTypes) => {
     addContractTemplate(payload, {
       onSuccess: () => {
-        useSuccessToast(t('tempalte.add.form.submit.success'));
+        useSuccessToast(t('template.add.form.submit.success'));
         navigateBack();
       },
       onError: (error) => {

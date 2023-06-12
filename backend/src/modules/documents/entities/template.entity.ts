@@ -16,6 +16,9 @@ export class TemplateEntity extends BaseEntity {
   @Column({ type: 'text', name: 'name' })
   name: string;
 
+  @Column({ type: 'text', name: 'path' })
+  path: string;
+
   @Column({ type: 'string', name: 'organization_id' })
   organizationId: string;
 

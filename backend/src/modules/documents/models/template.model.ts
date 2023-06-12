@@ -5,12 +5,13 @@ import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-paginat
 export interface ITemplateModel extends IBaseModel {
   id: string;
   name: string;
+  path: string;
   organizationId: string;
 }
 
 export type CreateTemplateOptions = Pick<
   ITemplateModel,
-  'name' | 'organizationId'
+  'name' | 'organizationId' | 'path'
 >;
 
 export type FindManyTemplatesOptions = IBasePaginationFilterModel;
@@ -24,6 +25,7 @@ export class TemplateTransformer {
     return {
       id: entity.id,
       name: entity.name,
+      path: entity.path,
       organizationId: entity.organizationId,
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,
@@ -35,6 +37,7 @@ export class TemplateTransformer {
 
     entity.name = model.name;
     entity.organizationId = model.organizationId;
+    entity.path = model.path;
 
     return entity;
   }

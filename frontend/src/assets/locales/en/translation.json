@@ -853,7 +853,10 @@
             "format": "Template-ul trebuie sa aiba extensia .pdf sau .doc"
           },
           "submit": {
-            "success": "Template-ul a fost creat!"
+            "success": "Template-ul a fost creat!",
+            "errors": {
+              "TEMPLATE_001": "Eroare la incarcarea documentului"
+            }
           }
         }
       }
