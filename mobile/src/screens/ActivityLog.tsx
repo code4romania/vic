@@ -5,7 +5,10 @@ import OrganizationIdentity from '../components/OrganizationIdentity';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import FormLayout from '../layouts/FormLayout';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
-import { useActivityLogQuery } from '../services/activity-log/activity-log.service';
+import {
+  useActivityLogQuery,
+  useCancelActivityLogMutation,
+} from '../services/activity-log/activity-log.service';
 import LoadingScreen from '../components/LoadingScreen';
 import Disclaimer from '../components/Disclaimer';
 import { ActivityLogStatusToColorMapper } from '../common/utils/utils';
@@ -13,6 +16,8 @@ import { useTranslation } from 'react-i18next';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { ButtonType } from '../common/enums/button-type.enum';
 import { Divider } from '@ui-kitten/components';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const ActivityLog = ({ navigation, route }: any) => {
   console.log('ActivityLog');
@@ -26,13 +31,30 @@ const ActivityLog = ({ navigation, route }: any) => {
   // activity log query
   const { isFetching: isLoadingActivityLog, data: activityLog } =
     useActivityLogQuery(activityLogId);
+  // cancel activity log
+  const { isLoading: isCancelingLog, mutate: cancelLog } = useCancelActivityLogMutation();
 
   const onDeleteLogBtnPress = () => {
-    console.log('delete');
+    cancelLog(
+      { activityLogId },
+      {
+        onSuccess: () => {
+          navigation.goBack();
+        },
+        onError: (error: any) => {
+          Toast.show({
+            type: 'error',
+            text1: `${InternalErrors.ACTIVITY_LOG_ERRORS.getError(
+              error.response?.data.code_error,
+            )}`,
+          });
+        },
+      },
+    );
   };
 
   const onEditActivityLog = () => {
-    console.log('delete');
+    navigation.navigate('edit-activity-log', { activityLogId });
   };
 
   const renderActionOptions = () => {
@@ -43,7 +65,7 @@ const ActivityLog = ({ navigation, route }: any) => {
           actionLabel: t('general:delete'),
           onActionButtonClick: onDeleteLogBtnPress,
           buttonType: ButtonType.DANGER,
-          loading: isLoadingActivityLog,
+          loading: isLoadingActivityLog || isCancelingLog,
         };
         break;
     }
@@ -89,11 +111,11 @@ const ActivityLog = ({ navigation, route }: any) => {
             )}
             <ReadOnlyElement
               label={i18n.t('activity_log:form.event.label')}
-              value={activityLog?.eventName}
+              value={activityLog?.event?.name}
             />
             <ReadOnlyElement
               label={i18n.t('activity_log:form.task.label')}
-              value={activityLog?.activityTypeName}
+              value={activityLog?.activityType.name}
             />
             <ReadOnlyElement
               label={i18n.t('activity_log:form.date.label')}

@@ -24,4 +24,5 @@ export interface IActivityLogRepository {
     findManyOptions: FindManyActivityLogCounterOptions,
   ): Promise<IActivityLogCountHoursByStatus>;
   countActivityLogs(findOptions: FindActivityLogCountOptions): Promise<number>;
+  delete(id: string): Promise<string>;
 }

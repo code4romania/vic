@@ -50,4 +50,8 @@ export class ActivityLogFacade {
   ): Promise<number> {
     return this.activityLogRepository.countActivityLogs(countOptions);
   }
+
+  async delete(id: string): Promise<string> {
+    return this.activityLogRepository.delete(id);
+  }
 }

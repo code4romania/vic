@@ -2,14 +2,19 @@ import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IActivityLogListItemModel } from 'src/modules/activity-log/models/activity-log.model';
 import { format } from 'date-fns';
+import { IActivityTypeModel } from 'src/modules/activity-type/models/activity-type.model';
+import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
+import { IEventModel } from 'src/modules/event/models/event.model';
 
 export class MobileActivityLogListItemPresenter {
   constructor(log: Omit<IActivityLogListItemModel, 'volunteer'>) {
     this.id = log.id;
     this.date = format(log.date, 'dd.MM.y');
     this.hours = log.hours;
-    this.activityTypeName = log.activityType.name;
-    this.eventName = log.event?.name;
+    this.activityType = log.activityType
+      ? new IdAndNamePresenter(log.activityType)
+      : null;
+    this.event = log.event ? new IdAndNamePresenter(log.event) : null;
   }
 
   @Expose()
@@ -34,16 +39,10 @@ export class MobileActivityLogListItemPresenter {
   hours: number;
 
   @Expose()
-  @ApiProperty({
-    description: 'The name of the activity',
-    example: 'Sort clothes',
-  })
-  activityTypeName: string;
+  @ApiProperty({ description: 'The activity type/task done by the volunteer' })
+  activityType: IdAndNamePresenter<IActivityTypeModel>;
 
   @Expose()
-  @ApiProperty({
-    description: 'The name of the event',
-    example: 'Meal for the poor',
-  })
-  eventName?: string;
+  @ApiProperty({ description: 'Event where the hours were worked' })
+  event?: IdAndNamePresenter<IEventModel>;
 }

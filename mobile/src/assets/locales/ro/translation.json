@@ -146,6 +146,14 @@
         "min": "Mențiunea poate să aibă minim {{value}} caractere",
         "max": "Mențiunea poate să aibă maxim {{value}} caractere"
       }
+    },
+    "errors": {
+      "ACTIVITY_LOG_001": "Nu exista inregistrarea de logare ore",
+      "ACTIVITY_LOG_002": "Voluntarul nu are profilul completat",
+      "ACTIVITY_LOG_004": "Nu se pot anula request-uri aprobate sau respinse",
+      "VOLUNTEER_001": "Voluntarul nu exista",
+      "EVENT_001": "Evenimentul nu exista",
+      "ACTIVITY_TYPE_001": "Typul activitatii nu exista"
     }
   },
   "volunteer": {

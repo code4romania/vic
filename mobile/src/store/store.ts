@@ -11,6 +11,7 @@ import { IEvent } from '../common/interfaces/event.interface';
 import { eventSlice } from './event/event.slice';
 import { IActivityLogCounters } from '../common/interfaces/activity-log-counters.interface';
 import { activityLogsSlice } from './activity-log/activity-log.slice';
+import { IActivityLog } from '../common/interfaces/activity-log.interface';
 
 interface ActiveOrganizationState {
   activeOrganization?: IOrganizationVolunteer;
@@ -45,7 +46,9 @@ interface EventState {
 
 interface ActivityLogState {
   counters: IActivityLogCounters;
+  selectedActivityLog?: IActivityLog;
   setCounters: (counters: IActivityLogCounters) => void;
+  setSelectedActivityLog: (activityLog: IActivityLog) => void;
 }
 
 interface BottomSheetState {
