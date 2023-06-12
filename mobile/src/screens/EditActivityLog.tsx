@@ -8,11 +8,18 @@ import ActivityLogForm, {
 } from '../components/ActivityLogForm';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useUpdateActivityLog } from '../services/activity-log/activity-log.service';
+import { parse } from 'date-fns';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const EditActivityLog = ({ navigation }: any) => {
   console.log('EditActivityLog');
   const { t } = useTranslation();
   const { selectedActivityLog } = useActivityLogs();
+
+  // log hours mutation
+  const { mutate: updateHouts, isLoading: isUpdateingHours } = useUpdateActivityLog();
 
   const {
     control,
@@ -28,8 +35,7 @@ const EditActivityLog = ({ navigation }: any) => {
   useEffect(() => {
     if (selectedActivityLog) {
       reset({
-        // branchId: volunteer?.profile.branch?.id,
-        date: new Date(),
+        date: parse(selectedActivityLog.date, 'dd.MM.y', new Date()),
         hours: selectedActivityLog.hours.toString(),
         mentions: selectedActivityLog.mentions,
         eventId: selectedActivityLog.event?.id,
@@ -39,7 +45,25 @@ const EditActivityLog = ({ navigation }: any) => {
   }, [selectedActivityLog, reset]);
 
   const onSubmit = (activityLog: ActivityLogFormTypes) => {
-    console.log('log, ', activityLog);
+    if (selectedActivityLog) {
+      updateHouts(
+        {
+          volunteerId: selectedActivityLog?.id,
+          activityLog,
+        },
+        {
+          onSuccess: () => navigation.goBack(),
+          onError: (error: any) => {
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.ACTIVITY_LOG_ERRORS.getError(
+                error.response?.data.code_error,
+              )}`,
+            });
+          },
+        },
+      );
+    }
   };
 
   return (
@@ -49,7 +73,7 @@ const EditActivityLog = ({ navigation }: any) => {
       actionsOptions={{
         actionLabel: t('general:save'),
         onActionButtonClick: handleSubmit(onSubmit),
-        loading: false,
+        loading: isUpdateingHours,
       }}
     >
       <ActivityLogForm isLoading={false} control={control} errors={errors} />

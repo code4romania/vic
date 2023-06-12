@@ -5,6 +5,7 @@ import {
   getActivityLogById,
   getActivityLogs,
   getActivityLogsTotalCounters,
+  updateActivityLog,
 } from './activity-log.api';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
@@ -16,6 +17,18 @@ import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 export const useCreateActivityLogMutation = () => {
   return useMutation(['log-hours'], ({ activityLog }: { activityLog: ActivityLogFormTypes }) =>
     createActivityLog(activityLog),
+  );
+};
+
+export const useUpdateActivityLog = () => {
+  const { setSelectedActivityLog } = useStore();
+  return useMutation(
+    ['update-hours'],
+    ({ volunteerId, activityLog }: { volunteerId: string; activityLog: ActivityLogFormTypes }) =>
+      updateActivityLog(volunteerId, activityLog),
+    {
+      onSuccess: (data: IActivityLog) => setSelectedActivityLog(data),
+    },
   );
 };
 

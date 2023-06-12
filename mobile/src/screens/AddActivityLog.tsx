@@ -10,6 +10,8 @@ import ActivityLogForm, {
   ActivityLogFormTypes,
   activityLogSchema,
 } from '../components/ActivityLogForm';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const AddActivityLog = ({ navigation }: any) => {
   console.log('AddActivityLog');
@@ -40,7 +42,14 @@ const AddActivityLog = ({ navigation }: any) => {
       },
       {
         onSuccess: () => navigation.goBack(),
-        onError: (error: any) => console.log('error', error),
+        onError: (error: any) => {
+          Toast.show({
+            type: 'error',
+            text1: `${InternalErrors.ACTIVITY_LOG_ERRORS.getError(
+              error.response?.data.code_error,
+            )}`,
+          });
+        },
       },
     );
   };

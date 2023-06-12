@@ -10,25 +10,22 @@ interface LogItemProps {
   onPress: (eventId: string) => void;
 }
 
-const LogItem = ({ activityLog, onPress }: LogItemProps) => {
-  console.log('activityLog', activityLog);
-  return (
-    <PressableContainer onPress={() => onPress(activityLog.id)}>
-      <View style={styles.container}>
-        <GrayIcon name={'heart'} />
-        <View style={styles.textWrapper}>
-          <Text category="p2" ellipsizeMode="tail" numberOfLines={1}>
-            {activityLog.activityType.name}
-          </Text>
-          <Text category="c1" appearance="hint" ellipsizeMode="tail" numberOfLines={1}>{`${
-            activityLog.date
-          }${activityLog.event ? ' | ' + activityLog.event.name : ''}`}</Text>
-        </View>
-        <Text category="p2">{`${activityLog.hours}h`}</Text>
+const LogItem = ({ activityLog, onPress }: LogItemProps) => (
+  <PressableContainer onPress={() => onPress(activityLog.id)}>
+    <View style={styles.container}>
+      <GrayIcon name={'heart'} />
+      <View style={styles.textWrapper}>
+        <Text category="p2" ellipsizeMode="tail" numberOfLines={1}>
+          {activityLog.activityType.name}
+        </Text>
+        <Text category="c1" appearance="hint" ellipsizeMode="tail" numberOfLines={1}>{`${
+          activityLog.date
+        }${activityLog.event ? ' | ' + activityLog.event.name : ''}`}</Text>
       </View>
-    </PressableContainer>
-  );
-};
+      <Text category="p2">{`${activityLog.hours}h`}</Text>
+    </View>
+  </PressableContainer>
+);
 
 export default LogItem;
 
