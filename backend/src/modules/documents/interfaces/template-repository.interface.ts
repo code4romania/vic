@@ -5,6 +5,7 @@ import {
   FindManyTemplatesOptions,
   FindTemplateOptions,
   ITemplateModel,
+  UpdateTemplateOptions,
 } from '../models/template.model';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 
@@ -15,4 +16,8 @@ export interface ITemplateRepository
     findOptions: FindManyTemplatesOptions,
   ): Promise<Pagination<ITemplateModel>>;
   find(findOptions: FindTemplateOptions): Promise<ITemplateModel>;
+  update(
+    id: string,
+    updatedTemplate: UpdateTemplateOptions,
+  ): Promise<ITemplateModel>;
 }

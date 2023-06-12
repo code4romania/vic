@@ -14,6 +14,7 @@ import {
   FindTemplateOptions,
   ITemplateModel,
   TemplateTransformer,
+  UpdateTemplateOptions,
 } from '../models/template.model';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 
@@ -35,6 +36,20 @@ export class TemplateRepositoryService
     );
 
     return this.find({ id: template.id });
+  }
+
+  async update(
+    id: string,
+    updatedTemplate: UpdateTemplateOptions,
+  ): Promise<ITemplateModel> {
+    const toUpdate = await this.templateRepository.preload({
+      id,
+      ...updatedTemplate,
+    });
+
+    await this.templateRepository.save(toUpdate);
+
+    return this.find({ id });
   }
 
   async findMany(

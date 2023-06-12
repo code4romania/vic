@@ -3,6 +3,7 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 import { ITemplateListItem } from '../../common/interfaces/template-list-item.interface';
 import { ITemplate } from '../../common/interfaces/template.interface';
 import { AddContractTemplateFormTypes } from '../../pages/AddContractTemplate';
+import { EditContractTemplateFormTypes } from '../../pages/EditContractTemplate';
 import API from '../api';
 
 export const createTemplate = async (payload: AddContractTemplateFormTypes): Promise<ITemplate> => {
@@ -16,11 +17,15 @@ export const createTemplate = async (payload: AddContractTemplateFormTypes): Pro
   }).then((res) => res.data);
 };
 
+export const editContractTemplate = async (id: string, payload: EditContractTemplateFormTypes) => {
+  return API.patch(`template/${id}`, payload).then((res) => res.data);
+};
+
 export const getTemplate = async (id: string): Promise<ITemplate> => {
   return API.get(`template/${id}`).then((res) => res.data);
 };
 
-export const getTemplates = (params: {
+export const getTemplates = async (params: {
   page: number;
   limit: number;
   orderBy?: string;
@@ -29,14 +34,6 @@ export const getTemplates = (params: {
   return API.get('template', { params }).then((res) => res.data);
 };
 
-export const deleteTemplate = (id: string): Promise<void> => {
-  // return API.delete(`/documents/templates/${id}`).then((res) => res.data);
-  console.log(id);
-  return Promise.resolve();
-};
-
-export const editContractTemplate = (id: string, payload: { name: string }) => {
-  // return API.patch('', { ...payload }).then((res) => res.data);
-  console.log(id, payload);
-  return Promise.resolve();
+export const deleteTemplate = async (id: string): Promise<void> => {
+  return API.delete(`template/${id}`).then((res) => res.data);
 };

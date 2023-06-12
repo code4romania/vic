@@ -7,6 +7,7 @@ import {
   FindManyTemplatesOptions,
   FindTemplateOptions,
   ITemplateModel,
+  UpdateTemplateOptions,
 } from '../models/template.model';
 
 @Injectable()
@@ -29,5 +30,12 @@ export class TemplateFacade {
     findOptions: FindTemplateOptions,
   ): Promise<ITemplateModel> {
     return this.templateRepository.find(findOptions);
+  }
+
+  public async update(
+    id: string,
+    updatedTemplate: UpdateTemplateOptions,
+  ): Promise<ITemplateModel> {
+    return this.templateRepository.update(id, updatedTemplate);
   }
 }
