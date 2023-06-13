@@ -106,6 +106,8 @@ import { GetTemplatesUsecase } from './documents/get-templates.usecase';
 import { GetOneTemplateUseCase } from './documents/get-one-template.usecase';
 import { UpdateTemplateUsecase } from './documents/update-template.usecase';
 import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
+import { GetAllTemplatesUsecase } from './documents/get-all-templates.usecase';
+import { CreateContractUsecase } from './documents/create-contract.usecase';
 
 @Module({
   imports: [
@@ -233,6 +235,9 @@ import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
     GetOneTemplateUseCase,
     UpdateTemplateUsecase,
     DeleteTemplateUseCase,
+    GetAllTemplatesUsecase,
+    // Contracts
+    CreateContractUsecase,
   ],
   exports: [
     // Organization
@@ -344,6 +349,9 @@ import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
     GetOneTemplateUseCase,
     UpdateTemplateUsecase,
     DeleteTemplateUseCase,
+    GetAllTemplatesUsecase,
+    // Contracts
+    CreateContractUsecase,
   ],
 })
 export class UseCaseModule {}

@@ -20,33 +20,33 @@ import { useAddContractMutation } from '../services/contracts/contracts.service'
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
+import { useTranslation } from 'react-i18next';
 
 const schema = yup
   .object({
-    volunteer: yup.object().required(`${i18n.t('activity_log:form.volunteer.required')}`),
-    template: yup.object().required(`${i18n.t('documents:contracts.form.template.required')}`),
-    number: yup
-      .number()
-      .typeError(`${i18n.t('documents:contracts.form.number.type')}`)
-      .integer(`${i18n.t('documents:contracts.form.number.integer')}`)
-      .positive(`${i18n.t('documents:contracts.form.number.positiv')}`)
-      .max(1000000000, `${i18n.t('documents:contracts.form.number.max')}`)
-      .required(`${i18n.t('documents:contracts.form.number.required')}`),
-    startDate: yup.date().required(`${i18n.t('documents:contracts.form.start_date.required')}`),
-    endDate: yup.date().required(`${i18n.t('documents:contracts.form.end_date.required')}`),
+    volunteer: yup.object().required(`${i18n.t('documents:contract.add.form.volunteer.required')}`),
+    template: yup.object().required(`${i18n.t('documents:contract.add.form.template.required')}`),
+    contractNumber: yup
+      .string()
+      .max(10, `${i18n.t('documents:contract.add.form.contract_number.max')}`)
+      .required(`${i18n.t('documents:contract.add.form.contract_number.required')}`),
+    startDate: yup.date().required(`${i18n.t('documents:contract.add.form.start_date.required')}`),
+    endDate: yup.date().required(`${i18n.t('documents:contract.add.form.end_date.required')}`),
   })
   .required();
 
 export type AddContractFormTypes = {
   volunteer: ListItem;
   template: ListItem;
-  number: number;
+  contractNumber: string;
   startDate: Date;
   endDate: Date;
 };
 
 const AddContract = () => {
   const navigate = useNavigate();
+  // translation
+  const { t } = useTranslation('documents');
 
   const navigateBack = () => {
     navigate('/documents/contracts', { replace: true });
@@ -63,31 +63,37 @@ const AddContract = () => {
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });
+  console.log('errors', errors);
 
   const onSubmit = (data: AddContractFormTypes) => {
-    addContract(data, {
-      onSuccess: () => {
-        useSuccessToast(i18n.t('documents:contracts.form.submit.messages.add_contract'));
-        navigateBack();
+    addContract(
+      {
+        ...data,
+        volunteerId: data.volunteer.value,
+        templateId: data.template.value,
       },
-      onError: (error) => {
-        useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+      {
+        onSuccess: () => {
+          useSuccessToast(t('contract.add.submit.success'));
+          navigateBack();
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+        },
       },
-    });
+    );
   };
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={navigateBack}>
-        {i18n.t('general:add', { item: '' })}
-      </PageHeader>
+      <PageHeader onBackButtonPress={navigateBack}>{t('general:add', { item: '' })}</PageHeader>
       {isLoading && <LoadingContent />}
       {!isLoading && (
         <Card>
           <CardHeader>
-            <h2>{i18n.t('general:contract')}</h2>
+            <h2>{t('general:contract')}</h2>
             <Button
-              label={i18n.t('documents:contracts.form.submit.label')}
+              label={t('contract.add.submit.label')}
               className="btn-primary"
               onClick={handleSubmit(onSubmit)}
             />
@@ -103,7 +109,7 @@ const AddContract = () => {
                     <VolunteerSelect
                       defaultValue={value}
                       onSelect={onChange}
-                      label={i18n.t('volunteer:name', { status: '' })}
+                      label={t('volunteer:name', { status: '' })}
                       errorMessage={errors['volunteer']?.message}
                     />
                   );
@@ -118,23 +124,23 @@ const AddContract = () => {
                     <TemplateSelect
                       defaultValue={value}
                       onSelect={onChange}
-                      label={i18n.t('documents:contracts.form.template.label')}
+                      label={t('contract.add.form.template.label')}
                       errorMessage={errors['template']?.message}
                     />
                   );
                 }}
               />
               <Controller
-                key="number"
-                name="number"
+                key="contractNumber"
+                name="contractNumber"
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
                     <FormInput
-                      type="number"
-                      label={`${i18n.t('documents:contracts.number')}*`}
+                      type="string"
+                      label={`${t('contract.add.form.contract_number.label')}`}
                       value={value}
-                      errorMessage={errors.number?.message}
+                      errorMessage={errors.contractNumber?.message}
                       onChange={onChange}
                     />
                   );
@@ -148,7 +154,7 @@ const AddContract = () => {
                   return (
                     <FormDatePicker
                       name="startDate"
-                      label={`${i18n.t('events:form.start_date.label')}*`}
+                      label={`${t('events:form.start_date.label')}*`}
                       onChange={onChange}
                       value={value}
                       errorMessage={errors['startDate']?.message}
@@ -164,7 +170,7 @@ const AddContract = () => {
                   return (
                     <FormDatePicker
                       name="endDate"
-                      label={i18n.t('events:form.end_date.label') as string}
+                      label={`${t('events:form.end_date.label')}*`}
                       onChange={onChange}
                       value={value}
                       errorMessage={errors['endDate']?.message}

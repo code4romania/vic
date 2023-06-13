@@ -8,29 +8,50 @@ import { ContractType } from '../common/enums/contract-type.enum';
 import TemplatesTableWithQueryParams from '../containers/query/TemplatesTableWithQueryParams';
 import { ContractsProps } from '../containers/query/ContractsWithQueryParams';
 import ContractsTableWithQueryParams from '../containers/query/ContractsTableWithQueryParams';
+import { useTranslation } from 'react-i18next';
+import StatisticsCard from '../components/StatisticsCard';
 
 const DocumentsTabsOptions: SelectItem<ContractType>[] = [
-  { key: ContractType.CONTRACT, value: i18n.t('documents:contracts.list') },
+  { key: ContractType.CONTRACT, value: i18n.t('general:contracts') },
   { key: ContractType.TEMPLATE, value: i18n.t('general:templates') },
 ];
 
 const Contracts = ({ query, setQuery }: ContractsProps) => {
+  const { t } = useTranslation('documents');
   // routing
 
   const onTabClick = (tab: ContractType) => {
     setQuery({ contractType: tab }, 'push');
   };
 
+  const onStatisticsCardClick = () => {
+    console.log('click here');
+  };
+
   return (
     <PageLayout>
-      <PageHeader>{i18n.t('documents:contracts.title')}</PageHeader>
-      <p className="text-cool-gray-500">{i18n.t('documents:contracts.description')}</p>
+      <PageHeader>{t('title')}</PageHeader>
+      <p className="text-cool-gray-500">{t('description')}</p>
       <Tabs<ContractType>
         tabs={DocumentsTabsOptions}
         onClick={onTabClick}
         defaultTab={DocumentsTabsOptions.find((tab) => tab.key === query?.contractType)}
       >
-        {query?.contractType === ContractType.CONTRACT && <ContractsTableWithQueryParams />}
+        {query?.contractType === ContractType.CONTRACT && (
+          <>
+            <div className="max-w-[350px]">
+              <StatisticsCard
+                label={t('contracts.statistics.title')}
+                value={'16'}
+                action={{
+                  label: t('contracts.statistics.action'),
+                  onClick: onStatisticsCardClick,
+                }}
+              />
+            </div>
+            <ContractsTableWithQueryParams />
+          </>
+        )}
         {query?.contractType === ContractType.TEMPLATE && <TemplatesTableWithQueryParams />}
       </Tabs>
     </PageLayout>

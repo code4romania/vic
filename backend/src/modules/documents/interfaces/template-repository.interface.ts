@@ -15,6 +15,7 @@ export interface ITemplateRepository
   findMany(
     findOptions: FindManyTemplatesOptions,
   ): Promise<Pagination<ITemplateModel>>;
+  findAll(findOptios: FindTemplateOptions): Promise<ITemplateModel[]>;
   find(findOptions: FindTemplateOptions): Promise<ITemplateModel>;
   update(
     id: string,

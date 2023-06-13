@@ -12,7 +12,14 @@ import { AxiosError } from 'axios';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { CONTRACT_ERRORS } from '../../common/errors/entities/contract.errors';
 import { ContractStatus } from '../../common/enums/contract-status.enum';
-import { AddContractFormTypes } from '../../pages/AddContract';
+
+export interface IAddContractPayload {
+  volunteerId: string;
+  templateId: string;
+  contractNumber: string;
+  startDate: Date;
+  endDate: Date;
+}
 
 export const useContractsQuery = ({
   limit,
@@ -80,7 +87,7 @@ export const useDeleteContractMutation = () => {
 };
 
 export const useAddContractMutation = () => {
-  return useMutation((data: AddContractFormTypes) => addContract(data), {
+  return useMutation((data: IAddContractPayload) => addContract(data), {
     onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
   });
 };
