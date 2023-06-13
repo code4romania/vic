@@ -83,7 +83,7 @@ export class TemplateRepositoryService
     const templates = await this.templateRepository.find({
       where: {
         ...options,
-        name: ILike(`${search}`),
+        name: ILike(`%${search}%`),
       },
     });
     return templates.map(TemplateTransformer.fromEntity);

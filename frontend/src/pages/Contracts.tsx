@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import Tabs from '../components/Tabs';
 import i18n from '../common/config/i18n';
@@ -10,6 +10,9 @@ import { ContractsProps } from '../containers/query/ContractsWithQueryParams';
 import ContractsTableWithQueryParams from '../containers/query/ContractsTableWithQueryParams';
 import { useTranslation } from 'react-i18next';
 import StatisticsCard from '../components/StatisticsCard';
+import { useActiveContractsCountQuery } from '../services/contracts/contracts.service';
+import { useErrorToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const DocumentsTabsOptions: SelectItem<ContractType>[] = [
   { key: ContractType.CONTRACT, value: i18n.t('general:contracts') },
@@ -18,7 +21,14 @@ const DocumentsTabsOptions: SelectItem<ContractType>[] = [
 
 const Contracts = ({ query, setQuery }: ContractsProps) => {
   const { t } = useTranslation('documents');
-  // routing
+
+  // active count
+  const { data: numberOfActiveContracts, error } = useActiveContractsCountQuery();
+
+  useEffect(() => {
+    if (error)
+      useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+  }, [error]);
 
   const onTabClick = (tab: ContractType) => {
     setQuery({ contractType: tab }, 'push');
@@ -42,7 +52,7 @@ const Contracts = ({ query, setQuery }: ContractsProps) => {
             <div className="max-w-[350px]">
               <StatisticsCard
                 label={t('contracts.statistics.title')}
-                value={'16'}
+                value={numberOfActiveContracts?.toString() || '0'}
                 action={{
                   label: t('contracts.statistics.action'),
                   onClick: onStatisticsCardClick,

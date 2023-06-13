@@ -4,6 +4,7 @@ import {
   addContract,
   approveContract,
   deleteContract,
+  getActiveCountractsCount,
   getContract,
   getContracts,
   rejectContract,
@@ -27,7 +28,7 @@ export const useContractsQuery = ({
   orderBy,
   orderDirection,
   search,
-  volunteer,
+  volunteerName,
   startDate,
   endDate,
   status,
@@ -37,7 +38,7 @@ export const useContractsQuery = ({
   orderBy?: string;
   orderDirection?: OrderDirection;
   search?: string;
-  volunteer?: string;
+  volunteerName?: string;
   startDate?: Date;
   endDate?: Date;
   status?: ContractStatus;
@@ -50,7 +51,7 @@ export const useContractsQuery = ({
       orderBy,
       orderDirection,
       search,
-      volunteer,
+      volunteerName,
       startDate,
       endDate,
       status,
@@ -62,7 +63,7 @@ export const useContractsQuery = ({
         orderBy,
         orderDirection,
         search,
-        volunteer,
+        volunteerName,
         startDate,
         endDate,
         status,
@@ -71,6 +72,12 @@ export const useContractsQuery = ({
       onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
     },
   );
+};
+
+export const useActiveContractsCountQuery = () => {
+  return useQuery(['active-counr'], () => getActiveCountractsCount(), {
+    onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
+  });
 };
 
 export const useContractQuery = (id: string) => {

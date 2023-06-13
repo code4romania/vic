@@ -44,36 +44,42 @@ import { VolunteerTabsOptions } from '../pages/Volunteer';
 import { useTranslation } from 'react-i18next';
 
 const StatusOptions: SelectItem<ContractStatus>[] = [
-  { key: ContractStatus.ACTIVE, value: `${i18n.t('documents:contracts.display_status.active')}` },
-  { key: ContractStatus.CLOSED, value: `${i18n.t('documents:contracts.display_status.closed')}` },
+  {
+    key: ContractStatus.ACTIVE,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.ACTIVE}`)}`,
+  },
+  {
+    key: ContractStatus.CLOSED,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.CLOSED}`)}`,
+  },
   {
     key: ContractStatus.NOT_STARTED,
-    value: `${i18n.t('documents:contracts.display_status.not_started')}`,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.NOT_STARTED}`)}`,
   },
   {
     key: ContractStatus.REJECTED,
-    value: `${i18n.t('documents:contracts.display_status.rejected')}`,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.REJECTED}`)}`,
   },
   {
-    key: ContractStatus.VALIDATE_ONG,
-    value: `${i18n.t('documents:contracts.display_status.validate_ong')}`,
+    key: ContractStatus.PENDING_ADMIN,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_ADMIN}`)}`,
   },
   {
-    key: ContractStatus.VALIDATE_VOLUNTEER,
-    value: `${i18n.t('documents:contracts.display_status.validate_volunteer')}`,
+    key: ContractStatus.PENDING_VOLUNTEER,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_VOLUNTEER}`)}`,
   },
 ];
 
 const ContractsTableHeader = [
   {
-    id: 'number',
-    name: i18n.t('documents:contracts.number'),
+    id: 'contractNumber',
+    name: i18n.t('documents:contracts.headers.contract_number'),
     sortable: true,
-    selector: (row: IContractListItem) => row.number,
+    selector: (row: IContractListItem) => row.contractNumber,
   },
   {
     id: 'volunteer',
-    name: i18n.t('volunteer:name', { status: '' }),
+    name: i18n.t('documents:contracts.headers.volunteer'),
     grow: 2,
     sortable: true,
     cell: (row: IContractListItem) => (
@@ -82,26 +88,26 @@ const ContractsTableHeader = [
   },
   {
     id: 'status',
-    name: i18n.t('general:status'),
+    name: i18n.t('documents:contracts.headers.status'),
     minWidth: '11rem',
     sortable: true,
     cell: (row: IContractListItem) => (
       <CellLayout>
         <StatusWithMarker markerColor={ContractStatusMarkerColorMapper[row.status]}>
-          {i18n.t(`documents:contracts.display_status.${row.status}`)}
+          {i18n.t(`documents:contract.status.${row.status}`)}
         </StatusWithMarker>
       </CellLayout>
     ),
   },
   {
     id: 'startDate',
-    name: i18n.t('events:form.start_date.label'),
+    name: i18n.t('documents:contracts.headers.start_date'),
     sortable: true,
     selector: (row: IContractListItem) => formatDate(row.startDate),
   },
   {
     id: 'endDate',
-    name: i18n.t('events:form.end_date.label'),
+    name: i18n.t('documents:contracts.headers.end_date'),
     sortable: true,
     selector: (row: IContractListItem) => formatDate(row.endDate),
   },
@@ -109,34 +115,34 @@ const ContractsTableHeader = [
 
 const VolunteerContractsTableHeader = [
   {
-    id: 'number',
-    name: i18n.t('documents:contracts.number'),
+    id: 'contractNumber',
+    name: i18n.t('documents:contracts.headers.contract_number'),
     sortable: true,
     grow: 3,
-    selector: (row: IContractListItem) => row.number,
+    selector: (row: IContractListItem) => row.contractNumber,
   },
   {
     id: 'status',
-    name: i18n.t('general:status'),
+    name: i18n.t('documents:contracts.headers.status'),
     minWidth: '11rem',
     sortable: true,
     cell: (row: IContractListItem) => (
       <CellLayout>
         <StatusWithMarker markerColor={ContractStatusMarkerColorMapper[row.status]}>
-          {i18n.t(`documents:contracts.display_status.${row.status}`)}
+          {i18n.t(`documents:contract.status.${row.status}`)}
         </StatusWithMarker>
       </CellLayout>
     ),
   },
   {
     id: 'startDate',
-    name: i18n.t('events:form.start_date.label'),
+    name: i18n.t('documents:contracts.headers.start_date'),
     sortable: true,
     selector: (row: IContractListItem) => formatDate(row.startDate),
   },
   {
     id: 'endDate',
-    name: i18n.t('events:form.end_date.label'),
+    name: i18n.t('documents:contracts.headers.end_date'),
     sortable: true,
     selector: (row: IContractListItem) => formatDate(row.endDate),
   },
@@ -180,7 +186,7 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     orderBy: query?.orderBy as string,
     orderDirection: query?.orderDirection as OrderDirection,
     search: query?.search,
-    volunteer: volunteerName || query?.volunteer,
+    volunteerName: query?.volunteer,
     startDate: query?.startDate,
     endDate: query?.endDate,
     status: query?.status as ContractStatus,
@@ -285,12 +291,14 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
         case ContractStatus.CLOSED:
         case ContractStatus.NOT_STARTED:
           return contractsMenuItems;
-        case ContractStatus.VALIDATE_ONG:
+        case ContractStatus.PENDING_ADMIN:
           return contractsValidateOngMenuItems;
-        case ContractStatus.VALIDATE_VOLUNTEER:
+        case ContractStatus.PENDING_VOLUNTEER:
           return contractsValidateVolunteerMenuItems;
         case ContractStatus.REJECTED:
           return contractsRejectedMenuItems;
+        default:
+          return [];
       }
     };
 
@@ -423,11 +431,9 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
       >
         {!volunteerName && (
           <VolunteerSelect
-            defaultValue={
-              query.volunteer ? { value: 'something dumb', label: query.volunteer } : undefined
-            }
-            onSelect={onVolunteerChange}
             label={t('volunteer:name', { status: '' })}
+            defaultValue={query.volunteer ? { value: '', label: query.volunteer } : undefined}
+            onSelect={onVolunteerChange}
           />
         )}
         <FormDatePicker
@@ -436,7 +442,6 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
           onChange={onStartDateChange}
           value={query.startDate}
         />
-
         <FormDatePicker
           label={`${t('contracts.filters.end_date')}`}
           placeholder={`${t('general:anytime')}`}

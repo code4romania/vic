@@ -1,9 +1,10 @@
 import { ContractStatus } from '../enums/contract-status.enum';
+import { IdName } from './id-name.interface';
 
 export interface IContractListItem {
   id: string;
-  number: number;
-  volunteer: { id: string; name: string };
+  contractNumber: string;
+  volunteer: IdName;
   status: ContractStatus;
   startDate: Date;
   endDate: Date;

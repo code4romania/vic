@@ -9,98 +9,22 @@ export const addContract = async (data: IAddContractPayload): Promise<void> => {
   return API.post('contract', data).then((res) => res.data);
 };
 
-export const getContracts = (params: {
+export const getContracts = async (params: {
   page: number;
   limit: number;
   orderBy?: string;
   orderDirection?: OrderDirection;
   search?: string;
-  volunteer?: string;
+  volunteerName?: string;
   startDate?: Date;
   endDate?: Date;
   status?: ContractStatus;
 }): Promise<IPaginatedEntity<IContractListItem>> => {
-  // return API.get('', { params }).then((res) => res.data);
-  console.log(params);
-  return Promise.resolve({
-    items: [
-      {
-        id: '1',
-        number: 12345,
-        volunteer: {
-          id: 'volunteer1',
-          name: 'John Doe',
-        },
-        status: ContractStatus.ACTIVE,
-        startDate: new Date('2022-01-01'),
-        endDate: new Date('2022-12-31'),
-      },
-      {
-        id: '2',
-        number: 67890,
-        volunteer: {
-          id: 'volunteer2',
-          name: 'Jane Smith',
-        },
-        status: ContractStatus.CLOSED,
-        startDate: new Date('2021-05-15'),
-        endDate: new Date('2021-06-30'),
-      },
-      {
-        id: '3',
-        number: 54321,
-        volunteer: {
-          id: 'volunteer3',
-          name: 'Alex Johnson',
-        },
-        status: ContractStatus.NOT_STARTED,
-        startDate: new Date('2023-02-15'),
-        endDate: new Date('2023-03-31'),
-      },
-      {
-        id: '4',
-        number: 98765,
-        volunteer: {
-          id: 'volunteer4',
-          name: 'Sarah Thompson',
-        },
-        status: ContractStatus.REJECTED,
-        startDate: new Date('2023-04-01'),
-        endDate: new Date('2023-09-30'),
-      },
-      {
-        id: '5',
-        number: 13579,
-        volunteer: {
-          id: 'volunteer5',
-          name: 'Michael Wilson',
-        },
-        status: ContractStatus.VALIDATE_ONG,
-        startDate: new Date('2022-09-01'),
-        endDate: new Date('2022-11-30'),
-      },
-      {
-        id: '6',
-        number: 24680,
-        volunteer: {
-          id: 'volunteer6',
-          name: 'Emily Davis',
-        },
-        status: ContractStatus.VALIDATE_VOLUNTEER,
-        startDate: new Date('2023-01-15'),
-        endDate: new Date('2023-06-30'),
-      },
-    ],
-    meta: {
-      currentPage: params.page,
-      itemCount: 3,
-      itemsPerPage: params.limit,
-      totalItems: 3,
-      totalPages: 1,
-      orderByColumn: 'name',
-      orderDirection: OrderDirection.ASC,
-    },
-  });
+  return API.get('contract', { params }).then((res) => res.data);
+};
+
+export const getActiveCountractsCount = async (): Promise<number> => {
+  return API.get('contract/active').then((res) => res.data);
 };
 
 export const getContract = (id: string): Promise<IContract> => {
@@ -109,7 +33,7 @@ export const getContract = (id: string): Promise<IContract> => {
     id,
     number: 12345,
     volunteer: { id: 'VOL001', name: 'John Doe' },
-    status: ContractStatus.VALIDATE_ONG,
+    status: ContractStatus.PENDING_ADMIN,
     startDate: new Date('2023-06-01'),
     endDate: new Date('2023-12-31'),
     signed: 'John Doe',
