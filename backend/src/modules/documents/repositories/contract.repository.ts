@@ -4,7 +4,7 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { ContractEntity } from '../entities/contract.entity';
 import { IContractRepository } from '../interfaces/contract-repository.interface';
 import {
@@ -145,5 +145,13 @@ export class ContractRepositoryService
     });
 
     return ContractTransformer.fromEntity(contract);
+  }
+
+  async count(findOptions: FindContractOptions): Promise<number> {
+    const { statuses, ...options } = findOptions;
+    const count = await this.contractRepository.count({
+      where: { ...options, status: In(statuses) },
+    });
+    return count;
   }
 }

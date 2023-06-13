@@ -23,6 +23,10 @@ export const getContracts = async (params: {
   return API.get('contract', { params }).then((res) => res.data);
 };
 
+export const getActiveCountractsCount = async (): Promise<number> => {
+  return API.get('contract/active').then((res) => res.data);
+};
+
 export const getContract = (id: string): Promise<IContract> => {
   // return API.get(`/${id}`).then((res) => res.data);
   return Promise.resolve({

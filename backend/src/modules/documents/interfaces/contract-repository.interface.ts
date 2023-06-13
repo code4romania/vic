@@ -15,4 +15,5 @@ export interface IContractRepository
     findOptions: FindManyContractOptions,
   ): Promise<Pagination<IContractModel>>;
   find(findOptions: FindContractOptions): Promise<IContractModel>;
+  count(findOptions: FindContractOptions): Promise<number>;
 }

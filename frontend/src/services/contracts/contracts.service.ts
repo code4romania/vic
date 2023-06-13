@@ -4,6 +4,7 @@ import {
   addContract,
   approveContract,
   deleteContract,
+  getActiveCountractsCount,
   getContract,
   getContracts,
   rejectContract,
@@ -71,6 +72,12 @@ export const useContractsQuery = ({
       onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
     },
   );
+};
+
+export const useActiveContractsCountQuery = () => {
+  return useQuery(['active-counr'], () => getActiveCountractsCount(), {
+    onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
+  });
 };
 
 export const useContractQuery = (id: string) => {

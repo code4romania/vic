@@ -12,6 +12,7 @@ import {
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { GetManyContractsDto } from './dto/get-many-contracts.dto';
 import { GetManyContractsUsecase } from 'src/usecases/documents/get-many-contracts.usecase';
+import { CountPendingContractsUsecase } from 'src/usecases/documents/count-pending-contracts.usecase';
 
 // TODO: guard for organization contract
 @ApiBearerAuth()
@@ -21,6 +22,7 @@ export class ContractController {
   constructor(
     private readonly createContractUsecase: CreateContractUsecase,
     private readonly getManyContractsUsecase: GetManyContractsUsecase,
+    private readonly countPendingContractsUsecase: CountPendingContractsUsecase,
   ) {}
 
   @Get()
@@ -37,6 +39,15 @@ export class ContractController {
     return new PaginatedPresenter<ContractPresenter>({
       ...contracts,
       items: contracts.items.map((contract) => new ContractPresenter(contract)),
+    });
+  }
+
+  @Get('active')
+  async getActivContractsCount(
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<number> {
+    return this.countPendingContractsUsecase.execute({
+      organizationId,
     });
   }
 
