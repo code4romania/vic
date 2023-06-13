@@ -14,7 +14,10 @@ import {
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
-import { CreateTemplateOptions } from 'src/modules/documents/models/template.model';
+import {
+  CreateTemplateOptions,
+  ITemplateModel,
+} from 'src/modules/documents/models/template.model';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateTemplateUsecase } from 'src/usecases/documents/create-template.usecase';
 import { CreateTemplateDto } from './dto/create-template.dto';
@@ -32,6 +35,9 @@ import { EditTemplateDto } from './dto/edit-template.dto';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { UpdateTemplateUsecase } from 'src/usecases/documents/update-template.usecase';
 import { DeleteTemplateUseCase } from 'src/usecases/documents/delete-template.usecase';
+import { GetAllTemplatesUsecase } from 'src/usecases/documents/get-all-templates.usecase';
+import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
+import { GetAllTemplatesDto } from './dto/get-all-templates.dto';
 
 // TODO: guard for organization template
 @ApiBearerAuth()
@@ -44,11 +50,12 @@ export class TemplateController {
     private readonly getOneTemplateUsecase: GetOneTemplateUseCase,
     private readonly updateTemplateUsecase: UpdateTemplateUsecase,
     private readonly deleteTemplateUsecase: DeleteTemplateUseCase,
+    private readonly getAllTemplatesUsecase: GetAllTemplatesUsecase,
   ) {}
 
   @Get()
   @ApiPaginatedResponse(TemplateListItemPresenter)
-  async getAll(
+  async getManyPaginated(
     @Query() filters: GetTemplatesDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<PaginatedPresenter<TemplateListItemPresenter>> {
@@ -63,6 +70,18 @@ export class TemplateController {
         (template) => new TemplateListItemPresenter(template),
       ),
     });
+  }
+
+  @Get('all')
+  async getAll(
+    @Query() filters: GetAllTemplatesDto,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<IdAndNamePresenter<ITemplateModel>[]> {
+    const templates = await this.getAllTemplatesUsecase.execute({
+      organizationId,
+      ...filters,
+    });
+    return templates.map((template) => new IdAndNamePresenter(template));
   }
 
   @ApiConsumes('multipart/form-data')

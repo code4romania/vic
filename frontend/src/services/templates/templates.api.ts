@@ -1,4 +1,5 @@
 import { OrderDirection } from '../../common/enums/order-direction.enum';
+import { IdName } from '../../common/interfaces/id-name.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ITemplateListItem } from '../../common/interfaces/template-list-item.interface';
 import { ITemplate } from '../../common/interfaces/template.interface';
@@ -32,6 +33,10 @@ export const getTemplates = async (params: {
   orderDirection?: OrderDirection;
 }): Promise<IPaginatedEntity<ITemplateListItem>> => {
   return API.get('template', { params }).then((res) => res.data);
+};
+
+export const getAllTemplatesForMyOrganization = async (search: string): Promise<IdName[]> => {
+  return API.get('template/all', { params: { search } }).then((res) => res.data);
 };
 
 export const deleteTemplate = async (id: string): Promise<void> => {

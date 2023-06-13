@@ -36,12 +36,12 @@ import FormDatePicker from './FormDatePicker';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import Select, { SelectItem } from './Select';
 import { ContractStatus } from '../common/enums/contract-status.enum';
-import StatisticsCard from './StatisticsCard';
 import { useNavigate } from 'react-router-dom';
 import ContractSidePanel from './ContractSidePanel';
 import ConfirmationModal from './ConfirmationModal';
 import RejectTextareaModal from './RejectTextareaModal';
 import { VolunteerTabsOptions } from '../pages/Volunteer';
+import { useTranslation } from 'react-i18next';
 
 const StatusOptions: SelectItem<ContractStatus>[] = [
   { key: ContractStatus.ACTIVE, value: `${i18n.t('documents:contracts.display_status.active')}` },
@@ -154,6 +154,8 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
   // confirmation modals
   const [showRejectContract, setShowRejectContract] = useState<null | IContractListItem>(null);
   const [showDeleteContract, setShowDeleteContract] = useState<null | IContractListItem>(null);
+  // translation
+  const { t } = useTranslation('documents');
 
   const navigate = useNavigate();
 
@@ -368,10 +370,6 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     setQuery({ status: item.key });
   };
 
-  const onStatisticsClick = () => {
-    navigate('');
-  };
-
   const onCloseSidePanel = (shouldRefetch?: boolean) => {
     setIsViewContractSidePanelOpen(false);
     setSelectedContract(undefined);
@@ -418,18 +416,6 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
 
   return (
     <>
-      {!volunteerName && (
-        <div className="max-w-[350px]">
-          <StatisticsCard
-            label={i18n.t('documents:contracts.statistics_card.title')}
-            value={'16'}
-            action={{
-              label: i18n.t('documents:contracts.statistics_card.label'),
-              onClick: onStatisticsClick,
-            }}
-          />
-        </div>
-      )}
       <DataTableFilters
         onSearch={onSearch}
         searchValue={query?.search}
@@ -441,42 +427,42 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
               query.volunteer ? { value: 'something dumb', label: query.volunteer } : undefined
             }
             onSelect={onVolunteerChange}
-            label={i18n.t('volunteer:name', { status: '' })}
+            label={t('volunteer:name', { status: '' })}
           />
         )}
         <FormDatePicker
-          label={`${i18n.t('documents:contracts.start_date')}`}
-          placeholder={`${i18n.t('general:anytime')}`}
+          label={`${t('contracts.filters.start_date')}`}
+          placeholder={`${t('general:anytime')}`}
           onChange={onStartDateChange}
           value={query.startDate}
         />
 
         <FormDatePicker
-          label={`${i18n.t('documents:contracts.end_date')}`}
-          placeholder={`${i18n.t('general:anytime')}`}
+          label={`${t('contracts.filters.end_date')}`}
+          placeholder={`${t('general:anytime')}`}
           onChange={onEndDateChange}
           value={query.endDate}
         />
         <Select
           options={StatusOptions}
           onChange={onStatusChange}
-          placeholder={`${i18n.t('general:select', { item: '' })}`}
-          label={`${i18n.t('documents:contracts.status')}`}
+          placeholder={`${t('general:select', { item: '' })}`}
+          label={`${t('contracts.filters.status')}`}
           selected={StatusOptions.find((option) => option.key === query.status)}
         />
       </DataTableFilters>
       <Card>
         <CardHeader>
-          <h2>{i18n.t('documents:contracts.total', { value: 235 })}</h2>
+          <h2>{t('contracts.statistics.total', { total: contracts?.meta.totalItems })}</h2>
           <div className="flex gap-2 lg:gap-6">
             <Button
-              label={i18n.t('documents:contracts.download')}
+              label={t('contracts.actions.download')}
               className="btn-outline-secondary"
               icon={<ArrowDownTrayIcon className="h-5 w-5" />}
               onClick={onDownloadApproved}
             />
             <Button
-              label={i18n.t('documents:contracts.generate')}
+              label={t('contracts.actions.add')}
               className="btn-primary"
               icon={<PlusIcon className="h-5 w-5" />}
               onClick={onAddContract}

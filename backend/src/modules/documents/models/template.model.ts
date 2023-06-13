@@ -21,7 +21,7 @@ export type FindManyTemplatesOptions = IBasePaginationFilterModel &
 
 export type FindTemplateOptions = Partial<
   Pick<ITemplateModel, 'id' | 'organizationId'>
->;
+> & { search?: string };
 
 export class TemplateTransformer {
   static fromEntity(entity: TemplateEntity): ITemplateModel {

@@ -754,6 +754,8 @@
     }
   },
   "documents": {
+    "title": "Contracte de voluntariat",
+    "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
     "templates": {
       "table": {
         "header": {
@@ -812,6 +814,52 @@
               "TEMPLATE_002": "Template-ul nu a fost gasit"
             }
           }
+        }
+      }
+    },
+    "contracts": {
+      "statistics": {
+        "title": "Contracte in curs de validare",
+        "action": "Vezi lista",
+        "total": "{{total}} contracte"
+      },
+      "filters": {
+        "start_date": "Data inceput perioada contract",
+        "end_date": "Data sfarsit perioada contract",
+        "status": "Status contract"
+      },
+      "actions": {
+        "download": "Descarca aprobate",
+        "add": "Genereaza contract"
+      }
+    },
+    "contract": {
+      "add": {
+        "form": {
+          "volunteer": {
+            "label": "Voluntar*",
+            "required": "Alegerea voluntarului este obligatorie"
+          },
+          "template": {
+            "label": "Template*",
+            "required": "Alegerea template-ului este obligatorie"
+          },
+          "contract_number": {
+            "label": "Numar contract*",
+            "required": "Numarul este obligatoriu",
+            "max": "Numarul trebuie sa aiba maxim 10 caractere"
+          },
+          "start_date": {
+            "label": "Data inceput contract*",
+            "required": "Data de inceput este obligatorie"
+          },
+          "end_date": {
+            "label": "Data final contract*",
+            "required": "Data de final este obligatorie"
+          }
+        },
+        "submit": {
+          "label": "Trimite catre voluntar"
         }
       }
     },

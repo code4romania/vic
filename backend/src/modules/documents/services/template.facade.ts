@@ -20,6 +20,12 @@ export class TemplateFacade {
     return this.templateRepository.findMany(findOptions);
   }
 
+  public async findAll(
+    findOptions: FindTemplateOptions,
+  ): Promise<ITemplateModel[]> {
+    return this.templateRepository.findAll(findOptions);
+  }
+
   public async create(
     newTemplate: CreateTemplateOptions,
   ): Promise<ITemplateModel> {
