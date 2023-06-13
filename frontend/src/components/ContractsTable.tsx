@@ -143,7 +143,7 @@ const VolunteerContractsTableHeader = [
 ];
 
 interface ContractsTableProps extends ContractsTableBasicProps {
-  volunteerName: string;
+  volunteerName?: string;
 }
 
 const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps) => {
