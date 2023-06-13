@@ -2,8 +2,12 @@ import { ContractStatus } from '../../common/enums/contract-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IContract, IContractListItem } from '../../common/interfaces/contract.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { AddContractFormTypes } from '../../pages/AddContract';
-// import API from '../api';
+import { IAddContractPayload } from './contracts.service';
+import API from '../api';
+
+export const addContract = async (data: IAddContractPayload): Promise<void> => {
+  return API.post('contract', data).then((res) => res.data);
+};
 
 export const getContracts = (params: {
   page: number;
@@ -117,12 +121,6 @@ export const getContract = (id: string): Promise<IContract> => {
     // rejectedOn: new Date('2023-05-31'),
     // rejectionReason: 'Insufficient experience',
   });
-};
-
-export const addContract = (data: AddContractFormTypes): Promise<void> => {
-  // return API.post('', { ...data });
-  console.log(data);
-  return Promise.resolve();
 };
 
 export const deleteContract = (id: string): Promise<void> => {

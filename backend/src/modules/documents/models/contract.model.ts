@@ -1,6 +1,7 @@
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import { ContractEntity } from '../entities/contract.entity';
 import { ContractStatus } from '../enums/contract-status.enum';
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 
 export interface IContractModel extends IBaseModel {
   id: string;
@@ -14,7 +15,7 @@ export interface IContractModel extends IBaseModel {
   volunteerId: string;
 }
 
-export type CreateTemplateOptions = Pick<
+export type CreateContractOptions = Pick<
   IContractModel,
   | 'contractNumber'
   | 'organizationId'
@@ -23,6 +24,13 @@ export type CreateTemplateOptions = Pick<
   | 'endDate'
   | 'templateId'
   | 'volunteerId'
+>;
+
+export type FindManyContractOptions = IBasePaginationFilterModel &
+  Pick<IContractModel, 'organizationId'>;
+
+export type FindContractOptions = Partial<
+  Pick<IContractModel, 'id' | 'organizationId'>
 >;
 
 export class ContractTransformer {
@@ -46,7 +54,7 @@ export class ContractTransformer {
     };
   }
 
-  static toEntity(model: CreateTemplateOptions): ContractEntity {
+  static toEntity(model: CreateContractOptions): ContractEntity {
     const entity = new ContractEntity();
 
     entity.contractNumber = model.contractNumber;

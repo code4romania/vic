@@ -24,6 +24,7 @@ import { MobileOrganizationStructureController } from './_mobile/organization/or
 import { MobileActivityLogController } from './_mobile/activity-log/activity-log.controller';
 import { MobileActivityTypeController } from './_mobile/activity-type/activity-type.controller';
 import { TemplateController } from './template/template.controller';
+import { ContractController } from './contracts/contracts.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -44,6 +45,7 @@ import { TemplateController } from './template/template.controller';
     ActionsArchiveController,
     DashboardController,
     TemplateController,
+    ContractController,
     // Mobile
     MobileRegularUserController,
     MobileAccessRequestController,

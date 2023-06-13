@@ -859,7 +859,8 @@
           }
         },
         "submit": {
-          "label": "Trimite catre voluntar"
+          "label": "Trimite catre voluntar",
+          "success": "Contractul a fost generat"
         }
       }
     },

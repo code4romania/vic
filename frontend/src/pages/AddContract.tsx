@@ -26,7 +26,7 @@ const schema = yup
   .object({
     volunteer: yup.object().required(`${i18n.t('documents:contract.add.form.volunteer.required')}`),
     template: yup.object().required(`${i18n.t('documents:contract.add.form.template.required')}`),
-    number: yup
+    contractNumber: yup
       .string()
       .max(10, `${i18n.t('documents:contract.add.form.contract_number.max')}`)
       .required(`${i18n.t('documents:contract.add.form.contract_number.required')}`),
@@ -38,7 +38,7 @@ const schema = yup
 export type AddContractFormTypes = {
   volunteer: ListItem;
   template: ListItem;
-  number: number;
+  contractNumber: string;
   startDate: Date;
   endDate: Date;
 };
@@ -63,17 +63,25 @@ const AddContract = () => {
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });
+  console.log('errors', errors);
 
   const onSubmit = (data: AddContractFormTypes) => {
-    addContract(data, {
-      onSuccess: () => {
-        useSuccessToast(i18n.t('documents:contracts.form.submit.messages.add_contract'));
-        navigateBack();
+    addContract(
+      {
+        ...data,
+        volunteerId: data.volunteer.value,
+        templateId: data.template.value,
       },
-      onError: (error) => {
-        useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+      {
+        onSuccess: () => {
+          useSuccessToast(t('contract.add.submit.success'));
+          navigateBack();
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+        },
       },
-    });
+    );
   };
 
   return (
@@ -123,16 +131,16 @@ const AddContract = () => {
                 }}
               />
               <Controller
-                key="number"
-                name="number"
+                key="contractNumber"
+                name="contractNumber"
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
                     <FormInput
-                      type="number"
+                      type="string"
                       label={`${t('contract.add.form.contract_number.label')}`}
                       value={value}
-                      errorMessage={errors.number?.message}
+                      errorMessage={errors.contractNumber?.message}
                       onChange={onChange}
                     />
                   );
