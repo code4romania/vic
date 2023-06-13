@@ -2,8 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { ContractRepositoryService } from '../repositories/contract.repository';
 import {
   CreateContractOptions,
+  FindContractOptions,
+  FindManyContractOptions,
   IContractModel,
 } from '../models/contract.model';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 
 @Injectable()
 export class ContractFacade {
@@ -13,5 +16,15 @@ export class ContractFacade {
     newContract: CreateContractOptions,
   ): Promise<IContractModel> {
     return this.contractRepository.create(newContract);
+  }
+
+  public async findMany(
+    findOptions: FindManyContractOptions,
+  ): Promise<Pagination<IContractModel>> {
+    return this.contractRepository.findMany(findOptions);
+  }
+
+  public async count(findOptions: FindContractOptions): Promise<number> {
+    return this.contractRepository.count(findOptions);
   }
 }

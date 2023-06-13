@@ -831,6 +831,13 @@
       "actions": {
         "download": "Descarca aprobate",
         "add": "Genereaza contract"
+      },
+      "headers": {
+        "contract_number": "Numar contract",
+        "volunteer": "Voluntar",
+        "status": "Status",
+        "start_date": "Data inceput",
+        "end_date": "Data final"
       }
     },
     "contract": {
@@ -862,6 +869,14 @@
           "label": "Trimite catre voluntar",
           "success": "Contractul a fost generat"
         }
+      },
+      "status": {
+        "PENDING_VOLUNTEER": "Validare voluntar",
+        "PENDING_ADMIN": "Validare admin",
+        "REJECTED": "Respins",
+        "ACTIVE": "Activ",
+        "CLOSED": "Inchis",
+        "NOT_STARTED": "Neinceput"
       }
     },
     "popover": {
