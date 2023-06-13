@@ -78,6 +78,15 @@ export const downloadExcel = (data: BlobPart, name: string): void => {
   link.remove();
 };
 
+export const downloadFile = (uri: string, name: string) => {
+  const link = document.createElement('a');
+  link.href = uri;
+  link.setAttribute('download', name);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+};
+
 export const formatStartDateISO9075 = (startDate: Date) => formatISO9075(startDate);
 
 export const formatEndDateISO9075 = (endDate: Date) => formatISO9075(endOfDay(endDate));

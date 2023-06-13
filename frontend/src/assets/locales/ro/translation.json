@@ -762,6 +762,7 @@
         }
       },
       "actions": {
+        "add": "Adauga template",
         "delete": {
           "modal": {
             "title": "Sigur doriți să ștergeți acest template?",

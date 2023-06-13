@@ -20,6 +20,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from './ConfirmationModal';
 import { useTranslation } from 'react-i18next';
+import { downloadFile } from '../common/utils/utils';
 
 const TemplatesTableHeader = [
   {
@@ -73,8 +74,8 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
     setShowDeleteTemplate(row);
   };
 
-  const onDownloadTemplate = () => {
-    alert('not yet implemented');
+  const onDownloadTemplate = (row: ITemplateListItem) => {
+    downloadFile(row.path, `${row.name}`);
   };
 
   const confirmDelete = () => {

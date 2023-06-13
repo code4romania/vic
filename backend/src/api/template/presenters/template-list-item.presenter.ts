@@ -7,6 +7,7 @@ export class TemplateListItemPresenter {
     this.id = template.id;
     this.name = template.name;
     this.templateUses = 0;
+    this.path = template.path;
   }
 
   @Expose()
@@ -30,4 +31,10 @@ export class TemplateListItemPresenter {
     example: '0',
   })
   templateUses: number;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The url for the template',
+  })
+  path: string;
 }
