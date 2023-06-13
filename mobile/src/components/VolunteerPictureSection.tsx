@@ -1,10 +1,11 @@
 import React from 'react';
 import { Image, ImageStyle } from 'react-native';
-import i18n from '../common/config/i18n';
 import { View } from 'react-native';
 import { Button, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import { useTranslation } from 'react-i18next';
 
 const VolunteerPictureSection = () => {
+  const { t } = useTranslation('volunteer');
   const styles = useStyleSheet(themedStyles);
 
   const onChangePicturePress = () => {
@@ -13,7 +14,7 @@ const VolunteerPictureSection = () => {
 
   return (
     <View style={styles.container}>
-      <Text>{`${i18n.t('settings:account_data.picture')}`}</Text>
+      <Text>{`${t('profile_picture')}`}</Text>
       <View style={styles.wrapper}>
         <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.image as ImageStyle} />
         <Button
@@ -22,7 +23,7 @@ const VolunteerPictureSection = () => {
           appearance="outline"
           style={styles.button}
         >
-          {() => <Text category="p2">{`${i18n.t('settings:account_data.change_picture')}`}</Text>}
+          {() => <Text category="p2">{`${t('change_picture')}`}</Text>}
         </Button>
       </View>
     </View>

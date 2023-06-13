@@ -9,6 +9,7 @@ import { ContractStatus } from '../common/enums/contract.status.enum';
 import { IContractListItem } from '../common/interfaces/contract.interface';
 import { View } from 'react-native';
 import { SectionList } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 const Data = [
   {
@@ -66,6 +67,8 @@ const Data = [
 ];
 
 const Documents = ({ navigation }: any) => {
+  const { t } = useTranslation('documents');
+
   const onContractPress = (id: string) => {
     console.log('contract pressed', id);
   };
@@ -75,10 +78,10 @@ const Documents = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout onBackButtonPress={navigation.goBack} title={i18n.t('general:documents')}>
+    <PageLayout onBackButtonPress={navigation.goBack} title={t('general:documents')}>
       <View style={styles.container}>
         <OrganizationIdentity name="Asociația ZEN" uri="https://picsum.photos/200" />
-        <Text>{`${i18n.t('documents:description')}`}</Text>
+        <Text>{`${t('description')}`}</Text>
         <SectionList
           sections={Data}
           renderItem={({ item }: { item: IContractListItem }) => (

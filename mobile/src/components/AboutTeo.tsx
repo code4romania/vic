@@ -7,26 +7,25 @@ import SunSvg from '../assets/svg/sun';
 import UserGroupSvg from '../assets/svg/user-group';
 import IconSvg from './IconSvg';
 import HorizontalCarousel from './HorizontalCarousel';
-import i18n from '../common/config/i18n';
+import { useTranslation } from 'react-i18next';
 
 const AboutTeo = () => {
+  const { t } = useTranslation('general');
+
   return (
-    <SectionWrapper
-      title={i18n.t('general:about_teo')}
-      icon={<IconSvg icon={EllipseSvg} size={20} />}
-    >
+    <SectionWrapper title={t('about_teo')} icon={<IconSvg icon={EllipseSvg} size={20} />}>
       <HorizontalCarousel>
         <StatisticsCard
           icon={<IconSvg icon={SunSvg} size={56} />}
           title="2500"
-          subtitle={i18n.t('general:active_volunteers')}
+          subtitle={t('active_volunteers')}
           backgroundColor="turquoise-50"
           onPress={() => console.log('statistic comp 1 pressed')}
         />
         <StatisticsCard
           icon={<IconSvg icon={UserGroupSvg} size={56} />}
           title="210"
-          subtitle={i18n.t('general:organizations').toLowerCase()}
+          subtitle={t('organizations').toLowerCase()}
           backgroundColor="turquoise-50"
           onPress={() => console.log('statistic comp 2 pressed')}
         />

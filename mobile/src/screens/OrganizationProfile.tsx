@@ -4,7 +4,6 @@ import { Divider, Text } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import SectionWrapper from '../components/SectionWrapper';
-import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
 import { useOrganizationQuery } from '../services/organization/organization.service';
 import LoadingScreen from '../components/LoadingScreen';
@@ -150,7 +149,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   return (
     <PageLayout
-      title={i18n.t('organization_profile:title')}
+      title={t('title')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         ...renderActionOptions(),
@@ -187,33 +186,18 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             <ProfileIntro
               uri={organization.logo}
               name={organization.name}
-              description={`${organization.numberOfVolunteers} ${i18n
-                .t('general:volunteers')
-                .toLowerCase()}`}
+              description={`${organization.numberOfVolunteers} ${t(
+                'general:volunteers',
+              ).toLowerCase()}`}
             />
             <View style={styles.container}>
-              <ReadOnlyElement
-                label={i18n.t('organization_profile:description')}
-                value={organization.description}
-              />
-              <ReadOnlyElement
-                label={i18n.t('organization_profile:email')}
-                value={organization.email}
-              />
-              <ReadOnlyElement
-                label={i18n.t('organization_profile:phone')}
-                value={organization.phone}
-              />
-              <ReadOnlyElement
-                label={i18n.t('organization_profile:address')}
-                value={organization.address}
-              />
-              <ReadOnlyElement
-                label={i18n.t('organization_profile:area')}
-                value={organization.activityArea}
-              />
+              <ReadOnlyElement label={t('description')} value={organization.description} />
+              <ReadOnlyElement label={t('email')} value={organization.email} />
+              <ReadOnlyElement label={t('phone')} value={organization.phone} />
+              <ReadOnlyElement label={t('address')} value={organization.address} />
+              <ReadOnlyElement label={t('area')} value={organization.activityArea} />
             </View>
-            <SectionWrapper title={i18n.t('organization_profile:events')}>
+            <SectionWrapper title={t('events')}>
               <ScrollViewLayout>
                 <View style={styles.container}>
                   {organization.events.map((event) => (

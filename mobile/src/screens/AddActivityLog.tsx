@@ -1,6 +1,5 @@
 import React from 'react';
 import ModalLayout from '../layouts/ModalLayout';
-import i18n from '../common/config/i18n';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
@@ -56,10 +55,10 @@ const AddActivityLog = ({ navigation }: any) => {
 
   return (
     <ModalLayout
-      title={i18n.t('general:add', { item: t('title').toLowerCase() })}
+      title={t('general:add', { item: t('title').toLowerCase() })}
       onDismiss={navigation.goBack}
       actionsOptions={{
-        actionLabel: i18n.t('general:add', { item: '' }),
+        actionLabel: t('general:add', { item: '' }),
         onActionButtonClick: handleSubmit(onSubmit),
         loading: isLoggingHours,
       }}

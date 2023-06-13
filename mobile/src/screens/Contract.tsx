@@ -2,12 +2,12 @@ import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import Disclaimer from '../components/Disclaimer';
 import OrganizationIdentity from '../components/OrganizationIdentity';
-import i18n from '../common/config/i18n';
 import { Text } from '@ui-kitten/components';
 import ContractItem from '../components/ContractItem';
 import { ContractStatus } from '../common/enums/contract.status.enum';
 import FormLayout from '../layouts/FormLayout';
 import { ButtonType } from '../common/enums/button-type.enum';
+import { useTranslation } from 'react-i18next';
 
 const contract = {
   id: '1234',
@@ -18,6 +18,8 @@ const contract = {
 };
 
 const Contract = ({ navigation }: any) => {
+  const { t } = useTranslation('documents');
+
   const onContractPress = (id: string) => {
     console.log('download pressed', id);
   };
@@ -33,9 +35,7 @@ const Contract = ({ navigation }: any) => {
       actionsOptions={{
         onPrimaryActionButtonClick: uploadContract,
         primaryActionLabel:
-          contract.status === ContractStatus.VALIDATE_VOLUNTEER
-            ? i18n.t('documents:upload')
-            : i18n.t('documents:cancel'),
+          contract.status === ContractStatus.VALIDATE_VOLUNTEER ? t('upload') : t('cancel'),
         primaryBtnType:
           contract.status === ContractStatus.VALIDATE_VOLUNTEER
             ? ButtonType.PRIMARY
@@ -46,16 +46,16 @@ const Contract = ({ navigation }: any) => {
         color="yellow"
         text={
           contract.status === ContractStatus.VALIDATE_ONG
-            ? i18n.t('documents:disclaimer_ong')
-            : i18n.t('documents:disclaimer_volunteer')
+            ? t('disclaimer_ong')
+            : t('disclaimer_volunteer')
         }
       />
       <FormLayout>
         <OrganizationIdentity name="Asociația ZEN" uri="https://picsum.photos/200" />
         <Text>{`${
           contract.status === ContractStatus.VALIDATE_ONG
-            ? i18n.t('documents:contract_description_ong')
-            : i18n.t('documents:contract_description_volunteer')
+            ? t('contract_description_ong')
+            : t('contract_description_volunteer')
         }`}</Text>
         <ContractItem
           id={contract.id}

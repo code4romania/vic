@@ -13,6 +13,7 @@ import FormDatePicker from '../components/FormDatePicker';
 import FormSelect from '../components/FormSelect';
 import { SexOptions } from '../common/constants/sex-options';
 import VolunteerPictureSection from '../components/VolunteerPictureSection';
+import { useTranslation } from 'react-i18next';
 
 type AccountDataFormTypes = {
   firstName: string;
@@ -70,6 +71,8 @@ const schema = yup
   .required();
 
 const AccountData = ({ navigation }: any) => {
+  const { t } = useTranslation('register');
+
   const {
     control,
     formState: { errors },
@@ -89,11 +92,11 @@ const AccountData = ({ navigation }: any) => {
 
   return (
     <PageLayout
-      title={i18n.t('settings:heading')}
+      title={t('settings:heading')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
-        primaryActionLabel: i18n.t('general:save'),
+        primaryActionLabel: t('general:save'),
       }}
     >
       <FormLayout>
@@ -102,64 +105,64 @@ const AccountData = ({ navigation }: any) => {
           control={control as any}
           name="firstName"
           error={errors.firstName}
-          placeholder={i18n.t('register:create_user.form.first_name.placeholder')}
-          label={i18n.t('register:create_user.form.first_name.label')}
+          placeholder={t('create_user.form.first_name.placeholder')}
+          label={t('create_user.form.first_name.label')}
           required={true}
         />
         <FormInput
           control={control as any}
           name="lastName"
           error={errors.lastName}
-          placeholder={i18n.t('register:create_user.form.last_name.placeholder')}
-          label={i18n.t('register:create_user.form.last_name.label')}
+          placeholder={t('create_user.form.last_name.placeholder')}
+          label={t('create_user.form.last_name.label')}
           required={true}
         />
         <FormInput
           control={control as any}
           name="email"
           error={errors.email}
-          placeholder={i18n.t('login:form.email.placeholder')}
-          label={i18n.t('login:form.email.label')}
+          placeholder={t('login:form.email.placeholder')}
+          label={t('login:form.email.label')}
           required={true}
         />
         <FormInput
           control={control as any}
           name="phone"
           error={errors.phone}
-          placeholder={i18n.t('register:create_account:form.phone.placeholder')}
-          label={i18n.t('register:create_account:form.phone.label')}
+          placeholder={t('create_account.form.phone.placeholder')}
+          label={t('create_account.form.phone.label')}
           keyboardType="phone-pad"
           required={true}
         />
         <CountySelect
           control={control as any}
           name="countyId"
-          label={i18n.t('register:create_user.form.county.label')}
+          label={t('create_user.form.county.label')}
           error={errors.countyId}
-          placeholder={i18n.t('general:select')}
+          placeholder={t('general:select')}
         />
         <CitySelect
           control={control as any}
           name="cityId"
-          label={i18n.t('register:create_user.form.city.label')}
+          label={t('create_user.form.city.label')}
           error={errors.cityId}
-          placeholder={i18n.t('general:select')}
+          placeholder={t('general:select')}
           countyId={watchCountyId}
         />
         <FormDatePicker
           control={control as any}
           name="birthday"
-          label={i18n.t('register:create_user.form.birthday.label')}
+          label={t('create_user.form.birthday.label')}
           error={errors.birthday}
-          placeholder={i18n.t('general:select')}
+          placeholder={t('general:select')}
           min={new Date(1900, 1, 1)}
         />
         <FormSelect
           control={control as any}
           name="sex"
-          label={i18n.t('general:sex', { sex_type: '' })}
+          label={t('general:sex', { sex_type: '' })}
           error={errors.sex}
-          placeholder={i18n.t('general:select')}
+          placeholder={t('general:select')}
           options={SexOptions}
         />
       </FormLayout>

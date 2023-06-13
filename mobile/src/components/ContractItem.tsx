@@ -5,7 +5,7 @@ import { Pressable } from 'react-native';
 import GrayIcon from './GreyIcon';
 import { formatDate } from '../common/utils/utils';
 import { ContractStatus } from '../common/enums/contract.status.enum';
-import i18n from '../common/config/i18n';
+import { useTranslation } from 'react-i18next';
 
 interface ContractItemProps {
   id: string;
@@ -28,6 +28,8 @@ const ContractItem = ({
   onPress,
   eva,
 }: ContractItemProps) => {
+  const { t } = useTranslation('documents');
+
   const onContractPress = () => {
     onPress(id);
   };
@@ -61,9 +63,7 @@ const ContractItem = ({
             ellipsizeMode="tail"
             numberOfLines={1}
           >{`${formatDate(startDate)} - ${formatDate(endDate)} ${
-            status === ContractStatus.PENDING
-              ? ''
-              : `(${i18n.t(`documents:contract_status.${status}`)})`
+            status === ContractStatus.PENDING ? '' : `(${t(`contract_status.${status}`)})`
           }`}</Text>
         </View>
         <View style={eva.style.iconWrapper}>

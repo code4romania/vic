@@ -1,6 +1,5 @@
 import React from 'react';
 import ModalLayout from '../layouts/ModalLayout';
-import i18n from '../common/config/i18n';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import FormLayout from '../layouts/FormLayout';
@@ -109,31 +108,16 @@ const ActivityLog = ({ navigation, route }: any) => {
                 name={activeOrganization.name}
               />
             )}
-            <ReadOnlyElement
-              label={i18n.t('activity_log:form.event.label')}
-              value={activityLog?.event?.name}
-            />
-            <ReadOnlyElement
-              label={i18n.t('activity_log:form.task.label')}
-              value={activityLog?.activityType.name}
-            />
-            <ReadOnlyElement
-              label={i18n.t('activity_log:form.date.label')}
-              value={activityLog?.date}
-            />
-            <ReadOnlyElement
-              label={i18n.t('activity_log:form.hours.label')}
-              value={`${activityLog?.hours}`}
-            />
-            <ReadOnlyElement
-              label={i18n.t('activity_log:form.mentions.label')}
-              value={activityLog?.mentions}
-            />
+            <ReadOnlyElement label={t('form.event.label')} value={activityLog?.event?.name} />
+            <ReadOnlyElement label={t('form.task.label')} value={activityLog?.activityType.name} />
+            <ReadOnlyElement label={t('form.date.label')} value={activityLog?.date} />
+            <ReadOnlyElement label={t('form.hours.label')} value={`${activityLog?.hours}`} />
+            <ReadOnlyElement label={t('form.mentions.label')} value={activityLog?.mentions} />
             {activityLog.status === ActivityLogStatus.REJECTED && (
               <>
                 <Divider />
                 <ReadOnlyElement
-                  label={i18n.t('activity_log:rejection_reason')}
+                  label={t('rejection_reason')}
                   value={activityLog.rejectionReason}
                 />
               </>

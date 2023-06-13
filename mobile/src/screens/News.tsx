@@ -4,11 +4,12 @@ import { VirtualizedList, View, StyleSheet } from 'react-native';
 import NewsListItem from '../components/NewsListItem';
 import { SvgXml } from 'react-native-svg';
 import LogoSvg from '../assets/svg/logo.js';
-import i18n from '../common/config/i18n';
+import { useTranslation } from 'react-i18next';
 
 const Separator = () => <View style={styles.separator} />;
 
 const News = ({ navigation }: any) => {
+  const { t } = useTranslation('general');
   console.log('News');
 
   const getItem = (data: unknown, index: number) => {
@@ -36,7 +37,7 @@ const News = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout title={i18n.t('general:news')} onBackButtonPress={navigation.goBack}>
+    <PageLayout title={t('news')} onBackButtonPress={navigation.goBack}>
       <VirtualizedList
         getItem={getItem}
         getItemCount={getItemCount}

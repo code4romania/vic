@@ -79,7 +79,7 @@ const JoinEvent = ({ navigation, route }: any) => {
       onDismiss={navigation.goBack}
       actionsOptions={{
         onActionButtonClick: handleSubmit(onSumit),
-        actionLabel: i18n.t('general:save'),
+        actionLabel: t('general:save'),
         loading: isLoading,
       }}
     >

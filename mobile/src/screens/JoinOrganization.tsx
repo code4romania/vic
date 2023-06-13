@@ -92,10 +92,10 @@ const JoinOrganization = ({ navigation, route }: any) => {
 
   return (
     <PageLayout
-      title={i18n.t('general:join')}
+      title={t('general:join')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
-        primaryActionLabel: i18n.t('general:send'),
+        primaryActionLabel: t('general:send'),
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isCreatingAccessRequest,
       }}
@@ -115,25 +115,25 @@ const JoinOrganization = ({ navigation, route }: any) => {
     >
       <FormLayout>
         <OrganizationIdentity uri={logo} name={name} />
-        <Text category="p2">{`${i18n.t('join_ngo:registration_form')}`}</Text>
-        <Text appearance="hint">{`${i18n.t('join_ngo:complete')}`}</Text>
+        <Text category="p2">{`${t('registration_form')}`}</Text>
+        <Text appearance="hint">{`${t('complete')}`}</Text>
         <FormSelect
           control={control as any}
-          label={i18n.t('join_ngo:form.referral.label')}
+          label={t('form.referral.label')}
           error={errors.referral}
           name="referral"
           options={ReferralOptions}
-          placeholder={i18n.t('general:select')}
+          placeholder={t('general:select')}
           disabled={isCreatingAccessRequest}
         />
         <FormInput
           control={control as any}
-          label={i18n.t('join_ngo:form.motivation.label')}
+          label={t('form.motivation.label')}
           error={errors.motivation}
           name="motivation"
           multiline={true}
           textStyle={styles.textArea}
-          helper={`${i18n.t('join_ngo:form.motivation.helper')}`}
+          helper={`${t('form.motivation.helper')}`}
           placeholder=""
           disabled={isCreatingAccessRequest}
         />

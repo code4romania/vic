@@ -7,7 +7,7 @@ import LogoSvg from '../assets/svg/logo.js';
 import NewsListItem from './NewsListItem';
 import IconSvg from './IconSvg';
 import { Button, withStyles } from '@ui-kitten/components';
-import i18n from '../common/config/i18n';
+import { useTranslation } from 'react-i18next';
 
 interface LatestNewsProps {
   navigation: any;
@@ -15,13 +15,15 @@ interface LatestNewsProps {
 }
 
 const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
+  const { t } = useTranslation('general');
+
   const onViewNewsButtonPress = () => {
     navigation.navigate('news');
   };
 
   return (
     <SectionWrapper
-      title={i18n.t('general:latest_news')}
+      title={t('latest_news')}
       icon={<IconSvg icon={SpeakerphoneSvg} size={20} />}
       action={
         <Button
@@ -31,7 +33,7 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
           status="success"
           onPress={onViewNewsButtonPress}
         >
-          {`${i18n.t('general:see_all')}`}
+          {`${t('see_all')}`}
         </Button>
       }
     >

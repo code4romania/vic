@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text } from '@ui-kitten/components';
 import NoVolunteerProfile from './MissingEntity';
-import i18n from '../common/config/i18n';
 import VolunteerCard from '../components/VolunteerCard';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
@@ -12,8 +11,10 @@ import volunteerClockSVG from '../assets/svg/volunteer-clock';
 import volunteerDocumentSVG from '../assets/svg/doc';
 import TopNavigationCard from '../components/TopNavigationCard';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import { useTranslation } from 'react-i18next';
 
 const Volunteer = ({ navigation }: any) => {
+  const { t } = useTranslation('volunteer');
   console.log('Volunteer');
 
   const { activeOrganization } = useActiveOrganization();
@@ -52,25 +53,25 @@ const Volunteer = ({ navigation }: any) => {
         />
       </View>
       <View style={styles.container}>
-        <Text>{`${i18n.t('volunteer:details')}`}</Text>
+        <Text>{`${t('details')}`}</Text>
         <VolunteerCard
-          title={i18n.t('volunteer:menu_items.organization_profile.title')}
+          title={t('menu_items.organization_profile.title')}
           uri={activeOrganization?.logo || ''}
           onPress={onViewOrganizationButtonPress}
         />
         <VolunteerCard
-          title={i18n.t('volunteer:menu_items.activity_log.title')}
+          title={t('menu_items.activity_log.title')}
           icon={<SvgXml xml={volunteerClockSVG} />}
           onPress={onViewAtivityLogsButtonPress}
-          subtitle={`${i18n.t('volunteer:menu_items.activity_log.subtitle', { number: 2 })}`}
+          subtitle={`${t('menu_items.activity_log.subtitle', { number: 2 })}`}
         />
         <VolunteerCard
-          title={i18n.t('general:documents')}
+          title={t('general:documents')}
           icon={<SvgXml xml={volunteerDocumentSVG} />}
           onPress={onDocumentsButtonPress}
         />
         <VolunteerCard
-          title={i18n.t('volunteer:menu_items.volunteer_profile.title')}
+          title={t('menu_items.volunteer_profile.title')}
           icon={<SvgXml xml={volunteerUserSVG} />}
           onPress={onViewVolunteerProfilenButtonPress}
         />
@@ -79,9 +80,9 @@ const Volunteer = ({ navigation }: any) => {
   ) : (
     <NoVolunteerProfile
       onActionBtnPress={onAddOrganizationPress}
-      heading={i18n.t('volunteer:no_org_added')}
-      paragraph={i18n.t('volunteer:no_org_description')}
-      actionBtnLabel={i18n.t('general:add', { item: i18n.t('general:organization').toLowerCase() })}
+      heading={t('no_org_added')}
+      paragraph={t('no_org_description')}
+      actionBtnLabel={t('general:add', { item: t('general:organization').toLowerCase() })}
     />
   );
 };

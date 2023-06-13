@@ -111,10 +111,10 @@ const JoinByAccessCode = ({ navigation }: any) => {
 
   return (
     <PageLayout
-      title={i18n.t('access_code:title')}
+      title={t('title')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
-        primaryActionLabel: i18n.t('general:join'),
+        primaryActionLabel: t('general:join'),
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isJoiningByAccessCode,
       }}
@@ -134,14 +134,14 @@ const JoinByAccessCode = ({ navigation }: any) => {
     >
       <FormLayout>
         <OrganizationIdentity name={organization?.name || ''} uri={organization?.logo || ''} />
-        <Text category="p2">{`${i18n.t('access_code:title')}`}</Text>
-        <Text appearance="hint">{`${i18n.t('access_code:description')}`}</Text>
+        <Text category="p2">{`${t('title')}`}</Text>
+        <Text appearance="hint">{`${t('description')}`}</Text>
         <FormInput
           control={control as any}
           error={errors.code}
-          label={i18n.t('access_code:title')}
+          label={t('title')}
           name="code"
-          placeholder={i18n.t('access_code:form.code.placeholder')}
+          placeholder={t('form.code.placeholder')}
           disabled={isJoiningByAccessCode}
         />
       </FormLayout>
