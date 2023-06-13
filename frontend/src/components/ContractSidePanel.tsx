@@ -110,7 +110,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
           </h3>
           {!(
             contract?.status === ContractStatus.REJECTED ||
-            contract?.status === ContractStatus.VALIDATE_VOLUNTEER
+            contract?.status === ContractStatus.PENDING_VOLUNTEER
           ) && (
             <button
               className="bg-white rounded-md text-turquoise-500 hover:text-turquoise-700 focus:outline-none focus:shadow-blue"
@@ -153,7 +153,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
             />
             {!(
               contract?.status === ContractStatus.REJECTED ||
-              contract?.status === ContractStatus.VALIDATE_VOLUNTEER
+              contract?.status === ContractStatus.PENDING_VOLUNTEER
             ) && (
               <FormReadOnlyElement
                 label={i18n.t('documents:contracts.side_panel.signed')}
@@ -200,7 +200,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
             )}
           </div>
           <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full  fixed bottom-0 right-0 bg-white">
-            {contract.status === ContractStatus.VALIDATE_ONG && (
+            {contract.status === ContractStatus.PENDING_ADMIN && (
               <>
                 <Button
                   label={i18n.t('documents:contracts.side_panel.confirm')}

@@ -27,7 +27,7 @@ export const useContractsQuery = ({
   orderBy,
   orderDirection,
   search,
-  volunteer,
+  volunteerName,
   startDate,
   endDate,
   status,
@@ -37,7 +37,7 @@ export const useContractsQuery = ({
   orderBy?: string;
   orderDirection?: OrderDirection;
   search?: string;
-  volunteer?: string;
+  volunteerName?: string;
   startDate?: Date;
   endDate?: Date;
   status?: ContractStatus;
@@ -50,7 +50,7 @@ export const useContractsQuery = ({
       orderBy,
       orderDirection,
       search,
-      volunteer,
+      volunteerName,
       startDate,
       endDate,
       status,
@@ -62,7 +62,7 @@ export const useContractsQuery = ({
         orderBy,
         orderDirection,
         search,
-        volunteer,
+        volunteerName,
         startDate,
         endDate,
         status,

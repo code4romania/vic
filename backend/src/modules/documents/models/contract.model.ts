@@ -2,6 +2,11 @@ import { IBaseModel } from 'src/common/interfaces/base.model';
 import { ContractEntity } from '../entities/contract.entity';
 import { ContractStatus } from '../enums/contract-status.enum';
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
+import {
+  IVolunteerModel,
+  VolunteerModelTransformer,
+} from 'src/modules/volunteer/model/volunteer.model';
+import { ClientContractStatus } from '../enums/client-contract-status.enum';
 
 export interface IContractModel extends IBaseModel {
   id: string;
@@ -13,6 +18,7 @@ export interface IContractModel extends IBaseModel {
   organizationId: string;
   templateId?: string;
   volunteerId: string;
+  volunteer: IVolunteerModel;
 }
 
 export type CreateContractOptions = Pick<
@@ -27,7 +33,12 @@ export type CreateContractOptions = Pick<
 >;
 
 export type FindManyContractOptions = IBasePaginationFilterModel &
-  Pick<IContractModel, 'organizationId'>;
+  Partial<
+    Pick<IContractModel, 'organizationId' | 'startDate' | 'endDate'> & {
+      volunteerName?: string;
+      status?: ClientContractStatus;
+    }
+  >;
 
 export type FindContractOptions = Partial<
   Pick<IContractModel, 'id' | 'organizationId'>
@@ -51,6 +62,7 @@ export class ContractTransformer {
       startDate: entity.startDate,
       endDate: entity.endDate,
       status: entity.status,
+      volunteer: VolunteerModelTransformer.fromEntity(entity.volunteer),
     };
   }
 

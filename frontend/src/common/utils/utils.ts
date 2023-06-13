@@ -115,8 +115,8 @@ export const ContractStatusMarkerColorMapper = {
   [ContractStatus.ACTIVE]: 'bg-green-500',
   [ContractStatus.CLOSED]: 'bg-cool-gray-800',
   [ContractStatus.NOT_STARTED]: 'bg-blue-500',
-  [ContractStatus.VALIDATE_ONG]: 'bg-yellow-500',
-  [ContractStatus.VALIDATE_VOLUNTEER]: 'bg-yellow-500',
+  [ContractStatus.PENDING_ADMIN]: 'bg-yellow-500',
+  [ContractStatus.PENDING_VOLUNTEER]: 'bg-yellow-500',
   [ContractStatus.REJECTED]: 'bg-red-500',
 };
 
