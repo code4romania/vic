@@ -24,7 +24,7 @@ export type ContractsTableBasicProps = IHOCQueryProps<ContractsTableQueryProps>;
 // set page default params
 const DEFAULT_QUERY_PARAMS = getPaginationQueryParams();
 
-const ContractsTableWithQueryParams = ({ volunteerName }: { volunteerName: string }) => {
+const ContractsTableWithQueryParams = ({ volunteerName }: { volunteerName?: string }) => {
   const queryConfig = {
     ...DEFAULT_QUERY_PARAMS,
     volunteer: StringParam,
