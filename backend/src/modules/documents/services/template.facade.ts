@@ -5,7 +5,9 @@ import { TemplateRepositoryService } from '../repositories/template.repository';
 import {
   CreateTemplateOptions,
   FindManyTemplatesOptions,
+  FindTemplateOptions,
   ITemplateModel,
+  UpdateTemplateOptions,
 } from '../models/template.model';
 
 @Injectable()
@@ -22,5 +24,22 @@ export class TemplateFacade {
     newTemplate: CreateTemplateOptions,
   ): Promise<ITemplateModel> {
     return this.templateRepository.create(newTemplate);
+  }
+
+  public async findOne(
+    findOptions: FindTemplateOptions,
+  ): Promise<ITemplateModel> {
+    return this.templateRepository.find(findOptions);
+  }
+
+  public async update(
+    id: string,
+    updatedTemplate: UpdateTemplateOptions,
+  ): Promise<ITemplateModel> {
+    return this.templateRepository.update(id, updatedTemplate);
+  }
+
+  public async delete(id: string): Promise<string> {
+    return this.templateRepository.delete(id);
   }
 }

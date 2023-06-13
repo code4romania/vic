@@ -754,7 +754,28 @@
     }
   },
   "documents": {
-    "templates": {},
+    "templates": {
+      "table": {
+        "header": {
+          "name": "Denumire",
+          "uses": "Utilizari"
+        }
+      },
+      "actions": {
+        "add": "Adauga template",
+        "delete": {
+          "modal": {
+            "title": "Sigur doriți să ștergeți acest template?",
+            "content": "Această acțiune va șterge definitiv template-ul și toate informațiile asociate acestuia.",
+            "action": "Sterge template-ul"
+          },
+          "success": "Template-ul a fost sters!",
+          "errors": {
+            "TEMPLATE_003": "Eroare la stergerea template-ului!"
+          }
+        }
+      }
+    },
     "template": {
       "add": {
         "heading": "Adauga template",
@@ -776,6 +797,19 @@
             "success": "Template-ul a fost creat!",
             "errors": {
               "TEMPLATE_001": "Eroare la incarcarea documentului"
+            }
+          }
+        }
+      },
+      "edit": {
+        "heading": "Editeaza template",
+        "card_header": "Template contract",
+        "form": {
+          "submit": {
+            "success": "Template-ul a fost updatat!",
+            "errors": {
+              "TEMPLATE_001": "Eroare la incarcarea documentului",
+              "TEMPLATE_002": "Template-ul nu a fost gasit"
             }
           }
         }

@@ -1,14 +1,17 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  Patch,
   Post,
   Query,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { CreateTemplateOptions } from 'src/modules/documents/models/template.model';
@@ -24,6 +27,11 @@ import { TemplatePresenter } from './presenters/template.presenter';
 import { TemplateListItemPresenter } from './presenters/template-list-item.presenter';
 import { GetTemplatesDto } from './dto/get-templates.dto';
 import { GetTemplatesUsecase } from 'src/usecases/documents/get-templates.usecase';
+import { GetOneTemplateUseCase } from 'src/usecases/documents/get-one-template.usecase';
+import { EditTemplateDto } from './dto/edit-template.dto';
+import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
+import { UpdateTemplateUsecase } from 'src/usecases/documents/update-template.usecase';
+import { DeleteTemplateUseCase } from 'src/usecases/documents/delete-template.usecase';
 
 // TODO: guard for organization template
 @ApiBearerAuth()
@@ -33,6 +41,9 @@ export class TemplateController {
   constructor(
     private readonly createTemplateUsecase: CreateTemplateUsecase,
     private readonly getTemplatesUsecase: GetTemplatesUsecase,
+    private readonly getOneTemplateUsecase: GetOneTemplateUseCase,
+    private readonly updateTemplateUsecase: UpdateTemplateUsecase,
+    private readonly deleteTemplateUsecase: DeleteTemplateUseCase,
   ) {}
 
   @Get()
@@ -71,5 +82,33 @@ export class TemplateController {
     );
 
     return new TemplatePresenter(newTemplate);
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: EditTemplateDto })
+  @Patch(':id')
+  async update(
+    @Param('id', UuidValidationPipe) id: string,
+    @Body() updateTemplateDto: EditTemplateDto,
+  ): Promise<TemplatePresenter> {
+    const template = await this.updateTemplateUsecase.execute(
+      id,
+      updateTemplateDto,
+    );
+
+    return new TemplatePresenter(template);
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @Get(':id')
+  async getOne(@Param('id') id: string): Promise<TemplatePresenter> {
+    const template = await this.getOneTemplateUsecase.execute({ id });
+    return new TemplatePresenter(template);
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @Delete(':id')
+  async delete(@Param('id', UuidValidationPipe) id: string): Promise<string> {
+    return this.deleteTemplateUsecase.execute(id);
   }
 }

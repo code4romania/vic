@@ -103,6 +103,9 @@ import { CancelActivityLogUsecase } from './activity-log/cancel-activity-log.use
 import { DocumentsModule } from 'src/modules/documents/documents.module';
 import { CreateTemplateUsecase } from './documents/create-template.usecase';
 import { GetTemplatesUsecase } from './documents/get-templates.usecase';
+import { GetOneTemplateUseCase } from './documents/get-one-template.usecase';
+import { UpdateTemplateUsecase } from './documents/update-template.usecase';
+import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
 
 @Module({
   imports: [
@@ -227,6 +230,9 @@ import { GetTemplatesUsecase } from './documents/get-templates.usecase';
     // Templates
     CreateTemplateUsecase,
     GetTemplatesUsecase,
+    GetOneTemplateUseCase,
+    UpdateTemplateUsecase,
+    DeleteTemplateUseCase,
   ],
   exports: [
     // Organization
@@ -335,6 +341,9 @@ import { GetTemplatesUsecase } from './documents/get-templates.usecase';
     // Templates
     CreateTemplateUsecase,
     GetTemplatesUsecase,
+    GetOneTemplateUseCase,
+    UpdateTemplateUsecase,
+    DeleteTemplateUseCase,
   ],
 })
 export class UseCaseModule {}
