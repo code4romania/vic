@@ -54,6 +54,7 @@ const FormInput: React.FC<FormInputProps> = ({
                 ? [styles.disabledColor, styles.inputText]
                 : [styles.inputText, error ? styles.redText : {}]
             }
+            style={error ? styles.redBorder : {}}
             {...rest}
             onSubmitEditing={handleKeyboardDismiss}
           />
@@ -77,6 +78,9 @@ export default FormInput;
 const themedStyles = StyleService.create({
   container: {
     gap: 4,
+  },
+  redBorder: {
+    borderColor: 'red',
   },
   redText: {
     color: '$color-danger-500',
