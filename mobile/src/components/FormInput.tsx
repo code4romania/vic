@@ -80,7 +80,7 @@ const themedStyles = StyleService.create({
     gap: 4,
   },
   redBorder: {
-    borderColor: 'red',
+    borderColor: '$color-danger-500',
   },
   redText: {
     color: '$color-danger-500',
