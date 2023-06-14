@@ -223,7 +223,9 @@
     "location": "Locatie",
     "description": "Descriere eveniment",
     "tasks": "Taskuri asociate",
-    "attending": "{{numberOfVolunteer}} de persoane participă!",
+    "attending": "{{numberOfVolunteer}} persoane participă!",
+    "attending_of": "{{numberOfVolunteer}} de persoane participă!",
+    "attending_one": "O persoană participă!",
     "type": {
       "public": "Eveniment public",
       "all_organization": "Toata organizatia"
