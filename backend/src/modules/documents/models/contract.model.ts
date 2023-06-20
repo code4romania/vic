@@ -27,6 +27,11 @@ export interface IContractModel extends IBaseModel {
   volunteer: IVolunteerModel;
   template?: ITemplateModel;
   createdByAdmin: IAdminUserModel;
+  rejectedBy?: IAdminUserModel;
+  approvedBy?: IAdminUserModel;
+  rejectedOn?: Date;
+  approvedOn?: Date;
+  rejectionReason?: string;
 }
 
 export type CreateContractOptions = Pick<
@@ -58,7 +63,13 @@ export type FindContractOptions = Partial<
 >;
 
 export type UpdateContractOptions = Partial<
-  Pick<IContractModel, 'path' | 'status'>
+  Pick<IContractModel, 'path' | 'status'> & {
+    approvedById?: string;
+    approvedOn?: Date;
+    rejectedById?: string;
+    rejectedOn?: Date;
+    rejectionReason?: string;
+  }
 >;
 
 export class ContractTransformer {

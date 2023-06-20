@@ -112,6 +112,8 @@ import { CreateContractUsecase } from './documents/create-contract.usecase';
 import { CountPendingContractsUsecase } from './documents/count-pending-contracts.usecase';
 import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
 import { SignContractByVolunteer } from './documents/sign-contract-by-volunteer.usecase';
+import { SignAndConfirmContractUsecase } from './documents/sign-and-confirm-contract.usecase';
+import { RejectContractUsecase } from './documents/reject-contract.usecase';
 
 @Module({
   imports: [
@@ -246,6 +248,9 @@ import { SignContractByVolunteer } from './documents/sign-contract-by-volunteer.
     CountPendingContractsUsecase,
     GetOneContractUsecase,
     SignContractByVolunteer,
+    SignAndConfirmContractUsecase,
+    SignAndConfirmContractUsecase,
+    RejectContractUsecase,
   ],
   exports: [
     // Organization
@@ -364,6 +369,9 @@ import { SignContractByVolunteer } from './documents/sign-contract-by-volunteer.
     CountPendingContractsUsecase,
     GetOneContractUsecase,
     SignContractByVolunteer,
+    SignAndConfirmContractUsecase,
+    SignAndConfirmContractUsecase,
+    RejectContractUsecase,
   ],
 })
 export class UseCaseModule {}

@@ -80,7 +80,8 @@
     "select_interval": "Selecteaza interval",
     "save_draft": "Salveaza ca draft",
     "other": "Alta optiune",
-    "add_file": "Adauga fisier aici"
+    "add_file": "Adauga fisier aici",
+    "confirm": "Confirma"
   },
   "header": {
     "login": "Login",
@@ -888,7 +889,16 @@
       "rejected_on": "Data refuzare",
       "actions": {
         "confirm": "Confirma si semneaza",
-        "reject": "Refuza"
+        "reject": "Refuza",
+        "reject_no_message": "Refuza fara mesaj"
+      },
+      "reject_modal": {
+        "title": "Argumentează respingere",
+        "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii."
+      },
+      "submit": {
+        "confirm": "Contractul a fost confirmat",
+        "reject": "Contractul a fost respins"
       }
     },
     "popover": {

@@ -18,6 +18,7 @@ import {
 import StatusWithMarker from './StatusWithMarker';
 import { ContractStatus } from '../common/enums/contract-status.enum';
 import { useTranslation } from 'react-i18next';
+import UploadFileModal from './UploadFileModal';
 
 interface ContractSidePanelProps {
   isOpen: boolean;
@@ -33,6 +34,9 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
 
   // reject modal state
   const [isRejectModalOpen, setIsRejectModalOpen] = useState<boolean>(false);
+  // aprove modal state
+  const [isConfirmAndSignContractModalOpen, setIsConfirmAndSignContractModalOpen] =
+    useState<boolean>(false);
 
   // mutations
   const { mutateAsync: approveContract, isLoading: isApproveLoading } =
@@ -66,16 +70,24 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
     if (contract) navigate(`/documents/contracts/${contract.template.id}/edit`);
   };
 
-  const onApprove = (id: string) => {
-    approveContract(id, {
-      onSuccess: () => {
-        useSuccessToast(t('documents:contracts.form.submit.messages.confirm'));
-        onClose(true);
+  const onApprove = (contract?: File) => {
+    if (!contract) return;
+
+    approveContract(
+      {
+        id: contractId as string,
+        contract,
       },
-      onError: (error) => {
-        useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+      {
+        onSuccess: () => {
+          useSuccessToast(t('contract.submit.confirm'));
+          onClose(true);
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+        },
       },
-    });
+    );
   };
 
   const onConfirmRejectModal = (rejectMessage?: string) => {
@@ -84,7 +96,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
         { id: contract?.id, rejectMessage },
         {
           onSuccess: () => {
-            useSuccessToast(t('documents:contracts.form.submit.messages.reject'));
+            useSuccessToast(t('contract.submit.reject'));
             onClose(true);
           },
           onError: (error) => {
@@ -206,7 +218,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
                 <Button
                   label={t('contract.actions.confirm')}
                   className="btn-primary"
-                  onClick={onApprove.bind(null, contract.id)}
+                  onClick={setIsConfirmAndSignContractModalOpen.bind(null, true)}
                   aria-label={`${t('contract.actions.confirm')}`}
                   icon={<CheckIcon className="h-5 w-5" />}
                   type="button"
@@ -215,7 +227,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
                   label={t('contract.actions.reject')}
                   className="btn-outline-secondary"
                   onClick={setIsRejectModalOpen.bind(null, true)}
-                  aria-label={`${t('dcontract.actions.reject')}`}
+                  aria-label={`${t('contract.actions.reject')}`}
                   icon={<XMarkIcon className="h-5 w-5" />}
                   type="button"
                 />
@@ -226,13 +238,22 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
       )}
       {isRejectModalOpen && (
         <RejectTextareaModal
-          label={t('documents:contracts.reject_modal.description')}
-          title={t('documents:contracts.reject_modal.title')}
+          label={t('contract.reject_modal.description')}
+          title={t('contract.reject_modal.title')}
           onClose={setIsRejectModalOpen.bind(null, false)}
           onConfirm={onConfirmRejectModal}
-          secondaryBtnLabel={`${t('documents:contracts.reject_modal.send')}`}
-          primaryBtnLabel={`${t('documents:contracts.side_panel.reject')}`}
+          secondaryBtnLabel={`${t('contract.actions.reject_no_message')}`}
+          primaryBtnLabel={`${t('contract.actions.reject')}`}
           primaryBtnClassName="btn-danger"
+        />
+      )}
+
+      {isConfirmAndSignContractModalOpen && (
+        <UploadFileModal
+          description={t('contract.upload.description')}
+          title={t('contract.upload.title')}
+          onClose={setIsConfirmAndSignContractModalOpen.bind(null, false)}
+          onConfirm={onApprove}
         />
       )}
     </SidePanel>

@@ -31,20 +31,20 @@ export const getContract = async (contractId: string): Promise<IContract> => {
   return API.get(`contract/${contractId}`).then((res) => res.data);
 };
 
+export const approveContract = async (id: string, contract: File): Promise<IContract> => {
+  const formData = new FormData();
+  formData.append('contract', contract);
+  return API.patch(`contract/${id}/confirm`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }).then((res) => res.data);
+};
+
+export const rejectContract = async (id: string, rejectionReason?: string): Promise<IContract> => {
+  return API.patch(`contract/${id}/reject`, { rejectionReason }).then((res) => res.data);
+};
+
 export const deleteContract = (id: string): Promise<void> => {
   // return API.delete(`/documents/contracts/${id}`).then((res) => res.data);
-  console.log(id);
-  return Promise.resolve();
-};
-
-export const rejectContract = (id: string, rejectMessage?: string): Promise<void> => {
-  // return API.patch(`/documents/contracts/${id}/reject`, { rejectMessage });
-  console.log(id, rejectMessage);
-  return Promise.resolve();
-};
-
-export const approveContract = (id: string): Promise<void> => {
-  // return API.patch(`/documents/contracts/${id}/approve`);
   console.log(id);
   return Promise.resolve();
 };

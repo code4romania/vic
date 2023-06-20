@@ -3,11 +3,14 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { CreateContractUsecase } from 'src/usecases/documents/create-contract.usecase';
@@ -24,6 +27,10 @@ import { CountPendingContractsUsecase } from 'src/usecases/documents/count-pendi
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { ContractListItemPresenter } from './presenters/contract-list-item.presenter';
 import { GetOneContractUsecase } from 'src/usecases/documents/get-one-contract.usecase';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { SignAndConfirmContractUsecase } from 'src/usecases/documents/sign-and-confirm-contract.usecase';
+import { RejectContractUsecase } from 'src/usecases/documents/reject-contract.usecase';
+import { RejectContractDto } from './dto/reject-contact.dto';
 
 // TODO: guard for organization contract
 @ApiBearerAuth()
@@ -35,6 +42,8 @@ export class ContractController {
     private readonly getManyContractsUsecase: GetManyContractsUsecase,
     private readonly countPendingContractsUsecase: CountPendingContractsUsecase,
     private readonly getOneContractUsecase: GetOneContractUsecase,
+    private readonly signAndConfirmContractUsecase: SignAndConfirmContractUsecase,
+    private readonly rejectContractUsecase: RejectContractUsecase,
   ) {}
 
   @Get()
@@ -89,6 +98,42 @@ export class ContractController {
       organizationId,
       createdByAdminId: id,
     });
+
+    return new ContractPresenter(newContract);
+  }
+
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'contract', maxCount: 1 }]))
+  @ApiParam({ name: 'contractId', type: 'string' })
+  @Patch(':contractId/confirm')
+  async sign(
+    @Param('contractId', UuidValidationPipe) contractId: string,
+    @ExtractUser() { organizationId, id }: IAdminUserModel,
+    @UploadedFiles() { contract }: { contract: Express.Multer.File[] },
+  ): Promise<ContractPresenter> {
+    const newContract = await this.signAndConfirmContractUsecase.execute(
+      contractId,
+      organizationId,
+      id,
+      contract,
+    );
+
+    return new ContractPresenter(newContract);
+  }
+
+  @ApiParam({ name: 'contractId', type: 'string' })
+  @Patch(':contractId/reject')
+  async reject(
+    @Param('contractId', UuidValidationPipe) contractId: string,
+    @ExtractUser() { organizationId, id }: IAdminUserModel,
+    @Body() { rejectionReason }: RejectContractDto,
+  ): Promise<ContractPresenter> {
+    const newContract = await this.rejectContractUsecase.execute(
+      contractId,
+      organizationId,
+      id,
+      rejectionReason,
+    );
 
     return new ContractPresenter(newContract);
   }

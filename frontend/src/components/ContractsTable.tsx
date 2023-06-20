@@ -244,7 +244,7 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     const contractsValidateOngMenuItems = [
       ...contractsMenuItems,
       {
-        label: i18n.t('documents:contracts.side_panel.confirm'),
+        label: t('documents:contracts.side_panel.confirm'),
         icon: <CheckIcon className="menu-icon" />,
         onClick: onSignContract,
       },

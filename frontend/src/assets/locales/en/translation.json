@@ -80,7 +80,8 @@
     "select_interval": "Selecteaza interval",
     "save_draft": "Salveaza ca draft",
     "other": "Alta optiune",
-    "add_file": "Adauga fisier aici"
+    "add_file": "Adauga fisier aici",
+    "confirm": "Confirma"
   },
   "header": {
     "login": "Login",
@@ -815,6 +816,89 @@
             }
           }
         }
+      }
+    },
+    "contracts": {
+      "statistics": {
+        "title": "Contracte in curs de validare",
+        "action": "Vezi lista",
+        "total": "{{total}} contracte"
+      },
+      "filters": {
+        "start_date": "Data inceput perioada contract",
+        "end_date": "Data sfarsit perioada contract",
+        "status": "Status contract"
+      },
+      "actions": {
+        "download": "Descarca aprobate",
+        "add": "Genereaza contract"
+      },
+      "headers": {
+        "contract_number": "Numar contract",
+        "volunteer": "Voluntar",
+        "status": "Status",
+        "start_date": "Data inceput",
+        "end_date": "Data final"
+      }
+    },
+    "contract": {
+      "add": {
+        "form": {
+          "volunteer": {
+            "label": "Voluntar*",
+            "required": "Alegerea voluntarului este obligatorie"
+          },
+          "template": {
+            "label": "Template*",
+            "required": "Alegerea template-ului este obligatorie"
+          },
+          "contract_number": {
+            "label": "Numar contract*",
+            "required": "Numarul este obligatoriu",
+            "max": "Numarul trebuie sa aiba maxim 10 caractere"
+          },
+          "start_date": {
+            "label": "Data inceput contract*",
+            "required": "Data de inceput este obligatorie"
+          },
+          "end_date": {
+            "label": "Data final contract*",
+            "required": "Data de final este obligatorie"
+          }
+        },
+        "submit": {
+          "label": "Trimite catre voluntar",
+          "success": "Contractul a fost generat"
+        }
+      },
+      "status": {
+        "PENDING_VOLUNTEER": "Validare voluntar",
+        "PENDING_ADMIN": "Validare admin",
+        "REJECTED": "Respins",
+        "ACTIVE": "Activ",
+        "CLOSED": "Inchis",
+        "NOT_STARTED": "Neinceput"
+      },
+      "period": "Perioada contract",
+      "signed": "Semnat fizic",
+      "template": "Template utilizat",
+      "generated_by": "Generat de",
+      "generated_on": "Data generare",
+      "approved_on": "Data aprobare",
+      "rejected_by": "Refuzat de",
+      "rejected_on": "Data refuzare",
+      "actions": {
+        "confirm": "Confirma si semneaza",
+        "reject": "Refuza",
+        "reject_no_message": "Refuza fara mesaj"
+      },
+      "reject_modal": {
+        "title": "Argumentează respingere",
+        "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii."
+      },
+      "submit": {
+        "confirm": "Contractul a fost confirmat",
+        "reject": "Contractul a fost respins"
       }
     },
     "popover": {

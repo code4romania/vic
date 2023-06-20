@@ -100,9 +100,12 @@ export const useAddContractMutation = () => {
 };
 
 export const useApproveContractMutation = () => {
-  return useMutation((id: string) => approveContract(id), {
-    onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
-  });
+  return useMutation(
+    ({ id, contract }: { id: string; contract: File }) => approveContract(id, contract),
+    {
+      onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
+    },
+  );
 };
 
 export const useRejectContractMutation = () => {
