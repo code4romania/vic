@@ -50,6 +50,7 @@ export class ContractRepositoryService
       startDate,
       endDate,
       volunteerName,
+      volunteerId,
     } = findOptions;
 
     const query = this.contractRepository
@@ -124,6 +125,10 @@ export class ContractRepositoryService
       query.andWhere('user.name = :volunteerName', {
         volunteerName,
       });
+    }
+
+    if (volunteerId) {
+      query.andWhere('contract.volunteerId = :volunteerId', { volunteerId });
     }
 
     return this.paginateQuery(

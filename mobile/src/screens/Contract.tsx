@@ -5,16 +5,16 @@ import OrganizationIdentity from '../components/OrganizationIdentity';
 import i18n from '../common/config/i18n';
 import { Text } from '@ui-kitten/components';
 import ContractItem from '../components/ContractItem';
-import { ContractStatus } from '../common/enums/contract.status.enum';
 import FormLayout from '../layouts/FormLayout';
 import { ButtonType } from '../common/enums/button-type.enum';
+import { ContractStatus } from '../common/enums/contract-status.enum';
 
 const contract = {
   id: '1234',
   name: 'Contract 123123',
-  status: ContractStatus.VALIDATE_ONG,
-  startDate: new Date('2023-02-01'),
-  endDate: new Date('2023-06-30'),
+  status: ContractStatus.PENDING_ADMIN,
+  startDate: '2023-02-01',
+  endDate: '2023-02-01',
 };
 
 const Contract = ({ navigation }: any) => {
@@ -33,11 +33,11 @@ const Contract = ({ navigation }: any) => {
       actionsOptions={{
         onPrimaryActionButtonClick: uploadContract,
         primaryActionLabel:
-          contract.status === ContractStatus.VALIDATE_VOLUNTEER
+          contract.status === ContractStatus.PENDING_VOLUNTEER
             ? i18n.t('documents:upload')
             : i18n.t('documents:cancel'),
         primaryBtnType:
-          contract.status === ContractStatus.VALIDATE_VOLUNTEER
+          contract.status === ContractStatus.PENDING_VOLUNTEER
             ? ButtonType.PRIMARY
             : ButtonType.DANGER,
       }}
@@ -45,7 +45,7 @@ const Contract = ({ navigation }: any) => {
       <Disclaimer
         color="yellow"
         text={
-          contract.status === ContractStatus.VALIDATE_ONG
+          contract.status === ContractStatus.PENDING_ADMIN
             ? i18n.t('documents:disclaimer_ong')
             : i18n.t('documents:disclaimer_volunteer')
         }
@@ -53,17 +53,16 @@ const Contract = ({ navigation }: any) => {
       <FormLayout>
         <OrganizationIdentity name="Asociația ZEN" uri="https://picsum.photos/200" />
         <Text>{`${
-          contract.status === ContractStatus.VALIDATE_ONG
+          contract.status === ContractStatus.PENDING_ADMIN
             ? i18n.t('documents:contract_description_ong')
             : i18n.t('documents:contract_description_volunteer')
         }`}</Text>
         <ContractItem
           id={contract.id}
           title={contract.name}
-          iconRightName="download"
           startDate={contract.startDate}
           endDate={contract.endDate}
-          status={ContractStatus.PENDING}
+          status={ContractStatus.PENDING_VOLUNTEER}
           onPress={onContractPress}
         />
       </FormLayout>

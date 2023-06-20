@@ -1,71 +1,41 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Divider, Text } from '@ui-kitten/components';
+import { Text } from '@ui-kitten/components';
 import OrganizationIdentity from '../components/OrganizationIdentity';
-import i18n from '../common/config/i18n';
 import { StyleSheet } from 'react-native';
-import ContractItem from '../components/ContractItem';
-import { ContractStatus } from '../common/enums/contract.status.enum';
-import { IContractListItem } from '../common/interfaces/contract.interface';
 import { View } from 'react-native';
-import { SectionList } from 'react-native';
+import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import ContractList from '../components/ContractList';
+import { ContractStatus } from '../common/enums/contract-status.enum';
+import { useTranslation } from 'react-i18next';
+import { useContractsInfiniteQuery } from '../services/contract/contract.service';
+import { mapPagesToItems } from '../common/utils/helpers';
+import { IContractListItem } from '../common/interfaces/contract-list-item.interface';
+import LoadingScreen from '../components/LoadingScreen';
+import { JSONStringifyError } from '../common/utils/utils';
 
-const Data = [
-  {
-    title: i18n.t('documents:contracts_proposal'),
-    data: [
-      {
-        id: '1',
-        name: 'Contract 1',
-        status: ContractStatus.PENDING,
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2023-12-31'),
-      },
-      {
-        id: '2',
-        name: 'Contract 2',
-        status: ContractStatus.PENDING,
-        startDate: new Date('2023-02-01'),
-        endDate: new Date('2023-06-30'),
-      },
-      {
-        id: '3',
-        name: 'Contract 3',
-        status: ContractStatus.PENDING,
-        startDate: new Date('2023-03-01'),
-        endDate: new Date('2023-03-31'),
-      },
-    ],
-  },
-  {
-    title: i18n.t('documents:contracts_history'),
-    data: [
-      {
-        id: '123',
-        name: 'Contract 12312',
-        status: ContractStatus.ACTIVE,
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2023-12-31'),
-      },
-      {
-        id: '1234',
-        name: 'Contract 123123',
-        status: ContractStatus.CLOSED,
-        startDate: new Date('2023-02-01'),
-        endDate: new Date('2023-06-30'),
-      },
-      {
-        id: '1435',
-        name: 'Contract 123123123',
-        status: ContractStatus.CLOSED,
-        startDate: new Date('2023-03-01'),
-        endDate: new Date('2023-03-31'),
-      },
-    ],
-  },
-];
+interface ContractsProps {
+  navigation: any;
+  volunteerId: string;
+}
 
-const Documents = ({ navigation }: any) => {
+const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
+  // translations
+  const { t } = useTranslation('documents');
+
+  // load pending contracts
+  const {
+    data: pendingContracts,
+    isFetching: isLoadingPendingContracts,
+    error: errorFetchingPendingContracts,
+  } = useContractsInfiniteQuery(volunteerId, ContractStatus.PENDING_VOLUNTEER);
+
+  const {
+    data: closedActiveContracts,
+    isFetching: isLoadingClosedActiveContracts,
+    error: errorFetchingClosedActiveContractsContracts,
+  } = useContractsInfiniteQuery(volunteerId, ContractStatus.ACTIVE);
+
   const onContractPress = (id: string) => {
     console.log('contract pressed', id);
   };
@@ -74,32 +44,54 @@ const Documents = ({ navigation }: any) => {
     navigation.navigate('contract', { id });
   };
 
+  if (errorFetchingPendingContracts) {
+    return <Text>{JSONStringifyError(errorFetchingPendingContracts as any)}</Text>;
+  }
+
+  if (errorFetchingClosedActiveContractsContracts) {
+    return <Text>{JSONStringifyError(errorFetchingClosedActiveContractsContracts as any)}</Text>;
+  }
+
+  if (isLoadingPendingContracts || isLoadingClosedActiveContracts) {
+    return <LoadingScreen />;
+  }
+
   return (
-    <PageLayout onBackButtonPress={navigation.goBack} title={i18n.t('general:documents')}>
+    <>
+      <ContractList
+        heading={t('sections.pending')}
+        status={ContractStatus.PENDING_VOLUNTEER}
+        contracts={mapPagesToItems<IContractListItem>(pendingContracts?.pages)}
+        onContractItemPress={onPendingContractPress}
+      />
+      <ContractList
+        heading={t('sections.closed')}
+        status={ContractStatus.CLOSED}
+        contracts={mapPagesToItems<IContractListItem>(closedActiveContracts?.pages)}
+        onContractItemPress={onContractPress}
+      />
+    </>
+  );
+};
+
+const Documents = ({ navigation }: any) => {
+  // translations
+  const { t } = useTranslation('documents');
+  const { activeOrganization } = useActiveOrganization();
+
+  return (
+    <PageLayout onBackButtonPress={navigation.goBack} title={t('general:documents')}>
       <View style={styles.container}>
-        <OrganizationIdentity name="Asociația ZEN" uri="https://picsum.photos/200" />
-        <Text>{`${i18n.t('documents:description')}`}</Text>
-        <SectionList
-          sections={Data}
-          renderItem={({ item }: { item: IContractListItem }) => (
-            <ContractItem
-              id={item.id}
-              title={item.name}
-              status={item.status}
-              startDate={item.startDate}
-              endDate={item.endDate}
-              iconRightName={item.status === ContractStatus.PENDING ? 'chevron-right' : 'download'}
-              onPress={
-                item.status === ContractStatus.PENDING ? onPendingContractPress : onContractPress
-              }
-            />
-          )}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text category="p2" style={styles.sectionTitle}>
-              {title}
-            </Text>
-          )}
-          ItemSeparatorComponent={Divider}
+        {activeOrganization && (
+          <OrganizationIdentity
+            name={activeOrganization.name}
+            uri={activeOrganization?.logo || ''}
+          />
+        )}
+        <Text>{`${t('documents:description')}`}</Text>
+        <Contracts
+          navigation={navigation}
+          volunteerId={activeOrganization?.volunteerId as string}
         />
       </View>
     </PageLayout>
@@ -109,10 +101,8 @@ const Documents = ({ navigation }: any) => {
 export default Documents;
 
 const styles = StyleSheet.create({
-  sectionTitle: {
-    paddingTop: 16,
-  },
   container: {
+    flex: 1,
     gap: 16,
   },
 });

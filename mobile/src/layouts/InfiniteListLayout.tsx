@@ -5,7 +5,7 @@ import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interfac
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-const ListEmptyComponent = () => {
+export const ListEmptyComponent = () => {
   const { t } = useTranslation('general');
 
   return (

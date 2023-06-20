@@ -1,19 +1,18 @@
 import { Icon, Text, withStyles } from '@ui-kitten/components';
 import React from 'react';
 import { View } from 'react-native';
-import { Pressable } from 'react-native';
 import GrayIcon from './GreyIcon';
 import { formatDate } from '../common/utils/utils';
-import { ContractStatus } from '../common/enums/contract.status.enum';
 import i18n from '../common/config/i18n';
+import PressableContainer from './PressableContainer';
+import { ContractStatus } from '../common/enums/contract-status.enum';
 
 interface ContractItemProps {
   id: string;
   title: string;
   status: ContractStatus;
-  startDate: Date;
-  endDate: Date;
-  iconRightName: string;
+  startDate: string;
+  endDate: string;
   onPress: (id: string) => void;
   eva?: any;
 }
@@ -24,7 +23,6 @@ const ContractItem = ({
   status,
   startDate,
   endDate,
-  iconRightName,
   onPress,
   eva,
 }: ContractItemProps) => {
@@ -33,20 +31,13 @@ const ContractItem = ({
   };
 
   return (
-    <Pressable
-      onPress={onContractPress}
-      style={({ pressed }) =>
-        pressed
-          ? { backgroundColor: eva.theme['cool-gray-50'] }
-          : { backgroundColor: eva.theme['cool-basic-100'] }
-      }
-    >
+    <PressableContainer onPress={onContractPress}>
       <View style={eva.style.container}>
         <GrayIcon
           name={'file-text'}
           style={{
             color:
-              status === ContractStatus.PENDING
+              status === ContractStatus.PENDING_VOLUNTEER
                 ? eva.theme['yellow-500']
                 : eva.theme['cool-gray-500'],
           }}
@@ -61,16 +52,19 @@ const ContractItem = ({
             ellipsizeMode="tail"
             numberOfLines={1}
           >{`${formatDate(startDate)} - ${formatDate(endDate)} ${
-            status === ContractStatus.PENDING
+            status === ContractStatus.PENDING_VOLUNTEER
               ? ''
               : `(${i18n.t(`documents:contract_status.${status}`)})`
           }`}</Text>
         </View>
         <View style={eva.style.iconWrapper}>
-          <Icon name={iconRightName} style={eva.style.icon} />
+          <Icon
+            name={status === ContractStatus.PENDING_VOLUNTEER ? 'chevron-right' : 'download'}
+            style={eva.style.icon}
+          />
         </View>
       </View>
-    </Pressable>
+    </PressableContainer>
   );
 };
 

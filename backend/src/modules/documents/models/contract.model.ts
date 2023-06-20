@@ -34,7 +34,10 @@ export type CreateContractOptions = Pick<
 
 export type FindManyContractOptions = IBasePaginationFilterModel &
   Partial<
-    Pick<IContractModel, 'organizationId' | 'startDate' | 'endDate'> & {
+    Pick<
+      IContractModel,
+      'organizationId' | 'startDate' | 'endDate' | 'volunteerId'
+    > & {
       volunteerName?: string;
       status?: ClientContractStatus;
     }

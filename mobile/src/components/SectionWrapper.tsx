@@ -21,7 +21,6 @@ const SectionWrapper = ({ children, ...sectionHeaderProps }: SectionWrapperProps
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    gap: 16,
     flexDirection: 'column',
   },
 });
