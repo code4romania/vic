@@ -147,6 +147,8 @@ export class ContractRepositoryService
         volunteer: {
           user: true,
         },
+        template: true,
+        createdByAdmin: true,
       },
     });
 

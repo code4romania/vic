@@ -2,7 +2,6 @@ import { ArrowDownTrayIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import i18n from '../common/config/i18n';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { ContractStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
@@ -18,6 +17,7 @@ import {
 } from '../services/contracts/contracts.service';
 import StatusWithMarker from './StatusWithMarker';
 import { ContractStatus } from '../common/enums/contract-status.enum';
+import { useTranslation } from 'react-i18next';
 
 interface ContractSidePanelProps {
   isOpen: boolean;
@@ -26,6 +26,9 @@ interface ContractSidePanelProps {
 }
 
 const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelProps) => {
+  // translations
+  const { t } = useTranslation('documents');
+
   const navigate = useNavigate();
 
   // reject modal state
@@ -34,6 +37,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
   // mutations
   const { mutateAsync: approveContract, isLoading: isApproveLoading } =
     useApproveContractMutation();
+
   const { mutateAsync: rejectContract, isLoading: isRejectLoading } = useRejectContractMutation();
   // get one query
   const { data: contract, error: contractError } = useContractQuery(contractId as string);
@@ -51,7 +55,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
   };
 
   const onGeneratedByClick = () => {
-    if (contract) navigate(`/actions-archive?author=${contract.generatedBy?.name}`);
+    if (contract) navigate(`/actions-archive?author=${contract.createdBy?.name}`);
   };
 
   const onRejectedByClick = () => {
@@ -65,7 +69,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
   const onApprove = (id: string) => {
     approveContract(id, {
       onSuccess: () => {
-        useSuccessToast(i18n.t('documents:contracts.form.submit.messages.confirm'));
+        useSuccessToast(t('documents:contracts.form.submit.messages.confirm'));
         onClose(true);
       },
       onError: (error) => {
@@ -80,7 +84,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
         { id: contract?.id, rejectMessage },
         {
           onSuccess: () => {
-            useSuccessToast(i18n.t('documents:contracts.form.submit.messages.reject'));
+            useSuccessToast(t('documents:contracts.form.submit.messages.reject'));
             onClose(true);
           },
           onError: (error) => {
@@ -106,7 +110,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
       <div className="flex justify-between items-center text-center sm:text-left px-6">
         <div className="flex gap-3 items-center">
           <h3 className="sm:text-lg lg:text-xl leading-6 font-robotoBold truncate">
-            {`${i18n.t('general:contract')} ${contract?.number}`}
+            {`${t('general:contract')} ${contract?.contractNumber}`}
           </h3>
           {!(
             contract?.status === ContractStatus.REJECTED ||
@@ -137,18 +141,18 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
         <>
           <div className="grow flex flex-col gap-6 pb-24 px-6 overflow-y-auto">
             <FormReadOnlyElement
-              label={i18n.t('volunteer:name', { status: '' })}
+              label={t('volunteer:name', { status: '' })}
               value={contract.volunteer.name}
               onClick={onVolunteerClick}
             />
             <div className="flex gap-2.5 flex-col">
-              <small className="text-cool-gray-500">{i18n.t('general:status')}</small>
+              <small className="text-cool-gray-500">{t('general:status')}</small>
               <StatusWithMarker markerColor={ContractStatusMarkerColorMapper[contract.status]}>
-                {i18n.t(`documents:contracts.display_status.${contract.status}`)}
+                {t(`contract.status.${contract.status}`)}
               </StatusWithMarker>
             </div>
             <FormReadOnlyElement
-              label={i18n.t('documents:contracts.side_panel.period')}
+              label={t('contract.period')}
               value={`${formatDate(contract.startDate)} - ${formatDate(contract.endDate)}`}
             />
             {!(
@@ -156,46 +160,43 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
               contract?.status === ContractStatus.PENDING_VOLUNTEER
             ) && (
               <FormReadOnlyElement
-                label={i18n.t('documents:contracts.side_panel.signed')}
-                value={contract.signed}
+                label={t('contract.signed')}
+                value={`${t('general:unspecified')}`}
               />
             )}
             <FormReadOnlyElement
-              label={i18n.t('documents:contracts.side_panel.template')}
+              label={t('contract.template')}
               value={contract.template.name}
               onClick={onTemplateClick}
             />
             <hr />
             <FormReadOnlyElement
-              label={i18n.t('documents:contracts.side_panel.generated_by')}
-              value={contract.generatedBy.name}
+              label={t('contract.generated_by')}
+              value={contract.createdBy.name}
               onClick={onGeneratedByClick}
             />
             <FormReadOnlyElement
-              label={i18n.t('documents:contracts.side_panel.generated_on')}
-              value={formatDate(contract.generatedOn)}
+              label={t('contract.generated_on')}
+              value={formatDate(contract.createdOn)}
             />
             {contract.approvedOn && (
               <FormReadOnlyElement
-                label={i18n.t('documents:contracts.side_panel.approved_on')}
+                label={t('contract.approved_on')}
                 value={formatDate(contract.approvedOn)}
               />
             )}
             {contract.status === ContractStatus.REJECTED && (
               <>
                 <FormReadOnlyElement
-                  label={i18n.t('documents:contracts.side_panel.rejected_by')}
+                  label={t('contract.rejected_by')}
                   value={contract.rejectedBy?.name}
                   onClick={onRejectedByClick}
                 />
                 <FormReadOnlyElement
-                  label={i18n.t('documents:contracts.side_panel.rejected_on')}
+                  label={t('contract.rejected_on')}
                   value={formatDate(contract.rejectedOn)}
                 />
-                <FormReadOnlyElement
-                  label={i18n.t('general:reason')}
-                  value={contract.rejectionReason}
-                />
+                <FormReadOnlyElement label={t('general:reason')} value={contract.rejectionReason} />
               </>
             )}
           </div>
@@ -203,18 +204,18 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
             {contract.status === ContractStatus.PENDING_ADMIN && (
               <>
                 <Button
-                  label={i18n.t('documents:contracts.side_panel.confirm')}
+                  label={t('contract.actions.confirm')}
                   className="btn-primary"
                   onClick={onApprove.bind(null, contract.id)}
-                  aria-label={`${i18n.t('documents:contracts.side_panel.confirm')}`}
+                  aria-label={`${t('contract.actions.confirm')}`}
                   icon={<CheckIcon className="h-5 w-5" />}
                   type="button"
                 />
                 <Button
-                  label={i18n.t('documents:contracts.side_panel.reject')}
-                  className="btn-text-danger"
+                  label={t('contract.actions.reject')}
+                  className="btn-outline-secondary"
                   onClick={setIsRejectModalOpen.bind(null, true)}
-                  aria-label={`${i18n.t('documents:contracts.side_panel.reject')}`}
+                  aria-label={`${t('dcontract.actions.reject')}`}
                   icon={<XMarkIcon className="h-5 w-5" />}
                   type="button"
                 />
@@ -225,12 +226,12 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
       )}
       {isRejectModalOpen && (
         <RejectTextareaModal
-          label={i18n.t('documents:contracts.reject_modal.description')}
-          title={i18n.t('documents:contracts.reject_modal.title')}
+          label={t('documents:contracts.reject_modal.description')}
+          title={t('documents:contracts.reject_modal.title')}
           onClose={setIsRejectModalOpen.bind(null, false)}
           onConfirm={onConfirmRejectModal}
-          secondaryBtnLabel={`${i18n.t('documents:contracts.reject_modal.send')}`}
-          primaryBtnLabel={`${i18n.t('documents:contracts.side_panel.reject')}`}
+          secondaryBtnLabel={`${t('documents:contracts.reject_modal.send')}`}
+          primaryBtnLabel={`${t('documents:contracts.side_panel.reject')}`}
           primaryBtnClassName="btn-danger"
         />
       )}

@@ -7,6 +7,11 @@ import {
   VolunteerModelTransformer,
 } from 'src/modules/volunteer/model/volunteer.model';
 import { ClientContractStatus } from '../enums/client-contract-status.enum';
+import { ITemplateModel, TemplateTransformer } from './template.model';
+import {
+  AdminUserTransformer,
+  IAdminUserModel,
+} from 'src/modules/user/models/admin-user.model';
 
 export interface IContractModel extends IBaseModel {
   id: string;
@@ -20,6 +25,8 @@ export interface IContractModel extends IBaseModel {
   volunteerId: string;
   fileName: string;
   volunteer: IVolunteerModel;
+  template?: ITemplateModel;
+  createdByAdmin: IAdminUserModel;
 }
 
 export type CreateContractOptions = Pick<
@@ -31,7 +38,7 @@ export type CreateContractOptions = Pick<
   | 'endDate'
   | 'templateId'
   | 'volunteerId'
->;
+> & { createdByAdminId: string };
 
 export type FindManyContractOptions = IBasePaginationFilterModel &
   Partial<
@@ -75,6 +82,8 @@ export class ContractTransformer {
       fileName:
         'Contract_' + entity.contractNumber + `.${entity.path.split('.')[1]}`,
       volunteer: VolunteerModelTransformer.fromEntity(entity.volunteer),
+      template: TemplateTransformer.fromEntity(entity.template),
+      createdByAdmin: AdminUserTransformer.fromEntity(entity.createdByAdmin),
     };
   }
 
@@ -88,6 +97,7 @@ export class ContractTransformer {
     entity.endDate = model.endDate;
     entity.templateId = model.templateId;
     entity.volunteerId = model.volunteerId;
+    entity.createdByAdminId = model.createdByAdminId;
 
     return entity;
   }

@@ -27,24 +27,8 @@ export const getActiveCountractsCount = async (): Promise<number> => {
   return API.get('contract/active').then((res) => res.data);
 };
 
-export const getContract = (id: string): Promise<IContract> => {
-  // return API.get(`/${id}`).then((res) => res.data);
-  return Promise.resolve({
-    id,
-    number: 12345,
-    volunteer: { id: 'VOL001', name: 'John Doe' },
-    status: ContractStatus.PENDING_ADMIN,
-    startDate: new Date('2023-06-01'),
-    endDate: new Date('2023-12-31'),
-    signed: 'John Doe',
-    template: { id: 'TMPL001', name: 'Volunteer Contract Template' },
-    generatedBy: { id: 'USR001', name: 'Admin User' },
-    generatedOn: new Date('2023-05-30'),
-    // approvedOn: new Date('2023-05-31'),
-    // rejectedBy: { id: 'USR002', name: 'Manager User' },
-    // rejectedOn: new Date('2023-05-31'),
-    // rejectionReason: 'Insufficient experience',
-  });
+export const getContract = async (contractId: string): Promise<IContract> => {
+  return API.get(`contract/${contractId}`).then((res) => res.data);
 };
 
 export const deleteContract = (id: string): Promise<void> => {
