@@ -60,13 +60,11 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
     <>
       <ContractList
         heading={t('sections.pending')}
-        status={ContractStatus.PENDING_VOLUNTEER}
         contracts={mapPagesToItems<IContractListItem>(pendingContracts?.pages)}
         onContractItemPress={onPendingContractPress}
       />
       <ContractList
         heading={t('sections.closed')}
-        status={ContractStatus.CLOSED}
         contracts={mapPagesToItems<IContractListItem>(closedActiveContracts?.pages)}
         onContractItemPress={onContractPress}
       />

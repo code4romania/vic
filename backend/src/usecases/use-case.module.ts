@@ -110,6 +110,7 @@ import { GetAllTemplatesUsecase } from './documents/get-all-templates.usecase';
 import { GetManyContractsUsecase } from './documents/get-many-contracts.usecase';
 import { CreateContractUsecase } from './documents/create-contract.usecase';
 import { CountPendingContractsUsecase } from './documents/count-pending-contracts.usecase';
+import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
 
 @Module({
   imports: [
@@ -242,6 +243,7 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     CreateContractUsecase,
     GetManyContractsUsecase,
     CountPendingContractsUsecase,
+    GetOneContractUsecase,
   ],
   exports: [
     // Organization
@@ -358,6 +360,7 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     CreateContractUsecase,
     GetManyContractsUsecase,
     CountPendingContractsUsecase,
+    GetOneContractUsecase,
   ],
 })
 export class UseCaseModule {}

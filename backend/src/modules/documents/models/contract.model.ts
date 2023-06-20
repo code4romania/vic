@@ -18,6 +18,7 @@ export interface IContractModel extends IBaseModel {
   organizationId: string;
   templateId?: string;
   volunteerId: string;
+  fileName: string;
   volunteer: IVolunteerModel;
 }
 
@@ -67,6 +68,8 @@ export class ContractTransformer {
       startDate: entity.startDate,
       endDate: entity.endDate,
       status: entity.status,
+      fileName:
+        'Contract_' + entity.contractNumber + `.${entity.path.split('.')[1]}`,
       volunteer: VolunteerModelTransformer.fromEntity(entity.volunteer),
     };
   }

@@ -4,16 +4,40 @@ import ContractItem from './ContractItem';
 import { IContractListItem } from '../common/interfaces/contract-list-item.interface';
 import { ContractStatus } from '../common/enums/contract-status.enum';
 import SectionWrapper from './SectionWrapper';
-import { Divider } from '@ui-kitten/components';
+import { Divider, useTheme } from '@ui-kitten/components';
+import GrayIcon from './GreyIcon';
 
 interface ContractListProps {
   heading: string;
   contracts: IContractListItem[];
-  status: ContractStatus;
   onContractItemPress: (contractId: string) => void;
 }
 
-const ContractList = ({ heading, status, onContractItemPress, contracts }: ContractListProps) => {
+export const PendingContractIcon = () => {
+  const theme = useTheme();
+  return (
+    <GrayIcon
+      name={'file-text'}
+      style={{
+        color: theme['yellow-500'],
+      }}
+    />
+  );
+};
+
+export const CloseContractIcon = () => {
+  const theme = useTheme();
+  return (
+    <GrayIcon
+      name={'file-text'}
+      style={{
+        color: theme['yellow-500'],
+      }}
+    />
+  );
+};
+
+const ContractList = ({ heading, onContractItemPress, contracts }: ContractListProps) => {
   // don't show the section if no data is displayed
   if (contracts.length === 0) {
     return <></>;
@@ -33,9 +57,18 @@ const ContractList = ({ heading, status, onContractItemPress, contracts }: Contr
             <ContractItem
               id={item.id}
               title={item.contractNumber}
-              status={status}
+              leftIcon={
+                item.status !== ContractStatus.PENDING_VOLUNTEER ? (
+                  <PendingContractIcon />
+                ) : (
+                  <CloseContractIcon />
+                )
+              }
               startDate={item.startDate}
               endDate={item.endDate}
+              rightIconName={
+                item.status === ContractStatus.PENDING_VOLUNTEER ? 'chevron-right' : 'download'
+              }
               onPress={onContractItemPress.bind(null, item.id)}
             />
           )}

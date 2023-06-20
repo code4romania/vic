@@ -8,27 +8,47 @@ import ContractItem from '../components/ContractItem';
 import FormLayout from '../layouts/FormLayout';
 import { ButtonType } from '../common/enums/button-type.enum';
 import { ContractStatus } from '../common/enums/contract-status.enum';
+import { useContractQuery } from '../services/contract/contract.service';
+import LoadingScreen from '../components/LoadingScreen';
+import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import * as FileSystem from 'expo-file-system';
+import { shareAsync } from 'expo-sharing';
+import { CloseContractIcon, PendingContractIcon } from '../components/ContractList';
 
-const contract = {
-  id: '1234',
-  name: 'Contract 123123',
-  status: ContractStatus.PENDING_ADMIN,
-  startDate: '2023-02-01',
-  endDate: '2023-02-01',
-};
+const Contract = ({ navigation, route }: any) => {
+  // contract param
+  const { id } = route.params;
+  // contract request
+  const { data: contract, isFetching: isLoadingContract, error } = useContractQuery(id);
+  // active organization
+  const { activeOrganization } = useActiveOrganization();
 
-const Contract = ({ navigation }: any) => {
-  const onContractPress = (id: string) => {
-    console.log('download pressed', id);
+  console.log('isLoadingContract', isLoadingContract, contract);
+  console.log('error', error);
+
+  const onDownloadContract = async () => {
+    if (contract) {
+      let LocalPath = FileSystem.documentDirectory + contract.contractFileName;
+      const file = await FileSystem.downloadAsync(contract?.path, LocalPath);
+      shareAsync(file.uri);
+    }
   };
 
   const uploadContract = () => {
     console.log('upload contract');
   };
 
+  if (!contract || error) {
+    return <></>;
+  }
+
+  if (isLoadingContract) {
+    <LoadingScreen />;
+  }
+
   return (
     <PageLayout
-      title={contract.name}
+      title={contract.contractNumber}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         onPrimaryActionButtonClick: uploadContract,
@@ -51,7 +71,10 @@ const Contract = ({ navigation }: any) => {
         }
       />
       <FormLayout>
-        <OrganizationIdentity name="Asociația ZEN" uri="https://picsum.photos/200" />
+        <OrganizationIdentity
+          name={activeOrganization?.name || ''}
+          uri={activeOrganization?.logo || ''}
+        />
         <Text>{`${
           contract.status === ContractStatus.PENDING_ADMIN
             ? i18n.t('documents:contract_description_ong')
@@ -59,11 +82,17 @@ const Contract = ({ navigation }: any) => {
         }`}</Text>
         <ContractItem
           id={contract.id}
-          title={contract.name}
+          title={contract.contractNumber}
           startDate={contract.startDate}
           endDate={contract.endDate}
-          status={ContractStatus.PENDING_VOLUNTEER}
-          onPress={onContractPress}
+          leftIcon={
+            contract.status !== ContractStatus.PENDING_VOLUNTEER ? (
+              <PendingContractIcon />
+            ) : (
+              <CloseContractIcon />
+            )
+          }
+          onPress={onDownloadContract}
         />
       </FormLayout>
     </PageLayout>

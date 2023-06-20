@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from 'react-query';
-import { getContracts } from './contract.api';
+import { useInfiniteQuery, useQuery } from 'react-query';
+import { getContract, getContracts } from './contract.api';
 import { ContractStatus } from '../../common/enums/contract-status.enum';
 
 export const useContractsInfiniteQuery = (volunteerId: string, status: ContractStatus) => {
@@ -15,4 +15,10 @@ export const useContractsInfiniteQuery = (volunteerId: string, status: ContractS
       enabled: !!volunteerId && !!status,
     },
   );
+};
+
+export const useContractQuery = (contractId: string) => {
+  return useQuery(['contract', contractId], () => getContract(contractId), {
+    enabled: !!contractId,
+  });
 };

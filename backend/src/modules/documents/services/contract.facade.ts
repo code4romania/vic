@@ -27,4 +27,10 @@ export class ContractFacade {
   public async count(findOptions: FindContractOptions): Promise<number> {
     return this.contractRepository.count(findOptions);
   }
+
+  public async findOne(
+    findOptions: FindContractOptions,
+  ): Promise<IContractModel> {
+    return this.contractRepository.find(findOptions);
+  }
 }
