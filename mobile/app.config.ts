@@ -35,7 +35,15 @@ const expoConfig: ExpoConfig = {
     favicon: './src/assets/images/favicon.png',
     build: { babel: { include: ['@ui-kitten/components'] } },
   },
-  plugins: ['expo-localization'],
+  plugins: [
+    'expo-localization',
+    [
+      'expo-document-picker',
+      {
+        iCloudContainerEnvironment: 'Development',
+      },
+    ],
+  ],
   extra: {
     apiUrl: process.env.API_URL,
     redirectUrl: process.env.REDIRECT_URL,

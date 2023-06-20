@@ -5,6 +5,7 @@ import {
   FindContractOptions,
   FindManyContractOptions,
   IContractModel,
+  UpdateContractOptions,
 } from '../models/contract.model';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 
@@ -32,5 +33,12 @@ export class ContractFacade {
     findOptions: FindContractOptions,
   ): Promise<IContractModel> {
     return this.contractRepository.find(findOptions);
+  }
+
+  public async updateContract(
+    id: string,
+    updates: UpdateContractOptions,
+  ): Promise<IContractModel> {
+    return this.contractRepository.update(id, updates);
   }
 }

@@ -1,3 +1,4 @@
+import { DocumentResult } from 'expo-document-picker';
 import { ContractStatus } from '../../common/enums/contract-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IContractListItem } from '../../common/interfaces/contract-list-item.interface';
@@ -29,4 +30,20 @@ export const getContracts = async ({
 
 export const getContract = async (contractId: string): Promise<IContract> => {
   return API.get(`/mobile/contract/${contractId}`).then((res) => res.data);
+};
+
+export const signContract = async ({
+  contractId,
+  contract,
+}: {
+  contractId: string;
+  contract: DocumentResult;
+}): Promise<IContract> => {
+  const formData = new FormData();
+
+  formData.append('contract', contract as File);
+
+  return API.patch(`mobile/contract/${contractId}/sign`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }).then((res) => res.data);
 };

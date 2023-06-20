@@ -1,6 +1,7 @@
-import { useInfiniteQuery, useQuery } from 'react-query';
-import { getContract, getContracts } from './contract.api';
+import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
+import { getContract, getContracts, signContract } from './contract.api';
 import { ContractStatus } from '../../common/enums/contract-status.enum';
+import { DocumentResult } from 'expo-document-picker';
 
 export const useContractsInfiniteQuery = (volunteerId: string, status: ContractStatus) => {
   return useInfiniteQuery(
@@ -21,4 +22,10 @@ export const useContractQuery = (contractId: string) => {
   return useQuery(['contract', contractId], () => getContract(contractId), {
     enabled: !!contractId,
   });
+};
+
+export const useSignContractMutation = () => {
+  return useMutation((payload: { contractId: string; contract: DocumentResult }) =>
+    signContract(payload),
+  );
 };

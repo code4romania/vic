@@ -13,6 +13,7 @@ import {
   FindManyContractOptions,
   ContractTransformer,
   FindContractOptions,
+  UpdateContractOptions,
 } from '../models/contract.model';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 import { ClientContractStatus } from '../enums/client-contract-status.enum';
@@ -150,6 +151,20 @@ export class ContractRepositoryService
     });
 
     return ContractTransformer.fromEntity(contract);
+  }
+
+  async update(
+    id: string,
+    updates: UpdateContractOptions,
+  ): Promise<IContractModel> {
+    const contractToUpdate = await this.contractRepository.preload({
+      id,
+      ...updates,
+    });
+
+    await this.contractRepository.save(contractToUpdate);
+
+    return this.find({ id });
   }
 
   async count(findOptions: FindContractOptions): Promise<number> {

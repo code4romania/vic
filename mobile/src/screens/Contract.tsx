@@ -8,12 +8,13 @@ import ContractItem from '../components/ContractItem';
 import FormLayout from '../layouts/FormLayout';
 import { ButtonType } from '../common/enums/button-type.enum';
 import { ContractStatus } from '../common/enums/contract-status.enum';
-import { useContractQuery } from '../services/contract/contract.service';
+import { useContractQuery, useSignContractMutation } from '../services/contract/contract.service';
 import LoadingScreen from '../components/LoadingScreen';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import { CloseContractIcon, PendingContractIcon } from '../components/ContractList';
+import * as DocumentPicker from 'expo-document-picker';
 
 const Contract = ({ navigation, route }: any) => {
   // contract param
@@ -22,6 +23,8 @@ const Contract = ({ navigation, route }: any) => {
   const { data: contract, isFetching: isLoadingContract, error } = useContractQuery(id);
   // active organization
   const { activeOrganization } = useActiveOrganization();
+  // sign contract
+  const { mutate: signContract } = useSignContractMutation();
 
   console.log('isLoadingContract', isLoadingContract, contract);
   console.log('error', error);
@@ -34,8 +37,16 @@ const Contract = ({ navigation, route }: any) => {
     }
   };
 
-  const uploadContract = () => {
-    console.log('upload contract');
+  const uploadContract = async () => {
+    const result = await DocumentPicker.getDocumentAsync();
+    signContract(
+      { contractId: id, contract: result },
+      {
+        onSuccess: () => {
+          console.log('done');
+        },
+      },
+    );
   };
 
   if (!contract || error) {

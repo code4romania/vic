@@ -13,7 +13,7 @@ export const createTemplate = async (payload: AddContractTemplateFormTypes): Pro
   formData.append('name', payload.name);
   formData.append('template', payload.template);
 
-  return API.post('template', payload, {
+  return API.post('template', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
 };
