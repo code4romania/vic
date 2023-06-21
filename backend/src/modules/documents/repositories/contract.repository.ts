@@ -4,7 +4,7 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { In, Repository } from 'typeorm';
+import { In, LessThanOrEqual, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { ContractEntity } from '../entities/contract.entity';
 import { IContractRepository } from '../interfaces/contract-repository.interface';
 import {
@@ -141,8 +141,19 @@ export class ContractRepositoryService
   }
 
   async find(findOptions: FindContractOptions): Promise<IContractModel> {
+    const { startDate, ...options } = findOptions;
+
     const contract = await this.contractRepository.findOne({
-      where: findOptions,
+      where: {
+        ...options,
+        ...(startDate
+          ? {
+              startDate: LessThanOrEqual(startDate),
+              endDate: MoreThanOrEqual(startDate),
+              status: Not(ContractStatus.REJECTED),
+            }
+          : {}),
+      },
       relations: {
         volunteer: {
           user: true,

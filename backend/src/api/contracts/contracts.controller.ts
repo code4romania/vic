@@ -38,7 +38,6 @@ import { jsonToExcelBuffer } from 'src/common/helpers/utils';
 import { IContractDownloadModel } from 'src/modules/documents/models/contract.model';
 import { Response } from 'express';
 
-// TODO: guard for organization contract
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
 @Controller('contract')
@@ -100,6 +99,7 @@ export class ContractController {
     });
   }
 
+  // TODO: guard for contractId
   @ApiParam({ name: 'contractId', type: 'string' })
   @Get(':contractId')
   async getContract(
@@ -128,6 +128,7 @@ export class ContractController {
     return new ContractPresenter(newContract);
   }
 
+  // TODO: guard for contractId
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'contract', maxCount: 1 }]))
   @ApiParam({ name: 'contractId', type: 'string' })
@@ -147,6 +148,7 @@ export class ContractController {
     return new ContractPresenter(newContract);
   }
 
+  // TODO: guard for contractId
   @ApiParam({ name: 'contractId', type: 'string' })
   @Patch(':contractId/reject')
   async reject(

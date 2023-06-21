@@ -857,7 +857,7 @@
           "contract_number": {
             "label": "Numar contract*",
             "required": "Numarul este obligatoriu",
-            "max": "Numarul trebuie sa aiba maxim 10 caractere"
+            "max": "Numarul trebuie sa aiba maxim 9 caractere"
           },
           "start_date": {
             "label": "Data inceput contract*",
@@ -870,7 +870,11 @@
         },
         "submit": {
           "label": "Trimite catre voluntar",
-          "success": "Contractul a fost generat"
+          "success": "Contractul a fost generat",
+          "errors": {
+            "CONTRACT_004": "Exista deja un contract cu acest numar pentru organizatia dumneavoastra!",
+            "CONTRACT_005": "Voluntarul are deja un contract in perioada respectiva"
+          }
         }
       },
       "status": {

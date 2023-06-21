@@ -6,12 +6,21 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 import { TemplateEntity } from './template.entity';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { ContractStatus } from '../enums/contract-status.enum';
 import { AdminUserEntity } from 'src/modules/user/entities/user.entity';
 
+export const CONTRACT_CONSTRAINTS = {
+  CONTRACT_NUMBER_ORGANIZATION: 'organization-contract-number',
+};
+
+@Unique(CONTRACT_CONSTRAINTS.CONTRACT_NUMBER_ORGANIZATION, [
+  'contractNumber',
+  'organizationId',
+])
 @Entity({ name: 'contract' })
 export class ContractEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
