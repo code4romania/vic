@@ -61,8 +61,6 @@ export const rejectContract = async (id: string, rejectionReason?: string): Prom
   return API.patch(`contract/${id}/reject`, { rejectionReason }).then((res) => res.data);
 };
 
-export const deleteContract = (id: string): Promise<void> => {
-  // return API.delete(`/documents/contracts/${id}`).then((res) => res.data);
-  console.log(id);
-  return Promise.resolve();
+export const deleteContract = async (id: string): Promise<void> => {
+  return API.delete(`contract/${id}`).then((res) => res.data);
 };

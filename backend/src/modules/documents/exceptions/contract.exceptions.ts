@@ -6,6 +6,7 @@ export enum ContractExceptionCodes {
   CONTRACT_003 = 'CONTRACT_003',
   CONTRACT_004 = 'CONTRACT_004',
   CONTRACT_005 = 'CONTRACT_005',
+  CONTRACT_006 = 'CONTRACT_006',
 }
 
 type ContractExceptionCodeType = keyof typeof ContractExceptionCodes;
@@ -34,5 +35,9 @@ export const ContractExceptionMessages: Record<
   [ContractExceptionCodes.CONTRACT_005]: {
     code_error: ContractExceptionCodes.CONTRACT_005,
     message: 'The volunteer already has a contract for that period',
+  },
+  [ContractExceptionCodes.CONTRACT_006]: {
+    code_error: ContractExceptionCodes.CONTRACT_006,
+    message: 'Cannot delete an approved contract',
   },
 };

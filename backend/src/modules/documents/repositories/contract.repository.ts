@@ -180,6 +180,17 @@ export class ContractRepositoryService
     return this.find({ id });
   }
 
+  async delete(id: string): Promise<string> {
+    const contract = await this.contractRepository.findOneBy({ id });
+
+    if (contract) {
+      await this.contractRepository.remove(contract);
+      return id;
+    }
+
+    return null;
+  }
+
   async count(findOptions: FindContractOptions): Promise<number> {
     const { statuses, ...options } = findOptions;
     const count = await this.contractRepository.count({

@@ -18,4 +18,5 @@ export interface IContractRepository
   find(findOptions: FindContractOptions): Promise<IContractModel>;
   count(findOptions: FindContractOptions): Promise<number>;
   update(id: string, updates: UpdateContractOptions): Promise<IContractModel>;
+  delete(id: string): Promise<string>;
 }

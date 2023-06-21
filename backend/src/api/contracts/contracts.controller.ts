@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Header,
   Param,
@@ -37,6 +38,7 @@ import { GetContractsForDownloadUsecase } from 'src/usecases/documents/get-contr
 import { jsonToExcelBuffer } from 'src/common/helpers/utils';
 import { IContractDownloadModel } from 'src/modules/documents/models/contract.model';
 import { Response } from 'express';
+import { DeleteContractUsecase } from 'src/usecases/documents/delete-contract.usecase';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -50,6 +52,7 @@ export class ContractController {
     private readonly signAndConfirmContractUsecase: SignAndConfirmContractUsecase,
     private readonly rejectContractUsecase: RejectContractUsecase,
     private readonly getContractsForDownloadUsecase: GetContractsForDownloadUsecase,
+    private readonly deleteContractUsecase: DeleteContractUsecase,
   ) {}
 
   @Get()
@@ -164,5 +167,15 @@ export class ContractController {
     );
 
     return new ContractPresenter(newContract);
+  }
+
+  // TODO: guard for contractId
+  @ApiParam({ name: 'id', type: 'string' })
+  @Delete(':id')
+  async delete(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<string> {
+    return this.deleteContractUsecase.execute(id, organizationId);
   }
 }

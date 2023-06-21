@@ -75,7 +75,7 @@ export const useContractsQuery = ({
 };
 
 export const useActiveContractsCountQuery = () => {
-  return useQuery(['active-counr'], () => getActiveCountractsCount(), {
+  return useQuery(['active-count'], () => getActiveCountractsCount(), {
     onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
   });
 };
@@ -88,7 +88,7 @@ export const useContractQuery = (id: string) => {
 };
 
 export const useDeleteContractMutation = () => {
-  return useMutation(['contract'], (id: string) => deleteContract(id), {
+  return useMutation(['delete-contract'], (id: string) => deleteContract(id), {
     onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
   });
 };

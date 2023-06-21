@@ -41,4 +41,8 @@ export class ContractFacade {
   ): Promise<IContractModel> {
     return this.contractRepository.update(id, updates);
   }
+
+  public async delete(id: string): Promise<string> {
+    return this.contractRepository.delete(id);
+  }
 }

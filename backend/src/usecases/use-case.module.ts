@@ -116,6 +116,7 @@ import { SignAndConfirmContractUsecase } from './documents/sign-and-confirm-cont
 import { RejectContractUsecase } from './documents/reject-contract.usecase';
 import { GetTemplatesForDownloadUsecase } from './documents/get-templates-for-download.usecase';
 import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
+import { DeleteContractUsecase } from './documents/delete-contract.usecase';
 
 @Module({
   imports: [
@@ -255,6 +256,7 @@ import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-do
     SignAndConfirmContractUsecase,
     RejectContractUsecase,
     GetContractsForDownloadUsecase,
+    DeleteContractUsecase,
   ],
   exports: [
     // Organization
@@ -378,6 +380,7 @@ import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-do
     SignAndConfirmContractUsecase,
     RejectContractUsecase,
     GetContractsForDownloadUsecase,
+    DeleteContractUsecase,
   ],
 })
 export class UseCaseModule {}

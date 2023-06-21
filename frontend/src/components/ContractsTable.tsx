@@ -413,19 +413,19 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
   };
 
   const confirmDelete = () => {
-    if (showDeleteContract)
-      deleteContract(showDeleteContract.id, {
+    if (showDeleteContract) {
+      const contractId = showDeleteContract.id;
+      setShowDeleteContract(null);
+      deleteContract(contractId, {
         onSuccess: () => {
-          useSuccessToast(i18n.t('documents:contracts.form.submit.messages.remove_contract'));
+          useSuccessToast(t('contract.submit.delete'));
           refetch();
         },
         onError: (error) => {
-          InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error);
-        },
-        onSettled: () => {
-          setShowDeleteContract(null);
+          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
         },
       });
+    }
   };
 
   const onConfirmSign = (contract?: File) => {
@@ -533,9 +533,9 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
         )}
         {showDeleteContract && (
           <ConfirmationModal
-            title={t('documents:contracts.confirmation_modal.title_contract')}
-            description={t('documents:contracts.confirmation_modal.description_contract')}
-            confirmBtnLabel={t('documents:contracts.confirmation_modal.label_contract')}
+            title={t('contract.delete_modal.title')}
+            description={t('contract.delete_modal.description')}
+            confirmBtnLabel={t('general:delete')}
             onClose={setShowDeleteContract.bind(null, null)}
             onConfirm={confirmDelete}
             confirmBtnClassName="btn-danger"
