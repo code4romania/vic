@@ -8,6 +8,7 @@ export class ContractPresenter extends ContractListItemPresenter {
   constructor(contract: IContractModel) {
     super(contract);
     this.createdOn = contract.createdOn;
+    this.approvedOn = contract.approvedOn;
     this.template = new IdAndNamePresenter({
       id: contract.template.id,
       name: contract.template.name,
@@ -16,6 +17,14 @@ export class ContractPresenter extends ContractListItemPresenter {
       id: contract.createdByAdmin.id,
       name: contract.createdByAdmin.name,
     });
+    this.rejectedBy = contract?.rejectedBy
+      ? new IdAndNamePresenter({
+          id: contract.rejectedBy.id,
+          name: contract.rejectedBy.name,
+        })
+      : null;
+    this.rejectedOn = contract.rejectedOn;
+    this.rejectionReason = contract.rejectionReason;
   }
 
   @Expose()
@@ -23,10 +32,28 @@ export class ContractPresenter extends ContractListItemPresenter {
   createdOn: Date;
 
   @Expose()
+  @ApiProperty({ description: 'Contract approval date' })
+  approvedOn?: Date;
+
+  @Expose()
+  @ApiProperty({ description: 'Contract rejection date' })
+  rejectedOn?: Date;
+
+  @Expose()
+  @ApiProperty({ description: 'Contract rejection reason' })
+  rejectionReason?: string;
+
+  @Expose()
   @ApiProperty({
     type: IdAndNamePresenter,
   })
   template: IdAndNamePresenter<{ id: string; name: string }>;
+
+  @Expose()
+  @ApiProperty({
+    type: IdAndNamePresenter,
+  })
+  rejectedBy?: IdAndNamePresenter<{ id: string; name: string }>;
 
   @Expose()
   @ApiProperty({

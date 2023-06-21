@@ -30,7 +30,7 @@ const UploadFileModal = ({ title, description, onClose, onConfirm }: UploadFileM
           />
           <Button
             type="button"
-            label={t('cofirm')}
+            label={t('confirm')}
             className="btn-primary"
             disabled={!file}
             onClick={onConfirm.bind(null, file)}

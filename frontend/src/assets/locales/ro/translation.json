@@ -904,7 +904,15 @@
       },
       "submit": {
         "confirm": "Contractul a fost confirmat",
-        "reject": "Contractul a fost respins"
+        "reject": "Contractul a fost respins",
+        "errors": {
+          "CONTRACT_002": "Contractul nu a fost gasit!",
+          "CONTRACT_001": "Eroare la incarcarea contractului!"
+        }
+      },
+      "upload": {
+        "title": "Incarca contract semnat",
+        "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
       }
     },
     "popover": {
@@ -912,7 +920,8 @@
       "download": "Descarcă document",
       "reject": "Respinge contract",
       "remove": "Elimină",
-      "remove_from_list": "Elimină din listă"
+      "remove_from_list": "Elimină din listă",
+      "confirm": "Confirma si semneaza"
     }
   }
 }

@@ -103,11 +103,16 @@ export class ContractTransformer {
       startDate: entity.startDate,
       endDate: entity.endDate,
       status: entity.status,
+      approvedOn: entity.approvedOn,
+      rejectedOn: entity.rejectedOn,
       fileName:
         'Contract_' + entity.contractNumber + `.${entity.path.split('.')[1]}`,
       volunteer: VolunteerModelTransformer.fromEntity(entity.volunteer),
       template: TemplateTransformer.fromEntity(entity.template),
       createdByAdmin: AdminUserTransformer.fromEntity(entity.createdByAdmin),
+      approvedBy: AdminUserTransformer.fromEntity(entity.createdByAdmin),
+      rejectedBy: AdminUserTransformer.fromEntity(entity.createdByAdmin),
+      rejectionReason: entity.rejectionReason,
     };
   }
 

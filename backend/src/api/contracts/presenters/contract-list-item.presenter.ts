@@ -18,6 +18,8 @@ export class ContractListItemPresenter {
       id: contract.volunteer.id,
       name: contract.volunteer.user.name,
     });
+    this.fileName = contract.fileName;
+    this.uri = contract.path;
   }
 
   @Expose()
@@ -33,6 +35,20 @@ export class ContractListItemPresenter {
     example: '000012212',
   })
   contractNumber: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The contract file name',
+    example: 'Contract_110002.xlsx',
+  })
+  fileName: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The contract link for download',
+    example: 'https://www.example.com',
+  })
+  uri: string;
 
   @Expose()
   @ApiProperty({ description: 'The Start Date of the contract' })

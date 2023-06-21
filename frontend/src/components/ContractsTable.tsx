@@ -26,7 +26,12 @@ import Popover from './Popover';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import Button from './Button';
-import { ContractStatusMarkerColorMapper, downloadExcel, formatDate } from '../common/utils/utils';
+import {
+  ContractStatusMarkerColorMapper,
+  downloadExcel,
+  downloadFile,
+  formatDate,
+} from '../common/utils/utils';
 import LinkCell from './LinkCell';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from './StatusWithMarker';
@@ -43,6 +48,7 @@ import RejectTextareaModal from './RejectTextareaModal';
 import { VolunteerTabsOptions } from '../pages/Volunteer';
 import { useTranslation } from 'react-i18next';
 import { getContractsForDownload } from '../services/contracts/contracts.api';
+import UploadFileModal from './UploadFileModal';
 
 const StatusOptions: SelectItem<ContractStatus>[] = [
   {
@@ -161,9 +167,10 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
   // confirmation modals
   const [showRejectContract, setShowRejectContract] = useState<null | IContractListItem>(null);
   const [showDeleteContract, setShowDeleteContract] = useState<null | IContractListItem>(null);
+  const [showApproveContract, setShowApproveContract] = useState<null | IContractListItem>(null);
   // translation
   const { t } = useTranslation('documents');
-
+  // navigation
   const navigate = useNavigate();
 
   //Actions
@@ -218,24 +225,6 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     downloadExcel(data as BlobPart, t('contracts.download'));
   };
 
-  const onSignContract = (row: IContractListItem) => {
-    approveContract(
-      {
-        id: row.id,
-        // contract: new File(),
-      },
-      {
-        onSuccess: () => {
-          useSuccessToast(i18n.t('documents:contracts.form.submit.messages.confirm'));
-          refetch();
-        },
-        onError: (error) => {
-          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-        },
-      },
-    );
-  };
-
   const onRejectContract = (row: IContractListItem) => {
     setShowRejectContract(row);
   };
@@ -247,31 +236,31 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
   const buildContractActionColumn = (): TableColumn<IContractListItem> => {
     const contractsMenuItems = [
       {
-        label: i18n.t('events:popover.view'),
+        label: t('events:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
       {
-        label: i18n.t('general:download', { item: i18n.t('general:contract').toLowerCase() }),
+        label: t('general:download', { item: i18n.t('general:contract').toLowerCase() }),
         icon: <ArrowDownTrayIcon className="menu-icon" />,
-        onClick: onDownloadApproved,
+        onClick: onDownloadContract,
       },
     ];
 
     const contractsValidateOngMenuItems = [
       ...contractsMenuItems,
       {
-        label: t('documents:contracts.side_panel.confirm'),
+        label: t('popover.confirm'),
         icon: <CheckIcon className="menu-icon" />,
-        onClick: onSignContract,
+        onClick: setShowApproveContract,
       },
       {
-        label: i18n.t('documents:popover.reject'),
+        label: t('popover.reject'),
         icon: <XMarkIcon className="menu-icon" />,
         onClick: onRejectContract,
       },
       {
-        label: i18n.t('documents:popover.remove'),
+        label: t('popover.remove'),
         icon: <TrashIcon className="menu-icon" />,
         alert: true,
         onClick: onRemove,
@@ -281,7 +270,7 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     const contractsValidateVolunteerMenuItems = [
       ...contractsMenuItems,
       {
-        label: i18n.t('documents:popover.remove'),
+        label: t('popover.remove'),
         icon: <TrashIcon className="menu-icon" />,
         alert: true,
         onClick: onRemove,
@@ -290,12 +279,12 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
 
     const contractsRejectedMenuItems = [
       {
-        label: i18n.t('events:popover.view'),
+        label: t('events:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
       {
-        label: i18n.t('documents:popover.remove_from_list'),
+        label: t('popover.remove_from_list'),
         icon: <TrashIcon className="menu-icon" />,
         alert: true,
         onClick: onRemove,
@@ -357,8 +346,8 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     });
   };
 
-  const onDownloadApproved = () => {
-    alert('not yet implemented');
+  const onDownloadContract = (row: IContractListItem) => {
+    downloadFile(row.uri, row.fileName);
   };
 
   const onAddContract = () => {
@@ -410,11 +399,11 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
         },
         {
           onSuccess: () => {
-            useSuccessToast(i18n.t('documents:contracts.form.submit.messages.reject'));
+            useSuccessToast(t('contract.submit.reject'));
             refetch();
           },
           onError: (error) => {
-            InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error);
+            useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
           },
           onSettled: () => {
             setShowRejectContract(null);
@@ -437,6 +426,30 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
           setShowDeleteContract(null);
         },
       });
+  };
+
+  const onConfirmSign = (contract?: File) => {
+    if (!contract) return;
+
+    // store id and close modal
+    const contractId = showApproveContract?.id;
+    setShowApproveContract(null);
+
+    // approval process
+    approveContract(
+      {
+        id: contractId as string,
+        contract,
+      },
+      {
+        onSuccess: () => {
+          useSuccessToast(t('contract.submit.confirm'));
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+        },
+      },
+    );
   };
 
   return (
@@ -509,23 +522,31 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
         </CardBody>
         {showRejectContract && (
           <RejectTextareaModal
-            label={i18n.t('documents:contracts.reject_modal.description')}
-            title={i18n.t('documents:contracts.reject_modal.title')}
+            label={t('contract.reject_modal.description')}
+            title={t('contract.reject_modal.title')}
             onClose={setShowRejectContract.bind(null, null)}
             onConfirm={confirmReject}
-            secondaryBtnLabel={`${i18n.t('documents:contracts.reject_modal.send')}`}
-            primaryBtnLabel={`${i18n.t('documents:contracts.side_panel.reject')}`}
+            secondaryBtnLabel={`${t('contract.actions.reject_no_message')}`}
+            primaryBtnLabel={`${t('contract.actions.reject')}`}
             primaryBtnClassName="btn-danger"
           />
         )}
         {showDeleteContract && (
           <ConfirmationModal
-            title={i18n.t('documents:contracts.confirmation_modal.title_contract')}
-            description={i18n.t('documents:contracts.confirmation_modal.description_contract')}
-            confirmBtnLabel={i18n.t('documents:contracts.confirmation_modal.label_contract')}
+            title={t('documents:contracts.confirmation_modal.title_contract')}
+            description={t('documents:contracts.confirmation_modal.description_contract')}
+            confirmBtnLabel={t('documents:contracts.confirmation_modal.label_contract')}
             onClose={setShowDeleteContract.bind(null, null)}
             onConfirm={confirmDelete}
             confirmBtnClassName="btn-danger"
+          />
+        )}
+        {showApproveContract && (
+          <UploadFileModal
+            description={t('contract.upload.description')}
+            title={t('contract.upload.title')}
+            onClose={setShowApproveContract.bind(null, null)}
+            onConfirm={onConfirmSign}
           />
         )}
       </Card>

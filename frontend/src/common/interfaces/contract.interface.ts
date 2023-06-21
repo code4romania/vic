@@ -8,6 +8,8 @@ export interface IContractListItem {
   status: ContractStatus;
   startDate: Date;
   endDate: Date;
+  fileName: string;
+  uri: string;
 }
 
 export interface IContract extends IContractListItem {

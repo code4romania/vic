@@ -8,6 +8,7 @@ import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { IContractModel } from 'src/modules/documents/models/contract.model';
 import { ContractFacade } from 'src/modules/documents/services/contract.facade';
+import { GetOneContractUsecase } from './get-one-contract.usecase';
 
 @Injectable()
 export class SignAndConfirmContractUsecase
@@ -16,6 +17,7 @@ export class SignAndConfirmContractUsecase
   private readonly logger = new Logger(SignAndConfirmContractUsecase.name);
 
   constructor(
+    private readonly getOneContractUsecase: GetOneContractUsecase,
     private readonly contractFacade: ContractFacade,
     private readonly exceptionService: ExceptionsService,
     private readonly s3Service: S3Service,
@@ -28,16 +30,11 @@ export class SignAndConfirmContractUsecase
     files: Express.Multer.File[],
   ): Promise<IContractModel> {
     // 1. check if contract exists
-    const contract = await this.contractFacade.findOne({
+    const contract = await this.getOneContractUsecase.execute({
       id: contractId,
       organizationId,
       status: ContractStatus.PENDING_ADMIN,
     });
-
-    if (!contract)
-      this.exceptionService.notFoundException(
-        ContractExceptionMessages.CONTRACT_002,
-      );
 
     try {
       // 2. upload file to s3 and get the path
