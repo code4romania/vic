@@ -115,6 +115,7 @@ import { SignContractByVolunteer } from './documents/sign-contract-by-volunteer.
 import { SignAndConfirmContractUsecase } from './documents/sign-and-confirm-contract.usecase';
 import { RejectContractUsecase } from './documents/reject-contract.usecase';
 import { GetTemplatesForDownloadUsecase } from './documents/get-templates-for-download.usecase';
+import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
 
 @Module({
   imports: [
@@ -253,6 +254,7 @@ import { GetTemplatesForDownloadUsecase } from './documents/get-templates-for-do
     SignAndConfirmContractUsecase,
     SignAndConfirmContractUsecase,
     RejectContractUsecase,
+    GetContractsForDownloadUsecase,
   ],
   exports: [
     // Organization
@@ -375,6 +377,7 @@ import { GetTemplatesForDownloadUsecase } from './documents/get-templates-for-do
     SignAndConfirmContractUsecase,
     SignAndConfirmContractUsecase,
     RejectContractUsecase,
+    GetContractsForDownloadUsecase,
   ],
 })
 export class UseCaseModule {}

@@ -12,6 +12,15 @@ import {
   AdminUserTransformer,
   IAdminUserModel,
 } from 'src/modules/user/models/admin-user.model';
+import { compareAsc } from 'date-fns';
+
+export interface IContractDownloadModel {
+  'Numar contract': string;
+  Voluntar: string;
+  Status: string;
+  'Data inceput': Date;
+  'Data final': Date;
+}
 
 export interface IContractModel extends IBaseModel {
   id: string;
@@ -113,3 +122,39 @@ export class ContractTransformer {
     return entity;
   }
 }
+
+export const mapContractStatusToClientContractStatus = (
+  contract: IContractModel,
+): ClientContractStatus => {
+  if (contract.status === ContractStatus.APPROVED) {
+    // not started
+    if (compareAsc(contract.startDate, new Date()) > 0) {
+      return ClientContractStatus.NOT_STARTED;
+    }
+
+    // active
+    if (
+      compareAsc(contract.startDate, new Date()) <= 0 &&
+      compareAsc(contract.endDate, new Date()) > 0
+    ) {
+      return ClientContractStatus.ACTIVE;
+    }
+
+    // closed
+    if (compareAsc(contract.endDate, new Date()) > 0) {
+      return ClientContractStatus.CLOSED;
+    }
+  }
+
+  if (contract.status === ContractStatus.PENDING_ADMIN) {
+    return ClientContractStatus.PENDING_ADMIN;
+  }
+
+  if (contract.status === ContractStatus.PENDING_VOLUNTEER) {
+    return ClientContractStatus.PENDING_VOLUNTEER;
+  }
+
+  if (contract.status === ContractStatus.REJECTED) {
+    return ClientContractStatus.REJECTED;
+  }
+};

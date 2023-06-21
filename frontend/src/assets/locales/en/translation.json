@@ -777,7 +777,8 @@
             "TEMPLATE_003": "Eroare la stergerea template-ului!"
           }
         }
-      }
+      },
+      "download": "Templates.xlsx"
     },
     "template": {
       "add": {
@@ -839,7 +840,8 @@
         "status": "Status",
         "start_date": "Data inceput",
         "end_date": "Data final"
-      }
+      },
+      "download": "Contracts.xlsx"
     },
     "contract": {
       "add": {

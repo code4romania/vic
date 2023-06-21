@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { compareAsc } from 'date-fns';
 import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
 import { ClientContractStatus } from 'src/modules/documents/enums/client-contract-status.enum';
-import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
-import { IContractModel } from 'src/modules/documents/models/contract.model';
+import {
+  IContractModel,
+  mapContractStatusToClientContractStatus,
+} from 'src/modules/documents/models/contract.model';
 
 export class ContractListItemPresenter {
   constructor(contract: IContractModel) {
@@ -12,7 +13,7 @@ export class ContractListItemPresenter {
     this.contractNumber = contract.contractNumber;
     this.startDate = contract.startDate;
     this.endDate = contract.endDate;
-    this.status = this.mapContractStatusToClientContractStatu(contract);
+    this.status = mapContractStatusToClientContractStatus(contract);
     this.volunteer = new IdAndNamePresenter({
       id: contract.volunteer.id,
       name: contract.volunteer.user.name,
@@ -54,40 +55,4 @@ export class ContractListItemPresenter {
     type: IdAndNamePresenter,
   })
   volunteer: IdAndNamePresenter<{ id: string; name: string }>;
-
-  private mapContractStatusToClientContractStatu(
-    contract: IContractModel,
-  ): ClientContractStatus {
-    if (contract.status === ContractStatus.APPROVED) {
-      // not started
-      if (compareAsc(contract.startDate, new Date()) < 0) {
-        return ClientContractStatus.NOT_STARTED;
-      }
-
-      // active
-      if (
-        compareAsc(contract.startDate, new Date()) >= 0 &&
-        compareAsc(contract.endDate, new Date()) <= 0
-      ) {
-        return ClientContractStatus.ACTIVE;
-      }
-
-      // closed
-      if (compareAsc(contract.endDate, new Date()) > 0) {
-        return ClientContractStatus.CLOSED;
-      }
-    }
-
-    if (contract.status === ContractStatus.PENDING_ADMIN) {
-      return ClientContractStatus.PENDING_ADMIN;
-    }
-
-    if (contract.status === ContractStatus.PENDING_VOLUNTEER) {
-      return ClientContractStatus.PENDING_VOLUNTEER;
-    }
-
-    if (contract.status === ContractStatus.REJECTED) {
-      return ClientContractStatus.REJECTED;
-    }
-  }
 }

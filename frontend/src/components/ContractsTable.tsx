@@ -26,7 +26,7 @@ import Popover from './Popover';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import Button from './Button';
-import { ContractStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
+import { ContractStatusMarkerColorMapper, downloadExcel, formatDate } from '../common/utils/utils';
 import LinkCell from './LinkCell';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from './StatusWithMarker';
@@ -42,6 +42,7 @@ import ConfirmationModal from './ConfirmationModal';
 import RejectTextareaModal from './RejectTextareaModal';
 import { VolunteerTabsOptions } from '../pages/Volunteer';
 import { useTranslation } from 'react-i18next';
+import { getContractsForDownload } from '../services/contracts/contracts.api';
 
 const StatusOptions: SelectItem<ContractStatus>[] = [
   {
@@ -203,20 +204,36 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     setIsViewContractSidePanelOpen(true);
   };
 
-  const onDownloadContract = () => {
-    alert('not yet implemented');
+  const onExport = async () => {
+    const { data } = await getContractsForDownload({
+      orderBy: query?.orderBy as string,
+      orderDirection: query?.orderDirection as OrderDirection,
+      search: query?.search,
+      volunteerName: query?.volunteer,
+      startDate: query?.startDate,
+      endDate: query?.endDate,
+      status: query?.status as ContractStatus,
+    });
+
+    downloadExcel(data as BlobPart, t('contracts.download'));
   };
 
   const onSignContract = (row: IContractListItem) => {
-    approveContract(row.id, {
-      onSuccess: () => {
-        useSuccessToast(i18n.t('documents:contracts.form.submit.messages.confirm'));
-        refetch();
+    approveContract(
+      {
+        id: row.id,
+        // contract: new File(),
       },
-      onError: (error) => {
-        useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+      {
+        onSuccess: () => {
+          useSuccessToast(i18n.t('documents:contracts.form.submit.messages.confirm'));
+          refetch();
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+        },
       },
-    });
+    );
   };
 
   const onRejectContract = (row: IContractListItem) => {
@@ -237,7 +254,7 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
       {
         label: i18n.t('general:download', { item: i18n.t('general:contract').toLowerCase() }),
         icon: <ArrowDownTrayIcon className="menu-icon" />,
-        onClick: onDownloadContract,
+        onClick: onDownloadApproved,
       },
     ];
 
@@ -464,7 +481,7 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
               label={t('contracts.actions.download')}
               className="btn-outline-secondary"
               icon={<ArrowDownTrayIcon className="h-5 w-5" />}
-              onClick={onDownloadApproved}
+              onClick={onExport}
             />
             <Button
               label={t('contracts.actions.add')}

@@ -2,10 +2,12 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   Param,
   Patch,
   Post,
   Query,
+  Res,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -31,6 +33,10 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { SignAndConfirmContractUsecase } from 'src/usecases/documents/sign-and-confirm-contract.usecase';
 import { RejectContractUsecase } from 'src/usecases/documents/reject-contract.usecase';
 import { RejectContractDto } from './dto/reject-contact.dto';
+import { GetContractsForDownloadUsecase } from 'src/usecases/documents/get-contracts-for-download.usecase';
+import { jsonToExcelBuffer } from 'src/common/helpers/utils';
+import { IContractDownloadModel } from 'src/modules/documents/models/contract.model';
+import { Response } from 'express';
 
 // TODO: guard for organization contract
 @ApiBearerAuth()
@@ -44,6 +50,7 @@ export class ContractController {
     private readonly getOneContractUsecase: GetOneContractUsecase,
     private readonly signAndConfirmContractUsecase: SignAndConfirmContractUsecase,
     private readonly rejectContractUsecase: RejectContractUsecase,
+    private readonly getContractsForDownloadUsecase: GetContractsForDownloadUsecase,
   ) {}
 
   @Get()
@@ -63,6 +70,25 @@ export class ContractController {
         (contract) => new ContractListItemPresenter(contract),
       ),
     });
+  }
+
+  @Get('download')
+  @Header(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  )
+  @Header('Content-Disposition', 'attachment; filename="Voluntari.xlsx"')
+  async downloadAll(
+    @Res({ passthrough: true }) res: Response,
+    @ExtractUser() user: IAdminUserModel,
+    @Query() filters: GetManyContractsDto,
+  ): Promise<void> {
+    const data = await this.getContractsForDownloadUsecase.execute({
+      ...filters,
+      organizationId: user.organizationId,
+    });
+
+    res.end(jsonToExcelBuffer<IContractDownloadModel>(data, 'Contracts'));
   }
 
   @Get('active')
