@@ -6,7 +6,7 @@ export class TemplateListItemPresenter {
   constructor(template: ITemplateModel) {
     this.id = template.id;
     this.name = template.name;
-    this.templateUses = 0;
+    this.templateUses = template.numberOfContracts;
     this.path = template.path;
   }
 

@@ -777,7 +777,8 @@
             "TEMPLATE_003": "Eroare la stergerea template-ului!"
           }
         }
-      }
+      },
+      "download": "Templates.xlsx"
     },
     "template": {
       "add": {

@@ -20,7 +20,8 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from './ConfirmationModal';
 import { useTranslation } from 'react-i18next';
-import { downloadFile } from '../common/utils/utils';
+import { downloadExcel, downloadFile } from '../common/utils/utils';
+import { getTemplatesForDownload } from '../services/templates/templates.api';
 
 const TemplatesTableHeader = [
   {
@@ -62,8 +63,13 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
     navigate('add-template');
   };
 
-  const onDownloadAll = () => {
-    alert('not yet implemented');
+  const onExport = async () => {
+    const { data } = await getTemplatesForDownload(
+      query.orderBy,
+      query.orderDirection as OrderDirection,
+    );
+
+    downloadExcel(data as BlobPart, t('templates.download'));
   };
 
   const onEdit = (row: ITemplateListItem) => {
@@ -166,7 +172,7 @@ const TemplatesTable = ({ query, setQuery }: TemplatesTableProps) => {
             label={t('general:download_table')}
             className="btn-outline-secondary"
             icon={<ArrowDownTrayIcon className="h-5 w-5" />}
-            onClick={onDownloadAll}
+            onClick={onExport}
           />
           <Button
             label={t('templates.actions.add')}

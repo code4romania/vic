@@ -17,6 +17,7 @@ import {
   UpdateTemplateOptions,
 } from '../models/template.model';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { ContractStatus } from '../enums/contract-status.enum';
 
 @Injectable()
 export class TemplateRepositoryService
@@ -60,6 +61,15 @@ export class TemplateRepositoryService
     // create query
     const query = this.templateRepository
       .createQueryBuilder('template')
+      .loadRelationCountAndMap(
+        'template.numberOfContracts',
+        'template.contracts',
+        'numberOfContracts',
+        (qb) =>
+          qb.where(
+            `"numberOfContracts"."status" = '${ContractStatus.APPROVED}' OR "numberOfContracts"."status" = '${ContractStatus.REJECTED}'`,
+          ),
+      )
       .select()
       .where('template.organizationId = :organizationId', {
         organizationId,
