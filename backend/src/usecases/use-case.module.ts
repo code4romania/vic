@@ -110,6 +110,13 @@ import { GetAllTemplatesUsecase } from './documents/get-all-templates.usecase';
 import { GetManyContractsUsecase } from './documents/get-many-contracts.usecase';
 import { CreateContractUsecase } from './documents/create-contract.usecase';
 import { CountPendingContractsUsecase } from './documents/count-pending-contracts.usecase';
+import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
+import { SignContractByVolunteer } from './documents/sign-contract-by-volunteer.usecase';
+import { SignAndConfirmContractUsecase } from './documents/sign-and-confirm-contract.usecase';
+import { RejectContractUsecase } from './documents/reject-contract.usecase';
+import { GetTemplatesForDownloadUsecase } from './documents/get-templates-for-download.usecase';
+import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
+import { DeleteContractUsecase } from './documents/delete-contract.usecase';
 
 @Module({
   imports: [
@@ -238,10 +245,18 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     UpdateTemplateUsecase,
     DeleteTemplateUseCase,
     GetAllTemplatesUsecase,
+    GetTemplatesForDownloadUsecase,
     // Contracts
     CreateContractUsecase,
     GetManyContractsUsecase,
     CountPendingContractsUsecase,
+    GetOneContractUsecase,
+    SignContractByVolunteer,
+    SignAndConfirmContractUsecase,
+    SignAndConfirmContractUsecase,
+    RejectContractUsecase,
+    GetContractsForDownloadUsecase,
+    DeleteContractUsecase,
   ],
   exports: [
     // Organization
@@ -354,10 +369,18 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     UpdateTemplateUsecase,
     DeleteTemplateUseCase,
     GetAllTemplatesUsecase,
+    GetTemplatesForDownloadUsecase,
     // Contracts
     CreateContractUsecase,
     GetManyContractsUsecase,
     CountPendingContractsUsecase,
+    GetOneContractUsecase,
+    SignContractByVolunteer,
+    SignAndConfirmContractUsecase,
+    SignAndConfirmContractUsecase,
+    RejectContractUsecase,
+    GetContractsForDownloadUsecase,
+    DeleteContractUsecase,
   ],
 })
 export class UseCaseModule {}

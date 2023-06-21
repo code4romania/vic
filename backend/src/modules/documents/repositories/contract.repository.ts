@@ -4,7 +4,7 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { In, Repository } from 'typeorm';
+import { In, LessThanOrEqual, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { ContractEntity } from '../entities/contract.entity';
 import { IContractRepository } from '../interfaces/contract-repository.interface';
 import {
@@ -13,6 +13,7 @@ import {
   FindManyContractOptions,
   ContractTransformer,
   FindContractOptions,
+  UpdateContractOptions,
 } from '../models/contract.model';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 import { ClientContractStatus } from '../enums/client-contract-status.enum';
@@ -50,6 +51,7 @@ export class ContractRepositoryService
       startDate,
       endDate,
       volunteerName,
+      volunteerId,
     } = findOptions;
 
     const query = this.contractRepository
@@ -104,12 +106,12 @@ export class ContractRepositoryService
         );
       } else if (status === ClientContractStatus.ACTIVE) {
         query.andWhere(
-          'contract.startDate >= :date AND contract.endDate <= :date AND contract.status = :status',
+          'contract.startDate <= :date AND contract.endDate >= :date AND contract.status = :status',
           { date: new Date(), status: ContractStatus.APPROVED },
         );
       } else if (status === ClientContractStatus.CLOSED) {
         query.andWhere(
-          'contract.endDate > :date AND contract.status = :status',
+          'contract.endDate <= :date AND contract.status = :status',
           {
             date: new Date(),
             status: ContractStatus.APPROVED,
@@ -126,6 +128,10 @@ export class ContractRepositoryService
       });
     }
 
+    if (volunteerId) {
+      query.andWhere('contract.volunteerId = :volunteerId', { volunteerId });
+    }
+
     return this.paginateQuery(
       query,
       findOptions.limit,
@@ -135,16 +141,54 @@ export class ContractRepositoryService
   }
 
   async find(findOptions: FindContractOptions): Promise<IContractModel> {
+    const { startDate, ...options } = findOptions;
+
     const contract = await this.contractRepository.findOne({
-      where: findOptions,
+      where: {
+        ...options,
+        ...(startDate
+          ? {
+              startDate: LessThanOrEqual(startDate),
+              endDate: MoreThanOrEqual(startDate),
+              status: Not(ContractStatus.REJECTED),
+            }
+          : {}),
+      },
       relations: {
         volunteer: {
           user: true,
         },
+        template: true,
+        createdByAdmin: true,
       },
     });
 
     return ContractTransformer.fromEntity(contract);
+  }
+
+  async update(
+    id: string,
+    updates: UpdateContractOptions,
+  ): Promise<IContractModel> {
+    const contractToUpdate = await this.contractRepository.preload({
+      id,
+      ...updates,
+    });
+
+    await this.contractRepository.save(contractToUpdate);
+
+    return this.find({ id });
+  }
+
+  async delete(id: string): Promise<string> {
+    const contract = await this.contractRepository.findOneBy({ id });
+
+    if (contract) {
+      await this.contractRepository.remove(contract);
+      return id;
+    }
+
+    return null;
   }
 
   async count(findOptions: FindContractOptions): Promise<number> {

@@ -488,8 +488,10 @@
   },
   "documents": {
     "description": "Lorem ipsum. Gestioneaza contractele tale din sectiunile de mai jos. Descarca contracte vechi, sau semneaza contractele trimise de organizatie.",
-    "contracts_proposal": "Propunere contract",
-    "contracts_history": "Istoric contracte semnate",
+    "sections": {
+      "pending": "Propunere contract",
+      "closed": "Istoric contracte semnate"
+    },
     "contract_status": {
       "active": "activ",
       "closed": "încheiat"

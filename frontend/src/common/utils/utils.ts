@@ -33,8 +33,8 @@ export const debouncePromise = (fn: any, delay: number) => {
  * FORMATTERS
  */
 
-export const formatDate = (value?: Date | string | null): string =>
-  value ? format(new Date(value), 'dd.LL.y') : '-';
+export const formatDate = (value?: Date | string | null, dateFormat?: string): string =>
+  value ? format(new Date(value), dateFormat || 'dd.LL.y') : '-';
 
 export const formatDateWithTime = (value?: Date | string | null): string =>
   value ? format(new Date(value), 'dd.LL.y hh:mm') : '-';

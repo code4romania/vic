@@ -6,6 +6,7 @@ import {
   FindContractOptions,
   FindManyContractOptions,
   IContractModel,
+  UpdateContractOptions,
 } from '../models/contract.model';
 
 export interface IContractRepository
@@ -16,4 +17,6 @@ export interface IContractRepository
   ): Promise<Pagination<IContractModel>>;
   find(findOptions: FindContractOptions): Promise<IContractModel>;
   count(findOptions: FindContractOptions): Promise<number>;
+  update(id: string, updates: UpdateContractOptions): Promise<IContractModel>;
+  delete(id: string): Promise<string>;
 }

@@ -2,7 +2,7 @@ import { IsDate, IsString, MaxLength } from 'class-validator';
 
 export class CreateContractDto {
   @IsString()
-  @MaxLength(10)
+  @MaxLength(9)
   contractNumber: string;
 
   @IsString()

@@ -34,9 +34,7 @@ const Contracts = ({ query, setQuery }: ContractsProps) => {
     setQuery({ contractType: tab }, 'push');
   };
 
-  const onStatisticsCardClick = () => {
-    console.log('click here');
-  };
+  const onStatisticsCardClick = () => {};
 
   return (
     <PageLayout>

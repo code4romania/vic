@@ -80,7 +80,8 @@
     "select_interval": "Selecteaza interval",
     "save_draft": "Salveaza ca draft",
     "other": "Alta optiune",
-    "add_file": "Adauga fisier aici"
+    "add_file": "Adauga fisier aici",
+    "confirm": "Confirma"
   },
   "header": {
     "login": "Login",
@@ -776,7 +777,8 @@
             "TEMPLATE_003": "Eroare la stergerea template-ului!"
           }
         }
-      }
+      },
+      "download": "Templates.xlsx"
     },
     "template": {
       "add": {
@@ -838,7 +840,8 @@
         "status": "Status",
         "start_date": "Data inceput",
         "end_date": "Data final"
-      }
+      },
+      "download": "Contracts.xlsx"
     },
     "contract": {
       "add": {
@@ -854,7 +857,7 @@
           "contract_number": {
             "label": "Numar contract*",
             "required": "Numarul este obligatoriu",
-            "max": "Numarul trebuie sa aiba maxim 10 caractere"
+            "max": "Numarul trebuie sa aiba maxim 9 caractere"
           },
           "start_date": {
             "label": "Data inceput contract*",
@@ -867,7 +870,11 @@
         },
         "submit": {
           "label": "Trimite catre voluntar",
-          "success": "Contractul a fost generat"
+          "success": "Contractul a fost generat",
+          "errors": {
+            "CONTRACT_004": "Exista deja un contract cu acest numar pentru organizatia dumneavoastra!",
+            "CONTRACT_005": "Voluntarul are deja un contract in perioada respectiva"
+          }
         }
       },
       "status": {
@@ -877,6 +884,42 @@
         "ACTIVE": "Activ",
         "CLOSED": "Inchis",
         "NOT_STARTED": "Neinceput"
+      },
+      "period": "Perioada contract",
+      "signed": "Semnat fizic",
+      "template": "Template utilizat",
+      "generated_by": "Generat de",
+      "generated_on": "Data generare",
+      "approved_on": "Data aprobare",
+      "rejected_by": "Refuzat de",
+      "rejected_on": "Data refuzare",
+      "actions": {
+        "confirm": "Confirma si semneaza",
+        "reject": "Refuza",
+        "reject_no_message": "Refuza fara mesaj"
+      },
+      "reject_modal": {
+        "title": "Argumentează respingere",
+        "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii."
+      },
+      "delete_modal": {
+        "title": "Esti sigur ca doresti stergerea acestui contract?",
+        "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
+      },
+      "submit": {
+        "confirm": "Contractul a fost confirmat",
+        "reject": "Contractul a fost respins",
+        "delete": "Contractul a fost sters",
+        "errors": {
+          "CONTRACT_002": "Contractul nu a fost gasit!",
+          "CONTRACT_001": "Eroare la incarcarea contractului!",
+          "CONTRACT_003": "Eroare la upload-ul documentului!",
+          "CONTRACT_006": "Nu se poate sterge un contract deja aprobat!"
+        }
+      },
+      "upload": {
+        "title": "Incarca contract semnat",
+        "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
       }
     },
     "popover": {
@@ -884,7 +927,8 @@
       "download": "Descarcă document",
       "reject": "Respinge contract",
       "remove": "Elimină",
-      "remove_from_list": "Elimină din listă"
+      "remove_from_list": "Elimină din listă",
+      "confirm": "Confirma si semneaza"
     }
   }
 }
