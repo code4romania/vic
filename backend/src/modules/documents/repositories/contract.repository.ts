@@ -106,12 +106,12 @@ export class ContractRepositoryService
         );
       } else if (status === ClientContractStatus.ACTIVE) {
         query.andWhere(
-          'contract.startDate >= :date AND contract.endDate <= :date AND contract.status = :status',
+          'contract.startDate <= :date AND contract.endDate >= :date AND contract.status = :status',
           { date: new Date(), status: ContractStatus.APPROVED },
         );
       } else if (status === ClientContractStatus.CLOSED) {
         query.andWhere(
-          'contract.endDate > :date AND contract.status = :status',
+          'contract.endDate <= :date AND contract.status = :status',
           {
             date: new Date(),
             status: ContractStatus.APPROVED,
