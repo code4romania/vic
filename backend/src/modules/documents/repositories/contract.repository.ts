@@ -52,6 +52,8 @@ export class ContractRepositoryService
       endDate,
       volunteerName,
       volunteerId,
+      history,
+      pending,
     } = findOptions;
 
     const query = this.contractRepository
@@ -120,6 +122,28 @@ export class ContractRepositoryService
       } else {
         query.andWhere('contract.status = :status', { status });
       }
+    }
+
+    // get all ACTIVE AND FINISHED contracts
+    if (history) {
+      query.andWhere(
+        'contract.startDate <= :date AND contract.status = :status',
+        {
+          date: new Date(),
+          status: ContractStatus.APPROVED,
+        },
+      );
+    }
+
+    // get all pending
+    if (pending) {
+      query.andWhere(
+        '(contract.status = :pendingVolunteer OR contract.status = :pendingAdmin)',
+        {
+          pendingVolunteer: ContractStatus.PENDING_VOLUNTEER,
+          pendingAdmin: ContractStatus.PENDING_ADMIN,
+        },
+      );
     }
 
     if (volunteerName) {

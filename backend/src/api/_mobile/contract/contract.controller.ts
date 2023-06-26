@@ -15,7 +15,6 @@ import {
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { MobileContractListItemPresenter } from './presenters/mobile-contract-list-item.presenter';
 import { GetVolunteerContractsDto } from './dto/get-volunteer-contracts.dto';
-import { GetManyContractsUsecase } from 'src/usecases/documents/get-many-contracts.usecase';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
 import { ContractVolunteerGuard } from './guards/contract-volunteer.guard';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
@@ -25,24 +24,46 @@ import { GetOneContractUsecase } from 'src/usecases/documents/get-one-contract.u
 import { MobileContractPresenter } from './presenters/mobile-contract.presenter';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { SignContractByVolunteer } from 'src/usecases/documents/sign-contract-by-volunteer.usecase';
+import { GetVolunteerContractHistoryUsecase } from 'src/usecases/documents/get-volunteer-contract-history.usecase';
+import { GetVolunteerPendingContractsUsecase } from 'src/usecases/documents/get-volunteer-pending-contracts.usecase';
 
 @UseGuards(MobileJwtAuthGuard, ContractVolunteerGuard)
 @ApiBearerAuth()
 @Controller('mobile/contract')
 export class MobileContractController {
   constructor(
-    private readonly getManyContractsUsecase: GetManyContractsUsecase,
+    private readonly getVolunteerContractHistoryUsecase: GetVolunteerContractHistoryUsecase,
+    private readonly getVolunteerPendingContractsUsecase: GetVolunteerPendingContractsUsecase,
     private readonly getOneContractUsecase: GetOneContractUsecase,
     private readonly signContractUsecase: SignContractByVolunteer,
   ) {}
 
-  @Get()
+  @Get('history')
   @ApiPaginatedResponse(MobileContractListItemPresenter)
-  async getMany(
+  async getManyApproved(
     @Query() filters: GetVolunteerContractsDto,
     @ExtractUser() { activeOrganization }: IRegularUserModel,
   ): Promise<PaginatedPresenter<MobileContractListItemPresenter>> {
-    const contracts = await this.getManyContractsUsecase.execute({
+    const contracts = await this.getVolunteerContractHistoryUsecase.execute({
+      ...filters,
+      organizationId: activeOrganization.id,
+    });
+
+    return new PaginatedPresenter({
+      ...contracts,
+      items: contracts.items.map(
+        (contract) => new MobileContractListItemPresenter(contract),
+      ),
+    });
+  }
+
+  @Get('pending')
+  @ApiPaginatedResponse(MobileContractListItemPresenter)
+  async getManyPending(
+    @Query() filters: GetVolunteerContractsDto,
+    @ExtractUser() { activeOrganization }: IRegularUserModel,
+  ): Promise<PaginatedPresenter<MobileContractListItemPresenter>> {
+    const contracts = await this.getVolunteerPendingContractsUsecase.execute({
       ...filters,
       organizationId: activeOrganization.id,
     });

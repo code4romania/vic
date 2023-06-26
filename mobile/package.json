@@ -48,7 +48,8 @@
     "zustand": "^4.3.8",
     "expo-file-system": "~15.2.2",
     "expo-sharing": "~11.2.2",
-    "expo-document-picker": "~11.2.2"
+    "expo-document-picker": "~11.2.2",
+    "lottie-react-native": "5.1.4"
   },
   "devDependencies": {
     "@babel/core": "7.21.3",

@@ -1,19 +1,38 @@
 import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
-import { getContract, getContracts, signContract } from './contract.api';
-import { ContractStatus } from '../../common/enums/contract-status.enum';
+import {
+  getContract,
+  getContractsHistory,
+  getPendingContracts,
+  signContract,
+} from './contract.api';
 import { DocumentResult } from 'expo-document-picker';
 
-export const useContractsInfiniteQuery = (volunteerId: string, status: ContractStatus) => {
+export const useContractHistoryInfiniteQuery = (volunteerId: string) => {
   return useInfiniteQuery(
-    ['contracts', volunteerId, status],
-    ({ pageParam }) => getContracts({ pageParam, volunteerId, status }),
+    ['contract-history', volunteerId],
+    ({ pageParam }) => getContractsHistory({ pageParam, volunteerId }),
     {
       getNextPageParam: (lastPage) => {
         return lastPage?.meta.totalPages > lastPage?.meta.currentPage
           ? lastPage?.meta.currentPage + 1
           : undefined;
       },
-      enabled: !!volunteerId && !!status,
+      enabled: !!volunteerId,
+    },
+  );
+};
+
+export const usePendingContractsInfiniteQuery = (volunteerId: string) => {
+  return useInfiniteQuery(
+    ['contracts-pending', volunteerId],
+    ({ pageParam }) => getPendingContracts({ pageParam, volunteerId }),
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage?.meta.totalPages > lastPage?.meta.currentPage
+          ? lastPage?.meta.currentPage + 1
+          : undefined;
+      },
+      enabled: !!volunteerId,
     },
   );
 };
