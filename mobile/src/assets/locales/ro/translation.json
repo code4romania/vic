@@ -518,9 +518,15 @@
       "upload": {
         "success": "Contractul a fost trimis!"
       },
+      "cancel": {
+        "success": "Contractul a fost intors la starea initiala!"
+      },
       "errors": {
         "CONTRACT_002": "Contractul nu a fost gasit",
-        "CONTRACT_001": "Nu s-a putut incarca contractul"
+        "CONTRACT_001": "Nu s-a putut incarca contractul",
+        "CONTRACT_003": "Nu s-a putut sterge documentul",
+        "CONTRACT_007": "Nu se poate anula un contract aprobat de admin",
+        "TEMPLATE_002": "Template-ul contractului nu a fost gasit!"
       }
     }
   },

@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
 import {
+  cancelContract,
   getContract,
   getContractsHistory,
   getPendingContracts,
@@ -47,4 +48,8 @@ export const useSignContractMutation = () => {
   return useMutation((payload: { contractId: string; contract: DocumentResult }) =>
     signContract(payload),
   );
+};
+
+export const useCancelContractMutation = () => {
+  return useMutation((payload: { contractId: string }) => cancelContract(payload));
 };

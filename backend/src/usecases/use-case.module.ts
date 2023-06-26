@@ -119,6 +119,7 @@ import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-do
 import { DeleteContractUsecase } from './documents/delete-contract.usecase';
 import { GetVolunteerContractHistoryUsecase } from './documents/get-volunteer-contract-history.usecase';
 import { GetVolunteerPendingContractsUsecase } from './documents/get-volunteer-pending-contracts.usecase';
+import { CancelContractUsecase } from './documents/cancel-contract.usecase';
 
 @Module({
   imports: [
@@ -261,6 +262,7 @@ import { GetVolunteerPendingContractsUsecase } from './documents/get-volunteer-p
     DeleteContractUsecase,
     GetVolunteerContractHistoryUsecase,
     GetVolunteerPendingContractsUsecase,
+    CancelContractUsecase,
   ],
   exports: [
     // Organization
@@ -387,6 +389,7 @@ import { GetVolunteerPendingContractsUsecase } from './documents/get-volunteer-p
     DeleteContractUsecase,
     GetVolunteerContractHistoryUsecase,
     GetVolunteerPendingContractsUsecase,
+    CancelContractUsecase,
   ],
 })
 export class UseCaseModule {}

@@ -152,7 +152,7 @@ export const mapContractStatusToClientContractStatus = (
     }
 
     // closed
-    if (compareAsc(contract.endDate, new Date()) > 0) {
+    if (compareAsc(contract.endDate, new Date()) <= 0) {
       return ClientContractStatus.CLOSED;
     }
   }

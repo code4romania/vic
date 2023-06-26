@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { useContractQuery, useSignContractMutation } from '../services/contract/contract.service';
+import {
+  useCancelContractMutation,
+  useContractQuery,
+  useSignContractMutation,
+} from '../services/contract/contract.service';
 import LoadingScreen from '../components/LoadingScreen';
 import { useTranslation } from 'react-i18next';
 import Disclaimer from '../components/Disclaimer';
@@ -43,6 +47,8 @@ const Contract = ({ navigation, route }: any) => {
 
   // sign contract
   const { mutate: signContract, isLoading: isUploadingContract } = useSignContractMutation();
+  // cancel contract
+  const { mutate: cancelContract, isLoading: isCancelingContract } = useCancelContractMutation();
 
   useEffect(() => {
     // go back and show error
@@ -91,7 +97,7 @@ const Contract = ({ navigation, route }: any) => {
           },
           onError: (error) => {
             Toast.show({
-              text1: `${InternalErrors.EVENT_ERRORS.getError(
+              text1: `${InternalErrors.CONTRACT_ERRORS.getError(
                 (error as any).response?.data.code_error,
               )}`,
               type: 'error',
@@ -103,7 +109,24 @@ const Contract = ({ navigation, route }: any) => {
   };
 
   const onCancelAndUploadNewContract = () => {
-    console.log('cancel and upload new contract');
+    cancelContract(
+      { contractId: id },
+      {
+        onSuccess: () => {
+          // show success toast and get back to the previous page and update state
+          Toast.show({ text1: `${t('contract.cancel.success')}`, type: 'success' });
+          navigation.goBack({ shouldRefetch: true });
+        },
+        onError: (error) => {
+          Toast.show({
+            text1: `${InternalErrors.CONTRACT_ERRORS.getError(
+              (error as any).response?.data.code_error,
+            )}`,
+            type: 'error',
+          });
+        },
+      },
+    );
   };
 
   const buildPageActions = () => {
@@ -121,7 +144,7 @@ const Contract = ({ navigation, route }: any) => {
         onPrimaryActionButtonClick: onCancelAndUploadNewContract,
         primaryActionLabel: t('contract.actions.cancel'),
         primaryBtnType: ButtonType.DANGER,
-        loading: isUploadingContract,
+        loading: isCancelingContract,
       };
     }
   };
@@ -134,7 +157,7 @@ const Contract = ({ navigation, route }: any) => {
       bottomSheetOptions={{
         paragraph: (
           <View style={styles.bottomSheetParagraphContainer}>
-            <Text category="p1">{`${t('contract.bottom_sheet.parapgraph')}`}</Text>
+            <Text category="p1">{`${t('contract.bottom_sheet.paragraph')}`}</Text>
             <Text category="p2" style={{ color: theme['color-success-500'] }}>
               {(selectedContract as any)?.name || ''}
             </Text>

@@ -26,6 +26,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { SignContractByVolunteer } from 'src/usecases/documents/sign-contract-by-volunteer.usecase';
 import { GetVolunteerContractHistoryUsecase } from 'src/usecases/documents/get-volunteer-contract-history.usecase';
 import { GetVolunteerPendingContractsUsecase } from 'src/usecases/documents/get-volunteer-pending-contracts.usecase';
+import { CancelContractUsecase } from 'src/usecases/documents/cancel-contract.usecase';
 
 @UseGuards(MobileJwtAuthGuard, ContractVolunteerGuard)
 @ApiBearerAuth()
@@ -36,6 +37,7 @@ export class MobileContractController {
     private readonly getVolunteerPendingContractsUsecase: GetVolunteerPendingContractsUsecase,
     private readonly getOneContractUsecase: GetOneContractUsecase,
     private readonly signContractUsecase: SignContractByVolunteer,
+    private readonly cancelContractUsecase: CancelContractUsecase,
   ) {}
 
   @Get('history')
@@ -103,6 +105,20 @@ export class MobileContractController {
       contractId,
       activeOrganization.id,
       contract,
+    );
+
+    return new MobileContractPresenter(updateedContract);
+  }
+
+  @ApiParam({ name: 'contractId', type: 'string' })
+  @Patch(':contractId/cancel')
+  async cancel(
+    @Param('contractId', UuidValidationPipe) contractId: string,
+    @ExtractUser() { activeOrganization }: IRegularUserModel,
+  ): Promise<MobileContractPresenter> {
+    const updateedContract = await this.cancelContractUsecase.execute(
+      contractId,
+      activeOrganization.id,
     );
 
     return new MobileContractPresenter(updateedContract);

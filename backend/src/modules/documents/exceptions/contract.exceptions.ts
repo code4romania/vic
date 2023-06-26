@@ -7,6 +7,7 @@ export enum ContractExceptionCodes {
   CONTRACT_004 = 'CONTRACT_004',
   CONTRACT_005 = 'CONTRACT_005',
   CONTRACT_006 = 'CONTRACT_006',
+  CONTRACT_007 = 'CONTRACT_007',
 }
 
 type ContractExceptionCodeType = keyof typeof ContractExceptionCodes;
@@ -39,5 +40,9 @@ export const ContractExceptionMessages: Record<
   [ContractExceptionCodes.CONTRACT_006]: {
     code_error: ContractExceptionCodes.CONTRACT_006,
     message: 'Cannot delete an approved contract',
+  },
+  [ContractExceptionCodes.CONTRACT_007]: {
+    code_error: ContractExceptionCodes.CONTRACT_007,
+    message: 'Can only cancel a contract pending to the ADMIN',
   },
 };

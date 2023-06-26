@@ -61,3 +61,11 @@ export const signContract = async ({
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
 };
+
+export const cancelContract = async ({
+  contractId,
+}: {
+  contractId: string;
+}): Promise<IContract> => {
+  return API.patch(`mobile/contract/${contractId}/cancel`).then((res) => res.data);
+};
