@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text, useTheme } from '@ui-kitten/components';
 import OrganizationIdentity from '../components/OrganizationIdentity';
@@ -15,6 +15,7 @@ import { IContractListItem } from '../common/interfaces/contract-list-item.inter
 import ContractItem from '../components/ContractItem';
 import GrayIcon from '../components/GreyIcon';
 import SectionWrapper from '../components/SectionWrapper';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface ContractsProps {
   navigation: any;
@@ -66,6 +67,20 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
     fetchNextPage: fetchHistoryNextPage,
     refetch: reloadHistory,
   } = useContractHistoryInfiniteQuery(volunteerId);
+
+  // TODO: review this
+  useFocusEffect(
+    useCallback(() => {
+      // Your onInit logic goes here
+      reloadPendingContracts();
+      reloadHistory();
+
+      return () => {
+        // Clean up any resources if necessary
+        console.log('Screen unmounted');
+      };
+    }, [reloadPendingContracts, reloadHistory]),
+  );
 
   const onDownloadContract = (id: string) => {
     console.log('contract pressed', id);

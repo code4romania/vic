@@ -515,8 +515,12 @@
         "paragraph": "Ai încărcat documentul",
         "label": "Trimite spre semnare"
       },
+      "upload": {
+        "success": "Contractul a fost trimis!"
+      },
       "errors": {
-        "CONTRACT_002": "Contractul nu a fost gasit"
+        "CONTRACT_002": "Contractul nu a fost gasit",
+        "CONTRACT_001": "Nu s-a putut incarca contractul"
       }
     }
   },

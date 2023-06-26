@@ -3,6 +3,7 @@ import { ErrorClass } from '../base-error.class';
 
 export enum CONTRACT_ERRORS {
   CONTRACT_002 = 'CONTRACT_002',
+  CONTRACT_001 = 'CONTRACT_001',
 }
 
 export class ContractErrors extends ErrorClass<CONTRACT_ERRORS> {
@@ -10,6 +11,7 @@ export class ContractErrors extends ErrorClass<CONTRACT_ERRORS> {
 
   private constructor() {
     super({
+      [CONTRACT_ERRORS.CONTRACT_001]: i18n.t('documents:contract.errors.CONTRACT_001'),
       [CONTRACT_ERRORS.CONTRACT_002]: i18n.t('documents:contract.errors.CONTRACT_002'),
     });
   }

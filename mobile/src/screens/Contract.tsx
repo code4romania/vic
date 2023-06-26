@@ -42,7 +42,7 @@ const Contract = ({ navigation, route }: any) => {
   } = useContractQuery(id);
 
   // sign contract
-  const { mutate: signContract } = useSignContractMutation();
+  const { mutate: signContract, isLoading: isUploadingContract } = useSignContractMutation();
 
   useEffect(() => {
     // go back and show error
@@ -85,13 +85,17 @@ const Contract = ({ navigation, route }: any) => {
         { contractId: id, contract: selectedContract },
         {
           onSuccess: () => {
-            console.log('done');
             // show success toast and get back to the previous page and update state
-            Toast.show({ text1: 'Contractul a fost incarcat', type: 'success' });
-            navigation.goBack();
+            Toast.show({ text1: `${t('contract.upload.success')}`, type: 'success' });
+            navigation.goBack({ shouldRefetch: true });
           },
           onError: (error) => {
-            console.error(error);
+            Toast.show({
+              text1: `${InternalErrors.EVENT_ERRORS.getError(
+                (error as any).response?.data.code_error,
+              )}`,
+              type: 'error',
+            });
           },
         },
       );
@@ -108,6 +112,7 @@ const Contract = ({ navigation, route }: any) => {
         onPrimaryActionButtonClick: onSelectContract,
         primaryActionLabel: t('contract.actions.upload'),
         primaryBtnType: ButtonType.PRIMARY,
+        loading: isUploadingContract,
       };
     }
 
@@ -116,6 +121,7 @@ const Contract = ({ navigation, route }: any) => {
         onPrimaryActionButtonClick: onCancelAndUploadNewContract,
         primaryActionLabel: t('contract.actions.cancel'),
         primaryBtnType: ButtonType.DANGER,
+        loading: isUploadingContract,
       };
     }
   };
