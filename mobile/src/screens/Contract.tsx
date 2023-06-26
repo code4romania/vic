@@ -13,8 +13,8 @@ import LoadingScreen from '../components/LoadingScreen';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
-import { CloseContractIcon, PendingContractIcon } from '../components/ContractList';
 import * as DocumentPicker from 'expo-document-picker';
+import { CloseContractIcon, PendingContractIcon } from './Documents';
 
 const Contract = ({ navigation, route }: any) => {
   // contract param
