@@ -1,33 +1,52 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import Disclaimer from '../components/Disclaimer';
-import OrganizationIdentity from '../components/OrganizationIdentity';
-import i18n from '../common/config/i18n';
-import { Text } from '@ui-kitten/components';
-import ContractItem from '../components/ContractItem';
-import FormLayout from '../layouts/FormLayout';
-import { ButtonType } from '../common/enums/button-type.enum';
-import { ContractStatus } from '../common/enums/contract-status.enum';
 import { useContractQuery, useSignContractMutation } from '../services/contract/contract.service';
 import LoadingScreen from '../components/LoadingScreen';
+import { useTranslation } from 'react-i18next';
+import Disclaimer from '../components/Disclaimer';
+import { ContractStatus } from '../common/enums/contract-status.enum';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import OrganizationIdentity from '../components/OrganizationIdentity';
+import FormLayout from '../layouts/FormLayout';
+import { Text } from '@ui-kitten/components';
+import { StyleSheet } from 'react-native';
+import ContractItem from '../components/ContractItem';
+import { PendingContractIcon } from './Documents';
+import { ButtonType } from '../common/enums/button-type.enum';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
-import { CloseContractIcon, PendingContractIcon } from './Documents';
 
 const Contract = ({ navigation, route }: any) => {
+  const { t } = useTranslation('documents');
   // contract param
   const { id } = route.params;
-  // contract request
-  const { data: contract, isFetching: isLoadingContract, error } = useContractQuery(id);
   // active organization
   const { activeOrganization } = useActiveOrganization();
+  // contract request
+  const {
+    data: contract,
+    isFetching: isLoadingContract,
+    error: getContractError,
+  } = useContractQuery(id);
+
   // sign contract
   const { mutate: signContract } = useSignContractMutation();
 
-  console.log('isLoadingContract', isLoadingContract, contract);
-  console.log('error', error);
+  useEffect(() => {
+    // go back and show error
+    if (getContractError) {
+      Toast.show({
+        type: 'error',
+        text1: `${InternalErrors.CONTRACT_ERRORS.getError(
+          (getContractError as any).response?.data.code_error,
+        )}`,
+      });
+      navigation.goBack();
+    }
+  }, [getContractError, navigation]);
 
   const onDownloadContract = async () => {
     if (contract) {
@@ -37,7 +56,7 @@ const Contract = ({ navigation, route }: any) => {
     }
   };
 
-  const uploadContract = async () => {
+  const onUploadContract = async () => {
     const result = await DocumentPicker.getDocumentAsync();
     signContract(
       { contractId: id, contract: result },
@@ -49,65 +68,70 @@ const Contract = ({ navigation, route }: any) => {
     );
   };
 
-  if (!contract || error) {
-    return <></>;
-  }
+  const onCancelAndUploadNewContract = () => {
+    console.log('cancel and upload new contract');
+  };
 
-  if (isLoadingContract) {
-    <LoadingScreen />;
-  }
+  const buildPageActions = () => {
+    if (isLoadingContract) {
+      return;
+    }
+
+    return contract?.status === ContractStatus.PENDING_VOLUNTEER
+      ? {
+          onPrimaryActionButtonClick: onUploadContract,
+          primaryActionLabel: t('contract.upload'),
+          primaryBtnType: ButtonType.PRIMARY,
+        }
+      : {
+          onPrimaryActionButtonClick: onCancelAndUploadNewContract,
+          primaryActionLabel: t('contract.cancel'),
+          primaryBtnType: ButtonType.DANGER,
+        };
+  };
 
   return (
     <PageLayout
-      title={contract.contractNumber}
+      title={t('contract.title', { contractNumber: contract?.contractNumber || '' })}
       onBackButtonPress={navigation.goBack}
-      actionsOptions={{
-        onPrimaryActionButtonClick: uploadContract,
-        primaryActionLabel:
-          contract.status === ContractStatus.PENDING_VOLUNTEER
-            ? i18n.t('documents:upload')
-            : i18n.t('documents:cancel'),
-        primaryBtnType:
-          contract.status === ContractStatus.PENDING_VOLUNTEER
-            ? ButtonType.PRIMARY
-            : ButtonType.DANGER,
-      }}
+      actionsOptions={buildPageActions()}
     >
-      <Disclaimer
-        color="yellow"
-        text={
-          contract.status === ContractStatus.PENDING_ADMIN
-            ? i18n.t('documents:disclaimer_ong')
-            : i18n.t('documents:disclaimer_volunteer')
-        }
-      />
-      <FormLayout>
-        <OrganizationIdentity
-          name={activeOrganization?.name || ''}
-          uri={activeOrganization?.logo || ''}
-        />
-        <Text>{`${
-          contract.status === ContractStatus.PENDING_ADMIN
-            ? i18n.t('documents:contract_description_ong')
-            : i18n.t('documents:contract_description_volunteer')
-        }`}</Text>
-        <ContractItem
-          id={contract.id}
-          title={contract.contractNumber}
-          startDate={contract.startDate}
-          endDate={contract.endDate}
-          leftIcon={
-            contract.status !== ContractStatus.PENDING_VOLUNTEER ? (
-              <PendingContractIcon />
-            ) : (
-              <CloseContractIcon />
-            )
-          }
-          onPress={onDownloadContract}
-        />
-      </FormLayout>
+      {isLoadingContract && <LoadingScreen />}
+      {!isLoadingContract && contract && (
+        <>
+          {(contract.status === ContractStatus.PENDING_ADMIN ||
+            contract.status === ContractStatus.PENDING_VOLUNTEER) && (
+            <Disclaimer color="yellow" text={t(`contract.disclaimer.${contract.status}`)} />
+          )}
+          <FormLayout>
+            {activeOrganization && (
+              <OrganizationIdentity
+                name={activeOrganization.name}
+                uri={activeOrganization.logo || ''}
+              />
+            )}
+            <Text category="p1" style={styles.paragraph}>{`${t(
+              `contract.paragraph.${contract.status}`,
+            )}`}</Text>
+            <ContractItem
+              id={contract.id}
+              title={contract.contractNumber}
+              startDate={contract.startDate}
+              endDate={contract.endDate}
+              leftIcon={<PendingContractIcon />}
+              onPress={onDownloadContract}
+            />
+          </FormLayout>
+        </>
+      )}
     </PageLayout>
   );
 };
 
 export default Contract;
+
+const styles = StyleSheet.create({
+  paragraph: {
+    lineHeight: 24,
+  },
+});

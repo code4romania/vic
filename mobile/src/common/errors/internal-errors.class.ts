@@ -1,6 +1,7 @@
 import { AccessCodeErrors } from './entities/access-code';
 import { AccessRequestErrors } from './entities/access-request';
 import { ActivityLogErrors } from './entities/activity-log';
+import { ContractErrors } from './entities/contract';
 import { EventErrors } from './entities/event.errors';
 import { UserErrors } from './entities/user.errors';
 import { VolunterProfileErrors } from './entities/volunteer-profile';
@@ -13,4 +14,5 @@ export class InternalErrors {
   public static VOLUNTEER_PROFILE_ERRORS = VolunterProfileErrors.getInstance();
   public static EVENT_ERRORS = EventErrors.getInstance();
   public static ACTIVITY_LOG_ERRORS = ActivityLogErrors.getInstance();
+  public static CONTRACT_ERRORS = ContractErrors.getInstance();
 }
