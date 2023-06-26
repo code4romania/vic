@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { useContractQuery, useSignContractMutation } from '../services/contract/contract.service';
 import LoadingScreen from '../components/LoadingScreen';
@@ -10,21 +10,30 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import FormLayout from '../layouts/FormLayout';
-import { Text } from '@ui-kitten/components';
-import { StyleSheet } from 'react-native';
+import { Text, useTheme } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
 import ContractItem from '../components/ContractItem';
 import { PendingContractIcon } from './Documents';
 import { ButtonType } from '../common/enums/button-type.enum';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
+import useStore from '../store/store';
 
 const Contract = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
   // contract param
   const { id } = route.params;
+  // theme
+  const theme = useTheme();
+  // document state
+  const [selectedContract, setSelectedContract] = useState<DocumentPicker.DocumentResult | null>(
+    null,
+  );
   // active organization
   const { activeOrganization } = useActiveOrganization();
+  // bottom sheet state
+  const { open: openBottomSheet, close: closeBottomSheet } = useStore();
   // contract request
   const {
     data: contract,
@@ -56,16 +65,37 @@ const Contract = ({ navigation, route }: any) => {
     }
   };
 
-  const onUploadContract = async () => {
+  const onSelectContract = async () => {
     const result = await DocumentPicker.getDocumentAsync();
-    signContract(
-      { contractId: id, contract: result },
-      {
-        onSuccess: () => {
-          console.log('done');
+    // don't show the bottom sheet if the user canceled the upload file from the device
+    if (result.type !== 'cancel') {
+      setSelectedContract(result);
+      openBottomSheet();
+    }
+  };
+
+  const onCancelSelection = async () => {
+    closeBottomSheet();
+    setSelectedContract(null);
+  };
+
+  const onUploadContract = async () => {
+    if (selectedContract) {
+      signContract(
+        { contractId: id, contract: selectedContract },
+        {
+          onSuccess: () => {
+            console.log('done');
+            // show success toast and get back to the previous page and update state
+            Toast.show({ text1: 'Contractul a fost incarcat', type: 'success' });
+            navigation.goBack();
+          },
+          onError: (error) => {
+            console.error(error);
+          },
         },
-      },
-    );
+      );
+    }
   };
 
   const onCancelAndUploadNewContract = () => {
@@ -73,21 +103,21 @@ const Contract = ({ navigation, route }: any) => {
   };
 
   const buildPageActions = () => {
-    if (isLoadingContract) {
-      return;
+    if (contract?.status === ContractStatus.PENDING_VOLUNTEER) {
+      return {
+        onPrimaryActionButtonClick: onSelectContract,
+        primaryActionLabel: t('contract.actions.upload'),
+        primaryBtnType: ButtonType.PRIMARY,
+      };
     }
 
-    return contract?.status === ContractStatus.PENDING_VOLUNTEER
-      ? {
-          onPrimaryActionButtonClick: onUploadContract,
-          primaryActionLabel: t('contract.upload'),
-          primaryBtnType: ButtonType.PRIMARY,
-        }
-      : {
-          onPrimaryActionButtonClick: onCancelAndUploadNewContract,
-          primaryActionLabel: t('contract.cancel'),
-          primaryBtnType: ButtonType.DANGER,
-        };
+    if (contract?.status === ContractStatus.PENDING_ADMIN) {
+      return {
+        onPrimaryActionButtonClick: onCancelAndUploadNewContract,
+        primaryActionLabel: t('contract.actions.cancel'),
+        primaryBtnType: ButtonType.DANGER,
+      };
+    }
   };
 
   return (
@@ -95,6 +125,25 @@ const Contract = ({ navigation, route }: any) => {
       title={t('contract.title', { contractNumber: contract?.contractNumber || '' })}
       onBackButtonPress={navigation.goBack}
       actionsOptions={buildPageActions()}
+      bottomSheetOptions={{
+        paragraph: (
+          <View style={styles.bottomSheetParagraphContainer}>
+            <Text category="p1">{`${t('contract.bottom_sheet.parapgraph')}`}</Text>
+            <Text category="p2" style={{ color: theme['color-success-500'] }}>
+              {(selectedContract as any)?.name || ''}
+            </Text>
+          </View>
+        ),
+        heading: t('contract.bottom_sheet.heading'),
+        primaryAction: {
+          label: t('contract.bottom_sheet.label'),
+          onPress: onUploadContract,
+        },
+        secondaryAction: {
+          label: t('general:back'),
+          onPress: onCancelSelection,
+        },
+      }}
     >
       {isLoadingContract && <LoadingScreen />}
       {!isLoadingContract && contract && (
@@ -133,5 +182,12 @@ export default Contract;
 const styles = StyleSheet.create({
   paragraph: {
     lineHeight: 24,
+  },
+  bottomSheetParagraphContainer: {
+    paddingVertical: 8,
+    flexDirection: 'column',
+    gap: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

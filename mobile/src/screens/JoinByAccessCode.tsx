@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import useStore from '../store/store';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { useOrganization } from '../store/organization/organization.selector';
+import Paragraph from '../components/Paragraph';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -120,7 +121,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
       }}
       bottomSheetOptions={{
         iconType: 'success',
-        paragraph: t('modal.success.paragraph'),
+        paragraph: <Paragraph>{`${t('modal.success.paragraph')}`}</Paragraph>,
         heading: t('modal.success.heading'),
         primaryAction: {
           label: t('modal.success.primary_action_label'),

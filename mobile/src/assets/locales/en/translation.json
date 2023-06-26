@@ -506,8 +506,10 @@
         "PENDING_VOLUNTEER": "Contractul necesita semnatura ta",
         "PENDING_ADMIN": "Contractul necesita semnătura organizației"
       },
-      "upload": "Încarcă contract semnat",
-      "cancel": "Anulează și încarcă altul",
+      "actions": {
+        "upload": "Încarcă contract semnat",
+        "cancel": "Anulează și încarcă altul"
+      },
       "bottom_sheet": {
         "heading": "Confirmi documentul?",
         "paragraph": "Ai încărcat documentul",

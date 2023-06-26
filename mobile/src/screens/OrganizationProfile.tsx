@@ -21,6 +21,7 @@ import { useCancelAccessRequestMutation } from '../services/access-request/acces
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import useStore from '../store/store';
+import Paragraph from '../components/Paragraph';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   console.log('OrganizationProfile', route.params);
@@ -97,7 +98,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   const renderIdentityDataMissingBottomSheetConfig = () => ({
     iconType: 'warning' as any,
     heading: t('modal.identity_data_missing.heading'),
-    paragraph: t('modal.identity_data_missing.paragraph'),
+    paragraph: <Paragraph>{`${t('modal.identity_data_missing.paragraph')}`}</Paragraph>,
     primaryAction: {
       label: t('modal.identity_data_missing.action_label'),
       onPress: onGoToIdentityDataScreen,
@@ -109,7 +110,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   const renderCanceAccessRequestConfirmationBottomSheetConfig = () => ({
     heading: t('modal.confirm_cancel_request.heading'),
-    paragraph: t('modal.confirm_cancel_request.paragraph'),
+    paragraph: <Paragraph>{`${t('modal.confirm_cancel_request.paragraph')}`}</Paragraph>,
     primaryAction: {
       status: 'danger' as any,
       label: t('modal.confirm_cancel_request.action_label'),
