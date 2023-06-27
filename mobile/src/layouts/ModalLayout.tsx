@@ -54,6 +54,7 @@ export const ModalLayout = ({
         alignment="start"
         accessoryLeft={renderLeftControl}
         accessoryRight={renderRightControl}
+        style={styles.header}
       />
       <Layout style={styles.layout}>
         <KeyboardAvoidingView
@@ -84,9 +85,10 @@ export const ModalLayout = ({
 export default ModalLayout;
 
 const styles = StyleSheet.create({
+  header: { minHeight: 45 },
   layout: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
   keyboardAvoidingContainer: { flex: 1 },
-  childrenContainer: { flex: 1, padding: 16 },
+  childrenContainer: { flex: 1, padding: 16, paddingTop: 0 },
   bottomActionContainer: {
     backgroundColor: 'white',
     shadowOffset: { width: 0, height: 1 },
