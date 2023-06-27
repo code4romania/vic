@@ -620,7 +620,7 @@
       "hours": {
         "required": "Numarul de ore este obligatoriu",
         "min": "Numarul de ore trebuie sa fie mai mare ca 0",
-        "max": "Numarul de ore trebuie sa fie mai mic ca 1000",
+        "max": "Numarul de ore trebuie sa fie mai mic ca {{value}}",
         "integer": "Numarul de ore trebuie sa fie intreg"
       },
       "submit": {
