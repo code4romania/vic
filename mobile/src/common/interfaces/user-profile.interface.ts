@@ -21,4 +21,8 @@ export interface IUserProfile {
   location?: ICity;
   userPersonalData: IUserPersonalData;
   activeOrganization: IOrganizationVolunteer;
+  profilePicture?: string;
+  firstName: string;
+  lastName: string;
+  birthday?: Date;
 }

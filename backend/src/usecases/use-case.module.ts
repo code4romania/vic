@@ -120,6 +120,7 @@ import { DeleteContractUsecase } from './documents/delete-contract.usecase';
 import { GetVolunteerContractHistoryUsecase } from './documents/get-volunteer-contract-history.usecase';
 import { GetVolunteerPendingContractsUsecase } from './documents/get-volunteer-pending-contracts.usecase';
 import { CancelContractUsecase } from './documents/cancel-contract.usecase';
+import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
 
 @Module({
   imports: [
@@ -165,6 +166,7 @@ import { CancelContractUsecase } from './documents/cancel-contract.usecase';
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
     UpdateUserPersonalDataUsecase,
+    UpdateRegularUserUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -291,6 +293,7 @@ import { CancelContractUsecase } from './documents/cancel-contract.usecase';
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
     UpdateUserPersonalDataUsecase,
+    UpdateRegularUserUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
