@@ -6,7 +6,7 @@ import SpeakerphoneSvg from '../assets/svg/speakerphone';
 import LogoSvg from '../assets/svg/logo.js';
 import NewsListItem from './NewsListItem';
 import IconSvg from './IconSvg';
-import { Button, withStyles } from '@ui-kitten/components';
+import { Button, Text, withStyles } from '@ui-kitten/components';
 import i18n from '../common/config/i18n';
 
 interface LatestNewsProps {
@@ -27,11 +27,12 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
         <Button
           style={eva.style.seeAllBtn}
           size="tiny"
-          appearance="outline"
-          status="success"
+          appearance="ghost"
           onPress={onViewNewsButtonPress}
         >
-          {`${i18n.t('general:see_all')}`}
+          {() => (
+            <Text category="c2" style={eva.style.seeAllText}>{`${i18n.t('general:see_all')}`}</Text>
+          )}
         </Button>
       }
     >
@@ -59,6 +60,11 @@ export default withStyles(LatestNews, (theme) => ({
   },
   seeAllBtn: {
     borderRadius: 100,
-    backgroundColor: theme['turqoise-50'],
+    backgroundColor: theme['turquoise-50'],
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+  },
+  seeAllText: {
+    color: theme['color-success-700'],
   },
 }));

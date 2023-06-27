@@ -40,7 +40,11 @@
 
     "text-caption-1-font-size": 14,
     "text-caption-1-font-weight": "400",
-    "text-caption-1-font-family": "roboto-regular"
+    "text-caption-1-font-family": "roboto-regular",
+
+    "text-caption-2-font-size": 12,
+    "text-caption-2-font-weight": "500",
+    "text-caption-2-font-family": "roboto-medium"
   },
   "components": {}
 }
