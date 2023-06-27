@@ -149,6 +149,10 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     return options;
   };
 
+  const onEventPress = (eventId: string) => {
+    navigation.navigate('event', { eventId });
+  };
+
   return (
     <PageLayout
       title={i18n.t('organization_profile:title')}
@@ -217,14 +221,15 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             <SectionWrapper title={i18n.t('organization_profile:events')}>
               <ScrollViewLayout>
                 <View style={styles.container}>
-                  {organization.events.map((event) => (
-                    <View style={styles.container} key={event.id}>
-                      <EventItem event={event} onPress={console.log} />
-                      <Divider />
-                    </View>
-                  ))}
-                  {organization.events.length === 0 && (
+                  {!organization.events || organization.events.length === 0 ? (
                     <Text category="p1">{`${t('no_events')}`}</Text>
+                  ) : (
+                    organization.events.map((event) => (
+                      <View style={styles.container} key={event.id}>
+                        <EventItem event={event} onPress={onEventPress} />
+                        <Divider />
+                      </View>
+                    ))
                   )}
                 </View>
               </ScrollViewLayout>

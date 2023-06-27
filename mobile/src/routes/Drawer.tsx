@@ -192,7 +192,7 @@ const renderDrawerContent = (props: any) => <DrawerContent {...props} />;
 // create drawer navigator on top of the tabs
 const { Navigator, Screen } = createDrawerNavigator();
 
-export const DrawerNavigator = () => (
+const DrawerNavigator = () => (
   <Navigator
     drawerContent={renderDrawerContent}
     initialRouteName="tabs"
