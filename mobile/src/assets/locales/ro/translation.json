@@ -363,6 +363,11 @@
       }
     }
   },
+  "home": {
+    "greeting": "Salut, {{name}}!",
+    "paragraph": "Bun venit in contul tău TEO! Locul unde poți să ții evidența orelor de activitate și a documentelor tale de voluntar, lorem ipsum.",
+    "add_hours": "Adauga ore de voluntariat!"
+  },
   "identity_data": {
     "description": "Introdu datele din actul de identitate. Acestea vor fi folosite pentru generarea contractului de voluntariat.",
     "privacy_policy": "Politica de Confidențialitate",
