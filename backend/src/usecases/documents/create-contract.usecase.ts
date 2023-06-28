@@ -12,6 +12,9 @@ import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
 import { GetOneTemplateUseCase } from './get-one-template.usecase';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 @Injectable()
 export class CreateContractUsecase implements IUseCaseService<IContractModel> {
@@ -21,13 +24,17 @@ export class CreateContractUsecase implements IUseCaseService<IContractModel> {
     private readonly volunteerFacade: VolunteerFacade,
     private readonly getOneTemplateUsecase: GetOneTemplateUseCase,
     private readonly exceptionsService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
     newContract: Omit<CreateContractOptions, 'path'>,
+    admin: IAdminUserModel,
   ): Promise<IContractModel> {
     // 1. check if the organization exists
-    await this.getOrganizationUsecase.execute(newContract.organizationId);
+    const organization = await this.getOrganizationUsecase.execute(
+      newContract.organizationId,
+    );
 
     // 2. check if the volunteer exists
     const volunteer = await this.volunteerFacade.find({
@@ -80,6 +87,19 @@ export class CreateContractUsecase implements IUseCaseService<IContractModel> {
       ...newContract,
       path: template.path,
     });
+
+    // Track event
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CREATE_CONTRACT,
+      {
+        organizationId: organization.id,
+        organizationName: organization.name,
+        contractId: contract.id,
+        volunteerId: volunteer.id,
+        volunteerName: volunteer.user.name,
+      },
+      admin,
+    );
 
     return contract;
   }

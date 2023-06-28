@@ -1,10 +1,10 @@
-import React, { ReactNode } from 'react';
-import { Text, useTheme, withStyles } from '@ui-kitten/components';
+import React from 'react';
+import { Icon, Text, useTheme, withStyles } from '@ui-kitten/components';
 import { TouchableHighlight, View } from 'react-native';
 import { applyCardShadow } from '../common/utils/utils';
 
 interface StatisticsCardProps {
-  icon: ReactNode;
+  icon: string;
   title: string;
   subtitle: string;
   onPress: () => void;
@@ -25,7 +25,7 @@ const StatisticsCard = ({
   return (
     <TouchableHighlight onPress={onPress} style={eva.style.touchableContainer}>
       <View style={[eva.style.container, { backgroundColor: theme[backgroundColor] }]}>
-        {icon}
+        <Icon name={icon} style={eva.style.icon} fill="red" />
         <View style={eva.style.textContainer}>
           <Text category="h3">{title}</Text>
           <Text category="c1">{subtitle}</Text>
@@ -48,5 +48,10 @@ export default withStyles(StatisticsCard, (theme) => ({
   },
   textContainer: {
     gap: 4,
+  },
+  icon: {
+    height: 56,
+    width: 56,
+    color: theme['color-success-500'],
   },
 }));

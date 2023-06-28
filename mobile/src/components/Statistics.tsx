@@ -1,55 +1,75 @@
 import React from 'react';
 import StarSvg from '../assets/svg/star';
-import ClockSvg from '../assets/svg/clock';
-import CalendarSvg from '../assets/svg/calendar';
-import DocumentSvg from '../assets/svg/document';
 import HorizontalCarousel from '../components/HorizontalCarousel';
 import StatisticsCard from './StatisticsCard';
 import SectionWrapper from '../components/SectionWrapper';
 import IconSvg from './IconSvg';
-import i18n from '../common/config/i18n';
+import { useMonthlyStatistics } from '../services/statistics/statistics.service';
+import { useTranslation } from 'react-i18next';
 
-const Statistics = () => {
+const Statistics = ({ navigation }: { navigation: any }) => {
+  const { t } = useTranslation('home');
+
+  const { isLoading: isFetchingStatistics, data: statistics } = useMonthlyStatistics();
+  console.log('statistics', statistics);
+
+  const onEventsCardPress = () => {
+    navigation.navigate('events');
+  };
+
+  const onHoursCardPress = () => {
+    navigation.navigate('news', { activityLogHoursUpdates: true });
+  };
+
+  const onDocumentsCardPress = () => {
+    navigation.navigate('news', { documentsUpdates: true });
+  };
+
+  const onOrganizationsCardPress = () => {
+    navigation.navigate('news', { organizationsUpdates: true });
+  };
+
+  // TODO: skeleton loading here
+  if (isFetchingStatistics) {
+    return <></>;
+  }
+
   return (
-    <SectionWrapper
-      title={i18n.t('general:current_month')}
-      icon={<IconSvg icon={StarSvg} size={20} />}
-    >
+    <SectionWrapper title={t('general:current_month')} icon={<IconSvg icon={StarSvg} size={20} />}>
       <HorizontalCarousel>
         <StatisticsCard
-          icon={<IconSvg icon={CalendarSvg} size={56} />}
-          title={`${3} ${i18n.t('tabs:events').toLowerCase()}`}
-          subtitle={i18n.t('general:current_month')}
+          icon="calendar"
+          title={`${t('statistics.events.title', { number: statistics?.numberOfUpcomingEvents })}`}
+          subtitle={t('statistics.events.description')}
           backgroundColor="turquoise-50"
-          onPress={() => console.log('statistic comp 1 pressed')}
+          onPress={onEventsCardPress}
         />
         <StatisticsCard
-          icon={<IconSvg icon={ClockSvg} size={56} />}
-          title={`${5} ${i18n.t('general:updates')}`}
-          subtitle={i18n.t('general:current_month')}
+          icon="clock"
+          title={`${t('statistics.hours.title', {
+            number: statistics?.numberOfActivityLogUpdates,
+          })}`}
+          subtitle={t('statistics.hours.description')}
           backgroundColor="turquoise-50"
-          onPress={() => console.log('statistic comp 2 pressed')}
+          onPress={onHoursCardPress}
         />
         <StatisticsCard
-          icon={<IconSvg icon={DocumentSvg} size={56} />}
-          title={`${5} ${i18n.t('general:updates')}`}
-          subtitle={i18n.t('general:current_month')}
+          icon="file"
+          title={`${t('statistics.documents.title', {
+            number: statistics?.numberOfDocumentUpdates,
+          })}`}
+          subtitle={t('statistics.documents.description')}
           backgroundColor="turquoise-50"
-          onPress={() => console.log('statistic comp 3 pressed')}
+          onPress={onDocumentsCardPress}
         />
         <StatisticsCard
-          icon={<IconSvg icon={CalendarSvg} size={56} />}
-          title={`${3} ${i18n.t('tabs:events').toLowerCase()}`}
-          subtitle={i18n.t('general:current_month')}
+          icon="users"
+          title={`${t('statistics.organizations.title', {
+            number: statistics?.numberOfOrganizationUpdates,
+          })}`}
+          subtitle={t('statistics.organizations.description')}
           backgroundColor="turquoise-50"
-          onPress={() => console.log('statistic comp 1 pressed')}
-        />
-        <StatisticsCard
-          icon={<IconSvg icon={ClockSvg} size={56} />}
-          title={`${5} ${i18n.t('general:updates')}`}
-          subtitle={i18n.t('general:current_month')}
-          backgroundColor="turquoise-50"
-          onPress={() => console.log('statistic comp 2 pressed')}
+          onPress={onOrganizationsCardPress}
         />
       </HorizontalCarousel>
     </SectionWrapper>

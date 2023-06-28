@@ -121,6 +121,7 @@ import { GetVolunteerContractHistoryUsecase } from './documents/get-volunteer-co
 import { GetVolunteerPendingContractsUsecase } from './documents/get-volunteer-pending-contracts.usecase';
 import { CancelContractUsecase } from './documents/cancel-contract.usecase';
 import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
+import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
 
 @Module({
   imports: [
@@ -243,6 +244,7 @@ import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    GetVolunteerMonthlyNewsStatisticsUsecase,
     // Templates
     CreateTemplateUsecase,
     GetTemplatesUsecase,
@@ -371,6 +373,7 @@ import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    GetVolunteerMonthlyNewsStatisticsUsecase,
     // Templates
     CreateTemplateUsecase,
     GetTemplatesUsecase,

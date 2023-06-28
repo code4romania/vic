@@ -47,7 +47,7 @@ const Home = ({ navigation }: any) => {
         </View>
       </View>
       <Layout style={styles.container}>
-        <Statistics />
+        <Statistics navigation={navigation} />
         <View style={styles.newsContainer}>
           <LatestNews navigation={navigation} />
           <AboutTeo />

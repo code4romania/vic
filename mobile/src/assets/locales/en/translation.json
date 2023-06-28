@@ -366,7 +366,25 @@
   "home": {
     "greeting": "Salut, {{name}}!",
     "paragraph": "Bun venit in contul tău TEO! Locul unde poți să ții evidența orelor de activitate și a documentelor tale de voluntar, lorem ipsum.",
-    "add_hours": "Adauga ore de voluntariat!"
+    "add_hours": "Adauga ore de voluntariat!",
+    "statistics": {
+      "events": {
+        "title": "{{number}} evenimente",
+        "description": "luna asta"
+      },
+      "hours": {
+        "title": "{{number}} actualizari",
+        "description": "in ore de voluntariat"
+      },
+      "documents": {
+        "title": "{{number}} actualizari",
+        "description": "in documente"
+      },
+      "organizations": {
+        "title": "{{number}} actualizari",
+        "description": "in organizatii"
+      }
+    }
   },
   "identity_data": {
     "description": "Introdu datele din actul de identitate. Acestea vor fi folosite pentru generarea contractului de voluntariat.",

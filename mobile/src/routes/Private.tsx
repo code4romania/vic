@@ -30,6 +30,7 @@ const Private = () => (
     <Group>
       <Screen name="home" component={DrawerNavigator} />
       <Screen name="news" component={News} />
+      <Screen name="announcements" component={News} />
       <Screen name="volunteer-profile" component={VolunteerProfile} />
       <Screen name="activity-logs" component={ActivityLogs} />
       <Screen name="organization-profile" component={OrganizationProfile} />

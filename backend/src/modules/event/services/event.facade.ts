@@ -107,4 +107,8 @@ export class EventFacade {
   ): Promise<IEventModel[]> {
     return this.eventRepository.findOngoingAndFinishedEvents(findOptions);
   }
+
+  async countUpcomingEventsByUserId(userId: string): Promise<number> {
+    return this.eventRepository.countUpcomingEvents(userId);
+  }
 }

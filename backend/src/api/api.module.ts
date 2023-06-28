@@ -26,6 +26,7 @@ import { MobileActivityTypeController } from './_mobile/activity-type/activity-t
 import { TemplateController } from './template/template.controller';
 import { ContractController } from './contracts/contracts.controller';
 import { MobileContractController } from './_mobile/contract/contract.controller';
+import { MobileStatisticsController } from './_mobile/statistics/statistics.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -57,6 +58,7 @@ import { MobileContractController } from './_mobile/contract/contract.controller
     MobileActivityLogController,
     MobileActivityTypeController,
     MobileContractController,
+    MobileStatisticsController,
   ],
 })
 export class ApiModule {}

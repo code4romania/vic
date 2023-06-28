@@ -120,13 +120,16 @@ export class ContractController {
   @Post()
   async create(
     @Body() contract: CreateContractDto,
-    @ExtractUser() { organizationId, id }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<ContractPresenter> {
-    const newContract = await this.createContractUsecase.execute({
-      ...contract,
-      organizationId,
-      createdByAdminId: id,
-    });
+    const newContract = await this.createContractUsecase.execute(
+      {
+        ...contract,
+        organizationId: admin.organizationId,
+        createdByAdminId: admin.id,
+      },
+      admin,
+    );
 
     return new ContractPresenter(newContract);
   }
@@ -138,13 +141,12 @@ export class ContractController {
   @Patch(':contractId/confirm')
   async sign(
     @Param('contractId', UuidValidationPipe) contractId: string,
-    @ExtractUser() { organizationId, id }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
     @UploadedFiles() { contract }: { contract: Express.Multer.File[] },
   ): Promise<ContractPresenter> {
     const newContract = await this.signAndConfirmContractUsecase.execute(
       contractId,
-      organizationId,
-      id,
+      admin,
       contract,
     );
 
@@ -156,13 +158,12 @@ export class ContractController {
   @Patch(':contractId/reject')
   async reject(
     @Param('contractId', UuidValidationPipe) contractId: string,
-    @ExtractUser() { organizationId, id }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
     @Body() { rejectionReason }: RejectContractDto,
   ): Promise<ContractPresenter> {
     const newContract = await this.rejectContractUsecase.execute(
       contractId,
-      organizationId,
-      id,
+      admin,
       rejectionReason,
     );
 
