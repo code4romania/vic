@@ -35,7 +35,10 @@ export class VolunteerRepositoryService
   public async findAll(
     options: FindVolunteerOptions,
   ): Promise<IVolunteerModel[]> {
-    const volunteers = await this.volunteerRepository.find({ where: options });
+    const volunteers = await this.volunteerRepository.find({
+      where: options,
+      relations: { organization: true },
+    });
     return volunteers.map(VolunteerModelTransformer.fromEntity);
   }
 

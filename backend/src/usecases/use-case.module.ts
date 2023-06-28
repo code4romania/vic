@@ -122,6 +122,7 @@ import { GetVolunteerPendingContractsUsecase } from './documents/get-volunteer-p
 import { CancelContractUsecase } from './documents/cancel-contract.usecase';
 import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
 import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
+import { GetTeoStatisticsUsecase } from './dashboard/get-teo-statistics.usecase';
 
 @Module({
   imports: [
@@ -245,6 +246,7 @@ import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunt
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
     GetVolunteerMonthlyNewsStatisticsUsecase,
+    GetTeoStatisticsUsecase,
     // Templates
     CreateTemplateUsecase,
     GetTemplatesUsecase,
@@ -396,6 +398,7 @@ import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunt
     GetVolunteerContractHistoryUsecase,
     GetVolunteerPendingContractsUsecase,
     CancelContractUsecase,
+    GetTeoStatisticsUsecase,
   ],
 })
 export class UseCaseModule {}

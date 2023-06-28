@@ -19,7 +19,7 @@ const NewsListItem = ({ icon, title, subtitle, eva, onPress }: NewsListItemProps
         <View style={eva?.style.iconWrapper}>{icon}</View>
         <View style={eva?.style.textContainer}>
           <Text category="s1">{title}</Text>
-          <Text category="c1" style={eva?.style.subtitle}>
+          <Text category="c1" numberOfLines={1} ellipsizeMode="tail" style={eva?.style.subtitle}>
             {subtitle}
           </Text>
         </View>
@@ -42,6 +42,7 @@ export default withStyles(NewsListItem, (theme) => ({
   },
   subtitle: {
     color: theme['cool-gray-500'],
+    paddingRight: 32,
   },
   iconWrapper: {
     width: 32,
@@ -52,5 +53,6 @@ export default withStyles(NewsListItem, (theme) => ({
   },
   textContainer: {
     gap: 6,
+    lineHeight: 20,
   },
 }));

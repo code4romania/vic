@@ -36,6 +36,8 @@ export type FindAnnouncementOptions = Partial<
 export type FindManyAnnouncementOptions = IBasePaginationFilterModel &
   Partial<Pick<IAnnouncementModel, 'status' | 'organizationId'>> & {
     targets?: string[];
+    organizationIds?: string[];
+    userId?: string;
   };
 
 export class AnnouncementStructureTransformer {

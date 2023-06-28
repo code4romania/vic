@@ -192,4 +192,8 @@ export class OrganizationRepositoryService
       OrganizationVolunteerTransformer.fromEntity,
     );
   }
+
+  public count(): Promise<number> {
+    return this.organizationRepository.count();
+  }
 }

@@ -1,8 +1,6 @@
 {
   "general": {
     "current_month": "Luna asta",
-    "see_all": "Vezi toate",
-    "latest_news": "Ultimele noutăți",
     "about_teo": "Despre TEO",
     "event": "Eveniment",
     "news": "Ultimele noutati",
@@ -383,6 +381,12 @@
       "organizations": {
         "title": "{{number}} actualizari",
         "description": "in organizatii"
+      }
+    },
+    "anouncements": {
+      "section": {
+        "header": "Ultimele noutăți",
+        "see_all": "Vezi toate"
       }
     }
   },

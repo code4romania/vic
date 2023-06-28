@@ -58,4 +58,8 @@ export class OrganizationFacadeService {
   ): Promise<IOrganizationVolunteerModel[]> {
     return this.organizationRepository.findMyOrganizations(userId);
   }
+
+  public async countOrganizations(): Promise<number> {
+    return this.organizationRepository.count();
+  }
 }

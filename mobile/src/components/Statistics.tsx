@@ -11,7 +11,6 @@ const Statistics = ({ navigation }: { navigation: any }) => {
   const { t } = useTranslation('home');
 
   const { isLoading: isFetchingStatistics, data: statistics } = useMonthlyStatistics();
-  console.log('statistics', statistics);
 
   const onEventsCardPress = () => {
     navigation.navigate('events');

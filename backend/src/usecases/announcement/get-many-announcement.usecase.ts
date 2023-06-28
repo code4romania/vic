@@ -6,16 +6,29 @@ import {
   IAnnouncementModel,
 } from 'src/modules/announcement/models/announcement.model';
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
+import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
 @Injectable()
 export class GetManyAnnouncementUseCase
   implements IUseCaseService<Pagination<IAnnouncementModel>>
 {
-  constructor(private readonly announcementFacade: AnnouncementFacade) {}
+  constructor(
+    private readonly announcementFacade: AnnouncementFacade,
+    private readonly volunteerFacade: VolunteerFacade,
+  ) {}
 
   public async execute(
     findOptions: FindManyAnnouncementOptions,
   ): Promise<Pagination<IAnnouncementModel>> {
-    return this.announcementFacade.findMany(findOptions);
+    const { userId, ...options } = findOptions;
+
+    // case where we require anouncements from all organizations
+    if (userId) {
+      const volunteers = await this.volunteerFacade.findAll({ userId });
+      const organizationIds = volunteers.map((v) => v.organization.id);
+      options.organizationIds = organizationIds;
+    }
+
+    return this.announcementFacade.findMany(options);
   }
 }

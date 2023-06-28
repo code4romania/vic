@@ -38,3 +38,8 @@ export interface IVolunteerMonthlyStatistics {
   numberOfDocumentUpdates: number;
   numberOfOrganizationUpdates: number;
 }
+
+export interface ITeoStatistics {
+  numberOfActiveVolunteers: number;
+  numberOfOrganizations: number;
+}

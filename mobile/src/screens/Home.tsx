@@ -22,44 +22,50 @@ const Home = ({ navigation }: any) => {
   };
 
   return (
-    <ScrollView
-      bouncesZoom={false}
-      alwaysBounceHorizontal={false}
-      alwaysBounceVertical={false}
-      bounces={false}
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.headerContainer}>
-        <View style={{ ...styles.headerShape, backgroundColor: theme['color-success-500'] }}>
-          <Text style={styles.greetingText} category="h3">
-            {`${t('greeting', { name: userProfile?.firstName || '' })}`}{' '}
-            <IconSvg icon={WaveSvg} size={14} />
-          </Text>
-          <Paragraph style={styles.paragraph}>{`${t('paragraph')}`}</Paragraph>
-          <View style={styles.addHoursContainer}>
-            <Button
-              appearance="outline"
-              label={`${t('add_hours')}`}
-              style={styles.addButton}
-              onPress={onAddVolunteeringHours}
-            />
+    <View style={styles.scrollViewContainer}>
+      <ScrollView
+        bouncesZoom={false}
+        alwaysBounceHorizontal={false}
+        alwaysBounceVertical={false}
+        bounces={false}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.headerContainer}>
+          <View style={{ ...styles.headerShape, backgroundColor: theme['color-success-500'] }}>
+            <Text style={styles.greetingText} category="h3">
+              {`${t('greeting', { name: userProfile?.firstName || '' })}`}{' '}
+              <IconSvg icon={WaveSvg} size={14} />
+            </Text>
+            <Paragraph style={styles.paragraph}>{`${t('paragraph')}`}</Paragraph>
+            <View style={styles.addHoursContainer}>
+              <Button
+                appearance="outline"
+                label={`${t('add_hours')}`}
+                style={styles.addButton}
+                onPress={onAddVolunteeringHours}
+              />
+            </View>
           </View>
         </View>
-      </View>
-      <Layout style={styles.container}>
-        <Statistics navigation={navigation} />
-        <View style={styles.newsContainer}>
-          <LatestNews navigation={navigation} />
-          <AboutTeo />
-        </View>
-      </Layout>
-    </ScrollView>
+        <Layout style={styles.container}>
+          <Statistics navigation={navigation} />
+          <View style={styles.newsContainer}>
+            <LatestNews navigation={navigation} />
+            <AboutTeo />
+          </View>
+        </Layout>
+      </ScrollView>
+    </View>
   );
 };
 
 export default Home;
 
 const styles = StyleSheet.create({
+  scrollViewContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   headerContainer: {
     width: '100%',
     overflow: 'hidden',
@@ -83,6 +89,8 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   container: {
+    flex: 1,
+    backgroundColor: 'white',
     paddingLeft: 16,
     paddingTop: 22,
   },

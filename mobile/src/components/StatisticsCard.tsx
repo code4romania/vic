@@ -7,7 +7,7 @@ interface StatisticsCardProps {
   icon: string;
   title: string;
   subtitle: string;
-  onPress: () => void;
+  onPress?: () => void;
   backgroundColor: string;
   eva?: any;
 }
