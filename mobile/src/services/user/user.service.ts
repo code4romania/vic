@@ -5,6 +5,7 @@ import { IdentityDataFormTypes } from '../../screens/IdentityData';
 import { AccountDataFormTypes } from '../../screens/AccountData';
 import { ImageAttachement } from '../../common/interfaces/image-attachement.interface';
 import { useAuth } from '../../hooks/useAuth';
+import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 
 export const useCreateUserProfileMutation = () => {
   return useMutation(['user-profile'], (userProfile: ICreateUserPayload) =>
@@ -13,8 +14,11 @@ export const useCreateUserProfileMutation = () => {
 };
 
 export const useUpdateUserPersonalDataMutation = () => {
-  return useMutation(['personal-data'], (personalData: IdentityDataFormTypes) =>
-    updateUserPersonalData(personalData),
+  const { setIdentityData } = useAuth();
+  return useMutation(
+    ['personal-data'],
+    (personalData: IdentityDataFormTypes) => updateUserPersonalData(personalData),
+    { onSuccess: (data: IUserProfile) => setIdentityData(data.userPersonalData) },
   );
 };
 

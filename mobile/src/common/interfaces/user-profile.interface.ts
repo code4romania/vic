@@ -5,7 +5,7 @@ import { IOrganizationVolunteer } from './organization-list-item.interface';
 export interface IUserPersonalData {
   id: string;
   identityDocumentSeries: string;
-  identityDocumentNumber: number;
+  identityDocumentNumber: string;
   address: string;
   identityDocumentIssueDate: Date;
   identityDocumentExpirationDate: Date;

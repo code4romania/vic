@@ -4,7 +4,7 @@ import { AuthContext, SignInOptions, SignUpOptions } from './AuthContext';
 import { Auth, Hub } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import i18n from '../../common/config/i18n';
-import { IUserProfile } from '../../common/interfaces/user-profile.interface';
+import { IUserPersonalData, IUserProfile } from '../../common/interfaces/user-profile.interface';
 import { JSONStringifyError } from '../../common/utils/utils';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import * as SplashScreen from 'expo-splash-screen';
@@ -48,6 +48,12 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const setActiveOrganization = (organization: IOrganizationVolunteer) => {
     if (userProfile !== null) {
       setUserProfile({ ...userProfile, activeOrganization: organization });
+    }
+  };
+
+  const setIdentityData = (userData: IUserPersonalData) => {
+    if (userProfile !== null) {
+      setUserProfile({ ...userProfile, userPersonalData: userData });
     }
   };
 
@@ -202,6 +208,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         setUserProfile,
         loginWithSocial,
         setActiveOrganization,
+        setIdentityData,
       }}
     >
       {children}

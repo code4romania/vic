@@ -425,6 +425,9 @@
       "expiration_date": {
         "label": "Data expirare",
         "required": "Data expirarii este obligatorie"
+      },
+      "submit": {
+        "success": "Datele au fost modificate!"
       }
     }
   },
