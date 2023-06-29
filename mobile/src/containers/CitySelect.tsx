@@ -7,7 +7,7 @@ interface CitySelectProps extends Omit<FormSelectProps, 'options'> {
   countyId: number;
 }
 
-const CitySelect = ({ countyId, ...props }: CitySelectProps) => {
+const CitySelect = ({ countyId, disabled, ...props }: CitySelectProps) => {
   const [cities, setCities] = useState<ISelectItem[]>([]);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const CitySelect = ({ countyId, ...props }: CitySelectProps) => {
     }
   };
 
-  return <FormSelect {...props} options={cities} disabled={!countyId} />;
+  return <FormSelect {...props} options={cities} disabled={!countyId || disabled} />;
 };
 
 export default CitySelect;

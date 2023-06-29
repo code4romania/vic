@@ -19,7 +19,7 @@ export const useUpdateUserPersonalDataMutation = () => {
 };
 
 export const useUpdateUserProfileMutation = () => {
-  const { setUserProfile } = useAuth();
+  const { setUserProfile, userProfile: oldProfile } = useAuth();
   return useMutation(
     ['update-profile'],
     ({
@@ -29,6 +29,6 @@ export const useUpdateUserProfileMutation = () => {
       userProfile: AccountDataFormTypes;
       profilePicture?: ImageAttachement;
     }) => updateUserProfile(userProfile, profilePicture),
-    { onSuccess: (data) => setUserProfile(data) },
+    { onSuccess: (data) => setUserProfile({ ...oldProfile, ...data }) },
   );
 };

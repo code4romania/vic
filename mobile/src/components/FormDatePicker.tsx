@@ -36,6 +36,7 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
   placeholder,
   error,
   required,
+  disabled,
   ...rest
 }: FormDatepickerProps) => {
   const styles = useStyleSheet(themedStyles);
@@ -56,7 +57,9 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
             onSelect={onChange}
             onBlur={onBlur}
             status={error ? 'danger' : 'basic'}
+            disabled={disabled}
             style={styles.input}
+            controlStyle={disabled ? styles.disabled : {}}
             accessoryRight={CalendarIcon}
             {...rest}
           />
@@ -87,5 +90,8 @@ const themedStyles = StyleService.create({
     shadowRadius: 1,
     elevation: 1,
     borderRadius: 6,
+  },
+  disabled: {
+    backgroundColor: '$cool-gray-100',
   },
 });

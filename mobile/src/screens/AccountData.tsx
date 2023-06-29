@@ -7,8 +7,6 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Sex } from '../common/enums/sex.enum';
-import CountySelect from '../containers/CountySelect';
-import CitySelect from '../containers/CitySelect';
 import FormDatePicker from '../components/FormDatePicker';
 import FormSelect from '../components/FormSelect';
 import { SexOptions } from '../common/constants/sex-options';
@@ -22,6 +20,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { ImageAttachement } from '../common/interfaces/image-attachement.interface';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import CountySelect from '../containers/CountySelect';
+import CitySelect from '../containers/CitySelect';
 
 export type AccountDataFormTypes = {
   firstName: string;
@@ -34,31 +34,29 @@ export type AccountDataFormTypes = {
   sex: Sex;
 };
 
-const schema = yup
-  .object({
-    firstName: yup
-      .string()
-      .required(`${i18n.t('register:create_user.form.first_name.required')}`)
-      .min(2, `${i18n.t('register:create_user.form.first_name.min', { value: '2' })}`)
-      .max(
-        50,
-        `${i18n.t('register:create_user.form.first_name.max', {
-          value: '50',
-        })}`,
-      ),
-    lastName: yup
-      .string()
-      .required(`${i18n.t('register:create_user.form.last_name.required')}`)
-      .min(2, `${i18n.t('register:create_user.form.last_name.min', { value: '2' })}`)
-      .max(
-        50,
-        `${i18n.t('register:create_user.form.last_name.max', {
-          value: '50',
-        })}`,
-      ),
-    phone: yup.string().required(`${i18n.t('register:create_account.form.phone.required')}`),
-  })
-  .required();
+const schema = yup.object({
+  firstName: yup
+    .string()
+    .required(`${i18n.t('register:create_user.form.first_name.required')}`)
+    .min(2, `${i18n.t('register:create_user.form.first_name.min', { value: '2' })}`)
+    .max(
+      50,
+      `${i18n.t('register:create_user.form.first_name.max', {
+        value: '50',
+      })}`,
+    ),
+  lastName: yup
+    .string()
+    .required(`${i18n.t('register:create_user.form.last_name.required')}`)
+    .min(2, `${i18n.t('register:create_user.form.last_name.min', { value: '2' })}`)
+    .max(
+      50,
+      `${i18n.t('register:create_user.form.last_name.max', {
+        value: '50',
+      })}`,
+    ),
+  phone: yup.string().required(`${i18n.t('register:create_account.form.phone.required')}`),
+});
 
 const AccountData = ({ navigation }: any) => {
   const styles = useStyleSheet(themedStyles);
@@ -81,7 +79,7 @@ const AccountData = ({ navigation }: any) => {
   } = useForm<AccountDataFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema as any),
   });
 
   const { isLoading: isUpdatingProfile, mutate: updateUserProfile } =
