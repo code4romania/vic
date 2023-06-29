@@ -28,6 +28,10 @@ export class GetVolunteerMonthlyNewsStatisticsUsecase
       numberOfOrganizationUpdates: 0,
     };
 
+    // get number of upcoming events for the user
+    statisticsResponse.numberOfUpcomingEvents =
+      await this.eventsFacade.countUpcomingEventsByUserId(user.id);
+
     // get all volunteerIds
     const volunteers = await this.volunteerFacade.findAll({
       userId: user.id,
@@ -36,9 +40,6 @@ export class GetVolunteerMonthlyNewsStatisticsUsecase
 
     if (volunteers.length > 0) {
       const volunteerIds = volunteers.map((v) => v.id);
-      // get number of upcoming events for the user
-      statisticsResponse.numberOfUpcomingEvents =
-        await this.eventsFacade.countUpcomingEventsByUserId(user.id);
       // get number of activityLogUpdates
       statisticsResponse.numberOfActivityLogUpdates =
         await this.actionsArchiveFacade.countActivityLogBetweenDates(

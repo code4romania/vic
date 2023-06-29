@@ -7,9 +7,13 @@ import IconSvg from './IconSvg';
 import { useMonthlyStatistics } from '../services/statistics/statistics.service';
 import { useTranslation } from 'react-i18next';
 import { Text } from '@ui-kitten/components';
+import { useAuth } from '../hooks/useAuth';
 
 const Statistics = ({ navigation }: { navigation: any }) => {
+  console.log('Statistics');
   const { t } = useTranslation('home');
+
+  const { userProfile } = useAuth();
 
   const {
     isLoading: isFetchingStatistics,
@@ -53,33 +57,37 @@ const Statistics = ({ navigation }: { navigation: any }) => {
             backgroundColor="turquoise-50"
             onPress={onEventsCardPress}
           />
-          <StatisticsCard
-            icon="clock"
-            title={`${t('statistics.hours.title', {
-              number: statistics?.numberOfActivityLogUpdates,
-            })}`}
-            subtitle={t('statistics.hours.description')}
-            backgroundColor="turquoise-50"
-            onPress={onHoursCardPress}
-          />
-          <StatisticsCard
-            icon="file"
-            title={`${t('statistics.documents.title', {
-              number: statistics?.numberOfDocumentUpdates,
-            })}`}
-            subtitle={t('statistics.documents.description')}
-            backgroundColor="turquoise-50"
-            onPress={onDocumentsCardPress}
-          />
-          <StatisticsCard
-            icon="users"
-            title={`${t('statistics.organizations.title', {
-              number: statistics?.numberOfOrganizationUpdates,
-            })}`}
-            subtitle={t('statistics.organizations.description')}
-            backgroundColor="turquoise-50"
-            onPress={onOrganizationsCardPress}
-          />
+          {userProfile?.activeOrganization && (
+            <>
+              <StatisticsCard
+                icon="clock"
+                title={`${t('statistics.hours.title', {
+                  number: statistics?.numberOfActivityLogUpdates,
+                })}`}
+                subtitle={t('statistics.hours.description')}
+                backgroundColor="turquoise-50"
+                onPress={onHoursCardPress}
+              />
+              <StatisticsCard
+                icon="file"
+                title={`${t('statistics.documents.title', {
+                  number: statistics?.numberOfDocumentUpdates,
+                })}`}
+                subtitle={t('statistics.documents.description')}
+                backgroundColor="turquoise-50"
+                onPress={onDocumentsCardPress}
+              />
+              <StatisticsCard
+                icon="users"
+                title={`${t('statistics.organizations.title', {
+                  number: statistics?.numberOfOrganizationUpdates,
+                })}`}
+                subtitle={t('statistics.organizations.description')}
+                backgroundColor="turquoise-50"
+                onPress={onOrganizationsCardPress}
+              />
+            </>
+          )}
         </HorizontalCarousel>
       )}
     </SectionWrapper>

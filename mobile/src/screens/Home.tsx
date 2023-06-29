@@ -21,6 +21,10 @@ const Home = ({ navigation }: any) => {
     navigation.navigate('activity-logs');
   };
 
+  const onJoinOrganization = () => {
+    navigation.navigate('search');
+  };
+
   return (
     <View style={styles.scrollViewContainer}>
       <ScrollView
@@ -37,16 +41,24 @@ const Home = ({ navigation }: any) => {
               <IconSvg icon={WaveSvg} size={14} />
             </Text>
             <Paragraph style={styles.paragraph}>{`${t('paragraph')}`}</Paragraph>
-            {userProfile?.activeOrganization && (
-              <View style={styles.addHoursContainer}>
+
+            <View style={styles.addHoursContainer}>
+              {userProfile?.activeOrganization ? (
                 <Button
                   appearance="outline"
                   label={`${t('add_hours')}`}
                   style={styles.addButton}
                   onPress={onAddVolunteeringHours}
                 />
-              </View>
-            )}
+              ) : (
+                <Button
+                  appearance="outline"
+                  label={`${t('join_ngo')}`}
+                  style={styles.addButton}
+                  onPress={onJoinOrganization}
+                />
+              )}
+            </View>
           </View>
         </View>
         <Layout style={styles.container}>
