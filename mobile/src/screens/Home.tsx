@@ -64,7 +64,7 @@ const Home = ({ navigation }: any) => {
         <Layout style={styles.container}>
           <Statistics navigation={navigation} />
           <View style={styles.newsContainer}>
-            <LatestNews navigation={navigation} />
+            {userProfile?.activeOrganization && <LatestNews navigation={navigation} />}
             <AboutTeo />
           </View>
         </Layout>
