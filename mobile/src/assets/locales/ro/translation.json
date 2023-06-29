@@ -95,7 +95,9 @@
       "signup": "Eroare la înregistrare",
       "resend_code": "Eroare la trimiterea codului de confirmare",
       "init_profile": "Eroare la încărcarea profilului",
-      "login": "Eroare la autentificare, vă rugăm încercați din nou"
+      "login": "Eroare la autentificare, vă rugăm încercați din nou",
+      "invalid_password": "Parola nu este conforma cu polita AWS",
+      "password": "Eroare la schimbarea parolei"
     }
   },
   "activity_logs": {
@@ -301,7 +303,8 @@
         "password": {
           "label": "Parola",
           "placeholder": "Introduceti parola",
-          "required": "Parola este obligatorie"
+          "required": "Parola este obligatorie",
+          "pattern": "Parola trebuie sa contina minim 8 caractere, litere mari, litere mici, numere si caractere speciale, fara spatii"
         },
         "confirm_password": {
           "label": "Confirma parola",
@@ -586,6 +589,12 @@
     },
     "errors": {
       "USER_006": "Eroare la modificarea fotografiei de profil"
+    }
+  },
+  "change_password": {
+    "title": "Schimba parola",
+    "submit": {
+      "success": "Parola a fost schimbata!"
     }
   }
 }

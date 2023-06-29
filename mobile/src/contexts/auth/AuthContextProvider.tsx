@@ -171,6 +171,25 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const changePassword = async (oldPassword: string, newPassword: string) => {
+    try {
+      // check if logged in
+      const user = await Auth.currentAuthenticatedUser();
+      await Auth.changePassword(user, oldPassword, newPassword);
+      Toast.show({ text1: `${i18n.t('change_password:submit.success')}`, type: 'success' });
+    } catch (error: any) {
+      console.log('[Auth][ChangePassword]:', JSONStringifyError(error));
+      if (error.code === 'NotAuthorizedException') {
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
+      } else if (error.code === 'InvalidPasswordException') {
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.invalid_password')}` });
+      } else {
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.password')}` });
+      }
+      throw error;
+    }
+  };
+
   const getProfile = async () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -209,6 +228,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         loginWithSocial,
         setActiveOrganization,
         setIdentityData,
+        changePassword,
       }}
     >
       {children}

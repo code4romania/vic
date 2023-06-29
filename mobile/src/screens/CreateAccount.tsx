@@ -12,6 +12,7 @@ import { useAuth } from '../hooks/useAuth';
 import { Pressable, View } from 'react-native';
 import InlineLink from '../components/InlineLink';
 import { Controller } from 'react-hook-form';
+import { REGEX } from '../common/constants/constants';
 
 export type RegisterFormTypes = {
   email: string;
@@ -28,9 +29,13 @@ const schema = yup
       .email(`${i18n.t('register:create_account.form.email.pattern')}`)
       .required(`${i18n.t('register:create_account.form.email.required')}`),
     phone: yup.string().required(`${i18n.t('register:create_account.form.phone.required')}`),
-    password: yup.string().required(`${i18n.t('register:create_account.form.password.required')}`),
+    password: yup
+      .string()
+      .matches(REGEX.COGNITO_PASSWORD, `${i18n.t('register:create_account.form.password.pattern')}`)
+      .required(`${i18n.t('register:create_account.form.password.required')}`),
     confirmPassword: yup
       .string()
+      .matches(REGEX.COGNITO_PASSWORD, `${i18n.t('register:create_account.form.password.pattern')}`)
       .oneOf(
         [yup.ref('password'), undefined],
         `${i18n.t('register:create_account.form.confirm_password.match')}`,
@@ -67,8 +72,6 @@ const CreateAccount = ({ navigation }: any) => {
     resolver: yupResolver(schema),
   });
 
-  console.log('errors', errors);
-
   const onSubmit = async ({ email, password, phone }: RegisterFormTypes) => {
     try {
       setIsLoading(true);
@@ -78,7 +81,6 @@ const CreateAccount = ({ navigation }: any) => {
       console.log('error');
       // show toast message or any error message
     } finally {
-      console.log('loading false');
       setIsLoading(false);
     }
   };

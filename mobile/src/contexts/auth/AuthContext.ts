@@ -27,6 +27,7 @@ interface AuthContextProps {
   setUserProfile: (user: any) => void;
   setActiveOrganization: (organization: IOrganizationVolunteer) => void;
   setIdentityData: (personalData: IUserPersonalData) => void;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -42,4 +43,5 @@ export const AuthContext = createContext<AuthContextProps>({
   setUserProfile: (user: any) => {},
   setActiveOrganization: (organization: IOrganizationVolunteer) => {},
   setIdentityData: (personalData: IUserPersonalData) => {},
+  changePassword: (oldPassword: string, newPassword: string) => Promise.resolve(),
 });
