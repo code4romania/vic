@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { getAnouncements } from './anouncement.api';
 
 export const useAnouncementsSnapshot = () => {
@@ -7,4 +7,14 @@ export const useAnouncementsSnapshot = () => {
 
 export const useAnouncementsQuery = () => {
   return useQuery(['anouncements'], () => getAnouncements({}));
+};
+
+export const useAnouncementsInfiniteQuery = () => {
+  return useInfiniteQuery(['anouncements'], ({ pageParam }) => getAnouncements({ pageParam }), {
+    getNextPageParam: (lastPage) => {
+      return lastPage?.meta.totalPages > lastPage?.meta.currentPage
+        ? lastPage?.meta.currentPage + 1
+        : undefined;
+    },
+  });
 };

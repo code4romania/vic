@@ -21,7 +21,7 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
   const { isFetching: isLoadingAnouncements, data: anouncements } = useAnouncementsSnapshot();
 
   const onViewNewsButtonPress = () => {
-    navigation.navigate('news');
+    navigation.navigate('announcements');
   };
 
   const onAnouncementItemPress = (id: string) => {
