@@ -95,7 +95,7 @@ const IdentityData = ({ navigation, route }: any) => {
       },
       {
         onSuccess: (data: IUserProfile) => {
-          setUserProfile(data);
+          setUserProfile({ ...userProfile, ...data });
           // callback in case we are redirected here from any other place than settings screen
           if (route?.params?.shouldGoBack) {
             navigation.goBack();

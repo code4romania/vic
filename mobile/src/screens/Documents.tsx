@@ -4,7 +4,6 @@ import { Text, useTheme } from '@ui-kitten/components';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import { useTranslation } from 'react-i18next';
 import {
   useContractHistoryInfiniteQuery,
@@ -16,6 +15,7 @@ import ContractItem from '../components/ContractItem';
 import GrayIcon from '../components/GreyIcon';
 import SectionWrapper from '../components/SectionWrapper';
 import { useFocusEffect } from '@react-navigation/native';
+import { useAuth } from '../hooks/useAuth';
 
 interface ContractsProps {
   navigation: any;
@@ -159,21 +159,21 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
 const Documents = ({ navigation }: any) => {
   // translations
   const { t } = useTranslation('documents');
-  const { activeOrganization } = useActiveOrganization();
+  const { userProfile } = useAuth();
 
   return (
     <PageLayout onBackButtonPress={navigation.goBack} title={t('general:documents')}>
       <View style={styles.container}>
-        {activeOrganization && (
+        {userProfile?.activeOrganization && (
           <OrganizationIdentity
-            name={activeOrganization.name}
-            uri={activeOrganization?.logo || ''}
+            name={userProfile?.activeOrganization.name}
+            uri={userProfile?.activeOrganization?.logo || ''}
           />
         )}
         <Text>{`${t('documents:description')}`}</Text>
         <Contracts
           navigation={navigation}
-          volunteerId={activeOrganization?.volunteerId as string}
+          volunteerId={userProfile?.activeOrganization?.volunteerId as string}
         />
       </View>
     </PageLayout>

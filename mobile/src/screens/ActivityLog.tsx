@@ -4,7 +4,6 @@ import i18n from '../common/config/i18n';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import FormLayout from '../layouts/FormLayout';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import {
   useActivityLogQuery,
   useCancelActivityLogMutation,
@@ -18,16 +17,16 @@ import { ButtonType } from '../common/enums/button-type.enum';
 import { Divider } from '@ui-kitten/components';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useAuth } from '../hooks/useAuth';
 
 const ActivityLog = ({ navigation, route }: any) => {
   console.log('ActivityLog');
   // translations
   const { t } = useTranslation('activity_log');
 
-  const { activityLogId } = route.params;
+  const { userProfile } = useAuth();
 
-  // active organization
-  const { activeOrganization } = useActiveOrganization();
+  const { activityLogId } = route.params;
   // activity log query
   const { isFetching: isLoadingActivityLog, data: activityLog } =
     useActivityLogQuery(activityLogId);
@@ -103,10 +102,10 @@ const ActivityLog = ({ navigation, route }: any) => {
             />
           )}
           <FormLayout>
-            {activeOrganization && (
+            {userProfile?.activeOrganization && (
               <OrganizationIdentity
-                uri={activeOrganization.logo || ''}
-                name={activeOrganization.name}
+                uri={userProfile?.activeOrganization.logo || ''}
+                name={userProfile?.activeOrganization.name}
               />
             )}
             <ReadOnlyElement

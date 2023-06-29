@@ -4,12 +4,13 @@ import { AuthContext, SignInOptions, SignUpOptions } from './AuthContext';
 import { Auth, Hub } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import i18n from '../../common/config/i18n';
-import { useUserProfile } from '../../services/user/user.service';
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 import { JSONStringifyError } from '../../common/utils/utils';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import * as SplashScreen from 'expo-splash-screen';
-import useStore from '../../store/store';
+import { getUserProfile } from '../../services/user/user.api';
+import { getMyOrganizations } from '../../services/organization/organization.api';
+import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -17,10 +18,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isUserPending, setIsUserPending] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
   const [userName, setUserName] = useState<string>('');
-  const { mutate: getUserProfile } = useUserProfile();
-
-  // app state
-  const { setActiveOrganization } = useStore();
 
   useEffect(() => {
     console.log('[APP Init]');
@@ -47,6 +44,12 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setIsAuthenticated(userProfile !== null);
   }, [userProfile]);
+
+  const setActiveOrganization = (organization: IOrganizationVolunteer) => {
+    if (userProfile !== null) {
+      setUserProfile({ ...userProfile, activeOrganization: organization });
+    }
+  };
 
   const initProfile = async () => {
     try {
@@ -163,24 +166,25 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const getProfile = async () => {
-    return new Promise((resolve, reject) => {
-      getUserProfile(undefined, {
-        onSuccess: (profile: IUserProfile) => {
-          setUserProfile(profile);
-          setActiveOrganization(profile.activeOrganization);
-          resolve(profile);
-        },
-        onError: (error: any) => {
-          // if the profile doesn't exists redirect to the the create account page
-          console.log('[Profile]:', JSONStringifyError(error));
-          if (error.response.status === 404) {
-            setIsUserPending(true);
-            reject();
-          } else {
-            Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
-          }
-        },
-      });
+    return new Promise(async (resolve, reject) => {
+      try {
+        // get the user profile
+        const profile = await getUserProfile();
+        // get the organizations the user is part of
+        const myOragnizations = await getMyOrganizations();
+        // set profile in context with all the organizations
+        setUserProfile({ ...profile, myOrganizations: myOragnizations });
+        resolve(profile);
+      } catch (error: any) {
+        // if the profile doesn't exists redirect to the the create account page
+        console.log('[Profile]:', JSONStringifyError(error));
+        if (error.response.status === 404) {
+          setIsUserPending(true);
+          reject();
+        } else {
+          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+        }
+      }
     });
   };
 
@@ -197,6 +201,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         userProfile,
         setUserProfile,
         loginWithSocial,
+        setActiveOrganization,
       }}
     >
       {children}

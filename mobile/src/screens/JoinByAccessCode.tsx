@@ -16,6 +16,7 @@ import useStore from '../store/store';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { useOrganization } from '../store/organization/organization.selector';
 import Paragraph from '../components/Paragraph';
+import { useAuth } from '../hooks/useAuth';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -47,12 +48,9 @@ const JoinByAccessCode = ({ navigation }: any) => {
     mutate: joinOrganization,
   } = useJoinByAccessCodeMutation();
   // bottom sheet and active organization state
-  const {
-    open: openBottomSheet,
-    close: closeBottomSheet,
-    setActiveOrganization,
-    addOrganization,
-  } = useStore();
+  const { open: openBottomSheet, close: closeBottomSheet } = useStore();
+
+  const { userProfile, setUserProfile } = useAuth();
 
   const {
     control,
@@ -74,16 +72,20 @@ const JoinByAccessCode = ({ navigation }: any) => {
     // make the access request
     joinOrganization(joinPayload, {
       onSuccess: (data: IVolunteer) => {
-        // set this as active organization
-        setActiveOrganization({
-          ...data.organization,
-          volunteerId: data.id,
-        });
-
-        // push new organization to my organizations drawer
-        addOrganization({
-          ...data.organization,
-          volunteerId: data.id,
+        // update user profile context
+        setUserProfile({
+          ...userProfile,
+          activeOrganization: {
+            ...data.organization,
+            volunteerId: data.id,
+          },
+          myOrganizations: [
+            ...(userProfile?.myOrganizations || []),
+            {
+              ...data.organization,
+              volunteerId: data.id,
+            },
+          ],
         });
 
         // show modal which will eventually become bottom sheet

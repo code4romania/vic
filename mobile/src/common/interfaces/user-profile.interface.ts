@@ -13,7 +13,6 @@ export interface IUserPersonalData {
 
 export interface IUserProfile {
   id: string;
-  name: string;
   email: string;
   phone?: string;
   age: number;
@@ -21,6 +20,7 @@ export interface IUserProfile {
   location?: ICity;
   userPersonalData: IUserPersonalData;
   activeOrganization: IOrganizationVolunteer;
+  myOrganizations: IOrganizationVolunteer[];
   profilePicture?: string;
   firstName: string;
   lastName: string;

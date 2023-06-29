@@ -2,9 +2,6 @@ import { create } from 'zustand';
 import { IOrganization } from '../common/interfaces/organization.interface';
 import { organizationSlice } from './organization/organization.slice';
 import { bottomSheetSlice } from './bottom-sheet/bottom-sheet.slice';
-import { organizationsSlice } from './organization/organizations.slice';
-import { activeOrganizationSlice } from './organization/active-organization.slice';
-import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { volunteerSlice } from './volunteer/volunteer.slice';
 import { IEvent } from '../common/interfaces/event.interface';
@@ -13,22 +10,11 @@ import { IActivityLogCounters } from '../common/interfaces/activity-log-counters
 import { activityLogsSlice } from './activity-log/activity-log.slice';
 import { IActivityLog } from '../common/interfaces/activity-log.interface';
 
-interface ActiveOrganizationState {
-  activeOrganization?: IOrganizationVolunteer;
-  setActiveOrganization: (activeOrganization: IOrganizationVolunteer) => void;
-}
-
 interface OrganizationState {
   organization?: IOrganization;
   setOrganization: (organization: IOrganization) => void;
   setOrganizationPending: () => void;
   resetOrganizationVolunteerStatus: () => void;
-}
-
-interface VolunteerState {
-  organizations: IOrganizationVolunteer[];
-  setOrganizations: (organizations: IOrganizationVolunteer[]) => void;
-  addOrganization: (organization: IOrganizationVolunteer) => void;
 }
 
 interface VolunteerProfileState {
@@ -58,18 +44,10 @@ interface BottomSheetState {
 }
 
 const useStore = create<
-  OrganizationState &
-    BottomSheetState &
-    VolunteerState &
-    ActiveOrganizationState &
-    VolunteerProfileState &
-    EventState &
-    ActivityLogState
+  OrganizationState & BottomSheetState & VolunteerProfileState & EventState & ActivityLogState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...bottomSheetSlice(set),
-  ...organizationsSlice(set),
-  ...activeOrganizationSlice(set),
   ...volunteerSlice(set),
   ...eventSlice(set),
   ...activityLogsSlice(set),

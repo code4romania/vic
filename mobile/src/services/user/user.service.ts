@@ -1,19 +1,10 @@
 import { useMutation } from 'react-query';
-import {
-  createUserProfile,
-  getUserProfile,
-  updateUserPersonalData,
-  updateUserProfile,
-} from './user.api';
+import { createUserProfile, updateUserPersonalData, updateUserProfile } from './user.api';
 import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.interface';
 import { IdentityDataFormTypes } from '../../screens/IdentityData';
 import { AccountDataFormTypes } from '../../screens/AccountData';
 import { ImageAttachement } from '../../common/interfaces/image-attachement.interface';
 import { useAuth } from '../../hooks/useAuth';
-
-export const useUserProfile = () => {
-  return useMutation(['user-profile'], () => getUserProfile());
-};
 
 export const useCreateUserProfileMutation = () => {
   return useMutation(['user-profile'], (userProfile: ICreateUserPayload) =>

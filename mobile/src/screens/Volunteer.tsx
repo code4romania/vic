@@ -11,15 +11,17 @@ import volunteerUserSVG from '../assets/svg/volunteer-user';
 import volunteerClockSVG from '../assets/svg/volunteer-clock';
 import volunteerDocumentSVG from '../assets/svg/doc';
 import TopNavigationCard from '../components/TopNavigationCard';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import { useAuth } from '../hooks/useAuth';
 
 const Volunteer = ({ navigation }: any) => {
   console.log('Volunteer');
 
-  const { activeOrganization } = useActiveOrganization();
+  const { userProfile } = useAuth();
 
   const onViewOrganizationButtonPress = () => {
-    navigation.navigate('organization-profile', { organizationId: activeOrganization?.id });
+    navigation.navigate('organization-profile', {
+      organizationId: userProfile?.activeOrganization?.id,
+    });
   };
 
   const onViewVolunteerProfilenButtonPress = () => {
@@ -42,12 +44,12 @@ const Volunteer = ({ navigation }: any) => {
     navigation.navigate('search');
   };
 
-  return activeOrganization ? (
+  return userProfile?.activeOrganization ? (
     <>
       <View style={styles.cardWrapper}>
         <TopNavigationCard
-          title={activeOrganization.name}
-          uri={activeOrganization?.logo || ''}
+          title={userProfile?.activeOrganization.name}
+          uri={userProfile?.activeOrganization?.logo || ''}
           onPress={onTopNavigationCardPress}
         />
       </View>
@@ -55,7 +57,7 @@ const Volunteer = ({ navigation }: any) => {
         <Text>{`${i18n.t('volunteer:details')}`}</Text>
         <VolunteerCard
           title={i18n.t('volunteer:menu_items.organization_profile.title')}
-          uri={activeOrganization?.logo || ''}
+          uri={userProfile?.activeOrganization?.logo || ''}
           onPress={onViewOrganizationButtonPress}
         />
         <VolunteerCard

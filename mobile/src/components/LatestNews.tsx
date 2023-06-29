@@ -41,22 +41,18 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
       title={t('anouncements.section.header')}
       icon={<IconSvg icon={SpeakerphoneSvg} size={20} />}
       action={
-        anouncements?.items && anouncements?.items.length > 2 ? (
-          <Button
-            style={eva.style.seeAllBtn}
-            size="tiny"
-            appearance="ghost"
-            onPress={onViewNewsButtonPress}
-          >
-            {() => (
-              <Text category="c2" style={eva.style.seeAllText}>{`${t(
-                'anouncements.section.see_all',
-              )}`}</Text>
-            )}
-          </Button>
-        ) : (
-          <></>
-        )
+        <Button
+          style={eva.style.seeAllBtn}
+          size="tiny"
+          appearance="ghost"
+          onPress={onViewNewsButtonPress}
+        >
+          {() => (
+            <Text category="c2" style={eva.style.seeAllText}>{`${t(
+              'anouncements.section.see_all',
+            )}`}</Text>
+          )}
+        </Button>
       }
     >
       <>

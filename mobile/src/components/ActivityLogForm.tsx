@@ -1,7 +1,6 @@
 import React from 'react';
 import FormLayout from '../layouts/FormLayout';
 import { View, StyleSheet } from 'react-native';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import OrganizationIdentity from './OrganizationIdentity';
 import EventSelect from '../containers/EventSelect';
 import ActivityTypeSelect from '../containers/ActivityTypeSelect';
@@ -11,6 +10,7 @@ import { Control, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
+import { useAuth } from '../hooks/useAuth';
 
 export type ActivityLogFormTypes = {
   eventId: string;
@@ -44,15 +44,18 @@ export const activityLogSchema = yup
   .required();
 
 const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) => {
-  const { activeOrganization } = useActiveOrganization();
+  const { userProfile } = useAuth();
 
   const { t } = useTranslation('activity_log');
 
   return (
     <FormLayout>
       <View />
-      {activeOrganization && (
-        <OrganizationIdentity uri={activeOrganization.logo || ''} name={activeOrganization.name} />
+      {userProfile?.activeOrganization && (
+        <OrganizationIdentity
+          uri={userProfile.activeOrganization.logo || ''}
+          name={userProfile.activeOrganization.name}
+        />
       )}
       <EventSelect
         name="eventId"
@@ -60,7 +63,7 @@ const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) =
         error={errors.eventId}
         label={t('form.event.label')}
         placeholder={t('general:select')}
-        organizationId={activeOrganization?.id as string}
+        organizationId={userProfile?.activeOrganization?.id as string}
         disabled={isLoading}
       />
       <ActivityTypeSelect
@@ -69,7 +72,7 @@ const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) =
         error={errors.activityTypeId}
         label={t('form.task.label')}
         placeholder={t('general:select')}
-        organizationId={activeOrganization?.id as string}
+        organizationId={userProfile?.activeOrganization?.id as string}
         required
         disabled={isLoading}
       />

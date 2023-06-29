@@ -9,14 +9,9 @@ import { withStyles } from '@ui-kitten/components';
 import { SvgXml } from 'react-native-svg';
 import PlusSvg from '../assets/svg/plus';
 import { LiteralUnion } from '@ui-kitten/components/devsupport';
-import { useOrganizations } from '../store/organization/organizations.selector';
-import {
-  useMyOrganizationsQuery,
-  useSwitchOrganizationMutation,
-} from '../services/organization/organization.service';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
-import useStore from '../store/store';
+import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
 import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
+import { useAuth } from '../hooks/useAuth';
 
 const AccessoryImage = withStyles(
   ({ logo, eva }: { logo?: string; eva?: any }) => {
@@ -91,16 +86,7 @@ const DrawerItemTitle = withStyles(
 
 const DrawerContent = withStyles(
   ({ navigation, eva }: any) => {
-    // Get my organizations
-    const { error } = useMyOrganizationsQuery();
-    console.log('organizations query', error);
-
-    // organizations state
-    const { organizations } = useOrganizations();
-    // active organizatio state
-    const { activeOrganization } = useActiveOrganization();
-    // update active organization
-    const { setActiveOrganization } = useStore();
+    const { userProfile, setActiveOrganization } = useAuth();
     // switch organization
     const { mutate: switchOrganization } = useSwitchOrganizationMutation();
 
@@ -131,7 +117,7 @@ const DrawerContent = withStyles(
       <View style={eva?.style.drawerContainer}>
         <Drawer style={eva?.style.drawer} appearance="noDivider" header={renderDrawerHeader}>
           <>
-            {organizations.map((organization: IOrganizationVolunteer) => (
+            {userProfile?.myOrganizations.map((organization: IOrganizationVolunteer) => (
               <DrawerItem
                 key={organization.id}
                 title={<DrawerItemTitle>{organization.name}</DrawerItemTitle>}
@@ -139,7 +125,7 @@ const DrawerContent = withStyles(
                 onPress={onOrganizationChange.bind(null, organization)}
                 style={[
                   eva?.style.drawerItem,
-                  ...(activeOrganization?.id === organization.id
+                  ...(userProfile.activeOrganization?.id === organization.id
                     ? [eva?.style.activeDrawerItem]
                     : []),
                 ]}

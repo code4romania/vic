@@ -11,7 +11,6 @@ import Disclaimer from '../components/Disclaimer';
 import { ContractStatus } from '../common/enums/contract-status.enum';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import FormLayout from '../layouts/FormLayout';
 import { Text, useTheme } from '@ui-kitten/components';
@@ -23,6 +22,7 @@ import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import useStore from '../store/store';
+import { useAuth } from '../hooks/useAuth';
 
 const Contract = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -35,7 +35,7 @@ const Contract = ({ navigation, route }: any) => {
     null,
   );
   // active organization
-  const { activeOrganization } = useActiveOrganization();
+  const { userProfile } = useAuth();
   // bottom sheet state
   const { open: openBottomSheet, close: closeBottomSheet } = useStore();
   // contract request
@@ -182,10 +182,10 @@ const Contract = ({ navigation, route }: any) => {
             <Disclaimer color="yellow" text={t(`contract.disclaimer.${contract.status}`)} />
           )}
           <FormLayout>
-            {activeOrganization && (
+            {userProfile?.activeOrganization && (
               <OrganizationIdentity
-                name={activeOrganization.name}
-                uri={activeOrganization.logo || ''}
+                name={userProfile?.activeOrganization.name}
+                uri={userProfile?.activeOrganization.logo || ''}
               />
             )}
             <Text category="p1" style={styles.paragraph}>{`${t(
