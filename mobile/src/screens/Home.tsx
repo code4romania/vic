@@ -37,14 +37,16 @@ const Home = ({ navigation }: any) => {
               <IconSvg icon={WaveSvg} size={14} />
             </Text>
             <Paragraph style={styles.paragraph}>{`${t('paragraph')}`}</Paragraph>
-            <View style={styles.addHoursContainer}>
-              <Button
-                appearance="outline"
-                label={`${t('add_hours')}`}
-                style={styles.addButton}
-                onPress={onAddVolunteeringHours}
-              />
-            </View>
+            {userProfile?.activeOrganization && (
+              <View style={styles.addHoursContainer}>
+                <Button
+                  appearance="outline"
+                  label={`${t('add_hours')}`}
+                  style={styles.addButton}
+                  onPress={onAddVolunteeringHours}
+                />
+              </View>
+            )}
           </View>
         </View>
         <Layout style={styles.container}>

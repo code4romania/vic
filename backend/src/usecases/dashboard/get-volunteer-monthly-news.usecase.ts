@@ -21,9 +21,12 @@ export class GetVolunteerMonthlyNewsStatisticsUsecase
   public async execute(userId: string): Promise<IVolunteerMonthlyStatistics> {
     const user = await this.getOneRegularUser.execute({ id: userId });
 
-    // get number of upcoming events for the user
-    const numberOfUpcomingEvents =
-      await this.eventsFacade.countUpcomingEventsByUserId(user.id);
+    const statisticsResponse = {
+      numberOfUpcomingEvents: 0,
+      numberOfActivityLogUpdates: 0,
+      numberOfDocumentUpdates: 0,
+      numberOfOrganizationUpdates: 0,
+    };
 
     // get all volunteerIds
     const volunteers = await this.volunteerFacade.findAll({
@@ -31,30 +34,28 @@ export class GetVolunteerMonthlyNewsStatisticsUsecase
       status: VolunteerStatus.ACTIVE,
     });
 
-    const volunteerIds = volunteers.map((v) => v.id);
-    // get number of activityLogUpdates
-    const numberOfActivityLogUpdates =
-      await this.actionsArchiveFacade.countActivityLogBetweenDates(
-        volunteerIds,
-      );
+    if (volunteers.length > 0) {
+      const volunteerIds = volunteers.map((v) => v.id);
+      // get number of upcoming events for the user
+      statisticsResponse.numberOfUpcomingEvents =
+        await this.eventsFacade.countUpcomingEventsByUserId(user.id);
+      // get number of activityLogUpdates
+      statisticsResponse.numberOfActivityLogUpdates =
+        await this.actionsArchiveFacade.countActivityLogBetweenDates(
+          volunteerIds,
+        );
+      // get number of documents updates
+      statisticsResponse.numberOfDocumentUpdates =
+        await this.actionsArchiveFacade.countDocumentStatusUpdatesBetweenDates(
+          volunteerIds,
+        );
+      // get number of organization access requests
+      statisticsResponse.numberOfOrganizationUpdates =
+        await this.actionsArchiveFacade.countActivityRequestsUpdatesBetweenDates(
+          volunteerIds,
+        );
+    }
 
-    // get number of documents updates
-    const numberOfDocumentUpdates =
-      await this.actionsArchiveFacade.countDocumentStatusUpdatesBetweenDates(
-        volunteerIds,
-      );
-
-    // get number of organization access requests
-    const numberOfOrganizationUpdates =
-      await this.actionsArchiveFacade.countActivityRequestsUpdatesBetweenDates(
-        volunteerIds,
-      );
-
-    return Promise.resolve({
-      numberOfUpcomingEvents,
-      numberOfActivityLogUpdates,
-      numberOfDocumentUpdates,
-      numberOfOrganizationUpdates,
-    });
+    return statisticsResponse;
   }
 }
