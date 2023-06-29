@@ -3,7 +3,6 @@ import SectionWrapper from './SectionWrapper';
 import { View } from 'react-native';
 //SVG
 import SpeakerphoneSvg from '../assets/svg/speakerphone';
-import LogoSvg from '../assets/svg/logo.js';
 import NewsListItem from './NewsListItem';
 import IconSvg from './IconSvg';
 import { Button, Text, withStyles } from '@ui-kitten/components';
@@ -61,7 +60,7 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
         {anouncements?.items.map((item) => (
           <NewsListItem
             key={item.id}
-            icon={<IconSvg icon={LogoSvg} size={24} />}
+            icon={item.organizationLogo}
             title={item.title}
             subtitle={item.description}
             onPress={onAnouncementItemPress.bind(null, item.id)}

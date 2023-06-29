@@ -1,8 +1,6 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import NewsListItem from '../components/NewsListItem';
-import { SvgXml } from 'react-native-svg';
-import LogoSvg from '../assets/svg/logo.js';
 import i18n from '../common/config/i18n';
 import InfiniteListLayout from '../layouts/InfiniteListLayout';
 import { IAnouncement } from '../common/interfaces/anouncement.interface';
@@ -30,11 +28,7 @@ const Anouncements = ({ navigation }: any) => {
 
   const onRenderAnouncementListItem = ({ item }: { item: IAnouncement }) => (
     <View style={styles.listItemContainer}>
-      <NewsListItem
-        icon={<SvgXml xml={LogoSvg} width={24} height={24} />}
-        title={item.title}
-        subtitle={item.description}
-      />
+      <NewsListItem icon={item.organizationLogo} title={item.title} subtitle={item.description} />
     </View>
   );
 

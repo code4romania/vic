@@ -123,6 +123,7 @@ import { CancelContractUsecase } from './documents/cancel-contract.usecase';
 import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
 import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
 import { GetTeoStatisticsUsecase } from './dashboard/get-teo-statistics.usecase';
+import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anouncements-by-user.usecase';
 
 @Module({
   imports: [
@@ -208,6 +209,7 @@ import { GetTeoStatisticsUsecase } from './dashboard/get-teo-statistics.usecase'
     CreateAnnouncementUseCase,
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
+    GetManyAnouncementsByUserAsUsecase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,
@@ -338,6 +340,7 @@ import { GetTeoStatisticsUsecase } from './dashboard/get-teo-statistics.usecase'
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
     CreateEventUseCase,
+    GetManyAnouncementsByUserAsUsecase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,

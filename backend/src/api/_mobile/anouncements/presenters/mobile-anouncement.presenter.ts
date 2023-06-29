@@ -7,7 +7,7 @@ export class MobileAnouncementPresenter {
     this.id = anouncement.id;
     this.title = anouncement.name;
     this.description = anouncement.description;
-    // this.organizationLogo = ''
+    this.organizationLogo = anouncement?.organization.logo || '';
   }
 
   @Expose()

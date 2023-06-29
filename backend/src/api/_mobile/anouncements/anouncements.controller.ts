@@ -11,15 +11,14 @@ import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { GetManyAnouncementsDto } from './dto/get-many-anouncements.dto';
 import { MobileAnouncementPresenter } from './presenters/mobile-anouncement.presenter';
-import { GetManyAnnouncementUseCase } from 'src/usecases/announcement/get-many-announcement.usecase';
-import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
+import { GetManyAnouncementsByUserAsUsecase } from 'src/usecases/announcement/get-many-anouncements-by-user.usecase';
 
 @ApiBearerAuth()
-@UseGuards(MobileJwtAuthGuard) // VolunteerGuard
+@UseGuards(MobileJwtAuthGuard)
 @Controller('mobile/anouncement')
 export class MobileAnouncementsController {
   constructor(
-    private readonly getManyAnouncements: GetManyAnnouncementUseCase,
+    private readonly getManyAnouncements: GetManyAnouncementsByUserAsUsecase,
   ) {}
 
   @Get()
@@ -31,7 +30,6 @@ export class MobileAnouncementsController {
     const anouncements = await this.getManyAnouncements.execute({
       ...filters,
       userId: id,
-      status: AnnouncementStatus.PUBLISHED,
     });
 
     return new PaginatedPresenter({
