@@ -16,7 +16,6 @@ import {
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
-import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import {
   IOrganizationWithVolunteersModel,
@@ -144,7 +143,7 @@ export class OrganizationRepositoryService
       .leftJoinAndSelect(
         'organization.events',
         'event',
-        'event.isPublic = :isPublic AND event.startDate > :date AND event.status = :status',
+        'event.isPublic = :isPublic AND (event.endDate > :date OR event.endDate IS NULL) AND event.status = :status',
         {
           isPublic: true,
           date: new Date(),

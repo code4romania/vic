@@ -17,7 +17,11 @@ export class OrganizationWithEventsPresenter {
     this.description = organization.description;
     this.numberOfVolunteers = organization.numberOfVolunteers;
     this.events = organization.events.map(
-      (event) => new MobileEventListItemPresenter(event),
+      (event) =>
+        new MobileEventListItemPresenter({
+          ...event,
+          organizationLogo: organization.logo,
+        }),
     );
     this.volunteers = organization.volunteers.map(
       (volunteer) => new VolunteerPresenter(volunteer),

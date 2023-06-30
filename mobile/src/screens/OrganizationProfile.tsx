@@ -24,7 +24,7 @@ import useStore from '../store/store';
 import Paragraph from '../components/Paragraph';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
-  console.log('OrganizationProfile', route.params);
+  console.log('OrganizationProfile');
   const { t } = useTranslation('organization_profile');
 
   const { userProfile } = useAuth();
@@ -220,12 +220,12 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             </View>
             <SectionWrapper title={i18n.t('organization_profile:events')}>
               <ScrollViewLayout>
-                <View style={styles.container}>
+                <View>
                   {!organization.events || organization.events.length === 0 ? (
                     <Text category="p1">{`${t('no_events')}`}</Text>
                   ) : (
                     organization.events.map((event) => (
-                      <View style={styles.container} key={event.id}>
+                      <View key={event.id}>
                         <EventItem event={event} onPress={onEventPress} />
                         <Divider />
                       </View>
