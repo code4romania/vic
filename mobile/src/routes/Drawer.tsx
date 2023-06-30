@@ -117,7 +117,7 @@ const DrawerContent = withStyles(
       <View style={eva?.style.drawerContainer}>
         <Drawer style={eva?.style.drawer} appearance="noDivider" header={renderDrawerHeader}>
           <>
-            {userProfile?.myOrganizations.map((organization: IOrganizationVolunteer) => (
+            {userProfile?.myOrganizations?.map((organization: IOrganizationVolunteer) => (
               <DrawerItem
                 key={organization.id}
                 title={<DrawerItemTitle>{organization.name}</DrawerItemTitle>}

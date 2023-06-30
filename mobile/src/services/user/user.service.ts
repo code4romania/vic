@@ -8,8 +8,15 @@ import { useAuth } from '../../hooks/useAuth';
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 
 export const useCreateUserProfileMutation = () => {
-  return useMutation(['user-profile'], (userProfile: ICreateUserPayload) =>
-    createUserProfile(userProfile),
+  const { setUserProfile } = useAuth();
+  return useMutation(
+    ['user-profile'],
+    (userProfile: ICreateUserPayload) => createUserProfile(userProfile),
+    {
+      onSuccess: (data: IUserProfile) => {
+        setUserProfile({ ...data, myOrganizations: [] });
+      },
+    },
   );
 };
 
