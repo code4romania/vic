@@ -100,7 +100,7 @@ export class OrganizationRepositoryService
         `organization.volunteers`,
         'numberOfVolunteers',
         (qb) =>
-          qb.innerJoin(VolunteerEntity, 'v').where(`"v"."status" = :status`, {
+          qb.where(`"numberOfVolunteers"."status" = :status`, {
             status: VolunteerStatus.ACTIVE,
           }),
       )
@@ -136,7 +136,7 @@ export class OrganizationRepositoryService
         `organization.volunteers`,
         'numberOfVolunteers',
         (qb) =>
-          qb.innerJoin(VolunteerEntity, 'v').where(`"v"."status" = :status`, {
+          qb.where(`"numberOfVolunteers"."status" = :status`, {
             status: VolunteerStatus.ACTIVE,
           }),
       )
