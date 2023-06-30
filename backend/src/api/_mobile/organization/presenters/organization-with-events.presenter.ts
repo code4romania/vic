@@ -16,7 +16,7 @@ export class OrganizationWithEventsPresenter {
     this.logo = organization.logo;
     this.description = organization.description;
     this.numberOfVolunteers = organization.numberOfVolunteers;
-    this.events = organization.events.map(
+    this.events = organization.events.slice(0, 2).map(
       (event) =>
         new MobileEventListItemPresenter({
           ...event,
