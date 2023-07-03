@@ -1,7 +1,6 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { StyleService, Text, useStyleSheet } from '@ui-kitten/components';
-import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
 import { ScrollView, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
@@ -46,7 +45,7 @@ const VolunteerProfile = ({ navigation }: any) => {
     VOLUNTEER_PROFILE_ERRORS.VOLUNTEER_PROFILE_003
   ) {
     return (
-      <PageLayout title={i18n.t('volunteer:profile')} onBackButtonPress={navigation.goBack}>
+      <PageLayout title={t('profile')} onBackButtonPress={navigation.goBack}>
         <MissingEntity
           onActionBtnPress={onCreateVolunteerProfileButtonPress}
           heading={t('missing_profile.heading')}
@@ -59,7 +58,7 @@ const VolunteerProfile = ({ navigation }: any) => {
 
   return (
     <PageLayout
-      title={i18n.t('volunteer:profile')}
+      title={t('profile')}
       onBackButtonPress={navigation.goBack}
       onEditButtonPress={volunteer && onEditVolunteerProfileButtonPress}
     >
@@ -69,11 +68,11 @@ const VolunteerProfile = ({ navigation }: any) => {
           <ProfileIntro
             uri={userProfile?.activeOrganization?.logo || ''}
             name={`${volunteer?.user.lastName} ${volunteer?.user.firstName}`}
-            description={`${i18n.t('volunteer:age', {
+            description={`${t('age', {
               years: volunteer.user.age,
-            })}\n${i18n.t('general:sex', {
-              sex_type: i18n.t(`general:${volunteer.user.sex}`),
-            })}\n${volunteer.user.location?.name || ''}${i18n.t('volunteer:county', {
+            })}\n${t('general:sex', {
+              sex_type: t(`general:${volunteer.user.sex}`),
+            })}\n${volunteer.user.location?.name || ''}${t('county', {
               name: volunteer.user.location?.county.name,
             })}`}
           />
@@ -82,28 +81,22 @@ const VolunteerProfile = ({ navigation }: any) => {
               uri={userProfile?.activeOrganization.logo || ''}
               name={userProfile?.activeOrganization.name}
             />
-            <Text category="p2">{`${i18n.t('volunteer:information')}`}</Text>
-            <ReadOnlyElement label={i18n.t('volunteer:email')} value={volunteer.profile.email} />
-            <ReadOnlyElement label={i18n.t('general:phone')} value={volunteer.profile.phone} />
-            <ReadOnlyElement label={i18n.t('general:role')} value={volunteer.profile.role?.name} />
+            <Text category="p2">{`${t('information')}`}</Text>
+            <ReadOnlyElement label={t('email')} value={volunteer.profile.email} />
+            <ReadOnlyElement label={t('general:phone')} value={volunteer.profile.phone} />
+            <ReadOnlyElement label={t('general:role')} value={volunteer.profile.role?.name} />
             <ReadOnlyElement
-              label={i18n.t('general:department')}
+              label={t('general:department')}
               value={volunteer.profile.department?.name}
             />
+            <ReadOnlyElement label={t('general:branch')} value={volunteer.profile.branch?.name} />
             <ReadOnlyElement
-              label={i18n.t('general:branch')}
-              value={volunteer.profile.branch?.name}
-            />
-            <ReadOnlyElement
-              label={i18n.t('volunteer:active_since')}
+              label={t('active_since')}
               value={
                 volunteer.profile.activeSince ? formatDate(volunteer.profile.activeSince) : '-'
               }
             />
-            <ReadOnlyElement
-              label={i18n.t('volunteer:created_on')}
-              value={formatDate(volunteer.createdOn)}
-            />
+            <ReadOnlyElement label={t('created_on')} value={formatDate(volunteer.createdOn)} />
           </View>
         </ScrollView>
       )}

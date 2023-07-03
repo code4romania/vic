@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text, Avatar, useStyleSheet, StyleService } from '@ui-kitten/components';
 import { ImageStyle, View } from 'react-native';
-import i18n from '../common/config/i18n';
 import { useOrganizationsInfiniteQuery } from '../services/organization/organization.service';
 import { IOrganizationListItemWithNumberOfVolunteers } from '../common/interfaces/organization-list-item.interface';
 import InfiniteListLayout from '../layouts/InfiniteListLayout';
@@ -18,7 +17,10 @@ interface OrganizationItemProps {
 }
 
 const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
+  const { t } = useTranslation('organization_profile');
+
   const styles = useStyleSheet(themedStyles);
+
   return (
     <PressableContainer onPress={onClick}>
       <View style={styles.renderItem}>
@@ -28,7 +30,7 @@ const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
             {item.name}
           </Text>
           <Text category="c1" appearance="hint">
-            {`${i18n.t('organization_profile:volunteers', { number: item.numberOfVolunteers })}`}
+            {`${t('volunteers', { number: item.numberOfVolunteers })}`}
           </Text>
         </View>
       </View>
@@ -80,7 +82,7 @@ const Organizations = ({ navigation }: any) => {
   );
 
   return (
-    <PageLayout title={i18n.t('general:organizations')}>
+    <PageLayout title={t('general:organizations')}>
       <SearchWithOrderAndFilters
         placeholder={t('search.placeholder')}
         onChange={setSearch}

@@ -7,7 +7,7 @@ const PrivacyPolicy = ({ navigation }: any) => {
   const { t } = useTranslation('privacy_policy');
 
   return (
-    <PageLayout title={t('privacy_policy:title')} onBackButtonPress={navigation.goBack}>
+    <PageLayout title={t('title')} onBackButtonPress={navigation.goBack}>
       <Text>This is where privacy policy will be</Text>
     </PageLayout>
   );

@@ -104,7 +104,7 @@ const ActivityLogs = ({ navigation }: any) => {
       />
       {!isLoadingCounters && (
         <Text appearance="hint" style={styles.totalText}>
-          {`${i18n.t('activity_log:total')}`}{' '}
+          {`${t('activity_log:total')}`}{' '}
           <>
             {status === ActivityLogStatus.APPROVED && (
               <Text category="p2">{`${approvedHours}h`} </Text>

@@ -96,11 +96,11 @@ const CreateUser = ({ navigation }: any) => {
       // create new profile
       createUserProfile(newUser, {
         onError: () => {
-          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+          Toast.show({ type: 'error', text1: `${t('auth:errors.init_profile')}` });
         },
       });
     } catch (error) {
-      Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+      Toast.show({ type: 'error', text1: `${t('auth:errors.init_profile')}` });
     }
   };
 
@@ -138,8 +138,8 @@ const CreateUser = ({ navigation }: any) => {
         <FormInput
           control={control as any}
           name="phone"
-          label={t('register:create_account.form.phone.label')}
-          placeholder={t('register:create_account.form.phone.placeholder')}
+          label={t('create_account.form.phone.label')}
+          placeholder={t('create_account.form.phone.placeholder')}
           error={errors.phone}
           disabled={isLoading}
           keyboardType="phone-pad"
