@@ -12,6 +12,7 @@ import volunteerClockSVG from '../assets/svg/volunteer-clock';
 import volunteerDocumentSVG from '../assets/svg/doc';
 import TopNavigationCard from '../components/TopNavigationCard';
 import { useAuth } from '../hooks/useAuth';
+import ScrollViewLayout from '../layouts/ScrollViewLayout';
 
 const Volunteer = ({ navigation }: any) => {
   console.log('Volunteer');
@@ -45,7 +46,7 @@ const Volunteer = ({ navigation }: any) => {
   };
 
   return userProfile?.activeOrganization ? (
-    <>
+    <ScrollViewLayout>
       <View style={styles.cardWrapper}>
         <TopNavigationCard
           title={userProfile?.activeOrganization.name}
@@ -77,7 +78,7 @@ const Volunteer = ({ navigation }: any) => {
           onPress={onViewVolunteerProfilenButtonPress}
         />
       </View>
-    </>
+    </ScrollViewLayout>
   ) : (
     <NoVolunteerProfile
       onActionBtnPress={onAddOrganizationPress}
@@ -99,6 +100,5 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     backgroundColor: 'white',
-    paddingBottom: 22,
   },
 });
