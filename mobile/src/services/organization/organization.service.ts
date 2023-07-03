@@ -1,5 +1,10 @@
 import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
-import { getOrganization, getOrganizations, switchOrganization } from './organization.api';
+import {
+  getOrganization,
+  getOrganizations,
+  leaveOrganization,
+  switchOrganization,
+} from './organization.api';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import useStore from '../../store/store';
 import { IOrganization } from '../../common/interfaces/organization.interface';
@@ -32,5 +37,11 @@ export const useOrganizationQuery = (organizationId: string) => {
 export const useSwitchOrganizationMutation = () => {
   return useMutation(['switch-organization'], ({ organizationId }: { organizationId: string }) =>
     switchOrganization(organizationId),
+  );
+};
+
+export const useLeaveOrganizationMutation = () => {
+  return useMutation(['leave-organization'], ({ organizationId }: { organizationId: string }) =>
+    leaveOrganization(organizationId),
   );
 };

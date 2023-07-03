@@ -45,7 +45,7 @@ const BottomSheet = ({
       return ['30%', '55%'];
     }
 
-    return ['25%', '35%'];
+    return ['25%', '45%'];
   }, [iconType]);
 
   // renders

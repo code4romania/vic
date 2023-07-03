@@ -158,6 +158,8 @@
   },
   "volunteer": {
     "profile": "Profil voluntar",
+    "profile_picture": "Poza profil",
+    "change_picture": "Schimba poza",
     "no_org_added": "Nu ai adăugat încă nicio organizație",
     "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
     "my_organizations": "Organizațiile mele",
@@ -223,13 +225,15 @@
     "location": "Locatie",
     "description": "Descriere eveniment",
     "tasks": "Taskuri asociate",
-    "attending": "{{numberOfVolunteer}} de persoane participă!",
+    "attending": "{{numberOfVolunteer}} persoane participă!",
+    "attending_of": "{{numberOfVolunteer}} de persoane participă!",
+    "attending_one": "O persoană participă!",
     "type": {
       "public": "Eveniment public",
       "all_organization": "Toata organizatia"
     },
     "errors": {
-      "EVENT_001": "Evenimentul nu a fost gasit!",
+      "EVENT_RSVP_001": "Evenimentul nu a fost gasit!",
       "EVENT_RSVP_006": "Evenimentul nu este inca publicat",
       "EVENT_RSVP_007": "Evenimentul este incheiat",
       "EVENT_RSVP_003": "Profilul de voluntar nu este activ",
@@ -270,6 +274,8 @@
         "label": "Email",
         "placeholder": "Introduceti emailul",
         "required": "Email-ul este obligatoriu",
+        "min": "Email-ul poate să aibă minim {{value}} caractere",
+        "max": "Mențiunea poate să aibă maxim {{value}} caractere",
         "pattern": "Formatul email-ului nu este valid"
       },
       "password": {
@@ -353,13 +359,19 @@
           "max": "Numele poate sa aiba maxim {{value}} caractere"
         },
         "county": {
-          "label": "Judet"
+          "label": "Județ",
+          "required": "Județul este obligatoriu"
         },
         "city": {
-          "label": "Oras"
+          "label": "Oraș",
+          "required": "Orașul este obligatoriu"
+        },
+        "sex": {
+          "required": "Alegerea sexului este obligatorie"
         },
         "birthday": {
-          "label": "Data nașterii"
+          "label": "Data nașterii",
+          "required": "Data nașterii este obligatorie"
         }
       }
     }
@@ -492,6 +504,11 @@
         "secondary_action_label": "Inchide"
       }
     }
+  },
+  "leave_ngo": {
+    "header": "Paraseste organizatia",
+    "paragraph": "Daca parasesti organizatia, aceasta iti va sterge datele. Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur /br qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ",
+    "action_btn": "Paraseste organizatia"
   },
   "create_volunteer": {
     "heading": "Completează profil voluntar",

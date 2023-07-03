@@ -4,23 +4,39 @@ import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useOrganization } from '../store/organization/organization.selector';
 import { Text } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { ButtonType } from '../common/enums/button-type.enum';
+import useStore from '../store/store';
 
 const LeaveOrganization = ({ navigation }: any) => {
   console.log('LeaveOrganization');
+  const { t } = useTranslation('leave_ngo');
+
+  const { open: openBottomSheet } = useStore();
 
   const { organization } = useOrganization();
 
+  const onLeaveOrganization = () => {
+    navigation.goBack();
+    openBottomSheet();
+  };
+
   return (
-    <ModalLayout title="Leave Organization" onDismiss={navigation.goBack}>
+    <ModalLayout
+      title={t('header')}
+      actionsOptions={{
+        buttonType: ButtonType.DANGER,
+        onActionButtonClick: onLeaveOrganization,
+        actionLabel: `${t('action_btn')}`,
+      }}
+      onDismiss={navigation.goBack}
+    >
       <View style={styles.container}>
         {organization && (
           <OrganizationIdentity uri={organization.logo || ''} name={organization.name} />
         )}
         <Text category="p1" style={styles.paragraph}>
-          Daca parasesti organizatia, aceasta iti va sterge datele. Fugiat ipsum ipsum deserunt
-          culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum
-          aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure
-          nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.
+          {`${t('paragraph')}`}
         </Text>
       </View>
     </ModalLayout>

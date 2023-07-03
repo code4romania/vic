@@ -90,6 +90,10 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     }
   };
 
+  const onLeaveOrganizationConfirm = () => {
+    console.log('leave organization');
+  };
+
   const isLoading = () => {
     return isCancelingAccessRequest || isFetchingOrganization;
   };
@@ -114,6 +118,25 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       status: 'danger' as any,
       label: t('modal.confirm_cancel_request.action_label'),
       onPress: onCancelAccessRequest,
+    },
+    secondaryAction: {
+      label: t('general:back'),
+    },
+  });
+
+  const renderLeaveOrganizationConfirmationBottomSheetConfig = () => ({
+    heading: 'Esti sigur ca doresti sa parasesti organizatia?',
+    paragraph: (
+      <Paragraph>
+        {
+          'Daca parasesti organizatia, aceasta iti va sterge datele, inclusiv orele inregistrate și documentele de voluntar. Pentru mai multe detalii, poți contacta organizația.'
+        }
+      </Paragraph>
+    ),
+    primaryAction: {
+      status: 'danger' as any,
+      label: 'Parasestie organizatia',
+      onPress: onLeaveOrganizationConfirm,
     },
     secondaryAction: {
       label: t('general:back'),
@@ -148,6 +171,21 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     return options;
   };
 
+  const renderBottomSheetOptions = () => {
+    if (
+      organization?.organizationVolunteerStatus ===
+      OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
+    ) {
+      return renderCanceAccessRequestConfirmationBottomSheetConfig();
+    }
+
+    if (organization?.organizationVolunteerStatus === OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER) {
+      return renderLeaveOrganizationConfirmationBottomSheetConfig();
+    }
+
+    return renderIdentityDataMissingBottomSheetConfig();
+  };
+
   const onEventPress = (eventId: string) => {
     navigation.navigate('event', { eventId });
   };
@@ -164,12 +202,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
         ...renderActionOptions(),
         loading: isLoading(),
       }}
-      bottomSheetOptions={
-        organization?.organizationVolunteerStatus !==
-        OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
-          ? renderIdentityDataMissingBottomSheetConfig()
-          : renderCanceAccessRequestConfirmationBottomSheetConfig()
-      }
+      bottomSheetOptions={renderBottomSheetOptions()}
     >
       {isFetchingOrganization && <LoadingScreen />}
       {!!getOrganizationError && !isFetchingOrganization && (

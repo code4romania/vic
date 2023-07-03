@@ -93,7 +93,7 @@ const Contract = ({ navigation, route }: any) => {
           onSuccess: () => {
             // show success toast and get back to the previous page and update state
             Toast.show({ text1: `${t('contract.upload.success')}`, type: 'success' });
-            navigation.goBack({ shouldRefetch: true });
+            navigation.goBack();
           },
           onError: (error) => {
             Toast.show({
