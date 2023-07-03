@@ -24,6 +24,10 @@ import { MobileOrganizationStructureController } from './_mobile/organization/or
 import { MobileActivityLogController } from './_mobile/activity-log/activity-log.controller';
 import { MobileActivityTypeController } from './_mobile/activity-type/activity-type.controller';
 import { TemplateController } from './template/template.controller';
+import { ContractController } from './contracts/contracts.controller';
+import { MobileContractController } from './_mobile/contract/contract.controller';
+import { MobileStatisticsController } from './_mobile/statistics/statistics.controller';
+import { MobileAnouncementsController } from './_mobile/anouncements/anouncements.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -44,6 +48,7 @@ import { TemplateController } from './template/template.controller';
     ActionsArchiveController,
     DashboardController,
     TemplateController,
+    ContractController,
     // Mobile
     MobileRegularUserController,
     MobileAccessRequestController,
@@ -53,6 +58,9 @@ import { TemplateController } from './template/template.controller';
     MobileOrganizationStructureController,
     MobileActivityLogController,
     MobileActivityTypeController,
+    MobileContractController,
+    MobileStatisticsController,
+    MobileAnouncementsController,
   ],
 })
 export class ApiModule {}

@@ -7,7 +7,12 @@ import {
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import { ActivityTypeTransformer } from 'src/modules/activity-type/models/activity-type.model';
 import { OrganizationStructureTransformer } from 'src/modules/organization/models/organization-structure.model';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import {
+  LessThanOrEqual,
+  MoreThan,
+  Repository,
+  SelectQueryBuilder,
+} from 'typeorm';
 import { EventEntity } from '../entities/event.entity';
 import { EventState } from '../enums/event-time.enum';
 import { IEventRepository } from '../interfaces/event-repository.interface';
@@ -27,6 +32,7 @@ import {
 import { EventStatus } from '../enums/event-status.enum';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { EventRSVPEntity } from '../entities/event-rsvp.entity';
+import { endOfDay, endOfMonth } from 'date-fns';
 
 @Injectable()
 export class EventRepository
@@ -319,5 +325,17 @@ export class EventRepository
       findOptions.page,
       EventModelTransformer.fromEntityToMobileEventItem,
     );
+  }
+
+  public async countUpcomingEvents(userId: string): Promise<number> {
+    return this.eventRepository.count({
+      where: [
+        {
+          eventRSVPs: { userId, going: true },
+          startDate: LessThanOrEqual(endOfMonth(new Date())),
+          endDate: MoreThan(endOfDay(new Date())),
+        },
+      ],
+    });
   }
 }

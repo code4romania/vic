@@ -76,7 +76,7 @@ class EnvironmentVariables {
   @IsString()
   AWS_SECRET_ACCESS_KEY: string;
   @IsString()
-  AWS_S3_DEFAULT_BUCKET: string;
+  AWS_S3_BUCKET_NAME: string;
   @IsString()
   AWS_REGION: string;
 

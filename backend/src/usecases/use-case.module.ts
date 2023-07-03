@@ -106,6 +106,24 @@ import { GetTemplatesUsecase } from './documents/get-templates.usecase';
 import { GetOneTemplateUseCase } from './documents/get-one-template.usecase';
 import { UpdateTemplateUsecase } from './documents/update-template.usecase';
 import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
+import { GetAllTemplatesUsecase } from './documents/get-all-templates.usecase';
+import { GetManyContractsUsecase } from './documents/get-many-contracts.usecase';
+import { CreateContractUsecase } from './documents/create-contract.usecase';
+import { CountPendingContractsUsecase } from './documents/count-pending-contracts.usecase';
+import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
+import { SignContractByVolunteer } from './documents/sign-contract-by-volunteer.usecase';
+import { SignAndConfirmContractUsecase } from './documents/sign-and-confirm-contract.usecase';
+import { RejectContractUsecase } from './documents/reject-contract.usecase';
+import { GetTemplatesForDownloadUsecase } from './documents/get-templates-for-download.usecase';
+import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
+import { DeleteContractUsecase } from './documents/delete-contract.usecase';
+import { GetVolunteerContractHistoryUsecase } from './documents/get-volunteer-contract-history.usecase';
+import { GetVolunteerPendingContractsUsecase } from './documents/get-volunteer-pending-contracts.usecase';
+import { CancelContractUsecase } from './documents/cancel-contract.usecase';
+import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
+import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
+import { GetTeoStatisticsUsecase } from './dashboard/get-teo-statistics.usecase';
+import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anouncements-by-user.usecase';
 
 @Module({
   imports: [
@@ -151,6 +169,7 @@ import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
     UpdateUserPersonalDataUsecase,
+    UpdateRegularUserUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -190,6 +209,7 @@ import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
     CreateAnnouncementUseCase,
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
+    GetManyAnouncementsByUserAsUsecase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,
@@ -227,12 +247,30 @@ import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    GetVolunteerMonthlyNewsStatisticsUsecase,
+    GetTeoStatisticsUsecase,
     // Templates
     CreateTemplateUsecase,
     GetTemplatesUsecase,
     GetOneTemplateUseCase,
     UpdateTemplateUsecase,
     DeleteTemplateUseCase,
+    GetAllTemplatesUsecase,
+    GetTemplatesForDownloadUsecase,
+    // Contracts
+    CreateContractUsecase,
+    GetManyContractsUsecase,
+    CountPendingContractsUsecase,
+    GetOneContractUsecase,
+    SignContractByVolunteer,
+    SignAndConfirmContractUsecase,
+    SignAndConfirmContractUsecase,
+    RejectContractUsecase,
+    GetContractsForDownloadUsecase,
+    DeleteContractUsecase,
+    GetVolunteerContractHistoryUsecase,
+    GetVolunteerPendingContractsUsecase,
+    CancelContractUsecase,
   ],
   exports: [
     // Organization
@@ -261,6 +299,7 @@ import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
     UpdateUserPersonalDataUsecase,
+    UpdateRegularUserUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -301,6 +340,7 @@ import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
     CreateEventUseCase,
+    GetManyAnouncementsByUserAsUsecase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,
@@ -338,12 +378,30 @@ import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    GetVolunteerMonthlyNewsStatisticsUsecase,
     // Templates
     CreateTemplateUsecase,
     GetTemplatesUsecase,
     GetOneTemplateUseCase,
     UpdateTemplateUsecase,
     DeleteTemplateUseCase,
+    GetAllTemplatesUsecase,
+    GetTemplatesForDownloadUsecase,
+    // Contracts
+    CreateContractUsecase,
+    GetManyContractsUsecase,
+    CountPendingContractsUsecase,
+    GetOneContractUsecase,
+    SignContractByVolunteer,
+    SignAndConfirmContractUsecase,
+    SignAndConfirmContractUsecase,
+    RejectContractUsecase,
+    GetContractsForDownloadUsecase,
+    DeleteContractUsecase,
+    GetVolunteerContractHistoryUsecase,
+    GetVolunteerPendingContractsUsecase,
+    CancelContractUsecase,
+    GetTeoStatisticsUsecase,
   ],
 })
 export class UseCaseModule {}

@@ -8,15 +8,10 @@ import { withStyles } from '@ui-kitten/components';
 import { SvgXml } from 'react-native-svg';
 import PlusSvg from '../assets/svg/plus';
 import { LiteralUnion } from '@ui-kitten/components/devsupport';
-import { useOrganizations } from '../store/organization/organizations.selector';
-import {
-  useMyOrganizationsQuery,
-  useSwitchOrganizationMutation,
-} from '../services/organization/organization.service';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
-import useStore from '../store/store';
+import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
 import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../hooks/useAuth';
 
 const AccessoryImage = withStyles(
   ({ logo, eva }: { logo?: string; eva?: any }) => {
@@ -92,16 +87,8 @@ const DrawerItemTitle = withStyles(
 const DrawerContent = withStyles(
   ({ navigation, eva }: any) => {
     const { t } = useTranslation('volunteer');
-    // Get my organizations
-    const { error } = useMyOrganizationsQuery();
-    console.log('organizations query', error);
 
-    // organizations state
-    const { organizations } = useOrganizations();
-    // active organizatio state
-    const { activeOrganization } = useActiveOrganization();
-    // update active organization
-    const { setActiveOrganization } = useStore();
+    const { userProfile, setActiveOrganization } = useAuth();
     // switch organization
     const { mutate: switchOrganization } = useSwitchOrganizationMutation();
 
@@ -130,7 +117,7 @@ const DrawerContent = withStyles(
       <View style={eva?.style.drawerContainer}>
         <Drawer style={eva?.style.drawer} appearance="noDivider" header={renderDrawerHeader}>
           <>
-            {organizations.map((organization: IOrganizationVolunteer) => (
+            {userProfile?.myOrganizations?.map((organization: IOrganizationVolunteer) => (
               <DrawerItem
                 key={organization.id}
                 title={<DrawerItemTitle>{organization.name}</DrawerItemTitle>}
@@ -138,7 +125,7 @@ const DrawerContent = withStyles(
                 onPress={onOrganizationChange.bind(null, organization)}
                 style={[
                   eva?.style.drawerItem,
-                  ...(activeOrganization?.id === organization.id
+                  ...(userProfile.activeOrganization?.id === organization.id
                     ? [eva?.style.activeDrawerItem]
                     : []),
                 ]}
@@ -187,7 +174,7 @@ const renderDrawerContent = (props: any) => <DrawerContent {...props} />;
 // create drawer navigator on top of the tabs
 const { Navigator, Screen } = createDrawerNavigator();
 
-export const DrawerNavigator = () => (
+const DrawerNavigator = () => (
   <Navigator
     drawerContent={renderDrawerContent}
     initialRouteName="tabs"

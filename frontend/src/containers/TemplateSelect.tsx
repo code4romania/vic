@@ -3,7 +3,7 @@ import React from 'react';
 import i18n from '../common/config/i18n';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import ServerSelect from '../components/ServerSelect';
-import { getTemplates } from '../services/templates/templates.api';
+import { getAllTemplatesForMyOrganization } from '../services/templates/templates.api';
 
 export interface TemplateSelectProps {
   label: string;
@@ -23,11 +23,10 @@ const TemplateSelect = ({
   // load templates from the database
   const loadTemplates = async (search: string): Promise<ListItem[]> => {
     try {
-      console.log(search);
-      const templates = await getTemplates({ page: 1, limit: 10 });
+      const templates = await getAllTemplatesForMyOrganization(search);
 
       // map template to server select data type
-      return templates.items.map((template) => ({
+      return templates.map((template) => ({
         value: template.id,
         label: template.name,
       }));

@@ -31,3 +31,15 @@ export type FindDashboardVolunteersGrouped = {
   organizationId: string;
   group: DashboardFilteringGroups;
 };
+
+export interface IVolunteerMonthlyStatistics {
+  numberOfUpcomingEvents: number;
+  numberOfActivityLogUpdates: number;
+  numberOfDocumentUpdates: number;
+  numberOfOrganizationUpdates: number;
+}
+
+export interface ITeoStatistics {
+  numberOfActiveVolunteers: number;
+  numberOfOrganizations: number;
+}

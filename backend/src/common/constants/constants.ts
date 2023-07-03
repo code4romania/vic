@@ -12,4 +12,5 @@ export const DATE_CONSTANTS = {
 export const S3_FILE_PATHS = {
   TEMPLATES: 'templates',
   CONTRACTS: 'contracts',
+  PROFILE: 'profile',
 };

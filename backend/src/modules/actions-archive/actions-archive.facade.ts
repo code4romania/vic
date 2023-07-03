@@ -39,4 +39,26 @@ export class ActionsArchiveFacade {
   ): Promise<Pagination<IActionArchiveModel>> {
     return this.actionsArchiveRepository.findMany(findOptions);
   }
+
+  async countActivityLogBetweenDates(volunteerIds: string[]): Promise<number> {
+    return this.actionsArchiveRepository.countActivityLogBetweenDates(
+      volunteerIds,
+    );
+  }
+
+  async countDocumentStatusUpdatesBetweenDates(
+    volunteerIds: string[],
+  ): Promise<number> {
+    return this.actionsArchiveRepository.countDocumentStatusUpdatesBetweenDates(
+      volunteerIds,
+    );
+  }
+
+  async countActivityRequestsUpdatesBetweenDates(
+    volunteerIds: string[],
+  ): Promise<number> {
+    return this.actionsArchiveRepository.countAccessRequestStatusUpdatesBetweenDates(
+      volunteerIds,
+    );
+  }
 }

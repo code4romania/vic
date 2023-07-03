@@ -10,17 +10,20 @@ import volunteerUserSVG from '../assets/svg/volunteer-user';
 import volunteerClockSVG from '../assets/svg/volunteer-clock';
 import volunteerDocumentSVG from '../assets/svg/doc';
 import TopNavigationCard from '../components/TopNavigationCard';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../hooks/useAuth';
+import ScrollViewLayout from '../layouts/ScrollViewLayout';
 
 const Volunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
   console.log('Volunteer');
 
-  const { activeOrganization } = useActiveOrganization();
+  const { userProfile } = useAuth();
 
   const onViewOrganizationButtonPress = () => {
-    navigation.navigate('organization-profile', { organizationId: activeOrganization?.id });
+    navigation.navigate('organization-profile', {
+      organizationId: userProfile?.activeOrganization?.id,
+    });
   };
 
   const onViewVolunteerProfilenButtonPress = () => {
@@ -43,12 +46,12 @@ const Volunteer = ({ navigation }: any) => {
     navigation.navigate('search');
   };
 
-  return activeOrganization ? (
-    <>
+  return userProfile?.activeOrganization ? (
+    <ScrollViewLayout>
       <View style={styles.cardWrapper}>
         <TopNavigationCard
-          title={activeOrganization.name}
-          uri={activeOrganization?.logo || ''}
+          title={userProfile?.activeOrganization.name}
+          uri={userProfile?.activeOrganization?.logo || ''}
           onPress={onTopNavigationCardPress}
         />
       </View>
@@ -56,7 +59,7 @@ const Volunteer = ({ navigation }: any) => {
         <Text>{`${t('details')}`}</Text>
         <VolunteerCard
           title={t('menu_items.organization_profile.title')}
-          uri={activeOrganization?.logo || ''}
+          uri={userProfile?.activeOrganization?.logo || ''}
           onPress={onViewOrganizationButtonPress}
         />
         <VolunteerCard
@@ -76,7 +79,7 @@ const Volunteer = ({ navigation }: any) => {
           onPress={onViewVolunteerProfilenButtonPress}
         />
       </View>
-    </>
+    </ScrollViewLayout>
   ) : (
     <NoVolunteerProfile
       onActionBtnPress={onAddOrganizationPress}
@@ -98,6 +101,5 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     backgroundColor: 'white',
-    paddingBottom: 22,
   },
 });

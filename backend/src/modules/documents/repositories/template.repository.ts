@@ -4,7 +4,7 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 import { TemplateEntity } from '../entities/template.entity';
 import { ITemplateRepository } from '../interfaces/template-repository.interface';
@@ -17,6 +17,7 @@ import {
   UpdateTemplateOptions,
 } from '../models/template.model';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { ContractStatus } from '../enums/contract-status.enum';
 
 @Injectable()
 export class TemplateRepositoryService
@@ -60,6 +61,15 @@ export class TemplateRepositoryService
     // create query
     const query = this.templateRepository
       .createQueryBuilder('template')
+      .loadRelationCountAndMap(
+        'template.numberOfContracts',
+        'template.contracts',
+        'numberOfContracts',
+        (qb) =>
+          qb.where(
+            `"numberOfContracts"."status" = '${ContractStatus.APPROVED}' OR "numberOfContracts"."status" = '${ContractStatus.REJECTED}'`,
+          ),
+      )
       .select()
       .where('template.organizationId = :organizationId', {
         organizationId,
@@ -75,6 +85,18 @@ export class TemplateRepositoryService
       findOptions.page,
       TemplateTransformer.fromEntity,
     );
+  }
+
+  async findAll(findOptions: FindTemplateOptions): Promise<ITemplateModel[]> {
+    const { search, ...options } = findOptions;
+
+    const templates = await this.templateRepository.find({
+      where: {
+        ...options,
+        name: ILike(`%${search}%`),
+      },
+    });
+    return templates.map(TemplateTransformer.fromEntity);
   }
 
   async find(findOptions: FindTemplateOptions): Promise<ITemplateModel> {

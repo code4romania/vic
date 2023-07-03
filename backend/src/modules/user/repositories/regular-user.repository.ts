@@ -46,7 +46,9 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
     const userEntity = await this.regularUserRepository.findOne({
       where: options,
       relations: {
-        location: true,
+        location: {
+          county: true,
+        },
         userPersonalData: true,
         activeOrganization: {
           volunteers: true,

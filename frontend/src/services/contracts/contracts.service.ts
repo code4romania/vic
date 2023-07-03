@@ -4,6 +4,7 @@ import {
   addContract,
   approveContract,
   deleteContract,
+  getActiveCountractsCount,
   getContract,
   getContracts,
   rejectContract,
@@ -12,7 +13,14 @@ import { AxiosError } from 'axios';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { CONTRACT_ERRORS } from '../../common/errors/entities/contract.errors';
 import { ContractStatus } from '../../common/enums/contract-status.enum';
-import { AddContractFormTypes } from '../../pages/AddContract';
+
+export interface IAddContractPayload {
+  volunteerId: string;
+  templateId: string;
+  contractNumber: string;
+  startDate: Date;
+  endDate: Date;
+}
 
 export const useContractsQuery = ({
   limit,
@@ -20,7 +28,7 @@ export const useContractsQuery = ({
   orderBy,
   orderDirection,
   search,
-  volunteer,
+  volunteerName,
   startDate,
   endDate,
   status,
@@ -30,7 +38,7 @@ export const useContractsQuery = ({
   orderBy?: string;
   orderDirection?: OrderDirection;
   search?: string;
-  volunteer?: string;
+  volunteerName?: string;
   startDate?: Date;
   endDate?: Date;
   status?: ContractStatus;
@@ -43,7 +51,7 @@ export const useContractsQuery = ({
       orderBy,
       orderDirection,
       search,
-      volunteer,
+      volunteerName,
       startDate,
       endDate,
       status,
@@ -55,7 +63,7 @@ export const useContractsQuery = ({
         orderBy,
         orderDirection,
         search,
-        volunteer,
+        volunteerName,
         startDate,
         endDate,
         status,
@@ -66,6 +74,12 @@ export const useContractsQuery = ({
   );
 };
 
+export const useActiveContractsCountQuery = () => {
+  return useQuery(['active-count'], () => getActiveCountractsCount(), {
+    onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
+  });
+};
+
 export const useContractQuery = (id: string) => {
   return useQuery(['contract', id], () => getContract(id), {
     enabled: !!id,
@@ -74,21 +88,24 @@ export const useContractQuery = (id: string) => {
 };
 
 export const useDeleteContractMutation = () => {
-  return useMutation(['contract'], (id: string) => deleteContract(id), {
+  return useMutation(['delete-contract'], (id: string) => deleteContract(id), {
     onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
   });
 };
 
 export const useAddContractMutation = () => {
-  return useMutation((data: AddContractFormTypes) => addContract(data), {
+  return useMutation((data: IAddContractPayload) => addContract(data), {
     onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
   });
 };
 
 export const useApproveContractMutation = () => {
-  return useMutation((id: string) => approveContract(id), {
-    onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
-  });
+  return useMutation(
+    ({ id, contract }: { id: string; contract: File }) => approveContract(id, contract),
+    {
+      onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
+    },
+  );
 };
 
 export const useRejectContractMutation = () => {

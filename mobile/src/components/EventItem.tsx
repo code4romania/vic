@@ -42,7 +42,7 @@ const EventContentRow = withStyles(
 );
 
 const EventItem = ({ event, onPress }: EventItemProps) => (
-  <PressableContainer onPress={() => onPress(event.id)}>
+  <PressableContainer onPress={onPress.bind(null, event.id)}>
     <View style={styles.container}>
       <Avatar source={{ uri: event.image }} size="large" />
       <View style={styles.content}>

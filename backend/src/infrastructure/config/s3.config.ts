@@ -11,7 +11,7 @@ export class S3ConfigService {
       accessKeyId: this.configService.get('AWS_ACCESS_KEY_ID'),
       secretAccessKey: this.configService.get('AWS_SECRET_ACCESS_KEY'),
       region: this.configService.get('AWS_REGION'),
-      defaultBucket: this.configService.get('AWS_S3_DEFAULT_BUCKET'),
+      defaultBucket: this.configService.get('AWS_S3_BUCKET_NAME'),
     };
   }
 }

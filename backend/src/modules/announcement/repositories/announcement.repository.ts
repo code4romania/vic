@@ -17,6 +17,7 @@ import {
   IAnnouncementModel,
   UpdateAnnouncementOptions,
 } from '../models/announcement.model';
+import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 
 @Injectable()
 export class AnnouncementRepositoryService
@@ -58,9 +59,6 @@ export class AnnouncementRepositoryService
         'targets',
       )
       .select()
-      .where('announcement.organizationId = :organizationId', {
-        organizationId,
-      })
       .orderBy(
         this.buildOrderByQuery(orderBy || 'createdOn', 'announcement'),
         orderDirection || OrderDirection.DESC,
@@ -70,6 +68,12 @@ export class AnnouncementRepositoryService
       query.andWhere(
         this.buildBracketSearchQuery(['announcement.name'], search),
       );
+    }
+
+    if (organizationId) {
+      query.andWhere('announcement.organizationId = :organizationId', {
+        organizationId,
+      });
     }
 
     if (status) {
@@ -83,6 +87,62 @@ export class AnnouncementRepositoryService
         'target.name IN (:...targets)',
         { targets },
       );
+    }
+
+    return this.paginateQuery(
+      query,
+      findOptions.limit,
+      findOptions.page,
+      AnnouncementStructureTransformer.fromEntity,
+    );
+  }
+
+  public async findManyByRegularUser(
+    findOptions: FindManyAnnouncementOptions,
+  ): Promise<Pagination<IAnnouncementModel>> {
+    const { orderBy, orderDirection, userId, search, status } = findOptions;
+
+    // create query
+    const query = this.announcementRepository
+      .createQueryBuilder('announcement')
+      .leftJoinAndMapMany(
+        'announcement.targets',
+        'announcement.targets',
+        'targets',
+      )
+      .leftJoinAndMapOne(
+        'announcement.organization',
+        'announcement.organization',
+        'organization',
+      )
+      .select()
+      .orderBy(
+        this.buildOrderByQuery(orderBy || 'createdOn', 'announcement'),
+        orderDirection || OrderDirection.DESC,
+      );
+
+    query.andWhere(
+      'announcement.organizationId IN ' +
+        query
+          .subQuery()
+          .select('volunteer.organizationId')
+          .from(VolunteerEntity, 'volunteer')
+          .leftJoin('volunteer.volunteerProfile', 'volunteerProfile')
+          .where(
+            'volunteer.userId = :userId AND (volunteerProfile.departmentId = targets.id OR targets.id IS NULL)',
+            { userId },
+          )
+          .getQuery(),
+    );
+
+    if (search) {
+      query.andWhere(
+        this.buildBracketSearchQuery(['announcement.name'], search),
+      );
+    }
+
+    if (status) {
+      query.andWhere('announcement.status = :status', { status });
     }
 
     return this.paginateQuery(

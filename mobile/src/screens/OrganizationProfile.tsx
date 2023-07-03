@@ -20,9 +20,10 @@ import { useCancelAccessRequestMutation } from '../services/access-request/acces
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import useStore from '../store/store';
+import Paragraph from '../components/Paragraph';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
-  console.log('OrganizationProfile', route.params);
+  console.log('OrganizationProfile');
   const { t } = useTranslation('organization_profile');
 
   const { userProfile } = useAuth();
@@ -96,7 +97,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   const renderIdentityDataMissingBottomSheetConfig = () => ({
     iconType: 'warning' as any,
     heading: t('modal.identity_data_missing.heading'),
-    paragraph: t('modal.identity_data_missing.paragraph'),
+    paragraph: <Paragraph>{`${t('modal.identity_data_missing.paragraph')}`}</Paragraph>,
     primaryAction: {
       label: t('modal.identity_data_missing.action_label'),
       onPress: onGoToIdentityDataScreen,
@@ -108,7 +109,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   const renderCanceAccessRequestConfirmationBottomSheetConfig = () => ({
     heading: t('modal.confirm_cancel_request.heading'),
-    paragraph: t('modal.confirm_cancel_request.paragraph'),
+    paragraph: <Paragraph>{`${t('modal.confirm_cancel_request.paragraph')}`}</Paragraph>,
     primaryAction: {
       status: 'danger' as any,
       label: t('modal.confirm_cancel_request.action_label'),
@@ -138,13 +139,21 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       case OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER:
         options = {
           primaryActionLabel: t('leave'),
-          onPrimaryActionButtonClick: () => console.log('leave'),
+          onPrimaryActionButtonClick: onLeaveOrganization,
           primaryBtnType: ButtonType.DANGER,
         };
         break;
     }
 
     return options;
+  };
+
+  const onEventPress = (eventId: string) => {
+    navigation.navigate('event', { eventId });
+  };
+
+  const onLeaveOrganization = () => {
+    navigation.navigate('leave-organization');
   };
 
   return (
@@ -199,15 +208,16 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             </View>
             <SectionWrapper title={t('events')}>
               <ScrollViewLayout>
-                <View style={styles.container}>
-                  {organization.events.map((event) => (
-                    <View style={styles.container} key={event.id}>
-                      <EventItem event={event} onPress={console.log} />
-                      <Divider />
-                    </View>
-                  ))}
-                  {organization.events.length === 0 && (
+                <View>
+                  {!organization.events || organization.events.length === 0 ? (
                     <Text category="p1">{`${t('no_events')}`}</Text>
+                  ) : (
+                    organization.events.map((event) => (
+                      <View key={event.id}>
+                        <EventItem event={event} onPress={onEventPress} />
+                        <Divider />
+                      </View>
+                    ))
                   )}
                 </View>
               </ScrollViewLayout>

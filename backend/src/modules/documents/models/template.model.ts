@@ -2,11 +2,17 @@ import { IBaseModel } from 'src/common/interfaces/base.model';
 import { TemplateEntity } from '../entities/template.entity';
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 
+export interface ITemplateDownloadModel {
+  Denumire: string;
+  Utilizari: number;
+}
+
 export interface ITemplateModel extends IBaseModel {
   id: string;
   name: string;
   path: string;
   organizationId: string;
+  numberOfContracts?: number;
 }
 
 export type CreateTemplateOptions = Pick<
@@ -21,10 +27,12 @@ export type FindManyTemplatesOptions = IBasePaginationFilterModel &
 
 export type FindTemplateOptions = Partial<
   Pick<ITemplateModel, 'id' | 'organizationId'>
->;
+> & { search?: string };
 
 export class TemplateTransformer {
-  static fromEntity(entity: TemplateEntity): ITemplateModel {
+  static fromEntity(
+    entity: TemplateEntity & { numberOfContracts?: number },
+  ): ITemplateModel {
     if (!entity) {
       return null;
     }
@@ -36,6 +44,7 @@ export class TemplateTransformer {
       organizationId: entity.organizationId,
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,
+      numberOfContracts: entity.numberOfContracts,
     };
   }
 

@@ -1,9 +1,7 @@
-import { ContractStatus } from '../enums/contract.status.enum';
+import { ContractStatus } from '../enums/contract-status.enum';
+import { IContractListItem } from './contract-list-item.interface';
 
-export interface IContractListItem {
-  id: string;
-  name: string;
+export interface IContract extends IContractListItem {
   status: ContractStatus;
-  startDate: Date;
-  endDate: Date;
+  contractFileName: string;
 }

@@ -26,7 +26,12 @@ import Popover from './Popover';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import Button from './Button';
-import { ContractStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
+import {
+  ContractStatusMarkerColorMapper,
+  downloadExcel,
+  downloadFile,
+  formatDate,
+} from '../common/utils/utils';
 import LinkCell from './LinkCell';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from './StatusWithMarker';
@@ -36,44 +41,52 @@ import FormDatePicker from './FormDatePicker';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import Select, { SelectItem } from './Select';
 import { ContractStatus } from '../common/enums/contract-status.enum';
-import StatisticsCard from './StatisticsCard';
 import { useNavigate } from 'react-router-dom';
 import ContractSidePanel from './ContractSidePanel';
 import ConfirmationModal from './ConfirmationModal';
 import RejectTextareaModal from './RejectTextareaModal';
 import { VolunteerTabsOptions } from '../pages/Volunteer';
+import { useTranslation } from 'react-i18next';
+import { getContractsForDownload } from '../services/contracts/contracts.api';
+import UploadFileModal from './UploadFileModal';
 
 const StatusOptions: SelectItem<ContractStatus>[] = [
-  { key: ContractStatus.ACTIVE, value: `${i18n.t('documents:contracts.display_status.active')}` },
-  { key: ContractStatus.CLOSED, value: `${i18n.t('documents:contracts.display_status.closed')}` },
+  {
+    key: ContractStatus.ACTIVE,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.ACTIVE}`)}`,
+  },
+  {
+    key: ContractStatus.CLOSED,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.CLOSED}`)}`,
+  },
   {
     key: ContractStatus.NOT_STARTED,
-    value: `${i18n.t('documents:contracts.display_status.not_started')}`,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.NOT_STARTED}`)}`,
   },
   {
     key: ContractStatus.REJECTED,
-    value: `${i18n.t('documents:contracts.display_status.rejected')}`,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.REJECTED}`)}`,
   },
   {
-    key: ContractStatus.VALIDATE_ONG,
-    value: `${i18n.t('documents:contracts.display_status.validate_ong')}`,
+    key: ContractStatus.PENDING_ADMIN,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_ADMIN}`)}`,
   },
   {
-    key: ContractStatus.VALIDATE_VOLUNTEER,
-    value: `${i18n.t('documents:contracts.display_status.validate_volunteer')}`,
+    key: ContractStatus.PENDING_VOLUNTEER,
+    value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_VOLUNTEER}`)}`,
   },
 ];
 
 const ContractsTableHeader = [
   {
-    id: 'number',
-    name: i18n.t('documents:contracts.number'),
+    id: 'contractNumber',
+    name: i18n.t('documents:contracts.headers.contract_number'),
     sortable: true,
-    selector: (row: IContractListItem) => row.number,
+    selector: (row: IContractListItem) => row.contractNumber,
   },
   {
     id: 'volunteer',
-    name: i18n.t('volunteer:name', { status: '' }),
+    name: i18n.t('documents:contracts.headers.volunteer'),
     grow: 2,
     sortable: true,
     cell: (row: IContractListItem) => (
@@ -82,26 +95,26 @@ const ContractsTableHeader = [
   },
   {
     id: 'status',
-    name: i18n.t('general:status'),
+    name: i18n.t('documents:contracts.headers.status'),
     minWidth: '11rem',
     sortable: true,
     cell: (row: IContractListItem) => (
       <CellLayout>
         <StatusWithMarker markerColor={ContractStatusMarkerColorMapper[row.status]}>
-          {i18n.t(`documents:contracts.display_status.${row.status}`)}
+          {i18n.t(`documents:contract.status.${row.status}`)}
         </StatusWithMarker>
       </CellLayout>
     ),
   },
   {
     id: 'startDate',
-    name: i18n.t('events:form.start_date.label'),
+    name: i18n.t('documents:contracts.headers.start_date'),
     sortable: true,
     selector: (row: IContractListItem) => formatDate(row.startDate),
   },
   {
     id: 'endDate',
-    name: i18n.t('events:form.end_date.label'),
+    name: i18n.t('documents:contracts.headers.end_date'),
     sortable: true,
     selector: (row: IContractListItem) => formatDate(row.endDate),
   },
@@ -109,34 +122,34 @@ const ContractsTableHeader = [
 
 const VolunteerContractsTableHeader = [
   {
-    id: 'number',
-    name: i18n.t('documents:contracts.number'),
+    id: 'contractNumber',
+    name: i18n.t('documents:contracts.headers.contract_number'),
     sortable: true,
     grow: 3,
-    selector: (row: IContractListItem) => row.number,
+    selector: (row: IContractListItem) => row.contractNumber,
   },
   {
     id: 'status',
-    name: i18n.t('general:status'),
+    name: i18n.t('documents:contracts.headers.status'),
     minWidth: '11rem',
     sortable: true,
     cell: (row: IContractListItem) => (
       <CellLayout>
         <StatusWithMarker markerColor={ContractStatusMarkerColorMapper[row.status]}>
-          {i18n.t(`documents:contracts.display_status.${row.status}`)}
+          {i18n.t(`documents:contract.status.${row.status}`)}
         </StatusWithMarker>
       </CellLayout>
     ),
   },
   {
     id: 'startDate',
-    name: i18n.t('events:form.start_date.label'),
+    name: i18n.t('documents:contracts.headers.start_date'),
     sortable: true,
     selector: (row: IContractListItem) => formatDate(row.startDate),
   },
   {
     id: 'endDate',
-    name: i18n.t('events:form.end_date.label'),
+    name: i18n.t('documents:contracts.headers.end_date'),
     sortable: true,
     selector: (row: IContractListItem) => formatDate(row.endDate),
   },
@@ -154,7 +167,10 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
   // confirmation modals
   const [showRejectContract, setShowRejectContract] = useState<null | IContractListItem>(null);
   const [showDeleteContract, setShowDeleteContract] = useState<null | IContractListItem>(null);
-
+  const [showApproveContract, setShowApproveContract] = useState<null | IContractListItem>(null);
+  // translation
+  const { t } = useTranslation('documents');
+  // navigation
   const navigate = useNavigate();
 
   //Actions
@@ -178,7 +194,7 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     orderBy: query?.orderBy as string,
     orderDirection: query?.orderDirection as OrderDirection,
     search: query?.search,
-    volunteer: volunteerName || query?.volunteer,
+    volunteerName: query?.volunteer,
     startDate: query?.startDate,
     endDate: query?.endDate,
     status: query?.status as ContractStatus,
@@ -195,20 +211,18 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     setIsViewContractSidePanelOpen(true);
   };
 
-  const onDownloadContract = () => {
-    alert('not yet implemented');
-  };
-
-  const onSignContract = (row: IContractListItem) => {
-    approveContract(row.id, {
-      onSuccess: () => {
-        useSuccessToast(i18n.t('documents:contracts.form.submit.messages.confirm'));
-        refetch();
-      },
-      onError: (error) => {
-        useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-      },
+  const onExport = async () => {
+    const { data } = await getContractsForDownload({
+      orderBy: query?.orderBy as string,
+      orderDirection: query?.orderDirection as OrderDirection,
+      search: query?.search,
+      volunteerName: query?.volunteer,
+      startDate: query?.startDate,
+      endDate: query?.endDate,
+      status: query?.status as ContractStatus,
     });
+
+    downloadExcel(data as BlobPart, t('contracts.download'));
   };
 
   const onRejectContract = (row: IContractListItem) => {
@@ -222,12 +236,12 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
   const buildContractActionColumn = (): TableColumn<IContractListItem> => {
     const contractsMenuItems = [
       {
-        label: i18n.t('events:popover.view'),
+        label: t('events:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
       {
-        label: i18n.t('general:download', { item: i18n.t('general:contract').toLowerCase() }),
+        label: t('general:download', { item: i18n.t('general:contract').toLowerCase() }),
         icon: <ArrowDownTrayIcon className="menu-icon" />,
         onClick: onDownloadContract,
       },
@@ -236,17 +250,17 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     const contractsValidateOngMenuItems = [
       ...contractsMenuItems,
       {
-        label: i18n.t('documents:contracts.side_panel.confirm'),
+        label: t('popover.confirm'),
         icon: <CheckIcon className="menu-icon" />,
-        onClick: onSignContract,
+        onClick: setShowApproveContract,
       },
       {
-        label: i18n.t('documents:popover.reject'),
+        label: t('popover.reject'),
         icon: <XMarkIcon className="menu-icon" />,
         onClick: onRejectContract,
       },
       {
-        label: i18n.t('documents:popover.remove'),
+        label: t('popover.remove'),
         icon: <TrashIcon className="menu-icon" />,
         alert: true,
         onClick: onRemove,
@@ -256,7 +270,7 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     const contractsValidateVolunteerMenuItems = [
       ...contractsMenuItems,
       {
-        label: i18n.t('documents:popover.remove'),
+        label: t('popover.remove'),
         icon: <TrashIcon className="menu-icon" />,
         alert: true,
         onClick: onRemove,
@@ -265,12 +279,12 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
 
     const contractsRejectedMenuItems = [
       {
-        label: i18n.t('events:popover.view'),
+        label: t('events:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
       },
       {
-        label: i18n.t('documents:popover.remove_from_list'),
+        label: t('popover.remove_from_list'),
         icon: <TrashIcon className="menu-icon" />,
         alert: true,
         onClick: onRemove,
@@ -283,12 +297,14 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
         case ContractStatus.CLOSED:
         case ContractStatus.NOT_STARTED:
           return contractsMenuItems;
-        case ContractStatus.VALIDATE_ONG:
+        case ContractStatus.PENDING_ADMIN:
           return contractsValidateOngMenuItems;
-        case ContractStatus.VALIDATE_VOLUNTEER:
+        case ContractStatus.PENDING_VOLUNTEER:
           return contractsValidateVolunteerMenuItems;
         case ContractStatus.REJECTED:
           return contractsRejectedMenuItems;
+        default:
+          return [];
       }
     };
 
@@ -330,8 +346,8 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     });
   };
 
-  const onDownloadApproved = () => {
-    alert('not yet implemented');
+  const onDownloadContract = (row: IContractListItem) => {
+    downloadFile(row.uri, row.fileName);
   };
 
   const onAddContract = () => {
@@ -368,10 +384,6 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
     setQuery({ status: item.key });
   };
 
-  const onStatisticsClick = () => {
-    navigate('');
-  };
-
   const onCloseSidePanel = (shouldRefetch?: boolean) => {
     setIsViewContractSidePanelOpen(false);
     setSelectedContract(undefined);
@@ -387,11 +399,11 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
         },
         {
           onSuccess: () => {
-            useSuccessToast(i18n.t('documents:contracts.form.submit.messages.reject'));
+            useSuccessToast(t('contract.submit.reject'));
             refetch();
           },
           onError: (error) => {
-            InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error);
+            useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
           },
           onSettled: () => {
             setShowRejectContract(null);
@@ -401,35 +413,47 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
   };
 
   const confirmDelete = () => {
-    if (showDeleteContract)
-      deleteContract(showDeleteContract.id, {
+    if (showDeleteContract) {
+      const contractId = showDeleteContract.id;
+      setShowDeleteContract(null);
+      deleteContract(contractId, {
         onSuccess: () => {
-          useSuccessToast(i18n.t('documents:contracts.form.submit.messages.remove_contract'));
+          useSuccessToast(t('contract.submit.delete'));
           refetch();
         },
         onError: (error) => {
-          InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error);
-        },
-        onSettled: () => {
-          setShowDeleteContract(null);
+          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
         },
       });
+    }
+  };
+
+  const onConfirmSign = (contract?: File) => {
+    if (!contract) return;
+
+    // store id and close modal
+    const contractId = showApproveContract?.id;
+    setShowApproveContract(null);
+
+    // approval process
+    approveContract(
+      {
+        id: contractId as string,
+        contract,
+      },
+      {
+        onSuccess: () => {
+          useSuccessToast(t('contract.submit.confirm'));
+        },
+        onError: (error) => {
+          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+        },
+      },
+    );
   };
 
   return (
     <>
-      {!volunteerName && (
-        <div className="max-w-[350px]">
-          <StatisticsCard
-            label={i18n.t('documents:contracts.statistics_card.title')}
-            value={'16'}
-            action={{
-              label: i18n.t('documents:contracts.statistics_card.label'),
-              onClick: onStatisticsClick,
-            }}
-          />
-        </div>
-      )}
       <DataTableFilters
         onSearch={onSearch}
         searchValue={query?.search}
@@ -437,46 +461,43 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
       >
         {!volunteerName && (
           <VolunteerSelect
-            defaultValue={
-              query.volunteer ? { value: 'something dumb', label: query.volunteer } : undefined
-            }
+            label={t('volunteer:name', { status: '' })}
+            defaultValue={query.volunteer ? { value: '', label: query.volunteer } : undefined}
             onSelect={onVolunteerChange}
-            label={i18n.t('volunteer:name', { status: '' })}
           />
         )}
         <FormDatePicker
-          label={`${i18n.t('documents:contracts.start_date')}`}
-          placeholder={`${i18n.t('general:anytime')}`}
+          label={`${t('contracts.filters.start_date')}`}
+          placeholder={`${t('general:anytime')}`}
           onChange={onStartDateChange}
           value={query.startDate}
         />
-
         <FormDatePicker
-          label={`${i18n.t('documents:contracts.end_date')}`}
-          placeholder={`${i18n.t('general:anytime')}`}
+          label={`${t('contracts.filters.end_date')}`}
+          placeholder={`${t('general:anytime')}`}
           onChange={onEndDateChange}
           value={query.endDate}
         />
         <Select
           options={StatusOptions}
           onChange={onStatusChange}
-          placeholder={`${i18n.t('general:select', { item: '' })}`}
-          label={`${i18n.t('documents:contracts.status')}`}
+          placeholder={`${t('general:select', { item: '' })}`}
+          label={`${t('contracts.filters.status')}`}
           selected={StatusOptions.find((option) => option.key === query.status)}
         />
       </DataTableFilters>
       <Card>
         <CardHeader>
-          <h2>{i18n.t('documents:contracts.total', { value: 235 })}</h2>
+          <h2>{t('contracts.statistics.total', { total: contracts?.meta.totalItems })}</h2>
           <div className="flex gap-2 lg:gap-6">
             <Button
-              label={i18n.t('documents:contracts.download')}
+              label={t('contracts.actions.download')}
               className="btn-outline-secondary"
               icon={<ArrowDownTrayIcon className="h-5 w-5" />}
-              onClick={onDownloadApproved}
+              onClick={onExport}
             />
             <Button
-              label={i18n.t('documents:contracts.generate')}
+              label={t('contracts.actions.add')}
               className="btn-primary"
               icon={<PlusIcon className="h-5 w-5" />}
               onClick={onAddContract}
@@ -501,23 +522,31 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
         </CardBody>
         {showRejectContract && (
           <RejectTextareaModal
-            label={i18n.t('documents:contracts.reject_modal.description')}
-            title={i18n.t('documents:contracts.reject_modal.title')}
+            label={t('contract.reject_modal.description')}
+            title={t('contract.reject_modal.title')}
             onClose={setShowRejectContract.bind(null, null)}
             onConfirm={confirmReject}
-            secondaryBtnLabel={`${i18n.t('documents:contracts.reject_modal.send')}`}
-            primaryBtnLabel={`${i18n.t('documents:contracts.side_panel.reject')}`}
+            secondaryBtnLabel={`${t('contract.actions.reject_no_message')}`}
+            primaryBtnLabel={`${t('contract.actions.reject')}`}
             primaryBtnClassName="btn-danger"
           />
         )}
         {showDeleteContract && (
           <ConfirmationModal
-            title={i18n.t('documents:contracts.confirmation_modal.title_contract')}
-            description={i18n.t('documents:contracts.confirmation_modal.description_contract')}
-            confirmBtnLabel={i18n.t('documents:contracts.confirmation_modal.label_contract')}
+            title={t('contract.delete_modal.title')}
+            description={t('contract.delete_modal.description')}
+            confirmBtnLabel={t('general:delete')}
             onClose={setShowDeleteContract.bind(null, null)}
             onConfirm={confirmDelete}
             confirmBtnClassName="btn-danger"
+          />
+        )}
+        {showApproveContract && (
+          <UploadFileModal
+            description={t('contract.upload.description')}
+            title={t('contract.upload.title')}
+            onClose={setShowApproveContract.bind(null, null)}
+            onConfirm={onConfirmSign}
           />
         )}
       </Card>

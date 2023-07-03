@@ -1,11 +1,12 @@
 import { Text, withStyles } from '@ui-kitten/components';
-import React, { ReactNode } from 'react';
-import { View } from 'react-native';
+import React from 'react';
+import { View, Image, ImageStyle } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { applyCardShadow } from '../common/utils/utils';
+import { Platform } from 'react-native';
 
 interface NewsListItemProps {
-  icon: ReactNode;
+  icon: string;
   title?: string;
   subtitle?: string;
   eva?: any;
@@ -16,10 +17,17 @@ const NewsListItem = ({ icon, title, subtitle, eva, onPress }: NewsListItemProps
   return (
     <TouchableHighlight onPress={onPress} style={eva.style.touchableContainer}>
       <View style={eva?.style.container}>
-        <View style={eva?.style.iconWrapper}>{icon}</View>
+        <View style={eva?.style.iconWrapper}>
+          <Image
+            source={{
+              uri: icon,
+            }}
+            style={eva?.style.image as ImageStyle}
+          />
+        </View>
         <View style={eva?.style.textContainer}>
           <Text category="s1">{title}</Text>
-          <Text category="c1" style={eva?.style.subtitle}>
+          <Text category="c1" numberOfLines={1} ellipsizeMode="tail" style={eva?.style.subtitle}>
             {subtitle}
           </Text>
         </View>
@@ -29,6 +37,11 @@ const NewsListItem = ({ icon, title, subtitle, eva, onPress }: NewsListItemProps
 };
 
 export default withStyles(NewsListItem, (theme) => ({
+  image: {
+    width: 32,
+    height: 32,
+    borderRadius: 32,
+  },
   touchableContainer: {
     borderRadius: 16,
   },
@@ -42,6 +55,7 @@ export default withStyles(NewsListItem, (theme) => ({
   },
   subtitle: {
     color: theme['cool-gray-500'],
+    paddingRight: 32,
   },
   iconWrapper: {
     width: 32,
@@ -49,8 +63,20 @@ export default withStyles(NewsListItem, (theme) => ({
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
+    ...Platform.select({
+      android: {
+        elevation: 5, // Adjust the shadow elevation as desired
+      },
+      ios: {
+        shadowColor: 'gray',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+      },
+    }),
   },
   textContainer: {
     gap: 6,
+    lineHeight: 20,
   },
 }));

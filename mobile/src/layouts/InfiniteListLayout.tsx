@@ -5,7 +5,7 @@ import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interfac
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-const ListEmptyComponent = () => {
+export const ListEmptyComponent = () => {
   const { t } = useTranslation('general');
 
   return (
@@ -34,6 +34,7 @@ interface InfiniteListLayoutProps<T> {
   renderItem: any;
   isLoading?: boolean;
   errorMessage?: string;
+  hasDivider?: boolean;
   refetch?: () => void;
   loadMore: () => void;
 }
@@ -45,15 +46,18 @@ const InfiniteListLayout = <T extends object>({
   errorMessage,
   isLoading,
   refetch,
-}: InfiniteListLayoutProps<T>) =>
-  isLoading ? (
+  hasDivider = true,
+}: InfiniteListLayoutProps<T>) => {
+  const onRenderDivider = () => (hasDivider ? Divider : () => <></>);
+
+  return isLoading ? (
     <LoadingComponent />
   ) : (
     <List
       data={mapPagesToItems<T>(pages || [])}
       renderItem={renderItem}
       style={styles.list}
-      ItemSeparatorComponent={Divider}
+      ItemSeparatorComponent={onRenderDivider()}
       onEndReached={loadMore}
       onEndReachedThreshold={0.1}
       showsVerticalScrollIndicator={false}
@@ -65,6 +69,7 @@ const InfiniteListLayout = <T extends object>({
       }
     />
   );
+};
 
 const styles = StyleService.create({
   list: {

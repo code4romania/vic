@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import GoogleButton from '../components/GoogleButton';
 import AppleButton from '../components/AppleButton';
 import FacebookButton from '../components/FacebookButton';
+import ScrollViewLayout from '../layouts/ScrollViewLayout';
 
 const Landing = ({ navigation }: any) => {
   console.log('Landing');
@@ -33,31 +34,33 @@ const Landing = ({ navigation }: any) => {
 
   return (
     <PageLayout title="">
-      <View style={styles.container}>
-        <Image source={require('../assets/images/teo-logo.png')} style={styles.image} />
-        <Text category="h1">{`${t('general:register')}`}</Text>
-        <Text category="c1" style={styles.message}>{`${t('message')}`}</Text>
-        <View style={styles.buttonsContainer}>
-          <Button onPress={onRegisterButtonPress} label={t('email')} />
-          {Platform.OS === 'ios' && (
-            <AppleButton
-              onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Apple)}
-              label={t('social.apple')}
+      <ScrollViewLayout>
+        <View style={styles.container}>
+          <Image source={require('../assets/images/teo-logo.png')} style={styles.image} />
+          <Text category="h1">{`${t('general:register')}`}</Text>
+          <Text category="c1" style={styles.message}>{`${t('message')}`}</Text>
+          <View style={styles.buttonsContainer}>
+            <Button onPress={onRegisterButtonPress} label={t('email')} />
+            {Platform.OS === 'ios' && (
+              <AppleButton
+                onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Apple)}
+                label={t('social.apple')}
+              />
+            )}
+            <GoogleButton
+              onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Google)}
+              label={t('social.google')}
             />
-          )}
-          <GoogleButton
-            onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Google)}
-            label={t('social.google')}
-          />
-          <FacebookButton
-            onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Facebook)}
-            label={t('social.facebook')}
-          />
+            <FacebookButton
+              onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Facebook)}
+              label={t('social.facebook')}
+            />
+          </View>
+          <View style={styles.separator} />
+          <LogInButton onPress={onLoginButtonPress} />
+          <Text style={styles.version}>v0.9</Text>
         </View>
-        <View style={styles.separator} />
-        <LogInButton onPress={onLoginButtonPress} />
-        <Text style={styles.version}>v0.9</Text>
-      </View>
+      </ScrollViewLayout>
     </PageLayout>
   );
 };
