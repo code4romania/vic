@@ -15,17 +15,20 @@ import PageLayout from '../layouts/PageLayout';
 import { useVolunteer } from '../services/volunteer/volunteer.service';
 import { VolunteerProps } from '../containers/query/VolunteerWithQueryParams';
 import ActivityLogTableWithQueryParams from '../containers/query/ActivityLogTableWithQueryParams';
+import ContractsTableWithQueryParams from '../containers/query/ContractsTableWithQueryParams';
 
 export enum VolunteerTabsOptions {
   ARCHIVE = 'archive',
   NEW = 'new',
   SOLVED = 'solved',
+  DOCUMENTS = 'documents',
 }
 
 const VolunteerTabsOptons: SelectItem<VolunteerTabsOptions>[] = [
   { key: VolunteerTabsOptions.ARCHIVE, value: i18n.t('side_menu:options.actions_archive') },
   { key: VolunteerTabsOptions.NEW, value: i18n.t('activity_log:pending') },
   { key: VolunteerTabsOptions.SOLVED, value: i18n.t('activity_log:past') },
+  { key: VolunteerTabsOptions.DOCUMENTS, value: i18n.t('side_menu:options.documents') },
 ];
 
 const Volunteer = ({ query, setQuery }: VolunteerProps) => {
@@ -101,6 +104,9 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
         )}
         {query?.activeTab === VolunteerTabsOptions.ARCHIVE && (
           <div>Actions Archive to be added</div>
+        )}
+        {query?.activeTab === VolunteerTabsOptions.DOCUMENTS && (
+          <ContractsTableWithQueryParams volunteerName={volunteer?.user.name as string} />
         )}
       </Tabs>
     </PageLayout>

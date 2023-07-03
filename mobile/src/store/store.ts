@@ -2,32 +2,19 @@ import { create } from 'zustand';
 import { IOrganization } from '../common/interfaces/organization.interface';
 import { organizationSlice } from './organization/organization.slice';
 import { bottomSheetSlice } from './bottom-sheet/bottom-sheet.slice';
-import { organizationsSlice } from './organization/organizations.slice';
-import { activeOrganizationSlice } from './organization/active-organization.slice';
-import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { volunteerSlice } from './volunteer/volunteer.slice';
 import { IEvent } from '../common/interfaces/event.interface';
 import { eventSlice } from './event/event.slice';
 import { IActivityLogCounters } from '../common/interfaces/activity-log-counters.interface';
 import { activityLogsSlice } from './activity-log/activity-log.slice';
-
-interface ActiveOrganizationState {
-  activeOrganization?: IOrganizationVolunteer;
-  setActiveOrganization: (activeOrganization: IOrganizationVolunteer) => void;
-}
+import { IActivityLog } from '../common/interfaces/activity-log.interface';
 
 interface OrganizationState {
   organization?: IOrganization;
   setOrganization: (organization: IOrganization) => void;
   setOrganizationPending: () => void;
   resetOrganizationVolunteerStatus: () => void;
-}
-
-interface VolunteerState {
-  organizations: IOrganizationVolunteer[];
-  setOrganizations: (organizations: IOrganizationVolunteer[]) => void;
-  addOrganization: (organization: IOrganizationVolunteer) => void;
 }
 
 interface VolunteerProfileState {
@@ -45,7 +32,9 @@ interface EventState {
 
 interface ActivityLogState {
   counters: IActivityLogCounters;
+  selectedActivityLog?: IActivityLog;
   setCounters: (counters: IActivityLogCounters) => void;
+  setSelectedActivityLog: (activityLog: IActivityLog) => void;
 }
 
 interface BottomSheetState {
@@ -55,18 +44,10 @@ interface BottomSheetState {
 }
 
 const useStore = create<
-  OrganizationState &
-    BottomSheetState &
-    VolunteerState &
-    ActiveOrganizationState &
-    VolunteerProfileState &
-    EventState &
-    ActivityLogState
+  OrganizationState & BottomSheetState & VolunteerProfileState & EventState & ActivityLogState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...bottomSheetSlice(set),
-  ...organizationsSlice(set),
-  ...activeOrganizationSlice(set),
   ...volunteerSlice(set),
   ...eventSlice(set),
   ...activityLogsSlice(set),

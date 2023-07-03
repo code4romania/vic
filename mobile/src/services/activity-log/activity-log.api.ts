@@ -3,9 +3,8 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IActivityLogCounters } from '../../common/interfaces/activity-log-counters.interface';
 import { IActivityLogItem } from '../../common/interfaces/activity-log-item.interface';
 import { IActivityLog } from '../../common/interfaces/activity-log.interface';
-import { IOrganizationStructureItem } from '../../common/interfaces/organization-structure-item.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { ActivityLogFormTypes } from '../../screens/AddActivityLog';
+import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import API from '../api';
 
 interface PaginationQuery {
@@ -15,10 +14,15 @@ interface PaginationQuery {
   status: ActivityLogStatus;
 }
 
-export const createActivityLog = async (
-  payload: ActivityLogFormTypes,
-): Promise<IOrganizationStructureItem[]> => {
+export const createActivityLog = async (payload: ActivityLogFormTypes): Promise<IActivityLog> => {
   return API.post('/mobile/activity-log', payload).then((res) => res.data);
+};
+
+export const updateActivityLog = async (
+  volunteerId: string,
+  updates: Partial<ActivityLogFormTypes>,
+): Promise<IActivityLog> => {
+  return API.patch(`/mobile/activity-log/${volunteerId}`, updates).then((res) => res.data);
 };
 
 export const getActivityLogs = async ({
@@ -50,4 +54,8 @@ export const getActivityLogsTotalCounters = async (
 
 export const getActivityLogById = async (activityLogId: string): Promise<IActivityLog> => {
   return API.get(`/mobile/activity-log/${activityLogId}`).then((res) => res.data);
+};
+
+export const cancelActivityLog = async (activityLogId: string): Promise<void> => {
+  return API.delete(`/mobile/activity-log/${activityLogId}`).then((res) => res.data);
 };

@@ -11,9 +11,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 
 const EditVolunteer = ({ navigation }: any) => {
   console.log('EditVolunteer');
-
   const { t } = useTranslation('volunteer');
-
   const { volunteer } = useVolunteer();
 
   const {

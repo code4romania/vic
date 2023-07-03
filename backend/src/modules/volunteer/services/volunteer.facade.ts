@@ -99,4 +99,8 @@ export class VolunteerFacade {
   async count(options: CountVolunteerOptions): Promise<number> {
     return this.volunteerRepository.count(options);
   }
+
+  async findAll(options: FindVolunteerOptions): Promise<IVolunteerModel[]> {
+    return this.volunteerRepository.findAll(options);
+  }
 }

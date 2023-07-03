@@ -14,7 +14,7 @@ interface PaginationQuery {
   search: string;
 }
 
-export const getOrganizations = ({
+export const getOrganizations = async ({
   pageParam = 1,
   ...params
 }: PaginationQuery): Promise<IPaginatedEntity<IOrganizationListItemWithNumberOfVolunteers>> => {
@@ -27,14 +27,14 @@ export const getOrganizations = ({
   }).then((res) => res.data);
 };
 
-export const getMyOrganizations = (): Promise<IOrganizationVolunteer[]> => {
+export const getMyOrganizations = async (): Promise<IOrganizationVolunteer[]> => {
   return API.get('/mobile/organization/profiles').then((res) => res.data);
 };
 
-export const getOrganization = (organizationId: string): Promise<IOrganization> => {
+export const getOrganization = async (organizationId: string): Promise<IOrganization> => {
   return API.get(`/mobile/organization/${organizationId}`).then((res) => res.data);
 };
 
-export const switchOrganization = (organizationId: string): Promise<IUserProfile> => {
+export const switchOrganization = async (organizationId: string): Promise<IUserProfile> => {
   return API.patch(`/mobile/organization/${organizationId}`).then((res) => res.data);
 };

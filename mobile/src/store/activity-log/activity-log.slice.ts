@@ -1,4 +1,5 @@
 import { IActivityLogCounters } from '../../common/interfaces/activity-log-counters.interface';
+import { IActivityLog } from '../../common/interfaces/activity-log.interface';
 
 export const activityLogsSlice = (set: any) => ({
   counters: {
@@ -6,8 +7,12 @@ export const activityLogsSlice = (set: any) => ({
     pending: 0,
     rejected: 0,
   },
+  selectedActivityLog: undefined,
   setCounters: (counters: IActivityLogCounters) => {
     set({ counters });
+  },
+  setSelectedActivityLog: (selectedActivityLog: IActivityLog) => {
+    set({ selectedActivityLog });
   },
 });
 

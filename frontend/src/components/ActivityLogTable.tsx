@@ -470,7 +470,7 @@ const ActivityLogTable = ({
               onSelect={onApprovedOrRejectedByChange}
               defaultValue={
                 query.approvedOrRejectedBy
-                  ? { value: 'something dumb', label: query.approvedOrRejectedBy }
+                  ? { value: '', label: query.approvedOrRejectedBy }
                   : approvedOrRejectedBy
               }
             />

@@ -2,8 +2,6 @@ import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { VirtualizedList, View, StyleSheet } from 'react-native';
 import NewsListItem from '../components/NewsListItem';
-import { SvgXml } from 'react-native-svg';
-import LogoSvg from '../assets/svg/logo.js';
 import i18n from '../common/config/i18n';
 
 const Separator = () => <View style={styles.separator} />;
@@ -28,7 +26,7 @@ const News = ({ navigation }: any) => {
     console.log('item', item);
     return (
       <NewsListItem
-        icon={<SvgXml xml={LogoSvg} width={24} height={24} />}
+        icon={''}
         title="Important! Ne vedem maine la 10!"
         subtitle="La 10:30 este plecarea, nu intarziati!"
       />

@@ -12,6 +12,7 @@ import {
   FindManyVolunteersOptions,
   IVolunteerModel,
   UpdateVolunteerOptions,
+  FindVolunteerOptions,
 } from '../model/volunteer.model';
 
 export interface IVolunteerRepository
@@ -25,6 +26,7 @@ export interface IVolunteerRepository
     departmentIds: string[],
   ): Promise<IVolunteerModel[]>;
   count(options: CountVolunteerOptions): Promise<number>;
+  findAll(options: FindVolunteerOptions): Promise<IVolunteerModel[]>;
 }
 
 export interface IVolunteerProfileRepository {

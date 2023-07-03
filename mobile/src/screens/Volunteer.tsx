@@ -9,17 +9,20 @@ import { View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import volunteerUserSVG from '../assets/svg/volunteer-user';
 import volunteerClockSVG from '../assets/svg/volunteer-clock';
+import volunteerDocumentSVG from '../assets/svg/doc';
 import TopNavigationCard from '../components/TopNavigationCard';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
+import { useAuth } from '../hooks/useAuth';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 
 const Volunteer = ({ navigation }: any) => {
   console.log('Volunteer');
 
-  const { activeOrganization } = useActiveOrganization();
+  const { userProfile } = useAuth();
 
   const onViewOrganizationButtonPress = () => {
-    navigation.navigate('organization-profile', { organizationId: activeOrganization?.id });
+    navigation.navigate('organization-profile', {
+      organizationId: userProfile?.activeOrganization?.id,
+    });
   };
 
   const onViewVolunteerProfilenButtonPress = () => {
@@ -30,6 +33,10 @@ const Volunteer = ({ navigation }: any) => {
     navigation.navigate('activity-logs');
   };
 
+  const onDocumentsButtonPress = () => {
+    navigation.navigate('documents');
+  };
+
   const onTopNavigationCardPress = () => {
     navigation.openDrawer();
   };
@@ -38,12 +45,12 @@ const Volunteer = ({ navigation }: any) => {
     navigation.navigate('search');
   };
 
-  return activeOrganization ? (
+  return userProfile?.activeOrganization ? (
     <ScrollViewLayout>
       <View style={styles.cardWrapper}>
         <TopNavigationCard
-          title={activeOrganization.name}
-          uri={activeOrganization?.logo || ''}
+          title={userProfile?.activeOrganization.name}
+          uri={userProfile?.activeOrganization?.logo || ''}
           onPress={onTopNavigationCardPress}
         />
       </View>
@@ -51,7 +58,7 @@ const Volunteer = ({ navigation }: any) => {
         <Text>{`${i18n.t('volunteer:details')}`}</Text>
         <VolunteerCard
           title={i18n.t('volunteer:menu_items.organization_profile.title')}
-          uri={activeOrganization?.logo || ''}
+          uri={userProfile?.activeOrganization?.logo || ''}
           onPress={onViewOrganizationButtonPress}
         />
         <VolunteerCard
@@ -59,6 +66,11 @@ const Volunteer = ({ navigation }: any) => {
           icon={<SvgXml xml={volunteerClockSVG} />}
           onPress={onViewAtivityLogsButtonPress}
           subtitle={`${i18n.t('volunteer:menu_items.activity_log.subtitle', { number: 2 })}`}
+        />
+        <VolunteerCard
+          title={i18n.t('general:documents')}
+          icon={<SvgXml xml={volunteerDocumentSVG} />}
+          onPress={onDocumentsButtonPress}
         />
         <VolunteerCard
           title={i18n.t('volunteer:menu_items.volunteer_profile.title')}

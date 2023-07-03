@@ -70,6 +70,18 @@ class EnvironmentVariables {
 
   @IsString()
   ONG_HUB_API: string;
+
+  @IsString()
+  AWS_ACCESS_KEY_ID: string;
+  @IsString()
+  AWS_SECRET_ACCESS_KEY: string;
+  @IsString()
+  AWS_S3_BUCKET_NAME: string;
+  @IsString()
+  AWS_REGION: string;
+
+  @IsString()
+  EXPO_PUSH_NOTIFICATIONS_ACCESS_TOKEN: string;
 }
 
 export function validate(

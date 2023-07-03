@@ -20,6 +20,9 @@ import DrawerNavigator from './Drawer';
 import CreateVolunteer from '../screens/CreateVolunteer';
 import PrivacyPolicy from '../screens/PrivacyPolicy';
 import JoinByAccessCode from '../screens/JoinByAccessCode';
+import Documents from '../screens/Documents';
+import Contract from '../screens/Contract';
+import Anouncements from '../screens/Anouncements';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
@@ -28,6 +31,7 @@ const Private = () => (
     <Group>
       <Screen name="home" component={DrawerNavigator} />
       <Screen name="news" component={News} />
+      <Screen name="announcements" component={Anouncements} />
       <Screen name="volunteer-profile" component={VolunteerProfile} />
       <Screen name="activity-logs" component={ActivityLogs} />
       <Screen name="organization-profile" component={OrganizationProfile} />
@@ -39,6 +43,8 @@ const Private = () => (
       <Screen name="change-password" component={ChangePassword} />
       <Screen name="notifications-settings" component={NotificationsSettings} />
       <Screen name="privacy-policy" component={PrivacyPolicy} />
+      <Screen name="documents" component={Documents} />
+      <Screen name="contract" component={Contract} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
       <Screen name="join-event" component={JoinEvent} />

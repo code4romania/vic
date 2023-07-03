@@ -18,7 +18,7 @@ export interface BottomSheetProps {
   modalRef: React.RefObject<BottomSheetModalMethods>;
   iconType?: BottomSheetIconType;
   heading: string;
-  paragraph: string;
+  paragraph: JSX.Element;
   primaryAction: {
     status?: 'success' | 'danger';
     label: string;
@@ -95,9 +95,7 @@ const BottomSheet = ({
           )}
           <View style={styles.textContainer}>
             <Text category="h1">{heading}</Text>
-            <Text style={styles.paragraph} category="p1" ellipsizeMode="tail" numberOfLines={3}>
-              {paragraph}
-            </Text>
+            {paragraph}
           </View>
           <View style={styles.buttonsContainer}>
             <Button
@@ -138,10 +136,6 @@ const styles = StyleSheet.create({
     gap: 4,
     alignItems: 'center',
     justifyContent: 'flex-end',
-  },
-  paragraph: {
-    textAlign: 'center',
-    lineHeight: 24,
   },
   buttonsContainer: {
     flex: 1,

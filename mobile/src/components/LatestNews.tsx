@@ -3,11 +3,11 @@ import SectionWrapper from './SectionWrapper';
 import { View } from 'react-native';
 //SVG
 import SpeakerphoneSvg from '../assets/svg/speakerphone';
-import LogoSvg from '../assets/svg/logo.js';
 import NewsListItem from './NewsListItem';
 import IconSvg from './IconSvg';
-import { Button, withStyles } from '@ui-kitten/components';
-import i18n from '../common/config/i18n';
+import { Button, Text, withStyles } from '@ui-kitten/components';
+import { useTranslation } from 'react-i18next';
+import { useAnouncementsSnapshot } from '../services/anouncement/anouncement.service';
 
 interface LatestNewsProps {
   navigation: any;
@@ -15,40 +15,66 @@ interface LatestNewsProps {
 }
 
 const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
+  const { t } = useTranslation('home');
+
+  const {
+    isFetching: isLoadingAnouncements,
+    data: anouncements,
+    error: getAnouncementsError,
+  } = useAnouncementsSnapshot();
+
   const onViewNewsButtonPress = () => {
-    navigation.navigate('news');
+    navigation.navigate('announcements');
   };
+
+  const onAnouncementItemPress = (id: string) => {
+    console.log('id', id);
+  };
+
+  // add skeleton loading
+  if (isLoadingAnouncements) {
+    return <></>;
+  }
 
   return (
     <SectionWrapper
-      title={i18n.t('general:latest_news')}
+      title={t('anouncements.section.header')}
       icon={<IconSvg icon={SpeakerphoneSvg} size={20} />}
       action={
         <Button
           style={eva.style.seeAllBtn}
           size="tiny"
-          appearance="outline"
-          status="success"
+          appearance="ghost"
           onPress={onViewNewsButtonPress}
         >
-          {`${i18n.t('general:see_all')}`}
+          {() => (
+            <Text category="c2" style={eva.style.seeAllText}>{`${t(
+              'anouncements.section.see_all',
+            )}`}</Text>
+          )}
         </Button>
       }
     >
-      <View style={eva.style.list}>
-        <NewsListItem
-          icon={<IconSvg icon={LogoSvg} size={24} />}
-          title="Important! Ne vedem maine la 10!"
-          subtitle="La 10:30 este plecarea, nu intarziati!"
-          onPress={() => console.log('press')}
-        />
-        <NewsListItem
-          icon={<IconSvg icon={LogoSvg} size={24} />}
-          title="Important! Ne vedem maine la 10!"
-          subtitle="La 10:30 este plecarea, nu intarziati!"
-          onPress={() => console.log('press')}
-        />
-      </View>
+      <>
+        {anouncements?.items.length === 0 && (
+          <Text category="c1">{`${t('anouncements.section.empty_list')}`}</Text>
+        )}
+        {getAnouncementsError ? (
+          <Text category="c1">{`${t('general:error.load_entries')}`}</Text>
+        ) : (
+          <View style={eva.style.list}>
+            {anouncements?.items.map((item) => (
+              <NewsListItem
+                key={item.id}
+                icon={item.organizationLogo}
+                title={item.title}
+                subtitle={item.description}
+                onPress={onAnouncementItemPress.bind(null, item.id)}
+              />
+            ))}
+          </View>
+        )}
+      </>
     </SectionWrapper>
   );
 };
@@ -59,6 +85,11 @@ export default withStyles(LatestNews, (theme) => ({
   },
   seeAllBtn: {
     borderRadius: 100,
-    backgroundColor: theme['turqoise-50'],
+    backgroundColor: theme['turquoise-50'],
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+  },
+  seeAllText: {
+    color: theme['color-success-700'],
   },
 }));

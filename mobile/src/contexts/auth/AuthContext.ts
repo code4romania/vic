@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createContext } from 'react';
-import { IUserProfile } from '../../common/interfaces/user-profile.interface';
+import { IUserPersonalData, IUserProfile } from '../../common/interfaces/user-profile.interface';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
+import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
 
 export interface SignUpOptions {
   username: string;
@@ -24,6 +25,9 @@ interface AuthContextProps {
   resendConfirmationCode: (username: string) => void;
   logout: () => void;
   setUserProfile: (user: any) => void;
+  setActiveOrganization: (organization: IOrganizationVolunteer) => void;
+  setIdentityData: (personalData: IUserPersonalData) => void;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -37,4 +41,7 @@ export const AuthContext = createContext<AuthContextProps>({
   resendConfirmationCode: (username: string) => {},
   logout: () => {},
   setUserProfile: (user: any) => {},
+  setActiveOrganization: (organization: IOrganizationVolunteer) => {},
+  setIdentityData: (personalData: IUserPersonalData) => {},
+  changePassword: (oldPassword: string, newPassword: string) => Promise.resolve(),
 });

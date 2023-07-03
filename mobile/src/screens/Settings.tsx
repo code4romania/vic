@@ -48,7 +48,7 @@ interface IListItem {
 const Settings = ({ navigation }: any) => {
   const { t } = useTranslation('settings');
   const theme = useTheme();
-  const { logout } = useAuth();
+  const { logout, userProfile } = useAuth();
 
   const handleItemPress = (route: string) => {
     if (route === SETTINGS_ROUTES.INFORMATION) {
@@ -80,9 +80,9 @@ const Settings = ({ navigation }: any) => {
   return (
     <PageLayout title={t('title')}>
       <View style={styles.profileContainer}>
-        <Image source={{ uri: 'https://picsum.photos/200/300' }} style={styles.image} />
+        <Image source={{ uri: userProfile?.profilePicture }} style={styles.image} />
         <Text category="h2" appearance="hint">
-          Andreea Popa
+          {`${userProfile?.firstName} ${userProfile?.lastName}`}
         </Text>
       </View>
       <List

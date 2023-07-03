@@ -7,7 +7,7 @@ export class CityPresenter {
   constructor(city: ICityModel) {
     this.id = city.id;
     this.name = city.name;
-    this.county = city.county;
+    this.county = new CountyPresenter(city.county);
   }
 
   @Expose()
@@ -27,6 +27,7 @@ export class CityPresenter {
   @Expose()
   @ApiProperty({
     description: 'The county this city belongs to',
+    type: CountyPresenter,
   })
   county: CountyPresenter;
 }
