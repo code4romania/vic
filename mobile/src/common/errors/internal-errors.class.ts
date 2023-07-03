@@ -3,6 +3,7 @@ import { AccessRequestErrors } from './entities/access-request';
 import { ActivityLogErrors } from './entities/activity-log';
 import { ContractErrors } from './entities/contract';
 import { EventErrors } from './entities/event.errors';
+import { OrganizationErrors } from './entities/organization.errors';
 import { UserErrors } from './entities/user.errors';
 import { VolunterProfileErrors } from './entities/volunteer-profile';
 
@@ -15,4 +16,5 @@ export class InternalErrors {
   public static EVENT_ERRORS = EventErrors.getInstance();
   public static ACTIVITY_LOG_ERRORS = ActivityLogErrors.getInstance();
   public static CONTRACT_ERRORS = ContractErrors.getInstance();
+  public static ORGANIZATION_ERRORS = OrganizationErrors.getInstance();
 }

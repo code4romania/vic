@@ -204,7 +204,10 @@
     "active_since": "Voluntar din",
     "created_on": "Înregistrat în TEO din",
     "errors": {
-      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creaza unul inainte!"
+      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creaza unul inainte!",
+      "VOLUNTEER_003": "Doar voluntarii activi pot fi arhivati",
+      "VOLUNTEER_004": "Doar voluntarii arhivati poti fi activati",
+      "VOLUNTEER_005": "Utilizatorul nu are profil de organizatie pentru acest ONG"
     },
     "missing_profile": {
       "heading": "Nu ai creat încă un profil de utilizator",

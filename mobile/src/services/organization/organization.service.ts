@@ -55,7 +55,7 @@ export const useLeaveOrganizationMutation = () => {
           (org) => org.volunteerId !== volunteerId,
         );
         // 2. check if it is your active organization and if so switch from it
-        if (userProfile?.activeOrganization?.id === data.id) {
+        if (userProfile?.activeOrganization?.volunteerId === volunteerId) {
           setUserProfile({
             ...userProfile,
             myOrganizations: profiles || [],

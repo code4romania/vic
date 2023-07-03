@@ -108,7 +108,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           onError: (error: any) => {
             Toast.show({
               type: 'error',
-              text1: `${InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
+              text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(
                 error.response?.data.code_error,
               )}`,
             });
@@ -126,7 +126,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           onError: (error: any) => {
             Toast.show({
               type: 'error',
-              text1: `${InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
+              text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(
                 error.response?.data.code_error,
               )}`,
             });
