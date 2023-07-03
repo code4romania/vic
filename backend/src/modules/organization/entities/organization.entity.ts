@@ -17,7 +17,7 @@ export class OrganizationEntity extends BaseEntity {
   @Column({ type: 'text', unique: true, name: 'phone' })
   phone: string;
 
-  @Column({ type: 'text', name: 'address' })
+  @Column({ type: 'text', name: 'address', nullable: true })
   address: string;
 
   @Column({ type: 'text', name: 'activity_area', nullable: true })

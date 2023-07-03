@@ -90,6 +90,18 @@ const Event = ({ navigation, route }: any) => {
     );
   };
 
+  const mapNumberOfPersonsToHelper = () => {
+    if (!event?.numberOfPersonsGoingToEvent && event?.numberOfPersonsGoingToEvent !== 0) {
+      return '';
+    } else if (event.numberOfPersonsGoingToEvent === 1) {
+      return t('attending_one');
+    } else if (event.numberOfPersonsGoingToEvent < 20) {
+      return t('attending', { numberOfVolunteer: event.numberOfPersonsGoingToEvent });
+    } else {
+      return t('attending_of', { numberOfVolunteer: event.numberOfPersonsGoingToEvent });
+    }
+  };
+
   return (
     <PageLayout
       title={i18n.t('event:details')}
@@ -114,7 +126,7 @@ const Event = ({ navigation, route }: any) => {
               onSecondaryActionButtonClick: onRsvpReponsePress.bind(null, false),
             }
           : {}),
-        helperText: `${t('attending', { numberOfVolunteer: event?.numberOfPersonsGoingToEvent })}`,
+        helperText: mapNumberOfPersonsToHelper(),
       }}
     >
       {isLoadingEvent && <LoadingScreen />}
