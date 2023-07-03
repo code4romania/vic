@@ -124,6 +124,8 @@ import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
 import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
 import { GetTeoStatisticsUsecase } from './dashboard/get-teo-statistics.usecase';
 import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anouncements-by-user.usecase';
+import { LeaveOrganizationUsecase } from './organization/leave-organization.usecase';
+import { RejoinOrganizationUsecase } from './organization/rejoin-organization.usecase';
 
 @Module({
   imports: [
@@ -150,6 +152,8 @@ import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anou
     GetOrganizationWithEventsUseCase,
     GetMyOrganizationsUsecase,
     SwitchOrganizationUsecase,
+    LeaveOrganizationUsecase,
+    RejoinOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -280,6 +284,8 @@ import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anou
     GetOrganizationWithEventsUseCase,
     GetMyOrganizationsUsecase,
     SwitchOrganizationUsecase,
+    LeaveOrganizationUsecase,
+    RejoinOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,

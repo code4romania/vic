@@ -153,9 +153,8 @@ export class OrganizationRepositoryService
       .leftJoinAndSelect(
         'organization.volunteers',
         'volunteer',
-        'volunteer.status = :volunteerStatus AND volunteer.userId = :userId',
+        'volunteer.userId = :userId',
         {
-          volunteerStatus: VolunteerStatus.ACTIVE,
           userId,
         },
       )

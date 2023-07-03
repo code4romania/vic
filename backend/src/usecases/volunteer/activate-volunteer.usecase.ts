@@ -9,6 +9,7 @@ import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/vol
 import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneVolunteerUsecase } from './get-one-volunteer.usecase';
+import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 
 @Injectable()
 export class ActivateVolunteerUsecase
@@ -23,7 +24,7 @@ export class ActivateVolunteerUsecase
 
   public async execute(
     volunteerId: string,
-    admin: IAdminUserModel,
+    admin: IAdminUserModel | IRegularUserModel,
   ): Promise<IVolunteerModel> {
     const volunteer = await this.getOneVolunteerUsecase.execute(volunteerId);
 

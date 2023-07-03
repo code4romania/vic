@@ -7,6 +7,7 @@ import { OrganizatinVolunteerStatus } from 'src/modules/organization/enums/organ
 import { OrganizationExceptionMessages } from 'src/modules/organization/exceptions/exceptions';
 import { IOrganizationWithEventsModel } from 'src/modules/organization/models/organization-with-events.model';
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 
 @Injectable()
 export class GetOrganizationWithEventsUseCase
@@ -50,7 +51,9 @@ export class GetOrganizationWithEventsUseCase
 
     if (organization.volunteers.length > 0) {
       organization.organizationVolunteerStatus =
-        OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER;
+        organization.volunteers[0].status === VolunteerStatus.ARCHIVED
+          ? OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER
+          : OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER;
     }
 
     // 4. Send the organization back to the caller

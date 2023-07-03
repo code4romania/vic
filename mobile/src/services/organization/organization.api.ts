@@ -39,6 +39,10 @@ export const switchOrganization = async (organizationId: string): Promise<IUserP
   return API.patch(`/mobile/organization/${organizationId}`).then((res) => res.data);
 };
 
-export const leaveOrganization = async (organizationId: string): Promise<IUserProfile> => {
-  return API.delete(`/mobile/organization/${organizationId}`).then((res) => res.data);
+export const leaveOrganization = async (volunteerId: string): Promise<IOrganization> => {
+  return API.delete(`/mobile/organization/${volunteerId}`).then((res) => res.data);
+};
+
+export const rejoinOrganization = async (volunteerId: string): Promise<IOrganization> => {
+  return API.patch(`/mobile/organization/${volunteerId}/rejoin`).then((res) => res.data);
 };

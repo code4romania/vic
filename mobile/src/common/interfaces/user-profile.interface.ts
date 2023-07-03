@@ -19,7 +19,7 @@ export interface IUserProfile {
   sex: Sex;
   location?: ICity;
   userPersonalData: IUserPersonalData;
-  activeOrganization: IOrganizationVolunteer;
+  activeOrganization: IOrganizationVolunteer | null;
   myOrganizations: IOrganizationVolunteer[];
   profilePicture?: string;
   firstName: string;

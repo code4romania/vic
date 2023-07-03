@@ -54,12 +54,15 @@
     "volunteers": "{{number}} voluntari",
     "join": "Alătură-te organizației",
     "leave": "Părăsește organizația",
+    "rejoin": "Reintra in organizatie",
     "cancel_request": "Anuleaza cererea",
     "no_events": "Nu sunt evenimente de afisat",
     "code": "Ai cod de acces?",
     "disclaimer": {
       "access_request_pending": "Inscrierea ta asteapta aprobare de la organizatie",
-      "joined_from": "Te-ai alaturat din {{date}}"
+      "joined_from": "Te-ai alaturat din {{date}}",
+      "volunteer_archived": "Profilul tau de voluntar a fost dezactivat!",
+      "volunteer_blocked": "Accesul tau la organizatie a fost restrictionat"
     },
     "modal": {
       "identity_data_missing": {
@@ -71,6 +74,11 @@
         "heading": "Anulezi cererea de inscriere?",
         "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Ești sigur că vrei să retragi cererea?",
         "action_label": "Anuleaza cererea"
+      },
+      "confirm_leave_organization": {
+        "heading": "Esti sigur ca doresti sa parasesti organizatia?",
+        "paragraph": "Daca parasesti organizatia, aceasta iti va sterge datele, inclusiv orele inregistrate și documentele de voluntar. Pentru mai multe detalii, poți contacta organizația.",
+        "action_label": "Parasestie organizatia"
       }
     }
   },

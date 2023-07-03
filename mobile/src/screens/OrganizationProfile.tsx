@@ -5,7 +5,11 @@ import { StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import SectionWrapper from '../components/SectionWrapper';
 import ProfileIntro from '../components/ProfileIntro';
-import { useOrganizationQuery } from '../services/organization/organization.service';
+import {
+  useLeaveOrganizationMutation,
+  useOrganizationQuery,
+  useRejoinOrganizationMutation,
+} from '../services/organization/organization.service';
 import LoadingScreen from '../components/LoadingScreen';
 import { JSONStringifyError, formatDate } from '../common/utils/utils';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
@@ -35,6 +39,12 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   const { isLoading: isCancelingAccessRequest, mutate: cancelAccessRequest } =
     useCancelAccessRequestMutation();
+
+  const { isLoading: isLeavingOrganization, mutate: leaveOrganization } =
+    useLeaveOrganizationMutation();
+
+  const { isLoading: isRejoiningOrganization, mutate: rejoinOrganization } =
+    useRejoinOrganizationMutation();
 
   const { organization } = useOrganization();
 
@@ -91,11 +101,48 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   };
 
   const onLeaveOrganizationConfirm = () => {
-    console.log('leave organization');
+    if (organization) {
+      leaveOrganization(
+        { volunteerId: organization.volunteer.id },
+        {
+          onError: (error: any) => {
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
+                error.response?.data.code_error,
+              )}`,
+            });
+          },
+        },
+      );
+    }
+  };
+
+  const onRejoinOrganization = () => {
+    if (organization) {
+      rejoinOrganization(
+        { volunteerId: organization.volunteer.id },
+        {
+          onError: (error: any) => {
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
+                error.response?.data.code_error,
+              )}`,
+            });
+          },
+        },
+      );
+    }
   };
 
   const isLoading = () => {
-    return isCancelingAccessRequest || isFetchingOrganization;
+    return (
+      isCancelingAccessRequest ||
+      isFetchingOrganization ||
+      isLeavingOrganization ||
+      isRejoiningOrganization
+    );
   };
 
   const renderIdentityDataMissingBottomSheetConfig = () => ({
@@ -125,17 +172,11 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   });
 
   const renderLeaveOrganizationConfirmationBottomSheetConfig = () => ({
-    heading: 'Esti sigur ca doresti sa parasesti organizatia?',
-    paragraph: (
-      <Paragraph>
-        {
-          'Daca parasesti organizatia, aceasta iti va sterge datele, inclusiv orele inregistrate și documentele de voluntar. Pentru mai multe detalii, poți contacta organizația.'
-        }
-      </Paragraph>
-    ),
+    heading: t('modal.confirm_leave_organization.heading'),
+    paragraph: <Paragraph>{`${t('modal.confirm_leave_organization.paragraph')}`}</Paragraph>,
     primaryAction: {
       status: 'danger' as any,
-      label: 'Parasestie organizatia',
+      label: t('modal.confirm_leave_organization.action_label'),
       onPress: onLeaveOrganizationConfirm,
     },
     secondaryAction: {
@@ -164,6 +205,13 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           primaryActionLabel: t('leave'),
           onPrimaryActionButtonClick: onLeaveOrganization,
           primaryBtnType: ButtonType.DANGER,
+        };
+        break;
+      case OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER:
+        options = {
+          primaryActionLabel: t('rejoin'),
+          onPrimaryActionButtonClick: onRejoinOrganization,
+          primaryBtnType: ButtonType.PRIMARY,
         };
         break;
     }
@@ -214,7 +262,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
             <Disclaimer
               text={t('disclaimer.joined_from', {
-                date: formatDate(new Date(organization.volunteers[0].createdOn)),
+                date: formatDate(new Date(organization.volunteer.createdOn)),
               })}
               color="green"
             />
@@ -222,6 +270,14 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           {organization?.organizationVolunteerStatus ===
             OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING && (
             <Disclaimer text={t('disclaimer.access_request_pending')} color="yellow" />
+          )}
+          {organization?.organizationVolunteerStatus ===
+            OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER && (
+            <Disclaimer text={t('disclaimer.volunteer_archived')} color="yellow" />
+          )}
+          {organization?.organizationVolunteerStatus ===
+            OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER && (
+            <Disclaimer text={t('disclaimer.volunteer_blocked')} color="danger" />
           )}
 
           <ScrollViewLayout>

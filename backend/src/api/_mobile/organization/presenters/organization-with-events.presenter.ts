@@ -23,9 +23,10 @@ export class OrganizationWithEventsPresenter {
           organizationLogo: organization.logo,
         }),
     );
-    this.volunteers = organization.volunteers.map(
-      (volunteer) => new VolunteerPresenter(volunteer),
-    );
+    this.volunteer =
+      organization.volunteers.length > 0
+        ? new VolunteerPresenter(organization.volunteers[0])
+        : null;
     this.organizationVolunteerStatus = organization.organizationVolunteerStatus;
   }
 
@@ -104,7 +105,6 @@ export class OrganizationWithEventsPresenter {
   @Expose()
   @ApiProperty({
     type: VolunteerPresenter,
-    isArray: true,
   })
-  volunteers: VolunteerPresenter[];
+  volunteer: VolunteerPresenter;
 }

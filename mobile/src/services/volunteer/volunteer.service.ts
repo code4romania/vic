@@ -54,7 +54,7 @@ export const useJoinByAccessCodeMutation = () => {
         setOrganization({
           ...(organization as IOrganization),
           organizationVolunteerStatus: OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER,
-          volunteers: [data],
+          volunteer: data,
         });
       },
     },
