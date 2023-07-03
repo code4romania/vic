@@ -140,7 +140,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       case OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER:
         options = {
           primaryActionLabel: t('leave'),
-          onPrimaryActionButtonClick: () => console.log('leave'),
+          onPrimaryActionButtonClick: onLeaveOrganization,
           primaryBtnType: ButtonType.DANGER,
         };
         break;
@@ -151,6 +151,10 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   const onEventPress = (eventId: string) => {
     navigation.navigate('event', { eventId });
+  };
+
+  const onLeaveOrganization = () => {
+    navigation.navigate('leave-organization');
   };
 
   return (

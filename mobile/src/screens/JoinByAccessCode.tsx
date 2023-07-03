@@ -13,10 +13,8 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useTranslation } from 'react-i18next';
 import useStore from '../store/store';
-import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { useOrganization } from '../store/organization/organization.selector';
 import Paragraph from '../components/Paragraph';
-import { useAuth } from '../hooks/useAuth';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -50,8 +48,6 @@ const JoinByAccessCode = ({ navigation }: any) => {
   // bottom sheet and active organization state
   const { open: openBottomSheet, close: closeBottomSheet } = useStore();
 
-  const { userProfile, setUserProfile } = useAuth();
-
   const {
     control,
     handleSubmit,
@@ -71,23 +67,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
 
     // make the access request
     joinOrganization(joinPayload, {
-      onSuccess: (data: IVolunteer) => {
-        // update user profile context
-        setUserProfile({
-          ...userProfile,
-          activeOrganization: {
-            ...data.organization,
-            volunteerId: data.id,
-          },
-          myOrganizations: [
-            ...(userProfile?.myOrganizations || []),
-            {
-              ...data.organization,
-              volunteerId: data.id,
-            },
-          ],
-        });
-
+      onSuccess: () => {
         // show modal which will eventually become bottom sheet
         openBottomSheet();
       },
