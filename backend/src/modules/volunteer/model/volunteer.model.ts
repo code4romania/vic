@@ -41,6 +41,12 @@ export type CreateVolunteerOptions = {
   organizationId: IVolunteerModel['organization']['id'];
 };
 
+export type JoinOrganizationByAccessCodeModel = {
+  requestedById: string;
+  code: string;
+  organizationId: string;
+};
+
 export type ArchiveVolunteerOptions = {
   status: VolunteerStatus.ARCHIVED;
   archivedOn: Date;
@@ -95,7 +101,8 @@ export type FindManyVolunteersOptions = Pick<IVolunteerModel, 'status'> & {
   IBasePaginationFilterModel;
 
 export type CountVolunteerOptions = Pick<IVolunteerModel, 'status'> & {
-  organizationId: string;
+  organizationId?: string;
+  departmentIds?: string[];
 };
 
 export class VolunteerModelTransformer {

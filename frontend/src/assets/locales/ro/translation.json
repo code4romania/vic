@@ -8,6 +8,7 @@
     "close": "Inchide",
     "name": "Nume",
     "people": "Persoane",
+    "contract": "Contract",
     "age": "Vârsta",
     "hours": "Ore",
     "daily": "Zilnic",
@@ -23,6 +24,7 @@
     "add": "Adaugă {{item}}",
     "category": "Categorie",
     "select": "Selectează {{item}}",
+    "download": "Descarcă {{item}}",
     "choose": "Alege {{item}}",
     "image": "Imagine",
     "reason": "Motiv",
@@ -30,6 +32,7 @@
     "unspecified": "Nespecificat",
     "activity": "Activitate",
     "address": "Adresa",
+    "activity_area": "Arie de desfasurare a activitatii",
     "status": "Status",
     "empty_table": "Nu exista informatii de afisat",
     "view": "Vizualizeaza",
@@ -41,11 +44,14 @@
     "back": "Inapoi",
     "send": "Trimite",
     "reject": "Respinge",
+    "templates": "Template-uri",
     "approve": "Aprobă",
     "save_changes": "Salveaza modificari",
     "save": "Salvează",
     "description": "Descriere",
     "required": "Campul este obligatoriu",
+    "contracts": "Contracte",
+    "anytime": "Oricand",
     "contact": "Date contact",
     "error": {
       "load_entries": "Eroare la incarcarea datelor",
@@ -73,7 +79,9 @@
     },
     "select_interval": "Selecteaza interval",
     "save_draft": "Salveaza ca draft",
-    "other": "Alta optiune"
+    "other": "Alta optiune",
+    "add_file": "Adauga fisier aici",
+    "confirm": "Confirma"
   },
   "header": {
     "login": "Login",
@@ -93,6 +101,7 @@
       "volunteers_list": "Listă voluntari",
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
+      "documents": "Documente",
       "announcements": "Anunturi",
       "activity_types": "Categorii activitati",
       "activity_log": "Ore de voluntariat",
@@ -101,6 +110,7 @@
     "collapse": "Restrange meniul"
   },
   "volunteer": {
+    "all": "Toti voluntarii",
     "title": "Vizualizare profil",
     "card_title": "Informatii voluntar",
     "name": "Voluntar {{status}}",
@@ -119,6 +129,13 @@
       "found_location": "De unde ai aflat de organizatie?",
       "motivation": "Ce te motiveaza sa fii voluntar?",
       "confirmation_message": "Cererea de inscriere a fost {{option}}",
+      "referral": {
+        "social": "Rețelele de socializare",
+        "teo": "Din aplicația TEO",
+        "friend": "De la un coleg sau prieten",
+        "event": "Dintr-un eveniment",
+        "other": "Altă opţiune"
+      },
       "confirmation_options": {
         "approved": "aprobata",
         "deleted": "stearsa",
@@ -451,9 +468,11 @@
         "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata",
         "required": "Departamentele sunt obligatorii"
       },
-
       "description": { "label": "Descriere eveniment" },
-      "logo": { "label": "Imagine eveniment", "button_label": "Încarcă imagine" },
+      "logo": {
+        "label": "Imagine eveniment",
+        "required": "Imaginea evenimentului este obligatorie"
+      },
       "noting": {
         "label": "Înscriere eveniment",
         "simple": "Simplă (fără mențiuni)",
@@ -491,7 +510,9 @@
       "EVENT_004": "Nu putem modifica target audience pentru evenimentele publicate",
       "EVENT_005": "Doar evenimentele DRAFT sau ARHIVATE pot fi publicate",
       "EVENT_006": "Doar evenimentele publicate pot fi arhivate",
-      "EVENT_007": "Aceste eveniment are ore de voluntariat inregistrate si nu poate fi sters!"
+      "EVENT_007": "Aceste eveniment are ore de voluntariat inregistrate si nu poate fi sters!",
+      "EVENT_008": "Eroare la incarcarea posterului!",
+      "EVENT_009": "Eroare la stergerea posterului"
     },
     "download_open": "Evenimente active.xlsx",
     "download_past": "Evenimente incheiate.xlsx",
@@ -610,7 +631,7 @@
       "hours": {
         "required": "Numarul de ore este obligatoriu",
         "min": "Numarul de ore trebuie sa fie mai mare ca 0",
-        "max": "Numarul de ore trebuie sa fie mai mic ca 1000",
+        "max": "Numarul de ore trebuie sa fie mai mic ca {{value}}",
         "integer": "Numarul de ore trebuie sa fie intreg"
       },
       "submit": {
@@ -742,6 +763,183 @@
     },
     "pie_chart": {
       "title": "Statistici voluntari organizatie"
+    }
+  },
+  "documents": {
+    "title": "Contracte de voluntariat",
+    "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+    "templates": {
+      "table": {
+        "header": {
+          "name": "Denumire",
+          "uses": "Utilizari"
+        }
+      },
+      "actions": {
+        "add": "Adauga template",
+        "delete": {
+          "modal": {
+            "title": "Sigur doriți să ștergeți acest template?",
+            "content": "Această acțiune va șterge definitiv template-ul și toate informațiile asociate acestuia.",
+            "action": "Sterge template-ul"
+          },
+          "success": "Template-ul a fost sters!",
+          "errors": {
+            "TEMPLATE_003": "Eroare la stergerea template-ului!"
+          }
+        }
+      },
+      "download": "Templates.xlsx"
+    },
+    "template": {
+      "add": {
+        "heading": "Adauga template",
+        "card_header": "Template contract",
+        "form": {
+          "name": {
+            "label": "Denumire template",
+            "placeholder": "Contract 2023",
+            "required": "Denumirea este obligatorie",
+            "min": "Denumirea poate sa aiba minim {{value}} caractere",
+            "max": "Denumirea poate sa aiba maxim {{value}} caractere"
+          },
+          "contract": {
+            "label": "Încarcă document",
+            "required": "Contractul este obligatoriu",
+            "format": "Template-ul trebuie sa aiba extensia .pdf sau .doc"
+          },
+          "submit": {
+            "success": "Template-ul a fost creat!",
+            "errors": {
+              "TEMPLATE_001": "Eroare la incarcarea documentului"
+            }
+          }
+        }
+      },
+      "edit": {
+        "heading": "Editeaza template",
+        "card_header": "Template contract",
+        "form": {
+          "submit": {
+            "success": "Template-ul a fost updatat!",
+            "errors": {
+              "TEMPLATE_001": "Eroare la incarcarea documentului",
+              "TEMPLATE_002": "Template-ul nu a fost gasit"
+            }
+          }
+        }
+      }
+    },
+    "contracts": {
+      "statistics": {
+        "title": "Contracte in curs de validare",
+        "action": "Vezi lista",
+        "total": "{{total}} contracte"
+      },
+      "filters": {
+        "start_date": "Data inceput perioada contract",
+        "end_date": "Data sfarsit perioada contract",
+        "status": "Status contract"
+      },
+      "actions": {
+        "download": "Descarca aprobate",
+        "add": "Genereaza contract"
+      },
+      "headers": {
+        "contract_number": "Numar contract",
+        "volunteer": "Voluntar",
+        "status": "Status",
+        "start_date": "Data inceput",
+        "end_date": "Data final"
+      },
+      "download": "Contracts.xlsx"
+    },
+    "contract": {
+      "add": {
+        "form": {
+          "volunteer": {
+            "label": "Voluntar*",
+            "required": "Alegerea voluntarului este obligatorie"
+          },
+          "template": {
+            "label": "Template*",
+            "required": "Alegerea template-ului este obligatorie"
+          },
+          "contract_number": {
+            "label": "Numar contract*",
+            "required": "Numarul este obligatoriu",
+            "max": "Numarul trebuie sa aiba maxim 9 caractere"
+          },
+          "start_date": {
+            "label": "Data inceput contract*",
+            "required": "Data de inceput este obligatorie"
+          },
+          "end_date": {
+            "label": "Data final contract*",
+            "required": "Data de final este obligatorie"
+          }
+        },
+        "submit": {
+          "label": "Trimite catre voluntar",
+          "success": "Contractul a fost generat",
+          "errors": {
+            "CONTRACT_004": "Exista deja un contract cu acest numar pentru organizatia dumneavoastra!",
+            "CONTRACT_005": "Voluntarul are deja un contract in perioada respectiva"
+          }
+        }
+      },
+      "status": {
+        "PENDING_VOLUNTEER": "Validare voluntar",
+        "PENDING_ADMIN": "Validare admin",
+        "REJECTED": "Respins",
+        "ACTIVE": "Activ",
+        "CLOSED": "Inchis",
+        "NOT_STARTED": "Neinceput"
+      },
+      "period": "Perioada contract",
+      "signed": "Semnat fizic",
+      "template": "Template utilizat",
+      "generated_by": "Generat de",
+      "generated_on": "Data generare",
+      "approved_on": "Data aprobare",
+      "rejected_by": "Refuzat de",
+      "rejected_on": "Data refuzare",
+      "actions": {
+        "confirm": "Confirma si semneaza",
+        "reject": "Refuza",
+        "reject_no_message": "Refuza fara mesaj"
+      },
+      "reject_modal": {
+        "title": "Argumentează respingere",
+        "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii."
+      },
+      "delete_modal": {
+        "title": "Esti sigur ca doresti stergerea acestui contract?",
+        "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
+      },
+      "submit": {
+        "confirm": "Contractul a fost confirmat",
+        "reject": "Contractul a fost respins",
+        "delete": "Contractul a fost sters",
+        "errors": {
+          "CONTRACT_002": "Contractul nu a fost gasit!",
+          "CONTRACT_001": "Eroare la incarcarea contractului!",
+          "CONTRACT_003": "Eroare la upload-ul documentului!",
+          "CONTRACT_006": "Nu se poate sterge un contract deja aprobat!"
+        }
+      },
+      "upload": {
+        "title": "Incarca contract semnat",
+        "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
+      }
+    },
+    "popover": {
+      "edit": "Editeaza titlu template",
+      "download": "Descarcă document",
+      "reject": "Respinge contract",
+      "remove": "Elimină",
+      "remove_from_list": "Elimină din listă",
+      "confirm": "Confirma si semneaza"
     }
   }
 }

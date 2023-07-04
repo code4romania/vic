@@ -12,7 +12,7 @@ import { ActivityLogStatus } from '../enums/activity-log-status.enum';
 import { IActivityLogRepository } from '../interfaces/activity-log-repository.interface';
 import {
   ActivityLogModelTransformer,
-  CreateActivityLogByAdminOptions,
+  CreateActivityLogOptions,
   FindActivityLogCountOptions,
   FindManyActivityLogCounterOptions,
   FindManyActivityLogsOptions,
@@ -172,9 +172,7 @@ export class ActivityLogRepositoryService
     );
   }
 
-  async create(
-    newLog: CreateActivityLogByAdminOptions,
-  ): Promise<IActivityLogModel> {
+  async create(newLog: CreateActivityLogOptions): Promise<IActivityLogModel> {
     const entity = await this.activityLogRepo.save(
       ActivityLogModelTransformer.toEntity(newLog),
     );
@@ -251,5 +249,16 @@ export class ActivityLogRepositoryService
     findOptions: FindActivityLogCountOptions,
   ): Promise<number> {
     return this.activityLogRepo.countBy(findOptions);
+  }
+
+  async delete(id: string): Promise<string> {
+    const accessRequest = await this.activityLogRepo.findOneBy({ id });
+
+    if (accessRequest) {
+      await this.activityLogRepo.remove(accessRequest);
+      return id;
+    }
+
+    return null;
   }
 }

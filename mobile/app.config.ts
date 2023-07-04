@@ -6,6 +6,7 @@ config(); // Load environment variables from .env file
 const expoConfig: ExpoConfig = {
   name: 'teo',
   slug: 'teo',
+  scheme: 'teo',
   version: '0.0.1',
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',
@@ -19,6 +20,9 @@ const expoConfig: ExpoConfig = {
   ios: {
     supportsTablet: true,
     bundleIdentifier: 'com.commitglobal.teo',
+    entitlements: {
+      'com.apple.developer.applesignin': ['Default'],
+    },
   },
   android: {
     adaptiveIcon: {
@@ -31,7 +35,21 @@ const expoConfig: ExpoConfig = {
     favicon: './src/assets/images/favicon.png',
     build: { babel: { include: ['@ui-kitten/components'] } },
   },
-  plugins: ['expo-localization'],
+  plugins: [
+    'expo-localization',
+    [
+      'expo-document-picker',
+      {
+        iCloudContainerEnvironment: 'Development',
+      },
+    ],
+    [
+      'expo-image-picker',
+      {
+        photosPermission: 'The app accesses your photos to let you share them with your friends.',
+      },
+    ],
+  ],
   extra: {
     apiUrl: process.env.API_URL,
     redirectUrl: process.env.REDIRECT_URL,

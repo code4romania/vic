@@ -1,19 +1,89 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Button, Text } from '@ui-kitten/components';
 import i18n from '../common/config/i18n';
+import Tabs from '../components/Tabs';
+import EventItem from '../components/EventItem';
+import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
+import { useTranslation } from 'react-i18next';
+import { OrderDirection } from '../common/enums/order-direction.enum';
+import InfiniteListLayout from '../layouts/InfiniteListLayout';
+import { IEventListItem } from '../common/interfaces/event-list-item.interface';
+import { useEventsInfiniteQuery } from '../services/event/event.service';
+import { JSONStringifyError } from '../common/utils/utils';
+import { EventType } from '../common/enums/event-type.enum';
+import { ISelectItem } from '../components/FormSelect';
+
+const EventsTabs: ISelectItem[] = [
+  { key: EventType.GOING, label: i18n.t('events:tabs.going') },
+  { key: EventType.ORGANIZATIONS, label: i18n.t('events:tabs.organizations') },
+  { key: EventType.OPEN, label: i18n.t('events:tabs.open') },
+];
 
 const Events = ({ navigation }: any) => {
   console.log('Events');
+  const { t } = useTranslation('events');
+  // order direction filter
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
+  // search filter
+  const [search, setSearch] = useState<string>('');
+  // event tab filter
+  const [eventFilter, setEventFilter] = useState<EventType>(EventType.GOING);
 
-  const onViewEventButtonPress = () => {
-    navigation.navigate('event');
+  // events query
+  const {
+    data: events,
+    error: getEventsError,
+    isFetching: isFetchingEvents,
+    fetchNextPage,
+    hasNextPage,
+    refetch: reloadEvents,
+  } = useEventsInfiniteQuery(orderDirection, search, eventFilter);
+
+  const onTabClick = (tabKey: string | number) => {
+    setEventFilter(tabKey as EventType);
+  };
+
+  const onLoadMore = () => {
+    if (!isFetchingEvents && hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  const onEventListItemPress = (eventId: string) => {
+    navigation.navigate('event', { eventId });
+  };
+
+  const onRenderEventListItem = ({ item }: { item: IEventListItem }) => (
+    <EventItem event={item} onPress={onEventListItemPress} />
+  );
+
+  const onSort = () => {
+    setOrderDirection(
+      orderDirection === OrderDirection.ASC ? OrderDirection.DESC : OrderDirection.ASC,
+    );
   };
 
   return (
-    <PageLayout title={i18n.t('tabs:events')}>
-      <Text category="h1">Events</Text>
-      <Button onPress={onViewEventButtonPress}>View Event</Button>
+    <PageLayout title={t('header')}>
+      <Tabs tabs={EventsTabs} onPress={onTabClick} />
+      <SearchWithOrderAndFilters
+        placeholder={t('search.placeholder')}
+        onChange={setSearch}
+        onSort={onSort}
+      />
+      <InfiniteListLayout<IEventListItem>
+        pages={events?.pages}
+        renderItem={onRenderEventListItem}
+        loadMore={onLoadMore}
+        isLoading={isFetchingEvents}
+        refetch={reloadEvents}
+        errorMessage={
+          getEventsError
+            ? `${JSONStringifyError(getEventsError as Error)}`
+            : // : `${t('errors.generic')}`
+              ''
+        }
+      />
     </PageLayout>
   );
 };

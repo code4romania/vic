@@ -32,6 +32,16 @@ export class VolunteerRepositoryService
     super(volunteerRepository);
   }
 
+  public async findAll(
+    options: FindVolunteerOptions,
+  ): Promise<IVolunteerModel[]> {
+    const volunteers = await this.volunteerRepository.find({
+      where: options,
+      relations: { organization: true },
+    });
+    return volunteers.map(VolunteerModelTransformer.fromEntity);
+  }
+
   async findMany(
     findOptions: FindManyVolunteersOptions,
   ): Promise<Pagination<IVolunteerModel>> {
@@ -226,7 +236,19 @@ export class VolunteerRepositoryService
   }
 
   async count(options: CountVolunteerOptions): Promise<number> {
-    return this.volunteerRepository.count({ where: options });
+    const { departmentIds, ...filters } = options;
+    return this.volunteerRepository.count({
+      where: {
+        ...filters,
+        ...(departmentIds?.length
+          ? {
+              volunteerProfile: {
+                departmentId: In(departmentIds),
+              },
+            }
+          : {}),
+      },
+    });
   }
 
   private addAgeRangeConditionToQuery(

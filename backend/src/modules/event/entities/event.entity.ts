@@ -41,7 +41,11 @@ export class EventEntity extends BaseEntity {
   @Column({ type: 'boolean', name: 'is_public', default: false })
   isPublic: boolean;
 
-  // TODO: add image
+  @Column({ type: 'text', name: 'poster', nullable: true })
+  poster?: string;
+
+  @Column({ type: 'text', name: 'poster_path', nullable: true })
+  posterPath?: string;
 
   @Column({
     type: 'enum',

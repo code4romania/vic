@@ -8,6 +8,7 @@ import {
   FindRegularUserOptions,
   IRegularUserModel,
   RegularUserTransformer,
+  UpdateRegularUserOptions,
 } from '../models/regular-user.model';
 
 @Injectable()
@@ -16,6 +17,20 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
     @InjectRepository(RegularUserEntity)
     private readonly regularUserRepository: Repository<RegularUserEntity>,
   ) {}
+
+  public async update(
+    id: string,
+    updateUserModel: UpdateRegularUserOptions,
+  ): Promise<IRegularUserModel> {
+    const userToUpdate = await this.regularUserRepository.preload({
+      id,
+      ...updateUserModel,
+    });
+
+    await this.regularUserRepository.save(userToUpdate);
+
+    return this.find({ id });
+  }
 
   async create(
     userModel: CreateRegularUserOptions,
@@ -31,7 +46,13 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
     const userEntity = await this.regularUserRepository.findOne({
       where: options,
       relations: {
-        location: true,
+        location: {
+          county: true,
+        },
+        userPersonalData: true,
+        activeOrganization: {
+          volunteers: true,
+        },
       },
     });
 

@@ -16,12 +16,18 @@ import { EventAttendOptions } from '../enums/event-attendance-options.enum';
 import { EventStatus } from '../enums/event-status.enum';
 import { IBasePaginationFilterModel } from '../../../infrastructure/base/base-pagination-filter.model';
 import { EventState } from '../enums/event-time.enum';
+import { EventFilterEnum } from '../enums/event-filter.enum';
+import { IEventRSVPModel } from './event-rsvp.model';
+import { EventRSVPModelTransformer } from './event-rsvp.model';
+import { EventVolunteerStatus } from '../enums/event-volunteer-status.enum';
 
 export interface IEventModel extends IBaseModel {
   id: string;
   name: string;
   description: string;
   location?: string;
+  poster?: string;
+  posterPath?: string;
 
   startDate: Date;
   endDate?: Date;
@@ -29,7 +35,6 @@ export interface IEventModel extends IBaseModel {
   status: EventStatus;
   isPublic: boolean;
 
-  // image?: string;
   attendanceType: EventAttendOptions;
   attendanceMention?: string;
 
@@ -38,12 +43,26 @@ export interface IEventModel extends IBaseModel {
   organization: IOrganizationModel;
   targets?: IOrganizationStructureModel[];
   tasks: IActivityTypeModel[];
+  eventRsvps?: IEventRSVPModel[];
 }
 
+export interface IEventWithVolunteerStatus
+  extends Omit<IEventModel, 'eventRsvps'> {
+  volunteerStatus: EventVolunteerStatus;
+  numberOfPersonsGoingToEvent: number;
+}
 export interface IEventsListItemModel
   extends Pick<
     IEventModel,
-    'id' | 'name' | 'startDate' | 'endDate' | 'status' | 'isPublic' | 'targets'
+    | 'id'
+    | 'name'
+    | 'startDate'
+    | 'endDate'
+    | 'status'
+    | 'isPublic'
+    | 'targets'
+    | 'location'
+    | 'poster'
   > {
   going: number;
   notGoing: number;
@@ -53,6 +72,21 @@ export interface IEventsListItemModel
     volunteers: number;
   };
 }
+
+export type IEventsMobileListItemModel = Pick<
+  IEventModel,
+  | 'id'
+  | 'name'
+  | 'startDate'
+  | 'endDate'
+  | 'status'
+  | 'isPublic'
+  | 'targets'
+  | 'location'
+  | 'poster'
+> & {
+  organizationLogo?: string;
+};
 
 export type CreateEventOptions = Pick<
   IEventModel,
@@ -65,6 +99,8 @@ export type CreateEventOptions = Pick<
   | 'attendanceType'
   | 'attendanceMention'
   | 'observation'
+  | 'poster'
+  | 'posterPath'
 > & {
   status: EventStatus.DRAFT | EventStatus.PUBLISHED;
   organizationId: string;
@@ -73,6 +109,7 @@ export type CreateEventOptions = Pick<
 };
 
 export type FindOneEventOptions = Pick<IActivityTypeModel, 'id'> & {
+  userId?: string;
   organizationId?: string;
 };
 
@@ -86,6 +123,16 @@ export type FindManyEventOptions = {
   organizationId: IOrganizationModel['id'];
   eventState?: EventState;
 } & IBasePaginationFilterModel;
+
+export type FindMyEventsOptions = {
+  userId: string;
+  eventFilter: EventFilterEnum;
+} & IBasePaginationFilterModel;
+
+export type FindOngoingAndFinishedEventOptions = {
+  organizationId: string;
+  userId: string;
+};
 
 export class EventModelTransformer {
   static fromEntityToEventItem(
@@ -113,14 +160,36 @@ export class EventModelTransformer {
 
       going: entity.going,
       notGoing: entity.notGoing,
+      location: entity.location,
 
-      // image: entity.image
+      poster: entity.poster,
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
 
       activityLogged: {
         totalHours: logged?.totalHours,
         volunteers: Object.keys(logged?.volunteers).length,
       },
+    };
+  }
+
+  static fromEntityToMobileEventItem(
+    entity: EventEntity,
+  ): IEventsMobileListItemModel {
+    if (!entity) return null;
+
+    return {
+      id: entity.id,
+      name: entity.name,
+      startDate: entity.startDate,
+      endDate: entity.endDate,
+
+      status: entity.status,
+      isPublic: entity.isPublic,
+      location: entity.location,
+
+      poster: entity.poster,
+      targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
+      organizationLogo: entity.organization?.logo || '',
     };
   }
 
@@ -138,7 +207,8 @@ export class EventModelTransformer {
       status: entity.status,
       isPublic: entity.isPublic,
 
-      // image: entity.image
+      poster: entity.poster,
+      posterPath: entity.posterPath,
       attendanceType: entity.attendanceType,
       attendanceMention: entity.attendanceMention,
 
@@ -147,6 +217,7 @@ export class EventModelTransformer {
       organization: OrganizationTransformer.fromEntity(entity.organization),
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
       tasks: entity.tasks?.map(ActivityTypeTransformer.fromEntity),
+      eventRsvps: entity.eventRSVPs?.map(EventRSVPModelTransformer.fromEntity),
 
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,
@@ -170,6 +241,8 @@ export class EventModelTransformer {
       OrganizationStructureTransformer.toEntity,
     );
     entity.tasks = model.tasksIds?.map(ActivityTypeTransformer.toEntity);
+    entity.poster = model.poster;
+    entity.posterPath = model.posterPath;
     return entity;
   }
 }

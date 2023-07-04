@@ -2,6 +2,14 @@ import { ICityModel } from 'src/modules/location/model/city.model';
 import { RegularUserEntity } from '../entities/user.entity';
 import { SEX } from '../enums/user.enum';
 import { IUserModel } from './base-user.model';
+import {
+  IUserPersonalDataModel,
+  UserPersonalDataTransformer,
+} from './user-personal-data.model';
+import {
+  IOrganizationVolunteerModel,
+  OrganizationVolunteerTransformer,
+} from 'src/modules/organization/models/organization-volunteer.models';
 
 export interface IRegularUserModel extends IUserModel {
   birthday: Date;
@@ -10,6 +18,8 @@ export interface IRegularUserModel extends IUserModel {
   location: ICityModel;
   firstName: string;
   lastName: string;
+  userPersonalData?: IUserPersonalDataModel;
+  activeOrganization?: IOrganizationVolunteerModel;
 }
 
 export type CreateRegularUserOptions = Omit<
@@ -17,6 +27,22 @@ export type CreateRegularUserOptions = Omit<
   'id' | 'location' | 'name'
 > & {
   locationId: number;
+};
+
+export type UpdateRegularUserOptions = Partial<
+  Pick<
+    IRegularUserModel,
+    | 'userPersonalData'
+    | 'firstName'
+    | 'lastName'
+    | 'birthday'
+    | 'phone'
+    | 'sex'
+    | 'profilePicture'
+  >
+> & {
+  activeOrganizationId?: string;
+  locationId?: number;
 };
 
 export type FindRegularUserOptions =
@@ -41,6 +67,12 @@ export class RegularUserTransformer {
       location: entity.location,
       firstName: entity.firstName,
       lastName: entity.lastName,
+      userPersonalData: UserPersonalDataTransformer.fromEntity(
+        entity.userPersonalData,
+      ),
+      activeOrganization: OrganizationVolunteerTransformer.fromEntity(
+        entity.activeOrganization,
+      ),
     };
   }
 

@@ -13,6 +13,8 @@ import {
   FindManyActionsArchiveOptions,
   IActionArchiveModel,
 } from '../models/actions-archive.model';
+import { TrackedEventName } from '../enums/action-resource-types.enum';
+import { endOfMonth, startOfMonth } from 'date-fns';
 
 @Injectable()
 export class ActionsArchiveRepository
@@ -25,6 +27,7 @@ export class ActionsArchiveRepository
   ) {
     super(actionsArchiveRepo);
   }
+
   findMany(
     findOptions: FindManyActionsArchiveOptions,
   ): Promise<Pagination<IActionArchiveModel>> {
@@ -54,7 +57,7 @@ export class ActionsArchiveRepository
     }
 
     if (findOptions.search) {
-      query.where(
+      query.andWhere(
         `exists (select 1 from jsonb_each_text(actionsArchive.eventData) as kv where kv.value ilike :search) OR exists (select 1 from jsonb_each_text(actionsArchive.changes) as kv where kv.value ilike :search)`,
         { search: `%${findOptions.search}%` },
       );
@@ -75,5 +78,70 @@ export class ActionsArchiveRepository
       findOptions.page,
       ActionsArchiveTransformer.fromEntity,
     );
+  }
+
+  async countActivityLogBetweenDates(volunteerIds: string[]): Promise<number> {
+    const query = this.actionsArchiveRepo
+      .createQueryBuilder('archive')
+      .where(
+        'archive.eventName = :eventName AND archive.createdOn >= :startDate AND archive.createdOn <= :endDate',
+        {
+          eventName: TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS,
+          startDate: startOfMonth(new Date()),
+          endDate: endOfMonth(new Date()),
+        },
+      )
+      .andWhere(`archive.event_data->>'volunteerId' IN (:...volunteerIds)`, {
+        volunteerIds,
+      });
+
+    return query.getCount();
+  }
+
+  async countDocumentStatusUpdatesBetweenDates(
+    volunteerIds: string[],
+  ): Promise<number> {
+    const query = this.actionsArchiveRepo
+      .createQueryBuilder('archive')
+      .where(
+        'archive.eventName in (:...eventNames) AND archive.createdOn >= :startDate AND archive.createdOn <= :endDate',
+        {
+          eventNames: [
+            TrackedEventName.CREATE_CONTRACT,
+            TrackedEventName.APPROVE_CONTRACT,
+            TrackedEventName.REJECT_CONTRACT,
+          ],
+          startDate: startOfMonth(new Date()),
+          endDate: endOfMonth(new Date()),
+        },
+      )
+      .andWhere(`archive.event_data->>'volunteerId' IN (:...volunteerIds)`, {
+        volunteerIds,
+      });
+
+    return query.getCount();
+  }
+
+  async countAccessRequestStatusUpdatesBetweenDates(
+    volunteerIds: string[],
+  ): Promise<number> {
+    const query = this.actionsArchiveRepo
+      .createQueryBuilder('archive')
+      .where(
+        'archive.eventName in (:...eventNames) AND archive.createdOn >= :startDate AND archive.createdOn <= :endDate',
+        {
+          eventNames: [
+            TrackedEventName.APPROVE_ACCESS_REQUEST,
+            TrackedEventName.REJECT_ACCESS_REQUEST,
+          ],
+          startDate: startOfMonth(new Date()),
+          endDate: endOfMonth(new Date()),
+        },
+      )
+      .andWhere(`archive.event_data->>'volunteerId' IN (:...volunteerIds)`, {
+        volunteerIds,
+      });
+
+    return query.getCount();
   }
 }

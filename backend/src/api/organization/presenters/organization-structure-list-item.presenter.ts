@@ -6,7 +6,7 @@ export class OrganizationStructureListItemPresenter {
   constructor(structure: IOrganizationStructureModel) {
     this.id = structure.id;
     this.name = structure.name;
-    this.numberOfMembers = structure.members;
+    this.numberOfMembers = structure.members || 0;
   }
 
   @Expose()

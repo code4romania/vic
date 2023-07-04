@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { differenceInYears, endOfDay, format, formatISO9075, isSameDay } from 'date-fns';
+import { endOfDay, format, formatISO9075, isSameDay } from 'date-fns';
 import { SelectItem } from '../../components/Select';
 import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 import { ICity } from '../interfaces/city.interface';
@@ -9,6 +9,7 @@ import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { EventStatus } from '../enums/event-status';
 import { ListItem } from '../interfaces/list-item.interface';
 import { AgeRangeEnum } from '../enums/age-range.enum';
+import { ContractStatus } from '../enums/contract-status.enum';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
@@ -32,15 +33,11 @@ export const debouncePromise = (fn: any, delay: number) => {
  * FORMATTERS
  */
 
-export const formatDate = (value?: Date | string | null): string =>
-  value ? format(new Date(value), 'dd.LL.y') : '-';
+export const formatDate = (value?: Date | string | null, dateFormat?: string): string =>
+  value ? format(new Date(value), dateFormat || 'dd.LL.y') : '-';
 
 export const formatDateWithTime = (value?: Date | string | null): string =>
   value ? format(new Date(value), 'dd.LL.y hh:mm') : '-';
-
-export const calculateAge = (birthday: Date) => {
-  return differenceInYears(new Date(), birthday);
-};
 
 export const arrayOfNamesToString = (array: { name: string }[], separator: string): string => {
   return array.map((item) => item.name).join(separator);
@@ -81,6 +78,15 @@ export const downloadExcel = (data: BlobPart, name: string): void => {
   link.remove();
 };
 
+export const downloadFile = (uri: string, name: string) => {
+  const link = document.createElement('a');
+  link.href = uri;
+  link.setAttribute('download', name);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+};
+
 export const formatStartDateISO9075 = (startDate: Date) => formatISO9075(startDate);
 
 export const formatEndDateISO9075 = (endDate: Date) => formatISO9075(endOfDay(endDate));
@@ -103,6 +109,15 @@ export const EventStatusMarkerColorMapper = {
   [EventStatus.DRAFT]: 'bg-yellow-500',
   [EventStatus.PUBLISHED]: 'bg-green-500',
   [EventStatus.ARCHIVED]: 'bg-red-500',
+};
+
+export const ContractStatusMarkerColorMapper = {
+  [ContractStatus.ACTIVE]: 'bg-green-500',
+  [ContractStatus.CLOSED]: 'bg-cool-gray-800',
+  [ContractStatus.NOT_STARTED]: 'bg-blue-500',
+  [ContractStatus.PENDING_ADMIN]: 'bg-yellow-500',
+  [ContractStatus.PENDING_VOLUNTEER]: 'bg-yellow-500',
+  [ContractStatus.REJECTED]: 'bg-red-500',
 };
 
 export const ActivityLogStatusMarkerColorMapper = {

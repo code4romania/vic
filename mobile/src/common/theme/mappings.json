@@ -31,12 +31,20 @@
     "text-label-font-family": "roboto-medium",
 
     "text-subtitle-1-font-size": 14,
-    "text-subtitle-1-font-weight": "600",
+    "text-subtitle-1-font-weight": "500",
     "text-subtitle-1-font-family": "roboto-medium",
+
+    "text-subtitle-2-font-size": 12,
+    "text-subtitle-2-font-weight": "400",
+    "text-subtitle-2-font-family": "roboto-regular",
 
     "text-caption-1-font-size": 14,
     "text-caption-1-font-weight": "400",
-    "text-caption-1-font-family": "roboto-regular"
+    "text-caption-1-font-family": "roboto-regular",
+
+    "text-caption-2-font-size": 12,
+    "text-caption-2-font-weight": "500",
+    "text-caption-2-font-family": "roboto-medium"
   },
   "components": {}
 }

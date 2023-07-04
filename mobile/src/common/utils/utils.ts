@@ -1,5 +1,5 @@
-// utils
-// add mappings and other helper methods
+import { format } from 'date-fns';
+import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 
 export const applyCardShadow = (theme: any) => ({
   shadowColor: theme['cool-gray-400'],
@@ -8,6 +8,9 @@ export const applyCardShadow = (theme: any) => ({
   shadowRadius: 2,
   elevation: 2, // android only
 });
+
+export const formatDate = (value?: Date | string | null): string =>
+  value ? format(new Date(value), 'dd/LL/y') : '-';
 
 export function JSONStringifyError(value: Error): string {
   if (value instanceof Error) {
@@ -19,3 +22,9 @@ export function JSONStringifyError(value: Error): string {
   }
   return JSON.stringify(value);
 }
+
+export const ActivityLogStatusToColorMapper = {
+  [ActivityLogStatus.APPROVED]: 'green',
+  [ActivityLogStatus.PENDING]: 'yellow',
+  [ActivityLogStatus.REJECTED]: 'red',
+};

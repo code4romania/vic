@@ -41,9 +41,9 @@ export const useRsvpsQuery = (
   orderByColumn?: string,
   orderDirection?: OrderDirection,
   search?: string,
-  branchId?: string,
-  departmentId?: string,
-  roleId?: string,
+  branch?: string,
+  department?: string,
+  role?: string,
   going?: string,
 ) => {
   return useQuery(
@@ -55,9 +55,9 @@ export const useRsvpsQuery = (
       orderByColumn,
       orderDirection,
       search,
-      branchId,
-      departmentId,
-      roleId,
+      branch,
+      department,
+      role,
       going,
     ],
     () =>
@@ -68,9 +68,9 @@ export const useRsvpsQuery = (
         orderByColumn,
         orderDirection,
         search,
-        branchId,
-        departmentId,
-        roleId,
+        branch,
+        department,
+        role,
         going,
       ),
     {

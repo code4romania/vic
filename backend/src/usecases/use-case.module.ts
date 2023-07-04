@@ -90,6 +90,45 @@ import { RegisterDevicePushTokenUseCase } from './push-notifications/register-de
 import { NotificationsModule } from 'src/modules/notifications/notifications.module';
 import { UnregisterDevicePushTokenUseCase } from './push-notifications/unregister-device-push-token.usecase';
 import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.usecase';
+import { GetOrganizationsUseCase } from './organization/get-organizations.usecase';
+import { GetOrganizationWithEventsUseCase } from './organization/get-organization-with-events.usecase';
+import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.usecase';
+import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organization-by-access-code.usecase';
+import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
+import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.usecase';
+import { SwitchOrganizationUsecase } from './organization/switch-organization.usecase';
+import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.usecase';
+import { GetMyEventsUsecase } from './event/get-my-events.usecase';
+import { GetOneEventWithVolunteerStatusUsecase } from './event/get-one-event-with-volunteer-status.usecase';
+import { CreateActivityLogByRegularUser } from './activity-log/create-activity-log-by-regular-user.usecase';
+import { GetEventsByOrganizationUsecase } from './event/get-events-by-organization.usecase';
+import { CancelActivityLogUsecase } from './activity-log/cancel-activity-log.usecase';
+import { DocumentsModule } from 'src/modules/documents/documents.module';
+import { CreateTemplateUsecase } from './documents/create-template.usecase';
+import { GetTemplatesUsecase } from './documents/get-templates.usecase';
+import { GetOneTemplateUseCase } from './documents/get-one-template.usecase';
+import { UpdateTemplateUsecase } from './documents/update-template.usecase';
+import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
+import { GetAllTemplatesUsecase } from './documents/get-all-templates.usecase';
+import { GetManyContractsUsecase } from './documents/get-many-contracts.usecase';
+import { CreateContractUsecase } from './documents/create-contract.usecase';
+import { CountPendingContractsUsecase } from './documents/count-pending-contracts.usecase';
+import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
+import { SignContractByVolunteer } from './documents/sign-contract-by-volunteer.usecase';
+import { SignAndConfirmContractUsecase } from './documents/sign-and-confirm-contract.usecase';
+import { RejectContractUsecase } from './documents/reject-contract.usecase';
+import { GetTemplatesForDownloadUsecase } from './documents/get-templates-for-download.usecase';
+import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
+import { DeleteContractUsecase } from './documents/delete-contract.usecase';
+import { GetVolunteerContractHistoryUsecase } from './documents/get-volunteer-contract-history.usecase';
+import { GetVolunteerPendingContractsUsecase } from './documents/get-volunteer-pending-contracts.usecase';
+import { CancelContractUsecase } from './documents/cancel-contract.usecase';
+import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
+import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
+import { GetTeoStatisticsUsecase } from './dashboard/get-teo-statistics.usecase';
+import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anouncements-by-user.usecase';
+import { LeaveOrganizationUsecase } from './organization/leave-organization.usecase';
+import { RejoinOrganizationUsecase } from './organization/rejoin-organization.usecase';
 
 @Module({
   imports: [
@@ -107,11 +146,18 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     ActionsArchiveModule,
     DashboardModule,
     NotificationsModule,
+    DocumentsModule,
   ],
   providers: [
     // Organization
     GetOrganizationUseCaseService,
     UpdateOrganizationDescriptionUseCaseService,
+    GetOrganizationsUseCase,
+    GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
+    SwitchOrganizationUsecase,
+    LeaveOrganizationUsecase,
+    RejoinOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -130,6 +176,8 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
+    UpdateUserPersonalDataUsecase,
+    UpdateRegularUserUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -139,6 +187,8 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -160,12 +210,14 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
     CreateAnnouncementUseCase,
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
+    GetManyAnouncementsByUserAsUsecase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,
@@ -175,6 +227,9 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     ArchiveEventUseCase,
     GetManyForDownloadEventUseCase,
     GetManyEventUseCase,
+    GetMyEventsUsecase,
+    GetOneEventWithVolunteerStatusUsecase,
+    GetEventsByOrganizationUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -191,6 +246,8 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     GetActivityLogCountersUsecase,
     GetManyForDownloadActivityLogUseCase,
     GetActivityLogCountUsecase,
+    CreateActivityLogByRegularUser,
+    CancelActivityLogUsecase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard
@@ -201,11 +258,41 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     // Push Notifications
     RegisterDevicePushTokenUseCase,
     UnregisterDevicePushTokenUseCase,
+    GetVolunteerMonthlyNewsStatisticsUsecase,
+    GetTeoStatisticsUsecase,
+    // Templates
+    CreateTemplateUsecase,
+    GetTemplatesUsecase,
+    GetOneTemplateUseCase,
+    UpdateTemplateUsecase,
+    DeleteTemplateUseCase,
+    GetAllTemplatesUsecase,
+    GetTemplatesForDownloadUsecase,
+    // Contracts
+    CreateContractUsecase,
+    GetManyContractsUsecase,
+    CountPendingContractsUsecase,
+    GetOneContractUsecase,
+    SignContractByVolunteer,
+    SignAndConfirmContractUsecase,
+    SignAndConfirmContractUsecase,
+    RejectContractUsecase,
+    GetContractsForDownloadUsecase,
+    DeleteContractUsecase,
+    GetVolunteerContractHistoryUsecase,
+    GetVolunteerPendingContractsUsecase,
+    CancelContractUsecase,
   ],
   exports: [
     // Organization
     GetOrganizationUseCaseService,
     UpdateOrganizationDescriptionUseCaseService,
+    GetOrganizationsUseCase,
+    GetOrganizationWithEventsUseCase,
+    GetMyOrganizationsUsecase,
+    SwitchOrganizationUsecase,
+    LeaveOrganizationUsecase,
+    RejoinOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -224,6 +311,8 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
+    UpdateUserPersonalDataUsecase,
+    UpdateRegularUserUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -233,6 +322,8 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     ApproveAccessRequestUseCase,
     RejectAccessRequestUseCase,
     GetAccessRequestsForDownloadUseCase,
+    JoinOrganizationByAccessCodeUsecase,
+    CancelAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -254,6 +345,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
+    GetVolunteerProfileUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -261,6 +353,7 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
     CreateEventUseCase,
+    GetManyAnouncementsByUserAsUsecase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,
@@ -270,6 +363,9 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     ArchiveEventUseCase,
     GetManyEventUseCase,
     GetManyForDownloadEventUseCase,
+    GetMyEventsUsecase,
+    GetOneEventWithVolunteerStatusUsecase,
+    GetEventsByOrganizationUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -286,6 +382,8 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     GetActivityLogCountersUsecase,
     GetManyForDownloadActivityLogUseCase,
     GetActivityLogCountUsecase,
+    CreateActivityLogByRegularUser,
+    CancelActivityLogUsecase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
     // Dashboard
@@ -296,6 +394,30 @@ import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.u
     // Push Notifications
     RegisterDevicePushTokenUseCase,
     UnregisterDevicePushTokenUseCase,
+    GetVolunteerMonthlyNewsStatisticsUsecase,
+    // Templates
+    CreateTemplateUsecase,
+    GetTemplatesUsecase,
+    GetOneTemplateUseCase,
+    UpdateTemplateUsecase,
+    DeleteTemplateUseCase,
+    GetAllTemplatesUsecase,
+    GetTemplatesForDownloadUsecase,
+    // Contracts
+    CreateContractUsecase,
+    GetManyContractsUsecase,
+    CountPendingContractsUsecase,
+    GetOneContractUsecase,
+    SignContractByVolunteer,
+    SignAndConfirmContractUsecase,
+    SignAndConfirmContractUsecase,
+    RejectContractUsecase,
+    GetContractsForDownloadUsecase,
+    DeleteContractUsecase,
+    GetVolunteerContractHistoryUsecase,
+    GetVolunteerPendingContractsUsecase,
+    CancelContractUsecase,
+    GetTeoStatisticsUsecase,
   ],
 })
 export class UseCaseModule {}

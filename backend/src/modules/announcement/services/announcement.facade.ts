@@ -27,6 +27,12 @@ export class AnnouncementFacade {
     return this.announcementRepository.findMany(findOptions);
   }
 
+  public async findManyByRegularUser(
+    findOptions: FindManyAnnouncementOptions,
+  ): Promise<Pagination<IAnnouncementModel>> {
+    return this.announcementRepository.findManyByRegularUser(findOptions);
+  }
+
   public async create(
     newAnouncement: CreateAnnouncementOptions,
   ): Promise<IAnnouncementModel> {

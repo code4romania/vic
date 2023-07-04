@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
-  CreateActivityLogByAdminOptions,
+  CreateActivityLogOptions,
   FindActivityLogCountOptions,
   FindManyActivityLogCounterOptions,
   FindManyActivityLogsOptions,
@@ -18,9 +18,7 @@ export class ActivityLogFacade {
     private readonly activityLogRepository: ActivityLogRepositoryService,
   ) {}
 
-  async create(
-    newLog: CreateActivityLogByAdminOptions,
-  ): Promise<IActivityLogModel> {
+  async create(newLog: CreateActivityLogOptions): Promise<IActivityLogModel> {
     return this.activityLogRepository.create(newLog);
   }
 
@@ -51,5 +49,9 @@ export class ActivityLogFacade {
     countOptions: FindActivityLogCountOptions,
   ): Promise<number> {
     return this.activityLogRepository.countActivityLogs(countOptions);
+  }
+
+  async delete(id: string): Promise<string> {
+    return this.activityLogRepository.delete(id);
   }
 }

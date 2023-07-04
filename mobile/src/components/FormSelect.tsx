@@ -46,6 +46,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
   placeholder,
   error,
   required,
+  disabled,
   ...rest
 }: FormSelectProps) => {
   const styles = useStyleSheet(themedStyles);
@@ -68,24 +69,27 @@ const FormSelect: React.FC<FormSelectProps> = ({
           }
 
           return (
-            <Select
-              placeholder={renderPlaceholder(placeholder, styles)}
-              status={error ? 'danger' : 'basic'}
-              value={value}
-              onSelect={(selectedItem: IndexPath | IndexPath[]) => {
-                onChange(options[(selectedItem as IndexPath).row].key);
-              }}
-              style={styles.select}
-              onBlur={onBlur}
-              {...rest}
-            >
-              {options.map((option) => (
-                <SelectItem key={option.key} title={option.label} />
-              ))}
-            </Select>
+            <View style={styles.controlContainer}>
+              <Select
+                placeholder={renderPlaceholder(placeholder, styles)}
+                status={error ? 'danger' : 'basic'}
+                value={value}
+                onSelect={(selectedItem: IndexPath | IndexPath[]) => {
+                  onChange(options[(selectedItem as IndexPath).row].key);
+                }}
+                style={styles.select}
+                disabled={disabled}
+                onBlur={onBlur}
+                {...rest}
+              >
+                {options.map((option) => (
+                  <SelectItem key={option.key} title={option.label} />
+                ))}
+              </Select>
+              {disabled && <View style={styles.disabled} />}
+            </View>
           );
         }}
-        defaultValue=""
       />
       {error && (
         <Text category="c1" status={error ? 'danger' : 'basic'}>
@@ -112,5 +116,13 @@ const themedStyles = StyleService.create({
     shadowRadius: 1,
     elevation: 1,
     borderRadius: 6,
+  },
+  controlContainer: { position: 'relative' },
+  disabled: {
+    height: '100%',
+    backgroundColor: '$cool-gray-500',
+    width: '100%',
+    position: 'absolute',
+    opacity: 0.1,
   },
 });

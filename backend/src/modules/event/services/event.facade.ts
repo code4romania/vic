@@ -11,9 +11,12 @@ import {
 import {
   CreateEventOptions,
   FindManyEventOptions,
+  FindMyEventsOptions,
   FindOneEventOptions,
+  FindOngoingAndFinishedEventOptions,
   IEventModel,
   IEventsListItemModel,
+  IEventsMobileListItemModel,
   UpdateEventOptions,
 } from '../models/event.model';
 import { EventRSVPRepository } from '../repositories/event-rsvp.repository';
@@ -79,5 +82,33 @@ export class EventFacade {
     findOptions: FindManyEventRSVPOptions,
   ): Promise<Pagination<IEventRSVPModel>> {
     return this.rsvpRepository.findMany(findOptions);
+  }
+
+  async findOpenEvents(
+    findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
+  ): Promise<Pagination<IEventsMobileListItemModel>> {
+    return this.eventRepository.findOpenEvents(findOptions);
+  }
+
+  async findMyOrganizationsEvents(
+    findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
+  ): Promise<Pagination<IEventsMobileListItemModel>> {
+    return this.eventRepository.findMyOrganizationsEvents(findOptions);
+  }
+
+  async findGoingEvents(
+    findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
+  ): Promise<Pagination<IEventsMobileListItemModel>> {
+    return this.eventRepository.findGoingEvents(findOptions);
+  }
+
+  async findOngoingAndFinishedEvents(
+    findOptions: FindOngoingAndFinishedEventOptions,
+  ): Promise<IEventModel[]> {
+    return this.eventRepository.findOngoingAndFinishedEvents(findOptions);
+  }
+
+  async countUpcomingEventsByUserId(userId: string): Promise<number> {
+    return this.eventRepository.countUpcomingEvents(userId);
   }
 }

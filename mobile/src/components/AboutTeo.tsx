@@ -3,34 +3,46 @@ import SectionWrapper from './SectionWrapper';
 import StatisticsCard from './StatisticsCard';
 //SVG
 import EllipseSvg from '../assets/svg/ellipse';
-import SunSvg from '../assets/svg/sun';
-import UserGroupSvg from '../assets/svg/user-group';
 import IconSvg from './IconSvg';
 import HorizontalCarousel from './HorizontalCarousel';
-import i18n from '../common/config/i18n';
+import { useTeoStatistics } from '../services/statistics/statistics.service';
+import { useTranslation } from 'react-i18next';
+import { Text } from '@ui-kitten/components';
 
 const AboutTeo = () => {
+  const { t } = useTranslation('general');
+
+  const {
+    isFetching: isLoadingStatistics,
+    data: statistics,
+    error: getTeoStatisticsError,
+  } = useTeoStatistics();
+
+  // add skeleton loading
+  if (isLoadingStatistics) {
+    return <></>;
+  }
+
   return (
-    <SectionWrapper
-      title={i18n.t('general:about_teo')}
-      icon={<IconSvg icon={EllipseSvg} size={20} />}
-    >
-      <HorizontalCarousel>
-        <StatisticsCard
-          icon={<IconSvg icon={SunSvg} size={56} />}
-          title="2500"
-          subtitle={i18n.t('general:active_volunteers')}
-          backgroundColor="turquoise-50"
-          onPress={() => console.log('statistic comp 1 pressed')}
-        />
-        <StatisticsCard
-          icon={<IconSvg icon={UserGroupSvg} size={56} />}
-          title="210"
-          subtitle={i18n.t('general:organizations').toLowerCase()}
-          backgroundColor="turquoise-50"
-          onPress={() => console.log('statistic comp 2 pressed')}
-        />
-      </HorizontalCarousel>
+    <SectionWrapper title={t('general:about_teo')} icon={<IconSvg icon={EllipseSvg} size={20} />}>
+      {getTeoStatisticsError ? (
+        <Text category="c1">{`${t('general:error.load_entries')}`}</Text>
+      ) : (
+        <HorizontalCarousel>
+          <StatisticsCard
+            icon="sun"
+            title={`${statistics?.numberOfActiveVolunteers}`}
+            subtitle={t('general:active_volunteers')}
+            backgroundColor="turquoise-50"
+          />
+          <StatisticsCard
+            icon="users"
+            title={`${statistics?.numberOfOrganizations}`}
+            subtitle={t('general:organizations').toLowerCase()}
+            backgroundColor="turquoise-50"
+          />
+        </HorizontalCarousel>
+      )}
     </SectionWrapper>
   );
 };

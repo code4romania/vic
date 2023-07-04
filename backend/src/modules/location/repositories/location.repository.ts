@@ -45,6 +45,9 @@ export class LocationRepositoryService implements ILocationRepository {
   async findCitiesByCountyId(countyId: number): Promise<ICityModel[]> {
     const cityEntities = await this.cityRepository.find({
       where: { countyId },
+      relations: {
+        county: true,
+      },
     });
     return cityEntities.map(CityTransformer.fromEntity);
   }

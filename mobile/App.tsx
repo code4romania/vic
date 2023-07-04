@@ -15,9 +15,10 @@ import { Amplify } from 'aws-amplify';
 import './src/common/config/i18n';
 import { AMPLIFY_CONFIG } from './src/common/config/amplify';
 import Toast from 'react-native-toast-message';
+import { toastConfig } from './src/common/config/toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { FeatherIconsPack } from './src/common/adapters/feather-icons.adapter';
-
+import * as SplashScreen from 'expo-splash-screen';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 
@@ -45,6 +46,8 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 export default () => {
   // // init fonts
@@ -74,9 +77,11 @@ export default () => {
       },
     ) as any;
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log(JSON.stringify(response));
-    }) as any;
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response: any) => {
+        console.log(JSON.stringify(response));
+      },
+    ) as any;
 
     return () => {
       Notifications.removeNotificationSubscription(
@@ -91,7 +96,7 @@ export default () => {
   return fontsLoaded ? (
     <>
       <IconRegistry icons={FeatherIconsPack} />
-      <ApplicationProvider {...eva} theme={{ ...theme }} customMapping={mapping}>
+      <ApplicationProvider {...eva} theme={{ ...theme } as any} customMapping={mapping}>
         {/* Add marginTop for android devices as SafeAreaView is iOS Only */}
         <SafeAreaView style={styles.container}>
           <QueryClientProvider client={queryClient}>
@@ -104,10 +109,10 @@ export default () => {
         </SafeAreaView>
         <ExpoStatusBar style="auto" />
       </ApplicationProvider>
-      <Toast />
+      <Toast config={toastConfig} />
     </>
   ) : (
-    <View></View>
+    <View />
   );
 };
 

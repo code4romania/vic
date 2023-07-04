@@ -1,4 +1,88 @@
 {
+  "general": {
+    "yes": "Da",
+    "no": "Nu",
+    "download_table": "Descarca tabel",
+    "created_by": "Creat de",
+    "user": "Utilizator",
+    "close": "Inchide",
+    "name": "Nume",
+    "people": "Persoane",
+    "contract": "Contract",
+    "age": "Vârsta",
+    "hours": "Ore",
+    "daily": "Zilnic",
+    "monthly": "Lunar",
+    "yearly": "Anual",
+    "date": "Data",
+    "target": "Target",
+    "answers": "Răspunsuri",
+    "answer": "Răspuns",
+    "created_on": "Data crearii",
+    "all_organization": "Toata organizatia",
+    "event": "Eveniment",
+    "add": "Adaugă {{item}}",
+    "category": "Categorie",
+    "select": "Selectează {{item}}",
+    "download": "Descarcă {{item}}",
+    "choose": "Alege {{item}}",
+    "image": "Imagine",
+    "reason": "Motiv",
+    "task": "Task",
+    "unspecified": "Nespecificat",
+    "activity": "Activitate",
+    "address": "Adresa",
+    "activity_area": "Arie de desfasurare a activitatii",
+    "status": "Status",
+    "empty_table": "Nu exista informatii de afisat",
+    "view": "Vizualizeaza",
+    "edit": "Editează {{item}}",
+    "block": "Blochează {{item}}",
+    "archive": "Arhivează {{item}}",
+    "delete": "Sterge",
+    "location": "Locatie",
+    "back": "Inapoi",
+    "send": "Trimite",
+    "reject": "Respinge",
+    "templates": "Template-uri",
+    "approve": "Aprobă",
+    "save_changes": "Salveaza modificari",
+    "save": "Salvează",
+    "description": "Descriere",
+    "required": "Campul este obligatoriu",
+    "contracts": "Contracte",
+    "anytime": "Oricand",
+    "contact": "Date contact",
+    "error": {
+      "load_entries": "Eroare la incarcarea datelor",
+      "unknown": "A aparut o eroare necunoscuta",
+      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
+    },
+    "cancel": "Anuleaza",
+    "years_old": "{{age}} ani",
+    "sex": "Sex {{sex_type}}",
+    "male": "Barbatesc",
+    "female": "Feminin",
+    "phone": "Telefon",
+    "email": "Email de contact",
+    "availability": "Valabilitate",
+    "uses": "Utilizari",
+    "confirm_delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
+    "invalid_date": "Va rugam sa introduceti o data",
+    "unlimited": "nelimitat",
+    "search": "Cauta...",
+    "publish": "Publica",
+    "filters": {
+      "show": "Filtre",
+      "reset": "Reseteaza filtre",
+      "hide": "Ascunde filtre"
+    },
+    "select_interval": "Selecteaza interval",
+    "save_draft": "Salveaza ca draft",
+    "other": "Alta optiune",
+    "add_file": "Adauga fisier aici",
+    "confirm": "Confirma"
+  },
   "header": {
     "login": "Login",
     "menu": {
@@ -10,8 +94,852 @@
   },
   "side_menu": {
     "options": {
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "organization": "Structura ONG",
+      "volunteers": "Voluntari",
+      "events": "Evenimente",
+      "volunteers_list": "Listă voluntari",
+      "access_requests": "Cereri de înscriere",
+      "access_codes": "Coduri de acces",
+      "documents": "Documente",
+      "announcements": "Anunturi",
+      "activity_types": "Categorii activitati",
+      "activity_log": "Ore de voluntariat",
+      "actions_archive": "Arhivă acțiuni"
     },
     "collapse": "Restrange meniul"
+  },
+  "volunteer": {
+    "all": "Toti voluntarii",
+    "title": "Vizualizare profil",
+    "card_title": "Informatii voluntar",
+    "name": "Voluntar {{status}}",
+    "volunteer_from": "Adaugat in TEO la",
+    "status": {
+      "active": "activ",
+      "archived": "arhivat",
+      "blocked": "blocat"
+    },
+    "registration": {
+      "title": "Cerere de inscriere",
+      "edit_status": "Această cerere de înscriere necesită aprobare",
+      "form": "Formular inscriere",
+      "answer": "Raspunsul voluntarului",
+      "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
+      "found_location": "De unde ai aflat de organizatie?",
+      "motivation": "Ce te motiveaza sa fii voluntar?",
+      "confirmation_message": "Cererea de inscriere a fost {{option}}",
+      "referral": {
+        "social": "Rețelele de socializare",
+        "teo": "Din aplicația TEO",
+        "friend": "De la un coleg sau prieten",
+        "event": "Dintr-un eveniment",
+        "other": "Altă opţiune"
+      },
+      "confirmation_options": {
+        "approved": "aprobata",
+        "deleted": "stearsa",
+        "rejected": "respinsa"
+      }
+    },
+    "errors": {
+      "VOL_001": "Nu s-a putut incarca cererea voluntarului"
+    },
+    "form": {
+      "name": {
+        "label": "Nume voluntar*"
+      },
+      "email": {
+        "label": "Email de contact*",
+        "max": "Emailul trebuie sa aibe maxim 75 de caractere",
+        "required": "Email-ul de contact este obligatoriu",
+        "pattern": "Emailul trebuie sa aiba un format valid"
+      },
+      "branch": {
+        "label": "Filiala sau sucursala"
+      },
+      "department": {
+        "label": "Departament"
+      },
+      "role": {
+        "label": "Rol"
+      },
+      "started_on": {
+        "label": "Voluntar din"
+      },
+      "submit": {
+        "edit": "Datele voluntarului au fost modificate"
+      }
+    }
+  },
+  "volunteers": {
+    "department_and_role": "Departament si rol",
+    "location": "Locatie voluntar",
+    "archived_on": "Arhivat din",
+    "blocked_on": "Data blocarii",
+    "tabs": {
+      "active": "Voluntari activi",
+      "archived": "Voluntari arhivati",
+      "blocked": "Voluntari blocati"
+    },
+    "filters": {
+      "active_since_range": "Perioada activitate"
+    },
+    "popover": {
+      "view": "Vizualizează profil",
+      "archive": "Arhivează voluntar",
+      "activate": "Reactivează voluntar",
+      "delete": "Sterge din ONG",
+      "block": "Blochează voluntar"
+    },
+    "modal": {
+      "block": {
+        "title": "Esti sigur ca doresti blocarea acestui voluntar?",
+        "description": "Această acțiune va bloca definitiv acest voluntar"
+      }
+    },
+    "submit": {
+      "archive": "Voluntarul a fost arhivat",
+      "activate": "Voluntarul a fost actiat",
+      "block": "Voluntarul a fost blocat"
+    },
+    "errors": {
+      "VOLUNTEER_001": "Voluntarul nu a fost gasit",
+      "VOLUNTEER_002": "Utilizatorul este deja parte din organizatie",
+      "VOLUNTEER_003": "Doar voluntarii activi pot fi arhivati",
+      "VOLUNTEER_004": "Doar voluntarii arhivati poti reactivati",
+      "VOLUNTEER_PROFILE_001": "Voluntarul are deja un profil",
+      "VOLUNTEER_PROFILE_002": "Rol/Departament/Filiala eronate",
+      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil pentru a fi updatat. Creaza unul inainte de a face modificarile."
+    },
+    "download": "Voluntari.xlsx"
+  },
+  "division": {
+    "members": "Membri",
+    "entity": {
+      "branch": "Filială",
+      "role": "Rol",
+      "department": "Departament"
+    },
+    "table": {
+      "title": {
+        "branch": "Filiale si sucursale",
+        "department": "Departamente",
+        "role": "Roluri"
+      }
+    },
+    "modal": {
+      "delete": {
+        "title": "Sterge {{division}}"
+      }
+    },
+    "submit": {
+      "success": {
+        "branch": {
+          "add": "Filiala a fost adaugata",
+          "edit": "Filiala actualizata",
+          "delete": "Filiala a fost stearsa"
+        },
+        "department": {
+          "add": "Departamanetul a fost adaugat",
+          "edit": "Departamanetul a fost actualizat",
+          "delete": "Departamentul a fost stears"
+        },
+        "role": {
+          "add": "Rolul a fost adaugat",
+          "edit": "Rolul a fost actualizat",
+          "delete": "Rolul a fost stears"
+        }
+      }
+    },
+    "form": {
+      "name": {
+        "required": "Numele este obligatoriu",
+        "min": "Numele poate sa aiba minim {{value}} caractere",
+        "max": "Numele poate sa aiba maxim {{value}} caractere",
+        "pattern": "Numele are un format invalid"
+      }
+    },
+    "errors": {
+      "delete": "Eroare la stergerea {{division}}",
+      "ORGANIZATION_STRUCTURE_001": "Nu exista structura organizationala cu acest nume",
+      "ORGANIZATION_STRUCTURE_002": "Exista deja o structura organizationala cu acest nume"
+    },
+    "popover": {
+      "view": "Vizualizeaza lista membri",
+      "edit": "Editeaza denumire"
+    }
+  },
+  "organization": {
+    "title": {
+      "view": "Profil organizație",
+      "edit": "Editare profil",
+      "card": "Editează profil organizație"
+    },
+    "subtitle": "Datele sunt preluate din ONGHub.",
+    "logo": "Logo organizație",
+    "name": "Denumire organizație",
+    "description": "Descriere organizație",
+    "teo_description": "Descrierea organizatiei in TEO",
+    "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poti alege sa formulezi o descriere specifica pentru aplicatia TEO, prin care sa atragi cat mai multi voluntari, sau sa folosesti descrierea organizatiei asa cum se regaseste in ONGHub.",
+    "errors": {
+      "ORG_001": "Organizatia nu a fost gasita",
+      "no_data": "Nu s-au putut incarca datele organizatiei"
+    },
+    "form": {
+      "description": {
+        "required": "Descrierea este obligatorie",
+        "min": "Descrierea poate sa aiba minim {{value}} caractere",
+        "max": "Descrierea poate sa aiba maxim {{value}} caractere"
+      }
+    },
+    "submit": {
+      "success": "Descrierea organizatiei a fost actualizata"
+    }
+  },
+  "pagination": {
+    "rows_per_page": "Randuri pe pagina",
+    "range_separator_text": "din"
+  },
+  "access_requests": {
+    "date": "Data cerere acces",
+    "rejected_date": "Data respingere",
+    "rejected_message": "Această cerere de înscriere a fost respinsă la {{date}}",
+    "tabs": {
+      "requests": "Cereri",
+      "rejected_requests": "Cereri respinse"
+    },
+    "filters": {
+      "access_request_range": "Perioada cerere access",
+      "access_request_rejected_range": "Perioada respingere"
+    },
+    "popover": {
+      "view": "Vizualizeaza aplicare",
+      "approve": "Aprobă cerere",
+      "reject": "Respinge cerere",
+      "delete": "Sterge din listă"
+    },
+    "errors": {
+      "no_data": "Nu s-au putut incarca cererile de inscriere",
+      "ACCESS_REQUEST_001": "Exista deja o cerere pentru organization dumneavoastra",
+      "ACCESS_REQUEST_002": "Cererea nu a fost gasita",
+      "ACCESS_REQUEST_003": "Cererea trebuie sa fie respinsa pentru a putea fi stearsa",
+      "ACCESS_REQUEST_004": "Cererea nu este in starea potrivita"
+    },
+    "confirmation_modal": {
+      "title": "Sigur doriți să ștergeți această solicitare de înregistrare?",
+      "description": "Această acțiune va șterge definitiv această solicitare și toate informațiile asociate acesteia",
+      "button_label": "Sterge solicitarea"
+    },
+    "download": "Cereri-Acces.xlsx"
+  },
+  "access_code": {
+    "name": "Cod acces",
+    "create": "Creeaza cod nou",
+    "title": "Informatii cod acces",
+    "description": "Introduceti un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alatura organizatiei ca voluntar, fara a fi necesar sa aprobati cererea manual.",
+    "start_date": "Data inceput valabilitate*",
+    "end_date": "Data final valabilitate",
+    "modal": {
+      "title": "Sigur doriți ștergerea acestui cod?",
+      "description": "Această acțiune va șterge definitiv acest cod de acces și toate informațiile asociate acestuia",
+      "delete": "Codul de access a fost sters cu succes"
+    },
+    "form": {
+      "code": {
+        "required": "Codul este obligatoriu",
+        "min": "Codul poate sa aiba minim {{value}} caractere",
+        "max": "Codul poate sa aiba maxim {{value}} caractere",
+        "pattern": "Codul are un format invalid"
+      },
+      "start_date": {
+        "required": "Data de inceput este obligatorie"
+      }
+    },
+    "submit": {
+      "success": {
+        "add": "Codul de acces a fost creat",
+        "edit": "Codul de acces a fost modificat"
+      }
+    },
+    "errors": {
+      "ACCESS_CODE_001": "Nu exista cod de acces cu acest nume",
+      "ACCESS_CODE_002": "Exista deja un cod de acces cu acest nume"
+    }
+  },
+  "reject_modal": {
+    "title": "Argumentează refuzul",
+    "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
+    "send": "Trimite fără mesaj",
+    "form": {
+      "required": "Mesajul este obligatoriu",
+      "max": "Mesajul trebuie sa aiba maxim 225 de caractere",
+      "min": "Mesajul trebuie sa aiba minim 50 caractere",
+      "error": "Refuzarea cererii a esuat"
+    }
+  },
+  "activity_types": {
+    "info": "Categoria a fost arhivată",
+    "form": {
+      "name": {
+        "label": "Denumire tip activitate*",
+        "required": "Denumirea este obligatorie",
+        "min": "Denumirea poate sa aiba minim {{value}} caractere",
+        "max": "Denumirea poate sa aiba maxim {{value}} caractere",
+        "placeholder": "Denumire"
+      },
+      "submit": {
+        "add": "Categorie adaugata cu success",
+        "update": "Categoria a fost modificata",
+        "activate": "Categoria a fost activata",
+        "archive": "Categoria a fost arhivata"
+      }
+    },
+    "actions": {
+      "activate": "Activeaza categorie",
+      "archive": "Arhiveaza categorie"
+    },
+    "errors": {
+      "ACTIVITY_TYPE_001": "Categoria nu a fost gasita",
+      "ACTIVITY_TYPE_002": "Exista deja o categorie cu aceste date pentru organizatia dumneavoastra",
+      "ACTIVITY_TYPE_003": "Categoria nu este in statusul potrivit",
+      "ACTIVITY_TYPE_004": "Nu s-a putut creea categoria"
+    }
+  },
+  "events": {
+    "past_events": "Evenimente încheiate",
+    "status": "Status afisare",
+    "hours": "Ore raportate",
+    "participate": "Participă",
+    "not_participate": "Nu participă",
+    "details": "Detalii eveniment",
+    "volunteer": "Voluntar in organizatie",
+    "responses_list": "Lista raspunsuri",
+    "observation": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi.",
+    "draft": {
+      "subtitle": "Evenimentul nu este publicat (draft)",
+      "description": "Ai salvat ca draft evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+    },
+    "published": {
+      "subtitle": "Evenimentul este publicat",
+      "description": "Ai publicat evenimentul, deci voluntarii il pot vizualiza in aplicatia mobila. "
+    },
+    "archived": {
+      "subtitle": "Evenimentul este arhivat",
+      "description": "Ai arhivat evenimentul, deci voluntarii nu il mai pot vizualiza in aplicatia mobila. "
+    },
+    "popover": {
+      "view": "Vizualizează detalii",
+      "publish": "Publica",
+      "archive": "Arhiveaza eveniment",
+      "delete": "Sterge eveniment"
+    },
+    "display_status": {
+      "draft": "Draft",
+      "published": "Publicat",
+      "archived": "Arhivat"
+    },
+    "modal": {
+      "title": "Sigur doriți ștergerea acestui eveniment?",
+      "description": "Această acțiune va șterge definitiv acest eveniment și toate informațiile asociate acestuia",
+      "description_name": "Această acțiune va șterge definitiv evenimentul '{{name}}' și toate informațiile asociate acestuia",
+      "delete": "Evenimentul a fost sters cu succes"
+    },
+    "form": {
+      "name": { "label": "Denumire eveniment" },
+      "start_date": { "label": "Data inceput" },
+      "end_date": { "label": "Data final" },
+      "submit": {
+        "published": "Evenimentul a fost publicat cu succes",
+        "draft": "Evenimentul a fost salvat ca draft cu succes",
+        "edit": "Evenimentul a fost modificat cu succes",
+        "archived": "Evenimentul a fost arhivat cu succes"
+      },
+      "location": {
+        "label": "Locatie",
+        "min": "Locatia poate sa aiba minim {{value}} caractere",
+        "max": "Locatia poate sa aiba maxim {{value}} caractere"
+      },
+      "target": {
+        "label": "Target",
+        "public": "Eveniment public",
+        "all": "Toata organizatia",
+        "placeholder": "Alege toate variantele care se aplica",
+        "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata",
+        "required": "Departamentele sunt obligatorii"
+      },
+      "description": { "label": "Descriere eveniment" },
+      "logo": {
+        "label": "Imagine eveniment",
+        "required": "Imaginea evenimentului este obligatorie"
+      },
+      "noting": {
+        "label": "Înscriere eveniment",
+        "simple": "Simplă (fără mențiuni)",
+        "mention": "Cu mențiune",
+        "description": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi."
+      },
+      "mention": {
+        "label": "Mențiune",
+        "description": "Adresează o intrebare voluntarilor.",
+        "empty": "Nicio mentiune.",
+        "required": "Mentiunea este obligatorie",
+        "min": "Mentiunea poate sa aiba minim {{value}} caractere",
+        "max": "Mentiunea poate sa aiba maxim {{value}} caractere"
+      },
+      "task": {
+        "title": "Taskuri asociate evenimentului",
+        "description": "Alege taskurile specifice din lista organizatiei.",
+        "label": "Alege taskuri",
+        "tasks": "Taskuri",
+        "required": "Alegerea taskurilor este obligatorie.",
+        "helper": "Lorem ipsum. Alege din lista"
+      },
+      "observation": {
+        "title": "Observație (vizibil doar pentru administrator)",
+        "description": "Notează informații despre eveniment dacă este cazul, vizibile doar pentru tine.",
+        "label": "Observație",
+        "min": "Observația poate sa aiba minim {{value}} caractere",
+        "max": "Observația poate sa aiba maxim {{value}} caractere"
+      }
+    },
+    "errors": {
+      "EVENT_001": "Evenimentul nu a fost gasit",
+      "EVENT_002": "Departamentele target nu au fost gasite",
+      "EVENT_003": "Task-urile nu sunt corecte",
+      "EVENT_004": "Nu putem modifica target audience pentru evenimentele publicate",
+      "EVENT_005": "Doar evenimentele DRAFT sau ARHIVATE pot fi publicate",
+      "EVENT_006": "Doar evenimentele publicate pot fi arhivate",
+      "EVENT_007": "Aceste eveniment are ore de voluntariat inregistrate si nu poate fi sters!",
+      "EVENT_008": "Eroare la incarcarea posterului!",
+      "EVENT_009": "Eroare la stergerea posterului"
+    },
+    "download_open": "Evenimente active.xlsx",
+    "download_past": "Evenimente incheiate.xlsx",
+    "download_rsvp": "Lista raspunsuri.xlsx"
+  },
+  "announcement": {
+    "title": "Istoric anunturi",
+    "name": "anunt",
+    "header": {
+      "name": "Titlu anunt",
+      "updated_on": "Editat la",
+      "status": "Status afisare",
+      "published_on": "Publicat la",
+      "target": "Target"
+    },
+    "all_organization": "Toata organizatia",
+    "status": {
+      "draft": "Draft",
+      "published": "Publicat"
+    },
+    "form": {
+      "title": "Anunt",
+      "name": {
+        "required": "Numele anuntului este obligatoriu",
+        "min": "Numele anuntului poate sa aiba minim {{value}} caractere",
+        "max": "Numele anuntului poate sa aiba maxim {{value}} caractere",
+        "placeholder": "Introdu titlul anuntului"
+      },
+      "description": {
+        "label": "Continut anunt",
+        "required": "Descrierea anuntului este obligatorie",
+        "min": "Descrierea poate sa aiba minim {{value}} caractere",
+        "max": "Descrierea anuntului poate sa aiba maxim {{value}} caractere",
+        "placeholder": "Introdu continutul anuntului"
+      },
+      "target": {
+        "label": "Target",
+        "placeholder": "Alege toate variantele care se aplica",
+        "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata"
+      }
+    },
+    "submit": {
+      "messages": {
+        "draft": "Anunt draft creat cu succes",
+        "publish": "Anunt creat si publicat cu succes",
+        "delete": "Anunt sters cu succes"
+      }
+    },
+    "modal": {
+      "title": "Esti sigur ca doresti stergerea anuntului?",
+      "description": "Aceasta actiune va sterge definitiv acest anunt si toate informatiile asociate lui."
+    },
+    "error": {
+      "ANNOUNCEMENT_001": "Anuntul nu a fost gasit",
+      "ANNOUNCEMENT_002": "Anuntul este deja publicat si nu poate fi modificat",
+      "ANNOUNCEMENT_003": "Selectie departament incorecta, doar departamentele pot fi alese ca target"
+    }
+  },
+  "activity_log": {
+    "pending": "Solicitări de aprobare",
+    "pending_header": "{{hours}} ore în curs de aprobare",
+    "past": "Istoric ore de voluntariat",
+    "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
+    "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+    "add": "Adauga ore",
+    "header": {
+      "task": "Task",
+      "execution_date": "Data efectuării",
+      "registration_date": "Data inregistrarii"
+    },
+    "display_status": {
+      "rejected": "Respins",
+      "approved": "Aprobat",
+      "pending": "Pending"
+    },
+    "status": "Status aprobare",
+    "popover": {
+      "view": "Fișă de activitate"
+    },
+    "filters": {
+      "execution": "Perioada efectuare task",
+      "registration": "Perioada inregistrare",
+      "approved_rejected": "Aprobat/Resprins de"
+    },
+    "modal": {
+      "title": "Argumentează respingere",
+      "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
+      "reject": "Respinge fără mesaj "
+    },
+    "side_panel": {
+      "reject": "Muta in respinse",
+      "approve": "Muta in aprobate",
+      "hours": "Număr ore",
+      "title": "Fișă de activitate",
+      "event": "În cadrul evenimentului",
+      "created_by": "Înregistrat de",
+      "registration_date": "Dată înregistrare ore",
+      "approved_by": "Aprobat de",
+      "approve_date": "Dată aprobare ore",
+      "rejected_by": "Respins de",
+      "reject_date": "Dată respingere ore",
+      "reject_reason": "Motiv respingere",
+      "mention": "Mentiune"
+    },
+    "form": {
+      "description": "Alege evenimentul pentru care dorești să adaugi ore de voluntariat",
+      "volunteer": {
+        "required": "Alegerea voluntarului este obligatorie"
+      },
+      "task": {
+        "required": "Alegerea taskului este obligatorie"
+      },
+      "date": {
+        "required": "Data este obligatorie"
+      },
+      "hours": {
+        "required": "Numarul de ore este obligatoriu",
+        "min": "Numarul de ore trebuie sa fie mai mare ca 0",
+        "max": "Numarul de ore trebuie sa fie mai mic ca {{value}}",
+        "integer": "Numarul de ore trebuie sa fie intreg"
+      },
+      "submit": {
+        "messages": {
+          "add": "Orele de voluntariat au fost adaugate cu succes",
+          "edit": "Datele privind orele de voluntariat au fost modificate cu succes",
+          "approve": "Orele de voluntariat au fost aprobate",
+          "reject": "Orele de voluntariat au fost respinse"
+        }
+      }
+    },
+    "errors": {
+      "no_data": "Nu s-au putut incarca orele de voluntariat",
+      "ACTIVITY_LOG_001": "Activitatea nu a fost gasita!",
+      "ACTIVITY_LOG_002": "Voluntarul trebuie sa aiba profil pentru a loga ore",
+      "ACTIVITY_LOG_003": "Nu se poat face modificari pe request-uri in status-ul Aprobat sau Respins"
+    },
+    "download_file_name": "Istoric ore de voluntariat.xlsx"
+  },
+  "actions_archive": {
+    "card_title": "Istoric acțiuni",
+    "area": "Tip Actiune",
+    "author": "Autor",
+    "filters": {
+      "execution": "Perioada efectuare actiune"
+    },
+    "UPDATE_ORGANIZATION_PROFILE": {
+      "label": "Update Organization Profile",
+      "description": "Descrierea organizatiei <inlineLink>{{organizationName}}</inlineLink> a fost modificata."
+    },
+    "CREATE_ORGANIZATION_STRUCTURE": {
+      "label": "Create Organization Structure",
+      "branch": "A fost creata filiala cu numele <inlineLink>{{organizationStructureName}}</inlineLink>.",
+      "department": "A fost creat departamentul cu numele <inlineLink>{{organizationStructureName}}</inlineLink>.",
+      "role": "A fost creat rolul cu numele <inlineLink>{{organizationStructureName}}</inlineLink>."
+    },
+    "UPDATE_ORGANIZATION_STRUCTURE": {
+      "label": "Update Organization Structure",
+      "branch": "A fost modificat numele filialei din {{organizationStructureNameInitial}} in <inlineLink>{{organizationStructureNameFinal}}</inlineLink>.",
+      "department": "A fost modificat numele departamentului din {{organizationStructureNameInitial}} in <inlineLink>{{organizationStructureNameFinal}}</inlineLink>.",
+      "role": "A fost modificat numele rolului din {{organizationStructureNameInitial}} in <inlineLink>{{organizationStructureNameFinal}}</inlineLink>."
+    },
+    "DELETE_ORGANIZATION_STRUCTURE": {
+      "label": "Delete Organization Structure",
+      "branch": "Filiala cu numele {{organizationStructureName}} a fost stearsa.",
+      "department": "Departamentul cu numele {{organizationStructureName}} a fost sters.",
+      "role": "Rolul cu numele {{organizationStructureName}} a fost sters."
+    },
+    "APPROVE_ACCESS_REQUEST": {
+      "label": "Approve Access Request",
+      "description": "Cererea de acces pentru voluntarul <inlineLink>{{userName}}</inlineLink> a fost aprobata."
+    },
+    "REJECT_ACCESS_REQUEST": {
+      "label": "Reject Access Request",
+      "description": "Cererea de acces pentru voluntarul <inlineLink>{{userName}}</inlineLink> a fost respinsa."
+    },
+    "DELETE_ACCESS_REQUEST": {
+      "label": "Delete Access Request",
+      "description": "Cererea de acces pentru voluntarul <inlineLink>{{userName}}</inlineLink> a fost stearsa."
+    },
+    "CHANGE_VOLUNTEER_STATUS": {
+      "label": "Change Volunteer Status",
+      "description": "Statusul pentru voluntarul <inlineLink>{{volunteerName}}</inlineLink> a fost schimbat din {{oldStatus}} in {{newStatus}}."
+    },
+    "UPDATE_VOLUNTEER_PROFILE": {
+      "label": "Update Volunteer Profile",
+      "description": "Profilul voluntarului <inlineLink>{{volunteerName}}</inlineLink> a fost modificat."
+    },
+    "REGISTER_ACTIVITY_LOG": {
+      "label": "Register Activity Log",
+      "description": "Voluntarul <inlineLink>{{volunteerName}}</inlineLink> a logat ore de voluntariat."
+    },
+    "CHANGE_ACTIVITY_LOG_STATUS": {
+      "label": "Change Activity Log Status",
+      "rejected": "Orele de volunatriat pentru <inlineLink>{{volunteerName}}</inlineLink> au fost respinse",
+      "approved": "Orele de volunatriat pentru <inlineLink>{{volunteerName}}</inlineLink> au fost aprobate"
+    },
+    "CREATE_ACTIVITY_TYPE": {
+      "label": "Create Activity Type",
+      "description": "Categoria de activitate <inlineLink>{{activityTypeName}}</inlineLink> a fost creata."
+    },
+    "UPDATE_ACTIVITY_TYPE": {
+      "label": "Update Activity Type",
+      "description": "Categoria de activitate <inlineLink>{{activityTypeName}}</inlineLink> a fost modificata."
+    },
+    "CHANGE_ACTIVITY_TYPE_STATUS": {
+      "label": "Change Activity Type Status",
+      "description": "Statusul categoriei de activitate <inlineLink>{{activityTypeName}}</inlineLink> a fost schimbat din {{oldStatus}} in {{newStatus}}."
+    },
+    "CREATE_EVENT": {
+      "label": "Create Event",
+      "description": "Evenimentul <inlineLink>{{eventName}}</inlineLink> a fost creat."
+    },
+    "UPDATE_EVENT": {
+      "label": "Update Event",
+      "description": "Evenimentul <inlineLink>{{eventName}}</inlineLink> a fost modificat."
+    },
+    "DELETE_EVENT": {
+      "label": "Delete Event",
+      "description": "Evenimentul {{eventName}} a fost sters."
+    },
+    "CHANGE_EVENT_STATUS": {
+      "label": "Change Event Status",
+      "description": "Statusul evenimentului pentru <inlineLink>{{eventName}}</inlineLink> a fost schimbat din {{oldStatus}} in {{newStatus}}."
+    },
+    "CREATE_ANNOUNCEMENT": {
+      "label": "Create Announcement",
+      "description": "Anuntul <inlineLink>{{announcementTitle}}</inlineLink> a fost creat."
+    },
+    "DELETE_ANNOUNCEMENT": {
+      "label": "Delete Announcement",
+      "description": "Anuntul {{announcementTitle}} a fost sters."
+    },
+    "PUBLISH_ANNOUNCEMENT": {
+      "label": "Publish Announcement",
+      "description": "Anuntul <inlineLink>{{announcementTitle}}</inlineLink> a fost publicat."
+    }
+  },
+  "dashboard": {
+    "statistics_card": {
+      "activity_log": {
+        "label": "Vezi ore care asteapta aprobare",
+        "info": "{{value}} ore in asteptare"
+      },
+      "volunteer": { "label": "Vezi solicitari", "info": "{{value}} solicitari de inscriere" }
+    },
+    "line_chart": {
+      "title": "Număr voluntari"
+    },
+    "pie_chart": {
+      "title": "Statistici voluntari organizatie"
+    }
+  },
+  "documents": {
+    "title": "Contracte de voluntariat",
+    "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+    "templates": {
+      "table": {
+        "header": {
+          "name": "Denumire",
+          "uses": "Utilizari"
+        }
+      },
+      "actions": {
+        "add": "Adauga template",
+        "delete": {
+          "modal": {
+            "title": "Sigur doriți să ștergeți acest template?",
+            "content": "Această acțiune va șterge definitiv template-ul și toate informațiile asociate acestuia.",
+            "action": "Sterge template-ul"
+          },
+          "success": "Template-ul a fost sters!",
+          "errors": {
+            "TEMPLATE_003": "Eroare la stergerea template-ului!"
+          }
+        }
+      },
+      "download": "Templates.xlsx"
+    },
+    "template": {
+      "add": {
+        "heading": "Adauga template",
+        "card_header": "Template contract",
+        "form": {
+          "name": {
+            "label": "Denumire template",
+            "placeholder": "Contract 2023",
+            "required": "Denumirea este obligatorie",
+            "min": "Denumirea poate sa aiba minim {{value}} caractere",
+            "max": "Denumirea poate sa aiba maxim {{value}} caractere"
+          },
+          "contract": {
+            "label": "Încarcă document",
+            "required": "Contractul este obligatoriu",
+            "format": "Template-ul trebuie sa aiba extensia .pdf sau .doc"
+          },
+          "submit": {
+            "success": "Template-ul a fost creat!",
+            "errors": {
+              "TEMPLATE_001": "Eroare la incarcarea documentului"
+            }
+          }
+        }
+      },
+      "edit": {
+        "heading": "Editeaza template",
+        "card_header": "Template contract",
+        "form": {
+          "submit": {
+            "success": "Template-ul a fost updatat!",
+            "errors": {
+              "TEMPLATE_001": "Eroare la incarcarea documentului",
+              "TEMPLATE_002": "Template-ul nu a fost gasit"
+            }
+          }
+        }
+      }
+    },
+    "contracts": {
+      "statistics": {
+        "title": "Contracte in curs de validare",
+        "action": "Vezi lista",
+        "total": "{{total}} contracte"
+      },
+      "filters": {
+        "start_date": "Data inceput perioada contract",
+        "end_date": "Data sfarsit perioada contract",
+        "status": "Status contract"
+      },
+      "actions": {
+        "download": "Descarca aprobate",
+        "add": "Genereaza contract"
+      },
+      "headers": {
+        "contract_number": "Numar contract",
+        "volunteer": "Voluntar",
+        "status": "Status",
+        "start_date": "Data inceput",
+        "end_date": "Data final"
+      },
+      "download": "Contracts.xlsx"
+    },
+    "contract": {
+      "add": {
+        "form": {
+          "volunteer": {
+            "label": "Voluntar*",
+            "required": "Alegerea voluntarului este obligatorie"
+          },
+          "template": {
+            "label": "Template*",
+            "required": "Alegerea template-ului este obligatorie"
+          },
+          "contract_number": {
+            "label": "Numar contract*",
+            "required": "Numarul este obligatoriu",
+            "max": "Numarul trebuie sa aiba maxim 9 caractere"
+          },
+          "start_date": {
+            "label": "Data inceput contract*",
+            "required": "Data de inceput este obligatorie"
+          },
+          "end_date": {
+            "label": "Data final contract*",
+            "required": "Data de final este obligatorie"
+          }
+        },
+        "submit": {
+          "label": "Trimite catre voluntar",
+          "success": "Contractul a fost generat",
+          "errors": {
+            "CONTRACT_004": "Exista deja un contract cu acest numar pentru organizatia dumneavoastra!",
+            "CONTRACT_005": "Voluntarul are deja un contract in perioada respectiva"
+          }
+        }
+      },
+      "status": {
+        "PENDING_VOLUNTEER": "Validare voluntar",
+        "PENDING_ADMIN": "Validare admin",
+        "REJECTED": "Respins",
+        "ACTIVE": "Activ",
+        "CLOSED": "Inchis",
+        "NOT_STARTED": "Neinceput"
+      },
+      "period": "Perioada contract",
+      "signed": "Semnat fizic",
+      "template": "Template utilizat",
+      "generated_by": "Generat de",
+      "generated_on": "Data generare",
+      "approved_on": "Data aprobare",
+      "rejected_by": "Refuzat de",
+      "rejected_on": "Data refuzare",
+      "actions": {
+        "confirm": "Confirma si semneaza",
+        "reject": "Refuza",
+        "reject_no_message": "Refuza fara mesaj"
+      },
+      "reject_modal": {
+        "title": "Argumentează respingere",
+        "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii."
+      },
+      "delete_modal": {
+        "title": "Esti sigur ca doresti stergerea acestui contract?",
+        "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
+      },
+      "submit": {
+        "confirm": "Contractul a fost confirmat",
+        "reject": "Contractul a fost respins",
+        "delete": "Contractul a fost sters",
+        "errors": {
+          "CONTRACT_002": "Contractul nu a fost gasit!",
+          "CONTRACT_001": "Eroare la incarcarea contractului!",
+          "CONTRACT_003": "Eroare la upload-ul documentului!",
+          "CONTRACT_006": "Nu se poate sterge un contract deja aprobat!"
+        }
+      },
+      "upload": {
+        "title": "Incarca contract semnat",
+        "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
+      }
+    },
+    "popover": {
+      "edit": "Editeaza titlu template",
+      "download": "Descarcă document",
+      "reject": "Respinge contract",
+      "remove": "Elimină",
+      "remove_from_list": "Elimină din listă",
+      "confirm": "Confirma si semneaza"
+    }
   }
 }

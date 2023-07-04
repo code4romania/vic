@@ -31,7 +31,7 @@
   "color-warning-300": "#FDE07B",
   "color-warning-400": "#FCD35A",
   "color-warning-500": "#FBBF24",
-  "color-warning-600": "#D79D1A",
+  "color-warning-600": "#D97706",
   "color-warning-700": "#B47D12",
   "color-warning-800": "#91600B",
   "color-warning-900": "#784B06",
@@ -72,6 +72,8 @@
   "text-success-color": "$color-success-500",
   "text-danger-focus-color": "$color-danger-500",
   "text-danger-color": "$color-danger-500",
+  "text-warning-color": "$color-warning-600",
+  "text-alternate-color": "#FFFFFF",
   "background-basic-color-1": "#FFFFFF",
   "background-basic-color-2": "#FFFFFF",
   "background-basic-color-3": "#EDF1F7",
@@ -113,5 +115,19 @@
   "cool-gray-900": "#121620",
   "dark-purple": "#280056",
   "input-shadow-color": "rgba(40, 0, 86, 0.24)",
-  "drawer-background": "#09636B"
+  "drawer-background": "#09636B",
+  "facebook-color": "#355487",
+  "green-50": "#ECFDF5",
+  "green-500": "#10B981",
+  "yellow-50": "#FEFAEA",
+  "yellow-500": "#FBBF24",
+  "red-50": "#FEF2F2",
+  "red-500": "#E23D3D",
+  "component": {
+    "avatar": {
+      "sizes": {
+        "large": 60
+      }
+    }
+  }
 }
