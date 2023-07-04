@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-
 import { PushTokensRepository } from './repositories/push-tokens.repository';
 import {
   IPushTokenModel,

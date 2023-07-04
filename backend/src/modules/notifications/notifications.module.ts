@@ -14,10 +14,13 @@ import { UserModule } from '../user/user.module';
 import { BullModule } from '@nestjs/bull';
 import { QUEUES } from 'src/common/constants/constants';
 import { PushTicketsCheckerProcessor } from './services/push-tickets-checker.processor';
+import { NotificationsSettingsEntity } from './entities/notifications-settings.entity';
+import { NotificationsSettingsRepository } from './repositories/notifications-settings.repository';
+import { NotificationsSettingsFacade } from './notifications-settings.facade';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PushTokensEntity]),
+    TypeOrmModule.forFeature([PushTokensEntity, NotificationsSettingsEntity]),
     BullModule.registerQueue({
       name: QUEUES.PUSH_NOTIFICATIONS_TICKETS,
     }),
@@ -36,7 +39,10 @@ import { PushTicketsCheckerProcessor } from './services/push-tickets-checker.pro
     PushNotificationsService,
 
     PushTicketsCheckerProcessor,
+
+    NotificationsSettingsRepository,
+    NotificationsSettingsFacade,
   ],
-  exports: [PushNotificationsFacade],
+  exports: [PushNotificationsFacade, NotificationsSettingsFacade],
 })
 export class NotificationsModule {}

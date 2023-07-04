@@ -602,6 +602,15 @@
     "notification": "Setări notificări",
     "information": "Informații"
   },
+  "notifications": {
+    "header": "Setari notificari",
+    "from": {
+      "title": "Primeste notificati de la"
+    },
+    "by": {
+      "title": "Primeste notificati prin"
+    }
+  },
   "user": {
     "errors": {
       "USER_001": "Utilizatorul nu a fost gasit",
