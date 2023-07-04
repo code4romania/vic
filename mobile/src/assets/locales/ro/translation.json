@@ -1,8 +1,6 @@
 {
   "general": {
     "current_month": "Luna asta",
-    "see_all": "Vezi toate",
-    "latest_news": "Ultimele noutăți",
     "about_teo": "Despre TEO",
     "event": "Eveniment",
     "news": "Ultimele noutati",
@@ -56,12 +54,15 @@
     "volunteers": "{{number}} voluntari",
     "join": "Alătură-te organizației",
     "leave": "Părăsește organizația",
+    "rejoin": "Reintra in organizatie",
     "cancel_request": "Anuleaza cererea",
     "no_events": "Nu sunt evenimente de afisat",
     "code": "Ai cod de acces?",
     "disclaimer": {
       "access_request_pending": "Inscrierea ta asteapta aprobare de la organizatie",
-      "joined_from": "Te-ai alaturat din {{date}}"
+      "joined_from": "Te-ai alaturat din {{date}}",
+      "volunteer_archived": "Profilul tau de voluntar a fost dezactivat!",
+      "volunteer_blocked": "Accesul tau la organizatie a fost restrictionat"
     },
     "modal": {
       "identity_data_missing": {
@@ -73,6 +74,11 @@
         "heading": "Anulezi cererea de inscriere?",
         "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Ești sigur că vrei să retragi cererea?",
         "action_label": "Anuleaza cererea"
+      },
+      "confirm_leave_organization": {
+        "heading": "Esti sigur ca doresti sa parasesti organizatia?",
+        "paragraph": "Daca parasesti organizatia, aceasta iti va sterge datele, inclusiv orele inregistrate și documentele de voluntar. Pentru mai multe detalii, poți contacta organizația.",
+        "action_label": "Parasestie organizatia"
       }
     }
   },
@@ -97,7 +103,9 @@
       "signup": "Eroare la înregistrare",
       "resend_code": "Eroare la trimiterea codului de confirmare",
       "init_profile": "Eroare la încărcarea profilului",
-      "login": "Eroare la autentificare, vă rugăm încercați din nou"
+      "login": "Eroare la autentificare, vă rugăm încercați din nou",
+      "invalid_password": "Parola nu este conforma cu polita AWS",
+      "password": "Eroare la schimbarea parolei"
     }
   },
   "activity_logs": {
@@ -158,6 +166,8 @@
   },
   "volunteer": {
     "profile": "Profil voluntar",
+    "profile_picture": "Poza profil",
+    "change_picture": "Schimba poza",
     "no_org_added": "Nu ai adăugat încă nicio organizație",
     "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
     "my_organizations": "Organizațiile mele",
@@ -194,7 +204,10 @@
     "active_since": "Voluntar din",
     "created_on": "Înregistrat în TEO din",
     "errors": {
-      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creaza unul inainte!"
+      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creaza unul inainte!",
+      "VOLUNTEER_003": "Doar voluntarii activi pot fi arhivati",
+      "VOLUNTEER_004": "Doar voluntarii arhivati poti fi activati",
+      "VOLUNTEER_005": "Utilizatorul nu are profil de organizatie pentru acest ONG"
     },
     "missing_profile": {
       "heading": "Nu ai creat încă un profil de utilizator",
@@ -223,13 +236,15 @@
     "location": "Locatie",
     "description": "Descriere eveniment",
     "tasks": "Taskuri asociate",
-    "attending": "{{numberOfVolunteer}} de persoane participă!",
+    "attending": "{{numberOfVolunteer}} persoane participă!",
+    "attending_of": "{{numberOfVolunteer}} de persoane participă!",
+    "attending_one": "O persoană participă!",
     "type": {
       "public": "Eveniment public",
       "all_organization": "Toata organizatia"
     },
     "errors": {
-      "EVENT_001": "Evenimentul nu a fost gasit!",
+      "EVENT_RSVP_001": "Evenimentul nu a fost gasit!",
       "EVENT_RSVP_006": "Evenimentul nu este inca publicat",
       "EVENT_RSVP_007": "Evenimentul este incheiat",
       "EVENT_RSVP_003": "Profilul de voluntar nu este activ",
@@ -270,6 +285,8 @@
         "label": "Email",
         "placeholder": "Introduceti emailul",
         "required": "Email-ul este obligatoriu",
+        "min": "Email-ul poate să aibă minim {{value}} caractere",
+        "max": "Mențiunea poate să aibă maxim {{value}} caractere",
         "pattern": "Formatul email-ului nu este valid"
       },
       "password": {
@@ -303,7 +320,8 @@
         "password": {
           "label": "Parola",
           "placeholder": "Introduceti parola",
-          "required": "Parola este obligatorie"
+          "required": "Parola este obligatorie",
+          "pattern": "Parola trebuie sa contina minim 8 caractere, litere mari, litere mici, numere si caractere speciale, fara spatii"
         },
         "confirm_password": {
           "label": "Confirma parola",
@@ -352,14 +370,51 @@
           "max": "Numele poate sa aiba maxim {{value}} caractere"
         },
         "county": {
-          "label": "Judet"
+          "label": "Județ",
+          "required": "Județul este obligatoriu"
         },
         "city": {
-          "label": "Oras"
+          "label": "Oraș",
+          "required": "Orașul este obligatoriu"
+        },
+        "sex": {
+          "required": "Alegerea sexului este obligatorie"
         },
         "birthday": {
-          "label": "Data nașterii"
+          "label": "Data nașterii",
+          "required": "Data nașterii este obligatorie"
         }
+      }
+    }
+  },
+  "home": {
+    "greeting": "Salut, {{name}}!",
+    "paragraph": "Bun venit in contul tău TEO! Locul unde poți să ții evidența orelor de activitate și a documentelor tale de voluntar, lorem ipsum.",
+    "add_hours": "Adauga ore de voluntariat!",
+    "join_ngo": "Alaturate unei organizatii!",
+    "statistics": {
+      "events": {
+        "title": "{{number}} evenimente",
+        "description": "luna asta"
+      },
+      "hours": {
+        "title": "{{number}} actualizari",
+        "description": "in ore de voluntariat"
+      },
+      "documents": {
+        "title": "{{number}} actualizari",
+        "description": "in documente"
+      },
+      "organizations": {
+        "title": "{{number}} actualizari",
+        "description": "in organizatii"
+      }
+    },
+    "anouncements": {
+      "section": {
+        "header": "Ultimele noutăți",
+        "see_all": "Vezi toate",
+        "empty_list": "Nu aveti anunturi noi!"
       }
     }
   },
@@ -369,6 +424,7 @@
     "form": {
       "series": {
         "label": "Serie document identitate (CI)",
+        "matches": "Seria trebuie sa contina doar litere",
         "placeholder": "Introdu seria (GZ, RX...)",
         "length": "Seria trebuie sa aiba {{number}} caractere",
         "required": "Seria este obligatorie"
@@ -376,7 +432,7 @@
       "number": {
         "label": "Număr document identitate (CI)",
         "placeholder": "Introdu numărul din 6 cifre",
-        "matches": "Trebuie să fie doar cifre",
+        "matches": "Numărul trebuie sa contina doar cifre",
         "length": "Numărul trebuie sa aiba {{number}} caractere",
         "required": "Numărul este obligatoriu"
       },
@@ -395,6 +451,9 @@
       "expiration_date": {
         "label": "Data expirare",
         "required": "Data expirarii este obligatorie"
+      },
+      "submit": {
+        "success": "Datele au fost modificate!"
       }
     }
   },
@@ -457,6 +516,11 @@
       }
     }
   },
+  "leave_ngo": {
+    "header": "Paraseste organizatia",
+    "paragraph": "Daca parasesti organizatia, aceasta iti va sterge datele. Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur /br qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ",
+    "action_btn": "Paraseste organizatia"
+  },
   "create_volunteer": {
     "heading": "Completează profil voluntar",
     "paragraph": "Completează profilul tău de voluntar pentru a putea fi contactat și începe să raportezi orele de voluntariat!",
@@ -488,22 +552,46 @@
   },
   "documents": {
     "description": "Lorem ipsum. Gestioneaza contractele tale din sectiunile de mai jos. Descarca contracte vechi, sau semneaza contractele trimise de organizatie.",
-    "contracts_proposal": "Propunere contract",
-    "contracts_history": "Istoric contracte semnate",
+    "sections": {
+      "pending": "Propunere contract",
+      "closed": "Istoric contracte semnate"
+    },
     "contract_status": {
       "active": "activ",
       "closed": "încheiat"
     },
-    "contract_description_volunteer": "Contractul a fost generat și necesită aprobarea ta. Descarcă modelul de mai jos și citește documentul cu atenție. Te rugăm să printezi o copie a acestuia, pe care să o semnezi, scanezi și încarci aici.",
-    "contract_description_ong": "Ai trimis un document spre semnare. Contractul a fost generat și necesită aprobarea organizației.",
-    "disclaimer_volunteer": "Contractul necesita semnatura ta",
-    "disclaimer_ong": "Contractul necesita semnătura organizației",
-    "upload": "Încarcă contract semnat",
-    "cancel": "Anulează și încarcă altul",
-    "bottom_sheet": {
-      "heading": "Confirmi documentul?",
-      "paragraph": "Ai încărcat documentul",
-      "label": "Trimite spre semnare"
+    "contract": {
+      "title": "Contract {{contractNumber}}",
+      "paragraph": {
+        "PENDING_VOLUNTEER": "Contractul a fost generat și necesită aprobarea ta. Descarcă modelul de mai jos și citește documentul cu atenție. Te rugăm să printezi o copie a acestuia, pe care să o semnezi, scanezi și încarci aici.",
+        "PENDING_ADMIN": "Ai trimis un document spre semnare. Contractul a fost generat și necesită aprobarea organizației."
+      },
+      "disclaimer": {
+        "PENDING_VOLUNTEER": "Contractul necesita semnatura ta",
+        "PENDING_ADMIN": "Contractul necesita semnătura organizației"
+      },
+      "actions": {
+        "upload": "Încarcă contract semnat",
+        "cancel": "Anulează și încarcă altul"
+      },
+      "bottom_sheet": {
+        "heading": "Confirmi documentul?",
+        "paragraph": "Ai încărcat documentul",
+        "label": "Trimite spre semnare"
+      },
+      "upload": {
+        "success": "Contractul a fost trimis!"
+      },
+      "cancel": {
+        "success": "Contractul a fost intors la starea initiala!"
+      },
+      "errors": {
+        "CONTRACT_002": "Contractul nu a fost gasit",
+        "CONTRACT_001": "Nu s-a putut incarca contractul",
+        "CONTRACT_003": "Nu s-a putut sterge documentul",
+        "CONTRACT_007": "Nu se poate anula un contract aprobat de admin",
+        "TEMPLATE_002": "Template-ul contractului nu a fost gasit!"
+      }
     }
   },
   "settings": {
@@ -518,6 +606,23 @@
     "errors": {
       "USER_001": "Utilizatorul nu a fost gasit",
       "USER_004": "Acest numar de identificare al utilizatorului exista deja"
+    }
+  },
+  "account_data": {
+    "title": "Date cont",
+    "profile_picture": "Poza profil",
+    "change_profile_picture": "Schimba poza",
+    "submit": {
+      "success": "Datele au fost modificate!"
+    },
+    "errors": {
+      "USER_006": "Eroare la modificarea fotografiei de profil"
+    }
+  },
+  "change_password": {
+    "title": "Schimba parola",
+    "submit": {
+      "success": "Parola a fost schimbata!"
     }
   }
 }

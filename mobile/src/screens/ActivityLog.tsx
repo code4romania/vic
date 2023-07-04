@@ -1,10 +1,8 @@
 import React from 'react';
 import ModalLayout from '../layouts/ModalLayout';
-import i18n from '../common/config/i18n';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import FormLayout from '../layouts/FormLayout';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import {
   useActivityLogQuery,
   useCancelActivityLogMutation,
@@ -18,16 +16,16 @@ import { ButtonType } from '../common/enums/button-type.enum';
 import { Divider } from '@ui-kitten/components';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useAuth } from '../hooks/useAuth';
 
 const ActivityLog = ({ navigation, route }: any) => {
   console.log('ActivityLog');
   // translations
   const { t } = useTranslation('activity_log');
 
-  const { activityLogId } = route.params;
+  const { userProfile } = useAuth();
 
-  // active organization
-  const { activeOrganization } = useActiveOrganization();
+  const { activityLogId } = route.params;
   // activity log query
   const { isFetching: isLoadingActivityLog, data: activityLog } =
     useActivityLogQuery(activityLogId);
@@ -103,37 +101,22 @@ const ActivityLog = ({ navigation, route }: any) => {
             />
           )}
           <FormLayout>
-            {activeOrganization && (
+            {userProfile?.activeOrganization && (
               <OrganizationIdentity
-                uri={activeOrganization.logo || ''}
-                name={activeOrganization.name}
+                uri={userProfile?.activeOrganization.logo || ''}
+                name={userProfile?.activeOrganization.name}
               />
             )}
-            <ReadOnlyElement
-              label={i18n.t('activity_log:form.event.label')}
-              value={activityLog?.event?.name}
-            />
-            <ReadOnlyElement
-              label={i18n.t('activity_log:form.task.label')}
-              value={activityLog?.activityType.name}
-            />
-            <ReadOnlyElement
-              label={i18n.t('activity_log:form.date.label')}
-              value={activityLog?.date}
-            />
-            <ReadOnlyElement
-              label={i18n.t('activity_log:form.hours.label')}
-              value={`${activityLog?.hours}`}
-            />
-            <ReadOnlyElement
-              label={i18n.t('activity_log:form.mentions.label')}
-              value={activityLog?.mentions}
-            />
+            <ReadOnlyElement label={t('form.event.label')} value={activityLog?.event?.name} />
+            <ReadOnlyElement label={t('form.task.label')} value={activityLog?.activityType.name} />
+            <ReadOnlyElement label={t('form.date.label')} value={activityLog?.date} />
+            <ReadOnlyElement label={t('form.hours.label')} value={`${activityLog?.hours}`} />
+            <ReadOnlyElement label={t('form.mentions.label')} value={activityLog?.mentions} />
             {activityLog.status === ActivityLogStatus.REJECTED && (
               <>
                 <Divider />
                 <ReadOnlyElement
-                  label={i18n.t('activity_log:rejection_reason')}
+                  label={t('rejection_reason')}
                   value={activityLog.rejectionReason}
                 />
               </>

@@ -13,6 +13,6 @@ export interface IOrganization {
   description: string;
   numberOfVolunteers: number;
   events: IEventListItem[];
-  volunteers: IVolunteer[];
+  volunteer: IVolunteer;
   organizationVolunteerStatus?: OrganizatinVolunteerStatus;
 }

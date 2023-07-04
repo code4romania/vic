@@ -2,7 +2,6 @@ import React from 'react';
 import FormLayout from '../layouts/FormLayout';
 import OrganizationIdentity from './OrganizationIdentity';
 import { Text } from '@ui-kitten/components';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import FormInput from './FormInput';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
@@ -41,7 +40,6 @@ interface VolunteerFormProps {
 }
 
 const VolunteerForm = ({ paragraph, isLoading, control, errors }: VolunteerFormProps) => {
-  const { activeOrganization } = useActiveOrganization();
   const { userProfile } = useAuth();
 
   const { t } = useTranslation('create_volunteer');
@@ -50,8 +48,8 @@ const VolunteerForm = ({ paragraph, isLoading, control, errors }: VolunteerFormP
     <FormLayout>
       <Text appearance="hint">{`${paragraph || ''}`}</Text>
       <OrganizationIdentity
-        name={activeOrganization?.name || ''}
-        uri={activeOrganization?.logo || ''}
+        name={userProfile?.activeOrganization?.name || ''}
+        uri={userProfile?.activeOrganization?.logo || ''}
       />
       <FormInput
         control={control as any}
@@ -77,7 +75,7 @@ const VolunteerForm = ({ paragraph, isLoading, control, errors }: VolunteerFormP
         label={t('form.branch.label')}
         name="branchId"
         placeholder={t('general:select')}
-        organizationId={(activeOrganization as IOrganizationListItem).id}
+        organizationId={(userProfile?.activeOrganization as IOrganizationListItem).id}
         type={OrganizationStructureType.BRANCH}
         disabled={isLoading}
       />
@@ -86,7 +84,7 @@ const VolunteerForm = ({ paragraph, isLoading, control, errors }: VolunteerFormP
         error={errors.departmentId}
         label={t('general:department')}
         name="departmentId"
-        organizationId={(activeOrganization as IOrganizationListItem).id}
+        organizationId={(userProfile?.activeOrganization as IOrganizationListItem).id}
         type={OrganizationStructureType.DEPARTMENT}
         placeholder={t('general:select')}
         disabled={isLoading}
@@ -96,7 +94,7 @@ const VolunteerForm = ({ paragraph, isLoading, control, errors }: VolunteerFormP
         error={errors.roleId}
         label={t('general:role')}
         name="roleId"
-        organizationId={(activeOrganization as IOrganizationListItem).id}
+        organizationId={(userProfile?.activeOrganization as IOrganizationListItem).id}
         type={OrganizationStructureType.ROLE}
         placeholder={t('general:select')}
         disabled={isLoading}

@@ -37,7 +37,7 @@ const VolunteerRequest = ({ email, phone, createdOn, answers }: VolunteerRequest
             </div>
             <div className="flex flex-col gap-5">
               <FormReadOnlyElement
-                value={answers[0].answer}
+                value={`${i18n.t(`volunteer:registration.referral.${answers[0].answer}`)}`}
                 label={i18n.t('volunteer:registration.found_location')}
               />
               <FormReadOnlyElement

@@ -1,11 +1,13 @@
 import React from 'react';
 import { Text } from '@ui-kitten/components';
 import PageLayout from '../layouts/PageLayout';
-import i18n from '../common/config/i18n';
+import { useTranslation } from 'react-i18next';
 
 const NotificationsSettings = ({ navigation }: any) => {
+  const { t } = useTranslation('settings');
+
   return (
-    <PageLayout title={i18n.t('settings:notification')} onBackButtonPress={navigation.goBack}>
+    <PageLayout title={t('notification')} onBackButtonPress={navigation.goBack}>
       <Text category="h1">Notifications Settings</Text>
     </PageLayout>
   );

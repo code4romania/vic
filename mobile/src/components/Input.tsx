@@ -12,8 +12,8 @@ const Input = (props: InputProps) => {
   return (
     <KittenInput
       textStyle={[styles.inputText, props.disabled ? styles.disabledColor : {}]}
-      style={[styles.input, props.disabled ? styles.disabledBackground : {}]}
       {...props}
+      style={[styles.input, props.style, props.disabled ? styles.disabledBackground : {}]}
     />
   );
 };

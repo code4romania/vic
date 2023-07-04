@@ -1,20 +1,19 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { StyleService, Text, useStyleSheet } from '@ui-kitten/components';
-import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
 import { ScrollView, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import { formatDate } from '../common/utils/utils';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useVolunteerProfile } from '../services/volunteer/volunteer.service';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import LoadingScreen from '../components/LoadingScreen';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { VOLUNTEER_PROFILE_ERRORS } from '../common/errors/entities/volunteer-profile';
 import MissingEntity from './MissingEntity';
 import { useTranslation } from 'react-i18next';
 import { useVolunteer } from '../store/volunteer/volunteer.selector';
+import { useAuth } from '../hooks/useAuth';
 
 const VolunteerProfile = ({ navigation }: any) => {
   console.log('VolunteerProfile');
@@ -22,11 +21,12 @@ const VolunteerProfile = ({ navigation }: any) => {
 
   const { t } = useTranslation('volunteer');
 
-  const { activeOrganization } = useActiveOrganization();
+  const { userProfile } = useAuth();
+
   const { volunteer } = useVolunteer();
 
   const { isLoading: isLoadingProfile, error: volunteerProfileError } = useVolunteerProfile(
-    activeOrganization?.volunteerId as string,
+    userProfile?.activeOrganization?.volunteerId as string,
   );
 
   const onEditVolunteerProfileButtonPress = () => {
@@ -35,7 +35,7 @@ const VolunteerProfile = ({ navigation }: any) => {
 
   const onCreateVolunteerProfileButtonPress = () => {
     navigation.navigate('create-volunteer', {
-      volunteerId: activeOrganization?.volunteerId,
+      volunteerId: userProfile?.activeOrganization?.volunteerId,
     });
   };
 
@@ -45,7 +45,7 @@ const VolunteerProfile = ({ navigation }: any) => {
     VOLUNTEER_PROFILE_ERRORS.VOLUNTEER_PROFILE_003
   ) {
     return (
-      <PageLayout title={i18n.t('volunteer:profile')} onBackButtonPress={navigation.goBack}>
+      <PageLayout title={t('profile')} onBackButtonPress={navigation.goBack}>
         <MissingEntity
           onActionBtnPress={onCreateVolunteerProfileButtonPress}
           heading={t('missing_profile.heading')}
@@ -58,51 +58,45 @@ const VolunteerProfile = ({ navigation }: any) => {
 
   return (
     <PageLayout
-      title={i18n.t('volunteer:profile')}
+      title={t('profile')}
       onBackButtonPress={navigation.goBack}
       onEditButtonPress={volunteer && onEditVolunteerProfileButtonPress}
     >
       {isLoadingProfile && <LoadingScreen />}
-      {volunteer && activeOrganization && (
+      {volunteer && userProfile?.activeOrganization && (
         <ScrollView>
           <ProfileIntro
-            uri={activeOrganization?.logo || ''}
-            name={volunteer?.user.name}
-            description={`${i18n.t('volunteer:age', {
+            uri={userProfile?.activeOrganization?.logo || ''}
+            name={`${volunteer?.user.lastName} ${volunteer?.user.firstName}`}
+            description={`${t('age', {
               years: volunteer.user.age,
-            })}\n${i18n.t('general:sex', {
-              sex_type: i18n.t(`general:${volunteer.user.sex}`),
-            })}\n${volunteer.user.location?.name || ''}${i18n.t('volunteer:county', {
+            })}\n${t('general:sex', {
+              sex_type: t(`general:${volunteer.user.sex}`),
+            })}\n${volunteer.user.location?.name || ''}${t('county', {
               name: volunteer.user.location?.county.name,
             })}`}
           />
           <View style={styles.profileContent}>
             <OrganizationIdentity
-              uri={activeOrganization.logo || ''}
-              name={activeOrganization.name}
+              uri={userProfile?.activeOrganization.logo || ''}
+              name={userProfile?.activeOrganization.name}
             />
-            <Text category="p2">{`${i18n.t('volunteer:information')}`}</Text>
-            <ReadOnlyElement label={i18n.t('volunteer:email')} value={volunteer.profile.email} />
-            <ReadOnlyElement label={i18n.t('general:phone')} value={volunteer.profile.phone} />
-            <ReadOnlyElement label={i18n.t('general:role')} value={volunteer.profile.role?.name} />
+            <Text category="p2">{`${t('information')}`}</Text>
+            <ReadOnlyElement label={t('email')} value={volunteer.profile.email} />
+            <ReadOnlyElement label={t('general:phone')} value={volunteer.profile.phone} />
+            <ReadOnlyElement label={t('general:role')} value={volunteer.profile.role?.name} />
             <ReadOnlyElement
-              label={i18n.t('general:department')}
+              label={t('general:department')}
               value={volunteer.profile.department?.name}
             />
+            <ReadOnlyElement label={t('general:branch')} value={volunteer.profile.branch?.name} />
             <ReadOnlyElement
-              label={i18n.t('general:branch')}
-              value={volunteer.profile.branch?.name}
-            />
-            <ReadOnlyElement
-              label={i18n.t('volunteer:active_since')}
+              label={t('active_since')}
               value={
                 volunteer.profile.activeSince ? formatDate(volunteer.profile.activeSince) : '-'
               }
             />
-            <ReadOnlyElement
-              label={i18n.t('volunteer:created_on')}
-              value={formatDate(volunteer.createdOn)}
-            />
+            <ReadOnlyElement label={t('created_on')} value={formatDate(volunteer.createdOn)} />
           </View>
         </ScrollView>
       )}

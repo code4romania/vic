@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -23,6 +24,8 @@ import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { GetMyOrganizationsUsecase } from 'src/usecases/organization/get-my-organizations.usecase';
 import { SwitchOrganizationUsecase } from 'src/usecases/organization/switch-organization.usecase';
 import { OrganizationVolunteerPresenter } from './presenters/organization-volunteer.presenter';
+import { LeaveOrganizationUsecase } from 'src/usecases/organization/leave-organization.usecase';
+import { RejoinOrganizationUsecase } from 'src/usecases/organization/rejoin-organization.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -33,6 +36,8 @@ export class MobileOrganizationController {
     private readonly getOrganizationWithEvents: GetOrganizationWithEventsUseCase,
     private readonly getMyOrganizationsUsecase: GetMyOrganizationsUsecase,
     private readonly switchOrganizationUsecase: SwitchOrganizationUsecase,
+    private readonly leaveOrganizationUsecase: LeaveOrganizationUsecase,
+    private readonly rejonOrganizationUsecase: RejoinOrganizationUsecase,
   ) {}
 
   @Get()
@@ -73,6 +78,34 @@ export class MobileOrganizationController {
       organizationId,
       id,
     );
+    return new OrganizationWithEventsPresenter(organization);
+  }
+
+  @ApiParam({ name: 'volunteerId', type: 'string' })
+  @Delete(':volunteerId')
+  async leave(
+    @Param('volunteerId', UuidValidationPipe) volunteerId: string,
+    @ExtractUser() user: IRegularUserModel,
+  ): Promise<OrganizationWithEventsPresenter> {
+    const organization = await this.leaveOrganizationUsecase.execute(
+      volunteerId,
+      user,
+    );
+
+    return new OrganizationWithEventsPresenter(organization);
+  }
+
+  @ApiParam({ name: 'volunteerId', type: 'string' })
+  @Patch(':volunteerId/rejoin')
+  async rejoin(
+    @Param('volunteerId', UuidValidationPipe) volunteerId: string,
+    @ExtractUser() user: IRegularUserModel,
+  ): Promise<OrganizationWithEventsPresenter> {
+    const organization = await this.rejonOrganizationUsecase.execute(
+      volunteerId,
+      user,
+    );
+
     return new OrganizationWithEventsPresenter(organization);
   }
 

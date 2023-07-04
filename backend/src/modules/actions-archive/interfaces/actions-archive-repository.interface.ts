@@ -8,4 +8,11 @@ export interface IActionArchiveRepository {
   findMany(
     findOptions: FindManyActionsArchiveOptions,
   ): Promise<Pagination<IActionArchiveModel>>;
+  countActivityLogBetweenDates(volunteerIds: string[]): Promise<number>;
+  countDocumentStatusUpdatesBetweenDates(
+    volunteerIds: string[],
+  ): Promise<number>;
+  countAccessRequestStatusUpdatesBetweenDates(
+    volunteerIds: string[],
+  ): Promise<number>;
 }

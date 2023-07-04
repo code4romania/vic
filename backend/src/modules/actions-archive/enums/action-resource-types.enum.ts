@@ -1,6 +1,7 @@
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { ActivityTypeStatus } from 'src/modules/activity-type/enums/activity-type-status.enum';
 import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
+import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
@@ -42,6 +43,11 @@ export enum TrackedEventName {
   CREATE_ANNOUNCEMENT = 'CREATE_ANNOUNCEMENT',
   DELETE_ANNOUNCEMENT = 'DELETE_ANNOUNCEMENT',
   PUBLISH_ANNOUNCEMENT = 'PUBLISH_ANNOUNCEMENT',
+
+  // Documents
+  CREATE_CONTRACT = 'CREATE_CONTRACT',
+  APPROVE_CONTRACT = 'APPROVE_CONTRACT',
+  REJECT_CONTRACT = 'REJECT_CONTRACT',
 }
 
 export interface TrackedEventData {
@@ -162,5 +168,32 @@ export interface TrackedEventData {
   [TrackedEventName.DELETE_ANNOUNCEMENT]: {
     announcementId: string;
     announcementTitle: string;
+  };
+
+  // Documents
+  [TrackedEventName.CREATE_CONTRACT]: {
+    organizationId: string;
+    organizationName: string;
+    contractId: string;
+    volunteerId: string;
+    volunteerName: string;
+  };
+  [TrackedEventName.APPROVE_CONTRACT]: {
+    organizationId: string;
+    organizationName: string;
+    contractId: string;
+    oldStatus: ContractStatus;
+    newStatus: ContractStatus;
+    volunteerId: string;
+    volunteerName: string;
+  };
+  [TrackedEventName.REJECT_CONTRACT]: {
+    organizationId: string;
+    organizationName: string;
+    contractId: string;
+    oldStatus: ContractStatus;
+    newStatus: ContractStatus;
+    volunteerId: string;
+    volunteerName: string;
   };
 }

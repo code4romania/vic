@@ -1,31 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { TemplateExceptionMessages } from 'src/modules/documents/exceptions/template.exceptions';
 import {
   ITemplateModel,
   UpdateTemplateOptions,
 } from 'src/modules/documents/models/template.model';
 import { TemplateFacade } from 'src/modules/documents/services/template.facade';
+import { GetOneTemplateUseCase } from './get-one-template.usecase';
 
 @Injectable()
 export class UpdateTemplateUsecase implements IUseCaseService<ITemplateModel> {
   constructor(
+    private readonly getOneTemplateUsecase: GetOneTemplateUseCase,
     private readonly templateFacade: TemplateFacade,
     private readonly exceptionsService: ExceptionsService,
   ) {}
 
   public async execute(
     id: string,
+    organizationId: string,
     options: UpdateTemplateOptions,
   ): Promise<ITemplateModel> {
-    const updated = await this.templateFacade.update(id, options);
+    // validate if template exists
+    await this.getOneTemplateUsecase.execute({ id, organizationId });
 
-    if (!updated) {
-      this.exceptionsService.notFoundException(
-        TemplateExceptionMessages.TEMPLATE_002,
-      );
-    }
+    // update template name
+    const updated = await this.templateFacade.update(id, options);
 
     return updated;
   }

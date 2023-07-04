@@ -3,20 +3,15 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Drawer, DrawerItem, Text } from '@ui-kitten/components';
 import Tabs from './Tabs';
 import { Image, View } from 'react-native';
-import i18n from '../common/config/i18n';
 import { withStyles } from '@ui-kitten/components';
 //SVG
 import { SvgXml } from 'react-native-svg';
 import PlusSvg from '../assets/svg/plus';
 import { LiteralUnion } from '@ui-kitten/components/devsupport';
-import { useOrganizations } from '../store/organization/organizations.selector';
-import {
-  useMyOrganizationsQuery,
-  useSwitchOrganizationMutation,
-} from '../services/organization/organization.service';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
-import useStore from '../store/store';
+import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
 import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../hooks/useAuth';
 
 const AccessoryImage = withStyles(
   ({ logo, eva }: { logo?: string; eva?: any }) => {
@@ -91,16 +86,9 @@ const DrawerItemTitle = withStyles(
 
 const DrawerContent = withStyles(
   ({ navigation, eva }: any) => {
-    // Get my organizations
-    const { error } = useMyOrganizationsQuery();
-    console.log('organizations query', error);
+    const { t } = useTranslation('volunteer');
 
-    // organizations state
-    const { organizations } = useOrganizations();
-    // active organizatio state
-    const { activeOrganization } = useActiveOrganization();
-    // update active organization
-    const { setActiveOrganization } = useStore();
+    const { userProfile, setActiveOrganization } = useAuth();
     // switch organization
     const { mutate: switchOrganization } = useSwitchOrganizationMutation();
 
@@ -108,9 +96,7 @@ const DrawerContent = withStyles(
     const renderAccessoryLeft = () => <AccesoryAdd />;
 
     // drawer header
-    const renderDrawerHeader = () => (
-      <DrawerHeader>{`${i18n.t('volunteer:my_organizations')}`}</DrawerHeader>
-    );
+    const renderDrawerHeader = () => <DrawerHeader>{`${t('my_organizations')}`}</DrawerHeader>;
 
     const renderAccessroyLeft = (logo: string) => {
       return <AccessoryImage logo={logo} />;
@@ -131,7 +117,7 @@ const DrawerContent = withStyles(
       <View style={eva?.style.drawerContainer}>
         <Drawer style={eva?.style.drawer} appearance="noDivider" header={renderDrawerHeader}>
           <>
-            {organizations.map((organization: IOrganizationVolunteer) => (
+            {userProfile?.myOrganizations?.map((organization: IOrganizationVolunteer) => (
               <DrawerItem
                 key={organization.id}
                 title={<DrawerItemTitle>{organization.name}</DrawerItemTitle>}
@@ -139,18 +125,14 @@ const DrawerContent = withStyles(
                 onPress={onOrganizationChange.bind(null, organization)}
                 style={[
                   eva?.style.drawerItem,
-                  ...(activeOrganization?.id === organization.id
+                  ...(userProfile.activeOrganization?.id === organization.id
                     ? [eva?.style.activeDrawerItem]
                     : []),
                 ]}
               />
             ))}
             <DrawerItem
-              title={
-                <DrawerItemTitle category="s1">{`${i18n.t(
-                  'volunteer:join_organization',
-                )}`}</DrawerItemTitle>
-              }
+              title={<DrawerItemTitle category="s1">{`${t('join_organization')}`}</DrawerItemTitle>}
               accessoryLeft={renderAccessoryLeft}
               style={[eva?.style.drawerItem]}
               onPress={onJoinNewOrganization}
@@ -192,7 +174,7 @@ const renderDrawerContent = (props: any) => <DrawerContent {...props} />;
 // create drawer navigator on top of the tabs
 const { Navigator, Screen } = createDrawerNavigator();
 
-export const DrawerNavigator = () => (
+const DrawerNavigator = () => (
   <Navigator
     drawerContent={renderDrawerContent}
     initialRouteName="tabs"

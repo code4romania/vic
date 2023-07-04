@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
@@ -8,15 +8,20 @@ import { GetOneEventUseCase } from './get-one-event.usecase';
 import { GetActivityLogCountUsecase } from '../activity-log/get-activity-log-count.usecase';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { EventExceptionMessages } from 'src/modules/event/exceptions/event.exceptions';
+import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
+import { JSONStringifyError } from 'src/common/helpers/utils';
 
 @Injectable()
 export class DeleteEventUseCase implements IUseCaseService<string> {
+  private readonly logger = new Logger(DeleteEventUseCase.name);
   constructor(
     private readonly eventFacade: EventFacade,
     private readonly getOneEventUseCase: GetOneEventUseCase,
     private readonly getActivityLogCountUseCase: GetActivityLogCountUsecase,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly exceptionService: ExceptionsService,
+    private readonly s3Service: S3Service,
+    private readonly exceptionsService: ExceptionsService,
   ) {}
 
   public async execute(id: string, admin: IAdminUserModel): Promise<string> {
@@ -36,7 +41,24 @@ export class DeleteEventUseCase implements IUseCaseService<string> {
       );
     }
 
-    // 3. delete event
+    try {
+      // 3. delete the file from s3
+      if (toBeDeleted.posterPath) {
+        await this.s3Service.deleteFile(toBeDeleted.posterPath);
+      }
+    } catch (error) {
+      // log error
+      this.logger.error({
+        ...EventExceptionMessages.EVENT_008,
+        error: JSONStringifyError(error),
+      });
+      // error while uploading file to s3
+      this.exceptionsService.badRequestException(
+        EventExceptionMessages.EVENT_008,
+      );
+    }
+
+    // 4. delete event
     const deleted = await this.eventFacade.delete(id);
 
     this.actionsArchiveFacade.trackEvent(

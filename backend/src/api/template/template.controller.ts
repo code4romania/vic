@@ -3,10 +3,12 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   Param,
   Patch,
   Post,
   Query,
+  Res,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -16,6 +18,7 @@ import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import {
   CreateTemplateOptions,
+  ITemplateDownloadModel,
   ITemplateModel,
 } from 'src/modules/documents/models/template.model';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
@@ -38,8 +41,10 @@ import { DeleteTemplateUseCase } from 'src/usecases/documents/delete-template.us
 import { GetAllTemplatesUsecase } from 'src/usecases/documents/get-all-templates.usecase';
 import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
 import { GetAllTemplatesDto } from './dto/get-all-templates.dto';
+import { GetTemplatesForDownloadUsecase } from 'src/usecases/documents/get-templates-for-download.usecase';
+import { jsonToExcelBuffer } from 'src/common/helpers/utils';
+import { Response } from 'express';
 
-// TODO: guard for organization template
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
 @Controller('template')
@@ -51,6 +56,7 @@ export class TemplateController {
     private readonly updateTemplateUsecase: UpdateTemplateUsecase,
     private readonly deleteTemplateUsecase: DeleteTemplateUseCase,
     private readonly getAllTemplatesUsecase: GetAllTemplatesUsecase,
+    private readonly getTemplatesForDownloadUsecase: GetTemplatesForDownloadUsecase,
   ) {}
 
   @Get()
@@ -70,6 +76,25 @@ export class TemplateController {
         (template) => new TemplateListItemPresenter(template),
       ),
     });
+  }
+
+  @Get('download')
+  @Header(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  )
+  @Header('Content-Disposition', 'attachment; filename="Voluntari.xlsx"')
+  async downloadAll(
+    @Res({ passthrough: true }) res: Response,
+    @ExtractUser() user: IAdminUserModel,
+    @Query() filters: GetTemplatesDto,
+  ): Promise<void> {
+    const data = await this.getTemplatesForDownloadUsecase.execute({
+      ...filters,
+      organizationId: user.organizationId,
+    });
+
+    res.end(jsonToExcelBuffer<ITemplateDownloadModel>(data, 'Templates'));
   }
 
   @Get('all')
@@ -109,9 +134,11 @@ export class TemplateController {
   async update(
     @Param('id', UuidValidationPipe) id: string,
     @Body() updateTemplateDto: EditTemplateDto,
+    @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<TemplatePresenter> {
     const template = await this.updateTemplateUsecase.execute(
       id,
+      organizationId,
       updateTemplateDto,
     );
 
@@ -120,14 +147,23 @@ export class TemplateController {
 
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
-  async getOne(@Param('id') id: string): Promise<TemplatePresenter> {
-    const template = await this.getOneTemplateUsecase.execute({ id });
+  async getOne(
+    @Param('id') id: string,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<TemplatePresenter> {
+    const template = await this.getOneTemplateUsecase.execute({
+      id,
+      organizationId,
+    });
     return new TemplatePresenter(template);
   }
 
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
-  async delete(@Param('id', UuidValidationPipe) id: string): Promise<string> {
-    return this.deleteTemplateUsecase.execute(id);
+  async delete(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<string> {
+    return this.deleteTemplateUsecase.execute(id, organizationId);
   }
 }

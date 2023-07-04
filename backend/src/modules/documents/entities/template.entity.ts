@@ -5,8 +5,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ContractEntity } from './contract.entity';
 
 @Entity({ name: 'template' })
 export class TemplateEntity extends BaseEntity {
@@ -25,4 +27,7 @@ export class TemplateEntity extends BaseEntity {
   @ManyToOne(() => OrganizationEntity)
   @JoinColumn({ name: 'organization_id' })
   organization: OrganizationEntity;
+
+  @OneToMany(() => ContractEntity, (contract) => contract.template)
+  contracts: ContractEntity[];
 }

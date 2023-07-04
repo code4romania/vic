@@ -1,3 +1,4 @@
+import { AxiosResponseHeaders } from 'axios';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IdName } from '../../common/interfaces/id-name.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -13,7 +14,7 @@ export const createTemplate = async (payload: AddContractTemplateFormTypes): Pro
   formData.append('name', payload.name);
   formData.append('template', payload.template);
 
-  return API.post('template', payload, {
+  return API.post('template', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
 };
@@ -33,6 +34,21 @@ export const getTemplates = async (params: {
   orderDirection?: OrderDirection;
 }): Promise<IPaginatedEntity<ITemplateListItem>> => {
   return API.get('template', { params }).then((res) => res.data);
+};
+
+export const getTemplatesForDownload = async (
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
+  return API.get('template/download', {
+    params: {
+      orderBy,
+      orderDirection,
+    },
+    responseType: 'arraybuffer',
+  }).then((res) => {
+    return { data: res.data, headers: res.headers as AxiosResponseHeaders };
+  });
 };
 
 export const getAllTemplatesForMyOrganization = async (search: string): Promise<IdName[]> => {

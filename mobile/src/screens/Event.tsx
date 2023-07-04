@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text } from '@ui-kitten/components';
-import i18n from '../common/config/i18n';
 import { Image, StyleSheet } from 'react-native';
 import FormLayout from '../layouts/FormLayout';
 import OrganizationIdentity from '../components/OrganizationIdentity';
@@ -90,9 +89,21 @@ const Event = ({ navigation, route }: any) => {
     );
   };
 
+  const mapNumberOfPersonsToHelper = () => {
+    if (!event?.numberOfPersonsGoingToEvent && event?.numberOfPersonsGoingToEvent !== 0) {
+      return '';
+    } else if (event.numberOfPersonsGoingToEvent === 1) {
+      return t('attending_one');
+    } else if (event.numberOfPersonsGoingToEvent < 20) {
+      return t('attending', { numberOfVolunteer: event.numberOfPersonsGoingToEvent });
+    } else {
+      return t('attending_of', { numberOfVolunteer: event.numberOfPersonsGoingToEvent });
+    }
+  };
+
   return (
     <PageLayout
-      title={i18n.t('event:details')}
+      title={t('details')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         loading: isLoadingEvent || isResponding || isCancelingRsvp,
@@ -114,7 +125,7 @@ const Event = ({ navigation, route }: any) => {
               onSecondaryActionButtonClick: onRsvpReponsePress.bind(null, false),
             }
           : {}),
-        helperText: `${t('attending', { numberOfVolunteer: event?.numberOfPersonsGoingToEvent })}`,
+        helperText: mapNumberOfPersonsToHelper(),
       }}
     >
       {isLoadingEvent && <LoadingScreen />}
@@ -125,13 +136,13 @@ const Event = ({ navigation, route }: any) => {
             uri={event.organizationLogo || ''}
             name={event.organizationName || ''}
           />
-          <ReadOnlyElement label={i18n.t('event:date')} value={event.eventInterval} />
-          <ReadOnlyElement label={i18n.t('event:name')} value={event.name} />
-          <ReadOnlyElement label={i18n.t('event:target')} value={mapEventType(event)} />
-          <ReadOnlyElement label={i18n.t('event:location')} value={event.location} />
-          <ReadOnlyElement label={i18n.t('event:description')} value={event.description} />
+          <ReadOnlyElement label={t('date')} value={event.eventInterval} />
+          <ReadOnlyElement label={t('name')} value={event.name} />
+          <ReadOnlyElement label={t('target')} value={mapEventType(event)} />
+          <ReadOnlyElement label={t('location')} value={event.location} />
+          <ReadOnlyElement label={t('description')} value={event.description} />
           <View style={styles.container}>
-            <Text category="c1" appearance="hint">{`${i18n.t('event:tasks')}`}</Text>
+            <Text category="c1" appearance="hint">{`${t('tasks')}`}</Text>
             <View style={styles.taskContainer}>
               {event.tasks.map((task) => (
                 <TaskPill key={task.id} label={task.name} />

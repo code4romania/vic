@@ -101,7 +101,7 @@ export type FindManyVolunteersOptions = Pick<IVolunteerModel, 'status'> & {
   IBasePaginationFilterModel;
 
 export type CountVolunteerOptions = Pick<IVolunteerModel, 'status'> & {
-  organizationId: string;
+  organizationId?: string;
   departmentIds?: string[];
 };
 

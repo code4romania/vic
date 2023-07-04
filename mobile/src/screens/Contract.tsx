@@ -1,74 +1,222 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
+import {
+  useCancelContractMutation,
+  useContractQuery,
+  useSignContractMutation,
+} from '../services/contract/contract.service';
+import LoadingScreen from '../components/LoadingScreen';
+import { useTranslation } from 'react-i18next';
 import Disclaimer from '../components/Disclaimer';
+import { ContractStatus } from '../common/enums/contract-status.enum';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 import OrganizationIdentity from '../components/OrganizationIdentity';
-import i18n from '../common/config/i18n';
-import { Text } from '@ui-kitten/components';
-import ContractItem from '../components/ContractItem';
-import { ContractStatus } from '../common/enums/contract.status.enum';
 import FormLayout from '../layouts/FormLayout';
+import { Text, useTheme } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
+import ContractItem from '../components/ContractItem';
+import { PendingContractIcon } from './Documents';
 import { ButtonType } from '../common/enums/button-type.enum';
+import * as FileSystem from 'expo-file-system';
+import { shareAsync } from 'expo-sharing';
+import * as DocumentPicker from 'expo-document-picker';
+import useStore from '../store/store';
+import { useAuth } from '../hooks/useAuth';
 
-const contract = {
-  id: '1234',
-  name: 'Contract 123123',
-  status: ContractStatus.VALIDATE_ONG,
-  startDate: new Date('2023-02-01'),
-  endDate: new Date('2023-06-30'),
-};
+const Contract = ({ navigation, route }: any) => {
+  const { t } = useTranslation('documents');
+  // contract param
+  const { id } = route.params;
+  // theme
+  const theme = useTheme();
+  // document state
+  const [selectedContract, setSelectedContract] = useState<DocumentPicker.DocumentResult | null>(
+    null,
+  );
+  // active organization
+  const { userProfile } = useAuth();
+  // bottom sheet state
+  const { open: openBottomSheet, close: closeBottomSheet } = useStore();
+  // contract request
+  const {
+    data: contract,
+    isFetching: isLoadingContract,
+    error: getContractError,
+  } = useContractQuery(id);
 
-const Contract = ({ navigation }: any) => {
-  const onContractPress = (id: string) => {
-    console.log('download pressed', id);
+  // sign contract
+  const { mutate: signContract, isLoading: isUploadingContract } = useSignContractMutation();
+  // cancel contract
+  const { mutate: cancelContract, isLoading: isCancelingContract } = useCancelContractMutation();
+
+  useEffect(() => {
+    // go back and show error
+    if (getContractError) {
+      Toast.show({
+        type: 'error',
+        text1: `${InternalErrors.CONTRACT_ERRORS.getError(
+          (getContractError as any).response?.data.code_error,
+        )}`,
+      });
+      navigation.goBack();
+    }
+  }, [getContractError, navigation]);
+
+  const onDownloadContract = async () => {
+    if (contract) {
+      let LocalPath = FileSystem.documentDirectory + contract.contractFileName;
+      const file = await FileSystem.downloadAsync(contract?.path, LocalPath);
+      shareAsync(file.uri);
+    }
   };
 
-  const uploadContract = () => {
-    console.log('upload contract');
+  const onSelectContract = async () => {
+    const result = await DocumentPicker.getDocumentAsync();
+    // don't show the bottom sheet if the user canceled the upload file from the device
+    if (result.type !== 'cancel') {
+      setSelectedContract(result);
+      openBottomSheet();
+    }
+  };
+
+  const onCancelSelection = async () => {
+    closeBottomSheet();
+    setSelectedContract(null);
+  };
+
+  const onUploadContract = async () => {
+    if (selectedContract) {
+      signContract(
+        { contractId: id, contract: selectedContract },
+        {
+          onSuccess: () => {
+            // show success toast and get back to the previous page and update state
+            Toast.show({ text1: `${t('contract.upload.success')}`, type: 'success' });
+            navigation.goBack();
+          },
+          onError: (error) => {
+            Toast.show({
+              text1: `${InternalErrors.CONTRACT_ERRORS.getError(
+                (error as any).response?.data.code_error,
+              )}`,
+              type: 'error',
+            });
+          },
+        },
+      );
+    }
+  };
+
+  const onCancelAndUploadNewContract = () => {
+    cancelContract(
+      { contractId: id },
+      {
+        onSuccess: () => {
+          // show success toast and get back to the previous page and update state
+          Toast.show({ text1: `${t('contract.cancel.success')}`, type: 'success' });
+          navigation.goBack({ shouldRefetch: true });
+        },
+        onError: (error) => {
+          Toast.show({
+            text1: `${InternalErrors.CONTRACT_ERRORS.getError(
+              (error as any).response?.data.code_error,
+            )}`,
+            type: 'error',
+          });
+        },
+      },
+    );
+  };
+
+  const buildPageActions = () => {
+    if (contract?.status === ContractStatus.PENDING_VOLUNTEER) {
+      return {
+        onPrimaryActionButtonClick: onSelectContract,
+        primaryActionLabel: t('contract.actions.upload'),
+        primaryBtnType: ButtonType.PRIMARY,
+        loading: isUploadingContract,
+      };
+    }
+
+    if (contract?.status === ContractStatus.PENDING_ADMIN) {
+      return {
+        onPrimaryActionButtonClick: onCancelAndUploadNewContract,
+        primaryActionLabel: t('contract.actions.cancel'),
+        primaryBtnType: ButtonType.DANGER,
+        loading: isCancelingContract,
+      };
+    }
   };
 
   return (
     <PageLayout
-      title={contract.name}
+      title={t('contract.title', { contractNumber: contract?.contractNumber || '' })}
       onBackButtonPress={navigation.goBack}
-      actionsOptions={{
-        onPrimaryActionButtonClick: uploadContract,
-        primaryActionLabel:
-          contract.status === ContractStatus.VALIDATE_VOLUNTEER
-            ? i18n.t('documents:upload')
-            : i18n.t('documents:cancel'),
-        primaryBtnType:
-          contract.status === ContractStatus.VALIDATE_VOLUNTEER
-            ? ButtonType.PRIMARY
-            : ButtonType.DANGER,
+      actionsOptions={buildPageActions()}
+      bottomSheetOptions={{
+        paragraph: (
+          <View style={styles.bottomSheetParagraphContainer}>
+            <Text category="p1">{`${t('contract.bottom_sheet.paragraph')}`}</Text>
+            <Text category="p2" style={{ color: theme['color-success-500'] }}>
+              {(selectedContract as any)?.name || ''}
+            </Text>
+          </View>
+        ),
+        heading: t('contract.bottom_sheet.heading'),
+        primaryAction: {
+          label: t('contract.bottom_sheet.label'),
+          onPress: onUploadContract,
+        },
+        secondaryAction: {
+          label: t('general:back'),
+          onPress: onCancelSelection,
+        },
       }}
     >
-      <Disclaimer
-        color="yellow"
-        text={
-          contract.status === ContractStatus.VALIDATE_ONG
-            ? i18n.t('documents:disclaimer_ong')
-            : i18n.t('documents:disclaimer_volunteer')
-        }
-      />
-      <FormLayout>
-        <OrganizationIdentity name="Asociația ZEN" uri="https://picsum.photos/200" />
-        <Text>{`${
-          contract.status === ContractStatus.VALIDATE_ONG
-            ? i18n.t('documents:contract_description_ong')
-            : i18n.t('documents:contract_description_volunteer')
-        }`}</Text>
-        <ContractItem
-          id={contract.id}
-          title={contract.name}
-          iconRightName="download"
-          startDate={contract.startDate}
-          endDate={contract.endDate}
-          status={ContractStatus.PENDING}
-          onPress={onContractPress}
-        />
-      </FormLayout>
+      {isLoadingContract && <LoadingScreen />}
+      {!isLoadingContract && contract && (
+        <>
+          {(contract.status === ContractStatus.PENDING_ADMIN ||
+            contract.status === ContractStatus.PENDING_VOLUNTEER) && (
+            <Disclaimer color="yellow" text={t(`contract.disclaimer.${contract.status}`)} />
+          )}
+          <FormLayout>
+            {userProfile?.activeOrganization && (
+              <OrganizationIdentity
+                name={userProfile?.activeOrganization.name}
+                uri={userProfile?.activeOrganization.logo || ''}
+              />
+            )}
+            <Text category="p1" style={styles.paragraph}>{`${t(
+              `contract.paragraph.${contract.status}`,
+            )}`}</Text>
+            <ContractItem
+              id={contract.id}
+              title={contract.contractNumber}
+              startDate={contract.startDate}
+              endDate={contract.endDate}
+              leftIcon={<PendingContractIcon />}
+              onPress={onDownloadContract}
+            />
+          </FormLayout>
+        </>
+      )}
     </PageLayout>
   );
 };
 
 export default Contract;
+
+const styles = StyleSheet.create({
+  paragraph: {
+    lineHeight: 24,
+  },
+  bottomSheetParagraphContainer: {
+    paddingVertical: 8,
+    flexDirection: 'column',
+    gap: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

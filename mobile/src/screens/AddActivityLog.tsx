@@ -1,9 +1,7 @@
 import React from 'react';
 import ModalLayout from '../layouts/ModalLayout';
-import i18n from '../common/config/i18n';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import { useTranslation } from 'react-i18next';
 import { useCreateActivityLogMutation } from '../services/activity-log/activity-log.service';
 import ActivityLogForm, {
@@ -12,13 +10,14 @@ import ActivityLogForm, {
 } from '../components/ActivityLogForm';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useAuth } from '../hooks/useAuth';
 
 const AddActivityLog = ({ navigation }: any) => {
   console.log('AddActivityLog');
   // translations
   const { t } = useTranslation('activity_log');
   // the active organization
-  const { activeOrganization } = useActiveOrganization();
+  const { userProfile } = useAuth();
   // log hours mutation
   const { mutate: logHours, isLoading: isLoggingHours } = useCreateActivityLogMutation();
 
@@ -37,7 +36,7 @@ const AddActivityLog = ({ navigation }: any) => {
       {
         activityLog: {
           ...activityLog,
-          volunteerId: activeOrganization?.volunteerId,
+          volunteerId: userProfile?.activeOrganization?.volunteerId,
         },
       },
       {
@@ -56,10 +55,10 @@ const AddActivityLog = ({ navigation }: any) => {
 
   return (
     <ModalLayout
-      title={i18n.t('general:add', { item: t('title').toLowerCase() })}
+      title={t('general:add', { item: t('title').toLowerCase() })}
       onDismiss={navigation.goBack}
       actionsOptions={{
-        actionLabel: i18n.t('general:add', { item: '' }),
+        actionLabel: t('general:add', { item: '' }),
         onActionButtonClick: handleSubmit(onSubmit),
         loading: isLoggingHours,
       }}

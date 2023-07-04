@@ -20,5 +20,8 @@ export interface IAnnouncementRepository
   findMany(
     findOptions: FindManyAnnouncementOptions,
   ): Promise<Pagination<IAnnouncementModel>>;
+  findManyByRegularUser(
+    findOptions: FindManyAnnouncementOptions,
+  ): Promise<Pagination<IAnnouncementModel>>;
   delete(id: string): Promise<string>;
 }

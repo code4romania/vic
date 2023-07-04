@@ -1,19 +1,16 @@
 import { Icon, Text, withStyles } from '@ui-kitten/components';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { View } from 'react-native';
-import { Pressable } from 'react-native';
-import GrayIcon from './GreyIcon';
 import { formatDate } from '../common/utils/utils';
-import { ContractStatus } from '../common/enums/contract.status.enum';
-import i18n from '../common/config/i18n';
+import PressableContainer from './PressableContainer';
 
 interface ContractItemProps {
   id: string;
   title: string;
-  status: ContractStatus;
-  startDate: Date;
-  endDate: Date;
-  iconRightName: string;
+  startDate: string;
+  endDate: string;
+  leftIcon: ReactNode;
+  rightIconName?: string;
   onPress: (id: string) => void;
   eva?: any;
 }
@@ -21,36 +18,21 @@ interface ContractItemProps {
 const ContractItem = ({
   id,
   title,
-  status,
   startDate,
   endDate,
-  iconRightName,
+  rightIconName = 'download',
   onPress,
   eva,
+  leftIcon,
 }: ContractItemProps) => {
   const onContractPress = () => {
     onPress(id);
   };
 
   return (
-    <Pressable
-      onPress={onContractPress}
-      style={({ pressed }) =>
-        pressed
-          ? { backgroundColor: eva.theme['cool-gray-50'] }
-          : { backgroundColor: eva.theme['cool-basic-100'] }
-      }
-    >
+    <PressableContainer onPress={onContractPress}>
       <View style={eva.style.container}>
-        <GrayIcon
-          name={'file-text'}
-          style={{
-            color:
-              status === ContractStatus.PENDING
-                ? eva.theme['yellow-500']
-                : eva.theme['cool-gray-500'],
-          }}
-        />
+        {leftIcon}
         <View style={eva.style.textWrapper}>
           <Text category="p2" ellipsizeMode="tail" numberOfLines={1}>
             {title}
@@ -60,17 +42,13 @@ const ContractItem = ({
             appearance="hint"
             ellipsizeMode="tail"
             numberOfLines={1}
-          >{`${formatDate(startDate)} - ${formatDate(endDate)} ${
-            status === ContractStatus.PENDING
-              ? ''
-              : `(${i18n.t(`documents:contract_status.${status}`)})`
-          }`}</Text>
+          >{`${formatDate(startDate)} - ${formatDate(endDate)}`}</Text>
         </View>
         <View style={eva.style.iconWrapper}>
-          <Icon name={iconRightName} style={eva.style.icon} />
+          <Icon name={rightIconName} style={eva.style.icon} />
         </View>
       </View>
-    </Pressable>
+    </PressableContainer>
   );
 };
 

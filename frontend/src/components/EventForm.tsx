@@ -12,7 +12,6 @@ import { AttendanceType } from '../common/enums/attendance-type.enum';
 import FormLayout from '../layouts/FormLayout';
 import FormDatePicker from './FormDatePicker';
 import FormInput from './FormInput';
-import FormUploadFile from './FormUploadFile';
 import FormTextarea from './FormTextarea';
 import { SelectItem } from './Select';
 import FormRadioGroup from './FormRadioGroup';
@@ -21,6 +20,7 @@ import { DATE_FORMAT } from '../common/constants/patterns';
 import TargetsMultiSelect from '../containers/TargetsMultiSelect';
 import ActivityTypesSelect from '../containers/ActivityTypesSelect';
 import { EventStatus } from '../common/enums/event-status';
+import FileUpload from './FileUpload';
 
 export enum TargetType {
   PUBLIC = 'public',
@@ -66,7 +66,7 @@ export type EventFormTypes = {
   targetType: TargetType;
   endDate?: Date;
   location?: string;
-  logo?: string;
+  logo?: File;
   attendanceType: AttendanceType;
   attendanceMention?: string;
   observation?: string;
@@ -238,16 +238,16 @@ const EventForm = ({
           }}
         />
         <Controller
-          name="logo"
           key="logo"
+          name="logo"
           control={control}
-          render={({ field: { onChange, value } }) => {
+          render={({ field: { onChange } }) => {
             return (
-              <FormUploadFile
-                value={value}
-                errorMessage={errors.logo?.message}
+              <FileUpload
                 label={`${i18n.t('events:form.logo.label')}`}
                 onChange={onChange}
+                errorMessage={errors['logo']?.message as string}
+                type="image"
               />
             );
           }}

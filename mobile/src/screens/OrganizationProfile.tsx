@@ -4,9 +4,12 @@ import { Divider, Text } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import SectionWrapper from '../components/SectionWrapper';
-import i18n from '../common/config/i18n';
 import ProfileIntro from '../components/ProfileIntro';
-import { useOrganizationQuery } from '../services/organization/organization.service';
+import {
+  useLeaveOrganizationMutation,
+  useOrganizationQuery,
+  useRejoinOrganizationMutation,
+} from '../services/organization/organization.service';
 import LoadingScreen from '../components/LoadingScreen';
 import { JSONStringifyError, formatDate } from '../common/utils/utils';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
@@ -21,9 +24,10 @@ import { useCancelAccessRequestMutation } from '../services/access-request/acces
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import useStore from '../store/store';
+import Paragraph from '../components/Paragraph';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
-  console.log('OrganizationProfile', route.params);
+  console.log('OrganizationProfile');
   const { t } = useTranslation('organization_profile');
 
   const { userProfile } = useAuth();
@@ -35,6 +39,12 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   const { isLoading: isCancelingAccessRequest, mutate: cancelAccessRequest } =
     useCancelAccessRequestMutation();
+
+  const { isLoading: isLeavingOrganization, mutate: leaveOrganization } =
+    useLeaveOrganizationMutation();
+
+  const { isLoading: isRejoiningOrganization, mutate: rejoinOrganization } =
+    useRejoinOrganizationMutation();
 
   const { organization } = useOrganization();
 
@@ -90,14 +100,55 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     }
   };
 
+  const onLeaveOrganizationConfirm = () => {
+    if (organization) {
+      leaveOrganization(
+        { volunteerId: organization.volunteer.id },
+        {
+          onError: (error: any) => {
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(
+                error.response?.data.code_error,
+              )}`,
+            });
+          },
+        },
+      );
+    }
+  };
+
+  const onRejoinOrganization = () => {
+    if (organization) {
+      rejoinOrganization(
+        { volunteerId: organization.volunteer.id },
+        {
+          onError: (error: any) => {
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(
+                error.response?.data.code_error,
+              )}`,
+            });
+          },
+        },
+      );
+    }
+  };
+
   const isLoading = () => {
-    return isCancelingAccessRequest || isFetchingOrganization;
+    return (
+      isCancelingAccessRequest ||
+      isFetchingOrganization ||
+      isLeavingOrganization ||
+      isRejoiningOrganization
+    );
   };
 
   const renderIdentityDataMissingBottomSheetConfig = () => ({
     iconType: 'warning' as any,
     heading: t('modal.identity_data_missing.heading'),
-    paragraph: t('modal.identity_data_missing.paragraph'),
+    paragraph: <Paragraph>{`${t('modal.identity_data_missing.paragraph')}`}</Paragraph>,
     primaryAction: {
       label: t('modal.identity_data_missing.action_label'),
       onPress: onGoToIdentityDataScreen,
@@ -109,11 +160,24 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   const renderCanceAccessRequestConfirmationBottomSheetConfig = () => ({
     heading: t('modal.confirm_cancel_request.heading'),
-    paragraph: t('modal.confirm_cancel_request.paragraph'),
+    paragraph: <Paragraph>{`${t('modal.confirm_cancel_request.paragraph')}`}</Paragraph>,
     primaryAction: {
       status: 'danger' as any,
       label: t('modal.confirm_cancel_request.action_label'),
       onPress: onCancelAccessRequest,
+    },
+    secondaryAction: {
+      label: t('general:back'),
+    },
+  });
+
+  const renderLeaveOrganizationConfirmationBottomSheetConfig = () => ({
+    heading: t('modal.confirm_leave_organization.heading'),
+    paragraph: <Paragraph>{`${t('modal.confirm_leave_organization.paragraph')}`}</Paragraph>,
+    primaryAction: {
+      status: 'danger' as any,
+      label: t('modal.confirm_leave_organization.action_label'),
+      onPress: onLeaveOrganizationConfirm,
     },
     secondaryAction: {
       label: t('general:back'),
@@ -139,8 +203,15 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       case OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER:
         options = {
           primaryActionLabel: t('leave'),
-          onPrimaryActionButtonClick: () => console.log('leave'),
+          onPrimaryActionButtonClick: onLeaveOrganization,
           primaryBtnType: ButtonType.DANGER,
+        };
+        break;
+      case OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER:
+        options = {
+          primaryActionLabel: t('rejoin'),
+          onPrimaryActionButtonClick: onRejoinOrganization,
+          primaryBtnType: ButtonType.PRIMARY,
         };
         break;
     }
@@ -148,20 +219,38 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     return options;
   };
 
+  const renderBottomSheetOptions = () => {
+    if (
+      organization?.organizationVolunteerStatus ===
+      OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
+    ) {
+      return renderCanceAccessRequestConfirmationBottomSheetConfig();
+    }
+
+    if (organization?.organizationVolunteerStatus === OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER) {
+      return renderLeaveOrganizationConfirmationBottomSheetConfig();
+    }
+
+    return renderIdentityDataMissingBottomSheetConfig();
+  };
+
+  const onEventPress = (eventId: string) => {
+    navigation.navigate('event', { eventId });
+  };
+
+  const onLeaveOrganization = () => {
+    navigation.navigate('leave-organization');
+  };
+
   return (
     <PageLayout
-      title={i18n.t('organization_profile:title')}
+      title={t('title')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         ...renderActionOptions(),
         loading: isLoading(),
       }}
-      bottomSheetOptions={
-        organization?.organizationVolunteerStatus !==
-        OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
-          ? renderIdentityDataMissingBottomSheetConfig()
-          : renderCanceAccessRequestConfirmationBottomSheetConfig()
-      }
+      bottomSheetOptions={renderBottomSheetOptions()}
     >
       {isFetchingOrganization && <LoadingScreen />}
       {!!getOrganizationError && !isFetchingOrganization && (
@@ -173,7 +262,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
             <Disclaimer
               text={t('disclaimer.joined_from', {
-                date: formatDate(new Date(organization.volunteers[0].createdOn)),
+                date: formatDate(new Date(organization.volunteer.createdOn)),
               })}
               color="green"
             />
@@ -182,48 +271,42 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING && (
             <Disclaimer text={t('disclaimer.access_request_pending')} color="yellow" />
           )}
+          {organization?.organizationVolunteerStatus ===
+            OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER && (
+            <Disclaimer text={t('disclaimer.volunteer_archived')} color="yellow" />
+          )}
+          {organization?.organizationVolunteerStatus ===
+            OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER && (
+            <Disclaimer text={t('disclaimer.volunteer_blocked')} color="danger" />
+          )}
 
           <ScrollViewLayout>
             <ProfileIntro
               uri={organization.logo}
               name={organization.name}
-              description={`${organization.numberOfVolunteers} ${i18n
-                .t('general:volunteers')
-                .toLowerCase()}`}
+              description={`${organization.numberOfVolunteers} ${t(
+                'general:volunteers',
+              ).toLowerCase()}`}
             />
             <View style={styles.container}>
-              <ReadOnlyElement
-                label={i18n.t('organization_profile:description')}
-                value={organization.description}
-              />
-              <ReadOnlyElement
-                label={i18n.t('organization_profile:email')}
-                value={organization.email}
-              />
-              <ReadOnlyElement
-                label={i18n.t('organization_profile:phone')}
-                value={organization.phone}
-              />
-              <ReadOnlyElement
-                label={i18n.t('organization_profile:address')}
-                value={organization.address}
-              />
-              <ReadOnlyElement
-                label={i18n.t('organization_profile:area')}
-                value={organization.activityArea}
-              />
+              <ReadOnlyElement label={t('description')} value={organization.description} />
+              <ReadOnlyElement label={t('email')} value={organization.email} />
+              <ReadOnlyElement label={t('phone')} value={organization.phone} />
+              <ReadOnlyElement label={t('address')} value={organization.address} />
+              <ReadOnlyElement label={t('area')} value={organization.activityArea} />
             </View>
-            <SectionWrapper title={i18n.t('organization_profile:events')}>
+            <SectionWrapper title={t('events')}>
               <ScrollViewLayout>
-                <View style={styles.container}>
-                  {organization.events.map((event) => (
-                    <View style={styles.container} key={event.id}>
-                      <EventItem event={event} onPress={console.log} />
-                      <Divider />
-                    </View>
-                  ))}
-                  {organization.events.length === 0 && (
+                <View>
+                  {!organization.events || organization.events.length === 0 ? (
                     <Text category="p1">{`${t('no_events')}`}</Text>
+                  ) : (
+                    organization.events.map((event) => (
+                      <View key={event.id}>
+                        <EventItem event={event} onPress={onEventPress} />
+                        <Divider />
+                      </View>
+                    ))
                   )}
                 </View>
               </ScrollViewLayout>

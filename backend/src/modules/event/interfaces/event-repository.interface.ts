@@ -33,4 +33,5 @@ export interface IEventRepository {
   findOngoingAndFinishedEvents(
     findOptions: FindOngoingAndFinishedEventOptions,
   ): Promise<IEventModel[]>;
+  countUpcomingEvents(userId: string): Promise<number>;
 }

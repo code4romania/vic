@@ -13,8 +13,8 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useTranslation } from 'react-i18next';
 import useStore from '../store/store';
-import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { useOrganization } from '../store/organization/organization.selector';
+import Paragraph from '../components/Paragraph';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -46,12 +46,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
     mutate: joinOrganization,
   } = useJoinByAccessCodeMutation();
   // bottom sheet and active organization state
-  const {
-    open: openBottomSheet,
-    close: closeBottomSheet,
-    setActiveOrganization,
-    addOrganization,
-  } = useStore();
+  const { open: openBottomSheet, close: closeBottomSheet } = useStore();
 
   const {
     control,
@@ -72,19 +67,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
 
     // make the access request
     joinOrganization(joinPayload, {
-      onSuccess: (data: IVolunteer) => {
-        // set this as active organization
-        setActiveOrganization({
-          ...data.organization,
-          volunteerId: data.id,
-        });
-
-        // push new organization to my organizations drawer
-        addOrganization({
-          ...data.organization,
-          volunteerId: data.id,
-        });
-
+      onSuccess: () => {
         // show modal which will eventually become bottom sheet
         openBottomSheet();
       },
@@ -111,16 +94,16 @@ const JoinByAccessCode = ({ navigation }: any) => {
 
   return (
     <PageLayout
-      title={i18n.t('access_code:title')}
+      title={t('title')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
-        primaryActionLabel: i18n.t('general:join'),
+        primaryActionLabel: t('general:join'),
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isJoiningByAccessCode,
       }}
       bottomSheetOptions={{
         iconType: 'success',
-        paragraph: t('modal.success.paragraph'),
+        paragraph: <Paragraph>{`${t('modal.success.paragraph')}`}</Paragraph>,
         heading: t('modal.success.heading'),
         primaryAction: {
           label: t('modal.success.primary_action_label'),
@@ -134,14 +117,14 @@ const JoinByAccessCode = ({ navigation }: any) => {
     >
       <FormLayout>
         <OrganizationIdentity name={organization?.name || ''} uri={organization?.logo || ''} />
-        <Text category="p2">{`${i18n.t('access_code:title')}`}</Text>
-        <Text appearance="hint">{`${i18n.t('access_code:description')}`}</Text>
+        <Text category="p2">{`${t('title')}`}</Text>
+        <Text appearance="hint">{`${t('description')}`}</Text>
         <FormInput
           control={control as any}
           error={errors.code}
-          label={i18n.t('access_code:title')}
+          label={t('title')}
           name="code"
-          placeholder={i18n.t('access_code:form.code.placeholder')}
+          placeholder={t('form.code.placeholder')}
           disabled={isJoiningByAccessCode}
         />
       </FormLayout>

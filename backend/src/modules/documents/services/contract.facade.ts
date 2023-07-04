@@ -5,6 +5,7 @@ import {
   FindContractOptions,
   FindManyContractOptions,
   IContractModel,
+  UpdateContractOptions,
 } from '../models/contract.model';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 
@@ -26,5 +27,22 @@ export class ContractFacade {
 
   public async count(findOptions: FindContractOptions): Promise<number> {
     return this.contractRepository.count(findOptions);
+  }
+
+  public async findOne(
+    findOptions: FindContractOptions,
+  ): Promise<IContractModel> {
+    return this.contractRepository.find(findOptions);
+  }
+
+  public async updateContract(
+    id: string,
+    updates: UpdateContractOptions,
+  ): Promise<IContractModel> {
+    return this.contractRepository.update(id, updates);
+  }
+
+  public async delete(id: string): Promise<string> {
+    return this.contractRepository.delete(id);
   }
 }

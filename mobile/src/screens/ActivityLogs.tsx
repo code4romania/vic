@@ -5,7 +5,6 @@ import i18n from '../common/config/i18n';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import Tabs from '../components/Tabs';
 import { View } from 'react-native';
-import { useActiveOrganization } from '../store/organization/active-organization.selector';
 import {
   useActivityLogsCounters,
   useActivityLogsInfiniteQuery,
@@ -20,6 +19,7 @@ import LogItem from '../components/LogItem';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { ISelectItem } from '../components/FormSelect';
 import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
+import { useAuth } from '../hooks/useAuth';
 
 export const ActivityLogsTabs: ISelectItem[] = [
   { key: ActivityLogStatus.PENDING, label: i18n.t('activity_logs:tabs.pending') },
@@ -38,10 +38,10 @@ const ActivityLogs = ({ navigation }: any) => {
   const [search, setSearch] = useState<string>('');
   // active tab
   const [status, setStatus] = useState<ActivityLogStatus>(ActivityLogStatus.PENDING);
-  // active organization
-  const { activeOrganization } = useActiveOrganization();
   // counters state
   const { approvedHours, rejectedHours, pendingHours } = useActivityLogs();
+  // user profile
+  const { userProfile } = useAuth();
 
   // events query
   const {
@@ -55,7 +55,7 @@ const ActivityLogs = ({ navigation }: any) => {
   // counters
   const { isFetching: isLoadingCounters } = useActivityLogsCounters(
     status,
-    activeOrganization?.volunteerId as string,
+    userProfile?.activeOrganization?.volunteerId as string,
   ); // TODO: check for error
 
   const onAddActivityLogButtonPress = () => {
@@ -88,11 +88,11 @@ const ActivityLogs = ({ navigation }: any) => {
 
   return (
     <PageLayout title={t('title')} onBackButtonPress={navigation.goBack}>
-      {activeOrganization && (
+      {userProfile?.activeOrganization && (
         <View style={styles.organizationIdentityWrapper}>
           <OrganizationIdentity
-            uri={activeOrganization.logo || ''}
-            name={activeOrganization.name}
+            uri={userProfile?.activeOrganization.logo || ''}
+            name={userProfile?.activeOrganization.name}
           />
         </View>
       )}
@@ -104,7 +104,7 @@ const ActivityLogs = ({ navigation }: any) => {
       />
       {!isLoadingCounters && (
         <Text appearance="hint" style={styles.totalText}>
-          {`${i18n.t('activity_log:total')}`}{' '}
+          {`${t('activity_log:total')}`}{' '}
           <>
             {status === ActivityLogStatus.APPROVED && (
               <Text category="p2">{`${approvedHours}h`} </Text>

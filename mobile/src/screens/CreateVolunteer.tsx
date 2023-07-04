@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import i18n from '../common/config/i18n';
 import ModalLayout from '../layouts/ModalLayout';
 import { useAuth } from '../hooks/useAuth';
 import { useCreateVolunteerProfileMutation } from '../services/volunteer/volunteer.service';
@@ -69,7 +68,7 @@ const CreateVolunteer = ({ navigation, route }: any) => {
       title={t('heading')}
       actionsOptions={{
         onActionButtonClick: handleSubmit(onSubmit),
-        actionLabel: i18n.t('general:save'),
+        actionLabel: t('general:save'),
         loading: isCreatingProfile,
       }}
       onDismiss={navigation.goBack}

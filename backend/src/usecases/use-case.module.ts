@@ -110,6 +110,22 @@ import { GetAllTemplatesUsecase } from './documents/get-all-templates.usecase';
 import { GetManyContractsUsecase } from './documents/get-many-contracts.usecase';
 import { CreateContractUsecase } from './documents/create-contract.usecase';
 import { CountPendingContractsUsecase } from './documents/count-pending-contracts.usecase';
+import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
+import { SignContractByVolunteer } from './documents/sign-contract-by-volunteer.usecase';
+import { SignAndConfirmContractUsecase } from './documents/sign-and-confirm-contract.usecase';
+import { RejectContractUsecase } from './documents/reject-contract.usecase';
+import { GetTemplatesForDownloadUsecase } from './documents/get-templates-for-download.usecase';
+import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
+import { DeleteContractUsecase } from './documents/delete-contract.usecase';
+import { GetVolunteerContractHistoryUsecase } from './documents/get-volunteer-contract-history.usecase';
+import { GetVolunteerPendingContractsUsecase } from './documents/get-volunteer-pending-contracts.usecase';
+import { CancelContractUsecase } from './documents/cancel-contract.usecase';
+import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
+import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
+import { GetTeoStatisticsUsecase } from './dashboard/get-teo-statistics.usecase';
+import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anouncements-by-user.usecase';
+import { LeaveOrganizationUsecase } from './organization/leave-organization.usecase';
+import { RejoinOrganizationUsecase } from './organization/rejoin-organization.usecase';
 
 @Module({
   imports: [
@@ -136,6 +152,8 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     GetOrganizationWithEventsUseCase,
     GetMyOrganizationsUsecase,
     SwitchOrganizationUsecase,
+    LeaveOrganizationUsecase,
+    RejoinOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -155,6 +173,7 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
     UpdateUserPersonalDataUsecase,
+    UpdateRegularUserUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -194,6 +213,7 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     CreateAnnouncementUseCase,
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
+    GetManyAnouncementsByUserAsUsecase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,
@@ -231,6 +251,8 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    GetVolunteerMonthlyNewsStatisticsUsecase,
+    GetTeoStatisticsUsecase,
     // Templates
     CreateTemplateUsecase,
     GetTemplatesUsecase,
@@ -238,10 +260,21 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     UpdateTemplateUsecase,
     DeleteTemplateUseCase,
     GetAllTemplatesUsecase,
+    GetTemplatesForDownloadUsecase,
     // Contracts
     CreateContractUsecase,
     GetManyContractsUsecase,
     CountPendingContractsUsecase,
+    GetOneContractUsecase,
+    SignContractByVolunteer,
+    SignAndConfirmContractUsecase,
+    SignAndConfirmContractUsecase,
+    RejectContractUsecase,
+    GetContractsForDownloadUsecase,
+    DeleteContractUsecase,
+    GetVolunteerContractHistoryUsecase,
+    GetVolunteerPendingContractsUsecase,
+    CancelContractUsecase,
   ],
   exports: [
     // Organization
@@ -251,6 +284,8 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     GetOrganizationWithEventsUseCase,
     GetMyOrganizationsUsecase,
     SwitchOrganizationUsecase,
+    LeaveOrganizationUsecase,
+    RejoinOrganizationUsecase,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -270,6 +305,7 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
     UpdateUserPersonalDataUsecase,
+    UpdateRegularUserUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -310,6 +346,7 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     UpdateAnnouncementUseCase,
     DeleteAnnouncementUseCase,
     CreateEventUseCase,
+    GetManyAnouncementsByUserAsUsecase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,
@@ -347,6 +384,7 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    GetVolunteerMonthlyNewsStatisticsUsecase,
     // Templates
     CreateTemplateUsecase,
     GetTemplatesUsecase,
@@ -354,10 +392,22 @@ import { CountPendingContractsUsecase } from './documents/count-pending-contract
     UpdateTemplateUsecase,
     DeleteTemplateUseCase,
     GetAllTemplatesUsecase,
+    GetTemplatesForDownloadUsecase,
     // Contracts
     CreateContractUsecase,
     GetManyContractsUsecase,
     CountPendingContractsUsecase,
+    GetOneContractUsecase,
+    SignContractByVolunteer,
+    SignAndConfirmContractUsecase,
+    SignAndConfirmContractUsecase,
+    RejectContractUsecase,
+    GetContractsForDownloadUsecase,
+    DeleteContractUsecase,
+    GetVolunteerContractHistoryUsecase,
+    GetVolunteerPendingContractsUsecase,
+    CancelContractUsecase,
+    GetTeoStatisticsUsecase,
   ],
 })
 export class UseCaseModule {}

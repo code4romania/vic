@@ -16,12 +16,17 @@ export class OrganizationWithEventsPresenter {
     this.logo = organization.logo;
     this.description = organization.description;
     this.numberOfVolunteers = organization.numberOfVolunteers;
-    this.events = organization.events.map(
-      (event) => new MobileEventListItemPresenter(event),
+    this.events = organization.events.slice(0, 2).map(
+      (event) =>
+        new MobileEventListItemPresenter({
+          ...event,
+          organizationLogo: organization.logo,
+        }),
     );
-    this.volunteers = organization.volunteers.map(
-      (volunteer) => new VolunteerPresenter(volunteer),
-    );
+    this.volunteer =
+      organization.volunteers.length > 0
+        ? new VolunteerPresenter(organization.volunteers[0])
+        : null;
     this.organizationVolunteerStatus = organization.organizationVolunteerStatus;
   }
 
@@ -100,7 +105,6 @@ export class OrganizationWithEventsPresenter {
   @Expose()
   @ApiProperty({
     type: VolunteerPresenter,
-    isArray: true,
   })
-  volunteers: VolunteerPresenter[];
+  volunteer: VolunteerPresenter;
 }

@@ -6,8 +6,6 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { Text } from '@ui-kitten/components';
 import { useCreateUserProfileMutation } from '../services/user/user.service';
-import { useAuth } from '../hooks/useAuth';
-import { IUserProfile } from '../common/interfaces/user-profile.interface';
 import FormInput from '../components/FormInput';
 import FormSelect from '../components/FormSelect';
 import { Sex } from '../common/enums/sex.enum';
@@ -59,7 +57,6 @@ const schema = yup
 const CreateUser = ({ navigation }: any) => {
   const { t } = useTranslation('register');
   const { mutate: createUserProfile, isLoading } = useCreateUserProfileMutation();
-  const { setUserProfile } = useAuth();
 
   const {
     control,
@@ -70,11 +67,10 @@ const CreateUser = ({ navigation }: any) => {
   } = useForm<UserFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema as any),
   });
 
   const watchCountyId = watch('countyId');
-  const phone = watch('phone');
 
   useEffect(() => {
     (async () => {
@@ -99,16 +95,12 @@ const CreateUser = ({ navigation }: any) => {
 
       // create new profile
       createUserProfile(newUser, {
-        onSuccess: (profile: IUserProfile) => {
-          // update profile in context
-          setUserProfile(profile);
-        },
         onError: () => {
-          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+          Toast.show({ type: 'error', text1: `${t('auth:errors.init_profile')}` });
         },
       });
     } catch (error) {
-      Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.init_profile')}` });
+      Toast.show({ type: 'error', text1: `${t('auth:errors.init_profile')}` });
     }
   };
 
@@ -146,10 +138,10 @@ const CreateUser = ({ navigation }: any) => {
         <FormInput
           control={control as any}
           name="phone"
-          label={t('register:create_account.form.phone.label')}
-          placeholder={t('register:create_account.form.phone.placeholder')}
+          label={t('create_account.form.phone.label')}
+          placeholder={t('create_account.form.phone.placeholder')}
           error={errors.phone}
-          disabled={isLoading || !!phone}
+          disabled={isLoading}
           keyboardType="phone-pad"
           required={true}
         />

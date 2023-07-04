@@ -9,8 +9,7 @@ export class EventListItemPresenter {
     this.id = event.id;
 
     this.name = event.name;
-    this.image =
-      'https://emoji.slack-edge.com/TFMSWR5JT/dragos/584b8f200c433c5e.jpg';
+    this.image = event.poster;
 
     this.startDate = event.startDate;
     this.endDate = event.endDate;

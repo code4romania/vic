@@ -6,6 +6,10 @@ import {
 } from 'src/modules/organization/models/organization-structure.model';
 import { AnnouncementEntity } from '../entities/announcement.entity';
 import { AnnouncementStatus } from '../enums/announcement-status.enum';
+import {
+  IOrganizationModel,
+  OrganizationTransformer,
+} from 'src/modules/organization/models/organization.model';
 
 export interface IAnnouncementModel extends IBaseModel {
   id: string;
@@ -13,6 +17,7 @@ export interface IAnnouncementModel extends IBaseModel {
   description: string;
   status: AnnouncementStatus;
   organizationId: string;
+  organization?: IOrganizationModel;
   publishedOn?: Date;
   targets?: IOrganizationStructureModel[];
   targetedVolunteers?: number;
@@ -36,6 +41,12 @@ export type FindAnnouncementOptions = Partial<
 export type FindManyAnnouncementOptions = IBasePaginationFilterModel &
   Partial<Pick<IAnnouncementModel, 'status' | 'organizationId'>> & {
     targets?: string[];
+    userId?: string;
+  };
+
+export type FindManyAnnouncementForUserOptions = IBasePaginationFilterModel &
+  Partial<Pick<IAnnouncementModel, 'status'>> & {
+    userId?: string;
   };
 
 export class AnnouncementStructureTransformer {
@@ -54,6 +65,7 @@ export class AnnouncementStructureTransformer {
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,
       targetedVolunteers: entity.targetedVolunteers,
+      organization: OrganizationTransformer.fromEntity(entity.organization),
     };
   }
 

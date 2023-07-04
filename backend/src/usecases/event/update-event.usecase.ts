@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ObjectDiff } from 'src/common/helpers/object-diff';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -17,9 +17,14 @@ import { OrganizationStructureType } from 'src/modules/organization/enums/organi
 import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOneEventUseCase } from './get-one-event.usecase';
+import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
+import { S3_FILE_PATHS } from 'src/common/constants/constants';
+import { JSONStringifyError } from 'src/common/helpers/utils';
 
 @Injectable()
 export class UpdateEventUseCase implements IUseCaseService<IEventModel> {
+  private readonly logger = new Logger(UpdateEventUseCase.name);
+
   constructor(
     private readonly eventFacade: EventFacade,
     private readonly getOneEventUseCase: GetOneEventUseCase,
@@ -27,12 +32,14 @@ export class UpdateEventUseCase implements IUseCaseService<IEventModel> {
     private readonly activityTypeFacade: ActivityTypeFacade,
     private readonly exceptionsService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly s3Service: S3Service,
   ) {}
 
   public async execute(
     id: string,
     data: UpdateEventOptions,
     admin: IAdminUserModel,
+    files?: Express.Multer.File[],
   ): Promise<IEventModel> {
     // 1. Find the event to update
     const event = await this.getOneEventUseCase.execute({ id });
@@ -82,18 +89,53 @@ export class UpdateEventUseCase implements IUseCaseService<IEventModel> {
       data.attendanceMention = undefined;
     }
 
-    const updated = await this.eventFacade.update(id, data);
+    // 5. save poster to s3
+    try {
+      const image = { poster: '', posterPath: '' };
+      let payload = data;
+      if (files?.length > 0) {
+        // 5.1. upload file to s3 and get the path
+        image.posterPath = await this.s3Service.uploadFile(
+          `${S3_FILE_PATHS.EVENTS}/${admin.organizationId}`,
+          files[0],
+        );
 
-    this.actionsArchiveFacade.trackEvent(
-      TrackedEventName.UPDATE_EVENT,
-      {
-        eventId: updated.id,
-        eventName: updated.name,
-      },
-      admin,
-      ObjectDiff.diff(event, updated),
-    );
+        // 5.2 check if there is already a path at that file and remove it
+        if (event.posterPath) {
+          await this.s3Service.deleteFile(event.posterPath);
+        }
 
-    return updated;
+        // 5.2 generate public url
+        image.poster = await this.s3Service.generatePresignedURL(
+          image.posterPath,
+        );
+
+        payload = { ...payload, ...image };
+      }
+
+      const updated = await this.eventFacade.update(id, payload);
+
+      this.actionsArchiveFacade.trackEvent(
+        TrackedEventName.UPDATE_EVENT,
+        {
+          eventId: updated.id,
+          eventName: updated.name,
+        },
+        admin,
+        ObjectDiff.diff(event, updated),
+      );
+
+      return updated;
+    } catch (error) {
+      // log error
+      this.logger.error({
+        ...EventExceptionMessages.EVENT_008,
+        error: JSONStringifyError(error),
+      });
+      // error while uploading file to s3
+      this.exceptionsService.badRequestException(
+        EventExceptionMessages.EVENT_008,
+      );
+    }
   }
 }

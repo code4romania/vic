@@ -6,11 +6,21 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 import { TemplateEntity } from './template.entity';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { ContractStatus } from '../enums/contract-status.enum';
+import { AdminUserEntity } from 'src/modules/user/entities/user.entity';
 
+export const CONTRACT_CONSTRAINTS = {
+  CONTRACT_NUMBER_ORGANIZATION: 'organization-contract-number',
+};
+
+@Unique(CONTRACT_CONSTRAINTS.CONTRACT_NUMBER_ORGANIZATION, [
+  'contractNumber',
+  'organizationId',
+])
 @Entity({ name: 'contract' })
 export class ContractEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -66,4 +76,38 @@ export class ContractEntity extends BaseEntity {
   @ManyToOne(() => VolunteerEntity)
   @JoinColumn({ name: 'volunteer_id' })
   volunteer: VolunteerEntity;
+
+  @Column({ type: 'string', name: 'created_by_admin_id', nullable: true })
+  createdByAdminId: string;
+
+  @ManyToOne(() => AdminUserEntity)
+  @JoinColumn({ name: 'created_by_admin_id' })
+  createdByAdmin: AdminUserEntity;
+
+  // ==================== APPROVAL =================================
+
+  @Column({ type: 'timestamptz', name: 'approved_on', nullable: true })
+  approvedOn: Date;
+
+  @Column({ type: 'string', name: 'approved_by', nullable: true })
+  approvedById: string;
+
+  @ManyToOne(() => AdminUserEntity)
+  @JoinColumn({ name: 'approved_by' })
+  approvedBy: AdminUserEntity;
+
+  // ==================== REJECTION =================================
+
+  @Column({ type: 'text', name: 'rejection_reason', nullable: true })
+  rejectionReason: string;
+
+  @Column({ type: 'timestamptz', name: 'rejected_on', nullable: true })
+  rejectedOn: Date;
+
+  @Column({ type: 'string', name: 'rejected_by', nullable: true })
+  rejectedById: string;
+
+  @ManyToOne(() => AdminUserEntity)
+  @JoinColumn({ name: 'rejected_by' })
+  rejectedBy: AdminUserEntity;
 }

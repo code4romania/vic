@@ -29,11 +29,20 @@ export type CreateRegularUserOptions = Omit<
   locationId: number;
 };
 
-export type UpdateRegularUserOptions = Pick<
-  IRegularUserModel,
-  'userPersonalData'
+export type UpdateRegularUserOptions = Partial<
+  Pick<
+    IRegularUserModel,
+    | 'userPersonalData'
+    | 'firstName'
+    | 'lastName'
+    | 'birthday'
+    | 'phone'
+    | 'sex'
+    | 'profilePicture'
+  >
 > & {
   activeOrganizationId?: string;
+  locationId?: number;
 };
 
 export type FindRegularUserOptions =

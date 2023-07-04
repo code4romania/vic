@@ -28,7 +28,7 @@ const schema = yup
     template: yup.object().required(`${i18n.t('documents:contract.add.form.template.required')}`),
     contractNumber: yup
       .string()
-      .max(10, `${i18n.t('documents:contract.add.form.contract_number.max')}`)
+      .max(9, `${i18n.t('documents:contract.add.form.contract_number.max')}`)
       .required(`${i18n.t('documents:contract.add.form.contract_number.required')}`),
     startDate: yup.date().required(`${i18n.t('documents:contract.add.form.start_date.required')}`),
     endDate: yup.date().required(`${i18n.t('documents:contract.add.form.end_date.required')}`),
