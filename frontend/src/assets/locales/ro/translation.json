@@ -468,9 +468,11 @@
         "disclaimer": "Disclaimer: Daca nu este selectat niciun departament, atunci 'Toata organizatia' va fi selectata",
         "required": "Departamentele sunt obligatorii"
       },
-
       "description": { "label": "Descriere eveniment" },
-      "logo": { "label": "Imagine eveniment", "button_label": "Încarcă imagine" },
+      "logo": {
+        "label": "Imagine eveniment",
+        "required": "Imaginea evenimentului este obligatorie"
+      },
       "noting": {
         "label": "Înscriere eveniment",
         "simple": "Simplă (fără mențiuni)",

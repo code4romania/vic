@@ -3,21 +3,29 @@ import { useDropzone } from 'react-dropzone';
 import { classNames } from '../common/utils/utils';
 import { useTranslation } from 'react-i18next';
 
+type FileType = 'doc' | 'image';
+
 interface FileUploadProps {
   onChange: (file: File) => void;
   errorMessage?: string;
   label: string;
+  type?: FileType;
 }
 
-const FileUpload = ({ onChange, errorMessage, label }: FileUploadProps) => {
+const FileUpload = ({ onChange, errorMessage, label, type = 'doc' }: FileUploadProps) => {
   const { t } = useTranslation('general');
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-    accept: {
-      'application/pdf': ['.pdf'],
-      'application/msword': ['.doc'],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-    },
+    accept:
+      type === 'doc'
+        ? {
+            'application/pdf': ['.pdf'],
+            'application/msword': ['.doc'],
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+          }
+        : {
+            'image/jpeg': ['.png', '.jpg', '.jpeg'],
+          },
     maxFiles: 1,
   });
 

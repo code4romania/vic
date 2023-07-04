@@ -44,7 +44,7 @@ export const eventValidationSchema = yup.object({
     is: TargetType.SELECT,
     then: yup.array().required(`${i18n.t('events:form.target.required')}`),
   }),
-  logo: yup.string().optional(),
+  logo: yup.mixed(),
   attendanceType: yup.string().oneOf(Object.values(AttendanceType)),
   attendanceMention: yup
     .string()

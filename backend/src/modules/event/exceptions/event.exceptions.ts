@@ -8,6 +8,7 @@ export enum EventsExceptionCodes {
   EVENT_005 = 'EVENT_005',
   EVENT_006 = 'EVENT_006',
   EVENT_007 = 'EVENT_007',
+  EVENT_008 = 'EVENT_008',
 }
 
 type EventExceptionCodeType = keyof typeof EventsExceptionCodes;
@@ -44,5 +45,9 @@ export const EventExceptionMessages: Record<
   [EventsExceptionCodes.EVENT_007]: {
     code_error: EventsExceptionCodes.EVENT_007,
     message: 'Cannot delete an event with logged hours.',
+  },
+  [EventsExceptionCodes.EVENT_008]: {
+    code_error: EventsExceptionCodes.EVENT_008,
+    message: 'Error while uploading the poster.',
   },
 };

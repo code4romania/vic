@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
@@ -15,9 +15,14 @@ import { OrganizationStructureType } from 'src/modules/organization/enums/organi
 import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
+import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
+import { S3_FILE_PATHS } from 'src/common/constants/constants';
+import { JSONStringifyError } from 'src/common/helpers/utils';
 
 @Injectable()
 export class CreateEventUseCase implements IUseCaseService<IEventModel> {
+  private readonly logger = new Logger(CreateEventUseCase.name);
+
   constructor(
     private readonly eventFacade: EventFacade,
     private readonly getOrganizationUseCaseService: GetOrganizationUseCaseService,
@@ -25,11 +30,13 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
     private readonly activityTypeFacade: ActivityTypeFacade,
     private readonly exceptionsService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly s3Service: S3Service,
   ) {}
 
   public async execute(
     data: CreateEventOptions,
     admin: IAdminUserModel,
+    files?: Express.Multer.File[],
   ): Promise<IEventModel> {
     // 1. Check if the the organization exists
     await this.getOrganizationUseCaseService.execute(data.organizationId);
@@ -70,18 +77,48 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
       data.attendanceMention = undefined;
     }
 
-    const created = await this.eventFacade.create(data);
+    // 5. save poster to s3
+    try {
+      const image = { poster: '', posterPath: '' };
+      if (files?.length > 0) {
+        // 5.1. upload file to s3 and get the path
+        image.posterPath = await this.s3Service.uploadFile(
+          `${S3_FILE_PATHS.EVENTS}/${admin.organizationId}`,
+          files[0],
+        );
 
-    this.actionsArchiveFacade.trackEvent(
-      TrackedEventName.CREATE_EVENT,
-      {
-        eventId: created.id,
-        eventName: created.name,
-        status: created.status,
-      },
-      admin,
-    );
+        // 5.2 generate public url
+        image.poster = await this.s3Service.generatePresignedURL(
+          image.posterPath,
+        );
+      }
 
-    return created;
+      const created = await this.eventFacade.create({
+        ...data,
+        ...image,
+      });
+
+      this.actionsArchiveFacade.trackEvent(
+        TrackedEventName.CREATE_EVENT,
+        {
+          eventId: created.id,
+          eventName: created.name,
+          status: created.status,
+        },
+        admin,
+      );
+
+      return created;
+    } catch (error) {
+      // log error
+      this.logger.error({
+        ...EventExceptionMessages.EVENT_008,
+        error: JSONStringifyError(error),
+      });
+      // error while uploading file to s3
+      this.exceptionsService.badRequestException(
+        EventExceptionMessages.EVENT_008,
+      );
+    }
   }
 }

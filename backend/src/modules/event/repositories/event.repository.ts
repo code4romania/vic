@@ -82,6 +82,7 @@ export class EventRepository
         'event.createdOn',
         'event.organizationId',
         'event.location',
+        'event.poster',
         'targets.id',
         'targets.name', // TODO: need number of members per target, create a View
         'activityLog.volunteerId',
