@@ -297,6 +297,7 @@ export class EventRepository
         'event.isPublic',
         'event.createdOn',
         'event.organizationId',
+        'event.poster',
         'event.location',
         'targets.id',
         'targets.name',
