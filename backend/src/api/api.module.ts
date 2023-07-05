@@ -29,6 +29,7 @@ import { ContractController } from './contracts/contracts.controller';
 import { MobileContractController } from './_mobile/contract/contract.controller';
 import { MobileStatisticsController } from './_mobile/statistics/statistics.controller';
 import { MobileAnouncementsController } from './_mobile/anouncements/anouncements.controller';
+import { MobileSettingsController } from './_mobile/settings/settings-controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -63,6 +64,7 @@ import { MobileAnouncementsController } from './_mobile/anouncements/anouncement
     MobileContractController,
     MobileStatisticsController,
     MobileAnouncementsController,
+    MobileSettingsController,
   ],
 })
 export class ApiModule {}

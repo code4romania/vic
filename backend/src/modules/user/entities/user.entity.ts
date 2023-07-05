@@ -16,6 +16,7 @@ import {
 } from 'typeorm';
 import { SEX, UserType } from '../enums/user.enum';
 import { UserPersonalDataEntity } from './user-personal-data.entity';
+import { NotificationsSettingsEntity } from 'src/modules/notifications/entities/notifications-settings.entity';
 
 export const USER_CONSTRAINTS = {
   COGNITO_USER_TYPE_EMAIL_UNIQUE: 'cognito-userType-email-unique',
@@ -96,6 +97,17 @@ export class RegularUserEntity extends UserEntity {
   @OneToOne(() => UserPersonalDataEntity, { eager: true })
   @JoinColumn({ name: 'user_personal_data_id' })
   userPersonalData: UserPersonalDataEntity;
+
+  @Column({
+    type: 'varchar',
+    name: 'notifications_settings_id',
+    nullable: true,
+  })
+  notificationsSettingsId: string;
+
+  @OneToOne(() => NotificationsSettingsEntity, { eager: true })
+  @JoinColumn({ name: 'notifications_settings_id' })
+  notificationsSettings: NotificationsSettingsEntity;
 
   @Column({
     type: 'varchar',

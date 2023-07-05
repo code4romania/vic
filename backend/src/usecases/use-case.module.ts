@@ -129,6 +129,7 @@ import { GetTeoStatisticsUsecase } from './dashboard/get-teo-statistics.usecase'
 import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anouncements-by-user.usecase';
 import { LeaveOrganizationUsecase } from './organization/leave-organization.usecase';
 import { RejoinOrganizationUsecase } from './organization/rejoin-organization.usecase';
+import { UpdateSettingsUsecase } from './notifications-settings/update-settings.usecase';
 
 @Module({
   imports: [
@@ -282,6 +283,8 @@ import { RejoinOrganizationUsecase } from './organization/rejoin-organization.us
     GetVolunteerContractHistoryUsecase,
     GetVolunteerPendingContractsUsecase,
     CancelContractUsecase,
+    // Notifications
+    UpdateSettingsUsecase,
   ],
   exports: [
     // Organization
@@ -418,6 +421,8 @@ import { RejoinOrganizationUsecase } from './organization/rejoin-organization.us
     GetVolunteerPendingContractsUsecase,
     CancelContractUsecase,
     GetTeoStatisticsUsecase,
+    // Notifications
+    UpdateSettingsUsecase,
   ],
 })
 export class UseCaseModule {}

@@ -1,12 +1,6 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import { RegularUserEntity } from 'src/modules/user/entities/user.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { NotificationsFrom } from '../enums/NotificationsFrom.enum';
 
 @Entity({ name: 'notifications_settings' })
@@ -28,10 +22,6 @@ export class NotificationsSettingsEntity extends BaseEntity {
   @Column({ type: 'boolean', name: 'notifications_via_push', default: false })
   notificationsViaPush: boolean;
 
-  @Column({ type: 'text', name: 'user_id' })
-  userId: string;
-
-  @OneToOne(() => RegularUserEntity)
-  @JoinColumn({ name: 'user_id' })
+  @OneToOne(() => RegularUserEntity, (user) => user.notificationsSettings)
   user: RegularUserEntity;
 }

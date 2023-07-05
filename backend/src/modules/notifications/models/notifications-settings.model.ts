@@ -7,13 +7,7 @@ export interface INotificationsSettingsModel extends IBaseModel {
   notificationsFrom: NotificationsFrom;
   notificationsViaEmail: boolean;
   notificationsViaPush: boolean;
-  userId: string;
 }
-
-export type ICreateNotificationsSettingsOptions = Pick<
-  INotificationsSettingsModel,
-  'userId'
->;
 
 export type IUpdateNotificationsSettingsOptions = Partial<
   Pick<
@@ -33,17 +27,13 @@ export class NotificationsSettingsTransformer {
       notificationsFrom: entity.notificationsFrom,
       notificationsViaEmail: entity.notificationsViaEmail,
       notificationsViaPush: entity.notificationsViaPush,
-      userId: entity.userId,
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,
     };
   }
 
-  static toEntity(
-    model: ICreateNotificationsSettingsOptions,
-  ): NotificationsSettingsEntity {
+  static toEntity(): NotificationsSettingsEntity {
     const entity = new NotificationsSettingsEntity();
-    entity.userId = model.userId;
     return entity;
   }
 }

@@ -618,7 +618,10 @@
         "push": "Push Notifications"
       }
     },
-    "disabled": "Notifcarile sunt dezactivate"
+    "disabled": "Notifcarile sunt dezactivate",
+    "errors": {
+      "NOTIFICATIONS_002": "Eroare la modificarea setarilor!"
+    }
   },
   "user": {
     "errors": {

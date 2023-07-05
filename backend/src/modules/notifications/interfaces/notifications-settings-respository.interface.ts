@@ -1,16 +1,13 @@
 import {
-  ICreateNotificationsSettingsOptions,
   INotificationsSettingsModel,
   IUpdateNotificationsSettingsOptions,
 } from '../models/notifications-settings.model';
 
 export interface INotificationsSettingsRepository {
-  create(
-    createNotiicationsSettings: ICreateNotificationsSettingsOptions,
-  ): Promise<INotificationsSettingsModel>;
+  create(): Promise<INotificationsSettingsModel>;
   update(
-    userId: string,
+    id: string,
     updates: IUpdateNotificationsSettingsOptions,
   ): Promise<INotificationsSettingsModel>;
-  find(userId: string): Promise<INotificationsSettingsModel>;
+  find(id: string): Promise<INotificationsSettingsModel>;
 }

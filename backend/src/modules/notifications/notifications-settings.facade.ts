@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import {
-  ICreateNotificationsSettingsOptions,
   INotificationsSettingsModel,
   IUpdateNotificationsSettingsOptions,
 } from './models/notifications-settings.model';
@@ -12,20 +11,18 @@ export class NotificationsSettingsFacade {
     private readonly notificationsSettingsRepository: NotificationsSettingsRepository,
   ) {}
 
-  async create(
-    data: ICreateNotificationsSettingsOptions,
-  ): Promise<INotificationsSettingsModel> {
-    return this.notificationsSettingsRepository.create(data);
+  async create(): Promise<INotificationsSettingsModel> {
+    return this.notificationsSettingsRepository.create();
   }
 
-  async find(userId: string): Promise<INotificationsSettingsModel> {
-    return this.notificationsSettingsRepository.find(userId);
+  async find(id: string): Promise<INotificationsSettingsModel> {
+    return this.notificationsSettingsRepository.find(id);
   }
 
   async update(
-    userId: string,
+    id: string,
     updates: IUpdateNotificationsSettingsOptions,
   ): Promise<INotificationsSettingsModel> {
-    return this.notificationsSettingsRepository.update(userId, updates);
+    return this.notificationsSettingsRepository.update(id, updates);
   }
 }

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Divider, Icon, StyleService, Text, useStyleSheet, useTheme } from '@ui-kitten/components';
 import PageLayout from '../layouts/PageLayout';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,12 @@ import PressableContainer from '../components/PressableContainer';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { NotificationsFrom } from '../common/enums/notifications-from.enum';
 import { NotificationBy } from '../common/enums/notification-by.enum';
+import { useAuth } from '../hooks/useAuth';
+import { useUpdateSettingsMutation } from '../services/settings/settings.service';
+import { ISettingsUpdatesPayload } from '../services/settings/settings.api';
+import { INotificationsSettings } from '../common/interfaces/user-profile.interface';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 interface NotificationSettingProps {
   title: string;
@@ -68,21 +74,42 @@ const renderBackdrop = (props: any) => (
 );
 
 const NotificationsSettings = ({ navigation }: any) => {
-  console.log('NotificationsSettings');
   const styles = useStyleSheet(themedStyles);
   const { t } = useTranslation('notifications');
 
+  const { userProfile, updateSettings } = useAuth();
+  // bottom sheet ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  // bottom sheet snap points
+  const snapPoints = useMemo(() => ['1%', '25%'], []);
+
+  // notifications state
   const [showNotificationFromOptions, setShowNotificationsFromOptions] = useState<boolean>(true);
   const [notificationFrom, setNotificationFrom] = useState<NotificationsFrom>(
     NotificationsFrom.ALL_ORGANIZATIONS,
   );
   const [notificationBy, setNotificationBy] = useState<NotificationBy[]>([]);
 
-  // ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  // mutation
+  const { mutate: updateNotificationsSettings } = useUpdateSettingsMutation();
 
-  // variables
-  const snapPoints = useMemo(() => ['1%', '25%'], []);
+  // init values from database
+  useEffect(() => {
+    if (userProfile?.notificationsSettings) {
+      setNotificationFrom(userProfile.notificationsSettings.notificationsFrom);
+
+      const notifBy = [];
+      if (userProfile.notificationsSettings.notificationsViaEmail) {
+        notifBy.push(NotificationBy.EMAIL);
+      }
+
+      if (userProfile.notificationsSettings.notificationsViaPush) {
+        notifBy.push(NotificationBy.PUSH);
+      }
+
+      setNotificationBy(notifBy);
+    }
+  }, [userProfile]);
 
   const onOrganizationNotificationFromPress = () => {
     setShowNotificationsFromOptions(true);
@@ -97,6 +124,9 @@ const NotificationsSettings = ({ navigation }: any) => {
   const onNotificationFromOptionPress = (value: string) => {
     setNotificationFrom(value as NotificationsFrom);
     bottomSheetRef.current?.close();
+    onUpdateSettings({
+      notificationsFrom: value as NotificationsFrom,
+    });
   };
 
   const onNotificationByOptionPress = (value: string) => {
@@ -109,6 +139,36 @@ const NotificationsSettings = ({ navigation }: any) => {
     setNotificationBy(newValues);
 
     bottomSheetRef.current?.close();
+
+    // update settings
+    onUpdateSettings({
+      notificationsViaEmail: newValues.includes(NotificationBy.EMAIL),
+      notificationsViaPush: newValues.includes(NotificationBy.PUSH),
+    });
+  };
+
+  const onUpdateSettings = (updates: ISettingsUpdatesPayload) => {
+    if (userProfile) {
+      updateNotificationsSettings(
+        {
+          id: userProfile?.notificationsSettings.id,
+          settings: updates,
+        },
+        {
+          onSuccess: (data: INotificationsSettings) => {
+            updateSettings(data);
+          },
+          onError: (error) => {
+            Toast.show({
+              type: 'error',
+              text1: `${InternalErrors.SETTINGS_ERRORS.getError(
+                (error as any).response?.data.code_error,
+              )}`,
+            });
+          },
+        },
+      );
+    }
   };
 
   const byNotificationDescription = notificationBy

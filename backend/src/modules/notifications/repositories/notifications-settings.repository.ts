@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { INotificationsSettingsRepository } from '../interfaces/notifications-settings-respository.interface';
 import { NotificationsSettingsEntity } from '../entities/notifications-settings.entity';
 import {
-  ICreateNotificationsSettingsOptions,
   INotificationsSettingsModel,
   IUpdateNotificationsSettingsOptions,
   NotificationsSettingsTransformer,
@@ -19,22 +18,20 @@ export class NotificationsSettingsRepository
     private readonly notificationsSettingsRepository: Repository<NotificationsSettingsEntity>,
   ) {}
 
-  public async create(
-    createNotiicationsSettings: ICreateNotificationsSettingsOptions,
-  ): Promise<INotificationsSettingsModel> {
+  public async create(): Promise<INotificationsSettingsModel> {
     const settings = await this.notificationsSettingsRepository.save(
-      NotificationsSettingsTransformer.toEntity(createNotiicationsSettings),
+      NotificationsSettingsTransformer.toEntity(),
     );
 
-    return this.find(settings.userId);
+    return this.find(settings.id);
   }
 
   public async update(
-    userId: string,
+    id: string,
     updates: IUpdateNotificationsSettingsOptions,
   ): Promise<INotificationsSettingsModel> {
     const toUpdate = await this.notificationsSettingsRepository.preload({
-      userId,
+      id,
       ...updates,
     });
 
@@ -42,12 +39,12 @@ export class NotificationsSettingsRepository
 
     await this.notificationsSettingsRepository.save(toUpdate);
 
-    return this.find(userId);
+    return this.find(id);
   }
 
-  public async find(userId: string): Promise<INotificationsSettingsModel> {
+  public async find(id: string): Promise<INotificationsSettingsModel> {
     const entity = await this.notificationsSettingsRepository.findOne({
-      where: { userId },
+      where: { id },
     });
 
     return NotificationsSettingsTransformer.fromEntity(entity);
