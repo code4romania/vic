@@ -27,6 +27,7 @@ export class PushNotificationsService {
     userIds,
     title,
     body,
+    data,
   }: SendNotificationData): Promise<void> => {
     // 1. Find all push tokens for the given user ids
     const tokens = await this.pushTokensRepository.findByUserIds(userIds);
@@ -35,6 +36,7 @@ export class PushNotificationsService {
       tokens,
       title,
       body,
+      data,
     );
 
     const tokenAndTickets: { ticket: ExpoPushTicket; token: string }[] =

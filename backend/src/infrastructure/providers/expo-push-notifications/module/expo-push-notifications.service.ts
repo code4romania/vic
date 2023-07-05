@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Expo, ExpoPushTicket, ExpoPushReceipt } from 'expo-server-sdk';
 import { MODULE_OPTIONS_TOKEN } from './expo-push-notifications.module-definition';
@@ -20,6 +21,7 @@ export class ExpoPushNotificationsService {
     tokens: string[],
     title: string,
     body: string,
+    data?: any,
   ): Promise<ExpoPushTicket[]> => {
     const messages = tokens.map((token) => {
       // Check that all your push tokens appear to be valid Expo push tokens
@@ -32,7 +34,7 @@ export class ExpoPushNotificationsService {
         to: token,
         title,
         body,
-        data: { withSome: 'data' },
+        data,
       };
     });
 

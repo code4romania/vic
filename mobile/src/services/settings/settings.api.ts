@@ -14,3 +14,7 @@ export const updateSettings = async (
 ): Promise<INotificationsSettings> => {
   return API.patch(`/mobile/settings/${id}`, newSettings).then((res) => res.data);
 };
+
+export const registerPushToken = async (token: string): Promise<void> => {
+  return API.post('/mobile/push-notifications/register', { token }).then((res) => res.data);
+};

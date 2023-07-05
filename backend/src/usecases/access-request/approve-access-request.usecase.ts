@@ -57,11 +57,12 @@ export class ApproveAccessRequestUseCase
     this.pushNotificationsFacade.send({
       userIds: [accessRequest.requestedBy.id],
       title: 'Cererea de access a fost aprobata',
-      body: JSON.stringify({
+      body: 'Cererea de access a fost aprobata content',
+      data: {
         organizationId: accessRequest.organizationId,
         organizationName: 'Test',
         type: 'APPROVE_ACCESS_REQUEST',
-      }),
+      },
     });
 
     const updated = await this.accessRequestFacade.update({

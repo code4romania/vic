@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AuthContext, SignInOptions, SignUpOptions } from './AuthContext';
 import { Auth, Hub } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
@@ -15,6 +15,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { getUserProfile } from '../../services/user/user.api';
 import { getMyOrganizations } from '../../services/organization/organization.api';
 import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
+import { registerForPushNotificationsAsync } from '../../common/utils/notifications';
+import * as Notifications from 'expo-notifications';
+import { registerPushToken } from '../../services/settings/settings.api';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -22,6 +25,9 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isUserPending, setIsUserPending] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
   const [userName, setUserName] = useState<string>('');
+  // notifications
+  const notificationListener = useRef<Notifications.Subscription>();
+  const responseListener = useRef<Notifications.Subscription>();
 
   useEffect(() => {
     console.log('[APP Init]');
@@ -44,6 +50,40 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (isAuthenticated) {
+        const token = await registerForPushNotificationsAsync();
+
+        if (token) {
+          await registerPushToken(token);
+        }
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(
+          (notif: Notifications.Notification) => {
+            console.log(notif);
+            // setNotification(notif);
+          },
+        ) as any;
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(
+          (response: any) => {
+            console.log(JSON.stringify(response));
+          },
+        ) as any;
+
+        return () => {
+          Notifications.removeNotificationSubscription(
+            notificationListener.current as Notifications.Subscription,
+          );
+          Notifications.removeNotificationSubscription(
+            responseListener.current as Notifications.Subscription,
+          );
+        };
+      }
+    })();
+  }, [isAuthenticated]);
 
   useEffect(() => {
     setIsAuthenticated(userProfile !== null);
