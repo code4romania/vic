@@ -1,0 +1,4 @@
+export enum NotificationsFrom {
+  ALL_ORGANIZATIONS = 'ALL_ORGANIZATIONS',
+  MY_ORGANIZATIONS = 'MY_ORGANIZATIONS',
+}

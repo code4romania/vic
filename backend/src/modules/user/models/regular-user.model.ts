@@ -10,6 +10,10 @@ import {
   IOrganizationVolunteerModel,
   OrganizationVolunteerTransformer,
 } from 'src/modules/organization/models/organization-volunteer.models';
+import {
+  INotificationsSettingsModel,
+  NotificationsSettingsTransformer,
+} from 'src/modules/notifications/models/notifications-settings.model';
 
 export interface IRegularUserModel extends IUserModel {
   birthday: Date;
@@ -20,13 +24,15 @@ export interface IRegularUserModel extends IUserModel {
   lastName: string;
   userPersonalData?: IUserPersonalDataModel;
   activeOrganization?: IOrganizationVolunteerModel;
+  notificationsSettings: INotificationsSettingsModel;
 }
 
 export type CreateRegularUserOptions = Omit<
   IRegularUserModel,
-  'id' | 'location' | 'name'
+  'id' | 'location' | 'name' | 'notificationsSettings'
 > & {
   locationId: number;
+  notificationsSettingsId?: string;
 };
 
 export type UpdateRegularUserOptions = Partial<
@@ -73,6 +79,9 @@ export class RegularUserTransformer {
       activeOrganization: OrganizationVolunteerTransformer.fromEntity(
         entity.activeOrganization,
       ),
+      notificationsSettings: NotificationsSettingsTransformer.fromEntity(
+        entity.notificationsSettings,
+      ),
     };
   }
 
@@ -87,6 +96,7 @@ export class RegularUserTransformer {
     entity.locationId = model.locationId;
     entity.firstName = model.firstName;
     entity.lastName = model.lastName;
+    entity.notificationsSettingsId = model.notificationsSettingsId;
     return entity;
   }
 }

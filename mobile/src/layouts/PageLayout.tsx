@@ -148,7 +148,7 @@ export const PageLayout = ({
 export default PageLayout;
 
 const styles = StyleSheet.create({
-  header: { minHeight: 45 },
+  header: { minHeight: 59 },
   layout: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
   keyboardAvoidingContainer: { flex: 1 },
   childrenContainer: { flex: 1, paddingHorizontal: 16, paddinVertical: 16 },

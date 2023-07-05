@@ -5,6 +5,7 @@ import { UserPersonalDataPresenter } from './user-personal-data.presenter';
 import { OrganizationVolunteerPresenter } from '../../organization/presenters/organization-volunteer.presenter';
 import { SEX } from 'src/modules/user/enums/user.enum';
 import { CityPresenter } from 'src/api/location/presenters/city.presenter';
+import { NotificationsSettinsPresenter } from './notifications-settings.presenter';
 
 export class UserPresenter {
   constructor(user: IRegularUserModel) {
@@ -24,6 +25,9 @@ export class UserPresenter {
     this.birthday = user.birthday;
     this.sex = user.sex;
     this.location = user.location;
+    this.notificationsSettings = user.notificationsSettings
+      ? new NotificationsSettinsPresenter(user.notificationsSettings)
+      : null;
   }
 
   @Expose()
@@ -106,4 +110,10 @@ export class UserPresenter {
     type: OrganizationVolunteerPresenter,
   })
   activeOrganization: OrganizationVolunteerPresenter;
+
+  @Expose()
+  @ApiProperty({
+    type: NotificationsSettinsPresenter,
+  })
+  notificationsSettings: NotificationsSettinsPresenter;
 }

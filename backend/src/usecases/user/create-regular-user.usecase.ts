@@ -7,6 +7,7 @@ import {
 } from 'src/modules/user/models/regular-user.model';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
+import { NotificationsSettingsFacade } from 'src/modules/notifications/notifications-settings.facade';
 
 @Injectable()
 export class CreateRegularUsereUseCaseService
@@ -17,6 +18,7 @@ export class CreateRegularUsereUseCaseService
   constructor(
     private readonly userService: UserFacadeService,
     private exceptionService: ExceptionsService,
+    private readonly notificationSettingsFacade: NotificationsSettingsFacade,
   ) {}
 
   async execute(newUser: CreateRegularUserOptions): Promise<IRegularUserModel> {
@@ -31,8 +33,14 @@ export class CreateRegularUsereUseCaseService
       this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
     }
 
-    const user = await this.userService.createRegularUser(newUser);
+    const notificationsSettings =
+      await this.notificationSettingsFacade.create();
 
-    return user;
+    const user = await this.userService.createRegularUser({
+      ...newUser,
+      notificationsSettingsId: notificationsSettings.id,
+    });
+
+    return this.userService.findRegularUser({ id: user.id });
   }
 }

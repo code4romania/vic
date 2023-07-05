@@ -1,3 +1,4 @@
+import { NotificationsFrom } from '../enums/notifications-from.enum';
 import { Sex } from '../enums/sex.enum';
 import { ICity } from './city.interface';
 import { IOrganizationVolunteer } from './organization-list-item.interface';
@@ -9,6 +10,13 @@ export interface IUserPersonalData {
   address: string;
   identityDocumentIssueDate: Date;
   identityDocumentExpirationDate: Date;
+}
+
+export interface INotificationsSettings {
+  id: string;
+  notificationsFrom: NotificationsFrom;
+  notificationsViaEmail: boolean;
+  notificationsViaPush: boolean;
 }
 
 export interface IUserProfile {
@@ -25,4 +33,5 @@ export interface IUserProfile {
   firstName: string;
   lastName: string;
   birthday?: Date;
+  notificationsSettings: INotificationsSettings;
 }

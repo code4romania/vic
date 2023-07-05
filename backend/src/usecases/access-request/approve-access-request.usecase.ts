@@ -12,6 +12,7 @@ import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archiv
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateVolunteerUseCase } from '../volunteer/create-volunteer.usecase';
+import { PushNotificationsFacade } from 'src/modules/notifications/notifications.facade';
 
 @Injectable()
 export class ApproveAccessRequestUseCase
@@ -22,6 +23,7 @@ export class ApproveAccessRequestUseCase
     private readonly createVolunteerUseCase: CreateVolunteerUseCase,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly exceptionService: ExceptionsService,
+    private readonly pushNotificationsFacade: PushNotificationsFacade,
   ) {}
 
   public async execute(
@@ -52,6 +54,16 @@ export class ApproveAccessRequestUseCase
     });
 
     // TODO: 2. send email and notification
+    this.pushNotificationsFacade.send({
+      userIds: [accessRequest.requestedBy.id],
+      title: 'Cererea de access a fost aprobata',
+      body: 'Cererea de access a fost aprobata content',
+      data: {
+        organizationId: accessRequest.organizationId,
+        organizationName: 'Test',
+        type: 'APPROVE_ACCESS_REQUEST',
+      },
+    });
 
     const updated = await this.accessRequestFacade.update({
       ...updates,

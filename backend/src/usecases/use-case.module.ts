@@ -86,6 +86,9 @@ import { GetDashboardVolunteersHoursUseCase } from './dashboard/get-dashboard-vo
 import { GetDashboardVolunteersStatusUseCase } from './dashboard/get-dashboard-volunteers-status.usecase';
 import { GetManyForDownloadActivityLogUseCase } from './activity-log/get-many-for-download-activity-log.usecase';
 import { GetActivityLogCountUsecase } from './activity-log/get-activity-log-count.usecase';
+import { RegisterDevicePushTokenUseCase } from './push-notifications/register-device-push-token.usecase';
+import { NotificationsModule } from 'src/modules/notifications/notifications.module';
+import { UnregisterDevicePushTokenUseCase } from './push-notifications/unregister-device-push-token.usecase';
 import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.usecase';
 import { GetOrganizationsUseCase } from './organization/get-organizations.usecase';
 import { GetOrganizationWithEventsUseCase } from './organization/get-organization-with-events.usecase';
@@ -126,6 +129,7 @@ import { GetTeoStatisticsUsecase } from './dashboard/get-teo-statistics.usecase'
 import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anouncements-by-user.usecase';
 import { LeaveOrganizationUsecase } from './organization/leave-organization.usecase';
 import { RejoinOrganizationUsecase } from './organization/rejoin-organization.usecase';
+import { UpdateSettingsUsecase } from './notifications-settings/update-settings.usecase';
 
 @Module({
   imports: [
@@ -142,6 +146,7 @@ import { RejoinOrganizationUsecase } from './organization/rejoin-organization.us
     ActivityLogModule,
     ActionsArchiveModule,
     DashboardModule,
+    NotificationsModule,
     DocumentsModule,
   ],
   providers: [
@@ -251,6 +256,9 @@ import { RejoinOrganizationUsecase } from './organization/rejoin-organization.us
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    // Push Notifications
+    RegisterDevicePushTokenUseCase,
+    UnregisterDevicePushTokenUseCase,
     GetVolunteerMonthlyNewsStatisticsUsecase,
     GetTeoStatisticsUsecase,
     // Templates
@@ -275,6 +283,8 @@ import { RejoinOrganizationUsecase } from './organization/rejoin-organization.us
     GetVolunteerContractHistoryUsecase,
     GetVolunteerPendingContractsUsecase,
     CancelContractUsecase,
+    // Notifications
+    UpdateSettingsUsecase,
   ],
   exports: [
     // Organization
@@ -384,6 +394,9 @@ import { RejoinOrganizationUsecase } from './organization/rejoin-organization.us
     GetDashboardVolunteerGroupedUsecase,
     GetDashboardVolunteersHoursUseCase,
     GetDashboardVolunteersStatusUseCase,
+    // Push Notifications
+    RegisterDevicePushTokenUseCase,
+    UnregisterDevicePushTokenUseCase,
     GetVolunteerMonthlyNewsStatisticsUsecase,
     // Templates
     CreateTemplateUsecase,
@@ -408,6 +421,8 @@ import { RejoinOrganizationUsecase } from './organization/rejoin-organization.us
     GetVolunteerPendingContractsUsecase,
     CancelContractUsecase,
     GetTeoStatisticsUsecase,
+    // Notifications
+    UpdateSettingsUsecase,
   ],
 })
 export class UseCaseModule {}

@@ -602,6 +602,27 @@
     "notification": "Setări notificări",
     "information": "Informații"
   },
+  "notifications": {
+    "header": "Setari notificari",
+    "from": {
+      "title": "Primeste notificati de la",
+      "options": {
+        "all_organizations": "Toate organizatiile",
+        "my_organizations": "Organizatiile mele"
+      }
+    },
+    "by": {
+      "title": "Primeste notificati prin",
+      "options": {
+        "email": "Email",
+        "push": "Push Notifications"
+      }
+    },
+    "disabled": "Notifcarile sunt dezactivate",
+    "errors": {
+      "NOTIFICATIONS_002": "Eroare la modificarea setarilor!"
+    }
+  },
   "user": {
     "errors": {
       "USER_001": "Utilizatorul nu a fost gasit",
