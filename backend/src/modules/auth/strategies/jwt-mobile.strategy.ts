@@ -33,7 +33,6 @@ export class MobileJwtStrategy extends PassportStrategy(
       algorithms: ['RS256'],
     });
   }
-
   public async validate(reqUser: {
     username: string;
   }): Promise<Partial<IRegularUserModel>> {

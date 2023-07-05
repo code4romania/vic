@@ -19,6 +19,7 @@ import { ActivityLogController } from './activity-log/activity-log.controller';
 import { ListingController } from './listing/listing.controller';
 import { ActionsArchiveController } from './actions-archive/actions-archive.controller';
 import { DashboardController } from './dashboard/dashboard.controller';
+import { MobilePushNotificationsController } from './_mobile/push-notifications/push-notifications.controller';
 import { MobileOrganizationController } from './_mobile/organization/organization.controller';
 import { MobileOrganizationStructureController } from './_mobile/organization/organization-structure.controller';
 import { MobileActivityLogController } from './_mobile/activity-log/activity-log.controller';
@@ -28,6 +29,7 @@ import { ContractController } from './contracts/contracts.controller';
 import { MobileContractController } from './_mobile/contract/contract.controller';
 import { MobileStatisticsController } from './_mobile/statistics/statistics.controller';
 import { MobileAnouncementsController } from './_mobile/anouncements/anouncements.controller';
+import { MobileSettingsController } from './_mobile/settings/settings-controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -54,6 +56,7 @@ import { MobileAnouncementsController } from './_mobile/anouncements/anouncement
     MobileAccessRequestController,
     MobileVolunteerController,
     MobileEventController,
+    MobilePushNotificationsController,
     MobileOrganizationController,
     MobileOrganizationStructureController,
     MobileActivityLogController,
@@ -61,6 +64,7 @@ import { MobileAnouncementsController } from './_mobile/anouncements/anouncement
     MobileContractController,
     MobileStatisticsController,
     MobileAnouncementsController,
+    MobileSettingsController,
   ],
 })
 export class ApiModule {}

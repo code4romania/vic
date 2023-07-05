@@ -53,6 +53,7 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
         activeOrganization: {
           volunteers: true,
         },
+        notificationsSettings: true,
       },
     });
 
