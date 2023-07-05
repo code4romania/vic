@@ -605,11 +605,20 @@
   "notifications": {
     "header": "Setari notificari",
     "from": {
-      "title": "Primeste notificati de la"
+      "title": "Primeste notificati de la",
+      "options": {
+        "all_organizations": "Toate organizatiile",
+        "my_organizations": "Organizatiile mele"
+      }
     },
     "by": {
-      "title": "Primeste notificati prin"
-    }
+      "title": "Primeste notificati prin",
+      "options": {
+        "email": "Email",
+        "push": "Push Notifications"
+      }
+    },
+    "disabled": "Notifcarile sunt dezactivate"
   },
   "user": {
     "errors": {
