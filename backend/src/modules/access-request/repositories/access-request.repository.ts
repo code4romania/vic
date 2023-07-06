@@ -126,6 +126,7 @@ export class AccessRequestRepository
           location: {
             county: true,
           },
+          notificationsSettings: true,
         },
       },
     });

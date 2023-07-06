@@ -10,6 +10,9 @@ import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneVolunteerUsecase } from './get-one-volunteer.usecase';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import ArchiveVolunteerEvent from 'src/modules/notifications/events/join-ngo/archive-volunteer.event';
 
 @Injectable()
 export class ArchiveVolunteerUsecase
@@ -20,6 +23,7 @@ export class ArchiveVolunteerUsecase
     private readonly getOneVolunteerUsecase: GetOneVolunteerUsecase,
     private readonly exceptionService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async execute(
@@ -38,6 +42,19 @@ export class ArchiveVolunteerUsecase
       id: volunteerId,
       archivedById: admin.id,
     });
+
+    // send notifications
+    this.eventEmitter.emit(
+      EVENTS.JOIN_NGO.ARCHIVE_VOLUNTEER,
+      new ArchiveVolunteerEvent(
+        volunteer.organization.id,
+        volunteer.user.id,
+        volunteer.organization.name,
+        volunteer.user.notificationsSettings.notificationsViaPush,
+        volunteer.user.notificationsSettings.notificationsViaEmail,
+        volunteer.user.email,
+      ),
+    );
 
     // Track event
     this.actionsArchiveFacade.trackEvent(

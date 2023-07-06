@@ -53,6 +53,7 @@
     "class-validator": "^0.14.0",
     "date-fns": "^2.29.3",
     "expo-server-sdk": "^3.7.0",
+    "handlebars": "^4.7.7",
     "helmet": "^6.0.1",
     "jwks-rsa": "^3.0.1",
     "nestjs-pino": "^3.1.2",
