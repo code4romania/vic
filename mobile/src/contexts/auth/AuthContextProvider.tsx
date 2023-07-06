@@ -19,6 +19,24 @@ import { registerForPushNotificationsAsync } from '../../common/utils/notificati
 import * as Notifications from 'expo-notifications';
 import { registerPushToken } from '../../services/settings/settings.api';
 
+const EVENTS = {
+  JOIN_NGO: {
+    APPROVE_REQUEST: 'join.ngo.approve.request',
+    REJECT_REQUEST: 'join.ngo.reject.request',
+    ARCHIVE_VOLUNTEER: 'join.ngo.archive.volunteer',
+  },
+  NGO_EVENT: {
+    ADD: 'ngo.event.add',
+  },
+  VOLUNTEER_HOURS: {
+    APPROVE: 'volunteer.hours.approve',
+    REJECT: 'volunteer.hours.reject',
+  },
+  OTHER: {
+    SEND_ANNOUNCEMENT: 'other.send.announcement',
+  },
+};
+
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   // meaning that the user has been validated by cognito but is not in our database
@@ -62,13 +80,29 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
         notificationListener.current = Notifications.addNotificationReceivedListener(
           (notif: Notifications.Notification) => {
-            console.log(notif);
-            // setNotification(notif);
+            console.log('notif', notif);
           },
         ) as any;
 
         responseListener.current = Notifications.addNotificationResponseReceivedListener(
           (response: any) => {
+            const {
+              notification: {
+                request: {
+                  content: { data: payload },
+                },
+              },
+            } = response;
+
+            if (payload.key === EVENTS.JOIN_NGO.APPROVE_REQUEST) {
+              Toast.show({ text1: JSON.stringify(payload), type: 'success' });
+            }
+            if (payload.key === EVENTS.JOIN_NGO.REJECT_REQUEST) {
+              Toast.show({ text1: JSON.stringify(payload), type: 'success' });
+            }
+            if (payload.key === EVENTS.JOIN_NGO.ARCHIVE_VOLUNTEER) {
+              Toast.show({ text1: JSON.stringify(payload), type: 'success' });
+            }
             console.log(JSON.stringify(response));
           },
         ) as any;

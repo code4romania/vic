@@ -225,6 +225,7 @@ export class VolunteerRepositoryService
           location: {
             county: true,
           },
+          notificationsSettings: true,
         },
         archivedBy: true,
         blockedBy: true,

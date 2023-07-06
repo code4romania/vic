@@ -12,7 +12,9 @@ import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archiv
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateVolunteerUseCase } from '../volunteer/create-volunteer.usecase';
-import { PushNotificationsFacade } from 'src/modules/notifications/notifications.facade';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import ApproveRequestEvent from 'src/modules/notifications/events/join-ngo/approve-request.event';
 
 @Injectable()
 export class ApproveAccessRequestUseCase
@@ -23,7 +25,7 @@ export class ApproveAccessRequestUseCase
     private readonly createVolunteerUseCase: CreateVolunteerUseCase,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly exceptionService: ExceptionsService,
-    private readonly pushNotificationsFacade: PushNotificationsFacade,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async execute(
@@ -53,22 +55,25 @@ export class ApproveAccessRequestUseCase
       userId: accessRequest.requestedBy?.id,
     });
 
-    // TODO: 2. send email and notification
-    this.pushNotificationsFacade.send({
-      userIds: [accessRequest.requestedBy.id],
-      title: 'Cererea de access a fost aprobata',
-      body: 'Cererea de access a fost aprobata content',
-      data: {
-        organizationId: accessRequest.organizationId,
-        organizationName: 'Test',
-        type: 'APPROVE_ACCESS_REQUEST',
-      },
-    });
-
     const updated = await this.accessRequestFacade.update({
       ...updates,
       status: AccessRequestStatus.APPROVED,
     });
+
+    // send notifications
+    this.eventEmitter.emit(
+      EVENTS.JOIN_NGO.APPROVE_REQUEST,
+      new ApproveRequestEvent(
+        volunteer.id,
+        accessRequest.organizationId,
+        accessRequest.requestedBy.id,
+        volunteer.organization.name,
+        volunteer.organization.logo,
+        accessRequest.requestedBy.notificationsSettings.notificationsViaPush,
+        accessRequest.requestedBy.notificationsSettings.notificationsViaEmail,
+        accessRequest.requestedBy.email,
+      ),
+    );
 
     // Track event
     this.actionsArchiveFacade.trackEvent(

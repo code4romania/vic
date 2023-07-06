@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { MailModule } from '../mail/mail.module';
-import { VolunteerModule } from '../volunteer/volunteer.module';
 import { JoinNGOListener } from './listeners/join-ngo.listener';
 import { NGOEventListener } from './listeners/ngo-event.listener';
 import { OthersListener } from './listeners/others.listener';
@@ -10,7 +9,6 @@ import { PushTokensEntity } from './entities/push-tokens.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PushTokensRepository } from './repositories/push-tokens.repository';
 import { PushNotificationsFacade } from './notifications.facade';
-import { UserModule } from '../user/user.module';
 import { BullModule } from '@nestjs/bull';
 import { QUEUES } from 'src/common/constants/constants';
 import { PushTicketsCheckerProcessor } from './services/push-tickets-checker.processor';
@@ -25,8 +23,6 @@ import { NotificationsSettingsFacade } from './notifications-settings.facade';
       name: QUEUES.PUSH_NOTIFICATIONS_TICKETS,
     }),
     MailModule,
-    VolunteerModule,
-    UserModule,
   ],
   providers: [
     PushTokensRepository,

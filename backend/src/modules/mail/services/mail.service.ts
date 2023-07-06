@@ -19,6 +19,7 @@ export class MailService {
 
     return this.emailQueue.add({
       from,
+      template: './mail-template',
       ...email,
     });
   }

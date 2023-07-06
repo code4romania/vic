@@ -1,24 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { JSONStringifyError } from 'src/common/helpers/utils';
-import { AnnouncementExceptionMessages } from 'src/modules/announcement/exceptions/announcement.exceptions';
-import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
-import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
-import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
-import { GetOneAnnouncementUseCase } from 'src/usecases/announcement/get-one-announcement.usecase';
-import { GetManyVolunteersUseCase } from 'src/usecases/volunteer/get-many-volunteers.usecase';
 import { EVENTS } from '../constants/events.constants';
 import SendAnnouncementEvent from '../events/others/send-announcement.event';
 
 @Injectable()
 export class OthersListener {
   private readonly logger = new Logger(OthersListener.name);
-
-  constructor(
-    // private readonly getOneAnnouncementUseCase: GetOneAnnouncementUseCase,
-    // private readonly getManyVolunteersUseCase: GetManyVolunteersUseCase,
-    private readonly volunteerFacade: VolunteerFacade,
-  ) {}
 
   @OnEvent(EVENTS.OTHER.SEND_ANNOUNCEMENT)
   async sendAnnouncementEvent(payload: SendAnnouncementEvent): Promise<void> {
