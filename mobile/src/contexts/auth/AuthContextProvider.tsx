@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AuthContext, SignInOptions, SignUpOptions } from './AuthContext';
 import { Auth, Hub } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
@@ -15,28 +15,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { getUserProfile } from '../../services/user/user.api';
 import { getMyOrganizations } from '../../services/organization/organization.api';
 import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
-import { registerForPushNotificationsAsync } from '../../common/utils/notifications';
-import * as Notifications from 'expo-notifications';
-import { registerPushToken } from '../../services/settings/settings.api';
-import { useNavigation } from '@react-navigation/native';
-
-const EVENTS = {
-  JOIN_NGO: {
-    APPROVE_REQUEST: 'join.ngo.approve.request',
-    REJECT_REQUEST: 'join.ngo.reject.request',
-    ARCHIVE_VOLUNTEER: 'join.ngo.archive.volunteer',
-  },
-  NGO_EVENT: {
-    ADD: 'ngo.event.add',
-  },
-  VOLUNTEER_HOURS: {
-    APPROVE: 'volunteer.hours.approve',
-    REJECT: 'volunteer.hours.reject',
-  },
-  OTHER: {
-    SEND_ANNOUNCEMENT: 'other.send.announcement',
-  },
-};
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -44,11 +22,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isUserPending, setIsUserPending] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
   const [userName, setUserName] = useState<string>('');
-  // notifications
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
-  // navigation
-  const navigation = useNavigation();
 
   useEffect(() => {
     console.log('[APP Init]');
@@ -71,62 +44,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
     return unsubscribe;
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      if (isAuthenticated) {
-        const token = await registerForPushNotificationsAsync();
-
-        if (token) {
-          await registerPushToken(token);
-        }
-
-        notificationListener.current = Notifications.addNotificationReceivedListener(
-          (notif: Notifications.Notification) => {
-            console.log('notif', notif);
-          },
-        ) as any;
-
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(
-          (response: any) => {
-            const {
-              notification: {
-                request: {
-                  content: { data: payload },
-                },
-              },
-            } = response;
-
-            if (payload.key === EVENTS.JOIN_NGO.APPROVE_REQUEST) {
-              if (userProfile) {
-                setUserProfile({
-                  ...userProfile,
-                  activeOrganization: payload.payload,
-                  myOrganizations: [...userProfile?.myOrganizations, payload.payload],
-                });
-                navigation.navigate('volunteer' as never);
-              }
-            }
-            if (payload.key === EVENTS.JOIN_NGO.REJECT_REQUEST) {
-              (navigation as any).navigate('organization-profile', {
-                organizationId: payload.payload.organizationId,
-              });
-            }
-            console.log(JSON.stringify(response));
-          },
-        ) as any;
-
-        return () => {
-          Notifications.removeNotificationSubscription(
-            notificationListener.current as Notifications.Subscription,
-          );
-          Notifications.removeNotificationSubscription(
-            responseListener.current as Notifications.Subscription,
-          );
-        };
-      }
-    })();
-  }, [isAuthenticated]);
 
   useEffect(() => {
     setIsAuthenticated(userProfile !== null);

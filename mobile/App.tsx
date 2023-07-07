@@ -5,7 +5,7 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { default as theme } from './src/common/theme/theme.json';
 import { default as mapping } from './src/common/theme/mappings.json';
 import * as Font from 'expo-font';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import AuthContextProvider from './src/contexts/auth/AuthContextProvider';
@@ -19,6 +19,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { FeatherIconsPack } from './src/common/adapters/feather-icons.adapter';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
+import NotificationContextProvider from './src/contexts/notification/NotificationContextProvider';
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG);
@@ -48,6 +49,7 @@ Notifications.setNotificationHandler({
 SplashScreen.preventAutoHideAsync();
 
 export default () => {
+  const navigationRef = useNavigationContainerRef();
   // // init fonts
   const [fontsLoaded] = Font.useFonts({
     'roboto-bold': require('./src/assets/fonts/Roboto-Bold.ttf'),
@@ -68,8 +70,10 @@ export default () => {
         <SafeAreaView style={styles.container}>
           <QueryClientProvider client={queryClient}>
             <AuthContextProvider>
-              <NavigationContainer>
-                <Router />
+              <NavigationContainer ref={navigationRef}>
+                <NotificationContextProvider navigation={navigationRef}>
+                  <Router />
+                </NotificationContextProvider>
               </NavigationContainer>
             </AuthContextProvider>
           </QueryClientProvider>
