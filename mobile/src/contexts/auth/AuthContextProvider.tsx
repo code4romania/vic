@@ -18,6 +18,7 @@ import { IOrganizationVolunteer } from '../../common/interfaces/organization-lis
 import { registerForPushNotificationsAsync } from '../../common/utils/notifications';
 import * as Notifications from 'expo-notifications';
 import { registerPushToken } from '../../services/settings/settings.api';
+import { useNavigation } from '@react-navigation/native';
 
 const EVENTS = {
   JOIN_NGO: {
@@ -46,6 +47,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   // notifications
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
+  // navigation
+  const navigation = useNavigation();
 
   useEffect(() => {
     console.log('[APP Init]');
@@ -95,13 +98,19 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
             } = response;
 
             if (payload.key === EVENTS.JOIN_NGO.APPROVE_REQUEST) {
-              Toast.show({ text1: JSON.stringify(payload), type: 'success' });
+              if (userProfile) {
+                setUserProfile({
+                  ...userProfile,
+                  activeOrganization: payload.payload,
+                  myOrganizations: [...userProfile?.myOrganizations, payload.payload],
+                });
+                navigation.navigate('volunteer' as never);
+              }
             }
             if (payload.key === EVENTS.JOIN_NGO.REJECT_REQUEST) {
-              Toast.show({ text1: JSON.stringify(payload), type: 'success' });
-            }
-            if (payload.key === EVENTS.JOIN_NGO.ARCHIVE_VOLUNTEER) {
-              Toast.show({ text1: JSON.stringify(payload), type: 'success' });
+              (navigation as any).navigate('organization-profile', {
+                organizationId: payload.payload.organizationId,
+              });
             }
             console.log(JSON.stringify(response));
           },
