@@ -130,7 +130,7 @@ import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anou
 import { LeaveOrganizationUsecase } from './organization/leave-organization.usecase';
 import { RejoinOrganizationUsecase } from './organization/rejoin-organization.usecase';
 import { UpdateSettingsUsecase } from './notifications-settings/update-settings.usecase';
-import { SendEventNotificationsUsecase } from './event/send-event-notifications.usecase';
+import { GetVolunteersUserDataForNotificationsUsecase } from './volunteer/get-volunteers-user-data-for-notifications.usecase';
 
 @Module({
   imports: [
@@ -213,6 +213,7 @@ import { SendEventNotificationsUsecase } from './event/send-event-notifications.
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
     GetVolunteerProfileUsecase,
+    GetVolunteersUserDataForNotificationsUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -232,7 +233,6 @@ import { SendEventNotificationsUsecase } from './event/send-event-notifications.
     GetMyEventsUsecase,
     GetOneEventWithVolunteerStatusUsecase,
     GetEventsByOrganizationUsecase,
-    SendEventNotificationsUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,
@@ -351,6 +351,7 @@ import { SendEventNotificationsUsecase } from './event/send-event-notifications.
     UpdateVolunteerProfileUsecase,
     GetVolunteersForDownloadUseCase,
     GetVolunteerProfileUsecase,
+    GetVolunteersUserDataForNotificationsUsecase,
     // Announcement
     GetOneAnnouncementUseCase,
     GetManyAnnouncementUseCase,
@@ -371,7 +372,6 @@ import { SendEventNotificationsUsecase } from './event/send-event-notifications.
     GetMyEventsUsecase,
     GetOneEventWithVolunteerStatusUsecase,
     GetEventsByOrganizationUsecase,
-    SendEventNotificationsUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
     GetOneEventRSVPUseCase,

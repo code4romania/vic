@@ -1,23 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
-import { EVENTS } from 'src/modules/notifications/constants/events.constants';
-import AddNGOEventEvent from 'src/modules/notifications/events/ngo-event/add-event.event';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
 @Injectable()
-export class SendEventNotificationsUsecase implements IUseCaseService<void> {
-  constructor(
-    private readonly volunteerFacade: VolunteerFacade,
-    private readonly eventEmitter: EventEmitter2,
-  ) {}
+export class GetVolunteersUserDataForNotificationsUsecase
+  implements IUseCaseService<{ userEmails: string[]; userIds: string[] }>
+{
+  constructor(private readonly volunteerFacade: VolunteerFacade) {}
 
   public async execute(
-    eventId: string,
     organizationId: string,
-    organizationName: string,
     targetsIds?: string[],
-  ): Promise<void> {
+  ): Promise<{ userEmails: string[]; userIds: string[] }> {
     // 6 send push notifications for all active users which are part of the organization or in case of department
     // 6.1. ALL ORGANIZATION
     //  Get all userIds from volunteer where organizationId
@@ -45,16 +39,9 @@ export class SendEventNotificationsUsecase implements IUseCaseService<void> {
       )
       .map((volunteer) => volunteer.user.email);
 
-    // send notifications
-    this.eventEmitter.emit(
-      EVENTS.NGO_EVENT.ADD,
-      new AddNGOEventEvent(
-        organizationId,
-        userIdsForPushNotifications,
-        organizationName,
-        userEmailForEmailNotifications,
-        eventId,
-      ),
-    );
+    return {
+      userEmails: userEmailForEmailNotifications,
+      userIds: userIdsForPushNotifications,
+    };
   }
 }

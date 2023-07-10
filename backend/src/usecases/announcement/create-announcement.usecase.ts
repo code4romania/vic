@@ -18,6 +18,8 @@ import { OrganizationStructureFacade } from 'src/modules/organization/services/o
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
+import { GetVolunteersUserDataForNotificationsUsecase } from '../volunteer/get-volunteers-user-data-for-notifications.usecase';
+import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
 
 @Injectable()
 export class CreateAnnouncementUseCase
@@ -30,12 +32,18 @@ export class CreateAnnouncementUseCase
     private readonly volunteerFacade: VolunteerFacade,
     private readonly organizationStructureFacade: OrganizationStructureFacade,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly getVolunteerUseDataForNotificationsUsecase: GetVolunteersUserDataForNotificationsUsecase,
+    private readonly getOrganizationUsecase: GetOrganizationUseCaseService,
   ) {}
 
   public async execute(
     announcement: CreateAnnouncementOptions,
     admin: IAdminUserModel,
   ): Promise<IAnnouncementModel> {
+    const organization = await this.getOrganizationUsecase.execute(
+      announcement.organizationId,
+    );
+
     // 1. Check if only departments were chosen and calculate the total number of volunteers
     let targetedVolunteers = 0;
 
@@ -74,12 +82,20 @@ export class CreateAnnouncementUseCase
 
     // 3. Send email to targets if announcement is published
     if (newAnouncement.status === AnnouncementStatus.PUBLISHED) {
+      const { userEmails, userIds } =
+        await this.getVolunteerUseDataForNotificationsUsecase.execute(
+          newAnouncement.organizationId,
+          announcement.targetsIds,
+        );
+
       this.eventEmitter.emit(
         EVENTS.OTHER.SEND_ANNOUNCEMENT,
         new SendAnnouncementEvent(
-          newAnouncement.organizationId,
+          announcement.organizationId,
+          userIds,
+          organization.name,
+          userEmails,
           newAnouncement.id,
-          announcement.targetsIds,
         ),
       );
     }

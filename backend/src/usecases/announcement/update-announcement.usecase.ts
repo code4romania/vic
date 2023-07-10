@@ -19,6 +19,8 @@ import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneAnnouncementUseCase } from './get-one-announcement.usecase';
+import { GetVolunteersUserDataForNotificationsUsecase } from '../volunteer/get-volunteers-user-data-for-notifications.usecase';
+import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
 
 @Injectable()
 export class UpdateAnnouncementUseCase
@@ -32,6 +34,8 @@ export class UpdateAnnouncementUseCase
     private readonly getOneAnnouncementUseCase: GetOneAnnouncementUseCase,
     private readonly organizationStructureFacade: OrganizationStructureFacade,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly getVolunteerUseDataForNotificationsUsecase: GetVolunteersUserDataForNotificationsUsecase,
+    private readonly getOrganizationUsecase: GetOrganizationUseCaseService,
   ) {}
 
   public async execute(
@@ -39,6 +43,10 @@ export class UpdateAnnouncementUseCase
     updateData: UpdateAnnouncementOptions,
     admin: IAdminUserModel,
   ): Promise<IAnnouncementModel> {
+    const organization = await this.getOrganizationUsecase.execute(
+      admin.organizationId,
+    );
+
     // 1. Check if the announcement exists
     const announcementToUpdate = await this.getOneAnnouncementUseCase.execute({
       id,
@@ -94,12 +102,20 @@ export class UpdateAnnouncementUseCase
 
     // 5. Send email to targets if announcement is published
     if (updatedAnnouncement.status === AnnouncementStatus.PUBLISHED) {
+      const { userEmails, userIds } =
+        await this.getVolunteerUseDataForNotificationsUsecase.execute(
+          announcementToUpdate.organizationId,
+          announcementToUpdate.targets.map((target) => target.id),
+        );
+
       this.eventEmitter.emit(
         EVENTS.OTHER.SEND_ANNOUNCEMENT,
         new SendAnnouncementEvent(
-          updatedAnnouncement.organizationId,
-          updatedAnnouncement.id,
-          updatedAnnouncement.targets?.map((target) => target.id), // TODO: recheck this
+          announcementToUpdate.organizationId,
+          userIds,
+          organization.name,
+          userEmails,
+          announcementToUpdate.id,
         ),
       );
 

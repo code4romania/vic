@@ -9,8 +9,11 @@ import { IEventModel } from 'src/modules/event/models/event.model';
 import { EventFacade } from 'src/modules/event/services/event.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOneEventUseCase } from './get-one-event.usecase';
-import { SendEventNotificationsUsecase } from './send-event-notifications.usecase';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
+import { GetVolunteersUserDataForNotificationsUsecase } from '../volunteer/get-volunteers-user-data-for-notifications.usecase';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import AddNGOEventEvent from 'src/modules/notifications/events/ngo-event/add-event.event';
 
 @Injectable()
 export class PublishEventUseCase implements IUseCaseService<IEventModel> {
@@ -19,8 +22,9 @@ export class PublishEventUseCase implements IUseCaseService<IEventModel> {
     private readonly getOneEventUseCase: GetOneEventUseCase,
     private readonly exceptionsService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
-    private readonly sendEventNotificationsUsecase: SendEventNotificationsUsecase,
     private readonly getOrganizationUsecase: GetOrganizationUseCaseService,
+    private readonly getVolunteerUserDataForNotificationsUsecase: GetVolunteersUserDataForNotificationsUsecase,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async execute(
@@ -43,12 +47,23 @@ export class PublishEventUseCase implements IUseCaseService<IEventModel> {
 
     const updated = await this.eventFacade.publish(id);
 
+    // send push notifications
+    const { userEmails, userIds } =
+      await this.getVolunteerUserDataForNotificationsUsecase.execute(
+        organization.id,
+        event.targets?.map((target) => target.id),
+      );
+
     // send notifications
-    await this.sendEventNotificationsUsecase.execute(
-      updated.id,
-      organization.id,
-      organization.name,
-      event.targets?.map((target) => target.id),
+    this.eventEmitter.emit(
+      EVENTS.NGO_EVENT.ADD,
+      new AddNGOEventEvent(
+        organization.id,
+        userIds,
+        organization.name,
+        userEmails,
+        event.id,
+      ),
     );
 
     this.actionsArchiveFacade.trackEvent(

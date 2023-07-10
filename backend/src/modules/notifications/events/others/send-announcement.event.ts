@@ -1,19 +1,17 @@
-export default class SendAnnouncementEvent {
-  constructor(
-    private _organizationId: string,
-    private _announcementId: string,
-    private _targetIds: string[],
-  ) {}
+import BaseEventMultipleUsers from '../base-event-multiple-users.class';
 
-  public get organizationId(): string {
-    return this._organizationId;
+export default class SendAnnouncementEvent extends BaseEventMultipleUsers {
+  constructor(
+    _organizationId: string,
+    _userIds: string[],
+    _organizationName: string,
+    _userEmails: string[],
+    private _announcementId: string,
+  ) {
+    super(_organizationId, _userIds, _organizationName, _userEmails);
   }
 
   public get announcementId(): string {
     return this._announcementId;
-  }
-
-  public get targetIds(): string[] {
-    return this._targetIds;
   }
 }

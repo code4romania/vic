@@ -18,7 +18,11 @@ import { GetOrganizationUseCaseService } from '../organization/get-organization.
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { S3_FILE_PATHS } from 'src/common/constants/constants';
 import { JSONStringifyError } from 'src/common/helpers/utils';
-import { SendEventNotificationsUsecase } from './send-event-notifications.usecase';
+import { GetVolunteersUserDataForNotificationsUsecase } from '../volunteer/get-volunteers-user-data-for-notifications.usecase';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import AddNGOEventEvent from 'src/modules/notifications/events/ngo-event/add-event.event';
+import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 
 @Injectable()
 export class CreateEventUseCase implements IUseCaseService<IEventModel> {
@@ -32,7 +36,8 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
     private readonly exceptionsService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly s3Service: S3Service,
-    private readonly sendEventNotificationsUsecase: SendEventNotificationsUsecase,
+    private readonly getVolunteerUserDataForNotificationsUsecase: GetVolunteersUserDataForNotificationsUsecase,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async execute(
@@ -103,13 +108,26 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
         ...image,
       });
 
-      // send push notifications
-      await this.sendEventNotificationsUsecase.execute(
-        created.id,
-        organization.id,
-        organization.name,
-        data.targetsIds,
-      );
+      if (created.status === EventStatus.PUBLISHED) {
+        // send push notifications
+        const { userEmails, userIds } =
+          await this.getVolunteerUserDataForNotificationsUsecase.execute(
+            organization.id,
+            data.targetsIds,
+          );
+
+        // send notifications
+        this.eventEmitter.emit(
+          EVENTS.NGO_EVENT.ADD,
+          new AddNGOEventEvent(
+            organization.id,
+            userIds,
+            organization.name,
+            userEmails,
+            created.id,
+          ),
+        );
+      }
 
       this.actionsArchiveFacade.trackEvent(
         TrackedEventName.CREATE_EVENT,
