@@ -36,7 +36,6 @@ const NotificationContextProvider = ({
   const { isAuthenticated, userProfile, setUserProfile } = useAuth();
 
   const initNotifications = async () => {
-    console.log('initNotifications');
     const token = await registerForPushNotificationsAsync();
 
     if (token) {
@@ -74,7 +73,6 @@ const NotificationContextProvider = ({
             organizationId: payload.payload.organizationId,
           });
         }
-        console.log(JSON.stringify(response));
       },
     ) as any;
 

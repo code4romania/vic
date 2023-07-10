@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 
 export async function registerForPushNotificationsAsync() {
   let token;
@@ -27,7 +28,7 @@ export async function registerForPushNotificationsAsync() {
     }
     token = (
       await Notifications.getExpoPushTokenAsync({
-        projectId: 'bcbf432c-f07a-4373-a9f1-f67f6281932e', // TODO update with process.env
+        projectId: Constants.expoConfig?.extra?.eas.projectId,
       })
     ).data;
     console.log(token);

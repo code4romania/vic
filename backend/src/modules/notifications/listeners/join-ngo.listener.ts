@@ -83,7 +83,7 @@ export class JoinNGOListener {
       const notificationData = {
         key: EVENTS.JOIN_NGO.REJECT_REQUEST,
         payload: {
-          id: organizationId,
+          organizationId,
         },
       };
 
