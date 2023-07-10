@@ -41,9 +41,13 @@ export class VolunteerFacade {
   }
 
   async findAllActiveByDepartmentIds(
-    ids: string[],
+    organizationId: string,
+    targetIds?: string[],
   ): Promise<IVolunteerModel[]> {
-    return this.volunteerRepository.findAllActiveByDepartmentIds(ids);
+    return this.volunteerRepository.findAllActiveByDepartmentIds(
+      organizationId,
+      targetIds,
+    );
   }
 
   public archive(

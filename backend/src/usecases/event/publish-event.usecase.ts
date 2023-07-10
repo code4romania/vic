@@ -9,6 +9,8 @@ import { IEventModel } from 'src/modules/event/models/event.model';
 import { EventFacade } from 'src/modules/event/services/event.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOneEventUseCase } from './get-one-event.usecase';
+import { SendEventNotificationsUsecase } from './send-event-notifications.usecase';
+import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
 
 @Injectable()
 export class PublishEventUseCase implements IUseCaseService<IEventModel> {
@@ -17,12 +19,18 @@ export class PublishEventUseCase implements IUseCaseService<IEventModel> {
     private readonly getOneEventUseCase: GetOneEventUseCase,
     private readonly exceptionsService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly sendEventNotificationsUsecase: SendEventNotificationsUsecase,
+    private readonly getOrganizationUsecase: GetOrganizationUseCaseService,
   ) {}
 
   public async execute(
     id: string,
     admin: IAdminUserModel,
   ): Promise<IEventModel> {
+    const organization = await this.getOrganizationUsecase.execute(
+      admin.organizationId,
+    );
+
     // 1. Find the event to publish
     const event = await this.getOneEventUseCase.execute({ id });
 
@@ -34,6 +42,14 @@ export class PublishEventUseCase implements IUseCaseService<IEventModel> {
     }
 
     const updated = await this.eventFacade.publish(id);
+
+    // send notifications
+    await this.sendEventNotificationsUsecase.execute(
+      updated.id,
+      organization.id,
+      organization.name,
+      event.targets?.map((target) => target.id),
+    );
 
     this.actionsArchiveFacade.trackEvent(
       TrackedEventName.CHANGE_EVENT_STATUS,

@@ -23,7 +23,8 @@ export interface IVolunteerRepository
     findOptions: FindManyVolunteersOptions,
   ): Promise<Pagination<IVolunteerModel>>;
   findAllActiveByDepartmentIds(
-    departmentIds: string[],
+    organizationId: string,
+    departmentIds?: string[],
   ): Promise<IVolunteerModel[]>;
   count(options: CountVolunteerOptions): Promise<number>;
   findAll(options: FindVolunteerOptions): Promise<IVolunteerModel[]>;

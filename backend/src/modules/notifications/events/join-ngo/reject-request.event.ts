@@ -1,34 +1,21 @@
-export default class RejectRequestEvent {
+import BaseEvent from '../base-event.class';
+
+export default class RejectRequestEvent extends BaseEvent {
   constructor(
-    private _organizationId: string,
-    private _userId: string,
-    private _organizationName: string,
-    private _notificationsViaPush: boolean,
-    private _notificationsViaEmail: boolean,
-    private _userEmail: string,
-  ) {}
-
-  public get organizationId(): string {
-    return this._organizationId;
-  }
-
-  public get userId(): string {
-    return this._userId;
-  }
-
-  public get organizationName(): string {
-    return this._organizationName;
-  }
-
-  public get notificationsViaPush(): boolean {
-    return this._notificationsViaPush;
-  }
-
-  public get notificationsViaEmail(): boolean {
-    return this._notificationsViaEmail;
-  }
-
-  public get userEmail(): string {
-    return this._userEmail;
+    _organizationId: string,
+    _userId: string,
+    _organizationName: string,
+    _notificationsViaPush: boolean,
+    _notificationsViaEmail: boolean,
+    _userEmail: string,
+  ) {
+    super(
+      _organizationId,
+      _userId,
+      _organizationName,
+      _notificationsViaPush,
+      _notificationsViaEmail,
+      _userEmail,
+    );
   }
 }

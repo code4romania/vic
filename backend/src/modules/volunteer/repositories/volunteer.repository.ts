@@ -173,17 +173,26 @@ export class VolunteerRepositoryService
   }
 
   async findAllActiveByDepartmentIds(
-    departmentIds: string[],
+    organizationId: string,
+    departmentIds?: string[],
   ): Promise<IVolunteerModel[]> {
     const volunteers = await this.volunteerRepository.find({
       where: {
         status: VolunteerStatus.ACTIVE,
-        volunteerProfile: {
-          departmentId: In(departmentIds),
-        },
+        organizationId,
+        ...(departmentIds && departmentIds.length > 0
+          ? {
+              volunteerProfile: {
+                departmentId: In(departmentIds),
+              },
+            }
+          : {}),
       },
       relations: {
         volunteerProfile: true,
+        user: {
+          notificationsSettings: true,
+        },
       },
     });
 

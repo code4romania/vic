@@ -64,14 +64,14 @@ export class ApproveAccessRequestUseCase
     this.eventEmitter.emit(
       EVENTS.JOIN_NGO.APPROVE_REQUEST,
       new ApproveRequestEvent(
-        volunteer.id,
         accessRequest.organizationId,
         accessRequest.requestedBy.id,
         volunteer.organization.name,
-        volunteer.organization.logo,
         accessRequest.requestedBy.notificationsSettings.notificationsViaPush,
         accessRequest.requestedBy.notificationsSettings.notificationsViaEmail,
         accessRequest.requestedBy.email,
+        volunteer.id,
+        volunteer.organization.logo,
       ),
     );
 

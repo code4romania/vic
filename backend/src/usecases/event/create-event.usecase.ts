@@ -18,6 +18,7 @@ import { GetOrganizationUseCaseService } from '../organization/get-organization.
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { S3_FILE_PATHS } from 'src/common/constants/constants';
 import { JSONStringifyError } from 'src/common/helpers/utils';
+import { SendEventNotificationsUsecase } from './send-event-notifications.usecase';
 
 @Injectable()
 export class CreateEventUseCase implements IUseCaseService<IEventModel> {
@@ -31,6 +32,7 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
     private readonly exceptionsService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly s3Service: S3Service,
+    private readonly sendEventNotificationsUsecase: SendEventNotificationsUsecase,
   ) {}
 
   public async execute(
@@ -39,12 +41,15 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
     files?: Express.Multer.File[],
   ): Promise<IEventModel> {
     // 1. Check if the the organization exists
-    await this.getOrganizationUseCaseService.execute(data.organizationId);
+    const organization = await this.getOrganizationUseCaseService.execute(
+      data.organizationId,
+    );
 
     // 2. Check if the tasks exists in the organization
     const tasksExists = await this.activityTypeFacade.exists(data.tasksIds, {
       organizationId: data.organizationId,
     });
+
     if (!tasksExists) {
       this.exceptionsService.badRequestException(
         EventExceptionMessages.EVENT_003,
@@ -97,6 +102,14 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
         ...data,
         ...image,
       });
+
+      // send push notifications
+      await this.sendEventNotificationsUsecase.execute(
+        created.id,
+        organization.id,
+        organization.name,
+        data.targetsIds,
+      );
 
       this.actionsArchiveFacade.trackEvent(
         TrackedEventName.CREATE_EVENT,

@@ -68,9 +68,16 @@ const NotificationContextProvider = ({
             navigation.navigate('volunteer');
           }
         }
+
         if (payload.key === EVENTS.JOIN_NGO.REJECT_REQUEST) {
           navigation.navigate('organization-profile', {
             organizationId: payload.payload.organizationId,
+          });
+        }
+
+        if (payload.key === EVENTS.NGO_EVENT.ADD) {
+          navigation.navigate('event', {
+            eventId: payload.payload.eventId,
           });
         }
       },
