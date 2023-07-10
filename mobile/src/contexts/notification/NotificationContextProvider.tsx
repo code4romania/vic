@@ -36,6 +36,7 @@ const NotificationContextProvider = ({
   const { isAuthenticated, userProfile, setUserProfile } = useAuth();
 
   const initNotifications = async () => {
+    console.log('initNotifications');
     const token = await registerForPushNotificationsAsync();
 
     if (token) {
@@ -90,9 +91,8 @@ const NotificationContextProvider = ({
   const init = useCallback(initNotifications, [initNotifications]);
 
   useEffect(() => {
-    // initNotifications();
     const state = navigation.getRootState();
-    if (isAuthenticated && state?.routerNames?.includes('home')) {
+    if (isAuthenticated && state?.routeNames?.includes('home')) {
       init();
     }
   }, [isAuthenticated, navigation, init]);
