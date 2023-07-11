@@ -27,7 +27,7 @@ export class GetVolunteersUserDataForNotificationsUsecase
     const userIdsForPushNotifications = volunteers
       .filter(
         (volunteer) =>
-          volunteer.user.notificationsSettings.notificationsViaPush === true,
+          volunteer.user.notificationsSettings?.notificationsViaPush === true,
       )
       .map((volunteer) => volunteer.user.id);
 
@@ -35,7 +35,7 @@ export class GetVolunteersUserDataForNotificationsUsecase
     const userEmailForEmailNotifications = volunteers
       .filter(
         (volunteer) =>
-          volunteer.user.notificationsSettings.notificationsViaEmail === true,
+          volunteer.user.notificationsSettings?.notificationsViaEmail === true,
       )
       .map((volunteer) => volunteer.user.email);
 
