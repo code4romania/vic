@@ -18,7 +18,7 @@ export class OthersListener {
       payload;
 
     const notificationData = {
-      key: EVENTS.NGO_EVENT.ADD,
+      key: EVENTS.OTHER.SEND_ANNOUNCEMENT,
       payload: {
         organizationId,
         announcementId,

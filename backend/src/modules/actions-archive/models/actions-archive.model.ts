@@ -38,6 +38,11 @@ export type FindManyActionsArchiveOptions = {
   actionEndDate?: Date;
 } & IBasePaginationFilterModel;
 
+export type FindManyNewsOptions = {
+  userId: string;
+  events: TrackedEventName[];
+} & IBasePaginationFilterModel;
+
 export class ActionsArchiveTransformer {
   static fromEntity(entity: ActionsArchiveEntity): IActionArchiveModel {
     return {

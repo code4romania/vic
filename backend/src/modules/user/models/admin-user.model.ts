@@ -1,9 +1,14 @@
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import { AdminUserEntity } from '../entities/user.entity';
 import { IUserModel } from './base-user.model';
+import {
+  IOrganizationModel,
+  OrganizationTransformer,
+} from 'src/modules/organization/models/organization.model';
 
 export interface IAdminUserModel extends IUserModel {
   organizationId: string;
+  organization?: IOrganizationModel;
 }
 
 export type ICreateAdminUserModel = Omit<IAdminUserModel, 'id'>;
@@ -26,6 +31,7 @@ export class AdminUserTransformer {
       phone: entity.phone,
       name: entity.name,
       organizationId: entity.organizationId,
+      organization: OrganizationTransformer.fromEntity(entity.organization),
     };
   }
 

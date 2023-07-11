@@ -1,6 +1,7 @@
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   FindManyActionsArchiveOptions,
+  FindManyNewsOptions,
   IActionArchiveModel,
 } from '../models/actions-archive.model';
 
@@ -15,4 +16,7 @@ export interface IActionArchiveRepository {
   countAccessRequestStatusUpdatesBetweenDates(
     volunteerIds: string[],
   ): Promise<number>;
+  findNews(
+    options: FindManyNewsOptions,
+  ): Promise<Pagination<IActionArchiveModel>>;
 }

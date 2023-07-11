@@ -71,7 +71,7 @@ export class RejectContractUsecase implements IUseCaseService<IContractModel> {
         organizationName: organization.name,
         contractId,
         oldStatus: ContractStatus.PENDING_ADMIN,
-        newStatus: ContractStatus.APPROVED,
+        newStatus: ContractStatus.REJECTED,
         volunteerId: contract.volunteer.id,
         volunteerName: contract.volunteer.user.name,
       },

@@ -11,10 +11,12 @@ import { IActionArchiveRepository } from '../interfaces/actions-archive-reposito
 import {
   ActionsArchiveTransformer,
   FindManyActionsArchiveOptions,
+  FindManyNewsOptions,
   IActionArchiveModel,
 } from '../models/actions-archive.model';
 import { TrackedEventName } from '../enums/action-resource-types.enum';
 import { endOfMonth, startOfMonth } from 'date-fns';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 
 @Injectable()
 export class ActionsArchiveRepository
@@ -76,6 +78,44 @@ export class ActionsArchiveRepository
       query,
       findOptions.limit,
       findOptions.page,
+      ActionsArchiveTransformer.fromEntity,
+    );
+  }
+
+  public async findNews(
+    options: FindManyNewsOptions,
+  ): Promise<Pagination<IActionArchiveModel>> {
+    const query = this.actionsArchiveRepo
+      .createQueryBuilder('actionsArchive')
+      .leftJoinAndMapOne(
+        'actionsArchive.author',
+        'actionsArchive.author',
+        'author',
+      )
+      .leftJoinAndMapOne(
+        'author.organization',
+        'author.organization',
+        'organization',
+      )
+      .select()
+      .where('actionsArchive.eventName in (:...eventNames)', {
+        eventNames: options.events,
+      })
+      .andWhere(
+        `("actionsArchive".event_data->>'volunteerId')::uuid IN (select "v".id from "volunteer" "v" 
+      INNER JOIN "user" "u" ON "v".user_id = "u".id 
+      where "u".id = :userId AND "v".status = :volunteerStatus)`,
+        { userId: options.userId, volunteerStatus: VolunteerStatus.ACTIVE },
+      )
+      .orderBy(
+        this.buildOrderByQuery('createdOn', 'actionsArchive'),
+        OrderDirection.DESC,
+      );
+
+    return this.paginateQuery(
+      query,
+      options.limit,
+      options.page,
       ActionsArchiveTransformer.fromEntity,
     );
   }

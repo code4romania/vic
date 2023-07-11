@@ -6,6 +6,7 @@ import { TrackedEventData } from './enums/action-resource-types.enum';
 import {
   CreateActionArchiveOptions,
   FindManyActionsArchiveOptions,
+  FindManyNewsOptions,
   IActionArchiveModel,
   TRACK_ACTION_EVENT,
 } from './models/actions-archive.model';
@@ -60,5 +61,11 @@ export class ActionsArchiveFacade {
     return this.actionsArchiveRepository.countAccessRequestStatusUpdatesBetweenDates(
       volunteerIds,
     );
+  }
+
+  async findNews(
+    options: FindManyNewsOptions,
+  ): Promise<Pagination<IActionArchiveModel>> {
+    return this.actionsArchiveRepository.findNews(options);
   }
 }

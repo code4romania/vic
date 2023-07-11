@@ -131,6 +131,7 @@ import { LeaveOrganizationUsecase } from './organization/leave-organization.usec
 import { RejoinOrganizationUsecase } from './organization/rejoin-organization.usecase';
 import { UpdateSettingsUsecase } from './notifications-settings/update-settings.usecase';
 import { GetVolunteersUserDataForNotificationsUsecase } from './volunteer/get-volunteers-user-data-for-notifications.usecase';
+import { GetManyNewsUsecase } from './actions-archive/get-many-news.usecase';
 
 @Module({
   imports: [
@@ -253,6 +254,7 @@ import { GetVolunteersUserDataForNotificationsUsecase } from './volunteer/get-vo
     CancelActivityLogUsecase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
+    GetManyNewsUsecase,
     // Dashboard
     GetDashboardVolunteerStatusTimeseriesUsecase,
     GetDashboardVolunteerGroupedUsecase,
@@ -392,6 +394,7 @@ import { GetVolunteersUserDataForNotificationsUsecase } from './volunteer/get-vo
     CancelActivityLogUsecase,
     // Actions Archive
     GetManyActionsArchiveUseCase,
+    GetManyNewsUsecase,
     // Dashboard
     GetDashboardVolunteerStatusTimeseriesUsecase,
     GetDashboardVolunteerGroupedUsecase,
