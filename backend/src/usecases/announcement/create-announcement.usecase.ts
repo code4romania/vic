@@ -88,16 +88,18 @@ export class CreateAnnouncementUseCase
           announcement.targetsIds,
         );
 
-      this.eventEmitter.emit(
-        EVENTS.OTHER.SEND_ANNOUNCEMENT,
-        new SendAnnouncementEvent(
-          announcement.organizationId,
-          userIds,
-          organization.name,
-          userEmails,
-          newAnouncement.id,
-        ),
-      );
+      if (userIds.length > 0) {
+        this.eventEmitter.emit(
+          EVENTS.OTHER.SEND_ANNOUNCEMENT,
+          new SendAnnouncementEvent(
+            announcement.organizationId,
+            userIds,
+            organization.name,
+            userEmails,
+            newAnouncement.id,
+          ),
+        );
+      }
     }
 
     // Track event

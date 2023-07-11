@@ -59,7 +59,7 @@ export class RejectContractUsecase implements IUseCaseService<IContractModel> {
         contract.volunteer.user.notificationsSettings.notificationsViaEmail,
         contract.volunteer.user.email,
         contract.id,
-        contract.rejectionReason,
+        rejectionReason || '',
       ),
     );
 

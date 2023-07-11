@@ -108,16 +108,18 @@ export class UpdateAnnouncementUseCase
           announcementToUpdate.targets.map((target) => target.id),
         );
 
-      this.eventEmitter.emit(
-        EVENTS.OTHER.SEND_ANNOUNCEMENT,
-        new SendAnnouncementEvent(
-          announcementToUpdate.organizationId,
-          userIds,
-          organization.name,
-          userEmails,
-          announcementToUpdate.id,
-        ),
-      );
+      if (userIds.length > 0) {
+        this.eventEmitter.emit(
+          EVENTS.OTHER.SEND_ANNOUNCEMENT,
+          new SendAnnouncementEvent(
+            announcementToUpdate.organizationId,
+            userIds,
+            organization.name,
+            userEmails,
+            announcementToUpdate.id,
+          ),
+        );
+      }
 
       this.actionsArchiveFacade.trackEvent(
         TrackedEventName.PUBLISH_ANNOUNCEMENT,
