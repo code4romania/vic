@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -41,6 +42,7 @@ export class CreateEventDto {
   status: EventStatus.DRAFT | EventStatus.PUBLISHED;
 
   @IsBoolean()
+  @Transform(({ value }) => value === 'true')
   isPublic: boolean;
 
   @IsEnum(EventAttendOptions)
@@ -59,7 +61,7 @@ export class CreateEventDto {
   observation: string;
 
   @IsArray()
-  @ValidateIf((o) => o.isPublic === false)
+  @IsOptional()
   targetsIds: string[];
 
   @IsArray()
