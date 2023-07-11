@@ -7,6 +7,9 @@ import { IActivityLogModel } from 'src/modules/activity-log/models/activity-log.
 import { ActivityLogFacade } from 'src/modules/activity-log/services/activity-log.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOneActivityLogUsecase } from './get-one-activity-log.usecase';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import ApproveHoursEvent from 'src/modules/notifications/events/volunteer-hours/approve-hours.event';
 
 @Injectable()
 export class ApproveActivityLogUsecase
@@ -16,6 +19,7 @@ export class ApproveActivityLogUsecase
     private readonly getOneActivityLogUsecase: GetOneActivityLogUsecase,
     private readonly activityLogFacade: ActivityLogFacade,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async execute(
@@ -37,6 +41,22 @@ export class ApproveActivityLogUsecase
       rejectedOn: null,
       rejectionReason: null,
     });
+
+    // send push notifications and or email
+    this.eventEmitter.emit(
+      EVENTS.VOLUNTEER_HOURS.APPROVE,
+      new ApproveHoursEvent(
+        approved.organization.id,
+        approved.volunteer.user.id,
+        approved.organization.name,
+        approved.volunteer.user.notificationsSettings.notificationsViaPush,
+        approved.volunteer.user.notificationsSettings.notificationsViaEmail,
+        approved.volunteer.user.email,
+        approved.id,
+        approved.hours,
+        approved.createdOn,
+      ),
+    );
 
     this.actionsArchiveFacade.trackEvent(
       TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS,

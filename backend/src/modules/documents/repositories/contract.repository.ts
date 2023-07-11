@@ -180,7 +180,9 @@ export class ContractRepositoryService
       },
       relations: {
         volunteer: {
-          user: true,
+          user: {
+            notificationsSettings: true,
+          },
         },
         template: true,
         createdByAdmin: true,

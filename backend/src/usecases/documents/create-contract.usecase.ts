@@ -15,6 +15,9 @@ import { ContractExceptionMessages } from 'src/modules/documents/exceptions/cont
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import GenerateContractEvent from 'src/modules/notifications/events/documents/generate-contract.event';
 
 @Injectable()
 export class CreateContractUsecase implements IUseCaseService<IContractModel> {
@@ -25,6 +28,7 @@ export class CreateContractUsecase implements IUseCaseService<IContractModel> {
     private readonly getOneTemplateUsecase: GetOneTemplateUseCase,
     private readonly exceptionsService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async execute(
@@ -87,6 +91,20 @@ export class CreateContractUsecase implements IUseCaseService<IContractModel> {
       ...newContract,
       path: template.path,
     });
+
+    // send push notifications and or email
+    this.eventEmitter.emit(
+      EVENTS.DOCUMENTS.GENERATE_CONTRACT,
+      new GenerateContractEvent(
+        organization.id,
+        volunteer.user.id,
+        organization.name,
+        volunteer.user.notificationsSettings.notificationsViaPush,
+        volunteer.user.notificationsSettings.notificationsViaEmail,
+        volunteer.user.email,
+        contract.id,
+      ),
+    );
 
     // Track event
     this.actionsArchiveFacade.trackEvent(

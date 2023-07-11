@@ -9,6 +9,9 @@ import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import RejectContractEvent from 'src/modules/notifications/events/documents/reject-contract.event';
 
 @Injectable()
 export class RejectContractUsecase implements IUseCaseService<IContractModel> {
@@ -18,6 +21,7 @@ export class RejectContractUsecase implements IUseCaseService<IContractModel> {
     private readonly s3Service: S3Service,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly getOrganizationUsecase: GetOrganizationUseCaseService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async execute(
@@ -43,6 +47,21 @@ export class RejectContractUsecase implements IUseCaseService<IContractModel> {
       rejectedOn: new Date(),
       rejectionReason,
     });
+
+    // send push notifications and or email
+    this.eventEmitter.emit(
+      EVENTS.DOCUMENTS.REJECT_CONATRCT,
+      new RejectContractEvent(
+        organization.id,
+        contract.volunteer.user.id,
+        organization.name,
+        contract.volunteer.user.notificationsSettings.notificationsViaPush,
+        contract.volunteer.user.notificationsSettings.notificationsViaEmail,
+        contract.volunteer.user.email,
+        contract.id,
+        contract.rejectionReason,
+      ),
+    );
 
     // Track event
     this.actionsArchiveFacade.trackEvent(

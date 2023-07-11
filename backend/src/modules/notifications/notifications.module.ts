@@ -15,6 +15,7 @@ import { PushTicketsCheckerProcessor } from './services/push-tickets-checker.pro
 import { NotificationsSettingsEntity } from './entities/notifications-settings.entity';
 import { NotificationsSettingsRepository } from './repositories/notifications-settings.repository';
 import { NotificationsSettingsFacade } from './notifications-settings.facade';
+import { DocumentsListener } from './listeners/documents.listener';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { NotificationsSettingsFacade } from './notifications-settings.facade';
     NGOEventListener,
     VolunteerHoursListener,
     OthersListener,
+    DocumentsListener,
     PushNotificationsService,
 
     PushTicketsCheckerProcessor,

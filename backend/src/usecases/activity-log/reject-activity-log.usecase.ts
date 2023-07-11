@@ -8,6 +8,9 @@ import { IActivityLogModel } from 'src/modules/activity-log/models/activity-log.
 import { ActivityLogFacade } from 'src/modules/activity-log/services/activity-log.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOneActivityLogUsecase } from './get-one-activity-log.usecase';
+import RejectHoursEvent from 'src/modules/notifications/events/volunteer-hours/reject-hours.event';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class RejectActivityLogUsecase
@@ -17,6 +20,7 @@ export class RejectActivityLogUsecase
     private readonly getOneActivityLogUsecase: GetOneActivityLogUsecase,
     private readonly activityLogFacade: ActivityLogFacade,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async execute(
@@ -39,6 +43,22 @@ export class RejectActivityLogUsecase
       rejectedOn: new Date(),
       rejectionReason,
     });
+
+    // send push notifications and or email
+    this.eventEmitter.emit(
+      EVENTS.VOLUNTEER_HOURS.REJECT,
+      new RejectHoursEvent(
+        rejected.organization.id,
+        rejected.volunteer.user.id,
+        rejected.organization.name,
+        rejected.volunteer.user.notificationsSettings.notificationsViaPush,
+        rejected.volunteer.user.notificationsSettings.notificationsViaEmail,
+        rejected.volunteer.user.email,
+        rejected.id,
+        rejected.hours,
+        rejected.createdOn,
+      ),
+    );
 
     // Track the event
     this.actionsArchiveFacade.trackEvent(

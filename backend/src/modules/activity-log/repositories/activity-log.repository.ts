@@ -188,12 +188,15 @@ export class ActivityLogRepositoryService
           organization: true,
         },
         volunteer: {
-          user: true,
+          user: {
+            notificationsSettings: true,
+          },
         },
         createdByAdmin: true,
         approvedBy: true,
         rejectedBy: true,
         activityType: true,
+        organization: true,
       },
     });
 

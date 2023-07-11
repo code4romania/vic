@@ -14,4 +14,9 @@ export const EVENTS = {
   OTHER: {
     SEND_ANNOUNCEMENT: 'other.send.announcement',
   },
+  DOCUMENTS: {
+    GENERATE_CONTRACT: 'contract.generate',
+    APPROVE_CONTRACT: 'contract.approve',
+    REJECT_CONATRCT: 'contract.reject',
+  },
 };

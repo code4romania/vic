@@ -1,6 +1,6 @@
 import BaseEvent from '../base-event.class';
 
-export default class ApproveHoursEvent extends BaseEvent {
+export default class GenerateContractEvent extends BaseEvent {
   constructor(
     _organizationId: string,
     _userId: string,
@@ -8,9 +8,7 @@ export default class ApproveHoursEvent extends BaseEvent {
     _notificationsViaPush: boolean,
     _notificationsViaEmail: boolean,
     _userEmail: string,
-    private _activityLogId: string,
-    private _hours: number,
-    private _date: Date,
+    private _contractId: string,
   ) {
     super(
       _organizationId,
@@ -22,15 +20,7 @@ export default class ApproveHoursEvent extends BaseEvent {
     );
   }
 
-  public get activityLogId(): string {
-    return this._activityLogId;
-  }
-
-  public get hours(): number {
-    return this._hours;
-  }
-
-  public get date(): Date {
-    return this._date;
+  public get contractId(): string {
+    return this._contractId;
   }
 }
