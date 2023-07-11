@@ -5,7 +5,7 @@ import { registerPushToken } from '../../services/settings/settings.api';
 import { NotificationContext } from './NotificationContext';
 import { useAuth } from '../../hooks/useAuth';
 
-const EVENTS = {
+export const EVENTS = {
   JOIN_NGO: {
     APPROVE_REQUEST: 'join.ngo.approve.request',
     REJECT_REQUEST: 'join.ngo.reject.request',
@@ -20,6 +20,11 @@ const EVENTS = {
   },
   OTHER: {
     SEND_ANNOUNCEMENT: 'other.send.announcement',
+  },
+  DOCUMENTS: {
+    GENERATE_CONTRACT: 'contract.generate',
+    APPROVE_CONTRACT: 'contract.approve',
+    REJECT_CONATRCT: 'contract.reject',
   },
 };
 
@@ -79,6 +84,25 @@ const NotificationContextProvider = ({
           navigation.navigate('event', {
             eventId: payload.payload.eventId,
           });
+        }
+
+        if (payload.key === EVENTS.OTHER.SEND_ANNOUNCEMENT) {
+          navigation.navigate('announcements');
+        }
+
+        if (
+          payload.key ===
+          (EVENTS.DOCUMENTS.GENERATE_CONTRACT ||
+            EVENTS.DOCUMENTS.APPROVE_CONTRACT ||
+            EVENTS.DOCUMENTS.REJECT_CONATRCT)
+        ) {
+          navigation.navigate('contract', {
+            id: payload.payload.contractId,
+          });
+        }
+
+        if (payload.key === (EVENTS.VOLUNTEER_HOURS.APPROVE || EVENTS.VOLUNTEER_HOURS.APPROVE)) {
+          navigation.navigate('activity-log', { activityLogId: payload.payload.activityLogId });
         }
       },
     ) as any;
