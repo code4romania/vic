@@ -13,4 +13,8 @@ export class GetManyActionsArchiveDto extends BasePaginationFilterDto {
   @IsDate()
   @IsOptional()
   actionEndDate?: Date;
+
+  @IsString()
+  @IsOptional()
+  volunteerId?: string;
 }

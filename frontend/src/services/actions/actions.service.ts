@@ -14,6 +14,7 @@ export const useActionsQuery = (params: {
   author?: string;
   actionStartDate?: Date;
   actionEndDate?: Date;
+  volunteerId?: string;
 }) => {
   return useQuery(
     [
@@ -26,6 +27,7 @@ export const useActionsQuery = (params: {
       params.author,
       params.actionStartDate,
       params.actionEndDate,
+      params.volunteerId,
     ],
     () => getActions(params),
     {

@@ -31,4 +31,6 @@ export interface IEventData {
   status?: string;
   announcementId?: string;
   announcementTitle?: string;
+  contractId?: string;
+  contractNumber?: string;
 }

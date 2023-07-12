@@ -209,6 +209,60 @@ export const mapEventDataToActionDescription = (
           }}
         />
       );
+    case TrackedEventName.CREATE_CONTRACT:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/${eventData.volunteerId}`}
+                content={eventData.volunteerName}
+              />
+            ),
+          }}
+        />
+      );
+    case TrackedEventName.APPROVE_CONTRACT:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/${eventData.volunteerId}`}
+                content={eventData.volunteerName}
+              />
+            ),
+            inlineContractLink: (
+              <LinkText
+                url={`/documents/contracts?search=${eventData.contractNumber}`}
+                content={eventData.contractNumber}
+              />
+            ),
+          }}
+        />
+      );
+    case TrackedEventName.REJECT_CONTRACT:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/${eventData.volunteerId}`}
+                content={eventData.volunteerName}
+              />
+            ),
+            inlineContractLink: (
+              <LinkText
+                url={`/documents/contracts?search=${eventData.contractNumber}`}
+                content={eventData.contractNumber}
+              />
+            ),
+          }}
+        />
+      );
     case TrackedEventName.DELETE_ANNOUNCEMENT:
       return `${i18n.t(`actions_archive:${eventName}.description`, {
         ...eventData,

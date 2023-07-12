@@ -92,6 +92,7 @@ export class SignAndConfirmContractUsecase
           newStatus: ContractStatus.APPROVED,
           volunteerId: contract.volunteer.id,
           volunteerName: contract.volunteer.user.name,
+          contractNumber: contract.contractNumber,
         },
         admin,
       );

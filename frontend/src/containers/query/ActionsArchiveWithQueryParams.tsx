@@ -6,7 +6,7 @@ import {
   IPaginationQueryParams,
 } from '../../common/constants/pagination';
 import { IHOCQueryProps } from '../../common/interfaces/hoc-query-props.interface';
-import ActionsArchive from '../../pages/ActionsArchive';
+import ActionsArchiveTable from '../../components/ActionsArchiveTable';
 
 export interface ActionsArchiveQueryProps extends IPaginationQueryParams {
   search?: string;
@@ -15,12 +15,14 @@ export interface ActionsArchiveQueryProps extends IPaginationQueryParams {
   author?: string;
 }
 
-export type ActionsArchiveProps = IHOCQueryProps<ActionsArchiveQueryProps>;
+export type ActionsArchiveProps = IHOCQueryProps<ActionsArchiveQueryProps> & {
+  volunteerId?: string;
+};
 
 // set page default params
 const DEFAULT_QUERY_PARAMS = getPaginationQueryParams({});
 
-const ActionsArchiveWithQueryParams = () => {
+const ActionsArchiveWithQueryParams = ({ volunteerId }: { volunteerId?: string }) => {
   // set query config
   const queryConfig = {
     ...DEFAULT_QUERY_PARAMS,
@@ -33,7 +35,7 @@ const ActionsArchiveWithQueryParams = () => {
   return (
     <QueryParams config={queryConfig}>
       {(props: any) => {
-        return <ActionsArchive {...props} />;
+        return <ActionsArchiveTable {...props} volunteerId={volunteerId} />;
       }}
     </QueryParams>
   );

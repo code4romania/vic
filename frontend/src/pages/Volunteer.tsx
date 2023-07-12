@@ -16,6 +16,7 @@ import { useVolunteer } from '../services/volunteer/volunteer.service';
 import { VolunteerProps } from '../containers/query/VolunteerWithQueryParams';
 import ActivityLogTableWithQueryParams from '../containers/query/ActivityLogTableWithQueryParams';
 import ContractsTableWithQueryParams from '../containers/query/ContractsTableWithQueryParams';
+import ActionsArchiveWithQueryParams from '../containers/query/ActionsArchiveWithQueryParams';
 
 export enum VolunteerTabsOptions {
   ARCHIVE = 'archive',
@@ -103,7 +104,7 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
           />
         )}
         {query?.activeTab === VolunteerTabsOptions.ARCHIVE && (
-          <div>Actions Archive to be added</div>
+          <ActionsArchiveWithQueryParams volunteerId={id} />
         )}
         {query?.activeTab === VolunteerTabsOptions.DOCUMENTS && (
           <ContractsTableWithQueryParams volunteerName={volunteer?.user.name as string} />

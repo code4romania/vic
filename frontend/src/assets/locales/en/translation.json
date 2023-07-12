@@ -748,6 +748,18 @@
     "PUBLISH_ANNOUNCEMENT": {
       "label": "Publish Announcement",
       "description": "Anuntul <inlineLink>{{announcementTitle}}</inlineLink> a fost publicat."
+    },
+    "CREATE_CONTRACT": {
+      "label": "Generate Contract",
+      "description": "Un nou contract a fost generat pentru voluntarul <inlineLink>{{volunteerName}}</inlineLink>"
+    },
+    "APPROVE_CONTRACT": {
+      "label": "Approve Contract",
+      "description": "Contractul cu numarul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost aprobat"
+    },
+    "REJECT_CONTRACT": {
+      "label": "Reject Contract",
+      "description": "Contractul cu numarul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost respins"
     }
   },
   "dashboard": {

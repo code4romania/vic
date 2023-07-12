@@ -30,11 +30,11 @@ import ActivityLogs from '../containers/query/ActivityLogsWithQueryParams';
 import AddActivityLog from '../pages/AddActivityLog';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
-import ActionsArchive from '../containers/query/ActionsArchiveWithQueryParams';
 import Contracts from '../containers/query/ContractsWithQueryParams';
 import AddContractTemplate from '../pages/AddContractTemplate';
 import EditContractTemplate from '../pages/EditContractTemplate';
 import AddContract from '../pages/AddContract';
+import ActionsArchive from '../pages/ActionsArchive';
 
 const Router = () => {
   return (

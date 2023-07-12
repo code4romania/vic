@@ -177,6 +177,7 @@ export interface TrackedEventData {
     contractId: string;
     volunteerId: string;
     volunteerName: string;
+    contractNumber: string;
   };
   [TrackedEventName.APPROVE_CONTRACT]: {
     organizationId: string;
@@ -186,6 +187,7 @@ export interface TrackedEventData {
     newStatus: ContractStatus;
     volunteerId: string;
     volunteerName: string;
+    contractNumber: string;
   };
   [TrackedEventName.REJECT_CONTRACT]: {
     organizationId: string;
@@ -195,5 +197,6 @@ export interface TrackedEventData {
     newStatus: ContractStatus;
     volunteerId: string;
     volunteerName: string;
+    contractNumber: string;
   };
 }

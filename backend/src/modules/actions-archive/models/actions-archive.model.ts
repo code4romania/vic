@@ -33,6 +33,7 @@ export type CreateActionArchiveOptions = Pick<
 
 export type FindManyActionsArchiveOptions = {
   organizationId: string;
+  volunteerId?: string;
   author?: string;
 
   actionStartDate?: Date;

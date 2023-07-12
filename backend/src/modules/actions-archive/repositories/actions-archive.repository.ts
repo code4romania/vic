@@ -58,6 +58,13 @@ export class ActionsArchiveRepository
       });
     }
 
+    if (findOptions.volunteerId) {
+      query.andWhere(
+        `("actionsArchive".event_data->>'volunteerId')::uuid = :volunteerId`,
+        { volunteerId: findOptions.volunteerId },
+      );
+    }
+
     if (findOptions.search) {
       query.andWhere(
         `exists (select 1 from jsonb_each_text(actionsArchive.eventData) as kv where kv.value ilike :search) OR exists (select 1 from jsonb_each_text(actionsArchive.changes) as kv where kv.value ilike :search)`,
