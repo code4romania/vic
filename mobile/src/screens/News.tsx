@@ -1,60 +1,220 @@
 import React from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { VirtualizedList, View, StyleSheet } from 'react-native';
 import NewsListItem from '../components/NewsListItem';
+import InfiniteListLayout from '../layouts/InfiniteListLayout';
+import { JSONStringifyError } from '../common/utils/utils';
+import { View, StyleSheet } from 'react-native';
+import { useNewsInfiniteQuery } from '../services/news/news.service';
+import { INewsItem } from '../common/interfaces/news-item.interface';
 import { useTranslation } from 'react-i18next';
+import { NewsType } from '../common/enums/news-type.enum';
+import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
+import { TrackedEventName } from '../common/enums/tracked-event-name.enum';
+import { Text, useTheme } from '@ui-kitten/components';
 
-const Separator = () => <View style={styles.separator} />;
-
-const News = ({ navigation }: any) => {
-  const { t } = useTranslation('general');
+const NewsContent = ({
+  startText,
+  endText,
+  organizationName,
+}: {
+  startText: string;
+  endText?: string;
+  organizationName?: string;
+}) => {
+  const theme = useTheme();
+  return (
+    <Text
+      category="c1"
+      numberOfLines={2}
+      ellipsizeMode="tail"
+      style={{ ...styles.newsText, color: theme['cool-gray-500'] }}
+    >
+      {startText}{' '}
+      <Text category="s1" style={styles.newsText}>
+        {organizationName || ''}
+      </Text>{' '}
+      {endText || ''}
+    </Text>
+  );
+};
+const News = ({ navigation, route }: any) => {
   console.log('News');
+  const { type } = route.params;
+  const { t } = useTranslation('news');
 
-  const getItem = (data: unknown, index: number) => {
-    console.log('data', data);
-    return {
-      id: Math.random().toString(12).substring(0),
-      title: `Item ${index + 1}`,
-    };
+  const {
+    data: news,
+    error: getNewsError,
+    isFetching: isFetchingNews,
+    fetchNextPage,
+    hasNextPage,
+    refetch: reloadNews,
+  } = useNewsInfiniteQuery(type);
+
+  const onLoadMore = () => {
+    if (!isFetchingNews && hasNextPage) {
+      fetchNextPage();
+    }
   };
 
-  const getItemCount = (data: unknown) => {
-    console.log('data', data);
-    return 50;
-  };
-
-  const renderItem = ({ item }: { item: unknown }) => {
-    console.log('item', item);
-    return (
+  const onRenderAnouncementListItem = ({ item }: { item: INewsItem }) => (
+    <View style={styles.listItemContainer}>
       <NewsListItem
-        icon={''}
-        title="Important! Ne vedem maine la 10!"
-        subtitle="La 10:30 este plecarea, nu intarziati!"
+        icon={item.organizationLogo}
+        subtitleElement={renderNewsItemDescription(item)}
+        onPress={onNewsItemPress.bind(null, item)}
       />
-    );
+    </View>
+  );
+
+  const renderHeader = () => {
+    switch (type) {
+      case NewsType.CONTRACTS:
+        return t('header.documents');
+      case NewsType.LOGGED_HOURS:
+        return t('header.logs');
+      case NewsType.ORGANIZATIONS:
+        return t('header.organizations');
+    }
+
+    return '';
+  };
+
+  const renderNewsItemDescription = (item: INewsItem) => {
+    switch (type) {
+      case NewsType.CONTRACTS:
+        return renderDocumentsNewsItemDescription(item);
+      case NewsType.LOGGED_HOURS:
+        return renderActivityLogsNewsItemDescription(item);
+      case NewsType.ORGANIZATIONS:
+        return renderOrganizationsNewsItemDescription(item);
+    }
+  };
+
+  const renderActivityLogsNewsItemDescription = (item: INewsItem) => {
+    if (
+      item.newStatus === ActivityLogStatus.APPROVED &&
+      item.eventName === TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS
+    ) {
+      return <NewsContent startText={t('item.logs.approved')} />;
+    }
+
+    if (
+      item.newStatus === ActivityLogStatus.REJECTED &&
+      item.eventName === TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS
+    ) {
+      return <NewsContent startText={t('item.logs.approved')} />;
+    }
+
+    return <></>;
+  };
+
+  const renderDocumentsNewsItemDescription = (item: INewsItem) => {
+    if (item.eventName === TrackedEventName.CREATE_CONTRACT) {
+      return (
+        <NewsContent
+          startText={''}
+          endText={`${t('item.documents.new')}`}
+          organizationName={item.organizationName}
+        />
+      );
+    }
+
+    if (item.eventName === TrackedEventName.APPROVE_CONTRACT) {
+      return (
+        <NewsContent
+          startText={`${t('item.documents.approved_start')}`}
+          endText={`${t('item.documents.approved_end')}`}
+          organizationName={item.organizationName}
+        />
+      );
+    }
+
+    if (item.eventName === TrackedEventName.REJECT_CONTRACT) {
+      return (
+        <NewsContent
+          startText={`${t('item.documents.rejected_start')}`}
+          endText={`${t('item.documents.rejected_end')}`}
+          organizationName={item.organizationName}
+        />
+      );
+    }
+
+    return <></>;
+  };
+
+  const renderOrganizationsNewsItemDescription = (item: INewsItem) => {
+    if (item.eventName === TrackedEventName.APPROVE_ACCESS_REQUEST) {
+      return (
+        <NewsContent
+          startText={`${t('item.organization.request')}`}
+          endText={`${t('item.organization.approved')}`}
+          organizationName={item.organizationName}
+        />
+      );
+    }
+
+    if (item.eventName === TrackedEventName.REJECT_ACCESS_REQUEST) {
+      return (
+        <NewsContent
+          startText={`${t('item.organization.request')}`}
+          endText={`${t('item.organization.rejected')}`}
+          organizationName={item.organizationName}
+        />
+      );
+    }
+
+    return <></>;
+  };
+
+  const onNewsItemPress = (item: INewsItem) => {
+    if (type === NewsType.LOGGED_HOURS) {
+      navigation.navigate('activity-log', { activityLogId: item.activityLogId });
+    }
+
+    if (type === NewsType.CONTRACTS) {
+      if (item.eventName === TrackedEventName.REJECT_CONTRACT) {
+        navigation.navigate('rejected-contract', {
+          contractId: item.contractId,
+        });
+      } else {
+        navigation.navigate('documents');
+      }
+    }
+
+    if (type === NewsType.ORGANIZATIONS) {
+      navigation.navigate('organization-profile', { organizationId: item.organizationId });
+    }
   };
 
   return (
-    <PageLayout title={t('news')} onBackButtonPress={navigation.goBack}>
-      <VirtualizedList
-        getItem={getItem}
-        getItemCount={getItemCount}
-        renderItem={renderItem}
-        ItemSeparatorComponent={Separator}
-        style={styles.virtualizedList}
+    <PageLayout title={renderHeader()} onBackButtonPress={navigation.goBack}>
+      <InfiniteListLayout<INewsItem>
+        pages={news?.pages}
+        renderItem={onRenderAnouncementListItem}
+        loadMore={onLoadMore}
+        isLoading={isFetchingNews}
+        refetch={reloadNews}
+        hasDivider={false}
+        errorMessage={
+          getNewsError
+            ? `${JSONStringifyError(getNewsError as Error)}`
+            : // : `${t('errors.generic')}`
+              ''
+        }
       />
     </PageLayout>
   );
 };
 
+export default News;
+
 const styles = StyleSheet.create({
-  separator: {
-    height: 16,
+  listItemContainer: {
+    paddingBottom: 16,
   },
-  virtualizedList: {
-    width: '100%',
-    paddingHorizontal: 16,
+  newsText: {
+    paddingRight: 32,
+    lineHeight: 20,
   },
 });
-
-export default News;

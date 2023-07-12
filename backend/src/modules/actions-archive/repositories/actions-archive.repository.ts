@@ -83,7 +83,7 @@ export class ActionsArchiveRepository
   }
 
   public async findNews(
-    options: FindManyNewsOptions,
+    options: Omit<FindManyNewsOptions, 'type'>,
   ): Promise<Pagination<IActionArchiveModel>> {
     const query = this.actionsArchiveRepo
       .createQueryBuilder('actionsArchive')

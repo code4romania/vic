@@ -10,6 +10,7 @@ import {
   TrackedEventName,
 } from '../enums/action-resource-types.enum';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
+import { NewsType } from '../enums/news-type.enum';
 
 export const TRACK_ACTION_EVENT = 'track.action';
 
@@ -41,6 +42,7 @@ export type FindManyActionsArchiveOptions = {
 export type FindManyNewsOptions = {
   userId: string;
   events: TrackedEventName[];
+  type: NewsType;
 } & IBasePaginationFilterModel;
 
 export class ActionsArchiveTransformer {

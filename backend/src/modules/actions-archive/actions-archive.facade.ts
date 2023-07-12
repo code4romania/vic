@@ -64,7 +64,7 @@ export class ActionsArchiveFacade {
   }
 
   async findNews(
-    options: FindManyNewsOptions,
+    options: Omit<FindManyNewsOptions, 'type'>,
   ): Promise<Pagination<IActionArchiveModel>> {
     return this.actionsArchiveRepository.findNews(options);
   }

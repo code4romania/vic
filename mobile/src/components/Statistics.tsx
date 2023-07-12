@@ -8,6 +8,7 @@ import { useMonthlyStatistics } from '../services/statistics/statistics.service'
 import { useTranslation } from 'react-i18next';
 import { Text } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
+import { NewsType } from '../common/enums/news-type.enum';
 
 const Statistics = ({ navigation }: { navigation: any }) => {
   console.log('Statistics');
@@ -26,15 +27,15 @@ const Statistics = ({ navigation }: { navigation: any }) => {
   };
 
   const onHoursCardPress = () => {
-    navigation.navigate('news', { activityLogHoursUpdates: true });
+    navigation.navigate('news', { type: NewsType.LOGGED_HOURS });
   };
 
   const onDocumentsCardPress = () => {
-    navigation.navigate('news', { documentsUpdates: true });
+    navigation.navigate('news', { type: NewsType.CONTRACTS });
   };
 
   const onOrganizationsCardPress = () => {
-    navigation.navigate('news', { organizationsUpdates: true });
+    navigation.navigate('news', { type: NewsType.ORGANIZATIONS });
   };
 
   // TODO: skeleton loading here

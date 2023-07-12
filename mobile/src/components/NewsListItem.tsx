@@ -1,5 +1,5 @@
 import { Text, withStyles } from '@ui-kitten/components';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { View, Image, ImageStyle } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { applyCardShadow } from '../common/utils/utils';
@@ -9,11 +9,19 @@ interface NewsListItemProps {
   icon: string;
   title?: string;
   subtitle?: string;
+  subtitleElement?: ReactNode;
   eva?: any;
   onPress?: () => void;
 }
 
-const NewsListItem = ({ icon, title, subtitle, eva, onPress }: NewsListItemProps) => {
+const NewsListItem = ({
+  icon,
+  title,
+  subtitle,
+  eva,
+  onPress,
+  subtitleElement,
+}: NewsListItemProps) => {
   return (
     <TouchableHighlight onPress={onPress} style={eva.style.touchableContainer}>
       <View style={eva?.style.container}>
@@ -26,10 +34,17 @@ const NewsListItem = ({ icon, title, subtitle, eva, onPress }: NewsListItemProps
           />
         </View>
         <View style={eva?.style.textContainer}>
-          <Text category="s1">{title}</Text>
-          <Text category="c1" numberOfLines={1} ellipsizeMode="tail" style={eva?.style.subtitle}>
-            {subtitle}
-          </Text>
+          {title && (
+            <Text category="s1" numberOfLines={2}>
+              {title}
+            </Text>
+          )}
+          {subtitle && (
+            <Text category="c1" numberOfLines={2} ellipsizeMode="tail" style={eva?.style.subtitle}>
+              {subtitle}
+            </Text>
+          )}
+          {subtitleElement}
         </View>
       </View>
     </TouchableHighlight>
@@ -56,6 +71,7 @@ export default withStyles(NewsListItem, (theme) => ({
   subtitle: {
     color: theme['cool-gray-500'],
     paddingRight: 32,
+    lineHeight: 20,
   },
   iconWrapper: {
     width: 32,

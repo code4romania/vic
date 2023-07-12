@@ -17,6 +17,6 @@ export interface IActionArchiveRepository {
     volunteerIds: string[],
   ): Promise<number>;
   findNews(
-    options: FindManyNewsOptions,
+    options: Omit<FindManyNewsOptions, 'type'>,
   ): Promise<Pagination<IActionArchiveModel>>;
 }

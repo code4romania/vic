@@ -23,6 +23,7 @@ import JoinByAccessCode from '../screens/JoinByAccessCode';
 import Documents from '../screens/Documents';
 import Contract from '../screens/Contract';
 import Anouncements from '../screens/Anouncements';
+import ContractRejectedReason from '../screens/ContractRejectedReason';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
@@ -54,6 +55,7 @@ const Private = () => (
       <Screen name="activity-log" component={ActivityLog} />
       <Screen name="edit-activity-log" component={EditActivityLog} />
       <Screen name="create-volunteer" component={CreateVolunteer} />
+      <Screen name="rejected-contract" component={ContractRejectedReason} />
     </Group>
   </Navigator>
 );

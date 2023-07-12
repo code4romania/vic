@@ -7,6 +7,7 @@ export class MobileContractPresenter extends MobileContractListItemPresenter {
   constructor(contract: IContractModel) {
     super(contract);
     this.contractFileName = contract.fileName;
+    this.rejectionReason = contract.rejectionReason;
   }
 
   @Expose()
@@ -14,4 +15,10 @@ export class MobileContractPresenter extends MobileContractListItemPresenter {
     description: 'The contract fileName',
   })
   contractFileName: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The rejection reason',
+  })
+  rejectionReason?: string;
 }

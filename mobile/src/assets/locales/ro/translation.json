@@ -592,6 +592,11 @@
         "CONTRACT_007": "Nu se poate anula un contract aprobat de admin",
         "TEMPLATE_002": "Template-ul contractului nu a fost gasit!"
       }
+    },
+    "contract_rejected": {
+      "header": "Contract Respins",
+      "paragraph": "Contractul tau a fost respins",
+      "label": "Motivul respingerii"
     }
   },
   "settings": {
@@ -644,6 +649,31 @@
     "title": "Schimba parola",
     "submit": {
       "success": "Parola a fost schimbata!"
+    }
+  },
+  "news": {
+    "header": {
+      "logs": "Actualizari in Ore de voluntariat",
+      "documents": "Actualizati in Documente",
+      "organizations": "Actualizati in Organizatii"
+    },
+    "item": {
+      "logs": {
+        "approved": "Orele de voluntariat inregistrate au fost aprobate",
+        "rejected": "Orele de voluntariat inregistrate au fost respinse"
+      },
+      "documents": {
+        "new": "ți-a generat contractul de voluntariat. Descarcă si semnează..",
+        "approved_start": "Contractul tău cu",
+        "approved_end": "a fost aprobat si semnat.",
+        "rejected_start": "Contractul tău cu",
+        "rejected_end": "a fost respins. Vezi motiv."
+      },
+      "organization": {
+        "request": "Cererea de inscriere in organizatia",
+        "approved": "a fost aprobata",
+        "rejected": "a fost respinsa"
+      }
     }
   }
 }
