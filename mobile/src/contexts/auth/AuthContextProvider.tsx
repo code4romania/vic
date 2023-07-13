@@ -80,7 +80,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       // here are just error strings validating user pool config and if user is authenticated
       console.debug('[Cognito][Init]:', JSONStringifyError(error));
     } finally {
-      await SplashScreen.hideAsync();
+      // TODO: recheck this
+      setTimeout(async () => {
+        await SplashScreen.hideAsync();
+      }, 500);
     }
   };
 
