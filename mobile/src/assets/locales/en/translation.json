@@ -92,14 +92,15 @@
       }
     },
     "validate_account": {
-      "heading": "Verificare code primit pe email",
+      "heading": "Verificare code primit prin email",
       "paragraph": "Completați câmpurile de mai jos pentru înregistrare.",
       "form": {
         "code": {
           "label": "Introdu codul primit prin email",
           "placeholder": "Introdu codul primit prin email",
           "required": "Codul este obligatoriu",
-          "length": "Codul trebuie sa aiba o lungime de 6 caractere"
+          "length": "Codul trebuie sa aiba o lungime de 6 caractere",
+          "pattern": "Codul trebuie sa contina doar cifre"
         }
       }
     },
@@ -137,6 +138,19 @@
           "required": "Data nașterii este obligatorie"
         }
       }
+    }
+  },
+  "auth": {
+    "errors": {
+      "unauthorizeed": "Userul sau parola sunt greșite",
+      "username_exists": "Există deja un utilizator cu această adresă de email",
+      "signup": "Eroare la înregistrare",
+      "resend_code": "Eroare la trimiterea codului de confirmare",
+      "init_profile": "Eroare la încărcarea profilului",
+      "login": "Eroare la autentificare, vă rugăm încercați din nou",
+      "invalid_password": "Parola nu este conforma cu polita AWS",
+      "password": "Eroare la schimbarea parolei",
+      "code_missmatch": "Codul este invalid"
     }
   },
   "organizations": {
@@ -188,18 +202,6 @@
   },
   "privacy_policy": {
     "title": "Politica de confidentialitate"
-  },
-  "auth": {
-    "errors": {
-      "unauthorizeed": "Userul sau parola sunt greșite",
-      "username_exists": "Există deja un utilizator cu această adresă de email",
-      "signup": "Eroare la înregistrare",
-      "resend_code": "Eroare la trimiterea codului de confirmare",
-      "init_profile": "Eroare la încărcarea profilului",
-      "login": "Eroare la autentificare, vă rugăm încercați din nou",
-      "invalid_password": "Parola nu este conforma cu polita AWS",
-      "password": "Eroare la schimbarea parolei"
-    }
   },
   "activity_logs": {
     "title": "Ore de voluntariat",

@@ -90,9 +90,6 @@ const CreateAccount = ({ navigation }: any) => {
         phoneNumber: `${CONSTANTS.PHONE_PREFIX}${phone.trim()}`,
       });
       navigation.replace('validate-account');
-    } catch (error) {
-      console.log('error');
-      // show toast message or any error message
     } finally {
       setIsLoading(false);
     }

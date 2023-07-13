@@ -9,6 +9,8 @@ import { useAuth } from '../hooks/useAuth';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from '../components/FormInput';
 import { Text } from '@ui-kitten/components';
+import { REGEX } from '../common/constants/constants';
+import Paragraph from '../components/Paragraph';
 
 export type ValidateAccountFormTypes = {
   code: string;
@@ -18,6 +20,7 @@ const schema = yup
   .object({
     code: yup
       .string()
+      .matches(REGEX.NUMBERS_ONLY, `${i18n.t('register:validate_account.form.code.pattern')}`)
       .length(6, `${i18n.t('register:validate_account.form.code.length')}`)
       .required(`${i18n.t('register:validate_account.form.code.required')}`),
   })
@@ -40,15 +43,16 @@ const ValidateAccount = ({ navigation }: any) => {
 
   const onSubmit = async ({ code }: ValidateAccountFormTypes) => {
     try {
-      console.log('code', code);
       setIsLoading(true);
       await confirmSignUp(code);
       navigation.replace('create-user');
-    } catch (error) {
-      console.log('error on confirm signup');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const onGoToLogin = () => {
+    navigation.navigate('login');
   };
 
   return (
@@ -59,11 +63,14 @@ const ValidateAccount = ({ navigation }: any) => {
         primaryActionLabel: t('general:continue'),
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isLoading,
+        onSecondaryActionButtonClick: onGoToLogin,
+        secondaryActionLabel: `${t('create_account.secondary_action.label')}`,
+        secondaryActionLink: `${t('create_account.secondary_action.link')}`,
       }}
     >
       <FormLayout>
         <Text category="h3">{`${t('validate_account.heading')}`}</Text>
-        <Text appearance="hint">{`${t('validate_account.paragraph')}`}</Text>
+        <Paragraph>{`${t('validate_account.paragraph')}`}</Paragraph>
         <FormInput
           control={control as any}
           name="code"

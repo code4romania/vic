@@ -157,7 +157,12 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       await Auth.confirmSignUp(email, code);
     } catch (error: any) {
       console.log('[Auth][Signup][Confirm]:', JSONStringifyError(error));
-      Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.signup')}` });
+      if (error.code === 'CodeMismatchException') {
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.code_missmatch')}` });
+      } else {
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.signup')}` });
+      }
+
       throw error;
     }
   };
