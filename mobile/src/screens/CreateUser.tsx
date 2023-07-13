@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import FormLayout from '../layouts/FormLayout';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ import CountySelect from '../containers/CountySelect';
 import CitySelect from '../containers/CitySelect';
 import { Auth } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import Paragraph from '../components/Paragraph';
 
 export type UserFormTypes = {
   firstName: string;
@@ -28,31 +29,28 @@ export type UserFormTypes = {
   sex: Sex;
 };
 
-const schema = yup
-  .object({
-    firstName: yup
-      .string()
-      .required(`${i18n.t('register:create_user.form.first_name.required')}`)
-      .min(2, `${i18n.t('register:create_user.form.first_name.min', { value: '2' })}`)
-      .max(
-        50,
-        `${i18n.t('register:create_user.form.first_name.max', {
-          value: '50',
-        })}`,
-      ),
-    lastName: yup
-      .string()
-      .required(`${i18n.t('register:create_user.form.last_name.required')}`)
-      .min(2, `${i18n.t('register:create_user.form.last_name.min', { value: '2' })}`)
-      .max(
-        50,
-        `${i18n.t('register:create_user.form.last_name.max', {
-          value: '50',
-        })}`,
-      ),
-    phone: yup.string().required(`${i18n.t('register:create_account.form.phone.required')}`),
-  })
-  .required();
+const schema = yup.object({
+  firstName: yup
+    .string()
+    .required(`${i18n.t('register:create_user.form.first_name.required')}`)
+    .min(2, `${i18n.t('register:create_user.form.first_name.min', { value: '2' })}`)
+    .max(
+      50,
+      `${i18n.t('register:create_user.form.first_name.max', {
+        value: '50',
+      })}`,
+    ),
+  lastName: yup
+    .string()
+    .required(`${i18n.t('register:create_user.form.last_name.required')}`)
+    .min(2, `${i18n.t('register:create_user.form.last_name.min', { value: '2' })}`)
+    .max(
+      50,
+      `${i18n.t('register:create_user.form.last_name.max', {
+        value: '50',
+      })}`,
+    ),
+});
 
 const CreateUser = ({ navigation }: any) => {
   const { t } = useTranslation('register');
@@ -62,7 +60,6 @@ const CreateUser = ({ navigation }: any) => {
     control,
     handleSubmit,
     watch,
-    reset,
     formState: { errors },
   } = useForm<UserFormTypes>({
     mode: 'onSubmit',
@@ -71,14 +68,6 @@ const CreateUser = ({ navigation }: any) => {
   });
 
   const watchCountyId = watch('countyId');
-
-  useEffect(() => {
-    (async () => {
-      // in case the user has registered phone number with AwS prefill it in the form
-      const user = await Auth.currentAuthenticatedUser();
-      reset({ phone: user.attributes.phone_number });
-    })();
-  }, [reset]);
 
   const onSubmit = async ({ cityId, ...userPayload }: UserFormTypes) => {
     try {
@@ -89,6 +78,7 @@ const CreateUser = ({ navigation }: any) => {
       const newUser = {
         ...userPayload,
         locationId: cityId,
+        phone: user.attributes.phone_number,
         email: user.attributes.email,
         cognitoId: user.username,
       };
@@ -116,7 +106,7 @@ const CreateUser = ({ navigation }: any) => {
     >
       <FormLayout>
         <Text category="h3">{`${t('create_user.heading')}`}</Text>
-        <Text appearance="hint">{`${t('create_user.paragraph')}`}</Text>
+        <Paragraph>{`${t('create_user.paragraph')}`}</Paragraph>
         <FormInput
           control={control as any}
           placeholder={t('create_user.form.first_name.placeholder')}
@@ -133,16 +123,6 @@ const CreateUser = ({ navigation }: any) => {
           name="lastName"
           error={errors.lastName}
           disabled={isLoading}
-          required={true}
-        />
-        <FormInput
-          control={control as any}
-          name="phone"
-          label={t('create_account.form.phone.label')}
-          placeholder={t('create_account.form.phone.placeholder')}
-          error={errors.phone}
-          disabled={isLoading}
-          keyboardType="phone-pad"
           required={true}
         />
         <CountySelect

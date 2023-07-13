@@ -123,19 +123,13 @@
           "max": "Numele poate sa aiba maxim {{value}} caractere"
         },
         "county": {
-          "label": "Județ",
-          "required": "Județul este obligatoriu"
+          "label": "Județ"
         },
         "city": {
-          "label": "Oraș",
-          "required": "Orașul este obligatoriu"
-        },
-        "sex": {
-          "required": "Alegerea sexului este obligatorie"
+          "label": "Oraș"
         },
         "birthday": {
-          "label": "Data nașterii",
-          "required": "Data nașterii este obligatorie"
+          "label": "Data nașterii"
         }
       }
     }

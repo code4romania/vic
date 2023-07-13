@@ -6,4 +6,5 @@ export const REGEX = {
 
 export const CONSTANTS = {
   PHONE_PREFIX: '+40',
+  MINIMAL_AGE: 18,
 };
