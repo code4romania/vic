@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Icon, Text } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 import FormLayout from '../layouts/FormLayout';
@@ -9,23 +8,23 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { renderPasswordEyeIcon } from '../components/InputPrefixes';
+import Paragraph from '../components/Paragraph';
 import { Pressable } from 'react-native';
+import { Text } from '@ui-kitten/components';
 
 export type LoginFormTypes = {
   username: string;
   password: string;
 };
 
-const schema = yup
-  .object({
-    username: yup
-      .string()
-      .email(`${i18n.t('login:form.email.pattern')}`)
-      .required(`${i18n.t('login:form.email.required')}`),
-
-    password: yup.string().required(`${i18n.t('login:form.password.required')}`),
-  })
-  .required();
+const schema = yup.object({
+  username: yup
+    .string()
+    .email(`${i18n.t('login:form.email.pattern')}`)
+    .required(`${i18n.t('login:form.email.required')}`),
+  password: yup.string().required(`${i18n.t('login:form.password.required')}`),
+});
 
 const Login = ({ navigation }: any) => {
   const { login, resendConfirmationCode } = useAuth();
@@ -65,18 +64,14 @@ const Login = ({ navigation }: any) => {
     try {
       await resendConfirmationCode(username);
       navigation.navigate('validate-account');
-    } catch (error: any) {
-      // here we do noting and error will be thrown from the context
     } finally {
       setIsLoading(false);
     }
   };
 
-  const renderPasswordEyeIcon = (props: any): React.ReactElement => (
-    <Pressable onPress={setSecureTextEntry.bind(null, !secureTextEntry)}>
-      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
-    </Pressable>
-  );
+  const onGoToResetPassword = () => {
+    navigation.navigate('reset-password');
+  };
 
   return (
     <PageLayout
@@ -89,7 +84,7 @@ const Login = ({ navigation }: any) => {
       }}
     >
       <FormLayout>
-        <Text appearance="hint">{`${t('paragraph')}`}</Text>
+        <Paragraph>{`${t('paragraph')}`}</Paragraph>
         <FormInput
           control={control as any}
           name="username"
@@ -105,11 +100,20 @@ const Login = ({ navigation }: any) => {
           label={t('form.password.label')}
           placeholder={t('form.password.placeholder')}
           error={errors.password}
-          accessoryRight={renderPasswordEyeIcon}
+          accessoryRight={(props: any) =>
+            renderPasswordEyeIcon({
+              ...props,
+              setSecureTextEntry,
+              secureTextEntry,
+            })
+          }
           secureTextEntry={secureTextEntry}
           disabled={isLoading}
           required={true}
         />
+        <Pressable onPress={onGoToResetPassword}>
+          <Text category="p1">Ai uitat parola?</Text>
+        </Pressable>
       </FormLayout>
     </PageLayout>
   );

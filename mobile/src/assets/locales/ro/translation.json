@@ -138,13 +138,32 @@
     "errors": {
       "unauthorizeed": "Userul sau parola sunt greșite",
       "username_exists": "Există deja un utilizator cu această adresă de email",
-      "signup": "Eroare la înregistrare",
+      "signup": "Eroare la înregistrare. Verificati datele de inregistrare si incercati din nou.",
       "resend_code": "Eroare la trimiterea codului de confirmare",
       "init_profile": "Eroare la încărcarea profilului",
       "login": "Eroare la autentificare, vă rugăm încercați din nou",
       "invalid_password": "Parola nu este conforma cu polita AWS",
       "password": "Eroare la schimbarea parolei",
       "code_missmatch": "Codul este invalid"
+    }
+  },
+  "login": {
+    "title": "Autentificare",
+    "paragraph": "Introduceți e-mailul și parola pentru a intra în cont.",
+    "submit": "Intra in cont",
+    "forgot_password": "Ai uitat parola? ",
+    "form": {
+      "email": {
+        "label": "E-mail",
+        "placeholder": "Introdu adresa de email",
+        "required": "Email-ul este obligatoriu",
+        "pattern": "Formatul email-ului nu este valid"
+      },
+      "password": {
+        "label": "Parola",
+        "placeholder": "Introduceti parola",
+        "required": "Parola este obligatorie"
+      }
     }
   },
   "organizations": {
@@ -368,26 +387,6 @@
     "events": "Evenimente",
     "search": "Caută",
     "account_settings": "Setări cont"
-  },
-  "login": {
-    "title": "Autentificare",
-    "paragraph": "Introduceți e-mailul și parola pentru a intra în cont.",
-    "submit": "Intra in cont",
-    "form": {
-      "email": {
-        "label": "Email",
-        "placeholder": "Introduceti emailul",
-        "required": "Email-ul este obligatoriu",
-        "min": "Email-ul poate să aibă minim {{value}} caractere",
-        "max": "Mențiunea poate să aibă maxim {{value}} caractere",
-        "pattern": "Formatul email-ului nu este valid"
-      },
-      "password": {
-        "label": "Parola",
-        "placeholder": "Introduceti parola",
-        "required": "Parola este obligatorie"
-      }
-    }
   },
   "home": {
     "greeting": "Salut, {{name}}!",
