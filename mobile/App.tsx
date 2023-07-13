@@ -65,7 +65,11 @@ export default () => {
   return fontsLoaded ? (
     <>
       <IconRegistry icons={FeatherIconsPack} />
-      <ApplicationProvider {...eva} theme={{ ...theme } as any} customMapping={mapping}>
+      <ApplicationProvider
+        {...eva}
+        theme={{ ...eva.dark, ...theme } as any}
+        customMapping={mapping}
+      >
         {/* Add marginTop for android devices as SafeAreaView is iOS Only */}
         <SafeAreaView style={styles.container}>
           <QueryClientProvider client={queryClient}>
@@ -78,7 +82,7 @@ export default () => {
             </AuthContextProvider>
           </QueryClientProvider>
         </SafeAreaView>
-        <ExpoStatusBar style="auto" />
+        <ExpoStatusBar style="dark" />
       </ApplicationProvider>
       <Toast config={toastConfig} />
     </>
