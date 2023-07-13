@@ -60,6 +60,8 @@ const expoConfig: ExpoConfig = {
     eas: {
       projectId: 'bcbf432c-f07a-4373-a9f1-f67f6281932e',
     },
+    policyLink: process.env.PRIVACY_POLICY_LINK,
+    termsLink: process.env.TERMS_AND_CONDITIONS_LINK,
   },
   owner: 'tribus-tech',
 };

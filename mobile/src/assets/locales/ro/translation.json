@@ -35,6 +35,108 @@
     },
     "back": "Inapoi"
   },
+  "landing": {
+    "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
+    "registered": "Ai deja cont?",
+    "email": "E-mail sau telefon",
+    "login": "Autentifică-te",
+    "social": {
+      "facebook": "Facebook",
+      "apple": "Apple",
+      "google": "Google"
+    }
+  },
+  "register": {
+    "title": "Creare cont",
+    "create_account": {
+      "heading": "Date cont",
+      "paragraph": "Completați câmpurile de mai jos pentru înregistrare",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Introduceti emailul",
+          "required": "Email-ul este obligatoriu",
+          "min": "Email-ul poate să aibă minim {{value}} caractere",
+          "max": "Email-ul poate să aibă maxim {{value}} caractere",
+          "pattern": "Formatul email-ului nu este valid"
+        },
+        "phone": {
+          "label": "Telefon",
+          "placeholder": "Introduceti telefonul",
+          "min": "Numărul de telefon poate să aibă minim {{value}} caractere",
+          "max": "Numărul de telefon poate să aibă maxim {{value}} caractere",
+          "required": "Telefonul este obligatoriu"
+        },
+        "password": {
+          "label": "Parola",
+          "placeholder": "Introduceti parola",
+          "required": "Parola este obligatorie",
+          "pattern": "Parola trebuie sa contina minim 8 caractere, litere mari, litere mici, numere si caractere speciale, fara spatii"
+        },
+        "confirm_password": {
+          "label": "Confirma parola",
+          "placeholder": "Confirmati parola",
+          "required": "Parola este obligatorie",
+          "match": "Parolele trebuie sa fie identice"
+        },
+        "terms": {
+          "agree": "Sunt de acord cu ",
+          "conditions": "Termenii și Condițiile",
+          "and": "cât și cu ",
+          "privacy_policy": "Politica de Confidențialitate ",
+          "application": "a aplicației",
+          "required": "Trebuie sa accepti Termenii,Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
+        }
+      }
+    },
+    "validate_account": {
+      "heading": "Verificare code primit pe email",
+      "paragraph": "Completați câmpurile de mai jos pentru înregistrare.",
+      "form": {
+        "code": {
+          "label": "Introdu codul primit prin email",
+          "placeholder": "Introdu codul primit prin email",
+          "required": "Codul este obligatoriu",
+          "length": "Codul trebuie sa aiba o lungime de 6 caractere"
+        }
+      }
+    },
+    "create_user": {
+      "heading": "Date utilizator",
+      "paragraph": "Completați câmpurile de mai jos pentru finalizarea inregistrarii.",
+      "form": {
+        "first_name": {
+          "label": "Prenume",
+          "placeholder": "Introdu prenumele",
+          "required": "Prenumele este obligatoriu",
+          "min": "Prenumele poate sa aiba minim {{value}} caractere",
+          "max": "Prenumele poate sa aiba maxim {{value}} caractere"
+        },
+        "last_name": {
+          "label": "Nume",
+          "placeholder": "Introdu numele de familie",
+          "required": "Numele de faimilie este obligatoriu",
+          "min": "Numele poate sa aiba minim {{value}} caractere",
+          "max": "Numele poate sa aiba maxim {{value}} caractere"
+        },
+        "county": {
+          "label": "Județ",
+          "required": "Județul este obligatoriu"
+        },
+        "city": {
+          "label": "Oraș",
+          "required": "Orașul este obligatoriu"
+        },
+        "sex": {
+          "required": "Alegerea sexului este obligatorie"
+        },
+        "birthday": {
+          "label": "Data nașterii",
+          "required": "Data nașterii este obligatorie"
+        }
+      }
+    }
+  },
   "organizations": {
     "search": {
       "placeholder": "Denumirea organizatiei"
@@ -84,17 +186,6 @@
   },
   "privacy_policy": {
     "title": "Politica de confidentialitate"
-  },
-  "landing": {
-    "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
-    "registered": "Ai deja cont?",
-    "email": "E-mail sau telefon",
-    "login": "Autentifică-te",
-    "social": {
-      "facebook": "Facebook",
-      "apple": "Apple",
-      "google": "Google"
-    }
   },
   "auth": {
     "errors": {
@@ -297,97 +388,6 @@
         "label": "Parola",
         "placeholder": "Introduceti parola",
         "required": "Parola este obligatorie"
-      }
-    }
-  },
-  "register": {
-    "title": "Creare cont",
-    "create_account": {
-      "heading": "Date cont",
-      "paragraph": "Completați câmpurile de mai jos pentru înregistrare",
-      "form": {
-        "email": {
-          "label": "Email",
-          "placeholder": "Introduceti emailul",
-          "required": "Email-ul este obligatoriu",
-          "min": "Email-ul poate să aibă minim {{value}} caractere",
-          "max": "Email-ul poate să aibă maxim {{value}} caractere",
-          "pattern": "Formatul email-ului nu este valid"
-        },
-        "phone": {
-          "label": "Telefon",
-          "placeholder": "Introduceti telefonul",
-          "min": "Numărul de telefon poate să aibă minim {{value}} caractere",
-          "max": "Numărul de telefon poate să aibă maxim {{value}} caractere",
-          "required": "Telefonul este obligatoriu"
-        },
-        "password": {
-          "label": "Parola",
-          "placeholder": "Introduceti parola",
-          "required": "Parola este obligatorie",
-          "pattern": "Parola trebuie sa contina minim 8 caractere, litere mari, litere mici, numere si caractere speciale, fara spatii"
-        },
-        "confirm_password": {
-          "label": "Confirma parola",
-          "placeholder": "Confirmati parola",
-          "required": "Parola este obligatorie",
-          "match": "Parolele trebuie sa fie identice"
-        },
-        "terms": {
-          "agree": "Sunt de acord cu ",
-          "conditions": "Termenii și Condițiile",
-          "and": "cât și cu ",
-          "privacy_policy": "Politica de Confidențialitate ",
-          "application": "a aplicației",
-          "required": "Trebuie sa accepti Termenii,Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
-        }
-      }
-    },
-    "validate_account": {
-      "heading": "Verificare code primit pe email",
-      "paragraph": "Completați câmpurile de mai jos pentru înregistrare.",
-      "form": {
-        "code": {
-          "label": "Introdu codul primit prin email",
-          "placeholder": "Introdu codul primit prin email",
-          "required": "Codul este obligatoriu",
-          "length": "Codul trebuie sa aiba o lungime de 6 caractere"
-        }
-      }
-    },
-    "create_user": {
-      "heading": "Date utilizator",
-      "paragraph": "Completați câmpurile de mai jos pentru finalizarea inregistrarii.",
-      "form": {
-        "first_name": {
-          "label": "Prenume",
-          "placeholder": "Introdu prenumele",
-          "required": "Prenumele este obligatoriu",
-          "min": "Prenumele poate sa aiba minim {{value}} caractere",
-          "max": "Prenumele poate sa aiba maxim {{value}} caractere"
-        },
-        "last_name": {
-          "label": "Nume",
-          "placeholder": "Introdu numele de familie",
-          "required": "Numele de faimilie este obligatoriu",
-          "min": "Numele poate sa aiba minim {{value}} caractere",
-          "max": "Numele poate sa aiba maxim {{value}} caractere"
-        },
-        "county": {
-          "label": "Județ",
-          "required": "Județul este obligatoriu"
-        },
-        "city": {
-          "label": "Oraș",
-          "required": "Orașul este obligatoriu"
-        },
-        "sex": {
-          "required": "Alegerea sexului este obligatorie"
-        },
-        "birthday": {
-          "label": "Data nașterii",
-          "required": "Data nașterii este obligatorie"
-        }
       }
     }
   },

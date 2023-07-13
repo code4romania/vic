@@ -13,6 +13,9 @@ import { Pressable, View } from 'react-native';
 import InlineLink from '../components/InlineLink';
 import { Controller } from 'react-hook-form';
 import { REGEX } from '../common/constants/constants';
+import Paragraph from '../components/Paragraph';
+import * as Linking from 'expo-linking';
+import Constants from 'expo-constants';
 
 export type RegisterFormTypes = {
   email: string;
@@ -55,11 +58,11 @@ const CreateAccount = ({ navigation }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onTermsAndConditionsPress = () => {
-    console.log('on terms and conditions pressed');
+    Linking.openURL(Constants.expoConfig?.extra?.termsLink);
   };
 
   const onPrivacyPolicyPress = () => {
-    console.log('on privacy policy pressed');
+    Linking.openURL(Constants.expoConfig?.extra?.policyLink);
   };
 
   const {
@@ -103,7 +106,7 @@ const CreateAccount = ({ navigation }: any) => {
     >
       <FormLayout>
         <Text category="h3">{`${t('create_account.heading')}`}</Text>
-        <Text appearance="hint">{`${t('create_account.paragraph')}`}</Text>
+        <Paragraph>{`${t('create_account.paragraph')}`}</Paragraph>
         <FormInput
           control={control as any}
           name="email"
@@ -195,6 +198,6 @@ const themedStyles = StyleService.create({
     alignItems: 'flex-start',
     gap: 12,
   },
-  termsTextContainer: { flexDirection: 'row', maxWidth: '90%', flexWrap: 'wrap' },
+  termsTextContainer: { flexDirection: 'row', maxWidth: '90%', flexWrap: 'wrap', gap: 4 },
   directionRow: { flexDirection: 'row' },
 });

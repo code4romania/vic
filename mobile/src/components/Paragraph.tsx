@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@ui-kitten/components';
+import { Text, useTheme } from '@ui-kitten/components';
 import { StyleSheet, TextStyle } from 'react-native';
 
 interface ParagraphProps {
@@ -7,16 +7,20 @@ interface ParagraphProps {
   style?: TextStyle;
 }
 
-const Paragraph = ({ children, style }: ParagraphProps) => (
-  <Text
-    style={{ ...styles.paragraph, ...style }}
-    category="p1"
-    ellipsizeMode="tail"
-    numberOfLines={3}
-  >
-    {children}
-  </Text>
-);
+const Paragraph = ({ children, style }: ParagraphProps) => {
+  const theme = useTheme();
+
+  return (
+    <Text
+      style={{ ...styles.paragraph, ...style, color: theme['cool-gray-500'] }}
+      category="p1"
+      ellipsizeMode="tail"
+      numberOfLines={3}
+    >
+      {children}
+    </Text>
+  );
+};
 
 export default Paragraph;
 
