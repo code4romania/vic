@@ -85,19 +85,24 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const login = async ({ username, password }: SignInOptions) => {
+    const confirm = { confirmAccount: false };
     try {
       await Auth.signIn(username, password);
-      await getProfile();
     } catch (error: any) {
       console.log('[Auth][Login]:', JSONStringifyError(error));
       // Handle scenario where user is created in cognito but not activated
       if (error.code === 'UserNotConfirmedException') {
         // send event to confirm account to login screen
-        throw { confirmAccount: true };
+        confirm.confirmAccount = true;
+        throw confirm;
       } else {
         // show any other error
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
       }
+    }
+
+    if (!confirm.confirmAccount) {
+      await getProfile();
     }
   };
 
