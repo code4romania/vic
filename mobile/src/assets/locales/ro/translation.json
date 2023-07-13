@@ -195,7 +195,11 @@
         "title": "Ore de voluntariat",
         "subtitle": "{{number}} ore asteapta aprobare"
       },
-      "volunteer_profile": { "title": "Profil voluntar" }
+      "documents": {
+        "title": "Documente",
+        "subtitle": "{{number}} documente asteapta raspuns"
+      },
+      "volunteer_profile": { "title": "Profil voluntar", "subtitle": "Profil incomplet" }
     },
     "age": "{{years}} de ani",
     "county": ", jud {{name}}",

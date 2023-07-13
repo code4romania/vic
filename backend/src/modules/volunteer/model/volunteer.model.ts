@@ -36,6 +36,13 @@ export interface IVolunteerModel extends IBaseModel {
   user: IRegularUserModel;
 }
 
+export interface IVolunteerStats {
+  volunteerId: string;
+  activityLogCount: number;
+  contractCount: number;
+  volunteerProfileId: string | null;
+}
+
 export type CreateVolunteerOptions = {
   userId: IVolunteerModel['user']['id'];
   organizationId: IVolunteerModel['organization']['id'];

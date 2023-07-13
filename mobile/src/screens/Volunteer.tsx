@@ -13,12 +13,17 @@ import TopNavigationCard from '../components/TopNavigationCard';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
+import { useVolunteerStats } from '../services/volunteer/volunteer.service';
 
 const Volunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
   console.log('Volunteer');
 
   const { userProfile } = useAuth();
+
+  const { data: stats, isFetching: isLoadingStats } = useVolunteerStats(
+    userProfile?.activeOrganization?.volunteerId as string,
+  );
 
   const onViewOrganizationButtonPress = () => {
     navigation.navigate('organization-profile', {
@@ -66,17 +71,23 @@ const Volunteer = ({ navigation }: any) => {
           title={t('menu_items.activity_log.title')}
           icon={<SvgXml xml={volunteerClockSVG} />}
           onPress={onViewAtivityLogsButtonPress}
-          subtitle={`${t('menu_items.activity_log.subtitle', { number: 2 })}`}
+          subtitle={`${t('menu_items.activity_log.subtitle', { number: stats?.activityLogCount })}`}
         />
         <VolunteerCard
           title={t('general:documents')}
           icon={<SvgXml xml={volunteerDocumentSVG} />}
           onPress={onDocumentsButtonPress}
+          subtitle={`${t('menu_items.documents.subtitle', { number: stats?.contractCount })}`}
         />
         <VolunteerCard
           title={t('menu_items.volunteer_profile.title')}
           icon={<SvgXml xml={volunteerUserSVG} />}
           onPress={onViewVolunteerProfilenButtonPress}
+          subtitle={
+            !stats?.volunteerProfileId && !isLoadingStats
+              ? `${t('menu_items.volunteer_profile.subtitle')}`
+              : ''
+          }
         />
       </View>
     </ScrollViewLayout>

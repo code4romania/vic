@@ -9,12 +9,15 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import { VolunteerStatus } from '../enums/volunteer-status.enum';
 import { VolunteerProfileEntity } from './volunteer-profile.entity';
+import { ContractEntity } from 'src/modules/documents/entities/contract.entity';
+import { ActivityLogEntity } from 'src/modules/activity-log/entities/activity-log.entity';
 
 // TODO: BR: Status Archived + ArchivedBy = null => volunteer leaved the org
 @Unique('user_in_organization', ['user', 'organization']) // TODO: recheck
@@ -73,4 +76,10 @@ export class VolunteerEntity extends BaseEntity {
   @ManyToOne(() => OrganizationEntity)
   @JoinColumn({ name: 'organization_id' })
   organization: OrganizationEntity;
+
+  @OneToMany(() => ContractEntity, (contract) => contract.volunteer)
+  contracts: ContractEntity[];
+
+  @OneToMany(() => ActivityLogEntity, (activityLog) => activityLog.volunteer)
+  activityLogs: ActivityLogEntity[];
 }

@@ -12,6 +12,7 @@ import {
   FindManyVolunteersOptions,
   FindVolunteerOptions,
   IVolunteerModel,
+  IVolunteerStats,
   UpdateVolunteerOptions,
 } from '../model/volunteer.model';
 import { VolunteerProfileRepositoryService } from '../repositories/volunteer-profile.repository';
@@ -106,5 +107,11 @@ export class VolunteerFacade {
 
   async findAll(options: FindVolunteerOptions): Promise<IVolunteerModel[]> {
     return this.volunteerRepository.findAll(options);
+  }
+
+  async findVolunteerWithOngStats(
+    volunteerId: string,
+  ): Promise<IVolunteerStats> {
+    return this.volunteerRepository.findVolunteerWithOngStats(volunteerId);
   }
 }

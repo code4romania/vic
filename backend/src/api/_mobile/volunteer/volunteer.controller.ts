@@ -16,6 +16,8 @@ import { VolunteerMobileGuard } from './guards/volunteer-mobile.guard';
 import { GetVolunteerProfileUsecase } from 'src/usecases/volunteer/get-volunteer-profile.usecase';
 import { UpdateVolunteerProfileDto } from './dto/update-volunteer-profile.dto';
 import { UpdateVolunteerProfileUsecase } from 'src/usecases/volunteer/update-volunteer-profile.usecase';
+import { GetVolunteerOrganizationStatusUsecase } from 'src/usecases/volunteer/get-volunteer-organization-status.usecase';
+import { VolunteerStatsPresenter } from './presenters/volunteer-stats.presenter';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -26,6 +28,7 @@ export class MobileVolunteerController {
     private readonly joinOrganizationByAccessCodeUsecase: JoinOrganizationByAccessCodeUsecase,
     private readonly getVolunteerProfileUsecase: GetVolunteerProfileUsecase,
     private readonly updateVolunteerProfileUsecase: UpdateVolunteerProfileUsecase,
+    private readonly getVolunteerOrganizationStatusUsecase: GetVolunteerOrganizationStatusUsecase,
   ) {}
 
   @Get(':id')
@@ -37,6 +40,17 @@ export class MobileVolunteerController {
     );
 
     return new VolunteerPresenter(volunteer);
+  }
+
+  @Get(':id/organization')
+  async getVolunteerOrganizationStats(
+    @Param('id', UuidValidationPipe) volunteerId: string,
+  ): Promise<VolunteerStatsPresenter> {
+    const volunteer = await this.getVolunteerOrganizationStatusUsecase.execute(
+      volunteerId,
+    );
+
+    return new VolunteerStatsPresenter(volunteer);
   }
 
   @ApiBody({ type: JoinByAccessCodeDto })

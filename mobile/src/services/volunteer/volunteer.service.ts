@@ -2,6 +2,7 @@ import { useMutation, useQuery } from 'react-query';
 import {
   createVolunteerProfile,
   getVolunteerProfile,
+  getVolunteerStats,
   joinByAccessCode,
   updateVolunteerProfile,
 } from './volunteer.api';
@@ -68,6 +69,12 @@ export const useVolunteerProfile = (organizationId: string) => {
     () => getVolunteerProfile(organizationId),
     { onSuccess: (data: IVolunteer) => setVolunteer(data), enabled: !!organizationId },
   );
+};
+
+export const useVolunteerStats = (volunteerId: string) => {
+  return useQuery(['volunteer-stats', volunteerId], () => getVolunteerStats(volunteerId), {
+    enabled: !!volunteerId,
+  });
 };
 
 export const useCreateVolunteerProfileMutation = () => {

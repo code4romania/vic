@@ -17,9 +17,12 @@ import {
   FindManyVolunteersOptions,
   FindVolunteerOptions,
   IVolunteerModel,
+  IVolunteerStats,
   UpdateVolunteerOptions,
   VolunteerModelTransformer,
 } from '../model/volunteer.model';
+import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
+import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 
 export class VolunteerRepositoryService
   extends RepositoryWithPagination<VolunteerEntity>
@@ -243,6 +246,41 @@ export class VolunteerRepositoryService
     });
 
     return VolunteerModelTransformer.fromEntity(volunteer);
+  }
+
+  async findVolunteerWithOngStats(
+    volunteerId: string,
+  ): Promise<IVolunteerStats> {
+    const queryBuilder = this.volunteerRepository
+      .createQueryBuilder('volunteer')
+      .leftJoin('volunteer.volunteerProfile', 'volunteerProfile')
+      .leftJoin(
+        'volunteer.contracts',
+        'contract',
+        'contract.status IN (:...statuses)',
+        {
+          statuses: [
+            ContractStatus.PENDING_ADMIN,
+            ContractStatus.PENDING_VOLUNTEER,
+          ],
+        },
+      )
+      .leftJoin(
+        'volunteer.activityLogs',
+        'activityLog',
+        '"activityLog".status = :status',
+        {
+          status: ActivityLogStatus.PENDING,
+        },
+      )
+      .select('volunteer.id', 'volunteerId')
+      .addSelect('volunteerProfile.id', 'volunteerProfileId')
+      .addSelect('COUNT(contract)', 'contractCount')
+      .addSelect('COUNT("activityLog")', 'activityLogCount')
+      .where('volunteer.id = :volunteerId', { volunteerId })
+      .groupBy('volunteer.id, volunteerProfile.id');
+
+    return await queryBuilder.getRawOne();
   }
 
   async count(options: CountVolunteerOptions): Promise<number> {
