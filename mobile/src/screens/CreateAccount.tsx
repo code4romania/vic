@@ -7,15 +7,16 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import i18n from '../common/config/i18n';
-import { CheckBox, Icon, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import { CheckBox, Text } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
-import { Pressable, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import InlineLink from '../components/InlineLink';
 import { Controller } from 'react-hook-form';
-import { REGEX } from '../common/constants/constants';
+import { CONSTANTS, REGEX } from '../common/constants/constants';
 import Paragraph from '../components/Paragraph';
 import * as Linking from 'expo-linking';
 import Constants from 'expo-constants';
+import { renderPasswordEyeIcon, renderPhoneNumberPrefix } from '../components/InputPrefixes';
 
 export type RegisterFormTypes = {
   email: string;
@@ -31,7 +32,11 @@ const schema = yup
       .string()
       .email(`${i18n.t('register:create_account.form.email.pattern')}`)
       .required(`${i18n.t('register:create_account.form.email.required')}`),
-    phone: yup.string().required(`${i18n.t('register:create_account.form.phone.required')}`),
+    phone: yup
+      .string()
+      .matches(REGEX.NUMBERS_ONLY, `${i18n.t('register:create_account.form.phone.pattern')}`)
+      .length(9, `${i18n.t('register:create_account.form.phone.length', { number: 10 })}`)
+      .required(`${i18n.t('register:create_account.form.phone.required')}`),
     password: yup
       .string()
       .matches(REGEX.COGNITO_PASSWORD, `${i18n.t('register:create_account.form.password.pattern')}`)
@@ -49,21 +54,14 @@ const schema = yup
   .required();
 
 const CreateAccount = ({ navigation }: any) => {
-  const styles = useStyleSheet(themedStyles);
+  // translations
   const { t } = useTranslation('register');
   // auth state
   const { signUp } = useAuth();
   // show hide password text in input
-  const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
+  const [secureTextEntryPassword, setSecureTextEntryPassword] = useState<boolean>(true);
+  const [secureTextEntryConfirm, setSecureTextEntryConfirm] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const onTermsAndConditionsPress = () => {
-    Linking.openURL(Constants.expoConfig?.extra?.termsLink);
-  };
-
-  const onPrivacyPolicyPress = () => {
-    Linking.openURL(Constants.expoConfig?.extra?.policyLink);
-  };
 
   const {
     control,
@@ -75,10 +73,22 @@ const CreateAccount = ({ navigation }: any) => {
     resolver: yupResolver(schema),
   });
 
+  const onTermsAndConditionsPress = () => {
+    Linking.openURL(Constants.expoConfig?.extra?.termsLink);
+  };
+
+  const onPrivacyPolicyPress = () => {
+    Linking.openURL(Constants.expoConfig?.extra?.policyLink);
+  };
+
   const onSubmit = async ({ email, password, phone }: RegisterFormTypes) => {
     try {
       setIsLoading(true);
-      await signUp({ username: email, password, phoneNumber: phone });
+      await signUp({
+        username: email.trim(),
+        password,
+        phoneNumber: `${CONSTANTS.PHONE_PREFIX}${phone.trim()}`,
+      });
       navigation.replace('validate-account');
     } catch (error) {
       console.log('error');
@@ -88,11 +98,9 @@ const CreateAccount = ({ navigation }: any) => {
     }
   };
 
-  const renderPasswordEyeIcon = (props: any): React.ReactElement => (
-    <Pressable onPress={setSecureTextEntry.bind(null, !secureTextEntry)}>
-      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
-    </Pressable>
-  );
+  const onGoToLogin = () => {
+    navigation.navigate('login');
+  };
 
   return (
     <PageLayout
@@ -102,6 +110,9 @@ const CreateAccount = ({ navigation }: any) => {
         primaryActionLabel: t('general:continue'),
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isLoading,
+        onSecondaryActionButtonClick: onGoToLogin,
+        secondaryActionLabel: `${t('create_account.secondary_action.label')}`,
+        secondaryActionLink: `${t('create_account.secondary_action.link')}`,
       }}
     >
       <FormLayout>
@@ -124,6 +135,7 @@ const CreateAccount = ({ navigation }: any) => {
           error={errors.phone}
           disabled={isLoading}
           keyboardType="phone-pad"
+          accessoryLeft={renderPhoneNumberPrefix}
           required={true}
         />
         <FormInput
@@ -132,8 +144,14 @@ const CreateAccount = ({ navigation }: any) => {
           label={t('create_account.form.password.label')}
           placeholder={t('create_account.form.password.placeholder')}
           error={errors.password}
-          accessoryRight={renderPasswordEyeIcon}
-          secureTextEntry={secureTextEntry}
+          accessoryRight={(props: any) =>
+            renderPasswordEyeIcon({
+              ...props,
+              setSecureTextEntry: setSecureTextEntryPassword,
+              secureTextEntry: secureTextEntryPassword,
+            })
+          }
+          secureTextEntry={secureTextEntryPassword}
           disabled={isLoading}
           required={true}
         />
@@ -143,8 +161,14 @@ const CreateAccount = ({ navigation }: any) => {
           label={t('create_account.form.confirm_password.label')}
           placeholder={t('create_account.form.confirm_password.placeholder')}
           error={errors.confirmPassword}
-          accessoryRight={renderPasswordEyeIcon}
-          secureTextEntry={secureTextEntry}
+          accessoryRight={(props: any) =>
+            renderPasswordEyeIcon({
+              ...props,
+              setSecureTextEntry: setSecureTextEntryConfirm,
+              secureTextEntry: secureTextEntryConfirm,
+            })
+          }
+          secureTextEntry={secureTextEntryConfirm}
           disabled={isLoading}
           required={true}
         />
@@ -192,7 +216,7 @@ const CreateAccount = ({ navigation }: any) => {
 
 export default CreateAccount;
 
-const themedStyles = StyleService.create({
+const styles = StyleSheet.create({
   termsContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',

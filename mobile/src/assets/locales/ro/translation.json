@@ -53,19 +53,17 @@
       "paragraph": "Completați câmpurile de mai jos pentru înregistrare",
       "form": {
         "email": {
-          "label": "Email",
-          "placeholder": "Introduceti emailul",
+          "label": "E-mail",
+          "placeholder": "Introdu adresa de email",
           "required": "Email-ul este obligatoriu",
-          "min": "Email-ul poate să aibă minim {{value}} caractere",
-          "max": "Email-ul poate să aibă maxim {{value}} caractere",
           "pattern": "Formatul email-ului nu este valid"
         },
         "phone": {
           "label": "Telefon",
           "placeholder": "Introduceti telefonul",
-          "min": "Numărul de telefon poate să aibă minim {{value}} caractere",
-          "max": "Numărul de telefon poate să aibă maxim {{value}} caractere",
-          "required": "Telefonul este obligatoriu"
+          "length": "Numărul de telefon trebuie să aibă {{number}} caractere",
+          "required": "Telefonul este obligatoriu",
+          "pattern": "Numarul de telefon trebuie sa contina doar numere"
         },
         "password": {
           "label": "Parola",
@@ -87,6 +85,10 @@
           "application": "a aplicației",
           "required": "Trebuie sa accepti Termenii,Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
         }
+      },
+      "secondary_action": {
+        "label": "Ai deja cont?",
+        "link": "Autentifică-te"
       }
     },
     "validate_account": {

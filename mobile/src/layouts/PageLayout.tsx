@@ -8,16 +8,18 @@ import {
   Text,
 } from '@ui-kitten/components';
 import Button from '../components/Button';
-import { View, KeyboardAvoidingView, StyleSheet, Platform, Pressable } from 'react-native';
+import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
 import { ButtonType } from '../common/enums/button-type.enum';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import BottomSheet, { BottomSheetProps } from '../components/BottomSheet';
 import { useBottomSheet } from '../store/bottom-sheet/bottom-sheet.selector';
+import InlineLink from '../components/InlineLink';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
   onPrimaryActionButtonClick: (props: any) => void;
   secondaryActionLabel?: string;
+  secondaryActionLink?: string;
   onSecondaryActionButtonClick?: () => void;
   primaryBtnType?: ButtonType;
   loading?: boolean;
@@ -120,10 +122,14 @@ export const PageLayout = ({
                     status={actionsOptions.primaryBtnType || 'primary'}
                   />
                   {actionsOptions.onSecondaryActionButtonClick &&
-                    actionsOptions.secondaryActionLabel && (
-                      <Pressable onPress={actionsOptions.onSecondaryActionButtonClick}>
-                        <Text category="p2">{actionsOptions.secondaryActionLabel}</Text>
-                      </Pressable>
+                    actionsOptions.secondaryActionLink && (
+                      <View style={styles.secondaryButtonContainer}>
+                        <Text category="p1">{actionsOptions.secondaryActionLabel || ''}</Text>
+                        <InlineLink
+                          onPress={actionsOptions.onSecondaryActionButtonClick}
+                          label={actionsOptions.secondaryActionLink}
+                        />
+                      </View>
                     )}
                 </View>
               </View>
@@ -180,6 +186,7 @@ const styles = StyleSheet.create({
     gap: 24,
     alignItems: 'center',
   },
+  secondaryButtonContainer: { flexDirection: 'row', gap: 2 },
   contentContainer: {
     flex: 1,
     alignItems: 'center',

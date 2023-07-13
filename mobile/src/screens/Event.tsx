@@ -121,7 +121,7 @@ const Event = ({ navigation, route }: any) => {
             : ButtonType.PRIMARY,
         ...(event?.volunteerStatus === EventVolunteerStatus.NO_RESPONSE
           ? {
-              secondaryActionLabel: `${t('rsvp.not_going')}`,
+              secondaryActionLink: `${t('rsvp.not_going')}`,
               onSecondaryActionButtonClick: onRsvpReponsePress.bind(null, false),
             }
           : {}),
