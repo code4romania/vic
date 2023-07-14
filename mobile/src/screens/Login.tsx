@@ -70,7 +70,7 @@ const Login = ({ navigation }: any) => {
   };
 
   const onGoToResetPassword = () => {
-    navigation.navigate('reset-password');
+    navigation.navigate('forgot-password');
   };
 
   return (

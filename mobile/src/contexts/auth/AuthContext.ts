@@ -33,6 +33,8 @@ interface AuthContextProps {
   setIdentityData: (personalData: IUserPersonalData) => void;
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
   updateSettings: (settings: INotificationsSettings) => void;
+  forgotPassword: (username: string) => Promise<void>;
+  forgotPasswordSubmit: (code: string, new_password: string) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -50,4 +52,6 @@ export const AuthContext = createContext<AuthContextProps>({
   setIdentityData: (personalData: IUserPersonalData) => {},
   changePassword: (oldPassword: string, newPassword: string) => Promise.resolve(),
   updateSettings: (settings: INotificationsSettings) => {},
+  forgotPassword: (username: string) => Promise.resolve(),
+  forgotPasswordSubmit: (code: string, new_password: string) => Promise.resolve(),
 });

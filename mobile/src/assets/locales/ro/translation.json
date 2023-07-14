@@ -144,7 +144,8 @@
       "login": "Eroare la autentificare, vă rugăm încercați din nou",
       "invalid_password": "Parola nu este conforma cu polita AWS",
       "password": "Eroare la schimbarea parolei",
-      "code_missmatch": "Codul este invalid"
+      "code_missmatch": "Codul este invalid",
+      "forgot_password": "Eroare la resetarea parolei"
     }
   },
   "login": {
@@ -164,6 +165,47 @@
         "placeholder": "Introduceti parola",
         "required": "Parola este obligatorie"
       }
+    }
+  },
+  "forgot_password": {
+    "header": "Resetare parola",
+    "paragraph": "Te rugăm să introduci email-ul sau numărul de telefon al contului pentru a reseta parola.",
+    "form": {
+      "email": {
+        "label": "E-mail",
+        "required": "Email-ul este obligatoriu",
+        "pattern": "Formatul email-ului nu este valid"
+      }
+    },
+    "submit": {
+      "label": "Trimite cod resetare"
+    }
+  },
+  "confirm_password": {
+    "header": "Resetare parola",
+    "form": {
+      "code": {
+        "label": "Introdu codul primit prin email",
+        "placeholder": "Introdu codul primit prin email",
+        "required": "Codul este obligatoriu",
+        "length": "Codul trebuie sa aiba o lungime de 6 caractere",
+        "pattern": "Codul trebuie sa contina doar cifre"
+      },
+      "password": {
+        "label": "Parola",
+        "placeholder": "Introduceti parola",
+        "required": "Parola este obligatorie",
+        "pattern": "Parola trebuie sa contina minim 8 caractere, litere mari, litere mici, numere si caractere speciale, fara spatii"
+      },
+      "confirm_password": {
+        "label": "Confirma parola",
+        "placeholder": "Confirmati parola",
+        "required": "Parola este obligatorie",
+        "match": "Parolele trebuie sa fie identice"
+      }
+    },
+    "submit": {
+      "label": "Salveaza modificarile"
     }
   },
   "organizations": {

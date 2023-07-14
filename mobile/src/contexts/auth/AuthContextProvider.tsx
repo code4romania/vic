@@ -236,6 +236,39 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  const forgotPassword = async (username: string) => {
+    try {
+      await Auth.forgotPassword(username);
+      // save username for confirmation
+      // TBD: if this is the best approach
+      setUserName(username);
+    } catch (error: any) {
+      console.log('[Auth][ForgotPassword]:', JSONStringifyError(error));
+      Toast.show({
+        type: 'error',
+        text1: `${i18n.t('auth:errors.forgot_password')}`,
+      });
+      throw error;
+    }
+  };
+
+  const forgotPasswordSubmit = async (code: string, new_password: string) => {
+    try {
+      await Auth.forgotPasswordSubmit(userName, code, new_password);
+    } catch (error: any) {
+      console.log('[Auth][ForgotPasswordSubmit]:', JSONStringifyError(error));
+      if (error.code === 'CodeMismatchException') {
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.code_missmatch')}` });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: `${i18n.t('auth:errors.forgot_password')}`,
+        });
+      }
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -253,6 +286,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         setIdentityData,
         changePassword,
         updateSettings,
+        forgotPassword,
+        forgotPasswordSubmit,
       }}
     >
       {children}
