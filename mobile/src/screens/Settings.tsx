@@ -6,12 +6,16 @@ import key from '../assets/svg/key';
 import logoutIcon from '../assets/svg/logout';
 import user from '../assets/svg/user';
 import PageLayout from '../layouts/PageLayout';
-import { Image, View, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { Text, Divider, List, useTheme } from '@ui-kitten/components';
+import { Text, Divider, List, useTheme, Icon } from '@ui-kitten/components';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import i18n from '../common/config/i18n';
+import PressableContainer from '../components/PressableContainer';
+import * as Linking from 'expo-linking';
+import Constants from 'expo-constants';
+import ImageWithPreload from '../components/ImageWithPreload';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -36,7 +40,7 @@ export const SETTING_SCREENS = [
     route: SETTINGS_ROUTES.NOTIFICATIONS_SETTINGS,
   },
   { icon: information, label: i18n.t('settings:information'), route: SETTINGS_ROUTES.INFORMATION },
-  { icon: logoutIcon, label: 'Log out', route: SETTINGS_ROUTES.LOGOUT },
+  { icon: logoutIcon, label: i18n.t('settings:logout'), route: SETTINGS_ROUTES.LOGOUT },
 ];
 
 interface IListItem {
@@ -46,50 +50,70 @@ interface IListItem {
 }
 
 const Settings = ({ navigation }: any) => {
+  // translations
   const { t } = useTranslation('settings');
+  // theme
   const theme = useTheme();
+  // auth
   const { logout, userProfile } = useAuth();
 
   const handleItemPress = (route: string) => {
     if (route === SETTINGS_ROUTES.INFORMATION) {
-      console.log('navigate to url');
+      onInfoListItemPress();
     } else if (route === SETTINGS_ROUTES.LOGOUT) {
-      logout();
+      onLogout();
     } else {
       navigation.navigate(route);
     }
   };
 
+  const onInfoListItemPress = () => {
+    Linking.openURL(Constants.expoConfig?.extra?.infoLink);
+  };
+
+  const onLogout = () => {
+    logout();
+  };
+
   const renderItem = ({ item }: { item: IListItem }) => (
-    <TouchableHighlight
-      onPress={() => handleItemPress(item.route)}
-      activeOpacity={1}
-      underlayColor={theme['cool-gray-100']}
-    >
+    <PressableContainer onPress={handleItemPress.bind(null, item.route)}>
       <View style={styles.screen}>
-        <View style={styles.iconWrapper}>
+        <View style={{ ...styles.iconWrapper, backgroundColor: theme['cool-gray-100'] }}>
           <SvgXml xml={item.icon} />
         </View>
-        <Text category="label" appearance="hint">
+        <Text category="label" style={{ color: theme['cool-gray-800'] }}>
           {item.label}
         </Text>
       </View>
-    </TouchableHighlight>
+    </PressableContainer>
   );
 
   return (
     <PageLayout title={t('title')}>
       <View style={styles.profileContainer}>
-        <Image source={{ uri: userProfile?.profilePicture }} style={styles.image} />
-        <Text category="h2" appearance="hint">
-          {`${userProfile?.firstName} ${userProfile?.lastName}`}
-        </Text>
+        {!userProfile?.profilePicture && (
+          <View style={{ ...styles.iconWrapper, backgroundColor: theme['cool-gray-100'] }}>
+            <Icon
+              name="user"
+              style={{ ...styles.imagePlaceholder, color: theme['cool-gray-500'] }}
+            />
+          </View>
+        )}
+        {userProfile?.profilePicture && (
+          <ImageWithPreload source={userProfile?.profilePicture} styles={styles.image} />
+        )}
+        <Text category="h3">{`${userProfile?.firstName} ${userProfile?.lastName}`}</Text>
       </View>
       <List
         data={SETTING_SCREENS}
         ItemSeparatorComponent={Divider}
         renderItem={renderItem}
         style={styles.list}
+        bouncesZoom={false}
+        alwaysBounceHorizontal={false}
+        alwaysBounceVertical={false}
+        bounces={false}
+        showsVerticalScrollIndicator={false}
       />
     </PageLayout>
   );
@@ -101,7 +125,12 @@ const styles = StyleSheet.create({
   list: {
     backgroundColor: 'white',
   },
-  image: { width: 48, height: 48, borderRadius: 100 },
+  image: {
+    width: 48,
+    height: 48,
+    borderRadius: 100,
+  },
+  imagePlaceholder: { width: 24, height: 24 },
   profileContainer: {
     flexDirection: 'row',
     gap: 12,
@@ -114,7 +143,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F3F4F6',
   },
   screen: {
     paddingVertical: 16,

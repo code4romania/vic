@@ -62,6 +62,7 @@ const expoConfig: ExpoConfig = {
     },
     policyLink: process.env.PRIVACY_POLICY_LINK,
     termsLink: process.env.TERMS_AND_CONDITIONS_LINK,
+    infoLink: process.env.INFORMATION_LINK,
   },
   owner: 'tribus-tech',
 };

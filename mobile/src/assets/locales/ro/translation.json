@@ -208,6 +208,15 @@
       "label": "Salveaza modificarile"
     }
   },
+  "settings": {
+    "title": "Setări cont",
+    "heading": "Date cont",
+    "identity": "Date identitate",
+    "password": "Schimbă parola",
+    "notification": "Setări notificări",
+    "information": "Informații",
+    "logout": "Log out"
+  },
   "organizations": {
     "search": {
       "placeholder": "Denumirea organizatiei"
@@ -641,14 +650,6 @@
       "paragraph": "Contractul tau a fost respins",
       "label": "Motivul respingerii"
     }
-  },
-  "settings": {
-    "title": "Setări cont",
-    "heading": "Date cont",
-    "identity": "Date identitate",
-    "password": "Schimbă parola",
-    "notification": "Setări notificări",
-    "information": "Informații"
   },
   "notifications": {
     "header": "Setari notificari",
