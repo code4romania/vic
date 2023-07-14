@@ -217,6 +217,17 @@
     "information": "Informații",
     "logout": "Log out"
   },
+  "account_data": {
+    "title": "Date cont",
+    "profile_picture": "Poza profil",
+    "change_profile_picture": "Schimba poza",
+    "submit": {
+      "success": "Datele au fost modificate!"
+    },
+    "errors": {
+      "USER_006": "Eroare la modificarea fotografiei de profil"
+    }
+  },
   "organizations": {
     "search": {
       "placeholder": "Denumirea organizatiei"
@@ -675,18 +686,8 @@
   "user": {
     "errors": {
       "USER_001": "Utilizatorul nu a fost gasit",
-      "USER_004": "Acest numar de identificare al utilizatorului exista deja"
-    }
-  },
-  "account_data": {
-    "title": "Date cont",
-    "profile_picture": "Poza profil",
-    "change_profile_picture": "Schimba poza",
-    "submit": {
-      "success": "Datele au fost modificate!"
-    },
-    "errors": {
-      "USER_006": "Eroare la modificarea fotografiei de profil"
+      "USER_004": "Acest numar de identificare al utilizatorului exista deja",
+      "USER_006": "Eroare la salvarea fotografiei de profil!"
     }
   },
   "change_password": {

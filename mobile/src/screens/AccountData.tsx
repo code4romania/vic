@@ -12,8 +12,8 @@ import FormSelect from '../components/FormSelect';
 import { SexOptions } from '../common/constants/sex-options';
 import { useAuth } from '../hooks/useAuth';
 import { Platform, View } from 'react-native';
-import { Image, ImageStyle } from 'react-native';
-import { StyleService, Text, useStyleSheet, Button } from '@ui-kitten/components';
+import { StyleSheet } from 'react-native';
+import { Text, Button, Icon, useTheme } from '@ui-kitten/components';
 import { useTranslation } from 'react-i18next';
 import { useUpdateUserProfileMutation } from '../services/user/user.service';
 import * as ImagePicker from 'expo-image-picker';
@@ -22,6 +22,9 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import CountySelect from '../containers/CountySelect';
 import CitySelect from '../containers/CitySelect';
+import ImageWithPreload from '../components/ImageWithPreload';
+import { CONSTANTS, REGEX } from '../common/constants/constants';
+import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
 
 export type AccountDataFormTypes = {
   firstName: string;
@@ -55,13 +58,18 @@ const schema = yup.object({
         value: '50',
       })}`,
     ),
-  phone: yup.string().required(`${i18n.t('register:create_account.form.phone.required')}`),
+  phone: yup
+    .string()
+    .matches(REGEX.NUMBERS_ONLY, `${i18n.t('register:create_account.form.phone.pattern')}`)
+    .length(9, `${i18n.t('register:create_account.form.phone.length', { number: 10 })}`)
+    .required(`${i18n.t('register:create_account.form.phone.required')}`),
 });
 
 const AccountData = ({ navigation }: any) => {
-  const styles = useStyleSheet(themedStyles);
   // translations
   const { t } = useTranslation('account_data');
+  // theme
+  const theme = useTheme();
   // user profile
   const { userProfile } = useAuth();
   // selected state
@@ -88,7 +96,7 @@ const AccountData = ({ navigation }: any) => {
   useEffect(() => {
     if (userProfile) {
       reset({
-        phone: userProfile.phone,
+        phone: userProfile.phone?.slice(3, userProfile.phone?.length),
         firstName: userProfile.firstName,
         lastName: userProfile.lastName,
         email: userProfile.email,
@@ -105,7 +113,10 @@ const AccountData = ({ navigation }: any) => {
   const onSubmit = async (payload: AccountDataFormTypes) => {
     updateUserProfile(
       {
-        userProfile: payload,
+        userProfile: {
+          ...payload,
+          phone: `${CONSTANTS.PHONE_PREFIX}${payload.phone.trim()}`,
+        },
         profilePicture: selectedProfilePicture || undefined,
       },
       {
@@ -154,7 +165,7 @@ const AccountData = ({ navigation }: any) => {
 
   return (
     <PageLayout
-      title={t('settings:heading')}
+      title={t('title')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
@@ -164,14 +175,24 @@ const AccountData = ({ navigation }: any) => {
     >
       <FormLayout>
         <View style={styles.container}>
-          <Text>{`${t('profile_picture')}`}</Text>
+          <Text category="p1">{`${t('profile_picture')}`}</Text>
           <View style={styles.wrapper}>
-            <Image
-              source={{
-                uri: selectedProfilePictureUri || userProfile?.profilePicture,
-              }}
-              style={styles.image as ImageStyle}
-            />
+            {selectedProfilePictureUri || userProfile?.profilePicture ? (
+              <ImageWithPreload
+                source={(selectedProfilePictureUri || userProfile?.profilePicture) as string}
+                styles={{ ...styles.image, borderColor: theme['cool-gray-200'] }}
+              />
+            ) : (
+              <View
+                style={{
+                  ...styles.image,
+                  borderColor: theme['cool-gray-200'],
+                  backgroundColor: theme['cool-gray-100'],
+                }}
+              >
+                <Icon name="user" style={{ ...styles.icon, color: theme['cool-gray-500'] }} />
+              </View>
+            )}
             <Button
               onPress={onChangePicturePress}
               status="basic"
@@ -204,20 +225,21 @@ const AccountData = ({ navigation }: any) => {
           control={control as any}
           name="email"
           error={errors.email}
-          placeholder={t('login:form.email.placeholder')}
-          label={t('login:form.email.label')}
+          placeholder={t('register:create_account.form.email.placeholder')}
+          label={t('register:create_account.form.email.label')}
           required={true}
           disabled
         />
         <FormInput
           control={control as any}
           name="phone"
+          label={t('register:create_account.form.phone.label')}
+          placeholder={t('register:create_account.form.phone.placeholder')}
           error={errors.phone}
-          placeholder={t('register:create_account:form.phone.placeholder')}
-          label={t('register:create_account:form.phone.label')}
-          keyboardType="phone-pad"
-          required={true}
           disabled={isUpdatingProfile}
+          keyboardType="phone-pad"
+          accessoryLeft={renderPhoneNumberPrefix}
+          required={true}
         />
         <CountySelect
           control={control as any}
@@ -261,7 +283,7 @@ const AccountData = ({ navigation }: any) => {
 
 export default AccountData;
 
-const themedStyles = StyleService.create({
+const styles = StyleSheet.create({
   container: {
     gap: 4,
   },
@@ -270,7 +292,12 @@ const themedStyles = StyleService.create({
     height: 96,
     borderRadius: 48,
     borderWidth: 1,
-    borderColor: '$cool-gray-200',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  icon: {
+    width: 48,
+    height: 48,
   },
   wrapper: {
     paddingVertical: 8,
