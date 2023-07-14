@@ -688,6 +688,7 @@
     "errors": {
       "USER_001": "Utilizatorul nu a fost gasit",
       "USER_004": "Numarul de identificare exista deja",
+      "USER_003": "Emailul sau telefonul sunt deja utilizate",
       "USER_006": "Eroare la salvarea fotografiei de profil!"
     }
   },

@@ -18,6 +18,7 @@ import CitySelect from '../containers/CitySelect';
 import { Auth } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import Paragraph from '../components/Paragraph';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 export type UserFormTypes = {
   firstName: string;
@@ -85,12 +86,14 @@ const CreateUser = ({ navigation }: any) => {
 
       // create new profile
       createUserProfile(newUser, {
-        onError: () => {
-          Toast.show({ type: 'error', text1: `${t('auth:errors.init_profile')}` });
+        onError: (error: any) => {
+          Toast.show({
+            type: 'error',
+            text1: `${InternalErrors.USER_ERRORS.getError(error.response?.data.code_error)}`,
+          });
         },
       });
     } catch (error) {
-      console.log('error', error);
       Toast.show({ type: 'error', text1: `${t('auth:errors.init_profile')}` });
     }
   };
