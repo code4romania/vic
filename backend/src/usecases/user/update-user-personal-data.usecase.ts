@@ -33,7 +33,11 @@ export class UpdateUserPersonalDataUsecase
     });
 
     // 3.1 Throw unique error
-    if (userPersonalData && userPersonalData.id !== user.userPersonalData.id) {
+    if (
+      userPersonalData &&
+      (!user.userPersonalData ||
+        userPersonalData.id !== user.userPersonalData?.id)
+    ) {
       this.exceptionService.badRequestException(UserExceptionMessages.USER_004);
     }
 
