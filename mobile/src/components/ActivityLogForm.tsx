@@ -1,6 +1,6 @@
 import React from 'react';
 import FormLayout from '../layouts/FormLayout';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import OrganizationIdentity from './OrganizationIdentity';
 import EventSelect from '../containers/EventSelect';
 import ActivityTypeSelect from '../containers/ActivityTypeSelect';
@@ -101,7 +101,6 @@ const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) =
         control={control as any}
         error={errors.mentions}
         multiline={true}
-        textStyle={styles.textArea}
         label={t('form.mentions.label')}
         placeholder={t('form.mentions.placeholder')}
         disabled={isLoading}
@@ -111,9 +110,3 @@ const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) =
 };
 
 export default ActivityLogForm;
-
-const styles = StyleSheet.create({
-  textArea: {
-    minHeight: 52,
-  },
-});

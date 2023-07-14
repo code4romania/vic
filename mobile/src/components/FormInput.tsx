@@ -51,8 +51,12 @@ const FormInput: React.FC<FormInputProps> = ({
             status={error ? 'danger' : 'basic'}
             textStyle={
               rest.disabled
-                ? [styles.disabledColor, styles.inputText]
-                : [styles.inputText, error ? styles.redText : {}]
+                ? [styles.disabledColor, styles.inputText, rest.multiline ? styles.textArea : {}]
+                : [
+                    styles.inputText,
+                    rest.multiline ? styles.textArea : {},
+                    error ? styles.redText : {},
+                  ]
             }
             style={error ? styles.redBorder : {}}
             {...rest}
@@ -87,4 +91,7 @@ const themedStyles = StyleService.create({
   },
   disabledColor: { color: '$cool-gray-500' },
   inputText: { fontSize: 16, fontWeight: '400' },
+  textArea: {
+    minHeight: 52,
+  },
 });

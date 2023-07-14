@@ -11,7 +11,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ReferralOptions } from '../common/constants/referral-options';
 import FormInput from '../components/FormInput';
-import { StyleSheet } from 'react-native';
 import { useCreateAccessrequestMutation } from '../services/access-request/access-request.service';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import Toast from 'react-native-toast-message';
@@ -133,7 +132,6 @@ const JoinOrganization = ({ navigation, route }: any) => {
           error={errors.motivation}
           name="motivation"
           multiline={true}
-          textStyle={styles.textArea}
           helper={`${t('form.motivation.helper')}`}
           placeholder=""
           disabled={isCreatingAccessRequest}
@@ -144,9 +142,3 @@ const JoinOrganization = ({ navigation, route }: any) => {
 };
 
 export default JoinOrganization;
-
-const styles = StyleSheet.create({
-  textArea: {
-    minHeight: 52,
-  },
-});

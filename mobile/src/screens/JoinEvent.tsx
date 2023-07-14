@@ -6,7 +6,6 @@ import FormInput from '../components/FormInput';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSetRsvpEventMutation } from '../services/event/event.service';
 import useStore from '../store/store';
@@ -92,7 +91,6 @@ const JoinEvent = ({ navigation, route }: any) => {
           label={t('join.form.mention.label')}
           helper={`${t('join.form.mention.helper')}`}
           multiline={true}
-          textStyle={styles.textArea}
           placeholder=""
         />
       </FormLayout>
@@ -101,9 +99,3 @@ const JoinEvent = ({ navigation, route }: any) => {
 };
 
 export default JoinEvent;
-
-const styles = StyleSheet.create({
-  textArea: {
-    minHeight: 52,
-  },
-});
