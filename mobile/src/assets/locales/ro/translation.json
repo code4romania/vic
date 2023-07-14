@@ -268,6 +268,12 @@
       }
     }
   },
+  "change_password": {
+    "title": "Schimba parola",
+    "submit": {
+      "success": "Parola a fost schimbata!"
+    }
+  },
   "organizations": {
     "search": {
       "placeholder": "Denumirea organizatiei"
@@ -690,12 +696,6 @@
       "USER_004": "Numarul de identificare exista deja",
       "USER_003": "Emailul sau telefonul sunt deja utilizate",
       "USER_006": "Eroare la salvarea fotografiei de profil!"
-    }
-  },
-  "change_password": {
-    "title": "Schimba parola",
-    "submit": {
-      "success": "Parola a fost schimbata!"
     }
   },
   "news": {

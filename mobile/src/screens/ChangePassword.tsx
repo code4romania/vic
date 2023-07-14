@@ -7,10 +7,9 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import i18n from '../common/config/i18n';
-import { Icon } from '@ui-kitten/components';
 import { useAuth } from '../hooks/useAuth';
-import { Pressable } from 'react-native';
 import { REGEX } from '../common/constants/constants';
+import { renderPasswordEyeIcon } from '../components/InputPrefixes';
 
 export type ChangePasswordFormTypes = {
   oldPassword: string;
@@ -42,13 +41,17 @@ const ChangePassword = ({ navigation }: any) => {
   // auth state
   const { changePassword } = useAuth();
   // show hide password text in input
-  const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
+  const [secureTextEntryOldPassword, setSecureTextEntryOldPassword] = useState<boolean>(true);
+  const [secureTextEntryNewPassword, setSecureTextEntryNewPassword] = useState<boolean>(true);
+  const [secureTextEntryConfirmNewPassword, setSecureTextEntryConfirmNewPassword] =
+    useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ChangePasswordFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
@@ -59,17 +62,12 @@ const ChangePassword = ({ navigation }: any) => {
     try {
       setIsLoading(true);
       await changePassword(data.oldPassword, data.password);
+      reset({});
     } catch (error) {
     } finally {
       setIsLoading(false);
     }
   };
-
-  const renderPasswordEyeIcon = (props: any): React.ReactElement => (
-    <Pressable onPress={setSecureTextEntry.bind(null, !secureTextEntry)}>
-      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
-    </Pressable>
-  );
 
   return (
     <PageLayout
@@ -88,8 +86,14 @@ const ChangePassword = ({ navigation }: any) => {
           label={t('register:create_account.form.password.label')}
           placeholder={t('register:create_account.form.password.placeholder')}
           error={errors.oldPassword}
-          accessoryRight={renderPasswordEyeIcon}
-          secureTextEntry={secureTextEntry}
+          accessoryRight={(props: any) =>
+            renderPasswordEyeIcon({
+              ...props,
+              setSecureTextEntry: setSecureTextEntryOldPassword,
+              secureTextEntry: secureTextEntryOldPassword,
+            })
+          }
+          secureTextEntry={secureTextEntryOldPassword}
           disabled={isLoading}
         />
         <FormInput
@@ -98,8 +102,14 @@ const ChangePassword = ({ navigation }: any) => {
           label={t('register:create_account.form.password.label')}
           placeholder={t('register:create_account.form.password.placeholder')}
           error={errors.password}
-          accessoryRight={renderPasswordEyeIcon}
-          secureTextEntry={secureTextEntry}
+          accessoryRight={(props: any) =>
+            renderPasswordEyeIcon({
+              ...props,
+              setSecureTextEntry: setSecureTextEntryNewPassword,
+              secureTextEntry: secureTextEntryNewPassword,
+            })
+          }
+          secureTextEntry={secureTextEntryNewPassword}
           disabled={isLoading}
         />
         <FormInput
@@ -108,8 +118,14 @@ const ChangePassword = ({ navigation }: any) => {
           label={t('register:create_account.form.confirm_password.label')}
           placeholder={t('register:create_account.form.confirm_password.placeholder')}
           error={errors.confirmPassword}
-          accessoryRight={renderPasswordEyeIcon}
-          secureTextEntry={secureTextEntry}
+          accessoryRight={(props: any) =>
+            renderPasswordEyeIcon({
+              ...props,
+              setSecureTextEntry: setSecureTextEntryConfirmNewPassword,
+              secureTextEntry: secureTextEntryConfirmNewPassword,
+            })
+          }
+          secureTextEntry={secureTextEntryConfirmNewPassword}
           disabled={isLoading}
         />
       </FormLayout>
