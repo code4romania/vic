@@ -16,6 +16,14 @@ import { getUserProfile } from '../../services/user/user.api';
 import { getMyOrganizations } from '../../services/organization/organization.api';
 import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
 
+const COGNITO_ERRORS = {
+  UserNotConfirmedException: 'UserNotConfirmedException',
+  UsernameExistsException: 'UsernameExistsException',
+  CodeMismatchException: 'CodeMismatchException',
+  NotAuthorizedException: 'NotAuthorizedException',
+  InvalidPasswordException: 'InvalidPasswordException',
+};
+
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   // meaning that the user has been validated by cognito but is not in our database
@@ -27,8 +35,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     console.log('[APP Init]');
     initProfile();
 
-    const unsubscribe = Hub.listen('auth', ({ payload: { event } }) => {
-      switch (event) {
+    const unsubscribe = Hub.listen('auth', ({ payload }) => {
+      switch (payload.event) {
         case 'signIn': {
           // redirect from social sign in done successfully
           initProfile();
@@ -36,7 +44,11 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         }
         case 'signIn_failure': {
           // error on social sign in
-          Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.login')}` });
+          if (
+            !JSONStringifyError(payload.data).includes(COGNITO_ERRORS.UserNotConfirmedException)
+          ) {
+            Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.login')}` });
+          }
           break;
         }
       }
@@ -88,24 +100,19 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const login = async ({ username, password }: SignInOptions) => {
-    const confirm = { confirmAccount: false };
     try {
       await Auth.signIn(username, password);
+      await getProfile();
     } catch (error: any) {
       console.log('[Auth][Login]:', JSONStringifyError(error));
-      // Handle scenario where user is created in cognito but not activated
-      if (error.code === 'UserNotConfirmedException') {
+      if (error.code === COGNITO_ERRORS.UserNotConfirmedException) {
         // send event to confirm account to login screen
-        confirm.confirmAccount = true;
-        throw confirm;
+        setUserName(username);
+        throw { confirmAccount: true };
       } else {
         // show any other error
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
       }
-    }
-
-    if (!confirm.confirmAccount) {
-      await getProfile();
     }
   };
 
@@ -139,7 +146,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       setUserName(username);
     } catch (error: any) {
       console.log('[Auth][Signup]:', JSONStringifyError(error));
-      if (error.code === 'UsernameExistsException') {
+      if (error.code === COGNITO_ERRORS.UsernameExistsException) {
         Toast.show({
           type: 'error',
           text1: `${i18n.t('auth:errors.username_exists')}`,
@@ -165,7 +172,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       await Auth.confirmSignUp(email, code);
     } catch (error: any) {
       console.log('[Auth][Signup][Confirm]:', JSONStringifyError(error));
-      if (error.code === 'CodeMismatchException') {
+      if (error.code === COGNITO_ERRORS.CodeMismatchException) {
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.code_missmatch')}` });
       } else {
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.signup')}` });
@@ -202,9 +209,9 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       Toast.show({ text1: `${i18n.t('change_password:submit.success')}`, type: 'success' });
     } catch (error: any) {
       console.log('[Auth][ChangePassword]:', JSONStringifyError(error));
-      if (error.code === 'NotAuthorizedException') {
+      if (error.code === COGNITO_ERRORS.NotAuthorizedException) {
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
-      } else if (error.code === 'InvalidPasswordException') {
+      } else if (error.code === COGNITO_ERRORS.InvalidPasswordException) {
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.invalid_password')}` });
       } else {
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.password')}` });
@@ -257,7 +264,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       await Auth.forgotPasswordSubmit(userName, code, new_password);
     } catch (error: any) {
       console.log('[Auth][ForgotPasswordSubmit]:', JSONStringifyError(error));
-      if (error.code === 'CodeMismatchException') {
+      if (error.code === COGNITO_ERRORS.CodeMismatchException) {
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.code_missmatch')}` });
       } else {
         Toast.show({

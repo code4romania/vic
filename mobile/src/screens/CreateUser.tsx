@@ -90,6 +90,7 @@ const CreateUser = ({ navigation }: any) => {
         },
       });
     } catch (error) {
+      console.log('error', error);
       Toast.show({ type: 'error', text1: `${t('auth:errors.init_profile')}` });
     }
   };
