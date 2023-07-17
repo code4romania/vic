@@ -1,11 +1,6 @@
 import React, { Fragment } from 'react';
 import logo from '../assets/images/logo.svg';
-import {
-  Bars3Icon,
-  ChevronDownIcon,
-  CogIcon,
-  ArrowRightOnRectangleIcon,
-} from '@heroicons/react/24/outline';
+import { Bars3Icon, ChevronDownIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
@@ -71,25 +66,6 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
               >
                 <Menu.Items className="origin-top-right  absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="py-1 divide-y divide-gray-200">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          id="profile__menu-item"
-                          aria-label="my account"
-                          className={classNames(
-                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                            'group flex items-center px-4 py-2 ',
-                          )}
-                          onClick={onNavigate.bind(null, '/account')}
-                        >
-                          <CogIcon
-                            className="mr-3 sm:h-5 sm:w-5 h-4 w-4 text-gray-800 "
-                            aria-hidden="true"
-                          />
-                          <small>{t('menu.options.my_account')}</small>
-                        </a>
-                      )}
-                    </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
                         <a
