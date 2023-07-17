@@ -93,7 +93,7 @@ const SearchWithOrderAndFilters = ({
 const styles = StyleService.create({
   searchContainer: {
     flexDirection: 'row',
-    paddingVertical: 8,
+    paddingBottom: 8,
   },
   inputContainer: {
     flex: 4,

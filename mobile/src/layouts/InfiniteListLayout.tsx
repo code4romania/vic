@@ -1,9 +1,11 @@
-import { Divider, List, StyleService, Text, Spinner } from '@ui-kitten/components';
-import React from 'react';
+import { Divider, Layout, List, StyleService, Text } from '@ui-kitten/components';
+import React, { ReactNode } from 'react';
 import { mapPagesToItems } from '../common/utils/helpers';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { SvgXml } from 'react-native-svg';
+import SadFaceSvg from '../assets/svg/sad-face';
 
 export const ListEmptyComponent = () => {
   const { t } = useTranslation('general');
@@ -17,15 +19,20 @@ export const ListEmptyComponent = () => {
 
 const ListErrorComponent = ({ errorMessage }: { errorMessage: string }) => {
   return (
-    <View style={styles.emptyListContainer}>
-      <Text category="c1">{errorMessage}</Text>
-    </View>
+    <Layout style={styles.listErrorContainer}>
+      <SvgXml xml={SadFaceSvg} style={styles.svg} />
+      <Text category="h3" style={styles.listError}>
+        {errorMessage}
+      </Text>
+    </Layout>
   );
 };
 
-const LoadingComponent = () => (
+const LoadingComponent = ({ component }: { component: ReactNode }) => (
   <View style={styles.loadingContainer}>
-    <Spinner />
+    {Array.from(Array(10).keys()).map((key) => (
+      <View key={key}>{component}</View>
+    ))}
   </View>
 );
 
@@ -37,6 +44,7 @@ interface InfiniteListLayoutProps<T> {
   hasDivider?: boolean;
   refetch?: () => void;
   loadMore: () => void;
+  loadingLayout?: ReactNode;
 }
 
 const InfiniteListLayout = <T extends object>({
@@ -47,11 +55,12 @@ const InfiniteListLayout = <T extends object>({
   isLoading,
   refetch,
   hasDivider = true,
+  loadingLayout,
 }: InfiniteListLayoutProps<T>) => {
   const onRenderDivider = () => (hasDivider ? Divider : () => <></>);
 
   return isLoading ? (
-    <LoadingComponent />
+    <LoadingComponent component={loadingLayout} />
   ) : (
     <List
       data={mapPagesToItems<T>(pages || [])}
@@ -82,9 +91,19 @@ const styles = StyleService.create({
     minHeight: 150,
   },
   loadingContainer: {
+    flexDirection: 'column',
+  },
+  listErrorContainer: {
+    paddingTop: '25%',
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  svg: {
+    marginBottom: 50,
+  },
+  listError: {
+    marginBottom: 12,
   },
 });
 

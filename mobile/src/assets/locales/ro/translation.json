@@ -275,6 +275,7 @@
     }
   },
   "organizations": {
+    "title": "Cauta",
     "search": {
       "placeholder": "Denumirea organizatiei"
     },

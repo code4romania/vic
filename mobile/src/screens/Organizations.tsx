@@ -8,8 +8,8 @@ import InfiniteListLayout from '../layouts/InfiniteListLayout';
 import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useTranslation } from 'react-i18next';
-import { JSONStringifyError } from '../common/utils/utils';
 import PressableContainer from '../components/PressableContainer';
+import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
 
 interface OrganizationItemProps {
   item: IOrganizationListItemWithNumberOfVolunteers;
@@ -82,7 +82,7 @@ const Organizations = ({ navigation }: any) => {
   );
 
   return (
-    <PageLayout title={t('general:organizations')}>
+    <PageLayout title={t('title')}>
       <SearchWithOrderAndFilters
         placeholder={t('search.placeholder')}
         onChange={setSearch}
@@ -94,12 +94,8 @@ const Organizations = ({ navigation }: any) => {
         loadMore={onLoadMore}
         isLoading={isFetchingOrganizations}
         refetch={reloadOrganizations}
-        errorMessage={
-          getOrganizationsError
-            ? `${JSONStringifyError(getOrganizationsError as Error)}`
-            : // : `${t('errors.generic')}`
-              ''
-        }
+        loadingLayout={<OrganizationSkeletonListItem />}
+        errorMessage={getOrganizationsError ? `${t('errors.generic')}` : ''}
       />
     </PageLayout>
   );
