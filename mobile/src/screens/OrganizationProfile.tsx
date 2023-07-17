@@ -10,7 +10,6 @@ import {
   useOrganizationQuery,
   useRejoinOrganizationMutation,
 } from '../services/organization/organization.service';
-import LoadingScreen from '../components/LoadingScreen';
 import { JSONStringifyError, formatDate } from '../common/utils/utils';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import EventItem from '../components/EventItem';
@@ -25,6 +24,7 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import useStore from '../store/store';
 import Paragraph from '../components/Paragraph';
+import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   console.log('OrganizationProfile');
@@ -252,7 +252,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       }}
       bottomSheetOptions={renderBottomSheetOptions()}
     >
-      {isFetchingOrganization && <LoadingScreen />}
+      {isFetchingOrganization && <OrganizationSkeleton />}
       {!!getOrganizationError && !isFetchingOrganization && (
         <Text>{JSONStringifyError(getOrganizationError as any)}</Text>
       )}
