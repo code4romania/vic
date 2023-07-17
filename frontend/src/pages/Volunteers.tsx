@@ -322,73 +322,103 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
 
   // pagination
   const onRowsPerPageChange = (limit: number) => {
-    setQuery({
-      limit,
-      page: 1,
-    });
+    setQuery(
+      {
+        limit,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onChangePage = (page: number) => {
-    setQuery({
-      page,
-    });
+    setQuery(
+      {
+        page,
+      },
+      'replaceIn',
+    );
   };
 
   const onSort = (column: TableColumn<IVolunteer>, direction: SortOrder) => {
-    setQuery({
-      orderBy: column.id as string,
-      orderDirection:
-        direction.toLocaleUpperCase() === OrderDirection.ASC
-          ? OrderDirection.ASC
-          : OrderDirection.DESC,
-    });
+    setQuery(
+      {
+        orderBy: column.id as string,
+        orderDirection:
+          direction.toLocaleUpperCase() === OrderDirection.ASC
+            ? OrderDirection.ASC
+            : OrderDirection.DESC,
+      },
+      'replaceIn',
+    );
   };
 
   const onSearch = (search: string) => {
-    setQuery({
-      search,
-    });
+    setQuery(
+      {
+        search,
+      },
+      'replaceIn',
+    );
   };
 
   const onSetBranchFilter = (branch: SelectItem<string>) => {
     setBranch(branch);
-    setQuery({
-      branch: branch?.value,
-    });
+    setQuery(
+      {
+        branch: branch?.value,
+      },
+      'replaceIn',
+    );
   };
 
   const onSetDepartmentFilter = (department: SelectItem<string>) => {
     setDepartment(department);
-    setQuery({
-      department: department?.value,
-    });
+    setQuery(
+      {
+        department: department?.value,
+      },
+      'replaceIn',
+    );
   };
 
   const onSetRoleFilter = (role: SelectItem<string>) => {
     setRole(role);
-    setQuery({
-      role: role?.value,
-    });
+    setQuery(
+      {
+        role: role?.value,
+      },
+      'replaceIn',
+    );
   };
 
   const onCreatedOnRangeChange = ([createdOnStart, createdOnEnd]: Date[]) => {
-    setQuery({
-      createdOnStart,
-      createdOnEnd,
-    });
+    setQuery(
+      {
+        createdOnStart,
+        createdOnEnd,
+      },
+      'replaceIn',
+    );
   };
 
   const onLocationChange = (location: ListItem) => {
     setLocation(location);
-    setQuery({
-      location: location.label.split(', '),
-    });
+    setQuery(
+      {
+        location: location.label.split(', '),
+      },
+      'replaceIn',
+    );
   };
 
   const onAgeRangeChange = (selectedRange: SelectItem<string>) => {
-    setQuery({
-      age: selectedRange.key,
-    });
+    setQuery(
+      {
+        age: selectedRange.key,
+      },
+      'replaceIn',
+    );
   };
 
   const onResetFilters = () => {
@@ -396,7 +426,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
-    setQuery({ volunteerStatus: query.volunteerStatus }, 'push');
+    setQuery({ volunteerStatus: query.volunteerStatus }, 'replaceIn');
   };
 
   const onExport = async () => {
