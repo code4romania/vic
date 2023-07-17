@@ -41,7 +41,7 @@ const SearchWithOrderAndFilters = ({
     }
 
     const timeoutId = setTimeout(() => {
-      searchValue && onChange(searchValue);
+      onChange(searchValue || '');
     }, debounceTime || 500);
 
     return () => clearTimeout(timeoutId);
