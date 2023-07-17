@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   header: { minHeight: 59 },
   layout: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
   keyboardAvoidingContainer: { flex: 1 },
-  childrenContainer: { flex: 1, padding: 16 },
+  childrenContainer: { flex: 1, paddingHorizontal: 16, paddingVertical: 8 },
   bottomActionContainer: {
     backgroundColor: 'white',
     shadowOffset: { width: 0, height: 1 },
