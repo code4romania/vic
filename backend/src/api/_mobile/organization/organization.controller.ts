@@ -44,9 +44,11 @@ export class MobileOrganizationController {
   @ApiPaginatedResponse(OrganizationWithVolunteersPresenter)
   async getAll(
     @Query() filters: GetManyOrganizationsDto,
+    @ExtractUser() { id }: IRegularUserModel,
   ): Promise<PaginatedPresenter<OrganizationWithVolunteersPresenter>> {
     const organizations = await this.getOrganizationsUseCase.execute({
       ...filters,
+      userId: id,
     });
 
     return new PaginatedPresenter<OrganizationWithVolunteersPresenter>({

@@ -4,7 +4,7 @@ import PageLayout from '../layouts/PageLayout';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import PressableContainer from '../components/PressableContainer';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 import { NotificationsFrom } from '../common/enums/notifications-from.enum';
 import { NotificationBy } from '../common/enums/notification-by.enum';
 import { useAuth } from '../hooks/useAuth';
@@ -13,6 +13,7 @@ import { ISettingsUpdatesPayload } from '../services/settings/settings.api';
 import { INotificationsSettings } from '../common/interfaces/user-profile.interface';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { renderBackdrop } from '../components/BottomSheet';
 
 interface NotificationSettingProps {
   title: string;
@@ -67,11 +68,6 @@ const NotificationOption = ({
     </PressableContainer>
   );
 };
-
-// renders
-const renderBackdrop = (props: any) => (
-  <BottomSheetBackdrop {...props} opacity={0.3} enableTouchThrough={true} />
-);
 
 const NotificationsSettings = ({ navigation }: any) => {
   const styles = useStyleSheet(themedStyles);

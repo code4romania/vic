@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Divider, Text } from '@ui-kitten/components';
+import { Divider, Text, useTheme } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import SectionWrapper from '../components/SectionWrapper';
@@ -10,7 +10,7 @@ import {
   useOrganizationQuery,
   useRejoinOrganizationMutation,
 } from '../services/organization/organization.service';
-import { JSONStringifyError, formatDate } from '../common/utils/utils';
+import { formatDate } from '../common/utils/utils';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import EventItem from '../components/EventItem';
 import { useTranslation } from 'react-i18next';
@@ -22,16 +22,28 @@ import { useOrganization } from '../store/organization/organization.selector';
 import { useCancelAccessRequestMutation } from '../services/access-request/access-request.service';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import useStore from '../store/store';
 import Paragraph from '../components/Paragraph';
 import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { renderBackdrop } from '../components/BottomSheet';
+import { SvgXml } from 'react-native-svg';
+import successIcon from '../assets/svg/success-icon';
+import upsIcon from '../assets/svg/ups-icon';
+import Button from '../components/Button';
+import InlineLink from '../components/InlineLink';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   console.log('OrganizationProfile');
   const { t } = useTranslation('organization_profile');
 
+  const theme = useTheme();
+
   const { userProfile } = useAuth();
-  const { open: openBottomSheet } = useStore();
+
+  // bottom sheet ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  // bottom sheet snap points
+  const snapPoints = useMemo(() => ['30%', '55%'], []);
 
   const { isFetching: isFetchingOrganization, error: getOrganizationError } = useOrganizationQuery(
     route.params.organizationId,
@@ -48,10 +60,23 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   const { organization } = useOrganization();
 
+  useEffect(() => {
+    if (getOrganizationError) {
+      // useToa
+      Toast.show({
+        type: 'error',
+        text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(
+          (getOrganizationError as any).response?.data.code_error,
+        )}`,
+      });
+      navigation.goBack();
+    }
+  }, [getOrganizationError, navigation]);
+
   const onJoinOrganizationButtonPress = () => {
     if (!userProfile?.userPersonalData) {
       // 1. if the user doesn't have the identity data filled in show modal
-      openBottomSheet();
+      bottomSheetRef.current?.expand();
       return;
     }
 
@@ -66,7 +91,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   const onJoinOrganizationByAccessCodeButtonPress = () => {
     if (!userProfile?.userPersonalData) {
       // 1. if the user doesn't have the identity data filled in show modal
-      openBottomSheet();
+      bottomSheetRef.current?.expand();
       return;
     }
 
@@ -79,6 +104,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   };
 
   const onGoToIdentityDataScreen = () => {
+    onCloseBottomSheet();
     navigation.navigate('identity-data', { shouldGoBack: true });
   };
 
@@ -145,50 +171,11 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     );
   };
 
-  const renderIdentityDataMissingBottomSheetConfig = () => ({
-    iconType: 'warning' as any,
-    heading: t('modal.identity_data_missing.heading'),
-    paragraph: <Paragraph>{`${t('modal.identity_data_missing.paragraph')}`}</Paragraph>,
-    primaryAction: {
-      label: t('modal.identity_data_missing.action_label'),
-      onPress: onGoToIdentityDataScreen,
-    },
-    secondaryAction: {
-      label: t('general:back'),
-    },
-  });
-
-  const renderCanceAccessRequestConfirmationBottomSheetConfig = () => ({
-    heading: t('modal.confirm_cancel_request.heading'),
-    paragraph: <Paragraph>{`${t('modal.confirm_cancel_request.paragraph')}`}</Paragraph>,
-    primaryAction: {
-      status: 'danger' as any,
-      label: t('modal.confirm_cancel_request.action_label'),
-      onPress: onCancelAccessRequest,
-    },
-    secondaryAction: {
-      label: t('general:back'),
-    },
-  });
-
-  const renderLeaveOrganizationConfirmationBottomSheetConfig = () => ({
-    heading: t('modal.confirm_leave_organization.heading'),
-    paragraph: <Paragraph>{`${t('modal.confirm_leave_organization.paragraph')}`}</Paragraph>,
-    primaryAction: {
-      status: 'danger' as any,
-      label: t('modal.confirm_leave_organization.action_label'),
-      onPress: onLeaveOrganizationConfirm,
-    },
-    secondaryAction: {
-      label: t('general:back'),
-    },
-  });
-
   const renderActionOptions = () => {
     let options: any = {
       primaryActionLabel: t('join'),
       onPrimaryActionButtonClick: onJoinOrganizationButtonPress,
-      secondaryActionLabel: `${t('code')}`,
+      secondaryActionLink: `${t('code')}`,
       onSecondaryActionButtonClick: onJoinOrganizationByAccessCodeButtonPress,
     };
 
@@ -196,7 +183,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       case OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING:
         options = {
           primaryActionLabel: t('cancel_request'),
-          onPrimaryActionButtonClick: openBottomSheet,
+          onPrimaryActionButtonClick: () => bottomSheetRef.current?.expand(),
           primaryBtnType: ButtonType.DANGER,
         };
         break;
@@ -219,21 +206,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     return options;
   };
 
-  const renderBottomSheetOptions = () => {
-    if (
-      organization?.organizationVolunteerStatus ===
-      OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
-    ) {
-      return renderCanceAccessRequestConfirmationBottomSheetConfig();
-    }
-
-    if (organization?.organizationVolunteerStatus === OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER) {
-      return renderLeaveOrganizationConfirmationBottomSheetConfig();
-    }
-
-    return renderIdentityDataMissingBottomSheetConfig();
-  };
-
   const onEventPress = (eventId: string) => {
     navigation.navigate('event', { eventId });
   };
@@ -242,79 +214,170 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     navigation.navigate('leave-organization');
   };
 
+  const onCloseBottomSheet = () => {
+    bottomSheetRef.current?.close();
+  };
+
   return (
-    <PageLayout
-      title={t('title')}
-      onBackButtonPress={navigation.goBack}
-      actionsOptions={{
-        ...renderActionOptions(),
-        loading: isLoading(),
-      }}
-      bottomSheetOptions={renderBottomSheetOptions()}
-    >
-      {isFetchingOrganization && <OrganizationSkeleton />}
-      {!!getOrganizationError && !isFetchingOrganization && (
-        <Text>{JSONStringifyError(getOrganizationError as any)}</Text>
-      )}
-      {!isFetchingOrganization && organization && (
-        <>
-          {organization?.organizationVolunteerStatus ===
-            OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
-            <Disclaimer
-              text={t('disclaimer.joined_from', {
-                date: formatDate(new Date(organization.volunteer.createdOn)),
-              })}
-              color="green"
-            />
-          )}
+    <>
+      <PageLayout
+        title={t('title')}
+        onBackButtonPress={navigation.goBack}
+        actionsOptions={{
+          ...renderActionOptions(),
+          loading: isLoading(),
+        }}
+      >
+        {isFetchingOrganization && <OrganizationSkeleton />}
+        {!isFetchingOrganization && organization && (
+          <>
+            {organization?.organizationVolunteerStatus ===
+              OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
+              <Disclaimer
+                text={t('disclaimer.joined_from', {
+                  date: formatDate(new Date(organization.volunteer.createdOn)),
+                })}
+                color="green"
+              />
+            )}
+            {organization?.organizationVolunteerStatus ===
+              OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING && (
+              <Disclaimer text={t('disclaimer.access_request_pending')} color="yellow" />
+            )}
+            {organization?.organizationVolunteerStatus ===
+              OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER && (
+              <Disclaimer text={t('disclaimer.volunteer_archived')} color="yellow" />
+            )}
+            {organization?.organizationVolunteerStatus ===
+              OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER && (
+              <Disclaimer text={t('disclaimer.volunteer_blocked')} color="danger" />
+            )}
+
+            <ScrollViewLayout>
+              <ProfileIntro
+                uri={organization.logo}
+                name={organization.name}
+                description={`${organization.numberOfVolunteers} ${t(
+                  'general:volunteers',
+                ).toLowerCase()}`}
+              />
+              <View style={styles.container}>
+                <ReadOnlyElement label={t('description')} value={organization.description} />
+                <ReadOnlyElement label={t('email')} value={organization.email} />
+                <ReadOnlyElement label={t('phone')} value={organization.phone} />
+                <ReadOnlyElement label={t('address')} value={organization.address} />
+                <ReadOnlyElement label={t('area')} value={organization.activityArea} />
+              </View>
+              <SectionWrapper title={t('events')}>
+                <ScrollViewLayout>
+                  <View>
+                    {!organization.events || organization.events.length === 0 ? (
+                      <Text category="p1">{`${t('no_events')}`}</Text>
+                    ) : (
+                      organization.events.map((event) => (
+                        <View key={event.id}>
+                          <EventItem event={event} onPress={onEventPress} />
+                          <Divider />
+                        </View>
+                      ))
+                    )}
+                  </View>
+                </ScrollViewLayout>
+              </SectionWrapper>
+            </ScrollViewLayout>
+          </>
+        )}
+      </PageLayout>
+      <BottomSheet
+        backdropComponent={renderBackdrop}
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={snapPoints}
+      >
+        <View style={styles.bottomSheetContainer}>
           {organization?.organizationVolunteerStatus ===
             OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING && (
-            <Disclaimer text={t('disclaimer.access_request_pending')} color="yellow" />
+            <>
+              <View style={styles.svgContainer}>
+                <SvgXml xml={successIcon} height={110} width={110} />
+              </View>
+              <View style={styles.textContainer}>
+                <Text category="h1">{`${t('modal.confirm_cancel_request.heading')}`}</Text>
+                <Paragraph style={styles.bottomSheetParagraph}>{`${t(
+                  'modal.confirm_cancel_request.paragraph',
+                )}`}</Paragraph>
+              </View>
+              <View style={styles.buttonsContainer}>
+                <Button
+                  label={t('modal.confirm_cancel_request.action_label')}
+                  status={'danger'}
+                  onPress={onCancelAccessRequest}
+                />
+                <InlineLink
+                  style={{ color: theme['cool-gray-700'] }}
+                  label={t('general:back')}
+                  onPress={onCloseBottomSheet}
+                />
+              </View>
+            </>
           )}
           {organization?.organizationVolunteerStatus ===
-            OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER && (
-            <Disclaimer text={t('disclaimer.volunteer_archived')} color="yellow" />
+            OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
+            <>
+              <View style={styles.svgContainer}>
+                <SvgXml xml={upsIcon} height={110} width={110} />
+              </View>
+              <View style={styles.textContainer}>
+                <Text category="h1">{`${t('modal.confirm_leave_organization.heading')}`}</Text>
+                <Paragraph style={styles.bottomSheetParagraph}>{`${t(
+                  'modal.confirm_leave_organization.paragraph',
+                )}`}</Paragraph>
+              </View>
+              <View style={styles.buttonsContainer}>
+                <Button
+                  label={t('modal.confirm_leave_organization.action_label')}
+                  status={'danger'}
+                  onPress={onLeaveOrganizationConfirm}
+                />
+                <InlineLink
+                  style={{ color: theme['cool-gray-700'] }}
+                  label={t('general:back')}
+                  onPress={onCloseBottomSheet}
+                />
+              </View>
+            </>
           )}
-          {organization?.organizationVolunteerStatus ===
-            OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER && (
-            <Disclaimer text={t('disclaimer.volunteer_blocked')} color="danger" />
-          )}
-
-          <ScrollViewLayout>
-            <ProfileIntro
-              uri={organization.logo}
-              name={organization.name}
-              description={`${organization.numberOfVolunteers} ${t(
-                'general:volunteers',
-              ).toLowerCase()}`}
-            />
-            <View style={styles.container}>
-              <ReadOnlyElement label={t('description')} value={organization.description} />
-              <ReadOnlyElement label={t('email')} value={organization.email} />
-              <ReadOnlyElement label={t('phone')} value={organization.phone} />
-              <ReadOnlyElement label={t('address')} value={organization.address} />
-              <ReadOnlyElement label={t('area')} value={organization.activityArea} />
-            </View>
-            <SectionWrapper title={t('events')}>
-              <ScrollViewLayout>
-                <View>
-                  {!organization.events || organization.events.length === 0 ? (
-                    <Text category="p1">{`${t('no_events')}`}</Text>
-                  ) : (
-                    organization.events.map((event) => (
-                      <View key={event.id}>
-                        <EventItem event={event} onPress={onEventPress} />
-                        <Divider />
-                      </View>
-                    ))
-                  )}
+          {organization?.organizationVolunteerStatus !==
+            OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING &&
+            organization?.organizationVolunteerStatus !==
+              OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
+              <>
+                <View style={styles.svgContainer}>
+                  <SvgXml xml={upsIcon} height={110} width={110} />
                 </View>
-              </ScrollViewLayout>
-            </SectionWrapper>
-          </ScrollViewLayout>
-        </>
-      )}
-    </PageLayout>
+                <View style={styles.textContainer}>
+                  <Text category="h1">{`${t('modal.identity_data_missing.heading')}`}</Text>
+                  <Paragraph style={styles.bottomSheetParagraph}>{`${t(
+                    'modal.identity_data_missing.paragraph',
+                  )}`}</Paragraph>
+                </View>
+                <View style={styles.buttonsContainer}>
+                  <Button
+                    label={t('modal.identity_data_missing.action_label')}
+                    status={'success'}
+                    onPress={onGoToIdentityDataScreen}
+                  />
+                  <InlineLink
+                    label={t('general:back')}
+                    style={{ color: theme['cool-gray-700'] }}
+                    onPress={onCloseBottomSheet}
+                  />
+                </View>
+              </>
+            )}
+        </View>
+      </BottomSheet>
+    </>
   );
 };
 
@@ -323,5 +386,32 @@ export default OrganizationProfile;
 const styles = StyleSheet.create({
   container: {
     gap: 16,
+  },
+  bottomSheetContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 40,
+    paddingVertical: 8,
+    gap: 24,
+  },
+  svgContainer: {
+    flex: 1,
+  },
+  textContainer: {
+    flex: 1,
+    gap: 4,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  bottomSheetParagraph: {
+    textAlign: 'center',
+  },
+  buttonsContainer: {
+    flex: 1,
+    gap: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

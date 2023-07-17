@@ -30,8 +30,12 @@ export class GetOrganizationWithEventsUseCase
         userId,
       );
 
-    // 2. If organization is not found throw error
-    if (!organization) {
+    // 2. If organization is not found throw error or volunteer is blocked
+    if (
+      !organization ||
+      (organization.volunteers.length > 0 &&
+        organization.volunteers[0].status === VolunteerStatus.BLOCKED)
+    ) {
       this.exceptionService.notFoundException(
         OrganizationExceptionMessages.ORG_001,
       );

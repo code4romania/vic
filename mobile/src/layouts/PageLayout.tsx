@@ -6,6 +6,7 @@ import {
   TopNavigationAction,
   Spinner,
   Text,
+  useTheme,
 } from '@ui-kitten/components';
 import Button from '../components/Button';
 import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
@@ -58,6 +59,7 @@ export const PageLayout = ({
   actionsOptions,
   bottomSheetOptions,
 }: PageLayoutProps) => {
+  const theme = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const { isOpen } = useBottomSheet();
@@ -126,6 +128,11 @@ export const PageLayout = ({
                       <View style={styles.secondaryButtonContainer}>
                         <Text category="p1">{actionsOptions.secondaryActionLabel || ''}</Text>
                         <InlineLink
+                          style={
+                            !actionsOptions.secondaryActionLabel
+                              ? { color: theme['cool-gray-700'] }
+                              : {}
+                          }
                           onPress={actionsOptions.onSecondaryActionButtonClick}
                           label={actionsOptions.secondaryActionLink}
                         />

@@ -19,7 +19,9 @@ export type IFindOrganizationModel = Pick<
   'id' | 'name' | 'email' | 'phone'
 >;
 
-export type FindManyOrganizationsOptions = IBasePaginationFilterModel;
+export type FindManyOrganizationsOptions = IBasePaginationFilterModel & {
+  userId: string;
+};
 
 export class OrganizationTransformer {
   static fromEntity(

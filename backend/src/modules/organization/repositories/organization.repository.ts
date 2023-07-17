@@ -5,12 +5,12 @@ import { Repository } from 'typeorm';
 import { OrganizationEntity } from '../entities/organization.entity';
 import { IOrganizationRepository } from '../interfaces/organization-repository.interface';
 import {
+  FindManyOrganizationsOptions,
   ICreateOrganizationModel,
   IFindOrganizationModel,
   IOrganizationModel,
   OrganizationTransformer,
 } from '../models/organization.model';
-import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import {
   Pagination,
   RepositoryWithPagination,
@@ -88,9 +88,9 @@ export class OrganizationRepositoryService
   }
 
   public async findMany(
-    findOptions: IBasePaginationFilterModel,
+    findOptions: FindManyOrganizationsOptions,
   ): Promise<Pagination<IOrganizationWithVolunteersModel>> {
-    const { orderBy, search, orderDirection } = findOptions;
+    const { orderBy, search, orderDirection, userId } = findOptions;
 
     const query = this.organizationRepository
       .createQueryBuilder('organization')
@@ -104,6 +104,17 @@ export class OrganizationRepositoryService
           }),
       )
       .select()
+      .leftJoin(
+        'organization.volunteers',
+        'volunteer',
+        'volunteer.userId = :userId AND volunteer.organizationId = organization.id',
+        {
+          userId,
+        },
+      )
+      .where('volunteer.status IN (:...statuses) OR volunteer.id IS NULL', {
+        statuses: [VolunteerStatus.ACTIVE, VolunteerStatus.ARCHIVED],
+      })
       .orderBy(
         this.buildOrderByQuery(orderBy || 'name', 'organization'),
         orderDirection || OrderDirection.ASC,

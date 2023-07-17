@@ -30,6 +30,11 @@ export interface BottomSheetProps {
   };
 }
 
+// renders
+export const renderBackdrop = (props: any) => (
+  <BottomSheetBackdrop {...props} opacity={0.3} enableTouchThrough={true} />
+);
+
 const BottomSheet = ({
   modalRef,
   iconType,
@@ -47,11 +52,6 @@ const BottomSheet = ({
 
     return ['25%', '45%'];
   }, [iconType]);
-
-  // renders
-  const renderBackdrop = (props: any) => (
-    <BottomSheetBackdrop {...props} opacity={0.3} enableTouchThrough={true} />
-  );
 
   const onPrimaryActionClick = () => {
     primaryAction.onPress();
