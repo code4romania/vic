@@ -137,7 +137,7 @@ const AccessRequestTable = ({
     query?.location && query?.location[0],
     query?.location && query?.location[1],
     query?.rejectedOnStart,
-    query?.rejectedOnStart,
+    query?.rejectedOnEnd,
   );
 
   // actions
@@ -222,26 +222,35 @@ const AccessRequestTable = ({
 
   // pagination
   const onRowsPerPageChange = (limit: number) => {
-    setQuery({
-      limit,
-      page: 1,
-    });
+    setQuery(
+      {
+        limit,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onChangePage = (page: number) => {
-    setQuery({
-      page,
-    });
+    setQuery(
+      {
+        page,
+      },
+      'replaceIn',
+    );
   };
 
   const onSort = (column: TableColumn<IAccessRequest>, direction: SortOrder) => {
-    setQuery({
-      orderBy: column.id as string,
-      orderDirection:
-        direction.toLocaleUpperCase() === OrderDirection.ASC
-          ? OrderDirection.ASC
-          : OrderDirection.DESC,
-    });
+    setQuery(
+      {
+        orderBy: column.id as string,
+        orderDirection:
+          direction.toLocaleUpperCase() === OrderDirection.ASC
+            ? OrderDirection.ASC
+            : OrderDirection.DESC,
+      },
+      'replaceIn',
+    );
   };
 
   // row actions
@@ -326,29 +335,41 @@ const AccessRequestTable = ({
 
   const onLocationChange = (location: ListItem) => {
     setLocation(location);
-    setQuery({
-      location: location.label.split(', '),
-    });
+    setQuery(
+      {
+        location: location.label.split(', '),
+      },
+      'replaceIn',
+    );
   };
 
   const onSearch = (search: string) => {
-    setQuery({
-      search,
-    });
+    setQuery(
+      {
+        search,
+      },
+      'replaceIn',
+    );
   };
 
   const onCreatedOnRangeChange = ([createdOnStart, createdOnEnd]: Date[]) => {
-    setQuery({
-      createdOnStart,
-      createdOnEnd,
-    });
+    setQuery(
+      {
+        createdOnStart,
+        createdOnEnd,
+      },
+      'replaceIn',
+    );
   };
 
   const onRejectedOnRangeChange = ([rejectedOnStart, rejectedOnEnd]: Date[]) => {
-    setQuery({
-      rejectedOnStart,
-      rejectedOnEnd,
-    });
+    setQuery(
+      {
+        rejectedOnStart,
+        rejectedOnEnd,
+      },
+      'replaceIn',
+    );
   };
 
   const onExport = async () => {
