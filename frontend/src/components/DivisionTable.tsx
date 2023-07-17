@@ -134,26 +134,35 @@ const DivisionTable = ({ query, setQuery }: DivisionTableProps) => {
 
   // pagination
   const onRowsPerPageChange = (rows: number) => {
-    setQuery({
-      limit: rows,
-      page: 1,
-    });
+    setQuery(
+      {
+        limit: rows,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onChangePage = (newPage: number) => {
-    setQuery({
-      page: newPage,
-    });
+    setQuery(
+      {
+        page: newPage,
+      },
+      'replaceIn',
+    );
   };
 
   const onSort = (column: TableColumn<IDivision>, direction: SortOrder) => {
-    setQuery({
-      orderBy: column.id as string,
-      orderDirection:
-        direction.toLocaleUpperCase() === OrderDirection.ASC
-          ? OrderDirection.ASC
-          : OrderDirection.DESC,
-    });
+    setQuery(
+      {
+        orderBy: column.id as string,
+        orderDirection:
+          direction.toLocaleUpperCase() === OrderDirection.ASC
+            ? OrderDirection.ASC
+            : OrderDirection.DESC,
+      },
+      'replaceIn',
+    );
   };
 
   // simple actions

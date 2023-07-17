@@ -51,9 +51,12 @@ const Organization = ({ query, setQuery }: OrganizationTableProps) => {
 
   const onTabClick = (id: DivisionType) => {
     const selectedTab = DivisionsTabs.find((tab) => tab.key === id)?.key as DivisionType;
-    setQuery({
-      type: selectedTab,
-    });
+    setQuery(
+      {
+        type: selectedTab,
+      },
+      'replaceIn',
+    );
   };
 
   const onEditButtonClick = () => {
