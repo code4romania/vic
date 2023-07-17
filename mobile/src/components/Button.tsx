@@ -2,22 +2,37 @@ import React from 'react';
 import {
   Button as ButtonKitten,
   ButtonProps as ButtonKittenProps,
-  withStyles,
+  Spinner,
+  useTheme,
 } from '@ui-kitten/components';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export interface ButtonProps extends ButtonKittenProps {
   label: string;
   onPress: (props?: any) => void;
-  eva?: any;
+  loading?: boolean;
 }
 
-const Button = ({ label, onPress, eva, appearance, ...props }: ButtonProps) => {
+const LoadingIndicator = (): React.ReactElement => (
+  <View style={styles.indicator}>
+    <Spinner size="small" />
+  </View>
+);
+
+const Button = ({ label, onPress, appearance, loading, ...props }: ButtonProps) => {
+  const theme = useTheme();
   return (
     <ButtonKitten
       {...props}
       appearance={appearance || 'filled'}
       onPress={onPress}
-      style={[eva.style.button, appearance === 'outline' ? null : eva.style.shadow, props.style]}
+      style={[
+        styles.button,
+        appearance === 'outline' ? null : { ...styles.shadow, shadowColor: theme['dark-purple'] },
+        props.style,
+      ]}
+      accessoryLeft={loading ? <LoadingIndicator /> : <></>}
       size="large"
     >
       {label}
@@ -25,10 +40,11 @@ const Button = ({ label, onPress, eva, appearance, ...props }: ButtonProps) => {
   );
 };
 
-export default withStyles(Button, (theme) => ({
+export default Button;
+
+const styles = StyleSheet.create({
   shadow: {
     elevation: 4,
-    shadowColor: theme['dark-purple'],
     shadowOffset: {
       width: 0,
       height: 2,
@@ -42,4 +58,12 @@ export default withStyles(Button, (theme) => ({
     paddingVertical: 15,
     paddingHorizontal: 30,
   },
-}));
+  indicator: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+});

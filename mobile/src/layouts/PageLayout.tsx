@@ -108,9 +108,7 @@ export const PageLayout = ({
 
         {actionsOptions && (
           <View style={styles.bottomActionContainer}>
-            {actionsOptions.loading ? (
-              <LoadingIndicator /> // TODO: handle the loading state properly
-            ) : (
+            {
               <View style={styles.helperContainer}>
                 {actionsOptions.helperText && (
                   <Text category="p1">{actionsOptions.helperText}</Text>
@@ -120,6 +118,8 @@ export const PageLayout = ({
                     onPress={actionsOptions.onPrimaryActionButtonClick}
                     label={`${actionsOptions.primaryActionLabel}`}
                     status={actionsOptions.primaryBtnType || 'primary'}
+                    loading={actionsOptions.loading}
+                    disabled={actionsOptions.loading}
                   />
                   {actionsOptions.onSecondaryActionButtonClick &&
                     actionsOptions.secondaryActionLink && (
@@ -133,7 +133,7 @@ export const PageLayout = ({
                     )}
                 </View>
               </View>
-            )}
+            }
           </View>
         )}
       </Layout>
