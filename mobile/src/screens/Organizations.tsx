@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import PressableContainer from '../components/PressableContainer';
 import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
 import { useOrganization } from '../store/organization/organization.selector';
+import { useAuth } from '../hooks/useAuth';
 
 interface OrganizationItemProps {
   item: IOrganizationListItemWithNumberOfVolunteers;
@@ -47,6 +48,9 @@ const Organizations = ({ navigation }: any) => {
   // organization state
   const { organization } = useOrganization();
 
+  // user profile
+  const { userProfile } = useAuth();
+
   // organizations query
   const {
     data: organizations,
@@ -64,7 +68,7 @@ const Organizations = ({ navigation }: any) => {
 
   useEffect(() => {
     refetchOrganizations();
-  }, [organization, refetchOrganizations]);
+  }, [organization, refetchOrganizations, userProfile]);
 
   const onViewOrganizationProfileButtonPress = (organizationId: string) => {
     navigation.navigate('organization-profile', { organizationId });
