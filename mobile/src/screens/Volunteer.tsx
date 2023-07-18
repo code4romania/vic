@@ -18,16 +18,13 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const Volunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
-  console.log('Volunteer');
+
+  const { getProfile } = useAuth();
 
   useFocusEffect(
     React.useCallback(() => {
-      // const unsubscribe = API.subscribe(userId, user => setUser(user));
-
-      // return () => unsubscribe();
-      console.log('init page');
-      // request profile
-      // if organizations are different - update profile
+      getProfile();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
 
