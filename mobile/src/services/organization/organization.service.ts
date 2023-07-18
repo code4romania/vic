@@ -43,25 +43,15 @@ export const useSwitchOrganizationMutation = () => {
 };
 
 export const useLeaveOrganizationMutation = () => {
-  const { userProfile, setUserProfile } = useAuth();
+  const { getProfile } = useAuth();
   const { setOrganization } = useStore();
   return useMutation(
     ['leave-organization'],
     ({ volunteerId }: { volunteerId: string }) => leaveOrganization(volunteerId),
     {
-      onSuccess: (data: IOrganization, { volunteerId }) => {
+      onSuccess: (data: IOrganization) => {
         // 1. remove it from your organization profile
-        const profiles = userProfile?.myOrganizations.filter(
-          (org) => org.volunteerId !== volunteerId,
-        );
-        // 2. check if it is your active organization and if so switch from it
-        if (userProfile?.activeOrganization?.volunteerId === volunteerId) {
-          setUserProfile({
-            ...userProfile,
-            myOrganizations: profiles || [],
-            activeOrganization: profiles && profiles?.length > 0 ? profiles[0] : null,
-          });
-        }
+        getProfile();
         // 3. set your organization profile volunteer status to archived
         setOrganization(data);
       },
@@ -70,24 +60,14 @@ export const useLeaveOrganizationMutation = () => {
 };
 
 export const useRejoinOrganizationMutation = () => {
-  const { userProfile, setUserProfile } = useAuth();
+  const { getProfile } = useAuth();
   const { setOrganization } = useStore();
   return useMutation(
     ['rejoin-organization'],
     ({ volunteerId }: { volunteerId: string }) => rejoinOrganization(volunteerId),
     {
       onSuccess: (data: IOrganization) => {
-        const activeOrganization = {
-          id: data.id,
-          logo: data.logo,
-          name: data.name,
-          numberOfVolunteer: data.numberOfVolunteers,
-          volunteerId: data.volunteer.id,
-        };
-        // 1. add it to your organization profiles
-        const myOrganizations = [...(userProfile?.myOrganizations || []), activeOrganization];
-        // 2. set it as your active organization
-        setUserProfile({ ...userProfile, myOrganizations, activeOrganization });
+        getProfile();
         // 3. set your organization profile volunteer status to active
         setOrganization(data);
       },

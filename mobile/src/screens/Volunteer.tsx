@@ -14,10 +14,22 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import { useVolunteerStats } from '../services/volunteer/volunteer.service';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Volunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
   console.log('Volunteer');
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // const unsubscribe = API.subscribe(userId, user => setUser(user));
+
+      // return () => unsubscribe();
+      console.log('init page');
+      // request profile
+      // if organizations are different - update profile
+    }, []),
+  );
 
   const { userProfile } = useAuth();
 
