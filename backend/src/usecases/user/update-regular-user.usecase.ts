@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 import {
-  IRegularUserModel,
+  IRegularUserProfileModel,
   UpdateRegularUserOptions,
 } from 'src/modules/user/models/regular-user.model';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -10,15 +10,17 @@ import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { S3_FILE_PATHS } from 'src/common/constants/constants';
 import { JSONStringifyError } from 'src/common/helpers/utils';
+import { GetOneRegularUserProfileUseCase } from './get-regule-user-profile.usecase';
 
 @Injectable()
 export class UpdateRegularUserUsecase
-  implements IUseCaseService<IRegularUserModel>
+  implements IUseCaseService<IRegularUserProfileModel>
 {
   private readonly logger = new Logger(UpdateRegularUserUsecase.name);
 
   constructor(
     private readonly userService: UserFacadeService,
+    private readonly getRegularUserProfileUsecase: GetOneRegularUserProfileUseCase,
     private readonly exceptionService: ExceptionsService,
     private readonly s3Service: S3Service,
   ) {}
@@ -27,7 +29,7 @@ export class UpdateRegularUserUsecase
     id: string,
     userUpdates: UpdateRegularUserOptions,
     profilePicture?: Express.Multer.File[],
-  ): Promise<IRegularUserModel> {
+  ): Promise<IRegularUserProfileModel> {
     // 1. check if user exists
     const user = await this.userService.findRegularUser({ id });
 
@@ -72,15 +74,6 @@ export class UpdateRegularUserUsecase
     );
 
     // 5. return user profile with presigned url
-    return {
-      ...updatedUser,
-      ...(updatedUser.profilePicture
-        ? {
-            profilePicture: await this.s3Service.generatePresignedURL(
-              updatedUser.profilePicture,
-            ),
-          }
-        : {}),
-    };
+    return this.getRegularUserProfileUsecase.execute({ id: updatedUser.id });
   }
 }

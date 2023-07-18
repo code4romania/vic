@@ -3,15 +3,16 @@ import { IUseCaseService } from 'src/common/interfaces/use-case-service.interfac
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 import {
   CreateRegularUserOptions,
-  IRegularUserModel,
+  IRegularUserProfileModel,
 } from 'src/modules/user/models/regular-user.model';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 import { NotificationsSettingsFacade } from 'src/modules/notifications/notifications-settings.facade';
+import { GetOneRegularUserProfileUseCase } from './get-regule-user-profile.usecase';
 
 @Injectable()
 export class CreateRegularUsereUseCaseService
-  implements IUseCaseService<IRegularUserModel>
+  implements IUseCaseService<IRegularUserProfileModel>
 {
   private readonly logger = new Logger(CreateRegularUsereUseCaseService.name);
 
@@ -19,9 +20,12 @@ export class CreateRegularUsereUseCaseService
     private readonly userService: UserFacadeService,
     private exceptionService: ExceptionsService,
     private readonly notificationSettingsFacade: NotificationsSettingsFacade,
+    private readonly getRegularUserProfileUsecase: GetOneRegularUserProfileUseCase,
   ) {}
 
-  async execute(newUser: CreateRegularUserOptions): Promise<IRegularUserModel> {
+  async execute(
+    newUser: CreateRegularUserOptions,
+  ): Promise<IRegularUserProfileModel> {
     const existingUser = await this.userService.findRegularUser([
       { cognitoId: newUser.cognitoId },
       { email: newUser.email },
@@ -41,6 +45,6 @@ export class CreateRegularUsereUseCaseService
       notificationsSettingsId: notificationsSettings.id,
     });
 
-    return this.userService.findRegularUser({ id: user.id });
+    return this.getRegularUserProfileUsecase.execute({ id: user.id });
   }
 }

@@ -13,7 +13,6 @@ import { JSONStringifyError } from '../../common/utils/utils';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import * as SplashScreen from 'expo-splash-screen';
 import { getUserProfile } from '../../services/user/user.api';
-import { getMyOrganizations } from '../../services/organization/organization.api';
 import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
 
 const COGNITO_ERRORS = {
@@ -225,10 +224,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         // get the user profile
         const profile = await getUserProfile();
-        // get the organizations the user is part of
-        const myOragnizations = await getMyOrganizations();
         // set profile in context with all the organizations
-        setUserProfile({ ...profile, myOrganizations: myOragnizations });
+        setUserProfile(profile);
         resolve(profile);
       } catch (error: any) {
         // if the profile doesn't exists redirect to the the create account page
@@ -295,6 +292,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         updateSettings,
         forgotPassword,
         forgotPasswordSubmit,
+        getProfile,
       }}
     >
       {children}

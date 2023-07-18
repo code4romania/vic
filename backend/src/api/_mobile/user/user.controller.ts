@@ -15,12 +15,13 @@ import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UserPresenter } from './presenters/user.presenter';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
-import { GetOneRegularUserUseCase } from 'src/usecases/user/get-one-regular-user.usecase';
 import { UpdateUserPersonalDataDto } from './dto/update-user-personal-data.dto';
 import { UpdateUserPersonalDataUsecase } from 'src/usecases/user/update-user-personal-data.usecase';
 import { UpdateRegularUserDto } from './dto/update-regular-user.dto';
 import { UpdateRegularUserUsecase } from 'src/usecases/user/update-regular-user.usecase';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { GetOneRegularUserProfileUseCase } from 'src/usecases/user/get-regule-user-profile.usecase';
+import { UserProfilePresenter } from './presenters/user-profile.presenter';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -28,7 +29,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 export class MobileRegularUserController {
   constructor(
     private readonly createRegularUsereUseCaseService: CreateRegularUsereUseCaseService,
-    private readonly getOneRegularUserUseCase: GetOneRegularUserUseCase,
+    private readonly getOneRegularUserProfileUseCase: GetOneRegularUserProfileUseCase,
     private readonly updateUserPersonalData: UpdateUserPersonalDataUsecase,
     private readonly updateRegularUserUsecase: UpdateRegularUserUsecase,
   ) {}
@@ -38,23 +39,23 @@ export class MobileRegularUserController {
   async create(
     @Body() newUser: CreateRegularUserDto,
     @ExtractUser() data: IRegularUserModel,
-  ): Promise<UserPresenter> {
+  ): Promise<UserProfilePresenter> {
     const user = await this.createRegularUsereUseCaseService.execute({
       ...newUser,
       cognitoId: data.cognitoId,
     });
 
-    return new UserPresenter(user);
+    return new UserProfilePresenter(user);
   }
 
   @Get('profile')
   async getProfile(
     @ExtractUser() user: IRegularUserModel,
-  ): Promise<UserPresenter> {
-    const regularUser = await this.getOneRegularUserUseCase.execute({
+  ): Promise<UserProfilePresenter> {
+    const regularUser = await this.getOneRegularUserProfileUseCase.execute({
       cognitoId: user.cognitoId,
     });
-    return new UserPresenter(regularUser);
+    return new UserProfilePresenter(regularUser);
   }
 
   @ApiConsumes('multipart/form-data')
@@ -68,13 +69,13 @@ export class MobileRegularUserController {
     @Body() regularUserData: UpdateRegularUserDto,
     @UploadedFiles()
     file: { profilePicture?: Express.Multer.File[] },
-  ): Promise<UserPresenter> {
+  ): Promise<UserProfilePresenter> {
     const regularUser = await this.updateRegularUserUsecase.execute(
       user.id,
       regularUserData,
       file?.profilePicture,
     );
-    return new UserPresenter(regularUser);
+    return new UserProfilePresenter(regularUser);
   }
 
   @ApiBody({ type: UpdateUserPersonalDataDto })

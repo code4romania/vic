@@ -28,7 +28,7 @@ export interface ICreateVolunteerProfilePayload {
 }
 
 export const useJoinByAccessCodeMutation = () => {
-  const { userProfile, setUserProfile } = useAuth();
+  const { getProfile } = useAuth();
   const { organization } = useOrganization();
   const { setOrganization } = useStore();
   return useMutation(
@@ -36,22 +36,8 @@ export const useJoinByAccessCodeMutation = () => {
     (request: IJoinByAccessCodePayload) => joinByAccessCode(request),
     {
       onSuccess: (data: IVolunteer) => {
-        // update user profile context
-        setUserProfile({
-          ...userProfile,
-          activeOrganization: {
-            ...data.organization,
-            volunteerId: data.id,
-          },
-          myOrganizations: [
-            ...(userProfile?.myOrganizations || []),
-            {
-              ...data.organization,
-              volunteerId: data.id,
-            },
-          ],
-        });
         // update organization state in the previous screen
+        getProfile();
         setOrganization({
           ...(organization as IOrganization),
           organizationVolunteerStatus: OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER,

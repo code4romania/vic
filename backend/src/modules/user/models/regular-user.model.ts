@@ -27,6 +27,10 @@ export interface IRegularUserModel extends IUserModel {
   notificationsSettings: INotificationsSettingsModel;
 }
 
+export interface IRegularUserProfileModel extends IRegularUserModel {
+  myOrganizations: IOrganizationVolunteerModel[];
+}
+
 export type CreateRegularUserOptions = Omit<
   IRegularUserModel,
   'id' | 'location' | 'name' | 'notificationsSettings'

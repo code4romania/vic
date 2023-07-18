@@ -95,7 +95,6 @@ import { GetOrganizationWithEventsUseCase } from './organization/get-organizatio
 import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.usecase';
 import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organization-by-access-code.usecase';
 import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
-import { GetMyOrganizationsUsecase } from './organization/get-my-organizations.usecase';
 import { SwitchOrganizationUsecase } from './organization/switch-organization.usecase';
 import { GetVolunteerProfileUsecase } from './volunteer/get-volunteer-profile.usecase';
 import { GetMyEventsUsecase } from './event/get-my-events.usecase';
@@ -133,6 +132,7 @@ import { UpdateSettingsUsecase } from './notifications-settings/update-settings.
 import { GetVolunteersUserDataForNotificationsUsecase } from './volunteer/get-volunteers-user-data-for-notifications.usecase';
 import { GetManyNewsUsecase } from './actions-archive/get-many-news.usecase';
 import { GetVolunteerOrganizationStatusUsecase } from './volunteer/get-volunteer-organization-status.usecase';
+import { GetOneRegularUserProfileUseCase } from './user/get-regule-user-profile.usecase';
 
 @Module({
   imports: [
@@ -158,7 +158,6 @@ import { GetVolunteerOrganizationStatusUsecase } from './volunteer/get-volunteer
     UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
-    GetMyOrganizationsUsecase,
     SwitchOrganizationUsecase,
     LeaveOrganizationUsecase,
     RejoinOrganizationUsecase,
@@ -182,6 +181,7 @@ import { GetVolunteerOrganizationStatusUsecase } from './volunteer/get-volunteer
     GetManyAdminUsersUseCase,
     UpdateUserPersonalDataUsecase,
     UpdateRegularUserUsecase,
+    GetOneRegularUserProfileUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -298,7 +298,6 @@ import { GetVolunteerOrganizationStatusUsecase } from './volunteer/get-volunteer
     UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
-    GetMyOrganizationsUsecase,
     SwitchOrganizationUsecase,
     LeaveOrganizationUsecase,
     RejoinOrganizationUsecase,
@@ -322,6 +321,7 @@ import { GetVolunteerOrganizationStatusUsecase } from './volunteer/get-volunteer
     GetManyAdminUsersUseCase,
     UpdateUserPersonalDataUsecase,
     UpdateRegularUserUsecase,
+    GetOneRegularUserProfileUseCase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,

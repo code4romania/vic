@@ -35,6 +35,7 @@ interface AuthContextProps {
   updateSettings: (settings: INotificationsSettings) => void;
   forgotPassword: (username: string) => Promise<void>;
   forgotPasswordSubmit: (code: string, new_password: string) => Promise<void>;
+  getProfile: () => Promise<unknown>;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -54,4 +55,5 @@ export const AuthContext = createContext<AuthContextProps>({
   updateSettings: (settings: INotificationsSettings) => {},
   forgotPassword: (username: string) => Promise.resolve(),
   forgotPasswordSubmit: (code: string, new_password: string) => Promise.resolve(),
+  getProfile: () => Promise.resolve(),
 });

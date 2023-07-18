@@ -7,7 +7,6 @@ import {
 } from 'src/modules/user/models/regular-user.model';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
-import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 
 @Injectable()
 export class GetOneRegularUserUseCase
@@ -16,7 +15,6 @@ export class GetOneRegularUserUseCase
   constructor(
     private readonly userService: UserFacadeService,
     private readonly exceptionService: ExceptionsService,
-    private readonly s3Service: S3Service,
   ) {}
 
   async execute(
@@ -28,15 +26,6 @@ export class GetOneRegularUserUseCase
       this.exceptionService.notFoundException(UserExceptionMessages.USER_001);
     }
 
-    return {
-      ...user,
-      ...(user.profilePicture
-        ? {
-            profilePicture: await this.s3Service.generatePresignedURL(
-              user.profilePicture,
-            ),
-          }
-        : {}),
-    };
+    return user;
   }
 }

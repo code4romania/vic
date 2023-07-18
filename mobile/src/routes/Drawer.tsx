@@ -88,7 +88,7 @@ const DrawerContent = withStyles(
   ({ navigation, eva }: any) => {
     const { t } = useTranslation('volunteer');
 
-    const { userProfile, setActiveOrganization } = useAuth();
+    const { userProfile, setActiveOrganization, getProfile } = useAuth();
     // switch organization
     const { mutate: switchOrganization } = useSwitchOrganizationMutation();
 
@@ -103,9 +103,16 @@ const DrawerContent = withStyles(
     };
 
     const onOrganizationChange = (organization: IOrganizationVolunteer) => {
-      switchOrganization({ organizationId: organization.id });
       setActiveOrganization(organization);
       navigation.closeDrawer();
+      switchOrganization(
+        { organizationId: organization.id },
+        {
+          onSuccess: () => {
+            getProfile();
+          },
+        },
+      );
     };
 
     const onJoinNewOrganization = () => {

@@ -21,9 +21,7 @@ import { OrganizationWithEventsPresenter } from './presenters/organization-with-
 import { GetOrganizationWithEventsUseCase } from 'src/usecases/organization/get-organization-with-events.usecase';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
-import { GetMyOrganizationsUsecase } from 'src/usecases/organization/get-my-organizations.usecase';
 import { SwitchOrganizationUsecase } from 'src/usecases/organization/switch-organization.usecase';
-import { OrganizationVolunteerPresenter } from './presenters/organization-volunteer.presenter';
 import { LeaveOrganizationUsecase } from 'src/usecases/organization/leave-organization.usecase';
 import { RejoinOrganizationUsecase } from 'src/usecases/organization/rejoin-organization.usecase';
 
@@ -34,7 +32,6 @@ export class MobileOrganizationController {
   constructor(
     private readonly getOrganizationsUseCase: GetOrganizationsUseCase,
     private readonly getOrganizationWithEvents: GetOrganizationWithEventsUseCase,
-    private readonly getMyOrganizationsUsecase: GetMyOrganizationsUsecase,
     private readonly switchOrganizationUsecase: SwitchOrganizationUsecase,
     private readonly leaveOrganizationUsecase: LeaveOrganizationUsecase,
     private readonly rejonOrganizationUsecase: RejoinOrganizationUsecase,
@@ -57,17 +54,6 @@ export class MobileOrganizationController {
         (organization) => new OrganizationWithVolunteersPresenter(organization),
       ),
     });
-  }
-
-  @Get('profiles')
-  async getMyOrganizations(
-    @ExtractUser() { id }: IRegularUserModel,
-  ): Promise<OrganizationVolunteerPresenter[]> {
-    const organizations = await this.getMyOrganizationsUsecase.execute(id);
-
-    return organizations.map(
-      (organization) => new OrganizationVolunteerPresenter(organization),
-    );
   }
 
   @ApiParam({ name: 'id', type: 'string' })

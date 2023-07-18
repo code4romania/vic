@@ -4,9 +4,9 @@ import { IOrganizationWithEventsModel } from 'src/modules/organization/models/or
 import { ArchiveVolunteerUsecase } from '../volunteer/archive-volunteer.usescase';
 import { SwitchOrganizationUsecase } from './switch-organization.usecase';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
-import { GetMyOrganizationsUsecase } from './get-my-organizations.usecase';
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 import { GetOrganizationWithEventsUseCase } from './get-organization-with-events.usecase';
+import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
 
 @Injectable()
 export class LeaveOrganizationUsecase
@@ -14,7 +14,7 @@ export class LeaveOrganizationUsecase
 {
   constructor(
     private readonly archiveVolunteerUsecase: ArchiveVolunteerUsecase,
-    private readonly getMyOrganizationsUsecase: GetMyOrganizationsUsecase,
+    private readonly organizationsFacade: OrganizationFacadeService,
     private readonly switchOrganizationUsecase: SwitchOrganizationUsecase,
     private readonly userFacade: UserFacadeService,
     private readonly getOneOrganizationUsecase: GetOrganizationWithEventsUseCase,
@@ -33,7 +33,9 @@ export class LeaveOrganizationUsecase
     // 2. check if the active organization is the one archived
     if (user.activeOrganization.id === volunteer.organization.id) {
       // 2.1 get my organization profiles
-      const profiles = await this.getMyOrganizationsUsecase.execute(user.id);
+      const profiles = await this.organizationsFacade.findMyOrganizations(
+        user.id,
+      );
 
       // 2.2. swith organization to one of the other profiles
       if (profiles.length > 0) {
