@@ -26,7 +26,6 @@ import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { renderBackdrop } from '../components/BottomSheet';
 import { SvgXml } from 'react-native-svg';
-import successIcon from '../assets/svg/success-icon';
 import upsIcon from '../assets/svg/ups-icon';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
@@ -37,10 +36,20 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   const theme = useTheme();
   // user profile context
   const { userProfile } = useAuth();
+
+  const { organization } = useOrganization();
+
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points
-  const snapPoints = useMemo(() => ['30%', '55%'], []);
+  const snapPoints = useMemo(
+    () =>
+      organization?.organizationVolunteerStatus ===
+      OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
+        ? ['30%', '40%']
+        : ['30%', '55%'],
+    [organization],
+  );
 
   const { isFetching: isFetchingOrganization, error: getOrganizationError } = useOrganizationQuery(
     route.params.organizationId,
@@ -51,8 +60,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   const { isLoading: isRejoiningOrganization, mutate: rejoinOrganization } =
     useRejoinOrganizationMutation();
-
-  const { organization } = useOrganization();
 
   useEffect(() => {
     if (getOrganizationError) {
@@ -103,6 +110,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   };
 
   const onCancelAccessRequest = () => {
+    onCloseBottomSheet();
     if (organization) {
       cancelAccessRequest(
         { organizationId: organization.id },
@@ -269,9 +277,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           {organization?.organizationVolunteerStatus ===
             OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING && (
             <>
-              <View style={styles.svgContainer}>
-                <SvgXml xml={successIcon} height={110} width={110} />
-              </View>
               <View style={styles.textContainer}>
                 <Text category="h1">{`${t('modal.confirm_cancel_request.heading')}`}</Text>
                 <Paragraph style={styles.bottomSheetParagraph}>{`${t(
