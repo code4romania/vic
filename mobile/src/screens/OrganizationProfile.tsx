@@ -6,7 +6,6 @@ import ReadOnlyElement from '../components/ReadOnlyElement';
 import SectionWrapper from '../components/SectionWrapper';
 import ProfileIntro from '../components/ProfileIntro';
 import {
-  useLeaveOrganizationMutation,
   useOrganizationQuery,
   useRejoinOrganizationMutation,
 } from '../services/organization/organization.service';
@@ -51,9 +50,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   const { isLoading: isCancelingAccessRequest, mutate: cancelAccessRequest } =
     useCancelAccessRequestMutation();
-
-  const { isLoading: isLeavingOrganization, mutate: leaveOrganization } =
-    useLeaveOrganizationMutation();
 
   const { isLoading: isRejoiningOrganization, mutate: rejoinOrganization } =
     useRejoinOrganizationMutation();
@@ -126,24 +122,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     }
   };
 
-  const onLeaveOrganizationConfirm = () => {
-    if (organization) {
-      leaveOrganization(
-        { volunteerId: organization.volunteer.id },
-        {
-          onError: (error: any) => {
-            Toast.show({
-              type: 'error',
-              text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(
-                error.response?.data.code_error,
-              )}`,
-            });
-          },
-        },
-      );
-    }
-  };
-
   const onRejoinOrganization = () => {
     if (organization) {
       rejoinOrganization(
@@ -163,12 +141,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   };
 
   const isLoading = () => {
-    return (
-      isCancelingAccessRequest ||
-      isFetchingOrganization ||
-      isLeavingOrganization ||
-      isRejoiningOrganization
-    );
+    return isCancelingAccessRequest || isFetchingOrganization || isRejoiningOrganization;
   };
 
   const renderActionOptions = () => {
@@ -312,32 +285,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                   label={t('modal.confirm_cancel_request.action_label')}
                   status={'danger'}
                   onPress={onCancelAccessRequest}
-                />
-                <InlineLink
-                  style={{ color: theme['cool-gray-700'] }}
-                  label={t('general:back')}
-                  onPress={onCloseBottomSheet}
-                />
-              </View>
-            </>
-          )}
-          {organization?.organizationVolunteerStatus ===
-            OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
-            <>
-              <View style={styles.svgContainer}>
-                <SvgXml xml={upsIcon} height={110} width={110} />
-              </View>
-              <View style={styles.textContainer}>
-                <Text category="h1">{`${t('modal.confirm_leave_organization.heading')}`}</Text>
-                <Paragraph style={styles.bottomSheetParagraph}>{`${t(
-                  'modal.confirm_leave_organization.paragraph',
-                )}`}</Paragraph>
-              </View>
-              <View style={styles.buttonsContainer}>
-                <Button
-                  label={t('modal.confirm_leave_organization.action_label')}
-                  status={'danger'}
-                  onPress={onLeaveOrganizationConfirm}
                 />
                 <InlineLink
                   style={{ color: theme['cool-gray-700'] }}

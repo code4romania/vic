@@ -314,7 +314,52 @@
         "heading": "Anulezi cererea de inscriere?",
         "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Ești sigur că vrei să retragi cererea?",
         "action_label": "Anuleaza cererea"
+      }
+    }
+  },
+  "join_ngo": {
+    "registration_form": "Formular de înscriere",
+    "complete": "Completează datele de mai jos pentru a te putea înscrie în organizație.",
+    "form": {
+      "referral": {
+        "label": "De unde ai aflat de noi?",
+        "required": "Acest câmp este obligatoriu",
+        "social": "Rețelele de socializare",
+        "teo": "Din aplicația TEO",
+        "friend": "De la un coleg sau prieten",
+        "event": "Dintr-un eveniment",
+        "other": "Altă opţiune"
       },
+      "motivation": {
+        "required": "Acest câmp este obligatoriu",
+        "label": "Ce te motivează să fii voluntar?",
+        "min": "Motivatia poate sa aiba minim {{value}} caractere",
+        "max": "Motivatia poate sa aiba maxim {{value}} caractere",
+        "helper": "Completează câmpul pentru a te înscrie."
+      }
+    },
+    "errors": {
+      "ACCESS_CODE_001": "Codul de access este invalid",
+      "ACCESS_REQUEST_001": "Exista deja un request de access pentru aceasta organizatie",
+      "ORG_001": "Organizatia nu a fost gasita",
+      "USER_001": "Utilizatotul nu a fost gasit",
+      "VOLUNTEER_002": "Utilizatorul este deja parte a organizatiei",
+      "USER_005": "Utilizatorul nu are datele de identificare completate"
+    },
+    "modal": {
+      "success": {
+        "heading": "Felicitari!",
+        "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Vei primi o notificare îndată ce aceștia vor răspunde.",
+        "primary_action_label": "Cauta alte organizatii",
+        "secondary_action_label": "Inchide"
+      }
+    }
+  },
+  "leave_ngo": {
+    "header": "Paraseste organizatia",
+    "paragraph": "Daca parasesti organizatia, aceasta iti va sterge datele. Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur /br qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ",
+    "action_btn": "Paraseste organizatia",
+    "modal": {
       "confirm_leave_organization": {
         "heading": "Esti sigur ca doresti sa parasesti organizatia?",
         "paragraph": "Daca parasesti organizatia, aceasta iti va sterge datele, inclusiv orele inregistrate și documentele de voluntar. Pentru mai multe detalii, poți contacta organizația.",
@@ -549,49 +594,7 @@
       }
     }
   },
-  "join_ngo": {
-    "registration_form": "Formular de înscriere",
-    "complete": "Completează datele de mai jos pentru a te putea înscrie în organizație.",
-    "form": {
-      "referral": {
-        "label": "De unde ai aflat de noi?",
-        "required": "Acest câmp este obligatoriu",
-        "social": "Rețelele de socializare",
-        "teo": "Din aplicația TEO",
-        "friend": "De la un coleg sau prieten",
-        "event": "Dintr-un eveniment",
-        "other": "Altă opţiune"
-      },
-      "motivation": {
-        "required": "Acest câmp este obligatoriu",
-        "label": "Ce te motivează să fii voluntar?",
-        "min": "Motivatia poate sa aiba minim {{value}} caractere",
-        "max": "Motivatia poate sa aiba maxim {{value}} caractere",
-        "helper": "Completează câmpul pentru a te înscrie."
-      }
-    },
-    "errors": {
-      "ACCESS_CODE_001": "Codul de access este invalid",
-      "ACCESS_REQUEST_001": "Exista deja un request de access pentru aceasta organizatie",
-      "ORG_001": "Organizatia nu a fost gasita",
-      "USER_001": "Utilizatotul nu a fost gasit",
-      "VOLUNTEER_002": "Utilizatorul este deja parte a organizatiei",
-      "USER_005": "Utilizatorul nu are datele de identificare completate"
-    },
-    "modal": {
-      "success": {
-        "heading": "Felicitari!",
-        "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Vei primi o notificare îndată ce aceștia vor răspunde.",
-        "primary_action_label": "Cauta alte organizatii",
-        "secondary_action_label": "Inchide"
-      }
-    }
-  },
-  "leave_ngo": {
-    "header": "Paraseste organizatia",
-    "paragraph": "Daca parasesti organizatia, aceasta iti va sterge datele. Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur /br qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ",
-    "action_btn": "Paraseste organizatia"
-  },
+
   "create_volunteer": {
     "heading": "Completează profil voluntar",
     "paragraph": "Completează profilul tău de voluntar pentru a putea fi contactat și începe să raportezi orele de voluntariat!",
