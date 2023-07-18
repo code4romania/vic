@@ -35,10 +35,10 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   console.log('OrganizationProfile');
   const { t } = useTranslation('organization_profile');
 
+  // theme
   const theme = useTheme();
-
+  // user profile context
   const { userProfile } = useAuth();
-
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points

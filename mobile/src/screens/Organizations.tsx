@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text, Avatar, useStyleSheet, StyleService } from '@ui-kitten/components';
 import { ImageStyle, View } from 'react-native';
@@ -10,6 +10,7 @@ import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useTranslation } from 'react-i18next';
 import PressableContainer from '../components/PressableContainer';
 import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
+import { useOrganization } from '../store/organization/organization.selector';
 
 interface OrganizationItemProps {
   item: IOrganizationListItemWithNumberOfVolunteers;
@@ -44,6 +45,9 @@ const Organizations = ({ navigation }: any) => {
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
   const [search, setSearch] = useState<string>('');
 
+  // organization state
+  const { organization } = useOrganization();
+
   // organizations query
   const {
     data: organizations,
@@ -53,6 +57,15 @@ const Organizations = ({ navigation }: any) => {
     hasNextPage,
     refetch: reloadOrganizations,
   } = useOrganizationsInfiniteQuery(orderDirection, search);
+
+  // This will be triggered every time the organization state changes
+  const refetchOrganizations = useCallback(() => {
+    reloadOrganizations();
+  }, [reloadOrganizations]);
+
+  useEffect(() => {
+    refetchOrganizations();
+  }, [organization, refetchOrganizations]);
 
   const onViewOrganizationProfileButtonPress = (organizationId: string) => {
     navigation.navigate('organization-profile', { organizationId });
