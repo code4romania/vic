@@ -3,7 +3,6 @@ import { Layout, TopNavigation, Icon, TopNavigationAction, Text } from '@ui-kitt
 import { ButtonType } from '../common/enums/button-type.enum';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import Button from '../components/Button';
-import { LoadingIndicator } from './PageLayout';
 
 interface ActionsOptionsProps {
   actionLabel: string;
@@ -66,15 +65,13 @@ export const ModalLayout = ({
         </KeyboardAvoidingView>
         {actionsOptions && (
           <View style={styles.bottomActionContainer}>
-            {actionsOptions.loading ? (
-              <LoadingIndicator />
-            ) : (
-              <Button
-                label={actionsOptions.actionLabel}
-                onPress={actionsOptions.onActionButtonClick}
-                status={actionsOptions.buttonType || 'primary'}
-              />
-            )}
+            <Button
+              label={actionsOptions.actionLabel}
+              onPress={actionsOptions.onActionButtonClick}
+              status={actionsOptions.buttonType || 'primary'}
+              loading={actionsOptions.loading}
+              disabled={actionsOptions.loading}
+            />
           </View>
         )}
       </Layout>
