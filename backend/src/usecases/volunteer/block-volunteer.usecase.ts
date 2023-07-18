@@ -6,6 +6,7 @@ import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneVolunteerUsecase } from './get-one-volunteer.usecase';
+import { SyncUserOrganizationsUsecase } from '../user/sync-user-organizations.usecase';
 
 @Injectable()
 export class BlockVolunteerUsecase implements IUseCaseService<IVolunteerModel> {
@@ -13,6 +14,7 @@ export class BlockVolunteerUsecase implements IUseCaseService<IVolunteerModel> {
     private readonly volunteerFacade: VolunteerFacade,
     private readonly getOneVolunteerUsecase: GetOneVolunteerUsecase,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly syncUseOrganizatinosUsecase: SyncUserOrganizationsUsecase,
   ) {}
 
   public async execute(
@@ -25,6 +27,11 @@ export class BlockVolunteerUsecase implements IUseCaseService<IVolunteerModel> {
       id: volunteerId,
       blockedById: admin.id,
     });
+
+    await this.syncUseOrganizatinosUsecase.execute(
+      volunteer.user.id,
+      volunteer.organization.id,
+    );
 
     // Track event
     this.actionsArchiveFacade.trackEvent(

@@ -133,6 +133,7 @@ import { GetVolunteersUserDataForNotificationsUsecase } from './volunteer/get-vo
 import { GetManyNewsUsecase } from './actions-archive/get-many-news.usecase';
 import { GetVolunteerOrganizationStatusUsecase } from './volunteer/get-volunteer-organization-status.usecase';
 import { GetOneRegularUserProfileUseCase } from './user/get-regule-user-profile.usecase';
+import { SyncUserOrganizationsUsecase } from './user/sync-user-organizations.usecase';
 
 @Module({
   imports: [
@@ -182,6 +183,7 @@ import { GetOneRegularUserProfileUseCase } from './user/get-regule-user-profile.
     UpdateUserPersonalDataUsecase,
     UpdateRegularUserUsecase,
     GetOneRegularUserProfileUseCase,
+    SyncUserOrganizationsUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -322,6 +324,7 @@ import { GetOneRegularUserProfileUseCase } from './user/get-regule-user-profile.
     UpdateUserPersonalDataUsecase,
     UpdateRegularUserUsecase,
     GetOneRegularUserProfileUseCase,
+    SyncUserOrganizationsUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,

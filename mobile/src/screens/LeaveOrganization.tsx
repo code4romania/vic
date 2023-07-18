@@ -11,10 +11,8 @@ import { renderBackdrop } from '../components/BottomSheet';
 import { useLeaveOrganizationMutation } from '../services/organization/organization.service';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { SvgXml } from 'react-native-svg';
 import Paragraph from '../components/Paragraph';
 import InlineLink from '../components/InlineLink';
-import successIcon from '../assets/svg/success-icon';
 import Button from '../components/Button';
 
 const LeaveOrganization = ({ navigation }: any) => {
@@ -26,7 +24,7 @@ const LeaveOrganization = ({ navigation }: any) => {
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points
-  const snapPoints = useMemo(() => ['30%', '55%'], []);
+  const snapPoints = useMemo(() => ['30%', '45%'], []);
 
   const { isLoading: isLeavingOrganization, mutate: leaveOrganization } =
     useLeaveOrganizationMutation();
@@ -91,9 +89,6 @@ const LeaveOrganization = ({ navigation }: any) => {
         snapPoints={snapPoints}
       >
         <View style={styles.bottomSheetContainer}>
-          <View style={styles.svgContainer}>
-            <SvgXml xml={successIcon} height={110} width={110} />
-          </View>
           <View style={styles.textContainer}>
             <Text category="h1">{`${t('modal.confirm_leave_organization.heading')}`}</Text>
             <Paragraph style={styles.bottomSheetParagraph}>{`${t(

@@ -13,6 +13,7 @@ import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import ArchiveVolunteerEvent from 'src/modules/notifications/events/join-ngo/archive-volunteer.event';
+import { SyncUserOrganizationsUsecase } from '../user/sync-user-organizations.usecase';
 
 @Injectable()
 export class ArchiveVolunteerUsecase
@@ -24,6 +25,7 @@ export class ArchiveVolunteerUsecase
     private readonly exceptionService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly eventEmitter: EventEmitter2,
+    private readonly syncUseOrganizatinosUsecase: SyncUserOrganizationsUsecase,
   ) {}
 
   public async execute(
@@ -42,6 +44,12 @@ export class ArchiveVolunteerUsecase
       id: volunteerId,
       archivedById: admin.id,
     });
+
+    // sync organization data
+    await this.syncUseOrganizatinosUsecase.execute(
+      volunteer.user.id,
+      volunteer.organization.id,
+    );
 
     // send notifications
     this.eventEmitter.emit(
