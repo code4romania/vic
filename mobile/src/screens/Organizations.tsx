@@ -40,7 +40,6 @@ const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
 };
 
 const Organizations = ({ navigation }: any) => {
-  console.log('Organizations');
   const { t } = useTranslation('organizations');
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
   const [search, setSearch] = useState<string>('');

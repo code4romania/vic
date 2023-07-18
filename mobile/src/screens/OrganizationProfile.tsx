@@ -32,9 +32,7 @@ import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
-  console.log('OrganizationProfile');
   const { t } = useTranslation('organization_profile');
-
   // theme
   const theme = useTheme();
   // user profile context

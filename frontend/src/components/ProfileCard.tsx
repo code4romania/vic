@@ -26,9 +26,11 @@ const ProfileCard = ({ name, logo, age, sex, location }: ProfileCardProps) => {
             className="logo w-32 lg:w-44 border-white border-4 shadow-blur text-transparent"
           />
           <small className="text-cool-gray-500">{i18n.t('general:years_old', { age })}</small>
-          <small className="text-cool-gray-500">
-            {i18n.t('general:sex', { sex_type: i18n.t(`general:${sex}`) })}
-          </small>
+          {sex && (
+            <small className="text-cool-gray-500">
+              {i18n.t('general:sex', { sex_type: i18n.t(`general:${sex}`) })}
+            </small>
+          )}
           <small className="text-cool-gray-500">{formatLocation(location)}</small>
         </div>
       </CardBody>
