@@ -124,7 +124,6 @@ const NotificationContextProvider = ({
 
   const unsubscribe = () => {
     try {
-      console.log('pushToken', pushToken);
       if (pushToken) {
         unregisterPushToken(pushToken);
       }

@@ -1,6 +1,7 @@
-import { Text } from '@ui-kitten/components';
+import { Icon, Text, useTheme } from '@ui-kitten/components';
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import ImageWithPreload from './ImageWithPreload';
 
 interface ProfileIntroProps {
   uri: string;
@@ -9,10 +10,23 @@ interface ProfileIntroProps {
 }
 
 const ProfileIntro = ({ uri, name, description }: ProfileIntroProps) => {
+  const theme = useTheme();
   return (
     <View style={styles.container}>
       <View style={styles.imageWrapper}>
-        <Image source={{ uri }} style={styles.profileImage} />
+        {uri ? (
+          <ImageWithPreload source={uri} styles={styles.profileImage} />
+        ) : (
+          <View
+            style={{
+              ...styles.profileImage,
+              borderColor: theme['cool-gray-200'],
+              backgroundColor: theme['cool-gray-100'],
+            }}
+          >
+            <Icon name="user" style={{ ...styles.icon, color: theme['cool-gray-500'] }} />
+          </View>
+        )}
       </View>
       <View style={styles.textContainer}>
         <Text category="h3" numberOfLines={3} ellipsizeMode="tail">
@@ -45,8 +59,14 @@ const styles = StyleSheet.create({
     borderRadius: 70,
     width: 138,
     height: 138,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   description: {
     lineHeight: 20,
+  },
+  icon: {
+    width: 48,
+    height: 48,
   },
 });

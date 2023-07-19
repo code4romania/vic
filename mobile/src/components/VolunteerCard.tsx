@@ -6,6 +6,7 @@ import { Pressable } from 'react-native';
 //SVG
 import chevronRightSVG from '../assets/svg/chevron-right';
 import { SvgXml } from 'react-native-svg';
+import SkeletonBar from './skeleton/skeleton-bar';
 
 interface VolunteerCardProps {
   title: string;
@@ -13,9 +14,10 @@ interface VolunteerCardProps {
   subtitle?: string;
   uri?: string;
   icon?: ReactNode;
+  loading?: boolean;
 }
 
-const VolunteerCard = ({ title, onPress, subtitle, uri, icon }: VolunteerCardProps) => {
+const VolunteerCard = ({ title, onPress, subtitle, uri, icon, loading }: VolunteerCardProps) => {
   const styles = useStyleSheet(themedStyles);
 
   return (
@@ -39,10 +41,16 @@ const VolunteerCard = ({ title, onPress, subtitle, uri, icon }: VolunteerCardPro
           <Text category="s1">{title}</Text>
           {subtitle && (
             <View style={styles.subtitleContainer}>
-              <View style={styles.yellowDot} />
-              <Text status="warning" category="s2">
-                {subtitle}
-              </Text>
+              {!loading ? (
+                <>
+                  <View style={styles.yellowDot} />
+                  <Text status="warning" category="s2">
+                    {subtitle}
+                  </Text>
+                </>
+              ) : (
+                <SkeletonBar />
+              )}
             </View>
           )}
         </View>

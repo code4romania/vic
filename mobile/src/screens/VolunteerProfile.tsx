@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import ProfileIntro from '../components/ProfileIntro';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import { formatDate } from '../common/utils/utils';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useVolunteerProfile } from '../services/volunteer/volunteer.service';
-import LoadingScreen from '../components/LoadingScreen';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { VOLUNTEER_PROFILE_ERRORS } from '../common/errors/entities/volunteer-profile';
 import MissingEntity from './MissingEntity';
 import { useTranslation } from 'react-i18next';
 import { useVolunteer } from '../store/volunteer/volunteer.selector';
 import { useAuth } from '../hooks/useAuth';
+import ScrollViewLayout from '../layouts/ScrollViewLayout';
+import VolunteerProfileSkeleton from '../components/skeleton/volunteer-profile.skeleton';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 const VolunteerProfile = ({ navigation }: any) => {
-  console.log('VolunteerProfile');
   const styles = useStyleSheet(themedStyles);
 
   const { t } = useTranslation('volunteer');
@@ -28,6 +29,21 @@ const VolunteerProfile = ({ navigation }: any) => {
   const { isLoading: isLoadingProfile, error: volunteerProfileError } = useVolunteerProfile(
     userProfile?.activeOrganization?.volunteerId as string,
   );
+
+  useEffect(() => {
+    if (
+      volunteerProfileError &&
+      (volunteerProfileError as any).response?.data.code_error !== 'VOLUNTEER_PROFILE_003'
+    ) {
+      navigation.goBack();
+      Toast.show({
+        text1: InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
+          (volunteerProfileError as any).response?.data.code_error,
+        ),
+        type: 'error',
+      });
+    }
+  }, [volunteerProfileError, navigation]);
 
   const onEditVolunteerProfileButtonPress = () => {
     navigation.navigate('edit-volunteer');
@@ -45,7 +61,7 @@ const VolunteerProfile = ({ navigation }: any) => {
     VOLUNTEER_PROFILE_ERRORS.VOLUNTEER_PROFILE_003
   ) {
     return (
-      <PageLayout title={t('profile')} onBackButtonPress={navigation.goBack}>
+      <PageLayout title={t('title')} onBackButtonPress={navigation.goBack}>
         <MissingEntity
           onActionBtnPress={onCreateVolunteerProfileButtonPress}
           heading={t('missing_profile.heading')}
@@ -56,25 +72,49 @@ const VolunteerProfile = ({ navigation }: any) => {
     );
   }
 
+  const buildProfileDescription = (): string => {
+    if (volunteer) {
+      let description = `${t('age', {
+        years: volunteer.user.age,
+      })}\n`;
+
+      if (volunteer.user.sex) {
+        description += `${
+          volunteer.user.sex
+            ? t('general:sex', {
+                sex_type: t(`general:${volunteer.user.sex}`),
+              })
+            : ''
+        }\n`;
+      }
+
+      if (volunteer.user.location) {
+        description += `${volunteer.user.location?.name || ''}${t('county', {
+          name: volunteer.user.location?.county.name,
+        })}`;
+      }
+
+      return description;
+    }
+
+    return '';
+  };
+
   return (
     <PageLayout
-      title={t('profile')}
+      title={t('title')}
       onBackButtonPress={navigation.goBack}
-      onEditButtonPress={volunteer && onEditVolunteerProfileButtonPress}
+      onEditButtonPress={
+        volunteer && !isLoadingProfile ? onEditVolunteerProfileButtonPress : undefined
+      }
     >
-      {isLoadingProfile && <LoadingScreen />}
-      {volunteer && userProfile?.activeOrganization && (
-        <ScrollView>
+      {isLoadingProfile && <VolunteerProfileSkeleton />}
+      {volunteer && userProfile?.activeOrganization && !isLoadingProfile && (
+        <ScrollViewLayout>
           <ProfileIntro
-            uri={userProfile?.activeOrganization?.logo || ''}
-            name={`${volunteer?.user.lastName} ${volunteer?.user.firstName}`}
-            description={`${t('age', {
-              years: volunteer.user.age,
-            })}\n${t('general:sex', {
-              sex_type: t(`general:${volunteer.user.sex}`),
-            })}\n${volunteer.user.location?.name || ''}${t('county', {
-              name: volunteer.user.location?.county.name,
-            })}`}
+            uri={userProfile?.profilePicture || ''}
+            name={`${userProfile.lastName} ${userProfile.firstName}`}
+            description={buildProfileDescription()}
           />
           <View style={styles.profileContent}>
             <OrganizationIdentity
@@ -98,14 +138,7 @@ const VolunteerProfile = ({ navigation }: any) => {
             />
             <ReadOnlyElement label={t('created_on')} value={formatDate(volunteer.createdOn)} />
           </View>
-        </ScrollView>
-      )}
-      {!!volunteerProfileError && (
-        <Text category="c1">
-          {InternalErrors.VOLUNTEER_PROFILE_ERRORS.getError(
-            (volunteerProfileError as any).response?.data.code_error,
-          )}
-        </Text>
+        </ScrollViewLayout>
       )}
     </PageLayout>
   );
@@ -115,7 +148,6 @@ export default VolunteerProfile;
 
 const themedStyles = StyleService.create({
   profileContent: {
-    marginTop: 32,
     gap: 16,
   },
 });

@@ -22,7 +22,7 @@ export class OrganizationErrors extends ErrorClass<ORGANIZATION_ERRORS> {
       [ORGANIZATION_ERRORS.VOLUNTEER_004]: i18n.t('volunteer:errors.VOLUNTEER_004'),
       [ORGANIZATION_ERRORS.USER_001]: i18n.t('user:errors.USER_001'),
       [ORGANIZATION_ERRORS.ORG_001]: i18n.t('join_ngo:errors.ORG_001'),
-      [ORGANIZATION_ERRORS.VOLUNTEER_005]: i18n.t('join_ngo:errors.VOLUNTEER_005'),
+      [ORGANIZATION_ERRORS.VOLUNTEER_005]: i18n.t('volunteer:errors.VOLUNTEER_005'),
     });
   }
 

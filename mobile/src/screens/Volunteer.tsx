@@ -80,22 +80,23 @@ const Volunteer = ({ navigation }: any) => {
           title={t('menu_items.activity_log.title')}
           icon={<SvgXml xml={volunteerClockSVG} />}
           onPress={onViewAtivityLogsButtonPress}
+          loading={isLoadingStats}
           subtitle={`${t('menu_items.activity_log.subtitle', { number: stats?.activityLogCount })}`}
         />
         <VolunteerCard
           title={t('general:documents')}
           icon={<SvgXml xml={volunteerDocumentSVG} />}
           onPress={onDocumentsButtonPress}
+          loading={isLoadingStats}
           subtitle={`${t('menu_items.documents.subtitle', { number: stats?.contractCount })}`}
         />
         <VolunteerCard
           title={t('menu_items.volunteer_profile.title')}
           icon={<SvgXml xml={volunteerUserSVG} />}
           onPress={onViewVolunteerProfilenButtonPress}
+          loading={isLoadingStats}
           subtitle={
-            !stats?.volunteerProfileId && !isLoadingStats
-              ? `${t('menu_items.volunteer_profile.subtitle')}`
-              : ''
+            !stats?.volunteerProfileId ? `${t('menu_items.volunteer_profile.subtitle')}` : ''
           }
         />
       </View>

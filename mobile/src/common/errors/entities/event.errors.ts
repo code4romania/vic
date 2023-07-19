@@ -17,7 +17,7 @@ export class EventErrors extends ErrorClass<EVENT_ERRORS> {
 
   private constructor() {
     super({
-      [EVENT_ERRORS.EVENT_001]: i18n.t('event:errors.EVENT_001'),
+      [EVENT_ERRORS.EVENT_001]: i18n.t('activity_log:errors.EVENT_001'),
       [EVENT_ERRORS.EVENT_RSVP_001]: i18n.t('event:errors.EVENT_RSVP_001'),
       [EVENT_ERRORS.EVENT_RSVP_002]: i18n.t('event:errors.EVENT_RSVP_002'),
       [EVENT_ERRORS.EVENT_RSVP_003]: i18n.t('event:errors.EVENT_RSVP_003'),

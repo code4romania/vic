@@ -367,8 +367,58 @@
       }
     }
   },
-  "privacy_policy": {
-    "title": "Politica de confidentialitate"
+  "volunteer": {
+    "title": "Profil voluntar",
+    "no_org_added": "Nu ai adăugat încă nicio organizație",
+    "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
+    "my_organizations": "Organizațiile mele",
+    "join_organization": "Alătură-te unei organizații",
+    "edit": "Editează profil voluntar",
+    "form": {
+      "email": {
+        "label": "Email de contact",
+        "required": "Email-ul este obligatoriu",
+        "pattern": "Formatul email-ului nu este valid"
+      },
+      "phone": {
+        "label": "Telefon",
+        "info": "Nu poti modifica acest câmp."
+      },
+      "active_since": {
+        "label": "Voluntar din",
+        "required": "Data este obligatorie"
+      }
+    },
+    "details": "Lorem ipsum. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident.",
+    "menu_items": {
+      "organization_profile": { "title": "Profil organizatie" },
+      "activity_log": {
+        "title": "Ore de voluntariat",
+        "subtitle": "{{number}} ore asteapta aprobare"
+      },
+      "documents": {
+        "title": "Documente",
+        "subtitle": "{{number}} documente asteapta raspuns"
+      },
+      "volunteer_profile": { "title": "Profil voluntar", "subtitle": "Profil incomplet" }
+    },
+    "age": "{{years}} de ani",
+    "county": ", jud {{name}}",
+    "information": "Informatii voluntar",
+    "email": "Email de contact",
+    "active_since": "Voluntar din",
+    "created_on": "Înregistrat în TEO din",
+    "errors": {
+      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creaza unul inainte!",
+      "VOLUNTEER_003": "Doar voluntarii activi pot fi arhivati",
+      "VOLUNTEER_004": "Doar voluntarii arhivati poti fi activati",
+      "VOLUNTEER_005": "Utilizatorul nu are profil de organizatie pentru acest ONG"
+    },
+    "missing_profile": {
+      "heading": "Nu ai creat încă un profil de utilizator",
+      "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique. ",
+      "action_btn": "Creaza profil"
+    }
   },
   "activity_logs": {
     "title": "Ore de voluntariat",
@@ -424,61 +474,6 @@
       "VOLUNTEER_001": "Voluntarul nu exista",
       "EVENT_001": "Evenimentul nu exista",
       "ACTIVITY_TYPE_001": "Typul activitatii nu exista"
-    }
-  },
-  "volunteer": {
-    "profile": "Profil voluntar",
-    "profile_picture": "Poza profil",
-    "change_picture": "Schimba poza",
-    "no_org_added": "Nu ai adăugat încă nicio organizație",
-    "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
-    "my_organizations": "Organizațiile mele",
-    "join_organization": "Alătură-te unei organizații",
-    "edit": "Editează profil voluntar",
-    "form": {
-      "email": {
-        "label": "Email de contact",
-        "required": "Email-ul este obligatoriu",
-        "pattern": "Formatul email-ului nu este valid"
-      },
-      "phone": {
-        "label": "Telefon",
-        "info": "Nu poti modifica acest câmp."
-      },
-      "active_since": {
-        "label": "Voluntar din",
-        "required": "Data este obligatorie"
-      }
-    },
-    "details": "Lorem ipsum. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident.",
-    "menu_items": {
-      "organization_profile": { "title": "Profil organizatie" },
-      "activity_log": {
-        "title": "Ore de voluntariat",
-        "subtitle": "{{number}} ore asteapta aprobare"
-      },
-      "documents": {
-        "title": "Documente",
-        "subtitle": "{{number}} documente asteapta raspuns"
-      },
-      "volunteer_profile": { "title": "Profil voluntar", "subtitle": "Profil incomplet" }
-    },
-    "age": "{{years}} de ani",
-    "county": ", jud {{name}}",
-    "information": "Informatii voluntar",
-    "email": "Email de contact",
-    "active_since": "Voluntar din",
-    "created_on": "Înregistrat în TEO din",
-    "errors": {
-      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creaza unul inainte!",
-      "VOLUNTEER_003": "Doar voluntarii activi pot fi arhivati",
-      "VOLUNTEER_004": "Doar voluntarii arhivati poti fi activati",
-      "VOLUNTEER_005": "Utilizatorul nu are profil de organizatie pentru acest ONG"
-    },
-    "missing_profile": {
-      "heading": "Nu ai creat încă un profil de utilizator",
-      "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique. ",
-      "action_btn": "Creaza profil"
     }
   },
   "event": {
