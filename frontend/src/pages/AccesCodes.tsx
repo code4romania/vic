@@ -105,24 +105,30 @@ const AccessCodes = ({ query, setQuery }: AccessCodesProps) => {
 
   // pagination
   const onRowsPerPageChange = (limit: number) => {
-    setQuery({
-      limit,
-      page: 1,
-    });
+    setQuery(
+      {
+        limit,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onChangePage = (page: number) => {
-    setQuery({ page });
+    setQuery({ page }, 'replaceIn');
   };
 
   const onSort = (column: TableColumn<IAccessCode>, direction: SortOrder) => {
-    setQuery({
-      orderBy: column.id as string,
-      orderDirection:
-        direction.toLocaleUpperCase() === OrderDirection.ASC
-          ? OrderDirection.ASC
-          : OrderDirection.DESC,
-    });
+    setQuery(
+      {
+        orderBy: column.id as string,
+        orderDirection:
+          direction.toLocaleUpperCase() === OrderDirection.ASC
+            ? OrderDirection.ASC
+            : OrderDirection.DESC,
+      },
+      'replaceIn',
+    );
   };
 
   // component actions

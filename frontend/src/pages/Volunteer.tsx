@@ -39,7 +39,7 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
   const { data: volunteer, isLoading, error } = useVolunteer(id as string);
 
   const onTabClick = (tab: VolunteerTabsOptions) => {
-    setQuery({ activeTab: tab }, 'push');
+    setQuery({ activeTab: tab }, 'replaceIn');
   };
 
   useEffect(() => {
