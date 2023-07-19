@@ -8,7 +8,6 @@ import { JSONStringifyError } from '../../common/utils/utils';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import * as SplashScreen from 'expo-splash-screen';
 import { getUserProfile } from '../../services/user/user.api';
-import { useUserProfile } from '../../store/profile/profile.selector';
 import useStore from '../../store/store';
 
 const COGNITO_ERRORS = {
@@ -24,7 +23,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   // meaning that the user has been validated by cognito but is not in our database
   const [isUserPending, setIsUserPending] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>('');
-  const { userProfile } = useUserProfile();
   const { setUserProfile } = useStore();
 
   useEffect(() => {
@@ -52,12 +50,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
     return unsubscribe;
   }, []);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setIsAuthenticated(userProfile !== null);
-    }
-  }, [userProfile]);
 
   const initProfile = async () => {
     try {
@@ -208,6 +200,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         // set profile in context with all the organizations
         setUserProfile(profile);
         resolve(profile);
+
+        if (!isAuthenticated) {
+          setIsAuthenticated(profile !== null);
+        }
       } catch (error: any) {
         // if the profile doesn't exists redirect to the the create account page
         console.log('[Profile]:', JSONStringifyError(error));
