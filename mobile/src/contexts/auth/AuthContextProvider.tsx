@@ -9,6 +9,7 @@ import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import * as SplashScreen from 'expo-splash-screen';
 import { getUserProfile } from '../../services/user/user.api';
 import useStore from '../../store/store';
+import { useUserProfile } from '../../store/profile/profile.selector';
 
 const COGNITO_ERRORS = {
   UserNotConfirmedException: 'UserNotConfirmedException',
@@ -24,6 +25,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isUserPending, setIsUserPending] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>('');
   const { setUserProfile } = useStore();
+  const { userProfile } = useUserProfile();
 
   useEffect(() => {
     console.log('[APP Init]');
@@ -50,6 +52,12 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setIsAuthenticated(userProfile !== null);
+    }
+  }, [userProfile]);
 
   const initProfile = async () => {
     try {
@@ -200,10 +208,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         // set profile in context with all the organizations
         setUserProfile(profile);
         resolve(profile);
-
-        if (!isAuthenticated) {
-          setIsAuthenticated(profile !== null);
-        }
       } catch (error: any) {
         // if the profile doesn't exists redirect to the the create account page
         console.log('[Profile]:', JSONStringifyError(error));

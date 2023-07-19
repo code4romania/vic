@@ -14,7 +14,6 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import Paragraph from '../components/Paragraph';
 import InlineLink from '../components/InlineLink';
 import Button from '../components/Button';
-import { useUserProfileQuery } from '../services/user/user.service';
 
 const LeaveOrganization = ({ navigation }: any) => {
   console.log('LeaveOrganization');
@@ -30,8 +29,6 @@ const LeaveOrganization = ({ navigation }: any) => {
   const { isLoading: isLeavingOrganization, mutate: leaveOrganization } =
     useLeaveOrganizationMutation();
 
-  const { refetch } = useUserProfileQuery();
-
   const { organization } = useOrganization();
 
   const onLeaveOrganizationConfirm = () => {
@@ -41,7 +38,6 @@ const LeaveOrganization = ({ navigation }: any) => {
         {
           onSuccess: () => {
             navigation.goBack();
-            refetch();
           },
           onError: (error: any) => {
             Toast.show({

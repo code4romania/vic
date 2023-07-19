@@ -15,24 +15,23 @@ import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import { useVolunteerStats } from '../services/volunteer/volunteer.service';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUserProfile } from '../store/profile/profile.selector';
-import { useUserProfileQuery } from '../services/user/user.service';
 
 const Volunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
 
-  const { refetch } = useUserProfileQuery();
+  const { userProfile } = useUserProfile();
+
+  const {
+    data: stats,
+    isFetching: isLoadingStats,
+    refetch,
+  } = useVolunteerStats(userProfile?.activeOrganization?.volunteerId as string);
 
   useFocusEffect(
     React.useCallback(() => {
       refetch();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
-  );
-
-  const { userProfile } = useUserProfile();
-
-  const { data: stats, isFetching: isLoadingStats } = useVolunteerStats(
-    userProfile?.activeOrganization?.volunteerId as string,
   );
 
   const onViewOrganizationButtonPress = () => {

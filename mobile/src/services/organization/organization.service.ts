@@ -9,6 +9,7 @@ import {
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import useStore from '../../store/store';
 import { IOrganization } from '../../common/interfaces/organization.interface';
+import { getUserProfile } from '../user/user.api';
 
 export const useOrganizationsInfiniteQuery = (orderDirection: OrderDirection, search: string) => {
   return useInfiniteQuery(
@@ -42,14 +43,19 @@ export const useSwitchOrganizationMutation = () => {
 };
 
 export const useLeaveOrganizationMutation = () => {
-  const { setOrganization } = useStore();
+  const { setOrganization, setUserProfile } = useStore();
   return useMutation(
     ['leave-organization'],
     ({ volunteerId }: { volunteerId: string }) => leaveOrganization(volunteerId),
     {
-      onSuccess: (data: IOrganization) => {
+      onSuccess: async (data: IOrganization) => {
         // 3. set your organization profile volunteer status to archived
         setOrganization(data);
+
+        try {
+          const profile = await getUserProfile();
+          setUserProfile(profile);
+        } catch (err) {}
       },
     },
   );
@@ -57,12 +63,26 @@ export const useLeaveOrganizationMutation = () => {
 
 export const useRejoinOrganizationMutation = () => {
   const { setOrganization } = useStore();
+  const { userProfile, setUserProfile } = useStore();
   return useMutation(
     ['rejoin-organization'],
     ({ volunteerId }: { volunteerId: string }) => rejoinOrganization(volunteerId),
     {
-      onSuccess: (data: IOrganization) => {
+      onSuccess: (data: IOrganization, { volunteerId }) => {
         setOrganization(data);
+        if (userProfile) {
+          const activeOrganization = {
+            id: data.id,
+            name: data.name,
+            logo: data.logo,
+            volunteerId,
+          };
+          setUserProfile({
+            ...userProfile,
+            activeOrganization,
+            myOrganizations: [...userProfile.myOrganizations, activeOrganization],
+          });
+        }
       },
     },
   );

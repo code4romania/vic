@@ -29,7 +29,6 @@ import upsIcon from '../assets/svg/ups-icon';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
 import { useUserProfile } from '../store/profile/profile.selector';
-import { useUserProfileQuery } from '../services/user/user.service';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   const { t } = useTranslation('organization_profile');
@@ -61,8 +60,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 
   const { isLoading: isRejoiningOrganization, mutate: rejoinOrganization } =
     useRejoinOrganizationMutation();
-
-  const { refetch } = useUserProfileQuery();
 
   useEffect(() => {
     if (getOrganizationError) {
@@ -136,9 +133,6 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       rejoinOrganization(
         { volunteerId: organization.volunteer.id },
         {
-          onSuccess: () => {
-            refetch();
-          },
           onError: (error: any) => {
             Toast.show({
               type: 'error',

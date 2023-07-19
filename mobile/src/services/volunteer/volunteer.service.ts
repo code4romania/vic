@@ -29,6 +29,7 @@ export interface ICreateVolunteerProfilePayload {
 export const useJoinByAccessCodeMutation = () => {
   const { organization } = useOrganization();
   const { setOrganization } = useStore();
+  const { userProfile, setUserProfile } = useStore();
   return useMutation(
     ['join-by-access-code'],
     (request: IJoinByAccessCodePayload) => joinByAccessCode(request),
@@ -39,6 +40,23 @@ export const useJoinByAccessCodeMutation = () => {
           organizationVolunteerStatus: OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER,
           volunteer: data,
         });
+
+        if (userProfile) {
+          setUserProfile({
+            ...userProfile,
+            activeOrganization: {
+              ...data.organization,
+              volunteerId: data.id,
+            },
+            myOrganizations: [
+              ...userProfile.myOrganizations,
+              {
+                ...data.organization,
+                volunteerId: data.id,
+              },
+            ],
+          });
+        }
       },
     },
   );

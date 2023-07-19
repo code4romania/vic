@@ -5,6 +5,7 @@ import { registerPushToken, unregisterPushToken } from '../../services/settings/
 import { NotificationContext } from './NotificationContext';
 import { useUserProfile } from '../../store/profile/profile.selector';
 import useStore from '../../store/store';
+import { useAuth } from '../../hooks/useAuth';
 
 export const EVENTS = {
   JOIN_NGO: {
@@ -42,6 +43,7 @@ const NotificationContextProvider = ({
   const responseListener = useRef<Notifications.Subscription>();
   const { userProfile } = useUserProfile();
   const { setUserProfile } = useStore();
+  const { isAuthenticated } = useAuth();
   const [isRegistered, setIsRegistered] = useState<boolean>(false);
 
   const initNotifications = async () => {
@@ -122,10 +124,10 @@ const NotificationContextProvider = ({
 
   useEffect(() => {
     const state = navigation.getRootState();
-    if (userProfile !== null && !isRegistered && state?.routeNames?.includes('home')) {
+    if (isAuthenticated && !isRegistered && state?.routeNames?.includes('home')) {
       init();
     }
-  }, [navigation, init, userProfile, isRegistered]);
+  }, [navigation, init, isAuthenticated, isRegistered]);
 
   const unsubscribe = () => {
     try {

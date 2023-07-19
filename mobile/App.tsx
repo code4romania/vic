@@ -73,13 +73,13 @@ export default () => {
         {/* Add marginTop for android devices as SafeAreaView is iOS Only */}
         <SafeAreaView style={styles.container}>
           <QueryClientProvider client={queryClient}>
-            <NotificationContextProvider navigation={navigationRef}>
-              <AuthContextProvider>
-                <NavigationContainer ref={navigationRef}>
+            <AuthContextProvider>
+              <NavigationContainer ref={navigationRef}>
+                <NotificationContextProvider navigation={navigationRef}>
                   <Router />
-                </NavigationContainer>
-              </AuthContextProvider>
-            </NotificationContextProvider>
+                </NotificationContextProvider>
+              </NavigationContainer>
+            </AuthContextProvider>
           </QueryClientProvider>
         </SafeAreaView>
         <ExpoStatusBar style="dark" />
