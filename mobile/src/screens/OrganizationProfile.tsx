@@ -13,7 +13,6 @@ import { formatDate } from '../common/utils/utils';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import EventItem from '../components/EventItem';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../hooks/useAuth';
 import { ButtonType } from '../common/enums/button-type.enum';
 import Disclaimer from '../components/Disclaimer';
 import { OrganizatinVolunteerStatus } from '../common/enums/organization-volunteer-status.enum';
@@ -29,13 +28,14 @@ import { SvgXml } from 'react-native-svg';
 import upsIcon from '../assets/svg/ups-icon';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   const { t } = useTranslation('organization_profile');
   // theme
   const theme = useTheme();
   // user profile context
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   const { organization } = useOrganization();
 

@@ -9,6 +9,21 @@ import { eventSlice } from './event/event.slice';
 import { IActivityLogCounters } from '../common/interfaces/activity-log-counters.interface';
 import { activityLogsSlice } from './activity-log/activity-log.slice';
 import { IActivityLog } from '../common/interfaces/activity-log.interface';
+import {
+  INotificationsSettings,
+  IUserPersonalData,
+  IUserProfile,
+} from '../common/interfaces/user-profile.interface';
+import { profileSlice } from './profile/profile.slice';
+import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
+
+interface UserProfileState {
+  userProfile: IUserProfile | null;
+  setUserProfile: (userProfile: IUserProfile | null) => void;
+  setActiveOrganization: (organization: IOrganizationVolunteer) => void;
+  setIdentityData: (personalData: IUserPersonalData) => void;
+  updateSettings: (newSettings: INotificationsSettings) => void;
+}
 
 interface OrganizationState {
   organization?: IOrganization;
@@ -44,13 +59,19 @@ interface BottomSheetState {
 }
 
 const useStore = create<
-  OrganizationState & BottomSheetState & VolunteerProfileState & EventState & ActivityLogState
+  OrganizationState &
+    BottomSheetState &
+    VolunteerProfileState &
+    EventState &
+    ActivityLogState &
+    UserProfileState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...bottomSheetSlice(set),
   ...volunteerSlice(set),
   ...eventSlice(set),
   ...activityLogsSlice(set),
+  ...profileSlice(set),
 }));
 
 export default useStore;

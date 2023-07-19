@@ -15,7 +15,7 @@ import ContractItem from '../components/ContractItem';
 import GrayIcon from '../components/GreyIcon';
 import SectionWrapper from '../components/SectionWrapper';
 import { useFocusEffect } from '@react-navigation/native';
-import { useAuth } from '../hooks/useAuth';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 interface ContractsProps {
   navigation: any;
@@ -159,7 +159,7 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
 const Documents = ({ navigation }: any) => {
   // translations
   const { t } = useTranslation('documents');
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   return (
     <PageLayout onBackButtonPress={navigation.goBack} title={t('general:documents')}>

@@ -22,7 +22,7 @@ import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import useStore from '../store/store';
-import { useAuth } from '../hooks/useAuth';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 const Contract = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -35,7 +35,7 @@ const Contract = ({ navigation, route }: any) => {
     null,
   );
   // active organization
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
   // bottom sheet state
   const { open: openBottomSheet, close: closeBottomSheet } = useStore();
   // contract request

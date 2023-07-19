@@ -7,14 +7,14 @@ import IconSvg from './IconSvg';
 import { useMonthlyStatistics } from '../services/statistics/statistics.service';
 import { useTranslation } from 'react-i18next';
 import { Text } from '@ui-kitten/components';
-import { useAuth } from '../hooks/useAuth';
 import { NewsType } from '../common/enums/news-type.enum';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 const Statistics = ({ navigation }: { navigation: any }) => {
   console.log('Statistics');
   const { t } = useTranslation('home');
 
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   const {
     isLoading: isFetchingStatistics,

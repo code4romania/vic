@@ -10,7 +10,6 @@ import { Sex } from '../common/enums/sex.enum';
 import FormDatePicker from '../components/FormDatePicker';
 import FormSelect from '../components/FormSelect';
 import { SexOptions } from '../common/constants/sex-options';
-import { useAuth } from '../hooks/useAuth';
 import { Platform, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Text, Button, Icon, useTheme } from '@ui-kitten/components';
@@ -25,6 +24,7 @@ import CitySelect from '../containers/CitySelect';
 import ImageWithPreload from '../components/ImageWithPreload';
 import { CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 export type AccountDataFormTypes = {
   firstName: string;
@@ -71,7 +71,7 @@ const AccountData = ({ navigation }: any) => {
   // theme
   const theme = useTheme();
   // user profile
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
   // selected state
   const [selectedProfilePicture, setSelectedProfilePicture] = useState<ImageAttachement | null>(
     null,

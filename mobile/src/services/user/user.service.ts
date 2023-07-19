@@ -4,11 +4,11 @@ import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.
 import { IdentityDataFormTypes } from '../../screens/IdentityData';
 import { AccountDataFormTypes } from '../../screens/AccountData';
 import { ImageAttachement } from '../../common/interfaces/image-attachement.interface';
-import { useAuth } from '../../hooks/useAuth';
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
+import useStore from '../../store/store';
 
 export const useCreateUserProfileMutation = () => {
-  const { setUserProfile } = useAuth();
+  const { setUserProfile } = useStore();
   return useMutation(
     ['user-profile'],
     (userProfile: ICreateUserPayload) => createUserProfile(userProfile),
@@ -21,7 +21,7 @@ export const useCreateUserProfileMutation = () => {
 };
 
 export const useUpdateUserPersonalDataMutation = () => {
-  const { setIdentityData } = useAuth();
+  const { setIdentityData } = useStore();
   return useMutation(
     ['personal-data'],
     (personalData: IdentityDataFormTypes) => updateUserPersonalData(personalData),
@@ -30,7 +30,7 @@ export const useUpdateUserPersonalDataMutation = () => {
 };
 
 export const useUpdateUserProfileMutation = () => {
-  const { setUserProfile, userProfile: oldProfile } = useAuth();
+  const { setUserProfile, userProfile: oldProfile } = useStore();
   return useMutation(
     ['update-profile'],
     ({

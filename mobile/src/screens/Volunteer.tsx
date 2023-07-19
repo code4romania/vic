@@ -15,6 +15,7 @@ import { useAuth } from '../hooks/useAuth';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import { useVolunteerStats } from '../services/volunteer/volunteer.service';
 import { useFocusEffect } from '@react-navigation/native';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 const Volunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
@@ -28,7 +29,7 @@ const Volunteer = ({ navigation }: any) => {
     }, []),
   );
 
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   const { data: stats, isFetching: isLoadingStats } = useVolunteerStats(
     userProfile?.activeOrganization?.volunteerId as string,

@@ -10,7 +10,7 @@ import { Control, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
-import { useAuth } from '../hooks/useAuth';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 export type ActivityLogFormTypes = {
   eventId: string;
@@ -44,7 +44,7 @@ export const activityLogSchema = yup
   .required();
 
 const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) => {
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   const { t } = useTranslation('activity_log');
 

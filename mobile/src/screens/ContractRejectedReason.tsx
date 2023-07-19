@@ -6,17 +6,17 @@ import LoadingScreen from '../components/LoadingScreen';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { useAuth } from '../hooks/useAuth';
 import { useContractQuery } from '../services/contract/contract.service';
 import Paragraph from '../components/Paragraph';
 import ReadOnlyElement from '../components/ReadOnlyElement';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 const ContractRejectedReason = ({ navigation, route }: any) => {
   console.log('ContractRejectedReason');
   // translations
   const { t } = useTranslation('documents');
 
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   const { contractId } = route.params;
   // contract request

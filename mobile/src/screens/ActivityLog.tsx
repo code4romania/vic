@@ -16,14 +16,14 @@ import { ButtonType } from '../common/enums/button-type.enum';
 import { Divider } from '@ui-kitten/components';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { useAuth } from '../hooks/useAuth';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 const ActivityLog = ({ navigation, route }: any) => {
   console.log('ActivityLog');
   // translations
   const { t } = useTranslation('activity_log');
 
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   const { activityLogId } = route.params;
   // activity log query

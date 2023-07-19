@@ -4,16 +4,12 @@ import { AuthContext, SignInOptions, SignUpOptions } from './AuthContext';
 import { Auth, Hub } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import i18n from '../../common/config/i18n';
-import {
-  INotificationsSettings,
-  IUserPersonalData,
-  IUserProfile,
-} from '../../common/interfaces/user-profile.interface';
 import { JSONStringifyError } from '../../common/utils/utils';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import * as SplashScreen from 'expo-splash-screen';
 import { getUserProfile } from '../../services/user/user.api';
-import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
+import { useUserProfile } from '../../store/profile/profile.selector';
+import useStore from '../../store/store';
 
 const COGNITO_ERRORS = {
   UserNotConfirmedException: 'UserNotConfirmedException',
@@ -27,8 +23,9 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   // meaning that the user has been validated by cognito but is not in our database
   const [isUserPending, setIsUserPending] = useState<boolean>(false);
-  const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
   const [userName, setUserName] = useState<string>('');
+  const { userProfile } = useUserProfile();
+  const { setUserProfile } = useStore();
 
   useEffect(() => {
     console.log('[APP Init]');
@@ -57,26 +54,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    setIsAuthenticated(userProfile !== null);
+    if (!isAuthenticated) {
+      setIsAuthenticated(userProfile !== null);
+    }
   }, [userProfile]);
-
-  const setActiveOrganization = (organization: IOrganizationVolunteer) => {
-    if (userProfile !== null) {
-      setUserProfile({ ...userProfile, activeOrganization: organization });
-    }
-  };
-
-  const setIdentityData = (userData: IUserPersonalData) => {
-    if (userProfile !== null) {
-      setUserProfile({ ...userProfile, userPersonalData: userData });
-    }
-  };
-
-  const updateSettings = (newSettings: INotificationsSettings) => {
-    if (userProfile !== null) {
-      setUserProfile({ ...userProfile, notificationsSettings: newSettings });
-    }
-  };
 
   const initProfile = async () => {
     try {
@@ -283,13 +264,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         signUp,
         confirmSignUp,
         resendConfirmationCode,
-        userProfile,
-        setUserProfile,
         loginWithSocial,
-        setActiveOrganization,
-        setIdentityData,
         changePassword,
-        updateSettings,
         forgotPassword,
         forgotPasswordSubmit,
         getProfile,

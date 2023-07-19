@@ -7,13 +7,14 @@ import PressableContainer from '../components/PressableContainer';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { NotificationsFrom } from '../common/enums/notifications-from.enum';
 import { NotificationBy } from '../common/enums/notification-by.enum';
-import { useAuth } from '../hooks/useAuth';
 import { useUpdateSettingsMutation } from '../services/settings/settings.service';
 import { ISettingsUpdatesPayload } from '../services/settings/settings.api';
 import { INotificationsSettings } from '../common/interfaces/user-profile.interface';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { renderBackdrop } from '../components/BottomSheet';
+import { useUserProfile } from '../store/profile/profile.selector';
+import useStore from '../store/store';
 
 interface NotificationSettingProps {
   title: string;
@@ -73,7 +74,8 @@ const NotificationsSettings = ({ navigation }: any) => {
   const styles = useStyleSheet(themedStyles);
   const { t } = useTranslation('notifications');
 
-  const { userProfile, updateSettings } = useAuth();
+  const { userProfile } = useUserProfile();
+  const { updateSettings } = useStore();
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points

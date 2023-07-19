@@ -9,7 +9,6 @@ import FormInput from '../components/FormInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormDatePicker from '../components/FormDatePicker';
 import { useUpdateUserPersonalDataMutation } from '../services/user/user.service';
-import { useAuth } from '../hooks/useAuth';
 import { IUserProfile } from '../common/interfaces/user-profile.interface';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -18,6 +17,7 @@ import * as Linking from 'expo-linking';
 import Constants from 'expo-constants';
 import Paragraph from '../components/Paragraph';
 import { REGEX } from '../common/constants/constants';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 export type IdentityDataFormTypes = {
   identityDocumentSeries: string;
@@ -52,7 +52,7 @@ const schema = yup.object({
 });
 
 const IdentityData = ({ navigation, route }: any) => {
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
   const { t } = useTranslation('identity_data');
 
   const {

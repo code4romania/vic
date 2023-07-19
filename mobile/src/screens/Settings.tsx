@@ -17,6 +17,7 @@ import * as Linking from 'expo-linking';
 import Constants from 'expo-constants';
 import ImageWithPreload from '../components/ImageWithPreload';
 import { NotificationContext } from '../contexts/notification/NotificationContext';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -56,7 +57,8 @@ const Settings = ({ navigation }: any) => {
   // theme
   const theme = useTheme();
   // auth
-  const { logout, userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
+  const { logout } = useAuth();
   const { unsubscribe } = useContext(NotificationContext);
 
   const handleItemPress = (route: string) => {

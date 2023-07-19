@@ -11,7 +11,8 @@ import { LiteralUnion } from '@ui-kitten/components/devsupport';
 import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
 import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../hooks/useAuth';
+import useStore from '../store/store';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 const AccessoryImage = withStyles(
   ({ logo, eva }: { logo?: string; eva?: any }) => {
@@ -88,7 +89,8 @@ const DrawerContent = withStyles(
   ({ navigation, eva }: any) => {
     const { t } = useTranslation('volunteer');
 
-    const { userProfile, setActiveOrganization, getProfile } = useAuth();
+    const { setActiveOrganization } = useStore();
+    const { userProfile } = useUserProfile();
     // switch organization
     const { mutate: switchOrganization } = useSwitchOrganizationMutation();
 
@@ -105,14 +107,7 @@ const DrawerContent = withStyles(
     const onOrganizationChange = (organization: IOrganizationVolunteer) => {
       setActiveOrganization(organization);
       navigation.closeDrawer();
-      switchOrganization(
-        { organizationId: organization.id },
-        {
-          onSuccess: () => {
-            getProfile();
-          },
-        },
-      );
+      switchOrganization({ organizationId: organization.id });
     };
 
     const onJoinNewOrganization = () => {

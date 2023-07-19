@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import ModalLayout from '../layouts/ModalLayout';
-import { useAuth } from '../hooks/useAuth';
 import { useCreateVolunteerProfileMutation } from '../services/volunteer/volunteer.service';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
@@ -8,10 +7,11 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import VolunteerForm, { VolunteerFormTypes, volunteerSchema } from '../components/VolunteerForm';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 const CreateVolunteer = ({ navigation, route }: any) => {
   // get user profile data
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
   // get volunteer id
   const { volunteerId } = route.params;
   // translations

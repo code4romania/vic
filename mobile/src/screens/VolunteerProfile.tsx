@@ -12,17 +12,17 @@ import { VOLUNTEER_PROFILE_ERRORS } from '../common/errors/entities/volunteer-pr
 import MissingEntity from './MissingEntity';
 import { useTranslation } from 'react-i18next';
 import { useVolunteer } from '../store/volunteer/volunteer.selector';
-import { useAuth } from '../hooks/useAuth';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import VolunteerProfileSkeleton from '../components/skeleton/volunteer-profile.skeleton';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 const VolunteerProfile = ({ navigation }: any) => {
   const styles = useStyleSheet(themedStyles);
 
   const { t } = useTranslation('volunteer');
 
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   const { volunteer } = useVolunteer();
 

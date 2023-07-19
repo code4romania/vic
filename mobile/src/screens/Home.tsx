@@ -8,14 +8,14 @@ import Paragraph from '../components/Paragraph';
 import Button from '../components/Button';
 import WaveSvg from '../assets/svg/wave';
 import IconSvg from '../components/IconSvg';
-import { useAuth } from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 const Home = ({ navigation }: any) => {
   const { t } = useTranslation('home');
   const theme = useTheme();
 
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   const onAddVolunteeringHours = () => {
     navigation.navigate('activity-logs');

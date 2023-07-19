@@ -112,7 +112,7 @@ export class OrganizationRepositoryService
           userId,
         },
       )
-      .where('volunteer.status IN (:...statuses) OR volunteer.id IS NULL', {
+      .where('(volunteer.status IN (:...statuses) OR volunteer.id IS NULL)', {
         statuses: [VolunteerStatus.ACTIVE, VolunteerStatus.ARCHIVED],
       })
       .orderBy(

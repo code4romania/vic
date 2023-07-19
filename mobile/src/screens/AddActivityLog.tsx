@@ -10,14 +10,14 @@ import ActivityLogForm, {
 } from '../components/ActivityLogForm';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { useAuth } from '../hooks/useAuth';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 const AddActivityLog = ({ navigation }: any) => {
   console.log('AddActivityLog');
   // translations
   const { t } = useTranslation('activity_log');
   // the active organization
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
   // log hours mutation
   const { mutate: logHours, isLoading: isLoggingHours } = useCreateActivityLogMutation();
 
@@ -28,7 +28,7 @@ const AddActivityLog = ({ navigation }: any) => {
   } = useForm<ActivityLogFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(activityLogSchema),
+    resolver: yupResolver(activityLogSchema) as any,
   });
 
   const onSubmit = (activityLog: ActivityLogFormTypes) => {

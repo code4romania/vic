@@ -3,7 +3,8 @@ import { registerForPushNotificationsAsync } from '../../common/utils/notificati
 import * as Notifications from 'expo-notifications';
 import { registerPushToken, unregisterPushToken } from '../../services/settings/settings.api';
 import { NotificationContext } from './NotificationContext';
-import { useAuth } from '../../hooks/useAuth';
+import { useUserProfile } from '../../store/profile/profile.selector';
+import useStore from '../../store/store';
 
 export const EVENTS = {
   JOIN_NGO: {
@@ -39,7 +40,9 @@ const NotificationContextProvider = ({
   // notifications
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
-  const { isAuthenticated, userProfile, setUserProfile } = useAuth();
+  const { userProfile } = useUserProfile();
+  const { setUserProfile } = useStore();
+  const [isRegistered, setIsRegistered] = useState<boolean>(false);
 
   const initNotifications = async () => {
     const token = await registerForPushNotificationsAsync();
@@ -48,6 +51,8 @@ const NotificationContextProvider = ({
     if (token) {
       await registerPushToken(token);
     }
+
+    setIsRegistered(true);
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(
       (response: any) => {
@@ -117,10 +122,10 @@ const NotificationContextProvider = ({
 
   useEffect(() => {
     const state = navigation.getRootState();
-    if (isAuthenticated && state?.routeNames?.includes('home')) {
+    if (userProfile !== null && !isRegistered && state?.routeNames?.includes('home')) {
       init();
     }
-  }, [isAuthenticated, navigation, init]);
+  }, [navigation, init, userProfile, isRegistered]);
 
   const unsubscribe = () => {
     try {

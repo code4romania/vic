@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createContext } from 'react';
-import {
-  INotificationsSettings,
-  IUserPersonalData,
-  IUserProfile,
-} from '../../common/interfaces/user-profile.interface';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
-import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
 
 export interface SignUpOptions {
   username: string;
@@ -19,7 +13,6 @@ export interface SignInOptions {
   password: string;
 }
 interface AuthContextProps {
-  userProfile: IUserProfile | null;
   isAuthenticated: boolean;
   isUserPending: boolean;
   login: (credentials: SignInOptions) => void;
@@ -28,11 +21,7 @@ interface AuthContextProps {
   confirmSignUp: (code: string) => void;
   resendConfirmationCode: (username: string) => void;
   logout: () => void;
-  setUserProfile: (user: any) => void;
-  setActiveOrganization: (organization: IOrganizationVolunteer) => void;
-  setIdentityData: (personalData: IUserPersonalData) => void;
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
-  updateSettings: (settings: INotificationsSettings) => void;
   forgotPassword: (username: string) => Promise<void>;
   forgotPasswordSubmit: (code: string, new_password: string) => Promise<void>;
   getProfile: () => Promise<unknown>;
@@ -41,18 +30,13 @@ interface AuthContextProps {
 export const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
   isUserPending: false,
-  userProfile: null,
   login: () => {},
   loginWithSocial: () => Promise.resolve(),
   signUp: (options: SignUpOptions) => {},
   confirmSignUp: (code: string) => {},
   resendConfirmationCode: (username: string) => {},
   logout: () => {},
-  setUserProfile: (user: any) => {},
-  setActiveOrganization: (organization: IOrganizationVolunteer) => {},
-  setIdentityData: (personalData: IUserPersonalData) => {},
   changePassword: (oldPassword: string, newPassword: string) => Promise.resolve(),
-  updateSettings: (settings: INotificationsSettings) => {},
   forgotPassword: (username: string) => Promise.resolve(),
   forgotPasswordSubmit: (code: string, new_password: string) => Promise.resolve(),
   getProfile: () => Promise.resolve(),

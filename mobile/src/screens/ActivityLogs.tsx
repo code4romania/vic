@@ -19,7 +19,7 @@ import LogItem from '../components/LogItem';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { ISelectItem } from '../components/FormSelect';
 import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
-import { useAuth } from '../hooks/useAuth';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 export const ActivityLogsTabs: ISelectItem[] = [
   { key: ActivityLogStatus.PENDING, label: i18n.t('activity_logs:tabs.pending') },
@@ -41,7 +41,7 @@ const ActivityLogs = ({ navigation }: any) => {
   // counters state
   const { approvedHours, rejectedHours, pendingHours } = useActivityLogs();
   // user profile
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   // events query
   const {

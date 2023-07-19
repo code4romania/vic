@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import PressableContainer from '../components/PressableContainer';
 import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
 import { useOrganization } from '../store/organization/organization.selector';
-import { useAuth } from '../hooks/useAuth';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 interface OrganizationItemProps {
   item: IOrganizationListItemWithNumberOfVolunteers;
@@ -49,7 +49,7 @@ const Organizations = ({ navigation }: any) => {
   const { organization } = useOrganization();
 
   // user profile
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   // organizations query
   const {

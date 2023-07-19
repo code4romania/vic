@@ -6,12 +6,12 @@ import FormInput from './FormInput';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
-import { useAuth } from '../hooks/useAuth';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import { IOrganizationListItem } from '../common/interfaces/organization-list-item.interface';
 import { OrganizationStructureType } from '../common/enums/organization-structure-type.enum';
 import FormDatePicker from './FormDatePicker';
 import { Control, FieldErrors } from 'react-hook-form';
+import { useUserProfile } from '../store/profile/profile.selector';
 
 export type VolunteerFormTypes = {
   email: string;
@@ -22,15 +22,13 @@ export type VolunteerFormTypes = {
   activeSince: Date;
 };
 
-export const volunteerSchema = yup
-  .object({
-    email: yup
-      .string()
-      .email(`${i18n.t('login:form.email.pattern')}`)
-      .required(`${i18n.t('login:form.email.required')}`),
-    phone: yup.string().required(`${i18n.t('register:create_account.form.phone.required')}`),
-  })
-  .required();
+export const volunteerSchema = yup.object({
+  email: yup
+    .string()
+    .email(`${i18n.t('login:form.email.pattern')}`)
+    .required(`${i18n.t('login:form.email.required')}`),
+  phone: yup.string().required(`${i18n.t('register:create_account.form.phone.required')}`),
+});
 
 interface VolunteerFormProps {
   paragraph?: string;
@@ -40,7 +38,7 @@ interface VolunteerFormProps {
 }
 
 const VolunteerForm = ({ paragraph, isLoading, control, errors }: VolunteerFormProps) => {
-  const { userProfile } = useAuth();
+  const { userProfile } = useUserProfile();
 
   const { t } = useTranslation('create_volunteer');
 
