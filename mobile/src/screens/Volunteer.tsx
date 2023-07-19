@@ -11,20 +11,20 @@ import volunteerClockSVG from '../assets/svg/volunteer-clock';
 import volunteerDocumentSVG from '../assets/svg/doc';
 import TopNavigationCard from '../components/TopNavigationCard';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../hooks/useAuth';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import { useVolunteerStats } from '../services/volunteer/volunteer.service';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { useUserProfileQuery } from '../services/user/user.service';
 
 const Volunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
 
-  const { getProfile } = useAuth();
+  const { refetch } = useUserProfileQuery();
 
   useFocusEffect(
     React.useCallback(() => {
-      getProfile();
+      refetch();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );

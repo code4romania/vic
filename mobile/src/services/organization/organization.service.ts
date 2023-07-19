@@ -9,7 +9,6 @@ import {
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import useStore from '../../store/store';
 import { IOrganization } from '../../common/interfaces/organization.interface';
-import { useAuth } from '../../hooks/useAuth';
 
 export const useOrganizationsInfiniteQuery = (orderDirection: OrderDirection, search: string) => {
   return useInfiniteQuery(
@@ -43,15 +42,12 @@ export const useSwitchOrganizationMutation = () => {
 };
 
 export const useLeaveOrganizationMutation = () => {
-  const { getProfile } = useAuth();
   const { setOrganization } = useStore();
   return useMutation(
     ['leave-organization'],
     ({ volunteerId }: { volunteerId: string }) => leaveOrganization(volunteerId),
     {
       onSuccess: (data: IOrganization) => {
-        // 1. remove it from your organization profile
-        getProfile();
         // 3. set your organization profile volunteer status to archived
         setOrganization(data);
       },
@@ -60,15 +56,12 @@ export const useLeaveOrganizationMutation = () => {
 };
 
 export const useRejoinOrganizationMutation = () => {
-  const { getProfile } = useAuth();
   const { setOrganization } = useStore();
   return useMutation(
     ['rejoin-organization'],
     ({ volunteerId }: { volunteerId: string }) => rejoinOrganization(volunteerId),
     {
       onSuccess: (data: IOrganization) => {
-        getProfile();
-        // 3. set your organization profile volunteer status to active
         setOrganization(data);
       },
     },

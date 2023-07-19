@@ -24,7 +24,6 @@ interface AuthContextProps {
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
   forgotPassword: (username: string) => Promise<void>;
   forgotPasswordSubmit: (code: string, new_password: string) => Promise<void>;
-  getProfile: () => Promise<unknown>;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -39,5 +38,4 @@ export const AuthContext = createContext<AuthContextProps>({
   changePassword: (oldPassword: string, newPassword: string) => Promise.resolve(),
   forgotPassword: (username: string) => Promise.resolve(),
   forgotPasswordSubmit: (code: string, new_password: string) => Promise.resolve(),
-  getProfile: () => Promise.resolve(),
 });

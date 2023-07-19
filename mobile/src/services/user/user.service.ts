@@ -1,5 +1,10 @@
-import { useMutation } from 'react-query';
-import { createUserProfile, updateUserPersonalData, updateUserProfile } from './user.api';
+import { useMutation, useQuery } from 'react-query';
+import {
+  createUserProfile,
+  getUserProfile,
+  updateUserPersonalData,
+  updateUserProfile,
+} from './user.api';
 import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.interface';
 import { IdentityDataFormTypes } from '../../screens/IdentityData';
 import { AccountDataFormTypes } from '../../screens/AccountData';
@@ -18,6 +23,16 @@ export const useCreateUserProfileMutation = () => {
       },
     },
   );
+};
+
+export const useUserProfileQuery = (isFetching?: boolean) => {
+  const { setUserProfile } = useStore();
+  return useQuery(['user-profile'], () => getUserProfile(), {
+    onSuccess: (newProfile: IUserProfile) => {
+      setUserProfile(newProfile);
+    },
+    enabled: isFetching,
+  });
 };
 
 export const useUpdateUserPersonalDataMutation = () => {

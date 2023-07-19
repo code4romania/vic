@@ -8,6 +8,7 @@ import VolunteerForm, { VolunteerFormTypes, volunteerSchema } from '../component
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { useUserProfileQuery } from '../services/user/user.service';
 
 const CreateVolunteer = ({ navigation, route }: any) => {
   // get user profile data
@@ -31,6 +32,8 @@ const CreateVolunteer = ({ navigation, route }: any) => {
 
   const { isLoading: isCreatingProfile, mutate: createVolunteerProfile } =
     useCreateVolunteerProfileMutation();
+
+  const { refetch } = useUserProfileQuery();
 
   useEffect(() => {
     if (userProfile) {
@@ -58,7 +61,10 @@ const CreateVolunteer = ({ navigation, route }: any) => {
             )}`,
           });
         },
-        onSuccess: () => navigation.navigate('volunteer'),
+        onSuccess: () => {
+          navigation.navigate('volunteer');
+          refetch();
+        },
       },
     );
   };

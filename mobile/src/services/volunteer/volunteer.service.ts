@@ -8,7 +8,6 @@ import {
 } from './volunteer.api';
 import useStore from '../../store/store';
 import { IVolunteer } from '../../common/interfaces/volunteer.interface';
-import { useAuth } from '../../hooks/useAuth';
 import { useOrganization } from '../../store/organization/organization.selector';
 import { OrganizatinVolunteerStatus } from '../../common/enums/organization-volunteer-status.enum';
 import { IOrganization } from '../../common/interfaces/organization.interface';
@@ -28,7 +27,6 @@ export interface ICreateVolunteerProfilePayload {
 }
 
 export const useJoinByAccessCodeMutation = () => {
-  const { getProfile } = useAuth();
   const { organization } = useOrganization();
   const { setOrganization } = useStore();
   return useMutation(
@@ -36,8 +34,6 @@ export const useJoinByAccessCodeMutation = () => {
     (request: IJoinByAccessCodePayload) => joinByAccessCode(request),
     {
       onSuccess: (data: IVolunteer) => {
-        // update organization state in the previous screen
-        getProfile();
         setOrganization({
           ...(organization as IOrganization),
           organizationVolunteerStatus: OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER,
@@ -64,16 +60,10 @@ export const useVolunteerStats = (volunteerId: string) => {
 };
 
 export const useCreateVolunteerProfileMutation = () => {
-  const { getProfile } = useAuth();
   return useMutation(
     ['create-volunteer-profile'],
     ({ profile, volunteerId }: { profile: ICreateVolunteerProfilePayload; volunteerId: string }) =>
       createVolunteerProfile(volunteerId, profile),
-    {
-      onSuccess: () => {
-        getProfile();
-      },
-    },
   );
 };
 

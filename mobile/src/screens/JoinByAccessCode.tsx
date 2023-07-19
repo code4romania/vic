@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import useStore from '../store/store';
 import { useOrganization } from '../store/organization/organization.selector';
 import Paragraph from '../components/Paragraph';
+import { useUserProfileQuery } from '../services/user/user.service';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -45,6 +46,9 @@ const JoinByAccessCode = ({ navigation }: any) => {
     isLoading: isJoiningByAccessCode,
     mutate: joinOrganization,
   } = useJoinByAccessCodeMutation();
+
+  const { refetch } = useUserProfileQuery();
+
   // bottom sheet and active organization state
   const { open: openBottomSheet, close: closeBottomSheet } = useStore();
 
@@ -69,6 +73,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
     joinOrganization(joinPayload, {
       onSuccess: () => {
         // show modal which will eventually become bottom sheet
+        refetch();
         openBottomSheet();
       },
       onError: (error: any) => {

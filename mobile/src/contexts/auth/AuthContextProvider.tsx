@@ -264,7 +264,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         changePassword,
         forgotPassword,
         forgotPasswordSubmit,
-        getProfile,
       }}
     >
       {children}
