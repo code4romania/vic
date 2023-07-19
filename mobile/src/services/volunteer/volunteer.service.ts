@@ -64,10 +64,16 @@ export const useVolunteerStats = (volunteerId: string) => {
 };
 
 export const useCreateVolunteerProfileMutation = () => {
+  const { getProfile } = useAuth();
   return useMutation(
     ['create-volunteer-profile'],
     ({ profile, volunteerId }: { profile: ICreateVolunteerProfilePayload; volunteerId: string }) =>
       createVolunteerProfile(volunteerId, profile),
+    {
+      onSuccess: () => {
+        getProfile();
+      },
+    },
   );
 };
 

@@ -420,6 +420,34 @@
       "action_btn": "Creaza profil"
     }
   },
+  "create_volunteer": {
+    "heading": "Completează profil voluntar",
+    "paragraph": "Completează profilul tău de voluntar pentru a putea fi contactat și începe să raportezi orele de voluntariat!",
+    "form": {
+      "email": {
+        "label": "E-mail de contact",
+        "required": "Email-ul este obligatoriu",
+        "placeholder": "Introduceți emailul",
+        "pattern": "Formatul email-ului nu este valid"
+      },
+      "checkbox": {
+        "label": "Același ca email cont TEO"
+      },
+      "branch": {
+        "label": "FIlială sau sucursală"
+      },
+      "active_since": {
+        "label": "Voluntar din"
+      },
+      "submit": {
+        "errors": {
+          "VOLUNTEER_001": "Voluntarul nu a fost gasit!",
+          "VOLUNTEER_PROFILE_001": "Voluntarul are deja un profil!",
+          "ORGANIZATION_STRUCTURE_001": "Structura organizationala nu exista"
+        }
+      }
+    }
+  },
   "activity_logs": {
     "title": "Ore de voluntariat",
     "tabs": {
@@ -590,35 +618,6 @@
     }
   },
 
-  "create_volunteer": {
-    "heading": "Completează profil voluntar",
-    "paragraph": "Completează profilul tău de voluntar pentru a putea fi contactat și începe să raportezi orele de voluntariat!",
-    "form": {
-      "name": { "label": "Nume complet" },
-      "email": {
-        "label": "E-mail de contact",
-        "required": "Email-ul este obligatoriu",
-        "placeholder": "Introduceți emailul",
-        "pattern": "Formatul email-ului nu este valid"
-      },
-      "checkbox": {
-        "label": "Același ca email cont TEO"
-      },
-      "branch": {
-        "label": "FIlială sau sucursală"
-      },
-      "active_since": {
-        "label": "Voluntar din"
-      },
-      "submit": {
-        "errors": {
-          "VOLUNTEER_001": "Voluntarul nu a fost gasit!",
-          "VOLUNTEER_PROFILE_001": "Voluntarul are deja un profil!",
-          "ORGANIZATION_STRUCTURE_001": "Structura organizationala nu exista"
-        }
-      }
-    }
-  },
   "documents": {
     "description": "Lorem ipsum. Gestioneaza contractele tale din sectiunile de mai jos. Descarca contracte vechi, sau semneaza contractele trimise de organizatie.",
     "sections": {

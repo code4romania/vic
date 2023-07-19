@@ -197,8 +197,8 @@ export class OrganizationRepositoryService
       },
     });
 
-    return organizationEntities.map(
-      OrganizationVolunteerTransformer.fromEntity,
+    return organizationEntities.map((entity) =>
+      OrganizationVolunteerTransformer.fromEntity(entity, userId),
     );
   }
 

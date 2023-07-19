@@ -26,7 +26,7 @@ const CreateVolunteer = ({ navigation, route }: any) => {
   } = useForm<VolunteerFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(volunteerSchema),
+    resolver: yupResolver(volunteerSchema as any),
   });
 
   const { isLoading: isCreatingProfile, mutate: createVolunteerProfile } =

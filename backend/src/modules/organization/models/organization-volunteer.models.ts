@@ -8,6 +8,7 @@ export interface IOrganizationVolunteerModel extends IOrganizationModel {
 export class OrganizationVolunteerTransformer {
   static fromEntity(
     organizationEntity: OrganizationEntity,
+    userId: string,
   ): IOrganizationVolunteerModel {
     if (!organizationEntity) return null;
     return {
@@ -19,7 +20,9 @@ export class OrganizationVolunteerTransformer {
       activityArea: organizationEntity.activityArea,
       logo: organizationEntity.logo,
       description: organizationEntity.description,
-      volunteerId: organizationEntity.volunteers[0].id,
+      volunteerId: organizationEntity.volunteers.find(
+        (v) => v.userId === userId,
+      )?.id,
     };
   }
 }

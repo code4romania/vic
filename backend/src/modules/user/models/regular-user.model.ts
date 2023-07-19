@@ -82,6 +82,7 @@ export class RegularUserTransformer {
       ),
       activeOrganization: OrganizationVolunteerTransformer.fromEntity(
         entity.activeOrganization,
+        entity.id,
       ),
       notificationsSettings: NotificationsSettingsTransformer.fromEntity(
         entity.notificationsSettings,
