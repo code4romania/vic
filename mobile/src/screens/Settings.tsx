@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import bell from '../assets/svg/bell';
 import identification from '../assets/svg/identification';
 import information from '../assets/svg/information';
@@ -16,6 +16,7 @@ import PressableContainer from '../components/PressableContainer';
 import * as Linking from 'expo-linking';
 import Constants from 'expo-constants';
 import ImageWithPreload from '../components/ImageWithPreload';
+import { NotificationContext } from '../contexts/notification/NotificationContext';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -56,6 +57,7 @@ const Settings = ({ navigation }: any) => {
   const theme = useTheme();
   // auth
   const { logout, userProfile } = useAuth();
+  const { unsubscribe } = useContext(NotificationContext);
 
   const handleItemPress = (route: string) => {
     if (route === SETTINGS_ROUTES.INFORMATION) {
@@ -72,6 +74,9 @@ const Settings = ({ navigation }: any) => {
   };
 
   const onLogout = () => {
+    // unregister token
+    unsubscribe();
+    // logout
     logout();
   };
 

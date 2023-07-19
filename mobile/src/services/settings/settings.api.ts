@@ -18,3 +18,7 @@ export const updateSettings = async (
 export const registerPushToken = async (token: string): Promise<void> => {
   return API.post('/mobile/push-notifications/register', { token }).then((res) => res.data);
 };
+
+export const unregisterPushToken = async (token: string): Promise<void> => {
+  return API.patch('/mobile/push-notifications/unregister', { token }).then((res) => res.data);
+};

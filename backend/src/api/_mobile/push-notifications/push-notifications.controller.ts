@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
 import { RegisterPushTokenDto } from './dto/register-push-token.dto';
@@ -31,7 +31,7 @@ export class MobilePushNotificationsController {
   }
 
   @ApiBody({ type: UnregisterPushTokenDto })
-  @Delete('unregister')
+  @Patch('unregister')
   async delete(@Body() { token }: UnregisterPushTokenDto): Promise<void> {
     return this.unregisterDevicePushTokenUseCase.execute(token);
   }
