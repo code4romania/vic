@@ -32,7 +32,7 @@ import { GetOneEventUseCase } from 'src/usecases/event/get-one-event.usecase';
 import { PublishEventUseCase } from 'src/usecases/event/publish-event.usecase';
 import { GetManyEventRSVPUseCase } from 'src/usecases/event/RSVP/get-many-rsvp.usecase';
 import { UpdateEventUseCase } from 'src/usecases/event/update-event.usecase';
-import { CreateEventDto } from './dto/create-event.dto';
+import { CreateEventDto, PublicEventType } from './dto/create-event.dto';
 import { GetPaginatedEventRSVPsDto } from './dto/get-paginated-event-rsvp.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventGuard } from './guards/event.guard';
@@ -112,6 +112,7 @@ export class EventController {
       {
         ...createEventDto,
         organizationId: adminUser.organizationId,
+        isPublic: createEventDto.isPublic === PublicEventType.PUBLIC,
       },
       adminUser,
       poster,
@@ -132,7 +133,10 @@ export class EventController {
   ): Promise<EventPresenter> {
     const event = await this.updateEventUseCase.execute(
       eventId,
-      updatesDto,
+      {
+        ...updatesDto,
+        isPublic: updatesDto.isPublic === PublicEventType.PUBLIC,
+      },
       adminUser,
       poster,
     );

@@ -1,7 +1,5 @@
-import { Transform } from 'class-transformer';
 import {
   IsArray,
-  IsBoolean,
   IsDate,
   IsEnum,
   IsIn,
@@ -14,6 +12,10 @@ import {
 import { EventAttendOptions } from 'src/modules/event/enums/event-attendance-options.enum';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 
+export enum PublicEventType {
+  PUBLIC = 'public',
+  PRIVATE = 'private',
+}
 export class CreateEventDto {
   @IsString()
   @MinLength(2)
@@ -41,9 +43,8 @@ export class CreateEventDto {
   @IsIn([EventStatus.DRAFT, EventStatus.PUBLISHED])
   status: EventStatus.DRAFT | EventStatus.PUBLISHED;
 
-  @IsBoolean()
-  @Transform(({ value }) => value === 'true')
-  isPublic: boolean;
+  @IsEnum(PublicEventType)
+  isPublic: PublicEventType;
 
   @IsEnum(EventAttendOptions)
   attendanceType: EventAttendOptions;

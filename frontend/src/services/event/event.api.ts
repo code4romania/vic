@@ -125,7 +125,7 @@ const formatAddEventPayload = (data: EventFormTypes): FormData => {
   formData.append('startDate', data.startDate.toISOString());
   formData.append('description', data.description);
   formData.append('attendanceType', data.attendanceType);
-  formData.append('isPublic', targetType === TargetType.PUBLIC ? 'true' : 'false');
+  formData.append('isPublic', targetType === TargetType.PUBLIC ? 'public' : 'private');
 
   if (data.status) {
     formData.append('status', data.status);
