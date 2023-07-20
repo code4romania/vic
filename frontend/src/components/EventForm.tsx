@@ -83,12 +83,19 @@ const EventForm = ({
 }: EventFormProps) => {
   const targetType = watch && watch('targetType');
   const attendanceType = watch && watch('attendanceType');
+  const observation = watch && watch('observation');
 
   useEffect(() => {
     if (attendanceType === AttendanceType.SIMPLE) {
       resetField && resetField('attendanceMention');
     }
   }, [attendanceType]);
+
+  useEffect(() => {
+    if (!observation) {
+      resetField && resetField('observation');
+    }
+  }, [observation]);
 
   useEffect(() => {
     if (targetType !== TargetType.SELECT) {
