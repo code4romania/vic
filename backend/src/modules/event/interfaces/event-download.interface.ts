@@ -8,4 +8,5 @@ export interface IEventDownload {
   'Numar participari': number;
   'Numar refuzuri': number;
   Status: EventStatus;
+  'Ore raportate': number;
 }

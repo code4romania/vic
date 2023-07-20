@@ -30,6 +30,7 @@ export class GetManyForDownloadEventUseCase
         'Numar participari': event.going,
         'Numar refuzuri': event.notGoing,
         Status: event.status,
+        'Ore raportate': event.activityLogged.totalHours,
       };
     });
   }
