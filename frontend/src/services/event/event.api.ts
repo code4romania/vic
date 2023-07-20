@@ -157,14 +157,6 @@ const formatAddEventPayload = (data: EventFormTypes): FormData => {
     formData.append('attendanceMention', data.attendanceMention);
   }
 
-  if (data.attendanceMention) {
-    formData.append('attendanceMention', data.attendanceMention);
-  }
-
-  if (data.attendanceMention) {
-    formData.append('attendanceMention', data.attendanceMention);
-  }
-
   if (data.observation) {
     formData.append('observation', data.observation);
   }
