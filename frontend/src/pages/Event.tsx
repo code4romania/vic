@@ -120,20 +120,16 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
           value={event.description}
         />
         <div className="flex gap-2.5 flex-col">
-          <small className="text-cool-gray-500">{i18n.t('events:form.logo.label')}</small>
-          {event.image ? (
-            <img
-              src={event.image}
-              className="w-20 h-20 logo text-transparent"
-              alt={`${event.name} picture`}
-            />
-          ) : (
-            <Button
-              className="btn-primary"
-              label={i18n.t('general:publish')}
-              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
-              onClick={onPublish}
-            />
+          {event.image && (
+            <>
+              <small className="text-cool-gray-500">{i18n.t('events:form.logo.label')}</small>
+
+              <img
+                src={event.image}
+                className="w-20 h-20 logo text-transparent"
+                alt={`${event.name} picture`}
+              />
+            </>
           )}
         </div>
         <hr className="border-cool-gray-200 mb-2 mt-10" />
