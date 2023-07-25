@@ -80,19 +80,23 @@ const ImageOption = ({
 interface ImagePickerProps {
   value: string;
   onChange: (value: string) => void;
+  label?: string;
 }
 
-const ImagePicker = ({ value, onChange }: ImagePickerProps) => (
-  <div className="flex flex-wrap gap-4">
-    {IMAGE_OPTIONS.map((item) => (
-      <ImageOption
-        key={item.key}
-        item={item.key}
-        component={item.component}
-        selected={item.key === value}
-        onChange={onChange}
-      />
-    ))}
+const ImagePicker = ({ value, onChange, label }: ImagePickerProps) => (
+  <div className="flex flex-col gap-1">
+    {label && <label htmlFor={`${label}__input`}>{label}</label>}
+    <div className="flex flex-wrap gap-4">
+      {IMAGE_OPTIONS.map((item) => (
+        <ImageOption
+          key={item.key}
+          item={item.key}
+          component={item.component}
+          selected={item.key === value}
+          onChange={onChange}
+        />
+      ))}
+    </div>
   </div>
 );
 

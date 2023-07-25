@@ -47,7 +47,15 @@ const ActivityTypeForm = ({ control, errors }: AccessCodeFormProps) => {
         name="icon"
         control={control}
         render={({ field: { onChange, value } }) => {
-          return <ImagePicker onChange={onChange} value={value} />;
+          return (
+            <ImagePicker
+              label={`${i18n.t('general:choose', {
+                item: i18n.t('general:image').toLowerCase(),
+              })}`}
+              onChange={onChange}
+              value={value}
+            />
+          );
         }}
       />
       <Controller
