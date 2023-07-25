@@ -194,12 +194,12 @@ const Events = ({ query, setQuery }: EventsProps) => {
 
   const onTabClick = (tab: EventState) => {
     // reset filter queries on tab click
-    setQuery({ eventState: tab }, 'push');
+    setQuery({ eventState: tab }, 'replaceIn');
   };
 
   // row actions
   const onView = (row: IEvent) => {
-    navigate(`${row.id}`, { replace: true });
+    navigate(`${row.id}`);
   };
 
   const onPublish = (row: IEvent) => {
@@ -332,26 +332,35 @@ const Events = ({ query, setQuery }: EventsProps) => {
   };
 
   const onRowsPerPageChange = (limit: number) => {
-    setQuery({
-      limit,
-      page: 1,
-    });
+    setQuery(
+      {
+        limit,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onChangePage = (page: number) => {
-    setQuery({
-      page,
-    });
+    setQuery(
+      {
+        page,
+      },
+      'replaceIn',
+    );
   };
 
   const onSort = (column: TableColumn<IEvent>, direction: SortOrder) => {
-    setQuery({
-      orderBy: column.id as string,
-      orderDirection:
-        direction.toLocaleUpperCase() === OrderDirection.ASC
-          ? OrderDirection.ASC
-          : OrderDirection.DESC,
-    });
+    setQuery(
+      {
+        orderBy: column.id as string,
+        orderDirection:
+          direction.toLocaleUpperCase() === OrderDirection.ASC
+            ? OrderDirection.ASC
+            : OrderDirection.DESC,
+      },
+      'replaceIn',
+    );
   };
 
   return (
