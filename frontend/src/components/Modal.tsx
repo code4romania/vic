@@ -39,7 +39,7 @@ const Modal = ({ children, title, onClose }: ModalProps) => {
                 <div className="flex justify-between items-center text-center sm:text-left">
                   <Dialog.Title
                     as="h3"
-                    className="sm:text-lg lg:text-xl leading-6 font-robotoBold truncate"
+                    className="sm:text-lg lg:text-xl leading-6 font-robotoBold line-clamp-2"
                   >
                     {title}
                   </Dialog.Title>
