@@ -174,7 +174,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
 
   const onTabClick = (tab: VolunteerStatus) => {
     // reset filter queries on tab click
-    setQuery({ volunteerStatus: tab }, 'push');
+    setQuery({ volunteerStatus: tab }, 'replaceIn');
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
