@@ -33,6 +33,8 @@ import { EventStatus } from '../enums/event-status.enum';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { EventRSVPEntity } from '../entities/event-rsvp.entity';
 import { endOfDay, endOfMonth } from 'date-fns';
+import { VolunteerProfileEntity } from 'src/modules/volunteer/entities/volunteer-profile.entity';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 
 @Injectable()
 export class EventRepository
@@ -194,15 +196,13 @@ export class EventRepository
 
     // Get all events in progress from the organizations i am part of or public events
     query.andWhere(
-      '((event.organizationId IN ' +
-        query
-          .subQuery()
-          .select('volunteer.organizationId')
-          .from(VolunteerEntity, 'volunteer')
-          .where('volunteer.userId = :userId', { userId })
-          .getQuery() +
-        ') OR event.isPublic = :isPublic) AND (event.startDate <= :currentDate AND (event.endDate > :currentDate OR event.endDate IS NULL))',
-      { isPublic: true, currentDate: new Date() },
+      '((v.userId = :userId AND (targets.id = vp.departmentId OR targets.id IS NULL)) OR event.isPublic = :isPublic) AND (v.status != :vStatus OR v.id IS NULL) AND (event.startDate <= :currentDate AND (event.endDate > :currentDate OR event.endDate IS NULL))',
+      {
+        isPublic: true,
+        currentDate: new Date(),
+        userId,
+        vStatus: VolunteerStatus.BLOCKED,
+      },
     );
 
     return this.searchOrderAndPaginate(query, filters);
@@ -217,15 +217,12 @@ export class EventRepository
 
     // Get all events in progress from the organizations i am part of
     query.andWhere(
-      '(event.organizationId IN ' +
-        query
-          .subQuery()
-          .select('volunteer.organizationId')
-          .from(VolunteerEntity, 'volunteer')
-          .where('volunteer.userId = :userId', { userId })
-          .getQuery() +
-        ') AND (event.endDate > :currentDate OR event.endDate IS NULL)',
-      { currentDate: new Date() },
+      'v.userId = :userId AND v.status = :volunteerStatus AND (event.endDate > :currentDate OR event.endDate IS NULL) AND (targets.id = vp.departmentId OR targets.id IS NULL)',
+      {
+        currentDate: new Date(),
+        userId,
+        volunteerStatus: VolunteerStatus.ACTIVE,
+      },
     );
 
     return this.searchOrderAndPaginate(query, filters);
@@ -288,6 +285,8 @@ export class EventRepository
         'event.organization',
         'organization',
       )
+      .leftJoin(VolunteerEntity, 'v', 'v.organizationId = event.organizationId')
+      .leftJoin(VolunteerProfileEntity, 'vp', 'vp.id = v.volunteerProfileId')
       .select([
         'event.id',
         'event.name',
@@ -303,7 +302,9 @@ export class EventRepository
         'targets.name',
         'organization.logo',
       ])
-      .where('event.status = :status', { status: EventStatus.PUBLISHED });
+      .where('event.status = :status', {
+        status: EventStatus.PUBLISHED,
+      });
   }
 
   private searchOrderAndPaginate(
