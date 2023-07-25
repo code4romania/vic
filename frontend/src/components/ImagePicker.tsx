@@ -69,7 +69,7 @@ const ImageOption = ({
   <div
     onClick={() => onChange(item)}
     className={classNames(
-      'h-12 w-12 rounded-full bg-cool-gray-100 flex items-center justify-center',
+      'h-12 w-12 rounded-full bg-cool-gray-100 flex items-center justify-center cursor-pointer',
       selected ? 'bg-cool-gray-300' : 'bg-cool-gray-100',
     )}
   >

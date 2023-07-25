@@ -50,7 +50,7 @@ const AddActivityType = () => {
   });
 
   useEffect(() => {
-    reset({ icon: 'heart' });
+    reset({ icon: 'box' });
   }, []);
 
   const navigateBack = () => {
