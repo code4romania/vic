@@ -44,11 +44,12 @@ export class MobileContractController {
   @ApiPaginatedResponse(MobileContractListItemPresenter)
   async getManyApproved(
     @Query() filters: GetVolunteerContractsDto,
-    @ExtractUser() { activeOrganization }: IRegularUserModel,
+    @ExtractUser() { activeOrganization, id }: IRegularUserModel,
   ): Promise<PaginatedPresenter<MobileContractListItemPresenter>> {
     const contracts = await this.getVolunteerContractHistoryUsecase.execute({
       ...filters,
       organizationId: activeOrganization.id,
+      userId: id,
     });
 
     return new PaginatedPresenter({
@@ -63,11 +64,12 @@ export class MobileContractController {
   @ApiPaginatedResponse(MobileContractListItemPresenter)
   async getManyPending(
     @Query() filters: GetVolunteerContractsDto,
-    @ExtractUser() { activeOrganization }: IRegularUserModel,
+    @ExtractUser() { activeOrganization, id }: IRegularUserModel,
   ): Promise<PaginatedPresenter<MobileContractListItemPresenter>> {
     const contracts = await this.getVolunteerPendingContractsUsecase.execute({
       ...filters,
       organizationId: activeOrganization.id,
+      userId: id,
     });
 
     return new PaginatedPresenter({

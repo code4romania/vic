@@ -54,6 +54,7 @@ export class ContractRepositoryService
       volunteerId,
       history,
       pending,
+      // userId,
     } = findOptions;
 
     const query = this.contractRepository

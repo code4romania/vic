@@ -64,6 +64,7 @@ export type FindManyContractOptions = IBasePaginationFilterModel &
       status?: ClientContractStatus;
       history?: boolean;
       pending?: boolean;
+      userId: string;
     }
   >;
 
