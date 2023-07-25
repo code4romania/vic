@@ -201,7 +201,7 @@ const Event = ({ query, setQuery }: EventProps) => {
 
   const onTabClick = (tab: EventTab) => {
     // reset filter queries on tab click
-    setQuery({ activeTab: tab }, 'push');
+    setQuery({ activeTab: tab }, 'replaceIn');
   };
 
   const onDelete = () => {
@@ -209,7 +209,7 @@ const Event = ({ query, setQuery }: EventProps) => {
   };
 
   const onEdit = () => {
-    navigate(`/events/${id}/edit`, { replace: true });
+    navigate(`/events/${id}/edit`);
   };
 
   const confirmDelete = () => {
