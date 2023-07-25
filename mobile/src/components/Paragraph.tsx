@@ -12,7 +12,7 @@ const Paragraph = ({ children, style }: ParagraphProps) => {
 
   return (
     <Text
-      style={{ ...styles.paragraph, ...style, color: theme['cool-gray-500'] }}
+      style={{ color: theme['cool-gray-500'], ...styles.paragraph, ...style }}
       category="p1"
       ellipsizeMode="tail"
       numberOfLines={3}
