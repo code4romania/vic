@@ -151,13 +151,11 @@ const ActionsArchiveTable = ({ query, setQuery, volunteerId }: ActionsArchiveTab
           }
           id="execution-on-range__picker"
         />
-        {!volunteerId && (
-          <AdminSelect
-            label={i18n.t('actions_archive:author')}
-            onSelect={onAuthorChange}
-            defaultValue={query.author ? { value: '', label: query.author } : author}
-          />
-        )}
+        <AdminSelect
+          label={i18n.t('actions_archive:author')}
+          onSelect={onAuthorChange}
+          defaultValue={query.author ? { value: '', label: query.author } : author}
+        />
       </DataTableFilters>
       <Card>
         <CardHeader>
