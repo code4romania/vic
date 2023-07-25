@@ -11,6 +11,7 @@ export class MobileContractListItemPresenter {
     this.endDate = contract.endDate;
     this.path = contract.path;
     this.status = contract.status;
+    this.contractFileName = contract.fileName;
   }
 
   @Expose()
@@ -49,4 +50,10 @@ export class MobileContractListItemPresenter {
     examples: Object.values(ContractStatus),
   })
   status: ContractStatus;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The contract fileName',
+  })
+  contractFileName: string;
 }

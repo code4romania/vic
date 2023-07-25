@@ -6,15 +6,8 @@ import { MobileContractListItemPresenter } from './mobile-contract-list-item.pre
 export class MobileContractPresenter extends MobileContractListItemPresenter {
   constructor(contract: IContractModel) {
     super(contract);
-    this.contractFileName = contract.fileName;
     this.rejectionReason = contract.rejectionReason;
   }
-
-  @Expose()
-  @ApiProperty({
-    description: 'The contract fileName',
-  })
-  contractFileName: string;
 
   @Expose()
   @ApiProperty({

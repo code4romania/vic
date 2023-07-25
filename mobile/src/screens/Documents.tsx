@@ -16,6 +16,9 @@ import GrayIcon from '../components/GreyIcon';
 import SectionWrapper from '../components/SectionWrapper';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUserProfile } from '../store/profile/profile.selector';
+import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
+import * as FileSystem from 'expo-file-system';
+import { shareAsync } from 'expo-sharing';
 
 interface ContractsProps {
   navigation: any;
@@ -82,8 +85,12 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
     }, [reloadPendingContracts, reloadHistory]),
   );
 
-  const onDownloadContract = (id: string) => {
-    console.log('contract pressed', id);
+  const onDownloadContract = async (contract: IContractListItem) => {
+    if (contract) {
+      let LocalPath = FileSystem.documentDirectory + contract.contractFileName;
+      const file = await FileSystem.downloadAsync(contract?.path, LocalPath);
+      shareAsync(file.uri);
+    }
   };
 
   const onPendingContractPress = (id: string) => {
@@ -110,7 +117,7 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
       startDate={item.startDate}
       endDate={item.endDate}
       rightIconName={'download'}
-      onPress={onDownloadContract.bind(null, item.id)}
+      onPress={onDownloadContract.bind(null, item)}
     />
   );
 
@@ -136,6 +143,8 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
             loadMore={onLoadMorePending}
             isLoading={isFetchingPendingContracts}
             refetch={reloadPendingContracts}
+            loadingLayout={<OrganizationSkeletonListItem />}
+            loadingElementsCount="small"
             errorMessage={errorFetchingPendingContracts ? `${t('errors.generic')}` : undefined}
           />
         </SectionWrapper>
@@ -147,6 +156,8 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
           loadMore={onLoadMoreHistory}
           isLoading={isLoadingClosedActiveContracts}
           refetch={reloadHistory}
+          loadingLayout={<OrganizationSkeletonListItem />}
+          loadingElementsCount="small"
           errorMessage={
             errorFetchingClosedActiveContractsContracts ? `${t('errors.generic')}` : undefined
           }

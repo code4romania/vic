@@ -28,9 +28,15 @@ const ListErrorComponent = ({ errorMessage }: { errorMessage: string }) => {
   );
 };
 
-const LoadingComponent = ({ component }: { component: ReactNode }) => (
+const LoadingComponent = ({
+  component,
+  loadingElementsCount = 'large',
+}: {
+  component: ReactNode;
+  loadingElementsCount?: 'small' | 'large';
+}) => (
   <View style={styles.loadingContainer}>
-    {Array.from(Array(10).keys()).map((key) => (
+    {Array.from(Array(loadingElementsCount === 'large' ? 10 : 4).keys()).map((key) => (
       <View key={key}>{component}</View>
     ))}
   </View>
@@ -45,6 +51,7 @@ interface InfiniteListLayoutProps<T> {
   refetch?: () => void;
   loadMore: () => void;
   loadingLayout?: ReactNode;
+  loadingElementsCount?: 'small' | 'large';
 }
 
 const InfiniteListLayout = <T extends object>({
@@ -56,11 +63,12 @@ const InfiniteListLayout = <T extends object>({
   refetch,
   hasDivider = true,
   loadingLayout,
+  loadingElementsCount,
 }: InfiniteListLayoutProps<T>) => {
   const onRenderDivider = () => (hasDivider ? Divider : () => <></>);
 
   return isLoading ? (
-    <LoadingComponent component={loadingLayout} />
+    <LoadingComponent component={loadingLayout} loadingElementsCount={loadingElementsCount} />
   ) : (
     <List
       data={mapPagesToItems<T>(pages || [])}

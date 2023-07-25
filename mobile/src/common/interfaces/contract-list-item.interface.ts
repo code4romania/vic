@@ -7,4 +7,5 @@ export interface IContractListItem {
   endDate: string;
   path: string;
   status: ContractStatus;
+  contractFileName: string;
 }
