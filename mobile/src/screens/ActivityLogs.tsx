@@ -13,13 +13,13 @@ import { OrderDirection } from '../common/enums/order-direction.enum';
 import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
 import { useTranslation } from 'react-i18next';
 import InfiniteListLayout from '../layouts/InfiniteListLayout';
-import { JSONStringifyError } from '../common/utils/utils';
 import { IActivityLogItem } from '../common/interfaces/activity-log-item.interface';
 import LogItem from '../components/LogItem';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { ISelectItem } from '../components/FormSelect';
 import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 import { useUserProfile } from '../store/profile/profile.selector';
+import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
 
 export const ActivityLogsTabs: ISelectItem[] = [
   { key: ActivityLogStatus.PENDING, label: i18n.t('activity_logs:tabs.pending') },
@@ -124,12 +124,8 @@ const ActivityLogs = ({ navigation }: any) => {
         loadMore={onLoadMore}
         isLoading={isFetchingActivityLogs}
         refetch={reloadActivityLogs}
-        errorMessage={
-          getActivityLogsError
-            ? `${JSONStringifyError(getActivityLogsError as Error)}`
-            : // : `${t('errors.generic')}`
-              ''
-        }
+        loadingLayout={<OrganizationSkeletonListItem />}
+        errorMessage={getActivityLogsError ? `${t('errors.generic')}` : ''}
       />
       <Button onPress={onAddActivityLogButtonPress} style={styles.addButton}>
         {() => <Icon name="plus" style={styles.addIcon} />}
