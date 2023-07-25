@@ -41,6 +41,7 @@ export default withStyles(StatisticsCard, (theme) => ({
     gap: 18,
     borderRadius: 16,
     width: 140,
+    minHeight: 150,
     ...applyCardShadow(theme),
   },
   touchableContainer: {
