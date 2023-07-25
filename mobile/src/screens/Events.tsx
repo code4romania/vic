@@ -9,9 +9,9 @@ import { OrderDirection } from '../common/enums/order-direction.enum';
 import InfiniteListLayout from '../layouts/InfiniteListLayout';
 import { IEventListItem } from '../common/interfaces/event-list-item.interface';
 import { useEventsInfiniteQuery } from '../services/event/event.service';
-import { JSONStringifyError } from '../common/utils/utils';
 import { EventType } from '../common/enums/event-type.enum';
 import { ISelectItem } from '../components/FormSelect';
+import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
 
 const EventsTabs: ISelectItem[] = [
   { key: EventType.GOING, label: i18n.t('events:tabs.going') },
@@ -77,12 +77,8 @@ const Events = ({ navigation }: any) => {
         loadMore={onLoadMore}
         isLoading={isFetchingEvents}
         refetch={reloadEvents}
-        errorMessage={
-          getEventsError
-            ? `${JSONStringifyError(getEventsError as Error)}`
-            : // : `${t('errors.generic')}`
-              ''
-        }
+        loadingLayout={<OrganizationSkeletonListItem />}
+        errorMessage={getEventsError ? `${t('errors.generic')}` : ''}
       />
     </PageLayout>
   );

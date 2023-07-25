@@ -16,6 +16,8 @@ export class MobileEventListItemPresenter {
     this.eventInterval = formatEventDate(event.startDate, event.endDate);
     this.organizationLogo = event.organizationLogo;
 
+    this.poster = event.poster;
+
     this.targets = event.targets?.map(
       (target) => new OrganizationStructureListItemPresenter(target),
     );
@@ -59,6 +61,10 @@ export class MobileEventListItemPresenter {
   @Expose()
   @ApiProperty({ description: 'Wether the event is public or not' })
   isPublic: boolean;
+
+  @Expose()
+  @ApiProperty({ description: 'Event poster' })
+  poster: string;
 
   @Expose()
   @ApiProperty({
