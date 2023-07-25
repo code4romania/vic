@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageHeader from '../components/PageHeader';
 import PageLayout from '../layouts/PageLayout';
 import { useNavigate } from 'react-router-dom';
@@ -42,11 +42,16 @@ const AddActivityType = () => {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<ActivityCategoryFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    reset({ icon: 'heart' });
+  }, []);
 
   const navigateBack = () => {
     navigate('/activity-types', { replace: true });

@@ -25,6 +25,7 @@
     "react-datepicker": "^4.10.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-feather": "^2.0.10",
     "react-hook-form": "^7.43.0",
     "react-i18next": "12.1.4",
     "react-query": "^3.39.2",
@@ -56,6 +57,7 @@
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
+    "@types/feather-icons": "^4.29.1",
     "@types/lodash.debounce": "^4.0.7",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",

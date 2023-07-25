@@ -5,6 +5,7 @@ import { DivisionType } from '../common/enums/division-type.enum';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import FormInput from './FormInput';
 import { SelectItem } from './Select';
+import ImagePicker from './ImagePicker';
 
 interface AccessCodeFormProps {
   control: Control<ActivityCategoryFormTypes, object>;
@@ -45,22 +46,8 @@ const ActivityTypeForm = ({ control, errors }: AccessCodeFormProps) => {
         key="icon"
         name="icon"
         control={control}
-        defaultValue="logo.svg"
         render={({ field: { onChange, value } }) => {
-          return (
-            <FormInput
-              type="text"
-              value={value}
-              errorMessage={errors['icon']?.message as string}
-              label={i18n
-                .t('general:choose', {
-                  item: i18n.t('general:image').toLowerCase(),
-                })
-                .toString()}
-              onChange={onChange}
-              id="add-activity-form__icon"
-            />
-          );
+          return <ImagePicker onChange={onChange} value={value} />;
         }}
       />
       <Controller

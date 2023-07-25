@@ -3,6 +3,7 @@ import { ChevronRightIcon, ExclamationCircleIcon } from '@heroicons/react/20/sol
 import i18n from '../common/config/i18n';
 import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
 import { IActivityType } from '../common/interfaces/activity-type.interface';
+import { IMAGE_OPTIONS } from './ImagePicker';
 
 interface ActivityTypeProps {
   activityType: IActivityType;
@@ -14,6 +15,12 @@ const ActivityType = ({ activityType, onClick }: ActivityTypeProps) => {
     onClick(activityType.id);
   };
 
+  const showIcon = (key: string) => {
+    const icon = IMAGE_OPTIONS.find((icon) => icon.key === key);
+
+    return icon ? icon.component : IMAGE_OPTIONS[0].component;
+  };
+
   return (
     <div
       id={`activity-type__${activityType.id}`}
@@ -21,11 +28,7 @@ const ActivityType = ({ activityType, onClick }: ActivityTypeProps) => {
       onClick={onActivityTypeClick}
     >
       <div className="h-12 w-12 grid place-items-center rounded-full bg-cool-gray-100 shrink-0">
-        <img
-          src={activityType.icon}
-          className="w-6 h-6 text-transparent"
-          alt={`${activityType.name} activity icon`}
-        />
+        {showIcon(activityType.icon)}
       </div>
       <div className="flex gap-1 items-center">
         <p className="text-left">{activityType.name}</p>
