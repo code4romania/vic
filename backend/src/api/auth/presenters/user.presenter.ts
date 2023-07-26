@@ -8,7 +8,7 @@ import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 export class RegularUserPresenter {
   constructor(user: IRegularUserModel) {
     this.id = user.id;
-    this.name = user.name;
+    this.name = `${user.firstName} ${user.lastName}`;
     this.email = user.email;
     this.phone = user.phone;
     this.age = this.calculateAge(user.birthday);

@@ -54,7 +54,7 @@ const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
 
 const ActiveVolunteersTableHeader = [
   {
-    id: 'user.name',
+    id: 'user.firstName',
     name: i18n.t('general:name'),
     sortable: true,
     grow: 1,
