@@ -27,7 +27,6 @@ export interface IEventModel extends IBaseModel {
   description: string;
   location?: string;
   poster?: string;
-  posterPath?: string;
 
   startDate: Date;
   endDate?: Date;
@@ -100,7 +99,6 @@ export type CreateEventOptions = Pick<
   | 'attendanceMention'
   | 'observation'
   | 'poster'
-  | 'posterPath'
 > & {
   status: EventStatus.DRAFT | EventStatus.PUBLISHED;
   organizationId: string;
@@ -208,7 +206,6 @@ export class EventModelTransformer {
       isPublic: entity.isPublic,
 
       poster: entity.poster,
-      posterPath: entity.posterPath,
       attendanceType: entity.attendanceType,
       attendanceMention: entity.attendanceMention,
 
@@ -242,7 +239,6 @@ export class EventModelTransformer {
     );
     entity.tasks = model.tasksIds?.map(ActivityTypeTransformer.toEntity);
     entity.poster = model.poster;
-    entity.posterPath = model.posterPath;
     return entity;
   }
 }

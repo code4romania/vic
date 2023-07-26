@@ -44,9 +44,6 @@ export class EventEntity extends BaseEntity {
   @Column({ type: 'text', name: 'poster', nullable: true })
   poster?: string;
 
-  @Column({ type: 'text', name: 'poster_path', nullable: true })
-  posterPath?: string;
-
   @Column({
     type: 'enum',
     enum: EventStatus,

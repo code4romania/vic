@@ -8,6 +8,11 @@ import { IRsvp } from '../../common/interfaces/rsvp.interface';
 import { EventFormTypes, TargetType } from '../../components/EventForm';
 import API from '../api';
 
+enum TargetEventType {
+  PUBLIC = 'public',
+  PRIVATE = 'private',
+}
+
 export const addEvent = async (data: EventFormTypes): Promise<IEvent> => {
   return API.post('event', formatAddEventPayload(data), {
     headers: { 'Content-Type': 'multipart/form-data' },
@@ -125,7 +130,10 @@ const formatAddEventPayload = (data: EventFormTypes): FormData => {
   formData.append('startDate', data.startDate.toISOString());
   formData.append('description', data.description);
   formData.append('attendanceType', data.attendanceType);
-  formData.append('isPublic', targetType === TargetType.PUBLIC ? 'public' : 'private');
+  formData.append(
+    'isPublic',
+    targetType === TargetType.PUBLIC ? TargetEventType.PUBLIC : TargetEventType.PRIVATE,
+  );
 
   if (data.status) {
     formData.append('status', data.status);
@@ -174,7 +182,11 @@ const formatEditEventPayload = (data: EventFormTypes): object => {
   formData.append('attendanceType', data.attendanceType);
 
   if (status === EventStatus.DRAFT) {
-    formData.append('isPublic', targetType === TargetType.PUBLIC ? 'true' : 'false');
+    formData.append(
+      'isPublic',
+      targetType === TargetType.PUBLIC ? TargetEventType.PUBLIC : TargetEventType.PRIVATE,
+    );
+
     if (targetType === TargetType.SELECT) {
       targets.forEach((target) => {
         formData.append('targetsIds[]', target.key);

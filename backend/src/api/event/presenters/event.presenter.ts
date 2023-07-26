@@ -22,6 +22,7 @@ export class EventPresenter {
     this.attendanceMention = event.attendanceMention;
     this.observation = event.observation;
     this.organizationId = event.organization?.id;
+    this.poster = event.poster;
 
     this.targets = event.targets?.map(
       (target) => new OrganizationStructureListItemPresenter(target),
@@ -97,6 +98,10 @@ export class EventPresenter {
   @Expose()
   @ApiProperty({ description: 'The id of organization who created the event.' })
   organizationId: string;
+
+  @Expose()
+  @ApiProperty({ description: 'The event poster' })
+  poster: string;
 
   @Expose()
   @ApiProperty({

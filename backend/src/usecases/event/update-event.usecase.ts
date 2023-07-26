@@ -91,26 +91,20 @@ export class UpdateEventUseCase implements IUseCaseService<IEventModel> {
 
     // 5. save poster to s3
     try {
-      const image = { poster: '', posterPath: '' };
       let payload = data;
       if (files?.length > 0) {
         // 5.1. upload file to s3 and get the path
-        image.posterPath = await this.s3Service.uploadFile(
+        const poster = await this.s3Service.uploadFile(
           `${S3_FILE_PATHS.EVENTS}/${admin.organizationId}`,
           files[0],
         );
 
         // 5.2 check if there is already a path at that file and remove it
-        if (event.posterPath) {
-          await this.s3Service.deleteFile(event.posterPath);
+        if (event.poster) {
+          await this.s3Service.deleteFile(event.poster);
         }
 
-        // 5.2 generate public url
-        image.poster = await this.s3Service.generatePresignedURL(
-          image.posterPath,
-        );
-
-        payload = { ...payload, ...image };
+        payload = { ...payload, poster };
       }
 
       const updated = await this.eventFacade.update(id, payload);

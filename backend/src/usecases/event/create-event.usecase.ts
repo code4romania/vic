@@ -89,23 +89,18 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
 
     // 5. save poster to s3
     try {
-      const image = { poster: '', posterPath: '' };
+      let poster = null;
       if (files?.length > 0) {
         // 5.1. upload file to s3 and get the path
-        image.posterPath = await this.s3Service.uploadFile(
+        poster = await this.s3Service.uploadFile(
           `${S3_FILE_PATHS.EVENTS}/${admin.organizationId}`,
           files[0],
-        );
-
-        // 5.2 generate public url
-        image.poster = await this.s3Service.generatePresignedURL(
-          image.posterPath,
         );
       }
 
       const created = await this.eventFacade.create({
         ...data,
-        ...image,
+        poster,
       });
 
       if (created.status === EventStatus.PUBLISHED) {

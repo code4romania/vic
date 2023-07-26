@@ -11,11 +11,8 @@ import {
 } from 'class-validator';
 import { EventAttendOptions } from 'src/modules/event/enums/event-attendance-options.enum';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
+import { TargetEventType } from 'src/modules/event/enums/target-event-type.enum';
 
-export enum PublicEventType {
-  PUBLIC = 'public',
-  PRIVATE = 'private',
-}
 export class CreateEventDto {
   @IsString()
   @MinLength(2)
@@ -43,8 +40,8 @@ export class CreateEventDto {
   @IsIn([EventStatus.DRAFT, EventStatus.PUBLISHED])
   status: EventStatus.DRAFT | EventStatus.PUBLISHED;
 
-  @IsEnum(PublicEventType)
-  isPublic: PublicEventType;
+  @IsEnum(TargetEventType)
+  isPublic: TargetEventType;
 
   @IsEnum(EventAttendOptions)
   attendanceType: EventAttendOptions;

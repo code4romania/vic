@@ -43,8 +43,8 @@ export class DeleteEventUseCase implements IUseCaseService<string> {
 
     try {
       // 3. delete the file from s3
-      if (toBeDeleted.posterPath) {
-        await this.s3Service.deleteFile(toBeDeleted.posterPath);
+      if (toBeDeleted.poster) {
+        await this.s3Service.deleteFile(toBeDeleted.poster);
       }
     } catch (error) {
       // log error

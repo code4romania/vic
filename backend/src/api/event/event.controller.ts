@@ -32,7 +32,7 @@ import { GetOneEventUseCase } from 'src/usecases/event/get-one-event.usecase';
 import { PublishEventUseCase } from 'src/usecases/event/publish-event.usecase';
 import { GetManyEventRSVPUseCase } from 'src/usecases/event/RSVP/get-many-rsvp.usecase';
 import { UpdateEventUseCase } from 'src/usecases/event/update-event.usecase';
-import { CreateEventDto, PublicEventType } from './dto/create-event.dto';
+import { CreateEventDto } from './dto/create-event.dto';
 import { GetPaginatedEventRSVPsDto } from './dto/get-paginated-event-rsvp.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventGuard } from './guards/event.guard';
@@ -46,6 +46,7 @@ import { GetManyForDownloadEventRSVPUseCase } from 'src/usecases/event/RSVP/get-
 import { IEventRSVPDownload } from 'src/modules/event/interfaces/event-rsvp-download.interface';
 import { RSVPGoingEnum } from 'src/modules/event/enums/rsvp-going.enum';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { TargetEventType } from 'src/modules/event/enums/target-event-type.enum';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, EventGuard)
@@ -112,7 +113,7 @@ export class EventController {
       {
         ...createEventDto,
         organizationId: adminUser.organizationId,
-        isPublic: createEventDto.isPublic === PublicEventType.PUBLIC,
+        isPublic: createEventDto.isPublic === TargetEventType.PUBLIC,
       },
       adminUser,
       poster,
@@ -131,11 +132,17 @@ export class EventController {
     @ExtractUser() adminUser: IAdminUserModel,
     @UploadedFiles() { poster }: { poster?: Express.Multer.File[] },
   ): Promise<EventPresenter> {
+    const { isPublic, ...updates } = updatesDto;
     const event = await this.updateEventUseCase.execute(
       eventId,
       {
-        ...updatesDto,
-        isPublic: updatesDto.isPublic === PublicEventType.PUBLIC,
+        ...updates,
+        ...(isPublic
+          ? { isPublic: updatesDto.isPublic === TargetEventType.PUBLIC }
+          : {}),
+        ...(isPublic === TargetEventType.PRIVATE && !updates.targetsIds
+          ? { targetsIds: [] }
+          : {}),
       },
       adminUser,
       poster,
