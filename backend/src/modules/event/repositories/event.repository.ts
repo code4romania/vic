@@ -194,14 +194,24 @@ export class EventRepository
     const { userId, ...filters } = findOptions;
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
-    // Get all events in progress from the organizations i am part of or public events
+    // Get all events in progress from the organizations i am part or public events
     query.andWhere(
-      '((v.userId = :userId AND (targets.id = vp.departmentId OR targets.id IS NULL)) OR event.isPublic = :isPublic) AND (v.status != :vStatus OR v.id IS NULL) AND (event.startDate <= :currentDate AND (event.endDate > :currentDate OR event.endDate IS NULL))',
+      '(event.endDate > :currentDate OR event.endDate IS NULL) AND ((event.isPublic = :isPublic AND event.organizationId NOT IN ' +
+        query
+          .subQuery()
+          .select('vol.organizationId')
+          .from(VolunteerEntity, 'vol')
+          .where('vol.userId = :userId AND vol.status = :blocked ', {
+            userId,
+            blocked: VolunteerStatus.BLOCKED,
+          })
+          .getQuery() +
+        ') OR (v.userId = :userId AND v.status = :active AND (targets.id = vp.departmentId OR targets.id IS NULL)))',
       {
         isPublic: true,
         currentDate: new Date(),
         userId,
-        vStatus: VolunteerStatus.BLOCKED,
+        active: VolunteerStatus.ACTIVE,
       },
     );
 
@@ -215,9 +225,8 @@ export class EventRepository
     const { userId, ...filters } = findOptions;
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
-    // Get all events in progress from the organizations i am part of
     query.andWhere(
-      'v.userId = :userId AND v.status = :volunteerStatus AND (event.endDate > :currentDate OR event.endDate IS NULL) AND (targets.id = vp.departmentId OR targets.id IS NULL)',
+      '(event.endDate > :currentDate OR event.endDate IS NULL) AND v.userId = :userId AND v.status = :volunteerStatus AND (targets.id = vp.departmentId OR targets.id IS NULL)',
       {
         currentDate: new Date(),
         userId,
@@ -235,9 +244,13 @@ export class EventRepository
     const { userId, ...filters } = findOptions;
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
-    query.andWhere('(event.endDate > :currentDate OR event.endDate IS NULL)', {
-      currentDate: new Date(),
-    });
+    query.andWhere(
+      '(event.endDate > :currentDate OR event.endDate IS NULL) AND v.status = :active AND v.userId = :userId',
+      {
+        currentDate: new Date(),
+        active: VolunteerStatus.ACTIVE,
+      },
+    );
 
     // Get all events where i have responded with going
     query.andWhere(
