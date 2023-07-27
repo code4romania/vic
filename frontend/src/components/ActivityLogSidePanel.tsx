@@ -187,11 +187,19 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
               value={activityLog.mentions}
             />
             <hr />
-            <FormReadOnlyElement
-              label={i18n.t('activity_log:side_panel.created_by')}
-              value={activityLog.createdByAdmin?.name}
-              onClick={onAdminClick}
-            />
+            {activityLog.createdByAdmin ? (
+              <FormReadOnlyElement
+                label={i18n.t('activity_log:side_panel.created_by')}
+                value={activityLog.createdByAdmin?.name}
+                onClick={onAdminClick}
+              />
+            ) : (
+              <FormReadOnlyElement
+                label={i18n.t('activity_log:side_panel.created_by')}
+                value={activityLog.volunteer?.name}
+                onClick={onVolunteerClick}
+              />
+            )}
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.registration_date')}
               value={formatDate(activityLog.createdOn)}
