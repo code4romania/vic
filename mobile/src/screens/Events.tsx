@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
 import Tabs from '../components/Tabs';
@@ -12,6 +12,7 @@ import { useEventsInfiniteQuery } from '../services/event/event.service';
 import { EventType } from '../common/enums/event-type.enum';
 import { ISelectItem } from '../components/FormSelect';
 import EventSkeletonListItem from '../components/skeleton/event-skeleton-item';
+import { useEvent } from '../store/event/event.selector';
 
 const EventsTabs: ISelectItem[] = [
   { key: EventType.GOING, label: i18n.t('events:tabs.going') },
@@ -28,6 +29,7 @@ const Events = ({ navigation }: any) => {
   const [search, setSearch] = useState<string>('');
   // event tab filter
   const [eventFilter, setEventFilter] = useState<EventType>(EventType.GOING);
+  const { event } = useEvent();
 
   // events query
   const {
@@ -38,6 +40,15 @@ const Events = ({ navigation }: any) => {
     hasNextPage,
     refetch: reloadEvents,
   } = useEventsInfiniteQuery(orderDirection, search, eventFilter);
+
+  // This will be triggered every time the organization state changes
+  const refetchEvents = useCallback(() => {
+    reloadEvents();
+  }, [reloadEvents]);
+
+  useEffect(() => {
+    refetchEvents();
+  }, [event, refetchEvents]);
 
   const onTabClick = (tabKey: string | number) => {
     setEventFilter(tabKey as EventType);
