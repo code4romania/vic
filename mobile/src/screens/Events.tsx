@@ -21,7 +21,6 @@ const EventsTabs: ISelectItem[] = [
 ];
 
 const Events = ({ navigation }: any) => {
-  console.log('Events');
   const { t } = useTranslation('events');
   // order direction filter
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);

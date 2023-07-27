@@ -25,7 +25,6 @@ import EventSkeleton from '../components/skeleton/event-skeleton.item';
 import ImageWithPreload from '../components/ImageWithPreload';
 
 const Event = ({ navigation, route }: any) => {
-  console.log('Event');
   const { t } = useTranslation('event');
 
   const theme = useTheme();
