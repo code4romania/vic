@@ -44,7 +44,6 @@ const EventContentRow = withStyles(
 
 const EventItem = ({ event, onPress }: EventItemProps) => {
   const theme = useTheme();
-  console.log('event.poster', event.poster);
   return (
     <PressableContainer onPress={onPress.bind(null, event.id)}>
       <View style={styles.container}>

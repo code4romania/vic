@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Text } from '@ui-kitten/components';
-import { Image, StyleSheet } from 'react-native';
+import { Icon, Text, useTheme } from '@ui-kitten/components';
+import { StyleSheet } from 'react-native';
 import FormLayout from '../layouts/FormLayout';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import ReadOnlyElement from '../components/ReadOnlyElement';
@@ -13,7 +13,6 @@ import {
   useSetRsvpEventMutation,
 } from '../services/event/event.service';
 import { mapEventType } from '../common/utils/helpers';
-import LoadingScreen from '../components/LoadingScreen';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useTranslation } from 'react-i18next';
@@ -22,10 +21,14 @@ import { ButtonType } from '../common/enums/button-type.enum';
 import { useEvent } from '../store/event/event.selector';
 import useStore from '../store/store';
 import { AttendanceType } from '../common/enums/attendance-type.enum';
+import EventSkeleton from '../components/skeleton/event-skeleton.item';
+import ImageWithPreload from '../components/ImageWithPreload';
 
 const Event = ({ navigation, route }: any) => {
   console.log('Event');
   const { t } = useTranslation('event');
+
+  const theme = useTheme();
 
   const { eventId } = route.params;
 
@@ -128,10 +131,19 @@ const Event = ({ navigation, route }: any) => {
         helperText: mapNumberOfPersonsToHelper(),
       }}
     >
-      {isLoadingEvent && <LoadingScreen />}
+      {isLoadingEvent && <EventSkeleton />}
       {event && !isLoadingEvent && (
         <FormLayout>
-          <Image source={{ uri: event.image }} style={styles.image} resizeMode="cover" />
+          {event.poster ? (
+            <ImageWithPreload source={event.poster} styles={styles.image} />
+          ) : (
+            <View style={{ ...styles.image, backgroundColor: theme['cool-gray-100'] }}>
+              <Icon
+                name="calendar"
+                style={{ ...styles.imagePlaceholder, color: theme['cool-gray-500'] }}
+              />
+            </View>
+          )}
           <OrganizationIdentity
             uri={event.organizationLogo || ''}
             name={event.organizationName || ''}
@@ -162,6 +174,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     width: '100%',
     aspectRatio: '16/9',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   container: {
     gap: 4,
@@ -171,4 +185,5 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 8,
   },
+  imagePlaceholder: { width: 48, height: 48 },
 });

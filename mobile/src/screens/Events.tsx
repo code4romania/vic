@@ -11,7 +11,7 @@ import { IEventListItem } from '../common/interfaces/event-list-item.interface';
 import { useEventsInfiniteQuery } from '../services/event/event.service';
 import { EventType } from '../common/enums/event-type.enum';
 import { ISelectItem } from '../components/FormSelect';
-import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
+import EventSkeletonListItem from '../components/skeleton/event-skeleton-item';
 
 const EventsTabs: ISelectItem[] = [
   { key: EventType.GOING, label: i18n.t('events:tabs.going') },
@@ -77,7 +77,7 @@ const Events = ({ navigation }: any) => {
         loadMore={onLoadMore}
         isLoading={isFetchingEvents}
         refetch={reloadEvents}
-        loadingLayout={<OrganizationSkeletonListItem />}
+        loadingLayout={<EventSkeletonListItem />}
         errorMessage={getEventsError ? `${t('errors.generic')}` : ''}
       />
     </PageLayout>

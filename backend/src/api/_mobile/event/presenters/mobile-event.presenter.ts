@@ -11,7 +11,7 @@ export class MobileEventPresenter {
   constructor(event: IEventWithVolunteerStatus) {
     this.id = event.id;
     this.name = event.name;
-    this.image = event.poster;
+    this.poster = event.poster;
 
     this.isPublic = event.isPublic;
 
@@ -65,7 +65,7 @@ export class MobileEventPresenter {
 
   @Expose()
   @ApiProperty({ description: 'The image of the Event' })
-  image: string;
+  poster: string;
 
   @Expose()
   @ApiProperty({ description: 'The organization logo for this event' })
