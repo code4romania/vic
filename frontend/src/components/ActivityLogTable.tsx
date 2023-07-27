@@ -289,7 +289,7 @@ const ActivityLogTable = ({
     registrationDateStart: query.registrationDateStart,
     registrationDateEnd: query.registrationDateEnd,
   });
-  const { data: counters } = useActivityLogCounterQuery(volunteerId);
+  const { data: counters, refetch: reloadCounters } = useActivityLogCounterQuery(volunteerId);
 
   // query error handling
   useEffect(() => {
@@ -342,7 +342,10 @@ const ActivityLogTable = ({
   const onCloseSidePanel = (shouldRefetch?: boolean) => {
     setIsViewActivityLogSidePanelOpen(false);
     setSelectedActivityLog(undefined);
-    if (shouldRefetch) refetch();
+    if (shouldRefetch) {
+      refetch();
+      reloadCounters();
+    }
   };
 
   // pagination
