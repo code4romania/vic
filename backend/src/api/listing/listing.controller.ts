@@ -65,9 +65,9 @@ export class ListingController {
     PaginatedPresenter<IdAndNamePresenter<IVolunteerModel & IRegularUserModel>>
   > {
     const volunteers = await this.getManyVolunteersUseCase.execute({
+      ...filters,
       organizationId: user.organizationId,
       limit: 50,
-      ...filters,
     });
 
     return new PaginatedPresenter({
@@ -122,8 +122,8 @@ export class ListingController {
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<PaginatedPresenter<OrganizationStructureListItemPresenter>> {
     const structures = await this.getAllStructureUsecase.execute({
-      limit: 50,
       ...filters,
+      limit: 50,
       type,
       organizationId,
     });
