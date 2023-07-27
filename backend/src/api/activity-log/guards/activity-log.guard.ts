@@ -19,8 +19,7 @@ export class ActivityLogGuard implements CanActivate {
     const activityLog: IActivityLogModel =
       await this.getOneActivityLogUsecase.execute(activityLogId);
 
-    if (activityLog?.event?.organization?.id !== user.organizationId)
-      return false;
+    if (activityLog?.organization?.id !== user.organizationId) return false;
 
     return true;
   }
