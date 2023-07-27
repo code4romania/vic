@@ -13,6 +13,7 @@ export interface VolunteerSelectProps {
   onSelect: (item: ListItem) => void;
   errorMessage?: string;
   helper?: string;
+  disabled?: boolean;
 }
 
 const VolunteerSelect = ({
@@ -21,6 +22,7 @@ const VolunteerSelect = ({
   onSelect,
   errorMessage,
   helper,
+  disabled,
 }: VolunteerSelectProps) => {
   // load volunteers from the database
   const loadVolunteers = async (search: string): Promise<ListItem[]> => {
@@ -55,6 +57,7 @@ const VolunteerSelect = ({
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
       placeholder={`${i18n.t('general:select', { item: '' })}`}
       aria-invalid={!!errorMessage}
+      disabled={disabled}
     />
   );
 };

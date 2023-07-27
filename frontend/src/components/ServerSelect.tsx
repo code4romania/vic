@@ -32,6 +32,7 @@ const ServerSelect = ({
   label,
   isClearable,
   helper,
+  disabled,
   ...props
 }: ServerSelectProps) => {
   const [defaultValue, setDefaultValue] = useState<ListItem>();
@@ -65,6 +66,7 @@ const ServerSelect = ({
         isClearable={isClearable}
         isMulti={isMulti}
         value={defaultValue || null}
+        isDisabled={disabled}
       />
       {helper}
     </div>

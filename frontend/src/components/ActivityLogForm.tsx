@@ -13,6 +13,7 @@ interface ActivityLogFormProps {
   control: Control<ActivityLogFormTypes, object>;
   errors: FieldErrorsImpl<DeepRequired<ActivityLogFormTypes>>;
   disabled?: boolean;
+  lockVoluneer?: boolean;
 }
 
 export type ActivityLogFormTypes = {
@@ -24,7 +25,7 @@ export type ActivityLogFormTypes = {
   task: ListItem;
 };
 
-const ActivityLogForm = ({ control, errors, disabled }: ActivityLogFormProps) => {
+const ActivityLogForm = ({ control, errors, disabled, lockVoluneer }: ActivityLogFormProps) => {
   return (
     <FormLayout>
       {!disabled && <p className="text-cool-gray-500">{i18n.t('activity_log:form.description')}</p>}
@@ -41,6 +42,7 @@ const ActivityLogForm = ({ control, errors, disabled }: ActivityLogFormProps) =>
                   onSelect={onChange}
                   label={i18n.t('volunteer:name', { status: '' })}
                   errorMessage={errors['volunteer']?.message}
+                  disabled={lockVoluneer}
                 />
               );
             }}

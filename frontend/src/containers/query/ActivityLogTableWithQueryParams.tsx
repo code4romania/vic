@@ -32,10 +32,12 @@ const DEFAULT_QUERY_PARAMS = getPaginationQueryParams();
 const ActivityLogTableWithQueryParams = ({
   resolutionStatus,
   volunteerId,
+  volunteerName,
   volunteerStatus,
 }: {
   resolutionStatus?: ActivityLogResolutionStatus;
   volunteerId?: string;
+  volunteerName?: string;
   volunteerStatus?: VolunteerStatus;
 }) => {
   // set request status default
@@ -66,6 +68,7 @@ const ActivityLogTableWithQueryParams = ({
             resolutionStatus={resolutionStatus}
             volunteerId={volunteerId}
             volunteerStatus={volunteerStatus}
+            volunteerName={volunteerName}
           />
         );
       }}

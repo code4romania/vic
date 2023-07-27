@@ -245,12 +245,14 @@ interface ActivityLogTableProps extends ActivityLogTableBasicProps {
   resolutionStatus: ActivityLogResolutionStatus;
   volunteerId?: string;
   volunteerStatus?: VolunteerStatus;
+  volunteerName?: string;
 }
 
 const ActivityLogTable = ({
   resolutionStatus,
   volunteerId,
   volunteerStatus,
+  volunteerName,
   query,
   setQuery,
 }: ActivityLogTableProps) => {
@@ -329,7 +331,7 @@ const ActivityLogTable = ({
   };
 
   const onAddButtonPress = () => {
-    navigate('/activity-log/add');
+    navigate(`/activity-log/add?volunteerName=${volunteerName}&volunteerId=${volunteerId}`);
   };
 
   const onView = (row: IActivityLogListItem) => {

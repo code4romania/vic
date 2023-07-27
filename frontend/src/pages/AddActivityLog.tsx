@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageHeader from '../components/PageHeader';
 import PageLayout from '../layouts/PageLayout';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +16,7 @@ import LoadingContent from '../components/LoadingContent';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import ActivityLogForm, { ActivityLogFormTypes } from '../components/ActivityLogForm';
 import { useAddActivityLogMutation } from '../services/activity-log/activity-log.service';
+import { AddActivityLogProps } from '../containers/query/AddActivityLogWithQueryParams';
 
 export const activityLogValidationSchema = yup
   .object({
@@ -36,7 +37,7 @@ export const activityLogValidationSchema = yup
   })
   .required();
 
-const AddActivityLog = () => {
+const AddActivityLog = ({ query }: AddActivityLogProps) => {
   const navigate = useNavigate();
 
   const { mutateAsync: addActivityLog, isLoading: isAddingActivityLog } =
@@ -46,6 +47,7 @@ const AddActivityLog = () => {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<ActivityLogFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -55,6 +57,12 @@ const AddActivityLog = () => {
   const navigateBack = () => {
     navigate('/activity-log', { replace: true });
   };
+
+  useEffect(() => {
+    if (query.volunteerName && query.volunteerId) {
+      reset({ volunteer: { value: query.volunteerId, label: query.volunteerName } });
+    }
+  }, []);
 
   const onSubmit = (data: ActivityLogFormTypes) => {
     addActivityLog(data, {
@@ -86,7 +94,7 @@ const AddActivityLog = () => {
             />
           </CardHeader>
           <CardBody>
-            <ActivityLogForm control={control} errors={errors} />
+            <ActivityLogForm control={control} errors={errors} lockVoluneer={!!query.volunteerId} />
           </CardBody>
         </Card>
       )}

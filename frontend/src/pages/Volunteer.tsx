@@ -49,7 +49,7 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
   }, [error]);
 
   const onBackButtonPress = () => {
-    navigate('/volunteers', { replace: true });
+    navigate(`/volunteers`, { replace: true });
   };
 
   return (
@@ -100,6 +100,7 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
           <ActivityLogTableWithQueryParams
             resolutionStatus={ActivityLogResolutionStatus.SOLVED}
             volunteerId={id as string}
+            volunteerName={volunteer?.user.name}
             volunteerStatus={volunteer?.status}
           />
         )}
