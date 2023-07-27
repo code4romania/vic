@@ -23,6 +23,7 @@ import { GetActivityTypesDto } from '../activity-type/dto/get-activity-types.dto
 import { GetManyEventDto } from '../event/dto/get-many-event.dto';
 import { OrganizationStructureListItemPresenter } from '../organization/presenters/organization-structure-list-item.presenter';
 import { GetVolunteersDto } from '../volunteer/dto/get-volunteers.dto';
+import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -46,6 +47,7 @@ export class ListingController {
       ...filters,
       limit: 50,
       organizationId,
+      status: EventStatus.PUBLISHED,
     });
 
     return new PaginatedPresenter({

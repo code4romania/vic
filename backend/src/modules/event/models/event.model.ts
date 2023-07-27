@@ -120,6 +120,7 @@ export type UpdateStatusOptions = EventStatus.PUBLISHED | EventStatus.ARCHIVED;
 export type FindManyEventOptions = {
   organizationId: IOrganizationModel['id'];
   eventState?: EventState;
+  status?: EventStatus;
 } & IBasePaginationFilterModel;
 
 export type FindMyEventsOptions = {

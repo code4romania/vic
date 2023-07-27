@@ -51,8 +51,14 @@ export class EventRepository
   async getMany(
     findOptions: FindManyEventOptions,
   ): Promise<Pagination<IEventsListItemModel>> {
-    const { eventState, organizationId, orderBy, orderDirection, search } =
-      findOptions;
+    const {
+      eventState,
+      organizationId,
+      orderBy,
+      orderDirection,
+      search,
+      status,
+    } = findOptions;
 
     const query = this.eventRepository
       .createQueryBuilder('event')
@@ -111,6 +117,10 @@ export class EventRepository
           currentDate,
         });
       }
+    }
+
+    if (status) {
+      query.andWhere('event.status = :status', { status });
     }
 
     if (search) {
