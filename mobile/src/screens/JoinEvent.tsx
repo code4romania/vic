@@ -12,6 +12,7 @@ import useStore from '../store/store';
 import ModalLayout from '../layouts/ModalLayout';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useEvent } from '../store/event/event.selector';
 
 type JoinEventFormTypes = {
   mention: string;
@@ -28,9 +29,10 @@ const schema = yup
   .required();
 
 const JoinEvent = ({ navigation, route }: any) => {
-  console.log('JoinEvent');
   const { eventId } = route.params;
   const { t } = useTranslation('event');
+
+  const { event } = useEvent();
 
   const { mutate: setRsvpEvent, isLoading } = useSetRsvpEventMutation();
 
@@ -83,7 +85,7 @@ const JoinEvent = ({ navigation, route }: any) => {
       }}
     >
       <FormLayout>
-        <Text appearance="hint">{`${t('join.paragraph')}`}</Text>
+        <Text appearance="hint">{`${event?.attendanceMention || ''}`}</Text>
         <FormInput
           control={control as any}
           error={errors.mention}

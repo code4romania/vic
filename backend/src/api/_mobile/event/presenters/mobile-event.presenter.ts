@@ -34,6 +34,7 @@ export class MobileEventPresenter {
     this.numberOfPersonsGoingToEvent = event.numberOfPersonsGoingToEvent;
 
     this.attendanceType = event.attendanceType;
+    this.attendanceMention = event.attendanceMention;
   }
 
   @Expose()
@@ -86,6 +87,12 @@ export class MobileEventPresenter {
     examples: Object.values(EventAttendOptions),
   })
   attendanceType: EventAttendOptions;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The attendance mention',
+  })
+  attendanceMention?: string;
 
   @Expose()
   @ApiProperty({

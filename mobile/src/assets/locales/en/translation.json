@@ -462,7 +462,6 @@
   "event": {
     "join": {
       "header": "Doresc sa particip",
-      "paragraph": "Lorem ispum",
       "form": {
         "mention": {
           "label": "Mențiune",
