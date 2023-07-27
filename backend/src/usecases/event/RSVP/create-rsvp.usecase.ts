@@ -86,7 +86,11 @@ export class CreateEventRSVPUseCase
     }
 
     // 8. Check if event requires mention and that mention is present
-    if (event.attendanceType === EventAttendOptions.MENTION && !data.mention) {
+    if (
+      event.attendanceType === EventAttendOptions.MENTION &&
+      !data.mention &&
+      data.going
+    ) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_004,
       );

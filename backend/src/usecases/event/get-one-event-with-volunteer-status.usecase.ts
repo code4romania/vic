@@ -27,7 +27,7 @@ export class GetOneEventWithVolunteerStatusUsecase
     // 2. count the number of rsvps going for this event
     const { eventRsvps, ...rest } = event;
 
-    const numberOfPersonsGoingToEvent = eventRsvps.map(
+    const numberOfPersonsGoingToEvent = eventRsvps.filter(
       (rsvp) => rsvp.going,
     ).length;
 
