@@ -157,9 +157,10 @@ const VolunteerContractsTableHeader = [
 
 interface ContractsTableProps extends ContractsTableBasicProps {
   volunteerName?: string;
+  volunteerId?: string;
 }
 
-const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps) => {
+const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: ContractsTableProps) => {
   // selected contract id
   const [selectedContract, setSelectedContract] = useState<string>();
   // side panel state
@@ -351,7 +352,13 @@ const ContractsTable = ({ query, setQuery, volunteerName }: ContractsTableProps)
   };
 
   const onAddContract = () => {
-    navigate('/documents/contracts/add');
+    if (volunteerName && volunteerId) {
+      navigate(
+        `/documents/contracts/add?volunteerName=${volunteerName}&volunteerId=${volunteerId}`,
+      );
+    } else {
+      navigate(`/documents/contracts/add`);
+    }
   };
 
   const onStartDateChange = (startDate: Date | null) => {

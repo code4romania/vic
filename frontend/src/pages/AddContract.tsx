@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import PageHeader from '../components/PageHeader';
 import i18n from '../common/config/i18n';
@@ -21,6 +21,7 @@ import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
 import { useTranslation } from 'react-i18next';
+import { AddContractProps } from '../containers/query/AddContractWithQueryParams';
 
 const schema = yup
   .object({
@@ -43,7 +44,7 @@ export type AddContractFormTypes = {
   endDate: Date;
 };
 
-const AddContract = () => {
+const AddContract = ({ query }: AddContractProps) => {
   const navigate = useNavigate();
   // translation
   const { t } = useTranslation('documents');
@@ -58,12 +59,18 @@ const AddContract = () => {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<AddContractFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });
-  console.log('errors', errors);
+
+  useEffect(() => {
+    if (query.volunteerId && query.volunteerName) {
+      reset({ volunteer: { value: query.volunteerId, label: query.volunteerName } });
+    }
+  }, []);
 
   const onSubmit = (data: AddContractFormTypes) => {
     addContract(
@@ -111,6 +118,7 @@ const AddContract = () => {
                       onSelect={onChange}
                       label={t('volunteer:name', { status: '' })}
                       errorMessage={errors['volunteer']?.message}
+                      disabled={!!query.volunteerId}
                     />
                   );
                 }}

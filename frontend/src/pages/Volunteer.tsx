@@ -108,7 +108,10 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
           <ActionsArchiveWithQueryParams volunteerId={id} />
         )}
         {query?.activeTab === VolunteerTabsOptions.DOCUMENTS && (
-          <ContractsTableWithQueryParams volunteerName={volunteer?.user.name as string} />
+          <ContractsTableWithQueryParams
+            volunteerName={volunteer?.user.name as string}
+            volunteerId={volunteer?.id}
+          />
         )}
       </Tabs>
     </PageLayout>

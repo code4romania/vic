@@ -33,7 +33,7 @@ import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import Contracts from '../containers/query/ContractsWithQueryParams';
 import AddContractTemplate from '../pages/AddContractTemplate';
 import EditContractTemplate from '../pages/EditContractTemplate';
-import AddContract from '../pages/AddContract';
+import AddContract from '../containers/query/AddContractWithQueryParams';
 import ActionsArchive from '../pages/ActionsArchive';
 
 const Router = () => {
