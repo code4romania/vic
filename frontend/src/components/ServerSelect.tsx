@@ -37,7 +37,7 @@ const ServerSelect = ({
 }: ServerSelectProps) => {
   const [defaultValue, setDefaultValue] = useState<ListItem>();
 
-  const onSearch = (inputValue: string) => (inputValue?.length >= 3 ? loadOptions(inputValue) : []);
+  const onSearch = (inputValue: string) => (inputValue?.length >= 2 ? loadOptions(inputValue) : []);
 
   const debouncedLoadOptions = debouncePromise(onSearch, 500);
 
