@@ -54,6 +54,7 @@ export class MobileActivityLogController {
   ): Promise<PaginatedPresenter<MobileActivityLogListItemPresenter>> {
     const logs = await this.getManyActivityLogsUsecase.execute({
       ...filters,
+      orderBy: 'activityType.name',
       organizationId: activeOrganization.id,
       volunteerId: activeOrganization.volunteerId,
     });
