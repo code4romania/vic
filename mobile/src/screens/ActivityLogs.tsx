@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Button, Icon, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import { Button, Icon, Text, useTheme } from '@ui-kitten/components';
 import i18n from '../common/config/i18n';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import Tabs from '../components/Tabs';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import {
   useActivityLogsCounters,
   useActivityLogsInfiniteQuery,
@@ -28,8 +28,8 @@ export const ActivityLogsTabs: ISelectItem[] = [
 ];
 
 const ActivityLogs = ({ navigation }: any) => {
-  const styles = useStyleSheet(themedStyles);
   console.log('ActivityLogs');
+  const theme = useTheme();
   // translations
   const { t } = useTranslation('activity_logs');
   // order direction filter
@@ -56,7 +56,7 @@ const ActivityLogs = ({ navigation }: any) => {
   const { isFetching: isLoadingCounters } = useActivityLogsCounters(
     status,
     userProfile?.activeOrganization?.volunteerId as string,
-  ); // TODO: check for error
+  );
 
   const onAddActivityLogButtonPress = () => {
     navigation.navigate('add-activity-log');
@@ -128,7 +128,7 @@ const ActivityLogs = ({ navigation }: any) => {
         errorMessage={getActivityLogsError ? `${t('errors.generic')}` : ''}
       />
       <Button onPress={onAddActivityLogButtonPress} style={styles.addButton}>
-        {() => <Icon name="plus" style={styles.addIcon} />}
+        {() => <Icon name="plus" style={{ ...styles.addIcon, color: theme['color-basic-100'] }} />}
       </Button>
     </PageLayout>
   );
@@ -136,7 +136,7 @@ const ActivityLogs = ({ navigation }: any) => {
 
 export default ActivityLogs;
 
-const themedStyles = StyleService.create({
+const styles = StyleSheet.create({
   totalText: {
     textAlign: 'right',
     paddingTop: 16,
@@ -157,6 +157,5 @@ const themedStyles = StyleService.create({
   },
   addIcon: {
     height: 24,
-    color: '$color-basic-100',
   },
 });

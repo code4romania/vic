@@ -55,6 +55,7 @@ export class MobileActivityLogController {
     const logs = await this.getManyActivityLogsUsecase.execute({
       ...filters,
       organizationId: activeOrganization.id,
+      volunteerId: activeOrganization.volunteerId,
     });
 
     return new PaginatedPresenter({
