@@ -7,7 +7,6 @@ import {
   useActivityLogQuery,
   useCancelActivityLogMutation,
 } from '../services/activity-log/activity-log.service';
-import LoadingScreen from '../components/LoadingScreen';
 import Disclaimer from '../components/Disclaimer';
 import { ActivityLogStatusToColorMapper } from '../common/utils/utils';
 import { useTranslation } from 'react-i18next';
@@ -17,14 +16,13 @@ import { Divider } from '@ui-kitten/components';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useUserProfile } from '../store/profile/profile.selector';
+import ActivityLogSkeleton from '../components/skeleton/activity-log-skeleton';
 
 const ActivityLog = ({ navigation, route }: any) => {
   console.log('ActivityLog');
   // translations
   const { t } = useTranslation('activity_log');
-
   const { userProfile } = useUserProfile();
-
   const { activityLogId } = route.params;
   // activity log query
   const { isFetching: isLoadingActivityLog, data: activityLog } =
@@ -79,7 +77,7 @@ const ActivityLog = ({ navigation, route }: any) => {
         activityLog?.status === ActivityLogStatus.PENDING ? onEditActivityLog : undefined
       }
     >
-      {isLoadingActivityLog && <LoadingScreen />}
+      {isLoadingActivityLog && <ActivityLogSkeleton />}
       {activityLog && !isLoadingActivityLog && (
         <>
           {activityLog?.status === ActivityLogStatus.PENDING && (

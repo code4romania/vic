@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Button, Icon, Text, useTheme } from '@ui-kitten/components';
 import i18n from '../common/config/i18n';
@@ -19,7 +19,7 @@ import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { ISelectItem } from '../components/FormSelect';
 import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 import { useUserProfile } from '../store/profile/profile.selector';
-import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
+import ActivityLogSkeletonItem from '../components/skeleton/activity-log-skeleton-item';
 
 export const ActivityLogsTabs: ISelectItem[] = [
   { key: ActivityLogStatus.PENDING, label: i18n.t('activity_logs:tabs.pending') },
@@ -52,11 +52,22 @@ const ActivityLogs = ({ navigation }: any) => {
     hasNextPage,
     refetch: reloadActivityLogs,
   } = useActivityLogsInfiniteQuery(orderDirection, search, status);
+
   // counters
-  const { isFetching: isLoadingCounters } = useActivityLogsCounters(
+  const { refetch: reloadCounters } = useActivityLogsCounters(
     status,
     userProfile?.activeOrganization?.volunteerId as string,
   );
+
+  // This will be triggered every time the organization state changes
+  const refetchLogs = useCallback(() => {
+    reloadActivityLogs();
+    reloadCounters();
+  }, [reloadCounters, reloadActivityLogs]);
+
+  useEffect(() => {
+    refetchLogs();
+  }, [refetchLogs]);
 
   const onAddActivityLogButtonPress = () => {
     navigation.navigate('add-activity-log');
@@ -102,29 +113,27 @@ const ActivityLogs = ({ navigation }: any) => {
         onChange={setSearch}
         onSort={onSort}
       />
-      {!isLoadingCounters && (
-        <Text appearance="hint" style={styles.totalText}>
-          {`${t('activity_log:total')}`}{' '}
-          <>
-            {status === ActivityLogStatus.APPROVED && (
-              <Text category="p2">{`${approvedHours}h`} </Text>
-            )}
-            {status === ActivityLogStatus.REJECTED && (
-              <Text category="p2">{`${rejectedHours}h`} </Text>
-            )}
-            {status === ActivityLogStatus.PENDING && (
-              <Text category="p2">{`${pendingHours}h`} </Text>
-            )}
-          </>
-        </Text>
-      )}
+      <Text appearance="hint" style={styles.totalText}>
+        {`${t('activity_log:total')}`}{' '}
+        <>
+          {status === ActivityLogStatus.APPROVED && (
+            <Text category="p2">{`${approvedHours || ''}h`} </Text>
+          )}
+          {status === ActivityLogStatus.REJECTED && (
+            <Text category="p2">{`${rejectedHours || ''}h`} </Text>
+          )}
+          {status === ActivityLogStatus.PENDING && (
+            <Text category="p2">{`${pendingHours || ''}h`} </Text>
+          )}
+        </>
+      </Text>
       <InfiniteListLayout<IActivityLogItem>
         pages={activityLogs?.pages}
         renderItem={onRenderEventListItem}
         loadMore={onLoadMore}
         isLoading={isFetchingActivityLogs}
         refetch={reloadActivityLogs}
-        loadingLayout={<OrganizationSkeletonListItem />}
+        loadingLayout={<ActivityLogSkeletonItem />}
         errorMessage={getActivityLogsError ? `${t('errors.generic')}` : ''}
       />
       <Button onPress={onAddActivityLogButtonPress} style={styles.addButton}>

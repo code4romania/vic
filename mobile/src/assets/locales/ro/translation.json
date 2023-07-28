@@ -516,6 +516,7 @@
     "title": "Log",
     "rejection_reason": "Motiv respingere",
     "other": "Alta optiune",
+    "total": "Total",
     "disclaimer": {
       "approved": "Aprobată la {{date}}",
       "pending": "Necesita aprobare din partea organizatiei",

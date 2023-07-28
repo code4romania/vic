@@ -21,7 +21,7 @@ import { ButtonType } from '../common/enums/button-type.enum';
 import { useEvent } from '../store/event/event.selector';
 import useStore from '../store/store';
 import { AttendanceType } from '../common/enums/attendance-type.enum';
-import EventSkeleton from '../components/skeleton/event-skeleton.item';
+import EventSkeleton from '../components/skeleton/event-skeleton';
 import ImageWithPreload from '../components/ImageWithPreload';
 
 const Event = ({ navigation, route }: any) => {

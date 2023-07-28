@@ -44,10 +44,8 @@ const Organizations = ({ navigation }: any) => {
   const { t } = useTranslation('organizations');
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
   const [search, setSearch] = useState<string>('');
-
   // organization state
   const { organization } = useOrganization();
-
   // user profile
   const { userProfile } = useUserProfile();
 

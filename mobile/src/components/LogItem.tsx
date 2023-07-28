@@ -17,7 +17,7 @@ const LogItem = ({ activityLog, onPress }: LogItemProps) => {
   return (
     <PressableContainer onPress={() => onPress(activityLog.id)}>
       <View style={styles.container}>
-        <GrayIcon name={'heart'} />
+        <GrayIcon name={activityLog.activityType?.icon || 'package'} />
         <View style={styles.textWrapper}>
           <Text category="p2" ellipsizeMode="tail" numberOfLines={1}>
             {activityLog.activityType?.name || `${t('other')}`}
