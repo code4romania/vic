@@ -45,7 +45,7 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
     <View style={styles.container}>
       <Text category="p1">
         {label}
-        {required ? <Text status={error ? 'danger' : 'basic'}>*</Text> : ''}
+        {required ? <Text status="danger">*</Text> : ''}
       </Text>
       <Controller
         control={control}
