@@ -120,6 +120,7 @@ const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {
   const { volunteer, task, event, ...payload } = data;
   return {
     ...payload,
+    date: formatEndDateISO9075(payload.date),
     volunteerId: volunteer.value,
     ...(task.value !== CONSTANTS.OTHER ? { activityTypeId: task.value } : {}),
     ...(event ? { eventId: event.value } : {}),
@@ -132,6 +133,7 @@ const formatEditActivityLogPayload = (data: ActivityLogFormTypes): object => {
 
   return {
     ...payload,
+    date: formatEndDateISO9075(payload.date),
     ...(task.value !== CONSTANTS.OTHER ? { activityTypeId: task.value } : {}),
     ...(event ? { eventId: event.value } : {}),
   };
