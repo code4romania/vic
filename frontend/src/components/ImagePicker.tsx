@@ -9,8 +9,23 @@ import {
   Gift,
   Scissors,
   Truck,
+  Package,
 } from 'react-feather';
 import { classNames } from '../common/utils/utils';
+
+export const ICON_MAPPER: Record<string, React.ReactNode> = {
+  box: <Book />,
+  heart: <Heart />,
+  archive: <Archive />,
+  book: <Book />,
+  camera: <Camera />,
+  clipboard: <Clipboard />,
+  coffee: <Coffee />,
+  gift: <Gift />,
+  scissors: <Scissors />,
+  truck: <Truck />,
+  package: <Package />,
+};
 
 export const IMAGE_OPTIONS = [
   {
@@ -55,7 +70,7 @@ export const IMAGE_OPTIONS = [
   },
 ];
 
-const ImageOption = ({
+export const ImageOption = ({
   item,
   component,
   selected,
@@ -64,10 +79,10 @@ const ImageOption = ({
   item: string;
   component: React.ReactNode;
   selected?: boolean;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
 }) => (
   <div
-    onClick={() => onChange(item)}
+    onClick={() => onChange && onChange(item)}
     className={classNames(
       'h-12 w-12 rounded-full bg-cool-gray-100 flex items-center justify-center cursor-pointer',
       selected ? 'bg-cool-gray-300' : 'bg-cool-gray-100',

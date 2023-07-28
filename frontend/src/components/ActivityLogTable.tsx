@@ -16,7 +16,6 @@ import {
 } from '../common/utils/utils';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import MediaCell from './MediaCell';
 import {
   useActivityLogCounterQuery,
   useActivityLogsQuery,
@@ -37,11 +36,28 @@ import { getActivityLogsForDownload } from '../services/activity-log/activity-lo
 import { ActivityLogTableBasicProps } from '../containers/query/ActivityLogTableWithQueryParams';
 import LinkCell from './LinkCell';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
+import { ICON_MAPPER, ImageOption } from './ImagePicker';
 
 const StatusOptions: SelectItem<ActivityLogStatus>[] = [
   { key: ActivityLogStatus.APPROVED, value: i18n.t('activity_log:display_status.approved') },
   { key: ActivityLogStatus.REJECTED, value: i18n.t('activity_log:display_status.rejected') },
 ];
+
+const ActivityTypeCell = ({ item }: { item: IActivityLogListItem }) => (
+  <div className="flex items-center gap-3 shrink-0 w-full">
+    {item.activityType ? (
+      <ImageOption item={item.activityType?.icon} component={ICON_MAPPER[item.activityType.icon]} />
+    ) : (
+      <ImageOption item="package" component={ICON_MAPPER['package']} />
+    )}
+    <div className="flex flex-col w-4/5">
+      <small className="font-robotoBold truncate ">
+        {item.activityType?.name || i18n.t('general:other')}
+      </small>
+      <small className="truncate text-cool-gray-500">{item.event?.name || ''}</small>
+    </div>
+  </div>
+);
 
 const PendingVolunteerActivityLogTableHeader = [
   {
@@ -50,13 +66,7 @@ const PendingVolunteerActivityLogTableHeader = [
     sortable: true,
     grow: 3,
     minWidth: '10rem',
-    cell: (row: IActivityLogListItem) => (
-      <MediaCell
-        logo={row.activityType?.icon}
-        title={row.activityType?.name || i18n.t('general:other')}
-        subtitle={row.event?.name || ''}
-      />
-    ),
+    cell: (row: IActivityLogListItem) => <ActivityTypeCell item={row} />,
   },
   {
     id: 'hours',
@@ -91,13 +101,7 @@ const PastVolunteerActivityLogTableHeader = [
     sortable: true,
     grow: 3,
     minWidth: '10rem',
-    cell: (row: IActivityLogListItem) => (
-      <MediaCell
-        logo={row.activityType?.icon}
-        title={row.activityType?.name || i18n.t('general:other')}
-        subtitle={row.event?.name || ''}
-      />
-    ),
+    cell: (row: IActivityLogListItem) => <ActivityTypeCell item={row} />,
   },
   {
     id: 'hours',
@@ -138,13 +142,7 @@ const PendingActivityLogTableHeader = [
     sortable: true,
     grow: 3,
     minWidth: '10rem',
-    cell: (row: IActivityLogListItem) => (
-      <MediaCell
-        logo={row.activityType?.icon}
-        title={row.activityType?.name || i18n.t('general:other')}
-        subtitle={row.event?.name || ''}
-      />
-    ),
+    cell: (row: IActivityLogListItem) => <ActivityTypeCell item={row} />,
   },
   {
     id: 'hours',
@@ -190,13 +188,7 @@ const PastActivityLogTableHeader = [
     sortable: true,
     grow: 3,
     minWidth: '10rem',
-    cell: (row: IActivityLogListItem) => (
-      <MediaCell
-        logo={row.activityType?.icon}
-        title={row.activityType?.name || i18n.t('general:other')}
-        subtitle={row.event?.name || ''}
-      />
-    ),
+    cell: (row: IActivityLogListItem) => <ActivityTypeCell item={row} />,
   },
   {
     id: 'hours',
