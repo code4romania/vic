@@ -38,7 +38,7 @@ const DatePickerInput = ({
           {...props}
           className={classNames(
             className || '',
-            'block w-full pr-10 border-cool-gray-200 shadow-sm rounded-md sm:text-sm lg:text-base text-xs leading-loose max-w-[37rem]',
+            'block w-full pr-10 border-cool-gray-200 shadow-sm rounded-md sm:text-sm lg:text-base text-xs leading-loose max-w-[37rem] max-h-[42px]',
           )}
           onChange={onChange}
           dateFormat={dateFormat ? dateFormat : 'dd.MM.yyyy'}
