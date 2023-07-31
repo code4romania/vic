@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
+import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import {
   FindManyContractOptions,
   IContractDownloadModel,
@@ -20,6 +21,7 @@ export class GetContractsForDownloadUsecase
       ...findOptions,
       limit: 0,
       page: 0,
+      contractStatus: ContractStatus.APPROVED,
     });
 
     return contracts.items.map((contract): IContractDownloadModel => {

@@ -54,7 +54,7 @@ export class ContractRepositoryService
       volunteerId,
       history,
       pending,
-      // userId,
+      contractStatus,
     } = findOptions;
 
     const query = this.contractRepository
@@ -123,6 +123,12 @@ export class ContractRepositoryService
       } else {
         query.andWhere('contract.status = :status', { status });
       }
+    }
+
+    if (contractStatus) {
+      query.andWhere('contract.status = :contractStatus', {
+        contractStatus,
+      });
     }
 
     // get all ACTIVE AND FINISHED contracts
