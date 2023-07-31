@@ -7,6 +7,7 @@ import { IActivityLog } from '../../common/interfaces/activity-log.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import API from '../api';
+import { CONSTANTS } from '../../common/constants/constants';
 
 interface PaginationQuery {
   pageParam?: number;
@@ -16,8 +17,10 @@ interface PaginationQuery {
 }
 
 export const createActivityLog = async (payload: ActivityLogFormTypes): Promise<IActivityLog> => {
+  const { activityTypeId, ...log } = payload;
   return API.post('/mobile/activity-log', {
-    ...payload,
+    ...log,
+    ...(activityTypeId !== CONSTANTS.OTHER_OPTION ? { activityTypeId } : {}),
     date: formatISO9075(endOfDay(payload.date)),
   }).then((res) => res.data);
 };
@@ -26,8 +29,10 @@ export const updateActivityLog = async (
   volunteerId: string,
   updates: Partial<ActivityLogFormTypes>,
 ): Promise<IActivityLog> => {
+  const { activityTypeId, ...log } = updates;
   return API.patch(`/mobile/activity-log/${volunteerId}`, {
-    ...updates,
+    ...log,
+    ...(activityTypeId !== CONSTANTS.OTHER_OPTION ? { activityTypeId } : {}),
     ...(updates.date ? { date: formatISO9075(endOfDay(updates.date)) } : {}),
   }).then((res) => res.data);
 };

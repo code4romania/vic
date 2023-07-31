@@ -17,6 +17,7 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useUserProfile } from '../store/profile/profile.selector';
 import ActivityLogSkeleton from '../components/skeleton/activity-log-skeleton';
+import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 
 const ActivityLog = ({ navigation, route }: any) => {
   console.log('ActivityLog');
@@ -25,8 +26,9 @@ const ActivityLog = ({ navigation, route }: any) => {
   const { userProfile } = useUserProfile();
   const { activityLogId } = route.params;
   // activity log query
-  const { isFetching: isLoadingActivityLog, data: activityLog } =
-    useActivityLogQuery(activityLogId);
+  const { activityLog } = useActivityLogs();
+
+  const { isFetching: isLoadingActivityLog } = useActivityLogQuery(activityLogId);
   // cancel activity log
   const { isLoading: isCancelingLog, mutate: cancelLog } = useCancelActivityLogMutation();
 
@@ -106,7 +108,10 @@ const ActivityLog = ({ navigation, route }: any) => {
               />
             )}
             <ReadOnlyElement label={t('form.event.label')} value={activityLog?.event?.name} />
-            <ReadOnlyElement label={t('form.task.label')} value={activityLog?.activityType.name} />
+            <ReadOnlyElement
+              label={t('form.task.label')}
+              value={activityLog?.activityType?.name || `${t('other')}`}
+            />
             <ReadOnlyElement label={t('form.date.label')} value={activityLog?.date} />
             <ReadOnlyElement label={t('form.hours.label')} value={`${activityLog?.hours}`} />
             <ReadOnlyElement label={t('form.mentions.label')} value={activityLog?.mentions} />

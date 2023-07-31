@@ -12,6 +12,7 @@ import { useUpdateActivityLog } from '../services/activity-log/activity-log.serv
 import { parse } from 'date-fns';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { CONSTANTS } from '../common/constants/constants';
 
 const EditActivityLog = ({ navigation }: any) => {
   console.log('EditActivityLog');
@@ -29,7 +30,7 @@ const EditActivityLog = ({ navigation }: any) => {
   } = useForm<ActivityLogFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(activityLogSchema),
+    resolver: yupResolver(activityLogSchema) as any,
   });
 
   useEffect(() => {
@@ -39,7 +40,7 @@ const EditActivityLog = ({ navigation }: any) => {
         hours: selectedActivityLog.hours.toString(),
         mentions: selectedActivityLog.mentions,
         eventId: selectedActivityLog.event?.id,
-        activityTypeId: selectedActivityLog.activityType.id,
+        activityTypeId: selectedActivityLog.activityType?.id || CONSTANTS.OTHER_OPTION,
       });
     }
   }, [selectedActivityLog, reset]);

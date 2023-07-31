@@ -22,7 +22,7 @@ const EditVolunteer = ({ navigation }: any) => {
   } = useForm<VolunteerFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(volunteerSchema),
+    resolver: yupResolver(volunteerSchema) as any,
   });
 
   const { isLoading: isUpdateingProfile, mutate: updateVolunteerProfile } =

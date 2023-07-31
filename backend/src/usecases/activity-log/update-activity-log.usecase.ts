@@ -59,6 +59,9 @@ export class UpdateActivityLogUsecase
       }
     }
 
-    return this.activityLogFacade.update(id, updates);
+    return this.activityLogFacade.update(id, {
+      ...updates,
+      activityTypeId: (updates.activityTypeId || null) as never,
+    });
   }
 }

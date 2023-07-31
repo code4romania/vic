@@ -15,8 +15,13 @@ import { IActivityLog } from '../../common/interfaces/activity-log.interface';
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 
 export const useCreateActivityLogMutation = () => {
-  return useMutation(['log-hours'], ({ activityLog }: { activityLog: ActivityLogFormTypes }) =>
-    createActivityLog(activityLog),
+  const { setSelectedActivityLog } = useStore();
+  return useMutation(
+    ['log-hours'],
+    ({ activityLog }: { activityLog: ActivityLogFormTypes }) => createActivityLog(activityLog),
+    {
+      onSuccess: (data: IActivityLog) => setSelectedActivityLog(data),
+    },
   );
 };
 

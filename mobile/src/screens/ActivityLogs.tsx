@@ -39,7 +39,7 @@ const ActivityLogs = ({ navigation }: any) => {
   // active tab
   const [status, setStatus] = useState<ActivityLogStatus>(ActivityLogStatus.PENDING);
   // counters state
-  const { approvedHours, rejectedHours, pendingHours } = useActivityLogs();
+  const { approvedHours, rejectedHours, pendingHours, activityLog } = useActivityLogs();
   // user profile
   const { userProfile } = useUserProfile();
 
@@ -61,13 +61,15 @@ const ActivityLogs = ({ navigation }: any) => {
 
   // This will be triggered every time the organization state changes
   const refetchLogs = useCallback(() => {
-    reloadActivityLogs();
-    reloadCounters();
-  }, [reloadCounters, reloadActivityLogs]);
+    if (activityLog) {
+      reloadActivityLogs();
+      reloadCounters();
+    }
+  }, [reloadCounters, reloadActivityLogs, activityLog]);
 
   useEffect(() => {
     refetchLogs();
-  }, [refetchLogs]);
+  }, [refetchLogs, activityLog]);
 
   const onAddActivityLogButtonPress = () => {
     navigation.navigate('add-activity-log');
@@ -117,13 +119,13 @@ const ActivityLogs = ({ navigation }: any) => {
         {`${t('activity_log:total')}`}{' '}
         <>
           {status === ActivityLogStatus.APPROVED && (
-            <Text category="p2">{`${approvedHours || ''}h`} </Text>
+            <Text category="p2">{`${approvedHours || '0'}h`} </Text>
           )}
           {status === ActivityLogStatus.REJECTED && (
-            <Text category="p2">{`${rejectedHours || ''}h`} </Text>
+            <Text category="p2">{`${rejectedHours || '0'}h`} </Text>
           )}
           {status === ActivityLogStatus.PENDING && (
-            <Text category="p2">{`${pendingHours || ''}h`} </Text>
+            <Text category="p2">{`${pendingHours || '0'}h`} </Text>
           )}
         </>
       </Text>
