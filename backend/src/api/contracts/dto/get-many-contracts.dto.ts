@@ -8,6 +8,10 @@ export class GetManyContractsDto extends BasePaginationFilterDto {
   volunteerName?: string;
 
   @IsOptional()
+  @IsString()
+  volunteerId?: string;
+
+  @IsOptional()
   @IsEnum(ClientContractStatus)
   status?: ClientContractStatus;
 

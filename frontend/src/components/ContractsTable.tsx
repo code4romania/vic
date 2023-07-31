@@ -199,6 +199,7 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
     startDate: query?.startDate,
     endDate: query?.endDate,
     status: query?.status as ContractStatus,
+    volunteerId,
   });
 
   // query error handling

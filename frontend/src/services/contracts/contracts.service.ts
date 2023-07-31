@@ -32,6 +32,7 @@ export const useContractsQuery = ({
   startDate,
   endDate,
   status,
+  volunteerId,
 }: {
   page: number;
   limit: number;
@@ -42,6 +43,7 @@ export const useContractsQuery = ({
   startDate?: Date;
   endDate?: Date;
   status?: ContractStatus;
+  volunteerId?: string;
 }) => {
   return useQuery(
     [
@@ -55,6 +57,7 @@ export const useContractsQuery = ({
       startDate,
       endDate,
       status,
+      volunteerId,
     ],
     () =>
       getContracts({
@@ -67,6 +70,7 @@ export const useContractsQuery = ({
         startDate,
         endDate,
         status,
+        volunteerId,
       }),
     {
       onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
@@ -88,7 +92,7 @@ export const useContractQuery = (id: string) => {
 };
 
 export const useDeleteContractMutation = () => {
-  return useMutation(['delete-contract'], (id: string) => deleteContract(id), {
+  return useMutation((id: string) => deleteContract(id), {
     onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
   });
 };

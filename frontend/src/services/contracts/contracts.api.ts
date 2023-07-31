@@ -20,6 +20,7 @@ export const getContracts = async (params: {
   startDate?: Date;
   endDate?: Date;
   status?: ContractStatus;
+  volunteerId?: string;
 }): Promise<IPaginatedEntity<IContractListItem>> => {
   return API.get('contract', { params }).then((res) => res.data);
 };
