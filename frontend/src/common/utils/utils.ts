@@ -37,7 +37,7 @@ export const formatDate = (value?: Date | string | null, dateFormat?: string): s
   value ? format(new Date(value), dateFormat || 'dd.LL.y') : '-';
 
 export const formatDateWithTime = (value?: Date | string | null): string =>
-  value ? format(new Date(value), 'dd.LL.y hh:mm') : '-';
+  value ? format(new Date(value), 'dd.LL.y HH:mm') : '-';
 
 export const arrayOfNamesToString = (array: { name: string }[], separator: string): string => {
   return array.map((item) => item.name).join(separator);
