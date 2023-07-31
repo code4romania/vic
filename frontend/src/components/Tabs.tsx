@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import Select, { SelectItem } from './Select';
 
 interface TabsProps<T> {
@@ -15,6 +15,12 @@ const Tabs = <T extends React.Key>({ children, tabs, onClick, defaultTab }: Tabs
     setActiveTab(selected);
     onClick(selected.key);
   };
+
+  useEffect(() => {
+    if (defaultTab && defaultTab?.key !== activeTab.key) {
+      setActiveTab(defaultTab);
+    }
+  }, [defaultTab]);
 
   return (
     <div className="flex flex-col gap-5">
