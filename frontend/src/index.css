@@ -262,7 +262,7 @@
 }
 
 .reactselect__value-container {
-  @apply py-1.5 px-3 !important;
+  @apply py-[0.35rem] px-3 !important;
 }
 
 .reactselect__loading-indicator {

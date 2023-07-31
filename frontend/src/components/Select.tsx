@@ -30,14 +30,10 @@ const Select = <T extends React.Key>({
     <Listbox defaultValue={selected} onChange={onChange}>
       {({ open }) => (
         <div className="flex gap-1 flex-col">
-          {label && (
-            <Listbox.Label className="block font-medium text-cool-gray-800 sm:text-sm lg:text-base text-xs">
-              {label}
-            </Listbox.Label>
-          )}
+          {label && <Listbox.Label>{label}</Listbox.Label>}
           <div className="relative">
             <Listbox.Button
-              className={`h-[44px] ${
+              className={`h-[42px] ${
                 minWidth ? 'min-w-[90px] md:min-w-[100px]' : ''
               } max-w-[37rem] bg-white relative w-full border border-cool-gray-200 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm disabled:bg-cool-gray-100`}
             >
