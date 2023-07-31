@@ -40,7 +40,7 @@ export const updateAnnouncement = async (
   const { targets, ...anouncementPayload } = updateData;
   return API.patch(`/announcement/${id}`, {
     ...anouncementPayload,
-    targetsIds: targets?.map((target) => target.key) || [],
+    ...(targets ? { targetsIds: targets?.map((target) => target.key) || [] } : {}),
   }).then((res) => res.data);
 };
 

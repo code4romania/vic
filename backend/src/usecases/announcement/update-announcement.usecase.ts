@@ -62,6 +62,14 @@ export class UpdateAnnouncementUseCase
     // 3. Check if only departments were chosen and calculate the new total number of volunteers
     let targetedVolunteers = 0;
 
+    // check if no target ids are provided and use the ones from db
+    // SCENARIO where publish is called from table directly not from the form
+    if (updateData.targetsIds === undefined) {
+      updateData.targetsIds = announcementToUpdate.targets?.map(
+        (target) => target.id,
+      );
+    }
+
     // validate if the all the targets are in database as departments for this organizations
     if (updateData.targetsIds?.length) {
       const departments = await this.organizationStructureFacade.findAllByIds({
