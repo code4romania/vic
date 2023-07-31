@@ -20,6 +20,7 @@ export class MobileActivityLogPresenter extends MobileActivityLogListItemPresent
     this.approvedOn = log.approvedOn ? format(log.approvedOn, 'dd/MM/y') : '';
     this.rejectedOn = log.rejectedOn ? format(log.rejectedOn, 'dd/MM/y') : '';
     this.rejectionReason = log.rejectionReason;
+    this.mentions = log.mentions;
   }
 
   @Expose()
