@@ -902,10 +902,10 @@
       },
       "status": {
         "PENDING_VOLUNTEER": "Validare voluntar",
-        "PENDING_ADMIN": "Validare admin",
+        "PENDING_ADMIN": "Validare ONG",
         "REJECTED": "Respins",
         "ACTIVE": "Activ",
-        "CLOSED": "Inchis",
+        "CLOSED": "Incheiat",
         "NOT_STARTED": "Neinceput"
       },
       "period": "Perioada contract",
