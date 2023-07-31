@@ -20,7 +20,7 @@ export class SyncUserOrganizationsUsecase implements IUseCaseService<void> {
     });
 
     // 2. check if the active organization is the one archived/blocked
-    if (user.activeOrganization.id === removedOrganizationId) {
+    if (user.activeOrganization?.id === removedOrganizationId) {
       // 2.1 get my organization profiles
       const profiles = await this.organizationsFacade.findMyOrganizations(
         user.id,
