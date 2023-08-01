@@ -19,7 +19,7 @@ export interface ButtonProps extends ButtonKittenProps {
 
 const LoadingIndicator = (): React.ReactElement => (
   <View style={styles.indicator}>
-    <Spinner size="small" />
+    <Spinner size="small" status="basic" />
   </View>
 );
 
@@ -34,6 +34,7 @@ const Button = ({ label, onPress, appearance, loading, ...props }: ButtonProps) 
         styles.button,
         appearance === 'outline' ? null : { ...styles.shadow, shadowColor: theme['dark-purple'] },
         props.style,
+        props.disabled ? { ...Platform.select({ android: { elevation: 1 } }) } : {},
       ]}
       accessoryLeft={loading ? <LoadingIndicator /> : <></>}
       size="large"
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     shadowColor: 'gray',
     ...Platform.select({
       android: {
-        elevation: 4,
+        elevation: 2,
       },
       ios: {
         shadowOffset: { width: 2, height: 2.5 },
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   indicator: {
+    marginRight: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },
