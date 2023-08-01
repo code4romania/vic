@@ -12,6 +12,7 @@ import { OrganizationStructureType } from '../common/enums/organization-structur
 import FormDatePicker from './FormDatePicker';
 import { Control, FieldErrors } from 'react-hook-form';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 export type VolunteerFormTypes = {
   email: string;
@@ -44,7 +45,7 @@ const VolunteerForm = ({ paragraph, isLoading, control, errors }: VolunteerFormP
 
   return (
     <FormLayout>
-      <Text appearance="hint">{`${paragraph || ''}`}</Text>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint">{`${paragraph || ''}`}</Text>
       <OrganizationIdentity
         name={userProfile?.activeOrganization?.name || ''}
         uri={userProfile?.activeOrganization?.logo || ''}

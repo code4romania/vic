@@ -12,6 +12,7 @@ import successIcon from '../assets/svg/success-icon';
 import upsIcon from '../assets/svg/ups-icon';
 import Button from './Button';
 import useStore from '../store/store';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 type BottomSheetIconType = 'success' | 'warning';
 export interface BottomSheetProps {
@@ -94,7 +95,9 @@ const BottomSheet = ({
             </View>
           )}
           <View style={styles.textContainer}>
-            <Text category="h1">{heading}</Text>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">
+              {heading}
+            </Text>
             {paragraph}
           </View>
           <View style={styles.buttonsContainer}>

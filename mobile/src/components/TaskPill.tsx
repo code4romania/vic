@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import { View } from 'react-native';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface TaskPill {
   label: string;
@@ -11,7 +12,7 @@ const TaskPill = ({ label }: TaskPill) => {
 
   return (
     <View style={styles.container}>
-      <Text>{label}</Text>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING}>{label}</Text>
     </View>
   );
 };

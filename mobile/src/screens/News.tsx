@@ -11,6 +11,7 @@ import { NewsType } from '../common/enums/news-type.enum';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { TrackedEventName } from '../common/enums/tracked-event-name.enum';
 import { Text, useTheme } from '@ui-kitten/components';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const NewsContent = ({
   startText,
@@ -24,13 +25,14 @@ const NewsContent = ({
   const theme = useTheme();
   return (
     <Text
+      allowFontScaling={ALLOW_FONT_SCALLING}
       category="c1"
       numberOfLines={2}
       ellipsizeMode="tail"
       style={{ ...styles.newsText, color: theme['cool-gray-500'] }}
     >
       {startText}{' '}
-      <Text category="s1" style={styles.newsText}>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="s1" style={styles.newsText}>
         {organizationName || ''}
       </Text>{' '}
       {endText || ''}

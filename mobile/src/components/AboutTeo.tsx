@@ -8,6 +8,7 @@ import HorizontalCarousel from './HorizontalCarousel';
 import { useTeoStatistics } from '../services/statistics/statistics.service';
 import { useTranslation } from 'react-i18next';
 import { Text } from '@ui-kitten/components';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const AboutTeo = () => {
   const { t } = useTranslation('general');
@@ -26,7 +27,9 @@ const AboutTeo = () => {
   return (
     <SectionWrapper title={t('general:about_teo')} icon={<IconSvg icon={EllipseSvg} size={20} />}>
       {getTeoStatisticsError ? (
-        <Text category="c1">{`${t('general:error.load_entries')}`}</Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1">{`${t(
+          'general:error.load_entries',
+        )}`}</Text>
       ) : (
         <HorizontalCarousel>
           <StatisticsCard

@@ -1,12 +1,13 @@
 import React from 'react';
-import { Avatar, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import { Avatar, Text, useTheme } from '@ui-kitten/components';
 import { ReactNode } from 'react';
-import { View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { Pressable } from 'react-native';
 //SVG
 import chevronRightSVG from '../assets/svg/chevron-right';
 import { SvgXml } from 'react-native-svg';
 import SkeletonBar from './skeleton/skeleton-bar';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface VolunteerCardProps {
   title: string;
@@ -18,12 +19,15 @@ interface VolunteerCardProps {
 }
 
 const VolunteerCard = ({ title, onPress, subtitle, uri, icon, loading }: VolunteerCardProps) => {
-  const styles = useStyleSheet(themedStyles);
-
+  const theme = useTheme();
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => (pressed ? styles.pressed : styles.notPressed)}
+      style={({ pressed }) =>
+        pressed
+          ? { ...styles.pressed, backgroundColor: theme['cool-gray-100'] }
+          : { ...styles.notPressed, backgroundColor: theme['cool-gray-50'] }
+      }
     >
       <View style={styles.container}>
         {uri && (
@@ -38,13 +42,17 @@ const VolunteerCard = ({ title, onPress, subtitle, uri, icon, loading }: Volunte
         )}
         {icon}
         <View style={styles.textContainer}>
-          <Text category="s1">{title}</Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="s1">
+            {title}
+          </Text>
           {subtitle && (
             <View style={styles.subtitleContainer}>
               {!loading ? (
                 <>
-                  <View style={styles.yellowDot} />
-                  <Text status="warning" category="s2">
+                  <View
+                    style={{ ...styles.yellowDot, backgroundColor: theme['color-warning-500'] }}
+                  />
+                  <Text allowFontScaling={ALLOW_FONT_SCALLING} status="warning" category="s2">
                     {subtitle}
                   </Text>
                 </>
@@ -62,7 +70,7 @@ const VolunteerCard = ({ title, onPress, subtitle, uri, icon, loading }: Volunte
 
 export default VolunteerCard;
 
-const themedStyles = StyleService.create({
+const styles = StyleSheet.create({
   container: {
     paddingLeft: 16,
     paddingRight: 24,
@@ -70,16 +78,20 @@ const themedStyles = StyleService.create({
     gap: 12,
     flexDirection: 'row',
     alignItems: 'center',
+    elevation: 2,
   },
   shadow: {
-    elevation: 4,
-    shadowColor: '$dark-purple',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.24,
-    shadowRadius: 4,
+    ...Platform.select({
+      android: {
+        elevation: 2, // Adjust the shadow elevation as desired
+      },
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+      },
+    }),
   },
   textContainer: {
     gap: 4,
@@ -93,17 +105,14 @@ const themedStyles = StyleService.create({
     marginLeft: 'auto',
   },
   pressed: {
-    backgroundColor: '$cool-gray-100',
     borderRadius: 16,
   },
   notPressed: {
-    backgroundColor: '$cool-gray-50',
     borderRadius: 16,
   },
   yellowDot: {
     width: 8,
     height: 8,
     borderRadius: 8,
-    backgroundColor: '$color-warning-500',
   },
 });

@@ -2,6 +2,7 @@ import { Icon, Text, useTheme } from '@ui-kitten/components';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import ImageWithPreload from './ImageWithPreload';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface ProfileIntroProps {
   uri: string;
@@ -29,10 +30,20 @@ const ProfileIntro = ({ uri, name, description }: ProfileIntroProps) => {
         )}
       </View>
       <View style={styles.textContainer}>
-        <Text category="h3" numberOfLines={3} ellipsizeMode="tail">
+        <Text
+          allowFontScaling={ALLOW_FONT_SCALLING}
+          category="h3"
+          numberOfLines={3}
+          ellipsizeMode="tail"
+        >
           {name}
         </Text>
-        <Text category="c1" appearance="hint" style={styles.description}>
+        <Text
+          allowFontScaling={ALLOW_FONT_SCALLING}
+          category="c1"
+          appearance="hint"
+          style={styles.description}
+        >
           {description}
         </Text>
       </View>

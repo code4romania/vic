@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { Text } from '@ui-kitten/components';
 import { NewsType } from '../common/enums/news-type.enum';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const Statistics = ({ navigation }: { navigation: any }) => {
   console.log('Statistics');
@@ -46,7 +47,9 @@ const Statistics = ({ navigation }: { navigation: any }) => {
   return (
     <SectionWrapper title={t('general:current_month')} icon={<IconSvg icon={StarSvg} size={20} />}>
       {getStatisticsError ? (
-        <Text category="c1">{`${t('general:error.load_entries')}`}</Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1">{`${t(
+          'general:error.load_entries',
+        )}`}</Text>
       ) : (
         <HorizontalCarousel>
           <StatisticsCard

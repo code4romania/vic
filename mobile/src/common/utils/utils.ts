@@ -1,14 +1,6 @@
 import { format } from 'date-fns';
 import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 
-export const applyCardShadow = (theme: any) => ({
-  shadowColor: theme['cool-gray-400'],
-  shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.1,
-  shadowRadius: 2,
-  elevation: 2, // android only
-});
-
 export const formatDate = (value?: Date | string | null): string =>
   value ? format(new Date(value), 'dd/LL/y') : '-';
 

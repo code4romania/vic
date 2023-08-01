@@ -1,19 +1,20 @@
 import React from 'react';
 import { Button as ButtonKitten, withStyles, Text } from '@ui-kitten/components';
 import { ButtonProps } from './Button';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const FacebookButton = ({ label, onPress, eva, ...props }: Omit<ButtonProps, 'type'>) => {
   return (
     <ButtonKitten
       {...props}
       onPress={onPress}
-      style={[eva.style.button, eva.style.shadow, props.style]}
+      style={[eva?.style?.button, eva?.style?.shadow, props.style]}
       appearance="ghost"
       size="large"
       // accessoryLeft={<SvgXml xml={FacebookSvg} />}
     >
       {() => (
-        <Text style={eva.style.label} category="label">
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} style={eva?.style?.label} category="label">
           {label}
         </Text>
       )}

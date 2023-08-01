@@ -5,6 +5,7 @@ import Input from './Input';
 import SortSvg from '../assets/svg/sort';
 import FiltersSvg from '../assets/svg/filters';
 import { SvgXml } from 'react-native-svg';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface SearchWithOrderAndFiltersProps {
   placeholder: string;
@@ -70,6 +71,7 @@ const SearchWithOrderAndFilters = ({
     <View style={styles.searchContainer}>
       <View style={styles.inputContainer}>
         <Input
+          allowFontScaling={ALLOW_FONT_SCALLING}
           value={searchValue}
           placeholder={placeholder}
           accessoryLeft={SearchIcon}

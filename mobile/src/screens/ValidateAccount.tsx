@@ -9,7 +9,7 @@ import { useAuth } from '../hooks/useAuth';
 import FormLayout from '../layouts/FormLayout';
 import FormInput from '../components/FormInput';
 import { Text } from '@ui-kitten/components';
-import { REGEX } from '../common/constants/constants';
+import { ALLOW_FONT_SCALLING, REGEX } from '../common/constants/constants';
 import Paragraph from '../components/Paragraph';
 
 export type ValidateAccountFormTypes = {
@@ -69,7 +69,9 @@ const ValidateAccount = ({ navigation }: any) => {
       }}
     >
       <FormLayout>
-        <Text category="h3">{`${t('validate_account.heading')}`}</Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">{`${t(
+          'validate_account.heading',
+        )}`}</Text>
         <Paragraph>{`${t('validate_account.paragraph')}`}</Paragraph>
         <FormInput
           control={control as any}

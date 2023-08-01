@@ -29,6 +29,7 @@ import upsIcon from '../assets/svg/ups-icon';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   const { t } = useTranslation('organization_profile');
@@ -251,7 +252,9 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                 <ScrollViewLayout>
                   <View>
                     {!organization.events || organization.events.length === 0 ? (
-                      <Text category="p1">{`${t('no_events')}`}</Text>
+                      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">{`${t(
+                        'no_events',
+                      )}`}</Text>
                     ) : (
                       organization.events.map((event) => (
                         <View key={event.id}>
@@ -278,7 +281,9 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING && (
             <>
               <View style={styles.textContainer}>
-                <Text category="h1">{`${t('modal.confirm_cancel_request.heading')}`}</Text>
+                <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
+                  'modal.confirm_cancel_request.heading',
+                )}`}</Text>
                 <Paragraph style={styles.bottomSheetParagraph}>{`${t(
                   'modal.confirm_cancel_request.paragraph',
                 )}`}</Paragraph>
@@ -306,7 +311,9 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                   <SvgXml xml={upsIcon} height={110} width={110} />
                 </View>
                 <View style={styles.textContainer}>
-                  <Text category="h1">{`${t('modal.identity_data_missing.heading')}`}</Text>
+                  <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
+                    'modal.identity_data_missing.heading',
+                  )}`}</Text>
                   <Paragraph style={styles.bottomSheetParagraph}>{`${t(
                     'modal.identity_data_missing.paragraph',
                   )}`}</Paragraph>

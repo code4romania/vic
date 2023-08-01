@@ -12,7 +12,7 @@ import { useAuth } from '../hooks/useAuth';
 import { StyleSheet, View } from 'react-native';
 import InlineLink from '../components/InlineLink';
 import { Controller } from 'react-hook-form';
-import { CONSTANTS, REGEX } from '../common/constants/constants';
+import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/constants';
 import Paragraph from '../components/Paragraph';
 import * as Linking from 'expo-linking';
 import Constants from 'expo-constants';
@@ -113,7 +113,9 @@ const CreateAccount = ({ navigation }: any) => {
       }}
     >
       <FormLayout>
-        <Text category="h3">{`${t('create_account.heading')}`}</Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">{`${t(
+          'create_account.heading',
+        )}`}</Text>
         <Paragraph>{`${t('create_account.paragraph')}`}</Paragraph>
         <FormInput
           control={control as any}
@@ -185,24 +187,30 @@ const CreateAccount = ({ navigation }: any) => {
             )}
           />
           <View style={styles.termsTextContainer}>
-            <Text>{`${t('create_account.form.terms.agree')}`}</Text>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING}>{`${t(
+              'create_account.form.terms.agree',
+            )}`}</Text>
             <View style={styles.directionRow}>
               <InlineLink
                 label={t('create_account.form.terms.conditions')}
                 onPress={onTermsAndConditionsPress}
               />
-              <Text>{', '}</Text>
+              <Text allowFontScaling={ALLOW_FONT_SCALLING}>{', '}</Text>
             </View>
-            <Text>{`${t('create_account.form.terms.and')}`}</Text>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING}>{`${t(
+              'create_account.form.terms.and',
+            )}`}</Text>
             <InlineLink
               label={t('create_account.form.terms.privacy_policy')}
               onPress={onPrivacyPolicyPress}
             />
-            <Text>{`${t('create_account.form.terms.application')}`}</Text>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING}>{`${t(
+              'create_account.form.terms.application',
+            )}`}</Text>
           </View>
         </View>
         {errors.terms && (
-          <Text category="c1" status="danger">
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1" status="danger">
             {errors.terms.message}
           </Text>
         )}

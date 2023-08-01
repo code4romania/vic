@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import { Pressable, View } from 'react-native';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface TopNavigationCardProps {
   title: string;
@@ -23,7 +24,7 @@ const TopNavigationCard = ({ title, uri, onPress }: TopNavigationCardProps) => {
       <View style={styles.shadow}>
         <Avatar source={{ uri }} size="small" />
       </View>
-      <Text category="h3" appearance="alternative">
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" appearance="alternative">
         {title}
       </Text>
     </Pressable>

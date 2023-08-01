@@ -10,3 +10,5 @@ export const CONSTANTS = {
   MINIMAL_AGE: 18,
   OTHER_OPTION: 'other',
 };
+
+export const ALLOW_FONT_SCALLING = false;

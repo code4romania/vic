@@ -1,6 +1,7 @@
 import { StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import React from 'react';
 import { Image, ImageStyle, View } from 'react-native';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface OrganizationIdentityProps {
   name: string;
@@ -13,7 +14,7 @@ const OrganizationIdentity = ({ name, uri }: OrganizationIdentityProps) => {
   return (
     <View style={styles.container}>
       <Image source={{ uri }} style={styles.image as ImageStyle} />
-      <Text>{name}</Text>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING}>{name}</Text>
     </View>
   );
 };

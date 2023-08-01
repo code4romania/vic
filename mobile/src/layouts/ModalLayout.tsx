@@ -3,6 +3,7 @@ import { Layout, TopNavigation, Icon, TopNavigationAction, Text } from '@ui-kitt
 import { ButtonType } from '../common/enums/button-type.enum';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import Button from '../components/Button';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface ActionsOptionsProps {
   actionLabel: string;
@@ -23,7 +24,7 @@ const CloseIcon = (props: any) => <Icon {...props} name="x" />;
 const EditIcon = (props: any) => <Icon {...props} name="edit" />;
 const renderTitle = (title: string) => () =>
   (
-    <Text category="h3" style={styles.title}>
+    <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
       {title}
     </Text>
   );
@@ -87,16 +88,10 @@ const styles = StyleSheet.create({
   keyboardAvoidingContainer: { flex: 1 },
   childrenContainer: { flex: 1, paddingHorizontal: 16, paddinVertical: 16 },
   bottomActionContainer: {
-    backgroundColor: 'white',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3,
-    elevation: 2, // android only
     width: '100%',
-    minHeight: 90,
+    minHeight: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
   },
   title: {
     paddingHorizontal: 8,

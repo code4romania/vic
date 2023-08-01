@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import useStore from '../store/store';
 import { useOrganization } from '../store/organization/organization.selector';
 import Paragraph from '../components/Paragraph';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -118,8 +119,10 @@ const JoinByAccessCode = ({ navigation }: any) => {
     >
       <FormLayout>
         <OrganizationIdentity name={organization?.name || ''} uri={organization?.logo || ''} />
-        <Text category="p2">{`${t('title')}`}</Text>
-        <Text appearance="hint">{`${t('description')}`}</Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2">{`${t('title')}`}</Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint">{`${t(
+          'description',
+        )}`}</Text>
         <FormInput
           control={control as any}
           error={errors.code}

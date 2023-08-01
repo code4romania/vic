@@ -23,6 +23,7 @@ import useStore from '../store/store';
 import { AttendanceType } from '../common/enums/attendance-type.enum';
 import EventSkeleton from '../components/skeleton/event-skeleton';
 import ImageWithPreload from '../components/ImageWithPreload';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const Event = ({ navigation, route }: any) => {
   const { t } = useTranslation('event');
@@ -153,7 +154,9 @@ const Event = ({ navigation, route }: any) => {
           <ReadOnlyElement label={t('location')} value={event.location} />
           <ReadOnlyElement label={t('description')} value={event.description} />
           <View style={styles.container}>
-            <Text category="c1" appearance="hint">{`${t('tasks')}`}</Text>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1" appearance="hint">{`${t(
+              'tasks',
+            )}`}</Text>
             <View style={styles.taskContainer}>
               {event.tasks.map((task) => (
                 <TaskPill key={task.id} label={task.name} />

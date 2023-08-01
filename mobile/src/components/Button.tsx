@@ -1,12 +1,15 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   Button as ButtonKitten,
   ButtonProps as ButtonKittenProps,
   Spinner,
   useTheme,
+  Text,
 } from '@ui-kitten/components';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { StyleSheet } from 'react-native';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 export interface ButtonProps extends ButtonKittenProps {
   label: string;
@@ -35,7 +38,17 @@ const Button = ({ label, onPress, appearance, loading, ...props }: ButtonProps) 
       accessoryLeft={loading ? <LoadingIndicator /> : <></>}
       size="large"
     >
-      {label}
+      {() => (
+        <Text
+          category="p2"
+          style={[
+            appearance === 'outline' ? { color: theme['color-success-500'] } : { color: 'white' },
+          ]}
+          allowFontScaling={ALLOW_FONT_SCALLING}
+        >
+          {label}
+        </Text>
+      )}
     </ButtonKitten>
   );
 };
@@ -44,13 +57,17 @@ export default Button;
 
 const styles = StyleSheet.create({
   shadow: {
-    elevation: 4,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.24,
-    shadowRadius: 8,
+    shadowColor: 'gray',
+    ...Platform.select({
+      android: {
+        elevation: 4,
+      },
+      ios: {
+        shadowOffset: { width: 2, height: 2.5 },
+        shadowOpacity: 0.35,
+        shadowRadius: 8,
+      },
+    }),
   },
   button: {
     minWidth: 240,

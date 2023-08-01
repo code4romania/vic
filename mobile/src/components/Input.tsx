@@ -5,12 +5,14 @@ import {
   useStyleSheet,
 } from '@ui-kitten/components';
 import React from 'react';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const Input = (props: InputProps) => {
   const styles = useStyleSheet(themedStyles);
 
   return (
     <KittenInput
+      allowFontScaling={ALLOW_FONT_SCALLING}
       textStyle={[styles.inputText, props.disabled ? styles.disabledColor : {}]}
       {...props}
       style={[styles.input, props.style, props.disabled ? styles.disabledBackground : {}]}

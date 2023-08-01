@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { View } from 'react-native';
 import { formatDate } from '../common/utils/utils';
 import PressableContainer from './PressableContainer';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface ContractItemProps {
   id: string;
@@ -34,7 +35,12 @@ const ContractItem = ({
       <View style={eva.style.container}>
         {leftIcon}
         <View style={eva.style.textWrapper}>
-          <Text category="p2" ellipsizeMode="tail" numberOfLines={1}>
+          <Text
+            allowFontScaling={ALLOW_FONT_SCALLING}
+            category="p2"
+            ellipsizeMode="tail"
+            numberOfLines={1}
+          >
             {title}
           </Text>
           <Text

@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import SadFaceSvg from '../assets/svg/sad-face';
 import { StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface MissingEntityProps {
   heading: string;
@@ -25,10 +26,10 @@ const MissingEntity = ({
     <PageLayout title="">
       <Layout style={styles.container}>
         <SvgXml xml={SadFaceSvg} style={styles.svg} />
-        <Text category="h3" style={styles.noOrgAdded}>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.noOrgAdded}>
           {heading}
         </Text>
-        <Text style={styles.description} appearance="hint">
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.description} appearance="hint">
           {paragraph}
         </Text>
         <Button label={actionBtnLabel} onPress={onActionBtnPress} />

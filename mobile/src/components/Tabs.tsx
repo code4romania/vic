@@ -3,6 +3,7 @@ import HorizontalCarousel from './HorizontalCarousel';
 import { Button, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import { ISelectItem } from './FormSelect';
 import { View } from 'react-native';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface TabsProps {
   tabs: ISelectItem[];
@@ -34,6 +35,7 @@ const Tabs = ({ tabs, onPress, defaultTab }: TabsProps) => {
             >
               {() => (
                 <Text
+                  allowFontScaling={ALLOW_FONT_SCALLING}
                   category={isTabActive ? 's1' : 'c1'}
                   appearance={isTabActive ? 'default' : 'hint'}
                 >

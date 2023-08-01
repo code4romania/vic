@@ -12,6 +12,7 @@ import PressableContainer from '../components/PressableContainer';
 import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
 import { useOrganization } from '../store/organization/organization.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface OrganizationItemProps {
   item: IOrganizationListItemWithNumberOfVolunteers;
@@ -28,10 +29,15 @@ const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
       <View style={styles.renderItem}>
         <Avatar source={{ uri: item.logo }} size="large" style={styles.avatar as ImageStyle} />
         <View style={styles.textWrapper}>
-          <Text category="p2" numberOfLines={1} ellipsizeMode="tail">
+          <Text
+            allowFontScaling={ALLOW_FONT_SCALLING}
+            category="p2"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
             {item.name}
           </Text>
-          <Text category="c1" appearance="hint">
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1" appearance="hint">
             {`${t('volunteers', { number: item.numberOfVolunteers })}`}
           </Text>
         </View>

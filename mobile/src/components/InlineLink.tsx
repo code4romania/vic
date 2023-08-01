@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, TextProps } from '@ui-kitten/components';
 import { Pressable } from 'react-native';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface InlineLinkProps extends TextProps {
   label: string;
@@ -10,7 +11,7 @@ interface InlineLinkProps extends TextProps {
 const InlineLink = ({ label, onPress, ...rest }: InlineLinkProps) => {
   return (
     <Pressable onPress={onPress}>
-      <Text status="success" {...rest}>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} status="success" {...rest}>
         {label}
       </Text>
     </Pressable>

@@ -102,6 +102,7 @@
   "color-danger-transparent-default-border": "$color-danger-500",
   "border-basic-color-4": "$cool-gray-200",
   "turquoise-50": "#EBFDFD",
+  "turquoise-100": "#DBF6F5",
   "turquoise-300": "#A7E2E2",
   "cool-gray-50": "#F9FAFB",
   "cool-gray-100": "#F3F4F6",

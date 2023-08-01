@@ -22,7 +22,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import CountySelect from '../containers/CountySelect';
 import CitySelect from '../containers/CitySelect';
 import ImageWithPreload from '../components/ImageWithPreload';
-import { CONSTANTS, REGEX } from '../common/constants/constants';
+import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
 import { useUserProfile } from '../store/profile/profile.selector';
 
@@ -175,7 +175,9 @@ const AccountData = ({ navigation }: any) => {
     >
       <FormLayout>
         <View style={styles.container}>
-          <Text category="p1">{`${t('profile_picture')}`}</Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">{`${t(
+            'profile_picture',
+          )}`}</Text>
           <View style={styles.wrapper}>
             {selectedProfilePictureUri || userProfile?.profilePicture ? (
               <ImageWithPreload
@@ -199,7 +201,11 @@ const AccountData = ({ navigation }: any) => {
               appearance="outline"
               style={styles.button}
             >
-              {() => <Text category="p2">{`${t('change_profile_picture')}`}</Text>}
+              {() => (
+                <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2">{`${t(
+                  'change_profile_picture',
+                )}`}</Text>
+              )}
             </Button>
           </View>
         </View>

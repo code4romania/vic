@@ -8,6 +8,7 @@ import IconSvg from './IconSvg';
 import { Button, Text, withStyles } from '@ui-kitten/components';
 import { useTranslation } from 'react-i18next';
 import { useAnouncementsSnapshot } from '../services/anouncement/anouncement.service';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface LatestNewsProps {
   navigation: any;
@@ -48,19 +49,25 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
           onPress={onViewNewsButtonPress}
         >
           {() => (
-            <Text category="c2" style={eva.style.seeAllText}>{`${t(
-              'anouncements.section.see_all',
-            )}`}</Text>
+            <Text
+              allowFontScaling={ALLOW_FONT_SCALLING}
+              category="c2"
+              style={eva.style.seeAllText}
+            >{`${t('anouncements.section.see_all')}`}</Text>
           )}
         </Button>
       }
     >
       <>
         {anouncements?.items.length === 0 && (
-          <Text category="c1">{`${t('anouncements.section.empty_list')}`}</Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1">{`${t(
+            'anouncements.section.empty_list',
+          )}`}</Text>
         )}
         {getAnouncementsError ? (
-          <Text category="c1">{`${t('general:error.load_entries')}`}</Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1">{`${t(
+            'general:error.load_entries',
+          )}`}</Text>
         ) : (
           <View style={eva.style.list}>
             {anouncements?.items.map((item) => (

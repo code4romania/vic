@@ -18,6 +18,7 @@ const HorizontalCarousel = ({ children }: HorizontalCarouselProps) => (
 const styles = StyleSheet.create({
   scrollView: {
     gap: 16,
+    paddingBottom: 16,
   },
 });
 

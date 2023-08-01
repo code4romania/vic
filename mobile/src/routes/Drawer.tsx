@@ -13,6 +13,7 @@ import { IOrganizationVolunteer } from '../common/interfaces/organization-list-i
 import { useTranslation } from 'react-i18next';
 import useStore from '../store/store';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const AccessoryImage = withStyles(
   ({ logo, eva }: { logo?: string; eva?: any }) => {
@@ -57,7 +58,7 @@ interface DrawerItemComponentProps {
 
 const DrawerHeader = withStyles(
   ({ children, eva }: DrawerItemComponentProps) => (
-    <Text category="h3" style={eva?.style.drawerHeader}>
+    <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={eva?.style.drawerHeader}>
       {children}
     </Text>
   ),
@@ -74,7 +75,11 @@ const DrawerHeader = withStyles(
 
 const DrawerItemTitle = withStyles(
   ({ children, eva, category }: DrawerItemComponentProps) => (
-    <Text category={category || 'h3'} style={eva?.style.drawerItemTitle}>
+    <Text
+      allowFontScaling={ALLOW_FONT_SCALLING}
+      category={category || 'h3'}
+      style={eva?.style.drawerItemTitle}
+    >
       {children}
     </Text>
   ),

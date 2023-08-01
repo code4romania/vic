@@ -23,6 +23,7 @@ import { shareAsync } from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import useStore from '../store/store';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const Contract = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -157,8 +158,14 @@ const Contract = ({ navigation, route }: any) => {
       bottomSheetOptions={{
         paragraph: (
           <View style={styles.bottomSheetParagraphContainer}>
-            <Text category="p1">{`${t('contract.bottom_sheet.paragraph')}`}</Text>
-            <Text category="p2" style={{ color: theme['color-success-500'] }}>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">{`${t(
+              'contract.bottom_sheet.paragraph',
+            )}`}</Text>
+            <Text
+              allowFontScaling={ALLOW_FONT_SCALLING}
+              category="p2"
+              style={{ color: theme['color-success-500'] }}
+            >
               {(selectedContract as any)?.name || ''}
             </Text>
           </View>
@@ -188,9 +195,11 @@ const Contract = ({ navigation, route }: any) => {
                 uri={userProfile?.activeOrganization.logo || ''}
               />
             )}
-            <Text category="p1" style={styles.paragraph}>{`${t(
-              `contract.paragraph.${contract.status}`,
-            )}`}</Text>
+            <Text
+              allowFontScaling={ALLOW_FONT_SCALLING}
+              category="p1"
+              style={styles.paragraph}
+            >{`${t(`contract.paragraph.${contract.status}`)}`}</Text>
             <ContractItem
               id={contract.id}
               title={contract.contractNumber}

@@ -12,6 +12,7 @@ import { renderPasswordEyeIcon } from '../components/InputPrefixes';
 import Paragraph from '../components/Paragraph';
 import { Pressable } from 'react-native';
 import { Text } from '@ui-kitten/components';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 export type LoginFormTypes = {
   username: string;
@@ -112,7 +113,9 @@ const Login = ({ navigation }: any) => {
           required={true}
         />
         <Pressable onPress={onGoToResetPassword}>
-          <Text category="p1">Ai uitat parola?</Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
+            {`${t('forgot_password')}`}
+          </Text>
         </Pressable>
       </FormLayout>
     </PageLayout>

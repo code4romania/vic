@@ -2,6 +2,7 @@ import { Icon, useTheme } from '@ui-kitten/components';
 import React from 'react';
 import { Pressable, View, StyleSheet } from 'react-native';
 import { Text } from '@ui-kitten/components';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 export const renderPasswordEyeIcon = (props: any): React.ReactElement => (
   <Pressable onPress={props.setSecureTextEntry.bind(null, !props.secureTextEntry)}>
@@ -19,7 +20,9 @@ export const renderPhoneNumberPrefix = () => {
         borderRightColor: theme['cool-gray-300'],
       }}
     >
-      <Text appearance="hint">+40</Text>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint">
+        +40
+      </Text>
     </View>
   );
 };

@@ -15,6 +15,7 @@ import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import { useVolunteerStats } from '../services/volunteer/volunteer.service';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const Volunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
@@ -70,7 +71,7 @@ const Volunteer = ({ navigation }: any) => {
         />
       </View>
       <View style={styles.container}>
-        <Text>{`${t('details')}`}</Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING}>{`${t('details')}`}</Text>
         <VolunteerCard
           title={t('menu_items.organization_profile.title')}
           uri={userProfile?.activeOrganization?.logo || ''}

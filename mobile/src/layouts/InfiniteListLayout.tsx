@@ -6,13 +6,14 @@ import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SvgXml } from 'react-native-svg';
 import SadFaceSvg from '../assets/svg/sad-face';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 export const ListEmptyComponent = () => {
   const { t } = useTranslation('general');
 
   return (
     <View style={styles.emptyListContainer}>
-      <Text category="c1">{`${t('empty_list')}`}</Text>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1">{`${t('empty_list')}`}</Text>
     </View>
   );
 };
@@ -21,7 +22,7 @@ const ListErrorComponent = ({ errorMessage }: { errorMessage: string }) => {
   return (
     <Layout style={styles.listErrorContainer}>
       <SvgXml xml={SadFaceSvg} style={styles.svg} />
-      <Text category="h3" style={styles.listError}>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.listError}>
         {errorMessage}
       </Text>
     </Layout>

@@ -15,6 +15,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { renderBackdrop } from '../components/BottomSheet';
 import { useUserProfile } from '../store/profile/profile.selector';
 import useStore from '../store/store';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface NotificationSettingProps {
   title: string;
@@ -35,10 +36,14 @@ const NotificationSetting = ({ title, description, onPress }: NotificationSettin
   return (
     <PressableContainer onPress={onPress}>
       <View style={styles.settingContainer}>
-        <Text style={styles.settingTite} category="p2">
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.settingTite} category="p2">
           {title}
         </Text>
-        <Text style={styles.settingDescription} category="c1">
+        <Text
+          allowFontScaling={ALLOW_FONT_SCALLING}
+          style={styles.settingDescription}
+          category="c1"
+        >
           {description}
         </Text>
       </View>
@@ -62,7 +67,11 @@ const NotificationOption = ({
         {multi && selected && (
           <Icon name={'check'} style={styles.checkIcon} fill={theme['color-success-500']} />
         )}
-        <Text style={selected ? { color: theme['color-success-500'] } : {}} category="p2">
+        <Text
+          allowFontScaling={ALLOW_FONT_SCALLING}
+          style={selected ? { color: theme['color-success-500'] } : {}}
+          category="p2"
+        >
           {label}
         </Text>
       </View>
@@ -202,7 +211,11 @@ const NotificationsSettings = ({ navigation }: any) => {
         <View style={styles.contentContainer}>
           {showNotificationFromOptions ? (
             <>
-              <Text category="p2" style={styles.bottomSheetTitle}>
+              <Text
+                allowFontScaling={ALLOW_FONT_SCALLING}
+                category="p2"
+                style={styles.bottomSheetTitle}
+              >
                 {`${t('from.title')}`}
               </Text>
               <NotificationOption
@@ -220,7 +233,11 @@ const NotificationsSettings = ({ navigation }: any) => {
             </>
           ) : (
             <>
-              <Text category="p2" style={styles.bottomSheetTitle}>
+              <Text
+                allowFontScaling={ALLOW_FONT_SCALLING}
+                category="p2"
+                style={styles.bottomSheetTitle}
+              >
                 {`${t('by.title')}`}
               </Text>
               <NotificationOption

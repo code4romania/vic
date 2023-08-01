@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { useTranslation } from 'react-i18next';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface LogInButtonProps {
   onPress: () => void;
@@ -12,9 +13,11 @@ const LogInButton = ({ onPress }: LogInButtonProps) => {
 
   return (
     <Pressable onPress={onPress}>
-      <Text>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING}>
         {`${t('registered')} `}
-        <Text category="p2" status="success">{`${t('login')}`}</Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2" status="success">{`${t(
+          'login',
+        )}`}</Text>
       </Text>
     </Pressable>
   );

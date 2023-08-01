@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, withStyles } from '@ui-kitten/components';
 import { View } from 'react-native';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface DisclaimerProps {
   color: string;
@@ -12,7 +13,7 @@ const Disclaimer = ({ color, text, eva }: DisclaimerProps) => {
   return (
     <View style={[eva.style.container, { backgroundColor: eva.theme[`${color}-50`] }]}>
       <View style={[eva.style.dot, { backgroundColor: eva.theme[`${color}-500`] }]} />
-      <Text category="c1" appearance="hint">
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1" appearance="hint">
         {text}
       </Text>
     </View>

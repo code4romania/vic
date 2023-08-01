@@ -10,6 +10,7 @@ import {
 } from '@ui-kitten/components';
 import { Control, Controller } from 'react-hook-form';
 import { View } from 'react-native';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 export interface ISelectItem {
   label: string;
@@ -27,12 +28,18 @@ export interface FormSelectProps extends SelectProps {
 }
 
 const renderSelectedItem = (label: string | undefined, styles: any) => {
-  return label ? () => <Text style={styles.marginHorizontal}>{label}</Text> : label;
+  return label
+    ? () => (
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.marginHorizontal}>
+          {label}
+        </Text>
+      )
+    : label;
 };
 
 const renderPlaceholder = (placeholder: string, styles: any) => {
   return () => (
-    <Text appearance="hint" style={styles.marginHorizontal}>
+    <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint" style={styles.marginHorizontal}>
       {placeholder}
     </Text>
   );
@@ -53,7 +60,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text category="p1">
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
         {label}
         {required ? <Text status="danger">*</Text> : ''}
       </Text>
@@ -92,7 +99,11 @@ const FormSelect: React.FC<FormSelectProps> = ({
         }}
       />
       {error && (
-        <Text category="c1" status={error ? 'danger' : 'basic'}>
+        <Text
+          allowFontScaling={ALLOW_FONT_SCALLING}
+          category="c1"
+          status={error ? 'danger' : 'basic'}
+        >
           {error.message}
         </Text>
       )}

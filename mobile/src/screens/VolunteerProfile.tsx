@@ -16,6 +16,7 @@ import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import VolunteerProfileSkeleton from '../components/skeleton/volunteer-profile.skeleton';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const VolunteerProfile = ({ navigation }: any) => {
   const styles = useStyleSheet(themedStyles);
@@ -121,7 +122,9 @@ const VolunteerProfile = ({ navigation }: any) => {
               uri={userProfile?.activeOrganization.logo || ''}
               name={userProfile?.activeOrganization.name}
             />
-            <Text category="p2">{`${t('information')}`}</Text>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2">{`${t(
+              'information',
+            )}`}</Text>
             <ReadOnlyElement label={t('email')} value={volunteer.profile.email} />
             <ReadOnlyElement label={t('general:phone')} value={volunteer.profile.phone} />
             <ReadOnlyElement label={t('general:role')} value={volunteer.profile.role?.name} />

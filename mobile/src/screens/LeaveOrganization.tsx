@@ -14,6 +14,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import Paragraph from '../components/Paragraph';
 import InlineLink from '../components/InlineLink';
 import Button from '../components/Button';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const LeaveOrganization = ({ navigation }: any) => {
   console.log('LeaveOrganization');
@@ -77,7 +78,7 @@ const LeaveOrganization = ({ navigation }: any) => {
           {organization && (
             <OrganizationIdentity uri={organization.logo || ''} name={organization.name} />
           )}
-          <Text category="p1" style={styles.paragraph}>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1" style={styles.paragraph}>
             {`${t('paragraph')}`}
           </Text>
         </View>
@@ -90,7 +91,9 @@ const LeaveOrganization = ({ navigation }: any) => {
       >
         <View style={styles.bottomSheetContainer}>
           <View style={styles.textContainer}>
-            <Text category="h1">{`${t('modal.confirm_leave_organization.heading')}`}</Text>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
+              'modal.confirm_leave_organization.heading',
+            )}`}</Text>
             <Paragraph style={styles.bottomSheetParagraph}>{`${t(
               'modal.confirm_leave_organization.paragraph',
             )}`}</Paragraph>

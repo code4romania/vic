@@ -13,6 +13,7 @@ import ModalLayout from '../layouts/ModalLayout';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useEvent } from '../store/event/event.selector';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 type JoinEventFormTypes = {
   mention: string;
@@ -85,7 +86,9 @@ const JoinEvent = ({ navigation, route }: any) => {
       }}
     >
       <FormLayout>
-        <Text appearance="hint">{`${event?.attendanceMention || ''}`}</Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint">{`${
+          event?.attendanceMention || ''
+        }`}</Text>
         <FormInput
           control={control as any}
           error={errors.mention}

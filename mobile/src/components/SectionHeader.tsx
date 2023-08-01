@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from '@ui-kitten/components';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface SectionHeaderProps {
   title: string;
@@ -11,7 +12,7 @@ interface SectionHeaderProps {
 const SectionHeader = ({ title, icon, action }: SectionHeaderProps) => (
   <View style={styles.sectionHeader}>
     {icon}
-    <Text category="p2" status="info">
+    <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2" status="info">
       {title}
     </Text>
     {action}

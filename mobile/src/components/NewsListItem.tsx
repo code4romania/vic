@@ -1,46 +1,45 @@
-import { Text, withStyles } from '@ui-kitten/components';
+import { Text, useTheme } from '@ui-kitten/components';
 import React, { ReactNode } from 'react';
-import { View, Image, ImageStyle } from 'react-native';
+import { View, Image, ImageStyle, StyleSheet } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { applyCardShadow } from '../common/utils/utils';
 import { Platform } from 'react-native';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface NewsListItemProps {
   icon: string;
   title?: string;
   subtitle?: string;
   subtitleElement?: ReactNode;
-  eva?: any;
   onPress?: () => void;
 }
 
-const NewsListItem = ({
-  icon,
-  title,
-  subtitle,
-  eva,
-  onPress,
-  subtitleElement,
-}: NewsListItemProps) => {
+const NewsListItem = ({ icon, title, subtitle, onPress, subtitleElement }: NewsListItemProps) => {
+  const theme = useTheme();
   return (
-    <TouchableHighlight onPress={onPress} style={eva.style.touchableContainer}>
-      <View style={eva?.style.container}>
-        <View style={eva?.style.iconWrapper}>
+    <TouchableHighlight onPress={onPress} style={styles.touchableContainer} activeOpacity={0.9}>
+      <View style={{ ...styles.container, backgroundColor: theme['cool-gray-50'] }}>
+        <View style={styles.iconWrapper}>
           <Image
             source={{
               uri: icon,
             }}
-            style={eva?.style.image as ImageStyle}
+            style={styles.image as ImageStyle}
           />
         </View>
-        <View style={eva?.style.textContainer}>
+        <View style={styles.textContainer}>
           {title && (
-            <Text category="s1" numberOfLines={2}>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="s1" numberOfLines={2}>
               {title}
             </Text>
           )}
           {subtitle && (
-            <Text category="c1" numberOfLines={2} ellipsizeMode="tail" style={eva?.style.subtitle}>
+            <Text
+              allowFontScaling={ALLOW_FONT_SCALLING}
+              category="c1"
+              numberOfLines={2}
+              ellipsizeMode="tail"
+              style={{ ...styles.subtitle, color: theme['cool-gray-500'] }}
+            >
               {subtitle}
             </Text>
           )}
@@ -51,7 +50,9 @@ const NewsListItem = ({
   );
 };
 
-export default withStyles(NewsListItem, (theme) => ({
+export default NewsListItem;
+
+const styles = StyleSheet.create({
   image: {
     width: 32,
     height: 32,
@@ -64,12 +65,20 @@ export default withStyles(NewsListItem, (theme) => ({
     padding: 16,
     flexDirection: 'row',
     gap: 12,
-    backgroundColor: theme['cool-gray-50'],
     borderRadius: 16,
-    ...applyCardShadow(theme),
+    ...Platform.select({
+      android: {
+        elevation: 2, // Adjust the shadow elevation as desired
+      },
+      ios: {
+        shadowColor: 'gray',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+      },
+    }),
   },
   subtitle: {
-    color: theme['cool-gray-500'],
     paddingRight: 32,
     lineHeight: 20,
   },
@@ -95,4 +104,4 @@ export default withStyles(NewsListItem, (theme) => ({
     gap: 6,
     lineHeight: 20,
   },
-}));
+});

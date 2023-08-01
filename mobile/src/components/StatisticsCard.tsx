@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon, Text, useTheme, withStyles } from '@ui-kitten/components';
-import { TouchableHighlight, View } from 'react-native';
-import { applyCardShadow } from '../common/utils/utils';
+import { Icon, Text, useTheme } from '@ui-kitten/components';
+import { Platform, StyleSheet, TouchableHighlight, View } from 'react-native';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface StatisticsCardProps {
   icon: string;
@@ -9,7 +9,6 @@ interface StatisticsCardProps {
   subtitle: string;
   onPress?: () => void;
   backgroundColor: string;
-  eva?: any;
 }
 
 const StatisticsCard = ({
@@ -18,31 +17,50 @@ const StatisticsCard = ({
   subtitle,
   onPress,
   backgroundColor,
-  eva,
 }: StatisticsCardProps) => {
   const theme = useTheme();
 
   return (
-    <TouchableHighlight onPress={onPress} style={eva.style.touchableContainer}>
-      <View style={[eva.style.container, { backgroundColor: theme[backgroundColor] }]}>
-        <Icon name={icon} style={eva.style.icon} fill="red" />
-        <View style={eva.style.textContainer}>
-          <Text category="h3">{title}</Text>
-          <Text category="c1">{subtitle}</Text>
+    <TouchableHighlight onPress={onPress} style={styles.touchableContainer} activeOpacity={0.9}>
+      <View style={[styles.container, { backgroundColor: theme[backgroundColor] }]}>
+        <Icon
+          name={icon}
+          style={{ ...styles.icon, color: theme['color-success-500'] }}
+          fill="red"
+        />
+        <View style={styles.textContainer}>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">
+            {title}
+          </Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1">
+            {subtitle}
+          </Text>
         </View>
       </View>
     </TouchableHighlight>
   );
 };
 
-export default withStyles(StatisticsCard, (theme) => ({
+export default StatisticsCard;
+
+const styles = StyleSheet.create({
   container: {
     padding: 16,
     gap: 18,
     borderRadius: 16,
     width: 140,
-    minHeight: 150,
-    ...applyCardShadow(theme),
+    minHeight: 163,
+    ...Platform.select({
+      android: {
+        elevation: 2, // Adjust the shadow elevation as desired
+      },
+      ios: {
+        shadowColor: 'gray',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+      },
+    }),
   },
   touchableContainer: {
     borderRadius: 16,
@@ -53,6 +71,5 @@ export default withStyles(StatisticsCard, (theme) => ({
   icon: {
     height: 56,
     width: 56,
-    color: theme['color-success-500'],
   },
-}));
+});

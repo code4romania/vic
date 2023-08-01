@@ -20,6 +20,7 @@ import { ISelectItem } from '../components/FormSelect';
 import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 import { useUserProfile } from '../store/profile/profile.selector';
 import ActivityLogSkeletonItem from '../components/skeleton/activity-log-skeleton-item';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 export const ActivityLogsTabs: ISelectItem[] = [
   { key: ActivityLogStatus.PENDING, label: i18n.t('activity_logs:tabs.pending') },
@@ -115,17 +116,23 @@ const ActivityLogs = ({ navigation }: any) => {
         onChange={setSearch}
         onSort={onSort}
       />
-      <Text appearance="hint" style={styles.totalText}>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint" style={styles.totalText}>
         {`${t('activity_log:total')}`}{' '}
         <>
           {status === ActivityLogStatus.APPROVED && (
-            <Text category="p2">{`${approvedHours || '0'}h`} </Text>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2">
+              {`${approvedHours || '0'}h`}{' '}
+            </Text>
           )}
           {status === ActivityLogStatus.REJECTED && (
-            <Text category="p2">{`${rejectedHours || '0'}h`} </Text>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2">
+              {`${rejectedHours || '0'}h`}{' '}
+            </Text>
           )}
           {status === ActivityLogStatus.PENDING && (
-            <Text category="p2">{`${pendingHours || '0'}h`} </Text>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2">
+              {`${pendingHours || '0'}h`}{' '}
+            </Text>
           )}
         </>
       </Text>

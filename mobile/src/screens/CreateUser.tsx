@@ -19,6 +19,7 @@ import { Auth } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import Paragraph from '../components/Paragraph';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 export type UserFormTypes = {
   firstName: string;
@@ -109,7 +110,9 @@ const CreateUser = ({ navigation }: any) => {
       }}
     >
       <FormLayout>
-        <Text category="h3">{`${t('create_user.heading')}`}</Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">{`${t(
+          'create_user.heading',
+        )}`}</Text>
         <Paragraph>{`${t('create_user.paragraph')}`}</Paragraph>
         <FormInput
           control={control as any}

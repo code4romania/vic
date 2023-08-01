@@ -18,6 +18,7 @@ import Constants from 'expo-constants';
 import ImageWithPreload from '../components/ImageWithPreload';
 import { NotificationContext } from '../contexts/notification/NotificationContext';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -88,7 +89,11 @@ const Settings = ({ navigation }: any) => {
         <View style={{ ...styles.iconWrapper, backgroundColor: theme['cool-gray-100'] }}>
           <SvgXml xml={item.icon} />
         </View>
-        <Text category="label" style={{ color: theme['cool-gray-800'] }}>
+        <Text
+          allowFontScaling={ALLOW_FONT_SCALLING}
+          category="label"
+          style={{ color: theme['cool-gray-800'] }}
+        >
           {item.label}
         </Text>
       </View>
@@ -109,7 +114,10 @@ const Settings = ({ navigation }: any) => {
         {userProfile?.profilePicture && (
           <ImageWithPreload source={userProfile?.profilePicture} styles={styles.image} />
         )}
-        <Text category="h3">{`${userProfile?.firstName} ${userProfile?.lastName}`}</Text>
+        <Text
+          allowFontScaling={ALLOW_FONT_SCALLING}
+          category="h3"
+        >{`${userProfile?.firstName} ${userProfile?.lastName}`}</Text>
       </View>
       <List
         data={SETTING_SCREENS}

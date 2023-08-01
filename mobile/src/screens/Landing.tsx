@@ -12,6 +12,7 @@ import GoogleButton from '../components/GoogleButton';
 import AppleButton from '../components/AppleButton';
 import FacebookButton from '../components/FacebookButton';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const Landing = ({ navigation }: any) => {
   console.log('Landing');
@@ -37,8 +38,12 @@ const Landing = ({ navigation }: any) => {
       <ScrollViewLayout>
         <View style={styles.container}>
           <Image source={require('../assets/images/teo-logo.png')} style={styles.image} />
-          <Text category="h1">{`${t('general:register')}`}</Text>
-          <Text category="c1" style={styles.message}>{`${t('message')}`}</Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
+            'general:register',
+          )}`}</Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1" style={styles.message}>{`${t(
+            'message',
+          )}`}</Text>
           <View style={styles.buttonsContainer}>
             <Button onPress={onRegisterButtonPress} label={t('email')} />
             {Platform.OS === 'ios' && (
@@ -58,7 +63,9 @@ const Landing = ({ navigation }: any) => {
           </View>
           <View style={styles.separator} />
           <LogInButton onPress={onLoginButtonPress} />
-          <Text style={styles.version}>v0.14.6</Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.version}>
+            v0.14.6
+          </Text>
         </View>
       </ScrollViewLayout>
     </PageLayout>

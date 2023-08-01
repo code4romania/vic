@@ -15,6 +15,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import BottomSheet, { BottomSheetProps } from '../components/BottomSheet';
 import { useBottomSheet } from '../store/bottom-sheet/bottom-sheet.selector';
 import InlineLink from '../components/InlineLink';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
@@ -40,7 +41,7 @@ const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
 const EditIcon = (props: any) => <Icon {...props} name="edit" />;
 const renderTitle = (title: string) => () =>
   (
-    <Text category="h3" style={styles.title}>
+    <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
       {title}
     </Text>
   );
@@ -109,38 +110,40 @@ export const PageLayout = ({
         </KeyboardAvoidingView>
 
         {actionsOptions && (
-          <View style={styles.bottomActionContainer}>
-            {
-              <View style={styles.helperContainer}>
-                {actionsOptions.helperText && (
-                  <Text category="p1">{actionsOptions.helperText}</Text>
-                )}
-                <View style={styles.buttonsContainer}>
-                  <Button
-                    onPress={actionsOptions.onPrimaryActionButtonClick}
-                    label={`${actionsOptions.primaryActionLabel}`}
-                    status={actionsOptions.primaryBtnType || 'primary'}
-                    loading={actionsOptions.loading}
-                    disabled={actionsOptions.loading}
-                  />
-                  {actionsOptions.onSecondaryActionButtonClick &&
-                    actionsOptions.secondaryActionLink && (
-                      <View style={styles.secondaryButtonContainer}>
-                        <Text category="p1">{actionsOptions.secondaryActionLabel || ''}</Text>
-                        <InlineLink
-                          style={
-                            !actionsOptions.secondaryActionLabel
-                              ? { color: theme['cool-gray-700'] }
-                              : {}
-                          }
-                          onPress={actionsOptions.onSecondaryActionButtonClick}
-                          label={actionsOptions.secondaryActionLink}
-                        />
-                      </View>
-                    )}
-                </View>
+          <View style={styles.helperContainer}>
+            <View style={styles.bottomActionContainer}>
+              {actionsOptions.helperText && (
+                <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
+                  {actionsOptions.helperText}
+                </Text>
+              )}
+              <View style={styles.buttonsContainer}>
+                <Button
+                  onPress={actionsOptions.onPrimaryActionButtonClick}
+                  label={`${actionsOptions.primaryActionLabel}`}
+                  status={actionsOptions.primaryBtnType || 'primary'}
+                  loading={actionsOptions.loading}
+                  disabled={actionsOptions.loading}
+                />
+                {actionsOptions.onSecondaryActionButtonClick &&
+                  actionsOptions.secondaryActionLink && (
+                    <View style={styles.secondaryButtonContainer}>
+                      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
+                        {actionsOptions.secondaryActionLabel || ''}
+                      </Text>
+                      <InlineLink
+                        style={
+                          !actionsOptions.secondaryActionLabel
+                            ? { color: theme['cool-gray-700'] }
+                            : {}
+                        }
+                        onPress={actionsOptions.onSecondaryActionButtonClick}
+                        label={actionsOptions.secondaryActionLink}
+                      />
+                    </View>
+                  )}
               </View>
-            }
+            </View>
           </View>
         )}
       </Layout>
@@ -162,32 +165,47 @@ export default PageLayout;
 
 const styles = StyleSheet.create({
   header: { minHeight: 59 },
-  layout: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
+  layout: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
   keyboardAvoidingContainer: { flex: 1 },
-  childrenContainer: { flex: 1, paddingHorizontal: 16, paddingVertical: 8 },
+  childrenContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
   bottomActionContainer: {
-    backgroundColor: 'white',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3,
-    elevation: 2, // android only
     width: '100%',
-    minHeight: 90,
+    minHeight: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
+    shadowColor: 'gray',
+    ...Platform.select({
+      android: {
+        backgroundColor: 'white',
+        elevation: 4,
+      },
+      ios: {
+        backgroundColor: 'white',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+      },
+    }),
   },
   indicator: {
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
   },
-  title: {
-    paddingHorizontal: 8,
-  },
   helperContainer: {
     gap: 12,
     alignItems: 'center',
+  },
+  title: {
+    paddingHorizontal: 8,
   },
   buttonsContainer: {
     gap: 24,

@@ -578,7 +578,7 @@
       },
       "hours": {
         "title": "{{number}} actualizari",
-        "description": "in ore de voluntariat"
+        "description": "in ore voluntariat"
       },
       "documents": {
         "title": "{{number}} actualizari",

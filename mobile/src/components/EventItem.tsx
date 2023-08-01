@@ -5,6 +5,7 @@ import { IEventListItem } from '../common/interfaces/event-list-item.interface';
 import PressableContainer from './PressableContainer';
 import { mapEventType } from '../common/utils/helpers';
 import ImageWithPreload from './ImageWithPreload';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface EventItemProps {
   event: IEventListItem;
@@ -22,7 +23,7 @@ const EventContentRow = withStyles(
   ({ eva, children, icon }: EventContentRowProps) => (
     <View style={eva.style.section}>
       <Icon name={icon} style={eva.style.icon} />
-      <Text category="c1" appearance="hint">
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1" appearance="hint">
         {children}
       </Text>
     </View>
@@ -61,7 +62,7 @@ const EventItem = ({ event, onPress }: EventItemProps) => {
           </View>
         )}
         <View style={styles.content}>
-          <Text style={styles.title} category="p2">
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.title} category="p2">
             {event.name}
           </Text>
           <EventContentRow icon="clock">{event.eventInterval}</EventContentRow>

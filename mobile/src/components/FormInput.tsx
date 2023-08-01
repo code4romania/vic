@@ -3,6 +3,7 @@ import { InputProps, StyleService, Text, useStyleSheet } from '@ui-kitten/compon
 import { Control, Controller } from 'react-hook-form';
 import { View, Keyboard } from 'react-native';
 import Input from './Input';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface FormInputProps extends InputProps {
   control: Control<Record<string, any>>;
@@ -34,7 +35,7 @@ const FormInput: React.FC<FormInputProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text category="p1">
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
         {label}
         {required ? <Text status="danger">*</Text> : ''}
       </Text>
@@ -43,6 +44,7 @@ const FormInput: React.FC<FormInputProps> = ({
         name={name}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
+            allowFontScaling={ALLOW_FONT_SCALLING}
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
             onBlur={onBlur}
@@ -66,6 +68,7 @@ const FormInput: React.FC<FormInputProps> = ({
       />
       {(error || helper) && (
         <Text
+          allowFontScaling={ALLOW_FONT_SCALLING}
           category="c1"
           status={error ? 'danger' : 'basic'}
           appearance={error ? 'default' : 'hint'}

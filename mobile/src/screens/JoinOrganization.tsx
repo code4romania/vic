@@ -23,6 +23,7 @@ import { StyleSheet, View } from 'react-native';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
 import { SvgXml } from 'react-native-svg';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 export type JoinNgoFormTypes = {
   referral: REFERRAL;
@@ -112,8 +113,10 @@ const JoinOrganization = ({ navigation, route }: any) => {
       >
         <FormLayout>
           <OrganizationIdentity uri={logo} name={name} />
-          <Text category="p2">{`${t('registration_form')}`}</Text>
-          <Text appearance="hint">{`${t('complete')}`}</Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2">{`${t(
+            'registration_form',
+          )}`}</Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint">{`${t('complete')}`}</Text>
           <FormSelect
             control={control as any}
             label={t('form.referral.label')}
@@ -146,7 +149,9 @@ const JoinOrganization = ({ navigation, route }: any) => {
             <SvgXml xml={successIcon} height={110} width={110} />
           </View>
           <View style={styles.textContainer}>
-            <Text category="h1">{`${t('modal.success.heading')}`}</Text>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
+              'modal.success.heading',
+            )}`}</Text>
             <Paragraph>{`${t('modal.success.paragraph')}`}</Paragraph>
           </View>
           <View style={styles.buttonsContainer}>

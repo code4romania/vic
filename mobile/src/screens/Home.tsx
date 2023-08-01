@@ -10,6 +10,7 @@ import WaveSvg from '../assets/svg/wave';
 import IconSvg from '../components/IconSvg';
 import { useTranslation } from 'react-i18next';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const Home = ({ navigation }: any) => {
   const { t } = useTranslation('home');
@@ -36,11 +37,11 @@ const Home = ({ navigation }: any) => {
       >
         <View style={styles.headerContainer}>
           <View style={{ ...styles.headerShape, backgroundColor: theme['color-success-500'] }}>
-            <Text style={styles.greetingText} category="h3">
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.greetingText} category="h3">
               {`${t('greeting', { name: userProfile?.firstName || '' })}`}{' '}
               <IconSvg icon={WaveSvg} size={14} />
             </Text>
-            <Paragraph style={styles.paragraph}>{`${t('paragraph')}`}</Paragraph>
+            <Paragraph style={{ color: theme['turquoise-100'] }}>{`${t('paragraph')}`}</Paragraph>
 
             <View style={styles.addHoursContainer}>
               {userProfile?.activeOrganization ? (
@@ -99,9 +100,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   addButton: { backgroundColor: 'white', borderWidth: 0 },
-  paragraph: {
-    color: 'white',
-  },
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -110,7 +108,8 @@ const styles = StyleSheet.create({
   },
   newsContainer: {
     paddingRight: 16,
-    paddingVertical: 32,
+    paddingTop: 16,
+    paddingBottom: 32,
     flex: 1,
     flexDirection: 'column',
     gap: 32,

@@ -19,6 +19,7 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface ContractsProps {
   navigation: any;
@@ -181,7 +182,7 @@ const Documents = ({ navigation }: any) => {
             uri={userProfile?.activeOrganization?.logo || ''}
           />
         )}
-        <Text>{`${t('documents:description')}`}</Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING}>{`${t('documents:description')}`}</Text>
         <Contracts
           navigation={navigation}
           volunteerId={userProfile?.activeOrganization?.volunteerId as string}
