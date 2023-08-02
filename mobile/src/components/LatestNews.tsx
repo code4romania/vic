@@ -72,6 +72,7 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
           <View style={eva.style.list}>
             {anouncements?.items.map((item) => (
               <NewsListItem
+                expandable
                 key={item.id}
                 icon={item.organizationLogo}
                 title={item.title}

@@ -214,6 +214,7 @@ export default News;
 const styles = StyleSheet.create({
   listItemContainer: {
     paddingBottom: 16,
+    paddingHorizontal: 2,
   },
   newsText: {
     paddingRight: 32,

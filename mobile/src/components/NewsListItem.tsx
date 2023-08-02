@@ -1,7 +1,6 @@
 import { Text, useTheme } from '@ui-kitten/components';
-import React, { ReactNode } from 'react';
-import { View, Image, ImageStyle, StyleSheet } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import React, { ReactNode, useState } from 'react';
+import { View, Image, ImageStyle, StyleSheet, Animated, Easing, Pressable } from 'react-native';
 import { Platform } from 'react-native';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
@@ -10,13 +9,52 @@ interface NewsListItemProps {
   title?: string;
   subtitle?: string;
   subtitleElement?: ReactNode;
+  expandable?: boolean;
   onPress?: () => void;
 }
 
-const NewsListItem = ({ icon, title, subtitle, onPress, subtitleElement }: NewsListItemProps) => {
+const NewsListItem = ({
+  expandable,
+  icon,
+  title,
+  subtitle,
+  onPress,
+  subtitleElement,
+}: NewsListItemProps) => {
+  const [expanded, setExpanded] = useState(false);
+  const animationValue = new Animated.Value(0);
   const theme = useTheme();
+
+  const toggleExpansion = () => {
+    const initialValue = expanded ? 1 : 0;
+    const finalValue = expanded ? 0 : 1;
+
+    animationValue.setValue(initialValue);
+    Animated.timing(animationValue, {
+      toValue: finalValue,
+      duration: 300,
+      easing: Easing.ease,
+      useNativeDriver: false,
+    }).start();
+
+    setExpanded(!expanded);
+  };
+
+  const animatedHeight = animationValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [45, 150], // Adjust this value as needed
+  });
+
+  const onNewsItemPress = () => {
+    if (expandable) {
+      toggleExpansion();
+    }
+
+    onPress && onPress();
+  };
+
   return (
-    <TouchableHighlight onPress={onPress} style={styles.touchableContainer} activeOpacity={0.9}>
+    <Pressable onPress={onNewsItemPress} style={styles.touchableContainer}>
       <View style={{ ...styles.container, backgroundColor: theme['cool-gray-50'] }}>
         <View style={styles.iconWrapper}>
           <Image
@@ -26,27 +64,34 @@ const NewsListItem = ({ icon, title, subtitle, onPress, subtitleElement }: NewsL
             style={styles.image as ImageStyle}
           />
         </View>
-        <View style={styles.textContainer}>
-          {title && (
-            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="s1" numberOfLines={2}>
-              {title}
-            </Text>
-          )}
-          {subtitle && (
-            <Text
-              allowFontScaling={ALLOW_FONT_SCALLING}
-              category="c1"
-              numberOfLines={2}
-              ellipsizeMode="tail"
-              style={{ ...styles.subtitle, color: theme['cool-gray-500'] }}
-            >
-              {subtitle}
-            </Text>
-          )}
-          {subtitleElement}
-        </View>
+        <Animated.View style={[styles.collapsiableContainer, { height: animatedHeight }]}>
+          <View style={styles.textContainer}>
+            {title && (
+              <Text
+                onPress={onNewsItemPress}
+                allowFontScaling={ALLOW_FONT_SCALLING}
+                category="s1"
+                numberOfLines={2}
+              >
+                {title}
+              </Text>
+            )}
+            {subtitle && (
+              <Text
+                allowFontScaling={ALLOW_FONT_SCALLING}
+                category="c1"
+                numberOfLines={expanded ? 1 : 50}
+                ellipsizeMode="tail"
+                style={{ ...styles.subtitle, color: theme['cool-gray-500'] }}
+              >
+                {subtitle}
+              </Text>
+            )}
+            {subtitleElement}
+          </View>
+        </Animated.View>
       </View>
-    </TouchableHighlight>
+    </Pressable>
   );
 };
 
@@ -99,6 +144,9 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
       },
     }),
+  },
+  collapsiableContainer: {
+    overflow: 'hidden',
   },
   textContainer: {
     gap: 6,

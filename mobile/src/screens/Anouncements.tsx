@@ -28,7 +28,12 @@ const Anouncements = ({ navigation }: any) => {
 
   const onRenderAnouncementListItem = ({ item }: { item: IAnouncement }) => (
     <View style={styles.listItemContainer}>
-      <NewsListItem icon={item.organizationLogo} title={item.title} subtitle={item.description} />
+      <NewsListItem
+        expandable
+        icon={item.organizationLogo}
+        title={item.title}
+        subtitle={item.description}
+      />
     </View>
   );
 
@@ -57,5 +62,6 @@ export default Anouncements;
 const styles = StyleSheet.create({
   listItemContainer: {
     paddingBottom: 16,
+    paddingHorizontal: 2,
   },
 });
