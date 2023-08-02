@@ -20,6 +20,7 @@ import OrganizationSkeletonListItem from '../components/skeleton/organization-se
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list';
 
 interface ContractsProps {
   navigation: any;
@@ -72,17 +73,11 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
     refetch: reloadHistory,
   } = useContractHistoryInfiniteQuery(volunteerId);
 
-  // TODO: review this
   useFocusEffect(
     useCallback(() => {
       // Your onInit logic goes here
       reloadPendingContracts();
       reloadHistory();
-
-      return () => {
-        // Clean up any resources if necessary
-        console.log('Screen unmounted');
-      };
     }, [reloadPendingContracts, reloadHistory]),
   );
 
@@ -134,9 +129,13 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
     />
   );
 
+  if (isFetchingPendingContracts || isLoadingClosedActiveContracts) {
+    return <DocumentSkeletonList />;
+  }
+
   return (
-    <>
-      {pendingContracts?.pages[0].meta.totalItems !== 0 && !isFetchingPendingContracts && (
+    <View style={styles.contractsContainer}>
+      {pendingContracts?.pages[0].meta.totalItems !== 0 && (
         <SectionWrapper title={t('sections.pending')}>
           <InfiniteListLayout<IContractListItem>
             pages={pendingContracts?.pages}
@@ -164,7 +163,7 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
           }
         />
       </SectionWrapper>
-    </>
+    </View>
   );
 };
 
@@ -182,7 +181,9 @@ const Documents = ({ navigation }: any) => {
             uri={userProfile?.activeOrganization?.logo || ''}
           />
         )}
-        <Text allowFontScaling={ALLOW_FONT_SCALLING}>{`${t('documents:description')}`}</Text>
+        <Text category="p1" allowFontScaling={ALLOW_FONT_SCALLING}>{`${t(
+          'documents:description',
+        )}`}</Text>
         <Contracts
           navigation={navigation}
           volunteerId={userProfile?.activeOrganization?.volunteerId as string}
@@ -198,5 +199,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 16,
+  },
+  contractsContainer: {
+    paddingTop: 16,
   },
 });
