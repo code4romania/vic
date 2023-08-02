@@ -55,7 +55,15 @@ export const signContract = async ({
 }): Promise<IContract> => {
   const formData = new FormData();
 
-  formData.append('contract', contract as File);
+  const name = (contract as any).name;
+  const type = (contract as any).mimeType;
+  const uri = (contract as any).uri;
+
+  formData.append('contract', {
+    name,
+    type,
+    uri,
+  } as unknown as File);
 
   return API.patch(`mobile/contract/${contractId}/sign`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
