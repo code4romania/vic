@@ -18,18 +18,26 @@ const expoConfig: ExpoConfig = {
   },
   assetBundlePatterns: ['**/*'],
   ios: {
+    buildNumber: '1',
     supportsTablet: true,
-    bundleIdentifier: 'com.commitglobal.teo',
+    bundleIdentifier: 'com.commitglobal.vic',
     entitlements: {
-      'com.apple.developer.applesignin': ['Default'],
+      'com.apple.developer.applesignin': ['Default'], // TODO: Ce e asta?
+    },
+    infoPlist: {
+      UIBackgroundModes: ['fetch', 'remote-notification'],
+    },
+    config: {
+      usesNonExemptEncryption: false,
     },
   },
   android: {
+    versionCode: 1,
     adaptiveIcon: {
       foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
     },
-    package: 'com.commitglobal.teo',
+    package: 'com.commitglobal.vic',
   },
   web: {
     favicon: './src/assets/images/favicon.png',
@@ -58,12 +66,18 @@ const expoConfig: ExpoConfig = {
     userPoolClientId: process.env.USER_POOL_CLIENT_ID,
     awsDomain: process.env.AWS_DOMAIN,
     eas: {
-      projectId: 'bcbf432c-f07a-4373-a9f1-f67f6281932e',
+      projectId: '7dd2fea9-6bb9-4b69-865f-c00ab46b5183',
     },
     policyLink: process.env.PRIVACY_POLICY_LINK,
     termsLink: process.env.TERMS_AND_CONDITIONS_LINK,
     infoLink: process.env.INFORMATION_LINK,
   },
-  owner: 'tribus-tech',
+  updates: {
+    url: 'https://u.expo.dev/7dd2fea9-6bb9-4b69-865f-c00ab46b5183',
+  },
+  runtimeVersion: {
+    policy: 'sdkVersion',
+  },
+  owner: 'commit-global',
 };
 export default expoConfig;

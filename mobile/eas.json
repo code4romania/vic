@@ -11,7 +11,9 @@
       "distribution": "internal",
       "node": "16.15.1"
     },
-    "production": {}
+    "production": {
+      "channel": "production"
+    }
   },
   "submit": {
     "production": {}
