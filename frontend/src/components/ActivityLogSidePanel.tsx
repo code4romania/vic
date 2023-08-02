@@ -180,7 +180,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.event')}
               value={activityLog.event?.name}
-              onClick={onEventClick}
+              onClick={activityLog.event && onEventClick}
             />
             <FormReadOnlyElement
               label={i18n.t('activity_log:side_panel.mention')}
