@@ -14,7 +14,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import FormLayout from '../layouts/FormLayout';
 import { Text, useTheme } from '@ui-kitten/components';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import ContractItem from '../components/ContractItem';
 import { PendingContractIcon } from './Documents';
 import { ButtonType } from '../common/enums/button-type.enum';
@@ -68,7 +68,38 @@ const Contract = ({ navigation, route }: any) => {
     if (contract) {
       let LocalPath = FileSystem.documentDirectory + contract.contractFileName;
       const file = await FileSystem.downloadAsync(contract?.path, LocalPath);
-      shareAsync(file.uri);
+      save(file.uri, contract.contractFileName, file.headers['Content-Type']);
+    }
+  };
+
+  const save = async (uri: string, fileName: string, mimetype: string) => {
+    if (Platform.OS === 'android') {
+      const permissions =
+        await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+
+      console.log('permissions', permissions);
+
+      if (permissions.granted) {
+        const base64 = await FileSystem.readAsStringAsync(uri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        await FileSystem.StorageAccessFramework.createFileAsync(
+          permissions.directoryUri,
+          fileName,
+          mimetype,
+        )
+          .then(async (resultUri) => {
+            console.log('resultUri', resultUri);
+            await FileSystem.writeAsStringAsync(resultUri, base64, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+          })
+          .catch(console.log);
+      } else {
+        shareAsync(uri);
+      }
+    } else {
+      shareAsync(uri);
     }
   };
 
