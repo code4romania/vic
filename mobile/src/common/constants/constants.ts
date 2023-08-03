@@ -12,3 +12,9 @@ export const CONSTANTS = {
 };
 
 export const ALLOW_FONT_SCALLING = false;
+
+export const MIME_TYPES: any = {
+  doc: 'application/msword',
+  ['docx']: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  ['pdf']: 'application/pdf',
+};

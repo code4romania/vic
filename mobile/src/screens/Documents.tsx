@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text, useTheme } from '@ui-kitten/components';
 import OrganizationIdentity from '../components/OrganizationIdentity';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import {
@@ -19,7 +19,7 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { ALLOW_FONT_SCALLING, MIME_TYPES } from '../common/constants/constants';
 import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list';
 
 interface ContractsProps {
@@ -85,7 +85,40 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
     if (contract) {
       let LocalPath = FileSystem.documentDirectory + contract.contractFileName;
       const file = await FileSystem.downloadAsync(contract?.path, LocalPath);
-      shareAsync(file.uri);
+      save(
+        file.uri,
+        contract.contractFileName,
+        MIME_TYPES[contract.contractFileName.split('.')[1]] as string,
+      );
+    }
+  };
+
+  const save = async (uri: string, fileName: string, mimetype: string) => {
+    // This has support only for Android 11 or more as expo requires to eject project in order to save to downloads
+    if (Platform.OS === 'android' && Platform.Version >= 30) {
+      const permissions =
+        await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+
+      if (permissions.granted) {
+        const base64 = await FileSystem.readAsStringAsync(uri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        await FileSystem.StorageAccessFramework.createFileAsync(
+          permissions.directoryUri,
+          fileName,
+          mimetype,
+        )
+          .then(async (resultUri) => {
+            await FileSystem.writeAsStringAsync(resultUri, base64, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+          })
+          .catch(console.log);
+      } else {
+        shareAsync(uri);
+      }
+    } else {
+      shareAsync(uri);
     }
   };
 

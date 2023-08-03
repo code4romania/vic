@@ -23,7 +23,7 @@ import { shareAsync } from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import useStore from '../store/store';
 import { useUserProfile } from '../store/profile/profile.selector';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { ALLOW_FONT_SCALLING, MIME_TYPES } from '../common/constants/constants';
 
 const Contract = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -32,9 +32,8 @@ const Contract = ({ navigation, route }: any) => {
   // theme
   const theme = useTheme();
   // document state
-  const [selectedContract, setSelectedContract] = useState<DocumentPicker.DocumentResult | null>(
-    null,
-  );
+  const [selectedContract, setSelectedContract] =
+    useState<DocumentPicker.DocumentPickerResult | null>(null);
   // active organization
   const { userProfile } = useUserProfile();
   // bottom sheet state
@@ -68,16 +67,18 @@ const Contract = ({ navigation, route }: any) => {
     if (contract) {
       let LocalPath = FileSystem.documentDirectory + contract.contractFileName;
       const file = await FileSystem.downloadAsync(contract?.path, LocalPath);
-      save(file.uri, contract.contractFileName, file.headers['Content-Type']);
+      save(
+        file.uri,
+        contract.contractFileName,
+        MIME_TYPES[contract.contractFileName.split('.')[1]] as string,
+      );
     }
   };
 
   const save = async (uri: string, fileName: string, mimetype: string) => {
-    if (Platform.OS === 'android') {
+    if (Platform.OS === 'android' && Platform.Version >= 30) {
       const permissions =
         await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-
-      console.log('permissions', permissions);
 
       if (permissions.granted) {
         const base64 = await FileSystem.readAsStringAsync(uri, {
@@ -89,7 +90,6 @@ const Contract = ({ navigation, route }: any) => {
           mimetype,
         )
           .then(async (resultUri) => {
-            console.log('resultUri', resultUri);
             await FileSystem.writeAsStringAsync(resultUri, base64, {
               encoding: FileSystem.EncodingType.Base64,
             });
@@ -104,10 +104,12 @@ const Contract = ({ navigation, route }: any) => {
   };
 
   const onSelectContract = async () => {
-    const result = await DocumentPicker.getDocumentAsync();
+    const result = await DocumentPicker.getDocumentAsync({
+      type: [MIME_TYPES.doc, MIME_TYPES.docx, MIME_TYPES.pdf],
+    });
     // don't show the bottom sheet if the user canceled the upload file from the device
-    if (result.type !== 'cancel') {
-      setSelectedContract(result);
+    if (!result.canceled && result.assets[0]) {
+      setSelectedContract(result.assets[0] as any);
       openBottomSheet();
     }
   };
