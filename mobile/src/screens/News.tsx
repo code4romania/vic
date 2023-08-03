@@ -105,7 +105,7 @@ const News = ({ navigation, route }: any) => {
       item.newStatus === ActivityLogStatus.REJECTED &&
       item.eventName === TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS
     ) {
-      return <NewsContent startText={t('item.logs.approved')} />;
+      return <NewsContent startText={t('item.logs.rejected')} />;
     }
 
     return <></>;
