@@ -51,14 +51,14 @@ export const NOTIFICATIONS = {
     PUSH: {
       title: 'TEO',
       body: (hours: number, date: string): string =>
-        `${hours} din ${date} au fost aprobate`,
+        `${hours} ore de voluntariat din ${date} au fost aprobate`,
     },
   },
   REJECTED_HOURS: {
     PUSH: {
       title: 'TEO',
       body: (hours: number, date: string): string =>
-        `${hours} din ${date} au fost respinse`,
+        `${hours} ore de voluntariat din ${date} au fost respinse`,
     },
   },
   NEW_CONTRACT: {
