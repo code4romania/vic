@@ -20,6 +20,7 @@ import { FeatherIconsPack } from './src/common/adapters/feather-icons.adapter';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
 import NotificationContextProvider from './src/contexts/notification/NotificationContextProvider';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG);
@@ -72,15 +73,17 @@ export default () => {
       >
         {/* Add marginTop for android devices as SafeAreaView is iOS Only */}
         <SafeAreaView style={styles.container}>
-          <QueryClientProvider client={queryClient}>
-            <AuthContextProvider>
-              <NavigationContainer ref={navigationRef}>
-                <NotificationContextProvider navigation={navigationRef}>
-                  <Router />
-                </NotificationContextProvider>
-              </NavigationContainer>
-            </AuthContextProvider>
-          </QueryClientProvider>
+          <GestureHandlerRootView style={styles.gestureHandler}>
+            <QueryClientProvider client={queryClient}>
+              <AuthContextProvider>
+                <NavigationContainer ref={navigationRef}>
+                  <NotificationContextProvider navigation={navigationRef}>
+                    <Router />
+                  </NotificationContextProvider>
+                </NavigationContainer>
+              </AuthContextProvider>
+            </QueryClientProvider>
+          </GestureHandlerRootView>
         </SafeAreaView>
         <ExpoStatusBar style="dark" />
       </ApplicationProvider>
@@ -93,4 +96,5 @@ export default () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, marginTop: StatusBar.currentHeight },
+  gestureHandler: { flex: 1 },
 });
