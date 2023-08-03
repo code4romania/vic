@@ -15,6 +15,9 @@ import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.en
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneEventUseCase } from '../event/get-one-event.usecase';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import ApproveHoursEvent from 'src/modules/notifications/events/volunteer-hours/approve-hours.event';
 
 @Injectable()
 export class CreateActivityLogByAdmin
@@ -28,6 +31,7 @@ export class CreateActivityLogByAdmin
 
     private readonly exceptionService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async execute(
@@ -89,6 +93,22 @@ export class CreateActivityLogByAdmin
       approvedOn: new Date(),
       organizationId: admin.organizationId,
     });
+
+    // send push notifications and or email
+    this.eventEmitter.emit(
+      EVENTS.VOLUNTEER_HOURS.APPROVE,
+      new ApproveHoursEvent(
+        created.organization.id,
+        created.volunteer.user.id,
+        created.organization.name,
+        created.volunteer.user.notificationsSettings.notificationsViaPush,
+        created.volunteer.user.notificationsSettings.notificationsViaEmail,
+        created.volunteer.user.email,
+        created.id,
+        created.hours,
+        created.createdOn,
+      ),
+    );
 
     this.actionsArchiveFacade.trackEvent(
       TrackedEventName.REGISTER_ACTIVITY_LOG,
