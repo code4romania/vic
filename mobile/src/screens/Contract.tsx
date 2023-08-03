@@ -5,7 +5,6 @@ import {
   useContractQuery,
   useSignContractMutation,
 } from '../services/contract/contract.service';
-import LoadingScreen from '../components/LoadingScreen';
 import { useTranslation } from 'react-i18next';
 import Disclaimer from '../components/Disclaimer';
 import { ContractStatus } from '../common/enums/contract-status.enum';
@@ -24,6 +23,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import useStore from '../store/store';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING, MIME_TYPES } from '../common/constants/constants';
+import ContractSkeleton from '../components/skeleton/contract-skeleton';
 
 const Contract = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -214,7 +214,7 @@ const Contract = ({ navigation, route }: any) => {
         },
       }}
     >
-      {isLoadingContract && <LoadingScreen />}
+      {isLoadingContract && <ContractSkeleton />}
       {!isLoadingContract && contract && (
         <>
           {(contract.status === ContractStatus.PENDING_ADMIN ||
