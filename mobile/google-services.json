@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "42831608116",
+    "project_id": "teo-development",
+    "storage_bucket": "teo-development.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42831608116:android:7fa59eb7d5a6645ae30d61",
+        "android_client_info": {
+          "package_name": "com.commitglobal.vic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42831608116-9bgd5lbk97dm4s17ncvs9cfe6he457dd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXrTVXUs3FCJf-QGKg4Tx2G_j9T9se5sA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42831608116-9bgd5lbk97dm4s17ncvs9cfe6he457dd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
