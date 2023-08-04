@@ -55,7 +55,7 @@ const AddActivityLog = ({ navigation }: any) => {
 
   return (
     <ModalLayout
-      title={t('general:add', { item: t('title').toLowerCase() })}
+      title={t('add_title')}
       onDismiss={navigation.goBack}
       actionsOptions={{
         actionLabel: t('general:add', { item: '' }),

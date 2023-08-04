@@ -514,6 +514,7 @@
   },
   "activity_log": {
     "title": "Log",
+    "add_title": "Adauga ore de voluntariat",
     "rejection_reason": "Motiv respingere",
     "other": "Alta optiune",
     "total": "Total",
