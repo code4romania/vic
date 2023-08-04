@@ -2,7 +2,6 @@ import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import NewsListItem from '../components/NewsListItem';
 import InfiniteListLayout from '../layouts/InfiniteListLayout';
-import { JSONStringifyError } from '../common/utils/utils';
 import { View, StyleSheet } from 'react-native';
 import { useNewsInfiniteQuery } from '../services/news/news.service';
 import { INewsItem } from '../common/interfaces/news-item.interface';
@@ -12,6 +11,7 @@ import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { TrackedEventName } from '../common/enums/tracked-event-name.enum';
 import { Text, useTheme } from '@ui-kitten/components';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
 
 const NewsContent = ({
   startText,
@@ -40,7 +40,6 @@ const NewsContent = ({
   );
 };
 const News = ({ navigation, route }: any) => {
-  console.log('News');
   const { type } = route.params;
   const { t } = useTranslation('news');
 
@@ -197,13 +196,9 @@ const News = ({ navigation, route }: any) => {
         loadMore={onLoadMore}
         isLoading={isFetchingNews}
         refetch={reloadNews}
+        loadingLayout={<NewsItemSkeleton />}
         hasDivider={false}
-        errorMessage={
-          getNewsError
-            ? `${JSONStringifyError(getNewsError as Error)}`
-            : // : `${t('errors.generic')}`
-              ''
-        }
+        errorMessage={getNewsError ? `${t('errors.generic')}` : ''}
       />
     </PageLayout>
   );
