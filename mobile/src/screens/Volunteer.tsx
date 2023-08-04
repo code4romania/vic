@@ -16,11 +16,13 @@ import { useVolunteerStats } from '../services/volunteer/volunteer.service';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useGetUserProfileQuery } from '../services/user/user.service';
 
 const Volunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
 
   const { userProfile } = useUserProfile();
+  const { refetch: refetchUserProfile } = useGetUserProfileQuery();
 
   const {
     data: stats,
@@ -30,6 +32,7 @@ const Volunteer = ({ navigation }: any) => {
 
   useFocusEffect(
     React.useCallback(() => {
+      refetchUserProfile();
       refetch();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),

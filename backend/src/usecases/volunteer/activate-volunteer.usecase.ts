@@ -10,6 +10,7 @@ import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneVolunteerUsecase } from './get-one-volunteer.usecase';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
+import { SwitchOrganizationUsecase } from '../organization/switch-organization.usecase';
 
 @Injectable()
 export class ActivateVolunteerUsecase
@@ -20,6 +21,7 @@ export class ActivateVolunteerUsecase
     private readonly getOneVolunteerUsecase: GetOneVolunteerUsecase,
     private readonly exceptionService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly switchOrganizationUsecase: SwitchOrganizationUsecase,
   ) {}
 
   public async execute(
@@ -35,6 +37,12 @@ export class ActivateVolunteerUsecase
     }
 
     const activated = await this.volunteerFacade.activate(volunteerId);
+
+    // 2. swith organization to the new active one
+    await this.switchOrganizationUsecase.execute(
+      volunteer.organization.id,
+      volunteer.user.id,
+    );
 
     // Track event
     this.actionsArchiveFacade.trackEvent(

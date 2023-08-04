@@ -9,7 +9,6 @@ interface IGrayIconProps extends IconProps {
 const GrayIcon = (props: IGrayIconProps) => {
   const theme = useTheme();
   const { backgroundColor, ...otherProps } = props;
-  console.log('lalsdas', backgroundColor);
 
   return (
     <View

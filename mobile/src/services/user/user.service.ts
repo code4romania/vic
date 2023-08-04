@@ -1,11 +1,17 @@
-import { useMutation } from 'react-query';
-import { createUserProfile, updateUserPersonalData, updateUserProfile } from './user.api';
+import { useMutation, useQuery } from 'react-query';
+import {
+  createUserProfile,
+  getUserProfile,
+  updateUserPersonalData,
+  updateUserProfile,
+} from './user.api';
 import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.interface';
 import { IdentityDataFormTypes } from '../../screens/IdentityData';
 import { AccountDataFormTypes } from '../../screens/AccountData';
 import { ImageAttachement } from '../../common/interfaces/image-attachement.interface';
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 import useStore from '../../store/store';
+import { useUserProfile } from '../../store/profile/profile.selector';
 
 export const useCreateUserProfileMutation = () => {
   const { setUserProfile } = useStore();
@@ -18,6 +24,21 @@ export const useCreateUserProfileMutation = () => {
       },
     },
   );
+};
+
+export const useGetUserProfileQuery = () => {
+  const { setUserProfile } = useStore();
+  const { userProfile } = useUserProfile();
+  return useQuery(['user-profile'], () => getUserProfile(), {
+    onSuccess: (data: IUserProfile) => {
+      if (
+        data.activeOrganization?.id !== userProfile?.activeOrganization?.id ||
+        data.myOrganizations.length !== userProfile?.myOrganizations.length
+      ) {
+        setUserProfile({ ...data });
+      }
+    },
+  });
 };
 
 export const useUpdateUserPersonalDataMutation = () => {
