@@ -10,18 +10,27 @@ import { Text } from '@ui-kitten/components';
 import { NewsType } from '../common/enums/news-type.enum';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import StatisticsSkeleton from './skeleton/statistics-skeleton';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Statistics = ({ navigation }: { navigation: any }) => {
-  console.log('Statistics');
   const { t } = useTranslation('home');
 
   const { userProfile } = useUserProfile();
 
   const {
-    isLoading: isFetchingStatistics,
+    isFetching: isFetchingStatistics,
     data: statistics,
     error: getStatisticsError,
+    refetch,
   } = useMonthlyStatistics();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   const onEventsCardPress = () => {
     navigation.navigate('events');
@@ -39,9 +48,8 @@ const Statistics = ({ navigation }: { navigation: any }) => {
     navigation.navigate('news', { type: NewsType.ORGANIZATIONS });
   };
 
-  // TODO: skeleton loading here
   if (isFetchingStatistics) {
-    return <></>;
+    return <StatisticsSkeleton />;
   }
 
   return (

@@ -9,6 +9,8 @@ import { useTeoStatistics } from '../services/statistics/statistics.service';
 import { useTranslation } from 'react-i18next';
 import { Text } from '@ui-kitten/components';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import AboutTeoSkeleton from './skeleton/about-teo-skeleton';
+import { useFocusEffect } from '@react-navigation/native';
 
 const AboutTeo = () => {
   const { t } = useTranslation('general');
@@ -17,11 +19,19 @@ const AboutTeo = () => {
     isFetching: isLoadingStatistics,
     data: statistics,
     error: getTeoStatisticsError,
+    refetch,
   } = useTeoStatistics();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   // add skeleton loading
   if (isLoadingStatistics) {
-    return <></>;
+    return <AboutTeoSkeleton />;
   }
 
   return (

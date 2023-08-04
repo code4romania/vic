@@ -9,6 +9,8 @@ import { Button, Text, withStyles } from '@ui-kitten/components';
 import { useTranslation } from 'react-i18next';
 import { useAnouncementsSnapshot } from '../services/anouncement/anouncement.service';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import NewsSkeleton from './skeleton/news-sekeleton';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface LatestNewsProps {
   navigation: any;
@@ -22,19 +24,23 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
     isFetching: isLoadingAnouncements,
     data: anouncements,
     error: getAnouncementsError,
+    refetch,
   } = useAnouncementsSnapshot();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   const onViewNewsButtonPress = () => {
     navigation.navigate('announcements');
   };
 
-  const onAnouncementItemPress = (id: string) => {
-    console.log('id', id);
-  };
-
   // add skeleton loading
   if (isLoadingAnouncements) {
-    return <></>;
+    return <NewsSkeleton />;
   }
 
   return (
@@ -77,7 +83,6 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
                 icon={item.organizationLogo}
                 title={item.title}
                 subtitle={item.description}
-                onPress={onAnouncementItemPress.bind(null, item.id)}
               />
             ))}
           </View>
