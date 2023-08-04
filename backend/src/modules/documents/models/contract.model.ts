@@ -62,7 +62,6 @@ export type FindManyContractOptions = IBasePaginationFilterModel &
     > & {
       volunteerName?: string;
       status?: ClientContractStatus;
-      history?: boolean;
       pending?: boolean;
       userId: string;
       contractStatus?: ContractStatus;

@@ -15,7 +15,7 @@ import FormLayout from '../layouts/FormLayout';
 import { Text, useTheme } from '@ui-kitten/components';
 import { Platform, StyleSheet, View } from 'react-native';
 import ContractItem from '../components/ContractItem';
-import { PendingContractIcon } from './Documents';
+import { DocumentIcon } from './Documents';
 import { ButtonType } from '../common/enums/button-type.enum';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
@@ -238,7 +238,7 @@ const Contract = ({ navigation, route }: any) => {
               title={contract.contractNumber}
               startDate={contract.startDate}
               endDate={contract.endDate}
-              leftIcon={<PendingContractIcon />}
+              leftIcon={<DocumentIcon color="yellow-500" backgroundColor="yellow-50" />}
               onPress={onDownloadContract}
             />
           </FormLayout>

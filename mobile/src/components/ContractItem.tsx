@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { formatDate } from '../common/utils/utils';
 import PressableContainer from './PressableContainer';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useTranslation } from 'react-i18next';
 
 interface ContractItemProps {
   id: string;
@@ -12,6 +13,7 @@ interface ContractItemProps {
   endDate: string;
   leftIcon: ReactNode;
   rightIconName?: string;
+  info?: string;
   onPress: (id: string) => void;
   eva?: any;
 }
@@ -25,7 +27,10 @@ const ContractItem = ({
   onPress,
   eva,
   leftIcon,
+  info,
 }: ContractItemProps) => {
+  const { t } = useTranslation('documents');
+
   const onContractPress = () => {
     onPress(id);
   };
@@ -41,14 +46,21 @@ const ContractItem = ({
             ellipsizeMode="tail"
             numberOfLines={1}
           >
-            {title}
+            {`${t('contract_prefix')} ${title}`}
           </Text>
-          <Text
-            category="c1"
-            appearance="hint"
-            ellipsizeMode="tail"
-            numberOfLines={1}
-          >{`${formatDate(startDate)} - ${formatDate(endDate)}`}</Text>
+          <View style={eva?.style.subtitleWrapper}>
+            <Text
+              category="c1"
+              appearance="hint"
+              ellipsizeMode="tail"
+              numberOfLines={1}
+            >{`${formatDate(startDate)} - ${formatDate(endDate)}`}</Text>
+            {info && (
+              <Text category="c1" appearance="hint" ellipsizeMode="tail" numberOfLines={1}>
+                ({info})
+              </Text>
+            )}
+          </View>
         </View>
         <View style={eva.style.iconWrapper}>
           <Icon name={rightIconName} style={eva.style.icon} />
@@ -74,5 +86,9 @@ export default withStyles(ContractItem, () => ({
   },
   icon: {
     height: 24,
+  },
+  subtitleWrapper: {
+    flexDirection: 'row',
+    gap: 2,
   },
 }));

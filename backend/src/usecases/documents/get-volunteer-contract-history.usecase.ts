@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
+import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import {
   FindManyContractOptions,
   IContractModel,
@@ -22,7 +23,7 @@ export class GetVolunteerContractHistoryUsecase
   ): Promise<Pagination<IContractModel>> {
     const contracts = await this.contractFacade.findMany({
       ...findOptions,
-      history: true,
+      contractStatus: ContractStatus.APPROVED,
     });
 
     // TODO: review this

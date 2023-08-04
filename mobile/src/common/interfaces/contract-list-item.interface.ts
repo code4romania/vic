@@ -1,4 +1,4 @@
-import { ContractStatus } from '../enums/contract-status.enum';
+import { ClientContractStatus } from '../enums/client-contract-status.enum';
 
 export interface IContractListItem {
   id: string;
@@ -6,6 +6,6 @@ export interface IContractListItem {
   startDate: string;
   endDate: string;
   path: string;
-  status: ContractStatus;
+  status: ClientContractStatus;
   contractFileName: string;
 }

@@ -52,7 +52,6 @@ export class ContractRepositoryService
       endDate,
       volunteerName,
       volunteerId,
-      history,
       pending,
       contractStatus,
     } = findOptions;
@@ -129,17 +128,6 @@ export class ContractRepositoryService
       query.andWhere('contract.status = :contractStatus', {
         contractStatus,
       });
-    }
-
-    // get all ACTIVE AND FINISHED contracts
-    if (history) {
-      query.andWhere(
-        'contract.startDate <= :date AND contract.status = :status',
-        {
-          date: new Date(),
-          status: ContractStatus.APPROVED,
-        },
-      );
     }
 
     // get all pending

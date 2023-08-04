@@ -104,6 +104,7 @@
   "turquoise-50": "#EBFDFD",
   "turquoise-100": "#DBF6F5",
   "turquoise-300": "#A7E2E2",
+  "turquoise-700": "#0AA5A5",
   "cool-gray-50": "#F9FAFB",
   "cool-gray-100": "#F3F4F6",
   "cool-gray-200": "#E5E7EB",
@@ -124,6 +125,8 @@
   "yellow-500": "#FBBF24",
   "red-50": "#FEF2F2",
   "red-500": "#E23D3D",
+  "background-turquoise": "#EEF8F8",
+  "background-blue": "#d7f7fc",
   "component": {
     "avatar": {
       "sizes": {

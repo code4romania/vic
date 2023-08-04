@@ -21,31 +21,27 @@ import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import { ALLOW_FONT_SCALLING, MIME_TYPES } from '../common/constants/constants';
 import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list';
+import { mapContractStatus } from '../common/utils/helpers';
 
 interface ContractsProps {
   navigation: any;
   volunteerId: string;
 }
 
-export const PendingContractIcon = () => {
+export const DocumentIcon = ({
+  color,
+  backgroundColor,
+}: {
+  backgroundColor?: string;
+  color?: string;
+}) => {
   const theme = useTheme();
   return (
     <GrayIcon
       name={'file-text'}
+      backgroundColor={backgroundColor}
       style={{
-        color: theme['yellow-500'],
-      }}
-    />
-  );
-};
-
-export const CloseContractIcon = () => {
-  const theme = useTheme();
-  return (
-    <GrayIcon
-      name={'file-text'}
-      style={{
-        color: theme['gray-50'],
+        color: theme[color || 'gray-50'],
       }}
     />
   );
@@ -138,23 +134,29 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
     }
   };
 
-  const onRenderHistoryContractListItem = ({ item }: { item: IContractListItem }) => (
-    <ContractItem
-      id={item.id}
-      title={item.contractNumber}
-      leftIcon={<CloseContractIcon />}
-      startDate={item.startDate}
-      endDate={item.endDate}
-      rightIconName={'download'}
-      onPress={onDownloadContract.bind(null, item)}
-    />
-  );
+  const onRenderHistoryContractListItem = ({ item }: { item: IContractListItem }) => {
+    const layoutProps = mapContractStatus(item.status);
+    return (
+      <ContractItem
+        id={item.id}
+        title={item.contractNumber}
+        info={layoutProps?.label ? `${t(layoutProps?.label)}` : ''}
+        leftIcon={
+          <DocumentIcon color={layoutProps?.color} backgroundColor={layoutProps?.backgroundColor} />
+        }
+        startDate={item.startDate}
+        endDate={item.endDate}
+        rightIconName={'download'}
+        onPress={onDownloadContract.bind(null, item)}
+      />
+    );
+  };
 
   const onRenderPendingContractListItem = ({ item }: { item: IContractListItem }) => (
     <ContractItem
       id={item.id}
       title={item.contractNumber}
-      leftIcon={<PendingContractIcon />}
+      leftIcon={<DocumentIcon color="yellow-500" backgroundColor="yellow-50" />}
       startDate={item.startDate}
       endDate={item.endDate}
       rightIconName={'chevron-right'}

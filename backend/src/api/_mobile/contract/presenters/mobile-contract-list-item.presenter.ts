@@ -1,7 +1,10 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IContractModel } from 'src/modules/documents/models/contract.model';
-import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
+import {
+  IContractModel,
+  mapContractStatusToClientContractStatus,
+} from 'src/modules/documents/models/contract.model';
+import { ClientContractStatus } from 'src/modules/documents/enums/client-contract-status.enum';
 
 export class MobileContractListItemPresenter {
   constructor(contract: IContractModel) {
@@ -10,7 +13,7 @@ export class MobileContractListItemPresenter {
     this.startDate = contract.startDate;
     this.endDate = contract.endDate;
     this.path = contract.path;
-    this.status = contract.status;
+    this.status = mapContractStatusToClientContractStatus(contract);
     this.contractFileName = contract.fileName;
   }
 
@@ -45,11 +48,11 @@ export class MobileContractListItemPresenter {
 
   @Expose()
   @ApiProperty({
-    description: 'The contract status',
-    enum: ContractStatus,
-    examples: Object.values(ContractStatus),
+    description: 'The status of the contract',
+    enum: ClientContractStatus,
+    examples: Object.values(ClientContractStatus),
   })
-  status: ContractStatus;
+  status: ClientContractStatus;
 
   @Expose()
   @ApiProperty({

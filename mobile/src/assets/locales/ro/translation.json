@@ -618,8 +618,8 @@
       }
     }
   },
-
   "documents": {
+    "contract_prefix": "Contract",
     "description": "Lorem ipsum. Gestioneaza contractele tale din sectiunile de mai jos. Descarca contracte vechi, sau semneaza contractele trimise de organizatie.",
     "sections": {
       "pending": "Propunere contract",
@@ -627,7 +627,8 @@
     },
     "contract_status": {
       "active": "activ",
-      "closed": "încheiat"
+      "closed": "încheiat",
+      "not_started": "neinceput"
     },
     "contract": {
       "title": "Contract {{contractNumber}}",
