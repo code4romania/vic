@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
+import React, { ReactNode } from 'react';
 import {
   Layout,
   TopNavigation,
@@ -11,9 +11,6 @@ import {
 import Button from '../components/Button';
 import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
 import { ButtonType } from '../common/enums/button-type.enum';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import BottomSheet, { BottomSheetProps } from '../components/BottomSheet';
-import { useBottomSheet } from '../store/bottom-sheet/bottom-sheet.selector';
 import InlineLink from '../components/InlineLink';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
@@ -34,7 +31,6 @@ interface PageLayoutProps {
   onBackButtonPress?: () => void;
   onEditButtonPress?: () => void;
   actionsOptions?: ActionsOptionsProps;
-  bottomSheetOptions?: Omit<BottomSheetProps, 'modalRef'>;
 }
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
@@ -57,22 +53,8 @@ export const PageLayout = ({
   onBackButtonPress,
   onEditButtonPress,
   actionsOptions,
-  bottomSheetOptions,
 }: PageLayoutProps) => {
   const theme = useTheme();
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  const { isOpen } = useBottomSheet();
-
-  const onBottomSheetOpen = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
-  useEffect(() => {
-    if (isOpen) {
-      onBottomSheetOpen();
-    }
-  }, [isOpen, onBottomSheetOpen]);
 
   const renderLeftControl = () => {
     if (!onBackButtonPress) {
@@ -147,16 +129,6 @@ export const PageLayout = ({
           </View>
         )}
       </Layout>
-      {bottomSheetOptions && isOpen && (
-        <BottomSheet
-          iconType={bottomSheetOptions.iconType}
-          modalRef={bottomSheetModalRef}
-          heading={bottomSheetOptions.heading}
-          paragraph={bottomSheetOptions.paragraph}
-          primaryAction={bottomSheetOptions.primaryAction}
-          secondaryAction={bottomSheetOptions.secondaryAction}
-        />
-      )}
     </>
   );
 };

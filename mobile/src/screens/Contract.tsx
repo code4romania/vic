@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import {
   useCancelContractMutation,
@@ -20,10 +20,13 @@ import { ButtonType } from '../common/enums/button-type.enum';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
-import useStore from '../store/store';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING, MIME_TYPES } from '../common/constants/constants';
 import ContractSkeleton from '../components/skeleton/contract-skeleton';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { renderBackdrop } from '../components/BottomSheet';
+import Button from '../components/Button';
+import InlineLink from '../components/InlineLink';
 
 const Contract = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -36,14 +39,20 @@ const Contract = ({ navigation, route }: any) => {
     useState<DocumentPicker.DocumentPickerResult | null>(null);
   // active organization
   const { userProfile } = useUserProfile();
-  // bottom sheet state
-  const { open: openBottomSheet, close: closeBottomSheet } = useStore();
   // contract request
   const {
     data: contract,
     isFetching: isLoadingContract,
     error: getContractError,
   } = useContractQuery(id);
+
+  // bottom sheet ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  // bottom sheet snap points
+  const snapPoints = useMemo(
+    () => (Platform.OS === 'android' ? ['25%', '45%'] : ['25%', '40%']),
+    [],
+  );
 
   // sign contract
   const { mutate: signContract, isLoading: isUploadingContract } = useSignContractMutation();
@@ -110,12 +119,20 @@ const Contract = ({ navigation, route }: any) => {
     // don't show the bottom sheet if the user canceled the upload file from the device
     if (!result.canceled && result.assets[0]) {
       setSelectedContract(result.assets[0] as any);
-      openBottomSheet();
+      onOpenBottomSheet();
     }
   };
 
+  const onCloseBottomSheet = () => {
+    bottomSheetRef.current?.close();
+  };
+
+  const onOpenBottomSheet = () => {
+    bottomSheetRef.current?.expand();
+  };
+
   const onCancelSelection = async () => {
-    closeBottomSheet();
+    onCloseBottomSheet();
     setSelectedContract(null);
   };
 
@@ -184,67 +201,80 @@ const Contract = ({ navigation, route }: any) => {
   };
 
   return (
-    <PageLayout
-      title={t('contract.title', { contractNumber: contract?.contractNumber || '' })}
-      onBackButtonPress={navigation.goBack}
-      actionsOptions={buildPageActions()}
-      bottomSheetOptions={{
-        paragraph: (
-          <View style={styles.bottomSheetParagraphContainer}>
-            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">{`${t(
-              'contract.bottom_sheet.paragraph',
-            )}`}</Text>
-            <Text
-              allowFontScaling={ALLOW_FONT_SCALLING}
-              category="p2"
-              style={{ color: theme['color-success-500'] }}
-            >
-              {(selectedContract as any)?.name || ''}
-            </Text>
-          </View>
-        ),
-        heading: t('contract.bottom_sheet.heading'),
-        primaryAction: {
-          label: t('contract.bottom_sheet.label'),
-          onPress: onUploadContract,
-        },
-        secondaryAction: {
-          label: t('general:back'),
-          onPress: onCancelSelection,
-        },
-      }}
-    >
-      {isLoadingContract && <ContractSkeleton />}
-      {!isLoadingContract && contract && (
-        <>
-          {(contract.status === ContractStatus.PENDING_ADMIN ||
-            contract.status === ContractStatus.PENDING_VOLUNTEER) && (
-            <Disclaimer color="yellow" text={t(`contract.disclaimer.${contract.status}`)} />
-          )}
-          <FormLayout>
-            {userProfile?.activeOrganization && (
-              <OrganizationIdentity
-                name={userProfile?.activeOrganization.name}
-                uri={userProfile?.activeOrganization.logo || ''}
-              />
+    <>
+      <PageLayout
+        title={t('contract.title', { contractNumber: contract?.contractNumber || '' })}
+        onBackButtonPress={navigation.goBack}
+        actionsOptions={buildPageActions()}
+      >
+        {isLoadingContract && <ContractSkeleton />}
+        {!isLoadingContract && contract && (
+          <>
+            {(contract.status === ContractStatus.PENDING_ADMIN ||
+              contract.status === ContractStatus.PENDING_VOLUNTEER) && (
+              <Disclaimer color="yellow" text={t(`contract.disclaimer.${contract.status}`)} />
             )}
-            <Text
-              allowFontScaling={ALLOW_FONT_SCALLING}
-              category="p1"
-              style={styles.paragraph}
-            >{`${t(`contract.paragraph.${contract.status}`)}`}</Text>
-            <ContractItem
-              id={contract.id}
-              title={contract.contractNumber}
-              startDate={contract.startDate}
-              endDate={contract.endDate}
-              leftIcon={<DocumentIcon color="yellow-500" backgroundColor="yellow-50" />}
-              onPress={onDownloadContract}
+            <FormLayout>
+              {userProfile?.activeOrganization && (
+                <OrganizationIdentity
+                  name={userProfile?.activeOrganization.name}
+                  uri={userProfile?.activeOrganization.logo || ''}
+                />
+              )}
+              <Text
+                allowFontScaling={ALLOW_FONT_SCALLING}
+                category="p1"
+                style={styles.paragraph}
+              >{`${t(`contract.paragraph.${contract.status}`)}`}</Text>
+              <ContractItem
+                id={contract.id}
+                title={contract.contractNumber}
+                startDate={contract.startDate}
+                endDate={contract.endDate}
+                leftIcon={<DocumentIcon color="yellow-500" backgroundColor="yellow-50" />}
+                onPress={onDownloadContract}
+              />
+            </FormLayout>
+          </>
+        )}
+      </PageLayout>
+      <BottomSheet
+        backdropComponent={renderBackdrop}
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={snapPoints}
+      >
+        <View style={styles.bottomSheetContainer}>
+          <View style={styles.textContainer}>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
+              'contract.bottom_sheet.heading',
+            )}`}</Text>
+            <View style={styles.bottomSheetParagraphContainer}>
+              <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">{`${t(
+                'contract.bottom_sheet.paragraph',
+              )}`}</Text>
+              <Text
+                allowFontScaling={ALLOW_FONT_SCALLING}
+                category="p2"
+                style={{ color: theme['color-success-500'] }}
+                numberOfLines={2}
+                ellipsizeMode="tail"
+              >
+                {(selectedContract as any)?.name || ''}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.buttonsContainer}>
+            <Button label={t('contract.bottom_sheet.label')} onPress={onUploadContract} />
+            <InlineLink
+              style={{ color: theme['cool-gray-700'] }}
+              label={t('general:back')}
+              onPress={onCancelSelection}
             />
-          </FormLayout>
-        </>
-      )}
-    </PageLayout>
+          </View>
+        </View>
+      </BottomSheet>
+    </>
   );
 };
 
@@ -258,6 +288,27 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     flexDirection: 'column',
     gap: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  bottomSheetContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    gap: 24,
+  },
+  textContainer: {
+    flex: 1,
+    gap: 4,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  buttonsContainer: {
+    flex: 1,
+    gap: 16,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -60,7 +60,7 @@ const JoinOrganization = ({ navigation, route }: any) => {
   } = useForm<JoinNgoFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   const onSubmit = (payload: JoinNgoFormTypes) => {

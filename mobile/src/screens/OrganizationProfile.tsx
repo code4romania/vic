@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Divider, Text, useTheme } from '@ui-kitten/components';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import SectionWrapper from '../components/SectionWrapper';
 import ProfileIntro from '../components/ProfileIntro';
@@ -47,7 +47,9 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     () =>
       organization?.organizationVolunteerStatus ===
       OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
-        ? ['30%', '40%']
+        ? ['30%', '45%']
+        : Platform.OS === 'android'
+        ? ['30%', '60%']
         : ['30%', '55%'],
     [organization],
   );
