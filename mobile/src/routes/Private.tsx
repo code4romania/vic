@@ -23,6 +23,8 @@ import Documents from '../screens/Documents';
 import Contract from '../screens/Contract';
 import Anouncements from '../screens/Anouncements';
 import ContractRejectedReason from '../screens/ContractRejectedReason';
+import PendingContracts from '../screens/PendingContracts';
+import ContractHistory from '../screens/ContractHistory';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
@@ -44,6 +46,8 @@ const Private = () => (
       <Screen name="notifications-settings" component={NotificationsSettings} />
       <Screen name="documents" component={Documents} />
       <Screen name="contract" component={Contract} />
+      <Screen name="pending-contracts" component={PendingContracts} />
+      <Screen name="contract-history" component={ContractHistory} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
       <Screen name="join-event" component={JoinEvent} />

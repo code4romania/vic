@@ -5,12 +5,13 @@ import { View } from 'react-native';
 import SpeakerphoneSvg from '../assets/svg/speakerphone';
 import NewsListItem from './NewsListItem';
 import IconSvg from './IconSvg';
-import { Button, Text, withStyles } from '@ui-kitten/components';
+import { Text, withStyles } from '@ui-kitten/components';
 import { useTranslation } from 'react-i18next';
 import { useAnouncementsSnapshot } from '../services/anouncement/anouncement.service';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import NewsSkeleton from './skeleton/news-sekeleton';
 import { useFocusEffect } from '@react-navigation/native';
+import SeeAllAction from './SeeAllAction';
 
 interface LatestNewsProps {
   navigation: any;
@@ -47,22 +48,7 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
     <SectionWrapper
       title={t('anouncements.section.header')}
       icon={<IconSvg icon={SpeakerphoneSvg} size={20} />}
-      action={
-        <Button
-          style={eva.style.seeAllBtn}
-          size="tiny"
-          appearance="ghost"
-          onPress={onViewNewsButtonPress}
-        >
-          {() => (
-            <Text
-              allowFontScaling={ALLOW_FONT_SCALLING}
-              category="c2"
-              style={eva.style.seeAllText}
-            >{`${t('anouncements.section.see_all')}`}</Text>
-          )}
-        </Button>
-      }
+      action={<SeeAllAction onPress={onViewNewsButtonPress} />}
     >
       <>
         {anouncements?.items.length === 0 && (
@@ -92,17 +78,8 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
   );
 };
 
-export default withStyles(LatestNews, (theme) => ({
+export default withStyles(LatestNews, () => ({
   list: {
     gap: 16,
-  },
-  seeAllBtn: {
-    borderRadius: 100,
-    backgroundColor: theme['turquoise-50'],
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-  },
-  seeAllText: {
-    color: theme['color-success-700'],
   },
 }));

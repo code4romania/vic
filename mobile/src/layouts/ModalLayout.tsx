@@ -22,12 +22,11 @@ interface ModalLayoutProps {
 
 const CloseIcon = (props: any) => <Icon {...props} name="x" />;
 const EditIcon = (props: any) => <Icon {...props} name="edit" />;
-const renderTitle = (title: string) => () =>
-  (
-    <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
-      {title}
-    </Text>
-  );
+const renderTitle = (title: string) => () => (
+  <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
+    {title}
+  </Text>
+);
 
 export const ModalLayout = ({
   children,
@@ -89,7 +88,14 @@ const styles = StyleSheet.create({
   childrenContainer: { flex: 1, paddingHorizontal: 16, paddinVertical: 16 },
   bottomActionContainer: {
     width: '100%',
-    minHeight: 100,
+    ...Platform.select({
+      android: {
+        minHeight: 100,
+      },
+      ios: {
+        minHeight: 125,
+      },
+    }),
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -3,7 +3,7 @@ import ModalLayout from '../layouts/ModalLayout';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useOrganization } from '../store/organization/organization.selector';
 import { Text, useTheme } from '@ui-kitten/components';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ButtonType } from '../common/enums/button-type.enum';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -25,7 +25,10 @@ const LeaveOrganization = ({ navigation }: any) => {
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points
-  const snapPoints = useMemo(() => ['30%', '45%'], []);
+  const snapPoints = useMemo(
+    () => (Platform.OS === 'android' ? ['30%', '55%'] : ['30%', '45%']),
+    [],
+  );
 
   const { isLoading: isLeavingOrganization, mutate: leaveOrganization } =
     useLeaveOrganizationMutation();

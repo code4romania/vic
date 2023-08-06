@@ -39,12 +39,11 @@ interface PageLayoutProps {
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
 const EditIcon = (props: any) => <Icon {...props} name="edit" />;
-const renderTitle = (title: string) => () =>
-  (
-    <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
-      {title}
-    </Text>
-  );
+const renderTitle = (title: string) => () => (
+  <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
+    {title}
+  </Text>
+);
 
 export const LoadingIndicator = (props: any): React.ReactElement => (
   <View style={[props.style, styles.indicator]}>
@@ -132,11 +131,12 @@ export const PageLayout = ({
                         {actionsOptions.secondaryActionLabel || ''}
                       </Text>
                       <InlineLink
-                        style={
+                        style={[
                           !actionsOptions.secondaryActionLabel
                             ? { color: theme['cool-gray-700'] }
-                            : {}
-                        }
+                            : {},
+                          styles.inlineLink,
+                        ]}
                         onPress={actionsOptions.onSecondaryActionButtonClick}
                         label={actionsOptions.secondaryActionLink}
                       />
@@ -178,17 +178,18 @@ const styles = StyleSheet.create({
   },
   bottomActionContainer: {
     width: '100%',
-    minHeight: 100,
+    minHeight: 120,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: 'gray',
+    backgroundColor: 'white',
+    gap: 16,
+    paddingVertical: 16,
     ...Platform.select({
       android: {
-        backgroundColor: 'white',
         elevation: 4,
       },
       ios: {
-        backgroundColor: 'white',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.3,
         shadowRadius: 4,
@@ -208,12 +209,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   buttonsContainer: {
-    gap: 24,
+    gap: 16,
     alignItems: 'center',
   },
   secondaryButtonContainer: { flexDirection: 'row', gap: 2 },
   contentContainer: {
     flex: 1,
     alignItems: 'center',
+  },
+  inlineLink: {
+    fontWeight: '500',
   },
 });

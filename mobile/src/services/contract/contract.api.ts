@@ -1,4 +1,4 @@
-import { DocumentResult } from 'expo-document-picker';
+import { DocumentPickerResult } from 'expo-document-picker';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IContractListItem } from '../../common/interfaces/contract-list-item.interface';
 import { IContract } from '../../common/interfaces/contract.interface';
@@ -51,7 +51,7 @@ export const signContract = async ({
   contract,
 }: {
   contractId: string;
-  contract: DocumentResult;
+  contract: DocumentPickerResult;
 }): Promise<IContract> => {
   const formData = new FormData();
 

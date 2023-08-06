@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Text, useTheme } from '@ui-kitten/components';
+import { Divider, Text, useTheme } from '@ui-kitten/components';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { Platform, StyleSheet } from 'react-native';
 import { View } from 'react-native';
@@ -9,19 +9,19 @@ import {
   useContractHistoryInfiniteQuery,
   usePendingContractsInfiniteQuery,
 } from '../services/contract/contract.service';
-import InfiniteListLayout from '../layouts/InfiniteListLayout';
 import { IContractListItem } from '../common/interfaces/contract-list-item.interface';
 import ContractItem from '../components/ContractItem';
 import GrayIcon from '../components/GreyIcon';
 import SectionWrapper from '../components/SectionWrapper';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUserProfile } from '../store/profile/profile.selector';
-import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import { ALLOW_FONT_SCALLING, MIME_TYPES } from '../common/constants/constants';
 import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list';
 import { mapContractStatus } from '../common/utils/helpers';
+import ScrollViewLayout from '../layouts/ScrollViewLayout';
+import SeeAllAction from '../components/SeeAllAction';
 
 interface ContractsProps {
   navigation: any;
@@ -54,18 +54,12 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
   const {
     data: pendingContracts,
     isFetching: isFetchingPendingContracts,
-    error: errorFetchingPendingContracts,
-    hasNextPage: hasPendingNextPage,
-    fetchNextPage: fetchPendingContractsNextPage,
     refetch: reloadPendingContracts,
   } = usePendingContractsInfiniteQuery(volunteerId);
 
   const {
     data: closedActiveContracts,
     isFetching: isLoadingClosedActiveContracts,
-    error: errorFetchingClosedActiveContractsContracts,
-    hasNextPage: hasNextPageHistory,
-    fetchNextPage: fetchHistoryNextPage,
     refetch: reloadHistory,
   } = useContractHistoryInfiniteQuery(volunteerId);
 
@@ -122,16 +116,12 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
     navigation.navigate('contract', { id });
   };
 
-  const onLoadMoreHistory = () => {
-    if (!isLoadingClosedActiveContracts && hasNextPageHistory) {
-      fetchHistoryNextPage();
-    }
+  const onSeeAllPendingActionPress = () => {
+    navigation.navigate('pending-contracts');
   };
 
-  const onLoadMorePending = () => {
-    if (!isFetchingPendingContracts && hasPendingNextPage) {
-      fetchPendingContractsNextPage();
-    }
+  const onSeeAllSignedActionPress = () => {
+    navigation.navigate('contract-history');
   };
 
   const onRenderHistoryContractListItem = ({ item }: { item: IContractListItem }) => {
@@ -152,53 +142,49 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
     );
   };
 
-  const onRenderPendingContractListItem = ({ item }: { item: IContractListItem }) => (
-    <ContractItem
-      id={item.id}
-      title={item.contractNumber}
-      leftIcon={<DocumentIcon color="yellow-500" backgroundColor="yellow-50" />}
-      startDate={item.startDate}
-      endDate={item.endDate}
-      rightIconName={'chevron-right'}
-      onPress={onPendingContractPress.bind(null, item.id)}
-    />
-  );
-
   if (isFetchingPendingContracts || isLoadingClosedActiveContracts) {
     return <DocumentSkeletonList />;
   }
 
   return (
-    <View style={styles.contractsContainer}>
+    <ScrollViewLayout>
       {pendingContracts?.pages[0].meta.totalItems !== 0 && (
-        <SectionWrapper title={t('sections.pending')}>
-          <InfiniteListLayout<IContractListItem>
-            pages={pendingContracts?.pages}
-            renderItem={onRenderPendingContractListItem}
-            loadMore={onLoadMorePending}
-            isLoading={isFetchingPendingContracts}
-            refetch={reloadPendingContracts}
-            loadingLayout={<OrganizationSkeletonListItem />}
-            loadingElementsCount="small"
-            errorMessage={errorFetchingPendingContracts ? `${t('errors.generic')}` : undefined}
-          />
+        <SectionWrapper
+          title={t('sections.pending')}
+          action={<SeeAllAction onPress={onSeeAllPendingActionPress} />}
+        >
+          <View>
+            {pendingContracts?.pages[0].items.map((item, index) => (
+              <View key={item.id}>
+                <ContractItem
+                  id={item.id}
+                  title={item.contractNumber}
+                  leftIcon={<DocumentIcon color="yellow-500" backgroundColor="yellow-50" />}
+                  startDate={item.startDate}
+                  endDate={item.endDate}
+                  rightIconName={'chevron-right'}
+                  onPress={onPendingContractPress.bind(null, item.id)}
+                />
+                {index < pendingContracts.pages[0].items.length - 1 && <Divider />}
+              </View>
+            ))}
+          </View>
         </SectionWrapper>
       )}
-      <SectionWrapper title={t('sections.closed')}>
-        <InfiniteListLayout<IContractListItem>
-          pages={closedActiveContracts?.pages}
-          renderItem={onRenderHistoryContractListItem}
-          loadMore={onLoadMoreHistory}
-          isLoading={isLoadingClosedActiveContracts}
-          refetch={reloadHistory}
-          loadingLayout={<OrganizationSkeletonListItem />}
-          loadingElementsCount="small"
-          errorMessage={
-            errorFetchingClosedActiveContractsContracts ? `${t('errors.generic')}` : undefined
-          }
-        />
+      <SectionWrapper
+        title={t('sections.closed')}
+        action={<SeeAllAction onPress={onSeeAllSignedActionPress} />}
+      >
+        <View>
+          {closedActiveContracts?.pages[0].items.map((item, index) => (
+            <View key={item.id}>
+              <View>{onRenderHistoryContractListItem({ item })}</View>
+              {index < closedActiveContracts.pages[0].items.length - 1 && <Divider />}
+            </View>
+          ))}
+        </View>
       </SectionWrapper>
-    </View>
+    </ScrollViewLayout>
   );
 };
 
@@ -234,8 +220,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 16,
-  },
-  contractsContainer: {
-    paddingTop: 16,
   },
 });

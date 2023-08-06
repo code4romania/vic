@@ -6,7 +6,7 @@ import {
   getPendingContracts,
   signContract,
 } from './contract.api';
-import { DocumentResult } from 'expo-document-picker';
+import { DocumentPickerResult } from 'expo-document-picker';
 
 export const useContractHistoryInfiniteQuery = (volunteerId: string) => {
   return useInfiniteQuery(
@@ -45,7 +45,7 @@ export const useContractQuery = (contractId: string) => {
 };
 
 export const useSignContractMutation = () => {
-  return useMutation((payload: { contractId: string; contract: DocumentResult }) =>
+  return useMutation((payload: { contractId: string; contract: DocumentPickerResult }) =>
     signContract(payload),
   );
 };
