@@ -1,46 +1,45 @@
 import React from 'react';
-import { Button as ButtonKitten, withStyles, Text } from '@ui-kitten/components';
-import { ButtonProps } from './Button';
+import { Pressable, StyleSheet, View, Image } from 'react-native';
+import { Text } from '@ui-kitten/components';
+import { Platform } from 'react-native';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
-const FacebookButton = ({ label, onPress, eva, ...props }: Omit<ButtonProps, 'type'>) => {
+interface FacebookButtonProps {
+  onPress: () => void;
+}
+
+const FacebookButton = ({ onPress }: FacebookButtonProps) => {
   return (
-    <ButtonKitten
-      {...props}
-      onPress={onPress}
-      style={[eva?.style?.button, eva?.style?.shadow, props.style]}
-      appearance="ghost"
-      size="large"
-      // accessoryLeft={<SvgXml xml={FacebookSvg} />}
-    >
-      {() => (
-        <Text allowFontScaling={ALLOW_FONT_SCALLING} style={eva?.style?.label} category="label">
-          {label}
+    <Pressable onPress={onPress}>
+      <View style={styles.btnContainer}>
+        <Image
+          source={require('../assets/images/social/facebook/facebook.png')}
+          style={styles.image}
+        />
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.textStyle} category="p2">
+          Login with Facebook
         </Text>
-      )}
-    </ButtonKitten>
+      </View>
+    </Pressable>
   );
 };
 
-export default withStyles(FacebookButton, (theme) => ({
-  shadow: {
-    elevation: 4,
-    shadowColor: '$dark-purple',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.24,
-    shadowRadius: 8,
+export default FacebookButton;
+
+const styles = StyleSheet.create({
+  btnContainer: {
+    height: 44,
+    width: '100%',
+    maxWidth: 240,
+    flexDirection: 'row',
+    backgroundColor: '#4285F4',
+    alignItems: 'center',
+    gap: 24,
+    shadowColor: 'gray',
+    ...Platform.select({
+      android: { elevation: 5 },
+    }),
   },
-  button: {
-    minWidth: 240,
-    borderRadius: 100,
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    backgroundColor: theme['facebook-color'],
-  },
-  label: {
-    color: 'white',
-  },
-}));
+  image: { width: 32, height: 32, marginVertical: 8, marginHorizontal: 8 },
+  textStyle: { fontSize: 14, color: 'white' },
+});

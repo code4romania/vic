@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text } from '@ui-kitten/components';
-import Button from '../components/Button';
-import { Image, Platform, StyleSheet } from 'react-native';
+import { Image, StyleSheet, Platform } from 'react-native';
 import { View } from 'react-native';
 import LogInButton from '../components/LogInButton';
 import { useAuth } from '../hooks/useAuth';
@@ -13,6 +12,7 @@ import AppleButton from '../components/AppleButton';
 import FacebookButton from '../components/FacebookButton';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import SignUpButton from '../components/SignUpButton';
 
 const Landing = ({ navigation }: any) => {
   console.log('Landing');
@@ -45,20 +45,17 @@ const Landing = ({ navigation }: any) => {
             'message',
           )}`}</Text>
           <View style={styles.buttonsContainer}>
-            <Button onPress={onRegisterButtonPress} label={t('email')} />
+            <SignUpButton onPress={onRegisterButtonPress} />
             {Platform.OS === 'ios' && (
               <AppleButton
                 onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Apple)}
-                label={t('social.apple')}
               />
             )}
             <GoogleButton
               onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Google)}
-              label={t('social.google')}
             />
             <FacebookButton
               onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Facebook)}
-              label={t('social.facebook')}
             />
           </View>
           <View style={styles.separator} />
@@ -87,7 +84,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonsContainer: {
-    gap: 16,
+    gap: 12,
+    minWidth: 240,
   },
   message: {
     marginTop: 12,

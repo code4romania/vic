@@ -1,30 +1,29 @@
 import React from 'react';
-import { Pressable, StyleSheet, View, Image } from 'react-native';
-import { Text } from '@ui-kitten/components';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Text, useTheme } from '@ui-kitten/components';
 import { Platform } from 'react-native';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useTranslation } from 'react-i18next';
 
-interface GoogleButtonProps {
+interface SignUpButtonProps {
   onPress: () => void;
 }
 
-const GoogleButton = ({ onPress }: GoogleButtonProps) => {
+const SignUpButton = ({ onPress }: SignUpButtonProps) => {
+  const { t } = useTranslation('landing');
+  const theme = useTheme();
   return (
     <Pressable onPress={onPress}>
-      <View style={styles.btnContainer}>
-        <Image
-          source={require('../assets/images/social/google/google-dark.png')}
-          style={styles.image}
-        />
+      <View style={[styles.btnContainer, { backgroundColor: theme['turquoise-700'] }]}>
         <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.textStyle} category="p2">
-          Sign in with Google
+          {`${t('email')}`}
         </Text>
       </View>
     </Pressable>
   );
 };
 
-export default GoogleButton;
+export default SignUpButton;
 
 const styles = StyleSheet.create({
   btnContainer: {
@@ -32,8 +31,8 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 240,
     flexDirection: 'row',
-    backgroundColor: '#1877F2',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 24,
     shadowColor: 'gray',
     ...Platform.select({
