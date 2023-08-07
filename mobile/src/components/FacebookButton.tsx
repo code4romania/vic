@@ -38,6 +38,11 @@ const styles = StyleSheet.create({
     shadowColor: 'gray',
     ...Platform.select({
       android: { elevation: 5 },
+      ios: {
+        shadowOffset: { width: 2, height: 2.5 },
+        shadowOpacity: 0.35,
+        shadowRadius: 8,
+      },
     }),
   },
   image: { width: 32, height: 32, marginVertical: 8, marginHorizontal: 8 },

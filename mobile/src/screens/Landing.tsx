@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonsContainer: {
-    gap: 12,
+    gap: 16,
     minWidth: 240,
   },
   message: {
