@@ -15,7 +15,6 @@ import { ButtonType } from '../common/enums/button-type.enum';
 import { Divider } from '@ui-kitten/components';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { useUserProfile } from '../store/profile/profile.selector';
 import ActivityLogSkeleton from '../components/skeleton/activity-log-skeleton';
 import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 
@@ -23,7 +22,6 @@ const ActivityLog = ({ navigation, route }: any) => {
   console.log('ActivityLog');
   // translations
   const { t } = useTranslation('activity_log');
-  const { userProfile } = useUserProfile();
   const { activityLogId } = route.params;
   // activity log query
   const { activityLog } = useActivityLogs();
@@ -101,12 +99,10 @@ const ActivityLog = ({ navigation, route }: any) => {
             />
           )}
           <FormLayout>
-            {userProfile?.activeOrganization && (
-              <OrganizationIdentity
-                uri={userProfile?.activeOrganization.logo || ''}
-                name={userProfile?.activeOrganization.name}
-              />
-            )}
+            <OrganizationIdentity
+              uri={activityLog.organization.logo || ''}
+              name={activityLog.organization.name}
+            />
             <ReadOnlyElement label={t('form.event.label')} value={activityLog?.event?.name} />
             <ReadOnlyElement
               label={t('form.task.label')}

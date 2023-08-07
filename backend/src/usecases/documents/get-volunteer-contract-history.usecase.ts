@@ -8,12 +8,14 @@ import {
   IContractModel,
 } from 'src/modules/documents/models/contract.model';
 import { ContractFacade } from 'src/modules/documents/services/contract.facade';
+import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
 @Injectable()
 export class GetVolunteerContractHistoryUsecase
   implements IUseCaseService<Pagination<IContractModel>>
 {
   constructor(
+    private readonly volunteerFacade: VolunteerFacade,
     private readonly contractFacade: ContractFacade,
     private readonly s3Service: S3Service,
   ) {}
@@ -21,8 +23,13 @@ export class GetVolunteerContractHistoryUsecase
   public async execute(
     findOptions: FindManyContractOptions,
   ): Promise<Pagination<IContractModel>> {
+    const volunteer = await this.volunteerFacade.find({
+      id: findOptions.volunteerId,
+    });
+
     const contracts = await this.contractFacade.findMany({
       ...findOptions,
+      organizationId: volunteer.organization.id,
       contractStatus: ContractStatus.APPROVED,
     });
 

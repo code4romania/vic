@@ -12,6 +12,10 @@ import { TrackedEventName } from '../common/enums/tracked-event-name.enum';
 import { Text, useTheme } from '@ui-kitten/components';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
+import { useUserProfile } from '../store/profile/profile.selector';
+import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
+import useStore from '../store/store';
+import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
 
 const NewsContent = ({
   startText,
@@ -42,6 +46,12 @@ const NewsContent = ({
 const News = ({ navigation, route }: any) => {
   const { type } = route.params;
   const { t } = useTranslation('news');
+
+  // switch organization
+  const { mutate: switchOrganization } = useSwitchOrganizationMutation();
+
+  const { setActiveOrganization } = useStore();
+  const { userProfile } = useUserProfile();
 
   const {
     data: news,
@@ -169,22 +179,48 @@ const News = ({ navigation, route }: any) => {
   };
 
   const onNewsItemPress = (item: INewsItem) => {
-    if (type === NewsType.LOGGED_HOURS) {
-      navigation.navigate('activity-log', { activityLogId: item.activityLogId });
-    }
+    if (userProfile?.activeOrganization?.id !== item.organizationId) {
+      const activeOrganization = userProfile?.myOrganizations.find(
+        (org) => org.id === item.organizationId,
+      );
+      setActiveOrganization(activeOrganization as IOrganizationVolunteer);
+      switchOrganization({ organizationId: item.organizationId as string });
 
-    if (type === NewsType.CONTRACTS) {
-      if (item.eventName === TrackedEventName.REJECT_CONTRACT) {
-        navigation.navigate('rejected-contract', {
-          contractId: item.contractId,
-        });
-      } else {
-        navigation.navigate('documents');
+      if (type === NewsType.LOGGED_HOURS) {
+        navigation.navigate('activity-log', { activityLogId: item.activityLogId });
       }
-    }
 
-    if (type === NewsType.ORGANIZATIONS) {
-      navigation.navigate('organization-profile', { organizationId: item.organizationId });
+      if (type === NewsType.CONTRACTS) {
+        if (item.eventName === TrackedEventName.REJECT_CONTRACT) {
+          navigation.navigate('rejected-contract', {
+            contractId: item.contractId,
+          });
+        } else {
+          navigation.navigate('documents', { volunteerId: activeOrganization?.volunteerId });
+        }
+      }
+
+      if (type === NewsType.ORGANIZATIONS) {
+        navigation.navigate('organization-profile', { organizationId: item.organizationId });
+      }
+    } else {
+      if (type === NewsType.LOGGED_HOURS) {
+        navigation.navigate('activity-log', { activityLogId: item.activityLogId });
+      }
+
+      if (type === NewsType.CONTRACTS) {
+        if (item.eventName === TrackedEventName.REJECT_CONTRACT) {
+          navigation.navigate('rejected-contract', {
+            contractId: item.contractId,
+          });
+        } else {
+          navigation.navigate('documents', {});
+        }
+      }
+
+      if (type === NewsType.ORGANIZATIONS) {
+        navigation.navigate('organization-profile', { organizationId: item.organizationId });
+      }
     }
   };
 

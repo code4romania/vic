@@ -22,6 +22,7 @@ import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list
 import { mapContractStatus } from '../common/utils/helpers';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import SeeAllAction from '../components/SeeAllAction';
+import { ListEmptyComponent } from '../layouts/InfiniteListLayout';
 
 interface ContractsProps {
   navigation: any;
@@ -182,13 +183,14 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
               {index < closedActiveContracts.pages[0].items.length - 1 && <Divider />}
             </View>
           ))}
+          {closedActiveContracts?.pages[0].items.length === 0 && <ListEmptyComponent />}
         </View>
       </SectionWrapper>
     </ScrollViewLayout>
   );
 };
 
-const Documents = ({ navigation }: any) => {
+const Documents = ({ navigation, route }: any) => {
   // translations
   const { t } = useTranslation('documents');
   const { userProfile } = useUserProfile();
@@ -207,7 +209,9 @@ const Documents = ({ navigation }: any) => {
         )}`}</Text>
         <Contracts
           navigation={navigation}
-          volunteerId={userProfile?.activeOrganization?.volunteerId as string}
+          volunteerId={
+            route.params?.volunteerId || (userProfile?.activeOrganization?.volunteerId as string)
+          }
         />
       </View>
     </PageLayout>

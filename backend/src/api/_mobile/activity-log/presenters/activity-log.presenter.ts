@@ -4,6 +4,7 @@ import { IActivityLogModel } from 'src/modules/activity-log/models/activity-log.
 import { MobileActivityLogListItemPresenter } from './activity-log-list-item-presenter';
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { format } from 'date-fns';
+import { OrganizationWithVolunteersPresenter } from '../../organization/presenters/organization-with-volunteers.presenter';
 
 export class MobileActivityLogPresenter extends MobileActivityLogListItemPresenter {
   constructor(log: IActivityLogModel) {
@@ -21,6 +22,12 @@ export class MobileActivityLogPresenter extends MobileActivityLogListItemPresent
     this.rejectedOn = log.rejectedOn ? format(log.rejectedOn, 'dd/MM/y') : '';
     this.rejectionReason = log.rejectionReason;
     this.mentions = log.mentions;
+    this.organization = log.organization
+      ? new OrganizationWithVolunteersPresenter({
+          ...log.organization,
+          numberOfVolunteers: 0,
+        })
+      : null;
   }
 
   @Expose()
@@ -46,4 +53,8 @@ export class MobileActivityLogPresenter extends MobileActivityLogListItemPresent
   @Expose()
   @ApiProperty({ description: 'Reason why the log was rejected' })
   rejectionReason?: string;
+
+  @Expose()
+  @ApiProperty({ description: 'Organization' })
+  organization?: OrganizationWithVolunteersPresenter;
 }

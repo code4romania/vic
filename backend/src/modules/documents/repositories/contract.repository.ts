@@ -18,6 +18,7 @@ import {
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 import { ClientContractStatus } from '../enums/client-contract-status.enum';
 import { ContractStatus } from '../enums/contract-status.enum';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 
 @Injectable()
 export class ContractRepositoryService
@@ -71,9 +72,13 @@ export class ContractRepositoryService
       )
       .leftJoinAndMapOne('volunteer.user', 'volunteer.user', 'user')
       .select()
-      .where('contract.organizationId = :organizationId', {
-        organizationId,
-      })
+      .where(
+        'contract.organizationId = :organizationId and volunteer.status = :volunteerStatus',
+        {
+          organizationId,
+          volunteerStatus: VolunteerStatus.ACTIVE,
+        },
+      )
       .orderBy(
         this.buildOrderByQuery(orderBy || 'createdOn', 'contract'),
         orderDirection || OrderDirection.ASC,

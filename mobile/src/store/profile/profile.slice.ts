@@ -14,7 +14,9 @@ export const profileSlice = (set: any) => ({
     set((state: any) => ({
       userProfile: {
         ...state.userProfile,
-        activeOrganization: organization,
+        activeOrganization: {
+          ...organization,
+        },
       },
     })),
   setIdentityData: (personalData: IUserPersonalData) =>

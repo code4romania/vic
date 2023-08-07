@@ -2,7 +2,6 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IOrganizationListItemWithNumberOfVolunteers } from '../../common/interfaces/organization-list-item.interface';
 import { IOrganization } from '../../common/interfaces/organization.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 import API from '../api';
 
 interface PaginationQuery {
@@ -28,7 +27,7 @@ export const getOrganization = async (organizationId: string): Promise<IOrganiza
   return API.get(`/mobile/organization/${organizationId}`).then((res) => res.data);
 };
 
-export const switchOrganization = async (organizationId: string): Promise<IUserProfile> => {
+export const switchOrganization = async (organizationId: string): Promise<IOrganization> => {
   return API.patch(`/mobile/organization/${organizationId}`).then((res) => res.data);
 };
 
