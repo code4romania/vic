@@ -23,6 +23,8 @@ import {
 } from '../model/volunteer.model';
 import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
+import { ContractEntity } from 'src/modules/documents/entities/contract.entity';
+import { ActivityLogEntity } from 'src/modules/activity-log/entities/activity-log.entity';
 
 export class VolunteerRepositoryService
   extends RepositoryWithPagination<VolunteerEntity>
@@ -253,32 +255,31 @@ export class VolunteerRepositoryService
   ): Promise<IVolunteerStats> {
     const queryBuilder = this.volunteerRepository
       .createQueryBuilder('volunteer')
-      .leftJoin('volunteer.volunteerProfile', 'volunteerProfile')
-      .leftJoin(
-        'volunteer.contracts',
-        'contract',
-        'contract.status IN (:...statuses)',
-        {
-          statuses: [
-            ContractStatus.PENDING_ADMIN,
-            ContractStatus.PENDING_VOLUNTEER,
-          ],
-        },
-      )
-      .leftJoin(
-        'volunteer.activityLogs',
-        'activityLog',
-        '"activityLog".status = :status',
-        {
-          status: ActivityLogStatus.PENDING,
-        },
-      )
       .select('volunteer.id', 'volunteerId')
       .addSelect('volunteerProfile.id', 'volunteerProfileId')
-      .addSelect('COUNT(contract)', 'contractCount')
-      .addSelect('COUNT("activityLog")', 'activityLogCount')
-      .where('volunteer.id = :volunteerId', { volunteerId })
-      .groupBy('volunteer.id, volunteerProfile.id');
+      .addSelect((subQuery) => {
+        return subQuery
+          .select('COUNT(contract.id)', 'contractCount')
+          .from(ContractEntity, 'contract')
+          .where('contract.volunteerId = :volunteerId', { volunteerId })
+          .andWhere('contract.status IN (:...statuses)', {
+            statuses: [
+              ContractStatus.PENDING_ADMIN,
+              ContractStatus.PENDING_VOLUNTEER,
+            ],
+          });
+      }, 'contractCount')
+      .addSelect((subQuery) => {
+        return subQuery
+          .select('COUNT(activityLog.id)', 'activityLogCount')
+          .from(ActivityLogEntity, 'activityLog')
+          .where('activityLog.volunteerId = :volunteerId', { volunteerId })
+          .andWhere('activityLog.status = :status', {
+            status: ActivityLogStatus.PENDING,
+          });
+      }, 'activityLogCount')
+      .leftJoin('volunteer.volunteerProfile', 'volunteerProfile')
+      .where('volunteer.id = :volunteerId', { volunteerId });
 
     return await queryBuilder.getRawOne();
   }
