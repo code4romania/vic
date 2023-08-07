@@ -9,10 +9,12 @@ export class ContractPresenter extends ContractListItemPresenter {
     super(contract);
     this.createdOn = contract.createdOn;
     this.approvedOn = contract.approvedOn;
-    this.template = new IdAndNamePresenter({
-      id: contract.template.id,
-      name: contract.template.name,
-    });
+    this.template = contract.template
+      ? new IdAndNamePresenter({
+          id: contract.template.id,
+          name: contract.template.name,
+        })
+      : null;
     this.createdBy = new IdAndNamePresenter({
       id: contract.createdByAdmin.id,
       name: contract.createdByAdmin.name,

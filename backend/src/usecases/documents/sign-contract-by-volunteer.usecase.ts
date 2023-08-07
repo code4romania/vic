@@ -52,7 +52,21 @@ export class SignContractByVolunteer
         status: ContractStatus.PENDING_ADMIN,
       });
 
-      // 4. generate contract
+      // 4 Check if the contract had its template deleted
+      if (!contract.templateId) {
+        // if there are not other contracts with deleted tempalate delete the file.
+        const pendingVolunteerContract = await this.contractFacade.findOne({
+          status: ContractStatus.PENDING_VOLUNTEER,
+          templateId: null,
+          organizationId,
+        });
+
+        if (!pendingVolunteerContract) {
+          await this.s3Service.deleteFile(contract.path);
+        }
+      }
+
+      // 5. generate contract
       return {
         ...newContract,
         path: await this.s3Service.generatePresignedURL(newContract.path),

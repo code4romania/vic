@@ -28,6 +28,8 @@ export class TemplateEntity extends BaseEntity {
   @JoinColumn({ name: 'organization_id' })
   organization: OrganizationEntity;
 
-  @OneToMany(() => ContractEntity, (contract) => contract.template)
+  @OneToMany(() => ContractEntity, (contract) => contract.template, {
+    onDelete: 'SET NULL',
+  })
   contracts: ContractEntity[];
 }

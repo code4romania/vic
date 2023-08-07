@@ -187,8 +187,8 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
             )}
             <FormReadOnlyElement
               label={t('contract.template')}
-              value={contract.template.name}
-              onClick={onTemplateClick}
+              value={contract.template?.name || '-'}
+              onClick={contract.template && onTemplateClick}
             />
             <hr />
             <FormReadOnlyElement
