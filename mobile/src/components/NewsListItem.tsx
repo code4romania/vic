@@ -26,8 +26,8 @@ const NewsListItem = ({
   const theme = useTheme();
 
   const toggleExpansion = () => {
-    const initialValue = expanded ? 1 : 0;
-    const finalValue = expanded ? 0 : 1;
+    const initialValue = expanded ? 0 : 1;
+    const finalValue = expanded ? 1 : 0;
 
     animationValue.setValue(initialValue);
     Animated.timing(animationValue, {
@@ -42,7 +42,7 @@ const NewsListItem = ({
 
   const animatedHeight = animationValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [45, 150], // Adjust this value as needed
+    outputRange: [76, 200], // Adjust this value as needed
   });
 
   const onNewsItemPress = () => {
@@ -55,7 +55,13 @@ const NewsListItem = ({
 
   return (
     <Pressable onPress={onNewsItemPress} style={styles.touchableContainer}>
-      <View style={{ ...styles.container, backgroundColor: theme['cool-gray-50'] }}>
+      <Animated.View
+        style={[
+          styles.container,
+          { backgroundColor: theme['cool-gray-50'] },
+          { height: animatedHeight },
+        ]}
+      >
         <View style={styles.iconWrapper}>
           <Image
             source={{
@@ -64,49 +70,43 @@ const NewsListItem = ({
             style={styles.image as ImageStyle}
           />
         </View>
-        <Animated.View style={[styles.collapsiableContainer, { height: animatedHeight }]}>
-          <View style={styles.textContainer}>
-            {title && (
-              <Text
-                onPress={onNewsItemPress}
-                allowFontScaling={ALLOW_FONT_SCALLING}
-                category="s1"
-                numberOfLines={2}
-              >
-                {title}
-              </Text>
-            )}
-            {subtitle && (
-              <Text
-                allowFontScaling={ALLOW_FONT_SCALLING}
-                category="c1"
-                numberOfLines={expanded ? 1 : 50}
-                ellipsizeMode="tail"
-                style={{ ...styles.subtitle, color: theme['cool-gray-500'] }}
-              >
-                {subtitle}
-              </Text>
-            )}
-            {subtitleElement}
-          </View>
-        </Animated.View>
-      </View>
+        <View style={styles.textContainer}>
+          {title && (
+            <Text
+              onPress={onNewsItemPress}
+              allowFontScaling={ALLOW_FONT_SCALLING}
+              category="s1"
+              numberOfLines={1}
+              suppressHighlighting
+            >
+              {title}
+            </Text>
+          )}
+          {subtitle && (
+            <Text
+              allowFontScaling={ALLOW_FONT_SCALLING}
+              category="c1"
+              numberOfLines={!expanded ? 1 : 50}
+              ellipsizeMode="tail"
+              style={{ ...styles.subtitle, color: theme['cool-gray-500'] }}
+            >
+              {subtitle}
+            </Text>
+          )}
+          {subtitleElement}
+        </View>
+      </Animated.View>
     </Pressable>
   );
 };
-
 export default NewsListItem;
 
 const styles = StyleSheet.create({
-  image: {
-    width: 32,
-    height: 32,
-    borderRadius: 32,
-  },
   touchableContainer: {
     borderRadius: 16,
   },
   container: {
+    overflow: 'hidden',
     padding: 16,
     flexDirection: 'row',
     gap: 12,
@@ -122,6 +122,11 @@ const styles = StyleSheet.create({
         shadowRadius: 1,
       },
     }),
+  },
+  image: {
+    width: 32,
+    height: 32,
+    borderRadius: 32,
   },
   subtitle: {
     paddingRight: 32,
@@ -144,9 +149,6 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
       },
     }),
-  },
-  collapsiableContainer: {
-    overflow: 'hidden',
   },
   textContainer: {
     gap: 6,
