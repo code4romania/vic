@@ -3,7 +3,7 @@ import ModalLayout from '../layouts/ModalLayout';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useOrganization } from '../store/organization/organization.selector';
 import { Text, useTheme } from '@ui-kitten/components';
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ButtonType } from '../common/enums/button-type.enum';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -25,10 +25,7 @@ const LeaveOrganization = ({ navigation }: any) => {
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points
-  const snapPoints = useMemo(
-    () => (Platform.OS === 'android' ? ['30%', '55%'] : ['30%', '45%']),
-    [],
-  );
+  const snapPoints = useMemo(() => [1, 360], []);
 
   const { isLoading: isLeavingOrganization, mutate: leaveOrganization } =
     useLeaveOrganizationMutation();
@@ -134,16 +131,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     paddingHorizontal: 40,
     paddingVertical: 8,
     gap: 24,
   },
-  svgContainer: {
-    flex: 1,
-  },
   textContainer: {
-    flex: 1,
     gap: 4,
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -152,7 +145,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonsContainer: {
-    flex: 1,
     gap: 16,
     justifyContent: 'center',
     alignItems: 'center',

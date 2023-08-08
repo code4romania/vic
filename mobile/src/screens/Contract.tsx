@@ -49,10 +49,7 @@ const Contract = ({ navigation, route }: any) => {
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points
-  const snapPoints = useMemo(
-    () => (Platform.OS === 'android' ? ['25%', '45%'] : ['25%', '40%']),
-    [],
-  );
+  const snapPoints = useMemo(() => [1, 300], []);
 
   // sign contract
   const { mutate: signContract, isLoading: isUploadingContract } = useSignContractMutation();

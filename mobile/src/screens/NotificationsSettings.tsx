@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Divider, Icon, StyleService, Text, useStyleSheet, useTheme } from '@ui-kitten/components';
 import PageLayout from '../layouts/PageLayout';
 import { useTranslation } from 'react-i18next';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 import PressableContainer from '../components/PressableContainer';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { NotificationsFrom } from '../common/enums/notifications-from.enum';
@@ -88,7 +88,7 @@ const NotificationsSettings = ({ navigation }: any) => {
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points
-  const snapPoints = useMemo(() => (Platform.OS === 'android' ? ['1%', '30%'] : ['1%', '25%']), []);
+  const snapPoints = useMemo(() => ['1%', 200], []);
 
   // notifications state
   const [showNotificationFromOptions, setShowNotificationsFromOptions] = useState<boolean>(true);

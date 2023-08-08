@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Divider, Text, useTheme } from '@ui-kitten/components';
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import SectionWrapper from '../components/SectionWrapper';
 import ProfileIntro from '../components/ProfileIntro';
@@ -47,10 +47,8 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     () =>
       organization?.organizationVolunteerStatus ===
       OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
-        ? ['30%', '45%']
-        : Platform.OS === 'android'
-        ? ['30%', '60%']
-        : ['30%', '55%'],
+        ? ['1%', 420]
+        : ['1%', 300],
     [organization],
   );
 
@@ -309,9 +307,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             organization?.organizationVolunteerStatus !==
               OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
               <>
-                <View style={styles.svgContainer}>
-                  <SvgXml xml={upsIcon} height={110} width={110} />
-                </View>
+                <SvgXml xml={upsIcon} height={100} width={100} />
                 <View style={styles.textContainer}>
                   <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
                     'modal.identity_data_missing.heading',
@@ -351,15 +347,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingHorizontal: 40,
-    paddingVertical: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 24,
     gap: 24,
   },
-  svgContainer: {
-    flex: 1,
-  },
   textContainer: {
-    flex: 1,
     gap: 4,
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -368,7 +360,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonsContainer: {
-    flex: 1,
     gap: 16,
     justifyContent: 'center',
     alignItems: 'center',

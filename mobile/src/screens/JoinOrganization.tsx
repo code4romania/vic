@@ -45,7 +45,7 @@ const JoinOrganization = ({ navigation, route }: any) => {
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points
-  const snapPoints = useMemo(() => ['30%', '55%'], []);
+  const snapPoints = useMemo(() => [1, 410], []);
   // theme
   const theme = useTheme();
 
@@ -145,9 +145,7 @@ const JoinOrganization = ({ navigation, route }: any) => {
         snapPoints={snapPoints}
       >
         <View style={styles.bottomSheetContainer}>
-          <View style={styles.svgContainer}>
-            <SvgXml xml={successIcon} height={110} width={110} />
-          </View>
+          <SvgXml xml={successIcon} height={100} width={100} />
           <View style={styles.textContainer}>
             <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
               'modal.success.heading',
@@ -180,14 +178,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingHorizontal: 40,
-    paddingVertical: 8,
+    paddingVertical: 24,
     gap: 24,
   },
-  svgContainer: {
-    flex: 1,
-  },
   textContainer: {
-    flex: 1,
     gap: 4,
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -196,7 +190,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonsContainer: {
-    flex: 1,
     gap: 16,
     justifyContent: 'center',
     alignItems: 'center',

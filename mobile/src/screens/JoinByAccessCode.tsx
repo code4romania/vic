@@ -16,7 +16,7 @@ import { useOrganization } from '../store/organization/organization.selector';
 import Paragraph from '../components/Paragraph';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { renderBackdrop } from '../components/BottomSheet';
 import { SvgXml } from 'react-native-svg';
 import successIcon from '../assets/svg/success-icon';
@@ -57,10 +57,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points
-  const snapPoints = useMemo(
-    () => (Platform.OS === 'android' ? ['30%', '60%'] : ['25%', '55%']),
-    [],
-  );
+  const snapPoints = useMemo(() => [1, 410], []);
 
   const {
     control,
@@ -148,9 +145,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
         snapPoints={snapPoints}
       >
         <View style={styles.container}>
-          <View style={styles.svgContainer}>
-            <SvgXml xml={successIcon} height={110} width={110} />
-          </View>
+          <SvgXml xml={successIcon} height={100} width={100} />
           <View style={styles.textContainer}>
             <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">
               {`${t('modal.success.heading')}`}
@@ -183,20 +178,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     gap: 24,
-    paddingVertical: 8,
-  },
-  svgContainer: {
-    flex: 1,
+    paddingVertical: 24,
   },
   textContainer: {
     paddingHorizontal: 40,
-    flex: 1,
     gap: 4,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
   buttonsContainer: {
-    flex: 1,
     gap: 16,
     justifyContent: 'center',
     alignItems: 'center',
