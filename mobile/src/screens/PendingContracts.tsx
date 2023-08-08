@@ -22,6 +22,7 @@ const PendingContracts = ({ navigation }: any) => {
     hasNextPage: hasPendingNextPage,
     fetchNextPage: fetchPendingContractsNextPage,
     refetch: reloadPendingContracts,
+    isFetchingNextPage,
   } = usePendingContractsInfiniteQuery(userProfile?.activeOrganization?.volunteerId as string);
 
   useFocusEffect(
@@ -59,7 +60,7 @@ const PendingContracts = ({ navigation }: any) => {
         pages={pendingContracts?.pages}
         renderItem={onRenderPendingContractListItem}
         loadMore={onLoadMorePending}
-        isLoading={isFetchingPendingContracts}
+        isLoading={isFetchingPendingContracts && !isFetchingNextPage}
         refetch={reloadPendingContracts}
         loadingLayout={<OrganizationSkeletonListItem />}
         loadingElementsCount="small"

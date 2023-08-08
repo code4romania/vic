@@ -19,6 +19,7 @@ const Anouncements = ({ navigation }: any) => {
     fetchNextPage,
     hasNextPage,
     refetch: reloadAnouncements,
+    isFetchingNextPage,
   } = useAnouncementsInfiniteQuery();
 
   const onLoadMore = () => {
@@ -44,7 +45,7 @@ const Anouncements = ({ navigation }: any) => {
         pages={anouncements?.pages}
         renderItem={onRenderAnouncementListItem}
         loadMore={onLoadMore}
-        isLoading={isFetchingAnouncements}
+        isLoading={isFetchingAnouncements && !isFetchingNextPage}
         refetch={reloadAnouncements}
         loadingLayout={<NewsItemSkeleton />}
         hasDivider={false}

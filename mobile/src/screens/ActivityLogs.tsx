@@ -49,6 +49,7 @@ const ActivityLogs = ({ navigation }: any) => {
     data: activityLogs,
     error: getActivityLogsError,
     isFetching: isFetchingActivityLogs,
+    isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
     refetch: reloadActivityLogs,
@@ -140,7 +141,7 @@ const ActivityLogs = ({ navigation }: any) => {
         pages={activityLogs?.pages}
         renderItem={onRenderEventListItem}
         loadMore={onLoadMore}
-        isLoading={isFetchingActivityLogs}
+        isLoading={isFetchingActivityLogs && !isFetchingNextPage}
         refetch={reloadActivityLogs}
         loadingLayout={<ActivityLogSkeletonItem />}
         errorMessage={getActivityLogsError ? `${t('errors.generic')}` : ''}

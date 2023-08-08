@@ -60,6 +60,7 @@ const News = ({ navigation, route }: any) => {
     fetchNextPage,
     hasNextPage,
     refetch: reloadNews,
+    isFetchingNextPage,
   } = useNewsInfiniteQuery(type);
 
   const onLoadMore = () => {
@@ -230,7 +231,7 @@ const News = ({ navigation, route }: any) => {
         pages={news?.pages}
         renderItem={onRenderAnouncementListItem}
         loadMore={onLoadMore}
-        isLoading={isFetchingNews}
+        isLoading={isFetchingNews && !isFetchingNextPage}
         refetch={reloadNews}
         loadingLayout={<NewsItemSkeleton />}
         hasDivider={false}

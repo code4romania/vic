@@ -38,6 +38,7 @@ const Events = ({ navigation }: any) => {
     fetchNextPage,
     hasNextPage,
     refetch: reloadEvents,
+    isFetchingNextPage,
   } = useEventsInfiniteQuery(orderDirection, search, eventFilter);
 
   // This will be triggered every time the organization state changes
@@ -85,7 +86,7 @@ const Events = ({ navigation }: any) => {
         pages={events?.pages}
         renderItem={onRenderEventListItem}
         loadMore={onLoadMore}
-        isLoading={isFetchingEvents}
+        isLoading={isFetchingEvents && !isFetchingNextPage}
         refetch={reloadEvents}
         loadingLayout={<EventSkeletonListItem />}
         errorMessage={getEventsError ? `${t('errors.generic')}` : ''}

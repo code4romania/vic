@@ -120,7 +120,7 @@ export class VolunteerRepositoryService
     if (search) {
       query.andWhere(
         this.buildBracketSearchQuery(
-          ['user.name', 'volunteerProfile.email', 'volunteerProfile.phone'],
+          ['user.name', 'volunteerProfile.email', 'user.phone'],
           search,
         ),
       );

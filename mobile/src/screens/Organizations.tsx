@@ -63,6 +63,7 @@ const Organizations = ({ navigation }: any) => {
     fetchNextPage,
     hasNextPage,
     refetch: reloadOrganizations,
+    isFetchingNextPage,
   } = useOrganizationsInfiniteQuery(orderDirection, search);
 
   // This will be triggered every time the organization state changes
@@ -112,7 +113,7 @@ const Organizations = ({ navigation }: any) => {
         pages={organizations?.pages}
         renderItem={onRenderOrganizationListItem}
         loadMore={onLoadMore}
-        isLoading={isFetchingOrganizations}
+        isLoading={isFetchingOrganizations && !isFetchingNextPage}
         refetch={reloadOrganizations}
         loadingLayout={<OrganizationSkeletonListItem />}
         errorMessage={getOrganizationsError ? `${t('errors.generic')}` : ''}

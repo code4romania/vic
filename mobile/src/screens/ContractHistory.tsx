@@ -27,6 +27,7 @@ const ContractHistory = ({ navigation }: any) => {
     hasNextPage: hasNextPageHistory,
     fetchNextPage: fetchHistoryNextPage,
     refetch: reloadHistory,
+    isFetchingNextPage,
   } = useContractHistoryInfiniteQuery(userProfile?.activeOrganization?.volunteerId as string);
 
   useFocusEffect(
@@ -107,7 +108,7 @@ const ContractHistory = ({ navigation }: any) => {
         pages={closedActiveContracts?.pages}
         renderItem={onRenderHistoryContractListItem}
         loadMore={onLoadMoreHistory}
-        isLoading={isLoadingClosedActiveContracts}
+        isLoading={isLoadingClosedActiveContracts && !isFetchingNextPage}
         refetch={reloadHistory}
         loadingLayout={<OrganizationSkeletonListItem />}
         loadingElementsCount="small"
