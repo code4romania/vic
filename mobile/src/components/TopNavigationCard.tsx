@@ -21,6 +21,7 @@ const TopNavigationCard = ({ title, uri, onPress }: TopNavigationCardProps) => {
           : [styles.notPressed, styles.container, styles.shadow]
       }
     >
+      <View style={styles.elipsis} />
       <View style={styles.shadow}>
         <Avatar source={{ uri }} size="small" />
       </View>
@@ -34,6 +35,15 @@ const TopNavigationCard = ({ title, uri, onPress }: TopNavigationCardProps) => {
 export default TopNavigationCard;
 
 const themedStyles = StyleService.create({
+  elipsis: {
+    backgroundColor: 'white',
+    opacity: 0.5,
+    height: 16,
+    width: 16,
+    borderRadius: 100,
+    position: 'absolute',
+    marginLeft: -8,
+  },
   notPressed: {
     backgroundColor: '$color-success-500',
   },
