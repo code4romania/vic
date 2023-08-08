@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import FormLayout from '../layouts/FormLayout';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,9 @@ import { Auth } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import Paragraph from '../components/Paragraph';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/constants';
+import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
+import { useAuth } from '../hooks/useAuth';
 
 export type UserFormTypes = {
   firstName: string;
@@ -42,6 +44,11 @@ const schema = yup.object({
         value: '50',
       })}`,
     ),
+  phone: yup
+    .string()
+    .matches(REGEX.NUMBERS_ONLY, `${i18n.t('register:create_account.form.phone.pattern')}`)
+    .length(9, `${i18n.t('register:create_account.form.phone.length', { number: 10 })}`)
+    .required(`${i18n.t('register:create_account.form.phone.required')}`),
   lastName: yup
     .string()
     .required(`${i18n.t('register:create_user.form.last_name.required')}`)
@@ -57,11 +64,13 @@ const schema = yup.object({
 const CreateUser = ({ navigation }: any) => {
   const { t } = useTranslation('register');
   const { mutate: createUserProfile, isLoading } = useCreateUserProfileMutation();
+  const { initialPhoneNumber } = useAuth();
 
   const {
     control,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<UserFormTypes>({
     mode: 'onSubmit',
@@ -71,7 +80,18 @@ const CreateUser = ({ navigation }: any) => {
 
   const watchCountyId = watch('countyId');
 
-  const onSubmit = async ({ cityId, ...userPayload }: UserFormTypes) => {
+  // request phone number for users without
+  useEffect(() => {
+    (async () => {
+      if (initialPhoneNumber) {
+        reset({
+          phone: initialPhoneNumber?.slice(3, initialPhoneNumber?.length),
+        });
+      }
+    })();
+  }, [reset, initialPhoneNumber]);
+
+  const onSubmit = async ({ cityId, phone, ...userPayload }: UserFormTypes) => {
     try {
       // get user phone and email data from aws
       const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
@@ -80,7 +100,7 @@ const CreateUser = ({ navigation }: any) => {
       const newUser = {
         ...userPayload,
         locationId: cityId,
-        phone: user.attributes.phone_number,
+        phone: user.attributes.phone_number || `${CONSTANTS.PHONE_PREFIX}${phone.trim()}`,
         email: user.attributes.email,
         cognitoId: user.username,
       };
@@ -130,6 +150,17 @@ const CreateUser = ({ navigation }: any) => {
           name="lastName"
           error={errors.lastName}
           disabled={isLoading}
+          required={true}
+        />
+        <FormInput
+          control={control as any}
+          name="phone"
+          label={t('create_account.form.phone.label')}
+          placeholder={t('create_account.form.phone.placeholder')}
+          error={errors.phone}
+          disabled={isLoading || !!initialPhoneNumber}
+          keyboardType="phone-pad"
+          accessoryLeft={renderPhoneNumberPrefix}
           required={true}
         />
         <CountySelect

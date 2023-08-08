@@ -15,6 +15,7 @@ export interface SignInOptions {
 interface AuthContextProps {
   isAuthenticated: boolean;
   isUserPending: boolean;
+  initialPhoneNumber: string | undefined;
   login: (credentials: SignInOptions) => void;
   loginWithSocial: (provider: CognitoHostedUIIdentityProvider) => Promise<void>;
   signUp: (options: SignUpOptions) => void;
@@ -29,6 +30,7 @@ interface AuthContextProps {
 export const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
   isUserPending: false,
+  initialPhoneNumber: undefined,
   login: () => {},
   loginWithSocial: () => Promise.resolve(),
   signUp: (options: SignUpOptions) => {},

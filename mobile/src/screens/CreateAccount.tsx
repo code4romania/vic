@@ -70,7 +70,7 @@ const CreateAccount = ({ navigation }: any) => {
   } = useForm<RegisterFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
   });
 
   const onTermsAndConditionsPress = () => {

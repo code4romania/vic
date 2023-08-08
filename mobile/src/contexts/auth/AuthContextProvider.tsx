@@ -24,6 +24,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   // meaning that the user has been validated by cognito but is not in our database
   const [isUserPending, setIsUserPending] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>('');
+  const [initialPhoneNumber, setPhoneNumber] = useState<string | undefined>();
   const { setUserProfile } = useStore();
   const { userProfile } = useUserProfile();
 
@@ -35,6 +36,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       switch (payload.event) {
         case 'signIn': {
           // redirect from social sign in done successfully
+          setPhoneNumber(payload?.data?.attributes?.phone_number);
           initProfile();
           break;
         }
@@ -208,6 +210,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         // set profile in context with all the organizations
         setUserProfile(profile);
         resolve(profile);
+        setPhoneNumber(undefined);
       } catch (error: any) {
         // if the profile doesn't exists redirect to the the create account page
         console.log('[Profile]:', JSONStringifyError(error));
@@ -268,6 +271,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         changePassword,
         forgotPassword,
         forgotPasswordSubmit,
+        initialPhoneNumber,
       }}
     >
       {children}

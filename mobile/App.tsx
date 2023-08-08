@@ -59,10 +59,6 @@ export default () => {
     'titilium-web': require('./src/assets/fonts/TitilliumWeb-SemiBold.ttf'),
   });
 
-  // if (!fontsLoaded) {
-  //   return null;
-  // }
-
   return fontsLoaded ? (
     <>
       <IconRegistry icons={FeatherIconsPack} />
