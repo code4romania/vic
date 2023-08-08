@@ -121,7 +121,7 @@ const EditAnnouncement = () => {
                 onClick={handleSubmit(onSaveDraft)}
               />
               <Button
-                label={i18n.t('general:send')}
+                label={i18n.t('general:publish')}
                 icon={<PaperAirplaneIcon className="h-5 w-5" />}
                 className="btn-primary"
                 onClick={handleSubmit(onPublish)}

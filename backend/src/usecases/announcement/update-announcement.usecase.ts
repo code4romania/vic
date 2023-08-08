@@ -102,10 +102,7 @@ export class UpdateAnnouncementUseCase
       ...updateData,
       publishedOn:
         updateData.status === AnnouncementStatus.PUBLISHED ? new Date() : null,
-      targetedVolunteers:
-        targetedVolunteers !== 0
-          ? targetedVolunteers
-          : announcementToUpdate.targetedVolunteers, // TODO: this needs rework
+      targetedVolunteers,
     });
 
     // 5. Send email to targets if announcement is published
