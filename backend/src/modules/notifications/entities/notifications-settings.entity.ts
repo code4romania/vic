@@ -12,7 +12,7 @@ export class NotificationsSettingsEntity extends BaseEntity {
     type: 'enum',
     enum: NotificationsFrom,
     name: 'notifications_from',
-    default: NotificationsFrom.MY_ORGANIZATIONS,
+    default: NotificationsFrom.ALL_ORGANIZATIONS,
   })
   notificationsFrom: NotificationsFrom;
 
