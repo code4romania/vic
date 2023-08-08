@@ -6,7 +6,6 @@ import { OrganizationStructureListItemPresenter } from 'src/api/organization/pre
 export class VolunteerProfilePresenter {
   constructor(volunteer: IVolunteerProfileModel) {
     this.email = volunteer.email;
-    this.phone = volunteer.phone;
     this.activeSince = volunteer.activeSince;
 
     this.branch = volunteer.branch
@@ -23,10 +22,6 @@ export class VolunteerProfilePresenter {
   @Expose()
   @ApiProperty({ description: 'The email of the volunteer' })
   email: string;
-
-  @Expose()
-  @ApiProperty({ description: 'The phone of the volunteer' })
-  phone: string;
 
   @Expose()
   @ApiProperty({

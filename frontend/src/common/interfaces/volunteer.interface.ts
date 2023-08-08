@@ -18,7 +18,6 @@ export interface IVolunteer {
 
 interface IVolunteerProfile {
   email: string;
-  phone: string;
   activeSince: Date;
   role?: IDivisionListItem;
   department?: IDivisionListItem;

@@ -126,7 +126,7 @@ const VolunteerProfile = ({ navigation }: any) => {
               'information',
             )}`}</Text>
             <ReadOnlyElement label={t('email')} value={volunteer.profile.email} />
-            <ReadOnlyElement label={t('general:phone')} value={volunteer.profile.phone} />
+            <ReadOnlyElement label={t('general:phone')} value={volunteer.user.phone} />
             <ReadOnlyElement label={t('general:role')} value={volunteer.profile.role?.name} />
             <ReadOnlyElement
               label={t('general:department')}

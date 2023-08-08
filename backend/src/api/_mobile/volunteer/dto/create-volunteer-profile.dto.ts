@@ -3,7 +3,6 @@ import {
   IsEmail,
   IsNotEmpty,
   IsOptional,
-  IsString,
   IsUUID,
 } from 'class-validator';
 
@@ -11,10 +10,6 @@ export class CreateVolunteerProfileDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  phone: string;
 
   @IsDate()
   @IsOptional()

@@ -77,7 +77,6 @@ export class MobileVolunteerController {
   ): Promise<VolunteerProfilePresenter> {
     const profile = await this.createVolunteerProfileUseCase.execute({
       email: profileDTO.email,
-      phone: profileDTO.phone,
       activeSince: profileDTO.activeSince,
       branchId: profileDTO.branchId,
       departmentId: profileDTO.departmentId,

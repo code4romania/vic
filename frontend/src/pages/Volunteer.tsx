@@ -70,7 +70,7 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
           <div className="w-full lg:w-2/3 xl:w-3/4">
             <VolunteerProfile
               email={volunteer.profile?.email || '-'}
-              phone={volunteer.profile?.phone || '-'}
+              phone={volunteer.user?.phone || '-'}
               branch={volunteer.profile?.branch?.name}
               status={volunteer.status}
               department={volunteer.profile?.department?.name}

@@ -29,7 +29,7 @@ export class GetVolunteersForDownloadUseCase
           ', jud ' +
           volunteer.user.location.county.name,
         Email: volunteer.volunteerProfile?.email,
-        Telefon: volunteer.volunteerProfile?.phone,
+        Telefon: volunteer.user?.phone,
         'Perioada activitate': volunteer.volunteerProfile?.activeSince,
         'Nume filiala': volunteer.volunteerProfile?.branch?.name,
         'Nume departament': volunteer.volunteerProfile?.department?.name,

@@ -9,7 +9,6 @@ export interface IVolunteerProfileModel extends IBaseModel {
   id: string;
 
   email: string;
-  phone: string;
   activeSince: Date;
 
   // Relations
@@ -20,7 +19,7 @@ export interface IVolunteerProfileModel extends IBaseModel {
 
 export type CreateVolunteerProfileOptions = Pick<
   IVolunteerProfileModel,
-  'email' | 'phone'
+  'email'
 > & {
   volunteerId: string;
   activeSince?: Date;
@@ -32,7 +31,7 @@ export type CreateVolunteerProfileOptions = Pick<
 export type UpdateVolunteerProfileOptions = Partial<
   Pick<
     CreateVolunteerProfileOptions,
-    'email' | 'phone' | 'activeSince' | 'branchId' | 'departmentId' | 'roleId'
+    'email' | 'activeSince' | 'branchId' | 'departmentId' | 'roleId'
   >
 >;
 
@@ -44,7 +43,6 @@ export class VolunteerProfileModelTransformer {
     return {
       id: profile.id,
       email: profile.email,
-      phone: profile.phone,
       activeSince: profile.activeSince,
 
       // Relations
@@ -65,7 +63,6 @@ export class VolunteerProfileModelTransformer {
   ): VolunteerProfileEntity {
     const entity = new VolunteerProfileEntity();
     entity.email = volunteer.email;
-    entity.phone = volunteer.phone;
     entity.activeSince = volunteer.activeSince ?? new Date();
     entity.branchId = volunteer.branchId;
     entity.departmentId = volunteer.departmentId;

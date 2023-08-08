@@ -32,7 +32,7 @@ const EditVolunteer = ({ navigation }: any) => {
     if (volunteer) {
       reset({
         email: volunteer?.profile.email,
-        phone: volunteer?.profile.phone,
+        phone: volunteer?.user.phone,
         branchId: volunteer?.profile.branch?.id,
         departmentId: volunteer?.profile.department?.id,
         roleId: volunteer?.profile.role?.id,
