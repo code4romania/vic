@@ -5,14 +5,14 @@ import StatisticsCard from './StatisticsCard';
 import { useNavigate } from 'react-router';
 
 const ActivityLogStatisticsCard = () => {
-  const { data } = useActivityLogStatisticsQuery();
+  const { data, isLoading } = useActivityLogStatisticsQuery();
 
   const navigate = useNavigate();
 
   return (
     <StatisticsCard
       label={i18n.t('side_menu:options.activity_log')}
-      value={data?.approved ?? 'N/A'}
+      value={isLoading ? '' : data?.approved ?? 'N/A'}
       info={i18n.t('dashboard:statistics_card.activity_log.info', { value: data?.pending })}
       action={{
         label: i18n.t('dashboard:statistics_card.activity_log.label', {
