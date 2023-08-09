@@ -10,7 +10,7 @@ export const LINE_CHART_OPTIONS = {
     ARCHIVED: '#DC2626',
   },
   DATA_KEYS: {
-    NAME: 'name',
+    NAME: 'date',
     ACTIVE: 'active',
     ARCHIVED: 'archived',
   },

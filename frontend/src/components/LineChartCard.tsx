@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import i18n from '../common/config/i18n';
 import Card from '../layouts/CardLayout';
@@ -9,6 +10,34 @@ import { LineChartOption, LINE_CHART_FILTER_OPTIONS } from '../common/constants/
 import { useVolunteerLineChartQuery } from '../services/volunteer/volunteer.service';
 import EmptyContent from './EmptyContent';
 import LoadingContent from './LoadingContent';
+import { format, getYear } from 'date-fns';
+
+const DayXAxisTick = (props: any) => {
+  const { x, y, payload } = props;
+  return (
+    <text x={x} y={y + 10} textAnchor="middle">
+      {format(new Date(payload.value), 'dd.MM')}
+    </text>
+  );
+};
+
+const MonthXAxisTick = (props: any) => {
+  const { x, y, payload } = props;
+  return (
+    <text x={x} y={y + 10} textAnchor="middle">
+      {format(new Date(payload.value), 'MMM')}
+    </text>
+  );
+};
+
+const YearXAxisTick = (props: any) => {
+  const { x, y, payload } = props;
+  return (
+    <text x={x} y={y + 10} textAnchor="middle">
+      {getYear(new Date(payload.value))}
+    </text>
+  );
+};
 
 const LineChartCard = () => {
   const [chartFilter, setChartFilter] = useState<SelectItem<LineChartOption>>(
@@ -16,6 +45,19 @@ const LineChartCard = () => {
   );
 
   const { data, isLoading } = useVolunteerLineChartQuery(chartFilter.key);
+
+  const switchXAxisTick = (option: LineChartOption) => {
+    switch (option) {
+      case LineChartOption.YEARLY: {
+        return <YearXAxisTick />;
+      }
+      case LineChartOption.MONTHLY: {
+        return <MonthXAxisTick />;
+      }
+      default:
+        return <DayXAxisTick />;
+    }
+  };
 
   return (
     <Card>
@@ -31,6 +73,7 @@ const LineChartCard = () => {
         {data && (
           <LineChart
             data={data}
+            xAxisTicx={switchXAxisTick(chartFilter.key)}
             tooltipItemStyle={{
               fontStyle: 'normal',
               fontWeight: '500',

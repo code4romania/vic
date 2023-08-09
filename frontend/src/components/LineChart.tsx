@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import {
   LineChart as LineChartRechart,
   Line,
@@ -26,12 +26,19 @@ interface MarginProps {
 
 interface LineChartProps {
   data: DataSet[];
+  xAxisTicx: ReactElement;
   margin?: MarginProps;
   tooltipLabelStyle?: React.CSSProperties;
   tooltipItemStyle?: React.CSSProperties;
 }
 
-const LineChart = ({ data, margin, tooltipLabelStyle, tooltipItemStyle }: LineChartProps) => {
+const LineChart = ({
+  data,
+  xAxisTicx,
+  margin,
+  tooltipLabelStyle,
+  tooltipItemStyle,
+}: LineChartProps) => {
   return (
     <div className="py-7 w-full min-w-fit h-[550px]">
       <ResponsiveContainer width="99%" height="99%">
@@ -45,7 +52,11 @@ const LineChart = ({ data, margin, tooltipLabelStyle, tooltipItemStyle }: LineCh
           }}
         >
           <CartesianGrid vertical={false} />
-          <XAxis dataKey={LINE_CHART_OPTIONS.DATA_KEYS.NAME} interval="preserveStartEnd" />
+          <XAxis
+            dataKey={LINE_CHART_OPTIONS.DATA_KEYS.NAME}
+            interval="preserveStartEnd"
+            tick={xAxisTicx}
+          />
           <YAxis orientation="right" tickLine={false} axisLine={false} allowDecimals={false} />
           <Tooltip separator=" " labelStyle={tooltipLabelStyle} itemStyle={tooltipItemStyle} />
           <Legend iconType="circle" />
