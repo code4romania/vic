@@ -95,7 +95,7 @@ const ActiveVolunteersTableHeader = [
     grow: 1,
     minWidth: '14rem',
     selector: (row: IVolunteer) =>
-      row.profile ? `${row.profile?.email}\n${row.profile?.phone}` : '-',
+      row.profile ? `${row.profile?.email}\n${row.user?.phone}` : '-',
   },
 ];
 
