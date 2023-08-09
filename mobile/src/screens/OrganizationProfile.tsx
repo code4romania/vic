@@ -47,8 +47,8 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     () =>
       organization?.organizationVolunteerStatus ===
       OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
-        ? ['1%', 420]
-        : ['1%', 300],
+        ? ['1%', 300]
+        : ['1%', 420],
     [organization],
   );
 
