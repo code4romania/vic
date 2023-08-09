@@ -77,6 +77,7 @@ export class DashboardRepository implements IDashboardRepository {
         .select('COUNT(*)', 'count')
         .addSelect(
           'CASE ' +
+            "WHEN extract(year from age(u.birthday)) BETWEEN 0 AND 14 THEN '0-14' " +
             "WHEN extract(year from age(u.birthday)) BETWEEN 15 AND 20 THEN '15-20' " +
             "WHEN extract(year from age(u.birthday)) BETWEEN 21 AND 25 THEN '21-25' " +
             "ELSE '25+' " +
@@ -85,6 +86,7 @@ export class DashboardRepository implements IDashboardRepository {
         )
         .groupBy(
           'CASE ' +
+            "WHEN extract(year from age(u.birthday)) BETWEEN 0 AND 14 THEN '0-14' " +
             "WHEN extract(year from age(u.birthday)) BETWEEN 15 AND 20 THEN '15-20' " +
             "WHEN extract(year from age(u.birthday)) BETWEEN 21 AND 25 THEN '21-25' " +
             "ELSE '25+' " +
