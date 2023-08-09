@@ -49,8 +49,6 @@ export const mapEventDataToActionDescription = (
 
     //Access Requests
     case TrackedEventName.APPROVE_ACCESS_REQUEST:
-    case TrackedEventName.REJECT_ACCESS_REQUEST:
-    case TrackedEventName.DELETE_ACCESS_REQUEST:
       return (
         <Trans
           i18nKey={`actions_archive:${eventName}.description`}
@@ -59,6 +57,15 @@ export const mapEventDataToActionDescription = (
               <LinkText url={`/volunteers/${eventData.volunteerId}`} content={eventData.userName} />
             ),
           }}
+        />
+      );
+
+    case TrackedEventName.REJECT_ACCESS_REQUEST:
+    case TrackedEventName.DELETE_ACCESS_REQUEST:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          values={{ userName: eventData.userName }}
         />
       );
 

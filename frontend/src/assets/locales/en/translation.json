@@ -686,11 +686,11 @@
     },
     "REJECT_ACCESS_REQUEST": {
       "label": "Reject Access Request",
-      "description": "Cererea de acces pentru voluntarul <inlineLink>{{userName}}</inlineLink> a fost respinsa."
+      "description": "Cererea de acces pentru utilizatorul {{userName}} a fost respinsa."
     },
     "DELETE_ACCESS_REQUEST": {
       "label": "Delete Access Request",
-      "description": "Cererea de acces pentru voluntarul <inlineLink>{{userName}}</inlineLink> a fost stearsa."
+      "description": "Cererea de acces pentru utilizatorul {{userName}} a fost stearsa."
     },
     "CHANGE_VOLUNTEER_STATUS": {
       "label": "Change Volunteer Status",
