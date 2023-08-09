@@ -13,9 +13,7 @@ export interface IActionArchiveRepository {
   countDocumentStatusUpdatesBetweenDates(
     volunteerIds: string[],
   ): Promise<number>;
-  countAccessRequestStatusUpdatesBetweenDates(
-    volunteerIds: string[],
-  ): Promise<number>;
+  countAccessRequestStatusUpdatesBetweenDates(userId: string): Promise<number>;
   findNews(
     options: Omit<FindManyNewsOptions, 'type'>,
   ): Promise<Pagination<IActionArchiveModel>>;

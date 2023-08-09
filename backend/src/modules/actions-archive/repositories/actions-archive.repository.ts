@@ -109,9 +109,9 @@ export class ActionsArchiveRepository
         eventNames: options.events,
       })
       .andWhere(
-        `("actionsArchive".event_data->>'volunteerId')::uuid IN (select "v".id from "volunteer" "v" 
+        `(("actionsArchive".event_data->>'volunteerId')::uuid IN (select "v".id from "volunteer" "v" 
       INNER JOIN "user" "u" ON "v".user_id = "u".id 
-      where "u".id = :userId AND "v".status = :volunteerStatus)`,
+      where "u".id = :userId AND "v".status = :volunteerStatus) OR ("actionsArchive".event_data->>'userId')::uuid = :userId)`,
         { userId: options.userId, volunteerStatus: VolunteerStatus.ACTIVE },
       )
       .orderBy(
@@ -170,7 +170,7 @@ export class ActionsArchiveRepository
   }
 
   async countAccessRequestStatusUpdatesBetweenDates(
-    volunteerIds: string[],
+    userId: string,
   ): Promise<number> {
     const query = this.actionsArchiveRepo
       .createQueryBuilder('archive')
@@ -185,8 +185,8 @@ export class ActionsArchiveRepository
           endDate: endOfMonth(new Date()),
         },
       )
-      .andWhere(`archive.event_data->>'volunteerId' IN (:...volunteerIds)`, {
-        volunteerIds,
+      .andWhere(`archive.event_data->>'userId' = :userId`, {
+        userId,
       });
 
     return query.getCount();

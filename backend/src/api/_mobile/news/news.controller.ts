@@ -8,7 +8,6 @@ import {
 import { GetManyNewsUsecase } from 'src/usecases/actions-archive/get-many-news.usecase';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
-import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 import { NewsPresenter } from './presenters/news.presenter';
 import { GetNewsDto } from './dto/get-news.dto';
 

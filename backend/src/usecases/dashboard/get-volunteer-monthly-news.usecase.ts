@@ -53,7 +53,7 @@ export class GetVolunteerMonthlyNewsStatisticsUsecase
       // get number of organization access requests
       statisticsResponse.numberOfOrganizationUpdates =
         await this.actionsArchiveFacade.countActivityRequestsUpdatesBetweenDates(
-          volunteerIds,
+          user.id,
         );
     }
 

@@ -56,10 +56,10 @@ export class ActionsArchiveFacade {
   }
 
   async countActivityRequestsUpdatesBetweenDates(
-    volunteerIds: string[],
+    userId: string,
   ): Promise<number> {
     return this.actionsArchiveRepository.countAccessRequestStatusUpdatesBetweenDates(
-      volunteerIds,
+      userId,
     );
   }
 
