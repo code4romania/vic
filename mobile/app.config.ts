@@ -18,11 +18,11 @@ const expoConfig: ExpoConfig = {
   },
   assetBundlePatterns: ['**/*'],
   ios: {
-    buildNumber: '2',
+    buildNumber: '3',
     supportsTablet: true,
     bundleIdentifier: 'com.commitglobal.vic',
     entitlements: {
-      'com.apple.developer.applesignin': ['Default'], // TODO: Ce e asta?
+      'com.apple.developer.applesignin': ['Default'],
     },
     infoPlist: {
       UIBackgroundModes: ['fetch', 'remote-notification'],
@@ -32,7 +32,7 @@ const expoConfig: ExpoConfig = {
     },
   },
   android: {
-    versionCode: 2,
+    versionCode: 3,
     adaptiveIcon: {
       foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
