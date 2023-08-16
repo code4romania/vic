@@ -61,7 +61,7 @@ const Landing = ({ navigation }: any) => {
           <View style={styles.separator} />
           <LogInButton onPress={onLoginButtonPress} />
           <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.version}>
-            v0.14.9
+            v0.14.10
           </Text>
         </View>
       </ScrollViewLayout>
