@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   greetingText: { color: 'white', textAlignVertical: 'center' },
   addHoursContainer: {
-    width: '75%',
+    width: '90%',
     alignItems: 'flex-start',
   },
   addButton: { backgroundColor: 'white', borderWidth: 0 },

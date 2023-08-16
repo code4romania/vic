@@ -15,7 +15,7 @@ const MainLayout = () => {
         <div className="hidden xl:flex">
           <SideMenu />
         </div>
-        <div className="w-full overflow-scroll">
+        <div className="w-full overflow-scroll no-scrollbar">
           <Outlet />
         </div>
       </section>
