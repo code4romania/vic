@@ -33,6 +33,7 @@ export const getContractsForDownload = async (params: {
   startDate?: Date;
   endDate?: Date;
   status?: ContractStatus;
+  volunteerId?: string;
 }): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
   return API.get('contract/download', {
     params,

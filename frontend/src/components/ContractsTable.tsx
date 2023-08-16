@@ -222,6 +222,7 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
       startDate: query?.startDate,
       endDate: query?.endDate,
       status: query?.status as ContractStatus,
+      volunteerId,
     });
 
     downloadExcel(data as BlobPart, t('contracts.download'));
