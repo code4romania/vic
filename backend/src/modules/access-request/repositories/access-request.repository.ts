@@ -122,6 +122,7 @@ export class AccessRequestRepository
       where: { ...findOptions },
       relations: {
         updatedBy: true,
+        organization: true,
         requestedBy: {
           location: {
             county: true,

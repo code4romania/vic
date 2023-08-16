@@ -10,9 +10,10 @@ import { useContractQuery } from '../services/contract/contract.service';
 import Paragraph from '../components/Paragraph';
 import ReadOnlyElement from '../components/ReadOnlyElement';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { useTheme } from '@ui-kitten/components';
 
 const ContractRejectedReason = ({ navigation, route }: any) => {
-  console.log('ContractRejectedReason');
+  const theme = useTheme();
   // translations
   const { t } = useTranslation('documents');
 
@@ -51,7 +52,9 @@ const ContractRejectedReason = ({ navigation, route }: any) => {
                 uri={userProfile?.activeOrganization.logo || ''}
               />
             )}
-            <Paragraph>{`${t('contract_rejected.paragraph')}`}</Paragraph>
+            <Paragraph style={{ color: theme['cool-gray-800'] }}>{`${t(
+              'contract_rejected.paragraph',
+            )}`}</Paragraph>
             <ReadOnlyElement
               label={t('contract_rejected.label')}
               value={contract.rejectionReason}

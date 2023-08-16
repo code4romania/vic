@@ -11,6 +11,10 @@ import {
 } from 'src/modules/user/models/regular-user.model';
 import { AccessRequestEntity } from '../entities/access-request.entity';
 import { AccessRequestStatus } from '../enums/access-request-status.enum';
+import {
+  IOrganizationModel,
+  OrganizationTransformer,
+} from 'src/modules/organization/models/organization.model';
 
 export interface IAccessRequestModel extends IBaseModel {
   id: string;
@@ -21,6 +25,7 @@ export interface IAccessRequestModel extends IBaseModel {
   requestedBy: IRegularUserModel;
   updatedBy: IAdminUserModel;
   organizationId: string;
+  organization?: IOrganizationModel;
 }
 
 export interface IAccessRequestQA {
@@ -72,6 +77,7 @@ export class AccessRequestTransformer {
       answers: entity.answers,
       requestedBy: RegularUserTransformer.fromEntity(entity.requestedBy),
       updatedBy: AdminUserTransformer.fromEntity(entity.updatedBy),
+      organization: OrganizationTransformer.fromEntity(entity.organization),
       organizationId: entity.organizationId,
       updatedOn: entity.updatedOn,
       createdOn: entity.createdOn,

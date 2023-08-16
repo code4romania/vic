@@ -355,6 +355,14 @@
       }
     }
   },
+  "access_request": {
+    "title": "Cerere de acces respinsă",
+    "paragraph": "Cererea ta de acces din data {{date}} a fost respinsă.",
+    "reason": "Motivul respingerii",
+    "errors": {
+      "ACCESS_REQUEST_002": "Request-ul nu a fost gasit"
+    }
+  },
   "leave_ngo": {
     "header": "Paraseste organizatia",
     "paragraph": "Daca parasesti organizatia, aceasta iti va sterge datele. Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur /br qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ",

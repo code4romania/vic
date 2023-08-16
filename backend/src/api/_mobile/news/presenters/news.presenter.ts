@@ -11,6 +11,7 @@ export class NewsPresenter {
     this.organizationName = item.author.organization.name;
     this.activityLogId = (item.eventData as never)['activityLogId'];
     this.contractId = (item.eventData as never)['contractId'];
+    this.accessRequestId = (item.eventData as never)['accessRequestId'];
     this.organizationId = item.author.organization.id;
     this.eventName = item.eventName;
     this.newStatus = (item.eventData as never)['newStatus'];
@@ -44,6 +45,10 @@ export class NewsPresenter {
   @Expose()
   @ApiProperty({ description: 'The contract id' })
   contractId?: string;
+
+  @Expose()
+  @ApiProperty({ description: 'The access request id' })
+  accessRequestId?: string;
 
   @Expose()
   @ApiProperty({

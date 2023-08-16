@@ -180,6 +180,7 @@ const News = ({ navigation, route }: any) => {
   };
 
   const onNewsItemPress = (item: INewsItem) => {
+    console.log('item', item);
     if (userProfile?.activeOrganization?.id !== item.organizationId) {
       const activeOrganization = userProfile?.myOrganizations.find(
         (org) => org.id === item.organizationId,
@@ -202,7 +203,11 @@ const News = ({ navigation, route }: any) => {
       }
 
       if (type === NewsType.ORGANIZATIONS) {
-        navigation.navigate('organization-profile', { organizationId: item.organizationId });
+        if (item.eventName === TrackedEventName.REJECT_ACCESS_REQUEST) {
+          navigation.navigate('rejected-request', { accessRequestId: item.accessRequestId });
+        } else {
+          navigation.navigate('organization-profile', { organizationId: item.organizationId });
+        }
       }
     } else {
       if (type === NewsType.LOGGED_HOURS) {
@@ -220,7 +225,11 @@ const News = ({ navigation, route }: any) => {
       }
 
       if (type === NewsType.ORGANIZATIONS) {
-        navigation.navigate('organization-profile', { organizationId: item.organizationId });
+        if (item.eventName === TrackedEventName.REJECT_ACCESS_REQUEST) {
+          navigation.navigate('rejected-request', { accessRequestId: item.accessRequestId });
+        } else {
+          navigation.navigate('organization-profile', { organizationId: item.organizationId });
+        }
       }
     }
   };

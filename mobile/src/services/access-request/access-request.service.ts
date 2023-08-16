@@ -1,5 +1,9 @@
-import { useMutation } from 'react-query';
-import { cancelAccessRequest, createAccessRequest } from './access-request.api';
+import { useMutation, useQuery } from 'react-query';
+import {
+  cancelAccessRequest,
+  createAccessRequest,
+  getRejectedAccessRequest,
+} from './access-request.api';
 import useStore from '../../store/store';
 
 interface IQuenstionAnswer {
@@ -11,6 +15,16 @@ export interface ICreateAccessRequestPayload {
   answers: IQuenstionAnswer[];
   organizationId: string;
 }
+
+export const useRejectedAccessRequest = (accessRequestId: string) => {
+  return useQuery(
+    ['access-request', accessRequestId],
+    () => getRejectedAccessRequest(accessRequestId),
+    {
+      enabled: !!accessRequestId,
+    },
+  );
+};
 
 export const useCreateAccessrequestMutation = () => {
   const { setOrganizationPending } = useStore();

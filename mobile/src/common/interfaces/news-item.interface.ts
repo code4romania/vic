@@ -6,6 +6,7 @@ export interface INewsItem {
   organizationLogo: string;
   organizationName: string;
   activityLogId?: string;
+  accessRequestId?: string;
   contractId?: string;
   organizationId?: string;
   eventName: TrackedEventName;

@@ -134,6 +134,7 @@ import { GetManyNewsUsecase } from './actions-archive/get-many-news.usecase';
 import { GetVolunteerOrganizationStatusUsecase } from './volunteer/get-volunteer-organization-status.usecase';
 import { GetOneRegularUserProfileUseCase } from './user/get-regule-user-profile.usecase';
 import { SyncUserOrganizationsUsecase } from './user/sync-user-organizations.usecase';
+import { GetRejectedAccessRequestUsecase } from './access-request/get-rejected-access-request.usecase';
 
 @Module({
   imports: [
@@ -195,6 +196,7 @@ import { SyncUserOrganizationsUsecase } from './user/sync-user-organizations.use
     GetAccessRequestsForDownloadUseCase,
     JoinOrganizationByAccessCodeUsecase,
     CancelAccessRequestUsecase,
+    GetRejectedAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
@@ -336,6 +338,7 @@ import { SyncUserOrganizationsUsecase } from './user/sync-user-organizations.use
     GetAccessRequestsForDownloadUseCase,
     JoinOrganizationByAccessCodeUsecase,
     CancelAccessRequestUsecase,
+    GetRejectedAccessRequestUsecase,
     // Location
     GetCitiesUseCase,
     GetCountiesUseCase,
