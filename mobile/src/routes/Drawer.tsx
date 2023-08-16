@@ -78,6 +78,7 @@ const DrawerItemTitle = withStyles(
     <Text
       allowFontScaling={ALLOW_FONT_SCALLING}
       category={category || 'h3'}
+      lineBreakMode="tail"
       style={eva?.style.drawerItemTitle}
     >
       {children}
@@ -86,6 +87,9 @@ const DrawerItemTitle = withStyles(
   () => ({
     drawerItemTitle: {
       color: '#fff',
+      flexWrap: 'wrap',
+      paddingLeft: 16,
+      maxWidth: '80%',
     },
   }),
 );
@@ -161,7 +165,6 @@ const DrawerContent = withStyles(
       paddingHorizontal: 0,
       paddingVertical: 8,
       justifyContent: 'flex-start',
-      gap: 16,
     },
     activeDrawerItem: {
       backgroundColor: 'rgba(0, 0, 0, 0.15)',

@@ -25,7 +25,12 @@ const TopNavigationCard = ({ title, uri, onPress }: TopNavigationCardProps) => {
       <View style={styles.shadow}>
         <Avatar source={{ uri }} size="small" />
       </View>
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" appearance="alternative">
+      <Text
+        style={styles.title}
+        allowFontScaling={ALLOW_FONT_SCALLING}
+        category="h3"
+        appearance="alternative"
+      >
         {title}
       </Text>
     </Pressable>
@@ -68,5 +73,9 @@ const themedStyles = StyleService.create({
     },
     shadowOpacity: 0.24,
     shadowRadius: 4,
+  },
+  title: {
+    flexWrap: 'wrap',
+    maxWidth: '85%',
   },
 });
