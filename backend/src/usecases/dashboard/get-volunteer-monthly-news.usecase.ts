@@ -33,10 +33,13 @@ export class GetVolunteerMonthlyNewsStatisticsUsecase
       await this.eventsFacade.countUpcomingEventsByUserId(user.id);
 
     // get all volunteerIds
-    const volunteers = await this.volunteerFacade.findAll({
+    const volunteersFound = await this.volunteerFacade.findAll({
       userId: user.id,
-      status: VolunteerStatus.ACTIVE,
     });
+
+    const volunteers = volunteersFound.filter(
+      (vol) => vol.status !== VolunteerStatus.BLOCKED,
+    );
 
     if (volunteers.length > 0) {
       const volunteerIds = volunteers.map((v) => v.id);

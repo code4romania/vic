@@ -129,6 +129,12 @@ const NotificationContextProvider = ({
     }
   }, [navigation, init, isAuthenticated, isRegistered]);
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setIsRegistered(false);
+    }
+  }, [isAuthenticated]);
+
   const unsubscribe = () => {
     try {
       if (pushToken) {
