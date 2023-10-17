@@ -136,7 +136,7 @@
   },
   "auth": {
     "errors": {
-      "unauthorizeed": "Userul sau parola sunt greșite",
+      "unauthorized": "Userul sau parola sunt greșite",
       "username_exists": "Există deja un utilizator cu această adresă de email",
       "signup": "Eroare la înregistrare. Verificati datele de inregistrare si incercati din nou.",
       "resend_code": "Eroare la trimiterea codului de confirmare",
@@ -328,7 +328,7 @@
         "teo": "Din aplicația TEO",
         "friend": "De la un coleg sau prieten",
         "event": "Dintr-un eveniment",
-        "other": "Altă opţiune"
+        "other": "Altă opțiune"
       },
       "motivation": {
         "required": "Acest câmp este obligatoriu",

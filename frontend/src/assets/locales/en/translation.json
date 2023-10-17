@@ -1,93 +1,93 @@
 {
   "general": {
-    "yes": "Da",
-    "no": "Nu",
-    "download_table": "Descarca tabel",
-    "created_by": "Creat de",
-    "user": "Utilizator",
-    "close": "Inchide",
-    "name": "Nume",
-    "people": "Persoane",
+    "yes": "Yes",
+    "no": "No",
+    "download_table": "Download table",
+    "created_by": "Created by",
+    "user": "User",
+    "close": "Close",
+    "name": "Name",
+    "people": "People",
     "contract": "Contract",
-    "age": "Vârsta",
-    "hours": "Ore",
-    "daily": "Zilnic",
-    "monthly": "Lunar",
-    "yearly": "Anual",
-    "date": "Data",
+    "age": "Age",
+    "hours": "Hours",
+    "daily": "Daily",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "date": "Date",
     "target": "Target",
-    "answers": "Răspunsuri",
-    "answer": "Răspuns",
-    "created_on": "Data crearii",
-    "all_organization": "Toata organizatia",
-    "event": "Eveniment",
-    "add": "Adaugă {{item}}",
-    "category": "Categorie",
-    "select": "Selectează {{item}}",
-    "download": "Descarcă {{item}}",
-    "choose": "Alege {{item}}",
-    "image": "Imagine",
-    "reason": "Motiv",
+    "answers": "Answers",
+    "answer": "Answer",
+    "created_on": "Created on",
+    "all_organization": "The entire organization",
+    "event": "Event",
+    "add": "Add {{item}}",
+    "category": "Category",
+    "select": "Select {{item}}",
+    "download": "Download {{item}}",
+    "choose": "Choose {{item}}",
+    "image": "Image",
+    "reason": "Reason",
     "task": "Task",
-    "unspecified": "Nespecificat",
-    "activity": "Activitate",
-    "address": "Adresa",
-    "activity_area": "Arie de desfasurare a activitatii",
+    "unspecified": "Unspecified",
+    "activity": "Activity",
+    "address": "Address",
+    "activity_area": "Activity area",
     "status": "Status",
-    "empty_table": "Nu exista informatii de afisat",
-    "view": "Vizualizeaza",
-    "edit": "Editează {{item}}",
-    "block": "Blochează {{item}}",
-    "archive": "Arhivează {{item}}",
-    "delete": "Sterge",
-    "location": "Locatie",
-    "back": "Inapoi",
-    "send": "Trimite",
-    "reject": "Respinge",
-    "templates": "Template-uri",
-    "approve": "Aprobă",
-    "save_changes": "Salveaza modificari",
-    "save": "Salvează",
-    "description": "Descriere",
-    "required": "Campul este obligatoriu",
-    "contracts": "Contracte",
-    "anytime": "Oricand",
-    "contact": "Date contact",
+    "empty_table": "No data available",
+    "view": "View",
+    "edit": "Edit {{item}}",
+    "block": "Block {{item}}",
+    "archive": "Archive {{item}}",
+    "delete": "Delete",
+    "location": "Location",
+    "back": "Back",
+    "send": "Send",
+    "reject": "Reject",
+    "templates": "Templates",
+    "approve": "Approve",
+    "save_changes": "Save changes",
+    "save": "Save",
+    "description": "Description",
+    "required": "Required",
+    "contracts": "Contracts",
+    "anytime": "Anytime",
+    "contact": "Contact",
     "error": {
-      "load_entries": "Eroare la incarcarea datelor",
-      "unknown": "A aparut o eroare necunoscuta",
-      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
+      "load_entries": "Error loading entries",
+      "unknown": "Unknown error",
+      "generic_error": "Error processing data, code: #{{code}}"
     },
-    "cancel": "Anuleaza",
-    "years_old": "{{age}} ani",
+    "cancel": "Cancel",
+    "years_old": "{{age}} years old",
     "sex": "Sex {{sex_type}}",
-    "male": "Barbatesc",
-    "female": "Feminin",
-    "phone": "Telefon",
-    "email": "Email de contact",
-    "availability": "Valabilitate",
-    "uses": "Utilizari",
+    "male": "Male",
+    "female": "Female",
+    "phone": "Phone",
+    "email": "Email",
+    "availability": "Availability",
+    "uses": "Uses",
     "confirm_delete": "Esti sigur ca doresti stergerea acestui {{item}}?",
     "invalid_date": "Va rugam sa introduceti o data",
-    "unlimited": "nelimitat",
-    "search": "Cauta...",
-    "publish": "Publica",
+    "unlimited": "unlimited",
+    "search": "Search...",
+    "publish": "Publish",
     "filters": {
-      "show": "Filtre",
-      "reset": "Reseteaza filtre",
-      "hide": "Ascunde filtre"
+      "show": "Filters",
+      "reset": "Reset filters",
+      "hide": "Hide filters"
     },
-    "select_interval": "Selecteaza interval",
-    "save_draft": "Salveaza ca draft",
-    "other": "Alta optiune",
-    "add_file": "Adauga fisier aici",
-    "confirm": "Confirma"
+    "select_interval": "Select interval",
+    "save_draft": "Save as draft",
+    "other": "Other option",
+    "add_file": "Add file here",
+    "confirm": "Confirm"
   },
   "header": {
     "login": "Login",
     "menu": {
       "options": {
-        "my_account": "Contul meu",
+        "my_account": "My account",
         "logout": "Log out"
       }
     }
@@ -95,80 +95,80 @@
   "side_menu": {
     "options": {
       "dashboard": "Dashboard",
-      "organization": "Structura ONG",
-      "volunteers": "Voluntari",
-      "events": "Evenimente",
-      "volunteers_list": "Listă voluntari",
-      "access_requests": "Cereri de înscriere",
-      "access_codes": "Coduri de acces",
-      "documents": "Documente",
-      "announcements": "Anunturi",
-      "activity_types": "Categorii activitati",
-      "activity_log": "Ore de voluntariat",
-      "actions_archive": "Arhivă acțiuni"
+      "organization": "NGO Structure",
+      "volunteers": "Volunteers",
+      "events": "Events",
+      "volunteers_list": "Volunteers list",
+      "access_requests": "Access requests",
+      "access_codes": "Access codes",
+      "documents": "Documents",
+      "announcements": "Announcements",
+      "activity_types": "Activity types",
+      "activity_log": "Activity log",
+      "actions_archive": "Actions archive"
     },
-    "collapse": "Restrange meniul"
+    "collapse": "Collapse menu"
   },
   "volunteer": {
-    "all": "Toti voluntarii",
-    "title": "Vizualizare profil",
-    "card_title": "Informatii voluntar",
-    "name": "Voluntar {{status}}",
-    "volunteer_from": "Adaugat in TEO la",
+    "all": "All volunteers",
+    "title": "See profile",
+    "card_title": "Volunteer information",
+    "name": "Volunteer {{status}}",
+    "volunteer_from": "Added in TEO at",
     "status": {
-      "active": "activ",
-      "archived": "arhivat",
-      "blocked": "blocat"
+      "active": "active",
+      "archived": "archived",
+      "blocked": "blocked"
     },
     "registration": {
-      "title": "Cerere de inscriere",
-      "edit_status": "Această cerere de înscriere necesită aprobare",
-      "form": "Formular inscriere",
-      "answer": "Raspunsul voluntarului",
-      "description": "A fost completat de voluntar in momentul cererii accesului in organizatie.",
-      "found_location": "De unde ai aflat de organizatie?",
-      "motivation": "Ce te motiveaza sa fii voluntar?",
-      "confirmation_message": "Cererea de inscriere a fost {{option}}",
+      "title": "Registration request",
+      "edit_status": "This registration request needs approval",
+      "form": "Registration form",
+      "answer": "Volunteer answer",
+      "description": "Was completed by the volunteer when requesting access to the organization.",
+      "found_location": "Where did you find out about the organization?",
+      "motivation": "What motivates you to be a volunteer?",
+      "confirmation_message": "The registration request was {{option}}",
       "referral": {
-        "social": "Rețelele de socializare",
-        "teo": "Din aplicația TEO",
-        "friend": "De la un coleg sau prieten",
-        "event": "Dintr-un eveniment",
-        "other": "Altă opţiune"
+        "social": "From social media",
+        "teo": "From the TEO app",
+        "friend": "From a colleague or friend",
+        "event": "From an event",
+        "other": "Other"
       },
       "confirmation_options": {
-        "approved": "aprobata",
-        "deleted": "stearsa",
-        "rejected": "respinsa"
+        "approved": "approved",
+        "deleted": "deleted",
+        "rejected": "rejected"
       }
     },
     "errors": {
-      "VOL_001": "Nu s-a putut incarca cererea voluntarului"
+      "VOL_001": "The volunteer's request was not found"
     },
     "form": {
       "name": {
-        "label": "Nume voluntar*"
+        "label": "Volunteer name*"
       },
       "email": {
-        "label": "Email de contact*",
-        "max": "Emailul trebuie sa aibe maxim 75 de caractere",
-        "required": "Email-ul de contact este obligatoriu",
-        "pattern": "Emailul trebuie sa aiba un format valid"
+        "label": "Contact email*",
+        "max": "The email must have a maximum of 75 characters",
+        "required": "The email is required",
+        "pattern": "The email has an invalid format"
       },
       "branch": {
         "label": "Filiala sau sucursala"
       },
       "department": {
-        "label": "Departament"
+        "label": "Department"
       },
       "role": {
-        "label": "Rol"
+        "label": "Role"
       },
       "started_on": {
-        "label": "Voluntar din"
+        "label": "Volunteer since"
       },
       "submit": {
-        "edit": "Datele voluntarului au fost modificate"
+        "edit": "The volunteer's information was updated"
       }
     }
   },
@@ -946,12 +946,12 @@
       }
     },
     "popover": {
-      "edit": "Editeaza titlu template",
-      "download": "Descarcă document",
-      "reject": "Respinge contract",
-      "remove": "Elimină",
-      "remove_from_list": "Elimină din listă",
-      "confirm": "Confirma si semneaza"
+      "edit": "Edit template title",
+      "download": "Download document",
+      "reject": "Reject contract",
+      "remove": "Eliminate",
+      "remove_from_list": "Eliminate din listă",
+      "confirm": "Confirm and sign"
     }
   }
 }
