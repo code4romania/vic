@@ -19,7 +19,7 @@
     "answers": "Answers",
     "answer": "Answer",
     "created_on": "Date of creation",
-    "all_organization": "The whole organisation",
+    "all_organization": "The whole organization",
     "event": "Event",
     "add": "Add {{item}}",
     "category": "Categories",
@@ -116,7 +116,7 @@
     "name": "Voluntar {{status}}",
     "volunteer_from": "Added to TEO at",
     "status": {
-      "active": "activ",
+      "active": "active",
       "archived": "archived",
       "blocked": "locked"
     },
@@ -125,7 +125,7 @@
       "edit_status": "This application requires approval",
       "form": "Registration form",
       "answer": "Volunteer response",
-      "description": "It was completed by the volunteer at the time of applying for access to the organisation.",
+      "description": "It was completed by the volunteer at the time of applying for access to the organization.",
       "found_location": "How did you find out about the organization?",
       "motivation": "What motivates you to volunteer?",
       "confirmation_message": "The application was {{option}}",
@@ -205,7 +205,7 @@
     },
     "errors": {
       "VOLUNTEER_001": "Volunteer not found",
-      "VOLUNTEER_002": "The user is already part of the organisation",
+      "VOLUNTEER_002": "The user is already part of the organization",
       "VOLUNTEER_003": "Only active volunteers can be archived",
       "VOLUNTEER_004": "Only archived volunteers can reactivate",
       "VOLUNTEER_PROFILE_001": "The volunteer already has a profile",
@@ -262,8 +262,8 @@
     },
     "errors": {
       "delete": "Error deleting {{division}}",
-      "ORGANIZATION_STRUCTURE_001": "There is no organisational structure with this name",
-      "ORGANIZATION_STRUCTURE_002": "There is already an organisational structure with this name"
+      "ORGANIZATION_STRUCTURE_001": "There is no organizational structure with this name",
+      "ORGANIZATION_STRUCTURE_002": "There is already an organizational structure with this name"
     },
     "popover": {
       "view": "View member list",
@@ -272,19 +272,19 @@
   },
   "organization": {
     "title": {
-      "view": "Organisation profile",
+      "view": "Organization profile",
       "edit": "Edit profile",
-      "card": "Edit organisation profile"
+      "card": "Edit organization profile"
     },
     "subtitle": "Data taken from ONGHub.",
-    "logo": "Organisation logo",
-    "name": "Organisation name",
-    "description": "Organisation description",
-    "teo_description": "Description of the organisation in TEO",
-    "description_placeholder": "The organisation description is displayed in the organisation profile in the TEO application. You can choose to formulate a specific description for the TEO app, which will attract as many volunteers as possible, or you can use the organisation description as it is in ONGHub.",
+    "logo": "Organization logo",
+    "name": "Organization name",
+    "description": "Organization description",
+    "teo_description": "Description of the organization in TEO",
+    "description_placeholder": "The organization description is displayed in the organization profile in the TEO application. You can choose to formulate a specific description for the TEO app, which will attract as many volunteers as possible, or you can use the organization description as it is in ONGHub.",
     "errors": {
-      "ORG_001": "The organisation has not been found",
-      "no_data": "Organisation data could not be uploaded"
+      "ORG_001": "The organization has not been found",
+      "no_data": "Organization data could not be uploaded"
     },
     "form": {
       "description": {
@@ -294,7 +294,7 @@
       }
     },
     "submit": {
-      "success": "The description of the organisation has been updated"
+      "success": "The description of the organization has been updated"
     }
   },
   "pagination": {
@@ -321,7 +321,7 @@
     },
     "errors": {
       "no_data": "Applications could not be uploaded",
-      "ACCESS_REQUEST_001": "There is already an application for your organisation",
+      "ACCESS_REQUEST_001": "There is already an application for your organization",
       "ACCESS_REQUEST_002": "Request not found",
       "ACCESS_REQUEST_003": "The application must be rejected in order to be deleted",
       "ACCESS_REQUEST_004": "Demand is not in the right state"
@@ -337,7 +337,7 @@
     "name": "Access code",
     "create": "Create new code",
     "title": "Access code information",
-    "description": "Enter a new access code. Using the access code, a TEO user can join the organisation as a volunteer, without having to approve the application manually.",
+    "description": "Enter a new access code. Using the access code, a TEO user can join the organization as a volunteer, without having to approve the application manually.",
     "start_date": "Valid from date*",
     "end_date": "End of validity date",
     "modal": {
@@ -401,7 +401,7 @@
     },
     "errors": {
       "ACTIVITY_TYPE_001": "Category not found",
-      "ACTIVITY_TYPE_002": "There is already a category with this data for your organisation",
+      "ACTIVITY_TYPE_002": "There is already a category with this data for your organization",
       "ACTIVITY_TYPE_003": "Category is not in the right status",
       "ACTIVITY_TYPE_004": "Could not create the category"
     }
@@ -413,7 +413,7 @@
     "participate": "Participate",
     "not_participate": "Not participating",
     "details": "Event details",
-    "volunteer": "Volunteer in the organisation",
+    "volunteer": "Volunteer in the organization",
     "responses_list": "List of answers",
     "observation": "Mention if the event registration is simple, or if you want extra mentions from your volunteers.",
     "draft": {
@@ -469,9 +469,9 @@
       "target": {
         "label": "Target",
         "public": "Public event",
-        "all": "The whole organisation",
+        "all": "The whole organization",
         "placeholder": "Choose all that apply",
-        "disclaimer": "Disclaimer: If no department is selected, then 'Whole organisation' will be selected",
+        "disclaimer": "Disclaimer: If no department is selected, then 'Whole organization' will be selected",
         "required": "Departments are mandatory"
       },
       "description": {
@@ -497,7 +497,7 @@
       },
       "task": {
         "title": "Tasks associated with the event",
-        "description": "Choose specific tasks from the organisation's list.",
+        "description": "Choose specific tasks from the organization's list.",
         "label": "Choose tasks",
         "tasks": "Tasks",
         "required": "The choice of tasks is mandatory.",
@@ -536,7 +536,7 @@
       "published_on": "Published at",
       "target": "Target"
     },
-    "all_organization": "The whole organisation",
+    "all_organization": "The whole organization",
     "status": {
       "draft": "Draft",
       "published": "Published"
@@ -559,7 +559,7 @@
       "target": {
         "label": "Target",
         "placeholder": "Choose all that apply",
-        "disclaimer": "Disclaimer: If no department is selected, then 'Whole organisation' will be selected"
+        "disclaimer": "Disclaimer: If no department is selected, then 'Whole organization' will be selected"
       }
     },
     "submit": {
@@ -668,7 +668,7 @@
     },
     "UPDATE_ORGANIZATION_PROFILE": {
       "label": "Update Organization Profile",
-      "description": "Description of the organisation <inlineLink>{{organizationName}}</inlineLink> has been modified."
+      "description": "Description of the organization <inlineLink>{{organizationName}}</inlineLink> has been modified."
     },
     "CREATE_ORGANIZATION_STRUCTURE": {
       "label": "Create Organization Structure",
@@ -785,7 +785,7 @@
       "title": "Number of volunteers"
     },
     "pie_chart": {
-      "title": "Organisation volunteer statistics"
+      "title": "Organization volunteer statistics"
     }
   },
   "documents": {
@@ -906,7 +906,7 @@
           "label": "Send to volunteer",
           "success": "The contract was generated",
           "errors": {
-            "CONTRACT_004": "There is already a contract with this number for your organisation!",
+            "CONTRACT_004": "There is already a contract with this number for your organization!",
             "CONTRACT_005": "The volunteer already has a contract during that period"
           }
         }

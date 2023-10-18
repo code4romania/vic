@@ -4,8 +4,8 @@
     "about_teo": "About TEO",
     "event": "Event",
     "news": "Latest news",
-    "organizations": "Organisations",
-    "organization": "Organisation",
+    "organizations": "Organizations",
+    "organization": "Organization",
     "active_volunteers": "active volunteers",
     "documents": "Documents",
     "updates": "updates",
@@ -277,49 +277,49 @@
   "organizations": {
     "title": "Search",
     "search": {
-      "placeholder": "Name of organisation"
+      "placeholder": "Name of organization"
     },
     "errors": {
       "generic": "Error loading data"
     }
   },
   "organization_profile": {
-    "title": "Organisation profile",
-    "description": "About the organisation",
+    "title": "Organization profile",
+    "description": "About the organization",
     "email": "Contact email",
     "phone": "Phone",
     "address": "Head office address",
     "area": "Area of activity",
     "events": "Open events",
     "volunteers": "{{number}} volunteers",
-    "join": "Join the organisation",
-    "leave": "Leaving the organisation",
-    "rejoin": "Rejoin the organisation",
+    "join": "Join the organization",
+    "leave": "Leaving the organization",
+    "rejoin": "Rejoin the organization",
     "cancel_request": "Cancel request",
     "no_events": "No events to display",
     "code": "Do you have an access code?",
     "disclaimer": {
-      "access_request_pending": "Your registration awaits approval from the organisation",
+      "access_request_pending": "Your registration awaits approval from the organization",
       "joined_from": "You joined from {{date}}",
       "volunteer_archived": "Your volunteer profile has been deactivated!",
-      "volunteer_blocked": "Your access to the organisation has been restricted"
+      "volunteer_blocked": "Your access to the organization has been restricted"
     },
     "modal": {
       "identity_data_missing": {
         "heading": "Oops!",
-        "paragraph": "You didn't fill in the identity data in my Account. Fill it in to join an organisation.",
+        "paragraph": "You didn't fill in the identity data in my Account. Fill it in to join an organization.",
         "action_label": "Fill in the data"
       },
       "confirm_cancel_request": {
         "heading": "Are you cancelling your application?",
-        "paragraph": "The application has been sent to the organisation's coordinators. Are you sure you want to withdraw your application?",
+        "paragraph": "The application has been sent to the organization's coordinators. Are you sure you want to withdraw your application?",
         "action_label": "Cancel request"
       }
     }
   },
   "join_ngo": {
     "registration_form": "Application form",
-    "complete": "Fill in the details below to join the organisation.",
+    "complete": "Fill in the details below to join the organization.",
     "form": {
       "referral": {
         "label": "How did you hear about us?",
@@ -340,17 +340,17 @@
     },
     "errors": {
       "ACCESS_CODE_001": "Access code is invalid",
-      "ACCESS_REQUEST_001": "There is already an access request for this organisation",
-      "ORG_001": "The organisation has not been found",
+      "ACCESS_REQUEST_001": "There is already an access request for this organization",
+      "ORG_001": "The organization has not been found",
       "USER_001": "User not found",
-      "VOLUNTEER_002": "The user is already part of the organisation",
+      "VOLUNTEER_002": "The user is already part of the organization",
       "USER_005": "The user does not have the identification data filled in"
     },
     "modal": {
       "success": {
         "heading": "Congratulations!",
-        "paragraph": "The application has been sent to the organisation's coordinators. You will be notified as soon as they have responded.",
-        "primary_action_label": "Search for other organisations",
+        "paragraph": "The application has been sent to the organization's coordinators. You will be notified as soon as they have responded.",
+        "primary_action_label": "Search for other organizations",
         "secondary_action_label": "Close"
       }
     }
@@ -364,23 +364,23 @@
     }
   },
   "leave_ngo": {
-    "header": "Leaving the organisation",
-    "paragraph": "If you leave the organisation, it will delete your data. Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur /br qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ",
-    "action_btn": "Leaving the organisation",
+    "header": "Leaving the organization",
+    "paragraph": "If you leave the organization, it will delete your data. Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur /br qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ",
+    "action_btn": "Leaving the organization",
     "modal": {
       "confirm_leave_organization": {
-        "heading": "Are you sure you want to leave the organisation?",
-        "paragraph": "If you leave the organisation, it will delete your data, including your registered hours and volunteer documents. For more details, you can contact the organisation.",
-        "action_label": "Leaving the organisation"
+        "heading": "Are you sure you want to leave the organization?",
+        "paragraph": "If you leave the organization, it will delete your data, including your registered hours and volunteer documents. For more details, you can contact the organization.",
+        "action_label": "Leaving the organization"
       }
     }
   },
   "volunteer": {
     "title": "Volunteer profile",
-    "no_org_added": "You have not added any organisations yet",
+    "no_org_added": "You have not added any organizations yet",
     "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-    "my_organizations": "My organisations",
-    "join_organization": "Join an organisation",
+    "my_organizations": "My organizations",
+    "join_organization": "Join an organization",
     "edit": "Edit volunteer profile",
     "form": {
       "email": {
@@ -400,7 +400,7 @@
     "details": "Lorem ipsum. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident.",
     "menu_items": {
       "organization_profile": {
-        "title": "Organisation profile"
+        "title": "Organization profile"
       },
       "activity_log": {
         "title": "Volunteer hours",
@@ -425,7 +425,7 @@
       "VOLUNTEER_PROFILE_003": "The volunteer has no profile created. Create one first!",
       "VOLUNTEER_003": "Only active volunteers can be archived",
       "VOLUNTEER_004": "Only archived volunteers can be activated",
-      "VOLUNTEER_005": "The user has no organisation profile for this NGO"
+      "VOLUNTEER_005": "The user has no organization profile for this NGO"
     },
     "missing_profile": {
       "heading": "You have not yet created a user profile",
@@ -468,7 +468,7 @@
     },
     "tabs": {
       "going": "Particip",
-      "organizations": "My organisations",
+      "organizations": "My organizations",
       "open": "Open"
     }
   },
@@ -497,7 +497,7 @@
     "attending_one": "One person participates!",
     "type": {
       "public": "Public event",
-      "all_organization": "The whole organisation"
+      "all_organization": "The whole organization"
     },
     "errors": {
       "EVENT_RSVP_001": "The event was not found!",
@@ -505,7 +505,7 @@
       "EVENT_RSVP_007": "The event is closed",
       "EVENT_RSVP_003": "Volunteer profile is not active",
       "EVENT_RSVP_005": "Please fill in your volunteer profile before joining the event",
-      "EVENT_RSVP_002": "You must be a volunteer in the organisation to participate in this event",
+      "EVENT_RSVP_002": "You must be a volunteer in the organization to participate in this event",
       "EVENT_RSVP_004": "For this event it is mandatory to mention"
     },
     "rsvp": {
@@ -533,7 +533,7 @@
     "total": "Total",
     "disclaimer": {
       "approved": "Approved at {{date}}",
-      "pending": "Requires approval from the organisation",
+      "pending": "Requires approval from the organization",
       "rejected": "Rejected at {{date}}"
     },
     "form": {
@@ -584,7 +584,7 @@
     "greeting": "Hi, {{name}}!",
     "paragraph": "Welcome to your TEO account! The place to keep track of your volunteer hours and documents, lorem ipsum.",
     "add_hours": "Add volunteer hours!",
-    "join_ngo": "Join an organisation!",
+    "join_ngo": "Join an organization!",
     "statistics": {
       "events": {
         "title": "{{number}} events",
@@ -600,7 +600,7 @@
       },
       "organizations": {
         "title": "{{number}} updates",
-        "description": "in organisations"
+        "description": "in organizations"
       }
     },
     "anouncements": {
@@ -613,7 +613,7 @@
   },
   "access_code": {
     "title": "Access code",
-    "description": "If you have an access code from your organisation, enter it below to join automatically.",
+    "description": "If you have an access code from your organization, enter it below to join automatically.",
     "form": {
       "code": {
         "placeholder": "Enter code",
@@ -634,13 +634,13 @@
   },
   "documents": {
     "contract_prefix": "Contract",
-    "description": "Lorem ipsum. Manage your contracts in the sections below. Download old contracts, or sign contracts sent by your organisation.",
+    "description": "Lorem ipsum. Manage your contracts in the sections below. Download old contracts, or sign contracts sent by your organization.",
     "sections": {
       "pending": "Contract proposal",
       "closed": "History of signed contracts"
     },
     "contract_status": {
-      "active": "activ",
+      "active": "active",
       "closed": "concluded",
       "not_started": "Unbeaten"
     },
@@ -648,11 +648,11 @@
       "title": "Contract {{contractNumber}}",
       "paragraph": {
         "PENDING_VOLUNTEER": "The contract has been generated and requires your approval. Download the template below and read the document carefully. Please print out a copy of it, which you can sign, scan and upload here.",
-        "PENDING_ADMIN": "You sent a document for signature. The contract has been generated and requires approval from the organisation."
+        "PENDING_ADMIN": "You sent a document for signature. The contract has been generated and requires approval from the organization."
       },
       "disclaimer": {
         "PENDING_VOLUNTEER": "The contract needs your signature",
-        "PENDING_ADMIN": "The contract requires the signature of the organisation"
+        "PENDING_ADMIN": "The contract requires the signature of the organization"
       },
       "actions": {
         "upload": "Upload signed contract",
@@ -688,8 +688,8 @@
     "from": {
       "title": "Receive notifications from",
       "options": {
-        "all_organizations": "All organisations",
-        "my_organizations": "My organisations"
+        "all_organizations": "All organizations",
+        "my_organizations": "My organizations"
       }
     },
     "by": {
@@ -716,7 +716,7 @@
     "header": {
       "logs": "Updates in Volunteering Hours",
       "documents": "Update in Documents",
-      "organizations": "Update in Organisations"
+      "organizations": "Update in Organizations"
     },
     "item": {
       "logs": {
@@ -731,7 +731,7 @@
         "rejected_end": "was rejected. See reason."
       },
       "organization": {
-        "request": "Application to join the organisation",
+        "request": "Application to join the organization",
         "approved": "has been approved",
         "rejected": "was rejected"
       }
