@@ -3,9 +3,9 @@
     "current_month": "Luna asta",
     "about_teo": "Despre TEO",
     "event": "Eveniment",
-    "news": "Ultimele noutati",
-    "organizations": "Organizatii",
-    "organization": "Organizatie",
+    "news": "Ultimele noutăți",
+    "organizations": "Organizații",
+    "organization": "Organizație",
     "active_volunteers": "voluntari activi",
     "documents": "Documente",
     "updates": "actualizări",
@@ -18,7 +18,7 @@
     "join": "Alătură-te",
     "select": "Selectează",
     "sex": "Sex {{sex_type}}",
-    "male": "Barbatesc",
+    "male": "Bărbătesc",
     "female": "Feminin",
     "register": "Înregistrează-te",
     "continue": "Continuă",
@@ -26,14 +26,14 @@
     "send": "Trimite",
     "delete": "Șterge",
     "volunteers": "Voluntari",
-    "loading": "Se incarca...",
-    "empty_list": "Nu exista rezultate",
+    "loading": "Se încarcă...",
+    "empty_list": "Nu există rezultate",
     "error": {
-      "load_entries": "Eroare la incarcarea datelor",
-      "unknown": "A aparut o eroare necunoscuta",
+      "load_entries": "Eroare la încărcarea datelor",
+      "unknown": "A apărut o eroare necunoscută",
       "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
     },
-    "back": "Inapoi"
+    "back": "Înapoi"
   },
   "landing": {
     "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
@@ -60,22 +60,22 @@
         },
         "phone": {
           "label": "Telefon",
-          "placeholder": "Introduceti telefonul",
+          "placeholder": "Introduceți telefonul",
           "length": "Numărul de telefon trebuie să aibă {{number}} caractere",
           "required": "Telefonul este obligatoriu",
-          "pattern": "Numarul de telefon trebuie sa contina doar numere"
+          "pattern": "Numărul de telefon trebuie să conțină doar numere"
         },
         "password": {
           "label": "Parola",
-          "placeholder": "Introduceti parola",
+          "placeholder": "Introduceți parola",
           "required": "Parola este obligatorie",
-          "pattern": "Parola trebuie sa contina minim 8 caractere, litere mari, litere mici, numere si caractere speciale, fara spatii"
+          "pattern": "Parola trebuie să conțină minim 8 caractere, litere mari, litere mici, numere și caractere speciale, fără spații"
         },
         "confirm_password": {
           "label": "Confirma parola",
-          "placeholder": "Confirmati parola",
+          "placeholder": "Confirmați parola",
           "required": "Parola este obligatorie",
-          "match": "Parolele trebuie sa fie identice"
+          "match": "Parolele trebuie să fie identice"
         },
         "terms": {
           "agree": "Sunt de acord cu ",
@@ -83,7 +83,7 @@
           "and": "cât și cu ",
           "privacy_policy": "Politica de Confidențialitate ",
           "application": "a aplicației",
-          "required": "Trebuie sa accepti Termenii,Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
+          "required": "Trebuie să accepți Termenii,Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
         }
       },
       "secondary_action": {
@@ -99,28 +99,28 @@
           "label": "Introdu codul primit prin email",
           "placeholder": "Introdu codul primit prin email",
           "required": "Codul este obligatoriu",
-          "length": "Codul trebuie sa aiba o lungime de 6 caractere",
-          "pattern": "Codul trebuie sa contina doar cifre"
+          "length": "Codul trebuie să aibă o lungime de 6 caractere",
+          "pattern": "Codul trebuie să conțină doar cifre"
         }
       }
     },
     "create_user": {
       "heading": "Date utilizator",
-      "paragraph": "Completați câmpurile de mai jos pentru finalizarea inregistrarii.",
+      "paragraph": "Completați câmpurile de mai jos pentru finalizarea înregistrării.",
       "form": {
         "first_name": {
           "label": "Prenume",
           "placeholder": "Introdu prenumele",
           "required": "Prenumele este obligatoriu",
-          "min": "Prenumele poate sa aiba minim {{value}} caractere",
-          "max": "Prenumele poate sa aiba maxim {{value}} caractere"
+          "min": "Prenumele poate să aibă minim {{value}} caractere",
+          "max": "Prenumele poate să aibă maxim {{value}} caractere"
         },
         "last_name": {
           "label": "Nume",
           "placeholder": "Introdu numele de familie",
-          "required": "Numele de faimilie este obligatoriu",
-          "min": "Numele poate sa aiba minim {{value}} caractere",
-          "max": "Numele poate sa aiba maxim {{value}} caractere"
+          "required": "Numele de familie este obligatoriu",
+          "min": "Numele poate să aibă minim {{value}} caractere",
+          "max": "Numele poate să aibă maxim {{value}} caractere"
         },
         "county": {
           "label": "Județ"
@@ -136,13 +136,13 @@
   },
   "auth": {
     "errors": {
-      "unauthorizeed": "Userul sau parola sunt greșite",
+      "unauthorized": "Userul sau parola sunt greșite",
       "username_exists": "Există deja un utilizator cu această adresă de email",
-      "signup": "Eroare la înregistrare. Verificati datele de inregistrare si incercati din nou.",
+      "signup": "Eroare la înregistrare. Verificați datele de înregistrare și încercați din nou.",
       "resend_code": "Eroare la trimiterea codului de confirmare",
       "init_profile": "Eroare la încărcarea profilului",
       "login": "Eroare la autentificare, vă rugăm încercați din nou",
-      "invalid_password": "Parola nu este conforma cu polita AWS",
+      "invalid_password": "Parola nu este conformă cu polița AWS",
       "password": "Eroare la schimbarea parolei",
       "code_missmatch": "Codul este invalid",
       "forgot_password": "Eroare la resetarea parolei"
@@ -151,7 +151,7 @@
   "login": {
     "title": "Autentificare",
     "paragraph": "Introduceți e-mailul și parola pentru a intra în cont.",
-    "submit": "Intra in cont",
+    "submit": "Intra în cont",
     "forgot_password": "Ai uitat parola? ",
     "form": {
       "email": {
@@ -162,7 +162,7 @@
       },
       "password": {
         "label": "Parola",
-        "placeholder": "Introduceti parola",
+        "placeholder": "Introduceți parola",
         "required": "Parola este obligatorie"
       }
     }
@@ -188,24 +188,24 @@
         "label": "Introdu codul primit prin email",
         "placeholder": "Introdu codul primit prin email",
         "required": "Codul este obligatoriu",
-        "length": "Codul trebuie sa aiba o lungime de 6 caractere",
-        "pattern": "Codul trebuie sa contina doar cifre"
+        "length": "Codul trebuie să aibă o lungime de 6 caractere",
+        "pattern": "Codul trebuie să conțină doar cifre"
       },
       "password": {
         "label": "Parola",
-        "placeholder": "Introduceti parola",
+        "placeholder": "Introduceți parola",
         "required": "Parola este obligatorie",
-        "pattern": "Parola trebuie sa contina minim 8 caractere, litere mari, litere mici, numere si caractere speciale, fara spatii"
+        "pattern": "Parola trebuie să conțină minim 8 caractere, litere mari, litere mici, numere și caractere speciale, fără spații"
       },
       "confirm_password": {
         "label": "Confirma parola",
-        "placeholder": "Confirmati parola",
+        "placeholder": "Confirmați parola",
         "required": "Parola este obligatorie",
-        "match": "Parolele trebuie sa fie identice"
+        "match": "Parolele trebuie să fie identice"
       }
     },
     "submit": {
-      "label": "Salveaza modificarile"
+      "label": "Salvează modificările"
     }
   },
   "settings": {
@@ -220,7 +220,7 @@
   "account_data": {
     "title": "Date cont",
     "profile_picture": "Poza profil",
-    "change_profile_picture": "Schimba poza",
+    "change_profile_picture": "Schimbă poza",
     "submit": {
       "success": "Datele au fost modificate!"
     },
@@ -235,25 +235,25 @@
     "form": {
       "series": {
         "label": "Serie document identitate (CI)",
-        "matches": "Seria trebuie sa contina doar litere",
+        "matches": "Seria trebuie să conțină doar litere",
         "placeholder": "Introdu seria (GZ, RX...)",
-        "length": "Seria trebuie sa aiba {{number}} caractere",
+        "length": "Seria trebuie să aibă {{number}} caractere",
         "required": "Seria este obligatorie"
       },
       "number": {
         "label": "Număr document identitate (CI)",
         "placeholder": "Introdu numărul din 6 cifre",
-        "matches": "Numărul trebuie sa contina doar cifre",
-        "length": "Numărul trebuie sa aiba {{number}} caractere",
+        "matches": "Numărul trebuie să conțină doar cifre",
+        "length": "Numărul trebuie să aibă {{number}} caractere",
         "required": "Numărul este obligatoriu"
       },
       "address": {
-        "label": "Domiciliat in",
+        "label": "Domiciliat în",
         "placeholder": "Introdu adresa",
         "required": "Domiciliul este obligatoriu",
         "helper": "Introdu adresa completa din buletin.",
-        "min": "Domiciliul poate sa aiba minim {{value}} caractere",
-        "max": "Domiciliul poate sa aiba maxim {{value}} caractere"
+        "min": "Domiciliul poate să aibă minim {{value}} caractere",
+        "max": "Domiciliul poate să aibă maxim {{value}} caractere"
       },
       "issue_date": {
         "label": "Data emitere",
@@ -261,7 +261,7 @@
       },
       "expiration_date": {
         "label": "Data expirare",
-        "required": "Data expirarii este obligatorie"
+        "required": "Data expirării este obligatorie"
       },
       "submit": {
         "success": "Datele au fost modificate!"
@@ -269,18 +269,18 @@
     }
   },
   "change_password": {
-    "title": "Schimba parola",
+    "title": "Schimbă parola",
     "submit": {
       "success": "Parola a fost schimbata!"
     }
   },
   "organizations": {
-    "title": "Cauta",
+    "title": "Caută",
     "search": {
-      "placeholder": "Denumirea organizatiei"
+      "placeholder": "Denumirea organizației"
     },
     "errors": {
-      "generic": "Eroare la incarcarea datelor"
+      "generic": "Eroare la încărcarea datelor"
     }
   },
   "organization_profile": {
@@ -289,31 +289,31 @@
     "email": "Email de contact",
     "phone": "Telefon",
     "address": "Adresa sediu",
-    "area": "Arie de desfasurare a activitatii",
+    "area": "Arie de desfășurare a activității",
     "events": "Evenimente deschise",
     "volunteers": "{{number}} voluntari",
     "join": "Alătură-te organizației",
     "leave": "Părăsește organizația",
-    "rejoin": "Reintra in organizatie",
-    "cancel_request": "Anuleaza cererea",
-    "no_events": "Nu sunt evenimente de afisat",
+    "rejoin": "Reintra în organizație",
+    "cancel_request": "Anulează cererea",
+    "no_events": "Nu sunt evenimente de afișat",
     "code": "Ai cod de acces?",
     "disclaimer": {
-      "access_request_pending": "Inscrierea ta asteapta aprobare de la organizatie",
-      "joined_from": "Te-ai alaturat din {{date}}",
+      "access_request_pending": "Înscrierea ta așteaptă aprobare de la organizație",
+      "joined_from": "Te-ai alăturat din {{date}}",
       "volunteer_archived": "Profilul tau de voluntar a fost dezactivat!",
-      "volunteer_blocked": "Accesul tau la organizatie a fost restrictionat"
+      "volunteer_blocked": "Accesul tau la organizație a fost restricționat"
     },
     "modal": {
       "identity_data_missing": {
         "heading": "Ups!",
         "paragraph": "Nu ai completat datele de identitate din Contul meu. Completează pentru a putea să te alături unei organizații.",
-        "action_label": "Completeaza datele"
+        "action_label": "Completează datele"
       },
       "confirm_cancel_request": {
-        "heading": "Anulezi cererea de inscriere?",
+        "heading": "Anulezi cererea de înscriere?",
         "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Ești sigur că vrei să retragi cererea?",
-        "action_label": "Anuleaza cererea"
+        "action_label": "Anulează cererea"
       }
     }
   },
@@ -328,30 +328,30 @@
         "teo": "Din aplicația TEO",
         "friend": "De la un coleg sau prieten",
         "event": "Dintr-un eveniment",
-        "other": "Altă opţiune"
+        "other": "Altă opțiune"
       },
       "motivation": {
         "required": "Acest câmp este obligatoriu",
         "label": "Ce te motivează să fii voluntar?",
-        "min": "Motivatia poate sa aiba minim {{value}} caractere",
-        "max": "Motivatia poate sa aiba maxim {{value}} caractere",
+        "min": "Motivația poate să aibă minim {{value}} caractere",
+        "max": "Motivația poate să aibă maxim {{value}} caractere",
         "helper": "Completează câmpul pentru a te înscrie."
       }
     },
     "errors": {
       "ACCESS_CODE_001": "Codul de access este invalid",
-      "ACCESS_REQUEST_001": "Exista deja un request de access pentru aceasta organizatie",
-      "ORG_001": "Organizatia nu a fost gasita",
-      "USER_001": "Utilizatotul nu a fost gasit",
-      "VOLUNTEER_002": "Utilizatorul este deja parte a organizatiei",
+      "ACCESS_REQUEST_001": "Exista deja un request de access pentru aceasta organizație",
+      "ORG_001": "Organizația nu a fost găsită",
+      "USER_001": "Utilizatorul nu a fost găsit",
+      "VOLUNTEER_002": "Utilizatorul este deja parte a organizației",
       "USER_005": "Utilizatorul nu are datele de identificare completate"
     },
     "modal": {
       "success": {
-        "heading": "Felicitari!",
+        "heading": "Felicitări!",
         "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Vei primi o notificare îndată ce aceștia vor răspunde.",
-        "primary_action_label": "Cauta alte organizatii",
-        "secondary_action_label": "Inchide"
+        "primary_action_label": "Caută alte organizații",
+        "secondary_action_label": "Închide"
       }
     }
   },
@@ -360,18 +360,18 @@
     "paragraph": "Cererea ta de acces din data {{date}} a fost respinsă.",
     "reason": "Motivul respingerii",
     "errors": {
-      "ACCESS_REQUEST_002": "Request-ul nu a fost gasit"
+      "ACCESS_REQUEST_002": "Request-ul nu a fost găsit"
     }
   },
   "leave_ngo": {
-    "header": "Paraseste organizatia",
-    "paragraph": "Daca parasesti organizatia, aceasta iti va sterge datele. Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur /br qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ",
-    "action_btn": "Paraseste organizatia",
+    "header": "Părăsește organizația",
+    "paragraph": "Daca părăsești organizația, aceasta îți va șterge datele. Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur /br qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud în ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ",
+    "action_btn": "Părăsește organizația",
     "modal": {
       "confirm_leave_organization": {
-        "heading": "Esti sigur ca doresti sa parasesti organizatia?",
-        "paragraph": "Daca parasesti organizatia, aceasta iti va sterge datele, inclusiv orele inregistrate și documentele de voluntar. Pentru mai multe detalii, poți contacta organizația.",
-        "action_label": "Parasestie organizatia"
+        "heading": "Ești sigur ca dorești să părăsești organizația?",
+        "paragraph": "Daca părăsești organizația, aceasta îți va șterge datele, inclusiv orele înregistrate și documentele de voluntar. Pentru mai multe detalii, poți contacta organizația.",
+        "action_label": "Părăsește organizația"
       }
     }
   },
@@ -390,42 +390,42 @@
       },
       "phone": {
         "label": "Telefon",
-        "info": "Nu poti modifica acest câmp."
+        "info": "Nu poți modifica acest câmp."
       },
       "active_since": {
         "label": "Voluntar din",
         "required": "Data este obligatorie"
       }
     },
-    "details": "Lorem ipsum. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident.",
+    "details": "Lorem ipsum. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud în ea officia proident.",
     "menu_items": {
-      "organization_profile": { "title": "Profil organizatie" },
+      "organization_profile": { "title": "Profil organizație" },
       "activity_log": {
         "title": "Ore de voluntariat",
-        "subtitle": "{{number}} ore asteapta aprobare"
+        "subtitle": "{{number}} ore așteaptă aprobare"
       },
       "documents": {
         "title": "Documente",
-        "subtitle": "{{number}} documente asteapta raspuns"
+        "subtitle": "{{number}} documente așteaptă răspuns"
       },
       "volunteer_profile": { "title": "Profil voluntar", "subtitle": "Profil incomplet" }
     },
     "age": "{{years}} de ani",
     "county": ", jud {{name}}",
-    "information": "Informatii voluntar",
+    "information": "Informații voluntar",
     "email": "Email de contact",
     "active_since": "Voluntar din",
     "created_on": "Înregistrat în TEO din",
     "errors": {
-      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creaza unul inainte!",
-      "VOLUNTEER_003": "Doar voluntarii activi pot fi arhivati",
-      "VOLUNTEER_004": "Doar voluntarii arhivati poti fi activati",
-      "VOLUNTEER_005": "Utilizatorul nu are profil de organizatie pentru acest ONG"
+      "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creează unul înainte!",
+      "VOLUNTEER_003": "Doar voluntarii activi pot fi arhivați",
+      "VOLUNTEER_004": "Doar voluntarii arhivați pot fi activați",
+      "VOLUNTEER_005": "Utilizatorul nu are profil de organizație pentru acest ONG"
     },
     "missing_profile": {
       "heading": "Nu ai creat încă un profil de utilizator",
       "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique. ",
-      "action_btn": "Creaza profil"
+      "action_btn": "Creează profil"
     }
   },
   "create_volunteer": {
@@ -442,16 +442,16 @@
         "label": "Același ca email cont TEO"
       },
       "branch": {
-        "label": "FIlială sau sucursală"
+        "label": "Filială sau sucursală"
       },
       "active_since": {
         "label": "Voluntar din"
       },
       "submit": {
         "errors": {
-          "VOLUNTEER_001": "Voluntarul nu a fost gasit!",
+          "VOLUNTEER_001": "Voluntarul nu a fost găsit!",
           "VOLUNTEER_PROFILE_001": "Voluntarul are deja un profil!",
-          "ORGANIZATION_STRUCTURE_001": "Structura organizationala nu exista"
+          "ORGANIZATION_STRUCTURE_001": "Structura organizaționala nu există"
         }
       }
     }
@@ -459,7 +459,7 @@
   "events": {
     "header": "Evenimente",
     "search": {
-      "placeholder": "Cauta"
+      "placeholder": "Caută"
     },
     "tabs": {
       "going": "Particip",
@@ -469,7 +469,7 @@
   },
   "event": {
     "join": {
-      "header": "Doresc sa particip",
+      "header": "Doresc să particip",
       "form": {
         "mention": {
           "label": "Mențiune",
@@ -484,24 +484,24 @@
     "date": "Data și ora",
     "name": "Denumire eveniment",
     "target": "Target",
-    "location": "Locatie",
+    "location": "Locație",
     "description": "Descriere eveniment",
-    "tasks": "Taskuri asociate",
+    "tasks": "Task-uri asociate",
     "attending": "{{numberOfVolunteer}} persoane participă!",
     "attending_of": "{{numberOfVolunteer}} de persoane participă!",
     "attending_one": "O persoană participă!",
     "type": {
       "public": "Eveniment public",
-      "all_organization": "Toata organizatia"
+      "all_organization": "Toată organizația"
     },
     "errors": {
-      "EVENT_RSVP_001": "Evenimentul nu a fost gasit!",
+      "EVENT_RSVP_001": "Evenimentul nu a fost găsit!",
       "EVENT_RSVP_006": "Evenimentul nu este inca publicat",
-      "EVENT_RSVP_007": "Evenimentul este incheiat",
+      "EVENT_RSVP_007": "Evenimentul este încheiat",
       "EVENT_RSVP_003": "Profilul de voluntar nu este activ",
-      "EVENT_RSVP_005": "Va rugam sa completati profilul de voluntar inainte da a te alatura evenimentului",
-      "EVENT_RSVP_002": "Trebuie sa fii voluntar in organizatie sa poti participa la acest eveniment",
-      "EVENT_RSVP_004": "Pentru acest evenimnent este obligatorie mentiunea"
+      "EVENT_RSVP_005": "Va rugam să completați profilul de voluntar înainte da a te alătura evenimentului",
+      "EVENT_RSVP_002": "Trebuie să fii voluntar în organizație să poți participa la acest eveniment",
+      "EVENT_RSVP_004": "Pentru acest eveniment este obligatorie mențiunea"
     },
     "rsvp": {
       "going": "Particip",
@@ -512,23 +512,23 @@
   "activity_logs": {
     "title": "Ore de voluntariat",
     "tabs": {
-      "pending": "In asteptare",
+      "pending": "În așteptare",
       "approved": "Aprobate",
       "rejected": "Refuzate"
     },
     "search": {
-      "placeholder": "Cauta"
+      "placeholder": "Caută"
     }
   },
   "activity_log": {
     "title": "Log",
-    "add_title": "Adauga ore de voluntariat",
+    "add_title": "Adaugă ore de voluntariat",
     "rejection_reason": "Motiv respingere",
-    "other": "Alta optiune",
+    "other": "Altă opțiune",
     "total": "Total",
     "disclaimer": {
       "approved": "Aprobată la {{date}}",
-      "pending": "Necesita aprobare din partea organizatiei",
+      "pending": "Necesita aprobare din partea organizației",
       "rejected": "Respins la {{date}}"
     },
     "form": {
@@ -537,7 +537,7 @@
       },
       "task": {
         "label": "Task",
-        "required": "Alegerea taskului este obligatorie"
+        "required": "Alegerea task-ului este obligatorie"
       },
       "date": {
         "label": "Data",
@@ -550,7 +550,7 @@
         "required": "Numărul de ore este obligatoriu",
         "min": "Numărul de ore trebuie să fie mai mare ca {{value}}",
         "max": "Numărul de ore trebuie să fie mai mic ca {{value}}",
-        "integer": "Numărul de ore trebuie să fie intreg"
+        "integer": "Numărul de ore trebuie să fie întreg"
       },
       "mentions": {
         "label": "Mențiuni",
@@ -560,12 +560,12 @@
       }
     },
     "errors": {
-      "ACTIVITY_LOG_001": "Nu exista inregistrarea de logare ore",
+      "ACTIVITY_LOG_001": "Nu există înregistrarea de logare ore",
       "ACTIVITY_LOG_002": "Voluntarul nu are profilul completat",
       "ACTIVITY_LOG_004": "Nu se pot anula request-uri aprobate sau respinse",
-      "VOLUNTEER_001": "Voluntarul nu exista",
-      "EVENT_001": "Evenimentul nu exista",
-      "ACTIVITY_TYPE_001": "Typul activitatii nu exista"
+      "VOLUNTEER_001": "Voluntarul nu există",
+      "EVENT_001": "Evenimentul nu există",
+      "ACTIVITY_TYPE_001": "Tipul activității nu există"
     }
   },
   "tabs": {
@@ -577,59 +577,59 @@
   },
   "home": {
     "greeting": "Salut, {{name}}!",
-    "paragraph": "Bun venit in contul tău TEO! Locul unde poți să ții evidența orelor de activitate și a documentelor tale de voluntar, lorem ipsum.",
-    "add_hours": "Adauga ore de voluntariat!",
-    "join_ngo": "Alaturate unei organizatii!",
+    "paragraph": "Bun venit în contul tău TEO! Locul unde poți să ții evidența orelor de activitate și a documentelor tale de voluntar, lorem ipsum.",
+    "add_hours": "Adaugă ore de voluntariat!",
+    "join_ngo": "Alătură-te unei organizații!",
     "statistics": {
       "events": {
         "title": "{{number}} evenimente",
         "description": "luna asta"
       },
       "hours": {
-        "title": "{{number}} actualizari",
-        "description": "in ore voluntariat"
+        "title": "{{number}} actualizări",
+        "description": "în ore voluntariat"
       },
       "documents": {
-        "title": "{{number}} actualizari",
-        "description": "in documente"
+        "title": "{{number}} actualizări",
+        "description": "în documente"
       },
       "organizations": {
-        "title": "{{number}} actualizari",
-        "description": "in organizatii"
+        "title": "{{number}} actualizări",
+        "description": "în organizații"
       }
     },
     "anouncements": {
       "section": {
         "header": "Ultimele noutăți",
         "see_all": "Vezi toate",
-        "empty_list": "Nu aveti anunturi noi!"
+        "empty_list": "Nu aveți anunțuri noi!"
       }
     }
   },
   "access_code": {
     "title": "Cod de acces",
-    "description": "Dacă ai un cod de acces de la organizatie, introdu-l mai jos pentru a te alatura automat.",
+    "description": "Dacă ai un cod de acces de la organizație, introdu-l mai jos pentru a te alătura automat.",
     "form": {
       "code": {
         "placeholder": "Introdu cod",
         "required": "Codul de acces este obligatoriu",
         "invalid": "Codul introdus nu este valid.",
-        "min": "Codul poate sa aiba minim {{value}} caractere",
-        "max": "Codul poate sa aiba maxim {{value}} caractere"
+        "min": "Codul poate să aibă minim {{value}} caractere",
+        "max": "Codul poate să aibă maxim {{value}} caractere"
       }
     },
     "modal": {
       "success": {
-        "heading": "Felicitari!",
+        "heading": "Felicitări!",
         "paragraph": "Codul introdus este corect, și te-ai alăturat cu succes organizației. Pentru a continua, trebuie să completezi profilul tău de voluntar.",
         "primary_action_label": "Completează profilul de voluntar",
-        "secondary_action_label": "Inchide"
+        "secondary_action_label": "Închide"
       }
     }
   },
   "documents": {
     "contract_prefix": "Contract",
-    "description": "Lorem ipsum. Gestioneaza contractele tale din sectiunile de mai jos. Descarca contracte vechi, sau semneaza contractele trimise de organizatie.",
+    "description": "Lorem ipsum. Gestionează contractele tale din secțiunile de mai jos. Descarcă contracte vechi, sau semnează contractele trimise de organizație.",
     "sections": {
       "pending": "Propunere contract",
       "closed": "Istoric contracte semnate"
@@ -637,7 +637,7 @@
     "contract_status": {
       "active": "activ",
       "closed": "încheiat",
-      "not_started": "neinceput"
+      "not_started": "neînceput"
     },
     "contract": {
       "title": "Contract {{contractNumber}}",
@@ -646,7 +646,7 @@
         "PENDING_ADMIN": "Ai trimis un document spre semnare. Contractul a fost generat și necesită aprobarea organizației."
       },
       "disclaimer": {
-        "PENDING_VOLUNTEER": "Contractul necesita semnatura ta",
+        "PENDING_VOLUNTEER": "Contractul necesita semnătura ta",
         "PENDING_ADMIN": "Contractul necesita semnătura organizației"
       },
       "actions": {
@@ -662,14 +662,14 @@
         "success": "Contractul a fost trimis!"
       },
       "cancel": {
-        "success": "Contractul a fost intors la starea initiala!"
+        "success": "Contractul a fost întors la starea inițială!"
       },
       "errors": {
-        "CONTRACT_002": "Contractul nu a fost gasit",
-        "CONTRACT_001": "Nu s-a putut incarca contractul",
-        "CONTRACT_003": "Nu s-a putut sterge documentul",
+        "CONTRACT_002": "Contractul nu a fost găsit",
+        "CONTRACT_001": "Nu s-a putut încărca contractul",
+        "CONTRACT_003": "Nu s-a putut șterge documentul",
         "CONTRACT_007": "Nu se poate anula un contract aprobat de admin",
-        "TEMPLATE_002": "Template-ul contractului nu a fost gasit!"
+        "TEMPLATE_002": "Template-ul contractului nu a fost găsit!"
       }
     },
     "contract_rejected": {
@@ -679,54 +679,54 @@
     }
   },
   "notifications": {
-    "header": "Setari notificari",
+    "header": "Setări notificări",
     "from": {
-      "title": "Primeste notificati de la",
+      "title": "Primește notificări de la",
       "options": {
-        "all_organizations": "Toate organizatiile",
-        "my_organizations": "Organizatiile mele"
+        "all_organizations": "Toate organizațiile",
+        "my_organizations": "Organizațiile mele"
       }
     },
     "by": {
-      "title": "Primeste notificati prin",
+      "title": "Primește notificări prin",
       "options": {
         "email": "Email",
         "push": "Push Notifications"
       }
     },
-    "disabled": "Notifcarile sunt dezactivate",
+    "disabled": "Notificările sunt dezactivate",
     "errors": {
-      "NOTIFICATIONS_002": "Eroare la modificarea setarilor!"
+      "NOTIFICATIONS_002": "Eroare la modificarea setărilor!"
     }
   },
   "user": {
     "errors": {
-      "USER_001": "Utilizatorul nu a fost gasit",
-      "USER_004": "Numarul de identificare exista deja",
+      "USER_001": "Utilizatorul nu a fost găsit",
+      "USER_004": "Numărul de identificare există deja",
       "USER_003": "Emailul sau telefonul sunt deja utilizate",
       "USER_006": "Eroare la salvarea fotografiei de profil!"
     }
   },
   "news": {
     "header": {
-      "logs": "Actualizari in Ore de voluntariat",
-      "documents": "Actualizati in Documente",
-      "organizations": "Actualizati in Organizatii"
+      "logs": "Actualizări în Ore de voluntariat",
+      "documents": "Actualizați în Documente",
+      "organizations": "Actualizați în Organizații"
     },
     "item": {
       "logs": {
-        "approved": "Orele de voluntariat inregistrate au fost aprobate",
-        "rejected": "Orele de voluntariat inregistrate au fost respinse"
+        "approved": "Orele de voluntariat înregistrate au fost aprobate",
+        "rejected": "Orele de voluntariat înregistrate au fost respinse"
       },
       "documents": {
-        "new": "ți-a generat contractul de voluntariat. Descarcă si semnează..",
+        "new": "ți-a generat contractul de voluntariat. Descarcă și semnează..",
         "approved_start": "Contractul tău cu",
-        "approved_end": "a fost aprobat si semnat.",
+        "approved_end": "a fost aprobat și semnat.",
         "rejected_start": "Contractul tău cu",
         "rejected_end": "a fost respins. Vezi motiv."
       },
       "organization": {
-        "request": "Cererea de inscriere in organizatia",
+        "request": "Cererea de înscriere în organizația",
         "approved": "a fost aprobata",
         "rejected": "a fost respinsa"
       }
