@@ -28,7 +28,7 @@
     "choose": "Alege {{item}}",
     "image": "Imagine",
     "reason": "Motiv",
-    "task": "Task",
+    "task": "Activitate",
     "unspecified": "Nespecificat",
     "activity": "Activitate",
     "address": "Adresa",
@@ -103,7 +103,7 @@
       "access_codes": "Coduri de acces",
       "documents": "Documente",
       "announcements": "Anunțuri",
-      "activity_types": "Listă task-uri",
+      "activity_types": "Categorii activități",
       "activity_log": "Ore de voluntariat",
       "actions_archive": "Arhivă acțiuni"
     },
@@ -488,12 +488,12 @@
         "max": "Mențiunea poate să aibă maxim {{value}} caractere"
       },
       "task": {
-        "title": "Task-uri asociate evenimentului",
-        "description": "Alege task-urile specifice din lista organizației.",
-        "label": "Alege task-uri",
-        "tasks": "Task-uri",
-        "required": "Alegerea task-urilor este obligatorie.",
-        "helper": "Lorem ipsum. Alege din lista"
+        "title": "Activitățile asociate evenimentului",
+        "description": "Alege activitățile specifice din lista organizației.",
+        "label": "Alege activități",
+        "tasks": "Activități",
+        "required": "Alegerea activităților este obligatorie.",
+        "helper": "Alege din lista care se deschide dacă dai click în câmpul de mai sus"
       },
       "observation": {
         "title": "Observație (vizibil doar pentru administrator)",
@@ -576,10 +576,10 @@
     "pending_header": "{{hours}} ore în curs de aprobare",
     "past": "Istoric ore de voluntariat",
     "past_header": "{{hours}} ore de voluntariat aprobate, {{rejected}} respinse",
-    "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+    "description": "Aici poti vedea orele de voluntariat care au fost înregistrate pentru voluntarii organizației",
     "add": "Adaugă ore",
     "header": {
-      "task": "Task",
+      "task": "Activitate",
       "execution_date": "Data efectuării",
       "registration_date": "Data înregistrării"
     },
@@ -593,7 +593,7 @@
       "view": "Fișă de activitate"
     },
     "filters": {
-      "execution": "Perioada efectuare task",
+      "execution": "Perioada efectuare activitate",
       "registration": "Perioada Înregistrare",
       "approved_rejected": "Aprobat/Respins de"
     },
@@ -623,7 +623,7 @@
         "required": "Alegerea voluntarului este obligatorie"
       },
       "task": {
-        "required": "Alegerea task-ului este obligatorie"
+        "required": "Alegerea activității este obligatorie"
       },
       "date": {
         "required": "Data este obligatorie"
@@ -779,7 +779,7 @@
   },
   "documents": {
     "title": "Contracte de voluntariat",
-    "description": "Lorem ipsum. Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+    "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
     "templates": {
       "table": {
         "header": {
