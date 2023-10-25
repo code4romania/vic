@@ -896,7 +896,7 @@
           "success": "Contractul a fost generat",
           "errors": {
             "CONTRACT_004": "Există deja un contract cu acest număr pentru organizația dumneavoastră!",
-            "CONTRACT_005": "Voluntarul are deja un contract în perioada respectiva"
+            "CONTRACT_005": "Voluntarul are deja un contract în perioada respectivă"
           }
         }
       },
