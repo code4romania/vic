@@ -142,9 +142,9 @@
       "resend_code": "Error sending confirmation code",
       "init_profile": "Error loading profile",
       "login": "Login error, please try again",
-      "invalid_password": "Password is not compliant with AWS policy",
+      "invalid_password": "Password is not compliant with security policy",
       "password": "Password change error",
-      "code_missmatch": "Code is invalid",
+      "code_mismatch": "Code is invalid",
       "forgot_password": "Password reset error"
     }
   },
