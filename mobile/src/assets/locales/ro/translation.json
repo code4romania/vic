@@ -1,6 +1,6 @@
 {
   "general": {
-    "current_month": "Luna asta",
+    "current_month": "Luna aceasta",
     "about_teo": "Despre TEO",
     "event": "Eveniment",
     "news": "Ultimele noutăți",
@@ -13,7 +13,7 @@
     "add": "Adaugă {{item}}",
     "role": "Rol",
     "department": "Departament",
-    "branch": "Filiala",
+    "branch": "Filială",
     "phone": "Telefon",
     "join": "Alătură-te",
     "select": "Selectează",
@@ -31,7 +31,7 @@
     "error": {
       "load_entries": "Eroare la încărcarea datelor",
       "unknown": "A apărut o eroare necunoscută",
-      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
+      "generic_error": "Eroare de procesare a datelor, cod: #{{code}}"
     },
     "back": "Înapoi"
   },
@@ -72,7 +72,7 @@
           "pattern": "Parola trebuie să conțină minim 8 caractere, litere mari, litere mici, numere și caractere speciale, fără spații"
         },
         "confirm_password": {
-          "label": "Confirma parola",
+          "label": "Confirmă parola",
           "placeholder": "Confirmați parola",
           "required": "Parola este obligatorie",
           "match": "Parolele trebuie să fie identice"
@@ -83,7 +83,7 @@
           "and": "cât și cu ",
           "privacy_policy": "Politica de Confidențialitate ",
           "application": "a aplicației",
-          "required": "Trebuie să accepți Termenii,Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
+          "required": "Trebuie să accepți Termenii, Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
         }
       },
       "secondary_action": {
@@ -92,7 +92,7 @@
       }
     },
     "validate_account": {
-      "heading": "Verificare code primit prin email",
+      "heading": "Verificare cod primit prin email",
       "paragraph": "Completați câmpurile de mai jos pentru înregistrare.",
       "form": {
         "code": {
@@ -136,15 +136,15 @@
   },
   "auth": {
     "errors": {
-      "unauthorized": "Userul sau parola sunt greșite",
+      "unauthorized": "Numele de utilizator sau parola sunt greșite",
       "username_exists": "Există deja un utilizator cu această adresă de email",
       "signup": "Eroare la înregistrare. Verificați datele de înregistrare și încercați din nou.",
       "resend_code": "Eroare la trimiterea codului de confirmare",
       "init_profile": "Eroare la încărcarea profilului",
       "login": "Eroare la autentificare, vă rugăm încercați din nou",
-      "invalid_password": "Parola nu este conformă cu polița AWS",
+      "invalid_password": "Parola nu este conformă cu politica de securitate",
       "password": "Eroare la schimbarea parolei",
-      "code_missmatch": "Codul este invalid",
+      "code_mismatch": "Codul este invalid",
       "forgot_password": "Eroare la resetarea parolei"
     }
   },
@@ -340,7 +340,7 @@
     },
     "errors": {
       "ACCESS_CODE_001": "Codul de access este invalid",
-      "ACCESS_REQUEST_001": "Exista deja un request de access pentru aceasta organizație",
+      "ACCESS_REQUEST_001": "Există deja un request de access pentru aceasta organizație",
       "ORG_001": "Organizația nu a fost găsită",
       "USER_001": "Utilizatorul nu a fost găsit",
       "VOLUNTEER_002": "Utilizatorul este deja parte a organizației",
@@ -365,7 +365,7 @@
   },
   "leave_ngo": {
     "header": "Părăsește organizația",
-    "paragraph": "Daca părăsești organizația, aceasta îți va șterge datele. Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur /br qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud în ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu. ",
+    "paragraph": "Daca părăsești organizația, aceasta îți va șterge datele.",
     "action_btn": "Părăsește organizația",
     "modal": {
       "confirm_leave_organization": {
@@ -378,7 +378,7 @@
   "volunteer": {
     "title": "Profil voluntar",
     "no_org_added": "Nu ai adăugat încă nicio organizație",
-    "no_org_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500",
+    "no_org_description": "",
     "my_organizations": "Organizațiile mele",
     "join_organization": "Alătură-te unei organizații",
     "edit": "Editează profil voluntar",
@@ -397,7 +397,7 @@
         "required": "Data este obligatorie"
       }
     },
-    "details": "Lorem ipsum. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud în ea officia proident.",
+    "details": "",
     "menu_items": {
       "organization_profile": { "title": "Profil organizație" },
       "activity_log": {
@@ -424,7 +424,7 @@
     },
     "missing_profile": {
       "heading": "Nu ai creat încă un profil de utilizator",
-      "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique. ",
+      "paragraph": "",
       "action_btn": "Creează profil"
     }
   },
@@ -528,7 +528,7 @@
     "total": "Total",
     "disclaimer": {
       "approved": "Aprobată la {{date}}",
-      "pending": "Necesita aprobare din partea organizației",
+      "pending": "Necesită aprobare din partea organizației",
       "rejected": "Respins la {{date}}"
     },
     "form": {
@@ -577,7 +577,7 @@
   },
   "home": {
     "greeting": "Salut, {{name}}!",
-    "paragraph": "Bun venit în contul tău TEO! Locul unde poți să ții evidența orelor de activitate și a documentelor tale de voluntar, lorem ipsum.",
+    "paragraph": "Bun venit în contul tău TEO! Locul unde poți să ții evidența orelor de activitate și a documentelor tale de voluntar.",
     "add_hours": "Adaugă ore de voluntariat!",
     "join_ngo": "Alătură-te unei organizații!",
     "statistics": {
@@ -629,7 +629,7 @@
   },
   "documents": {
     "contract_prefix": "Contract",
-    "description": "Lorem ipsum. Gestionează contractele tale din secțiunile de mai jos. Descarcă contracte vechi, sau semnează contractele trimise de organizație.",
+    "description": "Gestionează contractele tale din secțiunile de mai jos. Descarcă contracte vechi, sau semnează contractele trimise de organizație.",
     "sections": {
       "pending": "Propunere contract",
       "closed": "Istoric contracte semnate"
@@ -646,8 +646,8 @@
         "PENDING_ADMIN": "Ai trimis un document spre semnare. Contractul a fost generat și necesită aprobarea organizației."
       },
       "disclaimer": {
-        "PENDING_VOLUNTEER": "Contractul necesita semnătura ta",
-        "PENDING_ADMIN": "Contractul necesita semnătura organizației"
+        "PENDING_VOLUNTEER": "Contractul necesită semnătura ta",
+        "PENDING_ADMIN": "Contractul necesită semnătura organizației"
       },
       "actions": {
         "upload": "Încarcă contract semnat",
@@ -674,7 +674,7 @@
     },
     "contract_rejected": {
       "header": "Contract Respins",
-      "paragraph": "Contractul tau a fost respins",
+      "paragraph": "Contractul tău a fost respins",
       "label": "Motivul respingerii"
     }
   },
@@ -727,8 +727,8 @@
       },
       "organization": {
         "request": "Cererea de înscriere în organizația",
-        "approved": "a fost aprobata",
-        "rejected": "a fost respinsa"
+        "approved": "a fost aprobată",
+        "rejected": "a fost respinsă"
       }
     }
   }
