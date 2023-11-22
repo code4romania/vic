@@ -23,7 +23,7 @@ import NotificationContextProvider from './src/contexts/notification/Notificatio
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // Configure Amplify for Login
-Amplify.configure(AMPLIFY_CONFIG);
+Amplify.configure(AMPLIFY_CONFIG as any);
 
 const queryClient = new QueryClient({
   defaultOptions: {
