@@ -448,7 +448,10 @@
     "form": {
       "name": { "label": "Denumire eveniment" },
       "start_date": { "label": "Dată de început" },
-      "end_date": { "label": "Dată de final" },
+      "end_date": {
+        "label": "Dată de final",
+        "min": "Data de final trebuie sa fie mai mare decat data de inceput."
+      },
       "submit": {
         "published": "Evenimentul a fost publicat cu succes",
         "draft": "Evenimentul a fost salvat ca draft cu succes",
