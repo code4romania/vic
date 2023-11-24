@@ -136,6 +136,7 @@ const EditOrganization = () => {
                       <FormTextarea
                         label={i18n.t('organization:teo_description')}
                         defaultValue={value}
+                        value={value}
                         onChange={onChange}
                         errorMessage={errors.description?.message as string}
                       />
