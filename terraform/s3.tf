@@ -1,5 +1,6 @@
 module "s3_bucket_files" {
-  source = "terraform-aws-modules/s3-bucket/aws"
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.15.1"
 
   bucket = "${local.namespace}-files"
 
