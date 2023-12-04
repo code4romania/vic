@@ -119,8 +119,8 @@ resource "aws_cognito_user_pool_ui_customization" "ui" {
   user_pool_id = aws_cognito_user_pool.pool.id
 }
 
-resource "aws_cognito_user_pool_domain" "main" {
-  domain       = local.auth_domain
+resource "aws_cognito_user_pool_domain" "default" {
+  domain       = local.namespace
   user_pool_id = aws_cognito_user_pool.pool.id
 }
 
