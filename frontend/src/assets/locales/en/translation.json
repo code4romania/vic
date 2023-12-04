@@ -453,7 +453,8 @@
         "label": "Start date"
       },
       "end_date": {
-        "label": "End date"
+        "label": "End date",
+        "min": "The End date must be greater than the start date."
       },
       "submit": {
         "published": "The event was successfully published",
