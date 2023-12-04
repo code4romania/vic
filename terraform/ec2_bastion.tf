@@ -20,7 +20,7 @@ resource "aws_key_pair" "bastion" {
 }
 
 resource "aws_instance" "bastion" {
-  ami                         = data.aws_ami.amazon_linux_2.id
+  ami                         = data.aws_ami.bastion.id
   instance_type               = "t3a.nano"
   associate_public_ip_address = true
   source_dest_check           = false
@@ -29,7 +29,7 @@ resource "aws_instance" "bastion" {
   private_ip             = cidrhost(aws_subnet.public.0.cidr_block, 20)
   vpc_security_group_ids = [aws_security_group.bastion.id]
 
-  key_name = data.aws_key_pair.bastion.key_name
+  key_name = aws_key_pair.bastion.key_name
 
   ebs_optimized = true
 

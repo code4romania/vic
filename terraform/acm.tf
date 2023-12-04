@@ -1,5 +1,4 @@
 resource "aws_acm_certificate" "main" {
-  provider          = aws.acm
   validation_method = "DNS"
   domain_name       = local.frontend_domain
   subject_alternative_names = [
