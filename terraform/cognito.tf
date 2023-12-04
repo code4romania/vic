@@ -120,33 +120,38 @@ resource "aws_cognito_user_pool_ui_customization" "ui" {
 }
 
 resource "aws_cognito_user_pool_domain" "main" {
+  domain       = local.auth_domain
+  user_pool_id = aws_cognito_user_pool.pool.id
+}
+
+resource "aws_cognito_user_pool_domain" "custom" {
   domain          = local.auth_domain
   certificate_arn = aws_acm_certificate.main.arn
   user_pool_id    = aws_cognito_user_pool.pool.id
 }
 
 resource "aws_route53_record" "auth-cognito-A" {
-  name    = aws_cognito_user_pool_domain.main.domain
+  name    = aws_cognito_user_pool_domain.custom.domain
   type    = "A"
   zone_id = data.aws_route53_zone.main.zone_id
 
   alias {
     evaluate_target_health = false
 
-    name    = aws_cognito_user_pool_domain.main.cloudfront_distribution
-    zone_id = aws_cognito_user_pool_domain.main.cloudfront_distribution_zone_id
+    name    = aws_cognito_user_pool_domain.custom.cloudfront_distribution
+    zone_id = aws_cognito_user_pool_domain.custom.cloudfront_distribution_zone_id
   }
 }
 
 resource "aws_route53_record" "auth-cognito-AAAA" {
-  name    = aws_cognito_user_pool_domain.main.domain
+  name    = aws_cognito_user_pool_domain.custom.domain
   type    = "AAAA"
   zone_id = data.aws_route53_zone.main.zone_id
 
   alias {
     evaluate_target_health = false
 
-    name    = aws_cognito_user_pool_domain.main.cloudfront_distribution
-    zone_id = aws_cognito_user_pool_domain.main.cloudfront_distribution_zone_id
+    name    = aws_cognito_user_pool_domain.custom.cloudfront_distribution
+    zone_id = aws_cognito_user_pool_domain.custom.cloudfront_distribution_zone_id
   }
 }
