@@ -10,7 +10,14 @@ assignees: ''
 ### Description
 
 <!--
-A clear and concise description of what the bug is.
+A clear and concise description of what the bug is. Please mention the platform (eg. "On the mobile app, ...")
+-->
+
+### Test environment
+
+<!--
+On which platform did you find this bug, Web or Mobile?
+If Mobile, iOS or Android?
 -->
 
 
