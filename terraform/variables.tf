@@ -14,6 +14,10 @@ variable "region" {
   default     = "eu-west-1"
 }
 
+variable "route53_zone_id" {
+  type = string
+}
+
 variable "github_access_token" {
   type = string
 }
@@ -26,10 +30,15 @@ variable "onghub_cognito_oauth_domain" {
   type = string
 }
 
-variable "onghub_cognito_teo_client_id" {
+variable "onghub_cognito_vic_client_id" {
   type = string
 }
 
 variable "onghub_cognito_user_pool_id" {
   type = string
+}
+
+variable "bastion_public_key" {
+  description = "Public SSH key used to connect to the bastion"
+  type        = string
 }

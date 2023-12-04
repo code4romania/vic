@@ -26,7 +26,7 @@ resource "aws_apprunner_service" "backend" {
           COGNITO_USER_POOL_ID_MOBILE = aws_cognito_user_pool.pool.id
 
           COGNITO_REGION_WEB       = var.onghub_congito_region
-          COGNITO_CLIENT_ID_WEB    = var.onghub_cognito_teo_client_id
+          COGNITO_CLIENT_ID_WEB    = var.onghub_cognito_vic_client_id
           COGNITO_USER_POOL_ID_WEB = var.onghub_cognito_user_pool_id
 
           DATABASE_HOST     = aws_db_instance.db_instance.address
@@ -44,8 +44,8 @@ resource "aws_apprunner_service" "backend" {
 
           AWS_ACCESS_KEY_ID         = aws_iam_access_key.iam_user_key.id
           AWS_SECRET_ACCESS_KEY     = aws_iam_access_key.iam_user_key.secret
-          AWS_S3_BUCKET_NAME        = aws_s3_bucket.files.bucket
-          AWS_S3_BUCKET_NAME_PUBLIC = "${aws_s3_bucket.files.bucket_regional_domain_name}/public"
+          AWS_S3_BUCKET_NAME        = module.s3_bucket_files.s3_bucket_id
+          AWS_S3_BUCKET_NAME_PUBLIC = "${module.s3_bucket_files.s3_bucket_bucket_regional_domain_name}/public"
 
           REDIS_HOST = aws_elasticache_cluster.redis.cache_nodes.0.address
           REDIS_PORT = aws_elasticache_cluster.redis.port

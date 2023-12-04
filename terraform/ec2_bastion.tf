@@ -1,20 +1,27 @@
-data "aws_ami" "amazon_linux_2" {
-  owners      = ["amazon"]
+data "aws_ami" "bastion" {
   most_recent = true
+
+  owners = ["amazon"]
 
   filter {
     name   = "name"
     values = ["amzn2-ami-hvm*"]
   }
+
+  filter {
+    name   = "owner-alias"
+    values = ["amazon"]
+  }
 }
 
-data "aws_key_pair" "bastion" {
-  key_name = "${local.namespace}-bastion"
+resource "aws_key_pair" "bastion" {
+  key_name   = "${local.namespace}-bastion"
+  public_key = var.bastion_public_key
 }
 
 resource "aws_instance" "bastion" {
-  ami                         = data.aws_ami.amazon_linux_2.id
-  instance_type               = "t3.nano"
+  ami                         = data.aws_ami.bastion.id
+  instance_type               = "t3a.nano"
   associate_public_ip_address = true
   source_dest_check           = false
 
@@ -22,7 +29,7 @@ resource "aws_instance" "bastion" {
   private_ip             = cidrhost(aws_subnet.public.0.cidr_block, 20)
   vpc_security_group_ids = [aws_security_group.bastion.id]
 
-  key_name = data.aws_key_pair.bastion.key_name
+  key_name = aws_key_pair.bastion.key_name
 
   ebs_optimized = true
 
@@ -50,13 +57,6 @@ resource "aws_security_group" "bastion" {
     from_port   = "22"
     to_port     = "22"
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = "443"
-    to_port     = "443"
-    protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 

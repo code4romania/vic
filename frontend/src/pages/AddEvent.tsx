@@ -29,7 +29,15 @@ export const eventValidationSchema = yup.object({
     .date()
     .required(`${i18n.t('access_code:form.start_date.required')}`)
     .typeError(`${i18n.t('general:invalid_date')}`),
-  endDate: yup.date().typeError(`${i18n.t('general:invalid_date')}`),
+
+  endDate: yup.date().typeError(`${i18n.t('general:invalid_date')}`).when('startDate', (startDate, schema) => {
+    if (startDate) {
+      return schema.min(
+        yup.ref('startDate'), `${i18n.t('events:form.end_date.min')}`,
+      )
+    }
+  }),
+
   location: yup
     .string()
     .min(2, `${i18n.t('events:form.location.min', { value: '2' })}`)

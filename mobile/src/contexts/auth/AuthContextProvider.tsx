@@ -93,7 +93,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         throw { confirmAccount: true };
       } else {
         // show any other error
-        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorized')}` });
       }
     }
   };
@@ -155,7 +155,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error: any) {
       console.log('[Auth][Signup][Confirm]:', JSONStringifyError(error));
       if (error.code === COGNITO_ERRORS.CodeMismatchException) {
-        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.code_missmatch')}` });
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.code_mismatch')}` });
       } else {
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.signup')}` });
       }
@@ -192,7 +192,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error: any) {
       console.log('[Auth][ChangePassword]:', JSONStringifyError(error));
       if (error.code === COGNITO_ERRORS.NotAuthorizedException) {
-        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorizeed')}` });
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.unauthorized')}` });
       } else if (error.code === COGNITO_ERRORS.InvalidPasswordException) {
         Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.invalid_password')}` });
       } else {
@@ -246,7 +246,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error: any) {
       console.log('[Auth][ForgotPasswordSubmit]:', JSONStringifyError(error));
       if (error.code === COGNITO_ERRORS.CodeMismatchException) {
-        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.code_missmatch')}` });
+        Toast.show({ type: 'error', text1: `${i18n.t('auth:errors.code_mismatch')}` });
       } else {
         Toast.show({
           type: 'error',

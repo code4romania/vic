@@ -1,5 +1,9 @@
 data "aws_region" "current" {}
 
+data "aws_route53_zone" "main" {
+  zone_id = var.route53_zone_id
+}
+
 data "aws_caller_identity" "current" {}
 
 data "aws_ses_domain_identity" "main" {
@@ -100,8 +104,8 @@ data "aws_iam_policy_document" "bucket_acccess" {
     ]
 
     resources = [
-      aws_s3_bucket.files.arn,
-      "${aws_s3_bucket.files.arn}/*"
+      module.s3_bucket_files.s3_bucket_arn,
+      "${module.s3_bucket_files.s3_bucket_arn}/*"
     ]
   }
 }

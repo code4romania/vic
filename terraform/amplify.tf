@@ -1,6 +1,6 @@
 resource "aws_amplify_app" "amplify_app" {
   name       = "${local.namespace}-amplify-app"
-  repository = "https://github.com/code4romania/teo"
+  repository = "https://github.com/code4romania/vic"
 
   access_token = var.github_access_token
 
@@ -36,10 +36,10 @@ resource "aws_amplify_branch" "branch" {
     VITE_API_URL          = "https://${aws_apprunner_service.backend.service_url}"
     VITE_APP_FRONTEND_URL = "https://${local.frontend_domain}"
 
-    # ONGHub User Pool for TEO Client
+    # ONGHub User Pool for VIC Client
     VITE_AWS_REGION           = var.onghub_congito_region
     VITE_COGNITO_OAUTH_DOMAIN = var.onghub_cognito_oauth_domain
-    VITE_USER_POOL_CLIENT_ID  = var.onghub_cognito_teo_client_id
+    VITE_USER_POOL_CLIENT_ID  = var.onghub_cognito_vic_client_id
     VITE_USER_POOL_ID         = var.onghub_cognito_user_pool_id
   }
 }
