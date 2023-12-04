@@ -14,6 +14,10 @@ variable "region" {
   default     = "eu-west-1"
 }
 
+variable "route53_zone_id" {
+  type = string
+}
+
 variable "github_access_token" {
   type = string
 }

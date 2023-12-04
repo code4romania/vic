@@ -12,24 +12,8 @@ resource "aws_cognito_user_pool" "pool" {
 
   username_attributes = [
     "email",
+    "phone_number",
   ]
-
-  auto_verified_attributes = [
-    "email",
-  ]
-
-  schema {
-    attribute_data_type      = "String"
-    developer_only_attribute = false
-    mutable                  = true
-    name                     = "email"
-    required                 = true
-
-    string_attribute_constraints {
-      max_length = "2048"
-      min_length = "0"
-    }
-  }
 
   username_configuration {
     case_sensitive = false
@@ -129,15 +113,40 @@ resource "aws_cognito_user_pool_client" "onghub_client" {
   ]
 }
 
-
-resource "aws_cognito_user_pool_domain" "domain" {
-  domain       = local.namespace
-  user_pool_id = aws_cognito_user_pool.pool.id
-}
-
-
 resource "aws_cognito_user_pool_ui_customization" "ui" {
   css          = file("${path.module}/ui/custom.css")
   image_file   = filebase64("${path.module}/ui/logo.png")
   user_pool_id = aws_cognito_user_pool.pool.id
+}
+
+resource "aws_cognito_user_pool_domain" "main" {
+  domain          = local.auth_domain
+  certificate_arn = aws_acm_certificate.main.arn
+  user_pool_id    = aws_cognito_user_pool.pool.id
+}
+
+resource "aws_route53_record" "auth-cognito-A" {
+  name    = aws_cognito_user_pool_domain.main.domain
+  type    = "A"
+  zone_id = data.aws_route53_zone.main.zone_id
+
+  alias {
+    evaluate_target_health = false
+
+    name    = aws_cognito_user_pool_domain.main.cloudfront_distribution
+    zone_id = aws_cognito_user_pool_domain.main.cloudfront_distribution_zone_id
+  }
+}
+
+resource "aws_route53_record" "auth-cognito-AAAA" {
+  name    = aws_cognito_user_pool_domain.main.domain
+  type    = "AAAA"
+  zone_id = data.aws_route53_zone.main.zone_id
+
+  alias {
+    evaluate_target_health = false
+
+    name    = aws_cognito_user_pool_domain.main.cloudfront_distribution
+    zone_id = aws_cognito_user_pool_domain.main.cloudfront_distribution_zone_id
+  }
 }
