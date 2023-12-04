@@ -3,7 +3,7 @@ import { OrganizationStructureType } from 'src/modules/organization/enums/organi
 
 export class CreateOrganizationStructureDto {
   @IsString()
-  @MaxLength(20)
+  @MaxLength(50)
   @MinLength(2)
   name: string;
 
