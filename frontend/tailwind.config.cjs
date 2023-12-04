@@ -46,7 +46,9 @@ module.exports = {
           900: '#7F1D1D',
         },
         yellow: {
+          DEFAULT: '#FFD209',
           900: '#F57F17',
+          500: '#FFD209',
         },
       },
       transitionProperty: {

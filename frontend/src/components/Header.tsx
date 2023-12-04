@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import logo from '../assets/images/logo.svg';
+import logo from '../assets/images/app_logo.svg';
 import { Bars3Icon, ChevronDownIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -36,11 +36,7 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
             </div>
           )}
           <div className="flex items-center cursor-pointer" onClick={onNavigate.bind(null, '/')}>
-            <img
-              src={logo}
-              alt="Code 4 Romania - Teo"
-              className="h-full w-full sm:max-h-full max-h-10"
-            />
+            <img src={logo} alt="Code 4 Romania - VIC" className="max-h-8 w-full sm:max-h-11" />
           </div>
         </div>
         {isAuthenticated && (
