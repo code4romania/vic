@@ -37,3 +37,8 @@ variable "onghub_cognito_vic_client_id" {
 variable "onghub_cognito_user_pool_id" {
   type = string
 }
+
+variable "bastion_public_key" {
+  description = "Public SSH key used to connect to the bastion"
+  type        = string
+}
