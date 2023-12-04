@@ -50,6 +50,8 @@ resource "aws_apprunner_service" "backend" {
           REDIS_HOST = aws_elasticache_cluster.redis.cache_nodes.0.address
           REDIS_PORT = aws_elasticache_cluster.redis.port
 
+          EXPO_PUSH_NOTIFICATIONS_ACCESS_TOKEN = var.expo_push_notifications_access_token
+
           THROTTLE_LIMIT = "600"
           THROTTLE_TTL   = "60"
           CACHE_TTL      = "600"

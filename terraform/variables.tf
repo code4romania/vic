@@ -42,3 +42,8 @@ variable "bastion_public_key" {
   description = "Public SSH key used to connect to the bastion"
   type        = string
 }
+
+variable "expo_push_notifications_access_token" {
+  description = "Expo push notifications access token"
+  type        = string
+}
