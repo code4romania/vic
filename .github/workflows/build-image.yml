@@ -20,6 +20,7 @@ jobs:
       image_name: vic
       region: eu-west-1
       context: backend
+      dockerfile: backend/Dockerfile
       tags: |
         type=edge
         type=ref,event=branch
