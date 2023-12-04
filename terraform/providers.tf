@@ -10,7 +10,7 @@ terraform {
     organization = "code4romania"
 
     workspaces {
-      name = "teo"
+      name = "vic"
     }
   }
 }
@@ -20,7 +20,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      app = "teo"
+      app = "vic"
       env = var.env
     }
   }

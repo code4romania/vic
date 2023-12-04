@@ -26,7 +26,7 @@ variable "onghub_cognito_oauth_domain" {
   type = string
 }
 
-variable "onghub_cognito_teo_client_id" {
+variable "onghub_cognito_vic_client_id" {
   type = string
 }
 

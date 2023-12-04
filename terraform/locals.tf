@@ -1,8 +1,8 @@
 locals {
-  namespace       = "teo-${var.env}"
+  namespace       = "vic-${var.env}"
   domain          = "onghub.ro"
-  frontend_domain = var.env == "production" ? "teo.${local.domain}" : "teo-${var.env}.${local.domain}"
-  backend_domain  = var.env == "production" ? "api.teo.${local.domain}" : "api.teo-${var.env}.${local.domain}"
+  frontend_domain = var.env == "production" ? "vic.${local.domain}" : "vic-${var.env}.${local.domain}"
+  backend_domain  = "api.${local.frontend_domain}"
   mail_domain     = "onghub.ro"
 
   image = {

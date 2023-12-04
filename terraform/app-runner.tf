@@ -26,7 +26,7 @@ resource "aws_apprunner_service" "backend" {
           COGNITO_USER_POOL_ID_MOBILE = aws_cognito_user_pool.pool.id
 
           COGNITO_REGION_WEB       = var.onghub_congito_region
-          COGNITO_CLIENT_ID_WEB    = var.onghub_cognito_teo_client_id
+          COGNITO_CLIENT_ID_WEB    = var.onghub_cognito_vic_client_id
           COGNITO_USER_POOL_ID_WEB = var.onghub_cognito_user_pool_id
 
           DATABASE_HOST     = aws_db_instance.db_instance.address
