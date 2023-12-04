@@ -1,7 +1,6 @@
 # TODO:
 # - custom_domain
 # - sms_configuration
-# - email_sending_account = "DEVELOPER"
 
 resource "aws_cognito_user_pool" "pool" {
   name = "${local.namespace}-pool"
@@ -56,7 +55,9 @@ resource "aws_cognito_user_pool" "pool" {
   }
 
   email_configuration {
-    email_sending_account = "COGNITO_DEFAULT"
+    email_sending_account = "DEVELOPER"
+    source_arn            = data.aws_ses_domain_identity.main.arn
+    from_email_address    = "no-reply@${local.mail_domain}"
   }
 
   password_policy {
