@@ -1,5 +1,9 @@
 data "aws_region" "current" {}
 
+data "aws_route53_zone" "main" {
+  zone_id = var.route53_zone_id
+}
+
 data "aws_caller_identity" "current" {}
 
 data "aws_ses_domain_identity" "main" {

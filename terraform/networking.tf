@@ -69,7 +69,7 @@ resource "aws_nat_gateway" "nat_gateway" {
 }
 
 resource "aws_eip" "nat_gateway" {
-  vpc = true
+  domain = "vpc"
   tags = {
     Name = "${local.namespace}-nat-gateway"
   }
@@ -77,7 +77,7 @@ resource "aws_eip" "nat_gateway" {
 
 resource "aws_eip" "bastion" {
   instance = aws_instance.bastion.id
-  vpc      = true
+  domain   = "vpc"
   tags = {
     Name = "${local.namespace}-bastion"
   }

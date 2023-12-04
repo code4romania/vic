@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.35"
+      version = "~> 5.29"
     }
   }
 
@@ -10,7 +10,7 @@ terraform {
     organization = "code4romania"
 
     workspaces {
-      name = "teo"
+      name = "vic"
     }
   }
 }
@@ -20,7 +20,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      app = "teo"
+      app = "vic"
       env = var.env
     }
   }
