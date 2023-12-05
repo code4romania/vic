@@ -1,5 +1,4 @@
 # TODO:
-# - custom_domain
 # - sms_configuration
 
 resource "aws_cognito_user_pool" "pool" {
@@ -12,6 +11,10 @@ resource "aws_cognito_user_pool" "pool" {
   username_attributes = [
     "email",
     "phone_number",
+  ]
+
+  auto_verified_attributes = [
+    "email",
   ]
 
   username_configuration {
