@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IChildRoute {
   id: number;
   name: string;
@@ -5,11 +6,13 @@ export interface IChildRoute {
 }
 
 export interface IRoute extends IChildRoute {
-  icon?: React.ForwardRefExoticComponent<
-    React.SVGProps<SVGSVGElement> & {
-      title?: string | undefined;
-      titleId?: string | undefined;
-    }
-  >;
+  icon?:
+    | React.ForwardRefExoticComponent<
+        React.SVGProps<SVGSVGElement> & {
+          title?: string | undefined;
+          titleId?: string | undefined;
+        }
+      >
+    | any;
   childRoutes?: IChildRoute[];
 }
