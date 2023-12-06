@@ -4,10 +4,6 @@ module "s3_bucket_files" {
 
   bucket = "${local.namespace}-files"
 
-  control_object_ownership = true
-  object_ownership         = "BucketOwnerPreferred"
-  acl                      = "public-read"
-
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true

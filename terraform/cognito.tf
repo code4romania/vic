@@ -1,5 +1,4 @@
 # TODO:
-# - custom_domain
 # - sms_configuration
 
 resource "aws_cognito_user_pool" "pool" {
@@ -14,11 +13,15 @@ resource "aws_cognito_user_pool" "pool" {
     "phone_number",
   ]
 
+  auto_verified_attributes = [
+    "email",
+  ]
+
   username_configuration {
     case_sensitive = false
   }
 
-  mfa_configuration          = "ON"
+  mfa_configuration          = "OFF"
   sms_authentication_message = "Your verification code is {####}."
 
   verification_message_template {
@@ -28,12 +31,12 @@ resource "aws_cognito_user_pool" "pool" {
     sms_message          = "Your verification code is {####}. "
   }
 
-  software_token_mfa_configuration {
-    enabled = true
-  }
+  # software_token_mfa_configuration {
+  #   enabled = true
+  # }
 
   admin_create_user_config {
-    allow_admin_create_user_only = true
+    allow_admin_create_user_only = false
 
     invite_message_template {
       email_message = "Your username is {username} and temporary password is {####}. "
