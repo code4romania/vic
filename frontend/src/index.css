@@ -29,7 +29,7 @@
   }
 
   a {
-    @apply text-sm sm:text-base font-robotoBold text-turquoise hover:text-turquoise-700 active:text-turquoise-800 focus:outline-0 cursor-pointer;
+    @apply text-sm sm:text-base font-robotoBold text-blue hover:text-blue/[0.8] active:text-blue/[0.8] focus:outline-0 cursor-pointer;
   }
 
   h1 {
@@ -112,7 +112,7 @@
   }
 
   .btn-primary {
-    @apply btn text-white bg-turquoise hover:bg-turquoise-700 active:bg-turquoise-800 focus:shadow-yellow focus:outline-0 disabled:bg-turquoise;
+    @apply btn text-black bg-yellow hover:bg-yellow-500 active:bg-yellow-400 focus:shadow-yellow-400 focus:outline-0 disabled:bg-yellow;
   }
 
   .btn-danger {
@@ -120,7 +120,7 @@
   }
 
   .btn-secondary {
-    @apply btn text-white bg-cool-gray focus:shadow-yellow focus:outline-0;
+    @apply btn text-white bg-cool-gray focus:shadow-none focus:outline-0;
   }
 
   .btn-outline-secondary {
@@ -132,7 +132,7 @@
   }
 
   .btn-text-primary {
-    @apply btn text-turquoise hover:text-turquoise-700 active:text-turquoise-800 focus:shadow-yellow focus:outline-0;
+    @apply btn text-yellow hover:text-yellow-700 active:text-yellow-800 focus:shadow-yellow focus:outline-0;
   }
 
   .btn-text-danger {

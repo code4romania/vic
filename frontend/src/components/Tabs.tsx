@@ -32,8 +32,10 @@ const Tabs = <T extends React.Key>({ children, tabs, onClick, defaultTab }: Tabs
             aria-label={tab.value}
             onClick={onTabClick.bind(null, tab)}
             className={`${
-              activeTab.key === tab.key ? 'bg-turquoise-200' : 'font-roboto hover:bg-turquoise-200'
-            } min-w-fit leading-5 text-cool-gray-800 hover:text-cool-gray-800 px-4 py-2 rounded-md active:bg-turquoise-300`}
+              activeTab.key === tab.key
+                ? 'bg-yellow-500/[0.5]'
+                : 'font-roboto hover:bg-yellow-500/[0.5]'
+            } min-w-fit leading-5 text-cool-gray-800 hover:text-cool-gray-800 px-4 py-2 rounded-md active:bg-yellow-500`}
           >
             {tab.value}
           </a>

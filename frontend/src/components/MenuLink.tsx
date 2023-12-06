@@ -15,10 +15,10 @@ const MenuLink = ({ item, active, isNarrow, onClick }: MenuLinkProps) => {
       id={`${item.name}__menu-item`}
       aria-label={item.name}
       className={classNames(
-        active ? 'bg-turquoise/[0.15] text-turquoise' : 'text-gray-50',
+        active ? 'bg-yellow/[0.15] text-yellow' : 'text-gray-50',
         active && item.childRoutes ? 'bg-transparent' : '',
         isNarrow ? 'justify-center px-0 space-x-0' : 'px-4 space-x-5 ',
-        'h-10 flex items-center px-2 py-2 font-medium rounded-md hover:bg-turquoise/[0.15]  hover:text-turquoise',
+        'h-10 flex items-center px-2 py-2 font-medium rounded-md hover:bg-yellow/[0.15]  hover:text-yellow',
       )}
       onClick={() => onClick(item)}
     >

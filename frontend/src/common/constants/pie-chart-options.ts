@@ -5,11 +5,11 @@ export enum PieChartOption {
   SEX = 'SEX',
 }
 
-export const PIE_CHART_COLORS = ['#06B5C0', '#C4FBFF', '#246F6F', '#000000'];
+export const PIE_CHART_COLORS = ['#FFD209', '#FEF3C7', '#F59E0B', '#000000'];
 export const PIE_CHART_LEGEND_COLORS = [
-  'bg-[#06B5C0]',
-  'bg-[#C4FBFF]',
-  'bg-[#246F6F]',
+  'bg-[#FFD209]',
+  'bg-[#FEF3C7]',
+  'bg-[#F59E0B]',
   'bg-[#000000]',
 ];
 

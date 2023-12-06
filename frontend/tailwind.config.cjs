@@ -47,8 +47,20 @@ module.exports = {
         },
         yellow: {
           DEFAULT: '#FFD209',
-          900: '#F57F17',
+          50: '#fefce8',
+          100: '#fffbc2',
+          200: '#fff487',
+          300: '#ffe643',
+          400: '#ffe643',
           500: '#FFD209',
+          600: '#efba03',
+          700: '#ce9000',
+          800: '#F57F17',
+          900: '#a46604',
+        },
+        blue: {
+          DEFAULT: '#2563EB',
+          600: '#2563EB',
         },
       },
       transitionProperty: {
