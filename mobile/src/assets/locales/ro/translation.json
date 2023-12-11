@@ -578,6 +578,8 @@
   "home": {
     "greeting": "Salut, {{name}}!",
     "paragraph": "Bun venit în contul tău TEO! Locul unde poți să ții evidența orelor de activitate și a documentelor tale de voluntar.",
+    "no_ngo_title": "Nu ai adăugat încă nicio organizație",
+    "no_ngo_paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique.",
     "add_hours": "Adaugă ore de voluntariat!",
     "join_ngo": "Alătură-te unei organizații!",
     "statistics": {

@@ -11,10 +11,10 @@ interface SectionHeaderProps {
 
 const SectionHeader = ({ title, icon, action }: SectionHeaderProps) => (
   <View style={styles.sectionHeader}>
-    {icon}
     <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2" status="info">
       {title}
     </Text>
+    {icon}
     {action}
   </View>
 );

@@ -36,12 +36,26 @@ const Home = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.headerContainer}>
-          <View style={{ ...styles.headerShape, backgroundColor: theme['color-success-500'] }}>
+          <View style={{ ...styles.headerShape, backgroundColor: theme['cool-gray-800'] }}>
             <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.greetingText} category="h3">
               {`${t('greeting', { name: userProfile?.firstName || '' })}`}{' '}
-              <IconSvg icon={WaveSvg} size={14} />
+              <IconSvg icon={WaveSvg} size={16} />
             </Text>
-            <Paragraph style={{ color: theme['turquoise-100'] }}>{`${t('paragraph')}`}</Paragraph>
+            <Paragraph style={{ color: theme['cool-gray-400'] }}>{`${t('paragraph')}`}</Paragraph>
+            {!userProfile?.activeOrganization && (
+              <>
+                <Text
+                  allowFontScaling={ALLOW_FONT_SCALLING}
+                  style={styles.greetingText}
+                  category="h3"
+                >
+                  {`${t('no_ngo_title')}`}
+                </Text>
+                <Paragraph style={{ color: theme['cool-gray-400'] }}>{`${t(
+                  'no_ngo_paragraph',
+                )}`}</Paragraph>
+              </>
+            )}
 
             <View style={styles.addHoursContainer}>
               {userProfile?.activeOrganization ? (

@@ -10,6 +10,7 @@ import {
 import { Platform, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { ButtonType } from '../common/enums/button-type.enum';
 
 export interface ButtonProps extends ButtonKittenProps {
   label: string;
@@ -42,9 +43,11 @@ const Button = ({ label, onPress, appearance, loading, ...props }: ButtonProps) 
       {() => (
         <Text
           category="p2"
-          style={[
-            appearance === 'outline' ? { color: theme['color-success-500'] } : { color: 'white' },
-          ]}
+          style={
+            props.status === ButtonType.DANGER
+              ? { color: theme['color-basic-100'] }
+              : { color: 'black' }
+          }
           allowFontScaling={ALLOW_FONT_SCALLING}
         >
           {label}

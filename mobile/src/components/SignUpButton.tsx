@@ -14,7 +14,7 @@ const SignUpButton = ({ onPress }: SignUpButtonProps) => {
   const theme = useTheme();
   return (
     <Pressable onPress={onPress}>
-      <View style={[styles.btnContainer, { backgroundColor: theme['turquoise-700'] }]}>
+      <View style={[styles.btnContainer, { backgroundColor: theme['color-primary-500'] }]}>
         <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.textStyle} category="p2">
           {`${t('email')}`}
         </Text>
@@ -45,5 +45,5 @@ const styles = StyleSheet.create({
     }),
   },
   image: { width: 44, height: 44, margin: 0 },
-  textStyle: { fontSize: 14, color: 'white' },
+  textStyle: { fontSize: 14, color: 'black' },
 });

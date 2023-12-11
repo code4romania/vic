@@ -583,6 +583,8 @@
   "home": {
     "greeting": "Hi, {{name}}!",
     "paragraph": "Welcome to your TEO account! The place to keep track of your volunteer hours and documents, lorem ipsum.",
+    "no_ngo_title": "You didn't add any organizations yet",
+    "no_ngo_paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique.",
     "add_hours": "Add volunteer hours!",
     "join_ngo": "Join an organization!",
     "statistics": {

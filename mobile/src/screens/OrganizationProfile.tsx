@@ -157,6 +157,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       onPrimaryActionButtonClick: onJoinOrganizationButtonPress,
       secondaryActionLink: `${t('code')}`,
       onSecondaryActionButtonClick: onJoinOrganizationByAccessCodeButtonPress,
+      secondaryLinkColor: true,
     };
 
     switch (organization?.organizationVolunteerStatus) {
@@ -319,7 +320,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                 <View style={styles.buttonsContainer}>
                   <Button
                     label={t('modal.identity_data_missing.action_label')}
-                    status={'success'}
+                    status={'primary'}
                     onPress={onGoToIdentityDataScreen}
                   />
                   <InlineLink

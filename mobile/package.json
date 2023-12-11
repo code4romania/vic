@@ -12,7 +12,6 @@
     "lint": "eslint . --ext .tsx,.ts"
   },
   "dependencies": {
-    "@aws-amplify/react-native": "^1.0.4",
     "@eva-design/eva": "^2.1.1",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@hookform/resolvers": "^3.1.0",
@@ -23,8 +22,8 @@
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@ui-kitten/components": "5.3.1",
-    "amazon-cognito-identity-js": "^6.2.0",
-    "aws-amplify": "^5.3.12",
+    "amazon-cognito-identity-js": "^6.3.7",
+    "aws-amplify": "5.3.12",
     "axios": "^1.4.0",
     "core-js": "^3.30.2",
     "date-fns": "^2.30.0",

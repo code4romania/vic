@@ -15,7 +15,7 @@ const LogInButton = ({ onPress }: LogInButtonProps) => {
     <Pressable onPress={onPress}>
       <Text allowFontScaling={ALLOW_FONT_SCALLING}>
         {`${t('registered')} `}
-        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2" status="success">{`${t(
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2" status="primary">{`${t(
           'login',
         )}`}</Text>
       </Text>

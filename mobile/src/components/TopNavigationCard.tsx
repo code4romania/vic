@@ -41,8 +41,7 @@ export default TopNavigationCard;
 
 const themedStyles = StyleService.create({
   elipsis: {
-    backgroundColor: 'white',
-    opacity: 0.5,
+    backgroundColor: '$color-primary-500',
     height: 16,
     width: 16,
     borderRadius: 100,
@@ -50,10 +49,10 @@ const themedStyles = StyleService.create({
     marginLeft: -8,
   },
   notPressed: {
-    backgroundColor: '$color-success-500',
+    backgroundColor: '$cool-gray-800',
   },
   pressed: {
-    backgroundColor: '$color-success-700',
+    backgroundColor: '$cool-gray-700',
   },
   container: {
     paddingVertical: 24,

@@ -15,7 +15,6 @@ import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import SignUpButton from '../components/SignUpButton';
 
 const Landing = ({ navigation }: any) => {
-  console.log('Landing');
   const { isUserPending, loginWithSocial } = useAuth();
   const { t } = useTranslation('landing');
 
@@ -37,10 +36,7 @@ const Landing = ({ navigation }: any) => {
     <PageLayout title="">
       <ScrollViewLayout>
         <View style={styles.container}>
-          <Image source={require('../assets/images/teo-logo.png')} style={styles.image} />
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
-            'general:register',
-          )}`}</Text>
+          <Image source={require('../assets/images/vic-logo.png')} style={styles.image} />
           <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1" style={styles.message}>{`${t(
             'message',
           )}`}</Text>
@@ -74,6 +70,8 @@ export default Landing;
 const styles = StyleSheet.create({
   image: {
     marginBottom: 45,
+    height: 240,
+    width: 130,
   },
   separator: {
     height: 24,
