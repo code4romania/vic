@@ -1,7 +1,7 @@
 {
   "general": {
     "current_month": "Luna aceasta",
-    "about_teo": "Despre TEO",
+    "about_teo": "Despre VIC",
     "event": "Eveniment",
     "news": "Ultimele noutăți",
     "organizations": "Organizații",
@@ -325,7 +325,7 @@
         "label": "De unde ai aflat de noi?",
         "required": "Acest câmp este obligatoriu",
         "social": "Rețelele de socializare",
-        "teo": "Din aplicația TEO",
+        "teo": "Din aplicația VIC",
         "friend": "De la un coleg sau prieten",
         "event": "Dintr-un eveniment",
         "other": "Altă opțiune"
@@ -415,7 +415,7 @@
     "information": "Informații voluntar",
     "email": "Email de contact",
     "active_since": "Voluntar din",
-    "created_on": "Înregistrat în TEO din",
+    "created_on": "Înregistrat în VIC din",
     "errors": {
       "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil creat. Creează unul înainte!",
       "VOLUNTEER_003": "Doar voluntarii activi pot fi arhivați",
@@ -439,7 +439,7 @@
         "pattern": "Formatul email-ului nu este valid"
       },
       "checkbox": {
-        "label": "Același ca email cont TEO"
+        "label": "Același ca email cont VIC"
       },
       "branch": {
         "label": "Filială sau sucursală"
@@ -577,7 +577,7 @@
   },
   "home": {
     "greeting": "Salut, {{name}}!",
-    "paragraph": "Bun venit în contul tău TEO! Locul unde poți să ții evidența orelor de activitate și a documentelor tale de voluntar.",
+    "paragraph": "Bun venit în contul tău VIC! Locul unde poți să ții evidența orelor de activitate și a documentelor tale de voluntar.",
     "no_ngo_title": "Nu ai adăugat încă nicio organizație",
     "no_ngo_paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique.",
     "add_hours": "Adaugă ore de voluntariat!",

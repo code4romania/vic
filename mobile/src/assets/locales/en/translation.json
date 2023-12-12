@@ -1,7 +1,7 @@
 {
   "general": {
     "current_month": "This month",
-    "about_teo": "About TEO",
+    "about_teo": "About VIC",
     "event": "Event",
     "news": "Latest news",
     "organizations": "Organizations",
@@ -325,7 +325,7 @@
         "label": "How did you hear about us?",
         "required": "This field is mandatory",
         "social": "Social networks",
-        "teo": "From the TEO app",
+        "teo": "From the VIC app",
         "friend": "From a colleague or friend",
         "event": "From an event",
         "other": "Another option"
@@ -420,7 +420,7 @@
     "information": "Voluntary information",
     "email": "Contact email",
     "active_since": "Volunteer from",
-    "created_on": "Registered in TEO since",
+    "created_on": "Registered in VIC since",
     "errors": {
       "VOLUNTEER_PROFILE_003": "The volunteer has no profile created. Create one first!",
       "VOLUNTEER_003": "Only active volunteers can be archived",
@@ -444,7 +444,7 @@
         "pattern": "Email format is invalid"
       },
       "checkbox": {
-        "label": "Same as TEO account email"
+        "label": "Same as VIC account email"
       },
       "branch": {
         "label": "Subsidiary or branch"
@@ -582,7 +582,7 @@
   },
   "home": {
     "greeting": "Hi, {{name}}!",
-    "paragraph": "Welcome to your TEO account! The place to keep track of your volunteer hours and documents, lorem ipsum.",
+    "paragraph": "Welcome to your VIC account! The place to keep track of your volunteer hours and documents, lorem ipsum.",
     "no_ngo_title": "You didn't add any organizations yet",
     "no_ngo_paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique.",
     "add_hours": "Add volunteer hours!",
