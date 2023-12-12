@@ -1,8 +1,20 @@
 import { Request } from 'express';
+import * as dotenv from 'dotenv';
+import { Params as PinoLoggerParams } from 'nestjs-pino';
+dotenv.config();
 
-export const PinoLoggerConfig = {
+// Possible loggin levels, from quiet to verbose
+export type LOGGING_LEVEL =
+  | 'fatal'
+  | 'error'
+  | 'warn'
+  | 'info'
+  | 'debug'
+  | 'trace';
+
+export const PinoLoggerConfig: PinoLoggerParams = {
   pinoHttp: {
-    level: 'trace',
+    level: process.env.LOGGING_LEVEL || 'trace',
     autoLogging: {
       ignore: (req: Request): boolean => {
         return req.url.includes('health');
