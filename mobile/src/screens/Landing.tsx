@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text } from '@ui-kitten/components';
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import LogInButton from '../components/LogInButton';
 import { useAuth } from '../hooks/useAuth';
-import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
+// import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import { useTranslation } from 'react-i18next';
-import GoogleButton from '../components/GoogleButton';
-import AppleButton from '../components/AppleButton';
-import FacebookButton from '../components/FacebookButton';
+// import GoogleButton from '../components/GoogleButton';
+// import AppleButton from '../components/AppleButton';
+// import FacebookButton from '../components/FacebookButton';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import SignUpButton from '../components/SignUpButton';
 
 const Landing = ({ navigation }: any) => {
-  const { isUserPending, loginWithSocial } = useAuth();
+  const { isUserPending } = useAuth();
   const { t } = useTranslation('landing');
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const Landing = ({ navigation }: any) => {
           )}`}</Text>
           <View style={styles.buttonsContainer}>
             <SignUpButton onPress={onRegisterButtonPress} />
-            {Platform.OS === 'ios' && (
+            {/* {Platform.OS === 'ios' && (
               <AppleButton
                 onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Apple)}
               />
@@ -52,13 +52,13 @@ const Landing = ({ navigation }: any) => {
             />
             <FacebookButton
               onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Facebook)}
-            />
+            /> */}
           </View>
           <View style={styles.separator} />
           <LogInButton onPress={onLoginButtonPress} />
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.version}>
+          {/* <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.version}>
             v0.14.10
-          </Text>
+          </Text> */}
         </View>
       </ScrollViewLayout>
     </PageLayout>
