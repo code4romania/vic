@@ -65,11 +65,11 @@ const NotificationOption = ({
     <PressableContainer onPress={onPress.bind(null, value)}>
       <View style={styles.bottomSheetOption}>
         {multi && selected && (
-          <Icon name={'check'} style={styles.checkIcon} fill={theme['color-success-500']} />
+          <Icon name={'check'} style={styles.checkIcon} fill={theme['color-primary-800']} />
         )}
         <Text
           allowFontScaling={ALLOW_FONT_SCALLING}
-          style={selected ? { color: theme['color-success-500'] } : {}}
+          style={selected ? { color: theme['color-primary-800'] } : {}}
           category="p2"
         >
           {label}
@@ -294,6 +294,6 @@ const themedStyles = StyleService.create({
   checkIcon: {
     height: 24,
     width: 24,
-    color: '$color-success-500',
+    color: '$color-primary-800',
   },
 });

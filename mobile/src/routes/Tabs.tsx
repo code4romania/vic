@@ -17,7 +17,7 @@ const Title = ({ title, active }: { title: string; active?: boolean }) => {
   return (
     <Text
       category="c1"
-      style={[active ? { color: theme['color-success-500'] } : {}, styles.title]}
+      style={[active ? { color: theme['color-primary-500'] } : {}, styles.title]}
       allowFontScaling={ALLOW_FONT_SCALLING}
     >
       {title}

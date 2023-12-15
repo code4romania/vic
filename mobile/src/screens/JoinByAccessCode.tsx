@@ -155,7 +155,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
           <View style={styles.buttonsContainer}>
             <Button
               label={`${t('modal.success.primary_action_label')}`}
-              status={'success'}
+              status={'primary'}
               onPress={onCompleteVolunteerProfile}
             />
             <InlineLink

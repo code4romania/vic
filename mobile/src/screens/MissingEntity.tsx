@@ -20,8 +20,6 @@ const MissingEntity = ({
   paragraph,
   actionBtnLabel,
 }: MissingEntityProps) => {
-  console.log('No Volunteer Profile');
-
   return (
     <PageLayout title="">
       <Layout style={styles.container}>

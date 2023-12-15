@@ -13,7 +13,7 @@ const SeeAllAction = ({ onPress }: SeeAllActionProps) => {
   const theme = useTheme();
   return (
     <Button
-      style={[styles.seeAllBtn, { backgroundColor: theme['turquoise-50'] }]}
+      style={[styles.seeAllBtn, { backgroundColor: theme['color-primary-50'] }]}
       size="tiny"
       appearance="ghost"
       onPress={onPress}
@@ -22,7 +22,7 @@ const SeeAllAction = ({ onPress }: SeeAllActionProps) => {
         <Text
           allowFontScaling={ALLOW_FONT_SCALLING}
           category="c2"
-          style={{ color: theme['color-success-700'] }}
+          style={{ color: theme['color-primary-800'] }}
         >{`${t('anouncements.section.see_all')}`}</Text>
       )}
     </Button>

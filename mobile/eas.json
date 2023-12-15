@@ -9,7 +9,7 @@
     },
     "preview": {
       "distribution": "internal",
-      "node": "16.15.1"
+      "node": "16.18.1"
     },
     "production": {
       "channel": "production"

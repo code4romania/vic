@@ -23,6 +23,7 @@ interface ActionsOptionsProps {
   primaryBtnType?: ButtonType;
   loading?: boolean;
   helperText?: string;
+  secondaryLinkColor?: boolean;
 }
 
 interface PageLayoutProps {
@@ -114,9 +115,9 @@ export const PageLayout = ({
                       </Text>
                       <InlineLink
                         style={[
-                          !actionsOptions.secondaryActionLabel
-                            ? { color: theme['cool-gray-700'] }
-                            : {},
+                          !actionsOptions.secondaryActionLabel && !actionsOptions.secondaryLinkColor
+                            ? { color: theme['color-primary-700'] }
+                            : { color: theme['color-basic-1100'] },
                           styles.inlineLink,
                         ]}
                         onPress={actionsOptions.onSecondaryActionButtonClick}

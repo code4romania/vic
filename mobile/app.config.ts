@@ -4,10 +4,10 @@ import { config } from 'dotenv';
 config(); // Load environment variables from .env file
 
 const expoConfig: ExpoConfig = {
-  name: 'teo',
-  slug: 'teo',
-  scheme: 'teo',
-  version: '0.0.1',
+  name: 'vic',
+  slug: 'vic',
+  scheme: 'vic',
+  version: '1.0.0',
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',
   userInterfaceStyle: 'light',
@@ -18,9 +18,9 @@ const expoConfig: ExpoConfig = {
   },
   assetBundlePatterns: ['**/*'],
   ios: {
-    buildNumber: '3',
+    buildNumber: '1',
     supportsTablet: true,
-    bundleIdentifier: 'com.commitglobal.vic',
+    bundleIdentifier: 'org.commitglobal.vic',
     entitlements: {
       'com.apple.developer.applesignin': ['Default'],
     },
@@ -32,13 +32,13 @@ const expoConfig: ExpoConfig = {
     },
   },
   android: {
-    versionCode: 3,
+    versionCode: 1,
     adaptiveIcon: {
       foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
     },
     googleServicesFile: './google-services.json',
-    package: 'com.commitglobal.vic',
+    package: 'org.commitglobal.vic',
   },
   web: {
     favicon: './src/assets/images/favicon.png',
@@ -60,21 +60,20 @@ const expoConfig: ExpoConfig = {
     ],
   ],
   extra: {
-    apiUrl: process.env.API_URL,
-    redirectUrl: process.env.REDIRECT_URL,
-    awsRegion: process.env.AWS_REGION,
-    userPoolId: process.env.USER_POOL_ID,
-    userPoolClientId: process.env.USER_POOL_CLIENT_ID,
-    awsDomain: process.env.AWS_DOMAIN,
+    apiUrl: process.env.EXPO_PUBLIC_API_URL,
+    awsRegion: process.env.EXPO_PUBLIC_AWS_REGION,
+    userPoolId: process.env.EXPO_PUBLIC_USER_POOL_ID,
+    userPoolClientId: process.env.EXPO_PUBLIC_USER_POOL_CLIENT_ID,
+    awsDomain: process.env.EXPO_PUBLIC_AWS_DOMAIN,
     eas: {
-      projectId: '7dd2fea9-6bb9-4b69-865f-c00ab46b5183',
+      projectId: '6aaad982-5a5c-4af8-b66c-7689afe74e1f',
     },
-    policyLink: process.env.PRIVACY_POLICY_LINK,
-    termsLink: process.env.TERMS_AND_CONDITIONS_LINK,
-    infoLink: process.env.INFORMATION_LINK,
+    policyLink: process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK,
+    termsLink: process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK,
+    infoLink: process.env.EXPO_PUBLIC_INFORMATION_LINK,
   },
   updates: {
-    url: 'https://u.expo.dev/7dd2fea9-6bb9-4b69-865f-c00ab46b5183',
+    url: 'https://u.expo.dev/6aaad982-5a5c-4af8-b66c-7689afe74e1f',
   },
   runtimeVersion: {
     policy: 'sdkVersion',

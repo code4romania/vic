@@ -1,6 +1,6 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Drawer, DrawerItem, Text } from '@ui-kitten/components';
+import { Drawer, DrawerItem, Text, useTheme } from '@ui-kitten/components';
 import Tabs from './Tabs';
 import { Image, View } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
@@ -41,7 +41,7 @@ const AccesoryAdd = withStyles(
       width: 40,
       height: 40,
       borderRadius: 40,
-      backgroundColor: theme['color-success-active'],
+      backgroundColor: theme['cool-gray-600'],
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -51,6 +51,7 @@ const AccesoryAdd = withStyles(
 interface DrawerItemComponentProps {
   children: string;
   eva?: any;
+  active?: boolean;
   category?: LiteralUnion<
     'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 's1' | 's2' | 'p1' | 'p2' | 'c1' | 'c2' | 'label'
   >;
@@ -64,8 +65,8 @@ const DrawerHeader = withStyles(
   ),
   (theme) => ({
     drawerHeader: {
-      backgroundColor: theme['drawer-background'],
-      color: theme['turquoise-300'],
+      backgroundColor: theme['cool-gray-800'],
+      color: theme['color-basic-100'],
       paddingHorizontal: 18,
       paddingTop: 24,
       paddingBottom: 8,
@@ -74,19 +75,24 @@ const DrawerHeader = withStyles(
 );
 
 const DrawerItemTitle = withStyles(
-  ({ children, eva, category }: DrawerItemComponentProps) => (
-    <Text
-      allowFontScaling={ALLOW_FONT_SCALLING}
-      category={category || 'h3'}
-      lineBreakMode="tail"
-      style={eva?.style.drawerItemTitle}
-    >
-      {children}
-    </Text>
-  ),
+  ({ children, eva, active, category }: DrawerItemComponentProps) => {
+    const theme = useTheme();
+    return (
+      <Text
+        allowFontScaling={ALLOW_FONT_SCALLING}
+        category={category || 'h3'}
+        lineBreakMode="tail"
+        style={{
+          ...eva?.style.drawerItemTitle,
+          color: active ? theme['color-primary-500'] : theme['color-basic-100'],
+        }}
+      >
+        {children}
+      </Text>
+    );
+  },
   () => ({
     drawerItemTitle: {
-      color: '#fff',
       flexWrap: 'wrap',
       paddingLeft: 16,
       maxWidth: '80%',
@@ -131,7 +137,11 @@ const DrawerContent = withStyles(
             {userProfile?.myOrganizations?.map((organization: IOrganizationVolunteer) => (
               <DrawerItem
                 key={organization.id}
-                title={<DrawerItemTitle>{organization.name}</DrawerItemTitle>}
+                title={
+                  <DrawerItemTitle active={userProfile.activeOrganization?.id === organization.id}>
+                    {organization.name}
+                  </DrawerItemTitle>
+                }
                 accessoryLeft={renderAccessroyLeft.bind(null, organization.logo || '')}
                 onPress={onOrganizationChange.bind(null, organization)}
                 style={[
@@ -155,7 +165,7 @@ const DrawerContent = withStyles(
   },
   (theme) => ({
     drawer: {
-      backgroundColor: theme['drawer-background'],
+      backgroundColor: theme['cool-gray-800'],
       borderBottomRightRadius: 40,
     },
     drawerItem: {
@@ -167,7 +177,7 @@ const DrawerContent = withStyles(
       justifyContent: 'flex-start',
     },
     activeDrawerItem: {
-      backgroundColor: 'rgba(0, 0, 0, 0.15)',
+      backgroundColor: theme['cool-gray-700'],
       marginHorizontal: 10,
       borderRadius: 50,
       paddingHorizontal: 8,

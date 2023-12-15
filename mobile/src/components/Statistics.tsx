@@ -66,7 +66,7 @@ const Statistics = ({ navigation }: { navigation: any }) => {
               number: statistics?.numberOfUpcomingEvents,
             })}`}
             subtitle={t('statistics.events.description')}
-            backgroundColor="turquoise-50"
+            backgroundColor="color-primary-50"
             onPress={onEventsCardPress}
           />
           {userProfile?.activeOrganization && (
@@ -77,7 +77,7 @@ const Statistics = ({ navigation }: { navigation: any }) => {
                   number: statistics?.numberOfActivityLogUpdates,
                 })}`}
                 subtitle={t('statistics.hours.description')}
-                backgroundColor="turquoise-50"
+                backgroundColor="color-primary-50"
                 onPress={onHoursCardPress}
               />
               <StatisticsCard
@@ -86,7 +86,7 @@ const Statistics = ({ navigation }: { navigation: any }) => {
                   number: statistics?.numberOfDocumentUpdates,
                 })}`}
                 subtitle={t('statistics.documents.description')}
-                backgroundColor="turquoise-50"
+                backgroundColor="color-primary-50"
                 onPress={onDocumentsCardPress}
               />
               <StatisticsCard
@@ -95,7 +95,7 @@ const Statistics = ({ navigation }: { navigation: any }) => {
                   number: statistics?.numberOfOrganizationUpdates,
                 })}`}
                 subtitle={t('statistics.organizations.description')}
-                backgroundColor="turquoise-50"
+                backgroundColor="color-primary-50"
                 onPress={onOrganizationsCardPress}
               />
             </>
