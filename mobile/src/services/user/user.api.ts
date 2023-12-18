@@ -46,3 +46,7 @@ export const updateUserProfile = async (
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
 };
+
+export const deleteAccount = async () => {
+  return API.delete('/mobile/user').then((res) => res.data);
+};

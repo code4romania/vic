@@ -734,5 +734,11 @@
         "rejected": "a fost respinsă"
       }
     }
+  },
+  "delete_account": {
+    "title": "Confirma ștergerea contului",
+    "paragraph": "Pentru a șterge contul tău în aplicația VIC, te rugăm să confirmi decizia mai jos. Ștergerea contului va duce la pierderea permanentă a datelor tale și a accesului la aplicație. Dacă ești sigur în privința acestei acțiuni, apasă butonul 'Confirmă Ștergerea'. Menționează că acest proces este ireversibil și va trebui să creezi un cont nou dacă dorești să utilizezi VIC în viitor.",
+    "confirm": "Confirmă Ștergerea",
+    "error": "Eroare la stergerea contului"
   }
 }

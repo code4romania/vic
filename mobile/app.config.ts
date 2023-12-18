@@ -55,7 +55,8 @@ const expoConfig: ExpoConfig = {
     [
       'expo-image-picker',
       {
-        photosPermission: 'The app accesses your photos to let you share them with your friends.',
+        photosPermission: 'The app accesses your photos to allow you to set a profile picture.',
+        cameraPermission: 'The app accesses your camera to allow you to set a profile picture.',
       },
     ],
   ],
