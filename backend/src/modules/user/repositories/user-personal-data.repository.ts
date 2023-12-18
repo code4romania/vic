@@ -51,4 +51,17 @@ export class UserPersonalDataRepository implements IUserPersonalDataRepository {
 
     return UserPersonalDataTransformer.fromEntity(userPersonalDataEntity);
   }
+
+  public async delete(id: string): Promise<string> {
+    const data = await this.userPersonalDataRepository.findOne({
+      where: { id },
+    });
+
+    if (data) {
+      await this.userPersonalDataRepository.remove(data);
+      return data.id;
+    }
+
+    return null;
+  }
 }

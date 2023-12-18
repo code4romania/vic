@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Patch,
   Post,
@@ -22,6 +23,7 @@ import { UpdateRegularUserUsecase } from 'src/usecases/user/update-regular-user.
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { GetOneRegularUserProfileUseCase } from 'src/usecases/user/get-regule-user-profile.usecase';
 import { UserProfilePresenter } from './presenters/user-profile.presenter';
+import { DeleteAccountRegularUserUsecase } from 'src/usecases/user/delete-account.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -32,6 +34,7 @@ export class MobileRegularUserController {
     private readonly getOneRegularUserProfileUseCase: GetOneRegularUserProfileUseCase,
     private readonly updateUserPersonalData: UpdateUserPersonalDataUsecase,
     private readonly updateRegularUserUsecase: UpdateRegularUserUsecase,
+    private readonly deleteAccountRegularUserUsecase: DeleteAccountRegularUserUsecase,
   ) {}
 
   @ApiBody({ type: CreateRegularUserDto })
@@ -89,5 +92,12 @@ export class MobileRegularUserController {
       userPersonalData,
     );
     return new UserPresenter(updatedUser);
+  }
+
+  @Delete()
+  async deleteUserData(
+    @ExtractUser() regularUser: IRegularUserModel,
+  ): Promise<void> {
+    return this.deleteAccountRegularUserUsecase.execute(regularUser.id);
   }
 }

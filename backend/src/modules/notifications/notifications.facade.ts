@@ -45,4 +45,8 @@ export class PushNotificationsFacade {
   async delete(options: DeletePushTokenOptions): Promise<string> {
     return this.pushTokensRepository.delete(options);
   }
+
+  async deleteMany(options: DeletePushTokenOptions): Promise<void> {
+    return this.pushTokensRepository.deleteMany(options);
+  }
 }

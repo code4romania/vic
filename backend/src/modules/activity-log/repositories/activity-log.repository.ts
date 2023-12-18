@@ -264,4 +264,8 @@ export class ActivityLogRepositoryService
 
     return null;
   }
+
+  async deleteMany(ids: string[]): Promise<void> {
+    await this.activityLogRepo.delete(ids);
+  }
 }

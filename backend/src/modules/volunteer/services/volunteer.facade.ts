@@ -114,4 +114,14 @@ export class VolunteerFacade {
   ): Promise<IVolunteerStats> {
     return this.volunteerRepository.findVolunteerWithOngStats(volunteerId);
   }
+
+  async deleteProfile(id: string): Promise<void> {
+    return this.volunteerProfileRepositoryService.delete(id);
+  }
+
+  async deleteManyAndProfiles(
+    userId: string,
+  ): Promise<{ deletedProfiles: string[]; deletedVolunteers: string[] }> {
+    return this.volunteerRepository.deleteManyAndProfiles(userId);
+  }
 }

@@ -166,4 +166,8 @@ export class AccessRequestRepository
 
     return null;
   }
+
+  async deleteAllForUser(userId: string): Promise<void> {
+    await this.accessRequestRepository.delete({ requestedById: userId });
+  }
 }

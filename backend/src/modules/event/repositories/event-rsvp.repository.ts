@@ -71,6 +71,10 @@ export class EventRSVPRepository
     return null;
   }
 
+  async deleteAllRSVPsForUser(userId: string): Promise<void> {
+    await this.rsvpRepository.delete({ userId });
+  }
+
   async findMany(
     findOptions: FindManyEventRSVPOptions,
   ): Promise<Pagination<IEventRSVPModel>> {

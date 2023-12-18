@@ -25,6 +25,7 @@ import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { ContractEntity } from 'src/modules/documents/entities/contract.entity';
 import { ActivityLogEntity } from 'src/modules/activity-log/entities/activity-log.entity';
+import { VolunteerProfileEntity } from '../entities/volunteer-profile.entity';
 
 export class VolunteerRepositoryService
   extends RepositoryWithPagination<VolunteerEntity>
@@ -33,6 +34,8 @@ export class VolunteerRepositoryService
   constructor(
     @InjectRepository(VolunteerEntity)
     private readonly volunteerRepository: Repository<VolunteerEntity>,
+    @InjectRepository(VolunteerProfileEntity)
+    private readonly volunteerProfileRepository: Repository<VolunteerProfileEntity>,
   ) {
     super(volunteerRepository);
   }
@@ -298,6 +301,37 @@ export class VolunteerRepositoryService
           : {}),
       },
     });
+  }
+
+  async deleteManyAndProfiles(
+    userId: string,
+  ): Promise<{ deletedProfiles: string[]; deletedVolunteers: string[] }> {
+    const volunteerRecords = await this.volunteerRepository.find({
+      where: { userId },
+      relations: { volunteerProfile: true },
+    });
+
+    // Anonimize emails before soft delete
+    await this.volunteerProfileRepository.update(
+      volunteerRecords.map((v) => v.volunteerProfile.id),
+      {
+        email: `account-deleted@${new Date().getTime()}.ro`,
+      },
+    );
+
+    // Soft Delete all associated profiles
+    const deletedProfiles = await this.volunteerProfileRepository.softRemove(
+      volunteerRecords.map((v) => v.volunteerProfile),
+    );
+
+    const deletedVolunteerRecords = await this.volunteerRepository.softRemove(
+      volunteerRecords,
+    );
+
+    return {
+      deletedProfiles: deletedProfiles.map((dp) => dp.id),
+      deletedVolunteers: deletedVolunteerRecords.map((dvr) => dvr.id),
+    };
   }
 
   private addAgeRangeConditionToQuery(

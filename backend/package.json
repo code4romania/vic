@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@anchan828/typeorm-history": "1.0.38",
+    "@aws-sdk/client-cognito-identity-provider": "^3.474.0",
     "@aws-sdk/client-s3": "^3.325.0",
     "@aws-sdk/s3-request-presigner": "^3.325.0",
     "@bull-board/api": "^4.11.0",
