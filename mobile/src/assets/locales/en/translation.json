@@ -215,7 +215,8 @@
     "password": "Change password",
     "notification": "Notifications settings",
     "information": "Information",
-    "logout": "Log out"
+    "logout": "Log out",
+    "delete": "Delete account"
   },
   "account_data": {
     "title": "Date cont",

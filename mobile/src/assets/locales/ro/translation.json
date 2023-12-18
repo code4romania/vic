@@ -215,7 +215,8 @@
     "password": "Schimbă parola",
     "notification": "Setări notificări",
     "information": "Informații",
-    "logout": "Log out"
+    "logout": "Log out",
+    "delete": "Sterge cont"
   },
   "account_data": {
     "title": "Date cont",
