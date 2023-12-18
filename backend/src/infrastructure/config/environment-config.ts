@@ -81,6 +81,9 @@ class EnvironmentVariables {
   AWS_REGION: string;
 
   @IsString()
+  AWS_S3_BUCKET_NAME_PUBLIC: string;
+
+  @IsString()
   EXPO_PUSH_NOTIFICATIONS_ACCESS_TOKEN: string;
 }
 

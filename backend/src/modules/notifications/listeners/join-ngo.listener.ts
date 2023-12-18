@@ -61,6 +61,7 @@ export class JoinNGOListener {
               organizationName,
             ),
           subtitle: NOTIFICATIONS.APPROVE_ACCESS_REQUEST.EMAIL.body,
+          cta: NOTIFICATIONS.APPROVE_ACCESS_REQUEST.EMAIL.cta,
         },
       });
     }

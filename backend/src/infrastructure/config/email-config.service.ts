@@ -25,7 +25,7 @@ export class EmailConfigService {
       preview: true,
       template: {
         dir: __dirname + '/../../modules/mail/templates',
-        adapter: new HandlebarsAdapter(),
+        adapter: new HandlebarsAdapter({ asset_url: this.createAssetUrl }),
         options: {
           strict: true,
         },
@@ -40,4 +40,10 @@ export class EmailConfigService {
       },
     };
   }
+
+  createAssetUrl = (assetName: string): string => {
+    return `https://${this.configService.get(
+      'AWS_S3_BUCKET_NAME_PUBLIC',
+    )}/${assetName}`;
+  };
 }
