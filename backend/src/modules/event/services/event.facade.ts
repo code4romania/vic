@@ -78,6 +78,10 @@ export class EventFacade {
     return this.rsvpRepository.delete(id);
   }
 
+  async deleteAllRSVPsForUser(userId: string): Promise<void> {
+    return this.rsvpRepository.deleteAllRSVPsForUser(userId);
+  }
+
   async findManyRSVP(
     findOptions: FindManyEventRSVPOptions,
   ): Promise<Pagination<IEventRSVPModel>> {

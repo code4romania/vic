@@ -135,6 +135,7 @@ import { GetVolunteerOrganizationStatusUsecase } from './volunteer/get-volunteer
 import { GetOneRegularUserProfileUseCase } from './user/get-regule-user-profile.usecase';
 import { SyncUserOrganizationsUsecase } from './user/sync-user-organizations.usecase';
 import { GetRejectedAccessRequestUsecase } from './access-request/get-rejected-access-request.usecase';
+import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
 
 @Module({
   imports: [
@@ -185,6 +186,7 @@ import { GetRejectedAccessRequestUsecase } from './access-request/get-rejected-a
     UpdateRegularUserUsecase,
     GetOneRegularUserProfileUseCase,
     SyncUserOrganizationsUsecase,
+    DeleteAccountRegularUserUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,
@@ -327,6 +329,7 @@ import { GetRejectedAccessRequestUsecase } from './access-request/get-rejected-a
     UpdateRegularUserUsecase,
     GetOneRegularUserProfileUseCase,
     SyncUserOrganizationsUsecase,
+    DeleteAccountRegularUserUsecase,
     // Access Requests
     GetManyNewAccessRequestsUseCase,
     GetManyRejectedAccessRequestsUseCase,

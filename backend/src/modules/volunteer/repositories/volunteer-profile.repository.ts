@@ -17,8 +17,6 @@ export class VolunteerProfileRepositoryService
   constructor(
     @InjectRepository(VolunteerProfileEntity)
     private readonly volunteerProfileRepository: Repository<VolunteerProfileEntity>,
-    @InjectRepository(VolunteerEntity)
-    private readonly volunteerRepository: Repository<VolunteerEntity>,
     private readonly volunteerRepositoryService: VolunteerRepositoryService,
   ) {}
 
@@ -58,5 +56,9 @@ export class VolunteerProfileRepositoryService
     });
 
     return VolunteerProfileModelTransformer.fromEntity(profile);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.volunteerProfileRepository.delete(id);
   }
 }

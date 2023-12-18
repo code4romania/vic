@@ -42,4 +42,8 @@ export class AccessRequestFacade {
   async delete(id: string): Promise<string> {
     return this.accessRequestRepository.delete(id);
   }
+
+  async deleteAllForUser(userId: string): Promise<void> {
+    return this.accessRequestRepository.deleteAllForUser(userId);
+  }
 }

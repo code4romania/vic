@@ -66,6 +66,12 @@ export class UserFacadeService {
     return this.regularUserRepository.find(options);
   }
 
+  public async softDeleteAndAnonimizeRegularUser(
+    id: string,
+  ): Promise<IRegularUserModel> {
+    return this.regularUserRepository.softDeleteAndAnonimize(id);
+  }
+
   public async createUserPersonalData(
     userPersonalDataModel: CreateUserPersonalDataOptions,
   ): Promise<IUserPersonalDataModel> {
@@ -77,6 +83,10 @@ export class UserFacadeService {
     updates: Partial<CreateUserPersonalDataOptions>,
   ): Promise<IUserPersonalDataModel> {
     return this.userPersonalDataRepository.update(id, updates);
+  }
+
+  public async deleteUserPersonalData(id: string): Promise<string> {
+    return this.userPersonalDataRepository.delete(id);
   }
 
   public async findUserPersonalData(

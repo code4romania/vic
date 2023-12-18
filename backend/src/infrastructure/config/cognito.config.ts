@@ -1,4 +1,7 @@
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
+import { CognitoModuleOptions } from '../providers/cognito/module/cognito.interfaces';
 
 dotenv.config();
 
@@ -34,4 +37,22 @@ export function getCognitoProperty<Property extends keyof CognitoConfig>(
   property: Property,
 ): CognitoConfig[Property] {
   return ConfigEnvKeys[target][property];
+}
+
+// Service to configure the CognitoModule for Mobile
+@Injectable()
+export class CognitoConfigService {
+  constructor(private configService: ConfigService) {}
+
+  createCognitoConfigOptions(): CognitoModuleOptions {
+    return {
+      accessKeyId: this.configService.get('AWS_ACCESS_KEY_ID'),
+      secretAccessKey: this.configService.get('AWS_SECRET_ACCESS_KEY'),
+      region: this.configService.get('AWS_REGION'),
+      defaultUserPoolId: getCognitoProperty(
+        CognitoConfigType.MOBILE,
+        'userPoolId',
+      ),
+    };
+  }
 }

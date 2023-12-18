@@ -81,4 +81,8 @@ export class PushTokensRepository implements IPushTokensRepository {
 
     return null;
   }
+
+  async deleteMany(options: DeletePushTokenOptions): Promise<void> {
+    await this.pushTokensRepository.delete(options);
+  }
 }

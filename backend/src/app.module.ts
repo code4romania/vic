@@ -14,6 +14,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 import { UserModule } from './modules/user/user.module';
 import {
   CacheProviderModule,
+  CognitoProviderModule,
   DatabaseProviderModule,
   QueueProviderModule,
   ThrottleModule,
@@ -39,6 +40,8 @@ import { ExpoPushNotificationsProviderModule } from './infrastructure/providers/
     ThrottleModule,
     S3ProviderModule,
     ExpoPushNotificationsProviderModule,
+    CognitoProviderModule,
+
     // Modules
     MailModule,
     AuthenticationModule,

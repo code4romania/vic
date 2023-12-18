@@ -54,4 +54,8 @@ export class ActivityLogFacade {
   async delete(id: string): Promise<string> {
     return this.activityLogRepository.delete(id);
   }
+
+  async deleteMany(ids: string[]): Promise<void> {
+    return this.activityLogRepository.deleteMany(ids);
+  }
 }
