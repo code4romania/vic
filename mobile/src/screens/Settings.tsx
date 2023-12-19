@@ -3,6 +3,7 @@ import bell from '../assets/svg/bell';
 import identification from '../assets/svg/identification';
 import information from '../assets/svg/information';
 import key from '../assets/svg/key';
+import trash from '../assets/svg/trash';
 import logoutIcon from '../assets/svg/logout';
 import user from '../assets/svg/user';
 import PageLayout from '../layouts/PageLayout';
@@ -27,6 +28,7 @@ export enum SETTINGS_ROUTES {
   NOTIFICATIONS_SETTINGS = 'notifications-settings',
   INFORMATION = 'information',
   LOGOUT = 'logout',
+  DELETE_ACCOUNT = 'delete-account',
 }
 
 export const SETTING_SCREENS = [
@@ -43,6 +45,7 @@ export const SETTING_SCREENS = [
     route: SETTINGS_ROUTES.NOTIFICATIONS_SETTINGS,
   },
   { icon: information, label: i18n.t('settings:information'), route: SETTINGS_ROUTES.INFORMATION },
+  { icon: trash, label: i18n.t('settings:delete'), route: SETTINGS_ROUTES.DELETE_ACCOUNT },
   { icon: logoutIcon, label: i18n.t('settings:logout'), route: SETTINGS_ROUTES.LOGOUT },
 ];
 

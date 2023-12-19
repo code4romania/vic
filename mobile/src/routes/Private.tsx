@@ -26,6 +26,7 @@ import ContractRejectedReason from '../screens/ContractRejectedReason';
 import PendingContracts from '../screens/PendingContracts';
 import ContractHistory from '../screens/ContractHistory';
 import RequestRejectedReason from '../screens/RequestRejectedReason';
+import DeleteAccount from '../screens/DeleteAccount';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
@@ -60,6 +61,7 @@ const Private = () => (
       <Screen name="create-volunteer" component={CreateVolunteer} />
       <Screen name="rejected-contract" component={ContractRejectedReason} />
       <Screen name="rejected-request" component={RequestRejectedReason} />
+      <Screen name="delete-account" component={DeleteAccount} />
     </Group>
   </Navigator>
 );

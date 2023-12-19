@@ -215,7 +215,8 @@
     "password": "Change password",
     "notification": "Notifications settings",
     "information": "Information",
-    "logout": "Log out"
+    "logout": "Log out",
+    "delete": "Delete account"
   },
   "account_data": {
     "title": "Date cont",
@@ -738,5 +739,11 @@
         "rejected": "was rejected"
       }
     }
+  },
+  "delete_account": {
+    "title": "Confirm account deletion",
+    "paragraph": "To delete your account on the VIC application, please confirm your decision below. Deleting your account will result in the permanent loss of your data and access to the application. If you are certain about this action, click the 'Confirm Deletion' button. Keep in mind that this process is irreversible, and you will need to create a new account if you wish to use VIC in the future.",
+    "confirm": "Confirm Deletion",
+    "error": "Error on account deletion."
   }
 }
