@@ -59,6 +59,7 @@ export class ContractRepositoryService
 
     const query = this.contractRepository
       .createQueryBuilder('contract')
+      .withDeleted()
       .leftJoinAndMapOne(
         'contract.organization',
         'contract.organization',
@@ -187,6 +188,7 @@ export class ContractRepositoryService
         template: true,
         createdByAdmin: true,
       },
+      withDeleted: true,
     });
 
     return ContractTransformer.fromEntity(contract);

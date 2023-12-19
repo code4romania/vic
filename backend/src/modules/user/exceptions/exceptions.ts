@@ -7,6 +7,7 @@ export enum UserExceptionCodes {
   USER_004 = 'USER_004',
   USER_005 = 'USER_005',
   USER_006 = 'USER_006',
+  USER_007 = 'USER_007',
 }
 
 type UserExceptionCodeType = keyof typeof UserExceptionCodes;
@@ -39,5 +40,9 @@ export const UserExceptionMessages: Record<
   [UserExceptionCodes.USER_006]: {
     code_error: UserExceptionCodes.USER_006,
     message: 'Error while uploading profile picture in s3',
+  },
+  [UserExceptionCodes.USER_007]: {
+    code_error: UserExceptionCodes.USER_007,
+    message: 'Error while trying to delete user account',
   },
 };

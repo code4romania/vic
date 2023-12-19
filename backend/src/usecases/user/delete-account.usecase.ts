@@ -12,6 +12,7 @@ import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { ActivityLogFacade } from 'src/modules/activity-log/services/activity-log.facade';
 import { AccessRequestFacade } from 'src/modules/access-request/services/access-request.facade';
 import { EventFacade } from 'src/modules/event/services/event.facade';
+import { JSONStringifyError } from 'src/common/helpers/utils';
 
 @Injectable()
 export class DeleteAccountRegularUserUsecase implements IUseCaseService<void> {
@@ -39,41 +40,48 @@ export class DeleteAccountRegularUserUsecase implements IUseCaseService<void> {
       this.exceptionService.notFoundException(UserExceptionMessages.USER_001);
     }
 
-    // // 1. Delete cognito user
-    await this.cognitoService.globalSignOut(user.cognitoId);
-    await this.cognitoService.deleteUser(user.cognitoId);
+    try {
+      // 1. Delete cognito user
+      await this.cognitoService.globalSignOut(user.cognitoId);
+      await this.cognitoService.deleteUser(user.cognitoId);
 
-    /* =======================================================  */
-    /* =========FULL IMPLEMENTATION UNTESTED =================  */
-    /* =======================================================  */
+      // 2. Hard delete all "PushTokens"
+      await this.pushNotificationService.deleteMany({ userId });
 
-    // 2. Hard delete all "PushTokens"
-    await this.pushNotificationService.deleteMany({ userId });
-    // 3. Hard delete "UserPersonalData"
-    if (user.userPersonalData?.id) {
-      await this.userService.deleteUserPersonalData(user.userPersonalData.id);
-    }
+      // 3. Soft delete all Volunteers Records and the associated Profiles for the given UserId
+      const deletedVolunteersAndProfiles =
+        await this.volunteerFacade.softDeleteManyAndProfiles(userId);
 
-    // 4. Hard delete all Volunteers Records and the associated Profiles for the given UserId
-    const deletedVolunteersAndProfiles =
-      await this.volunteerFacade.softDeleteManyAndProfiles(userId);
+      // 4. Delete activity logs related to this user (linked with his Volunteer Records)
+      for (const volunteerId of deletedVolunteersAndProfiles.deletedVolunteers) {
+        await this.activityLogFacade.deleteManyByVolunteerId(volunteerId);
+      }
 
-    // Delete activity logs related to this user
-    await this.activityLogFacade.deleteMany(
-      deletedVolunteersAndProfiles.deletedVolunteers,
-    );
+      // 5. Delete all access requests made by the user
+      await this.accessRequestFacade.deleteAllForUser(userId);
 
-    // Delete all access requests made by the user
-    await this.accessRequestFacade.deleteAllForUser(userId);
+      // 6. Delete all RSVPs to events for the user
+      await this.eventFacade.deleteAllRSVPsForUser(userId);
 
-    // Delete all RSVPs to events for the user
-    await this.eventFacade.deleteAllRSVPsForUser(userId);
+      // 7. "User" - Anonimize + Soft delete + Delete profile picture
+      const deletedUser =
+        await this.userService.softDeleteAndAnonimizeRegularUser(userId);
+      if (deletedUser.profilePicture) {
+        await this.s3Service.deleteFile(deletedUser.profilePicture);
+      }
 
-    // 4. "User" - Anonimize + Soft delete + Delete profile picture
-    const deletedUser =
-      await this.userService.softDeleteAndAnonimizeRegularUser(userId);
-    if (deletedUser.profilePicture) {
-      await this.s3Service.deleteFile(deletedUser.profilePicture);
+      // 8. Hard delete "UserPersonalData"
+      if (user.userPersonalData?.id) {
+        await this.userService.deleteUserPersonalData(user.userPersonalData.id);
+      }
+    } catch (error) {
+      this.logger.error({
+        ...UserExceptionMessages.USER_007,
+        error: JSONStringifyError(error),
+      });
+      this.exceptionService.internalServerErrorException(
+        UserExceptionMessages.USER_007,
+      );
     }
 
     return;

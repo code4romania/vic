@@ -72,6 +72,7 @@ const expoConfig: ExpoConfig = {
     policyLink: process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK,
     termsLink: process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK,
     infoLink: process.env.EXPO_PUBLIC_INFORMATION_LINK,
+    contactEmail: process.env.EXPO_PUBLIC_CONTACT_EMAIL,
   },
   updates: {
     url: 'https://u.expo.dev/6aaad982-5a5c-4af8-b66c-7689afe74e1f',
