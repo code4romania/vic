@@ -303,7 +303,7 @@ export class VolunteerRepositoryService
     });
   }
 
-  async deleteManyAndProfiles(
+  async softDeleteManyAndProfiles(
     userId: string,
   ): Promise<{ deletedProfiles: string[]; deletedVolunteers: string[] }> {
     const volunteerRecords = await this.volunteerRepository.find({
@@ -311,26 +311,33 @@ export class VolunteerRepositoryService
       relations: { volunteerProfile: true },
     });
 
+    let deletedProfiles;
     // Anonimize emails before soft delete
-    await this.volunteerProfileRepository.update(
-      volunteerRecords.map((v) => v.volunteerProfile.id),
-      {
-        email: `account-deleted@${new Date().getTime()}.ro`,
-      },
+    const volunteerRecordsToDelete = volunteerRecords.filter(
+      (v) => v.volunteerProfile?.id,
     );
 
-    // Soft Delete all associated profiles
-    const deletedProfiles = await this.volunteerProfileRepository.softRemove(
-      volunteerRecords.map((v) => v.volunteerProfile),
-    );
+    if (volunteerRecordsToDelete.length) {
+      await this.volunteerProfileRepository.update(
+        volunteerRecordsToDelete.map((v) => v.volunteerProfile.id),
+        {
+          email: `account-deleted@${new Date().getTime()}.ro`,
+        },
+      );
+
+      // Soft Delete all associated profiles
+      deletedProfiles = await this.volunteerProfileRepository.softRemove(
+        volunteerRecordsToDelete,
+      );
+    }
 
     const deletedVolunteerRecords = await this.volunteerRepository.softRemove(
       volunteerRecords,
     );
 
     return {
-      deletedProfiles: deletedProfiles.map((dp) => dp.id),
-      deletedVolunteers: deletedVolunteerRecords.map((dvr) => dvr.id),
+      deletedProfiles: deletedProfiles?.map((dp) => dp.id) || [],
+      deletedVolunteers: deletedVolunteerRecords?.map((dvr) => dvr.id) || [],
     };
   }
 

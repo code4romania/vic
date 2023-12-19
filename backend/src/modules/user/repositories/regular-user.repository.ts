@@ -67,10 +67,15 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
       lastName: 'Deleted',
       email: `account-deleted@${new Date().getTime()}.ro`,
       phone: 'Deleted',
+      name: 'Deleted',
+      birthday: new Date(),
+      userPersonalDataId: null,
     });
 
-    await this.regularUserRepository.save(userToUpdate);
+    const updated = await this.regularUserRepository.save(userToUpdate);
 
-    return this.find({ id });
+    await this.regularUserRepository.softDelete({ id: userToUpdate.id });
+
+    return updated ? RegularUserTransformer.fromEntity(updated) : null;
   }
 }

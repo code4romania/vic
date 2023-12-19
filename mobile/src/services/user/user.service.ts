@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from 'react-query';
 import {
   createUserProfile,
+  deleteAccount,
   getUserProfile,
   updateUserPersonalData,
   updateUserProfile,
@@ -63,4 +64,8 @@ export const useUpdateUserProfileMutation = () => {
     }) => updateUserProfile(userProfile, profilePicture),
     { onSuccess: (data) => setUserProfile({ ...oldProfile, ...data }) },
   );
+};
+
+export const useDeleteAccountMutation = () => {
+  return useMutation(['delete-account'], () => deleteAccount());
 };

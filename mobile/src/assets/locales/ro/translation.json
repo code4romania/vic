@@ -215,7 +215,8 @@
     "password": "Schimbă parola",
     "notification": "Setări notificări",
     "information": "Informații",
-    "logout": "Log out"
+    "logout": "Log out",
+    "delete": "Sterge cont"
   },
   "account_data": {
     "title": "Date cont",
@@ -733,5 +734,11 @@
         "rejected": "a fost respinsă"
       }
     }
+  },
+  "delete_account": {
+    "title": "Confirma ștergerea contului",
+    "paragraph": "Pentru a șterge contul tău în aplicația VIC, te rugăm să confirmi decizia mai jos. Ștergerea contului va duce la pierderea permanentă a datelor tale și a accesului la aplicație. Dacă ești sigur în privința acestei acțiuni, apasă butonul 'Confirmă Ștergerea'. Menționează că acest proces este ireversibil și va trebui să creezi un cont nou dacă dorești să utilizezi VIC în viitor.",
+    "confirm": "Confirmă Ștergerea",
+    "error": "A aparut o eroare la stergerea contului. Contacteaza-ne la adresa de e-mail {{value}}, si te vom ajuta sa finalizezi procesul."
   }
 }
