@@ -18,8 +18,8 @@ const expoConfig: ExpoConfig = {
   },
   assetBundlePatterns: ['**/*'],
   ios: {
-    buildNumber: '4',
-    supportsTablet: true,
+    buildNumber: '5',
+    supportsTablet: false,
     bundleIdentifier: 'org.commitglobal.vic',
     entitlements: {
       'com.apple.developer.applesignin': ['Default'],
