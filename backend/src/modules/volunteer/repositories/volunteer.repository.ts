@@ -303,7 +303,7 @@ export class VolunteerRepositoryService
     });
   }
 
-  async deleteManyAndProfiles(
+  async softDeleteManyAndProfiles(
     userId: string,
   ): Promise<{ deletedProfiles: string[]; deletedVolunteers: string[] }> {
     const volunteerRecords = await this.volunteerRepository.find({

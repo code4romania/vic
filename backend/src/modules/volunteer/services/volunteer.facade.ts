@@ -119,9 +119,9 @@ export class VolunteerFacade {
     return this.volunteerProfileRepositoryService.delete(id);
   }
 
-  async deleteManyAndProfiles(
+  async softDeleteManyAndProfiles(
     userId: string,
   ): Promise<{ deletedProfiles: string[]; deletedVolunteers: string[] }> {
-    return this.volunteerRepository.deleteManyAndProfiles(userId);
+    return this.volunteerRepository.softDeleteManyAndProfiles(userId);
   }
 }

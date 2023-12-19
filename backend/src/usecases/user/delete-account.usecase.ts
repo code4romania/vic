@@ -47,34 +47,34 @@ export class DeleteAccountRegularUserUsecase implements IUseCaseService<void> {
     /* =========FULL IMPLEMENTATION UNTESTED =================  */
     /* =======================================================  */
 
-    // // 2. Hard delete all "PushTokens"
-    // await this.pushNotificationService.deleteMany({ userId });
-    // // 3. Hard delete "UserPersonalData"
-    // if (user.userPersonalData?.id) {
-    //   await this.userService.deleteUserPersonalData(user.userPersonalData.id);
-    // }
+    // 2. Hard delete all "PushTokens"
+    await this.pushNotificationService.deleteMany({ userId });
+    // 3. Hard delete "UserPersonalData"
+    if (user.userPersonalData?.id) {
+      await this.userService.deleteUserPersonalData(user.userPersonalData.id);
+    }
 
-    // // 4. Hard delete all Volunteers Records and the associated Profiles for the given UserId
-    // const deletedVolunteersAndProfiles =
-    //   await this.volunteerFacade.deleteManyAndProfiles(userId);
+    // 4. Hard delete all Volunteers Records and the associated Profiles for the given UserId
+    const deletedVolunteersAndProfiles =
+      await this.volunteerFacade.softDeleteManyAndProfiles(userId);
 
-    // // Delete activity logs related to this user
-    // await this.activityLogFacade.deleteMany(
-    //   deletedVolunteersAndProfiles.deletedVolunteers,
-    // );
+    // Delete activity logs related to this user
+    await this.activityLogFacade.deleteMany(
+      deletedVolunteersAndProfiles.deletedVolunteers,
+    );
 
-    // // Delete all access requests made by the user
-    // await this.accessRequestFacade.deleteAllForUser(userId);
+    // Delete all access requests made by the user
+    await this.accessRequestFacade.deleteAllForUser(userId);
 
-    // // Delete all RSVPs to events for the user
-    // await this.eventFacade.deleteAllRSVPsForUser(userId);
+    // Delete all RSVPs to events for the user
+    await this.eventFacade.deleteAllRSVPsForUser(userId);
 
-    // // 4. "User" - Anonimize + Soft delete + Delete profile picture
-    // const deletedUser =
-    //   await this.userService.softDeleteAndAnonimizeRegularUser(userId);
-    // if (deletedUser.profilePicture) {
-    //   await this.s3Service.deleteFile(deletedUser.profilePicture);
-    // }
+    // 4. "User" - Anonimize + Soft delete + Delete profile picture
+    const deletedUser =
+      await this.userService.softDeleteAndAnonimizeRegularUser(userId);
+    if (deletedUser.profilePicture) {
+      await this.s3Service.deleteFile(deletedUser.profilePicture);
+    }
 
     return;
   }
