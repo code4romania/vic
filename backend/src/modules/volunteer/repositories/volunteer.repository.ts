@@ -327,7 +327,7 @@ export class VolunteerRepositoryService
 
       // Soft Delete all associated profiles
       deletedProfiles = await this.volunteerProfileRepository.softRemove(
-        volunteerRecordsToDelete,
+        volunteerRecordsToDelete.map((v) => v.volunteerProfile),
       );
     }
 
