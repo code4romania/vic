@@ -578,9 +578,9 @@
   },
   "home": {
     "greeting": "Salut, {{name}}!",
-    "paragraph": "Bun venit în contul tău VIC! Locul unde poți să ții evidența orelor de activitate și a documentelor tale de voluntar.",
+    "paragraph": "Bun venit în contul tău VIC, locul care face legătura dintre ONG-uri și cei care vor să contribuie la crearea unei lumi mai bune.",
     "no_ngo_title": "Nu ai adăugat încă nicio organizație",
-    "no_ngo_paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur molestie vel lorem a varius. Praesent nisi libero, fermentum eu aliquet non, euismod eu arcu. Donec et ipsum ut ex efficitur tristique.",
+    "no_ngo_paragraph": "Descoperă organizațiile înscrise în VIC și activitățile de voluntariat cărora vrei să le dedici timpul tău.",
     "add_hours": "Adaugă ore de voluntariat!",
     "join_ngo": "Alătură-te unei organizații!",
     "statistics": {
