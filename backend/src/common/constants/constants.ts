@@ -1,8 +1,8 @@
 export type QUEUES_TYPES = 'MAILS' | 'PUSH_NOTIFICATIONS_TICKETS'; // Union type
 
 export const QUEUES: Record<QUEUES_TYPES, string> = {
-  MAILS: 'mails',
-  PUSH_NOTIFICATIONS_TICKETS: 'push-notifications-tickets',
+  MAILS: 'mails-vic',
+  PUSH_NOTIFICATIONS_TICKETS: 'push-notifications-tickets-vic',
 };
 
 export const DATE_CONSTANTS = {
