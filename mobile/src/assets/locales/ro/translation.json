@@ -50,7 +50,7 @@
     "title": "Creare cont",
     "create_account": {
       "heading": "Date cont",
-      "paragraph": "Completați câmpurile de mai jos pentru înregistrare",
+      "paragraph": "Completează câmpurile de mai jos pentru înregistrare",
       "form": {
         "email": {
           "label": "E-mail",
@@ -60,14 +60,14 @@
         },
         "phone": {
           "label": "Telefon",
-          "placeholder": "Introduceți telefonul",
+          "placeholder": "Introdu telefonul",
           "length": "Numărul de telefon trebuie să aibă {{number}} caractere",
           "required": "Telefonul este obligatoriu",
           "pattern": "Numărul de telefon trebuie să conțină doar numere"
         },
         "password": {
           "label": "Parola",
-          "placeholder": "Introduceți parola",
+          "placeholder": "Introdu parola",
           "required": "Parola este obligatorie",
           "pattern": "Parola trebuie să conțină minim 8 caractere, litere mari, litere mici, numere și caractere speciale, fără spații"
         },
@@ -93,7 +93,7 @@
     },
     "validate_account": {
       "heading": "Verificare cod primit prin email",
-      "paragraph": "Completați câmpurile de mai jos pentru înregistrare.",
+      "paragraph": "Completează câmpurile de mai jos pentru înregistrare.",
       "form": {
         "code": {
           "label": "Introdu codul primit prin email",
@@ -106,7 +106,7 @@
     },
     "create_user": {
       "heading": "Date utilizator",
-      "paragraph": "Completați câmpurile de mai jos pentru finalizarea înregistrării.",
+      "paragraph": "Completează câmpurile de mai jos pentru finalizarea înregistrării.",
       "form": {
         "first_name": {
           "label": "Prenume",
@@ -138,7 +138,7 @@
     "errors": {
       "unauthorized": "Numele de utilizator sau parola sunt greșite",
       "username_exists": "Există deja un utilizator cu această adresă de email",
-      "signup": "Eroare la înregistrare. Verificați datele de înregistrare și încercați din nou.",
+      "signup": "Eroare la înregistrare. Verifică datele de înregistrare și încearcă din nou.",
       "resend_code": "Eroare la trimiterea codului de confirmare",
       "init_profile": "Eroare la încărcarea profilului",
       "login": "Eroare la autentificare, vă rugăm încercați din nou",
@@ -150,7 +150,7 @@
   },
   "login": {
     "title": "Autentificare",
-    "paragraph": "Introduceți e-mailul și parola pentru a intra în cont.",
+    "paragraph": "Introdu e-mailul și parola pentru a intra în cont.",
     "submit": "Intra în cont",
     "forgot_password": "Ai uitat parola? ",
     "form": {
@@ -162,7 +162,7 @@
       },
       "password": {
         "label": "Parola",
-        "placeholder": "Introduceți parola",
+        "placeholder": "Introdu parola",
         "required": "Parola este obligatorie"
       }
     }
@@ -193,7 +193,7 @@
       },
       "password": {
         "label": "Parola",
-        "placeholder": "Introduceți parola",
+        "placeholder": "Introdu parola",
         "required": "Parola este obligatorie",
         "pattern": "Parola trebuie să conțină minim 8 caractere, litere mari, litere mici, numere și caractere speciale, fără spații"
       },
@@ -436,7 +436,7 @@
       "email": {
         "label": "E-mail de contact",
         "required": "Email-ul este obligatoriu",
-        "placeholder": "Introduceți emailul",
+        "placeholder": "Introdu emailul",
         "pattern": "Formatul email-ului nu este valid"
       },
       "checkbox": {
@@ -497,11 +497,11 @@
     },
     "errors": {
       "EVENT_RSVP_001": "Evenimentul nu a fost găsit!",
-      "EVENT_RSVP_006": "Evenimentul nu este inca publicat",
+      "EVENT_RSVP_006": "Evenimentul nu este încă publicat",
       "EVENT_RSVP_007": "Evenimentul este încheiat",
       "EVENT_RSVP_003": "Profilul de voluntar nu este activ",
-      "EVENT_RSVP_005": "Va rugam să completați profilul de voluntar înainte da a te alătura evenimentului",
-      "EVENT_RSVP_002": "Trebuie să fii voluntar în organizație să poți participa la acest eveniment",
+      "EVENT_RSVP_005": "Te rugăm să completezi profilul de voluntar înainte da a te alătura evenimentului",
+      "EVENT_RSVP_002": "Trebuie să fii voluntar în organizație pentru a putea să participi la acest eveniment",
       "EVENT_RSVP_004": "Pentru acest eveniment este obligatorie mențiunea"
     },
     "rsvp": {
@@ -722,7 +722,7 @@
         "rejected": "Orele de voluntariat înregistrate au fost respinse"
       },
       "documents": {
-        "new": "ți-a generat contractul de voluntariat. Descarcă și semnează..",
+        "new": "ți-a generat contractul de voluntariat. Descarcă și semnează.",
         "approved_start": "Contractul tău cu",
         "approved_end": "a fost aprobat și semnat.",
         "rejected_start": "Contractul tău cu",
