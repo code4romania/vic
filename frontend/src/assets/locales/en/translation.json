@@ -502,7 +502,7 @@
         "label": "Choose tasks",
         "tasks": "Tasks",
         "required": "The choice of tasks is mandatory.",
-        "helper": "Lorem ipsum. Choose from the list"
+        "helper": "Choose from the list"
       },
       "observation": {
         "title": "Remark (only visible to administrator)",
@@ -585,7 +585,7 @@
     "pending_header": "{{hours}} hours pending approval",
     "past": "History of volunteer hours",
     "past_header": "{{hours}} volunteer hours approved, {{rejected}} rejected",
-    "description": "Lorem ipsum. View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years).",
+    "description": "View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years).",
     "add": "Add hours",
     "header": {
       "task": "Task",
@@ -791,7 +791,7 @@
   },
   "documents": {
     "title": "Volunteer contracts",
-    "description": "Lorem ipsum. View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years).",
+    "description": "View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years).",
     "templates": {
       "table": {
         "header": {
@@ -939,7 +939,7 @@
       },
       "delete_modal": {
         "title": "Are you sure you want to delete this contract?",
-        "description": "Lorem ipsum. View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years)."
+        "description": "View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years)."
       },
       "submit": {
         "confirm": "The contract has been confirmed",
@@ -954,7 +954,7 @@
       },
       "upload": {
         "title": "Upload signed contract",
-        "description": "Lorem ipsum. View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years)."
+        "description": "View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years)."
       }
     },
     "popover": {
