@@ -9,7 +9,8 @@
     },
     "preview": {
       "distribution": "internal",
-      "node": "16.18.1"
+      "node": "16.18.1",
+      "channel": "testing" // https://github.com/expo/eas-cli#eas-channeledit-name
     },
     "production": {
       "channel": "production"

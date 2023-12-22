@@ -12,6 +12,7 @@ web-build/
 .env.production
 .env.test
 .env.development
+.env.local
 
 # macOS
 .DS_Store
