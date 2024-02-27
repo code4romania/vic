@@ -81,7 +81,9 @@
     "save_draft": "Save as draft",
     "other": "Other option",
     "add_file": "Add file here",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "no_options": "No options",
+    "type_for_options": "Type for options..."
   },
   "header": {
     "login": "Login",

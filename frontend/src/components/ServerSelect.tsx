@@ -9,6 +9,7 @@ import React, {
 import AsyncSelect from 'react-select/async';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { debouncePromise } from '../common/utils/utils';
+import { useTranslation } from 'react-i18next';
 
 export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select'>, 'value'> {
   label: string;
@@ -35,6 +36,7 @@ const ServerSelect = ({
   disabled,
   ...props
 }: ServerSelectProps) => {
+  const { t } = useTranslation('general');
   const [defaultValue, setDefaultValue] = useState<ListItem>();
 
   const onSearch = (inputValue: string) => (inputValue?.length >= 2 ? loadOptions(inputValue) : []);
@@ -67,6 +69,9 @@ const ServerSelect = ({
         isMulti={isMulti}
         value={defaultValue || null}
         isDisabled={disabled}
+        noOptionsMessage={({ inputValue }) =>
+          inputValue.length < 2 ? `${t('type_for_options')}` : `${t('no_options')}`
+        }
       />
       {helper}
     </div>
