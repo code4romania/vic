@@ -21,6 +21,10 @@ export class MailService {
       from,
       template: './mail-template',
       ...email,
+      context: {
+        ...email.context,
+        contactEmail: process.env.MAIL_CONTACT, // To make available the variable to all templates, especially the partials (header and footer)
+      },
     });
   }
 }

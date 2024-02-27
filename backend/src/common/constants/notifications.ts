@@ -3,11 +3,11 @@ export const NOTIFICATIONS = {
     PUSH: {
       title: 'TEO',
       body: (organizationName: string): string =>
-        `Cerearea de inscriere in organizatia ${organizationName} a fost aprobata`,
+        `Cererea de înscriere în organizația ${organizationName} a fost aprobată`,
     },
     EMAIL: {
       subject: (organizationName: string): string =>
-        `Cerearea de inscriere in organizatia ${organizationName} a fost aprobata`,
+        `Cererea de înscriere în organizația ${organizationName} a fost aprobată`,
       body: '',
     },
   },
@@ -15,11 +15,11 @@ export const NOTIFICATIONS = {
     PUSH: {
       title: 'TEO',
       body: (organizationName: string): string =>
-        `Cerearea de inscriere in organizatia ${organizationName} a fost respinsa`,
+        `Cererea de înscriere în organizația ${organizationName} a fost respinsă`,
     },
     EMAIL: {
       subject: (organizationName: string): string =>
-        `Cerearea de inscriere in organizatia ${organizationName} a fost respinsa`,
+        `Cererea de înscriere în organizația ${organizationName} a fost respinsă`,
       body: '',
     },
   },
@@ -27,11 +27,11 @@ export const NOTIFICATIONS = {
     PUSH: {
       title: 'TEO',
       body: (organizationName: string): string =>
-        `${organizationName} a dezactivat contul tau din organizatie. Pentru detalii te rugăm să contactezi direct organizația. `,
+        `${organizationName} a dezactivat contul tău din organizație. Pentru detalii te rugăm să contactezi direct organizația.`,
     },
     EMAIL: {
       subject: (organizationName: string): string =>
-        `${organizationName} a dezactivat contul tau din organizatie. Pentru detalii te rugăm să contactezi direct organizația. `,
+        `${organizationName} a dezactivat contul tău din organizație. Pentru detalii te rugăm să contactezi direct organizația.`,
       body: '',
     },
   },
@@ -39,11 +39,11 @@ export const NOTIFICATIONS = {
     PUSH: {
       title: 'TEO',
       body: (organizationName: string): string =>
-        `Organizatia ${organizationName} a adaugat un eveniment nou`,
+        `Organizația ${organizationName} a adăugat un eveniment nou`,
     },
     EMAIL: {
       subject: (organizationName: string): string =>
-        `Organizatia ${organizationName} a adaugat un eveniment nou`,
+        `Organizația ${organizationName} a adăugat un eveniment nou`,
       body: '',
     },
   },
@@ -65,11 +65,11 @@ export const NOTIFICATIONS = {
     PUSH: {
       title: 'TEO',
       body: (organizationName: string): string =>
-        `${organizationName} ți-a generat contractul de voluntariat. Intră în app și descarcă documentul.`,
+        `${organizationName} ți-a generat contractul de voluntariat. Intră în aplicație și descarcă documentul.`,
     },
     EMAIL: {
       subject: (organizationName: string): string =>
-        `${organizationName} ți-a generat contractul de voluntariat. Intră în app și descarcă documentul.`,
+        `${organizationName} ți-a generat contractul de voluntariat. Intră în aplicație și descarcă documentul.`,
       body: '',
     },
   },
@@ -77,11 +77,11 @@ export const NOTIFICATIONS = {
     PUSH: {
       title: 'TEO',
       body: (organizationName: string, reason: string): string =>
-        `Contractul tau cu ${organizationName} a fost respins. Motiv: ${reason}`,
+        `Contractul tău cu ${organizationName} a fost respins. Motiv: ${reason}`,
     },
     EMAIL: {
       subject: (organizationName: string, reason: string): string =>
-        `Contractul tau cu ${organizationName} a fost respins. Motiv: ${reason}`,
+        `Contractul tău cu ${organizationName} a fost respins. Motiv: ${reason}`,
       body: '',
     },
   },
@@ -89,11 +89,11 @@ export const NOTIFICATIONS = {
     PUSH: {
       title: 'TEO',
       body: (organizationName: string): string =>
-        `Contractul tau cu ${organizationName} a fost aprobat. Descarca documentul direct din aplicatie`,
+        `Contractul tău cu ${organizationName} a fost aprobat. Descarcă documentul direct din aplicație`,
     },
     EMAIL: {
       subject: (organizationName: string): string =>
-        `Contractul tau cu ${organizationName} a fost respins. Descarca documentul direct din aplicatie`,
+        `Contractul tău cu ${organizationName} a fost respins. Descarcă documentul direct din aplicație`,
       body: '',
     },
   },
