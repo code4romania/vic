@@ -134,7 +134,7 @@ const EditOrganization = () => {
                   render={({ field: { onChange, value } }) => {
                     return (
                       <FormTextarea
-                        label={i18n.t('organization:teo_description')}
+                        label={i18n.t('organization:vic_description')}
                         defaultValue={value}
                         value={value}
                         onChange={onChange}

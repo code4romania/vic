@@ -1,7 +1,7 @@
 {
     "general": {
         "current_month": "This month",
-        "about_teo": "About VIC",
+        "about_vic": "About VIC",
         "event": "Event",
         "news": "Latest news",
         "organizations": "Organizations",
@@ -326,7 +326,7 @@
                 "label": "How did you hear about us?",
                 "required": "This field is mandatory",
                 "social": "Social networks",
-                "teo": "From the VIC app",
+                "vic": "From the VIC app",
                 "friend": "From a colleague or friend",
                 "event": "From an event",
                 "other": "Another option"

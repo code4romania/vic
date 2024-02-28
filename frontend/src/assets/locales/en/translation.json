@@ -116,7 +116,7 @@
     "title": "View profile",
     "card_title": "Voluntary information",
     "name": "Voluntar {{status}}",
-    "volunteer_from": "Added to TEO at",
+    "volunteer_from": "Added to VIC at",
     "status": {
       "active": "active",
       "archived": "archived",
@@ -133,7 +133,7 @@
       "confirmation_message": "The application was {{option}}",
       "referral": {
         "social": "Social networks",
-        "teo": "From the TEO app",
+        "vic": "From the VIC app",
         "friend": "From a colleague or friend",
         "event": "From an event",
         "other": "Another option"
@@ -282,8 +282,8 @@
     "logo": "Organization logo",
     "name": "Organization name",
     "description": "Organization description",
-    "teo_description": "Description of the organization in TEO",
-    "description_placeholder": "The organization description is displayed in the organization profile in the TEO application. You can choose to formulate a specific description for the TEO app, which will attract as many volunteers as possible, or you can use the organization description as it is in ONGHub.",
+    "vic_description": "Description of the organization in VIC",
+    "description_placeholder": "The organization description is displayed in the organization profile in the VIC application. You can choose to formulate a specific description for the VIC app, which will attract as many volunteers as possible, or you can use the organization description as it is in ONGHub.",
     "errors": {
       "ORG_001": "The organization has not been found",
       "no_data": "Organization data could not be uploaded"
@@ -339,7 +339,7 @@
     "name": "Access code",
     "create": "Create new code",
     "title": "Access code information",
-    "description": "Enter a new access code. Using the access code, a TEO user can join the organization as a volunteer, without having to approve the application manually.",
+    "description": "Enter a new access code. Using the access code, a VIC user can join the organization as a volunteer, without having to approve the application manually.",
     "start_date": "Valid from date*",
     "end_date": "End of validity date",
     "modal": {
@@ -587,7 +587,7 @@
     "pending_header": "{{hours}} hours pending approval",
     "past": "History of volunteer hours",
     "past_header": "{{hours}} volunteer hours approved, {{rejected}} rejected",
-    "description": "View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years).",
+    "description": "View the list of all your volunteer contracts in VIC. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years).",
     "add": "Add hours",
     "header": {
       "task": "Task",
@@ -793,7 +793,7 @@
   },
   "documents": {
     "title": "Volunteer contracts",
-    "description": "View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years).",
+    "description": "View the list of all your volunteer contracts in VIC. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years).",
     "templates": {
       "table": {
         "header": {
@@ -941,7 +941,7 @@
       },
       "delete_modal": {
         "title": "Are you sure you want to delete this contract?",
-        "description": "View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years)."
+        "description": "View the list of all your volunteer contracts in VIC. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years)."
       },
       "submit": {
         "confirm": "The contract has been confirmed",
@@ -956,7 +956,7 @@
       },
       "upload": {
         "title": "Upload signed contract",
-        "description": "View the list of all your volunteer contracts in TEO. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years)."
+        "description": "View the list of all your volunteer contracts in VIC. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years)."
       }
     },
     "popover": {

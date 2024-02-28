@@ -33,8 +33,8 @@ const AboutTeo = () => {
   }
 
   return (
-    <SectionWrapper title={t('general:about_teo')}>
-      {getTeoStatisticsError ? (
+    <SectionWrapper title={t('general:about_vic')}>
+      {getVicStatisticsError ? (
         <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1">{`${t(
           'general:error.load_entries',
         )}`}</Text>

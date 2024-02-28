@@ -1,7 +1,7 @@
 {
     "general": {
         "current_month": "Luna aceasta",
-        "about_teo": "Despre VIC",
+        "about_vic": "Despre VIC",
         "event": "Eveniment",
         "news": "Ultimele noutăți",
         "organizations": "Organizații",
@@ -326,7 +326,7 @@
                 "label": "De unde ai aflat de noi?",
                 "required": "Acest câmp este obligatoriu",
                 "social": "Rețelele de socializare",
-                "teo": "Din aplicația VIC",
+                "vic": "Din aplicația VIC",
                 "friend": "De la un coleg sau prieten",
                 "event": "Dintr-un eveniment",
                 "other": "Altă opțiune"

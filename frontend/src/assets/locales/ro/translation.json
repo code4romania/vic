@@ -133,7 +133,7 @@
       "confirmation_message": "Cererea de înscriere a fost {{option}}",
       "referral": {
         "social": "Rețelele de socializare",
-        "teo": "Din aplicația TEO",
+        "vic": "Din aplicația TEO",
         "friend": "De la un coleg sau prieten",
         "event": "Dintr-un eveniment",
         "other": "Altă opțiune"
@@ -282,7 +282,7 @@
     "logo": "Logo organizație",
     "name": "Denumire organizație",
     "description": "Descriere organizație",
-    "teo_description": "Descrierea organizației în TEO",
+    "vic_description": "Descrierea organizației în TEO",
     "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poți alege să formulezi o descriere specifica pentru aplicația TEO, prin care să atragi cat mai multi voluntari, sau să folosești descrierea organizației asa cum se regăsește în ONGHub.",
     "errors": {
       "ORG_001": "Organizația nu a fost găsită",
