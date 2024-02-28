@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 
-const AboutTeoSkeleton = (props: any) => (
+const AboutVicSkeleton = (props: any) => (
   <ContentLoader
     speed={2}
     width={500}
@@ -17,4 +17,4 @@ const AboutTeoSkeleton = (props: any) => (
   </ContentLoader>
 );
 
-export default AboutTeoSkeleton;
+export default AboutVicSkeleton;

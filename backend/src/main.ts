@@ -32,8 +32,8 @@ async function bootstrap(): Promise<void> {
   // Create swagger module only local or development
   if (!(process.env.NODE_ENV === Environment.Production)) {
     const options = new DocumentBuilder()
-      .setTitle('TEO API Documentation')
-      .setDescription('TEO API Documentation')
+      .setTitle('VIC API Documentation')
+      .setDescription('VIC API Documentation')
       .setVersion('1.0')
       .addBearerAuth()
       .build();

@@ -3,7 +3,7 @@ import Statistics from '../components/Statistics';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Layout, Text, useTheme } from '@ui-kitten/components';
 import LatestNews from '../components/LatestNews';
-import AboutTeo from '../components/AboutTeo';
+import AboutVic from '../components/AboutVic';
 import Paragraph from '../components/Paragraph';
 import Button from '../components/Button';
 import WaveSvg from '../assets/svg/wave';
@@ -80,7 +80,7 @@ const Home = ({ navigation }: any) => {
           <Statistics navigation={navigation} />
           <View style={styles.newsContainer}>
             {userProfile?.activeOrganization && <LatestNews navigation={navigation} />}
-            <AboutTeo />
+            <AboutVic />
           </View>
         </Layout>
       </ScrollView>

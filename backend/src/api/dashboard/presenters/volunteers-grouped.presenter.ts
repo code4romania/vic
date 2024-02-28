@@ -1,9 +1,9 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IDashaboardVolunteersGrouped } from 'src/modules/dashboard/model/dashboard.model';
+import { IDashboardVolunteersGrouped } from 'src/modules/dashboard/model/dashboard.model';
 
 export class VolunteersGroupedPresenter {
-  constructor(data: IDashaboardVolunteersGrouped) {
+  constructor(data: IDashboardVolunteersGrouped) {
     this.name = data.name;
     this.count = data.count;
   }

@@ -16,12 +16,12 @@ export class OngHubService {
   ) {}
 
   //  Get user and organization data from OngHub
-  //  Because both Teo and OngHub refers to the same user pool the same token used in one can authorize a request in the other
+  //  Because both Vic and OngHub refers to the same user pool the same token used in one can authorize a request in the other
 
-  // cognito_user_id - user id of an admin user in TEO and a Admin/Employee user in OngHub
-  // access_token - token sent by the Teo Web Client for requesting the user profile
+  // cognito_user_id - user id of an admin user in VIC and a Admin/Employee user in OngHub
+  // access_token - token sent by the Vic Web Client for requesting the user profile
 
-  // This should be called on first user login where there is no data related to the user an it's organization in the TEO DB.
+  // This should be called on first user login where there is no data related to the user an it's organization in the VIC DB.
   public async getUserAndOrganizationDataFromOngHub(
     access_token: string,
   ): Promise<IUserWithOrganizationModel> {

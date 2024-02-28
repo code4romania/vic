@@ -10,7 +10,7 @@ import { IDashboardRepository } from '../interfaces/dashboard-volunteer-status-r
 import {
   FindDashboardVolunteersGrouped,
   FindDashboardVolunteerStatusChartOptions,
-  IDashaboardVolunteersGrouped,
+  IDashboardVolunteersGrouped,
   IDashboardVolunteersHours,
   IDashboardVolunteersStatus,
   IDashboardVolunteerStatusTimeseries,
@@ -64,7 +64,7 @@ export class DashboardRepository implements IDashboardRepository {
 
   async findVolunteersStatisticsGrouped(
     findOptions: FindDashboardVolunteersGrouped,
-  ): Promise<IDashaboardVolunteersGrouped[]> {
+  ): Promise<IDashboardVolunteersGrouped[]> {
     const query = this.volunteerRepository
       .createQueryBuilder('v')
       .leftJoin('v.user', 'u')

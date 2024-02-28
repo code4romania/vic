@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { ITeoStatistics } from 'src/modules/dashboard/model/dashboard.model';
+import { IVicStatistics } from 'src/modules/dashboard/model/dashboard.model';
 
-export class TeoStatisticsPresenter {
-  constructor(statistics: ITeoStatistics) {
+export class VicStatisticsPresenter {
+  constructor(statistics: IVicStatistics) {
     this.numberOfActiveVolunteers = statistics.numberOfActiveVolunteers;
     this.numberOfOrganizations = statistics.numberOfOrganizations;
   }
