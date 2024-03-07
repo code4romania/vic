@@ -7,7 +7,7 @@ export interface IDashboardVolunteerStatusTimeseries {
   archived: number;
 }
 
-export interface IDashaboardVolunteersGrouped {
+export interface IDashboardVolunteersGrouped {
   name: string;
   count: number;
 }
@@ -39,7 +39,7 @@ export interface IVolunteerMonthlyStatistics {
   numberOfOrganizationUpdates: number;
 }
 
-export interface ITeoStatistics {
+export interface IVicStatistics {
   numberOfActiveVolunteers: number;
   numberOfOrganizations: number;
 }

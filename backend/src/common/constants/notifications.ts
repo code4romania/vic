@@ -1,7 +1,7 @@
 export const NOTIFICATIONS = {
   APPROVE_ACCESS_REQUEST: {
     PUSH: {
-      title: 'TEO',
+      title: 'VIC',
       body: (organizationName: string): string =>
         `Cererea de înscriere în organizația ${organizationName} a fost aprobată`,
     },
@@ -13,7 +13,7 @@ export const NOTIFICATIONS = {
   },
   REJECT_ACCESS_REQUEST: {
     PUSH: {
-      title: 'TEO',
+      title: 'VIC',
       body: (organizationName: string): string =>
         `Cererea de înscriere în organizația ${organizationName} a fost respinsă`,
     },
@@ -25,7 +25,7 @@ export const NOTIFICATIONS = {
   },
   ARCHIVE_VOLUNTEER: {
     PUSH: {
-      title: 'TEO',
+      title: 'VIC',
       body: (organizationName: string): string =>
         `${organizationName} a dezactivat contul tău din organizație. Pentru detalii te rugăm să contactezi direct organizația.`,
     },
@@ -37,7 +37,7 @@ export const NOTIFICATIONS = {
   },
   NEW_EVENT: {
     PUSH: {
-      title: 'TEO',
+      title: 'VIC',
       body: (organizationName: string): string =>
         `Organizația ${organizationName} a adăugat un eveniment nou`,
     },
@@ -49,21 +49,21 @@ export const NOTIFICATIONS = {
   },
   APPROVED_HOURS: {
     PUSH: {
-      title: 'TEO',
+      title: 'VIC',
       body: (hours: number, date: string): string =>
         `${hours} ore de voluntariat din ${date} au fost aprobate`,
     },
   },
   REJECTED_HOURS: {
     PUSH: {
-      title: 'TEO',
+      title: 'VIC',
       body: (hours: number, date: string): string =>
         `${hours} ore de voluntariat din ${date} au fost respinse`,
     },
   },
   NEW_CONTRACT: {
     PUSH: {
-      title: 'TEO',
+      title: 'VIC',
       body: (organizationName: string): string =>
         `${organizationName} ți-a generat contractul de voluntariat. Intră în aplicație și descarcă documentul.`,
     },
@@ -75,7 +75,7 @@ export const NOTIFICATIONS = {
   },
   REJECT_CONTRACT: {
     PUSH: {
-      title: 'TEO',
+      title: 'VIC',
       body: (organizationName: string, reason: string): string =>
         `Contractul tău cu ${organizationName} a fost respins. Motiv: ${reason}`,
     },
@@ -87,7 +87,7 @@ export const NOTIFICATIONS = {
   },
   APPROVE_CONTRACT: {
     PUSH: {
-      title: 'TEO',
+      title: 'VIC',
       body: (organizationName: string): string =>
         `Contractul tău cu ${organizationName} a fost aprobat. Descarcă documentul direct din aplicație`,
     },
@@ -99,7 +99,7 @@ export const NOTIFICATIONS = {
   },
   NEW_ANNOUCEMENT: {
     PUSH: {
-      title: 'TEO',
+      title: 'VIC',
       body: (organizationName: string): string =>
         `Ai un mesaj nou de la ${organizationName}`,
     },

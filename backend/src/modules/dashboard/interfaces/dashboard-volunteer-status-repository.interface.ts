@@ -1,7 +1,7 @@
 import {
   FindDashboardVolunteerStatusChartOptions,
   FindDashboardVolunteersGrouped,
-  IDashaboardVolunteersGrouped,
+  IDashboardVolunteersGrouped,
   IDashboardVolunteerStatusTimeseries,
   IDashboardVolunteersHours,
   IDashboardVolunteersStatus,
@@ -13,7 +13,7 @@ export interface IDashboardRepository {
   ): Promise<IDashboardVolunteerStatusTimeseries[]>;
   findVolunteersStatisticsGrouped(
     findOptions: FindDashboardVolunteersGrouped,
-  ): Promise<IDashaboardVolunteersGrouped[]>;
+  ): Promise<IDashboardVolunteersGrouped[]>;
   countVolunteersHours(
     organizationId: string,
   ): Promise<IDashboardVolunteersHours>;

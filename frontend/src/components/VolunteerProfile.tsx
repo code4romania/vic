@@ -56,7 +56,7 @@ const VolunteerProfile = ({
             <hr className="border-cool-gray-200 col-span-full" />
             <FormReadOnlyElement value={branch} label={i18n.t('division:entity.branch')} />
             <div className="flex gap-2.5 flex-col">
-              <small className="text-cool-gray-500">{`${i18n.t('general:status')} in TEO`}</small>
+              <small className="text-cool-gray-500">{`${i18n.t('general:status')} in VIC`}</small>
               <p className={`${VolunteerProfileStatusTextColorMapper[status]}`}>
                 {i18n.t(`volunteer:name`, {
                   status: i18n.t(`volunteer:status.${status}`),

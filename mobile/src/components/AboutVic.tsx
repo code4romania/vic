@@ -3,22 +3,22 @@ import SectionWrapper from './SectionWrapper';
 import StatisticsCard from './StatisticsCard';
 //SVG
 import HorizontalCarousel from './HorizontalCarousel';
-import { useTeoStatistics } from '../services/statistics/statistics.service';
+import { useVicStatistics } from '../services/statistics/statistics.service';
 import { useTranslation } from 'react-i18next';
 import { Text } from '@ui-kitten/components';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import AboutTeoSkeleton from './skeleton/about-teo-skeleton';
+import AboutVicSkeleton from './skeleton/about-vic-skeleton';
 import { useFocusEffect } from '@react-navigation/native';
 
-const AboutTeo = () => {
+const AboutVic = () => {
   const { t } = useTranslation('general');
 
   const {
     isFetching: isLoadingStatistics,
     data: statistics,
-    error: getTeoStatisticsError,
+    error: getVicStatisticsError,
     refetch,
-  } = useTeoStatistics();
+  } = useVicStatistics();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -29,12 +29,12 @@ const AboutTeo = () => {
 
   // add skeleton loading
   if (isLoadingStatistics) {
-    return <AboutTeoSkeleton />;
+    return <AboutVicSkeleton />;
   }
 
   return (
-    <SectionWrapper title={t('general:about_teo')}>
-      {getTeoStatisticsError ? (
+    <SectionWrapper title={t('general:about_vic')}>
+      {getVicStatisticsError ? (
         <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1">{`${t(
           'general:error.load_entries',
         )}`}</Text>
@@ -56,4 +56,4 @@ const AboutTeo = () => {
   );
 };
 
-export default AboutTeo;
+export default AboutVic;

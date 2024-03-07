@@ -124,7 +124,7 @@ import { GetVolunteerPendingContractsUsecase } from './documents/get-volunteer-p
 import { CancelContractUsecase } from './documents/cancel-contract.usecase';
 import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
 import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
-import { GetTeoStatisticsUsecase } from './dashboard/get-teo-statistics.usecase';
+import { GetVicStatisticsUsecase } from './dashboard/get-vic-statistics.usecase';
 import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anouncements-by-user.usecase';
 import { LeaveOrganizationUsecase } from './organization/leave-organization.usecase';
 import { RejoinOrganizationUsecase } from './organization/rejoin-organization.usecase';
@@ -272,7 +272,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     RegisterDevicePushTokenUseCase,
     UnregisterDevicePushTokenUseCase,
     GetVolunteerMonthlyNewsStatisticsUsecase,
-    GetTeoStatisticsUsecase,
+    GetVicStatisticsUsecase,
     // Templates
     CreateTemplateUsecase,
     GetTemplatesUsecase,
@@ -438,7 +438,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetVolunteerContractHistoryUsecase,
     GetVolunteerPendingContractsUsecase,
     CancelContractUsecase,
-    GetTeoStatisticsUsecase,
+    GetVicStatisticsUsecase,
     // Notifications
     UpdateSettingsUsecase,
   ],

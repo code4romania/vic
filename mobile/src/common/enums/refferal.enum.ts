@@ -1,6 +1,6 @@
 export enum REFERRAL {
   SOCIAL = 'social',
-  TEO = 'teo',
+  VIC = 'vic',
   FRIEND = 'friend',
   EVENT = 'event',
   OTHER = 'other',

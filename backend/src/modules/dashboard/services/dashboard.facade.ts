@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   FindDashboardVolunteersGrouped,
   FindDashboardVolunteerStatusChartOptions,
-  IDashaboardVolunteersGrouped,
+  IDashboardVolunteersGrouped,
   IDashboardVolunteersHours,
   IDashboardVolunteersStatus,
   IDashboardVolunteerStatusTimeseries,
@@ -23,7 +23,7 @@ export class DashboardFacade {
 
   async findVolunteersStatisticsGrouped(
     findOptions: FindDashboardVolunteersGrouped,
-  ): Promise<IDashaboardVolunteersGrouped[]> {
+  ): Promise<IDashboardVolunteersGrouped[]> {
     return this.dashboardRepository.findVolunteersStatisticsGrouped(
       findOptions,
     );
