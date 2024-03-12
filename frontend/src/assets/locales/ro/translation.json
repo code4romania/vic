@@ -116,7 +116,7 @@
     "title": "Vizualizare profil",
     "card_title": "Informații voluntar",
     "name": "Voluntar {{status}}",
-    "volunteer_from": "Adăugat în TEO la",
+    "volunteer_from": "Adăugat în VIC la",
     "status": {
       "active": "activ",
       "archived": "arhivat",
@@ -133,7 +133,7 @@
       "confirmation_message": "Cererea de înscriere a fost {{option}}",
       "referral": {
         "social": "Rețelele de socializare",
-        "vic": "Din aplicația TEO",
+        "vic": "Din aplicația VIC",
         "friend": "De la un coleg sau prieten",
         "event": "Dintr-un eveniment",
         "other": "Altă opțiune"
@@ -282,8 +282,8 @@
     "logo": "Logo organizație",
     "name": "Denumire organizație",
     "description": "Descriere organizație",
-    "vic_description": "Descrierea organizației în TEO",
-    "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația TEO. Poți alege să formulezi o descriere specifica pentru aplicația TEO, prin care să atragi cat mai multi voluntari, sau să folosești descrierea organizației asa cum se regăsește în ONGHub.",
+    "vic_description": "Descrierea organizației în VIC",
+    "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația VIC. Poți alege să formulezi o descriere specifica pentru aplicația VIC, prin care să atragi cat mai multi voluntari, sau să folosești descrierea organizației asa cum se regăsește în ONGHub.",
     "errors": {
       "ORG_001": "Organizația nu a fost găsită",
       "no_data": "Nu s-au putut încărca datele organizației"
@@ -339,7 +339,7 @@
     "name": "Cod acces",
     "create": "Creează cod nou",
     "title": "Informații cod acces",
-    "description": "Introduceți un cod de acces nou. Folosind codul de acces, un utilizator TEO se poate alătura organizației ca voluntar, fără a fi necesar să aprobați cererea manual.",
+    "description": "Introduceți un cod de acces nou. Folosind codul de acces, un utilizator VIC se poate alătura organizației ca voluntar, fără a fi necesar să aprobați cererea manual.",
     "start_date": "Dată de început valabilitate*",
     "end_date": "Dată de final valabilitate",
     "modal": {
@@ -784,7 +784,7 @@
   },
   "documents": {
     "title": "Contracte de voluntariat",
-    "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+    "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din VIC. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
     "templates": {
       "table": {
         "header": {
@@ -932,7 +932,7 @@
       },
       "delete_modal": {
         "title": "Ești sigur că dorești ștergerea acestui contract?",
-        "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
+        "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din VIC. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
       },
       "submit": {
         "confirm": "Contractul a fost confirmat",
@@ -947,7 +947,7 @@
       },
       "upload": {
         "title": "Încarcă contract semnat",
-        "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din TEO. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
+        "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din VIC. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
       }
     },
     "popover": {
