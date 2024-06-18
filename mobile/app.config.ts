@@ -18,7 +18,7 @@ const expoConfig: ExpoConfig = {
   },
   assetBundlePatterns: ['**/*'],
   ios: {
-    buildNumber: '8',
+    buildNumber: '9',
     supportsTablet: false,
     bundleIdentifier: 'org.commitglobal.vic',
     entitlements: {
@@ -32,7 +32,7 @@ const expoConfig: ExpoConfig = {
     },
   },
   android: {
-    versionCode: 6,
+    versionCode: 7,
     adaptiveIcon: {
       foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
