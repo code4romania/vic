@@ -180,7 +180,6 @@ const News = ({ navigation, route }: any) => {
   };
 
   const onNewsItemPress = (item: INewsItem) => {
-    console.log('item', item);
     if (userProfile?.activeOrganization?.id !== item.organizationId) {
       const activeOrganization = userProfile?.myOrganizations.find(
         (org) => org.id === item.organizationId,

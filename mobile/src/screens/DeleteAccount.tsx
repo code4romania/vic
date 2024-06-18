@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import FormLayout from '../layouts/FormLayout';
 import { useDeleteAccountMutation } from '../services/user/user.service';
 import { useAuth } from '../hooks/useAuth';
-import Constants from 'expo-constants';
 
 const DeleteAccount = ({ navigation }: any) => {
   const { t } = useTranslation('delete_account');
@@ -49,7 +48,7 @@ const DeleteAccount = ({ navigation }: any) => {
             style={{ color: theme['color-danger-500'] }}
             category="p1"
           >
-            {`${t('error', { value: Constants.expoConfig?.extra?.contactEmail })}`}
+            {`${t('error', { value: process.env.EXPO_PUBLIC_CONTACT_EMAIL })}`}
           </Text>
         )}
       </FormLayout>

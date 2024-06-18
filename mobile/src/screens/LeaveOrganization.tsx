@@ -17,7 +17,6 @@ import Button from '../components/Button';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const LeaveOrganization = ({ navigation }: any) => {
-  console.log('LeaveOrganization');
   const { t } = useTranslation('leave_ngo');
 
   const theme = useTheme();

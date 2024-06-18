@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
 
 const Anouncements = ({ navigation }: any) => {
-  console.log('Anouncements');
   const { t } = useTranslation('general');
 
   const {

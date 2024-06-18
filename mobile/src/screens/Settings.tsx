@@ -15,7 +15,6 @@ import { useAuth } from '../hooks/useAuth';
 import i18n from '../common/config/i18n';
 import PressableContainer from '../components/PressableContainer';
 import * as Linking from 'expo-linking';
-import Constants from 'expo-constants';
 import ImageWithPreload from '../components/ImageWithPreload';
 import { NotificationContext } from '../contexts/notification/NotificationContext';
 import { useUserProfile } from '../store/profile/profile.selector';
@@ -76,7 +75,7 @@ const Settings = ({ navigation }: any) => {
   };
 
   const onInfoListItemPress = () => {
-    Linking.openURL(Constants.expoConfig?.extra?.infoLink);
+    Linking.openURL(`${process.env.EXPO_PUBLIC_INFORMATION_LINK}`);
   };
 
   const onLogout = () => {

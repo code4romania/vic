@@ -1,14 +1,13 @@
-import Constants from 'expo-constants';
 import * as Linking from 'expo-linking';
 
 export const AMPLIFY_CONFIG = {
   Auth: {
-    region: Constants.expoConfig?.extra?.awsRegion,
-    userPoolId: Constants.expoConfig?.extra?.userPoolId,
-    userPoolWebClientId: Constants.expoConfig?.extra?.userPoolClientId, // ONGHub
+    region: process.env.EXPO_PUBLIC_AWS_REGION,
+    userPoolId: process.env.EXPO_PUBLIC_USER_POOL_ID,
+    userPoolWebClientId: process.env.EXPO_PUBLIC_USER_POOL_CLIENT_ID, // ONGHub
   },
   oauth: {
-    domain: Constants.expoConfig?.extra?.awsDomain,
+    domain: process.env.EXPO_PUBLIC_AWS_DOMAIN,
     scope: ['email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
     redirectSignIn: Linking.createURL(''),
     redirectSignOut: Linking.createURL(''),

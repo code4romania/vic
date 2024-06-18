@@ -19,7 +19,6 @@ import ActivityLogSkeleton from '../components/skeleton/activity-log-skeleton';
 import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 
 const ActivityLog = ({ navigation, route }: any) => {
-  console.log('ActivityLog');
   // translations
   const { t } = useTranslation('activity_log');
   const { activityLogId } = route.params;
