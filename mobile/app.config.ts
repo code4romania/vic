@@ -18,7 +18,7 @@ const expoConfig: ExpoConfig = {
   },
   assetBundlePatterns: ['**/*'],
   ios: {
-    buildNumber: '7',
+    buildNumber: '8',
     supportsTablet: false,
     bundleIdentifier: 'org.commitglobal.vic',
     entitlements: {
@@ -32,7 +32,7 @@ const expoConfig: ExpoConfig = {
     },
   },
   android: {
-    versionCode: 5,
+    versionCode: 6,
     adaptiveIcon: {
       foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
@@ -61,18 +61,18 @@ const expoConfig: ExpoConfig = {
     ],
   ],
   extra: {
-    apiUrl: process.env.EXPO_PUBLIC_API_URL,
-    awsRegion: process.env.EXPO_PUBLIC_AWS_REGION,
-    userPoolId: process.env.EXPO_PUBLIC_USER_POOL_ID,
-    userPoolClientId: process.env.EXPO_PUBLIC_USER_POOL_CLIENT_ID,
-    awsDomain: process.env.EXPO_PUBLIC_AWS_DOMAIN,
+    apiUrl: 'https://api-vic-staging.ngohub.ro',
+    awsRegion: 'eu-west-1',
+    userPoolId: 'eu-west-1_HRB7J3vjJ',
+    userPoolClientId: '4sihusclii449k2otmeetl4dgq',
+    awsDomain: 'vic-staging.auth.eu-west-1.amazoncognito.com',
     eas: {
       projectId: '6aaad982-5a5c-4af8-b66c-7689afe74e1f',
     },
-    policyLink: process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK,
-    termsLink: process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK,
-    infoLink: process.env.EXPO_PUBLIC_INFORMATION_LINK,
-    contactEmail: process.env.EXPO_PUBLIC_CONTACT_EMAIL,
+    policyLink: 'https://www.ngohub.ro/ro/politica-de-confidentialitate',
+    termsLink: 'https://www.ngohub.ro/ro/termeni-si-conditii',
+    infoLink: 'https://www.ngohub.ro/ro/vic',
+    contactEmail: 'civic@commitglobal.org',
   },
   updates: {
     url: 'https://u.expo.dev/6aaad982-5a5c-4af8-b66c-7689afe74e1f',
