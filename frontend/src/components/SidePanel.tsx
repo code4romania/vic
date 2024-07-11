@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 
 interface SidePanelProps {
   isOpen: boolean;
@@ -9,9 +9,9 @@ interface SidePanelProps {
 
 const SidePanel = ({ isOpen, onClose, children }: SidePanelProps) => {
   return (
-    <Transition.Root show={isOpen} as={Fragment}>
+    <Transition show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="ease-in-out duration-500"
           enterFrom="opacity-0"
@@ -21,12 +21,12 @@ const SidePanel = ({ isOpen, onClose, children }: SidePanelProps) => {
           leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-cool-gray-500 bg-opacity-75 transition-opacity" />
-        </Transition.Child>
+        </TransitionChild>
 
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
             <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full ">
-              <Transition.Child
+              <TransitionChild
                 as={Fragment}
                 enter="transform transition ease-in-out duration-500"
                 enterFrom="translate-x-full"
@@ -35,15 +35,15 @@ const SidePanel = ({ isOpen, onClose, children }: SidePanelProps) => {
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto relative w-screen xs:max-w-xs sm:max-w-md flex h-full flex-col py-6 bg-white shadow-xl gap-5">
+                <DialogPanel className="pointer-events-auto relative w-screen xs:max-w-xs sm:max-w-md flex h-full flex-col py-6 bg-white shadow-xl gap-5">
                   {children}
-                </Dialog.Panel>
-              </Transition.Child>
+                </DialogPanel>
+              </TransitionChild>
             </div>
           </div>
         </div>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   );
 };
 

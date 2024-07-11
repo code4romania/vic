@@ -18,7 +18,7 @@ interface AccessCodeFormProps {
 export type AccessCodeFormTypes = {
   code: string;
   startDate: Date;
-  endDate?: Date;
+  endDate?: Date | null;
 };
 
 const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: AccessCodeFormProps) => {
@@ -81,7 +81,7 @@ const AccessCodeForm = ({ control, errors, disabled, accessCode, reset }: Access
                 name="endDate"
                 label={i18n.t('access_code:end_date') as string}
                 onChange={onChange}
-                value={value}
+                value={value as Date}
                 errorMessage={errors['endDate']?.message}
               />
             );

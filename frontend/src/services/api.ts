@@ -1,4 +1,4 @@
-import { Auth } from 'aws-amplify';
+import { fetchAuthSession } from 'aws-amplify/auth';
 import axios, { AxiosError, AxiosRequestHeaders } from 'axios';
 import { IBusinessException } from '../common/interfaces/business-exception.interface';
 
@@ -14,17 +14,14 @@ const API = axios.create({
 API.interceptors.request.use(async (request) => {
   // add auth header with jwt if account is logged in and request is to the api url
   try {
-    const user = await Auth.currentAuthenticatedUser();
+    const { tokens } = await fetchAuthSession();
 
     if (!request.headers) {
       request.headers = {} as AxiosRequestHeaders;
     }
 
-    if (user?.getSignInUserSession()) {
-      request.headers.Authorization = `Bearer ${user
-        .getSignInUserSession()
-        .getAccessToken()
-        .getJwtToken()}`;
+    if (tokens?.accessToken) {
+      request.headers.Authorization = `Bearer ${tokens.accessToken.toString()}`;
     }
   } catch (err) {
     // User not authenticated. May be a public API.
