@@ -1,10 +1,9 @@
 import { Auth } from 'aws-amplify';
 import axios, { AxiosRequestHeaders } from 'axios';
-import Constants from 'expo-constants';
 
 // https://vitejs.dev/guide/env-and-mode.html
 const API = axios.create({
-  baseURL: `${Constants.expoConfig?.extra?.apiUrl}`,
+  baseURL: `${process.env.EXPO_PUBLIC_API_URL}`,
   timeout: 100000,
   headers: {
     'Content-Type': 'application/json',

@@ -15,7 +15,6 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { CONSTANTS } from '../common/constants/constants';
 
 const EditActivityLog = ({ navigation }: any) => {
-  console.log('EditActivityLog');
   const { t } = useTranslation();
   const { selectedActivityLog } = useActivityLogs();
 

@@ -15,7 +15,6 @@ import { Controller } from 'react-hook-form';
 import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/constants';
 import Paragraph from '../components/Paragraph';
 import * as Linking from 'expo-linking';
-import Constants from 'expo-constants';
 import { renderPasswordEyeIcon, renderPhoneNumberPrefix } from '../components/InputPrefixes';
 
 export type RegisterFormTypes = {
@@ -74,11 +73,11 @@ const CreateAccount = ({ navigation }: any) => {
   });
 
   const onTermsAndConditionsPress = () => {
-    Linking.openURL(Constants.expoConfig?.extra?.termsLink);
+    Linking.openURL(`${process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK}`);
   };
 
   const onPrivacyPolicyPress = () => {
-    Linking.openURL(Constants.expoConfig?.extra?.policyLink);
+    Linking.openURL(`${process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK}`);
   };
 
   const onSubmit = async ({ email, password, phone }: RegisterFormTypes) => {

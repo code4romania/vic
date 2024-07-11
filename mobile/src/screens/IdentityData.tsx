@@ -14,7 +14,6 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useTranslation } from 'react-i18next';
 import * as Linking from 'expo-linking';
-import Constants from 'expo-constants';
 import Paragraph from '../components/Paragraph';
 import { REGEX } from '../common/constants/constants';
 import { useUserProfile } from '../store/profile/profile.selector';
@@ -87,7 +86,7 @@ const IdentityData = ({ navigation, route }: any) => {
   }, [userProfile, reset]);
 
   const onPrivacyPolicyPress = () => {
-    Linking.openURL(Constants.expoConfig?.extra?.policyLink);
+    Linking.openURL(`${process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK}`);
   };
 
   const onSubmit = async (payload: IdentityDataFormTypes) => {

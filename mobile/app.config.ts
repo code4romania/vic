@@ -7,7 +7,7 @@ const expoConfig: ExpoConfig = {
   name: 'vic',
   slug: 'vic',
   scheme: 'vic',
-  version: '1.0.6',
+  version: '1.0.7',
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',
   userInterfaceStyle: 'light',
@@ -18,7 +18,7 @@ const expoConfig: ExpoConfig = {
   },
   assetBundlePatterns: ['**/*'],
   ios: {
-    buildNumber: '8',
+    buildNumber: '10',
     supportsTablet: false,
     bundleIdentifier: 'org.commitglobal.vic',
     entitlements: {
@@ -32,7 +32,7 @@ const expoConfig: ExpoConfig = {
     },
   },
   android: {
-    versionCode: 6,
+    versionCode: 8,
     adaptiveIcon: {
       foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
@@ -46,6 +46,7 @@ const expoConfig: ExpoConfig = {
   },
   plugins: [
     'expo-localization',
+    'expo-font',
     [
       'expo-document-picker',
       {
@@ -61,18 +62,9 @@ const expoConfig: ExpoConfig = {
     ],
   ],
   extra: {
-    apiUrl: 'https://api-vic-staging.ngohub.ro',
-    awsRegion: 'eu-west-1',
-    userPoolId: 'eu-west-1_HRB7J3vjJ',
-    userPoolClientId: '4sihusclii449k2otmeetl4dgq',
-    awsDomain: 'vic-staging.auth.eu-west-1.amazoncognito.com',
     eas: {
       projectId: '6aaad982-5a5c-4af8-b66c-7689afe74e1f',
     },
-    policyLink: 'https://www.ngohub.ro/ro/politica-de-confidentialitate',
-    termsLink: 'https://www.ngohub.ro/ro/termeni-si-conditii',
-    infoLink: 'https://www.ngohub.ro/ro/vic',
-    contactEmail: 'civic@commitglobal.org',
   },
   updates: {
     url: 'https://u.expo.dev/6aaad982-5a5c-4af8-b66c-7689afe74e1f',

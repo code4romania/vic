@@ -13,7 +13,6 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useUserProfile } from '../store/profile/profile.selector';
 
 const AddActivityLog = ({ navigation }: any) => {
-  console.log('AddActivityLog');
   // translations
   const { t } = useTranslation('activity_log');
   // the active organization

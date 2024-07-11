@@ -29,7 +29,6 @@ export const ActivityLogsTabs: ISelectItem[] = [
 ];
 
 const ActivityLogs = ({ navigation }: any) => {
-  console.log('ActivityLogs');
   const theme = useTheme();
   // translations
   const { t } = useTranslation('activity_logs');

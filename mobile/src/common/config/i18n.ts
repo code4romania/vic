@@ -11,7 +11,7 @@ i18n.use(initReactI18next).init<ResourceLanguage>({
     en: en,
     ro: ro,
   },
-  debug: true,
+  debug: false,
   interpolation: {
     escapeValue: false,
   },
