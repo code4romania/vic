@@ -17,6 +17,7 @@ export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select
   isMulti?: boolean;
   helper?: ReactNode;
   isClearable?: boolean;
+  placeholder?: string;
   loadOptions: (search: string) => void;
   /** Indicate if the value entered in the field is invalid **/
   'aria-invalid'?: AriaAttributes['aria-invalid'];

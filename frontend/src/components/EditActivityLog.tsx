@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect } from 'react';
 import { ArrowLongLeftIcon } from '@heroicons/react/24/solid';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -31,7 +32,7 @@ const EditActivityLog = ({ isOpen, onClose, activityLog }: EditActivityLogProps)
   } = useForm<ActivityLogFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(activityLogValidationSchema),
+    resolver: yupResolver(activityLogValidationSchema as any),
   });
 
   // mutations
@@ -92,7 +93,7 @@ const EditActivityLog = ({ isOpen, onClose, activityLog }: EditActivityLogProps)
           <div className="grow flex flex-col gap-6 pb-24 overflow-y-auto px-6">
             <ActivityLogForm control={control} errors={errors} disabled />
           </div>
-          <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full  fixed bottom-0 right-0 bg-white">
+          <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full xs:max-w-xs sm:max-w-md fixed bottom-0 right-0 bg-white">
             <Button
               label={i18n.t('general:save')}
               className="btn-outline-secondary"
