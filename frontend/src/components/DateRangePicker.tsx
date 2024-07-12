@@ -35,6 +35,7 @@ const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) =
   return (
     <div className="flex gap-1 flex-col relative w-full">
       {label && <label htmlFor={`${id}__date-picker`}>{label}</label>}
+
       <div className="relative">
         <div className="absolute inset-y-0 right-0 pl-3 flex items-center pointer-events-none z-10">
           <CalendarIcon
@@ -42,8 +43,10 @@ const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) =
             aria-hidden="true"
           />
         </div>
+
         <DatePicker
-          className="block w-full pr-10 border-cool-gray-200 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose max-w-[37rem]"
+          wrapperClassName="w-full"
+          className="block w-full pr-10 border-cool-gray-200 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose max-w-[37rem] py-2 pl-3"
           selectsRange={true}
           startDate={startDate}
           endDate={endDate}

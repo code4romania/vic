@@ -1,5 +1,6 @@
 import React, { ComponentPropsWithoutRef, ReactNode, SyntheticEvent } from 'react';
 import DatePicker from 'react-datepicker';
+import { CalendarIcon } from '@heroicons/react/24/outline';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import { classNames } from '../common/utils/utils';
@@ -33,9 +34,17 @@ const DatePickerInput = ({
     <div className="flex gap-1 flex-col">
       {label && <label htmlFor={`${label}__datepicker`}>{label}</label>}
       {/* Keep this div wrapper because DatePicker adds a div immediately after him when it's focused and gap-1 it's added*/}
-      <div>
+      <div className="relative">
+        <div className="absolute inset-y-0 right-0 pl-3 flex items-center pointer-events-none z-10">
+          <CalendarIcon
+            className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4 text-gray-400"
+            aria-hidden="true"
+          />
+        </div>
+
         <DatePicker
           {...props}
+          wrapperClassName="w-full"
           className={classNames(
             className || '',
             'block w-full pr-10 border-cool-gray-200 shadow-sm rounded-md sm:text-sm lg:text-base text-xs leading-loose max-w-[37rem] max-h-[42px]',
