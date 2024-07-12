@@ -16,6 +16,7 @@ import { renderBackdrop } from '../components/BottomSheet';
 import { useUserProfile } from '../store/profile/profile.selector';
 import useStore from '../store/store';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useReducedMotion } from 'react-native-reanimated';
 
 interface NotificationSettingProps {
   title: string;
@@ -96,6 +97,8 @@ const NotificationsSettings = ({ navigation }: any) => {
     NotificationsFrom.ALL_ORGANIZATIONS,
   );
   const [notificationBy, setNotificationBy] = useState<NotificationBy[]>([]);
+
+  const reducedMotion = useReducedMotion();
 
   // mutation
   const { mutate: updateNotificationsSettings } = useUpdateSettingsMutation();
@@ -207,6 +210,7 @@ const NotificationsSettings = ({ navigation }: any) => {
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.contentContainer}>
           {showNotificationFromOptions ? (

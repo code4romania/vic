@@ -27,6 +27,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { renderBackdrop } from '../components/BottomSheet';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
+import { useReducedMotion } from 'react-native-reanimated';
 
 const Contract = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -45,6 +46,8 @@ const Contract = ({ navigation, route }: any) => {
     isFetching: isLoadingContract,
     error: getContractError,
   } = useContractQuery(id);
+
+  const reducedMotion = useReducedMotion();
 
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -240,6 +243,7 @@ const Contract = ({ navigation, route }: any) => {
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.bottomSheetContainer}>
           <View style={styles.textContainer}>

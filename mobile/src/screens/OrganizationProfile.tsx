@@ -30,6 +30,7 @@ import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useReducedMotion } from 'react-native-reanimated';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   const { t } = useTranslation('organization_profile');
@@ -51,6 +52,8 @@ const OrganizationProfile = ({ navigation, route }: any) => {
         : ['1%', 420],
     [organization],
   );
+
+  const reducedMotion = useReducedMotion();
 
   const { isFetching: isFetchingOrganization, error: getOrganizationError } = useOrganizationQuery(
     route.params.organizationId,
@@ -276,6 +279,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.bottomSheetContainer}>
           {organization?.organizationVolunteerStatus ===

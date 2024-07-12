@@ -24,6 +24,7 @@ import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
 import { SvgXml } from 'react-native-svg';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useReducedMotion } from 'react-native-reanimated';
 
 export type JoinNgoFormTypes = {
   referral: REFERRAL;
@@ -52,6 +53,8 @@ const JoinOrganization = ({ navigation, route }: any) => {
   const { organizationId, logo, name } = route.params;
   const { isLoading: isCreatingAccessRequest, mutate: createAccessRequest } =
     useCreateAccessrequestMutation();
+
+  const reducedMotion = useReducedMotion();
 
   const {
     control,
@@ -143,6 +146,7 @@ const JoinOrganization = ({ navigation, route }: any) => {
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.bottomSheetContainer}>
           <SvgXml xml={successIcon} height={100} width={100} />

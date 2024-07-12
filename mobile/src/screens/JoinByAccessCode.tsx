@@ -22,6 +22,7 @@ import { SvgXml } from 'react-native-svg';
 import successIcon from '../assets/svg/success-icon';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
+import { useReducedMotion } from 'react-native-reanimated';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -58,6 +59,8 @@ const JoinByAccessCode = ({ navigation }: any) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points
   const snapPoints = useMemo(() => [1, 410], []);
+
+  const reducedMotion = useReducedMotion();
 
   const {
     control,
@@ -143,6 +146,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.container}>
           <SvgXml xml={successIcon} height={100} width={100} />
