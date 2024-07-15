@@ -24,6 +24,7 @@ import { AttendanceType } from '../common/enums/attendance-type.enum';
 import EventSkeleton from '../components/skeleton/event-skeleton';
 import ImageWithPreload from '../components/ImageWithPreload';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { formatEventDate } from '../common/utils/event.helper';
 
 const Event = ({ navigation, route }: any) => {
   const { t } = useTranslation('event');
@@ -148,7 +149,10 @@ const Event = ({ navigation, route }: any) => {
             uri={event.organizationLogo || ''}
             name={event.organizationName || ''}
           />
-          <ReadOnlyElement label={t('date')} value={event.eventInterval} />
+          <ReadOnlyElement
+            label={t('date')}
+            value={formatEventDate(event.startDate, event.endDate)}
+          />
           <ReadOnlyElement label={t('name')} value={event.name} />
           <ReadOnlyElement label={t('target')} value={mapEventType(event)} />
           <ReadOnlyElement label={t('location')} value={event.location} />
