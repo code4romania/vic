@@ -16,7 +16,11 @@ export class MobileEventPresenter {
     this.isPublic = event.isPublic;
 
     this.location = event.location;
+
     this.eventInterval = formatEventDate(event.startDate, event.endDate);
+    this.startDate = event.startDate;
+    this.endDate = event.endDate;
+
     this.organizationLogo = event.organization.logo;
 
     this.targets = event.targets?.map(
@@ -63,6 +67,18 @@ export class MobileEventPresenter {
       'The interval in which the event occurs, is made of start and end date',
   })
   eventInterval: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Start date of the event',
+  })
+  startDate: Date;
+
+  @Expose()
+  @ApiProperty({
+    description: 'End date of the event',
+  })
+  endDate: Date;
 
   @Expose()
   @ApiProperty({ description: 'The image of the Event' })

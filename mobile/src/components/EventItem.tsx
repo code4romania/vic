@@ -6,6 +6,7 @@ import PressableContainer from './PressableContainer';
 import { mapEventType } from '../common/utils/helpers';
 import ImageWithPreload from './ImageWithPreload';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { formatEventDate } from '../common/utils/event.helper';
 
 interface EventItemProps {
   event: IEventListItem;
@@ -65,7 +66,9 @@ const EventItem = ({ event, onPress }: EventItemProps) => {
           <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.title} category="p2">
             {event.name}
           </Text>
-          <EventContentRow icon="clock">{event.eventInterval}</EventContentRow>
+          <EventContentRow icon="clock">
+            {formatEventDate(event.startDate, event.endDate)}
+          </EventContentRow>
           <EventContentRow icon="map-pin">{event.location}</EventContentRow>
           <EventContentRow icon="users">{mapEventType(event)}</EventContentRow>
         </View>

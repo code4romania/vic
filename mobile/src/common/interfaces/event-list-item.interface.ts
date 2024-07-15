@@ -6,7 +6,9 @@ export interface IEventListItem {
   poster: string;
   location: string;
   isPublic: boolean;
-  eventInterval: string;
+  startDate: string;
+  endDate: string;
+  eventInterval: string; // TODO: remove after deprecation
   organizationLogo?: string;
   targets?: IOrganizationListItem[];
 }
