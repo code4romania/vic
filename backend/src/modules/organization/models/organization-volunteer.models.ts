@@ -3,6 +3,7 @@ import { IOrganizationModel } from './organization.model';
 
 export interface IOrganizationVolunteerModel extends IOrganizationModel {
   volunteerId: string;
+  volunteerProfileId: string;
 }
 
 export class OrganizationVolunteerTransformer {
@@ -11,6 +12,11 @@ export class OrganizationVolunteerTransformer {
     userId: string,
   ): IOrganizationVolunteerModel {
     if (!organizationEntity) return null;
+
+    const volunteer = organizationEntity.volunteers.find(
+      (v) => v.userId === userId,
+    );
+
     return {
       id: organizationEntity.id,
       name: organizationEntity.name,
@@ -20,9 +26,8 @@ export class OrganizationVolunteerTransformer {
       activityArea: organizationEntity.activityArea,
       logo: organizationEntity.logo,
       description: organizationEntity.description,
-      volunteerId: organizationEntity.volunteers.find(
-        (v) => v.userId === userId,
-      )?.id,
+      volunteerId: volunteer?.id,
+      volunteerProfileId: volunteer?.volunteerProfileId,
     };
   }
 }
