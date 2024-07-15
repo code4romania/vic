@@ -1,4 +1,5 @@
-import { CacheModule, Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
+import { Module } from '@nestjs/common';
 import { CacheConfigService } from 'src/infrastructure/config/cache-config.service';
 /**
  * Will register the CacheModule using the provided configuration
