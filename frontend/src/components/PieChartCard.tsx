@@ -14,11 +14,11 @@ import LoadingContent from './LoadingContent';
 import PieChart from './PieChart';
 
 const PieChartCard = () => {
-  const [chartFilter, setChartFilter] = useState<SelectItem<PieChartOption>>(
+  const [chartFilter, setChartFilter] = useState<SelectItem<PieChartOption> | undefined>(
     PIE_CHART_FILTER_OPTIONS[0],
   );
 
-  const { data, isLoading } = useVolunteerPieChartQuery(chartFilter.key);
+  const { data, isLoading } = useVolunteerPieChartQuery(chartFilter?.key || PIE_CHART_FILTER_OPTIONS[0].key);
 
   return (
     <Card>
@@ -42,7 +42,7 @@ const PieChartCard = () => {
                     className={`h-3.5 w-3.5 border-solid ${PIE_CHART_LEGEND_COLORS[index]} rounded-full self-center`}
                   />
                   <small>
-                    {chartFilter.key === PieChartOption.AGE
+                    {chartFilter?.key === PieChartOption.AGE
                       ? i18n.t('general:years_old', { age: item.name })
                       : i18n.t('general:sex', { sex_type: i18n.t(`general:${item.name}`) })}
                   </small>

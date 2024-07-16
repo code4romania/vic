@@ -75,9 +75,8 @@ const ActiveVolunteersTableHeader = [
     minWidth: '9rem',
     selector: (row: IVolunteer) =>
       row.profile?.department || row?.profile?.role
-        ? `${row.profile?.role?.name || ''}${
-            row.profile?.role && row.profile?.department ? '\n' : ''
-          }${row.profile?.department?.name || ''}`
+        ? `${row.profile?.role?.name || ''}${row.profile?.role && row.profile?.department ? '\n' : ''
+        }${row.profile?.department?.name || ''}`
         : '-',
   },
   {
@@ -362,7 +361,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     );
   };
 
-  const onSetBranchFilter = (branch: SelectItem<string>) => {
+  const onSetBranchFilter = (branch: SelectItem<string> | undefined) => {
     setBranch(branch);
     setQuery(
       {
@@ -372,7 +371,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     );
   };
 
-  const onSetDepartmentFilter = (department: SelectItem<string>) => {
+  const onSetDepartmentFilter = (department: SelectItem<string> | undefined) => {
     setDepartment(department);
     setQuery(
       {
@@ -382,7 +381,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     );
   };
 
-  const onSetRoleFilter = (role: SelectItem<string>) => {
+  const onSetRoleFilter = (role: SelectItem<string> | undefined) => {
     setRole(role);
     setQuery(
       {
@@ -412,10 +411,10 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     );
   };
 
-  const onAgeRangeChange = (selectedRange: SelectItem<string>) => {
+  const onAgeRangeChange = (selectedRange: SelectItem<string> | undefined) => {
     setQuery(
       {
-        age: selectedRange.key,
+        age: selectedRange?.key,
       },
       'replaceIn',
     );

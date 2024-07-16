@@ -389,8 +389,8 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
     });
   };
 
-  const onStatusChange = (item: SelectItem<ContractStatus>) => {
-    setQuery({ status: item.key });
+  const onStatusChange = (item: SelectItem<ContractStatus> | undefined) => {
+    setQuery({ status: item?.key });
   };
 
   const onCloseSidePanel = (shouldRefetch?: boolean) => {
