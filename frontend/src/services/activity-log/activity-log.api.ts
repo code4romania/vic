@@ -9,6 +9,7 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils/utils';
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import API from '../api';
+import { format } from 'date-fns';
 
 export interface GetActivityLogsParams {
   limit: number;
@@ -37,9 +38,9 @@ export const getActivityLogs = async ({
     params: {
       ...params,
       ...(executionDateStart
-        ? { executionDateStart: formatStartDateISO9075(executionDateStart) }
+        ? { executionDateStart: format(executionDateStart, 'yyyy-MM-dd') }
         : {}),
-      ...(executionDateEnd ? { executionDateEnd: formatEndDateISO9075(executionDateEnd) } : {}),
+      ...(executionDateEnd ? { executionDateEnd: format(executionDateEnd, 'yyyy-MM-dd') } : {}),
       ...(registrationDateStart
         ? { registrationDateStart: formatStartDateISO9075(registrationDateStart) }
         : {}),
@@ -76,8 +77,12 @@ export const getActivityLogsForDownload = async ({
       search,
       status,
       approvedOrRejectedBy,
-      executionDateStart,
-      executionDateEnd,
+      executionDateStart: executionDateStart
+        ? format(executionDateStart, 'yyyy-MM-dd')
+        : executionDateStart,
+      executionDateEnd: executionDateEnd
+        ? format(executionDateEnd, 'yyyy-MM-dd')
+        : executionDateEnd,
       volunteerId,
     },
     responseType: 'arraybuffer',
@@ -120,7 +125,7 @@ const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {
   const { volunteer, task, event, ...payload } = data;
   return {
     ...payload,
-    date: formatEndDateISO9075(payload.date),
+    date: format(payload.date, 'yyyy-MM-dd'),
     volunteerId: volunteer.value,
     ...(task.value !== CONSTANTS.OTHER ? { activityTypeId: task.value } : {}),
     ...(event ? { eventId: event.value } : {}),
@@ -133,7 +138,7 @@ const formatEditActivityLogPayload = (data: ActivityLogFormTypes): object => {
 
   return {
     ...payload,
-    date: formatEndDateISO9075(payload.date),
+    date: format(payload.date, 'yyyy-MM-dd'),
     ...(task.value !== CONSTANTS.OTHER ? { activityTypeId: task.value } : {}),
     ...(event ? { eventId: event.value } : {}),
   };
