@@ -526,6 +526,11 @@
         },
         "search": {
             "placeholder": "Caută"
+        },
+        "error_modal": {
+            "title": "Ups!",
+            "description": "Nu ai completat datele de identitate din Profil voluntar. Completează-le pentru a putea adăuga ore de voluntariat.",
+            "action_btn_label": "Completează datele"
         }
     },
     "activity_log": {
