@@ -116,8 +116,8 @@ const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
     );
   };
 
-  const onResponseChange = (response: SelectItem<string>) => {
-    setQuery({ going: response.key as RSVPGoingEnum }, 'replaceIn');
+  const onResponseChange = (response: SelectItem<string> | undefined) => {
+    setQuery({ going: response?.key as RSVPGoingEnum }, 'replaceIn');
   };
 
   const onResetFilters = () => {
@@ -142,7 +142,7 @@ const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
     downloadExcel(eventRSVPsData as BlobPart, i18n.t('events:download_rsvp'));
   };
 
-  const onSetBranchFilter = (branch: SelectItem<string>) => {
+  const onSetBranchFilter = (branch: SelectItem<string> | undefined) => {
     setBranch(branch);
     setQuery(
       {
@@ -152,7 +152,7 @@ const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
     );
   };
 
-  const onSetDepartmentFilter = (department: SelectItem<string>) => {
+  const onSetDepartmentFilter = (department: SelectItem<string> | undefined) => {
     setDepartment(department);
     setQuery(
       {
@@ -162,7 +162,7 @@ const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
     );
   };
 
-  const onSetRoleFilter = (role: SelectItem<string>) => {
+  const onSetRoleFilter = (role: SelectItem<string> | undefined) => {
     setRole(role);
     setQuery(
       {

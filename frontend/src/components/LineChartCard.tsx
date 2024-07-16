@@ -40,13 +40,13 @@ const YearXAxisTick = (props: any) => {
 };
 
 const LineChartCard = () => {
-  const [chartFilter, setChartFilter] = useState<SelectItem<LineChartOption>>(
+  const [chartFilter, setChartFilter] = useState<SelectItem<LineChartOption> | undefined>(
     LINE_CHART_FILTER_OPTIONS[0],
   );
 
-  const { data, isLoading } = useVolunteerLineChartQuery(chartFilter.key);
+  const { data, isLoading } = useVolunteerLineChartQuery(chartFilter?.key || LINE_CHART_FILTER_OPTIONS[0].key);
 
-  const switchXAxisTick = (option: LineChartOption) => {
+  const switchXAxisTick = (option: LineChartOption | undefined) => {
     switch (option) {
       case LineChartOption.YEARLY: {
         return <YearXAxisTick />;
@@ -73,7 +73,7 @@ const LineChartCard = () => {
         {data && (
           <LineChart
             data={data}
-            xAxisTicx={switchXAxisTick(chartFilter.key)}
+            xAxisTicx={switchXAxisTick(chartFilter?.key)}
             tooltipItemStyle={{
               fontStyle: 'normal',
               fontWeight: '500',
