@@ -526,6 +526,11 @@
         },
         "search": {
             "placeholder": "Caută"
+        },
+        "error_modal": {
+            "title": "Ups!",
+            "description": "Încă nu ți-ai completat profilul de voluntar. Adaugă datele a putea adăuga ore de voluntariat.",
+            "action_btn_label": "Completează datele"
         }
     },
     "activity_log": {
