@@ -238,6 +238,7 @@ const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
           onChange={onResponseChange}
           options={ResponseSelectOptions}
           defaultValue={query.going}
+          allowDeselect
         />
       </DataTableFilters>
       <Card>
