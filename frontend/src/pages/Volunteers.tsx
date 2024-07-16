@@ -75,8 +75,9 @@ const ActiveVolunteersTableHeader = [
     minWidth: '9rem',
     selector: (row: IVolunteer) =>
       row.profile?.department || row?.profile?.role
-        ? `${row.profile?.role?.name || ''}${row.profile?.role && row.profile?.department ? '\n' : ''
-        }${row.profile?.department?.name || ''}`
+        ? `${row.profile?.role?.name || ''}${
+            row.profile?.role && row.profile?.department ? '\n' : ''
+          }${row.profile?.department?.name || ''}`
         : '-',
   },
   {
@@ -511,6 +512,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
             options={AgeRangeOptions}
             onChange={onAgeRangeChange}
             defaultValue={query?.age}
+            allowDeselect
           />
         </DataTableFilters>
         <Card>
