@@ -199,12 +199,10 @@ const ActivityLogs = ({ navigation }: any) => {
           </View>
           <View style={styles.buttonsContainer}>
             <Button
-              label="Completează datele"
+              label={`${t('error_modal.action_btn_label')}`}
               status={'primary'}
               onPress={onGoToIdentityDataScreen}
-            >
-              {`${t('error_modal.action_btn_label')}`}
-            </Button>
+            />
             <InlineLink
               label={t('general:back')}
               style={{ color: theme['cool-gray-700'] }}

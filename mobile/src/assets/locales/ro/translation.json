@@ -529,7 +529,7 @@
         },
         "error_modal": {
             "title": "Ups!",
-            "description": "Nu ai completat datele de identitate din Profil voluntar. Completează-le pentru a putea adăuga ore de voluntariat.",
+            "description": "Încă nu ți-ai completat profilul de voluntar. Adaugă datele a putea adăuga ore de voluntariat.",
             "action_btn_label": "Completează datele"
         }
     },
