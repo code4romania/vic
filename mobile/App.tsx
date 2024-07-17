@@ -6,7 +6,7 @@ import { default as theme } from './src/common/theme/theme.json';
 import { default as mapping } from './src/common/theme/mappings.json';
 import * as Font from 'expo-font';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import AuthContextProvider from './src/contexts/auth/AuthContextProvider';
 import Router from './src/routes/Router';
@@ -67,8 +67,6 @@ export default () => {
         theme={{ ...eva.dark, ...theme } as any}
         customMapping={mapping}
       >
-        {/* Add marginTop for android devices as SafeAreaView is iOS Only */}
-        {/* <SafeAreaView style={styles.container}> */}
         <GestureHandlerRootView style={styles.gestureHandler}>
           <QueryClientProvider client={queryClient}>
             <AuthContextProvider>
@@ -80,7 +78,6 @@ export default () => {
             </AuthContextProvider>
           </QueryClientProvider>
         </GestureHandlerRootView>
-        {/* </SafeAreaView> */}
 
         <ExpoStatusBar style="dark" />
       </ApplicationProvider>
@@ -92,6 +89,5 @@ export default () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, marginTop: StatusBar.currentHeight },
   gestureHandler: { flex: 1 },
 });
