@@ -23,15 +23,15 @@ export const activityLogValidationSchema = yup
     volunteer: yup
       .object()
       .shape({
-        label: yup.string().required(),
-        value: yup.string().required(),
+        label: yup.string().required(`${i18n.t('activity_log:form.volunteer.required')}`),
+        value: yup.string().required(`${i18n.t('activity_log:form.volunteer.required')}`),
       })
       .required(`${i18n.t('activity_log:form.volunteer.required')}`),
     task: yup
       .object()
       .shape({
-        label: yup.string().required(),
-        value: yup.string().required(),
+        label: yup.string().required(`${i18n.t('activity_log:form.task.required')}`),
+        value: yup.string().required(`${i18n.t('activity_log:form.task.required')}`),
       })
       .required(`${i18n.t('activity_log:form.task.required')}`),
     hours: yup
@@ -65,6 +65,8 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
     reValidateMode: 'onChange',
     resolver: yupResolver(activityLogValidationSchema),
   });
+
+  console.log('errors', errors);
 
   const navigateBack = () => {
     navigate('/activity-log', { replace: true });
