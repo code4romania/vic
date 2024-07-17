@@ -25,6 +25,7 @@ import InlineLink from '../components/InlineLink';
 import { SvgXml } from 'react-native-svg';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { useReducedMotion } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type JoinNgoFormTypes = {
   referral: REFERRAL;
@@ -113,6 +114,7 @@ const JoinOrganization = ({ navigation, route }: any) => {
           onPrimaryActionButtonClick: handleSubmit(onSubmit),
           loading: isCreatingAccessRequest,
         }}
+        headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
       >
         <FormLayout>
           <OrganizationIdentity uri={logo} name={name} />

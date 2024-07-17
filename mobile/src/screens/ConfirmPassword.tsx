@@ -10,6 +10,7 @@ import FormInput from '../components/FormInput';
 import { REGEX } from '../common/constants/constants';
 import { renderPasswordEyeIcon } from '../components/InputPrefixes';
 import { useAuth } from '../hooks/useAuth';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type ConfirmPasswordFormTypes = {
   code: string;
@@ -77,6 +78,7 @@ const ConfirmPassword = ({ navigation }: any) => {
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isLoading,
       }}
+      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
     >
       <FormLayout>
         <FormInput

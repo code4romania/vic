@@ -1,6 +1,6 @@
 import React from 'react';
 import Statistics from '../components/Statistics';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Layout, Text, useTheme } from '@ui-kitten/components';
 import LatestNews from '../components/LatestNews';
 import AboutVic from '../components/AboutVic';
@@ -11,6 +11,8 @@ import IconSvg from '../components/IconSvg';
 import { useTranslation } from 'react-i18next';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { Screen } from '../components/Screen';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Home = ({ navigation }: any) => {
   const { t } = useTranslation('home');
@@ -27,64 +29,70 @@ const Home = ({ navigation }: any) => {
   };
 
   return (
-    <View style={styles.scrollViewContainer}>
-      <ScrollView
-        bouncesZoom={false}
-        alwaysBounceHorizontal={false}
-        alwaysBounceVertical={false}
-        bounces={false}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.headerContainer}>
-          <View style={{ ...styles.headerShape, backgroundColor: theme['cool-gray-800'] }}>
-            <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.greetingText} category="h3">
-              {`${t('greeting', { name: userProfile?.firstName || '' })}`}{' '}
-              <IconSvg icon={WaveSvg} size={16} />
-            </Text>
-            <Paragraph style={{ color: theme['cool-gray-400'] }}>{`${t('paragraph')}`}</Paragraph>
-            {!userProfile?.activeOrganization && (
-              <>
-                <Text
-                  allowFontScaling={ALLOW_FONT_SCALLING}
-                  style={styles.greetingText}
-                  category="h3"
-                >
-                  {`${t('no_ngo_title')}`}
-                </Text>
-                <Paragraph style={{ color: theme['cool-gray-400'] }}>{`${t(
-                  'no_ngo_paragraph',
-                )}`}</Paragraph>
-              </>
-            )}
+    <Screen
+      preset="scroll"
+      statusBarStyle="light"
+      ScrollViewProps={{
+        bounces: false,
+        stickyHeaderIndices: [0],
+        showsVerticalScrollIndicator: false,
+      }}
+    >
+      <View style={styles.headerContainer}>
+        <View
+          style={{
+            ...styles.headerShape,
+            backgroundColor: theme['cool-gray-800'],
+            paddingTop: useSafeAreaInsets().top + 16,
+          }}
+        >
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.greetingText} category="h3">
+            {`${t('greeting', { name: userProfile?.firstName || '' })}`}{' '}
+            <IconSvg icon={WaveSvg} size={16} />
+          </Text>
+          <Paragraph style={{ color: theme['cool-gray-400'] }}>{`${t('paragraph')}`}</Paragraph>
+          {!userProfile?.activeOrganization && (
+            <>
+              <Text
+                allowFontScaling={ALLOW_FONT_SCALLING}
+                style={styles.greetingText}
+                category="h3"
+              >
+                {`${t('no_ngo_title')}`}
+              </Text>
+              <Paragraph style={{ color: theme['cool-gray-400'] }}>{`${t(
+                'no_ngo_paragraph',
+              )}`}</Paragraph>
+            </>
+          )}
 
-            <View style={styles.addHoursContainer}>
-              {userProfile?.activeOrganization ? (
-                <Button
-                  appearance="outline"
-                  label={`${t('add_hours')}`}
-                  style={styles.addButton}
-                  onPress={onAddVolunteeringHours}
-                />
-              ) : (
-                <Button
-                  appearance="outline"
-                  label={`${t('join_ngo')}`}
-                  style={styles.addButton}
-                  onPress={onJoinOrganization}
-                />
-              )}
-            </View>
+          <View style={styles.addHoursContainer}>
+            {userProfile?.activeOrganization ? (
+              <Button
+                appearance="outline"
+                label={`${t('add_hours')}`}
+                style={styles.addButton}
+                onPress={onAddVolunteeringHours}
+              />
+            ) : (
+              <Button
+                appearance="outline"
+                label={`${t('join_ngo')}`}
+                style={styles.addButton}
+                onPress={onJoinOrganization}
+              />
+            )}
           </View>
         </View>
-        <Layout style={styles.container}>
-          <Statistics navigation={navigation} />
-          <View style={styles.newsContainer}>
-            {userProfile?.activeOrganization && <LatestNews navigation={navigation} />}
-            <AboutVic />
-          </View>
-        </Layout>
-      </ScrollView>
-    </View>
+      </View>
+      <Layout style={styles.container}>
+        <Statistics navigation={navigation} />
+        <View style={styles.newsContainer}>
+          {userProfile?.activeOrganization && <LatestNews navigation={navigation} />}
+          <AboutVic />
+        </View>
+      </Layout>
+    </Screen>
   );
 };
 

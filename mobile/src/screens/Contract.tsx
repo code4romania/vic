@@ -28,6 +28,7 @@ import { renderBackdrop } from '../components/BottomSheet';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
 import { useReducedMotion } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Contract = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -206,6 +207,7 @@ const Contract = ({ navigation, route }: any) => {
         title={t('contract.title', { contractNumber: contract?.contractNumber || '' })}
         onBackButtonPress={navigation.goBack}
         actionsOptions={buildPageActions()}
+        headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
       >
         {isLoadingContract && <ContractSkeleton />}
         {!isLoadingContract && contract && (

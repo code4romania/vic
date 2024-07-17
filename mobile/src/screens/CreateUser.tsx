@@ -22,6 +22,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
 import { useAuth } from '../hooks/useAuth';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type UserFormTypes = {
   firstName: string;
@@ -128,6 +129,7 @@ const CreateUser = ({ navigation }: any) => {
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isLoading,
       }}
+      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
     >
       <FormLayout>
         <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">{`${t(

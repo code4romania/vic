@@ -30,6 +30,7 @@ import upsIcon from '../assets/svg/ups-icon';
 import { SvgXml } from 'react-native-svg';
 import Paragraph from '../components/Paragraph';
 import InlineLink from '../components/InlineLink';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const ActivityLogsTabs: ISelectItem[] = [
   { key: ActivityLogStatus.PENDING, label: i18n.t('activity_logs:tabs.pending') },
@@ -130,7 +131,11 @@ const ActivityLogs = ({ navigation }: any) => {
 
   return (
     <>
-      <PageLayout title={t('title')} onBackButtonPress={navigation.goBack}>
+      <PageLayout
+        title={t('title')}
+        onBackButtonPress={navigation.goBack}
+        headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
+      >
         {userProfile?.activeOrganization && (
           <View style={styles.organizationIdentityWrapper}>
             <OrganizationIdentity

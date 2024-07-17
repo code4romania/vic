@@ -16,6 +16,7 @@ import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/const
 import Paragraph from '../components/Paragraph';
 import * as Linking from 'expo-linking';
 import { renderPasswordEyeIcon, renderPhoneNumberPrefix } from '../components/InputPrefixes';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type RegisterFormTypes = {
   email: string;
@@ -110,6 +111,7 @@ const CreateAccount = ({ navigation }: any) => {
         secondaryActionLabel: `${t('create_account.secondary_action.label')}`,
         secondaryActionLink: `${t('create_account.secondary_action.link')}`,
       }}
+      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
     >
       <FormLayout>
         <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">{`${t(

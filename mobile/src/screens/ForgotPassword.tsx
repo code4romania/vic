@@ -9,6 +9,7 @@ import FormLayout from '../layouts/FormLayout';
 import Paragraph from '../components/Paragraph';
 import FormInput from '../components/FormInput';
 import { useAuth } from '../hooks/useAuth';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type ForgotPasswordFormTypes = {
   email: string;
@@ -56,6 +57,7 @@ const ForgotPassword = ({ navigation }: any) => {
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isLoading,
       }}
+      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
     >
       <FormLayout>
         <Paragraph>{`${t('paragraph')}`}</Paragraph>

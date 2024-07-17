@@ -25,6 +25,7 @@ import EventSkeleton from '../components/skeleton/event-skeleton';
 import ImageWithPreload from '../components/ImageWithPreload';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { formatEventDate } from '../common/utils/event.helper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Event = ({ navigation, route }: any) => {
   const { t } = useTranslation('event');
@@ -108,6 +109,7 @@ const Event = ({ navigation, route }: any) => {
   return (
     <PageLayout
       title={t('details')}
+      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         loading: isLoadingEvent || isResponding || isCancelingRsvp,

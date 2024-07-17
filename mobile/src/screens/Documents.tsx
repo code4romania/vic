@@ -23,6 +23,7 @@ import { mapContractStatus } from '../common/utils/helpers';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import SeeAllAction from '../components/SeeAllAction';
 import { ListEmptyComponent } from '../layouts/InfiniteListLayout';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ContractsProps {
   navigation: any;
@@ -196,7 +197,11 @@ const Documents = ({ navigation, route }: any) => {
   const { userProfile } = useUserProfile();
 
   return (
-    <PageLayout onBackButtonPress={navigation.goBack} title={t('general:documents')}>
+    <PageLayout
+      onBackButtonPress={navigation.goBack}
+      title={t('general:documents')}
+      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
+    >
       <View style={styles.container}>
         {userProfile?.activeOrganization && (
           <OrganizationIdentity

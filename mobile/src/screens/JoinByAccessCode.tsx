@@ -23,6 +23,7 @@ import successIcon from '../assets/svg/success-icon';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
 import { useReducedMotion } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -124,6 +125,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
           onPrimaryActionButtonClick: handleSubmit(onSubmit),
           loading: isJoiningByAccessCode,
         }}
+        headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
       >
         <FormLayout>
           <OrganizationIdentity name={organization?.name || ''} uri={organization?.logo || ''} />

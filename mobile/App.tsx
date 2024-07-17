@@ -68,19 +68,20 @@ export default () => {
         customMapping={mapping}
       >
         {/* Add marginTop for android devices as SafeAreaView is iOS Only */}
-        <SafeAreaView style={styles.container}>
-          <GestureHandlerRootView style={styles.gestureHandler}>
-            <QueryClientProvider client={queryClient}>
-              <AuthContextProvider>
-                <NavigationContainer ref={navigationRef}>
-                  <NotificationContextProvider navigation={navigationRef}>
-                    <Router />
-                  </NotificationContextProvider>
-                </NavigationContainer>
-              </AuthContextProvider>
-            </QueryClientProvider>
-          </GestureHandlerRootView>
-        </SafeAreaView>
+        {/* <SafeAreaView style={styles.container}> */}
+        <GestureHandlerRootView style={styles.gestureHandler}>
+          <QueryClientProvider client={queryClient}>
+            <AuthContextProvider>
+              <NavigationContainer ref={navigationRef}>
+                <NotificationContextProvider navigation={navigationRef}>
+                  <Router />
+                </NotificationContextProvider>
+              </NavigationContainer>
+            </AuthContextProvider>
+          </QueryClientProvider>
+        </GestureHandlerRootView>
+        {/* </SafeAreaView> */}
+
         <ExpoStatusBar style="dark" />
       </ApplicationProvider>
       <Toast config={toastConfig} />

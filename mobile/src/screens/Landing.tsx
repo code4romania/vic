@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import SignUpButton from '../components/SignUpButton';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Landing = ({ navigation }: any) => {
   const { isUserPending } = useAuth();
@@ -33,7 +34,7 @@ const Landing = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout title="">
+    <PageLayout title="" headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}>
       <ScrollViewLayout>
         <View style={styles.container}>
           <Image source={require('../assets/images/vic-logo.png')} style={styles.image} />

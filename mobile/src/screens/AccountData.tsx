@@ -25,6 +25,7 @@ import ImageWithPreload from '../components/ImageWithPreload';
 import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type AccountDataFormTypes = {
   firstName: string;
@@ -172,6 +173,7 @@ const AccountData = ({ navigation }: any) => {
         primaryActionLabel: t('general:save'),
         loading: isUpdatingProfile,
       }}
+      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
     >
       <FormLayout>
         <View style={styles.container}>

@@ -11,6 +11,7 @@ import FormInput from '../components/FormInput';
 import { Text } from '@ui-kitten/components';
 import { ALLOW_FONT_SCALLING, REGEX } from '../common/constants/constants';
 import Paragraph from '../components/Paragraph';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type ValidateAccountFormTypes = {
   code: string;
@@ -67,6 +68,7 @@ const ValidateAccount = ({ navigation }: any) => {
         secondaryActionLabel: `${t('create_account.secondary_action.label')}`,
         secondaryActionLink: `${t('create_account.secondary_action.link')}`,
       }}
+      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
     >
       <FormLayout>
         <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">{`${t(

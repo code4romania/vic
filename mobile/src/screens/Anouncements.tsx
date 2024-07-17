@@ -7,6 +7,7 @@ import { useAnouncementsInfiniteQuery } from '../services/anouncement/anouncemen
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Anouncements = ({ navigation }: any) => {
   const { t } = useTranslation('general');
@@ -39,7 +40,11 @@ const Anouncements = ({ navigation }: any) => {
   );
 
   return (
-    <PageLayout title={t('news')} onBackButtonPress={navigation.goBack}>
+    <PageLayout
+      title={t('news')}
+      onBackButtonPress={navigation.goBack}
+      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
+    >
       <InfiniteListLayout<IAnouncement>
         pages={anouncements?.pages}
         renderItem={onRenderAnouncementListItem}

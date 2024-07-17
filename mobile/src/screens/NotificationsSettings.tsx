@@ -21,6 +21,7 @@ import { registerForPushNotificationsAsync } from '../common/utils/notifications
 import { SvgXml } from 'react-native-svg';
 import upsIcon from '../assets/svg/ups-icon';
 import Button from '../components/Button';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface NotificationSettingProps {
   title: string;
@@ -210,7 +211,11 @@ const NotificationsSettings = ({ navigation }: any) => {
 
   return (
     <>
-      <PageLayout title={t('header')} onBackButtonPress={navigation.goBack}>
+      <PageLayout
+        title={t('header')}
+        onBackButtonPress={navigation.goBack}
+        headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
+      >
         <NotificationSetting
           title={t('from.title')}
           description={
