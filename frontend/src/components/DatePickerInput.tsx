@@ -1,62 +1,40 @@
-import React, { ComponentPropsWithoutRef, ReactNode, SyntheticEvent } from 'react';
-import DatePicker from 'react-datepicker';
-import { CalendarIcon } from '@heroicons/react/24/outline';
-
+import React, { ReactNode } from 'react';
+import DatePicker, { DatePickerProps } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { CalendarIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../common/utils/utils';
-//TODO: extends DatePickerInputProps with DatePicker props
-export interface DatePickerInputProps
-  extends Omit<ComponentPropsWithoutRef<'input'>, 'onChange' | 'value' | 'onSelect'> {
-  minDate?: Date;
-  maxDate?: Date;
-  onChange: (date: Date | null, event: SyntheticEvent<Date, Event> | undefined) => void;
-  value?: Date;
-  dateFormat?: string;
-  showTimeSelect?: boolean;
-  timeIntervals?: number;
-  timeFormat?: string;
-  helper?: ReactNode;
+
+export type DatePickerInputProps = DatePickerProps & {
   label?: string;
-}
+  helperText?: string;
+  helper?: ReactNode;
+};
 
-const DatePickerInput = ({
-  placeholder,
-  onChange,
-  value,
-  id,
-  dateFormat,
-  className,
-  helper,
+const DatePickerInput: React.FC<DatePickerInputProps> = ({
   label,
-  ...props
-}: DatePickerInputProps) => {
+  helper,
+  className,
+  dateFormat = 'dd.MM.yyyy',
+  ...datePickerProps
+}) => {
   return (
-    <div className="flex gap-1 flex-col">
+    <div className="flex gap-1 flex-col max-w-[37rem]">
       {label && <label htmlFor={`${label}__datepicker`}>{label}</label>}
-      {/* Keep this div wrapper because DatePicker adds a div immediately after him when it's focused and gap-1 it's added*/}
       <div className="relative">
-        <div className="absolute inset-y-0 right-0 pl-3 flex items-center pointer-events-none z-10">
-          <CalendarIcon
-            className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4 text-gray-400"
-            aria-hidden="true"
-          />
-        </div>
-
+        <CalendarIcon
+          className="sm:h-5 sm:w-5 h-4 w-4 text-gray-400 absolute z-10 mt-2.5 right-2"
+          aria-hidden="true"
+        />
         <DatePicker
-          {...props}
+          {...datePickerProps}
           wrapperClassName="w-full"
           className={classNames(
             className || '',
-            'block w-full pr-10 border-cool-gray-200 shadow-sm rounded-md sm:text-sm lg:text-base text-xs leading-loose max-w-[37rem] max-h-[42px]',
+            'block w-full border-cool-gray-200 shadow-sm rounded-md sm:text-sm lg:text-base text-xs leading-loose max-h-[42px]',
           )}
-          onChange={onChange}
-          dateFormat={dateFormat ? dateFormat : 'dd.MM.yyyy'}
-          selected={value}
-          placeholderText={placeholder}
-          id={id}
+          dateFormat={dateFormat}
         />
       </div>
-
       {helper}
     </div>
   );
