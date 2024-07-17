@@ -60,17 +60,21 @@ interface EventFormProps {
 export type EventFormTypes = {
   name: string;
   startDate: Date;
-  targets: SelectItem<string>[];
   description: string;
-  tasks: SelectItem<string>[];
-  targetType: TargetType;
-  endDate?: Date;
   location?: string;
-  logo?: File;
+  endDate?: Date;
+
+  observation?: string;
+
+  targetType: TargetType;
+  targets?: SelectItem<string>[];
+
+  tasks: SelectItem<string>[];
+
   attendanceType: AttendanceType;
   attendanceMention?: string;
-  observation?: string;
   status?: EventStatus;
+  logo?: File;
 };
 
 const EventForm = ({

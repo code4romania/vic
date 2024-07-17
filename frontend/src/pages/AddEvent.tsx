@@ -30,13 +30,14 @@ export const eventValidationSchema = yup.object({
     .required(`${i18n.t('access_code:form.start_date.required')}`)
     .typeError(`${i18n.t('general:invalid_date')}`),
 
-  endDate: yup.date().typeError(`${i18n.t('general:invalid_date')}`).when('startDate', (startDate, schema) => {
-    if (startDate) {
-      return schema.min(
-        yup.ref('startDate'), `${i18n.t('events:form.end_date.min')}`,
-      )
-    }
-  }),
+  endDate: yup
+    .date()
+    .typeError(`${i18n.t('general:invalid_date')}`)
+    .when('startDate', ([startDate], schema) => {
+      return startDate
+        ? schema.min(yup.ref('startDate'), `${i18n.t('events:form.end_date.min')}`)
+        : schema;
+    }),
 
   location: yup
     .string()
@@ -47,28 +48,34 @@ export const eventValidationSchema = yup.object({
     .required(`${i18n.t('organization:form.description.required')}`)
     .min(2, `${i18n.t('organization:form.description.min', { value: '2' })}`)
     .max(1500, `${i18n.t('organization:form.description.max', { value: '1500' })}`),
-  targetType: yup.string().required(),
+  targetType: yup.mixed<TargetType>().oneOf(Object.values(TargetType)).required(),
   targets: yup.array().when('targetType', {
     is: TargetType.SELECT,
-    then: yup.array().required(`${i18n.t('events:form.target.required')}`),
+    then: (schema) =>
+      schema
+        .min(1, `${i18n.t('events:form.target.required')}`)
+        .required(`${i18n.t('events:form.target.required')}`),
   }),
   logo: yup.mixed(),
-  attendanceType: yup.string().oneOf(Object.values(AttendanceType)),
+  attendanceType: yup.mixed<AttendanceType>().oneOf(Object.values(AttendanceType)).required(),
   attendanceMention: yup
     .string()
     .min(2, `${i18n.t('events:form.mention.min', { value: '2' })}`)
     .max(250, `${i18n.t('events:form.mention.max', { value: '250' })}`)
-    .nullable()
+    .optional()
     .when('attendanceType', {
       is: AttendanceType.MENTION,
-      then: yup.string().required(`${i18n.t('events:form.mention.required')}`),
+      then: (schema) => schema.required(`${i18n.t('events:form.mention.required')}`),
     }),
-  tasks: yup.array().required(`${i18n.t('events:form.task.required')}`),
+  tasks: yup
+    .array()
+    .min(1, `${i18n.t('events:form.task.required')}`)
+    .required(`${i18n.t('events:form.task.required')}`),
   observation: yup
     .string()
     .min(2, `${i18n.t('events:form.observation.min', { value: '2' })}`)
     .max(1500, `${i18n.t('events:form.observation.max', { value: '1500' })}`)
-    .nullable(),
+    .optional(),
 });
 
 const AddEvent = () => {

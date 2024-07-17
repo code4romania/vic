@@ -20,8 +20,20 @@ import { AddActivityLogProps } from '../containers/query/AddActivityLogWithQuery
 
 export const activityLogValidationSchema = yup
   .object({
-    volunteer: yup.object().required(`${i18n.t('activity_log:form.volunteer.required')}`),
-    task: yup.object().required(`${i18n.t('activity_log:form.task.required')}`),
+    volunteer: yup
+      .object()
+      .shape({
+        label: yup.string().required(),
+        value: yup.string().required(),
+      })
+      .required(`${i18n.t('activity_log:form.volunteer.required')}`),
+    task: yup
+      .object()
+      .shape({
+        label: yup.string().required(),
+        value: yup.string().required(),
+      })
+      .required(`${i18n.t('activity_log:form.task.required')}`),
     hours: yup
       .number()
       .typeError(`${i18n.t('activity_log:form.hours.required')}`)

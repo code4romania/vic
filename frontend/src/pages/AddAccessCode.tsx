@@ -18,7 +18,7 @@ import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 
-const validationSchema = yup.object({
+export const AddAccessCodeValidationSchema = yup.object({
   code: yup
     .string()
     .required(`${i18n.t('access_code:form.code.required')}`)
@@ -58,7 +58,7 @@ const AddAccessCode = () => {
   } = useForm<AccessCodeFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(AddAccessCodeValidationSchema),
   });
 
   const onNavigateBack = () => {

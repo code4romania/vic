@@ -61,7 +61,7 @@ export const useCreateAccessCodesMutation = () => {
 
 export const useUpdateAccessCodeMutation = () => {
   return useMutation(
-    ({ id, endDate }: { id: string; endDate?: Date }) => updateAccessCode(id, endDate),
+    ({ id, endDate }: { id: string; endDate?: Date | null }) => updateAccessCode(id, endDate),
     {
       onError: (error: AxiosError<IBusinessException<ORGANIZATION_ERRORS>>) =>
         Promise.resolve(error),
