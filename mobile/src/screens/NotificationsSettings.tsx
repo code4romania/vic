@@ -163,7 +163,6 @@ const NotificationsSettings = ({ navigation }: any) => {
     if (newValues.includes(NotificationBy.PUSH)) {
       const { token } = await registerForPushNotificationsAsync();
       // if a token does not exist -> we did not grant access to notifications for the app -> show warning modal
-      console.log('🩷 TOCHEN', token);
       if (!token) {
         notificationsBottomSheetRef?.current?.expand();
         bottomSheetRef.current?.close();
