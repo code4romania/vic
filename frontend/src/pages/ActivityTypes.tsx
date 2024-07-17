@@ -63,21 +63,21 @@ const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
     });
   };
 
-  const onSetBranchFilter = (branch: SelectItem<string>) => {
+  const onSetBranchFilter = (branch: SelectItem<string> | undefined) => {
     setBranch(branch);
     setQuery({
       branch: branch?.value,
     });
   };
 
-  const onSetDepartmentFilter = (department: SelectItem<string>) => {
+  const onSetDepartmentFilter = (department: SelectItem<string> | undefined) => {
     setDepartment(department);
     setQuery({
       department: department?.value,
     });
   };
 
-  const onSetRoleFilter = (role: SelectItem<string>) => {
+  const onSetRoleFilter = (role: SelectItem<string> | undefined) => {
     setRole(role);
     setQuery({
       role: role?.value,
