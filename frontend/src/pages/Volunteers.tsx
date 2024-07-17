@@ -426,7 +426,17 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
-    setQuery({ volunteerStatus: query.volunteerStatus }, 'replaceIn');
+    setQuery(
+      {
+        volunteerStatus: query.volunteerStatus,
+        location: undefined,
+        branch: undefined,
+        department: undefined,
+        role: undefined,
+        age: undefined,
+        createdOnEnd: undefined,
+        createdOnStart: undefined
+      }, 'replaceIn');
   };
 
   const onExport = async () => {
