@@ -712,6 +712,10 @@
         "disabled": "Notificările sunt dezactivate",
         "errors": {
             "NOTIFICATIONS_002": "Eroare la modificarea setărilor!"
+        },
+        "warning_modal": {
+            "description": "Notificările sunt dezactivate pentru această aplicație. Pentru a primi actualizări și alerte importante, te rugăm să le activezi din setările telefonului.",
+            "btn_label": "Deschide setările"
         }
     },
     "user": {

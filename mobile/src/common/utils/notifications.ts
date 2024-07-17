@@ -5,6 +5,7 @@ import Constants from 'expo-constants';
 
 export async function registerForPushNotificationsAsync() {
   let token;
+  let userWasAsked = false;
 
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('default', {
@@ -16,15 +17,20 @@ export async function registerForPushNotificationsAsync() {
   }
 
   if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    const { status: existingStatus, canAskAgain } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
+
+    if (canAskAgain) {
       const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
+      userWasAsked = true;
+      if (existingStatus !== 'granted' && canAskAgain) {
+        finalStatus = status;
+      }
     }
+
     if (finalStatus !== 'granted') {
       console.error('Failed to get push token for push notification!');
-      return;
+      return { token: undefined, userWasAsked };
     }
     token = (
       await Notifications.getExpoPushTokenAsync({
@@ -35,5 +41,5 @@ export async function registerForPushNotificationsAsync() {
     console.error('Must use physical device for Push Notifications');
   }
 
-  return token;
+  return { token, userWasAsked };
 }
