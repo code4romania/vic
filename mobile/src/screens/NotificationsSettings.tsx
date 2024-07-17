@@ -150,6 +150,7 @@ const NotificationsSettings = ({ navigation }: any) => {
     Linking.openSettings().catch(() => {
       console.warn('Unable to open settings');
     });
+    notificationsBottomSheetRef.current?.close();
   };
 
   const onNotificationByOptionPress = async (value: string) => {
