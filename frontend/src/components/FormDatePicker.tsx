@@ -30,6 +30,7 @@ const FormDatePicker = ({
           : '',
         errorMessage || '',
       )}
+      label={label}
       selected={value}
       placeholderText={placeholder}
       aria-invalid={errorMessage ? 'true' : 'false'}
