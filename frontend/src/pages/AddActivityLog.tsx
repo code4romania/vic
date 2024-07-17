@@ -66,8 +66,6 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
     resolver: yupResolver(activityLogValidationSchema),
   });
 
-  console.log('errors', errors);
-
   const navigateBack = () => {
     navigate('/activity-log', { replace: true });
   };
