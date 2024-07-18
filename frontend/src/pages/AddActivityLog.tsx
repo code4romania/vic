@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PageHeader from '../components/PageHeader';
 import PageLayout from '../layouts/PageLayout';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import CardHeader from '../components/CardHeader';
 import Card from '../layouts/CardLayout';
@@ -17,6 +17,7 @@ import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import ActivityLogForm, { ActivityLogFormTypes } from '../components/ActivityLogForm';
 import { useAddActivityLogMutation } from '../services/activity-log/activity-log.service';
 import { AddActivityLogProps } from '../containers/query/AddActivityLogWithQueryParams';
+import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
 
 export const activityLogValidationSchema = yup
   .object({
@@ -80,7 +81,15 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
     addActivityLog(data, {
       onSuccess: () => {
         useSuccessToast(i18n.t('activity_log:form.submit.messages.add'));
-        navigateBack();
+        navigate(
+          {
+            pathname: '/activity-log',
+            search: `?${createSearchParams({
+              resolutionStatus: ActivityLogResolutionStatus.SOLVED,
+            })}`,
+          },
+          { replace: true },
+        );
       },
       onError: (error) => {
         useErrorToast(InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error));
