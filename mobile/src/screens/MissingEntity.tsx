@@ -6,7 +6,7 @@ import SadFaceSvg from '../assets/svg/sad-face';
 import { StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 interface MissingEntityProps {
   heading: string;
@@ -21,8 +21,10 @@ const MissingEntity = ({
   paragraph,
   actionBtnLabel,
 }: MissingEntityProps) => {
+  const paddingTop = usePaddingTop();
+
   return (
-    <PageLayout title="" headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}>
+    <PageLayout title="" headerStyle={{ paddingTop }}>
       <Layout style={styles.container}>
         <SvgXml xml={SadFaceSvg} style={styles.svg} />
         <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.noOrgAdded}>

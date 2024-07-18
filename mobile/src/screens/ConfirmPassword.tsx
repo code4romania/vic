@@ -10,7 +10,7 @@ import FormInput from '../components/FormInput';
 import { REGEX } from '../common/constants/constants';
 import { renderPasswordEyeIcon } from '../components/InputPrefixes';
 import { useAuth } from '../hooks/useAuth';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type ConfirmPasswordFormTypes = {
   code: string;
@@ -40,6 +40,7 @@ const schema = yup.object({
 
 const ConfirmPassword = ({ navigation }: any) => {
   const { t } = useTranslation('confirm_password');
+  const paddingTop = usePaddingTop();
 
   // show hide password text in input
   const [secureTextEntryPassword, setSecureTextEntryPassword] = useState<boolean>(true);
@@ -78,7 +79,7 @@ const ConfirmPassword = ({ navigation }: any) => {
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isLoading,
       }}
-      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
+      headerStyle={{ paddingTop }}
     >
       <FormLayout>
         <FormInput

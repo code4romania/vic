@@ -12,11 +12,12 @@ import { useTranslation } from 'react-i18next';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { Screen } from '../components/Screen';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const Home = ({ navigation }: any) => {
   const { t } = useTranslation('home');
   const theme = useTheme();
+  const paddingTop = usePaddingTop();
 
   const { userProfile } = useUserProfile();
 
@@ -43,7 +44,7 @@ const Home = ({ navigation }: any) => {
           style={{
             ...styles.headerShape,
             backgroundColor: theme['cool-gray-800'],
-            paddingTop: useSafeAreaInsets().top + 16,
+            paddingTop,
           }}
         >
           <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.greetingText} category="h3">

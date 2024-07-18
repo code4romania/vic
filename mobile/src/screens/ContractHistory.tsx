@@ -14,10 +14,11 @@ import { Platform } from 'react-native';
 import { MIME_TYPES } from '../common/constants/constants';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const ContractHistory = ({ navigation }: any) => {
   const { t } = useTranslation('documents');
+  const paddingTop = usePaddingTop();
 
   const { userProfile } = useUserProfile();
 
@@ -107,7 +108,7 @@ const ContractHistory = ({ navigation }: any) => {
     <PageLayout
       title={t('sections.closed')}
       onBackButtonPress={navigation.goBack}
-      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
+      headerStyle={{ paddingTop }}
     >
       <InfiniteListLayout<IContractListItem>
         pages={closedActiveContracts?.pages}

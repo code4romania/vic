@@ -30,7 +30,7 @@ import upsIcon from '../assets/svg/ups-icon';
 import { SvgXml } from 'react-native-svg';
 import Paragraph from '../components/Paragraph';
 import InlineLink from '../components/InlineLink';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export const ActivityLogsTabs: ISelectItem[] = [
   { key: ActivityLogStatus.PENDING, label: i18n.t('activity_logs:tabs.pending') },
@@ -42,6 +42,7 @@ const ActivityLogs = ({ navigation }: any) => {
   const theme = useTheme();
   // translations
   const { t } = useTranslation('activity_logs');
+  const paddingTop = usePaddingTop();
   // order direction filter
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
   // search filter
@@ -134,7 +135,7 @@ const ActivityLogs = ({ navigation }: any) => {
       <PageLayout
         title={t('title')}
         onBackButtonPress={navigation.goBack}
-        headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
+        headerStyle={{ paddingTop }}
       >
         {userProfile?.activeOrganization && (
           <View style={styles.organizationIdentityWrapper}>

@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import useStore from '../store/store';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const AccessoryImage = withStyles(
   ({ logo, eva }: { logo?: string; eva?: any }) => {
@@ -59,15 +59,18 @@ interface DrawerItemComponentProps {
 }
 
 const DrawerHeader = withStyles(
-  ({ children, eva }: DrawerItemComponentProps) => (
-    <Text
-      allowFontScaling={ALLOW_FONT_SCALLING}
-      category="h3"
-      style={[eva?.style.drawerHeader, { paddingTop: useSafeAreaInsets().top + 16 }]}
-    >
-      {children}
-    </Text>
-  ),
+  ({ children, eva }: DrawerItemComponentProps) => {
+    const paddingTop = usePaddingTop();
+    return (
+      <Text
+        allowFontScaling={ALLOW_FONT_SCALLING}
+        category="h3"
+        style={[eva?.style.drawerHeader, { paddingTop }]}
+      >
+        {children}
+      </Text>
+    );
+  },
   (theme) => ({
     drawerHeader: {
       backgroundColor: theme['cool-gray-800'],

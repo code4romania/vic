@@ -9,10 +9,11 @@ import { IContractListItem } from '../common/interfaces/contract-list-item.inter
 import { DocumentIcon } from './Documents';
 import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
 import { useFocusEffect } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const PendingContracts = ({ navigation }: any) => {
   const { t } = useTranslation('documents');
+  const paddingTop = usePaddingTop();
 
   const { userProfile } = useUserProfile();
 
@@ -59,7 +60,7 @@ const PendingContracts = ({ navigation }: any) => {
     <PageLayout
       title={t('sections.pending')}
       onBackButtonPress={navigation.goBack}
-      headerStyle={{ paddingTop: useSafeAreaInsets().top + 16 }}
+      headerStyle={{ paddingTop }}
     >
       <InfiniteListLayout<IContractListItem>
         pages={pendingContracts?.pages}
