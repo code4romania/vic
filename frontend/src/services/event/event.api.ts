@@ -144,7 +144,7 @@ const formatAddEventPayload = (data: EventFormTypes): FormData => {
   });
 
   if (targetType === TargetType.SELECT) {
-    targets.forEach((target) => {
+    targets?.forEach((target) => {
       formData.append('targetsIds[]', target.key);
     });
   }
@@ -188,7 +188,7 @@ const formatEditEventPayload = (data: EventFormTypes): object => {
     );
 
     if (targetType === TargetType.SELECT) {
-      targets.forEach((target) => {
+      targets?.forEach((target) => {
         formData.append('targetsIds[]', target.key);
       });
     }
