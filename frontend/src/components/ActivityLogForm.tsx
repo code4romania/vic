@@ -2,12 +2,14 @@ import React from 'react';
 import { Control, Controller, DeepRequired, FieldErrorsImpl } from 'react-hook-form';
 import i18n from '../common/config/i18n';
 import FormLayout from '../layouts/FormLayout';
-import VolunteerSelect from '../containers/VolunteerSelect';
+// import VolunteerSelect from '../containers/VolunteerSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import FormInput from './FormInput';
 import FormDatePicker from './FormDatePicker';
 import EventSelect from '../containers/EventSelect';
 import TaskSelect from '../containers/TaskSelect';
+// import VolunteerSelect2 from '../containers/VolunteerSelect2';
+import VolunteerSelect3 from '../containers/VolunteerSelect3';
 
 interface ActivityLogFormProps {
   control: Control<ActivityLogFormTypes, object>;
@@ -25,7 +27,7 @@ export type ActivityLogFormTypes = {
   task: ListItem;
 };
 
-const ActivityLogForm = ({ control, errors, disabled, lockVoluneer }: ActivityLogFormProps) => {
+const ActivityLogForm = ({ control, errors, disabled }: ActivityLogFormProps) => {
   return (
     <FormLayout>
       {!disabled && <p className="text-cool-gray-500">{i18n.t('activity_log:form.description')}</p>}
@@ -37,13 +39,16 @@ const ActivityLogForm = ({ control, errors, disabled, lockVoluneer }: ActivityLo
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
-                <VolunteerSelect
-                  defaultValue={value}
-                  onSelect={onChange}
-                  label={i18n.t('volunteer:name', { status: '' })}
-                  errorMessage={errors['volunteer']?.message}
-                  disabled={lockVoluneer}
-                />
+                <>
+                  <VolunteerSelect3
+                    defaultValue={value}
+                    onSelect={onChange}
+                    // label={i18n.t('volunteer:name', { status: '' })}
+                    // errorMessage={errors['volunteer']?.message}
+                    // disabled={lockVoluneer}
+                  />
+                  {/* <VolunteerSelect3 /> */}
+                </>
               );
             }}
           />

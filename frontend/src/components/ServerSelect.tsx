@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {
   AriaAttributes,
   ComponentPropsWithoutRef,
@@ -6,11 +5,8 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-// import AsyncSelect from 'react-select/async';
+import AsyncSelect from 'react-select/async';
 import { ListItem } from '../common/interfaces/list-item.interface';
-// import { debouncePromise } from '../common/utils/utils';
-// import { useTranslation } from 'react-i18next';
-import Select from 'react-select';
 
 export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select'>, 'value'> {
   label: string;
@@ -18,33 +14,27 @@ export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select
   isMulti?: boolean;
   helper?: ReactNode;
   isClearable?: boolean;
-  onInputChange: any;
   placeholder?: string;
-  options: any;
-  // loadOptions: () => void;
+  loadOptions: (inputValue: string, callback: (options) => void) => void;
   onMenuScrollToBottom?: () => void;
   /** Indicate if the value entered in the field is invalid **/
   'aria-invalid'?: AriaAttributes['aria-invalid'];
 }
 
-// TODO: set correct types for loadOptions and onChange methods
 const ServerSelect = ({
   id,
   isMulti,
-  options,
+  loadOptions,
   value,
   onChange,
-  onInputChange,
   placeholder,
   label,
   isClearable,
   helper,
   disabled,
-
   onMenuScrollToBottom,
   ...props
 }: ServerSelectProps) => {
-  // const { t } = useTranslation('general');
   const [defaultValue, setDefaultValue] = useState<ListItem>();
 
   useEffect(() => {
@@ -54,10 +44,9 @@ const ServerSelect = ({
   return (
     <div className="flex gap-1 flex-col">
       {label && <label htmlFor={`${label}__select`}>{label}</label>}
-      <Select
+      <AsyncSelect
         id={`${id}__select`}
-        // cacheOptions
-        options={options}
+        loadOptions={loadOptions}
         classNames={{
           control: (state) => {
             if (props['aria-invalid'] && state.isFocused) return 'error-and-focused';
@@ -68,18 +57,13 @@ const ServerSelect = ({
         }}
         placeholder={placeholder}
         classNamePrefix="reactselect"
-        // loadOptions={onLoadOptions}
-        onChange={onChange as any}
+        onChange={onChange as never}
         isClearable={isClearable}
         isMulti={isMulti}
         value={defaultValue || null}
         isDisabled={disabled}
-        // defaultOptions={true}
-        // noOptionsMessage={({ inputValue }) =>
-        //   inputValue.length < 2 ? `${t('type_for_options')}` : `${t('no_options')}`
-        // }
         onMenuScrollToBottom={onMenuScrollToBottom}
-        onInputChange={onInputChange}
+        defaultOptions
       />
       {helper}
     </div>

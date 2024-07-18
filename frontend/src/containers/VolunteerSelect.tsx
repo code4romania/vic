@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useCallback, useState } from 'react';
-import i18n from '../common/config/i18n';
+import React, { useState } from 'react';
+// import i18n from '../common/config/i18n';
 // import { OrderDirection } from '../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { ListItem } from '../common/interfaces/list-item.interface';
@@ -69,10 +69,38 @@ const VolunteerSelect = ({
   //   },
   //   [queryClient],
   // );
-  const [search, setSearch] = useState('');
+
+  //  ============================================================================================================================================
+  // const useVolunteersInfiniteQuery = (search: string = '') => {
+  //   return useInfiniteQuery(
+  //     ['volunteers'],
+  //     ({ pageParam = 1 }) =>
+  //       getVolunteers(VolunteerStatus.ACTIVE, 2, pageParam, undefined, undefined, search),
+  //     {
+  //       getNextPageParam: (lastPage) => {
+  //         const { currentPage, totalPages } = lastPage.meta;
+  //         return currentPage < totalPages ? currentPage + 1 : undefined;
+  //       },
+  //     },
+  //   );
+  // };
+
+  // const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useVolunteersInfiniteQuery('');
+  // const options =
+  //   data?.pages
+  //     .flatMap((page) => page.items)
+  //     .map((item) => ({ value: item.id, label: item.user.name })) || [];
+
+  // const handleScrollToBottom = () => {
+  //   console.log('scrolled to bottom');
+  //   if (hasNextPage && !isFetchingNextPage) {
+  //     fetchNextPage();
+  //   }
+  // };
+  // ================================================================================================================================================
   const useVolunteersInfiniteQuery = (search: string = '') => {
     return useInfiniteQuery(
-      ['volunteers'],
+      ['volunteers', search],
       ({ pageParam = 1 }) =>
         getVolunteers(VolunteerStatus.ACTIVE, 2, pageParam, undefined, undefined, search),
       {
@@ -84,37 +112,45 @@ const VolunteerSelect = ({
     );
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useVolunteersInfiniteQuery(search);
-  const options =
-    data?.pages
-      .flatMap((page) => page.items)
-      .map((item) => ({ value: item.id, label: item.user.name })) || [];
+  const useLoadOptions = () => {
+    const [search, setSearch] = useState('');
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+      useVolunteersInfiniteQuery(search);
 
-  const handleScrollToBottom = () => {
-    console.log('scrolled to bottom');
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
+    const loadOptions = async (inputValue: string, callback: (options: any[]) => void) => {
+      setSearch(inputValue);
+      const options =
+        data?.pages
+          .flatMap((page) => page.items)
+          .map((item) => ({ value: item.id, label: item.user.name })) || [];
+      console.log(options);
+      callback(options);
+    };
+
+    const handleScrollToBottom = () => {
+      console.log('handle scroll to bottom...');
+      if (hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    };
+
+    return { loadOptions, handleScrollToBottom };
   };
 
-  const handleInputChange = useCallback((newValue: string) => {
-    setSearch(newValue);
-  }, []);
+  const { loadOptions, handleScrollToBottom } = useLoadOptions();
 
   return (
     <ServerSelect
       id="volunteer__select"
-      options={options}
+      loadOptions={loadOptions}
       label={label}
       value={defaultValue}
       onChange={onSelect as any}
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
-      placeholder={`${i18n.t('general:select', { item: '' })}`}
+      placeholder="Select a volunteer"
       aria-invalid={!!errorMessage}
       disabled={disabled}
       onMenuScrollToBottom={handleScrollToBottom}
-      onInputChange={handleInputChange}
     />
   );
 };
