@@ -6,10 +6,11 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import AsyncSelect from 'react-select/async';
+// import AsyncSelect from 'react-select/async';
 import { ListItem } from '../common/interfaces/list-item.interface';
-import { debouncePromise } from '../common/utils/utils';
-import { useTranslation } from 'react-i18next';
+// import { debouncePromise } from '../common/utils/utils';
+// import { useTranslation } from 'react-i18next';
+import Select from 'react-select';
 
 export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select'>, 'value'> {
   label: string;
@@ -17,8 +18,11 @@ export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select
   isMulti?: boolean;
   helper?: ReactNode;
   isClearable?: boolean;
+  onInputChange: any;
   placeholder?: string;
-  loadOptions: (search: string) => void;
+  options: any;
+  // loadOptions: () => void;
+  onMenuScrollToBottom?: () => void;
   /** Indicate if the value entered in the field is invalid **/
   'aria-invalid'?: AriaAttributes['aria-invalid'];
 }
@@ -27,22 +31,21 @@ export interface ServerSelectProps extends Omit<ComponentPropsWithoutRef<'select
 const ServerSelect = ({
   id,
   isMulti,
-  loadOptions,
+  options,
   value,
   onChange,
+  onInputChange,
   placeholder,
   label,
   isClearable,
   helper,
   disabled,
+
+  onMenuScrollToBottom,
   ...props
 }: ServerSelectProps) => {
-  const { t } = useTranslation('general');
+  // const { t } = useTranslation('general');
   const [defaultValue, setDefaultValue] = useState<ListItem>();
-
-  const onSearch = (inputValue: string) => (inputValue?.length >= 2 ? loadOptions(inputValue) : []);
-
-  const debouncedLoadOptions = debouncePromise(onSearch, 500);
 
   useEffect(() => {
     setDefaultValue(value);
@@ -51,9 +54,10 @@ const ServerSelect = ({
   return (
     <div className="flex gap-1 flex-col">
       {label && <label htmlFor={`${label}__select`}>{label}</label>}
-      <AsyncSelect
+      <Select
         id={`${id}__select`}
-        cacheOptions
+        // cacheOptions
+        options={options}
         classNames={{
           control: (state) => {
             if (props['aria-invalid'] && state.isFocused) return 'error-and-focused';
@@ -64,15 +68,18 @@ const ServerSelect = ({
         }}
         placeholder={placeholder}
         classNamePrefix="reactselect"
-        loadOptions={debouncedLoadOptions as any}
+        // loadOptions={onLoadOptions}
         onChange={onChange as any}
         isClearable={isClearable}
         isMulti={isMulti}
         value={defaultValue || null}
         isDisabled={disabled}
-        noOptionsMessage={({ inputValue }) =>
-          inputValue.length < 2 ? `${t('type_for_options')}` : `${t('no_options')}`
-        }
+        // defaultOptions={true}
+        // noOptionsMessage={({ inputValue }) =>
+        //   inputValue.length < 2 ? `${t('type_for_options')}` : `${t('no_options')}`
+        // }
+        onMenuScrollToBottom={onMenuScrollToBottom}
+        onInputChange={onInputChange}
       />
       {helper}
     </div>
