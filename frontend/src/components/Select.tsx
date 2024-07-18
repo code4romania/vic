@@ -10,11 +10,12 @@ export interface SelectItem<T> {
 export interface SelectProps<T> {
   label?: string;
   options: SelectItem<T>[];
-  onChange: (item: SelectItem<T>) => void;
-  selected?: SelectItem<T>;
+  onChange: (item: SelectItem<T> | undefined) => void;
+  selected?: SelectItem<T> | undefined;
   placeholder?: string;
   helper?: ReactNode;
   minWidth?: boolean;
+  allowDeselect?: boolean;
 }
 
 const Select = <T extends React.Key>({
@@ -25,17 +26,25 @@ const Select = <T extends React.Key>({
   placeholder,
   helper,
   minWidth,
+  allowDeselect = false
 }: SelectProps<T>) => {
+  const handleChange = (item: SelectItem<T>) => {
+    if (allowDeselect && selected && item?.key === selected.key) {
+      onChange(undefined);
+    } else {
+      onChange(item);
+    }
+  };
+
   return (
-    <Listbox defaultValue={selected} onChange={onChange}>
+    <Listbox defaultValue={selected} onChange={handleChange}>
       {({ open }) => (
         <div className="flex gap-1 flex-col">
           {label && <Listbox.Label>{label}</Listbox.Label>}
           <div className="relative">
             <Listbox.Button
-              className={`h-[42px] ${
-                minWidth ? 'min-w-[90px] md:min-w-[100px]' : ''
-              } max-w-[37rem] bg-white relative w-full border border-cool-gray-200 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm disabled:bg-cool-gray-100`}
+              className={`h-[42px] ${minWidth ? 'min-w-[90px] md:min-w-[100px]' : ''
+                } max-w-[37rem] bg-white relative w-full border border-cool-gray-200 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm disabled:bg-cool-gray-100`}
             >
               <span className="block truncate lg:text-base text-sm">
                 {selected ? (

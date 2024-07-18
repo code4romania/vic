@@ -122,6 +122,7 @@ export const useVolunteerStatisticsQuery = () => {
 //Volunteer Line Chart
 export const useVolunteerLineChartQuery = (filter: LineChartOption) => {
   return useQuery(['volunteer-line-chart', filter], () => getVolunteerLineChart(filter), {
+    enabled: !!filter,
     onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
   });
 };
@@ -129,6 +130,7 @@ export const useVolunteerLineChartQuery = (filter: LineChartOption) => {
 //Volunteer Pie Chart
 export const useVolunteerPieChartQuery = (filter: PieChartOption) => {
   return useQuery(['volunteer-pie-chart', filter], () => getVolunteerPieChart(filter), {
+    enabled: !!filter,
     onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
   });
 };

@@ -1,4 +1,4 @@
-import { endOfDay, formatISO9075 } from 'date-fns';
+import { format } from 'date-fns';
 import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IActivityLogCounters } from '../../common/interfaces/activity-log-counters.interface';
@@ -21,7 +21,7 @@ export const createActivityLog = async (payload: ActivityLogFormTypes): Promise<
   return API.post('/mobile/activity-log', {
     ...log,
     ...(activityTypeId !== CONSTANTS.OTHER_OPTION ? { activityTypeId } : {}),
-    date: formatISO9075(endOfDay(payload.date)),
+    date: format(payload.date, 'yyyy-MM-dd'),
   }).then((res) => res.data);
 };
 
@@ -33,7 +33,7 @@ export const updateActivityLog = async (
   return API.patch(`/mobile/activity-log/${volunteerId}`, {
     ...log,
     ...(activityTypeId !== CONSTANTS.OTHER_OPTION ? { activityTypeId } : {}),
-    ...(updates.date ? { date: formatISO9075(endOfDay(updates.date)) } : {}),
+    ...(updates.date ? { date: format(updates.date, 'yyyy-MM-dd') } : {}),
   }).then((res) => res.data);
 };
 

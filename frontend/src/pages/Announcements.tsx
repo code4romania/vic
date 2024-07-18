@@ -274,9 +274,9 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
     });
   };
 
-  const onStatusChange = (status: SelectItem<string>) => {
+  const onStatusChange = (status: SelectItem<string> | undefined) => {
     setQuery({
-      status: status.key,
+      status: status?.key,
     });
   };
 
@@ -316,6 +316,7 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
           options={StatusOptions}
           defaultValue={query.status}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
+          allowDeselect
         />
         <TargetsMultiSelectFilter
           onChange={onTargetsChange}

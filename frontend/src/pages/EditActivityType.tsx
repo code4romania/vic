@@ -9,8 +9,6 @@ import CardBody from '../components/CardBody';
 import Button from '../components/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { SelectItem } from '../components/Select';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
@@ -21,33 +19,11 @@ import {
   useArchiveActivityTypeMutation,
   useUpdateActivityTypeMutation,
 } from '../services/activity-type/activity-type.service';
-import ActivityTypeForm from '../components/ActivityTypeForm';
+import ActivityTypeForm, { ActivityCategoryFormTypes } from '../components/ActivityTypeForm';
 import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
 import { ArchiveBoxIcon, ArchiveBoxXMarkIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import { mapDivisionListItemToSelectItem } from '../common/utils/utils';
-
-export type ActivityCategoryFormTypes = {
-  name: string;
-  icon: string;
-  department?: SelectItem<string>;
-  branch?: SelectItem<string>;
-  role?: SelectItem<string>;
-};
-
-const schema = yup
-  .object({
-    name: yup
-      .string()
-      .required(`${i18n.t('activity_types:form.name.required')}`)
-      .min(2, `${i18n.t('activity_types:form.name.min', { value: '2' })}`)
-      .max(
-        50,
-        `${i18n.t('activity_types:form.name.max', {
-          value: '50',
-        })}`,
-      ),
-  })
-  .required();
+import { ActivityTypeFormSchema } from './AddActivityType';
 
 const EditActivityType = () => {
   // get query params
@@ -76,7 +52,7 @@ const EditActivityType = () => {
   } = useForm<ActivityCategoryFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(ActivityTypeFormSchema),
   });
 
   useEffect(() => {

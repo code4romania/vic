@@ -29,7 +29,7 @@ export const anouncementFormValidationSchema = yup.object({
     .required(`${i18n.t('announcement:form.description.required')}`)
     .min(2, `${i18n.t('announcement:form.description.min', { value: '2' })}`)
     .max(225, `${i18n.t('announcement:form.description.max', { value: '225' })}`),
-  targets: yup.array().optional(),
+  targets: yup.array().default([]),
 });
 
 const AddAnnouncement = () => {

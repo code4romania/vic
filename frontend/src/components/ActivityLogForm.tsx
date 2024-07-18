@@ -41,7 +41,7 @@ const ActivityLogForm = ({ control, errors, disabled, lockVoluneer }: ActivityLo
                   defaultValue={value}
                   onSelect={onChange}
                   label={i18n.t('volunteer:name', { status: '' })}
-                  errorMessage={errors['volunteer']?.message}
+                  errorMessage={errors['volunteer']?.value?.message}
                   disabled={lockVoluneer}
                 />
               );
@@ -58,7 +58,7 @@ const ActivityLogForm = ({ control, errors, disabled, lockVoluneer }: ActivityLo
                 defaultValue={value}
                 onSelect={onChange}
                 label={i18n.t('general:event')}
-                errorMessage={errors['event']?.message}
+                errorMessage={errors['event']?.value?.message}
               />
             );
           }}
@@ -73,7 +73,7 @@ const ActivityLogForm = ({ control, errors, disabled, lockVoluneer }: ActivityLo
                 defaultValue={value}
                 onSelect={onChange}
                 label={i18n.t('general:task')}
-                errorMessage={errors['task']?.message}
+                errorMessage={errors['task']?.value?.message}
               />
             );
           }}

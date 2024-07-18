@@ -3,27 +3,27 @@ import { classNames, formatDate } from '../common/utils/utils';
 import DatePickerInput, { DatePickerInputProps } from './DatePickerInput';
 import FormReadOnlyElement from './FormReadOnlyElement';
 
-interface FormDatePickerProps extends DatePickerInputProps {
+type FormDatePickerProps = Omit<DatePickerInputProps, 'placeholderText' | 'value' | 'selected'> & {
   label?: string;
   errorMessage?: string;
-  disabled?: boolean;
-}
+  placeholder?: string;
+  value?: Date | null;
+};
 
 const FormDatePicker = ({
   placeholder,
-  onChange,
-  value,
   errorMessage,
   helper,
   readOnly,
   label,
+  value,
   ...props
 }: FormDatePickerProps) => {
   return readOnly ? (
     <FormReadOnlyElement label={label || ''} value={value ? formatDate(value) : '-'} />
   ) : (
     <DatePickerInput
-      {...props}
+      {...(props as DatePickerInputProps)}
       className={classNames(
         errorMessage
           ? 'border border-red-500 text-red-900 focus:ring-red-500 focus:border-red-500'
@@ -31,9 +31,8 @@ const FormDatePicker = ({
         errorMessage || '',
       )}
       label={label}
-      onChange={onChange}
-      placeholder={placeholder}
-      value={value}
+      selected={value}
+      placeholderText={placeholder}
       aria-invalid={errorMessage ? 'true' : 'false'}
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
     />

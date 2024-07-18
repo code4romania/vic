@@ -86,16 +86,26 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
     column: string,
     start: Date,
     end?: Date,
+    customDateFormat?: string,
   ): SelectQueryBuilder<T> {
     const prefix = column.split('.').join('');
     if (end) {
       query.andWhere(`${column} BETWEEN :${prefix}Start AND :${prefix}End`, {
-        [`${prefix}Start`]: format(start, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
-        [`${prefix}End`]: format(end, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
+        [`${prefix}Start`]: format(
+          start,
+          customDateFormat || DATE_CONSTANTS.YYYY_MM_DD_HH_SS,
+        ),
+        [`${prefix}End`]: format(
+          end,
+          customDateFormat || DATE_CONSTANTS.YYYY_MM_DD_HH_SS,
+        ),
       });
     } else {
       query.andWhere(`${column} >= :${prefix}Start`, {
-        [`${prefix}Start`]: format(start, DATE_CONSTANTS.YYYY_MM_DD),
+        [`${prefix}Start`]: format(
+          start,
+          customDateFormat || DATE_CONSTANTS.YYYY_MM_DD,
+        ),
       });
     }
 

@@ -17,7 +17,7 @@ import { useCreateActivityTypeMutation } from '../services/activity-type/activit
 import ActivityTypeForm, { ActivityCategoryFormTypes } from '../components/ActivityTypeForm';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 
-const schema = yup
+export const ActivityTypeFormSchema = yup
   .object({
     name: yup
       .string()
@@ -29,6 +29,12 @@ const schema = yup
           value: '50',
         })}`,
       ),
+    department: yup
+      .object({ key: yup.string().required(), value: yup.string().required() })
+      .optional(),
+    branch: yup.object({ key: yup.string().required(), value: yup.string().required() }).optional(),
+    role: yup.object({ key: yup.string().required(), value: yup.string().required() }).optional(),
+    icon: yup.string().required(),
   })
   .required();
 
@@ -46,7 +52,7 @@ const AddActivityType = () => {
   } = useForm<ActivityCategoryFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(ActivityTypeFormSchema),
   });
 
   useEffect(() => {

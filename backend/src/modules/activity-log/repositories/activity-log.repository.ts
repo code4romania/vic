@@ -21,6 +21,7 @@ import {
   IActivityLogModel,
   UpdateActivityLogOptions,
 } from '../models/activity-log.model';
+import { DATE_CONSTANTS } from 'src/common/constants/constants';
 
 @Injectable()
 export class ActivityLogRepositoryService
@@ -152,6 +153,7 @@ export class ActivityLogRepositoryService
         'activityLog.date',
         findOptions.executionDateStart,
         findOptions.executionDateEnd,
+        DATE_CONSTANTS.YYYY_MM_DD,
       );
     }
 
