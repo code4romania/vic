@@ -19,7 +19,7 @@ export class ActivityLogEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'timestamptz', name: 'date' })
+  @Column({ type: 'date', name: 'date' })
   date: Date;
 
   @Column({ type: 'integer', name: 'hours' })
