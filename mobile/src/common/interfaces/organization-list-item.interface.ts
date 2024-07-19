@@ -10,5 +10,5 @@ export interface IOrganizationListItemWithNumberOfVolunteers extends IOrganizati
 
 export interface IOrganizationVolunteer extends IOrganizationListItem {
   volunteerId: string;
-  volunteerProfileId: string;
+  volunteerProfileId: string | null;
 }
