@@ -711,6 +711,10 @@
         "disabled": "Notifications are disabled",
         "errors": {
             "NOTIFICATIONS_002": "Error changing settings!"
+        },
+        "warning_modal": {
+            "description": "Notifications are currently disabled for this app. To receive important updates and alerts, please enable notifications in your phone's settings.",
+            "btn_label": "Open settings"
         }
     },
     "user": {
