@@ -11,12 +11,12 @@ import volunteerClockSVG from '../assets/svg/volunteer-clock';
 import volunteerDocumentSVG from '../assets/svg/doc';
 import TopNavigationCard from '../components/TopNavigationCard';
 import { useTranslation } from 'react-i18next';
-import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import { useVolunteerStats } from '../services/volunteer/volunteer.service';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { useGetUserProfileQuery } from '../services/user/user.service';
+import { Screen } from '../components/Screen';
 
 const Volunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
@@ -65,7 +65,15 @@ const Volunteer = ({ navigation }: any) => {
   };
 
   return userProfile?.activeOrganization ? (
-    <ScrollViewLayout>
+    <Screen
+      preset="scroll"
+      statusBarStyle="light"
+      ScrollViewProps={{
+        bounces: false,
+        stickyHeaderIndices: [0],
+        showsVerticalScrollIndicator: false,
+      }}
+    >
       <View style={styles.cardWrapper}>
         <TopNavigationCard
           title={userProfile?.activeOrganization.name}
@@ -104,7 +112,7 @@ const Volunteer = ({ navigation }: any) => {
           }
         />
       </View>
-    </ScrollViewLayout>
+    </Screen>
   ) : (
     <NoVolunteerProfile
       onActionBtnPress={onAddOrganizationPress}

@@ -9,6 +9,7 @@ import FormLayout from '../layouts/FormLayout';
 import Paragraph from '../components/Paragraph';
 import FormInput from '../components/FormInput';
 import { useAuth } from '../hooks/useAuth';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type ForgotPasswordFormTypes = {
   email: string;
@@ -23,6 +24,8 @@ const schema = yup.object({
 
 const ForgotPassword = ({ navigation }: any) => {
   const { t } = useTranslation('forgot_password');
+  const paddingTop = usePaddingTop();
+
   const { forgotPassword } = useAuth();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -56,6 +59,7 @@ const ForgotPassword = ({ navigation }: any) => {
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isLoading,
       }}
+      headerStyle={{ paddingTop }}
     >
       <FormLayout>
         <Paragraph>{`${t('paragraph')}`}</Paragraph>

@@ -10,6 +10,7 @@ import i18n from '../common/config/i18n';
 import { useAuth } from '../hooks/useAuth';
 import { REGEX } from '../common/constants/constants';
 import { renderPasswordEyeIcon } from '../components/InputPrefixes';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type ChangePasswordFormTypes = {
   oldPassword: string;
@@ -38,6 +39,8 @@ const schema = yup.object({
 
 const ChangePassword = ({ navigation }: any) => {
   const { t } = useTranslation('change_password');
+  const paddingTop = usePaddingTop();
+
   // auth state
   const { changePassword } = useAuth();
   // show hide password text in input
@@ -78,6 +81,7 @@ const ChangePassword = ({ navigation }: any) => {
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isLoading,
       }}
+      headerStyle={{ paddingTop }}
     >
       <FormLayout>
         <FormInput

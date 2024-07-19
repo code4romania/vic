@@ -31,11 +31,14 @@ import InlineLink from '../components/InlineLink';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { useReducedMotion } from 'react-native-reanimated';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const OrganizationProfile = ({ navigation, route }: any) => {
   const { t } = useTranslation('organization_profile');
   // theme
   const theme = useTheme();
+  const paddingTop = usePaddingTop();
+
   // user profile context
   const { userProfile } = useUserProfile();
 
@@ -211,6 +214,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           ...renderActionOptions(),
           loading: isLoading(),
         }}
+        headerStyle={{ paddingTop }}
       >
         {isFetchingOrganization && <OrganizationSkeleton />}
         {!isFetchingOrganization && organization && (

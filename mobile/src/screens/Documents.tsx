@@ -23,6 +23,7 @@ import { mapContractStatus } from '../common/utils/helpers';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import SeeAllAction from '../components/SeeAllAction';
 import { ListEmptyComponent } from '../layouts/InfiniteListLayout';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 interface ContractsProps {
   navigation: any;
@@ -193,10 +194,16 @@ const Contracts = ({ volunteerId, navigation }: ContractsProps) => {
 const Documents = ({ navigation, route }: any) => {
   // translations
   const { t } = useTranslation('documents');
+  const paddingTop = usePaddingTop();
+
   const { userProfile } = useUserProfile();
 
   return (
-    <PageLayout onBackButtonPress={navigation.goBack} title={t('general:documents')}>
+    <PageLayout
+      onBackButtonPress={navigation.goBack}
+      title={t('general:documents')}
+      headerStyle={{ paddingTop: paddingTop }}
+    >
       <View style={styles.container}>
         {userProfile?.activeOrganization && (
           <OrganizationIdentity

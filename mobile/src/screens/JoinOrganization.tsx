@@ -25,6 +25,7 @@ import InlineLink from '../components/InlineLink';
 import { SvgXml } from 'react-native-svg';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { useReducedMotion } from 'react-native-reanimated';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type JoinNgoFormTypes = {
   referral: REFERRAL;
@@ -49,6 +50,7 @@ const JoinOrganization = ({ navigation, route }: any) => {
   const snapPoints = useMemo(() => [1, 410], []);
   // theme
   const theme = useTheme();
+  const paddingTop = usePaddingTop();
 
   const { organizationId, logo, name } = route.params;
   const { isLoading: isCreatingAccessRequest, mutate: createAccessRequest } =
@@ -113,6 +115,7 @@ const JoinOrganization = ({ navigation, route }: any) => {
           onPrimaryActionButtonClick: handleSubmit(onSubmit),
           loading: isCreatingAccessRequest,
         }}
+        headerStyle={{ paddingTop }}
       >
         <FormLayout>
           <OrganizationIdentity uri={logo} name={name} />

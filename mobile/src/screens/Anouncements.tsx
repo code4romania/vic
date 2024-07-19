@@ -7,9 +7,11 @@ import { useAnouncementsInfiniteQuery } from '../services/anouncement/anouncemen
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const Anouncements = ({ navigation }: any) => {
   const { t } = useTranslation('general');
+  const paddingTop = usePaddingTop();
 
   const {
     data: anouncements,
@@ -39,7 +41,11 @@ const Anouncements = ({ navigation }: any) => {
   );
 
   return (
-    <PageLayout title={t('news')} onBackButtonPress={navigation.goBack}>
+    <PageLayout
+      title={t('news')}
+      onBackButtonPress={navigation.goBack}
+      headerStyle={{ paddingTop }}
+    >
       <InfiniteListLayout<IAnouncement>
         pages={anouncements?.pages}
         renderItem={onRenderAnouncementListItem}

@@ -17,6 +17,7 @@ import * as Linking from 'expo-linking';
 import Paragraph from '../components/Paragraph';
 import { REGEX } from '../common/constants/constants';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type IdentityDataFormTypes = {
   identityDocumentSeries: string;
@@ -53,6 +54,7 @@ const schema = yup.object({
 const IdentityData = ({ navigation, route }: any) => {
   const { userProfile } = useUserProfile();
   const { t } = useTranslation('identity_data');
+  const paddingTop = usePaddingTop();
 
   const {
     control,
@@ -122,6 +124,7 @@ const IdentityData = ({ navigation, route }: any) => {
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isUpdateingPersonalData,
       }}
+      headerStyle={{ paddingTop }}
     >
       <FormLayout>
         <Paragraph>{`${t('description')}`}</Paragraph>

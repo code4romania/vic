@@ -1,5 +1,5 @@
 import React from 'react';
-import PageLayout from '../layouts/PageLayout';
+import { BackIcon } from '../layouts/PageLayout';
 import NewsListItem from '../components/NewsListItem';
 import InfiniteListLayout from '../layouts/InfiniteListLayout';
 import { View, StyleSheet } from 'react-native';
@@ -9,13 +9,15 @@ import { useTranslation } from 'react-i18next';
 import { NewsType } from '../common/enums/news-type.enum';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { TrackedEventName } from '../common/enums/tracked-event-name.enum';
-import { Text, useTheme } from '@ui-kitten/components';
+import { Text, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
 import useStore from '../store/store';
 import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
+import { Screen } from '../components/Screen';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const NewsContent = ({
   startText,
@@ -46,6 +48,7 @@ const NewsContent = ({
 const News = ({ navigation, route }: any) => {
   const { type } = route.params;
   const { t } = useTranslation('news');
+  const insets = useSafeAreaInsets();
 
   // switch organization
   const { mutate: switchOrganization } = useSwitchOrganizationMutation();
@@ -233,8 +236,21 @@ const News = ({ navigation, route }: any) => {
     }
   };
 
+  const renderLeftControl = () => {
+    return <TopNavigationAction icon={BackIcon} onPress={navigation.goBack} />;
+  };
+
   return (
-    <PageLayout title={renderHeader()} onBackButtonPress={navigation.goBack}>
+    <Screen
+      preset="fixed"
+      contentContainerStyle={[styles.innerContainer, { paddingTop: insets.top }]}
+    >
+      <TopNavigation
+        title={renderHeader()}
+        alignment="start"
+        accessoryLeft={renderLeftControl}
+        style={styles.header}
+      />
       <InfiniteListLayout<INewsItem>
         pages={news?.pages}
         renderItem={onRenderAnouncementListItem}
@@ -245,13 +261,18 @@ const News = ({ navigation, route }: any) => {
         hasDivider={false}
         errorMessage={getNewsError ? `${t('errors.generic')}` : ''}
       />
-    </PageLayout>
+    </Screen>
   );
 };
 
 export default News;
 
 const styles = StyleSheet.create({
+  innerContainer: { flex: 1, padding: 16 },
+  header: {
+    minHeight: 59,
+    marginLeft: -16,
+  },
   listItemContainer: {
     paddingBottom: 16,
     paddingHorizontal: 2,

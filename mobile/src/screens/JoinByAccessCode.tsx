@@ -23,6 +23,7 @@ import successIcon from '../assets/svg/success-icon';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
 import { useReducedMotion } from 'react-native-reanimated';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -46,6 +47,8 @@ const schema = yup
 const JoinByAccessCode = ({ navigation }: any) => {
   const theme = useTheme();
   const { t } = useTranslation('access_code');
+  const paddingTop = usePaddingTop();
+
   // get selected organization from state
   const { organization } = useOrganization();
   // join by access code
@@ -124,6 +127,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
           onPrimaryActionButtonClick: handleSubmit(onSubmit),
           loading: isJoiningByAccessCode,
         }}
+        headerStyle={{ paddingTop }}
       >
         <FormLayout>
           <OrganizationIdentity name={organization?.name || ''} uri={organization?.logo || ''} />

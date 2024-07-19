@@ -16,6 +16,7 @@ import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/const
 import Paragraph from '../components/Paragraph';
 import * as Linking from 'expo-linking';
 import { renderPasswordEyeIcon, renderPhoneNumberPrefix } from '../components/InputPrefixes';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type RegisterFormTypes = {
   email: string;
@@ -55,6 +56,8 @@ const schema = yup
 const CreateAccount = ({ navigation }: any) => {
   // translations
   const { t } = useTranslation('register');
+  const paddingTop = usePaddingTop();
+
   // auth state
   const { signUp } = useAuth();
   // show hide password text in input
@@ -110,6 +113,7 @@ const CreateAccount = ({ navigation }: any) => {
         secondaryActionLabel: `${t('create_account.secondary_action.label')}`,
         secondaryActionLink: `${t('create_account.secondary_action.link')}`,
       }}
+      headerStyle={{ paddingTop }}
     >
       <FormLayout>
         <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">{`${t(

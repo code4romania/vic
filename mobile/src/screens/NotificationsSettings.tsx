@@ -21,6 +21,7 @@ import { registerForPushNotificationsAsync } from '../common/utils/notifications
 import { SvgXml } from 'react-native-svg';
 import upsIcon from '../assets/svg/ups-icon';
 import Button from '../components/Button';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 interface NotificationSettingProps {
   title: string;
@@ -87,6 +88,7 @@ const NotificationOption = ({
 const NotificationsSettings = ({ navigation }: any) => {
   const styles = useStyleSheet(themedStyles);
   const { t } = useTranslation('notifications');
+  const paddingTop = usePaddingTop();
 
   const { userProfile } = useUserProfile();
   const { updateSettings } = useStore();
@@ -210,7 +212,11 @@ const NotificationsSettings = ({ navigation }: any) => {
 
   return (
     <>
-      <PageLayout title={t('header')} onBackButtonPress={navigation.goBack}>
+      <PageLayout
+        title={t('header')}
+        onBackButtonPress={navigation.goBack}
+        headerStyle={{ paddingTop }}
+      >
         <NotificationSetting
           title={t('from.title')}
           description={

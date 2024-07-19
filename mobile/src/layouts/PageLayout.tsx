@@ -9,10 +9,11 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import Button from '../components/Button';
-import { View, KeyboardAvoidingView, StyleSheet, Platform } from 'react-native';
+import { View, KeyboardAvoidingView, StyleSheet, Platform, ViewStyle } from 'react-native';
 import { ButtonType } from '../common/enums/button-type.enum';
 import InlineLink from '../components/InlineLink';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
@@ -32,9 +33,10 @@ interface PageLayoutProps {
   onBackButtonPress?: () => void;
   onEditButtonPress?: () => void;
   actionsOptions?: ActionsOptionsProps;
+  headerStyle?: ViewStyle;
 }
 
-const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
+export const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
 const EditIcon = (props: any) => <Icon {...props} name="edit" />;
 const renderTitle = (title: string) => () => (
   <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
@@ -54,9 +56,10 @@ export const PageLayout = ({
   onBackButtonPress,
   onEditButtonPress,
   actionsOptions,
+  headerStyle,
 }: PageLayoutProps) => {
   const theme = useTheme();
-
+  const insets = useSafeAreaInsets();
   const renderLeftControl = () => {
     if (!onBackButtonPress) {
       return <></>;
@@ -80,7 +83,7 @@ export const PageLayout = ({
         alignment="start"
         accessoryLeft={renderLeftControl}
         accessoryRight={renderRightControl}
-        style={styles.header}
+        style={[styles.header, headerStyle]}
       />
       <Layout style={styles.layout}>
         <KeyboardAvoidingView
@@ -93,7 +96,7 @@ export const PageLayout = ({
 
         {actionsOptions && (
           <View style={styles.helperContainer}>
-            <View style={styles.bottomActionContainer}>
+            <View style={[styles.bottomActionContainer, { paddingBottom: insets.bottom + 16 }]}>
               {actionsOptions.helperText && (
                 <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
                   {actionsOptions.helperText}

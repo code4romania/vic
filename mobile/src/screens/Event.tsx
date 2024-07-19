@@ -25,11 +25,13 @@ import EventSkeleton from '../components/skeleton/event-skeleton';
 import ImageWithPreload from '../components/ImageWithPreload';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { formatEventDate } from '../common/utils/event.helper';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const Event = ({ navigation, route }: any) => {
   const { t } = useTranslation('event');
 
   const theme = useTheme();
+  const paddingTop = usePaddingTop();
 
   const { eventId } = route.params;
 
@@ -108,6 +110,7 @@ const Event = ({ navigation, route }: any) => {
   return (
     <PageLayout
       title={t('details')}
+      headerStyle={{ paddingTop }}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         loading: isLoadingEvent || isResponding || isCancelingRsvp,

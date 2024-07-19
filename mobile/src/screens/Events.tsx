@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
 import Tabs from '../components/Tabs';
 import EventItem from '../components/EventItem';
@@ -13,6 +12,11 @@ import { EventType } from '../common/enums/event-type.enum';
 import { ISelectItem } from '../components/FormSelect';
 import EventSkeletonListItem from '../components/skeleton/event-skeleton-item';
 import { useEvent } from '../store/event/event.selector';
+import { Screen } from '../components/Screen';
+import { Text } from '@ui-kitten/components';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native';
 
 const EventsTabs: ISelectItem[] = [
   { key: EventType.GOING, label: i18n.t('events:tabs.going') },
@@ -22,6 +26,7 @@ const EventsTabs: ISelectItem[] = [
 
 const Events = ({ navigation }: any) => {
   const { t } = useTranslation('events');
+  const insets = useSafeAreaInsets();
   // order direction filter
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
   // search filter
@@ -75,7 +80,13 @@ const Events = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout title={t('header')}>
+    <Screen
+      preset="fixed"
+      contentContainerStyle={[styles.childrenContainer, { paddingTop: insets.top + 16 }]}
+    >
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
+        {`${t('header')}`}
+      </Text>
       <Tabs tabs={EventsTabs} onPress={onTabClick} />
       <SearchWithOrderAndFilters
         placeholder={t('search.placeholder')}
@@ -91,8 +102,16 @@ const Events = ({ navigation }: any) => {
         loadingLayout={<EventSkeletonListItem />}
         errorMessage={getEventsError ? `${t('errors.generic')}` : ''}
       />
-    </PageLayout>
+    </Screen>
   );
 };
 
 export default Events;
+
+const styles = StyleSheet.create({
+  childrenContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  title: { paddingLeft: 8, marginBottom: 16 },
+});

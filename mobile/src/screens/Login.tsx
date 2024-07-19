@@ -13,6 +13,7 @@ import Paragraph from '../components/Paragraph';
 import { Pressable } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type LoginFormTypes = {
   username: string;
@@ -32,6 +33,8 @@ const Login = ({ navigation }: any) => {
   const { t } = useTranslation('login');
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const paddingTop = usePaddingTop();
 
   const {
     control,
@@ -83,6 +86,7 @@ const Login = ({ navigation }: any) => {
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isLoading,
       }}
+      headerStyle={{ paddingTop }}
     >
       <FormLayout>
         <Paragraph>{`${t('paragraph')}`}</Paragraph>

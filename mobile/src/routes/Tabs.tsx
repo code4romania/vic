@@ -9,6 +9,7 @@ import Settings from '../screens/Settings';
 import Volunteer from '../screens/Volunteer';
 import i18n from '../common/config/i18n';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -45,27 +46,32 @@ const BottomTabBar = ({ navigation, state }: any) => {
       selectedIndex={state.index}
       onSelect={onSelect}
       appearance="noIndicator"
-      style={[styles.tabs]}
+      style={[styles.tabs, { paddingBottom: useSafeAreaInsets().bottom }]}
     >
       <BottomNavigationTab
         title={<Title title={`${i18n.t('tabs:home')}`} active={state.index === 0} />}
         icon={HomeIcon}
+        style={styles.tab}
       />
       <BottomNavigationTab
         title={<Title title={`${i18n.t('tabs:volunteer')}`} active={state.index === 1} />}
         icon={SunIcon}
+        style={styles.tab}
       />
       <BottomNavigationTab
         title={<Title title={`${i18n.t('tabs:events')}`} active={state.index === 2} />}
         icon={CalendarIcon}
+        style={styles.tab}
       />
       <BottomNavigationTab
         title={<Title title={`${i18n.t('tabs:search')}`} active={state.index === 3} />}
         icon={SearchIcon}
+        style={styles.tab}
       />
       <BottomNavigationTab
         title={<Title title={`${i18n.t('tabs:account_settings')}`} active={state.index === 4} />}
         icon={SettingsIcon}
+        style={styles.tab}
       />
     </BottomNavigation>
   );
@@ -78,7 +84,10 @@ const SearchComponent = (props: any) => <Organizations {...props} name="Cauta" /
 const SettingsComponent = (props: any) => <Settings {...props} name="Setari cont" />;
 
 const Tabs = () => (
-  <Navigator screenOptions={{ headerShown: false, lazy: true }} tabBar={BottomTabBar}>
+  <Navigator
+    screenOptions={{ headerShown: false, lazy: true }}
+    tabBar={(props) => <BottomTabBar {...props} />}
+  >
     <Screen name="dashboard" component={HomeComponent} />
     <Screen name="volunteer" component={VolunteerComponent} />
     <Screen name="events" component={EventsComponent} />
@@ -91,7 +100,12 @@ export default Tabs;
 
 const styles = StyleSheet.create({
   screenContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  tabs: { borderTopColor: '#EDF1F7', borderTopWidth: 1 },
+  tabs: {
+    borderTopColor: '#EDF1F7',
+    borderTopWidth: 1,
+    backgroundColor: 'white',
+  },
+  tab: { paddingVertical: 5 },
   title: { paddingTop: 4 },
   icon: { height: 24, width: 24 },
 });

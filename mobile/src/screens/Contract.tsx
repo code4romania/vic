@@ -28,6 +28,7 @@ import { renderBackdrop } from '../components/BottomSheet';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
 import { useReducedMotion } from 'react-native-reanimated';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const Contract = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -35,6 +36,8 @@ const Contract = ({ navigation, route }: any) => {
   const { id } = route.params;
   // theme
   const theme = useTheme();
+  const paddingTop = usePaddingTop();
+
   // document state
   const [selectedContract, setSelectedContract] =
     useState<DocumentPicker.DocumentPickerResult | null>(null);
@@ -206,6 +209,7 @@ const Contract = ({ navigation, route }: any) => {
         title={t('contract.title', { contractNumber: contract?.contractNumber || '' })}
         onBackButtonPress={navigation.goBack}
         actionsOptions={buildPageActions()}
+        headerStyle={{ paddingTop }}
       >
         {isLoadingContract && <ContractSkeleton />}
         {!isLoadingContract && contract && (
