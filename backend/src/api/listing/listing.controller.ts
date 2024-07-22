@@ -101,7 +101,6 @@ export class ListingController {
   ): Promise<PaginatedPresenter<IdAndNamePresenter<IAdminUserModel>>> {
     const admins = await this.getManyAdminUserUseCase.execute({
       ...filters,
-      limit: 50,
       organizationId,
     });
 

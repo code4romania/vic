@@ -28,6 +28,8 @@ const AdminSelect = ({ label, defaultValue, onSelect }: AdminSelectProps) => {
   ): Promise<LoadAdminsParams> => {
     try {
       const admins = await getAdminsListItems({
+        page,
+        limit: 10,
         search,
         orderBy: 'name',
         orderDirection: OrderDirection.ASC,
