@@ -135,6 +135,7 @@ export default Organizations;
 
 const themedStyles = StyleService.create({
   childrenContainer: {
+    flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 8,
   },

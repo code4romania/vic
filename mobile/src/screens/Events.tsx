@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
   childrenContainer: {
     paddingHorizontal: 16,
     paddingVertical: 8,
+    flex: 1,
   },
   title: { paddingLeft: 8, marginBottom: 16 },
 });
