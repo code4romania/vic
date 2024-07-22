@@ -235,6 +235,8 @@ export const deleteEvent = async (id: string): Promise<IEvent> => {
 
 //Listing events
 export const getEventListItems = async (params: {
+  page: number;
+  limit: number;
   search?: string;
   orderBy?: string;
   orderDirection?: OrderDirection;

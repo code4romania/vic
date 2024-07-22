@@ -56,9 +56,8 @@ export class ActivityTypeController {
   async get(
     @Param('id', UuidValidationPipe) activityTypeId: string,
   ): Promise<ActivityTypePresenter> {
-    const accessRequest = await this.getOneActivityTypeUseCase.execute(
-      activityTypeId,
-    );
+    const accessRequest =
+      await this.getOneActivityTypeUseCase.execute(activityTypeId);
     return new ActivityTypePresenter(accessRequest);
   }
 

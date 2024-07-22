@@ -1,16 +1,12 @@
-import { IsOptional, IsString, MinLength } from 'class-validator';
+import { IsOptional, IsPositive, IsString } from 'class-validator';
+import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 
-export class GetCityDto {
+export class GetCityDto extends BasePaginationFilterDto {
   @IsString()
   @IsOptional()
-  @MinLength(3)
-  search: string;
+  search?: string;
 
-  @IsString()
+  @IsPositive()
   @IsOptional()
-  city: string;
-
-  @IsString()
-  @IsOptional()
-  county: string;
+  countyId?: number;
 }

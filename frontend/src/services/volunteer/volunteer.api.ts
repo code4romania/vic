@@ -113,6 +113,8 @@ export const blockVolunteer = async (id: string): Promise<IVolunteer> => {
 
 export const getVolunteerListItems = async (params: {
   status: VolunteerStatus;
+  page: number;
+  limit: number;
   search?: string;
   orderBy?: string;
   orderDirection?: OrderDirection;

@@ -6,6 +6,7 @@ export const getCities = async (params: {
   search?: string;
   city?: string;
   county?: string;
+  page?: number;
 }): Promise<ICity[]> => {
   return API.get(`/location/city`, { params }).then((res) => res.data);
 };

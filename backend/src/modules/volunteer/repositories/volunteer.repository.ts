@@ -331,9 +331,8 @@ export class VolunteerRepositoryService
       );
     }
 
-    const deletedVolunteerRecords = await this.volunteerRepository.softRemove(
-      volunteerRecords,
-    );
+    const deletedVolunteerRecords =
+      await this.volunteerRepository.softRemove(volunteerRecords);
 
     return {
       deletedProfiles: deletedProfiles?.map((dp) => dp.id) || [],

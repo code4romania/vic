@@ -3,6 +3,8 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 import API from '../api';
 
 export const getAdminsListItems = async (params: {
+  page: number;
+  limit: number;
   search?: string;
   orderBy?: string;
   orderDirection?: OrderDirection;

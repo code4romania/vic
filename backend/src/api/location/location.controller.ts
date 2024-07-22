@@ -7,6 +7,7 @@ import { CountyPresenter } from './presenters/county.presenter';
 import { Public } from 'src/common/decorators/public.decorator';
 import { ApiParam } from '@nestjs/swagger';
 import { GetCitiesByCountyIdUseCase } from 'src/usecases/location/get-cities-by-county-id.usecase';
+import { PaginatedPresenter } from 'src/infrastructure/presenters/generic-paginated.presenter';
 
 @Public()
 @Controller('location')
@@ -19,14 +20,14 @@ export class LocationController {
 
   @Get('city')
   async getCities(
-    @Query() { search, city, county }: GetCityDto,
-  ): Promise<CityPresenter[]> {
-    const cities = await this.getCitiesUseCase.execute({
-      search,
-      city,
-      county,
-    });
-    return cities.map((city) => new CityPresenter(city));
+    @Query() options: GetCityDto,
+  ): Promise<PaginatedPresenter<CityPresenter>> {
+    const cities = await this.getCitiesUseCase.execute(options);
+
+    return {
+      items: cities.items.map((city) => new CityPresenter(city)),
+      meta: cities.meta,
+    };
   }
 
   @ApiParam({ name: 'countyId', type: 'number' })
