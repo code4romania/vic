@@ -2,8 +2,11 @@
 import React, { useEffect } from 'react';
 import i18n from '../common/config/i18n';
 import { ListItem } from '../common/interfaces/list-item.interface';
-import ServerSelect from '../components/ServerSelect';
+// import ServerSelect from '../components/ServerSelect';
 import { getCities } from '../services/location/location.api';
+// import PaginatedSelect from '../components/PaginatedSelect';
+// import ServerSelect from '../components/ServerSelect';
+import PaginatedSelect from '../components/PaginatedSelect';
 
 interface LocationSelectProps {
   label: string;
@@ -11,6 +14,11 @@ interface LocationSelectProps {
   defaultCity?: string;
   defaultCounty?: string;
   onSelect: (item: ListItem) => void;
+}
+interface LoadCitiesParams {
+  options: ListItem[];
+  hasMore: boolean;
+  additional: { page: number };
 }
 
 const LocationSelect = ({
@@ -21,20 +29,35 @@ const LocationSelect = ({
   onSelect,
 }: LocationSelectProps) => {
   // load cities from the database
-  const loadCities = async (search: string): Promise<ListItem[]> => {
+  const loadCities = async (
+    search: string,
+    loadedOptions: ListItem[],
+    { page }: { page: number },
+  ): Promise<LoadCitiesParams> => {
     try {
-      const cities = await getCities({ search });
-
+      const cities = await getCities({ search: 'gal' });
+      console.log(cities);
       // map cities to server select data type
-      return cities.map((city) => ({
-        value: city.id.toString(),
-        label: `${city.name}, ${city.county.abbreviation}`,
-      }));
+      return {
+        options: cities.map((city) => ({
+          value: city.id.toString(),
+          label: `${city.name}, ${city.county.abbreviation}`,
+        })),
+        // todo: hasMore
+        hasMore: true,
+        additional: { page: page + 1 },
+      };
     } catch (error) {
       // show error
       console.error(error);
       // return empty error
-      return [];
+      return {
+        options: [],
+        hasMore: false,
+        additional: {
+          page: page,
+        },
+      };
     }
   };
 
@@ -56,7 +79,7 @@ const LocationSelect = ({
   }, []);
 
   return (
-    <ServerSelect
+    <PaginatedSelect
       id="location__select"
       label={label}
       value={value}

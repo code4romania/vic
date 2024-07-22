@@ -238,6 +238,7 @@ export const getEventListItems = async (params: {
   search?: string;
   orderBy?: string;
   orderDirection?: OrderDirection;
+  page?: number;
 }): Promise<IPaginatedEntity<Pick<IEvent, 'id' | 'name'>>> => {
   return API.get('/listing/events', { params }).then((res) => res.data);
 };
