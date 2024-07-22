@@ -34,6 +34,7 @@ const EventSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Ev
         orderBy: 'name',
         orderDirection: OrderDirection.ASC,
         page: page,
+        limit: 10,
       });
       console.log(events);
       console.log(loadedOptions);

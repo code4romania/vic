@@ -45,7 +45,6 @@ export class ListingController {
   ): Promise<PaginatedPresenter<IdAndNamePresenter<IEventModel>>> {
     const events = await this.getManyEventUseCase.execute({
       ...filters,
-      limit: 50,
       organizationId,
       status: EventStatus.PUBLISHED,
     });
