@@ -69,6 +69,7 @@ const Statistics = ({ navigation }: { navigation: any }) => {
             backgroundColor="color-primary-50"
             onPress={onEventsCardPress}
           />
+
           {userProfile?.activeOrganization && (
             <>
               <StatisticsCard
@@ -89,17 +90,18 @@ const Statistics = ({ navigation }: { navigation: any }) => {
                 backgroundColor="color-primary-50"
                 onPress={onDocumentsCardPress}
               />
-              <StatisticsCard
-                icon="users"
-                title={`${t('statistics.organizations.title', {
-                  number: statistics?.numberOfOrganizationUpdates,
-                })}`}
-                subtitle={t('statistics.organizations.description')}
-                backgroundColor="color-primary-50"
-                onPress={onOrganizationsCardPress}
-              />
             </>
           )}
+
+          <StatisticsCard
+            icon="users"
+            title={`${t('statistics.organizations.title', {
+              number: statistics?.numberOfOrganizationUpdates,
+            })}`}
+            subtitle={t('statistics.organizations.description')}
+            backgroundColor="color-primary-50"
+            onPress={onOrganizationsCardPress}
+          />
         </HorizontalCarousel>
       )}
     </SectionWrapper>

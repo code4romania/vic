@@ -187,7 +187,10 @@ const News = ({ navigation, route }: any) => {
       const activeOrganization = userProfile?.myOrganizations.find(
         (org) => org.id === item.organizationId,
       );
-      setActiveOrganization(activeOrganization as IOrganizationVolunteer);
+
+      if (activeOrganization) {
+        setActiveOrganization(activeOrganization as IOrganizationVolunteer);
+      }
       switchOrganization({ organizationId: item.organizationId as string });
 
       if (type === NewsType.LOGGED_HOURS) {
