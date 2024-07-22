@@ -34,6 +34,7 @@ const VolunteerSelect = ({
           orderBy: 'user.name',
           orderDirection: OrderDirection.ASC,
           page: page,
+          limit: 10,
         });
 
         // get the options that will be displayed inside the select list
@@ -51,6 +52,7 @@ const VolunteerSelect = ({
         };
       } catch (error) {
         console.error(error);
+        //TODO: Inteleg de ce, dar poate ar trebui sa punem si ceva error
         return {
           options: [],
           hasMore: false,

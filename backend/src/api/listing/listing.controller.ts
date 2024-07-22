@@ -67,7 +67,6 @@ export class ListingController {
     const volunteers = await this.getManyVolunteersUseCase.execute({
       ...filters,
       organizationId: user.organizationId,
-      limit: 50,
     });
 
     return new PaginatedPresenter({

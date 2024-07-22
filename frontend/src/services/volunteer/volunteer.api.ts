@@ -113,10 +113,11 @@ export const blockVolunteer = async (id: string): Promise<IVolunteer> => {
 
 export const getVolunteerListItems = async (params: {
   status: VolunteerStatus;
+  page: number;
+  limit: number;
   search?: string;
   orderBy?: string;
   orderDirection?: OrderDirection;
-  page?: number;
 }): Promise<IPaginatedEntity<{ id: string; name: string }>> => {
   return API.get('/listing/volunteers', { params }).then((res) => res.data);
 };
