@@ -15,8 +15,8 @@ import { useEvent } from '../store/event/event.selector';
 import { Screen } from '../components/Screen';
 import { Text } from '@ui-kitten/components';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const EventsTabs: ISelectItem[] = [
   { key: EventType.GOING, label: i18n.t('events:tabs.going') },
@@ -26,7 +26,7 @@ const EventsTabs: ISelectItem[] = [
 
 const Events = ({ navigation }: any) => {
   const { t } = useTranslation('events');
-  const insets = useSafeAreaInsets();
+  const paddingTop = usePaddingTop();
   // order direction filter
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
   // search filter
@@ -80,10 +80,7 @@ const Events = ({ navigation }: any) => {
   };
 
   return (
-    <Screen
-      preset="fixed"
-      contentContainerStyle={[styles.childrenContainer, { paddingTop: insets.top + 16 }]}
-    >
+    <Screen preset="fixed" contentContainerStyle={[styles.childrenContainer, { paddingTop }]}>
       <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
         {`${t('header')}`}
       </Text>
