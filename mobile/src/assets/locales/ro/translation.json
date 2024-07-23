@@ -658,7 +658,11 @@
             "title": "Contract {{contractNumber}}",
             "paragraph": {
                 "PENDING_VOLUNTEER": "Contractul a fost generat și necesită aprobarea ta. Descarcă modelul de mai jos și citește documentul cu atenție. Te rugăm să printezi o copie a acestuia, pe care să o semnezi, scanezi și încarci aici.",
-                "PENDING_ADMIN": "Ai trimis un document spre semnare. Contractul a fost generat și necesită aprobarea organizației."
+                "PENDING_ADMIN": "Ai trimis un document spre semnare. Contractul a fost generat și necesită aprobarea organizației.",
+                "NOT_STARTED": "Neînceput",
+                "CLOSED": "Închis",
+                "ACTIVE": "Activ",
+                "REJECTED": "Respins"
             },
             "disclaimer": {
                 "PENDING_VOLUNTEER": "Contractul necesită semnătura ta",

@@ -657,7 +657,11 @@
             "title": "Contract {{contractNumber}}",
             "paragraph": {
                 "PENDING_VOLUNTEER": "The contract has been generated and requires your approval. Download the template below and read the document carefully. Please print out a copy of it, which you can sign, scan and upload here.",
-                "PENDING_ADMIN": "You sent a document for signature. The contract has been generated and requires approval from the organization."
+                "PENDING_ADMIN": "You sent a document for signature. The contract has been generated and requires approval from the organization.",
+                "NOT_STARTED": "Not started",
+                "CLOSED": "Closed",
+                "ACTIVE": "Active",
+                "REJECTED": "Rejected"
             },
             "disclaimer": {
                 "PENDING_VOLUNTEER": "The contract needs your signature",
