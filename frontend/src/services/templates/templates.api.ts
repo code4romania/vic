@@ -51,7 +51,7 @@ export const getTemplatesForDownload = async (
   });
 };
 
-export const getAllTemplatesForMyOrganization = async (search: string): Promise<IdName[]> => {
+export const getAllTemplatesForMyOrganization = async (search?: string): Promise<IdName[]> => {
   return API.get('template/all', { params: { search } }).then((res) => res.data);
 };
 

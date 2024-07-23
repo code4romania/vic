@@ -4,6 +4,7 @@ import {
   createTemplate,
   deleteTemplate,
   editContractTemplate,
+  getAllTemplatesForMyOrganization,
   getTemplate,
   getTemplates,
 } from './templates.api';
@@ -58,4 +59,10 @@ export const useEditContractTemplateMutation = () => {
       onError: (error: AxiosError<IBusinessException<TEMPLATE_ERRORS>>) => Promise.resolve(error),
     },
   );
+};
+
+export const useTemplateListItemsQuery = (search?: string) => {
+  return useQuery(['template-list-items', search], () => getAllTemplatesForMyOrganization(search), {
+    onError: (error: AxiosError<IBusinessException<TEMPLATE_ERRORS>>) => error,
+  });
 };

@@ -5,26 +5,31 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { AsyncPaginate } from 'react-select-async-paginate';
+import { AsyncPaginate, LoadOptions } from 'react-select-async-paginate';
+import { ActionMeta, GroupBase, MultiValue, SingleValue } from 'react-select';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { useTranslation } from 'react-i18next';
 
-interface PaginatedSelectProps extends Omit<ComponentPropsWithoutRef<'select'>, 'value'> {
+interface PaginatedSelectProps
+  extends Omit<ComponentPropsWithoutRef<'select'>, 'value' | 'onChange'> {
   label: string;
   value?: ListItem;
   isMulti?: boolean;
   helper?: ReactNode;
   isClearable?: boolean;
   placeholder?: string;
-  loadOptions: (
-    searchQuery: string,
-    loadedOptions: ListItem[],
-    { page }: { page: number },
-  ) => Promise<{
-    options: { value: string; label: string }[];
-    hasMore: boolean;
-    additional: { page: number };
-  }>;
+  loadOptions: LoadOptions<
+    ListItem,
+    GroupBase<ListItem>,
+    {
+      page: number;
+    }
+  >;
+  onChange?: (
+    newValue: MultiValue<ListItem> | SingleValue<ListItem>,
+    actionMeta: ActionMeta<ListItem>,
+  ) => void;
+
   /** Indicate if the value entered in the field is invalid **/
   'aria-invalid'?: AriaAttributes['aria-invalid'];
 }
@@ -72,7 +77,7 @@ const PaginatedSelect = ({
         value={defaultValue || null}
         isDisabled={disabled}
         noOptionsMessage={({ inputValue }) =>
-          inputValue.length < 2 ? `${t('type_for_options')}` : `${t('no_options')}`
+          inputValue.length < 0 ? `${t('type_for_options')}` : `${t('no_options')}`
         }
         additional={{
           page: 1,
