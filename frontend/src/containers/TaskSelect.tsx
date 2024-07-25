@@ -39,7 +39,7 @@ const TaskSelect = ({
             })),
             { value: CONSTANTS.OTHER, label: i18n.t('general:other') },
           ]
-        : [],
+        : [{ value: CONSTANTS.OTHER, label: i18n.t('general:other') }],
     [tasksResults],
   );
 
