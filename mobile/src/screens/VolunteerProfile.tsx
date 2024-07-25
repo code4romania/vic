@@ -17,13 +17,13 @@ import VolunteerProfileSkeleton from '../components/skeleton/volunteer-profile.s
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const VolunteerProfile = ({ navigation }: any) => {
   const styles = useStyleSheet(themedStyles);
 
   const { t } = useTranslation('volunteer');
-  const insets = useSafeAreaInsets();
+  const paddingTop = usePaddingTop();
 
   const { userProfile } = useUserProfile();
 
@@ -67,7 +67,7 @@ const VolunteerProfile = ({ navigation }: any) => {
       <PageLayout
         title={t('title')}
         onBackButtonPress={navigation.goBack}
-        headerStyle={{ paddingTop: insets.top + 16 }}
+        headerStyle={{ paddingTop }}
       >
         <MissingEntity
           onActionBtnPress={onCreateVolunteerProfileButtonPress}
@@ -114,7 +114,7 @@ const VolunteerProfile = ({ navigation }: any) => {
       onEditButtonPress={
         volunteer && !isLoadingProfile ? onEditVolunteerProfileButtonPress : undefined
       }
-      headerStyle={{ paddingTop: insets.top + 16 }}
+      headerStyle={{ paddingTop }}
     >
       {isLoadingProfile && <VolunteerProfileSkeleton />}
       {volunteer && userProfile?.activeOrganization && !isLoadingProfile && (

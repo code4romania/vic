@@ -13,7 +13,7 @@ import { useOrganization } from '../store/organization/organization.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { Screen } from '../components/Screen';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 interface OrganizationItemProps {
   item: IOrganizationListItemWithNumberOfVolunteers;
@@ -49,7 +49,7 @@ const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
 
 const Organizations = ({ navigation }: any) => {
   const { t } = useTranslation('organizations');
-  const insets = useSafeAreaInsets();
+  const paddingTop = usePaddingTop();
 
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
   const [search, setSearch] = useState<string>('');
@@ -106,10 +106,7 @@ const Organizations = ({ navigation }: any) => {
   );
 
   return (
-    <Screen
-      preset="fixed"
-      contentContainerStyle={[themedStyles.childrenContainer, { paddingTop: insets.top + 16 }]}
-    >
+    <Screen preset="fixed" contentContainerStyle={[themedStyles.childrenContainer, { paddingTop }]}>
       <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={themedStyles.title}>
         {`${t('title')}`}
       </Text>

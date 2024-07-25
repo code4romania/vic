@@ -18,8 +18,8 @@ import ImageWithPreload from '../components/ImageWithPreload';
 import { NotificationContext } from '../contexts/notification/NotificationContext';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Screen } from '../components/Screen';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -58,7 +58,7 @@ interface IListItem {
 const Settings = ({ navigation }: any) => {
   // translations
   const { t } = useTranslation('settings');
-  const insets = useSafeAreaInsets();
+  const paddingTop = usePaddingTop();
   // theme
   const theme = useTheme();
   // auth
@@ -105,10 +105,7 @@ const Settings = ({ navigation }: any) => {
   );
 
   return (
-    <Screen
-      preset="fixed"
-      contentContainerStyle={[styles.childrenContainer, { paddingTop: insets.top + 16 }]}
-    >
+    <Screen preset="fixed" contentContainerStyle={[styles.childrenContainer, { paddingTop }]}>
       <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
         {`${t('title')}`}
       </Text>
