@@ -1,6 +1,6 @@
 import React from 'react';
 import Statistics from '../components/Statistics';
-import { StyleSheet, View } from 'react-native';
+import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
 import { Layout, Text, useTheme } from '@ui-kitten/components';
 import LatestNews from '../components/LatestNews';
 import AboutVic from '../components/AboutVic';
@@ -13,6 +13,9 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { Screen } from '../components/Screen';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { useMonthlyStatistics, useVicStatistics } from '../services/statistics/statistics.service';
+import { getUserProfile } from '../services/user/user.api';
+import useStore from '../store/store';
 
 const Home = ({ navigation }: any) => {
   const { t } = useTranslation('home');
@@ -20,6 +23,12 @@ const Home = ({ navigation }: any) => {
   const paddingTop = usePaddingTop();
 
   const { userProfile } = useUserProfile();
+  const { setUserProfile } = useStore();
+
+  const { isRefetching: isRefetchingMonthlyStatistics, refetch: refetchMonthlyStatistics } =
+    useMonthlyStatistics();
+  const { isRefetching: isRefetchingVicStatistics, refetch: refetchVicStatistics } =
+    useVicStatistics();
 
   const onAddVolunteeringHours = () => {
     navigation.navigate('activity-logs');
@@ -29,16 +38,36 @@ const Home = ({ navigation }: any) => {
     navigation.navigate('search');
   };
 
+  const onRefresh = async () => {
+    refetchMonthlyStatistics();
+    refetchVicStatistics();
+    const profile = await getUserProfile();
+    setUserProfile(profile);
+  };
+
   return (
     <Screen
       preset="scroll"
       statusBarStyle="light"
       ScrollViewProps={{
-        bounces: false,
-        stickyHeaderIndices: [0],
+        bounces: true,
+        // because on ios we add the backdrop for the refresh control, the actual sticky header will be at index 1
+        stickyHeaderIndices: Platform.OS === 'ios' ? [1] : [0],
         showsVerticalScrollIndicator: false,
+        refreshControl: (
+          <RefreshControl
+            onRefresh={onRefresh}
+            refreshing={isRefetchingMonthlyStatistics || isRefetchingVicStatistics}
+            style={{ zIndex: 1 }}
+            tintColor="white"
+          />
+        ),
       }}
     >
+      {/* adds background color for the refresh control - only on iOS because on android the loader is on top of the screen */}
+      {Platform.OS === 'ios' && (
+        <View style={[styles.bounceBackdrop, { backgroundColor: theme['cool-gray-800'] }]} />
+      )}
       <View style={styles.headerContainer}>
         <View
           style={{
@@ -136,5 +165,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     gap: 32,
+  },
+  bounceBackdrop: {
+    height: 500,
+    position: 'absolute',
+    top: -500,
+    left: 0,
+    right: 0,
   },
 });
