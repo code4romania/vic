@@ -1,6 +1,6 @@
 import { OrderDirection } from '../enums/order-direction.enum';
 
-interface IPaginationMeta {
+export interface IPaginationMeta {
   currentPage: number;
   itemCount: number;
   itemsPerPage: number;

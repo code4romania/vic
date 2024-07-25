@@ -6,6 +6,8 @@ import { ListItem } from '../common/interfaces/list-item.interface';
 // import ServerSelect from '../components/ServerSelect';
 import { getAdminsListItems } from '../services/admin/admin.api';
 import PaginatedSelect from '../components/PaginatedSelect';
+import { GroupBase } from 'react-select';
+import { LoadOptions } from 'react-select-async-paginate';
 
 export interface AdminSelectProps {
   label: string;
@@ -16,15 +18,15 @@ export interface AdminSelectProps {
 interface LoadAdminsParams {
   options: ListItem[];
   hasMore: boolean;
-  additional: { page: number };
+  additional: any;
 }
 
 const AdminSelect = ({ label, defaultValue, onSelect }: AdminSelectProps) => {
   // load admins from the database
-  const loadVolunteers = async (
-    search: string,
-    loadedOptions: ListItem[],
-    { page }: { page: number },
+  const loadAdmins: LoadOptions<ListItem, GroupBase<ListItem>, any> = async (
+    search,
+    loadedOptions,
+    { page },
   ): Promise<LoadAdminsParams> => {
     try {
       const admins = await getAdminsListItems({
@@ -61,7 +63,7 @@ const AdminSelect = ({ label, defaultValue, onSelect }: AdminSelectProps) => {
       id="admin__select"
       label={label}
       value={defaultValue}
-      loadOptions={loadVolunteers}
+      loadOptions={loadAdmins}
       onChange={onSelect as any}
       placeholder={`${i18n.t('general:select', { item: '' })}`}
     />

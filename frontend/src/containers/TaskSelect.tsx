@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import React, { AriaAttributes, useMemo } from 'react';
 import i18n from '../common/config/i18n';
 import { CONSTANTS } from '../common/constants/constants';
 import { ListItem } from '../common/interfaces/list-item.interface';
-import ServerSelect from '../components/ServerSelect';
-import { getActivityTypeListItems } from '../services/activity-type/activity-type.api';
 import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
+import { useActivityTypeListItemsQuery } from '../services/activity-type/activity-type.service';
+import BasicSelect from '../components/BasicSelect';
 
 export interface TaskSelectProps {
   label: string;
@@ -13,40 +13,48 @@ export interface TaskSelectProps {
   onSelect: (item: ListItem) => void;
   errorMessage?: string;
   helper?: string;
+  'aria-invalid'?: AriaAttributes['aria-invalid'];
 }
 
-const TaskSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: TaskSelectProps) => {
-  // load volunteers from the database
-  const loadTasks = async (search: string): Promise<ListItem[]> => {
-    try {
-      const tasks = await getActivityTypeListItems({ search, status: ActivityTypeStatus.ACTIVE });
-
-      // map volunteers to server select data type
-      const results = tasks.map((task) => ({
-        value: task.id,
-        label: task.name,
-      }));
-
-      // add "Other" at the end
-      return [...results, { value: CONSTANTS.OTHER, label: i18n.t('general:other') }];
-    } catch (error) {
-      // show error
-      console.error(error);
-      // return empty error
-      return [];
-    }
-  };
+const TaskSelect = ({
+  label,
+  errorMessage,
+  onSelect,
+  defaultValue,
+  helper,
+  ...props
+}: TaskSelectProps) => {
+  // get response from api
+  const { data: tasksResults } = useActivityTypeListItemsQuery({
+    status: ActivityTypeStatus.ACTIVE,
+  });
+  // map tasks to select data type
+  const tasks = useMemo(
+    () =>
+      tasksResults
+        ? [
+            ...tasksResults.map((task) => ({
+              value: task.id,
+              label: task.name,
+            })),
+            { value: CONSTANTS.OTHER, label: i18n.t('general:other') },
+          ]
+        : [{ value: CONSTANTS.OTHER, label: i18n.t('general:other') }],
+    [tasksResults],
+  );
 
   return (
-    <ServerSelect
+    <BasicSelect
       id="task__select"
       label={label}
-      value={defaultValue}
-      loadOptions={loadTasks}
-      onChange={onSelect as any}
-      helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}
       placeholder={`${i18n.t('general:select', { item: '' })}`}
+      defaultValue={defaultValue}
+      options={tasks}
+      onSelect={onSelect}
+      errorMessage={errorMessage}
       aria-invalid={!!errorMessage}
+      helper={helper}
+      {...props}
     />
   );
 };

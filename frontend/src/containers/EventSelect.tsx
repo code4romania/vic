@@ -6,6 +6,8 @@ import { ListItem } from '../common/interfaces/list-item.interface';
 // import ServerSelect from '../components/ServerSelect';
 import { getEventListItems } from '../services/event/event.api';
 import PaginatedSelect from '../components/PaginatedSelect';
+import { LoadOptions } from 'react-select-async-paginate';
+import { GroupBase } from 'react-select';
 
 export interface EventSelectProps {
   label: string;
@@ -23,10 +25,10 @@ interface LoadEventsParams {
 
 const EventSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: EventSelectProps) => {
   // load events from the database
-  const loadEvents = async (
-    search: string,
-    loadedOptions: unknown,
-    { page }: { page: number },
+  const loadEvents: LoadOptions<ListItem, GroupBase<ListItem>, any> = async (
+    search,
+    loadedOptions,
+    { page },
   ): Promise<LoadEventsParams> => {
     try {
       const events = await getEventListItems({
@@ -36,9 +38,6 @@ const EventSelect = ({ label, defaultValue, onSelect, errorMessage, helper }: Ev
         page: page,
         limit: 10,
       });
-      console.log(events);
-      console.log(loadedOptions);
-      console.log(page);
 
       // map events to server select data type
       return {

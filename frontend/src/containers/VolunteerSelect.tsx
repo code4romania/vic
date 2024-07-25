@@ -6,6 +6,8 @@ import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { getVolunteerListItems } from '../services/volunteer/volunteer.api';
 import PaginatedSelect from '../components/PaginatedSelect';
+import { LoadOptions } from 'react-select-async-paginate';
+import { GroupBase } from 'react-select';
 
 export interface VolunteerSelectProps {
   label: string;
@@ -24,8 +26,8 @@ const VolunteerSelect = ({
   helper,
   disabled,
 }: VolunteerSelectProps) => {
-  const loadVolunteers = useCallback(
-    async (searchQuery: string = '', loadedOptions: unknown, { page }: { page: number }) => {
+  const loadVolunteers: LoadOptions<ListItem, GroupBase<ListItem>, any> = useCallback(
+    async (searchQuery, loadedOptions, { page }) => {
       try {
         //get response from api
         const response = await getVolunteerListItems({
@@ -52,7 +54,7 @@ const VolunteerSelect = ({
         };
       } catch (error) {
         console.error(error);
-        //TODO: Inteleg de ce, dar poate ar trebui sa punem si ceva error
+        //TODO: refetch functionality inside the select
         return {
           options: [],
           hasMore: false,
