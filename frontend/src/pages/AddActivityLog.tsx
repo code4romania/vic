@@ -18,6 +18,7 @@ import ActivityLogForm, { ActivityLogFormTypes } from '../components/ActivityLog
 import { useAddActivityLogMutation } from '../services/activity-log/activity-log.service';
 import { AddActivityLogProps } from '../containers/query/AddActivityLogWithQueryParams';
 import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
+import { OrderDirection } from '../common/enums/order-direction.enum';
 
 export const activityLogValidationSchema = yup
   .object({
@@ -84,9 +85,11 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
         navigate(
           {
             pathname: '/activity-log',
-            search: `?${createSearchParams({
+            search: createSearchParams({
               resolutionStatus: ActivityLogResolutionStatus.SOLVED,
-            })}`,
+              orderDirection: OrderDirection.DESC,
+              orderBy: 'date',
+            }).toString(),
           },
           { replace: true },
         );

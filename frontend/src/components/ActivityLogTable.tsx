@@ -479,12 +479,12 @@ const ActivityLogTable = ({
           <h2>
             {resolutionStatus === ActivityLogResolutionStatus.NEW
               ? i18n.t('activity_log:pending_header', {
-                hours: counters?.pending ?? '-',
-              })
+                  hours: counters?.pending ?? '-',
+                })
               : `${i18n.t('activity_log:past_header', {
-                hours: counters?.approved ?? '-',
-                rejected: counters?.rejected ?? '-',
-              })}`}
+                  hours: counters?.approved ?? '-',
+                  rejected: counters?.rejected ?? '-',
+                })}`}
           </h2>
           {resolutionStatus === ActivityLogResolutionStatus.SOLVED && (
             <div className="flex gap-2 lg:gap-6 flex-wrap">
@@ -522,6 +522,8 @@ const ActivityLogTable = ({
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}
+            defaultSortAsc={query.orderDirection === OrderDirection.ASC}
+            defaultSortFieldId={query.orderBy}
           />
         </CardBody>
       </Card>
