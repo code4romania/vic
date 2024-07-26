@@ -514,6 +514,11 @@
             "going": "Particip",
             "not_going": "Not participating",
             "cancel": "Withdraw reply"
+        },
+        "error_modal": {
+            "title": "Ups!",
+            "description": "You did not fill in the data for your volunteer profile. Fill it out in order to be able to attend the event.",
+            "action_btn_label": "Complete data"
         }
     },
     "activity_logs": {
@@ -528,7 +533,7 @@
         },
         "error_modal": {
             "title": "Ups!",
-            "description": "You did not fill in your identification data in your Volunteer profile. Fill it out in order to be able to log volunteering hours.",
+            "description": "You did not fill in the data for your volunteer profile. Fill it out in order to be able to log volunteering hours.",
             "action_btn_label": "Complete data"
         }
     },
