@@ -33,7 +33,7 @@
     "react-select": "^5.8.0",
     "react-select-async-paginate": "0.7.4",
     "react-toastify": "^10.0.5",
-    "recharts": "^2.12.7",
+    "recharts": "^2.13.0-alpha.4",
     "use-query-params": "^2.2.1",
     "yup": "^1.4.0"
   },

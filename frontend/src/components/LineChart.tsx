@@ -11,6 +11,12 @@ import {
 } from 'recharts';
 import { LINE_CHART_OPTIONS } from '../common/constants/line-chart-options';
 
+export interface InitialDataSet {
+  name: string;
+  active: string;
+  archived: string;
+}
+
 export interface DataSet {
   name: string;
   active: number;
