@@ -515,6 +515,11 @@
             "going": "Particip",
             "not_going": "Nu particip",
             "cancel": "Retrage răspuns"
+        },
+        "error_modal": {
+            "title": "Ups!",
+            "description": "Încă nu ți-ai completat profilul de voluntar. Adaugă datele a putea participa la eveniment.",
+            "action_btn_label": "Completează datele"
         }
     },
     "activity_logs": {
