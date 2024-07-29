@@ -13,7 +13,7 @@ const API = axios.create({
 API.interceptors.request.use(async (request) => {
   // add auth header with jwt if account is logged in and request is to the api url
   try {
-    const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
+    const user = await Auth.currentAuthenticatedUser();
 
     if (!request.headers) {
       request.headers = {} as AxiosRequestHeaders;
