@@ -161,14 +161,14 @@ const EditActivityType = () => {
                   <Button
                     label={i18n.t(`activity_types:actions.archive`)}
                     className="btn-outline-secondary"
-                    icon={<ArchiveBoxIcon className="h-5 w-5 sm:hidden" />}
+                    icon={<ArchiveBoxIcon className="h-5 w-5 md:hidden" />}
                     onClick={onArchiveActivityType}
                   />
                 )}
                 <Button
                   label={i18n.t('general:save_changes')}
                   className="btn-primary"
-                  icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
+                  icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
                   onClick={handleSubmit(onSubmit)}
                 />
               </div>

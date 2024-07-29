@@ -21,10 +21,6 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
     <div className="flex gap-1 flex-col max-w-[37rem]">
       {label && <label htmlFor={`${label}__datepicker`}>{label}</label>}
       <div className="relative">
-        <CalendarIcon
-          className="sm:h-5 sm:w-5 h-4 w-4 text-gray-400 absolute z-10 mt-2.5 right-2"
-          aria-hidden="true"
-        />
         <DatePicker
           {...datePickerProps}
           wrapperClassName="w-full"
@@ -33,6 +29,10 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
             'block w-full border-cool-gray-200 shadow-sm rounded-md sm:text-sm lg:text-base text-xs leading-loose max-h-[42px]',
           )}
           dateFormat={dateFormat}
+        />
+        <CalendarIcon
+          className="sm:h-5 sm:w-5 h-4 w-4 text-gray-400 absolute mt-[-2rem] right-2"
+          aria-hidden="true"
         />
       </div>
       {helper}
