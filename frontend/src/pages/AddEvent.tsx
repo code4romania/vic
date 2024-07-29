@@ -136,13 +136,13 @@ const AddEvent = () => {
               <Button
                 className="btn-outline-secondary"
                 label={i18n.t('general:save_draft')}
-                icon={<BookmarkIcon className="h-5 w-5 text-cool-gray-500 md:hidden" />}
+                icon={<BookmarkIcon className="h-5 w-5 text-cool-gray-500 sm:hidden" />}
                 onClick={handleSubmit(onSaveAsDraft)}
               />
               <Button
                 className="btn-primary"
                 label={i18n.t('general:publish')}
-                icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
+                icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
                 onClick={handleSubmit(onPublish)}
               />
             </div>

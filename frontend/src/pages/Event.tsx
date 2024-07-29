@@ -62,7 +62,7 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
         <Button
           className="btn-outline-danger"
           label={i18n.t('general:delete')}
-          icon={<TrashIcon className="h-5 w-5 md:hidden" aria-hidden="true" />}
+          icon={<TrashIcon className="h-5 w-5 sm:hidden" aria-hidden="true" />}
           onClick={onDelete}
         />
         <Button
@@ -75,14 +75,14 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
           <Button
             className="btn-outline-secondary"
             label={i18n.t('general:archive', { item: '' })}
-            icon={<ArchiveBoxIcon className="h-5 w-5 md:hidden" />}
+            icon={<ArchiveBoxIcon className="h-5 w-5 sm:hidden" />}
             onClick={onArchive}
           />
         ) : (
           <Button
             className="btn-primary"
             label={i18n.t('general:publish')}
-            icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
+            icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
             onClick={onPublish}
           />
         )}
@@ -111,8 +111,8 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
             event.isPublic
               ? `${i18n.t('events:form.target.public')}`
               : event.targets.length === 0
-                ? `${i18n.t('announcement:all_organization')}`
-                : event.targets?.map((target) => `${target.name}`).join(', ')
+              ? `${i18n.t('announcement:all_organization')}`
+              : event.targets?.map((target) => `${target.name}`).join(', ')
           }
         />
         <FormReadOnlyElement

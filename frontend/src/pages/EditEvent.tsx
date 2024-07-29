@@ -53,8 +53,8 @@ const EditEvent = () => {
         targetType: event.isPublic
           ? TargetType.PUBLIC
           : event.targets?.length > 0
-            ? TargetType.SELECT
-            : TargetType.ALL,
+          ? TargetType.SELECT
+          : TargetType.ALL,
         targets: !event.isPublic ? [...event.targets.map(mapDivisionListItemToSelectItem)] : [],
         tasks: [...event.tasks.map(mapDivisionListItemToSelectItem)],
         status: event.status,
@@ -97,7 +97,7 @@ const EditEvent = () => {
             <Button
               className="btn-primary"
               label={i18n.t('general:save_changes')}
-              icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
+              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
               onClick={handleSubmit(onSaveChanges)}
             />
           </CardHeader>
