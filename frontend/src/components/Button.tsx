@@ -10,7 +10,7 @@ const Button = ({ label, icon, ...rest }: ButtonProps) => {
   return (
     <button {...rest} aria-label={label}>
       {icon}
-      <div className={classNames(icon ? 'hidden sm:block' : '')}>{label}</div>
+      <div className={classNames(icon ? 'hidden md:block' : '')}>{label}</div>
     </button>
   );
 };
