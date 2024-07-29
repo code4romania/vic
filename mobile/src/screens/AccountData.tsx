@@ -264,7 +264,7 @@ const AccountData = ({ navigation }: any) => {
           label={t('register:create_user.form.city.label')}
           error={errors.cityId}
           placeholder={t('general:select')}
-          countyId={watchCountyId || (userProfile?.location?.id as number)}
+          countyId={watchCountyId || (userProfile?.location?.county.id as number)}
           disabled={isUpdatingProfile}
         />
         <FormDatePicker
