@@ -153,7 +153,7 @@ const EditActivityType = () => {
                   <Button
                     label={i18n.t(`activity_types:actions.activate`)}
                     className="btn-outline-secondary"
-                    icon={<ArchiveBoxXMarkIcon className="h-5 w-5 md:hidden" />}
+                    icon={<ArchiveBoxXMarkIcon className="h-5 w-5 sm:hidden" />}
                     onClick={onActivateActivityType}
                   />
                 )}
@@ -161,14 +161,14 @@ const EditActivityType = () => {
                   <Button
                     label={i18n.t(`activity_types:actions.archive`)}
                     className="btn-outline-secondary"
-                    icon={<ArchiveBoxIcon className="h-5 w-5 md:hidden" />}
+                    icon={<ArchiveBoxIcon className="h-5 w-5 sm:hidden" />}
                     onClick={onArchiveActivityType}
                   />
                 )}
                 <Button
                   label={i18n.t('general:save_changes')}
                   className="btn-primary"
-                  icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
+                  icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
                   onClick={handleSubmit(onSubmit)}
                 />
               </div>

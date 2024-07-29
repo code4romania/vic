@@ -100,7 +100,7 @@ const EditContractTemplate = () => {
             <Button
               label={t('general:save')}
               className="btn-primary"
-              icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
+              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
               onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>
