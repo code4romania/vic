@@ -153,7 +153,7 @@ const EditActivityType = () => {
                   <Button
                     label={i18n.t(`activity_types:actions.activate`)}
                     className="btn-outline-secondary"
-                    icon={<ArchiveBoxXMarkIcon className="h-5 w-5 sm:hidden" />}
+                    icon={<ArchiveBoxXMarkIcon className="h-5 w-5 md:hidden" />}
                     onClick={onActivateActivityType}
                   />
                 )}
