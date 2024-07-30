@@ -32,7 +32,14 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       await getCurrentUser();
 
       // request profile data
-      getProfile();
+
+      getProfile(undefined, {
+        onError: async (error) => {
+          console.log('⛔️ getProfile error: ', error);
+          await signOut();
+          setIsLoading(false);
+        },
+      });
     } catch (error) {
       // https://github.com/aws-amplify/amplify-js/blob/6caccc7b4/packages/auth/src/Auth.ts#L1705
       // here are just error strings validating user pool config and if user is authenticated
