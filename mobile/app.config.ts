@@ -37,7 +37,7 @@ const expoConfig: ExpoConfig = {
       foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
     },
-    googleServicesFile: './google-services.json',
+    googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
     package: 'org.commitglobal.vic',
   },
   web: {
