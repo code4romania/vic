@@ -5,6 +5,8 @@ import ReadOnlyElement from '../components/ReadOnlyElement';
 import FormLayout from '../layouts/FormLayout';
 import {
   useActivityLogQuery,
+  useActivityLogsCounters,
+  useActivityLogsInfiniteQuery,
   useCancelActivityLogMutation,
 } from '../services/activity-log/activity-log.service';
 import Disclaimer from '../components/Disclaimer';
@@ -17,6 +19,8 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import ActivityLogSkeleton from '../components/skeleton/activity-log-skeleton';
 import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
+import { useUserProfile } from '../store/profile/profile.selector';
+import { OrderDirection } from '../common/enums/order-direction.enum';
 
 const ActivityLog = ({ navigation, route }: any) => {
   // translations
@@ -29,11 +33,25 @@ const ActivityLog = ({ navigation, route }: any) => {
   // cancel activity log
   const { isLoading: isCancelingLog, mutate: cancelLog } = useCancelActivityLogMutation();
 
+  const { userProfile } = useUserProfile();
+  const { refetch: reloadCounters } = useActivityLogsCounters(
+    ActivityLogStatus.PENDING,
+    userProfile?.activeOrganization?.volunteerId as string,
+  );
+  const { refetch: reloadActivityLogs } = useActivityLogsInfiniteQuery(
+    OrderDirection.ASC,
+    '',
+    ActivityLogStatus.PENDING,
+  );
+
   const onDeleteLogBtnPress = () => {
     cancelLog(
       { activityLogId },
       {
         onSuccess: () => {
+          // reload logs and counters
+          reloadActivityLogs();
+          reloadCounters();
           navigation.goBack();
         },
         onError: (error: any) => {
