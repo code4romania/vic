@@ -26,9 +26,9 @@ export const updateActivityType = async (
   const { department, role, branch, ...payload } = data;
   return API.patch(`/activity-type/${id}`, {
     ...payload,
-    ...(department ? { departmentId: department?.key } : {}),
-    ...(role ? { roleId: role?.key } : {}),
-    ...(branch ? { branchId: branch?.key } : {}),
+    ...(department ? { departmentId: department?.key || null } : {}),
+    ...(role ? { roleId: role?.key || null } : {}),
+    ...(branch ? { branchId: branch?.key || null } : {}),
   }).then((res) => res.data);
 };
 
