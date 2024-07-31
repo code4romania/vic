@@ -107,7 +107,7 @@ const Select = <T extends React.Key>({
                       {item.value}
                     </span>
 
-                    {/* if the item cannot be deselected, display a check icon, otherwise display an x icon to indicate that posibility of deselection */}
+                    {/* if the item cannot be deselected, display a check icon, otherwise display an x icon to indicate the posibility of deselection */}
                     {selected?.key === item.key && !allowDeselect ? (
                       <span className="text-indigo-500 absolute inset-y-0 right-0 flex items-center pr-2">
                         <CheckIcon className="h-5 w-5" aria-hidden="true" />
