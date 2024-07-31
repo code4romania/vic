@@ -7,11 +7,17 @@ export interface SelectItem<T> {
   value: string;
   key: T;
 }
+
+export interface OptionalSelectItem<T> {
+  value?: string;
+  key?: T;
+}
+
 export interface SelectProps<T> {
   label?: string;
   options: SelectItem<T>[];
   onChange: (item: SelectItem<T> | undefined) => void;
-  selected?: SelectItem<T> | undefined;
+  selected?: SelectItem<T> | OptionalSelectItem<T> | undefined;
   placeholder?: string;
   helper?: ReactNode;
   minWidth?: boolean;
