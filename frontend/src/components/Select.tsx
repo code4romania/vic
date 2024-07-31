@@ -1,6 +1,6 @@
 import React, { Fragment, ReactNode } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { classNames } from '../common/utils/utils';
 
 export interface SelectItem<T> {
@@ -26,7 +26,7 @@ const Select = <T extends React.Key>({
   placeholder,
   helper,
   minWidth,
-  allowDeselect = false
+  allowDeselect = false,
 }: SelectProps<T>) => {
   const handleChange = (item: SelectItem<T>) => {
     if (allowDeselect && selected && item?.key === selected.key) {
@@ -43,8 +43,9 @@ const Select = <T extends React.Key>({
           {label && <Listbox.Label>{label}</Listbox.Label>}
           <div className="relative">
             <Listbox.Button
-              className={`h-[42px] ${minWidth ? 'min-w-[90px] md:min-w-[100px]' : ''
-                } max-w-[37rem] bg-white relative w-full border border-cool-gray-200 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm disabled:bg-cool-gray-100`}
+              className={`h-[42px] ${
+                minWidth ? 'min-w-[90px] md:min-w-[100px]' : ''
+              } max-w-[37rem] bg-white relative w-full border border-cool-gray-200 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm disabled:bg-cool-gray-100`}
             >
               <span className="block truncate lg:text-base text-sm">
                 {selected ? (
@@ -86,6 +87,7 @@ const Select = <T extends React.Key>({
                       classNames(
                         active ? ' bg-indigo-50' : '',
                         'cursor-default select-none relative py-3 pl-3 pr-9 text-cool-gray-900',
+                        selected?.key === item.key ? 'bg-indigo-50' : '',
                       )
                     }
                     value={item}
@@ -99,9 +101,14 @@ const Select = <T extends React.Key>({
                       {item.value}
                     </span>
 
-                    {selected?.key === item.key ? (
-                      <span className="text-indigo-500 absolute inset-y-0 right-0 flex items-center pr-4">
+                    {/* if the item cannot be deselected, display a check icon, otherwise display an x icon to indicate that posibility of deselection */}
+                    {selected?.key === item.key && !allowDeselect ? (
+                      <span className="text-indigo-500 absolute inset-y-0 right-0 flex items-center pr-2">
                         <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                    ) : selected?.key === item.key && allowDeselect ? (
+                      <span className="text-indigo-500 absolute inset-y-0 right-0 flex items-center pr-2">
+                        <XMarkIcon className="h-5 w-5" aria-hidden="true" />
                       </span>
                     ) : null}
                   </Listbox.Option>
