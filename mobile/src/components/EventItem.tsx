@@ -21,25 +21,37 @@ interface EventContentRowProps {
 }
 
 const EventContentRow = withStyles(
-  ({ eva, children, icon }: EventContentRowProps) => (
-    <View style={eva.style.section}>
-      <Icon name={icon} style={eva.style.icon} />
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1" appearance="hint">
-        {children}
-      </Text>
-    </View>
-  ),
+  ({ eva, children, icon }: EventContentRowProps) => {
+    return (
+      <View style={eva.style.section}>
+        <Icon name={icon} style={eva.style.icon} />
+        <Text
+          allowFontScaling={ALLOW_FONT_SCALLING}
+          category="c1"
+          appearance="hint"
+          style={eva.style.text}
+        >
+          {children}
+        </Text>
+      </View>
+    );
+  },
   (theme) => ({
     section: {
       gap: 8,
       flexDirection: 'row',
-      alignItems: 'center',
-      height: 20,
+      alignItems: 'flex-start',
+      minHeight: 20,
     },
     icon: {
       width: 12,
       height: 12,
       tintColor: theme['cool-gray-400'],
+      paddingTop: 2,
+    },
+    text: {
+      flex: 1,
+      flexWrap: 'wrap',
     },
   }),
 );
@@ -69,7 +81,9 @@ const EventItem = ({ event, onPress }: EventItemProps) => {
           <EventContentRow icon="clock">
             {formatEventDate(event.startDate, event.endDate)}
           </EventContentRow>
-          <EventContentRow icon="map-pin">{event.location}</EventContentRow>
+
+          {event.location && <EventContentRow icon="map-pin">{event.location}</EventContentRow>}
+
           <EventContentRow icon="users">{mapEventType(event)}</EventContentRow>
         </View>
         <Avatar source={{ uri: event.organizationLogo }} size={'tiny'} />
@@ -88,6 +102,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    gap: 2,
   },
   title: {
     paddingBottom: 4,
