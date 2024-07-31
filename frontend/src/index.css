@@ -197,7 +197,7 @@
 .rdt_TableWrapper > div:first-of-type {
   overflow: scroll !important;
   /* added for action menu to be visible without scrolling */
-  padding-bottom: 7rem !important;
+  padding-bottom: 10rem !important;
 }
 
 /* data table overrides */
