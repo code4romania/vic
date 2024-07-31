@@ -29,11 +29,9 @@ export const ActivityTypeFormSchema = yup
           value: '50',
         })}`,
       ),
-    department: yup
-      .object({ key: yup.string().required(), value: yup.string().required() })
-      .optional(),
-    branch: yup.object({ key: yup.string().required(), value: yup.string().required() }).optional(),
-    role: yup.object({ key: yup.string().required(), value: yup.string().required() }).optional(),
+    department: yup.object().shape({ key: yup.string(), value: yup.string() }).optional(),
+    branch: yup.object().shape({ key: yup.string(), value: yup.string() }).optional(),
+    role: yup.object().shape({ key: yup.string(), value: yup.string() }).optional(),
     icon: yup.string().required(),
   })
   .required();
