@@ -18,7 +18,9 @@ const PieChartCard = () => {
     PIE_CHART_FILTER_OPTIONS[0],
   );
 
-  const { data, isLoading } = useVolunteerPieChartQuery(chartFilter?.key || PIE_CHART_FILTER_OPTIONS[0].key);
+  const { data, isLoading } = useVolunteerPieChartQuery(
+    chartFilter?.key || PIE_CHART_FILTER_OPTIONS[0].key,
+  );
 
   return (
     <Card>
@@ -32,7 +34,7 @@ const PieChartCard = () => {
         />
       </CardHeader>
       <div className="max-xs:h-[350px] max-sm:h-[400px] h-[600px] w-full sm:px-8 px-4 py-8">
-        {data && (
+        {data && data.length > 0 ? (
           <>
             <PieChart data={data.map((item) => ({ name: item.name, value: +item.count }))} />
             <div className="flex max-xs:gap-1 gap-3 justify-center flex-wrap">
@@ -50,7 +52,11 @@ const PieChartCard = () => {
               ))}
             </div>
           </>
-        )}
+        ) : data && data.length === 0 ? (
+          <div className="max-xs:h-[350px] max-sm:h-[400px] h-[600px] text-center py-6">
+            <EmptyContent description={i18n.t('general:empty_table')} />
+          </div>
+        ) : null}
 
         {!data && !isLoading && (
           <div className="max-xs:h-[350px] max-sm:h-[400px] h-[600px] text-center py-6">
