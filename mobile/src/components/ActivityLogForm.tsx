@@ -39,7 +39,10 @@ export const activityLogSchema = yup
       .required(`${i18n.t('activity_log:form.hours.required')}`)
       .min(1, `${i18n.t('activity_log:form.hours.min', { value: 1 })}`)
       .max(300, `${i18n.t('activity_log:form.hours.max', { value: 300 })}`),
-    mentions: yup.string().max(300, `${i18n.t('activity_log:form.mentions.max', { value: 300 })}`),
+    mentions: yup
+      .string()
+      .max(300, `${i18n.t('activity_log:form.mentions.max', { value: 300 })}`)
+      .nullable(),
   })
   .required();
 

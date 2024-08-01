@@ -5,6 +5,8 @@ import ReadOnlyElement from '../components/ReadOnlyElement';
 import FormLayout from '../layouts/FormLayout';
 import {
   useActivityLogQuery,
+  useActivityLogsCounters,
+  useActivityLogsInfiniteQuery,
   useCancelActivityLogMutation,
 } from '../services/activity-log/activity-log.service';
 import Disclaimer from '../components/Disclaimer';
@@ -21,7 +23,7 @@ import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 const ActivityLog = ({ navigation, route }: any) => {
   // translations
   const { t } = useTranslation('activity_log');
-  const { activityLogId } = route.params;
+  const { activityLogId, orderDirection, search, status, volunteerId } = route.params;
   // activity log query
   const { activityLog } = useActivityLogs();
 
@@ -29,11 +31,21 @@ const ActivityLog = ({ navigation, route }: any) => {
   // cancel activity log
   const { isLoading: isCancelingLog, mutate: cancelLog } = useCancelActivityLogMutation();
 
+  const { refetch: reloadCounters } = useActivityLogsCounters(status, volunteerId);
+  const { refetch: reloadActivityLogs } = useActivityLogsInfiniteQuery(
+    orderDirection,
+    search,
+    status,
+  );
+
   const onDeleteLogBtnPress = () => {
     cancelLog(
       { activityLogId },
       {
         onSuccess: () => {
+          // reload logs and counters
+          reloadActivityLogs();
+          reloadCounters();
           navigation.goBack();
         },
         onError: (error: any) => {
