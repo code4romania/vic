@@ -19,13 +19,11 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import ActivityLogSkeleton from '../components/skeleton/activity-log-skeleton';
 import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
-import { useUserProfile } from '../store/profile/profile.selector';
-import { OrderDirection } from '../common/enums/order-direction.enum';
 
 const ActivityLog = ({ navigation, route }: any) => {
   // translations
   const { t } = useTranslation('activity_log');
-  const { activityLogId } = route.params;
+  const { activityLogId, orderDirection, search, status, volunteerId } = route.params;
   // activity log query
   const { activityLog } = useActivityLogs();
 
@@ -33,15 +31,11 @@ const ActivityLog = ({ navigation, route }: any) => {
   // cancel activity log
   const { isLoading: isCancelingLog, mutate: cancelLog } = useCancelActivityLogMutation();
 
-  const { userProfile } = useUserProfile();
-  const { refetch: reloadCounters } = useActivityLogsCounters(
-    ActivityLogStatus.PENDING,
-    userProfile?.activeOrganization?.volunteerId as string,
-  );
+  const { refetch: reloadCounters } = useActivityLogsCounters(status, volunteerId);
   const { refetch: reloadActivityLogs } = useActivityLogsInfiniteQuery(
-    OrderDirection.ASC,
-    '',
-    ActivityLogStatus.PENDING,
+    orderDirection,
+    search,
+    status,
   );
 
   const onDeleteLogBtnPress = () => {

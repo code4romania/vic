@@ -31,6 +31,7 @@ import { SvgXml } from 'react-native-svg';
 import Paragraph from '../components/Paragraph';
 import InlineLink from '../components/InlineLink';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const ActivityLogsTabs: ISelectItem[] = [
   { key: ActivityLogStatus.PENDING, label: i18n.t('activity_logs:tabs.pending') },
@@ -114,7 +115,13 @@ const ActivityLogs = ({ navigation }: any) => {
   };
 
   const onActivityLogItemPress = (activityLogId: string) => {
-    navigation.navigate('activity-log', { activityLogId });
+    navigation.navigate('activity-log', {
+      activityLogId,
+      orderDirection,
+      search,
+      status,
+      volunteerId: userProfile?.activeOrganization?.volunteerId,
+    });
   };
 
   const onRenderEventListItem = ({ item }: { item: IActivityLogItem }) => (
@@ -180,7 +187,10 @@ const ActivityLogs = ({ navigation }: any) => {
           loadingLayout={<ActivityLogSkeletonItem />}
           errorMessage={getActivityLogsError ? `${t('errors.generic')}` : ''}
         />
-        <ButtonKitten onPress={onAddActivityLogButtonPress} style={styles.addButton}>
+        <ButtonKitten
+          onPress={onAddActivityLogButtonPress}
+          style={[styles.addButton, { bottom: useSafeAreaInsets().bottom + 21 }]}
+        >
           {() => (
             <Icon name="plus" style={{ ...styles.addIcon, color: theme['color-basic-100'] }} />
           )}
@@ -235,7 +245,6 @@ const styles = StyleSheet.create({
   addButton: {
     position: 'absolute',
     right: 21,
-    bottom: 21,
     width: 48,
     height: 48,
     borderRadius: 24,
