@@ -80,7 +80,11 @@
     "select_interval": "Selectează interval",
     "save_draft": "Salvează ca draft",
     "other": "Altă opțiune",
-    "add_file": "Adaugă fișier aici",
+    "add_file": {
+      "p1": "Plasează aici sau",
+      "p2": "Selectează",
+      "p3": "fișierul"
+    },
     "confirm": "Confirmă",
     "no_options": "Fără opțiuni",
     "type_for_options": "Începeți să scrieți pentru opțiuni..."
