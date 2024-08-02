@@ -29,6 +29,14 @@ import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
 import { useReducedMotion } from 'react-native-reanimated';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SvgXml } from 'react-native-svg';
+import upsIcon from '../assets/svg/ups-icon';
+
+enum BottomSheetContent {
+  DOCUMENT_CONFIRMATION = 'document-confirmation',
+  DOCUMENT_REMOVAL = 'document-removal',
+}
 
 const Contract = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -37,6 +45,11 @@ const Contract = ({ navigation, route }: any) => {
   // theme
   const theme = useTheme();
   const paddingTop = usePaddingTop();
+  const insets = useSafeAreaInsets();
+
+  const [bottomSheetContent, setBottomSheetContent] = useState(
+    BottomSheetContent.DOCUMENT_CONFIRMATION,
+  );
 
   // document state
   const [selectedContract, setSelectedContract] =
@@ -55,7 +68,7 @@ const Contract = ({ navigation, route }: any) => {
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points
-  const snapPoints = useMemo(() => [1, 300], []);
+  const snapPoints = useMemo(() => [1, 350], []);
 
   // sign contract
   const { mutate: signContract, isLoading: isUploadingContract } = useSignContractMutation();
@@ -122,6 +135,7 @@ const Contract = ({ navigation, route }: any) => {
     // don't show the bottom sheet if the user canceled the upload file from the device
     if (!result.canceled && result.assets[0]) {
       setSelectedContract(result.assets[0] as any);
+      setBottomSheetContent(BottomSheetContent.DOCUMENT_CONFIRMATION);
       onOpenBottomSheet();
     }
   };
@@ -162,7 +176,14 @@ const Contract = ({ navigation, route }: any) => {
     }
   };
 
+  const onOpenCancelConfirmationModal = () => {
+    setBottomSheetContent(BottomSheetContent.DOCUMENT_REMOVAL);
+    onOpenBottomSheet();
+    return;
+  };
+
   const onCancelAndUploadNewContract = () => {
+    onCloseBottomSheet();
     cancelContract(
       { contractId: id },
       {
@@ -195,7 +216,7 @@ const Contract = ({ navigation, route }: any) => {
 
     if (contract?.status === ContractStatus.PENDING_ADMIN) {
       return {
-        onPrimaryActionButtonClick: onCancelAndUploadNewContract,
+        onPrimaryActionButtonClick: onOpenCancelConfirmationModal,
         primaryActionLabel: t('contract.actions.cancel'),
         primaryBtnType: ButtonType.DANGER,
         loading: isCancelingContract,
@@ -249,34 +270,55 @@ const Contract = ({ navigation, route }: any) => {
         snapPoints={snapPoints}
         animateOnMount={reducedMotion ? false : true}
       >
-        <View style={styles.bottomSheetContainer}>
-          <View style={styles.textContainer}>
-            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
-              'contract.bottom_sheet.heading',
-            )}`}</Text>
-            <View style={styles.bottomSheetParagraphContainer}>
-              <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">{`${t(
-                'contract.bottom_sheet.paragraph',
-              )}`}</Text>
+        <View style={[styles.bottomSheetContainer, { paddingBottom: insets.bottom }]}>
+          {bottomSheetContent === BottomSheetContent.DOCUMENT_CONFIRMATION ? (
+            <>
+              <View style={styles.textContainer}>
+                <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
+                  'contract.bottom_sheet.heading',
+                )}`}</Text>
+                <View style={styles.bottomSheetParagraphContainer}>
+                  <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">{`${t(
+                    'contract.bottom_sheet.paragraph',
+                  )}`}</Text>
+                  <Text
+                    allowFontScaling={ALLOW_FONT_SCALLING}
+                    category="p2"
+                    style={{ color: theme['color-success-500'] }}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                  >
+                    {(selectedContract as any)?.name || ''}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.buttonsContainer}>
+                <Button label={t('contract.bottom_sheet.label')} onPress={onUploadContract} />
+                <InlineLink
+                  style={{ color: theme['cool-gray-700'] }}
+                  label={t('general:back')}
+                  onPress={onCancelSelection}
+                />
+              </View>
+            </>
+          ) : (
+            <>
+              <SvgXml xml={upsIcon} height={100} width={100} />
               <Text
                 allowFontScaling={ALLOW_FONT_SCALLING}
-                category="p2"
-                style={{ color: theme['color-success-500'] }}
-                numberOfLines={2}
-                ellipsizeMode="tail"
+                category="h2"
+                style={styles.centeredText}
               >
-                {(selectedContract as any)?.name || ''}
+                {`${t('confirmation_modal.paragraph')}`}
               </Text>
-            </View>
-          </View>
-          <View style={styles.buttonsContainer}>
-            <Button label={t('contract.bottom_sheet.label')} onPress={onUploadContract} />
-            <InlineLink
-              style={{ color: theme['cool-gray-700'] }}
-              label={t('general:back')}
-              onPress={onCancelSelection}
-            />
-          </View>
+              <Button
+                status="danger"
+                label={t('contract.actions.cancel')}
+                onPress={onCancelAndUploadNewContract}
+                loading={isCancelingContract}
+              />
+            </>
+          )}
         </View>
       </BottomSheet>
     </>
@@ -302,7 +344,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
     gap: 24,
   },
   textContainer: {
@@ -310,6 +353,9 @@ const styles = StyleSheet.create({
     gap: 4,
     alignItems: 'center',
     justifyContent: 'flex-end',
+  },
+  centeredText: {
+    textAlign: 'center',
   },
   buttonsContainer: {
     flex: 1,

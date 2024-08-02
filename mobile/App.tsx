@@ -6,7 +6,7 @@ import { default as theme } from './src/common/theme/theme.json';
 import { default as mapping } from './src/common/theme/mappings.json';
 import * as Font from 'expo-font';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import AuthContextProvider from './src/contexts/auth/AuthContextProvider';
 import Router from './src/routes/Router';
