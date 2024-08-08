@@ -14,10 +14,10 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useTranslation } from 'react-i18next';
 import * as Linking from 'expo-linking';
-import Constants from 'expo-constants';
 import Paragraph from '../components/Paragraph';
 import { REGEX } from '../common/constants/constants';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type IdentityDataFormTypes = {
   identityDocumentSeries: string;
@@ -54,6 +54,7 @@ const schema = yup.object({
 const IdentityData = ({ navigation, route }: any) => {
   const { userProfile } = useUserProfile();
   const { t } = useTranslation('identity_data');
+  const paddingTop = usePaddingTop();
 
   const {
     control,
@@ -87,7 +88,7 @@ const IdentityData = ({ navigation, route }: any) => {
   }, [userProfile, reset]);
 
   const onPrivacyPolicyPress = () => {
-    Linking.openURL(Constants.expoConfig?.extra?.policyLink);
+    Linking.openURL(`${process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK}`);
   };
 
   const onSubmit = async (payload: IdentityDataFormTypes) => {
@@ -123,6 +124,7 @@ const IdentityData = ({ navigation, route }: any) => {
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isUpdateingPersonalData,
       }}
+      headerStyle={{ paddingTop }}
     >
       <FormLayout>
         <Paragraph>{`${t('description')}`}</Paragraph>

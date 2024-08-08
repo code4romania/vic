@@ -370,9 +370,9 @@ const ActivityLogTable = ({
     });
   };
 
-  const onStatusChange = (status: SelectItem<ActivityLogStatus>) => {
+  const onStatusChange = (status: SelectItem<ActivityLogStatus> | undefined) => {
     setStatus(status);
-    setQuery({ status: status.key });
+    setQuery({ status: status?.key });
   };
 
   const onExecutionOnRangeChange = ([executionDateStart, executionDateEnd]: Date[]) => {
@@ -522,6 +522,8 @@ const ActivityLogTable = ({
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}
+            defaultSortAsc={query.orderDirection === OrderDirection.ASC}
+            defaultSortFieldId={query.orderBy}
           />
         </CardBody>
       </Card>

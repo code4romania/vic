@@ -7,7 +7,7 @@ const expoConfig: ExpoConfig = {
   name: 'vic',
   slug: 'vic',
   scheme: 'vic',
-  version: '1.0.6',
+  version: '1.0.14',
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',
   userInterfaceStyle: 'light',
@@ -18,7 +18,7 @@ const expoConfig: ExpoConfig = {
   },
   assetBundlePatterns: ['**/*'],
   ios: {
-    buildNumber: '7',
+    buildNumber: '17',
     supportsTablet: false,
     bundleIdentifier: 'org.commitglobal.vic',
     entitlements: {
@@ -32,7 +32,7 @@ const expoConfig: ExpoConfig = {
     },
   },
   android: {
-    versionCode: 5,
+    versionCode: 15,
     adaptiveIcon: {
       foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
@@ -46,6 +46,7 @@ const expoConfig: ExpoConfig = {
   },
   plugins: [
     'expo-localization',
+    'expo-font',
     [
       'expo-document-picker',
       {
@@ -61,18 +62,9 @@ const expoConfig: ExpoConfig = {
     ],
   ],
   extra: {
-    apiUrl: process.env.EXPO_PUBLIC_API_URL,
-    awsRegion: process.env.EXPO_PUBLIC_AWS_REGION,
-    userPoolId: process.env.EXPO_PUBLIC_USER_POOL_ID,
-    userPoolClientId: process.env.EXPO_PUBLIC_USER_POOL_CLIENT_ID,
-    awsDomain: process.env.EXPO_PUBLIC_AWS_DOMAIN,
     eas: {
       projectId: '6aaad982-5a5c-4af8-b66c-7689afe74e1f',
     },
-    policyLink: process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK,
-    termsLink: process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK,
-    infoLink: process.env.EXPO_PUBLIC_INFORMATION_LINK,
-    contactEmail: process.env.EXPO_PUBLIC_CONTACT_EMAIL,
   },
   updates: {
     url: 'https://u.expo.dev/6aaad982-5a5c-4af8-b66c-7689afe74e1f',

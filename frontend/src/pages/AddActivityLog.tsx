@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PageHeader from '../components/PageHeader';
 import PageLayout from '../layouts/PageLayout';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import CardHeader from '../components/CardHeader';
 import Card from '../layouts/CardLayout';
@@ -17,11 +17,25 @@ import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import ActivityLogForm, { ActivityLogFormTypes } from '../components/ActivityLogForm';
 import { useAddActivityLogMutation } from '../services/activity-log/activity-log.service';
 import { AddActivityLogProps } from '../containers/query/AddActivityLogWithQueryParams';
+import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
+import { OrderDirection } from '../common/enums/order-direction.enum';
 
 export const activityLogValidationSchema = yup
   .object({
-    volunteer: yup.object().required(`${i18n.t('activity_log:form.volunteer.required')}`),
-    task: yup.object().required(`${i18n.t('activity_log:form.task.required')}`),
+    volunteer: yup
+      .object()
+      .shape({
+        label: yup.string().required(`${i18n.t('activity_log:form.volunteer.required')}`),
+        value: yup.string().required(`${i18n.t('activity_log:form.volunteer.required')}`),
+      })
+      .required(`${i18n.t('activity_log:form.volunteer.required')}`),
+    task: yup
+      .object()
+      .shape({
+        label: yup.string().required(`${i18n.t('activity_log:form.task.required')}`),
+        value: yup.string().required(`${i18n.t('activity_log:form.task.required')}`),
+      })
+      .required(`${i18n.t('activity_log:form.task.required')}`),
     hours: yup
       .number()
       .typeError(`${i18n.t('activity_log:form.hours.required')}`)
@@ -68,7 +82,17 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
     addActivityLog(data, {
       onSuccess: () => {
         useSuccessToast(i18n.t('activity_log:form.submit.messages.add'));
-        navigateBack();
+        navigate(
+          {
+            pathname: '/activity-log',
+            search: createSearchParams({
+              resolutionStatus: ActivityLogResolutionStatus.SOLVED,
+              orderDirection: OrderDirection.DESC,
+              orderBy: 'date',
+            }).toString(),
+          },
+          { replace: true },
+        );
       },
       onError: (error) => {
         useErrorToast(InternalErrors.ACTIVITY_LOG_ERRORS.getError(error.response?.data.code_error));
@@ -89,7 +113,7 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
             <Button
               label={i18n.t('general:save')}
               className="btn-primary"
-              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
+              icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
               onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>

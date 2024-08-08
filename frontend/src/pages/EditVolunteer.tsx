@@ -34,6 +34,7 @@ export type VolunteerFormTypes = {
 };
 
 const schema = yup.object({
+  name: yup.string().required(),
   email: yup
     .string()
     .email(`${i18n.t('volunteer:form.email.pattern')}`)
@@ -41,7 +42,6 @@ const schema = yup.object({
     .required(`${i18n.t('volunteer:form.email.required')}`),
   activeSince: yup
     .date()
-    .nullable()
     .optional()
     .typeError(`${i18n.t('general:invalid_date')}`),
 });
@@ -131,7 +131,7 @@ const EditVolunteer = () => {
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary shrink-0"
-              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
+              icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
               onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>

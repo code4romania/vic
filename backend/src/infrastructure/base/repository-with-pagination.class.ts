@@ -2,7 +2,6 @@ import { Brackets, Repository, SelectQueryBuilder } from 'typeorm';
 import { format } from 'date-fns';
 import { DATE_CONSTANTS } from 'src/common/constants/constants';
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
-import { BaseEntity } from './base-entity';
 
 export interface IPaginationMeta {
   itemCount: number;
@@ -17,7 +16,7 @@ export interface Pagination<T> {
   meta: IPaginationMeta;
 }
 
-export abstract class RepositoryWithPagination<T extends BaseEntity>
+export abstract class RepositoryWithPagination<T>
   implements IRepositoryWithPagination<T>
 {
   constructor(private readonly repository: Repository<T>) {}
@@ -86,16 +85,26 @@ export abstract class RepositoryWithPagination<T extends BaseEntity>
     column: string,
     start: Date,
     end?: Date,
+    customDateFormat?: string,
   ): SelectQueryBuilder<T> {
     const prefix = column.split('.').join('');
     if (end) {
       query.andWhere(`${column} BETWEEN :${prefix}Start AND :${prefix}End`, {
-        [`${prefix}Start`]: format(start, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
-        [`${prefix}End`]: format(end, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
+        [`${prefix}Start`]: format(
+          start,
+          customDateFormat || DATE_CONSTANTS.YYYY_MM_DD_HH_SS,
+        ),
+        [`${prefix}End`]: format(
+          end,
+          customDateFormat || DATE_CONSTANTS.YYYY_MM_DD_HH_SS,
+        ),
       });
     } else {
       query.andWhere(`${column} >= :${prefix}Start`, {
-        [`${prefix}Start`]: format(start, DATE_CONSTANTS.YYYY_MM_DD),
+        [`${prefix}Start`]: format(
+          start,
+          customDateFormat || DATE_CONSTANTS.YYYY_MM_DD,
+        ),
       });
     }
 

@@ -15,9 +15,9 @@ import Paragraph from '../components/Paragraph';
 import InlineLink from '../components/InlineLink';
 import Button from '../components/Button';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useReducedMotion } from 'react-native-reanimated';
 
 const LeaveOrganization = ({ navigation }: any) => {
-  console.log('LeaveOrganization');
   const { t } = useTranslation('leave_ngo');
 
   const theme = useTheme();
@@ -31,6 +31,8 @@ const LeaveOrganization = ({ navigation }: any) => {
     useLeaveOrganizationMutation();
 
   const { organization } = useOrganization();
+
+  const reducedMotion = useReducedMotion();
 
   const onLeaveOrganizationConfirm = () => {
     if (organization) {
@@ -88,6 +90,7 @@ const LeaveOrganization = ({ navigation }: any) => {
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.bottomSheetContainer}>
           <View style={styles.textContainer}>

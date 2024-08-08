@@ -16,7 +16,7 @@ interface ProfileCardProps {
 
 const ProfileCard = ({ name, logo, age, sex, location }: ProfileCardProps) => {
   return (
-    <Card>
+    <Card className="h-full flex justify-center align-center">
       <CardBody>
         <div className="flex flex-col items-center gap-4 px-2 pt-4 pb-8">
           <h2 className="text-cool-gray-700">{name}</h2>

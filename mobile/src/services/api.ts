@@ -1,10 +1,9 @@
 import { Auth } from 'aws-amplify';
 import axios, { AxiosRequestHeaders } from 'axios';
-import Constants from 'expo-constants';
 
 // https://vitejs.dev/guide/env-and-mode.html
 const API = axios.create({
-  baseURL: `${Constants.expoConfig?.extra?.apiUrl}`,
+  baseURL: `${process.env.EXPO_PUBLIC_API_URL}`,
   timeout: 100000,
   headers: {
     'Content-Type': 'application/json',
@@ -14,7 +13,7 @@ const API = axios.create({
 API.interceptors.request.use(async (request) => {
   // add auth header with jwt if account is logged in and request is to the api url
   try {
-    const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
+    const user = await Auth.currentAuthenticatedUser();
 
     if (!request.headers) {
       request.headers = {} as AxiosRequestHeaders;

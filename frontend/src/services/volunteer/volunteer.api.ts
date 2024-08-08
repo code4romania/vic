@@ -8,7 +8,7 @@ import { AgeRangeEnum } from '../../common/enums/age-range.enum';
 import { AxiosResponseHeaders } from 'axios';
 import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils/utils';
 import { IVolunteerStatistics } from '../../common/interfaces/volunteer-statistics.interface';
-import { DataSet } from '../../components/LineChart';
+import { DataSet, InitialDataSet } from '../../components/LineChart';
 import { PieChartOption } from '../../common/constants/pie-chart-options';
 import { LineChartOption } from '../../common/constants/line-chart-options';
 
@@ -113,6 +113,8 @@ export const blockVolunteer = async (id: string): Promise<IVolunteer> => {
 
 export const getVolunteerListItems = async (params: {
   status: VolunteerStatus;
+  page: number;
+  limit: number;
   search?: string;
   orderBy?: string;
   orderDirection?: OrderDirection;
@@ -125,8 +127,12 @@ export const getVolunteerStatistics = async (): Promise<IVolunteerStatistics> =>
 };
 
 export const getVolunteerLineChart = async (interval: LineChartOption): Promise<DataSet[]> => {
-  return API.get('/dashboard/volunteer-status-timeseries', { params: { interval } }).then(
-    (res) => res.data,
+  return API.get('/dashboard/volunteer-status-timeseries', { params: { interval } }).then((res) =>
+    res.data.map((item: InitialDataSet) => ({
+      ...item,
+      active: Number(item.active),
+      archived: Number(item.archived),
+    })),
   );
 };
 

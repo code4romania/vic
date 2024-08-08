@@ -22,6 +22,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
 import { useAuth } from '../hooks/useAuth';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type UserFormTypes = {
   firstName: string;
@@ -63,6 +64,8 @@ const schema = yup.object({
 
 const CreateUser = ({ navigation }: any) => {
   const { t } = useTranslation('register');
+  const paddingTop = usePaddingTop();
+
   const { mutate: createUserProfile, isLoading } = useCreateUserProfileMutation();
   const { initialPhoneNumber } = useAuth();
 
@@ -128,6 +131,7 @@ const CreateUser = ({ navigation }: any) => {
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
         loading: isLoading,
       }}
+      headerStyle={{ paddingTop }}
     >
       <FormLayout>
         <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">{`${t(

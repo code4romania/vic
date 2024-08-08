@@ -4,6 +4,7 @@ import { ButtonType } from '../common/enums/button-type.enum';
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import Button from '../components/Button';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 interface ActionsOptionsProps {
   actionLabel: string;
@@ -35,6 +36,7 @@ export const ModalLayout = ({
   onEditButtonPress,
   actionsOptions,
 }: ModalLayoutProps) => {
+  const paddingTop = usePaddingTop();
   const renderLeftControl = () => {
     return <TopNavigationAction icon={CloseIcon} onPress={onDismiss} />;
   };
@@ -53,7 +55,8 @@ export const ModalLayout = ({
         alignment="start"
         accessoryLeft={renderLeftControl}
         accessoryRight={renderRightControl}
-        style={styles.header}
+        // because on android we don't display this as a modal, it needs a top padding to include the insets
+        style={[styles.header, Platform.OS === 'android' && { paddingTop }]}
       />
       <Layout style={styles.layout}>
         <KeyboardAvoidingView
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
   header: { minHeight: 59 },
   layout: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
   keyboardAvoidingContainer: { flex: 1 },
-  childrenContainer: { flex: 1, paddingHorizontal: 16, paddinVertical: 16 },
+  childrenContainer: { flex: 1, padding: 16 },
   bottomActionContainer: {
     width: '100%',
     ...Platform.select({

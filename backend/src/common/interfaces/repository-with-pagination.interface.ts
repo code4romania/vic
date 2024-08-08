@@ -1,8 +1,7 @@
-import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { SelectQueryBuilder } from 'typeorm';
 
-export interface IRepositoryWithPagination<T extends BaseEntity> {
+export interface IRepositoryWithPagination<T> {
   paginateQuery<TModel>(
     query: SelectQueryBuilder<T>,
     limit: number,

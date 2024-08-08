@@ -224,7 +224,7 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
             )}
           </div>
           {contract.status === ContractStatus.PENDING_ADMIN && (
-            <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full  fixed bottom-0 right-0 bg-white">
+            <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full xs:max-w-xs sm:max-w-md fixed bottom-0 right-0 bg-white">
               <Button
                 label={t('contract.actions.confirm')}
                 className="btn-primary"

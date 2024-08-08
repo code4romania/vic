@@ -2,6 +2,7 @@ import React from 'react';
 import { Avatar, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import { Pressable, View } from 'react-native';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface TopNavigationCardProps {
   title: string;
@@ -11,42 +12,56 @@ interface TopNavigationCardProps {
 
 const TopNavigationCard = ({ title, uri, onPress }: TopNavigationCardProps) => {
   const styles = useStyleSheet(themedStyles);
+  const insets = useSafeAreaInsets();
 
   return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) =>
-        pressed
-          ? [styles.pressed, styles.container, styles.shadow]
-          : [styles.notPressed, styles.container, styles.shadow]
-      }
-    >
-      <View style={styles.elipsis} />
-      <View style={styles.shadow}>
-        <Avatar source={{ uri }} size="small" />
+    <>
+      <View style={[styles.header, { height: insets.top + 6 }]} />
+      <View style={styles.row}>
+        <Pressable
+          onPress={onPress}
+          style={({ pressed }) =>
+            pressed ? [styles.pressed, styles.container] : [styles.notPressed, styles.container]
+          }
+        >
+          <View style={styles.elipsis} />
+          <View style={styles.shadow}>
+            <Avatar source={{ uri }} size="small" />
+          </View>
+          <Text
+            style={styles.title}
+            allowFontScaling={ALLOW_FONT_SCALLING}
+            category="h3"
+            appearance="alternative"
+          >
+            {title}
+          </Text>
+        </Pressable>
+        <View style={styles.backdropBox}>
+          <View style={styles.whiteBox} />
+        </View>
       </View>
-      <Text
-        style={styles.title}
-        allowFontScaling={ALLOW_FONT_SCALLING}
-        category="h3"
-        appearance="alternative"
-      >
-        {title}
-      </Text>
-    </Pressable>
+    </>
   );
 };
 
 export default TopNavigationCard;
 
 const themedStyles = StyleService.create({
+  header: {
+    backgroundColor: '$cool-gray-800',
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   elipsis: {
     backgroundColor: '$color-primary-500',
     height: 16,
     width: 16,
     borderRadius: 100,
-    position: 'absolute',
-    marginLeft: -8,
+    position: 'relative',
+    left: -24,
   },
   notPressed: {
     backgroundColor: '$cool-gray-800',
@@ -68,7 +83,7 @@ const themedStyles = StyleService.create({
     shadowColor: '$dark-purple',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 3,
     },
     shadowOpacity: 0.24,
     shadowRadius: 4,
@@ -76,5 +91,14 @@ const themedStyles = StyleService.create({
   title: {
     flexWrap: 'wrap',
     maxWidth: '85%',
+  },
+  backdropBox: {
+    flex: 1,
+    backgroundColor: '#1F2937',
+  },
+  whiteBox: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 40,
   },
 });

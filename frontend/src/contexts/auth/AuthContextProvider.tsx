@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Auth } from 'aws-amplify';
 import { AuthContext } from './AuthContext';
 import { useLogin } from '../../services/auth/auth.service';
 import { IUser } from '../../common/interfaces/user.interface';
+import { signInWithRedirect, getCurrentUser, signOut } from 'aws-amplify/auth';
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -29,10 +29,17 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const initProfile = async () => {
     try {
       // this will throw error if user is not authenticated
-      await Auth.currentAuthenticatedUser();
+      await getCurrentUser();
 
       // request profile data
-      getProfile();
+
+      getProfile(undefined, {
+        onError: async (error) => {
+          console.log('⛔️ getProfile error: ', error);
+          await signOut();
+          setIsLoading(false);
+        },
+      });
     } catch (error) {
       // https://github.com/aws-amplify/amplify-js/blob/6caccc7b4/packages/auth/src/Auth.ts#L1705
       // here are just error strings validating user pool config and if user is authenticated
@@ -42,11 +49,11 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const login = async () => {
-    await Auth.federatedSignIn();
+    await signInWithRedirect();
   };
 
   const logout = async () => {
-    await Auth.signOut();
+    await signOut();
     setIsAuthenticated(false);
   };
 

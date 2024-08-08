@@ -6,6 +6,8 @@ import { NotificationContext } from './NotificationContext';
 import { useUserProfile } from '../../store/profile/profile.selector';
 import useStore from '../../store/store';
 import { useAuth } from '../../hooks/useAuth';
+import { useUpdateSettingsMutation } from '../../services/settings/settings.service';
+import { INotificationsSettings } from '../../common/interfaces/user-profile.interface';
 
 export const EVENTS = {
   JOIN_NGO: {
@@ -42,16 +44,37 @@ const NotificationContextProvider = ({
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
   const { userProfile } = useUserProfile();
-  const { setUserProfile } = useStore();
+  const { setUserProfile, updateSettings } = useStore();
   const { isAuthenticated } = useAuth();
   const [isRegistered, setIsRegistered] = useState<boolean>(false);
+  const { mutate: updateNotificationsSettings } = useUpdateSettingsMutation();
 
   const initNotifications = async () => {
-    const token = await registerForPushNotificationsAsync();
+    const { token, userWasAsked } = await registerForPushNotificationsAsync();
+
     setPushToken(token);
 
     if (token) {
       await registerPushToken(token);
+    }
+
+    if (userWasAsked && userProfile) {
+      updateNotificationsSettings(
+        {
+          id: userProfile.notificationsSettings.id,
+          settings: {
+            notificationsViaPush: !!token,
+          },
+        },
+        {
+          onSuccess: (data: INotificationsSettings) => {
+            updateSettings(data);
+          },
+          onError: () => {
+            console.log('Could not update notifications settings data.');
+          },
+        },
+      );
     }
 
     setIsRegistered(true);

@@ -47,12 +47,14 @@ export const useJoinByAccessCodeMutation = () => {
             activeOrganization: {
               ...data.organization,
               volunteerId: data.id,
+              volunteerProfileId: null,
             },
             myOrganizations: [
               ...userProfile.myOrganizations,
               {
                 ...data.organization,
                 volunteerId: data.id,
+                volunteerProfileId: null,
               },
             ],
           });

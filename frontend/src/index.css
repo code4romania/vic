@@ -197,7 +197,7 @@
 .rdt_TableWrapper > div:first-of-type {
   overflow: scroll !important;
   /* added for action menu to be visible without scrolling */
-  padding-bottom: 7rem !important;
+  padding-bottom: 10rem !important;
 }
 
 /* data table overrides */
@@ -314,16 +314,14 @@ li.recharts-legend-item {
 }
 
 @layer utilities {
-  @variants responsive {
-    /* Hide scrollbar for Chrome, Safari, and Opera */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
+  /* Hide scrollbar for Chrome, Safari, and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
-    /* Hide scrollbar for IE, Edge, and Firefox */
-    .no-scrollbar {
-      -ms-overflow-style: none; /* IE and Edge */
-      scrollbar-width: none; /* Firefox */
-    }
+  /* Hide scrollbar for IE, Edge, and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }

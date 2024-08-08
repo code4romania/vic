@@ -45,7 +45,6 @@ export class ListingController {
   ): Promise<PaginatedPresenter<IdAndNamePresenter<IEventModel>>> {
     const events = await this.getManyEventUseCase.execute({
       ...filters,
-      limit: 50,
       organizationId,
       status: EventStatus.PUBLISHED,
     });
@@ -67,7 +66,6 @@ export class ListingController {
     const volunteers = await this.getManyVolunteersUseCase.execute({
       ...filters,
       organizationId: user.organizationId,
-      limit: 50,
     });
 
     return new PaginatedPresenter({
@@ -103,7 +101,6 @@ export class ListingController {
   ): Promise<PaginatedPresenter<IdAndNamePresenter<IAdminUserModel>>> {
     const admins = await this.getManyAdminUserUseCase.execute({
       ...filters,
-      limit: 50,
       organizationId,
     });
 

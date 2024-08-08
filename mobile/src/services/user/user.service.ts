@@ -34,7 +34,9 @@ export const useGetUserProfileQuery = () => {
     onSuccess: (data: IUserProfile) => {
       if (
         data.activeOrganization?.id !== userProfile?.activeOrganization?.id ||
-        data.myOrganizations.length !== userProfile?.myOrganizations.length
+        data.myOrganizations.length !== userProfile?.myOrganizations.length ||
+        data.activeOrganization?.volunteerProfileId !==
+          userProfile.activeOrganization?.volunteerProfileId
       ) {
         setUserProfile({ ...data });
       }

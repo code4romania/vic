@@ -8,6 +8,7 @@ export class OrganizationVolunteerPresenter {
     this.name = organization.name;
     this.logo = organization.logo;
     this.volunteerId = organization.volunteerId;
+    this.volunteerProfileId = organization.volunteerProfileId;
   }
 
   @Expose()
@@ -35,4 +36,10 @@ export class OrganizationVolunteerPresenter {
     description: 'The volunteer id for this organization',
   })
   volunteerId: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The volunteer profile id for this organization',
+  })
+  volunteerProfileId: string;
 }

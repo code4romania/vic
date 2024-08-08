@@ -53,12 +53,12 @@ export class GetVolunteerMonthlyNewsStatisticsUsecase
         await this.actionsArchiveFacade.countDocumentStatusUpdatesBetweenDates(
           volunteerIds,
         );
-      // get number of organization access requests
-      statisticsResponse.numberOfOrganizationUpdates =
-        await this.actionsArchiveFacade.countActivityRequestsUpdatesBetweenDates(
-          user.id,
-        );
     }
+    // get number of organization access requests
+    statisticsResponse.numberOfOrganizationUpdates =
+      await this.actionsArchiveFacade.countActivityRequestsUpdatesBetweenDates(
+        user.id,
+      );
 
     return statisticsResponse;
   }

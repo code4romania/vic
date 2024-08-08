@@ -7,7 +7,9 @@ import { useTranslation } from 'react-i18next';
 import FormLayout from '../layouts/FormLayout';
 import { useDeleteAccountMutation } from '../services/user/user.service';
 import { useAuth } from '../hooks/useAuth';
-import Constants from 'expo-constants';
+import { SvgXml } from 'react-native-svg';
+import upsIcon from '../assets/svg/ups-icon';
+import { StyleSheet, View } from 'react-native';
 
 const DeleteAccount = ({ navigation }: any) => {
   const { t } = useTranslation('delete_account');
@@ -40,16 +42,23 @@ const DeleteAccount = ({ navigation }: any) => {
       onDismiss={navigation.goBack}
     >
       <FormLayout>
-        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
-          {`${t('paragraph')}`}
-        </Text>
+        <View style={styles.contentContainer}>
+          <SvgXml xml={upsIcon} width={100} height={100} />
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1" style={styles.header}>
+            {`${t('header')}`}
+          </Text>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1" style={styles.paragraph}>
+            {`${t('paragraph')}`}
+          </Text>
+        </View>
+
         {!!deleteAccountError && (
           <Text
             allowFontScaling={ALLOW_FONT_SCALLING}
             style={{ color: theme['color-danger-500'] }}
             category="p1"
           >
-            {`${t('error', { value: Constants.expoConfig?.extra?.contactEmail })}`}
+            {`${t('error', { value: process.env.EXPO_PUBLIC_CONTACT_EMAIL })}`}
           </Text>
         )}
       </FormLayout>
@@ -58,3 +67,19 @@ const DeleteAccount = ({ navigation }: any) => {
 };
 
 export default DeleteAccount;
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+    gap: 24,
+  },
+  header: {
+    paddingHorizontal: 16,
+    textAlign: 'center',
+  },
+  paragraph: {
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+});

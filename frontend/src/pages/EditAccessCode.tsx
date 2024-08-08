@@ -7,7 +7,6 @@ import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import {
@@ -19,14 +18,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
-
-const validationSchema = yup.object({
-  endDate: yup
-    .date()
-    .typeError(`${i18n.t('general:invalid_date')}`)
-    .nullable()
-    .optional(),
-});
+import { AddAccessCodeValidationSchema } from './AddAccessCode';
 
 const EditAccessCode = () => {
   const navigate = useNavigate();
@@ -43,7 +35,7 @@ const EditAccessCode = () => {
   } = useForm<AccessCodeFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(AddAccessCodeValidationSchema),
   });
 
   useEffect(() => {
@@ -60,7 +52,7 @@ const EditAccessCode = () => {
     navigate('/volunteers/access-codes');
   };
 
-  const onSubmit = ({ endDate }: AccessCodeFormTypes) => {
+  const onSubmit = ({ endDate }: Pick<AccessCodeFormTypes, 'endDate'>) => {
     if (accessCode) {
       updateAccessCode(
         { id: accessCode.id, endDate },
@@ -92,7 +84,7 @@ const EditAccessCode = () => {
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"
-              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
+              icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
               onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>

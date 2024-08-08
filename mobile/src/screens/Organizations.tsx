@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import PageLayout from '../layouts/PageLayout';
 import { Text, Avatar, useStyleSheet, StyleService } from '@ui-kitten/components';
 import { ImageStyle, View } from 'react-native';
 import { useOrganizationsInfiniteQuery } from '../services/organization/organization.service';
@@ -13,6 +12,8 @@ import OrganizationSkeletonListItem from '../components/skeleton/organization-se
 import { useOrganization } from '../store/organization/organization.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { Screen } from '../components/Screen';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 interface OrganizationItemProps {
   item: IOrganizationListItemWithNumberOfVolunteers;
@@ -48,6 +49,8 @@ const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
 
 const Organizations = ({ navigation }: any) => {
   const { t } = useTranslation('organizations');
+  const paddingTop = usePaddingTop();
+
   const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
   const [search, setSearch] = useState<string>('');
   // organization state
@@ -103,7 +106,10 @@ const Organizations = ({ navigation }: any) => {
   );
 
   return (
-    <PageLayout title={t('title')}>
+    <Screen preset="fixed" contentContainerStyle={[themedStyles.childrenContainer, { paddingTop }]}>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={themedStyles.title}>
+        {`${t('title')}`}
+      </Text>
       <SearchWithOrderAndFilters
         placeholder={t('search.placeholder')}
         onChange={setSearch}
@@ -118,13 +124,19 @@ const Organizations = ({ navigation }: any) => {
         loadingLayout={<OrganizationSkeletonListItem />}
         errorMessage={getOrganizationsError ? `${t('errors.generic')}` : ''}
       />
-    </PageLayout>
+    </Screen>
   );
 };
 
 export default Organizations;
 
 const themedStyles = StyleService.create({
+  childrenContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  title: { paddingLeft: 8, marginBottom: 16 },
   avatar: { borderWidth: 1, borderColor: '$cool-gray-200' },
   textWrapper: {
     gap: 4,

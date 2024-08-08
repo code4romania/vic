@@ -14,6 +14,10 @@ export class MobileEventListItemPresenter {
 
     this.location = event.location;
     this.eventInterval = formatEventDate(event.startDate, event.endDate);
+
+    this.startDate = event.startDate;
+    this.endDate = event.endDate;
+
     this.organizationLogo = event.organizationLogo;
 
     this.poster = event.poster;
@@ -43,6 +47,19 @@ export class MobileEventListItemPresenter {
   })
   location: string;
 
+  @Expose()
+  @ApiProperty({
+    description: 'Start date of the event',
+  })
+  startDate: Date;
+
+  @Expose()
+  @ApiProperty({
+    description: 'End date of the event',
+  })
+  endDate: Date;
+
+  // TODO: Deprecate this, remove in the next version. Because of the BE timezone the dates are parsed wrong in the backend we do it in FE.
   @Expose()
   @ApiProperty({
     description:

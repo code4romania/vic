@@ -80,7 +80,11 @@
     "select_interval": "Select range",
     "save_draft": "Save as draft",
     "other": "Other option",
-    "add_file": "Add file here",
+    "add_file": {
+      "p1": "Drag & Drop or",
+      "p2": "Choose file",
+      "p3": "to upload"
+    },
     "confirm": "Confirm",
     "no_options": "No options",
     "type_for_options": "Type for options..."

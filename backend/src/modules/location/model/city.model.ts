@@ -1,3 +1,4 @@
+import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
 import { CityEntity } from '../entities/city.entity';
 import { ICountyModel } from './county.model';
 
@@ -9,9 +10,8 @@ export interface ICityModel {
 
 export type FindLocationOptions = {
   search?: string;
-  city?: string;
-  county?: string;
-};
+  countyId?: number;
+} & IBasePaginationFilterModel;
 
 export class CityTransformer {
   static fromEntity(entity: CityEntity): ICityModel {

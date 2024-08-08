@@ -1,20 +1,27 @@
 import React, { Fragment, ReactNode } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { classNames } from '../common/utils/utils';
 
 export interface SelectItem<T> {
   value: string;
   key: T;
 }
+
+export interface OptionalSelectItem<T> {
+  value?: string;
+  key?: T;
+}
+
 export interface SelectProps<T> {
   label?: string;
   options: SelectItem<T>[];
-  onChange: (item: SelectItem<T>) => void;
-  selected?: SelectItem<T>;
+  onChange: (item: SelectItem<T> | undefined) => void;
+  selected?: SelectItem<T> | OptionalSelectItem<T> | undefined;
   placeholder?: string;
   helper?: ReactNode;
   minWidth?: boolean;
+  allowDeselect?: boolean;
 }
 
 const Select = <T extends React.Key>({
@@ -25,9 +32,18 @@ const Select = <T extends React.Key>({
   placeholder,
   helper,
   minWidth,
+  allowDeselect = false,
 }: SelectProps<T>) => {
+  const handleChange = (item: SelectItem<T>) => {
+    if (allowDeselect && selected && item?.key === selected.key) {
+      onChange(undefined);
+    } else {
+      onChange(item);
+    }
+  };
+
   return (
-    <Listbox defaultValue={selected} onChange={onChange}>
+    <Listbox defaultValue={selected} onChange={handleChange}>
       {({ open }) => (
         <div className="flex gap-1 flex-col">
           {label && <Listbox.Label>{label}</Listbox.Label>}
@@ -77,6 +93,7 @@ const Select = <T extends React.Key>({
                       classNames(
                         active ? ' bg-indigo-50' : '',
                         'cursor-default select-none relative py-3 pl-3 pr-9 text-cool-gray-900',
+                        selected?.key === item.key ? 'bg-indigo-50' : '',
                       )
                     }
                     value={item}
@@ -90,9 +107,14 @@ const Select = <T extends React.Key>({
                       {item.value}
                     </span>
 
-                    {selected?.key === item.key ? (
-                      <span className="text-indigo-500 absolute inset-y-0 right-0 flex items-center pr-4">
+                    {/* if the item cannot be deselected, display a check icon, otherwise display an x icon to indicate the posibility of deselection */}
+                    {selected?.key === item.key && !allowDeselect ? (
+                      <span className="text-indigo-500 absolute inset-y-0 right-0 flex items-center pr-2">
                         <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                    ) : selected?.key === item.key && allowDeselect ? (
+                      <span className="text-indigo-500 absolute inset-y-0 right-0 flex items-center pr-2">
+                        <XMarkIcon className="h-5 w-5" aria-hidden="true" />
                       </span>
                     ) : null}
                   </Listbox.Option>

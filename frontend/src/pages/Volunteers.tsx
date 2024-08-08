@@ -362,7 +362,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     );
   };
 
-  const onSetBranchFilter = (branch: SelectItem<string>) => {
+  const onSetBranchFilter = (branch: SelectItem<string> | undefined) => {
     setBranch(branch);
     setQuery(
       {
@@ -372,7 +372,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     );
   };
 
-  const onSetDepartmentFilter = (department: SelectItem<string>) => {
+  const onSetDepartmentFilter = (department: SelectItem<string> | undefined) => {
     setDepartment(department);
     setQuery(
       {
@@ -382,7 +382,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     );
   };
 
-  const onSetRoleFilter = (role: SelectItem<string>) => {
+  const onSetRoleFilter = (role: SelectItem<string> | undefined) => {
     setRole(role);
     setQuery(
       {
@@ -412,10 +412,10 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     );
   };
 
-  const onAgeRangeChange = (selectedRange: SelectItem<string>) => {
+  const onAgeRangeChange = (selectedRange: SelectItem<string> | undefined) => {
     setQuery(
       {
-        age: selectedRange.key,
+        age: selectedRange?.key,
       },
       'replaceIn',
     );
@@ -426,7 +426,17 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
-    setQuery({ volunteerStatus: query.volunteerStatus }, 'replaceIn');
+    setQuery(
+      {
+        volunteerStatus: query.volunteerStatus,
+        location: undefined,
+        branch: undefined,
+        department: undefined,
+        role: undefined,
+        age: undefined,
+        createdOnEnd: undefined,
+        createdOnStart: undefined
+      }, 'replaceIn');
   };
 
   const onExport = async () => {
@@ -512,6 +522,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
             options={AgeRangeOptions}
             onChange={onAgeRangeChange}
             defaultValue={query?.age}
+            allowDeselect
           />
         </DataTableFilters>
         <Card>

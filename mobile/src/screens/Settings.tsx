@@ -6,7 +6,6 @@ import key from '../assets/svg/key';
 import trash from '../assets/svg/trash';
 import logoutIcon from '../assets/svg/logout';
 import user from '../assets/svg/user';
-import PageLayout from '../layouts/PageLayout';
 import { View, StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { Text, Divider, List, useTheme, Icon } from '@ui-kitten/components';
@@ -15,11 +14,12 @@ import { useAuth } from '../hooks/useAuth';
 import i18n from '../common/config/i18n';
 import PressableContainer from '../components/PressableContainer';
 import * as Linking from 'expo-linking';
-import Constants from 'expo-constants';
 import ImageWithPreload from '../components/ImageWithPreload';
 import { NotificationContext } from '../contexts/notification/NotificationContext';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { Screen } from '../components/Screen';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -58,6 +58,7 @@ interface IListItem {
 const Settings = ({ navigation }: any) => {
   // translations
   const { t } = useTranslation('settings');
+  const paddingTop = usePaddingTop();
   // theme
   const theme = useTheme();
   // auth
@@ -76,7 +77,7 @@ const Settings = ({ navigation }: any) => {
   };
 
   const onInfoListItemPress = () => {
-    Linking.openURL(Constants.expoConfig?.extra?.infoLink);
+    Linking.openURL(`${process.env.EXPO_PUBLIC_INFORMATION_LINK}`);
   };
 
   const onLogout = () => {
@@ -104,7 +105,10 @@ const Settings = ({ navigation }: any) => {
   );
 
   return (
-    <PageLayout title={t('title')}>
+    <Screen preset="fixed" contentContainerStyle={[styles.childrenContainer, { paddingTop }]}>
+      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
+        {`${t('title')}`}
+      </Text>
       <View style={styles.profileContainer}>
         {!userProfile?.profilePicture && (
           <View style={{ ...styles.iconWrapper, backgroundColor: theme['cool-gray-100'] }}>
@@ -133,7 +137,7 @@ const Settings = ({ navigation }: any) => {
         bounces={false}
         showsVerticalScrollIndicator={false}
       />
-    </PageLayout>
+    </Screen>
   );
 };
 
@@ -168,4 +172,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  childrenContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  title: { paddingLeft: 8, marginBottom: 16 },
 });

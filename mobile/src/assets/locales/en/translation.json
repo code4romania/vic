@@ -514,6 +514,11 @@
             "going": "Particip",
             "not_going": "Not participating",
             "cancel": "Withdraw reply"
+        },
+        "error_modal": {
+            "title": "Ups!",
+            "description": "You did not fill in the data for your volunteer profile. Fill it out in order to be able to attend the event.",
+            "action_btn_label": "Complete data"
         }
     },
     "activity_logs": {
@@ -525,6 +530,11 @@
         },
         "search": {
             "placeholder": "Search"
+        },
+        "error_modal": {
+            "title": "Ups!",
+            "description": "You did not fill in the data for your volunteer profile. Fill it out in order to be able to log volunteering hours.",
+            "action_btn_label": "Complete data"
         }
     },
     "activity_log": {
@@ -573,6 +583,12 @@
             "VOLUNTEER_001": "Volunteer does not exist",
             "EVENT_001": "The event does not exist",
             "ACTIVITY_TYPE_001": "Type of activity does not exist"
+        },
+        "confirmation_modal": {
+            "paragraph": " Are you sure you want to delete this log?"
+        },
+        "toast": {
+            "success": "The log was successfully deleted."
         }
     },
     "tabs": {
@@ -652,7 +668,11 @@
             "title": "Contract {{contractNumber}}",
             "paragraph": {
                 "PENDING_VOLUNTEER": "The contract has been generated and requires your approval. Download the template below and read the document carefully. Please print out a copy of it, which you can sign, scan and upload here.",
-                "PENDING_ADMIN": "You sent a document for signature. The contract has been generated and requires approval from the organization."
+                "PENDING_ADMIN": "You sent a document for signature. The contract has been generated and requires approval from the organization.",
+                "NOT_STARTED": "Not started",
+                "CLOSED": "Closed",
+                "ACTIVE": "Active",
+                "REJECTED": "Rejected"
             },
             "disclaimer": {
                 "PENDING_VOLUNTEER": "The contract needs your signature",
@@ -685,6 +705,9 @@
             "header": "Contract Rejected",
             "paragraph": "Your contract has been rejected",
             "label": "Reason for rejection"
+        },
+        "confirmation_modal": {
+            "paragraph": "Are you sure you wish to cancel and upload a different contract?"
         }
     },
     "notifications": {
@@ -706,6 +729,10 @@
         "disabled": "Notifications are disabled",
         "errors": {
             "NOTIFICATIONS_002": "Error changing settings!"
+        },
+        "warning_modal": {
+            "description": "Notifications are currently disabled for this app. To receive important updates and alerts, please enable notifications in your phone's settings.",
+            "btn_label": "Open settings"
         }
     },
     "user": {
@@ -743,6 +770,7 @@
     },
     "delete_account": {
         "title": "Confirm account deletion",
+        "header": "Are you sure you wish to permanently delete your account?",
         "paragraph": "To delete your account on the VIC application, please confirm your decision below. Deleting your account will result in the permanent loss of your data and access to the application. If you are certain about this action, click the 'Confirm Deletion' button. Keep in mind that this process is irreversible, and you will need to create a new account if you wish to use VIC in the future.",
         "confirm": "Confirm Deletion",
         "error": "There was an error trying to delete your account. Please contact us at {{value}} to finalize the process."

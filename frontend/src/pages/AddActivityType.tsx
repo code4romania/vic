@@ -17,7 +17,7 @@ import { useCreateActivityTypeMutation } from '../services/activity-type/activit
 import ActivityTypeForm, { ActivityCategoryFormTypes } from '../components/ActivityTypeForm';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 
-const schema = yup
+export const ActivityTypeFormSchema = yup
   .object({
     name: yup
       .string()
@@ -29,6 +29,10 @@ const schema = yup
           value: '50',
         })}`,
       ),
+    department: yup.object().shape({ key: yup.string(), value: yup.string() }).optional(),
+    branch: yup.object().shape({ key: yup.string(), value: yup.string() }).optional(),
+    role: yup.object().shape({ key: yup.string(), value: yup.string() }).optional(),
+    icon: yup.string().required(),
   })
   .required();
 
@@ -46,7 +50,7 @@ const AddActivityType = () => {
   } = useForm<ActivityCategoryFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(ActivityTypeFormSchema),
   });
 
   useEffect(() => {
@@ -84,7 +88,7 @@ const AddActivityType = () => {
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"
-              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
+              icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
               onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>

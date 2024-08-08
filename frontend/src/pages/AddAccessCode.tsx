@@ -18,7 +18,7 @@ import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 
-const validationSchema = yup.object({
+export const AddAccessCodeValidationSchema = yup.object({
   code: yup
     .string()
     .required(`${i18n.t('access_code:form.code.required')}`)
@@ -58,7 +58,7 @@ const AddAccessCode = () => {
   } = useForm<AccessCodeFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(AddAccessCodeValidationSchema),
   });
 
   const onNavigateBack = () => {
@@ -92,7 +92,7 @@ const AddAccessCode = () => {
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"
-              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
+              icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
               onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>

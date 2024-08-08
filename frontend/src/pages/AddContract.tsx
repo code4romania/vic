@@ -25,8 +25,20 @@ import { AddContractProps } from '../containers/query/AddContractWithQueryParams
 
 const schema = yup
   .object({
-    volunteer: yup.object().required(`${i18n.t('documents:contract.add.form.volunteer.required')}`),
-    template: yup.object().required(`${i18n.t('documents:contract.add.form.template.required')}`),
+    volunteer: yup
+      .object()
+      .shape({
+        label: yup.string().required(`${i18n.t('documents:contract.add.form.volunteer.required')}`),
+        value: yup.string().required(`${i18n.t('documents:contract.add.form.volunteer.required')}`),
+      })
+      .required(`${i18n.t('documents:contract.add.form.volunteer.required')}`),
+    template: yup
+      .object()
+      .shape({
+        label: yup.string().required(`${i18n.t('documents:contract.add.form.template.required')}`),
+        value: yup.string().required(`${i18n.t('documents:contract.add.form.template.required')}`),
+      })
+      .required(`${i18n.t('documents:contract.add.form.template.required')}`),
     contractNumber: yup
       .string()
       .max(9, `${i18n.t('documents:contract.add.form.contract_number.max')}`)
@@ -117,7 +129,7 @@ const AddContract = ({ query }: AddContractProps) => {
                       defaultValue={value}
                       onSelect={onChange}
                       label={t('volunteer:name', { status: '' })}
-                      errorMessage={errors['volunteer']?.message}
+                      errorMessage={errors['volunteer']?.value?.message}
                       disabled={!!query.volunteerId}
                     />
                   );
@@ -133,7 +145,7 @@ const AddContract = ({ query }: AddContractProps) => {
                       defaultValue={value}
                       onSelect={onChange}
                       label={t('contract.add.form.template.label')}
-                      errorMessage={errors['template']?.message}
+                      errorMessage={errors['template']?.value?.message}
                     />
                   );
                 }}

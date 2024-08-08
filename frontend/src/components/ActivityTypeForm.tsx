@@ -4,7 +4,7 @@ import i18n from '../common/config/i18n';
 import { DivisionType } from '../common/enums/division-type.enum';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import FormInput from './FormInput';
-import { SelectItem } from './Select';
+import { OptionalSelectItem } from './Select';
 import ImagePicker from './ImagePicker';
 
 interface AccessCodeFormProps {
@@ -15,9 +15,9 @@ interface AccessCodeFormProps {
 export type ActivityCategoryFormTypes = {
   name: string;
   icon: string;
-  department?: SelectItem<string>;
-  branch?: SelectItem<string>;
-  role?: SelectItem<string>;
+  department?: OptionalSelectItem<string>;
+  branch?: OptionalSelectItem<string>;
+  role?: OptionalSelectItem<string>;
 };
 
 const ActivityTypeForm = ({ control, errors }: AccessCodeFormProps) => {

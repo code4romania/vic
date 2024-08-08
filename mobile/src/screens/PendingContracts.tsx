@@ -9,9 +9,11 @@ import { IContractListItem } from '../common/interfaces/contract-list-item.inter
 import { DocumentIcon } from './Documents';
 import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
 import { useFocusEffect } from '@react-navigation/native';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const PendingContracts = ({ navigation }: any) => {
   const { t } = useTranslation('documents');
+  const paddingTop = usePaddingTop();
 
   const { userProfile } = useUserProfile();
 
@@ -55,7 +57,11 @@ const PendingContracts = ({ navigation }: any) => {
   );
 
   return (
-    <PageLayout title={t('sections.pending')} onBackButtonPress={navigation.goBack}>
+    <PageLayout
+      title={t('sections.pending')}
+      onBackButtonPress={navigation.goBack}
+      headerStyle={{ paddingTop }}
+    >
       <InfiniteListLayout<IContractListItem>
         pages={pendingContracts?.pages}
         renderItem={onRenderPendingContractListItem}

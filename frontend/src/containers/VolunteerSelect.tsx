@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import React, { useCallback } from 'react';
 import i18n from '../common/config/i18n';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { ListItem } from '../common/interfaces/list-item.interface';
-import ServerSelect from '../components/ServerSelect';
 import { getVolunteerListItems } from '../services/volunteer/volunteer.api';
+import PaginatedSelect from '../components/PaginatedSelect';
+import { LoadOptions } from 'react-select-async-paginate';
+import { GroupBase } from 'react-select';
 
 export interface VolunteerSelectProps {
   label: string;
@@ -24,31 +26,49 @@ const VolunteerSelect = ({
   helper,
   disabled,
 }: VolunteerSelectProps) => {
-  // load volunteers from the database
-  const loadVolunteers = async (search: string): Promise<ListItem[]> => {
-    try {
-      const volunteers = await getVolunteerListItems({
-        search,
-        status: VolunteerStatus.ACTIVE,
-        orderBy: 'user.name',
-        orderDirection: OrderDirection.ASC,
-      });
+  const loadVolunteers: LoadOptions<ListItem, GroupBase<ListItem>, any> = useCallback(
+    async (searchQuery, loadedOptions, { page }) => {
+      try {
+        //get response from api
+        const response = await getVolunteerListItems({
+          search: searchQuery,
+          status: VolunteerStatus.ACTIVE,
+          orderBy: 'user.name',
+          orderDirection: OrderDirection.ASC,
+          page: page,
+          limit: 10,
+        });
 
-      // map volunteers to server select data type
-      return volunteers.items.map((volunteer) => ({
-        value: volunteer.id,
-        label: volunteer.name,
-      }));
-    } catch (error) {
-      // show error
-      console.error(error);
-      // return empty error
-      return [];
-    }
-  };
+        // get the options that will be displayed inside the select list
+        const options = response.items.map((volunteer) => ({
+          value: volunteer.id,
+          label: volunteer.name,
+        }));
+
+        return {
+          options,
+          hasMore: page < response.meta.totalPages,
+          additional: {
+            page: page + 1,
+          },
+        };
+      } catch (error) {
+        console.error(error);
+        //TODO: refetch functionality inside the select
+        return {
+          options: [],
+          hasMore: false,
+          additional: {
+            page: page,
+          },
+        };
+      }
+    },
+    [],
+  );
 
   return (
-    <ServerSelect
+    <PaginatedSelect
       id="volunteer__select"
       label={label}
       value={defaultValue}

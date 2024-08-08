@@ -22,6 +22,8 @@ import { SvgXml } from 'react-native-svg';
 import successIcon from '../assets/svg/success-icon';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
+import { useReducedMotion } from 'react-native-reanimated';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 type AccessCodeFormTypes = {
   code: string;
@@ -45,6 +47,8 @@ const schema = yup
 const JoinByAccessCode = ({ navigation }: any) => {
   const theme = useTheme();
   const { t } = useTranslation('access_code');
+  const paddingTop = usePaddingTop();
+
   // get selected organization from state
   const { organization } = useOrganization();
   // join by access code
@@ -58,6 +62,8 @@ const JoinByAccessCode = ({ navigation }: any) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   // bottom sheet snap points
   const snapPoints = useMemo(() => [1, 410], []);
+
+  const reducedMotion = useReducedMotion();
 
   const {
     control,
@@ -121,6 +127,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
           onPrimaryActionButtonClick: handleSubmit(onSubmit),
           loading: isJoiningByAccessCode,
         }}
+        headerStyle={{ paddingTop }}
       >
         <FormLayout>
           <OrganizationIdentity name={organization?.name || ''} uri={organization?.logo || ''} />
@@ -143,6 +150,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.container}>
           <SvgXml xml={successIcon} height={100} width={100} />

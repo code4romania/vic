@@ -25,16 +25,16 @@ export type AddContractTemplateFormTypes = {
   template: File;
 };
 
-const validationSchema = yup
-  .object({
-    name: yup
-      .string()
-      .required(`${i18n.t('documents:template.add.form.name.required')}`)
-      .min(2, `${i18n.t('documents:template.add.form.name.min', { value: 2 })}`)
-      .max(250, `${i18n.t('documents:template.add.form.name.max', { value: 250 })}`),
-    template: yup.mixed().required(`${i18n.t('documents:template.add.form.contract.required')}`),
-  })
-  .required();
+const validationSchema = yup.object({
+  name: yup
+    .string()
+    .required(`${i18n.t('documents:template.add.form.name.required')}`)
+    .min(2, `${i18n.t('documents:template.add.form.name.min', { value: 2 })}`)
+    .max(250, `${i18n.t('documents:template.add.form.name.max', { value: 250 })}`),
+  template: yup
+    .mixed<File>()
+    .required(`${i18n.t('documents:template.add.form.contract.required')}`),
+});
 
 const AddContractTemplate = () => {
   const navigate = useNavigate();
@@ -79,7 +79,7 @@ const AddContractTemplate = () => {
             <Button
               label={i18n.t('general:save')}
               className="btn-primary"
-              icon={<CloudArrowUpIcon className="h-5 w-5 sm:hidden" />}
+              icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
               onClick={handleSubmit(onSubmit)}
             />
           </CardHeader>

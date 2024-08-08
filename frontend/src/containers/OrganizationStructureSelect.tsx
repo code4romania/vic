@@ -32,6 +32,7 @@ const OrganizationStructureSelect = ({
       {...selectProps}
       selected={selected}
       onChange={onChange}
+      allowDeselect
       options={
         divisionListItems && divisionListItems.items?.length > 0
           ? divisionListItems.items?.map(mapDivisionListItemToSelectItem)

@@ -15,8 +15,8 @@ import { Controller } from 'react-hook-form';
 import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/constants';
 import Paragraph from '../components/Paragraph';
 import * as Linking from 'expo-linking';
-import Constants from 'expo-constants';
 import { renderPasswordEyeIcon, renderPhoneNumberPrefix } from '../components/InputPrefixes';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type RegisterFormTypes = {
   email: string;
@@ -56,6 +56,8 @@ const schema = yup
 const CreateAccount = ({ navigation }: any) => {
   // translations
   const { t } = useTranslation('register');
+  const paddingTop = usePaddingTop();
+
   // auth state
   const { signUp } = useAuth();
   // show hide password text in input
@@ -74,11 +76,11 @@ const CreateAccount = ({ navigation }: any) => {
   });
 
   const onTermsAndConditionsPress = () => {
-    Linking.openURL(Constants.expoConfig?.extra?.termsLink);
+    Linking.openURL(`${process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK}`);
   };
 
   const onPrivacyPolicyPress = () => {
-    Linking.openURL(Constants.expoConfig?.extra?.policyLink);
+    Linking.openURL(`${process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK}`);
   };
 
   const onSubmit = async ({ email, password, phone }: RegisterFormTypes) => {
@@ -111,6 +113,7 @@ const CreateAccount = ({ navigation }: any) => {
         secondaryActionLabel: `${t('create_account.secondary_action.label')}`,
         secondaryActionLink: `${t('create_account.secondary_action.link')}`,
       }}
+      headerStyle={{ paddingTop }}
     >
       <FormLayout>
         <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">{`${t(

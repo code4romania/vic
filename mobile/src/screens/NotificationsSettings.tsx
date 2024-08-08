@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Divider, Icon, StyleService, Text, useStyleSheet, useTheme } from '@ui-kitten/components';
 import PageLayout from '../layouts/PageLayout';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 import PressableContainer from '../components/PressableContainer';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { NotificationsFrom } from '../common/enums/notifications-from.enum';
@@ -16,6 +16,12 @@ import { renderBackdrop } from '../components/BottomSheet';
 import { useUserProfile } from '../store/profile/profile.selector';
 import useStore from '../store/store';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { useReducedMotion } from 'react-native-reanimated';
+import { registerForPushNotificationsAsync } from '../common/utils/notifications';
+import { SvgXml } from 'react-native-svg';
+import upsIcon from '../assets/svg/ups-icon';
+import Button from '../components/Button';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 interface NotificationSettingProps {
   title: string;
@@ -82,13 +88,17 @@ const NotificationOption = ({
 const NotificationsSettings = ({ navigation }: any) => {
   const styles = useStyleSheet(themedStyles);
   const { t } = useTranslation('notifications');
+  const paddingTop = usePaddingTop();
 
   const { userProfile } = useUserProfile();
   const { updateSettings } = useStore();
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const notificationsBottomSheetRef = useRef<BottomSheet>(null);
+
   // bottom sheet snap points
   const snapPoints = useMemo(() => ['1%', 200], []);
+  const notificationsSnapPoints = useMemo(() => ['1%', 410], []);
 
   // notifications state
   const [showNotificationFromOptions, setShowNotificationsFromOptions] = useState<boolean>(true);
@@ -96,6 +106,8 @@ const NotificationsSettings = ({ navigation }: any) => {
     NotificationsFrom.ALL_ORGANIZATIONS,
   );
   const [notificationBy, setNotificationBy] = useState<NotificationBy[]>([]);
+
+  const reducedMotion = useReducedMotion();
 
   // mutation
   const { mutate: updateNotificationsSettings } = useUpdateSettingsMutation();
@@ -136,16 +148,32 @@ const NotificationsSettings = ({ navigation }: any) => {
     });
   };
 
-  const onNotificationByOptionPress = (value: string) => {
+  const openAppSettings = () => {
+    Linking.openSettings().catch(() => {
+      console.warn('Unable to open settings');
+    });
+    notificationsBottomSheetRef.current?.close();
+  };
+
+  const onNotificationByOptionPress = async (value: string) => {
     const newValues = notificationBy.filter((option) => option !== value);
 
     if (newValues.length === notificationBy.length) {
       newValues.push(value as NotificationBy);
     }
 
-    setNotificationBy(newValues);
+    // we're checking if we're trying to enable push notifications
+    if (newValues.includes(NotificationBy.PUSH)) {
+      const { token } = await registerForPushNotificationsAsync();
+      // if a token does not exist -> we did not grant access to notifications for the app -> show warning modal
+      if (!token) {
+        notificationsBottomSheetRef?.current?.expand();
+        bottomSheetRef.current?.close();
+        return;
+      }
+    }
 
-    bottomSheetRef.current?.close();
+    setNotificationBy(newValues);
 
     // update settings
     onUpdateSettings({
@@ -184,7 +212,11 @@ const NotificationsSettings = ({ navigation }: any) => {
 
   return (
     <>
-      <PageLayout title={t('header')} onBackButtonPress={navigation.goBack}>
+      <PageLayout
+        title={t('header')}
+        onBackButtonPress={navigation.goBack}
+        headerStyle={{ paddingTop }}
+      >
         <NotificationSetting
           title={t('from.title')}
           description={
@@ -207,6 +239,7 @@ const NotificationsSettings = ({ navigation }: any) => {
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.contentContainer}>
           {showNotificationFromOptions ? (
@@ -258,6 +291,25 @@ const NotificationsSettings = ({ navigation }: any) => {
           )}
         </View>
       </BottomSheet>
+      <BottomSheet
+        backdropComponent={renderBackdrop}
+        ref={notificationsBottomSheetRef}
+        index={-1}
+        snapPoints={notificationsSnapPoints}
+        animateOnMount={reducedMotion ? false : true}
+      >
+        <View style={styles.warningSheetContainer}>
+          <SvgXml xml={upsIcon} height={100} width={100} />
+          <Text
+            allowFontScaling={ALLOW_FONT_SCALLING}
+            category="p2"
+            style={[styles.bottomSheetTitle, { textAlign: 'center', lineHeight: 24 }]}
+          >
+            {`${t('warning_modal.description')}`}
+          </Text>
+          <Button label={t('warning_modal.btn_label')} onPress={openAppSettings} />
+        </View>
+      </BottomSheet>
     </>
   );
 };
@@ -295,5 +347,13 @@ const themedStyles = StyleService.create({
     height: 24,
     width: 24,
     color: '$color-primary-800',
+  },
+  warningSheetContainer: {
+    backgroundColor: 'white',
+    paddingVertical: 24,
+    paddingHorizontal: 32,
+    flex: 1,
+    alignItems: 'center',
+    gap: 16,
   },
 });

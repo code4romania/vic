@@ -14,9 +14,11 @@ import { Platform } from 'react-native';
 import { MIME_TYPES } from '../common/constants/constants';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const ContractHistory = ({ navigation }: any) => {
   const { t } = useTranslation('documents');
+  const paddingTop = usePaddingTop();
 
   const { userProfile } = useUserProfile();
 
@@ -103,7 +105,11 @@ const ContractHistory = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout title={t('sections.closed')} onBackButtonPress={navigation.goBack}>
+    <PageLayout
+      title={t('sections.closed')}
+      onBackButtonPress={navigation.goBack}
+      headerStyle={{ paddingTop }}
+    >
       <InfiniteListLayout<IContractListItem>
         pages={closedActiveContracts?.pages}
         renderItem={onRenderHistoryContractListItem}

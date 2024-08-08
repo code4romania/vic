@@ -4,7 +4,7 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils/utils';
 import API from '../api';
 
-export const getActions = (params: {
+export const getActions = async (params: {
   page: number;
   limit: number;
   search?: string;

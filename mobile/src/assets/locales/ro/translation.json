@@ -515,6 +515,11 @@
             "going": "Particip",
             "not_going": "Nu particip",
             "cancel": "Retrage răspuns"
+        },
+        "error_modal": {
+            "title": "Ups!",
+            "description": "Încă nu ți-ai completat profilul de voluntar. Adaugă datele pentru a putea participa la eveniment.",
+            "action_btn_label": "Completează datele"
         }
     },
     "activity_logs": {
@@ -526,6 +531,11 @@
         },
         "search": {
             "placeholder": "Caută"
+        },
+        "error_modal": {
+            "title": "Ups!",
+            "description": "Încă nu ți-ai completat profilul de voluntar. Adaugă datele pentru a putea adăuga ore de voluntariat.",
+            "action_btn_label": "Completează datele"
         }
     },
     "activity_log": {
@@ -574,6 +584,12 @@
             "VOLUNTEER_001": "Voluntarul nu există",
             "EVENT_001": "Evenimentul nu există",
             "ACTIVITY_TYPE_001": "Tipul activității nu există"
+        },
+        "confirmation_modal": {
+            "paragraph": " Ești sigur că vrei să ștergi această înregistrare?"
+        },
+        "toast": {
+            "success": "Înregistrarea a fost ștearsă cu success."
         }
     },
     "tabs": {
@@ -653,7 +669,11 @@
             "title": "Contract {{contractNumber}}",
             "paragraph": {
                 "PENDING_VOLUNTEER": "Contractul a fost generat și necesită aprobarea ta. Descarcă modelul de mai jos și citește documentul cu atenție. Te rugăm să printezi o copie a acestuia, pe care să o semnezi, scanezi și încarci aici.",
-                "PENDING_ADMIN": "Ai trimis un document spre semnare. Contractul a fost generat și necesită aprobarea organizației."
+                "PENDING_ADMIN": "Ai trimis un document spre semnare. Contractul a fost generat și necesită aprobarea organizației.",
+                "NOT_STARTED": "Neînceput",
+                "CLOSED": "Închis",
+                "ACTIVE": "Activ",
+                "REJECTED": "Respins"
             },
             "disclaimer": {
                 "PENDING_VOLUNTEER": "Contractul necesită semnătura ta",
@@ -686,6 +706,9 @@
             "header": "Contract Respins",
             "paragraph": "Contractul tău a fost respins",
             "label": "Motivul respingerii"
+        },
+        "confirmation_modal": {
+            "paragraph": "Ești sigur că vrei să anulezi și să încarci un contract diferit?"
         }
     },
     "notifications": {
@@ -707,6 +730,10 @@
         "disabled": "Notificările sunt dezactivate",
         "errors": {
             "NOTIFICATIONS_002": "Eroare la modificarea setărilor!"
+        },
+        "warning_modal": {
+            "description": "Notificările sunt dezactivate pentru această aplicație. Pentru a primi actualizări și alerte importante, te rugăm să le activezi din setările telefonului.",
+            "btn_label": "Deschide setările"
         }
     },
     "user": {
@@ -744,6 +771,7 @@
     },
     "delete_account": {
         "title": "Confirma ștergerea contului",
+        "header": "Ești sigur că vrei să ștergi permanent contul?",
         "paragraph": "Pentru a șterge contul tău în aplicația VIC, te rugăm să confirmi decizia mai jos. Ștergerea contului va duce la pierderea permanentă a datelor tale și a accesului la aplicație. Dacă ești sigur în privința acestei acțiuni, apasă butonul 'Confirmă Ștergerea'. Menționează că acest proces este ireversibil și va trebui să creezi un cont nou dacă dorești să utilizezi VIC în viitor.",
         "confirm": "Confirmă Ștergerea",
         "error": "A apărut o eroare la ștergerea contului. Contactează-ne la adresa de e-mail {{value}}, și te vom ajuta să finalizezi procesul."

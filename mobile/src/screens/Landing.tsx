@@ -13,10 +13,12 @@ import { useTranslation } from 'react-i18next';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import SignUpButton from '../components/SignUpButton';
+import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const Landing = ({ navigation }: any) => {
   const { isUserPending } = useAuth();
   const { t } = useTranslation('landing');
+  const paddingTop = usePaddingTop();
 
   useEffect(() => {
     if (isUserPending) {
@@ -33,7 +35,7 @@ const Landing = ({ navigation }: any) => {
   };
 
   return (
-    <PageLayout title="">
+    <PageLayout title="" headerStyle={{ paddingTop }}>
       <ScrollViewLayout>
         <View style={styles.container}>
           <Image source={require('../assets/images/vic-logo.png')} style={styles.image} />

@@ -80,7 +80,11 @@
     "select_interval": "Selectează interval",
     "save_draft": "Salvează ca draft",
     "other": "Altă opțiune",
-    "add_file": "Adaugă fișier aici",
+    "add_file": {
+      "p1": "Plasează aici sau",
+      "p2": "Selectează",
+      "p3": "fișierul"
+    },
     "confirm": "Confirmă",
     "no_options": "Fără opțiuni",
     "type_for_options": "Începeți să scrieți pentru opțiuni..."
@@ -448,8 +452,12 @@
       "delete": "Evenimentul a fost șters cu succes"
     },
     "form": {
-      "name": { "label": "Denumire eveniment" },
-      "start_date": { "label": "Dată de început" },
+      "name": {
+        "label": "Denumire eveniment"
+      },
+      "start_date": {
+        "label": "Dată de început"
+      },
       "end_date": {
         "label": "Dată de final",
         "min": "Data de final trebuie sa fie mai mare decat data de inceput."
@@ -473,7 +481,9 @@
         "disclaimer": "Disclaimer: Dacă nu este selectat niciun departament, atunci 'Toată organizația' va fi selectată",
         "required": "Departamentele sunt obligatorii"
       },
-      "description": { "label": "Descriere eveniment" },
+      "description": {
+        "label": "Descriere eveniment"
+      },
       "logo": {
         "label": "Imagine eveniment",
         "required": "Imaginea evenimentului este obligatorie"
@@ -773,7 +783,10 @@
         "label": "Vezi ore care așteaptă aprobare",
         "info": "{{value}} ore în așteptare"
       },
-      "volunteer": { "label": "Vezi solicitări", "info": "{{value}} solicitări de înscriere" }
+      "volunteer": {
+        "label": "Vezi solicitări",
+        "info": "{{value}} solicitări de înscriere"
+      }
     },
     "line_chart": {
       "title": "Număr voluntari"

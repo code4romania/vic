@@ -8,6 +8,7 @@ import VolunteerForm, { VolunteerFormTypes, volunteerSchema } from '../component
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { useQueryClient } from 'react-query';
 
 const CreateVolunteer = ({ navigation, route }: any) => {
   // get user profile data
@@ -16,6 +17,7 @@ const CreateVolunteer = ({ navigation, route }: any) => {
   const { volunteerId } = route.params;
   // translations
   const { t } = useTranslation('create_volunteer');
+  const queryClient = useQueryClient();
 
   // form
   const {
@@ -59,6 +61,7 @@ const CreateVolunteer = ({ navigation, route }: any) => {
           });
         },
         onSuccess: () => {
+          queryClient.invalidateQueries(['user-profile']);
           navigation.navigate('volunteer');
         },
       },
