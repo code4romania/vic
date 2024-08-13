@@ -8,6 +8,7 @@ export enum UserExceptionCodes {
   USER_005 = 'USER_005',
   USER_006 = 'USER_006',
   USER_007 = 'USER_007',
+  USER_008 = 'USER_008',
 }
 
 type UserExceptionCodeType = keyof typeof UserExceptionCodes;
@@ -44,5 +45,9 @@ export const UserExceptionMessages: Record<
   [UserExceptionCodes.USER_007]: {
     code_error: UserExceptionCodes.USER_007,
     message: 'Error while trying to delete user account',
+  },
+  [UserExceptionCodes.USER_008]: {
+    code_error: UserExceptionCodes.USER_008,
+    message: 'Error while trying to update the user data',
   },
 };

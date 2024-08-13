@@ -1,778 +1,779 @@
 {
-    "general": {
-        "current_month": "This month",
-        "about_vic": "About VIC",
-        "event": "Event",
-        "news": "Latest news",
-        "organizations": "Organizations",
-        "organization": "Organization",
-        "active_volunteers": "active volunteers",
-        "documents": "Documents",
-        "updates": "updates",
-        "edit": "Edit {{item}}",
-        "add": "Add {{item}}",
-        "role": "Role",
-        "department": "Department",
-        "branch": "Branch",
-        "phone": "Phone",
-        "join": "Join",
-        "select": "Select",
-        "sex": "Sex {{sex_type}}",
-        "male": "Manly",
-        "female": "Female",
-        "register": "Register",
-        "continue": "Continue",
-        "save": "Save",
-        "send": "Send",
-        "delete": "Delete",
-        "volunteers": "Volunteers",
-        "loading": "Loading...",
-        "empty_list": "No results",
-        "error": {
-            "load_entries": "Error loading data",
-            "unknown": "An unknown error has occurred",
-            "generic_error": "Data processing error, code: #{{code}}"
+  "general": {
+    "current_month": "This month",
+    "about_vic": "About VIC",
+    "event": "Event",
+    "news": "Latest news",
+    "organizations": "Organizations",
+    "organization": "Organization",
+    "active_volunteers": "active volunteers",
+    "documents": "Documents",
+    "updates": "updates",
+    "edit": "Edit {{item}}",
+    "add": "Add {{item}}",
+    "role": "Role",
+    "department": "Department",
+    "branch": "Branch",
+    "phone": "Phone",
+    "join": "Join",
+    "select": "Select",
+    "sex": "Sex {{sex_type}}",
+    "male": "Manly",
+    "female": "Female",
+    "register": "Register",
+    "continue": "Continue",
+    "save": "Save",
+    "send": "Send",
+    "delete": "Delete",
+    "volunteers": "Volunteers",
+    "loading": "Loading...",
+    "empty_list": "No results",
+    "error": {
+      "load_entries": "Error loading data",
+      "unknown": "An unknown error has occurred",
+      "generic_error": "Data processing error, code: #{{code}}"
+    },
+    "back": "Back to"
+  },
+  "landing": {
+    "message": "Register in the app using one of the following ways",
+    "registered": "Already have an account?",
+    "email": "E-mail or phone",
+    "login": "Log in",
+    "social": {
+      "facebook": "Facebook",
+      "apple": "Apple",
+      "google": "Google"
+    }
+  },
+  "register": {
+    "title": "Create account",
+    "create_account": {
+      "heading": "Account data",
+      "paragraph": "Fill in the fields below to register",
+      "form": {
+        "email": {
+          "label": "E-mail",
+          "placeholder": "Enter your email address",
+          "required": "Email is required",
+          "pattern": "Email format is invalid"
         },
-        "back": "Back to"
-    },
-    "landing": {
-        "message": "Register in the app using one of the following ways",
-        "registered": "Already have an account?",
-        "email": "E-mail or phone",
-        "login": "Log in",
-        "social": {
-            "facebook": "Facebook",
-            "apple": "Apple",
-            "google": "Google"
-        }
-    },
-    "register": {
-        "title": "Create account",
-        "create_account": {
-            "heading": "Account data",
-            "paragraph": "Fill in the fields below to register",
-            "form": {
-                "email": {
-                    "label": "E-mail",
-                    "placeholder": "Enter your email address",
-                    "required": "Email is required",
-                    "pattern": "Email format is invalid"
-                },
-                "phone": {
-                    "label": "Phone",
-                    "placeholder": "Enter your phone",
-                    "length": "Phone number must have {{number}} characters",
-                    "required": "Phone is mandatory",
-                    "pattern": "The telephone number must contain only numbers"
-                },
-                "password": {
-                    "label": "Password",
-                    "placeholder": "Enter your password",
-                    "required": "Password is required",
-                    "pattern": "The password must contain a minimum of 8 characters, uppercase letters, lowercase letters, numbers and special characters, without spaces"
-                },
-                "confirm_password": {
-                    "label": "Confirm password",
-                    "placeholder": "Confirm password",
-                    "required": "Password is required",
-                    "match": "Passwords must be identical"
-                },
-                "terms": {
-                    "agree": "I agree with ",
-                    "conditions": "Terms and Conditions",
-                    "and": "as well as with ",
-                    "privacy_policy": "Privacy Policy ",
-                    "application": "of the application",
-                    "required": "You must accept the Terms, Conditions and Privacy Policy in order to proceed."
-                }
-            },
-            "secondary_action": {
-                "label": "Already have an account?",
-                "link": "Log in"
-            }
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Enter your phone",
+          "length": "Phone number must have {{number}} characters",
+          "required": "Phone is mandatory",
+          "pattern": "The telephone number must contain only numbers"
         },
-        "validate_account": {
-            "heading": "Check code received by email",
-            "paragraph": "Fill in the fields below to register.",
-            "form": {
-                "code": {
-                    "label": "Enter the code received by email",
-                    "placeholder": "Enter the code received by email",
-                    "required": "The code is mandatory",
-                    "length": "The code must be 6 characters long",
-                    "pattern": "The code must contain only digits"
-                }
-            }
+        "password": {
+          "label": "Password",
+          "placeholder": "Enter your password",
+          "required": "Password is required",
+          "pattern": "The password must contain a minimum of 8 characters, uppercase letters, lowercase letters, numbers and special characters, without spaces"
         },
-        "create_user": {
-            "heading": "User data",
-            "paragraph": "Fill in the fields below to complete the registration.",
-            "form": {
-                "first_name": {
-                    "label": "First name",
-                    "placeholder": "Enter first name",
-                    "required": "First name is required",
-                    "min": "The first name can be a minimum of {{value}} characters",
-                    "max": "The first name can have a maximum of {{value}} characters"
-                },
-                "last_name": {
-                    "label": "Name",
-                    "placeholder": "Enter your surname",
-                    "required": "Surname is required",
-                    "min": "The name can have a minimum of {{value}} characters",
-                    "max": "The name can have a maximum of {{value}} characters"
-                },
-                "county": {
-                    "label": "County"
-                },
-                "city": {
-                    "label": "City"
-                },
-                "birthday": {
-                    "label": "Date of birth"
-                }
-            }
-        }
-    },
-    "auth": {
-        "errors": {
-            "unauthorized": "Wrong username or password",
-            "username_exists": "There is already a user with this email address",
-            "signup": "Registration error. Check your registration details and try again.",
-            "resend_code": "Error sending confirmation code",
-            "init_profile": "Error loading profile",
-            "login": "Login error, please try again",
-            "invalid_password": "Password is not compliant with security policy",
-            "password": "Password change error",
-            "code_mismatch": "Code is invalid",
-            "forgot_password": "Password reset error"
-        }
-    },
-    "login": {
-        "title": "Login",
-        "paragraph": "Enter your email and password to log in.",
-        "submit": "Log in",
-        "forgot_password": "Forgot your password? ",
-        "form": {
-            "email": {
-                "label": "E-mail",
-                "placeholder": "Enter your email address",
-                "required": "Email is required",
-                "pattern": "Email format is invalid"
-            },
-            "password": {
-                "label": "Password",
-                "placeholder": "Enter your password",
-                "required": "Password is required"
-            }
-        }
-    },
-    "forgot_password": {
-        "header": "Reset password",
-        "paragraph": "Please enter your account email or phone number to reset your password.",
-        "form": {
-            "email": {
-                "label": "E-mail",
-                "required": "Email is required",
-                "pattern": "Email format is invalid"
-            }
+        "confirm_password": {
+          "label": "Confirm password",
+          "placeholder": "Confirm password",
+          "required": "Password is required",
+          "match": "Passwords must be identical"
         },
-        "submit": {
-            "label": "Send reset code"
+        "terms": {
+          "agree": "I agree with ",
+          "conditions": "Terms and Conditions",
+          "and": "as well as with ",
+          "privacy_policy": "Privacy Policy ",
+          "application": "of the application",
+          "required": "You must accept the Terms, Conditions and Privacy Policy in order to proceed."
         }
+      },
+      "secondary_action": {
+        "label": "Already have an account?",
+        "link": "Log in"
+      }
     },
-    "confirm_password": {
-        "header": "Reset password",
-        "form": {
-            "code": {
-                "label": "Enter the code received by email",
-                "placeholder": "Enter the code received by email",
-                "required": "The code is mandatory",
-                "length": "The code must be 6 characters long",
-                "pattern": "The code must contain only digits"
-            },
-            "password": {
-                "label": "Password",
-                "placeholder": "Enter your password",
-                "required": "Password is required",
-                "pattern": "The password must contain a minimum of 8 characters, uppercase letters, lowercase letters, numbers and special characters, without spaces"
-            },
-            "confirm_password": {
-                "label": "Confirm password",
-                "placeholder": "Confirm password",
-                "required": "Password is required",
-                "match": "Passwords must be identical"
-            }
-        },
-        "submit": {
-            "label": "Save changes"
+    "validate_account": {
+      "heading": "Check code received by email",
+      "paragraph": "Fill in the fields below to register.",
+      "form": {
+        "code": {
+          "label": "Enter the code received by email",
+          "placeholder": "Enter the code received by email",
+          "required": "The code is mandatory",
+          "length": "The code must be 6 characters long",
+          "pattern": "The code must contain only digits"
         }
+      }
     },
-    "settings": {
-        "title": "Account settings",
-        "heading": "Account data",
-        "identity": "Identity data",
-        "password": "Change password",
-        "notification": "Notifications settings",
-        "information": "Information",
-        "logout": "Log out",
-        "delete": "Delete account"
-    },
-    "account_data": {
-        "title": "Account data",
-        "profile_picture": "Profile picture",
-        "change_profile_picture": "Change photo",
-        "submit": {
-            "success": "The dates have been changed!"
+    "create_user": {
+      "heading": "User data",
+      "paragraph": "Fill in the fields below to complete the registration.",
+      "form": {
+        "first_name": {
+          "label": "First name",
+          "placeholder": "Enter first name",
+          "required": "First name is required",
+          "min": "The first name can be a minimum of {{value}} characters",
+          "max": "The first name can have a maximum of {{value}} characters"
         },
-        "errors": {
-            "USER_006": "Error changing profile photo"
+        "last_name": {
+          "label": "Name",
+          "placeholder": "Enter your surname",
+          "required": "Surname is required",
+          "min": "The name can have a minimum of {{value}} characters",
+          "max": "The name can have a maximum of {{value}} characters"
+        },
+        "county": {
+          "label": "County"
+        },
+        "city": {
+          "label": "City"
+        },
+        "birthday": {
+          "label": "Date of birth"
         }
+      }
+    }
+  },
+  "auth": {
+    "errors": {
+      "unauthorized": "Wrong username or password",
+      "username_exists": "There is already a user with this email address",
+      "signup": "Registration error. Check your registration details and try again.",
+      "resend_code": "Error sending confirmation code",
+      "init_profile": "Error loading profile",
+      "login": "Login error, please try again",
+      "invalid_password": "Password is not compliant with security policy",
+      "password": "Password change error",
+      "code_mismatch": "Code is invalid",
+      "forgot_password": "Password reset error"
+    }
+  },
+  "login": {
+    "title": "Login",
+    "paragraph": "Enter your email and password to log in.",
+    "submit": "Log in",
+    "forgot_password": "Forgot your password? ",
+    "form": {
+      "email": {
+        "label": "E-mail",
+        "placeholder": "Enter your email address",
+        "required": "Email is required",
+        "pattern": "Email format is invalid"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password",
+        "required": "Password is required"
+      }
+    }
+  },
+  "forgot_password": {
+    "header": "Reset password",
+    "paragraph": "Please enter your account email or phone number to reset your password.",
+    "form": {
+      "email": {
+        "label": "E-mail",
+        "required": "Email is required",
+        "pattern": "Email format is invalid"
+      }
     },
-    "identity_data": {
-        "title": "Identity data",
-        "description": "Enter your ID card details. These will be used to generate the volunteer contract.",
-        "privacy_policy": "Privacy Policy",
-        "form": {
-            "series": {
-                "label": "Identity document (ID) series",
-                "matches": "The series must contain only letters",
-                "placeholder": "Enter series (GZ, RX, etc.)",
-                "length": "Series must have {{number}} characters",
-                "required": "The series is mandatory"
-            },
-            "number": {
-                "label": "Identity document number (CI)",
-                "placeholder": "Enter the 6-digit number",
-                "matches": "The number must contain only digits",
-                "length": "The number must have {{number}} characters",
-                "required": "The number is mandatory"
-            },
-            "address": {
-                "label": "Domiciled in",
-                "placeholder": "Enter address",
-                "required": "Domicile is mandatory",
-                "helper": "Enter the full address from your ID.",
-                "min": "The address can have a minimum of {{value}} characters",
-                "max": "The address can have a maximum of {{value}} characters"
-            },
-            "issue_date": {
-                "label": "Date of issue",
-                "required": "Date of issue is mandatory"
-            },
-            "expiration_date": {
-                "label": "Expiry date",
-                "required": "Expiry date is mandatory"
-            },
-            "submit": {
-                "success": "The dates have been changed!"
-            }
-        }
+    "submit": {
+      "label": "Send reset code"
+    }
+  },
+  "confirm_password": {
+    "header": "Reset password",
+    "form": {
+      "code": {
+        "label": "Enter the code received by email",
+        "placeholder": "Enter the code received by email",
+        "required": "The code is mandatory",
+        "length": "The code must be 6 characters long",
+        "pattern": "The code must contain only digits"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password",
+        "required": "Password is required",
+        "pattern": "The password must contain a minimum of 8 characters, uppercase letters, lowercase letters, numbers and special characters, without spaces"
+      },
+      "confirm_password": {
+        "label": "Confirm password",
+        "placeholder": "Confirm password",
+        "required": "Password is required",
+        "match": "Passwords must be identical"
+      }
     },
-    "change_password": {
-        "title": "Change password",
-        "submit": {
-            "success": "Password has been changed!"
-        }
+    "submit": {
+      "label": "Save changes"
+    }
+  },
+  "settings": {
+    "title": "Account settings",
+    "heading": "Account data",
+    "identity": "Identity data",
+    "password": "Change password",
+    "notification": "Notifications settings",
+    "information": "Information",
+    "logout": "Log out",
+    "delete": "Delete account"
+  },
+  "account_data": {
+    "title": "Account data",
+    "profile_picture": "Profile picture",
+    "change_profile_picture": "Change photo",
+    "submit": {
+      "success": "The dates have been changed!"
     },
-    "organizations": {
-        "title": "Search",
-        "search": {
-            "placeholder": "Name of organization"
-        },
-        "errors": {
-            "generic": "Error loading data"
-        }
+    "errors": {
+      "USER_006": "Error changing profile photo"
+    }
+  },
+  "identity_data": {
+    "title": "Identity data",
+    "description": "Enter your ID card details. These will be used to generate the volunteer contract.",
+    "privacy_policy": "Privacy Policy",
+    "form": {
+      "series": {
+        "label": "Identity document (ID) series",
+        "matches": "The series must contain only letters",
+        "placeholder": "Enter series (GZ, RX, etc.)",
+        "length": "Series must have {{number}} characters",
+        "required": "The series is mandatory"
+      },
+      "number": {
+        "label": "Identity document number (CI)",
+        "placeholder": "Enter the 6-digit number",
+        "matches": "The number must contain only digits",
+        "length": "The number must have {{number}} characters",
+        "required": "The number is mandatory"
+      },
+      "address": {
+        "label": "Domiciled in",
+        "placeholder": "Enter address",
+        "required": "Domicile is mandatory",
+        "helper": "Enter the full address from your ID.",
+        "min": "The address can have a minimum of {{value}} characters",
+        "max": "The address can have a maximum of {{value}} characters"
+      },
+      "issue_date": {
+        "label": "Date of issue",
+        "required": "Date of issue is mandatory"
+      },
+      "expiration_date": {
+        "label": "Expiry date",
+        "required": "Expiry date is mandatory"
+      },
+      "submit": {
+        "success": "The dates have been changed!"
+      }
+    }
+  },
+  "change_password": {
+    "title": "Change password",
+    "submit": {
+      "success": "Password has been changed!"
+    }
+  },
+  "organizations": {
+    "title": "Search",
+    "search": {
+      "placeholder": "Name of organization"
     },
-    "organization_profile": {
-        "title": "Organization profile",
-        "description": "About the organization",
-        "email": "Contact email",
-        "phone": "Phone",
-        "address": "Head office address",
-        "area": "Area of activity",
-        "events": "Open events",
-        "volunteers": "{{number}} volunteers",
-        "join": "Join the organization",
-        "leave": "Leaving the organization",
-        "rejoin": "Rejoin the organization",
-        "cancel_request": "Cancel request",
-        "no_events": "No events to display",
-        "code": "Do you have an access code?",
-        "disclaimer": {
-            "access_request_pending": "Your registration awaits approval from the organization",
-            "joined_from": "You joined from {{date}}",
-            "volunteer_archived": "Your volunteer profile has been deactivated!",
-            "volunteer_blocked": "Your access to the organization has been restricted"
-        },
-        "modal": {
-            "identity_data_missing": {
-                "heading": "Oops!",
-                "paragraph": "You didn't fill in the identity data in my Account. Fill it in to join an organization.",
-                "action_label": "Fill in the data"
-            },
-            "confirm_cancel_request": {
-                "heading": "Are you cancelling your application?",
-                "paragraph": "The application has been sent to the organization's coordinators. Are you sure you want to withdraw your application?",
-                "action_label": "Cancel request"
-            }
-        }
+    "errors": {
+      "generic": "Error loading data"
+    }
+  },
+  "organization_profile": {
+    "title": "Organization profile",
+    "description": "About the organization",
+    "email": "Contact email",
+    "phone": "Phone",
+    "address": "Head office address",
+    "area": "Area of activity",
+    "events": "Open events",
+    "volunteers": "{{number}} volunteers",
+    "join": "Join the organization",
+    "leave": "Leaving the organization",
+    "rejoin": "Rejoin the organization",
+    "cancel_request": "Cancel request",
+    "no_events": "No events to display",
+    "code": "Do you have an access code?",
+    "disclaimer": {
+      "access_request_pending": "Your registration awaits approval from the organization",
+      "joined_from": "You joined from {{date}}",
+      "volunteer_archived": "Your volunteer profile has been deactivated!",
+      "volunteer_blocked": "Your access to the organization has been restricted"
     },
-    "join_ngo": {
-        "registration_form": "Application form",
-        "complete": "Fill in the details below to join the organization.",
-        "form": {
-            "referral": {
-                "label": "How did you hear about us?",
-                "required": "This field is mandatory",
-                "social": "Social networks",
-                "vic": "From the VIC app",
-                "friend": "From a colleague or friend",
-                "event": "From an event",
-                "other": "Another option"
-            },
-            "motivation": {
-                "required": "This field is mandatory",
-                "label": "What motivates you to volunteer?",
-                "min": "The motivation can be a minimum of {{value}} characters",
-                "max": "The motivation can be up to {{value}} characters long",
-                "helper": "Fill in the field to register."
-            }
-        },
-        "errors": {
-            "ACCESS_CODE_001": "Access code is invalid",
-            "ACCESS_REQUEST_001": "There is already an access request for this organization",
-            "ORG_001": "The organization has not been found",
-            "USER_001": "User not found",
-            "VOLUNTEER_002": "The user is already part of the organization",
-            "USER_005": "The user does not have the identification data filled in"
-        },
-        "modal": {
-            "success": {
-                "heading": "Congratulations!",
-                "paragraph": "The application has been sent to the organization's coordinators. You will be notified as soon as they have responded.",
-                "primary_action_label": "Search for other organizations",
-                "secondary_action_label": "Close"
-            }
-        }
+    "modal": {
+      "identity_data_missing": {
+        "heading": "Oops!",
+        "paragraph": "You didn't fill in the identity data in my Account. Fill it in to join an organization.",
+        "action_label": "Fill in the data"
+      },
+      "confirm_cancel_request": {
+        "heading": "Are you cancelling your application?",
+        "paragraph": "The application has been sent to the organization's coordinators. Are you sure you want to withdraw your application?",
+        "action_label": "Cancel request"
+      }
+    }
+  },
+  "join_ngo": {
+    "registration_form": "Application form",
+    "complete": "Fill in the details below to join the organization.",
+    "form": {
+      "referral": {
+        "label": "How did you hear about us?",
+        "required": "This field is mandatory",
+        "social": "Social networks",
+        "vic": "From the VIC app",
+        "friend": "From a colleague or friend",
+        "event": "From an event",
+        "other": "Another option"
+      },
+      "motivation": {
+        "required": "This field is mandatory",
+        "label": "What motivates you to volunteer?",
+        "min": "The motivation can be a minimum of {{value}} characters",
+        "max": "The motivation can be up to {{value}} characters long",
+        "helper": "Fill in the field to register."
+      }
     },
-    "access_request": {
-        "title": "Application for access refused",
-        "paragraph": "Your access request dated {{date}} has been rejected.",
-        "reason": "Reason for rejection",
-        "errors": {
-            "ACCESS_REQUEST_002": "Request not found"
-        }
+    "errors": {
+      "ACCESS_CODE_001": "Access code is invalid",
+      "ACCESS_REQUEST_001": "There is already an access request for this organization",
+      "ORG_001": "The organization has not been found",
+      "USER_001": "User not found",
+      "VOLUNTEER_002": "The user is already part of the organization",
+      "USER_005": "The user does not have the identification data filled in"
     },
-    "leave_ngo": {
-        "header": "Leaving the organization",
-        "paragraph": "If you leave the organization, it will delete your data.",
-        "action_btn": "Leaving the organization",
-        "modal": {
-            "confirm_leave_organization": {
-                "heading": "Are you sure you want to leave the organization?",
-                "paragraph": "If you leave the organization, it will delete your data, including your registered hours and volunteer documents. For more details, you can contact the organization.",
-                "action_label": "Leaving the organization"
-            }
-        }
+    "modal": {
+      "success": {
+        "heading": "Congratulations!",
+        "paragraph": "The application has been sent to the organization's coordinators. You will be notified as soon as they have responded.",
+        "primary_action_label": "Search for other organizations",
+        "secondary_action_label": "Close"
+      }
+    }
+  },
+  "access_request": {
+    "title": "Application for access refused",
+    "paragraph": "Your access request dated {{date}} has been rejected.",
+    "reason": "Reason for rejection",
+    "errors": {
+      "ACCESS_REQUEST_002": "Request not found"
+    }
+  },
+  "leave_ngo": {
+    "header": "Leaving the organization",
+    "paragraph": "If you leave the organization, it will delete your data.",
+    "action_btn": "Leaving the organization",
+    "modal": {
+      "confirm_leave_organization": {
+        "heading": "Are you sure you want to leave the organization?",
+        "paragraph": "If you leave the organization, it will delete your data, including your registered hours and volunteer documents. For more details, you can contact the organization.",
+        "action_label": "Leaving the organization"
+      }
+    }
+  },
+  "volunteer": {
+    "title": "Volunteer profile",
+    "no_org_added": "You have not added any organizations yet",
+    "no_org_description": "",
+    "my_organizations": "My organizations",
+    "join_organization": "Join an organization",
+    "edit": "Edit volunteer profile",
+    "form": {
+      "email": {
+        "label": "Contact email",
+        "required": "Email is required",
+        "pattern": "The email format is invalid"
+      },
+      "phone": {
+        "label": "Phone",
+        "info": "You cannot change this field."
+      },
+      "active_since": {
+        "label": "Volunteer from",
+        "required": "Date is mandatory"
+      }
     },
-    "volunteer": {
-        "title": "Volunteer profile",
-        "no_org_added": "You have not added any organizations yet",
-        "no_org_description": "",
-        "my_organizations": "My organizations",
-        "join_organization": "Join an organization",
-        "edit": "Edit volunteer profile",
-        "form": {
-            "email": {
-                "label": "Contact email",
-                "required": "Email is required",
-                "pattern": "The email format is invalid"
-            },
-            "phone": {
-                "label": "Phone",
-                "info": "You cannot change this field."
-            },
-            "active_since": {
-                "label": "Volunteer from",
-                "required": "Date is mandatory"
-            }
-        },
-        "details": "",
-        "menu_items": {
-            "organization_profile": {
-                "title": "Organization profile"
-            },
-            "activity_log": {
-                "title": "Volunteer hours",
-                "subtitle": "{{number}} hours awaiting approval"
-            },
-            "documents": {
-                "title": "Documents",
-                "subtitle": "{{number}} documents await response"
-            },
-            "volunteer_profile": {
-                "title": "Volunteer profile",
-                "subtitle": "Incomplete profile"
-            }
-        },
-        "age": "{{years}} years",
-        "county": ", jud {{name}}",
-        "information": "Voluntary information",
-        "email": "Contact email",
-        "active_since": "Volunteer from",
-        "created_on": "Registered in VIC since",
-        "errors": {
-            "VOLUNTEER_PROFILE_003": "The volunteer has no profile created. Create one first!",
-            "VOLUNTEER_003": "Only active volunteers can be archived",
-            "VOLUNTEER_004": "Only archived volunteers can be activated",
-            "VOLUNTEER_005": "The user has no organization profile for this NGO"
-        },
-        "missing_profile": {
-            "heading": "You have not yet created a user profile",
-            "paragraph": "",
-            "action_btn": "Create profile"
-        }
-    },
-    "create_volunteer": {
-        "heading": "Complete volunteer profile",
-        "paragraph": "Fill in your volunteer profile to be contacted and start reporting your volunteer hours!",
-        "form": {
-            "email": {
-                "label": "Contact e-mail",
-                "required": "Email is required",
-                "placeholder": "Enter your email",
-                "pattern": "Email format is invalid"
-            },
-            "checkbox": {
-                "label": "Same as VIC account email"
-            },
-            "branch": {
-                "label": "Subsidiary or branch"
-            },
-            "active_since": {
-                "label": "Volunteer from"
-            },
-            "submit": {
-                "errors": {
-                    "VOLUNTEER_001": "The volunteer has not been found!",
-                    "VOLUNTEER_PROFILE_001": "The volunteer already has a profile!",
-                    "ORGANIZATION_STRUCTURE_001": "Organizational structure does not exist"
-                }
-            }
-        }
-    },
-    "events": {
-        "header": "Events",
-        "search": {
-            "placeholder": "Search"
-        },
-        "tabs": {
-            "going": "Particip",
-            "organizations": "My organizations",
-            "open": "Open"
-        }
-    },
-    "event": {
-        "join": {
-            "header": "I want to participate",
-            "form": {
-                "mention": {
-                    "label": "Mention",
-                    "required": "The mention is mandatory",
-                    "min": "The mention can be a minimum of {{value}} characters",
-                    "max": "The mention can have a maximum of {{value}} characters",
-                    "helper": "Fill in the field to register."
-                }
-            }
-        },
-        "details": "Event details",
-        "date": "Date and time",
-        "name": "Event name",
-        "target": "Target",
-        "location": "Location",
-        "description": "Event description",
-        "tasks": "Related tasks",
-        "attending": "{{numberOfVolunteer}} people participate!",
-        "attending_of": "{{numberOfVolunteer}} of people participate!",
-        "attending_one": "One person participates!",
-        "attending_other": "",
-        "type": {
-            "public": "Public event",
-            "all_organization": "The whole organization"
-        },
-        "errors": {
-            "EVENT_RSVP_001": "The event was not found!",
-            "EVENT_RSVP_006": "The event is not yet published",
-            "EVENT_RSVP_007": "The event is closed",
-            "EVENT_RSVP_003": "Volunteer profile is not active",
-            "EVENT_RSVP_005": "Please fill in your volunteer profile before joining the event",
-            "EVENT_RSVP_002": "You must be a volunteer in the organization to participate in this event",
-            "EVENT_RSVP_004": "For this event it is mandatory to mention"
-        },
-        "rsvp": {
-            "going": "Particip",
-            "not_going": "Not participating",
-            "cancel": "Withdraw reply"
-        },
-        "error_modal": {
-            "title": "Ups!",
-            "description": "You did not fill in the data for your volunteer profile. Fill it out in order to be able to attend the event.",
-            "action_btn_label": "Complete data"
-        }
-    },
-    "activity_logs": {
+    "details": "",
+    "menu_items": {
+      "organization_profile": {
+        "title": "Organization profile"
+      },
+      "activity_log": {
         "title": "Volunteer hours",
-        "tabs": {
-            "pending": "Waiting",
-            "approved": "Approved",
-            "rejected": "Rejected"
-        },
-        "search": {
-            "placeholder": "Search"
-        },
-        "error_modal": {
-            "title": "Ups!",
-            "description": "You did not fill in the data for your volunteer profile. Fill it out in order to be able to log volunteering hours.",
-            "action_btn_label": "Complete data"
-        }
+        "subtitle": "{{number}} hours awaiting approval"
+      },
+      "documents": {
+        "title": "Documents",
+        "subtitle": "{{number}} documents await response"
+      },
+      "volunteer_profile": {
+        "title": "Volunteer profile",
+        "subtitle": "Incomplete profile"
+      }
     },
-    "activity_log": {
-        "title": "Log",
-        "add_title": "Add volunteer hours",
-        "rejection_reason": "Reason for rejection",
-        "other": "Another option",
-        "total": "Total",
-        "disclaimer": {
-            "approved": "Approved at {{date}}",
-            "pending": "Requires approval from the organization",
-            "rejected": "Rejected at {{date}}"
-        },
-        "form": {
-            "event": {
-                "label": "Event"
-            },
-            "task": {
-                "label": "Task",
-                "required": "Choice of task is mandatory"
-            },
-            "date": {
-                "label": "Date",
-                "required": "Date is mandatory"
-            },
-            "hours": {
-                "label": "Number of hours",
-                "number": "The number must contain only digits",
-                "placeholder": "Add number of hours",
-                "required": "The number of hours is compulsory",
-                "min": "The number of hours must be greater than {{value}}",
-                "max": "The number of hours must be less than {{value}}",
-                "integer": "The number of hours must be whole"
-            },
-            "mentions": {
-                "label": "Mentions",
-                "placeholder": "Add mention",
-                "min": "The mention can be a minimum of {{value}} characters",
-                "max": "The mention can have a maximum of {{value}} characters"
-            }
-        },
+    "age": "{{years}} years",
+    "county": ", jud {{name}}",
+    "information": "Voluntary information",
+    "email": "Contact email",
+    "active_since": "Volunteer from",
+    "created_on": "Registered in VIC since",
+    "errors": {
+      "VOLUNTEER_PROFILE_003": "The volunteer has no profile created. Create one first!",
+      "VOLUNTEER_003": "Only active volunteers can be archived",
+      "VOLUNTEER_004": "Only archived volunteers can be activated",
+      "VOLUNTEER_005": "The user has no organization profile for this NGO"
+    },
+    "missing_profile": {
+      "heading": "You have not yet created a user profile",
+      "paragraph": "",
+      "action_btn": "Create profile"
+    }
+  },
+  "create_volunteer": {
+    "heading": "Complete volunteer profile",
+    "paragraph": "Fill in your volunteer profile to be contacted and start reporting your volunteer hours!",
+    "form": {
+      "email": {
+        "label": "Contact e-mail",
+        "required": "Email is required",
+        "placeholder": "Enter your email",
+        "pattern": "Email format is invalid"
+      },
+      "checkbox": {
+        "label": "Same as VIC account email"
+      },
+      "branch": {
+        "label": "Subsidiary or branch"
+      },
+      "active_since": {
+        "label": "Volunteer from"
+      },
+      "submit": {
         "errors": {
-            "ACTIVITY_LOG_001": "No logging of hours",
-            "ACTIVITY_LOG_002": "The volunteer does not have a completed profile",
-            "ACTIVITY_LOG_004": "Cannot cancel approved or rejected requests",
-            "VOLUNTEER_001": "Volunteer does not exist",
-            "EVENT_001": "The event does not exist",
-            "ACTIVITY_TYPE_001": "Type of activity does not exist"
-        },
-        "confirmation_modal": {
-            "paragraph": " Are you sure you want to delete this log?"
-        },
-        "toast": {
-            "success": "The log was successfully deleted."
+          "VOLUNTEER_001": "The volunteer has not been found!",
+          "VOLUNTEER_PROFILE_001": "The volunteer already has a profile!",
+          "ORGANIZATION_STRUCTURE_001": "Organizational structure does not exist"
         }
+      }
+    }
+  },
+  "events": {
+    "header": "Events",
+    "search": {
+      "placeholder": "Search"
     },
     "tabs": {
-        "home": "Home",
-        "volunteer": "Voluntar",
-        "events": "Events",
-        "search": "Search",
-        "account_settings": "Account settings"
-    },
-    "home": {
-        "greeting": "Hi, {{name}}!",
-        "paragraph": "Welcome to your VIC account, the place that connects NGOs and those who want to contribute to creating a better world.",
-        "no_ngo_title": "You didn't add any organizations yet",
-        "no_ngo_paragraph": "Discover the organizations registered in VIC and the events you want to dedicate your time to.",
-        "add_hours": "Add volunteer hours!",
-        "join_ngo": "Join an organization!",
-        "statistics": {
-            "events": {
-                "title": "{{number}} events",
-                "description": "this month"
-            },
-            "hours": {
-                "title": "{{number}} updates",
-                "description": "in volunteer hours"
-            },
-            "documents": {
-                "title": "{{number}} updates",
-                "description": "in documents"
-            },
-            "organizations": {
-                "title": "{{number}} updates",
-                "description": "in organizations"
-            }
-        },
-        "anouncements": {
-            "section": {
-                "header": "Latest news",
-                "see_all": "See all",
-                "empty_list": "No new ads!"
-            }
-        }
-    },
-    "access_code": {
-        "title": "Access code",
-        "description": "If you have an access code from your organization, enter it below to join automatically.",
-        "form": {
-            "code": {
-                "placeholder": "Enter code",
-                "required": "The access code is mandatory",
-                "invalid": "The code entered is invalid.",
-                "min": "The code can be a minimum of {{value}} characters",
-                "max": "The code can have a maximum of {{value}} characters"
-            }
-        },
-        "modal": {
-            "success": {
-                "heading": "Congratulations!",
-                "paragraph": "The code entered is correct, and you have successfully joined the organization. To continue, you need to complete your volunteer profile.",
-                "primary_action_label": "Complete the volunteer profile",
-                "secondary_action_label": "Close"
-            }
-        }
-    },
-    "documents": {
-        "contract_prefix": "Contract",
-        "description": "Manage your contracts in the sections below. Download old contracts or sign contracts sent by your organization.",
-        "sections": {
-            "pending": "Contract proposal",
-            "closed": "History of signed contracts"
-        },
-        "contract_status": {
-            "active": "active",
-            "closed": "concluded",
-            "not_started": "Unbeaten"
-        },
-        "contract": {
-            "title": "Contract {{contractNumber}}",
-            "paragraph": {
-                "PENDING_VOLUNTEER": "The contract has been generated and requires your approval. Download the template below and read the document carefully. Please print out a copy of it, which you can sign, scan and upload here.",
-                "PENDING_ADMIN": "You sent a document for signature. The contract has been generated and requires approval from the organization.",
-                "NOT_STARTED": "Not started",
-                "CLOSED": "Closed",
-                "ACTIVE": "Active",
-                "REJECTED": "Rejected"
-            },
-            "disclaimer": {
-                "PENDING_VOLUNTEER": "The contract needs your signature",
-                "PENDING_ADMIN": "The contract requires the signature of the organization"
-            },
-            "actions": {
-                "upload": "Upload signed contract",
-                "cancel": "Cancel and upload another"
-            },
-            "bottom_sheet": {
-                "heading": "Confirm document?",
-                "paragraph": "You have uploaded the document",
-                "label": "Send for signature"
-            },
-            "upload": {
-                "success": "The contract has been sent!"
-            },
-            "cancel": {
-                "success": "The contract has been returned to its original state!"
-            },
-            "errors": {
-                "CONTRACT_002": "Contract not found",
-                "CONTRACT_001": "Could not upload the contract",
-                "CONTRACT_003": "Could not delete the document",
-                "CONTRACT_007": "Cannot cancel a contract approved by the admin",
-                "TEMPLATE_002": "Contract template not found!"
-            }
-        },
-        "contract_rejected": {
-            "header": "Contract Rejected",
-            "paragraph": "Your contract has been rejected",
-            "label": "Reason for rejection"
-        },
-        "confirmation_modal": {
-            "paragraph": "Are you sure you wish to cancel and upload a different contract?"
-        }
-    },
-    "notifications": {
-        "header": "Notifications settings",
-        "from": {
-            "title": "Receive notifications from",
-            "options": {
-                "all_organizations": "All organizations",
-                "my_organizations": "My organizations"
-            }
-        },
-        "by": {
-            "title": "Receive notifications via",
-            "options": {
-                "email": "Email",
-                "push": "Push Notifications"
-            }
-        },
-        "disabled": "Notifications are disabled",
-        "errors": {
-            "NOTIFICATIONS_002": "Error changing settings!"
-        },
-        "warning_modal": {
-            "description": "Notifications are currently disabled for this app. To receive important updates and alerts, please enable notifications in your phone's settings.",
-            "btn_label": "Open settings"
-        }
-    },
-    "user": {
-        "errors": {
-            "USER_001": "User not found",
-            "USER_004": "Identification number already exists",
-            "USER_003": "Email or phone are already used",
-            "USER_006": "Error saving profile photo!"
-        }
-    },
-    "news": {
-        "header": {
-            "logs": "Updates in Volunteering Hours",
-            "documents": "Update in Documents",
-            "organizations": "Update in Organizations"
-        },
-        "item": {
-            "logs": {
-                "approved": "Registered volunteer hours approved",
-                "rejected": "Registered volunteer hours were rejected"
-            },
-            "documents": {
-                "new": "generated your volunteer contract. Download and sign.",
-                "approved_start": "Your contract with",
-                "approved_end": "has been approved and signed.",
-                "rejected_start": "Your contract with",
-                "rejected_end": "was rejected. See reason."
-            },
-            "organization": {
-                "request": "Application to join the organization",
-                "approved": "has been approved",
-                "rejected": "was rejected"
-            }
-        }
-    },
-    "delete_account": {
-        "title": "Confirm account deletion",
-        "header": "Are you sure you wish to permanently delete your account?",
-        "paragraph": "To delete your account on the VIC application, please confirm your decision below. Deleting your account will result in the permanent loss of your data and access to the application. If you are certain about this action, click the 'Confirm Deletion' button. Keep in mind that this process is irreversible, and you will need to create a new account if you wish to use VIC in the future.",
-        "confirm": "Confirm Deletion",
-        "error": "There was an error trying to delete your account. Please contact us at {{value}} to finalize the process."
+      "going": "Particip",
+      "organizations": "My organizations",
+      "open": "Open"
     }
+  },
+  "event": {
+    "join": {
+      "header": "I want to participate",
+      "form": {
+        "mention": {
+          "label": "Mention",
+          "required": "The mention is mandatory",
+          "min": "The mention can be a minimum of {{value}} characters",
+          "max": "The mention can have a maximum of {{value}} characters",
+          "helper": "Fill in the field to register."
+        }
+      }
+    },
+    "details": "Event details",
+    "date": "Date and time",
+    "name": "Event name",
+    "target": "Target",
+    "location": "Location",
+    "description": "Event description",
+    "tasks": "Related tasks",
+    "attending": "{{numberOfVolunteer}} people participate!",
+    "attending_of": "{{numberOfVolunteer}} of people participate!",
+    "attending_one": "One person participates!",
+    "attending_other": "",
+    "type": {
+      "public": "Public event",
+      "all_organization": "The whole organization"
+    },
+    "errors": {
+      "EVENT_RSVP_001": "The event was not found!",
+      "EVENT_RSVP_006": "The event is not yet published",
+      "EVENT_RSVP_007": "The event is closed",
+      "EVENT_RSVP_003": "Volunteer profile is not active",
+      "EVENT_RSVP_005": "Please fill in your volunteer profile before joining the event",
+      "EVENT_RSVP_002": "You must be a volunteer in the organization to participate in this event",
+      "EVENT_RSVP_004": "For this event it is mandatory to mention"
+    },
+    "rsvp": {
+      "going": "Particip",
+      "not_going": "Not participating",
+      "cancel": "Withdraw reply"
+    },
+    "error_modal": {
+      "title": "Ups!",
+      "description": "You did not fill in the data for your volunteer profile. Fill it out in order to be able to attend the event.",
+      "action_btn_label": "Complete data"
+    }
+  },
+  "activity_logs": {
+    "title": "Volunteer hours",
+    "tabs": {
+      "pending": "Waiting",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "search": {
+      "placeholder": "Search"
+    },
+    "error_modal": {
+      "title": "Ups!",
+      "description": "You did not fill in the data for your volunteer profile. Fill it out in order to be able to log volunteering hours.",
+      "action_btn_label": "Complete data"
+    }
+  },
+  "activity_log": {
+    "title": "Log",
+    "add_title": "Add volunteer hours",
+    "rejection_reason": "Reason for rejection",
+    "other": "Another option",
+    "total": "Total",
+    "disclaimer": {
+      "approved": "Approved at {{date}}",
+      "pending": "Requires approval from the organization",
+      "rejected": "Rejected at {{date}}"
+    },
+    "form": {
+      "event": {
+        "label": "Event"
+      },
+      "task": {
+        "label": "Task",
+        "required": "Choice of task is mandatory"
+      },
+      "date": {
+        "label": "Date",
+        "required": "Date is mandatory"
+      },
+      "hours": {
+        "label": "Number of hours",
+        "number": "The number must contain only digits",
+        "placeholder": "Add number of hours",
+        "required": "The number of hours is compulsory",
+        "min": "The number of hours must be greater than {{value}}",
+        "max": "The number of hours must be less than {{value}}",
+        "integer": "The number of hours must be whole"
+      },
+      "mentions": {
+        "label": "Mentions",
+        "placeholder": "Add mention",
+        "min": "The mention can be a minimum of {{value}} characters",
+        "max": "The mention can have a maximum of {{value}} characters"
+      }
+    },
+    "errors": {
+      "ACTIVITY_LOG_001": "No logging of hours",
+      "ACTIVITY_LOG_002": "The volunteer does not have a completed profile",
+      "ACTIVITY_LOG_004": "Cannot cancel approved or rejected requests",
+      "VOLUNTEER_001": "Volunteer does not exist",
+      "EVENT_001": "The event does not exist",
+      "ACTIVITY_TYPE_001": "Type of activity does not exist"
+    },
+    "confirmation_modal": {
+      "paragraph": " Are you sure you want to delete this log?"
+    },
+    "toast": {
+      "success": "The log was successfully deleted."
+    }
+  },
+  "tabs": {
+    "home": "Home",
+    "volunteer": "Voluntar",
+    "events": "Events",
+    "search": "Search",
+    "account_settings": "Account settings"
+  },
+  "home": {
+    "greeting": "Hi, {{name}}!",
+    "paragraph": "Welcome to your VIC account, the place that connects NGOs and those who want to contribute to creating a better world.",
+    "no_ngo_title": "You didn't add any organizations yet",
+    "no_ngo_paragraph": "Discover the organizations registered in VIC and the events you want to dedicate your time to.",
+    "add_hours": "Add volunteer hours!",
+    "join_ngo": "Join an organization!",
+    "statistics": {
+      "events": {
+        "title": "{{number}} events",
+        "description": "this month"
+      },
+      "hours": {
+        "title": "{{number}} updates",
+        "description": "in volunteer hours"
+      },
+      "documents": {
+        "title": "{{number}} updates",
+        "description": "in documents"
+      },
+      "organizations": {
+        "title": "{{number}} updates",
+        "description": "in organizations"
+      }
+    },
+    "anouncements": {
+      "section": {
+        "header": "Latest news",
+        "see_all": "See all",
+        "empty_list": "No new ads!"
+      }
+    }
+  },
+  "access_code": {
+    "title": "Access code",
+    "description": "If you have an access code from your organization, enter it below to join automatically.",
+    "form": {
+      "code": {
+        "placeholder": "Enter code",
+        "required": "The access code is mandatory",
+        "invalid": "The code entered is invalid.",
+        "min": "The code can be a minimum of {{value}} characters",
+        "max": "The code can have a maximum of {{value}} characters"
+      }
+    },
+    "modal": {
+      "success": {
+        "heading": "Congratulations!",
+        "paragraph": "The code entered is correct, and you have successfully joined the organization. To continue, you need to complete your volunteer profile.",
+        "primary_action_label": "Complete the volunteer profile",
+        "secondary_action_label": "Close"
+      }
+    }
+  },
+  "documents": {
+    "contract_prefix": "Contract",
+    "description": "Manage your contracts in the sections below. Download old contracts or sign contracts sent by your organization.",
+    "sections": {
+      "pending": "Contract proposal",
+      "closed": "History of signed contracts"
+    },
+    "contract_status": {
+      "active": "active",
+      "closed": "concluded",
+      "not_started": "Unbeaten"
+    },
+    "contract": {
+      "title": "Contract {{contractNumber}}",
+      "paragraph": {
+        "PENDING_VOLUNTEER": "The contract has been generated and requires your approval. Download the template below and read the document carefully. Please print out a copy of it, which you can sign, scan and upload here.",
+        "PENDING_ADMIN": "You sent a document for signature. The contract has been generated and requires approval from the organization.",
+        "NOT_STARTED": "Not started",
+        "CLOSED": "Closed",
+        "ACTIVE": "Active",
+        "REJECTED": "Rejected"
+      },
+      "disclaimer": {
+        "PENDING_VOLUNTEER": "The contract needs your signature",
+        "PENDING_ADMIN": "The contract requires the signature of the organization"
+      },
+      "actions": {
+        "upload": "Upload signed contract",
+        "cancel": "Cancel and upload another"
+      },
+      "bottom_sheet": {
+        "heading": "Confirm document?",
+        "paragraph": "You have uploaded the document",
+        "label": "Send for signature"
+      },
+      "upload": {
+        "success": "The contract has been sent!"
+      },
+      "cancel": {
+        "success": "The contract has been returned to its original state!"
+      },
+      "errors": {
+        "CONTRACT_002": "Contract not found",
+        "CONTRACT_001": "Could not upload the contract",
+        "CONTRACT_003": "Could not delete the document",
+        "CONTRACT_007": "Cannot cancel a contract approved by the admin",
+        "TEMPLATE_002": "Contract template not found!"
+      }
+    },
+    "contract_rejected": {
+      "header": "Contract Rejected",
+      "paragraph": "Your contract has been rejected",
+      "label": "Reason for rejection"
+    },
+    "confirmation_modal": {
+      "paragraph": "Are you sure you wish to cancel and upload a different contract?"
+    }
+  },
+  "notifications": {
+    "header": "Notifications settings",
+    "from": {
+      "title": "Receive notifications from",
+      "options": {
+        "all_organizations": "All organizations",
+        "my_organizations": "My organizations"
+      }
+    },
+    "by": {
+      "title": "Receive notifications via",
+      "options": {
+        "email": "Email",
+        "push": "Push Notifications"
+      }
+    },
+    "disabled": "Notifications are disabled",
+    "errors": {
+      "NOTIFICATIONS_002": "Error changing settings!"
+    },
+    "warning_modal": {
+      "description": "Notifications are currently disabled for this app. To receive important updates and alerts, please enable notifications in your phone's settings.",
+      "btn_label": "Open settings"
+    }
+  },
+  "user": {
+    "errors": {
+      "USER_001": "User not found",
+      "USER_004": "Identification number already exists",
+      "USER_003": "Email or phone are already used",
+      "USER_006": "Error saving profile photo!",
+      "USER_008": "Error while updating user phone number!"
+    }
+  },
+  "news": {
+    "header": {
+      "logs": "Updates in Volunteering Hours",
+      "documents": "Update in Documents",
+      "organizations": "Update in Organizations"
+    },
+    "item": {
+      "logs": {
+        "approved": "Registered volunteer hours approved",
+        "rejected": "Registered volunteer hours were rejected"
+      },
+      "documents": {
+        "new": "generated your volunteer contract. Download and sign.",
+        "approved_start": "Your contract with",
+        "approved_end": "has been approved and signed.",
+        "rejected_start": "Your contract with",
+        "rejected_end": "was rejected. See reason."
+      },
+      "organization": {
+        "request": "Application to join the organization",
+        "approved": "has been approved",
+        "rejected": "was rejected"
+      }
+    }
+  },
+  "delete_account": {
+    "title": "Confirm account deletion",
+    "header": "Are you sure you wish to permanently delete your account?",
+    "paragraph": "To delete your account on the VIC application, please confirm your decision below. Deleting your account will result in the permanent loss of your data and access to the application. If you are certain about this action, click the 'Confirm Deletion' button. Keep in mind that this process is irreversible, and you will need to create a new account if you wish to use VIC in the future.",
+    "confirm": "Confirm Deletion",
+    "error": "There was an error trying to delete your account. Please contact us at {{value}} to finalize the process."
+  }
 }

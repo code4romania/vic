@@ -6,6 +6,7 @@ export enum USER_ERRORS {
   USER_004 = 'USER_004',
   USER_003 = 'USER_003',
   USER_006 = 'USER_006',
+  USER_008 = 'USER_008',
 }
 
 export class UserErrors extends ErrorClass<USER_ERRORS> {
@@ -17,6 +18,7 @@ export class UserErrors extends ErrorClass<USER_ERRORS> {
       [USER_ERRORS.USER_004]: i18n.t('user:errors.USER_004'),
       [USER_ERRORS.USER_003]: i18n.t('user:errors.USER_003'),
       [USER_ERRORS.USER_006]: i18n.t('user:errors.USER_006'),
+      [USER_ERRORS.USER_008]: i18n.t('user:errors.USER_008'),
     });
   }
 
