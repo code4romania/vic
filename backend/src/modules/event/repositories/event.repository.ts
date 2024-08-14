@@ -255,10 +255,11 @@ export class EventRepository
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
     query.andWhere(
-      '(event.endDate > :currentDate OR event.endDate IS NULL) AND v.status = :active AND v.userId = :userId',
+      '(event.endDate > :currentDate OR event.endDate IS NULL) AND ((v.status = :active AND v.userId = :userId) OR event.isPublic = :isPublic)',
       {
         currentDate: new Date(),
         active: VolunteerStatus.ACTIVE,
+        isPublic: true,
       },
     );
 
