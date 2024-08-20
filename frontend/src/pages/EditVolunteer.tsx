@@ -30,7 +30,7 @@ export type VolunteerFormTypes = {
   branch?: SelectItem<string>;
   role?: SelectItem<string>;
   department?: SelectItem<string>;
-  activeSince?: Date;
+  activeSince?: Date | null;
 };
 
 const schema = yup.object({
@@ -43,6 +43,7 @@ const schema = yup.object({
   activeSince: yup
     .date()
     .optional()
+    .nullable()
     .typeError(`${i18n.t('general:invalid_date')}`),
 });
 
