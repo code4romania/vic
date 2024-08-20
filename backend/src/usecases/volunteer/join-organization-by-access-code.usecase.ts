@@ -9,7 +9,7 @@ import {
 } from 'src/modules/volunteer/model/volunteer.model';
 import { CreateVolunteerUseCase } from './create-volunteer.usecase';
 import { AccessCodeFacade } from 'src/modules/organization/services/access-code.facade';
-import { compareAsc } from 'date-fns';
+import { compareAsc, endOfDay, startOfDay } from 'date-fns';
 import { AccessCodeExceptionMessages } from 'src/modules/organization/exceptions/access-codes.exceptions';
 
 @Injectable()
@@ -52,8 +52,9 @@ export class JoinOrganizationByAccessCodeUsecase
 
     // check fi the access code is valid
     if (
-      compareAsc(accessCode.startDate, new Date()) > 0 ||
-      (accessCode.endDate && compareAsc(accessCode.endDate, new Date()) < 0)
+      compareAsc(startOfDay(accessCode.startDate), new Date()) > 0 ||
+      (accessCode.endDate &&
+        compareAsc(endOfDay(accessCode.endDate), new Date()) < 0)
     ) {
       this.exceptionService.badRequestException(
         AccessCodeExceptionMessages.ACCESS_CODE_001,
