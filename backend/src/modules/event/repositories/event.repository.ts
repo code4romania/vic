@@ -206,7 +206,7 @@ export class EventRepository
 
     // Get all events in progress from the organizations i am part or public events
     query.andWhere(
-      '(event.endDate > :currentDate OR event.endDate IS NULL) AND event.startDate <= :currentDate AND ((event.isPublic = :isPublic AND event.organizationId NOT IN ' +
+      '(event.endDate > :currentDate OR event.endDate IS NULL) AND ((event.isPublic = :isPublic AND event.organizationId NOT IN ' +
         query
           .subQuery()
           .select('vol.organizationId')
