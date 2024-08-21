@@ -50,7 +50,7 @@ export class UpdateActivityLogUsecase
     if (updates.activityTypeId) {
       const taskExists = await this.activityTypeFacade.exists(
         [updates.activityTypeId],
-        { organizationId: log.event.organization.id },
+        { organizationId: log.event?.organization.id || log.organization.id }, // in case the organization doesn't have an event associated with it
       );
       if (!taskExists) {
         this.exceptionService.badRequestException(
