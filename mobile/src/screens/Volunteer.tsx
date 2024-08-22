@@ -17,14 +17,12 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { useGetUserProfileQuery } from '../services/user/user.service';
 import { Screen } from '../components/Screen';
-import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 
 const Volunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
 
   const { userProfile } = useUserProfile();
   const { refetch: refetchUserProfile } = useGetUserProfileQuery();
-  const { pendingHours } = useActivityLogs();
 
   const {
     data: stats,
@@ -95,7 +93,7 @@ const Volunteer = ({ navigation }: any) => {
           icon={<SvgXml xml={volunteerClockSVG} />}
           onPress={onViewAtivityLogsButtonPress}
           loading={isLoadingStats}
-          subtitle={`${t('menu_items.activity_log.subtitle', { number: pendingHours })}`}
+          subtitle={`${t(Number(stats?.activityLogCount) === 1 ? 'menu_items.activity_log.subtitle.one' : 'menu_items.activity_log.subtitle.many', { number: stats?.activityLogCount })}`}
         />
         <VolunteerCard
           title={t('general:documents')}
