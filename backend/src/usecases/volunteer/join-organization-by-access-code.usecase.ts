@@ -9,7 +9,13 @@ import {
 } from 'src/modules/volunteer/model/volunteer.model';
 import { CreateVolunteerUseCase } from './create-volunteer.usecase';
 import { AccessCodeFacade } from 'src/modules/organization/services/access-code.facade';
-import { compareAsc, endOfDay, startOfDay } from 'date-fns';
+import {
+  endOfDay,
+  endOfToday,
+  endOfTomorrow,
+  isWithinInterval,
+  startOfDay,
+} from 'date-fns';
 import { AccessCodeExceptionMessages } from 'src/modules/organization/exceptions/access-codes.exceptions';
 
 @Injectable()
@@ -50,11 +56,19 @@ export class JoinOrganizationByAccessCodeUsecase
       );
     }
 
+    // Added this to have more control over the time.
+    const today = endOfToday();
+    // start of the day to have the full interval
+    const startDate = startOfDay(accessCode.startDate);
+    // end of the day to have the full interval, and also in case the interval is open ended end of tomorrow will always include today
+    const endDate = endOfDay(accessCode.endDate || endOfTomorrow());
+
     // check fi the access code is valid
     if (
-      compareAsc(startOfDay(accessCode.startDate), new Date()) > 0 ||
-      (accessCode.endDate &&
-        compareAsc(endOfDay(accessCode.endDate), new Date()) < 0)
+      !isWithinInterval(today, {
+        start: startDate,
+        end: endDate,
+      })
     ) {
       this.exceptionService.badRequestException(
         AccessCodeExceptionMessages.ACCESS_CODE_001,
