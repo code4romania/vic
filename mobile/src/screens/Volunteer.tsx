@@ -93,7 +93,7 @@ const Volunteer = ({ navigation }: any) => {
           icon={<SvgXml xml={volunteerClockSVG} />}
           onPress={onViewAtivityLogsButtonPress}
           loading={isLoadingStats}
-          subtitle={`${t('menu_items.activity_log.subtitle', { number: stats?.activityLogCount })}`}
+          subtitle={`${t(Number(stats?.activityLogCount) === 1 ? 'menu_items.activity_log.subtitle.one' : 'menu_items.activity_log.subtitle.many', { number: stats?.activityLogCount })}`}
         />
         <VolunteerCard
           title={t('general:documents')}

@@ -405,7 +405,10 @@
       },
       "activity_log": {
         "title": "Volunteer hours",
-        "subtitle": "{{number}} hours awaiting approval"
+        "subtitle": {
+          "one": "{{number}} request awaiting approval",
+          "many": "{{number}} requests awaiting approval"
+        }
       },
       "documents": {
         "title": "Documents",

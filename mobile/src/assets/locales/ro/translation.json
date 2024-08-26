@@ -405,7 +405,10 @@
       },
       "activity_log": {
         "title": "Ore de voluntariat",
-        "subtitle": "{{number}} ore așteaptă aprobare"
+        "subtitle": {
+          "one": "{{number}} cerere așteaptă aprobare",
+          "many": "{{number}} cereri așteaptă aprobare"
+        }
       },
       "documents": {
         "title": "Documente",
