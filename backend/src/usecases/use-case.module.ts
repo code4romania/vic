@@ -136,6 +136,7 @@ import { GetOneRegularUserProfileUseCase } from './user/get-regule-user-profile.
 import { SyncUserOrganizationsUsecase } from './user/sync-user-organizations.usecase';
 import { GetRejectedAccessRequestUsecase } from './access-request/get-rejected-access-request.usecase';
 import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
+import { GeneratePDFsUseCase } from './documents/generate-pdfs.usecase';
 
 @Module({
   imports: [
@@ -297,6 +298,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     CancelContractUsecase,
     // Notifications
     UpdateSettingsUsecase,
+    // Testing PDFs
+    GeneratePDFsUseCase,
   ],
   exports: [
     // Organization
@@ -441,6 +444,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetVicStatisticsUsecase,
     // Notifications
     UpdateSettingsUsecase,
+    // Testing PDFs
+    GeneratePDFsUseCase,
   ],
 })
 export class UseCaseModule {}
