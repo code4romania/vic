@@ -46,15 +46,19 @@ export const ContractTemplatePreview = () => {
       {/* P1 */}
       <p>
         {t('template_preview.p2.between')}{' '}
-        <InfoParagraph text={organization?.name || ''} className="font-robotoBold" />{' '}
-        {t('template_preview.p2.address')} <InfoParagraph text={organization?.address || ''} />{' '}
+        <InfoParagraph text={organization?.name || ''} className="font-robotoBold" />
+        {', '}
+        {t('template_preview.p2.address')} <InfoParagraph text={organization?.address || ''} />
+        {', '}
         {t('template_preview.p2.identified')}{' '}
-        <InfoParagraph text={organization?.cui || ''} className="font-robotoBold" />{' '}
+        <InfoParagraph text={organization?.cui || ''} className="font-robotoBold" />
+        {', '}
         {t('template_preview.p2.represented_by')}{' '}
         <InfoParagraph
-          text={organization?.legalRepresentative || ' ' + ','}
+          text={organization?.legalRepresentative || ' '}
           className="font-robotoBold"
-        />{' '}
+        />
+        {', '}
         {t('template_preview.p2.as')}{' '}
         <InfoParagraph text={organization?.legalRepresentativeRole || ''} />{' '}
         {t('template_preview.p2.named')}{' '}
@@ -67,13 +71,14 @@ export const ContractTemplatePreview = () => {
 
       {/* P3 */}
       <p>
-        <InfoParagraph text={t('volunteer.name') + ','} /> {t('template_preview.p3.lives')}{' '}
-        <InfoParagraph text={t('volunteer.address') + ','} /> {t('template_preview.p3.cnp')}{' '}
-        <InfoParagraph text={t('volunteer.cnp') + ','} /> {t('template_preview.p3.legitimate')}{' '}
+        <InfoParagraph text={t('volunteer.name')} />, {t('template_preview.p3.lives')}{' '}
+        <InfoParagraph text={t('volunteer.address')} />, {t('template_preview.p3.cnp')}{' '}
+        <InfoParagraph text={t('volunteer.cnp')} />, {t('template_preview.p3.legitimate')}{' '}
         <InfoParagraph text={t('volunteer.series')} /> {t('template_preview.p3.no')}{' '}
-        <InfoParagraph text={t('volunteer.no') + ','} /> {t('template_preview.p3.by')}{' '}
-        <InfoParagraph text={t('volunteer.institution') + ','} /> {t('template_preview.p3.at_date')}{' '}
-        <InfoParagraph text={t('volunteer.eliberation_date') + ','} />{' '}
+        <InfoParagraph text={t('volunteer.no')} />, {t('template_preview.p3.by')}{' '}
+        <InfoParagraph text={t('volunteer.institution')} />, {t('template_preview.p3.at_date')}{' '}
+        <InfoParagraph text={t('volunteer.eliberation_date')} />
+        {', '}
         {t('template_preview.p3.named')}{' '}
         <span className="italic"> {t('template_preview.p3.volunteer')}</span>{' '}
       </p>
