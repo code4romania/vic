@@ -16,6 +16,23 @@
     @apply font-roboto text-sm sm:text-base;
   }
 
+  ul,
+  ol {
+    @apply pl-5 my-2;
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+
+  li {
+    @apply mb-1;
+  }
+
   header {
     @apply shadow-header;
   }

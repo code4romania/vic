@@ -66,6 +66,11 @@ export const ROUTES: IRoute[] = [
         name: i18n.t('general:contracts'),
         href: 'documents/contracts',
       },
+      {
+        id: 62,
+        name: i18n.t('general:templates'),
+        href: 'documents/templates',
+      },
     ],
   },
   {
