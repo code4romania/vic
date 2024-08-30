@@ -52,24 +52,24 @@ export class CreateEventRSVPUseCase
       organizationId: event.organization.id,
     });
 
-    if (volunteer) {
-      // 4. Only ACTIVE volunteers can join events. In case the user is already a volunteer and is BLOCKED or ARCHIVED. Non-volunteers will pass this validation for public events
-      if (volunteer.status !== VolunteerStatus.ACTIVE) {
-        this.exceptionsService.badRequestException(
-          EventRSVPExceptionMessages.EVENT_RSVP_003,
-        );
-      } else if (!volunteer.volunteerProfile) {
-        // 5. Volunteers must have the profile completed to RSVP.
-        this.exceptionsService.badRequestException(
-          EventRSVPExceptionMessages.EVENT_RSVP_005,
-        );
-      }
+    // 4. If the volunteer is blocked the user should not be able to join the event
+    if (volunteer?.status === VolunteerStatus.BLOCKED) {
+      this.exceptionsService.badRequestException(
+        EventRSVPExceptionMessages.EVENT_RSVP_003,
+      );
     }
 
-    // 6. For "private" events, check if the USER is VOLUNTEER in the ORGANIZATION of the EVENT
+    // 5. For "private" events, check if the USER is VOLUNTEER in the ORGANIZATION of the EVENT
     if (!event.isPublic && !volunteer) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_002,
+      );
+    }
+
+    // 6. For private events volunteers must have the profile completed to RSVP.
+    if (!event.isPublic && volunteer && !volunteer.volunteerProfile) {
+      this.exceptionsService.badRequestException(
+        EventRSVPExceptionMessages.EVENT_RSVP_005,
       );
     }
 

@@ -4,6 +4,7 @@ import { CognitoModuleOptions } from './cognito.interfaces';
 import {
   AdminDeleteUserCommand,
   AdminUserGlobalSignOutCommand,
+  AdminUpdateUserAttributesCommand,
   CognitoIdentityProviderClient,
 } from '@aws-sdk/client-cognito-identity-provider';
 
@@ -22,6 +23,21 @@ export class CognitoService {
       },
       region: options.region,
     });
+  }
+
+  async updateUser(cognitoId: string, phoneNumber: string): Promise<unknown> {
+    const command = new AdminUpdateUserAttributesCommand({
+      UserPoolId: this.options.defaultUserPoolId,
+      Username: cognitoId,
+      UserAttributes: [
+        {
+          Name: 'phone_number',
+          Value: phoneNumber,
+        },
+      ],
+    });
+
+    return await this.cognitoProvider.send(command);
   }
 
   async deleteUser(cognitoId: string): Promise<unknown> {

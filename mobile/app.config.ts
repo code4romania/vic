@@ -7,7 +7,7 @@ const expoConfig: ExpoConfig = {
   name: 'vic',
   slug: 'vic',
   scheme: 'vic',
-  version: '1.0.14',
+  version: '1.0.19',
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',
   userInterfaceStyle: 'light',
@@ -18,7 +18,7 @@ const expoConfig: ExpoConfig = {
   },
   assetBundlePatterns: ['**/*'],
   ios: {
-    buildNumber: '17',
+    buildNumber: '22',
     supportsTablet: false,
     bundleIdentifier: 'org.commitglobal.vic',
     entitlements: {
@@ -32,7 +32,7 @@ const expoConfig: ExpoConfig = {
     },
   },
   android: {
-    versionCode: 15,
+    versionCode: 22,
     adaptiveIcon: {
       foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',

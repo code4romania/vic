@@ -32,11 +32,15 @@
       }
     },
     "preview": {
-      "distribution": "internal",
+      // "distribution": "internal",
       "channel": "staging",
       "env": {
         "EXPO_PUBLIC_ENVIRONMENT": "staging",
         "EXPO_PUBLIC_API_URL": "https://api-vic-staging.ngohub.ro",
+        "EXPO_PUBLIC_AWS_REGION": "eu-west-1",
+        "EXPO_PUBLIC_USER_POOL_ID": "eu-west-1_HRB7J3vjJ",
+        "EXPO_PUBLIC_USER_POOL_CLIENT_ID": "4sihusclii449k2otmeetl4dgq",
+        "EXPO_PUBLIC_AWS_DOMAIN": "vic-staging.auth.eu-west-1.amazoncognito.com",
         "EXPO_PUBLIC_PRIVACY_POLICY_LINK": "https://www.ngohub.ro/ro/politica-de-confidentialitate",
         "EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK": "https://www.ngohub.ro/ro/termeni-si-conditii",
         "EXPO_PUBLIC_INFORMATION_LINK": "https://www.ngohub.ro/ro/vic",

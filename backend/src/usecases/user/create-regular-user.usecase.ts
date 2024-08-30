@@ -9,6 +9,8 @@ import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.serv
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 import { NotificationsSettingsFacade } from 'src/modules/notifications/notifications-settings.facade';
 import { GetOneRegularUserProfileUseCase } from './get-regule-user-profile.usecase';
+import { CognitoService } from 'src/infrastructure/providers/cognito/module/cognito.service';
+import { JSONStringifyError } from 'src/common/helpers/utils';
 
 @Injectable()
 export class CreateRegularUsereUseCaseService
@@ -21,6 +23,7 @@ export class CreateRegularUsereUseCaseService
     private exceptionService: ExceptionsService,
     private readonly notificationSettingsFacade: NotificationsSettingsFacade,
     private readonly getRegularUserProfileUsecase: GetOneRegularUserProfileUseCase,
+    private readonly cognitoService: CognitoService,
   ) {}
 
   async execute(
@@ -40,11 +43,27 @@ export class CreateRegularUsereUseCaseService
     const notificationsSettings =
       await this.notificationSettingsFacade.create();
 
+    // 1. update cognito phone number
+    // OBS: This needs to be done as cognito accepts duplicates in regards to phone numbers and this will keep the data in sync
+    try {
+      await this.cognitoService.updateUser(newUser.cognitoId, newUser.phone);
+    } catch (error) {
+      this.logger.error({
+        ...UserExceptionMessages.USER_008,
+        error: JSONStringifyError(error),
+      });
+      this.exceptionService.internalServerErrorException(
+        UserExceptionMessages.USER_008,
+      );
+    }
+
+    // 2. create new user
     const user = await this.userService.createRegularUser({
       ...newUser,
       notificationsSettingsId: notificationsSettings.id,
     });
 
+    // 3. get user profile
     return this.getRegularUserProfileUsecase.execute({ id: user.id });
   }
 }

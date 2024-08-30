@@ -103,7 +103,7 @@ const CreateUser = ({ navigation }: any) => {
       const newUser = {
         ...userPayload,
         locationId: cityId,
-        phone: user.attributes.phone_number || `${CONSTANTS.PHONE_PREFIX}${phone.trim()}`,
+        phone: `${CONSTANTS.PHONE_PREFIX}${phone.trim()}`,
         email: user.attributes.email,
         cognitoId: user.username,
       };
@@ -162,7 +162,7 @@ const CreateUser = ({ navigation }: any) => {
           label={t('create_account.form.phone.label')}
           placeholder={t('create_account.form.phone.placeholder')}
           error={errors.phone}
-          disabled={isLoading || !!initialPhoneNumber}
+          disabled={isLoading}
           keyboardType="phone-pad"
           accessoryLeft={renderPhoneNumberPrefix}
           required={true}
