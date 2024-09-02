@@ -4,12 +4,23 @@ import { ContractTerms } from './ContractTerms';
 import { useTranslation } from 'react-i18next';
 import { Signatures } from '../Signatures';
 import { useOrganizationQuery } from '../../services/organization/organization.service';
+import LoadingContent from '../LoadingContent';
+import { OrganizationDataError } from '../OrganizationDataError';
 
 export const ContractTemplatePreview = () => {
-  const { data: organization } = useOrganizationQuery();
-
   const { t } = useTranslation('doc_templates');
   const [infoParagraphHovered, setInfoParagraphHovered] = useState(false);
+
+  const {
+    data: organization,
+    isLoading: isLoadingOrganizationData,
+    isError: isErrorOrganizationData,
+    refetch: refetchOrganizationData,
+  } = useOrganizationQuery();
+
+  const handleRefetch = () => {
+    refetchOrganizationData();
+  };
 
   const onInfoParagraphHover = () => {
     setInfoParagraphHovered(true);
@@ -17,6 +28,21 @@ export const ContractTemplatePreview = () => {
   const onInfoParagraphLeave = () => {
     setInfoParagraphHovered(false);
   };
+
+  if (isLoadingOrganizationData) {
+    return (
+      <div className="flex-2 pt-10">
+        <LoadingContent />
+      </div>
+    );
+  }
+
+  if (isErrorOrganizationData)
+    return (
+      <div className="flex-2 p-4 flex flex-col gap-5 ">
+        <OrganizationDataError onRetry={handleRefetch} />
+      </div>
+    );
 
   return (
     <div className="flex-2 p-4 flex flex-col gap-5">

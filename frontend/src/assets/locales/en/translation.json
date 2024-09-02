@@ -971,5 +971,113 @@
       "remove_from_list": "Remove from list",
       "confirm": "Confirm and sign"
     }
+  },
+  "doc_templates": {
+    "title": "Create template",
+    "subheading": {
+      "p1": "This template was created respecting the rules in the field.",
+      "p1_link": "Learn more",
+      "p2": "The contract model is not conform to the organization's needs?",
+      "p2_link": "Send your feedback"
+    },
+    "table_header": {
+      "title": "Contract template",
+      "download_uncompleted": "Download uncompleted",
+      "save": "Save"
+    },
+    "tooltip": "The contract data (Number, contract period, and establishment date) is automatically completed when the contract is assigned to one or more volunteers.",
+    "template_name": "Template name",
+    "organization": {
+      "data": "Organization data",
+      "description": "The data is automatically retrieved from the organization's profile in NGO Hub",
+      "view_profile": "View organization profile",
+      "edit": "Edit the organization's information for this contract template, or move on.",
+      "name": "Official organization name **",
+      "address": "Headquarters address **",
+      "cui": "CUI/CIF **",
+      "legal_representative": "Legal representative name **",
+      "legal_representative_role": "Role **",
+      "volunteer_data": {
+        "title": "Volunteer data",
+        "description": "The volunteer's data will be automatically retrieved from the VIC application when a contract is assigned."
+      },
+      "legal_representative_data": {
+        "title": "Legal representative's data",
+        "description": "Volunteers under the age of 16 will need to complete the section containing the legal representative's data in the mobile application when signing the contract."
+      },
+      "organization_data_form": {
+        "loading_error": "We encountered a problem while loading the organization data",
+        "retry_button": "Retry"
+      }
+    },
+    "volunteer": {
+      "volunteer": "Volunteer",
+      "name": "[Volunteer full name]",
+      "address": "[Volunteer home address]",
+      "cnp": "[CNP number]",
+      "series": "[Series]",
+      "no": "[Number]",
+      "institution": "[Issuing institution]",
+      "eliberation_date": "[Issuance date]"
+    },
+    "template_preview": {
+      "title": "VOLUNTEERING CONTRACT",
+      "p1": {
+        "no": "No.",
+        "contract_no": "[Contract number]",
+        "date": "dated",
+        "contract_date": "[Contract date]"
+      },
+      "p2": {
+        "between": "Between",
+        "address": "headquartered at",
+        "identified": "identified with CUI",
+        "represented_by": "represented by",
+        "as": "as",
+        "named": "hereinafter referred to as",
+        "organization": "Organization"
+      },
+      "and": "and",
+      "p3": {
+        "lives": "residing at",
+        "cnp": "C.N.P",
+        "legitimate": "legitimated with ID series",
+        "no": "no.",
+        "by": "issued by",
+        "at_date": "on",
+        "named": "hereinafter referred to as",
+        "volunteer": "Volunteer,"
+      },
+      "p4": "it was agreed to conclude this contract under Law no. 78/2014 regarding the regulation of volunteering activity in Romania."
+    },
+    "contract_duration": {
+      "title": "CONTRACT DURATION",
+      "description": "This contract is concluded for a fixed period, between",
+      "start": "[Start date]",
+      "end": "[End date]"
+    },
+    "contract_terms": {
+      "title": "Contract terms",
+      "describe": "Describe the contract terms",
+      "add_text": "Add text",
+      "first_contract": "First contract? Read more about what's included in a",
+      "volunteering_contract": "volunteering contract",
+      "cancel": "Cancel",
+      "save": "Save changes"
+    },
+    "text_editor": {
+      "placeholder": "Add contract terms...",
+      "title": "Edit text"
+    },
+    "organization_name": "Organization name",
+    "represented_by": "Represented by",
+    "legal_representative": "Legal representative of the minor",
+    "identification": "ID series and number",
+    "series": "Series",
+    "tel_no": "Phone number",
+    "volunteer_name": "Volunteer name",
+    "legal_rep_name": "Legal representative's name",
+    "number": "Number",
+    "telephone": "Phone"
   }
 }

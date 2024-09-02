@@ -1004,6 +1004,10 @@
       "legal_representative_data": {
         "title": "Datele reprezentantului legal",
         "description": " Voluntarii sub 16 ani vor trebui sa completeze sectiunea ce conține datele reprezentantului, din aplicația mobilă, în momentul semnării contractului."
+      },
+      "organization_data_form": {
+        "loading_error": "Am întâmpinat o problemă la încărcarea datelor despre organizație",
+        "retry_button": "Reîncearcă"
       }
     },
     "volunteer": {

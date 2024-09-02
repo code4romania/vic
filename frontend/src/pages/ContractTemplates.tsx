@@ -1,14 +1,14 @@
 import React from 'react';
-import PageLayout from '../../layouts/PageLayout';
-import PageHeader from '../PageHeader';
+import PageLayout from '../layouts/PageLayout';
+import PageHeader from '../components/PageHeader';
 import { useNavigate } from 'react-router-dom';
-import CardHeader from '../CardHeader';
-import Card from '../../layouts/CardLayout';
-import CardBody from '../CardBody';
-import Button from '../Button';
+import CardHeader from '../components/CardHeader';
+import Card from '../layouts/CardLayout';
+import CardBody from '../components/CardBody';
+import Button from '../components/Button';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
-import { OrganizationDetails } from './OrganizationDetails';
-import { ContractTemplatePreview } from './ContractTemplatePreview';
+import { OrganizationDetails } from '../components/contracts/OrganizationDetails';
+import { ContractTemplatePreview } from '../components/contracts/ContractTemplatePreview';
 import { useTranslation } from 'react-i18next';
 
 export const ContractTemplates = () => {
@@ -20,7 +20,6 @@ export const ContractTemplates = () => {
     navigate('/documents/contracts', { replace: true });
   };
 
-  // TODO: translations
   // TODO: links for <a/>
 
   return (

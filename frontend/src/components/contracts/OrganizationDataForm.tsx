@@ -2,11 +2,20 @@ import React from 'react';
 import FormInput from '../FormInput';
 import { useTranslation } from 'react-i18next';
 import { useOrganizationQuery } from '../../services/organization/organization.service';
+import LoadingContent from '../LoadingContent';
+import { OrganizationDataError } from '../OrganizationDataError';
 
 export const OrganizationDataForm = () => {
   const { t } = useTranslation('doc_templates');
 
-  const { data: organization } = useOrganizationQuery();
+  const { data: organization, isLoading, isError, refetch } = useOrganizationQuery();
+
+  const handleRefetch = () => {
+    refetch();
+  };
+
+  if (isLoading) return <LoadingContent />;
+  if (isError) return <OrganizationDataError onRetry={handleRefetch} />;
 
   return (
     <>
