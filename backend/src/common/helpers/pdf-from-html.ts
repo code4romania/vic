@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer';
 
 export const HTMLtoPDF = async (html: string): Promise<Uint8Array> => {
+  // TODO: https://www.flightcontrol.dev/docs/tips/deployment/puppeteer
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],

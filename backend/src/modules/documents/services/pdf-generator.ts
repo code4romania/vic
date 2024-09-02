@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { resolve } from 'path';
 import * as fs from 'fs';
-import { HTMLtoPDF } from 'src/common/helpers/pdf-from-html';
 import Handlebars from 'handlebars';
+import axios from 'axios';
 
 @Injectable()
 export class PDFGenerator {
@@ -19,7 +19,7 @@ export class PDFGenerator {
     Handlebars.registerPartial('header', template);
   }
 
-  public async generatePDF(): Promise<Uint8Array> {
+  public async generatePDF(): Promise<unknown> {
     const templateDir = resolve(__dirname, '..', 'templates', 'contract.hbs');
     const file = fs.readFileSync(templateDir, 'utf-8');
     const template = Handlebars.compile(file);
@@ -28,6 +28,12 @@ export class PDFGenerator {
       subtitle: `<h5 style="color:blue;text-align:center;">Text</h5>`,
     });
 
-    return HTMLtoPDF(fileHTML);
+    // return HTMLtoPDF(fileHTML);
+    return axios
+      .post(
+        'https://iywe2rp7u1.execute-api.us-east-1.amazonaws.com/test',
+        fileHTML,
+      )
+      .then((res) => res.data);
   }
 }

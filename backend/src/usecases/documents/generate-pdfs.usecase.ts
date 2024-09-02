@@ -6,7 +6,7 @@ import { PDFGenerator } from 'src/modules/documents/services/pdf-generator';
 export class GeneratePDFsUseCase implements IUseCaseService<unknown> {
   constructor(private readonly pDFGenerator: PDFGenerator) {}
 
-  public async execute(): Promise<Uint8Array> {
+  public async execute(): Promise<unknown> {
     return this.pDFGenerator.generatePDF();
   }
 }
