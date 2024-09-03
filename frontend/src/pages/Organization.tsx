@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import { useErrorToast } from '../hooks/useToast';
 import PageLayout from '../layouts/PageLayout';
-import { useOrganizationQuery } from '../services/organization/organization.service';
+import {
+  useOrganizationQuery,
+  useResyncOrganizationWithOngHubMutation,
+} from '../services/organization/organization.service';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import i18n from '../common/config/i18n';
 import EmptyContent from '../components/EmptyContent';
@@ -22,6 +25,7 @@ import FormInput from '../components/FormInput';
 import FormTextarea from '../components/FormTextarea';
 import DivisionTable from '../containers/query/DivisionTableWithQueryParams';
 import { OrganizationTableProps } from '../containers/query/OrganizationWithQueryParam';
+import { useQueryClient } from 'react-query';
 
 export const DivisionsTabs: SelectItem<DivisionType>[] = [
   { key: DivisionType.BRANCH, value: i18n.t(`division:table.title.branch`) },
@@ -31,12 +35,18 @@ export const DivisionsTabs: SelectItem<DivisionType>[] = [
 
 const Organization = ({ query, setQuery }: OrganizationTableProps) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const {
     data: organization,
     error: organizationError,
     isLoading: isOrganizationLoading,
   } = useOrganizationQuery();
+
+  const {
+    mutate: resyncOrganizationWithOngHub,
+    isLoading: isResyncingOrganizationWithOngHubLoading,
+  } = useResyncOrganizationWithOngHubMutation();
 
   // error handling
   useEffect(() => {
@@ -81,12 +91,25 @@ const Organization = ({ query, setQuery }: OrganizationTableProps) => {
         <Card>
           <CardHeader>
             <h2>{i18n.t('organization:title.view')}</h2>
-            <Button
-              className="btn-outline-secondary w-20"
-              label={i18n.t('general:edit', { item: '' })}
-              icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
-              onClick={onEditButtonClick}
-            />
+            <div className="flex gap-2">
+              <Button
+                className="btn-primary"
+                label={isResyncingOrganizationWithOngHubLoading ? `Loading...` : `Sync with ONGHub`}
+                onClick={() =>
+                  resyncOrganizationWithOngHub(undefined, {
+                    onSuccess: () => {
+                      queryClient.invalidateQueries({ queryKey: ['organization'] });
+                    },
+                  })
+                }
+              />
+              <Button
+                className="btn-outline-secondary"
+                label={i18n.t('general:edit', { item: '' })}
+                icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
+                onClick={onEditButtonClick}
+              />
+            </div>
           </CardHeader>
           <CardBody>
             <FormLayout>
@@ -104,6 +127,21 @@ const Organization = ({ query, setQuery }: OrganizationTableProps) => {
               <FormInput
                 label={i18n.t('organization:name') || ''}
                 value={organization.name}
+                readOnly
+              />
+              <FormInput
+                label={i18n.t('organization:cui') || ''}
+                value={organization.cui}
+                readOnly
+              />
+              <FormInput
+                label={i18n.t('organization:legal_representative_full_name') || ''}
+                value={organization.legalReprezentativeFullName}
+                readOnly
+              />
+              <FormInput
+                label={i18n.t('organization:legal_representative_role') || ''}
+                value={organization.legalReprezentativeRole}
                 readOnly
               />
               <FormInput

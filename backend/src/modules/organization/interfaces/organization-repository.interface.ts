@@ -4,6 +4,7 @@ import {
   ICreateOrganizationModel,
   IFindOrganizationModel,
   IOrganizationModel,
+  IUpdateOrganizationModel,
 } from '../models/organization.model';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { OrganizationEntity } from '../entities/organization.entity';
@@ -15,7 +16,10 @@ import { IOrganizationVolunteerModel } from '../models/organization-volunteer.mo
 export interface IOrganizationRepository
   extends IRepositoryWithPagination<OrganizationEntity> {
   create(organization: ICreateOrganizationModel): Promise<IOrganizationModel>;
-  update(id: string, description: string): Promise<IOrganizationModel>;
+  update(
+    id: string,
+    updates: IUpdateOrganizationModel,
+  ): Promise<IOrganizationModel>;
   find(
     options:
       | Partial<IFindOrganizationModel>

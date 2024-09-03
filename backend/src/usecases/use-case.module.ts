@@ -137,6 +137,7 @@ import { SyncUserOrganizationsUsecase } from './user/sync-user-organizations.use
 import { GetRejectedAccessRequestUsecase } from './access-request/get-rejected-access-request.usecase';
 import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
 import { GeneratePDFsUseCase } from './documents/generate-pdfs.usecase';
+import { SyncWithOngHubUseCaseService } from './organization/sync-with-ngohub.usecase';
 
 @Module({
   imports: [
@@ -165,6 +166,7 @@ import { GeneratePDFsUseCase } from './documents/generate-pdfs.usecase';
     SwitchOrganizationUsecase,
     LeaveOrganizationUsecase,
     RejoinOrganizationUsecase,
+    SyncWithOngHubUseCaseService,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,
@@ -310,6 +312,7 @@ import { GeneratePDFsUseCase } from './documents/generate-pdfs.usecase';
     SwitchOrganizationUsecase,
     LeaveOrganizationUsecase,
     RejoinOrganizationUsecase,
+    SyncWithOngHubUseCaseService,
     // Access Codes
     CreateAccessCodeUseCase,
     UpdateAccessCodeUseCase,

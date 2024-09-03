@@ -12,6 +12,9 @@ export class OrganizationPresenter {
     this.activityArea = organization.activityArea;
     this.logo = organization.logo;
     this.description = organization.description;
+    this.cui = organization.cui;
+    this.legalReprezentativeFullName = organization.legalReprezentativeFullName;
+    this.legalReprezentativeRole = organization.legalReprezentativeRole;
   }
 
   @Expose()
@@ -63,4 +66,22 @@ export class OrganizationPresenter {
     description: 'The description phone of the Organization',
   })
   description: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'CUI Organization',
+  })
+  cui: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The legal representative full name of the Organization',
+  })
+  legalReprezentativeFullName: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The legal representative role of the Organization',
+  })
+  legalReprezentativeRole: string;
 }
