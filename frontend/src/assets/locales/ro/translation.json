@@ -87,7 +87,9 @@
     },
     "confirm": "Confirmă",
     "no_options": "Fără opțiuni",
-    "type_for_options": "Începeți să scrieți pentru opțiuni..."
+    "type_for_options": "Începeți să scrieți pentru opțiuni...",
+    "hide": "Vezi mai puțin",
+    "show": "Vezi tot"
   },
   "header": {
     "login": "Login",
@@ -1048,8 +1050,12 @@
         "named": "numit în continuare",
         "volunteer": "Voluntar,"
       },
-      "p4": "s-a convenit încheierea prezentului contract în baza Legii nr. 78/2014 privind reglementarea activității de voluntariat din Romănia."
+      "p4": "s-a convenit încheierea prezentului contract în baza Legii nr. 78/2014 privind reglementarea activității de voluntariat din România."
     },
+    "contract_data": "Datele contractului",
+    "contract_no": "Număr contract",
+    "contract_date": "Data contractlui",
+    "contract_period": "Perioadă contract",
     "contract_duration": {
       "title": "DURATA CONTRACTULUI",
       "description": "Prezentul contract se încheie pe o perioadă determinată, între data de",
@@ -1079,5 +1085,12 @@
     "legal_rep_name": "Nume reprezentant legal",
     "number": "Număr",
     "telephone": "Telefon"
+  },
+  "stepper": {
+    "choose_template": "Alege template",
+    "choose_volunteers": "Alege voluntari",
+    "fill": "Completează",
+    "attachments": "Anexe",
+    "complete": "Finalizează"
   }
 }

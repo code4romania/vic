@@ -330,6 +330,10 @@ li.recharts-legend-item {
   @apply flex items-center !important;
 }
 
+.react-datepicker-popper {
+  z-index: 1000;
+}
+
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari, and Opera */
   .no-scrollbar::-webkit-scrollbar {

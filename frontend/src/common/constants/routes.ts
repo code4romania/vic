@@ -71,6 +71,11 @@ export const ROUTES: IRoute[] = [
         name: i18n.t('general:templates'),
         href: 'documents/templates',
       },
+      {
+        id: 63,
+        name: 'stepper',
+        href: 'documents/templates/stepper_example',
+      },
     ],
   },
   {

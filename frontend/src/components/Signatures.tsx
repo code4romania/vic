@@ -3,8 +3,13 @@ import { InfoParagraph } from './InfoParagraph';
 import { Signature } from './Signature';
 import { useTranslation } from 'react-i18next';
 import { useOrganizationQuery } from '../services/organization/organization.service';
+import { IMockVolunteer } from './ContractCard';
 
-export const Signatures = () => {
+interface SignatureProps {
+  volunteer?: IMockVolunteer;
+}
+
+export const Signatures = ({ volunteer }: SignatureProps) => {
   const { t } = useTranslation('doc_templates');
   const { data: organization } = useOrganizationQuery();
 
@@ -15,19 +20,31 @@ export const Signatures = () => {
           signatureTitle={
             <div className="flex flex-row gap-1 flex-wrap">
               {t('template_preview.p2.organization')}{' '}
-              <InfoParagraph text={organization ? organization?.name : t('organization.name')} />
+              {volunteer ? (
+                <p>{organization?.name}</p>
+              ) : (
+                <InfoParagraph text={organization ? organization?.name : t('organization.name')} />
+              )}
             </div>
           }
           p={
             <div className="flex flex-row gap-1 flex-wrap">
-              {t('represented_by')} <InfoParagraph text=" " />
+              {' '}
+              {t('represented_by')}
+              {volunteer ? <p>{organization?.legalRepresentative} </p> : <InfoParagraph text=" " />}
             </div>
           }
         />
 
         <Signature
           signatureTitle={<p>{t('volunteer.volunteer')}</p>}
-          p={<InfoParagraph text={`[${t('volunteer_name')}]`} className="self-baseline" />}
+          p={
+            volunteer ? (
+              volunteer.name
+            ) : (
+              <InfoParagraph text={`[${t('volunteer_name')}]`} className="self-baseline" />
+            )
+          }
         />
       </div>
 
@@ -39,13 +56,34 @@ export const Signatures = () => {
           signatureTitle={<p>{t('legal_representative')}</p>}
           p={
             <div className="flex flex-col gap-1">
-              <InfoParagraph text={`[${t('legal_rep_name')}]`} className="self-baseline" />
+              {volunteer?.legalRepresentative?.name ? (
+                <p>{volunteer.legalRepresentative.name}</p>
+              ) : (
+                <InfoParagraph text={`[${t('legal_rep_name')}]`} className="self-baseline" />
+              )}
+
               <div className="flex flex-row gap-1 flex-wrap">
-                {t('identification')} <InfoParagraph text={`[${t('series')}]`} />,{' '}
-                <InfoParagraph text={`[${t('number')}]`} />
+                {t('identification')}
+                {volunteer?.legalRepresentative?.series ? (
+                  <p>{volunteer.legalRepresentative.series}</p>
+                ) : (
+                  <InfoParagraph text={`[${t('series')}]`} />
+                )}
+                ,
+                {volunteer?.legalRepresentative?.no ? (
+                  <p>{volunteer?.legalRepresentative?.no}</p>
+                ) : (
+                  <InfoParagraph text={`[${t('number')}]`} />
+                )}
               </div>
               <div className="flex flex-row gap-1 flex-wrap">
-                {t('tel_no')} <InfoParagraph text={`[${t('telephone')}]`} />
+                {t('tel_no')}
+
+                {volunteer?.legalRepresentative?.tel ? (
+                  <p>{volunteer.legalRepresentative.tel}</p>
+                ) : (
+                  <InfoParagraph text={`[${t('telephone')}]`} />
+                )}
               </div>
             </div>
           }

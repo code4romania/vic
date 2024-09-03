@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '../Button';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
+import DOMPurify from 'dompurify';
 
 export const ContractTermsContent = ({
   innerContent,
@@ -23,7 +24,7 @@ export const ContractTermsContent = ({
           onClick={() => setEditingText(true)}
         />
       </div>
-      <div dangerouslySetInnerHTML={{ __html: innerContent || '' }} />
+      <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(innerContent || '') }} />
     </div>
   );
 };

@@ -10,16 +10,19 @@ interface DateRangePickerProps {
   label: string;
   value?: Date[];
   onChange?: (range: Date[]) => void;
+  disabled?: boolean;
 }
 
-const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) => {
-  const [dateRange, setDateRange] = useState<Date[]>([]);
+const DateRangePicker = ({ label, value, onChange, id, disabled }: DateRangePickerProps) => {
+  const [dateRange, setDateRange] = useState<Date[]>(value || []);
   const [startDate, endDate] = dateRange;
 
   useEffect(() => {
     if (value) {
       setDateRange(value);
-    } else [setDateRange([])];
+    } else {
+      setDateRange([]);
+    }
   }, [value]);
 
   useEffect(() => {
@@ -54,6 +57,7 @@ const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) =
           isClearable={false}
           placeholderText={i18n.t('general:select_interval').toString()}
           id={`${id}__date-picker`}
+          disabled={disabled}
         />
       </div>
     </div>

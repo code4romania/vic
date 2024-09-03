@@ -87,7 +87,9 @@
     },
     "confirm": "Confirm",
     "no_options": "No options",
-    "type_for_options": "Type for options..."
+    "type_for_options": "Type for options...",
+    "hide": "Show less",
+    "show": "Show more"
   },
   "header": {
     "login": "Login",
@@ -1050,6 +1052,10 @@
       },
       "p4": "it was agreed to conclude this contract under Law no. 78/2014 regarding the regulation of volunteering activity in Romania."
     },
+    "contract_data": "Contract data",
+    "contract_no": "Contract number",
+    "contract_date": "Contract date",
+    "contract_period": "Contract period",
     "contract_duration": {
       "title": "CONTRACT DURATION",
       "description": "This contract is concluded for a fixed period, between",
@@ -1079,5 +1085,12 @@
     "legal_rep_name": "Legal representative's name",
     "number": "Number",
     "telephone": "Phone"
+  },
+  "stepper": {
+    "choose_template": "Choose template",
+    "choose_volunteers": "Choose volunteers",
+    "fill": "Fill",
+    "attachments": "Attachments",
+    "complete": "Complete"
   }
 }
