@@ -10,16 +10,27 @@ interface DateRangePickerProps {
   label: string;
   value?: Date[];
   onChange?: (range: Date[]) => void;
+  disabled?: boolean;
+  className?: string;
 }
 
-const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) => {
-  const [dateRange, setDateRange] = useState<Date[]>([]);
+const DateRangePicker = ({
+  label,
+  value,
+  onChange,
+  id,
+  disabled,
+  className,
+}: DateRangePickerProps) => {
+  const [dateRange, setDateRange] = useState<Date[]>(value || []);
   const [startDate, endDate] = dateRange;
 
   useEffect(() => {
     if (value) {
       setDateRange(value);
-    } else [setDateRange([])];
+    } else {
+      setDateRange([]);
+    }
   }, [value]);
 
   useEffect(() => {
@@ -33,7 +44,7 @@ const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) =
   };
 
   return (
-    <div className="flex gap-1 flex-col relative w-full">
+    <div className={`flex gap-1 flex-col relative w-full ${className}`}>
       {label && <label htmlFor={`${id}__date-picker`}>{label}</label>}
 
       <div className="relative">
@@ -54,6 +65,7 @@ const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) =
           isClearable={false}
           placeholderText={i18n.t('general:select_interval').toString()}
           id={`${id}__date-picker`}
+          disabled={disabled}
         />
       </div>
     </div>

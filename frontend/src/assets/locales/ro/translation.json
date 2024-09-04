@@ -87,7 +87,9 @@
     },
     "confirm": "Confirmă",
     "no_options": "Fără opțiuni",
-    "type_for_options": "Începeți să scrieți pentru opțiuni..."
+    "type_for_options": "Începeți să scrieți pentru opțiuni...",
+    "hide": "Vezi mai puțin",
+    "show": "Vezi tot"
   },
   "header": {
     "login": "Login",
@@ -974,5 +976,124 @@
       "remove_from_list": "Elimină din listă",
       "confirm": "Confirmă și semnează"
     }
+  },
+  "doc_templates": {
+    "title": "Creează template",
+    "subheading": {
+      "p1": "Acest template a fost realizat respectând normele din domeniu.",
+      "p1_link": "Află mai multe",
+      "p2": "Modelul de contract nu este conform nevoilor organizației tale?",
+      "p2_link": "Trimite feedback-ul tău"
+    },
+    "table_header": {
+      "title": "Template contract",
+      "download_uncompleted": "Descarcă necompletat",
+      "save": "Salvează"
+    },
+    "tooltip": "Datele contractului (Numărul, perioada contractului și data întemeierii) se completează în momentul atribuirii contractului către unul sau mai mulți voluntari.",
+    "template_name": "Numele template-ului",
+    "organization": {
+      "data": "Datele organizației",
+      "description": "Datele sunt preluate automat din profilul organizației în NGO Hub",
+      "view_profile": "Vezi profilul organizației",
+      "edit": "Editează informațiile organizației pentru acest template de contract, sau treci mai departe.",
+      "name": "Denumirea oficială a organizației **",
+      "address": "Sediul social **",
+      "cui": "CUI/CIF **",
+      "legal_representative": "Nume prenume reprezentant legal **",
+      "legal_representative_role": "În calitate de **",
+      "volunteer_data": {
+        "title": "Datele voluntarului",
+        "description": "Datele voluntarului vor fi preluate automat din aplicația VIC, în momentul atribuirii unui contract."
+      },
+      "legal_representative_data": {
+        "title": "Datele reprezentantului legal",
+        "description": " Voluntarii sub 16 ani vor trebui sa completeze sectiunea ce conține datele reprezentantului, din aplicația mobilă, în momentul semnării contractului."
+      },
+      "organization_data_form": {
+        "loading_error": "Am întâmpinat o problemă la încărcarea datelor despre organizație",
+        "retry_button": "Reîncearcă"
+      }
+    },
+    "volunteer": {
+      "volunteer": "Voluntar",
+      "name": "[Nume și prenume voluntar]",
+      "address": "[Adresă domiciliu voluntar]",
+      "cnp": "[Număr CNP]",
+      "series": "[Serie]",
+      "no": "[Număr]",
+      "institution": "[Unitate eliberare]",
+      "eliberation_date": "[Data eliberării]"
+    },
+    "template_preview": {
+      "title": "CONTRACT DE VOLUNTARIAT",
+      "p1": {
+        "no": "Nr.",
+        "contract_no": "[Numar contract]",
+        "date": "din data de",
+        "contract_date": "[Data contract]"
+      },
+      "p2": {
+        "between": "Între",
+        "address": "cu sediul în",
+        "identified": "identificată cu CUI",
+        "represented_by": "reprezentată prin",
+        "as": "în calitate de",
+        "named": "numită în continuare",
+        "organization": "Organizația"
+      },
+      "and": "și",
+      "p3": {
+        "lives": "domiciliat(ă) în",
+        "cnp": "C.N.P",
+        "legitimate": "legitimat cu BI/CI seria",
+        "no": "nr.",
+        "by": "eliberat de",
+        "at_date": "la data de",
+        "named": "numit în continuare",
+        "volunteer": "Voluntar,"
+      },
+      "p4": "s-a convenit încheierea prezentului contract în baza Legii nr. 78/2014 privind reglementarea activității de voluntariat din România."
+    },
+    "contract_data": "Datele contractului",
+    "contract_no": "Număr contract",
+    "contract_date": "Data contractlui",
+    "contract_period": "Perioadă contract",
+    "contract_duration": {
+      "title": "DURATA CONTRACTULUI",
+      "description": "Prezentul contract se încheie pe o perioadă determinată, între data de",
+      "start": "[Data început]",
+      "end": "[Data final]"
+    },
+    "contract_terms": {
+      "title": "Termenii contractului",
+      "describe": "Descrie termenii contractului",
+      "add_text": "Adaugă text",
+      "first_contract": "Primul contract? Citește mai multe despre ce conține un",
+      "volunteering_contract": "contract de voluntariat",
+      "cancel": "Anulează",
+      "save": "Salvează modificări"
+    },
+    "text_editor": {
+      "placeholder": "Adaugă termenii contractului...",
+      "title": "Editează text"
+    },
+    "organization_name": "Nume organizație",
+    "represented_by": "Reprezentată de",
+    "legal_representative": "Reprezentantul legal al minorului",
+    "identification": "Serie si nr. CI",
+    "series": "Serie",
+    "tel_no": "Nr. Tel.",
+    "volunteer_name": "Nume voluntar",
+    "legal_rep_name": "Nume reprezentant legal",
+    "number": "Număr",
+    "telephone": "Telefon"
+  },
+  "stepper": {
+    "choose_template": "Alege template",
+    "choose_volunteers": "Alege voluntari",
+    "fill": "Completează",
+    "attachments": "Anexe",
+    "complete": "Finalizează"
   }
 }
