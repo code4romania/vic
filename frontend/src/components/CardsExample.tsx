@@ -1,5 +1,8 @@
 import React from 'react';
 import { ContractCard } from './ContractCard';
+import FormInput from './FormInput';
+import FormDatePicker from './FormDatePicker';
+import DateRangePicker from './DateRangePicker';
 
 const items = [
   {
@@ -108,10 +111,25 @@ const items = [
 
 export const CardsExample = () => {
   return (
-    <div className="bg-gray-100  flex flex-col gap-4 p-4">
-      {items.map((item) => (
-        <ContractCard key={item.contract.id} data={item} />
-      ))}
-    </div>
+    <>
+      <div className="bg-white rounded shadow flex flex-col p-4 gap-4">
+        <p className="font-robotoBold">Completare rapidă</p>
+        <p className="text-cool-gray-700">
+          Precompletează datele de mai jos dintr-un singur click! Poți modifica datele individual
+          ulterior.
+        </p>
+        <div className="flex flex-col md:flex-row gap-6">
+          <FormInput label="Numere contract consecutive începând cu" className="flex-1 " />
+          <FormDatePicker label="Data contractului" placeholder="ZZ/LL/AAAAA" className="flex-1" />
+          {/* //todo: something about this */}
+          <DateRangePicker label="Perioadă contract" className="flex-1" />
+        </div>
+      </div>
+      <div className="bg-gray-100  flex flex-col gap-4 p-4">
+        {items.map((item) => (
+          <ContractCard key={item.contract.id} data={item} />
+        ))}
+      </div>
+    </>
   );
 };

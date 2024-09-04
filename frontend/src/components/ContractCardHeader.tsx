@@ -16,7 +16,7 @@ export const ContractCardHeader = ({ open, setOpen, volunteer }: ContractCardHea
   const isError = true;
 
   return (
-    <div key={volunteer.cnp} className="bg-white rounded shadow flex flex-row items-center  ">
+    <div key={volunteer.cnp} className="bg-white rounded shadow flex flex-row items-center z-10">
       <div
         className="flex flex-row justify-center items-center p-4 hover:cursor-pointer"
         onClick={() => console.log('delete item')}

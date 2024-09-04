@@ -11,9 +11,17 @@ interface DateRangePickerProps {
   value?: Date[];
   onChange?: (range: Date[]) => void;
   disabled?: boolean;
+  className?: string;
 }
 
-const DateRangePicker = ({ label, value, onChange, id, disabled }: DateRangePickerProps) => {
+const DateRangePicker = ({
+  label,
+  value,
+  onChange,
+  id,
+  disabled,
+  className,
+}: DateRangePickerProps) => {
   const [dateRange, setDateRange] = useState<Date[]>(value || []);
   const [startDate, endDate] = dateRange;
 
@@ -36,7 +44,7 @@ const DateRangePicker = ({ label, value, onChange, id, disabled }: DateRangePick
   };
 
   return (
-    <div className="flex gap-1 flex-col relative w-full">
+    <div className={`flex gap-1 flex-col relative w-full ${className}`}>
       {label && <label htmlFor={`${id}__date-picker`}>{label}</label>}
 
       <div className="relative">
