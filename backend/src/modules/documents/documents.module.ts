@@ -7,16 +7,27 @@ import { ContractEntity } from './entities/contract.entity';
 import { ContractRepositoryService } from './repositories/contract.repository';
 import { ContractFacade } from './services/contract.facade';
 import { PDFGenerator } from './services/pdf-generator';
+import { DocumentTemplateRepositoryService } from './repositories/document-template.repository';
+import { DocumentTemplateFacade } from './services/document-template.facade';
+import { DocumentTemplateEntity } from './entities/document-template.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TemplateEntity, ContractEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      TemplateEntity,
+      ContractEntity,
+      DocumentTemplateEntity,
+    ]),
+  ],
   providers: [
     // Repositories
     TemplateRepositoryService,
     ContractRepositoryService,
+    DocumentTemplateRepositoryService,
     // Facades
     TemplateFacade,
     ContractFacade,
+    DocumentTemplateFacade,
     // Services
     PDFGenerator,
   ],
@@ -25,6 +36,7 @@ import { PDFGenerator } from './services/pdf-generator';
     TemplateFacade,
     ContractFacade,
     PDFGenerator,
+    DocumentTemplateFacade,
   ],
 })
 export class DocumentsModule {}

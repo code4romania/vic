@@ -138,6 +138,8 @@ import { GetRejectedAccessRequestUsecase } from './access-request/get-rejected-a
 import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
 import { GeneratePDFsUseCase } from './documents/generate-pdfs.usecase';
 import { SyncWithOngHubUseCaseService } from './organization/sync-with-ngohub.usecase';
+import { CreateDocumentTemplateUsecase } from './documents/create-document-template.usecase';
+import { GetOneDocumentTemplateUseCase } from './documents/get-one-document-template.usecase';
 
 @Module({
   imports: [
@@ -284,6 +286,8 @@ import { SyncWithOngHubUseCaseService } from './organization/sync-with-ngohub.us
     DeleteTemplateUseCase,
     GetAllTemplatesUsecase,
     GetTemplatesForDownloadUsecase,
+    CreateDocumentTemplateUsecase,
+    GetOneDocumentTemplateUseCase,
     // Contracts
     CreateContractUsecase,
     GetManyContractsUsecase,
@@ -430,6 +434,8 @@ import { SyncWithOngHubUseCaseService } from './organization/sync-with-ngohub.us
     DeleteTemplateUseCase,
     GetAllTemplatesUsecase,
     GetTemplatesForDownloadUsecase,
+    CreateDocumentTemplateUsecase,
+    GetOneDocumentTemplateUseCase,
     // Contracts
     CreateContractUsecase,
     GetManyContractsUsecase,
