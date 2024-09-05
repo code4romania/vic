@@ -3,17 +3,39 @@ import { TrashIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/s
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { IMockVolunteer } from './ContractCard';
 import { Tooltip } from 'react-tooltip';
+import LoadingContent from './LoadingContent';
 
 interface ContractCardHeaderProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   volunteer: IMockVolunteer;
   // todo: onDelete
+  isLoading?: boolean;
+  isError?: boolean;
+  isErrorText?: string;
 }
 
-export const ContractCardHeader = ({ open, setOpen, volunteer }: ContractCardHeaderProps) => {
+export const ContractCardHeader = ({
+  open,
+  setOpen,
+  volunteer,
+  isLoading,
+  isError,
+  isErrorText,
+}: ContractCardHeaderProps) => {
   // todo: remove isError from here and use the right thing instead
-  const isError = true;
+  // todo: error state
+
+  if (isLoading) {
+    return (
+      <div
+        key={volunteer.cnp}
+        className="bg-white rounded shadow flex flex-row justify-center items-center z-10 p-4"
+      >
+        <LoadingContent />
+      </div>
+    );
+  }
 
   return (
     <div key={volunteer.cnp} className="bg-white rounded shadow flex flex-row items-center z-10">
@@ -44,9 +66,7 @@ export const ContractCardHeader = ({ open, setOpen, volunteer }: ContractCardHea
               <Tooltip
                 id={`error-tooltip-${volunteer.cnp}`}
                 place="top"
-                content={
-                  'Exista date lipsa la generarea contractului pentru acest voluntar. Va rugam...'
-                }
+                content={isErrorText}
                 arrowColor="red"
                 border="2px solid red"
                 opacity={1}

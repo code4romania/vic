@@ -4,6 +4,8 @@ import { Signature } from './Signature';
 import { useTranslation } from 'react-i18next';
 import { useOrganizationQuery } from '../services/organization/organization.service';
 import { IMockVolunteer } from './ContractCard';
+import LoadingContent from './LoadingContent';
+import { OrganizationDataError } from './OrganizationDataError';
 
 interface SignatureProps {
   volunteer?: IMockVolunteer;
@@ -11,7 +13,23 @@ interface SignatureProps {
 
 export const Signatures = ({ volunteer }: SignatureProps) => {
   const { t } = useTranslation('doc_templates');
-  const { data: organization } = useOrganizationQuery();
+  const {
+    data: organization,
+    isLoading: isLoadingOrganization,
+    isError: isErrorOrganization,
+    isFetching,
+    refetch,
+  } = useOrganizationQuery();
+
+  if (isLoadingOrganization) {
+    return <LoadingContent />;
+  }
+
+  if (isErrorOrganization) {
+    return <OrganizationDataError onRetry={refetch} isFetching={isFetching} />;
+  }
+
+  const isOrganizationNameMissing = !organization?.name;
 
   return (
     <div className="flex flex-col gap-8">
@@ -23,7 +41,9 @@ export const Signatures = ({ volunteer }: SignatureProps) => {
               {volunteer ? (
                 <p>{organization?.name}</p>
               ) : (
-                <InfoParagraph text={organization ? organization?.name : t('organization.name')} />
+                <InfoParagraph
+                  text={!isOrganizationNameMissing ? organization?.name : t('organization.name')}
+                />
               )}
             </div>
           }
@@ -31,7 +51,13 @@ export const Signatures = ({ volunteer }: SignatureProps) => {
             <div className="flex flex-row gap-1 flex-wrap">
               {' '}
               {t('represented_by')}
-              {volunteer ? <p>{organization?.legalRepresentative} </p> : <InfoParagraph text=" " />}
+              {volunteer ? (
+                <p>{organization?.legalReprezentativeFullName} </p>
+              ) : (
+                <InfoParagraph
+                  text={organization?.legalReprezentativeFullName || `[${t('legal_rep_name')}]`}
+                />
+              )}
             </div>
           }
         />

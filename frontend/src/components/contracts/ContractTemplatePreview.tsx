@@ -16,6 +16,7 @@ export const ContractTemplatePreview = () => {
     isLoading: isLoadingOrganizationData,
     isError: isErrorOrganizationData,
     refetch: refetchOrganizationData,
+    isFetching,
   } = useOrganizationQuery();
 
   const handleRefetch = () => {
@@ -40,7 +41,7 @@ export const ContractTemplatePreview = () => {
   if (isErrorOrganizationData)
     return (
       <div className="flex-2 p-4 flex flex-col gap-5 ">
-        <OrganizationDataError onRetry={handleRefetch} />
+        <OrganizationDataError onRetry={handleRefetch} isFetching={isFetching} />
       </div>
     );
 
@@ -72,21 +73,28 @@ export const ContractTemplatePreview = () => {
       {/* P1 */}
       <p>
         {t('template_preview.p2.between')}{' '}
-        <InfoParagraph text={organization?.name || ''} className="font-robotoBold" />
+        <InfoParagraph
+          text={organization?.name || `[${t('organization_name')}]`}
+          className="font-robotoBold"
+        />
         {', '}
-        {t('template_preview.p2.address')} <InfoParagraph text={organization?.address || ''} />
+        {t('template_preview.p2.address')}{' '}
+        <InfoParagraph text={organization?.address || `[${t('organization_address')}]`} />
         {', '}
         {t('template_preview.p2.identified')}{' '}
-        <InfoParagraph text={organization?.cui || ''} className="font-robotoBold" />
+        <InfoParagraph
+          text={organization?.cui || `[${t('organization_cui')}]`}
+          className="font-robotoBold"
+        />
         {', '}
         {t('template_preview.p2.represented_by')}{' '}
         <InfoParagraph
-          text={organization?.legalRepresentative || ' '}
+          text={organization?.legalReprezentativeFullName || `[${t('legal_rep_name')}]`}
           className="font-robotoBold"
         />
         {', '}
         {t('template_preview.p2.as')}{' '}
-        <InfoParagraph text={organization?.legalRepresentativeRole || ''} />{' '}
+        <InfoParagraph text={organization?.legalReprezentativeRole || `[${t('legal_rep_role')}]`} />{' '}
         {t('template_preview.p2.named')}{' '}
         <span className="italic">{t('template_preview.p2.organization')}</span>{' '}
       </p>

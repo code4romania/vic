@@ -46,7 +46,7 @@ export const StepperExample = () => {
   };
 
   return (
-    <div className="bg-white p-6 flex flex-col gap-6">
+    <div className="p-6 flex flex-col gap-6">
       <p>Stepper Example</p>
       <Stepper
         steps={steps}

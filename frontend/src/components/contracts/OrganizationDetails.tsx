@@ -3,10 +3,20 @@ import FormInput from '../FormInput';
 import { useTranslation } from 'react-i18next';
 import { OrganizationDataForm } from './OrganizationDataForm';
 import { Controller, useForm } from 'react-hook-form';
+import { useResyncOrganizationWithOngHubMutation } from '../../services/organization/organization.service';
+import Button from '../Button';
+import { useQueryClient } from 'react-query';
 
 export const OrganizationDetails = () => {
   const { t } = useTranslation('doc_templates');
   const { control } = useForm();
+
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: resyncOrganizationWithOngHub,
+    isLoading: isResyncingOrganizationWithOngHubLoading,
+  } = useResyncOrganizationWithOngHubMutation();
 
   return (
     <div className="flex-1 bg-gray-100/40 rounded p-4 flex flex-col gap-5 text-cool-gray-600 self-baseline">
@@ -28,6 +38,26 @@ export const OrganizationDetails = () => {
         </a>
         ). {t('organization.edit')}
       </p>
+
+      {isResyncingOrganizationWithOngHubLoading ? (
+        t('organization.organization_data_form.synced.is_syncing')
+      ) : (
+        <p>
+          {t('organization.organization_data_form.synced.p1') + ' '}
+          <Button
+            label={t('organization.organization_data_form.synced.p2')}
+            className="text-yellow underline text-base"
+            onClick={() =>
+              resyncOrganizationWithOngHub(undefined, {
+                onSuccess: () => {
+                  queryClient.invalidateQueries({ queryKey: ['organization'] });
+                },
+              })
+            }
+          />
+          {' ' + t('organization.organization_data_form.synced.p3')}
+        </p>
+      )}
 
       <OrganizationDataForm />
 

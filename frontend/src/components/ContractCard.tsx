@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FormInput from './FormInput';
 import Button from './Button';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
@@ -34,30 +34,74 @@ export interface IMockVolunteer {
 
 interface ContractCardProps {
   data: { contract: IMockContract; volunteer: IMockVolunteer };
+  initialNumber?: string;
+  initialDate?: Date | null;
+  initialPeriod?: [Date | null, Date | null];
 }
 
 const dotsString = '.........................';
 const contractTerms =
   '<h1>h1</h1><h2>h2</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis nisl cursus bibendum sit nulla accumsan sodales ornare. At urna viverra non suspendisse neque, lorem. Pretium condimentum pellentesque gravida id etiam sit sed arcu euismod. Rhoncus proin orci duis scelerisque molestie cursus tincidunt aliquam.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis nisl cursus bibendum sit nulla accumsan sodales ornare. At urna viverra non suspendisse neque, lorem. Pretium condimentum pellentesque gravida id etiam sit sed arcu euismod. Rhoncus proin orci duis scelerisque molestie cursus tincidunt aliquam.</p>';
 
-export const ContractCard = ({ data }: ContractCardProps) => {
+export const ContractCard = ({
+  data,
+  initialNumber,
+  initialDate,
+  initialPeriod,
+}: ContractCardProps) => {
   const { t } = useTranslation(['doc_templates', 'general']);
-  //?   todo: get the contract data from a query and not from props
-  const { contract, volunteer } = data;
-  //   todo: delete this
-  console.log(contract);
-
   // contract card states
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
 
-  const [contractNumber, setContractNumber] = useState(dotsString);
-  const [contractDate, setContractDate] = useState(dotsString);
-  const [contractPeriod, setContractPeriod] = useState([dotsString, dotsString]);
+  // queries
+  const { data: organization, isLoading: isLoadingOrganization } = useOrganizationQuery();
+  //?   todo: get the contract data from a query and not from props
+  const { contract, volunteer } = data;
+  console.log(contract);
+  const isVolunteerDataIncomplete = true;
+  const { control, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      contractNumber: initialNumber || '',
+      contractDate: initialDate || null,
+      contractPeriod: initialPeriod || [null, null],
+    },
+  });
 
-  const { data: organization } = useOrganizationQuery();
-  const { control, handleSubmit, setValue } = useForm();
+  // update values for the contract data, as well as for the contract preview, whenever the initial values coming from the parent change (the fast contract completion feature)
+  useEffect(() => {
+    // update contract number
+    setContractNumber(initialNumber ? initialNumber : dotsString);
+    setValue('contractNumber', initialNumber ? initialNumber : '');
 
+    // update contract date
+    setContractDate(initialDate ? initialDate.toLocaleDateString() : dotsString);
+    setValue('contractDate', initialDate ? initialDate : null);
+
+    // update contract period
+    setContractPeriod([
+      initialPeriod && initialPeriod[0] ? initialPeriod[0].toLocaleDateString() : dotsString,
+      initialPeriod && initialPeriod[1] ? initialPeriod[1].toLocaleDateString() : dotsString,
+    ]);
+    setValue(
+      'contractPeriod',
+      initialPeriod && initialPeriod[0] && initialPeriod[1]
+        ? [initialPeriod[0], initialPeriod[1]]
+        : [null, null],
+    );
+  }, [initialNumber, initialDate, initialPeriod]);
+
+  const [contractNumber, setContractNumber] = useState(initialNumber ? initialNumber : dotsString);
+  const [contractDate, setContractDate] = useState(
+    initialDate ? initialDate.toLocaleDateString() : dotsString,
+  );
+  const [contractPeriod, setContractPeriod] = useState(
+    initialPeriod && initialPeriod[0] && initialPeriod[1]
+      ? [initialPeriod[0].toLocaleDateString(), initialPeriod[1].toLocaleDateString()]
+      : [dotsString, dotsString],
+  );
+
+  // on submit -> update the values in the contract preview
   const onSubmit = (data: FieldValues) => {
     if (data.contractNumber) {
       setContractNumber(data.contractNumber);
@@ -67,7 +111,7 @@ export const ContractCard = ({ data }: ContractCardProps) => {
       setContractDate(data.contractDate.toLocaleDateString());
     }
 
-    if (data.contractPeriod) {
+    if (data.contractPeriod && data.contractPeriod[0] && data.contractPeriod[1]) {
       setContractPeriod([
         data.contractPeriod[0].toLocaleDateString(),
         data.contractPeriod[1].toLocaleDateString(),
@@ -79,7 +123,14 @@ export const ContractCard = ({ data }: ContractCardProps) => {
 
   return (
     <div className="flex flex-col">
-      <ContractCardHeader open={open} setOpen={setOpen} volunteer={data.volunteer} />
+      <ContractCardHeader
+        open={open}
+        setOpen={setOpen}
+        volunteer={data.volunteer}
+        isLoading={isLoadingOrganization}
+        isError={isVolunteerDataIncomplete}
+        isErrorText={t('volunteer.missing_data')}
+      />
 
       {open && (
         <div className="bg-white shadow-sm p-4 mt-[-16px] pt-8 rounded flex flex-col gap-4 sm:flex-row">
@@ -90,9 +141,8 @@ export const ContractCard = ({ data }: ContractCardProps) => {
             <Controller
               name="contractNumber"
               control={control}
-              render={({ field: { value, onChange } }) => (
+              render={({ field: { value = initialNumber, onChange } }) => (
                 <FormInput
-                  type="d"
                   label={t('contract_no')}
                   disabled={!edit}
                   value={value}
@@ -115,14 +165,19 @@ export const ContractCard = ({ data }: ContractCardProps) => {
               )}
             />
 
-            {/* no controller here, as the value of this component is managed differently inside */}
-            <DateRangePicker
-              label={t('contract_period')}
-              disabled={!edit}
-              onChange={(value) => setValue('contractPeriod', value)}
+            <Controller
+              name="contractPeriod"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <DateRangePicker
+                  label={t('contract_period')}
+                  value={value as [Date | null, Date | null] | undefined}
+                  disabled={!edit}
+                  onChange={onChange}
+                />
+              )}
             />
 
-            {/* //? ce facem dupa ce editam astea? */}
             <Button
               label={edit ? t('save', { ns: 'general' }) : t('edit', { ns: 'general', item: '' })}
               className="bg-yellow btn-primary mt-4 text-white"
@@ -140,18 +195,25 @@ export const ContractCard = ({ data }: ContractCardProps) => {
 
             <p>
               {t('template_preview.p2.between')}{' '}
-              <span className="font-robotoBold">{organization?.name || ''}</span>{' '}
-              {t('template_preview.p2.address')} {organization?.address || ''}{' '}
+              <span className="font-robotoBold">
+                {organization?.name || `[${t('organization_name')}]`}
+              </span>{' '}
+              {t('template_preview.p2.address')}{' '}
+              {organization?.address || `[${t('organization_address')}]`}{' '}
               {t('template_preview.p2.identified')}
-              <span className="font-robotoBold"> {organization?.cui || '!!!!'}</span>
+              <span className="font-robotoBold">
+                {' '}
+                {organization?.cui || `[${t('organization_cui')}]`}
+              </span>
               {', '}
               {t('template_preview.p2.represented_by')}{' '}
               <span className="font-robotoBold">
                 {' '}
-                {organization?.legalRepresentative || '!!!!!!'}
+                {organization?.legalReprezentativeFullName || `[${t('legal_rep_name')}]`}
               </span>
               {', '}
-              {t('template_preview.p2.as')} {organization?.legalRepresentativeRole || '!!!!!!!!!'}{' '}
+              {t('template_preview.p2.as')}{' '}
+              {organization?.legalReprezentativeRole || `[${t('legal_rep_role')}]`}{' '}
               {t('template_preview.p2.named')}{' '}
               <span className="italic">{t('template_preview.p2.organization')}</span>{' '}
             </p>

@@ -89,7 +89,8 @@
     "no_options": "No options",
     "type_for_options": "Type for options...",
     "hide": "Show less",
-    "show": "Show more"
+    "show": "Show more",
+    "loading": "Loading..."
   },
   "header": {
     "login": "Login",
@@ -1012,7 +1013,18 @@
       },
       "organization_data_form": {
         "loading_error": "We encountered a problem while loading the organization data",
-        "retry_button": "Retry"
+        "synced": {
+          "is_syncing": "Updating...",
+          "p1": "Have you updated the data in NGO Hub? Press",
+          "p2": "here",
+          "p3": "to synchronise"
+        },
+        "retry_button": "Retry",
+        "missing_name": "Organization name is missing",
+        "missing_address": "Organization address is missing",
+        "missing_cui": "Organization CUI is missing",
+        "missing_legalReprezentativeFullName": "Organization legal representative's name is missing",
+        "missing_legalReprezentativeRole": "Organization legal representative's role is missing"
       }
     },
     "volunteer": {
@@ -1023,7 +1035,8 @@
       "series": "[Series]",
       "no": "[Number]",
       "institution": "[Issuing institution]",
-      "eliberation_date": "[Issuance date]"
+      "eliberation_date": "[Issuance date]",
+      "missing_data": "There is missing data for generating the contract for this volunteer."
     },
     "template_preview": {
       "title": "VOLUNTEERING CONTRACT",
@@ -1079,6 +1092,8 @@
       "title": "Edit text"
     },
     "organization_name": "Organization name",
+    "organization_address": "Organization address",
+    "organization_cui": "CUI",
     "represented_by": "Represented by",
     "legal_representative": "Legal representative of the minor",
     "identification": "ID series and number",
@@ -1086,6 +1101,7 @@
     "tel_no": "Phone number",
     "volunteer_name": "Volunteer name",
     "legal_rep_name": "Legal representative's name",
+    "legal_rep_role": "Legal representative's role",
     "number": "Number",
     "telephone": "Phone"
   },
@@ -1095,5 +1111,16 @@
     "fill": "Fill",
     "attachments": "Attachments",
     "complete": "Complete"
+  },
+  "fast_contract_fill": {
+    "title": "Quick Fill",
+    "description": "Pre-fill the data below with a single click! You can modify the data individually later.",
+    "form": {
+      "starting_number": "Consecutive contract numbers starting with",
+      "contract_date": "Contract date",
+      "contract_period": "Contract period"
+    },
+    "clear": "Clear",
+    "apply_all": "Apply to all"
   }
 }

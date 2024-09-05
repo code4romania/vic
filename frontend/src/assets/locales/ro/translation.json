@@ -89,7 +89,8 @@
     "no_options": "Fără opțiuni",
     "type_for_options": "Începeți să scrieți pentru opțiuni...",
     "hide": "Vezi mai puțin",
-    "show": "Vezi tot"
+    "show": "Vezi tot",
+    "loading": "Se încarcă..."
   },
   "header": {
     "login": "Login",
@@ -1012,7 +1013,18 @@
       },
       "organization_data_form": {
         "loading_error": "Am întâmpinat o problemă la încărcarea datelor despre organizație",
-        "retry_button": "Reîncearcă"
+        "synced": {
+          "is_syncing": "Se actualizează...",
+          "p1": "Ai actualizat datele în NGO Hub? Apasă",
+          "p2": "aici",
+          "p3": "pentru sincronizare"
+        },
+        "retry_button": "Reîncearcă",
+        "missing_name": "Numele organizației lipsește",
+        "missing_address": "Adresa organizației lipsește",
+        "missing_cui": "CUI-ul organizației lipsește",
+        "missing_legalReprezentativeFullName": "Numele reprezentantului legal al organizației lipsește",
+        "missing_legalReprezentativeRole": "Rolul reprezentantului legal al organizației lipsește"
       }
     },
     "volunteer": {
@@ -1023,7 +1035,8 @@
       "series": "[Serie]",
       "no": "[Număr]",
       "institution": "[Unitate eliberare]",
-      "eliberation_date": "[Data eliberării]"
+      "eliberation_date": "[Data eliberării]",
+      "missing_data": "Există date lipsă la generarea contractului pentru acest voluntar."
     },
     "template_preview": {
       "title": "CONTRACT DE VOLUNTARIAT",
@@ -1079,6 +1092,8 @@
       "title": "Editează text"
     },
     "organization_name": "Nume organizație",
+    "organization_address": "Sediu organizație",
+    "organization_cui": "CUI",
     "represented_by": "Reprezentată de",
     "legal_representative": "Reprezentantul legal al minorului",
     "identification": "Serie si nr. CI",
@@ -1086,6 +1101,7 @@
     "tel_no": "Nr. Tel.",
     "volunteer_name": "Nume voluntar",
     "legal_rep_name": "Nume reprezentant legal",
+    "legal_rep_role": "Rolul reprezentantului legal",
     "number": "Număr",
     "telephone": "Telefon"
   },
@@ -1095,5 +1111,16 @@
     "fill": "Completează",
     "attachments": "Anexe",
     "complete": "Finalizează"
+  },
+  "fast_contract_fill": {
+    "title": "Completare rapidă",
+    "description": "Precompletează datele de mai jos dintr-un singur click! Poți modifica datele individual ulterior.",
+    "form": {
+      "starting_number": "Numere contract consecutive începând cu",
+      "contract_date": "Data contractului",
+      "contract_period": "Perioadă contract"
+    },
+    "clear": "Șterge",
+    "apply_all": "Aplică pentru toate"
   }
 }

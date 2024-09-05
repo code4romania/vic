@@ -8,14 +8,14 @@ import { OrganizationDataError } from '../OrganizationDataError';
 export const OrganizationDataForm = () => {
   const { t } = useTranslation('doc_templates');
 
-  const { data: organization, isLoading, isError, refetch } = useOrganizationQuery();
+  const { data: organization, isLoading, isError, refetch, isFetching } = useOrganizationQuery();
 
   const handleRefetch = () => {
     refetch();
   };
 
   if (isLoading) return <LoadingContent />;
-  if (isError) return <OrganizationDataError onRetry={handleRefetch} />;
+  if (isError) return <OrganizationDataError onRetry={handleRefetch} isFetching={isFetching} />;
 
   return (
     <>
@@ -23,8 +23,13 @@ export const OrganizationDataForm = () => {
         type="text"
         disabled
         label={t('organization.name')}
-        value={organization ? organization.name : t('organization_name')}
+        value={organization ? organization.name : ''}
         id="organization_name"
+        errorMessage={
+          organization && !organization.name
+            ? t('organization.organization_data_form.missing_name')
+            : undefined
+        }
       />
       <FormInput
         type="text"
@@ -32,6 +37,11 @@ export const OrganizationDataForm = () => {
         label={t('organization.address')}
         value={organization?.address || ''}
         id="organization_address"
+        errorMessage={
+          organization && !organization.address
+            ? t('organization.organization_data_form.missing_address')
+            : undefined
+        }
       />
       <FormInput
         type="text"
@@ -39,20 +49,35 @@ export const OrganizationDataForm = () => {
         label={t('organization.cui')}
         value={organization?.cui || ''}
         id="organization_CUI"
+        errorMessage={
+          organization && !organization.cui
+            ? t('organization.organization_data_form.missing_cui')
+            : undefined
+        }
       />
       <FormInput
         type="text"
         disabled
         label={t('organization.legal_representative')}
-        value={organization?.legalRepresentative || ''}
+        value={organization?.legalReprezentativeFullName || ''}
         id="organization_legal_representative"
+        errorMessage={
+          organization && !organization.legalReprezentativeFullName
+            ? t('organization.organization_data_form.missing_legalReprezentativeFullName')
+            : undefined
+        }
       />
       <FormInput
         type="text"
         disabled
         label={t('organization.legal_representative_role')}
-        value={organization?.legalRepresentativeRole || ''}
+        value={organization?.legalReprezentativeRole || ''}
         id="organization_legal_representative_role"
+        errorMessage={
+          organization && !organization.legalReprezentativeRole
+            ? t('organization.organization_data_form.missing_legalReprezentativeRole')
+            : undefined
+        }
       />
     </>
   );
