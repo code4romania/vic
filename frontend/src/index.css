@@ -334,6 +334,18 @@ li.recharts-legend-item {
   z-index: 1000;
 }
 
+.ql-container {
+  @apply border-0;
+}
+
+.ql-container.ql-snow {
+  @apply border-0;
+}
+
+.ql-toolbar.ql-snow {
+  @apply border-0 border-b-2 border-cool-gray-900;
+}
+
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari, and Opera */
   .no-scrollbar::-webkit-scrollbar {

@@ -978,6 +978,29 @@
       "confirm": "Confirmă și semnează"
     }
   },
+  "volunteering_contracts": {
+    "title": "Contracte de voluntariat",
+    "templates": "Template-uri de contracte",
+    "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din VIC. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+    "tabs": {
+      "contracts": "Listă contracte",
+      "templates": "Template-uri"
+    },
+    "statistics": {
+      "active_contracts": "Contracte active",
+      "in_signing_contracts": "Contracte în curs de semnare",
+      "saved_contracts": "Contracte salvate (netrimise)",
+      "to_expire_soon": "Contracte care expiră curând"
+    },
+    "table_header": {
+      "title": "Template-uri de contracte",
+      "download_all": "Descarcă toate",
+      "create_template": "Creează template"
+    },
+    "generate": {
+      "title": "Generează contract"
+    }
+  },
   "doc_templates": {
     "title": "Creează template",
     "subheading": {
@@ -1009,7 +1032,7 @@
       },
       "legal_representative_data": {
         "title": "Datele reprezentantului legal",
-        "description": " Voluntarii sub 16 ani vor trebui sa completeze sectiunea ce conține datele reprezentantului, din aplicația mobilă, în momentul semnării contractului."
+        "description": " Voluntarii sub 16 ani vor trebui să completeze sectiunea ce conține datele reprezentantului, din aplicația mobilă, în momentul semnării contractului."
       },
       "organization_data_form": {
         "loading_error": "Am întâmpinat o problemă la încărcarea datelor despre organizație",

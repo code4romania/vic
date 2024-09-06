@@ -6,8 +6,19 @@ import { Signatures } from '../Signatures';
 import { useOrganizationQuery } from '../../services/organization/organization.service';
 import LoadingContent from '../LoadingContent';
 import { OrganizationDataError } from '../OrganizationDataError';
+import { Control, FieldErrors, FieldValues, UseFormGetValues, UseFormReset } from 'react-hook-form';
 
-export const ContractTemplatePreview = () => {
+export const ContractTemplatePreview = ({
+  control,
+  reset,
+  getValues,
+  formErrors,
+}: {
+  control: Control<FieldValues>;
+  reset: UseFormReset<FieldValues>;
+  getValues: UseFormGetValues<FieldValues>;
+  formErrors: FieldErrors<FieldValues>;
+}) => {
   const { t } = useTranslation('doc_templates');
   const [infoParagraphHovered, setInfoParagraphHovered] = useState(false);
 
@@ -141,7 +152,12 @@ export const ContractTemplatePreview = () => {
         />
       </p>
 
-      <ContractTerms />
+      <ContractTerms
+        control={control}
+        reset={reset}
+        getValues={getValues}
+        formErrors={formErrors}
+      />
       <Signatures />
     </div>
   );

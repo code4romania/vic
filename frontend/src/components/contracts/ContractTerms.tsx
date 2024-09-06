@@ -1,22 +1,39 @@
 import React, { useState } from 'react';
-import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  FieldValues,
+  UseFormGetValues,
+  UseFormReset,
+} from 'react-hook-form';
 import Button from '../Button';
 import { ContractTermsEmptyState } from './ContractTermsEmptyState';
 import { useTranslation } from 'react-i18next';
 import RichTextEditor from '../RichText/RichTextEditor';
 import { ContractTermsContent } from './ContractTermsContent';
 
-export const ContractTerms = () => {
-  const { control, handleSubmit, reset } = useForm();
-  const { t } = useTranslation('doc_templates');
+export const ContractTerms = ({
+  control,
+  reset,
+  getValues,
+  formErrors,
+}: {
+  control: Control<FieldValues>;
+  reset: UseFormReset<FieldValues>;
+  getValues: UseFormGetValues<FieldValues>;
+  formErrors: FieldErrors<FieldValues>;
+}) => {
+  const { t } = useTranslation(['doc_templates', 'general']);
   const [editingText, setEditingText] = useState(false);
 
   // todo: initial value for contractTerms taken from the template
   const [contractTerms, setContractTerms] = useState<string>('');
 
-  const onSubmit: SubmitHandler<FieldValues> = ({ contractTerms }) => {
+  const onSave = () => {
+    const newContractTerms = getValues('contractTerms');
     // save the new value
-    setContractTerms(contractTerms);
+    setContractTerms(newContractTerms);
     // close text editor
     setEditingText(false);
   };
@@ -28,15 +45,16 @@ export const ContractTerms = () => {
         <Controller
           key="contractTermsController"
           name="contractTerms"
-          // ? todo:do we need to set any validation rules here?
-          // rules={}
           control={control}
+          rules={{ required: { value: true, message: t('required', { ns: 'general' }) } }}
           render={({
             field: { value, onChange },
           }: {
             field: { value: string; onChange: (value: string) => void };
           }) => {
-            return <RichTextEditor value={value} onChange={onChange} />;
+            return (
+              <RichTextEditor value={value} onChange={onChange} error={formErrors.contractTerms} />
+            );
           }}
         />
         <div className="flex flex-row justify-end gap-2">
@@ -53,7 +71,7 @@ export const ContractTerms = () => {
           <Button
             label={t('contract_terms.save')}
             className="btn-primary text-cool-gray-600"
-            onClick={handleSubmit(onSubmit)}
+            onClick={onSave}
           />
         </div>
       </div>
@@ -61,8 +79,9 @@ export const ContractTerms = () => {
   }
 
   if (!contractTerms) {
-    return <ContractTermsEmptyState setEditingText={setEditingText} />;
-  }
-  // normal text
+    return (
+      <ContractTermsEmptyState setEditingText={setEditingText} error={formErrors.contractTerms} />
+    );
+  } // normal text
   return <ContractTermsContent innerContent={contractTerms} setEditingText={setEditingText} />;
 };
