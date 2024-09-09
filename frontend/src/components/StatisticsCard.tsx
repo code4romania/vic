@@ -8,11 +8,12 @@ interface StatisticsCardProps {
   action?: { label: string; onClick: () => void };
   icon?: ReactNode;
   info?: ReactNode;
+  className?: string;
 }
 
-const StatisticsCard = ({ label, value, action, icon, info }: StatisticsCardProps) => {
+const StatisticsCard = ({ label, value, action, icon, info, className }: StatisticsCardProps) => {
   return (
-    <Card>
+    <Card className={className}>
       <div className="flex flex-col">
         <div className="flex sm:gap-5 gap-2 sm:p-6 p-3 items-center">
           {icon}

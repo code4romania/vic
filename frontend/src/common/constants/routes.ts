@@ -68,11 +68,21 @@ export const ROUTES: IRoute[] = [
       },
       {
         id: 62,
-        name: i18n.t('general:templates'),
+        name: 'Contracte * NEW *',
         href: 'documents/templates',
       },
       {
         id: 63,
+        name: 'Creează template * NEW *',
+        href: 'documents/templates/create',
+      },
+      {
+        id: 64,
+        name: 'Generează contract * NEW *',
+        href: 'documents/templates/contracts/generate',
+      },
+      {
+        id: 65,
         name: 'stepper',
         href: 'documents/templates/stepper_example',
       },

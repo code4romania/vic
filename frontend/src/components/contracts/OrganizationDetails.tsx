@@ -2,14 +2,13 @@ import React from 'react';
 import FormInput from '../FormInput';
 import { useTranslation } from 'react-i18next';
 import { OrganizationDataForm } from './OrganizationDataForm';
-import { Controller, useForm } from 'react-hook-form';
+import { Control, Controller, FieldValues } from 'react-hook-form';
 import { useResyncOrganizationWithOngHubMutation } from '../../services/organization/organization.service';
 import Button from '../Button';
 import { useQueryClient } from 'react-query';
 
-export const OrganizationDetails = () => {
-  const { t } = useTranslation('doc_templates');
-  const { control } = useForm();
+export const OrganizationDetails = ({ control }: { control: Control<FieldValues> }) => {
+  const { t } = useTranslation(['doc_templates', 'general']);
 
   const queryClient = useQueryClient();
 
@@ -25,9 +24,20 @@ export const OrganizationDetails = () => {
         name="templateName"
         control={control}
         rules={{ required: true }}
-        render={({ field: { value, onChange } }) => (
-          <FormInput label={t('template_name')} value={value} onChange={onChange} />
-        )}
+        render={({ field: { value, onChange }, formState: { errors } }) => {
+          return (
+            <FormInput
+              label={t('template_name')}
+              value={value}
+              onChange={onChange}
+              errorMessage={
+                errors.templateName && errors.templateName?.type === 'required'
+                  ? t('required', { ns: 'general' })
+                  : undefined
+              }
+            />
+          );
+        }}
       />
 
       <p className="font-robotoBold">{t('organization.data')}</p>

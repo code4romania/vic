@@ -978,6 +978,29 @@
       "confirm": "Confirm and sign"
     }
   },
+  "volunteering_contracts": {
+    "title": "Volunteering contracts",
+    "templates": "Contract templates",
+    "description": "View the list of all your volunteer contracts in VIC. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. contract for volunteers >16 years old, contract for volunteers <16 years old).",
+    "tabs": {
+      "contracts": "Contract list",
+      "templates": "Templates"
+    },
+    "statistics": {
+      "active_contracts": "Active contracts",
+      "in_signing_contracts": "Contracts in signing process",
+      "saved_contracts": "Saved contracts (unsent)",
+      "to_expire_soon": "Contracts expiring soon"
+    },
+    "table_header": {
+      "title": "Contract templates",
+      "download_all": "Download all",
+      "create_template": "Create template"
+    },
+    "generate": {
+      "title": "Generate contract"
+    }
+  },
   "doc_templates": {
     "title": "Create template",
     "subheading": {
