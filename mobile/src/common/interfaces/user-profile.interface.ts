@@ -5,11 +5,21 @@ import { IOrganizationVolunteer } from './organization-list-item.interface';
 
 export interface IUserPersonalData {
   id: string;
+  identityDocumentCNP: string;
   identityDocumentSeries: string;
   identityDocumentNumber: string;
   address: string;
   identityDocumentIssueDate: Date;
   identityDocumentExpirationDate: Date;
+  identityDocumentIssuedBy: string;
+}
+
+export interface ILegalGuardianData {
+  name: string;
+  identityDocumentSeries: string;
+  identityDocumentNumber: string;
+  email: string;
+  phone: string;
 }
 
 export interface INotificationsSettings {
@@ -27,6 +37,7 @@ export interface IUserProfile {
   sex: Sex;
   location?: ICity;
   userPersonalData: IUserPersonalData;
+  legalGuardianData?: ILegalGuardianData;
   activeOrganization: IOrganizationVolunteer | null;
   myOrganizations: IOrganizationVolunteer[];
   profilePicture?: string;

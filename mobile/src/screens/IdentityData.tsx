@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -18,57 +18,182 @@ import Paragraph from '../components/Paragraph';
 import { REGEX } from '../common/constants/constants';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { differenceInYears, parseISO } from 'date-fns';
 
 export type IdentityDataFormTypes = {
+  identityDocumentCNP: string;
   identityDocumentSeries: string;
   identityDocumentNumber: string;
   address: string;
   identityDocumentIssueDate: Date;
+  identityDocumentIssuedBy: string;
   identityDocumentExpirationDate: Date;
+  guardianName?: string;
+  guardianIdentityDocumentSeries?: string;
+  guardianIdentityDocumentNumber?: string;
+  guardianEmail?: string;
+  guardianPhone?: string;
 };
 
-const schema = yup.object({
-  identityDocumentSeries: yup
-    .string()
-    .matches(REGEX.STRINGS_ONLY, `${i18n.t('identity_data:form.series.matches')}`)
-    .required(`${i18n.t('identity_data:form.series.required')}`)
-    .length(2, `${i18n.t('identity_data:form.series.length', { number: 2 })}`),
-  identityDocumentNumber: yup
-    .string()
-    .matches(REGEX.NUMBERS_ONLY, `${i18n.t('identity_data:form.number.matches')}`)
-    .required(`${i18n.t('identity_data:form.number.required')}`)
-    .length(6, `${i18n.t('identity_data:form.number.length', { number: 6 })}`),
-  address: yup
-    .string()
-    .required(`${i18n.t('identity_data:form.address.required')}`)
-    .min(2, `${i18n.t('identity_data:form.address.min', { value: 2 })}`)
-    .max(100, `${i18n.t('identity_data:form.address.max', { value: 100 })}`),
-  identityDocumentIssueDate: yup
-    .date()
-    .required(`${i18n.t('identity_data:form.issue_date.required')}`),
-  identityDocumentExpirationDate: yup
-    .date()
-    .required(`${i18n.t('identity_data:form.expiration_date.required')}`),
-});
+const schema = (isUserOver16: boolean, userBirthday: Date | undefined) =>
+  yup.object({
+    identityDocumentCNP: yup
+      .string()
+      .matches(REGEX.NUMBERS_ONLY, `${i18n.t('identity_data:form.cnp.matches')}`)
+      .required(`${i18n.t('identity_data:form.cnp.required')}`)
+      .length(13, `${i18n.t('identity_data:form.cnp.length', { number: 13 })}`)
+      // check if the birthday extracted from the CNP matches the user birthday
+      .test(
+        'cnp-birthday-match',
+        `${i18n.t('identity_data:form.cnp.birthday_mismatch')}`,
+        (value) => {
+          if (!userBirthday || !value) {
+            return true;
+          }
+          const cnpBirthday = getBirthdayFromCNP(value);
+          // TODO: remove this after testing
+          console.log('cnpBirthday: 🎂', cnpBirthday);
+          console.log('userBirthday: 🎂', userBirthday);
+          return cnpBirthday ? cnpBirthday.getTime() === new Date(userBirthday).getTime() : true;
+        },
+      ),
+    identityDocumentSeries: yup
+      .string()
+      .matches(REGEX.STRINGS_ONLY, `${i18n.t('identity_data:form.series.matches')}`)
+      .required(`${i18n.t('identity_data:form.series.required')}`)
+      .length(2, `${i18n.t('identity_data:form.series.length', { number: 2 })}`),
+    identityDocumentNumber: yup
+      .string()
+      .matches(REGEX.NUMBERS_ONLY, `${i18n.t('identity_data:form.number.matches')}`)
+      .required(`${i18n.t('identity_data:form.number.required')}`)
+      .length(6, `${i18n.t('identity_data:form.number.length', { number: 6 })}`),
+    address: yup
+      .string()
+      .required(`${i18n.t('identity_data:form.address.required')}`)
+      .min(2, `${i18n.t('identity_data:form.address.min', { value: 2 })}`)
+      .max(100, `${i18n.t('identity_data:form.address.max', { value: 100 })}`),
+    identityDocumentIssueDate: yup
+      .date()
+      .required(`${i18n.t('identity_data:form.issue_date.required')}`),
+    identityDocumentIssuedBy: yup
+      .string()
+      .required(`${i18n.t('identity_data:form.issued_by.required')}`),
+    identityDocumentExpirationDate: yup
+      .date()
+      .required(`${i18n.t('identity_data:form.expiration_date.required')}`),
+    guardianName: yup.string().when([], {
+      is: () => !isUserOver16,
+      then: (schema) => schema.required(`${i18n.t('identity_data:form.guardian.name.required')}`),
+      otherwise: (schema) => schema.optional(),
+    }),
+    guardianIdentityDocumentSeries: yup
+      .string()
+      .matches(REGEX.STRINGS_ONLY, `${i18n.t('identity_data:form.guardian.series.matches')}`)
+      .length(2, `${i18n.t('identity_data:form.guardian.series.length', { number: 2 })}`)
+      .when([], {
+        is: () => !isUserOver16,
+        then: (schema) =>
+          schema.required(`${i18n.t('identity_data:form.guardian.series.required')}`),
+        otherwise: (schema) => schema.optional(),
+      }),
+    guardianIdentityDocumentNumber: yup
+      .string()
+      .matches(REGEX.NUMBERS_ONLY, `${i18n.t('identity_data:form.guardian.number.matches')}`)
+      .length(6, `${i18n.t('identity_data:form.guardian.number.length', { number: 6 })}`)
+      .when([], {
+        is: () => !isUserOver16,
+        then: (schema) =>
+          schema.required(`${i18n.t('identity_data:form.guardian.number.required')}`),
+        otherwise: (schema) => schema.optional(),
+      }),
+    guardianEmail: yup
+      .string()
+      .email(`${i18n.t('identity_data:form.guardian.email.pattern')}`)
+      .when([], {
+        is: () => !isUserOver16,
+        then: (schema) =>
+          schema.required(`${i18n.t('identity_data:form.guardian.email.required')}`),
+        otherwise: (schema) => schema.optional(),
+      }),
+    guardianPhone: yup
+      .string()
+      .matches(REGEX.NUMBERS_ONLY, `${i18n.t('identity_data:form.guardian.phone.matches')}`)
+      .length(9, `${i18n.t('identity_data:form.guardian.phone.length', { number: 10 })}`)
+      .when([], {
+        is: () => !isUserOver16,
+        then: (schema) =>
+          schema.required(`${i18n.t('identity_data:form.guardian.phone.required')}`),
+        otherwise: (schema) => schema.optional(),
+      }),
+  });
+
+const isOver16 = (birthday: string | Date) => {
+  const birthdayDate = typeof birthday === 'string' ? parseISO(birthday) : birthday;
+  const today = new Date();
+  const age = differenceInYears(today, birthdayDate);
+  return age >= 16;
+};
+
+const isOver16FromCNP = (cnp: string) => {
+  // we don't need to perform the calculation before the user has entered all the necessary digits to calculate
+  if (cnp.length < 7) {
+    return true;
+  }
+
+  // CNP example: 2980825... -> 1998-08-25
+  //              6000825... -> 2000-08-25
+
+  // if first digit is above 5, then the birth year is 2000+
+  const yearPrefix = parseInt(cnp[0], 10) < 5 ? '19' : '20';
+  const year = (yearPrefix + cnp.substring(1, 3)).toString();
+  const month = cnp.substring(3, 5);
+  const day = cnp.substring(5, 7);
+  const birthday = new Date(`${year}-${month}-${day}`);
+
+  const age = differenceInYears(new Date(), birthday);
+  return age >= 16;
+};
+
+const getBirthdayFromCNP = (cnp: string): Date | null => {
+  if (cnp.length < 7) {
+    return null;
+  }
+
+  const yearPrefix = parseInt(cnp[0], 10) < 5 ? '19' : '20';
+  const year = (yearPrefix + cnp.substring(1, 3)).toString();
+  const month = cnp.substring(3, 5);
+  const day = cnp.substring(5, 7);
+  return new Date(`${year}-${month}-${day}`);
+};
 
 const IdentityData = ({ navigation, route }: any) => {
-  const { userProfile } = useUserProfile();
-  const { t } = useTranslation('identity_data');
   const paddingTop = usePaddingTop();
+  const { t } = useTranslation('identity_data');
 
+  const { userProfile } = useUserProfile();
+
+  // try to decide if the user is over 16 based on the birthday or the CNP
+  const [isUserOver16, setIsUserOver16] = useState(
+    userProfile?.birthday
+      ? isOver16(userProfile?.birthday)
+      : userProfile?.userPersonalData.identityDocumentCNP
+        ? isOver16FromCNP(userProfile?.userPersonalData.identityDocumentCNP)
+        : true,
+  );
+
+  const { isLoading: isUpdateingPersonalData, mutate: updateUserPersonalData } =
+    useUpdateUserPersonalDataMutation();
   const {
     control,
     handleSubmit,
     formState: { errors },
+    watch,
     reset,
   } = useForm<IdentityDataFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema(isUserOver16, userProfile?.birthday)),
   });
-
-  const { isLoading: isUpdateingPersonalData, mutate: updateUserPersonalData } =
-    useUpdateUserPersonalDataMutation();
 
   useEffect(() => {
     const { userPersonalData } = userProfile as IUserProfile;
@@ -81,11 +206,25 @@ const IdentityData = ({ navigation, route }: any) => {
       // init form data with the user profile personal data
       reset({
         ...formData,
+        // TODO: add the new fields
         identityDocumentIssueDate: new Date(formData.identityDocumentIssueDate),
         identityDocumentExpirationDate: new Date(formData.identityDocumentExpirationDate),
       });
     }
   }, [userProfile, reset]);
+
+  useEffect(() => {
+    // if the user has a birthday, then we don't need to check the CNP
+    if (userProfile?.birthday) {
+      return;
+    }
+    const subscription = watch((value, { name }) => {
+      if (name === 'identityDocumentCNP') {
+        setIsUserOver16(isOver16FromCNP(value.identityDocumentCNP || ''));
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, userProfile?.birthday]);
 
   const onPrivacyPolicyPress = () => {
     Linking.openURL(`${process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK}`);
@@ -95,6 +234,7 @@ const IdentityData = ({ navigation, route }: any) => {
     updateUserPersonalData(
       {
         ...payload,
+        // TODO: add the new fields
         identityDocumentSeries: payload.identityDocumentSeries.toLocaleUpperCase(),
       },
       {
@@ -129,6 +269,14 @@ const IdentityData = ({ navigation, route }: any) => {
       <FormLayout>
         <Paragraph>{`${t('description')}`}</Paragraph>
         <InlineLink label={t('privacy_policy')} onPress={onPrivacyPolicyPress} category="p2" />
+        <FormInput
+          control={control as any}
+          label={t('form.cnp.label')}
+          name="identityDocumentCNP"
+          placeholder={t('form.cnp.placeholder')}
+          error={errors.identityDocumentCNP}
+          disabled={isUpdateingPersonalData}
+        />
         <FormInput
           control={control as any}
           label={t('form.series.label')}
@@ -173,6 +321,59 @@ const IdentityData = ({ navigation, route }: any) => {
           max={new Date(2200, 0, 0)}
           disabled={isUpdateingPersonalData}
         />
+        <FormInput
+          control={control as any}
+          label={t('form.issued_by.label')}
+          name="identityDocumentIssuedBy"
+          error={errors.identityDocumentIssuedBy}
+          placeholder={t('form.issued_by.placeholder')}
+          disabled={isUpdateingPersonalData}
+        />
+        {!isUserOver16 && (
+          <>
+            <Paragraph>{`${t('legal_gardian_data_required')}`}</Paragraph>
+            <FormInput
+              control={control as any}
+              label={t('form.guardian.name.label')}
+              name="guardianName"
+              error={errors.guardianName}
+              placeholder={t('form.guardian.name.placeholder')}
+              disabled={isUpdateingPersonalData}
+            />
+            <FormInput
+              control={control as any}
+              label={t('form.guardian.series.label')}
+              name="guardianIdentityDocumentSeries"
+              error={errors.guardianIdentityDocumentSeries}
+              placeholder={t('form.guardian.series.placeholder')}
+              disabled={isUpdateingPersonalData}
+            />
+            <FormInput
+              control={control as any}
+              label={t('form.guardian.number.label')}
+              name="guardianIdentityDocumentNumber"
+              error={errors.guardianIdentityDocumentNumber}
+              placeholder={t('form.guardian.number.placeholder')}
+              disabled={isUpdateingPersonalData}
+            />
+            <FormInput
+              control={control as any}
+              label={t('form.guardian.email.label')}
+              name="guardianEmail"
+              error={errors.guardianEmail}
+              placeholder={t('form.guardian.email.placeholder')}
+              disabled={isUpdateingPersonalData}
+            />
+            <FormInput
+              control={control as any}
+              label={t('form.guardian.phone.label')}
+              name="guardianPhone"
+              error={errors.guardianPhone}
+              placeholder={t('form.guardian.phone.placeholder')}
+              disabled={isUpdateingPersonalData}
+            />
+          </>
+        )}
       </FormLayout>
     </PageLayout>
   );
