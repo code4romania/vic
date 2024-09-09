@@ -32,6 +32,7 @@ import { MobileAnouncementsController } from './_mobile/anouncements/anouncement
 import { MobileSettingsController } from './_mobile/settings/settings-controller';
 import { MobileNewsController } from './_mobile/news/news.controller';
 import { DocumentTemplateController } from './documents/document-template.controller';
+import { DocumentContractController } from './documents/document-contract.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -54,6 +55,7 @@ import { DocumentTemplateController } from './documents/document-template.contro
     TemplateController,
     ContractController,
     DocumentTemplateController,
+    DocumentContractController,
     // Mobile
     MobileRegularUserController,
     MobileAccessRequestController,

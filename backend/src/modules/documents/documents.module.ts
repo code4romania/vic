@@ -10,13 +10,23 @@ import { PDFGenerator } from './services/pdf-generator';
 import { DocumentTemplateRepositoryService } from './repositories/document-template.repository';
 import { DocumentTemplateFacade } from './services/document-template.facade';
 import { DocumentTemplateEntity } from './entities/document-template.entity';
+import { DocumentContractEntity } from './entities/document-contract.entity';
+import { DocumentContractRepositoryService } from './repositories/document-contract.repository';
+import { SignatureRepositoryService } from './repositories/document-signature.repository';
+import { DocumentContractFacade } from './services/document-contract.facade';
+import { DocumentContractListViewEntity } from './entities/document-contract-list-view.entity';
+import { DocumentContractListViewRepository } from './repositories/document-contract-list-view.repository';
+import { DocumentSignatureEntity } from './entities/document-signature.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
+      DocumentContractListViewEntity,
       TemplateEntity,
       ContractEntity,
       DocumentTemplateEntity,
+      DocumentContractEntity,
+      DocumentSignatureEntity,
     ]),
   ],
   providers: [
@@ -24,10 +34,14 @@ import { DocumentTemplateEntity } from './entities/document-template.entity';
     TemplateRepositoryService,
     ContractRepositoryService,
     DocumentTemplateRepositoryService,
+    DocumentContractRepositoryService,
+    SignatureRepositoryService,
+    DocumentContractListViewRepository,
     // Facades
     TemplateFacade,
     ContractFacade,
     DocumentTemplateFacade,
+    DocumentContractFacade,
     // Services
     PDFGenerator,
   ],
@@ -37,6 +51,7 @@ import { DocumentTemplateEntity } from './entities/document-template.entity';
     ContractFacade,
     PDFGenerator,
     DocumentTemplateFacade,
+    DocumentContractFacade,
   ],
 })
 export class DocumentsModule {}

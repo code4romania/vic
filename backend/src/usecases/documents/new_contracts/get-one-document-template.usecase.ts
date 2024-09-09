@@ -21,11 +21,12 @@ export class GetOneDocumentTemplateUseCase
     findOptions: FindOneDocumentTemplateOptions,
     organizationId: string,
   ): Promise<IDocumentTemplateModel> {
-    const template = await this.documentTemplateFacade.findOne(findOptions);
+    const template = await this.documentTemplateFacade.findOne({
+      ...findOptions,
+      organizationId,
+    });
 
-    // Check if the provided organizationId matches the template's organizationId
-    // If they don't match, throw a forbidden exception
-    if (!template || organizationId !== template.organizationId) {
+    if (!template) {
       this.exceptionsService.notFoundException(
         DocumentTemplateExceptionMessages.TEMPLATE_001,
       );
