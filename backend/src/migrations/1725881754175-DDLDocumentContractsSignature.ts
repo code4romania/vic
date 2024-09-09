@@ -1,9 +1,9 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class DDLDocumentContractsSignature1725878984294
+export class DDLDocumentContractsSignature1725881754175
   implements MigrationInterface
 {
-  name = 'DDLDocumentContractsSignature1725878984294';
+  name = 'DDLDocumentContractsSignature1725881754175';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -13,19 +13,28 @@ export class DDLDocumentContractsSignature1725878984294
       `CREATE INDEX "IDX_8c0295ec75967828329ef52ac3" ON "document_signature" ("created_on") `,
     );
     await queryRunner.query(
-      `CREATE TABLE "document_contract" ("deleted_on" TIMESTAMP WITH TIME ZONE, "created_on" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_on" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "status" "public"."document_contract_status_enum" NOT NULL DEFAULT 'CREATED', "document_number" text NOT NULL, "document_date" date NOT NULL, "document_start_date" date NOT NULL, "document_end_date" date NOT NULL, "file_path" text, "volunteer_data" jsonb NOT NULL, "volunteer_tutor_data" jsonb, "volunteer_id" uuid NOT NULL, "organization_id" uuid NOT NULL, "document_template_id" uuid, "created_by_admin_id" uuid NOT NULL, "ngo_legal_representative_signature_id" uuid, "volunteer_signature_id" uuid, "tutor_signature_id" uuid, CONSTRAINT "PK_bc0002326db7d928c061fc90953" PRIMARY KEY ("id"))`,
-    );
-    await queryRunner.query(
-      `CREATE INDEX "IDX_0bc738c91555e8a0ef9836de02" ON "document_contract" ("created_on") `,
-    );
-    await queryRunner.query(
       `CREATE TABLE "document_template" ("deleted_on" TIMESTAMP WITH TIME ZONE, "created_on" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_on" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" text NOT NULL, "organization_data" jsonb NOT NULL, "document_terms" text NOT NULL, "organization_id" uuid NOT NULL, "created_by_admin_id" uuid, CONSTRAINT "PK_0e9c5bda0dd75f3bde7ae176c62" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE INDEX "IDX_6dfe1cd0474df5d7d716bf59f0" ON "document_template" ("created_on") `,
     );
     await queryRunner.query(
+      `CREATE TYPE "public"."document_contract_status_enum" AS ENUM('CREATED', 'SCHEDULED', 'PENDING_VOLUNTEER_SIGNATURE', 'PENDING_APPROVAL_NGO', 'PENDING_NGO_REPRESENTATIVE_SIGNATURE', 'APPROVED', 'REJECTED_VOLUNTEER', 'REJECTED_NGO', 'ACTION_EXPIRED')`,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "document_contract" ("deleted_on" TIMESTAMP WITH TIME ZONE, "created_on" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_on" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "id" uuid NOT NULL DEFAULT uuid_generate_v4(), "status" "public"."document_contract_status_enum" NOT NULL DEFAULT 'CREATED', "document_number" text NOT NULL, "document_date" date NOT NULL, "document_start_date" date NOT NULL, "document_end_date" date NOT NULL, "file_path" text, "volunteer_data" jsonb NOT NULL, "volunteer_tutor_data" jsonb, "volunteer_id" uuid NOT NULL, "organization_id" uuid NOT NULL, "document_template_id" uuid, "created_by_admin_id" uuid NOT NULL, "ngo_legal_representative_signature_id" uuid, "volunteer_signature_id" uuid, "tutor_signature_id" uuid, CONSTRAINT "PK_bc0002326db7d928c061fc90953" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "IDX_0bc738c91555e8a0ef9836de02" ON "document_contract" ("created_on") `,
+    );
+    await queryRunner.query(
       `ALTER TABLE "document_signature" ADD CONSTRAINT "FK_6e59057f55354293bf9f5e0a8df" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "document_template" ADD CONSTRAINT "FK_5b878af38db8ff501cbba07d97b" FOREIGN KEY ("organization_id") REFERENCES "organization"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "document_template" ADD CONSTRAINT "FK_efd8efceb4027c6e48af499e005" FOREIGN KEY ("created_by_admin_id") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "document_contract" ADD CONSTRAINT "FK_7617b71c917deb25a66df28843d" FOREIGN KEY ("volunteer_id") REFERENCES "volunteer"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -47,12 +56,6 @@ export class DDLDocumentContractsSignature1725878984294
     );
     await queryRunner.query(
       `ALTER TABLE "document_contract" ADD CONSTRAINT "FK_8586b2b6c023b4a93d301363004" FOREIGN KEY ("tutor_signature_id") REFERENCES "document_signature"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE "document_template" ADD CONSTRAINT "FK_5b878af38db8ff501cbba07d97b" FOREIGN KEY ("organization_id") REFERENCES "organization"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE "document_template" ADD CONSTRAINT "FK_efd8efceb4027c6e48af499e005" FOREIGN KEY ("created_by_admin_id") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(`CREATE VIEW "DocumentContractListView" AS 
     SELECT
@@ -90,12 +93,6 @@ export class DDLDocumentContractsSignature1725878984294
     );
     await queryRunner.query(`DROP VIEW "DocumentContractListView"`);
     await queryRunner.query(
-      `ALTER TABLE "document_template" DROP CONSTRAINT "FK_efd8efceb4027c6e48af499e005"`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE "document_template" DROP CONSTRAINT "FK_5b878af38db8ff501cbba07d97b"`,
-    );
-    await queryRunner.query(
       `ALTER TABLE "document_contract" DROP CONSTRAINT "FK_8586b2b6c023b4a93d301363004"`,
     );
     await queryRunner.query(
@@ -117,16 +114,25 @@ export class DDLDocumentContractsSignature1725878984294
       `ALTER TABLE "document_contract" DROP CONSTRAINT "FK_7617b71c917deb25a66df28843d"`,
     );
     await queryRunner.query(
+      `ALTER TABLE "document_template" DROP CONSTRAINT "FK_efd8efceb4027c6e48af499e005"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "document_template" DROP CONSTRAINT "FK_5b878af38db8ff501cbba07d97b"`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "document_signature" DROP CONSTRAINT "FK_6e59057f55354293bf9f5e0a8df"`,
+    );
+    await queryRunner.query(
+      `DROP INDEX "public"."IDX_0bc738c91555e8a0ef9836de02"`,
+    );
+    await queryRunner.query(`DROP TABLE "document_contract"`);
+    await queryRunner.query(
+      `DROP TYPE "public"."document_contract_status_enum"`,
     );
     await queryRunner.query(
       `DROP INDEX "public"."IDX_6dfe1cd0474df5d7d716bf59f0"`,
     );
     await queryRunner.query(`DROP TABLE "document_template"`);
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_0bc738c91555e8a0ef9836de02"`,
-    );
-    await queryRunner.query(`DROP TABLE "document_contract"`);
     await queryRunner.query(
       `DROP INDEX "public"."IDX_8c0295ec75967828329ef52ac3"`,
     );
