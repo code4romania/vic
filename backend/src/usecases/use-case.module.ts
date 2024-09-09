@@ -138,8 +138,10 @@ import { GetRejectedAccessRequestUsecase } from './access-request/get-rejected-a
 import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
 import { GeneratePDFsUseCase } from './documents/generate-pdfs.usecase';
 import { SyncWithOngHubUseCaseService } from './organization/sync-with-ngohub.usecase';
-import { CreateDocumentTemplateUsecase } from './documents/create-document-template.usecase';
-import { GetOneDocumentTemplateUseCase } from './documents/get-one-document-template.usecase';
+import { CreateDocumentTemplateUsecase } from './documents/new_contracts/create-document-template.usecase';
+import { GetOneDocumentTemplateUseCase } from './documents/new_contracts/get-one-document-template.usecase';
+import { CreateDocumentContractUsecase } from './documents/new_contracts/create-document-contract.usecase';
+import { GetManyDocumentContractsUsecase } from './documents/new_contracts/get-many-document-contracts.usecase';
 
 @Module({
   imports: [
@@ -286,6 +288,7 @@ import { GetOneDocumentTemplateUseCase } from './documents/get-one-document-temp
     DeleteTemplateUseCase,
     GetAllTemplatesUsecase,
     GetTemplatesForDownloadUsecase,
+    // NEW Templates
     CreateDocumentTemplateUsecase,
     GetOneDocumentTemplateUseCase,
     // Contracts
@@ -302,6 +305,9 @@ import { GetOneDocumentTemplateUseCase } from './documents/get-one-document-temp
     GetVolunteerContractHistoryUsecase,
     GetVolunteerPendingContractsUsecase,
     CancelContractUsecase,
+    // NEW Contracts
+    CreateDocumentContractUsecase,
+    GetManyDocumentContractsUsecase,
     // Notifications
     UpdateSettingsUsecase,
     // Testing PDFs
@@ -434,6 +440,7 @@ import { GetOneDocumentTemplateUseCase } from './documents/get-one-document-temp
     DeleteTemplateUseCase,
     GetAllTemplatesUsecase,
     GetTemplatesForDownloadUsecase,
+    // NEW Templates
     CreateDocumentTemplateUsecase,
     GetOneDocumentTemplateUseCase,
     // Contracts
@@ -450,9 +457,12 @@ import { GetOneDocumentTemplateUseCase } from './documents/get-one-document-temp
     GetVolunteerContractHistoryUsecase,
     GetVolunteerPendingContractsUsecase,
     CancelContractUsecase,
-    GetVicStatisticsUsecase,
+    // NEW Contracts
+    CreateDocumentContractUsecase,
+    GetManyDocumentContractsUsecase,
     // Notifications
     UpdateSettingsUsecase,
+    GetVicStatisticsUsecase,
     // Testing PDFs
     GeneratePDFsUseCase,
   ],

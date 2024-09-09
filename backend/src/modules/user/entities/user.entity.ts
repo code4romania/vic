@@ -68,7 +68,7 @@ export class RegularUserEntity extends UserEntity {
   @Column({ type: 'text', name: 'last_name' })
   lastName: string;
 
-  @Column({ type: 'timestamptz', name: 'birthday', nullable: true })
+  @Column({ type: 'date', name: 'birthday', nullable: true })
   birthday: Date;
 
   @Column({ type: 'varchar', name: 'sex', enum: SEX, nullable: true })

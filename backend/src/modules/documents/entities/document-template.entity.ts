@@ -6,10 +6,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { DocumentContractEntity } from './document-contract.entity';
 
-@Entity({ name: 'documents_template' })
+@Entity({ name: 'document_template' })
 export class DocumentTemplateEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -44,8 +46,12 @@ export class DocumentTemplateEntity extends BaseEntity {
   @JoinColumn({ name: 'created_by_admin_id' })
   createdByAdmin: AdminUserEntity;
 
-  //   @OneToMany(() => ContractEntity, (contract) => contract.template, {
-  //     onDelete: 'SET NULL',
-  //   })
-  //   contracts: ContractEntity[];
+  @OneToMany(
+    () => DocumentContractEntity,
+    (contract) => contract.documentTemplate,
+    {
+      onDelete: 'SET NULL',
+    },
+  )
+  contracts: DocumentContractEntity[];
 }

@@ -5,9 +5,9 @@ import { CreateDocumentTemplateDto } from './dto/create-document-template.dto';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { DocumentTemplatePresenter } from './presenters/document-template.presenter';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
-import { CreateDocumentTemplateUsecase } from 'src/usecases/documents/create-document-template.usecase';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
-import { GetOneDocumentTemplateUseCase } from 'src/usecases/documents/get-one-document-template.usecase';
+import { CreateDocumentTemplateUsecase } from 'src/usecases/documents/new_contracts/create-document-template.usecase';
+import { GetOneDocumentTemplateUseCase } from 'src/usecases/documents/new_contracts/get-one-document-template.usecase';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)

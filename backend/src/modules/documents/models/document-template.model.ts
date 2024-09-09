@@ -29,7 +29,9 @@ export type CreateDocumentTemplateOptions = Omit<
   'id' | 'createdOn' | 'updatedOn' | 'createdByAdmin'
 > & { createdByAdminId: string };
 
-export type FindOneDocumentTemplateOptions = Pick<IDocumentTemplateModel, 'id'>;
+export type FindOneDocumentTemplateOptions = Partial<
+  Pick<IDocumentTemplateModel, 'id' | 'organizationId'>
+>;
 
 export class DocumentTemplateTransformer {
   static fromEntity(entity: DocumentTemplateEntity): IDocumentTemplateModel {
