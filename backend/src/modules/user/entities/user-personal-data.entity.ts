@@ -14,11 +14,11 @@ export class UserPersonalDataEntity extends BaseEntity {
   @Column({ type: 'text', name: 'address' })
   address: string;
 
-  @Column({ type: 'timestamptz', name: 'identity_document_issue_date' })
+  @Column({ type: 'date', name: 'identity_document_issue_date' })
   identityDocumentIssueDate: Date;
 
   @Column({
-    type: 'timestamptz',
+    type: 'date',
     name: 'identity_document_expiration_date',
   })
   identityDocumentExpirationDate: Date;
