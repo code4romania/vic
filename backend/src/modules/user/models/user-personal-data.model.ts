@@ -2,11 +2,22 @@ import { UserPersonalDataEntity } from '../entities/user-personal-data.entity';
 
 export interface IUserPersonalDataModel {
   id: string;
+  cnp: string;
+  address: string;
   identityDocumentSeries: string;
   identityDocumentNumber: string;
-  address: string;
   identityDocumentIssueDate: Date;
   identityDocumentExpirationDate: Date;
+  identityDocumentIssuedBy: string;
+  legalGuardian?: ILegalGuardian;
+}
+
+export interface ILegalGuardian {
+  name: string;
+  identityDocumentSeries: string;
+  identityDocumentNumber: string;
+  email: string;
+  phone: string;
 }
 
 export type CreateUserPersonalDataOptions = Omit<IUserPersonalDataModel, 'id'>;
@@ -20,10 +31,13 @@ export class UserPersonalDataTransformer {
     if (!entity) return null;
     return {
       id: entity.id,
+      cnp: entity.cnp,
       identityDocumentSeries: entity.identityDocumentSeries,
       identityDocumentNumber: entity.identityDocumentNumber,
       identityDocumentIssueDate: entity.identityDocumentIssueDate,
       identityDocumentExpirationDate: entity.identityDocumentExpirationDate,
+      identityDocumentIssuedBy: entity.identityDocumentIssuedBy,
+      legalGuardian: entity.legalGuardian,
       address: entity.address,
     };
   }
@@ -38,6 +52,9 @@ export class UserPersonalDataTransformer {
     entity.identityDocumentIssueDate = model.identityDocumentIssueDate;
     entity.identityDocumentNumber = model.identityDocumentNumber;
     entity.identityDocumentSeries = model.identityDocumentSeries;
+    entity.identityDocumentIssuedBy = model.identityDocumentIssuedBy;
+    entity.legalGuardian = model.legalGuardian;
+    entity.cnp = model.cnp;
     return entity;
   }
 }

@@ -117,10 +117,13 @@ const ActionsArchiveTable = ({ query, setQuery, volunteerId }: ActionsArchiveTab
     });
   };
 
-  const onActionDateRangeChange = ([actionStartDate, actionEndDate]: Date[]) => {
+  const onActionDateRangeChange = ([actionStartDate, actionEndDate]: [
+    Date | null,
+    Date | null,
+  ]) => {
     setQuery({
-      actionStartDate,
-      actionEndDate,
+      actionStartDate: actionStartDate ?? undefined,
+      actionEndDate: actionEndDate ?? undefined,
     });
   };
 

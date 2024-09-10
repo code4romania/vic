@@ -147,7 +147,7 @@ export const GenerateContract = () => {
       setCurrentStep(currentStep - 1);
     }
   };
-  const onSelectTemplate = (template: ContractTemplate) => {
+  const onSelectTemplate = (template: ContractTemplate[]) => {
     console.log(template);
   };
 
