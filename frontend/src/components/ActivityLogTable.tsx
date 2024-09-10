@@ -375,17 +375,23 @@ const ActivityLogTable = ({
     setQuery({ status: status?.key });
   };
 
-  const onExecutionOnRangeChange = ([executionDateStart, executionDateEnd]: Date[]) => {
+  const onExecutionOnRangeChange = ([executionDateStart, executionDateEnd]: [
+    Date | null,
+    Date | null,
+  ]) => {
     setQuery({
-      executionDateStart,
-      executionDateEnd,
+      executionDateStart: executionDateStart ?? undefined,
+      executionDateEnd: executionDateEnd ?? undefined,
     });
   };
 
-  const onRegistrationOnRangeChange = ([registrationDateStart, registrationDateEnd]: Date[]) => {
+  const onRegistrationOnRangeChange = ([registrationDateStart, registrationDateEnd]: [
+    Date | null,
+    Date | null,
+  ]) => {
     setQuery({
-      registrationDateStart,
-      registrationDateEnd,
+      registrationDateStart: registrationDateStart ?? undefined,
+      registrationDateEnd: registrationDateEnd ?? undefined,
     });
   };
 
