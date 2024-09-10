@@ -283,6 +283,21 @@
           "placeholder": "Ion Popescu",
           "required": "Numele și prenumele tutorelui legal sunt obligatorii"
         },
+        "cnp": {
+          "label": "CNP",
+          "placeholder": "Introdu CNP-ul",
+          "matches": "CNP-ul trebuie să conțină doar cifre",
+          "required": "CNP-ul este obligatoriu",
+          "length": "CNP-ul trebuie să conțină {{number}} cifre"
+        },
+        "address": {
+          "label": "Domiciliat în",
+          "placeholder": "Introdu adresa",
+          "required": "Domiciliul este obligatoriu",
+          "helper": "Introdu adresa completa din buletin.",
+          "min": "Domiciliul poate să aibă minim {{value}} caractere",
+          "max": "Domiciliul poate să aibă maxim {{value}} caractere"
+        },
         "series": {
           "label": "Serie document identitate (CI)",
           "matches": "Seria trebuie să conțină doar litere",

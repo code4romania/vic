@@ -34,6 +34,8 @@ export type IdentityDataFormTypes = {
   guardianIdentityDocumentNumber?: string;
   guardianEmail?: string;
   guardianPhone?: string;
+  guardianCNP?: string;
+  guardianAddress?: string;
 };
 
 export const mapIdentityDataFormToPayload = (
@@ -56,13 +58,15 @@ export const mapIdentityDataFormToPayload = (
       identityDocumentNumber: formData.guardianIdentityDocumentNumber!,
       email: formData.guardianEmail!,
       phone: formData.guardianPhone!,
+      cnp: formData.guardianCNP!,
+      address: formData.guardianAddress!,
     };
   }
 
   return payload;
 };
 
-const schema = (isUserOver16: boolean, userBirthday: Date | undefined) =>
+const formSchema = (isUserOver16: boolean, userBirthday: Date | undefined) =>
   yup.object({
     identityDocumentCNP: yup
       .string()
@@ -113,6 +117,26 @@ const schema = (isUserOver16: boolean, userBirthday: Date | undefined) =>
       then: (schema) => schema.required(`${i18n.t('identity_data:form.guardian.name.required')}`),
       otherwise: (schema) => schema.optional(),
     }),
+    guardianCNP: yup
+      .string()
+      .matches(REGEX.NUMBERS_ONLY, `${i18n.t('identity_data:form.cnp.matches')}`)
+      .length(13, `${i18n.t('identity_data:form.guardian.cnp.length', { number: 13 })}`)
+      .when([], {
+        is: () => !isUserOver16,
+        then: (schema) => schema.required(`${i18n.t('identity_data:form.guardian.cnp.required')}`),
+        otherwise: (schema) => schema.optional(),
+      }),
+    guardianAddress: yup
+      .string()
+
+      .min(2, `${i18n.t('identity_data:form.guardian.address.min', { value: 2 })}`)
+      .max(100, `${i18n.t('identity_data:form.guardian.address.max', { value: 100 })}`)
+      .when([], {
+        is: () => !isUserOver16,
+        then: (schema) =>
+          schema.required(`${i18n.t('identity_data:form.guardian.address.required')}`),
+        otherwise: (schema) => schema.optional(),
+      }),
     guardianIdentityDocumentSeries: yup
       .string()
       .matches(REGEX.STRINGS_ONLY, `${i18n.t('identity_data:form.guardian.series.matches')}`)
@@ -145,7 +169,7 @@ const schema = (isUserOver16: boolean, userBirthday: Date | undefined) =>
     guardianPhone: yup
       .string()
       .matches(REGEX.NUMBERS_ONLY, `${i18n.t('identity_data:form.guardian.phone.matches')}`)
-      .length(9, `${i18n.t('identity_data:form.guardian.phone.length', { number: 10 })}`)
+      .length(10, `${i18n.t('identity_data:form.guardian.phone.length', { number: 10 })}`)
       .when([], {
         is: () => !isUserOver16,
         then: (schema) =>
@@ -219,7 +243,7 @@ const IdentityData = ({ navigation, route }: any) => {
   } = useForm<IdentityDataFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema(isUserOver16, userProfile?.birthday)),
+    resolver: yupResolver(formSchema(isUserOver16, userProfile?.birthday)),
   });
 
   useEffect(() => {
@@ -241,6 +265,8 @@ const IdentityData = ({ navigation, route }: any) => {
         guardianIdentityDocumentNumber: userPersonalData.legalGuardian?.identityDocumentNumber,
         guardianEmail: userPersonalData.legalGuardian?.email,
         guardianPhone: userPersonalData.legalGuardian?.phone,
+        guardianAddress: userPersonalData.legalGuardian?.address,
+        guardianCNP: userPersonalData.legalGuardian?.cnp,
       });
     }
   }, [userProfile, reset]);
@@ -368,6 +394,38 @@ const IdentityData = ({ navigation, route }: any) => {
             />
             <FormInput
               control={control as any}
+              label={t('form.guardian.email.label')}
+              name="guardianEmail"
+              error={errors.guardianEmail}
+              placeholder={t('form.guardian.email.placeholder')}
+              disabled={isUpdateingPersonalData}
+            />
+            <FormInput
+              control={control as any}
+              label={t('form.guardian.phone.label')}
+              name="guardianPhone"
+              error={errors.guardianPhone}
+              placeholder={t('form.guardian.phone.placeholder')}
+              disabled={isUpdateingPersonalData}
+            />
+            <FormInput
+              control={control as any}
+              label={t('form.guardian.address.label')}
+              name="guardianAddress"
+              error={errors.guardianAddress}
+              placeholder={t('form.guardian.address.placeholder')}
+              disabled={isUpdateingPersonalData}
+            />
+            <FormInput
+              control={control as any}
+              label={t('form.guardian.cnp.label')}
+              name="guardianCNP"
+              error={errors.guardianCNP}
+              placeholder={t('form.guardian.cnp.placeholder')}
+              disabled={isUpdateingPersonalData}
+            />
+            <FormInput
+              control={control as any}
               label={t('form.guardian.series.label')}
               name="guardianIdentityDocumentSeries"
               error={errors.guardianIdentityDocumentSeries}
@@ -382,22 +440,6 @@ const IdentityData = ({ navigation, route }: any) => {
               error={errors.guardianIdentityDocumentNumber}
               placeholder={t('form.guardian.number.placeholder')}
               keyboardType="phone-pad"
-              disabled={isUpdateingPersonalData}
-            />
-            <FormInput
-              control={control as any}
-              label={t('form.guardian.email.label')}
-              name="guardianEmail"
-              error={errors.guardianEmail}
-              placeholder={t('form.guardian.email.placeholder')}
-              disabled={isUpdateingPersonalData}
-            />
-            <FormInput
-              control={control as any}
-              label={t('form.guardian.phone.label')}
-              name="guardianPhone"
-              error={errors.guardianPhone}
-              placeholder={t('form.guardian.phone.placeholder')}
               disabled={isUpdateingPersonalData}
             />
           </>

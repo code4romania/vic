@@ -14,6 +14,8 @@ export interface IUserPersonalDataModel {
 
 export interface ILegalGuardian {
   name: string;
+  cnp: string;
+  address: string;
   identityDocumentSeries: string;
   identityDocumentNumber: string;
   email: string;

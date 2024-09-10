@@ -20,6 +20,17 @@ class LegalGuardianDto {
 
   @IsString()
   @IsNotEmpty()
+  @Length(13)
+  cnp: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(2)
+  @MaxLength(100)
+  address: string;
+
+  @IsString()
+  @IsNotEmpty()
   @Length(2)
   identityDocumentSeries: string;
 

@@ -1,5 +1,5 @@
 import API from '../api';
-import { IUserProfile } from '../../common/interfaces/user-profile.interface';
+import { ILegalGuardianData, IUserProfile } from '../../common/interfaces/user-profile.interface';
 import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.interface';
 import { AccountDataFormTypes } from '../../screens/AccountData';
 import { ImageAttachement } from '../../common/interfaces/image-attachement.interface';
@@ -20,13 +20,7 @@ export interface UserPersonalDataPayload {
   identityDocumentIssueDate: Date;
   identityDocumentExpirationDate: Date;
   identityDocumentIssuedBy: string;
-  legalGuardian?: {
-    name: string;
-    identityDocumentSeries: string;
-    identityDocumentNumber: string;
-    email: string;
-    phone: string;
-  };
+  legalGuardian?: ILegalGuardianData;
 }
 export const updateUserPersonalData = async (
   updates: UserPersonalDataPayload,

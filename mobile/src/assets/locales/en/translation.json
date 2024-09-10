@@ -283,6 +283,21 @@
           "placeholder": "John Doe",
           "required": "Legal guardian's full name is mandatory"
         },
+        "cnp": {
+          "label": "CNP",
+          "placeholder": "Enter CNP",
+          "matches": "CNP must contain only digits",
+          "required": "CNP is mandatory",
+          "length": "CNP must contain {{number}} digits"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "Enter address",
+          "required": "Address is mandatory",
+          "helper": "Enter the full address from your ID.",
+          "min": "Address can have a minimum of {{value}} characters",
+          "max": "Address can have a maximum of {{value}} characters"
+        },
         "series": {
           "label": "Identity document (ID) series",
           "matches": "The series must contain only letters",
