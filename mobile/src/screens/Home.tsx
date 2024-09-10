@@ -25,9 +25,9 @@ const Home = ({ navigation }: any) => {
   const { userProfile } = useUserProfile();
   const { setUserProfile } = useStore();
 
-  const { isRefetching: isRefetchingMonthlyStatistics, refetch: refetchMonthlyStatistics } =
+  const { isLoading: isRefetchingMonthlyStatistics, refetch: refetchMonthlyStatistics } =
     useMonthlyStatistics();
-  const { isRefetching: isRefetchingVicStatistics, refetch: refetchVicStatistics } =
+  const { isLoading: isRefetchingVicStatistics, refetch: refetchVicStatistics } =
     useVicStatistics();
 
   const onAddVolunteeringHours = () => {

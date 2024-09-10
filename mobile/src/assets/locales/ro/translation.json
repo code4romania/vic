@@ -234,6 +234,14 @@
     "description": "Introdu datele din actul de identitate. Acestea vor fi folosite pentru generarea contractului de voluntariat.",
     "privacy_policy": "Politica de Confidențialitate",
     "form": {
+      "cnp": {
+        "label": "CNP",
+        "placeholder": "Introdu CNP-ul",
+        "matches": "CNP-ul trebuie să conțină doar cifre",
+        "required": "CNP-ul este obligatoriu",
+        "length": "CNP-ul trebuie să conțină {{number}} cifre",
+        "birthday_mismatch": "Data de naștere extrasă din CNP nu corespunde cu cea din datele contului de utilizator"
+      },
       "series": {
         "label": "Serie document identitate (CI)",
         "matches": "Seria trebuie să conțină doar litere",
@@ -260,14 +268,54 @@
         "label": "Data emitere",
         "required": "Data emiterii este obligatorie"
       },
+      "issued_by": {
+        "label": "Eliberat de",
+        "placeholder": "Entitatea care a emis documentul (SPCLEP...)",
+        "required": "Denumirea entității care a emis documentul este obligatorie"
+      },
       "expiration_date": {
         "label": "Data expirare",
         "required": "Data expirării este obligatorie"
       },
+      "guardian": {
+        "name": {
+          "label": "Nume și prenume",
+          "placeholder": "Ion Popescu",
+          "required": "Numele și prenumele tutorelui legal sunt obligatorii"
+        },
+        "series": {
+          "label": "Serie document identitate (CI)",
+          "matches": "Seria trebuie să conțină doar litere",
+          "placeholder": "Introdu seria (GZ, RX...)",
+          "length": "Seria trebuie să aibă {{number}} caractere",
+          "required": "Seria este obligatorie"
+        },
+        "number": {
+          "label": "Număr document identitate (CI)",
+          "placeholder": "Introdu numărul din 6 cifre",
+          "matches": "Numărul trebuie să conțină doar cifre",
+          "length": "Numărul trebuie să aibă {{number}} caractere",
+          "required": "Numărul este obligatoriu"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Introdu adresa de email",
+          "required": "Adresa de email este obligatorie",
+          "pattern": "Formatul email-ului nu este valid"
+        },
+        "phone": {
+          "label": "Telefon",
+          "placeholder": "Introdu numărul de telefon",
+          "required": "Numărul de telefon este obligatoriu",
+          "matches": "Numărul de telefon trebuie să conțină doar cifre",
+          "length": "Numărul de telefon trebuie să aibă {{number}} caractere"
+        }
+      },
       "submit": {
         "success": "Datele au fost modificate!"
       }
-    }
+    },
+    "legal_gardian_data_required": "Atenție! Pentru voluntarii sub 16 ani, sunt necesare datele tutorelui legal. Acestea vor fi incluse în contractul de voluntariat."
   },
   "change_password": {
     "title": "Schimbă parola",

@@ -1,6 +1,9 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IUserPersonalDataModel } from 'src/modules/user/models/user-personal-data.model';
+import {
+  ILegalGuardian,
+  IUserPersonalDataModel,
+} from 'src/modules/user/models/user-personal-data.model';
 
 export class UserPersonalDataPresenter {
   constructor(personalData: IUserPersonalDataModel) {
@@ -11,6 +14,9 @@ export class UserPersonalDataPresenter {
     this.identityDocumentExpirationDate =
       personalData.identityDocumentExpirationDate;
     this.address = personalData.address;
+    this.cnp = personalData.cnp;
+    this.identityDocumentIssuedBy = personalData.identityDocumentIssuedBy;
+    this.legalGuardian = personalData.legalGuardian;
   }
 
   @Expose()
@@ -19,6 +25,13 @@ export class UserPersonalDataPresenter {
     example: '525dcdf9-4117-443e-a0c3-bf652cdc5c1b',
   })
   id: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The cnp of the user',
+    example: '1234567890123',
+  })
+  cnp: string;
 
   @Expose()
   @ApiProperty({
@@ -48,4 +61,12 @@ export class UserPersonalDataPresenter {
   @Expose()
   @ApiProperty({ description: 'The identity document expiration date' })
   identityDocumentExpirationDate: Date;
+
+  @Expose()
+  @ApiProperty({ description: 'The identity document issued by' })
+  identityDocumentIssuedBy: string;
+
+  @Expose()
+  @ApiProperty({ description: 'The legal guardian of the user' })
+  legalGuardian: ILegalGuardian;
 }

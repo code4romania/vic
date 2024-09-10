@@ -234,6 +234,14 @@
     "description": "Enter your ID card details. These will be used to generate the volunteer contract.",
     "privacy_policy": "Privacy Policy",
     "form": {
+      "cnp": {
+        "label": "CNP",
+        "placeholder": "Enter CNP",
+        "matches": "CNP must contain only digits",
+        "required": "CNP is mandatory",
+        "length": "CNP must contain {{number}} digits",
+        "birthday_mismatch": "The birth date extracted from CNP does not match the one in the account data"
+      },
       "series": {
         "label": "Identity document (ID) series",
         "matches": "The series must contain only letters",
@@ -260,14 +268,54 @@
         "label": "Date of issue",
         "required": "Date of issue is mandatory"
       },
+      "issued_by": {
+        "label": "Issued by",
+        "placeholder": "Entity that issued the document (SPCLEP...)",
+        "required": "The name of the entity that issued the document is mandatory"
+      },
       "expiration_date": {
         "label": "Expiry date",
         "required": "Expiry date is mandatory"
       },
+      "guardian": {
+        "name": {
+          "label": "Full name",
+          "placeholder": "John Doe",
+          "required": "Legal guardian's full name is mandatory"
+        },
+        "series": {
+          "label": "Identity document (ID) series",
+          "matches": "The series must contain only letters",
+          "placeholder": "Enter series (GZ, RX...)",
+          "length": "The series must have {{number}} characters",
+          "required": "The series is mandatory"
+        },
+        "number": {
+          "label": "Identity document number (CI)",
+          "placeholder": "Enter the 6-digit number",
+          "matches": "The number must contain only digits",
+          "length": "The number must have {{number}} digits",
+          "required": "The number is mandatory"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Enter email address",
+          "required": "Email address is mandatory",
+          "pattern": "The email format is invalid"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Enter phone number",
+          "required": "The phone number is mandatory",
+          "matches": "The phone number must contain only digits",
+          "length": "The phone number must have {{number}} characters"
+        }
+      },
       "submit": {
         "success": "The dates have been changed!"
       }
-    }
+    },
+    "legal_gardian_data_required": "Attention! For volunteers under the age of 16, the legal guardian data is required. This will be included in the volunteer contract."
   },
   "change_password": {
     "title": "Change password",

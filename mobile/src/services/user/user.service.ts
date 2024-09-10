@@ -5,9 +5,9 @@ import {
   getUserProfile,
   updateUserPersonalData,
   updateUserProfile,
+  UserPersonalDataPayload,
 } from './user.api';
 import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.interface';
-import { IdentityDataFormTypes } from '../../screens/IdentityData';
 import { AccountDataFormTypes } from '../../screens/AccountData';
 import { ImageAttachement } from '../../common/interfaces/image-attachement.interface';
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
@@ -48,7 +48,7 @@ export const useUpdateUserPersonalDataMutation = () => {
   const { setIdentityData } = useStore();
   return useMutation(
     ['personal-data'],
-    (personalData: IdentityDataFormTypes) => updateUserPersonalData(personalData),
+    (personalData: UserPersonalDataPayload) => updateUserPersonalData(personalData),
     { onSuccess: (data: IUserProfile) => setIdentityData(data.userPersonalData) },
   );
 };

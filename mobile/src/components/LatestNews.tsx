@@ -22,7 +22,7 @@ const LatestNews = ({ navigation, eva }: LatestNewsProps) => {
   const { t } = useTranslation('home');
 
   const {
-    isFetching: isLoadingAnouncements,
+    isLoading: isLoadingAnouncements,
     data: anouncements,
     error: getAnouncementsError,
     refetch,
