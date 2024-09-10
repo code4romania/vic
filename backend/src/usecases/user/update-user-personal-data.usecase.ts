@@ -45,9 +45,8 @@ export class UpdateUserPersonalDataUsecase
     // 4. check if the user has personal data
     if (!user.userPersonalData) {
       // 4.1 if not create new personal data entity for the user
-      userIdentityData = await this.userService.createUserPersonalData(
-        personalData,
-      );
+      userIdentityData =
+        await this.userService.createUserPersonalData(personalData);
 
       // 4.2 save the data to the user
       await this.userService.updateRegularUser(id, {
