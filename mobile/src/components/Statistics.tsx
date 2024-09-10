@@ -19,7 +19,7 @@ const Statistics = ({ navigation }: { navigation: any }) => {
   const { userProfile } = useUserProfile();
 
   const {
-    isFetching: isFetchingStatistics,
+    isLoading: isLoadingStatistics,
     data: statistics,
     error: getStatisticsError,
     refetch,
@@ -48,7 +48,7 @@ const Statistics = ({ navigation }: { navigation: any }) => {
     navigation.navigate('news', { type: NewsType.ORGANIZATIONS });
   };
 
-  if (isFetchingStatistics) {
+  if (isLoadingStatistics) {
     return <StatisticsSkeleton />;
   }
 

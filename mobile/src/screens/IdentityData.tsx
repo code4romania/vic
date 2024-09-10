@@ -19,6 +19,7 @@ import { REGEX } from '../common/constants/constants';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { differenceInYears, parseISO } from 'date-fns';
+import { UserPersonalDataPayload } from '../services/user/user.api';
 
 export type IdentityDataFormTypes = {
   identityDocumentCNP: string;
@@ -33,6 +34,32 @@ export type IdentityDataFormTypes = {
   guardianIdentityDocumentNumber?: string;
   guardianEmail?: string;
   guardianPhone?: string;
+};
+
+export const mapIdentityDataFormToPayload = (
+  formData: IdentityDataFormTypes,
+): UserPersonalDataPayload => {
+  const payload: UserPersonalDataPayload = {
+    cnp: formData.identityDocumentCNP,
+    identityDocumentSeries: formData.identityDocumentSeries.toUpperCase(),
+    identityDocumentNumber: formData.identityDocumentNumber,
+    address: formData.address,
+    identityDocumentIssueDate: formData.identityDocumentIssueDate,
+    identityDocumentExpirationDate: formData.identityDocumentExpirationDate,
+    identityDocumentIssuedBy: formData.identityDocumentIssuedBy,
+  };
+
+  if (formData.guardianName) {
+    payload.legalGuardian = {
+      name: formData.guardianName,
+      identityDocumentSeries: formData.guardianIdentityDocumentSeries!.toUpperCase(),
+      identityDocumentNumber: formData.guardianIdentityDocumentNumber!,
+      email: formData.guardianEmail!,
+      phone: formData.guardianPhone!,
+    };
+  }
+
+  return payload;
 };
 
 const schema = (isUserOver16: boolean, userBirthday: Date | undefined) =>
@@ -176,8 +203,8 @@ const IdentityData = ({ navigation, route }: any) => {
   const [isUserOver16, setIsUserOver16] = useState(
     userProfile?.birthday
       ? isOver16(userProfile?.birthday)
-      : userProfile?.userPersonalData.identityDocumentCNP
-        ? isOver16FromCNP(userProfile?.userPersonalData.identityDocumentCNP)
+      : userProfile?.userPersonalData.cnp
+        ? isOver16FromCNP(userProfile?.userPersonalData.cnp)
         : true,
   );
 
@@ -200,15 +227,20 @@ const IdentityData = ({ navigation, route }: any) => {
 
     // here the data can be null on first user creation
     if (userPersonalData) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { id, ...formData } = userPersonalData;
-
       // init form data with the user profile personal data
       reset({
-        ...formData,
-        // TODO: add the new fields
-        identityDocumentIssueDate: new Date(formData.identityDocumentIssueDate),
-        identityDocumentExpirationDate: new Date(formData.identityDocumentExpirationDate),
+        identityDocumentCNP: userPersonalData.cnp,
+        identityDocumentSeries: userPersonalData.identityDocumentSeries,
+        identityDocumentNumber: userPersonalData.identityDocumentNumber,
+        address: userPersonalData.address,
+        identityDocumentIssueDate: new Date(userPersonalData.identityDocumentIssueDate),
+        identityDocumentExpirationDate: new Date(userPersonalData.identityDocumentExpirationDate),
+        identityDocumentIssuedBy: userPersonalData.identityDocumentIssuedBy,
+        guardianName: userPersonalData.legalGuardian?.name,
+        guardianIdentityDocumentSeries: userPersonalData.legalGuardian?.identityDocumentSeries,
+        guardianIdentityDocumentNumber: userPersonalData.legalGuardian?.identityDocumentNumber,
+        guardianEmail: userPersonalData.legalGuardian?.email,
+        guardianPhone: userPersonalData.legalGuardian?.phone,
       });
     }
   }, [userProfile, reset]);
@@ -231,28 +263,21 @@ const IdentityData = ({ navigation, route }: any) => {
   };
 
   const onSubmit = async (payload: IdentityDataFormTypes) => {
-    updateUserPersonalData(
-      {
-        ...payload,
-        // TODO: add the new fields
-        identityDocumentSeries: payload.identityDocumentSeries.toLocaleUpperCase(),
+    updateUserPersonalData(mapIdentityDataFormToPayload(payload), {
+      onSuccess: () => {
+        // callback in case we are redirected here from any other place than settings screen
+        Toast.show({ type: 'success', text1: `${t('form.submit.success')}` });
+        if (route?.params?.shouldGoBack) {
+          navigation.goBack();
+        }
       },
-      {
-        onSuccess: () => {
-          // callback in case we are redirected here from any other place than settings screen
-          Toast.show({ type: 'success', text1: `${t('form.submit.success')}` });
-          if (route?.params?.shouldGoBack) {
-            navigation.goBack();
-          }
-        },
-        onError: (error: any) => {
-          Toast.show({
-            type: 'error',
-            text1: `${InternalErrors.USER_ERRORS.getError(error.response?.data.code_error)}`,
-          });
-        },
+      onError: (error: any) => {
+        Toast.show({
+          type: 'error',
+          text1: `${InternalErrors.USER_ERRORS.getError(error.response?.data.code_error)}`,
+        });
       },
-    );
+    });
   };
 
   return (
@@ -284,6 +309,7 @@ const IdentityData = ({ navigation, route }: any) => {
           error={errors.identityDocumentSeries}
           placeholder={t('form.series.placeholder')}
           disabled={isUpdateingPersonalData}
+          autoCapitalize="characters"
         />
         <FormInput
           control={control as any}
@@ -347,6 +373,7 @@ const IdentityData = ({ navigation, route }: any) => {
               error={errors.guardianIdentityDocumentSeries}
               placeholder={t('form.guardian.series.placeholder')}
               disabled={isUpdateingPersonalData}
+              autoCapitalize="characters"
             />
             <FormInput
               control={control as any}
@@ -354,6 +381,7 @@ const IdentityData = ({ navigation, route }: any) => {
               name="guardianIdentityDocumentNumber"
               error={errors.guardianIdentityDocumentNumber}
               placeholder={t('form.guardian.number.placeholder')}
+              keyboardType="phone-pad"
               disabled={isUpdateingPersonalData}
             />
             <FormInput

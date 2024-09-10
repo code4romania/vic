@@ -26,16 +26,17 @@ const Volunteer = ({ navigation }: any) => {
 
   const {
     data: stats,
-    isFetching: isLoadingStats,
+    isLoading: isLoadingStats,
     refetch,
-  } = useVolunteerStats(userProfile?.activeOrganization?.volunteerId as string);
+  } = useVolunteerStats(userProfile?.activeOrganization?.volunteerId);
 
   useFocusEffect(
     React.useCallback(() => {
       refetchUserProfile();
-      refetch();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
+      if (userProfile?.activeOrganization?.volunteerId) {
+        refetch();
+      }
+    }, [refetch, refetchUserProfile, userProfile?.activeOrganization?.volunteerId]),
   );
 
   const onViewOrganizationButtonPress = () => {

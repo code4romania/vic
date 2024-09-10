@@ -1,7 +1,6 @@
 import API from '../api';
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.interface';
-import { IdentityDataFormTypes } from '../../screens/IdentityData';
 import { AccountDataFormTypes } from '../../screens/AccountData';
 import { ImageAttachement } from '../../common/interfaces/image-attachement.interface';
 
@@ -13,8 +12,24 @@ export const getUserProfile = async (): Promise<IUserProfile> => {
   return API.get('/mobile/user/profile').then((res) => res.data);
 };
 
+export interface UserPersonalDataPayload {
+  cnp: string;
+  identityDocumentSeries: string;
+  identityDocumentNumber: string;
+  address: string;
+  identityDocumentIssueDate: Date;
+  identityDocumentExpirationDate: Date;
+  identityDocumentIssuedBy: string;
+  legalGuardian?: {
+    name: string;
+    identityDocumentSeries: string;
+    identityDocumentNumber: string;
+    email: string;
+    phone: string;
+  };
+}
 export const updateUserPersonalData = async (
-  updates: IdentityDataFormTypes,
+  updates: UserPersonalDataPayload,
 ): Promise<IUserProfile> => {
   return API.patch('/mobile/user/personal-data', updates).then((res) => res.data);
 };

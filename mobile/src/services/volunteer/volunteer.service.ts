@@ -73,8 +73,8 @@ export const useVolunteerProfile = (organizationId: string) => {
   );
 };
 
-export const useVolunteerStats = (volunteerId: string) => {
-  return useQuery(['volunteer-stats', volunteerId], () => getVolunteerStats(volunteerId), {
+export const useVolunteerStats = (volunteerId: string | undefined) => {
+  return useQuery(['volunteer-stats', volunteerId], () => getVolunteerStats(volunteerId!), {
     enabled: !!volunteerId,
   });
 };

@@ -5,13 +5,14 @@ import { IOrganizationVolunteer } from './organization-list-item.interface';
 
 export interface IUserPersonalData {
   id: string;
-  identityDocumentCNP: string;
+  cnp: string;
   identityDocumentSeries: string;
   identityDocumentNumber: string;
   address: string;
   identityDocumentIssueDate: Date;
   identityDocumentExpirationDate: Date;
   identityDocumentIssuedBy: string;
+  legalGuardian?: ILegalGuardianData;
 }
 
 export interface ILegalGuardianData {
@@ -37,7 +38,6 @@ export interface IUserProfile {
   sex: Sex;
   location?: ICity;
   userPersonalData: IUserPersonalData;
-  legalGuardianData?: ILegalGuardianData;
   activeOrganization: IOrganizationVolunteer | null;
   myOrganizations: IOrganizationVolunteer[];
   profilePicture?: string;
