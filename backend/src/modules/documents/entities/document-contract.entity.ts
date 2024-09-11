@@ -11,8 +11,8 @@ import { DocumentTemplateEntity } from './document-template.entity';
 import { AdminUserEntity } from 'src/modules/user/entities/user.entity';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
-import { PersonalData } from '../models/document-contract.model';
 import { DocumentSignatureEntity } from './document-signature.entity';
+import { VolunteerContractIdentityData } from '../models/document-contract.model';
 
 @Entity({ name: 'document_contract' })
 export class DocumentContractEntity extends BaseEntity {
@@ -45,10 +45,7 @@ export class DocumentContractEntity extends BaseEntity {
   // ==================== VOLUNTEER RELATION =================================
 
   @Column({ type: 'jsonb', name: 'volunteer_data', nullable: false })
-  volunteerData: PersonalData;
-
-  @Column({ type: 'jsonb', name: 'volunteer_tutor_data', nullable: true })
-  volunteerTutorData: PersonalData;
+  volunteerData: VolunteerContractIdentityData;
 
   @Column({
     type: 'varchar',

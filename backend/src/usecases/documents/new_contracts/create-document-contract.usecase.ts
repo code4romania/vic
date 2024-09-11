@@ -4,7 +4,10 @@ import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.serv
 import { CreateDocumentContractOptions } from 'src/modules/documents/models/document-contract.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentTemplateFacade } from 'src/modules/documents/services/document-template.facade';
-import { IUserPersonalDataModel } from 'src/modules/user/models/user-personal-data.model';
+import {
+  IUserPersonalDataModel,
+  LegalGuardianIdentityData,
+} from 'src/modules/user/models/user-personal-data.model';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
@@ -63,30 +66,17 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
 
     // 6. Extract volunteerData and volunteerTutorData from the user
     const volunteerPersonalData = volunteer.user.userPersonalData;
+
+    console.log(volunteerPersonalData);
+
     await this.validateVolunteerPersonalData(volunteerPersonalData);
-    // TODO: 6.1. Extract volunteerTutorData from the user and validate it
+    await this.validateLegalGuardianData(volunteerPersonalData.legalGuardian);
 
     const newContractOptions: CreateDocumentContractOptions = {
       ...newContract,
       volunteerData: {
         name: volunteer.user.name,
-        CNP: '11321321312321 MISSING',
-        address: volunteerPersonalData.address,
-        identityDocumentSeries: volunteerPersonalData.identityDocumentSeries,
-        identityDocumentNumber: volunteerPersonalData.identityDocumentNumber,
-        // identityDocumentIssuedBy: volunteerPersonalData.identityDocumentIssuedBy,
-        // identityDocumentIssuedDate: volunteerPersonalData.identityDocumentIssuedDate,
-        identityDocumentIssuedBy: 'Missing',
-        identityDocumentIssuedDate: new Date(),
-      },
-      volunteerTutorData: {
-        CNP: '11321321312321',
-        address: 'Str. Unirii 59',
-        name: 'Test',
-        identityDocumentSeries: 'AB',
-        identityDocumentNumber: '1234567890',
-        identityDocumentIssuedBy: 'Comisaria',
-        identityDocumentIssuedDate: new Date(),
+        ...volunteerPersonalData,
       },
     };
 
@@ -114,7 +104,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     volunteerPersonalData: IUserPersonalDataModel,
   ): Promise<void> {
     const personalDataSchema = z.object({
-      CNP: z.string().length(13, 'CNP must be 13 digits'),
+      cnp: z.string().length(13, 'CNP must be 13 digits'),
       address: z.string().min(1, 'Address is required'),
       identityDocumentSeries: z
         .string()
@@ -125,7 +115,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
       identityDocumentIssuedBy: z
         .string()
         .min(1, 'Identity document issuer is required'),
-      identityDocumentIssuedDate: z
+      identityDocumentIssueDate: z.coerce
         .date()
         .max(new Date(), 'Issue date cannot be in the future'),
     });
@@ -142,6 +132,42 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
         this.exceptionsService.badRequestException({
           message: `Invalid personal data ${JSON.stringify(invalidFields)}`,
           code_error: 'INVALID_PERSONAL_DATA', // TODO: create a new error code for this
+        });
+      } else {
+        throw error; // Re-throw unexpected errors
+      }
+    }
+  }
+
+  private async validateLegalGuardianData(
+    legalGuardianData: LegalGuardianIdentityData,
+  ): Promise<void> {
+    const legalGuardianSchema = z.object({
+      name: z.string().min(1, 'Name is required'),
+      cnp: z.string().length(13, 'CNP must be 13 digits'),
+      address: z.string().min(1, 'Address is required'),
+      identityDocumentSeries: z
+        .string()
+        .min(2, 'Identity document series is required'),
+      identityDocumentNumber: z
+        .string()
+        .min(1, 'Identity document number is required'),
+      email: z.string().email('Invalid email address'),
+      phone: z.string().min(1, 'Phone number is required'),
+    });
+
+    try {
+      legalGuardianSchema.parse(legalGuardianData);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const invalidFields = error.issues.map((issue) => ({
+          field: issue.path.join('.'),
+          message: issue.message,
+        }));
+
+        this.exceptionsService.badRequestException({
+          message: `Invalid legal guardian data ${JSON.stringify(invalidFields)}`,
+          code_error: 'INVALID_LEGAL_GUARDIAN_DATA',
         });
       } else {
         throw error; // Re-throw unexpected errors

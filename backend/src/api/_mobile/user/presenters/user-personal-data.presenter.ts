@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  ILegalGuardian,
+  LegalGuardianIdentityData,
   IUserPersonalDataModel,
 } from 'src/modules/user/models/user-personal-data.model';
 
@@ -68,5 +68,5 @@ export class UserPersonalDataPresenter {
 
   @Expose()
   @ApiProperty({ description: 'The legal guardian of the user' })
-  legalGuardian: ILegalGuardian;
+  legalGuardian: LegalGuardianIdentityData;
 }

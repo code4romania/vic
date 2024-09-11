@@ -9,10 +9,10 @@ export interface IUserPersonalDataModel {
   identityDocumentIssueDate: Date;
   identityDocumentExpirationDate: Date;
   identityDocumentIssuedBy: string;
-  legalGuardian?: ILegalGuardian;
+  legalGuardian?: LegalGuardianIdentityData;
 }
 
-export interface ILegalGuardian {
+export interface LegalGuardianIdentityData {
   name: string;
   cnp: string;
   address: string;

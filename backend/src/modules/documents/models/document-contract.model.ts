@@ -13,17 +13,11 @@ import {
   IVolunteerModel,
   VolunteerModelTransformer,
 } from 'src/modules/volunteer/model/volunteer.model';
+import { IUserPersonalDataModel } from 'src/modules/user/models/user-personal-data.model';
 
-// TODO: Change this with the existent IUserPersonalDataModel after is updated
-export interface PersonalData {
-  CNP: string;
+export type VolunteerContractIdentityData = IUserPersonalDataModel & {
   name: string;
-  address: string;
-  identityDocumentSeries: string;
-  identityDocumentNumber: string;
-  identityDocumentIssuedBy: string;
-  identityDocumentIssuedDate: Date;
-}
+};
 
 export interface IDocumentContractModel extends IBaseModel {
   id: string;
@@ -48,8 +42,7 @@ export interface IDocumentContractModel extends IBaseModel {
   volunteerId: string;
   volunteer: IVolunteerModel;
 
-  volunteerData: PersonalData; // TODO: le tragem din user in usecase-ul de creare contract si raman ca snapshoot
-  volunteerTutorData?: PersonalData; // TODO: le tragem din user in usecase-ul de creare contract si raman ca snapshoot
+  volunteerData: VolunteerContractIdentityData; // TODO: le tragem din user in usecase-ul de creare contract si raman ca snapshoot
 
   filePath?: string;
 
@@ -66,8 +59,7 @@ export type CreateDocumentContractOptions = {
   documentStartDate: Date;
   documentEndDate: Date;
 
-  volunteerData: PersonalData;
-  volunteerTutorData?: PersonalData;
+  volunteerData: VolunteerContractIdentityData;
 
   volunteerId: string;
   organizationId: string;
@@ -105,7 +97,6 @@ export class DocumentContractTransformer {
       volunteerId: entity.volunteerId,
       volunteer: VolunteerModelTransformer.fromEntity(entity.volunteer),
       volunteerData: entity.volunteerData,
-      volunteerTutorData: entity.volunteerTutorData,
       // Template
       documentTemplateId: entity.documentTemplateId,
       documentTemplate: DocumentTemplateTransformer.fromEntity(
@@ -131,7 +122,6 @@ export class DocumentContractTransformer {
     entity.documentEndDate = model.documentEndDate;
     entity.volunteerId = model.volunteerId;
     entity.volunteerData = model.volunteerData;
-    entity.volunteerTutorData = model.volunteerTutorData;
     entity.organizationId = model.organizationId;
     entity.documentTemplateId = model.documentTemplateId;
     entity.createdByAdminId = model.createdByAdminId;

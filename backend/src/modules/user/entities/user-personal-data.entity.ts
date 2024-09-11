@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { ILegalGuardian } from '../models/user-personal-data.model';
+import { LegalGuardianIdentityData } from '../models/user-personal-data.model';
 @Entity({ name: 'user_personal_data' })
 export class UserPersonalDataEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -31,5 +31,5 @@ export class UserPersonalDataEntity extends BaseEntity {
   identityDocumentIssuedBy: string;
 
   @Column({ type: 'jsonb', name: 'legal_guardian', nullable: true })
-  legalGuardian: ILegalGuardian;
+  legalGuardian: LegalGuardianIdentityData;
 }
