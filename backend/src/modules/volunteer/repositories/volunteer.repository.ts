@@ -92,6 +92,11 @@ export class VolunteerRepositoryService
         'department',
       )
       .leftJoinAndMapOne('volunteer.user', 'volunteer.user', 'user')
+      .leftJoinAndMapOne(
+        'user.userPersonalData',
+        'user.userPersonalData',
+        'userPersonalData',
+      )
       .leftJoinAndMapOne('user.location', 'user.location', 'location')
       .leftJoinAndMapOne('location.county', 'location.county', 'county')
       .leftJoinAndMapOne(
