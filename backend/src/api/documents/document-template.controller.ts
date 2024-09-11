@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { CreateDocumentTemplateDto } from './dto/create-document-template.dto';
@@ -8,6 +16,10 @@ import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { CreateDocumentTemplateUsecase } from 'src/usecases/documents/new_contracts/create-document-template.usecase';
 import { GetOneDocumentTemplateUseCase } from 'src/usecases/documents/new_contracts/get-one-document-template.usecase';
+import { GetManyDocumentTemplatesDto } from './dto/get-many-document-templates.dto';
+import { DocumentTemplateListViewItemPresenter } from './presenters/document-template-list-view-item.presenter';
+import { GetManyDocumentTemplatesUsecase } from 'src/usecases/documents/new_contracts/get-many-document-templates.usecase';
+import { PaginatedPresenter } from 'src/infrastructure/presenters/generic-paginated.presenter';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -16,6 +28,7 @@ export class DocumentTemplateController {
   constructor(
     private readonly createDocumentTemplateUsecase: CreateDocumentTemplateUsecase,
     private readonly getOneDocumentTemplateUsecase: GetOneDocumentTemplateUseCase,
+    private readonly getManyDocumentTemplatesUsecase: GetManyDocumentTemplatesUsecase,
   ) {}
 
   @ApiBody({ type: CreateDocumentTemplateDto })
@@ -45,5 +58,25 @@ export class DocumentTemplateController {
     );
 
     return new DocumentTemplatePresenter(documentTemplate);
+  }
+
+  @Get()
+  async getMany(
+    @Query() query: GetManyDocumentTemplatesDto,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<PaginatedPresenter<DocumentTemplateListViewItemPresenter>> {
+    const documentTemplates =
+      await this.getManyDocumentTemplatesUsecase.execute({
+        ...query,
+        organizationId,
+      });
+
+    return new PaginatedPresenter<DocumentTemplateListViewItemPresenter>({
+      ...documentTemplates,
+      items: documentTemplates.items.map(
+        (documentTemplate) =>
+          new DocumentTemplateListViewItemPresenter(documentTemplate),
+      ),
+    });
   }
 }
