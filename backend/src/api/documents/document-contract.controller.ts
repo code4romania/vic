@@ -8,7 +8,10 @@ import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { GetManyDocumentContractsUsecase } from 'src/usecases/documents/new_contracts/get-many-document-contracts.usecase';
 import { DocumentContractListViewItemPresenter } from './presenters/document-contract-list-view-item.presenter';
-import { PaginatedPresenter } from 'src/infrastructure/presenters/generic-paginated.presenter';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { GetManyDocumentContractsDto } from './dto/get-many-document-contracts.dto';
 
 @ApiBearerAuth()
@@ -35,6 +38,7 @@ export class DocumentContractController {
   }
 
   @Get('')
+  @ApiPaginatedResponse(DocumentContractListViewItemPresenter)
   async getDocumentContracts(
     @Query() filters: GetManyDocumentContractsDto,
     @ExtractUser() { organizationId }: IAdminUserModel,

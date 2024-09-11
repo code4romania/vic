@@ -19,7 +19,10 @@ import { GetOneDocumentTemplateUseCase } from 'src/usecases/documents/new_contra
 import { GetManyDocumentTemplatesDto } from './dto/get-many-document-templates.dto';
 import { DocumentTemplateListViewItemPresenter } from './presenters/document-template-list-view-item.presenter';
 import { GetManyDocumentTemplatesUsecase } from 'src/usecases/documents/new_contracts/get-many-document-templates.usecase';
-import { PaginatedPresenter } from 'src/infrastructure/presenters/generic-paginated.presenter';
+import {
+  ApiPaginatedResponse,
+  PaginatedPresenter,
+} from 'src/infrastructure/presenters/generic-paginated.presenter';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -61,6 +64,7 @@ export class DocumentTemplateController {
   }
 
   @Get()
+  @ApiPaginatedResponse(DocumentTemplateListViewItemPresenter)
   async getMany(
     @Query() query: GetManyDocumentTemplatesDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
