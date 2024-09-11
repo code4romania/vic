@@ -32,6 +32,10 @@ export class DocumentContractFacade {
     return this.documentContractRepository.findOne(options);
   }
 
+  async exists(options: FindOneDocumentContractOptions): Promise<boolean> {
+    return this.documentContractRepository.exists(options);
+  }
+
   async findMany(
     options: FindManyDocumentContractListViewOptions,
   ): Promise<Pagination<IDocumentContractListViewModel>> {

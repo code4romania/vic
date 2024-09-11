@@ -8,17 +8,15 @@ import {
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class SignatureRepositoryService {
+export class DocumentSignatureRepository {
   constructor(
     @InjectRepository(DocumentSignatureEntity)
     private readonly signatureRepository: Repository<DocumentSignatureEntity>,
   ) {}
 
-  async create(
-    newSignature: CreateSignatureOptions,
-  ): Promise<DocumentSignatureEntity> {
+  async create(newSignature: CreateSignatureOptions): Promise<string> {
     const signature = await this.signatureRepository.save(newSignature);
-    return signature;
+    return signature.id;
   }
 
   async findOne(

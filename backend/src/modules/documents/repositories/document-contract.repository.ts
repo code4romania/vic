@@ -43,6 +43,10 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
     return DocumentContractTransformer.fromEntity(documentContract);
   }
 
+  async exists(options: FindOneDocumentContractOptions): Promise<boolean> {
+    return this.documentContractRepository.exists({ where: options });
+  }
+
   async update(
     id: string,
     updates: UpdateDocumentContractOptions,

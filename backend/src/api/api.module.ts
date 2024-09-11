@@ -33,6 +33,7 @@ import { MobileSettingsController } from './_mobile/settings/settings-controller
 import { MobileNewsController } from './_mobile/news/news.controller';
 import { DocumentTemplateController } from './documents/document-template.controller';
 import { DocumentContractController } from './documents/document-contract.controller';
+import { MobileDocumentsContractController } from './_mobile/documents/documents-contract.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -71,6 +72,7 @@ import { DocumentContractController } from './documents/document-contract.contro
     MobileAnouncementsController,
     MobileSettingsController,
     MobileNewsController,
+    MobileDocumentsContractController,
   ],
 })
 export class ApiModule {}

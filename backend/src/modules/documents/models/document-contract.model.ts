@@ -48,7 +48,7 @@ export interface IDocumentContractModel extends IBaseModel {
 
   ngoLegalRepresentativeSignatureId?: string;
   volunteerSignatureId?: string;
-  tutorSignatureId?: string;
+  legalGuardianSignatureId?: string;
 }
 
 export type CreateDocumentContractOptions = {
@@ -72,10 +72,15 @@ export type UpdateDocumentContractOptions = {
   filePath?: string;
   ngoLegalRepresentativeSignatureId?: string;
   volunteerSignatureId?: string;
-  tutorSignatureId?: string;
+  legalGuardianSignatureId?: string;
 };
 
-export type FindOneDocumentContractOptions = Pick<IDocumentContractModel, 'id'>;
+export type FindOneDocumentContractOptions = Partial<
+  Pick<
+    IDocumentContractModel,
+    'id' | 'volunteerId' | 'organizationId' | 'status'
+  >
+>;
 
 export class DocumentContractTransformer {
   static fromEntity(entity: DocumentContractEntity): IDocumentContractModel {

@@ -12,13 +12,14 @@ import { DocumentTemplateFacade } from './services/document-template.facade';
 import { DocumentTemplateEntity } from './entities/document-template.entity';
 import { DocumentContractEntity } from './entities/document-contract.entity';
 import { DocumentContractRepositoryService } from './repositories/document-contract.repository';
-import { SignatureRepositoryService } from './repositories/document-signature.repository';
 import { DocumentContractFacade } from './services/document-contract.facade';
 import { DocumentContractListViewEntity } from './entities/document-contract-list-view.entity';
 import { DocumentContractListViewRepository } from './repositories/document-contract-list-view.repository';
 import { DocumentSignatureEntity } from './entities/document-signature.entity';
 import { DocumentTemplateListViewEntity } from './entities/document-template-list-view.entity';
 import { DocumentTemplateListViewRepository } from './repositories/document-template-list-view.repository';
+import { DocumentSignatureRepository } from './repositories/document-signature.repository';
+import { DocumentSignatureFacade } from './services/document-signature.facade';
 
 @Module({
   imports: [
@@ -38,7 +39,7 @@ import { DocumentTemplateListViewRepository } from './repositories/document-temp
     ContractRepositoryService,
     DocumentTemplateRepositoryService,
     DocumentContractRepositoryService,
-    SignatureRepositoryService,
+    DocumentSignatureRepository,
     DocumentContractListViewRepository,
     DocumentTemplateListViewRepository,
     // Facades
@@ -46,6 +47,7 @@ import { DocumentTemplateListViewRepository } from './repositories/document-temp
     ContractFacade,
     DocumentTemplateFacade,
     DocumentContractFacade,
+    DocumentSignatureFacade,
     // Services
     PDFGenerator,
   ],
@@ -56,6 +58,7 @@ import { DocumentTemplateListViewRepository } from './repositories/document-temp
     PDFGenerator,
     DocumentTemplateFacade,
     DocumentContractFacade,
+    DocumentSignatureFacade,
   ],
 })
 export class DocumentsModule {}

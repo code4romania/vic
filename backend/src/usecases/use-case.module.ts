@@ -143,6 +143,7 @@ import { GetOneDocumentTemplateUseCase } from './documents/new_contracts/get-one
 import { CreateDocumentContractUsecase } from './documents/new_contracts/create-document-contract.usecase';
 import { GetManyDocumentContractsUsecase } from './documents/new_contracts/get-many-document-contracts.usecase';
 import { GetManyDocumentTemplatesUsecase } from './documents/new_contracts/get-many-document-templates.usecase';
+import { SignDocumentContractByVolunteerUsecase } from './documents/new_contracts/sign-document-contract-by-volunteer.usecase';
 
 const providers = [
   // Organization
@@ -292,6 +293,7 @@ const providers = [
   // NEW Contracts
   CreateDocumentContractUsecase,
   GetManyDocumentContractsUsecase,
+  SignDocumentContractByVolunteerUsecase,
   // Notifications
   UpdateSettingsUsecase,
   // Testing PDFs

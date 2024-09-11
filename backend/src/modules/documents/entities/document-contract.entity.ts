@@ -118,14 +118,14 @@ export class DocumentContractEntity extends BaseEntity {
 
   @Column({
     type: 'varchar',
-    name: 'tutor_signature_id',
+    name: 'legal_guardian_signature_id',
     nullable: true,
   })
-  tutorSignatureId: string;
+  legalGuardianSignatureId: string;
 
   @ManyToOne(() => DocumentSignatureEntity)
-  @JoinColumn({ name: 'tutor_signature_id' })
-  tutorSignature: DocumentSignatureEntity;
+  @JoinColumn({ name: 'legal_guardian_signature_id' })
+  legalGuardianSignature: DocumentSignatureEntity;
 
   //   // ==================== APPROVAL =================================
 
