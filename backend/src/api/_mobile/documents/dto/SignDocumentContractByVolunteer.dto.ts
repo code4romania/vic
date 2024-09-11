@@ -1,7 +1,7 @@
 import { IsString, IsOptional, IsUUID } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class SignDocumentContractDto {
+export class SignDocumentContractByVolunteerDto {
   @ApiProperty({ description: 'The ID of the organization' })
   @IsUUID()
   organizationId: string;
