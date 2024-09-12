@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateDocumentContractUsecase } from 'src/usecases/documents/new_contracts/create-document-contract.usecase';
 import { CreateDocumentContractDto } from './dto/create-document-contract.dto';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
@@ -13,6 +22,8 @@ import {
   PaginatedPresenter,
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { GetManyDocumentContractsDto } from './dto/get-many-document-contracts.dto';
+import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
+import { ApproveDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/approve-document-contract-by-ngo.usecase';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -21,6 +32,7 @@ export class DocumentContractController {
   constructor(
     private readonly createDocumentContractUsecase: CreateDocumentContractUsecase,
     private readonly getManyDocumentContractsUsecase: GetManyDocumentContractsUsecase,
+    private readonly approveDocumentContractByNgoUsecase: ApproveDocumentContractByNgoUsecase,
   ) {}
 
   @Post()
@@ -56,9 +68,11 @@ export class DocumentContractController {
     });
   }
 
-  /* TODO: GET /documents/contracts/check?year={year}&documentNumber={documentNumber}
-   CHECK IF A CONTRACT ALREADY EXISTS FOR THE GIVEN YEAR AND DOCUMENT NUMBER IN THE SAME ORGANIZATION
-   RETURN TRUE IF IT EXISTS, FALSE OTHERWISE
-   USED TO PREVENT DUPLICATE DOCUMENT NUMBERS IN THE SAME YEAR
-   */
+  @Patch(':id/approve')
+  async approveDocumentContract(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<void> {
+    await this.approveDocumentContractByNgoUsecase.execute(id, organizationId);
+  }
 }
