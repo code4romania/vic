@@ -14,6 +14,7 @@ import { GetManyDocumentContractsByVolunteerUsecase } from 'src/usecases/documen
 import { GetManyContractsByVolunteerDto } from './dto/GetManyContractsByVolunteer.dto';
 import { DocumentContractListViewItemPresenter } from 'src/api/documents/presenters/document-contract-list-view-item.presenter';
 import { PaginatedPresenter } from 'src/infrastructure/presenters/generic-paginated.presenter';
+import { GetOneDocumentContractForVolunteerUsecase } from 'src/usecases/documents/new_contracts/get-one-document-contract-for-volunteer.usecase';
 
 // @UseGuards(MobileJwtAuthGuard, ContractVolunteerGuard)
 @UseGuards(MobileJwtAuthGuard)
@@ -24,6 +25,7 @@ export class MobileDocumentsContractController {
     private readonly signDocumentContractByVolunteerUsecase: SignDocumentContractByVolunteerUsecase,
     private readonly rejectDocumentContractByVolunteerUsecase: RejectDocumentContractByVolunteerUsecase,
     private readonly getManyDocumentContractsByVolunteerUsecase: GetManyDocumentContractsByVolunteerUsecase,
+    private readonly getOneDocumentContractForVolunteerUsecase: GetOneDocumentContractForVolunteerUsecase,
   ) {}
 
   // Get all contracts for a volunteer
@@ -44,6 +46,22 @@ export class MobileDocumentsContractController {
         (contract) => new DocumentContractListViewItemPresenter(contract),
       ),
     });
+  }
+
+  @Get(':contractId')
+  async findOne(
+    @ExtractUser() { id }: IRegularUserModel,
+    @Param('contractId', UuidValidationPipe) contractId: string,
+    @Query('organizationId', UuidValidationPipe) organizationId: string,
+  ): Promise<DocumentContractListViewItemPresenter> {
+    const contract =
+      await this.getOneDocumentContractForVolunteerUsecase.execute({
+        documentContractId: contractId,
+        userId: id,
+        organizationId,
+      });
+
+    return new DocumentContractListViewItemPresenter(contract);
   }
 
   @ApiParam({ name: 'contractId', type: 'string' })

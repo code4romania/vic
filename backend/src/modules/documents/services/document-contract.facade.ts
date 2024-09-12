@@ -9,6 +9,7 @@ import {
 import { DocumentContractListViewRepository } from '../repositories/document-contract-list-view.repository';
 import {
   FindManyDocumentContractListViewOptions,
+  FindOneDocumentContractListViewOptions,
   IDocumentContractListViewModel,
 } from '../models/document-contract-list-view.model';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
@@ -40,6 +41,12 @@ export class DocumentContractFacade {
     options: FindManyDocumentContractListViewOptions,
   ): Promise<Pagination<IDocumentContractListViewModel>> {
     return this.documentContractListViewRepository.findMany(options);
+  }
+
+  async findOneForVolunteer(
+    options: FindOneDocumentContractListViewOptions,
+  ): Promise<IDocumentContractListViewModel> {
+    return this.documentContractListViewRepository.findOne(options);
   }
 
   async update(

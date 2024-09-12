@@ -146,6 +146,7 @@ import { SignDocumentContractByVolunteerUsecase } from './documents/new_contract
 import { RejectDocumentContractByVolunteerUsecase } from './documents/new_contracts/reject-document-contact-by-volunteer.usecase';
 import { GeneratePDFsUseCase } from './documents/new_contracts/generate-pdfs.usecase';
 import { GetManyDocumentContractsByVolunteerUsecase } from './documents/new_contracts/get-many-document-contracts-by-volunteer.usecase';
+import { GetOneDocumentContractForVolunteerUsecase } from './documents/new_contracts/get-one-document-contract-for-volunteer.usecase';
 
 const providers = [
   // Organization
@@ -298,6 +299,7 @@ const providers = [
   SignDocumentContractByVolunteerUsecase,
   RejectDocumentContractByVolunteerUsecase,
   GetManyDocumentContractsByVolunteerUsecase,
+  GetOneDocumentContractForVolunteerUsecase,
   // Notifications
   UpdateSettingsUsecase,
   // Testing PDFs
