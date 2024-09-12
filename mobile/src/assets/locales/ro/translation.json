@@ -266,7 +266,8 @@
       },
       "issue_date": {
         "label": "Data emitere",
-        "required": "Data emiterii este obligatorie"
+        "required": "Data emiterii este obligatorie",
+        "future": "Data emiterii nu poate fi ulterioară datei curente"
       },
       "issued_by": {
         "label": "Eliberat de",
@@ -275,7 +276,8 @@
       },
       "expiration_date": {
         "label": "Data expirare",
-        "required": "Data expirării este obligatorie"
+        "required": "Data expirării este obligatorie",
+        "future": "Data expirării nu poate fi înaintea datei curente"
       },
       "guardian": {
         "name": {
