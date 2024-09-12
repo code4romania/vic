@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 interface FormLayoutProps {
   children: React.ReactNode;
 }
 
-const FormLayout = ({ children }: FormLayoutProps) => {
+const FormLayout = forwardRef<ScrollView, FormLayoutProps>(({ children }, ref) => {
   return (
     <ScrollView
+      ref={ref}
       automaticallyAdjustKeyboardInsets={true}
       bounces={false}
       bouncesZoom={false}
@@ -19,7 +20,7 @@ const FormLayout = ({ children }: FormLayoutProps) => {
       {children}
     </ScrollView>
   );
-};
+});
 
 export default FormLayout;
 

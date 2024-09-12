@@ -266,7 +266,8 @@
       },
       "issue_date": {
         "label": "Date of issue",
-        "required": "Date of issue is mandatory"
+        "required": "Date of issue is mandatory",
+        "future": "The date of issue cannot be later than the current date"
       },
       "issued_by": {
         "label": "Issued by",
@@ -275,7 +276,8 @@
       },
       "expiration_date": {
         "label": "Expiry date",
-        "required": "Expiry date is mandatory"
+        "required": "Expiry date is mandatory",
+        "future": "The expiration date cannot be before the current date"
       },
       "guardian": {
         "name": {

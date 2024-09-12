@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -20,6 +20,7 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { differenceInYears, parseISO } from 'date-fns';
 import { UserPersonalDataPayload } from '../services/user/user.api';
+import { findNodeHandle, ScrollView, View } from 'react-native';
 
 export type IdentityDataFormTypes = {
   identityDocumentCNP: string;
@@ -82,9 +83,6 @@ const formSchema = (isUserOver16: boolean, userBirthday: Date | undefined) =>
             return true;
           }
           const cnpBirthday = getBirthdayFromCNP(value);
-          // TODO: remove this after testing
-          console.log('cnpBirthday: 🎂', cnpBirthday);
-          console.log('userBirthday: 🎂', userBirthday);
           return cnpBirthday ? cnpBirthday.getTime() === new Date(userBirthday).getTime() : true;
         },
       ),
@@ -105,13 +103,15 @@ const formSchema = (isUserOver16: boolean, userBirthday: Date | undefined) =>
       .max(100, `${i18n.t('identity_data:form.address.max', { value: 100 })}`),
     identityDocumentIssueDate: yup
       .date()
-      .required(`${i18n.t('identity_data:form.issue_date.required')}`),
+      .required(`${i18n.t('identity_data:form.issue_date.required')}`)
+      .max(new Date(), `${i18n.t('identity_data:form.issue_date.future')}`),
     identityDocumentIssuedBy: yup
       .string()
       .required(`${i18n.t('identity_data:form.issued_by.required')}`),
     identityDocumentExpirationDate: yup
       .date()
-      .required(`${i18n.t('identity_data:form.expiration_date.required')}`),
+      .required(`${i18n.t('identity_data:form.expiration_date.required')}`)
+      .min(new Date(), `${i18n.t('identity_data:form.expiration_date.future')}`),
     guardianName: yup.string().when([], {
       is: () => !isUserOver16,
       then: (schema) => schema.required(`${i18n.t('identity_data:form.guardian.name.required')}`),
@@ -220,6 +220,8 @@ const getBirthdayFromCNP = (cnp: string): Date | null => {
 const IdentityData = ({ navigation, route }: any) => {
   const paddingTop = usePaddingTop();
   const { t } = useTranslation('identity_data');
+  const scrollViewRef = useRef<ScrollView>(null);
+  const inputRefs = useRef<{ [key: string]: View | null }>({});
 
   const { userProfile } = useUserProfile();
 
@@ -284,6 +286,34 @@ const IdentityData = ({ navigation, route }: any) => {
     return () => subscription.unsubscribe();
   }, [watch, userProfile?.birthday]);
 
+  const registerInputRef = (name: keyof IdentityDataFormTypes) => (ref: View | null) => {
+    inputRefs.current[name] = ref;
+  };
+
+  // scroll to the first input that has an error
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      // check if there are any errors and get the key of the first error
+      const firstErrorKey = Object.keys(errors)[0];
+      const errorInput = inputRefs.current[firstErrorKey];
+
+      if (errorInput && scrollViewRef.current) {
+        const scrollViewHandle = findNodeHandle(scrollViewRef.current);
+        if (scrollViewHandle) {
+          errorInput.measureLayout(
+            scrollViewHandle,
+            (_, y) => {
+              // measure the layout of the error input relative to the scroll view
+              // scroll to the error input, with a 50-pixel offset for better visibility
+              scrollViewRef.current?.scrollTo({ y: y - 50, animated: true });
+            },
+            () => console.log('measurement failed'),
+          );
+        }
+      }
+    }
+  }, [errors]);
+
   const onPrivacyPolicyPress = () => {
     Linking.openURL(`${process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK}`);
   };
@@ -317,131 +347,161 @@ const IdentityData = ({ navigation, route }: any) => {
       }}
       headerStyle={{ paddingTop }}
     >
-      <FormLayout>
+      <FormLayout ref={scrollViewRef}>
         <Paragraph>{`${t('description')}`}</Paragraph>
         <InlineLink label={t('privacy_policy')} onPress={onPrivacyPolicyPress} category="p2" />
-        <FormInput
-          control={control as any}
-          label={t('form.cnp.label')}
-          name="identityDocumentCNP"
-          placeholder={t('form.cnp.placeholder')}
-          error={errors.identityDocumentCNP}
-          disabled={isUpdateingPersonalData}
-        />
-        <FormInput
-          control={control as any}
-          label={t('form.series.label')}
-          name="identityDocumentSeries"
-          error={errors.identityDocumentSeries}
-          placeholder={t('form.series.placeholder')}
-          disabled={isUpdateingPersonalData}
-          autoCapitalize="characters"
-        />
-        <FormInput
-          control={control as any}
-          label={t('form.number.label')}
-          name="identityDocumentNumber"
-          error={errors.identityDocumentNumber}
-          placeholder={t('form.number.placeholder')}
-          keyboardType="phone-pad"
-          disabled={isUpdateingPersonalData}
-        />
-        <FormInput
-          control={control as any}
-          label={t('form.address.label')}
-          name="address"
-          error={errors.address}
-          placeholder={t('form.address.placeholder')}
-          helper={`${t('form.address.helper')}`}
-          disabled={isUpdateingPersonalData}
-        />
-        <FormDatePicker
-          control={control as any}
-          label={t('form.issue_date.label')}
-          name="identityDocumentIssueDate"
-          error={errors.identityDocumentIssueDate}
-          placeholder={t('general:select')}
-          min={new Date(1900, 0, 0)}
-          disabled={isUpdateingPersonalData}
-        />
-        <FormDatePicker
-          control={control as any}
-          label={t('form.expiration_date.label')}
-          name="identityDocumentExpirationDate"
-          error={errors.identityDocumentExpirationDate}
-          placeholder={t('general:select')}
-          max={new Date(2200, 0, 0)}
-          disabled={isUpdateingPersonalData}
-        />
-        <FormInput
-          control={control as any}
-          label={t('form.issued_by.label')}
-          name="identityDocumentIssuedBy"
-          error={errors.identityDocumentIssuedBy}
-          placeholder={t('form.issued_by.placeholder')}
-          disabled={isUpdateingPersonalData}
-        />
+        <View ref={registerInputRef('identityDocumentCNP')}>
+          <FormInput
+            control={control as any}
+            label={t('form.cnp.label')}
+            name="identityDocumentCNP"
+            placeholder={t('form.cnp.placeholder')}
+            error={errors.identityDocumentCNP}
+            disabled={isUpdateingPersonalData}
+          />
+        </View>
+        <View ref={registerInputRef('identityDocumentSeries')}>
+          <FormInput
+            control={control as any}
+            label={t('form.series.label')}
+            name="identityDocumentSeries"
+            error={errors.identityDocumentSeries}
+            placeholder={t('form.series.placeholder')}
+            disabled={isUpdateingPersonalData}
+            autoCapitalize="characters"
+          />
+        </View>
+        <View ref={registerInputRef('identityDocumentNumber')}>
+          <FormInput
+            control={control as any}
+            label={t('form.number.label')}
+            name="identityDocumentNumber"
+            error={errors.identityDocumentNumber}
+            placeholder={t('form.number.placeholder')}
+            keyboardType="phone-pad"
+            disabled={isUpdateingPersonalData}
+          />
+        </View>
+        <View ref={registerInputRef('address')}>
+          <FormInput
+            control={control as any}
+            label={t('form.address.label')}
+            name="address"
+            error={errors.address}
+            placeholder={t('form.address.placeholder')}
+            helper={`${t('form.address.helper')}`}
+            disabled={isUpdateingPersonalData}
+          />
+        </View>
+        <View ref={registerInputRef('identityDocumentIssueDate')}>
+          <FormDatePicker
+            control={control as any}
+            label={t('form.issue_date.label')}
+            name="identityDocumentIssueDate"
+            error={errors.identityDocumentIssueDate}
+            placeholder={t('general:select')}
+            min={new Date(1900, 0, 0)}
+            disabled={isUpdateingPersonalData}
+            max={new Date()}
+          />
+        </View>
+        <View ref={registerInputRef('identityDocumentExpirationDate')}>
+          <FormDatePicker
+            control={control as any}
+            label={t('form.expiration_date.label')}
+            name="identityDocumentExpirationDate"
+            error={errors.identityDocumentExpirationDate}
+            placeholder={t('general:select')}
+            max={new Date(2200, 0, 0)}
+            disabled={isUpdateingPersonalData}
+            min={new Date()}
+          />
+        </View>
+        <View ref={registerInputRef('identityDocumentIssuedBy')}>
+          <FormInput
+            control={control as any}
+            label={t('form.issued_by.label')}
+            name="identityDocumentIssuedBy"
+            error={errors.identityDocumentIssuedBy}
+            placeholder={t('form.issued_by.placeholder')}
+            disabled={isUpdateingPersonalData}
+          />
+        </View>
         {!isUserOver16 && (
           <>
             <Paragraph>{`${t('legal_gardian_data_required')}`}</Paragraph>
-            <FormInput
-              control={control as any}
-              label={t('form.guardian.name.label')}
-              name="guardianName"
-              error={errors.guardianName}
-              placeholder={t('form.guardian.name.placeholder')}
-              disabled={isUpdateingPersonalData}
-            />
-            <FormInput
-              control={control as any}
-              label={t('form.guardian.email.label')}
-              name="guardianEmail"
-              error={errors.guardianEmail}
-              placeholder={t('form.guardian.email.placeholder')}
-              disabled={isUpdateingPersonalData}
-            />
-            <FormInput
-              control={control as any}
-              label={t('form.guardian.phone.label')}
-              name="guardianPhone"
-              error={errors.guardianPhone}
-              placeholder={t('form.guardian.phone.placeholder')}
-              disabled={isUpdateingPersonalData}
-            />
-            <FormInput
-              control={control as any}
-              label={t('form.guardian.address.label')}
-              name="guardianAddress"
-              error={errors.guardianAddress}
-              placeholder={t('form.guardian.address.placeholder')}
-              disabled={isUpdateingPersonalData}
-            />
-            <FormInput
-              control={control as any}
-              label={t('form.guardian.cnp.label')}
-              name="guardianCNP"
-              error={errors.guardianCNP}
-              placeholder={t('form.guardian.cnp.placeholder')}
-              disabled={isUpdateingPersonalData}
-            />
-            <FormInput
-              control={control as any}
-              label={t('form.guardian.series.label')}
-              name="guardianIdentityDocumentSeries"
-              error={errors.guardianIdentityDocumentSeries}
-              placeholder={t('form.guardian.series.placeholder')}
-              disabled={isUpdateingPersonalData}
-              autoCapitalize="characters"
-            />
-            <FormInput
-              control={control as any}
-              label={t('form.guardian.number.label')}
-              name="guardianIdentityDocumentNumber"
-              error={errors.guardianIdentityDocumentNumber}
-              placeholder={t('form.guardian.number.placeholder')}
-              keyboardType="phone-pad"
-              disabled={isUpdateingPersonalData}
-            />
+            <View ref={registerInputRef('guardianName')}>
+              <FormInput
+                control={control as any}
+                label={t('form.guardian.name.label')}
+                name="guardianName"
+                error={errors.guardianName}
+                placeholder={t('form.guardian.name.placeholder')}
+                disabled={isUpdateingPersonalData}
+              />
+            </View>
+            <View ref={registerInputRef('guardianEmail')}>
+              <FormInput
+                control={control as any}
+                label={t('form.guardian.email.label')}
+                name="guardianEmail"
+                error={errors.guardianEmail}
+                placeholder={t('form.guardian.email.placeholder')}
+                disabled={isUpdateingPersonalData}
+              />
+            </View>
+            <View ref={registerInputRef('guardianPhone')}>
+              <FormInput
+                control={control as any}
+                label={t('form.guardian.phone.label')}
+                name="guardianPhone"
+                error={errors.guardianPhone}
+                placeholder={t('form.guardian.phone.placeholder')}
+                disabled={isUpdateingPersonalData}
+              />
+            </View>
+            <View ref={registerInputRef('guardianAddress')}>
+              <FormInput
+                control={control as any}
+                label={t('form.guardian.address.label')}
+                name="guardianAddress"
+                error={errors.guardianAddress}
+                placeholder={t('form.guardian.address.placeholder')}
+                disabled={isUpdateingPersonalData}
+              />
+            </View>
+            <View ref={registerInputRef('guardianCNP')}>
+              <FormInput
+                control={control as any}
+                label={t('form.guardian.cnp.label')}
+                name="guardianCNP"
+                error={errors.guardianCNP}
+                placeholder={t('form.guardian.cnp.placeholder')}
+                disabled={isUpdateingPersonalData}
+              />
+            </View>
+            <View ref={registerInputRef('guardianIdentityDocumentSeries')}>
+              <FormInput
+                control={control as any}
+                label={t('form.guardian.series.label')}
+                name="guardianIdentityDocumentSeries"
+                error={errors.guardianIdentityDocumentSeries}
+                placeholder={t('form.guardian.series.placeholder')}
+                disabled={isUpdateingPersonalData}
+                autoCapitalize="characters"
+              />
+            </View>
+            <View ref={registerInputRef('guardianIdentityDocumentNumber')}>
+              <FormInput
+                control={control as any}
+                label={t('form.guardian.number.label')}
+                name="guardianIdentityDocumentNumber"
+                error={errors.guardianIdentityDocumentNumber}
+                placeholder={t('form.guardian.number.placeholder')}
+                keyboardType="phone-pad"
+                disabled={isUpdateingPersonalData}
+              />
+            </View>
           </>
         )}
       </FormLayout>
