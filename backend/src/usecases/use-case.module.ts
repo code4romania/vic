@@ -136,7 +136,6 @@ import { GetOneRegularUserProfileUseCase } from './user/get-regule-user-profile.
 import { SyncUserOrganizationsUsecase } from './user/sync-user-organizations.usecase';
 import { GetRejectedAccessRequestUsecase } from './access-request/get-rejected-access-request.usecase';
 import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
-import { GeneratePDFsUseCase } from './documents/generate-pdfs.usecase';
 import { SyncWithOngHubUseCaseService } from './organization/sync-with-ngohub.usecase';
 import { CreateDocumentTemplateUsecase } from './documents/new_contracts/create-document-template.usecase';
 import { GetOneDocumentTemplateUseCase } from './documents/new_contracts/get-one-document-template.usecase';
@@ -145,6 +144,8 @@ import { GetManyDocumentContractsUsecase } from './documents/new_contracts/get-m
 import { GetManyDocumentTemplatesUsecase } from './documents/new_contracts/get-many-document-templates.usecase';
 import { SignDocumentContractByVolunteerUsecase } from './documents/new_contracts/sign-document-contract-by-volunteer.usecase';
 import { RejectDocumentContractByVolunteerUsecase } from './documents/new_contracts/reject-document-contact-by-volunteer.usecase';
+import { GeneratePDFsUseCase } from './documents/new_contracts/generate-pdfs.usecase';
+import { GetManyDocumentContractsByVolunteerUsecase } from './documents/new_contracts/get-many-document-contracts-by-volunteer.usecase';
 
 const providers = [
   // Organization
@@ -296,6 +297,7 @@ const providers = [
   GetManyDocumentContractsUsecase,
   SignDocumentContractByVolunteerUsecase,
   RejectDocumentContractByVolunteerUsecase,
+  GetManyDocumentContractsByVolunteerUsecase,
   // Notifications
   UpdateSettingsUsecase,
   // Testing PDFs

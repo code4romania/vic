@@ -1,4 +1,4 @@
-import { Body, Param, Patch, UseGuards } from '@nestjs/common';
+import { Body, Get, Param, Patch, Query, UseGuards } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
@@ -9,6 +9,11 @@ import { SignDocumentContractByVolunteerUsecase } from 'src/usecases/documents/n
 import { RejectDocumentContractByVolunteerUsecase } from 'src/usecases/documents/new_contracts/reject-document-contact-by-volunteer.usecase';
 import { SignDocumentContractByVolunteerDto } from './dto/SignDocumentContractByVolunteer.dto';
 import { RejectDocumentContractByVolunteerDto } from './dto/RejectDocumentContractByVolunteer.dto';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
+import { GetManyDocumentContractsByVolunteerUsecase } from 'src/usecases/documents/new_contracts/get-many-document-contracts-by-volunteer.usecase';
+import { GetManyContractsByVolunteerDto } from './dto/GetManyContractsByVolunteer.dto';
+import { DocumentContractListViewItemPresenter } from 'src/api/documents/presenters/document-contract-list-view-item.presenter';
+import { PaginatedPresenter } from 'src/infrastructure/presenters/generic-paginated.presenter';
 
 // @UseGuards(MobileJwtAuthGuard, ContractVolunteerGuard)
 @UseGuards(MobileJwtAuthGuard)
@@ -18,7 +23,28 @@ export class MobileDocumentsContractController {
   constructor(
     private readonly signDocumentContractByVolunteerUsecase: SignDocumentContractByVolunteerUsecase,
     private readonly rejectDocumentContractByVolunteerUsecase: RejectDocumentContractByVolunteerUsecase,
+    private readonly getManyDocumentContractsByVolunteerUsecase: GetManyDocumentContractsByVolunteerUsecase,
   ) {}
+
+  // Get all contracts for a volunteer
+  @Get()
+  async findMany(
+    @ExtractUser() { id: userId }: IRegularUserModel,
+    @Query() query: GetManyContractsByVolunteerDto,
+  ): Promise<Pagination<DocumentContractListViewItemPresenter>> {
+    const contracts =
+      await this.getManyDocumentContractsByVolunteerUsecase.execute({
+        ...query,
+        userId,
+      });
+
+    return new PaginatedPresenter<DocumentContractListViewItemPresenter>({
+      ...contracts,
+      items: contracts.items.map(
+        (contract) => new DocumentContractListViewItemPresenter(contract),
+      ),
+    });
+  }
 
   @ApiParam({ name: 'contractId', type: 'string' })
   @Patch(':contractId/sign')

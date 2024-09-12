@@ -20,13 +20,6 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
     private readonly documentContractListViewRepository: Repository<DocumentContractListViewEntity>,
   ) {
     super(documentContractListViewRepository);
-
-    // this.findMany({
-    //   limit: 10,
-    //   page: 1,
-    //   organizationId: '7f005461-07c3-4693-a85d-40d31db43a4c',
-    //   status: DocumentContractStatus.APPROVED,
-    // }).then(console.log);
   }
 
   async findMany(
