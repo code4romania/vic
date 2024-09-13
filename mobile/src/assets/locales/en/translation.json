@@ -479,6 +479,9 @@
         "title": "Documents",
         "subtitle": "{{number}} documents await response"
       },
+      "contract": {
+        "title": "Volunteering contract"
+      },
       "volunteer_profile": {
         "title": "Volunteer profile",
         "subtitle": "Incomplete profile"
@@ -776,6 +779,32 @@
     },
     "confirmation_modal": {
       "paragraph": "Are you sure you wish to cancel and upload a different contract?"
+    }
+  },
+  "documents-contract": {
+    "title": "Volunteering contract",
+    "no_active_contract": {
+      "title": "You don't have an active volunteering contract",
+      "description": "Contact the organization representatives to obtain the volunteering contract."
+    },
+    "description": "Manage your contracts in the sections below. Download old contracts, or sign contracts sent by the organization.",
+    "requires_volunteer_signature": "The contract requires your signature",
+    "pending_documents": "Pending documents",
+    "contract": {
+      "title": "Contract {{value}}",
+      "description": "The contract has been generated and requires your approval. Download the template below and read the document carefully. Check if the identity data is correct, if not, modify the data and sign the document"
+    },
+    "volunteer_signature": {
+      "title": "Volunteer signature",
+      "description": "Draw your signature in the box below",
+      "action_button_label": "Send for signing",
+      "back": "Back"
+    },
+    "legal_guardian_signature": {
+      "title": "Legal guardian signature",
+      "description": "Since you are under 16, the signature of the legal guardian ({{value}}) is required. Draw the signature in the box below",
+      "action_button_label": "Send for signing",
+      "back": "Back"
     }
   },
   "notifications": {

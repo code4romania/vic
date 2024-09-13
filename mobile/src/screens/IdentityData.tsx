@@ -18,9 +18,10 @@ import Paragraph from '../components/Paragraph';
 import { REGEX } from '../common/constants/constants';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
-import { differenceInYears, parseISO } from 'date-fns';
+import { differenceInYears } from 'date-fns';
 import { UserPersonalDataPayload } from '../services/user/user.api';
 import { findNodeHandle, ScrollView, View } from 'react-native';
+import { isOver16 } from '../common/utils/utils';
 
 export type IdentityDataFormTypes = {
   identityDocumentCNP: string;
@@ -177,13 +178,6 @@ const formSchema = (isUserOver16: boolean, userBirthday: Date | undefined) =>
         otherwise: (schema) => schema.optional(),
       }),
   });
-
-const isOver16 = (birthday: string | Date) => {
-  const birthdayDate = typeof birthday === 'string' ? parseISO(birthday) : birthday;
-  const today = new Date();
-  const age = differenceInYears(today, birthdayDate);
-  return age >= 16;
-};
 
 const isOver16FromCNP = (cnp: string) => {
   // we don't need to perform the calculation before the user has entered all the necessary digits to calculate
