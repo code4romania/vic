@@ -6,60 +6,40 @@ import FormDatePicker from './FormDatePicker';
 import DateRangePicker from './DateRangePicker';
 import { ContractCardHeader } from './ContractCardHeader';
 import { useTranslation } from 'react-i18next';
-import { useOrganizationQuery } from '../services/organization/organization.service';
 import { Signatures } from './Signatures';
 import { ContentExpander } from './ContentExpander';
-
-export interface IMockContract {
-  id: string;
-  name: string;
-}
-
-export interface IMockVolunteer {
-  name: string;
-  address: string;
-  cnp: string;
-  series: string;
-  number: string;
-  institution: string;
-  issuanceDate: string;
-  image: string;
-  legalRepresentative?: {
-    name: string;
-    series: string;
-    no: number;
-    tel: string;
-  };
-}
+import { IVolunteer } from '../common/interfaces/volunteer.interface';
+import { IDocumentTemplate } from '../common/interfaces/template.interface';
+import { format } from 'date-fns';
 
 interface ContractCardProps {
-  data: { contract: IMockContract; volunteer: IMockVolunteer };
+  volunteer: IVolunteer,
+  template: IDocumentTemplate,
   initialNumber?: string;
   initialDate?: Date | null;
   initialPeriod?: [Date | null, Date | null];
+  isOpen?: boolean;
+  onDelete: (id: string) => void;
 }
 
 const dotsString = '.........................';
-const contractTerms =
-  '<h1>h1</h1><h2>h2</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis nisl cursus bibendum sit nulla accumsan sodales ornare. At urna viverra non suspendisse neque, lorem. Pretium condimentum pellentesque gravida id etiam sit sed arcu euismod. Rhoncus proin orci duis scelerisque molestie cursus tincidunt aliquam.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis lobortis nisl cursus bibendum sit nulla accumsan sodales ornare. At urna viverra non suspendisse neque, lorem. Pretium condimentum pellentesque gravida id etiam sit sed arcu euismod. Rhoncus proin orci duis scelerisque molestie cursus tincidunt aliquam.</p>';
 
 export const ContractCard = ({
-  data,
+  volunteer,
+  template,
   initialNumber,
   initialDate,
   initialPeriod,
+  onDelete,
+  isOpen = false,
 }: ContractCardProps) => {
   const { t } = useTranslation(['doc_templates', 'general']);
   // contract card states
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(isOpen);
   const [edit, setEdit] = useState(false);
 
-  // queries
-  const { data: organization, isLoading: isLoadingOrganization } = useOrganizationQuery();
-  //?   todo: get the contract data from a query and not from props
-  const { contract, volunteer } = data;
-  console.log(contract);
-  const isVolunteerDataIncomplete = true;
+  const isVolunteerDataIncomplete: boolean = false;
+
   const { control, handleSubmit, setValue } = useForm({
     defaultValues: {
       contractNumber: initialNumber || '',
@@ -101,7 +81,6 @@ export const ContractCard = ({
       : [dotsString, dotsString],
   );
 
-  // on submit -> update the values in the contract preview
   const onSubmit = (data: FieldValues) => {
     if (data.contractNumber) {
       setContractNumber(data.contractNumber);
@@ -125,19 +104,18 @@ export const ContractCard = ({
     <div className="flex flex-col">
       <ContractCardHeader
         open={open}
+        onDelete={onDelete}
         setOpen={setOpen}
-        volunteer={data.volunteer}
-        isLoading={isLoadingOrganization}
+        volunteer={volunteer}
         isError={isVolunteerDataIncomplete}
         isErrorText={t('volunteer.missing_data')}
       />
 
       {open && (
-        <div className="bg-white shadow-sm p-4 mt-[-16px] pt-8 rounded flex flex-col gap-4 sm:flex-row">
+        <div className="bg-white shadow-xs p-4 mt-[-16px] pt-8 rounded flex flex-col gap-4 sm:flex-row">
           {/* datele contractului */}
           <div className="bg-gray-100 rounded flex-1 flex sm:self-baseline flex-col p-4 gap-4">
             <p className="font-robotoBold">{t('contract_data')}</p>
-            {/* //todo: icon at the end of the input??? */}
             <Controller
               name="contractNumber"
               control={control}
@@ -196,24 +174,24 @@ export const ContractCard = ({
             <p>
               {t('template_preview.p2.between')}{' '}
               <span className="font-robotoBold">
-                {organization?.name || `[${t('organization_name')}]`}
+                {template?.organizationData?.officialName || `[${t('organization_name')}]`}
               </span>{' '}
               {t('template_preview.p2.address')}{' '}
-              {organization?.address || `[${t('organization_address')}]`}{' '}
+              {template?.organizationData?.registeredOffice || `[${t('organization_address')}]`}{' '}
               {t('template_preview.p2.identified')}
               <span className="font-robotoBold">
                 {' '}
-                {organization?.cui || `[${t('organization_cui')}]`}
+                {template?.organizationData?.CUI || `[${t('organization_cui')}]`}
               </span>
               {', '}
               {t('template_preview.p2.represented_by')}{' '}
               <span className="font-robotoBold">
                 {' '}
-                {organization?.legalReprezentativeFullName || `[${t('legal_rep_name')}]`}
+                {template?.organizationData?.legalRepresentativeName || `[${t('legal_rep_name')}]`}
               </span>
               {', '}
               {t('template_preview.p2.as')}{' '}
-              {organization?.legalReprezentativeRole || `[${t('legal_rep_role')}]`}{' '}
+              {template?.organizationData?.legalRepresentativeRole || `[${t('legal_rep_role')}]`}{' '}
               {t('template_preview.p2.named')}{' '}
               <span className="italic">{t('template_preview.p2.organization')}</span>{' '}
             </p>
@@ -221,12 +199,12 @@ export const ContractCard = ({
             <p>{t('template_preview.and')}</p>
 
             <p>
-              <span className="font-robotoBold">{volunteer.name}</span>,{' '}
-              {t('template_preview.p3.lives')} {volunteer.address}, {t('template_preview.p3.cnp')}{' '}
-              <span className="font-robotoBold">{volunteer.cnp}</span>,{' '}
-              {t('template_preview.p3.legitimate')} {volunteer.series} {t('template_preview.p3.no')}{' '}
-              {volunteer.number}, {t('template_preview.p3.by')} {volunteer.institution},{' '}
-              {t('template_preview.p3.at_date')} {volunteer.issuanceDate}
+              <span className="font-robotoBold">{volunteer.user.name}</span>,{' '}
+              {t('template_preview.p3.lives')} {volunteer.user.userPersonalData?.address}, {t('template_preview.p3.cnp')}{' '}
+              <span className="font-robotoBold">{volunteer.user.userPersonalData?.cnp}</span>,{' '}
+              {t('template_preview.p3.legitimate')} {volunteer.user.userPersonalData?.identityDocumentSeries} {t('template_preview.p3.no')}{' '}
+              {volunteer.user.userPersonalData?.identityDocumentNumber}, {t('template_preview.p3.by')} {volunteer.user.userPersonalData?.identityDocumentIssuedBy},{' '}
+              {t('template_preview.p3.at_date')} {volunteer.user.userPersonalData?.identityDocumentExpirationDate && format(volunteer.user.userPersonalData?.identityDocumentExpirationDate, 'dd/MM/yyyy')},
               {', '}
               {t('template_preview.p3.named')}{' '}
               <span className="italic"> {t('template_preview.p3.volunteer')}</span>{' '}
@@ -244,9 +222,9 @@ export const ContractCard = ({
             <div className="flex flex-col border-y-2 border-dashed py-6 gap-2">
               <p className="font-robotoBold">{t('contract_terms.title')}</p>
 
-              {contractTerms && <ContentExpander fullContent={contractTerms} />}
+              {template.documentTerms && <ContentExpander fullContent={template.documentTerms} />}
             </div>
-            <Signatures volunteer={volunteer} />
+            <Signatures volunteer={volunteer} organization={template.organizationData} />
           </div>
         </div>
       )}

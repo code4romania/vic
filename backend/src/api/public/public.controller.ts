@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
 import { APP_VERSION } from 'src/common/constants/version';
-import { GeneratePDFsUseCase } from 'src/usecases/documents/generate-pdfs.usecase';
+import { GeneratePDFsUseCase } from 'src/usecases/documents/new_contracts/generate-pdfs.usecase';
 
 @Controller('public')
 export class PublicController {

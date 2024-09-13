@@ -1,13 +1,15 @@
 import { useMutation, useQuery } from 'react-query';
-import { addContractTemplate, getContractTemplate } from './documents-templates.api';
-
-interface IOrganizationData {
-  officialName: string;
-  registeredOffice: string;
-  CUI: string;
-  legalRepresentativeName: string;
-  legalRepresentativeRole: string;
-}
+import {
+  addContractTemplate,
+  getContractTemplate,
+  getTemplateById,
+  getTemplates,
+} from './documents-templates.api';
+import { AxiosError } from 'axios';
+import { OrderDirection } from '../../common/enums/order-direction.enum';
+import { CONTRACT_ERRORS } from '../../common/errors/entities/contract.errors';
+import { IBusinessException } from '../../common/interfaces/business-exception.interface';
+import { IOrganizationData } from '../../common/interfaces/template.interface';
 
 export interface IAddContractTemplatePayload {
   name: string;
@@ -34,5 +36,42 @@ export const useContractTemplateQuery = (id: string) => {
       console.log('⭕️ ERROR IN GET CONTRACT TEMPLATE QUERY ⭕️', error);
       return Promise.resolve(error);
     },
+  });
+};
+
+export const useDocumentTemplatesQuery = ({
+  limit,
+  page,
+  orderBy,
+  orderDirection,
+  search,
+}: {
+  page: number;
+  limit: number;
+  orderBy?: string;
+  orderDirection?: OrderDirection;
+  search?: string;
+}) => {
+  return useQuery(
+    ['document-templates', limit, page, orderBy, orderDirection, search],
+    () =>
+      getTemplates({
+        limit,
+        page,
+        orderBy,
+        orderDirection,
+        search,
+      }),
+    {
+      onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
+    },
+  );
+};
+
+export const useDocumentTemplateByIdQuery = (id: string) => {
+  return useQuery({
+    queryKey: ['document-template', id],
+    queryFn: () => getTemplateById(id),
+    enabled: !!id,
   });
 };

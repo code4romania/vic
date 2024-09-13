@@ -9,6 +9,7 @@ import { Injectable } from '@nestjs/common';
 import {
   DocumentContractListViewTransformer,
   FindManyDocumentContractListViewOptions,
+  FindOneDocumentContractListViewOptions,
   IDocumentContractListViewModel,
 } from '../models/document-contract-list-view.model';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
@@ -20,13 +21,6 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
     private readonly documentContractListViewRepository: Repository<DocumentContractListViewEntity>,
   ) {
     super(documentContractListViewRepository);
-
-    // this.findMany({
-    //   limit: 10,
-    //   page: 1,
-    //   organizationId: '7f005461-07c3-4693-a85d-40d31db43a4c',
-    //   status: DocumentContractStatus.APPROVED,
-    // }).then(console.log);
   }
 
   async findMany(
@@ -82,5 +76,13 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
       page,
       DocumentContractListViewTransformer.fromEntity,
     );
+  }
+
+  async findOne(
+    options: FindOneDocumentContractListViewOptions,
+  ): Promise<IDocumentContractListViewModel> {
+    return this.documentContractListViewRepository.findOne({
+      where: options,
+    });
   }
 }

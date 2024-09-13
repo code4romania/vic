@@ -15,6 +15,11 @@ export interface IDocumentContractListViewModel {
   organizationName: string;
 }
 
+export type FindOneDocumentContractListViewOptions = {
+  documentId: string;
+  volunteerId: string;
+};
+
 export type FindManyDocumentContractListViewOptions =
   IBasePaginationFilterModel & {
     organizationId: string;

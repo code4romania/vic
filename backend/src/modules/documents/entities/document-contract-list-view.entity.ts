@@ -1,4 +1,4 @@
-import { ViewColumn, ViewEntity } from 'typeorm';
+import { Column, ViewColumn, ViewEntity } from 'typeorm';
 import { DocumentContractStatus } from '../enums/contract-status.enum';
 
 @ViewEntity('DocumentContractListView', {
@@ -8,7 +8,7 @@ import { DocumentContractStatus } from '../enums/contract-status.enum';
         document_contract.document_number as document_number,
         document_contract.status as status,
         document_contract.document_start_date as document_start_date,
-        document_contract.document_end_date as document_end_date,
+        document_contract.document_end_date as document_end_date,   
         document_contract.file_path AS document_file_path,
         organization.id AS organization_id,
         organization.name AS organization_name,
@@ -25,13 +25,15 @@ export class DocumentContractListViewEntity {
   @ViewColumn({ name: 'document_id' })
   documentId: string;
 
-  @ViewColumn({ name: 'document_number' })
+  @Column({ name: 'document_number' })
   documentNumber: string;
 
-  @ViewColumn({ name: 'document_start_date' })
+  // Use Column instead of ViewColumn because of https://github.com/typeorm/typeorm/issues/4320. Date was returned as Timestamp
+  @Column({ name: 'document_start_date', type: 'date' })
   documentStartDate: Date;
 
-  @ViewColumn({ name: 'document_end_date' })
+  // Use Column instead of ViewColumn because of https://github.com/typeorm/typeorm/issues/4320. Date was returned as Timestamp
+  @Column({ name: 'document_end_date', type: 'date' })
   documentEndDate: Date;
 
   @ViewColumn({ name: 'document_file_path' })

@@ -9,9 +9,11 @@ import {
 import { DocumentContractListViewRepository } from '../repositories/document-contract-list-view.repository';
 import {
   FindManyDocumentContractListViewOptions,
+  FindOneDocumentContractListViewOptions,
   IDocumentContractListViewModel,
 } from '../models/document-contract-list-view.model';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
+import { DocumentContractStatus } from '../enums/contract-status.enum';
 
 @Injectable()
 export class DocumentContractFacade {
@@ -19,6 +21,14 @@ export class DocumentContractFacade {
     private readonly documentContractRepository: DocumentContractRepositoryService,
     private readonly documentContractListViewRepository: DocumentContractListViewRepository,
   ) {}
+
+  async approveDocumentContractByNGO(
+    documentContractId: string,
+  ): Promise<IDocumentContractModel> {
+    return this.documentContractRepository.update(documentContractId, {
+      status: DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE,
+    });
+  }
 
   async create(
     newDocumentContract: CreateDocumentContractOptions,
@@ -40,6 +50,12 @@ export class DocumentContractFacade {
     options: FindManyDocumentContractListViewOptions,
   ): Promise<Pagination<IDocumentContractListViewModel>> {
     return this.documentContractListViewRepository.findMany(options);
+  }
+
+  async findOneForVolunteer(
+    options: FindOneDocumentContractListViewOptions,
+  ): Promise<IDocumentContractListViewModel> {
+    return this.documentContractListViewRepository.findOne(options);
   }
 
   async update(
