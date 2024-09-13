@@ -85,7 +85,7 @@ export const DocumentContractFillCards = ({ volunteers, template, setSelectedVol
         onSubmit={onSubmit}
       />
 
-      <div className="bg-gray-100  flex flex-col gap-4 p-4">
+      <div className="flex flex-col gap-4">
         {volunteers.map((item, index) => (
           <ContractCard
             key={item.id}

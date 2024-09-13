@@ -90,13 +90,13 @@ export const CreateContractTemplate = () => {
         <p className="text-cool-gray-500">
           {t('subheading.p1') + ' '}
           {/* //TODO: href */}
-          <a className="font-roboto text-yellow hover:text-yellow-600 hover:underline underline-offset-2">
+          <a className="font-roboto text-yellow-600 hover:text-yellow-600 hover:underline underline-offset-2">
             {t('subheading.p1_link')}
           </a>
         </p>
         <p className="text-cool-gray-500">
           {t('subheading.p2') + ' '} {/* //TODO: href */}
-          <a className="font-roboto text-yellow hover:text-yellow-600 hover:underline underline-offset-2">
+          <a className="font-roboto text-yellow-600 hover:text-yellow-600 hover:underline underline-offset-2">
             {t('subheading.p2_link')}
           </a>
         </p>
@@ -112,7 +112,7 @@ export const CreateContractTemplate = () => {
                 icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
                 className="btn-outline-secondary text-cool-gray-600 "
                 // TODO: descarca necompletat functionality
-                onClick={() => {}}
+                onClick={() => { }}
               />
               {/* // TODO: save functionality */}
               <Button

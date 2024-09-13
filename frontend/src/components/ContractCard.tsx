@@ -12,6 +12,8 @@ import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { IDocumentTemplate } from '../common/interfaces/template.interface';
 import { format } from 'date-fns';
 
+const dotsString = '.........................';
+
 interface ContractCardProps {
   volunteer: IVolunteer,
   template: IDocumentTemplate,
@@ -22,7 +24,6 @@ interface ContractCardProps {
   onDelete: (id: string) => void;
 }
 
-const dotsString = '.........................';
 
 export const ContractCard = ({
   volunteer,
@@ -37,68 +38,75 @@ export const ContractCard = ({
   // contract card states
   const [open, setOpen] = useState(isOpen);
   const [edit, setEdit] = useState(false);
+  const [documentNumber, setDocumentNumber] = useState(initialNumber ? initialNumber : dotsString);
+  const [documentDate, setDocumentDate] = useState(
+    initialDate ? initialDate.toLocaleDateString() : dotsString,
+  );
+  const [documentPeriod, setDocumentPeriod] = useState(
+    initialPeriod && initialPeriod[0] && initialPeriod[1]
+      ? [initialPeriod[0].toLocaleDateString(), initialPeriod[1].toLocaleDateString()]
+      : [dotsString, dotsString],
+  );
 
   const isVolunteerDataIncomplete: boolean = false;
 
   const { control, handleSubmit, setValue } = useForm({
     defaultValues: {
-      contractNumber: initialNumber || '',
-      contractDate: initialDate || null,
-      contractPeriod: initialPeriod || [null, null],
+      documentNumber: initialNumber || '',
+      documentDate: initialDate || null,
+      documentPeriod: initialPeriod || [null, null],
     },
   });
 
   // update values for the contract data, as well as for the contract preview, whenever the initial values coming from the parent change (the fast contract completion feature)
   useEffect(() => {
     // update contract number
-    setContractNumber(initialNumber ? initialNumber : dotsString);
-    setValue('contractNumber', initialNumber ? initialNumber : '');
+    setDocumentNumber(initialNumber ? initialNumber : dotsString);
+    setValue('documentNumber', initialNumber ? initialNumber : '');
 
     // update contract date
-    setContractDate(initialDate ? initialDate.toLocaleDateString() : dotsString);
-    setValue('contractDate', initialDate ? initialDate : null);
+    setDocumentDate(initialDate ? initialDate.toLocaleDateString() : dotsString);
+    setValue('documentDate', initialDate ? initialDate : null);
 
     // update contract period
-    setContractPeriod([
+    setDocumentPeriod([
       initialPeriod && initialPeriod[0] ? initialPeriod[0].toLocaleDateString() : dotsString,
       initialPeriod && initialPeriod[1] ? initialPeriod[1].toLocaleDateString() : dotsString,
     ]);
     setValue(
-      'contractPeriod',
+      'documentPeriod',
       initialPeriod && initialPeriod[0] && initialPeriod[1]
         ? [initialPeriod[0], initialPeriod[1]]
         : [null, null],
     );
   }, [initialNumber, initialDate, initialPeriod]);
 
-  const [contractNumber, setContractNumber] = useState(initialNumber ? initialNumber : dotsString);
-  const [contractDate, setContractDate] = useState(
-    initialDate ? initialDate.toLocaleDateString() : dotsString,
-  );
-  const [contractPeriod, setContractPeriod] = useState(
-    initialPeriod && initialPeriod[0] && initialPeriod[1]
-      ? [initialPeriod[0].toLocaleDateString(), initialPeriod[1].toLocaleDateString()]
-      : [dotsString, dotsString],
-  );
-
   const onSubmit = (data: FieldValues) => {
-    if (data.contractNumber) {
-      setContractNumber(data.contractNumber);
+    if (data.documentNumber) {
+      setDocumentNumber(data.documentNumber);
     }
 
-    if (data.contractDate) {
-      setContractDate(data.contractDate.toLocaleDateString());
+    if (data.documentDate) {
+      setDocumentDate(data.documentDate.toLocaleDateString());
     }
 
-    if (data.contractPeriod && data.contractPeriod[0] && data.contractPeriod[1]) {
-      setContractPeriod([
-        data.contractPeriod[0].toLocaleDateString(),
-        data.contractPeriod[1].toLocaleDateString(),
+    if (data.documentPeriod && data.documentPeriod[0] && data.documentPeriod[1]) {
+      setDocumentPeriod([
+        data.documentPeriod[0].toLocaleDateString(),
+        data.documentPeriod[1].toLocaleDateString(),
       ]);
     }
 
     setEdit(false);
   };
+
+  const onCancel = () => {
+    setEdit(false);
+    setValue('documentNumber', documentNumber);
+    setValue('documentDate', documentDate ? new Date(documentDate) : null);
+    setValue('documentPeriod', documentPeriod && documentPeriod[0] && documentPeriod[1] ? [new Date(documentPeriod[0]), new Date(documentPeriod[1])] : [null, null]);
+  };
+
 
   return (
     <div className="flex flex-col">
@@ -117,7 +125,7 @@ export const ContractCard = ({
           <div className="bg-gray-100 rounded flex-1 flex sm:self-baseline flex-col p-4 gap-4">
             <p className="font-robotoBold">{t('contract_data')}</p>
             <Controller
-              name="contractNumber"
+              name="documentNumber"
               control={control}
               render={({ field: { value = initialNumber, onChange } }) => (
                 <FormInput
@@ -130,7 +138,7 @@ export const ContractCard = ({
               )}
             />
             <Controller
-              name="contractDate"
+              name="documentDate"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <FormDatePicker
@@ -144,7 +152,7 @@ export const ContractCard = ({
             />
 
             <Controller
-              name="contractPeriod"
+              name="documentPeriod"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <DateRangePicker
@@ -156,19 +164,30 @@ export const ContractCard = ({
               )}
             />
 
-            <Button
-              label={edit ? t('save', { ns: 'general' }) : t('edit', { ns: 'general', item: '' })}
-              className="bg-yellow btn-primary mt-4 text-white"
-              onClick={edit ? handleSubmit(onSubmit) : () => setEdit(true)}
-            />
+            <div className='flex gap-4'>
+              {edit && (
+                <Button
+                  label={t('cancel', { ns: 'general' })}
+                  className="bg-gray-300 btn-secondary mt-4 text-gray-700 w-full"
+                  onClick={onCancel}
+                />
+
+              )}
+              <Button
+                label={edit ? t('save', { ns: 'general' }) : t('edit', { ns: 'general', item: '' })}
+                className="bg-yellow-500 btn-primary mt-4 text-white w-full"
+                onClick={edit ? handleSubmit(onSubmit) : () => setEdit(true)}
+              />
+            </div>
+
           </div>
 
           {/* contract preview */}
           <div className="bg-white rounded flex-1 sm:flex-2 p-4 flex flex-col gap-4">
             <p className="font-robotoBold text-center">{t('template_preview.title')}</p>
             <p className="text-center">
-              {t('template_preview.p1.no')} {contractNumber} {t('template_preview.p1.date')}{' '}
-              {contractDate}
+              {t('template_preview.p1.no')} {documentNumber} {t('template_preview.p1.date')}{' '}
+              {documentDate}
             </p>
 
             <p>
@@ -215,8 +234,8 @@ export const ContractCard = ({
             {/* P5: DURATA CONTRACTULUI */}
             <p className="font-robotoBold">{t('contract_duration.title')}</p>
             <p>
-              {t('contract_duration.description')} {contractPeriod[0]} {t('template_preview.and')}{' '}
-              {contractPeriod[1]}.
+              {t('contract_duration.description')} {documentPeriod[0]} {t('template_preview.and')}{' '}
+              {documentPeriod[1]}.
             </p>
 
             <div className="flex flex-col border-y-2 border-dashed py-6 gap-2">
@@ -227,7 +246,8 @@ export const ContractCard = ({
             <Signatures volunteer={volunteer} organization={template.organizationData} />
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
