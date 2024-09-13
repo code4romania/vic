@@ -5,109 +5,18 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Stepper } from '../components/Stepper';
 import Button from '../components/Button';
-import CardBody from '../components/CardBody';
-import DataTableComponent from '../components/DataTableComponent';
-import { ContractTemplate } from './ContractTemplates';
-import Card from '../layouts/CardLayout';
-import CardHeader from '../components/CardHeader';
-
-const ContractTemplatesTableHeader = [
-  {
-    id: 'name',
-    name: 'Nume',
-    sortable: true,
-    grow: 4,
-    minWidth: '9rem',
-    selector: (row: ContractTemplate) => row.name,
-  },
-  {
-    id: 'uses',
-    name: 'Utilizări',
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    // todo: get uses count
-    selector: () => 'TODO',
-  },
-  {
-    id: 'last_used',
-    name: 'Ultima utilizare',
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    // todo: get last usage count
-    selector: () => 'TODO',
-  },
-  {
-    id: 'created_by',
-    name: 'Creat de',
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    selector: (row: ContractTemplate) => row.createdByAdmin.name,
-  },
-  {
-    id: 'created_at',
-    name: 'Data creării',
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    // todo: get created_at date
-    selector: () => 'TODO',
-  },
-];
-const templates: ContractTemplate[] = [
-  {
-    id: '9a827436-e0b8-4763-8b04-ccff3f9b2757',
-    name: 'Test Template Lucia',
-    organizationData: {
-      CUI: '1278133',
-      officialName: 'Tenebru Diamonds Industry',
-      registeredOffice: 'Strada Cazarmii NR. 3392',
-      legalRepresentativeName: 'John Dave',
-      legalRepresentativeRole: 'Admin',
-    },
-    documentTerms: '<p>Contract terms</p>',
-    createdByAdmin: {
-      id: '8f2a561d-982f-465f-8dfb-bb2e16c39be6',
-      name: 'Galdo Gerald',
-    },
-  },
-  {
-    id: 'b3c45678-d9e0-4f12-a3b4-56c7d8e9f012',
-    name: 'Standard Contract Template',
-    organizationData: {
-      CUI: '9876543',
-      officialName: 'Global Solutions Inc.',
-      registeredOffice: 'Main Street 123',
-      legalRepresentativeName: 'Jane Smith',
-      legalRepresentativeRole: 'CEO',
-    },
-    documentTerms: '<p>Standard contract terms and conditions</p>',
-    createdByAdmin: {
-      id: '1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p',
-      name: 'Admin User',
-    },
-  },
-  {
-    id: 'c7d89012-e3f4-5g6h-i7j8-9k0l1m2n3o4p',
-    name: 'Volunteer Agreement Template',
-    organizationData: {
-      CUI: '5432109',
-      officialName: 'Community Helpers Association',
-      registeredOffice: 'Volunteer Avenue 456',
-      legalRepresentativeName: 'Mark Johnson',
-      legalRepresentativeRole: 'Director',
-    },
-    documentTerms: '<p>Volunteer agreement terms</p>',
-    createdByAdmin: {
-      id: 'q1w2e3r4-t5y6-u7i8-o9p0-a1s2d3f4g5h6',
-      name: 'Sarah Admin',
-    },
-  },
-];
+import DocumentVolunteersTableWithQueryParams from '../containers/query/DocumentVolunteersTableWithQueryParams';
+import { IDocumentTemplateListItem } from '../common/interfaces/template.interface';
+import { IVolunteer } from '../common/interfaces/volunteer.interface';
+import DocumentTemplatesTableWithQueryParams from '../containers/query/DocumentTemplatesTableWithQueryParams';
+import { DocumentContractFillCards } from '../components/DocumentContractFillCards';
+// import { ContractTemplate } from './ContractTemplates';
+// import { IVolunteer } from '../common/interfaces/volunteer.interface';
 
 export const GenerateContract = () => {
+  const [selectedTemplate, setSelectedTemplate] = useState<IDocumentTemplateListItem | null>(null);
+  const [selectedVolunteers, setSelectedVolunteers] = useState<IVolunteer[]>([]);
+
   const { t } = useTranslation(['volunteering_contracts', 'stepper']);
   const navigate = useNavigate();
 
@@ -147,46 +56,44 @@ export const GenerateContract = () => {
       setCurrentStep(currentStep - 1);
     }
   };
-  const onSelectTemplate = (template: ContractTemplate[]) => {
-    console.log(template);
+
+  const onSelectTemplate = (template: IDocumentTemplateListItem | null) => {
+    setSelectedTemplate(template);
+  };
+
+  const onSelectVolunteers = (volunteers: IVolunteer[]) => {
+    setSelectedVolunteers(volunteers);
   };
 
   const renderStep = () => {
     switch (currentStep) {
       case 0:
         return (
-          <Card>
-            <CardHeader>
-              <h2>{t('templates')}</h2>
-            </CardHeader>
-            <CardBody>
-              <DataTableComponent
-                // todo: action column
-                columns={[...ContractTemplatesTableHeader]}
-                data={templates}
-                // loading={isLoadingContractTemplate}
-                pagination
-                // paginationPerPage={10}
-                selectableRows
-                selectableRowsSingle
-                paginationTotalRows={templates.length}
-                onSelectedRowsChange={onSelectTemplate}
-                // paginationDefaultPage={query.page as number}
-                // onChangeRowsPerPage={onRowsPerPageChange}
-                // onChangePage={onChangePage}
-                // onSort={onSort}
-              />
-            </CardBody>
-          </Card>
+          <DocumentTemplatesTableWithQueryParams selectedTemplate={selectedTemplate} onSelectTemplate={onSelectTemplate} />
         );
       case 1:
-        return <div>Volunteers</div>;
+        return <DocumentVolunteersTableWithQueryParams selectedVolunteers={selectedVolunteers} setSelectedVolunteers={onSelectVolunteers} />
+      case 2:
+        return <DocumentContractFillCards volunteers={selectedVolunteers} template={selectedTemplate as IDocumentTemplateListItem} setSelectedVolunteers={setSelectedVolunteers} />
     }
   };
 
   const navigateBack = () => {
     navigate('/documents/templates', { replace: true });
   };
+
+  const canGoNext = useMemo(() => {
+    switch (currentStep) {
+      case 0:
+        return selectedTemplate !== null && selectedTemplate !== undefined;
+      case 1:
+        return selectedVolunteers.length > 0;
+      case 2:
+        return selectedVolunteers.length > 0;
+      default:
+        return true;
+    }
+  }, [currentStep, selectedTemplate, selectedVolunteers]);
 
   return (
     <PageLayout>
@@ -200,11 +107,12 @@ export const GenerateContract = () => {
       {/* template table */}
       {renderStep()}
       <div className="flex flex-row gap-4 justify-end">
-        <Button label="Pasul anterior" onClick={handlePrevious} className="text-yellow" />
+        <Button label={currentStep === 0 ? 'Renunta' : 'Pasul anterior'} onClick={handlePrevious} className="text-yellow-500" />
         <Button
           label="Pasul urmator"
           onClick={handleNext}
-          className="bg-yellow text-white self-center p-2 rounded"
+          disabled={!canGoNext}
+          className="bg-yellow text-white self-center p-2 rounded disabled:bg-gray-300 disabled:text-white"
         />
       </div>
     </PageLayout>

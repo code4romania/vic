@@ -21,9 +21,12 @@ interface DataTableProps<T> {
   selectableRows?: boolean;
   selectableRowsSingle?: boolean;
   onSelectedRowsChange?: (selectedRows: T[]) => void;
+  selectableRowSelected?: (row: T) => boolean;
+  selectableRowDisabled?: (row: T) => boolean;
   onSort?: (selectedColumn: TableColumn<T>, sortDirection: SortOrder, sortedRows: T[]) => void;
   defaultSortFieldId?: string | number;
   defaultSortAsc?: boolean;
+
 }
 
 const DataTableComponent = <T extends object>({
@@ -41,6 +44,8 @@ const DataTableComponent = <T extends object>({
   selectableRows,
   selectableRowsSingle,
   onSelectedRowsChange,
+  selectableRowSelected,
+  selectableRowDisabled,
   defaultSortFieldId,
   defaultSortAsc,
 }: DataTableProps<T>) => {
@@ -76,6 +81,8 @@ const DataTableComponent = <T extends object>({
       defaultSortAsc={defaultSortAsc}
       selectableRows={selectableRows}
       selectableRowsSingle={selectableRowsSingle}
+      selectableRowSelected={selectableRowSelected}
+      selectableRowDisabled={selectableRowDisabled}
       onSelectedRowsChange={(selected) =>
         onSelectedRowsChange && onSelectedRowsChange(selected.selectedRows)
       }

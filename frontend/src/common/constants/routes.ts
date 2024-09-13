@@ -63,28 +63,23 @@ export const ROUTES: IRoute[] = [
     childRoutes: [
       {
         id: 61,
-        name: i18n.t('general:contracts'),
+        name: i18n.t('general:contracts') + ' - OLD',
         href: 'documents/contracts',
       },
       {
         id: 62,
-        name: 'Contracte * NEW *',
+        name: 'Contracte',
         href: 'documents/templates',
       },
       {
         id: 63,
-        name: 'Creează template * NEW *',
+        name: 'Creează template',
         href: 'documents/templates/create',
       },
       {
         id: 64,
-        name: 'Generează contract * NEW *',
+        name: 'Generează contract',
         href: 'documents/templates/contracts/generate',
-      },
-      {
-        id: 65,
-        name: 'stepper',
-        href: 'documents/templates/stepper_example',
       },
     ],
   },

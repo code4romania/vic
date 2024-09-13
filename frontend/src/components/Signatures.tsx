@@ -2,34 +2,18 @@ import React from 'react';
 import { InfoParagraph } from './InfoParagraph';
 import { Signature } from './Signature';
 import { useTranslation } from 'react-i18next';
-import { useOrganizationQuery } from '../services/organization/organization.service';
-import { IMockVolunteer } from './ContractCard';
-import LoadingContent from './LoadingContent';
-import { OrganizationDataError } from './OrganizationDataError';
+import { IOrganizationData } from '../common/interfaces/template.interface';
+import { IVolunteer } from '../common/interfaces/volunteer.interface';
 
 interface SignatureProps {
-  volunteer?: IMockVolunteer;
+  volunteer?: IVolunteer;
+  organization: IOrganizationData;
 }
 
-export const Signatures = ({ volunteer }: SignatureProps) => {
+export const Signatures = ({ volunteer, organization }: SignatureProps) => {
   const { t } = useTranslation('doc_templates');
-  const {
-    data: organization,
-    isLoading: isLoadingOrganization,
-    isError: isErrorOrganization,
-    isFetching,
-    refetch,
-  } = useOrganizationQuery();
 
-  if (isLoadingOrganization) {
-    return <LoadingContent />;
-  }
-
-  if (isErrorOrganization) {
-    return <OrganizationDataError onRetry={refetch} isFetching={isFetching} />;
-  }
-
-  const isOrganizationNameMissing = !organization?.name;
+  const isOrganizationNameMissing = !organization?.officialName;
 
   return (
     <div className="flex flex-col gap-8">
@@ -39,10 +23,10 @@ export const Signatures = ({ volunteer }: SignatureProps) => {
             <div className="flex flex-row gap-1 flex-wrap">
               {t('template_preview.p2.organization')}{' '}
               {volunteer ? (
-                <p>{organization?.name}</p>
+                <p>{organization?.officialName}</p>
               ) : (
                 <InfoParagraph
-                  text={!isOrganizationNameMissing ? organization?.name : t('organization.name')}
+                  text={!isOrganizationNameMissing ? organization?.officialName : t('organization.name')}
                 />
               )}
             </div>
@@ -52,10 +36,10 @@ export const Signatures = ({ volunteer }: SignatureProps) => {
               {' '}
               {t('represented_by')}
               {volunteer ? (
-                <p>{organization?.legalReprezentativeFullName} </p>
+                <p>{organization?.legalRepresentativeName} </p>
               ) : (
                 <InfoParagraph
-                  text={organization?.legalReprezentativeFullName || `[${t('legal_rep_name')}]`}
+                  text={organization?.legalRepresentativeName || `[${t('legal_rep_name')}]`}
                 />
               )}
             </div>
@@ -66,7 +50,7 @@ export const Signatures = ({ volunteer }: SignatureProps) => {
           signatureTitle={<p>{t('volunteer.volunteer')}</p>}
           p={
             volunteer ? (
-              volunteer.name
+              volunteer.user.name
             ) : (
               <InfoParagraph text={`[${t('volunteer_name')}]`} className="self-baseline" />
             )
@@ -82,22 +66,22 @@ export const Signatures = ({ volunteer }: SignatureProps) => {
           signatureTitle={<p>{t('legal_representative')}</p>}
           p={
             <div className="flex flex-col gap-1">
-              {volunteer?.legalRepresentative?.name ? (
-                <p>{volunteer.legalRepresentative.name}</p>
+              {volunteer?.user.userPersonalData?.legalGuardian?.name ? (
+                <p>{volunteer.user.userPersonalData?.legalGuardian?.name}</p>
               ) : (
                 <InfoParagraph text={`[${t('legal_rep_name')}]`} className="self-baseline" />
               )}
 
               <div className="flex flex-row gap-1 flex-wrap">
                 {t('identification')}
-                {volunteer?.legalRepresentative?.series ? (
-                  <p>{volunteer.legalRepresentative.series}</p>
+                {volunteer?.user.userPersonalData?.legalGuardian?.identityDocumentSeries ? (
+                  <p>{volunteer.user.userPersonalData?.legalGuardian?.identityDocumentSeries}</p>
                 ) : (
                   <InfoParagraph text={`[${t('series')}]`} />
                 )}
                 ,
-                {volunteer?.legalRepresentative?.no ? (
-                  <p>{volunteer?.legalRepresentative?.no}</p>
+                {volunteer?.user.userPersonalData?.legalGuardian?.identityDocumentNumber ? (
+                  <p>{volunteer?.user.userPersonalData?.legalGuardian?.identityDocumentNumber}</p>
                 ) : (
                   <InfoParagraph text={`[${t('number')}]`} />
                 )}
@@ -105,8 +89,8 @@ export const Signatures = ({ volunteer }: SignatureProps) => {
               <div className="flex flex-row gap-1 flex-wrap">
                 {t('tel_no')}
 
-                {volunteer?.legalRepresentative?.tel ? (
-                  <p>{volunteer.legalRepresentative.tel}</p>
+                {volunteer?.user.userPersonalData?.legalGuardian?.phone ? (
+                  <p>{volunteer?.user.userPersonalData?.legalGuardian?.phone}</p>
                 ) : (
                   <InfoParagraph text={`[${t('telephone')}]`} />
                 )}
