@@ -24,7 +24,9 @@ import {
 import { GetManyDocumentContractsDto } from './dto/get-many-document-contracts.dto';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { ApproveDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/approve-document-contract-by-ngo.usecase';
-import { SignDocumentContractByNGO } from 'src/usecases/documents/new_contracts/sign-document-contract-by-ngo.usecase';
+import { SignDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/sign-document-contract-by-ngo.usecase';
+import { RejectDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/reject-document-contract-by-ngo.usecase';
+import { RejectDocumentContractByNgoDTO } from './dto/reject-document-contract.dto';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -34,7 +36,8 @@ export class DocumentContractController {
     private readonly createDocumentContractUsecase: CreateDocumentContractUsecase,
     private readonly getManyDocumentContractsUsecase: GetManyDocumentContractsUsecase,
     private readonly approveDocumentContractByNgoUsecase: ApproveDocumentContractByNgoUsecase,
-    private readonly signDocumentContractByNGO: SignDocumentContractByNGO,
+    private readonly rejectDocumentContractByNgoUsecase: RejectDocumentContractByNgoUsecase,
+    private readonly signDocumentContractByNGO: SignDocumentContractByNgoUsecase,
   ) {}
 
   @Post()
@@ -84,5 +87,18 @@ export class DocumentContractController {
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<void> {
     await this.signDocumentContractByNGO.execute(id, organizationId);
+  }
+
+  @Patch(':id/reject')
+  async rejectDocumentContract(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+    @Body() { rejectionReason }: RejectDocumentContractByNgoDTO,
+  ): Promise<void> {
+    await this.rejectDocumentContractByNgoUsecase.execute({
+      documentContractId: id,
+      organizationId,
+      rejectionReason: rejectionReason,
+    });
   }
 }

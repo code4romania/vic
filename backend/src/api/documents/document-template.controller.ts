@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -23,6 +24,7 @@ import {
   ApiPaginatedResponse,
   PaginatedPresenter,
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
+import { DeleteDocumentTemplateUsecase } from 'src/usecases/documents/new_contracts/delete-document-template.usecase';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -32,6 +34,7 @@ export class DocumentTemplateController {
     private readonly createDocumentTemplateUsecase: CreateDocumentTemplateUsecase,
     private readonly getOneDocumentTemplateUsecase: GetOneDocumentTemplateUseCase,
     private readonly getManyDocumentTemplatesUsecase: GetManyDocumentTemplatesUsecase,
+    private readonly deleteDocumentTemplateUsecase: DeleteDocumentTemplateUsecase,
   ) {}
 
   @ApiBody({ type: CreateDocumentTemplateDto })
@@ -61,6 +64,15 @@ export class DocumentTemplateController {
     );
 
     return new DocumentTemplatePresenter(documentTemplate);
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @Delete(':id')
+  async delete(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<string> {
+    return this.deleteDocumentTemplateUsecase.execute(id, organizationId);
   }
 
   @Get()

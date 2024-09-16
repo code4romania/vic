@@ -6,7 +6,9 @@ import { ContractExceptionMessages } from 'src/modules/documents/exceptions/cont
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 
 @Injectable()
-export class RejectDocumentContractByNGO implements IUseCaseService<void> {
+export class RejectDocumentContractByNgoUsecase
+  implements IUseCaseService<void>
+{
   constructor(
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly exceptionService: ExceptionsService,

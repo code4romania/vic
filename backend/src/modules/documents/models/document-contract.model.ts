@@ -78,7 +78,7 @@ export type UpdateDocumentContractOptions = {
 export type FindOneDocumentContractOptions = Partial<
   Pick<
     IDocumentContractModel,
-    'id' | 'volunteerId' | 'organizationId' | 'status'
+    'id' | 'volunteerId' | 'organizationId' | 'status' | 'documentTemplateId'
   >
 >;
 

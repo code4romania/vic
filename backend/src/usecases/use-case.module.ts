@@ -148,7 +148,9 @@ import { GeneratePDFsUseCase } from './documents/new_contracts/generate-pdfs.use
 import { GetManyDocumentContractsByVolunteerUsecase } from './documents/new_contracts/get-many-document-contracts-by-volunteer.usecase';
 import { GetOneDocumentContractForVolunteerUsecase } from './documents/new_contracts/get-one-document-contract-for-volunteer.usecase';
 import { ApproveDocumentContractByNgoUsecase } from './documents/new_contracts/approve-document-contract-by-ngo.usecase';
-import { SignDocumentContractByNGO } from './documents/new_contracts/sign-document-contract-by-ngo.usecase';
+import { SignDocumentContractByNgoUsecase } from './documents/new_contracts/sign-document-contract-by-ngo.usecase';
+import { DeleteDocumentTemplateUsecase } from './documents/new_contracts/delete-document-template.usecase';
+import { RejectDocumentContractByNgoUsecase } from './documents/new_contracts/reject-document-contract-by-ngo.usecase';
 
 const providers = [
   // Organization
@@ -281,6 +283,7 @@ const providers = [
   CreateDocumentTemplateUsecase,
   GetOneDocumentTemplateUseCase,
   GetManyDocumentTemplatesUsecase,
+  DeleteDocumentTemplateUsecase,
   // Contracts
   CreateContractUsecase,
   GetManyContractsUsecase,
@@ -303,7 +306,8 @@ const providers = [
   GetManyDocumentContractsByVolunteerUsecase,
   GetOneDocumentContractForVolunteerUsecase,
   ApproveDocumentContractByNgoUsecase,
-  SignDocumentContractByNGO,
+  SignDocumentContractByNgoUsecase,
+  RejectDocumentContractByNgoUsecase,
   // Notifications
   UpdateSettingsUsecase,
   // Testing PDFs

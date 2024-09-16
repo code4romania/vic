@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DocumentTemplateRepositoryService } from '../repositories/document-template.repository';
 import {
   CreateDocumentTemplateOptions,
+  DeleteOneDocumentTemplateOptions,
   FindOneDocumentTemplateOptions,
   IDocumentTemplateModel,
 } from '../models/document-template.model';
@@ -35,5 +36,9 @@ export class DocumentTemplateFacade {
     findOptions: FindManyDocumentTemplateListViewOptions,
   ): Promise<Pagination<IDocumentTemplateListViewModel>> {
     return this.documentTemplateListViewRepository.findMany(findOptions);
+  }
+
+  async delete(options: DeleteOneDocumentTemplateOptions): Promise<string> {
+    return this.documentTemplateRepository.delete(options);
   }
 }
