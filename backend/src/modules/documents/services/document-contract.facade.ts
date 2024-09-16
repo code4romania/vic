@@ -37,6 +37,13 @@ export class DocumentContractFacade {
       status: DocumentContractStatus.APPROVED,
     });
   }
+  async rejectDocumentContractByNGO(
+    documentContractId: string,
+  ): Promise<IDocumentContractModel> {
+    return this.documentContractRepository.update(documentContractId, {
+      status: DocumentContractStatus.REJECTED_NGO,
+    });
+  }
 
   async create(
     newDocumentContract: CreateDocumentContractOptions,

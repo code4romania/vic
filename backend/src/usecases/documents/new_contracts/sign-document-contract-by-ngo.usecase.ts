@@ -16,7 +16,7 @@ export class SignDocumentContractByNGO implements IUseCaseService<void> {
     documentContractId: string,
     organizationId: string,
   ): Promise<void> {
-    const exists = await this.documentContractFacade.exists({
+    const exists = await this.documentContractFacade.findOne({
       id: documentContractId,
       organizationId,
       status: DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE,
@@ -35,8 +35,8 @@ export class SignDocumentContractByNGO implements IUseCaseService<void> {
     } catch (error) {
       // TODO: Update error
       this.exceptionService.internalServerErrorException({
-        message: `Error while approving the contract by NGO ${error?.message}`,
-        code_error: 'APPROVE_DOCUMENT_CONTRACT_BY_NGO_001',
+        message: `Error while sigining the contract by NGO ${error?.message}`,
+        code_error: 'SIGN_DOCUMENT_CONTRACT_BY_NGO_003',
       });
     }
 
