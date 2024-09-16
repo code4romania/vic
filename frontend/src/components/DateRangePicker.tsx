@@ -62,6 +62,7 @@ const DateRangePicker = ({
           placeholderText={i18n.t('general:select_interval').toString()}
           id={`${id}__date-picker`}
           disabled={disabled}
+          dateFormat="dd.MM.yyyy"
         />
       </div>
     </div>

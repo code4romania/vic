@@ -40,11 +40,11 @@ export const ContractCard = ({
   const [edit, setEdit] = useState(false);
   const [documentNumber, setDocumentNumber] = useState(initialNumber ? initialNumber : dotsString);
   const [documentDate, setDocumentDate] = useState(
-    initialDate ? initialDate.toLocaleDateString() : dotsString,
+    initialDate ? format(initialDate, 'dd.MM.yyyy') : dotsString,
   );
   const [documentPeriod, setDocumentPeriod] = useState(
     initialPeriod && initialPeriod[0] && initialPeriod[1]
-      ? [initialPeriod[0].toLocaleDateString(), initialPeriod[1].toLocaleDateString()]
+      ? [format(initialPeriod[0], 'dd.MM.yyyy'), format(initialPeriod[1], 'dd.MM.yyyy')]
       : [dotsString, dotsString],
   );
 
@@ -65,13 +65,13 @@ export const ContractCard = ({
     setValue('documentNumber', initialNumber ? initialNumber : '');
 
     // update contract date
-    setDocumentDate(initialDate ? initialDate.toLocaleDateString() : dotsString);
+    setDocumentDate(initialDate ? format(initialDate, 'dd.MM.yyyy') : dotsString);
     setValue('documentDate', initialDate ? initialDate : null);
 
     // update contract period
     setDocumentPeriod([
-      initialPeriod && initialPeriod[0] ? initialPeriod[0].toLocaleDateString() : dotsString,
-      initialPeriod && initialPeriod[1] ? initialPeriod[1].toLocaleDateString() : dotsString,
+      initialPeriod && initialPeriod[0] ? format(initialPeriod[0], 'dd.MM.yyyy') : dotsString,
+      initialPeriod && initialPeriod[1] ? format(initialPeriod[1], 'dd.MM.yyyy') : dotsString,
     ]);
     setValue(
       'documentPeriod',
@@ -87,24 +87,40 @@ export const ContractCard = ({
     }
 
     if (data.documentDate) {
-      setDocumentDate(data.documentDate.toLocaleDateString());
+      setDocumentDate(format(data.documentDate, 'dd.MM.yyyy'));
     }
 
     if (data.documentPeriod && data.documentPeriod[0] && data.documentPeriod[1]) {
       setDocumentPeriod([
-        data.documentPeriod[0].toLocaleDateString(),
-        data.documentPeriod[1].toLocaleDateString(),
+        format(data.documentPeriod[0], 'dd.MM.yyyy'),
+        format(data.documentPeriod[1], 'dd.MM.yyyy'),
       ]);
     }
 
     setEdit(false);
   };
 
-  const onCancel = () => {
+  const onCancel = (data: FieldValues) => {
+    if (data.documentNumber !== documentNumber) {
+      setDocumentNumber(documentNumber);
+      setValue('documentNumber', documentNumber !== dotsString ? documentNumber : '');
+    }
+    if (data.documentDate !== documentDate) {
+      setDocumentDate(documentDate);
+      const [day, month, year] = documentDate.split('.').map(Number);
+      setValue('documentDate', documentDate !== dotsString ? new Date(year, month, day) : null);
+    }
+    if (data.documentPeriod !== documentPeriod) {
+      setDocumentPeriod(documentPeriod);
+      if (documentPeriod[0] !== dotsString && documentPeriod[1] !== dotsString) {
+        const [day1, month1, year1] = documentPeriod[0].split('.').map(Number);
+        const [day2, month2, year2] = documentPeriod[1].split('.').map(Number);
+        setValue('documentPeriod', [new Date(year1, month1, day1), new Date(year2, month2, day2)]);
+      } else {
+        setValue('documentPeriod', [null, null]);
+      }
+    }
     setEdit(false);
-    setValue('documentNumber', documentNumber);
-    setValue('documentDate', documentDate ? new Date(documentDate) : null);
-    setValue('documentPeriod', documentPeriod && documentPeriod[0] && documentPeriod[1] ? [new Date(documentPeriod[0]), new Date(documentPeriod[1])] : [null, null]);
   };
 
 
@@ -146,7 +162,7 @@ export const ContractCard = ({
                   disabled={!edit}
                   value={value}
                   onChange={onChange}
-                  placeholder="ZZ/LL/AAAAA"
+                  placeholder="ZZ.LL.AAAA"
                 />
               )}
             />
@@ -169,7 +185,7 @@ export const ContractCard = ({
                 <Button
                   label={t('cancel', { ns: 'general' })}
                   className="bg-gray-300 btn-secondary mt-4 text-gray-700 w-full"
-                  onClick={onCancel}
+                  onClick={handleSubmit(onCancel)}
                 />
 
               )}

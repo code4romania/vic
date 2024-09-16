@@ -37,6 +37,7 @@ export const AutoFillContractCard = ({
                 onChange={onChange}
                 placeholder="1000"
                 wrapperClassname="flex-1"
+                type="number"
               />
             )}
           />
@@ -46,7 +47,7 @@ export const AutoFillContractCard = ({
             render={({ field: { value, onChange } }) => (
               <FormDatePicker
                 label={t('form.contract_date')}
-                placeholder="ZZ/LL/AAAAA"
+                placeholder="ZZ.LL.AAAA"
                 value={value}
                 onChange={onChange}
               />
