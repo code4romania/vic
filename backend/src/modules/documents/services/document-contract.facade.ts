@@ -30,6 +30,14 @@ export class DocumentContractFacade {
     });
   }
 
+  async signDocumentContractByNGO(
+    documentContractId: string,
+  ): Promise<IDocumentContractModel> {
+    return this.documentContractRepository.update(documentContractId, {
+      status: DocumentContractStatus.APPROVED,
+    });
+  }
+
   async create(
     newDocumentContract: CreateDocumentContractOptions,
   ): Promise<string> {
