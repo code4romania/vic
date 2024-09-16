@@ -479,6 +479,9 @@
         "title": "Documente",
         "subtitle": "{{number}} documente așteaptă răspuns"
       },
+      "contract": {
+        "title": "Contract de voluntariat"
+      },
       "volunteer_profile": {
         "title": "Profil voluntar",
         "subtitle": "Profil incomplet"
@@ -777,6 +780,32 @@
     },
     "confirmation_modal": {
       "paragraph": "Ești sigur că vrei să anulezi și să încarci un contract diferit?"
+    }
+  },
+  "documents-contract": {
+    "title": "Contract voluntariat",
+    "no_active_contract": {
+      "title": "Nu ai un contract de voluntariat activ",
+      "description": "Ia legatura cu reprezentanții organizației pentru a obține contractul de voluntariat."
+    },
+    "description": "Gestioneaza contractele tale din sectiunile de mai jos. Descarca contracte vechi, sau semneaza contractele trimise de organizatie.",
+    "requires_volunteer_signature": "Contractul necesită semnătura ta",
+    "pending_documents": "Documente în așteptare",
+    "contract": {
+      "title": "Contract {{value}}",
+      "description": "Contractul a fost generat și necesită aprobarea ta. Descarcă modelul de mai jos și citește documentul cu atenție. Verifică dacă datele de identitate sunt corecte, în caz contrar, modifică datele și semnează documentul"
+    },
+    "volunteer_signature": {
+      "title": " Semnatură voluntar",
+      "description": " Desenează semnătura în cadranul de mai jos",
+      "action_button_label": "Trimite spre semnare",
+      "back": "Înapoi"
+    },
+    "legal_guardian_signature": {
+      "title": "Semnătura tutore legal",
+      "description": "Deoarece ai sub 16 ani, este necesară semnătura tutorelui legal ({{value}}). Desenează semnătura în cadranul de mai jos",
+      "action_button_label": "Trimite spre semnare",
+      "back": "Înapoi"
     }
   },
   "notifications": {

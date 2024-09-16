@@ -1,15 +1,15 @@
 import React from 'react';
 import { TrashIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
-import { IMockVolunteer } from './ContractCard';
 import { Tooltip } from 'react-tooltip';
 import LoadingContent from './LoadingContent';
+import { IVolunteer } from '../common/interfaces/volunteer.interface';
 
 interface ContractCardHeaderProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  volunteer: IMockVolunteer;
-  // todo: onDelete
+  volunteer: IVolunteer;
+  onDelete: (id: string) => void;
   isLoading?: boolean;
   isError?: boolean;
   isErrorText?: string;
@@ -19,18 +19,17 @@ export const ContractCardHeader = ({
   open,
   setOpen,
   volunteer,
+  onDelete,
   isLoading,
   isError,
   isErrorText,
 }: ContractCardHeaderProps) => {
-  // todo: remove isError from here and use the right thing instead
-  // todo: error state
 
   if (isLoading) {
     return (
       <div
-        key={volunteer.cnp}
         className="bg-white rounded shadow flex flex-row justify-center items-center z-10 p-4"
+        key={volunteer.user.userPersonalData?.cnp}
       >
         <LoadingContent />
       </div>
@@ -38,10 +37,10 @@ export const ContractCardHeader = ({
   }
 
   return (
-    <div key={volunteer.cnp} className="bg-white rounded shadow flex flex-row items-center z-10">
+    <div key={volunteer.user.userPersonalData?.cnp} className="bg-white rounded shadow flex flex-row items-center z-10">
       <div
         className="flex flex-row justify-center items-center p-4 hover:cursor-pointer"
-        onClick={() => console.log('delete item')}
+        onClick={() => onDelete(volunteer.id)}
       >
         <TrashIcon width={20} height={20} color="red" />
       </div>
@@ -51,9 +50,9 @@ export const ContractCardHeader = ({
         onClick={() => setOpen(!open)}
       >
         <div className="rounded-full">
-          <img src={volunteer.image} className="w-8 h-8 rounded-full" />
+          <img src={volunteer.user.profilePicture} className="w-8 h-8 rounded-full" />
         </div>
-        {volunteer.name}
+        {volunteer.user.name}
         <div className="flex flex-row gap-4 ml-auto z-20">
           {isError && (
             <>
@@ -61,10 +60,10 @@ export const ContractCardHeader = ({
                 width={20}
                 height={20}
                 color="red"
-                data-tooltip-id={`error-tooltip-${volunteer.cnp}`}
+                data-tooltip-id={`error-tooltip-${volunteer.user.userPersonalData?.cnp}`}
               />
               <Tooltip
-                id={`error-tooltip-${volunteer.cnp}`}
+                id={`error-tooltip-${volunteer.user.userPersonalData?.cnp}`}
                 place="top"
                 content={isErrorText}
                 arrowColor="red"
