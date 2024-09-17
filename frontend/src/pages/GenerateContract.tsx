@@ -10,12 +10,17 @@ import { IDocumentTemplateListItem } from '../common/interfaces/template.interfa
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import DocumentTemplatesTableWithQueryParams from '../containers/query/DocumentTemplatesTableWithQueryParams';
 import { DocumentContractFillCards } from '../components/DocumentContractFillCards';
-// import { ContractTemplate } from './ContractTemplates';
-// import { IVolunteer } from '../common/interfaces/volunteer.interface';
+
+export interface IDocumentVolunteerData {
+  documentNumber: number;
+  documentDate: Date;
+  documentPeriod: [Date, Date];
+}
 
 export const GenerateContract = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<IDocumentTemplateListItem | null>(null);
   const [selectedVolunteers, setSelectedVolunteers] = useState<IVolunteer[]>([]);
+  const [volunteersData, setVolunteersData] = useState<Record<string, IDocumentVolunteerData>>();
 
   const { t } = useTranslation(['volunteering_contracts', 'stepper']);
   const navigate = useNavigate();
@@ -65,6 +70,10 @@ export const GenerateContract = () => {
     setSelectedVolunteers(volunteers);
   };
 
+  const handleSetVolunteersData = (volunteerData: Record<string, IDocumentVolunteerData>) => {
+    setVolunteersData((prevData) => ({ ...prevData, ...volunteerData }));
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 0:
@@ -74,7 +83,12 @@ export const GenerateContract = () => {
       case 1:
         return <DocumentVolunteersTableWithQueryParams selectedVolunteers={selectedVolunteers} setSelectedVolunteers={onSelectVolunteers} />
       case 2:
-        return <DocumentContractFillCards volunteers={selectedVolunteers} template={selectedTemplate as IDocumentTemplateListItem} setSelectedVolunteers={setSelectedVolunteers} />
+        return <DocumentContractFillCards volunteers={selectedVolunteers}
+          template={selectedTemplate as IDocumentTemplateListItem}
+          setSelectedVolunteers={setSelectedVolunteers}
+          setVolunteerData={handleSetVolunteersData}
+          volunteersData={volunteersData}
+        />
     }
   };
 

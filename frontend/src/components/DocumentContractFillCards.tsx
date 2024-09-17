@@ -6,23 +6,24 @@ import { IDocumentTemplate, IDocumentTemplateListItem } from '../common/interfac
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { useDocumentTemplateByIdQuery } from '../services/documents-templates/documents-templates.service';
 import LoadingContent from './LoadingContent';
-// Add this import
-import ConfirmationModal from './ConfirmationModal'; // Adjust the import path as needed
+import ConfirmationModal from './ConfirmationModal';
+import { IDocumentVolunteerData } from '../pages/GenerateContract';
 
 interface DocumentContractFillCardsProps {
   volunteers: IVolunteer[];
   template: IDocumentTemplateListItem;
   setSelectedVolunteers: (volunteers: IVolunteer[]) => void;
+  setVolunteerData: (volunteerData: Record<string, IDocumentVolunteerData>) => void;
+  volunteersData: Record<string, IDocumentVolunteerData> | undefined;
 }
 
-export const DocumentContractFillCards = ({ volunteers, template, setSelectedVolunteers }: DocumentContractFillCardsProps) => {
+export const DocumentContractFillCards = ({ volunteers, template, setSelectedVolunteers, setVolunteerData, volunteersData }: DocumentContractFillCardsProps) => {
   const { control, reset, handleSubmit, watch, setValue } = useForm();
-  const [startingNumber, setStartingNumber] = useState('');
-  const [contractDate, setContractDate] = useState<Date | null>(null);
-  const [contractPeriod, setContractPeriod] = useState<[Date | null, Date | null]>([null, null]);
+  const [startingNumber, setStartingNumber] = useState<number>();
+  const [contractDate, setContractDate] = useState<Date>();
+  const [contractPeriod, setContractPeriod] = useState<[Date, Date]>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [volunteerToDelete, setVolunteerToDelete] = useState<string | null>(null);
-
 
   const { data: templateData, isLoading: isLoadingTemplate } = useDocumentTemplateByIdQuery(template.id);
 
@@ -31,9 +32,9 @@ export const DocumentContractFillCards = ({ volunteers, template, setSelectedVol
   }, []);
 
   const handleReset = () => {
-    setStartingNumber('');
-    setContractDate(null);
-    setContractPeriod([null, null]);
+    setStartingNumber(undefined);
+    setContractDate(undefined);
+    setContractPeriod(undefined);
     reset({
       startingNumber: '',
       contractDate: null,
@@ -41,7 +42,7 @@ export const DocumentContractFillCards = ({ volunteers, template, setSelectedVol
     });
   };
 
-  const onSubmit = ({ startingNumber, contractDate, contractPeriod }: FieldValues) => {
+  const onSubmitFillForm = ({ startingNumber, contractDate, contractPeriod }: FieldValues) => {
     if (startingNumber) {
       setStartingNumber(startingNumber);
     }
@@ -75,6 +76,9 @@ export const DocumentContractFillCards = ({ volunteers, template, setSelectedVol
     setVolunteerToDelete(null);
   };
 
+  const handleAddVolunteerData = (volunteerId: string, volunteerData: IDocumentVolunteerData) => {
+    setVolunteerData({ [volunteerId]: volunteerData });
+  };
 
   return (
     <>
@@ -82,7 +86,7 @@ export const DocumentContractFillCards = ({ volunteers, template, setSelectedVol
         control={control}
         handleReset={handleReset}
         handleSubmit={handleSubmit}
-        onSubmit={onSubmit}
+        onSubmit={onSubmitFillForm}
         watch={watch}
         setValue={setValue}
       />
@@ -94,10 +98,12 @@ export const DocumentContractFillCards = ({ volunteers, template, setSelectedVol
             onDelete={onDelete}
             volunteer={item}
             template={templateData as IDocumentTemplate}
-            initialNumber={startingNumber ? String(Number(startingNumber) + index) : undefined}
-            initialDate={contractDate}
-            initialPeriod={contractPeriod}
+            initialNumber={startingNumber}
+            initialDate={contractDate ? contractDate : undefined}
+            initialPeriod={contractPeriod ? contractPeriod : undefined}
             isOpen={index === 0}
+            saveVolunteerData={handleAddVolunteerData}
+            volunteersData={volunteersData}
           />
         ))}
       </div>

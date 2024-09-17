@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { IDocumentVolunteerData } from '../pages/GenerateContract';
 
 const dotsString = '.........................';
 
@@ -25,10 +26,12 @@ interface ContractCardProps {
   initialPeriod?: [Date | undefined, Date | undefined];
   isOpen?: boolean;
   onDelete: (id: string) => void;
+  saveVolunteerData: (voluneerId: string, volunteerData: IDocumentVolunteerData) => void;
+  volunteersData: Record<string, IDocumentVolunteerData> | undefined;
 }
 
 export const fillCardValidationSchema = yup.object({
-  documentNumber: yup.number().required(`${i18n.t('doc_templates:contract_card_form.document_number:required')}`),
+  documentNumber: yup.number().positive(`${i18n.t('doc_templates:contract_card_form.document_number.invalid')}`).typeError(`${i18n.t('doc_templates:contract_card_form.document_number.invalid')}`).required(`${i18n.t('doc_templates:contract_card_form.document_number:required')}`),
   documentDate: yup.date().required(`${i18n.t('doc_templates:contract_card_form.document_date.required')}`),
   documentPeriod: yup.array().of(yup.date()
     .required(`${i18n.t('doc_templates:contract_card_form.document_period.required')}`)
@@ -43,6 +46,8 @@ export const ContractCard = ({
   initialDate,
   initialPeriod,
   onDelete,
+  saveVolunteerData,
+  volunteersData,
   isOpen = false,
 }: ContractCardProps) => {
   const { t } = useTranslation(['doc_templates', 'general']);
@@ -110,6 +115,29 @@ export const ContractCard = ({
         data.documentPeriod[1]
       ]);
     }
+
+    if (volunteersData) {
+      const existingNumbers = Object.entries(volunteersData)
+        .filter(([key, v]: [string, IDocumentVolunteerData]) => {
+
+          return v.documentDate.getFullYear() === data.documentDate.getFullYear() && key !== volunteer.id;
+        })
+        .map(([, v]: [string, IDocumentVolunteerData]) => v.documentNumber);
+
+      if (existingNumbers.includes(data.documentNumber)) {
+        setError('documentNumber', {
+          type: 'manual',
+          message: t('doc_templates:contract_card_form.document_number.unique')
+        });
+        return;
+      }
+    }
+
+    saveVolunteerData(volunteer.id, {
+      documentNumber: data.documentNumber,
+      documentDate: data.documentDate,
+      documentPeriod: data.documentPeriod,
+    });
 
     setEdit(false);
   };
