@@ -16,7 +16,7 @@ interface DocumentContractFillCardsProps {
 }
 
 export const DocumentContractFillCards = ({ volunteers, template, setSelectedVolunteers }: DocumentContractFillCardsProps) => {
-  const { control, reset, handleSubmit } = useForm();
+  const { control, reset, handleSubmit, watch, setValue } = useForm();
   const [startingNumber, setStartingNumber] = useState('');
   const [contractDate, setContractDate] = useState<Date | null>(null);
   const [contractPeriod, setContractPeriod] = useState<[Date | null, Date | null]>([null, null]);
@@ -83,6 +83,8 @@ export const DocumentContractFillCards = ({ volunteers, template, setSelectedVol
         handleReset={handleReset}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
+        watch={watch}
+        setValue={setValue}
       />
 
       <div className="flex flex-col gap-4">

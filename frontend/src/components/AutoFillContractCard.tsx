@@ -1,5 +1,5 @@
-import React from 'react';
-import { Control, Controller, FieldValues, UseFormHandleSubmit } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { Control, Controller, FieldValues, UseFormHandleSubmit, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import FormInput from './FormInput';
 import FormDatePicker from './FormDatePicker';
 import DateRangePicker from './DateRangePicker';
@@ -8,6 +8,8 @@ import Button from './Button';
 
 interface AutoFillContractCardProps {
   control: Control<FieldValues>;
+  watch: UseFormWatch<FieldValues>;
+  setValue: UseFormSetValue<FieldValues>;
   handleReset: () => void;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   onSubmit: ({ startingNumber, contractDate, contractPeriod }: FieldValues) => void;
@@ -18,8 +20,16 @@ export const AutoFillContractCard = ({
   handleReset,
   handleSubmit,
   onSubmit,
+  watch,
+  setValue,
 }: AutoFillContractCardProps) => {
   const { t } = useTranslation('fast_contract_fill');
+
+  const contractDate = watch('contractDate');
+
+  useEffect(() => {
+    setValue('contractPeriod', [null, null]);
+  }, [contractDate]);
 
   return (
     <>
@@ -50,6 +60,8 @@ export const AutoFillContractCard = ({
                 placeholder="ZZ.LL.AAAA"
                 value={value}
                 onChange={onChange}
+                minDate={new Date()}
+                maxDate={new Date(new Date().setMonth(new Date().getMonth() + 6))}
               />
             )}
           />
@@ -63,6 +75,7 @@ export const AutoFillContractCard = ({
                 className="flex-1"
                 value={value}
                 onChange={onChange}
+                minDate={contractDate}
               />
             )}
           />

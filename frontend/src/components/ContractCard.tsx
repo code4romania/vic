@@ -11,19 +11,30 @@ import { ContentExpander } from './ContentExpander';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { IDocumentTemplate } from '../common/interfaces/template.interface';
 import { format } from 'date-fns';
+import * as yup from 'yup';
+import i18n from '../common/config/i18n';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const dotsString = '.........................';
 
 interface ContractCardProps {
   volunteer: IVolunteer,
   template: IDocumentTemplate,
-  initialNumber?: string;
-  initialDate?: Date | null;
-  initialPeriod?: [Date | null, Date | null];
+  initialNumber?: number;
+  initialDate?: Date | undefined;
+  initialPeriod?: [Date | undefined, Date | undefined];
   isOpen?: boolean;
   onDelete: (id: string) => void;
 }
 
+export const fillCardValidationSchema = yup.object({
+  documentNumber: yup.number().required(`${i18n.t('doc_templates:contract_card_form.document_number:required')}`),
+  documentDate: yup.date().required(`${i18n.t('doc_templates:contract_card_form.document_date.required')}`),
+  documentPeriod: yup.array().of(yup.date()
+    .required(`${i18n.t('doc_templates:contract_card_form.document_period.required')}`)
+  )
+    .required(`${i18n.t('doc_templates:contract_card_form.document_period.required')}`)
+});
 
 export const ContractCard = ({
   volunteer,
@@ -38,46 +49,49 @@ export const ContractCard = ({
   // contract card states
   const [open, setOpen] = useState(isOpen);
   const [edit, setEdit] = useState(false);
-  const [documentNumber, setDocumentNumber] = useState(initialNumber ? initialNumber : dotsString);
-  const [documentDate, setDocumentDate] = useState(
-    initialDate ? format(initialDate, 'dd.MM.yyyy') : dotsString,
+  const [documentNumber, setDocumentNumber] = useState<number | undefined>(initialNumber);
+  const [documentDate, setDocumentDate] = useState<Date | undefined>(
+    initialDate,
   );
-  const [documentPeriod, setDocumentPeriod] = useState(
+  const [documentPeriod, setDocumentPeriod] = useState<[Date | undefined, Date | undefined]>(
     initialPeriod && initialPeriod[0] && initialPeriod[1]
-      ? [format(initialPeriod[0], 'dd.MM.yyyy'), format(initialPeriod[1], 'dd.MM.yyyy')]
-      : [dotsString, dotsString],
+      ? [initialPeriod[0], initialPeriod[1]]
+      : [undefined, undefined],
   );
 
   const isVolunteerDataIncomplete: boolean = false;
 
-  const { control, handleSubmit, setValue } = useForm({
+  const { control, handleSubmit, setValue, watch, formState: { errors }, setError } = useForm({
+    resolver: yupResolver(fillCardValidationSchema),
     defaultValues: {
-      documentNumber: initialNumber || '',
-      documentDate: initialDate || null,
-      documentPeriod: initialPeriod || [null, null],
+      documentNumber: initialNumber || undefined,
+      documentDate: initialDate || undefined,
+      documentPeriod: initialPeriod || [undefined, undefined],
     },
   });
+
+  const documentDateValue = watch('documentDate');
 
   // update values for the contract data, as well as for the contract preview, whenever the initial values coming from the parent change (the fast contract completion feature)
   useEffect(() => {
     // update contract number
-    setDocumentNumber(initialNumber ? initialNumber : dotsString);
-    setValue('documentNumber', initialNumber ? initialNumber : '');
+    setDocumentNumber(initialNumber);
+    setValue('documentNumber', initialNumber as number);
 
     // update contract date
-    setDocumentDate(initialDate ? format(initialDate, 'dd.MM.yyyy') : dotsString);
-    setValue('documentDate', initialDate ? initialDate : null);
+    setDocumentDate(initialDate);
+    setValue('documentDate', initialDate as Date);
 
     // update contract period
     setDocumentPeriod([
-      initialPeriod && initialPeriod[0] ? format(initialPeriod[0], 'dd.MM.yyyy') : dotsString,
-      initialPeriod && initialPeriod[1] ? format(initialPeriod[1], 'dd.MM.yyyy') : dotsString,
+      initialPeriod && initialPeriod[0] ? initialPeriod[0] : undefined,
+      initialPeriod && initialPeriod[1] ? initialPeriod[1] : undefined
     ]);
     setValue(
       'documentPeriod',
       initialPeriod && initialPeriod[0] && initialPeriod[1]
-        ? [initialPeriod[0], initialPeriod[1]]
-        : [null, null],
+        ? [initialPeriod[0] as Date, initialPeriod[1] as Date]
+        : [undefined as unknown as Date, undefined as unknown as Date],
     );
   }, [initialNumber, initialDate, initialPeriod]);
 
@@ -87,42 +101,39 @@ export const ContractCard = ({
     }
 
     if (data.documentDate) {
-      setDocumentDate(format(data.documentDate, 'dd.MM.yyyy'));
+      setDocumentDate(data.documentDate);
     }
 
     if (data.documentPeriod && data.documentPeriod[0] && data.documentPeriod[1]) {
       setDocumentPeriod([
-        format(data.documentPeriod[0], 'dd.MM.yyyy'),
-        format(data.documentPeriod[1], 'dd.MM.yyyy'),
+        data.documentPeriod[0],
+        data.documentPeriod[1]
       ]);
     }
 
     setEdit(false);
   };
 
-  const onCancel = (data: FieldValues) => {
-    if (data.documentNumber !== documentNumber) {
-      setDocumentNumber(documentNumber);
-      setValue('documentNumber', documentNumber !== dotsString ? documentNumber : '');
-    }
-    if (data.documentDate !== documentDate) {
-      setDocumentDate(documentDate);
-      const [day, month, year] = documentDate.split('.').map(Number);
-      setValue('documentDate', documentDate !== dotsString ? new Date(year, month, day) : null);
-    }
-    if (data.documentPeriod !== documentPeriod) {
-      setDocumentPeriod(documentPeriod);
-      if (documentPeriod[0] !== dotsString && documentPeriod[1] !== dotsString) {
-        const [day1, month1, year1] = documentPeriod[0].split('.').map(Number);
-        const [day2, month2, year2] = documentPeriod[1].split('.').map(Number);
-        setValue('documentPeriod', [new Date(year1, month1, day1), new Date(year2, month2, day2)]);
-      } else {
-        setValue('documentPeriod', [null, null]);
-      }
-    }
+  const onCancel = () => {
+    // Reset Errors
+    setError('documentNumber', {});
+    setError('documentDate', {});
+    setError('documentPeriod', {});
+
+    // Reintilize with initial values Document Number
+    setDocumentNumber(documentNumber);
+    setValue('documentNumber', documentNumber as number);
+
+    // Reintilize with initial values Document Date
+    setDocumentDate(documentDate);
+    setValue('documentDate', documentDate as Date);
+
+    // Reintilize with initial values Document Period
+    setDocumentPeriod(documentPeriod);
+    setValue('documentPeriod', documentPeriod as [Date, Date]);
+
     setEdit(false);
   };
-
 
   return (
     <div className="flex flex-col">
@@ -147,9 +158,11 @@ export const ContractCard = ({
                 <FormInput
                   label={t('contract_no')}
                   disabled={!edit}
-                  value={value}
+                  value={value ? value : ''}
                   onChange={onChange}
                   placeholder="1000"
+                  errorMessage={errors.documentNumber?.message}
+                  type="number"
                 />
               )}
             />
@@ -163,6 +176,9 @@ export const ContractCard = ({
                   value={value}
                   onChange={onChange}
                   placeholder="ZZ.LL.AAAA"
+                  minDate={new Date()}
+                  maxDate={new Date(new Date().setMonth(new Date().getMonth() + 6))}
+                  errorMessage={errors.documentDate?.message}
                 />
               )}
             />
@@ -176,6 +192,8 @@ export const ContractCard = ({
                   value={value as [Date | null, Date | null] | undefined}
                   disabled={!edit}
                   onChange={onChange}
+                  minDate={documentDateValue as Date ? documentDateValue as Date : new Date()}
+                  errorMessage={errors?.documentPeriod ? (errors.documentPeriod[0]?.message || errors.documentPeriod[1]?.message) : ''}
                 />
               )}
             />
@@ -185,7 +203,7 @@ export const ContractCard = ({
                 <Button
                   label={t('cancel', { ns: 'general' })}
                   className="bg-gray-300 btn-secondary mt-4 text-gray-700 w-full"
-                  onClick={handleSubmit(onCancel)}
+                  onClick={onCancel}
                 />
 
               )}
@@ -203,7 +221,7 @@ export const ContractCard = ({
             <p className="font-robotoBold text-center">{t('template_preview.title')}</p>
             <p className="text-center">
               {t('template_preview.p1.no')} {documentNumber} {t('template_preview.p1.date')}{' '}
-              {documentDate}
+              {documentDate ? format(documentDate, 'dd.MM.yyyy') : dotsString}
             </p>
 
             <p>
@@ -250,8 +268,8 @@ export const ContractCard = ({
             {/* P5: DURATA CONTRACTULUI */}
             <p className="font-robotoBold">{t('contract_duration.title')}</p>
             <p>
-              {t('contract_duration.description')} {documentPeriod[0]} {t('template_preview.and')}{' '}
-              {documentPeriod[1]}.
+              {t('contract_duration.description')} {documentPeriod[0] ? format(documentPeriod[0], 'dd.MM.yyyy') : dotsString} {t('template_preview.and')}{' '}
+              {documentPeriod[1] ? format(documentPeriod[1], 'dd.MM.yyyy') : dotsString}.
             </p>
 
             <div className="flex flex-col border-y-2 border-dashed py-6 gap-2">
