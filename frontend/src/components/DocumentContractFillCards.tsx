@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ContractCard } from './ContractCard';
-import { FieldValues, useForm } from 'react-hook-form';
 import { AutoFillContractCard } from './AutoFillContractCard';
 import { IDocumentTemplate, IDocumentTemplateListItem } from '../common/interfaces/template.interface';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
@@ -8,6 +7,7 @@ import { useDocumentTemplateByIdQuery } from '../services/documents-templates/do
 import LoadingContent from './LoadingContent';
 import ConfirmationModal from './ConfirmationModal';
 import { IDocumentVolunteerData } from '../pages/GenerateContract';
+import { FieldValues } from 'react-hook-form';
 
 interface DocumentContractFillCardsProps {
   volunteers: IVolunteer[];
@@ -18,10 +18,6 @@ interface DocumentContractFillCardsProps {
 }
 
 export const DocumentContractFillCards = ({ volunteers, template, setSelectedVolunteers, setVolunteerData, volunteersData }: DocumentContractFillCardsProps) => {
-  const { control, reset, handleSubmit, watch, setValue } = useForm();
-  const [startingNumber, setStartingNumber] = useState<number>();
-  const [contractDate, setContractDate] = useState<Date>();
-  const [contractPeriod, setContractPeriod] = useState<[Date, Date]>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [volunteerToDelete, setVolunteerToDelete] = useState<string | null>(null);
 
@@ -31,27 +27,15 @@ export const DocumentContractFillCards = ({ volunteers, template, setSelectedVol
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  const handleReset = () => {
-    setStartingNumber(undefined);
-    setContractDate(undefined);
-    setContractPeriod(undefined);
-    reset({
-      startingNumber: '',
-      contractDate: null,
-      contractPeriod: [null, null],
-    });
-  };
-
   const onSubmitFillForm = ({ startingNumber, contractDate, contractPeriod }: FieldValues) => {
-    if (startingNumber) {
-      setStartingNumber(startingNumber);
-    }
-    if (contractDate) {
-      setContractDate(contractDate);
-    }
-    if (contractPeriod) {
-      setContractPeriod(contractPeriod);
-    }
+    volunteers.forEach((volunteer, index) => {
+      const volunteerData: IDocumentVolunteerData = {
+        documentNumber: startingNumber ? +startingNumber + index : 0,
+        documentDate: contractDate ? contractDate : undefined,
+        documentPeriod: contractPeriod ? contractPeriod : undefined,
+      };
+      setVolunteerData({ [volunteer.id]: volunteerData });
+    });
   };
 
   if (isLoadingTemplate) {
@@ -83,12 +67,7 @@ export const DocumentContractFillCards = ({ volunteers, template, setSelectedVol
   return (
     <>
       <AutoFillContractCard
-        control={control}
-        handleReset={handleReset}
-        handleSubmit={handleSubmit}
         onSubmit={onSubmitFillForm}
-        watch={watch}
-        setValue={setValue}
       />
 
       <div className="flex flex-col gap-4">
@@ -98,9 +77,9 @@ export const DocumentContractFillCards = ({ volunteers, template, setSelectedVol
             onDelete={onDelete}
             volunteer={item}
             template={templateData as IDocumentTemplate}
-            initialNumber={startingNumber ? +startingNumber + index : undefined}
-            initialDate={contractDate ? contractDate : undefined}
-            initialPeriod={contractPeriod ? contractPeriod : undefined}
+            initialNumber={volunteersData && volunteersData[item.id] ? volunteersData[item.id]?.documentNumber : undefined}
+            initialDate={volunteersData && volunteersData[item.id] ? volunteersData[item.id]?.documentDate : undefined}
+            initialPeriod={volunteersData && volunteersData[item.id] ? volunteersData[item.id]?.documentPeriod : undefined}
             isOpen={index === 0}
             saveVolunteerData={handleAddVolunteerData}
             volunteersData={volunteersData}

@@ -30,8 +30,7 @@ export const GenerateContract = () => {
       { id: '1', label: t('choose_template', { ns: 'stepper' }) },
       { id: '2', label: t('choose_volunteers', { ns: 'stepper' }) },
       { id: '3', label: t('fill', { ns: 'stepper' }) },
-      { id: '4', label: t('attachments', { ns: 'stepper' }) },
-      { id: '5', label: t('complete', { ns: 'stepper' }) },
+      { id: '4', label: t('complete', { ns: 'stepper' }) },
     ],
     [],
   );
@@ -74,6 +73,13 @@ export const GenerateContract = () => {
     setVolunteersData((prevData) => ({ ...prevData, ...volunteerData }));
   };
 
+  const canSendContract = useMemo(() => {
+    // 1. Must have a template
+    // 2. Must have volunteers
+    // 3. Must have volunteers data for all volunteers
+    return selectedTemplate !== null && selectedVolunteers.length > 0 && volunteersData && Object.keys(volunteersData).length === selectedVolunteers.length;
+  }, [selectedTemplate, selectedVolunteers, volunteersData]);
+
   const renderStep = () => {
     switch (currentStep) {
       case 0:
@@ -103,11 +109,11 @@ export const GenerateContract = () => {
       case 1:
         return selectedVolunteers.length > 0;
       case 2:
-        return selectedVolunteers.length > 0;
+        return canSendContract;
       default:
         return true;
     }
-  }, [currentStep, selectedTemplate, selectedVolunteers]);
+  }, [currentStep, selectedTemplate, selectedVolunteers, canSendContract]);
 
   return (
     <PageLayout>

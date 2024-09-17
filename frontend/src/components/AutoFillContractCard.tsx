@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Control, Controller, FieldValues, UseFormHandleSubmit, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { Controller, FieldValues, useForm } from 'react-hook-form';
 import FormInput from './FormInput';
 import FormDatePicker from './FormDatePicker';
 import DateRangePicker from './DateRangePicker';
@@ -7,22 +7,17 @@ import { useTranslation } from 'react-i18next';
 import Button from './Button';
 
 interface AutoFillContractCardProps {
-  control: Control<FieldValues>;
-  watch: UseFormWatch<FieldValues>;
-  setValue: UseFormSetValue<FieldValues>;
-  handleReset: () => void;
-  handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   onSubmit: ({ startingNumber, contractDate, contractPeriod }: FieldValues) => void;
 }
 
 export const AutoFillContractCard = ({
-  control,
-  handleReset,
-  handleSubmit,
   onSubmit,
-  watch,
-  setValue,
 }: AutoFillContractCardProps) => {
+  const { control, reset, handleSubmit, watch, setValue } = useForm();
+
+  const handleReset = () => {
+    reset({});
+  };
   const { t } = useTranslation('fast_contract_fill');
 
   const contractDate = watch('contractDate');

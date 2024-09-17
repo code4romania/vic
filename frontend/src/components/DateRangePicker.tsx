@@ -68,6 +68,7 @@ const DateRangePicker = ({
           disabled={disabled}
           dateFormat="dd.MM.yyyy"
           minDate={minDate}
+          autoComplete="off"
         />
       </div>
       <p className="text-red-500">{errorMessage}</p>

@@ -54,15 +54,6 @@ export const ContractCard = ({
   // contract card states
   const [open, setOpen] = useState(isOpen);
   const [edit, setEdit] = useState(false);
-  const [documentNumber, setDocumentNumber] = useState<number | undefined>(initialNumber);
-  const [documentDate, setDocumentDate] = useState<Date | undefined>(
-    initialDate,
-  );
-  const [documentPeriod, setDocumentPeriod] = useState<[Date | undefined, Date | undefined]>(
-    initialPeriod && initialPeriod[0] && initialPeriod[1]
-      ? [initialPeriod[0], initialPeriod[1]]
-      : [undefined, undefined],
-  );
 
   const isVolunteerDataIncomplete: boolean = false;
 
@@ -80,18 +71,12 @@ export const ContractCard = ({
   // update values for the contract data, as well as for the contract preview, whenever the initial values coming from the parent change (the fast contract completion feature)
   useEffect(() => {
     // update contract number
-    setDocumentNumber(initialNumber);
     setValue('documentNumber', initialNumber as number);
 
     // update contract date
-    setDocumentDate(initialDate);
     setValue('documentDate', initialDate as Date);
 
     // update contract period
-    setDocumentPeriod([
-      initialPeriod && initialPeriod[0] ? initialPeriod[0] : undefined,
-      initialPeriod && initialPeriod[1] ? initialPeriod[1] : undefined
-    ]);
     setValue(
       'documentPeriod',
       initialPeriod && initialPeriod[0] && initialPeriod[1]
@@ -107,21 +92,6 @@ export const ContractCard = ({
         message: t('doc_templates:contract_card_form.document_period.must_be_after')
       });
       return;
-    }
-
-    if (data.documentNumber) {
-      setDocumentNumber(data.documentNumber);
-    }
-
-    if (data.documentDate) {
-      setDocumentDate(data.documentDate);
-    }
-
-    if (data.documentPeriod && data.documentPeriod[0] && data.documentPeriod[1]) {
-      setDocumentPeriod([
-        data.documentPeriod[0],
-        data.documentPeriod[1]
-      ]);
     }
 
     if (volunteersData) {
@@ -157,16 +127,13 @@ export const ContractCard = ({
     setError('documentPeriod', {});
 
     // Reintilize with initial values Document Number
-    setDocumentNumber(documentNumber);
-    setValue('documentNumber', documentNumber as number);
+    setValue('documentNumber', initialNumber as number);
 
     // Reintilize with initial values Document Date
-    setDocumentDate(documentDate);
-    setValue('documentDate', documentDate as Date);
+    setValue('documentDate', initialDate as Date);
 
     // Reintilize with initial values Document Period
-    setDocumentPeriod(documentPeriod);
-    setValue('documentPeriod', documentPeriod as [Date, Date]);
+    setValue('documentPeriod', initialPeriod as [Date, Date]);
 
     setEdit(false);
   };
@@ -256,8 +223,8 @@ export const ContractCard = ({
           <div className="bg-white rounded flex-1 sm:flex-2 p-4 flex flex-col gap-4">
             <p className="font-robotoBold text-center">{t('template_preview.title')}</p>
             <p className="text-center">
-              {t('template_preview.p1.no')} {documentNumber} {t('template_preview.p1.date')}{' '}
-              {documentDate ? format(documentDate, 'dd.MM.yyyy') : dotsString}
+              {t('template_preview.p1.no')} {initialNumber} {t('template_preview.p1.date')}{' '}
+              {initialDate ? format(initialDate, 'dd.MM.yyyy') : dotsString}
             </p>
 
             <p>
@@ -304,8 +271,8 @@ export const ContractCard = ({
             {/* P5: DURATA CONTRACTULUI */}
             <p className="font-robotoBold">{t('contract_duration.title')}</p>
             <p>
-              {t('contract_duration.description')} {documentPeriod[0] ? format(documentPeriod[0], 'dd.MM.yyyy') : dotsString} {t('template_preview.and')}{' '}
-              {documentPeriod[1] ? format(documentPeriod[1], 'dd.MM.yyyy') : dotsString}.
+              {t('contract_duration.description')} {initialPeriod && initialPeriod[0] ? format(initialPeriod[0], 'dd.MM.yyyy') : dotsString} {t('template_preview.and')}{' '}
+              {initialPeriod && initialPeriod[1] ? format(initialPeriod[1], 'dd.MM.yyyy') : dotsString}.
             </p>
 
             <div className="flex flex-col border-y-2 border-dashed py-6 gap-2">
