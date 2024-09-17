@@ -98,7 +98,7 @@ export const DocumentContractFillCards = ({ volunteers, template, setSelectedVol
             onDelete={onDelete}
             volunteer={item}
             template={templateData as IDocumentTemplate}
-            initialNumber={startingNumber}
+            initialNumber={startingNumber ? +startingNumber + index : undefined}
             initialDate={contractDate ? contractDate : undefined}
             initialPeriod={contractPeriod ? contractPeriod : undefined}
             isOpen={index === 0}

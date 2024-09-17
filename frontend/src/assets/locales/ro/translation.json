@@ -1108,7 +1108,8 @@
         "invalid": "Numărul contractului trebuie să fie un număr întreg pozitiv"
       },
       "document_period": {
-        "required": "Perioada contractului este obligatorie"
+        "required": "Perioada contractului este obligatorie",
+        "must_be_after": "Perioada contractului trebuie să înceapă după data contractului"
       },
       "document_date": {
         "required": "Data contractului este obligatorie"

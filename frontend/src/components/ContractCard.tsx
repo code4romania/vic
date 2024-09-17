@@ -34,8 +34,8 @@ export const fillCardValidationSchema = yup.object({
   documentNumber: yup.number().positive(`${i18n.t('doc_templates:contract_card_form.document_number.invalid')}`).typeError(`${i18n.t('doc_templates:contract_card_form.document_number.invalid')}`).required(`${i18n.t('doc_templates:contract_card_form.document_number:required')}`),
   documentDate: yup.date().required(`${i18n.t('doc_templates:contract_card_form.document_date.required')}`),
   documentPeriod: yup.array().of(yup.date()
-    .required(`${i18n.t('doc_templates:contract_card_form.document_period.required')}`)
-  )
+    .required(`${i18n.t('doc_templates:contract_card_form.document_period.required')}`
+    ))
     .required(`${i18n.t('doc_templates:contract_card_form.document_period.required')}`)
 });
 
@@ -101,6 +101,14 @@ export const ContractCard = ({
   }, [initialNumber, initialDate, initialPeriod]);
 
   const onSubmit = (data: FieldValues) => {
+    if (data.documentPeriod && data.documentPeriod[0] && data.documentPeriod[1] && (data.documentPeriod[0] < data.documentDate || data.documentPeriod[1] < data.documentDate)) {
+      setError('documentPeriod', {
+        type: 'manual',
+        message: t('doc_templates:contract_card_form.document_period.must_be_after')
+      });
+      return;
+    }
+
     if (data.documentNumber) {
       setDocumentNumber(data.documentNumber);
     }
@@ -221,7 +229,7 @@ export const ContractCard = ({
                   disabled={!edit}
                   onChange={onChange}
                   minDate={documentDateValue as Date ? documentDateValue as Date : new Date()}
-                  errorMessage={errors?.documentPeriod ? (errors.documentPeriod[0]?.message || errors.documentPeriod[1]?.message) : ''}
+                  errorMessage={errors?.documentPeriod ? (errors.documentPeriod[0]?.message || errors.documentPeriod[1]?.message || errors.documentPeriod?.message) : ''}
                 />
               )}
             />
