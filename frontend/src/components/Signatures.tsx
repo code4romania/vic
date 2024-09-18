@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { InfoParagraph } from './InfoParagraph';
 import { Signature } from './Signature';
 import { useTranslation } from 'react-i18next';
 import { IOrganizationData } from '../common/interfaces/template.interface';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
+import { isOver16FromCNP } from '../common/utils/volunteer-data.util';
 
 interface SignatureProps {
   volunteer?: IVolunteer;
@@ -14,6 +15,13 @@ export const Signatures = ({ volunteer, organization }: SignatureProps) => {
   const { t } = useTranslation('doc_templates');
 
   const isOrganizationNameMissing = !organization?.officialName;
+  const isVolunteerOver16 = useMemo(
+    () =>
+      volunteer && volunteer.user.userPersonalData
+        ? isOver16FromCNP(volunteer.user.userPersonalData.cnp)
+        : false,
+    [volunteer],
+  );
 
   return (
     <div className="flex flex-col gap-8">
@@ -26,7 +34,9 @@ export const Signatures = ({ volunteer, organization }: SignatureProps) => {
                 <p>{organization?.officialName}</p>
               ) : (
                 <InfoParagraph
-                  text={!isOrganizationNameMissing ? organization?.officialName : t('organization.name')}
+                  text={
+                    !isOrganizationNameMissing ? organization?.officialName : t('organization.name')
+                  }
                 />
               )}
             </div>
@@ -97,7 +107,8 @@ export const Signatures = ({ volunteer, organization }: SignatureProps) => {
               </div>
             </div>
           }
-          className="mt-[-2rem] sm:mt-0"
+          // don't display legal guardian signature if the volunteer is over 16 years old
+          className={`mt-[-2rem] sm:mt-0 ${isVolunteerOver16 ? 'hidden' : ''}`}
         />
       </div>
     </div>

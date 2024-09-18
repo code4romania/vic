@@ -1,3 +1,4 @@
+import { differenceInYears } from 'date-fns';
 import { IVolunteer } from '../interfaces/volunteer.interface';
 
 export interface VolunteerDataCheck {
@@ -78,4 +79,24 @@ export const checkIsVolunteerDataIncomplete = (volunteer: IVolunteer): Volunteer
     isIncomplete: missingVolunteerFields.length > 0 || missingGuardianFields.length > 0,
     missingInfo,
   };
+};
+
+export const isOver16FromCNP = (cnp: string) => {
+  // we don't need to perform the calculation before the user has entered all the necessary digits to calculate
+  if (cnp.length < 7) {
+    return true;
+  }
+
+  // CNP example: 2980825... -> 1998-08-25
+  //              6000825... -> 2000-08-25
+
+  // if first digit is above 5, then the birth year is 2000+
+  const yearPrefix = parseInt(cnp[0], 10) < 5 ? '19' : '20';
+  const year = (yearPrefix + cnp.substring(1, 3)).toString();
+  const month = cnp.substring(3, 5);
+  const day = cnp.substring(5, 7);
+  const birthday = new Date(`${year}-${month}-${day}`);
+
+  const age = differenceInYears(new Date(), birthday);
+  return age >= 16;
 };
