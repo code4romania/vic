@@ -1,23 +1,29 @@
-import { IsDate, IsEnum, IsString, MaxLength } from 'class-validator';
-import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
+import { IsDate, IsString, MaxLength, MinDate } from 'class-validator';
+import { IsDateGreaterThanOrEqualTo } from 'src/common/validators/is-date-gte.validator';
 
 export class CreateDocumentContractDto {
-  // TODO: validate dates
-
-  @IsEnum(DocumentContractStatus)
-  status: DocumentContractStatus;
-
   @IsString()
   @MaxLength(9)
   documentNumber: string;
 
   @IsDate()
+  @MinDate(() => new Date(), {
+    message: 'Document date must be greater than or equal to the current date',
+  })
   documentDate: Date;
 
   @IsDate()
+  @IsDateGreaterThanOrEqualTo('documentDate', {
+    message:
+      'Document start date must be greater than or equal to the document date',
+  })
   documentStartDate: Date;
 
   @IsDate()
+  @IsDateGreaterThanOrEqualTo('documentStartDate', {
+    message:
+      'Document end date must be greater than or equal to the document start date',
+  })
   documentEndDate: Date;
 
   @IsString()

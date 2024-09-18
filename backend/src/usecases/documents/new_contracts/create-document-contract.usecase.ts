@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { CreateDocumentContractOptions } from 'src/modules/documents/models/document-contract.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentTemplateFacade } from 'src/modules/documents/services/document-template.facade';
@@ -39,7 +40,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
   public async execute(
     newContract: Omit<
       CreateDocumentContractOptions,
-      'volunteerData' | 'volunteerTutorData'
+      'volunteerData' | 'volunteerTutorData' | 'status'
     >,
   ): Promise<string> {
     // 1. check if the organization exists
@@ -67,13 +68,14 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     // 6. Extract volunteerData and volunteerTutorData from the user
     const volunteerPersonalData = volunteer.user.userPersonalData;
 
-    console.log(volunteerPersonalData);
+    // console.log(volunteerPersonalData);
 
     await this.validateVolunteerPersonalData(volunteerPersonalData);
     await this.validateLegalGuardianData(volunteerPersonalData.legalGuardian);
 
     const newContractOptions: CreateDocumentContractOptions = {
       ...newContract,
+      status: DocumentContractStatus.CREATED,
       volunteerData: {
         name: volunteer.user.name,
         ...volunteerPersonalData,
