@@ -845,6 +845,9 @@
         "identity": {
           "description": "Răspunsul tău a fost trimis către organizație. Atenție! Datele de identitate din contract sunt preluate automat din contul tău. Asigură-te că acestea sunt corecte și complete.",
           "action_btn_label": "Actualizează datele de identitate"
+        },
+        "error": {
+          "title": "A apărut o eroare la respingerea contractului"
         }
       }
     }

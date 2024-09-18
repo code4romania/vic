@@ -16,6 +16,7 @@ import { useReducedMotion } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgXml } from 'react-native-svg';
 import successIcon from '../assets/svg/success-icon';
+import upsIcon from '../assets/svg/ups-icon';
 import InlineLink from '../components/InlineLink';
 import Button from '../components/Button';
 import { useQueryClient } from 'react-query';
@@ -44,9 +45,13 @@ export const RejectContract = ({ navigation, route }: any) => {
   const { contract } = route.params as { contract: DocumentContract };
 
   const [bottomSheetContent, setBottomSheetContent] = useState<{
-    description: string;
+    icon?: string;
+    title?: string;
+    description: string | null;
     action: (() => void) | null;
   }>({
+    icon: successIcon,
+    title: `${t('reject.sheet.title')}`,
     description: `${t('reject.sheet.description')}`,
     action: null,
   });
@@ -67,7 +72,6 @@ export const RejectContract = ({ navigation, route }: any) => {
       reason: formData.rejectionReason,
     };
     rejectContract(rejectPayload, {
-      // todo: onSuccess
       onSuccess: () => {
         if (rejectPayload.reason === RejectionReason.INCORRECT_IDENTITY_DATA) {
           setBottomSheetContent({
@@ -80,6 +84,15 @@ export const RejectContract = ({ navigation, route }: any) => {
             },
           });
         }
+        openBottomSheet();
+      },
+      onError: () => {
+        setBottomSheetContent({
+          icon: upsIcon,
+          title: `${t('reject.sheet.error.title')}`,
+          description: null,
+          action: null,
+        });
         openBottomSheet();
       },
       onSettled: () => {
@@ -151,11 +164,16 @@ export const RejectContract = ({ navigation, route }: any) => {
         enableContentPanningGesture={false}
       >
         <BottomSheetView style={[styles.bottomSheetContainer, { paddingBottom: insets.bottom }]}>
-          <SvgXml xml={successIcon} height={100} width={100} />
-          <Text style={styles.text} category="h1">{`${t('reject.sheet.title')}`}</Text>
-          <Text style={styles.text} appearance="hint" category="p1">
-            {bottomSheetContent.description}
+          <SvgXml xml={bottomSheetContent.icon || successIcon} height={100} width={100} />
+
+          <Text style={styles.text} category="h1">
+            {bottomSheetContent.title}
           </Text>
+          {bottomSheetContent.description && (
+            <Text style={styles.text} appearance="hint" category="p1">
+              {bottomSheetContent.description}
+            </Text>
+          )}
           {bottomSheetContent.action && (
             <Button
               label={t('reject.sheet.identity.action_btn_label')}

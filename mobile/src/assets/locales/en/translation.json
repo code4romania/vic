@@ -844,6 +844,9 @@
         "identity": {
           "description": "Your response has been sent to the organization. Attention! The identity data in the contract is automatically taken from your account. Make sure it is correct and complete.",
           "action_btn_label": "Update identity data"
+        },
+        "error": {
+          "title": "An error occurred while rejecting the contract"
         }
       }
     }
