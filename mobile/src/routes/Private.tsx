@@ -29,6 +29,7 @@ import RequestRejectedReason from '../screens/RequestRejectedReason';
 import DeleteAccount from '../screens/DeleteAccount';
 import { DocumentsContracts } from '../screens/DocumentsContracts';
 import { DocumentsContract } from '../screens/DocumentsContract';
+import { RejectContract } from '../screens/RejectContract';
 
 const { Navigator, Screen, Group } = createNativeStackNavigator();
 
@@ -54,6 +55,7 @@ const Private = () => (
       <Screen name="contract-history" component={ContractHistory} />
       <Screen name="documents/contracts" component={DocumentsContracts} />
       <Screen name="documents/contract" component={DocumentsContract} />
+      <Screen name="documents/contract/reject" component={RejectContract} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
       <Screen name="join-event" component={JoinEvent} />

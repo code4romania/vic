@@ -5,16 +5,17 @@ import { ScrollView, StyleSheet } from 'react-native';
 interface ScrollViewLayoutProps {
   children: ReactNode;
   eva?: any;
+  style?: any;
 }
 
-const ScrollViewLayout = ({ children, eva }: ScrollViewLayoutProps) => (
+const ScrollViewLayout = ({ children, eva, style }: ScrollViewLayoutProps) => (
   <ScrollView
     bouncesZoom={false}
     alwaysBounceHorizontal={false}
     alwaysBounceVertical={false}
     bounces={false}
     showsVerticalScrollIndicator={false}
-    style={eva?.style.background}
+    style={[eva?.style.background, style]}
   >
     <Layout style={styles.layout}>{children}</Layout>
   </ScrollView>

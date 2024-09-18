@@ -36,7 +36,7 @@ export const mapContractStatus = (
     case ClientContractStatus.ACTIVE: {
       return {
         label: 'contract_status.active',
-        color: 'turquoise-700',
+        color: 'turquoise-500',
         backgroundColor: 'background-turquoise',
       };
     }

@@ -15,22 +15,10 @@ export interface DocumentContract {
 }
 
 export interface ISignContractPayload {
-  organizationId: string;
-  volunteerSignatureBase64: string;
+  organizationId: string | null;
+  volunteerSignatureBase64: string | null;
   legalGuardianSignatureBase64: string | null;
 }
-
-export const signContract = ({
-  contractId,
-  payload,
-}: {
-  contractId: string;
-  payload: ISignContractPayload;
-}) => {
-  return API.patch(`/mobile/documents/contracts/${contractId}/sign`, payload).then(
-    (res) => res.data,
-  );
-};
 
 export interface IGetContractsForVolunteerParams {
   limit?: number;
@@ -40,6 +28,16 @@ export interface IGetContractsForVolunteerParams {
   orderDirection?: 'asc' | 'desc';
   organizationId?: string;
 }
+
+export const getContract = (
+  contractId: string,
+  organizationId: string,
+): Promise<DocumentContract> => {
+  const params = { contractId, organizationId };
+  return API.get(`/mobile/documents/contracts/${contractId}`, {
+    params,
+  }).then((res) => res.data);
+};
 
 export const getContractsForVolunteer = ({
   limit,
@@ -59,4 +57,36 @@ export const getContractsForVolunteer = ({
   };
 
   return API.get('/mobile/documents/contracts', { params }).then((res) => res.data);
+};
+
+export const signContract = ({
+  contractId,
+  payload,
+}: {
+  contractId: string | undefined;
+  payload: ISignContractPayload;
+}) => {
+  return API.patch(`/mobile/documents/contracts/${contractId}/sign`, payload).then(
+    (res) => res.data,
+  );
+};
+
+export enum RejectionReason {
+  INCORRECT_IDENTITY_DATA = 'incorrect_identity_data',
+  DONT_AGREE_WITH_CLAUSES = 'dont_agree_with_clauses',
+  WRONG_CONTRACT_PERIOD = 'wrong_contract_period',
+  OTHER = 'other',
+}
+
+export interface IRejectContractPayload {
+  contractId: string;
+  organizationId: string | undefined;
+  reason: RejectionReason;
+}
+
+export const rejectContract = ({ contractId, organizationId, reason }: IRejectContractPayload) => {
+  const body = { organizationId, reason };
+  return API.patch(`/mobile/documents/contracts/${contractId}/reject`, body).then(
+    (res) => res.data,
+  );
 };

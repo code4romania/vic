@@ -65,6 +65,10 @@ const Volunteer = ({ navigation }: any) => {
     navigation.navigate('search');
   };
 
+  const onViewContractButtonPress = () => {
+    navigation.navigate('documents/contracts');
+  };
+
   return userProfile?.activeOrganization ? (
     <Screen
       preset="scroll"
@@ -111,6 +115,13 @@ const Volunteer = ({ navigation }: any) => {
           subtitle={
             !stats?.volunteerProfileId ? `${t('menu_items.volunteer_profile.subtitle')}` : ''
           }
+        />
+        <VolunteerCard
+          title={t('menu_items.contract.title')}
+          icon={<SvgXml xml={volunteerDocumentSVG} />}
+          onPress={onViewContractButtonPress}
+          loading={isLoadingStats}
+          subtitle={'TODO: subtitle after API is ready'}
         />
       </View>
     </Screen>

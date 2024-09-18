@@ -1,62 +1,61 @@
-import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, UseQueryResult } from 'react-query';
 import {
+  DocumentContract,
+  getContract,
   getContractsForVolunteer,
   IGetContractsForVolunteerParams,
+  IRejectContractPayload,
   ISignContractPayload,
+  rejectContract,
   signContract,
 } from './documents.api';
-import { DocumentContractStatus } from '../../common/enums/document-contract-status.enum';
 
-export const useGetContractsInfiniteQuery = (
+export const useGetContractsQuery = (
   volunteerId: string | undefined,
   params: IGetContractsForVolunteerParams,
 ) => {
-  return useInfiniteQuery(
-    ['contracts', volunteerId],
-    ({ pageParam = 1 }) => getContractsForVolunteer({ ...params, page: pageParam }),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage?.meta.currentPage < lastPage?.meta.totalPages
-          ? lastPage.meta.currentPage + 1
-          : undefined;
-      },
-      enabled: !!volunteerId,
-      onError: (error) => {
-        console.log('⛔️ ERROR IN GET CONTRACTS INFINITE QUERY ⛔️', error);
-      },
+  return useQuery({
+    queryKey: ['contracts', volunteerId],
+    queryFn: () => getContractsForVolunteer({ ...params }),
+    enabled: !!volunteerId,
+    onError: (error) => {
+      console.log('⛔️ ERROR IN GET ALL CONTRACTS QUERY ⛔️', error);
     },
-  );
+  });
 };
 
-export const useGetPendingVolunteerSignatureContractsQuery = (
-  volunteerId: string | undefined,
-  params: IGetContractsForVolunteerParams,
-) => {
-  return useQuery(
-    ['pending-volunteer-signature-contracts', volunteerId],
-    async () => {
-      const contracts = await getContractsForVolunteer(params);
-      return contracts.items.filter(
-        (contract: any) => contract.status === DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE,
-      );
+export const useGetContractQuery = (
+  contractId: string | undefined,
+  organizationId: string | undefined,
+): UseQueryResult<DocumentContract> => {
+  return useQuery({
+    queryKey: ['contract', 'contractId', contractId, 'organizationId', organizationId] as const,
+    queryFn: () =>
+      contractId && organizationId ? getContract(contractId, organizationId) : undefined,
+    enabled: !!contractId && !!organizationId,
+    onError: (error) => {
+      console.log('⛔️ ERROR IN GET CONTRACT QUERY ⛔️', error);
     },
-    {
-      onError: (error) => {
-        console.log('⛔️ ERROR IN GET PENDING VOLUNTEER SIGNATURE CONTRACTS QUERY ⛔️', error);
-      },
-      enabled: !!volunteerId,
-    },
-  );
+  });
 };
 
 export const useSignContractMutation = () => {
-  return useMutation(
-    ['sign-contract'],
-    (payload: { contractId: string; payload: ISignContractPayload }) => signContract(payload),
-    {
-      onError: (error) => {
-        console.log('⛔️ ERROR IN SIGN CONTRACT MUTATION ⛔️', error);
-      },
+  return useMutation({
+    mutationKey: ['sign-contract'],
+    mutationFn: (payload: { contractId: string | undefined; payload: ISignContractPayload }) =>
+      signContract(payload),
+    onError: (error) => {
+      console.log('⛔️ ERROR IN SIGN CONTRACT MUTATION ⛔️', error);
     },
-  );
+  });
+};
+
+export const useRejectContractMutation = () => {
+  return useMutation({
+    mutationKey: ['reject-contract'],
+    mutationFn: (payload: IRejectContractPayload) => rejectContract(payload),
+    onError: (error) => {
+      console.log('⛔️ ERROR IN REJECT CONTRACT MUTATION ⛔️', error);
+    },
+  });
 };
