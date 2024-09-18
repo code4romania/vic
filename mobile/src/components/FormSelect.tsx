@@ -19,6 +19,7 @@ export interface ISelectItem {
 
 export interface FormSelectProps extends SelectProps {
   control: Control<Record<string, any>>;
+  controllerRules?: any;
   options: ISelectItem[];
   name: string;
   label: string;
@@ -47,6 +48,7 @@ const renderPlaceholder = (placeholder: string, styles: any) => {
 
 const FormSelect: React.FC<FormSelectProps> = ({
   control,
+  controllerRules,
   options,
   name,
   label,
@@ -66,6 +68,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
       </Text>
       <Controller
         control={control}
+        rules={controllerRules}
         name={name}
         render={({ field: { onChange, onBlur, value } }) => {
           if (value !== undefined) {

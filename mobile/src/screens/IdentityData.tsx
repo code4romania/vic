@@ -18,10 +18,9 @@ import Paragraph from '../components/Paragraph';
 import { REGEX } from '../common/constants/constants';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
-import { differenceInYears } from 'date-fns';
 import { UserPersonalDataPayload } from '../services/user/user.api';
 import { findNodeHandle, ScrollView, View } from 'react-native';
-import { isOver16 } from '../common/utils/utils';
+import { isOver16, isOver16FromCNP } from '../common/utils/document-contracts.helpers';
 
 export type IdentityDataFormTypes = {
   identityDocumentCNP: string;
@@ -178,26 +177,6 @@ const formSchema = (isUserOver16: boolean, userBirthday: Date | undefined) =>
         otherwise: (schema) => schema.optional(),
       }),
   });
-
-const isOver16FromCNP = (cnp: string) => {
-  // we don't need to perform the calculation before the user has entered all the necessary digits to calculate
-  if (cnp.length < 7) {
-    return true;
-  }
-
-  // CNP example: 2980825... -> 1998-08-25
-  //              6000825... -> 2000-08-25
-
-  // if first digit is above 5, then the birth year is 2000+
-  const yearPrefix = parseInt(cnp[0], 10) < 5 ? '19' : '20';
-  const year = (yearPrefix + cnp.substring(1, 3)).toString();
-  const month = cnp.substring(3, 5);
-  const day = cnp.substring(5, 7);
-  const birthday = new Date(`${year}-${month}-${day}`);
-
-  const age = differenceInYears(new Date(), birthday);
-  return age >= 16;
-};
 
 const getBirthdayFromCNP = (cnp: string): Date | null => {
   if (cnp.length < 7) {

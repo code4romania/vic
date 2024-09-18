@@ -788,23 +788,64 @@
       "description": "Contact the organization representatives to obtain the volunteering contract."
     },
     "description": "Manage your contracts in the sections below. Download old contracts, or sign contracts sent by the organization.",
+    "no_active_contract_description": "Contact the organization representatives to obtain the volunteering contract.",
     "requires_volunteer_signature": "The contract requires your signature",
+    "requires_ngo_signature": "The contract requires the organization's signature",
+    "approved": "The contract is signed by both parties",
     "pending_documents": "Pending documents",
+    "approved_history": "Contract history",
+    "expired": "Expired",
+    "rejected": "Rejected",
+    "current": "Current",
     "contract": {
       "title": "Contract {{value}}",
-      "description": "The contract has been generated and requires your approval. Download the template below and read the document carefully. Check if the identity data is correct, if not, modify the data and sign the document"
+      "pending_volunteer_signature": "The contract has been generated and requires your approval. Download the template below and carefully read the document. Check if the identity data is correct, otherwise, modify the data and sign the document.",
+      "pending_ngo_signature": "The signed contract has been sent to the organization to obtain their signature as well. You will be notified immediately once the contract is fully signed. After that, you will be able to download the document with both signatures from the app.",
+      "signed_contract_footer": "Once signed, the contract cannot be modified. If you encounter problems, contact the organization to cancel the contract and generate a new one.",
+      "approved": "The contract has been approved by both parties and cannot be modified. Download and view the contract.",
+      "expired": "The contract period has ended. Download and view the contract.",
+      "rejected": "The contract has been rejected.",
+      "sign": "Sign",
+      "reject": "Reject contract"
     },
     "volunteer_signature": {
-      "title": "Volunteer signature",
+      "title": "Volunteer Signature",
       "description": "Draw your signature in the box below",
-      "action_button_label": "Send for signing",
-      "back": "Back"
+      "terms": "By applying your signature, you confirm that you have read and agree to the terms of the contract, and the identity data entered is correct.",
+      "send": "Send for signing",
+      "apply": "Apply signature",
+      "back": "Back",
+      "required": "The signature is required"
     },
     "legal_guardian_signature": {
       "title": "Legal guardian signature",
       "description": "Since you are under 16, the signature of the legal guardian ({{value}}) is required. Draw the signature in the box below",
+      "terms": "By applying your signature, you confirm that you have read and agree to the terms of the contract, and the identity data entered is correct.",
       "action_button_label": "Send for signing",
       "back": "Back"
+    },
+    "success": {
+      "title": "Contract successfully signed!",
+      "description": "The signed document has been sent to the organization to obtain their signature as well. You can view the contract status in the 'Documents' section. You will be notified immediately once the contract is fully signed. After that, you will be able to download the document with both signatures from the app."
+    },
+    "error": {
+      "title": "An error occurred while signing the contract",
+      "description": "Please try again."
+    },
+    "reject": {
+      "title": "Reject contract",
+      "reason": "Reason for rejection",
+      "description": "The coordinator will receive your response. You may receive a new contract later. Mention the reason why the contract does not meet your expectations, or contact the coordinator of your organization.",
+      "send": "Send",
+      "sheet": {
+        "title": "Response sent",
+        "description": "Your response and the reason for rejecting the signature have been sent to the organization.",
+        "close": "Close",
+        "identity": {
+          "description": "Your response has been sent to the organization. Attention! The identity data in the contract is automatically taken from your account. Make sure it is correct and complete.",
+          "action_btn_label": "Update identity data"
+        }
+      }
     }
   },
   "notifications": {
