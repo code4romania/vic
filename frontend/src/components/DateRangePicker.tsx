@@ -9,18 +9,22 @@ interface DateRangePickerProps {
   id?: string;
   label: string;
   value?: [Date | null, Date | null];
+  minDate?: Date | undefined;
   onChange?: (range: [Date | null, Date | null]) => void;
   disabled?: boolean;
   className?: string;
+  errorMessage?: string;
 }
 
 const DateRangePicker = ({
   label,
   value,
+  minDate,
   onChange,
   id,
   disabled,
   className,
+  errorMessage,
 }: DateRangePickerProps) => {
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>(value || [null, null]);
 
@@ -62,8 +66,12 @@ const DateRangePicker = ({
           placeholderText={i18n.t('general:select_interval').toString()}
           id={`${id}__date-picker`}
           disabled={disabled}
+          dateFormat="dd.MM.yyyy"
+          minDate={minDate}
+          autoComplete="off"
         />
       </div>
+      <p className="text-red-500">{errorMessage}</p>
     </div>
   );
 };

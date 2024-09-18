@@ -1,24 +1,25 @@
 import { Injectable } from '@nestjs/common';
+import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 
 @Injectable()
-export class ApproveDocumentContractByNgoUsecase {
+export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
   constructor(
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly exceptionService: ExceptionsService,
   ) {}
 
-  async execute(
+  public async execute(
     documentContractId: string,
     organizationId: string,
   ): Promise<void> {
-    const exists = await this.documentContractFacade.exists({
+    const exists = await this.documentContractFacade.findOne({
       id: documentContractId,
       organizationId,
-      status: DocumentContractStatus.PENDING_APPROVAL_NGO,
+      status: DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE,
     });
 
     if (!exists) {
@@ -26,18 +27,20 @@ export class ApproveDocumentContractByNgoUsecase {
         ContractExceptionMessages.CONTRACT_002,
       );
     }
+
     try {
-      await this.documentContractFacade.approveDocumentContractByNGO(
+      await this.documentContractFacade.signDocumentContractByNGO(
         documentContractId,
       );
     } catch (error) {
       // TODO: Update error
       this.exceptionService.internalServerErrorException({
-        message: `Error while approving the contract by NGO ${error?.message}`,
-        code_error: 'APPROVE_DOCUMENT_CONTRACT_BY_NGO_001',
+        message: `Error while sigining the contract by NGO ${error?.message}`,
+        code_error: 'SIGN_DOCUMENT_CONTRACT_BY_NGO_003',
       });
     }
 
-    // TODO: Track event
+    // TODO: Send notification to Volunteer (Contract is now active)
+    // TODO: Track Event
   }
 }

@@ -10,12 +10,21 @@ import { IDocumentTemplateListItem } from '../common/interfaces/template.interfa
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import DocumentTemplatesTableWithQueryParams from '../containers/query/DocumentTemplatesTableWithQueryParams';
 import { DocumentContractFillCards } from '../components/DocumentContractFillCards';
-// import { ContractTemplate } from './ContractTemplates';
-// import { IVolunteer } from '../common/interfaces/volunteer.interface';
+import { DocumentContractProgress } from '../components/DocumentContractProgress';
+import { useAddDocumentContractMutation } from '../services/document-contracts/document-contracts.service';
+
+export interface IDocumentVolunteerData {
+  documentNumber: number;
+  documentDate: Date;
+  documentPeriod: [Date, Date];
+}
 
 export const GenerateContract = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<IDocumentTemplateListItem | null>(null);
   const [selectedVolunteers, setSelectedVolunteers] = useState<IVolunteer[]>([]);
+  const [volunteersData, setVolunteersData] = useState<Record<string, IDocumentVolunteerData>>();
+
+  const { mutateAsync: addDocumentContract } = useAddDocumentContractMutation();
 
   const { t } = useTranslation(['volunteering_contracts', 'stepper']);
   const navigate = useNavigate();
@@ -25,8 +34,7 @@ export const GenerateContract = () => {
       { id: '1', label: t('choose_template', { ns: 'stepper' }) },
       { id: '2', label: t('choose_volunteers', { ns: 'stepper' }) },
       { id: '3', label: t('fill', { ns: 'stepper' }) },
-      { id: '4', label: t('attachments', { ns: 'stepper' }) },
-      { id: '5', label: t('complete', { ns: 'stepper' }) },
+      { id: '4', label: t('complete', { ns: 'stepper' }) },
     ],
     [],
   );
@@ -49,6 +57,10 @@ export const GenerateContract = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
+
+    if (currentStep + 1 === 3) {
+      handleSendContract();
+    }
   };
 
   const handlePrevious = () => {
@@ -65,6 +77,45 @@ export const GenerateContract = () => {
     setSelectedVolunteers(volunteers);
   };
 
+  const handleSetVolunteersData = (volunteerData: Record<string, IDocumentVolunteerData>) => {
+    setVolunteersData((prevData) => ({ ...prevData, ...volunteerData }));
+  };
+
+  const canSendContract = useMemo(() => {
+    // 1. Must have a template
+    // 2. Must have volunteers
+    // 3. Must have volunteers data for all volunteers
+    return selectedTemplate !== null && selectedVolunteers.length > 0 && volunteersData && Object.keys(volunteersData).length === selectedVolunteers.length;
+  }, [selectedTemplate, selectedVolunteers, volunteersData]);
+
+  const handleSendContract = async () => {
+    const success = [];
+    const errors = [];
+
+    if (canSendContract) {
+      for (const volunteer of selectedVolunteers) {
+        try {
+          if (!volunteersData || !volunteersData[volunteer.id]) {
+            return;
+          }
+
+          await addDocumentContract({
+            documentTemplateId: selectedTemplate?.id as string,
+            volunteerId: volunteer.id,
+            documentNumber: volunteersData[volunteer.id].documentNumber.toString(),
+            documentDate: volunteersData[volunteer.id].documentDate,
+            documentStartDate: volunteersData[volunteer.id].documentPeriod[0],
+            documentEndDate: volunteersData[volunteer.id].documentPeriod[1],
+            status: 'CREATED', // TODO: change to status enum value.
+          });
+          success.push(volunteer.id);
+        } catch (error) {
+          errors.push(volunteer.id);
+        }
+      }
+    }
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 0:
@@ -74,7 +125,14 @@ export const GenerateContract = () => {
       case 1:
         return <DocumentVolunteersTableWithQueryParams selectedVolunteers={selectedVolunteers} setSelectedVolunteers={onSelectVolunteers} />
       case 2:
-        return <DocumentContractFillCards volunteers={selectedVolunteers} template={selectedTemplate as IDocumentTemplateListItem} setSelectedVolunteers={setSelectedVolunteers} />
+        return <DocumentContractFillCards volunteers={selectedVolunteers}
+          template={selectedTemplate as IDocumentTemplateListItem}
+          setSelectedVolunteers={setSelectedVolunteers}
+          setVolunteerData={handleSetVolunteersData}
+          volunteersData={volunteersData}
+        />
+      case 3:
+        return <DocumentContractProgress />
     }
   };
 
@@ -89,11 +147,11 @@ export const GenerateContract = () => {
       case 1:
         return selectedVolunteers.length > 0;
       case 2:
-        return selectedVolunteers.length > 0;
+        return canSendContract;
       default:
         return true;
     }
-  }, [currentStep, selectedTemplate, selectedVolunteers]);
+  }, [currentStep, selectedTemplate, selectedVolunteers, canSendContract]);
 
   return (
     <PageLayout>
@@ -112,7 +170,7 @@ export const GenerateContract = () => {
           label="Pasul urmator"
           onClick={handleNext}
           disabled={!canGoNext}
-          className="bg-yellow text-white self-center p-2 rounded disabled:bg-gray-300 disabled:text-white"
+          className="bg-yellow-500 text-white self-center p-2 rounded disabled:bg-gray-300 disabled:text-white"
         />
       </div>
     </PageLayout>

@@ -30,7 +30,7 @@ export const ContractTermsEmptyState = ({
         />
         <p className="text-cool-gray-400 text-center">
           {t('contract_terms.first_contract')} {/* //todo: href */}
-          <a className="font-roboto text-yellow hover:text-yellow-600 hover:underline underline-offset-2">
+          <a className="font-roboto text-yellow-600 hover:text-yellow-600 hover:underline underline-offset-2">
             {t('contract_terms.volunteering_contract')}
           </a>
         </p>

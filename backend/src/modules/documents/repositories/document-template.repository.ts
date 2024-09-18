@@ -5,6 +5,7 @@ import { DocumentTemplateEntity } from '../entities/document-template.entity';
 import { IDocumentTemplateRepository } from '../interfaces/document-template-repository.interface';
 import {
   CreateDocumentTemplateOptions,
+  DeleteOneDocumentTemplateOptions,
   DocumentTemplateTransformer,
   FindOneDocumentTemplateOptions,
   IDocumentTemplateModel,
@@ -42,5 +43,16 @@ export class DocumentTemplateRepositoryService
     });
 
     return DocumentTemplateTransformer.fromEntity(documentTemplate);
+  }
+
+  async delete(options: DeleteOneDocumentTemplateOptions): Promise<string> {
+    const template = await this.documentTemplateRepository.findOneBy(options);
+
+    if (template) {
+      await this.documentTemplateRepository.remove(template);
+      return options.id;
+    }
+
+    return null;
   }
 }

@@ -11,18 +11,33 @@ import { ContentExpander } from './ContentExpander';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { IDocumentTemplate } from '../common/interfaces/template.interface';
 import { format } from 'date-fns';
+import * as yup from 'yup';
+import i18n from '../common/config/i18n';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { IDocumentVolunteerData } from '../pages/GenerateContract';
+
+const dotsString = '.........................';
 
 interface ContractCardProps {
   volunteer: IVolunteer,
   template: IDocumentTemplate,
-  initialNumber?: string;
-  initialDate?: Date | null;
-  initialPeriod?: [Date | null, Date | null];
+  initialNumber?: number;
+  initialDate?: Date | undefined;
+  initialPeriod?: [Date | undefined, Date | undefined];
   isOpen?: boolean;
   onDelete: (id: string) => void;
+  saveVolunteerData: (voluneerId: string, volunteerData: IDocumentVolunteerData) => void;
+  volunteersData: Record<string, IDocumentVolunteerData> | undefined;
 }
 
-const dotsString = '.........................';
+export const fillCardValidationSchema = yup.object({
+  documentNumber: yup.number().positive(`${i18n.t('doc_templates:contract_card_form.document_number.invalid')}`).typeError(`${i18n.t('doc_templates:contract_card_form.document_number.invalid')}`).required(`${i18n.t('doc_templates:contract_card_form.document_number:required')}`),
+  documentDate: yup.date().required(`${i18n.t('doc_templates:contract_card_form.document_date.required')}`),
+  documentPeriod: yup.array().of(yup.date()
+    .required(`${i18n.t('doc_templates:contract_card_form.document_period.required')}`
+    ))
+    .required(`${i18n.t('doc_templates:contract_card_form.document_period.required')}`)
+});
 
 export const ContractCard = ({
   volunteer,
@@ -31,6 +46,8 @@ export const ContractCard = ({
   initialDate,
   initialPeriod,
   onDelete,
+  saveVolunteerData,
+  volunteersData,
   isOpen = false,
 }: ContractCardProps) => {
   const { t } = useTranslation(['doc_templates', 'general']);
@@ -40,62 +57,83 @@ export const ContractCard = ({
 
   const isVolunteerDataIncomplete: boolean = false;
 
-  const { control, handleSubmit, setValue } = useForm({
+  const { control, handleSubmit, setValue, watch, formState: { errors }, setError } = useForm({
+    resolver: yupResolver(fillCardValidationSchema),
     defaultValues: {
-      contractNumber: initialNumber || '',
-      contractDate: initialDate || null,
-      contractPeriod: initialPeriod || [null, null],
+      documentNumber: initialNumber || undefined,
+      documentDate: initialDate || undefined,
+      documentPeriod: initialPeriod || [undefined, undefined],
     },
   });
+
+  const documentDateValue = watch('documentDate');
 
   // update values for the contract data, as well as for the contract preview, whenever the initial values coming from the parent change (the fast contract completion feature)
   useEffect(() => {
     // update contract number
-    setContractNumber(initialNumber ? initialNumber : dotsString);
-    setValue('contractNumber', initialNumber ? initialNumber : '');
+    setValue('documentNumber', initialNumber as number);
 
     // update contract date
-    setContractDate(initialDate ? initialDate.toLocaleDateString() : dotsString);
-    setValue('contractDate', initialDate ? initialDate : null);
+    setValue('documentDate', initialDate as Date);
 
     // update contract period
-    setContractPeriod([
-      initialPeriod && initialPeriod[0] ? initialPeriod[0].toLocaleDateString() : dotsString,
-      initialPeriod && initialPeriod[1] ? initialPeriod[1].toLocaleDateString() : dotsString,
-    ]);
     setValue(
-      'contractPeriod',
+      'documentPeriod',
       initialPeriod && initialPeriod[0] && initialPeriod[1]
-        ? [initialPeriod[0], initialPeriod[1]]
-        : [null, null],
+        ? [initialPeriod[0] as Date, initialPeriod[1] as Date]
+        : [undefined as unknown as Date, undefined as unknown as Date],
     );
   }, [initialNumber, initialDate, initialPeriod]);
 
-  const [contractNumber, setContractNumber] = useState(initialNumber ? initialNumber : dotsString);
-  const [contractDate, setContractDate] = useState(
-    initialDate ? initialDate.toLocaleDateString() : dotsString,
-  );
-  const [contractPeriod, setContractPeriod] = useState(
-    initialPeriod && initialPeriod[0] && initialPeriod[1]
-      ? [initialPeriod[0].toLocaleDateString(), initialPeriod[1].toLocaleDateString()]
-      : [dotsString, dotsString],
-  );
-
   const onSubmit = (data: FieldValues) => {
-    if (data.contractNumber) {
-      setContractNumber(data.contractNumber);
+    if (data.documentPeriod && data.documentPeriod[0] && data.documentPeriod[1] && (data.documentPeriod[0] < data.documentDate || data.documentPeriod[1] < data.documentDate)) {
+      setError('documentPeriod', {
+        type: 'manual',
+        message: t('doc_templates:contract_card_form.document_period.must_be_after')
+      });
+      return;
     }
 
-    if (data.contractDate) {
-      setContractDate(data.contractDate.toLocaleDateString());
+    if (volunteersData) {
+      const existingNumbers = Object.entries(volunteersData)
+        .filter(([key, v]: [string, IDocumentVolunteerData]) => {
+
+          return v.documentDate.getFullYear() === data.documentDate.getFullYear() && key !== volunteer.id;
+        })
+        .map(([, v]: [string, IDocumentVolunteerData]) => v.documentNumber);
+
+      if (existingNumbers.includes(data.documentNumber)) {
+        setError('documentNumber', {
+          type: 'manual',
+          message: t('doc_templates:contract_card_form.document_number.unique')
+        });
+        return;
+      }
     }
 
-    if (data.contractPeriod && data.contractPeriod[0] && data.contractPeriod[1]) {
-      setContractPeriod([
-        data.contractPeriod[0].toLocaleDateString(),
-        data.contractPeriod[1].toLocaleDateString(),
-      ]);
-    }
+    saveVolunteerData(volunteer.id, {
+      documentNumber: data.documentNumber,
+      documentDate: data.documentDate,
+      documentPeriod: data.documentPeriod,
+    });
+
+    setEdit(false);
+  };
+
+  const onCancel = () => {
+    // Reset Errors
+    setError('documentNumber', {});
+    setError('documentDate', {});
+    setError('documentPeriod', {});
+
+    // Reintilize with initial values Document Number
+    setValue('documentNumber', initialNumber as number);
+
+    // Reintilize with initial values Document Date
+    setValue('documentDate', initialDate as Date);
+
+    // Reintilize with initial values Document Period
+    setValue('documentPeriod', initialPeriod as [Date, Date]);
 
     setEdit(false);
   };
@@ -117,20 +155,22 @@ export const ContractCard = ({
           <div className="bg-gray-100 rounded flex-1 flex sm:self-baseline flex-col p-4 gap-4">
             <p className="font-robotoBold">{t('contract_data')}</p>
             <Controller
-              name="contractNumber"
+              name="documentNumber"
               control={control}
               render={({ field: { value = initialNumber, onChange } }) => (
                 <FormInput
                   label={t('contract_no')}
                   disabled={!edit}
-                  value={value}
+                  value={value ? value : ''}
                   onChange={onChange}
                   placeholder="1000"
+                  errorMessage={errors.documentNumber?.message}
+                  type="number"
                 />
               )}
             />
             <Controller
-              name="contractDate"
+              name="documentDate"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <FormDatePicker
@@ -138,13 +178,16 @@ export const ContractCard = ({
                   disabled={!edit}
                   value={value}
                   onChange={onChange}
-                  placeholder="ZZ/LL/AAAAA"
+                  placeholder="ZZ.LL.AAAA"
+                  minDate={new Date()}
+                  maxDate={new Date(new Date().setMonth(new Date().getMonth() + 6))}
+                  errorMessage={errors.documentDate?.message}
                 />
               )}
             />
 
             <Controller
-              name="contractPeriod"
+              name="documentPeriod"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <DateRangePicker
@@ -152,23 +195,36 @@ export const ContractCard = ({
                   value={value as [Date | null, Date | null] | undefined}
                   disabled={!edit}
                   onChange={onChange}
+                  minDate={documentDateValue as Date ? documentDateValue as Date : new Date()}
+                  errorMessage={errors?.documentPeriod ? (errors.documentPeriod[0]?.message || errors.documentPeriod[1]?.message || errors.documentPeriod?.message) : ''}
                 />
               )}
             />
 
-            <Button
-              label={edit ? t('save', { ns: 'general' }) : t('edit', { ns: 'general', item: '' })}
-              className="bg-yellow btn-primary mt-4 text-white"
-              onClick={edit ? handleSubmit(onSubmit) : () => setEdit(true)}
-            />
+            <div className='flex gap-4'>
+              {edit && (
+                <Button
+                  label={t('cancel', { ns: 'general' })}
+                  className="bg-gray-300 btn-secondary mt-4 text-gray-700 w-full"
+                  onClick={onCancel}
+                />
+
+              )}
+              <Button
+                label={edit ? t('save', { ns: 'general' }) : t('edit', { ns: 'general', item: '' })}
+                className="bg-yellow-500 btn-primary mt-4 text-white w-full"
+                onClick={edit ? handleSubmit(onSubmit) : () => setEdit(true)}
+              />
+            </div>
+
           </div>
 
           {/* contract preview */}
           <div className="bg-white rounded flex-1 sm:flex-2 p-4 flex flex-col gap-4">
             <p className="font-robotoBold text-center">{t('template_preview.title')}</p>
             <p className="text-center">
-              {t('template_preview.p1.no')} {contractNumber} {t('template_preview.p1.date')}{' '}
-              {contractDate}
+              {t('template_preview.p1.no')} {initialNumber} {t('template_preview.p1.date')}{' '}
+              {initialDate ? format(initialDate, 'dd.MM.yyyy') : dotsString}
             </p>
 
             <p>
@@ -215,8 +271,8 @@ export const ContractCard = ({
             {/* P5: DURATA CONTRACTULUI */}
             <p className="font-robotoBold">{t('contract_duration.title')}</p>
             <p>
-              {t('contract_duration.description')} {contractPeriod[0]} {t('template_preview.and')}{' '}
-              {contractPeriod[1]}.
+              {t('contract_duration.description')} {initialPeriod && initialPeriod[0] ? format(initialPeriod[0], 'dd.MM.yyyy') : dotsString} {t('template_preview.and')}{' '}
+              {initialPeriod && initialPeriod[1] ? format(initialPeriod[1], 'dd.MM.yyyy') : dotsString}.
             </p>
 
             <div className="flex flex-col border-y-2 border-dashed py-6 gap-2">
@@ -227,7 +283,8 @@ export const ContractCard = ({
             <Signatures volunteer={volunteer} organization={template.organizationData} />
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };

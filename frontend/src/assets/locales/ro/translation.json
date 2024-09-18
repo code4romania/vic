@@ -1101,6 +1101,20 @@
       "start": "[Data început]",
       "end": "[Data final]"
     },
+    "contract_card_form": {
+      "document_number": {
+        "required": "Numărul contractului este obligatoriu",
+        "unique": "Numărul contractului trebuie să fie unic",
+        "invalid": "Numărul contractului trebuie să fie un număr întreg pozitiv"
+      },
+      "document_period": {
+        "required": "Perioada contractului este obligatorie",
+        "must_be_after": "Perioada contractului trebuie să înceapă după data contractului"
+      },
+      "document_date": {
+        "required": "Data contractului este obligatorie"
+      }
+    },
     "contract_terms": {
       "title": "Termenii contractului",
       "describe": "Descrie termenii contractului",

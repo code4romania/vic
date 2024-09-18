@@ -1,5 +1,5 @@
-import React from 'react';
-import { Control, Controller, FieldValues, UseFormHandleSubmit } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { Controller, FieldValues, useForm } from 'react-hook-form';
 import FormInput from './FormInput';
 import FormDatePicker from './FormDatePicker';
 import DateRangePicker from './DateRangePicker';
@@ -7,19 +7,24 @@ import { useTranslation } from 'react-i18next';
 import Button from './Button';
 
 interface AutoFillContractCardProps {
-  control: Control<FieldValues>;
-  handleReset: () => void;
-  handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   onSubmit: ({ startingNumber, contractDate, contractPeriod }: FieldValues) => void;
 }
 
 export const AutoFillContractCard = ({
-  control,
-  handleReset,
-  handleSubmit,
   onSubmit,
 }: AutoFillContractCardProps) => {
+  const { control, reset, handleSubmit, watch, setValue } = useForm();
+
+  const handleReset = () => {
+    reset({});
+  };
   const { t } = useTranslation('fast_contract_fill');
+
+  const contractDate = watch('contractDate');
+
+  useEffect(() => {
+    setValue('contractPeriod', [null, null]);
+  }, [contractDate]);
 
   return (
     <>
@@ -37,6 +42,7 @@ export const AutoFillContractCard = ({
                 onChange={onChange}
                 placeholder="1000"
                 wrapperClassname="flex-1"
+                type="number"
               />
             )}
           />
@@ -46,9 +52,11 @@ export const AutoFillContractCard = ({
             render={({ field: { value, onChange } }) => (
               <FormDatePicker
                 label={t('form.contract_date')}
-                placeholder="ZZ/LL/AAAAA"
+                placeholder="ZZ.LL.AAAA"
                 value={value}
                 onChange={onChange}
+                minDate={new Date()}
+                maxDate={new Date(new Date().setMonth(new Date().getMonth() + 6))}
               />
             )}
           />
@@ -62,6 +70,7 @@ export const AutoFillContractCard = ({
                 className="flex-1"
                 value={value}
                 onChange={onChange}
+                minDate={contractDate}
               />
             )}
           />

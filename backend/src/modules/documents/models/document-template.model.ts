@@ -33,6 +33,11 @@ export type FindOneDocumentTemplateOptions = Partial<
   Pick<IDocumentTemplateModel, 'id' | 'organizationId'>
 >;
 
+export type DeleteOneDocumentTemplateOptions = {
+  id: string;
+  organizationId: string;
+};
+
 export class DocumentTemplateTransformer {
   static fromEntity(entity: DocumentTemplateEntity): IDocumentTemplateModel {
     if (!entity) {
