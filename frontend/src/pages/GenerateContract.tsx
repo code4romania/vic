@@ -10,6 +10,8 @@ import { IDocumentTemplateListItem } from '../common/interfaces/template.interfa
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import DocumentTemplatesTableWithQueryParams from '../containers/query/DocumentTemplatesTableWithQueryParams';
 import { DocumentContractFillCards } from '../components/DocumentContractFillCards';
+import { DocumentContractProgress } from '../components/DocumentContractProgress';
+import { useAddDocumentContractMutation } from '../services/document-contracts/document-contracts.service';
 
 export interface IDocumentVolunteerData {
   documentNumber: number;
@@ -21,6 +23,8 @@ export const GenerateContract = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<IDocumentTemplateListItem | null>(null);
   const [selectedVolunteers, setSelectedVolunteers] = useState<IVolunteer[]>([]);
   const [volunteersData, setVolunteersData] = useState<Record<string, IDocumentVolunteerData>>();
+
+  const { mutateAsync: addDocumentContract } = useAddDocumentContractMutation();
 
   const { t } = useTranslation(['volunteering_contracts', 'stepper']);
   const navigate = useNavigate();
@@ -53,6 +57,10 @@ export const GenerateContract = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
+
+    if (currentStep + 1 === 3) {
+      handleSendContract();
+    }
   };
 
   const handlePrevious = () => {
@@ -80,6 +88,34 @@ export const GenerateContract = () => {
     return selectedTemplate !== null && selectedVolunteers.length > 0 && volunteersData && Object.keys(volunteersData).length === selectedVolunteers.length;
   }, [selectedTemplate, selectedVolunteers, volunteersData]);
 
+  const handleSendContract = async () => {
+    const success = [];
+    const errors = [];
+
+    if (canSendContract) {
+      for (const volunteer of selectedVolunteers) {
+        try {
+          if (!volunteersData || !volunteersData[volunteer.id]) {
+            return;
+          }
+
+          await addDocumentContract({
+            documentTemplateId: selectedTemplate?.id as string,
+            volunteerId: volunteer.id,
+            documentNumber: volunteersData[volunteer.id].documentNumber.toString(),
+            documentDate: volunteersData[volunteer.id].documentDate,
+            documentStartDate: volunteersData[volunteer.id].documentPeriod[0],
+            documentEndDate: volunteersData[volunteer.id].documentPeriod[1],
+            status: 'CREATED', // TODO: change to status enum value.
+          });
+          success.push(volunteer.id);
+        } catch (error) {
+          errors.push(volunteer.id);
+        }
+      }
+    }
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 0:
@@ -95,6 +131,8 @@ export const GenerateContract = () => {
           setVolunteerData={handleSetVolunteersData}
           volunteersData={volunteersData}
         />
+      case 3:
+        return <DocumentContractProgress />
     }
   };
 
