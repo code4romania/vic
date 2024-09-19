@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { isOver16FromCNP } from 'src/common/helpers/utils';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
@@ -44,10 +45,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     >,
   ): Promise<string> {
     // 1. check if the organization exists
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const organization = await this.getOrganizationUsecase.execute(
-      newContract.organizationId,
-    );
+    await this.getOrganizationUsecase.execute(newContract.organizationId);
 
     // 2. check if the volunteer exists
     const volunteer = await this.checkVolunteerExists(
@@ -68,10 +66,18 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     // 6. Extract volunteerData and volunteerTutorData from the user
     const volunteerPersonalData = volunteer.user.userPersonalData;
 
-    // console.log(volunteerPersonalData);
-
     await this.validateVolunteerPersonalData(volunteerPersonalData);
-    await this.validateLegalGuardianData(volunteerPersonalData.legalGuardian);
+
+    if (!isOver16FromCNP(volunteerPersonalData.cnp)) {
+      if (!volunteerPersonalData.legalGuardian) {
+        this.exceptionsService.badRequestException({
+          message: 'Legal guardian data is required for under 16 volunteers',
+          code_error: 'LEGAL_GUARDIAN_DATA_REQUIRED',
+        });
+      }
+
+      await this.validateLegalGuardianData(volunteerPersonalData.legalGuardian);
+    }
 
     const newContractOptions: CreateDocumentContractOptions = {
       ...newContract,
