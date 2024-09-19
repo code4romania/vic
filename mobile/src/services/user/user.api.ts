@@ -3,6 +3,7 @@ import { ILegalGuardianData, IUserProfile } from '../../common/interfaces/user-p
 import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.interface';
 import { AccountDataFormTypes } from '../../screens/AccountData';
 import { ImageAttachement } from '../../common/interfaces/image-attachement.interface';
+import { format } from 'date-fns';
 
 export const createUserProfile = async (userProfile: ICreateUserPayload): Promise<IUserProfile> => {
   return API.post('/mobile/user', userProfile).then((res) => res.data);

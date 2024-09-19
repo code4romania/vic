@@ -9,7 +9,6 @@ import ActivityLogForm, {
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useUpdateActivityLog } from '../services/activity-log/activity-log.service';
-import { parse } from 'date-fns';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { CONSTANTS } from '../common/constants/constants';
