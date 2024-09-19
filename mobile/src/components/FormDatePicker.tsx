@@ -57,13 +57,9 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
               placeholder={renderPlaceholder(placeholder, styles)}
               date={value ? new UTCDate(value) : undefined}
               onSelect={(date) => {
-                onChange(
-                  new UTCDate(
-                    date.toLocaleDateString('ro-RO').split('.').map(Number)[2],
-                    date.toLocaleDateString('ro-RO').split('.').map(Number)[1],
-                    date.toLocaleDateString('ro-RO').split('.').map(Number)[0],
-                  ),
-                );
+                const localeDate = date.toLocaleDateString('ro-RO').split('.').map(Number);
+                const utcDate = new UTCDate(localeDate[2], localeDate[1] - 1, localeDate[0]);
+                onChange(utcDate);
               }}
               onBlur={onBlur}
               status={error ? 'danger' : 'basic'}
