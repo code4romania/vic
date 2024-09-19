@@ -29,7 +29,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const { userProfile } = useUserProfile();
 
   useEffect(() => {
-    console.log('[APP Init]');
     initProfile();
 
     const unsubscribe = Hub.listen('auth', ({ payload }) => {

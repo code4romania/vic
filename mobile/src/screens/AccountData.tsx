@@ -26,6 +26,7 @@ import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/const
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { UTCDate } from '@date-fns/utc';
 
 export type AccountDataFormTypes = {
   firstName: string;
@@ -94,7 +95,6 @@ const AccountData = ({ navigation }: any) => {
 
   const { isLoading: isUpdatingProfile, mutate: updateUserProfile } =
     useUpdateUserProfileMutation();
-
   useEffect(() => {
     if (userProfile) {
       reset({
@@ -102,7 +102,7 @@ const AccountData = ({ navigation }: any) => {
         firstName: userProfile.firstName,
         lastName: userProfile.lastName,
         email: userProfile.email,
-        birthday: userProfile.birthday ? new Date(userProfile.birthday) : undefined,
+        birthday: userProfile.birthday ? new UTCDate(userProfile.birthday) : undefined,
         sex: userProfile.sex,
         countyId: userProfile.location?.county.id,
         cityId: userProfile.location?.id,

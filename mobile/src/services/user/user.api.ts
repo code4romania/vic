@@ -41,8 +41,9 @@ export const updateUserProfile = async (
     formData.append('locationId', updates.cityId.toString());
   }
   if (updates.birthday) {
-    formData.append('birthday', updates.birthday.toISOString());
+    formData.append('birthday', format(updates.birthday, 'yyyy-MM-dd'));
   }
+
   if (updates.sex) {
     formData.append('sex', updates.sex);
   }
