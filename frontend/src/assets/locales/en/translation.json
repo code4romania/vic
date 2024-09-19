@@ -999,6 +999,19 @@
     },
     "generate": {
       "title": "Generate contract"
+    },
+    "modal": {
+      "loading": {
+        "title": "Generating contracts...",
+        "description": "Successfully sent {{value1}}/{{value2}} contracts"
+      },
+      "success": {
+        "title": "Contracts generated"
+      },
+      "error": {
+        "title": "Contract Generation",
+        "description": "Close this window to see the contracts that could not be generated and require your attention"
+      }
     }
   },
   "doc_templates": {
@@ -1126,7 +1139,10 @@
     "legal_rep_name": "Legal representative's name",
     "legal_rep_role": "Legal representative's role",
     "number": "Number",
-    "telephone": "Phone"
+    "telephone": "Phone",
+    "error": {
+      "title": "You cannot generate this contract yet"
+    }
   },
   "stepper": {
     "choose_template": "Choose template",

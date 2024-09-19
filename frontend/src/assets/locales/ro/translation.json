@@ -999,6 +999,19 @@
     },
     "generate": {
       "title": "Generează contract"
+    },
+    "modal": {
+      "loading": {
+        "title": "Se generează contractele...",
+        "description": "S-au trimis cu succes {{value1}}/{{value2}} contracte"
+      },
+      "success": {
+        "title": "Contracte generate"
+      },
+      "error": {
+        "title": "Generare Contract",
+        "description": " Închide această fereastră pentru a vedea contractele care nu au putut fi generate și necesită atenție"
+      }
     }
   },
   "doc_templates": {
@@ -1140,7 +1153,10 @@
     "legal_rep_name": "Nume reprezentant legal",
     "legal_rep_role": "Rolul reprezentantului legal",
     "number": "Număr",
-    "telephone": "Telefon"
+    "telephone": "Telefon",
+    "error": {
+      "title": "Nu poți genera încă acest contract"
+    }
   },
   "stepper": {
     "choose_template": "Alege template",

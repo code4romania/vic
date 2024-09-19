@@ -4,11 +4,12 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface ModalProps {
   title: string;
+  titleClassName?: string;
   onClose: () => void;
   children: React.ReactNode;
 }
 
-const Modal = ({ children, title, onClose }: ModalProps) => {
+const Modal = ({ children, title, titleClassName, onClose }: ModalProps) => {
   return (
     <Transition.Root show={true} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -39,7 +40,7 @@ const Modal = ({ children, title, onClose }: ModalProps) => {
                 <div className="flex justify-between items-center text-center sm:text-left">
                   <Dialog.Title
                     as="h3"
-                    className="sm:text-lg lg:text-xl leading-6 font-robotoBold line-clamp-2"
+                    className={`sm:text-lg lg:text-xl leading-6 font-robotoBold line-clamp-2 flex-1 ${titleClassName}`}
                   >
                     {title}
                   </Dialog.Title>

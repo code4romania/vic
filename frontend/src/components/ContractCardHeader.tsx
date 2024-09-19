@@ -1,9 +1,8 @@
 import React from 'react';
 import { TrashIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
-import { Tooltip } from 'react-tooltip';
 import LoadingContent from './LoadingContent';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
+import { Pill } from './Pill';
 
 interface ContractCardHeaderProps {
   open: boolean;
@@ -11,8 +10,8 @@ interface ContractCardHeaderProps {
   volunteer: IVolunteer;
   onDelete: (id: string) => void;
   isLoading?: boolean;
-  isError?: boolean;
-  isErrorText?: string;
+  isVolunteerDataIncomplete?: boolean;
+  error?: unknown;
 }
 
 export const ContractCardHeader = ({
@@ -21,10 +20,9 @@ export const ContractCardHeader = ({
   volunteer,
   onDelete,
   isLoading,
-  isError,
-  isErrorText,
+  isVolunteerDataIncomplete,
+  error,
 }: ContractCardHeaderProps) => {
-
   if (isLoading) {
     return (
       <div
@@ -37,7 +35,10 @@ export const ContractCardHeader = ({
   }
 
   return (
-    <div key={volunteer.user.userPersonalData?.cnp} className="bg-white rounded shadow flex flex-row items-center z-10">
+    <div
+      key={volunteer.user.userPersonalData?.cnp}
+      className="bg-white rounded shadow flex flex-row items-center z-10"
+    >
       <div
         className="flex flex-row justify-center items-center p-4 hover:cursor-pointer"
         onClick={() => onDelete(volunteer.id)}
@@ -53,31 +54,9 @@ export const ContractCardHeader = ({
           <img src={volunteer.user.profilePicture} className="w-8 h-8 rounded-full" />
         </div>
         {volunteer.user.name}
-        <div className="flex flex-row gap-4 ml-auto z-20">
-          {isError && (
-            <>
-              <ExclamationCircleIcon
-                width={20}
-                height={20}
-                color="red"
-                data-tooltip-id={`error-tooltip-${volunteer.user.userPersonalData?.cnp}`}
-              />
-              <Tooltip
-                id={`error-tooltip-${volunteer.user.userPersonalData?.cnp}`}
-                place="top"
-                content={isErrorText}
-                arrowColor="red"
-                border="2px solid red"
-                opacity={1}
-                style={{
-                  maxWidth: '200px',
-                  zIndex: 100_000,
-                  backgroundColor: 'white',
-                  color: 'black',
-                }}
-              />
-            </>
-          )}
+        <div className="flex flex-row items-center gap-4 ml-auto z-20">
+          {isVolunteerDataIncomplete && <Pill label="Necompletat" theme="warning" />}
+          {!!error && <Pill label="Invalid" theme="danger" />}
 
           {open ? (
             <ChevronUpIcon width={16} height={16} />
