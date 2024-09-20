@@ -43,13 +43,16 @@ export class DocumentContractController {
   @Post()
   async createDocumentContract(
     @Body() createDocumentContractDto: CreateDocumentContractDto,
-    @ExtractUser() { organizationId, id: adminId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<string> {
-    const documentContract = await this.createDocumentContractUsecase.execute({
-      ...createDocumentContractDto,
-      organizationId,
-      createdByAdminId: adminId,
-    });
+    const documentContract = await this.createDocumentContractUsecase.execute(
+      {
+        ...createDocumentContractDto,
+        organizationId: admin.organizationId,
+        createdByAdminId: admin.id,
+      },
+      admin,
+    );
 
     return documentContract;
   }
@@ -92,13 +95,14 @@ export class DocumentContractController {
   @Patch(':id/reject')
   async rejectDocumentContract(
     @Param('id', UuidValidationPipe) id: string,
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
     @Body() { rejectionReason }: RejectDocumentContractByNgoDTO,
   ): Promise<void> {
     await this.rejectDocumentContractByNgoUsecase.execute({
       documentContractId: id,
-      organizationId,
+      organizationId: admin.organizationId,
       rejectionReason: rejectionReason,
+      admin,
     });
   }
 }

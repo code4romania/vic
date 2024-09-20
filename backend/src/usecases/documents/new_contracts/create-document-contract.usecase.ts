@@ -2,11 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { isOver16FromCNP } from 'src/common/helpers/utils';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { CreateDocumentContractOptions } from 'src/modules/documents/models/document-contract.model';
+import { IDocumentTemplateModel } from 'src/modules/documents/models/document-template.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentTemplateFacade } from 'src/modules/documents/services/document-template.facade';
+import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import {
   IUserPersonalDataModel,
   LegalGuardianIdentityData,
@@ -38,6 +43,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     private readonly getOrganizationUsecase: GetOrganizationUseCaseService,
     private readonly volunteerFacade: VolunteerFacade,
     private readonly exceptionsService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
@@ -45,11 +51,16 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
       CreateDocumentContractOptions,
       'volunteerData' | 'volunteerTutorData' | 'status'
     >,
+    admin: IAdminUserModel,
   ): Promise<string> {
     let volunteer: IVolunteerModel;
+    let organization: IOrganizationModel;
+    let template: IDocumentTemplateModel;
     try {
       // 1. Check if the organization exists
-      await this.getOrganizationUsecase.execute(newContract.organizationId);
+      organization = await this.getOrganizationUsecase.execute(
+        newContract.organizationId,
+      );
 
       // 2. Check if the volunteer exists
       volunteer = await this.checkVolunteerExists(
@@ -58,7 +69,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
       );
 
       //3. Check if template exists
-      await this.checkTemplateExists(
+      template = await this.checkTemplateExists(
         newContract.documentTemplateId,
         newContract.organizationId,
       );
@@ -125,6 +136,19 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     // 9. Send notification to the volunteer to sign the contract if the status is PENDING_VOLUNTEER_SIGNATURE
 
     // 10. Track event
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CREATE_DOCUMENT_CONTRACT,
+      {
+        organizationId: newContract.organizationId,
+        volunteerId: volunteer.id,
+        volunteerName: volunteer.user.name,
+        documentContractId: contractId,
+        documentContractNumber: newContract.documentNumber,
+        documentTemplateId: newContract.documentTemplateId,
+        documentTemplateName: template.name,
+      },
+      admin,
+    );
 
     return contractId;
   }
@@ -248,7 +272,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
   private async checkTemplateExists(
     documentTemplateId: string,
     organizationId: string,
-  ): Promise<void> {
+  ): Promise<IDocumentTemplateModel> {
     const template = await this.documentTemplateFacade.findOne({
       id: documentTemplateId,
       organizationId: organizationId,
@@ -261,5 +285,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
         code_error: 'TEMPLATE_NOT_FOUND',
       });
     }
+
+    return template;
   }
 }
