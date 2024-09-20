@@ -31,6 +31,9 @@ import { MobileStatisticsController } from './_mobile/statistics/statistics.cont
 import { MobileAnouncementsController } from './_mobile/anouncements/anouncements.controller';
 import { MobileSettingsController } from './_mobile/settings/settings-controller';
 import { MobileNewsController } from './_mobile/news/news.controller';
+import { DocumentTemplateController } from './documents/document-template.controller';
+import { DocumentContractController } from './documents/document-contract.controller';
+import { MobileDocumentsContractController } from './_mobile/documents/documents-contract.controller';
 
 @Module({
   imports: [UseCaseModule],
@@ -52,6 +55,8 @@ import { MobileNewsController } from './_mobile/news/news.controller';
     DashboardController,
     TemplateController,
     ContractController,
+    DocumentTemplateController,
+    DocumentContractController,
     // Mobile
     MobileRegularUserController,
     MobileAccessRequestController,
@@ -67,6 +72,7 @@ import { MobileNewsController } from './_mobile/news/news.controller';
     MobileAnouncementsController,
     MobileSettingsController,
     MobileNewsController,
+    MobileDocumentsContractController,
   ],
 })
 export class ApiModule {}

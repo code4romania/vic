@@ -5,6 +5,7 @@ import {
   ICreateOrganizationModel,
   IFindOrganizationModel,
   IOrganizationModel,
+  IUpdateOrganizationModel,
 } from '../models/organization.model';
 import { OrganizationRepositoryService } from '../repositories/organization.repository';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
@@ -31,7 +32,14 @@ export class OrganizationFacadeService {
     organizationId: string,
     description: string,
   ): Promise<IOrganizationModel> {
-    return this.organizationRepository.update(organizationId, description);
+    return this.organizationRepository.update(organizationId, { description });
+  }
+
+  public async updateOrganization(
+    organizationId: string,
+    updates: IUpdateOrganizationModel,
+  ): Promise<IOrganizationModel> {
+    return this.organizationRepository.update(organizationId, updates);
   }
 
   public async createOrganization(

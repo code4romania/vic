@@ -5,6 +5,7 @@ import FormReadOnlyElement from './FormReadOnlyElement';
 
 interface FormInputProps extends InputProps {
   errorMessage?: string;
+  wrapperClassname?: string;
 }
 
 const FormInput = ({
@@ -13,6 +14,7 @@ const FormInput = ({
   value,
   label,
   className,
+  wrapperClassname,
   helper,
   ...props
 }: FormInputProps) => {
@@ -31,6 +33,7 @@ const FormInput = ({
           : '',
         className || '',
       )}
+      wrapperClassname={wrapperClassname}
       aria-invalid={errorMessage ? 'true' : 'false'}
       {...props}
       helper={errorMessage ? <p className="text-red-500">{errorMessage}</p> : helper}

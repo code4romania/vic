@@ -1,0 +1,21 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+# org: tribus
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: pdf-generator
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: pdf-generator-puppeteer
+
+# package:
+#   individually: true
+#   patterns:
+#     - '!node_modules/@sparticuz/chromium/bin/**'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - httpApi: 'POST /test'

@@ -234,6 +234,14 @@
     "description": "Enter your ID card details. These will be used to generate the volunteer contract.",
     "privacy_policy": "Privacy Policy",
     "form": {
+      "cnp": {
+        "label": "CNP",
+        "placeholder": "Enter CNP",
+        "matches": "CNP must contain only digits",
+        "required": "CNP is mandatory",
+        "length": "CNP must contain {{number}} digits",
+        "birthday_mismatch": "The birth date extracted from CNP does not match the one in the account data"
+      },
       "series": {
         "label": "Identity document (ID) series",
         "matches": "The series must contain only letters",
@@ -258,16 +266,73 @@
       },
       "issue_date": {
         "label": "Date of issue",
-        "required": "Date of issue is mandatory"
+        "required": "Date of issue is mandatory",
+        "future": "The date of issue cannot be later than the current date"
+      },
+      "issued_by": {
+        "label": "Issued by",
+        "placeholder": "Entity that issued the document (SPCLEP...)",
+        "required": "The name of the entity that issued the document is mandatory"
       },
       "expiration_date": {
         "label": "Expiry date",
-        "required": "Expiry date is mandatory"
+        "required": "Expiry date is mandatory",
+        "future": "The expiration date cannot be before the current date"
+      },
+      "guardian": {
+        "name": {
+          "label": "Full name",
+          "placeholder": "John Doe",
+          "required": "Legal guardian's full name is mandatory"
+        },
+        "cnp": {
+          "label": "CNP",
+          "placeholder": "Enter CNP",
+          "matches": "CNP must contain only digits",
+          "required": "CNP is mandatory",
+          "length": "CNP must contain {{number}} digits"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "Enter address",
+          "required": "Address is mandatory",
+          "helper": "Enter the full address from your ID.",
+          "min": "Address can have a minimum of {{value}} characters",
+          "max": "Address can have a maximum of {{value}} characters"
+        },
+        "series": {
+          "label": "Identity document (ID) series",
+          "matches": "The series must contain only letters",
+          "placeholder": "Enter series (GZ, RX...)",
+          "length": "The series must have {{number}} characters",
+          "required": "The series is mandatory"
+        },
+        "number": {
+          "label": "Identity document number (CI)",
+          "placeholder": "Enter the 6-digit number",
+          "matches": "The number must contain only digits",
+          "length": "The number must have {{number}} digits",
+          "required": "The number is mandatory"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Enter email address",
+          "required": "Email address is mandatory",
+          "pattern": "The email format is invalid"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Enter phone number",
+          "required": "The phone number is mandatory",
+          "matches": "The phone number must contain only digits",
+          "length": "The phone number must have {{number}} characters"
+        }
       },
       "submit": {
         "success": "The dates have been changed!"
       }
-    }
+    },
+    "legal_gardian_data_required": "Attention! For volunteers under the age of 16, the legal guardian data is required. This will be included in the volunteer contract."
   },
   "change_password": {
     "title": "Change password",
@@ -413,6 +478,9 @@
       "documents": {
         "title": "Documents",
         "subtitle": "{{number}} documents await response"
+      },
+      "contract": {
+        "title": "Volunteering contract"
       },
       "volunteer_profile": {
         "title": "Volunteer profile",
@@ -711,6 +779,76 @@
     },
     "confirmation_modal": {
       "paragraph": "Are you sure you wish to cancel and upload a different contract?"
+    }
+  },
+  "documents-contract": {
+    "title": "Volunteering contract",
+    "no_active_contract": {
+      "title": "You don't have an active volunteering contract",
+      "description": "Contact the organization representatives to obtain the volunteering contract."
+    },
+    "description": "Manage your contracts in the sections below. Download old contracts, or sign contracts sent by the organization.",
+    "no_active_contract_description": "Contact the organization representatives to obtain the volunteering contract.",
+    "requires_volunteer_signature": "The contract requires your signature",
+    "requires_ngo_signature": "The contract requires the organization's signature",
+    "approved": "The contract is signed by both parties",
+    "pending_documents": "Pending documents",
+    "approved_history": "Contract history",
+    "expired": "Expired",
+    "rejected": "Rejected",
+    "current": "Current",
+    "contract": {
+      "title": "Contract {{value}}",
+      "pending_volunteer_signature": "The contract has been generated and requires your approval. Download the template below and carefully read the document. Check if the identity data is correct, otherwise, modify the data and sign the document.",
+      "pending_ngo_signature": "The signed contract has been sent to the organization to obtain their signature as well. You will be notified immediately once the contract is fully signed. After that, you will be able to download the document with both signatures from the app.",
+      "signed_contract_footer": "Once signed, the contract cannot be modified. If you encounter problems, contact the organization to cancel the contract and generate a new one.",
+      "approved": "The contract has been approved by both parties and cannot be modified. Download and view the contract.",
+      "expired": "The contract period has ended. Download and view the contract.",
+      "rejected": "The contract has been rejected.",
+      "sign": "Sign",
+      "reject": "Reject contract"
+    },
+    "volunteer_signature": {
+      "title": "Volunteer Signature",
+      "description": "Draw your signature in the box below",
+      "terms": "By applying your signature, you confirm that you have read and agree to the terms of the contract, and the identity data entered is correct.",
+      "send": "Send for signing",
+      "apply": "Apply signature",
+      "back": "Back",
+      "required": "The signature is required"
+    },
+    "legal_guardian_signature": {
+      "title": "Legal guardian signature",
+      "description": "Since you are under 16, the signature of the legal guardian ({{value}}) is required. Draw the signature in the box below",
+      "terms": "By applying your signature, you confirm that you have read and agree to the terms of the contract, and the identity data entered is correct.",
+      "action_button_label": "Send for signing",
+      "back": "Back"
+    },
+    "success": {
+      "title": "Contract successfully signed!",
+      "description": "The signed document has been sent to the organization to obtain their signature as well. You can view the contract status in the 'Documents' section. You will be notified immediately once the contract is fully signed. After that, you will be able to download the document with both signatures from the app."
+    },
+    "error": {
+      "title": "An error occurred while signing the contract",
+      "description": "Please try again."
+    },
+    "reject": {
+      "title": "Reject contract",
+      "reason": "Reason for rejection",
+      "description": "The coordinator will receive your response. You may receive a new contract later. Mention the reason why the contract does not meet your expectations, or contact the coordinator of your organization.",
+      "send": "Send",
+      "sheet": {
+        "title": "Response sent",
+        "description": "Your response and the reason for rejecting the signature have been sent to the organization.",
+        "close": "Close",
+        "identity": {
+          "description": "Your response has been sent to the organization. Attention! The identity data in the contract is automatically taken from your account. Make sure it is correct and complete.",
+          "action_btn_label": "Update identity data"
+        },
+        "error": {
+          "title": "An error occurred while rejecting the contract"
+        }
+      }
     }
   },
   "notifications": {

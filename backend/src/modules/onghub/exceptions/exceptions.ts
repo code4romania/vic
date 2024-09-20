@@ -4,6 +4,7 @@ export enum OngHubExceptionCodes {
   ONG_001 = 'ONG_001',
   ONG_002 = 'ONG_002',
   ONG_003 = 'ONG_003',
+  ONG_004 = 'ONG_004',
 }
 
 type OngHubExceptionCodeType = keyof typeof OngHubExceptionCodes;
@@ -24,5 +25,9 @@ export const OngHubExceptionMessages: Record<
   [OngHubExceptionCodes.ONG_003]: {
     message: 'There was unexpected issue while requesting data from ONG Hub',
     code_error: OngHubExceptionCodes.ONG_003,
+  },
+  [OngHubExceptionCodes.ONG_004]: {
+    message: 'Could not update organization with the data from ONG Hub',
+    code_error: OngHubExceptionCodes.ONG_004,
   },
 };

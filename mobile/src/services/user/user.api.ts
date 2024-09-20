@@ -1,9 +1,9 @@
 import API from '../api';
-import { IUserProfile } from '../../common/interfaces/user-profile.interface';
+import { ILegalGuardianData, IUserProfile } from '../../common/interfaces/user-profile.interface';
 import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.interface';
-import { IdentityDataFormTypes } from '../../screens/IdentityData';
 import { AccountDataFormTypes } from '../../screens/AccountData';
 import { ImageAttachement } from '../../common/interfaces/image-attachement.interface';
+import { format } from 'date-fns';
 
 export const createUserProfile = async (userProfile: ICreateUserPayload): Promise<IUserProfile> => {
   return API.post('/mobile/user', userProfile).then((res) => res.data);
@@ -13,8 +13,18 @@ export const getUserProfile = async (): Promise<IUserProfile> => {
   return API.get('/mobile/user/profile').then((res) => res.data);
 };
 
+export interface UserPersonalDataPayload {
+  cnp: string;
+  identityDocumentSeries: string;
+  identityDocumentNumber: string;
+  address: string;
+  identityDocumentIssueDate: Date;
+  identityDocumentExpirationDate: Date;
+  identityDocumentIssuedBy: string;
+  legalGuardian?: ILegalGuardianData;
+}
 export const updateUserPersonalData = async (
-  updates: IdentityDataFormTypes,
+  updates: UserPersonalDataPayload,
 ): Promise<IUserProfile> => {
   return API.patch('/mobile/user/personal-data', updates).then((res) => res.data);
 };
@@ -32,8 +42,9 @@ export const updateUserProfile = async (
     formData.append('locationId', updates.cityId.toString());
   }
   if (updates.birthday) {
-    formData.append('birthday', updates.birthday.toISOString());
+    formData.append('birthday', format(updates.birthday, 'yyyy-MM-dd'));
   }
+
   if (updates.sex) {
     formData.append('sex', updates.sex);
   }

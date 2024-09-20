@@ -234,6 +234,14 @@
     "description": "Introdu datele din actul de identitate. Acestea vor fi folosite pentru generarea contractului de voluntariat.",
     "privacy_policy": "Politica de Confidențialitate",
     "form": {
+      "cnp": {
+        "label": "CNP",
+        "placeholder": "Introdu CNP-ul",
+        "matches": "CNP-ul trebuie să conțină doar cifre",
+        "required": "CNP-ul este obligatoriu",
+        "length": "CNP-ul trebuie să conțină {{number}} cifre",
+        "birthday_mismatch": "Data de naștere extrasă din CNP nu corespunde cu cea din datele contului de utilizator"
+      },
       "series": {
         "label": "Serie document identitate (CI)",
         "matches": "Seria trebuie să conțină doar litere",
@@ -258,16 +266,73 @@
       },
       "issue_date": {
         "label": "Data emitere",
-        "required": "Data emiterii este obligatorie"
+        "required": "Data emiterii este obligatorie",
+        "future": "Data emiterii nu poate fi ulterioară datei curente"
+      },
+      "issued_by": {
+        "label": "Eliberat de",
+        "placeholder": "Entitatea care a emis documentul (SPCLEP...)",
+        "required": "Denumirea entității care a emis documentul este obligatorie"
       },
       "expiration_date": {
         "label": "Data expirare",
-        "required": "Data expirării este obligatorie"
+        "required": "Data expirării este obligatorie",
+        "future": "Data expirării nu poate fi înaintea datei curente"
+      },
+      "guardian": {
+        "name": {
+          "label": "Nume și prenume",
+          "placeholder": "Ion Popescu",
+          "required": "Numele și prenumele tutorelui legal sunt obligatorii"
+        },
+        "cnp": {
+          "label": "CNP",
+          "placeholder": "Introdu CNP-ul",
+          "matches": "CNP-ul trebuie să conțină doar cifre",
+          "required": "CNP-ul este obligatoriu",
+          "length": "CNP-ul trebuie să conțină {{number}} cifre"
+        },
+        "address": {
+          "label": "Domiciliat în",
+          "placeholder": "Introdu adresa",
+          "required": "Domiciliul este obligatoriu",
+          "helper": "Introdu adresa completa din buletin.",
+          "min": "Domiciliul poate să aibă minim {{value}} caractere",
+          "max": "Domiciliul poate să aibă maxim {{value}} caractere"
+        },
+        "series": {
+          "label": "Serie document identitate (CI)",
+          "matches": "Seria trebuie să conțină doar litere",
+          "placeholder": "Introdu seria (GZ, RX...)",
+          "length": "Seria trebuie să aibă {{number}} caractere",
+          "required": "Seria este obligatorie"
+        },
+        "number": {
+          "label": "Număr document identitate (CI)",
+          "placeholder": "Introdu numărul din 6 cifre",
+          "matches": "Numărul trebuie să conțină doar cifre",
+          "length": "Numărul trebuie să aibă {{number}} caractere",
+          "required": "Numărul este obligatoriu"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Introdu adresa de email",
+          "required": "Adresa de email este obligatorie",
+          "pattern": "Formatul email-ului nu este valid"
+        },
+        "phone": {
+          "label": "Telefon",
+          "placeholder": "Introdu numărul de telefon",
+          "required": "Numărul de telefon este obligatoriu",
+          "matches": "Numărul de telefon trebuie să conțină doar cifre",
+          "length": "Numărul de telefon trebuie să aibă {{number}} caractere"
+        }
       },
       "submit": {
         "success": "Datele au fost modificate!"
       }
-    }
+    },
+    "legal_gardian_data_required": "Atenție! Pentru voluntarii sub 16 ani, sunt necesare datele tutorelui legal. Acestea vor fi incluse în contractul de voluntariat."
   },
   "change_password": {
     "title": "Schimbă parola",
@@ -413,6 +478,9 @@
       "documents": {
         "title": "Documente",
         "subtitle": "{{number}} documente așteaptă răspuns"
+      },
+      "contract": {
+        "title": "Contract de voluntariat"
       },
       "volunteer_profile": {
         "title": "Profil voluntar",
@@ -712,6 +780,76 @@
     },
     "confirmation_modal": {
       "paragraph": "Ești sigur că vrei să anulezi și să încarci un contract diferit?"
+    }
+  },
+  "documents-contract": {
+    "title": "Contract voluntariat",
+    "no_active_contract": {
+      "title": "Nu ai un contract de voluntariat activ",
+      "description": "Ia legatura cu reprezentanții organizației pentru a obține contractul de voluntariat."
+    },
+    "description": "Gestioneaza contractele tale din sectiunile de mai jos. Descarca contracte vechi, sau semneaza contractele trimise de organizatie.",
+    "no_active_contract_description": "Ia legatura cu reprezentanții organizației pentru a obține contractul de voluntariat.",
+    "requires_volunteer_signature": "Contractul necesită semnătura ta",
+    "requires_ngo_signature": "Contractul necesita semnătura organizației",
+    "approved": "Contractul este semnat de ambele părți",
+    "pending_documents": "Documente în așteptare",
+    "approved_history": "Istoric contracte",
+    "expired": "încheiat",
+    "rejected": "respins",
+    "current": "curent",
+    "contract": {
+      "title": "Contract {{value}}",
+      "pending_volunteer_signature": "Contractul a fost generat și necesită aprobarea ta. Descarcă modelul de mai jos și citește documentul cu atenție. Verifică dacă datele de identitate sunt corecte, în caz contrar, modifică datele și semnează documentul.",
+      "pending_ngo_signature": "Contractul semnat a fost trimis către organizație pentru a obține și semnătura lor. Vei fi notificat imediat ce contractul este complet semnat. După aceea, vei putea descărca documentul cu ambele semnături, din aplicație.",
+      "signed_contract_footer": "Odată semnat, contractul nu poate fi modificat. Dacă întâmpini probleme, ia legătura cu organizația, pentru a anula contractul și a genera un contract nou.",
+      "approved": "Contractul a fost aprobat de ambele părți și nu mai poate fi modificat. Descarcă și vizualizează contractul.",
+      "expired": "Perioada contractului a luat sfârșit. Descarcă și vizualizează contractul.",
+      "rejected": "Contractul a fost respins.",
+      "sign": "Semnează",
+      "reject": "Respinge contract"
+    },
+    "volunteer_signature": {
+      "title": " Semnatură voluntar",
+      "description": " Desenează semnătura în cadranul de mai jos",
+      "terms": " Prin aplicarea semnăturii, confirmi că ai citit și ești de acord cu termenii contractului, iar datele de identitate introduse sunt corecte.",
+      "send": "Trimite spre semnare",
+      "apply": "Aplică semnatura",
+      "back": "Înapoi",
+      "required": "Semnătura este obligatorie"
+    },
+    "legal_guardian_signature": {
+      "title": "Semnătura tutore legal",
+      "description": "Deoarece ai sub 16 ani, este necesară semnătura tutorelui legal ({{value}}). Desenează semnătura în cadranul de mai jos",
+      "terms": " Prin aplicarea semnăturii, confirmi că ai citit și ești de acord cu termenii contractului, iar datele de identitate introduse sunt corecte.",
+      "action_button_label": "Trimite spre semnare",
+      "back": "Înapoi"
+    },
+    "success": {
+      "title": "Contractul a fost semnat cu succes!",
+      "description": "Documentul semnat a fost trimis către organizație pentru a obține și semnătura lor. Poți vizualiza statusul contractului în secțiunea ‘Documente’. Vei fi notificat imediat ce contractul este complet semnat. După aceea, vei putea descărca documentul cu ambele semnături, din aplicație."
+    },
+    "error": {
+      "title": "A apărut o eroare la semnarea contractului",
+      "description": "Te rugăm să încerci din nou."
+    },
+    "reject": {
+      "title": "Respinge contract",
+      "reason": "Motivul respingerii",
+      "description": "Coordonatorul va primi răspunsul tău. Poți primi un contract nou ulterior. Menționează motivul pentru care contractul nu este conform cu așteptările tale, sau ia legătura cu coordonatorul organizației tale.",
+      "send": "Trimite",
+      "sheet": {
+        "title": "Răspuns înregistrat",
+        "description": "Răspunsul tău și motivul pentru care ai refuzat semnarea au fost trimise către organizație.",
+        "close": "Închide",
+        "identity": {
+          "description": "Răspunsul tău a fost trimis către organizație. Atenție! Datele de identitate din contract sunt preluate automat din contul tău. Asigură-te că acestea sunt corecte și complete.",
+          "action_btn_label": "Actualizează datele de identitate"
+        },
+        "error": {
+          "title": "A apărut o eroare la respingerea contractului"
+        }
+      }
     }
   },
   "notifications": {

@@ -9,6 +9,7 @@ import {
   ICreateOrganizationModel,
   IFindOrganizationModel,
   IOrganizationModel,
+  IUpdateOrganizationModel,
   OrganizationTransformer,
 } from '../models/organization.model';
 import {
@@ -62,10 +63,10 @@ export class OrganizationRepositoryService
 
   public async update(
     id: string,
-    description: string,
+    updates: IUpdateOrganizationModel,
   ): Promise<IOrganizationModel> {
     // update organization entity
-    await this.organizationRepository.update({ id }, { description });
+    await this.organizationRepository.update({ id }, { ...updates });
 
     // return organization model
     return this.find({ id });

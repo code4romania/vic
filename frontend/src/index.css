@@ -16,6 +16,23 @@
     @apply font-roboto text-sm sm:text-base;
   }
 
+  ul,
+  ol {
+    @apply pl-5 my-2;
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+
+  li {
+    @apply mb-1;
+  }
+
   header {
     @apply shadow-header;
   }
@@ -311,6 +328,22 @@ ul.recharts-default-legend {
 
 li.recharts-legend-item {
   @apply flex items-center !important;
+}
+
+.react-datepicker-popper {
+  z-index: 1000;
+}
+
+.ql-container {
+  @apply border-0;
+}
+
+.ql-container.ql-snow {
+  @apply border-0;
+}
+
+.ql-toolbar.ql-snow {
+  @apply border-0 border-b-2 border-cool-gray-900;
 }
 
 @layer utilities {

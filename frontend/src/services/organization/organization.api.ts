@@ -14,6 +14,9 @@ export const updateOrganizationDescription = async (
 ): Promise<IOrganization> => {
   return API.patch(`/organization`, { description }).then((res) => res.data);
 };
+export const resyncOrganizationWithOngHub = async (): Promise<IOrganization> => {
+  return API.post(`/organization/onghub/sync`).then((res) => res.data);
+};
 
 export const getAccessCodes = async (
   limit: number,

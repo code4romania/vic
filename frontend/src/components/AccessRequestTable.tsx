@@ -352,21 +352,24 @@ const AccessRequestTable = ({
     );
   };
 
-  const onCreatedOnRangeChange = ([createdOnStart, createdOnEnd]: Date[]) => {
+  const onCreatedOnRangeChange = ([createdOnStart, createdOnEnd]: [Date | null, Date | null]) => {
     setQuery(
       {
-        createdOnStart,
-        createdOnEnd,
+        createdOnStart: createdOnStart ?? undefined,
+        createdOnEnd: createdOnEnd ?? undefined,
       },
       'replaceIn',
     );
   };
 
-  const onRejectedOnRangeChange = ([rejectedOnStart, rejectedOnEnd]: Date[]) => {
+  const onRejectedOnRangeChange = ([rejectedOnStart, rejectedOnEnd]: [
+    Date | null,
+    Date | null,
+  ]) => {
     setQuery(
       {
-        rejectedOnStart,
-        rejectedOnEnd,
+        rejectedOnStart: rejectedOnStart ?? undefined,
+        rejectedOnEnd: rejectedOnEnd ?? undefined,
       },
       'replaceIn',
     );

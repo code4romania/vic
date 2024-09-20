@@ -435,8 +435,10 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
         role: undefined,
         age: undefined,
         createdOnEnd: undefined,
-        createdOnStart: undefined
-      }, 'replaceIn');
+        createdOnStart: undefined,
+      },
+      'replaceIn',
+    );
   };
 
   const onExport = async () => {
@@ -477,7 +479,10 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
         >
           <DateRangePicker
             label={i18n.t('volunteers:filters.active_since_range')}
-            onChange={onCreatedOnRangeChange}
+            onChange={(range: [Date | null, Date | null]) => {
+              const [createdOnStart, createdOnEnd] = range;
+              onCreatedOnRangeChange([createdOnStart as Date, createdOnEnd as Date]);
+            }}
             value={
               query?.createdOnStart && query?.createdOnEnd
                 ? [query?.createdOnStart, query?.createdOnEnd]

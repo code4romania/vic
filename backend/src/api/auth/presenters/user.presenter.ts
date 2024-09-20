@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { differenceInYears } from 'date-fns';
+import { UserPersonalDataPresenter } from 'src/api/_mobile/user/presenters/user-personal-data.presenter';
 import { CityPresenter } from 'src/api/location/presenters/city.presenter';
 import { SEX } from 'src/modules/user/enums/user.enum';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
@@ -15,6 +16,9 @@ export class RegularUserPresenter {
     this.sex = user.sex;
     this.profilePicture = user.profilePicture;
     this.location = user.location ? new CityPresenter(user.location) : null;
+    this.userPersonalData = user.userPersonalData
+      ? new UserPersonalDataPresenter(user.userPersonalData)
+      : null;
   }
 
   @Expose()
@@ -51,6 +55,10 @@ export class RegularUserPresenter {
   @Expose()
   @ApiProperty({ description: 'The users location' })
   location: CityPresenter;
+
+  @Expose()
+  @ApiProperty({ description: 'The user personal data' })
+  userPersonalData?: UserPersonalDataPresenter;
 
   private calculateAge = (birthday: Date): number => {
     return birthday ? differenceInYears(new Date(), new Date(birthday)) : 0;

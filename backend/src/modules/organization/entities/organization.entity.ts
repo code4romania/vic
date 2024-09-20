@@ -29,6 +29,19 @@ export class OrganizationEntity extends BaseEntity {
   @Column({ type: 'text', name: 'logo', nullable: true })
   logo: string;
 
+  @Column({ type: 'text', name: 'cui', nullable: true })
+  cui: string;
+
+  @Column({
+    type: 'text',
+    name: 'legal_representative_full_name',
+    nullable: true,
+  })
+  legalReprezentativeFullName: string;
+
+  @Column({ type: 'text', name: 'legal_representative_role', nullable: true })
+  legalReprezentativeRole: string;
+
   @OneToMany(() => VolunteerEntity, (volunteer) => volunteer.organization)
   volunteers: VolunteerEntity[];
 

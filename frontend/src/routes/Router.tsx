@@ -35,6 +35,9 @@ import AddContractTemplate from '../pages/AddContractTemplate';
 import EditContractTemplate from '../pages/EditContractTemplate';
 import AddContract from '../containers/query/AddContractWithQueryParams';
 import ActionsArchive from '../pages/ActionsArchive';
+import { CreateContractTemplate } from '../pages/CreateContractTemplate';
+import { ContractTemplates } from '../pages/ContractTemplates';
+import { GenerateContract } from '../pages/GenerateContract';
 
 const Router = () => {
   return (
@@ -91,6 +94,13 @@ const Router = () => {
                 <Route path="add-template" element={<AddContractTemplate />} />
                 <Route path="add" element={<AddContract />} />
                 <Route path=":id/edit" element={<EditContractTemplate />} />
+              </Route>
+              <Route path="templates" element={<Outlet />}>
+                <Route index element={<ContractTemplates />} />
+                <Route path="create" element={<CreateContractTemplate />} />
+                <Route path="contracts" element={<Outlet />}>
+                  <Route path="generate" element={<GenerateContract />} />
+                </Route>
               </Route>
             </Route>
           </Route>

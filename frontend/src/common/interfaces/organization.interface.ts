@@ -7,4 +7,7 @@ export interface IOrganization {
   activityArea: string;
   logo: string;
   description: string;
+  cui: string;
+  legalReprezentativeFullName: string;
+  legalReprezentativeRole: string;
 }

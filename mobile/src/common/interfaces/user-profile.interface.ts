@@ -5,11 +5,24 @@ import { IOrganizationVolunteer } from './organization-list-item.interface';
 
 export interface IUserPersonalData {
   id: string;
+  cnp: string;
   identityDocumentSeries: string;
   identityDocumentNumber: string;
   address: string;
   identityDocumentIssueDate: Date;
   identityDocumentExpirationDate: Date;
+  identityDocumentIssuedBy: string;
+  legalGuardian?: ILegalGuardianData;
+}
+
+export interface ILegalGuardianData {
+  name: string;
+  cnp: string;
+  address: string;
+  identityDocumentSeries: string;
+  identityDocumentNumber: string;
+  email: string;
+  phone: string;
 }
 
 export interface INotificationsSettings {

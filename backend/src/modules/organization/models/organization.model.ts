@@ -10,9 +10,13 @@ export interface IOrganizationModel {
   activityArea: string;
   logo: string;
   description: string;
+  cui?: string;
+  legalReprezentativeFullName?: string;
+  legalReprezentativeRole?: string;
 }
 
 export type ICreateOrganizationModel = Omit<IOrganizationModel, 'id'>;
+export type IUpdateOrganizationModel = Partial<ICreateOrganizationModel>;
 
 export type IFindOrganizationModel = Pick<
   IOrganizationModel,
@@ -37,6 +41,10 @@ export class OrganizationTransformer {
       activityArea: organizationEntity.activityArea,
       logo: organizationEntity.logo,
       description: organizationEntity.description,
+      cui: organizationEntity.cui,
+      legalReprezentativeFullName:
+        organizationEntity.legalReprezentativeFullName,
+      legalReprezentativeRole: organizationEntity.legalReprezentativeRole,
     };
   }
 
@@ -51,6 +59,11 @@ export class OrganizationTransformer {
     organizationEntity.activityArea = organizationModel.activityArea;
     organizationEntity.logo = organizationModel.logo;
     organizationEntity.description = organizationModel.description;
+    organizationEntity.cui = organizationModel.cui;
+    organizationEntity.legalReprezentativeFullName =
+      organizationModel.legalReprezentativeFullName;
+    organizationEntity.legalReprezentativeRole =
+      organizationModel.legalReprezentativeRole;
     return organizationEntity;
   }
 }

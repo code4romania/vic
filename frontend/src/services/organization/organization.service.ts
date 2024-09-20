@@ -10,6 +10,7 @@ import {
   getAccessCode,
   getAccessCodes,
   getOrganization,
+  resyncOrganizationWithOngHub,
   updateAccessCode,
   updateOrganizationDescription,
 } from './organization.api';
@@ -29,6 +30,12 @@ export const useUpdateOrganizationDescriptionMutation = () => {
         Promise.resolve(error),
     },
   );
+};
+
+export const useResyncOrganizationWithOngHubMutation = () => {
+  return useMutation(['resync-organization-onghub'], () => resyncOrganizationWithOngHub(), {
+    onError: (error: AxiosError<IBusinessException<ORGANIZATION_ERRORS>>) => Promise.resolve(error),
+  });
 };
 
 export const useAccessCodesQuery = (

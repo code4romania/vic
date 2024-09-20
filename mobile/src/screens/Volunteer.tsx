@@ -26,16 +26,17 @@ const Volunteer = ({ navigation }: any) => {
 
   const {
     data: stats,
-    isFetching: isLoadingStats,
+    isLoading: isLoadingStats,
     refetch,
-  } = useVolunteerStats(userProfile?.activeOrganization?.volunteerId as string);
+  } = useVolunteerStats(userProfile?.activeOrganization?.volunteerId);
 
   useFocusEffect(
     React.useCallback(() => {
       refetchUserProfile();
-      refetch();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
+      if (userProfile?.activeOrganization?.volunteerId) {
+        refetch();
+      }
+    }, [refetch, refetchUserProfile, userProfile?.activeOrganization?.volunteerId]),
   );
 
   const onViewOrganizationButtonPress = () => {
@@ -62,6 +63,10 @@ const Volunteer = ({ navigation }: any) => {
 
   const onAddOrganizationPress = () => {
     navigation.navigate('search');
+  };
+
+  const onViewContractButtonPress = () => {
+    navigation.navigate('documents/contracts');
   };
 
   return userProfile?.activeOrganization ? (
@@ -110,6 +115,13 @@ const Volunteer = ({ navigation }: any) => {
           subtitle={
             !stats?.volunteerProfileId ? `${t('menu_items.volunteer_profile.subtitle')}` : ''
           }
+        />
+        <VolunteerCard
+          title={t('menu_items.contract.title')}
+          icon={<SvgXml xml={volunteerDocumentSVG} />}
+          onPress={onViewContractButtonPress}
+          loading={isLoadingStats}
+          subtitle={'TODO: subtitle after API is ready'}
         />
       </View>
     </Screen>

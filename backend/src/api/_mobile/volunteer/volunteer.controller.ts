@@ -35,9 +35,8 @@ export class MobileVolunteerController {
   async getVolunteerProfile(
     @Param('id', UuidValidationPipe) volunteerId: string,
   ): Promise<VolunteerPresenter> {
-    const volunteer = await this.getVolunteerProfileUsecase.execute(
-      volunteerId,
-    );
+    const volunteer =
+      await this.getVolunteerProfileUsecase.execute(volunteerId);
 
     return new VolunteerPresenter(volunteer);
   }
@@ -46,9 +45,8 @@ export class MobileVolunteerController {
   async getVolunteerOrganizationStats(
     @Param('id', UuidValidationPipe) volunteerId: string,
   ): Promise<VolunteerStatsPresenter> {
-    const volunteer = await this.getVolunteerOrganizationStatusUsecase.execute(
-      volunteerId,
-    );
+    const volunteer =
+      await this.getVolunteerOrganizationStatusUsecase.execute(volunteerId);
 
     return new VolunteerStatsPresenter(volunteer);
   }

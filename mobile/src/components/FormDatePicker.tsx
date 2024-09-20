@@ -11,6 +11,7 @@ import {
 import { Control, Controller } from 'react-hook-form';
 import { View } from 'react-native';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { UTCDate } from '@date-fns/utc';
 
 interface FormDatepickerProps extends DatepickerProps {
   control: Control<Record<string, any>>;
@@ -22,12 +23,11 @@ interface FormDatepickerProps extends DatepickerProps {
 }
 
 const CalendarIcon = (props: any): IconElement => <Icon {...props} name="calendar" />;
-const renderPlaceholder = (placeholder: string, styles: any) => () =>
-  (
-    <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint" style={styles.marginHorizontal}>
-      {placeholder}
-    </Text>
-  );
+const renderPlaceholder = (placeholder: string, styles: any) => () => (
+  <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint" style={styles.marginHorizontal}>
+    {placeholder}
+  </Text>
+);
 
 //Add min or max props to date picker in order to let user select year
 const FormDatePicker: React.FC<FormDatepickerProps> = ({
@@ -51,20 +51,26 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
       <Controller
         control={control}
         name={name}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Datepicker
-            placeholder={renderPlaceholder(placeholder, styles)}
-            date={value}
-            onSelect={onChange}
-            onBlur={onBlur}
-            status={error ? 'danger' : 'basic'}
-            disabled={disabled}
-            style={styles.input}
-            controlStyle={disabled ? styles.disabled : {}}
-            accessoryRight={CalendarIcon}
-            {...rest}
-          />
-        )}
+        render={({ field: { onChange, onBlur, value } }) => {
+          return (
+            <Datepicker
+              placeholder={renderPlaceholder(placeholder, styles)}
+              date={value ? new UTCDate(value) : undefined}
+              onSelect={(date) => {
+                const localeDate = date.toLocaleDateString('ro-RO').split('.').map(Number);
+                const utcDate = new UTCDate(localeDate[2], localeDate[1] - 1, localeDate[0]);
+                onChange(utcDate);
+              }}
+              onBlur={onBlur}
+              status={error ? 'danger' : 'basic'}
+              disabled={disabled}
+              style={styles.input}
+              controlStyle={disabled ? styles.disabled : {}}
+              accessoryRight={CalendarIcon}
+              {...rest}
+            />
+          );
+        }}
       />
       {error && (
         <Text
