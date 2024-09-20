@@ -1,6 +1,7 @@
 export interface IError {
   message: string;
   code_error?: string;
+  details?: unknown;
 }
 
 export interface IException {

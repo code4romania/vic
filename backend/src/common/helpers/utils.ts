@@ -29,6 +29,9 @@ export function jsonToExcelBuffer<T>(
 
 export const isOver16FromCNP = (cnp: string): boolean => {
   // we don't need to perform the calculation before the user has entered all the necessary digits to calculate
+  if (!cnp) {
+    throw new Error('CNP is required');
+  }
   if (cnp.length !== 13) {
     throw new Error('CNP must be 13 digits long');
   }

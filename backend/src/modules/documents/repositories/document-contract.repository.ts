@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { DocumentContractEntity } from '../entities/document-contract.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { RepositoryWithPagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   CreateDocumentContractOptions,
   DocumentContractTransformer,
+  FindExistingContractForVolunteerInInterval,
   FindOneDocumentContractOptions,
   IDocumentContractModel,
   UpdateDocumentContractOptions,
@@ -41,6 +42,26 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
     });
 
     return DocumentContractTransformer.fromEntity(documentContract);
+  }
+
+  /**
+   * Checks if a contract exists for a volunteer in the given period
+   *
+   * The method checks if there's any overlap between the new contract period
+   * and any existing contract for the volunteer.
+   */
+  async existsInSamePeriod(
+    options: FindExistingContractForVolunteerInInterval,
+  ): Promise<boolean> {
+    const existingContract = await this.documentContractRepository.findOne({
+      where: {
+        volunteerId: options.volunteerId,
+        documentStartDate: LessThanOrEqual(options.documentEndDate),
+        documentEndDate: MoreThanOrEqual(options.documentStartDate),
+      },
+    });
+
+    return !!existingContract;
   }
 
   async exists(options: FindOneDocumentContractOptions): Promise<boolean> {

@@ -8,6 +8,12 @@ export enum ContractExceptionCodes {
   CONTRACT_005 = 'CONTRACT_005',
   CONTRACT_006 = 'CONTRACT_006',
   CONTRACT_007 = 'CONTRACT_007',
+  CONTRACT_008 = 'CONTRACT_008',
+  CONTRACT_009 = 'CONTRACT_009',
+  CONTRACT_010 = 'CONTRACT_010',
+  CONTRACT_011 = 'CONTRACT_011',
+  CONTRACT_012 = 'CONTRACT_012',
+  CONTRACT_013 = 'CONTRACT_013',
 }
 
 type ContractExceptionCodeType = keyof typeof ContractExceptionCodes;
@@ -31,7 +37,7 @@ export const ContractExceptionMessages: Record<
   [ContractExceptionCodes.CONTRACT_004]: {
     code_error: ContractExceptionCodes.CONTRACT_004,
     message:
-      'There is already a conract with this number for your organization',
+      'There is already a contract with this number for your organization',
   },
   [ContractExceptionCodes.CONTRACT_005]: {
     code_error: ContractExceptionCodes.CONTRACT_005,
@@ -44,5 +50,29 @@ export const ContractExceptionMessages: Record<
   [ContractExceptionCodes.CONTRACT_007]: {
     code_error: ContractExceptionCodes.CONTRACT_007,
     message: 'Can only cancel a contract pending to the ADMIN',
+  },
+  [ContractExceptionCodes.CONTRACT_008]: {
+    code_error: ContractExceptionCodes.CONTRACT_008,
+    message: 'Legal guardian data is required for under 16 volunteers',
+  },
+  [ContractExceptionCodes.CONTRACT_009]: {
+    code_error: ContractExceptionCodes.CONTRACT_009,
+    message: 'FATAL: Error while creating the contract in DB',
+  },
+  [ContractExceptionCodes.CONTRACT_010]: {
+    code_error: ContractExceptionCodes.CONTRACT_010,
+    message: '[Create Contract] Invalid input data',
+  },
+  [ContractExceptionCodes.CONTRACT_011]: {
+    code_error: ContractExceptionCodes.CONTRACT_011,
+    message: '[Create Contract] Invalid legal guardian data',
+  },
+  [ContractExceptionCodes.CONTRACT_012]: {
+    code_error: ContractExceptionCodes.CONTRACT_012,
+    message: '[Create Contract] Invalid personal data',
+  },
+  [ContractExceptionCodes.CONTRACT_013]: {
+    code_error: ContractExceptionCodes.CONTRACT_013,
+    message: '[Create Contract] Missing volunteer personal data',
   },
 };

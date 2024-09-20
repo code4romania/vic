@@ -5,6 +5,7 @@ import {
   IDocumentContractModel,
   FindOneDocumentContractOptions,
   UpdateDocumentContractOptions,
+  FindExistingContractForVolunteerInInterval,
 } from '../models/document-contract.model';
 import { DocumentContractListViewRepository } from '../repositories/document-contract-list-view.repository';
 import {
@@ -59,6 +60,12 @@ export class DocumentContractFacade {
 
   async exists(options: FindOneDocumentContractOptions): Promise<boolean> {
     return this.documentContractRepository.exists(options);
+  }
+
+  async existsInSamePeriod(
+    options: FindExistingContractForVolunteerInInterval,
+  ): Promise<boolean> {
+    return this.documentContractRepository.existsInSamePeriod(options);
   }
 
   async findMany(
