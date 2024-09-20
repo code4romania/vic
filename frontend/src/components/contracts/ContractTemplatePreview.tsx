@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { InfoParagraph } from '../InfoParagraph';
 import { ContractTerms } from './ContractTerms';
 import { useTranslation } from 'react-i18next';
-import { Signatures } from '../Signatures';
 import { useOrganizationQuery } from '../../services/organization/organization.service';
 import LoadingContent from '../LoadingContent';
 import { OrganizationDataError } from '../OrganizationDataError';
@@ -158,7 +157,7 @@ export const ContractTemplatePreview = ({
         getValues={getValues}
         formErrors={formErrors}
       />
-      <Signatures />
+      {/* <Signatures /> */}
     </div>
   );
 };

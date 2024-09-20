@@ -5,5 +5,4 @@ export interface IAddDocumentContractDTO {
   documentEndDate: Date;
   volunteerId: string;
   documentTemplateId: string;
-  status: 'CREATED';
 }
