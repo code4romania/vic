@@ -7,9 +7,16 @@ export class CreateDocumentContractDto {
   documentNumber: string;
 
   @IsDate()
-  @MinDate(() => new Date(), {
-    message: 'Document date must be greater than or equal to the current date',
-  })
+  @MinDate(
+    () => {
+      const today = new Date();
+      return new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    },
+    {
+      message:
+        'Document date must be greater than or equal to the current date',
+    },
+  )
   documentDate: Date;
 
   @IsDate()

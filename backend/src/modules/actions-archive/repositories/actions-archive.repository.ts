@@ -41,6 +41,7 @@ export class ActionsArchiveRepository
         'author',
       )
       .select()
+      // TODO: Instead of filtering organization by author, add organizationId in the entity because otherwise we can't track volunteer actions
       .where('author.organizationId = :organizationId', {
         organizationId: findOptions.organizationId,
       })

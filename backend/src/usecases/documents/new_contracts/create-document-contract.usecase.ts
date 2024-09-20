@@ -2,10 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { isOver16FromCNP } from 'src/common/helpers/utils';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
+import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { CreateDocumentContractOptions } from 'src/modules/documents/models/document-contract.model';
+import { IDocumentTemplateModel } from 'src/modules/documents/models/document-template.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentTemplateFacade } from 'src/modules/documents/services/document-template.facade';
+import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import {
   IUserPersonalDataModel,
   LegalGuardianIdentityData,
@@ -17,6 +23,18 @@ import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade
 import { GetOrganizationUseCaseService } from 'src/usecases/organization/get-organization.usecase';
 import * as z from 'zod';
 
+/*
+Possible errors thrown:
+1. CONTRACT_010: Invalid input data
+2. CONTRACT_004: Contract number already exists
+3. CONTRACT_005: Volunteer already has a contract for that period
+4. CONTRACT_013: Missing volunteer personal data
+5. CONTRACT_012: Invalid personal data
+6. CONTRACT_008: Legal guardian data is required for under 16 volunteers
+7. CONTRACT_011: Invalid legal guardian data
+8. CONTRACT_009: Error while creating the contract in DB
+*/
+
 @Injectable()
 export class CreateDocumentContractUsecase implements IUseCaseService<string> {
   constructor(
@@ -25,60 +43,74 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     private readonly getOrganizationUsecase: GetOrganizationUseCaseService,
     private readonly volunteerFacade: VolunteerFacade,
     private readonly exceptionsService: ExceptionsService,
-  ) {
-    // this.execute({
-    //   documentDate: new Date(),
-    //   documentStartDate: new Date(),
-    //   documentEndDate: new Date(),
-    //   volunteerId: '1a53406f-263b-41bc-b60c-cb30a1805f1e',
-    //   organizationId: '7f005461-07c3-4693-a85d-40d31db43a4c',
-    //   documentTemplateId: 'bc3b7d74-686e-47b4-850a-b1de69574e28',
-    //   createdByAdminId: '4db075bd-4095-432e-98bd-dc68b4599337',
-    //   status: DocumentContractStatus.CREATED,
-    // });
-  }
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
+  ) {}
 
   public async execute(
     newContract: Omit<
       CreateDocumentContractOptions,
       'volunteerData' | 'volunteerTutorData' | 'status'
     >,
+    admin: IAdminUserModel,
   ): Promise<string> {
-    // 1. check if the organization exists
-    await this.getOrganizationUsecase.execute(newContract.organizationId);
+    let volunteer: IVolunteerModel;
+    let organization: IOrganizationModel;
+    let template: IDocumentTemplateModel;
+    try {
+      // 1. Check if the organization exists
+      organization = await this.getOrganizationUsecase.execute(
+        newContract.organizationId,
+      );
 
-    // 2. check if the volunteer exists
-    const volunteer = await this.checkVolunteerExists(
-      newContract.volunteerId,
-      newContract.organizationId,
-    );
+      // 2. Check if the volunteer exists
+      volunteer = await this.checkVolunteerExists(
+        newContract.volunteerId,
+        newContract.organizationId,
+      );
 
-    //3. check if template exists
-    await this.checkTemplateExists(
-      newContract.documentTemplateId,
-      newContract.organizationId,
-    );
-
-    //TODO: 4. check if the contract number already exists
-
-    //TODO: 5. check if the volunteer has already a contract in that period
-
-    // 6. Extract volunteerData and volunteerTutorData from the user
-    const volunteerPersonalData = volunteer.user.userPersonalData;
-
-    await this.validateVolunteerPersonalData(volunteerPersonalData);
-
-    if (!isOver16FromCNP(volunteerPersonalData.cnp)) {
-      if (!volunteerPersonalData.legalGuardian) {
-        this.exceptionsService.badRequestException({
-          message: 'Legal guardian data is required for under 16 volunteers',
-          code_error: 'LEGAL_GUARDIAN_DATA_REQUIRED',
-        });
-      }
-
-      await this.validateLegalGuardianData(volunteerPersonalData.legalGuardian);
+      //3. Check if template exists
+      template = await this.checkTemplateExists(
+        newContract.documentTemplateId,
+        newContract.organizationId,
+      );
+    } catch (error) {
+      this.exceptionsService.badRequestException({
+        ...ContractExceptionMessages.CONTRACT_010,
+        details: error,
+      });
     }
 
+    // 4. Check if the contract number already exists
+    const existingContract = await this.documentContractFacade.findOne({
+      documentNumber: newContract.documentNumber,
+      organizationId: newContract.organizationId,
+    });
+
+    if (existingContract) {
+      this.exceptionsService.badRequestException(
+        ContractExceptionMessages.CONTRACT_004,
+      );
+    }
+
+    // 5. Check if the volunteer has already a contract in that period
+    const existingContractInSamePeriod =
+      await this.documentContractFacade.existsInSamePeriod({
+        volunteerId: newContract.volunteerId,
+        documentStartDate: newContract.documentStartDate,
+        documentEndDate: newContract.documentEndDate,
+      });
+
+    if (existingContractInSamePeriod) {
+      this.exceptionsService.badRequestException(
+        ContractExceptionMessages.CONTRACT_005,
+      );
+    }
+
+    // 6. Extract volunteerData and volunteerTutorData from the user
+    const volunteerPersonalData = volunteer?.user?.userPersonalData;
+    await this.validateVolunteerPersonalData(volunteerPersonalData);
+
+    // 7. Create the contract input
     const newContractOptions: CreateDocumentContractOptions = {
       ...newContract,
       status: DocumentContractStatus.CREATED,
@@ -94,8 +126,8 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
       contractId = await this.documentContractFacade.create(newContractOptions);
     } catch (error) {
       this.exceptionsService.internalServerErrorException({
-        message: 'Error creating contract',
-        code_error: 'ERROR_CREATING_CONTRACT', // TODO: create a new error code for this
+        ...ContractExceptionMessages.CONTRACT_009,
+        details: error,
       });
     }
 
@@ -104,6 +136,19 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     // 9. Send notification to the volunteer to sign the contract if the status is PENDING_VOLUNTEER_SIGNATURE
 
     // 10. Track event
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CREATE_DOCUMENT_CONTRACT,
+      {
+        organizationId: newContract.organizationId,
+        volunteerId: volunteer.id,
+        volunteerName: volunteer.user.name,
+        documentContractId: contractId,
+        documentContractNumber: newContract.documentNumber,
+        documentTemplateId: newContract.documentTemplateId,
+        documentTemplateName: template.name,
+      },
+      admin,
+    );
 
     return contractId;
   }
@@ -111,6 +156,12 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
   private async validateVolunteerPersonalData(
     volunteerPersonalData: IUserPersonalDataModel,
   ): Promise<void> {
+    if (!volunteerPersonalData) {
+      this.exceptionsService.badRequestException(
+        ContractExceptionMessages.CONTRACT_013,
+      );
+    }
+
     const personalDataSchema = z.object({
       cnp: z.string().length(13, 'CNP must be 13 digits'),
       address: z.string().min(1, 'Address is required'),
@@ -138,12 +189,25 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
         }));
 
         this.exceptionsService.badRequestException({
-          message: `Invalid personal data ${JSON.stringify(invalidFields)}`,
-          code_error: 'INVALID_PERSONAL_DATA', // TODO: create a new error code for this
+          ...ContractExceptionMessages.CONTRACT_012,
+          details: invalidFields,
         });
       } else {
-        throw error; // Re-throw unexpected errors
+        this.exceptionsService.badRequestException({
+          ...ContractExceptionMessages.CONTRACT_012,
+          details: error,
+        });
       }
+    }
+
+    if (!isOver16FromCNP(volunteerPersonalData.cnp)) {
+      if (!volunteerPersonalData.legalGuardian) {
+        this.exceptionsService.badRequestException(
+          ContractExceptionMessages.CONTRACT_008,
+        );
+      }
+
+      await this.validateLegalGuardianData(volunteerPersonalData.legalGuardian);
     }
   }
 
@@ -174,11 +238,14 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
         }));
 
         this.exceptionsService.badRequestException({
-          message: `Invalid legal guardian data ${JSON.stringify(invalidFields)}`,
-          code_error: 'INVALID_LEGAL_GUARDIAN_DATA',
+          ...ContractExceptionMessages.CONTRACT_011,
+          details: invalidFields,
         });
       } else {
-        throw error; // Re-throw unexpected errors
+        this.exceptionsService.badRequestException({
+          ...ContractExceptionMessages.CONTRACT_011,
+          details: error,
+        });
       }
     }
   }
@@ -205,7 +272,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
   private async checkTemplateExists(
     documentTemplateId: string,
     organizationId: string,
-  ): Promise<void> {
+  ): Promise<IDocumentTemplateModel> {
     const template = await this.documentTemplateFacade.findOne({
       id: documentTemplateId,
       organizationId: organizationId,
@@ -218,5 +285,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
         code_error: 'TEMPLATE_NOT_FOUND',
       });
     }
+
+    return template;
   }
 }

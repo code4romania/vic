@@ -78,9 +78,20 @@ export type UpdateDocumentContractOptions = {
 export type FindOneDocumentContractOptions = Partial<
   Pick<
     IDocumentContractModel,
-    'id' | 'volunteerId' | 'organizationId' | 'status' | 'documentTemplateId'
+    | 'id'
+    | 'volunteerId'
+    | 'organizationId'
+    | 'status'
+    | 'documentTemplateId'
+    | 'documentNumber'
   >
 >;
+
+export type FindExistingContractForVolunteerInInterval = {
+  volunteerId: string;
+  documentStartDate: Date;
+  documentEndDate: Date;
+};
 
 export class DocumentContractTransformer {
   static fromEntity(entity: DocumentContractEntity): IDocumentContractModel {

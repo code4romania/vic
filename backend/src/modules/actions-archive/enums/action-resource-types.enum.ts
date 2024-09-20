@@ -5,6 +5,7 @@ import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
+import { BaseDocumentContractActionsArchiveEvent } from '../interfaces/document-contract-actions-archive-event.type';
 
 export enum TrackedEventName {
   // Organization Profile
@@ -48,6 +49,20 @@ export enum TrackedEventName {
   CREATE_CONTRACT = 'CREATE_CONTRACT',
   APPROVE_CONTRACT = 'APPROVE_CONTRACT',
   REJECT_CONTRACT = 'REJECT_CONTRACT',
+
+  // New Documents
+  CREATE_DOCUMENT_CONTRACT = 'CREATE_DOCUMENT_CONTRACT',
+  VALIDATE_DOCUMENT_CONTRACT = 'VALIDATE_DOCUMENT_CONTRACT',
+  SIGN_DOCUMENT_CONTRACT_BY_NGO = 'SIGN_DOCUMENT_CONTRACT_BY_NGO',
+  SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER = 'SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER',
+  REJECT_DOCUMENT_CONTRACT_BY_NGO = 'REJECT_DOCUMENT_CONTRACT_BY_NGO',
+  REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER = 'REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER',
+  DELETE_DOCUMENT_CONTRACT = 'DELETE_DOCUMENT_CONTRACT',
+
+  // New Templates
+  // CREATE_DOCUMENT_TEMPLATE = 'CREATE_DOCUMENT_TEMPLATE',
+  // UPDATE_DOCUMENT_TEMPLATE = 'UPDATE_DOCUMENT_TEMPLATE',
+  // DELETE_DOCUMENT_TEMPLATE = 'DELETE_DOCUMENT_TEMPLATE',
 }
 
 export interface TrackedEventData {
@@ -199,4 +214,20 @@ export interface TrackedEventData {
     volunteerName: string;
     contractNumber: string;
   };
+
+  // New Documents
+  [TrackedEventName.CREATE_DOCUMENT_CONTRACT]: BaseDocumentContractActionsArchiveEvent & {
+    documentTemplateId: string;
+    documentTemplateName: string;
+  };
+  [TrackedEventName.VALIDATE_DOCUMENT_CONTRACT]: BaseDocumentContractActionsArchiveEvent;
+  [TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_NGO]: BaseDocumentContractActionsArchiveEvent;
+  [TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER]: BaseDocumentContractActionsArchiveEvent;
+  [TrackedEventName.REJECT_DOCUMENT_CONTRACT_BY_NGO]: BaseDocumentContractActionsArchiveEvent & {
+    rejectionReason: string;
+  };
+  [TrackedEventName.REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER]: BaseDocumentContractActionsArchiveEvent & {
+    rejectionReason: string;
+  };
+  [TrackedEventName.DELETE_DOCUMENT_CONTRACT]: BaseDocumentContractActionsArchiveEvent;
 }
