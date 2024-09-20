@@ -1,8 +1,8 @@
 export interface IAddDocumentContractDTO {
   documentNumber: string;
-  documentDate: Date;
-  documentStartDate: Date;
-  documentEndDate: Date;
+  documentDate: string;
+  documentStartDate: string;
+  documentEndDate: string;
   volunteerId: string;
   documentTemplateId: string;
 }

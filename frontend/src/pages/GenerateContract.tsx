@@ -15,6 +15,7 @@ import Modal from '../components/Modal';
 import { LoadingContract } from '../components/LoadingContract';
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { AxiosError } from 'axios';
+import { format } from 'date-fns';
 
 export interface IDocumentVolunteerData {
   documentNumber: number;
@@ -116,9 +117,9 @@ export const GenerateContract = () => {
             documentTemplateId: selectedTemplate?.id as string,
             volunteerId: volunteer.id,
             documentNumber: volunteersData[volunteer.id].documentNumber.toString(),
-            documentDate: volunteersData[volunteer.id].documentDate,
-            documentStartDate: volunteersData[volunteer.id].documentPeriod[0],
-            documentEndDate: volunteersData[volunteer.id].documentPeriod[1],
+            documentDate: format(volunteersData[volunteer.id].documentDate, 'yyyy-MM-dd'),
+            documentStartDate: format(volunteersData[volunteer.id].documentPeriod[0], 'yyyy-MM-dd'),
+            documentEndDate: format(volunteersData[volunteer.id].documentPeriod[1], 'yyyy-MM-dd'),
           });
           success.push(volunteer.id);
           setSentContractsCount((prev) => prev + 1);

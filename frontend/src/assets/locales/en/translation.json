@@ -1142,6 +1142,17 @@
     "telephone": "Phone",
     "error": {
       "title": "You cannot generate this contract yet"
+    },
+    "errors": {
+      "invalid_input_data": "The input data is invalid",
+      "contract_number_exists": "A contract with this number already exists",
+      "volunteer_has_contract": "This volunteer already has a generated contract for the specified period",
+      "missing_volunteer_data": "Volunteer data is missing",
+      "invalid_personal_data": "Volunteer data is invalid",
+      "legal_guardian_required": "Legal guardian data is missing and required for volunteers under 16 years old",
+      "invalid_legal_guardian_data": "Legal guardian data is invalid",
+      "db_error": "An error occurred during contract creation",
+      "unknown_error": "An unknown error occurred"
     }
   },
   "stepper": {

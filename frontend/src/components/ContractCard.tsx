@@ -17,6 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { IDocumentVolunteerData } from '../pages/GenerateContract';
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { AxiosError } from 'axios';
+import { mapErrorCodeToTranslationKey } from '../common/utils/document-contracts.util';
 
 const dotsString = '.........................';
 
@@ -67,7 +68,6 @@ export const ContractCard = ({
   const [open, setOpen] = useState(isOpen);
   const [edit, setEdit] = useState(false);
   const isVolunteerDataIncomplete: boolean = !(volunteersData && volunteersData[volunteer.id]);
-
   const {
     control,
     handleSubmit,
@@ -184,7 +184,13 @@ export const ContractCard = ({
                   <p className="text-red-700 text-sm">{t('error.title')}</p>
                   <ul>
                     <li className="text-red-600">
-                      <p className="text-red-600 text-sm">{error.message}</p>
+                      <p className="text-red-600 text-sm">
+                        {t(
+                          mapErrorCodeToTranslationKey(
+                            (error.response?.data as { code_error?: string }).code_error ?? '',
+                          ),
+                        )}
+                      </p>
                     </li>
                   </ul>
                 </div>

@@ -1156,6 +1156,17 @@
     "telephone": "Telefon",
     "error": {
       "title": "Nu poți genera încă acest contract"
+    },
+    "errors": {
+      "invalid_input_data": "Datele introduse sunt invalide",
+      "contract_number_exists": "Există deja un contract cu acest număr",
+      "volunteer_has_contract": "Acest voluntar are deja un contract generat pentru perioada specificată",
+      "missing_volunteer_data": "Datele voluntarului lipsesc",
+      "invalid_personal_data": "Datele voluntarului sunt invalide",
+      "legal_guardian_required": "Datele reprezentantului legal al voluntarului lipsesc și sunt necesare pentru voluntarii sub 16 ani",
+      "invalid_legal_guardian_data": "Datele reprezentantului legal al voluntarului sunt invalide",
+      "db_error": "A apărut o eroare în timpul creării contractului",
+      "unknown_error": "A apărut o eroare necunoscută"
     }
   },
   "stepper": {
