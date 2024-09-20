@@ -158,7 +158,15 @@ export const ContractTemplatePreview = ({
         getValues={getValues}
         formErrors={formErrors}
       />
-      <Signatures />
+      <Signatures
+        organization={{
+          officialName: organization?.name || '',
+          registeredOffice: organization?.address || '',
+          CUI: organization?.cui || '',
+          legalRepresentativeName: organization?.legalReprezentativeFullName || '',
+          legalRepresentativeRole: organization?.legalReprezentativeRole || '',
+        }}
+      />
     </div>
   );
 };

@@ -119,8 +119,6 @@ export const GenerateContract = () => {
             documentDate: volunteersData[volunteer.id].documentDate,
             documentStartDate: volunteersData[volunteer.id].documentPeriod[0],
             documentEndDate: volunteersData[volunteer.id].documentPeriod[1],
-            // todo: delete
-            status: volunteer.id === '907e1016-2d76-45d5-b274-549ae5b3ca13' ? 'CREATED' : '', // TODO: change to status enum value
           });
           success.push(volunteer.id);
           setSentContractsCount((prev) => prev + 1);
