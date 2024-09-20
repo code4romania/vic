@@ -1,4 +1,3 @@
-import { IOrganization } from './organization.interface';
 import { IUser } from './user.interface';
 
 export interface ITemplate {
