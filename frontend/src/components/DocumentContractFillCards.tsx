@@ -41,12 +41,16 @@ export const DocumentContractFillCards = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  const onSubmitFillForm = ({ startingNumber, contractDate, contractPeriod }: FieldValues) => {
+  const onSubmitFillForm = ({
+    startingNumber,
+    documentContractDate,
+    documentContractPeriod,
+  }: FieldValues) => {
     volunteers.forEach((volunteer, index) => {
       const volunteerData: IDocumentVolunteerData = {
         documentNumber: startingNumber ? +startingNumber + index : 0,
-        documentDate: contractDate ? contractDate : undefined,
-        documentPeriod: contractPeriod ? contractPeriod : undefined,
+        documentDate: documentContractDate ? documentContractDate : undefined,
+        documentPeriod: documentContractPeriod ? documentContractPeriod : undefined,
       };
       setVolunteerData({ [volunteer.id]: volunteerData });
     });

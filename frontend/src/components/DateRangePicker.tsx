@@ -8,7 +8,7 @@ import i18n from '../common/config/i18n';
 interface DateRangePickerProps {
   id?: string;
   label: string;
-  value?: [Date | null, Date | null];
+  value?: Date[];
   minDate?: Date | undefined;
   onChange?: (range: [Date | null, Date | null]) => void;
   disabled?: boolean;
@@ -26,14 +26,16 @@ const DateRangePicker = ({
   className,
   errorMessage,
 }: DateRangePickerProps) => {
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>(value || [null, null]);
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>(
+    value && value.length === 2 ? [value[0], value[1]] : [null, null],
+  );
 
   useEffect(() => {
     // Update internal state when value prop changes, including when it's reset to undefined
     if (value === undefined) {
       setDateRange([null, null]);
     } else if (value && (value[0] !== dateRange[0] || value[1] !== dateRange[1])) {
-      setDateRange(value);
+      setDateRange(value as [Date | null, Date | null]);
     }
   }, [value]);
 
@@ -57,7 +59,7 @@ const DateRangePicker = ({
 
         <DatePicker
           wrapperClassName="w-full"
-          className="block w-full pr-10 border-cool-gray-200 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose max-w-[37rem] py-2 pl-3"
+          className={`block w-full pr-10 border-cool-gray-200 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose max-w-[37rem] py-2 pl-3 ${errorMessage ? 'border-red-500' : ''}`}
           selectsRange={true}
           startDate={dateRange[0] ? dateRange[0] : undefined}
           endDate={dateRange[1] ? dateRange[1] : undefined}

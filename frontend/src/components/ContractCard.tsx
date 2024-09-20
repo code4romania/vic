@@ -230,7 +230,7 @@ export const ContractCard = ({
                 render={({ field: { value, onChange } }) => (
                   <DateRangePicker
                     label={t('contract_period')}
-                    value={value as [Date | null, Date | null] | undefined}
+                    value={value}
                     disabled={!edit}
                     onChange={onChange}
                     minDate={(documentDateValue as Date) ? (documentDateValue as Date) : new Date()}
@@ -257,7 +257,7 @@ export const ContractCard = ({
                   label={
                     edit ? t('save', { ns: 'general' }) : t('edit', { ns: 'general', item: '' })
                   }
-                  className="bg-yellow-500 btn-primary mt-4 text-white w-full"
+                  className="btn-primary mt-4 w-full"
                   onClick={edit ? handleSubmit(onSubmit) : () => setEdit(true)}
                 />
               </div>
@@ -268,7 +268,8 @@ export const ContractCard = ({
           <div className="bg-white rounded flex-1 sm:flex-2 p-4 flex flex-col gap-4">
             <p className="font-robotoBold text-center">{t('template_preview.title')}</p>
             <p className="text-center">
-              {t('template_preview.p1.no')} {initialNumber} {t('template_preview.p1.date')}{' '}
+              {t('template_preview.p1.no')} {initialNumber || dotsString}{' '}
+              {t('template_preview.p1.date')}{' '}
               {initialDate ? format(initialDate, 'dd.MM.yyyy') : dotsString}
             </p>
 

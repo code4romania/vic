@@ -230,7 +230,7 @@ export const GenerateContract = () => {
             label="Pasul urmator"
             onClick={handleNext}
             disabled={!canGoNext}
-            className="bg-yellow-500 text-white self-center p-2 rounded disabled:bg-gray-300 disabled:text-white"
+            className="btn-primary self-center p-2 rounded disabled:bg-gray-300 disabled:text-white"
           />
         </div>
       </PageLayout>
