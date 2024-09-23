@@ -87,6 +87,13 @@ export type UpdateDocumentContractOptions = {
   rejectionDate?: Date;
 };
 
+export type DocumentContractStatistics = {
+  pendingNgoRepresentativeSignature: number;
+  pendingVolunteerSignature: number;
+  activeContracts: number;
+  soonToExpire: number;
+};
+
 export type FindOneDocumentContractOptions = Partial<
   Pick<
     IDocumentContractModel,

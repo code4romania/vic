@@ -13,6 +13,8 @@ export interface IDocumentContractWebItemModel {
   organizationId: string;
   createdByAdminId: string;
   createdByAdminName: string;
+  documentTemplateId: string;
+  documentTemplateName: string;
   rejectedById: string;
   rejectedByName: string;
   rejectionDate: Date;

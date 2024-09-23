@@ -6,6 +6,7 @@ import {
   FindOneDocumentContractOptions,
   UpdateDocumentContractOptions,
   FindExistingContractForVolunteerInInterval,
+  DocumentContractStatistics,
 } from '../models/document-contract.model';
 import { DocumentContractListViewRepository } from '../repositories/document-contract-list-view.repository';
 import {
@@ -120,5 +121,11 @@ export class DocumentContractFacade {
 
   async delete(id: string): Promise<string> {
     return this.documentContractRepository.delete(id);
+  }
+
+  async statistics(
+    organizationId: string,
+  ): Promise<DocumentContractStatistics> {
+    return this.documentContractRepository.statistics(organizationId);
   }
 }
