@@ -16,6 +16,10 @@ export class DocumentContractWebItemPresenter {
     this.organizationId = item.organizationId;
     this.createdByAdminId = item.createdByAdminId;
     this.createdByAdminName = item.createdByAdminName;
+
+    this.documentTemplateId = item.documentTemplateId;
+    this.documentTemplateName = item.documentTemplateName;
+
     this.rejectedById = item.rejectedById;
     this.rejectedByName = item.rejectedByName;
     this.rejectionDate = item.rejectionDate;
@@ -101,6 +105,20 @@ export class DocumentContractWebItemPresenter {
     example: 'John Doe',
   })
   createdByAdminName: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The unique identifier of the document template',
+    example: '525dcdf9-4117-443e-a0c3-bf652cdc5c1b',
+  })
+  documentTemplateId: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The name of the document template',
+    example: 'Contract Template',
+  })
+  documentTemplateName: string;
 
   @Expose()
   @ApiProperty({
