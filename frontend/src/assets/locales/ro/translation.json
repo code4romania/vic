@@ -1006,13 +1006,16 @@
         "description": "S-au trimis cu succes {{value1}}/{{value2}} contracte"
       },
       "success": {
-        "title": "Contracte generate"
+        "title": "Contracte generate",
+        "description": "Toate contractele au fost trimise cu succes!"
       },
       "error": {
         "title": "Generare Contract",
         "description": " Închide această fereastră pentru a vedea contractele care nu au putut fi generate și necesită atenție"
       }
-    }
+    },
+    "back_alert": "Esti sigur ca vrei sa te intorci? Tot progresul tau se va pierde.",
+    "dont_refresh": "Pentru a te asigura că progresul tău nu se pierde, te rugăm să nu reîncarci pagina în timpul generării contractelor"
   },
   "doc_templates": {
     "title": "Creează template",
