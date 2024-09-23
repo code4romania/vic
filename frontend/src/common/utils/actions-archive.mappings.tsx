@@ -274,6 +274,140 @@ export const mapEventDataToActionDescription = (
       return `${i18n.t(`actions_archive:${eventName}.description`, {
         ...eventData,
       })}`;
+    case TrackedEventName.CREATE_DOCUMENT_CONTRACT:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/${eventData.volunteerId}`}
+                content={eventData.volunteerName}
+              />
+            ),
+            inlineContractLink: (
+              <LinkText
+                url={`/documents/contracts?search=${eventData.documentContractNumber}`}
+                content={eventData.documentContractNumber}
+              />
+            ),
+          }}
+        />
+      );
+    case TrackedEventName.VALIDATE_DOCUMENT_CONTRACT:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/${eventData.volunteerId}`}
+                content={eventData.volunteerName}
+              />
+            ),
+            inlineContractLink: (
+              <LinkText
+                url={`/documents/contracts?search=${eventData.documentContractNumber}`}
+                content={eventData.documentContractNumber}
+              />
+            ),
+          }}
+        />
+      );
+    case TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_NGO:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/${eventData.volunteerId}`}
+                content={eventData.volunteerName}
+              />
+            ),
+            inlineContractLink: (
+              <LinkText
+                url={`/documents/contracts?search=${eventData.documentContractNumber}`}
+                content={eventData.documentContractNumber}
+              />
+            ),
+          }}
+        />
+      );
+    case TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/${eventData.volunteerId}`}
+                content={eventData.volunteerName}
+              />
+            ),
+            inlineContractLink: (
+              <LinkText
+                url={`/documents/contracts?search=${eventData.documentContractNumber}`}
+                content={eventData.documentContractNumber}
+              />
+            ),
+          }}
+        />
+      );
+    case TrackedEventName.REJECT_DOCUMENT_CONTRACT_BY_NGO:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/${eventData.volunteerId}`}
+                content={eventData.volunteerName}
+              />
+            ),
+            inlineContractLink: (
+              <LinkText
+                url={`/documents/contracts?search=${eventData.documentContractNumber}`}
+                content={eventData.documentContractNumber}
+              />
+            ),
+          }}
+        />
+      );
+    case TrackedEventName.REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/${eventData.volunteerId}`}
+                content={eventData.volunteerName}
+              />
+            ),
+            inlineContractLink: (
+              <LinkText
+                url={`/documents/contracts?search=${eventData.documentContractNumber}`}
+                content={eventData.documentContractNumber}
+              />
+            ),
+          }}
+        />
+      );
+    case TrackedEventName.DELETE_DOCUMENT_CONTRACT:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/${eventData.volunteerId}`}
+                content={eventData.volunteerName}
+              />
+            ),
+          }}
+        />
+      );
 
     default:
       return '-';

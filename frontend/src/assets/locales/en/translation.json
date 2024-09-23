@@ -781,6 +781,30 @@
     "REJECT_CONTRACT": {
       "label": "Reject Contract",
       "description": "Contract number <inlineContractLink>{{contractNumber}}</inlineContractLink> for <inlineLink>{{volunteerName}}</inlineLink> has been rejected"
+    },
+    "VALIDATE_DOCUMENT_CONTRACT": {
+      "label": "Approve Contract",
+      "description": "Contract number <inlineContractLink>{{contractNumber}}</inlineContractLink> for <inlineLink>{{volunteerName}}</inlineLink> has been approved"
+    },
+    "SIGN_DOCUMENT_CONTRACT_BY_NGO": {
+      "label": "Sign Contract",
+      "description": "Contract number <inlineContractLink>{{contractNumber}}</inlineContractLink> for <inlineLink>{{volunteerName}}</inlineLink> has been signed by the NGO"
+    },
+    "SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER": {
+      "label": "Sign Contract",
+      "description": "Contract number <inlineContractLink>{{contractNumber}}</inlineContractLink> for <inlineLink>{{volunteerName}}</inlineLink> has been signed by the volunteer"
+    },
+    "REJECT_DOCUMENT_CONTRACT_BY_NGO": {
+      "label": "Reject Contract",
+      "description": "Contract number <inlineContractLink>{{contractNumber}}</inlineContractLink> for <inlineLink>{{volunteerName}}</inlineLink> has been rejected by the NGO"
+    },
+    "REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER": {
+      "label": "Reject Contract",
+      "description": "Contract number <inlineContractLink>{{contractNumber}}</inlineContractLink> for <inlineLink>{{volunteerName}}</inlineLink> has been rejected by the volunteer"
+    },
+    "DELETE_DOCUMENT_CONTRACT": {
+      "label": "Delete Contract",
+      "description": "Contract number <inlineContractLink>{{contractNumber}}</inlineContractLink> for <inlineLink>{{volunteerName}}</inlineLink> has been deleted"
     }
   },
   "dashboard": {

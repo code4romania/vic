@@ -79,17 +79,17 @@ export class DocumentContractController {
   @Patch(':id/approve')
   async approveDocumentContract(
     @Param('id', UuidValidationPipe) id: string,
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<void> {
-    await this.approveDocumentContractByNgoUsecase.execute(id, organizationId);
+    await this.approveDocumentContractByNgoUsecase.execute(id, admin);
   }
 
   @Patch(':id/sign')
   async signDocumentContract(
     @Param('id', UuidValidationPipe) id: string,
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<void> {
-    await this.signDocumentContractByNGO.execute(id, organizationId);
+    await this.signDocumentContractByNGO.execute(id, admin);
   }
 
   @Patch(':id/reject')

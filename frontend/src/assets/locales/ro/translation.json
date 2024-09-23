@@ -781,6 +781,34 @@
     "REJECT_CONTRACT": {
       "label": "Respinge Contract",
       "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost respins"
+    },
+    "CREATE_DOCUMENT_CONTRACT": {
+      "label": "Creează Contract",
+      "description": "A fost creat un nou contract pentru voluntarul <inlineLink>{{volunteerName}}</inlineLink>"
+    },
+    "VALIDATE_DOCUMENT_CONTRACT": {
+      "label": "Aprobă Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost aprobat"
+    },
+    "SIGN_DOCUMENT_CONTRACT_BY_NGO": {
+      "label": "Semnează Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost semnat de voluntar"
+    },
+    "SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER": {
+      "label": "Semnează Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost semnat de voluntar"
+    },
+    "REJECT_DOCUMENT_CONTRACT_BY_NGO": {
+      "label": "Respinge Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost respins"
+    },
+    "REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER": {
+      "label": "Respinge Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost respins"
+    },
+    "DELETE_DOCUMENT_CONTRACT": {
+      "label": "Șterge Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost șters"
     }
   },
   "dashboard": {
