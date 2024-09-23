@@ -9,6 +9,7 @@ import {
   DocumentTemplateTransformer,
   FindOneDocumentTemplateOptions,
   IDocumentTemplateModel,
+  UpdateDocumentTemplateOptions,
 } from '../models/document-template.model';
 
 export class DocumentTemplateRepositoryService
@@ -30,6 +31,23 @@ export class DocumentTemplateRepositoryService
     );
 
     return this.findOne({ id: documentTemplate.id });
+  }
+
+  async update(
+    updateOptions: UpdateDocumentTemplateOptions,
+  ): Promise<IDocumentTemplateModel> {
+    const documentTemplate = await this.documentTemplateRepository.preload({
+      id: updateOptions.id,
+      ...updateOptions,
+    });
+
+    await this.documentTemplateRepository.save(documentTemplate);
+
+    return this.findOne({ id: documentTemplate.id });
+  }
+
+  async exists(options: FindOneDocumentTemplateOptions): Promise<boolean> {
+    return this.documentTemplateRepository.exists({ where: options });
   }
 
   async findOne(

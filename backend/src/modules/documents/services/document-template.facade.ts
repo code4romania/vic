@@ -5,6 +5,7 @@ import {
   DeleteOneDocumentTemplateOptions,
   FindOneDocumentTemplateOptions,
   IDocumentTemplateModel,
+  UpdateDocumentTemplateOptions,
 } from '../models/document-template.model';
 import { DocumentTemplateListViewRepository } from '../repositories/document-template-list-view.repository';
 import {
@@ -24,6 +25,16 @@ export class DocumentTemplateFacade {
     newDocumentTemplate: CreateDocumentTemplateOptions,
   ): Promise<IDocumentTemplateModel> {
     return this.documentTemplateRepository.create(newDocumentTemplate);
+  }
+
+  async update(
+    updateOptions: UpdateDocumentTemplateOptions,
+  ): Promise<IDocumentTemplateModel> {
+    return this.documentTemplateRepository.update(updateOptions);
+  }
+
+  async exists(findOptions: FindOneDocumentTemplateOptions): Promise<boolean> {
+    return this.documentTemplateRepository.exists(findOptions);
   }
 
   async findOne(

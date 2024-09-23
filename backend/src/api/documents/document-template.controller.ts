@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -25,6 +26,7 @@ import {
   PaginatedPresenter,
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { DeleteDocumentTemplateUsecase } from 'src/usecases/documents/new_contracts/delete-document-template.usecase';
+import { UpdateDocumentTemplateUsecase } from 'src/usecases/documents/new_contracts/update-document-template.usecase';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -35,6 +37,7 @@ export class DocumentTemplateController {
     private readonly getOneDocumentTemplateUsecase: GetOneDocumentTemplateUseCase,
     private readonly getManyDocumentTemplatesUsecase: GetManyDocumentTemplatesUsecase,
     private readonly deleteDocumentTemplateUsecase: DeleteDocumentTemplateUsecase,
+    private readonly updateDocumentTemplateUsecase: UpdateDocumentTemplateUsecase,
   ) {}
 
   @ApiBody({ type: CreateDocumentTemplateDto })
@@ -64,6 +67,19 @@ export class DocumentTemplateController {
     );
 
     return new DocumentTemplatePresenter(documentTemplate);
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @Patch(':id')
+  async update(
+    @Param('id', UuidValidationPipe) id: string,
+    @Body() payload: CreateDocumentTemplateDto,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<void> {
+    return this.updateDocumentTemplateUsecase.execute(
+      { id, ...payload },
+      organizationId,
+    );
   }
 
   @ApiParam({ name: 'id', type: 'string' })

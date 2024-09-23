@@ -38,6 +38,13 @@ export type DeleteOneDocumentTemplateOptions = {
   organizationId: string;
 };
 
+export type UpdateDocumentTemplateOptions = {
+  id: string;
+  name: string;
+  organizationData: IDocumentTemplateOrganizationData;
+  documentTerms: string;
+};
+
 export class DocumentTemplateTransformer {
   static fromEntity(entity: DocumentTemplateEntity): IDocumentTemplateModel {
     if (!entity) {

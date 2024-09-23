@@ -152,6 +152,7 @@ import { SignDocumentContractByNgoUsecase } from './documents/new_contracts/sign
 import { DeleteDocumentTemplateUsecase } from './documents/new_contracts/delete-document-template.usecase';
 import { RejectDocumentContractByNgoUsecase } from './documents/new_contracts/reject-document-contract-by-ngo.usecase';
 import { GetOneDocumentContractForNgoUsecase } from './documents/new_contracts/get-one-document-contract-for-ngo.usecase';
+import { UpdateDocumentTemplateUsecase } from './documents/new_contracts/update-document-template.usecase';
 
 const providers = [
   // Organization
@@ -285,6 +286,7 @@ const providers = [
   GetOneDocumentTemplateUseCase,
   GetManyDocumentTemplatesUsecase,
   DeleteDocumentTemplateUsecase,
+  UpdateDocumentTemplateUsecase,
   // Contracts
   CreateContractUsecase,
   GetManyContractsUsecase,

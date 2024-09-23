@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DocumentContractRepositoryService } from '../repositories/document-contract.repository';
 import {
   CreateDocumentContractOptions,
