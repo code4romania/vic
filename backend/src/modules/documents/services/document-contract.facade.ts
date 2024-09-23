@@ -40,9 +40,11 @@ export class DocumentContractFacade {
 
   async signDocumentContractByNGO(
     documentContractId: string,
+    signatureId: string,
   ): Promise<IDocumentContractModel> {
     return this.documentContractRepository.update(documentContractId, {
       status: DocumentContractStatus.APPROVED,
+      ngoLegalRepresentativeSignatureId: signatureId,
     });
   }
 

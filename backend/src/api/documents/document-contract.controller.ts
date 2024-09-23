@@ -31,6 +31,7 @@ import { DocumentContractWebItemPresenter } from './presenters/document-contract
 import { GetOneDocumentContractForNgoUsecase } from 'src/usecases/documents/new_contracts/get-one-document-contract-for-ngo.usecase';
 import { DocumentContractStatisticsPresenter } from './presenters/document-contract-statistics.presenter';
 import { GetDocumentContractStatisticsUsecase } from 'src/usecases/documents/new_contracts/get-document-contract-statistics.usecase';
+import { SignDocumentContractByNgoDto } from './dto/sign-document-contract-by-ngo.dto';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -121,9 +122,15 @@ export class DocumentContractController {
   @Patch(':id/sign')
   async signDocumentContract(
     @Param('id', UuidValidationPipe) id: string,
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
+    @Body()
+    { legalRepresentativeSignatureBase64 }: SignDocumentContractByNgoDto,
   ): Promise<void> {
-    await this.signDocumentContractByNGO.execute(id, organizationId);
+    await this.signDocumentContractByNGO.execute(
+      id,
+      legalRepresentativeSignatureBase64,
+      admin,
+    );
   }
 
   @Patch(':id/reject')
