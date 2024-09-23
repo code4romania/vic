@@ -112,7 +112,6 @@ export const GenerateContract = () => {
           if (!volunteersData || !volunteersData[volunteer.id]) {
             return;
           }
-
           await addDocumentContract({
             documentTemplateId: selectedTemplate?.id as string,
             volunteerId: volunteer.id,
@@ -185,7 +184,7 @@ export const GenerateContract = () => {
     // if we have errors -> close the modal and keep in the list only the volunteers with errors
 
     // keep only the volunteers with errors in the list
-    if (contractsWithErrors) {
+    if (contractsWithErrors && Object.keys(contractsWithErrors).length > 0) {
       const volunteerIdsWithError = Object.keys(contractsWithErrors);
       setSelectedVolunteers((selectedVolunteers) => {
         return selectedVolunteers.filter((v) => volunteerIdsWithError.includes(v.id));
@@ -201,6 +200,14 @@ export const GenerateContract = () => {
 
         return volunteersData;
       });
+    }
+
+    // if we have no volunteers with errors -> navigate to all contracts
+    if (
+      !contractsWithErrors ||
+      (contractsWithErrors && Object.keys(contractsWithErrors).length === 0)
+    ) {
+      navigate('/documents/templates');
     }
 
     // reset
@@ -255,26 +262,34 @@ export const GenerateContract = () => {
             </>
           )}
           {/* success content */}
-          {!isLoadingAddDocumentContracts && !contractsWithErrors && (
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-row justify-center">
-                <CheckCircleIcon width={70} height={70} className="text-yellow-500" />
+          {!isLoadingAddDocumentContracts &&
+            (!contractsWithErrors || Object.keys(contractsWithErrors).length === 0) && (
+              <div className="flex flex-col gap-4 items-center pb-4">
+                <div className="flex flex-row justify-center">
+                  <CheckCircleIcon width={70} height={70} className="text-yellow-500" />
+                </div>
+                <p className="text-center">Toate contractele au fost trimise cu succes!</p>
+                <Button
+                  label="Înapoi la lista de contracte"
+                  onClick={() => navigate('/documents/templates')}
+                  className="btn-primary"
+                />
               </div>
-              <p className="text-center">Toate contractele au fost trimise cu succes!</p>
-            </div>
-          )}
+            )}
           {/* error content */}
-          {!isLoadingAddDocumentContracts && contractsWithErrors && (
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row justify-center">
-                <ExclamationCircleIcon width={70} height={70} className="text-red-400" />
+          {!isLoadingAddDocumentContracts &&
+            contractsWithErrors &&
+            Object.keys(contractsWithErrors).length > 0 && (
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-row justify-center">
+                  <ExclamationCircleIcon width={70} height={70} className="text-red-400" />
+                </div>
+                <p className="text-center">
+                  {`${t('modal.loading.description', { value1: sentContractsCount, value2: selectedVolunteers.length })}`}
+                </p>
+                <p className="text-center">{t('modal.error.description')}</p>
               </div>
-              <p className="text-center">
-                {`${t('modal.loading.description', { value1: sentContractsCount, value2: selectedVolunteers.length })}`}
-              </p>
-              <p className="text-center">{t('modal.error.description')}</p>
-            </div>
-          )}
+            )}
         </Modal>
       )}
     </>
