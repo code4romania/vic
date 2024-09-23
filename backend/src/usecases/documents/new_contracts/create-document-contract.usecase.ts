@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { isSameYear } from 'date-fns';
 import { isOver16FromCNP } from 'src/common/helpers/utils';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -84,8 +85,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
 
     if (
       existingContract &&
-      existingContract.documentDate.getFullYear() ===
-        newContract.documentDate.getFullYear()
+      isSameYear(existingContract.documentDate, newContract.documentDate)
     ) {
       this.exceptionsService.badRequestException(
         ContractExceptionMessages.CONTRACT_004,
