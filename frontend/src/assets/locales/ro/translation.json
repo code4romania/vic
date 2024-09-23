@@ -792,7 +792,7 @@
     },
     "SIGN_DOCUMENT_CONTRACT_BY_NGO": {
       "label": "Semnează Contract",
-      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost semnat de voluntar"
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost semnat de organizație"
     },
     "SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER": {
       "label": "Semnează Contract",
@@ -800,7 +800,7 @@
     },
     "REJECT_DOCUMENT_CONTRACT_BY_NGO": {
       "label": "Respinge Contract",
-      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost respins"
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost respins de organizație"
     },
     "REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER": {
       "label": "Respinge Contract",
