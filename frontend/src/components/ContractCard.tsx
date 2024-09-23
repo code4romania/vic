@@ -18,6 +18,8 @@ import { IDocumentVolunteerData } from '../pages/GenerateContract';
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { AxiosError } from 'axios';
 import { mapErrorCodeToTranslationKey } from '../common/utils/document-contracts.util';
+import { useAddDocumentContractMutation } from '../services/document-contracts/document-contracts.service';
+import Spinner from './Spinner';
 
 const dotsString = '.........................';
 
@@ -61,13 +63,21 @@ export const ContractCard = ({
   saveVolunteerData,
   volunteersData,
   isOpen = false,
-  error,
+  error: initialError,
 }: ContractCardProps) => {
   const { t } = useTranslation(['doc_templates', 'general']);
   // contract card states
   const [open, setOpen] = useState(isOpen);
   const [edit, setEdit] = useState(false);
   const isVolunteerDataIncomplete: boolean = !(volunteersData && volunteersData[volunteer.id]);
+
+  const [retryError, setRetryError] = useState<AxiosError | null>(null);
+  useEffect(() => {
+    setRetryError(initialError || null);
+  }, [initialError]);
+
+  const { mutateAsync: addDocumentContract, isLoading: isLoadingAddDocumentContract } =
+    useAddDocumentContractMutation();
   const {
     control,
     handleSubmit,
@@ -162,6 +172,24 @@ export const ContractCard = ({
     setEdit(false);
   };
 
+  const handleRetrySendContract = async () => {
+    try {
+      await addDocumentContract({
+        documentTemplateId: template.id,
+        volunteerId: volunteer.id,
+        documentNumber: watch('documentNumber').toString(),
+        documentDate: format(watch('documentDate'), 'yyyy-MM-dd'),
+        documentStartDate: format(watch('documentPeriod')[0], 'yyyy-MM-dd'),
+        documentEndDate: format(watch('documentPeriod')[1], 'yyyy-MM-dd'),
+      });
+      setRetryError(null); // Clear retry error on success
+    } catch (error) {
+      setRetryError(error as AxiosError); // Set retry error on failure
+    }
+  };
+
+  const currentError = retryError || initialError;
+
   return (
     <div className="flex flex-col">
       <ContractCardHeader
@@ -170,30 +198,47 @@ export const ContractCard = ({
         setOpen={setOpen}
         volunteer={volunteer}
         isVolunteerDataIncomplete={isVolunteerDataIncomplete}
-        error={error}
+        error={currentError}
       />
 
       {open && (
         <div className="bg-white shadow-xs p-4 mt-[-16px] pt-8 rounded flex flex-col gap-4 sm:flex-row">
           {/* datele contractului */}
           <div className="flex flex-col flex-1 sm:self-baseline  gap-4">
-            {!!error && (
-              <div className="bg-red-100 rounded p-4 flex flex-row gap-2 ">
-                <XCircleIcon width={15} height={15} className="text-red-400" />
-                <div>
-                  <p className="text-red-700 text-sm">{t('error.title')}</p>
-                  <ul>
-                    <li className="text-red-600">
-                      <p className="text-red-600 text-sm">
-                        {t(
-                          mapErrorCodeToTranslationKey(
-                            (error.response?.data as { code_error?: string }).code_error ?? '',
-                          ),
-                        )}
-                      </p>
-                    </li>
-                  </ul>
-                </div>
+            {!!currentError && (
+              <div className="bg-red-100 rounded p-4 flex flex-row gap-2">
+                {isLoadingAddDocumentContract ? (
+                  <div className="w-full flex justify-center items-center">
+                    <Spinner className="w-8 h-8 fill-red-400" />
+                  </div>
+                ) : (
+                  <>
+                    <XCircleIcon width={15} height={15} className="text-red-400" />
+                    <div className="w-full flex flex-col">
+                      <p className="text-red-700 text-sm">{t('error.title')}</p>
+                      <ul>
+                        <li className="text-red-600">
+                          <p className="text-red-600 text-sm">
+                            {t(
+                              mapErrorCodeToTranslationKey(
+                                (currentError.response?.data as { code_error?: string })
+                                  .code_error ?? '',
+                              ),
+                            )}
+                          </p>
+                        </li>
+                      </ul>
+                      {(currentError.response?.data as { statusCode?: number })?.statusCode ===
+                        500 && (
+                        <Button
+                          label={t('organization.organization_data_form.retry_button')}
+                          className="self-baseline"
+                          onClick={handleRetrySendContract}
+                        />
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
             )}
             <div className="bg-gray-100 rounded flex-1 flex  flex-col p-4 gap-4 ">

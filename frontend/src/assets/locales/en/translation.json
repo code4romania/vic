@@ -1006,13 +1006,16 @@
         "description": "Successfully sent {{value1}}/{{value2}} contracts"
       },
       "success": {
-        "title": "Contracts generated"
+        "title": "Contracts generated",
+        "description": "Successfully sent {{value1}}/{{value2}} contracts"
       },
       "error": {
         "title": "Contract Generation",
         "description": "Close this window to see the contracts that could not be generated and require your attention"
       }
-    }
+    },
+    "back_alert": "Are you sure you want to go back? All your progress will be lost.",
+    "dont_refresh": "To ensure that no progress will not be lost, please do not refresh the page during the contract generation process"
   },
   "doc_templates": {
     "title": "Create template",
