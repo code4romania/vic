@@ -8,7 +8,7 @@ import Button from '../components/Button';
 import DocumentVolunteersTableWithQueryParams from '../containers/query/DocumentVolunteersTableWithQueryParams';
 import { IDocumentTemplateListItem } from '../common/interfaces/template.interface';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
-import DocumentTemplatesTableWithQueryParams from '../containers/query/DocumentTemplatesTableWithQueryParams';
+import DocumentTemplatesTableSelectableWithQueryParams from '../containers/query/DocumentTemplatesTableSelectableWithQueryParams';
 import { DocumentContractFillCards } from '../components/DocumentContractFillCards';
 import { useAddDocumentContractMutation } from '../services/document-contracts/document-contracts.service';
 import Modal from '../components/Modal';
@@ -176,7 +176,7 @@ export const GenerateContract = () => {
     switch (currentStep) {
       case 0:
         return (
-          <DocumentTemplatesTableWithQueryParams
+          <DocumentTemplatesTableSelectableWithQueryParams
             selectedTemplate={selectedTemplate}
             onSelectTemplate={onSelectTemplate}
           />
