@@ -35,7 +35,6 @@ export class DocumentsListener {
           organizationId,
         },
       };
-
       this.pushNotificationsFacade.send({
         userIds: [userId],
         title: NOTIFICATIONS.NEW_CONTRACT.PUSH.title,
@@ -57,7 +56,7 @@ export class DocumentsListener {
     }
   }
 
-  @OnEvent(EVENTS.DOCUMENTS.APPROVE_CONTRACT)
+  @OnEvent(EVENTS.DOCUMENTS.SIGN_CONTRACT_BY_NGO)
   async onApproveContractEvent(payload: ApproveContractEvent): Promise<void> {
     const {
       userId,
@@ -90,16 +89,18 @@ export class DocumentsListener {
       // 4. Send mail to user with link to the volunteer profile for the organization
       await this.mailService.sendEmail({
         to: userEmail,
-        subject: NOTIFICATIONS.APPROVE_CONTRACT.EMAIL.subject(organizationName),
+        subject:
+          NOTIFICATIONS.SIGN_CONTRACT_BY_NGO.EMAIL.subject(organizationName),
         context: {
-          title: NOTIFICATIONS.APPROVE_CONTRACT.EMAIL.subject(organizationName),
-          subtitle: NOTIFICATIONS.APPROVE_CONTRACT.EMAIL.body,
+          title:
+            NOTIFICATIONS.SIGN_CONTRACT_BY_NGO.EMAIL.subject(organizationName),
+          subtitle: NOTIFICATIONS.SIGN_CONTRACT_BY_NGO.EMAIL.body,
         },
       });
     }
   }
 
-  @OnEvent(EVENTS.DOCUMENTS.REJECT_CONATRCT)
+  @OnEvent(EVENTS.DOCUMENTS.REJECT_CONTRACT_BY_NGO)
   async onRejectContractEvent(payload: RejectContractEvent): Promise<void> {
     const {
       userId,
@@ -109,12 +110,11 @@ export class DocumentsListener {
       contractId,
       userEmail,
       notificationsViaEmail,
-      reason,
     } = payload;
 
     if (notificationsViaPush) {
       const notificationData = {
-        key: EVENTS.DOCUMENTS.REJECT_CONATRCT,
+        key: EVENTS.DOCUMENTS.REJECT_CONTRACT_BY_NGO,
         payload: {
           contractId,
           organizationId,
@@ -124,7 +124,7 @@ export class DocumentsListener {
       this.pushNotificationsFacade.send({
         userIds: [userId],
         title: NOTIFICATIONS.REJECT_CONTRACT.PUSH.title,
-        body: NOTIFICATIONS.REJECT_CONTRACT.PUSH.body(organizationName, reason),
+        body: NOTIFICATIONS.REJECT_CONTRACT.PUSH.body(organizationName),
         data: notificationData,
       });
     }
@@ -133,15 +133,9 @@ export class DocumentsListener {
       // 4. Send mail to user with link to the volunteer profile for the organization
       await this.mailService.sendEmail({
         to: userEmail,
-        subject: NOTIFICATIONS.REJECT_CONTRACT.EMAIL.subject(
-          organizationName,
-          reason,
-        ),
+        subject: NOTIFICATIONS.REJECT_CONTRACT.EMAIL.subject(organizationName),
         context: {
-          title: NOTIFICATIONS.REJECT_CONTRACT.EMAIL.subject(
-            organizationName,
-            reason,
-          ),
+          title: NOTIFICATIONS.REJECT_CONTRACT.EMAIL.subject(organizationName),
           subtitle: NOTIFICATIONS.REJECT_CONTRACT.EMAIL.body,
         },
       });

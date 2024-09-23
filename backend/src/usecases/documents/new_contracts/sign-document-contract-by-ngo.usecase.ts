@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
@@ -7,6 +8,8 @@ import { DocumentContractStatus } from 'src/modules/documents/enums/contract-sta
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { IDocumentContractModel } from 'src/modules/documents/models/document-contract.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import ApproveContractEvent from 'src/modules/notifications/events/documents/approve-contract.event';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 @Injectable()
@@ -15,6 +18,7 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly exceptionService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async execute(
@@ -47,7 +51,19 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
       });
     }
 
-    // TODO: Send notification to Volunteer (Contract is now active)
+    // send push notifications and or email
+    this.eventEmitter.emit(
+      EVENTS.DOCUMENTS.SIGN_CONTRACT_BY_NGO,
+      new ApproveContractEvent(
+        contract.organizationId,
+        contract.volunteerId,
+        contract.volunteer.organization.name,
+        contract.volunteer.user.notificationsSettings.notificationsViaPush,
+        contract.volunteer.user.notificationsSettings.notificationsViaEmail,
+        contract.volunteer.user.email,
+        contract.id,
+      ),
+    );
 
     // Sign Document Contract by NGO
     await this.actionsArchiveFacade.trackEvent(

@@ -22,7 +22,6 @@ export class EmailConfigService {
       defaults: {
         from: '"No Reply" <no-reply@localhost>',
       },
-      preview: true,
       template: {
         dir: __dirname + '/../../modules/mail/templates',
         adapter: new HandlebarsAdapter({ asset_url: this.createAssetUrl }),
