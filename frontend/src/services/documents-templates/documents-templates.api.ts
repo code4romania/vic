@@ -17,7 +17,7 @@ export const getTemplates = async (params: {
   return API.get('documents/templates', { params }).then((res) => res.data);
 };
 
-export const getTemplateById = async (id: string): Promise<IDocumentTemplate> => {
+export const getTemplateById = async (id?: string): Promise<IDocumentTemplate> => {
   return API.get(`/documents/templates/${id}`).then((res) => res.data);
 };
 

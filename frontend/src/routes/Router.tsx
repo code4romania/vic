@@ -97,6 +97,8 @@ const Router = () => {
               </Route>
               <Route path="templates" element={<Outlet />}>
                 <Route index element={<DocumentContracts />} />
+                <Route path=':id' element={<CreateContractTemplate readonly />} />
+                <Route path=':id/edit' element={<CreateContractTemplate />} />
                 <Route path="create" element={<CreateContractTemplate />} />
                 <Route path="contracts" element={<Outlet />}>
                   <Route path="generate" element={<GenerateContract />} />

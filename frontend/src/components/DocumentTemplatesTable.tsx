@@ -12,7 +12,7 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import { DocumentTemplatesProps } from '../containers/query/DocumentTemplatesTableWithQueryParams';
 import { ArrowDownTrayIcon, EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Popover from './Popover';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const createArchiveRoute = (name: string) => `/actions-archive?author=${name.split(' ').join('+')}`;
 
@@ -62,6 +62,7 @@ const DocumentTemplatesTableHeader = [
 
 export const DocumentTemplatesTable = ({ query, setQuery }: DocumentTemplatesProps) => {
 	const { t } = useTranslation(['doc_templates']);
+	const navigate = useNavigate();
 
 	const { data: templates, isLoading: isLoadingDocumentTemplates } = useDocumentTemplatesQuery({
 		limit: 10,
@@ -108,12 +109,12 @@ export const DocumentTemplatesTable = ({ query, setQuery }: DocumentTemplatesPro
 			{
 				label: t('table.table_actions.view'),
 				icon: <EyeIcon className="menu-icon" />,
-				onClick: () => { },
+				onClick: (row: IDocumentTemplateListItem) => { navigate(`${row.id}`) },
 			},
 			{
 				label: t('table.table_actions.edit'),
 				icon: <PencilIcon className="menu-icon" />,
-				onClick: () => { },
+				onClick: (row: IDocumentTemplateListItem) => { navigate(`${row.id}/edit`) },
 			},
 			{
 				label: t('table.table_actions.download_uncompleted'),
@@ -132,7 +133,7 @@ export const DocumentTemplatesTable = ({ query, setQuery }: DocumentTemplatesPro
 			{
 				label: t('table.table_actions.view'),
 				icon: <EyeIcon className="menu-icon" />,
-				onClick: () => { },
+				onClick: (row: IDocumentTemplateListItem) => { navigate(`${row.id}`) },
 			},
 			{
 				label: t('table.table_actions.download_uncompleted'),

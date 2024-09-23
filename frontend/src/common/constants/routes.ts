@@ -72,11 +72,6 @@ export const ROUTES: IRoute[] = [
         href: 'documents/templates',
       },
       {
-        id: 63,
-        name: 'Creează template',
-        href: 'documents/templates/create',
-      },
-      {
         id: 64,
         name: 'Generează contract',
         href: 'documents/templates/contracts/generate',
