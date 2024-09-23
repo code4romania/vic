@@ -82,7 +82,11 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
       organizationId: newContract.organizationId,
     });
 
-    if (existingContract) {
+    if (
+      existingContract &&
+      existingContract.documentDate.getFullYear() ===
+        newContract.documentDate.getFullYear()
+    ) {
       this.exceptionsService.badRequestException(
         ContractExceptionMessages.CONTRACT_004,
       );
