@@ -1040,6 +1040,10 @@
         "edit": "Editează",
         "delete": "Elimină",
         "download_uncompleted": "Descarcă necompletat"
+      },
+      "table_header": {
+        "create": "Creeaază template",
+        "download_all": "Descarcă toate"
       }
     },
 
