@@ -1030,6 +1030,17 @@
       "download_uncompleted": "Descarcă necompletat",
       "save": "Salvează"
     },
+
+    "table": {
+      "title": "Template-uri de contracte",
+      "table_actions": {
+        "view": "Vizualizează",
+        "edit": "Editează",
+        "delete": "Elimină",
+        "download_uncompleted": "Descarcă necompletat"
+      }
+    },
+
     "tooltip": "Datele contractului (Numărul, perioada contractului și data întemeierii) se completează în momentul atribuirii contractului către unul sau mai mulți voluntari.",
     "template_name": "Numele template-ului",
     "organization": {

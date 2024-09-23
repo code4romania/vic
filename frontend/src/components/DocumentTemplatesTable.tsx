@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import CardBody from './CardBody';
 import DataTableComponent from './DataTableComponent';
@@ -8,8 +8,13 @@ import { IDocumentTemplateListItem } from '../common/interfaces/template.interfa
 import { useDocumentTemplatesQuery } from '../services/documents-templates/documents-templates.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { format } from 'date-fns';
-import { DocumentTemplatesProps } from '../containers/query/DocumentTemplatesTableWithQueryParams';
 import { SortOrder, TableColumn } from 'react-data-table-component';
+import { DocumentTemplatesProps } from '../containers/query/DocumentTemplatesTableWithQueryParams';
+import { ArrowDownTrayIcon, EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import Popover from './Popover';
+import { Link } from 'react-router-dom';
+
+const createArchiveRoute = (name: string) => `/actions-archive?author=${name.split(' ').join('+')}`;
 
 const DocumentTemplatesTableHeader = [
 	{
@@ -42,7 +47,7 @@ const DocumentTemplatesTableHeader = [
 		sortable: true,
 		grow: 1,
 		minWidth: '5rem',
-		selector: (row: IDocumentTemplateListItem) => row.createdByName,
+		cell: (row: IDocumentTemplateListItem) => (<Link className='text-yellow-600 hover:pointer' to={createArchiveRoute(row.createdByName)}>{row.createdByName}</Link>),
 	},
 	{
 		id: 'created_at',
@@ -55,11 +60,8 @@ const DocumentTemplatesTableHeader = [
 ];
 
 
-export const DocumentTemplateTable = ({ query, setQuery, selectedTemplate, onSelectTemplate }: DocumentTemplatesProps) => {
-	const { t } = useTranslation(['volunteering_contracts', 'stepper']);
-	const firstRender = useRef(true);
-
-	useEffect(() => { firstRender.current = false }, []);
+export const DocumentTemplatesTable = ({ query, setQuery }: DocumentTemplatesProps) => {
+	const { t } = useTranslation(['doc_templates']);
 
 	const { data: templates, isLoading: isLoadingDocumentTemplates } = useDocumentTemplatesQuery({
 		limit: 10,
@@ -67,32 +69,6 @@ export const DocumentTemplateTable = ({ query, setQuery, selectedTemplate, onSel
 		orderBy: 'name',
 		orderDirection: OrderDirection.ASC,
 	});
-
-	const handleOnSelectTemplate = (templates: IDocumentTemplateListItem[]) => {
-		if (templates.length === 0) {
-			onSelectTemplate(templates[0]);
-		} else if (templates[0].id !== selectedTemplate?.id) {
-			onSelectTemplate(templates[0]);
-		}
-	};
-
-	const defaultSelectedRows = useCallback((row: IDocumentTemplateListItem) => {
-		return row.id === selectedTemplate?.id;
-	}, [selectedTemplate]);
-
-	// We're doing this because of a bug in DataTableComponent
-	// https://github.com/jbetancur/react-data-table-component/issues/930
-	// https://github.com/jbetancur/react-data-table-component/issues/955
-
-	// While some fixes exist we should be able to also unselect the row, thus removing props after the first render is the only way that works.
-	const selectProps = {
-		...(firstRender.current && {
-			selectableRowSelected: defaultSelectedRows
-		}),
-		...(!firstRender.current && {
-			onSelectedRowsChange: handleOnSelectTemplate,
-		}),
-	};
 
 	// pagination
 	const onRowsPerPageChange = (limit: number) => {
@@ -127,21 +103,64 @@ export const DocumentTemplateTable = ({ query, setQuery, selectedTemplate, onSel
 		);
 	};
 
+	const buildDocumentTemplatesTableActions = (): TableColumn<IDocumentTemplateListItem> => {
+		const menuItemsNotUsed = [
+			{
+				label: t('table.table_actions.view'),
+				icon: <EyeIcon className="menu-icon" />,
+				onClick: () => { },
+			},
+			{
+				label: t('table.table_actions.edit'),
+				icon: <PencilIcon className="menu-icon" />,
+				onClick: () => { },
+			},
+			{
+				label: t('table.table_actions.download_uncompleted'),
+				icon: <ArrowDownTrayIcon className="menu-icon" />,
+				onClick: () => { },
+			},
+			{
+				label: t('table.table_actions.delete'),
+				icon: <TrashIcon className="menu-icon" />,
+				onClick: () => { },
+				alert: true,
+			},
+		];
+
+		const menuItemsUsed = [
+			{
+				label: t('table.table_actions.view'),
+				icon: <EyeIcon className="menu-icon" />,
+				onClick: () => { },
+			},
+			{
+				label: t('table.table_actions.download_uncompleted'),
+				icon: <ArrowDownTrayIcon className="menu-icon" />,
+				onClick: () => { },
+			},
+		]
+
+		return {
+			name: '',
+			cell: (row: IDocumentTemplateListItem) => <Popover<IDocumentTemplateListItem> row={row} items={+row.usageCount > 0 ? menuItemsUsed : menuItemsNotUsed} />,
+			width: '50px',
+			allowOverflow: true,
+		};
+	};
+
 	return (
 		<Card>
 			<CardHeader>
-				<h2>{t('templates')}</h2>
+				<h2>{t('table.title')}</h2>
 			</CardHeader>
 			<CardBody>
 				<DataTableComponent
-					{...selectProps}
-					columns={[...DocumentTemplatesTableHeader]}
+					columns={[...DocumentTemplatesTableHeader, buildDocumentTemplatesTableActions()]}
 					data={templates?.items}
 					loading={isLoadingDocumentTemplates}
 					pagination
 					paginationPerPage={10}
-					selectableRows
-					selectableRowsSingle
 					paginationTotalRows={templates?.items?.length}
 					paginationDefaultPage={query.page as number}
 					onChangeRowsPerPage={onRowsPerPageChange}
