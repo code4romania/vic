@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotImplementedException } from '@nestjs/common';
 import { DocumentContractRepositoryService } from '../repositories/document-contract.repository';
 import {
   CreateDocumentContractOptions,
@@ -15,12 +15,18 @@ import {
 } from '../models/document-contract-list-view.model';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { DocumentContractStatus } from '../enums/contract-status.enum';
+import {
+  FindOneDocumentContractWebItemOptions,
+  IDocumentContractWebItemModel,
+} from '../models/document-contract-web-item.model';
+import { DocumentContractWebItemRepository } from '../repositories/document-contract-web-item.repository';
 
 @Injectable()
 export class DocumentContractFacade {
   constructor(
     private readonly documentContractRepository: DocumentContractRepositoryService,
     private readonly documentContractListViewRepository: DocumentContractListViewRepository,
+    private readonly documentContractWebItemRepository: DocumentContractWebItemRepository,
   ) {}
 
   async approveDocumentContractByNGO(
@@ -75,6 +81,12 @@ export class DocumentContractFacade {
     options: FindOneDocumentContractOptions,
   ): Promise<IDocumentContractModel> {
     return this.documentContractRepository.findOne(options);
+  }
+
+  async findOneForWeb(
+    options: FindOneDocumentContractWebItemOptions,
+  ): Promise<IDocumentContractWebItemModel> {
+    return this.documentContractWebItemRepository.findOne(options);
   }
 
   async exists(options: FindOneDocumentContractOptions): Promise<boolean> {

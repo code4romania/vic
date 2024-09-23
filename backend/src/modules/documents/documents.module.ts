@@ -20,11 +20,14 @@ import { DocumentTemplateListViewEntity } from './entities/document-template-lis
 import { DocumentTemplateListViewRepository } from './repositories/document-template-list-view.repository';
 import { DocumentSignatureRepository } from './repositories/document-signature.repository';
 import { DocumentSignatureFacade } from './services/document-signature.facade';
+import { DocumentContractWebItemView } from './entities/document-contract-web-item.entity';
+import { DocumentContractWebItemRepository } from './repositories/document-contract-web-item.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       DocumentContractListViewEntity,
+      DocumentContractWebItemView,
       DocumentTemplateListViewEntity,
       TemplateEntity,
       ContractEntity,
@@ -42,6 +45,7 @@ import { DocumentSignatureFacade } from './services/document-signature.facade';
     DocumentSignatureRepository,
     DocumentContractListViewRepository,
     DocumentTemplateListViewRepository,
+    DocumentContractWebItemRepository,
     // Facades
     TemplateFacade,
     ContractFacade,

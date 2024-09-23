@@ -151,6 +151,7 @@ import { ApproveDocumentContractByNgoUsecase } from './documents/new_contracts/a
 import { SignDocumentContractByNgoUsecase } from './documents/new_contracts/sign-document-contract-by-ngo.usecase';
 import { DeleteDocumentTemplateUsecase } from './documents/new_contracts/delete-document-template.usecase';
 import { RejectDocumentContractByNgoUsecase } from './documents/new_contracts/reject-document-contract-by-ngo.usecase';
+import { GetOneDocumentContractForNgoUsecase } from './documents/new_contracts/get-one-document-contract-for-ngo.usecase';
 
 const providers = [
   // Organization
@@ -308,6 +309,7 @@ const providers = [
   ApproveDocumentContractByNgoUsecase,
   SignDocumentContractByNgoUsecase,
   RejectDocumentContractByNgoUsecase,
+  GetOneDocumentContractForNgoUsecase,
   // Notifications
   UpdateSettingsUsecase,
   // Testing PDFs
