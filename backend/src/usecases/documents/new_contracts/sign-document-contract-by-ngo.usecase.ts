@@ -16,7 +16,7 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
     documentContractId: string,
     organizationId: string,
   ): Promise<void> {
-    const exists = await this.documentContractFacade.findOne({
+    const exists = await this.documentContractFacade.exists({
       id: documentContractId,
       organizationId,
       status: DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE,

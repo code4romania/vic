@@ -53,7 +53,7 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
   async existsInSamePeriod(
     options: FindExistingContractForVolunteerInInterval,
   ): Promise<boolean> {
-    const existingContract = await this.documentContractRepository.findOne({
+    const existingContract = await this.documentContractRepository.exists({
       where: {
         volunteerId: options.volunteerId,
         documentStartDate: LessThanOrEqual(options.documentEndDate),
