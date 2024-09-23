@@ -8,7 +8,10 @@ import {
 import { DocumentContractStatus } from '../enums/contract-status.enum';
 import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
 import { DocumentTemplateEntity } from './document-template.entity';
-import { AdminUserEntity } from 'src/modules/user/entities/user.entity';
+import {
+  AdminUserEntity,
+  UserEntity,
+} from 'src/modules/user/entities/user.entity';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import { DocumentSignatureEntity } from './document-signature.entity';
@@ -93,6 +96,26 @@ export class DocumentContractEntity extends BaseEntity {
   @JoinColumn({ name: 'created_by_admin_id' })
   createdByAdmin: AdminUserEntity;
 
+  // ======================== REJECTION =================================
+  // ============== Either by Admin or Volunteer ========================
+
+  @Column({
+    type: 'varchar',
+    name: 'rejected_by_id',
+    nullable: true,
+  })
+  rejectedById: string;
+
+  @ManyToOne(() => UserEntity)
+  @JoinColumn({ name: 'rejected_by_id' })
+  rejectedBy: UserEntity;
+
+  @Column({ type: 'text', name: 'rejection_reason', nullable: true })
+  rejectionReason: string;
+
+  @Column({ type: 'timestamptz', name: 'rejection_date', nullable: true })
+  rejectionDate: Date;
+
   // ======================== SIGNATURES =================================
   @Column({
     type: 'varchar',
@@ -126,33 +149,4 @@ export class DocumentContractEntity extends BaseEntity {
   @ManyToOne(() => DocumentSignatureEntity)
   @JoinColumn({ name: 'legal_guardian_signature_id' })
   legalGuardianSignature: DocumentSignatureEntity;
-
-  //   // ==================== APPROVAL =================================
-
-  // TODO: instead of keeping here the approval/rejection/signatures we can keep them in ActionsArchive
-
-  //   @Column({ type: 'timestamptz', name: 'approved_on', nullable: true })
-  //   approvedOn: Date;
-
-  //   @Column({ type: 'string', name: 'approved_by', nullable: true })
-  //   approvedById: string;
-
-  //   @ManyToOne(() => AdminUserEntity)
-  //   @JoinColumn({ name: 'approved_by' })
-  //   approvedBy: AdminUserEntity;
-
-  //   // ==================== REJECTION =================================
-
-  //   @Column({ type: 'text', name: 'rejection_reason', nullable: true })
-  //   rejectionReason: string;
-
-  //   @Column({ type: 'timestamptz', name: 'rejected_on', nullable: true })
-  //   rejectedOn: Date;
-
-  //   @Column({ type: 'string', name: 'rejected_by', nullable: true })
-  //   rejectedById: string;
-
-  //   @ManyToOne(() => AdminUserEntity)
-  //   @JoinColumn({ name: 'rejected_by' })
-  //   rejectedBy: AdminUserEntity;
 }

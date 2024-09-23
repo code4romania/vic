@@ -59,6 +59,8 @@ export class RejectDocumentContractByNgoUsecase
       updatedContract =
         await this.documentContractFacade.rejectDocumentContractByNGO(
           documentContractId,
+          rejectionReason,
+          admin.id,
         );
     } catch (error) {
       // TODO: Update error

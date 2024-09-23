@@ -10,7 +10,6 @@ import { CreateDocumentContractOptions } from 'src/modules/documents/models/docu
 import { IDocumentTemplateModel } from 'src/modules/documents/models/document-template.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentTemplateFacade } from 'src/modules/documents/services/document-template.facade';
-import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import {
   IUserPersonalDataModel,
@@ -54,13 +53,10 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     admin: IAdminUserModel,
   ): Promise<string> {
     let volunteer: IVolunteerModel;
-    let organization: IOrganizationModel;
     let template: IDocumentTemplateModel;
     try {
       // 1. Check if the organization exists
-      organization = await this.getOrganizationUsecase.execute(
-        newContract.organizationId,
-      );
+      await this.getOrganizationUsecase.execute(newContract.organizationId);
 
       // 2. Check if the volunteer exists
       volunteer = await this.checkVolunteerExists(

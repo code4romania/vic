@@ -14,6 +14,7 @@ import {
   VolunteerModelTransformer,
 } from 'src/modules/volunteer/model/volunteer.model';
 import { IUserPersonalDataModel } from 'src/modules/user/models/user-personal-data.model';
+import { IUserModel } from 'src/modules/user/models/base-user.model';
 
 export type VolunteerContractIdentityData = IUserPersonalDataModel & {
   name: string;
@@ -38,11 +39,17 @@ export interface IDocumentContractModel extends IBaseModel {
   createdByAdminId: string;
   createdByAdmin: IAdminUserModel;
 
+  // Rejected By
+  rejectedById?: string;
+  rejectedBy?: IUserModel;
+  rejectionReason?: string;
+  rejectionDate?: Date;
+
   // Volunteer
   volunteerId: string;
   volunteer: IVolunteerModel;
 
-  volunteerData: VolunteerContractIdentityData; // TODO: le tragem din user in usecase-ul de creare contract si raman ca snapshoot
+  volunteerData: VolunteerContractIdentityData;
 
   filePath?: string;
 
@@ -73,6 +80,11 @@ export type UpdateDocumentContractOptions = {
   ngoLegalRepresentativeSignatureId?: string;
   volunteerSignatureId?: string;
   legalGuardianSignatureId?: string;
+
+  // Rejection
+  rejectionReason?: string;
+  rejectedById?: string;
+  rejectionDate?: Date;
 };
 
 export type FindOneDocumentContractOptions = Partial<
@@ -121,6 +133,20 @@ export class DocumentContractTransformer {
       // CreatedBy
       createdByAdminId: entity.createdByAdminId,
       createdByAdmin: AdminUserTransformer.fromEntity(entity.createdByAdmin),
+
+      // Rejected By
+      rejectedById: entity.rejectedById,
+      rejectedBy: entity.rejectedBy // TODO: we don't need all the data
+        ? {
+            id: entity.rejectedBy.id,
+            name: entity.rejectedBy.name,
+            email: entity.rejectedBy.email,
+            phone: entity.rejectedBy.phone,
+            cognitoId: entity.rejectedBy.cognitoId,
+          }
+        : null,
+      rejectionReason: entity.rejectionReason,
+      rejectionDate: entity.rejectionDate,
 
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,

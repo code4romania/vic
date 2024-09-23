@@ -38,11 +38,30 @@ export class DocumentContractFacade {
       status: DocumentContractStatus.APPROVED,
     });
   }
+
   async rejectDocumentContractByNGO(
     documentContractId: string,
+    rejectionReason: string,
+    rejectedById: string,
   ): Promise<IDocumentContractModel> {
     return this.documentContractRepository.update(documentContractId, {
       status: DocumentContractStatus.REJECTED_NGO,
+      rejectionReason,
+      rejectedById,
+      rejectionDate: new Date(),
+    });
+  }
+
+  async rejectDocumentContractByVolunteer(
+    documentContractId: string,
+    rejectionReason: string,
+    userId: string,
+  ): Promise<IDocumentContractModel> {
+    return this.documentContractRepository.update(documentContractId, {
+      status: DocumentContractStatus.REJECTED_VOLUNTEER,
+      rejectionReason,
+      rejectedById: userId,
+      rejectionDate: new Date(),
     });
   }
 

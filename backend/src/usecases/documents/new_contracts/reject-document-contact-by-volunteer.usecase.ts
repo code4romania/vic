@@ -124,9 +124,11 @@ export class RejectDocumentContractByVolunteerUsecase
      * │ 1. Update the contract status to REJECTED_VOLUNTEER.                │
      * └─────────────────────────────────────────────────────────────────────┘
      */
-    await this.documentContractFacade.update(contractId, {
-      status: DocumentContractStatus.REJECTED_VOLUNTEER,
-    });
+    await this.documentContractFacade.rejectDocumentContractByVolunteer(
+      contractId,
+      rejectionReason,
+      userId,
+    );
 
     /* ┌─────────────────────────────────────────────────────────────────────┐
      * │ Audit trail logging:                                                │
