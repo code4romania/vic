@@ -12,6 +12,7 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import { DocumentTemplatesProps } from '../containers/query/DocumentTemplatesTableWithQueryParams';
 import { ArrowDownTrayIcon, EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Popover from './Popover';
+import { Link } from 'react-router-dom';
 
 const createArchiveRoute = (name: string) => `/actions-archive?author=${name.split(' ').join('+')}`;
 
@@ -46,7 +47,7 @@ const DocumentTemplatesTableHeader = [
 		sortable: true,
 		grow: 1,
 		minWidth: '5rem',
-		cell: (row: IDocumentTemplateListItem) => (<a className='text-yellow-600 hover:pointer' href={createArchiveRoute(row.createdByName)}>{row.createdByName}</a>),
+		cell: (row: IDocumentTemplateListItem) => (<Link className='text-yellow-600 hover:pointer' to={createArchiveRoute(row.createdByName)}>{row.createdByName}</Link>),
 	},
 	{
 		id: 'created_at',
