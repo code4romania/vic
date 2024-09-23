@@ -9,14 +9,15 @@ const RichTextEditor = ({
   onChange,
   error,
   className,
+  readonly,
 }: {
   onChange: (value: string) => void;
   value: string;
   error?: FieldError | Merge<FieldError, FieldErrorsImpl> | undefined;
   className?: string;
+  readonly?: boolean;
 }) => {
   const { t } = useTranslation('doc_templates');
-  console.log('error', error);
 
   return (
     <div className="flex flex-col gap-4">
@@ -27,6 +28,7 @@ const RichTextEditor = ({
         theme="snow"
         onChange={onChange}
         value={value}
+        readOnly={readonly}
         // this bottom margin is NECESSARY due to the default styling, which sets the height of 100% to the text editor, but it doesn't take into consideration the toolbar height
         className={`mb-10 border-2 border-cool-gray-900 rounded min-h-[10rem] max-h-[40rem] ${error && 'border-2 border-red-500'} ${className}`}
       />

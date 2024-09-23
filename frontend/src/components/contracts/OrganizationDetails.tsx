@@ -7,7 +7,7 @@ import { useResyncOrganizationWithOngHubMutation } from '../../services/organiza
 import Button from '../Button';
 import { useQueryClient } from 'react-query';
 
-export const OrganizationDetails = ({ control }: { control: Control<FieldValues> }) => {
+export const OrganizationDetails = ({ control, readonly }: { control: Control<FieldValues>, readonly?: boolean }) => {
   const { t } = useTranslation(['doc_templates', 'general']);
 
   const queryClient = useQueryClient();
@@ -35,6 +35,7 @@ export const OrganizationDetails = ({ control }: { control: Control<FieldValues>
                   ? t('required', { ns: 'general' })
                   : undefined
               }
+              readOnly={readonly}
             />
           );
         }}

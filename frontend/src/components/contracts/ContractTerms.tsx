@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Control,
   Controller,
@@ -18,17 +18,27 @@ export const ContractTerms = ({
   reset,
   getValues,
   formErrors,
+  readonly,
+  termsValue,
 }: {
   control: Control<FieldValues>;
   reset: UseFormReset<FieldValues>;
   getValues: UseFormGetValues<FieldValues>;
   formErrors: FieldErrors<FieldValues>;
+  readonly?: boolean;
+  termsValue?: string;
 }) => {
   const { t } = useTranslation(['doc_templates', 'general']);
   const [editingText, setEditingText] = useState(false);
 
   // todo: initial value for contractTerms taken from the template
-  const [contractTerms, setContractTerms] = useState<string>('');
+  const [contractTerms, setContractTerms] = useState<string>(termsValue || '')
+
+  useEffect(() => {
+    if (termsValue && termsValue !== contractTerms) {
+      setContractTerms(termsValue || '');
+    }
+  }, [termsValue]);
 
   const onSave = () => {
     const newContractTerms = getValues('contractTerms');
@@ -53,7 +63,7 @@ export const ContractTerms = ({
             field: { value: string; onChange: (value: string) => void };
           }) => {
             return (
-              <RichTextEditor value={value} onChange={onChange} error={formErrors.contractTerms} />
+              <RichTextEditor value={value} onChange={onChange} error={formErrors.contractTerms} readonly={readonly} />
             );
           }}
         />
@@ -78,10 +88,10 @@ export const ContractTerms = ({
     );
   }
 
-  if (!contractTerms) {
+  if (!contractTerms && !readonly) {
     return (
       <ContractTermsEmptyState setEditingText={setEditingText} error={formErrors.contractTerms} />
     );
   } // normal text
-  return <ContractTermsContent innerContent={contractTerms} setEditingText={setEditingText} />;
+  return <ContractTermsContent innerContent={contractTerms} setEditingText={setEditingText} readonly={readonly} />;
 };

@@ -68,7 +68,7 @@ export const useDocumentTemplatesQuery = ({
   );
 };
 
-export const useDocumentTemplateByIdQuery = (id: string) => {
+export const useDocumentTemplateByIdQuery = (id?: string) => {
   return useQuery({
     queryKey: ['document-template', id],
     queryFn: () => getTemplateById(id),
