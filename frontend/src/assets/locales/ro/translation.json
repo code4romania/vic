@@ -1021,6 +1021,10 @@
     "title": "Creează template",
     "view_title": "Vizualizează template",
     "edit_title": "Editează template",
+    "success_add": "Template-ul a fost adaugat!",
+    "success_edit": "Template-ul a fost actualizat!",
+    "error_add": "Eroare la adaugarea template-ului!",
+    "error_edit": "Eroare la actualizarea template-ului!",
     "subheading": {
       "p1": "Acest template a fost realizat respectând normele din domeniu.",
       "p1_link": "Află mai multe",

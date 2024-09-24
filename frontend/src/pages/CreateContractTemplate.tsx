@@ -17,8 +17,10 @@ import {
   IAddContractTemplatePayload,
   useAddContractTemplateMutation,
   useDocumentTemplateByIdQuery,
+  useUpdateContractTemplateMutation,
 } from '../services/documents-templates/documents-templates.service';
 import { IDocumentTemplate } from '../common/interfaces/template.interface';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 
 interface CreateContractTemplateProps {
   template?: IDocumentTemplate;
@@ -65,7 +67,10 @@ export const CreateContractTemplate = ({ readonly }: CreateContractTemplateProps
   const { mutate: addContractTemplate, isLoading: isLoadingAddContractTemplate } =
     useAddContractTemplateMutation();
 
-  const onSubmit = ({ templateName, contractTerms }: FieldValues) => {
+  const { mutate: updateContractTemplate, isLoading: isLoadingUpdateContractTemplate } =
+    useUpdateContractTemplateMutation();
+
+  const onAddDocumentTemplate = ({ templateName, contractTerms }: FieldValues) => {
     if (!contractTerms) {
       return setError('contractTerms', {
         type: 'required',
@@ -86,13 +91,52 @@ export const CreateContractTemplate = ({ readonly }: CreateContractTemplateProps
 
     addContractTemplate(contractTemplateData, {
       onSuccess: () => {
-        //todo
+        navigate('/documents/templates', { replace: true });
+        useSuccessToast(t('success_add'));
       },
       onError: () => {
-        //todo
+        useErrorToast(t('error_add'));
       },
     });
   };
+
+  const onUpdateDocumentTemplate = ({ templateName, contractTerms }: FieldValues) => {
+    if (!id) {
+      return;
+    }
+
+    if (!contractTerms) {
+      return setError('contractTerms', {
+        type: 'required',
+        message: t('required', { ns: 'general' }),
+      });
+    }
+
+    const contractTemplateData = {
+      name: templateName,
+      organizationData: {
+        officialName: organization?.name,
+        registeredOffice: organization?.address,
+        CUI: organization?.cui,
+        legalRepresentativeName: organization?.legalReprezentativeFullName,
+        legalRepresentativeRole: organization?.legalReprezentativeRole,
+      },
+      documentTerms: contractTerms,
+    } as IAddContractTemplatePayload;
+
+    updateContractTemplate({ id, data: contractTemplateData }, {
+      onSuccess: () => {
+        navigate('/documents/templates', { replace: true });
+        useSuccessToast(t('success_edit'));
+      },
+      onError: () => {
+        useErrorToast(t('error_edit'));
+      },
+    });
+
+  };
+
+
 
   const navigateBack = () => {
     navigate('/documents/templates', { replace: true });
@@ -133,14 +177,14 @@ export const CreateContractTemplate = ({ readonly }: CreateContractTemplateProps
               />
               <Button
                 data-tooltip-id="save-btn-tooltip-incompleteData"
-                disabled={!isOrganizationDataComplete || isLoadingAddContractTemplate}
+                disabled={!isOrganizationDataComplete || isLoadingAddContractTemplate || isLoadingUpdateContractTemplate}
                 label={
-                  isLoadingAddContractTemplate
+                  isLoadingAddContractTemplate || isLoadingUpdateContractTemplate
                     ? t('loading', { ns: 'general' })
                     : t('table_header.save')
                 }
                 className="btn-primary"
-                onClick={isOrganizationDataComplete ? handleSubmit(onSubmit) : undefined}
+                onClick={isOrganizationDataComplete ? handleSubmit(template ? onUpdateDocumentTemplate : onAddDocumentTemplate) : undefined}
               />
               {!isOrganizationDataComplete && (
                 <Tooltip
