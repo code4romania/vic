@@ -4,6 +4,9 @@ import PageHeader from '../components/PageHeader';
 import { useTranslation } from 'react-i18next';
 import Tabs from '../components/Tabs';
 import { ContractType } from '../common/enums/contract-type.enum';
+// import { ContractsStatistics } from '../components/ContractsStatistics';
+// import NewContractsTableWithQueryParams from '../containers/query/DocumentContractsTableWithQueryParams';
+// import { DocumentTemplatesTableWithQueryParams } from '../containers/query/DocumentTemplatesTableWithQueryParams';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { SelectItem } from '../components/Select';
 
@@ -35,7 +38,10 @@ export const DocumentContracts = () => {
   const onTabClick = (tab: ContractType) => {
     navigate(`/documents/${tab}`);
   };
-  const [activeTab, setActiveTab] = useState<SelectItem<ContractType>>({ key: ContractType.CONTRACT, value: t('tabs.contracts') });
+  const [activeTab, setActiveTab] = useState<SelectItem<ContractType>>({
+    key: ContractType.CONTRACT,
+    value: t('tabs.contracts'),
+  });
 
   useEffect(() => {
     if (pathname.includes(ContractType.CONTRACT)) {

@@ -8,7 +8,7 @@ import {
 } from '../../common/constants/pagination';
 import { ContractStatus } from '../../common/enums/contract-status.enum';
 import { VolunteerTabsOptions } from '../../pages/Volunteer';
-import NewContractsTable from '../../components/NewContractsTable';
+import NewContractsTable from '../../components/DocumentContractsTable';
 
 export interface ContractsTableQueryProps extends IPaginationQueryParams {
   volunteer?: string;
@@ -33,11 +33,11 @@ const ContractsTableWithQueryParams = ({
 }) => {
   const queryConfig = {
     ...DEFAULT_QUERY_PARAMS,
-    volunteer: StringParam,
     search: StringParam,
+    volunteerId: StringParam,
+    status: StringParam,
     startDate: DateParam,
     endDate: DateParam,
-    status: StringParam,
     activeTab: StringParam,
   };
 

@@ -35,7 +35,7 @@ import { CreateContractTemplate } from '../pages/CreateContractTemplate';
 import { DocumentContracts } from '../pages/DocumentContracts';
 import { GenerateContract } from '../pages/GenerateContract';
 import { DocumentTemplatesTableWithQueryParams } from '../containers/query/DocumentTemplatesTableWithQueryParams';
-import NewContractsTableWithQueryParams from '../containers/query/NewContractsTableWithQueryParams';
+import DocumentContractsTableWithQueryParams from '../containers/query/DocumentContractsTableWithQueryParams';
 
 const Router = () => (
   <BrowserRouter>
@@ -94,7 +94,7 @@ const Router = () => (
             <Route index element={<Navigate to="contracts" />} />
             <Route element={<DocumentContracts />}>
               <Route path="contracts" element={<Outlet />}>
-                <Route index element={<NewContractsTableWithQueryParams />} />
+                <Route index element={<DocumentContractsTableWithQueryParams />} />
               </Route>
               <Route path="templates" element={<Outlet />}>
                 <Route index element={<DocumentTemplatesTableWithQueryParams />} />
@@ -104,7 +104,7 @@ const Router = () => (
         </Route>
       </Routes>
     </QueryParamProvider>
-  </BrowserRouter >
+  </BrowserRouter>
 );
 
 export default Router;
