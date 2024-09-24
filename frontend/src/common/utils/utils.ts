@@ -10,6 +10,10 @@ import { EventStatus } from '../enums/event-status';
 import { ListItem } from '../interfaces/list-item.interface';
 import { AgeRangeEnum } from '../enums/age-range.enum';
 import { ContractStatus } from '../enums/contract-status.enum';
+import {
+  ApprovedDocumentContractStatus,
+  DocumentContractStatus,
+} from '../enums/document-contract-status.enum';
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ');
@@ -118,6 +122,24 @@ export const ContractStatusMarkerColorMapper = {
   [ContractStatus.PENDING_ADMIN]: 'bg-yellow-500',
   [ContractStatus.PENDING_VOLUNTEER]: 'bg-yellow-500',
   [ContractStatus.REJECTED]: 'bg-red-500',
+};
+
+export const ApprovedDocumentContractStatusMapper = {
+  [ApprovedDocumentContractStatus.ACTIVE]: 'bg-green-500',
+  [ApprovedDocumentContractStatus.DONE]: 'bg-black',
+  [ApprovedDocumentContractStatus.NOT_STARTED]: 'bg-blue-500',
+};
+
+export const DocumentContractStatusMarkerColorMapper = {
+  [DocumentContractStatus.CREATED]: 'bg-purple-500',
+  [DocumentContractStatus.SCHEDULED]: 'bg-blue-500',
+  [DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE]: 'bg-yellow-500',
+  [DocumentContractStatus.PENDING_APPROVAL_NGO]: 'bg-yellow-500',
+  [DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE]: 'bg-yellow-500',
+  [DocumentContractStatus.APPROVED]: 'bg-green-500',
+  [DocumentContractStatus.REJECTED_VOLUNTEER]: 'bg-red-500',
+  [DocumentContractStatus.REJECTED_NGO]: 'bg-red-500',
+  [DocumentContractStatus.ACTION_EXPIRED]: 'bg-red-500',
 };
 
 export const ActivityLogStatusMarkerColorMapper = {

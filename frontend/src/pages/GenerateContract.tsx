@@ -203,7 +203,7 @@ export const GenerateContract = () => {
   };
 
   const navigateBack = () => {
-    navigate('/documents/templates', { replace: true });
+    navigate('/documents/contracts', { replace: true });
   };
 
   const canGoNext = useMemo(() => {

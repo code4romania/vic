@@ -4,6 +4,7 @@ import {
   getContractTemplate,
   getTemplateById,
   getTemplates,
+  updateContractTemplate,
 } from './documents-templates.api';
 import { AxiosError } from 'axios';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
@@ -25,6 +26,19 @@ export const useAddContractTemplateMutation = () => {
       return Promise.resolve(error);
     },
   });
+};
+
+export const useUpdateContractTemplateMutation = () => {
+  return useMutation(
+    ({ id, data }: { id: string; data: IAddContractTemplatePayload }) =>
+      updateContractTemplate(id, data),
+    {
+      onError: (error) => {
+        console.log('⭕️ ERROR IN UPDATE CONTRACT MUTATION ⭕️', error);
+        return Promise.resolve(error);
+      },
+    },
+  );
 };
 
 export const useContractTemplateQuery = (id: string) => {

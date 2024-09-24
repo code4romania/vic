@@ -1,4 +1,4 @@
 export enum ContractType {
-  TEMPLATE = 'template',
-  CONTRACT = 'contract',
+  TEMPLATE = 'templates',
+  CONTRACT = 'contracts',
 }

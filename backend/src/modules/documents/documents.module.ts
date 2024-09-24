@@ -22,6 +22,7 @@ import { DocumentSignatureRepository } from './repositories/document-signature.r
 import { DocumentSignatureFacade } from './services/document-signature.facade';
 import { DocumentContractWebItemView } from './entities/document-contract-web-item.entity';
 import { DocumentContractWebItemRepository } from './repositories/document-contract-web-item.repository';
+import { CronsService } from './services/crons.service';
 
 @Module({
   imports: [
@@ -54,6 +55,8 @@ import { DocumentContractWebItemRepository } from './repositories/document-contr
     DocumentSignatureFacade,
     // Services
     DocumentPDFGenerator,
+    // CRONS
+    CronsService,
   ],
   exports: [
     // Export only facades!

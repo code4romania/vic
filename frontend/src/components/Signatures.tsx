@@ -68,11 +68,18 @@ export const Signatures = ({ volunteer, organization }: SignatureProps) => {
         />
       </div>
 
+      {/* //todo: add legal representative signature paragraph */}
+      {/* 
+      <div>
+        <p className="font-robotoBold">{t('contract_duration.title')}</p>
+      </div> */}
+
       <div className="flex flex-col sm:flex-row gap-8">
         {/* empty div to align items correctly */}
         <div className="flex-1 flex flex-col gap-4" />
 
         <Signature
+          className={`mt-[-2rem] sm:mt-0 ${isVolunteerOver16 ? 'hidden' : ''}`}
           signatureTitle={<p>{t('legal_representative')}</p>}
           p={
             <div className="flex flex-col gap-1">
@@ -107,8 +114,6 @@ export const Signatures = ({ volunteer, organization }: SignatureProps) => {
               </div>
             </div>
           }
-          // don't display legal guardian signature if the volunteer is over 16 years old
-          className={`mt-[-2rem] sm:mt-0 ${isVolunteerOver16 ? 'hidden' : ''}`}
         />
       </div>
     </div>

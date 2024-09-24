@@ -30,86 +30,81 @@ import ActivityLogs from '../containers/query/ActivityLogsWithQueryParams';
 import AddActivityLog from '../containers/query/AddActivityLogWithQueryParams';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
-import Contracts from '../containers/query/ContractsWithQueryParams';
-import AddContractTemplate from '../pages/AddContractTemplate';
-import EditContractTemplate from '../pages/EditContractTemplate';
-import AddContract from '../containers/query/AddContractWithQueryParams';
 import ActionsArchive from '../pages/ActionsArchive';
 import { CreateContractTemplate } from '../pages/CreateContractTemplate';
 import { DocumentContracts } from '../pages/DocumentContracts';
 import { GenerateContract } from '../pages/GenerateContract';
+import { DocumentTemplatesTableWithQueryParams } from '../containers/query/DocumentTemplatesTableWithQueryParams';
+import DocumentContractsTableWithQueryParams from '../containers/query/DocumentContractsTableWithQueryParams';
 
-const Router = () => {
-  return (
-    <BrowserRouter>
-      <QueryParamProvider adapter={ReactRouter6Adapter}>
-        <Routes>
-          <Route path="/login" element={<PublicRoute element={<Login />} />} />
-          <Route path="/" element={<PrivateRoute element={<MainLayout />} />}>
-            <Route index element={<Dashboard />}></Route>
-            <Route path="organization" element={<Outlet />}>
-              <Route index element={<Organization />} />
-              <Route path="edit" element={<EditOrganization />} />
+const Router = () => (
+  <BrowserRouter>
+    <QueryParamProvider adapter={ReactRouter6Adapter}>
+      <Routes>
+        <Route path="/login" element={<PublicRoute element={<Login />} />} />
+        <Route path="/" element={<PrivateRoute element={<MainLayout />} />}>
+          <Route index element={<Dashboard />}></Route>
+          <Route path="organization" element={<Outlet />}>
+            <Route index element={<Organization />} />
+            <Route path="edit" element={<EditOrganization />} />
+          </Route>
+          <Route path="volunteers" element={<Outlet />}>
+            <Route index element={<Volunteers />} />
+            <Route path=":id" element={<Volunteer />} />
+            <Route path=":id/edit" element={<EditVolunteer />} />
+            <Route path="access-codes" element={<Outlet />}>
+              <Route index element={<AccessCodes />} />
+              <Route path="add" element={<AddAccessCode />} />
+              <Route path=":id/edit" element={<EditAccessCode />} />
             </Route>
-            <Route path="volunteers" element={<Outlet />}>
-              <Route index element={<Volunteers />} />
-              <Route path=":id" element={<Volunteer />} />
-              <Route path=":id/edit" element={<EditVolunteer />} />
-              <Route path="access-codes" element={<Outlet />}>
-                <Route index element={<AccessCodes />} />
-                <Route path="add" element={<AddAccessCode />} />
-                <Route path=":id/edit" element={<EditAccessCode />} />
-              </Route>
-              <Route path="requests" element={<RegistrationRequests />} />
-              <Route path="requests/:id" element={<AccessRequest />} />
-            </Route>
-            <Route path="announcements" element={<Outlet />}>
-              <Route index element={<Announcements />} />
-              <Route path="add" element={<AddAnnouncement />} />
-              <Route path=":id/edit" element={<EditAnnouncement />} />
-              <Route path=":id" element={<Announcement />} />
-            </Route>
-            <Route path="activity-types" element={<Outlet />}>
-              <Route index element={<ActivityTypes />} />
-              <Route path="add" element={<AddActivityType />} />
-              <Route path="edit/:id" element={<EditActivityType />} />
-            </Route>
-            <Route path="events" element={<Outlet />}>
-              <Route index element={<Events />} />
-              <Route path=":id" element={<Event />} />
-              <Route path=":id/edit" element={<EditEvent />} />
-              <Route path="add" element={<AddEvent />} />
-            </Route>
-            <Route path="activity-log" element={<Outlet />}>
-              <Route index element={<ActivityLogs />} />
-              <Route path="add" element={<AddActivityLog />} />
-            </Route>
-            <Route path="actions-archive" element={<Outlet />}>
-              <Route index element={<ActionsArchive />} />
-            </Route>
-            <Route path="documents" element={<Outlet />}>
-              <Route index element={<Navigate to={'contracts'} />} />
+            <Route path="requests" element={<RegistrationRequests />} />
+            <Route path="requests/:id" element={<AccessRequest />} />
+          </Route>
+          <Route path="announcements" element={<Outlet />}>
+            <Route index element={<Announcements />} />
+            <Route path="add" element={<AddAnnouncement />} />
+            <Route path=":id/edit" element={<EditAnnouncement />} />
+            <Route path=":id" element={<Announcement />} />
+          </Route>
+          <Route path="activity-types" element={<Outlet />}>
+            <Route index element={<ActivityTypes />} />
+            <Route path="add" element={<AddActivityType />} />
+            <Route path="edit/:id" element={<EditActivityType />} />
+          </Route>
+          <Route path="events" element={<Outlet />}>
+            <Route index element={<Events />} />
+            <Route path=":id" element={<Event />} />
+            <Route path=":id/edit" element={<EditEvent />} />
+            <Route path="add" element={<AddEvent />} />
+          </Route>
+          <Route path="activity-log" element={<Outlet />}>
+            <Route index element={<ActivityLogs />} />
+            <Route path="add" element={<AddActivityLog />} />
+          </Route>
+          <Route path="actions-archive" element={<Outlet />}>
+            <Route index element={<ActionsArchive />} />
+          </Route>
+          {/* Contract / Templates form as distinct pages */}
+          <Route path="documents/contracts/generate" element={<GenerateContract />} />
+          <Route path="documents/templates/:id/edit" element={<CreateContractTemplate />} />
+          <Route path="documents/templates/create" element={<CreateContractTemplate />} />
+          <Route path="documents/templates/:id" element={<CreateContractTemplate readonly />} />
+          {/* Tables */}
+          <Route path="documents">
+            <Route index element={<Navigate to="contracts" />} />
+            <Route element={<DocumentContracts />}>
               <Route path="contracts" element={<Outlet />}>
-                <Route index element={<Contracts />} />
-                <Route path="add-template" element={<AddContractTemplate />} />
-                <Route path="add" element={<AddContract />} />
-                <Route path=":id/edit" element={<EditContractTemplate />} />
+                <Route index element={<DocumentContractsTableWithQueryParams />} />
               </Route>
               <Route path="templates" element={<Outlet />}>
-                <Route index element={<DocumentContracts />} />
-                <Route path=':id' element={<CreateContractTemplate readonly />} />
-                <Route path=':id/edit' element={<CreateContractTemplate />} />
-                <Route path="create" element={<CreateContractTemplate />} />
-                <Route path="contracts" element={<Outlet />}>
-                  <Route path="generate" element={<GenerateContract />} />
-                </Route>
+                <Route index element={<DocumentTemplatesTableWithQueryParams />} />
               </Route>
             </Route>
           </Route>
-        </Routes>
-      </QueryParamProvider>
-    </BrowserRouter>
-  );
-};
+        </Route>
+      </Routes>
+    </QueryParamProvider>
+  </BrowserRouter>
+);
 
 export default Router;

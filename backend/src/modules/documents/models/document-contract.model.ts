@@ -117,6 +117,7 @@ export type FindOneDocumentContractOptions = Partial<
     | 'status'
     | 'documentTemplateId'
     | 'documentNumber'
+    | 'createdOn'
   >
 >;
 
