@@ -15,6 +15,14 @@ import {
 } from 'src/modules/volunteer/model/volunteer.model';
 import { IUserPersonalDataModel } from 'src/modules/user/models/user-personal-data.model';
 import { IUserModel } from 'src/modules/user/models/base-user.model';
+import {
+  IOrganizationModel,
+  OrganizationTransformer,
+} from 'src/modules/organization/models/organization.model';
+import {
+  IDocumentSignatureModel,
+  SignatureModelTransformer,
+} from './document-signature.model';
 
 export type VolunteerContractIdentityData = IUserPersonalDataModel & {
   name: string;
@@ -30,6 +38,7 @@ export interface IDocumentContractModel extends IBaseModel {
   documentEndDate: Date;
 
   organizationId: string;
+  organization?: IOrganizationModel;
 
   // Template
   documentTemplateId: string;
@@ -53,9 +62,14 @@ export interface IDocumentContractModel extends IBaseModel {
 
   filePath?: string;
 
-  ngoLegalRepresentativeSignatureId?: string;
   volunteerSignatureId?: string;
+  volunteerSignature?: IDocumentSignatureModel;
+
   legalGuardianSignatureId?: string;
+  legalGuardianSignature?: IDocumentSignatureModel;
+
+  ngoLegalRepresentativeSignatureId?: string;
+  ngoLegalRepresentativeSignature?: IDocumentSignatureModel;
 }
 
 export type CreateDocumentContractOptions = {
@@ -103,6 +117,7 @@ export type FindOneDocumentContractOptions = Partial<
     | 'status'
     | 'documentTemplateId'
     | 'documentNumber'
+    | 'createdOn'
   >
 >;
 
@@ -127,6 +142,7 @@ export class DocumentContractTransformer {
       documentEndDate: entity.documentEndDate,
 
       organizationId: entity.organizationId,
+      organization: OrganizationTransformer.fromEntity(entity.organization),
 
       // Volunteer
       volunteerId: entity.volunteerId,
@@ -154,6 +170,23 @@ export class DocumentContractTransformer {
         : null,
       rejectionReason: entity.rejectionReason,
       rejectionDate: entity.rejectionDate,
+
+      filePath: entity.filePath,
+
+      // Volunteer Signature
+      volunteerSignature: SignatureModelTransformer.fromEntity(
+        entity.volunteerSignature,
+      ),
+
+      // Legal Guardian Signature
+      legalGuardianSignature: SignatureModelTransformer.fromEntity(
+        entity.legalGuardianSignature,
+      ),
+
+      // Ngo Legal Representative Signature
+      ngoLegalRepresentativeSignature: SignatureModelTransformer.fromEntity(
+        entity.ngoLegalRepresentativeSignature,
+      ),
 
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,

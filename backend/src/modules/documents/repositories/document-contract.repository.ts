@@ -26,14 +26,14 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
 
   async create(
     newDocumentContract: CreateDocumentContractOptions,
-  ): Promise<string> {
+  ): Promise<IDocumentContractModel> {
     const documentContract = await this.documentContractRepository.save(
       DocumentContractTransformer.createDocumentContractToEntity(
         newDocumentContract,
       ),
     );
 
-    return documentContract.id;
+    return DocumentContractTransformer.fromEntity(documentContract);
   }
 
   async findOne(
@@ -41,6 +41,21 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
   ): Promise<IDocumentContractModel> {
     const documentContract = await this.documentContractRepository.findOne({
       where: options,
+    });
+
+    return DocumentContractTransformer.fromEntity(documentContract);
+  }
+
+  async findOneForPDFGeneration(id: string): Promise<IDocumentContractModel> {
+    const documentContract = await this.documentContractRepository.findOne({
+      where: { id },
+      relations: {
+        organization: true,
+        documentTemplate: true,
+        volunteerSignature: true,
+        legalGuardianSignature: true,
+        ngoLegalRepresentativeSignature: true,
+      },
     });
 
     return DocumentContractTransformer.fromEntity(documentContract);

@@ -5,6 +5,7 @@ import { DocumentContractStatus } from 'src/modules/documents/enums/contract-sta
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentSignatureFacade } from 'src/modules/documents/services/document-signature.facade';
+import { DocumentPDFGenerator } from 'src/modules/documents/services/document-pdf-generator';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 @Injectable()
@@ -13,6 +14,7 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly documentSignatureFacade: DocumentSignatureFacade,
     private readonly exceptionService: ExceptionsService,
+    private readonly documentPDFGenerator: DocumentPDFGenerator,
   ) {}
 
   public async execute(
@@ -49,6 +51,8 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
         code_error: 'SIGN_DOCUMENT_CONTRACT_BY_NGO_003',
       });
     }
+
+    this.documentPDFGenerator.generateContractPDF(documentContractId);
 
     // TODO: Send notification to Volunteer (Contract is now active)
     // TODO: Track Event
