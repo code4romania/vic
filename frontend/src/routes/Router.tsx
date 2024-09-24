@@ -88,6 +88,7 @@ const Router = () => (
           <Route path="documents/contracts/generate" element={<GenerateContract />} />
           <Route path="documents/templates/:id/edit" element={<CreateContractTemplate />} />
           <Route path="documents/templates/create" element={<CreateContractTemplate />} />
+          <Route path="documents/templates/:id" element={<CreateContractTemplate readonly />} />
           {/* Tables */}
           <Route path="documents">
             <Route index element={<Navigate to="contracts" />} />
@@ -97,7 +98,6 @@ const Router = () => (
               </Route>
               <Route path="templates" element={<Outlet />}>
                 <Route index element={<DocumentTemplatesTableWithQueryParams />} />
-                <Route path=":id" element={<CreateContractTemplate readonly />} />
               </Route>
             </Route>
           </Route>
