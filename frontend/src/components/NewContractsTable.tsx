@@ -354,7 +354,7 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
   };
 
   const onAddContract = () => {
-    navigate(`/documents/templates/contracts/generate`);
+    navigate(`generate`);
   };
 
   const onStartDateChange = (startDate: Date | null) => {
