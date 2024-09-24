@@ -8,6 +8,7 @@ import {
 import { ContractInfoContent } from './ContractInfoContent';
 import { SignatureContent } from './SignatureContent';
 import { DocumentContractSignedSuccessfullyContent } from './DocumentContractSignedSuccessfullyContent';
+import { RejectContractPanelContent } from './RejectContractPanelContent';
 
 interface ContractSidePanelProps {
   isOpen: boolean;
@@ -56,6 +57,13 @@ const ContractSidePanel = ({ isOpen, onClose, contractId }: ContractSidePanelPro
             contractId={contractId || ''}
             onCloseSidePanel={onCloseSidePanel}
             setSidePanelContent={setSidePanelContent}
+          />
+        );
+      case 3:
+        return (
+          <RejectContractPanelContent
+            setSidePanelContent={setSidePanelContent}
+            contractId={contractId || ''}
           />
         );
     }

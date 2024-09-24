@@ -3,11 +3,13 @@ import {
   addDocumentContract,
   getDocumentContract,
   getDocumentsContracts,
+  rejectDocumentContract,
   signDocumentContract,
 } from './document-contracts.api';
 import {
   IAddDocumentContractDTO,
   IGetDocumentsContractsParams,
+  IRejectDocumentContractBody,
   ISignDocumentContractBody,
 } from '../../common/interfaces/document-contract.interface';
 
@@ -76,7 +78,19 @@ export const useSignDocumentContractMutation = () => {
       signDocumentContract(id, payload),
     {
       onError: (error) => {
-        console.log(`⛔️ ERROR IN SIGN DOCUMENT CONTRACT`, error);
+        console.log(`⛔️ ERROR IN SIGN DOCUMENT CONTRACT ⛔️`, error);
+      },
+    },
+  );
+};
+
+export const useRejectcontractMutation = () => {
+  return useMutation(
+    ({ id, payload }: { id: string; payload: IRejectDocumentContractBody }) =>
+      rejectDocumentContract(id, payload),
+    {
+      onError: (error) => {
+        console.log(`⛔️ ERROR IN REJECT DOCUMENT CONTRACT ⛔️`, error);
       },
     },
   );

@@ -1061,6 +1061,18 @@
       "error": {
         "empty_signature": "The signature is required"
       }
+    },
+    "reject": {
+      "title": "Justify rejection",
+      "description": "Send a message to the volunteer explaining the reason for the rejection.",
+      "actions": {
+        "reject_without_message": "Reject without message",
+        "reject": "Reject"
+      },
+      "toast": {
+        "success": "The contract has been successfully rejected.",
+        "error": "An error occurred while rejecting the contract."
+      }
     }
   },
   "doc_templates": {

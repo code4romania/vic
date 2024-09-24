@@ -1026,7 +1026,7 @@
       "template": "Template utilizat",
       "actions": {
         "sign": "Semnează",
-        "reject": "Refuză"
+        "reject": "Respinge"
       },
       "status": {
         "CREATED": "Salvat",
@@ -1060,6 +1060,18 @@
       },
       "error": {
         "empty_signature": "Semnătura este obligatorie"
+      }
+    },
+    "reject": {
+      "title": "Argumentează respingerea",
+      "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
+      "actions": {
+        "reject_without_message": "Respinge fără mesaj",
+        "reject": "Respinge"
+      },
+      "toast": {
+        "success": "Contractul a fost respins cu succes.",
+        "error": "A apărut o eroare la respingerea contractului."
       }
     }
   },

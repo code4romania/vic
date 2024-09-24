@@ -59,3 +59,7 @@ export interface IGetDocumentContractResponse {
 export interface ISignDocumentContractBody {
   legalRepresentativeSignatureBase64: string;
 }
+
+export interface IRejectDocumentContractBody {
+  rejectionReason: string;
+}

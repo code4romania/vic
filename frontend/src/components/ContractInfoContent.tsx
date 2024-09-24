@@ -157,8 +157,7 @@ export const ContractInfoContent = ({
           <Button
             label={t('contract.actions.reject')}
             className="btn-outline-secondary"
-            //todo reject contract
-            onClick={() => {}}
+            onClick={() => setSidePanelContent(3)}
             aria-label={`${t('contract.actions.reject')}`}
             icon={<XMarkIcon className="h-5 w-5" />}
             type="button"

@@ -12,7 +12,9 @@ import { OrderDirection } from '../common/enums/order-direction.enum';
 import Popover from './Popover';
 import Button from './Button';
 import {
+  ApprovedDocumentContractStatusMapper,
   ContractStatusMarkerColorMapper,
+  DocumentContractStatusMarkerColorMapper,
   downloadExcel,
   // downloadFile,
   formatDate,
@@ -27,7 +29,10 @@ import { VolunteerTabsOptions } from '../pages/Volunteer';
 import { useTranslation } from 'react-i18next';
 import { getContractsForDownload } from '../services/contracts/contracts.api';
 import { useGetDocumentsContractsQuery } from '../services/document-contracts/document-contracts.service';
-import { DocumentContractStatus } from '../common/enums/document-contract-status.enum';
+import {
+  ApprovedDocumentContractStatus,
+  DocumentContractStatus,
+} from '../common/enums/document-contract-status.enum';
 import { IPaginationQueryParams } from '../common/constants/pagination';
 import { IDocumentContract } from '../common/interfaces/document-contract.interface';
 import DocumentsContractSidePanel from './DocumentsContractSidePanel';
@@ -92,13 +97,44 @@ const ContractsTableHeader = [
     name: i18n.t('documents:contracts.headers.status'),
     minWidth: '11rem',
     sortable: true,
-    cell: (row: IDocumentContract) => (
-      <CellLayout>
-        <StatusWithMarker markerColor={ContractStatusMarkerColorMapper[row.status]}>
-          {i18n.t(`documents:contract.status.${row.status}`)}
-        </StatusWithMarker>
-      </CellLayout>
-    ),
+    cell: (row: IDocumentContract) => {
+      const approvedStatus = () => {
+        if (row.status === DocumentContractStatus.APPROVED) {
+          //active contract
+          const currentDate = new Date();
+          if (
+            currentDate >= new Date(row.documentStartDate) &&
+            currentDate <= new Date(row.documentEndDate)
+          ) {
+            return ApprovedDocumentContractStatus.ACTIVE;
+          }
+          //done contract
+          if (currentDate > new Date(row.documentEndDate)) {
+            return ApprovedDocumentContractStatus.DONE;
+          }
+          //not started contract
+          if (currentDate < new Date(row.documentStartDate)) {
+            return ApprovedDocumentContractStatus.NOT_STARTED;
+          }
+        }
+        return ApprovedDocumentContractStatus.NOT_STARTED;
+      };
+      return (
+        <CellLayout>
+          <StatusWithMarker
+            markerColor={
+              row.status === DocumentContractStatus.APPROVED
+                ? ApprovedDocumentContractStatusMapper[approvedStatus()]
+                : DocumentContractStatusMarkerColorMapper[row.status]
+            }
+          >
+            {row.status === DocumentContractStatus.APPROVED
+              ? i18n.t(`document_contract:contract.status.${row.status}.${approvedStatus()}`)
+              : i18n.t(`document_contract:contract.status.${row.status}`)}
+          </StatusWithMarker>
+        </CellLayout>
+      );
+    },
   },
 ];
 
@@ -446,35 +482,6 @@ const ContractsTable = ({
             onSort={onSort}
           />
         </CardBody>
-        {/* {showRejectContract && (
-          <RejectTextareaModal
-            label={t('contract.reject_modal.description')}
-            title={t('contract.reject_modal.title')}
-            onClose={setShowRejectContract.bind(null, null)}
-            onConfirm={confirmReject}
-            secondaryBtnLabel={`${t('contract.actions.reject_no_message')}`}
-            primaryBtnLabel={`${t('contract.actions.reject')}`}
-            primaryBtnClassName="btn-danger"
-          />
-        )} */}
-        {/* {showDeleteContract && (
-          <ConfirmationModal
-            title={t('contract.delete_modal.title')}
-            description={t('contract.delete_modal.description')}
-            confirmBtnLabel={t('general:delete')}
-            onClose={setShowDeleteContract.bind(null, null)}
-            onConfirm={confirmDelete}
-            confirmBtnClassName="btn-danger"
-          />
-        )} */}
-        {/* {showApproveContract && (
-          <UploadFileModal
-            description={t('contract.upload.description')}
-            title={t('contract.upload.title')}
-            onClose={setShowApproveContract.bind(null, null)}
-            onConfirm={onConfirmSign}
-          />
-        )} */}
       </Card>
       <DocumentsContractSidePanel
         onClose={onCloseSidePanel}

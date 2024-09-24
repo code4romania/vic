@@ -2,6 +2,7 @@ import {
   IAddDocumentContractDTO,
   IGetDocumentContractResponse,
   IGetDocumentsContractsParams,
+  IRejectDocumentContractBody,
   ISignDocumentContractBody,
 } from '../../common/interfaces/document-contract.interface';
 import API from '../api';
@@ -20,4 +21,8 @@ export const addDocumentContract = (data: IAddDocumentContractDTO) => {
 
 export const signDocumentContract = (id: string, body: ISignDocumentContractBody) => {
   return API.patch(`/documents/contracts/${id}/sign`, body).then((res) => res.data);
+};
+
+export const rejectDocumentContract = (id: string, body: IRejectDocumentContractBody) => {
+  return API.patch(`/documents/contracts/${id}/reject`, body).then((res) => res.data);
 };
