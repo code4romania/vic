@@ -76,7 +76,7 @@ export class DocumentContractFacade {
 
   async create(
     newDocumentContract: CreateDocumentContractOptions,
-  ): Promise<string> {
+  ): Promise<IDocumentContractModel> {
     return this.documentContractRepository.create(newDocumentContract);
   }
 

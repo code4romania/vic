@@ -5,6 +5,7 @@ import { DocumentContractStatus } from 'src/modules/documents/enums/contract-sta
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentSignatureFacade } from 'src/modules/documents/services/document-signature.facade';
+import { DocumentPDFGenerator } from 'src/modules/documents/services/document-pdf-generator';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
 // ┌─────────────────────────────────────────────────────────────────────────┐
@@ -71,6 +72,7 @@ export class SignDocumentContractByVolunteerUsecase
     private readonly documentSignatureFacade: DocumentSignatureFacade,
     private readonly volunteerFacade: VolunteerFacade,
     private readonly exceptionService: ExceptionsService,
+    private readonly documentPDFGenerator: DocumentPDFGenerator,
   ) {}
 
   public async execute({
@@ -162,6 +164,8 @@ export class SignDocumentContractByVolunteerUsecase
       volunteerSignatureId: volunteerSignatureId,
       legalGuardianSignatureId: legalGuardianSignatureId,
     });
+
+    this.documentPDFGenerator.generateContractPDF(contractId);
 
     // Track event in Actions Archive
 

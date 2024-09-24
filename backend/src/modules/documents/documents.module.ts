@@ -6,7 +6,7 @@ import { TemplateFacade } from './services/template.facade';
 import { ContractEntity } from './entities/contract.entity';
 import { ContractRepositoryService } from './repositories/contract.repository';
 import { ContractFacade } from './services/contract.facade';
-import { PDFGenerator } from './services/pdf-generator';
+import { DocumentPDFGenerator } from './services/document-pdf-generator';
 import { DocumentTemplateRepositoryService } from './repositories/document-template.repository';
 import { DocumentTemplateFacade } from './services/document-template.facade';
 import { DocumentTemplateEntity } from './entities/document-template.entity';
@@ -53,13 +53,13 @@ import { DocumentContractWebItemRepository } from './repositories/document-contr
     DocumentContractFacade,
     DocumentSignatureFacade,
     // Services
-    PDFGenerator,
+    DocumentPDFGenerator,
   ],
   exports: [
     // Export only facades!
     TemplateFacade,
     ContractFacade,
-    PDFGenerator,
+    DocumentPDFGenerator,
     DocumentTemplateFacade,
     DocumentContractFacade,
     DocumentSignatureFacade,
