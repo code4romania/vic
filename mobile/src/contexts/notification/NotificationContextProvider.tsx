@@ -29,6 +29,9 @@ export const EVENTS = {
     GENERATE_CONTRACT: 'contract.generate',
     APPROVE_CONTRACT: 'contract.approve',
     REJECT_CONATRCT: 'contract.reject',
+
+    SIGN_CONTRACT_BY_NGO: 'contract.sign.by.ngo',
+    REJECT_CONTRACT_BY_NGO: 'contract.reject.by.ngo',
   },
 };
 
@@ -120,7 +123,9 @@ const NotificationContextProvider = ({
           payload.key ===
           (EVENTS.DOCUMENTS.GENERATE_CONTRACT ||
             EVENTS.DOCUMENTS.APPROVE_CONTRACT ||
-            EVENTS.DOCUMENTS.REJECT_CONATRCT)
+            EVENTS.DOCUMENTS.REJECT_CONATRCT ||
+            EVENTS.DOCUMENTS.SIGN_CONTRACT_BY_NGO ||
+            EVENTS.DOCUMENTS.REJECT_CONTRACT_BY_NGO)
         ) {
           navigation.navigate('contract', {
             id: payload.payload.contractId,

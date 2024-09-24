@@ -70,7 +70,7 @@ export class DocumentsListener {
 
     if (notificationsViaPush) {
       const notificationData = {
-        key: EVENTS.DOCUMENTS.APPROVE_CONTRACT,
+        key: EVENTS.DOCUMENTS.SIGN_CONTRACT_BY_NGO,
         payload: {
           contractId,
           organizationId,
