@@ -10,9 +10,10 @@ import { OrderDirection } from '../common/enums/order-direction.enum';
 import { format } from 'date-fns';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { DocumentTemplatesProps } from '../containers/query/DocumentTemplatesTableWithQueryParams';
-import { ArrowDownTrayIcon, EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon, EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Popover from './Popover';
 import { Link, useNavigate } from 'react-router-dom';
+import Button from './Button';
 
 const createArchiveRoute = (name: string) => `/actions-archive?author=${name.split(' ').join('+')}`;
 
@@ -154,6 +155,20 @@ export const DocumentTemplatesTable = ({ query, setQuery }: DocumentTemplatesPro
 		<Card>
 			<CardHeader>
 				<h2>{t('table.title')}</h2>
+				<div className="flex gap-2 lg:gap-6">
+					<Button
+						label={t('table.table_header.download_all')}
+						className="btn-outline-secondary"
+						icon={<ArrowDownTrayIcon className="h-5 w-5" />}
+						onClick={() => { }}
+					/>
+					<Button
+						label={t('table.table_header.create')}
+						className="btn-primary"
+						icon={<PlusIcon className="h-5 w-5" />}
+						onClick={() => navigate('/documents/templates/create')}
+					/>
+				</div>
 			</CardHeader>
 			<CardBody>
 				<DataTableComponent

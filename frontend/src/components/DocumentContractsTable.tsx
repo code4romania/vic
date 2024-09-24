@@ -272,7 +272,7 @@ const ContractsTable = ({
   // };
 
   const onAddContract = () => {
-    navigate(`/documents/templates/contracts/generate`);
+    navigate(`generate`);
   };
 
   const onStartDateChange = (startDate: Date | null) => {
