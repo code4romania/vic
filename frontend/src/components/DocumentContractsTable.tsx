@@ -3,7 +3,6 @@ import DataTableComponent from './DataTableComponent';
 import CardHeader from './CardHeader';
 import CardBody from './CardBody';
 import Card from '../layouts/CardLayout';
-import { IContractListItem } from '../common/interfaces/contract.interface';
 import { IHOCQueryProps } from '../common/interfaces/hoc-query-props.interface';
 import i18n from '../common/config/i18n';
 import { ArrowDownTrayIcon, EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
@@ -13,7 +12,6 @@ import Popover from './Popover';
 import Button from './Button';
 import {
   ApprovedDocumentContractStatusMapper,
-  ContractStatusMarkerColorMapper,
   DocumentContractStatusMarkerColorMapper,
   downloadExcel,
   // downloadFile,
@@ -138,41 +136,6 @@ const ContractsTableHeader = [
   },
 ];
 
-const VolunteerContractsTableHeader = [
-  {
-    id: 'contractNumber',
-    name: i18n.t('documents:contracts.headers.contract_number'),
-    sortable: true,
-    grow: 3,
-    selector: (row: IContractListItem) => row.contractNumber,
-  },
-  {
-    id: 'status',
-    name: i18n.t('documents:contracts.headers.status'),
-    minWidth: '11rem',
-    sortable: true,
-    cell: (row: IContractListItem) => (
-      <CellLayout>
-        <StatusWithMarker markerColor={ContractStatusMarkerColorMapper[row.status]}>
-          {i18n.t(`documents:contract.status.${row.status}`)}
-        </StatusWithMarker>
-      </CellLayout>
-    ),
-  },
-  {
-    id: 'startDate',
-    name: i18n.t('documents:contracts.headers.start_date'),
-    sortable: true,
-    selector: (row: IContractListItem) => formatDate(row.startDate),
-  },
-  {
-    id: 'endDate',
-    name: i18n.t('documents:contracts.headers.end_date'),
-    sortable: true,
-    selector: (row: IContractListItem) => formatDate(row.endDate),
-  },
-];
-
 interface DocumentContractsTableQueryProps extends IPaginationQueryParams {
   volunteerId?: string;
   search?: string;
@@ -244,7 +207,9 @@ const ContractsTable = ({
         label: t('general:download', { item: i18n.t('general:contract').toLowerCase() }),
         icon: <ArrowDownTrayIcon className="menu-icon" />,
         // todo: download contract
-        // onClick: onDownloadContract,
+        onClick: () => {
+          console.log('TODO: download contract');
+        },
       },
     ];
 
@@ -276,7 +241,7 @@ const ContractsTable = ({
   };
 
   const buildContractTableHeader = (): TableColumn<IDocumentContract>[] => {
-    return volunteerName ? VolunteerContractsTableHeader : ContractsTableHeader;
+    return ContractsTableHeader;
   };
 
   // pagination
