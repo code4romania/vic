@@ -1023,10 +1023,13 @@
       "generated_by": "Generat de",
       "generated_on": "Data generare",
       "signed_on": "Data semnare",
+      "rejected_on": "Data refuzare",
+      "rejection_reason": "Motiv",
       "template": "Template utilizat",
       "actions": {
         "sign": "Semnează",
-        "reject": "Respinge"
+        "reject": "Respinge",
+        "send_to_signing": "Trimite spre semnare"
       },
       "status": {
         "CREATED": "Salvat",
