@@ -1,6 +1,6 @@
 import { IBaseModel } from 'src/common/interfaces/base.model';
 
-export interface SignatureModel extends IBaseModel {
+export interface IDocumentSignatureModel extends IBaseModel {
   id: string;
 
   signature: string;
@@ -12,10 +12,25 @@ export interface SignatureModel extends IBaseModel {
 }
 
 export type CreateSignatureOptions = Pick<
-  SignatureModel,
+  IDocumentSignatureModel,
   'signature' | 'userId'
 >;
 
 export type FindOneSignatureOptions = Partial<
-  Pick<SignatureModel, 'id' | 'userId'>
+  Pick<IDocumentSignatureModel, 'id' | 'userId'>
 >;
+
+export class SignatureModelTransformer {
+  public static fromEntity(
+    entity: IDocumentSignatureModel,
+  ): IDocumentSignatureModel {
+    if (!entity) return null;
+    return {
+      id: entity.id,
+      signature: entity.signature,
+      userId: entity.userId,
+      createdOn: entity.createdOn,
+      updatedOn: entity.updatedOn,
+    };
+  }
+}

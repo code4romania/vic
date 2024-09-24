@@ -8,7 +8,7 @@ import Button from '../components/Button';
 import DocumentVolunteersTableWithQueryParams from '../containers/query/DocumentVolunteersTableWithQueryParams';
 import { IDocumentTemplateListItem } from '../common/interfaces/template.interface';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
-import DocumentTemplatesTableWithQueryParams from '../containers/query/DocumentTemplatesTableWithQueryParams';
+import DocumentTemplatesTableSelectableWithQueryParams from '../containers/query/DocumentTemplatesTableSelectableWithQueryParams';
 import { DocumentContractFillCards } from '../components/DocumentContractFillCards';
 import { useAddDocumentContractMutation } from '../services/document-contracts/document-contracts.service';
 import Modal from '../components/Modal';
@@ -22,6 +22,45 @@ export interface IDocumentVolunteerData {
   documentDate: Date;
   documentPeriod: [Date, Date];
 }
+
+const SuccessModalContent = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation('volunteering_contracts');
+  return (
+    <div className="flex flex-col gap-4 items-center pb-4">
+      <div className="flex flex-row justify-center">
+        <CheckCircleIcon width={70} height={70} className="text-yellow-500" />
+      </div>
+      <p className="text-center">{t('modal.success.description')}</p>
+      <Button
+        label="Înapoi la lista de contracte"
+        onClick={() => navigate('/documents/templates')}
+        className="btn-primary"
+      />
+    </div>
+  );
+};
+
+const ErrorModalContent = ({
+  sentContractsCount,
+  totalNumberOfVolunteers,
+}: {
+  sentContractsCount: number;
+  totalNumberOfVolunteers: number;
+}) => {
+  const { t } = useTranslation('volunteering_contracts');
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-row justify-center">
+        <ExclamationCircleIcon width={70} height={70} className="text-red-400" />
+      </div>
+      <p className="text-center">
+        {`${t('modal.loading.description', { value1: sentContractsCount, value2: totalNumberOfVolunteers })}`}
+      </p>
+      <p className="text-center">{t('modal.error.description')}</p>
+    </div>
+  );
+};
 
 export const GenerateContract = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<IDocumentTemplateListItem | null>(null);
@@ -137,7 +176,7 @@ export const GenerateContract = () => {
     switch (currentStep) {
       case 0:
         return (
-          <DocumentTemplatesTableWithQueryParams
+          <DocumentTemplatesTableSelectableWithQueryParams
             selectedTemplate={selectedTemplate}
             onSelectTemplate={onSelectTemplate}
           />
@@ -164,7 +203,7 @@ export const GenerateContract = () => {
   };
 
   const navigateBack = () => {
-    navigate('/documents/templates', { replace: true });
+    navigate('/documents/contracts', { replace: true });
   };
 
   const canGoNext = useMemo(() => {
@@ -216,10 +255,17 @@ export const GenerateContract = () => {
     setIsLoadingModalOpen(false);
   };
 
+  const handleNavigateBack = () => {
+    if (window.confirm(t('back_alert'))) {
+      navigateBack();
+    }
+  };
+
   return (
     <>
       <PageLayout>
-        <PageHeader onBackButtonPress={navigateBack}>{t('generate.title')}</PageHeader>
+        <PageHeader onBackButtonPress={handleNavigateBack}>{t('generate.title')}</PageHeader>
+        <p className="text-sm text-gray-500">{t('dont_refresh')}</p>
         <Stepper
           steps={steps}
           currentStep={currentStep}
@@ -264,31 +310,16 @@ export const GenerateContract = () => {
           {/* success content */}
           {!isLoadingAddDocumentContracts &&
             (!contractsWithErrors || Object.keys(contractsWithErrors).length === 0) && (
-              <div className="flex flex-col gap-4 items-center pb-4">
-                <div className="flex flex-row justify-center">
-                  <CheckCircleIcon width={70} height={70} className="text-yellow-500" />
-                </div>
-                <p className="text-center">Toate contractele au fost trimise cu succes!</p>
-                <Button
-                  label="Înapoi la lista de contracte"
-                  onClick={() => navigate('/documents/templates')}
-                  className="btn-primary"
-                />
-              </div>
+              <SuccessModalContent />
             )}
           {/* error content */}
           {!isLoadingAddDocumentContracts &&
             contractsWithErrors &&
             Object.keys(contractsWithErrors).length > 0 && (
-              <div className="flex flex-col gap-2">
-                <div className="flex flex-row justify-center">
-                  <ExclamationCircleIcon width={70} height={70} className="text-red-400" />
-                </div>
-                <p className="text-center">
-                  {`${t('modal.loading.description', { value1: sentContractsCount, value2: selectedVolunteers.length })}`}
-                </p>
-                <p className="text-center">{t('modal.error.description')}</p>
-              </div>
+              <ErrorModalContent
+                sentContractsCount={sentContractsCount}
+                totalNumberOfVolunteers={selectedVolunteers.length}
+              />
             )}
         </Modal>
       )}

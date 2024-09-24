@@ -10,22 +10,27 @@ import { IDocumentContractModel } from 'src/modules/documents/models/document-co
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import ApproveContractEvent from 'src/modules/notifications/events/documents/approve-contract.event';
+import { DocumentSignatureFacade } from 'src/modules/documents/services/document-signature.facade';
+import { DocumentPDFGenerator } from 'src/modules/documents/services/document-pdf-generator';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 @Injectable()
 export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
   constructor(
     private readonly documentContractFacade: DocumentContractFacade,
+    private readonly documentSignatureFacade: DocumentSignatureFacade,
     private readonly exceptionService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly eventEmitter: EventEmitter2,
+    private readonly documentPDFGenerator: DocumentPDFGenerator,
   ) {}
 
   public async execute(
     documentContractId: string,
+    signatureBase64: string,
     admin: IAdminUserModel,
   ): Promise<void> {
-    const exists = await this.documentContractFacade.findOne({
+    const exists = await this.documentContractFacade.exists({
       id: documentContractId,
       organizationId: admin.organizationId,
       status: DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE,
@@ -39,10 +44,15 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
 
     let contract: IDocumentContractModel;
     try {
-      contract =
-        await this.documentContractFacade.signDocumentContractByNGO(
-          documentContractId,
-        );
+      const signatureId = await this.documentSignatureFacade.create({
+        userId: admin.id,
+        signature: signatureBase64,
+      });
+
+      contract = await this.documentContractFacade.signDocumentContractByNGO(
+        documentContractId,
+        signatureId,
+      );
     } catch (error) {
       // TODO: Update error
       this.exceptionService.internalServerErrorException({
@@ -50,6 +60,8 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
         code_error: 'SIGN_DOCUMENT_CONTRACT_BY_NGO_003',
       });
     }
+
+    this.documentPDFGenerator.generateContractPDF(documentContractId);
 
     // send push notifications and or email
     this.eventEmitter.emit(

@@ -144,13 +144,15 @@ import { GetManyDocumentContractsUsecase } from './documents/new_contracts/get-m
 import { GetManyDocumentTemplatesUsecase } from './documents/new_contracts/get-many-document-templates.usecase';
 import { SignDocumentContractByVolunteerUsecase } from './documents/new_contracts/sign-document-contract-by-volunteer.usecase';
 import { RejectDocumentContractByVolunteerUsecase } from './documents/new_contracts/reject-document-contact-by-volunteer.usecase';
-import { GeneratePDFsUseCase } from './documents/new_contracts/generate-pdfs.usecase';
 import { GetManyDocumentContractsByVolunteerUsecase } from './documents/new_contracts/get-many-document-contracts-by-volunteer.usecase';
 import { GetOneDocumentContractForVolunteerUsecase } from './documents/new_contracts/get-one-document-contract-for-volunteer.usecase';
 import { ApproveDocumentContractByNgoUsecase } from './documents/new_contracts/approve-document-contract-by-ngo.usecase';
 import { SignDocumentContractByNgoUsecase } from './documents/new_contracts/sign-document-contract-by-ngo.usecase';
 import { DeleteDocumentTemplateUsecase } from './documents/new_contracts/delete-document-template.usecase';
 import { RejectDocumentContractByNgoUsecase } from './documents/new_contracts/reject-document-contract-by-ngo.usecase';
+import { GetOneDocumentContractForNgoUsecase } from './documents/new_contracts/get-one-document-contract-for-ngo.usecase';
+import { UpdateDocumentTemplateUsecase } from './documents/new_contracts/update-document-template.usecase';
+import { GetDocumentContractStatisticsUsecase } from './documents/new_contracts/get-document-contract-statistics.usecase';
 
 const providers = [
   // Organization
@@ -284,6 +286,7 @@ const providers = [
   GetOneDocumentTemplateUseCase,
   GetManyDocumentTemplatesUsecase,
   DeleteDocumentTemplateUsecase,
+  UpdateDocumentTemplateUsecase,
   // Contracts
   CreateContractUsecase,
   GetManyContractsUsecase,
@@ -308,10 +311,10 @@ const providers = [
   ApproveDocumentContractByNgoUsecase,
   SignDocumentContractByNgoUsecase,
   RejectDocumentContractByNgoUsecase,
+  GetOneDocumentContractForNgoUsecase,
+  GetDocumentContractStatisticsUsecase,
   // Notifications
   UpdateSettingsUsecase,
-  // Testing PDFs
-  GeneratePDFsUseCase,
 ];
 
 @Module({

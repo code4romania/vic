@@ -1,40 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { QueryParams } from 'use-query-params';
-import {
-    getPaginationQueryParams,
-    IPaginationQueryParams,
-} from '../../common/constants/pagination';
+import { getPaginationQueryParams, IPaginationQueryParams } from '../../common/constants/pagination';
+import { DateParam, NumberParam, QueryParams, StringParam } from 'use-query-params';
 import { IHOCQueryProps } from '../../common/interfaces/hoc-query-props.interface';
-import { DocumentTemplateTable } from '../../components/DocumentTemplateTable';
-import { IDocumentTemplateListItem } from '../../common/interfaces/template.interface';
+import { DocumentTemplatesTable } from '../../components/DocumentTemplatesTable';
 
-export interface DocumentTemplatesQueryProps extends IPaginationQueryParams {
+const DEFAULT_QUERY_PARAMS = getPaginationQueryParams();
 
-}
+export interface DocumentTemplatesQueryProps extends IPaginationQueryParams { }
 
-export type DocumentTemplatesProps = IHOCQueryProps<DocumentTemplatesQueryProps> & {
-    selectedTemplate: IDocumentTemplateListItem | null;
-    onSelectTemplate: (template: IDocumentTemplateListItem) => void;
-}
+export type DocumentTemplatesProps = IHOCQueryProps<DocumentTemplatesQueryProps>
 
-// set page default params
-const DEFAULT_QUERY_PARAMS = getPaginationQueryParams({ orderBy: 'name' });
 
-// set defaults (if needed) for other specific filter params
-const DocumentTemplatesTableWithQueryParams = ({ selectedTemplate, onSelectTemplate }: { selectedTemplate: IDocumentTemplateListItem | null, onSelectTemplate: (template: IDocumentTemplateListItem) => void }) => {
-    // set query config
-    const queryConfig = {
-        ...DEFAULT_QUERY_PARAMS,
-    };
-
-    return (
-        <QueryParams config={queryConfig}>
-            {(props: any) => {
-                return <DocumentTemplateTable {...props} selectedTemplate={selectedTemplate} onSelectTemplate={onSelectTemplate} />;
-            }}
-        </QueryParams>
-    );
+export const DocumentTemplatesTableWithQueryParams = () => {
+  const queryConfig = {
+    ...DEFAULT_QUERY_PARAMS,
+    name: StringParam,
+    uses: NumberParam,
+    lastUseDate: DateParam,
+    createdBy: StringParam,
+    createdAt: DateParam,
+  };
+  return (
+    <QueryParams config={queryConfig}>
+      {(props: any) => {
+        return <DocumentTemplatesTable {...props} />;
+      }}
+    </QueryParams>
+  );
 };
-
-export default DocumentTemplatesTableWithQueryParams;

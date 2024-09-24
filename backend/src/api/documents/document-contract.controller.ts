@@ -12,7 +12,7 @@ import { CreateDocumentContractUsecase } from 'src/usecases/documents/new_contra
 import { CreateDocumentContractDto } from './dto/create-document-contract.dto';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { GetManyDocumentContractsUsecase } from 'src/usecases/documents/new_contracts/get-many-document-contracts.usecase';
@@ -27,6 +27,11 @@ import { ApproveDocumentContractByNgoUsecase } from 'src/usecases/documents/new_
 import { SignDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/sign-document-contract-by-ngo.usecase';
 import { RejectDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/reject-document-contract-by-ngo.usecase';
 import { RejectDocumentContractByNgoDTO } from './dto/reject-document-contract.dto';
+import { DocumentContractWebItemPresenter } from './presenters/document-contract-web-item.presenter';
+import { GetOneDocumentContractForNgoUsecase } from 'src/usecases/documents/new_contracts/get-one-document-contract-for-ngo.usecase';
+import { DocumentContractStatisticsPresenter } from './presenters/document-contract-statistics.presenter';
+import { GetDocumentContractStatisticsUsecase } from 'src/usecases/documents/new_contracts/get-document-contract-statistics.usecase';
+import { SignDocumentContractByNgoDto } from './dto/sign-document-contract-by-ngo.dto';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -38,6 +43,8 @@ export class DocumentContractController {
     private readonly approveDocumentContractByNgoUsecase: ApproveDocumentContractByNgoUsecase,
     private readonly rejectDocumentContractByNgoUsecase: RejectDocumentContractByNgoUsecase,
     private readonly signDocumentContractByNGO: SignDocumentContractByNgoUsecase,
+    private readonly getOneDocumentContractForNgoUsecase: GetOneDocumentContractForNgoUsecase,
+    private readonly getDocumentContractStatisticsUsecase: GetDocumentContractStatisticsUsecase,
   ) {}
 
   @Post()
@@ -76,6 +83,34 @@ export class DocumentContractController {
     });
   }
 
+  @Get('statistics')
+  @ApiResponse({
+    type: DocumentContractStatisticsPresenter,
+  })
+  async getStatistics(
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<DocumentContractStatisticsPresenter> {
+    const statistics =
+      await this.getDocumentContractStatisticsUsecase.execute(organizationId);
+    return new DocumentContractStatisticsPresenter(statistics);
+  }
+
+  @Get(':id')
+  @ApiResponse({
+    type: DocumentContractWebItemPresenter,
+  })
+  async getDocumentContract(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<DocumentContractWebItemPresenter> {
+    const documentContract =
+      await this.getOneDocumentContractForNgoUsecase.execute({
+        documentContractId: id,
+        organizationId,
+      });
+    return new DocumentContractWebItemPresenter(documentContract);
+  }
+
   @Patch(':id/approve')
   async approveDocumentContract(
     @Param('id', UuidValidationPipe) id: string,
@@ -88,8 +123,14 @@ export class DocumentContractController {
   async signDocumentContract(
     @Param('id', UuidValidationPipe) id: string,
     @ExtractUser() admin: IAdminUserModel,
+    @Body()
+    { legalRepresentativeSignatureBase64 }: SignDocumentContractByNgoDto,
   ): Promise<void> {
-    await this.signDocumentContractByNGO.execute(id, admin);
+    await this.signDocumentContractByNGO.execute(
+      id,
+      legalRepresentativeSignatureBase64,
+      admin,
+    );
   }
 
   @Patch(':id/reject')

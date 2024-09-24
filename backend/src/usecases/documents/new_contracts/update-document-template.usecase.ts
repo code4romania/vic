@@ -3,23 +3,39 @@ import { JSONStringifyError } from 'src/common/helpers/utils';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { DocumentTemplateExceptionMessages } from 'src/modules/documents/exceptions/documente-template.exceptions';
+import { UpdateDocumentTemplateOptions } from 'src/modules/documents/models/document-template.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentTemplateFacade } from 'src/modules/documents/services/document-template.facade';
 
 @Injectable()
-export class DeleteDocumentTemplateUsecase implements IUseCaseService<string> {
-  private readonly logger = new Logger(DeleteDocumentTemplateUsecase.name);
+export class UpdateDocumentTemplateUsecase implements IUseCaseService<string> {
+  private readonly logger = new Logger(UpdateDocumentTemplateUsecase.name);
   constructor(
     private readonly documentTemplateFacade: DocumentTemplateFacade,
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly exceptionService: ExceptionsService,
   ) {}
 
-  public async execute(id: string, organizationId: string): Promise<string> {
+  public async execute(
+    updates: UpdateDocumentTemplateOptions,
+    organizationId: string,
+  ): Promise<void> {
     try {
-      // 1. Templates can be deleted if are not linked with a contract
+      // 1. Does the template exists in the callers' organization?
+      const template = await this.documentTemplateFacade.exists({
+        id: updates.id,
+        organizationId,
+      });
+
+      if (!template) {
+        this.exceptionService.notFoundException(
+          DocumentTemplateExceptionMessages.TEMPLATE_001,
+        );
+      }
+
+      // 2. Templates can be deleted if are not linked with a contract
       const isUsed = await this.documentContractFacade.exists({
-        documentTemplateId: id,
+        documentTemplateId: updates.id,
         organizationId: organizationId,
       });
 
@@ -29,19 +45,7 @@ export class DeleteDocumentTemplateUsecase implements IUseCaseService<string> {
         );
       }
 
-      // 2. Try to delete it
-      const deleted = await this.documentTemplateFacade.delete({
-        id,
-        organizationId,
-      });
-
-      if (!deleted) {
-        this.exceptionService.badRequestException(
-          DocumentTemplateExceptionMessages.TEMPLATE_001,
-        );
-      }
-
-      return deleted;
+      await this.documentTemplateFacade.update(updates);
     } catch (error) {
       if (error?.status === 400) {
         // Rethrow errors that we've thrown above, and catch the others
@@ -49,11 +53,11 @@ export class DeleteDocumentTemplateUsecase implements IUseCaseService<string> {
       }
 
       this.logger.error({
-        ...DocumentTemplateExceptionMessages.TEMPLATE_002,
+        ...DocumentTemplateExceptionMessages.TEMPLATE_004,
         error: JSONStringifyError(error),
       });
       this.exceptionService.internalServerErrorException({
-        ...DocumentTemplateExceptionMessages.TEMPLATE_005,
+        ...DocumentTemplateExceptionMessages.TEMPLATE_004,
         details: JSONStringifyError(error),
       });
     }

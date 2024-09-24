@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Injectable, Logger } from '@nestjs/common';
+import { isSameYear } from 'date-fns';
 import { isOver16FromCNP } from 'src/common/helpers/utils';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -7,13 +8,17 @@ import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archiv
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
-import { CreateDocumentContractOptions } from 'src/modules/documents/models/document-contract.model';
+import {
+  CreateDocumentContractOptions,
+  IDocumentContractModel,
+} from 'src/modules/documents/models/document-contract.model';
 import { IDocumentTemplateModel } from 'src/modules/documents/models/document-template.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentTemplateFacade } from 'src/modules/documents/services/document-template.facade';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import GenerateContractEvent from 'src/modules/notifications/events/documents/generate-contract.event';
 import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
+import { DocumentPDFGenerator } from 'src/modules/documents/services/document-pdf-generator';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import {
   IUserPersonalDataModel,
@@ -40,6 +45,8 @@ Possible errors thrown:
 
 @Injectable()
 export class CreateDocumentContractUsecase implements IUseCaseService<string> {
+  private readonly logger = new Logger(CreateDocumentContractUsecase.name);
+
   constructor(
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly documentTemplateFacade: DocumentTemplateFacade,
@@ -48,12 +55,13 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     private readonly exceptionsService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly eventEmitter: EventEmitter2,
+    private readonly documentPDFGenerator: DocumentPDFGenerator,
   ) {}
 
   public async execute(
     newContract: Omit<
       CreateDocumentContractOptions,
-      'volunteerData' | 'volunteerTutorData' | 'status'
+      'volunteerData' | 'volunteerTutorData' | 'status' | 'filePath'
     >,
     admin: IAdminUserModel,
   ): Promise<string> {
@@ -90,7 +98,10 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
       organizationId: newContract.organizationId,
     });
 
-    if (existingContract) {
+    if (
+      existingContract &&
+      isSameYear(existingContract.documentDate, newContract.documentDate)
+    ) {
       this.exceptionsService.badRequestException(
         ContractExceptionMessages.CONTRACT_004,
       );
@@ -117,17 +128,15 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     // 7. Create the contract input
     const newContractOptions: CreateDocumentContractOptions = {
       ...newContract,
-      status: DocumentContractStatus.CREATED,
+      status: DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE,
       volunteerData: {
         name: volunteer.user.name,
         ...volunteerPersonalData,
       },
     };
-
-    // 7. Create the contract
-    let contractId: string;
+    let contract: IDocumentContractModel;
     try {
-      contractId = await this.documentContractFacade.create(newContractOptions);
+      contract = await this.documentContractFacade.create(newContractOptions);
     } catch (error) {
       this.exceptionsService.internalServerErrorException({
         ...ContractExceptionMessages.CONTRACT_009,
@@ -135,7 +144,17 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
       });
     }
 
-    // 8. Build the HTML with handlebars and set it to lambda to Create the PDF
+    // 8. Generate the PDF
+    try {
+      await this.documentPDFGenerator.generateContractPDF(contract.id);
+    } catch (error) {
+      this.logger.error(
+        `Error while generating the PDF for contract ${contract.id}`,
+        error,
+      );
+
+      // TODO: Sentry
+    }
 
     // 9. Send notification to the volunteer to sign the contract if the status is PENDING_VOLUNTEER_SIGNATURE
     this.eventEmitter.emit(
@@ -147,7 +166,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
         volunteer.user.notificationsSettings.notificationsViaPush,
         volunteer.user.notificationsSettings.notificationsViaEmail,
         volunteer.user.email,
-        contractId,
+        contract.id,
       ),
     );
 
@@ -158,7 +177,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
         organizationId: newContract.organizationId,
         volunteerId: volunteer.id,
         volunteerName: volunteer.user.name,
-        documentContractId: contractId,
+        documentContractId: contract.id,
         documentContractNumber: newContract.documentNumber,
         documentTemplateId: newContract.documentTemplateId,
         documentTemplateName: template.name,
@@ -166,7 +185,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
       admin,
     );
 
-    return contractId;
+    return contract.id;
   }
 
   private async validateVolunteerPersonalData(

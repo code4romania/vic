@@ -7,9 +7,11 @@ import DOMPurify from 'dompurify';
 export const ContractTermsContent = ({
   innerContent,
   setEditingText,
+  readonly,
 }: {
   innerContent: string;
   setEditingText: React.Dispatch<React.SetStateAction<boolean>>;
+  readonly?: boolean
 }) => {
   const { t } = useTranslation('doc_templates');
 
@@ -17,12 +19,12 @@ export const ContractTermsContent = ({
     <div className="flex flex-col gap-4 my-4 py-8 border-y-2 border-dashed">
       <div className="flex flex-row justify-between items-center">
         <p className="font-robotoBold">{t('contract_terms.title')}</p>
-        <Button
+        {!readonly && <Button
           className="btn-outline-secondary text-cool-gray-500"
           label={t('text_editor.title')}
           icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
           onClick={() => setEditingText(true)}
-        />
+        />}
       </div>
       <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(innerContent || '') }} />
     </div>

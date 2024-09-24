@@ -6,6 +6,7 @@ import {
   FindOneDocumentContractOptions,
   UpdateDocumentContractOptions,
   FindExistingContractForVolunteerInInterval,
+  DocumentContractStatistics,
 } from '../models/document-contract.model';
 import { DocumentContractListViewRepository } from '../repositories/document-contract-list-view.repository';
 import {
@@ -15,12 +16,18 @@ import {
 } from '../models/document-contract-list-view.model';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { DocumentContractStatus } from '../enums/contract-status.enum';
+import {
+  FindOneDocumentContractWebItemOptions,
+  IDocumentContractWebItemModel,
+} from '../models/document-contract-web-item.model';
+import { DocumentContractWebItemRepository } from '../repositories/document-contract-web-item.repository';
 
 @Injectable()
 export class DocumentContractFacade {
   constructor(
     private readonly documentContractRepository: DocumentContractRepositoryService,
     private readonly documentContractListViewRepository: DocumentContractListViewRepository,
+    private readonly documentContractWebItemRepository: DocumentContractWebItemRepository,
   ) {}
 
   async approveDocumentContractByNGO(
@@ -33,9 +40,11 @@ export class DocumentContractFacade {
 
   async signDocumentContractByNGO(
     documentContractId: string,
+    signatureId: string,
   ): Promise<IDocumentContractModel> {
     return this.documentContractRepository.update(documentContractId, {
       status: DocumentContractStatus.APPROVED,
+      ngoLegalRepresentativeSignatureId: signatureId,
     });
   }
 
@@ -67,7 +76,7 @@ export class DocumentContractFacade {
 
   async create(
     newDocumentContract: CreateDocumentContractOptions,
-  ): Promise<string> {
+  ): Promise<IDocumentContractModel> {
     return this.documentContractRepository.create(newDocumentContract);
   }
 
@@ -75,6 +84,12 @@ export class DocumentContractFacade {
     options: FindOneDocumentContractOptions,
   ): Promise<IDocumentContractModel> {
     return this.documentContractRepository.findOne(options);
+  }
+
+  async findOneForWeb(
+    options: FindOneDocumentContractWebItemOptions,
+  ): Promise<IDocumentContractWebItemModel> {
+    return this.documentContractWebItemRepository.findOne(options);
   }
 
   async exists(options: FindOneDocumentContractOptions): Promise<boolean> {
@@ -108,5 +123,11 @@ export class DocumentContractFacade {
 
   async delete(id: string): Promise<string> {
     return this.documentContractRepository.delete(id);
+  }
+
+  async statistics(
+    organizationId: string,
+  ): Promise<DocumentContractStatistics> {
+    return this.documentContractRepository.statistics(organizationId);
   }
 }

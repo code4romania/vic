@@ -1,11 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
 import { APP_VERSION } from 'src/common/constants/version';
-import { GeneratePDFsUseCase } from 'src/usecases/documents/new_contracts/generate-pdfs.usecase';
 
 @Controller('public')
 export class PublicController {
-  constructor(private readonly generatePDFsUseCase: GeneratePDFsUseCase) {}
+  constructor() {}
 
   @SkipThrottle()
   @Get('health')
@@ -17,10 +16,5 @@ export class PublicController {
   @Get('version')
   version(): unknown {
     return APP_VERSION;
-  }
-
-  @Get('pdf')
-  async pdf(): Promise<unknown> {
-    return this.generatePDFsUseCase.execute();
   }
 }

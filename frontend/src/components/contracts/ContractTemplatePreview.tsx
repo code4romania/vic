@@ -13,11 +13,15 @@ export const ContractTemplatePreview = ({
   reset,
   getValues,
   formErrors,
+  readonly,
+  termsValue,
 }: {
   control: Control<FieldValues>;
   reset: UseFormReset<FieldValues>;
   getValues: UseFormGetValues<FieldValues>;
   formErrors: FieldErrors<FieldValues>;
+  readonly?: boolean;
+  termsValue: string;
 }) => {
   const { t } = useTranslation('doc_templates');
   const [infoParagraphHovered, setInfoParagraphHovered] = useState(false);
@@ -157,6 +161,8 @@ export const ContractTemplatePreview = ({
         reset={reset}
         getValues={getValues}
         formErrors={formErrors}
+        readonly={readonly}
+        termsValue={termsValue}
       />
       <Signatures
         organization={{

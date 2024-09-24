@@ -8,7 +8,7 @@ import { IDocumentTemplateListItem } from '../common/interfaces/template.interfa
 import { useDocumentTemplatesQuery } from '../services/documents-templates/documents-templates.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { format } from 'date-fns';
-import { DocumentTemplatesProps } from '../containers/query/DocumentTemplatesTableWithQueryParams';
+import { DocumentTemplatesSelectableProps } from '../containers/query/DocumentTemplatesTableSelectableWithQueryParams';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 
 const DocumentTemplatesTableHeader = [
@@ -55,7 +55,7 @@ const DocumentTemplatesTableHeader = [
 ];
 
 
-export const DocumentTemplateTable = ({ query, setQuery, selectedTemplate, onSelectTemplate }: DocumentTemplatesProps) => {
+export const DocumentTemplateTableSelectable = ({ query, setQuery, selectedTemplate, onSelectTemplate }: DocumentTemplatesSelectableProps) => {
 	const { t } = useTranslation(['volunteering_contracts', 'stepper']);
 	const firstRender = useRef(true);
 

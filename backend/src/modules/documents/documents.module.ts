@@ -6,7 +6,7 @@ import { TemplateFacade } from './services/template.facade';
 import { ContractEntity } from './entities/contract.entity';
 import { ContractRepositoryService } from './repositories/contract.repository';
 import { ContractFacade } from './services/contract.facade';
-import { PDFGenerator } from './services/pdf-generator';
+import { DocumentPDFGenerator } from './services/document-pdf-generator';
 import { DocumentTemplateRepositoryService } from './repositories/document-template.repository';
 import { DocumentTemplateFacade } from './services/document-template.facade';
 import { DocumentTemplateEntity } from './entities/document-template.entity';
@@ -20,11 +20,15 @@ import { DocumentTemplateListViewEntity } from './entities/document-template-lis
 import { DocumentTemplateListViewRepository } from './repositories/document-template-list-view.repository';
 import { DocumentSignatureRepository } from './repositories/document-signature.repository';
 import { DocumentSignatureFacade } from './services/document-signature.facade';
+import { DocumentContractWebItemView } from './entities/document-contract-web-item.entity';
+import { DocumentContractWebItemRepository } from './repositories/document-contract-web-item.repository';
+import { CronsService } from './services/crons.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       DocumentContractListViewEntity,
+      DocumentContractWebItemView,
       DocumentTemplateListViewEntity,
       TemplateEntity,
       ContractEntity,
@@ -42,6 +46,7 @@ import { DocumentSignatureFacade } from './services/document-signature.facade';
     DocumentSignatureRepository,
     DocumentContractListViewRepository,
     DocumentTemplateListViewRepository,
+    DocumentContractWebItemRepository,
     // Facades
     TemplateFacade,
     ContractFacade,
@@ -49,13 +54,15 @@ import { DocumentSignatureFacade } from './services/document-signature.facade';
     DocumentContractFacade,
     DocumentSignatureFacade,
     // Services
-    PDFGenerator,
+    DocumentPDFGenerator,
+    // CRONS
+    CronsService,
   ],
   exports: [
     // Export only facades!
     TemplateFacade,
     ContractFacade,
-    PDFGenerator,
+    DocumentPDFGenerator,
     DocumentTemplateFacade,
     DocumentContractFacade,
     DocumentSignatureFacade,

@@ -1,116 +1,98 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import DataTableComponent from './DataTableComponent';
 import CardHeader from './CardHeader';
 import CardBody from './CardBody';
 import Card from '../layouts/CardLayout';
 import { IContractListItem } from '../common/interfaces/contract.interface';
+import { IHOCQueryProps } from '../common/interfaces/hoc-query-props.interface';
 import i18n from '../common/config/i18n';
-import {
-  ArrowDownTrayIcon,
-  CheckIcon,
-  EyeIcon,
-  PlusIcon,
-  TrashIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon, EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
-import {
-  useApproveContractMutation,
-  useContractsQuery,
-  useDeleteContractMutation,
-  useRejectContractMutation,
-} from '../services/contracts/contracts.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { ContractsTableBasicProps } from '../containers/query/ContractsTableWithQueryParams';
 import Popover from './Popover';
-import { useErrorToast, useSuccessToast } from '../hooks/useToast';
-import { InternalErrors } from '../common/errors/internal-errors.class';
 import Button from './Button';
 import {
   ContractStatusMarkerColorMapper,
   downloadExcel,
-  downloadFile,
+  // downloadFile,
   formatDate,
 } from '../common/utils/utils';
 import LinkCell from './LinkCell';
 import CellLayout from '../layouts/CellLayout';
 import StatusWithMarker from './StatusWithMarker';
 import DataTableFilters from './DataTableFilters';
-import VolunteerSelect from '../containers/VolunteerSelect';
 import FormDatePicker from './FormDatePicker';
-import { ListItem } from '../common/interfaces/list-item.interface';
-import Select, { SelectItem } from './Select';
-import { ContractStatus } from '../common/enums/contract-status.enum';
 import { useNavigate } from 'react-router-dom';
-import ContractSidePanel from './ContractSidePanel';
-import ConfirmationModal from './ConfirmationModal';
-import RejectTextareaModal from './RejectTextareaModal';
 import { VolunteerTabsOptions } from '../pages/Volunteer';
 import { useTranslation } from 'react-i18next';
 import { getContractsForDownload } from '../services/contracts/contracts.api';
-import UploadFileModal from './UploadFileModal';
+import { useGetDocumentsContractsQuery } from '../services/document-contracts/document-contracts.service';
+import { DocumentContractStatus } from '../common/enums/document-contract-status.enum';
+import { IPaginationQueryParams } from '../common/constants/pagination';
+import { IDocumentContract } from '../common/interfaces/document-contract.interface';
+import DocumentsContractSidePanel from './DocumentsContractSidePanel';
 
-const StatusOptions: SelectItem<ContractStatus>[] = [
-  {
-    key: ContractStatus.ACTIVE,
-    value: `${i18n.t(`documents:contract.status.${ContractStatus.ACTIVE}`)}`,
-  },
-  {
-    key: ContractStatus.CLOSED,
-    value: `${i18n.t(`documents:contract.status.${ContractStatus.CLOSED}`)}`,
-  },
-  {
-    key: ContractStatus.NOT_STARTED,
-    value: `${i18n.t(`documents:contract.status.${ContractStatus.NOT_STARTED}`)}`,
-  },
-  {
-    key: ContractStatus.REJECTED,
-    value: `${i18n.t(`documents:contract.status.${ContractStatus.REJECTED}`)}`,
-  },
-  {
-    key: ContractStatus.PENDING_ADMIN,
-    value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_ADMIN}`)}`,
-  },
-  {
-    key: ContractStatus.PENDING_VOLUNTEER,
-    value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_VOLUNTEER}`)}`,
-  },
-];
+// const StatusOptions: SelectItem<ContractStatus>[] = [
+//   {
+//     key: ContractStatus.ACTIVE,
+//     value: `${i18n.t(`documents:contract.status.${ContractStatus.ACTIVE}`)}`,
+//   },
+//   {
+//     key: ContractStatus.CLOSED,
+//     value: `${i18n.t(`documents:contract.status.${ContractStatus.CLOSED}`)}`,
+//   },
+//   {
+//     key: ContractStatus.NOT_STARTED,
+//     value: `${i18n.t(`documents:contract.status.${ContractStatus.NOT_STARTED}`)}`,
+//   },
+//   {
+//     key: ContractStatus.REJECTED,
+//     value: `${i18n.t(`documents:contract.status.${ContractStatus.REJECTED}`)}`,
+//   },
+//   {
+//     key: ContractStatus.PENDING_ADMIN,
+//     value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_ADMIN}`)}`,
+//   },
+//   {
+//     key: ContractStatus.PENDING_VOLUNTEER,
+//     value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_VOLUNTEER}`)}`,
+//   },
+// ];
 
 const ContractsTableHeader = [
   {
     id: 'contractNumber',
     name: i18n.t('documents:contracts.headers.contract_number'),
     sortable: true,
-    selector: (row: IContractListItem) => row.contractNumber,
+    selector: (row: IDocumentContract) => row.documentNumber,
   },
   {
     id: 'volunteer',
     name: i18n.t('documents:contracts.headers.volunteer'),
     grow: 2,
     sortable: true,
-    cell: (row: IContractListItem) => (
-      <LinkCell href={`/volunteers/${row.volunteer.id}`}>{row.volunteer.name}</LinkCell>
+    cell: (row: IDocumentContract) => (
+      <LinkCell href={`/volunteers/${row.volunteerId}`}>{row.volunteerName}</LinkCell>
     ),
   },
   {
     id: 'startDate',
     name: i18n.t('documents:contracts.headers.start_date'),
     sortable: true,
-    selector: (row: IContractListItem) => formatDate(row.startDate),
+    selector: (row: IDocumentContract) => formatDate(row.documentStartDate),
   },
   {
     id: 'endDate',
     name: i18n.t('documents:contracts.headers.end_date'),
     sortable: true,
-    selector: (row: IContractListItem) => formatDate(row.endDate),
+    selector: (row: IDocumentContract) => formatDate(row.documentEndDate),
   },
   {
     id: 'status',
     name: i18n.t('documents:contracts.headers.status'),
     minWidth: '11rem',
     sortable: true,
-    cell: (row: IContractListItem) => (
+    cell: (row: IDocumentContract) => (
       <CellLayout>
         <StatusWithMarker markerColor={ContractStatusMarkerColorMapper[row.status]}>
           {i18n.t(`documents:contract.status.${row.status}`)}
@@ -155,61 +137,48 @@ const VolunteerContractsTableHeader = [
   },
 ];
 
-interface ContractsTableProps extends ContractsTableBasicProps {
+interface DocumentContractsTableQueryProps extends IPaginationQueryParams {
+  volunteerId?: string;
+  search?: string;
+  startDate?: Date;
+  endDate?: Date;
+  status?: DocumentContractStatus;
+  activeTab?: VolunteerTabsOptions;
+}
+
+type DocumentContractsTableBasicProps = IHOCQueryProps<DocumentContractsTableQueryProps>;
+interface DocumentContractsTableProps extends DocumentContractsTableBasicProps {
   volunteerName?: string;
   volunteerId?: string;
 }
 
-const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: ContractsTableProps) => {
+const ContractsTable = ({
+  query,
+  setQuery,
+  volunteerName,
+  volunteerId,
+}: DocumentContractsTableProps) => {
   // selected contract id
   const [selectedContract, setSelectedContract] = useState<string>();
   // side panel state
   const [isViewContractSidePanelOpen, setIsViewContractSidePanelOpen] = useState<boolean>(false);
-  // confirmation modals
-  const [showRejectContract, setShowRejectContract] = useState<null | IContractListItem>(null);
-  const [showDeleteContract, setShowDeleteContract] = useState<null | IContractListItem>(null);
-  const [showApproveContract, setShowApproveContract] = useState<null | IContractListItem>(null);
   // translation
   const { t } = useTranslation('documents');
   // navigation
   const navigate = useNavigate();
 
-  //Actions
-  const { mutateAsync: deleteContract, isLoading: isDeletingContract } =
-    useDeleteContractMutation();
-
-  const { mutateAsync: approveContract, isLoading: isApprovingContract } =
-    useApproveContractMutation();
-
-  const { mutateAsync: rejectContract, isLoading: isRejectingContract } =
-    useRejectContractMutation();
-
-  const {
-    data: contracts,
-    isLoading: isContractsLoading,
-    error,
-    refetch,
-  } = useContractsQuery({
-    limit: query?.limit as number,
+  const { data: contracts, isLoading: isLoadingContracts } = useGetDocumentsContractsQuery({
     page: query?.page as number,
+    limit: query?.limit as number,
+    search: query?.search,
     orderBy: query?.orderBy as string,
     orderDirection: query?.orderDirection as OrderDirection,
-    search: query?.search,
-    volunteerName: query?.volunteer,
-    startDate: query?.startDate,
-    endDate: query?.endDate,
-    status: query?.status as ContractStatus,
     volunteerId,
+    status: query?.status as DocumentContractStatus,
   });
 
-  // query error handling
-  useEffect(() => {
-    if (error)
-      useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-  }, [error]);
-
-  const onView = (row: IContractListItem) => {
-    setSelectedContract(row.id);
+  const onView = (row: IDocumentContract) => {
+    setSelectedContract(row.documentId);
     setIsViewContractSidePanelOpen(true);
   };
 
@@ -218,25 +187,17 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
       orderBy: query?.orderBy as string,
       orderDirection: query?.orderDirection as OrderDirection,
       search: query?.search,
-      volunteerName: query?.volunteer,
+      // volunteerName: query?.volunteer,
       startDate: query?.startDate,
       endDate: query?.endDate,
-      status: query?.status as ContractStatus,
+      // status: query?.status as ContractStatus,
       volunteerId,
     });
 
     downloadExcel(data as BlobPart, t('contracts.download'));
   };
 
-  const onRejectContract = (row: IContractListItem) => {
-    setShowRejectContract(row);
-  };
-
-  const onRemove = (row: IContractListItem) => {
-    setShowDeleteContract(row);
-  };
-
-  const buildContractActionColumn = (): TableColumn<IContractListItem> => {
+  const buildContractActionColumn = (): TableColumn<IDocumentContract> => {
     const contractsMenuItems = [
       {
         label: t('events:popover.view'),
@@ -246,66 +207,23 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
       {
         label: t('general:download', { item: i18n.t('general:contract').toLowerCase() }),
         icon: <ArrowDownTrayIcon className="menu-icon" />,
-        onClick: onDownloadContract,
+        // todo: download contract
+        // onClick: onDownloadContract,
       },
     ];
 
-    const contractsValidateOngMenuItems = [
-      ...contractsMenuItems,
-      {
-        label: t('popover.confirm'),
-        icon: <CheckIcon className="menu-icon" />,
-        onClick: setShowApproveContract,
-      },
-      {
-        label: t('popover.reject'),
-        icon: <XMarkIcon className="menu-icon" />,
-        onClick: onRejectContract,
-      },
-      {
-        label: t('popover.remove'),
-        icon: <TrashIcon className="menu-icon" />,
-        alert: true,
-        onClick: onRemove,
-      },
-    ];
-
-    const contractsValidateVolunteerMenuItems = [
-      ...contractsMenuItems,
-      {
-        label: t('popover.remove'),
-        icon: <TrashIcon className="menu-icon" />,
-        alert: true,
-        onClick: onRemove,
-      },
-    ];
-
-    const contractsRejectedMenuItems = [
-      {
-        label: t('events:popover.view'),
-        icon: <EyeIcon className="menu-icon" />,
-        onClick: onView,
-      },
-      {
-        label: t('popover.remove_from_list'),
-        icon: <TrashIcon className="menu-icon" />,
-        alert: true,
-        onClick: onRemove,
-      },
-    ];
-
-    const mapContractStatusToPopoverItems = (status: ContractStatus) => {
+    const mapContractStatusToPopoverItems = (status: DocumentContractStatus) => {
       switch (status) {
-        case ContractStatus.ACTIVE:
-        case ContractStatus.CLOSED:
-        case ContractStatus.NOT_STARTED:
+        case DocumentContractStatus.APPROVED:
+        case DocumentContractStatus.SCHEDULED:
+        case DocumentContractStatus.ACTION_EXPIRED:
+        case DocumentContractStatus.REJECTED_NGO:
+        case DocumentContractStatus.REJECTED_VOLUNTEER:
+        case DocumentContractStatus.CREATED:
+        case DocumentContractStatus.PENDING_APPROVAL_NGO:
+        case DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE:
+        case DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE:
           return contractsMenuItems;
-        case ContractStatus.PENDING_ADMIN:
-          return contractsValidateOngMenuItems;
-        case ContractStatus.PENDING_VOLUNTEER:
-          return contractsValidateVolunteerMenuItems;
-        case ContractStatus.REJECTED:
-          return contractsRejectedMenuItems;
         default:
           return [];
       }
@@ -313,15 +231,15 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
 
     return {
       name: '',
-      cell: (row: IContractListItem) => (
-        <Popover<IContractListItem> row={row} items={mapContractStatusToPopoverItems(row.status)} />
+      cell: (row: IDocumentContract) => (
+        <Popover<IDocumentContract> row={row} items={mapContractStatusToPopoverItems(row.status)} />
       ),
       width: '50px',
       allowOverflow: true,
     };
   };
 
-  const buildContractTableHeader = (): TableColumn<IContractListItem>[] => {
+  const buildContractTableHeader = (): TableColumn<IDocumentContract>[] => {
     return volunteerName ? VolunteerContractsTableHeader : ContractsTableHeader;
   };
 
@@ -339,7 +257,7 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
     });
   };
 
-  const onSort = (column: TableColumn<IContractListItem>, direction: SortOrder) => {
+  const onSort = (column: TableColumn<IDocumentContract>, direction: SortOrder) => {
     setQuery({
       orderBy: column.id as string,
       orderDirection:
@@ -349,12 +267,12 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
     });
   };
 
-  const onDownloadContract = (row: IContractListItem) => {
-    downloadFile(row.uri, row.fileName);
-  };
+  // const onDownloadContract = (row: IContractListItem) => {
+  //   downloadFile(row.uri, row.fileName);
+  // };
 
   const onAddContract = () => {
-    navigate(`/documents/templates/contracts/generate`);
+    navigate(`generate`);
   };
 
   const onStartDateChange = (startDate: Date | null) => {
@@ -365,9 +283,9 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
     setQuery({ endDate: endDate as Date });
   };
 
-  const onVolunteerChange = (volunteer: ListItem) => {
-    setQuery({ volunteer: volunteer.label });
-  };
+  // const onVolunteerChange = (volunteer: ListItem) => {
+  //   setQuery({ volunteer: volunteer.label });
+  // };
 
   const onResetFilters = () => {
     if (volunteerName) {
@@ -383,77 +301,83 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
     });
   };
 
-  const onStatusChange = (item: SelectItem<ContractStatus> | undefined) => {
-    setQuery({ status: item?.key });
-  };
+  // const onStatusChange = (item: SelectItem<ContractStatus> | undefined) => {
+  //   setQuery({ status: item?.key });
+  // };
 
-  const onCloseSidePanel = (shouldRefetch?: boolean) => {
+  // const onCloseSidePanel = (shouldRefetch?: boolean) => {
+  //   setIsViewContractSidePanelOpen(false);
+  //   setSelectedContract(undefined);
+  //   if (shouldRefetch) refetch();
+  // };
+
+  // todo: do we need shouldRefetch?
+  const onCloseSidePanel = () => {
     setIsViewContractSidePanelOpen(false);
     setSelectedContract(undefined);
-    if (shouldRefetch) refetch();
   };
 
-  const confirmReject = (rejectMessage?: string) => {
-    if (showRejectContract)
-      rejectContract(
-        {
-          id: showRejectContract.id,
-          rejectMessage,
-        },
-        {
-          onSuccess: () => {
-            useSuccessToast(t('contract.submit.reject'));
-            refetch();
-          },
-          onError: (error) => {
-            useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-          },
-          onSettled: () => {
-            setShowRejectContract(null);
-          },
-        },
-      );
-  };
+  // const confirmReject = (rejectMessage?: string) => {
+  //   if (showRejectContract)
+  //     rejectContract(
+  //       {
+  //         id: showRejectContract.id,
+  //         rejectMessage,
+  //       },
+  //       {
+  //         onSuccess: () => {
+  //           useSuccessToast(t('contract.submit.reject'));
+  //           // refetch();
+  //         },
+  //         onError: (error) => {
+  //           useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+  //         },
+  //         onSettled: () => {
+  //           setShowRejectContract(null);
+  //         },
+  //       },
+  //     );
+  // };
 
-  const confirmDelete = () => {
-    if (showDeleteContract) {
-      const contractId = showDeleteContract.id;
-      setShowDeleteContract(null);
-      deleteContract(contractId, {
-        onSuccess: () => {
-          useSuccessToast(t('contract.submit.delete'));
-          refetch();
-        },
-        onError: (error) => {
-          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-        },
-      });
-    }
-  };
+  // const confirmDelete = () => {
+  //   if (showDeleteContract) {
+  //     const contractId = showDeleteContract.id;
+  //     setShowDeleteContract(null);
+  //     deleteContract(contractId, {
+  //       onSuccess: () => {
+  //         useSuccessToast(t('contract.submit.delete'));
+  //         // refetch();
+  //       },
+  //       onError: (error) => {
+  //         useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+  //       },
+  //     });
+  //   }
+  // };
 
-  const onConfirmSign = (contract?: File) => {
-    if (!contract) return;
+  // const onConfirmSign = (contract?: File) => {
+  //   if (!contract) return;
 
-    // store id and close modal
-    const contractId = showApproveContract?.id;
-    setShowApproveContract(null);
+  //   // store id and close modal
+  //   const contractId = showApproveContract?.id;
+  //   setShowApproveContract(null);
 
-    // approval process
-    approveContract(
-      {
-        id: contractId as string,
-        contract,
-      },
-      {
-        onSuccess: () => {
-          useSuccessToast(t('contract.submit.confirm'));
-        },
-        onError: (error) => {
-          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-        },
-      },
-    );
-  };
+  //   // approval process
+  //   approveContract(
+  //     {
+  //       id: contractId as string,
+  //       contract,
+  //     },
+  //     {
+  //       onSuccess: () => {
+  //         useSuccessToast(t('contract.submit.confirm'));
+  //       },
+  //       onError: (error) => {
+  //         useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
+  //       },
+  //     },
+  //   );
+  // };
 
   return (
     <>
@@ -462,13 +386,13 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
         searchValue={query?.search}
         onResetFilters={onResetFilters}
       >
-        {!volunteerName && (
+        {/* {!volunteerName && (
           <VolunteerSelect
             label={t('volunteer:name', { status: '' })}
             defaultValue={query.volunteer ? { value: '', label: query.volunteer } : undefined}
             onSelect={onVolunteerChange}
           />
-        )}
+        )} */}
         <FormDatePicker
           label={`${t('contracts.filters.start_date')}`}
           placeholder={`${t('general:anytime')}`}
@@ -481,13 +405,13 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
           onChange={onEndDateChange}
           value={query.endDate}
         />
-        <Select
+        {/* <Select
           options={StatusOptions}
           onChange={onStatusChange}
           placeholder={`${t('general:select', { item: '' })}`}
           label={`${t('contracts.filters.status')}`}
           selected={StatusOptions.find((option) => option.key === query.status)}
-        />
+        /> */}
       </DataTableFilters>
       <Card>
         <CardHeader>
@@ -508,12 +432,11 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
           </div>
         </CardHeader>
         <CardBody>
-          <DataTableComponent
+          <DataTableComponent<IDocumentContract>
             columns={[...buildContractTableHeader(), buildContractActionColumn()]}
             data={contracts?.items}
-            loading={
-              isContractsLoading || isDeletingContract || isRejectingContract || isApprovingContract
-            }
+            // todo: more loading stuff here while doing actions
+            loading={isLoadingContracts}
             pagination
             paginationPerPage={query.limit}
             paginationTotalRows={contracts?.meta?.totalItems}
@@ -523,7 +446,7 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
             onSort={onSort}
           />
         </CardBody>
-        {showRejectContract && (
+        {/* {showRejectContract && (
           <RejectTextareaModal
             label={t('contract.reject_modal.description')}
             title={t('contract.reject_modal.title')}
@@ -533,8 +456,8 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
             primaryBtnLabel={`${t('contract.actions.reject')}`}
             primaryBtnClassName="btn-danger"
           />
-        )}
-        {showDeleteContract && (
+        )} */}
+        {/* {showDeleteContract && (
           <ConfirmationModal
             title={t('contract.delete_modal.title')}
             description={t('contract.delete_modal.description')}
@@ -543,17 +466,17 @@ const ContractsTable = ({ query, setQuery, volunteerName, volunteerId }: Contrac
             onConfirm={confirmDelete}
             confirmBtnClassName="btn-danger"
           />
-        )}
-        {showApproveContract && (
+        )} */}
+        {/* {showApproveContract && (
           <UploadFileModal
             description={t('contract.upload.description')}
             title={t('contract.upload.title')}
             onClose={setShowApproveContract.bind(null, null)}
             onConfirm={onConfirmSign}
           />
-        )}
+        )} */}
       </Card>
-      <ContractSidePanel
+      <DocumentsContractSidePanel
         onClose={onCloseSidePanel}
         isOpen={isViewContractSidePanelOpen}
         contractId={selectedContract}

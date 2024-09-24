@@ -5,12 +5,14 @@ import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { RepositoryWithPagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   CreateDocumentContractOptions,
+  DocumentContractStatistics,
   DocumentContractTransformer,
   FindExistingContractForVolunteerInInterval,
   FindOneDocumentContractOptions,
   IDocumentContractModel,
   UpdateDocumentContractOptions,
 } from '../models/document-contract.model';
+import { DocumentContractStatus } from '../enums/contract-status.enum';
 
 @Injectable()
 export class DocumentContractRepositoryService extends RepositoryWithPagination<DocumentContractEntity> {
@@ -24,14 +26,14 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
 
   async create(
     newDocumentContract: CreateDocumentContractOptions,
-  ): Promise<string> {
+  ): Promise<IDocumentContractModel> {
     const documentContract = await this.documentContractRepository.save(
       DocumentContractTransformer.createDocumentContractToEntity(
         newDocumentContract,
       ),
     );
 
-    return documentContract.id;
+    return DocumentContractTransformer.fromEntity(documentContract);
   }
 
   async findOne(
@@ -52,6 +54,21 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
     return DocumentContractTransformer.fromEntity(documentContract);
   }
 
+  async findOneForPDFGeneration(id: string): Promise<IDocumentContractModel> {
+    const documentContract = await this.documentContractRepository.findOne({
+      where: { id },
+      relations: {
+        organization: true,
+        documentTemplate: true,
+        volunteerSignature: true,
+        legalGuardianSignature: true,
+        ngoLegalRepresentativeSignature: true,
+      },
+    });
+
+    return DocumentContractTransformer.fromEntity(documentContract);
+  }
+
   /**
    * Checks if a contract exists for a volunteer in the given period
    *
@@ -61,7 +78,7 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
   async existsInSamePeriod(
     options: FindExistingContractForVolunteerInInterval,
   ): Promise<boolean> {
-    const existingContract = await this.documentContractRepository.findOne({
+    const existingContract = await this.documentContractRepository.exists({
       where: {
         volunteerId: options.volunteerId,
         documentStartDate: LessThanOrEqual(options.documentEndDate),
@@ -101,5 +118,37 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
     }
 
     return null;
+  }
+
+  async statistics(
+    organizationId: string,
+  ): Promise<DocumentContractStatistics> {
+    const result = await this.documentContractRepository.query(
+      `
+      SELECT
+        COUNT(*) FILTER (WHERE status = $1) AS pending_ngo_representative_signature,
+        COUNT(*) FILTER (WHERE status = $2) AS pending_volunteer_signature,
+        COUNT(*) FILTER (WHERE CURRENT_DATE BETWEEN document_start_date AND document_end_date) AS active_contracts,
+        COUNT(*) FILTER (WHERE document_end_date - CURRENT_DATE <= 14) AS soon_to_expire
+      FROM document_contract WHERE organization_id = $3
+    `,
+      [
+        DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE,
+        DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE,
+        organizationId,
+      ],
+    );
+
+    const data = result[0];
+
+    const statistics = {
+      pendingNgoRepresentativeSignature:
+        +data.pending_ngo_representative_signature || 0,
+      pendingVolunteerSignature: +data.pending_volunteer_signature || 0,
+      activeContracts: +data.active_contracts || 0,
+      soonToExpire: +data.soon_to_expire || 0,
+    };
+
+    return statistics;
   }
 }
