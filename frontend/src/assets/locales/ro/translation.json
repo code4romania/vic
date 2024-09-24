@@ -1017,6 +1017,52 @@
     "back_alert": "Esti sigur ca vrei sa te intorci? Tot progresul tau se va pierde.",
     "dont_refresh": "Pentru a te asigura că progresul tău nu se pierde, te rugăm să nu reîncarci pagina în timpul generării contractelor"
   },
+  "document_contract": {
+    "contract": {
+      "period": "Perioada contract",
+      "generated_by": "Generat de",
+      "generated_on": "Data generare",
+      "signed_on": "Data semnare",
+      "template": "Template utilizat",
+      "actions": {
+        "sign": "Semnează",
+        "reject": "Refuză"
+      },
+      "status": {
+        "CREATED": "Salvat",
+        "SCHEDULED": "Planificat",
+        "PENDING_VOLUNTEER_SIGNATURE": "Semnare voluntar",
+        "PENDING_APPROVAL_NGO": "Verificare ONG",
+        "PENDING_NGO_REPRESENTATIVE_SIGNATURE": "Semnare ONG",
+        "APPROVED": {
+          "ACTIVE": "Activ",
+          "DONE": "Încheiat",
+          "NOT_STARTED": "Neînceput"
+        },
+        "REJECTED_VOLUNTEER": "Refuzat",
+        "REJECTED_NGO": "Refuzat",
+        "ACTION_EXPIRED": "Expirat"
+      }
+    },
+    "sign": {
+      "title": "Semnează contract {{value}}",
+      "warning": "Atenție! Doar reprezentantul legal al organizației, ale cărui date sunt menționate în contract, poate semna documentul. Odată ce ai salvat, nu mai poți modifica semnătura sau documentul.",
+      "draw": "Desenează semnătura mai jos pentru a semna documentul.",
+      "confirm": "Prin aplicarea semnăturii, confirmi că ai citit, verificat și ești de acord cu conținutul contractului. Odată semnat, contractul devine valid și nu mai poate fi modificat.",
+      "actions": {
+        "apply": "Aplică semnătura",
+        "reset": "Resetează"
+      },
+      "success": {
+        "title": "Ai semnat cu succes!",
+        "description": "Documentul a fost trimis către voluntar și nu mai poate fi modificat. În cazul în care s-a produs o eroare, poți genera un document nou pentru acest voluntar.",
+        "see_contract_details": "Vezi detaliile contractului"
+      },
+      "error": {
+        "empty_signature": "Semnătura este obligatorie"
+      }
+    }
+  },
   "doc_templates": {
     "title": "Creează template",
     "view_title": "Vizualizează template",
@@ -1032,7 +1078,6 @@
       "download_uncompleted": "Descarcă necompletat",
       "save": "Salvează"
     },
-
     "table": {
       "title": "Template-uri de contracte",
       "table_actions": {
@@ -1042,7 +1087,6 @@
         "download_uncompleted": "Descarcă necompletat"
       }
     },
-
     "tooltip": "Datele contractului (Numărul, perioada contractului și data întemeierii) se completează în momentul atribuirii contractului către unul sau mai mulți voluntari.",
     "template_name": "Numele template-ului",
     "organization": {

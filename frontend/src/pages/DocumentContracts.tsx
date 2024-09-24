@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import Tabs from '../components/Tabs';
 import { ContractType } from '../common/enums/contract-type.enum';
 import { ContractsStatistics } from '../components/ContractsStatistics';
-import NewContractsTableWithQueryParams from '../containers/query/NewContractsTableWithQueryParams';
+import NewContractsTableWithQueryParams from '../containers/query/DocumentContractsTableWithQueryParams';
 import { DocumentTemplatesTableWithQueryParams } from '../containers/query/DocumentTemplatesTableWithQueryParams';
 
 interface OrganizationData {
@@ -107,7 +107,7 @@ export const DocumentContracts = () => {
             { key: ContractType.TEMPLATE, value: t('tabs.templates') },
           ]}
           onClick={onTabClick}
-        // defaultTab={DocumentsTabsOptions.find((tab) => tab.key === query?.contractType)}
+          // defaultTab={DocumentsTabsOptions.find((tab) => tab.key === query?.contractType)}
         >
           <p className="text-cool-gray-500">{t('description')}</p>
 
