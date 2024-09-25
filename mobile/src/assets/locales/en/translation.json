@@ -480,7 +480,11 @@
         "subtitle": "{{number}} documents await response"
       },
       "contract": {
-        "title": "Volunteering contract"
+        "title": "Volunteering contract",
+        "subtitle": {
+          "one": "{{number}} contract pending",
+          "many": "{{number}} contracts pending"
+        }
       },
       "volunteer_profile": {
         "title": "Volunteer profile",

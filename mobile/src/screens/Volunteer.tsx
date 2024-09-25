@@ -53,10 +53,6 @@ const Volunteer = ({ navigation }: any) => {
     navigation.navigate('activity-logs');
   };
 
-  const onDocumentsButtonPress = () => {
-    navigation.navigate('documents');
-  };
-
   const onTopNavigationCardPress = () => {
     navigation.openDrawer();
   };
@@ -101,13 +97,6 @@ const Volunteer = ({ navigation }: any) => {
           subtitle={`${t(Number(stats?.activityLogCount) === 1 ? 'menu_items.activity_log.subtitle.one' : 'menu_items.activity_log.subtitle.many', { number: stats?.activityLogCount })}`}
         />
         <VolunteerCard
-          title={t('general:documents')}
-          icon={<SvgXml xml={volunteerDocumentSVG} />}
-          onPress={onDocumentsButtonPress}
-          loading={isLoadingStats}
-          subtitle={`${t('menu_items.documents.subtitle', { number: stats?.contractCount })}`}
-        />
-        <VolunteerCard
           title={t('menu_items.volunteer_profile.title')}
           icon={<SvgXml xml={volunteerUserSVG} />}
           onPress={onViewVolunteerProfilenButtonPress}
@@ -121,7 +110,7 @@ const Volunteer = ({ navigation }: any) => {
           icon={<SvgXml xml={volunteerDocumentSVG} />}
           onPress={onViewContractButtonPress}
           loading={isLoadingStats}
-          subtitle={'TODO: subtitle after API is ready'}
+          subtitle={`${t(Number(stats?.contractCount) === 1 ? 'menu_items.contract.subtitle.one' : 'menu_items.contract.subtitle.many', { number: stats?.contractCount })}`}
         />
       </View>
     </Screen>
