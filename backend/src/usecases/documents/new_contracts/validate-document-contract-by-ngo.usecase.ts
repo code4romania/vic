@@ -9,7 +9,7 @@ import { DocumentContractFacade } from 'src/modules/documents/services/document-
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 @Injectable()
-export class ApproveDocumentContractByNgoUsecase {
+export class ValidateDocumentContractByNgoUsecase {
   constructor(
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly exceptionService: ExceptionsService,

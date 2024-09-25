@@ -6,13 +6,14 @@ import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archiv
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
-import { IDocumentContractModel } from 'src/modules/documents/models/document-contract.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
-import ApproveContractEvent from 'src/modules/notifications/events/documents/approve-contract.event';
 import { DocumentSignatureFacade } from 'src/modules/documents/services/document-signature.facade';
 import { DocumentPDFGenerator } from 'src/modules/documents/services/document-pdf-generator';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
+import { IDocumentContractModel } from 'src/modules/documents/models/document-contract.model';
+import SignContractEvent from 'src/modules/notifications/events/documents/sign-contract.event';
 
 @Injectable()
 export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
@@ -23,6 +24,7 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly eventEmitter: EventEmitter2,
     private readonly documentPDFGenerator: DocumentPDFGenerator,
+    private readonly volunteerFacade: VolunteerFacade,
   ) {}
 
   public async execute(
@@ -63,22 +65,8 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
 
     this.documentPDFGenerator.generateContractPDF(documentContractId);
 
-    // send push notifications and or email
-    this.eventEmitter.emit(
-      EVENTS.DOCUMENTS.SIGN_CONTRACT_BY_NGO,
-      new ApproveContractEvent(
-        contract.organizationId,
-        contract.volunteerId,
-        contract.volunteer.organization.name,
-        contract.volunteer.user.notificationsSettings.notificationsViaPush,
-        contract.volunteer.user.notificationsSettings.notificationsViaEmail,
-        contract.volunteer.user.email,
-        contract.id,
-      ),
-    );
-
     // Sign Document Contract by NGO
-    await this.actionsArchiveFacade.trackEvent(
+    this.actionsArchiveFacade.trackEvent(
       TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_NGO,
       {
         organizationId: admin.organizationId,
@@ -88,6 +76,25 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
         volunteerName: contract.volunteerData.name,
       },
       admin,
+    );
+
+    // get volunteer data to build the mail/notification subject/body
+    const volunteer = await this.volunteerFacade.find({
+      id: contract.volunteerId,
+    });
+
+    // send push notifications and or email
+    this.eventEmitter.emit(
+      EVENTS.DOCUMENTS.SIGN_CONTRACT_BY_NGO,
+      new SignContractEvent(
+        contract.organizationId,
+        volunteer.user.id,
+        volunteer.organization.name,
+        volunteer.user.notificationsSettings.notificationsViaPush,
+        volunteer.user.notificationsSettings.notificationsViaEmail,
+        volunteer.user.email,
+        contract.id,
+      ),
     );
   }
 }

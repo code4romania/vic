@@ -85,18 +85,6 @@ export const NOTIFICATIONS = {
       body: '',
     },
   },
-  APPROVE_CONTRACT: {
-    PUSH: {
-      title: 'VIC',
-      body: (organizationName: string): string =>
-        `Contractul tău cu ${organizationName} a fost aprobat și semnat`,
-    },
-    EMAIL: {
-      subject: (organizationName: string): string =>
-        `Contractul tău cu ${organizationName} a fost aprobat și semnat`,
-      body: '',
-    },
-  },
   SIGN_CONTRACT_BY_NGO: {
     PUSH: {
       title: 'VIC',

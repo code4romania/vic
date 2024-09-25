@@ -41,14 +41,6 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
   ): Promise<IDocumentContractModel> {
     const documentContract = await this.documentContractRepository.findOne({
       where: options,
-      relations: {
-        volunteer: {
-          user: {
-            notificationsSettings: true,
-          },
-          organization: true,
-        },
-      },
     });
 
     return DocumentContractTransformer.fromEntity(documentContract);

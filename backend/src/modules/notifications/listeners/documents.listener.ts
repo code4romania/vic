@@ -5,8 +5,8 @@ import { NOTIFICATIONS } from 'src/common/constants/notifications';
 import { PushNotificationsFacade } from '../notifications.facade';
 import { MailService } from 'src/modules/mail/services/mail.service';
 import GenerateContractEvent from '../events/documents/generate-contract.event';
-import ApproveContractEvent from '../events/documents/approve-contract.event';
 import RejectContractEvent from '../events/documents/reject-contract.event';
+import SignContractEvent from '../events/documents/sign-contract.event';
 
 @Injectable()
 export class DocumentsListener {
@@ -57,7 +57,7 @@ export class DocumentsListener {
   }
 
   @OnEvent(EVENTS.DOCUMENTS.SIGN_CONTRACT_BY_NGO)
-  async onApproveContractEvent(payload: ApproveContractEvent): Promise<void> {
+  async onSignContractEvent(payload: SignContractEvent): Promise<void> {
     const {
       userId,
       organizationId,
@@ -79,8 +79,8 @@ export class DocumentsListener {
 
       this.pushNotificationsFacade.send({
         userIds: [userId],
-        title: NOTIFICATIONS.APPROVE_CONTRACT.PUSH.title,
-        body: NOTIFICATIONS.APPROVE_CONTRACT.PUSH.body(organizationName),
+        title: NOTIFICATIONS.SIGN_CONTRACT_BY_NGO.PUSH.title,
+        body: NOTIFICATIONS.SIGN_CONTRACT_BY_NGO.PUSH.body(organizationName),
         data: notificationData,
       });
     }

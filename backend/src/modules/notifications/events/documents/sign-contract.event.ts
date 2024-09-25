@@ -1,6 +1,6 @@
 import BaseEvent from '../base-event.class';
 
-export default class ApproveContractEvent extends BaseEvent {
+export default class SignContractEvent extends BaseEvent {
   constructor(
     _organizationId: string,
     _userId: string,

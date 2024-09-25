@@ -27,11 +27,8 @@ export const EVENTS = {
   },
   DOCUMENTS: {
     GENERATE_CONTRACT: 'contract.generate',
-    APPROVE_CONTRACT: 'contract.approve',
-    REJECT_CONATRCT: 'contract.reject',
-
-    SIGN_CONTRACT_BY_NGO: 'contract.sign.by.ngo',
-    REJECT_CONTRACT_BY_NGO: 'contract.reject.by.ngo',
+    SIGN_CONTRACT_BY_NGO: 'contract.sign.ngo',
+    REJECT_CONTRACT_BY_NGO: 'contract.reject.ngo',
   },
 };
 
@@ -120,14 +117,14 @@ const NotificationContextProvider = ({
         }
 
         if (
-          payload.key ===
-          (EVENTS.DOCUMENTS.GENERATE_CONTRACT ||
-            EVENTS.DOCUMENTS.APPROVE_CONTRACT ||
-            EVENTS.DOCUMENTS.REJECT_CONATRCT ||
-            EVENTS.DOCUMENTS.SIGN_CONTRACT_BY_NGO ||
-            EVENTS.DOCUMENTS.REJECT_CONTRACT_BY_NGO)
+          [
+            EVENTS.DOCUMENTS.GENERATE_CONTRACT,
+            EVENTS.DOCUMENTS.SIGN_CONTRACT_BY_NGO,
+            EVENTS.DOCUMENTS.REJECT_CONTRACT_BY_NGO,
+          ].includes(payload.key)
         ) {
-          navigation.navigate('contract', {
+          // TBD: where do we navigate?
+          navigation.navigate('documents/contracts', {
             id: payload.payload.contractId,
           });
         }

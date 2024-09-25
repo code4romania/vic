@@ -11,6 +11,7 @@ import { DocumentContractFacade } from 'src/modules/documents/services/document-
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import RejectContractEvent from 'src/modules/notifications/events/documents/reject-contract.event';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
 @Injectable()
 export class RejectDocumentContractByNgoUsecase
@@ -21,6 +22,7 @@ export class RejectDocumentContractByNgoUsecase
     private readonly exceptionService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly eventEmitter: EventEmitter2,
+    private readonly volunteerFacade: VolunteerFacade,
   ) {}
 
   public async execute({
@@ -88,21 +90,24 @@ export class RejectDocumentContractByNgoUsecase
       admin,
     );
 
+    // get volunteer data to build the mail/notification subject/body
+    const volunteer = await this.volunteerFacade.find({
+      id: updatedContract.volunteerId,
+    });
+
     // send push notifications and or email
     this.eventEmitter.emit(
       EVENTS.DOCUMENTS.REJECT_CONTRACT_BY_NGO,
       new RejectContractEvent(
         contract.organizationId,
-        contract.volunteer.user.id,
-        contract.volunteer.organization.name,
-        contract.volunteer.user.notificationsSettings.notificationsViaPush,
-        contract.volunteer.user.notificationsSettings.notificationsViaEmail,
-        contract.volunteer.user.email,
+        volunteer.user.id,
+        volunteer.organization.name,
+        volunteer.user.notificationsSettings.notificationsViaPush,
+        volunteer.user.notificationsSettings.notificationsViaEmail,
+        volunteer.user.email,
         contract.id,
         rejectionReason || '',
       ),
     );
-
-    console.log(rejectionReason);
   }
 }
