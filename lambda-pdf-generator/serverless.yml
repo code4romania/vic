@@ -1,0 +1,23 @@
+
+app: pdf-generator
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: pdf-generator-service
+
+# package:
+#   individually: true
+#   patterns:
+#     - '!node_modules/@sparticuz/chromium/bin/**'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-west-1
+  timeout: 30
+  
+functions:
+  generatePDF:
+    handler: handler.generatePDF
+    events:
+      - httpApi: 'POST /generate-pdf'
+    memorySize: 512
+    description: 'Generate a PDF from an HTML template'

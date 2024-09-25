@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -23,7 +24,7 @@ import {
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { GetManyDocumentContractsDto } from './dto/get-many-document-contracts.dto';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
-import { ApproveDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/approve-document-contract-by-ngo.usecase';
+import { ValidateDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/validate-document-contract-by-ngo.usecase';
 import { SignDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/sign-document-contract-by-ngo.usecase';
 import { RejectDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/reject-document-contract-by-ngo.usecase';
 import { RejectDocumentContractByNgoDTO } from './dto/reject-document-contract.dto';
@@ -32,6 +33,7 @@ import { GetOneDocumentContractForNgoUsecase } from 'src/usecases/documents/new_
 import { DocumentContractStatisticsPresenter } from './presenters/document-contract-statistics.presenter';
 import { GetDocumentContractStatisticsUsecase } from 'src/usecases/documents/new_contracts/get-document-contract-statistics.usecase';
 import { SignDocumentContractByNgoDto } from './dto/sign-document-contract-by-ngo.dto';
+import { DeleteDocumentContractUsecase } from 'src/usecases/documents/new_contracts/delete-document-contract.usecase';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -40,11 +42,12 @@ export class DocumentContractController {
   constructor(
     private readonly createDocumentContractUsecase: CreateDocumentContractUsecase,
     private readonly getManyDocumentContractsUsecase: GetManyDocumentContractsUsecase,
-    private readonly approveDocumentContractByNgoUsecase: ApproveDocumentContractByNgoUsecase,
+    private readonly validateDocumentContractByNgoUsecase: ValidateDocumentContractByNgoUsecase,
     private readonly rejectDocumentContractByNgoUsecase: RejectDocumentContractByNgoUsecase,
     private readonly signDocumentContractByNGO: SignDocumentContractByNgoUsecase,
     private readonly getOneDocumentContractForNgoUsecase: GetOneDocumentContractForNgoUsecase,
     private readonly getDocumentContractStatisticsUsecase: GetDocumentContractStatisticsUsecase,
+    private readonly deleteDocumentContractUsecase: DeleteDocumentContractUsecase,
   ) {}
 
   @Post()
@@ -114,9 +117,9 @@ export class DocumentContractController {
   @Patch(':id/approve')
   async approveDocumentContract(
     @Param('id', UuidValidationPipe) id: string,
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<void> {
-    await this.approveDocumentContractByNgoUsecase.execute(id, organizationId);
+    await this.validateDocumentContractByNgoUsecase.execute(id, admin);
   }
 
   @Patch(':id/sign')
@@ -145,5 +148,13 @@ export class DocumentContractController {
       rejectionReason: rejectionReason,
       admin,
     });
+  }
+
+  @Delete(':id')
+  async deleteDocumentContract(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<void> {
+    await this.deleteDocumentContractUsecase.execute(id, admin);
   }
 }

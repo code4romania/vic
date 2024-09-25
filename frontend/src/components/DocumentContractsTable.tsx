@@ -5,7 +5,7 @@ import CardBody from './CardBody';
 import Card from '../layouts/CardLayout';
 import { IHOCQueryProps } from '../common/interfaces/hoc-query-props.interface';
 import i18n from '../common/config/i18n';
-import { ArrowDownTrayIcon, EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon, EyeIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import Popover from './Popover';
@@ -14,6 +14,7 @@ import {
   ApprovedDocumentContractStatusMapper,
   DocumentContractStatusMarkerColorMapper,
   downloadExcel,
+  downloadFile,
   // downloadFile,
   formatDate,
 } from '../common/utils/utils';
@@ -26,7 +27,10 @@ import { useNavigate } from 'react-router-dom';
 import { VolunteerTabsOptions } from '../pages/Volunteer';
 import { useTranslation } from 'react-i18next';
 import { getContractsForDownload } from '../services/contracts/contracts.api';
-import { useGetDocumentsContractsQuery } from '../services/document-contracts/document-contracts.service';
+import {
+  useDeleteDocumentContractMutation,
+  useGetDocumentsContractsQuery,
+} from '../services/document-contracts/document-contracts.service';
 import {
   ApprovedDocumentContractStatus,
   DocumentContractStatus,
@@ -39,6 +43,9 @@ import VolunteerSelect from '../containers/VolunteerSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { SelectItem } from './Select';
 import SelectFilter from '../containers/SelectFilter';
+import ConfirmationModal from './ConfirmationModal';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
 interface StatusOption {
   key: string;
@@ -171,6 +178,9 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
   // selected contract id
   const [selectedContract, setSelectedContract] = useState<string>();
   const [selectedVolunteer, setSelectedVolunteer] = useState<ListItem>();
+  const [selectedDeleteContract, setSelectedDeleteContract] = useState<null | IDocumentContract>(
+    null,
+  );
   // side panel state
   const [isViewContractSidePanelOpen, setIsViewContractSidePanelOpen] = useState<boolean>(false);
   // translation
@@ -178,7 +188,11 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
   // navigation
   const navigate = useNavigate();
 
-  const { data: contracts, isLoading: isLoadingContracts } = useGetDocumentsContractsQuery({
+  const {
+    data: contracts,
+    isLoading: isLoadingContracts,
+    refetch,
+  } = useGetDocumentsContractsQuery({
     page: query?.page as number,
     limit: query?.limit as number,
     search: query?.search,
@@ -189,6 +203,8 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
     startDate: query?.startDate as Date,
     endDate: query?.endDate as Date,
   });
+
+  const { mutate: deleteContract } = useDeleteDocumentContractMutation();
 
   const onView = (row: IDocumentContract) => {
     setSelectedContract(row.documentId);
@@ -209,6 +225,26 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
     downloadExcel(data as BlobPart, t('contracts.download'));
   };
 
+  const showDeleteContractModal = (row: IDocumentContract) => {
+    setSelectedDeleteContract(row);
+  };
+
+  const confirmDelete = () => {
+    if (selectedDeleteContract) {
+      const contractId = selectedDeleteContract.documentId;
+      deleteContract(contractId, {
+        onSuccess: () => {
+          useSuccessToast(t('contract.submit.delete'));
+          refetch();
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: any) => {
+          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error?.response?.data.code_error));
+        },
+      });
+    }
+  };
+
   const buildContractActionColumn = (): TableColumn<IDocumentContract> => {
     const contractsMenuItems = [
       {
@@ -219,10 +255,24 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
       {
         label: t('general:download', { item: i18n.t('general:contract').toLowerCase() }),
         icon: <ArrowDownTrayIcon className="menu-icon" />,
-        // todo: download contract
-        onClick: () => {
-          console.log('TODO: download contract');
+        onClick: (contract: IDocumentContract) => {
+          if (contract.documentFilePath) {
+            downloadFile(
+              contract.documentFilePath,
+              contract.documentFilePath?.split('/').pop() || 'contract.pdf',
+            );
+          }
         },
+      },
+    ];
+
+    const deleteContractsMenuItems = [
+      ...contractsMenuItems,
+      {
+        label: t('general:delete'),
+        icon: <TrashIcon className="menu-icon" />,
+        onClick: showDeleteContractModal,
+        alert: true,
       },
     ];
 
@@ -230,13 +280,14 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
       switch (status) {
         case DocumentContractStatus.APPROVED:
         case DocumentContractStatus.SCHEDULED:
+        case DocumentContractStatus.CREATED:
+        case DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE:
+          return deleteContractsMenuItems;
         case DocumentContractStatus.ACTION_EXPIRED:
         case DocumentContractStatus.REJECTED_NGO:
         case DocumentContractStatus.REJECTED_VOLUNTEER:
-        case DocumentContractStatus.CREATED:
         case DocumentContractStatus.PENDING_APPROVAL_NGO:
         case DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE:
-        case DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE:
           return contractsMenuItems;
         default:
           return [];
@@ -419,6 +470,16 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
         isOpen={isViewContractSidePanelOpen}
         contractId={selectedContract}
       />
+      {selectedDeleteContract && (
+        <ConfirmationModal
+          title={t('contract.delete_modal.title')}
+          description={t('contract.delete_modal.description')}
+          confirmBtnLabel={t('general:delete')}
+          onClose={setSelectedDeleteContract.bind(null, null)}
+          onConfirm={confirmDelete}
+          confirmBtnClassName="btn-danger"
+        />
+      )}
     </>
   );
 };

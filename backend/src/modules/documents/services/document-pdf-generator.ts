@@ -130,7 +130,7 @@ export class DocumentPDFGenerator {
     // HTMLtoPDF(fileHTML);
 
     const result = await axios.post(
-      'https://iywe2rp7u1.execute-api.us-east-1.amazonaws.com/test',
+      'https://715w11fnq9.execute-api.eu-west-1.amazonaws.com/generate-pdf',
       fileHTML,
       {
         headers: {

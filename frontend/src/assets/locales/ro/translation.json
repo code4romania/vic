@@ -782,6 +782,34 @@
     "REJECT_CONTRACT": {
       "label": "Respinge Contract",
       "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost respins"
+    },
+    "CREATE_DOCUMENT_CONTRACT": {
+      "label": "Creează Contract",
+      "description": "A fost creat un nou contract pentru voluntarul <inlineLink>{{volunteerName}}</inlineLink>"
+    },
+    "VALIDATE_DOCUMENT_CONTRACT": {
+      "label": "Aprobă Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost aprobat"
+    },
+    "SIGN_DOCUMENT_CONTRACT_BY_NGO": {
+      "label": "Semnează Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost semnat de organizație"
+    },
+    "SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER": {
+      "label": "Semnează Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost semnat de voluntar"
+    },
+    "REJECT_DOCUMENT_CONTRACT_BY_NGO": {
+      "label": "Respinge Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost respins de organizație"
+    },
+    "REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER": {
+      "label": "Respinge Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost respins"
+    },
+    "DELETE_DOCUMENT_CONTRACT": {
+      "label": "Șterge Contract",
+      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost șters"
     }
   },
   "dashboard": {
@@ -962,7 +990,9 @@
           "CONTRACT_002": "Contractul nu a fost găsit!",
           "CONTRACT_001": "Eroare la încărcarea contractului!",
           "CONTRACT_003": "Eroare la upload-ul documentului!",
-          "CONTRACT_006": "Nu se poate șterge un contract deja aprobat!"
+          "CONTRACT_006": "Nu se poate șterge un contract deja aprobat!",
+          "CONTRACT_014": "Nu se poate șterge un contract care a fost semnat de una dintre părți!",
+          "CONTRACT_015": "Eroare la ștergerea contractului!"
         }
       },
       "upload": {
@@ -1111,7 +1141,7 @@
         "download_uncompleted": "Descarcă necompletat"
       },
       "table_header": {
-        "create": "Creeaază template",
+        "create": "Creează template",
         "download_all": "Descarcă toate"
       }
     },

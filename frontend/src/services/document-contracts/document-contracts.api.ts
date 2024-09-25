@@ -30,3 +30,7 @@ export const approveDocumentContract = (id: string) => {
 export const rejectDocumentContract = (id: string, body: IRejectDocumentContractBody) => {
   return API.patch(`/documents/contracts/${id}/reject`, body).then((res) => res.data);
 };
+
+export const deleteDocumentContract = (id: string) => {
+  return API.delete(`/documents/contracts/${id}`).then((res) => res.data);
+};
