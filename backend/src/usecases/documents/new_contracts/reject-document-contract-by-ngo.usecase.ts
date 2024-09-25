@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
@@ -7,7 +8,10 @@ import { DocumentContractStatus } from 'src/modules/documents/enums/contract-sta
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { IDocumentContractModel } from 'src/modules/documents/models/document-contract.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import RejectContractEvent from 'src/modules/notifications/events/documents/reject-contract.event';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
 @Injectable()
 export class RejectDocumentContractByNgoUsecase
@@ -17,6 +21,8 @@ export class RejectDocumentContractByNgoUsecase
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly exceptionService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly eventEmitter: EventEmitter2,
+    private readonly volunteerFacade: VolunteerFacade,
   ) {}
 
   public async execute({
@@ -84,8 +90,24 @@ export class RejectDocumentContractByNgoUsecase
       admin,
     );
 
-    // TODO: Send notification to Volunteer including Rejection Reason if exists (Contract was rejected)
+    // get volunteer data to build the mail/notification subject/body
+    const volunteer = await this.volunteerFacade.find({
+      id: updatedContract.volunteerId,
+    });
 
-    console.log(rejectionReason);
+    // send push notifications and or email
+    this.eventEmitter.emit(
+      EVENTS.DOCUMENTS.REJECT_CONTRACT_BY_NGO,
+      new RejectContractEvent(
+        contract.organizationId,
+        volunteer.user.id,
+        volunteer.organization.name,
+        volunteer.user.notificationsSettings.notificationsViaPush,
+        volunteer.user.notificationsSettings.notificationsViaEmail,
+        volunteer.user.email,
+        contract.id,
+        rejectionReason || '',
+      ),
+    );
   }
 }

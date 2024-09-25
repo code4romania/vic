@@ -23,7 +23,7 @@ import {
 } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { GetManyDocumentContractsDto } from './dto/get-many-document-contracts.dto';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
-import { ApproveDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/approve-document-contract-by-ngo.usecase';
+import { ValidateDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/validate-document-contract-by-ngo.usecase';
 import { SignDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/sign-document-contract-by-ngo.usecase';
 import { RejectDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/reject-document-contract-by-ngo.usecase';
 import { RejectDocumentContractByNgoDTO } from './dto/reject-document-contract.dto';
@@ -40,7 +40,7 @@ export class DocumentContractController {
   constructor(
     private readonly createDocumentContractUsecase: CreateDocumentContractUsecase,
     private readonly getManyDocumentContractsUsecase: GetManyDocumentContractsUsecase,
-    private readonly approveDocumentContractByNgoUsecase: ApproveDocumentContractByNgoUsecase,
+    private readonly validateDocumentContractByNgoUsecase: ValidateDocumentContractByNgoUsecase,
     private readonly rejectDocumentContractByNgoUsecase: RejectDocumentContractByNgoUsecase,
     private readonly signDocumentContractByNGO: SignDocumentContractByNgoUsecase,
     private readonly getOneDocumentContractForNgoUsecase: GetOneDocumentContractForNgoUsecase,
@@ -114,9 +114,9 @@ export class DocumentContractController {
   @Patch(':id/approve')
   async approveDocumentContract(
     @Param('id', UuidValidationPipe) id: string,
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<void> {
-    await this.approveDocumentContractByNgoUsecase.execute(id, organizationId);
+    await this.validateDocumentContractByNgoUsecase.execute(id, admin);
   }
 
   @Patch(':id/sign')

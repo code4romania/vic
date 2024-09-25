@@ -1,3 +1,4 @@
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Injectable, Logger } from '@nestjs/common';
 import { isSameYear } from 'date-fns';
 import { isOver16FromCNP } from 'src/common/helpers/utils';
@@ -14,6 +15,9 @@ import {
 import { IDocumentTemplateModel } from 'src/modules/documents/models/document-template.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentTemplateFacade } from 'src/modules/documents/services/document-template.facade';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import GenerateContractEvent from 'src/modules/notifications/events/documents/generate-contract.event';
+import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
 import { DocumentPDFGenerator } from 'src/modules/documents/services/document-pdf-generator';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import {
@@ -50,6 +54,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     private readonly volunteerFacade: VolunteerFacade,
     private readonly exceptionsService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly eventEmitter: EventEmitter2,
     private readonly documentPDFGenerator: DocumentPDFGenerator,
   ) {}
 
@@ -62,9 +67,12 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
   ): Promise<string> {
     let volunteer: IVolunteerModel;
     let template: IDocumentTemplateModel;
+    let organization: IOrganizationModel;
     try {
       // 1. Check if the organization exists
-      await this.getOrganizationUsecase.execute(newContract.organizationId);
+      organization = await this.getOrganizationUsecase.execute(
+        newContract.organizationId,
+      );
 
       // 2. Check if the volunteer exists
       volunteer = await this.checkVolunteerExists(
@@ -150,6 +158,18 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     }
 
     // 9. Send notification to the volunteer to sign the contract if the status is PENDING_VOLUNTEER_SIGNATURE
+    this.eventEmitter.emit(
+      EVENTS.DOCUMENTS.GENERATE_CONTRACT,
+      new GenerateContractEvent(
+        organization.id,
+        volunteer.user.id,
+        organization.name,
+        volunteer.user.notificationsSettings.notificationsViaPush,
+        volunteer.user.notificationsSettings.notificationsViaEmail,
+        volunteer.user.email,
+        contract.id,
+      ),
+    );
 
     // 10. Track event
     this.actionsArchiveFacade.trackEvent(
