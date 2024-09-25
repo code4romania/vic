@@ -21,11 +21,15 @@ import {
   UpdateVolunteerOptions,
   VolunteerModelTransformer,
 } from '../model/volunteer.model';
-import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
+import {
+  ContractStatus,
+  DocumentContractStatus,
+} from 'src/modules/documents/enums/contract-status.enum';
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { ContractEntity } from 'src/modules/documents/entities/contract.entity';
 import { ActivityLogEntity } from 'src/modules/activity-log/entities/activity-log.entity';
 import { VolunteerProfileEntity } from '../entities/volunteer-profile.entity';
+import { DocumentContractEntity } from 'src/modules/documents/entities/document-contract.entity';
 
 export class VolunteerRepositoryService
   extends RepositoryWithPagination<VolunteerEntity>
@@ -268,12 +272,13 @@ export class VolunteerRepositoryService
       .addSelect((subQuery) => {
         return subQuery
           .select('COUNT(contract.id)', 'contractCount')
-          .from(ContractEntity, 'contract')
+          .from(DocumentContractEntity, 'contract')
           .where('contract.volunteerId = :volunteerId', { volunteerId })
           .andWhere('contract.status IN (:...statuses)', {
             statuses: [
-              ContractStatus.PENDING_ADMIN,
-              ContractStatus.PENDING_VOLUNTEER,
+              DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE,
+              DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE,
+              DocumentContractStatus.PENDING_APPROVAL_NGO,
             ],
           });
       }, 'contractCount')

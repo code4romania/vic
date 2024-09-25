@@ -8,7 +8,7 @@ import {
 } from '../../common/constants/pagination';
 import { ContractStatus } from '../../common/enums/contract-status.enum';
 import { VolunteerTabsOptions } from '../../pages/Volunteer';
-import NewContractsTable from '../../components/DocumentContractsTable';
+import DocumentContractsTable from '../../components/DocumentContractsTable';
 
 export interface ContractsTableQueryProps extends IPaginationQueryParams {
   volunteer?: string;
@@ -45,8 +45,11 @@ const ContractsTableWithQueryParams = ({
     <QueryParams config={queryConfig}>
       {(props: any) => {
         return (
-          // !THIS USES THE OLD COMPONENT, IT'S JUST A COPY OF THAT
-          <NewContractsTable volunteerName={volunteerName} volunteerId={volunteerId} {...props} />
+          <DocumentContractsTable
+            volunteerName={volunteerName}
+            volunteerId={volunteerId}
+            {...props}
+          />
         );
       }}
     </QueryParams>

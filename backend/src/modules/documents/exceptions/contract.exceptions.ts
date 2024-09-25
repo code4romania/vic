@@ -14,6 +14,8 @@ export enum ContractExceptionCodes {
   CONTRACT_011 = 'CONTRACT_011',
   CONTRACT_012 = 'CONTRACT_012',
   CONTRACT_013 = 'CONTRACT_013',
+  CONTRACT_014 = 'CONTRACT_014',
+  CONTRACT_015 = 'CONTRACT_015',
 }
 
 type ContractExceptionCodeType = keyof typeof ContractExceptionCodes;
@@ -74,5 +76,14 @@ export const ContractExceptionMessages: Record<
   [ContractExceptionCodes.CONTRACT_013]: {
     code_error: ContractExceptionCodes.CONTRACT_013,
     message: '[Create Contract] Missing volunteer personal data',
+  },
+  [ContractExceptionCodes.CONTRACT_014]: {
+    code_error: ContractExceptionCodes.CONTRACT_014,
+    message:
+      'Cannot delete a contract when it has been signed by any of the parties',
+  },
+  [ContractExceptionCodes.CONTRACT_015]: {
+    code_error: ContractExceptionCodes.CONTRACT_015,
+    message: 'Error while deleting the contract',
   },
 };
