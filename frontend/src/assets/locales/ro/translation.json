@@ -1079,6 +1079,12 @@
         "REJECTED_VOLUNTEER": "Refuzat",
         "REJECTED_NGO": "Refuzat",
         "ACTION_EXPIRED": "Expirat"
+      },
+      "rejection": {
+        "incorrect_identity_data": "Datele de identitate sunt incorecte",
+        "dont_agree_with_clauses": "Voluntarul nu este de acord cu termenii contractului",
+        "wrong_contract_period": "Perioada contractului este incorectă",
+        "OTHER": "Altele"
       }
     },
     "sign": {

@@ -184,7 +184,11 @@ export const ContractInfoContent = ({
           contract.status === DocumentContractStatus.REJECTED_VOLUNTEER) && (
           <FormReadOnlyElement
             label={t('contract.rejection_reason')}
-            value={contract.rejectionReason || '-'}
+            value={
+              contract.status === DocumentContractStatus.REJECTED_VOLUNTEER
+                ? t(`contract.rejection.${contract.rejectionReason}`)
+                : contract.rejectionReason || '-'
+            }
           />
         )}
       </div>
