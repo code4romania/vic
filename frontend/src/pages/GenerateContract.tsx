@@ -33,8 +33,8 @@ const SuccessModalContent = () => {
       </div>
       <p className="text-center">{t('modal.success.description')}</p>
       <Button
-        label="Înapoi la lista de contracte"
-        onClick={() => navigate('/documents/templates')}
+        label={t('modal.success.button')}
+        onClick={() => navigate('/documents/contracts')}
         className="btn-primary"
       />
     </div>

@@ -1036,7 +1036,8 @@
       },
       "success": {
         "title": "Contracts generated",
-        "description": "Successfully sent {{value1}}/{{value2}} contracts"
+        "description": "Successfully sent {{value1}}/{{value2}} contracts",
+        "button": "Back to contracts list"
       },
       "error": {
         "title": "Contract Generation",

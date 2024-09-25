@@ -1040,7 +1040,8 @@
       },
       "success": {
         "title": "Contracte generate",
-        "description": "Toate contractele au fost trimise cu succes!"
+        "description": "Toate contractele au fost trimise cu succes!",
+        "button": "Înapoi la lista de contracte"
       },
       "error": {
         "title": "Generare Contract",
