@@ -1026,7 +1026,12 @@
       "create_template": "Creează template"
     },
     "generate": {
-      "title": "Generează contract"
+      "title": "Generează contract",
+      "quit": "Renunță",
+      "prev_step": "Pasul anterior",
+      "next_step": "Pasul următor",
+      "send_contracts": "Trimite",
+      "template_selected_alert": "Esti sigur ca vrei sa părăsești pagina? Progresul tău nu va fi salvat."
     },
     "modal": {
       "loading": {
@@ -1287,7 +1292,7 @@
   "stepper": {
     "choose_template": "Alege template",
     "choose_volunteers": "Alege voluntari",
-    "fill": "Completează",
+    "fill": "Generează contracte",
     "attachments": "Anexe",
     "complete": "Finalizează"
   },

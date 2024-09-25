@@ -66,7 +66,6 @@ export const GenerateContract = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<IDocumentTemplateListItem | null>(null);
   const [selectedVolunteers, setSelectedVolunteers] = useState<IVolunteer[]>([]);
   const [volunteersData, setVolunteersData] = useState<Record<string, IDocumentVolunteerData>>();
-
   const [isLoadingModalOpen, setIsLoadingModalOpen] = useState<boolean>(false);
   const [sentContractsCount, setSentContractsCount] = useState<number>(0);
   const [contractsWithErrors, setContractsWithErrors] = useState<Record<string, AxiosError>>();
@@ -113,6 +112,15 @@ export const GenerateContract = () => {
   const handlePrevious = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
+    }
+    // if we are on the first step and try to quit but a template has been selected -> display alert before navigating
+    if (selectedTemplate) {
+      if (window.confirm(t('generate.template_selected_alert'))) {
+        navigate('/documents/contracts');
+        return;
+      }
+    } else {
+      navigate('/documents/contracts');
     }
   };
 
@@ -276,12 +284,12 @@ export const GenerateContract = () => {
         {renderStep()}
         <div className="flex flex-row gap-4 justify-end">
           <Button
-            label={currentStep === 0 ? 'Renunta' : 'Pasul anterior'}
+            label={currentStep === 0 ? t('generate.quit') : t('generate.prev_step')}
             onClick={handlePrevious}
             className="text-yellow-500"
           />
           <Button
-            label="Pasul urmator"
+            label={currentStep === 2 ? t('generate.send_contracts') : t('generate.next_step')}
             onClick={handleNext}
             disabled={!canGoNext}
             className="btn-primary self-center p-2 rounded disabled:bg-gray-300 disabled:text-white"

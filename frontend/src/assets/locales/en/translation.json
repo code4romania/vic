@@ -1022,7 +1022,12 @@
       "create_template": "Create template"
     },
     "generate": {
-      "title": "Generate contract"
+      "title": "Generate contract",
+      "quit": "Quit",
+      "prev_step": "Previous step",
+      "next_step": "Next step",
+      "send_contracts": "Send",
+      "template_selected_alert": "Are you sure you want to leave the page? Your progress will not be saved."
     },
     "modal": {
       "loading": {
@@ -1250,7 +1255,7 @@
   "stepper": {
     "choose_template": "Choose template",
     "choose_volunteers": "Choose volunteers",
-    "fill": "Fill",
+    "fill": "Generate contracts",
     "attachments": "Attachments",
     "complete": "Complete"
   },
