@@ -33,6 +33,9 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
       limit,
       page,
 
+      documentStartDate,
+      documentEndDate,
+
       organizationId,
       volunteerId,
       status,
@@ -59,6 +62,27 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
 
     if (status) {
       query.andWhere('documentContractListView.status = :status', { status });
+    }
+
+    if (documentStartDate && documentEndDate) {
+      query.andWhere(
+        '(documentContractListView.documentStartDate >= :documentStartDate::DATE AND documentContractListView.documentEndDate <= :documentEndDate::DATE)',
+        { documentStartDate, documentEndDate },
+      );
+    } else {
+      if (documentStartDate) {
+        query.andWhere(
+          'documentContractListView.documentStartDate >= :documentStartDate::DATE',
+          { documentStartDate },
+        );
+      }
+
+      if (documentEndDate) {
+        query.andWhere(
+          'documentContractListView.documentEndDate <= :documentEndDate::DATE',
+          { documentEndDate },
+        );
+      }
     }
 
     if (search) {

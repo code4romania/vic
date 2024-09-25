@@ -25,6 +25,8 @@ export type FindManyDocumentContractListViewOptions =
     organizationId: string;
     volunteerId?: string;
     status?: DocumentContractStatus;
+    documentStartDate?: Date;
+    documentEndDate?: Date;
   };
 
 export class DocumentContractListViewTransformer {
