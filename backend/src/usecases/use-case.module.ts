@@ -146,7 +146,7 @@ import { SignDocumentContractByVolunteerUsecase } from './documents/new_contract
 import { RejectDocumentContractByVolunteerUsecase } from './documents/new_contracts/reject-document-contact-by-volunteer.usecase';
 import { GetManyDocumentContractsByVolunteerUsecase } from './documents/new_contracts/get-many-document-contracts-by-volunteer.usecase';
 import { GetOneDocumentContractForVolunteerUsecase } from './documents/new_contracts/get-one-document-contract-for-volunteer.usecase';
-import { ApproveDocumentContractByNgoUsecase } from './documents/new_contracts/approve-document-contract-by-ngo.usecase';
+import { ValidateDocumentContractByNgoUsecase } from './documents/new_contracts/validate-document-contract-by-ngo.usecase';
 import { SignDocumentContractByNgoUsecase } from './documents/new_contracts/sign-document-contract-by-ngo.usecase';
 import { DeleteDocumentTemplateUsecase } from './documents/new_contracts/delete-document-template.usecase';
 import { RejectDocumentContractByNgoUsecase } from './documents/new_contracts/reject-document-contract-by-ngo.usecase';
@@ -309,7 +309,7 @@ const providers = [
   RejectDocumentContractByVolunteerUsecase,
   GetManyDocumentContractsByVolunteerUsecase,
   GetOneDocumentContractForVolunteerUsecase,
-  ApproveDocumentContractByNgoUsecase,
+  ValidateDocumentContractByNgoUsecase,
   SignDocumentContractByNgoUsecase,
   RejectDocumentContractByNgoUsecase,
   GetOneDocumentContractForNgoUsecase,

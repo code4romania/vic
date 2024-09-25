@@ -18,5 +18,9 @@ export const EVENTS = {
     GENERATE_CONTRACT: 'contract.generate',
     APPROVE_CONTRACT: 'contract.approve',
     REJECT_CONATRCT: 'contract.reject',
+
+    // new document events
+    SIGN_CONTRACT_BY_NGO: 'contract.sign.ngo',
+    REJECT_CONTRACT_BY_NGO: 'contract.reject.ngo',
   },
 };

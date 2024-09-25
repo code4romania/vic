@@ -6,9 +6,12 @@ import { AppModule } from './app.module';
 import { Environment } from './infrastructure/config/environment-config';
 import { ExceptionsFilter } from './infrastructure/filters/exception.filter';
 import { createQueueMonitoring } from './infrastructure/config/create-bull-board';
+import { json } from 'express';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
+
+  app.use(json({ limit: '50mb' })); // Increase the limit to 50mb to avoid the error "Request Entity Too Large"
 
   app.enableCors({
     exposedHeaders: 'content-disposition', // Allow header in the Axios Response Headers

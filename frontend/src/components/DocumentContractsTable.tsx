@@ -14,6 +14,7 @@ import {
   ApprovedDocumentContractStatusMapper,
   DocumentContractStatusMarkerColorMapper,
   downloadExcel,
+  downloadFile,
   // downloadFile,
   formatDate,
 } from '../common/utils/utils';
@@ -232,9 +233,13 @@ const ContractsTable = ({
       {
         label: t('general:download', { item: i18n.t('general:contract').toLowerCase() }),
         icon: <ArrowDownTrayIcon className="menu-icon" />,
-        // todo: download contract
-        onClick: () => {
-          console.log('TODO: download contract');
+        onClick: (contract: IDocumentContract) => {
+          if (contract.documentFilePath) {
+            downloadFile(
+              contract.documentFilePath,
+              contract.documentFilePath?.split('/').pop() || 'contract.pdf',
+            );
+          }
         },
       },
     ];

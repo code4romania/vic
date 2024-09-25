@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
+import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import {
   FindManyDocumentContractListViewOptions,
   IDocumentContractListViewModel,
@@ -13,11 +14,30 @@ export class GetManyDocumentContractsUsecase
 {
   constructor(
     private readonly documentContractFacade: DocumentContractFacade,
+    private readonly s3Service: S3Service,
   ) {}
 
   public async execute(
     findOptions: FindManyDocumentContractListViewOptions,
   ): Promise<Pagination<IDocumentContractListViewModel>> {
-    return this.documentContractFacade.findMany(findOptions);
+    const contracts = await this.documentContractFacade.findMany(findOptions);
+
+    const contractsWithPath = await Promise.all(
+      contracts.items.map(async (contract) => {
+        return {
+          ...contract,
+          documentFilePath: contract.documentFilePath
+            ? await this.s3Service.generatePresignedURL(
+                contract.documentFilePath,
+              )
+            : null,
+        };
+      }),
+    );
+
+    return {
+      ...contracts,
+      items: contractsWithPath,
+    };
   }
 }

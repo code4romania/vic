@@ -7,6 +7,7 @@ import FormReadOnlyElement from './FormReadOnlyElement';
 import {
   ApprovedDocumentContractStatusMapper,
   DocumentContractStatusMarkerColorMapper,
+  downloadFile,
   formatDate,
 } from '../common/utils/utils';
 import StatusWithMarker from './StatusWithMarker';
@@ -98,8 +99,14 @@ export const ContractInfoContent = ({
 
           <button
             className="bg-white rounded-md text-turquoise-500 hover:text-turquoise-700 focus:outline-none focus:shadow-blue"
-            // todo: download contract
-            //   onClick={onDownloadContractClick.bind(null, contract.uri, contract.fileName)}
+            onClick={() => {
+              if (contract.documentFilePath) {
+                downloadFile(
+                  contract.documentFilePath,
+                  contract.documentFilePath?.split('/').pop() || 'contract.pdf',
+                );
+              }
+            }}
             aria-label="download-contract"
             type="button"
           >

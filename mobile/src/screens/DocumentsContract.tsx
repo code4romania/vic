@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform, Linking } from 'react-native';
 import PageLayout from '../layouts/PageLayout';
 import { useTranslation } from 'react-i18next';
 import { usePaddingTop } from '../hooks/usePaddingTop';
@@ -266,7 +266,11 @@ export const DocumentsContract = ({ navigation, route }: any) => {
               // leftIcon={<DocumentIcon color={'yellow'} backgroundColor={'yellow'} />}
               startDate={contract.documentStartDate}
               endDate={contract.documentEndDate}
-              onPress={() => {}}
+              onPress={() => {
+                if (contract.documentFilePath) {
+                  Linking.openURL(contract.documentFilePath);
+                }
+              }}
               // todo: download contract
               //   onPress={() => onContractPress(item)}
               info={info}

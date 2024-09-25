@@ -86,6 +86,7 @@ export const downloadFile = (uri: string, name: string) => {
   const link = document.createElement('a');
   link.href = uri;
   link.setAttribute('download', name);
+  link.setAttribute('target', '_blank');
   document.body.appendChild(link);
   link.click();
   link.remove();

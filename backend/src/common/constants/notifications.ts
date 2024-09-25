@@ -76,24 +76,24 @@ export const NOTIFICATIONS = {
   REJECT_CONTRACT: {
     PUSH: {
       title: 'VIC',
-      body: (organizationName: string, reason: string): string =>
-        `Contractul tău cu ${organizationName} a fost respins. Motiv: ${reason}`,
-    },
-    EMAIL: {
-      subject: (organizationName: string, reason: string): string =>
-        `Contractul tău cu ${organizationName} a fost respins. Motiv: ${reason}`,
-      body: '',
-    },
-  },
-  APPROVE_CONTRACT: {
-    PUSH: {
-      title: 'VIC',
       body: (organizationName: string): string =>
-        `Contractul tău cu ${organizationName} a fost aprobat. Descarcă documentul direct din aplicație`,
+        `Contractul tău cu ${organizationName} a fost respins. Vezi motiv`,
     },
     EMAIL: {
       subject: (organizationName: string): string =>
-        `Contractul tău cu ${organizationName} a fost respins. Descarcă documentul direct din aplicație`,
+        `Contractul tău cu ${organizationName} a fost respins. Vezi motiv`,
+      body: '',
+    },
+  },
+  SIGN_CONTRACT_BY_NGO: {
+    PUSH: {
+      title: 'VIC',
+      body: (organizationName: string): string =>
+        `Contractul tău cu ${organizationName} a fost aprobat și semnat`,
+    },
+    EMAIL: {
+      subject: (organizationName: string): string =>
+        `Contractul tău cu ${organizationName} a fost aprobat și semnat`,
       body: '',
     },
   },

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { IDocumentContractWebItemModel } from 'src/modules/documents/models/document-contract-web-item.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
@@ -9,6 +10,7 @@ export class GetOneDocumentContractForNgoUsecase {
   constructor(
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly exceptionService: ExceptionsService,
+    private readonly s3Service: S3Service,
   ) {}
 
   async execute({
@@ -29,6 +31,13 @@ export class GetOneDocumentContractForNgoUsecase {
       );
     }
 
-    return contract;
+    const contractWithPath = {
+      ...contract,
+      documentFilePath: contract.documentFilePath
+        ? await this.s3Service.generatePresignedURL(contract.documentFilePath)
+        : null,
+    };
+
+    return contractWithPath;
   }
 }

@@ -14,8 +14,6 @@ import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resou
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { EVENTS } from 'src/modules/notifications/constants/events.constants';
-import ApproveContractEvent from 'src/modules/notifications/events/documents/approve-contract.event';
 
 @Injectable()
 export class SignAndConfirmContractUsecase
@@ -66,20 +64,6 @@ export class SignAndConfirmContractUsecase
         approvedOn: new Date(),
         status: ContractStatus.APPROVED,
       });
-
-      // send push notifications and or email
-      this.eventEmitter.emit(
-        EVENTS.DOCUMENTS.APPROVE_CONTRACT,
-        new ApproveContractEvent(
-          organization.id,
-          contract.volunteer.user.id,
-          organization.name,
-          contract.volunteer.user.notificationsSettings.notificationsViaPush,
-          contract.volunteer.user.notificationsSettings.notificationsViaEmail,
-          contract.volunteer.user.email,
-          contract.id,
-        ),
-      );
 
       // Track event
       this.actionsArchiveFacade.trackEvent(
