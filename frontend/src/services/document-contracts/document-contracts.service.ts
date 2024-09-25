@@ -2,6 +2,7 @@ import { useMutation, useQuery } from 'react-query';
 import {
   addDocumentContract,
   approveDocumentContract,
+  deleteDocumentContract,
   getDocumentContract,
   getDocumentsContracts,
   rejectDocumentContract,
@@ -103,4 +104,12 @@ export const useRejectcontractMutation = () => {
       },
     },
   );
+};
+
+export const useDeleteDocumentContractMutation = () => {
+  return useMutation((id: string) => deleteDocumentContract(id), {
+    onError: (error) => {
+      console.log(`⛔️ ERROR IN DELETE DOCUMENT CONTRACT ⛔️`, error);
+    },
+  });
 };
