@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -32,6 +33,7 @@ import { GetOneDocumentContractForNgoUsecase } from 'src/usecases/documents/new_
 import { DocumentContractStatisticsPresenter } from './presenters/document-contract-statistics.presenter';
 import { GetDocumentContractStatisticsUsecase } from 'src/usecases/documents/new_contracts/get-document-contract-statistics.usecase';
 import { SignDocumentContractByNgoDto } from './dto/sign-document-contract-by-ngo.dto';
+import { DeleteDocumentContractUsecase } from 'src/usecases/documents/new_contracts/delete-document-contract.usecase';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -45,6 +47,7 @@ export class DocumentContractController {
     private readonly signDocumentContractByNGO: SignDocumentContractByNgoUsecase,
     private readonly getOneDocumentContractForNgoUsecase: GetOneDocumentContractForNgoUsecase,
     private readonly getDocumentContractStatisticsUsecase: GetDocumentContractStatisticsUsecase,
+    private readonly deleteDocumentContractUsecase: DeleteDocumentContractUsecase,
   ) {}
 
   @Post()
@@ -145,5 +148,13 @@ export class DocumentContractController {
       rejectionReason: rejectionReason,
       admin,
     });
+  }
+
+  @Delete(':id')
+  async deleteDocumentContract(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<void> {
+    await this.deleteDocumentContractUsecase.execute(id, admin);
   }
 }
