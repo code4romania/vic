@@ -12,7 +12,7 @@ import {
 } from '../common/utils/utils';
 import StatusWithMarker from './StatusWithMarker';
 import {
-  ApprovedDocumentContractStatus,
+  DocumentContractStatusForFilter,
   DocumentContractStatus,
 } from '../common/enums/document-contract-status.enum';
 import Button from './Button';
@@ -75,18 +75,18 @@ export const ContractInfoContent = ({
         currentDate >= new Date(contract.documentStartDate) &&
         currentDate <= new Date(contract.documentEndDate)
       ) {
-        return ApprovedDocumentContractStatus.ACTIVE;
+        return DocumentContractStatusForFilter.ACTIVE;
       }
       //done contract
       if (currentDate > new Date(contract.documentEndDate)) {
-        return ApprovedDocumentContractStatus.DONE;
+        return DocumentContractStatusForFilter.DONE;
       }
       //not started contract
       if (currentDate < new Date(contract.documentStartDate)) {
-        return ApprovedDocumentContractStatus.NOT_STARTED;
+        return DocumentContractStatusForFilter.NOT_STARTED;
       }
     }
-    return ApprovedDocumentContractStatus.NOT_STARTED;
+    return DocumentContractStatusForFilter.NOT_STARTED;
   }, [contract]);
 
   return (
@@ -175,18 +175,18 @@ export const ContractInfoContent = ({
         {/* rejection date and reason */}
         {(contract.status === DocumentContractStatus.REJECTED_NGO ||
           contract.status === DocumentContractStatus.REJECTED_VOLUNTEER) && (
-          <FormReadOnlyElement
-            label={t('contract.rejected_on')}
-            value={formatDate(contract.rejectionDate, 'dd/MM/yyy')}
-          />
-        )}
+            <FormReadOnlyElement
+              label={t('contract.rejected_on')}
+              value={formatDate(contract.rejectionDate, 'dd/MM/yyy')}
+            />
+          )}
         {(contract.status === DocumentContractStatus.REJECTED_NGO ||
           contract.status === DocumentContractStatus.REJECTED_VOLUNTEER) && (
-          <FormReadOnlyElement
-            label={t('contract.rejection_reason')}
-            value={contract.rejectionReason || '-'}
-          />
-        )}
+            <FormReadOnlyElement
+              label={t('contract.rejection_reason')}
+              value={contract.rejectionReason || '-'}
+            />
+          )}
       </div>
       {contract.status === DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE && (
         <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full xs:max-w-xs sm:max-w-md fixed bottom-0 right-0 bg-white">

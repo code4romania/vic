@@ -2,7 +2,7 @@ import { UTCDate } from '@date-fns/utc';
 import { Transform } from 'class-transformer';
 import { IsDate, IsEnum, IsOptional, IsString } from 'class-validator';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
-import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
+import { DocumentContractStatusForDTO } from 'src/modules/documents/enums/contract-status.enum';
 
 export class GetManyDocumentContractsDto extends BasePaginationFilterDto {
   @IsOptional()
@@ -10,8 +10,8 @@ export class GetManyDocumentContractsDto extends BasePaginationFilterDto {
   volunteerId?: string;
 
   @IsOptional()
-  @IsEnum(DocumentContractStatus)
-  status?: DocumentContractStatus;
+  @IsEnum(DocumentContractStatusForDTO)
+  status?: DocumentContractStatusForDTO;
 
   @IsDate()
   @IsOptional()

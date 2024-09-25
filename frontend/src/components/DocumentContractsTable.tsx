@@ -11,7 +11,7 @@ import { OrderDirection } from '../common/enums/order-direction.enum';
 import Popover from './Popover';
 import Button from './Button';
 import {
-  ApprovedDocumentContractStatusMapper,
+  // ApprovedDocumentContractStatusMapper,
   DocumentContractStatusMarkerColorMapper,
   downloadExcel,
   downloadFile,
@@ -32,7 +32,7 @@ import {
   useGetDocumentsContractsQuery,
 } from '../services/document-contracts/document-contracts.service';
 import {
-  ApprovedDocumentContractStatus,
+  DocumentContractStatusForFilter,
   DocumentContractStatus,
 } from '../common/enums/document-contract-status.enum';
 import { IPaginationQueryParams } from '../common/constants/pagination';
@@ -49,36 +49,11 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 
 interface StatusOption {
   key: string;
-  internalValue: DocumentContractStatus;
+  internalValue: DocumentContractStatusForFilter;
   value: string;
 }
 
-const StatusOptions = Object.values(DocumentContractStatus).flatMap((status: string) => {
-  if (status === DocumentContractStatus.APPROVED) {
-    return [
-      {
-        key: ApprovedDocumentContractStatus.ACTIVE,
-        internalValue: DocumentContractStatus.APPROVED,
-        value: i18n.t(
-          `document_contract:contract.status.${DocumentContractStatus.APPROVED}.${ApprovedDocumentContractStatus.ACTIVE}`,
-        ),
-      },
-      {
-        key: ApprovedDocumentContractStatus.DONE,
-        internalValue: DocumentContractStatus.APPROVED,
-        value: i18n.t(
-          `document_contract:contract.status.${DocumentContractStatus.APPROVED}.${ApprovedDocumentContractStatus.DONE}`,
-        ),
-      },
-      {
-        key: ApprovedDocumentContractStatus.NOT_STARTED,
-        internalValue: DocumentContractStatus.APPROVED,
-        value: i18n.t(
-          `document_contract:contract.status.${DocumentContractStatus.APPROVED}.${ApprovedDocumentContractStatus.NOT_STARTED}`,
-        ),
-      },
-    ];
-  }
+const StatusOptions = Object.values(DocumentContractStatusForFilter).flatMap((status: string) => {
   return [
     {
       key: status,
@@ -122,39 +97,12 @@ const ContractsTableHeader = [
     minWidth: '11rem',
     sortable: true,
     cell: (row: IDocumentContract) => {
-      const approvedStatus = () => {
-        if (row.status === DocumentContractStatus.APPROVED) {
-          //active contract
-          const currentDate = new Date();
-          if (
-            currentDate >= new Date(row.documentStartDate) &&
-            currentDate <= new Date(row.documentEndDate)
-          ) {
-            return ApprovedDocumentContractStatus.ACTIVE;
-          }
-          //done contract
-          if (currentDate > new Date(row.documentEndDate)) {
-            return ApprovedDocumentContractStatus.DONE;
-          }
-          //not started contract
-          if (currentDate < new Date(row.documentStartDate)) {
-            return ApprovedDocumentContractStatus.NOT_STARTED;
-          }
-        }
-        return ApprovedDocumentContractStatus.NOT_STARTED;
-      };
       return (
         <CellLayout>
           <StatusWithMarker
-            markerColor={
-              row.status === DocumentContractStatus.APPROVED
-                ? ApprovedDocumentContractStatusMapper[approvedStatus()]
-                : DocumentContractStatusMarkerColorMapper[row.status]
-            }
+            markerColor={DocumentContractStatusMarkerColorMapper[row.status]}
           >
-            {row.status === DocumentContractStatus.APPROVED
-              ? i18n.t(`document_contract:contract.status.${row.status}.${approvedStatus()}`)
-              : i18n.t(`document_contract:contract.status.${row.status}`)}
+            {i18n.t(`document_contract:contract.status.${row.status}`)}
           </StatusWithMarker>
         </CellLayout>
       );
@@ -168,7 +116,7 @@ interface DocumentContractsTableQueryProps extends IPaginationQueryParams {
   search?: string;
   startDate?: Date;
   endDate?: Date;
-  status?: DocumentContractStatus;
+  status?: DocumentContractStatusForFilter;
   activeTab?: VolunteerTabsOptions;
 }
 
@@ -199,7 +147,7 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
     orderBy: query?.orderBy as string,
     orderDirection: query?.orderDirection as OrderDirection,
     volunteerId: query?.volunteerId as string,
-    status: query?.status as DocumentContractStatus,
+    status: query?.status as DocumentContractStatusForFilter,
     startDate: query?.startDate as Date,
     endDate: query?.endDate as Date,
   });
@@ -365,25 +313,7 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
   };
 
   const onStatusChange = (item: StatusOption) => {
-    if (item.key === 'ACTIVE') {
-      // setQuery({ status: item?.internalValue as DocumentContractStatus, endDate: new Date() });
-    } else if (item.key === 'DONE') {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      setQuery({
-        status: item?.internalValue as DocumentContractStatus,
-        endDate: new Date(yesterday),
-      });
-    } else if (item.key === 'NOT_STARTED') {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      setQuery({
-        status: item?.internalValue as DocumentContractStatus,
-        startDate: new Date(tomorrow),
-      });
-    } else {
-      setQuery({ status: item?.internalValue as DocumentContractStatus });
-    }
+    setQuery({ status: item?.internalValue as DocumentContractStatusForFilter });
   };
 
   // todo: do we need shouldRefetch?
