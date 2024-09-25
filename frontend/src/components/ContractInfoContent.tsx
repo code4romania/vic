@@ -15,6 +15,10 @@ import {
   DocumentContractStatus,
 } from '../common/enums/document-contract-status.enum';
 import Button from './Button';
+import { useApproveDocumentContractMutation } from '../services/document-contracts/document-contracts.service';
+import Spinner from './Spinner';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useQueryClient } from 'react-query';
 
 export const ContractInfoContent = ({
   contract,
@@ -27,6 +31,10 @@ export const ContractInfoContent = ({
 }) => {
   const { t } = useTranslation('document_contract');
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { mutate: approveDocumentContract, isLoading: isLoadingApproveDocumentContract } =
+    useApproveDocumentContractMutation();
 
   const onVolunteerClick = () => {
     if (contract) navigate(`/volunteers/${contract.volunteerId}`);
@@ -41,7 +49,21 @@ export const ContractInfoContent = ({
       navigate(`/documents/templates/${contract.documentTemplateId}`);
   };
 
-  //todo: reject contract
+  const handleApproveDocumentContract = () => {
+    approveDocumentContract(contract.documentId, {
+      onSuccess: () => {
+        useSuccessToast(t('approve.success'));
+      },
+      onError: () => {
+        useErrorToast(t('approve.error'));
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: ['document-contract', contract.documentId] });
+        queryClient.invalidateQueries({ queryKey: ['documents-contracts'] });
+      },
+    });
+  };
+
   //todo: download contract
 
   const approvedStatus = useMemo(() => {
@@ -184,11 +206,16 @@ export const ContractInfoContent = ({
           <Button
             label={t('contract.actions.send_to_signing')}
             className="btn-primary"
-            onClick={() => {
-              //todo: trimite spre semnare
-            }}
+            onClick={handleApproveDocumentContract}
             aria-label={`${t('contract.actions.sign')}`}
-            icon={<CheckIcon className="h-5 w-5" />}
+            icon={
+              isLoadingApproveDocumentContract ? (
+                <Spinner className="h-5 w-5 fill-black" />
+              ) : (
+                <CheckIcon className="h-5 w-5" />
+              )
+            }
+            disabled={isLoadingApproveDocumentContract}
             type="button"
           />
           <Button
@@ -198,6 +225,7 @@ export const ContractInfoContent = ({
             aria-label={`${t('contract.actions.reject')}`}
             icon={<XMarkIcon className="h-5 w-5" />}
             type="button"
+            disabled={isLoadingApproveDocumentContract}
           />
         </footer>
       )}

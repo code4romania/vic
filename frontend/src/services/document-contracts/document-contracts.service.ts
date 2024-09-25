@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from 'react-query';
 import {
   addDocumentContract,
+  approveDocumentContract,
   getDocumentContract,
   getDocumentsContracts,
   rejectDocumentContract,
@@ -82,6 +83,14 @@ export const useSignDocumentContractMutation = () => {
       },
     },
   );
+};
+
+export const useApproveDocumentContractMutation = () => {
+  return useMutation((id: string) => approveDocumentContract(id), {
+    onError: (error) => {
+      console.log(`⛔️ ERROR IN APPROVE DOCUMENT CONTRACT ⛔️`, error);
+    },
+  });
 };
 
 export const useRejectcontractMutation = () => {

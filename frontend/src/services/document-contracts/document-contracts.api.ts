@@ -23,6 +23,10 @@ export const signDocumentContract = (id: string, body: ISignDocumentContractBody
   return API.patch(`/documents/contracts/${id}/sign`, body).then((res) => res.data);
 };
 
+export const approveDocumentContract = (id: string) => {
+  return API.patch(`/documents/contracts/${id}/approve`).then((res) => res.data);
+};
+
 export const rejectDocumentContract = (id: string, body: IRejectDocumentContractBody) => {
   return API.patch(`/documents/contracts/${id}/reject`, body).then((res) => res.data);
 };

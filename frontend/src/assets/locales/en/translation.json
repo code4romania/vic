@@ -1076,6 +1076,10 @@
         "success": "The contract has been successfully rejected.",
         "error": "An error occurred while rejecting the contract."
       }
+    },
+    "approve": {
+      "success": "The contract has been successfully approved.",
+      "error": "An error occurred while approving the contract."
     }
   },
   "doc_templates": {

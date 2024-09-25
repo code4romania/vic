@@ -1076,6 +1076,10 @@
         "success": "Contractul a fost respins cu succes.",
         "error": "A apărut o eroare la respingerea contractului."
       }
+    },
+    "approve": {
+      "success": "Contractul a fost aprobat cu succes.",
+      "error": "A apărut o eroare la aprobarea contractului."
     }
   },
   "doc_templates": {
