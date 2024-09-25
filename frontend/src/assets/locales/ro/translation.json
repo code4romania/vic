@@ -8,6 +8,7 @@
     "close": "Închide",
     "name": "Nume",
     "people": "Persoane",
+    "volunteer": "Voluntar",
     "contract": "Contract",
     "age": "Vârsta",
     "hours": "Ore",
@@ -1042,8 +1043,8 @@
           "DONE": "Încheiat",
           "NOT_STARTED": "Neînceput"
         },
-        "REJECTED_VOLUNTEER": "Refuzat",
-        "REJECTED_NGO": "Refuzat",
+        "REJECTED_VOLUNTEER": "Refuzat Voluntar",
+        "REJECTED_NGO": "Refuzat NGO",
         "ACTION_EXPIRED": "Expirat"
       }
     },

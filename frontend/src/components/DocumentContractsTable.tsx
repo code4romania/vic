@@ -32,45 +32,64 @@ import {
   DocumentContractStatus,
 } from '../common/enums/document-contract-status.enum';
 import { IPaginationQueryParams } from '../common/constants/pagination';
+
 import { IDocumentContract } from '../common/interfaces/document-contract.interface';
 import DocumentsContractSidePanel from './DocumentsContractSidePanel';
+import VolunteerSelect from '../containers/VolunteerSelect';
+import { ListItem } from '../common/interfaces/list-item.interface';
+import { SelectItem } from './Select';
+import SelectFilter from '../containers/SelectFilter';
 
-// const StatusOptions: SelectItem<ContractStatus>[] = [
-//   {
-//     key: ContractStatus.ACTIVE,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.ACTIVE}`)}`,
-//   },
-//   {
-//     key: ContractStatus.CLOSED,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.CLOSED}`)}`,
-//   },
-//   {
-//     key: ContractStatus.NOT_STARTED,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.NOT_STARTED}`)}`,
-//   },
-//   {
-//     key: ContractStatus.REJECTED,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.REJECTED}`)}`,
-//   },
-//   {
-//     key: ContractStatus.PENDING_ADMIN,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_ADMIN}`)}`,
-//   },
-//   {
-//     key: ContractStatus.PENDING_VOLUNTEER,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_VOLUNTEER}`)}`,
-//   },
-// ];
+interface StatusOption {
+  key: string;
+  internalValue: DocumentContractStatus;
+  value: string;
+}
+
+const StatusOptions = Object.values(DocumentContractStatus).flatMap((status: string) => {
+  if (status === DocumentContractStatus.APPROVED) {
+    return [
+      {
+        key: ApprovedDocumentContractStatus.ACTIVE,
+        internalValue: DocumentContractStatus.APPROVED,
+        value: i18n.t(
+          `document_contract:contract.status.${DocumentContractStatus.APPROVED}.${ApprovedDocumentContractStatus.ACTIVE}`,
+        ),
+      },
+      {
+        key: ApprovedDocumentContractStatus.DONE,
+        internalValue: DocumentContractStatus.APPROVED,
+        value: i18n.t(
+          `document_contract:contract.status.${DocumentContractStatus.APPROVED}.${ApprovedDocumentContractStatus.DONE}`,
+        ),
+      },
+      {
+        key: ApprovedDocumentContractStatus.NOT_STARTED,
+        internalValue: DocumentContractStatus.APPROVED,
+        value: i18n.t(
+          `document_contract:contract.status.${DocumentContractStatus.APPROVED}.${ApprovedDocumentContractStatus.NOT_STARTED}`,
+        ),
+      },
+    ];
+  }
+  return [
+    {
+      key: status,
+      value: i18n.t(`document_contract:contract.status.${status}`),
+      internalValue: status,
+    },
+  ];
+});
 
 const ContractsTableHeader = [
   {
-    id: 'contractNumber',
+    id: 'documentNumber',
     name: i18n.t('documents:contracts.headers.contract_number'),
     sortable: true,
     selector: (row: IDocumentContract) => row.documentNumber,
   },
   {
-    id: 'volunteer',
+    id: 'volunteerName',
     name: i18n.t('documents:contracts.headers.volunteer'),
     grow: 2,
     sortable: true,
@@ -79,13 +98,13 @@ const ContractsTableHeader = [
     ),
   },
   {
-    id: 'startDate',
+    id: 'documentStartDate',
     name: i18n.t('documents:contracts.headers.start_date'),
     sortable: true,
     selector: (row: IDocumentContract) => formatDate(row.documentStartDate),
   },
   {
-    id: 'endDate',
+    id: 'documentEndDate',
     name: i18n.t('documents:contracts.headers.end_date'),
     sortable: true,
     selector: (row: IDocumentContract) => formatDate(row.documentEndDate),
@@ -138,6 +157,7 @@ const ContractsTableHeader = [
 
 interface DocumentContractsTableQueryProps extends IPaginationQueryParams {
   volunteerId?: string;
+  volunteerName?: string;
   search?: string;
   startDate?: Date;
   endDate?: Date;
@@ -146,19 +166,11 @@ interface DocumentContractsTableQueryProps extends IPaginationQueryParams {
 }
 
 type DocumentContractsTableBasicProps = IHOCQueryProps<DocumentContractsTableQueryProps>;
-interface DocumentContractsTableProps extends DocumentContractsTableBasicProps {
-  volunteerName?: string;
-  volunteerId?: string;
-}
 
-const ContractsTable = ({
-  query,
-  setQuery,
-  volunteerName,
-  volunteerId,
-}: DocumentContractsTableProps) => {
+const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasicProps) => {
   // selected contract id
   const [selectedContract, setSelectedContract] = useState<string>();
+  const [selectedVolunteer, setSelectedVolunteer] = useState<ListItem>();
   // side panel state
   const [isViewContractSidePanelOpen, setIsViewContractSidePanelOpen] = useState<boolean>(false);
   // translation
@@ -172,8 +184,10 @@ const ContractsTable = ({
     search: query?.search,
     orderBy: query?.orderBy as string,
     orderDirection: query?.orderDirection as OrderDirection,
-    volunteerId,
+    volunteerId: query?.volunteerId as string,
     status: query?.status as DocumentContractStatus,
+    startDate: query?.startDate as Date,
+    endDate: query?.endDate as Date,
   });
 
   const onView = (row: IDocumentContract) => {
@@ -190,9 +204,8 @@ const ContractsTable = ({
       startDate: query?.startDate,
       endDate: query?.endDate,
       // status: query?.status as ContractStatus,
-      volunteerId,
+      volunteerId: query?.volunteerId,
     });
-
     downloadExcel(data as BlobPart, t('contracts.download'));
   };
 
@@ -284,16 +297,14 @@ const ContractsTable = ({
     setQuery({ endDate: endDate as Date });
   };
 
-  // const onVolunteerChange = (volunteer: ListItem) => {
-  //   setQuery({ volunteer: volunteer.label });
-  // };
+  const onVolunteerChange = (volunteer: ListItem) => {
+    setSelectedVolunteer(volunteer);
+    setQuery({ volunteerId: volunteer.value });
+  };
 
   const onResetFilters = () => {
-    if (volunteerName) {
-      setQuery({ activeTab: VolunteerTabsOptions.DOCUMENTS }, 'push');
-    } else {
-      setQuery({}, 'push');
-    }
+    setSelectedVolunteer(undefined);
+    setQuery({}, 'push');
   };
 
   const onSearch = (search: string) => {
@@ -302,83 +313,33 @@ const ContractsTable = ({
     });
   };
 
-  // const onStatusChange = (item: SelectItem<ContractStatus> | undefined) => {
-  //   setQuery({ status: item?.key });
-  // };
-
-  // const onCloseSidePanel = (shouldRefetch?: boolean) => {
-  //   setIsViewContractSidePanelOpen(false);
-  //   setSelectedContract(undefined);
-  //   if (shouldRefetch) refetch();
-  // };
+  const onStatusChange = (item: StatusOption) => {
+    if (item.key === 'ACTIVE') {
+      // setQuery({ status: item?.internalValue as DocumentContractStatus, endDate: new Date() });
+    } else if (item.key === 'DONE') {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      setQuery({
+        status: item?.internalValue as DocumentContractStatus,
+        endDate: new Date(yesterday),
+      });
+    } else if (item.key === 'NOT_STARTED') {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      setQuery({
+        status: item?.internalValue as DocumentContractStatus,
+        startDate: new Date(tomorrow),
+      });
+    } else {
+      setQuery({ status: item?.internalValue as DocumentContractStatus });
+    }
+  };
 
   // todo: do we need shouldRefetch?
   const onCloseSidePanel = () => {
     setIsViewContractSidePanelOpen(false);
     setSelectedContract(undefined);
   };
-
-  // const confirmReject = (rejectMessage?: string) => {
-  //   if (showRejectContract)
-  //     rejectContract(
-  //       {
-  //         id: showRejectContract.id,
-  //         rejectMessage,
-  //       },
-  //       {
-  //         onSuccess: () => {
-  //           useSuccessToast(t('contract.submit.reject'));
-  //           // refetch();
-  //         },
-  //         onError: (error) => {
-  //           useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-  //         },
-  //         onSettled: () => {
-  //           setShowRejectContract(null);
-  //         },
-  //       },
-  //     );
-  // };
-
-  // const confirmDelete = () => {
-  //   if (showDeleteContract) {
-  //     const contractId = showDeleteContract.id;
-  //     setShowDeleteContract(null);
-  //     deleteContract(contractId, {
-  //       onSuccess: () => {
-  //         useSuccessToast(t('contract.submit.delete'));
-  //         // refetch();
-  //       },
-  //       onError: (error) => {
-  //         useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-  //       },
-  //     });
-  //   }
-  // };
-
-  // const onConfirmSign = (contract?: File) => {
-  //   if (!contract) return;
-
-  //   // store id and close modal
-  //   const contractId = showApproveContract?.id;
-  //   setShowApproveContract(null);
-
-  //   // approval process
-  //   approveContract(
-  //     {
-  //       id: contractId as string,
-  //       contract,
-  //     },
-  //     {
-  //       onSuccess: () => {
-  //         useSuccessToast(t('contract.submit.confirm'));
-  //       },
-  //       onError: (error) => {
-  //         useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-  //       },
-  //     },
-  //   );
-  // };
 
   return (
     <>
@@ -387,13 +348,17 @@ const ContractsTable = ({
         searchValue={query?.search}
         onResetFilters={onResetFilters}
       >
-        {/* {!volunteerName && (
+        {
           <VolunteerSelect
-            label={t('volunteer:name', { status: '' })}
-            defaultValue={query.volunteer ? { value: '', label: query.volunteer } : undefined}
+            label={t('general:volunteer')}
+            defaultValue={
+              query.volunteerId && selectedVolunteer
+                ? { value: query.volunteerId, label: selectedVolunteer?.label }
+                : undefined
+            }
             onSelect={onVolunteerChange}
           />
-        )} */}
+        }
         <FormDatePicker
           label={`${t('contracts.filters.start_date')}`}
           placeholder={`${t('general:anytime')}`}
@@ -406,13 +371,14 @@ const ContractsTable = ({
           onChange={onEndDateChange}
           value={query.endDate}
         />
-        {/* <Select
-          options={StatusOptions}
-          onChange={onStatusChange}
+        <SelectFilter
+          options={StatusOptions as SelectItem<string>[]}
+          onChange={onStatusChange as (item: SelectItem<string> | undefined) => void}
           placeholder={`${t('general:select', { item: '' })}`}
           label={`${t('contracts.filters.status')}`}
-          selected={StatusOptions.find((option) => option.key === query.status)}
-        /> */}
+          defaultValue={query.status}
+          allowDeselect
+        />
       </DataTableFilters>
       <Card>
         <CardHeader>
@@ -457,4 +423,4 @@ const ContractsTable = ({
   );
 };
 
-export default ContractsTable;
+export default DocumentContractsTable;
