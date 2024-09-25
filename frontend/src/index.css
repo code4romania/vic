@@ -338,12 +338,16 @@ li.recharts-legend-item {
   @apply border-0;
 }
 
+.ql-editor {
+  @apply max-h-[37rem];
+}
+
 .ql-container.ql-snow {
   @apply border-0;
 }
 
 .ql-toolbar.ql-snow {
-  @apply border-0 border-b-2 border-cool-gray-900;
+  @apply border-0 border-b-2 border-cool-gray-500;
 }
 
 @layer utilities {
