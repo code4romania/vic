@@ -1115,8 +1115,8 @@
       }
     },
     "approve": {
-      "success": "The contract has been successfully approved.",
-      "error": "An error occurred while approving the contract."
+      "success": "The contract has been successfully validated.",
+      "error": "An error occurred while validating the contract."
     }
   },
   "doc_templates": {
