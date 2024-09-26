@@ -62,6 +62,7 @@ export const DocumentContracts = () => {
           ]}
           onClick={onTabClick}
           defaultTab={activeTab}
+          selectClassName="max-w-[37rem]"
         >
           <p className="text-cool-gray-500">{t('description')}</p>
           <Outlet />

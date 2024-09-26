@@ -22,6 +22,7 @@ export interface SelectProps<T> {
   helper?: ReactNode;
   minWidth?: boolean;
   allowDeselect?: boolean;
+  optionsClassName?: string;
 }
 
 const Select = <T extends React.Key>({
@@ -33,6 +34,7 @@ const Select = <T extends React.Key>({
   helper,
   minWidth,
   allowDeselect = false,
+  optionsClassName,
 }: SelectProps<T>) => {
   const handleChange = (item: SelectItem<T>) => {
     if (allowDeselect && selected && item?.key === selected.key) {
@@ -74,7 +76,9 @@ const Select = <T extends React.Key>({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 sm:text-sm lg:text-base text-xs ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none">
+              <Listbox.Options
+                className={`absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 sm:text-sm lg:text-base text-xs ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none ${optionsClassName}`}
+              >
                 {(options.length === 0 || !options) && (
                   <Listbox.Option
                     className={
