@@ -1,20 +1,16 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { IGetDocumentContractResponse } from '../common/interfaces/document-contract.interface';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ArrowDownTrayIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import FormReadOnlyElement from './FormReadOnlyElement';
 import {
-  ApprovedDocumentContractStatusMapper,
   DocumentContractStatusMarkerColorMapper,
   downloadFile,
   formatDate,
 } from '../common/utils/utils';
 import StatusWithMarker from './StatusWithMarker';
-import {
-  DocumentContractStatusForFilter,
-  DocumentContractStatus,
-} from '../common/enums/document-contract-status.enum';
+import { DocumentContractStatus } from '../common/enums/document-contract-status.enum';
 import Button from './Button';
 import { useApproveDocumentContractMutation } from '../services/document-contracts/document-contracts.service';
 import Spinner from './Spinner';
@@ -67,28 +63,6 @@ export const ContractInfoContent = ({
 
   //todo: download contract
 
-  const approvedStatus = useMemo(() => {
-    if (contract.status === DocumentContractStatus.APPROVED) {
-      //active contract
-      const currentDate = new Date();
-      if (
-        currentDate >= new Date(contract.documentStartDate) &&
-        currentDate <= new Date(contract.documentEndDate)
-      ) {
-        return DocumentContractStatusForFilter.ACTIVE;
-      }
-      //done contract
-      if (currentDate > new Date(contract.documentEndDate)) {
-        return DocumentContractStatusForFilter.EXPIRED;
-      }
-      //not started contract
-      if (currentDate < new Date(contract.documentStartDate)) {
-        return DocumentContractStatusForFilter.NOT_STARTED;
-      }
-    }
-    return DocumentContractStatusForFilter.NOT_STARTED;
-  }, [contract]);
-
   return (
     <>
       <div className="flex justify-between items-center text-center sm:text-left px-6">
@@ -138,16 +112,8 @@ export const ContractInfoContent = ({
         />
         <div className="flex gap-2.5 flex-col">
           <small className="text-cool-gray-500">{t('general:status')}</small>
-          <StatusWithMarker
-            markerColor={
-              contract.status === DocumentContractStatus.APPROVED
-                ? ApprovedDocumentContractStatusMapper[approvedStatus]
-                : DocumentContractStatusMarkerColorMapper[contract.status]
-            }
-          >
-            {contract.status === DocumentContractStatus.APPROVED
-              ? t(`contract.status.${contract.status}.${approvedStatus}`)
-              : t(`contract.status.${contract.status}`)}
+          <StatusWithMarker markerColor={DocumentContractStatusMarkerColorMapper[contract.status]}>
+            {t(`contract.status.${contract.status}`)}
           </StatusWithMarker>
         </div>
 

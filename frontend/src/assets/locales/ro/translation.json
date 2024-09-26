@@ -1086,7 +1086,7 @@
         "incorrect_identity_data": "Datele de identitate sunt incorecte",
         "dont_agree_with_clauses": "Voluntarul nu este de acord cu termenii contractului",
         "wrong_contract_period": "Perioada contractului este incorectă",
-        "OTHER": "Altele"
+        "other": "Alt motiv"
       }
     },
     "sign": {

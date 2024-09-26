@@ -1081,7 +1081,7 @@
         "incorrect_identity_data": "The identity data is incorrect",
         "dont_agree_with_clauses": "The volunteer does not agree with the contract terms",
         "wrong_contract_period": "The contract period is incorrect",
-        "OTHER": "Other"
+        "other": "Other reason"
       }
     },
     "sign": {

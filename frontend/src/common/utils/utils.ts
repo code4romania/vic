@@ -127,7 +127,7 @@ export const ContractStatusMarkerColorMapper = {
 
 export const ApprovedDocumentContractStatusMapper = {
   [DocumentContractStatusForFilter.ACTIVE]: 'bg-green-500',
-  [DocumentContractStatusForFilter.DONE]: 'bg-black',
+  [DocumentContractStatusForFilter.EXPIRED]: 'bg-black',
   [DocumentContractStatusForFilter.NOT_STARTED]: 'bg-blue-500',
 };
 
