@@ -254,7 +254,7 @@ export const GenerateContract = () => {
       !contractsWithErrors ||
       (contractsWithErrors && Object.keys(contractsWithErrors).length === 0)
     ) {
-      navigate('/documents/templates');
+      navigate('/documents/contracts');
     }
 
     // reset
