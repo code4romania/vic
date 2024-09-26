@@ -8,17 +8,19 @@ export type DatePickerInputProps = DatePickerProps & {
   label?: string;
   helperText?: string;
   helper?: ReactNode;
+  wrapperClassName?: string;
 };
 
 const DatePickerInput: React.FC<DatePickerInputProps> = ({
   label,
   helper,
   className,
+  wrapperClassName,
   dateFormat = 'dd.MM.yyyy',
   ...datePickerProps
 }) => {
   return (
-    <div className="flex gap-1 flex-col max-w-[37rem]">
+    <div className={`flex gap-1 flex-col max-w-[37rem] ${wrapperClassName}`}>
       {label && <label htmlFor={`${label}__datepicker`}>{label}</label>}
       <div className="relative">
         <DatePicker

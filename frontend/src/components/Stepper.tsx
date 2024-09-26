@@ -33,7 +33,7 @@ export const Stepper = ({ steps, currentStep, completedSteps, goToStep }: Steppe
             >
               {/* show check icon if completed, otherwise show step number with '0' in front if step < 9 -> (01, 02, ..., 09, 10) */}
               {isCompleted ? (
-                <CheckIcon width={20} height={20} color="white" />
+                <CheckIcon width={20} height={20} color="black" />
               ) : (
                 `${index < 9 ? '0' : ''}${index + 1}`
               )}

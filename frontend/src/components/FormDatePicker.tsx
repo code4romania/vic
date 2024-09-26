@@ -6,6 +6,7 @@ import FormReadOnlyElement from './FormReadOnlyElement';
 type FormDatePickerProps = Omit<DatePickerInputProps, 'placeholderText' | 'value' | 'selected'> & {
   label?: string;
   errorMessage?: string;
+  wrapperClassName?: string;
   placeholder?: string;
   value?: Date | null;
 };
@@ -17,6 +18,7 @@ const FormDatePicker = ({
   readOnly,
   label,
   value,
+  wrapperClassName,
   ...props
 }: FormDatePickerProps) => {
   return readOnly ? (
@@ -30,6 +32,7 @@ const FormDatePicker = ({
           : '',
         errorMessage || '',
       )}
+      wrapperClassName={wrapperClassName}
       label={label}
       selected={value}
       placeholderText={placeholder}

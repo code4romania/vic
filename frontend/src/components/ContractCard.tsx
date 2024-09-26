@@ -202,9 +202,9 @@ export const ContractCard = ({
       />
 
       {open && (
-        <div className="bg-white shadow-xs p-4 mt-[-16px] pt-8 rounded flex flex-col gap-4 sm:flex-row">
+        <div className="bg-white shadow-xs p-4 mt-[-16px] pt-8 rounded flex flex-col gap-4 md:flex-row">
           {/* datele contractului */}
-          <div className="flex flex-col flex-1 sm:self-baseline  gap-4">
+          <div className="flex flex-col flex-1 md:self-baseline gap-4">
             {!!currentError && (
               <div className="bg-red-100 rounded p-4 flex flex-row gap-2">
                 {isLoadingAddDocumentContract ? (

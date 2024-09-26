@@ -75,7 +75,7 @@ export const AutoFillContractCard = ({ onSubmit }: AutoFillContractCardProps) =>
                   value={value ?? ''}
                   onChange={onChange}
                   placeholder="Introdu numarul"
-                  wrapperClassname="flex-1"
+                  wrapperClassname="flex-1 justify-between"
                   type="number"
                   errorMessage={errors.startingNumber ? t('required', { ns: 'general' }) : ''}
                 />
@@ -95,6 +95,7 @@ export const AutoFillContractCard = ({ onSubmit }: AutoFillContractCardProps) =>
                   minDate={new Date()}
                   maxDate={new Date(new Date().setMonth(new Date().getMonth() + 6))}
                   errorMessage={errors.documentContractDate ? t('required', { ns: 'general' }) : ''}
+                  wrapperClassName="h-full justify-between"
                 />
               </div>
             )}
@@ -106,7 +107,7 @@ export const AutoFillContractCard = ({ onSubmit }: AutoFillContractCardProps) =>
             render={({ field: { value, onChange } }) => (
               <DateRangePicker
                 label={t('form.contract_period')}
-                className="flex-1"
+                className="flex-1 justify-between"
                 value={value}
                 onChange={onChange}
                 minDate={documentContractDate}
@@ -115,7 +116,7 @@ export const AutoFillContractCard = ({ onSubmit }: AutoFillContractCardProps) =>
             )}
           />
         </div>
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <Button
             label={t('clear')}
             className="btn-outline-secondary shadow px-16"

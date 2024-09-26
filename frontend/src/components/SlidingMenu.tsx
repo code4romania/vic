@@ -47,7 +47,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setSlidingMenuOpen}>
+      <Dialog as="div" className="relative z-30" onClose={setSlidingMenuOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-in-out duration-500"

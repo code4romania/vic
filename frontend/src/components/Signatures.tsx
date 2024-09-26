@@ -68,8 +68,6 @@ export const Signatures = ({ volunteer, organization }: SignatureProps) => {
         />
       </div>
 
-      {/* //todo: add legal representative signature paragraph */}
-
       <div className={`flex flex-col gap-4 my-4 ${isVolunteerOver16 ? 'hidden' : ''}`}>
         <p className="font-robotoBold text-center">{t('approval_declaration.title')}</p>
         <p className="font-robotoRegular">

@@ -73,7 +73,7 @@ const DateRangePicker = ({
           autoComplete="off"
         />
       </div>
-      <p className="text-red-500">{errorMessage}</p>
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </div>
   );
 };

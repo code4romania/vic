@@ -5,9 +5,10 @@ interface MediaCellProps {
   logo?: string;
   title: string;
   subtitle?: string;
+  nameContainerClassName?: string;
 }
 
-const MediaCell = ({ logo, title, subtitle }: MediaCellProps) => (
+const MediaCell = ({ logo, title, subtitle, nameContainerClassName }: MediaCellProps) => (
   <div className="flex items-center gap-3 shrink-0 w-full">
     {logo ? (
       <img
@@ -20,7 +21,7 @@ const MediaCell = ({ logo, title, subtitle }: MediaCellProps) => (
         <PhotoIcon className="h-6 w-6 text-gray-500" />
       </div>
     )}
-    <div className="flex flex-col w-4/5">
+    <div className={`flex flex-col w-4/5 ${nameContainerClassName}`}>
       <small className="font-robotoBold truncate ">{title}</small>
       <small className="truncate text-cool-gray-500">{subtitle || ''}</small>
     </div>

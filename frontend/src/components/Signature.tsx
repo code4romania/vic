@@ -12,7 +12,7 @@ export const Signature = ({ signatureTitle, p, className }: SignatureProps) => {
       {signatureTitle}
       {p}
 
-      <div className="border-2 border-dashed rounded flex justify-center items-center p-4">
+      <div className="border-2 border-dashed rounded flex justify-center items-center p-4 mt-auto">
         <img src={signature} alt="signature" className="w-20 h-20" />
       </div>
     </div>
