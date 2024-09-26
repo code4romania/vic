@@ -10,7 +10,7 @@ import {
 } from '../models/document-contract.model';
 import { DocumentContractListViewRepository } from '../repositories/document-contract-list-view.repository';
 import {
-  FindManyDocumentContractListViewOptions,
+  FindManyDocumentContractListViewPaginatedOptions,
   FindOneDocumentContractListViewOptions,
   IDocumentContractListViewModel,
 } from '../models/document-contract-list-view.model';
@@ -102,10 +102,22 @@ export class DocumentContractFacade {
     return this.documentContractRepository.existsInSamePeriod(options);
   }
 
-  async findMany(
-    options: FindManyDocumentContractListViewOptions,
+  async existsByDocumentNumberInSameYear(
+    documentNumber: string,
+    documentDate: Date,
+    organizationId: string,
+  ): Promise<boolean> {
+    return this.documentContractRepository.existsByDocumentNumberInSameYear(
+      documentNumber,
+      documentDate,
+      organizationId,
+    );
+  }
+
+  async findManyPaginated(
+    options: FindManyDocumentContractListViewPaginatedOptions,
   ): Promise<Pagination<IDocumentContractListViewModel>> {
-    return this.documentContractListViewRepository.findMany(options);
+    return this.documentContractListViewRepository.findManyPaginated(options);
   }
 
   async findOneForVolunteer(

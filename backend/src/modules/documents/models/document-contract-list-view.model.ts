@@ -23,7 +23,7 @@ export type FindOneDocumentContractListViewOptions = {
   volunteerId: string;
 };
 
-export type FindManyDocumentContractListViewOptions =
+export type FindManyDocumentContractListViewPaginatedOptions =
   IBasePaginationFilterModel & {
     organizationId: string;
     volunteerId?: string;
