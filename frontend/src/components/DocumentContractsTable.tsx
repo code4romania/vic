@@ -99,9 +99,7 @@ const ContractsTableHeader = [
     cell: (row: IDocumentContract) => {
       return (
         <CellLayout>
-          <StatusWithMarker
-            markerColor={DocumentContractStatusMarkerColorMapper[row.status]}
-          >
+          <StatusWithMarker markerColor={DocumentContractStatusMarkerColorMapper[row.status]}>
             {i18n.t(`document_contract:contract.status.${row.status}`)}
           </StatusWithMarker>
         </CellLayout>
@@ -392,6 +390,7 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}
+            onRowClicked={onView}
           />
         </CardBody>
       </Card>
