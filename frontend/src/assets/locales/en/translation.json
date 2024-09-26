@@ -1211,6 +1211,10 @@
     },
     "contract_data": "Contract data",
     "contract_no": "Contract number",
+    "placeholders": {
+      "contract_no": "Enter contract number",
+      "date": "DD.MM.YYYY"
+    },
     "contract_date": "Contract date",
     "contract_period": "Contract period",
     "contract_duration": {
