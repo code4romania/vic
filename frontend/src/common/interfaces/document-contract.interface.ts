@@ -1,4 +1,7 @@
-import { DocumentContractStatus } from '../enums/document-contract-status.enum';
+import {
+  DocumentContractStatusForFilter,
+  DocumentContractStatus,
+} from '../enums/document-contract-status.enum';
 import { OrderDirection } from '../enums/order-direction.enum';
 
 export interface IDocumentContract {
@@ -20,7 +23,7 @@ export interface IGetDocumentsContractsParams {
   orderBy?: string;
   orderDirection?: OrderDirection;
   volunteerId?: string;
-  status?: DocumentContractStatus;
+  status?: DocumentContractStatusForFilter;
   startDate?: Date;
   endDate?: Date;
 }

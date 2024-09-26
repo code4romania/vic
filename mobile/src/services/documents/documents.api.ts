@@ -40,7 +40,7 @@ export const getContract = (
 };
 
 export const getContractsForVolunteer = ({
-  limit,
+  limit = 100,
   page,
   search,
   orderBy,

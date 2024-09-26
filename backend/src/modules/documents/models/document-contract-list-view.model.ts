@@ -1,5 +1,8 @@
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
-import { DocumentContractStatus } from '../enums/contract-status.enum';
+import {
+  DocumentContractStatus,
+  DocumentContractStatusForDTO,
+} from '../enums/contract-status.enum';
 import { DocumentContractListViewEntity } from '../entities/document-contract-list-view.entity';
 
 export interface IDocumentContractListViewModel {
@@ -24,7 +27,7 @@ export type FindManyDocumentContractListViewOptions =
   IBasePaginationFilterModel & {
     organizationId: string;
     volunteerId?: string;
-    status?: DocumentContractStatus;
+    status?: DocumentContractStatusForDTO;
     documentStartDate?: Date;
     documentEndDate?: Date;
   };

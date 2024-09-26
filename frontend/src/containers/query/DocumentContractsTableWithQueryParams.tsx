@@ -6,16 +6,16 @@ import {
   IPaginationQueryParams,
   getPaginationQueryParams,
 } from '../../common/constants/pagination';
-import { ContractStatus } from '../../common/enums/contract-status.enum';
 import { VolunteerTabsOptions } from '../../pages/Volunteer';
 import DocumentContractsTable from '../../components/DocumentContractsTable';
+import { DocumentContractStatusForFilter } from '../../common/enums/document-contract-status.enum';
 
 export interface ContractsTableQueryProps extends IPaginationQueryParams {
   volunteer?: string;
   search?: string;
   startDate?: Date;
   endDate?: Date;
-  status?: ContractStatus;
+  status?: DocumentContractStatusForFilter;
   activeTab?: VolunteerTabsOptions;
 }
 

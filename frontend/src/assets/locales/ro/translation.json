@@ -1068,11 +1068,10 @@
         "PENDING_VOLUNTEER_SIGNATURE": "Semnare voluntar",
         "PENDING_APPROVAL_NGO": "Verificare ONG",
         "PENDING_NGO_REPRESENTATIVE_SIGNATURE": "Semnare ONG",
-        "APPROVED": {
-          "ACTIVE": "Activ",
-          "DONE": "Încheiat",
-          "NOT_STARTED": "Neînceput"
-        },
+        "APPROVED": "Aprobat",
+        "ACTIVE": "Activ",
+        "EXPIRED": "Încheiat",
+        "NOT_STARTED": "Neînceput",
         "REJECTED_VOLUNTEER": "Refuzat Voluntar",
         "REJECTED_NGO": "Refuzat NGO",
         "ACTION_EXPIRED": "Expirat"

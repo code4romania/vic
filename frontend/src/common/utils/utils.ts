@@ -11,7 +11,7 @@ import { ListItem } from '../interfaces/list-item.interface';
 import { AgeRangeEnum } from '../enums/age-range.enum';
 import { ContractStatus } from '../enums/contract-status.enum';
 import {
-  ApprovedDocumentContractStatus,
+  DocumentContractStatusForFilter,
   DocumentContractStatus,
 } from '../enums/document-contract-status.enum';
 
@@ -126,9 +126,9 @@ export const ContractStatusMarkerColorMapper = {
 };
 
 export const ApprovedDocumentContractStatusMapper = {
-  [ApprovedDocumentContractStatus.ACTIVE]: 'bg-green-500',
-  [ApprovedDocumentContractStatus.DONE]: 'bg-black',
-  [ApprovedDocumentContractStatus.NOT_STARTED]: 'bg-blue-500',
+  [DocumentContractStatusForFilter.ACTIVE]: 'bg-green-500',
+  [DocumentContractStatusForFilter.DONE]: 'bg-black',
+  [DocumentContractStatusForFilter.NOT_STARTED]: 'bg-blue-500',
 };
 
 export const DocumentContractStatusMarkerColorMapper = {
