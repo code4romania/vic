@@ -12,7 +12,7 @@ export interface IDocumentContract {
   documentEndDate: string;
   organizationId: string;
   organizationName: string;
-  status: DocumentContractStatus;
+  status: DocumentContractStatusForFilter;
   volunteerId: string;
   volunteerName: string;
 }
@@ -24,8 +24,8 @@ export interface IGetDocumentsContractsParams {
   orderDirection?: OrderDirection;
   volunteerId?: string;
   status?: DocumentContractStatusForFilter;
-  startDate?: Date;
-  endDate?: Date;
+  documentStartDate?: string;
+  documentEndDate?: string;
 }
 
 export interface IAddDocumentContractDTO {
@@ -65,4 +65,11 @@ export interface ISignDocumentContractBody {
 
 export interface IRejectDocumentContractBody {
   rejectionReason: string;
+}
+
+export interface IDocumentContractsStatistics {
+  pendingNgoRepresentativeSignature: number;
+  pendingVolunteerSignature: number;
+  activeContracts: number;
+  soonToExpire: number;
 }

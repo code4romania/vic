@@ -141,22 +141,22 @@ export const ContractInfoContent = ({
         {/* rejection date and reason */}
         {(contract.status === DocumentContractStatus.REJECTED_NGO ||
           contract.status === DocumentContractStatus.REJECTED_VOLUNTEER) && (
-          <FormReadOnlyElement
-            label={t('contract.rejected_on')}
-            value={formatDate(contract.rejectionDate, 'dd/MM/yyy')}
-          />
-        )}
+            <FormReadOnlyElement
+              label={t('contract.rejected_on')}
+              value={formatDate(contract.rejectionDate, 'dd/MM/yyy')}
+            />
+          )}
         {(contract.status === DocumentContractStatus.REJECTED_NGO ||
           contract.status === DocumentContractStatus.REJECTED_VOLUNTEER) && (
-          <FormReadOnlyElement
-            label={t('contract.rejection_reason')}
-            value={
-              contract.status === DocumentContractStatus.REJECTED_VOLUNTEER
-                ? t(`contract.rejection.${contract.rejectionReason}`)
-                : contract.rejectionReason || '-'
-            }
-          />
-        )}
+            <FormReadOnlyElement
+              label={t('contract.rejection_reason')}
+              value={
+                contract.status === DocumentContractStatus.REJECTED_VOLUNTEER
+                  ? t(`contract.rejection.${contract.rejectionReason}`)
+                  : contract.rejectionReason || '-'
+              }
+            />
+          )}
       </div>
       {contract.status === DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE && (
         <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full xs:max-w-xs sm:max-w-md fixed bottom-0 right-0 bg-white">
