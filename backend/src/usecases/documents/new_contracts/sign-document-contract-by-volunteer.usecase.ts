@@ -165,7 +165,7 @@ export class SignDocumentContractByVolunteerUsecase
       legalGuardianSignatureId: legalGuardianSignatureId,
     });
 
-    this.documentPDFGenerator.generateContractPDF(contractId);
+    await this.documentPDFGenerator.generateContractPDF(contractId);
 
     // Track event in Actions Archive
 
