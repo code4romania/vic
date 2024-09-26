@@ -88,21 +88,29 @@ const DataTableComponent = <T extends object>({
         onSelectedRowsChange && onSelectedRowsChange(selected.selectedRows)
       }
       onRowClicked={onRowClicked}
-      customStyles={
-        onRowClicked
-          ? {
-              rows: {
-                style: {
-                  '&:hover': {
-                    cursor: 'pointer',
-                    backgroundColor: '#F9FAFB',
-                    transition: 'background-color 0.3s ease',
-                  },
-                },
-              },
-            }
-          : {}
-      }
+      // custom background color for hovering rows that perform an action onClick
+      customStyles={{
+        rows: {
+          style: {
+            '&:hover': onRowClicked
+              ? {
+                  cursor: 'pointer',
+                  backgroundColor: '#F9FAFB',
+                  transition: 'background-color 0.3s ease',
+                }
+              : {},
+          },
+        },
+      }}
+      // custom background color for disabled rows
+      conditionalRowStyles={[
+        {
+          when: (row) => (selectableRowDisabled && selectableRowDisabled(row)) || false,
+          style: {
+            backgroundColor: '#F9FAFB',
+          },
+        },
+      ]}
     />
   );
 };
