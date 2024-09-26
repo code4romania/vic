@@ -81,6 +81,27 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
     return !!existingContract;
   }
 
+  async existsByDocumentNumberInSameYear(
+    documentNumber: string,
+    documentDate: Date,
+    organizationId: string,
+  ): Promise<boolean> {
+    const existingContracts = await this.documentContractRepository
+      .createQueryBuilder('contract')
+      .where('contract.documentNumber = :documentNumber', {
+        documentNumber: documentNumber,
+      })
+      .andWhere('contract.organizationId = :organizationId', {
+        organizationId: organizationId,
+      })
+      .andWhere('EXTRACT(YEAR FROM contract.documentDate) = :year', {
+        year: documentDate.getFullYear(),
+      })
+      .getMany();
+
+    return existingContracts.length > 0;
+  }
+
   async exists(options: FindOneDocumentContractOptions): Promise<boolean> {
     return this.documentContractRepository.exists({ where: options });
   }

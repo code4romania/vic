@@ -26,7 +26,7 @@ interface DataTableProps<T> {
   onSort?: (selectedColumn: TableColumn<T>, sortDirection: SortOrder, sortedRows: T[]) => void;
   defaultSortFieldId?: string | number;
   defaultSortAsc?: boolean;
-
+  onRowClicked?: (row: T) => void;
 }
 
 const DataTableComponent = <T extends object>({
@@ -41,6 +41,7 @@ const DataTableComponent = <T extends object>({
   onSort,
   onChangePage,
   onChangeRowsPerPage,
+  onRowClicked,
   selectableRows,
   selectableRowsSingle,
   onSelectedRowsChange,
@@ -86,6 +87,30 @@ const DataTableComponent = <T extends object>({
       onSelectedRowsChange={(selected) =>
         onSelectedRowsChange && onSelectedRowsChange(selected.selectedRows)
       }
+      onRowClicked={onRowClicked}
+      // custom background color for hovering rows that perform an action onClick
+      customStyles={{
+        rows: {
+          style: {
+            '&:hover': onRowClicked
+              ? {
+                  cursor: 'pointer',
+                  backgroundColor: '#F9FAFB',
+                  transition: 'background-color 0.3s ease',
+                }
+              : {},
+          },
+        },
+      }}
+      // custom background color for disabled rows
+      conditionalRowStyles={[
+        {
+          when: (row) => (selectableRowDisabled && selectableRowDisabled(row)) || false,
+          style: {
+            backgroundColor: '#F9FAFB',
+          },
+        },
+      ]}
     />
   );
 };

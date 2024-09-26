@@ -1029,7 +1029,12 @@
       "create_template": "Creează template"
     },
     "generate": {
-      "title": "Generează contract"
+      "title": "Generează contract",
+      "quit": "Renunță",
+      "prev_step": "Pasul anterior",
+      "next_step": "Pasul următor",
+      "send_contracts": "Trimite",
+      "template_selected_alert": "Esti sigur ca vrei sa părăsești pagina? Progresul tău nu va fi salvat."
     },
     "modal": {
       "loading": {
@@ -1038,7 +1043,8 @@
       },
       "success": {
         "title": "Contracte generate",
-        "description": "Toate contractele au fost trimise cu succes!"
+        "description": "Toate contractele au fost trimise cu succes!",
+        "button": "Înapoi la lista de contracte"
       },
       "error": {
         "title": "Generare Contract",
@@ -1075,6 +1081,12 @@
         "REJECTED_VOLUNTEER": "Refuzat Voluntar",
         "REJECTED_NGO": "Refuzat NGO",
         "ACTION_EXPIRED": "Expirat"
+      },
+      "rejection": {
+        "incorrect_identity_data": "Datele de identitate sunt incorecte",
+        "dont_agree_with_clauses": "Voluntarul nu este de acord cu termenii contractului",
+        "wrong_contract_period": "Perioada contractului este incorectă",
+        "other": "Alt motiv"
       }
     },
     "sign": {
@@ -1108,8 +1120,8 @@
       }
     },
     "approve": {
-      "success": "Contractul a fost aprobat cu succes.",
-      "error": "A apărut o eroare la aprobarea contractului."
+      "success": "Contractul a fost validat cu succes.",
+      "error": "A apărut o eroare la validarea contractului."
     }
   },
   "doc_templates": {
@@ -1223,6 +1235,10 @@
     },
     "contract_data": "Datele contractului",
     "contract_no": "Număr contract",
+    "placeholders": {
+      "contract_no": "Introdu numărul contractului",
+      "date": "ZZ.LL.AAAA"
+    },
     "contract_date": "Data contractlui",
     "contract_period": "Perioadă contract",
     "contract_duration": {
@@ -1289,7 +1305,7 @@
   "stepper": {
     "choose_template": "Alege template",
     "choose_volunteers": "Alege voluntari",
-    "fill": "Completează",
+    "fill": "Generează contracte",
     "attachments": "Anexe",
     "complete": "Finalizează"
   },

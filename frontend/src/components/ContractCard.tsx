@@ -252,7 +252,7 @@ export const ContractCard = ({
                     disabled={!edit}
                     value={value ? value : ''}
                     onChange={onChange}
-                    placeholder="1000"
+                    placeholder={t('placeholders.contract_no')}
                     errorMessage={errors.documentNumber?.message}
                     type="number"
                   />
@@ -267,7 +267,7 @@ export const ContractCard = ({
                     disabled={!edit}
                     value={value}
                     onChange={onChange}
-                    placeholder="ZZ.LL.AAAA"
+                    placeholder={t('placeholders.date')}
                     minDate={new Date()}
                     maxDate={new Date(new Date().setMonth(new Date().getMonth() + 6))}
                     errorMessage={errors.documentDate?.message}
