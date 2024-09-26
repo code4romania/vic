@@ -3,7 +3,7 @@ import { IUseCaseService } from 'src/common/interfaces/use-case-service.interfac
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import {
-  FindManyDocumentContractListViewOptions,
+  FindManyDocumentContractListViewPaginatedOptions,
   IDocumentContractListViewModel,
 } from 'src/modules/documents/models/document-contract-list-view.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
@@ -18,9 +18,10 @@ export class GetManyDocumentContractsUsecase
   ) {}
 
   public async execute(
-    findOptions: FindManyDocumentContractListViewOptions,
+    findOptions: FindManyDocumentContractListViewPaginatedOptions,
   ): Promise<Pagination<IDocumentContractListViewModel>> {
-    const contracts = await this.documentContractFacade.findMany(findOptions);
+    const contracts =
+      await this.documentContractFacade.findManyPaginated(findOptions);
 
     const contractsWithPath = await Promise.all(
       contracts.items.map(async (contract) => {

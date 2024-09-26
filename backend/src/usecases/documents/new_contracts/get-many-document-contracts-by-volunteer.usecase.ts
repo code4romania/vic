@@ -41,7 +41,7 @@ export class GetManyDocumentContractsByVolunteerUsecase
     }
 
     // 2. Find the document contracts based on the volunteerId
-    const contracts = await this.documentContractFacade.findMany({
+    const contracts = await this.documentContractFacade.findManyPaginated({
       ...paginationOptions,
       organizationId,
       volunteerId: volunteer.id,

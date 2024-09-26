@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import {
   DocumentContractListViewTransformer,
-  FindManyDocumentContractListViewOptions,
+  FindManyDocumentContractListViewPaginatedOptions,
   FindOneDocumentContractListViewOptions,
   IDocumentContractListViewModel,
 } from '../models/document-contract-list-view.model';
@@ -24,8 +24,8 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
     super(documentContractListViewRepository);
   }
 
-  async findMany(
-    findOptions: FindManyDocumentContractListViewOptions,
+  async findManyPaginated(
+    findOptions: FindManyDocumentContractListViewPaginatedOptions,
   ): Promise<Pagination<IDocumentContractListViewModel>> {
     const {
       orderBy,

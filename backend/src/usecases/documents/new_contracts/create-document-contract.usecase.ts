@@ -1,6 +1,5 @@
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Injectable, Logger } from '@nestjs/common';
-import { isSameYear } from 'date-fns';
 import { isOver16FromCNP } from 'src/common/helpers/utils';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -93,15 +92,14 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     }
 
     // 4. Check if the contract number already exists
-    const existingContract = await this.documentContractFacade.findOne({
-      documentNumber: newContract.documentNumber,
-      organizationId: newContract.organizationId,
-    });
+    const existingContract =
+      await this.documentContractFacade.existsByDocumentNumberInSameYear(
+        newContract.documentNumber,
+        newContract.documentDate,
+        newContract.organizationId,
+      );
 
-    if (
-      existingContract &&
-      isSameYear(existingContract.documentDate, newContract.documentDate)
-    ) {
+    if (existingContract) {
       this.exceptionsService.badRequestException(
         ContractExceptionMessages.CONTRACT_004,
       );
