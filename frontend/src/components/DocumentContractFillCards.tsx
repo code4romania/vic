@@ -68,6 +68,9 @@ export const DocumentContractFillCards = ({
   const handleConfirmDelete = () => {
     if (volunteerToDelete) {
       setSelectedVolunteers(volunteers.filter((volunteer) => volunteer.id !== volunteerToDelete));
+      if (volunteersData) {
+        delete volunteersData[volunteerToDelete];
+      }
       setIsDeleteModalOpen(false);
       setVolunteerToDelete(null);
     }

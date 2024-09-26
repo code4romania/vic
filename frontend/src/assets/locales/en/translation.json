@@ -1023,7 +1023,12 @@
       "create_template": "Create template"
     },
     "generate": {
-      "title": "Generate contract"
+      "title": "Generate contract",
+      "quit": "Quit",
+      "prev_step": "Previous step",
+      "next_step": "Next step",
+      "send_contracts": "Send",
+      "template_selected_alert": "Are you sure you want to leave the page? Your progress will not be saved."
     },
     "modal": {
       "loading": {
@@ -1032,7 +1037,8 @@
       },
       "success": {
         "title": "Contracts generated",
-        "description": "Successfully sent {{value1}}/{{value2}} contracts"
+        "description": "Successfully sent {{value1}}/{{value2}} contracts",
+        "button": "Back to contracts list"
       },
       "error": {
         "title": "Contract Generation",
@@ -1070,6 +1076,12 @@
         "REJECTED_VOLUNTEER": "Rejected by volunteer",
         "REJECTED_NGO": "Rejected by NGO",
         "ACTION_EXPIRED": "Expired"
+      },
+      "rejection": {
+        "incorrect_identity_data": "The identity data is incorrect",
+        "dont_agree_with_clauses": "The volunteer does not agree with the contract terms",
+        "wrong_contract_period": "The contract period is incorrect",
+        "other": "Other reason"
       }
     },
     "sign": {
@@ -1199,6 +1211,10 @@
     },
     "contract_data": "Contract data",
     "contract_no": "Contract number",
+    "placeholders": {
+      "contract_no": "Enter contract number",
+      "date": "DD.MM.YYYY"
+    },
     "contract_date": "Contract date",
     "contract_period": "Contract period",
     "contract_duration": {
@@ -1251,7 +1267,7 @@
   "stepper": {
     "choose_template": "Choose template",
     "choose_volunteers": "Choose volunteers",
-    "fill": "Fill",
+    "fill": "Generate contracts",
     "attachments": "Attachments",
     "complete": "Complete"
   },
