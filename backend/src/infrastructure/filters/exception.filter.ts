@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
+import { WithSentry } from '@sentry/nestjs';
 import { Request, Response } from 'express';
 import { IError } from 'src/common/exceptions/exceptions.interface';
 import { JSONStringifyError } from 'src/common/helpers/utils';
@@ -14,6 +15,8 @@ import { TypeORMError } from 'typeorm';
 @Catch()
 export class ExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(ExceptionsFilter.name);
+
+  @WithSentry()
   catch(
     exception: HttpException | TypeORMError | TypeError,
     host: ArgumentsHost,

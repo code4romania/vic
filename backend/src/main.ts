@@ -1,12 +1,14 @@
+import './instrument';
+
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { Environment } from './infrastructure/config/environment-config';
-import { ExceptionsFilter } from './infrastructure/filters/exception.filter';
 import { createQueueMonitoring } from './infrastructure/config/create-bull-board';
 import { json } from 'express';
+import { ExceptionsFilter } from './infrastructure/filters/exception.filter';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
