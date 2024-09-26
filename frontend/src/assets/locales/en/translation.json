@@ -1042,10 +1042,11 @@
       },
       "error": {
         "title": "Contract Generation",
-        "description": "Close this window to see the contracts that could not be generated and require your attention"
+        "description": "Close this window to see the contracts that could not be generated and require your attention",
+        "see_errored_contracts": "See errored contracts"
       }
     },
-    "back_alert": "Are you sure you want to go back? All your progress will be lost.",
+    "back_alert": "Are you sure you want to leave the contract generation page? All your progress will be lost.",
     "dont_refresh": "To ensure that no progress will not be lost, please do not refresh the page during the contract generation process"
   },
   "document_contract": {
@@ -1055,6 +1056,7 @@
       "generated_on": "Generation date",
       "signed_on": "Signing date",
       "rejected_on": "Rejection date",
+      "rejected_by": "Rejected by",
       "rejection_reason": "Rejection reason",
       "template": "Template used",
       "actions": {
@@ -1117,6 +1119,14 @@
     "approve": {
       "success": "The contract has been successfully validated.",
       "error": "An error occurred while validating the contract."
+    }
+  },
+  "generate_contracts": {
+    "no_volunteers": "Oops! Go back to the previous step and add volunteers to generate contracts.",
+    "delete_modal": {
+      "title": "Confirm volunteer removal",
+      "description": "Are you sure you want to remove the volunteer from the list?",
+      "confirm_btn_label": "Yes, remove"
     }
   },
   "doc_templates": {
@@ -1236,6 +1246,10 @@
       "placeholder": "Add contract terms...",
       "title": "Edit text"
     },
+    "approval_declaration": {
+      "title": "LEGAL REPRESENTATIVE'S CONSENT DECLARATION FOR VOLUNTEERING",
+      "content": "I, the undersigned, {{rep_name}}, residing at {{rep_address}}, CNP {{rep_cnp}}, identified with ID series {{rep_series}} no. {{rep_number}}, as the legal representative of the minor {{volunteer_name}}, hereby declare that I give my consent for their involvement in volunteering activities organized by {{organization_name}}."
+    },
     "organization_name": "Organization name",
     "organization_address": "Organization address",
     "organization_cui": "CUI",
@@ -1246,6 +1260,10 @@
     "tel_no": "Phone number",
     "volunteer_name": "Volunteer name",
     "legal_rep_name": "Legal representative's name",
+    "legal_rep_address": "Legal representative's address",
+    "legal_rep_cnp": "Legal representative's CNP",
+    "legal_rep_series": "Legal representative's ID series",
+    "legal_rep_number": "Legal representative's ID number",
     "legal_rep_role": "Legal representative's role",
     "number": "Number",
     "telephone": "Phone",

@@ -12,6 +12,7 @@ import ConfirmationModal from './ConfirmationModal';
 import { IDocumentVolunteerData } from '../pages/GenerateContract';
 import { FieldValues } from 'react-hook-form';
 import { AxiosError } from 'axios';
+import { useTranslation } from 'react-i18next';
 
 interface DocumentContractFillCardsProps {
   volunteers: IVolunteer[];
@@ -30,6 +31,7 @@ export const DocumentContractFillCards = ({
   volunteersData,
   contractsWithErrors,
 }: DocumentContractFillCardsProps) => {
+  const { t } = useTranslation('generate_contracts');
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [volunteerToDelete, setVolunteerToDelete] = useState<string | null>(null);
 
@@ -85,6 +87,10 @@ export const DocumentContractFillCards = ({
     setVolunteerData({ [volunteerId]: volunteerData });
   };
 
+  if (volunteers.length === 0) {
+    return <p className="text-sm text-gray-500">{t('no_volunteers')}</p>;
+  }
+
   return (
     <>
       <AutoFillContractCard onSubmit={onSubmitFillForm} />
@@ -123,9 +129,9 @@ export const DocumentContractFillCards = ({
         <ConfirmationModal
           onClose={handleCancelDelete}
           onConfirm={handleConfirmDelete}
-          title="Confirma eliminarea voluntarului"
-          description="Esti sigur ca vrei sa elimini voluntarul din lista?"
-          confirmBtnLabel="Da, elimină"
+          title={t('delete_modal.title')}
+          description={t('delete_modal.description')}
+          confirmBtnLabel={t('delete_modal.confirm_btn_label')}
           confirmBtnClassName="btn-danger"
         />
       )}

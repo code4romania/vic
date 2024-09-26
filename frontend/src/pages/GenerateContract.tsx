@@ -44,9 +44,11 @@ const SuccessModalContent = () => {
 const ErrorModalContent = ({
   sentContractsCount,
   totalNumberOfVolunteers,
+  handleCloseModal,
 }: {
   sentContractsCount: number;
   totalNumberOfVolunteers: number;
+  handleCloseModal: () => void;
 }) => {
   const { t } = useTranslation('volunteering_contracts');
   return (
@@ -58,6 +60,13 @@ const ErrorModalContent = ({
         {`${t('modal.loading.description', { value1: sentContractsCount, value2: totalNumberOfVolunteers })}`}
       </p>
       <p className="text-center">{t('modal.error.description')}</p>
+      <div className="flex flex-row justify-center">
+        <Button
+          label={t('modal.error.see_errored_contracts')}
+          onClick={handleCloseModal}
+          className="btn-danger bg-red-400 mt-4"
+        />
+      </div>
     </div>
   );
 };
@@ -111,11 +120,11 @@ export const GenerateContract = () => {
 
   const handlePrevious = () => {
     if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
+      return setCurrentStep(currentStep - 1);
     }
     // if we are on the first step and try to quit but a template has been selected -> display alert before navigating
     if (selectedTemplate) {
-      if (window.confirm(t('generate.template_selected_alert'))) {
+      if (window.confirm(t('back_alert'))) {
         navigate('/documents/contracts');
         return;
       }
@@ -264,6 +273,9 @@ export const GenerateContract = () => {
   };
 
   const handleNavigateBack = () => {
+    if (!selectedTemplate || !selectedVolunteers) {
+      return navigateBack();
+    }
     if (window.confirm(t('back_alert'))) {
       navigateBack();
     }
@@ -271,7 +283,7 @@ export const GenerateContract = () => {
 
   return (
     <>
-      <PageLayout>
+      <PageLayout className="mb-20">
         <PageHeader onBackButtonPress={handleNavigateBack}>{t('generate.title')}</PageHeader>
         <p className="text-sm text-gray-500">{t('dont_refresh')}</p>
         <Stepper
@@ -280,9 +292,11 @@ export const GenerateContract = () => {
           completedSteps={completedSteps}
           goToStep={goToStep}
         />
-        {/* template table */}
+
+        {/* content */}
         {renderStep()}
-        <div className="flex flex-row gap-4 justify-end">
+
+        <div className="fixed bottom-0 left-4 right-4 sm:left-6 sm:right-6 xl:left-[18rem] xl:ml-6 flex flex-row gap-4 justify-end rounded-t bg-white p-4 shadow-[rgba(0,0,0,0.1)_0px_-1px_8px_0px] z-20">
           <Button
             label={currentStep === 0 ? t('generate.quit') : t('generate.prev_step')}
             onClick={handlePrevious}
@@ -327,6 +341,7 @@ export const GenerateContract = () => {
               <ErrorModalContent
                 sentContractsCount={sentContractsCount}
                 totalNumberOfVolunteers={selectedVolunteers.length}
+                handleCloseModal={handleCloseModal}
               />
             )}
         </Modal>

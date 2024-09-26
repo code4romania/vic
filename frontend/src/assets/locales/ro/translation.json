@@ -1034,7 +1034,7 @@
       "prev_step": "Pasul anterior",
       "next_step": "Pasul următor",
       "send_contracts": "Trimite",
-      "template_selected_alert": "Esti sigur ca vrei sa părăsești pagina? Progresul tău nu va fi salvat."
+      "template_selected_alert": "Ești sigur că vrei să părăsești pagina? Progresul tău nu va fi salvat."
     },
     "modal": {
       "loading": {
@@ -1048,10 +1048,11 @@
       },
       "error": {
         "title": "Generare Contract",
-        "description": " Închide această fereastră pentru a vedea contractele care nu au putut fi generate și necesită atenție"
+        "description": " Închide această fereastră pentru a vedea contractele care nu au putut fi generate și necesită atenție",
+        "see_errored_contracts": "Vezi contractele eronate"
       }
     },
-    "back_alert": "Esti sigur ca vrei sa te intorci? Tot progresul tau se va pierde.",
+    "back_alert": "Esti sigur ca vrei sa părăsești generarea contractelor? Progresul tău nu va fi salvat.",
     "dont_refresh": "Pentru a te asigura că progresul tău nu se pierde, te rugăm să nu reîncarci pagina în timpul generării contractelor"
   },
   "document_contract": {
@@ -1061,6 +1062,7 @@
       "generated_on": "Data generare",
       "signed_on": "Data semnare",
       "rejected_on": "Data refuzare",
+      "rejected_by": "Refuzat de",
       "rejection_reason": "Motiv",
       "template": "Template utilizat",
       "actions": {
@@ -1122,6 +1124,14 @@
     "approve": {
       "success": "Contractul a fost validat cu succes.",
       "error": "A apărut o eroare la validarea contractului."
+    }
+  },
+  "generate_contracts": {
+    "no_volunteers": "Ups! Întoarce-te la pasul anterior și adaugă voluntari pentru a putea genera contracte.",
+    "delete_modal": {
+      "title": "Confirmă eliminarea voluntarului",
+      "description": "Ești sigur că vrei să elimini voluntarul din listă?",
+      "confirm_btn_label": "Da, elimină"
     }
   },
   "doc_templates": {
@@ -1274,6 +1284,10 @@
       "placeholder": "Adaugă termenii contractului...",
       "title": "Editează text"
     },
+    "approval_declaration": {
+      "title": "DECLARAȚIE DE ACORD PENTRU VOLUNTARIAT A REPREZENTANTULUI LEGAL",
+      "content": "Subsemnatul/a, {{rep_name}}, domiciliat/ă în {{rep_address}}, CNP {{rep_cnp}}, legitimat cu BI/CI seria {{rep_series}} nr. {{rep_number}},  în calitate de reprezentant legal al minorului/minorei {{volunteer_name}}, declar prin prezenta că îmi exprim acordul pentru implicarea acestuia/acesteia în activități de voluntariat organizate de {{organization_name}}."
+    },
     "organization_name": "Nume organizație",
     "organization_address": "Sediu organizație",
     "organization_cui": "CUI",
@@ -1284,6 +1298,10 @@
     "tel_no": "Nr. Tel.",
     "volunteer_name": "Nume voluntar",
     "legal_rep_name": "Nume reprezentant legal",
+    "legal_rep_address": "Adresa reprezentant legal",
+    "legal_rep_cnp": "CNP reprezentant legal",
+    "legal_rep_series": "Serie reprezentant legal",
+    "legal_rep_number": "Număr reprezentant legal",
     "legal_rep_role": "Rolul reprezentantului legal",
     "number": "Număr",
     "telephone": "Telefon",

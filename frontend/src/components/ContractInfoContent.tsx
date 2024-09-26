@@ -37,8 +37,11 @@ export const ContractInfoContent = ({
     if (contract) navigate(`/volunteers/${contract.volunteerId}`);
   };
 
+  // open navigation in new tab
   const onGeneratedByClick = () => {
-    if (contract) navigate(`/actions-archive?author=${contract.createdByAdminName}`);
+    if (contract) {
+      window.open(`/actions-archive?author=${contract.createdByAdminName}`, '_blank');
+    }
   };
 
   const onTemplateClick = () => {
@@ -138,12 +141,18 @@ export const ContractInfoContent = ({
             value={formatDate(contract.updatedOn, 'dd/MM/yyy')}
           />
         )}
-        {/* rejection date and reason */}
+        {/* rejection date, by and reason */}
         {(contract.status === DocumentContractStatus.REJECTED_NGO ||
           contract.status === DocumentContractStatus.REJECTED_VOLUNTEER) && (
           <FormReadOnlyElement
             label={t('contract.rejected_on')}
             value={formatDate(contract.rejectionDate, 'dd/MM/yyy')}
+          />
+        )}
+        {contract.status === DocumentContractStatus.REJECTED_NGO && (
+          <FormReadOnlyElement
+            label={t('contract.rejected_by')}
+            value={contract.rejectedByName || '-'}
           />
         )}
         {(contract.status === DocumentContractStatus.REJECTED_NGO ||

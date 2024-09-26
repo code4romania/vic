@@ -69,10 +69,29 @@ export const Signatures = ({ volunteer, organization }: SignatureProps) => {
       </div>
 
       {/* //todo: add legal representative signature paragraph */}
-      {/* 
-      <div>
-        <p className="font-robotoBold">{t('contract_duration.title')}</p>
-      </div> */}
+
+      <div className={`flex flex-col gap-4 my-4 ${isVolunteerOver16 ? 'hidden' : ''}`}>
+        <p className="font-robotoBold text-center">{t('approval_declaration.title')}</p>
+        <p className="font-robotoRegular">
+          {t('approval_declaration.content', {
+            rep_name:
+              volunteer?.user.userPersonalData?.legalGuardian?.name || `[${t('legal_rep_name')}]`,
+            rep_address:
+              volunteer?.user.userPersonalData?.legalGuardian?.address ||
+              `[${t('legal_rep_address')}]`,
+            rep_cnp:
+              volunteer?.user.userPersonalData?.legalGuardian?.cnp || `[${t('legal_rep_cnp')}]`,
+            rep_series:
+              volunteer?.user.userPersonalData?.legalGuardian?.identityDocumentSeries ||
+              `[${t('legal_rep_series')}]`,
+            rep_number:
+              volunteer?.user.userPersonalData?.legalGuardian?.identityDocumentNumber ||
+              `[${t('legal_rep_number')}]`,
+            volunteer_name: volunteer?.user.name || `[${t('volunteer_name')}]`,
+            organization_name: organization?.officialName || `[${t('organization_name')}]`,
+          })}
+        </p>
+      </div>
 
       <div className="flex flex-col sm:flex-row gap-8">
         {/* empty div to align items correctly */}
