@@ -63,7 +63,7 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
       });
     }
 
-    this.documentPDFGenerator.generateContractPDF(documentContractId);
+    await this.documentPDFGenerator.generateContractPDF(documentContractId);
 
     // Sign Document Contract by NGO
     this.actionsArchiveFacade.trackEvent(

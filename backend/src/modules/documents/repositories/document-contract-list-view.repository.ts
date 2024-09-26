@@ -13,6 +13,7 @@ import {
   IDocumentContractListViewModel,
 } from '../models/document-contract-list-view.model';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { DocumentContractStatusForDTO } from '../enums/contract-status.enum';
 
 @Injectable()
 export class DocumentContractListViewRepository extends RepositoryWithPagination<DocumentContractListViewEntity> {
@@ -32,6 +33,9 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
       search,
       limit,
       page,
+
+      documentStartDate,
+      documentEndDate,
 
       organizationId,
       volunteerId,
@@ -58,7 +62,75 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
     }
 
     if (status) {
-      query.andWhere('documentContractListView.status = :status', { status });
+      switch (status) {
+        case DocumentContractStatusForDTO.ACTIVE:
+          query
+            .andWhere('documentContractListView.status = :status', {
+              status: 'APPROVED',
+            })
+            .andWhere(
+              'documentContractListView.documentStartDate <= :currentDate',
+              {
+                currentDate: new Date(),
+              },
+            )
+            .andWhere(
+              'documentContractListView.documentEndDate >= :currentDate',
+              {
+                currentDate: new Date(),
+              },
+            );
+          break;
+        case DocumentContractStatusForDTO.NOT_STARTED:
+          query
+            .andWhere('documentContractListView.status = :status', {
+              status: 'APPROVED',
+            })
+            .andWhere(
+              'documentContractListView.documentStartDate > :currentDate',
+              {
+                currentDate: new Date(),
+              },
+            );
+          break;
+        case DocumentContractStatusForDTO.EXPIRED:
+          query
+            .andWhere('documentContractListView.status = :status', {
+              status: 'APPROVED',
+            })
+            .andWhere(
+              'documentContractListView.documentEndDate < :currentDate',
+              {
+                currentDate: new Date(),
+              },
+            );
+          break;
+        default:
+          query.andWhere('documentContractListView.status = :status', {
+            status,
+          });
+      }
+    }
+
+    if (documentStartDate && documentEndDate) {
+      query.andWhere(
+        '(documentContractListView.documentStartDate >= :documentStartDate::DATE AND documentContractListView.documentEndDate <= :documentEndDate::DATE)',
+        { documentStartDate, documentEndDate },
+      );
+    } else {
+      if (documentStartDate) {
+        query.andWhere(
+          'documentContractListView.documentStartDate >= :documentStartDate::DATE',
+          { documentStartDate },
+        );
+      }
+
+      if (documentEndDate) {
+        query.andWhere(
+          'documentContractListView.documentEndDate <= :documentEndDate::DATE',
+          { documentEndDate },
+        );
+      }
     }
 
     if (search) {

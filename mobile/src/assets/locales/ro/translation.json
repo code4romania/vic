@@ -480,7 +480,11 @@
         "subtitle": "{{number}} documente așteaptă răspuns"
       },
       "contract": {
-        "title": "Contract de voluntariat"
+        "title": "Contract de voluntariat",
+        "subtitle": {
+          "one": "{{number}} document în așteptare",
+          "many": "{{number}} documente în așteptare"
+        }
       },
       "volunteer_profile": {
         "title": "Profil voluntar",

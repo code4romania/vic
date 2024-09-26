@@ -5,13 +5,13 @@ import CardBody from './CardBody';
 import Card from '../layouts/CardLayout';
 import { IHOCQueryProps } from '../common/interfaces/hoc-query-props.interface';
 import i18n from '../common/config/i18n';
-import { ArrowDownTrayIcon, EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon, EyeIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import Popover from './Popover';
 import Button from './Button';
 import {
-  ApprovedDocumentContractStatusMapper,
+  // ApprovedDocumentContractStatusMapper,
   DocumentContractStatusMarkerColorMapper,
   downloadExcel,
   downloadFile,
@@ -27,51 +27,51 @@ import { useNavigate } from 'react-router-dom';
 import { VolunteerTabsOptions } from '../pages/Volunteer';
 import { useTranslation } from 'react-i18next';
 import { getContractsForDownload } from '../services/contracts/contracts.api';
-import { useGetDocumentsContractsQuery } from '../services/document-contracts/document-contracts.service';
 import {
-  ApprovedDocumentContractStatus,
+  useDeleteDocumentContractMutation,
+  useGetDocumentsContractsQuery,
+} from '../services/document-contracts/document-contracts.service';
+import {
+  DocumentContractStatusForFilter,
   DocumentContractStatus,
 } from '../common/enums/document-contract-status.enum';
 import { IPaginationQueryParams } from '../common/constants/pagination';
+
 import { IDocumentContract } from '../common/interfaces/document-contract.interface';
 import DocumentsContractSidePanel from './DocumentsContractSidePanel';
+import VolunteerSelect from '../containers/VolunteerSelect';
+import { ListItem } from '../common/interfaces/list-item.interface';
+import { SelectItem } from './Select';
+import SelectFilter from '../containers/SelectFilter';
+import ConfirmationModal from './ConfirmationModal';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 
-// const StatusOptions: SelectItem<ContractStatus>[] = [
-//   {
-//     key: ContractStatus.ACTIVE,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.ACTIVE}`)}`,
-//   },
-//   {
-//     key: ContractStatus.CLOSED,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.CLOSED}`)}`,
-//   },
-//   {
-//     key: ContractStatus.NOT_STARTED,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.NOT_STARTED}`)}`,
-//   },
-//   {
-//     key: ContractStatus.REJECTED,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.REJECTED}`)}`,
-//   },
-//   {
-//     key: ContractStatus.PENDING_ADMIN,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_ADMIN}`)}`,
-//   },
-//   {
-//     key: ContractStatus.PENDING_VOLUNTEER,
-//     value: `${i18n.t(`documents:contract.status.${ContractStatus.PENDING_VOLUNTEER}`)}`,
-//   },
-// ];
+interface StatusOption {
+  key: string;
+  internalValue: DocumentContractStatusForFilter;
+  value: string;
+}
+
+const StatusOptions = Object.values(DocumentContractStatusForFilter).flatMap((status: string) => {
+  return [
+    {
+      key: status,
+      value: i18n.t(`document_contract:contract.status.${status}`),
+      internalValue: status,
+    },
+  ];
+});
 
 const ContractsTableHeader = [
   {
-    id: 'contractNumber',
+    id: 'documentNumber',
     name: i18n.t('documents:contracts.headers.contract_number'),
     sortable: true,
     selector: (row: IDocumentContract) => row.documentNumber,
   },
   {
-    id: 'volunteer',
+    id: 'volunteerName',
     name: i18n.t('documents:contracts.headers.volunteer'),
     grow: 2,
     sortable: true,
@@ -80,13 +80,13 @@ const ContractsTableHeader = [
     ),
   },
   {
-    id: 'startDate',
+    id: 'documentStartDate',
     name: i18n.t('documents:contracts.headers.start_date'),
     sortable: true,
     selector: (row: IDocumentContract) => formatDate(row.documentStartDate),
   },
   {
-    id: 'endDate',
+    id: 'documentEndDate',
     name: i18n.t('documents:contracts.headers.end_date'),
     sortable: true,
     selector: (row: IDocumentContract) => formatDate(row.documentEndDate),
@@ -97,39 +97,12 @@ const ContractsTableHeader = [
     minWidth: '11rem',
     sortable: true,
     cell: (row: IDocumentContract) => {
-      const approvedStatus = () => {
-        if (row.status === DocumentContractStatus.APPROVED) {
-          //active contract
-          const currentDate = new Date();
-          if (
-            currentDate >= new Date(row.documentStartDate) &&
-            currentDate <= new Date(row.documentEndDate)
-          ) {
-            return ApprovedDocumentContractStatus.ACTIVE;
-          }
-          //done contract
-          if (currentDate > new Date(row.documentEndDate)) {
-            return ApprovedDocumentContractStatus.DONE;
-          }
-          //not started contract
-          if (currentDate < new Date(row.documentStartDate)) {
-            return ApprovedDocumentContractStatus.NOT_STARTED;
-          }
-        }
-        return ApprovedDocumentContractStatus.NOT_STARTED;
-      };
       return (
         <CellLayout>
           <StatusWithMarker
-            markerColor={
-              row.status === DocumentContractStatus.APPROVED
-                ? ApprovedDocumentContractStatusMapper[approvedStatus()]
-                : DocumentContractStatusMarkerColorMapper[row.status]
-            }
+            markerColor={DocumentContractStatusMarkerColorMapper[row.status]}
           >
-            {row.status === DocumentContractStatus.APPROVED
-              ? i18n.t(`document_contract:contract.status.${row.status}.${approvedStatus()}`)
-              : i18n.t(`document_contract:contract.status.${row.status}`)}
+            {i18n.t(`document_contract:contract.status.${row.status}`)}
           </StatusWithMarker>
         </CellLayout>
       );
@@ -139,27 +112,23 @@ const ContractsTableHeader = [
 
 interface DocumentContractsTableQueryProps extends IPaginationQueryParams {
   volunteerId?: string;
+  volunteerName?: string;
   search?: string;
   startDate?: Date;
   endDate?: Date;
-  status?: DocumentContractStatus;
+  status?: DocumentContractStatusForFilter;
   activeTab?: VolunteerTabsOptions;
 }
 
 type DocumentContractsTableBasicProps = IHOCQueryProps<DocumentContractsTableQueryProps>;
-interface DocumentContractsTableProps extends DocumentContractsTableBasicProps {
-  volunteerName?: string;
-  volunteerId?: string;
-}
 
-const ContractsTable = ({
-  query,
-  setQuery,
-  volunteerName,
-  volunteerId,
-}: DocumentContractsTableProps) => {
+const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasicProps) => {
   // selected contract id
   const [selectedContract, setSelectedContract] = useState<string>();
+  const [selectedVolunteer, setSelectedVolunteer] = useState<ListItem>();
+  const [selectedDeleteContract, setSelectedDeleteContract] = useState<null | IDocumentContract>(
+    null,
+  );
   // side panel state
   const [isViewContractSidePanelOpen, setIsViewContractSidePanelOpen] = useState<boolean>(false);
   // translation
@@ -167,15 +136,23 @@ const ContractsTable = ({
   // navigation
   const navigate = useNavigate();
 
-  const { data: contracts, isLoading: isLoadingContracts } = useGetDocumentsContractsQuery({
+  const {
+    data: contracts,
+    isLoading: isLoadingContracts,
+    refetch,
+  } = useGetDocumentsContractsQuery({
     page: query?.page as number,
     limit: query?.limit as number,
     search: query?.search,
     orderBy: query?.orderBy as string,
     orderDirection: query?.orderDirection as OrderDirection,
-    volunteerId,
-    status: query?.status as DocumentContractStatus,
+    volunteerId: query?.volunteerId as string,
+    status: query?.status as DocumentContractStatusForFilter,
+    startDate: query?.startDate as Date,
+    endDate: query?.endDate as Date,
   });
+
+  const { mutate: deleteContract } = useDeleteDocumentContractMutation();
 
   const onView = (row: IDocumentContract) => {
     setSelectedContract(row.documentId);
@@ -191,10 +168,29 @@ const ContractsTable = ({
       startDate: query?.startDate,
       endDate: query?.endDate,
       // status: query?.status as ContractStatus,
-      volunteerId,
+      volunteerId: query?.volunteerId,
     });
-
     downloadExcel(data as BlobPart, t('contracts.download'));
+  };
+
+  const showDeleteContractModal = (row: IDocumentContract) => {
+    setSelectedDeleteContract(row);
+  };
+
+  const confirmDelete = () => {
+    if (selectedDeleteContract) {
+      const contractId = selectedDeleteContract.documentId;
+      deleteContract(contractId, {
+        onSuccess: () => {
+          useSuccessToast(t('contract.submit.delete'));
+          refetch();
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: any) => {
+          useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error?.response?.data.code_error));
+        },
+      });
+    }
   };
 
   const buildContractActionColumn = (): TableColumn<IDocumentContract> => {
@@ -218,17 +214,28 @@ const ContractsTable = ({
       },
     ];
 
+    const deleteContractsMenuItems = [
+      ...contractsMenuItems,
+      {
+        label: t('general:delete'),
+        icon: <TrashIcon className="menu-icon" />,
+        onClick: showDeleteContractModal,
+        alert: true,
+      },
+    ];
+
     const mapContractStatusToPopoverItems = (status: DocumentContractStatus) => {
       switch (status) {
         case DocumentContractStatus.APPROVED:
         case DocumentContractStatus.SCHEDULED:
+        case DocumentContractStatus.CREATED:
+        case DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE:
+          return deleteContractsMenuItems;
         case DocumentContractStatus.ACTION_EXPIRED:
         case DocumentContractStatus.REJECTED_NGO:
         case DocumentContractStatus.REJECTED_VOLUNTEER:
-        case DocumentContractStatus.CREATED:
         case DocumentContractStatus.PENDING_APPROVAL_NGO:
         case DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE:
-        case DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE:
           return contractsMenuItems;
         default:
           return [];
@@ -289,16 +296,14 @@ const ContractsTable = ({
     setQuery({ endDate: endDate as Date });
   };
 
-  // const onVolunteerChange = (volunteer: ListItem) => {
-  //   setQuery({ volunteer: volunteer.label });
-  // };
+  const onVolunteerChange = (volunteer: ListItem) => {
+    setSelectedVolunteer(volunteer);
+    setQuery({ volunteerId: volunteer.value });
+  };
 
   const onResetFilters = () => {
-    if (volunteerName) {
-      setQuery({ activeTab: VolunteerTabsOptions.DOCUMENTS }, 'push');
-    } else {
-      setQuery({}, 'push');
-    }
+    setSelectedVolunteer(undefined);
+    setQuery({}, 'push');
   };
 
   const onSearch = (search: string) => {
@@ -307,83 +312,15 @@ const ContractsTable = ({
     });
   };
 
-  // const onStatusChange = (item: SelectItem<ContractStatus> | undefined) => {
-  //   setQuery({ status: item?.key });
-  // };
-
-  // const onCloseSidePanel = (shouldRefetch?: boolean) => {
-  //   setIsViewContractSidePanelOpen(false);
-  //   setSelectedContract(undefined);
-  //   if (shouldRefetch) refetch();
-  // };
+  const onStatusChange = (item: StatusOption) => {
+    setQuery({ status: item?.internalValue as DocumentContractStatusForFilter });
+  };
 
   // todo: do we need shouldRefetch?
   const onCloseSidePanel = () => {
     setIsViewContractSidePanelOpen(false);
     setSelectedContract(undefined);
   };
-
-  // const confirmReject = (rejectMessage?: string) => {
-  //   if (showRejectContract)
-  //     rejectContract(
-  //       {
-  //         id: showRejectContract.id,
-  //         rejectMessage,
-  //       },
-  //       {
-  //         onSuccess: () => {
-  //           useSuccessToast(t('contract.submit.reject'));
-  //           // refetch();
-  //         },
-  //         onError: (error) => {
-  //           useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-  //         },
-  //         onSettled: () => {
-  //           setShowRejectContract(null);
-  //         },
-  //       },
-  //     );
-  // };
-
-  // const confirmDelete = () => {
-  //   if (showDeleteContract) {
-  //     const contractId = showDeleteContract.id;
-  //     setShowDeleteContract(null);
-  //     deleteContract(contractId, {
-  //       onSuccess: () => {
-  //         useSuccessToast(t('contract.submit.delete'));
-  //         // refetch();
-  //       },
-  //       onError: (error) => {
-  //         useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-  //       },
-  //     });
-  //   }
-  // };
-
-  // const onConfirmSign = (contract?: File) => {
-  //   if (!contract) return;
-
-  //   // store id and close modal
-  //   const contractId = showApproveContract?.id;
-  //   setShowApproveContract(null);
-
-  //   // approval process
-  //   approveContract(
-  //     {
-  //       id: contractId as string,
-  //       contract,
-  //     },
-  //     {
-  //       onSuccess: () => {
-  //         useSuccessToast(t('contract.submit.confirm'));
-  //       },
-  //       onError: (error) => {
-  //         useErrorToast(InternalErrors.CONTRACT_ERRORS.getError(error.response?.data.code_error));
-  //       },
-  //     },
-  //   );
-  // };
 
   return (
     <>
@@ -392,13 +329,17 @@ const ContractsTable = ({
         searchValue={query?.search}
         onResetFilters={onResetFilters}
       >
-        {/* {!volunteerName && (
+        {
           <VolunteerSelect
-            label={t('volunteer:name', { status: '' })}
-            defaultValue={query.volunteer ? { value: '', label: query.volunteer } : undefined}
+            label={t('general:volunteer')}
+            defaultValue={
+              query.volunteerId && selectedVolunteer
+                ? { value: query.volunteerId, label: selectedVolunteer?.label }
+                : undefined
+            }
             onSelect={onVolunteerChange}
           />
-        )} */}
+        }
         <FormDatePicker
           label={`${t('contracts.filters.start_date')}`}
           placeholder={`${t('general:anytime')}`}
@@ -411,13 +352,14 @@ const ContractsTable = ({
           onChange={onEndDateChange}
           value={query.endDate}
         />
-        {/* <Select
-          options={StatusOptions}
-          onChange={onStatusChange}
+        <SelectFilter
+          options={StatusOptions as SelectItem<string>[]}
+          onChange={onStatusChange as (item: SelectItem<string> | undefined) => void}
           placeholder={`${t('general:select', { item: '' })}`}
           label={`${t('contracts.filters.status')}`}
-          selected={StatusOptions.find((option) => option.key === query.status)}
-        /> */}
+          defaultValue={query.status}
+          allowDeselect
+        />
       </DataTableFilters>
       <Card>
         <CardHeader>
@@ -458,8 +400,18 @@ const ContractsTable = ({
         isOpen={isViewContractSidePanelOpen}
         contractId={selectedContract}
       />
+      {selectedDeleteContract && (
+        <ConfirmationModal
+          title={t('contract.delete_modal.title')}
+          description={t('contract.delete_modal.description')}
+          confirmBtnLabel={t('general:delete')}
+          onClose={setSelectedDeleteContract.bind(null, null)}
+          onConfirm={confirmDelete}
+          confirmBtnClassName="btn-danger"
+        />
+      )}
     </>
   );
 };
 
-export default ContractsTable;
+export default DocumentContractsTable;

@@ -12,7 +12,7 @@ import {
 } from '../common/utils/utils';
 import StatusWithMarker from './StatusWithMarker';
 import {
-  ApprovedDocumentContractStatus,
+  DocumentContractStatusForFilter,
   DocumentContractStatus,
 } from '../common/enums/document-contract-status.enum';
 import Button from './Button';
@@ -75,18 +75,18 @@ export const ContractInfoContent = ({
         currentDate >= new Date(contract.documentStartDate) &&
         currentDate <= new Date(contract.documentEndDate)
       ) {
-        return ApprovedDocumentContractStatus.ACTIVE;
+        return DocumentContractStatusForFilter.ACTIVE;
       }
       //done contract
       if (currentDate > new Date(contract.documentEndDate)) {
-        return ApprovedDocumentContractStatus.DONE;
+        return DocumentContractStatusForFilter.EXPIRED;
       }
       //not started contract
       if (currentDate < new Date(contract.documentStartDate)) {
-        return ApprovedDocumentContractStatus.NOT_STARTED;
+        return DocumentContractStatusForFilter.NOT_STARTED;
       }
     }
-    return ApprovedDocumentContractStatus.NOT_STARTED;
+    return DocumentContractStatusForFilter.NOT_STARTED;
   }, [contract]);
 
   return (

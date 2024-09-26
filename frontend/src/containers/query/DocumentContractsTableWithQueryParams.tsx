@@ -6,16 +6,16 @@ import {
   IPaginationQueryParams,
   getPaginationQueryParams,
 } from '../../common/constants/pagination';
-import { ContractStatus } from '../../common/enums/contract-status.enum';
 import { VolunteerTabsOptions } from '../../pages/Volunteer';
-import NewContractsTable from '../../components/DocumentContractsTable';
+import DocumentContractsTable from '../../components/DocumentContractsTable';
+import { DocumentContractStatusForFilter } from '../../common/enums/document-contract-status.enum';
 
 export interface ContractsTableQueryProps extends IPaginationQueryParams {
   volunteer?: string;
   search?: string;
   startDate?: Date;
   endDate?: Date;
-  status?: ContractStatus;
+  status?: DocumentContractStatusForFilter;
   activeTab?: VolunteerTabsOptions;
 }
 
@@ -45,8 +45,11 @@ const ContractsTableWithQueryParams = ({
     <QueryParams config={queryConfig}>
       {(props: any) => {
         return (
-          // !THIS USES THE OLD COMPONENT, IT'S JUST A COPY OF THAT
-          <NewContractsTable volunteerName={volunteerName} volunteerId={volunteerId} {...props} />
+          <DocumentContractsTable
+            volunteerName={volunteerName}
+            volunteerId={volunteerId}
+            {...props}
+          />
         );
       }}
     </QueryParams>

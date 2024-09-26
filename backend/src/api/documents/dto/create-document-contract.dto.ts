@@ -1,3 +1,5 @@
+import { UTCDate } from '@date-fns/utc';
+import { Transform } from 'class-transformer';
 import { IsDate, IsString, MaxLength, MinDate } from 'class-validator';
 import { IsDateGreaterThanOrEqualTo } from 'src/common/validators/is-date-gte.validator';
 
@@ -17,6 +19,9 @@ export class CreateDocumentContractDto {
         'Document date must be greater than or equal to the current date',
     },
   )
+  @Transform(({ value }) => {
+    return new UTCDate(value);
+  })
   documentDate: Date;
 
   @IsDate()
@@ -24,12 +29,18 @@ export class CreateDocumentContractDto {
     message:
       'Document start date must be greater than or equal to the document date',
   })
+  @Transform(({ value }) => {
+    return new UTCDate(value);
+  })
   documentStartDate: Date;
 
   @IsDate()
   @IsDateGreaterThanOrEqualTo('documentStartDate', {
     message:
       'Document end date must be greater than or equal to the document start date',
+  })
+  @Transform(({ value }) => {
+    return new UTCDate(value);
   })
   documentEndDate: Date;
 
