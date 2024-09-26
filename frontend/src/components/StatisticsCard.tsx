@@ -1,6 +1,7 @@
 import React from 'react';
 import { ReactNode } from 'react';
 import Card from '../layouts/CardLayout';
+import LoadingContent from './LoadingContent';
 
 interface StatisticsCardProps {
   label: string;
@@ -9,9 +10,10 @@ interface StatisticsCardProps {
   icon?: ReactNode;
   info?: ReactNode;
   className?: string;
+  isLoading?: boolean;
 }
 
-const StatisticsCard = ({ label, value, action, icon, info, className }: StatisticsCardProps) => {
+const StatisticsCard = ({ label, value, action, icon, info, className, isLoading }: StatisticsCardProps) => {
   return (
     <Card className={className}>
       <div className="flex flex-col">
@@ -20,7 +22,7 @@ const StatisticsCard = ({ label, value, action, icon, info, className }: Statist
           <div className="flex flex-col gap-2 shrink-[80]">
             <p className="text-cool-gray-500 leading-5">{label}</p>
             <div className="flex flex-wrap gap-2 items-end">
-              <p className="text-4xl leading-8 font-semibold ">{value}</p>
+              {isLoading ? <LoadingContent /> : <p className="text-4xl leading-8 font-semibold ">{value}</p>}
               {info && (
                 <span className="bg-yellow-200 h-7 leading-7 rounded-xl px-2.5 whitespace-nowrap">
                   {info}

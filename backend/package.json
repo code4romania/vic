@@ -6,7 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "build": "nest build && npm run sentry:sourcemaps",
+    "build2": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -23,7 +24,8 @@
     "migration:generate": "npm run typeorm -- migration:generate ./src/migrations/$npm_config_name",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
-    "migration:show": "npm run typeorm -- migration:show"
+    "migration:show": "npm run typeorm -- migration:show",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org code4romania --project vic-backend ./dist && sentry-cli sourcemaps upload --org code4romania --project vic-backend ./dist"
   },
   "dependencies": {
     "@anchan828/typeorm-history": "1.0.38",
@@ -48,6 +50,9 @@
     "@nestjs/swagger": "^7.4.0",
     "@nestjs/throttler": "^6.0.0",
     "@nestjs/typeorm": "^10.0.2",
+    "@sentry/cli": "^2.36.2",
+    "@sentry/nestjs": "8.32.0",
+    "@sentry/profiling-node": "8.32.0",
     "@types/multer": "^1.4.11",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "axios": "^1.7.2",

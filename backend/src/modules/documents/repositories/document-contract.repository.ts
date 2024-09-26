@@ -142,7 +142,7 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
         COUNT(*) FILTER (WHERE status = $1) AS pending_ngo_representative_signature,
         COUNT(*) FILTER (WHERE status = $2) AS pending_volunteer_signature,
         COUNT(*) FILTER (WHERE CURRENT_DATE BETWEEN document_start_date AND document_end_date) AS active_contracts,
-        COUNT(*) FILTER (WHERE document_end_date - CURRENT_DATE <= 14) AS soon_to_expire
+        COUNT(*) FILTER (WHERE document_end_date - CURRENT_DATE <= 30 AND document_end_date - CURRENT_DATE > 0) AS soon_to_expire
       FROM document_contract WHERE organization_id = $3
     `,
       [

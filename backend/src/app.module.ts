@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { SentryModule } from '@sentry/nestjs/setup';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ApiModule } from './api/api.module';
 import { validate } from './infrastructure/config/environment-config';
@@ -21,10 +21,12 @@ import {
 } from './infrastructure/providers';
 import { S3ProviderModule } from './infrastructure/providers/s3/s3-provider.module';
 import { ExpoPushNotificationsProviderModule } from './infrastructure/providers/expo-push-notifications/expo-push-notifications-provider.module';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     // Configuration modules
+    SentryModule.forRoot(),
     // LoggerModule.forRoot(PinoLoggerConfig),
     ConfigModule.forRoot({ validate, isGlobal: true }),
     EventEmitterModule.forRoot({

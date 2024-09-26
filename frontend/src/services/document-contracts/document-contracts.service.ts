@@ -3,6 +3,7 @@ import {
   addDocumentContract,
   approveDocumentContract,
   deleteDocumentContract,
+  getContractsStatistics,
   getDocumentContract,
   getDocumentsContracts,
   rejectDocumentContract,
@@ -23,8 +24,8 @@ export const useGetDocumentsContractsQuery = ({
   orderDirection,
   volunteerId,
   status,
-  startDate,
-  endDate,
+  documentStartDate,
+  documentEndDate,
 }: IGetDocumentsContractsParams) => {
   return useQuery({
     queryKey: [
@@ -36,8 +37,8 @@ export const useGetDocumentsContractsQuery = ({
       orderDirection,
       volunteerId,
       status,
-      startDate,
-      endDate,
+      documentStartDate,
+      documentEndDate,
     ],
     queryFn: () =>
       getDocumentsContracts({
@@ -48,8 +49,8 @@ export const useGetDocumentsContractsQuery = ({
         orderDirection,
         volunteerId,
         status,
-        startDate,
-        endDate,
+        documentStartDate,
+        documentEndDate,
       }),
     onError: (error) => {
       console.log('⛔️ ERROR IN GET ALL DOCUMENT CONTRACTS ⛔️', error);
@@ -111,5 +112,12 @@ export const useDeleteDocumentContractMutation = () => {
     onError: (error) => {
       console.log(`⛔️ ERROR IN DELETE DOCUMENT CONTRACT ⛔️`, error);
     },
+  });
+};
+
+export const useGetContractsStatisticsQuery = () => {
+  return useQuery({
+    queryKey: ['contracts-statistics'],
+    queryFn: () => getContractsStatistics(),
   });
 };

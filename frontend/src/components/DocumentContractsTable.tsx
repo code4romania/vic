@@ -11,7 +11,6 @@ import { OrderDirection } from '../common/enums/order-direction.enum';
 import Popover from './Popover';
 import Button from './Button';
 import {
-  // ApprovedDocumentContractStatusMapper,
   DocumentContractStatusMarkerColorMapper,
   downloadExcel,
   downloadFile,
@@ -29,15 +28,15 @@ import { useTranslation } from 'react-i18next';
 import { getContractsForDownload } from '../services/contracts/contracts.api';
 import {
   useDeleteDocumentContractMutation,
+  useGetContractsStatisticsQuery,
   useGetDocumentsContractsQuery,
 } from '../services/document-contracts/document-contracts.service';
 import {
   DocumentContractStatusForFilter,
-  DocumentContractStatus,
 } from '../common/enums/document-contract-status.enum';
 import { IPaginationQueryParams } from '../common/constants/pagination';
 
-import { IDocumentContract } from '../common/interfaces/document-contract.interface';
+import { IDocumentContract, IDocumentContractsStatistics } from '../common/interfaces/document-contract.interface';
 import DocumentsContractSidePanel from './DocumentsContractSidePanel';
 import VolunteerSelect from '../containers/VolunteerSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
@@ -46,6 +45,7 @@ import SelectFilter from '../containers/SelectFilter';
 import ConfirmationModal from './ConfirmationModal';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { ContractsStatistics } from './ContractsStatistics';
 
 interface StatusOption {
   key: string;
@@ -108,7 +108,7 @@ const ContractsTableHeader = [
   },
 ];
 
-interface DocumentContractsTableQueryProps extends IPaginationQueryParams {
+export interface DocumentContractsTableQueryProps extends IPaginationQueryParams {
   volunteerId?: string;
   volunteerName?: string;
   search?: string;
@@ -146,9 +146,11 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
     orderDirection: query?.orderDirection as OrderDirection,
     volunteerId: query?.volunteerId as string,
     status: query?.status as DocumentContractStatusForFilter,
-    startDate: query?.startDate as Date,
-    endDate: query?.endDate as Date,
+    ...(query.startDate ? { documentStartDate: formatDate(query?.startDate as Date, 'yyyy-MM-dd') } : {}),
+    ...(query.endDate ? { documentEndDate: formatDate(query?.endDate as Date, 'yyyy-MM-dd') } : {}),
   });
+
+  const { data: statistics, isLoading: isLoadingStatistics } = useGetContractsStatisticsQuery();
 
   const { mutate: deleteContract } = useDeleteDocumentContractMutation();
 
@@ -222,18 +224,17 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
       },
     ];
 
-    const mapContractStatusToPopoverItems = (status: DocumentContractStatus) => {
+    const mapContractStatusToPopoverItems = (status: DocumentContractStatusForFilter) => {
       switch (status) {
-        case DocumentContractStatus.APPROVED:
-        case DocumentContractStatus.SCHEDULED:
-        case DocumentContractStatus.CREATED:
-        case DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE:
+        case DocumentContractStatusForFilter.SCHEDULED:
+        case DocumentContractStatusForFilter.CREATED:
+        case DocumentContractStatusForFilter.PENDING_VOLUNTEER_SIGNATURE:
           return deleteContractsMenuItems;
-        case DocumentContractStatus.ACTION_EXPIRED:
-        case DocumentContractStatus.REJECTED_NGO:
-        case DocumentContractStatus.REJECTED_VOLUNTEER:
-        case DocumentContractStatus.PENDING_APPROVAL_NGO:
-        case DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE:
+        case DocumentContractStatusForFilter.ACTION_EXPIRED:
+        case DocumentContractStatusForFilter.REJECTED_NGO:
+        case DocumentContractStatusForFilter.REJECTED_VOLUNTEER:
+        case DocumentContractStatusForFilter.PENDING_APPROVAL_NGO:
+        case DocumentContractStatusForFilter.PENDING_NGO_REPRESENTATIVE_SIGNATURE:
           return contractsMenuItems;
         default:
           return [];
@@ -322,6 +323,7 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
 
   return (
     <>
+      <ContractsStatistics statistics={statistics as IDocumentContractsStatistics} isLoading={isLoadingStatistics} setQuery={setQuery} />
       <DataTableFilters
         onSearch={onSearch}
         searchValue={query?.search}

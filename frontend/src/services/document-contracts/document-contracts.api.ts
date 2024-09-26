@@ -1,14 +1,21 @@
 import {
   IAddDocumentContractDTO,
+  IDocumentContract,
+  IDocumentContractsStatistics,
   IGetDocumentContractResponse,
   IGetDocumentsContractsParams,
   IRejectDocumentContractBody,
   ISignDocumentContractBody,
 } from '../../common/interfaces/document-contract.interface';
+import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import API from '../api';
 
-export const getDocumentsContracts = (params: IGetDocumentsContractsParams) => {
-  return API.get('/documents/contracts', { params }).then((res) => res.data);
+export const getDocumentsContracts = async (
+  params: IGetDocumentsContractsParams,
+): Promise<IPaginatedEntity<IDocumentContract>> => {
+  return API.get<IPaginatedEntity<IDocumentContract>>('/documents/contracts', {
+    params,
+  }).then((res) => res.data);
 };
 
 export const getDocumentContract = (id: string): Promise<IGetDocumentContractResponse> => {
@@ -33,4 +40,8 @@ export const rejectDocumentContract = (id: string, body: IRejectDocumentContract
 
 export const deleteDocumentContract = (id: string) => {
   return API.delete(`/documents/contracts/${id}`).then((res) => res.data);
+};
+
+export const getContractsStatistics = async (): Promise<IDocumentContractsStatistics> => {
+  return API.get('documents/contracts/statistics').then((res) => res.data);
 };
