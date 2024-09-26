@@ -125,12 +125,6 @@ export const ContractStatusMarkerColorMapper = {
   [ContractStatus.REJECTED]: 'bg-red-500',
 };
 
-export const ApprovedDocumentContractStatusMapper = {
-  [DocumentContractStatusForFilter.ACTIVE]: 'bg-green-500',
-  [DocumentContractStatusForFilter.DONE]: 'bg-black',
-  [DocumentContractStatusForFilter.NOT_STARTED]: 'bg-blue-500',
-};
-
 export const DocumentContractStatusMarkerColorMapper = {
   [DocumentContractStatus.CREATED]: 'bg-purple-500',
   [DocumentContractStatus.SCHEDULED]: 'bg-blue-500',
@@ -141,6 +135,9 @@ export const DocumentContractStatusMarkerColorMapper = {
   [DocumentContractStatus.REJECTED_VOLUNTEER]: 'bg-red-500',
   [DocumentContractStatus.REJECTED_NGO]: 'bg-red-500',
   [DocumentContractStatus.ACTION_EXPIRED]: 'bg-red-500',
+  [DocumentContractStatusForFilter.ACTIVE]: 'bg-green-500',
+  [DocumentContractStatusForFilter.EXPIRED]: 'bg-black',
+  [DocumentContractStatusForFilter.NOT_STARTED]: 'bg-blue-500',
 };
 
 export const ActivityLogStatusMarkerColorMapper = {

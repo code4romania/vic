@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowDownTrayIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import FormReadOnlyElement from './FormReadOnlyElement';
 import {
-  ApprovedDocumentContractStatusMapper,
   DocumentContractStatusMarkerColorMapper,
   downloadFile,
   formatDate,
@@ -79,7 +78,7 @@ export const ContractInfoContent = ({
       }
       //done contract
       if (currentDate > new Date(contract.documentEndDate)) {
-        return DocumentContractStatusForFilter.DONE;
+        return DocumentContractStatusForFilter.EXPIRED;
       }
       //not started contract
       if (currentDate < new Date(contract.documentStartDate)) {
@@ -140,9 +139,7 @@ export const ContractInfoContent = ({
           <small className="text-cool-gray-500">{t('general:status')}</small>
           <StatusWithMarker
             markerColor={
-              contract.status === DocumentContractStatus.APPROVED
-                ? ApprovedDocumentContractStatusMapper[approvedStatus]
-                : DocumentContractStatusMarkerColorMapper[contract.status]
+              DocumentContractStatusMarkerColorMapper[contract.status]
             }
           >
             {contract.status === DocumentContractStatus.APPROVED
