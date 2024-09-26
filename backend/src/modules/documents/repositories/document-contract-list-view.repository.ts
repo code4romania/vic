@@ -13,7 +13,7 @@ import {
   IDocumentContractListViewModel,
 } from '../models/document-contract-list-view.model';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
-import { DocumentContractStatusForDTO } from '../enums/contract-status.enum';
+import { DocumentContractComputedStatuses } from '../enums/contract-status.enum';
 
 @Injectable()
 export class DocumentContractListViewRepository extends RepositoryWithPagination<DocumentContractListViewEntity> {
@@ -63,7 +63,7 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
 
     if (status) {
       switch (status) {
-        case DocumentContractStatusForDTO.ACTIVE:
+        case DocumentContractComputedStatuses.ACTIVE:
           query
             .andWhere('documentContractListView.status = :status', {
               status: 'APPROVED',
@@ -81,7 +81,7 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
               },
             );
           break;
-        case DocumentContractStatusForDTO.NOT_STARTED:
+        case DocumentContractComputedStatuses.NOT_STARTED:
           query
             .andWhere('documentContractListView.status = :status', {
               status: 'APPROVED',
@@ -93,7 +93,7 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
               },
             );
           break;
-        case DocumentContractStatusForDTO.EXPIRED:
+        case DocumentContractComputedStatuses.EXPIRED:
           query
             .andWhere('documentContractListView.status = :status', {
               status: 'APPROVED',
