@@ -1,4 +1,3 @@
-import { DocumentContractStatusForFilter } from '../../common/enums/document-contract-status.enum';
 import {
   IAddDocumentContractDTO,
   IDocumentContract,
@@ -14,30 +13,9 @@ import API from '../api';
 export const getDocumentsContracts = async (
   params: IGetDocumentsContractsParams,
 ): Promise<IPaginatedEntity<IDocumentContract>> => {
-  const { data: contracts } = await API.get<IPaginatedEntity<IDocumentContract>>(
-    '/documents/contracts',
-    {
-      params,
-    },
-  );
-
-  // These enum values (ACTIVE, EXPIRED, NOT_STARTED) are not stored in the database
-  // They are derived statuses based on the contract's start and end dates
-  // We need to manually update the status here to reflect these derived states
-  const statusesToUpdate = [
-    DocumentContractStatusForFilter.ACTIVE,
-    DocumentContractStatusForFilter.EXPIRED,
-    DocumentContractStatusForFilter.NOT_STARTED,
-  ];
-
-  if (params.status && statusesToUpdate.includes(params.status)) {
-    contracts.items = contracts.items.map((item: IDocumentContract) => ({
-      ...item,
-      status: params.status as DocumentContractStatusForFilter,
-    }));
-  }
-
-  return contracts;
+  return API.get<IPaginatedEntity<IDocumentContract>>('/documents/contracts', {
+    params,
+  }).then((res) => res.data);
 };
 
 export const getDocumentContract = (id: string): Promise<IGetDocumentContractResponse> => {

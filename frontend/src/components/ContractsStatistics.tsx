@@ -1,51 +1,58 @@
 import React from 'react';
 import StatisticsCard from './StatisticsCard';
 import { useTranslation } from 'react-i18next';
+import { IDocumentContractsStatistics } from '../common/interfaces/document-contract.interface';
+import { UpdateType } from '../common/interfaces/hoc-query-props.interface';
+import { DocumentContractsTableQueryProps } from './DocumentContractsTable';
+import { DocumentContractStatusForFilter } from '../common/enums/document-contract-status.enum';
 
-export const ContractsStatistics = () => {
+interface ContractsStatisticsProps {
+  statistics: IDocumentContractsStatistics;
+  isLoading: boolean;
+  setQuery: (changes: DocumentContractsTableQueryProps, updateType?: UpdateType) => void;
+}
+
+export const ContractsStatistics = ({ statistics, isLoading, setQuery }: ContractsStatisticsProps) => {
   const { t } = useTranslation('volunteering_contracts');
 
   return (
     <div className="flex flex-col sm:flex-row  gap-2">
       <StatisticsCard
-        label={t('statistics.active_contracts')}
-        // todo: get active contracts count
-        value={'13'}
+        label={t('statistics.saved_contracts')}
+        value={statistics?.pendingNgoRepresentativeSignature.toString()}
         action={{
-          label: 'Vezi lista',
-          // todo: add functionality to view list of active contracts
-          onClick: () => {},
+          label: t('statistics.view_list'),
+          onClick: () => { setQuery({ status: DocumentContractStatusForFilter.PENDING_NGO_REPRESENTATIVE_SIGNATURE }, 'push') },
         }}
+        isLoading={isLoading}
       />
       <StatisticsCard
         label={t('statistics.in_signing_contracts')}
-        // todo: get in signing contracts count
-        value={'1'}
+        value={statistics?.pendingVolunteerSignature.toString()}
         action={{
-          label: 'Vezi lista',
-          // todo: add functionality to view list of in signing contracts
-          onClick: () => {},
+          label: t('statistics.view_list'),
+          onClick: () => { setQuery({ status: DocumentContractStatusForFilter.PENDING_VOLUNTEER_SIGNATURE }, 'push') },
         }}
+        isLoading={isLoading}
       />
+
       <StatisticsCard
-        label={t('statistics.saved_contracts')}
-        // todo: get saved contracts count
-        value={'5'}
+        label={t('statistics.active_contracts')}
+        value={statistics?.activeContracts.toString()}
         action={{
-          label: 'Vezi lista',
-          // todo: add functionality to view list of saved contracts
-          onClick: () => {},
+          label: t('statistics.view_list'),
+          onClick: () => { setQuery({ status: DocumentContractStatusForFilter.ACTIVE }, 'push') },
         }}
+        isLoading={isLoading}
       />
       <StatisticsCard
         label={t('statistics.to_expire_soon')}
-        // todo: get to expire soon contracts count
-        value={'12'}
+        value={statistics?.soonToExpire.toString()}
         action={{
-          label: 'Vezi lista',
-          // todo: add functionality to view list of to expire soon contracts
-          onClick: () => {},
+          label: t('statistics.view_list'),
+          onClick: () => { setQuery({ endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), status: DocumentContractStatusForFilter.ACTIVE }, 'push') },
         }}
+        isLoading={isLoading}
       />
     </div>
   );

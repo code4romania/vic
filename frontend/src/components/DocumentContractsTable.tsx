@@ -28,6 +28,7 @@ import { useTranslation } from 'react-i18next';
 import { getContractsForDownload } from '../services/contracts/contracts.api';
 import {
   useDeleteDocumentContractMutation,
+  useGetContractsStatisticsQuery,
   useGetDocumentsContractsQuery,
 } from '../services/document-contracts/document-contracts.service';
 import {
@@ -35,7 +36,7 @@ import {
 } from '../common/enums/document-contract-status.enum';
 import { IPaginationQueryParams } from '../common/constants/pagination';
 
-import { IDocumentContract } from '../common/interfaces/document-contract.interface';
+import { IDocumentContract, IDocumentContractsStatistics } from '../common/interfaces/document-contract.interface';
 import DocumentsContractSidePanel from './DocumentsContractSidePanel';
 import VolunteerSelect from '../containers/VolunteerSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
@@ -107,7 +108,7 @@ const ContractsTableHeader = [
   },
 ];
 
-interface DocumentContractsTableQueryProps extends IPaginationQueryParams {
+export interface DocumentContractsTableQueryProps extends IPaginationQueryParams {
   volunteerId?: string;
   volunteerName?: string;
   search?: string;
@@ -148,6 +149,8 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
     ...(query.startDate ? { documentStartDate: formatDate(query?.startDate as Date, 'yyyy-MM-dd') } : {}),
     ...(query.endDate ? { documentEndDate: formatDate(query?.endDate as Date, 'yyyy-MM-dd') } : {}),
   });
+
+  const { data: statistics, isLoading: isLoadingStatistics } = useGetContractsStatisticsQuery();
 
   const { mutate: deleteContract } = useDeleteDocumentContractMutation();
 
@@ -223,7 +226,6 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
 
     const mapContractStatusToPopoverItems = (status: DocumentContractStatusForFilter) => {
       switch (status) {
-        case DocumentContractStatusForFilter.APPROVED:
         case DocumentContractStatusForFilter.SCHEDULED:
         case DocumentContractStatusForFilter.CREATED:
         case DocumentContractStatusForFilter.PENDING_VOLUNTEER_SIGNATURE:
@@ -321,7 +323,7 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
 
   return (
     <>
-      <ContractsStatistics />
+      <ContractsStatistics statistics={statistics as IDocumentContractsStatistics} isLoading={isLoadingStatistics} setQuery={setQuery} />
       <DataTableFilters
         onSearch={onSearch}
         searchValue={query?.search}
