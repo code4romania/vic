@@ -1019,9 +1019,10 @@
     },
     "statistics": {
       "active_contracts": "Contracte active",
-      "in_signing_contracts": "Contracte în curs de semnare",
-      "saved_contracts": "Contracte salvate (netrimise)",
-      "to_expire_soon": "Contracte care expiră curând"
+      "in_signing_contracts": "Contracte în curs de semnare la voluntari",
+      "saved_contracts": "Contracte verificate care necesită semnatură",
+      "to_expire_soon": "Contracte care expiră curând",
+      "view_list": "Vezi lista"
     },
     "table_header": {
       "title": "Template-uri de contracte",

@@ -62,54 +62,9 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
     }
 
     if (status) {
-      switch (status) {
-        case DocumentContractComputedStatuses.ACTIVE:
-          query
-            .andWhere('documentContractListView.status = :status', {
-              status: 'APPROVED',
-            })
-            .andWhere(
-              'documentContractListView.documentStartDate <= :currentDate',
-              {
-                currentDate: new Date(),
-              },
-            )
-            .andWhere(
-              'documentContractListView.documentEndDate >= :currentDate',
-              {
-                currentDate: new Date(),
-              },
-            );
-          break;
-        case DocumentContractComputedStatuses.NOT_STARTED:
-          query
-            .andWhere('documentContractListView.status = :status', {
-              status: 'APPROVED',
-            })
-            .andWhere(
-              'documentContractListView.documentStartDate > :currentDate',
-              {
-                currentDate: new Date(),
-              },
-            );
-          break;
-        case DocumentContractComputedStatuses.EXPIRED:
-          query
-            .andWhere('documentContractListView.status = :status', {
-              status: 'APPROVED',
-            })
-            .andWhere(
-              'documentContractListView.documentEndDate < :currentDate',
-              {
-                currentDate: new Date(),
-              },
-            );
-          break;
-        default:
-          query.andWhere('documentContractListView.status = :status', {
-            status,
-          });
-      }
+      query.andWhere('documentContractListView.status = :status', {
+        status,
+      });
     }
 
     if (documentStartDate && documentEndDate) {
