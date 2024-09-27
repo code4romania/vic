@@ -1,5 +1,8 @@
 import { Column, ViewColumn, ViewEntity } from 'typeorm';
-import { DocumentContractStatus } from '../enums/contract-status.enum';
+import {
+  DocumentContractComputedStatuses,
+  DocumentContractStatus,
+} from '../enums/contract-status.enum';
 
 @ViewEntity('DocumentContractWebItemView', {
   /*
@@ -35,7 +38,19 @@ import { DocumentContractStatus } from '../enums/contract-status.enum';
       dc.document_number,
       dc.document_start_date,
       dc.document_end_date,
-      dc.status,
+      CASE 
+          WHEN dc.status = 'APPROVED' AND 
+              dc.document_start_date <= CURRENT_DATE AND 
+              dc.document_end_date >= CURRENT_DATE 
+          THEN 'ACTIVE'
+          WHEN dc.status = 'APPROVED' AND 
+              dc.document_start_date > CURRENT_DATE 
+          THEN 'NOT_STARTED'
+          WHEN dc.status = 'APPROVED' AND 
+              dc.document_end_date < CURRENT_DATE 
+          THEN 'EXPIRED'
+          ELSE dc.status::text
+      END AS "status",
       dc.file_path as "document_file_path",
       dc.document_template_id,
       dt."name" as "document_template_name",
@@ -80,7 +95,7 @@ export class DocumentContractWebItemView {
   documentFilePath: string;
 
   @ViewColumn({ name: 'status' })
-  status: DocumentContractStatus;
+  status: DocumentContractComputedStatuses;
 
   @ViewColumn({ name: 'document_template_id' })
   documentTemplateId: string;

@@ -1,5 +1,5 @@
 import { DocumentContractWebItemView } from '../entities/document-contract-web-item.entity';
-import { DocumentContractStatus } from '../enums/contract-status.enum';
+import { DocumentContractComputedStatuses } from '../enums/contract-status.enum';
 
 export interface IDocumentContractWebItemModel {
   documentId: string;
@@ -7,7 +7,7 @@ export interface IDocumentContractWebItemModel {
   documentStartDate: Date;
   documentEndDate: Date;
   documentFilePath: string;
-  status: DocumentContractStatus;
+  status: DocumentContractComputedStatuses;
   volunteerId: string;
   volunteerName: string;
   organizationId: string;

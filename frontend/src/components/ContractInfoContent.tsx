@@ -10,7 +10,7 @@ import {
   formatDate,
 } from '../common/utils/utils';
 import StatusWithMarker from './StatusWithMarker';
-import { DocumentContractStatus } from '../common/enums/document-contract-status.enum';
+import { DocumentContractStatusForFilter } from '../common/enums/document-contract-status.enum';
 import Button from './Button';
 import { useApproveDocumentContractMutation } from '../services/document-contracts/document-contracts.service';
 import Spinner from './Spinner';
@@ -135,39 +135,39 @@ export const ContractInfoContent = ({
           label={t('contract.generated_on')}
           value={formatDate(contract.createdOn, 'dd/MM/yyy')}
         />
-        {contract.status === DocumentContractStatus.APPROVED && (
+        {contract.status === DocumentContractStatusForFilter.ACTIVE && (
           <FormReadOnlyElement
             label={t('contract.signed_on')}
             value={formatDate(contract.updatedOn, 'dd/MM/yyy')}
           />
         )}
         {/* rejection date, by and reason */}
-        {(contract.status === DocumentContractStatus.REJECTED_NGO ||
-          contract.status === DocumentContractStatus.REJECTED_VOLUNTEER) && (
-          <FormReadOnlyElement
-            label={t('contract.rejected_on')}
-            value={formatDate(contract.rejectionDate, 'dd/MM/yyy')}
-          />
-        )}
-        {contract.status === DocumentContractStatus.REJECTED_NGO && (
+        {(contract.status === DocumentContractStatusForFilter.REJECTED_NGO ||
+          contract.status === DocumentContractStatusForFilter.REJECTED_VOLUNTEER) && (
+            <FormReadOnlyElement
+              label={t('contract.rejected_on')}
+              value={formatDate(contract.rejectionDate, 'dd/MM/yyy')}
+            />
+          )}
+        {contract.status === DocumentContractStatusForFilter.REJECTED_NGO && (
           <FormReadOnlyElement
             label={t('contract.rejected_by')}
             value={contract.rejectedByName || '-'}
           />
         )}
-        {(contract.status === DocumentContractStatus.REJECTED_NGO ||
-          contract.status === DocumentContractStatus.REJECTED_VOLUNTEER) && (
-          <FormReadOnlyElement
-            label={t('contract.rejection_reason')}
-            value={
-              contract.status === DocumentContractStatus.REJECTED_VOLUNTEER
-                ? t(`contract.rejection.${contract.rejectionReason}`)
-                : contract.rejectionReason || '-'
-            }
-          />
-        )}
+        {(contract.status === DocumentContractStatusForFilter.REJECTED_NGO ||
+          contract.status === DocumentContractStatusForFilter.REJECTED_VOLUNTEER) && (
+            <FormReadOnlyElement
+              label={t('contract.rejection_reason')}
+              value={
+                contract.status === DocumentContractStatusForFilter.REJECTED_VOLUNTEER
+                  ? t(`contract.rejection.${contract.rejectionReason}`)
+                  : contract.rejectionReason || '-'
+              }
+            />
+          )}
       </div>
-      {contract.status === DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE && (
+      {contract.status === DocumentContractStatusForFilter.PENDING_NGO_REPRESENTATIVE_SIGNATURE && (
         <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full xs:max-w-xs sm:max-w-md fixed bottom-0 right-0 bg-white">
           <Button
             label={t('contract.actions.sign')}
@@ -187,7 +187,7 @@ export const ContractInfoContent = ({
           />
         </footer>
       )}
-      {contract.status === DocumentContractStatus.PENDING_APPROVAL_NGO && (
+      {contract.status === DocumentContractStatusForFilter.PENDING_APPROVAL_NGO && (
         <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full xs:max-w-xs sm:max-w-md fixed bottom-0 right-0 bg-white">
           <Button
             label={t('contract.actions.send_to_signing')}

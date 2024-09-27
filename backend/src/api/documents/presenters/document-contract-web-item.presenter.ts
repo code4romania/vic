@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
+import { DocumentContractComputedStatuses } from 'src/modules/documents/enums/contract-status.enum';
 import { IDocumentContractWebItemModel } from 'src/modules/documents/models/document-contract-web-item.model';
 
 export class DocumentContractWebItemPresenter {
@@ -66,9 +66,9 @@ export class DocumentContractWebItemPresenter {
   @Expose()
   @ApiProperty({
     description: 'The status of the document contract',
-    enum: DocumentContractStatus,
+    enum: DocumentContractComputedStatuses,
   })
-  status: DocumentContractStatus;
+  status: DocumentContractComputedStatuses;
 
   @Expose()
   @ApiProperty({

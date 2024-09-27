@@ -43,7 +43,7 @@ export interface IGetDocumentContractResponse {
   documentStartDate: string;
   documentEndDate: string;
   documentFilePath: string | null;
-  status: DocumentContractStatus;
+  status: DocumentContractStatusForFilter;
   volunteerId: string;
   volunteerName: string;
   organizationId: string;
