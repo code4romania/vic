@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import {
   Layout,
   TopNavigation,
@@ -34,6 +34,7 @@ interface PageLayoutProps {
   onEditButtonPress?: () => void;
   actionsOptions?: ActionsOptionsProps;
   headerStyle?: ViewStyle;
+  androidKeyboardAvoidingViewBehavior?: 'height' | 'padding' | 'position' | 'explicitUndefined';
 }
 
 export const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
@@ -57,9 +58,17 @@ export const PageLayout = ({
   onEditButtonPress,
   actionsOptions,
   headerStyle,
+  androidKeyboardAvoidingViewBehavior,
 }: PageLayoutProps) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const [
+    internalAndroidKeyboardAvoidingViewBehavior,
+    setInternalAndroidKeyboardAvoidingViewBehavior,
+  ] = useState<'height' | 'padding' | 'position' | undefined>(
+    Platform.OS === 'ios' ? 'padding' : 'height',
+  );
+
   const renderLeftControl = () => {
     if (!onBackButtonPress) {
       return <></>;
@@ -76,6 +85,14 @@ export const PageLayout = ({
     return <TopNavigationAction icon={EditIcon} onPress={onEditButtonPress} />;
   };
 
+  // sometimes we might want to set the keyboard avoiding view behavior to undefined on android
+  // but because sending undefined directly would be overwritten by the default value, we need to set it to 'explicitUndefined' and set it to undefined here
+  useEffect(() => {
+    if (Platform.OS === 'android' && androidKeyboardAvoidingViewBehavior === 'explicitUndefined') {
+      setInternalAndroidKeyboardAvoidingViewBehavior(undefined);
+    }
+  }, [androidKeyboardAvoidingViewBehavior]);
+
   return (
     <>
       <TopNavigation
@@ -87,7 +104,7 @@ export const PageLayout = ({
       />
       <Layout style={styles.layout}>
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === 'ios' ? 'padding' : internalAndroidKeyboardAvoidingViewBehavior}
           style={styles.keyboardAvoidingContainer}
           keyboardVerticalOffset={-100} // This is the distance between the top of the user screen and the react native view - because we have put the avoiding view after the navigation
         >

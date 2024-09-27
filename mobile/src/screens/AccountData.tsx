@@ -175,6 +175,7 @@ const AccountData = ({ navigation }: any) => {
         loading: isUpdatingProfile,
       }}
       headerStyle={{ paddingTop }}
+      androidKeyboardAvoidingViewBehavior="explicitUndefined"
     >
       <FormLayout>
         <View style={styles.container}>

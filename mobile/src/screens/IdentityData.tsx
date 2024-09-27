@@ -319,6 +319,7 @@ const IdentityData = ({ navigation, route }: any) => {
         loading: isUpdateingPersonalData,
       }}
       headerStyle={{ paddingTop }}
+      androidKeyboardAvoidingViewBehavior="explicitUndefined"
     >
       <FormLayout ref={scrollViewRef}>
         <Paragraph>{`${t('description')}`}</Paragraph>

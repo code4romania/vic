@@ -840,12 +840,18 @@
     "reject": {
       "title": "Respinge contract",
       "reason": "Motivul respingerii",
+      "reject_reason": {
+        "incorrect_identity_data": "Datele de identitate nu sunt corecte",
+        "dont_agree_with_clauses": "Nu sunt de acord cu clauzele",
+        "wrong_contract_period": "Perioada contractului este greșită",
+        "other": "Alt motiv"
+      },
       "description": "Coordonatorul va primi răspunsul tău. Poți primi un contract nou ulterior. Menționează motivul pentru care contractul nu este conform cu așteptările tale, sau ia legătura cu coordonatorul organizației tale.",
       "send": "Trimite",
       "sheet": {
         "title": "Răspuns înregistrat",
         "description": "Răspunsul tău și motivul pentru care ai refuzat semnarea au fost trimise către organizație.",
-        "close": "Închide",
+        "back_to_contracts": "Înapoi la contracte",
         "identity": {
           "description": "Răspunsul tău a fost trimis către organizație. Atenție! Datele de identitate din contract sunt preluate automat din contul tău. Asigură-te că acestea sunt corecte și complete.",
           "action_btn_label": "Actualizează datele de identitate"

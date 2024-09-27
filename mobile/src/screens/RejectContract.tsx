@@ -20,12 +20,22 @@ import upsIcon from '../assets/svg/ups-icon';
 import InlineLink from '../components/InlineLink';
 import Button from '../components/Button';
 import { useQueryClient } from 'react-query';
+import i18n from '../common/config/i18n';
 
 const rejectionOptionsArray = [
-  { key: RejectionReason.INCORRECT_IDENTITY_DATA, label: 'Datele de identitate nu sunt corecte' },
-  { key: RejectionReason.DONT_AGREE_WITH_CLAUSES, label: 'Nu sunt de acord cu clauzele' },
-  { key: RejectionReason.WRONG_CONTRACT_PERIOD, label: 'Perioada contractului este greșită' },
-  { key: RejectionReason.OTHER, label: 'Alt motiv' },
+  {
+    key: RejectionReason.INCORRECT_IDENTITY_DATA,
+    label: i18n.t('documents-contract:reject.reject_reason.incorrect_identity_data'),
+  },
+  {
+    key: RejectionReason.DONT_AGREE_WITH_CLAUSES,
+    label: i18n.t('documents-contract:reject.reject_reason.dont_agree_with_clauses'),
+  },
+  {
+    key: RejectionReason.WRONG_CONTRACT_PERIOD,
+    label: i18n.t('documents-contract:reject.reject_reason.wrong_contract_period'),
+  },
+  { key: RejectionReason.OTHER, label: i18n.t('documents-contract:reject.reject_reason.other') },
 ];
 
 interface FieldValues {
@@ -181,7 +191,7 @@ export const RejectContract = ({ navigation, route }: any) => {
             />
           )}
           <InlineLink
-            label={t('reject.sheet.close')}
+            label={t('reject.sheet.back_to_contracts')}
             style={{ color: theme['cool-gray-700'] }}
             onPress={() => {
               onCloseBottomSheet();

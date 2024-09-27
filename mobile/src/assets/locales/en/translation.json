@@ -839,12 +839,18 @@
     "reject": {
       "title": "Reject contract",
       "reason": "Reason for rejection",
+      "reject_reason": {
+        "incorrect_identity_data": "The identity data is incorrect",
+        "dont_agree_with_clauses": "I don't agree with the clauses",
+        "wrong_contract_period": "The contract period is wrong",
+        "other": "Other reason"
+      },
       "description": "The coordinator will receive your response. You may receive a new contract later. Mention the reason why the contract does not meet your expectations, or contact the coordinator of your organization.",
       "send": "Send",
       "sheet": {
         "title": "Response sent",
         "description": "Your response and the reason for rejecting the signature have been sent to the organization.",
-        "close": "Close",
+        "back_to_contracts": "Back to contracts",
         "identity": {
           "description": "Your response has been sent to the organization. Attention! The identity data in the contract is automatically taken from your account. Make sure it is correct and complete.",
           "action_btn_label": "Update identity data"
