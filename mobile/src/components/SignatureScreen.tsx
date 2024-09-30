@@ -53,6 +53,7 @@ export const SignatureScreen = ({
         ]}
       >
         <Signature
+          trimWhitespace
           ref={signatureRef}
           webStyle={webStyle}
           style={styles.signatureWrapper}
