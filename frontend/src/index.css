@@ -9,6 +9,10 @@
     word-break: break-word;
   }
 
+  * {
+    @apply text-sm;
+  }
+
   body,
   p,
   label,
