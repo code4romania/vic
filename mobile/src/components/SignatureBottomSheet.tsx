@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { StyleSheet } from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LoadingIndicator } from '../layouts/PageLayout';
 import { SignatureScreen } from './SignatureScreen';
 import { useTranslation } from 'react-i18next';
 import successIcon from '../assets/svg/success-icon';
@@ -14,7 +13,7 @@ import upsIcon from '../assets/svg/ups-icon';
 import { renderBackdrop } from '../components/BottomSheet';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { SignatureViewRef } from 'react-native-signature-canvas';
-
+import LottieView from 'lottie-react-native';
 interface SignatureBottomSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetMethods>;
   snapPoints: number[];
@@ -39,6 +38,75 @@ interface SignatureBottomSheetProps {
   handleClearLegalGuardianSignature: () => void;
   readLegalGuardianSignature: () => void;
 }
+const LoadingScreen = () => {
+  const { t } = useTranslation('documents-contract');
+  const theme = useTheme();
+  const loadingTexts = useMemo(
+    () => [
+      `${t('loading_signature.processing_signature')}`,
+      `${t('loading_signature.applying_signature')}`,
+      `${t('loading_signature.processing_document')}`,
+    ],
+    [t],
+  );
+  const [currentText, setCurrentText] = useState(loadingTexts[0]);
+  const [fadeAnim] = useState(new Animated.Value(1));
+
+  // changing text animation
+  // 1. fade out current text
+  // 2. change text
+  // 3. fade in new text
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      Animated.sequence([
+        // fade out animation
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 750,
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        // change displayed text
+        setCurrentText(loadingTexts[(index + 1) % loadingTexts.length]);
+        // start fade in animation
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 250,
+          useNativeDriver: true,
+        }).start();
+        index = (index + 1) % loadingTexts.length;
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [loadingTexts, fadeAnim]);
+
+  return (
+    <View style={styles.loadingScreen}>
+      <Text style={styles.text} category="h1">
+        {`${t('loading_signature.title')}`}
+      </Text>
+      <LottieView
+        source={require('../assets/animations/loading-document.json')}
+        autoPlay
+        loop
+        style={styles.lottieDocumentLoader}
+      />
+      <Animated.Text
+        style={[
+          {
+            opacity: fadeAnim,
+            color: theme['cool-gray-500'],
+          },
+          styles.animatedText,
+        ]}
+      >
+        {currentText}
+      </Animated.Text>
+    </View>
+  );
+};
 
 export const SignatureBottomSheet = ({
   bottomSheetRef,
@@ -65,6 +133,7 @@ export const SignatureBottomSheet = ({
   const reducedMotion = useReducedMotion();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
+
   return (
     <BottomSheet
       backdropComponent={renderBackdrop}
@@ -78,7 +147,7 @@ export const SignatureBottomSheet = ({
         {!isFinishedSigning.isFinished ? (
           !displayLegalGuardianScreen ? (
             isLoadingSignContract ? (
-              <LoadingIndicator />
+              <LoadingScreen />
             ) : (
               // FIRST SCREEN - VOLUNTEER SIGNATURE
               <SignatureScreen
@@ -102,7 +171,7 @@ export const SignatureBottomSheet = ({
               />
             )
           ) : isLoadingSignContract ? (
-            <LoadingIndicator />
+            <LoadingScreen />
           ) : (
             // SECOND SCREEN - LEGAL GUARDIAN SIGNATURE
             <SignatureScreen
@@ -161,6 +230,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
   },
+  animatedText: { fontFamily: 'roboto-regular', fontSize: 16, fontWeight: '400' },
   bottomSheetContainer: {
     flex: 1,
     paddingVertical: 24,
@@ -168,5 +238,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 24,
+  },
+  loadingScreen: {
+    flex: 1,
+    width: '100%',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: 'pink',
+  },
+  lottieDocumentLoader: {
+    width: 150,
+    height: 150,
   },
 });

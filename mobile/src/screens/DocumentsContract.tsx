@@ -76,8 +76,8 @@ export const DocumentsContract = ({ navigation, route }: any) => {
 
   // bottom sheet
   const snapPoints = useMemo(
-    () => (isFinishedSigning.isFinished ? [1, 550] : [1, 700]),
-    [isFinishedSigning],
+    () => (isFinishedSigning.isFinished ? [1, 550] : isLoadingSignContract ? [1, 350] : [1, 700]),
+    [isFinishedSigning, isLoadingSignContract],
   );
 
   const bottomSheetRef = useRef<BottomSheet>(null);
