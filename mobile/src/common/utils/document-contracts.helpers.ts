@@ -123,6 +123,9 @@ export const renderContractInfoText = (contract: DocumentContract, t: any) => {
 };
 
 export const isIdentityDataIncomplete = (userProfile: IUserProfile) => {
+  if (!userProfile || !userProfile?.userPersonalData) {
+    return true;
+  }
   // required fields for all users
   const defaultRequiredFields = [
     'cnp',
@@ -145,7 +148,9 @@ export const isIdentityDataIncomplete = (userProfile: IUserProfile) => {
     'address',
   ];
 
-  const isUserOver16 = isOver16FromCNP(userProfile ? userProfile?.userPersonalData.cnp : '');
+  const isUserOver16 = isOver16FromCNP(
+    userProfile && userProfile?.userPersonalData.cnp ? userProfile?.userPersonalData?.cnp : '',
+  );
 
   // check if all required fields are present in userProfile.userPersonalData object
   const isMissingRequiredFields = defaultRequiredFields.some(
