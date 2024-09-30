@@ -75,7 +75,6 @@ export const SignatureBottomSheet = ({
       enableContentPanningGesture={false}
     >
       <BottomSheetView style={[styles.bottomSheetContainer, { paddingBottom: insets.bottom }]}>
-        {/* //todo ! */}
         {!isFinishedSigning.isFinished ? (
           !displayLegalGuardianScreen ? (
             isLoadingSignContract ? (

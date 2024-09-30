@@ -151,7 +151,7 @@
   "login": {
     "title": "Autentificare",
     "paragraph": "Introdu e-mailul și parola pentru a intra în cont.",
-    "submit": "Intra în cont",
+    "submit": "Intră în cont",
     "forgot_password": "Ai uitat parola? ",
     "form": {
       "email": {
@@ -705,6 +705,12 @@
         "see_all": "Vezi toate",
         "empty_list": "Nu aveți anunțuri noi!"
       }
+    },
+    "incomplete_identity_data_modal": {
+      "title": "Ups!",
+      "description": "Datele tale de identitate nu sunt complete. Te rugăm să le actualizezi, astfel încât organizația la care voluntariezi să poată pregăti toate documentele de care ai nevoie pentru voluntariat (contracte, adeverințe etc)",
+      "action_btn_label": "Actualizează datele de identitate",
+      "cancel_btn_label": "Mai târziu"
     }
   },
   "access_code": {

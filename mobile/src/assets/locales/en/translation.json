@@ -704,6 +704,12 @@
         "see_all": "See all",
         "empty_list": "No new ads!"
       }
+    },
+    "incomplete_identity_data_modal": {
+      "title": "Oops!",
+      "description": "Your identity data is incomplete. Please update it so that the organization you volunteer for can prepare all the documents you need for volunteering (contracts, certificates, etc.)",
+      "action_btn_label": "Update identity data",
+      "cancel_btn_label": "Later"
     }
   },
   "access_code": {

@@ -1,6 +1,11 @@
 import { differenceInYears, isAfter, parseISO } from 'date-fns';
 import { DocumentContractStatus } from '../enums/document-contract-status.enum';
 import { DocumentContract } from '../../services/documents/documents.api';
+import {
+  ILegalGuardianData,
+  IUserPersonalData,
+  IUserProfile,
+} from '../interfaces/user-profile.interface';
 
 export const isOver16 = (birthday: string | Date) => {
   const birthdayDate = typeof birthday === 'string' ? parseISO(birthday) : birthday;
@@ -10,6 +15,9 @@ export const isOver16 = (birthday: string | Date) => {
 };
 
 export const isOver16FromCNP = (cnp: string) => {
+  if (!cnp) {
+    return true;
+  }
   // we don't need to perform the calculation before the user has entered all the necessary digits to calculate
   if (cnp.length < 7) {
     return true;
@@ -100,4 +108,46 @@ export const renderContractInfoText = (contract: DocumentContract, t: any) => {
   if (contract.status === DocumentContractStatus.APPROVED) {
     return t('contract.approved');
   }
+};
+
+export const isIdentityDataIncomplete = (userProfile: IUserProfile) => {
+  // required fields for all users
+  const defaultRequiredFields = [
+    'cnp',
+    'identityDocumentSeries',
+    'identityDocumentNumber',
+    'address',
+    'identityDocumentIssueDate',
+    'identityDocumentExpirationDate',
+    'identityDocumentIssuedBy',
+  ];
+
+  // required fields for users under 16
+  const requiredGuardianFields = [
+    'name',
+    'identityDocumentSeries',
+    'identityDocumentNumber',
+    'email',
+    'phone',
+    'cnp',
+    'address',
+  ];
+
+  const isUserOver16 = isOver16FromCNP(userProfile ? userProfile?.userPersonalData.cnp : '');
+
+  // check if all required fields are present in userProfile.userPersonalData object
+  const isMissingRequiredFields = defaultRequiredFields.some(
+    (field) => !userProfile.userPersonalData[field as keyof IUserPersonalData],
+  );
+
+  let isMissingGuardianFields = false;
+
+  // check if all required fields for users under 16 are present in userProfile.userPersonalData.legalGuardian object
+  if (!isUserOver16) {
+    isMissingGuardianFields = requiredGuardianFields.some(
+      (field) => !userProfile.userPersonalData.legalGuardian?.[field as keyof ILegalGuardianData],
+    );
+  }
+
+  return isMissingRequiredFields || isMissingGuardianFields;
 };

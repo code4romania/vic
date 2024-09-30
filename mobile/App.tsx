@@ -21,6 +21,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
 import NotificationContextProvider from './src/contexts/notification/NotificationContextProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG as any);
@@ -70,11 +71,13 @@ export default () => {
         <GestureHandlerRootView style={styles.gestureHandler}>
           <QueryClientProvider client={queryClient}>
             <AuthContextProvider>
-              <NavigationContainer ref={navigationRef}>
-                <NotificationContextProvider navigation={navigationRef}>
-                  <Router />
-                </NotificationContextProvider>
-              </NavigationContainer>
+              <BottomSheetModalProvider>
+                <NavigationContainer ref={navigationRef}>
+                  <NotificationContextProvider navigation={navigationRef}>
+                    <Router />
+                  </NotificationContextProvider>
+                </NavigationContainer>
+              </BottomSheetModalProvider>
             </AuthContextProvider>
           </QueryClientProvider>
         </GestureHandlerRootView>

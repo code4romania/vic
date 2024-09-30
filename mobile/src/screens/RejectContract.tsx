@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import FormSelect from '../components/FormSelect';
 import { DocumentContract, RejectionReason } from '../services/documents/documents.api';
 import { useRejectContractMutation } from '../services/documents/documents.service';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { renderBackdrop } from '../components/BottomSheet';
 import { useReducedMotion } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -21,6 +21,7 @@ import InlineLink from '../components/InlineLink';
 import Button from '../components/Button';
 import { useQueryClient } from 'react-query';
 import i18n from '../common/config/i18n';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 const rejectionOptionsArray = [
   {
@@ -124,9 +125,9 @@ export const RejectContract = ({ navigation, route }: any) => {
 
   // bottom sheet
   const snapPoints = useMemo(() => [1, 500], []);
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheetModalMethods>(null);
   const openBottomSheet = () => {
-    return bottomSheetRef.current?.expand();
+    return bottomSheetRef.current?.present();
   };
   const onCloseBottomSheet = () => {
     return bottomSheetRef.current?.close();
@@ -165,10 +166,10 @@ export const RejectContract = ({ navigation, route }: any) => {
           />
         </View>
       </PageLayout>
-      <BottomSheet
+      <BottomSheetModal
         backdropComponent={renderBackdrop}
         ref={bottomSheetRef}
-        index={-1}
+        index={1}
         snapPoints={snapPoints}
         animateOnMount={reducedMotion ? false : true}
         enableContentPanningGesture={false}
@@ -203,7 +204,7 @@ export const RejectContract = ({ navigation, route }: any) => {
             }}
           />
         </BottomSheetView>
-      </BottomSheet>
+      </BottomSheetModal>
     </>
   );
 };
