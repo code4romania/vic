@@ -806,7 +806,8 @@
     "pending_documents": "Documente în așteptare",
     "approved_history": "Istoric contracte",
     "expired": "încheiat",
-    "rejected": "respins",
+    "rejected": "Respins",
+    "action_expired": "Acțiune expirată",
     "current": "curent",
     "contract": {
       "title": "Contract {{value}}",
@@ -816,6 +817,7 @@
       "approved": "Contractul a fost aprobat de ambele părți și nu mai poate fi modificat. Descarcă și vizualizează contractul.",
       "expired": "Perioada contractului a luat sfârșit. Descarcă și vizualizează contractul.",
       "rejected": "Contractul a fost respins.",
+      "action_expired": "Contractul nu a fost semnat în intervalul de timp dedicat.",
       "sign": "Semnează",
       "reject": "Respinge contract"
     },
@@ -866,6 +868,12 @@
           "title": "A apărut o eroare la respingerea contractului"
         }
       }
+    },
+    "loading_signature": {
+      "title": "Se semnează documentul...",
+      "processing_signature": "Se procesează semnătura...",
+      "applying_signature": "Se aplică semnătura...",
+      "processing_document": "Se procesează documentul..."
     }
   },
   "notifications": {

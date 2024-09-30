@@ -66,6 +66,16 @@ export const DocumentsContracts = ({ navigation }: any) => {
     [allContracts, isLoadingAllContracts],
   );
 
+  const actionExpiredContracts = useMemo(
+    () =>
+      allContracts &&
+      !isLoadingAllContracts &&
+      allContracts.items.filter(
+        (contract: DocumentContract) => contract.status === DocumentContractStatus.ACTION_EXPIRED,
+      ),
+    [allContracts, isLoadingAllContracts],
+  );
+
   // an activeContract exists if the current date is between the document start and end date
   const activeContractExists = useMemo(
     () =>
@@ -192,6 +202,26 @@ export const DocumentsContracts = ({ navigation }: any) => {
                     info={`${t('rejected')}`}
                   />
                   {index < rejectedContracts.length - 1 && <Divider />}
+                </View>
+              );
+            })}
+            {actionExpiredContracts.map((item: DocumentContract, index: number) => {
+              return (
+                <View key={item.documentId}>
+                  <ContractItem
+                    id={item.documentId}
+                    title={item.documentNumber}
+                    leftIcon={
+                      <DocumentIcon color={'color-danger-800'} backgroundColor={'red-50'} />
+                    }
+                    rightIconName={'chevron-right'}
+                    startDate={item.documentStartDate}
+                    endDate={item.documentEndDate}
+                    // todo: download contract
+                    onPress={() => onContractPress(item)}
+                    info={`${t('action_expired')}`}
+                  />
+                  {index < actionExpiredContracts.length - 1 && <Divider />}
                 </View>
               );
             })}
