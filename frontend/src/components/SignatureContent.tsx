@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import {
   IGetDocumentContractResponse,
@@ -34,6 +34,26 @@ export const SignatureContent = ({
   const queryClient = useQueryClient();
   const signatureRef = useRef<SignatureCanvas>(null);
   const [signatureError, setSignatureError] = useState<string | null>(null);
+  const [signatureWidth, setSignatureWidth] = useState<number>(350);
+
+  // the signature needs a specific width in order to function properly
+  // therefore, we need to resize it based on the window size in order for it to be responsive
+  useEffect(() => {
+    const handleResize = () => {
+      setSignatureWidth(window.innerWidth < 640 ? 250 : 350);
+    };
+
+    // Set initial width
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleClearSignature = () => {
     signatureRef.current?.clear();
@@ -96,7 +116,7 @@ export const SignatureContent = ({
           <SignatureCanvas
             ref={signatureRef}
             canvasProps={{
-              width: 400,
+              width: signatureWidth,
               height: 150,
               style: {
                 border: signatureError ? '1px solid red' : '1px solid lightgray',
