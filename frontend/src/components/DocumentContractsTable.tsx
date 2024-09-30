@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import DataTableComponent from './DataTableComponent';
 import CardHeader from './CardHeader';
 import CardBody from './CardBody';
@@ -321,6 +321,14 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
     setSelectedContract(undefined);
   };
 
+  const expandOnStatsFiltersChange = useMemo(() => {
+    // These fields are changed on "view more" button on contracts stats => we want to expand the filters when applied.
+    if (query.status || query.endDate) {
+      return true;
+    }
+    return false;
+  }, [query.status, query.endDate]);
+
   return (
     <>
       <ContractsStatistics statistics={statistics as IDocumentContractsStatistics} isLoading={isLoadingStatistics} setQuery={setQuery} />
@@ -328,6 +336,7 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
         onSearch={onSearch}
         searchValue={query?.search}
         onResetFilters={onResetFilters}
+        isExpanded={expandOnStatsFiltersChange}
       >
         {
           <VolunteerSelect

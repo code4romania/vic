@@ -4,12 +4,16 @@ import { In, LessThan, Not, Repository } from 'typeorm';
 import { DocumentContractStatus } from '../enums/contract-status.enum';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DocumentContractEntity } from '../entities/document-contract.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.constants';
+import ActionExpireContractEvent from 'src/modules/notifications/events/documents/action-expire-contract.event';
 
 @Injectable()
 export class CronsService {
   constructor(
     @InjectRepository(DocumentContractEntity)
     private readonly documentContractRepository: Repository<DocumentContractEntity>,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   /**
@@ -39,7 +43,19 @@ export class CronsService {
       });
 
       // 2. Send notification to volunteer
-      // TODO: Send notification to volunteer
+      // send push notifications and or email
+      this.eventEmitter.emit(
+        EVENTS.DOCUMENTS.ACTION_EXPIRE_CONTRACT,
+        new ActionExpireContractEvent(
+          contract.organizationId,
+          contract.volunteer.user.id,
+          contract.organization.name,
+          contract.volunteer.user.notificationsSettings.notificationsViaPush,
+          contract.volunteer.user.notificationsSettings.notificationsViaEmail,
+          contract.volunteer.user.email,
+          contract.id,
+        ),
+      );
     }
   }
 }

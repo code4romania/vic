@@ -7,6 +7,7 @@ import { MailService } from 'src/modules/mail/services/mail.service';
 import GenerateContractEvent from '../events/documents/generate-contract.event';
 import RejectContractEvent from '../events/documents/reject-contract.event';
 import SignContractEvent from '../events/documents/sign-contract.event';
+import ActionExpireContractEvent from '../events/documents/action-expire-contract.event';
 
 @Injectable()
 export class DocumentsListener {
@@ -138,6 +139,36 @@ export class DocumentsListener {
           title: NOTIFICATIONS.REJECT_CONTRACT.EMAIL.subject(organizationName),
           subtitle: NOTIFICATIONS.REJECT_CONTRACT.EMAIL.body,
         },
+      });
+    }
+  }
+
+  @OnEvent(EVENTS.DOCUMENTS.ACTION_EXPIRE_CONTRACT)
+  async onActionExpiredContract(
+    payload: ActionExpireContractEvent,
+  ): Promise<void> {
+    const {
+      userId,
+      organizationId,
+      notificationsViaPush,
+      organizationName,
+      contractId,
+    } = payload;
+
+    if (notificationsViaPush) {
+      const notificationData = {
+        key: EVENTS.DOCUMENTS.ACTION_EXPIRE_CONTRACT,
+        payload: {
+          contractId,
+          organizationId,
+        },
+      };
+
+      this.pushNotificationsFacade.send({
+        userIds: [userId],
+        title: NOTIFICATIONS.ACTION_EXPIRE_CONTRACT.PUSH.title,
+        body: NOTIFICATIONS.ACTION_EXPIRE_CONTRACT.PUSH.body(organizationName),
+        data: notificationData,
       });
     }
   }

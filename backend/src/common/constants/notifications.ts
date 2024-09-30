@@ -104,4 +104,11 @@ export const NOTIFICATIONS = {
         `Ai un mesaj nou de la ${organizationName}`,
     },
   },
+  ACTION_EXPIRE_CONTRACT: {
+    PUSH: {
+      title: 'VIC',
+      body: (organizationName: string): string =>
+        `Contractul tău cu ${organizationName} este expirat. Vezi motiv`,
+    },
+  },
 };

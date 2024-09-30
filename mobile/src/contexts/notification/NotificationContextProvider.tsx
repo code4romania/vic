@@ -29,6 +29,7 @@ export const EVENTS = {
     GENERATE_CONTRACT: 'contract.generate',
     SIGN_CONTRACT_BY_NGO: 'contract.sign.ngo',
     REJECT_CONTRACT_BY_NGO: 'contract.reject.ngo',
+    ACTION_EXPIRE_CONTRACT: 'contract.action.expire',
   },
 };
 
@@ -121,6 +122,7 @@ const NotificationContextProvider = ({
             EVENTS.DOCUMENTS.GENERATE_CONTRACT,
             EVENTS.DOCUMENTS.SIGN_CONTRACT_BY_NGO,
             EVENTS.DOCUMENTS.REJECT_CONTRACT_BY_NGO,
+            EVENTS.DOCUMENTS.ACTION_EXPIRE_CONTRACT,
           ].includes(payload.key)
         ) {
           // TBD: where do we navigate?
