@@ -1,11 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ObjectDiff } from 'src/common/helpers/object-diff';
 import { JSONStringifyError } from 'src/common/helpers/utils';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { DocumentTemplateExceptionMessages } from 'src/modules/documents/exceptions/documente-template.exceptions';
 import { UpdateDocumentTemplateOptions } from 'src/modules/documents/models/document-template.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentTemplateFacade } from 'src/modules/documents/services/document-template.facade';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 @Injectable()
 export class UpdateDocumentTemplateUsecase implements IUseCaseService<string> {
@@ -14,17 +18,18 @@ export class UpdateDocumentTemplateUsecase implements IUseCaseService<string> {
     private readonly documentTemplateFacade: DocumentTemplateFacade,
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly exceptionService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
     updates: UpdateDocumentTemplateOptions,
-    organizationId: string,
+    admin: IAdminUserModel,
   ): Promise<void> {
     try {
       // 1. Does the template exists in the callers' organization?
-      const template = await this.documentTemplateFacade.exists({
+      const template = await this.documentTemplateFacade.findOne({
         id: updates.id,
-        organizationId,
+        organizationId: admin.organizationId,
       });
 
       if (!template) {
@@ -36,7 +41,7 @@ export class UpdateDocumentTemplateUsecase implements IUseCaseService<string> {
       // 2. Templates can be deleted if are not linked with a contract
       const isUsed = await this.documentContractFacade.exists({
         documentTemplateId: updates.id,
-        organizationId: organizationId,
+        organizationId: admin.organizationId,
       });
 
       if (isUsed) {
@@ -45,7 +50,18 @@ export class UpdateDocumentTemplateUsecase implements IUseCaseService<string> {
         );
       }
 
-      await this.documentTemplateFacade.update(updates);
+      const updated = await this.documentTemplateFacade.update(updates);
+
+      this.actionsArchiveFacade.trackEvent(
+        TrackedEventName.UPDATE_DOCUMENT_TEMPLATE,
+        {
+          organizationId: admin.organizationId,
+          documentTemplateId: updates.id,
+          documentTemplateName: template.name,
+        },
+        admin,
+        ObjectDiff.diff(template, updated),
+      );
     } catch (error) {
       if (error?.status === 400) {
         // Rethrow errors that we've thrown above, and catch the others

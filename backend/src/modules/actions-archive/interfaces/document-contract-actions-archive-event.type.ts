@@ -6,3 +6,9 @@ export type BaseDocumentContractActionsArchiveEvent = {
   volunteerId: string;
   volunteerName: string;
 };
+
+export type BaseDocumentTemplateActionsArchiveEvent = {
+  organizationId: string;
+  documentTemplateId: string;
+  documentTemplateName: string;
+};

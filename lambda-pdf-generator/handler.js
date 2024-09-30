@@ -33,7 +33,7 @@ exports.generatePDF = async (event) => {
 
     const page = await browser.newPage();
     await page.setContent(event.body);
-    const buffer = await page.pdf({ format: 'A4' });
+    const buffer = await page.pdf({ format: 'A4', margin: { top: '50px', bottom: '50px' } });
     await browser.close();
 
     const fileName = `documents/contracts/${organizationId}/${documentContractId}-${Date.now()}.pdf`;

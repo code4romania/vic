@@ -2,9 +2,12 @@ import { Injectable, Logger } from '@nestjs/common';
 import { JSONStringifyError } from 'src/common/helpers/utils';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { DocumentTemplateExceptionMessages } from 'src/modules/documents/exceptions/documente-template.exceptions';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { DocumentTemplateFacade } from 'src/modules/documents/services/document-template.facade';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 
 @Injectable()
 export class DeleteDocumentTemplateUsecase implements IUseCaseService<string> {
@@ -13,14 +16,15 @@ export class DeleteDocumentTemplateUsecase implements IUseCaseService<string> {
     private readonly documentTemplateFacade: DocumentTemplateFacade,
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly exceptionService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
-  public async execute(id: string, organizationId: string): Promise<string> {
+  public async execute(id: string, admin: IAdminUserModel): Promise<string> {
     try {
       // 1. Templates can be deleted if are not linked with a contract
       const isUsed = await this.documentContractFacade.exists({
         documentTemplateId: id,
-        organizationId: organizationId,
+        organizationId: admin.organizationId,
       });
 
       if (isUsed) {
@@ -32,7 +36,7 @@ export class DeleteDocumentTemplateUsecase implements IUseCaseService<string> {
       // 2. Try to delete it
       const deleted = await this.documentTemplateFacade.delete({
         id,
-        organizationId,
+        organizationId: admin.organizationId,
       });
 
       if (!deleted) {
@@ -41,7 +45,17 @@ export class DeleteDocumentTemplateUsecase implements IUseCaseService<string> {
         );
       }
 
-      return deleted;
+      this.actionsArchiveFacade.trackEvent(
+        TrackedEventName.DELETE_DOCUMENT_TEMPLATE,
+        {
+          organizationId: admin.organizationId,
+          documentTemplateId: id,
+          documentTemplateName: deleted.name,
+        },
+        admin,
+      );
+
+      return deleted.name;
     } catch (error) {
       if (error?.status === 400) {
         // Rethrow errors that we've thrown above, and catch the others

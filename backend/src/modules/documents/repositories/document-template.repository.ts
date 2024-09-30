@@ -63,12 +63,14 @@ export class DocumentTemplateRepositoryService
     return DocumentTemplateTransformer.fromEntity(documentTemplate);
   }
 
-  async delete(options: DeleteOneDocumentTemplateOptions): Promise<string> {
+  async delete(
+    options: DeleteOneDocumentTemplateOptions,
+  ): Promise<{ name: string }> {
     const template = await this.documentTemplateRepository.findOneBy(options);
 
     if (template) {
       await this.documentTemplateRepository.remove(template);
-      return options.id;
+      return { name: template.name };
     }
 
     return null;
