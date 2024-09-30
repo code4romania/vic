@@ -810,6 +810,18 @@
     "DELETE_DOCUMENT_CONTRACT": {
       "label": "Șterge Contract",
       "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost șters"
+    },
+    "CREATE_DOCUMENT_TEMPLATE": {
+      "label": "Creează Template",
+      "description": "A fost creat un nou template cu numele <inlineLink>{{documentTemplateName}}</inlineLink>"
+    },
+    "UPDATE_DOCUMENT_TEMPLATE": {
+      "label": "Actualizează Template",
+      "description": "Template-ul cu numele <inlineLink>{{documentTemplateName}}</inlineLink> a fost modificat."
+    },
+    "DELETE_DOCUMENT_TEMPLATE": {
+      "label": "Șterge Template",
+      "description": "Template-ul cu numele <inlineLink>{{documentTemplateName}}</inlineLink> a fost șters."
     }
   },
   "dashboard": {
