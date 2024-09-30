@@ -16,6 +16,7 @@ import { classNames } from '../common/utils/utils';
 interface DataTableFiltersProps {
   children?: React.ReactNode;
   searchValue?: string | null;
+  isExpanded?: boolean;
   onSearch: (searchWord: string) => void;
   onResetFilters: () => void;
 }
@@ -25,13 +26,21 @@ const DataTableFilters = ({
   searchValue,
   onSearch,
   onResetFilters,
+  isExpanded = false,
 }: DataTableFiltersProps) => {
-  const [filtersCollapsed, setFiltersCollapsed] = useState<boolean>(false);
+  const [filtersExpanded, setFiltersExpanded] = useState<boolean>(false);
   const [searchWord, setSearchWord] = useState<string>('');
 
   useEffect(() => {
     setSearchWord(searchValue || '');
   }, []);
+
+  useEffect(() => {
+    if (isExpanded && children) {
+      // Update on children change too
+      setFiltersExpanded(true);
+    }
+  }, [isExpanded, children]);
 
   // cleanup any side effects of deounce
   useEffect(() => {
@@ -42,7 +51,7 @@ const DataTableFilters = ({
 
   const resetFilters = () => {
     onResetFilters();
-    setFiltersCollapsed(true);
+    setFiltersExpanded(true);
     setSearchWord('');
   };
 
@@ -71,7 +80,7 @@ const DataTableFilters = ({
           />
         </div>
         <div className="w-full items-center justify-end gap-1 md:gap-4 flex flex-1">
-          {filtersCollapsed && (
+          {filtersExpanded && (
             <Button
               type="button"
               className="btn-outline-secondary w-auto"
@@ -84,14 +93,14 @@ const DataTableFilters = ({
             type="button"
             className="btn-outline-secondary w-auto"
             label={
-              filtersCollapsed ? i18n.t('general:filters.hide') : i18n.t('general:filters.show')
+              filtersExpanded ? i18n.t('general:filters.hide') : i18n.t('general:filters.show')
             }
-            onClick={setFiltersCollapsed.bind(null, !filtersCollapsed)}
+            onClick={setFiltersExpanded.bind(null, !filtersExpanded)}
             icon={<AdjustmentsVerticalIcon className="h-5 w-5" aria-hidden="true" />}
           />
         </div>
       </CardHeader>
-      <div className={classNames(filtersCollapsed ? '' : 'hidden')}>
+      <div className={classNames(filtersExpanded ? '' : 'hidden')}>
         <CardBody>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-6">
             {children}

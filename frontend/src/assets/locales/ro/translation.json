@@ -1021,7 +1021,7 @@
       "active_contracts": "Contracte active",
       "in_signing_contracts": "Contracte în curs de semnare la voluntari",
       "saved_contracts": "Contracte verificate care necesită semnatură",
-      "to_expire_soon": "Contracte care expiră curând",
+      "to_expire_soon": "Contracte care expiră în urmatoarele 30 de zile",
       "view_list": "Vezi lista"
     },
     "table_header": {

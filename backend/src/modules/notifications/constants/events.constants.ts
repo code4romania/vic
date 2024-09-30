@@ -22,5 +22,6 @@ export const EVENTS = {
     // new document events
     SIGN_CONTRACT_BY_NGO: 'contract.sign.ngo',
     REJECT_CONTRACT_BY_NGO: 'contract.reject.ngo',
+    ACTION_EXPIRE_CONTRACT: 'contract.action.expire',
   },
 };
