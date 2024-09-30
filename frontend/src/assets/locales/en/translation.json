@@ -806,6 +806,18 @@
     "DELETE_DOCUMENT_CONTRACT": {
       "label": "Delete Contract",
       "description": "Contract number <inlineContractLink>{{contractNumber}}</inlineContractLink> for <inlineLink>{{volunteerName}}</inlineLink> has been deleted"
+    },
+    "CREATE_DOCUMENT_TEMPLATE": {
+      "label": "Create Template",
+      "description": "A new template has been created with the name <inlineLink>{{documentTemplateName}}</inlineLink>"
+    },
+    "UPDATE_DOCUMENT_TEMPLATE": {
+      "label": "Update Template",
+      "description": "Template with the name <inlineLink>{{documentTemplateName}}</inlineLink> has been modified."
+    },
+    "DELETE_DOCUMENT_TEMPLATE": {
+      "label": "Delete Template",
+      "description": "Template with the name <inlineLink>{{documentTemplateName}}</inlineLink> has been deleted."
     }
   },
   "dashboard": {

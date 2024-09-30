@@ -5,7 +5,10 @@ import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { OrganizationStructureType } from 'src/modules/organization/enums/organization-structure-type.enum';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
-import { BaseDocumentContractActionsArchiveEvent } from '../interfaces/document-contract-actions-archive-event.type';
+import {
+  BaseDocumentContractActionsArchiveEvent,
+  BaseDocumentTemplateActionsArchiveEvent,
+} from '../interfaces/document-contract-actions-archive-event.type';
 
 export enum TrackedEventName {
   // Organization Profile
@@ -60,9 +63,9 @@ export enum TrackedEventName {
   DELETE_DOCUMENT_CONTRACT = 'DELETE_DOCUMENT_CONTRACT',
 
   // New Templates
-  // CREATE_DOCUMENT_TEMPLATE = 'CREATE_DOCUMENT_TEMPLATE',
-  // UPDATE_DOCUMENT_TEMPLATE = 'UPDATE_DOCUMENT_TEMPLATE',
-  // DELETE_DOCUMENT_TEMPLATE = 'DELETE_DOCUMENT_TEMPLATE',
+  CREATE_DOCUMENT_TEMPLATE = 'CREATE_DOCUMENT_TEMPLATE',
+  UPDATE_DOCUMENT_TEMPLATE = 'UPDATE_DOCUMENT_TEMPLATE',
+  DELETE_DOCUMENT_TEMPLATE = 'DELETE_DOCUMENT_TEMPLATE',
 }
 
 export interface TrackedEventData {
@@ -230,4 +233,9 @@ export interface TrackedEventData {
     rejectionReason: string;
   };
   [TrackedEventName.DELETE_DOCUMENT_CONTRACT]: BaseDocumentContractActionsArchiveEvent;
+
+  // New Templates
+  [TrackedEventName.CREATE_DOCUMENT_TEMPLATE]: BaseDocumentTemplateActionsArchiveEvent;
+  [TrackedEventName.UPDATE_DOCUMENT_TEMPLATE]: BaseDocumentTemplateActionsArchiveEvent;
+  [TrackedEventName.DELETE_DOCUMENT_TEMPLATE]: BaseDocumentTemplateActionsArchiveEvent;
 }

@@ -13,7 +13,7 @@ Sentry.init({
 
   debug: process.env.NODE_ENV === 'local',
 
-  enabled: true,
+  enabled: process.env.NODE_ENV !== 'local',
 
   environment: process.env.NODE_ENV,
 

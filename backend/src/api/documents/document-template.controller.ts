@@ -44,14 +44,17 @@ export class DocumentTemplateController {
   @Post()
   async create(
     @Body() payload: CreateDocumentTemplateDto,
-    @ExtractUser() { organizationId, id: adminId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<DocumentTemplatePresenter> {
     const newDocumentTemplate =
-      await this.createDocumentTemplateUsecase.execute({
-        ...payload,
-        createdByAdminId: adminId,
-        organizationId,
-      });
+      await this.createDocumentTemplateUsecase.execute(
+        {
+          ...payload,
+          createdByAdminId: admin.id,
+          organizationId: admin.organizationId,
+        },
+        admin,
+      );
     return new DocumentTemplatePresenter(newDocumentTemplate);
   }
 
@@ -74,11 +77,11 @@ export class DocumentTemplateController {
   async update(
     @Param('id', UuidValidationPipe) id: string,
     @Body() payload: CreateDocumentTemplateDto,
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<void> {
     return this.updateDocumentTemplateUsecase.execute(
       { id, ...payload },
-      organizationId,
+      admin,
     );
   }
 
@@ -86,9 +89,9 @@ export class DocumentTemplateController {
   @Delete(':id')
   async delete(
     @Param('id', UuidValidationPipe) id: string,
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<string> {
-    return this.deleteDocumentTemplateUsecase.execute(id, organizationId);
+    return this.deleteDocumentTemplateUsecase.execute(id, admin);
   }
 
   @Get()

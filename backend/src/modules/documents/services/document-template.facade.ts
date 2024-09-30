@@ -49,7 +49,9 @@ export class DocumentTemplateFacade {
     return this.documentTemplateListViewRepository.findMany(findOptions);
   }
 
-  async delete(options: DeleteOneDocumentTemplateOptions): Promise<string> {
+  async delete(
+    options: DeleteOneDocumentTemplateOptions,
+  ): Promise<{ name: string }> {
     return this.documentTemplateRepository.delete(options);
   }
 }

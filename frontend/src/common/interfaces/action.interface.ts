@@ -35,4 +35,6 @@ export interface IEventData {
   contractNumber?: string;
   documentContractId?: string;
   documentContractNumber?: string;
+  documentTemplateId?: string;
+  documentTemplateName?: string;
 }
