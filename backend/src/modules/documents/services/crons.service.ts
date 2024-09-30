@@ -34,6 +34,7 @@ export class CronsService {
         ),
         documentStartDate: LessThan(new Date()),
       },
+      relations: ['volunteer', 'organization', 'volunteer.user'],
     });
 
     for (const contract of contracts) {
