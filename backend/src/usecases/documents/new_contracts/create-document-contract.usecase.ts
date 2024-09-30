@@ -144,7 +144,6 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
 
     // 8. Generate the PDF
     try {
-      // TODO: Make it async, so we can return the contract id immediately
       await this.documentPDFGenerator.generateContractPDF(contract.id);
     } catch (error) {
       this.logger.error(

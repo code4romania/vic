@@ -49,6 +49,14 @@ export const mapContractToColor = (contract: DocumentContract, t: any) => {
       info: `${t('rejected')}`,
     };
   }
+  //action expired contract
+  if (contract.status === DocumentContractStatus.ACTION_EXPIRED) {
+    return {
+      color: 'color-danger-800',
+      backgroundColor: 'red-50',
+      info: `${t('action_expired')}`,
+    };
+  }
   // expired contract
   if (isAfter(new Date(), new Date(contract.documentEndDate))) {
     return {
@@ -88,6 +96,10 @@ export const renderContractInfoText = (contract: DocumentContract, t: any) => {
     contract.status === DocumentContractStatus.REJECTED_VOLUNTEER
   ) {
     return t('contract.rejected');
+  }
+  // action expired contract
+  if (contract.status === DocumentContractStatus.ACTION_EXPIRED) {
+    return t('contract.action_expired');
   }
   // expired contract
   if (isAfter(new Date(), new Date(contract.documentEndDate))) {

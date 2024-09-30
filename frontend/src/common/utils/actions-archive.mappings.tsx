@@ -408,6 +408,22 @@ export const mapEventDataToActionDescription = (
           }}
         />
       );
+    case TrackedEventName.CREATE_DOCUMENT_TEMPLATE:
+    case TrackedEventName.UPDATE_DOCUMENT_TEMPLATE:
+    case TrackedEventName.DELETE_DOCUMENT_TEMPLATE:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/documents/templates/${eventData.documentTemplateId}`}
+                content={eventData.documentTemplateName}
+              />
+            ),
+          }}
+        />
+      );
 
     default:
       return '-';
