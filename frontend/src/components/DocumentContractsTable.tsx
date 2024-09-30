@@ -235,6 +235,9 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
         case DocumentContractStatusForFilter.REJECTED_VOLUNTEER:
         case DocumentContractStatusForFilter.PENDING_APPROVAL_NGO:
         case DocumentContractStatusForFilter.PENDING_NGO_REPRESENTATIVE_SIGNATURE:
+        case DocumentContractStatusForFilter.ACTIVE:
+        case DocumentContractStatusForFilter.NOT_STARTED:
+        case DocumentContractStatusForFilter.EXPIRED:
           return contractsMenuItems;
         default:
           return [];
