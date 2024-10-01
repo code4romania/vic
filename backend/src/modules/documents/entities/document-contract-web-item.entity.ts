@@ -1,10 +1,7 @@
 import { Column, ViewColumn, ViewEntity } from 'typeorm';
-import {
-  DocumentContractComputedStatuses,
-  DocumentContractStatus,
-} from '../enums/contract-status.enum';
+import { DocumentContractComputedStatuses } from '../enums/contract-status.enum';
 
-@ViewEntity('DocumentContractWebItemView', {
+@ViewEntity('DocumentContractItemView', {
   /*
 
     Get one document contract for the web
@@ -33,50 +30,52 @@ import {
     | updated_on             | Updated on date                      |
     */
   expression: `
-    SELECT
-      dc.id as "document_id",
-      dc.document_number,
-      dc.document_start_date,
-      dc.document_end_date,
-      CASE 
-          WHEN dc.status = 'APPROVED' AND 
-              dc.document_start_date <= CURRENT_DATE AND 
-              dc.document_end_date >= CURRENT_DATE 
-          THEN 'ACTIVE'
-          WHEN dc.status = 'APPROVED' AND 
-              dc.document_start_date > CURRENT_DATE 
-          THEN 'NOT_STARTED'
-          WHEN dc.status = 'APPROVED' AND 
-              dc.document_end_date < CURRENT_DATE 
-          THEN 'EXPIRED'
-          ELSE dc.status::text
-      END AS "status",
-      dc.file_path as "document_file_path",
-      dc.document_template_id,
-      dt."name" as "document_template_name",
-      dc.volunteer_id,
-      dc.volunteer_data->>'name' as "volunteer_name",
-      dc.created_by_admin_id, 
-      "adminUser"."name" as "created_by_admin_name",
-      
-      dc.rejection_date,
-      dc.rejection_reason,
-      dc.rejected_by_id,
-      "rejectionUser".name as "rejected_by_name",
+     SELECT
+        dc.id as "document_id",
+        dc.document_number,
+        dc.document_start_date,
+        dc.document_end_date,
+        CASE 
+            WHEN dc.status = 'APPROVED' AND 
+                dc.document_start_date <= CURRENT_DATE AND 
+                dc.document_end_date >= CURRENT_DATE 
+            THEN 'ACTIVE'
+            WHEN dc.status = 'APPROVED' AND 
+                dc.document_start_date > CURRENT_DATE 
+            THEN 'NOT_STARTED'
+            WHEN dc.status = 'APPROVED' AND 
+                dc.document_end_date < CURRENT_DATE 
+            THEN 'EXPIRED'
+            ELSE dc.status::text
+        END AS "status",
+        dc.file_path as "document_file_path",
+        dc.document_template_id,
+        dt."name" as "document_template_name",
+        dc.volunteer_id,
+        dc.volunteer_data->>'name' as "volunteer_name",
+        dc.created_by_admin_id, 
+        "adminUser"."name" as "created_by_admin_name",
+        
+        dc.rejection_date,
+        dc.rejection_reason,
+        dc.rejected_by_id,
+        "rejectionUser".name as "rejected_by_name",
 
-      dc.organization_id,
+        dc.organization_id,
+        o.name as "organization_name",
 
-      dc.created_on, 
-      dc.updated_on
-    FROM
-      document_contract dc
-      LEFT JOIN volunteer v ON v.id = dc.id
-      LEFT JOIN document_template dt on dt.id = dc.document_template_id
-      LEFT JOIN "user" "adminUser" ON dc.created_by_admin_id = "adminUser".id
-      LEFT JOIN "user" "rejectionUser" ON dc.rejected_by_id = "rejectionUser".id
+        dc.created_on, 
+        dc.updated_on
+      FROM
+        document_contract dc
+        LEFT JOIN volunteer v ON v.id = dc.id
+        LEFT JOIN document_template dt on dt.id = dc.document_template_id
+        LEFT JOIN "user" "adminUser" ON dc.created_by_admin_id = "adminUser".id
+        LEFT JOIN "user" "rejectionUser" ON dc.rejected_by_id = "rejectionUser".id
+        LEFT JOIN "organization" o ON dc.organization_id = o.id
   `,
 })
-export class DocumentContractWebItemView {
+export class DocumentContractItemView {
   @ViewColumn({ name: 'document_id' })
   documentId: string;
 
@@ -129,6 +128,9 @@ export class DocumentContractWebItemView {
 
   @ViewColumn({ name: 'organization_id' })
   organizationId: string;
+
+  @ViewColumn({ name: 'organization_name' })
+  organizationName: string;
 
   @ViewColumn({ name: 'created_on' })
   createdOn: Date;

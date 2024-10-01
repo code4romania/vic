@@ -1,7 +1,7 @@
-import { DocumentContractWebItemView } from '../entities/document-contract-web-item.entity';
+import { DocumentContractItemView } from '../entities/document-contract-web-item.entity';
 import { DocumentContractComputedStatuses } from '../enums/contract-status.enum';
 
-export interface IDocumentContractWebItemModel {
+export interface IDocumentContractItemModel {
   documentId: string;
   documentNumber: string;
   documentStartDate: Date;
@@ -15,6 +15,7 @@ export interface IDocumentContractWebItemModel {
   createdByAdminName: string;
   documentTemplateId: string;
   documentTemplateName: string;
+  organizationName: string;
   rejectedById: string;
   rejectedByName: string;
   rejectionDate: Date;
@@ -23,15 +24,16 @@ export interface IDocumentContractWebItemModel {
   updatedOn: Date;
 }
 
-export type FindOneDocumentContractWebItemOptions = {
+export type FindOneDocumentContractItemOptions = {
   documentId: string;
   organizationId: string;
+  volunteerId?: string;
 };
 
-export const DocumentContractWebItemTransformer = {
+export const DocumentContractItemTransformer = {
   fromEntity: (
-    entity: DocumentContractWebItemView,
-  ): IDocumentContractWebItemModel => {
+    entity: DocumentContractItemView,
+  ): IDocumentContractItemModel => {
     return {
       ...entity,
     };

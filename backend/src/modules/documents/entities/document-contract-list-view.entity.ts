@@ -3,36 +3,25 @@ import { DocumentContractComputedStatuses } from '../enums/contract-status.enum'
 
 @ViewEntity('DocumentContractListView', {
   expression: `
-    SELECT 
-      document_contract.id AS document_id,
-      document_contract.document_number,
-
-      
-      CASE 
-          WHEN document_contract.status = 'APPROVED' AND 
-              document_contract.document_start_date <= CURRENT_DATE AND 
-              document_contract.document_end_date >= CURRENT_DATE 
-          THEN 'ACTIVE'
-          WHEN document_contract.status = 'APPROVED' AND 
-              document_contract.document_start_date > CURRENT_DATE 
-          THEN 'NOT_STARTED'
-          WHEN document_contract.status = 'APPROVED' AND 
-              document_contract.document_end_date < CURRENT_DATE 
-          THEN 'EXPIRED'
-          ELSE document_contract.status
-      END AS "status",
-
-      document_contract.document_start_date,
-      document_contract.document_end_date,
-      document_contract.file_path AS document_file_path,
-      organization.id AS organization_id,
-      organization.name AS organization_name,
-      volunteer.id AS volunteer_id,
-      "user".name AS volunteer_name
-  FROM document_contract
-    JOIN volunteer ON document_contract.volunteer_id = volunteer.id
-    JOIN "user" ON "user".id = volunteer.user_id
-    JOIN organization ON document_contract.organization_id = organization.id;
+    SELECT document_contract.id AS document_id,
+    document_contract.document_number,
+        CASE
+            WHEN document_contract.status = 'APPROVED'::document_contract_status_enum AND document_contract.document_start_date <= CURRENT_DATE AND document_contract.document_end_date >= CURRENT_DATE THEN 'ACTIVE'::text
+            WHEN document_contract.status = 'APPROVED'::document_contract_status_enum AND document_contract.document_start_date > CURRENT_DATE THEN 'NOT_STARTED'::text
+            WHEN document_contract.status = 'APPROVED'::document_contract_status_enum AND document_contract.document_end_date < CURRENT_DATE THEN 'EXPIRED'::text
+            ELSE document_contract.status::text
+        END AS status,
+    document_contract.document_start_date,
+    document_contract.document_end_date,
+    document_contract.file_path AS document_file_path,
+    organization.id AS organization_id,
+    organization.name AS organization_name,
+    volunteer.id AS volunteer_id,
+    "user".name AS volunteer_name
+   FROM document_contract
+     JOIN volunteer ON document_contract.volunteer_id = volunteer.id
+     JOIN "user" ON "user".id = volunteer.user_id
+     JOIN organization ON document_contract.organization_id = organization.id;
   `,
 })
 export class DocumentContractListViewEntity {

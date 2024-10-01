@@ -28,7 +28,7 @@ import { ValidateDocumentContractByNgoUsecase } from 'src/usecases/documents/new
 import { SignDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/sign-document-contract-by-ngo.usecase';
 import { RejectDocumentContractByNgoUsecase } from 'src/usecases/documents/new_contracts/reject-document-contract-by-ngo.usecase';
 import { RejectDocumentContractByNgoDTO } from './dto/reject-document-contract.dto';
-import { DocumentContractWebItemPresenter } from './presenters/document-contract-web-item.presenter';
+import { DocumentContractItemPresenter } from './presenters/document-contract-item.presenter';
 import { GetOneDocumentContractForNgoUsecase } from 'src/usecases/documents/new_contracts/get-one-document-contract-for-ngo.usecase';
 import { DocumentContractStatisticsPresenter } from './presenters/document-contract-statistics.presenter';
 import { GetDocumentContractStatisticsUsecase } from 'src/usecases/documents/new_contracts/get-document-contract-statistics.usecase';
@@ -100,18 +100,18 @@ export class DocumentContractController {
 
   @Get(':id')
   @ApiResponse({
-    type: DocumentContractWebItemPresenter,
+    type: DocumentContractItemPresenter,
   })
   async getDocumentContract(
     @Param('id', UuidValidationPipe) id: string,
     @ExtractUser() { organizationId }: IAdminUserModel,
-  ): Promise<DocumentContractWebItemPresenter> {
+  ): Promise<DocumentContractItemPresenter> {
     const documentContract =
       await this.getOneDocumentContractForNgoUsecase.execute({
         documentContractId: id,
         organizationId,
       });
-    return new DocumentContractWebItemPresenter(documentContract);
+    return new DocumentContractItemPresenter(documentContract);
   }
 
   @Patch(':id/approve')

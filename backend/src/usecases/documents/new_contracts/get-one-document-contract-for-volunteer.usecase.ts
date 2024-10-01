@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
-import { DocumentContractListViewEntity } from 'src/modules/documents/entities/document-contract-list-view.entity';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
+import { IDocumentContractItemModel } from 'src/modules/documents/models/document-contract-item-view.model';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
@@ -24,7 +24,7 @@ export class GetOneDocumentContractForVolunteerUsecase {
     documentContractId: string;
     userId: string;
     organizationId: string;
-  }): Promise<DocumentContractListViewEntity> {
+  }): Promise<IDocumentContractItemModel> {
     const volunteer = await this.volunteerFacade.find({
       userId: userId,
       organizationId,
@@ -36,8 +36,9 @@ export class GetOneDocumentContractForVolunteerUsecase {
       );
     }
 
-    const contract = await this.documentContractFacade.findOneForVolunteer({
+    const contract = await this.documentContractFacade.findOneItem({
       documentId: documentContractId,
+      organizationId,
       volunteerId: volunteer.id,
     });
 

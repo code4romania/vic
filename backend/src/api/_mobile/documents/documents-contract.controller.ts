@@ -15,6 +15,7 @@ import { GetManyContractsByVolunteerDto } from './dto/get-many-contracts-by-volu
 import { DocumentContractListViewItemPresenter } from 'src/api/documents/presenters/document-contract-list-view-item.presenter';
 import { PaginatedPresenter } from 'src/infrastructure/presenters/generic-paginated.presenter';
 import { GetOneDocumentContractForVolunteerUsecase } from 'src/usecases/documents/new_contracts/get-one-document-contract-for-volunteer.usecase';
+import { DocumentContractItemMobilePresenter } from './presenters/document-contract-item-mobile.presenter';
 
 // @UseGuards(MobileJwtAuthGuard, ContractVolunteerGuard)
 @UseGuards(MobileJwtAuthGuard)
@@ -53,7 +54,7 @@ export class MobileDocumentsContractController {
     @ExtractUser() { id }: IRegularUserModel,
     @Param('contractId', UuidValidationPipe) contractId: string,
     @Query('organizationId', UuidValidationPipe) organizationId: string,
-  ): Promise<DocumentContractListViewItemPresenter> {
+  ): Promise<DocumentContractItemMobilePresenter> {
     const contract =
       await this.getOneDocumentContractForVolunteerUsecase.execute({
         documentContractId: contractId,
@@ -61,7 +62,7 @@ export class MobileDocumentsContractController {
         organizationId,
       });
 
-    return new DocumentContractListViewItemPresenter(contract);
+    return new DocumentContractItemMobilePresenter(contract);
   }
 
   @ApiParam({ name: 'contractId', type: 'string' })

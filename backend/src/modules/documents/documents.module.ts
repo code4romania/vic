@@ -20,15 +20,15 @@ import { DocumentTemplateListViewEntity } from './entities/document-template-lis
 import { DocumentTemplateListViewRepository } from './repositories/document-template-list-view.repository';
 import { DocumentSignatureRepository } from './repositories/document-signature.repository';
 import { DocumentSignatureFacade } from './services/document-signature.facade';
-import { DocumentContractWebItemView } from './entities/document-contract-web-item.entity';
-import { DocumentContractWebItemRepository } from './repositories/document-contract-web-item.repository';
+import { DocumentContractItemView } from './entities/document-contract-web-item.entity';
+import { DocumentContractItemRepository } from './repositories/document-contract-item-view.repository';
 import { CronsService } from './services/crons.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       DocumentContractListViewEntity,
-      DocumentContractWebItemView,
+      DocumentContractItemView,
       DocumentTemplateListViewEntity,
       TemplateEntity,
       ContractEntity,
@@ -46,7 +46,7 @@ import { CronsService } from './services/crons.service';
     DocumentSignatureRepository,
     DocumentContractListViewRepository,
     DocumentTemplateListViewRepository,
-    DocumentContractWebItemRepository,
+    DocumentContractItemRepository,
     // Facades
     TemplateFacade,
     ContractFacade,
