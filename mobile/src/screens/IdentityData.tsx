@@ -202,7 +202,7 @@ const IdentityData = ({ navigation, route }: any) => {
   const [isUserOver16, setIsUserOver16] = useState(
     userProfile?.birthday
       ? isOver16(userProfile?.birthday)
-      : userProfile?.userPersonalData.cnp
+      : userProfile?.userPersonalData
         ? isOver16FromCNP(userProfile?.userPersonalData.cnp)
         : true,
   );
