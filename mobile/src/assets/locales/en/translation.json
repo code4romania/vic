@@ -65,6 +65,9 @@
           "required": "Phone is mandatory",
           "pattern": "The telephone number must contain only numbers"
         },
+        "birthday": {
+          "required": "The date of birth is required"
+        },
         "password": {
           "label": "Password",
           "placeholder": "Enter your password",

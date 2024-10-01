@@ -65,6 +65,9 @@
           "required": "Telefonul este obligatoriu",
           "pattern": "Numărul de telefon trebuie să conțină doar numere"
         },
+        "birthday": {
+          "required": "Data nașterii este obligatorie"
+        },
         "password": {
           "label": "Parola",
           "placeholder": "Introdu parola",
