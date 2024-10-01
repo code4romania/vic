@@ -129,7 +129,8 @@
           "label": "Oraș"
         },
         "birthday": {
-          "label": "Data nașterii"
+          "label": "Data nașterii",
+          "required": "Data nașterii este obligatorie"
         }
       }
     }

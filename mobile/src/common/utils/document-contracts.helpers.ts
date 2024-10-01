@@ -8,6 +8,9 @@ import {
 } from '../interfaces/user-profile.interface';
 
 export const isOver16 = (birthday: string | Date) => {
+  if (!birthday) {
+    return true;
+  }
   const birthdayDate = typeof birthday === 'string' ? parseISO(birthday) : birthday;
   const today = new Date();
   const age = differenceInYears(today, birthdayDate);

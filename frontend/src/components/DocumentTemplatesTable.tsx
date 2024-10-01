@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CardBody from './CardBody';
 import DataTableComponent from './DataTableComponent';
 import Card from '../layouts/CardLayout';
 import CardHeader from './CardHeader';
 import { IDocumentTemplateListItem } from '../common/interfaces/template.interface';
-import { useDocumentTemplatesQuery } from '../services/documents-templates/documents-templates.service';
+import { useDeleteDocumentTemplateMutation, useDocumentTemplatesQuery } from '../services/documents-templates/documents-templates.service';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { format } from 'date-fns';
 import { SortOrder, TableColumn } from 'react-data-table-component';
@@ -14,6 +14,8 @@ import { ArrowDownTrayIcon, EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@he
 import Popover from './Popover';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from './Button';
+import ConfirmationModal from './ConfirmationModal';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 
 const createArchiveRoute = (name: string) => `/actions-archive?author=${name.split(' ').join('+')}`;
 
@@ -64,13 +66,39 @@ const DocumentTemplatesTableHeader = [
 export const DocumentTemplatesTable = ({ query, setQuery }: DocumentTemplatesProps) => {
 	const { t } = useTranslation(['doc_templates']);
 	const navigate = useNavigate();
+	const [selectedDeleteDocumentTemplate, setSelectedDeleteDocumentTemplate] = useState<IDocumentTemplateListItem | null>(null);
 
-	const { data: templates, isLoading: isLoadingDocumentTemplates } = useDocumentTemplatesQuery({
+	const { data: templates, isLoading: isLoadingDocumentTemplates, refetch } = useDocumentTemplatesQuery({
 		limit: 10,
 		page: 1,
 		orderBy: 'name',
 		orderDirection: OrderDirection.ASC,
 	});
+
+	const { mutate: deleteDocumentTemplate } = useDeleteDocumentTemplateMutation();
+
+	const handleDeleteDocumentTemplate = (template: IDocumentTemplateListItem) => {
+		setSelectedDeleteDocumentTemplate(template);
+	};
+
+	const handleCancelDelete = () => {
+		setSelectedDeleteDocumentTemplate(null);
+	};
+
+	const handleConfirmDelete = () => {
+		if (selectedDeleteDocumentTemplate) {
+			deleteDocumentTemplate(selectedDeleteDocumentTemplate?.id, {
+				onSuccess: () => {
+					setSelectedDeleteDocumentTemplate(null);
+					useSuccessToast(t('success_delete'));
+					refetch();
+				},
+				onError: () => {
+					useErrorToast(t('error_delete'));
+				},
+			});
+		}
+	};
 
 	// pagination
 	const onRowsPerPageChange = (limit: number) => {
@@ -125,7 +153,7 @@ export const DocumentTemplatesTable = ({ query, setQuery }: DocumentTemplatesPro
 			{
 				label: t('table.table_actions.delete'),
 				icon: <TrashIcon className="menu-icon" />,
-				onClick: () => { },
+				onClick: (row: IDocumentTemplateListItem) => { handleDeleteDocumentTemplate(row) },
 				alert: true,
 			},
 		];
@@ -152,38 +180,50 @@ export const DocumentTemplatesTable = ({ query, setQuery }: DocumentTemplatesPro
 	};
 
 	return (
-		<Card>
-			<CardHeader>
-				<h2>{t('table.title')}</h2>
-				<div className="flex gap-2 lg:gap-6">
-					<Button
-						label={t('table.table_header.download_all')}
-						className="btn-outline-secondary"
-						icon={<ArrowDownTrayIcon className="h-5 w-5" />}
-						onClick={() => { }}
+		<>
+			<Card>
+				<CardHeader>
+					<h2>{t('table.title')}</h2>
+					<div className="flex gap-2 lg:gap-6">
+						<Button
+							label={t('table.table_header.download_all')}
+							className="btn-outline-secondary"
+							icon={<ArrowDownTrayIcon className="h-5 w-5" />}
+							onClick={() => { }}
+						/>
+						<Button
+							label={t('table.table_header.create')}
+							className="btn-primary"
+							icon={<PlusIcon className="h-5 w-5" />}
+							onClick={() => navigate('/documents/templates/create')}
+						/>
+					</div>
+				</CardHeader>
+				<CardBody>
+					<DataTableComponent
+						columns={[...DocumentTemplatesTableHeader, buildDocumentTemplatesTableActions()]}
+						data={templates?.items}
+						loading={isLoadingDocumentTemplates}
+						pagination
+						paginationPerPage={10}
+						paginationTotalRows={templates?.items?.length}
+						paginationDefaultPage={query.page as number}
+						onChangeRowsPerPage={onRowsPerPageChange}
+						onChangePage={onChangePage}
+						onSort={onSort}
 					/>
-					<Button
-						label={t('table.table_header.create')}
-						className="btn-primary"
-						icon={<PlusIcon className="h-5 w-5" />}
-						onClick={() => navigate('/documents/templates/create')}
-					/>
-				</div>
-			</CardHeader>
-			<CardBody>
-				<DataTableComponent
-					columns={[...DocumentTemplatesTableHeader, buildDocumentTemplatesTableActions()]}
-					data={templates?.items}
-					loading={isLoadingDocumentTemplates}
-					pagination
-					paginationPerPage={10}
-					paginationTotalRows={templates?.items?.length}
-					paginationDefaultPage={query.page as number}
-					onChangeRowsPerPage={onRowsPerPageChange}
-					onChangePage={onChangePage}
-					onSort={onSort}
+				</CardBody>
+			</Card>
+			{selectedDeleteDocumentTemplate &&
+				<ConfirmationModal
+					onClose={handleCancelDelete}
+					onConfirm={handleConfirmDelete}
+					title={t('delete_modal.title')}
+					description={t('delete_modal.description')}
+					confirmBtnLabel={t('delete_modal.confirm_btn_label')}
+					confirmBtnClassName="btn-danger"
 				/>
-			</CardBody>
-		</Card>
+			}
+		</>
 	);
 };

@@ -70,7 +70,7 @@ const expoConfig: ExpoConfig = {
     url: 'https://u.expo.dev/6aaad982-5a5c-4af8-b66c-7689afe74e1f',
   },
   runtimeVersion: {
-    policy: 'sdkVersion',
+    policy: 'appVersion',
   },
   owner: 'commit-global',
 };

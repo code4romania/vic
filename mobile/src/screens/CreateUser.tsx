@@ -60,6 +60,7 @@ const schema = yup.object({
         value: '50',
       })}`,
     ),
+  birthday: yup.date().required(`${i18n.t('register:create_user.form.birthday.required')}`),
 });
 
 const CreateUser = ({ navigation }: any) => {
@@ -192,6 +193,7 @@ const CreateUser = ({ navigation }: any) => {
           disabled={isLoading}
           name="birthday"
           error={errors.birthday}
+          required={true}
         />
         <FormSelect
           control={control as any}

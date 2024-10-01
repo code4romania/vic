@@ -129,7 +129,8 @@
           "label": "City"
         },
         "birthday": {
-          "label": "Date of birth"
+          "label": "Date of birth",
+          "required": "The date of birth is required"
         }
       }
     }

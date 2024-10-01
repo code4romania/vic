@@ -1,5 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetHandle,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 import { Animated, StyleSheet, View } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,10 +14,10 @@ import { SvgXml } from 'react-native-svg';
 import { Text, useTheme } from '@ui-kitten/components';
 import InlineLink from './InlineLink';
 import upsIcon from '../assets/svg/ups-icon';
-import { renderBackdrop } from '../components/BottomSheet';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { SignatureViewRef } from 'react-native-signature-canvas';
 import LottieView from 'lottie-react-native';
+import { renderBackdrop } from './BottomSheet';
 interface SignatureBottomSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetMethods>;
   snapPoints: number[];
@@ -134,14 +138,21 @@ export const SignatureBottomSheet = ({
   const insets = useSafeAreaInsets();
   const theme = useTheme();
 
+  const renderUncloseableBackdrop = (props: any) => {
+    return <BottomSheetBackdrop opacity={0.3} pressBehavior="none" {...props} />;
+  };
+
   return (
     <BottomSheet
-      backdropComponent={renderBackdrop}
+      backdropComponent={isLoadingSignContract ? renderUncloseableBackdrop : renderBackdrop}
       ref={bottomSheetRef}
       index={-1}
       snapPoints={snapPoints}
       animateOnMount={reducedMotion ? false : true}
       enableContentPanningGesture={false}
+      enablePanDownToClose={!isLoadingSignContract}
+      enableHandlePanningGesture={!isLoadingSignContract}
+      handleComponent={isLoadingSignContract ? null : BottomSheetHandle}
     >
       <BottomSheetView style={[styles.bottomSheetContainer, { paddingBottom: insets.bottom }]}>
         {!isFinishedSigning.isFinished ? (

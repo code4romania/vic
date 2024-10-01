@@ -1113,7 +1113,8 @@
         "see_contract_details": "See contract details"
       },
       "error": {
-        "empty_signature": "The signature is required"
+        "empty_signature": "The signature is required",
+        "error_signing": "An error occurred while signing the contract!"
       }
     },
     "reject": {
