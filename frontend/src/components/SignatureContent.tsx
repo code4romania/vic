@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeftIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import LoadingContent from './LoadingContent';
 import Button from './Button';
-
+import { useErrorToast } from '../hooks/useToast';
 export const SignatureContent = ({
   contract,
   setSidePanelContent,
@@ -70,6 +70,11 @@ export const SignatureContent = ({
         {
           onSuccess: () => {
             setSidePanelContent(2);
+          },
+          onError: () => {
+            useErrorToast(t('sign.error.error_signing'));
+            // show contract info content
+            setSidePanelContent(0);
           },
           onSettled: () => {
             queryClient.invalidateQueries({

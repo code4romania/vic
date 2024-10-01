@@ -1119,7 +1119,8 @@
         "see_contract_details": "Vezi detaliile contractului"
       },
       "error": {
-        "empty_signature": "Semnătura este obligatorie"
+        "empty_signature": "Semnătura este obligatorie",
+        "error_signing": "A apărut o eroare la semnarea contractului!"
       }
     },
     "reject": {
