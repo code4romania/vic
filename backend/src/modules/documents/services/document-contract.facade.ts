@@ -11,23 +11,22 @@ import {
 import { DocumentContractListViewRepository } from '../repositories/document-contract-list-view.repository';
 import {
   FindManyDocumentContractListViewPaginatedOptions,
-  FindOneDocumentContractListViewOptions,
   IDocumentContractListViewModel,
 } from '../models/document-contract-list-view.model';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { DocumentContractStatus } from '../enums/contract-status.enum';
 import {
-  FindOneDocumentContractWebItemOptions,
-  IDocumentContractWebItemModel,
-} from '../models/document-contract-web-item.model';
-import { DocumentContractWebItemRepository } from '../repositories/document-contract-web-item.repository';
+  FindOneDocumentContractItemOptions,
+  IDocumentContractItemModel,
+} from '../models/document-contract-item-view.model';
+import { DocumentContractItemRepository } from '../repositories/document-contract-item-view.repository';
 
 @Injectable()
 export class DocumentContractFacade {
   constructor(
     private readonly documentContractRepository: DocumentContractRepositoryService,
     private readonly documentContractListViewRepository: DocumentContractListViewRepository,
-    private readonly documentContractWebItemRepository: DocumentContractWebItemRepository,
+    private readonly documentContractWebItemRepository: DocumentContractItemRepository,
   ) {}
 
   async approveDocumentContractByNGO(
@@ -86,9 +85,9 @@ export class DocumentContractFacade {
     return this.documentContractRepository.findOne(options);
   }
 
-  async findOneForWeb(
-    options: FindOneDocumentContractWebItemOptions,
-  ): Promise<IDocumentContractWebItemModel> {
+  async findOneItem(
+    options: FindOneDocumentContractItemOptions,
+  ): Promise<IDocumentContractItemModel> {
     return this.documentContractWebItemRepository.findOne(options);
   }
 
@@ -118,12 +117,6 @@ export class DocumentContractFacade {
     options: FindManyDocumentContractListViewPaginatedOptions,
   ): Promise<Pagination<IDocumentContractListViewModel>> {
     return this.documentContractListViewRepository.findManyPaginated(options);
-  }
-
-  async findOneForVolunteer(
-    options: FindOneDocumentContractListViewOptions,
-  ): Promise<IDocumentContractListViewModel> {
-    return this.documentContractListViewRepository.findOne(options);
   }
 
   async update(

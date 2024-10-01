@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { DocumentContractComputedStatuses } from 'src/modules/documents/enums/contract-status.enum';
-import { IDocumentContractWebItemModel } from 'src/modules/documents/models/document-contract-web-item.model';
+import { IDocumentContractItemModel } from 'src/modules/documents/models/document-contract-item-view.model';
 
-export class DocumentContractWebItemPresenter {
-  constructor(item: IDocumentContractWebItemModel) {
+export class DocumentContractItemPresenter {
+  constructor(item: IDocumentContractItemModel) {
     this.documentId = item.documentId;
     this.documentNumber = item.documentNumber;
     this.documentStartDate = item.documentStartDate;
@@ -13,7 +13,10 @@ export class DocumentContractWebItemPresenter {
     this.status = item.status;
     this.volunteerId = item.volunteerId;
     this.volunteerName = item.volunteerName;
+
     this.organizationId = item.organizationId;
+    this.organizationName = item.organizationName;
+
     this.createdByAdminId = item.createdByAdminId;
     this.createdByAdminName = item.createdByAdminName;
 
@@ -90,6 +93,13 @@ export class DocumentContractWebItemPresenter {
     example: '525dcdf9-4117-443e-a0c3-bf652cdc5c1b',
   })
   organizationId: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'The name of the organization',
+    example: 'Code4Romania',
+  })
+  organizationName: string;
 
   @Expose()
   @ApiProperty({
