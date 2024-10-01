@@ -135,7 +135,10 @@ export const ContractInfoContent = ({
           label={t('contract.generated_on')}
           value={formatDate(contract.createdOn, 'dd/MM/yyy')}
         />
-        {contract.status === DocumentContractStatusForFilter.ACTIVE && (
+        {/* signed on date: only for contracts that are active/expired/not started */}
+        {(contract.status === DocumentContractStatusForFilter.ACTIVE ||
+          contract.status === DocumentContractStatusForFilter.EXPIRED ||
+          contract.status === DocumentContractStatusForFilter.NOT_STARTED) && (
           <FormReadOnlyElement
             label={t('contract.signed_on')}
             value={formatDate(contract.updatedOn, 'dd/MM/yyy')}
@@ -144,11 +147,11 @@ export const ContractInfoContent = ({
         {/* rejection date, by and reason */}
         {(contract.status === DocumentContractStatusForFilter.REJECTED_NGO ||
           contract.status === DocumentContractStatusForFilter.REJECTED_VOLUNTEER) && (
-            <FormReadOnlyElement
-              label={t('contract.rejected_on')}
-              value={formatDate(contract.rejectionDate, 'dd/MM/yyy')}
-            />
-          )}
+          <FormReadOnlyElement
+            label={t('contract.rejected_on')}
+            value={formatDate(contract.rejectionDate, 'dd/MM/yyy')}
+          />
+        )}
         {contract.status === DocumentContractStatusForFilter.REJECTED_NGO && (
           <FormReadOnlyElement
             label={t('contract.rejected_by')}
@@ -157,15 +160,15 @@ export const ContractInfoContent = ({
         )}
         {(contract.status === DocumentContractStatusForFilter.REJECTED_NGO ||
           contract.status === DocumentContractStatusForFilter.REJECTED_VOLUNTEER) && (
-            <FormReadOnlyElement
-              label={t('contract.rejection_reason')}
-              value={
-                contract.status === DocumentContractStatusForFilter.REJECTED_VOLUNTEER
-                  ? t(`contract.rejection.${contract.rejectionReason}`)
-                  : contract.rejectionReason || '-'
-              }
-            />
-          )}
+          <FormReadOnlyElement
+            label={t('contract.rejection_reason')}
+            value={
+              contract.status === DocumentContractStatusForFilter.REJECTED_VOLUNTEER
+                ? t(`contract.rejection.${contract.rejectionReason}`)
+                : contract.rejectionReason || '-'
+            }
+          />
+        )}
       </div>
       {contract.status === DocumentContractStatusForFilter.PENDING_NGO_REPRESENTATIVE_SIGNATURE && (
         <footer className="p-6 flex flex-row-reverse gap-4 border-t w-full xs:max-w-xs sm:max-w-md fixed bottom-0 right-0 bg-white">
