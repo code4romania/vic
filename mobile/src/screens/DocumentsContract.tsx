@@ -4,7 +4,7 @@ import PageLayout from '../layouts/PageLayout';
 import { useTranslation } from 'react-i18next';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { Text, useTheme } from '@ui-kitten/components';
-import { DocumentContract } from '../services/documents/documents.api';
+import { IDocumentContract, RejectionReason } from '../services/documents/documents.api';
 import { DocumentContractStatus } from '../common/enums/document-contract-status.enum';
 import Disclaimer from '../components/Disclaimer';
 import { useUserProfile } from '../store/profile/profile.selector';
@@ -19,9 +19,10 @@ import {
   useSignContractMutation,
 } from '../services/documents/documents.service';
 
-import { isAfter } from 'date-fns';
+import { format, isAfter } from 'date-fns';
 import {
   isOver16FromCNP,
+  mapContractRejectionReasonToText,
   mapContractToColor,
   renderContractInfoText,
 } from '../common/utils/document-contracts.helpers';
@@ -47,7 +48,7 @@ export const DocumentsContract = ({ navigation, route }: any) => {
   const [isSignatureEmpty, setIsSignatureEmpty] = useState(false);
 
   // queries
-  const { contract: routeContract } = route.params as { contract: DocumentContract };
+  const { contract: routeContract } = route.params as { contract: IDocumentContract };
   const { data: contract, isLoading: isLoadingContract } = useGetContractQuery(
     routeContract.documentId,
     userProfile?.activeOrganization?.id,
@@ -198,6 +199,56 @@ export const DocumentsContract = ({ navigation, route }: any) => {
     navigation.navigate('documents/contract/reject', { contract });
   };
 
+  const renderRejectedContractContent = () => {
+    if (!contract) {
+      return null;
+    }
+    if (
+      !(
+        contract.status === DocumentContractStatus.REJECTED_NGO ||
+        contract.status === DocumentContractStatus.REJECTED_VOLUNTEER
+      )
+    ) {
+      return null;
+    }
+    return (
+      <>
+        {contract.status === DocumentContractStatus.REJECTED_NGO && (
+          <View style={styles.rejectedItemContainer}>
+            <Text category="p2" appearance="hint">
+              {`${t('contract.rejected.by')}`}
+            </Text>
+            <Text category="p1">{contract.rejectedByName ? contract.rejectedByName : '-'}</Text>
+          </View>
+        )}
+
+        <View style={styles.rejectedItemContainer}>
+          {/* rejection reason */}
+          <Text category="p2" appearance="hint">
+            {`${t('contract.rejected.reason')}`}
+          </Text>
+          <Text category="p1">
+            {contract.rejectionReason
+              ? contract.status === DocumentContractStatus.REJECTED_VOLUNTEER
+                ? mapContractRejectionReasonToText(contract.rejectionReason as RejectionReason)
+                : contract.rejectionReason
+              : '-'}
+          </Text>
+        </View>
+
+        <View style={styles.rejectedItemContainer}>
+          {/* rejection date */}
+          <Text category="p2" appearance="hint">
+            {`${t('contract.rejected.date')}`}
+          </Text>
+          <Text category="p1">
+            {contract.rejectionDate ? format(new Date(contract.rejectionDate), 'dd.MM.yyyy') : '-'}
+          </Text>
+        </View>
+      </>
+    );
+  };
+
   if (isLoadingContract) {
     return (
       <PageLayout
@@ -275,6 +326,9 @@ export const DocumentsContract = ({ navigation, route }: any) => {
               //   onPress={() => onContractPress(item)}
               info={info}
             />
+            {(contract.status === DocumentContractStatus.REJECTED_NGO ||
+              contract.status === DocumentContractStatus.REJECTED_VOLUNTEER) &&
+              renderRejectedContractContent()}
 
             {/* footer for pending signature from ngo */}
             {(contract.status === DocumentContractStatus.PENDING_APPROVAL_NGO ||
@@ -328,6 +382,10 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
+  },
+  rejectedItemContainer: {
+    flexDirection: 'column',
+    gap: 8,
   },
   buttonsContainer: {
     flexDirection: 'column',

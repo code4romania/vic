@@ -10,7 +10,7 @@ import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { useGetContractsQuery } from '../services/documents/documents.service';
 import ContractItem from '../components/ContractItem';
 import { DocumentIcon } from './Documents';
-import { DocumentContract } from '../services/documents/documents.api';
+import { IDocumentContract } from '../services/documents/documents.api';
 import { isAfter } from 'date-fns';
 import Disclaimer from '../components/Disclaimer';
 import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list';
@@ -36,7 +36,7 @@ export const DocumentsContracts = ({ navigation }: any) => {
       allContracts &&
       !isLoadingAllContracts &&
       allContracts.items.filter(
-        (contract: DocumentContract) =>
+        (contract: IDocumentContract) =>
           contract.status === DocumentContractStatus.PENDING_APPROVAL_NGO ||
           contract.status === DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE ||
           contract.status === DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE,
@@ -49,7 +49,7 @@ export const DocumentsContracts = ({ navigation }: any) => {
       allContracts &&
       !isLoadingAllContracts &&
       allContracts.items.filter(
-        (contract: DocumentContract) => contract.status === DocumentContractStatus.APPROVED,
+        (contract: IDocumentContract) => contract.status === DocumentContractStatus.APPROVED,
       ),
     [allContracts, isLoadingAllContracts],
   );
@@ -59,7 +59,7 @@ export const DocumentsContracts = ({ navigation }: any) => {
       allContracts &&
       !isLoadingAllContracts &&
       allContracts.items.filter(
-        (contract: DocumentContract) =>
+        (contract: IDocumentContract) =>
           contract.status === DocumentContractStatus.REJECTED_NGO ||
           contract.status === DocumentContractStatus.REJECTED_VOLUNTEER,
       ),
@@ -71,7 +71,7 @@ export const DocumentsContracts = ({ navigation }: any) => {
       allContracts &&
       !isLoadingAllContracts &&
       allContracts.items.filter(
-        (contract: DocumentContract) => contract.status === DocumentContractStatus.ACTION_EXPIRED,
+        (contract: IDocumentContract) => contract.status === DocumentContractStatus.ACTION_EXPIRED,
       ),
     [allContracts, isLoadingAllContracts],
   );
@@ -81,7 +81,7 @@ export const DocumentsContracts = ({ navigation }: any) => {
     () =>
       approvedContracts &&
       approvedContracts.find(
-        (contract: DocumentContract) =>
+        (contract: IDocumentContract) =>
           isAfter(new Date(), new Date(contract.documentStartDate)) &&
           isAfter(new Date(contract.documentEndDate), new Date()),
       ),
@@ -108,7 +108,7 @@ export const DocumentsContracts = ({ navigation }: any) => {
     );
   }
 
-  const onContractPress = (contract: DocumentContract) => {
+  const onContractPress = (contract: IDocumentContract) => {
     navigation.navigate('documents/contract', { contract });
   };
 
@@ -140,7 +140,7 @@ export const DocumentsContracts = ({ navigation }: any) => {
               allowFontScaling={ALLOW_FONT_SCALLING}
             >{`${t('pending_documents')}`}</Text>
             {/* pending volunteer signature contracts list */}
-            {pendingSignatureContracts.map((item: DocumentContract, index: number) => (
+            {pendingSignatureContracts.map((item: IDocumentContract, index: number) => (
               <View key={item.documentId}>
                 <ContractItem
                   id={item.documentId}
@@ -164,7 +164,7 @@ export const DocumentsContracts = ({ navigation }: any) => {
               category="p2"
               allowFontScaling={ALLOW_FONT_SCALLING}
             >{`${t('approved_history')}`}</Text>
-            {approvedContracts.map((item: DocumentContract, index: number) => {
+            {approvedContracts.map((item: IDocumentContract, index: number) => {
               const { color, backgroundColor, info } = mapContractToColor(item, t);
               return (
                 <View key={item.documentId}>
@@ -187,7 +187,7 @@ export const DocumentsContracts = ({ navigation }: any) => {
                 </View>
               );
             })}
-            {rejectedContracts.map((item: DocumentContract, index: number) => {
+            {rejectedContracts.map((item: IDocumentContract, index: number) => {
               return (
                 <View key={item.documentId}>
                   <ContractItem
@@ -205,7 +205,7 @@ export const DocumentsContracts = ({ navigation }: any) => {
                 </View>
               );
             })}
-            {actionExpiredContracts.map((item: DocumentContract, index: number) => {
+            {actionExpiredContracts.map((item: IDocumentContract, index: number) => {
               return (
                 <View key={item.documentId}>
                   <ContractItem

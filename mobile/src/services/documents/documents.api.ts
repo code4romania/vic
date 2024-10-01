@@ -1,17 +1,20 @@
 import { DocumentContractStatus } from '../../common/enums/document-contract-status.enum';
 import API from '../api';
 
-export interface DocumentContract {
-  documentEndDate: string;
+export interface IDocumentContract {
   documentFilePath: string | null;
   documentId: string;
   documentNumber: string;
   documentStartDate: string;
+  documentEndDate: string;
   organizationId: string;
   organizationName: string;
   status: DocumentContractStatus;
   volunteerId: string;
   volunteerName: string;
+  rejectedByName: string;
+  rejectionDate: string;
+  rejectionReason: string;
 }
 
 export interface ISignContractPayload {
@@ -32,7 +35,7 @@ export interface IGetContractsForVolunteerParams {
 export const getContract = (
   contractId: string,
   organizationId: string,
-): Promise<DocumentContract> => {
+): Promise<IDocumentContract> => {
   const params = { contractId, organizationId };
   return API.get(`/mobile/documents/contracts/${contractId}`, {
     params,

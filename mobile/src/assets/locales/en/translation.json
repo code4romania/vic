@@ -816,7 +816,13 @@
       "signed_contract_footer": "Once signed, the contract cannot be modified. If you encounter problems, contact the organization to cancel the contract and generate a new one.",
       "approved": "The contract has been approved by both parties and cannot be modified. Download and view the contract.",
       "expired": "The contract period has ended. Download and view the contract.",
-      "rejected": "The contract has been rejected.",
+      "rejected": {
+        "ngo": "The contract has been rejected by the organization.",
+        "volunteer": "The contract has been rejected by the volunteer.",
+        "reason": "Reason for rejection",
+        "date": "Date of rejection",
+        "by": "Rejected by"
+      },
       "action_expired": "The contract was not signed within the dedicated time frame.",
       "sign": "Sign",
       "reject": "Reject contract"

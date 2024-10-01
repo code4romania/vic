@@ -817,7 +817,13 @@
       "signed_contract_footer": "Odată semnat, contractul nu poate fi modificat. Dacă întâmpini probleme, ia legătura cu organizația, pentru a anula contractul și a genera un contract nou.",
       "approved": "Contractul a fost aprobat de ambele părți și nu mai poate fi modificat. Descarcă și vizualizează contractul.",
       "expired": "Perioada contractului a luat sfârșit. Descarcă și vizualizează contractul.",
-      "rejected": "Contractul a fost respins.",
+      "rejected": {
+        "ngo": "Contractul a fost respins de către organizație.",
+        "volunteer": "Contractul a fost respins de către voluntar.",
+        "reason": "Motivul respingerii",
+        "date": "Data respingerii",
+        "by": "Respins de"
+      },
       "action_expired": "Contractul nu a fost semnat în intervalul de timp dedicat.",
       "sign": "Semnează",
       "reject": "Respinge contract"

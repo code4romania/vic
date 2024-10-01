@@ -8,7 +8,7 @@ import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import FormSelect from '../components/FormSelect';
-import { DocumentContract, RejectionReason } from '../services/documents/documents.api';
+import { IDocumentContract, RejectionReason } from '../services/documents/documents.api';
 import { useRejectContractMutation } from '../services/documents/documents.service';
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { renderBackdrop } from '../components/BottomSheet';
@@ -20,23 +20,23 @@ import upsIcon from '../assets/svg/ups-icon';
 import InlineLink from '../components/InlineLink';
 import Button from '../components/Button';
 import { useQueryClient } from 'react-query';
-import i18n from '../common/config/i18n';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { mapContractRejectionReasonToText } from '../common/utils/document-contracts.helpers';
 
 const rejectionOptionsArray = [
   {
     key: RejectionReason.INCORRECT_IDENTITY_DATA,
-    label: i18n.t('documents-contract:reject.reject_reason.incorrect_identity_data'),
+    label: mapContractRejectionReasonToText(RejectionReason.INCORRECT_IDENTITY_DATA),
   },
   {
     key: RejectionReason.DONT_AGREE_WITH_CLAUSES,
-    label: i18n.t('documents-contract:reject.reject_reason.dont_agree_with_clauses'),
+    label: mapContractRejectionReasonToText(RejectionReason.DONT_AGREE_WITH_CLAUSES),
   },
   {
     key: RejectionReason.WRONG_CONTRACT_PERIOD,
-    label: i18n.t('documents-contract:reject.reject_reason.wrong_contract_period'),
+    label: mapContractRejectionReasonToText(RejectionReason.WRONG_CONTRACT_PERIOD),
   },
-  { key: RejectionReason.OTHER, label: i18n.t('documents-contract:reject.reject_reason.other') },
+  { key: RejectionReason.OTHER, label: mapContractRejectionReasonToText(RejectionReason.OTHER) },
 ];
 
 interface FieldValues {
@@ -53,7 +53,7 @@ export const RejectContract = ({ navigation, route }: any) => {
   const queryClient = useQueryClient();
 
   const { userProfile } = useUserProfile();
-  const { contract } = route.params as { contract: DocumentContract };
+  const { contract } = route.params as { contract: IDocumentContract };
 
   const [bottomSheetContent, setBottomSheetContent] = useState<{
     icon?: string;

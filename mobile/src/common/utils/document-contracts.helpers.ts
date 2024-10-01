@@ -1,11 +1,12 @@
 import { differenceInYears, isAfter, parseISO } from 'date-fns';
 import { DocumentContractStatus } from '../enums/document-contract-status.enum';
-import { DocumentContract } from '../../services/documents/documents.api';
+import { IDocumentContract, RejectionReason } from '../../services/documents/documents.api';
 import {
   ILegalGuardianData,
   IUserPersonalData,
   IUserProfile,
 } from '../interfaces/user-profile.interface';
+import i18n from '../config/i18n';
 
 export const isOver16 = (birthday: string | Date) => {
   if (!birthday) {
@@ -40,7 +41,54 @@ export const isOver16FromCNP = (cnp: string) => {
   return age >= 16;
 };
 
-export const mapContractToColor = (contract: DocumentContract, t: any) => {
+export const isIdentityDataIncomplete = (userProfile: IUserProfile) => {
+  if (!userProfile || !userProfile?.userPersonalData) {
+    return true;
+  }
+  // required fields for all users
+  const defaultRequiredFields = [
+    'cnp',
+    'identityDocumentSeries',
+    'identityDocumentNumber',
+    'address',
+    'identityDocumentIssueDate',
+    'identityDocumentExpirationDate',
+    'identityDocumentIssuedBy',
+  ];
+
+  // required fields for users under 16
+  const requiredGuardianFields = [
+    'name',
+    'identityDocumentSeries',
+    'identityDocumentNumber',
+    'email',
+    'phone',
+    'cnp',
+    'address',
+  ];
+
+  const isUserOver16 = isOver16FromCNP(
+    userProfile && userProfile?.userPersonalData.cnp ? userProfile?.userPersonalData?.cnp : '',
+  );
+
+  // check if all required fields are present in userProfile.userPersonalData object
+  const isMissingRequiredFields = defaultRequiredFields.some(
+    (field) => !userProfile.userPersonalData[field as keyof IUserPersonalData],
+  );
+
+  let isMissingGuardianFields = false;
+
+  // check if all required fields for users under 16 are present in userProfile.userPersonalData.legalGuardian object
+  if (!isUserOver16) {
+    isMissingGuardianFields = requiredGuardianFields.some(
+      (field) => !userProfile.userPersonalData.legalGuardian?.[field as keyof ILegalGuardianData],
+    );
+  }
+
+  return isMissingRequiredFields || isMissingGuardianFields;
+};
+
+export const mapContractToColor = (contract: IDocumentContract, t: any) => {
   // rejected contract
   if (
     contract.status === DocumentContractStatus.REJECTED_NGO ||
@@ -92,82 +140,38 @@ export const mapContractToColor = (contract: DocumentContract, t: any) => {
   return { color: 'yellow-500', backgroundColor: 'yellow-50', info: '' };
 };
 
-export const renderContractInfoText = (contract: DocumentContract, t: any) => {
-  // rejected contract
-  if (
-    contract.status === DocumentContractStatus.REJECTED_NGO ||
-    contract.status === DocumentContractStatus.REJECTED_VOLUNTEER
-  ) {
-    return t('contract.rejected');
-  }
-  // action expired contract
-  if (contract.status === DocumentContractStatus.ACTION_EXPIRED) {
-    return t('contract.action_expired');
-  }
-  // expired contract
-  if (isAfter(new Date(), new Date(contract.documentEndDate))) {
-    return t('contract.expired');
-  }
-  // pending volunteer signature
-  if (contract.status === DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE) {
-    return t('contract.pending_volunteer_signature');
-  }
-  // pending ngo
-  if (
-    contract.status === DocumentContractStatus.PENDING_APPROVAL_NGO ||
-    contract.status === DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE
-  ) {
-    return t('contract.pending_ngo_signature');
-  }
-  // active contract
-  if (contract.status === DocumentContractStatus.APPROVED) {
-    return t('contract.approved');
+export const mapContractRejectionReasonToText = (rejectionReason: RejectionReason) => {
+  switch (rejectionReason) {
+    case RejectionReason.INCORRECT_IDENTITY_DATA:
+      return i18n.t('documents-contract:reject.reject_reason.incorrect_identity_data');
+    case RejectionReason.DONT_AGREE_WITH_CLAUSES:
+      return i18n.t('documents-contract:reject.reject_reason.dont_agree_with_clauses');
+    case RejectionReason.WRONG_CONTRACT_PERIOD:
+      return i18n.t('documents-contract:reject.reject_reason.wrong_contract_period');
+    case RejectionReason.OTHER:
+      return i18n.t('documents-contract:reject.reject_reason.other');
   }
 };
 
-export const isIdentityDataIncomplete = (userProfile: IUserProfile) => {
-  if (!userProfile || !userProfile?.userPersonalData) {
-    return true;
+export const renderContractInfoText = (contract: IDocumentContract, t: any) => {
+  switch (contract.status) {
+    case DocumentContractStatus.REJECTED_NGO:
+      return t('contract.rejected.ngo');
+    case DocumentContractStatus.REJECTED_VOLUNTEER:
+      return t('contract.rejected.volunteer');
+    case DocumentContractStatus.ACTION_EXPIRED:
+      return t('contract.action_expired');
+    case DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE:
+      return t('contract.pending_volunteer_signature');
+    case DocumentContractStatus.PENDING_APPROVAL_NGO:
+    case DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE:
+      return t('contract.pending_ngo_signature');
+    case DocumentContractStatus.APPROVED:
+      return t('contract.approved');
+    default:
+      if (isAfter(new Date(), new Date(contract.documentEndDate))) {
+        return t('contract.expired');
+      }
+      return '';
   }
-  // required fields for all users
-  const defaultRequiredFields = [
-    'cnp',
-    'identityDocumentSeries',
-    'identityDocumentNumber',
-    'address',
-    'identityDocumentIssueDate',
-    'identityDocumentExpirationDate',
-    'identityDocumentIssuedBy',
-  ];
-
-  // required fields for users under 16
-  const requiredGuardianFields = [
-    'name',
-    'identityDocumentSeries',
-    'identityDocumentNumber',
-    'email',
-    'phone',
-    'cnp',
-    'address',
-  ];
-
-  const isUserOver16 = isOver16FromCNP(
-    userProfile && userProfile?.userPersonalData.cnp ? userProfile?.userPersonalData?.cnp : '',
-  );
-
-  // check if all required fields are present in userProfile.userPersonalData object
-  const isMissingRequiredFields = defaultRequiredFields.some(
-    (field) => !userProfile.userPersonalData[field as keyof IUserPersonalData],
-  );
-
-  let isMissingGuardianFields = false;
-
-  // check if all required fields for users under 16 are present in userProfile.userPersonalData.legalGuardian object
-  if (!isUserOver16) {
-    isMissingGuardianFields = requiredGuardianFields.some(
-      (field) => !userProfile.userPersonalData.legalGuardian?.[field as keyof ILegalGuardianData],
-    );
-  }
-
-  return isMissingRequiredFields || isMissingGuardianFields;
 };

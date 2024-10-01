@@ -1,6 +1,6 @@
 import { useMutation, useQuery, UseQueryResult } from 'react-query';
 import {
-  DocumentContract,
+  IDocumentContract,
   getContract,
   getContractsForVolunteer,
   IGetContractsForVolunteerParams,
@@ -27,7 +27,7 @@ export const useGetContractsQuery = (
 export const useGetContractQuery = (
   contractId: string | undefined,
   organizationId: string | undefined,
-): UseQueryResult<DocumentContract> => {
+): UseQueryResult<IDocumentContract> => {
   return useQuery({
     queryKey: ['contract', 'contractId', contractId, 'organizationId', organizationId] as const,
     queryFn: () =>
