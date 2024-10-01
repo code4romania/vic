@@ -2,12 +2,15 @@ import { Injectable, Logger } from '@nestjs/common';
 import { JSONStringifyError } from 'src/common/helpers/utils';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import * as Sentry from '@sentry/nestjs';
+import { DocumentSignatureFacade } from 'src/modules/documents/services/document-signature.facade';
 
 @Injectable()
 export class DeleteDocumentContractUsecase implements IUseCaseService<string> {
@@ -16,6 +19,8 @@ export class DeleteDocumentContractUsecase implements IUseCaseService<string> {
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly exceptionService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly signatureService: DocumentSignatureFacade,
+    private readonly s3Service: S3Service,
   ) {}
 
   public async execute(id: string, admin: IAdminUserModel): Promise<void> {
@@ -47,7 +52,39 @@ export class DeleteDocumentContractUsecase implements IUseCaseService<string> {
         );
       }
 
-      await this.documentContractFacade.delete(id);
+      const deleted = await this.documentContractFacade.delete(id);
+
+      if (!deleted) {
+        throw new Error('Could not delete contract from DB');
+      }
+
+      // Delete file from S3
+      try {
+        if (contract.filePath) {
+          await this.s3Service.deleteFile(contract.filePath);
+        }
+      } catch (error) {
+        Sentry.captureException(error);
+        this.logger.error('Error deleting contract file from S3: ', error);
+      }
+
+      // Delete signatures
+      try {
+        if (contract.volunteerSignatureId) {
+          await this.signatureService.delete(contract.volunteerSignatureId);
+        }
+        if (contract.legalGuardianSignatureId) {
+          await this.signatureService.delete(contract.legalGuardianSignatureId);
+        }
+        if (contract.ngoLegalRepresentativeSignatureId) {
+          await this.signatureService.delete(
+            contract.ngoLegalRepresentativeSignatureId,
+          );
+        }
+      } catch (error) {
+        Sentry.captureException(error);
+        this.logger.error('Error while deleting contract signatures');
+      }
 
       // 10. Track event
       this.actionsArchiveFacade.trackEvent(
@@ -55,7 +92,7 @@ export class DeleteDocumentContractUsecase implements IUseCaseService<string> {
         {
           organizationId: contract.organizationId,
           volunteerId: contract.volunteerId,
-          volunteerName: contract.volunteer.user.name,
+          volunteerName: contract.volunteerData.name,
           documentContractId: contract.id,
           documentContractNumber: contract.documentNumber,
         },
