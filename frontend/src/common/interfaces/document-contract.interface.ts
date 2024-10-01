@@ -1,7 +1,4 @@
-import {
-  DocumentContractStatusForFilter,
-  DocumentContractStatus,
-} from '../enums/document-contract-status.enum';
+import { DocumentContractStatusForFilter } from '../enums/document-contract-status.enum';
 import { OrderDirection } from '../enums/order-direction.enum';
 
 export interface IDocumentContract {

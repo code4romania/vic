@@ -12,7 +12,6 @@ import Popover from './Popover';
 import Button from './Button';
 import {
   DocumentContractStatusMarkerColorMapper,
-  downloadExcel,
   downloadFile,
   // downloadFile,
   formatDate,
@@ -25,7 +24,6 @@ import FormDatePicker from './FormDatePicker';
 import { useNavigate } from 'react-router-dom';
 import { VolunteerTabsOptions } from '../pages/Volunteer';
 import { useTranslation } from 'react-i18next';
-import { getContractsForDownload } from '../services/contracts/contracts.api';
 import {
   useDeleteDocumentContractMutation,
   useGetContractsStatisticsQuery,
@@ -163,20 +161,6 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
   const onView = (row: IDocumentContract) => {
     setSelectedContract(row.documentId);
     setIsViewContractSidePanelOpen(true);
-  };
-
-  const onExport = async () => {
-    const { data } = await getContractsForDownload({
-      orderBy: query?.orderBy as string,
-      orderDirection: query?.orderDirection as OrderDirection,
-      search: query?.search,
-      // volunteerName: query?.volunteer,
-      startDate: query?.startDate,
-      endDate: query?.endDate,
-      // status: query?.status as ContractStatus,
-      volunteerId: query?.volunteerId,
-    });
-    downloadExcel(data as BlobPart, t('contracts.download'));
   };
 
   const showDeleteContractModal = (row: IDocumentContract) => {
@@ -389,12 +373,6 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
         <CardHeader>
           <h2>{t('contracts.statistics.total', { total: contracts?.meta.totalItems })}</h2>
           <div className="flex gap-2 lg:gap-6">
-            <Button
-              label={t('contracts.actions.download')}
-              className="btn-outline-secondary"
-              icon={<ArrowDownTrayIcon className="h-5 w-5" />}
-              onClick={onExport}
-            />
             <Button
               label={t('contracts.actions.add')}
               className="btn-primary"
