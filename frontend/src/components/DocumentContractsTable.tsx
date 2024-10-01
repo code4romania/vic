@@ -47,6 +47,7 @@ import ConfirmationModal from './ConfirmationModal';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { ContractsStatistics } from './ContractsStatistics';
+import { useQueryClient } from 'react-query';
 
 interface StatusOption {
   key: string;
@@ -122,6 +123,8 @@ export interface DocumentContractsTableQueryProps extends IPaginationQueryParams
 type DocumentContractsTableBasicProps = IHOCQueryProps<DocumentContractsTableQueryProps>;
 
 const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasicProps) => {
+  const queryClient = useQueryClient();
+
   // selected contract id
   const [selectedContract, setSelectedContract] = useState<string>();
   const [selectedVolunteer, setSelectedVolunteer] = useState<ListItem>();
@@ -187,6 +190,7 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
         onSuccess: () => {
           useSuccessToast(t('contract.submit.delete'));
           setSelectedDeleteContract(null);
+          queryClient.invalidateQueries({ queryKey: ['contracts-statistics'] });
           refetch();
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

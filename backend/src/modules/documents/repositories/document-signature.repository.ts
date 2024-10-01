@@ -19,6 +19,10 @@ export class DocumentSignatureRepository {
     return signature.id;
   }
 
+  async delete(id: string): Promise<void> {
+    await this.signatureRepository.delete({ id });
+  }
+
   async findOne(
     options: FindOneSignatureOptions,
   ): Promise<DocumentSignatureEntity> {

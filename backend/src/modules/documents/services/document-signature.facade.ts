@@ -11,4 +11,8 @@ export class DocumentSignatureFacade {
   async create(newSignature: CreateSignatureOptions): Promise<string> {
     return this.documentSignatureRepository.create(newSignature);
   }
+
+  async delete(id: string): Promise<void> {
+    return this.documentSignatureRepository.delete(id);
+  }
 }
