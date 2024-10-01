@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import { DocumentTemplatesSelectableProps } from '../containers/query/DocumentTemplatesTableSelectableWithQueryParams';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 
+
 const DocumentTemplatesTableHeader = [
   {
     id: 'name',
@@ -152,6 +153,7 @@ export const DocumentTemplateTableSelectable = ({
           paginationPerPage={10}
           selectableRows
           selectableRowsSingle
+          selectableRowsComponentProps={{ type: 'radio' }}
           paginationTotalRows={templates?.items?.length}
           paginationDefaultPage={query.page as number}
           onChangeRowsPerPage={onRowsPerPageChange}

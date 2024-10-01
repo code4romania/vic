@@ -30,6 +30,7 @@ import {
   checkIsVolunteerDataIncomplete,
   VolunteerDataCheck,
 } from '../common/utils/volunteer-data.util';
+import EmptyContent from './EmptyContent';
 
 const ActiveVolunteersTableHeader = [
   {
@@ -85,9 +86,8 @@ const ActiveVolunteersTableHeader = [
     minWidth: '9rem',
     selector: (row: IVolunteer) =>
       row.profile?.department || row?.profile?.role
-        ? `${row.profile?.role?.name || ''}${
-            row.profile?.role && row.profile?.department ? '\n' : ''
-          }${row.profile?.department?.name || ''}`
+        ? `${row.profile?.role?.name || ''}${row.profile?.role && row.profile?.department ? '\n' : ''
+        }${row.profile?.department?.name || ''}`
         : '-',
   },
   {
@@ -387,7 +387,10 @@ const DocumentVolunteersTable = ({
           <h2>{i18n.t('side_menu:options.volunteers_list')}</h2>
         </CardHeader>
         <CardBody>
-          {query?.volunteerStatus === VolunteerStatus.ACTIVE && (
+          {volunteers?.items?.length === 0 && (
+            <EmptyContent description={i18n.t('general:empty_table')} />
+          )}
+          {query?.volunteerStatus === VolunteerStatus.ACTIVE && volunteers?.items && volunteers.items.length > 0 && (
             <DataTableComponent
               {...selectProps}
               columns={[...ActiveVolunteersTableHeader]}

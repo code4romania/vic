@@ -226,6 +226,10 @@
   @apply bg-cool-gray-50 text-sm text-cool-gray-800 border-cool-gray-300;
 }
 
+.rdt_TableHeadRow > div {
+  @apply bg-cool-gray-50 text-sm text-cool-gray-800 border-cool-gray-300;
+}
+
 .rdt_TableHeadRow > .rdt_TableCol > div {
   @apply py-3.5 px-2.5 text-sm font-titilliumBold;
 }

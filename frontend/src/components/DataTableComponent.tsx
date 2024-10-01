@@ -27,6 +27,7 @@ interface DataTableProps<T> {
   defaultSortFieldId?: string | number;
   defaultSortAsc?: boolean;
   onRowClicked?: (row: T) => void;
+  selectableRowsComponentProps?: { type: 'radio' }
 }
 
 const DataTableComponent = <T extends object>({
@@ -49,6 +50,7 @@ const DataTableComponent = <T extends object>({
   selectableRowDisabled,
   defaultSortFieldId,
   defaultSortAsc,
+  selectableRowsComponentProps
 }: DataTableProps<T>) => {
   return (
     <DataTable
@@ -88,16 +90,17 @@ const DataTableComponent = <T extends object>({
         onSelectedRowsChange && onSelectedRowsChange(selected.selectedRows)
       }
       onRowClicked={onRowClicked}
+      selectableRowsComponentProps={selectableRowsComponentProps}
       // custom background color for hovering rows that perform an action onClick
       customStyles={{
         rows: {
           style: {
             '&:hover': onRowClicked
               ? {
-                  cursor: 'pointer',
-                  backgroundColor: '#F9FAFB',
-                  transition: 'background-color 0.3s ease',
-                }
+                cursor: 'pointer',
+                backgroundColor: '#F9FAFB',
+                transition: 'background-color 0.3s ease',
+              }
               : {},
           },
         },
