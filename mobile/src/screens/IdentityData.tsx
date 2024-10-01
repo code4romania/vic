@@ -332,6 +332,7 @@ const IdentityData = ({ navigation, route }: any) => {
             placeholder={t('form.cnp.placeholder')}
             error={errors.identityDocumentCNP}
             disabled={isUpdateingPersonalData}
+            required={true}
           />
         </View>
         <View ref={registerInputRef('identityDocumentSeries')}>
@@ -343,6 +344,7 @@ const IdentityData = ({ navigation, route }: any) => {
             placeholder={t('form.series.placeholder')}
             disabled={isUpdateingPersonalData}
             autoCapitalize="characters"
+            required={true}
           />
         </View>
         <View ref={registerInputRef('identityDocumentNumber')}>
@@ -354,6 +356,7 @@ const IdentityData = ({ navigation, route }: any) => {
             placeholder={t('form.number.placeholder')}
             keyboardType="phone-pad"
             disabled={isUpdateingPersonalData}
+            required={true}
           />
         </View>
         <View ref={registerInputRef('address')}>
@@ -365,6 +368,7 @@ const IdentityData = ({ navigation, route }: any) => {
             placeholder={t('form.address.placeholder')}
             helper={`${t('form.address.helper')}`}
             disabled={isUpdateingPersonalData}
+            required={true}
           />
         </View>
         <View ref={registerInputRef('identityDocumentIssueDate')}>
@@ -377,6 +381,7 @@ const IdentityData = ({ navigation, route }: any) => {
             min={new Date(1900, 0, 0)}
             disabled={isUpdateingPersonalData}
             max={new Date()}
+            required={true}
           />
         </View>
         <View ref={registerInputRef('identityDocumentExpirationDate')}>
@@ -389,6 +394,7 @@ const IdentityData = ({ navigation, route }: any) => {
             max={new Date(2200, 0, 0)}
             disabled={isUpdateingPersonalData}
             min={new Date()}
+            required={true}
           />
         </View>
         <View ref={registerInputRef('identityDocumentIssuedBy')}>
@@ -399,6 +405,7 @@ const IdentityData = ({ navigation, route }: any) => {
             error={errors.identityDocumentIssuedBy}
             placeholder={t('form.issued_by.placeholder')}
             disabled={isUpdateingPersonalData}
+            required={true}
           />
         </View>
         {!isUserOver16 && (
@@ -412,6 +419,7 @@ const IdentityData = ({ navigation, route }: any) => {
                 error={errors.guardianName}
                 placeholder={t('form.guardian.name.placeholder')}
                 disabled={isUpdateingPersonalData}
+                required={true}
               />
             </View>
             <View ref={registerInputRef('guardianEmail')}>
@@ -422,6 +430,7 @@ const IdentityData = ({ navigation, route }: any) => {
                 error={errors.guardianEmail}
                 placeholder={t('form.guardian.email.placeholder')}
                 disabled={isUpdateingPersonalData}
+                required={true}
               />
             </View>
             <View ref={registerInputRef('guardianPhone')}>
@@ -432,6 +441,7 @@ const IdentityData = ({ navigation, route }: any) => {
                 error={errors.guardianPhone}
                 placeholder={t('form.guardian.phone.placeholder')}
                 disabled={isUpdateingPersonalData}
+                required={true}
               />
             </View>
             <View ref={registerInputRef('guardianAddress')}>
@@ -442,6 +452,7 @@ const IdentityData = ({ navigation, route }: any) => {
                 error={errors.guardianAddress}
                 placeholder={t('form.guardian.address.placeholder')}
                 disabled={isUpdateingPersonalData}
+                required={true}
               />
             </View>
             <View ref={registerInputRef('guardianCNP')}>
@@ -452,6 +463,7 @@ const IdentityData = ({ navigation, route }: any) => {
                 error={errors.guardianCNP}
                 placeholder={t('form.guardian.cnp.placeholder')}
                 disabled={isUpdateingPersonalData}
+                required={true}
               />
             </View>
             <View ref={registerInputRef('guardianIdentityDocumentSeries')}>
@@ -463,6 +475,7 @@ const IdentityData = ({ navigation, route }: any) => {
                 placeholder={t('form.guardian.series.placeholder')}
                 disabled={isUpdateingPersonalData}
                 autoCapitalize="characters"
+                required={true}
               />
             </View>
             <View ref={registerInputRef('guardianIdentityDocumentNumber')}>
@@ -474,6 +487,7 @@ const IdentityData = ({ navigation, route }: any) => {
                 placeholder={t('form.guardian.number.placeholder')}
                 keyboardType="phone-pad"
                 disabled={isUpdateingPersonalData}
+                required={true}
               />
             </View>
           </>
