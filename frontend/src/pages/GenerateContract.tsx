@@ -18,7 +18,7 @@ import { AxiosError } from 'axios';
 import { format } from 'date-fns';
 
 export interface IDocumentVolunteerData {
-  documentNumber: number;
+  documentNumber: string;
   documentDate: Date;
   documentPeriod: [Date, Date];
 }

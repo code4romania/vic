@@ -50,7 +50,7 @@ export const DocumentContractFillCards = ({
   }: FieldValues) => {
     volunteers.forEach((volunteer, index) => {
       const volunteerData: IDocumentVolunteerData = {
-        documentNumber: startingNumber ? +startingNumber + index : 0,
+        documentNumber: startingNumber ? startingNumber + index : 0,
         documentDate: documentContractDate ? documentContractDate : undefined,
         documentPeriod: documentContractPeriod ? documentContractPeriod : undefined,
       };
