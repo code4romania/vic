@@ -20,6 +20,7 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { Screen } from '../components/Screen';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import Constants from 'expo-constants';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -106,9 +107,15 @@ const Settings = ({ navigation }: any) => {
 
   return (
     <Screen preset="fixed" contentContainerStyle={[styles.childrenContainer, { paddingTop }]}>
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
-        {`${t('title')}`}
-      </Text>
+      <View style={styles.header}>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
+          {`${t('title')}`}
+        </Text>
+        <Text
+          style={{ color: theme['cool-gray-400'] }}
+        >{`${Constants.expoConfig?.version || ''}`}</Text>
+      </View>
+
       <View style={styles.profileContainer}>
         {!userProfile?.profilePicture && (
           <View style={{ ...styles.iconWrapper, backgroundColor: theme['cool-gray-100'] }}>
@@ -144,6 +151,11 @@ const Settings = ({ navigation }: any) => {
 export default Settings;
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   list: {
     backgroundColor: 'white',
   },
