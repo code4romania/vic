@@ -32,3 +32,7 @@ export const updateContractTemplate = (id: string, data: IAddContractTemplatePay
 export const getContractTemplate = (id: string) => {
   return API.get(`/documents/templates/${id}`).then((res) => res.data);
 };
+
+export const deleteContractTemplate = (id: string) => {
+  return API.delete(`/documents/templates/${id}`).then((res) => res.data);
+};

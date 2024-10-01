@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from 'react-query';
 import {
   addContractTemplate,
+  deleteContractTemplate,
   getContractTemplate,
   getTemplateById,
   getTemplates,
@@ -87,5 +88,14 @@ export const useDocumentTemplateByIdQuery = (id?: string) => {
     queryKey: ['document-template', id],
     queryFn: () => getTemplateById(id),
     enabled: !!id,
+  });
+};
+
+export const useDeleteDocumentTemplateMutation = () => {
+  return useMutation((id: string) => deleteContractTemplate(id), {
+    onError: (error) => {
+      console.log('⭕️ ERROR IN DELETE DOCUMENT TEMPLATE MUTATION ⭕️', error);
+      return Promise.resolve(error);
+    },
   });
 };

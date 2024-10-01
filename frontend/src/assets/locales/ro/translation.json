@@ -1154,8 +1154,10 @@
     "edit_title": "Editează template",
     "success_add": "Template-ul a fost adaugat!",
     "success_edit": "Template-ul a fost actualizat!",
+    "success_delete": "Template-ul a fost eliminat!",
     "error_add": "Eroare la adaugarea template-ului!",
     "error_edit": "Eroare la actualizarea template-ului!",
+    "error_delete": "Eroare la eliminarea template-ului!",
     "subheading": {
       "p1": "Acest template a fost realizat respectând normele din domeniu.",
       "p1_link": "Află mai multe",
@@ -1179,6 +1181,11 @@
         "create": "Creează template",
         "download_all": "Descarcă toate"
       }
+    },
+    "delete_modal": {
+      "title": "Confirmă eliminarea template-ului",
+      "description": "Ești sigur că vrei să elimini template-ul?",
+      "confirm_btn_label": "Da, elimină"
     },
     "tooltip": "Datele contractului (Numărul, perioada contractului și data întemeierii) se completează în momentul atribuirii contractului către unul sau mai mulți voluntari.",
     "template_name": "Numele template-ului",
