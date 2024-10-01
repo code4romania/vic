@@ -18,6 +18,7 @@ export const ContractsStatistics = ({ statistics, isLoading, setQuery }: Contrac
   return (
     <div className="flex flex-col sm:flex-row  gap-2">
       <StatisticsCard
+        className="w-full"
         label={t('statistics.saved_contracts')}
         value={statistics?.pendingNgoRepresentativeSignature.toString()}
         action={{
@@ -27,6 +28,7 @@ export const ContractsStatistics = ({ statistics, isLoading, setQuery }: Contrac
         isLoading={isLoading}
       />
       <StatisticsCard
+        className="w-full"
         label={t('statistics.in_signing_contracts')}
         value={statistics?.pendingVolunteerSignature.toString()}
         action={{
@@ -37,6 +39,7 @@ export const ContractsStatistics = ({ statistics, isLoading, setQuery }: Contrac
       />
 
       <StatisticsCard
+        className="w-full"
         label={t('statistics.active_contracts')}
         value={statistics?.activeContracts.toString()}
         action={{
@@ -46,6 +49,7 @@ export const ContractsStatistics = ({ statistics, isLoading, setQuery }: Contrac
         isLoading={isLoading}
       />
       <StatisticsCard
+        className="w-full"
         label={t('statistics.to_expire_soon')}
         value={statistics?.soonToExpire.toString()}
         action={{
