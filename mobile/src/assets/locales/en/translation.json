@@ -809,12 +809,14 @@
     "action_expired": "Action expired",
     "rejected": "Rejected",
     "current": "Current",
+    "not_started": "Not started",
     "contract": {
       "title": "Contract {{value}}",
       "pending_volunteer_signature": "The contract has been generated and requires your approval. Download the template below and carefully read the document. Check if the identity data is correct, otherwise, modify the data and sign the document.",
       "pending_ngo_signature": "The signed contract has been sent to the organization to obtain their signature as well. You will be notified immediately once the contract is fully signed. After that, you will be able to download the document with both signatures from the app.",
       "signed_contract_footer": "Once signed, the contract cannot be modified. If you encounter problems, contact the organization to cancel the contract and generate a new one.",
-      "approved": "The contract has been approved by both parties and cannot be modified. Download and view the contract.",
+      "active": "The contract has been approved by both parties and cannot be modified. Download and view the contract.",
+      "not_started": "The contract has been signed by both parties and is about to begin.",
       "expired": "The contract period has ended. Download and view the contract.",
       "rejected": {
         "ngo": "The contract has been rejected by the organization.",

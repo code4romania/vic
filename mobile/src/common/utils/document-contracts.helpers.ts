@@ -88,56 +88,47 @@ export const isIdentityDataIncomplete = (userProfile: IUserProfile) => {
   return isMissingRequiredFields || isMissingGuardianFields;
 };
 
-export const mapContractToColor = (contract: IDocumentContract, t: any) => {
-  // rejected contract
-  if (
-    contract.status === DocumentContractStatus.REJECTED_NGO ||
-    contract.status === DocumentContractStatus.REJECTED_VOLUNTEER
-  ) {
-    return {
-      color: 'red-500',
-      backgroundColor: 'red-50',
-      info: `${t('rejected')}`,
-    };
-  }
-  //action expired contract
-  if (contract.status === DocumentContractStatus.ACTION_EXPIRED) {
-    return {
-      color: 'color-danger-800',
-      backgroundColor: 'red-50',
-      info: `${t('action_expired')}`,
-    };
-  }
-  // expired contract
-  if (isAfter(new Date(), new Date(contract.documentEndDate))) {
-    return {
-      color: 'cool-gray-500',
-      backgroundColor: 'cool-gray-50',
-      info: `${t('expired')}`,
-    };
-  }
-  // pending
-  if (
-    contract.status === DocumentContractStatus.PENDING_APPROVAL_NGO ||
-    contract.status === DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE ||
-    contract.status === DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE
-  ) {
-    return { color: 'yellow-500', backgroundColor: 'yellow-50', info: '' };
-  }
-  if (
-    isAfter(new Date(), new Date(contract.documentStartDate)) &&
-    isAfter(new Date(contract.documentEndDate), new Date())
-  ) {
-    // active contract
-    return {
-      color: 'turquoise-500',
-      backgroundColor: 'turquoise-50',
-      info: `${t('current')}`,
-    };
-  }
+export const mapContractToColor = (contract: IDocumentContract) => {
+  switch (contract.status) {
+    case DocumentContractStatus.REJECTED_NGO:
+    case DocumentContractStatus.REJECTED_VOLUNTEER:
+      return {
+        color: 'red-500',
+        backgroundColor: 'red-50',
+        info: `${i18n.t('documents-contract:rejected')}`,
+      };
+    case DocumentContractStatus.ACTION_EXPIRED:
+      return {
+        color: 'color-danger-800',
+        backgroundColor: 'red-50',
+        info: `${i18n.t('documents-contract:action_expired')}`,
+      };
+    case DocumentContractStatus.EXPIRED:
+      return {
+        color: 'cool-gray-500',
+        backgroundColor: 'cool-gray-50',
+        info: `${i18n.t('documents-contract:expired')}`,
+      };
+    case DocumentContractStatus.PENDING_APPROVAL_NGO:
+    case DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE:
+    case DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE:
+      return { color: 'yellow-500', backgroundColor: 'yellow-50', info: '' };
+    case DocumentContractStatus.ACTIVE:
+      return {
+        color: 'turquoise-500',
+        backgroundColor: 'turquoise-50',
+        info: `${i18n.t('documents-contract:current')}`,
+      };
+    case DocumentContractStatus.NOT_STARTED:
+      return {
+        color: 'green-500',
+        backgroundColor: 'green-50',
+        info: `${i18n.t('documents-contract:not_started')}`,
+      };
 
-  // default yellow
-  return { color: 'yellow-500', backgroundColor: 'yellow-50', info: '' };
+    default:
+      return { color: 'yellow-500', backgroundColor: 'yellow-50', info: '' };
+  }
 };
 
 export const mapContractRejectionReasonToText = (rejectionReason: RejectionReason) => {
@@ -153,24 +144,28 @@ export const mapContractRejectionReasonToText = (rejectionReason: RejectionReaso
   }
 };
 
-export const renderContractInfoText = (contract: IDocumentContract, t: any) => {
+export const renderContractInfoText = (contract: IDocumentContract) => {
   switch (contract.status) {
     case DocumentContractStatus.REJECTED_NGO:
-      return t('contract.rejected.ngo');
+      return i18n.t('documents-contract:contract.rejected.ngo');
     case DocumentContractStatus.REJECTED_VOLUNTEER:
-      return t('contract.rejected.volunteer');
+      return i18n.t('documents-contract:contract.rejected.volunteer');
     case DocumentContractStatus.ACTION_EXPIRED:
-      return t('contract.action_expired');
+      return i18n.t('documents-contract:contract.action_expired');
     case DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE:
-      return t('contract.pending_volunteer_signature');
+      return i18n.t('documents-contract:contract.pending_volunteer_signature');
     case DocumentContractStatus.PENDING_APPROVAL_NGO:
     case DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE:
-      return t('contract.pending_ngo_signature');
-    case DocumentContractStatus.APPROVED:
-      return t('contract.approved');
+      return i18n.t('documents-contract:contract.pending_ngo_signature');
+    case DocumentContractStatus.ACTIVE:
+      return i18n.t('documents-contract:contract.active');
+    case DocumentContractStatus.EXPIRED:
+      return i18n.t('documents-contract:contract.expired');
+    case DocumentContractStatus.NOT_STARTED:
+      return i18n.t('documents-contract:contract.not_started');
     default:
       if (isAfter(new Date(), new Date(contract.documentEndDate))) {
-        return t('contract.expired');
+        return i18n.t('documents-contract:contract.expired');
       }
       return '';
   }
