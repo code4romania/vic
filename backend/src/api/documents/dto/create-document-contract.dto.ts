@@ -1,11 +1,18 @@
 import { UTCDate } from '@date-fns/utc';
 import { Transform } from 'class-transformer';
-import { IsDate, IsString, MaxLength, MinDate } from 'class-validator';
+import {
+  IsDate,
+  IsString,
+  MaxLength,
+  MinDate,
+  MinLength,
+} from 'class-validator';
 import { IsDateGreaterThanOrEqualTo } from 'src/common/validators/is-date-gte.validator';
 
 export class CreateDocumentContractDto {
   @IsString()
-  @MaxLength(9)
+  @MinLength(1)
+  @MaxLength(10)
   documentNumber: string;
 
   @IsDate()

@@ -64,7 +64,7 @@ export const AutoFillContractCard = ({ onSubmit }: AutoFillContractCardProps) =>
       <div className="bg-white rounded shadow flex flex-col p-4 gap-4">
         <p className="font-robotoBold">{t('title')}</p>
         <p className="text-cool-gray-700">{t('description')}</p>
-        <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex flex-col md:flex-row items-start gap-6 sm:h-24">
           <Controller
             name="startingNumber"
             control={control}
