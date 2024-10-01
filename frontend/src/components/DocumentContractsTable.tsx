@@ -31,12 +31,13 @@ import {
   useGetContractsStatisticsQuery,
   useGetDocumentsContractsQuery,
 } from '../services/document-contracts/document-contracts.service';
-import {
-  DocumentContractStatusForFilter,
-} from '../common/enums/document-contract-status.enum';
+import { DocumentContractStatusForFilter } from '../common/enums/document-contract-status.enum';
 import { IPaginationQueryParams } from '../common/constants/pagination';
 
-import { IDocumentContract, IDocumentContractsStatistics } from '../common/interfaces/document-contract.interface';
+import {
+  IDocumentContract,
+  IDocumentContractsStatistics,
+} from '../common/interfaces/document-contract.interface';
 import DocumentsContractSidePanel from './DocumentsContractSidePanel';
 import VolunteerSelect from '../containers/VolunteerSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
@@ -146,7 +147,9 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
     orderDirection: query?.orderDirection as OrderDirection,
     volunteerId: query?.volunteerId as string,
     status: query?.status as DocumentContractStatusForFilter,
-    ...(query.startDate ? { documentStartDate: formatDate(query?.startDate as Date, 'yyyy-MM-dd') } : {}),
+    ...(query.startDate
+      ? { documentStartDate: formatDate(query?.startDate as Date, 'yyyy-MM-dd') }
+      : {}),
     ...(query.endDate ? { documentEndDate: formatDate(query?.endDate as Date, 'yyyy-MM-dd') } : {}),
   });
 
@@ -183,6 +186,7 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
       deleteContract(contractId, {
         onSuccess: () => {
           useSuccessToast(t('contract.submit.delete'));
+          setSelectedDeleteContract(null);
           refetch();
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -334,7 +338,11 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
 
   return (
     <>
-      <ContractsStatistics statistics={statistics as IDocumentContractsStatistics} isLoading={isLoadingStatistics} setQuery={setQuery} />
+      <ContractsStatistics
+        statistics={statistics as IDocumentContractsStatistics}
+        isLoading={isLoadingStatistics}
+        setQuery={setQuery}
+      />
       <DataTableFilters
         onSearch={onSearch}
         searchValue={query?.search}

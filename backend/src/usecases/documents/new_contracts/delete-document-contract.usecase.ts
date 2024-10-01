@@ -47,7 +47,11 @@ export class DeleteDocumentContractUsecase implements IUseCaseService<string> {
         );
       }
 
-      await this.documentContractFacade.delete(id);
+      const deleted = await this.documentContractFacade.delete(id);
+
+      if (!deleted) {
+        throw new Error('Could not delete contract from DB');
+      }
 
       // 10. Track event
       this.actionsArchiveFacade.trackEvent(
@@ -55,7 +59,7 @@ export class DeleteDocumentContractUsecase implements IUseCaseService<string> {
         {
           organizationId: contract.organizationId,
           volunteerId: contract.volunteerId,
-          volunteerName: contract.volunteer.user.name,
+          volunteerName: contract.volunteerData.name,
           documentContractId: contract.id,
           documentContractNumber: contract.documentNumber,
         },
