@@ -155,9 +155,13 @@ export class ActionsArchiveRepository
         'archive.eventName in (:...eventNames) AND archive.createdOn >= :startDate AND archive.createdOn <= :endDate',
         {
           eventNames: [
-            TrackedEventName.CREATE_CONTRACT,
-            TrackedEventName.APPROVE_CONTRACT,
-            TrackedEventName.REJECT_CONTRACT,
+            TrackedEventName.CREATE_DOCUMENT_CONTRACT,
+            TrackedEventName.VALIDATE_DOCUMENT_CONTRACT,
+            TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_NGO,
+            TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER,
+            TrackedEventName.REJECT_DOCUMENT_CONTRACT_BY_NGO,
+            TrackedEventName.REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER,
+            TrackedEventName.DELETE_DOCUMENT_CONTRACT,
           ],
           startDate: startOfMonth(new Date()),
           endDate: endOfMonth(new Date()),

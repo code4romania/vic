@@ -31,9 +31,13 @@ export class GetManyNewsUsecase
         break;
       case NewsType.CONTRACTS:
         events = [
-          TrackedEventName.CREATE_CONTRACT,
-          TrackedEventName.APPROVE_CONTRACT,
-          TrackedEventName.REJECT_CONTRACT,
+          TrackedEventName.CREATE_DOCUMENT_CONTRACT,
+          TrackedEventName.VALIDATE_DOCUMENT_CONTRACT,
+          TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_NGO,
+          TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER,
+          TrackedEventName.REJECT_DOCUMENT_CONTRACT_BY_NGO,
+          TrackedEventName.REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER,
+          TrackedEventName.DELETE_DOCUMENT_CONTRACT,
         ];
         break;
       case NewsType.LOGGED_HOURS:
