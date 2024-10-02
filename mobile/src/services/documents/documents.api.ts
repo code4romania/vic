@@ -36,7 +36,7 @@ export const getContract = (
   contractId: string,
   organizationId: string,
 ): Promise<IDocumentContract> => {
-  const params = { contractId, organizationId };
+  const params = { organizationId };
   return API.get(`/mobile/documents/contracts/${contractId}`, {
     params,
   }).then((res) => res.data);

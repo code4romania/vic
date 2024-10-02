@@ -937,7 +937,17 @@
         "approved_start": "Your contract with",
         "approved_end": "has been approved and signed.",
         "rejected_start": "Your contract with",
-        "rejected_end": "was rejected. See reason."
+        "rejected_end": "was rejected by the organization. See reason.",
+        "rejected_volunteer_start": "You rejected the contract with",
+        "rejected_volunteer_end": ".",
+        "validated_start": "Your contract with",
+        "validated_end": "has been validated by the organization.",
+        "signed_start": "Your contract with",
+        "signed_end": "has been signed by the organization representative.",
+        "signed_volunteer_start": "You signed the contract with",
+        "signed_volunteer_end": ".",
+        "deleted_start": "Your contract with",
+        "deleted_end": "has been deleted."
       },
       "organization": {
         "request": "Application to join the organization",

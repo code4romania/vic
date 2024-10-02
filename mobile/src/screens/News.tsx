@@ -155,6 +155,76 @@ const News = ({ navigation, route }: any) => {
       );
     }
 
+    if (item.eventName === TrackedEventName.CREATE_DOCUMENT_CONTRACT) {
+      return (
+        <NewsContent
+          startText={''}
+          organizationName={item.organizationName}
+          endText={`${t('item.documents.new')}`}
+        />
+      );
+    }
+
+    if (item.eventName === TrackedEventName.VALIDATE_DOCUMENT_CONTRACT) {
+      return (
+        <NewsContent
+          startText={`${t('item.documents.validated_start')}`}
+          organizationName={item.organizationName}
+          endText={`${t('item.documents.validated_end')}`}
+        />
+      );
+    }
+
+    if (item.eventName === TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_NGO) {
+      return (
+        <NewsContent
+          startText={`${t('item.documents.signed_start')}`}
+          organizationName={item.organizationName}
+          endText={`${t('item.documents.signed_end')}`}
+        />
+      );
+    }
+
+    if (item.eventName === TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER) {
+      return (
+        <NewsContent
+          startText={`${t('item.documents.signed_start')}`}
+          organizationName={item.organizationName}
+          endText={`${t('item.documents.signed_end')}`}
+        />
+      );
+    }
+
+    if (item.eventName === TrackedEventName.REJECT_DOCUMENT_CONTRACT_BY_NGO) {
+      return (
+        <NewsContent
+          startText={`${t('item.documents.rejected_start')}`}
+          organizationName={item.organizationName}
+          endText={`${t('item.documents.rejected_end')}`}
+        />
+      );
+    }
+
+    if (item.eventName === TrackedEventName.REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER) {
+      return (
+        <NewsContent
+          startText={`${t('item.documents.rejected_volunteer_start')}`}
+          organizationName={item.organizationName}
+          endText={`${t('item.documents.rejected_volunteer_end')}`}
+        />
+      );
+    }
+
+    if (item.eventName === TrackedEventName.DELETE_DOCUMENT_CONTRACT) {
+      return (
+        <NewsContent
+          startText={`${t('item.documents.deleted_start')}`}
+          organizationName={item.organizationName}
+          endText={`${t('item.documents.deleted_end')}`}
+        />
+      );
+    }
+
     return <></>;
   };
 
@@ -198,13 +268,11 @@ const News = ({ navigation, route }: any) => {
       }
 
       if (type === NewsType.CONTRACTS) {
-        if (item.eventName === TrackedEventName.REJECT_CONTRACT) {
-          navigation.navigate('rejected-contract', {
-            contractId: item.contractId,
-          });
-        } else {
-          navigation.navigate('documents', { volunteerId: activeOrganization?.volunteerId });
+        // don't navigate to contract if it was deleted
+        if (item.eventName === TrackedEventName.DELETE_DOCUMENT_CONTRACT) {
+          return;
         }
+        navigation.navigate('documents/contract', { contractId: item.contractId });
       }
 
       if (type === NewsType.ORGANIZATIONS) {
@@ -220,13 +288,11 @@ const News = ({ navigation, route }: any) => {
       }
 
       if (type === NewsType.CONTRACTS) {
-        if (item.eventName === TrackedEventName.REJECT_CONTRACT) {
-          navigation.navigate('rejected-contract', {
-            contractId: item.contractId,
-          });
-        } else {
-          navigation.navigate('documents', {});
+        // don't navigate to contract if it was deleted
+        if (item.eventName === TrackedEventName.DELETE_DOCUMENT_CONTRACT) {
+          return;
         }
+        navigation.navigate('documents/contract', { contractId: item.contractId });
       }
 
       if (type === NewsType.ORGANIZATIONS) {
