@@ -19,7 +19,7 @@ import {
   useSignContractMutation,
 } from '../services/documents/documents.service';
 
-import { format, isAfter } from 'date-fns';
+import { format } from 'date-fns';
 import {
   isOver16FromCNP,
   mapContractRejectionReasonToText,
@@ -60,11 +60,7 @@ export const DocumentsContract = ({ navigation, route }: any) => {
     [userProfile],
   );
   const isContractActive = useMemo(
-    () =>
-      contract &&
-      contract.status === DocumentContractStatus.APPROVED &&
-      isAfter(new Date(), new Date(contract.documentStartDate)) &&
-      isAfter(new Date(contract.documentEndDate), new Date()),
+    () => contract && contract.status === DocumentContractStatus.ACTIVE,
     [contract],
   );
 
@@ -283,7 +279,7 @@ export const DocumentsContract = ({ navigation, route }: any) => {
   };
 
   if (contract) {
-    const { color, backgroundColor, info } = mapContractToColor(contract, t);
+    const { color, backgroundColor, info } = mapContractToColor(contract);
     return (
       <>
         <PageLayout
@@ -308,7 +304,7 @@ export const DocumentsContract = ({ navigation, route }: any) => {
                 uri={userProfile?.activeOrganization?.logo || ''}
               />
             )}
-            <Text category="p1">{renderContractInfoText(contract, t)}</Text>
+            <Text category="p1">{renderContractInfoText(contract)}</Text>
 
             <ContractItem
               id={contract.documentId}

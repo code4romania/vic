@@ -65,6 +65,9 @@
           "required": "Telefonul este obligatoriu",
           "pattern": "Numărul de telefon trebuie să conțină doar numere"
         },
+        "birthday": {
+          "required": "Data nașterii este obligatorie"
+        },
         "password": {
           "label": "Parola",
           "placeholder": "Introdu parola",
@@ -809,13 +812,15 @@
     "expired": "încheiat",
     "rejected": "Respins",
     "action_expired": "Acțiune expirată",
-    "current": "curent",
+    "current": "Curent",
+    "not_started": "Neînceput",
     "contract": {
       "title": "Contract {{value}}",
       "pending_volunteer_signature": "Contractul a fost generat și necesită aprobarea ta. Descarcă modelul de mai jos și citește documentul cu atenție. Verifică dacă datele de identitate sunt corecte, în caz contrar, modifică datele și semnează documentul.",
       "pending_ngo_signature": "Contractul semnat a fost trimis către organizație pentru a obține și semnătura lor. Vei fi notificat imediat ce contractul este complet semnat. După aceea, vei putea descărca documentul cu ambele semnături, din aplicație.",
       "signed_contract_footer": "Odată semnat, contractul nu poate fi modificat. Dacă întâmpini probleme, ia legătura cu organizația, pentru a anula contractul și a genera un contract nou.",
-      "approved": "Contractul a fost aprobat de ambele părți și nu mai poate fi modificat. Descarcă și vizualizează contractul.",
+      "active": "Contractul a fost aprobat de ambele părți și nu mai poate fi modificat. Descarcă și vizualizează contractul.",
+      "not_started": "Contractul a fost semnat de ambele părți și urmează să înceapă.",
       "expired": "Perioada contractului a luat sfârșit. Descarcă și vizualizează contractul.",
       "rejected": {
         "ngo": "Contractul a fost respins de către organizație.",

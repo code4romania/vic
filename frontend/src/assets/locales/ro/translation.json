@@ -1281,6 +1281,8 @@
     "contract_card_form": {
       "document_number": {
         "required": "Numărul contractului este obligatoriu",
+        "max_length": "Numărul contractului trebuie să aibă maxim 10 caractere",
+        "min_length": "Numărul contractului trebuie să aibă minim 1 caracter",
         "unique": "Numărul contractului trebuie să fie unic",
         "invalid": "Numărul contractului trebuie să fie un număr întreg pozitiv"
       },

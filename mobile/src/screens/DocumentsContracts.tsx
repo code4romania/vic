@@ -11,7 +11,6 @@ import { useGetContractsQuery } from '../services/documents/documents.service';
 import ContractItem from '../components/ContractItem';
 import { DocumentIcon } from './Documents';
 import { IDocumentContract } from '../services/documents/documents.api';
-import { isAfter } from 'date-fns';
 import Disclaimer from '../components/Disclaimer';
 import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list';
 import { DocumentContractStatus } from '../common/enums/document-contract-status.enum';
@@ -44,48 +43,27 @@ export const DocumentsContracts = ({ navigation }: any) => {
     [allContracts, isLoadingAllContracts],
   );
 
-  const approvedContracts = useMemo(
-    () =>
-      allContracts &&
-      !isLoadingAllContracts &&
-      allContracts.items.filter(
-        (contract: IDocumentContract) => contract.status === DocumentContractStatus.APPROVED,
-      ),
-    [allContracts, isLoadingAllContracts],
-  );
-
-  const rejectedContracts = useMemo(
-    () =>
+  // all contracts that are not pending
+  const contractsHistory = useMemo(() => {
+    return (
       allContracts &&
       !isLoadingAllContracts &&
       allContracts.items.filter(
         (contract: IDocumentContract) =>
-          contract.status === DocumentContractStatus.REJECTED_NGO ||
-          contract.status === DocumentContractStatus.REJECTED_VOLUNTEER,
-      ),
-    [allContracts, isLoadingAllContracts],
-  );
+          contract.status !== DocumentContractStatus.PENDING_APPROVAL_NGO &&
+          contract.status !== DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE &&
+          contract.status !== DocumentContractStatus.PENDING_VOLUNTEER_SIGNATURE,
+      )
+    );
+  }, [allContracts, isLoadingAllContracts]);
 
-  const actionExpiredContracts = useMemo(
-    () =>
-      allContracts &&
-      !isLoadingAllContracts &&
-      allContracts.items.filter(
-        (contract: IDocumentContract) => contract.status === DocumentContractStatus.ACTION_EXPIRED,
-      ),
-    [allContracts, isLoadingAllContracts],
-  );
-
-  // an activeContract exists if the current date is between the document start and end date
   const activeContractExists = useMemo(
     () =>
-      approvedContracts &&
-      approvedContracts.find(
-        (contract: IDocumentContract) =>
-          isAfter(new Date(), new Date(contract.documentStartDate)) &&
-          isAfter(new Date(contract.documentEndDate), new Date()),
+      contractsHistory &&
+      contractsHistory.find(
+        (contract: IDocumentContract) => contract.status === DocumentContractStatus.ACTIVE,
       ),
-    [approvedContracts],
+    [contractsHistory],
   );
 
   if (isLoadingAllContracts) {
@@ -158,14 +136,14 @@ export const DocumentsContracts = ({ navigation }: any) => {
         )}
 
         {/* contracts history: approved & rejected */}
-        {(approvedContracts.length > 0 || rejectedContracts.length > 0) && (
+        {contractsHistory.length > 0 && (
           <View style={styles.contractsContainer}>
             <Text
               category="p2"
               allowFontScaling={ALLOW_FONT_SCALLING}
             >{`${t('approved_history')}`}</Text>
-            {approvedContracts.map((item: IDocumentContract, index: number) => {
-              const { color, backgroundColor, info } = mapContractToColor(item, t);
+            {contractsHistory.map((item: IDocumentContract, index: number) => {
+              const { color, backgroundColor, info } = mapContractToColor(item);
               return (
                 <View key={item.documentId}>
                   <ContractItem
@@ -175,53 +153,10 @@ export const DocumentsContracts = ({ navigation }: any) => {
                     rightIconName={'chevron-right'}
                     startDate={item.documentStartDate}
                     endDate={item.documentEndDate}
-                    // todo: download contract
                     onPress={() => onContractPress(item)}
                     info={info}
                   />
-                  {rejectedContracts.length > 0 ? (
-                    <Divider />
-                  ) : (
-                    index < approvedContracts.length - 1 && <Divider />
-                  )}
-                </View>
-              );
-            })}
-            {rejectedContracts.map((item: IDocumentContract, index: number) => {
-              return (
-                <View key={item.documentId}>
-                  <ContractItem
-                    id={item.documentId}
-                    title={item.documentNumber}
-                    leftIcon={<DocumentIcon color={'red-500'} backgroundColor={'red-50'} />}
-                    rightIconName={'chevron-right'}
-                    startDate={item.documentStartDate}
-                    endDate={item.documentEndDate}
-                    // todo: download contract
-                    onPress={() => onContractPress(item)}
-                    info={`${t('rejected')}`}
-                  />
-                  {index < rejectedContracts.length - 1 && <Divider />}
-                </View>
-              );
-            })}
-            {actionExpiredContracts.map((item: IDocumentContract, index: number) => {
-              return (
-                <View key={item.documentId}>
-                  <ContractItem
-                    id={item.documentId}
-                    title={item.documentNumber}
-                    leftIcon={
-                      <DocumentIcon color={'color-danger-800'} backgroundColor={'red-50'} />
-                    }
-                    rightIconName={'chevron-right'}
-                    startDate={item.documentStartDate}
-                    endDate={item.documentEndDate}
-                    // todo: download contract
-                    onPress={() => onContractPress(item)}
-                    info={`${t('action_expired')}`}
-                  />
-                  {index < actionExpiredContracts.length - 1 && <Divider />}
+                  {index < contractsHistory.length - 1 && <Divider />}
                 </View>
               );
             })}

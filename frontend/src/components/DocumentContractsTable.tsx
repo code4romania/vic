@@ -312,6 +312,8 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
 
   // todo: do we need shouldRefetch?
   const onCloseSidePanel = () => {
+    queryClient.invalidateQueries({ queryKey: ['documents-contracts'] });
+    queryClient.invalidateQueries({ queryKey: ['contracts-statistics'] });
     setIsViewContractSidePanelOpen(false);
     setSelectedContract(undefined);
   };

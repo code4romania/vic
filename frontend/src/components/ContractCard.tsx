@@ -26,7 +26,7 @@ const dotsString = '.........................';
 interface ContractCardProps {
   volunteer: IVolunteer;
   template: IDocumentTemplate;
-  initialNumber?: number;
+  initialNumber?: string;
   initialDate?: Date | undefined;
   initialPeriod?: [Date | undefined, Date | undefined];
   isOpen?: boolean;
@@ -38,8 +38,9 @@ interface ContractCardProps {
 
 export const fillCardValidationSchema = yup.object({
   documentNumber: yup
-    .number()
-    .positive(`${i18n.t('doc_templates:contract_card_form.document_number.invalid')}`)
+    .string()
+    .min(1, `${i18n.t('doc_templates:contract_card_form.document_number.min_length')}`)
+    .max(10, `${i18n.t('doc_templates:contract_card_form.document_number.max_length')}`)
     .typeError(`${i18n.t('doc_templates:contract_card_form.document_number.invalid')}`)
     .required(`${i18n.t('doc_templates:contract_card_form.document_number:required')}`),
   documentDate: yup
@@ -99,7 +100,7 @@ export const ContractCard = ({
   // update values for the contract data, as well as for the contract preview, whenever the initial values coming from the parent change (the fast contract completion feature)
   useEffect(() => {
     // update contract number
-    setValue('documentNumber', initialNumber as number);
+    setValue('documentNumber', initialNumber as string);
 
     // update contract date
     setValue('documentDate', initialDate as Date);
@@ -161,7 +162,7 @@ export const ContractCard = ({
     setError('documentPeriod', {});
 
     // Reintilize with initial values Document Number
-    setValue('documentNumber', initialNumber as number);
+    setValue('documentNumber', initialNumber as string);
 
     // Reintilize with initial values Document Date
     setValue('documentDate', initialDate as Date);
@@ -230,12 +231,12 @@ export const ContractCard = ({
                       </ul>
                       {(currentError.response?.data as { statusCode?: number })?.statusCode ===
                         500 && (
-                        <Button
-                          label={t('organization.organization_data_form.retry_button')}
-                          className="self-baseline"
-                          onClick={handleRetrySendContract}
-                        />
-                      )}
+                          <Button
+                            label={t('organization.organization_data_form.retry_button')}
+                            className="self-baseline"
+                            onClick={handleRetrySendContract}
+                          />
+                        )}
                     </div>
                   </>
                 )}
@@ -254,7 +255,6 @@ export const ContractCard = ({
                     onChange={onChange}
                     placeholder={t('placeholders.contract_no')}
                     errorMessage={errors.documentNumber?.message}
-                    type="number"
                   />
                 )}
               />
@@ -288,8 +288,8 @@ export const ContractCard = ({
                     errorMessage={
                       errors?.documentPeriod
                         ? errors.documentPeriod[0]?.message ||
-                          errors.documentPeriod[1]?.message ||
-                          errors.documentPeriod?.message
+                        errors.documentPeriod[1]?.message ||
+                        errors.documentPeriod?.message
                         : ''
                     }
                   />

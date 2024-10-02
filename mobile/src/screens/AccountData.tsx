@@ -65,6 +65,7 @@ const schema = yup.object({
     .matches(REGEX.NUMBERS_ONLY, `${i18n.t('register:create_account.form.phone.pattern')}`)
     .length(9, `${i18n.t('register:create_account.form.phone.length', { number: 10 })}`)
     .required(`${i18n.t('register:create_account.form.phone.required')}`),
+  birthday: yup.date().required(`${i18n.t('register:create_account.form.birthday.required')}`),
 });
 
 const AccountData = ({ navigation }: any) => {
@@ -276,6 +277,7 @@ const AccountData = ({ navigation }: any) => {
           placeholder={t('general:select')}
           min={new Date(1900, 1, 1)}
           disabled={isUpdatingProfile}
+          required={true}
         />
         <FormSelect
           control={control as any}
