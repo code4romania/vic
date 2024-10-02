@@ -9,7 +9,7 @@ export interface InputProps extends ComponentPropsWithoutRef<'input'> {
 const Input = ({ label, helper, wrapperClassname, ...props }: InputProps) => {
   return (
     <div className={`flex gap-1 flex-col ${wrapperClassname}`}>
-      {label && <label htmlFor={`${label}__input`}>{label}</label>}
+      {label && <label htmlFor={`${label}__input`} className="text-ellipsis text-nowrap">{label}</label>}
       <input id={`${label}__input`} {...props} />
       {helper}
     </div>
