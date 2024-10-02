@@ -27,7 +27,10 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
       ...updateUserModel,
     });
 
-    await this.regularUserRepository.save(userToUpdate);
+    await this.regularUserRepository.save({
+      ...userToUpdate,
+      name: `${userToUpdate.firstName} ${userToUpdate.lastName}`,
+    });
 
     return this.find({ id });
   }
