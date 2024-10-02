@@ -97,6 +97,12 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
       .andWhere('EXTRACT(YEAR FROM contract.documentDate) = :year', {
         year: documentDate.getFullYear(),
       })
+      .andWhere('contract.status NOT IN (:...statuses)', {
+        statuses: [
+          DocumentContractStatus.REJECTED_NGO,
+          DocumentContractStatus.REJECTED_VOLUNTEER,
+        ],
+      })
       .getMany();
 
     return existingContracts.length > 0;
