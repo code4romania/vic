@@ -91,7 +91,10 @@ export class DocumentContractListViewRepository extends RepositoryWithPagination
     if (search) {
       query.andWhere(
         this.buildBracketSearchQuery(
-          ['documentContractListView.documentNumber', 'user.name'],
+          [
+            'documentContractListView.documentNumber',
+            'documentContractListView.volunteerName',
+          ],
           search,
         ),
       );

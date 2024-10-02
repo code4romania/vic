@@ -64,57 +64,63 @@ export const AutoFillContractCard = ({ onSubmit }: AutoFillContractCardProps) =>
       <div className="bg-white rounded shadow flex flex-col p-4 gap-4">
         <p className="font-robotoBold">{t('title')}</p>
         <p className="text-cool-gray-700">{t('description')}</p>
-        <div className="flex flex-col md:flex-row items-start gap-6 sm:h-24">
-          <Controller
-            name="startingNumber"
-            control={control}
-            render={({ field: { value, onChange } }) => {
-              return (
-                <FormInput
-                  label={t('form.starting_number')}
-                  value={value ?? ''}
-                  onChange={onChange}
-                  placeholder="Introdu numarul"
-                  wrapperClassname="flex-1 justify-between"
-                  type="number"
-                  errorMessage={errors.startingNumber ? t('required', { ns: 'general' }) : ''}
-                />
-              );
-            }}
-          />
-          <Controller
-            name="documentContractDate"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <div className="flex-1 min-w-0">
-                <FormDatePicker
-                  label={t('form.contract_date')}
-                  placeholder="ZZ.LL.AAAA"
+        <div className="flex flex-col md:flex-row items-start gap-6 md:h-24">
+          <div className="w-full">
+            <Controller
+              name="startingNumber"
+              control={control}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <FormInput
+                    label={t('form.starting_number')}
+                    value={value ?? ''}
+                    onChange={onChange}
+                    placeholder="Introdu numarul"
+                    wrapperClassname="flex-1 justify-between"
+                    type="number"
+                    errorMessage={errors.startingNumber ? t('required', { ns: 'general' }) : ''}
+                  />
+                );
+              }}
+            />
+
+          </div>
+          <div className="w-full">
+            <Controller
+              name="documentContractDate"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <div className="flex-1 min-w-0">
+                  <FormDatePicker
+                    label={t('form.contract_date')}
+                    placeholder="ZZ.LL.AAAA"
+                    value={value}
+                    onChange={onChange}
+                    minDate={new Date()}
+                    maxDate={new Date(new Date().setMonth(new Date().getMonth() + 6))}
+                    errorMessage={errors.documentContractDate ? t('required', { ns: 'general' }) : ''}
+                    wrapperClassName="h-full justify-between"
+                  />
+                </div>
+              )}
+            />
+          </div>
+          <div className="w-full">
+            <Controller
+              name="documentContractPeriod"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <DateRangePicker
+                  label={t('form.contract_period')}
+                  className="flex-1 justify-between"
                   value={value}
                   onChange={onChange}
-                  minDate={new Date()}
-                  maxDate={new Date(new Date().setMonth(new Date().getMonth() + 6))}
-                  errorMessage={errors.documentContractDate ? t('required', { ns: 'general' }) : ''}
-                  wrapperClassName="h-full justify-between"
+                  minDate={documentContractDate}
+                  errorMessage={errors.documentContractPeriod ? t('required', { ns: 'general' }) : ''}
                 />
-              </div>
-            )}
-          />
-
-          <Controller
-            name="documentContractPeriod"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <DateRangePicker
-                label={t('form.contract_period')}
-                className="flex-1 justify-between"
-                value={value}
-                onChange={onChange}
-                minDate={documentContractDate}
-                errorMessage={errors.documentContractPeriod ? t('required', { ns: 'general' }) : ''}
-              />
-            )}
-          />
+              )}
+            />
+          </div>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button
@@ -128,7 +134,7 @@ export const AutoFillContractCard = ({ onSubmit }: AutoFillContractCardProps) =>
             onClick={handleSubmit(onSubmit)}
           />
         </div>
-      </div>
+      </div >
     </>
   );
 };
