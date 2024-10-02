@@ -34,6 +34,9 @@ export const DocumentContractItemTransformer = {
   fromEntity: (
     entity: DocumentContractItemView,
   ): IDocumentContractItemModel => {
+    if (!entity) {
+      return null;
+    }
     return {
       ...entity,
     };

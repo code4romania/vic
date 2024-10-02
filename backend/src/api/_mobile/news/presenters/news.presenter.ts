@@ -10,7 +10,7 @@ export class NewsPresenter {
     this.organizationLogo = item.author.organization.logo;
     this.organizationName = item.author.organization.name;
     this.activityLogId = (item.eventData as never)['activityLogId'];
-    this.contractId = (item.eventData as never)['contractId'];
+    this.contractId = (item.eventData as never)['documentContractId'];
     this.accessRequestId = (item.eventData as never)['accessRequestId'];
     this.organizationId = item.author.organization.id;
     this.eventName = item.eventName;
