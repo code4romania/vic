@@ -938,7 +938,17 @@
         "approved_start": "Contractul tău cu",
         "approved_end": "a fost aprobat și semnat.",
         "rejected_start": "Contractul tău cu",
-        "rejected_end": "a fost respins. Vezi motiv."
+        "rejected_end": "a fost respins de către organizație. Vezi motivul.",
+        "rejected_volunteer_start": "Ai respins contractul cu",
+        "rejected_volunteer_end": ".",
+        "validated_start": "Contractul tău cu",
+        "validated_end": "a fost validat de către organizație. Urmează să fie semnat de către reprezentantul acesteia.",
+        "signed_start": "Contractul tău cu",
+        "signed_end": "a fost semnat de către reprezentantul organizației.",
+        "signed_volunteer_start": "Ai semnat contractul cu",
+        "signed_volunteer_end": ".",
+        "deleted_start": "Contractul tău cu",
+        "deleted_end": "a fost șters."
       },
       "organization": {
         "request": "Cererea de înscriere în organizația",

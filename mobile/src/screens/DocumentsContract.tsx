@@ -4,7 +4,7 @@ import PageLayout from '../layouts/PageLayout';
 import { useTranslation } from 'react-i18next';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { Text, useTheme } from '@ui-kitten/components';
-import { IDocumentContract, RejectionReason } from '../services/documents/documents.api';
+import { RejectionReason } from '../services/documents/documents.api';
 import { DocumentContractStatus } from '../common/enums/document-contract-status.enum';
 import Disclaimer from '../components/Disclaimer';
 import { useUserProfile } from '../store/profile/profile.selector';
@@ -48,11 +48,12 @@ export const DocumentsContract = ({ navigation, route }: any) => {
   const [isSignatureEmpty, setIsSignatureEmpty] = useState(false);
 
   // queries
-  const { contract: routeContract } = route.params as { contract: IDocumentContract };
+  const { contractId } = route.params;
   const { data: contract, isLoading: isLoadingContract } = useGetContractQuery(
-    routeContract.documentId,
+    contractId,
     userProfile?.activeOrganization?.id,
   );
+
   const { mutate: signContract, isLoading: isLoadingSignContract } = useSignContractMutation();
 
   const isUserOver16 = useMemo(
@@ -249,7 +250,7 @@ export const DocumentsContract = ({ navigation, route }: any) => {
     return (
       <PageLayout
         onBackButtonPress={navigation.goBack}
-        title={t('contract.title', { value: routeContract.documentNumber })}
+        title={t('contract.title', { value: '' })}
         headerStyle={{ paddingTop }}
       >
         <View style={styles.container}>
