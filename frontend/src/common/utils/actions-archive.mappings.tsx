@@ -405,6 +405,12 @@ export const mapEventDataToActionDescription = (
                 content={eventData.volunteerName}
               />
             ),
+            inlineContractLink: (
+              <LinkText
+                url={`/documents/contracts?search=${eventData.documentContractNumber}`}
+                content={eventData.documentContractNumber}
+              />
+            ),
           }}
         />
       );

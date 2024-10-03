@@ -77,6 +77,7 @@ export class RejectContractUsecase implements IUseCaseService<IContractModel> {
         contractNumber: contract.contractNumber,
       },
       admin,
+      organization.id,
     );
 
     // 4. generate contract

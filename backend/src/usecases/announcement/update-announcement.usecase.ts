@@ -133,6 +133,7 @@ export class UpdateAnnouncementUseCase
           announcementTitle: updatedAnnouncement.name,
         },
         admin,
+        admin.organizationId,
       );
     }
 

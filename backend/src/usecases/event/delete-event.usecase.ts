@@ -68,6 +68,7 @@ export class DeleteEventUseCase implements IUseCaseService<string> {
         eventName: toBeDeleted.name,
       },
       admin,
+      admin.organizationId,
     );
 
     return deleted;

@@ -88,6 +88,7 @@ export class RejectDocumentContractByNgoUsecase
         documentContractNumber: updatedContract.documentNumber,
       },
       admin,
+      admin.organizationId,
     );
 
     // get volunteer data to build the mail/notification subject/body

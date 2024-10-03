@@ -38,6 +38,7 @@ export class CreateDocumentTemplateUsecase
           documentTemplateName: newTemplate.name,
         },
         admin,
+        admin.organizationId,
       );
 
       return newTemplate;

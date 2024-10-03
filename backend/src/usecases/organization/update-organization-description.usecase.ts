@@ -42,6 +42,7 @@ export class UpdateOrganizationDescriptionUseCaseService
         organizationName: toUpdate.name,
       },
       admin,
+      admin.organizationId,
       ObjectDiff.diff(toUpdate, updated),
     );
 

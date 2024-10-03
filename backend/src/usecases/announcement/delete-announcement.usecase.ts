@@ -37,6 +37,7 @@ export class DeleteAnnouncementUseCase implements IUseCaseService<string> {
         announcementTitle: announcement.name,
       },
       admin,
+      admin.organizationId,
     );
 
     return deleted;

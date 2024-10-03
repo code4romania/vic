@@ -40,6 +40,7 @@ export class DeleteOrganizationStructureUseCase
         organizationStructureType: toRemove.type,
       },
       admin,
+      admin.organizationId,
     );
 
     return removed;

@@ -24,6 +24,7 @@ export class ActionsArchiveFacade {
     eventName: EventName,
     eventData: TrackedEventData[EventName],
     author: IAdminUserModel | IRegularUserModel,
+    organizationId: string,
     changes?: unknown,
   ): void {
     const event: CreateActionArchiveOptions = {
@@ -31,6 +32,7 @@ export class ActionsArchiveFacade {
       eventData,
       author,
       changes,
+      organizationId,
     };
     this.eventEmitter.emit(TRACK_ACTION_EVENT, event);
   }

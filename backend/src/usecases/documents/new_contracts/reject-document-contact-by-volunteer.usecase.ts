@@ -5,7 +5,8 @@ import { DocumentContractStatus } from 'src/modules/documents/enums/contract-sta
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
-
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 // ┌─────────────────────────────────────────────────────────────────────────┐
 // │ Business Rules for RejectDocumentContractByVolunteerUsecase:            │
 // │                                                                         │
@@ -62,6 +63,7 @@ export class RejectDocumentContractByVolunteerUsecase
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly volunteerFacade: VolunteerFacade,
     private readonly exceptionService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute({
@@ -124,11 +126,12 @@ export class RejectDocumentContractByVolunteerUsecase
      * │ 1. Update the contract status to REJECTED_VOLUNTEER.                │
      * └─────────────────────────────────────────────────────────────────────┘
      */
-    await this.documentContractFacade.rejectDocumentContractByVolunteer(
-      contractId,
-      rejectionReason,
-      userId,
-    );
+    const contract =
+      await this.documentContractFacade.rejectDocumentContractByVolunteer(
+        contractId,
+        rejectionReason,
+        userId,
+      );
 
     /* ┌─────────────────────────────────────────────────────────────────────┐
      * │ Audit trail logging:                                                │
@@ -137,8 +140,19 @@ export class RejectDocumentContractByVolunteerUsecase
      * │    with the rejection reason.                                       │
      * └─────────────────────────────────────────────────────────────────────┘
      */
-    // TODO: Implement audit trail logging
-    console.log('rejectionReason', rejectionReason);
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER,
+      {
+        documentContractId: contract.id,
+        documentContractNumber: contract.documentNumber,
+        volunteerId: volunteer.id,
+        volunteerName: volunteer.user.name,
+        rejectionReason,
+        organizationId,
+      },
+      volunteer.user,
+      organizationId,
+    );
 
     // TODO: Implement notification to relevant parties
 

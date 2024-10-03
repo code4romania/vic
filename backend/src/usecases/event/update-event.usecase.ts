@@ -116,6 +116,7 @@ export class UpdateEventUseCase implements IUseCaseService<IEventModel> {
           eventName: updated.name,
         },
         admin,
+        admin.organizationId,
         ObjectDiff.diff(event, updated),
       );
 

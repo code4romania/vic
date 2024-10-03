@@ -181,6 +181,7 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
         documentTemplateName: template.name,
       },
       admin,
+      admin.organizationId,
     );
 
     return contract.id;

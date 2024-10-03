@@ -53,6 +53,7 @@ export class DeleteDocumentTemplateUsecase implements IUseCaseService<string> {
           documentTemplateName: deleted.name,
         },
         admin,
+        admin.organizationId,
       );
 
       return deleted.name;
