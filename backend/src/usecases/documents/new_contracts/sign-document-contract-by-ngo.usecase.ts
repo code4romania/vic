@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -14,9 +14,11 @@ import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { IDocumentContractModel } from 'src/modules/documents/models/document-contract.model';
 import SignContractEvent from 'src/modules/notifications/events/documents/sign-contract.event';
+import * as Sentry from '@sentry/nestjs';
 
 @Injectable()
 export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
+  private readonly logger = new Logger(SignDocumentContractByNgoUsecase.name);
   constructor(
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly documentSignatureFacade: DocumentSignatureFacade,
@@ -56,11 +58,13 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
         signatureId,
       );
     } catch (error) {
-      // TODO: Update error
-      this.exceptionService.internalServerErrorException({
-        message: `Error while sigining the contract by NGO ${error?.message}`,
-        code_error: 'SIGN_DOCUMENT_CONTRACT_BY_NGO_003',
-      });
+      Sentry.captureException(error);
+      this.logger.error(
+        `Error while sigining the contract by NGO ${error?.message}`,
+      );
+      this.exceptionService.internalServerErrorException(
+        ContractExceptionMessages.CONTRACT_018,
+      );
     }
 
     await this.documentPDFGenerator.generateContractPDF(documentContractId);

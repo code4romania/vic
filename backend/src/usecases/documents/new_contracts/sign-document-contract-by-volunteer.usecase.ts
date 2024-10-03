@@ -7,6 +7,7 @@ import { DocumentContractFacade } from 'src/modules/documents/services/document-
 import { DocumentSignatureFacade } from 'src/modules/documents/services/document-signature.facade';
 import { DocumentPDFGenerator } from 'src/modules/documents/services/document-pdf-generator';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
+import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 
 // ┌─────────────────────────────────────────────────────────────────────────┐
 // │ Business Rules for SignDocumentContractByVolunteerUsecase:              │
@@ -100,10 +101,9 @@ export class SignDocumentContractByVolunteerUsecase
       organizationId,
     });
     if (!volunteer) {
-      this.exceptionService.notFoundException({
-        message: 'Volunteer is not part of the organization',
-        code_error: 'VOLUNTEER_NOT_PART_OF_ORGANIZATION',
-      });
+      this.exceptionService.notFoundException(
+        VolunteerExceptionMessages.VOLUNTEER_001,
+      );
     }
 
     // ┌─────────────────────────────────────────────────────────────────────┐

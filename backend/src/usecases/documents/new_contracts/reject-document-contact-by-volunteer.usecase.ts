@@ -4,6 +4,7 @@ import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.serv
 import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
+import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
 // ┌─────────────────────────────────────────────────────────────────────────┐
@@ -88,10 +89,9 @@ export class RejectDocumentContractByVolunteerUsecase
       organizationId,
     });
     if (!volunteer) {
-      this.exceptionService.notFoundException({
-        message: 'Volunteer is not part of the organization',
-        code_error: 'VOLUNTEER_NOT_PART_OF_ORGANIZATION',
-      });
+      this.exceptionService.badRequestException(
+        VolunteerExceptionMessages.VOLUNTEER_005,
+      );
     }
 
     /* ┌─────────────────────────────────────────────────────────────────────┐
@@ -137,7 +137,6 @@ export class RejectDocumentContractByVolunteerUsecase
      * │    with the rejection reason.                                       │
      * └─────────────────────────────────────────────────────────────────────┘
      */
-    // TODO: Implement audit trail logging
     console.log('rejectionReason', rejectionReason);
 
     // TODO: Implement notification to relevant parties
