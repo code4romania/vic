@@ -3,6 +3,7 @@ import { ErrorClass } from '../base-error.class';
 
 export enum CONTRACT_ERRORS {
   ORG_001 = 'ORG_001',
+  TEMPLATE_001 = 'TEMPLATE_001',
   VOLUNTEER_001 = 'VOLUNTEER_001',
   TEMPLATE_002 = 'TEMPLATE_002',
   CONTRACT_004 = 'CONTRACT_004',
@@ -14,6 +15,10 @@ export enum CONTRACT_ERRORS {
 
   CONTRACT_014 = 'CONTRACT_014',
   CONTRACT_015 = 'CONTRACT_015',
+  CONTRACT_016 = 'CONTRACT_016',
+  CONTRACT_017 = 'CONTRACT_017',
+  CONTRACT_018 = 'CONTRACT_018',
+  CONTRACT_019 = 'CONTRACT_019',
 }
 
 export class ContractError extends ErrorClass<CONTRACT_ERRORS> {
@@ -22,6 +27,9 @@ export class ContractError extends ErrorClass<CONTRACT_ERRORS> {
   private constructor() {
     super({
       [CONTRACT_ERRORS.ORG_001]: i18n.t('organization:errors.ORG_001'),
+      [CONTRACT_ERRORS.TEMPLATE_001]: i18n.t(
+        'documents:template.edit.form.submit.errors.TEMPLATE_001',
+      ),
       [CONTRACT_ERRORS.VOLUNTEER_001]: i18n.t('volunteers:errors.VOLUNTEER_001'),
       [CONTRACT_ERRORS.TEMPLATE_002]: i18n.t(
         'documents:template.edit.form.submit.errors.TEMPLATE_002',
@@ -35,6 +43,10 @@ export class ContractError extends ErrorClass<CONTRACT_ERRORS> {
 
       [CONTRACT_ERRORS.CONTRACT_014]: i18n.t('documents:contract.submit.errors.CONTRACT_014'),
       [CONTRACT_ERRORS.CONTRACT_015]: i18n.t('documents:contract.submit.errors.CONTRACT_015'),
+      [CONTRACT_ERRORS.CONTRACT_016]: i18n.t('documents:contract.submit.errors.CONTRACT_016'),
+      [CONTRACT_ERRORS.CONTRACT_017]: i18n.t('documents:contract.submit.errors.CONTRACT_017'),
+      [CONTRACT_ERRORS.CONTRACT_018]: i18n.t('documents:contract.submit.errors.CONTRACT_018'),
+      [CONTRACT_ERRORS.CONTRACT_019]: i18n.t('documents:contract.submit.errors.CONTRACT_019'),
     });
   }
 

@@ -29,6 +29,7 @@ import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOrganizationUseCaseService } from 'src/usecases/organization/get-organization.usecase';
 import * as z from 'zod';
+import { DocumentTemplateExceptionMessages } from 'src/modules/documents/exceptions/documente-template.exceptions';
 
 /*
 Possible errors thrown:
@@ -313,11 +314,9 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
     });
 
     if (!template) {
-      this.exceptionsService.notFoundException({
-        // TODO update this exception
-        message: 'Template not found',
-        code_error: 'TEMPLATE_NOT_FOUND',
-      });
+      this.exceptionsService.notFoundException(
+        DocumentTemplateExceptionMessages.TEMPLATE_001,
+      );
     }
 
     return template;

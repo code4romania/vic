@@ -8,6 +8,13 @@ export const mapErrorCodeToTranslationKey = (errorCode: string): string => {
     CONTRACT_008: 'doc_templates:errors.legal_guardian_required',
     CONTRACT_011: 'doc_templates:errors.invalid_legal_guardian_data',
     CONTRACT_009: 'doc_templates:errors.db_error',
+    VOLUNTEER_001: 'volunteers:errors.VOLUNTEER_001',
+    CONTRACT_014: 'documents:contract.submit.errors.CONTRACT_014',
+    CONTRACT_015: 'documents:contract.submit.errors.CONTRACT_015',
+    CONTRACT_016: 'documents:contract.submit.errors.CONTRACT_016',
+    CONTRACT_017: 'documents:contract.submit.errors.CONTRACT_017',
+    CONTRACT_018: 'documents:contract.submit.errors.CONTRACT_018',
+    CONTRACT_019: 'documents:contract.submit.errors.CONTRACT_019',
   };
 
   return errorMap[errorCode] || 'doc_templates:errors.unknown_error';

@@ -4,6 +4,7 @@ import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.serv
 import { DocumentContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { DocumentContractFacade } from 'src/modules/documents/services/document-contract.facade';
+import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
@@ -90,10 +91,9 @@ export class RejectDocumentContractByVolunteerUsecase
       organizationId,
     });
     if (!volunteer) {
-      this.exceptionService.notFoundException({
-        message: 'Volunteer is not part of the organization',
-        code_error: 'VOLUNTEER_NOT_PART_OF_ORGANIZATION',
-      });
+      this.exceptionService.badRequestException(
+        VolunteerExceptionMessages.VOLUNTEER_005,
+      );
     }
 
     /* ┌─────────────────────────────────────────────────────────────────────┐

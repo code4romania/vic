@@ -16,6 +16,10 @@ export enum ContractExceptionCodes {
   CONTRACT_013 = 'CONTRACT_013',
   CONTRACT_014 = 'CONTRACT_014',
   CONTRACT_015 = 'CONTRACT_015',
+  CONTRACT_016 = 'CONTRACT_016',
+  CONTRACT_017 = 'CONTRACT_017',
+  CONTRACT_018 = 'CONTRACT_018',
+  CONTRACT_019 = 'CONTRACT_019',
 }
 
 type ContractExceptionCodeType = keyof typeof ContractExceptionCodes;
@@ -85,5 +89,21 @@ export const ContractExceptionMessages: Record<
   [ContractExceptionCodes.CONTRACT_015]: {
     code_error: ContractExceptionCodes.CONTRACT_015,
     message: 'Error while deleting the contract',
+  },
+  [ContractExceptionCodes.CONTRACT_016]: {
+    code_error: ContractExceptionCodes.CONTRACT_016,
+    message: 'Only Pending Contracts can be rejected',
+  },
+  [ContractExceptionCodes.CONTRACT_017]: {
+    code_error: ContractExceptionCodes.CONTRACT_017,
+    message: 'Error while rejecting the contract by NGO',
+  },
+  [ContractExceptionCodes.CONTRACT_018]: {
+    code_error: ContractExceptionCodes.CONTRACT_018,
+    message: 'Error while signing the contract by NGO',
+  },
+  [ContractExceptionCodes.CONTRACT_019]: {
+    code_error: ContractExceptionCodes.CONTRACT_019,
+    message: 'Error while approving the contract by NGO',
   },
 };
