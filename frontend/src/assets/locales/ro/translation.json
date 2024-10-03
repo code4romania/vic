@@ -809,7 +809,7 @@
     },
     "DELETE_DOCUMENT_CONTRACT": {
       "label": "Șterge Contract",
-      "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost șters"
+      "description": "Contractul cu numărul {{documentContractNumber}} pentru <inlineLink>{{volunteerName}}</inlineLink> a fost șters"
     },
     "CREATE_DOCUMENT_TEMPLATE": {
       "label": "Creează Template",
