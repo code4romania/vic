@@ -1016,6 +1016,12 @@
         "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din VIC. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
       }
     },
+    "document_contract": {
+      "delete_modal": {
+        "title": "Ești sigur că dorești ștergerea acestui contract?",
+        "description": "Odată șters, contractul nu mai poate fi recuperat."
+      }
+    },
     "popover": {
       "edit": "Editează titlu template",
       "download": "Descarcă document",
@@ -1288,7 +1294,7 @@
         "max_length": "Numărul contractului trebuie să aibă maxim 10 caractere",
         "min_length": "Numărul contractului trebuie să aibă minim 1 caracter",
         "unique": "Numărul contractului trebuie să fie unic",
-        "invalid": "Numărul contractului trebuie să fie un număr întreg pozitiv"
+        "invalid": "Numărul contractului trebuie să fie un număr întreg pozitiv sau zero"
       },
       "document_period": {
         "required": "Perioada contractului este obligatorie",

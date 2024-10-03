@@ -16,9 +16,11 @@ interface AutoFillContractCardProps {
 const autoFillValidationSchema = yup.object({
   startingNumber: yup
     .number()
-    .positive(`${i18n.t('doc_templates:contract_card_form.document_number.invalid')}`)
+    .moreThan(-1, `${i18n.t('doc_templates:contract_card_form.document_number.invalid')}`)
+    .test('min-length', `${i18n.t('doc_templates:contract_card_form.document_number:min_length')}`, (value) => !value || value.toString().length >= 1)
+    .test('max-length', `${i18n.t('doc_templates:contract_card_form.document_number:max_length')}`, (value) => !value || value.toString().length <= 10)
     .typeError(`${i18n.t('doc_templates:contract_card_form.document_number.invalid')}`)
-    .required(`${i18n.t('doc_templates:contract_card_form.document_number:required')}`),
+    .required(`${i18n.t('doc_templates:contract_card_form.document_number.required')}`),
   documentContractDate: yup
     .date()
     .required(`${i18n.t('doc_templates:contract_card_form.document_date.required')}`),
@@ -73,12 +75,12 @@ export const AutoFillContractCard = ({ onSubmit }: AutoFillContractCardProps) =>
                 return (
                   <FormInput
                     label={t('form.starting_number')}
-                    value={value ?? ''}
+                    value={value}
                     onChange={onChange}
                     placeholder="Introdu numarul"
                     wrapperClassname="flex-1 justify-between"
                     type="number"
-                    errorMessage={errors.startingNumber ? t('required', { ns: 'general' }) : ''}
+                    errorMessage={errors.startingNumber?.message}
                   />
                 );
               }}

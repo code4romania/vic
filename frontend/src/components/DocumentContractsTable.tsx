@@ -407,8 +407,8 @@ const DocumentContractsTable = ({ query, setQuery }: DocumentContractsTableBasic
       />
       {selectedDeleteContract && (
         <ConfirmationModal
-          title={t('contract.delete_modal.title')}
-          description={t('contract.delete_modal.description')}
+          title={t('document_contract.delete_modal.title')}
+          description={t('document_contract.delete_modal.description')}
           confirmBtnLabel={t('general:delete')}
           onClose={setSelectedDeleteContract.bind(null, null)}
           onConfirm={confirmDelete}

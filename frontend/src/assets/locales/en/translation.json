@@ -1006,6 +1006,12 @@
         "description": "View the list of all your volunteer contracts in VIC. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years)."
       }
     },
+    "document_contract": {
+      "delete_modal": {
+        "title": "Are you sure you want to delete this contract?",
+        "description": "Once deleted, the contract cannot be recovered."
+      }
+    },
     "popover": {
       "edit": "Edit template title",
       "download": "Download document",

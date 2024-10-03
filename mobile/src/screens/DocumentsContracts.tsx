@@ -87,7 +87,7 @@ export const DocumentsContracts = ({ navigation }: any) => {
   }
 
   const onContractPress = (contract: IDocumentContract) => {
-    navigation.navigate('documents/contract', { contract });
+    navigation.navigate('documents/contract', { contractId: contract.documentId });
   };
 
   return (
