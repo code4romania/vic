@@ -118,6 +118,7 @@ export class CreateActivityLogByAdmin
         volunteerName: volunteer.user?.name,
       },
       admin,
+      admin.organizationId,
     );
 
     return created;

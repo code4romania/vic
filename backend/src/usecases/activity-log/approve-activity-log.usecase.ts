@@ -68,6 +68,7 @@ export class ApproveActivityLogUsecase
         newStatus: approved.status,
       },
       admin,
+      admin.organizationId,
     );
 
     return approved;

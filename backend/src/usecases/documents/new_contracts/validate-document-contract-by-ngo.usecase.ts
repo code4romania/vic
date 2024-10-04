@@ -64,6 +64,7 @@ export class ValidateDocumentContractByNgoUsecase {
         volunteerName: contract.volunteerData.name,
       },
       admin,
+      admin.organizationId,
     );
   }
 }

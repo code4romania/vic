@@ -407,6 +407,12 @@ export const mapEventDataToActionDescription = (
               />
 
             ),
+            inlineContractLink: (
+              <LinkText
+                url={`/documents/contracts?search=${eventData.documentContractNumber}`}
+                content={eventData.documentContractNumber}
+              />
+            ),
           }}
         />
       );

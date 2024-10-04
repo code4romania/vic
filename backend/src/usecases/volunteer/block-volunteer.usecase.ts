@@ -43,6 +43,7 @@ export class BlockVolunteerUsecase implements IUseCaseService<IVolunteerModel> {
         newStatus: blocked.status,
       },
       admin,
+      admin.organizationId,
     );
 
     return blocked;

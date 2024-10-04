@@ -132,6 +132,7 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
           status: created.status,
         },
         admin,
+        organization.id,
       );
 
       return created;

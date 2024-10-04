@@ -74,6 +74,7 @@ export class ArchiveVolunteerUsecase
         newStatus: archived.status,
       },
       admin,
+      volunteer.organization.id,
     );
 
     return archived;

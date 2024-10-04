@@ -43,6 +43,7 @@ export class DeleteAccessRequestUseCase implements IUseCaseService<string> {
         userId: accessRequest.requestedBy?.id,
       },
       admin,
+      admin.organizationId,
     );
 
     return deleted;

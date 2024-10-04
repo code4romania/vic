@@ -79,6 +79,7 @@ export class SignAndConfirmContractUsecase
           contractNumber: contract.contractNumber,
         },
         admin,
+        organization.id,
       );
 
       // 4. generate contract

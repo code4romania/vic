@@ -48,6 +48,7 @@ export class ActivateActivityTypeUseCase
         newStatus: updated.status,
       },
       admin,
+      admin.organizationId,
     );
 
     return updated;

@@ -118,6 +118,7 @@ export class CreateContractUsecase implements IUseCaseService<IContractModel> {
         contractNumber: contract.contractNumber,
       },
       admin,
+      organization.id,
     );
 
     return contract;

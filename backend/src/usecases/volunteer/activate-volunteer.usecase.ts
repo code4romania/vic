@@ -54,6 +54,7 @@ export class ActivateVolunteerUsecase
         newStatus: activated.status,
       },
       admin,
+      volunteer.organization.id,
     );
 
     return activated;

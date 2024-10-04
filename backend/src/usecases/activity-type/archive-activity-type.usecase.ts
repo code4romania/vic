@@ -48,6 +48,7 @@ export class ArchiveActivityTypeUseCase
         newStatus: updated.status,
       },
       admin,
+      admin.organizationId,
     );
 
     return updated;

@@ -44,6 +44,7 @@ export class ArchiveEventUseCase implements IUseCaseService<IEventModel> {
         newStatus: updated.status,
       },
       admin,
+      admin.organizationId,
     );
 
     return updated;

@@ -99,6 +99,7 @@ export class DeleteDocumentContractUsecase implements IUseCaseService<string> {
           documentContractNumber: contract.documentNumber,
         },
         admin,
+        admin.organizationId,
       );
     } catch (error) {
       if (error?.status === 400) {

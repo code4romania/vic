@@ -75,6 +75,7 @@ export class PublishEventUseCase implements IUseCaseService<IEventModel> {
         newStatus: updated.status,
       },
       admin,
+      organization.id,
     );
 
     return updated;

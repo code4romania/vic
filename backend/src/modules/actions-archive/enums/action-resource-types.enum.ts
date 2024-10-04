@@ -61,6 +61,7 @@ export enum TrackedEventName {
   REJECT_DOCUMENT_CONTRACT_BY_NGO = 'REJECT_DOCUMENT_CONTRACT_BY_NGO',
   REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER = 'REJECT_DOCUMENT_CONTRACT_BY_VOLUNTEER',
   DELETE_DOCUMENT_CONTRACT = 'DELETE_DOCUMENT_CONTRACT',
+  EXPIRE_DOCUMENT_CONTRACT = 'EXPIRE_DOCUMENT_CONTRACT',
 
   // New Templates
   CREATE_DOCUMENT_TEMPLATE = 'CREATE_DOCUMENT_TEMPLATE',
@@ -238,4 +239,5 @@ export interface TrackedEventData {
   [TrackedEventName.CREATE_DOCUMENT_TEMPLATE]: BaseDocumentTemplateActionsArchiveEvent;
   [TrackedEventName.UPDATE_DOCUMENT_TEMPLATE]: BaseDocumentTemplateActionsArchiveEvent;
   [TrackedEventName.DELETE_DOCUMENT_TEMPLATE]: BaseDocumentTemplateActionsArchiveEvent;
+  [TrackedEventName.EXPIRE_DOCUMENT_CONTRACT]: BaseDocumentContractActionsArchiveEvent;
 }

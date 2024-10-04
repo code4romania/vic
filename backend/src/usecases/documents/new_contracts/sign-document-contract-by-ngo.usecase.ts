@@ -80,6 +80,7 @@ export class SignDocumentContractByNgoUsecase implements IUseCaseService<void> {
         volunteerName: contract.volunteerData.name,
       },
       admin,
+      admin.organizationId,
     );
 
     // get volunteer data to build the mail/notification subject/body

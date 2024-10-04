@@ -87,6 +87,7 @@ export class UpdateActivityTypeUseCase
         activityTypeName: updated.name,
       },
       admin,
+      admin.organizationId,
       ObjectDiff.diff(toUpdate, updated),
     );
 
