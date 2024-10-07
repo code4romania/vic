@@ -193,7 +193,7 @@ export const DocumentsContract = ({ navigation, route }: any) => {
   };
 
   const handleRejectContract = () => {
-    navigation.navigate('documents/contract/reject', { contract });
+    navigation.navigate('documents/contract/reject', { contractId: contract?.documentId });
   };
 
   const renderRejectedContractContent = () => {

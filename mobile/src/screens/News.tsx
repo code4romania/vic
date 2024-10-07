@@ -188,9 +188,8 @@ const News = ({ navigation, route }: any) => {
     if (item.eventName === TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER) {
       return (
         <NewsContent
-          startText={`${t('item.documents.signed_start')}`}
+          startText={`${t('item.documents.signed_volunteer_start')}`}
           organizationName={item.organizationName}
-          endText={`${t('item.documents.signed_end')}`}
         />
       );
     }
@@ -210,7 +209,6 @@ const News = ({ navigation, route }: any) => {
         <NewsContent
           startText={`${t('item.documents.rejected_volunteer_start')}`}
           organizationName={item.organizationName}
-          endText={`${t('item.documents.rejected_volunteer_end')}`}
         />
       );
     }

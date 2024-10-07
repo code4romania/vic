@@ -858,6 +858,7 @@
     },
     "reject": {
       "title": "Reject contract",
+      "not_found": "Contract not found.",
       "reason": "Reason for rejection",
       "reject_reason": {
         "incorrect_identity_data": "The identity data is incorrect",
@@ -865,6 +866,7 @@
         "wrong_contract_period": "The contract period is wrong",
         "other": "Other reason"
       },
+      "required": "The reason for rejection is required",
       "description": "The coordinator will receive your response. You may receive a new contract later. Mention the reason why the contract does not meet your expectations, or contact the coordinator of your organization.",
       "send": "Send",
       "sheet": {
@@ -939,7 +941,6 @@
         "rejected_start": "Your contract with",
         "rejected_end": "was rejected by the organization. See reason.",
         "rejected_volunteer_start": "You rejected the contract with",
-        "rejected_volunteer_end": ".",
         "validated_start": "Your contract with",
         "validated_end": "has been validated by the organization.",
         "signed_start": "Your contract with",

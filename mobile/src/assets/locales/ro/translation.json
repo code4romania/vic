@@ -859,6 +859,7 @@
     },
     "reject": {
       "title": "Respinge contract",
+      "not_found": "Contractul nu a fost găsit.",
       "reason": "Motivul respingerii",
       "reject_reason": {
         "incorrect_identity_data": "Datele de identitate nu sunt corecte",
@@ -866,6 +867,7 @@
         "wrong_contract_period": "Perioada contractului este greșită",
         "other": "Alt motiv"
       },
+      "required": "Motivul respingerii este obligatoriu",
       "description": "Coordonatorul va primi răspunsul tău. Poți primi un contract nou ulterior. Menționează motivul pentru care contractul nu este conform cu așteptările tale, sau ia legătura cu coordonatorul organizației tale.",
       "send": "Trimite",
       "sheet": {
@@ -940,7 +942,6 @@
         "rejected_start": "Contractul tău cu",
         "rejected_end": "a fost respins de către organizație. Vezi motivul.",
         "rejected_volunteer_start": "Ai respins contractul cu",
-        "rejected_volunteer_end": ".",
         "validated_start": "Contractul tău cu",
         "validated_end": "a fost validat de către organizație. Urmează să fie semnat de către reprezentantul acesteia.",
         "signed_start": "Contractul tău cu",
