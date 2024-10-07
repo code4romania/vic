@@ -29,6 +29,7 @@ export class ActionsArchiveEventListener {
           eventData: event.eventData,
           author: event.author,
           changes: event.changes,
+          organizationId: event.organizationId,
         }),
       );
     } catch (err) {

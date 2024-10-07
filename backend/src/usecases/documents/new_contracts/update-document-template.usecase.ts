@@ -60,6 +60,7 @@ export class UpdateDocumentTemplateUsecase implements IUseCaseService<string> {
           documentTemplateName: template.name,
         },
         admin,
+        admin.organizationId,
         ObjectDiff.diff(template, updated),
       );
     } catch (error) {

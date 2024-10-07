@@ -55,7 +55,9 @@ export class DeleteDocumentContractUsecase implements IUseCaseService<string> {
       const deleted = await this.documentContractFacade.delete(id);
 
       if (!deleted) {
-        throw new Error('Could not delete contract from DB');
+        this.exceptionService.badRequestException(
+          ContractExceptionMessages.CONTRACT_015,
+        );
       }
 
       // Delete file from S3
@@ -97,6 +99,7 @@ export class DeleteDocumentContractUsecase implements IUseCaseService<string> {
           documentContractNumber: contract.documentNumber,
         },
         admin,
+        admin.organizationId,
       );
     } catch (error) {
       if (error?.status === 400) {

@@ -71,6 +71,7 @@ export class RejectActivityLogUsecase
         newStatus: rejected.status,
       },
       admin,
+      admin.organizationId,
     );
 
     return rejected;

@@ -1,9 +1,6 @@
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
-import {
-  AdminUserTransformer,
-  IAdminUserModel,
-} from 'src/modules/user/models/admin-user.model';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { ActionsArchiveEntity } from '../entities/actions-archive.entity';
 import {
   TrackedEventData,
@@ -11,13 +8,21 @@ import {
 } from '../enums/action-resource-types.enum';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { NewsType } from '../enums/news-type.enum';
+import {
+  BaseUserTransformer,
+  ICommonUserModel,
+} from 'src/modules/user/models/base-user.model';
+import {
+  IOrganizationModel,
+  OrganizationTransformer,
+} from 'src/modules/organization/models/organization.model';
 
 export const TRACK_ACTION_EVENT = 'track.action';
 
 export interface IActionArchiveModel extends IBaseModel {
   id: string;
-  author: IAdminUserModel;
-
+  author: ICommonUserModel;
+  organization: IOrganizationModel;
   eventName: TrackedEventName;
   eventData: TrackedEventData[TrackedEventName];
 
@@ -29,6 +34,7 @@ export type CreateActionArchiveOptions = Pick<
   'eventName' | 'eventData' | 'changes'
 > & {
   author: IRegularUserModel | IAdminUserModel;
+  organizationId: string;
 };
 
 export type FindManyActionsArchiveOptions = {
@@ -51,7 +57,9 @@ export class ActionsArchiveTransformer {
     return {
       id: entity.id,
 
-      author: AdminUserTransformer.fromEntity(entity.author),
+      author: BaseUserTransformer.fromEntity(entity.author),
+
+      organization: OrganizationTransformer.fromEntity(entity.organization),
 
       eventName: entity.eventName,
       eventData: entity.eventData,
@@ -70,6 +78,8 @@ export class ActionsArchiveTransformer {
     entity.eventData = action.eventData;
 
     entity.authorId = action.author.id;
+
+    entity.organizationId = action.organizationId;
 
     entity.changes = action.changes;
 

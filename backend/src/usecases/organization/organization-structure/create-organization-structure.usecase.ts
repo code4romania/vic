@@ -46,6 +46,7 @@ export class CreateOrganizationStructureUseCase
         organizationStructureType: created.type,
       },
       admin,
+      admin.organizationId,
     );
 
     return created;

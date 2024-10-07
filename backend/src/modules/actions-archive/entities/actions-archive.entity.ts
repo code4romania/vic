@@ -1,5 +1,5 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
-import { AdminUserEntity } from 'src/modules/user/entities/user.entity';
+import { UserEntity } from 'src/modules/user/entities/user.entity';
 import {
   Column,
   Entity,
@@ -11,6 +11,7 @@ import {
   TrackedEventData,
   TrackedEventName,
 } from '../enums/action-resource-types.enum';
+import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
 
 @Entity({ name: 'actions_archive' })
 export class ActionsArchiveEntity extends BaseEntity {
@@ -29,7 +30,14 @@ export class ActionsArchiveEntity extends BaseEntity {
   @Column({ type: 'text', name: 'author_id' })
   authorId: string;
 
-  @ManyToOne(() => AdminUserEntity)
+  @ManyToOne(() => UserEntity)
   @JoinColumn({ name: 'author_id' })
-  author: AdminUserEntity;
+  author: UserEntity;
+
+  @Column({ type: 'text', name: 'organization_id' })
+  organizationId: string;
+
+  @ManyToOne(() => OrganizationEntity)
+  @JoinColumn({ name: 'organization_id' })
+  organization: OrganizationEntity;
 }

@@ -85,6 +85,7 @@ export class ApproveAccessRequestUseCase
         volunteerId: volunteer.id,
       },
       admin,
+      accessRequest.organizationId,
     );
 
     return updated;

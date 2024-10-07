@@ -7,6 +7,9 @@ import { DocumentContractFacade } from 'src/modules/documents/services/document-
 import { DocumentSignatureFacade } from 'src/modules/documents/services/document-signature.facade';
 import { DocumentPDFGenerator } from 'src/modules/documents/services/document-pdf-generator';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
+import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 
 // ┌─────────────────────────────────────────────────────────────────────────┐
 // │ Business Rules for SignDocumentContractByVolunteerUsecase:              │
@@ -73,6 +76,7 @@ export class SignDocumentContractByVolunteerUsecase
     private readonly volunteerFacade: VolunteerFacade,
     private readonly exceptionService: ExceptionsService,
     private readonly documentPDFGenerator: DocumentPDFGenerator,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute({
@@ -100,10 +104,9 @@ export class SignDocumentContractByVolunteerUsecase
       organizationId,
     });
     if (!volunteer) {
-      this.exceptionService.notFoundException({
-        message: 'Volunteer is not part of the organization',
-        code_error: 'VOLUNTEER_NOT_PART_OF_ORGANIZATION',
-      });
+      this.exceptionService.notFoundException(
+        VolunteerExceptionMessages.VOLUNTEER_001,
+      );
     }
 
     // ┌─────────────────────────────────────────────────────────────────────┐
@@ -159,7 +162,7 @@ export class SignDocumentContractByVolunteerUsecase
     // │ This ensures that the contract is updated with the signatures and   │
     // │ ready for further processing.                                       │
     // └─────────────────────────────────────────────────────────────────────┘
-    await this.documentContractFacade.update(contractId, {
+    const contract = await this.documentContractFacade.update(contractId, {
       status: DocumentContractStatus.PENDING_APPROVAL_NGO,
       volunteerSignatureId: volunteerSignatureId,
       legalGuardianSignatureId: legalGuardianSignatureId,
@@ -168,6 +171,18 @@ export class SignDocumentContractByVolunteerUsecase
     await this.documentPDFGenerator.generateContractPDF(contractId);
 
     // Track event in Actions Archive
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.SIGN_DOCUMENT_CONTRACT_BY_VOLUNTEER,
+      {
+        documentContractId: contract.id,
+        documentContractNumber: contract.documentNumber,
+        volunteerId: volunteer.id,
+        volunteerName: volunteer.user.name,
+        organizationId,
+      },
+      volunteer.user,
+      organizationId,
+    );
 
     return;
   }

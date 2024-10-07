@@ -7,12 +7,12 @@ import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-s
 export class NewsPresenter {
   constructor(item: IActionArchiveModel) {
     this.id = item.id;
-    this.organizationLogo = item.author.organization.logo;
-    this.organizationName = item.author.organization.name;
+    this.organizationLogo = item.organization.logo;
+    this.organizationName = item.organization.name;
     this.activityLogId = (item.eventData as never)['activityLogId'];
     this.contractId = (item.eventData as never)['documentContractId'];
     this.accessRequestId = (item.eventData as never)['accessRequestId'];
-    this.organizationId = item.author.organization.id;
+    this.organizationId = item.organization.id;
     this.eventName = item.eventName;
     this.newStatus = (item.eventData as never)['newStatus'];
   }

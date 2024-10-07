@@ -41,8 +41,7 @@ export class ActionsArchiveRepository
         'author',
       )
       .select()
-      // TODO: Instead of filtering organization by author, add organizationId in the entity because otherwise we can't track volunteer actions
-      .where('author.organizationId = :organizationId', {
+      .where('actionsArchive.organizationId = :organizationId', {
         organizationId: findOptions.organizationId,
       })
       .orderBy(
@@ -101,8 +100,8 @@ export class ActionsArchiveRepository
         'author',
       )
       .leftJoinAndMapOne(
-        'author.organization',
-        'author.organization',
+        'actionsArchive.organization',
+        'actionsArchive.organization',
         'organization',
       )
       .select()

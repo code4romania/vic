@@ -111,6 +111,7 @@ export class CreateAnnouncementUseCase
         status: newAnouncement.status,
       },
       admin,
+      admin.organizationId,
     );
 
     return newAnouncement;

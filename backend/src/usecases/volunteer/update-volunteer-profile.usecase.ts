@@ -51,6 +51,7 @@ export class UpdateVolunteerProfileUsecase
         volunteerName: volunteer.user?.name,
       },
       user,
+      volunteer.organization.id,
       ObjectDiff.diff(volunteer.volunteerProfile, updated.volunteerProfile),
     );
 

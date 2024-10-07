@@ -884,7 +884,7 @@
           "submit": {
             "success": "The template has been created!",
             "errors": {
-              "TEMPLATE_001": "Document upload error"
+              "TEMPLATE_002": "Document upload error"
             }
           }
         }
@@ -896,8 +896,8 @@
           "submit": {
             "success": "The template has been updated!",
             "errors": {
-              "TEMPLATE_001": "Document upload error",
-              "TEMPLATE_002": "Template not found"
+              "TEMPLATE_002": "Document upload error",
+              "TEMPLATE_001": "Template not found"
             }
           }
         }

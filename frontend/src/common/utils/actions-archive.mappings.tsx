@@ -398,11 +398,19 @@ export const mapEventDataToActionDescription = (
       return (
         <Trans
           i18nKey={`actions_archive:${eventName}.description`}
+          values={{ documentContractNumber: eventData.documentContractNumber }}
           components={{
             inlineLink: (
               <LinkText
                 url={`/volunteers/${eventData.volunteerId}`}
                 content={eventData.volunteerName}
+              />
+
+            ),
+            inlineContractLink: (
+              <LinkText
+                url={`/documents/contracts?search=${eventData.documentContractNumber}`}
+                content={eventData.documentContractNumber}
               />
             ),
           }}

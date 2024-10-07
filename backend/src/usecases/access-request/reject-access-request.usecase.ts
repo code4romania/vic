@@ -79,6 +79,7 @@ export class RejectAccessRequestUseCase
         userId: accessRequest.requestedBy?.id,
       },
       admin,
+      admin.organizationId,
     );
 
     return updated;

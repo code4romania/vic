@@ -74,6 +74,7 @@ export class CreateActivityTypeUseCase
         activityTypeName: created.name,
       },
       admin,
+      admin.organizationId,
     );
 
     return created;

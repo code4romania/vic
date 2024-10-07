@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -12,11 +12,13 @@ import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import RejectContractEvent from 'src/modules/notifications/events/documents/reject-contract.event';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
+import * as Sentry from '@sentry/node';
 
 @Injectable()
 export class RejectDocumentContractByNgoUsecase
   implements IUseCaseService<void>
 {
+  private readonly logger = new Logger(RejectDocumentContractByNgoUsecase.name);
   constructor(
     private readonly documentContractFacade: DocumentContractFacade,
     private readonly exceptionService: ExceptionsService,
@@ -53,11 +55,9 @@ export class RejectDocumentContractByNgoUsecase
         DocumentContractStatus.PENDING_NGO_REPRESENTATIVE_SIGNATURE,
       ].includes(contract.status) !== true
     ) {
-      // TODO: update error
-      this.exceptionService.notFoundException({
-        message: 'Only Pending Contracts can be rejected',
-        code_error: 'REJECT_DOCUMENT_CONTRACT_BY_NGO_02',
-      });
+      this.exceptionService.badRequestException(
+        ContractExceptionMessages.CONTRACT_016,
+      );
     }
 
     let updatedContract: IDocumentContractModel;
@@ -69,11 +69,13 @@ export class RejectDocumentContractByNgoUsecase
           admin.id,
         );
     } catch (error) {
-      // TODO: Update error
-      this.exceptionService.internalServerErrorException({
-        message: `Error while rejecting the contract by NGO ${error?.message}`,
-        code_error: 'REJECT_DOCUMENT_CONTRACT_BY_NGO_002',
-      });
+      Sentry.captureException(error);
+      this.logger.error(
+        `Error while rejecting the contract by NGO ${error?.message}`,
+      );
+      this.exceptionService.internalServerErrorException(
+        ContractExceptionMessages.CONTRACT_017,
+      );
     }
 
     // Track Rejection Event including Rejection Reason
@@ -88,6 +90,7 @@ export class RejectDocumentContractByNgoUsecase
         documentContractNumber: updatedContract.documentNumber,
       },
       admin,
+      admin.organizationId,
     );
 
     // get volunteer data to build the mail/notification subject/body
