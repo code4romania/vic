@@ -846,7 +846,8 @@
       "description": "Since you are under 16, the signature of the legal guardian ({{value}}) is required. Draw the signature in the box below",
       "terms": "By applying your signature, you confirm that you have read and agree to the terms of the contract, and the identity data entered is correct.",
       "action_button_label": "Send for signing",
-      "back": "Back"
+      "back": "Back",
+      "name": "Legal guardian name"
     },
     "success": {
       "title": "Contract successfully signed!",

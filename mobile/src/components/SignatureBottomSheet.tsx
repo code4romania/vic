@@ -18,6 +18,7 @@ import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { SignatureViewRef } from 'react-native-signature-canvas';
 import LottieView from 'lottie-react-native';
 import { renderBackdrop } from './BottomSheet';
+import { useUserProfile } from '../store/profile/profile.selector';
 interface SignatureBottomSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetMethods>;
   snapPoints: number[];
@@ -138,6 +139,8 @@ export const SignatureBottomSheet = ({
   const insets = useSafeAreaInsets();
   const theme = useTheme();
 
+  const { userProfile } = useUserProfile();
+
   const renderUncloseableBackdrop = (props: any) => {
     return <BottomSheetBackdrop opacity={0.3} pressBehavior="none" {...props} />;
   };
@@ -187,7 +190,7 @@ export const SignatureBottomSheet = ({
             // SECOND SCREEN - LEGAL GUARDIAN SIGNATURE
             <SignatureScreen
               title={`${t('legal_guardian_signature.title')}`}
-              description={`${t('legal_guardian_signature.description', { value: 'Ion Popescu' })}`}
+              description={`${t('legal_guardian_signature.description', { value: userProfile?.userPersonalData.legalGuardian?.name || t('legal_guardian_signature.name') })}`}
               signatureRef={legalGuardianSignatureRef}
               onOK={onSubmitBothSignatures}
               onEnd={handleEndStroke}

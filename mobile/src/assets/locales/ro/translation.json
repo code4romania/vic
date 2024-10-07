@@ -847,7 +847,8 @@
       "description": "Deoarece ai sub 16 ani, este necesară semnătura tutorelui legal ({{value}}). Desenează semnătura în cadranul de mai jos",
       "terms": " Prin aplicarea semnăturii, confirmi că ai citit și ești de acord cu termenii contractului, iar datele de identitate introduse sunt corecte.",
       "action_button_label": "Trimite spre semnare",
-      "back": "Înapoi"
+      "back": "Înapoi",
+      "name": "Nume tutore legal"
     },
     "success": {
       "title": "Contractul a fost semnat cu succes!",
