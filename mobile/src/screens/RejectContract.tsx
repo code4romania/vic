@@ -8,8 +8,11 @@ import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import FormSelect from '../components/FormSelect';
-import { IDocumentContract, RejectionReason } from '../services/documents/documents.api';
-import { useRejectContractMutation } from '../services/documents/documents.service';
+import { RejectionReason } from '../services/documents/documents.api';
+import {
+  useGetContractQuery,
+  useRejectContractMutation,
+} from '../services/documents/documents.service';
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { renderBackdrop } from '../components/BottomSheet';
 import { useReducedMotion } from 'react-native-reanimated';
@@ -22,6 +25,7 @@ import Button from '../components/Button';
 import { useQueryClient } from 'react-query';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { mapContractRejectionReasonToText } from '../common/utils/document-contracts.helpers';
+import { DocumentContractStatus } from '../common/enums/document-contract-status.enum';
 
 const rejectionOptionsArray = [
   {
@@ -53,7 +57,8 @@ export const RejectContract = ({ navigation, route }: any) => {
   const queryClient = useQueryClient();
 
   const { userProfile } = useUserProfile();
-  const { contract } = route.params as { contract: IDocumentContract };
+  const { contractId } = route.params;
+  const { data: contract } = useGetContractQuery(contractId, userProfile?.activeOrganization?.id);
 
   const [bottomSheetContent, setBottomSheetContent] = useState<{
     icon?: string;
@@ -78,7 +83,7 @@ export const RejectContract = ({ navigation, route }: any) => {
 
   const onSubmit = (formData: FieldValues) => {
     const rejectPayload = {
-      contractId: contract.documentId,
+      contractId: contract?.documentId || '',
       organizationId: userProfile?.activeOrganization?.id,
       reason: formData.rejectionReason,
     };
@@ -91,7 +96,6 @@ export const RejectContract = ({ navigation, route }: any) => {
               // pop the current screen from the stack -> we do this in order to navigate back to the contract screen instead of the rejection screen when coming back from completing identity data
               navigation.pop();
               navigation.navigate('identity-data');
-              onCloseBottomSheet();
             },
           });
         }
@@ -114,7 +118,7 @@ export const RejectContract = ({ navigation, route }: any) => {
           queryKey: [
             'contract',
             'contractId',
-            contract.documentId,
+            contract?.documentId,
             'organizationId',
             userProfile?.activeOrganization?.id,
           ] as const,
@@ -132,6 +136,20 @@ export const RejectContract = ({ navigation, route }: any) => {
   const onCloseBottomSheet = () => {
     return bottomSheetRef.current?.close();
   };
+
+  if (!contract) {
+    return (
+      <PageLayout
+        onBackButtonPress={navigation.goBack}
+        headerStyle={{ paddingTop }}
+        title={t('reject.title')}
+      >
+        <View style={styles.container}>
+          <Text>{`${t('reject.not_found')}`}</Text>
+        </View>
+      </PageLayout>
+    );
+  }
 
   return (
     <>
@@ -158,7 +176,7 @@ export const RejectContract = ({ navigation, route }: any) => {
             controllerRules={{ required: true }}
             name="rejectionReason"
             label={t('reject.reason')}
-            error={errors.rejectionReason}
+            error={errors.rejectionReason ? { message: t('reject.required') } : ''}
             placeholder={t('general:select')}
             options={rejectionOptionsArray}
             disabled={isLoadingRejectContract}
@@ -173,6 +191,17 @@ export const RejectContract = ({ navigation, route }: any) => {
         snapPoints={snapPoints}
         animateOnMount={reducedMotion ? false : true}
         enableContentPanningGesture={false}
+        onDismiss={() => {
+          // if the contract is already rejected and we're still on the reject route (so we did not navigate to the identity-data screen),
+          // redirect automatically to the contracts page
+          if (
+            contract?.status === DocumentContractStatus.REJECTED_VOLUNTEER &&
+            navigation.getState().routes[navigation.getState().index].name ===
+              'documents/contract/reject'
+          ) {
+            navigation.navigate('documents/contracts');
+          }
+        }}
       >
         <BottomSheetView style={[styles.bottomSheetContainer, { paddingBottom: insets.bottom }]}>
           <SvgXml xml={bottomSheetContent.icon || successIcon} height={100} width={100} />
