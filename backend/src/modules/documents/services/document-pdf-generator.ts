@@ -62,8 +62,6 @@ export class DocumentPDFGenerator {
         documentContractId,
       );
 
-    console.log(documentContract);
-
     const contractPDFVariables: ContractPDFVariables = {
       documentContractNumber: documentContract.documentNumber,
       documentContractDate: format(documentContract.documentDate, 'dd-MM-yyyy'),

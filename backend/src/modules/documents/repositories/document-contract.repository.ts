@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DocumentContractEntity } from '../entities/document-contract.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
+import { In, LessThanOrEqual, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { RepositoryWithPagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   CreateDocumentContractOptions,
@@ -75,6 +75,12 @@ export class DocumentContractRepositoryService extends RepositoryWithPagination<
         volunteerId: options.volunteerId,
         documentStartDate: LessThanOrEqual(options.documentEndDate),
         documentEndDate: MoreThanOrEqual(options.documentStartDate),
+        status: Not(
+          In([
+            DocumentContractStatus.REJECTED_NGO,
+            DocumentContractStatus.REJECTED_VOLUNTEER,
+          ]),
+        ),
       },
     });
 
