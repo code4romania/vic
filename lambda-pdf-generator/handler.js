@@ -8,18 +8,19 @@ const S3_BUCKET = 'vic-staging-private-enid';
 chromium.setHeadlessMode = true;
 
 exports.generatePDF = async (event) => {
-  console.log('Received headers:', event.headers);
+  console.log('event', JSON.stringify(event, null, 2));
 
   const {
-    'x-document-contract-id': documentContractId,
-    'x-organization-id': organizationId,
-    'x-existing-file-path': existingContractFilePath
-  } = event.headers;
+    htmlPayload,
+    organizationId,
+    documentContractId,
+    existingContractFilePath,
+  } = event;
 
-  if (!documentContractId || !organizationId) {
+  if (!documentContractId || !organizationId || !htmlPayload) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Missing required headers' }),
+      body: JSON.stringify({ message: 'Missing required parameters' }),
     };
   }
 
@@ -32,7 +33,7 @@ exports.generatePDF = async (event) => {
     });
 
     const page = await browser.newPage();
-    await page.setContent(event.body);
+    await page.setContent(htmlPayload);
     const buffer = await page.pdf({ format: 'A4', margin: { top: '50px', bottom: '50px' } });
     await browser.close();
 

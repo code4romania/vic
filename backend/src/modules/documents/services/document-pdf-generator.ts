@@ -2,9 +2,56 @@ import { Injectable } from '@nestjs/common';
 import { resolve } from 'path';
 import * as fs from 'fs';
 import Handlebars from 'handlebars';
-import axios from 'axios';
 import { DocumentContractRepositoryService } from '../repositories/document-contract.repository';
 import { format } from 'date-fns';
+import {
+  InvokeCommand,
+  InvokeCommandInput,
+  InvokeCommandOutput,
+  LambdaClient,
+} from '@aws-sdk/client-lambda';
+
+const lambdaClient = new LambdaClient({ region: process.env.AWS_REGION });
+
+async function invokeFunction(
+  name: string,
+  payload: {
+    htmlPayload: string;
+    documentContractId: string;
+    organizationId: string;
+    existingFilePath: string;
+  },
+): Promise<{ message: string; url: string }> {
+  try {
+    const input: InvokeCommandInput = {
+      FunctionName: name,
+      InvocationType: 'RequestResponse',
+      Payload: Buffer.from(JSON.stringify(payload), 'utf8'),
+    };
+
+    const command = new InvokeCommand(input);
+
+    const res: InvokeCommandOutput = await lambdaClient.send(command);
+
+    const result = JSON.parse(Buffer.from(res.Payload).toString());
+
+    if (result?.statusCode !== 200 || !result?.body) {
+      throw new Error(result.body);
+    }
+
+    try {
+      return JSON.parse(result?.body);
+    } catch (e) {
+      console.log('error parsing result', e);
+      throw new Error(
+        `[PDF Invoker Function]Error parsing result, ${JSON.stringify(e)}`,
+      );
+    }
+  } catch (e) {
+    console.log('error triggering function', e as Error);
+    throw e;
+  }
+}
 
 export type ContractPDFVariables = {
   documentContractNumber: string;
@@ -53,7 +100,6 @@ export class DocumentPDFGenerator {
     // const file = fs.readFileSync(templateDir, 'utf-8');
     // const template = Handlebars.compile(file);
     // Handlebars.registerPartial('header', template);
-    // this.generateContractPDF('7064e696-01ba-423e-a341-afd83d563481');
   }
 
   public async generateContractPDF(documentContractId: string): Promise<void> {
@@ -127,23 +173,15 @@ export class DocumentPDFGenerator {
 
     // HTMLtoPDF(fileHTML);
 
-    const result = await axios.post(
-      'https://715w11fnq9.execute-api.eu-west-1.amazonaws.com/generate-pdf',
-      fileHTML,
-      {
-        headers: {
-          'Content-Type': 'text/html',
-          'X-Document-Contract-Id': documentContractId,
-          'X-Organization-Id': documentContract.organizationId,
-          'X-Existing-File-Path': documentContract.filePath,
-        },
-      },
-    );
-
-    await this.documentContractRepository.update(documentContractId, {
-      filePath: result.data.url,
+    const result = await invokeFunction(process.env.PDF_GENERATOR_LAMBDA_NAME, {
+      htmlPayload: fileHTML,
+      documentContractId,
+      organizationId: documentContract.organizationId,
+      existingFilePath: documentContract.filePath,
     });
 
-    return result.data.url;
+    await this.documentContractRepository.update(documentContractId, {
+      filePath: result.url,
+    });
   }
 }

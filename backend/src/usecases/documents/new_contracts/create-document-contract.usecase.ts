@@ -30,6 +30,7 @@ import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade
 import { GetOrganizationUseCaseService } from 'src/usecases/organization/get-organization.usecase';
 import * as z from 'zod';
 import { DocumentTemplateExceptionMessages } from 'src/modules/documents/exceptions/documente-template.exceptions';
+import * as Sentry from '@sentry/nestjs';
 
 /*
 Possible errors thrown:
@@ -151,8 +152,10 @@ export class CreateDocumentContractUsecase implements IUseCaseService<string> {
         `Error while generating the PDF for contract ${contract.id}`,
         error,
       );
-
-      // TODO: Sentry
+      Sentry.captureMessage('Error while generating the PDF for contract', {
+        level: 'error',
+      });
+      Sentry.captureException(error);
     }
 
     // 9. Send notification to the volunteer to sign the contract if the status is PENDING_VOLUNTEER_SIGNATURE
