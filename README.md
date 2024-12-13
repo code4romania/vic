@@ -1,14 +1,14 @@
-# Project name
+# Vic: volunteer manager
 
 [![GitHub contributors][ico-contributors]][link-contributors]
 [![GitHub last commit][ico-last-commit]][link-last-commit]
 [![License: MPL 2.0][ico-license]][link-license]
 
-Insert bullets description of the project if available.
+Vic is a virtual assistant that helps organizations coordinate volunteers. It is a complex solution consisting of a mobile app and a web app. The web app helps NGOs manage volunteer databases and document flows more efficiently, keep in touch with volunteer participants, and easily track pro bono hours.
 
 [See the project live][link-production]
 
-Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.
+The mobile app is available for free in the AppStore and Google Play. The app is dedicated to anyone who wants to volunteer, regardless of the time available or frequency of volunteering. The app allows each volunteer to create an account, choose their preferred NGOs or areas of interest, respond to volunteer calls when available, report hours worked and centralize personal volunteering documents.
 
 [Contributing](#contributing) | [Built with](#built-with) | [Repos and projects](#repos-and-projects) | [Deployment](#deployment) | [Feedback](#feedback) | [License](#license) | [About Code for Romania](#about-code-for-romania)
 
