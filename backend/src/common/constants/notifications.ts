@@ -93,7 +93,7 @@ export const NOTIFICATIONS = {
     },
     EMAIL: {
       subject: (organizationName: string): string =>
-        `Contractul tău cu ${organizationName} a fost respins. Descarcă documentul direct din aplicație`,
+        `Contractul tău cu ${organizationName} a fost aprobat. Descarcă documentul direct din aplicație`,
       body: '',
     },
   },
