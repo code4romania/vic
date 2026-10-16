@@ -16,3 +16,11 @@ export const S3_FILE_PATHS = {
   PROFILE: 'profile',
   EVENTS: 'events',
 };
+
+/**
+ * Password rule for every set-password path (login, reset, invite, registration).
+ * Same rule the mobile app enforces (REGEX.COGNITO_PASSWORD) and that Cognito enforced:
+ * 8 to 256 characters, upper case, lower case, a digit and a symbol, no leading or trailing whitespace.
+ */
+export const PASSWORD_REGEX =
+  /^(?!\s+)(?!.*\s+$)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[$^*.[\]{}()?"!@#%&/\\,><':;|_~`=+\- ])[A-Za-z0-9$^*.[\]{}()?"!@#%&/\\,><':;|_~`=+\- ]{8,256}$/;
