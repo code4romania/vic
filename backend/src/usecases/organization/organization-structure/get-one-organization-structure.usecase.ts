@@ -20,9 +20,8 @@ export class GetOneOrganizationStructureUseCase
   public async execute(
     findOptions: IFindOrganizationStructureModel,
   ): Promise<IOrganizationStructureModel> {
-    const organizationStructure = await this.organizationStructureFacade.find(
-      findOptions,
-    );
+    const organizationStructure =
+      await this.organizationStructureFacade.find(findOptions);
 
     if (!organizationStructure) {
       this.exceptionService.notFoundException(

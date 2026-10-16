@@ -51,9 +51,8 @@ export class DashboardController {
   async getDashboardVolunteerHours(
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<VolunteerHoursPresenter> {
-    const data = await this.getDashboardVolunteerHoursUseCase.execute(
-      organizationId,
-    );
+    const data =
+      await this.getDashboardVolunteerHoursUseCase.execute(organizationId);
 
     return new VolunteerHoursPresenter(data);
   }
@@ -62,9 +61,8 @@ export class DashboardController {
   async getDashboardVolunteerStatus(
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<VolunteerStatusPresenter> {
-    const data = await this.getDashboardVolunteerStatusUseCase.execute(
-      organizationId,
-    );
+    const data =
+      await this.getDashboardVolunteerStatusUseCase.execute(organizationId);
 
     return new VolunteerStatusPresenter(data);
   }

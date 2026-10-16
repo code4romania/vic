@@ -1,6 +1,9 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { json } from 'body-parser';
-import { Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { IncomingMessage, ServerResponse } from 'http';
+
+type RequestWithRawBody = IncomingMessage & { rawBody?: Buffer };
 
 /**
  * Copied this middleware to parse the raw response into a param to use later
@@ -8,15 +11,17 @@ import { Request } from 'express';
  */
 @Injectable()
 export class RawBodyMiddleware implements NestMiddleware {
-  public use(req: Request, res: Response, next: () => any): any {
+  public use(req: Request, res: Response, next: NextFunction): void {
     json({
-      verify: (req: any, res, buffer) => {
+      verify: (
+        request: RequestWithRawBody,
+        _response: ServerResponse,
+        buffer: Buffer,
+      ): void => {
         if (Buffer.isBuffer(buffer)) {
-          const rawBody = Buffer.from(buffer);
-          req['rawBody'] = rawBody;
+          request.rawBody = Buffer.from(buffer);
         }
-        return true;
       },
-    })(req, res as any, next);
+    })(req, res, next);
   }
 }

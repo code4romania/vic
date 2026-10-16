@@ -25,8 +25,8 @@ export class GetManyForDownloadEventUseCase
         Targets: event.isPublic
           ? 'Eveniment public'
           : event.targets?.length === 0
-          ? 'Toata organizatia'
-          : `${event.targets?.length} Departamente`,
+            ? 'Toata organizatia'
+            : `${event.targets?.length} Departamente`,
         'Numar participari': event.going,
         'Numar refuzuri': event.notGoing,
         Status: event.status,

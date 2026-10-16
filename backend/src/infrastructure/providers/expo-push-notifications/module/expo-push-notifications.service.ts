@@ -64,9 +64,8 @@ export class ExpoPushNotificationsService {
 
     for (const chunk of receiptIdChunks) {
       try {
-        const receipts = await this.expo.getPushNotificationReceiptsAsync(
-          chunk,
-        );
+        const receipts =
+          await this.expo.getPushNotificationReceiptsAsync(chunk);
         allReceipts = { ...allReceipts, ...receipts };
       } catch (error) {
         this.logger.error(error);

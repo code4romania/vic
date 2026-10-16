@@ -8,7 +8,6 @@ import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { CognitoService } from 'src/infrastructure/providers/cognito/module/cognito.service';
 import { PushNotificationsFacade } from 'src/modules/notifications/notifications.facade';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
-import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { ActivityLogFacade } from 'src/modules/activity-log/services/activity-log.facade';
 import { AccessRequestFacade } from 'src/modules/access-request/services/access-request.facade';
 import { EventFacade } from 'src/modules/event/services/event.facade';

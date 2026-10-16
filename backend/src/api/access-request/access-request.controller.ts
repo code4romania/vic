@@ -102,9 +102,8 @@ export class AccessRequestController {
   async getOne(
     @Param('id', UuidValidationPipe) accessRequestId: string,
   ): Promise<AccessRequestPresenter> {
-    const accessRequest = await this.getAccessRequestUseCase.execute(
-      accessRequestId,
-    );
+    const accessRequest =
+      await this.getAccessRequestUseCase.execute(accessRequestId);
     return new AccessRequestPresenter(accessRequest);
   }
 

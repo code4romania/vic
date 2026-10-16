@@ -65,9 +65,8 @@ export class AccessCodeController {
   async getOne(
     @Param('id', UuidValidationPipe) accessCodeId: string,
   ): Promise<AccessCodePresenter> {
-    const accessCodeModel = await this.findAccessCodeUseCase.execute(
-      accessCodeId,
-    );
+    const accessCodeModel =
+      await this.findAccessCodeUseCase.execute(accessCodeId);
     return new AccessCodePresenter(accessCodeModel);
   }
 

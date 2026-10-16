@@ -66,9 +66,8 @@ export class GetUserProfileUseCaseService
       // if there is no organization save it
       if (!dbOrganization) {
         // save organization to database
-        dbOrganization = await this.organizationService.createOrganization(
-          organization,
-        );
+        dbOrganization =
+          await this.organizationService.createOrganization(organization);
       }
     } catch (error) {
       // log the error and the payload

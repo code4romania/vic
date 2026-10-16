@@ -1,7 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { VolunteerProfileEntity } from '../entities/volunteer-profile.entity';
-import { VolunteerEntity } from '../entities/volunteer.entity';
 import { IVolunteerProfileRepository } from '../intefaces/volunteer-repository.interface';
 import {
   CreateVolunteerProfileOptions,

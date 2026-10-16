@@ -1,12 +1,14 @@
 import { PASSWORD_REGEX } from './constants';
 
 describe('PASSWORD_REGEX', () => {
-  it.each(['Volunteer#2026', 'Aa1!aaaa', 'Str0ng pass word!', 'Parola-Mea-2026'])(
-    'accepts %p',
-    (password) => {
-      expect(PASSWORD_REGEX.test(password)).toBe(true);
-    },
-  );
+  it.each([
+    'Volunteer#2026',
+    'Aa1!aaaa',
+    'Str0ng pass word!',
+    'Parola-Mea-2026',
+  ])('accepts %p', (password) => {
+    expect(PASSWORD_REGEX.test(password)).toBe(true);
+  });
 
   it.each([
     ['all lower case', 'password'],

@@ -35,9 +35,8 @@ export class AdminUserRepositoryService
     const newAdminUserEntity = AdminUserTransformer.toEntity(adminUserModel);
 
     // save admin user entity
-    const adminUserEntity = await this.adminUserRepository.save(
-      newAdminUserEntity,
-    );
+    const adminUserEntity =
+      await this.adminUserRepository.save(newAdminUserEntity);
 
     // return organization model
     return AdminUserTransformer.fromEntity(adminUserEntity);
