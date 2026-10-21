@@ -145,7 +145,7 @@ const AccountData = ({ navigation }: any) => {
     }
 
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ['images'],
       allowsEditing: false,
       aspect: [4, 3],
       quality: 1,

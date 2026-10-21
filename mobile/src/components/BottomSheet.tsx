@@ -19,7 +19,7 @@ export interface BottomSheetProps {
   modalRef: React.RefObject<BottomSheetModalMethods>;
   iconType?: BottomSheetIconType;
   heading: string;
-  paragraph: JSX.Element;
+  paragraph: React.JSX.Element;
   primaryAction: {
     status?: 'success' | 'danger';
     label: string;

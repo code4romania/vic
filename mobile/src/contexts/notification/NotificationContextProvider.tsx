@@ -41,8 +41,8 @@ const NotificationContextProvider = ({
 }) => {
   const [pushToken, setPushToken] = useState<string>();
   // notifications
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
+  const notificationListener = useRef<Notifications.Subscription>(undefined);
+  const responseListener = useRef<Notifications.Subscription>(undefined);
   const { userProfile } = useUserProfile();
   const { setUserProfile, updateSettings } = useStore();
   const { isAuthenticated } = useAuth();
