@@ -5,7 +5,7 @@ Type: task
 Blocked by: 01
 Tracker card: B1
 
-Deployable on its own: the API still runs on Cognito and nothing reads the new tables.
+Local only: the migration runs against the local `docker compose` database and is not deployed or merged to `main` before the staging rehearsal (decided 21 Oct 2026, see `../flows.md`). The API still runs on Cognito and nothing reads the new tables.
 
 ## Checklist
 
@@ -20,10 +20,12 @@ Deployable on its own: the API still runs on Cognito and nothing reads the new t
 - [ ] Models + transformers `src/modules/auth/models/{auth-identity,auth-token,refresh-token,auth-identity-provider}.model.ts` (pattern `admin-user.model.ts`: `I…Model`, `Create…Options`, `Find…Options`, `…Transformer.fromEntity/toEntity`; `toEntity` lowercases and trims the email). Extend `IOrganizationModel` and `OrganizationTransformer` in `organization.model.ts`.
 - [ ] `src/modules/auth/auth.module.ts`: `TypeOrmModule.forFeature([AuthIdentityEntity, AuthTokenEntity, RefreshTokenEntity, AuthIdentityProviderEntity])`.
 - [ ] Migration `OwnAuthTables`: `npm run build && npm run migration:generate --name=OwnAuthTables`, then complete `up()` by hand, in this order: the four tables; unique `token_hash`; partial unique `auth_identity (realm, email) WHERE deleted_on IS NULL`; partial `auth_token (identity_id, type) WHERE used_at IS NULL AND replaced_at IS NULL`; `refresh_token (identity_id)`, `refresh_token (previous_hash)`; unique `auth_identity_provider (provider, subject)`; `ALTER TABLE "user" ALTER COLUMN "cognito_id" DROP NOT NULL`; `DROP CONSTRAINT "cognito-userType-email-unique"`; `CREATE UNIQUE INDEX user_type_email_unique ON "user" ("type", lower("email")) WHERE "deleted_on" IS NULL`; organization columns; `UPDATE organization SET status = 'active', validated_at = now()`; partial unique on `tax_id`. `down()` reverses in the opposite order and restores the constraint from `1684135710464-UserEmailTypeUnique.ts`.
+- [ ] Admin events (decisions R7): add `DISABLE_ADMIN` and `ENABLE_ADMIN` to `TrackedEventName` in `src/modules/actions-archive/enums/action-resource-types.enum.ts`, with `TrackedEventData` shapes like `CHANGE_VOLUNTEER_STATUS` (`adminId`, `adminName`). The same migration runs `ALTER TYPE "public"."actions_archive_event_name_enum" ADD VALUE 'DISABLE_ADMIN'` and `... ADD VALUE 'ENABLE_ADMIN'`; `down()` recreates the enum without them, as `1687957625046-ActionsArchiveContractTargets.ts` does. Layer 8 (issue 09) writes these events.
+- [ ] No county or city column on `organization` (decisions R6): NGO registration keeps the free-text `address`.
 - [ ] `src/modules/auth/models/auth-identity.model.spec.ts`.
 
 ## Done when
 
-`npm run migration:run`, `npm run migration:revert`, `npm run migration:run` succeed against `docker compose up db`; `npm run migration:show` lists it; build, lint, test pass; pre-flight queries from issue 01 return zero rows on the production copy or every row has a recorded fix.
+`npm run migration:run`, `npm run migration:revert`, `npm run migration:run` succeed against `docker compose up db`; `npm run migration:show` lists it; `actions_archive_event_name_enum` contains `DISABLE_ADMIN` and `ENABLE_ADMIN` after `run` and does not after `revert`; build, lint, test pass; pre-flight queries from issue 01 return zero rows on the production copy or every row has a recorded fix.
 
 ## Comments
