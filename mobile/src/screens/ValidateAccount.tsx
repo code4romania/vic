@@ -55,7 +55,7 @@ const ValidateAccount = ({ navigation }: any) => {
   };
 
   const onGoToLogin = () => {
-    navigation.navigate('login');
+    navigation.navigate('login', undefined, { pop: true });
   };
 
   return (

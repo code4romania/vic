@@ -90,6 +90,7 @@ const LeaveOrganization = ({ navigation }: any) => {
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.bottomSheetContainer}>

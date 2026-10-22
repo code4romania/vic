@@ -81,6 +81,7 @@ const BottomSheet = ({
         ref={modalRef}
         index={1}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         onChange={onBottomSheetStateChange}
         backdropComponent={renderBackdrop}
       >

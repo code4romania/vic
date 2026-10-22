@@ -64,7 +64,7 @@ const ConfirmPassword = ({ navigation }: any) => {
     try {
       setIsLoading(true);
       await forgotPasswordSubmit(code, password);
-      navigation.navigate('login');
+      navigation.navigate('login', undefined, { pop: true });
     } finally {
       setIsLoading(false);
     }

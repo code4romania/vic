@@ -239,6 +239,7 @@ const NotificationsSettings = ({ navigation }: any) => {
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.contentContainer}>
@@ -296,6 +297,7 @@ const NotificationsSettings = ({ navigation }: any) => {
         ref={notificationsBottomSheetRef}
         index={-1}
         snapPoints={notificationsSnapPoints}
+        enableDynamicSizing={false}
         animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.warningSheetContainer}>

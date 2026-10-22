@@ -71,7 +71,7 @@ export default () => {
         <GestureHandlerRootView style={styles.gestureHandler}>
           <QueryClientProvider client={queryClient}>
             <AuthContextProvider>
-              <NavigationContainer ref={navigationRef}>
+              <NavigationContainer ref={navigationRef} navigationInChildEnabled>
                 <NotificationContextProvider navigation={navigationRef}>
                   <Router />
                 </NotificationContextProvider>
