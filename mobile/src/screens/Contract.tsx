@@ -17,7 +17,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import ContractItem from '../components/ContractItem';
 import { DocumentIcon } from './Documents';
 import { ButtonType } from '../common/enums/button-type.enum';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { shareAsync } from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import { useUserProfile } from '../store/profile/profile.selector';

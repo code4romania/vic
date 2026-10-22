@@ -134,12 +134,8 @@ const NotificationContextProvider = ({
     ) as any;
 
     return () => {
-      Notifications.removeNotificationSubscription(
-        notificationListener.current as Notifications.Subscription,
-      );
-      Notifications.removeNotificationSubscription(
-        responseListener.current as Notifications.Subscription,
-      );
+      notificationListener.current?.remove();
+      responseListener.current?.remove();
     };
   };
 
