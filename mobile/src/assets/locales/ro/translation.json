@@ -216,7 +216,14 @@
         "notification": "Setări notificări",
         "information": "Informații",
         "logout": "Log out",
-        "delete": "Șterge cont"
+        "delete": "Șterge cont",
+        "modal": {
+            "confirm_logout": {
+                "heading": "Ești sigur că vrei să te deconectezi?",
+                "paragraph": "Va trebui să te autentifici din nou pentru a folosi aplicația.",
+                "action_label": "Deconectează-te"
+            }
+        }
     },
     "account_data": {
         "title": "Date cont",

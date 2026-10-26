@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo, useRef } from 'react';
 import bell from '../assets/svg/bell';
 import identification from '../assets/svg/identification';
 import information from '../assets/svg/information';
@@ -20,6 +20,12 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { Screen } from '../components/Screen';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { renderBackdrop } from '../components/BottomSheet';
+import Paragraph from '../components/Paragraph';
+import InlineLink from '../components/InlineLink';
+import Button from '../components/Button';
+import { useReducedMotion } from 'react-native-reanimated';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -66,11 +72,18 @@ const Settings = ({ navigation }: any) => {
   const { logout } = useAuth();
   const { unsubscribe } = useContext(NotificationContext);
 
+  // bottom sheet ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  // bottom sheet snap points
+  const snapPoints = useMemo(() => [1, 340], []);
+
+  const reducedMotion = useReducedMotion();
+
   const handleItemPress = (route: string) => {
     if (route === SETTINGS_ROUTES.INFORMATION) {
       onInfoListItemPress();
     } else if (route === SETTINGS_ROUTES.LOGOUT) {
-      onLogout();
+      onOpenBottomSheet();
     } else {
       navigation.navigate(route);
     }
@@ -81,10 +94,19 @@ const Settings = ({ navigation }: any) => {
   };
 
   const onLogout = () => {
+    onCloseBottomSheet();
     // unregister token
     unsubscribe();
     // logout
     logout();
+  };
+
+  const onCloseBottomSheet = () => {
+    bottomSheetRef.current?.close();
+  };
+
+  const onOpenBottomSheet = () => {
+    bottomSheetRef.current?.expand();
   };
 
   const renderItem = ({ item }: { item: IListItem }) => (
@@ -105,39 +127,72 @@ const Settings = ({ navigation }: any) => {
   );
 
   return (
-    <Screen preset="fixed" contentContainerStyle={[styles.childrenContainer, { paddingTop }]}>
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
-        {`${t('title')}`}
-      </Text>
-      <View style={styles.profileContainer}>
-        {!userProfile?.profilePicture && (
-          <View style={{ ...styles.iconWrapper, backgroundColor: theme['cool-gray-100'] }}>
-            <Icon
-              name="user"
-              style={{ ...styles.imagePlaceholder, color: theme['cool-gray-500'] }}
+    <>
+      <Screen preset="fixed" contentContainerStyle={[styles.childrenContainer, { paddingTop }]}>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
+          {`${t('title')}`}
+        </Text>
+        <View style={styles.profileContainer}>
+          {!userProfile?.profilePicture && (
+            <View style={{ ...styles.iconWrapper, backgroundColor: theme['cool-gray-100'] }}>
+              <Icon
+                name="user"
+                style={{ ...styles.imagePlaceholder, color: theme['cool-gray-500'] }}
+              />
+            </View>
+          )}
+          {userProfile?.profilePicture && (
+            <ImageWithPreload source={userProfile?.profilePicture} styles={styles.image} />
+          )}
+          <Text
+            allowFontScaling={ALLOW_FONT_SCALLING}
+            category="h3"
+          >{`${userProfile?.firstName} ${userProfile?.lastName}`}</Text>
+        </View>
+        <List
+          data={SETTING_SCREENS}
+          ItemSeparatorComponent={Divider}
+          renderItem={renderItem}
+          style={styles.list}
+          bouncesZoom={false}
+          alwaysBounceHorizontal={false}
+          alwaysBounceVertical={false}
+          bounces={false}
+          showsVerticalScrollIndicator={false}
+        />
+      </Screen>
+      <BottomSheet
+        backdropComponent={renderBackdrop}
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={snapPoints}
+        enableDynamicSizing={false}
+        animateOnMount={reducedMotion ? false : true}
+      >
+        <View style={styles.bottomSheetContainer}>
+          <View style={styles.textContainer}>
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1" style={styles.heading}>
+              {`${t('modal.confirm_logout.heading')}`}
+            </Text>
+            <Paragraph style={styles.bottomSheetParagraph}>
+              {`${t('modal.confirm_logout.paragraph')}`}
+            </Paragraph>
+          </View>
+          <View style={styles.buttonsContainer}>
+            <Button
+              label={t('modal.confirm_logout.action_label')}
+              status={'danger'}
+              onPress={onLogout}
+            />
+            <InlineLink
+              style={{ color: theme['cool-gray-700'] }}
+              label={t('general:back')}
+              onPress={onCloseBottomSheet}
             />
           </View>
-        )}
-        {userProfile?.profilePicture && (
-          <ImageWithPreload source={userProfile?.profilePicture} styles={styles.image} />
-        )}
-        <Text
-          allowFontScaling={ALLOW_FONT_SCALLING}
-          category="h3"
-        >{`${userProfile?.firstName} ${userProfile?.lastName}`}</Text>
-      </View>
-      <List
-        data={SETTING_SCREENS}
-        ItemSeparatorComponent={Divider}
-        renderItem={renderItem}
-        style={styles.list}
-        bouncesZoom={false}
-        alwaysBounceHorizontal={false}
-        alwaysBounceVertical={false}
-        bounces={false}
-        showsVerticalScrollIndicator={false}
-      />
-    </Screen>
+        </View>
+      </BottomSheet>
+    </>
   );
 };
 
@@ -178,4 +233,29 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   title: { paddingLeft: 8, marginBottom: 16 },
+  bottomSheetContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 40,
+    paddingVertical: 8,
+    gap: 24,
+  },
+  textContainer: {
+    gap: 4,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  heading: {
+    textAlign: 'center',
+  },
+  bottomSheetParagraph: {
+    textAlign: 'center',
+  },
+  buttonsContainer: {
+    gap: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
