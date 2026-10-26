@@ -1,5 +1,4 @@
 import { useScrollToTop } from '@react-navigation/native';
-import { StatusBar, StatusBarProps } from 'expo-status-bar';
 import React, { useRef, useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -13,6 +12,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { ExtendedEdge, useSafeAreaInsetsStyle } from '../hooks/useSafeAreaInsetsStyle';
+import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { useTheme } from '@ui-kitten/components';
 
 interface BaseScreenProps {
@@ -44,10 +44,6 @@ interface BaseScreenProps {
    * By how much should we offset the keyboard? Defaults to 0.
    */
   keyboardOffset?: number;
-  /**
-   * Pass any additional props directly to the StatusBar component.
-   */
-  StatusBarProps?: StatusBarProps;
   /**
    * Pass any additional props directly to the KeyboardAvoidingView component.
    */
@@ -240,16 +236,14 @@ export function Screen(props: ScreenProps) {
     KeyboardAvoidingViewProps,
     keyboardOffset = 0,
     safeAreaEdges,
-    StatusBarProps,
     statusBarStyle = 'dark',
   } = props;
 
   const $containerInsets = useSafeAreaInsetsStyle(safeAreaEdges);
+  useFocusedStatusBarStyle(statusBarStyle);
 
   return (
     <View style={[$containerStyle, { backgroundColor }, $containerInsets]}>
-      <StatusBar style={statusBarStyle} {...StatusBarProps} />
-
       <KeyboardAvoidingView
         behavior={isIos ? 'padding' : 'height'}
         keyboardVerticalOffset={keyboardOffset}

@@ -14,6 +14,7 @@ import { ButtonType } from '../common/enums/button-type.enum';
 import InlineLink from '../components/InlineLink';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
@@ -60,6 +61,8 @@ export const PageLayout = ({
 }: PageLayoutProps) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  useFocusedStatusBarStyle('dark');
+
   const renderLeftControl = () => {
     if (!onBackButtonPress) {
       return <></>;
