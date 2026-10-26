@@ -11,11 +11,6 @@ const expoConfig: ExpoConfig = {
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',
   userInterfaceStyle: 'light',
-  splash: {
-    image: './src/assets/images/splash.png',
-    resizeMode: 'contain',
-    backgroundColor: '#ffffff',
-  },
   assetBundlePatterns: ['**/*'],
   ios: {
     buildNumber: '22',
@@ -47,6 +42,19 @@ const expoConfig: ExpoConfig = {
   plugins: [
     'expo-localization',
     'expo-font',
+    [
+      'expo-splash-screen',
+      {
+        image: './src/assets/images/splash.png',
+        resizeMode: 'contain',
+        backgroundColor: '#ffffff',
+        enableFullScreenImage_legacy: true,
+        android: {
+          image: './src/assets/images/logo.png',
+          imageWidth: 200,
+        },
+      },
+    ],
     [
       'expo-document-picker',
       {
