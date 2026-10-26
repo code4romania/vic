@@ -278,6 +278,20 @@
   },
   "change_password": {
     "title": "Change password",
+    "form": {
+      "old_password": {
+        "label": "Current password",
+        "placeholder": "Enter your current password"
+      },
+      "new_password": {
+        "label": "New password",
+        "placeholder": "Enter your new password"
+      },
+      "confirm_password": {
+        "label": "Confirm new password",
+        "placeholder": "Confirm new password"
+      }
+    },
     "submit": {
       "success": "Password has been changed!"
     }

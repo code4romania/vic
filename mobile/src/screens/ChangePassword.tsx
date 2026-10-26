@@ -87,8 +87,8 @@ const ChangePassword = ({ navigation }: any) => {
         <FormInput
           control={control as any}
           name="oldPassword"
-          label={t('register:create_account.form.password.label')}
-          placeholder={t('register:create_account.form.password.placeholder')}
+          label={t('form.old_password.label')}
+          placeholder={t('form.old_password.placeholder')}
           error={errors.oldPassword}
           accessoryRight={(props: any) =>
             renderPasswordEyeIcon({
@@ -103,8 +103,8 @@ const ChangePassword = ({ navigation }: any) => {
         <FormInput
           control={control as any}
           name="password"
-          label={t('register:create_account.form.password.label')}
-          placeholder={t('register:create_account.form.password.placeholder')}
+          label={t('form.new_password.label')}
+          placeholder={t('form.new_password.placeholder')}
           error={errors.password}
           accessoryRight={(props: any) =>
             renderPasswordEyeIcon({
@@ -119,8 +119,8 @@ const ChangePassword = ({ navigation }: any) => {
         <FormInput
           control={control as any}
           name="confirmPassword"
-          label={t('register:create_account.form.confirm_password.label')}
-          placeholder={t('register:create_account.form.confirm_password.placeholder')}
+          label={t('form.confirm_password.label')}
+          placeholder={t('form.confirm_password.placeholder')}
           error={errors.confirmPassword}
           accessoryRight={(props: any) =>
             renderPasswordEyeIcon({

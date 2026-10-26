@@ -278,6 +278,20 @@
     },
     "change_password": {
         "title": "Schimbă parola",
+        "form": {
+            "old_password": {
+                "label": "Parola curentă",
+                "placeholder": "Introdu parola curentă"
+            },
+            "new_password": {
+                "label": "Parola nouă",
+                "placeholder": "Introdu parola nouă"
+            },
+            "confirm_password": {
+                "label": "Confirmă parola nouă",
+                "placeholder": "Confirmă parola nouă"
+            }
+        },
         "submit": {
             "success": "Parola a fost schimbata!"
         }
