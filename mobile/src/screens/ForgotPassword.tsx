@@ -18,6 +18,7 @@ export type ForgotPasswordFormTypes = {
 const schema = yup.object({
   email: yup
     .string()
+    .trim()
     .email(`${i18n.t('forgot_password:form.email.pattern')}`)
     .required(`${i18n.t('forgot_password:form.email.required')}`),
 });
@@ -45,6 +46,8 @@ const ForgotPassword = ({ navigation }: any) => {
       setIsLoading(true);
       await forgotPassword(email);
       navigation.navigate('confirm-password');
+    } catch (error) {
+      // error toast is shown by the auth context
     } finally {
       setIsLoading(false);
     }

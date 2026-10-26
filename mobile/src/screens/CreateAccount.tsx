@@ -30,6 +30,7 @@ const schema = yup
   .object({
     email: yup
       .string()
+      .trim()
       .email(`${i18n.t('register:create_account.form.email.pattern')}`)
       .required(`${i18n.t('register:create_account.form.email.required')}`),
     phone: yup

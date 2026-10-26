@@ -26,6 +26,7 @@ export type VolunteerFormTypes = {
 export const volunteerSchema = yup.object({
   email: yup
     .string()
+    .trim()
     .email(`${i18n.t('login:form.email.pattern')}`)
     .required(`${i18n.t('login:form.email.required')}`),
   phone: yup.string().required(`${i18n.t('register:create_account.form.phone.required')}`),

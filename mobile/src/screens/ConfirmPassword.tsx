@@ -65,6 +65,8 @@ const ConfirmPassword = ({ navigation }: any) => {
       setIsLoading(true);
       await forgotPasswordSubmit(code, password);
       navigation.navigate('login', undefined, { pop: true });
+    } catch (error) {
+      // error toast is shown by the auth context
     } finally {
       setIsLoading(false);
     }
