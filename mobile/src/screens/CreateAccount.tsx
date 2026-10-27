@@ -93,6 +93,8 @@ const CreateAccount = ({ navigation }: any) => {
         phoneNumber: `${CONSTANTS.PHONE_PREFIX}${phone.trim()}`,
       });
       navigation.replace('validate-account');
+    } catch (error) {
+      // error toast is shown by the auth context
     } finally {
       setIsLoading(false);
     }

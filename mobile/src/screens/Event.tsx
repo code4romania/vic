@@ -28,6 +28,7 @@ import { formatEventDate } from '../common/utils/event.helper';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { useUserProfile } from '../store/profile/profile.selector';
 import BottomSheet from '@gorhom/bottom-sheet';
+import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
 import { renderBackdrop } from '../components/BottomSheet';
 import { useReducedMotion } from 'react-native-reanimated';
 import { SvgXml } from 'react-native-svg';
@@ -231,7 +232,7 @@ const Event = ({ navigation, route }: any) => {
         )}
       </PageLayout>
       {/* error bottom sheet -> displayed when the user tries to attend the event but doesn't have a volunteer profile for the event's organization */}
-      <BottomSheet
+      <SafeAreaBottomSheet
         backdropComponent={renderBackdrop}
         ref={bottomSheetRef}
         index={-1}
@@ -262,7 +263,7 @@ const Event = ({ navigation, route }: any) => {
             />
           </View>
         </View>
-      </BottomSheet>
+      </SafeAreaBottomSheet>
     </>
   );
 };

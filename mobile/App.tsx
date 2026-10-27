@@ -21,6 +21,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
 import NotificationContextProvider from './src/contexts/notification/NotificationContextProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG as any);
@@ -69,15 +70,17 @@ export default () => {
         customMapping={mapping}
       >
         <GestureHandlerRootView style={styles.gestureHandler}>
-          <QueryClientProvider client={queryClient}>
-            <AuthContextProvider>
-              <NavigationContainer ref={navigationRef} navigationInChildEnabled>
-                <NotificationContextProvider navigation={navigationRef}>
-                  <Router />
-                </NotificationContextProvider>
-              </NavigationContainer>
-            </AuthContextProvider>
-          </QueryClientProvider>
+          <KeyboardProvider>
+            <QueryClientProvider client={queryClient}>
+              <AuthContextProvider>
+                <NavigationContainer ref={navigationRef} navigationInChildEnabled>
+                  <NotificationContextProvider navigation={navigationRef}>
+                    <Router />
+                  </NotificationContextProvider>
+                </NavigationContainer>
+              </AuthContextProvider>
+            </QueryClientProvider>
+          </KeyboardProvider>
         </GestureHandlerRootView>
 
         <ExpoStatusBar style="dark" />

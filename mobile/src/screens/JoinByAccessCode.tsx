@@ -16,6 +16,7 @@ import { useOrganization } from '../store/organization/organization.selector';
 import Paragraph from '../components/Paragraph';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import BottomSheet from '@gorhom/bottom-sheet';
+import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
 import { StyleSheet, View } from 'react-native';
 import { renderBackdrop } from '../components/BottomSheet';
 import { SvgXml } from 'react-native-svg';
@@ -145,7 +146,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
           />
         </FormLayout>
       </PageLayout>
-      <BottomSheet
+      <SafeAreaBottomSheet
         backdropComponent={renderBackdrop}
         ref={bottomSheetRef}
         index={-1}
@@ -174,7 +175,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
             />
           </View>
         </View>
-      </BottomSheet>
+      </SafeAreaBottomSheet>
     </>
   );
 };

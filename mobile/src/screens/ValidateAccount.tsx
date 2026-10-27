@@ -49,6 +49,8 @@ const ValidateAccount = ({ navigation }: any) => {
       setIsLoading(true);
       await confirmSignUp(code);
       navigation.replace('create-user');
+    } catch (error) {
+      // error toast is shown by the auth context
     } finally {
       setIsLoading(false);
     }

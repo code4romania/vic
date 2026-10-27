@@ -26,6 +26,7 @@ import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { renderBackdrop } from '../components/BottomSheet';
 import { useReducedMotion } from 'react-native-reanimated';
 import BottomSheet from '@gorhom/bottom-sheet';
+import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
 import upsIcon from '../assets/svg/ups-icon';
 import { SvgXml } from 'react-native-svg';
 import Paragraph from '../components/Paragraph';
@@ -196,7 +197,7 @@ const ActivityLogs = ({ navigation }: any) => {
           )}
         </ButtonKitten>
       </PageLayout>
-      <BottomSheet
+      <SafeAreaBottomSheet
         backdropComponent={renderBackdrop}
         ref={bottomSheetRef}
         index={-1}
@@ -227,7 +228,7 @@ const ActivityLogs = ({ navigation }: any) => {
             />
           </View>
         </View>
-      </BottomSheet>
+      </SafeAreaBottomSheet>
     </>
   );
 };

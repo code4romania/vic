@@ -23,6 +23,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import Paragraph from '../components/Paragraph';
 import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 import BottomSheet from '@gorhom/bottom-sheet';
+import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
 import { renderBackdrop } from '../components/BottomSheet';
 import { SvgXml } from 'react-native-svg';
 import upsIcon from '../assets/svg/ups-icon';
@@ -278,7 +279,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           </>
         )}
       </PageLayout>
-      <BottomSheet
+      <SafeAreaBottomSheet
         backdropComponent={renderBackdrop}
         ref={bottomSheetRef}
         index={-1}
@@ -341,7 +342,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
               </>
             )}
         </View>
-      </BottomSheet>
+      </SafeAreaBottomSheet>
     </>
   );
 };

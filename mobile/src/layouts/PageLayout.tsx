@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import {
   Layout,
   TopNavigation,
@@ -9,12 +9,14 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import Button from '../components/Button';
-import { View, KeyboardAvoidingView, StyleSheet, Platform, ViewStyle } from 'react-native';
+import { View, StyleSheet, Platform, ViewStyle } from 'react-native';
+import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import { ButtonType } from '../common/enums/button-type.enum';
 import InlineLink from '../components/InlineLink';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
+import { FormLayoutBottomOffsetContext } from './FormLayout';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
@@ -62,6 +64,7 @@ export const PageLayout = ({
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   useFocusedStatusBarStyle('dark');
+  const [actionsHeight, setActionsHeight] = useState(0);
 
   const renderLeftControl = () => {
     if (!onBackButtonPress) {
@@ -89,51 +92,57 @@ export const PageLayout = ({
         style={[styles.header, headerStyle]}
       />
       <Layout style={styles.layout}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.keyboardAvoidingContainer}
-          keyboardVerticalOffset={-100} // This is the distance between the top of the user screen and the react native view - because we have put the avoiding view after the navigation
-        >
-          <View style={styles.childrenContainer}>{children}</View>
-        </KeyboardAvoidingView>
+        <View style={styles.childrenContainer}>
+          <FormLayoutBottomOffsetContext.Provider value={actionsHeight}>
+            {children}
+          </FormLayoutBottomOffsetContext.Provider>
+        </View>
 
         {actionsOptions && (
-          <View style={styles.helperContainer}>
-            <View style={[styles.bottomActionContainer, { paddingBottom: insets.bottom + 16 }]}>
-              {actionsOptions.helperText && (
-                <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
-                  {actionsOptions.helperText}
-                </Text>
-              )}
-              <View style={styles.buttonsContainer}>
-                <Button
-                  onPress={actionsOptions.onPrimaryActionButtonClick}
-                  label={`${actionsOptions.primaryActionLabel}`}
-                  status={actionsOptions.primaryBtnType || 'primary'}
-                  loading={actionsOptions.loading}
-                  disabled={actionsOptions.loading}
-                />
-                {actionsOptions.onSecondaryActionButtonClick &&
-                  actionsOptions.secondaryActionLink && (
-                    <View style={styles.secondaryButtonContainer}>
-                      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
-                        {actionsOptions.secondaryActionLabel || ''}
-                      </Text>
-                      <InlineLink
-                        style={[
-                          !actionsOptions.secondaryActionLabel && !actionsOptions.secondaryLinkColor
-                            ? { color: theme['color-primary-700'] }
-                            : { color: theme['color-basic-1100'] },
-                          styles.inlineLink,
-                        ]}
-                        onPress={actionsOptions.onSecondaryActionButtonClick}
-                        label={actionsOptions.secondaryActionLink}
-                      />
-                    </View>
-                  )}
+          // moves the buttons above the keyboard; the navigation bar inset is already
+          // covered by the keyboard, so it is left behind it
+          <KeyboardStickyView offset={{ opened: insets.bottom }}>
+            <View
+              style={styles.helperContainer}
+              onLayout={(event) => setActionsHeight(event.nativeEvent.layout.height)}
+            >
+              <View style={[styles.bottomActionContainer, { paddingBottom: insets.bottom + 16 }]}>
+                {actionsOptions.helperText && (
+                  <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
+                    {actionsOptions.helperText}
+                  </Text>
+                )}
+                <View style={styles.buttonsContainer}>
+                  <Button
+                    onPress={actionsOptions.onPrimaryActionButtonClick}
+                    label={`${actionsOptions.primaryActionLabel}`}
+                    status={actionsOptions.primaryBtnType || 'primary'}
+                    loading={actionsOptions.loading}
+                    disabled={actionsOptions.loading}
+                  />
+                  {actionsOptions.onSecondaryActionButtonClick &&
+                    actionsOptions.secondaryActionLink && (
+                      <View style={styles.secondaryButtonContainer}>
+                        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
+                          {actionsOptions.secondaryActionLabel || ''}
+                        </Text>
+                        <InlineLink
+                          style={[
+                            !actionsOptions.secondaryActionLabel &&
+                            !actionsOptions.secondaryLinkColor
+                              ? { color: theme['color-primary-700'] }
+                              : { color: theme['color-basic-1100'] },
+                            styles.inlineLink,
+                          ]}
+                          onPress={actionsOptions.onSecondaryActionButtonClick}
+                          label={actionsOptions.secondaryActionLink}
+                        />
+                      </View>
+                    )}
+                </View>
               </View>
             </View>
-          </View>
+          </KeyboardStickyView>
         )}
       </Layout>
     </>
@@ -149,7 +158,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
-  keyboardAvoidingContainer: { flex: 1 },
   childrenContainer: {
     flex: 1,
     paddingHorizontal: 16,

@@ -20,6 +20,7 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import ActivityLogSkeleton from '../components/skeleton/activity-log-skeleton';
 import { useActivityLogs } from '../store/activity-log/activity-log.selectors';
 import BottomSheet from '@gorhom/bottom-sheet';
+import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
 import { useReducedMotion } from 'react-native-reanimated';
 import { renderBackdrop } from '../components/BottomSheet';
 import { StyleSheet, View } from 'react-native';
@@ -163,7 +164,7 @@ const ActivityLog = ({ navigation, route }: any) => {
           </>
         )}
       </ModalLayout>
-      <BottomSheet
+      <SafeAreaBottomSheet
         backdropComponent={renderBackdrop}
         ref={bottomSheetRef}
         index={-1}
@@ -183,7 +184,7 @@ const ActivityLog = ({ navigation, route }: any) => {
             loading={isCancelingLog}
           />
         </View>
-      </BottomSheet>
+      </SafeAreaBottomSheet>
     </>
   );
 };
