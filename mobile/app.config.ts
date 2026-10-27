@@ -42,6 +42,8 @@ const expoConfig: ExpoConfig = {
   plugins: [
     'expo-localization',
     'expo-font',
+    // the app is always light at the bottom (tab bar, action bars), so keep the navigation buttons dark
+    ['expo-navigation-bar', { style: 'dark' }],
     [
       'expo-splash-screen',
       {
