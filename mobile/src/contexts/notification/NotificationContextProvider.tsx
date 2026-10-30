@@ -40,9 +40,10 @@ const NotificationContextProvider = ({
   navigation: any;
 }) => {
   const [pushToken, setPushToken] = useState<string>();
-  // notifications
-  const notificationListener = useRef<Notifications.Subscription>(undefined);
-  const responseListener = useRef<Notifications.Subscription>(undefined);
+  // covers both taps while the app is running and the tap that launched the app from a killed state
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
+  const handledResponseId = useRef<string>(undefined);
+  const [isNavigationReady, setIsNavigationReady] = useState<boolean>(false);
   const { userProfile } = useUserProfile();
   const { setUserProfile, updateSettings } = useStore();
   const { isAuthenticated } = useAuth();
@@ -78,65 +79,6 @@ const NotificationContextProvider = ({
     }
 
     setIsRegistered(true);
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(
-      (response: any) => {
-        const {
-          notification: {
-            request: {
-              content: { data: payload },
-            },
-          },
-        } = response;
-
-        if (payload.key === EVENTS.JOIN_NGO.APPROVE_REQUEST) {
-          if (userProfile) {
-            setUserProfile({
-              ...userProfile,
-              activeOrganization: payload.payload,
-              myOrganizations: [...userProfile?.myOrganizations, payload.payload],
-            });
-            navigation.navigate('volunteer');
-          }
-        }
-
-        if (payload.key === EVENTS.JOIN_NGO.REJECT_REQUEST) {
-          navigation.navigate('organization-profile', {
-            organizationId: payload.payload.organizationId,
-          });
-        }
-
-        if (payload.key === EVENTS.NGO_EVENT.ADD) {
-          navigation.navigate('event', {
-            eventId: payload.payload.eventId,
-          });
-        }
-
-        if (payload.key === EVENTS.OTHER.SEND_ANNOUNCEMENT) {
-          navigation.navigate('announcements');
-        }
-
-        if (
-          payload.key ===
-          (EVENTS.DOCUMENTS.GENERATE_CONTRACT ||
-            EVENTS.DOCUMENTS.APPROVE_CONTRACT ||
-            EVENTS.DOCUMENTS.REJECT_CONATRCT)
-        ) {
-          navigation.navigate('contract', {
-            id: payload.payload.contractId,
-          });
-        }
-
-        if (payload.key === (EVENTS.VOLUNTEER_HOURS.APPROVE || EVENTS.VOLUNTEER_HOURS.APPROVE)) {
-          navigation.navigate('activity-log', { activityLogId: payload.payload.activityLogId });
-        }
-      },
-    ) as any;
-
-    return () => {
-      notificationListener.current?.remove();
-      responseListener.current?.remove();
-    };
   };
 
   const init = useCallback(initNotifications, [initNotifications]);
@@ -153,6 +95,86 @@ const NotificationContextProvider = ({
       setIsRegistered(false);
     }
   }, [isAuthenticated]);
+
+  // the private routes are mounted only after the user is authenticated
+  useEffect(() => {
+    const updateNavigationReady = () =>
+      setIsNavigationReady(
+        navigation.isReady() && !!navigation.getRootState()?.routeNames?.includes('home'),
+      );
+
+    updateNavigationReady();
+    return navigation.addListener('state', updateNavigationReady);
+  }, [navigation, isAuthenticated]);
+
+  const handleNotificationResponse = (response: Notifications.NotificationResponse) => {
+    const payload: any = response.notification.request.content.data;
+
+    switch (payload?.key) {
+      case EVENTS.JOIN_NGO.APPROVE_REQUEST: {
+        if (userProfile) {
+          const isAlreadyMember = userProfile.myOrganizations.some(
+            (organization) => organization.id === payload.payload.id,
+          );
+          setUserProfile({
+            ...userProfile,
+            activeOrganization: payload.payload,
+            myOrganizations: isAlreadyMember
+              ? userProfile.myOrganizations
+              : [...userProfile.myOrganizations, payload.payload],
+          });
+        }
+        navigation.navigate('volunteer');
+        break;
+      }
+      case EVENTS.JOIN_NGO.REJECT_REQUEST:
+        navigation.navigate('organization-profile', {
+          organizationId: payload.payload.organizationId,
+        });
+        break;
+      case EVENTS.JOIN_NGO.ARCHIVE_VOLUNTEER:
+        navigation.navigate('organization-profile', {
+          organizationId: payload.payload.id,
+        });
+        break;
+      case EVENTS.NGO_EVENT.ADD:
+        navigation.navigate('event', {
+          eventId: payload.payload.eventId,
+        });
+        break;
+      case EVENTS.OTHER.SEND_ANNOUNCEMENT:
+        navigation.navigate('announcements');
+        break;
+      case EVENTS.DOCUMENTS.GENERATE_CONTRACT:
+      case EVENTS.DOCUMENTS.APPROVE_CONTRACT:
+      case EVENTS.DOCUMENTS.REJECT_CONATRCT:
+        navigation.navigate('contract', {
+          id: payload.payload.contractId,
+        });
+        break;
+      case EVENTS.VOLUNTEER_HOURS.APPROVE:
+      case EVENTS.VOLUNTEER_HOURS.REJECT:
+        navigation.navigate('activity-log', { activityLogId: payload.payload.activityLogId });
+        break;
+    }
+  };
+
+  useEffect(() => {
+    if (!lastNotificationResponse || !isAuthenticated || !isNavigationReady || !userProfile) {
+      return;
+    }
+
+    const responseId = lastNotificationResponse.notification.request.identifier;
+    if (handledResponseId.current === responseId) {
+      return;
+    }
+
+    handledResponseId.current = responseId;
+    // so the same response is not replayed after a new login
+    Notifications.clearLastNotificationResponse();
+    handleNotificationResponse(lastNotificationResponse);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastNotificationResponse, isAuthenticated, isNavigationReady, userProfile]);
 
   const unsubscribe = () => {
     try {
