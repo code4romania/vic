@@ -26,3 +26,4 @@ The T-7 announce and T-1 reminder are not in this layer (decisions R3): a small 
 Build passes with the Cognito packages gone; lint, test pass; `npm run auth:migrate -- --dry-run` prints counts against the local seed.
 
 ## Comments
+- 2026-10-30: the `{{#if code}}` block in `mail-template.hbs` is already done (Layer 3), together with an optional `{{#if english}}` block for the English text. Nothing left to change in the template here.

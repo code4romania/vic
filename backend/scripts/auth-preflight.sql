@@ -32,3 +32,17 @@ SELECT 'phone', btrim(phone), count(*) FROM organization WHERE deleted_on IS NUL
 
 -- 5. Informational: how many identities the migration will create.
 SELECT type, count(*) FROM "user" WHERE deleted_on IS NULL GROUP BY 1;
+
+-- 6. Informational (decisions R35): today's volunteers by Cognito username prefix.
+--    Rows for google, facebook or signinwithapple mean `auth:migrate` must create their
+--    auth_identity_provider links from the Cognito username. The social buttons have been
+--    hidden since 13 December 2023 (e0cd277d), so expect few or none.
+SELECT CASE
+         WHEN split_part(cognito_id, '_', 1) IN ('google', 'facebook', 'signinwithapple')
+           THEN split_part(cognito_id, '_', 1)
+         ELSE 'email_password'
+       END AS kind,
+       count(*)
+FROM "user"
+WHERE type = 'regular' AND deleted_on IS NULL
+GROUP BY 1;

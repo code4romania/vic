@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EntityManager } from 'typeorm';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import {
   FindManyAdminUserOptions,
@@ -43,8 +44,9 @@ export class UserFacadeService {
 
   public async createAdmin(
     adminUserModel: ICreateAdminUserModel,
+    manager?: EntityManager,
   ): Promise<IAdminUserModel> {
-    return this.adminUserRepository.create(adminUserModel);
+    return this.adminUserRepository.create(adminUserModel, manager);
   }
 
   public async createRegularUser(

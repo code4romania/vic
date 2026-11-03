@@ -48,6 +48,10 @@ export enum TrackedEventName {
   CREATE_CONTRACT = 'CREATE_CONTRACT',
   APPROVE_CONTRACT = 'APPROVE_CONTRACT',
   REJECT_CONTRACT = 'REJECT_CONTRACT',
+
+  // Admins (Team page)
+  DISABLE_ADMIN = 'DISABLE_ADMIN',
+  ENABLE_ADMIN = 'ENABLE_ADMIN',
 }
 
 export interface TrackedEventData {
@@ -198,5 +202,15 @@ export interface TrackedEventData {
     volunteerId: string;
     volunteerName: string;
     contractNumber: string;
+  };
+
+  // Admins
+  [TrackedEventName.DISABLE_ADMIN]: {
+    adminId: string;
+    adminName: string;
+  };
+  [TrackedEventName.ENABLE_ADMIN]: {
+    adminId: string;
+    adminName: string;
   };
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
@@ -16,6 +17,7 @@ export class ApproveActivityLogUsecase
   implements IUseCaseService<IActivityLogModel>
 {
   constructor(
+    private readonly organizationGate: OrganizationGateService,
     private readonly getOneActivityLogUsecase: GetOneActivityLogUsecase,
     private readonly activityLogFacade: ActivityLogFacade,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
@@ -26,6 +28,9 @@ export class ApproveActivityLogUsecase
     id: string,
     admin: IAdminUserModel,
   ): Promise<IActivityLogModel> {
+    // 0. An NGO that is not validated (or is suspended) cannot be joined, run events or log hours (decision 1)
+    await this.organizationGate.assertValidated(admin.organizationId);
+
     // 1. Check if the log to be updated, exists
     const log = await this.getOneActivityLogUsecase.execute(id);
 

@@ -1,7 +1,39 @@
 import { Module } from '@nestjs/common';
+import { RegisterOrganizationUseCase } from './organization/register-organization.usecase';
+import { UpdateOrganizationUseCase } from './organization/update-organization.usecase';
+import { ListPendingValidationUseCase } from './organization/list-pending-validation.usecase';
+import { ValidateOrganizationUseCase } from './organization/validate-organization.usecase';
+import {
+  SuspendOrganizationUseCase,
+  UnsuspendOrganizationUseCase,
+} from './organization/suspend-organization.usecase';
+import { OrganizationGateService } from './organization/organization-gate.service';
+import { OrganizationFilesHelper } from './organization/organization-files.helper';
+import { TurnstileService } from 'src/infrastructure/providers/turnstile/turnstile.service';
+import { ListTeamUseCase } from './team/list-team.usecase';
+import { AddAdminUseCase } from './team/add-admin.usecase';
+import { SendInviteUseCase } from './team/send-invite.usecase';
+import { SetAdminStatusUseCase } from './team/set-admin-status.usecase';
+import { TeamAccessHelper } from './team/team-access.helper';
+import { ApplyNewPasswordUseCase } from './auth/apply-new-password.usecase';
+import { LoginUseCase } from './auth/login.usecase';
+import { SetPasswordUseCase } from './auth/set-password.usecase';
+import { ResetPasswordWithCodeUseCase } from './auth/reset-password-with-code.usecase';
+import { ForgotPasswordUseCase } from './auth/forgot-password.usecase';
+import { RegisterMobileUseCase } from './auth/register-mobile.usecase';
+import { ConfirmEmailUseCase } from './auth/confirm-email.usecase';
+import { RefreshSessionUseCase } from './auth/refresh-session.usecase';
+import { LogoutUseCase } from './auth/logout.usecase';
+import { ChangePasswordUseCase } from './auth/change-password.usecase';
+import { SocialLoginUseCase } from './auth/social-login.usecase';
+import { GetTokenInfoUseCase } from './auth/get-token-info.usecase';
+import { ResendTokenUseCase } from './auth/resend-token.usecase';
+import { ResendVerificationUseCase } from './auth/resend-verification.usecase';
+import { WebSessionHelper } from './auth/web-session.helper';
+import { AdminContextHelper } from './auth/token-purpose.helper';
+import { AuthenticationModule } from 'src/modules/auth/auth.module';
 import { ExceptionsModule } from 'src/infrastructure/exceptions/exceptions.module';
 import { AccessRequestModule } from 'src/modules/access-request/access-request.module';
-import { OngHubModule } from 'src/modules/onghub/onghub.module';
 import { OrganizationModule } from 'src/modules/organization/organization.module';
 import { UserModule } from 'src/modules/user/user.module';
 import { CreateAccessCodeUseCase } from './access-code/create-access-code.usecase';
@@ -17,8 +49,6 @@ import { CreateOrganizationStructureUseCase } from './organization/organization-
 import { DeleteOrganizationStructureUseCase } from './organization/organization-structure/delete-organization-structure.usecase';
 import { GetAllOrganizationStructureUseCase } from './organization/organization-structure/get-all-organization-structure.usecase';
 import { UpdateOrganizationStructureUseCase } from './organization/organization-structure/update-organization-structure.usecase';
-import { UpdateOrganizationDescriptionUseCaseService } from './organization/update-organization-description.usecase';
-import { GetUserProfileUseCaseService } from './user/get-user-profile.usecase';
 import { ApproveAccessRequestUseCase } from './access-request/approve-access-request.usecase';
 import { RejectAccessRequestUseCase } from './access-request/reject-access-request.usecase';
 import { GetManyNewAccessRequestsUseCase } from './access-request/get-many-new-access-requests.usecase';
@@ -140,8 +170,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
 @Module({
   imports: [
     ExceptionsModule,
+    AuthenticationModule,
     OrganizationModule,
-    OngHubModule,
     UserModule,
     AccessRequestModule,
     LocationModule,
@@ -156,9 +186,41 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     DocumentsModule,
   ],
   providers: [
+    // Organizations: registration, validation, gates
+    RegisterOrganizationUseCase,
+    UpdateOrganizationUseCase,
+    ListPendingValidationUseCase,
+    ValidateOrganizationUseCase,
+    SuspendOrganizationUseCase,
+    UnsuspendOrganizationUseCase,
+    OrganizationGateService,
+    OrganizationFilesHelper,
+    TurnstileService,
+    // Team
+    ListTeamUseCase,
+    AddAdminUseCase,
+    SendInviteUseCase,
+    SetAdminStatusUseCase,
+    TeamAccessHelper,
+    // Auth
+    ApplyNewPasswordUseCase,
+    LoginUseCase,
+    SetPasswordUseCase,
+    ResetPasswordWithCodeUseCase,
+    ForgotPasswordUseCase,
+    RegisterMobileUseCase,
+    ConfirmEmailUseCase,
+    RefreshSessionUseCase,
+    LogoutUseCase,
+    ChangePasswordUseCase,
+    SocialLoginUseCase,
+    GetTokenInfoUseCase,
+    ResendTokenUseCase,
+    ResendVerificationUseCase,
+    WebSessionHelper,
+    AdminContextHelper,
     // Organization
     GetOrganizationUseCaseService,
-    UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
     SwitchOrganizationUsecase,
@@ -178,7 +240,6 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     UpdateOrganizationStructureUseCase,
     GetAllOrganizationStructureByTypeUseCase,
     // User
-    GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
@@ -299,9 +360,36 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     UpdateSettingsUsecase,
   ],
   exports: [
+    // Organizations: registration, validation, gates
+    RegisterOrganizationUseCase,
+    UpdateOrganizationUseCase,
+    ListPendingValidationUseCase,
+    ValidateOrganizationUseCase,
+    SuspendOrganizationUseCase,
+    UnsuspendOrganizationUseCase,
+    OrganizationGateService,
+    OrganizationFilesHelper,
+    // Team
+    ListTeamUseCase,
+    AddAdminUseCase,
+    SendInviteUseCase,
+    SetAdminStatusUseCase,
+    // Auth
+    LoginUseCase,
+    SetPasswordUseCase,
+    ResetPasswordWithCodeUseCase,
+    ForgotPasswordUseCase,
+    RegisterMobileUseCase,
+    ConfirmEmailUseCase,
+    RefreshSessionUseCase,
+    LogoutUseCase,
+    ChangePasswordUseCase,
+    SocialLoginUseCase,
+    GetTokenInfoUseCase,
+    ResendTokenUseCase,
+    ResendVerificationUseCase,
     // Organization
     GetOrganizationUseCaseService,
-    UpdateOrganizationDescriptionUseCaseService,
     GetOrganizationsUseCase,
     GetOrganizationWithEventsUseCase,
     SwitchOrganizationUsecase,
@@ -321,7 +409,6 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     UpdateOrganizationStructureUseCase,
     GetAllOrganizationStructureByTypeUseCase,
     // User
-    GetUserProfileUseCaseService,
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,

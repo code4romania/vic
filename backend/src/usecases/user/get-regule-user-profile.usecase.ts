@@ -24,6 +24,11 @@ export class GetOneRegularUserProfileUseCase
   async execute(
     options: FindOneRegularUserOptions,
   ): Promise<IRegularUserProfileModel> {
+    // 0. a volunteer with no profile has no id; TypeORM drops an undefined where key and would match the first user
+    if (!options || Object.values(options).some((value) => !value)) {
+      this.exceptionService.notFoundException(UserExceptionMessages.USER_001);
+    }
+
     // 1. get user data
     const user = await this.userService.findRegularUser(options);
 

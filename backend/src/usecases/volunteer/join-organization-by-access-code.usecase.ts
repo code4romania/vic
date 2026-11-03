@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
@@ -23,6 +24,7 @@ export class JoinOrganizationByAccessCodeUsecase
   implements IUseCaseService<IVolunteerModel>
 {
   constructor(
+    private readonly organizationGate: OrganizationGateService,
     private readonly userFacade: UserFacadeService,
     private readonly exceptionService: ExceptionsService,
     private readonly accessCodeFacade: AccessCodeFacade,
@@ -32,6 +34,11 @@ export class JoinOrganizationByAccessCodeUsecase
   public async execute(
     joinByAccessCode: JoinOrganizationByAccessCodeModel,
   ): Promise<IVolunteerModel> {
+    // 0. An NGO that is not validated (or is suspended) cannot be joined, run events or log hours (decision 1)
+    await this.organizationGate.assertValidated(
+      joinByAccessCode.organizationId,
+    );
+
     // ========================================================================
     // 1: check if the user has the identity data completed, otherwise throw
     // ========================================================================

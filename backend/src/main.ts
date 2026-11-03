@@ -1,31 +1,19 @@
-import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
+import { setupApp } from './app.setup';
 import { Environment } from './infrastructure/config/environment-config';
-import { ExceptionsFilter } from './infrastructure/filters/exception.filter';
 import { createQueueMonitoring } from './infrastructure/config/create-bull-board';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.enableCors({
-    exposedHeaders: 'content-disposition', // Allow header in the Axios Response Headers
-  });
+  // trust proxy, cookies, CORS limited to CORS_ORIGINS with credentials, the exception filter and the validation pipe.
+  setupApp(app);
 
   app.use(helmet());
-
-  app.useGlobalFilters(new ExceptionsFilter());
-
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-      transformOptions: { enableImplicitConversion: true },
-      forbidNonWhitelisted: false,
-    }),
-  );
 
   app.use('/admin/queues', createQueueMonitoring(app).getRouter());
 

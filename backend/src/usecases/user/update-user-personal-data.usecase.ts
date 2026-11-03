@@ -19,6 +19,11 @@ export class UpdateUserPersonalDataUsecase
     id: string,
     personalData: CreateUserPersonalDataOptions,
   ): Promise<IRegularUserModel> {
+    // 0. a volunteer with no profile has no id; TypeORM drops an undefined where key and would match the first user
+    if (!id) {
+      this.exceptionService.notFoundException(UserExceptionMessages.USER_001);
+    }
+
     // 1. check if user exists
     const user = await this.userService.findRegularUser({ id });
 

@@ -6,34 +6,29 @@ import {
   ChildEntity,
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   TableInheritance,
-  Unique,
 } from 'typeorm';
 import { SEX, UserType } from '../enums/user.enum';
 import { UserPersonalDataEntity } from './user-personal-data.entity';
 import { NotificationsSettingsEntity } from 'src/modules/notifications/entities/notifications-settings.entity';
 
-export const USER_CONSTRAINTS = {
-  COGNITO_USER_TYPE_EMAIL_UNIQUE: 'cognito-userType-email-unique',
-};
-
 @Entity({ name: 'user' })
-@Unique(USER_CONSTRAINTS.COGNITO_USER_TYPE_EMAIL_UNIQUE, [
-  'cognitoId',
-  'type',
-  'email',
-])
+// Emails are unique per type ignoring case: UNIQUE (type, lower(email)) WHERE deleted_on IS NULL.
+// Written by hand in the OwnAuthTables migration, because TypeORM cannot express lower().
+@Index('user_type_email_unique', { synchronize: false })
 @TableInheritance({ column: { type: 'varchar', name: 'type', enum: UserType } }) // TODO: can include type in the entity response from the db?
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'text', name: 'cognito_id' })
+  // Nullable since own auth; the column is dropped at day 30 after the cutover.
+  @Column({ type: 'text', name: 'cognito_id', nullable: true })
   cognitoId: string;
 
   @Column({ type: 'text', name: 'name' })

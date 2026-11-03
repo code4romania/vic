@@ -5,7 +5,7 @@ import { UserFacadeService } from 'src/modules/user/services/user-facade.service
 import { GetOneRegularUserProfileUseCase } from './get-regule-user-profile.usecase';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
-import { CognitoService } from 'src/infrastructure/providers/cognito/module/cognito.service';
+import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import { PushNotificationsFacade } from 'src/modules/notifications/notifications.facade';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { ActivityLogFacade } from 'src/modules/activity-log/services/activity-log.facade';
@@ -22,7 +22,7 @@ export class DeleteAccountRegularUserUsecase implements IUseCaseService<void> {
     private readonly getRegularUserProfileUsecase: GetOneRegularUserProfileUseCase,
     private readonly exceptionService: ExceptionsService,
     private readonly s3Service: S3Service,
-    private readonly cognitoService: CognitoService,
+    private readonly authIdentityFacade: AuthIdentityFacade,
     private readonly pushNotificationService: PushNotificationsFacade,
     private readonly volunteerFacade: VolunteerFacade,
     private readonly activityLogFacade: ActivityLogFacade,
@@ -31,6 +31,11 @@ export class DeleteAccountRegularUserUsecase implements IUseCaseService<void> {
   ) {}
 
   async execute(userId: string): Promise<void> {
+    // A0. a volunteer with no profile has no id; TypeORM drops an undefined where key and would delete someone else
+    if (!userId) {
+      this.exceptionService.notFoundException(UserExceptionMessages.USER_001);
+    }
+
     // A1. check if user exists
     const user = await this.userService.findRegularUser({ id: userId });
 
@@ -40,9 +45,8 @@ export class DeleteAccountRegularUserUsecase implements IUseCaseService<void> {
     }
 
     try {
-      // 1. Delete cognito user
-      await this.cognitoService.globalSignOut(user.cognitoId);
-      await this.cognitoService.deleteUser(user.cognitoId);
+      // 1. Delete the login: the foreign keys remove its tokens, sessions and provider links, and the email can register again
+      await this.authIdentityFacade.deleteByUserId(userId);
 
       // 2. Hard delete all "PushTokens"
       await this.pushNotificationService.deleteMany({ userId });

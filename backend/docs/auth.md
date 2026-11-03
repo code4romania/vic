@@ -1,6 +1,6 @@
 # Authentication in the VIC backend
 
-How login works once Cognito and NGO Hub are replaced. Written 16 October 2026 from the design; sections are confirmed or corrected as each layer lands (`.scratch/own-auth/issues/`). The full step-by-step is in the Implementation Guide (https://claude.ai/code/artifact/02645619-109a-4538-9358-b61ffb680134); the reasons are in the design doc (https://claude.ai/code/artifact/db39a7ad-1dd1-4ea4-b50f-ebc22ada9a7e). Decisions taken after the design (resolutions R1 to R36) are in `.scratch/own-auth/decisions.md`, which wins where the documents differ; this page follows it.
+How login works once Cognito and NGO Hub are replaced. Written 16 October 2026 from the design; sections are confirmed or corrected as each layer lands (Layers 1 to 3 checked against the code on 30 October 2026) (`.scratch/own-auth/issues/`). The full step-by-step is in the Implementation Guide (https://claude.ai/code/artifact/02645619-109a-4538-9358-b61ffb680134); the reasons are in the design doc (https://claude.ai/code/artifact/db39a7ad-1dd1-4ea4-b50f-ebc22ada9a7e). Decisions taken after the design (resolutions R1 to R36) are in `.scratch/own-auth/decisions.md`, which wins where the documents differ; this page follows it.
 
 ## Overview
 
@@ -40,7 +40,11 @@ A one-time token row is accepted only while live: no `used_at`, no `replaced_at`
 - Consumed inside the transaction that applies the change.
 - Per identity and type: one new token a minute, five an hour (Redis counters). Send invite: one per 10 minutes, five a day per target.
 
-Refresh, in one transaction: find the row by hash and live → move the hash to `previous_hash`, store the new hash, extend `expires_at`, set `rotated_at` and `last_used_at`. Not found but a `previous_hash` matches: within 10 seconds of `rotated_at` return the current pair (two tabs crossed); otherwise revoke the session and answer AUTH_008. Otherwise AUTH_008.
+Refresh (`SessionService.rotate`, confirmed in Layer 3): find the row by hash; it must be live (not revoked, not expired) and its identity `active` and of the asking realm, else AUTH_008. Then one conditional UPDATE moves the hash to `previous_hash`, stores the new hash, extends `expires_at` and sets `rotated_at` and `last_used_at`, only while the row still holds the presented hash. Not found but a `previous_hash` matches: within 10 seconds of `rotated_at` (two tabs or requests crossed, or the UPDATE lost that race) the answer is a new access token **without** a refresh token, and the client keeps the refresh token it already has (only hashes are stored, so the current refresh token cannot be returned); later than that it is a replay: the session is revoked and the answer is AUTH_008. Otherwise AUTH_008.
+
+Lockout (`AuthIdentityFacade`, Layer 2): the fifth wrong password in a row sets `locked_until = now + 15 min` and resets `failed_attempts` to 0, in one SQL statement, so after the lock the user gets five fresh tries. A successful login resets both and sets `last_login_at`.
+
+Emails (`src/modules/auth/constants/auth-emails.ts`, Layer 3): Romanian first, English below, in `mail-template.hbs`. Every builder passes `title`, `subtitle`, `cta`, `code` and `english`. The template has optional `{{#if code}}` (the 6-digit code, large) and `{{#if english}}` blocks; `{{#if}}` on a missing key is safe under strict mode, so existing emails render unchanged.
 
 ## Endpoints
 
@@ -59,6 +63,10 @@ Web, `/auth/web` (`WebJwtAuthGuard`, public where marked):
 Shared, `/auth` (public): `GET token/:secret` → `{ type, purpose, realm, maskedEmail, organizationName? }` with `purpose` one of `transition`, `invite`, `reset`, `verify_email` (transition = an invite with no `sent_by`, made by the migration script); 400 AUTH_005. `POST token/:secret/resend` (200 always; a fresh link of the same type). `POST set-password { token, password }` (transition, reset and invite links): web realm → session + cookie; mobile realm → `{ realm: 'mobile', email }` and no session, the volunteer logs in in the app. `POST confirm-email { token }`: NGO link → NGO active + session; mobile link → `{ realm: 'mobile', email }`.
 
 Mobile, `/mobile/auth` (`MobileJwtAuthGuard`, public where marked): `register`, `resend-verification` (200 always), `login`, `social { provider, token }` (a migrated volunteer still in `pending_password` is activated by a successful social sign-in), `refresh { refreshToken }`, `logout`, `forgot-password` (a code), `reset-password { email, code, password }`, `change-password`. Every `/mobile/*` route passes the version guard: `x-app-version` below `MOBILE_MIN_VERSION` → 426 AUTH_011. `GET /public/mobile-version` returns `{ minVersion }`.
+
+Built in Layer 7 (checked 30 October 2026): the web, shared and mobile routes above, Swagger at `/api`. The logged-in admin is returned as `AdminProfilePresenter { id, name, email, phone, organizationId, superAdmin }`; `AdminUserPresenter` stays `{ id, name }` because the activity log shows it for other admins. Set-password, confirm-email and social sign-in refuse a disabled login (AUTH_004), so a live link cannot undo a Disable. `POST /mobile/user` takes the email from the login, never from the body.
+
+Built in Layer 8 (checked 2 November 2026): logos are stored as **full public URLs** in the public bucket (deviation from R27: presigning cannot happen in the synchronous presenters); statutes are private keys presigned for a day where shown. A local S3 emulator is used when `AWS_S3_ENDPOINT` is set (with `AWS_S3_PUBLIC_BUCKET` and `AWS_S3_PUBLIC_BASE_URL`); staging and production leave all three unset. Team members without a login show as `no_login`; extra codes ORG_008, ORG_009, ORG_010.
 
 Organizations: `POST /organizations/register` (public, multipart with `logo` and `statute`, Turnstile token; address is free text); `PATCH /organization` (every field, multipart). Super admin, `/admin/organizations` (`SuperAdminGuard`): `GET pending-validation`, `PATCH :id/validate`, `PATCH :id/suspend`, `PATCH :id/unsuspend`. Team, `/organization/team`: `GET`, `POST`, `POST :userId/invite`, `PATCH :userId/disable`, `PATCH :userId/enable`. Enable sends no email: an enabled admin who has no password gets one through `POST :userId/invite`.
 
@@ -83,6 +91,9 @@ Organizations: `POST /organizations/register` (public, multipart with `logo` and
 | ORG_005 | Organization not validated | 403 |
 | ORG_006 | Turnstile check failed on NGO registration | 400 |
 | ORG_007 | Statute missing or not a PDF | 400 |
+| ORG_008 | Team: the admin is not in your organization | 403 |
+| ORG_009 | Team: invites are only for admins without a password | 400 |
+| ORG_010 | Team: you cannot change your own status | 400 |
 | MAINTENANCE | API in maintenance mode | 503 |
 
 ## Environment variables
@@ -98,7 +109,7 @@ Organizations: `POST /organizations/register` (public, multipart with `logo` and
 | `CORS_ORIGINS` | comma-separated origins allowed to send the cookie |
 | `MOBILE_MIN_VERSION` | lowest app version the API accepts |
 | `MAINTENANCE_MODE` | `true` → 503 `MAINTENANCE` on everything except `GET /public/health` and allow-listed IPs |
-| `MAINTENANCE_ALLOWED_IPS` | optional, comma separated; during maintenance these client IPs pass (the smoke-test team). The IP is the first `X-Forwarded-For` hop (`trust proxy` 1) |
+| `MAINTENANCE_ALLOWED_IPS` | optional, comma separated; during maintenance these client IPs pass (the smoke-test team). The IP is `req.ip` with `trust proxy` 1: the address the load balancer appended to `X-Forwarded-For`, **not** the first hop, which the client can write itself (deviation from decisions R2, Layer 4) |
 | `REDIS_KEY_PREFIX` | optional ioredis `keyPrefix`; empty in production, `test:` in `.env.test` |
 | `TURNSTILE_SECRET` | Cloudflare Turnstile, NGO registration only |
 | `GOOGLE_CLIENT_IDS`, `FACEBOOK_APP_ID`, `FACEBOOK_APP_SECRET`, `APPLE_BUNDLE_ID` | social token verification |
@@ -133,6 +144,7 @@ Daily job `auth-maintenance-vic` at 03:30: deletes expired or long-revoked sessi
 
 ## Tests
 
-- Unit: `npm run test` (`*.spec.ts` next to the code; `moduleNameMapper` resolves `src/...` imports).
-- End-to-end: `npm run test:e2e` against the `vic_test` database and the compose Redis (keys prefixed `test:`), with `MailService` faked and a helper that mints access tokens with the test key (harness built in Layer 3) so tests read links and codes from the fake mailbox. Specs: `auth-web`, `auth-mobile`, `auth-social`, `realms`, `organization-registration`, `team`, `migration`.
+- Unit: `npm run test` (`*.spec.ts` next to the code; `moduleNameMapper` resolves `src/...` imports). The repository and service specs use a real Postgres, so the local compose database must be up.
+- Databases: `test/utils/test-data-source.ts` creates and migrates `vic_test_<jest worker>` (`DATABASE_TEST_NAME`, default `vic_test`) on the local server and refuses any `DATABASE_HOST` other than localhost / 127.0.0.1. One database per worker keeps parallel suites apart.
+- End-to-end: `npm run test:e2e`. `test/setup-env.ts` (Jest `setupFiles`) loads `.env`, then `.env.test`, then generates a throwaway RSA key pair and `AUTH_TOKEN_KEY` in memory; no test secret is committed. `test/utils/test-app.ts` boots `AppModule` on the worker's database with the compose Redis (keys prefixed `test:`), `MailService` replaced by `FakeMailService` (tests read links and codes from `mailbox.sent`), and `mintAccessToken(identity, realm)` that creates a real session so the token carries `sid`. `test/harness.e2e-spec.ts` proves the three. Specs: `auth-web`, `auth-mobile`, `auth-social`, `realms`, `organization-registration`, `team`, `migration`.
 - Pre-flight: `scripts/auth-preflight.sql` on a copy of production before the cutover migration, including the count of social Cognito users by provider.

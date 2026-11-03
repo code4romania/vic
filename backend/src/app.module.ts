@@ -6,17 +6,17 @@ import { ApiModule } from './api/api.module';
 import { validate } from './infrastructure/config/environment-config';
 import { RolesGuard } from './infrastructure/guards/roles.guard';
 import { ThrottlerGuardByIP } from './infrastructure/guards/throttler.guard';
-import { JsonBodyMiddleware } from './infrastructure/middleware/json-body.middlware';
-import { RawBodyMiddleware } from './infrastructure/middleware/raw-body.middleware';
+import { MaintenanceMiddleware } from './infrastructure/middleware/maintenance.middleware';
+import { MobileVersionGuard } from './infrastructure/guards/mobile-version.guard';
 import { AuthenticationModule } from './modules/auth/auth.module';
 import { MailModule } from './modules/mail/mail.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { UserModule } from './modules/user/user.module';
 import {
   CacheProviderModule,
-  CognitoProviderModule,
   DatabaseProviderModule,
   QueueProviderModule,
+  RedisProviderModule,
   ThrottleModule,
 } from './infrastructure/providers';
 import { S3ProviderModule } from './infrastructure/providers/s3/s3-provider.module';
@@ -37,10 +37,10 @@ import { ExpoPushNotificationsProviderModule } from './infrastructure/providers/
     DatabaseProviderModule,
     CacheProviderModule,
     QueueProviderModule,
+    RedisProviderModule,
     ThrottleModule,
     S3ProviderModule,
     ExpoPushNotificationsProviderModule,
-    CognitoProviderModule,
 
     // Modules
     MailModule,
@@ -61,14 +61,17 @@ import { ExpoPushNotificationsProviderModule } from './infrastructure/providers/
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
+    {
+      // 426 AUTH_011 for a /mobile request from an app below MOBILE_MIN_VERSION
+      provide: APP_GUARD,
+      useClass: MobileVersionGuard,
+    },
   ],
 })
 export class AppModule {
-  onfigure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
-    consumer
-      .apply(RawBodyMiddleware)
-      .forRoutes('api/*')
-      .apply(JsonBodyMiddleware)
-      .forRoutes('*');
+  // Was misspelled `onfigure`, so no middleware ever ran. The RawBody / JsonBody registrations it held are
+  // dropped rather than switched on silently; the files stay for now.
+  configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
+    consumer.apply(MaintenanceMiddleware).forRoutes('*');
   }
 }

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { IOrganizationModel } from 'src/modules/organization/models/organization.model';
 
 export class OrganizationPresenter {
@@ -12,6 +13,11 @@ export class OrganizationPresenter {
     this.activityArea = organization.activityArea;
     this.logo = organization.logo;
     this.description = organization.description;
+    this.status = organization.status;
+    this.validatedAt = organization.validatedAt;
+    this.taxId = organization.taxId;
+    this.website = organization.website;
+    this.statuteUrl = organization.statuteUrl;
   }
 
   @Expose()
@@ -63,4 +69,31 @@ export class OrganizationPresenter {
     description: 'The description phone of the Organization',
   })
   description: string;
+
+  @Expose()
+  @ApiProperty({ enum: OrganizationStatus })
+  status: OrganizationStatus;
+
+  @Expose()
+  @ApiProperty({
+    description:
+      'When a super admin validated it; null shows the "awaiting validation" banner',
+    nullable: true,
+  })
+  validatedAt: Date;
+
+  @Expose()
+  @ApiProperty({ description: 'CUI' })
+  taxId: string;
+
+  @Expose()
+  @ApiProperty({ nullable: true })
+  website: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'A link to the statute PDF, valid for a day',
+    nullable: true,
+  })
+  statuteUrl: string;
 }

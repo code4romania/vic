@@ -5,7 +5,7 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { AdminUserEntity } from '../entities/user.entity';
 import { IAdminUserRepository } from '../interfaces/admin-user-repository.interface';
 import {
@@ -30,13 +30,17 @@ export class AdminUserRepositoryService
 
   async create(
     adminUserModel: ICreateAdminUserModel,
+    manager?: EntityManager,
   ): Promise<IAdminUserModel> {
     // create  admin user  entity
     const newAdminUserEntity = AdminUserTransformer.toEntity(adminUserModel);
 
-    // save admin user entity
-    const adminUserEntity =
-      await this.adminUserRepository.save(newAdminUserEntity);
+    // save admin user entity, inside the caller's transaction when given one
+    const adminUserEntity = await (
+      manager
+        ? manager.getRepository(AdminUserEntity)
+        : this.adminUserRepository
+    ).save(newAdminUserEntity);
 
     // return organization model
     return AdminUserTransformer.fromEntity(adminUserEntity);

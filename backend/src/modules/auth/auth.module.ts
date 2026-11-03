@@ -1,12 +1,76 @@
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from '../user/user.module';
+import { OrganizationModule } from '../organization/organization.module';
+import { SuperAdminGuard } from './guards/super-admin.guard';
+import { GoogleTokenVerifier } from './services/social/google.verifier';
+import { AppleTokenVerifier } from './services/social/apple.verifier';
+import { FacebookTokenVerifier } from './services/social/facebook.verifier';
+import { SocialTokenVerifierService } from './services/social/social-token-verifier.service';
 import { MobileJwtStrategy } from './strategies/jwt-mobile.strategy';
 import { WebJwtStrategy } from './strategies/jwt-web.strategy';
+import { AuthIdentityEntity } from './entities/auth-identity.entity';
+import { AuthTokenEntity } from './entities/auth-token.entity';
+import { RefreshTokenEntity } from './entities/refresh-token.entity';
+import { AuthIdentityProviderEntity } from './entities/auth-identity-provider.entity';
+import { AuthIdentityRepository } from './repositories/auth-identity.repository';
+import { AuthTokenRepository } from './repositories/auth-token.repository';
+import { RefreshTokenRepository } from './repositories/refresh-token.repository';
+import { AuthIdentityProviderRepository } from './repositories/auth-identity-provider.repository';
+import { AuthIdentityFacade } from './services/auth-identity.facade';
+import { AuthConfigService } from 'src/infrastructure/config/auth.config';
+import { PasswordService } from './services/password.service';
+import { OneTimeTokenService } from './services/one-time-token.service';
+import { SessionService } from './services/session.service';
+import { AuthRateLimitService } from './services/auth-rate-limit.service';
+import { AuthMailerService } from './services/auth-mailer.service';
 
 @Module({
-  imports: [PassportModule.register({}), UserModule],
-  providers: [WebJwtStrategy, MobileJwtStrategy],
-  exports: [],
+  imports: [
+    PassportModule.register({}),
+    // RS256 with the key pair from AuthConfigService; signs and verifies VIC's own access tokens.
+    JwtModule.registerAsync({ useClass: AuthConfigService }),
+    TypeOrmModule.forFeature([
+      AuthIdentityEntity,
+      AuthTokenEntity,
+      RefreshTokenEntity,
+      AuthIdentityProviderEntity,
+    ]),
+    UserModule,
+    OrganizationModule,
+  ],
+  providers: [
+    WebJwtStrategy,
+    MobileJwtStrategy,
+    AuthIdentityRepository,
+    AuthTokenRepository,
+    RefreshTokenRepository,
+    AuthIdentityProviderRepository,
+    AuthIdentityFacade,
+    AuthConfigService,
+    PasswordService,
+    OneTimeTokenService,
+    SessionService,
+    AuthRateLimitService,
+    AuthMailerService,
+    SuperAdminGuard,
+    GoogleTokenVerifier,
+    AppleTokenVerifier,
+    FacebookTokenVerifier,
+    SocialTokenVerifierService,
+  ],
+  exports: [
+    AuthIdentityFacade,
+    AuthConfigService,
+    PasswordService,
+    OneTimeTokenService,
+    SessionService,
+    AuthRateLimitService,
+    AuthMailerService,
+    SuperAdminGuard,
+    SocialTokenVerifierService,
+  ],
 })
 export class AuthenticationModule {}

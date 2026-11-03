@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArrayOfPropetyType } from 'src/common/helpers/typescript-extends';
-import { Repository } from 'typeorm';
+import { Brackets, EntityManager, Repository } from 'typeorm';
 import { OrganizationEntity } from '../entities/organization.entity';
 import { IOrganizationRepository } from '../interfaces/organization-repository.interface';
 import {
@@ -10,7 +10,14 @@ import {
   IFindOrganizationModel,
   IOrganizationModel,
   OrganizationTransformer,
+  OrganizationUniqueFields,
+  UpdateOrganizationOptions,
 } from '../models/organization.model';
+import { OrganizationStatus } from '../enums/organization-status.enum';
+
+// What volunteers may see in the app (decision 1): confirmed (active, not pending or suspended) and validated.
+const VISIBLE_TO_VOLUNTEERS =
+  'organization.status = :visibleStatus AND organization.validated_at IS NOT NULL';
 import {
   Pagination,
   RepositoryWithPagination,
@@ -46,13 +53,14 @@ export class OrganizationRepositoryService
 
   public async create(
     organization: ICreateOrganizationModel,
+    manager?: EntityManager,
   ): Promise<IOrganizationModel> {
     // create organization entity
     const newOrganizationEntity =
       OrganizationTransformer.toEntity(organization);
 
     // save organization entity
-    const organizationEntity = await this.organizationRepository.save(
+    const organizationEntity = await this.repositoryFor(manager).save(
       newOrganizationEntity,
     );
 
@@ -62,13 +70,66 @@ export class OrganizationRepositoryService
 
   public async update(
     id: string,
-    description: string,
+    options: UpdateOrganizationOptions,
+    manager?: EntityManager,
   ): Promise<IOrganizationModel> {
+    if (!id) return null;
+
     // update organization entity
-    await this.organizationRepository.update({ id }, { description });
+    await this.repositoryFor(manager).update({ id }, options);
 
     // return organization model
-    return this.find({ id });
+    const entity = await this.repositoryFor(manager).findOne({ where: { id } });
+    return OrganizationTransformer.fromEntity(entity);
+  }
+
+  // Organizations other than `exceptId` that already use one of these values, ignoring case.
+  public async findConflicts(
+    fields: OrganizationUniqueFields,
+    exceptId?: string,
+  ): Promise<IOrganizationModel[]> {
+    const checks = Object.entries(fields).filter(([, value]) => !!value);
+    if (!checks.length) return [];
+
+    const columns: Record<string, string> = {
+      name: 'organization.name',
+      email: 'organization.email',
+      phone: 'organization.phone',
+      taxId: 'organization.taxId',
+    };
+    const query = this.organizationRepository
+      .createQueryBuilder('organization')
+      .where(
+        new Brackets((qb) => {
+          checks.forEach(([field, value], index) => {
+            qb.orWhere(
+              `lower(trim(${columns[field]})) = lower(trim(:v${index}))`,
+              {
+                [`v${index}`]: value,
+              },
+            );
+          });
+        }),
+      );
+    if (exceptId) {
+      query.andWhere('organization.id <> :exceptId', { exceptId });
+    }
+
+    return (await query.getMany()).map(OrganizationTransformer.fromEntity);
+  }
+
+  // Confirmed by their first admin, waiting for a super admin.
+  public async findPendingValidation(): Promise<IOrganizationModel[]> {
+    const entities = await this.organizationRepository
+      .createQueryBuilder('organization')
+      .where('organization.status = :status', {
+        status: OrganizationStatus.ACTIVE,
+      })
+      .andWhere('organization.validated_at IS NULL')
+      .orderBy('organization.created_on', 'ASC')
+      .getMany();
+
+    return entities.map(OrganizationTransformer.fromEntity);
   }
 
   public async find(
@@ -114,6 +175,9 @@ export class OrganizationRepositoryService
       )
       .where('(volunteer.status IN (:...statuses) OR volunteer.id IS NULL)', {
         statuses: [VolunteerStatus.ACTIVE, VolunteerStatus.ARCHIVED],
+      })
+      .andWhere(VISIBLE_TO_VOLUNTEERS, {
+        visibleStatus: OrganizationStatus.ACTIVE,
       })
       .orderBy(
         this.buildOrderByQuery(orderBy || 'name', 'organization'),
@@ -170,6 +234,9 @@ export class OrganizationRepositoryService
         },
       )
       .where('organization.id = :organizationId', { organizationId })
+      .andWhere(VISIBLE_TO_VOLUNTEERS, {
+        visibleStatus: OrganizationStatus.ACTIVE,
+      })
       .getOne();
 
     // return organization model
@@ -204,5 +271,13 @@ export class OrganizationRepositoryService
 
   public count(): Promise<number> {
     return this.organizationRepository.count();
+  }
+
+  private repositoryFor(
+    manager?: EntityManager,
+  ): Repository<OrganizationEntity> {
+    return manager
+      ? manager.getRepository(OrganizationEntity)
+      : this.organizationRepository;
   }
 }

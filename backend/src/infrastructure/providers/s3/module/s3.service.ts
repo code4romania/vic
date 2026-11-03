@@ -23,6 +23,9 @@ export class S3Service {
         secretAccessKey: this.options.secretAccessKey,
       },
       region: this.options.region,
+      ...(this.options.endpoint
+        ? { endpoint: this.options.endpoint, forcePathStyle: true }
+        : {}),
     });
   }
 
@@ -63,6 +66,25 @@ export class S3Service {
 
     // Return uploaded files paths
     return uploadCommand.input.Key;
+  }
+
+  // For files anyone may see (NGO logos): uploaded to the public bucket; returns the full URL, which is
+  // what gets stored, so new logos look like the legacy NGO Hub logo URLs and need no presigning.
+  public async uploadPublicFile(
+    path: string,
+    file: Express.Multer.File,
+    fileName?: string,
+  ): Promise<string> {
+    if (!this.options.publicBucket || !this.options.publicBaseUrl) {
+      throw new Error('The public S3 bucket is not configured');
+    }
+    const key = await this.uploadFile(
+      path,
+      file,
+      fileName,
+      this.options.publicBucket,
+    );
+    return `${this.options.publicBaseUrl.replace(/\/+$/, '')}/${key}`;
   }
 
   public async deleteFile(key: string): Promise<string> {

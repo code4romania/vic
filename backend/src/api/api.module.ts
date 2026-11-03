@@ -1,6 +1,12 @@
+import { AuthenticationModule } from 'src/modules/auth/auth.module';
 import { Module } from '@nestjs/common';
 import { UseCaseModule } from 'src/usecases/use-case.module';
-import { AuthController } from './auth/auth.controller';
+import { WebAuthController } from './auth/web-auth.controller';
+import { OrganizationRegistrationController } from './organization/organization-registration.controller';
+import { TeamController } from './organization/team.controller';
+import { AdminOrganizationsController } from './admin/organizations.controller';
+import { TokenController } from './auth/token.controller';
+import { MobileAuthController } from './_mobile/auth/auth.controller';
 import { PublicController } from './public/public.controller';
 import { AccessCodeController } from './organization/access-code.controller';
 import { OrganizationStructureController } from './organization/organization-structure.controller';
@@ -33,11 +39,16 @@ import { MobileSettingsController } from './_mobile/settings/settings-controller
 import { MobileNewsController } from './_mobile/news/news.controller';
 
 @Module({
-  imports: [UseCaseModule],
+  imports: [UseCaseModule, AuthenticationModule],
   controllers: [
     PublicController,
     OrganizationController,
-    AuthController,
+    WebAuthController,
+    TokenController,
+    MobileAuthController,
+    OrganizationRegistrationController,
+    TeamController,
+    AdminOrganizationsController,
     AccessCodeController,
     OrganizationStructureController,
     AccessRequestController,

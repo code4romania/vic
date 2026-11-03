@@ -24,6 +24,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { GetOneRegularUserProfileUseCase } from 'src/usecases/user/get-regule-user-profile.usecase';
 import { UserProfilePresenter } from './presenters/user-profile.presenter';
 import { DeleteAccountRegularUserUsecase } from 'src/usecases/user/delete-account.usecase';
+import { IMobileRequestUser } from 'src/modules/auth/interfaces/request-user.interface';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -41,12 +42,15 @@ export class MobileRegularUserController {
   @Post()
   async create(
     @Body() newUser: CreateRegularUserDto,
-    @ExtractUser() data: IRegularUserModel,
+    @ExtractUser() data: IMobileRequestUser,
   ): Promise<UserProfilePresenter> {
-    const user = await this.createRegularUsereUseCaseService.execute({
-      ...newUser,
-      cognitoId: data.cognitoId,
-    });
+    // The email comes from the login, not the body: it is the address that was confirmed.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { email, ...profile } = newUser;
+    const user = await this.createRegularUsereUseCaseService.execute(
+      profile,
+      data.identityId,
+    );
 
     return new UserProfilePresenter(user);
   }
@@ -55,8 +59,9 @@ export class MobileRegularUserController {
   async getProfile(
     @ExtractUser() user: IRegularUserModel,
   ): Promise<UserProfilePresenter> {
+    // 404 USER_001 while the volunteer has no profile: the app's signal to open CreateUser.
     const regularUser = await this.getOneRegularUserProfileUseCase.execute({
-      cognitoId: user.cognitoId,
+      id: user.id,
     });
     return new UserProfilePresenter(regularUser);
   }

@@ -22,7 +22,10 @@ export class EmailConfigService {
       defaults: {
         from: '"No Reply" <no-reply@localhost>',
       },
-      preview: true,
+      // Opens each email in the browser. Not in the iOS Simulator: on a Mac with Xcode but no booted
+      // simulator, preview-email polls `simctl` forever and the mail queue stops. preview-email accepts
+      // `openSimulator`; the mailer's type for `preview` does not list it, hence the cast.
+      preview: { openSimulator: false } as MailerOptions['preview'],
       template: {
         dir: __dirname + '/../../modules/mail/templates',
         adapter: new HandlebarsAdapter({ asset_url: this.createAssetUrl }),

@@ -4,7 +4,10 @@ import {
   ICreateOrganizationModel,
   IFindOrganizationModel,
   IOrganizationModel,
+  OrganizationUniqueFields,
+  UpdateOrganizationOptions,
 } from '../models/organization.model';
+import { EntityManager } from 'typeorm';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { OrganizationEntity } from '../entities/organization.entity';
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
@@ -14,8 +17,20 @@ import { IOrganizationVolunteerModel } from '../models/organization-volunteer.mo
 
 export interface IOrganizationRepository
   extends IRepositoryWithPagination<OrganizationEntity> {
-  create(organization: ICreateOrganizationModel): Promise<IOrganizationModel>;
-  update(id: string, description: string): Promise<IOrganizationModel>;
+  create(
+    organization: ICreateOrganizationModel,
+    manager?: EntityManager,
+  ): Promise<IOrganizationModel>;
+  update(
+    id: string,
+    options: UpdateOrganizationOptions,
+    manager?: EntityManager,
+  ): Promise<IOrganizationModel>;
+  findConflicts(
+    fields: OrganizationUniqueFields,
+    exceptId?: string,
+  ): Promise<IOrganizationModel[]>;
+  findPendingValidation(): Promise<IOrganizationModel[]>;
   find(
     options:
       | Partial<IFindOrganizationModel>

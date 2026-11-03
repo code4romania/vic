@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 import {
@@ -9,33 +9,42 @@ import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.serv
 import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 import { NotificationsSettingsFacade } from 'src/modules/notifications/notifications-settings.facade';
 import { GetOneRegularUserProfileUseCase } from './get-regule-user-profile.usecase';
-import { CognitoService } from 'src/infrastructure/providers/cognito/module/cognito.service';
-import { JSONStringifyError } from 'src/common/helpers/utils';
+import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
+import { AuthRealm } from 'src/modules/auth/enums/auth.enums';
 
 @Injectable()
 export class CreateRegularUsereUseCaseService
   implements IUseCaseService<IRegularUserProfileModel>
 {
-  private readonly logger = new Logger(CreateRegularUsereUseCaseService.name);
-
   constructor(
     private readonly userService: UserFacadeService,
     private exceptionService: ExceptionsService,
     private readonly notificationSettingsFacade: NotificationsSettingsFacade,
     private readonly getRegularUserProfileUsecase: GetOneRegularUserProfileUseCase,
-    private readonly cognitoService: CognitoService,
+    private readonly authIdentityFacade: AuthIdentityFacade,
   ) {}
 
+  // The profile of the logged-in volunteer: one per mobile login, with the login's (confirmed) email.
   async execute(
-    newUser: CreateRegularUserOptions,
+    newUser: Omit<CreateRegularUserOptions, 'email'>,
+    identityId: string,
   ): Promise<IRegularUserProfileModel> {
+    // 1. the login must exist and not have a profile yet
+    const identity = await this.authIdentityFacade.findIdentity({
+      id: identityId,
+    });
+    if (!identity || identity.realm !== AuthRealm.MOBILE) {
+      this.exceptionService.badRequestException(UserExceptionMessages.USER_005);
+    }
+    if (identity.userId) {
+      this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
+    }
+
+    // 2. There is already an user with the same "phone"/"email", abort..
     const existingUser = await this.userService.findRegularUser([
-      { cognitoId: newUser.cognitoId },
-      { email: newUser.email },
+      { email: identity.email },
       { phone: newUser.phone },
     ]);
-
-    // There is already an user with the same "phone"/"email"/"cognitoId", abort..
     if (existingUser) {
       this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
     }
@@ -43,27 +52,17 @@ export class CreateRegularUsereUseCaseService
     const notificationsSettings =
       await this.notificationSettingsFacade.create();
 
-    // 1. update cognito phone number
-    // OBS: This needs to be done as cognito accepts duplicates in regards to phone numbers and this will keep the data in sync
-    try {
-      await this.cognitoService.updateUser(newUser.cognitoId, newUser.phone);
-    } catch (error) {
-      this.logger.error({
-        ...UserExceptionMessages.USER_008,
-        error: JSONStringifyError(error),
-      });
-      this.exceptionService.internalServerErrorException(
-        UserExceptionMessages.USER_008,
-      );
-    }
-
-    // 2. create new user
+    // 3. create new user and link it to the login
     const user = await this.userService.createRegularUser({
       ...newUser,
+      email: identity.email,
       notificationsSettingsId: notificationsSettings.id,
     });
+    await this.authIdentityFacade.updateIdentity(identity.id, {
+      userId: user.id,
+    });
 
-    // 3. get user profile
+    // 4. get user profile
     return this.getRegularUserProfileUsecase.execute({ id: user.id });
   }
 }

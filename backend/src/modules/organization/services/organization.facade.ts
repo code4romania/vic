@@ -5,7 +5,10 @@ import {
   ICreateOrganizationModel,
   IFindOrganizationModel,
   IOrganizationModel,
+  OrganizationUniqueFields,
+  UpdateOrganizationOptions,
 } from '../models/organization.model';
+import { EntityManager } from 'typeorm';
 import { OrganizationRepositoryService } from '../repositories/organization.repository';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 import { IOrganizationWithVolunteersModel } from '../models/organization-with-volunteers.model';
@@ -27,17 +30,30 @@ export class OrganizationFacadeService {
     return this.organizationRepository.find(options);
   }
 
-  public async updateOrganizationDescription(
+  public async updateOrganization(
     organizationId: string,
-    description: string,
+    options: UpdateOrganizationOptions,
+    manager?: EntityManager,
   ): Promise<IOrganizationModel> {
-    return this.organizationRepository.update(organizationId, description);
+    return this.organizationRepository.update(organizationId, options, manager);
   }
 
   public async createOrganization(
     organization: ICreateOrganizationModel,
+    manager?: EntityManager,
   ): Promise<IOrganizationModel> {
-    return this.organizationRepository.create(organization);
+    return this.organizationRepository.create(organization, manager);
+  }
+
+  public async findConflicts(
+    fields: OrganizationUniqueFields,
+    exceptId?: string,
+  ): Promise<IOrganizationModel[]> {
+    return this.organizationRepository.findConflicts(fields, exceptId);
+  }
+
+  public async findPendingValidation(): Promise<IOrganizationModel[]> {
+    return this.organizationRepository.findPendingValidation();
   }
 
   public async findOrganizations(

@@ -1,6 +1,6 @@
 # Layer 0 · Scaffolding: Jest mapper, PASSWORD_REGEX, pre-flight SQL
 
-Status: ready-for-agent
+Status: done (built and tested locally, 2026-11-03)
 Type: task
 Blocked by: —
 Tracker card: B1 (part)
@@ -13,7 +13,7 @@ No runtime change. Makes `npm run test` work for the first time and records the 
 - [ ] `backend/package.json` jest block: `moduleNameMapper: { "^src/(.*)$": "<rootDir>/$1" }`. `backend/test/jest-e2e.json`: `"^src/(.*)$": "<rootDir>/../src/$1"`. Delete `backend/test/app.e2e-spec.ts` (Nest boilerplate, cannot pass).
 - [ ] `PASSWORD_REGEX` in `backend/src/common/constants/constants.ts`, same rule as `REGEX.COGNITO_PASSWORD` in `mobile/src/common/constants/constants.ts`; `constants.spec.ts` next to it (accepts `Volunteer#2026`; rejects `password`, `PASSWORD`, `Pass1`, a 257-character string, leading or trailing space).
 - [ ] `backend/scripts/auth-preflight.sql`: duplicate emails per user type ignoring case; admins with `organization_id IS NULL`; emails with spaces or no `@`; organizations sharing a name, email or phone ignoring case. Run once on a production copy and paste the counts under Comments.
-- [ ] Add the social-user count to `auth-preflight.sql` (decisions R35): `SELECT split_part(cognito_id, '_', 1), count(*) FROM "user" WHERE type = 'regular' AND deleted_on IS NULL GROUP BY 1`. Rows for `google`, `facebook` or `signinwithapple` mean `auth:migrate` (Layer 9, issue 10) must create their `auth_identity_provider` links from the Cognito username. The social buttons have been hidden since 13 December 2023 (`e0cd277d`), so expect few or none. This query is not in `26d1977e` yet.
+- [x] Add the social-user count to `auth-preflight.sql` (decisions R35): `SELECT split_part(cognito_id, '_', 1), count(*) FROM "user" WHERE type = 'regular' AND deleted_on IS NULL GROUP BY 1`. Rows for `google`, `facebook` or `signinwithapple` mean `auth:migrate` (Layer 9, issue 10) must create their `auth_identity_provider` links from the Cognito username. The social buttons have been hidden since 13 December 2023 (`e0cd277d`), so expect few or none. This query is not in `26d1977e` yet.
 
 ## Done when
 
@@ -23,3 +23,4 @@ No runtime change. Makes `npm run test` work for the first time and records the 
 
 - 2026-10-16: Layer 0 code (Jest mapper, PASSWORD_REGEX + spec, pre-flight SQL) and a lint-baseline cleanup were committed on `feat/own-auth` as `26d1977e` and `466b1798` before Dragos asked to hold code changes. Decision pending: keep as Layer 0, or reset the branch and keep only the docs and issue files. Docs added without code: `docs/adr/0001-own-authentication.md`, `CONTEXT.md`, `backend/docs/auth.md`.
 - 2026-10-22: Dragos decided on 20 Oct to keep both commits as Layer 0 (see ../decisions.md).
+- 2026-10-30: R35 social-user count added to `backend/scripts/auth-preflight.sql` as check 6 (grouped as google / facebook / signinwithapple / email_password). Local seed scripts added next to it: `auth-local-seed.sql` (clean data, pre-flight returns zero problem rows), `auth-local-seed-problems.sql` (one row per check; every check catches its row) and `auth-local-seed-problems-undo.sql`. The pre-flight run on a production copy is still to do.

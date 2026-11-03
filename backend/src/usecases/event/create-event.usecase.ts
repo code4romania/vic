@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
@@ -29,6 +30,7 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
   private readonly logger = new Logger(CreateEventUseCase.name);
 
   constructor(
+    private readonly organizationGate: OrganizationGateService,
     private readonly eventFacade: EventFacade,
     private readonly getOrganizationUseCaseService: GetOrganizationUseCaseService,
     private readonly organizationStructureFacade: OrganizationStructureFacade,
@@ -45,6 +47,9 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
     admin: IAdminUserModel,
     files?: Express.Multer.File[],
   ): Promise<IEventModel> {
+    // 0. An NGO that is not validated (or is suspended) cannot be joined, run events or log hours (decision 1)
+    await this.organizationGate.assertValidated(data.organizationId);
+
     // 1. Check if the the organization exists
     const organization = await this.getOrganizationUseCaseService.execute(
       data.organizationId,

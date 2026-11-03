@@ -26,6 +26,11 @@ export class SwitchOrganizationUsecase
     organizationId: string,
     userId: string,
   ): Promise<IOrganizationWithEventsModel> {
+    // 0. a volunteer with no profile has no id; TypeORM drops an undefined where key and would match the first user
+    if (!userId) {
+      this.exceptionService.notFoundException(UserExceptionMessages.USER_001);
+    }
+
     // 1. validate if user exists
     const user = await this.userService.findRegularUser({ id: userId });
 

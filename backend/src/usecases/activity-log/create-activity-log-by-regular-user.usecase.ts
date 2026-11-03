@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 import { CreateActivityLogByAdminDto } from 'src/api/activity-log/dto/create-activity-log-by-admin.dto';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -21,6 +22,7 @@ export class CreateActivityLogByRegularUser
   implements IUseCaseService<IActivityLogModel>
 {
   constructor(
+    private readonly organizationGate: OrganizationGateService,
     private readonly getOneEventUsecase: GetOneEventUseCase,
     private readonly activityLogFacade: ActivityLogFacade,
     private readonly activityTypeFacade: ActivityTypeFacade,
@@ -33,6 +35,9 @@ export class CreateActivityLogByRegularUser
     newLogRequestDto: CreateActivityLogByAdminDto,
     user: IRegularUserModel,
   ): Promise<IActivityLogModel> {
+    // 0. An NGO that is not validated (or is suspended) cannot be joined, run events or log hours (decision 1)
+    await this.organizationGate.assertValidated(user.activeOrganization?.id);
+
     // 1. Check if the volunteer exists in the organization and have a profile
     const volunteer = await this.volunteerFacade.find({
       id: newLogRequestDto.volunteerId,
