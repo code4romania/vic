@@ -212,6 +212,54 @@ export const AUTH_EMAILS = {
       },
     ),
 
+  // T-7, sent with `npm run announce -- --template announce --date <date>` (decisions R3).
+  announce: (date: string): AuthEmail =>
+    email(
+      `Pe ${date} VIC are un nou sistem de autentificare / On ${date} VIC gets a new login`,
+      {
+        title: `Pe ${date} VIC are un nou sistem de autentificare`,
+        subtitle:
+          'În acea zi, VIC va fi indisponibil câteva ore. După aceea, actualizează aplicația și folosește linkul pe care ți-l trimitem pe email pentru a seta o parolă nouă.',
+      },
+      {
+        title: `On ${date} VIC gets a new login`,
+        subtitle:
+          "VIC will be unavailable for a few hours that day. Afterwards, update the app and use the link we'll email you to set a new password.",
+      },
+    ),
+
+  // T-1, sent with `npm run announce -- --template reminder --date <date>` (decisions R3).
+  reminder: (date: string): AuthEmail =>
+    email(
+      `Mâine, ${date}: noul sistem de autentificare VIC / Tomorrow, ${date}: VIC's new login`,
+      {
+        title: `Mâine, ${date}, VIC are un nou sistem de autentificare`,
+        subtitle:
+          'VIC va fi indisponibil câteva ore. După aceea, actualizează aplicația și folosește linkul pe care ți-l trimitem pe email pentru a seta o parolă nouă.',
+      },
+      {
+        title: `Tomorrow, ${date}, VIC gets a new login`,
+        subtitle:
+          "VIC will be unavailable for a few hours. Afterwards, update the app and use the link we'll email you to set a new password.",
+      },
+    ),
+
+  // After go, sent with `npm run announce -- --template back`.
+  back: (): AuthEmail =>
+    email(
+      'VIC funcționează din nou / VIC is back',
+      {
+        title: 'VIC funcționează din nou',
+        subtitle:
+          'Actualizează aplicația VIC din magazin, apoi folosește linkul din emailul „VIC are un nou sistem de autentificare” pentru a seta parola.',
+      },
+      {
+        title: 'VIC is back',
+        subtitle:
+          'Update the VIC app from the store, then use the link in the "VIC has a new login" email in your inbox to set your password.',
+      },
+    ),
+
   passwordChanged: (): AuthEmail =>
     email(
       'Parola ta VIC a fost schimbată / Your VIC password was changed',

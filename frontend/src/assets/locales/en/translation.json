@@ -111,7 +111,10 @@
       "announcements": "Announcements",
       "activity_types": "Activity categories",
       "activity_log": "Volunteer hours",
-      "actions_archive": "Actions archive"
+      "actions_archive": "Actions archive",
+      "organization_profile": "Profile",
+      "team": "Team",
+      "validation": "NGO validation"
     },
     "collapse": "Narrow the menu"
   },
@@ -282,15 +285,22 @@
       "edit": "Edit profile",
       "card": "Edit organization profile"
     },
-    "subtitle": "Data taken from ONGHub.",
+    "subtitle": "The data of your organization.",
     "logo": "Organization logo",
     "name": "Organization name",
     "description": "Organization description",
     "vic_description": "Description of the organization in VIC",
-    "description_placeholder": "The organization description is displayed in the organization profile in the VIC application. You can choose to formulate a specific description for the VIC app, which will attract as many volunteers as possible, or you can use the organization description as it is in ONGHub.",
+    "description_placeholder": "The organization description is shown on the organization's profile in the VIC app. Write it for volunteers: what you do and how they can help.",
     "errors": {
       "ORG_001": "The organization has not been found",
-      "no_data": "Organization data could not be uploaded"
+      "no_data": "Organization data could not be uploaded",
+      "ORG_004": "An organization with the same name, email, phone or tax ID already exists.",
+      "ORG_005": "The organization is not validated yet. This will be possible after the VIC team validates it.",
+      "ORG_006": "The anti-robot check failed. Please try again.",
+      "ORG_007": "The statute is missing or is not a PDF (at most 10 MB).",
+      "ORG_008": "This administrator is not in your organization.",
+      "ORG_009": "Invites are only for administrators who have not set a password.",
+      "ORG_010": "You cannot change your own status."
     },
     "form": {
       "description": {
@@ -300,8 +310,22 @@
       }
     },
     "submit": {
-      "success": "The description of the organization has been updated"
-    }
+      "success": "The organization has been updated"
+    },
+    "tax_id": "Tax ID (CUI)",
+    "website": "Website",
+    "validated_on": "Validated on",
+    "not_validated": "Awaiting validation",
+    "statute": "Statute",
+    "open_statute": "Open the statute (PDF)",
+    "replace_logo": "New logo (optional)",
+    "replace_statute": "New statute (optional)",
+    "status": {
+      "pending": "Email not confirmed",
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "validation_banner": "Your organization is awaiting validation by the VIC team. You can set everything up meanwhile. Until then volunteers can't see it, you can't start a campaign and no hours can be registered."
   },
   "pagination": {
     "rows_per_page": "Rows per page",
@@ -971,5 +995,350 @@
       "remove_from_list": "Remove from list",
       "confirm": "Confirm and sign"
     }
+  },
+  "auth": {
+    "errors": {
+      "AUTH_001": "Wrong email or password.",
+      "AUTH_002": "Too many wrong attempts. The account is locked for 15 minutes.",
+      "AUTH_003": "Your email address is not confirmed yet. Check your inbox.",
+      "AUTH_004": "The account is disabled or the organization is suspended.",
+      "AUTH_005": "The link or code is no longer valid.",
+      "AUTH_006": "Too many wrong codes. Ask for a new one.",
+      "AUTH_007": "The password does not meet the rules.",
+      "AUTH_008": "Your session expired. Please log in again.",
+      "AUTH_009": "An account with this email already exists.",
+      "AUTH_010": "Too many requests. Try again in a minute.",
+      "AUTH_011": "The app version is too old.",
+      "AUTH_012": "This is a volunteer account. Use the VIC mobile app.",
+      "AUTH_013": "Signing in with this account failed."
+    },
+    "maintenance": {
+      "title": "VIC is under maintenance",
+      "description": "We are updating the login system. We'll be back in a few hours.",
+      "retry": "Try again"
+    },
+    "session_ended": "Your session expired. Please log in again.",
+    "open_app": "Open the app",
+    "expired_link": {
+      "description": "This link is no longer valid: it expired or was already used.",
+      "resend": "Send me a new link",
+      "sent": "If the link can be renewed, we sent a new one. Check your email.",
+      "forgot_password": "Reset your password"
+    }
+  },
+  "login": {
+    "title": "Log in to VIC",
+    "migration_notice": "Had an account before the switch? Use the link we emailed you to set your password, or Forgot password.",
+    "form": {
+      "email": {
+        "label": "Email",
+        "invalid": "The email address is not valid",
+        "required": "Email is required"
+      },
+      "password": {
+        "label": "Password",
+        "required": "Password is required"
+      }
+    },
+    "forgot_password": "Forgot password?",
+    "submit": "Log in",
+    "no_account": "Your organization has no account?",
+    "register": "Register your organization",
+    "errors": {
+      "generic": "Login failed. Please try again."
+    },
+    "resend_verification": {
+      "button": "Resend the confirmation email",
+      "sent": "If the address has an unconfirmed account, we sent a new link."
+    },
+    "volunteer_account": {
+      "title": "This is a volunteer account",
+      "description": "Volunteers use the VIC mobile app. The web platform is for organization admins.",
+      "open_app": "Open the app"
+    }
+  },
+  "forgot_password": {
+    "title": "Forgot password",
+    "description": "Enter your account's email. If an account exists, we'll send you a link to choose a new password.",
+    "email": {
+      "label": "Email",
+      "invalid": "The email address is not valid",
+      "required": "Email is required"
+    },
+    "submit": "Send the link",
+    "sent": "If an account exists for this address, we've sent a link to choose a new password. Check your email.",
+    "back_to_login": "Back to login",
+    "errors": {
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "set_password": {
+    "title": {
+      "transition": "VIC has a new login",
+      "invite": "Welcome to {{organization}}",
+      "reset": "Choose a new password"
+    },
+    "description": {
+      "transition": "Choose your password for {{email}}.",
+      "invite": "Choose your password for {{email}}.",
+      "reset": "Choose a new password for {{email}}.",
+      "volunteer_social": "Set a password with this link, or sign in with Google, Facebook or Apple in the app as before."
+    },
+    "expired_title": "Link no longer valid",
+    "form": {
+      "password": {
+        "label": "Password",
+        "required": "Password is required",
+        "rule": "At least 8 characters, with an upper case letter, a lower case letter, a digit and a symbol."
+      },
+      "confirm": {
+        "label": "Confirm password",
+        "required": "Confirm the password",
+        "mismatch": "The passwords do not match"
+      }
+    },
+    "submit": "Save the password",
+    "done": {
+      "title": "Password saved",
+      "open_app": "Done. Open the app and log in."
+    },
+    "errors": {
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "confirm_email": {
+    "title": "Confirming your email",
+    "failed_title": "Link no longer valid",
+    "done": {
+      "title": "Email confirmed",
+      "open_app": "Email confirmed. Open the app and log in."
+    }
+  },
+  "landing": {
+    "title": "Manage your volunteers in one place",
+    "subtitle": "VIC helps organizations recruit volunteers, plan events, record volunteering hours and sign contracts, for free.",
+    "login": "Log in",
+    "register": "Register your organization",
+    "features": {
+      "volunteers": {
+        "title": "Volunteers",
+        "description": "Access codes, requests and profiles of the people who help you."
+      },
+      "events": {
+        "title": "Events",
+        "description": "Publish events and see who is coming."
+      },
+      "hours": {
+        "title": "Volunteering hours",
+        "description": "Volunteers log their hours, you approve them."
+      },
+      "documents": {
+        "title": "Contracts",
+        "description": "Volunteering contracts generated and signed online."
+      }
+    },
+    "volunteers": {
+      "title": "Are you a volunteer?",
+      "description": "Volunteers use the VIC mobile app."
+    }
+  },
+  "not_found": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist.",
+    "home": "Go to the home page"
+  },
+  "register_organization": {
+    "title": "Register your organization",
+    "description": "After you confirm your email you can set everything up. The VIC team then validates the organization before volunteers can see it.",
+    "organization_card": "Organization",
+    "admin_card": "First administrator",
+    "admin_card_description": "You will manage the organization in VIC and can invite other administrators.",
+    "form": {
+      "required": "Field is required",
+      "min": "At least {{value}} characters",
+      "max": "At most {{value}} characters",
+      "email_invalid": "The email address is not valid",
+      "website_invalid": "Enter a full address, starting with https://",
+      "tax_id_invalid": "The tax ID (CUI) has digits only, optionally with RO in front",
+      "name": {
+        "label": "Organization name"
+      },
+      "taxId": {
+        "label": "Tax ID (CUI)"
+      },
+      "email": {
+        "label": "Organization email"
+      },
+      "phone": {
+        "label": "Organization phone"
+      },
+      "address": {
+        "label": "Address"
+      },
+      "activityArea": {
+        "label": "Area of activity"
+      },
+      "website": {
+        "label": "Website (optional)"
+      },
+      "description": {
+        "label": "Description for volunteers (50 to 250 characters)"
+      },
+      "logo": {
+        "label": "Logo (optional)",
+        "hint": "PNG or JPG, at most 5 MB",
+        "rejected": "The logo must be a PNG or JPG of at most 5 MB"
+      },
+      "statute": {
+        "label": "Statute of the organization",
+        "hint": "PDF only, at most 10 MB",
+        "required": "The statute is required",
+        "rejected": "The statute must be a PDF of at most 10 MB"
+      },
+      "firstName": {
+        "label": "First name"
+      },
+      "lastName": {
+        "label": "Last name"
+      },
+      "adminEmail": {
+        "label": "Your email (your login)"
+      },
+      "adminPhone": {
+        "label": "Your phone"
+      },
+      "password": {
+        "label": "Password",
+        "rule": "At least 8 characters, with an upper case letter, a lower case letter, a digit and a symbol."
+      },
+      "confirmPassword": {
+        "label": "Confirm password"
+      },
+      "confirm_password": {
+        "mismatch": "The passwords do not match"
+      },
+      "terms": {
+        "label": "I agree with the",
+        "terms": "terms and conditions",
+        "and": "and the",
+        "privacy": "privacy policy",
+        "required": "You must accept the terms"
+      }
+    },
+    "submit": "Register",
+    "has_account": "Already have an account?",
+    "login": "Log in",
+    "success": {
+      "title": "Confirm your email to activate {{organization}}",
+      "description": "We sent a link to {{email}}. Open it to confirm the address and log in.",
+      "login": "Go to login"
+    },
+    "errors": {
+      "turnstile_missing": "Complete the anti-robot check.",
+      "generic": "The registration failed. Check the fields and try again."
+    }
+  },
+  "team": {
+    "title": "Team",
+    "description": "The administrators of your organization.",
+    "add_admin": "Add admin",
+    "you": "you",
+    "transition_link": "VIC (new login)",
+    "columns": {
+      "name": "Name",
+      "phone": "Phone",
+      "status": "Status",
+      "last_login": "Last login",
+      "last_invite": "Last invite"
+    },
+    "status": {
+      "active": "Active",
+      "invite_sent": "Invite sent, expires in {{days}} days",
+      "invite_expired": "Invite expired",
+      "disabled": "Disabled",
+      "no_login": "No login yet"
+    },
+    "actions": {
+      "send_invite": "Send invite",
+      "disable": "Disable",
+      "enable": "Enable"
+    },
+    "confirm": {
+      "invite": {
+        "title": "Send invite",
+        "description": "Send {{name}} a link to set a password at {{email}}? Any earlier invite stops working.",
+        "button": "Send"
+      },
+      "disable": {
+        "title": "Disable administrator",
+        "description": "{{name}} will be logged out and will not be able to log in until enabled again.",
+        "button": "Disable"
+      },
+      "enable": {
+        "title": "Enable administrator",
+        "description": "{{name}} can log in again. No email is sent; if they have no password yet, send them an invite.",
+        "button": "Enable"
+      }
+    },
+    "toast": {
+      "invite_sent": "Invite sent to {{email}}",
+      "disabled": "{{name}} was disabled",
+      "enabled": "{{name}} was enabled"
+    },
+    "form": {
+      "description": "We'll email them a link to choose a password.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "required": "Field is required",
+      "email_invalid": "The email address is not valid",
+      "cancel": "Cancel",
+      "submit": "Add and send invite"
+    },
+    "errors": {
+      "load": "The team could not be loaded",
+      "too_many": "Too many invites. Try again later.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "validation": {
+    "title": "NGO validation",
+    "description": "Organizations that confirmed their email and wait for validation. Check the statute before validating.",
+    "open_statute": "Statute (PDF)",
+    "columns": {
+      "name": "Organization",
+      "tax_id": "CUI",
+      "registered_on": "Registered on",
+      "first_admin": "First admin",
+      "statute": "Statute"
+    },
+    "actions": {
+      "validate": "Validate",
+      "suspend": "Suspend"
+    },
+    "confirm": {
+      "validate": {
+        "title": "Validate organization",
+        "description": "{{name}} becomes visible to volunteers and can start campaigns."
+      },
+      "suspend": {
+        "title": "Suspend organization",
+        "description": "No administrator of {{name}} will be able to log in until it is unsuspended."
+      }
+    },
+    "toast": {
+      "validate": "{{name}} was validated",
+      "suspend": "{{name}} was suspended"
+    },
+    "errors": {
+      "load": "The organizations could not be loaded",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "forbidden": {
+    "title": "Access denied",
+    "description": "You do not have access to this page.",
+    "home": "Go to the home page"
   }
 }

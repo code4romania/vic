@@ -1,4 +1,6 @@
+import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
+import { QUEUES } from 'src/common/constants/constants';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -26,6 +28,9 @@ import { OneTimeTokenService } from './services/one-time-token.service';
 import { SessionService } from './services/session.service';
 import { AuthRateLimitService } from './services/auth-rate-limit.service';
 import { AuthMailerService } from './services/auth-mailer.service';
+import { TransitionMailService } from './services/transition-mail.service';
+import { AuthTransitionProcessor } from './jobs/auth-transition.processor';
+import { AuthCleanupProcessor } from './jobs/auth-cleanup.processor';
 
 @Module({
   imports: [
@@ -38,6 +43,12 @@ import { AuthMailerService } from './services/auth-mailer.service';
       RefreshTokenEntity,
       AuthIdentityProviderEntity,
     ]),
+    // Held transition emails: paused by auth:migrate, resumed by `announce --release-transition`, 10 per second.
+    BullModule.registerQueue({
+      name: QUEUES.AUTH_TRANSITION,
+      limiter: { max: 10, duration: 1000 },
+    }),
+    BullModule.registerQueue({ name: QUEUES.AUTH_MAINTENANCE }),
     UserModule,
     OrganizationModule,
   ],
@@ -55,6 +66,9 @@ import { AuthMailerService } from './services/auth-mailer.service';
     SessionService,
     AuthRateLimitService,
     AuthMailerService,
+    TransitionMailService,
+    AuthTransitionProcessor,
+    AuthCleanupProcessor,
     SuperAdminGuard,
     GoogleTokenVerifier,
     AppleTokenVerifier,
@@ -69,6 +83,8 @@ import { AuthMailerService } from './services/auth-mailer.service';
     SessionService,
     AuthRateLimitService,
     AuthMailerService,
+    TransitionMailService,
+    AuthCleanupProcessor,
     SuperAdminGuard,
     SocialTokenVerifierService,
   ],

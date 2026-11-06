@@ -16,6 +16,11 @@ import { DataSource } from 'typeorm';
 import { createTestAuthConfig, TestAuthKeys } from './auth-test-config';
 import { FakeMailService } from './fake-mail.service';
 import { createTestDataSource } from './test-data-source';
+import { FakeSocialVerifier } from './fake-social';
+import { GoogleTokenVerifier } from 'src/modules/auth/services/social/google.verifier';
+import { AppleTokenVerifier } from 'src/modules/auth/services/social/apple.verifier';
+import { FacebookTokenVerifier } from 'src/modules/auth/services/social/facebook.verifier';
+import Redis from 'ioredis';
 
 export const TURNSTILE_OK = 'turnstile-ok';
 
@@ -28,6 +33,8 @@ export interface TestApp {
     identity: Pick<IAuthIdentityModel, 'id'>,
     realm: AuthRealm,
   ): Promise<string>;
+  // Deletes this run's Redis keys (rate limits; prefixed `test:` by REDIS_KEY_PREFIX).
+  flushRedis(): Promise<void>;
   close(): Promise<void>;
 }
 
@@ -52,7 +59,14 @@ export async function createTestApp(
     .useValue(mailbox)
     // No call to Cloudflare from the tests: TURNSTILE_OK passes, anything else fails.
     .overrideProvider(TurnstileService)
-    .useValue({ verify: async (token: string) => token === TURNSTILE_OK });
+    .useValue({ verify: async (token: string) => token === TURNSTILE_OK })
+    // No call to Google, Apple or Facebook: fixture tokens from test/utils/fake-social.ts.
+    .overrideProvider(GoogleTokenVerifier)
+    .useValue(new FakeSocialVerifier())
+    .overrideProvider(AppleTokenVerifier)
+    .useValue(new FakeSocialVerifier())
+    .overrideProvider(FacebookTokenVerifier)
+    .useValue(new FakeSocialVerifier());
   if (options.authConfig) {
     const keys = Object.fromEntries(
       ['JWT_PRIVATE_KEY', 'JWT_PUBLIC_KEY', 'JWT_KEY_ID', 'AUTH_TOKEN_KEY'].map(
@@ -80,6 +94,21 @@ export async function createTestApp(
     mailbox,
     mintAccessToken: async (identity, realm) =>
       (await sessions.createSession(identity, realm)).accessToken,
+    flushRedis: async (): Promise<void> => {
+      const prefix = process.env.REDIS_KEY_PREFIX;
+      if (!prefix) return; // never flush an unprefixed (shared) Redis
+      // A client without keyPrefix, so KEYS and DEL see the same full key names.
+      const redis = new Redis({
+        host: process.env.REDIS_HOST,
+        port: +process.env.REDIS_PORT,
+      });
+      try {
+        const keys = await redis.keys(`${prefix}*`);
+        if (keys.length) await redis.del(...keys);
+      } finally {
+        redis.disconnect();
+      }
+    },
     // Bull rejects a connection that is still connecting when its queue closes ("Connection is closed"),
     // which failed short suites at random; wait for the queues before closing.
     close: async (): Promise<void> => {

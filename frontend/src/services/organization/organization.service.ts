@@ -10,9 +10,15 @@ import {
   getAccessCode,
   getAccessCodes,
   getOrganization,
+  registerOrganization,
   updateAccessCode,
-  updateOrganizationDescription,
+  updateOrganization,
 } from './organization.api';
+import {
+  IOrganizationFields,
+  IOrganizationFiles,
+  IRegisterOrganization,
+} from '../../common/interfaces/organization.interface';
 
 export const useOrganizationQuery = () => {
   return useQuery(['organization'], () => getOrganization(), {
@@ -20,14 +26,22 @@ export const useOrganizationQuery = () => {
   });
 };
 
-export const useUpdateOrganizationDescriptionMutation = () => {
+export type OrganizationApiError = AxiosError<IBusinessException<ORGANIZATION_ERRORS>>;
+
+export const useUpdateOrganizationMutation = () => {
   return useMutation(
     ['organization'],
-    (description: string) => updateOrganizationDescription(description),
-    {
-      onError: (error: AxiosError<IBusinessException<ORGANIZATION_ERRORS>>) =>
-        Promise.resolve(error),
-    },
+    ({ data, files }: { data: IOrganizationFields; files?: IOrganizationFiles }) =>
+      updateOrganization(data, files),
+    { onError: (error: OrganizationApiError) => Promise.resolve(error) },
+  );
+};
+
+export const useRegisterOrganizationMutation = () => {
+  return useMutation(
+    ({ data, files }: { data: IRegisterOrganization; files: IOrganizationFiles }) =>
+      registerOrganization(data, files),
+    { onError: (error: OrganizationApiError) => Promise.resolve(error) },
   );
 };
 

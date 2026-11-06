@@ -1,6 +1,6 @@
 # W2 · Web: landing, login, forgot password, set password, confirm email
 
-Status: needs-info
+Status: done locally (2026-11-06)
 Type: task
 Blocked by: 12, 09
 Tracker card: W2
@@ -14,3 +14,14 @@ Outline until Layer 7 fixes the `/auth` routes and Layer 8 (issue 09) fixes the 
 - `PASSWORD_REGEX` copied to `src/common/constants/`; ro and en translations (`auth`, `landing` namespaces), one message per AUTH code.
 
 ## Comments
+
+- 2026-11-06: built and tested locally, no PR.
+  - Routes: `src/routes/RootRoute.tsx` replaces `PrivateRoute` on `/`: logged in → `MainLayout`; logged out → `Landing` on `/` itself, `/login` (with `from`) on any private path (R29). `/forgot-password` under `PublicRoute`; `/set-password`, `/confirm-email` neutral; `*` → `NotFound.tsx`.
+  - New: `Landing.tsx`, `ForgotPassword.tsx`, `SetPassword.tsx`, `ConfirmEmail.tsx`, `NotFound.tsx`; shared `layouts/AuthLayout.tsx`, `components/OpenAppBox.tsx` (vic:// on phones only, store links), `components/ExpiredLink.tsx` (resend-token, always ends in "check your email"), `common/utils/auth-error.ts`. `PASSWORD_REGEX` in `src/common/constants/patterns.ts`. Login.tsx moved onto the shared pieces (Login itself was pulled into W1).
+  - `/set-password` with a `verify_email` token redirects to `/confirm-email`. ConfirmEmail calls the API once (ref guard against StrictMode's double effect, the link is single use).
+  - Translations: `forgot_password`, `set_password`, `confirm_email`, `landing`, `not_found`, `auth.open_app`, `auth.expired_link`, ro + en.
+  - Backend bug found: the exception filter spread a string response, so the throttler's 429 answered `{"0":"T","1":"h",...}` with no `code_error`. Fixed in `src/infrastructure/filters/exception.filter.ts` (+ `exception.filter.spec.ts`); the web reads any 429 without a code as AUTH_010.
+  - Browser check (Vite 5173, API 4001): `/` dashboard logged in, landing logged out; `/nope` 404; `/organization` logged out → /login. Forgot password (ana.admin) → mailcatcher reset link → weak password refused → saved → session → dashboard; same link again → expired state. Links inserted directly in `auth_token` (HMAC with the base64-decoded `AUTH_TOKEN_KEY`): volunteer transition (elena) → "VIC are o nouă autentificare" + the R36 sentence → saved → "Gata. Deschide aplicația" + store links, no session; Team invite (dana.both, sent by ana) → "Bine ai venit în Fundatia Seed Doi"; mobile verify (florin) → "Email confirmat. Deschide aplicația"; reopened → expired → resend → "check your email". No console errors.
+  - Local test password set for ana.admin@seed.test and elena@seed.test (mobile): `Vic-Local-Test1!`.
+  - Not covered yet: NGO confirm-email → session + banner (needs W3 registration).
+

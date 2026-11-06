@@ -3,16 +3,49 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { IAccessCode } from '../../pages/AccesCodes';
 import { AccessCodeFormTypes } from '../../components/AccessCodeForm';
-import { IOrganization } from '../../common/interfaces/organization.interface';
+import {
+  IMaskedEmail,
+  IOrganization,
+  IOrganizationFields,
+  IOrganizationFiles,
+  IRegisterOrganization,
+} from '../../common/interfaces/organization.interface';
 
 export const getOrganization = async (): Promise<IOrganization> => {
   return API.get(`/organization`).then((res) => res.data);
 };
 
-export const updateOrganizationDescription = async (
-  description: string,
+const appendFiles = (formData: FormData, files?: IOrganizationFiles): FormData => {
+  if (files?.logo) formData.append('logo', files.logo);
+  if (files?.statute) formData.append('statute', files.statute);
+  return formData;
+};
+
+const toFormData = (fields: Record<string, string | boolean>): FormData => {
+  const formData = new FormData();
+  Object.entries(fields).forEach(([key, value]) => formData.append(key, String(value)));
+  return formData;
+};
+
+// Every field plus an optional new logo or statute. An empty field means "unchanged", except the
+// website, where empty clears it (backend UpdateOrganizationDto).
+export const updateOrganization = async (
+  data: IOrganizationFields,
+  files?: IOrganizationFiles,
 ): Promise<IOrganization> => {
-  return API.patch(`/organization`, { description }).then((res) => res.data);
+  return API.patch(`/organization`, appendFiles(toFormData({ ...data }), files), {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }).then((res) => res.data);
+};
+
+// Public: the NGO and its first admin, the statute PDF and the Turnstile token.
+export const registerOrganization = async (
+  data: IRegisterOrganization,
+  files: IOrganizationFiles,
+): Promise<IMaskedEmail> => {
+  return API.post('/organizations/register', appendFiles(toFormData({ ...data }), files), {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }).then((res) => res.data);
 };
 
 export const getAccessCodes = async (

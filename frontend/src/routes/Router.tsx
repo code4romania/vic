@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
-import MainLayout from '../layouts/MainLayout';
 import AccessRequest from '../pages/AccessRequest';
 import Dashboard from '../pages/Dashboard';
 import EditOrganization from '../pages/EditOrganization';
@@ -9,7 +8,7 @@ import Login from '../pages/Login';
 import Organization from '../containers/query/OrganizationWithQueryParam';
 import RegistrationRequests from '../containers/query/AccessRequestsWithQueryParams';
 import AccessCodes from '../containers/query/AccessCodesWithQueryParams';
-import PrivateRoute from './PrivateRoute';
+import RootRoute from './RootRoute';
 import PublicRoute from './PublicRoute';
 import Volunteers from '../containers/query/VolunteersWithQueryParams';
 import AddAccessCode from '../pages/AddAccessCode';
@@ -35,6 +34,13 @@ import AddContractTemplate from '../pages/AddContractTemplate';
 import EditContractTemplate from '../pages/EditContractTemplate';
 import AddContract from '../containers/query/AddContractWithQueryParams';
 import ActionsArchive from '../pages/ActionsArchive';
+import ForgotPassword from '../pages/ForgotPassword';
+import SetPassword from '../pages/SetPassword';
+import ConfirmEmail from '../pages/ConfirmEmail';
+import NotFound from '../pages/NotFound';
+import RegisterOrganization from '../pages/RegisterOrganization';
+import Team from '../pages/Team';
+import OrganizationValidation from '../pages/OrganizationValidation';
 
 const Router = () => {
   return (
@@ -42,11 +48,17 @@ const Router = () => {
       <QueryParamProvider adapter={ReactRouter6Adapter}>
         <Routes>
           <Route path="/login" element={<PublicRoute element={<Login />} />} />
-          <Route path="/" element={<PrivateRoute element={<MainLayout />} />}>
+          <Route path="/forgot-password" element={<PublicRoute element={<ForgotPassword />} />} />
+          <Route path="/register" element={<PublicRoute element={<RegisterOrganization />} />} />
+          {/* Neutral: reachable logged in or out (a link opened in a browser with a session). */}
+          <Route path="/set-password" element={<SetPassword />} />
+          <Route path="/confirm-email" element={<ConfirmEmail />} />
+          <Route path="/" element={<RootRoute />}>
             <Route index element={<Dashboard />}></Route>
             <Route path="organization" element={<Outlet />}>
               <Route index element={<Organization />} />
               <Route path="edit" element={<EditOrganization />} />
+              <Route path="team" element={<Team />} />
             </Route>
             <Route path="volunteers" element={<Outlet />}>
               <Route index element={<Volunteers />} />
@@ -81,6 +93,7 @@ const Router = () => {
               <Route index element={<ActivityLogs />} />
               <Route path="add" element={<AddActivityLog />} />
             </Route>
+            <Route path="admin/validation" element={<OrganizationValidation />} />
             <Route path="actions-archive" element={<Outlet />}>
               <Route index element={<ActionsArchive />} />
             </Route>
@@ -94,6 +107,7 @@ const Router = () => {
               </Route>
             </Route>
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </QueryParamProvider>
     </BrowserRouter>

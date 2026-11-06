@@ -18,6 +18,7 @@ import { PencilIcon } from '@heroicons/react/24/outline';
 import CardBody from '../components/CardBody';
 import FormLayout from '../layouts/FormLayout';
 import Paragraph from '../components/Paragraph';
+import { formatDate } from '../common/utils/utils';
 import FormInput from '../components/FormInput';
 import FormTextarea from '../components/FormTextarea';
 import DivisionTable from '../containers/query/DivisionTableWithQueryParams';
@@ -126,6 +127,43 @@ const Organization = ({ query, setQuery }: OrganizationTableProps) => {
                 value={organization.activityArea}
                 readOnly
               />
+              <FormInput
+                label={i18n.t('organization:tax_id')}
+                value={organization.taxId}
+                readOnly
+              />
+              <FormInput
+                label={i18n.t('organization:website')}
+                value={organization.website ?? '-'}
+                readOnly
+              />
+              <FormInput
+                label={i18n.t('general:status')}
+                value={i18n.t(`organization:status.${organization.status}`)}
+                readOnly
+              />
+              <FormInput
+                label={i18n.t('organization:validated_on')}
+                value={
+                  organization.validatedAt
+                    ? formatDate(organization.validatedAt)
+                    : i18n.t('organization:not_validated')
+                }
+                readOnly
+              />
+              {organization.statuteUrl && (
+                <div className="flex flex-col gap-1">
+                  <small className="text-cool-gray-500">{i18n.t('organization:statute')}</small>
+                  <a
+                    className="underline text-turquoise-700 self-start"
+                    href={organization.statuteUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {i18n.t('organization:open_statute')}
+                  </a>
+                </div>
+              )}
               <hr className="border-cool-gray-200" />
               <Paragraph title={i18n.t('organization:description')}>
                 {i18n.t('organization:description_placeholder')}

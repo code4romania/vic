@@ -2,11 +2,13 @@
 
 interface ImportMetaEnv {
   readonly VITE_API_URL: string;
-  readonly VITE_FRONTEND_URL: string;
-  readonly VITE_AWS_REGION: string;
-  readonly VITE_USER_POOL_ID: string;
-  readonly VITE_USER_POOL_CLIENT_ID: string;
-  readonly VITE_COGNITO_OAUTH_DOMAIN: string;
+  readonly VITE_APP_FRONTEND_URL: string;
+  readonly VITE_TURNSTILE_SITE_KEY: string;
+  readonly VITE_APP_STORE_URL: string;
+  readonly VITE_PLAY_STORE_URL: string;
+  readonly VITE_MIGRATION_NOTICE_UNTIL: string;
+  readonly VITE_TERMS_URL?: string;
+  readonly VITE_PRIVACY_URL?: string;
 }
 
 declare const APP_VERSION: string;

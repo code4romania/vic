@@ -72,6 +72,25 @@ describe('JWT guards (e2e)', () => {
     expect(response.body.id).toBe(organizationId);
   });
 
+  // Regression: organization.status (own auth, Layer 1) made a bare `status` in the volunteer query ambiguous (422).
+  it('an admin lists the volunteers of each status', async () => {
+    const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
+
+    for (const status of ['active', 'archived', 'blocked']) {
+      await http()
+        .get('/volunteer')
+        .query({
+          status,
+          limit: 10,
+          page: 1,
+          orderBy: 'user.name',
+          orderDirection: 'ASC',
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+    }
+  });
+
   it('a Cognito-style token is refused', async () => {
     const keys = generateTestAuthKeys();
     const cognito = new JwtService({

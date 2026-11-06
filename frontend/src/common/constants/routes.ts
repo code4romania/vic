@@ -1,5 +1,10 @@
 import i18n from '../config/i18n';
-import { RectangleGroupIcon, SunIcon, UsersIcon } from '@heroicons/react/24/outline';
+import {
+  RectangleGroupIcon,
+  ShieldCheckIcon,
+  SunIcon,
+  UsersIcon,
+} from '@heroicons/react/24/outline';
 import {
   ClockIcon,
   PuzzlePieceIcon,
@@ -13,7 +18,16 @@ import { MegaphoneIcon } from '@heroicons/react/24/solid';
 
 export const ROUTES: IRoute[] = [
   { id: 0, name: i18n.t('side_menu:options.dashboard'), href: '', icon: RectangleGroupIcon },
-  { id: 1, name: i18n.t('side_menu:options.organization'), href: 'organization', icon: SunIcon },
+  {
+    id: 1,
+    name: i18n.t('side_menu:options.organization'),
+    href: 'organization',
+    icon: SunIcon,
+    childRoutes: [
+      { id: 11, name: i18n.t('side_menu:options.organization_profile'), href: 'organization' },
+      { id: 12, name: i18n.t('side_menu:options.team'), href: 'organization/team' },
+    ],
+  },
   {
     id: 2,
     name: i18n.t('side_menu:options.volunteers'),
@@ -79,5 +93,12 @@ export const ROUTES: IRoute[] = [
     name: i18n.t('side_menu:options.announcements'),
     href: 'announcements',
     icon: MegaphoneIcon,
+  },
+  {
+    id: 9,
+    name: i18n.t('side_menu:options.validation'),
+    href: 'admin/validation',
+    icon: ShieldCheckIcon,
+    roles: ['super_admin'],
   },
 ];

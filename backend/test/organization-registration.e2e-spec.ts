@@ -1,3 +1,4 @@
+import { AuthCleanupProcessor } from 'src/modules/auth/jobs/auth-cleanup.processor';
 import {
   AuthIdentityStatus,
   AuthRealm,
@@ -400,5 +401,34 @@ describe('Organization registration and validation (e2e)', () => {
       ).body.code_error,
     ).toBe('AUTH_004');
     expect(await mobileOrganizationNames()).toContain('Asociatia Noua');
+  });
+  it('a registration never confirmed is removed by the daily cleanup after 7 days, files included, and the name is free again', async () => {
+    await register({}, { logo: PNG }).expect(201);
+    const organization = await organizationRow();
+    expect((await fetch(organization.logo as string)).status).toBe(200);
+
+    const cleanup = testApp.app.get(AuthCleanupProcessor);
+    expect((await cleanup.run()).pendingOrganizations).toBe(0);
+
+    await testApp.dataSource.query(
+      `UPDATE organization SET created_on = now() - interval '8 days' WHERE id = $1`,
+      [organization.id],
+    );
+    expect((await cleanup.run()).pendingOrganizations).toBe(1);
+
+    expect(await organizationRow()).toBeUndefined();
+    expect(
+      await facade.findIdentity({ realm: AuthRealm.WEB, email: ADMIN_EMAIL }),
+    ).toBeNull();
+    const [{ count }] = await testApp.dataSource.query(
+      `SELECT count(*)::int AS count FROM "user" WHERE lower(email) = $1`,
+      [ADMIN_EMAIL],
+    );
+    expect(count).toBe(0);
+    // The public logo is gone from the bucket (local S3 emulator).
+    expect((await fetch(organization.logo as string)).status).toBe(404);
+
+    testApp.mailbox.clear();
+    await register().expect(201);
   });
 });

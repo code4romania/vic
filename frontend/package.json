@@ -8,14 +8,14 @@
     "start": "vite --port 3000",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^6.1.13",
     "@headlessui/react": "2.1.2",
     "@heroicons/react": "^2.1.5",
     "@hookform/resolvers": "^3.9.0",
-    "aws-amplify": "^6.4.0",
     "axios": "^1.7.2",
     "date-fns": "^3.6.0",
     "i18next": "23.11.5",
@@ -58,6 +58,10 @@
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/feather-icons": "^4.29.4",
     "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20.14.10",
@@ -78,13 +82,15 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "husky": "^9.0.11",
+    "jsdom": "^25.0.1",
+    "msw": "^2.7.0",
     "postcss": "^8.4.39",
     "prettier": "^3.3.2",
-    "rollup-plugin-polyfill-node": "^0.13.0",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.5.3",
     "vite": "^5.3.3",
-    "vite-plugin-eslint": "^1.8.1"
+    "vite-plugin-eslint": "^1.8.1",
+    "vitest": "^2.1.9"
   },
   "config": {
     "commitizen": {

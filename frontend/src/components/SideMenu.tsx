@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ROUTES } from '../common/constants/routes';
+import { findParentRoute, useVisibleRoutes } from '../hooks/useVisibleRoutes';
 import { classNames } from '../common/utils/utils';
 import { IChildRoute, IRoute } from '../common/interfaces/route.interface';
 import MenuItem from './MenuItem';
@@ -11,14 +11,15 @@ import MenuLink from './MenuLink';
 const SideMenu = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const routes = useVisibleRoutes();
   const [isNarrow, setIsNarrow] = useState<boolean>(false);
-  const [activeParentRoute, setActiveParentRoute] = useState<IRoute>(ROUTES[0]);
+  const [activeParentRoute, setActiveParentRoute] = useState<IRoute>(routes[0]);
   const [activeSubRoute, setActiveSubRoute] = useState<IChildRoute | null>(null);
   const { t } = useTranslation('side_menu');
 
   useEffect(() => {
     const splittedLocation = location.pathname.split('/');
-    const parentRoute = ROUTES.find((route) => route.href === splittedLocation[1]);
+    const parentRoute = findParentRoute(routes, location.pathname);
 
     if (parentRoute?.childRoutes?.length) {
       const subRoute = parentRoute.childRoutes.find((childRoute) =>
@@ -36,7 +37,7 @@ const SideMenu = () => {
       setActiveParentRoute(parentRoute);
       setActiveSubRoute(null);
     }
-  }, [location]);
+  }, [location, routes]);
 
   const onMenuItemClick = (item: IRoute, childRoute?: IChildRoute) => {
     navigate(childRoute ? `${childRoute.href}` : `${item.href}`);
@@ -50,7 +51,7 @@ const SideMenu = () => {
       )}
       aria-label="Sidebar"
     >
-      {ROUTES.map((item) => (
+      {routes.map((item) => (
         <MenuItem
           key={item.id}
           item={item}

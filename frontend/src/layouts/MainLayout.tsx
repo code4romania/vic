@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
 import SideMenu from '../components/SideMenu';
 import SlidingMenu from '../components/SlidingMenu';
+import ValidationBanner from '../components/ValidationBanner';
 
 const MainLayout = () => {
   const [isSlidingMenuOpen, setSlidingMenuOpen] = useState<boolean>(false);
@@ -15,7 +16,8 @@ const MainLayout = () => {
         <div className="hidden xl:flex">
           <SideMenu />
         </div>
-        <div className="w-full overflow-scroll no-scrollbar">
+        <div className="w-full overflow-scroll no-scrollbar flex flex-col gap-6">
+          <ValidationBanner />
           <Outlet />
         </div>
       </section>

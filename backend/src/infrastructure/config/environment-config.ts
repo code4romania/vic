@@ -42,20 +42,6 @@ class EnvironmentVariables {
   DATABASE_HOST: string;
 
   @IsString()
-  COGNITO_USER_POOL_ID_WEB: string;
-  @IsString()
-  COGNITO_CLIENT_ID_WEB: string;
-  @IsString()
-  COGNITO_REGION_WEB: string;
-
-  @IsString()
-  COGNITO_USER_POOL_ID_MOBILE: string;
-  @IsString()
-  COGNITO_CLIENT_ID_MOBILE: string;
-  @IsString()
-  COGNITO_REGION_MOBILE: string;
-
-  @IsString()
   REDIS_HOST: string;
   @IsNumber()
   REDIS_PORT: number;
@@ -70,9 +56,6 @@ class EnvironmentVariables {
   MAIL_PASS: string;
 
   @IsString()
-  ONG_HUB_API: string;
-
-  @IsString()
   AWS_ACCESS_KEY_ID: string;
   @IsString()
   AWS_SECRET_ACCESS_KEY: string;
@@ -84,7 +67,7 @@ class EnvironmentVariables {
   @IsString()
   EXPO_PUSH_NOTIFICATIONS_ACCESS_TOKEN: string;
 
-  // Own authentication (see docs/auth.md). COGNITO_* and ONG_HUB_API stay until Layer 9.
+  // Own authentication (see docs/auth.md).
   @IsString()
   JWT_PRIVATE_KEY: string; // PEM, base64 encoded on one line
   @IsString()

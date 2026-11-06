@@ -1,6 +1,6 @@
 # Authentication in the VIC backend
 
-How login works once Cognito and NGO Hub are replaced. Written 16 October 2026 from the design; sections are confirmed or corrected as each layer lands (Layers 1 to 3 checked against the code on 30 October 2026) (`.scratch/own-auth/issues/`). The full step-by-step is in the Implementation Guide (https://claude.ai/code/artifact/02645619-109a-4538-9358-b61ffb680134); the reasons are in the design doc (https://claude.ai/code/artifact/db39a7ad-1dd1-4ea4-b50f-ebc22ada9a7e). Decisions taken after the design (resolutions R1 to R36) are in `.scratch/own-auth/decisions.md`, which wins where the documents differ; this page follows it.
+How login works once Cognito and NGO Hub are replaced. Written 16 October 2026 from the design and checked against the code as each layer landed (Layers 1 to 3 on 30 October 2026, Layers 4 to 9 by 4 November 2026) (`.scratch/own-auth/issues/`). The full step-by-step is in the Implementation Guide (https://claude.ai/code/artifact/02645619-109a-4538-9358-b61ffb680134); the reasons are in the design doc (https://claude.ai/code/artifact/db39a7ad-1dd1-4ea4-b50f-ebc22ada9a7e). Decisions taken after the design (resolutions R1 to R36) are in `.scratch/own-auth/decisions.md`, which wins where the documents differ; this page follows it.
 
 ## Overview
 
@@ -115,7 +115,7 @@ Organizations: `POST /organizations/register` (public, multipart with `logo` and
 | `GOOGLE_CLIENT_IDS`, `FACEBOOK_APP_ID`, `FACEBOOK_APP_SECRET`, `APPLE_BUNDLE_ID` | social token verification |
 | `MAIL_CONTACT` | the address shown in emails and policy pages |
 
-Removed at Layer 9: `COGNITO_*` (six variables) and `ONG_HUB_API`. `AWS_*` stay for S3.
+Removed in Layer 9 (with `src/infrastructure/providers/cognito/`, `src/modules/onghub/` and `@aws-sdk/client-cognito-identity-provider`): `COGNITO_*` (six variables) and `ONG_HUB_API`. `AWS_*` stay for S3; `jwks-rsa` stays for the Apple verifier (R24). Old `.env` files may still list them; they are ignored.
 
 Generate once per environment and keep in the secrets manager:
 
@@ -129,22 +129,37 @@ openssl rand -base64 32  # AUTH_TOKEN_KEY
 
 ## Commands
 
-Run with ts-node like the TypeORM scripts; each creates a Nest application context.
+Scripts in `src/commands/`, run with ts-node like the TypeORM scripts; each boots a Nest application context (`command-runner.ts`) so it reuses the services, and exits 1 on any error. Built and run locally in Layer 9 (4 November 2026).
 
 | Script | Does |
 |---|---|
-| `npm run auth:migrate -- [--dry-run]` | creates identities for every existing user (admins → web, volunteers → mobile, all pending_password), links Google / Facebook / Apple accounts from Cognito usernames (`google_…`, `facebook_…`, `signinwithapple_…`), queues one held 30-day transition email each; idempotent; prints counts |
-| `npm run announce -- --release-transition` | releases the held transition emails at 10/s |
-| `npm run announce -- --template <announce\|reminder> [--dry-run]` | T-7 and T-1 emails from the `user` table (`deleted_on IS NULL`, deduplicated by `lower(email)`); shipped to `main` in a separate PR before the cutover |
-| `npm run announce -- --template back [--dry-run]` | after the switch: emails every identity and pushes every device |
-| `npm run org:suspend -- <id> [--reason "..."]`, `npm run org:unsuspend -- <id>` | suspends or restores an NGO; while suspended its admins cannot log in and their sessions are revoked; identity status is not changed |
-| `npm run auth:super-admin -- <email> [--remove]` | sets or clears the super admin flag |
+| `npm run auth:migrate -- [--dry-run] [--batch-size 500]` | `MigrateIdentitiesUseCase`: every `user` row with `deleted_on IS NULL` becomes an identity in `pending_password` (admins → web, with `legacy_cognito_username`; volunteers → mobile, `email_verified_at = created_on`); a volunteer whose Cognito username is `google_…`, `facebook_…` or `signinwithapple_…` also gets its `auth_identity_provider` link (R35). One transaction per batch; nobody imported disabled. Upsert on (realm, email): a second run creates nothing and queues nothing. Each new identity gets a 30-day invite link with no sender (a transition link, R16) and one held transition email (admin or volunteer text). Two rows with the same lowercased email in one realm: the newest `created_on` is kept, the others are listed. `--dry-run` rolls every batch back and queues nothing. Prints a table of counts |
+| `npm run announce -- --release-transition` | go: resumes the held queue `auth-transition-vic`; its limiter sends 10 per second into the mail queue |
+| `npm run announce -- --status` | the held queue: paused or not, job counts |
+| `npm run announce -- --template <announce\|reminder> --date "<date>" [--dry-run]` | T-7 and T-1 emails to the `user` table (`deleted_on IS NULL`, one per `lower(trim(email))`). The plan ships these to `main` in a separate PR before the cutover (R3); for the local proof they live on this branch |
+| `npm run announce -- --template back [--dry-run]` | after go: emails every identity not disabled, one per email across realms, at 10 per second, and pushes the same text to every user in `push_tokens` |
+| `npm run org:suspend -- <id> [--reason "..."]`, `npm run org:unsuspend -- <id>` | the Layer 8 use cases: while suspended its admins cannot log in and their sessions are revoked; identity status is not changed; the reason is printed |
+| `npm run auth:super-admin -- [<email>] [--remove]` | sets or clears the super admin flag on a web identity (guards read it on every request), then prints the current super admins; with no email it only prints them |
 
-Daily job `auth-maintenance-vic` at 03:30: deletes expired or long-revoked sessions, ended tokens older than 90 days, pending NGO registrations older than 7 days, unconfirmed mobile identities older than 7 days.
+Every `--dry-run` prints the recipient count and the first email as text.
+
+### Held transition emails
+
+`auth:migrate` pauses `auth-transition-vic` globally (in Redis, so no API worker picks a job up) and adds the composed emails after each batch commits, so a job never carries a link whose row was rolled back. Nothing is sent until `announce --release-transition`; on no-go, restoring the snapshot and emptying the queue (`TransitionMailService.drop()`) leaves nobody emailed. The processor (`AuthTransitionProcessor`) hands each job to `MailService.sendEmail`.
+
+### Daily cleanup
+
+`AuthCleanupProcessor` on queue `auth-maintenance-vic`, a repeatable job (`30 3 * * *`) registered on boot (not under `NODE_ENV=test`). It logs one line of counts:
+
+- refresh tokens expired or revoked more than 7 days ago;
+- one-time tokens used, replaced or expired more than 90 days ago;
+- organizations still `pending` (email never confirmed) after 7 days, with their admin users and identities, one transaction per NGO; then the statute (private bucket) and the logo (public bucket, only when it is one of ours) are deleted from S3; an NGO that cannot be deleted is logged and skipped;
+- mobile identities with no user and no confirmed email after 7 days.
 
 ## Tests
 
 - Unit: `npm run test` (`*.spec.ts` next to the code; `moduleNameMapper` resolves `src/...` imports). The repository and service specs use a real Postgres, so the local compose database must be up.
 - Databases: `test/utils/test-data-source.ts` creates and migrates `vic_test_<jest worker>` (`DATABASE_TEST_NAME`, default `vic_test`) on the local server and refuses any `DATABASE_HOST` other than localhost / 127.0.0.1. One database per worker keeps parallel suites apart.
-- End-to-end: `npm run test:e2e`. `test/setup-env.ts` (Jest `setupFiles`) loads `.env`, then `.env.test`, then generates a throwaway RSA key pair and `AUTH_TOKEN_KEY` in memory; no test secret is committed. `test/utils/test-app.ts` boots `AppModule` on the worker's database with the compose Redis (keys prefixed `test:`), `MailService` replaced by `FakeMailService` (tests read links and codes from `mailbox.sent`), and `mintAccessToken(identity, realm)` that creates a real session so the token carries `sid`. `test/harness.e2e-spec.ts` proves the three. Specs: `auth-web`, `auth-mobile`, `auth-social`, `realms`, `organization-registration`, `team`, `migration`.
+- End-to-end: `npm run test:e2e`. `test/setup-env.ts` (Jest `setupFiles`) loads `.env`, then `.env.test`, then generates a throwaway RSA key pair and `AUTH_TOKEN_KEY` in memory; no test secret is committed. `test/utils/test-app.ts` boots `AppModule` on the worker's database with the compose Redis (keys prefixed `test:`), `MailService` replaced by `FakeMailService` (tests read links and codes from `mailbox.sent`), and `mintAccessToken(identity, realm)` that creates a real session so the token carries `sid`. `test/harness.e2e-spec.ts` proves the three. Google, Apple and Facebook are replaced by `test/utils/fake-social.ts` (fixture tokens: `socialToken({ sub, email })`; wrong audience, expired or no subject answer AUTH_013); Turnstile by `TURNSTILE_OK`. `testApp.flushRedis()` clears the run's `test:` keys; `asWeb` / `asMobile` in `test/utils/http.ts` log in through the API. Bull queues are prefixed per Jest worker (`BULL_PREFIX=test-bull-<worker>`), so one suite's app never takes another's jobs. Specs (Layer 10, 4 November 2026: 10 suites, 69 tests): `auth-web`, `auth-mobile`, `auth-social`, `realms`, `guards`, `throttle`, `organization-registration` (includes the cleanup of a pending NGO and its S3 files), `team`, `migration` (import → held emails → release → each kind of user signs in → second run changes nothing), `harness`. Coverage of `src/modules/auth` and `src/usecases/auth` from the e2e suite alone: 92 % lines, 91 % functions, 66 % branches. No CI workflow yet: the suite runs locally against the compose Postgres, Redis and S3 emulator.
+- Layer 9 specs: `src/usecases/auth/migrate-identities.usecase.spec.ts` (database: admin, volunteer, both, deleted, duplicate, `google_` / `signinwithapple_` links, second run, dry run), `src/modules/auth/jobs/auth-cleanup.processor.spec.ts` (database: one row to go and one to stay per kind), `src/usecases/auth/announce.usecase.spec.ts` (back dry run renders the first email).
 - Pre-flight: `scripts/auth-preflight.sql` on a copy of production before the cutover migration, including the count of social Cognito users by provider.

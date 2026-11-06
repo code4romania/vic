@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { IChildRoute, IRoute } from '../common/interfaces/route.interface';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../common/utils/utils';
-import { ROUTES } from '../common/constants/routes';
+import { findParentRoute, useVisibleRoutes } from '../hooks/useVisibleRoutes';
 import MenuItem from './MenuItem';
 
 interface SlidingMenuProps {
@@ -15,12 +15,13 @@ interface SlidingMenuProps {
 export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeParentRoute, setActiveParentRoute] = useState<IRoute>(ROUTES[0]);
+  const routes = useVisibleRoutes();
+  const [activeParentRoute, setActiveParentRoute] = useState<IRoute>(routes[0]);
   const [activeSubRoute, setActiveSubRoute] = useState<IChildRoute | null>(null);
 
   useEffect(() => {
     const splittedLocation = location.pathname.split('/');
-    const parentRoute = ROUTES.find((route) => route.href === splittedLocation[1]);
+    const parentRoute = findParentRoute(routes, location.pathname);
 
     if (parentRoute?.childRoutes?.length) {
       const subRoute = parentRoute.childRoutes.find((childRoute) =>
@@ -38,7 +39,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
       setActiveParentRoute(parentRoute);
       setActiveSubRoute(null);
     }
-  }, [location]);
+  }, [location, routes]);
 
   const onMenuItemClick = (item: IRoute, childRoute?: IChildRoute) => {
     navigate(childRoute ? `${childRoute.href}` : `${item.href}`);
@@ -104,7 +105,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
                         )}
                         aria-label="Sidebar"
                       >
-                        {ROUTES.map((item) => (
+                        {routes.map((item) => (
                           <MenuItem
                             key={item.id}
                             item={item}

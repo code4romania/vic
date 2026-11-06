@@ -49,3 +49,49 @@ export function refreshCookie(response: request.Response): string {
   );
   return cookie;
 }
+
+// Logs a web admin in through the API; the access token and the refresh cookie (for /auth/web/refresh).
+export async function asWeb(
+  http: ReturnType<typeof api>,
+  email: string,
+  password: string,
+): Promise<{
+  accessToken: string;
+  cookie: string;
+  auth: { Authorization: string };
+}> {
+  const res = await http.post('/auth/web/login').send({ email, password });
+  if (res.status !== 200) {
+    throw new Error(
+      `web login ${email}: ${res.status} ${JSON.stringify(res.body)}`,
+    );
+  }
+  return {
+    accessToken: res.body.accessToken,
+    cookie: refreshCookie(res).split(';')[0],
+    auth: { Authorization: `Bearer ${res.body.accessToken}` },
+  };
+}
+
+// Logs a volunteer in through the API; both tokens, as the app keeps them.
+export async function asMobile(
+  http: ReturnType<typeof api>,
+  email: string,
+  password: string,
+): Promise<{
+  accessToken: string;
+  refreshToken: string;
+  auth: { Authorization: string };
+}> {
+  const res = await http.post('/mobile/auth/login').send({ email, password });
+  if (res.status !== 200) {
+    throw new Error(
+      `mobile login ${email}: ${res.status} ${JSON.stringify(res.body)}`,
+    );
+  }
+  return {
+    accessToken: res.body.accessToken,
+    refreshToken: res.body.refreshToken,
+    auth: { Authorization: `Bearer ${res.body.accessToken}` },
+  };
+}

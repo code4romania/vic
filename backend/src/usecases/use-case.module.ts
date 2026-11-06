@@ -21,6 +21,8 @@ import { SetPasswordUseCase } from './auth/set-password.usecase';
 import { ResetPasswordWithCodeUseCase } from './auth/reset-password-with-code.usecase';
 import { ForgotPasswordUseCase } from './auth/forgot-password.usecase';
 import { RegisterMobileUseCase } from './auth/register-mobile.usecase';
+import { MigrateIdentitiesUseCase } from './auth/migrate-identities.usecase';
+import { AnnounceUseCase } from './auth/announce.usecase';
 import { ConfirmEmailUseCase } from './auth/confirm-email.usecase';
 import { RefreshSessionUseCase } from './auth/refresh-session.usecase';
 import { LogoutUseCase } from './auth/logout.usecase';
@@ -209,6 +211,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     ResetPasswordWithCodeUseCase,
     ForgotPasswordUseCase,
     RegisterMobileUseCase,
+    MigrateIdentitiesUseCase,
+    AnnounceUseCase,
     ConfirmEmailUseCase,
     RefreshSessionUseCase,
     LogoutUseCase,
@@ -380,6 +384,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     ResetPasswordWithCodeUseCase,
     ForgotPasswordUseCase,
     RegisterMobileUseCase,
+    MigrateIdentitiesUseCase,
+    AnnounceUseCase,
     ConfirmEmailUseCase,
     RefreshSessionUseCase,
     LogoutUseCase,

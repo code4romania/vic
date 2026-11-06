@@ -111,7 +111,10 @@
       "announcements": "Anunțuri",
       "activity_types": "Categorii activități",
       "activity_log": "Ore de voluntariat",
-      "actions_archive": "Arhivă acțiuni"
+      "actions_archive": "Arhivă acțiuni",
+      "organization_profile": "Profil",
+      "team": "Echipa",
+      "validation": "Validare ONG-uri"
     },
     "collapse": "Restrânge meniul"
   },
@@ -282,15 +285,22 @@
       "edit": "Editare profil",
       "card": "Editează profil organizație"
     },
-    "subtitle": "Datele sunt preluate din ONGHub.",
+    "subtitle": "Datele organizației tale.",
     "logo": "Logo organizație",
     "name": "Denumire organizație",
     "description": "Descriere organizație",
     "vic_description": "Descrierea organizației în VIC",
-    "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația VIC. Poți alege să formulezi o descriere specifica pentru aplicația VIC, prin care să atragi cat mai multi voluntari, sau să folosești descrierea organizației asa cum se regăsește în ONGHub.",
+    "description_placeholder": "Descrierea organizației este afișată în profilul organizației din aplicația VIC. Scrie-o pentru voluntari: ce faceți și cum vă pot ajuta.",
     "errors": {
       "ORG_001": "Organizația nu a fost găsită",
-      "no_data": "Nu s-au putut încărca datele organizației"
+      "no_data": "Nu s-au putut încărca datele organizației",
+      "ORG_004": "Există deja o organizație cu același nume, email, telefon sau CUI.",
+      "ORG_005": "Organizația nu este validată încă. Va fi posibil după ce echipa VIC o validează.",
+      "ORG_006": "Verificarea anti-robot nu a reușit. Încearcă din nou.",
+      "ORG_007": "Statutul lipsește sau nu este PDF (maximum 10 MB).",
+      "ORG_008": "Acest administrator nu face parte din organizația ta.",
+      "ORG_009": "Invitațiile sunt doar pentru administratorii care nu și-au setat parola.",
+      "ORG_010": "Nu îți poți schimba propriul status."
     },
     "form": {
       "description": {
@@ -300,8 +310,22 @@
       }
     },
     "submit": {
-      "success": "Descrierea organizației a fost actualizată"
-    }
+      "success": "Organizația a fost actualizată"
+    },
+    "tax_id": "CUI",
+    "website": "Website",
+    "validated_on": "Validată la",
+    "not_validated": "În așteptarea validării",
+    "statute": "Statut",
+    "open_statute": "Deschide statutul (PDF)",
+    "replace_logo": "Logo nou (opțional)",
+    "replace_statute": "Statut nou (opțional)",
+    "status": {
+      "pending": "Email neconfirmat",
+      "active": "Activă",
+      "suspended": "Suspendată"
+    },
+    "validation_banner": "Organizația ta așteaptă validarea echipei VIC. Între timp poți configura totul. Până atunci voluntarii nu o pot vedea, nu poți porni o campanie și nu se pot înregistra ore."
   },
   "pagination": {
     "rows_per_page": "Rânduri pe pagină",
@@ -971,5 +995,350 @@
       "remove_from_list": "Elimină din listă",
       "confirm": "Confirmă și semnează"
     }
+  },
+  "auth": {
+    "errors": {
+      "AUTH_001": "Email sau parolă greșită.",
+      "AUTH_002": "Prea multe încercări greșite. Contul este blocat 15 minute.",
+      "AUTH_003": "Adresa de email nu este confirmată încă. Verifică-ți emailul.",
+      "AUTH_004": "Contul este dezactivat sau organizația este suspendată.",
+      "AUTH_005": "Linkul sau codul nu mai este valabil.",
+      "AUTH_006": "Prea multe coduri greșite. Cere un cod nou.",
+      "AUTH_007": "Parola nu respectă regulile.",
+      "AUTH_008": "Sesiunea a expirat. Autentifică-te din nou.",
+      "AUTH_009": "Există deja un cont cu acest email.",
+      "AUTH_010": "Prea multe cereri. Încearcă din nou peste un minut.",
+      "AUTH_011": "Versiunea aplicației este prea veche.",
+      "AUTH_012": "Acesta este un cont de voluntar. Folosește aplicația mobilă VIC.",
+      "AUTH_013": "Autentificarea cu acest cont nu a reușit."
+    },
+    "maintenance": {
+      "title": "VIC este în mentenanță",
+      "description": "Facem o actualizare a sistemului de autentificare. Revenim în câteva ore.",
+      "retry": "Încearcă din nou"
+    },
+    "session_ended": "Sesiunea a expirat. Autentifică-te din nou.",
+    "open_app": "Deschide aplicația",
+    "expired_link": {
+      "description": "Linkul nu mai este valabil: a expirat sau a fost deja folosit.",
+      "resend": "Trimite-mi un link nou",
+      "sent": "Dacă linkul poate fi reînnoit, am trimis unul nou. Verifică-ți emailul.",
+      "forgot_password": "Resetează parola"
+    }
+  },
+  "login": {
+    "title": "Autentificare în VIC",
+    "migration_notice": "Aveai cont înainte de schimbare? Folosește linkul primit pe email pentru a-ți seta parola, sau Ai uitat parola.",
+    "form": {
+      "email": {
+        "label": "Email",
+        "invalid": "Adresa de email nu este validă",
+        "required": "Emailul este obligatoriu"
+      },
+      "password": {
+        "label": "Parola",
+        "required": "Parola este obligatorie"
+      }
+    },
+    "forgot_password": "Ai uitat parola?",
+    "submit": "Intră în cont",
+    "no_account": "Organizația ta nu are cont?",
+    "register": "Înregistrează organizația",
+    "errors": {
+      "generic": "Autentificarea nu a reușit. Încearcă din nou."
+    },
+    "resend_verification": {
+      "button": "Retrimite emailul de confirmare",
+      "sent": "Dacă adresa are un cont neconfirmat, am trimis un link nou."
+    },
+    "volunteer_account": {
+      "title": "Acesta este un cont de voluntar",
+      "description": "Voluntarii folosesc aplicația mobilă VIC. Platforma web este pentru administratorii organizațiilor.",
+      "open_app": "Deschide aplicația"
+    }
+  },
+  "forgot_password": {
+    "title": "Ai uitat parola",
+    "description": "Introdu emailul contului. Dacă există un cont, îți trimitem un link pentru a alege o parolă nouă.",
+    "email": {
+      "label": "Email",
+      "invalid": "Adresa de email nu este validă",
+      "required": "Emailul este obligatoriu"
+    },
+    "submit": "Trimite linkul",
+    "sent": "Dacă există un cont pentru această adresă, am trimis un link pentru a alege o parolă nouă. Verifică-ți emailul.",
+    "back_to_login": "Înapoi la autentificare",
+    "errors": {
+      "generic": "A apărut o eroare. Încearcă din nou."
+    }
+  },
+  "set_password": {
+    "title": {
+      "transition": "VIC are o nouă autentificare",
+      "invite": "Bine ai venit în {{organization}}",
+      "reset": "Alege o parolă nouă"
+    },
+    "description": {
+      "transition": "Alege parola pentru {{email}}.",
+      "invite": "Alege parola pentru {{email}}.",
+      "reset": "Alege o parolă nouă pentru {{email}}.",
+      "volunteer_social": "Setează o parolă cu acest link sau intră cu Google, Facebook sau Apple în aplicație, ca înainte."
+    },
+    "expired_title": "Linkul nu mai este valabil",
+    "form": {
+      "password": {
+        "label": "Parola",
+        "required": "Parola este obligatorie",
+        "rule": "Minimum 8 caractere, cu o literă mare, o literă mică, o cifră și un simbol."
+      },
+      "confirm": {
+        "label": "Confirmă parola",
+        "required": "Confirmă parola",
+        "mismatch": "Parolele nu coincid"
+      }
+    },
+    "submit": "Salvează parola",
+    "done": {
+      "title": "Parola a fost salvată",
+      "open_app": "Gata. Deschide aplicația și intră în cont."
+    },
+    "errors": {
+      "generic": "A apărut o eroare. Încearcă din nou."
+    }
+  },
+  "confirm_email": {
+    "title": "Confirmăm emailul",
+    "failed_title": "Linkul nu mai este valabil",
+    "done": {
+      "title": "Email confirmat",
+      "open_app": "Email confirmat. Deschide aplicația și intră în cont."
+    }
+  },
+  "landing": {
+    "title": "Gestionează voluntarii într-un singur loc",
+    "subtitle": "VIC ajută organizațiile să recruteze voluntari, să organizeze evenimente, să înregistreze orele de voluntariat și să semneze contracte, gratuit.",
+    "login": "Intră în cont",
+    "register": "Înregistrează organizația",
+    "features": {
+      "volunteers": {
+        "title": "Voluntari",
+        "description": "Coduri de acces, cereri și profilurile celor care te ajută."
+      },
+      "events": {
+        "title": "Evenimente",
+        "description": "Publică evenimente și vezi cine participă."
+      },
+      "hours": {
+        "title": "Ore de voluntariat",
+        "description": "Voluntarii își înregistrează orele, tu le aprobi."
+      },
+      "documents": {
+        "title": "Contracte",
+        "description": "Contracte de voluntariat generate și semnate online."
+      }
+    },
+    "volunteers": {
+      "title": "Ești voluntar?",
+      "description": "Voluntarii folosesc aplicația mobilă VIC."
+    }
+  },
+  "not_found": {
+    "title": "Pagina nu a fost găsită",
+    "description": "Pagina pe care o cauți nu există.",
+    "home": "Mergi la pagina principală"
+  },
+  "register_organization": {
+    "title": "Înregistrează organizația",
+    "description": "După ce îți confirmi emailul poți configura totul. Echipa VIC validează apoi organizația, înainte ca voluntarii să o poată vedea.",
+    "organization_card": "Organizația",
+    "admin_card": "Primul administrator",
+    "admin_card_description": "Vei administra organizația în VIC și poți invita alți administratori.",
+    "form": {
+      "required": "Câmpul este obligatoriu",
+      "min": "Minimum {{value}} caractere",
+      "max": "Maximum {{value}} caractere",
+      "email_invalid": "Adresa de email nu este validă",
+      "website_invalid": "Introdu adresa completă, care începe cu https://",
+      "tax_id_invalid": "CUI-ul conține doar cifre, opțional cu RO în față",
+      "name": {
+        "label": "Numele organizației"
+      },
+      "taxId": {
+        "label": "CUI"
+      },
+      "email": {
+        "label": "Emailul organizației"
+      },
+      "phone": {
+        "label": "Telefonul organizației"
+      },
+      "address": {
+        "label": "Adresa"
+      },
+      "activityArea": {
+        "label": "Domeniul de activitate"
+      },
+      "website": {
+        "label": "Website (opțional)"
+      },
+      "description": {
+        "label": "Descriere pentru voluntari (50-250 de caractere)"
+      },
+      "logo": {
+        "label": "Logo (opțional)",
+        "hint": "PNG sau JPG, maximum 5 MB",
+        "rejected": "Logoul trebuie să fie PNG sau JPG de maximum 5 MB"
+      },
+      "statute": {
+        "label": "Statutul organizației",
+        "hint": "Doar PDF, maximum 10 MB",
+        "required": "Statutul este obligatoriu",
+        "rejected": "Statutul trebuie să fie un PDF de maximum 10 MB"
+      },
+      "firstName": {
+        "label": "Prenume"
+      },
+      "lastName": {
+        "label": "Nume"
+      },
+      "adminEmail": {
+        "label": "Emailul tău (cu el intri în cont)"
+      },
+      "adminPhone": {
+        "label": "Telefonul tău"
+      },
+      "password": {
+        "label": "Parola",
+        "rule": "Minimum 8 caractere, cu o literă mare, o literă mică, o cifră și un simbol."
+      },
+      "confirmPassword": {
+        "label": "Confirmă parola"
+      },
+      "confirm_password": {
+        "mismatch": "Parolele nu coincid"
+      },
+      "terms": {
+        "label": "Sunt de acord cu",
+        "terms": "termenii și condițiile",
+        "and": "și cu",
+        "privacy": "politica de confidențialitate",
+        "required": "Trebuie să accepți termenii"
+      }
+    },
+    "submit": "Înregistrează",
+    "has_account": "Ai deja cont?",
+    "login": "Intră în cont",
+    "success": {
+      "title": "Confirmă emailul pentru a activa {{organization}}",
+      "description": "Am trimis un link la {{email}}. Deschide-l pentru a confirma adresa și a intra în cont.",
+      "login": "Mergi la autentificare"
+    },
+    "errors": {
+      "turnstile_missing": "Completează verificarea anti-robot.",
+      "generic": "Înregistrarea nu a reușit. Verifică datele și încearcă din nou."
+    }
+  },
+  "team": {
+    "title": "Echipa",
+    "description": "Administratorii organizației tale.",
+    "add_admin": "Adaugă administrator",
+    "you": "tu",
+    "transition_link": "VIC (noua autentificare)",
+    "columns": {
+      "name": "Nume",
+      "phone": "Telefon",
+      "status": "Status",
+      "last_login": "Ultima autentificare",
+      "last_invite": "Ultima invitație"
+    },
+    "status": {
+      "active": "Activ",
+      "invite_sent": "Invitație trimisă, expiră în {{days}} zile",
+      "invite_expired": "Invitație expirată",
+      "disabled": "Dezactivat",
+      "no_login": "Fără cont încă"
+    },
+    "actions": {
+      "send_invite": "Trimite invitație",
+      "disable": "Dezactivează",
+      "enable": "Activează"
+    },
+    "confirm": {
+      "invite": {
+        "title": "Trimite invitație",
+        "description": "Trimiți lui {{name}} un link pentru setarea parolei la {{email}}? Invitațiile anterioare nu vor mai funcționa.",
+        "button": "Trimite"
+      },
+      "disable": {
+        "title": "Dezactivează administratorul",
+        "description": "{{name}} va fi deconectat și nu va mai putea intra în cont până la reactivare.",
+        "button": "Dezactivează"
+      },
+      "enable": {
+        "title": "Activează administratorul",
+        "description": "{{name}} poate intra din nou în cont. Nu se trimite niciun email; dacă nu are parolă încă, trimite-i o invitație.",
+        "button": "Activează"
+      }
+    },
+    "toast": {
+      "invite_sent": "Invitație trimisă la {{email}}",
+      "disabled": "{{name}} a fost dezactivat",
+      "enabled": "{{name}} a fost activat"
+    },
+    "form": {
+      "description": "Îi trimitem pe email un link pentru a-și alege parola.",
+      "firstName": "Prenume",
+      "lastName": "Nume",
+      "email": "Email",
+      "phone": "Telefon",
+      "required": "Câmpul este obligatoriu",
+      "email_invalid": "Adresa de email nu este validă",
+      "cancel": "Anulează",
+      "submit": "Adaugă și trimite invitația"
+    },
+    "errors": {
+      "load": "Echipa nu a putut fi încărcată",
+      "too_many": "Prea multe invitații. Încearcă mai târziu.",
+      "generic": "A apărut o eroare. Încearcă din nou."
+    }
+  },
+  "validation": {
+    "title": "Validare ONG-uri",
+    "description": "Organizații care și-au confirmat emailul și așteaptă validarea. Verifică statutul înainte de validare.",
+    "open_statute": "Statut (PDF)",
+    "columns": {
+      "name": "Organizație",
+      "tax_id": "CUI",
+      "registered_on": "Înregistrată la",
+      "first_admin": "Primul administrator",
+      "statute": "Statut"
+    },
+    "actions": {
+      "validate": "Validează",
+      "suspend": "Suspendă"
+    },
+    "confirm": {
+      "validate": {
+        "title": "Validează organizația",
+        "description": "{{name}} devine vizibilă voluntarilor și poate porni campanii."
+      },
+      "suspend": {
+        "title": "Suspendă organizația",
+        "description": "Niciun administrator al {{name}} nu va mai putea intra în cont până la reactivare."
+      }
+    },
+    "toast": {
+      "validate": "{{name}} a fost validată",
+      "suspend": "{{name}} a fost suspendată"
+    },
+    "errors": {
+      "load": "Organizațiile nu au putut fi încărcate",
+      "generic": "A apărut o eroare. Încearcă din nou."
+    }
+  },
+  "forbidden": {
+    "title": "Acces interzis",
+    "description": "Nu ai acces la această pagină.",
+    "home": "Mergi la pagina principală"
   }
 }

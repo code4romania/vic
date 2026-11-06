@@ -111,7 +111,7 @@ export class VolunteerRepositoryService
       )
       .select()
       .where(
-        'volunteer.organizationId = :organizationId AND status = :status',
+        'volunteer.organizationId = :organizationId AND volunteer.status = :status',
         { organizationId, status },
       )
       .orderBy(

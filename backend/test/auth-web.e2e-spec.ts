@@ -247,6 +247,136 @@ describe('Web auth (e2e)', () => {
     expect(testApp.mailbox.sent).toHaveLength(0);
   });
 
+  // Layer 10 additions.
+
+  const activate = async (): Promise<void> => {
+    await http
+      .post('/auth/set-password')
+      .send({ token: transitionSecret, password: PASSWORD })
+      .expect(200);
+  };
+  const cookieOf = (res: { headers: Record<string, unknown> }): string =>
+    refreshCookie(res as never).split(';')[0];
+
+  it('five wrong passwords lock the login: 423 AUTH_002 even with the right one', async () => {
+    await activate();
+
+    for (let attempt = 1; attempt <= 5; attempt++) {
+      expect((await login('Wrong#20266').expect(401)).body.code_error).toBe(
+        'AUTH_001',
+      );
+    }
+    expect((await login().expect(423)).body.code_error).toBe('AUTH_002');
+
+    // The lock lasts 15 minutes.
+    await testApp.dataSource.query(
+      `UPDATE auth_identity SET locked_until = now() - interval '1 second'`,
+    );
+    await login().expect(200);
+  });
+
+  it('a rotated cookie presented again: within 10 s it is two tabs crossing (200), later a replay that ends the session', async () => {
+    await activate();
+    const first = cookieOf(await login().expect(200));
+    const second = cookieOf(
+      await http.post('/auth/web/refresh').set('Cookie', first).expect(200),
+    );
+
+    // 3 s later: the other tab still gets in.
+    await testApp.dataSource.query(
+      `UPDATE refresh_token SET rotated_at = now() - interval '3 seconds'`,
+    );
+    const crossing = await http
+      .post('/auth/web/refresh')
+      .set('Cookie', first)
+      .expect(200);
+    expect(crossing.body.accessToken).toEqual(expect.any(String));
+
+    // 11 s later: a replay; the session is revoked, so even the current cookie stops working.
+    await testApp.dataSource.query(
+      `UPDATE refresh_token SET rotated_at = now() - interval '11 seconds'`,
+    );
+    const replay = await http
+      .post('/auth/web/refresh')
+      .set('Cookie', first)
+      .expect(401);
+    expect(replay.body.code_error).toBe('AUTH_008');
+    const [{ revoked }] = await testApp.dataSource.query(
+      `SELECT count(*)::int AS revoked FROM refresh_token WHERE revoked_at IS NOT NULL`,
+    );
+    expect(revoked).toBe(1);
+    const current = refreshCookie(crossing) ? cookieOf(crossing) : second;
+    await http.post('/auth/web/refresh').set('Cookie', current).expect(401);
+  });
+
+  it('change password keeps this session and ends the other', async () => {
+    await activate();
+    const here = await login().expect(200);
+    const there = cookieOf(await login().expect(200));
+
+    await http
+      .patch('/auth/web/change-password')
+      .set('Authorization', `Bearer ${here.body.accessToken}`)
+      .send({ currentPassword: PASSWORD, newPassword: 'Changed#2026' })
+      .expect(204);
+
+    await http.post('/auth/web/refresh').set('Cookie', there).expect(401);
+    await http
+      .post('/auth/web/refresh')
+      .set('Cookie', cookieOf(here))
+      .expect(200);
+  });
+
+  it('a newer reset link ends the earlier one; forgot password for an unknown email sends nothing', async () => {
+    await http
+      .post('/auth/web/forgot-password')
+      .send({ email: EMAIL })
+      .expect(200);
+    const earlier = linkSecret(testApp.mailbox.last(EMAIL));
+    await testApp.flushRedis(); // one link a minute per type
+    await http
+      .post('/auth/web/forgot-password')
+      .send({ email: EMAIL })
+      .expect(200);
+    const newer = linkSecret(testApp.mailbox.last(EMAIL));
+
+    await http.get(`/auth/token/${earlier}`).expect(400);
+    await http.get(`/auth/token/${newer}`).expect(200);
+
+    testApp.mailbox.clear();
+    await http
+      .post('/auth/web/forgot-password')
+      .send({ email: 'nobody@example.ro' })
+      .expect(200);
+    await http
+      .post('/auth/web/resend-verification')
+      .send({ email: 'nobody@example.ro' })
+      .expect(200);
+    await http
+      .post('/auth/web/resend-verification')
+      .send({ email: EMAIL })
+      .expect(200);
+    expect(testApp.mailbox.sent).toHaveLength(0);
+  });
+
+  it('disabling an admin: login 403 AUTH_004, refresh 401, the earlier access token refused (R18)', async () => {
+    await activate();
+    const logged = await login().expect(200);
+    const auth = { Authorization: `Bearer ${logged.body.accessToken}` };
+    await http.get('/auth/web/me').set(auth).expect(200);
+
+    await facade.updateIdentity(admin.id, {
+      status: AuthIdentityStatus.DISABLED,
+    });
+
+    expect((await login().expect(403)).body.code_error).toBe('AUTH_004');
+    await http
+      .post('/auth/web/refresh')
+      .set('Cookie', cookieOf(logged))
+      .expect(401);
+    await http.get('/auth/web/me').set(auth).expect(401);
+  });
+
   it('the old Cognito bootstrap route is gone and the mobile version is public', async () => {
     await http.post('/auth/login').expect(404);
 

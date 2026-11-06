@@ -289,4 +289,65 @@ describe('Mobile auth (e2e)', () => {
 
     expect(testApp.mailbox.sent).toHaveLength(0);
   });
+  // Layer 10 additions.
+
+  it('the reset code for one volunteer fails for another, even with the same digits', async () => {
+    await confirmedVolunteer();
+    const OTHER = 'bogdan@example.ro';
+    await register(OTHER).expect(201);
+    await http
+      .post('/auth/confirm-email')
+      .send({ token: linkSecret(testApp.mailbox.last(OTHER)) })
+      .expect(200);
+
+    await http
+      .post('/mobile/auth/forgot-password')
+      .send({ email: EMAIL })
+      .expect(200);
+    await http
+      .post('/mobile/auth/forgot-password')
+      .send({ email: OTHER })
+      .expect(200);
+    const elenaCode = emailedCode(testApp.mailbox.last(EMAIL));
+
+    const wrongPerson = await http
+      .post('/mobile/auth/reset-password')
+      .send({ email: OTHER, code: elenaCode, password: 'Changed#2026' });
+    // Two codes can collide by chance (1 in a million); then this one is Bogdan's own and works.
+    const bogdanCode = emailedCode(testApp.mailbox.last(OTHER));
+    if (bogdanCode !== elenaCode) {
+      expect(wrongPerson.status).toBe(400);
+      expect(wrongPerson.body.code_error).toBe('AUTH_005');
+    }
+    await http
+      .post('/mobile/auth/reset-password')
+      .send({ email: EMAIL, code: elenaCode, password: 'Changed#2026' })
+      .expect(200);
+  });
+
+  it('refresh through the body: rotation, the 10 s window for a crossing request, then a replay ends the session', async () => {
+    const { refreshToken } = await confirmedVolunteer();
+    const rotated = (
+      await http.post('/mobile/auth/refresh').send({ refreshToken }).expect(200)
+    ).body;
+    expect(rotated.refreshToken).not.toBe(refreshToken);
+
+    await testApp.dataSource.query(
+      `UPDATE refresh_token SET rotated_at = now() - interval '3 seconds'`,
+    );
+    await http.post('/mobile/auth/refresh').send({ refreshToken }).expect(200);
+
+    await testApp.dataSource.query(
+      `UPDATE refresh_token SET rotated_at = now() - interval '11 seconds'`,
+    );
+    const replay = await http
+      .post('/mobile/auth/refresh')
+      .send({ refreshToken })
+      .expect(401);
+    expect(replay.body.code_error).toBe('AUTH_008');
+    await http
+      .post('/mobile/auth/refresh')
+      .send({ refreshToken: rotated.refreshToken })
+      .expect(401);
+  });
 });

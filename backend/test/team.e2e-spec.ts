@@ -340,4 +340,41 @@ describe('Team (e2e)', () => {
       ).body.code_error,
     ).toBe('ORG_008');
   });
+  // Layer 10 addition.
+  it('an invite left 14 days shows invite_expired; resend on its link sends a working one from the same sender', async () => {
+    await http
+      .post('/organization/team')
+      .set(auth())
+      .send({
+        firstName: 'Ion',
+        lastName: 'Tarziu',
+        email: 'ion@ong.ro',
+        phone: '+40733333333',
+      })
+      .expect(201);
+    const first = linkSecret(testApp.mailbox.last('ion@ong.ro'));
+    expect((await team())['ion@ong.ro'].status).toBe('invite_sent');
+
+    await testApp.dataSource.query(
+      `UPDATE auth_token SET expires_at = now() - interval '1 second'`,
+    );
+    expect((await team())['ion@ong.ro'].status).toBe('invite_expired');
+    await http.get(`/auth/token/${first}`).expect(400);
+
+    await http.post(`/auth/token/${first}/resend`).expect(200);
+    const fresh = linkSecret(testApp.mailbox.last('ion@ong.ro'));
+    expect(fresh).not.toBe(first);
+    const info = await http.get(`/auth/token/${fresh}`).expect(200);
+    expect(info.body).toMatchObject({
+      purpose: 'invite',
+      organizationName: 'Asociatia Echipa',
+    });
+    expect((await team())['ion@ong.ro'].status).toBe('invite_sent');
+
+    await http
+      .post('/auth/set-password')
+      .send({ token: fresh, password: PASSWORD })
+      .expect(200);
+    expect((await team())['ion@ong.ro'].status).toBe('active');
+  });
 });

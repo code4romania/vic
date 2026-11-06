@@ -30,7 +30,13 @@ export class ExceptionsFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       // handle http exceptions
       status = exception.getStatus();
-      message = exception.getResponse() as IError;
+      const body = exception.getResponse();
+      // Some exceptions answer a plain string (e.g. the throttler's 429); spreading it below would
+      // turn it into { "0": "T", "1": "h", ... }.
+      message =
+        typeof body === 'string'
+          ? { message: body, code_error: null }
+          : (body as IError);
     } else if (exception instanceof TypeORMError) {
       // handle typeorm errors
       status = HttpStatus.UNPROCESSABLE_ENTITY;

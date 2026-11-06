@@ -10,6 +10,7 @@ import { EventError } from './entities/event.errors';
 import { ActionsError } from './entities/actions.errors';
 import { TemplateError } from './entities/template.errors';
 import { ContractError } from './entities/contract.errors';
+import { AuthError } from './entities/auth.errors';
 
 // Here we list all the group of errors for every page
 export class InternalErrors {
@@ -25,4 +26,5 @@ export class InternalErrors {
   public static ACTIONS_ERRORS = ActionsError.getInstance();
   public static TEMPLATE_ERRORS = TemplateError.getInstance();
   public static CONTRACT_ERRORS = ContractError.getInstance();
+  public static AUTH_ERRORS = AuthError.getInstance();
 }

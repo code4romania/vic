@@ -4,31 +4,55 @@ import { classNames } from '../common/utils/utils';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 
-type FileType = 'doc' | 'image';
+// pdf: the NGO statute, PDF only (R32).
+type FileType = 'doc' | 'image' | 'pdf';
+
+const ACCEPT: Record<FileType, Record<string, string[]>> = {
+  doc: {
+    'application/pdf': ['.pdf'],
+    'application/msword': ['.doc'],
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+  },
+  image: {
+    'image/png': ['.png'],
+    'image/jpeg': ['.jpg', '.jpeg'],
+  },
+  pdf: { 'application/pdf': ['.pdf'] },
+};
 
 interface FileUploadProps {
   onChange: (file: File) => void;
   errorMessage?: string;
   label: string;
   type?: FileType;
+  // Shown under the drop zone, e.g. "PDF, at most 10 MB".
+  hint?: string;
+  // Files above this are refused here, before the upload.
+  maxSize?: number;
+  // Shown when a dropped file has the wrong type or is too big.
+  rejectedMessage?: string;
 }
 
-const FileUpload = ({ onChange, errorMessage, label, type = 'doc' }: FileUploadProps) => {
+const FileUpload = ({
+  onChange,
+  errorMessage,
+  label,
+  type = 'doc',
+  hint,
+  maxSize,
+  rejectedMessage,
+}: FileUploadProps) => {
   const { t } = useTranslation('general');
 
-  const { acceptedFiles, getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept:
-      type === 'doc'
-        ? {
-            'application/pdf': ['.pdf'],
-            'application/msword': ['.doc'],
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-          }
-        : {
-            'image/jpeg': ['.png', '.jpg', '.jpeg'],
-          },
+  const { acceptedFiles, fileRejections, getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: ACCEPT[type],
+    maxSize,
     maxFiles: 1,
   });
+
+  const error =
+    errorMessage ||
+    (fileRejections.length > 0 && acceptedFiles.length === 0 ? rejectedMessage : undefined);
 
   // send file back to controller
   useEffect(() => {
@@ -41,7 +65,7 @@ const FileUpload = ({ onChange, errorMessage, label, type = 'doc' }: FileUploadP
       <div
         className={classNames(
           'min-h-[10rem] w-full max-w-[37rem] bg-gray-50 border-dashed border-2  rounded-lg flex flex-col justify-center items-center',
-          errorMessage
+          error
             ? 'border-red-500'
             : isDragActive
               ? 'border-yellow-500 bg-yellow-50'
@@ -62,11 +86,7 @@ const FileUpload = ({ onChange, errorMessage, label, type = 'doc' }: FileUploadP
 
             <div
               className={`flex flex-row  gap-1 ${
-                errorMessage
-                  ? 'text-red-500'
-                  : acceptedFiles.length > 0
-                    ? 'text-yellow-600'
-                    : 'text-black'
+                error ? 'text-red-500' : acceptedFiles.length > 0 ? 'text-yellow-600' : 'text-black'
               }`}
             >
               {acceptedFiles.length > 0 ? (
@@ -84,7 +104,8 @@ const FileUpload = ({ onChange, errorMessage, label, type = 'doc' }: FileUploadP
           </div>
         </div>
       </div>
-      <p className="text-red-500">{errorMessage}</p>
+      {hint && !error && <p className="text-sm text-cool-gray-500">{hint}</p>}
+      <p className="text-red-500">{error}</p>
     </div>
   );
 };

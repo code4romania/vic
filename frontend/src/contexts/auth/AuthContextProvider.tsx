@@ -1,65 +1,92 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useQueryClient } from 'react-query';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { AuthContext } from './AuthContext';
-import { useLogin } from '../../services/auth/auth.service';
-import { IUser } from '../../common/interfaces/user.interface';
-import { signInWithRedirect, getCurrentUser, signOut } from 'aws-amplify/auth';
+import { IAdminProfile, IWebSession } from '../../common/interfaces/auth.interface';
+import * as authApi from '../../services/auth/auth.api';
+import { apiEvents, refreshAccessToken } from '../../services/api';
+import { tokenStore } from '../../services/auth/token.store';
+import Maintenance from '../../pages/Maintenance';
 
+// The web session: the access token in memory, the refresh token in the httpOnly vic_refresh cookie.
+// On load: refresh, then /auth/web/me; any failure means logged out.
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [profile, setProfile] = useState<IUser>();
-  const { mutate: getProfile, data: userProfile, isLoading: isFetchingProfile } = useLogin();
+  const [profile, setProfile] = useState<IAdminProfile>();
+  const [maintenance, setMaintenance] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+  const { t } = useTranslation('auth');
+
+  const endSession = useCallback(() => {
+    tokenStore.clear();
+    setProfile(undefined);
+    queryClient.clear();
+  }, [queryClient]);
 
   useEffect(() => {
-    initProfile();
+    const offMaintenance = apiEvents.onMaintenance(() => setMaintenance(true));
+    // A refresh failed in the middle of the session (expired, revoked, disabled): back to the login page.
+    const offSessionEnded = apiEvents.onSessionEnded(() => {
+      setProfile((current) => {
+        if (current) toast.info(t('session_ended'));
+        return undefined;
+      });
+      queryClient.clear();
+    });
+    return () => {
+      offMaintenance();
+      offSessionEnded();
+    };
+  }, [queryClient, t]);
+
+  useEffect(() => {
+    const bootstrap = async () => {
+      try {
+        await refreshAccessToken();
+        setProfile(await authApi.getMe());
+      } catch {
+        tokenStore.clear();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    bootstrap();
   }, []);
 
-  useEffect(() => {
-    // once we retrieve the profile we can asume we are logged in
-    if (userProfile) {
-      // set user and authenticated which will automatically show protected routes
-      setIsAuthenticated(true);
-      // set user profile
-      setProfile(userProfile);
-      // hide loading screen
-      setIsLoading(false);
-    }
-  }, [userProfile]);
+  const startSession = useCallback(async (session: IWebSession) => {
+    tokenStore.set(session.accessToken);
+    setProfile(session.user ?? (await authApi.getMe()));
+  }, []);
 
-  const initProfile = async () => {
+  const login = useCallback(
+    async (email: string, password: string) => {
+      const session = await authApi.login(email, password);
+      await startSession(session);
+    },
+    [startSession],
+  );
+
+  const logout = useCallback(async () => {
     try {
-      // this will throw error if user is not authenticated
-      await getCurrentUser();
-
-      // request profile data
-
-      getProfile(undefined, {
-        onError: async (error) => {
-          console.log('⛔️ getProfile error: ', error);
-          await signOut();
-          setIsLoading(false);
-        },
-      });
-    } catch (error) {
-      // https://github.com/aws-amplify/amplify-js/blob/6caccc7b4/packages/auth/src/Auth.ts#L1705
-      // here are just error strings validating user pool config and if user is authenticated
-      console.debug('[Cognito] error while loging in:', error);
-      setIsLoading(false);
+      await authApi.logout();
+    } finally {
+      endSession();
     }
-  };
+  }, [endSession]);
 
-  const login = async () => {
-    await signInWithRedirect();
-  };
+  const isAuthenticated = !!profile;
+  const isSuperAdmin = profile?.superAdmin === true;
 
-  const logout = async () => {
-    await signOut();
-    setIsAuthenticated(false);
-  };
+  if (maintenance) {
+    return <Maintenance onRetry={() => window.location.reload()} />;
+  }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, profile }}>
-      {!(isLoading || isFetchingProfile) ? (
+    <AuthContext.Provider
+      value={{ isAuthenticated, profile, isSuperAdmin, login, logout, startSession }}
+    >
+      {!isLoading ? (
         children
       ) : (
         <div role="status" className="h-[100vh] w-full flex items-center justify-center">

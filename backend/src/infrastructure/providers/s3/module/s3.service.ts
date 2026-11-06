@@ -87,9 +87,22 @@ export class S3Service {
     return `${this.options.publicBaseUrl.replace(/\/+$/, '')}/${key}`;
   }
 
-  public async deleteFile(key: string): Promise<string> {
+  // Deletes a file uploaded with uploadPublicFile, given the URL it returned. A URL outside the public
+  // bucket (a legacy NGO Hub logo) is left alone; returns the deleted key, or null.
+  public async deletePublicFile(url: string): Promise<string> {
+    const base = this.options.publicBaseUrl?.replace(/\/+$/, '');
+    if (!url || !base || !this.options.publicBucket) return null;
+    if (!url.startsWith(`${base}/`)) return null;
+
+    return this.deleteFile(
+      url.slice(base.length + 1),
+      this.options.publicBucket,
+    );
+  }
+
+  public async deleteFile(key: string, bucket?: string): Promise<string> {
     const deleteCommand: DeleteObjectCommand = new DeleteObjectCommand({
-      Bucket: this.options.defaultBucket,
+      Bucket: bucket || this.options.defaultBucket,
       Key: key,
     });
 

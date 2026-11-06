@@ -1,48 +1,100 @@
-import { fetchAuthSession } from 'aws-amplify/auth';
-import axios, { AxiosError, AxiosRequestHeaders } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { IBusinessException } from '../common/interfaces/business-exception.interface';
+import { tokenStore } from './auth/token.store';
 
 // https://vitejs.dev/guide/env-and-mode.html
 const API = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL}`,
   timeout: 100000,
+  // Sends the httpOnly vic_refresh cookie to the API (another origin in development).
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-API.interceptors.request.use(async (request) => {
-  // add auth header with jwt if account is logged in and request is to the api url
-  try {
-    const { tokens } = await fetchAuthSession();
+// The public auth routes: a 401 from them is an answer (wrong password, dead link), never a reason to
+// refresh. Every other 401, /auth/web/me and change-password included, refreshes once (decisions R23).
+const NO_REFRESH_ROUTES = [
+  /^\/?auth\/web\/(login|refresh|logout|forgot-password|resend-verification)$/,
+  /^\/?auth\/token\//,
+  /^\/?auth\/(set-password|confirm-email)$/,
+];
 
-    if (!request.headers) {
-      request.headers = {} as AxiosRequestHeaders;
-    }
+const isPublicAuthRoute = (url = ''): boolean =>
+  NO_REFRESH_ROUTES.some((pattern) => pattern.test(url.replace(/^\/+/, '')));
 
-    if (tokens?.accessToken) {
-      request.headers.Authorization = `Bearer ${tokens.accessToken.toString()}`;
-    }
-  } catch (err) {
-    // User not authenticated. May be a public API.
-    // Catches "The user is not authenticated".
-    return request;
+// Listeners: the AuthContext logs out on a failed refresh; the maintenance screen listens for 503.
+type Listener = () => void;
+const sessionEndedListeners = new Set<Listener>();
+const maintenanceListeners = new Set<Listener>();
+
+export const apiEvents = {
+  onSessionEnded: (listener: Listener): (() => void) => {
+    sessionEndedListeners.add(listener);
+    return () => sessionEndedListeners.delete(listener);
+  },
+  onMaintenance: (listener: Listener): (() => void) => {
+    maintenanceListeners.add(listener);
+    return () => maintenanceListeners.delete(listener);
+  },
+};
+
+interface RefreshResponse {
+  accessToken: string;
+  expiresIn: number;
+}
+
+// One refresh at a time: every request that gets a 401 while it runs waits for the same promise, so a
+// burst of requests never presents the same cookie twice.
+let refreshing: Promise<string> | null = null;
+
+export function refreshAccessToken(): Promise<string> {
+  if (!refreshing) {
+    refreshing = API.post<RefreshResponse>('/auth/web/refresh')
+      .then((res) => {
+        tokenStore.set(res.data.accessToken);
+        return res.data.accessToken;
+      })
+      .finally(() => {
+        refreshing = null;
+      });
   }
+  return refreshing;
+}
 
+API.interceptors.request.use((request) => {
+  const token = tokenStore.get();
+  if (token && !request.headers.Authorization) {
+    request.headers.Authorization = `Bearer ${token}`;
+  }
   return request;
 });
 
 API.interceptors.response.use(
-  async (response) => {
-    return response;
-  },
-  async (error: AxiosError<IBusinessException<symbol>>) => {
-    // Redirect to login once we have restricted access
-    if (error?.response?.status === 401) {
-      window.location.href = '/login';
+  (response) => response,
+  async (error: AxiosError<IBusinessException<string>>) => {
+    const status = error?.response?.status;
+    const original = error.config as AxiosRequestConfig & { _retried?: boolean };
+
+    // The cutover window: the API answers 503 MAINTENANCE to everyone outside the allow-list (R2).
+    if (status === 503 && error.response?.data?.code_error === 'MAINTENANCE') {
+      maintenanceListeners.forEach((listener) => listener());
+      throw error;
     }
 
-    // if not any of the auth error codes throw the error
+    if (status === 401 && original && !original._retried && !isPublicAuthRoute(original.url)) {
+      original._retried = true;
+      try {
+        const token = await refreshAccessToken();
+        original.headers = { ...original.headers, Authorization: `Bearer ${token}` };
+        return API(original);
+      } catch {
+        tokenStore.clear();
+        sessionEndedListeners.forEach((listener) => listener());
+      }
+    }
+
     throw error;
   },
 );

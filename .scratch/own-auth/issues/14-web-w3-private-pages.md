@@ -1,6 +1,6 @@
 # W3 · Web: NGO registration, validation banner, super admin review, Team, full organization edit
 
-Status: needs-info
+Status: done locally (2026-11-06)
 Type: task
 Blocked by: 12, 09
 Tracker card: W3
@@ -16,3 +16,17 @@ Outline until Layer 8 (issue 09) fixes the organization, Team and super admin ro
 - Translations `register_organization`, `validation`, `team`, with one message per ORG code used above.
 
 ## Comments
+
+- 2026-11-06: built and tested locally, no PR.
+  - `/register` (`RegisterOrganization.tsx`, under `PublicRoute`): organization card (shared `components/OrganizationFields.tsx`: fields, yup rules mirroring backend `organization-fields.ts`, logo + statute uploads), first-admin card, terms checkbox (links from new optional `VITE_TERMS_URL` / `VITE_PRIVACY_URL`), `components/Turnstile.tsx` (explicit render, no package; a fresh widget after every failed submit, the token is single use). ORG_004 / ORG_006 → message, ORG_007 → under the statute, AUTH codes via `getAuthErrorCode`. Success: "Confirm your email to activate <org>" + masked email.
+  - `FileUpload`: `pdf` mode, `hint`, `maxSize`, `rejectedMessage` (wrong type or too big is shown instead of being dropped silently); `image` now accepts .png as image/png.
+  - Validation banner: `components/ValidationBanner.tsx` in `MainLayout`, reads `useOrganizationQuery`. ORG_005 from any page (events, hours) is mapped in `ErrorClass` as a shared fallback, so every error class shows it.
+  - `/admin/validation` (`OrganizationValidation.tsx`): logo, website, CUI, registered on, first admin, statute link, Validate / Suspend with `ConfirmationModal`, toasts; `Forbidden.tsx` for plain admins. Validate/suspend also invalidate `['organization']`.
+  - `/organization/team` (`Team.tsx`): status badge (invite_sent with days left, invite_expired, disabled, no_login), last login, last invite (+ by, or "VIC (noua autentificare)" for the transition link), row menu: Send invite (invite_sent, invite_expired, no_login), Disable/Enable (never on yourself), Add admin modal.
+  - Menu: `roles?` on `IRoute`/`IChildRoute`, Organization gets children Profile + Team, Validation entry `roles: ['super_admin']`; `hooks/useVisibleRoutes.ts` (+ `findParentRoute`, so `/admin/validation` highlights) used by `SideMenu` and `SlidingMenu`.
+  - `EditOrganization.tsx`: every field + new logo + new statute, multipart `updateOrganization(data, files)`; `Organization.tsx` shows CUI, website, status, validated on, statute link. `IOrganization` + status, validatedAt, taxId, website, statuteUrl. ONGHub wording removed from translations.
+  - Services: `services/team/*`, `services/admin/admin-organizations.*`, `registerOrganization` / `updateOrganization` in `organization.api.ts`. Translations `register_organization`, `team`, `validation`, `forbidden`, `organization.*`, `side_menu.options.*`, ro + en.
+  - Browser check: empty submit → every field required (+ statute); .txt as statute refused; duplicate phone → ORG_004 message, Turnstile reset; then success → mailcatcher "Activează Asociatia Test W3" → `/confirm-email` → session → dashboard with banner, no Validation menu, `/admin/validation` → 403. Team: Add admin (irina@w3.test) → toast "Invitație trimisă la i•••@w3.test", "expiră în 14 zile", last invite by Tudor; Disable → Dezactivat; Enable (only option shown) → Invitație expirată (Disable ended the invite; Send invite gives a new one, R20). `auth:super-admin -- tudor@w3.test` → Validation menu + row with logo, statute, first admin → Validate → toast, list empty, banner gone. Edit: website + new statute → saved, profile shows them.
+  - Local test data: NGO "Asociatia Test W3" (admin tudor@w3.test, password `Vic-Local-Test1!`, now super admin; colleague irina@w3.test without password).
+  - Not done: Suspend clicked only through the API in Layer 9; `lastLoginAt` stays empty after a session started by confirm-email or set-password (backend only sets it on login, worth a look).
+

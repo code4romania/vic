@@ -23,11 +23,15 @@
     "migration:generate": "npm run typeorm -- migration:generate ./src/migrations/$npm_config_name",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
-    "migration:show": "npm run typeorm -- migration:show"
+    "migration:show": "npm run typeorm -- migration:show",
+    "auth:migrate": "ts-node -r tsconfig-paths/register src/commands/migrate-identities.command.ts",
+    "auth:super-admin": "ts-node -r tsconfig-paths/register src/commands/super-admin.command.ts",
+    "org:suspend": "ts-node -r tsconfig-paths/register src/commands/organization-status.command.ts --suspend",
+    "org:unsuspend": "ts-node -r tsconfig-paths/register src/commands/organization-status.command.ts --unsuspend",
+    "announce": "ts-node -r tsconfig-paths/register src/commands/announce.command.ts"
   },
   "dependencies": {
     "@anchan828/typeorm-history": "1.0.38",
-    "@aws-sdk/client-cognito-identity-provider": "^3.614.0",
     "@aws-sdk/client-s3": "^3.614.0",
     "@aws-sdk/s3-request-presigner": "^3.614.0",
     "@bull-board/api": "^5.21.0",
