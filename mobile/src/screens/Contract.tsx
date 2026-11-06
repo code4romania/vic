@@ -17,13 +17,14 @@ import { Platform, StyleSheet, View } from 'react-native';
 import ContractItem from '../components/ContractItem';
 import { DocumentIcon } from './Documents';
 import { ButtonType } from '../common/enums/button-type.enum';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { shareAsync } from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { ALLOW_FONT_SCALLING, MIME_TYPES } from '../common/constants/constants';
 import ContractSkeleton from '../components/skeleton/contract-skeleton';
 import BottomSheet from '@gorhom/bottom-sheet';
+import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
 import { renderBackdrop } from '../components/BottomSheet';
 import Button from '../components/Button';
 import InlineLink from '../components/InlineLink';
@@ -263,11 +264,12 @@ const Contract = ({ navigation, route }: any) => {
           </>
         )}
       </PageLayout>
-      <BottomSheet
+      <SafeAreaBottomSheet
         backdropComponent={renderBackdrop}
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         animateOnMount={reducedMotion ? false : true}
       >
         <View style={[styles.bottomSheetContainer, { paddingBottom: insets.bottom }]}>
@@ -320,7 +322,7 @@ const Contract = ({ navigation, route }: any) => {
             </>
           )}
         </View>
-      </BottomSheet>
+      </SafeAreaBottomSheet>
     </>
   );
 };

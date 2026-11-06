@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Linking, View } from 'react-native';
 import PressableContainer from '../components/PressableContainer';
 import BottomSheet from '@gorhom/bottom-sheet';
+import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
 import { NotificationsFrom } from '../common/enums/notifications-from.enum';
 import { NotificationBy } from '../common/enums/notification-by.enum';
 import { useUpdateSettingsMutation } from '../services/settings/settings.service';
@@ -234,11 +235,12 @@ const NotificationsSettings = ({ navigation }: any) => {
         />
         <Divider />
       </PageLayout>
-      <BottomSheet
+      <SafeAreaBottomSheet
         backdropComponent={renderBackdrop}
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.contentContainer}>
@@ -290,12 +292,13 @@ const NotificationsSettings = ({ navigation }: any) => {
             </>
           )}
         </View>
-      </BottomSheet>
-      <BottomSheet
+      </SafeAreaBottomSheet>
+      <SafeAreaBottomSheet
         backdropComponent={renderBackdrop}
         ref={notificationsBottomSheetRef}
         index={-1}
         snapPoints={notificationsSnapPoints}
+        enableDynamicSizing={false}
         animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.warningSheetContainer}>
@@ -309,7 +312,7 @@ const NotificationsSettings = ({ navigation }: any) => {
           </Text>
           <Button label={t('warning_modal.btn_label')} onPress={openAppSettings} />
         </View>
-      </BottomSheet>
+      </SafeAreaBottomSheet>
     </>
   );
 };

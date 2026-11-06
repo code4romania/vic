@@ -216,7 +216,14 @@
     "notification": "Notifications settings",
     "information": "Information",
     "logout": "Log out",
-    "delete": "Delete account"
+    "delete": "Delete account",
+    "modal": {
+      "confirm_logout": {
+        "heading": "Are you sure you want to log out?",
+        "paragraph": "You will need to sign in again to use the app.",
+        "action_label": "Log out"
+      }
+    }
   },
   "account_data": {
     "title": "Account data",
@@ -271,6 +278,20 @@
   },
   "change_password": {
     "title": "Change password",
+    "form": {
+      "old_password": {
+        "label": "Current password",
+        "placeholder": "Enter your current password"
+      },
+      "new_password": {
+        "label": "New password",
+        "placeholder": "Enter your new password"
+      },
+      "confirm_password": {
+        "label": "Confirm new password",
+        "placeholder": "Confirm new password"
+      }
+    },
     "submit": {
       "success": "Password has been changed!"
     }

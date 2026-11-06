@@ -19,7 +19,7 @@ export interface BottomSheetProps {
   modalRef: React.RefObject<BottomSheetModalMethods>;
   iconType?: BottomSheetIconType;
   heading: string;
-  paragraph: JSX.Element;
+  paragraph: React.JSX.Element;
   primaryAction: {
     status?: 'success' | 'danger';
     label: string;
@@ -81,6 +81,7 @@ const BottomSheet = ({
         ref={modalRef}
         index={1}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         onChange={onBottomSheetStateChange}
         backdropComponent={renderBackdrop}
       >

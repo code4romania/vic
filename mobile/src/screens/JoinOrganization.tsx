@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import successIcon from '../assets/svg/success-icon';
 import Paragraph from '../components/Paragraph';
 import BottomSheet from '@gorhom/bottom-sheet';
+import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
 import { renderBackdrop } from '../components/BottomSheet';
 import { StyleSheet, View } from 'react-native';
 import Button from '../components/Button';
@@ -144,11 +145,12 @@ const JoinOrganization = ({ navigation, route }: any) => {
           />
         </FormLayout>
       </PageLayout>
-      <BottomSheet
+      <SafeAreaBottomSheet
         backdropComponent={renderBackdrop}
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.bottomSheetContainer}>
@@ -171,7 +173,7 @@ const JoinOrganization = ({ navigation, route }: any) => {
             />
           </View>
         </View>
-      </BottomSheet>
+      </SafeAreaBottomSheet>
     </>
   );
 };

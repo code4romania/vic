@@ -15,7 +15,7 @@ import GrayIcon from '../components/GreyIcon';
 import SectionWrapper from '../components/SectionWrapper';
 import { useFocusEffect } from '@react-navigation/native';
 import { useUserProfile } from '../store/profile/profile.selector';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { shareAsync } from 'expo-sharing';
 import { ALLOW_FONT_SCALLING, MIME_TYPES } from '../common/constants/constants';
 import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list';

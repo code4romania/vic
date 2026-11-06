@@ -1,10 +1,13 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Layout, TopNavigation, Icon, TopNavigationAction, Text } from '@ui-kitten/components';
 import { ButtonType } from '../common/enums/button-type.enum';
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
+import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import Button from '../components/Button';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { FormLayoutBottomOffsetContext } from './FormLayout';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ActionsOptionsProps {
   actionLabel: string;
@@ -37,6 +40,11 @@ export const ModalLayout = ({
   actionsOptions,
 }: ModalLayoutProps) => {
   const paddingTop = usePaddingTop();
+  const [actionsHeight, setActionsHeight] = useState(0);
+  // on android (edge-to-edge) the button needs to stay above the navigation bar
+  const insets = useSafeAreaInsets();
+  const bottomInset = Platform.OS === 'android' ? insets.bottom : 0;
+
   const renderLeftControl = () => {
     return <TopNavigationAction icon={CloseIcon} onPress={onDismiss} />;
   };
@@ -59,23 +67,28 @@ export const ModalLayout = ({
         style={[styles.header, Platform.OS === 'android' && { paddingTop }]}
       />
       <Layout style={styles.layout}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.keyboardAvoidingContainer}
-          keyboardVerticalOffset={-100} // This is the distance between the top of the user screen and the react native view - because we have put the avoiding view after the navigation
-        >
-          <View style={styles.childrenContainer}>{children}</View>
-        </KeyboardAvoidingView>
+        <View style={styles.childrenContainer}>
+          <FormLayoutBottomOffsetContext.Provider value={actionsHeight}>
+            {children}
+          </FormLayoutBottomOffsetContext.Provider>
+        </View>
         {actionsOptions && (
-          <View style={styles.bottomActionContainer}>
-            <Button
-              label={actionsOptions.actionLabel}
-              onPress={actionsOptions.onActionButtonClick}
-              status={actionsOptions.buttonType || 'primary'}
-              loading={actionsOptions.loading}
-              disabled={actionsOptions.loading}
-            />
-          </View>
+          // moves the button above the keyboard; the navigation bar inset is already
+          // covered by the keyboard, so it is left behind it
+          <KeyboardStickyView offset={{ opened: bottomInset }}>
+            <View
+              style={[styles.bottomActionContainer, { paddingBottom: bottomInset }]}
+              onLayout={(event) => setActionsHeight(event.nativeEvent.layout.height)}
+            >
+              <Button
+                label={actionsOptions.actionLabel}
+                onPress={actionsOptions.onActionButtonClick}
+                status={actionsOptions.buttonType || 'primary'}
+                loading={actionsOptions.loading}
+                disabled={actionsOptions.loading}
+              />
+            </View>
+          </KeyboardStickyView>
         )}
       </Layout>
     </>
@@ -87,10 +100,10 @@ export default ModalLayout;
 const styles = StyleSheet.create({
   header: { minHeight: 59 },
   layout: { flex: 1, flexDirection: 'column', justifyContent: 'space-between' },
-  keyboardAvoidingContainer: { flex: 1 },
   childrenContainer: { flex: 1, padding: 16 },
   bottomActionContainer: {
     width: '100%',
+    backgroundColor: 'white',
     ...Platform.select({
       android: {
         minHeight: 100,

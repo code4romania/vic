@@ -216,7 +216,14 @@
         "notification": "Setări notificări",
         "information": "Informații",
         "logout": "Log out",
-        "delete": "Șterge cont"
+        "delete": "Șterge cont",
+        "modal": {
+            "confirm_logout": {
+                "heading": "Ești sigur că vrei să te deconectezi?",
+                "paragraph": "Va trebui să te autentifici din nou pentru a folosi aplicația.",
+                "action_label": "Deconectează-te"
+            }
+        }
     },
     "account_data": {
         "title": "Date cont",
@@ -271,6 +278,20 @@
     },
     "change_password": {
         "title": "Schimbă parola",
+        "form": {
+            "old_password": {
+                "label": "Parola curentă",
+                "placeholder": "Introdu parola curentă"
+            },
+            "new_password": {
+                "label": "Parola nouă",
+                "placeholder": "Introdu parola nouă"
+            },
+            "confirm_password": {
+                "label": "Confirmă parola nouă",
+                "placeholder": "Confirmă parola nouă"
+            }
+        },
         "submit": {
             "success": "Parola a fost schimbata!"
         }

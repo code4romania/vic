@@ -30,6 +30,7 @@ const schema = yup
   .object({
     email: yup
       .string()
+      .trim()
       .email(`${i18n.t('register:create_account.form.email.pattern')}`)
       .required(`${i18n.t('register:create_account.form.email.required')}`),
     phone: yup
@@ -92,13 +93,15 @@ const CreateAccount = ({ navigation }: any) => {
         phoneNumber: `${CONSTANTS.PHONE_PREFIX}${phone.trim()}`,
       });
       navigation.replace('validate-account');
+    } catch (error) {
+      // error toast is shown by the auth context
     } finally {
       setIsLoading(false);
     }
   };
 
   const onGoToLogin = () => {
-    navigation.navigate('login');
+    navigation.navigate('login', undefined, { pop: true });
   };
 
   return (

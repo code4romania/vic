@@ -6,7 +6,7 @@ import { default as theme } from './src/common/theme/theme.json';
 import { default as mapping } from './src/common/theme/mappings.json';
 import * as Font from 'expo-font';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import AuthContextProvider from './src/contexts/auth/AuthContextProvider';
 import Router from './src/routes/Router';
@@ -19,8 +19,15 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { FeatherIconsPack } from './src/common/adapters/feather-icons.adapter';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
+import * as NavigationBar from 'expo-navigation-bar';
 import NotificationContextProvider from './src/contexts/notification/NotificationContextProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+
+// Keep the android navigation buttons dark on our light screens, regardless of the system theme
+if (Platform.OS === 'android') {
+  NavigationBar.setStyle('dark');
+}
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG as any);
@@ -41,7 +48,8 @@ const queryClient = new QueryClient({
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldPlaySound: false,
     shouldSetBadge: false,
   }),
@@ -68,15 +76,17 @@ export default () => {
         customMapping={mapping}
       >
         <GestureHandlerRootView style={styles.gestureHandler}>
-          <QueryClientProvider client={queryClient}>
-            <AuthContextProvider>
-              <NavigationContainer ref={navigationRef}>
-                <NotificationContextProvider navigation={navigationRef}>
-                  <Router />
-                </NotificationContextProvider>
-              </NavigationContainer>
-            </AuthContextProvider>
-          </QueryClientProvider>
+          <KeyboardProvider>
+            <QueryClientProvider client={queryClient}>
+              <AuthContextProvider>
+                <NavigationContainer ref={navigationRef} navigationInChildEnabled>
+                  <NotificationContextProvider navigation={navigationRef}>
+                    <Router />
+                  </NotificationContextProvider>
+                </NavigationContainer>
+              </AuthContextProvider>
+            </QueryClientProvider>
+          </KeyboardProvider>
         </GestureHandlerRootView>
 
         <ExpoStatusBar style="dark" />

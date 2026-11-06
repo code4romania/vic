@@ -37,7 +37,7 @@ const Button = ({ label, onPress, appearance, loading, ...props }: ButtonProps) 
         props.style,
         props.disabled ? { ...Platform.select({ android: { elevation: 1 } }) } : {},
       ]}
-      accessoryLeft={loading ? <LoadingIndicator /> : <></>}
+      accessoryLeft={loading ? <LoadingIndicator /> : undefined}
       size="large"
     >
       {() => (

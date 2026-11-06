@@ -141,12 +141,12 @@ const DrawerContent = withStyles(
     return (
       <View style={eva?.style.drawerContainer}>
         <Drawer style={eva?.style.drawer} appearance="noDivider" header={renderDrawerHeader}>
-          <>
-            {userProfile?.myOrganizations?.map((organization: IOrganizationVolunteer) => (
+          {[
+            ...(userProfile?.myOrganizations || []).map((organization: IOrganizationVolunteer) => (
               <DrawerItem
                 key={organization.id}
                 title={
-                  <DrawerItemTitle active={userProfile.activeOrganization?.id === organization.id}>
+                  <DrawerItemTitle active={userProfile?.activeOrganization?.id === organization.id}>
                     {organization.name}
                   </DrawerItemTitle>
                 }
@@ -154,19 +154,20 @@ const DrawerContent = withStyles(
                 onPress={onOrganizationChange.bind(null, organization)}
                 style={[
                   eva?.style.drawerItem,
-                  ...(userProfile.activeOrganization?.id === organization.id
+                  ...(userProfile?.activeOrganization?.id === organization.id
                     ? [eva?.style.activeDrawerItem]
                     : []),
                 ]}
               />
-            ))}
+            )),
             <DrawerItem
+              key="join-organization"
               title={<DrawerItemTitle category="s1">{`${t('join_organization')}`}</DrawerItemTitle>}
               accessoryLeft={renderAccessoryLeft}
               style={[eva?.style.drawerItem]}
               onPress={onJoinNewOrganization}
-            />
-          </>
+            />,
+          ]}
         </Drawer>
       </View>
     );

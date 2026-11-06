@@ -12,7 +12,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { mapContractStatus } from '../common/utils/helpers';
 import { Platform } from 'react-native';
 import { MIME_TYPES } from '../common/constants/constants';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { shareAsync } from 'expo-sharing';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 

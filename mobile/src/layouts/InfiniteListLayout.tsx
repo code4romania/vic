@@ -1,5 +1,5 @@
 import { Divider, Layout, List, StyleService, Text } from '@ui-kitten/components';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import { mapPagesToItems } from '../common/utils/helpers';
 import { IPaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 import { View } from 'react-native';
@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { SvgXml } from 'react-native-svg';
 import SadFaceSvg from '../assets/svg/sad-face';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const ListEmptyComponent = () => {
   const { t } = useTranslation('general');
@@ -67,6 +69,11 @@ const InfiniteListLayout = <T extends object>({
   loadingElementsCount,
 }: InfiniteListLayoutProps<T>) => {
   const onRenderDivider = () => (hasDivider ? Divider : () => <></>);
+  const insets = useSafeAreaInsets();
+  // inside the tabs the tab bar already sits above the navigation bar,
+  // elsewhere the last items need to scroll above it (edge-to-edge)
+  const isInsideTabs = useContext(BottomTabBarHeightContext) !== undefined;
+  const bottomInset = isInsideTabs ? 0 : insets.bottom;
 
   return isLoading ? (
     <LoadingComponent component={loadingLayout} loadingElementsCount={loadingElementsCount} />
@@ -79,6 +86,7 @@ const InfiniteListLayout = <T extends object>({
       onEndReached={loadMore}
       onEndReachedThreshold={0.1}
       showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ paddingBottom: bottomInset }}
       refreshing={isLoading}
       onRefresh={refetch}
       ListEmptyComponent={!errorMessage ? ListEmptyComponent : <></>}

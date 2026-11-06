@@ -23,6 +23,7 @@ export type LoginFormTypes = {
 const schema = yup.object({
   username: yup
     .string()
+    .trim()
     .email(`${i18n.t('login:form.email.pattern')}`)
     .required(`${i18n.t('login:form.email.required')}`),
   password: yup.string().required(`${i18n.t('login:form.password.required')}`),

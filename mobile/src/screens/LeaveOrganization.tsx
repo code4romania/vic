@@ -7,6 +7,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ButtonType } from '../common/enums/button-type.enum';
 import BottomSheet from '@gorhom/bottom-sheet';
+import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
 import { renderBackdrop } from '../components/BottomSheet';
 import { useLeaveOrganizationMutation } from '../services/organization/organization.service';
 import Toast from 'react-native-toast-message';
@@ -85,11 +86,12 @@ const LeaveOrganization = ({ navigation }: any) => {
           </Text>
         </View>
       </ModalLayout>
-      <BottomSheet
+      <SafeAreaBottomSheet
         backdropComponent={renderBackdrop}
         ref={bottomSheetRef}
         index={-1}
         snapPoints={snapPoints}
+        enableDynamicSizing={false}
         animateOnMount={reducedMotion ? false : true}
       >
         <View style={styles.bottomSheetContainer}>
@@ -114,7 +116,7 @@ const LeaveOrganization = ({ navigation }: any) => {
             />
           </View>
         </View>
-      </BottomSheet>
+      </SafeAreaBottomSheet>
     </>
   );
 };

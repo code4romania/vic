@@ -49,13 +49,15 @@ const ValidateAccount = ({ navigation }: any) => {
       setIsLoading(true);
       await confirmSignUp(code);
       navigation.replace('create-user');
+    } catch (error) {
+      // error toast is shown by the auth context
     } finally {
       setIsLoading(false);
     }
   };
 
   const onGoToLogin = () => {
-    navigation.navigate('login');
+    navigation.navigate('login', undefined, { pop: true });
   };
 
   return (
