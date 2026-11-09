@@ -1167,12 +1167,14 @@
       "filters": {
         "start_date": "Contract period start date",
         "end_date": "Contract end date",
-        "status": "Contract status"
+        "status": "Contract status",
+        "type": "Document type"
       },
       "actions": {
         "download": "Download table",
         "add": "Generate contract",
-        "upload": "Upload contract"
+        "upload": "Upload contract",
+        "certificate": "Generate certificate"
       },
       "headers": {
         "contract_number": "Contract number",
@@ -1281,7 +1283,23 @@
         "contract_number": "Contract number",
         "number_max": "The number can have at most 50 characters",
         "submit": "Upload",
-        "success": "The contract was uploaded"
+        "success": "The contract was uploaded",
+        "type": "Document type",
+        "certificate": {
+          "title": "Upload signed certificate",
+          "description": "Upload the signed and stamped certificate PDF. It shows in the volunteer's documents.",
+          "file": "Signed certificate (PDF)*",
+          "file_required": "Upload the signed PDF",
+          "file_rejected": "The file must be a PDF of at most 10 MB",
+          "start_date": "Issue date*",
+          "start_required": "The issue date is required",
+          "contract_number": "Registration number",
+          "success": "The certificate was uploaded"
+        }
+      },
+      "type": {
+        "CONTRACT": "Contract",
+        "CERTIFICATE": "Certificate"
       }
     },
     "popover": {
@@ -1291,6 +1309,29 @@
       "remove": "Remove",
       "remove_from_list": "Remove from list",
       "confirm": "Confirm and sign"
+    },
+    "certificate": {
+      "form": {
+        "title": "Generate certificate",
+        "description": "Fill in the details and download the certificate as a PDF. Once signed and stamped, upload it to the volunteer's documents.",
+        "volunteer": "Volunteer*",
+        "volunteer_required": "Choose the volunteer",
+        "hours": "Total volunteering hours*",
+        "hours_hint": "{{hours}} hours approved in VIC, since {{since}}. You can change the total.",
+        "hours_required": "Fill in the hours",
+        "hours_min": "The hours cannot be negative",
+        "purpose": "Purpose*",
+        "purpose_placeholder": "E.g. university application",
+        "purpose_required": "Fill in the purpose",
+        "purpose_max": "The purpose can have at most 250 characters",
+        "registration_number": "Registration number*",
+        "number_required": "Fill in the registration number",
+        "number_max": "The number can have at most 50 characters",
+        "issue_date": "Issue date*",
+        "date_required": "The issue date is required",
+        "submit": "Generate PDF",
+        "success": "The certificate was downloaded. Once signed, upload it from \"Upload contract\", as a certificate."
+      }
     }
   },
   "auth": {

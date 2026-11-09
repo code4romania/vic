@@ -108,6 +108,21 @@ describe('Documente', () => {
     expect(screen.queryByText(/semnătura ta/)).toBeNull();
   });
 
+  it('shows a certificate as "Adeverință", issued on a day (#490)', async () => {
+    mockSigned = [
+      contract('9', ClientContractStatus.SIGNED, {
+        type: 'CERTIFICATE',
+        contractNumber: '45/2026',
+        endDate: null,
+      }),
+    ];
+    await renderApp();
+    const row = await screen.findByTestId('document-row-9');
+    expect(within(row).getByText('Adeverință 45/2026')).toBeTruthy();
+    expect(within(row).getByText('emisă la 15 ian 2026')).toBeTruthy();
+    expect(within(row).getByText('Semnat')).toBeTruthy();
+  });
+
   it('a signed contract downloads, and a failed download says so', async () => {
     await renderApp();
     await fireEvent.press(await screen.findByTestId('document-row-3'));

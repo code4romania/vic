@@ -753,6 +753,7 @@
   },
   "documents": {
     "contract_prefix": "Contract",
+    "certificate_prefix": "Certificate",
     "description": "The contracts you signed with the organization. Download them any time.",
     "sections": {
       "closed": "History of signed contracts",
@@ -779,7 +780,8 @@
       "generic": "Error loading your documents"
     },
     "expiring_soon": "Expires soon",
-    "period_open": "from {{start}}, no end date"
+    "period_open": "from {{start}}, no end date",
+    "issued_on": "issued on {{date}}"
   },
   "notifications": {
     "header": "Notifications settings",

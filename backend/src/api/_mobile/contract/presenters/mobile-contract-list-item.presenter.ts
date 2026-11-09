@@ -6,6 +6,7 @@ import {
   mapContractStatusToClientContractStatus,
 } from 'src/modules/documents/models/contract.model';
 import { ClientContractStatus } from 'src/modules/documents/enums/client-contract-status.enum';
+import { DocumentType } from 'src/modules/documents/enums/document-type.enum';
 
 export class MobileContractListItemPresenter {
   constructor(contract: IContractModel) {
@@ -16,6 +17,7 @@ export class MobileContractListItemPresenter {
     this.path = contract.path;
     this.status = mapContractStatusToClientContractStatus(contract);
     this.expiringSoon = isContractExpiringSoon(contract);
+    this.type = contract.type;
     this.contractFileName = contract.fileName;
   }
 
@@ -68,4 +70,11 @@ export class MobileContractListItemPresenter {
       '#488: a signed contract within a month of its end date ("Expiră în curând")',
   })
   expiringSoon: boolean;
+
+  @Expose()
+  @ApiProperty({
+    description: '#490: a contract or a certificate ("adeverință")',
+    enum: DocumentType,
+  })
+  type: DocumentType;
 }

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 import { IContractListItem } from '../../common/interfaces/contract-list-item.interface';
 import { ClientContractStatus } from '../../common/enums/client-contract-status.enum';
+import { DocumentType } from '../../common/enums/document-type.enum';
 import { colors, fonts, StatusTone } from '../../common/theme/tokens';
 import { shortMonth } from '../../common/utils/event-format';
 import { Badge, PressableScale, VText } from '../ui';
@@ -29,19 +30,22 @@ export interface DocumentRowProps {
   divider?: boolean;
 }
 
-/** A contract on Documente (canvas board "Documente"): file tile, number, period and status. */
+/** A contract or a certificate on Documente (canvas board "Documente"): file tile, number, period and status. */
 export const DocumentRow = ({ contract, onPress, busy, divider = true }: DocumentRowProps) => {
   const { t } = useTranslation('documents');
   const status = contract.expiringSoon
     ? { tone: 'wait' as StatusTone, label: 'expiring_soon' }
     : STATUS[contract.status];
   const tone = colors.status[status?.tone ?? 'neutral'];
-  const period = contract.endDate
-    ? `${formatContractDay(contract.startDate)} – ${formatContractDay(contract.endDate)}`
-    : `${t('period_open', { start: formatContractDay(contract.startDate) })}`;
-  const title = contract.contractNumber
-    ? `${t('contract_prefix')} ${contract.contractNumber}`
-    : `${t('contract_prefix')}`;
+  // #490: a certificate is issued on a day and never expires
+  const isCertificate = contract.type === DocumentType.CERTIFICATE;
+  const period = isCertificate
+    ? `${t('issued_on', { date: formatContractDay(contract.startDate) })}`
+    : contract.endDate
+      ? `${formatContractDay(contract.startDate)} – ${formatContractDay(contract.endDate)}`
+      : `${t('period_open', { start: formatContractDay(contract.startDate) })}`;
+  const prefix = t(isCertificate ? 'certificate_prefix' : 'contract_prefix');
+  const title = contract.contractNumber ? `${prefix} ${contract.contractNumber}` : `${prefix}`;
   return (
     <PressableScale
       onPress={() => onPress(contract)}

@@ -1,4 +1,5 @@
 import { ClientContractStatus } from '../enums/client-contract-status.enum';
+import { DocumentType } from '../enums/document-type.enum';
 
 export interface IContractListItem {
   id: string;
@@ -11,4 +12,6 @@ export interface IContractListItem {
   // #488: signed, and within a month of its end date
   expiringSoon: boolean;
   contractFileName: string;
+  // #490: a contract or a certificate ("adeverință"); older APIs leave it out
+  type?: DocumentType;
 }

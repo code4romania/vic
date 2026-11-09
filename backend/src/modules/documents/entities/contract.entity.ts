@@ -12,6 +12,7 @@ import { TemplateEntity } from './template.entity';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { ContractStatus } from '../enums/contract-status.enum';
 import { AdminUserEntity } from 'src/modules/user/entities/user.entity';
+import { DocumentType } from '../enums/document-type.enum';
 
 export const CONTRACT_CONSTRAINTS = {
   CONTRACT_NUMBER_ORGANIZATION: 'organization-contract-number',
@@ -20,6 +21,7 @@ export const CONTRACT_CONSTRAINTS = {
 @Unique(CONTRACT_CONSTRAINTS.CONTRACT_NUMBER_ORGANIZATION, [
   'contractNumber',
   'organizationId',
+  'type',
 ])
 @Entity({ name: 'contract' })
 export class ContractEntity extends BaseEntity {
@@ -46,6 +48,15 @@ export class ContractEntity extends BaseEntity {
     default: ContractStatus.ACTIVE,
   })
   status: ContractStatus;
+
+  // #490: a contract or a certificate ("adeverință")
+  @Column({
+    type: 'enum',
+    enum: DocumentType,
+    name: 'type',
+    default: DocumentType.CONTRACT,
+  })
+  type: DocumentType;
 
   @Column({
     type: 'varchar',
