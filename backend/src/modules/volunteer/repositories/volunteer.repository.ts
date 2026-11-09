@@ -119,11 +119,17 @@ export class VolunteerRepositoryService
         orderDirection || OrderDirection.ASC,
       );
 
-    // map search query
+    // name, email, phone and city; case and diacritics insensitive (#474)
     if (search) {
       query.andWhere(
-        this.buildBracketSearchQuery(
-          ['user.name', 'volunteerProfile.email', 'user.phone'],
+        this.buildAccentInsensitiveSearchQuery(
+          [
+            'user.name',
+            'user.email',
+            'volunteerProfile.email',
+            'user.phone',
+            'location.name',
+          ],
           search,
         ),
       );

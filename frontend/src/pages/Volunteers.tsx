@@ -501,6 +501,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
         <DataTableFilters
           onSearch={onSearch}
           searchValue={query?.search}
+          searchPlaceholder={i18n.t('volunteers:search_placeholder').toString()}
           onResetFilters={onResetFilters}
         >
           <DateRangePicker
