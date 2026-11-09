@@ -10,6 +10,8 @@ export interface IVolunteer {
   status: VolunteerStatus;
   source?: string | null;
   isFavorite: boolean;
+  // Approved hours in the organization; only in the volunteers list (#475).
+  totalHours?: number;
   archivedOn?: Date;
   blockedOn?: Date;
   archivedBy?: Pick<IUser, 'id' | 'name'>;

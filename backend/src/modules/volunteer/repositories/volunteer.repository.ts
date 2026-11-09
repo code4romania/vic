@@ -178,12 +178,38 @@ export class VolunteerRepositoryService
       );
     }
 
-    return this.paginateQuery(
+    const page = await this.paginateQuery(
       query,
       findOptions.limit,
       findOptions.page,
       VolunteerModelTransformer.fromEntity,
     );
+    return { ...page, items: await this.withApprovedHours(page.items) };
+  }
+
+  // Total approved hours of each volunteer in their organization (#475), one grouped query for the page.
+  private async withApprovedHours(
+    volunteers: IVolunteerModel[],
+  ): Promise<IVolunteerModel[]> {
+    if (volunteers.length === 0) return volunteers;
+    const rows: { volunteerId: string; total: string }[] =
+      await this.volunteerRepository.manager
+        .createQueryBuilder(ActivityLogEntity, 'log')
+        .select('log.volunteerId', 'volunteerId')
+        .addSelect('COALESCE(SUM(log.hours), 0)', 'total')
+        .where('log.volunteerId IN (:...ids)', {
+          ids: volunteers.map((volunteer) => volunteer.id),
+        })
+        .andWhere('log.status = :approved', {
+          approved: ActivityLogStatus.APPROVED,
+        })
+        .groupBy('log.volunteerId')
+        .getRawMany();
+    const totals = new Map(rows.map((row) => [row.volunteerId, +row.total]));
+    return volunteers.map((volunteer) => ({
+      ...volunteer,
+      totalHours: totals.get(volunteer.id) ?? 0,
+    }));
   }
 
   async findAllActiveByDepartmentIds(

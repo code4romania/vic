@@ -14,6 +14,7 @@ export class VolunteerPresenter {
     this.status = volunteer.status;
     this.source = volunteer.source;
     this.isFavorite = volunteer.isFavorite;
+    this.totalHours = volunteer.totalHours;
 
     this.archivedOn = volunteer.archivedOn;
     this.archivedBy = volunteer.archivedBy
@@ -62,6 +63,13 @@ export class VolunteerPresenter {
   @Expose()
   @ApiProperty({ description: 'Starred by the organization' })
   isFavorite: boolean;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Approved hours in the organization (volunteers list only)',
+    required: false,
+  })
+  totalHours?: number;
 
   @Expose()
   @ApiProperty({ description: 'Profile of the volunteer' })

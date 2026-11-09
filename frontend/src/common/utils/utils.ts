@@ -124,6 +124,14 @@ export const ContractStatusMarkerColorMapper = {
   [ContractStatus.REJECTED]: 'bg-red-500',
 };
 
+// Volunteers table (#475)
+export const VolunteerStatusMarkerColorMapper: Record<string, string> = {
+  active: 'bg-green-500',
+  inactive: 'bg-yellow-500',
+  candidate: 'bg-blue-500',
+  blocked: 'bg-red-500',
+};
+
 export const ActivityLogStatusMarkerColorMapper = {
   [ActivityLogStatus.APPROVED]: 'bg-green-500',
   [ActivityLogStatus.REJECTED]: 'bg-red-500',

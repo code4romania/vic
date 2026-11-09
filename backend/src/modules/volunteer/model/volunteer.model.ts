@@ -31,6 +31,8 @@ export interface IVolunteerModel extends IBaseModel {
   // Admin who made the volunteer inactive, or the volunteer's own user id when they left.
   archivedById: string;
   blockedOn: Date;
+  // Approved hours in the organization; only set by the volunteers list (#475).
+  totalHours?: number;
 
   // Relations
   volunteerProfile: IVolunteerProfileModel;

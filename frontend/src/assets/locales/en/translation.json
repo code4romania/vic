@@ -189,7 +189,6 @@
   },
   "volunteers": {
     "department_and_role": "Department and role",
-    "location": "Volunteer Location",
     "blocked_on": "Date of blocking",
     "tabs": {
       "active": "Active volunteers",
@@ -231,7 +230,16 @@
     },
     "download": "Volunteers.xlsx",
     "inactive_on": "Inactive since",
-    "search_placeholder": "Search by name, email or city"
+    "search_placeholder": "Search by name, email or city",
+    "hours": "Hours",
+    "status": "Status",
+    "source": "Source",
+    "status_label": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "candidate": "Candidate",
+      "blocked": "Blocked"
+    }
   },
   "division": {
     "members": "Members",

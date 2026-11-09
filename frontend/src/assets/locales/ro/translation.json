@@ -189,7 +189,6 @@
   },
   "volunteers": {
     "department_and_role": "Departament și rol",
-    "location": "Locație voluntar",
     "blocked_on": "Data blocării",
     "tabs": {
       "active": "Voluntari activi",
@@ -231,7 +230,16 @@
     },
     "download": "Voluntari.xlsx",
     "inactive_on": "Inactiv din",
-    "search_placeholder": "Caută după nume, email sau oraș"
+    "search_placeholder": "Caută după nume, email sau oraș",
+    "hours": "Ore",
+    "status": "Status",
+    "source": "Sursă",
+    "status_label": {
+      "active": "Activ",
+      "inactive": "Inactiv",
+      "candidate": "Candidat",
+      "blocked": "Blocat"
+    }
   },
   "division": {
     "members": "Membri",
