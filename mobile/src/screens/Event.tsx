@@ -16,6 +16,7 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useTranslation } from 'react-i18next';
 import { EventVolunteerStatus } from '../common/enums/event-volunteer-status.enum';
+import { EventRegistrationStatus } from '../common/enums/event-registration-status.enum';
 import { ButtonType } from '../common/enums/button-type.enum';
 import { useEvent } from '../store/event/event.selector';
 import useStore from '../store/store';
@@ -63,7 +64,11 @@ const Event = ({ navigation, route }: any) => {
 
   const { declineEvent, canceRsvp, joinEvent } = useStore();
 
-  const { isFetching: isLoadingEvent, error: getEventError } = useEventQuery(eventId);
+  const {
+    isFetching: isLoadingEvent,
+    error: getEventError,
+    refetch: refetchEvent,
+  } = useEventQuery(eventId);
 
   const { mutate: setRsvpEvent, isLoading: isResponding } = useSetRsvpEventMutation();
 
@@ -92,7 +97,15 @@ const Event = ({ navigation, route }: any) => {
         },
       },
       {
-        onSuccess: going ? joinEvent : declineEvent,
+        onSuccess: () => {
+          if (going) {
+            joinEvent();
+            // #501: get the registration's status (approved right away or waiting for the NGO)
+            refetchEvent();
+          } else {
+            declineEvent();
+          }
+        },
         onError: (error: any) => {
           //if we don't have a volunteerProfileId for this organization -> open error bottom sheet that will redirect the user to the volunteer profile page
           if (userProfile && event) {
@@ -200,6 +213,17 @@ const Event = ({ navigation, route }: any) => {
               uri={event.organizationLogo || ''}
               name={event.organizationName || ''}
             />
+            {event.volunteerStatus === EventVolunteerStatus.JOINED && event.registrationStatus && (
+              <ReadOnlyElement
+                label={t('registration.label')}
+                value={
+                  event.registrationStatus === EventRegistrationStatus.REJECTED &&
+                  event.rejectionReason
+                    ? `${t('registration.rejected_reason', { reason: event.rejectionReason })}`
+                    : `${t(`registration.${event.registrationStatus}`)}`
+                }
+              />
+            )}
             <ReadOnlyElement
               label={t('date')}
               value={formatEventDate(event.startDate, event.endDate)}

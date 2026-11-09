@@ -19,6 +19,9 @@ export const EVENTS = {
     ADD: 'ngo.event.add',
     // VIC 2.0 (#496): the NGO registered the volunteer to an event
     VOLUNTEER_ADDED: 'ngo.event.volunteer.added',
+    // #501: the NGO approved or rejected the volunteer's registration
+    REGISTRATION_APPROVED: 'ngo.event.registration.approved',
+    REGISTRATION_REJECTED: 'ngo.event.registration.rejected',
   },
   VOLUNTEER_HOURS: {
     APPROVE: 'volunteer.hours.approve',
@@ -141,6 +144,8 @@ const NotificationContextProvider = ({
         break;
       case EVENTS.NGO_EVENT.ADD:
       case EVENTS.NGO_EVENT.VOLUNTEER_ADDED:
+      case EVENTS.NGO_EVENT.REGISTRATION_APPROVED:
+      case EVENTS.NGO_EVENT.REGISTRATION_REJECTED:
         navigation.navigate('event', {
           eventId: payload.payload.eventId,
         });

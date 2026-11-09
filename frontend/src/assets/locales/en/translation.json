@@ -114,7 +114,9 @@
       "actions_archive": "Actions archive",
       "organization_profile": "Profile",
       "team": "Team",
-      "validation": "NGO validation"
+      "validation": "NGO validation",
+      "events_list": "Events list",
+      "event_registrations": "Event registrations"
     },
     "collapse": "Narrow the menu"
   },
@@ -588,7 +590,8 @@
       "EVENT_RSVP_006": "The event is not published.",
       "EVENT_RSVP_007": "The event has ended.",
       "EVENT_RSVP_008": "The event is full: there are not enough places for all the selected volunteers.",
-      "EVENT_RSVP_009": "Only active volunteers from the event's departments can be added."
+      "EVENT_RSVP_009": "Only active volunteers from the event's departments can be added.",
+      "EVENT_RSVP_010": "Registration not found."
     },
     "download_open": "Active events.xlsx",
     "download_past": "Closed events.xlsx",
@@ -637,6 +640,47 @@
         "role": "Role",
         "hours": "Approved hours in the organization",
         "registeredOn": "Registration date"
+      }
+    },
+    "registrations": {
+      "title": "Event registrations",
+      "description": "The organization's volunteers from the event's departments are accepted automatically. Here you decide on the other registrations; you can change a decision at any time and the volunteer is notified.",
+      "tabs": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "status": {
+        "pending": "pending",
+        "approved": "approved",
+        "rejected": "rejected"
+      },
+      "header": {
+        "person": "Person",
+        "event": "Event",
+        "in_organization": "In the organization",
+        "registered_on": "Registered on",
+        "decided": "Decision"
+      },
+      "volunteer_status": {
+        "active": "Active volunteer",
+        "inactive": "Inactive volunteer",
+        "blocked": "Blocked volunteer",
+        "candidate": "Candidate",
+        "none": "Not a volunteer"
+      },
+      "automatic": "Automatic",
+      "search": "Search by name, email or event",
+      "approve": "Approve",
+      "approved": "{{name}}'s registration was approved",
+      "rejected": "{{name}}'s registration was rejected",
+      "reject": {
+        "button": "Reject",
+        "title": "Reject {{name}}'s registration",
+        "reason": "Reason (the volunteer sees it)",
+        "confirm": "Reject registration",
+        "required": "The reason is required",
+        "max": "The reason can have at most {{value}} characters"
       }
     }
   },

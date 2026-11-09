@@ -9,6 +9,7 @@ import Organization from '../containers/query/OrganizationWithQueryParam';
 import RegistrationRequests from '../containers/query/AccessRequestsWithQueryParams';
 import AccessCodes from '../containers/query/AccessCodesWithQueryParams';
 import RootRoute from './RootRoute';
+import EventRegistrations from '../pages/EventRegistrations';
 import PublicRoute from './PublicRoute';
 import Volunteers from '../containers/query/VolunteersWithQueryParams';
 import AddAccessCode from '../pages/AddAccessCode';
@@ -90,6 +91,7 @@ const Router = () => {
             </Route>
             <Route path="events" element={<Outlet />}>
               <Route index element={<Events />} />
+              <Route path="registrations" element={<EventRegistrations />} />
               <Route path=":id" element={<Event />} />
               <Route path=":id/edit" element={<EditEvent />} />
               <Route path="add" element={<AddEvent />} />

@@ -12,7 +12,9 @@ import {
   CreateEventRSVPOptions,
   EventRSVPModelTransformer,
   FindEventRSVPOptions,
+  FindManyEventRegistrationsOptions,
   FindManyEventRSVPOptions,
+  IEventRegistrationListItem,
   IEventRSVPModel,
   UpdateEventRSVPOptions,
 } from '../models/event-rsvp.model';
@@ -42,7 +44,8 @@ export class EventRSVPRepository
       where: findOptions,
       relations: {
         event: true,
-        user: true,
+        user: { notificationsSettings: true },
+        decidedBy: true,
       },
     });
 
@@ -157,5 +160,75 @@ export class EventRSVPRepository
       findOptions.page,
       EventRSVPModelTransformer.fromEntity,
     );
+  }
+
+  // #501: the organization's registrations ("going" answers) with one status, newest first
+  async findManyRegistrations({
+    organizationId,
+    status,
+    eventId,
+    search,
+    limit,
+    page,
+  }: FindManyEventRegistrationsOptions): Promise<
+    Pagination<IEventRegistrationListItem>
+  > {
+    const params = [
+      organizationId,
+      status,
+      eventId ?? null,
+      search?.trim() || null,
+    ];
+    const where = `FROM event_rsvp r
+       JOIN event e ON e.id = r.event_id
+       JOIN "user" u ON u.id = r.user_id
+       LEFT JOIN volunteer v ON v.user_id = u.id AND v.organization_id = e.organization_id
+       LEFT JOIN volunteer_profile vp ON vp.id = v.volunteer_profile_id
+       LEFT JOIN "user" a ON a.id = r.decided_by
+       WHERE e.organization_id = $1 AND r.going AND r.status = $2
+         AND ($3::uuid IS NULL OR e.id = $3)
+         AND ($4::text IS NULL OR u.name ILIKE '%' || $4 || '%' OR u.email ILIKE '%' || $4 || '%' OR e.name ILIKE '%' || $4 || '%')`;
+    const [{ total }] = await this.rsvpRepository.query(
+      `SELECT count(*) AS total ${where}`,
+      params,
+    );
+    const rows = await this.rsvpRepository.query(
+      `SELECT r.id, r.status, r.rejection_reason AS "rejectionReason", r.decided_on AS "decidedOn",
+              a.name AS "decidedByName", r.created_on AS "createdOn",
+              e.id AS "eventId", e.name AS "eventName", e.start_date AS "eventStartDate",
+              u.id AS "userId", u.name AS "userName", COALESCE(vp.email, u.email) AS "userEmail",
+              v.id AS "volunteerId", v.status AS "volunteerStatus"
+       ${where}
+       ORDER BY r.created_on DESC
+       LIMIT $5 OFFSET $6`,
+      [...params, limit, (page - 1) * limit],
+    );
+    const totalItems = +total;
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      items: rows.map((row: Record<string, any>) => ({
+        id: row.id,
+        status: row.status,
+        rejectionReason: row.rejectionReason,
+        decidedOn: row.decidedOn,
+        decidedByName: row.decidedByName,
+        createdOn: row.createdOn,
+        event: {
+          id: row.eventId,
+          name: row.eventName,
+          startDate: row.eventStartDate,
+        },
+        user: { id: row.userId, name: row.userName, email: row.userEmail },
+        volunteerId: row.volunteerId,
+        volunteerStatus: row.volunteerStatus,
+      })),
+      meta: {
+        itemCount: rows.length,
+        totalItems,
+        itemsPerPage: limit,
+        totalPages: Math.ceil(totalItems / limit),
+        currentPage: page,
+      },
+    };
   }
 }

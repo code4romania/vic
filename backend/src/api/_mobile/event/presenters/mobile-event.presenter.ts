@@ -1,3 +1,4 @@
+import { EventRegistrationStatus } from 'src/modules/event/enums/event-registration-status.enum';
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IEventWithVolunteerStatus } from 'src/modules/event/models/event.model';
@@ -33,6 +34,8 @@ export class MobileEventPresenter {
 
     this.volunteerStatus = event.volunteerStatus;
     this.numberOfPersonsGoingToEvent = event.numberOfPersonsGoingToEvent;
+    this.registrationStatus = event.registrationStatus ?? null;
+    this.rejectionReason = event.rejectionReason ?? null;
 
     this.displayStatus = getEventDisplayStatus(event);
     this.capacity = event.capacity ?? null;
@@ -112,6 +115,22 @@ export class MobileEventPresenter {
     examples: Object.values(EventVolunteerStatus),
   })
   volunteerStatus: EventVolunteerStatus;
+
+  @Expose()
+  @ApiProperty({
+    description:
+      "The NGO's decision on the volunteer's registration: pending, approved or rejected (null when not going)",
+    enum: EventRegistrationStatus,
+    nullable: true,
+  })
+  registrationStatus: EventRegistrationStatus;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Why the registration was rejected',
+    nullable: true,
+  })
+  rejectionReason: string;
 
   @Expose()
   @ApiProperty({

@@ -68,6 +68,15 @@ export const ROUTES: IRoute[] = [
     name: i18n.t('side_menu:options.events'),
     href: 'events',
     icon: CalendarIcon,
+    childRoutes: [
+      { id: 51, name: i18n.t('side_menu:options.events_list'), href: 'events' },
+      // #501
+      {
+        id: 52,
+        name: i18n.t('side_menu:options.event_registrations'),
+        href: 'events/registrations',
+      },
+    ],
   },
   {
     id: 6,

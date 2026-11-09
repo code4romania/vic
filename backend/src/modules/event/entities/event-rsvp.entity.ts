@@ -1,5 +1,9 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
-import { RegularUserEntity } from 'src/modules/user/entities/user.entity';
+import {
+  AdminUserEntity,
+  RegularUserEntity,
+} from 'src/modules/user/entities/user.entity';
+import { EventRegistrationStatus } from '../enums/event-registration-status.enum';
 
 import {
   Column,
@@ -22,6 +26,28 @@ export class EventRSVPEntity extends BaseEntity {
 
   @Column({ type: 'text', name: 'mention', nullable: true })
   mention: string;
+
+  // #501: the NGO's decision on a "going" answer; null when not going
+  @Column({
+    type: 'enum',
+    enum: EventRegistrationStatus,
+    name: 'status',
+    nullable: true,
+  })
+  status: EventRegistrationStatus;
+
+  @Column({ type: 'text', name: 'rejection_reason', nullable: true })
+  rejectionReason: string;
+
+  @Column({ type: 'timestamptz', name: 'decided_on', nullable: true })
+  decidedOn: Date;
+
+  @Column({ type: 'uuid', name: 'decided_by', nullable: true })
+  decidedById: string;
+
+  @ManyToOne(() => AdminUserEntity, { onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'decided_by' })
+  decidedBy: AdminUserEntity;
 
   @Column({
     type: 'varchar',

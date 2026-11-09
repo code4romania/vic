@@ -8,6 +8,9 @@ export const EVENTS = {
     ADD: 'ngo.event.add',
     // #496: the NGO registered the volunteer to an event
     VOLUNTEER_ADDED: 'ngo.event.volunteer.added',
+    // #501: the NGO decided on the volunteer's registration
+    REGISTRATION_APPROVED: 'ngo.event.registration.approved',
+    REGISTRATION_REJECTED: 'ngo.event.registration.rejected',
   },
   VOLUNTEER_HOURS: {
     APPROVE: 'volunteer.hours.approve',

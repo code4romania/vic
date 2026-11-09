@@ -66,7 +66,7 @@ export class EventRepository
               d.name AS department,
               COALESCE((SELECT sum(l.hours) FROM activity_log l
                         WHERE l.volunteer_id = v.id AND l.organization_id = v.organization_id AND l.status = 'approved'), 0) AS "totalHours",
-              EXISTS (SELECT 1 FROM event_rsvp r WHERE r.event_id = $2 AND r.user_id = u.id AND r.going) AS registered
+              EXISTS (SELECT 1 FROM event_rsvp r WHERE r.event_id = $2 AND r.user_id = u.id AND r.going AND r.status = 'approved') AS registered
        FROM volunteer v
        JOIN "user" u ON u.id = v.user_id
        JOIN volunteer_profile vp ON vp.id = v.volunteer_profile_id
@@ -92,7 +92,7 @@ export class EventRepository
     }));
   }
 
-  // #497: the event's registered ("going") people; profile fields when they volunteer in the organization
+  // #497: the event's registered ("going", approved since #501) people; profile fields when they volunteer in the organization
   async findRegistrationsForExport(
     eventId: string,
   ): Promise<IEventRegistrationExportRow[]> {
@@ -110,7 +110,7 @@ export class EventRepository
        LEFT JOIN organization_structure d ON d.id = vp.department_id
        LEFT JOIN organization_structure b ON b.id = vp.branch_id
        LEFT JOIN organization_structure ro ON ro.id = vp.role_id
-       WHERE r.event_id = $1 AND r.going
+       WHERE r.event_id = $1 AND r.going AND r.status = 'approved'
        ORDER BY u.name`,
       [eventId],
     );
@@ -123,7 +123,7 @@ export class EventRepository
   countGoing(eventId: string): Promise<number> {
     return this.eventRepository
       .query(
-        `SELECT count(*) AS n FROM event_rsvp WHERE event_id = $1 AND going`,
+        `SELECT count(*) AS n FROM event_rsvp WHERE event_id = $1 AND going AND status = 'approved'`,
         [eventId],
       )
       .then(([row]) => +row.n);
@@ -148,7 +148,7 @@ export class EventRepository
        SELECT
          (SELECT count(*) FROM e WHERE e.upcoming) AS upcoming,
          (SELECT count(*) FROM e WHERE NOT e.upcoming) AS ongoing,
-         (SELECT count(*) FROM event_rsvp r JOIN e ON e.id = r.event_id WHERE r.going) AS participants`,
+         (SELECT count(*) FROM event_rsvp r JOIN e ON e.id = r.event_id WHERE r.going AND r.status = 'approved') AS participants`,
       [organizationId, departmentId ?? null],
     );
     return {
@@ -183,7 +183,11 @@ export class EventRepository
         'event.going',
         'event.eventRSVPs',
         'eventRSVPs',
-        (qb) => qb.where(`"eventRSVPs"."going" = 'true'`),
+        // #501: only approved registrations count as going
+        (qb) =>
+          qb.where(
+            `"eventRSVPs"."going" = 'true' AND "eventRSVPs"."status" = 'approved'`,
+          ),
       )
       .loadRelationCountAndMap(
         'event.notGoing',

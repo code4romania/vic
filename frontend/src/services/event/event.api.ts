@@ -5,6 +5,8 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IEvent } from '../../common/interfaces/event.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { IRsvp } from '../../common/interfaces/rsvp.interface';
+import { EventRegistrationStatus } from '../../common/enums/event-registration-status.enum';
+import { IEventRegistration } from '../../common/interfaces/event-registration.interface';
 import { EventFormTypes, TargetType } from '../../components/EventForm';
 import API from '../api';
 
@@ -251,4 +253,25 @@ export const downloadEventRegistrations = async (
     params: { fields: fields.join(',') },
     responseType: 'arraybuffer',
   }).then((res) => res.data);
+};
+
+// #501: the organization's registrations to its events, and the NGO's decisions
+export const getEventRegistrations = async (params: {
+  status: EventRegistrationStatus;
+  page: number;
+  limit: number;
+  search?: string;
+  eventId?: string;
+}): Promise<IPaginatedEntity<IEventRegistration>> => {
+  return API.get('/event-registrations', {
+    params: { ...params, search: params.search || undefined },
+  }).then((res) => res.data);
+};
+
+export const approveEventRegistration = async (id: string): Promise<IRsvp> => {
+  return API.patch(`/event-registrations/${id}/approve`).then((res) => res.data);
+};
+
+export const rejectEventRegistration = async (id: string, reason: string): Promise<IRsvp> => {
+  return API.patch(`/event-registrations/${id}/reject`, { reason }).then((res) => res.data);
 };
