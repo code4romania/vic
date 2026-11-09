@@ -57,7 +57,6 @@
     "react-hook-form": "^7.43.9",
     "react-i18next": "^12.2.2",
     "react-native": "0.86.3",
-    "react-native-fbsdk-next": "^13.4.3",
     "react-native-gesture-handler": "~2.32.0",
     "react-native-keyboard-controller": "1.21.9",
     "react-native-reanimated": "4.5.1",
@@ -105,7 +104,7 @@
       "<rootDir>/src/**/*.test.ts?(x)"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?|@react-native-google-signin|react-native-fbsdk-next|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@ui-kitten/.*|@eva-design/.*|react-native-svg|react-native-toast-message|react-native-reanimated|react-native-worklets))"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?|@react-native-google-signin|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@ui-kitten/.*|@eva-design/.*|react-native-svg|react-native-toast-message|react-native-reanimated|react-native-worklets))"
     ]
   }
 }

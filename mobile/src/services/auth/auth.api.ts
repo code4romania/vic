@@ -1,7 +1,8 @@
 import API from '../api';
 import { ITokens } from './token.storage';
 
-export type SocialProvider = 'google' | 'facebook' | 'apple';
+// VIC 2.0 (#512): Google and Apple only.
+export type SocialProvider = 'google' | 'apple';
 
 export interface ISession extends ITokens {
   expiresIn: number;
@@ -22,7 +23,7 @@ export const loginWithCode = async (email: string, code: string): Promise<ISessi
   return API.post('/mobile/auth/login/code', { email, code }).then((res) => res.data);
 };
 
-// Google and Apple: the identity token; Facebook: the access token.
+// The identity token from Google or Apple.
 export const loginWithSocial = async (
   provider: SocialProvider,
   token: string,

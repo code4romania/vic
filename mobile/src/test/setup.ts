@@ -57,12 +57,6 @@ jest.mock('expo-apple-authentication', () => ({
   AppleAuthenticationScope: { EMAIL: 1, FULL_NAME: 0 },
 }));
 
-jest.mock('react-native-fbsdk-next', () => ({
-  Settings: { initializeSDK: jest.fn() },
-  LoginManager: { logInWithPermissions: jest.fn(), logOut: jest.fn() },
-  AccessToken: { getCurrentAccessToken: jest.fn() },
-}));
-
 beforeEach(() => {
   (require('expo-secure-store') as any).__store.clear();
   return mockAsyncStorage.clear();
