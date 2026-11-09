@@ -4,11 +4,38 @@ import i18n from '../config/i18n';
 
 const locale = () => (i18n.language === 'en' ? enUS : ro);
 
+// date-fns abbreviates November as "noi." in Romanian; the canvas and most apps use "nov".
+const RO_SHORT_MONTHS = [
+  'ian',
+  'feb',
+  'mar',
+  'apr',
+  'mai',
+  'iun',
+  'iul',
+  'aug',
+  'sep',
+  'oct',
+  'nov',
+  'dec',
+];
+
+/** "nov" (ro) or "Nov" (en), without a dot. */
+export const shortMonth = (value: string | Date) =>
+  i18n.language === 'en'
+    ? format(new Date(value), 'MMM', { locale: enUS })
+    : RO_SHORT_MONTHS[new Date(value).getMonth()];
+
 const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 
 /** "Sâm, 22 nov" */
 export const formatShortDay = (value: string | Date) =>
-  capitalize(format(new Date(value), 'EEE, d MMM', { locale: locale() }).replace('.', ''));
+  capitalize(
+    `${format(new Date(value), 'EEE', { locale: locale() }).replace('.', '')}, ${format(
+      new Date(value),
+      'd',
+    )} ${shortMonth(value)}`,
+  );
 
 /** "Sâmbătă, 22 noiembrie" */
 export const formatLongDay = (value: string | Date) =>
@@ -20,7 +47,7 @@ export const formatTime = (value: string | Date) => format(new Date(value), 'HH:
 /** Day number and short month for the date tile: { day: '22', month: 'NOV' }. */
 export const dateTile = (value: string | Date) => ({
   day: format(new Date(value), 'd'),
-  month: format(new Date(value), 'MMM', { locale: locale() }).replace('.', '').toUpperCase(),
+  month: shortMonth(value).toUpperCase(),
 });
 
 /** One line for a card: "Sâm, 22 nov · 09:00" (a multi-day event shows "22 nov – 24 nov"). */

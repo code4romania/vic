@@ -51,7 +51,7 @@ const withTabInset = (Component: React.ComponentType<any>) => {
 const HomeTab = withTabInset(Home);
 // redesigned: scrolls under the glass bar and adds the inset itself
 const EventsTab = Events;
-const HoursTab = withTabInset(ActivityLogs);
+const HoursTab = ActivityLogs;
 const DocumentsTab = withTabInset(Documents);
 const ProfileTab = withTabInset(Settings);
 const VolunteerRoute = withTabInset(Volunteer);

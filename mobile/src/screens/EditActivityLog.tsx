@@ -68,7 +68,7 @@ const EditActivityLog = ({ navigation }: any) => {
 
   return (
     <ModalLayout
-      title={t('general:edit', { item: '' })}
+      title={t('activity_log:edit_title')}
       onDismiss={navigation.goBack}
       actionsOptions={{
         actionLabel: t('general:save'),

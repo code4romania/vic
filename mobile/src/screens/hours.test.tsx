@@ -1,0 +1,216 @@
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { fireEvent, render, screen, within } from '@testing-library/react-native';
+import '../common/config/i18n';
+import ActivityLogs from './ActivityLogs';
+import ActivityLog from './ActivityLog';
+import AddActivityLog from './AddActivityLog';
+import useStore from '../store/store';
+import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
+import { OrderDirection } from '../common/enums/order-direction.enum';
+import { formatLogLongDay, formatLogShortDay } from '../common/utils/activity-log-format';
+
+jest.mock('@gorhom/bottom-sheet', () => require('@gorhom/bottom-sheet/mock'));
+// the legacy pickers load their options from the API
+jest.mock('../containers/EventSelect', () => () => null);
+jest.mock('../containers/ActivityTypeSelect', () => () => null);
+jest.mock('../components/FormDatePicker', () => () => null);
+jest.mock('../components/FormInput', () => () => null);
+
+const mockListCalls: any[][] = [];
+const mockCancel = jest.fn();
+const mockCreate = jest.fn();
+
+const entry = (id: string, extra: Record<string, unknown> = {}) => ({
+  id,
+  date: '08.11.2026',
+  hours: 6,
+  activityType: { id: 'a1', name: 'Asistență medicală', icon: 'heart' },
+  event: { id: 'e1', name: 'Training: Prim ajutor' },
+  ...extra,
+});
+
+jest.mock('../services/activity-log/activity-log.service', () => ({
+  useActivityLogsInfiniteQuery: (...args: any[]) => {
+    mockListCalls.push(args);
+    const status = args[2];
+    const items =
+      status === 'pending'
+        ? [entry('1'), entry('2', { event: undefined, activityType: undefined, hours: 3 })]
+        : status === 'approved'
+          ? [entry('3', { hours: 4 })]
+          : [];
+    return {
+      data: { pages: [{ items, meta: { totalItems: items.length } }] },
+      error: null,
+      isFetching: false,
+      isFetchingNextPage: false,
+      isRefetching: false,
+      hasNextPage: false,
+      fetchNextPage: jest.fn(),
+      refetch: jest.fn(),
+    };
+  },
+  useActivityLogsCounters: () => ({ refetch: jest.fn() }),
+  useActivityLogQuery: () => ({ isFetching: false }),
+  useCancelActivityLogMutation: () => ({ mutate: mockCancel, isLoading: false }),
+  useCreateActivityLogMutation: () => ({ mutate: mockCreate, isLoading: false }),
+}));
+
+const { Navigator, Screen } = createNativeStackNavigator();
+const Stub = () => null;
+
+const renderApp = (initialRouteName = 'hours', params?: Record<string, unknown>) =>
+  render(
+    <SafeAreaProvider
+      initialMetrics={{
+        frame: { x: 0, y: 0, width: 390, height: 844 },
+        insets: { top: 47, left: 0, right: 0, bottom: 34 },
+      }}
+    >
+      <NavigationContainer>
+        <Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
+          <Screen name="hours" component={ActivityLogs} />
+          <Screen name="activity-log" component={ActivityLog} initialParams={params} />
+          <Screen name="add-activity-log" component={AddActivityLog} />
+          <Screen name="edit-activity-log" component={Stub} />
+          <Screen name="volunteer-profile" component={Stub} />
+        </Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>,
+  );
+
+const setProfile = (volunteerProfileId: string | null = 'p1') =>
+  useStore.setState({
+    userProfile: {
+      firstName: 'Ana',
+      activeOrganization: {
+        id: 'org-1',
+        name: 'Asociația Exemplu',
+        logo: '',
+        volunteerId: 'v1',
+        volunteerProfileId,
+      },
+    } as any,
+    counters: { approved: 145, pending: 9, rejected: 5 },
+    selectedActivityLog: undefined,
+  });
+
+const detail = (status: ActivityLogStatus, extra: Record<string, unknown> = {}) =>
+  useStore.setState({
+    selectedActivityLog: {
+      ...entry('1'),
+      status,
+      mentions: 'Am ajutat la standul de prim ajutor.',
+      organization: { id: 'org-1', name: 'Asociația Exemplu', logo: '' },
+      ...extra,
+    } as any,
+  });
+
+const detailParams = {
+  activityLogId: '1',
+  orderDirection: OrderDirection.DESC,
+  search: '',
+  status: ActivityLogStatus.PENDING,
+  volunteerId: 'v1',
+};
+
+beforeEach(() => {
+  mockListCalls.length = 0;
+  jest.clearAllMocks();
+  setProfile();
+});
+
+describe('Ore', () => {
+  it('shows the organization, the totals and the pending entries first, newest first', async () => {
+    await renderApp();
+    expect(await screen.findByText('Ore de voluntariat')).toBeTruthy();
+    expect(screen.getByText('La Asociația Exemplu')).toBeTruthy();
+    expect(within(screen.getByTestId('hours-total-approved')).getByText('145h')).toBeTruthy();
+    expect(within(screen.getByTestId('hours-total-pending')).getByText('9h')).toBeTruthy();
+    const last = mockListCalls[mockListCalls.length - 1];
+    expect(last[0]).toBe(OrderDirection.DESC);
+    expect(last[2]).toBe(ActivityLogStatus.PENDING);
+    const row = screen.getByTestId('log-row-1');
+    expect(within(row).getByText('6h')).toBeTruthy();
+    expect(within(row).getByText('Asistență medicală')).toBeTruthy();
+    expect(within(row).getByText('Training: Prim ajutor · 8 nov')).toBeTruthy();
+    expect(within(row).getByText('În așteptare')).toBeTruthy();
+    // no task and no event: "Altă opțiune" and only the day
+    expect(within(screen.getByTestId('log-row-2')).getByText('Altă opțiune')).toBeTruthy();
+    expect(within(screen.getByTestId('log-row-2')).getByText('8 nov')).toBeTruthy();
+  });
+
+  it('switches status with the segmented control and shows an empty state', async () => {
+    await renderApp();
+    await fireEvent.press(await screen.findByText('Aprobate'));
+    expect(mockListCalls[mockListCalls.length - 1][2]).toBe(ActivityLogStatus.APPROVED);
+    expect(within(await screen.findByTestId('log-row-3')).getByText('Aprobat')).toBeTruthy();
+    await fireEvent.press(screen.getByText('Refuzate'));
+    expect(await screen.findByText('Nicio înregistrare refuzată')).toBeTruthy();
+  });
+
+  it('"+ Adaugă ore" without a volunteer profile asks to fill it in', async () => {
+    setProfile(null);
+    await renderApp();
+    await fireEvent.press(await screen.findByTestId('hours-add'));
+    expect(screen.getByText('Completează datele')).toBeTruthy();
+  });
+
+  it('adds hours from today with the − / + stepper', async () => {
+    await renderApp();
+    await fireEvent.press(await screen.findByTestId('hours-add'));
+    expect(await screen.findByText('Adaugă ore de voluntariat')).toBeTruthy();
+    expect(screen.getByTestId('hours-stepper-value').props.children).toBe('1h');
+    await fireEvent.press(screen.getByTestId('hours-stepper-plus'));
+    await fireEvent.press(screen.getByTestId('hours-stepper-plus'));
+    expect(screen.getByTestId('hours-stepper-value').props.children).toBe('3h');
+    await fireEvent.press(screen.getByTestId('hours-stepper-minus'));
+    expect(screen.getByTestId('hours-stepper-value').props.children).toBe('2h');
+  });
+});
+
+describe('Ore: detaliu', () => {
+  it('a pending entry can be deleted after confirming', async () => {
+    detail(ActivityLogStatus.PENDING);
+    await renderApp('activity-log', detailParams);
+    expect(await screen.findByText('8 noiembrie 2026')).toBeTruthy();
+    expect(screen.getByText(/Până atunci o poți edita sau șterge/)).toBeTruthy();
+    expect(screen.getByText('Am ajutat la standul de prim ajutor.')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('log-delete'));
+    expect(
+      screen.getByText('Cele 6 ore de la Asistență medicală nu mai ajung la organizație.'),
+    ).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('log-delete-confirm'));
+    expect(mockCancel).toHaveBeenCalledWith({ activityLogId: '1' }, expect.any(Object));
+  });
+
+  it('a rejected entry shows the reason and cannot be edited', async () => {
+    detail(ActivityLogStatus.REJECTED, {
+      rejectedOn: '14/10/2026',
+      rejectionReason: 'Transportul a fost făcut în altă zi.',
+    });
+    await renderApp('activity-log', detailParams);
+    expect(await screen.findByText('Respins la 14 octombrie 2026')).toBeTruthy();
+    expect(screen.getByText(/Transportul a fost făcut în altă zi\./)).toBeTruthy();
+    expect(screen.queryByTestId('log-edit')).toBeNull();
+    expect(screen.queryByTestId('log-delete')).toBeNull();
+  });
+
+  it('an approved entry shows when it was approved', async () => {
+    detail(ActivityLogStatus.APPROVED, { approvedOn: '28/10/2026' });
+    await renderApp('activity-log', detailParams);
+    expect(await screen.findByText('Aprobată la 28 octombrie 2026')).toBeTruthy();
+  });
+});
+
+describe('activity log dates', () => {
+  it('reads the API formats and keeps unknown text', () => {
+    expect(formatLogShortDay('08.11.2026')).toBe('8 nov');
+    expect(formatLogLongDay('28/10/2026')).toBe('28 octombrie 2026');
+    expect(formatLogLongDay('')).toBe('');
+    expect(formatLogShortDay('ieri')).toBe('ieri');
+  });
+});

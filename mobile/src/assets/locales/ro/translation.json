@@ -34,7 +34,9 @@
             "generic_error": "Eroare de procesare a datelor, cod: #{{code}}",
             "ORG_005": "Organizația nu este validată încă sau este suspendată. Încearcă din nou mai târziu."
         },
-        "back": "Înapoi"
+        "back": "Înapoi",
+        "close": "Închide",
+        "cancel": "Anulează"
     },
     "landing": {
         "message": "Intră în aplicație sau creează-ți cont folosind una dintre modalitățile următoare",
@@ -537,6 +539,30 @@
             "title": "Ups!",
             "description": "Încă nu ți-ai completat profilul de voluntar. Adaugă datele pentru a putea adăuga ore de voluntariat.",
             "action_btn_label": "Completează datele"
+        },
+        "add": "Adaugă ore",
+        "at": "La {{name}}",
+        "totals": {
+            "approved": "aprobate",
+            "pending": "în așteptare",
+            "rejected": "refuzate"
+        },
+        "errors": {
+            "generic": "Eroare la încărcarea orelor"
+        },
+        "empty": {
+            "pending": {
+                "title": "Nimic în așteptare",
+                "description": "Orele trimise apar aici până le aprobă organizația."
+            },
+            "approved": {
+                "title": "Încă nu ai ore aprobate",
+                "description": "Orele aprobate de organizație apar aici."
+            },
+            "rejected": {
+                "title": "Nicio înregistrare refuzată",
+                "description": "Dacă organizația refuză ore, vezi aici motivul."
+            }
         }
     },
     "activity_log": {
@@ -548,7 +574,8 @@
         "disclaimer": {
             "approved": "Aprobată la {{date}}",
             "pending": "Necesită aprobare din partea organizației",
-            "rejected": "Respins la {{date}}"
+            "rejected": "Respins la {{date}}",
+            "pending_editable": "Necesită aprobare din partea organizației. Până atunci o poți edita sau șterge."
         },
         "form": {
             "event": {
@@ -587,10 +614,18 @@
             "ACTIVITY_TYPE_001": "Tipul activității nu există"
         },
         "confirmation_modal": {
-            "paragraph": " Ești sigur că vrei să ștergi această înregistrare?"
+            "paragraph": " Ești sigur că vrei să ștergi această înregistrare?",
+            "heading": "Ștergi înregistrarea?",
+            "description": "Cele {{hours}} ore de la {{title}} nu mai ajung la organizație."
         },
         "toast": {
             "success": "Înregistrarea a fost ștearsă cu success."
+        },
+        "edit_title": "Editează orele",
+        "status": {
+            "pending": "În așteptare",
+            "approved": "Aprobat",
+            "rejected": "Respins"
         }
     },
     "tabs": {
