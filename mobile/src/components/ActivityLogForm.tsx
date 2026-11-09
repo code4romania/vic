@@ -1,12 +1,13 @@
 import React from 'react';
 import FormLayout from '../layouts/FormLayout';
-import { View } from 'react-native';
-import OrganizationIdentity from './OrganizationIdentity';
+import { StyleSheet, View } from 'react-native';
+import { Avatar, VText } from './ui';
 import EventSelect from '../containers/EventSelect';
 import ActivityTypeSelect from '../containers/ActivityTypeSelect';
 import FormDatePicker from './FormDatePicker';
 import FormInput from './FormInput';
-import { Control, FieldErrors } from 'react-hook-form';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
+import HoursStepper from './hours/HoursStepper';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
@@ -55,10 +56,17 @@ const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) =
     <FormLayout>
       <View />
       {userProfile?.activeOrganization && (
-        <OrganizationIdentity
-          uri={userProfile.activeOrganization.logo || ''}
-          name={userProfile.activeOrganization.name}
-        />
+        <View style={styles.organization}>
+          <Avatar
+            name={userProfile.activeOrganization.name}
+            uri={userProfile.activeOrganization.logo}
+            size={36}
+            shape="rounded"
+          />
+          <VText variant="label" numberOfLines={1} style={styles.organizationName}>
+            {userProfile.activeOrganization.name}
+          </VText>
+        </View>
       )}
       <EventSelect
         name="eventId"
@@ -89,15 +97,18 @@ const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) =
         required
         disabled={isLoading}
       />
-      <FormInput
+      <Controller
         name="hours"
-        control={control as any}
-        error={errors.hours}
-        label={t('form.hours.label')}
-        placeholder={t('form.hours.placeholder')}
-        keyboardType="phone-pad"
-        required
-        disabled={isLoading}
+        control={control}
+        render={({ field: { value, onChange } }) => (
+          <HoursStepper
+            label={`${t('form.hours.label')}`}
+            value={Number(value) || 0}
+            onChange={(next) => onChange(`${next}`)}
+            error={errors.hours?.message}
+            disabled={isLoading}
+          />
+        )}
       />
       <FormInput
         name="mentions"
@@ -113,3 +124,8 @@ const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) =
 };
 
 export default ActivityLogForm;
+
+const styles = StyleSheet.create({
+  organization: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  organizationName: { flex: 1 },
+});

@@ -34,7 +34,9 @@
       "generic_error": "Data processing error, code: #{{code}}",
       "ORG_005": "The organization is not validated yet or is suspended. Try again later."
     },
-    "back": "Back to"
+    "back": "Back to",
+    "close": "Close",
+    "cancel": "Cancel"
   },
   "landing": {
     "message": "Log in or create an account in one of the following ways",
@@ -539,6 +541,30 @@
       "title": "Ups!",
       "description": "You did not fill in the data for your volunteer profile. Fill it out in order to be able to log volunteering hours.",
       "action_btn_label": "Complete data"
+    },
+    "add": "Add hours",
+    "at": "At {{name}}",
+    "totals": {
+      "approved": "approved",
+      "pending": "pending",
+      "rejected": "rejected"
+    },
+    "errors": {
+      "generic": "Error loading your hours"
+    },
+    "empty": {
+      "pending": {
+        "title": "Nothing pending",
+        "description": "Hours you send show here until the organization approves them."
+      },
+      "approved": {
+        "title": "No approved hours yet",
+        "description": "Hours the organization approves show here."
+      },
+      "rejected": {
+        "title": "Nothing rejected",
+        "description": "If the organization rejects hours, you see the reason here."
+      }
     }
   },
   "activity_log": {
@@ -550,7 +576,8 @@
     "disclaimer": {
       "approved": "Approved at {{date}}",
       "pending": "Requires approval from the organization",
-      "rejected": "Rejected at {{date}}"
+      "rejected": "Rejected at {{date}}",
+      "pending_editable": "Needs approval from the organization. Until then you can edit or delete it."
     },
     "form": {
       "event": {
@@ -589,10 +616,18 @@
       "ACTIVITY_TYPE_001": "Type of activity does not exist"
     },
     "confirmation_modal": {
-      "paragraph": " Are you sure you want to delete this log?"
+      "paragraph": " Are you sure you want to delete this log?",
+      "heading": "Delete this entry?",
+      "description": "The {{hours}} hours for {{title}} will no longer reach the organization."
     },
     "toast": {
       "success": "The log was successfully deleted."
+    },
+    "edit_title": "Edit hours",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
     }
   },
   "tabs": {

@@ -28,6 +28,8 @@ const AddActivityLog = ({ navigation }: any) => {
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(activityLogSchema) as any,
+    // the canvas starts from today and one hour
+    defaultValues: { date: new Date(), hours: '1' },
   });
 
   const onSubmit = (activityLog: ActivityLogFormTypes) => {
@@ -57,7 +59,7 @@ const AddActivityLog = ({ navigation }: any) => {
       title={t('add_title')}
       onDismiss={navigation.goBack}
       actionsOptions={{
-        actionLabel: t('general:add', { item: '' }),
+        actionLabel: t('general:add', { item: '' }).trim(),
         onActionButtonClick: handleSubmit(onSubmit),
         loading: isLoggingHours,
       }}
