@@ -801,7 +801,7 @@
     "display_status": {
       "rejected": "Respins",
       "approved": "Aprobat",
-      "pending": "Pending"
+      "pending": "În așteptare"
     },
     "status": "Status aprobare",
     "popover": {
