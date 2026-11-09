@@ -97,7 +97,9 @@ describe('AUTH_EMAILS', () => {
     const email = AUTH_EMAILS.loginCode('012345');
 
     expect(email.context.cta).toBeNull();
-    expect(render(email)).toContain('<p class="code">012345</p>');
+    const html = render(email);
+    expect(html).toMatch(/class="code"[^>]*>012345<\/td>/);
+    expect(html).not.toContain('class="cta"');
   });
 
   it('the admin transition email asks to review the Team page', () => {
@@ -152,5 +154,12 @@ describe('AUTH_EMAILS', () => {
     expect(html).toContain('Titlu');
     expect(html).not.toContain('class="code"');
     expect(html).not.toContain('class="divider"');
+    expect(html).not.toContain('class="cta"');
+  });
+
+  it('shows the logo as an inline attachment, with no remote images', () => {
+    const html = render(AUTH_EMAILS.loginCode('012345'));
+    expect(html).toContain('src="cid:vic-logo"');
+    expect(html).not.toMatch(/src="https?:/);
   });
 });
