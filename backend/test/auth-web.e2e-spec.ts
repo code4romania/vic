@@ -98,6 +98,10 @@ describe('Web auth (e2e)', () => {
       .send({ token: transitionSecret, password: 'weak' })
       .expect(400);
     expect(weak.body.code_error).toBeUndefined();
+    const lastLogin = async (): Promise<Date> =>
+      (await facade.findIdentity({ realm: AuthRealm.WEB, email: EMAIL }))
+        .lastLoginAt;
+    expect(await lastLogin()).toBeNull();
 
     const set = await http
       .post('/auth/set-password')
@@ -109,6 +113,8 @@ describe('Web auth (e2e)', () => {
       superAdmin: false,
     });
     expect(set.body.refreshToken).toBeUndefined();
+    // the link's session counts as a login (Team page "last login")
+    expect(await lastLogin()).toBeInstanceOf(Date);
     const cookie = refreshCookie(set);
     expect(cookie).toMatch(/HttpOnly/);
     expect(cookie).toMatch(/Path=\/auth\/web/);

@@ -168,7 +168,7 @@ export const AUTH_EMAILS = {
       | 'taxId'
     >,
     admin: OrganizationRegisteredAdmin,
-    statuteUrl: string,
+    validationPageUrl: string,
   ): AuthEmail => {
     const details = [
       `${organization.name} (CUI ${organization.taxId})`,
@@ -187,17 +187,23 @@ export const AUTH_EMAILS = {
       `ONG nou de validat: ${organization.name} / New NGO to validate`,
       {
         title: `ONG nou de validat: ${organization.name}`,
-        subtitle: `${details}. Statutul este la linkul de mai jos. Validează sau suspendă organizația din pagina de validare. Pentru suspendare din linia de comandă: ${suspend}`,
+        subtitle: `${details}. Statutul și datele sunt pe pagina de validare, unde poți valida sau suspenda organizația. Pentru suspendare din linia de comandă: ${suspend}`,
       },
       {
         title: `New NGO to validate: ${organization.name}`,
-        subtitle: `The statute is at the link below. Validate or suspend the organization on the validation page. To suspend from the command line: ${suspend}`,
+        subtitle: `The statute and the details are on the validation page, where you can validate or suspend the organization. To suspend from the command line: ${suspend}`,
       },
-      { cta: { link: statuteUrl, label: 'Vezi statutul' } },
+      // Not the statute itself: a presigned link would expire a day after the email.
+      {
+        cta: { link: validationPageUrl, label: 'Deschide pagina de validare' },
+      },
     );
   },
 
-  organizationValidated: (organizationName: string): AuthEmail =>
+  organizationValidated: (
+    organizationName: string,
+    loginUrl: string,
+  ): AuthEmail =>
     email(
       `${organizationName} a fost validată pe VIC / ${organizationName} is validated on VIC`,
       {
@@ -210,6 +216,7 @@ export const AUTH_EMAILS = {
         subtitle:
           'Volunteers can now see the organization in the app. You can create events and log volunteering hours.',
       },
+      { cta: { link: loginUrl, label: 'Intră în VIC' } },
     ),
 
   // T-7, sent with `npm run announce -- --template announce --date <date>` (decisions R3).

@@ -46,3 +46,12 @@ SELECT CASE
 FROM "user"
 WHERE type = 'regular' AND deleted_on IS NULL
 GROUP BY 1;
+
+-- 7. Informational, not an auth problem: volunteers with no notification settings. The July 2023
+--    migration that linked users to notifications_settings did not backfill, and approving their
+--    access request or hours fails with a 500 (it reads requestedBy.notificationsSettings). Found in
+--    the local web regression (issue 14). Expect zero; if not, backfill before the cutover:
+--      INSERT INTO notifications_settings ... + UPDATE "user" SET notifications_settings_id = ...
+SELECT count(*) AS volunteers_without_notification_settings
+FROM "user"
+WHERE type = 'regular' AND deleted_on IS NULL AND notifications_settings_id IS NULL;

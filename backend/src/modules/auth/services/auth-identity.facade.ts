@@ -103,10 +103,10 @@ export class AuthIdentityFacade {
   public async registerSuccessfulLogin(
     identity: IAuthIdentityModel,
   ): Promise<IAuthIdentityModel> {
+    // lastLoginAt is set with the session (createSession)
     return this.authIdentityRepository.update(identity.id, {
       failedAttempts: 0,
       lockedUntil: null,
-      lastLoginAt: new Date(),
     });
   }
 
@@ -174,11 +174,19 @@ export class AuthIdentityFacade {
 
   // Sessions (refresh tokens)
 
+  // Every new session is a login (password, social, reset code, or a set-password / confirm-email link),
+  // so lastLoginAt is recorded here rather than in each use case. Refresh rotations do not pass here.
   public async createSession(
     options: CreateRefreshTokenOptions,
     manager?: EntityManager,
   ): Promise<IRefreshTokenModel> {
-    return this.refreshTokenRepository.create(options, manager);
+    const session = await this.refreshTokenRepository.create(options, manager);
+    await this.authIdentityRepository.update(
+      options.identityId,
+      { lastLoginAt: new Date() },
+      manager,
+    );
+    return session;
   }
 
   public async findSessionByHash(

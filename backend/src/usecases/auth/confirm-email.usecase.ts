@@ -12,7 +12,6 @@ import {
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import { OneTimeTokenService } from 'src/modules/auth/services/one-time-token.service';
 import { SessionClient } from 'src/modules/auth/services/session.service';
-import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { AUTH_EMAILS } from 'src/modules/auth/constants/auth-emails';
 import { AuthMailerService } from 'src/modules/auth/services/auth-mailer.service';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
@@ -38,7 +37,6 @@ export class ConfirmEmailUseCase implements IUseCaseService<LinkResult> {
     private readonly userFacade: UserFacadeService,
     private readonly organizationFacade: OrganizationFacadeService,
     private readonly authMailer: AuthMailerService,
-    private readonly s3Service: S3Service,
   ) {}
 
   async execute(
@@ -104,7 +102,8 @@ export class ConfirmEmailUseCase implements IUseCaseService<LinkResult> {
     return { organization: active, admin };
   }
 
-  // The "new NGO to validate" email, with every field and a link to the statute (presigned, valid one day).
+  // The "new NGO to validate" email, with every field and a link to the validation page (the statute is
+  // there; a presigned link in the email would expire after a day).
   private async notifySuperAdmins(
     organization: IOrganizationModel,
     admin: IAdminUserModel,
@@ -112,15 +111,12 @@ export class ConfirmEmailUseCase implements IUseCaseService<LinkResult> {
     const superAdmins = await this.authIdentityFacade.findSuperAdmins();
     if (!superAdmins.length) return;
 
-    const statuteUrl = organization.statuteUrl
-      ? await this.s3Service.generatePresignedURL(organization.statuteUrl)
-      : null;
     await this.authMailer.send(
       superAdmins.map((superAdmin) => superAdmin.email),
       AUTH_EMAILS.organizationRegistered(
         organization,
         { name: admin.name, email: admin.email, phone: admin.phone },
-        statuteUrl,
+        this.authMailer.validationPageUrl(),
       ),
     );
   }

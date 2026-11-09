@@ -21,6 +21,15 @@ export class AuthMailerService {
     return `${this.authConfig.webAppUrl}/confirm-email?token=${encodeURIComponent(secret)}`;
   }
 
+  // The super admins' page for pending NGOs: details and statute, with links that do not expire.
+  public validationPageUrl(): string {
+    return `${this.authConfig.webAppUrl}/admin/validation`;
+  }
+
+  public loginUrl(): string {
+    return `${this.authConfig.webAppUrl}/login`;
+  }
+
   public async send(to: string | string[], email: AuthEmail): Promise<void> {
     await this.mailService.sendEmail({
       to,

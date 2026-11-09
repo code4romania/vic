@@ -50,7 +50,10 @@ export class ValidateOrganizationUseCase
     if (admins.length) {
       await this.authMailer.send(
         admins.map((admin) => admin.email),
-        AUTH_EMAILS.organizationValidated(organization.name),
+        AUTH_EMAILS.organizationValidated(
+          organization.name,
+          this.authMailer.loginUrl(),
+        ),
       );
     }
 

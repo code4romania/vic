@@ -46,4 +46,20 @@ VALUES
   ('00000000-0000-4000-c000-000000000007', 'regular', '22222222-2222-4222-8222-000000000007', 'Jean Sters', 'jean@seed.test', '+40720000007', 'Jean', 'Sters', now() - interval '30 days')
 ON CONFLICT (id) DO NOTHING;
 
+-- Volunteers get notification settings, as the app's create-user does (the approve flows read them).
+WITH missing AS (
+  SELECT id FROM "user"
+  WHERE type = 'regular' AND deleted_on IS NULL AND notifications_settings_id IS NULL
+    AND id::text LIKE '00000000-0000-4000-c000-%'
+), created AS (
+  INSERT INTO notifications_settings (id)
+  SELECT uuid_generate_v4() FROM missing
+  RETURNING id
+), paired AS (
+  SELECT m.id AS user_id, c.id AS settings_id
+  FROM (SELECT id, row_number() OVER () AS n FROM missing) m
+  JOIN (SELECT id, row_number() OVER () AS n FROM created) c USING (n)
+)
+UPDATE "user" u SET notifications_settings_id = p.settings_id FROM paired p WHERE u.id = p.user_id;
+
 COMMIT;

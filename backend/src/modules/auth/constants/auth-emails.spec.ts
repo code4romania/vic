@@ -57,12 +57,20 @@ const builders: Array<[string, AuthEmail, string | null]> = [
     AUTH_EMAILS.organizationRegistered(
       organization,
       { name: 'Ana', email: 'ana@test.ro', phone: '+40711111111' },
-      'https://s3.test/statute.pdf',
+      'https://vic.test/admin/validation',
     ),
-    'https://s3.test/statute.pdf',
+    'https://vic.test/admin/validation',
   ],
-  ['organizationValidated', AUTH_EMAILS.organizationValidated('Test'), null],
+  [
+    'organizationValidated',
+    AUTH_EMAILS.organizationValidated('Test', 'https://vic.test/login'),
+    'https://vic.test/login',
+  ],
   ['passwordChanged', AUTH_EMAILS.passwordChanged(), null],
+  // The bulk messages around the cutover go to every user: render them too.
+  ['announce', AUTH_EMAILS.announce('15 decembrie 2026'), null],
+  ['reminder', AUTH_EMAILS.reminder('15 decembrie 2026'), null],
+  ['back', AUTH_EMAILS.back(), null],
 ];
 
 describe('AUTH_EMAILS', () => {
@@ -115,7 +123,7 @@ describe('AUTH_EMAILS', () => {
     const { context } = AUTH_EMAILS.organizationRegistered(
       organization,
       { name: 'Ana', email: 'ana@test.ro', phone: '+40711111111' },
-      'https://s3.test/statute.pdf',
+      'https://vic.test/admin/validation',
     );
 
     for (const value of [

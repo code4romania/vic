@@ -1,3 +1,4 @@
+import { EntityManager } from 'typeorm';
 import { AUTH_LOCKOUT } from '../auth.constants';
 import { AuthIdentityStatus, AuthRealm } from '../enums/auth.enums';
 import { IAuthIdentityModel } from '../models/auth-identity.model';
@@ -15,7 +16,7 @@ describe('AuthIdentityFacade', () => {
     >
   >;
   let refreshTokenRepository: jest.Mocked<
-    Pick<RefreshTokenRepository, 'revokeAllForIdentity'>
+    Pick<RefreshTokenRepository, 'revokeAllForIdentity' | 'create'>
   >;
   let facade: AuthIdentityFacade;
 
@@ -46,7 +47,10 @@ describe('AuthIdentityFacade', () => {
       update: jest.fn(),
       deleteByUserId: jest.fn(),
     };
-    refreshTokenRepository = { revokeAllForIdentity: jest.fn() };
+    refreshTokenRepository = {
+      revokeAllForIdentity: jest.fn(),
+      create: jest.fn(),
+    };
 
     facade = new AuthIdentityFacade(
       identityRepository as unknown as AuthIdentityRepository,
@@ -71,14 +75,36 @@ describe('AuthIdentityFacade', () => {
     expect(AUTH_LOCKOUT.MAX_FAILED_ATTEMPTS).toBe(5);
   });
 
-  it('registerSuccessfulLogin resets the counter and the lock and records the login', async () => {
+  it('registerSuccessfulLogin resets the counter and the lock', async () => {
     await facade.registerSuccessfulLogin(identity);
 
     expect(identityRepository.update).toHaveBeenCalledWith('identity-id', {
       failedAttempts: 0,
       lockedUntil: null,
-      lastLoginAt: new Date('2026-10-30T10:00:00Z'),
     });
+  });
+
+  it('createSession records the login on the identity, in the same transaction', async () => {
+    const session = { id: 'session-id' };
+    refreshTokenRepository.create.mockResolvedValue(session as never);
+    const manager = {} as EntityManager;
+    const options = {
+      identityId: 'identity-id',
+      tokenHash: 'hash',
+      expiresAt: new Date('2026-11-29T10:00:00Z'),
+    };
+
+    await expect(facade.createSession(options, manager)).resolves.toBe(session);
+
+    expect(refreshTokenRepository.create).toHaveBeenCalledWith(
+      options,
+      manager,
+    );
+    expect(identityRepository.update).toHaveBeenCalledWith(
+      'identity-id',
+      { lastLoginAt: new Date('2026-10-30T10:00:00Z') },
+      manager,
+    );
   });
 
   it('isLocked is true only while lockedUntil is in the future', () => {

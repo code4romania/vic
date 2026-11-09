@@ -24,9 +24,11 @@ export class CreateRegularUserDto {
   @MaxLength(50)
   lastName: string;
 
+  // Ignored: the profile takes the login's confirmed email. Optional so the 1.1.0 app can leave it
+  // out (it does not know the email of a social login); 1.0.x builds still send it.
+  @IsOptional()
   @IsEmail()
-  @IsNotEmpty()
-  email: string;
+  email?: string;
 
   @IsString()
   @IsNotEmpty()

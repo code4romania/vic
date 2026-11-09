@@ -155,6 +155,16 @@ describe('Organization registration and validation (e2e)', () => {
     testApp.mailbox.clear();
   });
 
+  it('the confirm-email session counts as a login (lastLoginAt)', async () => {
+    await registeredAndConfirmed();
+
+    const identity = await facade.findIdentity({
+      realm: AuthRealm.WEB,
+      email: ADMIN_EMAIL,
+    });
+    expect(identity.lastLoginAt).toBeInstanceOf(Date);
+  });
+
   it('refuses a failed anti-robot check (ORG_006), a missing or non-PDF statute (ORG_007), unaccepted terms', async () => {
     expect(
       (await register({ turnstileToken: 'bot' }).expect(400)).body.code_error,
@@ -256,7 +266,7 @@ describe('Organization registration and validation (e2e)', () => {
     }
   });
 
-  it('confirming activates the NGO, logs the admin in and tells the super admins, statute link included', async () => {
+  it('confirming activates the NGO, logs the admin in and tells the super admins, with a link to the validation page', async () => {
     const { accessToken, cookie } = await registeredAndConfirmed();
     expect(cookie).toMatch(/^vic_refresh=/);
 
@@ -267,7 +277,17 @@ describe('Organization registration and validation (e2e)', () => {
     const notice = testApp.mailbox.last('super@vic.ro');
     expect(notice.subject).toContain('ONG nou de validat: Asociatia Noua');
     expect(notice.context.subtitle).toContain('RO12345678');
-    const statute = await fetch(notice.context.cta.link);
+    // The button opens the validation page (a presigned statute link would expire in a day);
+    // the statute is downloaded from there.
+    expect(notice.context.cta.link).toBe('https://vic.test/admin/validation');
+    const pending = await http
+      .get('/admin/organizations/pending-validation')
+      .set('Authorization', `Bearer ${superAdminToken}`)
+      .expect(200);
+    const listed = pending.body.find(
+      (item: { name: string }) => item.name === 'Asociatia Noua',
+    );
+    const statute = await fetch(listed.statuteUrl);
     expect(statute.status).toBe(200);
     expect(Buffer.from(await statute.arrayBuffer()).equals(PDF)).toBe(true);
 
@@ -330,9 +350,9 @@ describe('Organization registration and validation (e2e)', () => {
       .expect(200);
 
     expect(await mobileOrganizationNames()).toContain('Asociatia Noua');
-    expect(testApp.mailbox.last(ADMIN_EMAIL).subject).toContain(
-      'a fost validată',
-    );
+    const validatedMail = testApp.mailbox.last(ADMIN_EMAIL);
+    expect(validatedMail.subject).toContain('a fost validată');
+    expect(validatedMail.context.cta.link).toBe('https://vic.test/login');
     const again = await http
       .get('/admin/organizations/pending-validation')
       .set('Authorization', `Bearer ${superAdminToken}`)
