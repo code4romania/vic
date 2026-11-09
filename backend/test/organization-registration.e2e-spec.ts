@@ -310,17 +310,17 @@ describe('Organization registration and validation (e2e)', () => {
     const { accessToken } = await registeredAndConfirmed();
 
     expect(await mobileOrganizationNames()).not.toContain('Asociatia Noua');
-    // Multipart, as the web app sends it (the event controller expects the files object).
+    // JSON, as the web app sends it since the poster was removed (#492).
     const event = await http
       .post('/event')
       .set('Authorization', `Bearer ${accessToken}`)
-      .field('name', 'Eveniment')
-      .field('description', 'Un eveniment de test')
-      .field('startDate', new Date(Date.now() + 86400000).toISOString())
-      .field('status', 'draft')
-      .field('isPublic', 'public')
-      .field('attendanceType', 'simple')
-      .field('tasksIds[]', '00000000-0000-4000-8000-000000000000')
+      .send({
+        name: 'Eveniment',
+        description: 'Un eveniment de test',
+        startDate: new Date(Date.now() + 86400000).toISOString(),
+        status: 'draft',
+        isPublic: 'public',
+      })
       .expect(403);
     expect(event.body.code_error).toBe('ORG_005');
   });

@@ -76,7 +76,7 @@ describe('JWT guards (e2e)', () => {
   it('an admin lists the volunteers of each status', async () => {
     const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
 
-    for (const status of ['active', 'archived', 'blocked']) {
+    for (const status of ['active', 'inactive', 'blocked', 'candidate']) {
       await http()
         .get('/volunteer')
         .query({
