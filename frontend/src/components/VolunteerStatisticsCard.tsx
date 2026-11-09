@@ -16,7 +16,7 @@ const VolunteerStatisticsCard = () => {
       info={i18n.t('dashboard:statistics_card.volunteer.info', { value: data?.pendingRequest })}
       action={{
         label: i18n.t('dashboard:statistics_card.volunteer.label'),
-        onClick: () => navigate('/volunteers/requests'),
+        onClick: () => navigate('/approvals/volunteers'),
       }}
     />
   );

@@ -43,8 +43,9 @@ export const arrayOfNamesToString = (array: { name: string }[], separator: strin
   return array.map((item) => item.name).join(separator);
 };
 
-export const formatLocation = (location: ICity): string =>
-  location ? `${location.name}, ${location.county?.abbreviation}` : '-';
+// "-" when there is no city; never the text "null" or "undefined"
+export const formatLocation = (location?: ICity | null): string =>
+  [location?.name, location?.county?.abbreviation].filter(Boolean).join(', ') || '-';
 
 export const getHoursAndMinutes = (value: Date | string): string =>
   format(new Date(value), 'HH:mm');

@@ -6,10 +6,9 @@ import EditOrganization from '../pages/EditOrganization';
 import EditAccessCode from '../pages/EditAccessCode';
 import Login from '../pages/Login';
 import Organization from '../containers/query/OrganizationWithQueryParam';
-import RegistrationRequests from '../containers/query/AccessRequestsWithQueryParams';
+import Approvals from '../pages/Approvals';
 import AccessCodes from '../containers/query/AccessCodesWithQueryParams';
 import RootRoute from './RootRoute';
-import EventRegistrations from '../pages/EventRegistrations';
 import PublicRoute from './PublicRoute';
 import Volunteers from '../containers/query/VolunteersWithQueryParams';
 import AddAccessCode from '../pages/AddAccessCode';
@@ -79,7 +78,8 @@ const Router = () => {
                 <Route path="add" element={<AddAccessCode />} />
                 <Route path=":id/edit" element={<EditAccessCode />} />
               </Route>
-              <Route path="requests" element={<RegistrationRequests />} />
+              {/* #499: the lists moved to the approvals page */}
+              <Route path="requests" element={<Navigate to="/approvals/volunteers" replace />} />
               <Route path="requests/:id" element={<AccessRequest />} />
             </Route>
             <Route path="announcements" element={<Outlet />}>
@@ -95,7 +95,7 @@ const Router = () => {
             </Route>
             <Route path="events" element={<Outlet />}>
               <Route index element={<Events />} />
-              <Route path="registrations" element={<EventRegistrations />} />
+              <Route path="registrations" element={<Navigate to="/approvals/events" replace />} />
               <Route path=":id" element={<Event />} />
               <Route path=":id/edit" element={<EditEvent />} />
               <Route path="add" element={<AddEvent />} />
@@ -104,6 +104,8 @@ const Router = () => {
               <Route index element={<ActivityLogs />} />
               <Route path="add" element={<AddActivityLog />} />
             </Route>
+            <Route path="approvals" element={<Approvals />} />
+            <Route path="approvals/:type" element={<Approvals />} />
             <Route path="admin/validation" element={<OrganizationValidation />} />
             <Route path="actions-archive" element={<Outlet />}>
               <Route index element={<ActionsArchive />} />

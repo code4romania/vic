@@ -55,7 +55,7 @@ const AccessRequest = () => {
   }, [accessRequestError]);
 
   const onBackButtonPress = () => {
-    navigate('/volunteers/requests', { replace: true });
+    navigate('/approvals/volunteers', { replace: true });
   };
 
   const approveAccessRequest = () => {

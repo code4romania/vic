@@ -11,6 +11,7 @@ import {
   CalendarIcon,
   ArchiveBoxIcon,
   DocumentDuplicateIcon,
+  CheckBadgeIcon,
 } from '@heroicons/react/24/solid';
 
 import { IRoute } from '../interfaces/route.interface';
@@ -18,6 +19,13 @@ import { MegaphoneIcon } from '@heroicons/react/24/solid';
 
 export const ROUTES: IRoute[] = [
   { id: 0, name: i18n.t('side_menu:options.dashboard'), href: '', icon: RectangleGroupIcon },
+  // #499: volunteer applications, hours and event registrations in one place
+  {
+    id: 10,
+    name: i18n.t('side_menu:options.approvals'),
+    href: 'approvals',
+    icon: CheckBadgeIcon,
+  },
   {
     id: 1,
     name: i18n.t('side_menu:options.organization'),
@@ -44,11 +52,6 @@ export const ROUTES: IRoute[] = [
         name: i18n.t('side_menu:options.access_codes'),
         href: 'volunteers/access-codes',
       },
-      {
-        id: 23,
-        name: i18n.t('side_menu:options.access_requests'),
-        href: 'volunteers/requests',
-      },
     ],
   },
   {
@@ -68,15 +71,6 @@ export const ROUTES: IRoute[] = [
     name: i18n.t('side_menu:options.events'),
     href: 'events',
     icon: CalendarIcon,
-    childRoutes: [
-      { id: 51, name: i18n.t('side_menu:options.events_list'), href: 'events' },
-      // #501
-      {
-        id: 52,
-        name: i18n.t('side_menu:options.event_registrations'),
-        href: 'events/registrations',
-      },
-    ],
   },
   {
     id: 6,

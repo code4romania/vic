@@ -116,7 +116,8 @@
       "team": "Echipa",
       "validation": "Validare ONG-uri",
       "events_list": "Listă evenimente",
-      "event_registrations": "Înscrieri la evenimente"
+      "event_registrations": "Înscrieri la evenimente",
+      "approvals": "Aprobări"
     },
     "collapse": "Restrânge meniul"
   },
@@ -1558,5 +1559,22 @@
     "title": "Acces interzis",
     "description": "Nu ai acces la această pagină.",
     "home": "Mergi la pagina principală"
+  },
+  "approvals": {
+    "title": "Aprobări",
+    "description": "Cereri care așteaptă decizia organizației.",
+    "pending_total_one": "O cerere așteaptă decizia ta.",
+    "pending_total_few": "{{count}} cereri așteaptă decizia ta.",
+    "pending_total_other": "{{count}} de cereri așteaptă decizia ta.",
+    "tabs": {
+      "volunteers": "Aplicații voluntari",
+      "hours": "Ore de voluntariat",
+      "events": "Înscrieri la evenimente"
+    },
+    "status": {
+      "pending": "În așteptare",
+      "approved": "Aprobate",
+      "rejected": "Respinse"
+    }
   }
 }

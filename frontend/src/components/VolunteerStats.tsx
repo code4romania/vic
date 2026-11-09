@@ -12,13 +12,13 @@ const VolunteerStats = ({ volunteerId }: { volunteerId: string }) => {
   ];
 
   return (
-    <dl className="grid grid-cols-2 gap-3 w-full">
+    <dl className="flex flex-col gap-2 w-full">
       {counters.map((counter) => (
         <div
           key={counter.key}
-          className="flex flex-col items-center gap-1 rounded-lg bg-cool-gray-50 p-3"
+          className="flex items-center justify-between gap-3 rounded-lg bg-cool-gray-50 px-3 py-2"
         >
-          <dt className="text-cool-gray-500 text-xs text-center">{counter.label}</dt>
+          <dt className="text-cool-gray-500 text-sm">{counter.label}</dt>
           <dd className="font-robotoBold text-cool-gray-800 text-xl" aria-label={counter.label}>
             {counter.value ?? '-'}
           </dd>

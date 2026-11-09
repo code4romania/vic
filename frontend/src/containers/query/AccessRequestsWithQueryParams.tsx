@@ -11,7 +11,7 @@ export interface AccessRequestsQueryProps {
 
 export type AccessRequestsProps = IHOCQueryProps<AccessRequestsQueryProps>;
 
-const AccessRequestsWithQueryParams = () => {
+const AccessRequestsWithQueryParams = ({ embedded }: { embedded?: boolean } = {}) => {
   const RequestStatusParam = withDefault(StringParam, RequestStatus.PENDING);
 
   const queryConfig = {
@@ -21,7 +21,7 @@ const AccessRequestsWithQueryParams = () => {
   return (
     <QueryParams config={queryConfig}>
       {(props: any) => {
-        return <AccessRequests {...props} />;
+        return <AccessRequests {...props} embedded={embedded} />;
       }}
     </QueryParams>
   );
