@@ -292,7 +292,9 @@ describe('Contracts (e2e)', () => {
       volunteerName: 'Elena Pop',
       hours: 6,
     });
-    expect(new Date(prefill.since).toISOString()).toContain('2026-02-01');
+    expect(new Date(prefill.since).toLocaleDateString('sv-SE')).toBe(
+      '2026-02-01',
+    );
 
     const res = await auth(http().post('/contract/certificate'))
       .send({
