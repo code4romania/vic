@@ -599,6 +599,11 @@
     "filters": {
       "department": "Department",
       "all_departments": "All departments"
+    },
+    "counters": {
+      "upcoming": "Upcoming events",
+      "ongoing": "Ongoing events",
+      "participants": "Participants"
     }
   },
   "announcement": {

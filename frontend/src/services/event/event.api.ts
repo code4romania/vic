@@ -186,3 +186,14 @@ export const getEventListItems = async (params: {
 }): Promise<IPaginatedEntity<Pick<IEvent, 'id' | 'name'>>> => {
   return API.get('/listing/events', { params }).then((res) => res.data);
 };
+
+// #493: counters for the events page (same department filter as the list)
+export interface IEventCounters {
+  upcoming: number;
+  ongoing: number;
+  participants: number;
+}
+
+export const getEventCounters = async (departmentId?: string): Promise<IEventCounters> => {
+  return API.get('/event/counters', { params: { departmentId } }).then((res) => res.data);
+};

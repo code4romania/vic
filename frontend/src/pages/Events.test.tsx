@@ -10,6 +10,9 @@ describe('Events tabs (#495)', () => {
   beforeEach(() => {
     server.use(
       http.get(api('/listing/structures/department'), () => HttpResponse.json({ items: [] })),
+      http.get(api('/event/counters'), () =>
+        HttpResponse.json({ upcoming: 4, ongoing: 2, participants: 37 }),
+      ),
     );
   });
 
@@ -75,5 +78,23 @@ describe('Events tabs (#495)', () => {
     await waitFor(() => expect(params.some((p) => p.get('departmentId') === 'd1')).toBe(true));
     expect(await screen.findByText('Comunicare')).toBeInTheDocument();
     expect(screen.getByText(t('events:filters.department'))).toBeInTheDocument();
+  });
+
+  it('shows the counters from the API (#493)', async () => {
+    server.use(
+      http.get(api('/event'), () =>
+        HttpResponse.json({
+          items: [],
+          meta: { itemCount: 0, totalItems: 0, itemsPerPage: 10, totalPages: 0, currentPage: 1 },
+        }),
+      ),
+    );
+    renderPage(
+      <Events query={{ limit: 10, page: 1, eventState: EventState.UPCOMING }} setQuery={vi.fn()} />,
+    );
+    expect(await screen.findByText('37')).toBeInTheDocument();
+    expect(screen.getByText(t('events:counters.participants'))).toBeInTheDocument();
+    expect(screen.getByText('4')).toBeInTheDocument();
+    expect(screen.getByText(t('events:counters.ongoing'))).toBeInTheDocument();
   });
 });
