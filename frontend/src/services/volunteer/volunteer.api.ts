@@ -121,6 +121,11 @@ export const updateVolunteerDetails = async (
   return API.patch(`volunteer/${id}/details`, data).then((res) => res.data);
 };
 
+// #484: deletes the volunteer and all their data in the NGO
+export const deleteVolunteer = async (id: string): Promise<void> => {
+  return API.delete(`volunteer/${id}`).then((res) => res.data);
+};
+
 export const archiveVolunteer = async (id: string): Promise<IVolunteer> => {
   return API.patch(`volunteer/${id}/archive`).then((res) => res.data);
 };

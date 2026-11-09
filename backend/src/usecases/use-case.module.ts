@@ -148,6 +148,7 @@ import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
 import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
 import { DeleteContractUsecase } from './documents/delete-contract.usecase';
 import { UploadContractUsecase } from './documents/upload-contract.usecase';
+import { DeleteVolunteerUsecase } from './volunteer/delete-volunteer.usecase';
 import { CertificateUsecase } from './documents/certificate.usecase';
 import { GetVolunteerContractHistoryUsecase } from './documents/get-volunteer-contract-history.usecase';
 import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
@@ -364,6 +365,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,
     UploadContractUsecase,
+    DeleteVolunteerUsecase,
     CertificateUsecase,
     GetVolunteerContractHistoryUsecase,
     // Notifications
@@ -537,6 +539,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,
     UploadContractUsecase,
+    DeleteVolunteerUsecase,
     CertificateUsecase,
     GetVolunteerContractHistoryUsecase,
     GetVicStatisticsUsecase,
