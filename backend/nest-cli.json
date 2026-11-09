@@ -4,13 +4,19 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": ["modules/mail/templates/**/*", "modules/mail/assets/**/*"],
+    "assets": [
+      "modules/mail/templates/**/*",
+      "modules/mail/assets/**/*",
+      "modules/volunteer/assets/**/*"
+    ],
     "plugins": [
       {
         "name": "@nestjs/swagger/plugin",
         "options": {
           "introspectComments": true,
-          "dtoFileNameSuffix": [".dto.ts"]
+          "dtoFileNameSuffix": [
+            ".dto.ts"
+          ]
         }
       }
     ]
