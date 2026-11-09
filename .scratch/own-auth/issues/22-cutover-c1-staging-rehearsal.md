@@ -1,6 +1,6 @@
 # C1 · Staging rehearsal: timed cutover runs, rollback drill, checklists, email review
 
-Status: ready-for-human
+Status: rehearsed locally (2026-11-06); staging rehearsal still ready-for-human
 Type: task
 Blocked by: 11, 15, 19, 20, 00
 Tracker card: C1
@@ -50,3 +50,12 @@ Migrated admin: old password → 401 and nothing in the sink → transition link
 - [ ] No unresolved pre-flight rows against a fresh production copy.
 
 ## Comments
+
+- 2026-11-06, local rehearsal (no staging; everything on this machine), database `vic_rehearsal` next to `vic`:
+  - Before state: all migrations, then `OwnAuthTables` reverted (the pre-cutover schema), `scripts/auth-local-seed.sql` loaded (4 admins, 7 volunteers of which 1 deleted, 2 NGOs). Pre-flight (`auth-preflight.sql`): zero problem rows; logins: 3 email/password, 1 each Google / Facebook / Apple.
+  - Deploy in maintenance (`MAINTENANCE_MODE=true`, `MAINTENANCE_ALLOWED_IPS=203.0.113.7`, `MOBILE_MIN_VERSION=1.1.0`): `OwnAuthTables` ran on boot; both NGOs active + validated; `/public/health` 200; everything else 503 MAINTENANCE (mobile login included); the allow-listed IP via X-Forwarded-For passes.
+  - `auth:migrate --dry-run` then real: 10 users read, 4 admins + 6 volunteers, 3 provider links, 1 deleted skipped, 10 transition emails held; a second run changes nothing. `announce --status` 10 paused; `--release-transition` → 10 emails in mailcatcher (Dana twice: admin and volunteer). Admin template asks to review the Team page; volunteer template has the update-the-app line and the R36 sentence; both say 30 days.
+  - Maintenance off: old 1.0.x app (Cognito bearer, no x-app-version) → 401 (R22); x-app-version 1.0.19 → 426 AUTH_011.
+  - Flows: Ana (admin) transition link → web set-password → dashboard, no validation banner; Team shows her active with last login, Bogdan "invite sent, expires in 30 days" sent by "VIC (noua autentificare)". Ioana (volunteer) transition link → set-password answers `{ realm: 'mobile', email }` → app via `vic://login?email=` → login → Home on her migrated profile. App search lists only the two validated NGOs; a pending NGO is hidden, also when searched by name.
+  - Found: the local `mobile/android` project (gitignored, generated on the Expo branch) still said 1.0.19 / 22, so the dev build reported 1.0.19 and got 426 with MOBILE_MIN_VERSION=1.1.0. Regenerated with `npx expo prebuild --platform android --clean` → 1.1.0 / 23. EAS builds generate `android/` from app.config.ts, so release builds are not affected; local builds after a version bump need `prebuild --clean`. `expo prebuild` also staged the whole change set in git; unstaged again (files untouched).
+  - Not covered locally: AWS/ALB scaling, the static web maintenance page, store releases, the OTA, the real NGO Hub switch.

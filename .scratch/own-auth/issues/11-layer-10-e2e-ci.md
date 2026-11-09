@@ -25,3 +25,4 @@ These are the tests the cutover is gated on.
   - Already covered before this layer: R14 resend 200 for used/expired/unknown, R16 purpose transition/invite, R20 enable sends no email, suspended NGO AUTH_004 and unsuspend, AUTH_012, x-app-version 426.
   - Result: `npm run test:e2e` 10 suites / 69 tests, green twice in a row; `npm run test` green; lint clean. Coverage (e2e alone) on src/modules/auth + src/usecases/auth: 92 % lines, 91 % functions, 66 % branches.
 
+- 2026-11-06: one parallel `npm run test:e2e` run stalled (11 idle workers, no DB connections) after the unit tests. Not reproducible: two later parallel runs, including the same unit-then-e2e sequence, passed 10 suites / 71 tests in ~15 s. If it happens again, `npx jest --config ./test/jest-e2e.json --runInBand` works.

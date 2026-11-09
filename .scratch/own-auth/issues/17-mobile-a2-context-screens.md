@@ -1,6 +1,6 @@
 # A2 · Mobile: AuthContext over the backend, social buttons back, code screen for Forgot password, deep link, Maintenance and Update required
 
-Status: needs-info
+Status: done locally (2026-11-06), checked on the Android emulator
 Type: task
 Blocked by: 16
 Tracker card: A2
@@ -15,3 +15,22 @@ Outline until Layer 7. `../decisions.md` wins over this text and over the Guide.
 - Translations ro / en; policy and terms links no longer at ngohub.ro (with issue 21).
 
 ## Comments
+
+- 2026-11-06, done locally on feat/own-auth (Expo 57):
+  - AuthContext.ts: `SocialProvider` union, confirmSignUp removed (R30); added `userName` (the email of the last login / sign-up / reset) and `reload()` (the Maintenance Retry).
+  - AuthContextProvider: getProfile settles on every path (404 or USER_001 → isUserPending + `{ createUser: true }`; no toast for 401/426/503). Login: AUTH_003 → `{ confirmAccount: true }`; AUTH_001 + migration hint as toast line 2 while EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL (inclusive) is in the future; other codes via `InternalErrors.AUTH_ERRORS`. forgotPasswordSubmit logs in. logout: POST logout (errors ignored), clearTokens, social sign-out, profile null. Push-token unregister stays in Settings (`unsubscribe()` before `logout()`), since the NotificationContext holds the token. authEvents 'logout' ends the session.
+  - `src/services/auth/social.ts`: Google (configure once, account picker each time), Apple (identityToken), Facebook (classic access token, tracking 'enabled'); a cancelled sheet shows nothing.
+  - Backend: `CreateRegularUserDto.email` is now optional (it was already ignored): the app does not know a social login's email, so 1.1.0 sends no email; 1.0.x still does.
+  - Screens: Landing has the three buttons back (Apple only on iOS); button colours swapped back (Google #4285F4, Facebook #1877F2) and labels translated ("Continuă cu …"). ValidateAccount = check your email + resend + Go to login (passes the email). ConfirmPassword no longer navigates after submit. CreateUser has no Amplify and no email. Login: migration notice, email from `route.params.email`.
+  - Deep link: `linking` on NavigationContainer, `vic://login?email=` → public `login` screen with `initialRouteName: 'landing'` underneath; ignored while logged in.
+  - Maintenance.tsx / UpdateRequired.tsx reuse MissingEntity; Router shows them from the app slice before the routes.
+  - REGEX.COGNITO_PASSWORD renamed REGEX.PASSWORD (same rule as the backend).
+  - Translations ro/en: auth.errors AUTH_001-013, migration_hint, social_failed; landing.social; login.migration_notice; register.validate_account (rewritten); maintenance; update_required.
+  - Checks: tsc only shows the 4 errors from the Expo branch; eslint clean on all changed files; `expo export --platform android` bundles; backend unit 229/229.
+  - Open: Facebook on iOS without tracking permission gives only a Limited Login token (no access token), so the sign-in fails with social_failed; the backend would have to verify the Limited Login OIDC token to support it. Policy/terms links still point at ngohub.ro (issue 21). Not yet run on a device or simulator: needs a native build with the five new modules.
+- 2026-11-06, checked on the Android emulator (Pixel_8, dev build, local API on 4001, adb reverse):
+  - Passed: Landing (Apple hidden on Android); Facebook without an app id → social_failed toast, Google sheet cancelled → nothing; sign-up → check-email screen; login before confirming → link resent, back to check-email; confirm-email (API, mobile realm answers `{ realm, email }`) → `vic://login?email=` → Login prefilled; login → CreateUser with the phone prefilled → profile created without email → Home; cold restart keeps the session; logout revokes the refresh token; wrong password → AUTH_001 + migration hint; Forgot password → wrong code "Codul este invalid" → right code logs in; seeded elena@seed.test login; with JWT_ACCESS_TTL_SECONDS=20 an expired token is refreshed once and the user stays in; MAINTENANCE_MODE=true → Maintenance on cold start, Retry stays while it lasts; MOBILE_MIN_VERSION=1.2.0 → UpdateRequired, Update opens the Play Store; back to normal → Home.
+  - Fixed while testing: importing react-native-fbsdk-next crashed Android when the Facebook plugin is not configured → the SDK is now loaded on first use and initialized there (auto-init is off in app.config.ts); Maintenance / UpdateRequired crashed for lack of a SafeAreaProvider (they render outside the navigators) → SafeAreaProvider added in App.tsx; signUp now logs the failed response.
+  - Gotcha: `.env.development` (gitignored) points EXPO_PUBLIC_API_URL at staging and overrides a shell variable; for a local API use a `.env.development.local` (not gitignored: delete it after) or edit `.env.development`.
+  - Not covered on a device: iOS (simulator taps blocked), real Google / Facebook / Apple sign-in (no client ids locally), the web page's Open the app button on a phone (Chrome first-run screen), a cold start through the deep link.
+- 2026-11-09, cold start through the deep link (Android emulator): a dev build cannot test this, because the expo-dev-client launcher takes the cold-start intent. Used a local release APK instead (`expo run:android --variant release` with `EXPO_PUBLIC_API_URL=http://localhost:4001`; for this build only, `usesCleartextTraffic` added to the gitignored `android/app/src/main/AndroidManifest.xml`, reverted after; the bundle checked to hold only localhost). App force-stopped, then `am start -d vic://login?email=florin%40seed.test` → LaunchState COLD → Login with the email filled in; back → Landing; login → Home. Logged in, force-stopped, cold start with a link for another email → session restored from secure storage, Home, the link ignored. The debug build was reinstalled afterwards.

@@ -1,6 +1,6 @@
 # A3 · Mobile: unit tests, preview and production builds, OTA isolation check
 
-Status: needs-info
+Status: unit tests done locally (2026-11-06); builds and OTA checks open
 Type: test
 Blocked by: 17, 18
 Tracker card: A3
@@ -11,3 +11,23 @@ Tracker card: A3
 - OTA isolation in both directions recorded (cutover exit criterion with issue 18).
 
 ## Comments
+
+- 2026-11-06, unit tests done locally on feat/own-auth (Expo 57):
+  - jest ~29.7 + jest-expo ~57.0.6 + @testing-library/react-native 14 (+ test-renderer, @types/jest); `npm test`; config in package.json (`jest` key). tsconfig now lists `types: ["jest"]` (TypeScript 6 loads no @types by default).
+  - `src/test/setup.ts`: in-memory expo-secure-store, the official AsyncStorage mock, expo-application (1.1.0), splash screen, toast, the three social SDKs, plus the reanimated / worklets / keyboard-controller mocks the screens need.
+  - Specs (36 tests): token.storage.test.ts (5: round trip, rotation without refresh token, memory cache, legacy cleanup only Cognito/Amplify keys and once, stale keychain tokens dropped); api.test.ts (8: bearer + x-app-version, one refresh for parallel 401s, refused refresh clears + logout event, 5xx refresh keeps the session, no refresh on public auth routes, change-password refreshes, 426, 503 set/clear); AuthContextProvider.test.tsx (21: start with/without tokens, login, AUTH_001 hint before/after the notice date, AUTH_003 confirmAccount, USER_001/404 createUser, profile 500 settles, 503 no toast, signUp + AUTH_009, reset with code logs in, wrong code, social Google/Apple, new social user → CreateUser, cancelled sheet, Facebook unconfigured, AUTH_013, logout, logout event, no confirmSignUp); linking.test.tsx (2: path → landing + login with the email; cold start through vic://login?email= shows Login with the email filled).
+  - Deep-link config moved to `src/routes/linking.ts` (App.tsx imports it). RNTL 14's `render` is async: await it.
+  - Still open: EAS preview/production builds, the device checklist on staging, OTA isolation in both directions (needs the Expo account and the stores).
+- 2026-11-06, local device checklist (Android emulator, local API), migrated volunteer:
+  - florin@seed.test (pending_password from the Layer 9 `auth:migrate`, old profile created 30 Oct with a cognito_id): fresh transition link (invite, sent_by NULL; the Layer 9 email was gone from mailcatcher) → `/auth/token` says purpose transition, realm mobile → web set-password page shows the transition wording and the R36 sentence → saved: desktop shows only the store links, the identity is active with a password, no session and no lastLoginAt (R17) → `vic://login?email=florin%40seed.test` opens Login with the email filled → login → Home "Salut, Florin!" on the original profile, no CreateUser; lastLoginAt set; the older Layer 9 link is ended (replaced) by the newer one being used.
+  - gabriela@seed.test, still pending: login → 401 AUTH_001 (the app shows the migration hint); Forgot password → 6-digit code → reset → session, identity active, original profile.
+  - Not run here: the phone browser's "Open the app" button (emulator Chrome stops on its Terms screen), social sign-in of a migrated volunteer (R4; covered by `auth-social.e2e-spec.ts`).
+- 2026-11-06, local device checklist, rest (Android emulator with the 1.1.0 build, local API on `vic`):
+  - Change password: a wrong current password → 401 AUTH_001; the app refreshes once and retries (two calls in the log), shows the error and stays logged in. The right one → "Parola a fost schimbata!"; the other session (a curl login = device B) gets 401 AUTH_008 on its next refresh; exactly one session stays live (the app's); the old password → 401.
+  - Delete account (mira@a2.test) → identity, sessions and profile gone, app on Landing. Register again with the same email and phone → check-email → confirm → login → CreateUser with the same phone → Home. The soft-deleted profile does not block it.
+  - Five wrong reset codes: 1-4 → AUTH_005, 5th → AUTH_006 (the code is used up; the right code afterwards → AUTH_005). One code per minute and five per hour per account: a new request within the same minute answers 200 but sends nothing (R14); after the minute a new code arrives and logs in.
+  - Lockout: five wrong passwords → 6th 423 AUTH_002, locked 15 minutes; the app shows "Prea multe încercări greșite. Contul este blocat 15 minute." (test@seed.test, unlocks by itself).
+  - Unvalidated NGO (Asociatia Test Trei, pending): joining with its own access code → 403 ORG_005; hidden from the list and search. Fixed: the app had no text for ORG_005 and would show the generic "cod: #ORG_005"; `ErrorClass` now falls back to `general:error.ORG_005` on any screen (same approach as the web's SHARED_ERRORS), ro + en, with `base-error.class.test.ts`.
+  - English: the app is Romanian-only at runtime (`i18n.ts` hard-codes `lng: 'ro'`, no switch; same on main). With `lng: 'en'` set temporarily (reverted): Landing, Login with the migration notice, and the wrong-password toast with the hint all read correctly.
+  - Device-test tooling notes: the push-notification toast on the emulator covers the tab bar (dismiss it first); a stray key can switch on the RN element inspector (restart the app); only press Back while the keyboard is open.
+- 2026-11-09, full local regression on the uncommitted tree: backend build + lint clean, unit 23 suites / 233, e2e 10 suites / 71; web vitest 12 files / 67, tsc + eslint clean; mobile jest 5 suites / 38, eslint clean on the changed files, tsc shows only the 4 errors inherited from the Expo branch. A local Android release build (1.1.0 / 23) builds, installs and runs against the local API.
