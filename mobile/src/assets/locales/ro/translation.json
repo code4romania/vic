@@ -163,6 +163,8 @@
     },
     "settings": {
         "title": "Setări cont",
+        "my_organizations": "Organizațiile mele",
+        "join_organization": "Alătură-te unei organizații",
         "heading": "Date cont",
         "notification": "Setări notificări",
         "information": "Informații",
@@ -508,7 +510,10 @@
         "volunteer": "Voluntar",
         "events": "Evenimente",
         "search": "Caută",
-        "account_settings": "Setări cont"
+        "account_settings": "Setări cont",
+        "hours": "Ore",
+        "documents": "Documente",
+        "profile": "Profil"
     },
     "home": {
         "greeting": "Salut, {{name}}!",

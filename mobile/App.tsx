@@ -22,6 +22,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import NotificationContextProvider from './src/contexts/notification/NotificationContextProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Keep the android navigation buttons dark on our light screens, regardless of the system theme
@@ -62,6 +63,8 @@ export default () => {
     'roboto-medium': require('./src/assets/fonts/Roboto-Medium.ttf'),
     'roboto-regular': require('./src/assets/fonts/Roboto-Regular.ttf'),
     'titilium-web': require('./src/assets/fonts/TitilliumWeb-SemiBold.ttf'),
+    // VIC 2.0 titles (Titillium Web 700)
+    'titillium-bold': require('./src/assets/fonts/TitilliumWeb-Bold.ttf'),
   });
 
   return fontsLoaded ? (
@@ -78,17 +81,19 @@ export default () => {
           <GestureHandlerRootView style={styles.gestureHandler}>
             <KeyboardProvider>
               <QueryClientProvider client={queryClient}>
-                <AuthContextProvider>
-                  <NavigationContainer
-                    ref={navigationRef}
-                    linking={linking}
-                    navigationInChildEnabled
-                  >
-                    <NotificationContextProvider navigation={navigationRef}>
-                      <Router />
-                    </NotificationContextProvider>
-                  </NavigationContainer>
-                </AuthContextProvider>
+                <BottomSheetModalProvider>
+                  <AuthContextProvider>
+                    <NavigationContainer
+                      ref={navigationRef}
+                      linking={linking}
+                      navigationInChildEnabled
+                    >
+                      <NotificationContextProvider navigation={navigationRef}>
+                        <Router />
+                      </NotificationContextProvider>
+                    </NavigationContainer>
+                  </AuthContextProvider>
+                </BottomSheetModalProvider>
               </QueryClientProvider>
             </KeyboardProvider>
           </GestureHandlerRootView>

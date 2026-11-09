@@ -19,7 +19,11 @@ jest.mock('expo-secure-store', () => {
 });
 
 jest.mock('react-native-worklets', () => require('react-native-worklets/src/mock'));
-jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
+jest.mock('react-native-reanimated', () => ({
+  ...require('react-native-reanimated/mock'),
+  // missing from the official mock; the VIC 2.0 UI kit reads it to skip motion
+  useReducedMotion: () => false,
+}));
 
 jest.mock('react-native-keyboard-controller', () =>
   require('react-native-keyboard-controller/jest'),
