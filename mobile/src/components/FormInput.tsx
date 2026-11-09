@@ -1,11 +1,9 @@
 import React from 'react';
-import { InputProps, StyleService, Text, useStyleSheet } from '@ui-kitten/components';
+import { Keyboard, TextInputProps } from 'react-native';
 import { Control, Controller } from 'react-hook-form';
-import { View, Keyboard } from 'react-native';
-import Input from './Input';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { VTextField } from './ui';
 
-interface FormInputProps extends InputProps {
+interface FormInputProps extends Omit<TextInputProps, 'style'> {
   control: Control<Record<string, any>>;
   name: string;
   label: string;
@@ -14,8 +12,13 @@ interface FormInputProps extends InputProps {
   error: any;
   helper?: string;
   required?: boolean;
+  disabled?: boolean;
+  /** element or ui-kitten style render function, e.g. the +40 phone prefix */
+  accessoryLeft?: React.ReactNode | ((props: any) => React.ReactNode);
+  [key: string]: any;
 }
 
+/** react-hook-form field in the VIC 2.0 style (label inside an outlined box). */
 const FormInput: React.FC<FormInputProps> = ({
   control,
   name,
@@ -25,76 +28,32 @@ const FormInput: React.FC<FormInputProps> = ({
   error,
   required,
   helper,
+  disabled,
+  accessoryLeft,
+  backdropComponent: _backdropComponent,
   ...rest
-}: FormInputProps) => {
-  const styles = useStyleSheet(themedStyles);
-
-  const handleKeyboardDismiss = () => {
-    Keyboard.dismiss();
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
-        {label}
-        {required ? <Text status="danger">*</Text> : ''}
-      </Text>
-      <Controller
-        control={control}
-        name={name}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            allowFontScaling={ALLOW_FONT_SCALLING}
-            placeholder={placeholder}
-            secureTextEntry={secureTextEntry}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            status={error ? 'danger' : 'basic'}
-            textStyle={
-              rest.disabled
-                ? [styles.disabledColor, styles.inputText, rest.multiline ? styles.textArea : {}]
-                : [
-                    styles.inputText,
-                    rest.multiline ? styles.textArea : {},
-                    error ? styles.redText : {},
-                  ]
-            }
-            style={error ? styles.redBorder : {}}
-            {...rest}
-            onSubmitEditing={handleKeyboardDismiss}
-          />
-        )}
+}: FormInputProps) => (
+  <Controller
+    control={control}
+    name={name}
+    render={({ field: { onChange, onBlur, value } }) => (
+      <VTextField
+        label={required ? `${label} *` : label}
+        placeholder={placeholder}
+        secureTextEntry={secureTextEntry}
+        onBlur={onBlur}
+        onChangeText={onChange}
+        value={value === undefined || value === null ? '' : `${value}`}
+        error={error?.message}
+        helper={helper}
+        editable={!disabled}
+        leading={typeof accessoryLeft === 'function' ? accessoryLeft({}) : accessoryLeft}
+        onSubmitEditing={() => Keyboard.dismiss()}
+        testID={`field-${name}`}
+        {...rest}
       />
-      {(error || helper) && (
-        <Text
-          allowFontScaling={ALLOW_FONT_SCALLING}
-          category="c1"
-          status={error ? 'danger' : 'basic'}
-          appearance={error ? 'default' : 'hint'}
-        >
-          {error?.message || helper}
-        </Text>
-      )}
-    </View>
-  );
-};
+    )}
+  />
+);
 
 export default FormInput;
-
-const themedStyles = StyleService.create({
-  container: {
-    gap: 4,
-  },
-  redBorder: {
-    borderColor: '$color-danger-500',
-  },
-  redText: {
-    color: '$color-danger-500',
-  },
-  disabledColor: { color: '$cool-gray-500' },
-  inputText: { fontSize: 16, fontWeight: '400' },
-  textArea: {
-    minHeight: 52,
-  },
-});
