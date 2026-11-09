@@ -197,7 +197,9 @@
       "candidate": "Candidați"
     },
     "filters": {
-      "active_since_range": "Perioada activitate"
+      "all_statuses": "Toate statusurile",
+      "activity_type": "Activitate",
+      "all_activity_types": "Toate activitățile"
     },
     "popover": {
       "view": "Vizualizează profil",
@@ -239,7 +241,10 @@
       "inactive": "Inactiv",
       "candidate": "Candidat",
       "blocked": "Blocat"
-    }
+    },
+    "found_one": "{{count}} voluntar găsit",
+    "found_other": "{{count}} voluntari găsiți",
+    "found_few": "{{count}} voluntari găsiți"
   },
   "division": {
     "members": "Membri",

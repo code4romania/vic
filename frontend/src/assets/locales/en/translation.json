@@ -197,7 +197,9 @@
       "candidate": "Candidates"
     },
     "filters": {
-      "active_since_range": "Activity period"
+      "all_statuses": "All statuses",
+      "activity_type": "Activity",
+      "all_activity_types": "All activities"
     },
     "popover": {
       "view": "View profile",
@@ -239,7 +241,9 @@
       "inactive": "Inactive",
       "candidate": "Candidate",
       "blocked": "Blocked"
-    }
+    },
+    "found_one": "{{count}} volunteer found",
+    "found_other": "{{count}} volunteers found"
   },
   "division": {
     "members": "Members",

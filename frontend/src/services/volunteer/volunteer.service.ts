@@ -1,11 +1,9 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { AgeRangeEnum } from '../../common/enums/age-range.enum';
-import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
 import { VOLUNTEER_ERRORS } from '../../common/errors/entities/volunteer.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import {
+  IVolunteersFilters,
   activateVolunteer,
   archiveVolunteer,
   updateVolunteerDetails,
@@ -22,61 +20,12 @@ import { LineChartOption } from '../../common/constants/line-chart-options';
 import { PieChartOption } from '../../common/constants/pie-chart-options';
 
 export const useVolunteersQuery = (
-  status: VolunteerStatus,
-  limit: number,
-  page: number,
-  orderBy?: string,
-  orderDirection?: OrderDirection,
-  search?: string,
-  age?: AgeRangeEnum,
-  branch?: string,
-  department?: string,
-  role?: string,
-  city?: string,
-  county?: string,
-  start?: Date,
-  end?: Date,
+  filters: IVolunteersFilters & { limit: number; page: number },
 ) => {
-  return useQuery(
-    [
-      'volunteers',
-      status,
-      limit,
-      page,
-      orderBy,
-      orderDirection,
-      search,
-      age,
-      branch,
-      department,
-      role,
-      city,
-      county,
-      start,
-      end,
-    ],
-    () =>
-      getVolunteers(
-        status,
-        limit,
-        page,
-        orderBy,
-        orderDirection,
-        search,
-        age,
-        branch,
-        department,
-        role,
-        city,
-        county,
-        start,
-        end,
-      ),
-    {
-      enabled: !!(status && limit && page),
-      onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
-    },
-  );
+  return useQuery(['volunteers', filters], () => getVolunteers(filters), {
+    enabled: !!(filters.limit && filters.page),
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
 };
 
 export const useVolunteer = (id: string) => {

@@ -43,14 +43,16 @@ describe('Volunteers list columns (e2e)', () => {
     hours: number,
     status: string,
     orgId = organizationId,
+    activityTypeId: string | null = null,
   ): Promise<unknown> =>
     testApp.dataSource.query(
-      `INSERT INTO activity_log (date, hours, status, volunteer_id, organization_id) VALUES (now(), $1, $2, $3, $4)`,
-      [hours, status, volunteerId, orgId],
+      `INSERT INTO activity_log (date, hours, status, volunteer_id, organization_id, activity_type_id) VALUES (now(), $1, $2, $3, $4, $5)`,
+      [hours, status, volunteerId, orgId, activityTypeId],
     );
 
   const list = async (
-    status: string,
+    status?: string,
+    extra: Record<string, string> = {},
   ): Promise<
     {
       user: { name: string };
@@ -62,7 +64,7 @@ describe('Volunteers list columns (e2e)', () => {
     const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
     const response = await http()
       .get('/volunteer')
-      .query({ status, limit: 50, page: 1 })
+      .query({ ...(status ? { status } : {}), ...extra, limit: 50, page: 1 })
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
     return response.body.items as {
@@ -85,6 +87,7 @@ describe('Volunteers list columns (e2e)', () => {
     await truncate(testApp.dataSource, [
       'auth_identity',
       'activity_log',
+      'activity_type',
       'volunteer',
       'user',
       'organization',
@@ -145,5 +148,42 @@ describe('Volunteers list columns (e2e)', () => {
       .query({ status: 'candidate' })
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
+  });
+
+  // #476
+  it('without a status lists every status; with one, only that status', async () => {
+    await addVolunteer('Ana Activ', 'active', null);
+    await addVolunteer('Ina Inactiv', 'inactive', null);
+    await addVolunteer('Cora Candidat', 'candidate', null);
+    await addVolunteer('Bob Blocat', 'blocked', null);
+
+    expect((await list()).map((v) => v.status).sort()).toEqual([
+      'active',
+      'blocked',
+      'candidate',
+      'inactive',
+    ]);
+    expect((await list('inactive')).map((v) => v.user.name)).toEqual([
+      'Ina Inactiv',
+    ]);
+  });
+
+  it('filters by activity type: pending or approved hours count, rejected do not', async () => {
+    const [type] = await testApp.dataSource.query(
+      `INSERT INTO activity_type (name, icon, organization_id) VALUES ('Mediu', 'leaf', $1) RETURNING id`,
+      [organizationId],
+    );
+    const ana = await addVolunteer('Ana Mediu', 'active', null);
+    const ion = await addVolunteer('Ion Respins', 'active', null);
+    const mara = await addVolunteer('Mara Asteapta', 'inactive', null);
+    await addVolunteer('Dan Nimic', 'active', null);
+    await log(ana, 2, 'approved', organizationId, type.id);
+    await log(ion, 2, 'rejected', organizationId, type.id);
+    await log(mara, 2, 'pending', organizationId, type.id);
+
+    const names = (await list(undefined, { activityTypeId: type.id }))
+      .map((v) => v.user.name)
+      .sort();
+    expect(names).toEqual(['Ana Mediu', 'Mara Asteapta']);
   });
 });
