@@ -9,7 +9,6 @@ import { CreateRegularUsereUseCaseService } from './create-regular-user.usecase'
 import { DeleteAccountRegularUserUsecase } from './delete-account.usecase';
 import { GetOneRegularUserProfileUseCase } from './get-regule-user-profile.usecase';
 import { UpdateRegularUserUsecase } from './update-regular-user.usecase';
-import { UpdateUserPersonalDataUsecase } from './update-user-personal-data.usecase';
 
 const exceptions = new ExceptionsService();
 
@@ -128,18 +127,6 @@ describe('user use cases adapted to own auth', () => {
         {} as GetOneRegularUserProfileUseCase,
         exceptions,
         {} as S3Service,
-      );
-
-      await expect(
-        useCase.execute(undefined, {} as never),
-      ).rejects.toMatchObject(notFound);
-      expect(users.findRegularUser).not.toHaveBeenCalled();
-    });
-
-    it('update personal data', async () => {
-      const useCase = new UpdateUserPersonalDataUsecase(
-        users as unknown as UserFacadeService,
-        exceptions,
       );
 
       await expect(

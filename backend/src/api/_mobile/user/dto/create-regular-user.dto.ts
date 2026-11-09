@@ -30,16 +30,18 @@ export class CreateRegularUserDto {
   @IsEmail()
   email?: string;
 
+  // Optional since VIC 2.0
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  phone: string; //TODO: check ONGHUb for phone validations if needed
+  phone?: string;
 
   @IsNumber()
   @IsOptional()
   locationId: number;
 
+  // Mandatory since VIC 2.0 (it replaces the ID card data)
   @IsDate()
-  @IsOptional()
   birthday: Date;
 
   @IsEnum(SEX)

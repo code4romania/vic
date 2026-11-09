@@ -133,7 +133,7 @@ const ActivityLogs = ({ navigation }: any) => {
     bottomSheetRef.current?.close();
   };
 
-  const onGoToIdentityDataScreen = () => {
+  const onGoToVolunteerProfileScreen = () => {
     onCloseBottomSheet();
     navigation.navigate('volunteer-profile');
   };
@@ -219,7 +219,7 @@ const ActivityLogs = ({ navigation }: any) => {
             <Button
               label={`${t('error_modal.action_btn_label')}`}
               status={'primary'}
-              onPress={onGoToIdentityDataScreen}
+              onPress={onGoToVolunteerProfileScreen}
             />
             <InlineLink
               label={t('general:back')}

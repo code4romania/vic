@@ -126,7 +126,8 @@
           "label": "City"
         },
         "birthday": {
-          "label": "Date of birth"
+          "label": "Date of birth",
+          "required": "Date of birth is required"
         }
       }
     }
@@ -224,7 +225,6 @@
   "settings": {
     "title": "Account settings",
     "heading": "Account data",
-    "identity": "Identity data",
     "password": "Change password",
     "notification": "Notifications settings",
     "information": "Information",
@@ -247,46 +247,6 @@
     },
     "errors": {
       "USER_006": "Error changing profile photo"
-    }
-  },
-  "identity_data": {
-    "title": "Identity data",
-    "description": "Enter your ID card details. These will be used to generate the volunteer contract.",
-    "privacy_policy": "Privacy Policy",
-    "form": {
-      "series": {
-        "label": "Identity document (ID) series",
-        "matches": "The series must contain only letters",
-        "placeholder": "Enter series (GZ, RX, etc.)",
-        "length": "Series must have {{number}} characters",
-        "required": "The series is mandatory"
-      },
-      "number": {
-        "label": "Identity document number (CI)",
-        "placeholder": "Enter the 6-digit number",
-        "matches": "The number must contain only digits",
-        "length": "The number must have {{number}} characters",
-        "required": "The number is mandatory"
-      },
-      "address": {
-        "label": "Domiciled in",
-        "placeholder": "Enter address",
-        "required": "Domicile is mandatory",
-        "helper": "Enter the full address from your ID.",
-        "min": "The address can have a minimum of {{value}} characters",
-        "max": "The address can have a maximum of {{value}} characters"
-      },
-      "issue_date": {
-        "label": "Date of issue",
-        "required": "Date of issue is mandatory"
-      },
-      "expiration_date": {
-        "label": "Expiry date",
-        "required": "Expiry date is mandatory"
-      },
-      "submit": {
-        "success": "The dates have been changed!"
-      }
     }
   },
   "change_password": {
@@ -340,10 +300,10 @@
       "volunteer_blocked": "Your access to the organization has been restricted"
     },
     "modal": {
-      "identity_data_missing": {
+      "birthday_missing": {
         "heading": "Oops!",
-        "paragraph": "You didn't fill in the identity data in my Account. Fill it in to join an organization.",
-        "action_label": "Fill in the data"
+        "paragraph": "You have not filled in your date of birth in My account. Fill it in to join an organization.",
+        "action_label": "Complete your data"
       },
       "confirm_cancel_request": {
         "heading": "Are you cancelling your application?",
@@ -379,7 +339,7 @@
       "ORG_001": "The organization has not been found",
       "USER_001": "User not found",
       "VOLUNTEER_002": "The user is already part of the organization",
-      "USER_005": "The user does not have the identification data filled in"
+      "USER_005": "Fill in your date of birth in My account to join an organization."
     },
     "modal": {
       "success": {

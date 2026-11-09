@@ -3,10 +3,6 @@ import { RegularUserEntity } from '../entities/user.entity';
 import { SEX } from '../enums/user.enum';
 import { IUserModel } from './base-user.model';
 import {
-  IUserPersonalDataModel,
-  UserPersonalDataTransformer,
-} from './user-personal-data.model';
-import {
   IOrganizationVolunteerModel,
   OrganizationVolunteerTransformer,
 } from 'src/modules/organization/models/organization-volunteer.models';
@@ -22,7 +18,6 @@ export interface IRegularUserModel extends IUserModel {
   location: ICityModel;
   firstName: string;
   lastName: string;
-  userPersonalData?: IUserPersonalDataModel;
   activeOrganization?: IOrganizationVolunteerModel;
   notificationsSettings: INotificationsSettingsModel;
 }
@@ -33,8 +28,10 @@ export interface IRegularUserProfileModel extends IRegularUserModel {
 
 export type CreateRegularUserOptions = Omit<
   IRegularUserModel,
-  'id' | 'location' | 'name' | 'notificationsSettings'
+  'id' | 'location' | 'name' | 'notificationsSettings' | 'phone'
 > & {
+  // Optional since VIC 2.0
+  phone?: string;
   locationId: number;
   notificationsSettingsId?: string;
 };
@@ -42,13 +39,7 @@ export type CreateRegularUserOptions = Omit<
 export type UpdateRegularUserOptions = Partial<
   Pick<
     IRegularUserModel,
-    | 'userPersonalData'
-    | 'firstName'
-    | 'lastName'
-    | 'birthday'
-    | 'phone'
-    | 'sex'
-    | 'profilePicture'
+    'firstName' | 'lastName' | 'birthday' | 'phone' | 'sex' | 'profilePicture'
   >
 > & {
   activeOrganizationId?: string;
@@ -77,9 +68,6 @@ export class RegularUserTransformer {
       location: entity.location,
       firstName: entity.firstName,
       lastName: entity.lastName,
-      userPersonalData: UserPersonalDataTransformer.fromEntity(
-        entity.userPersonalData,
-      ),
       activeOrganization: OrganizationVolunteerTransformer.fromEntity(
         entity.activeOrganization,
         entity.id,

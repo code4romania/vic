@@ -72,11 +72,6 @@ export class DeleteAccountRegularUserUsecase implements IUseCaseService<void> {
       if (deletedUser.profilePicture) {
         await this.s3Service.deleteFile(deletedUser.profilePicture);
       }
-
-      // 8. Hard delete "UserPersonalData"
-      if (user.userPersonalData?.id) {
-        await this.userService.deleteUserPersonalData(user.userPersonalData.id);
-      }
     } catch (error) {
       this.logger.error({
         ...UserExceptionMessages.USER_007,

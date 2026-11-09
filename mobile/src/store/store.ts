@@ -9,11 +9,7 @@ import { eventSlice } from './event/event.slice';
 import { IActivityLogCounters } from '../common/interfaces/activity-log-counters.interface';
 import { activityLogsSlice } from './activity-log/activity-log.slice';
 import { IActivityLog } from '../common/interfaces/activity-log.interface';
-import {
-  INotificationsSettings,
-  IUserPersonalData,
-  IUserProfile,
-} from '../common/interfaces/user-profile.interface';
+import { INotificationsSettings, IUserProfile } from '../common/interfaces/user-profile.interface';
 import { profileSlice } from './profile/profile.slice';
 import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
 import { appSlice } from './app/app.slice';
@@ -22,7 +18,6 @@ interface UserProfileState {
   userProfile: IUserProfile | null;
   setUserProfile: (userProfile: IUserProfile | null) => void;
   setActiveOrganization: (organization: IOrganizationVolunteer) => void;
-  setIdentityData: (personalData: IUserPersonalData) => void;
   updateSettings: (newSettings: INotificationsSettings) => void;
 }
 

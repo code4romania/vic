@@ -4,7 +4,6 @@ export enum UserExceptionCodes {
   USER_001 = 'USER_001',
   USER_002 = 'USER_002',
   USER_003 = 'USER_003',
-  USER_004 = 'USER_004',
   USER_005 = 'USER_005',
   USER_006 = 'USER_006',
   USER_007 = 'USER_007',
@@ -30,13 +29,10 @@ export const UserExceptionMessages: Record<
     code_error: UserExceptionCodes.USER_003,
     message: 'There is already an user with the same data',
   },
-  [UserExceptionCodes.USER_004]: {
-    code_error: UserExceptionCodes.USER_004,
-    message: 'There is already an user with the same ID number',
-  },
   [UserExceptionCodes.USER_005]: {
     code_error: UserExceptionCodes.USER_005,
-    message: 'Missing user identity data',
+    message:
+      'Missing date of birth: complete the profile to join an organization',
   },
   [UserExceptionCodes.USER_006]: {
     code_error: UserExceptionCodes.USER_006,

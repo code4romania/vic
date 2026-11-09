@@ -126,7 +126,8 @@
                     "label": "Oraș"
                 },
                 "birthday": {
-                    "label": "Data nașterii"
+                    "label": "Data nașterii",
+                    "required": "Data nașterii este obligatorie"
                 }
             }
         }
@@ -224,7 +225,6 @@
     "settings": {
         "title": "Setări cont",
         "heading": "Date cont",
-        "identity": "Date identitate",
         "password": "Schimbă parola",
         "notification": "Setări notificări",
         "information": "Informații",
@@ -247,46 +247,6 @@
         },
         "errors": {
             "USER_006": "Eroare la modificarea fotografiei de profil"
-        }
-    },
-    "identity_data": {
-        "title": "Date identitate",
-        "description": "Introdu datele din actul de identitate. Acestea vor fi folosite pentru generarea contractului de voluntariat.",
-        "privacy_policy": "Politica de Confidențialitate",
-        "form": {
-            "series": {
-                "label": "Serie document identitate (CI)",
-                "matches": "Seria trebuie să conțină doar litere",
-                "placeholder": "Introdu seria (GZ, RX...)",
-                "length": "Seria trebuie să aibă {{number}} caractere",
-                "required": "Seria este obligatorie"
-            },
-            "number": {
-                "label": "Număr document identitate (CI)",
-                "placeholder": "Introdu numărul din 6 cifre",
-                "matches": "Numărul trebuie să conțină doar cifre",
-                "length": "Numărul trebuie să aibă {{number}} caractere",
-                "required": "Numărul este obligatoriu"
-            },
-            "address": {
-                "label": "Domiciliat în",
-                "placeholder": "Introdu adresa",
-                "required": "Domiciliul este obligatoriu",
-                "helper": "Introdu adresa completa din buletin.",
-                "min": "Domiciliul poate să aibă minim {{value}} caractere",
-                "max": "Domiciliul poate să aibă maxim {{value}} caractere"
-            },
-            "issue_date": {
-                "label": "Data emitere",
-                "required": "Data emiterii este obligatorie"
-            },
-            "expiration_date": {
-                "label": "Data expirare",
-                "required": "Data expirării este obligatorie"
-            },
-            "submit": {
-                "success": "Datele au fost modificate!"
-            }
         }
     },
     "change_password": {
@@ -340,9 +300,9 @@
             "volunteer_blocked": "Accesul tau la organizație a fost restricționat"
         },
         "modal": {
-            "identity_data_missing": {
+            "birthday_missing": {
                 "heading": "Ups!",
-                "paragraph": "Nu ai completat datele de identitate din Contul meu. Completează pentru a putea să te alături unei organizații.",
+                "paragraph": "Nu ai completat data nașterii în Contul meu. Completeaz-o pentru a te putea alătura unei organizații.",
                 "action_label": "Completează datele"
             },
             "confirm_cancel_request": {
@@ -379,7 +339,7 @@
             "ORG_001": "Organizația nu a fost găsită",
             "USER_001": "Utilizatorul nu a fost găsit",
             "VOLUNTEER_002": "Utilizatorul este deja parte a organizației",
-            "USER_005": "Utilizatorul nu are datele de identificare completate"
+            "USER_005": "Completează data nașterii în Contul meu pentru a te alătura unei organizații."
         },
         "modal": {
             "success": {

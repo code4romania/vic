@@ -38,13 +38,14 @@ export class CreateAccessRequestUseCase
     );
 
     // ========================================================================
-    // 1: check if the user has the identity data completed, otherwise throw
+    // 1: check if the user has a date of birth (VIC 2.0, no ID card data)
     // ========================================================================
     const user = await this.userFacade.findRegularUser({
       id: createRequestModel.requestedById,
     });
 
-    if (!user.userPersonalData) {
+    // VIC 2.0: no ID card data; a volunteer needs a date of birth to join
+    if (!user.birthday) {
       this.exceptionService.badRequestException(UserExceptionMessages.USER_005);
     }
 

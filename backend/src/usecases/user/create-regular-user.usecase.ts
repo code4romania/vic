@@ -41,9 +41,10 @@ export class CreateRegularUsereUseCaseService
     }
 
     // 2. There is already an user with the same "phone"/"email", abort..
+    // (phone is optional: an empty condition would match every user)
     const existingUser = await this.userService.findRegularUser([
       { email: identity.email },
-      { phone: newUser.phone },
+      ...(newUser.phone ? [{ phone: newUser.phone }] : []),
     ]);
     if (existingUser) {
       this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
