@@ -2,6 +2,7 @@ import { AxiosResponseHeaders } from 'axios';
 import { CONSTANTS } from '../../common/constants/constants';
 import { ActivityLogResolutionStatus } from '../../common/enums/activity-log-resolution-status.enum';
 import { ActivityLogStatus } from '../../common/enums/activity-log.status.enum';
+import { ActivityLogSource } from '../../common/enums/activity-log-source.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { IActivityLogStatistics } from '../../common/interfaces/activity-log-statistics.interface';
 import { IActivityLog, IActivityLogListItem } from '../../common/interfaces/activity-log.interface';
@@ -14,7 +15,10 @@ import { format } from 'date-fns';
 export interface GetActivityLogsParams {
   limit: number;
   page: number;
-  resolutionStatus: ActivityLogResolutionStatus;
+  // left out: every status
+  resolutionStatus?: ActivityLogResolutionStatus;
+  // #481: only hours logged on events, or only on activities
+  source?: ActivityLogSource;
   orderBy?: string;
   orderDirection?: OrderDirection;
   volunteerId?: string;

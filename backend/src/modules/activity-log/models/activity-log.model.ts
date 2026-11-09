@@ -1,3 +1,4 @@
+import { ActivityLogSource } from '../enums/activity-log-source.enum';
 import { OneOf } from 'src/common/helpers/typescript-extends';
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import { IBasePaginationFilterModel } from 'src/infrastructure/base/base-pagination-filter.model';
@@ -113,7 +114,8 @@ export type UpdateActivityLogOptions = OneOf<
 
 export type FindManyActivityLogsOptions = {
   organizationId: string;
-  resolutionStatus: ActivityLogResolutionStatus;
+  resolutionStatus?: ActivityLogResolutionStatus;
+  source?: ActivityLogSource;
 
   eventId?: IActivityLogModel['event']['id'];
   volunteerId?: IActivityLogModel['volunteer']['id'];

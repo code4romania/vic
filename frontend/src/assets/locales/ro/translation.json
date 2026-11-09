@@ -185,7 +185,15 @@
     "source_placeholder": "Ex: Facebook, eveniment, recomandare",
     "favorite": "Adaugă la favoriți",
     "unfavorite": "Elimină de la favoriți",
-    "no_account": "Fără cont VIC"
+    "no_account": "Fără cont VIC",
+    "activities": {
+      "tab": "Activități",
+      "title": "Activități",
+      "add": "Adaugă activitate",
+      "add_title": "Adaugă activitate",
+      "description": "Orele oferite de voluntar în afara evenimentelor.",
+      "saved": "Activitatea a fost adăugată."
+    }
   },
   "volunteers": {
     "department_and_role": "Departament și rol",

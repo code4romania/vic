@@ -19,6 +19,7 @@ import { useAddActivityLogMutation } from '../services/activity-log/activity-log
 import { AddActivityLogProps } from '../containers/query/AddActivityLogWithQueryParams';
 import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
+import { VolunteerTabsOptions } from './Volunteer';
 
 export const activityLogValidationSchema = yup
   .object({
@@ -68,8 +69,11 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
     resolver: yupResolver(activityLogValidationSchema),
   });
 
+  const isActivity = !!query.activity && !!query.volunteerId;
+  const volunteerActivitiesPath = `/volunteers/${query.volunteerId}?activeTab=${VolunteerTabsOptions.ACTIVITIES}`;
+
   const navigateBack = () => {
-    navigate('/activity-log', { replace: true });
+    navigate(isActivity ? volunteerActivitiesPath : '/activity-log', { replace: true });
   };
 
   useEffect(() => {
@@ -79,8 +83,13 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
   }, []);
 
   const onSubmit = (data: ActivityLogFormTypes) => {
-    addActivityLog(data, {
+    addActivityLog(isActivity ? { ...data, event: undefined } : data, {
       onSuccess: () => {
+        if (isActivity) {
+          useSuccessToast(i18n.t('volunteer:activities.saved'));
+          navigate(volunteerActivitiesPath, { replace: true });
+          return;
+        }
         useSuccessToast(i18n.t('activity_log:form.submit.messages.add'));
         navigate(
           {
@@ -109,7 +118,11 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
       {!isAddingActivityLog && (
         <Card>
           <CardHeader>
-            <h2>{i18n.t('side_menu:options.activity_log')}</h2>
+            <h2>
+              {isActivity
+                ? i18n.t('volunteer:activities.add_title')
+                : i18n.t('side_menu:options.activity_log')}
+            </h2>
             <Button
               label={i18n.t('general:save')}
               className="btn-primary"
@@ -118,7 +131,12 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
             />
           </CardHeader>
           <CardBody>
-            <ActivityLogForm control={control} errors={errors} lockVoluneer={!!query.volunteerId} />
+            <ActivityLogForm
+              control={control}
+              errors={errors}
+              lockVoluneer={!!query.volunteerId}
+              hideEvent={isActivity}
+            />
           </CardBody>
         </Card>
       )}

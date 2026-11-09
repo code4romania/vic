@@ -11,7 +11,7 @@ export interface VolunteerQueryProps {
 export type VolunteerProps = IHOCQueryProps<VolunteerQueryProps>;
 
 const VolunteerWithQueryParams = () => {
-  const ActiveTabParam = withDefault(StringParam, VolunteerTabsOptions.ARCHIVE);
+  const ActiveTabParam = withDefault(StringParam, VolunteerTabsOptions.ACTIVITIES);
   const queryConfig = {
     activeTab: ActiveTabParam,
   };

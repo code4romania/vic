@@ -25,6 +25,7 @@ export const useActivityLogsQuery = (params: GetActivityLogsParams) => {
       params.orderBy,
       params.orderDirection,
       params.resolutionStatus,
+      params.source,
       params.search,
       params.status,
       params.executionDateStart,
