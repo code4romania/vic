@@ -57,8 +57,14 @@ export class OrganizationRegistrationController {
     @UploadedFiles() files: OrganizationUploads,
     @Req() req: Request,
   ): Promise<MaskedEmailPresenter> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { acceptedTerms, ...options } = dto;
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    const {
+      acceptedTerms,
+      declaresRegisteredNgo,
+      declaresRepresentative,
+      ...options
+    } = dto;
+    /* eslint-enable @typescript-eslint/no-unused-vars */
     const { maskedEmail } = await this.registerOrganizationUseCase.execute(
       options,
       { logo: files?.logo?.[0] },

@@ -27,6 +27,8 @@ const DEFAULTS: RegisterForm = {
   adminEmail: '',
   adminPhone: '',
   acceptedTerms: false,
+  declaresRegisteredNgo: false,
+  declaresRepresentative: false,
 };
 
 // /register: an NGO and its first admin. The admin confirms the email, then the NGO waits for a super
@@ -61,6 +63,8 @@ const RegisterOrganization = () => {
       .required(t('form.required'))
       .max(20, t('form.max', { value: 20 })),
     acceptedTerms: yup.boolean().oneOf([true], t('form.terms.required')).required(),
+    declaresRegisteredNgo: yup.boolean().oneOf([true], t('form.declaration.required')).required(),
+    declaresRepresentative: yup.boolean().oneOf([true], t('form.declaration.required')).required(),
   });
 
   const {
@@ -163,6 +167,28 @@ const RegisterOrganization = () => {
             </section>
 
             <section className="bg-white rounded-lg shadow p-6 flex flex-col gap-4">
+              {/* #510: self-declaration instead of the statute; a super admin still validates the NGO */}
+              <h3 className="font-semibold">{t('form.declaration.title')}</h3>
+              {(['declaresRegisteredNgo', 'declaresRepresentative'] as const).map((name) => (
+                <div key={name} className="flex flex-col gap-1">
+                  <Controller
+                    name={name}
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <label className="flex items-start gap-2 text-sm">
+                        <input
+                          type="checkbox"
+                          className="mt-1"
+                          checked={value}
+                          onChange={(event) => onChange(event.target.checked)}
+                        />
+                        <span>{t(`form.declaration.${name}`)}</span>
+                      </label>
+                    )}
+                  />
+                  {errors[name] && <p className="text-red-500 text-sm">{errors[name]?.message}</p>}
+                </div>
+              ))}
               <Controller
                 name="acceptedTerms"
                 control={control}

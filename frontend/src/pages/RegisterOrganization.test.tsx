@@ -28,7 +28,7 @@ const fillAll = async () => {
   await type(f('lastName'), 'Testescu');
   await type(f('adminEmail'), 'tudor@ong.test');
   await type(f('adminPhone'), '+40711000000');
-  await userEvent.click(screen.getByRole('checkbox'));
+  for (const checkbox of screen.getAllByRole('checkbox')) await userEvent.click(checkbox);
 };
 
 const submit = () =>
@@ -40,6 +40,9 @@ describe('RegisterOrganization', () => {
     await submit();
     expect(await screen.findAllByText(t('register_organization:form.required'))).toHaveLength(8);
     expect(screen.getByText(t('register_organization:form.terms.required'))).toBeInTheDocument();
+    expect(screen.getAllByText(t('register_organization:form.declaration.required'))).toHaveLength(
+      2,
+    );
   });
 
   it('asks only the minimum: no description, address, website, logo or statute (#469)', () => {
@@ -81,6 +84,9 @@ describe('RegisterOrganization', () => {
       expect(form?.has(key)).toBe(false);
     }
     expect(form?.get('acceptedTerms')).toBe('true');
+    // #510: the self-declaration replaces the statute
+    expect(form?.get('declaresRegisteredNgo')).toBe('true');
+    expect(form?.get('declaresRepresentative')).toBe('true');
     expect(form?.has('password')).toBe(false);
     expect(form?.has('confirmPassword')).toBe(false);
     API.interceptors.request.eject(interceptor);

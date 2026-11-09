@@ -37,6 +37,8 @@ export interface IRegisterOrganization extends IOrganizationFields {
   adminEmail: string;
   adminPhone: string;
   acceptedTerms: boolean;
+  declaresRegisteredNgo: boolean;
+  declaresRepresentative: boolean;
   turnstileToken: string;
 }
 
