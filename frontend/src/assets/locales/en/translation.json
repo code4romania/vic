@@ -299,7 +299,7 @@
       "ORG_006": "The anti-robot check failed. Please try again.",
       "ORG_007": "The statute is missing or is not a PDF (at most 10 MB).",
       "ORG_008": "This administrator is not in your organization.",
-      "ORG_009": "Invites are only for administrators who have not set a password.",
+      "ORG_009": "Invites are only for admins who have not logged in yet.",
       "ORG_010": "You cannot change your own status."
     },
     "form": {
@@ -1023,33 +1023,33 @@
       "description": "This link is no longer valid: it expired or was already used.",
       "resend": "Send me a new link",
       "sent": "If the link can be renewed, we sent a new one. Check your email.",
-      "forgot_password": "Reset your password"
+      "new_login": "Ask for a new link on the login page"
     }
   },
   "login": {
     "title": "Log in to VIC",
-    "migration_notice": "Had an account before the switch? Use the link we emailed you to set your password, or Forgot password.",
+    "description": "Enter the email of your admin account. We'll send you a link to log in, no password needed.",
+    "migration_notice": "Had an account before the switch? Enter your email below and we'll send you a login link. You no longer need a password.",
     "form": {
       "email": {
         "label": "Email",
         "invalid": "The email address is not valid",
         "required": "Email is required"
-      },
-      "password": {
-        "label": "Password",
-        "required": "Password is required"
       }
     },
-    "forgot_password": "Forgot password?",
-    "submit": "Log in",
+    "submit": "Send login link",
+    "sent": {
+      "title": "Check your email",
+      "description": "If {{email}} has an admin account, we sent a login link. It is valid for 15 minutes and can be used once.",
+      "hint": "Can't find it? Check Spam or Promotions too.",
+      "again": "Send again",
+      "again_done": "We sent a new link.",
+      "other_email": "Use another email"
+    },
     "no_account": "Your organization has no account?",
     "register": "Register your organization",
     "errors": {
       "generic": "Login failed. Please try again."
-    },
-    "resend_verification": {
-      "button": "Resend the confirmation email",
-      "sent": "If the address has an unconfirmed account, we sent a new link."
     },
     "volunteer_account": {
       "title": "This is a volunteer account",
@@ -1057,50 +1057,23 @@
       "open_app": "Open the app"
     }
   },
-  "forgot_password": {
-    "title": "Forgot password",
-    "description": "Enter your account's email. If an account exists, we'll send you a link to choose a new password.",
-    "email": {
-      "label": "Email",
-      "invalid": "The email address is not valid",
-      "required": "Email is required"
-    },
-    "submit": "Send the link",
-    "sent": "If an account exists for this address, we've sent a link to choose a new password. Check your email.",
-    "back_to_login": "Back to login",
-    "errors": {
-      "generic": "Something went wrong. Please try again."
-    }
-  },
-  "set_password": {
+  "login_link": {
     "title": {
+      "login": "Log in to VIC",
       "transition": "VIC has a new login",
-      "invite": "Welcome to {{organization}}",
-      "reset": "Choose a new password"
+      "invite": "Welcome to {{organization}}"
     },
     "description": {
-      "transition": "Choose your password for {{email}}.",
-      "invite": "Choose your password for {{email}}.",
-      "reset": "Choose a new password for {{email}}.",
-      "volunteer_social": "Set a password with this link, or sign in with Google, Facebook or Apple in the app as before."
+      "login": "Continue to log in as {{email}}.",
+      "transition": "From now on you log in to VIC with a link we email you, no password. Continue to log in as {{email}}.",
+      "invite": "You were invited as an admin. Continue to log in as {{email}}. Next time, log in with your email from the login page."
     },
-    "expired_title": "Link no longer valid",
-    "form": {
-      "password": {
-        "label": "Password",
-        "required": "Password is required",
-        "rule": "At least 8 characters, with an upper case letter, a lower case letter, a digit and a symbol."
-      },
-      "confirm": {
-        "label": "Confirm password",
-        "required": "Confirm the password",
-        "mismatch": "The passwords do not match"
-      }
-    },
-    "submit": "Save the password",
-    "done": {
-      "title": "Password saved",
-      "open_app": "Done. Open the app and log in."
+    "submit": "Log in",
+    "expired_title": "This link is no longer valid",
+    "volunteer": {
+      "title": "Use the VIC app",
+      "open_app": "This is a volunteer account",
+      "description": "Volunteers log in to the VIC mobile app with their email and a code we email them."
     },
     "errors": {
       "generic": "Something went wrong. Please try again."
@@ -1207,16 +1180,6 @@
       "adminPhone": {
         "label": "Your phone"
       },
-      "password": {
-        "label": "Password",
-        "rule": "At least 8 characters, with an upper case letter, a lower case letter, a digit and a symbol."
-      },
-      "confirmPassword": {
-        "label": "Confirm password"
-      },
-      "confirm_password": {
-        "mismatch": "The passwords do not match"
-      },
       "terms": {
         "label": "I agree with the",
         "terms": "terms and conditions",
@@ -1266,7 +1229,7 @@
     "confirm": {
       "invite": {
         "title": "Send invite",
-        "description": "Send {{name}} a link to set a password at {{email}}? Any earlier invite stops working.",
+        "description": "Send {{name}} a login link at {{email}}? Any earlier invite stops working.",
         "button": "Send"
       },
       "disable": {
@@ -1276,7 +1239,7 @@
       },
       "enable": {
         "title": "Enable administrator",
-        "description": "{{name}} can log in again. No email is sent; if they have no password yet, send them an invite.",
+        "description": "{{name}} can log in again. No email is sent; if they never logged in, send them an invite.",
         "button": "Enable"
       }
     },
@@ -1286,7 +1249,7 @@
       "enabled": "{{name}} was enabled"
     },
     "form": {
-      "description": "We'll email them a link to choose a password.",
+      "description": "We'll email them a link to log in.",
       "firstName": "First name",
       "lastName": "Last name",
       "email": "Email",
