@@ -476,6 +476,7 @@
             "public": "public",
             "members": "doar membri",
             "going": "Înscris",
+            "pending": "În așteptare",
             "finished": "Încheiat"
         },
         "empty": {

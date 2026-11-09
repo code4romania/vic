@@ -478,6 +478,7 @@
       "public": "public",
       "members": "members only",
       "going": "Going",
+      "pending": "Pending",
       "finished": "Ended"
     },
     "empty": {

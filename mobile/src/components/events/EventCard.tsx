@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { EventRegistrationStatus } from '../../common/enums/event-registration-status.enum';
 import { IEventListItem } from '../../common/interfaces/event-list-item.interface';
 import { colors, fonts, radius } from '../../common/theme/tokens';
 import { dateTile, formatEventWhen } from '../../common/utils/event-format';
@@ -17,13 +18,15 @@ export interface EventCardProps {
 
 /**
  * Event row: a date tile (events have no poster since #492), the title, when and where, and who
- * organizes it. "Înscris" when the volunteer is going, "Încheiat" once it's over.
+ * organizes it. "Înscris" when the volunteer is going, "În așteptare" while the organization still has to
+ * approve the registration, "Încheiat" once it's over.
  */
 export const EventCard = ({ event, onPress, going }: EventCardProps) => {
   const { t } = useTranslation('events');
   const tile = dateTile(event.startDate);
   const isGoing = going || event.isGoing;
   const finished = event.displayStatus === 'finished';
+  const pending = event.registrationStatus === EventRegistrationStatus.PENDING;
   const audience = event.isPublic ? t('card.public') : t('card.members');
   const meta = [event.organizationName, audience].filter(Boolean).join(' · ');
 
@@ -46,7 +49,8 @@ export const EventCard = ({ event, onPress, going }: EventCardProps) => {
           <VText variant="h3" numberOfLines={2} style={styles.title}>
             {event.name}
           </VText>
-          {isGoing && !finished && <Badge label={t('card.going')} tone="ok" />}
+          {pending && !finished && <Badge label={t('card.pending')} tone="wait" />}
+          {isGoing && !pending && !finished && <Badge label={t('card.going')} tone="ok" />}
           {finished && <Badge label={t('card.finished')} tone="neutral" />}
         </View>
         <VText variant="sub" numberOfLines={1}>
