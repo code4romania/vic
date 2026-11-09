@@ -4,6 +4,7 @@ import {
   ShieldCheckIcon,
   SunIcon,
   UsersIcon,
+  BuildingOffice2Icon,
 } from '@heroicons/react/24/outline';
 import {
   ClockIcon,
@@ -110,6 +111,21 @@ export const ROUTES: IRoute[] = [
     name: i18n.t('side_menu:options.validation'),
     href: 'admin/validation',
     icon: ShieldCheckIcon,
+    roles: ['super_admin'],
+  },
+  // #511
+  {
+    id: 12,
+    name: i18n.t('side_menu:options.all_organizations'),
+    href: 'admin/organizations',
+    icon: BuildingOffice2Icon,
+    roles: ['super_admin'],
+  },
+  {
+    id: 13,
+    name: i18n.t('side_menu:options.all_volunteers'),
+    href: 'admin/volunteers',
+    icon: UsersIcon,
     roles: ['super_admin'],
   },
 ];

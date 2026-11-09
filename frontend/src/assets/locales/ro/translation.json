@@ -118,7 +118,9 @@
       "events_list": "Listă evenimente",
       "event_registrations": "Înscrieri la evenimente",
       "approvals": "Aprobări",
-      "settings": "Setări"
+      "settings": "Setări",
+      "all_organizations": "Toate organizațiile",
+      "all_volunteers": "Toți voluntarii"
     },
     "collapse": "Restrânge meniul"
   },
@@ -1603,6 +1605,34 @@
       "privacy": "Politica de confidențialitate",
       "help": "Centru de asistență",
       "version": "Versiunea {{version}}"
+    }
+  },
+  "super_admin": {
+    "title": "Administrare VIC",
+    "tabs": {
+      "organizations": "Organizații",
+      "volunteers": "Voluntari"
+    },
+    "search": {
+      "organizations": "Caută după nume, email sau CUI",
+      "volunteers": "Caută după nume, email sau telefon"
+    },
+    "columns": {
+      "organization": "Organizație",
+      "name": "Nume",
+      "tax_id": "CUI",
+      "contact": "Contact",
+      "status": "Status",
+      "volunteers": "Voluntari activi",
+      "registered_on": "Înregistrată la",
+      "organizations": "Organizații",
+      "account_created": "Cont creat la"
+    },
+    "status": {
+      "all": "Toate",
+      "pending": "În validare",
+      "active": "Activă",
+      "suspended": "Suspendată"
     }
   }
 }

@@ -118,7 +118,9 @@
       "events_list": "Events list",
       "event_registrations": "Event registrations",
       "approvals": "Approvals",
-      "settings": "Settings"
+      "settings": "Settings",
+      "all_organizations": "All organizations",
+      "all_volunteers": "All volunteers"
     },
     "collapse": "Narrow the menu"
   },
@@ -1596,6 +1598,34 @@
       "privacy": "Privacy policy",
       "help": "Help center",
       "version": "Version {{version}}"
+    }
+  },
+  "super_admin": {
+    "title": "VIC administration",
+    "tabs": {
+      "organizations": "Organizations",
+      "volunteers": "Volunteers"
+    },
+    "search": {
+      "organizations": "Search by name, email or tax ID",
+      "volunteers": "Search by name, email or phone"
+    },
+    "columns": {
+      "organization": "Organization",
+      "name": "Name",
+      "tax_id": "Tax ID",
+      "contact": "Contact",
+      "status": "Status",
+      "volunteers": "Active volunteers",
+      "registered_on": "Registered on",
+      "organizations": "Organizations",
+      "account_created": "Account created on"
+    },
+    "status": {
+      "all": "All",
+      "pending": "Pending validation",
+      "active": "Active",
+      "suspended": "Suspended"
     }
   }
 }
