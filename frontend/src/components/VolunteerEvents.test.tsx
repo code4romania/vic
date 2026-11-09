@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import VolunteerEvents from './VolunteerEvents';
 import VolunteerStats from './VolunteerStats';
@@ -54,7 +54,10 @@ describe('Volunteer profile events and counters (#480, #485)', () => {
       http.get(api('/volunteer/v-1/stats'), () => HttpResponse.json({ totalHours: 12, events: 3 })),
     );
     renderPage(<VolunteerStats volunteerId="v-1" />);
-    expect(await screen.findByLabelText(t('volunteer:stats.hours'))).toHaveTextContent('12');
+    // the counters render "-" until the stats arrive
+    await waitFor(() =>
+      expect(screen.getByLabelText(t('volunteer:stats.hours'))).toHaveTextContent('12'),
+    );
     expect(screen.getByLabelText(t('volunteer:stats.events'))).toHaveTextContent('3');
   });
 });
