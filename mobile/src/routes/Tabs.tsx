@@ -20,6 +20,11 @@ const Title = ({ title, active }: { title: string; active?: boolean }) => {
       category="c1"
       style={[active ? { color: theme['color-primary-500'] } : {}, styles.title]}
       allowFontScaling={ALLOW_FONT_SCALLING}
+      // Five tabs on a narrow screen (iPhone 8 with Display Zoom is 320pt): keep one line and
+      // shrink the label slightly instead of wrapping "Evenimente" / "Setări cont".
+      numberOfLines={1}
+      adjustsFontSizeToFit
+      minimumFontScale={0.7}
     >
       {title}
     </Text>
