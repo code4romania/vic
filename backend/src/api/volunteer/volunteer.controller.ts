@@ -46,6 +46,7 @@ import { jsonToExcelBuffer } from 'src/common/helpers/utils';
 import { IVolunteerDownload } from 'src/modules/volunteer/intefaces/volunteer-download.interface';
 import { GetVolunteersForDownloadUseCase } from 'src/usecases/volunteer/get-many-for-download-volunteer.usecase';
 import { Response } from 'express';
+import { GetVolunteerReportUseCase } from 'src/usecases/volunteer/get-volunteer-report.usecase';
 import { UpdateVolunteerDetailsDto } from './dto/update-volunteer-details.dto';
 import { UpdateVolunteerDetailsUsecase } from 'src/usecases/volunteer/update-volunteer-details.usecase';
 import { AddVolunteerUseCase } from 'src/usecases/volunteer/add-volunteer.usecase';
@@ -58,6 +59,7 @@ export class VolunteerController {
   constructor(
     private readonly getOneVolunteerUsecase: GetOneVolunteerUsecase,
     private readonly getVolunteerEventsUseCase: GetVolunteerEventsUseCase,
+    private readonly getVolunteerReportUseCase: GetVolunteerReportUseCase,
     private readonly getManyVolunteersUsecase: GetManyVolunteersUseCase,
     private readonly blockVolunteerUsecase: BlockVolunteerUsecase,
     private readonly activateVolunteerUsecase: ActivateVolunteerUsecase,
@@ -170,6 +172,23 @@ export class VolunteerController {
     @Param('id', UuidValidationPipe) volunteerId: string,
   ): Promise<IVolunteerEvents> {
     return this.getVolunteerEventsUseCase.execute(volunteerId);
+  }
+
+  // #479: the full report as a PDF download
+  @ApiParam({ name: 'id', type: 'string' })
+  @Get(':id/report')
+  async getReport(
+    @Param('id', UuidValidationPipe) volunteerId: string,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
+    const { fileName, pdf } =
+      await this.getVolunteerReportUseCase.execute(volunteerId);
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="${fileName}"`,
+      'Access-Control-Expose-Headers': 'Content-Disposition',
+    });
+    res.end(pdf);
   }
 
   @ApiParam({ name: 'id', type: 'string' })

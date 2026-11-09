@@ -67,6 +67,15 @@ export const getVolunteerStats = async (id: string): Promise<IVolunteerStats> =>
   return API.get(`volunteer/${id}/stats`).then((res) => res.data);
 };
 
+// #479: the full report, as a PDF file
+export const getVolunteerReport = async (id: string): Promise<{ data: Blob; fileName: string }> => {
+  return API.get(`volunteer/${id}/report`, { responseType: 'blob' }).then((res) => {
+    const disposition = (res.headers['content-disposition'] as string | undefined) ?? '';
+    const fileName = /filename="([^"]+)"/.exec(disposition)?.[1] ?? 'Raport-voluntar.pdf';
+    return { data: res.data, fileName };
+  });
+};
+
 export const getVolunteerEvents = async (id: string): Promise<IVolunteerEvents> => {
   return API.get(`volunteer/${id}/events`).then((res) => res.data);
 };

@@ -84,6 +84,8 @@ export type IEventsMobileListItemModel = Pick<
   organizationId?: string;
   organizationName?: string;
   isGoing?: boolean;
+  // the volunteer's "going" registration, null when they have none (or no status was set)
+  registrationStatus?: EventRegistrationStatus | null;
 };
 
 export type CreateEventOptions = Pick<

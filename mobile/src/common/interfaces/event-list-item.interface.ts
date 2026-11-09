@@ -1,3 +1,4 @@
+import { EventRegistrationStatus } from '../enums/event-registration-status.enum';
 import { IOrganizationListItem } from './organization-list-item.interface';
 
 export interface IEventListItem {
@@ -16,6 +17,9 @@ export interface IEventListItem {
   // redesigned list cards: the organization and an "Înscris" badge
   organizationId?: string;
   organizationName?: string;
+  // going and not rejected by the NGO
   isGoing?: boolean;
+  // the "going" registration (#501), null without one: lets a card say "În așteptare"
+  registrationStatus?: EventRegistrationStatus | null;
   targets?: IOrganizationListItem[];
 }

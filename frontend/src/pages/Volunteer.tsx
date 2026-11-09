@@ -22,6 +22,7 @@ import ContractsTableWithQueryParams from '../containers/query/ContractsTableWit
 import VolunteerActivities from '../components/VolunteerActivities';
 import VolunteerEvents from '../components/VolunteerEvents';
 import VolunteerStats from '../components/VolunteerStats';
+import VolunteerReportButton from '../components/VolunteerReportButton';
 
 export enum VolunteerTabsOptions {
   ACTIVITIES = 'activities',
@@ -90,6 +91,7 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
               logo={volunteer.user.profilePicture || ''}
             >
               <VolunteerStats volunteerId={volunteer.id} />
+              <VolunteerReportButton volunteerId={volunteer.id} />
             </ProfileCard>
           </div>
           <div className="w-full lg:w-2/3 xl:w-3/4">

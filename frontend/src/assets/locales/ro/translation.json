@@ -225,6 +225,11 @@
       "finished": "Încheiate",
       "none": "Niciun eveniment.",
       "hours": "{{hours}}h aprobate"
+    },
+    "report": {
+      "download": "Descarcă raport complet (PDF)",
+      "loading": "Se generează raportul…",
+      "error": "Raportul nu a putut fi generat. Încearcă din nou."
     }
   },
   "volunteers": {

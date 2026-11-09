@@ -24,6 +24,7 @@ describe('Mobile events filters (e2e)', () => {
       organizationId: string;
       organizationName: string;
       isGoing: boolean;
+      registrationStatus: string | null;
     }[];
     meta: { totalItems: number };
   }> =>
@@ -93,12 +94,21 @@ describe('Mobile events filters (e2e)', () => {
         )
       )[0].id;
     const maraton = await event('Maraton', orgs.Crucea, '2030-05-10T09:00:00Z');
-    await event('Curățenie', orgs.Crucea, '2030-05-20T09:00:00Z');
-    await event('Concert', orgs.Salvati, '2030-05-20T18:00:00Z');
+    const curatenie = await event(
+      'Curățenie',
+      orgs.Crucea,
+      '2030-05-20T09:00:00Z',
+    );
+    const concert = await event(
+      'Concert',
+      orgs.Salvati,
+      '2030-05-20T18:00:00Z',
+    );
     await event('Gală', orgs.Salvati, '2030-06-01T18:00:00Z');
     await testApp.dataSource.query(
-      `INSERT INTO event_rsvp (going, status, event_id, user_id) VALUES (true, 'approved', $1, $2)`,
-      [maraton, userId],
+      `INSERT INTO event_rsvp (going, status, event_id, user_id) VALUES
+         (true, 'approved', $1, $2), (true, 'rejected', $3, $2), (true, 'pending', $4, $2)`,
+      [maraton, userId, curatenie, concert],
     );
   });
 
@@ -110,10 +120,25 @@ describe('Mobile events filters (e2e)', () => {
         organizationId: orgs.Crucea,
         organizationName: 'Crucea',
         isGoing: true,
+        registrationStatus: 'approved',
       }),
     );
+    // a rejected registration is not "going"; a pending one is, with its status
+    expect(body.items.find((item) => item.name === 'Curățenie')).toEqual(
+      expect.objectContaining({
+        isGoing: false,
+        registrationStatus: 'rejected',
+      }),
+    );
+    expect(body.items.find((item) => item.name === 'Concert')).toEqual(
+      expect.objectContaining({ isGoing: true, registrationStatus: 'pending' }),
+    );
     expect(body.items.find((item) => item.name === 'Gală')).toEqual(
-      expect.objectContaining({ organizationName: 'Salvati', isGoing: false }),
+      expect.objectContaining({
+        organizationName: 'Salvati',
+        isGoing: false,
+        registrationStatus: null,
+      }),
     );
   });
 
@@ -138,10 +163,13 @@ describe('Mobile events filters (e2e)', () => {
         }),
       ),
     ).toEqual(['Curățenie']);
-    // the GOING list takes the filters too
+    // the GOING list takes the filters too, and leaves out rejected registrations
     expect(
       names(await list({ eventFilter: 'GOING', organizationId: orgs.Salvati })),
-    ).toEqual([]);
+    ).toEqual(['Concert']);
+    expect(
+      names(await list({ eventFilter: 'GOING', organizationId: orgs.Crucea })),
+    ).toEqual(['Maraton']);
   });
 
   it('refuses a malformed organization or date', async () => {

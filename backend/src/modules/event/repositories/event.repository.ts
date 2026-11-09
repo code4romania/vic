@@ -1,3 +1,4 @@
+import { EventRegistrationStatus } from '../enums/event-registration-status.enum';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
@@ -389,7 +390,7 @@ export class EventRepository
       },
     );
 
-    // Get all events where i have responded with going
+    // Get all events where i have responded with going, unless the NGO rejected it (#501)
     query.andWhere(
       'event.id IN ' +
         query
@@ -400,6 +401,10 @@ export class EventRepository
             userId,
             going: true,
           })
+          .andWhere(
+            '(rsvp.status IS NULL OR rsvp.status <> :rejectedRegistration)',
+            { rejectedRegistration: EventRegistrationStatus.REJECTED },
+          )
           .getQuery(),
     );
 
@@ -501,24 +506,39 @@ export class EventRepository
       EventModelTransformer.fromEntityToMobileEventItem,
     );
 
-    // whether the volunteer said they are going, for the "Înscris" badge
+    // The volunteer's registration, for the "Înscris" badge. A rejected registration
+    // (#501) does not count as going; the status lets the card say "În așteptare".
     const ids = page.items.map((event) => event.id);
     const going = ids.length
       ? await this.eventRepository.manager
           .createQueryBuilder(EventRSVPEntity, 'rsvp')
           .select('rsvp.eventId', 'eventId')
+          .addSelect('rsvp.status', 'status')
           .where('rsvp.userId = :userId AND rsvp.going = true', { userId })
           .andWhere('rsvp.eventId IN (:...ids)', { ids })
-          .getRawMany<{ eventId: string }>()
+          .getRawMany<{
+            eventId: string;
+            status: EventRegistrationStatus | null;
+          }>()
       : [];
-    const goingIds = new Set(going.map((row) => row.eventId));
+    const registrations = new Map(
+      going.map((row) => [row.eventId, row.status]),
+    );
 
     return {
       ...page,
-      items: page.items.map((event) => ({
-        ...event,
-        isGoing: goingIds.has(event.id),
-      })),
+      items: page.items.map((event) => {
+        const registrationStatus = registrations.has(event.id)
+          ? registrations.get(event.id) ?? null
+          : null;
+        return {
+          ...event,
+          isGoing:
+            registrations.has(event.id) &&
+            registrationStatus !== EventRegistrationStatus.REJECTED,
+          registrationStatus,
+        };
+      }),
     };
   }
 
