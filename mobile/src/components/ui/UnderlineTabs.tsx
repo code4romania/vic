@@ -69,7 +69,7 @@ export function UnderlineTabs<T extends string>({
             style={styles.tab}
           >
             {tab.icon?.(active)}
-            <VText variant="cap" color={active ? colors.ink : colors.muted} style={styles.label}>
+            <VText variant="cap" color={active ? colors.navy : colors.muted} style={styles.label}>
               {tab.label}
             </VText>
           </Pressable>
@@ -97,6 +97,6 @@ const styles = StyleSheet.create({
     width: UNDERLINE_WIDTH,
     height: 2,
     borderRadius: 1,
-    backgroundColor: colors.ink,
+    backgroundColor: colors.navy,
   },
 });

@@ -19,8 +19,10 @@ import {
   Avatar,
   EmptyState,
   Enter,
+  groupedItem,
   PressableScale,
   SegmentedControl,
+  StatusBarScrim,
   VText,
 } from '../components/ui';
 
@@ -164,7 +166,7 @@ const News = ({ navigation, route }: any) => {
     const status = STATUS_ICON[described.kind];
     const { line } = described;
     return (
-      <Enter index={Math.min(index, 6)}>
+      <Enter index={Math.min(index, 6)} style={groupedItem(index, items.length)}>
         <PressableScale
           onPress={() => onPress(item)}
           pressedScale={0.985}
@@ -172,7 +174,12 @@ const News = ({ navigation, route }: any) => {
           testID={`news-row-${item.id}`}
         >
           <View>
-            <Avatar name={item.organizationName || '?'} uri={item.organizationLogo} size={44} />
+            <Avatar
+              name={item.organizationName || '?'}
+              uri={item.organizationLogo}
+              size={44}
+              shape="rounded"
+            />
             <View style={[styles.badge, { backgroundColor: colors.status[status.tone].bg }]}>
               <EventIcon name={status.icon} size={12} color={colors.status[status.tone].fg} />
             </View>
@@ -252,6 +259,7 @@ const News = ({ navigation, route }: any) => {
         showsVerticalScrollIndicator={false}
         testID="news"
       />
+      <StatusBarScrim />
     </View>
   );
 };
@@ -259,7 +267,7 @@ const News = ({ navigation, route }: any) => {
 export default News;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
+  screen: { flex: 1, backgroundColor: colors.canvas },
   list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
   header: { paddingBottom: 8, gap: 16 },
   back: {

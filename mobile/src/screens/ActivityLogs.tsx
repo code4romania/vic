@@ -24,15 +24,24 @@ import ActivityLogSkeletonItem from '../components/skeleton/activity-log-skeleto
 import {
   EmptyState,
   Enter,
+  groupedItem,
   PressableScale,
   SegmentedControl,
   Sheet,
+  StatusBarScrim,
   VButton,
   VText,
 } from '../components/ui';
 
 // newest first, like the canvas
 const ORDER = OrderDirection.DESC;
+
+// white stat cards with a strong colored figure (Andrew, 9 Nov: no pastel blocks)
+const STAT_TONE: Record<string, { bg: string; fg: string }> = {
+  approved: { bg: colors.white, fg: colors.figure.green },
+  pending: { bg: colors.white, fg: colors.figure.amber },
+  rejected: { bg: colors.white, fg: colors.figure.red },
+};
 
 /**
  * VIC 2.0 Ore (canvas boards "Ore" and "OraDetaliu"): large title with the organization, the hours
@@ -143,8 +152,14 @@ const ActivityLogs = ({ navigation, route }: any) => {
       )}
       <Enter index={2} style={styles.stats}>
         {stats.map((stat) => (
-          <View key={stat.key} style={styles.stat} testID={`hours-total-${stat.key}`}>
-            <VText style={styles.statValue}>{`${stat.value || 0}h`}</VText>
+          <View
+            key={stat.key}
+            style={[styles.stat, shadows.card, { backgroundColor: STAT_TONE[stat.key].bg }]}
+            testID={`hours-total-${stat.key}`}
+          >
+            <VText style={[styles.statValue, { color: STAT_TONE[stat.key].fg }]}>
+              {`${stat.value || 0}h`}
+            </VText>
             <VText variant="cap">{stat.label}</VText>
           </View>
         ))}
@@ -194,7 +209,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
         data={items}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
-          <Enter index={Math.min(index, 6)}>
+          <Enter index={Math.min(index, 6)} style={groupedItem(index, items.length)}>
             <LogRow log={item} status={status} onPress={onOpen} />
           </Enter>
         )}
@@ -235,6 +250,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
           onPress={() => profileSheet.current?.dismiss()}
         />
       </Sheet>
+      <StatusBarScrim />
     </View>
   );
 };
@@ -242,7 +258,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
 export default ActivityLogs;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
+  screen: { flex: 1, backgroundColor: colors.canvas },
   list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
   header: { paddingBottom: 6, gap: 4 },
   topRow: {
@@ -264,7 +280,6 @@ const styles = StyleSheet.create({
   stat: {
     flex: 1,
     borderRadius: radius.card,
-    backgroundColor: colors.soft,
     paddingVertical: 12,
     paddingHorizontal: 14,
     gap: 2,

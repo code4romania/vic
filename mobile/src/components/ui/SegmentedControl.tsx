@@ -23,7 +23,7 @@ export interface SegmentedControlProps<T extends string> {
 
 const PADDING = 3;
 
-/** iOS-style segmented control with a white indicator that slides between segments. */
+/** Segmented control: a navy indicator slides between segments on a navy-tinted track. */
 export function SegmentedControl<T extends string>({
   options,
   value,
@@ -77,7 +77,7 @@ export function SegmentedControl<T extends string>({
           >
             <VText
               variant="label"
-              color={selected ? colors.ink : colors.muted}
+              color={selected ? colors.white : colors.navy}
               style={styles.label}
               numberOfLines={1}
             >
@@ -95,7 +95,7 @@ export default SegmentedControl;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: colors.soft,
+    backgroundColor: colors.white,
     borderRadius: 10,
     padding: PADDING,
     height: 38,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     left: PADDING,
     bottom: PADDING,
     borderRadius: 8,
-    backgroundColor: colors.white,
+    backgroundColor: colors.navy,
     shadowColor: '#000',
     shadowOpacity: 0.12,
     shadowRadius: 3,

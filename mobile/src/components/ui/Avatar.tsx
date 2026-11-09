@@ -20,7 +20,17 @@ export const initials = (name: string) =>
     .map((word) => word[0]?.toUpperCase())
     .join('');
 
-/** Photo or logo, falling back to initials on a soft background. */
+// The line height follows the font size and leaves room for diacritics (Ș, Ț), so big initials
+// aren't cut by the variant's fixed line height.
+const initialsStyle = (size: number) => {
+  const fontSize = Math.max(12, size * 0.36);
+  return { fontSize, lineHeight: Math.round(fontSize * 1.3) };
+};
+
+/**
+ * Photo or logo, falling back to initials: people get navy with yellow initials (canvas "Profil"),
+ * organizations a navy tint with navy initials.
+ */
 export const Avatar = ({ name, uri, size = 40, shape = 'circle' }: AvatarProps) => {
   const borderRadius = shape === 'circle' ? size / 2 : Math.round(size * 0.3);
   if (uri) {
@@ -38,9 +48,17 @@ export const Avatar = ({ name, uri, size = 40, shape = 'circle' }: AvatarProps) 
     <View
       accessible
       accessibilityLabel={name}
-      style={[styles.fallback, { width: size, height: size, borderRadius }]}
+      style={[
+        styles.fallback,
+        shape === 'circle' ? styles.person : styles.organization,
+        { width: size, height: size, borderRadius },
+      ]}
     >
-      <VText variant="h3" color={colors.navy} style={{ fontSize: Math.max(12, size * 0.36) }}>
+      <VText
+        variant="h3"
+        color={shape === 'circle' ? colors.yellow : colors.navy}
+        style={initialsStyle(size)}
+      >
         {initials(name)}
       </VText>
     </View>
@@ -50,5 +68,7 @@ export const Avatar = ({ name, uri, size = 40, shape = 'circle' }: AvatarProps) 
 export default Avatar;
 
 const styles = StyleSheet.create({
-  fallback: { backgroundColor: colors.soft, alignItems: 'center', justifyContent: 'center' },
+  fallback: { alignItems: 'center', justifyContent: 'center' },
+  person: { backgroundColor: colors.navy },
+  organization: { backgroundColor: colors.navyTint },
 });

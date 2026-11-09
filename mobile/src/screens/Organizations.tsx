@@ -22,7 +22,17 @@ import useMyOrganizations from '../hooks/useMyOrganizations';
 import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
 import { EventIcon } from '../components/events/EventIcons';
-import { Avatar, Badge, Chevron, EmptyState, Enter, PressableScale, VText } from '../components/ui';
+import {
+  Avatar,
+  Badge,
+  Chevron,
+  EmptyState,
+  Enter,
+  groupedItem,
+  PressableScale,
+  StatusBarScrim,
+  VText,
+} from '../components/ui';
 import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 
 const SEARCH_DEBOUNCE_MS = 300;
@@ -85,7 +95,7 @@ const Organizations = ({ navigation }: any) => {
     item: IOrganizationListItemWithNumberOfVolunteers;
     index: number;
   }) => (
-    <Enter index={index}>
+    <Enter index={index} style={groupedItem(index, items.length)}>
       <PressableScale
         onPress={() => navigation.navigate('organization-profile', { organizationId: item.id })}
         pressedScale={0.985}
@@ -211,6 +221,7 @@ const Organizations = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}
         testID="organizations-list"
       />
+      <StatusBarScrim />
     </View>
   );
 };
@@ -218,7 +229,7 @@ const Organizations = ({ navigation }: any) => {
 export default Organizations;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
+  screen: { flex: 1, backgroundColor: colors.canvas },
   list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
   header: { paddingBottom: 6 },
   topRow: {

@@ -23,19 +23,37 @@ import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
 import { EventCard } from '../components/events/EventCard';
 import { EventIcon, EventIconName } from '../components/events/EventIcons';
-import { Avatar, Enter, ListRow, PressableScale, VButton, VText } from '../components/ui';
+import {
+  Avatar,
+  Enter,
+  Group,
+  ListRow,
+  PressableScale,
+  StatusBarScrim,
+  VButton,
+  VText,
+} from '../components/ui';
 
-const BellIcon = () => (
+const BellIcon = ({ color = colors.ink }: { color?: string }) => (
   <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
     <Path
       d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"
-      stroke={colors.ink}
+      stroke={color}
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
     />
   </Svg>
 );
+
+// "Luna asta" tiles: one solid navy tile, the others white with a strong colored figure
+// (Andrew, 9 Nov: more color, but no pastel blocks)
+const TILE_TONE: Record<string, { bg: string; fg: string; label: string }> = {
+  events: { bg: colors.navy, fg: colors.yellow, label: colors.white },
+  hours: { bg: colors.white, fg: colors.figure.green, label: colors.muted },
+  documents: { bg: colors.white, fg: colors.figure.amber, label: colors.muted },
+  organizations: { bg: colors.white, fg: colors.figure.teal, label: colors.muted },
+};
 
 const SectionHead = ({
   title,
@@ -79,7 +97,7 @@ const Home = ({ navigation }: any) => {
   const { t } = useTranslation('home');
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
-  useFocusedStatusBarStyle('dark');
+  useFocusedStatusBarStyle('light');
   const onScroll = useTabBarScroll();
 
   const { userProfile } = useUserProfile();
@@ -208,138 +226,172 @@ const Home = ({ navigation }: any) => {
           <RefreshControl
             refreshing={statistics.isRefetching || anouncements.isRefetching}
             onRefresh={onRefresh}
+            tintColor={colors.white}
           />
         }
-        contentContainerStyle={[
-          styles.content,
-          { paddingTop: insets.top + 12, paddingBottom: bottomInset },
-        ]}
+        contentContainerStyle={{ paddingBottom: bottomInset }}
         showsVerticalScrollIndicator={false}
         testID="home"
       >
-        <View style={styles.topRow}>
-          <PressableScale
-            onPress={() => navigation.navigate(TAB_ROUTES.PROFILE)}
-            accessibilityLabel={`${t('settings:profile')}`}
-            testID="home-avatar"
-          >
-            <Avatar
-              name={
-                [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ') || '?'
-              }
-              uri={userProfile?.profilePicture}
-              size={40}
-            />
-          </PressableScale>
-          <PressableScale
-            onPress={() => navigation.navigate('news', { type: NewsType.LOGGED_HOURS })}
-            style={[styles.bell, shadows.back]}
-            accessibilityLabel={`${t('news')}`}
-            testID="home-news"
-          >
-            <BellIcon />
-          </PressableScale>
-        </View>
-
-        <Enter>
-          <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
-            {t('hello', { name: userProfile?.firstName || '' })}
-          </VText>
-        </Enter>
-
-        {!organization && (
-          <Enter index={1} style={styles.join}>
-            <VText variant="h3">{t('no_ngo_title')}</VText>
-            <VText variant="sub">{t('no_ngo_paragraph')}</VText>
-            <VButton
-              label={`${t('join_ngo_short')}`}
-              onPress={() => navigation.navigate('search')}
-              testID="home-join"
-            />
-          </Enter>
-        )}
-
-        {nextEvents.length > 0 && (
-          <Enter index={1} style={styles.section}>
-            <SectionHead
-              title={`${t('next.title')}`}
-              action={`${t('see_all')}`}
-              onAction={() => navigation.navigate(TAB_ROUTES.EVENTS)}
-              testID="home-next-all"
-            />
-            {nextEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                event={event}
-                onPress={(eventId) => navigation.navigate('event', { eventId })}
+        <View style={[styles.hero, { paddingTop: insets.top + 12 }]}>
+          {/* navy behind the pull-to-refresh bounce */}
+          <View style={styles.heroBounce} />
+          <View style={styles.topRow}>
+            <PressableScale
+              onPress={() => navigation.navigate(TAB_ROUTES.PROFILE)}
+              accessibilityLabel={`${t('settings:profile')}`}
+              style={styles.avatarRing}
+              testID="home-avatar"
+            >
+              <Avatar
+                name={
+                  [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ') || '?'
+                }
+                uri={userProfile?.profilePicture}
+                size={40}
               />
-            ))}
-          </Enter>
-        )}
-
-        {todos.length > 0 && (
-          <Enter index={2} style={styles.section} testID="home-todo">
-            <SectionHead title={`${t('todo.title')}`} />
-            {todos.map((todo, index) => (
-              <ListRow
-                key={todo.key}
-                leading={<TodoIcon name={todo.icon} tone={todo.tone} />}
-                title={todo.title}
-                subtitle={todo.subtitle}
-                onPress={todo.onPress}
-                divider={index < todos.length - 1}
-                testID={`home-todo-${todo.key}`}
-              />
-            ))}
-          </Enter>
-        )}
-
-        <Enter index={3} style={styles.section}>
-          <SectionHead title={`${t('general:current_month')}`} />
-          <View style={styles.tiles}>
-            {tiles.map((tile) => (
-              <PressableScale
-                key={tile.key}
-                onPress={tile.onPress}
-                style={styles.tile}
-                accessibilityLabel={`${tile.value ?? 0} ${tile.label}`}
-                testID={`home-stat-${tile.key}`}
-              >
-                <VText style={styles.tileValue}>{`${tile.value ?? '–'}`}</VText>
-                <VText variant="cap">{tile.label}</VText>
-              </PressableScale>
-            ))}
+            </PressableScale>
+            <PressableScale
+              onPress={() => navigation.navigate('news', { type: NewsType.LOGGED_HOURS })}
+              style={styles.bell}
+              accessibilityLabel={`${t('news')}`}
+              testID="home-news"
+            >
+              <BellIcon color={colors.white} />
+            </PressableScale>
           </View>
-        </Enter>
 
-        {!!organization && (
-          <Enter index={4} style={styles.section}>
-            <SectionHead
-              title={`${t('anouncements.section.title')}`}
-              action={`${t('see_all')}`}
-              onAction={() => navigation.navigate('announcements')}
-              testID="home-anouncements-all"
-            />
-            {anouncements.error ? (
-              <VText variant="sub">{t('general:error.load_entries')}</VText>
-            ) : !anouncements.data?.items?.length ? (
-              <VText variant="sub">{t('anouncements.section.empty_list')}</VText>
-            ) : (
-              anouncements.data.items.map((item, index, all) => (
-                <ListRow
-                  key={item.id}
-                  leading={<Avatar name={item.title} uri={item.organizationLogo} size={40} />}
-                  title={item.title}
-                  subtitle={item.description}
-                  onPress={() => navigation.navigate('announcements')}
-                  divider={index < all.length - 1}
-                  testID={`home-anouncement-${item.id}`}
-                />
-              ))
+          <Enter>
+            <VText
+              variant="largeTitle"
+              color={colors.white}
+              accessibilityRole="header"
+              style={styles.title}
+            >
+              {t('hello', { name: userProfile?.firstName || '' })}
+            </VText>
+            {!!organization?.name && (
+              <VText variant="sub" color="rgba(255,255,255,0.75)" numberOfLines={1}>
+                {organization.name}
+              </VText>
             )}
           </Enter>
-        )}
+        </View>
+
+        <View style={styles.content}>
+          {!organization && (
+            <Enter index={1} style={[styles.join, shadows.card]}>
+              <VText variant="h3">{t('no_ngo_title')}</VText>
+              <VText variant="sub">{t('no_ngo_paragraph')}</VText>
+              <VButton
+                label={`${t('join_ngo_short')}`}
+                onPress={() => navigation.navigate('search')}
+                testID="home-join"
+              />
+            </Enter>
+          )}
+
+          {nextEvents.length > 0 && (
+            <Enter index={1} style={styles.section}>
+              <SectionHead
+                title={`${t('next.title')}`}
+                action={`${t('see_all')}`}
+                onAction={() => navigation.navigate(TAB_ROUTES.EVENTS)}
+                testID="home-next-all"
+              />
+              <Group>
+                {nextEvents.map((event, index) => (
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    onPress={(eventId) => navigation.navigate('event', { eventId })}
+                    divider={index < nextEvents.length - 1}
+                  />
+                ))}
+              </Group>
+            </Enter>
+          )}
+
+          {todos.length > 0 && (
+            <Enter index={2} style={styles.section} testID="home-todo">
+              <SectionHead title={`${t('todo.title')}`} />
+              <Group>
+                {todos.map((todo, index) => (
+                  <ListRow
+                    key={todo.key}
+                    leading={<TodoIcon name={todo.icon} tone={todo.tone} />}
+                    title={todo.title}
+                    subtitle={todo.subtitle}
+                    onPress={todo.onPress}
+                    divider={index < todos.length - 1}
+                    testID={`home-todo-${todo.key}`}
+                  />
+                ))}
+              </Group>
+            </Enter>
+          )}
+
+          <Enter index={3} style={styles.section}>
+            <SectionHead title={`${t('general:current_month')}`} />
+            <View style={styles.tiles}>
+              {tiles.map((tile) => (
+                <PressableScale
+                  key={tile.key}
+                  onPress={tile.onPress}
+                  style={[styles.tile, shadows.card, { backgroundColor: TILE_TONE[tile.key].bg }]}
+                  accessibilityLabel={`${tile.value ?? 0} ${tile.label}`}
+                  testID={`home-stat-${tile.key}`}
+                >
+                  <VText style={[styles.tileValue, { color: TILE_TONE[tile.key].fg }]}>
+                    {`${tile.value ?? '–'}`}
+                  </VText>
+                  <VText variant="cap" color={TILE_TONE[tile.key].label}>
+                    {tile.label}
+                  </VText>
+                </PressableScale>
+              ))}
+            </View>
+          </Enter>
+
+          {!!organization && (
+            <Enter index={4} style={styles.section}>
+              <SectionHead
+                title={`${t('anouncements.section.title')}`}
+                action={`${t('see_all')}`}
+                onAction={() => navigation.navigate('announcements')}
+                testID="home-anouncements-all"
+              />
+              {anouncements.error ? (
+                <VText variant="sub">{t('general:error.load_entries')}</VText>
+              ) : !anouncements.data?.items?.length ? (
+                <VText variant="sub">{t('anouncements.section.empty_list')}</VText>
+              ) : (
+                <Group>
+                  {anouncements.data.items.map((item, index, all) => (
+                    <ListRow
+                      key={item.id}
+                      leading={
+                        <Avatar
+                          name={item.title}
+                          uri={item.organizationLogo}
+                          size={40}
+                          shape="rounded"
+                        />
+                      }
+                      title={item.title}
+                      subtitle={item.description}
+                      onPress={() => navigation.navigate('announcements')}
+                      divider={index < all.length - 1}
+                      testID={`home-anouncement-${item.id}`}
+                    />
+                  ))}
+                </Group>
+              )}
+            </Enter>
+          )}
+        </View>
       </Animated.ScrollView>
+      <StatusBarScrim color={colors.navy} />
     </View>
   );
 };
@@ -347,14 +399,30 @@ const Home = ({ navigation }: any) => {
 export default Home;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
+  screen: { flex: 1, backgroundColor: colors.canvas },
+  hero: {
+    backgroundColor: colors.navy,
+    paddingHorizontal: spacing.gutter,
+    paddingBottom: 28,
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
+  },
+  heroBounce: {
+    position: 'absolute',
+    top: -800,
+    left: 0,
+    right: 0,
+    height: 800,
+    backgroundColor: colors.navy,
+  },
   content: { paddingHorizontal: spacing.gutter },
   topRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  avatarRing: { borderRadius: 22, borderWidth: 2, borderColor: 'rgba(255,255,255,0.9)' },
   bell: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: colors.white,
+    backgroundColor: 'rgba(255,255,255,0.14)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -364,7 +432,7 @@ const styles = StyleSheet.create({
     gap: 8,
     padding: 16,
     borderRadius: radius.card,
-    backgroundColor: colors.soft,
+    backgroundColor: colors.white,
   },
   section: { marginTop: 28, gap: 10 },
   sectionHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },

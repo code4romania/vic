@@ -32,7 +32,7 @@ import EventSkeletonListItem from '../components/skeleton/event-skeleton-item';
 const HEADER_HEIGHT = 150;
 
 const tabIcon = (name: 'open' | 'going' | 'organizations') => (active: boolean) => (
-  <EventIcon name={name} color={active ? colors.ink : colors.muted} />
+  <EventIcon name={name} color={active ? colors.navy : colors.muted} />
 );
 
 /**
@@ -93,6 +93,10 @@ const Events = ({ navigation }: any) => {
   const listKey = `${eventFilter}:${JSON.stringify(filters)}`;
   const isInitialLoading = isFetching && !isFetchingNextPage && !isRefetching && !items.length;
 
+  // measured (the tallest it gets: the pill shrinks while scrolling), so the first card always
+  // starts below the header whatever the text size
+  const [measuredHeader, setMeasuredHeader] = useState(0);
+  const headerHeight = measuredHeader || insets.top + HEADER_HEIGHT;
   const headerShadow = useAnimatedStyle(() => ({
     shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
     borderBottomColor: scrollY.value > 4 ? colors.line : 'transparent',
@@ -109,7 +113,12 @@ const Events = ({ navigation }: any) => {
 
   const renderItem = ({ item, index }: { item: EventCardItem; index: number }) => (
     <Enter index={index}>
-      <EventCard event={item} onPress={onOpenEvent} going={eventFilter === EventType.GOING} />
+      <EventCard
+        event={item}
+        onPress={onOpenEvent}
+        going={eventFilter === EventType.GOING}
+        variant="card"
+      />
     </Enter>
   );
 
@@ -163,18 +172,25 @@ const Events = ({ navigation }: any) => {
           <RefreshControl
             refreshing={isRefetching}
             onRefresh={reload}
-            progressViewOffset={insets.top + HEADER_HEIGHT}
+            progressViewOffset={headerHeight}
           />
         }
         contentContainerStyle={[
           styles.list,
-          { paddingTop: insets.top + HEADER_HEIGHT, paddingBottom: bottomInset },
+          // room under the search bar and the tabs (Andrew, 9 Nov: the list sat too close to them)
+          { paddingTop: headerHeight + 16, paddingBottom: bottomInset },
         ]}
         showsVerticalScrollIndicator={false}
         testID="events-list"
       />
 
-      <Animated.View style={[styles.top, { paddingTop: insets.top + 12 }, headerShadow]}>
+      <Animated.View
+        style={[styles.top, { paddingTop: insets.top + 12 }, headerShadow]}
+        onLayout={(e) => {
+          const height = Math.round(e.nativeEvent.layout.height);
+          setMeasuredHeader((current) => Math.max(current, height));
+        }}
+      >
         <View style={styles.searchRow}>
           <Animated.View style={[styles.pillWrap, pillStyle]}>
             <PressableScale
@@ -256,7 +272,7 @@ const Events = ({ navigation }: any) => {
 export default Events;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
+  screen: { flex: 1, backgroundColor: colors.canvas },
   list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
   more: { paddingVertical: 20 },
   top: {

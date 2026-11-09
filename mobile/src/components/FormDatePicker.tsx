@@ -45,27 +45,32 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
 
   return (
     <View style={styles.container}>
-      <VText variant="cap">{required ? `${label} *` : label}</VText>
       <Controller
         control={control}
         name={name}
         render={({ field: { onChange, onBlur, value } }) => (
-          <Datepicker
-            placeholder={renderPlaceholder(placeholder, styles)}
-            date={value}
-            onSelect={onChange}
-            onBlur={onBlur}
-            status={error ? 'danger' : 'basic'}
-            disabled={disabled}
-            style={styles.input}
-            controlStyle={[
-              fieldStyles.control,
-              error ? fieldStyles.invalid : null,
-              disabled ? styles.disabled : null,
-            ]}
-            accessoryRight={CalendarIcon}
-            {...rest}
-          />
+          <View>
+            <Datepicker
+              placeholder={renderPlaceholder(placeholder, styles)}
+              date={value}
+              onSelect={onChange}
+              onBlur={onBlur}
+              status={error ? 'danger' : 'basic'}
+              disabled={disabled}
+              style={styles.input}
+              controlStyle={[
+                fieldStyles.control,
+                error ? fieldStyles.invalid : null,
+                disabled ? styles.disabled : null,
+              ]}
+              accessoryRight={CalendarIcon}
+              {...rest}
+            />
+            {/* the label sits inside the box, like VTextField */}
+            <VText variant="cap" style={fieldStyles.label} pointerEvents="none">
+              {required ? `${label} *` : label}
+            </VText>
+          </View>
         )}
       />
       {!!error?.message && (
@@ -98,9 +103,11 @@ const themedStyles = StyleService.create({
 const fieldStyles = StyleSheet.create({
   control: {
     minHeight: 56,
+    paddingTop: 16,
     borderRadius: radius.field,
     borderColor: colors.subtle,
     backgroundColor: colors.white,
   },
   invalid: { borderColor: colors.danger },
+  label: { position: 'absolute', top: 8, left: 16 },
 });

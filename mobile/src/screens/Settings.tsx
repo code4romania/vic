@@ -23,7 +23,18 @@ import { colors, radius, shadows, spacing } from '../common/theme/tokens';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
-import { Avatar, Badge, Chevron, Enter, ListRow, Sheet, VButton, VText } from '../components/ui';
+import {
+  Avatar,
+  Badge,
+  Chevron,
+  Enter,
+  Group,
+  ListRow,
+  Sheet,
+  StatusBarScrim,
+  VButton,
+  VText,
+} from '../components/ui';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -39,16 +50,18 @@ export enum SETTINGS_ROUTES {
 const Stat = ({
   value,
   label,
+  color,
   last,
   testID,
 }: {
   value: string;
   label: string;
+  color: string;
   last?: boolean;
   testID: string;
 }) => (
   <View style={[styles.stat, !last && styles.statDivider]} testID={testID}>
-    <VText variant="h3" style={styles.statValue}>
+    <VText variant="h3" color={color} style={styles.statValue}>
       {value}
     </VText>
     <VText variant="cap">{label}</VText>
@@ -158,16 +171,19 @@ const Settings = ({ navigation }: any) => {
             <Stat
               value={stats ? `${stats.approvedHours}` : '–'}
               label={`${t('stats.hours')}`}
+              color={colors.status.ok.fg}
               testID="profile-stat-hours"
             />
             <Stat
               value={stats ? `${stats.events}` : '–'}
               label={`${t('stats.events')}`}
+              color={colors.navy}
               testID="profile-stat-events"
             />
             <Stat
               value={stats ? years(stats.yearsInVic) : '–'}
               label={`${t('stats.in_vic')}`}
+              color="#0B6B6B"
               last
               testID="profile-stat-years"
             />
@@ -176,86 +192,91 @@ const Settings = ({ navigation }: any) => {
 
         <Enter index={2} style={styles.section}>
           <VText variant="h2">{t('my_organizations')}</VText>
-          {organizations.map((organization) => (
+          <Group>
+            {organizations.map((organization) => (
+              <ListRow
+                key={organization.id}
+                leading={
+                  <Avatar
+                    name={organization.name}
+                    uri={organization.logo}
+                    size={44}
+                    shape="rounded"
+                  />
+                }
+                title={organization.name}
+                subtitle={
+                  organization.volunteerProfileId ? undefined : `${t('volunteer_profile_missing')}`
+                }
+                trailing={
+                  <View style={styles.trailing}>
+                    {organization.id === activeId && <Badge label={`${t('active')}`} tone="ok" />}
+                    <Chevron />
+                  </View>
+                }
+                onPress={() => onOpenOrganization(organization)}
+                testID={`profile-organization-${organization.id}`}
+              />
+            ))}
             <ListRow
-              key={organization.id}
               leading={
-                <Avatar
-                  name={organization.name}
-                  uri={organization.logo}
-                  size={44}
-                  shape="rounded"
-                />
-              }
-              title={organization.name}
-              subtitle={
-                organization.volunteerProfileId ? undefined : `${t('volunteer_profile_missing')}`
-              }
-              trailing={
-                <View style={styles.trailing}>
-                  {organization.id === activeId && <Badge label={`${t('active')}`} tone="ok" />}
-                  <Chevron />
+                <View style={[styles.rowIcon, styles.addIcon]}>
+                  <VText variant="h2" color={colors.navy}>
+                    +
+                  </VText>
                 </View>
               }
-              onPress={() => onOpenOrganization(organization)}
-              testID={`profile-organization-${organization.id}`}
+              title={`${t('join_organization')}`}
+              onPress={() => navigation.navigate(SETTINGS_ROUTES.SEARCH_ORGANIZATIONS)}
+              divider={false}
+              testID="profile-join"
             />
-          ))}
-          <ListRow
-            leading={
-              <View style={[styles.rowIcon, styles.addIcon]}>
-                <VText variant="h2" color={colors.navy}>
-                  +
-                </VText>
-              </View>
-            }
-            title={`${t('join_organization')}`}
-            onPress={() => navigation.navigate(SETTINGS_ROUTES.SEARCH_ORGANIZATIONS)}
-            divider={false}
-            testID="profile-join"
-          />
+          </Group>
         </Enter>
 
         <Enter index={3} style={styles.section}>
           <VText variant="h2">{t('section_settings')}</VText>
-          <ListRow
-            leading={<RowIcon xml={user} />}
-            title={`${t('heading')}`}
-            onPress={() => navigation.navigate(SETTINGS_ROUTES.ACCOUNT_DATA)}
-            testID="profile-account"
-          />
-          <ListRow
-            leading={<RowIcon xml={bell} />}
-            title={`${t('notification')}`}
-            onPress={() => navigation.navigate(SETTINGS_ROUTES.NOTIFICATIONS_SETTINGS)}
-            testID="profile-notifications"
-          />
-          <ListRow
-            leading={<RowIcon xml={information} />}
-            title={`${t('information')}`}
-            onPress={onInformation}
-            testID="profile-information"
-          />
-          <ListRow
-            leading={<RowIcon xml={trash} />}
-            title={`${t('delete')}`}
-            onPress={() => navigation.navigate(SETTINGS_ROUTES.DELETE_ACCOUNT)}
-            testID="profile-delete"
-          />
-          <ListRow
-            leading={<RowIcon xml={logoutIcon} />}
-            title={`${t('logout')}`}
-            destructive
-            divider={false}
-            onPress={() => logoutSheet.current?.present()}
-            testID="profile-logout"
-          />
+          <Group>
+            <ListRow
+              leading={<RowIcon xml={user} />}
+              title={`${t('heading')}`}
+              onPress={() => navigation.navigate(SETTINGS_ROUTES.ACCOUNT_DATA)}
+              testID="profile-account"
+            />
+            <ListRow
+              leading={<RowIcon xml={bell} />}
+              title={`${t('notification')}`}
+              onPress={() => navigation.navigate(SETTINGS_ROUTES.NOTIFICATIONS_SETTINGS)}
+              testID="profile-notifications"
+            />
+            <ListRow
+              leading={<RowIcon xml={information} />}
+              title={`${t('information')}`}
+              onPress={onInformation}
+              testID="profile-information"
+            />
+            <ListRow
+              leading={<RowIcon xml={trash} />}
+              title={`${t('delete')}`}
+              onPress={() => navigation.navigate(SETTINGS_ROUTES.DELETE_ACCOUNT)}
+              testID="profile-delete"
+            />
+            <ListRow
+              leading={<RowIcon xml={logoutIcon} />}
+              title={`${t('logout')}`}
+              destructive
+              divider={false}
+              onPress={() => logoutSheet.current?.present()}
+              testID="profile-logout"
+            />
+          </Group>
         </Enter>
 
         <VText variant="cap" style={styles.footer}>
           {t('footer')}
         </VText>
       </Animated.ScrollView>
+      <StatusBarScrim />
 
       <Sheet
         ref={logoutSheet}
@@ -282,7 +303,7 @@ const Settings = ({ navigation }: any) => {
 export default Settings;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
+  screen: { flex: 1, backgroundColor: colors.canvas },
   content: { paddingHorizontal: spacing.gutter },
   title: { marginTop: 16 },
   me: {
@@ -306,7 +327,7 @@ const styles = StyleSheet.create({
   stats: { width: 110 },
   stat: { paddingVertical: 8 },
   statDivider: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.line },
-  section: { marginTop: 28, gap: 2 },
+  section: { marginTop: 28, gap: 10 },
   trailing: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   rowIcon: {
     width: 40,

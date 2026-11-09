@@ -24,6 +24,7 @@ import {
   Avatar,
   Badge,
   Enter,
+  Group,
   ListRow,
   PressableScale,
   Sheet,
@@ -270,54 +271,56 @@ const OrganizationProfile = ({ navigation, route }: any) => {
               </Enter>
             )}
 
-            <Enter index={2}>
-              {!!organization.address && (
-                <ListRow
-                  leading={<EventIcon name="pin" />}
-                  title={organization.address}
-                  onPress={() =>
-                    Linking.openURL(
-                      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        organization.address as string,
-                      )}`,
-                    ).catch(() => undefined)
-                  }
-                />
-              )}
-              {!!organization.website && (
-                <ListRow
-                  leading={<EventIcon name="open" />}
-                  title={organization.website.replace(/^https?:\/\//, '')}
-                  onPress={() =>
-                    Linking.openURL(
-                      /^https?:\/\//.test(organization.website as string)
-                        ? (organization.website as string)
-                        : `https://${organization.website}`,
-                    ).catch(() => undefined)
-                  }
-                />
-              )}
-              {!!organization.email && (
-                <ListRow
-                  leading={<EventIcon name="people" />}
-                  title={organization.email}
-                  subtitle={`${t('email')}`}
-                  onPress={() =>
-                    Linking.openURL(`mailto:${organization.email}`).catch(() => undefined)
-                  }
-                />
-              )}
-              {!!organization.phone && (
-                <ListRow
-                  leading={<EventIcon name="calendar" />}
-                  title={organization.phone}
-                  subtitle={`${t('phone')}`}
-                  onPress={() =>
-                    Linking.openURL(`tel:${organization.phone}`).catch(() => undefined)
-                  }
-                  divider={false}
-                />
-              )}
+            <Enter index={2} style={styles.section}>
+              <Group>
+                {!!organization.address && (
+                  <ListRow
+                    leading={<EventIcon name="pin" />}
+                    title={organization.address}
+                    onPress={() =>
+                      Linking.openURL(
+                        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                          organization.address as string,
+                        )}`,
+                      ).catch(() => undefined)
+                    }
+                  />
+                )}
+                {!!organization.website && (
+                  <ListRow
+                    leading={<EventIcon name="open" />}
+                    title={organization.website.replace(/^https?:\/\//, '')}
+                    onPress={() =>
+                      Linking.openURL(
+                        /^https?:\/\//.test(organization.website as string)
+                          ? (organization.website as string)
+                          : `https://${organization.website}`,
+                      ).catch(() => undefined)
+                    }
+                  />
+                )}
+                {!!organization.email && (
+                  <ListRow
+                    leading={<EventIcon name="people" />}
+                    title={organization.email}
+                    subtitle={`${t('email')}`}
+                    onPress={() =>
+                      Linking.openURL(`mailto:${organization.email}`).catch(() => undefined)
+                    }
+                  />
+                )}
+                {!!organization.phone && (
+                  <ListRow
+                    leading={<EventIcon name="calendar" />}
+                    title={organization.phone}
+                    subtitle={`${t('phone')}`}
+                    onPress={() =>
+                      Linking.openURL(`tel:${organization.phone}`).catch(() => undefined)
+                    }
+                    divider={false}
+                  />
+                )}
+              </Group>
             </Enter>
 
             <Enter index={3} style={styles.section}>
@@ -325,13 +328,16 @@ const OrganizationProfile = ({ navigation, route }: any) => {
               {!organization.events?.length ? (
                 <VText variant="sub">{t('no_events')}</VText>
               ) : (
-                organization.events.map((event) => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                    onPress={(eventId) => navigation.navigate('event', { eventId })}
-                  />
-                ))
+                <Group>
+                  {organization.events.map((event, index, all) => (
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      onPress={(eventId) => navigation.navigate('event', { eventId })}
+                      divider={index < all.length - 1}
+                    />
+                  ))}
+                </Group>
               )}
             </Enter>
 
@@ -413,7 +419,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
 export default OrganizationProfile;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
+  screen: { flex: 1, backgroundColor: colors.canvas },
   hero: { backgroundColor: colors.navy },
   logo: {
     position: 'absolute',

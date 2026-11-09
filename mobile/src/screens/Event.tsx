@@ -69,6 +69,14 @@ const Fact = ({
  */
 const Event = ({ navigation, route }: any) => {
   const { t } = useTranslation('event');
+  // Romanian: "1 loc", "5 locuri", but "20 de locuri"
+  const capacityLabel = (places: number) => {
+    if (places === 1) {
+      return t('capacity_place');
+    }
+    const rest = places % 100;
+    return t(rest === 0 || rest >= 20 ? 'capacity_places_de' : 'capacity_places', { places });
+  };
   const insets = useSafeAreaInsets();
   useFocusedStatusBarStyle('dark');
   const { userProfile } = useUserProfile();
@@ -271,7 +279,7 @@ const Event = ({ navigation, route }: any) => {
                   icon="people"
                   title={
                     event.capacity
-                      ? `${t('capacity_places', { places: event.capacity })}`
+                      ? `${capacityLabel(event.capacity)}`
                       : `${t('capacity_unlimited')}`
                   }
                   subtitle={`${t('capacity')}`}
