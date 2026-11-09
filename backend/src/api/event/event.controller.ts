@@ -237,12 +237,13 @@ export class EventController {
   async addVolunteers(
     @Param('id', UuidValidationPipe) eventId: string,
     @Body() { volunteerIds }: AddVolunteersToEventDto,
-    @ExtractUser() { organizationId }: IAdminUserModel,
+    @ExtractUser() { organizationId, id: adminId }: IAdminUserModel,
   ): Promise<EventCandidatePresenter[]> {
     const added = await this.addVolunteersToEventUseCase.execute({
       eventId,
       organizationId,
       volunteerIds,
+      adminId,
     });
     return added.map((candidate) => new EventCandidatePresenter(candidate));
   }

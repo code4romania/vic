@@ -423,7 +423,14 @@
             "action_btn_label": "Completează datele"
         },
         "capacity": "Capacitate",
-        "capacity_unlimited": "Fără limită"
+        "capacity_unlimited": "Fără limită",
+        "registration": {
+            "label": "Înscrierea ta",
+            "pending": "Așteaptă aprobarea organizației",
+            "approved": "Aprobată",
+            "rejected": "Respinsă",
+            "rejected_reason": "Respinsă. Motiv: {{reason}}"
+        }
     },
     "activity_logs": {
         "title": "Ore de voluntariat",

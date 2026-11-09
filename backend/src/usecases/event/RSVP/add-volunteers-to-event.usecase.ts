@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { EventRegistrationStatus } from 'src/modules/event/enums/event-registration-status.enum';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { EventRSVPExceptionMessages } from 'src/modules/event/exceptions/event-rsvp.exceptions';
 import { IEventCandidateModel } from 'src/modules/event/models/event.model';
@@ -30,10 +31,12 @@ export class AddVolunteersToEventUseCase
     eventId,
     organizationId,
     volunteerIds,
+    adminId,
   }: {
     eventId: string;
     organizationId: string;
     volunteerIds: string[];
+    adminId?: string;
   }): Promise<IEventCandidateModel[]> {
     await this.organizationGate.assertValidated(organizationId);
 
@@ -76,19 +79,30 @@ export class AddVolunteersToEventUseCase
       }
     }
 
+    // #501: added by the NGO = an approved registration (a pending or rejected one becomes approved)
+    const decision = {
+      status: EventRegistrationStatus.APPROVED,
+      decidedById: adminId ?? null,
+      decidedOn: new Date(),
+    };
     for (const candidate of toAdd) {
       const existing = await this.eventFacade.findRSVP({
         eventId,
         userId: candidate.userId,
       });
       if (existing) {
-        await this.eventFacade.updateRSVP(existing.id, { going: true });
+        await this.eventFacade.updateRSVP(existing.id, {
+          going: true,
+          rejectionReason: null,
+          ...decision,
+        });
       } else {
         await this.eventFacade.createRSVP({
           eventId,
           userId: candidate.userId,
           going: true,
           mention: null,
+          ...decision,
         });
       }
     }

@@ -1,3 +1,4 @@
+import { EventRegistrationStatus } from '../enums/event-registration-status.enum';
 import { IBaseModel } from 'src/common/interfaces/base.model';
 import { IActivityTypeModel } from 'src/modules/activity-type/models/activity-type.model';
 import {
@@ -40,6 +41,9 @@ export interface IEventWithVolunteerStatus
   extends Omit<IEventModel, 'eventRsvps'> {
   volunteerStatus: EventVolunteerStatus;
   numberOfPersonsGoingToEvent: number;
+  // #501: the NGO's decision on the volunteer's registration (null when not going)
+  registrationStatus?: EventRegistrationStatus;
+  rejectionReason?: string;
 }
 export interface IEventsListItemModel
   extends Pick<

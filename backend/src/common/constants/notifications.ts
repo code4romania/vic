@@ -60,6 +60,31 @@ export const NOTIFICATIONS = {
       body: 'Îl găsești în aplicația VIC, la Evenimente.',
     },
   },
+  // #501
+  REGISTRATION_APPROVED: {
+    PUSH: {
+      title: 'VIC',
+      body: (organizationName: string, eventName: string): string =>
+        `Înscrierea ta la evenimentul ${eventName} (${organizationName}) a fost aprobată`,
+    },
+    EMAIL: {
+      subject: (organizationName: string, eventName: string): string =>
+        `Înscrierea ta la evenimentul ${eventName} (${organizationName}) a fost aprobată`,
+      body: 'Îl găsești în aplicația VIC, la Evenimente.',
+    },
+  },
+  REGISTRATION_REJECTED: {
+    PUSH: {
+      title: 'VIC',
+      body: (organizationName: string, eventName: string): string =>
+        `Înscrierea ta la evenimentul ${eventName} (${organizationName}) a fost respinsă`,
+    },
+    EMAIL: {
+      subject: (organizationName: string, eventName: string): string =>
+        `Înscrierea ta la evenimentul ${eventName} (${organizationName}) a fost respinsă`,
+      body: (reason: string): string => `Motiv: ${reason}`,
+    },
+  },
   APPROVED_HOURS: {
     PUSH: {
       title: 'VIC',

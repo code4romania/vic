@@ -114,7 +114,9 @@
       "actions_archive": "Arhivă acțiuni",
       "organization_profile": "Profil",
       "team": "Echipa",
-      "validation": "Validare ONG-uri"
+      "validation": "Validare ONG-uri",
+      "events_list": "Listă evenimente",
+      "event_registrations": "Înscrieri la evenimente"
     },
     "collapse": "Restrânge meniul"
   },
@@ -589,7 +591,8 @@
       "EVENT_RSVP_006": "Evenimentul nu este publicat.",
       "EVENT_RSVP_007": "Evenimentul s-a încheiat.",
       "EVENT_RSVP_008": "Evenimentul este complet: nu sunt destule locuri pentru toți voluntarii selectați.",
-      "EVENT_RSVP_009": "Se pot adăuga doar voluntari activi din departamentele evenimentului."
+      "EVENT_RSVP_009": "Se pot adăuga doar voluntari activi din departamentele evenimentului.",
+      "EVENT_RSVP_010": "Înscrierea nu a fost găsită."
     },
     "download_open": "Evenimente active.xlsx",
     "download_past": "Evenimente încheiate.xlsx",
@@ -639,6 +642,47 @@
         "role": "Rol",
         "hours": "Ore aprobate în organizație",
         "registeredOn": "Data înscrierii"
+      }
+    },
+    "registrations": {
+      "title": "Înscrieri la evenimente",
+      "description": "Voluntarii organizației din departamentele evenimentului sunt acceptați automat. Aici decizi pentru restul înscrierilor; poți schimba oricând decizia, iar voluntarul este anunțat.",
+      "tabs": {
+        "pending": "În așteptare",
+        "approved": "Aprobate",
+        "rejected": "Respinse"
+      },
+      "status": {
+        "pending": "în așteptare",
+        "approved": "aprobată",
+        "rejected": "respinsă"
+      },
+      "header": {
+        "person": "Persoană",
+        "event": "Eveniment",
+        "in_organization": "În organizație",
+        "registered_on": "Înscris la",
+        "decided": "Decizie"
+      },
+      "volunteer_status": {
+        "active": "Voluntar activ",
+        "inactive": "Voluntar inactiv",
+        "blocked": "Voluntar blocat",
+        "candidate": "Candidat",
+        "none": "Nu este voluntar"
+      },
+      "automatic": "Automat",
+      "search": "Caută după nume, email sau eveniment",
+      "approve": "Aprobă",
+      "approved": "Înscrierea lui {{name}} a fost aprobată",
+      "rejected": "Înscrierea lui {{name}} a fost respinsă",
+      "reject": {
+        "button": "Respinge",
+        "title": "Respinge înscrierea lui {{name}}",
+        "reason": "Motivul (îl vede voluntarul)",
+        "confirm": "Respinge înscrierea",
+        "required": "Motivul este obligatoriu",
+        "max": "Motivul poate avea cel mult {{value}} de caractere"
       }
     }
   },

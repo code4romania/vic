@@ -4,7 +4,9 @@ import { EventStatus } from '../enums/event-status.enum';
 import {
   CreateEventRSVPOptions,
   FindEventRSVPOptions,
+  FindManyEventRegistrationsOptions,
   FindManyEventRSVPOptions,
+  IEventRegistrationListItem,
   IEventRSVPModel,
   UpdateEventRSVPOptions,
 } from '../models/event-rsvp.model';
@@ -107,6 +109,13 @@ export class EventFacade {
 
   async deleteAllRSVPsForUser(userId: string): Promise<void> {
     return this.rsvpRepository.deleteAllRSVPsForUser(userId);
+  }
+
+  // #501
+  async findManyRegistrations(
+    findOptions: FindManyEventRegistrationsOptions,
+  ): Promise<Pagination<IEventRegistrationListItem>> {
+    return this.rsvpRepository.findManyRegistrations(findOptions);
   }
 
   async findManyRSVP(

@@ -151,7 +151,7 @@ describe('Add volunteers to an event (e2e)', () => {
     );
     // Elena already said she is going
     await testApp.dataSource.query(
-      `INSERT INTO event_rsvp (going, event_id, user_id) SELECT true, $1, user_id FROM volunteer WHERE id = $2`,
+      `INSERT INTO event_rsvp (going, status, event_id, user_id) SELECT true, 'approved', $1, user_id FROM volunteer WHERE id = $2`,
       [eventId, volunteers['Elena']],
     );
   });
@@ -179,6 +179,12 @@ describe('Add volunteers to an event (e2e)', () => {
     const response = await add(['Ana'], 201);
     expect(response.body).toMatchObject([{ name: 'Ana', registered: true }]);
     expect(await going()).toEqual(['Ana', 'Elena']);
+    // #501: an approved registration, decided by the admin
+    const [rsvp] = await testApp.dataSource.query(
+      `SELECT r.status, r.decided_by IS NOT NULL AS decided FROM event_rsvp r JOIN volunteer v ON v.user_id = r.user_id WHERE v.id = $1`,
+      [volunteers['Ana']],
+    );
+    expect(rsvp).toEqual({ status: 'approved', decided: true });
   });
 
   it('respects the capacity: 400 EVENT_RSVP_008 and nobody is added', async () => {

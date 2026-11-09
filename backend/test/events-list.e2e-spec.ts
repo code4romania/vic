@@ -191,7 +191,7 @@ describe('Events list tabs (e2e)', () => {
           ],
         );
         await testApp.dataSource.query(
-          `INSERT INTO event_rsvp (going, event_id, user_id) SELECT $2, id, $3 FROM event WHERE name = $1`,
+          `INSERT INTO event_rsvp (going, status, event_id, user_id) SELECT $2, CASE WHEN $2 THEN 'approved'::event_rsvp_status_enum END, id, $3 FROM event WHERE name = $1`,
           [eventName, going, user.id],
         );
       }

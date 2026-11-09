@@ -10,6 +10,7 @@ export enum EventsRSVPExceptionCodes {
   EVENT_RSVP_007 = 'EVENT_RSVP_007',
   EVENT_RSVP_008 = 'EVENT_RSVP_008',
   EVENT_RSVP_009 = 'EVENT_RSVP_009',
+  EVENT_RSVP_010 = 'EVENT_RSVP_010',
 }
 
 type EventRSVPExceptionCodeType = keyof typeof EventsRSVPExceptionCodes;
@@ -57,5 +58,9 @@ export const EventRSVPExceptionMessages: Record<
     code_error: EventsRSVPExceptionCodes.EVENT_RSVP_009,
     message:
       'Only active volunteers with a profile, from the event departments, can be added',
+  },
+  [EventsRSVPExceptionCodes.EVENT_RSVP_010]: {
+    code_error: EventsRSVPExceptionCodes.EVENT_RSVP_010,
+    message: 'Registration not found',
   },
 };

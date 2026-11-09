@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { EventRegistrationStatus } from 'src/modules/event/enums/event-registration-status.enum';
 import { EventVolunteerStatus } from 'src/modules/event/enums/event-volunteer-status.enum';
 import {
   FindOneEventOptions,
@@ -27,8 +28,9 @@ export class GetOneEventWithVolunteerStatusUsecase
     // 2. count the number of rsvps going for this event
     const { eventRsvps, ...rest } = event;
 
+    // #501: a registration counts once the NGO approved it
     const numberOfPersonsGoingToEvent = eventRsvps.filter(
-      (rsvp) => rsvp.going,
+      (rsvp) => rsvp.going && rsvp.status === EventRegistrationStatus.APPROVED,
     ).length;
 
     // 3.1 check if the user has responded to this event
@@ -44,6 +46,11 @@ export class GetOneEventWithVolunteerStatusUsecase
       ...rest,
       volunteerStatus,
       numberOfPersonsGoingToEvent,
+      registrationStatus: rsvp?.going ? rsvp.status : null,
+      rejectionReason:
+        rsvp?.going && rsvp.status === EventRegistrationStatus.REJECTED
+          ? rsvp.rejectionReason
+          : null,
     };
   }
 }

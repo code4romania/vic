@@ -425,7 +425,14 @@
       "action_btn_label": "Complete data"
     },
     "capacity": "Capacity",
-    "capacity_unlimited": "No limit"
+    "capacity_unlimited": "No limit",
+    "registration": {
+      "label": "Your registration",
+      "pending": "Waiting for the organization to approve it",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "rejected_reason": "Rejected. Reason: {{reason}}"
+    }
   },
   "activity_logs": {
     "title": "Volunteer hours",

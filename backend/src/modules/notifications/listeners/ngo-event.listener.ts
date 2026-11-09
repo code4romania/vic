@@ -4,6 +4,7 @@ import { MailService } from 'src/modules/mail/services/mail.service';
 import { EVENTS } from '../constants/events.constants';
 import AddNGOEventEvent from '../events/ngo-event/add-event.event';
 import VolunteerAddedToEventEvent from '../events/ngo-event/volunteer-added.event';
+import RegistrationDecidedEvent from '../events/ngo-event/registration-decided.event';
 import { PushNotificationsFacade } from '../notifications.facade';
 import { NOTIFICATIONS } from 'src/common/constants/notifications';
 
@@ -87,5 +88,70 @@ export class NGOEventListener {
           },
         }),
     );
+  }
+
+  // #501
+  @OnEvent(EVENTS.NGO_EVENT.REGISTRATION_APPROVED)
+  async sendRegistrationApprovedNotification(
+    payload: RegistrationDecidedEvent,
+  ): Promise<void> {
+    await this.sendRegistrationDecision(
+      payload,
+      EVENTS.NGO_EVENT.REGISTRATION_APPROVED,
+    );
+  }
+
+  @OnEvent(EVENTS.NGO_EVENT.REGISTRATION_REJECTED)
+  async sendRegistrationRejectedNotification(
+    payload: RegistrationDecidedEvent,
+  ): Promise<void> {
+    await this.sendRegistrationDecision(
+      payload,
+      EVENTS.NGO_EVENT.REGISTRATION_REJECTED,
+    );
+  }
+
+  private async sendRegistrationDecision(
+    payload: RegistrationDecidedEvent,
+    key: string,
+  ): Promise<void> {
+    const {
+      organizationId,
+      organizationName,
+      eventId,
+      eventName,
+      userId,
+      userEmail,
+      reason,
+      notificationsViaPush,
+      notificationsViaEmail,
+    } = payload;
+    const approved = key === EVENTS.NGO_EVENT.REGISTRATION_APPROVED;
+    const texts = approved
+      ? NOTIFICATIONS.REGISTRATION_APPROVED
+      : NOTIFICATIONS.REGISTRATION_REJECTED;
+
+    if (notificationsViaPush) {
+      this.pushNotificationsFacade.send({
+        userIds: [userId],
+        title: texts.PUSH.title,
+        body: texts.PUSH.body(organizationName, eventName),
+        data: { key, payload: { organizationId, eventId } },
+      });
+    }
+
+    if (notificationsViaEmail && userEmail) {
+      const subject = texts.EMAIL.subject(organizationName, eventName);
+      await this.mailService.sendEmail({
+        to: userEmail,
+        subject,
+        context: {
+          title: subject,
+          subtitle: approved
+            ? NOTIFICATIONS.REGISTRATION_APPROVED.EMAIL.body
+            : NOTIFICATIONS.REGISTRATION_REJECTED.EMAIL.body(reason),
+        },
+      });
+    }
   }
 }

@@ -99,6 +99,8 @@ import { GetManyEventRSVPUseCase } from './event/RSVP/get-many-rsvp.usecase';
 import { GetEventCandidatesUseCase } from './event/RSVP/get-event-candidates.usecase';
 import { AddVolunteersToEventUseCase } from './event/RSVP/add-volunteers-to-event.usecase';
 import { DownloadEventRegistrationsUseCase } from './event/RSVP/download-registrations.usecase';
+import { GetManyEventRegistrationsUseCase } from './event/RSVP/get-many-event-registrations.usecase';
+import { DecideEventRegistrationUseCase } from './event/RSVP/decide-event-registration.usecase';
 import { GetManyEventUseCase } from './event/get-many-event.usecase';
 import { GetEventCountersUseCase } from './event/get-event-counters.usecase';
 import { GetManyForDownloadEventUseCase } from './event/get-many-for-download-event.usecase';
@@ -310,6 +312,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetEventsByOrganizationUsecase,
     // Events RSVP
     CreateEventRSVPUseCase,
+    GetManyEventRegistrationsUseCase,
+    DecideEventRegistrationUseCase,
     GetOneEventRSVPUseCase,
     DeleteEventRSVPUseCase,
     GetManyEventRSVPUseCase,
@@ -491,6 +495,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetEventCandidatesUseCase,
     AddVolunteersToEventUseCase,
     DownloadEventRegistrationsUseCase,
+    GetManyEventRegistrationsUseCase,
+    DecideEventRegistrationUseCase,
     GetManyForDownloadEventRSVPUseCase,
     // Activity Log
     CreateActivityLogByAdmin,

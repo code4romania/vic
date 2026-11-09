@@ -18,7 +18,11 @@ import {
   getEventCounters,
   getEventCandidates,
   addVolunteersToEvent,
+  getEventRegistrations,
+  approveEventRegistration,
+  rejectEventRegistration,
 } from './event.api';
+import { EventRegistrationStatus } from '../../common/enums/event-registration-status.enum';
 
 export const useEventsQuery = (
   limit: number,
@@ -142,6 +146,29 @@ export const useAddVolunteersToEventMutation = () => {
   return useMutation(
     ({ eventId, volunteerIds }: { eventId: string; volunteerIds: string[] }) =>
       addVolunteersToEvent(eventId, volunteerIds),
+    {
+      onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
+    },
+  );
+};
+
+// #501
+export const useEventRegistrationsQuery = (params: {
+  status: EventRegistrationStatus;
+  page: number;
+  limit: number;
+  search?: string;
+}) => {
+  return useQuery(['event-registrations', params], () => getEventRegistrations(params), {
+    keepPreviousData: true,
+    onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => error,
+  });
+};
+
+export const useDecideEventRegistrationMutation = () => {
+  return useMutation(
+    ({ id, reason }: { id: string; reason?: string }) =>
+      reason === undefined ? approveEventRegistration(id) : rejectEventRegistration(id, reason),
     {
       onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
     },

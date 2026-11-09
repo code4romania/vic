@@ -7,6 +7,7 @@ import ExportRegistrationsModal from './ExportRegistrationsModal';
 import CardHeader from './CardHeader';
 import { DivisionType } from '../common/enums/division-type.enum';
 import { RSVPGoingEnum } from '../common/enums/rsvp.enum';
+import { EventRegistrationStatus } from '../common/enums/event-registration-status.enum';
 import { getEventRSVPsForDownload } from '../services/event/event.api';
 import DataTableComponent from './DataTableComponent';
 import DataTableFilters from './DataTableFilters';
@@ -40,8 +41,13 @@ const TableHeader = [
     minWidth: '11rem',
     grow: 1,
     sortable: true,
+    // #501: a "going" answer shows the NGO's decision too
     selector: (row: IRsvp) =>
-      row.going ? i18n.t('events:participate') : i18n.t('events:not_participate'),
+      row.going
+        ? row.status && row.status !== EventRegistrationStatus.APPROVED
+          ? `${i18n.t('events:participate')} (${i18n.t(`events:registrations.status.${row.status}`)})`
+          : i18n.t('events:participate')
+        : i18n.t('events:not_participate'),
   },
   {
     id: 'volunteerId',

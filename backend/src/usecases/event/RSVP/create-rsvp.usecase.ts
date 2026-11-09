@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { EventRegistrationStatus } from 'src/modules/event/enums/event-registration-status.enum';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { EventRSVPExceptionMessages } from 'src/modules/event/exceptions/event-rsvp.exceptions';
 import {
@@ -89,16 +90,38 @@ export class CreateEventRSVPUseCase
       eventId: data.eventId,
     });
 
+    // 8. #501: "going" is a registration. Volunteers already in the organization (active, with a
+    // profile) and in one of the event's departments (or the event targets everyone) are approved
+    // automatically; everyone else waits for the NGO's decision. Not going has no status.
+    const targetIds = (event.targets ?? []).map((target) => target.id);
+    const departmentId = volunteer?.volunteerProfile?.department?.id;
+    const autoApproved =
+      volunteer?.status === VolunteerStatus.ACTIVE &&
+      !!volunteer.volunteerProfile &&
+      (targetIds.length === 0 ||
+        (!!departmentId && targetIds.includes(departmentId)));
+    const status = data.going
+      ? autoApproved
+        ? EventRegistrationStatus.APPROVED
+        : EventRegistrationStatus.PENDING
+      : null;
+
     if (existingRSVP) {
       return existingRSVP.going === data.going
         ? existingRSVP
-        : this.eventFacade.updateRSVP(existingRSVP.id, { going: data.going });
+        : this.eventFacade.updateRSVP(existingRSVP.id, {
+            going: data.going,
+            status,
+            rejectionReason: null,
+            decidedOn: null,
+            decidedById: null,
+          });
     }
 
-    // 8. VIC 2.0 (#492): events have no "registration with mention" any more;
+    // 9. VIC 2.0 (#492): events have no "registration with mention" any more;
     // mentions given before stay on their RSVPs, new ones are not collected.
     data.mention = null;
 
-    return this.eventFacade.createRSVP(data);
+    return this.eventFacade.createRSVP({ ...data, status });
   }
 }

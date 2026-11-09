@@ -1,3 +1,4 @@
+import { EventRegistrationStatus } from 'src/modules/event/enums/event-registration-status.enum';
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IEventRSVPModel } from 'src/modules/event/models/event-rsvp.model';
@@ -15,6 +16,9 @@ export class EventRSVPPresenter {
     this.updatedOn = rsvp.updatedOn;
 
     this.volunteerId = rsvp.volunteerId;
+
+    this.status = rsvp.status ?? null;
+    this.rejectionReason = rsvp.rejectionReason ?? null;
   }
 
   @Expose()
@@ -47,4 +51,16 @@ export class EventRSVPPresenter {
   @Expose()
   @ApiProperty({ description: 'Volunteer Id' })
   volunteerId: string;
+
+  @Expose()
+  @ApiProperty({
+    description: '#501: pending, approved or rejected (null when not going)',
+    enum: EventRegistrationStatus,
+    nullable: true,
+  })
+  status: EventRegistrationStatus;
+
+  @Expose()
+  @ApiProperty({ description: 'Why the registration was rejected' })
+  rejectionReason: string;
 }

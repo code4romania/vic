@@ -20,6 +20,7 @@ import { VolunteerController } from './volunteer/volunteer.controller';
 import { MobileVolunteerController } from './_mobile/volunteer/volunteer.controller';
 import { AnnouncementController } from './announcement/announcement.controller';
 import { EventController } from './event/event.controller';
+import { EventRegistrationsController } from './event-registrations/event-registrations.controller';
 import { MobileEventController } from './_mobile/event/event.controller';
 import { ActivityLogController } from './activity-log/activity-log.controller';
 import { ListingController } from './listing/listing.controller';
@@ -57,6 +58,7 @@ import { MobileNewsController } from './_mobile/news/news.controller';
     VolunteerController,
     AnnouncementController,
     EventController,
+    EventRegistrationsController,
     ActivityLogController,
     ListingController,
     ActionsArchiveController,
