@@ -10,6 +10,7 @@ export enum OrganizationExceptionCodes {
   ORG_008 = 'ORG_008',
   ORG_009 = 'ORG_009',
   ORG_010 = 'ORG_010',
+  ORG_011 = 'ORG_011',
 }
 
 type OrganizationExceptionCodeType = keyof typeof OrganizationExceptionCodes;
@@ -55,5 +56,10 @@ export const OrganizationExceptionMessages: Record<
   [OrganizationExceptionCodes.ORG_010]: {
     message: 'You cannot change your own status',
     code_error: OrganizationExceptionCodes.ORG_010,
+  },
+  // #508
+  [OrganizationExceptionCodes.ORG_011]: {
+    message: 'Type the organization name exactly to delete it',
+    code_error: OrganizationExceptionCodes.ORG_011,
   },
 };

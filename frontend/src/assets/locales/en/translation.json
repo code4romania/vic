@@ -440,7 +440,8 @@
       "ORG_006": "The anti-robot check failed. Please try again.",
       "ORG_008": "This administrator is not in your organization.",
       "ORG_009": "Invites are only for admins who have not logged in yet.",
-      "ORG_010": "You cannot change your own status."
+      "ORG_010": "You cannot change your own status.",
+      "ORG_011": "Type the organization's name exactly to delete it."
     },
     "form": {
       "description": {
@@ -1623,7 +1624,8 @@
       "required": "Field is required",
       "email_invalid": "The email address is not valid",
       "cancel": "Cancel",
-      "submit": "Add and send invite"
+      "submit": "Add and send invite",
+      "code_required": "Enter the 6-digit code from your email"
     },
     "errors": {
       "load": "The team could not be loaded",
@@ -1696,6 +1698,62 @@
       "title": "Public organization profile",
       "description": "What volunteers see about the organization in the VIC app.",
       "edit": "Edit profile"
+    },
+    "security": {
+      "title": "Data and security",
+      "two_factor": {
+        "title": "Email code confirmation",
+        "description": "For sensitive actions (changing your email, deleting the organization account, adding an administrator) we ask for a code sent by email. It is on for every account and cannot be turned off.",
+        "on": "On"
+      },
+      "code": {
+        "description": "For safety, confirm with a code sent to your email.",
+        "send": "Email me the code",
+        "resend": "Send the code again",
+        "sent": "We sent a 6-digit code to {{email}}. It is valid for 10 minutes.",
+        "label": "Confirmation code*",
+        "error": "We couldn't send the code. Try again."
+      },
+      "email": {
+        "label": "Login email",
+        "action": "Change email",
+        "title": "Change email",
+        "description": "You log in to VIC with {{email}}. We send a code to your current address and one to the new one.",
+        "new_email": "New email*",
+        "send": "Send the codes",
+        "sent": "We sent one code to {{current}} and one to {{next}}.",
+        "current_code": "Code sent to {{email}}*",
+        "new_code": "Code sent to {{email}}*",
+        "confirm": "Change email",
+        "invalid": "The email address is not valid",
+        "same": "This is already your email",
+        "codes_required": "Fill in both 6-digit codes",
+        "success": "From now on you log in with {{email}}.",
+        "error": "The email couldn't be changed. Try again."
+      },
+      "backup": {
+        "title": "Full backup",
+        "description": "All the organization's data in one Excel file: volunteers, hours, events, registrations, announcements, documents, structure and history.",
+        "action": "Download backup",
+        "loading": "Preparing...",
+        "error": "The backup couldn't be downloaded."
+      },
+      "history": {
+        "title": "Change history",
+        "description": "Who changed what in the organization, and when.",
+        "action": "See history"
+      }
+    },
+    "danger": {
+      "title": "Danger zone",
+      "delete_title": "Delete the organization account",
+      "delete_description": "Permanently deletes the organization and all its data in VIC. This cannot be undone.",
+      "action": "Delete account",
+      "modal_title": "Delete the organization account for good?",
+      "modal_description": "This deletes {{name}}, its volunteers in the organization, hours, events, announcements, documents, structure, history and all administrators. Volunteers keep their VIC account. We recommend downloading the full backup first. The VIC team will be notified.",
+      "type_name": "Type the organization's name ({{name}})*",
+      "confirm": "Delete for good",
+      "error": "The account couldn't be deleted. Try again."
     },
     "about": {
       "title": "About",

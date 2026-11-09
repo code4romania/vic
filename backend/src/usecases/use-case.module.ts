@@ -148,6 +148,10 @@ import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
 import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
 import { DeleteContractUsecase } from './documents/delete-contract.usecase';
 import { UploadContractUsecase } from './documents/upload-contract.usecase';
+import { SensitiveActionUsecase } from './security/sensitive-action.usecase';
+import { ChangeEmailUsecase } from './security/change-email.usecase';
+import { DeleteOrganizationUsecase } from './security/delete-organization.usecase';
+import { OrganizationBackupUsecase } from './security/organization-backup.usecase';
 import { GetDashboardOverviewUsecase } from './dashboard/get-dashboard-overview.usecase';
 import { DeleteVolunteerUsecase } from './volunteer/delete-volunteer.usecase';
 import { CertificateUsecase } from './documents/certificate.usecase';
@@ -366,6 +370,10 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,
     UploadContractUsecase,
+    SensitiveActionUsecase,
+    ChangeEmailUsecase,
+    DeleteOrganizationUsecase,
+    OrganizationBackupUsecase,
     GetDashboardOverviewUsecase,
     DeleteVolunteerUsecase,
     CertificateUsecase,
@@ -541,6 +549,10 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,
     UploadContractUsecase,
+    SensitiveActionUsecase,
+    ChangeEmailUsecase,
+    DeleteOrganizationUsecase,
+    OrganizationBackupUsecase,
     GetDashboardOverviewUsecase,
     DeleteVolunteerUsecase,
     CertificateUsecase,

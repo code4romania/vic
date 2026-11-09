@@ -18,6 +18,7 @@ export const authValue = (overrides: Partial<AuthContextProps> = {}): AuthContex
   isSuperAdmin: false,
   logout: vi.fn(),
   startSession: vi.fn(),
+  refreshProfile: vi.fn(),
   ...overrides,
 });
 
