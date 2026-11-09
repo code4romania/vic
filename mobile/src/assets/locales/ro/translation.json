@@ -37,10 +37,8 @@
         "back": "Înapoi"
     },
     "landing": {
-        "message": "Înregistrează-te în aplicație folosind una dintre modalitățile următoare",
-        "registered": "Ai deja cont?",
-        "email": "E-mail sau telefon",
-        "login": "Autentifică-te",
+        "message": "Intră în aplicație sau creează-ți cont folosind una dintre modalitățile următoare",
+        "email": "Continuă cu emailul",
         "social": {
             "google": "Continuă cu Google",
             "facebook": "Continuă cu Facebook",
@@ -66,18 +64,6 @@
                     "required": "Telefonul este obligatoriu",
                     "pattern": "Numărul de telefon trebuie să conțină doar numere"
                 },
-                "password": {
-                    "label": "Parola",
-                    "placeholder": "Introdu parola",
-                    "required": "Parola este obligatorie",
-                    "pattern": "Parola trebuie să conțină minim 8 caractere, litere mari, litere mici, numere și caractere speciale, fără spații"
-                },
-                "confirm_password": {
-                    "label": "Confirmă parola",
-                    "placeholder": "Confirmați parola",
-                    "required": "Parola este obligatorie",
-                    "match": "Parolele trebuie să fie identice"
-                },
                 "terms": {
                     "agree": "Sunt de acord cu ",
                     "conditions": "Termenii și Condițiile",
@@ -91,15 +77,6 @@
                 "label": "Ai deja cont?",
                 "link": "Autentifică-te"
             }
-        },
-        "validate_account": {
-            "heading": "Verifică-ți emailul",
-            "check_email": "Ți-am trimis un link de confirmare la {{email}}. Deschide-l, apoi revino în aplicație și autentifică-te.",
-            "not_received": "Nu ai primit emailul? Verifică și folderul Spam sau cere unul nou.",
-            "resend": "Retrimite linkul",
-            "resending": "Se trimite...",
-            "resent": "Dacă adresa există, ți-am trimis un link nou.",
-            "go_to_login": "Mergi la autentificare"
         },
         "create_user": {
             "heading": "Date utilizator",
@@ -133,16 +110,9 @@
     },
     "auth": {
         "errors": {
-            "unauthorized": "Numele de utilizator sau parola sunt greșite",
-            "username_exists": "Există deja un utilizator cu această adresă de email",
-            "signup": "Eroare la înregistrare. Verifică datele de înregistrare și încearcă din nou.",
-            "resend_code": "Eroare la trimiterea codului de confirmare",
             "init_profile": "Eroare la încărcarea profilului",
             "login": "Eroare la autentificare, vă rugăm încercați din nou",
-            "invalid_password": "Parola nu este conformă cu politica de securitate",
-            "password": "Eroare la schimbarea parolei",
             "code_mismatch": "Codul este invalid",
-            "forgot_password": "Eroare la resetarea parolei",
             "AUTH_001": "Email sau parolă greșită.",
             "AUTH_002": "Prea multe încercări greșite. Contul este blocat 15 minute.",
             "AUTH_003": "Adresa de email nu este confirmată încă. Verifică-ți emailul.",
@@ -156,15 +126,13 @@
             "AUTH_011": "Versiunea aplicației este prea veche. Actualizeaz-o din magazin.",
             "AUTH_012": "Acesta este un cont de organizație. Folosește VIC pe web.",
             "AUTH_013": "Autentificarea cu acest cont nu a reușit.",
-            "migration_hint": "Aveai cont înainte? Folosește linkul primit pe email sau „Ai uitat parola?”.",
             "social_failed": "Autentificarea nu a reușit. Încearcă din nou sau folosește emailul și parola."
         }
     },
     "login": {
-        "title": "Autentificare",
-        "paragraph": "Introdu e-mailul și parola pentru a intra în cont.",
-        "submit": "Intra în cont",
-        "forgot_password": "Ai uitat parola? ",
+        "title": "Intră în cont",
+        "paragraph": "Introdu adresa de email. Îți trimitem un cod de 6 cifre cu care intri în cont. Dacă nu ai cont încă, îl creăm acum.",
+        "submit": "Trimite codul",
         "form": {
             "email": {
                 "label": "E-mail",
@@ -172,60 +140,30 @@
                 "required": "Email-ul este obligatoriu",
                 "pattern": "Formatul email-ului nu este valid"
             },
-            "password": {
-                "label": "Parola",
-                "placeholder": "Introdu parola",
-                "required": "Parola este obligatorie"
-            }
-        },
-        "migration_notice": "Aveai deja cont în VIC? Setează-ți parola din linkul primit pe email sau apasă „Ai uitat parola?”. Dacă intrai cu Google, Facebook sau Apple, folosește același buton ca înainte."
-    },
-    "forgot_password": {
-        "header": "Resetare parola",
-        "paragraph": "Te rugăm să introduci email-ul sau numărul de telefon al contului pentru a reseta parola.",
-        "form": {
-            "email": {
-                "label": "E-mail",
-                "required": "Email-ul este obligatoriu",
-                "pattern": "Formatul email-ului nu este valid"
-            }
-        },
-        "submit": {
-            "label": "Trimite cod resetare"
-        }
-    },
-    "confirm_password": {
-        "header": "Resetare parola",
-        "form": {
             "code": {
-                "label": "Introdu codul primit prin email",
-                "placeholder": "Introdu codul primit prin email",
+                "label": "Codul primit pe email",
+                "placeholder": "6 cifre",
                 "required": "Codul este obligatoriu",
-                "length": "Codul trebuie să aibă o lungime de 6 caractere",
-                "pattern": "Codul trebuie să conțină doar cifre"
-            },
-            "password": {
-                "label": "Parola",
-                "placeholder": "Introdu parola",
-                "required": "Parola este obligatorie",
-                "pattern": "Parola trebuie să conțină minim 8 caractere, litere mari, litere mici, numere și caractere speciale, fără spații"
-            },
-            "confirm_password": {
-                "label": "Confirma parola",
-                "placeholder": "Confirmați parola",
-                "required": "Parola este obligatorie",
-                "match": "Parolele trebuie să fie identice"
+                "length": "Codul are 6 cifre",
+                "pattern": "Codul conține doar cifre"
             }
         },
-        "submit": {
-            "label": "Salvează modificările"
-        }
+        "code": {
+            "title": "Verifică-ți emailul",
+            "paragraph": "Am trimis un cod de 6 cifre la {{email}}. Codul este valabil 15 minute.",
+            "submit": "Intră în cont",
+            "not_received": "Nu ai primit codul? Uită-te și în Spam sau Promoții.",
+            "resend": "Trimite un cod nou",
+            "resend_in": "Poți cere un cod nou în {{seconds}} s",
+            "resent": "Am trimis un cod nou.",
+            "change_email": "Folosește alt email"
+        },
+        "migration_notice": "Aveai deja cont în VIC? Introdu același email: îți trimitem un cod și intri în contul tău, fără parolă. Dacă intrai cu Google sau Apple, folosește același buton ca înainte."
     },
     "settings": {
         "title": "Setări cont",
         "heading": "Date cont",
         "identity": "Date identitate",
-        "password": "Schimbă parola",
         "notification": "Setări notificări",
         "information": "Informații",
         "logout": "Log out",
@@ -287,26 +225,6 @@
             "submit": {
                 "success": "Datele au fost modificate!"
             }
-        }
-    },
-    "change_password": {
-        "title": "Schimbă parola",
-        "form": {
-            "old_password": {
-                "label": "Parola curentă",
-                "placeholder": "Introdu parola curentă"
-            },
-            "new_password": {
-                "label": "Parola nouă",
-                "placeholder": "Introdu parola nouă"
-            },
-            "confirm_password": {
-                "label": "Confirmă parola nouă",
-                "placeholder": "Confirmă parola nouă"
-            }
-        },
-        "submit": {
-            "success": "Parola a fost schimbata!"
         }
     },
     "organizations": {

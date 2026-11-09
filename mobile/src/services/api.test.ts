@@ -93,16 +93,17 @@ describe('API client', () => {
     serve(() => ({ status: 401, data: { code_error: 'AUTH_001' } }));
 
     await expect(
-      API.post('/mobile/auth/login', { email: 'a@b.ro', password: 'x' }),
+      API.post('/mobile/auth/login/code', { email: 'a@b.ro', code: '123456' }),
     ).rejects.toMatchObject({ response: { status: 401 } });
 
-    expect(calls.map((c) => c.url)).toEqual(['/mobile/auth/login']);
+    expect(calls.map((c) => c.url)).toEqual(['/mobile/auth/login/code']);
     expect(await getRefreshToken()).toBe('refresh-1');
   });
 
-  it('refreshes on a 401 from change-password, which needs a session', () => {
-    expect(isPublicAuthRoute('/mobile/auth/change-password')).toBe(false);
-    expect(isPublicAuthRoute('/mobile/auth/reset-password')).toBe(true);
+  it('treats only the public auth routes as public (#514)', () => {
+    expect(isPublicAuthRoute('/mobile/auth/login/request')).toBe(true);
+    expect(isPublicAuthRoute('/mobile/auth/login/code')).toBe(true);
+    expect(isPublicAuthRoute('/mobile/user/profile')).toBe(false);
   });
 
   it('sets updateRequired on 426', async () => {

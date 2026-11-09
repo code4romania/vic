@@ -2,7 +2,6 @@ import React, { useContext, useMemo, useRef } from 'react';
 import bell from '../assets/svg/bell';
 import identification from '../assets/svg/identification';
 import information from '../assets/svg/information';
-import key from '../assets/svg/key';
 import trash from '../assets/svg/trash';
 import logoutIcon from '../assets/svg/logout';
 import user from '../assets/svg/user';
@@ -30,7 +29,6 @@ import { useReducedMotion } from 'react-native-reanimated';
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
   IDENTITY_DATA = 'identity-data',
-  CHANGE_PASSWORD = 'change-password',
   NOTIFICATIONS_SETTINGS = 'notifications-settings',
   INFORMATION = 'information',
   LOGOUT = 'logout',
@@ -44,7 +42,6 @@ export const SETTING_SCREENS = [
     label: i18n.t('settings:identity'),
     route: SETTINGS_ROUTES.IDENTITY_DATA,
   },
-  { icon: key, label: i18n.t('settings:password'), route: SETTINGS_ROUTES.CHANGE_PASSWORD },
   {
     icon: bell,
     label: i18n.t('settings:notification'),
