@@ -209,7 +209,19 @@
       "event": "Event (optional)",
       "saved": "The hours were added."
     },
-    "notes": "Internal notes"
+    "notes": "Internal notes",
+    "stats": {
+      "hours": "Approved hours",
+      "events": "Events"
+    },
+    "events": {
+      "tab": "Events",
+      "title": "Events",
+      "upcoming": "Upcoming",
+      "finished": "Finished",
+      "none": "No events.",
+      "hours": "{{hours}}h approved"
+    }
   },
   "volunteers": {
     "department_and_role": "Department and role",

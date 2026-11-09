@@ -20,16 +20,20 @@ import { VolunteerProps } from '../containers/query/VolunteerWithQueryParams';
 import VolunteerHoursHistory from '../components/VolunteerHoursHistory';
 import ContractsTableWithQueryParams from '../containers/query/ContractsTableWithQueryParams';
 import VolunteerActivities from '../components/VolunteerActivities';
+import VolunteerEvents from '../components/VolunteerEvents';
+import VolunteerStats from '../components/VolunteerStats';
 
 export enum VolunteerTabsOptions {
   ACTIVITIES = 'activities',
   HOURS = 'hours',
+  EVENTS = 'events',
   DOCUMENTS = 'documents',
 }
 
 const VolunteerTabsOptons: SelectItem<VolunteerTabsOptions>[] = [
   { key: VolunteerTabsOptions.ACTIVITIES, value: i18n.t('volunteer:activities.tab') },
   { key: VolunteerTabsOptions.HOURS, value: i18n.t('volunteer:hours_history.tab') },
+  { key: VolunteerTabsOptions.EVENTS, value: i18n.t('volunteer:events.tab') },
   { key: VolunteerTabsOptions.DOCUMENTS, value: i18n.t('side_menu:options.documents') },
 ];
 
@@ -84,7 +88,9 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
               sex={volunteer.user.sex}
               location={volunteer.user.location}
               logo={volunteer.user.profilePicture || ''}
-            />
+            >
+              <VolunteerStats volunteerId={volunteer.id} />
+            </ProfileCard>
           </div>
           <div className="w-full lg:w-2/3 xl:w-3/4">
             <VolunteerProfile
@@ -124,6 +130,9 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
             volunteerName={volunteer?.user.name}
             volunteerStatus={volunteer?.status}
           />
+        )}
+        {query?.activeTab === VolunteerTabsOptions.EVENTS && (
+          <VolunteerEvents volunteerId={id as string} />
         )}
         {query?.activeTab === VolunteerTabsOptions.DOCUMENTS && (
           <ContractsTableWithQueryParams

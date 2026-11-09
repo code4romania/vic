@@ -1,3 +1,4 @@
+import { GetVolunteerEventsUseCase } from './volunteer/get-volunteer-events.usecase';
 import { Module } from '@nestjs/common';
 import { RegisterOrganizationUseCase } from './organization/register-organization.usecase';
 import { UpdateOrganizationUseCase } from './organization/update-organization.usecase';
@@ -288,6 +289,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     UpdateVolunteerProfileUsecase,
     UpdateVolunteerDetailsUsecase,
     AddVolunteerUseCase,
+    GetVolunteerEventsUseCase,
     ImportVolunteersUseCase,
     GetVolunteersForDownloadUseCase,
     GetVolunteerProfileUsecase,
@@ -467,6 +469,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     UpdateVolunteerProfileUsecase,
     UpdateVolunteerDetailsUsecase,
     AddVolunteerUseCase,
+    GetVolunteerEventsUseCase,
     ImportVolunteersUseCase,
     GetVolunteersForDownloadUseCase,
     GetVolunteerProfileUsecase,

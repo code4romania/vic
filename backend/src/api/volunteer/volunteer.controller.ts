@@ -1,4 +1,9 @@
 import {
+  GetVolunteerEventsUseCase,
+  IVolunteerEvents,
+  IVolunteerStats,
+} from 'src/usecases/volunteer/get-volunteer-events.usecase';
+import {
   Body,
   Controller,
   Get,
@@ -52,6 +57,7 @@ import { AddVolunteerDto } from './dto/add-volunteer.dto';
 export class VolunteerController {
   constructor(
     private readonly getOneVolunteerUsecase: GetOneVolunteerUsecase,
+    private readonly getVolunteerEventsUseCase: GetVolunteerEventsUseCase,
     private readonly getManyVolunteersUsecase: GetManyVolunteersUseCase,
     private readonly blockVolunteerUsecase: BlockVolunteerUsecase,
     private readonly activateVolunteerUsecase: ActivateVolunteerUsecase,
@@ -146,6 +152,24 @@ export class VolunteerController {
   ): Promise<VolunteerPresenter> {
     const volunteer = await this.getOneVolunteerUsecase.execute(volunteerId);
     return new VolunteerPresenter(volunteer);
+  }
+
+  // #480: total approved hours and number of events
+  @ApiParam({ name: 'id', type: 'string' })
+  @Get(':id/stats')
+  async getStats(
+    @Param('id', UuidValidationPipe) volunteerId: string,
+  ): Promise<IVolunteerStats> {
+    return this.getVolunteerEventsUseCase.stats(volunteerId);
+  }
+
+  // #485: the volunteer's events, upcoming and finished, read only
+  @ApiParam({ name: 'id', type: 'string' })
+  @Get(':id/events')
+  async getEvents(
+    @Param('id', UuidValidationPipe) volunteerId: string,
+  ): Promise<IVolunteerEvents> {
+    return this.getVolunteerEventsUseCase.execute(volunteerId);
   }
 
   @ApiParam({ name: 'id', type: 'string' })
