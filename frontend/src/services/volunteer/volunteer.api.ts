@@ -4,79 +4,48 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 import { VolunteerFormTypes } from '../../pages/EditVolunteer';
 import { IVolunteer } from '../../common/interfaces/volunteer.interface';
 import API from '../api';
-import { AgeRangeEnum } from '../../common/enums/age-range.enum';
 import { AxiosResponseHeaders } from 'axios';
-import { formatEndDateISO9075, formatStartDateISO9075 } from '../../common/utils/utils';
 import { IVolunteerStatistics } from '../../common/interfaces/volunteer-statistics.interface';
 import { DataSet, InitialDataSet } from '../../components/LineChart';
 import { PieChartOption } from '../../common/constants/pie-chart-options';
 import { LineChartOption } from '../../common/constants/line-chart-options';
 
+// The volunteers list (#476): every status unless one is given.
+export interface IVolunteersFilters {
+  status?: VolunteerStatus;
+  orderBy?: string;
+  orderDirection?: OrderDirection;
+  search?: string;
+  branch?: string;
+  department?: string;
+  role?: string;
+  activityTypeId?: string;
+}
+
+const filterParams = (filters: IVolunteersFilters) => ({
+  status: filters.status,
+  orderBy: filters.orderBy,
+  orderDirection: filters.orderDirection,
+  search: filters.search,
+  branch: filters.branch,
+  department: filters.department,
+  role: filters.role,
+  activityTypeId: filters.activityTypeId,
+});
+
 export const getVolunteers = async (
-  status: VolunteerStatus,
-  limit: number,
-  page: number,
-  orderBy?: string,
-  orderDirection?: OrderDirection,
-  search?: string,
-  age?: AgeRangeEnum,
-  branch?: string,
-  department?: string,
-  role?: string,
-  city?: string,
-  county?: string,
-  activeSinceStart?: Date,
-  activeSinceEnd?: Date,
+  filters: IVolunteersFilters & { limit: number; page: number },
 ): Promise<IPaginatedEntity<IVolunteer>> => {
   return API.get('/volunteer', {
-    params: {
-      limit,
-      page,
-      status,
-      orderBy,
-      orderDirection,
-      search,
-      age,
-      branch,
-      department,
-      role,
-      city,
-      county,
-      ...(activeSinceStart ? { activeSinceStart: formatStartDateISO9075(activeSinceStart) } : {}),
-      ...(activeSinceEnd ? { activeSinceEnd: formatEndDateISO9075(activeSinceEnd) } : {}),
-    },
+    params: { limit: filters.limit, page: filters.page, ...filterParams(filters) },
   }).then((res) => res.data);
 };
 
 export const getVolunteersForDownload = async (
-  status: VolunteerStatus,
-  orderBy?: string,
-  orderDirection?: OrderDirection,
-  search?: string,
-  age?: AgeRangeEnum,
-  branch?: string,
-  department?: string,
-  role?: string,
-  city?: string,
-  county?: string,
-  activeSinceStart?: Date,
-  activeSinceEnd?: Date,
+  filters: IVolunteersFilters,
 ): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
   return API.get('volunteer/download', {
-    params: {
-      status,
-      orderBy,
-      orderDirection,
-      search,
-      age,
-      branch,
-      department,
-      role,
-      city,
-      county,
-      ...(activeSinceStart ? { activeSinceStart: formatStartDateISO9075(activeSinceStart) } : {}),
-      ...(activeSinceEnd ? { activeSinceEnd: formatEndDateISO9075(activeSinceEnd) } : {}),
-    },
+    params: filterParams(filters),
     responseType: 'arraybuffer',
   }).then((res) => {
     return { data: res.data, headers: res.headers as AxiosResponseHeaders };

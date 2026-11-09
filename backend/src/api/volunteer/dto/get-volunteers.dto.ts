@@ -3,6 +3,7 @@ import {
   IsEnum,
   IsOptional,
   IsString,
+  IsUUID,
   ValidateIf,
 } from 'class-validator';
 import { AgeRangeEnum } from 'src/common/enums/age-range.enum';
@@ -10,8 +11,15 @@ import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 
 export class GetVolunteersDto extends BasePaginationFilterDto {
+  // All statuses when left out (VIC 2.0 #476: one list with a status filter, no tabs).
   @IsEnum(VolunteerStatus)
-  status: VolunteerStatus;
+  @IsOptional()
+  status?: VolunteerStatus;
+
+  // Volunteers who logged hours (pending or approved) on this activity type (#476).
+  @IsUUID()
+  @IsOptional()
+  activityTypeId?: string;
 
   @IsEnum(AgeRangeEnum)
   @IsOptional()

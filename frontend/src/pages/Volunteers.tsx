@@ -4,13 +4,11 @@ import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
 import CardBody from '../components/CardBody';
 import Button from '../components/Button';
-import Tabs from '../components/Tabs';
 import DataTableComponent from '../components/DataTableComponent';
 import i18n from '../common/config/i18n';
 import {
   ArrowDownTrayIcon,
   EyeIcon,
-  XMarkIcon,
   PauseCircleIcon,
   NoSymbolIcon,
   CheckCircleIcon,
@@ -19,12 +17,7 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
-import {
-  AgeRangeOptions,
-  downloadExcel,
-  formatDate,
-  VolunteerStatusMarkerColorMapper,
-} from '../common/utils/utils';
+import { downloadExcel, VolunteerStatusMarkerColorMapper } from '../common/utils/utils';
 import StatusWithMarker from '../components/StatusWithMarker';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -40,26 +33,23 @@ import { IVolunteer } from '../common/interfaces/volunteer.interface';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { useNavigate } from 'react-router-dom';
 import DataTableFilters from '../components/DataTableFilters';
-import DateRangePicker from '../components/DateRangePicker';
-import LocationSelect from '../containers/LocationSelect';
-import { ListItem } from '../common/interfaces/list-item.interface';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
 import { DivisionType } from '../common/enums/division-type.enum';
-import { AgeRangeEnum } from '../common/enums/age-range.enum';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { getVolunteersForDownload } from '../services/volunteer/volunteer.api';
-import CellLayout from '../layouts/CellLayout';
+import { useActivityTypeListItemsQuery } from '../services/activity-type/activity-type.service';
+import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
 import { VolunteersProps } from '../containers/query/VolunteersWithQueryParams';
 import SelectFilter from '../containers/SelectFilter';
 
-const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
-  { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
-  { key: VolunteerStatus.INACTIVE, value: i18n.t('volunteers:tabs.inactive') },
-  { key: VolunteerStatus.CANDIDATE, value: i18n.t('volunteers:tabs.candidate') },
-  { key: VolunteerStatus.BLOCKED, value: i18n.t('volunteers:tabs.blocked') },
-];
+const STATUS_OPTIONS: SelectItem<string>[] = [
+  VolunteerStatus.ACTIVE,
+  VolunteerStatus.INACTIVE,
+  VolunteerStatus.CANDIDATE,
+  VolunteerStatus.BLOCKED,
+].map((status) => ({ key: status, value: i18n.t(`volunteers:status_label.${status}`) }));
 
-const ActiveVolunteersTableHeader = [
+const VolunteersTableHeader = [
   {
     id: 'user.firstName',
     name: i18n.t('general:name'),
@@ -127,36 +117,11 @@ const ActiveVolunteersTableHeader = [
   },
 ];
 
-const ArchivedVolunteersTableHeader = [
-  ...ActiveVolunteersTableHeader,
-  {
-    id: 'archivedOn',
-    name: i18n.t('volunteers:inactive_on'),
-    sortable: true,
-    cell: (row: IVolunteer) => (
-      <CellLayout>{row.archivedOn ? formatDate(row.archivedOn) : '-'}</CellLayout>
-    ),
-  },
-];
-
-const BlockedVolunteersTableHeader = [
-  ...ActiveVolunteersTableHeader,
-  {
-    id: 'blockedOn',
-    name: i18n.t('volunteers:blocked_on'),
-    sortable: true,
-    cell: (row: IVolunteer) => (
-      <CellLayout>{row.blockedOn ? formatDate(row.blockedOn) : '-'}</CellLayout>
-    ),
-  },
-];
-
 const Volunteers = ({ query, setQuery }: VolunteersProps) => {
   const navigate = useNavigate();
   // Modal
   const [blockVolunteerCandidate, setBlockVolunteerCandidate] = useState<null | IVolunteer>();
   // filters
-  const [location, setLocation] = useState<ListItem>();
   const [branch, setBranch] = useState<SelectItem<string>>();
   const [department, setDepartment] = useState<SelectItem<string>>();
   const [role, setRole] = useState<SelectItem<string>>();
@@ -166,22 +131,22 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     isLoading: isVolunteersLoading,
     error: volunteersError,
     refetch,
-  } = useVolunteersQuery(
-    query?.volunteerStatus as VolunteerStatus,
-    query?.limit as number,
-    query?.page as number,
-    query?.orderBy as string,
-    query?.orderDirection as OrderDirection,
-    query?.search as string,
-    query?.age as AgeRangeEnum,
-    query?.branch,
-    query?.department,
-    query?.role,
-    query?.location && query?.location[0],
-    query?.location && query?.location[1],
-    query?.createdOnStart as Date,
-    query?.createdOnEnd as Date,
-  );
+  } = useVolunteersQuery({
+    status: query?.volunteerStatus as VolunteerStatus | undefined,
+    limit: query?.limit as number,
+    page: query?.page as number,
+    orderBy: query?.orderBy as string,
+    orderDirection: query?.orderDirection as OrderDirection,
+    search: query?.search as string,
+    branch: query?.branch,
+    department: query?.department,
+    role: query?.role,
+    activityTypeId: query?.activityTypeId,
+  });
+
+  const { data: activityTypes } = useActivityTypeListItemsQuery({
+    status: ActivityTypeStatus.ACTIVE,
+  });
 
   //actions
   const { mutateAsync: archiveVolunteer, isLoading: isArchivingVolunteer } =
@@ -200,124 +165,52 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
       );
   }, [volunteersError]);
 
-  const onTabClick = (tab: VolunteerStatus) => {
-    // reset filter queries on tab click
-    setQuery({ volunteerStatus: tab }, 'replaceIn');
-    setBranch(undefined);
-    setDepartment(undefined);
-    setRole(undefined);
-    setLocation(undefined);
+  // menu items, by the row's status (one list for every status, #476)
+  const menuItemsFor = (row: IVolunteer) => {
+    const view = {
+      label: i18n.t('volunteers:popover.view'),
+      icon: <EyeIcon className="menu-icon" />,
+      onClick: onView,
+    };
+    const block = {
+      label: i18n.t('volunteers:popover.block'),
+      icon: <NoSymbolIcon className="menu-icon" />,
+      onClick: onBlock,
+      alert: true,
+    };
+    switch (row.status) {
+      case VolunteerStatus.ACTIVE:
+        return [
+          view,
+          {
+            label: i18n.t('volunteers:popover.archive'),
+            icon: <PauseCircleIcon className="menu-icon" />,
+            onClick: onArchive,
+          },
+          block,
+        ];
+      case VolunteerStatus.INACTIVE:
+        return [
+          view,
+          {
+            label: i18n.t('volunteers:popover.activate'),
+            icon: <CheckCircleIcon className="menu-icon" />,
+            onClick: onActivate,
+          },
+          block,
+        ];
+      case VolunteerStatus.CANDIDATE:
+        return [view, block];
+      default:
+        return [view];
+    }
   };
 
-  // menu items
-  const buildActiveVolunteersActionColumn = (): TableColumn<IVolunteer> => {
-    const activeVolunteersMenuItems = [
-      {
-        label: i18n.t('volunteers:popover.view'),
-        icon: <EyeIcon className="menu-icon" />,
-        onClick: onView,
-      },
-      {
-        label: i18n.t('volunteers:popover.archive'),
-        icon: <PauseCircleIcon className="menu-icon" />,
-        onClick: onArchive,
-      },
-      {
-        label: i18n.t('volunteers:popover.block'),
-        icon: <NoSymbolIcon className="menu-icon" />,
-        onClick: onBlock,
-        alert: true,
-      },
-    ];
-
-    return {
-      name: '',
-      cell: (row: IVolunteer) => (
-        <Popover<IVolunteer> row={row} items={activeVolunteersMenuItems} />
-      ),
-      width: '50px',
-      allowOverflow: true,
-    };
-  };
-
-  const buildArchivedVolunteersActionColumn = (): TableColumn<IVolunteer> => {
-    const archivedVolunteersMenuItems = [
-      {
-        label: i18n.t('volunteers:popover.view'),
-        icon: <EyeIcon className="menu-icon" />,
-        onClick: onView,
-      },
-      {
-        label: i18n.t('volunteers:popover.activate'),
-        icon: <CheckCircleIcon className="menu-icon" />,
-        onClick: onActivate,
-      },
-      {
-        label: i18n.t('volunteers:popover.delete'),
-        icon: <XMarkIcon className="menu-icon" />,
-        onClick: onDelete,
-        alert: true,
-      },
-      {
-        label: i18n.t('volunteers:popover.block'),
-        icon: <NoSymbolIcon className="menu-icon" />,
-        onClick: onBlock,
-        alert: true,
-      },
-    ];
-
-    return {
-      name: '',
-      cell: (row: IVolunteer) => (
-        <Popover<IVolunteer> row={row} items={archivedVolunteersMenuItems} />
-      ),
-      width: '50px',
-      allowOverflow: true,
-    };
-  };
-
-  const buildCandidateVolunteersActionColumn = (): TableColumn<IVolunteer> => {
-    const candidateVolunteersMenuItems = [
-      {
-        label: i18n.t('volunteers:popover.view'),
-        icon: <EyeIcon className="menu-icon" />,
-        onClick: onView,
-      },
-      {
-        label: i18n.t('volunteers:popover.block'),
-        icon: <NoSymbolIcon className="menu-icon" />,
-        onClick: onBlock,
-        alert: true,
-      },
-    ];
-
-    return {
-      name: '',
-      cell: (row: IVolunteer) => (
-        <Popover<IVolunteer> row={row} items={candidateVolunteersMenuItems} />
-      ),
-      width: '50px',
-      allowOverflow: true,
-    };
-  };
-
-  const buildBlockedVolunteersActionColumn = (): TableColumn<IVolunteer> => {
-    const blockedVolunteersMenuItems = [
-      {
-        label: i18n.t('volunteers:popover.view'),
-        icon: <EyeIcon className="menu-icon" />,
-        onClick: onView,
-      },
-    ];
-
-    return {
-      name: '',
-      cell: (row: IVolunteer) => (
-        <Popover<IVolunteer> row={row} items={blockedVolunteersMenuItems} />
-      ),
-      width: '50px',
-      allowOverflow: true,
-    };
+  const actionColumn: TableColumn<IVolunteer> = {
+    name: '',
+    cell: (row: IVolunteer) => <Popover<IVolunteer> row={row} items={menuItemsFor(row)} />,
+    width: '50px',
+    allowOverflow: true,
   };
 
   // row actions
@@ -351,10 +244,6 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
 
   const onBlock = (row: IVolunteer) => {
     setBlockVolunteerCandidate(row);
-  };
-
-  const onDelete = (row: IVolunteer) => {
-    alert(`Not yet implemented, ${row}`);
   };
 
   const onConfirmBlockModal = () => {
@@ -445,70 +334,41 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     );
   };
 
-  const onCreatedOnRangeChange = ([createdOnStart, createdOnEnd]: Date[]) => {
-    setQuery(
-      {
-        createdOnStart,
-        createdOnEnd,
-      },
-      'replaceIn',
-    );
+  const onStatusChange = (status: SelectItem<string> | undefined) => {
+    setQuery({ volunteerStatus: status?.key, page: 1 }, 'replaceIn');
   };
 
-  const onLocationChange = (location: ListItem) => {
-    setLocation(location);
-    setQuery(
-      {
-        location: location.label.split(', '),
-      },
-      'replaceIn',
-    );
-  };
-
-  const onAgeRangeChange = (selectedRange: SelectItem<string> | undefined) => {
-    setQuery(
-      {
-        age: selectedRange?.key,
-      },
-      'replaceIn',
-    );
+  const onActivityTypeChange = (activityType: SelectItem<string> | undefined) => {
+    setQuery({ activityTypeId: activityType?.key, page: 1 }, 'replaceIn');
   };
 
   const onResetFilters = () => {
-    setLocation(undefined);
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
     setQuery(
       {
-        volunteerStatus: query.volunteerStatus,
-        location: undefined,
+        volunteerStatus: undefined,
+        activityTypeId: undefined,
         branch: undefined,
         department: undefined,
         role: undefined,
-        age: undefined,
-        createdOnEnd: undefined,
-        createdOnStart: undefined,
       },
       'replaceIn',
     );
   };
 
   const onExport = async () => {
-    const { data: volunteersData } = await getVolunteersForDownload(
-      query?.volunteerStatus as VolunteerStatus,
-      query?.orderBy as string,
-      query?.orderDirection as OrderDirection,
-      query?.search as string,
-      query?.age as AgeRangeEnum,
-      query?.branch,
-      query?.department,
-      query?.role,
-      query?.location && query?.location[0],
-      query?.location && query?.location[1],
-      query?.createdOnStart as Date,
-      query?.createdOnEnd as Date,
-    );
+    const { data: volunteersData } = await getVolunteersForDownload({
+      status: query?.volunteerStatus as VolunteerStatus | undefined,
+      orderBy: query?.orderBy as string,
+      orderDirection: query?.orderDirection as OrderDirection,
+      search: query?.search as string,
+      branch: query?.branch,
+      department: query?.department,
+      role: query?.role,
+      activityTypeId: query?.activityTypeId,
+    });
 
     downloadExcel(volunteersData as BlobPart, i18n.t('volunteers:download'));
   };
@@ -516,141 +376,83 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
   return (
     <PageLayout>
       <PageHeader>{i18n.t('side_menu:options.volunteers_list')}</PageHeader>
-      <Tabs<VolunteerStatus>
-        tabs={VolunteersTabs}
-        onClick={onTabClick}
-        defaultTab={
-          query?.volunteerStatus
-            ? VolunteersTabs.find((tab) => tab.key === query?.volunteerStatus)
-            : VolunteersTabs[0]
-        }
+      <DataTableFilters
+        onSearch={onSearch}
+        searchValue={query?.search}
+        searchPlaceholder={i18n.t('volunteers:search_placeholder').toString()}
+        onResetFilters={onResetFilters}
       >
-        <DataTableFilters
-          onSearch={onSearch}
-          searchValue={query?.search}
-          searchPlaceholder={i18n.t('volunteers:search_placeholder').toString()}
-          onResetFilters={onResetFilters}
-        >
-          <DateRangePicker
-            label={i18n.t('volunteers:filters.active_since_range')}
-            onChange={onCreatedOnRangeChange}
-            value={
-              query?.createdOnStart && query?.createdOnEnd
-                ? [query?.createdOnStart, query?.createdOnEnd]
-                : undefined
+        <SelectFilter
+          label={`${i18n.t('volunteers:status')}`}
+          placeholder={`${i18n.t('volunteers:filters.all_statuses')}`}
+          options={STATUS_OPTIONS}
+          onChange={onStatusChange}
+          defaultValue={query?.volunteerStatus}
+          allowDeselect
+        />
+        <SelectFilter
+          label={`${i18n.t('volunteers:filters.activity_type')}`}
+          placeholder={`${i18n.t('volunteers:filters.all_activity_types')}`}
+          options={(activityTypes ?? []).map((type) => ({ key: type.id, value: type.name }))}
+          onChange={onActivityTypeChange}
+          defaultValue={query?.activityTypeId}
+          allowDeselect
+        />
+        <OrganizationStructureSelect
+          label={`${i18n.t('division:entity.branch')}`}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+          onChange={onSetBranchFilter}
+          selected={branch}
+          defaultValue={query.branch}
+          type={DivisionType.BRANCH}
+        />
+        <OrganizationStructureSelect
+          label={`${i18n.t('division:entity.department')}`}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+          onChange={onSetDepartmentFilter}
+          selected={department}
+          defaultValue={query.department}
+          type={DivisionType.DEPARTMENT}
+        />
+        <OrganizationStructureSelect
+          label={`${i18n.t('division:entity.role')}`}
+          placeholder={`${i18n.t('general:select', { item: '' })}`}
+          onChange={onSetRoleFilter}
+          selected={role}
+          defaultValue={query.role}
+          type={DivisionType.ROLE}
+        />
+      </DataTableFilters>
+      <Card>
+        <CardHeader>
+          <h2>{i18n.t('volunteers:found', { count: volunteers?.meta?.totalItems ?? 0 })}</h2>
+          <Button
+            label={i18n.t('general:download_table')}
+            icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+            className="btn-outline-secondary"
+            onClick={onExport}
+          />
+        </CardHeader>
+        <CardBody>
+          <DataTableComponent
+            columns={[...VolunteersTableHeader, actionColumn]}
+            data={volunteers?.items}
+            loading={
+              isVolunteersLoading ||
+              isArchivingVolunteer ||
+              isActivatingVolunteer ||
+              isBlockingVolunteer
             }
-            id="created-on-range__picker"
+            pagination
+            paginationPerPage={query.limit as number}
+            paginationTotalRows={volunteers?.meta?.totalItems}
+            paginationDefaultPage={query.page as number}
+            onChangeRowsPerPage={onRowsPerPageChange}
+            onChangePage={onChangePage}
+            onSort={onSort}
           />
-          <OrganizationStructureSelect
-            label={`${i18n.t('division:entity.branch')}`}
-            placeholder={`${i18n.t('general:select', { item: '' })}`}
-            onChange={onSetBranchFilter}
-            selected={branch}
-            defaultValue={query.branch}
-            type={DivisionType.BRANCH}
-          />
-          <OrganizationStructureSelect
-            label={`${i18n.t('division:entity.department')}`}
-            placeholder={`${i18n.t('general:select', { item: '' })}`}
-            onChange={onSetDepartmentFilter}
-            selected={department}
-            defaultValue={query.department}
-            type={DivisionType.DEPARTMENT}
-          />
-          <OrganizationStructureSelect
-            label={`${i18n.t('division:entity.role')}`}
-            placeholder={`${i18n.t('general:select', { item: '' })}`}
-            onChange={onSetRoleFilter}
-            selected={role}
-            defaultValue={query.role}
-            type={DivisionType.ROLE}
-          />
-          <LocationSelect
-            label={i18n.t('general:location')}
-            onSelect={onLocationChange}
-            value={location}
-            defaultCity={query.location && query.location[0]}
-            defaultCounty={query.location && query.location[1]}
-          />
-          <SelectFilter
-            label={`${i18n.t('general:age')}`}
-            placeholder={`${i18n.t('general:select', { item: '' })}`}
-            options={AgeRangeOptions}
-            onChange={onAgeRangeChange}
-            defaultValue={query?.age}
-            allowDeselect
-          />
-        </DataTableFilters>
-        <Card>
-          <CardHeader>
-            <h2>{i18n.t(`volunteers:tabs.${query?.volunteerStatus}`)}</h2>
-            <Button
-              label={i18n.t('general:download_table')}
-              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-              className="btn-outline-secondary"
-              onClick={onExport}
-            />
-          </CardHeader>
-          <CardBody>
-            {query?.volunteerStatus === VolunteerStatus.ACTIVE && (
-              <DataTableComponent
-                columns={[...ActiveVolunteersTableHeader, buildActiveVolunteersActionColumn()]}
-                data={volunteers?.items}
-                loading={isVolunteersLoading || isArchivingVolunteer || isBlockingVolunteer}
-                pagination
-                paginationPerPage={query.limit as number}
-                paginationTotalRows={volunteers?.meta?.totalItems}
-                paginationDefaultPage={query.page as number}
-                onChangeRowsPerPage={onRowsPerPageChange}
-                onChangePage={onChangePage}
-                onSort={onSort}
-              />
-            )}
-            {query?.volunteerStatus === VolunteerStatus.CANDIDATE && (
-              <DataTableComponent
-                columns={[...ActiveVolunteersTableHeader, buildCandidateVolunteersActionColumn()]}
-                data={volunteers?.items}
-                loading={isVolunteersLoading || isBlockingVolunteer}
-                pagination
-                paginationPerPage={query.limit as number}
-                paginationTotalRows={volunteers?.meta?.totalItems}
-                paginationDefaultPage={query.page as number}
-                onChangeRowsPerPage={onRowsPerPageChange}
-                onChangePage={onChangePage}
-                onSort={onSort}
-              />
-            )}
-            {query?.volunteerStatus === VolunteerStatus.INACTIVE && (
-              <DataTableComponent
-                columns={[...ArchivedVolunteersTableHeader, buildArchivedVolunteersActionColumn()]}
-                data={volunteers?.items}
-                loading={isVolunteersLoading || isActivatingVolunteer || isBlockingVolunteer}
-                pagination
-                paginationPerPage={query.limit as number}
-                paginationTotalRows={volunteers?.meta?.totalItems}
-                paginationDefaultPage={query.page as number}
-                onChangeRowsPerPage={onRowsPerPageChange}
-                onChangePage={onChangePage}
-                onSort={onSort}
-              />
-            )}
-            {query?.volunteerStatus === VolunteerStatus.BLOCKED && (
-              <DataTableComponent
-                columns={[...BlockedVolunteersTableHeader, buildBlockedVolunteersActionColumn()]}
-                data={volunteers?.items}
-                loading={isVolunteersLoading}
-                pagination
-                paginationPerPage={query.limit as number}
-                paginationTotalRows={volunteers?.meta?.totalItems}
-                paginationDefaultPage={query.page as number}
-                onChangeRowsPerPage={onRowsPerPageChange}
-                onChangePage={onChangePage}
-                onSort={onSort}
-              />
-            )}
-          </CardBody>
-        </Card>
-      </Tabs>
+        </CardBody>
+      </Card>
       {blockVolunteerCandidate && (
         <ConfirmationModal
           title={i18n.t('volunteers:modal.block.title')}

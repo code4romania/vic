@@ -58,6 +58,7 @@ export class VolunteerRepositoryService
       orderDirection,
       organizationId,
       status,
+      activityTypeId,
       search,
       branch,
       department,
@@ -110,14 +111,30 @@ export class VolunteerRepositoryService
         'archivedBy',
       )
       .select()
-      .where(
-        'volunteer.organizationId = :organizationId AND volunteer.status = :status',
-        { organizationId, status },
-      )
+      .where('volunteer.organizationId = :organizationId', { organizationId })
       .orderBy(
         this.buildOrderByQuery(orderBy || 'createdOn', 'volunteer'),
         orderDirection || OrderDirection.ASC,
       );
+
+    if (status) {
+      query.andWhere('volunteer.status = :status', { status });
+    }
+
+    // logged hours on the activity type, pending or approved (#476)
+    if (activityTypeId) {
+      query.andWhere(
+        `EXISTS (SELECT 1 FROM activity_log log WHERE log.volunteer_id = volunteer.id
+          AND log.activity_type_id = :activityTypeId AND log.status IN (:...loggedStatuses))`,
+        {
+          activityTypeId,
+          loggedStatuses: [
+            ActivityLogStatus.PENDING,
+            ActivityLogStatus.APPROVED,
+          ],
+        },
+      );
+    }
 
     // name, email, phone and city; case and diacritics insensitive (#474)
     if (search) {

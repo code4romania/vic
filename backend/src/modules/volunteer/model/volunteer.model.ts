@@ -106,9 +106,12 @@ export type FindVolunteerOptions = Partial<IVolunteerModel> & {
   organizationId?: IVolunteerModel['organization']['id'];
 };
 
-export type FindManyVolunteersOptions = Pick<IVolunteerModel, 'status'> & {
+export type FindManyVolunteersOptions = Partial<
+  Pick<IVolunteerModel, 'status'>
+> & {
   organizationId: IVolunteerModel['organization']['id'];
 } & Partial<{
+    activityTypeId: string;
     city: string;
     county: string;
     branch: string;
