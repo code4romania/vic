@@ -31,6 +31,7 @@ import {
   IEventCountersModel,
   FindEventCandidatesOptions,
   IEventCandidateModel,
+  IEventRegistrationExportRow,
 } from '../models/event.model';
 import { EventStatus } from '../enums/event-status.enum';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
@@ -88,6 +89,34 @@ export class EventRepository
     return rows.map((row: IEventCandidateModel) => ({
       ...row,
       totalHours: +row.totalHours,
+    }));
+  }
+
+  // #497: the event's registered ("going") people; profile fields when they volunteer in the organization
+  async findRegistrationsForExport(
+    eventId: string,
+  ): Promise<IEventRegistrationExportRow[]> {
+    const rows = await this.eventRepository.query(
+      `SELECT u.name, COALESCE(vp.email, u.email) AS email, u.phone,
+              d.name AS department, b.name AS branch, ro.name AS role,
+              COALESCE((SELECT sum(l.hours) FROM activity_log l
+                        WHERE l.volunteer_id = v.id AND l.organization_id = e.organization_id AND l.status = 'approved'), 0) AS hours,
+              r.created_on AS "registeredOn"
+       FROM event_rsvp r
+       JOIN event e ON e.id = r.event_id
+       JOIN "user" u ON u.id = r.user_id
+       LEFT JOIN volunteer v ON v.user_id = u.id AND v.organization_id = e.organization_id
+       LEFT JOIN volunteer_profile vp ON vp.id = v.volunteer_profile_id
+       LEFT JOIN organization_structure d ON d.id = vp.department_id
+       LEFT JOIN organization_structure b ON b.id = vp.branch_id
+       LEFT JOIN organization_structure ro ON ro.id = vp.role_id
+       WHERE r.event_id = $1 AND r.going
+       ORDER BY u.name`,
+      [eventId],
+    );
+    return rows.map((row: IEventRegistrationExportRow) => ({
+      ...row,
+      hours: +row.hours,
     }));
   }
 

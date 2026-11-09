@@ -623,6 +623,23 @@
       "added_one": "{{count}} voluntar adăugat",
       "added_few": "{{count}} voluntari adăugați",
       "added_other": "{{count}} de voluntari adăugați"
+    },
+    "export_registrations": {
+      "button": "Exportă înscrișii",
+      "title": "Exportă voluntarii înscriși",
+      "description": "Alege coloanele. Fișierul conține voluntarii care participă la eveniment.",
+      "submit": "Descarcă XLSX",
+      "file": "Înscrieri {{event}}.xlsx",
+      "fields": {
+        "name": "Nume",
+        "email": "Email",
+        "phone": "Telefon",
+        "department": "Departament",
+        "branch": "Filială",
+        "role": "Rol",
+        "hours": "Ore aprobate în organizație",
+        "registeredOn": "Data înscrierii"
+      }
     }
   },
   "announcement": {

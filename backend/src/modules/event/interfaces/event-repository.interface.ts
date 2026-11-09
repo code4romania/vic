@@ -14,6 +14,7 @@ import {
   IEventCountersModel,
   FindEventCandidatesOptions,
   IEventCandidateModel,
+  IEventRegistrationExportRow,
 } from '../models/event.model';
 
 export interface IEventRepository {
@@ -30,6 +31,9 @@ export interface IEventRepository {
     options: FindEventCandidatesOptions,
   ): Promise<IEventCandidateModel[]>;
   countGoing(eventId: string): Promise<number>;
+  findRegistrationsForExport(
+    eventId: string,
+  ): Promise<IEventRegistrationExportRow[]>;
   findOpenEvents(
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>>;

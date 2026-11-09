@@ -22,6 +22,7 @@ import {
   IEventCountersModel,
   FindEventCandidatesOptions,
   IEventCandidateModel,
+  IEventRegistrationExportRow,
 } from '../models/event.model';
 import { EventRSVPRepository } from '../repositories/event-rsvp.repository';
 import { EventRepository } from '../repositories/event.repository';
@@ -51,6 +52,12 @@ export class EventFacade {
     options: FindEventCandidatesOptions,
   ): Promise<IEventCandidateModel[]> {
     return this.eventRepository.findCandidates(options);
+  }
+
+  findRegistrationsForExport(
+    eventId: string,
+  ): Promise<IEventRegistrationExportRow[]> {
+    return this.eventRepository.findRegistrationsForExport(eventId);
   }
 
   countGoing(eventId: string): Promise<number> {

@@ -3,6 +3,7 @@ import OrganizationStructureSelect from '../containers/OrganizationStructureSele
 import { downloadExcel } from '../common/utils/utils';
 import Card from '../layouts/CardLayout';
 import Button from './Button';
+import ExportRegistrationsModal from './ExportRegistrationsModal';
 import CardHeader from './CardHeader';
 import { DivisionType } from '../common/enums/division-type.enum';
 import { RSVPGoingEnum } from '../common/enums/rsvp.enum';
@@ -75,6 +76,8 @@ interface RsvpTableProps extends RsvpTableBasicProps {
 }
 
 const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
+  // #497
+  const [showExport, setShowExport] = useState<boolean>(false);
   // filters
   const [branch, setBranch] = useState<SelectItem<string>>();
   const [department, setDepartment] = useState<SelectItem<string>>();
@@ -244,12 +247,20 @@ const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
       <Card>
         <CardHeader>
           <h2>{i18n.t('events:responses_list')}</h2>
-          <Button
-            label={i18n.t('general:download_table')}
-            icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-            className="btn-outline-secondary ml-auto"
-            onClick={onExportRSVPs}
-          />
+          <div className="flex flex-wrap gap-2 sm:gap-4 ml-auto">
+            <Button
+              label={i18n.t('events:export_registrations.button')}
+              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+              className="btn-outline-secondary"
+              onClick={() => setShowExport(true)}
+            />
+            <Button
+              label={i18n.t('general:download_table')}
+              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+              className="btn-outline-secondary"
+              onClick={onExportRSVPs}
+            />
+          </div>
         </CardHeader>
         <CardBody>
           <DataTableComponent
@@ -266,6 +277,9 @@ const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
           />
         </CardBody>
       </Card>
+      {showExport && (
+        <ExportRegistrationsModal eventId={eventId} onClose={() => setShowExport(false)} />
+      )}
     </>
   );
 };

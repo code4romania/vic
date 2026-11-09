@@ -229,3 +229,26 @@ export const addVolunteersToEvent = async (
 ): Promise<IEventCandidate[]> => {
   return API.post(`/event/${eventId}/volunteers`, { volunteerIds }).then((res) => res.data);
 };
+
+// #497: the columns the NGO can export for the registered volunteers, in the file's order
+export const REGISTRATION_EXPORT_FIELDS = [
+  'name',
+  'email',
+  'phone',
+  'department',
+  'branch',
+  'role',
+  'hours',
+  'registeredOn',
+] as const;
+export type RegistrationExportField = (typeof REGISTRATION_EXPORT_FIELDS)[number];
+
+export const downloadEventRegistrations = async (
+  eventId: string,
+  fields: RegistrationExportField[],
+): Promise<BlobPart> => {
+  return API.get(`event/${eventId}/registrations/download`, {
+    params: { fields: fields.join(',') },
+    responseType: 'arraybuffer',
+  }).then((res) => res.data);
+};
