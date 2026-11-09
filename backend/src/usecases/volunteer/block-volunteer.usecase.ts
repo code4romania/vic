@@ -7,6 +7,7 @@ import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneVolunteerUsecase } from './get-one-volunteer.usecase';
 import { SyncUserOrganizationsUsecase } from '../user/sync-user-organizations.usecase';
+import { assertVolunteerNotBlocked } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class BlockVolunteerUsecase implements IUseCaseService<IVolunteerModel> {
@@ -22,6 +23,9 @@ export class BlockVolunteerUsecase implements IUseCaseService<IVolunteerModel> {
     admin: IAdminUserModel,
   ): Promise<IVolunteerModel> {
     const volunteer = await this.getOneVolunteerUsecase.execute(volunteerId);
+
+    // Blocked is permanent, so blocking twice is also a status change we refuse
+    assertVolunteerNotBlocked(volunteer);
 
     const blocked = await this.volunteerFacade.block({
       id: volunteerId,

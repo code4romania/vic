@@ -12,6 +12,7 @@ import { ActivityTypeExceptionMessages } from 'src/modules/activity-type/excepti
 import { ActivityTypeFacade } from 'src/modules/activity-type/services/activity-type.facade';
 import { GetOneEventUseCase } from '../event/get-one-event.usecase';
 import { GetOneActivityLogUsecase } from './get-one-activity-log.usecase';
+import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class UpdateActivityLogUsecase
@@ -31,6 +32,8 @@ export class UpdateActivityLogUsecase
   ): Promise<IActivityLogModel> {
     // 1. Check if the log to be updated, exists
     const log = await this.getOneActivityLogUsecase.execute(id);
+    // An inactive or blocked volunteer's hours are read-only
+    assertVolunteerEditable(log.volunteer);
 
     // 2. Allow updates only for PENDING requests
     if (log.status !== ActivityLogStatus.PENDING) {

@@ -99,6 +99,13 @@ export const updateVolunteer = async (
   }).then((res) => res.data);
 };
 
+export const updateVolunteerDetails = async (
+  id: string,
+  data: { source?: string | null; isFavorite?: boolean },
+): Promise<IVolunteer> => {
+  return API.patch(`volunteer/${id}/details`, data).then((res) => res.data);
+};
+
 export const archiveVolunteer = async (id: string): Promise<IVolunteer> => {
   return API.patch(`volunteer/${id}/archive`).then((res) => res.data);
 };

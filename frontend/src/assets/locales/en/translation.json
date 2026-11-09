@@ -126,8 +126,9 @@
     "volunteer_from": "Added to VIC at",
     "status": {
       "active": "active",
-      "archived": "archived",
-      "blocked": "locked"
+      "blocked": "locked",
+      "inactive": "inactive",
+      "candidate": "candidate"
     },
     "registration": {
       "title": "Application form",
@@ -179,24 +180,29 @@
       "submit": {
         "edit": "Volunteer data has been changed"
       }
-    }
+    },
+    "source": "Source",
+    "source_placeholder": "E.g. Facebook, event, referral",
+    "favorite": "Add to favorites",
+    "unfavorite": "Remove from favorites",
+    "no_account": "No VIC account"
   },
   "volunteers": {
     "department_and_role": "Department and role",
     "location": "Volunteer Location",
-    "archived_on": "Archived from",
     "blocked_on": "Date of blocking",
     "tabs": {
       "active": "Active volunteers",
-      "archived": "Archived volunteers",
-      "blocked": "Volunteers stuck"
+      "blocked": "Volunteers stuck",
+      "inactive": "Inactive volunteers",
+      "candidate": "Candidates"
     },
     "filters": {
       "active_since_range": "Activity period"
     },
     "popover": {
       "view": "View profile",
-      "archive": "Voluntary archiving",
+      "archive": "Mark as inactive",
       "activate": "Voluntary reactivation",
       "delete": "Delete from NGO",
       "block": "Voluntary blocking"
@@ -215,13 +221,16 @@
     "errors": {
       "VOLUNTEER_001": "Volunteer not found",
       "VOLUNTEER_002": "The user is already part of the organization",
-      "VOLUNTEER_003": "Only active volunteers can be archived",
-      "VOLUNTEER_004": "Only archived volunteers can reactivate",
+      "VOLUNTEER_003": "Only active volunteers can be marked inactive",
+      "VOLUNTEER_004": "Only inactive volunteers can be activated",
       "VOLUNTEER_PROFILE_001": "The volunteer already has a profile",
       "VOLUNTEER_PROFILE_002": "Wrong role/department/branch",
-      "VOLUNTEER_PROFILE_003": "The volunteer has no profile to be updated. Create one before making changes."
+      "VOLUNTEER_PROFILE_003": "The volunteer has no profile to be updated. Create one before making changes.",
+      "VOLUNTEER_006": "A blocked volunteer cannot change status",
+      "VOLUNTEER_007": "The volunteer is not active: hours, documents and contracts can no longer change"
     },
-    "download": "Volunteers.xlsx"
+    "download": "Volunteers.xlsx",
+    "inactive_on": "Inactive since"
   },
   "division": {
     "members": "Members",

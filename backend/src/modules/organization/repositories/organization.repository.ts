@@ -174,7 +174,7 @@ export class OrganizationRepositoryService
         },
       )
       .where('(volunteer.status IN (:...statuses) OR volunteer.id IS NULL)', {
-        statuses: [VolunteerStatus.ACTIVE, VolunteerStatus.ARCHIVED],
+        statuses: [VolunteerStatus.ACTIVE, VolunteerStatus.INACTIVE],
       })
       .andWhere(VISIBLE_TO_VOLUNTEERS, {
         visibleStatus: OrganizationStatus.ACTIVE,

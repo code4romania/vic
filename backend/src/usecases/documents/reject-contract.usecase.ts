@@ -12,6 +12,7 @@ import { GetOrganizationUseCaseService } from '../organization/get-organization.
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import RejectContractEvent from 'src/modules/notifications/events/documents/reject-contract.event';
+import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class RejectContractUsecase implements IUseCaseService<IContractModel> {
@@ -39,6 +40,8 @@ export class RejectContractUsecase implements IUseCaseService<IContractModel> {
       organizationId: admin.organizationId,
       status: ContractStatus.PENDING_ADMIN,
     });
+    // An inactive or blocked volunteer's contracts are read-only
+    assertVolunteerEditable(contract.volunteer);
 
     // 3. update the contract path and status from datatbase and get the updates
     const newContract = await this.contractFacade.updateContract(contractId, {

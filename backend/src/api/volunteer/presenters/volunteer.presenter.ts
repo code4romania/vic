@@ -12,6 +12,8 @@ export class VolunteerPresenter {
   constructor(volunteer: IVolunteerModel) {
     this.id = volunteer.id;
     this.status = volunteer.status;
+    this.source = volunteer.source;
+    this.isFavorite = volunteer.isFavorite;
 
     this.archivedOn = volunteer.archivedOn;
     this.archivedBy = volunteer.archivedBy
@@ -54,6 +56,14 @@ export class VolunteerPresenter {
   status: VolunteerStatus;
 
   @Expose()
+  @ApiProperty({ description: 'Where the volunteer came from', nullable: true })
+  source: string;
+
+  @Expose()
+  @ApiProperty({ description: 'Starred by the organization' })
+  isFavorite: boolean;
+
+  @Expose()
   @ApiProperty({ description: 'Profile of the volunteer' })
   profile: VolunteerProfilePresenter;
 
@@ -75,7 +85,7 @@ export class VolunteerPresenter {
   user: RegularUserPresenter;
 
   @Expose()
-  @ApiProperty({ description: 'Date when the volunteer was archived' })
+  @ApiProperty({ description: 'Date when the volunteer became inactive' })
   archivedOn: Date;
 
   @Expose()

@@ -48,7 +48,8 @@ import SelectFilter from '../containers/SelectFilter';
 
 const VolunteersTabs: SelectItem<VolunteerStatus>[] = [
   { key: VolunteerStatus.ACTIVE, value: i18n.t('volunteers:tabs.active') },
-  { key: VolunteerStatus.ARCHIVED, value: i18n.t('volunteers:tabs.archived') },
+  { key: VolunteerStatus.INACTIVE, value: i18n.t('volunteers:tabs.inactive') },
+  { key: VolunteerStatus.CANDIDATE, value: i18n.t('volunteers:tabs.candidate') },
   { key: VolunteerStatus.BLOCKED, value: i18n.t('volunteers:tabs.blocked') },
 ];
 
@@ -103,7 +104,7 @@ const ArchivedVolunteersTableHeader = [
   ...ActiveVolunteersTableHeader,
   {
     id: 'archivedOn',
-    name: i18n.t('volunteers:archived_on'),
+    name: i18n.t('volunteers:inactive_on'),
     sortable: true,
     cell: (row: IVolunteer) => (
       <CellLayout>{row.archivedOn ? formatDate(row.archivedOn) : '-'}</CellLayout>
@@ -242,6 +243,31 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
       name: '',
       cell: (row: IVolunteer) => (
         <Popover<IVolunteer> row={row} items={archivedVolunteersMenuItems} />
+      ),
+      width: '50px',
+      allowOverflow: true,
+    };
+  };
+
+  const buildCandidateVolunteersActionColumn = (): TableColumn<IVolunteer> => {
+    const candidateVolunteersMenuItems = [
+      {
+        label: i18n.t('volunteers:popover.view'),
+        icon: <EyeIcon className="menu-icon" />,
+        onClick: onView,
+      },
+      {
+        label: i18n.t('volunteers:popover.block'),
+        icon: <NoSymbolIcon className="menu-icon" />,
+        onClick: onBlock,
+        alert: true,
+      },
+    ];
+
+    return {
+      name: '',
+      cell: (row: IVolunteer) => (
+        <Popover<IVolunteer> row={row} items={candidateVolunteersMenuItems} />
       ),
       width: '50px',
       allowOverflow: true,
@@ -435,8 +461,10 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
         role: undefined,
         age: undefined,
         createdOnEnd: undefined,
-        createdOnStart: undefined
-      }, 'replaceIn');
+        createdOnStart: undefined,
+      },
+      'replaceIn',
+    );
   };
 
   const onExport = async () => {
@@ -550,7 +578,21 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
                 onSort={onSort}
               />
             )}
-            {query?.volunteerStatus === VolunteerStatus.ARCHIVED && (
+            {query?.volunteerStatus === VolunteerStatus.CANDIDATE && (
+              <DataTableComponent
+                columns={[...ActiveVolunteersTableHeader, buildCandidateVolunteersActionColumn()]}
+                data={volunteers?.items}
+                loading={isVolunteersLoading || isBlockingVolunteer}
+                pagination
+                paginationPerPage={query.limit as number}
+                paginationTotalRows={volunteers?.meta?.totalItems}
+                paginationDefaultPage={query.page as number}
+                onChangeRowsPerPage={onRowsPerPageChange}
+                onChangePage={onChangePage}
+                onSort={onSort}
+              />
+            )}
+            {query?.volunteerStatus === VolunteerStatus.INACTIVE && (
               <DataTableComponent
                 columns={[...ArchivedVolunteersTableHeader, buildArchivedVolunteersActionColumn()]}
                 data={volunteers?.items}

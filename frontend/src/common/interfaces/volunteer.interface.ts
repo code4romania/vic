@@ -8,6 +8,8 @@ export interface IVolunteer {
   updatedOn: Date;
   user: IUser;
   status: VolunteerStatus;
+  source?: string | null;
+  isFavorite: boolean;
   archivedOn?: Date;
   blockedOn?: Date;
   archivedBy?: Pick<IUser, 'id' | 'name'>;

@@ -15,7 +15,15 @@ export class RegularUserPresenter {
     this.sex = user.sex;
     this.profilePicture = user.profilePicture;
     this.location = user.location ? new CityPresenter(user.location) : null;
+    this.hasAccount = user.hasAccount ?? true;
   }
+
+  @Expose()
+  @ApiProperty({
+    description:
+      'False for a person added by the NGO who has no VIC account yet (Candidate)',
+  })
+  hasAccount: boolean;
 
   @Expose()
   @ApiProperty({

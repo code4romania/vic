@@ -1,3 +1,4 @@
+import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -56,10 +57,10 @@ export class GetOrganizationWithEventsUseCase
     }
 
     if (organization.volunteers.length > 0) {
-      organization.organizationVolunteerStatus =
-        organization.volunteers[0].status === VolunteerStatus.ARCHIVED
-          ? OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER
-          : OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER;
+      organization.organizationVolunteerStatus = this.toOrganizationStatus(
+        organization.volunteers[0],
+        userId,
+      );
     }
 
     const eventsWithPaths = await Promise.all(
@@ -76,5 +77,24 @@ export class GetOrganizationWithEventsUseCase
       ...organization,
       events: eventsWithPaths,
     };
+  }
+
+  private toOrganizationStatus(
+    volunteer: IVolunteerModel,
+    userId: string,
+  ): OrganizatinVolunteerStatus {
+    switch (volunteer.status) {
+      case VolunteerStatus.INACTIVE:
+        // Left by themselves (archived by their own user) vs made inactive by the NGO
+        return volunteer.archivedById === userId
+          ? OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER
+          : OrganizatinVolunteerStatus.INACTIVE_VOLUNTEER;
+      case VolunteerStatus.BLOCKED:
+        return OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER;
+      case VolunteerStatus.CANDIDATE:
+        return OrganizatinVolunteerStatus.CANDIDATE_VOLUNTEER;
+      default:
+        return OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER;
+    }
   }
 }

@@ -78,6 +78,7 @@ import { ArchiveVolunteerUsecase } from './volunteer/archive-volunteer.usescase'
 import { BlockVolunteerUsecase } from './volunteer/block-volunteer.usecase';
 import { ActivateVolunteerUsecase } from './volunteer/activate-volunteer.usecase';
 import { UpdateVolunteerProfileUsecase } from './volunteer/update-volunteer-profile.usecase';
+import { UpdateVolunteerDetailsUsecase } from './volunteer/update-volunteer-details.usecase';
 import { AnnouncementModule } from 'src/modules/announcement/announcement.module';
 import { GetOneAnnouncementUseCase } from './announcement/get-one-announcement.usecase';
 import { GetManyAnnouncementUseCase } from './announcement/get-many-announcement.usecase';
@@ -284,6 +285,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    UpdateVolunteerDetailsUsecase,
     GetVolunteersForDownloadUseCase,
     GetVolunteerProfileUsecase,
     GetVolunteersUserDataForNotificationsUsecase,
@@ -455,6 +457,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     CreateVolunteerProfileUseCase,
     GetManyVolunteersUseCase,
     UpdateVolunteerProfileUsecase,
+    UpdateVolunteerDetailsUsecase,
     GetVolunteersForDownloadUseCase,
     GetVolunteerProfileUsecase,
     GetVolunteersUserDataForNotificationsUsecase,

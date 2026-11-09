@@ -11,6 +11,7 @@ import {
 } from 'src/modules/event/models/event-rsvp.model';
 import { EventFacade } from 'src/modules/event/services/event.facade';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
+import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneRegularUserUseCase } from 'src/usecases/user/get-one-regular-user.usecase';
 import { GetOneEventUseCase } from '../get-one-event.usecase';
@@ -56,6 +57,16 @@ export class CreateEventRSVPUseCase
     if (volunteer?.status === VolunteerStatus.BLOCKED) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_003,
+      );
+    }
+
+    // 4b. A volunteer the NGO made inactive can only view the NGO and its documents
+    if (
+      volunteer?.status === VolunteerStatus.INACTIVE &&
+      volunteer.archivedById !== data.userId
+    ) {
+      this.exceptionsService.badRequestException(
+        VolunteerExceptionMessages.VOLUNTEER_007,
       );
     }
 

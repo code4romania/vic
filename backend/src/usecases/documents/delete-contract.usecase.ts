@@ -7,6 +7,7 @@ import { GetOneContractUsecase } from './get-one-contract.usecase';
 import { ContractFacade } from 'src/modules/documents/services/contract.facade';
 import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
+import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class DeleteContractUsecase implements IUseCaseService<string> {
@@ -24,6 +25,8 @@ export class DeleteContractUsecase implements IUseCaseService<string> {
       id,
       organizationId,
     });
+    // An inactive or blocked volunteer's contracts are read-only
+    assertVolunteerEditable(contract.volunteer);
 
     // 2. check if the contract is approved
     if (contract.status === ContractStatus.APPROVED) {

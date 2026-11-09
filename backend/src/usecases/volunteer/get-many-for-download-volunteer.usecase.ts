@@ -34,8 +34,8 @@ export class GetVolunteersForDownloadUseCase
         'Nume filiala': volunteer.volunteerProfile?.branch?.name,
         'Nume departament': volunteer.volunteerProfile?.department?.name,
         'Nume rol': volunteer.volunteerProfile?.role?.name,
-        ...(volunteer.status === VolunteerStatus.ARCHIVED
-          ? { 'Arhivat din': volunteer.archivedOn }
+        ...(volunteer.status === VolunteerStatus.INACTIVE
+          ? { 'Inactiv din': volunteer.archivedOn }
           : {}),
         ...(volunteer.status === VolunteerStatus.BLOCKED
           ? { 'Data blocarii': volunteer.blockedOn }

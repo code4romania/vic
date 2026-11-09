@@ -10,6 +10,8 @@ export interface IUser {
   location: ICity;
   age: number;
   sex: Sex;
+  // False for a person added by the organization who has no VIC account yet
+  hasAccount?: boolean;
   createdOn: Date;
   updatedOn: Date;
 }

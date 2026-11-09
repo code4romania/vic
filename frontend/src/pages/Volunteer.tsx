@@ -11,8 +11,12 @@ import { SelectItem } from '../components/Select';
 import Tabs from '../components/Tabs';
 import VolunteerProfile from '../components/VolunteerProfile';
 import { useErrorToast } from '../hooks/useToast';
+import { useQueryClient } from 'react-query';
 import PageLayout from '../layouts/PageLayout';
-import { useVolunteer } from '../services/volunteer/volunteer.service';
+import {
+  useUpdateVolunteerDetailsMutation,
+  useVolunteer,
+} from '../services/volunteer/volunteer.service';
 import { VolunteerProps } from '../containers/query/VolunteerWithQueryParams';
 import ActivityLogTableWithQueryParams from '../containers/query/ActivityLogTableWithQueryParams';
 import ContractsTableWithQueryParams from '../containers/query/ContractsTableWithQueryParams';
@@ -37,6 +41,24 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
   const { id } = useParams();
 
   const { data: volunteer, isLoading, error } = useVolunteer(id as string);
+  const queryClient = useQueryClient();
+  const { mutate: updateDetails, isLoading: isSavingDetails } = useUpdateVolunteerDetailsMutation();
+
+  const onUpdateDetails = (data: { source?: string | null; isFavorite?: boolean }) => {
+    if (!volunteer) return;
+    updateDetails(
+      { id: volunteer.id, data },
+      {
+        onSuccess: (updated) => {
+          queryClient.setQueryData(['volunteer', volunteer.id], updated);
+        },
+        onError: (detailsError) =>
+          useErrorToast(
+            InternalErrors.VOLUNTEER_ERRORS.getError(detailsError?.response?.data.code_error),
+          ),
+      },
+    );
+  };
 
   const onTabClick = (tab: VolunteerTabsOptions) => {
     setQuery({ activeTab: tab }, 'replaceIn');
@@ -77,6 +99,12 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
               startedOn={volunteer.profile?.activeSince}
               role={volunteer.profile?.role?.name}
               createdOn={volunteer.createdOn}
+              source={volunteer.source}
+              isFavorite={volunteer.isFavorite}
+              hasAccount={volunteer.user?.hasAccount}
+              onToggleFavorite={() => onUpdateDetails({ isFavorite: !volunteer.isFavorite })}
+              onSaveSource={(source) => onUpdateDetails({ source: source || null })}
+              isSaving={isSavingDetails}
             />
           </div>
         </div>

@@ -34,6 +34,15 @@ export class VolunteerEntity extends BaseEntity {
   })
   status: VolunteerStatus;
 
+  // Where the volunteer came from (free text set by the NGO, e.g. "Facebook", "Import CSV").
+  @Column({ type: 'text', name: 'source', nullable: true })
+  source: string;
+
+  // Star set by the NGO.
+  @Column({ type: 'boolean', name: 'is_favorite', default: false })
+  isFavorite: boolean;
+
+  // Inactive since. The name is kept from the old "archived" status.
   @Column({ type: 'timestamptz', name: 'archived_on', nullable: true })
   archivedOn: Date;
 

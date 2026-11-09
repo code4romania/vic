@@ -96,7 +96,8 @@ export const formatEndDateISO9075 = (endDate: Date) => formatISO9075(endOfDay(en
  */
 export const VolunteerProfileStatusTextColorMapper = {
   [VolunteerStatus.ACTIVE]: '',
-  [VolunteerStatus.ARCHIVED]: 'text-yellow-600',
+  [VolunteerStatus.INACTIVE]: 'text-yellow-600',
+  [VolunteerStatus.CANDIDATE]: 'text-cool-gray-500',
   [VolunteerStatus.BLOCKED]: 'text-red-600',
 };
 

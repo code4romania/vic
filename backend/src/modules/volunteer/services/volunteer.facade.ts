@@ -13,6 +13,7 @@ import {
   FindVolunteerOptions,
   IVolunteerModel,
   IVolunteerStats,
+  UpdateVolunteerDetailsOptions,
   UpdateVolunteerOptions,
 } from '../model/volunteer.model';
 import { VolunteerProfileRepositoryService } from '../repositories/volunteer-profile.repository';
@@ -51,6 +52,14 @@ export class VolunteerFacade {
     );
   }
 
+  public updateDetails(
+    id: string,
+    details: UpdateVolunteerDetailsOptions,
+  ): Promise<IVolunteerModel> {
+    return this.volunteerRepository.update({ id, ...details });
+  }
+
+  // Sets the volunteer as Inactive (VIC 2.0); "archive" is the historical name.
   public archive(
     options: Pick<UpdateVolunteerOptions, 'id' | 'archivedById'>,
   ): Promise<IVolunteerModel> {
@@ -58,7 +67,7 @@ export class VolunteerFacade {
       id: options.id,
       archivedById: options.archivedById,
       archivedOn: new Date(),
-      status: VolunteerStatus.ARCHIVED,
+      status: VolunteerStatus.INACTIVE,
     });
   }
 
