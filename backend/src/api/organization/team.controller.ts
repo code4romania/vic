@@ -23,6 +23,7 @@ import { ListTeamUseCase } from 'src/usecases/team/list-team.usecase';
 import { SendInviteUseCase } from 'src/usecases/team/send-invite.usecase';
 import { SetAdminStatusUseCase } from 'src/usecases/team/set-admin-status.usecase';
 import { AddAdminDto } from './dto/add-admin.dto';
+import { SensitiveActionUsecase } from 'src/usecases/security/sensitive-action.usecase';
 import { MaskedEmailPresenter } from './presenters/masked-email.presenter';
 import { TeamMemberPresenter } from './presenters/team-member.presenter';
 
@@ -36,6 +37,7 @@ export class TeamController {
     private readonly addAdminUseCase: AddAdminUseCase,
     private readonly sendInviteUseCase: SendInviteUseCase,
     private readonly setAdminStatusUseCase: SetAdminStatusUseCase,
+    private readonly sensitiveAction: SensitiveActionUsecase,
   ) {}
 
   @ApiOkResponse({ type: TeamMemberPresenter, isArray: true })
@@ -51,8 +53,9 @@ export class TeamController {
   @Post()
   async add(
     @ExtractUser() admin: IWebRequestUser,
-    @Body() dto: AddAdminDto,
+    @Body() { code, ...dto }: AddAdminDto,
   ): Promise<MaskedEmailPresenter> {
+    await this.sensitiveAction.verify(admin, code);
     const { maskedEmail } = await this.addAdminUseCase.execute(admin, dto);
     return new MaskedEmailPresenter(maskedEmail);
   }

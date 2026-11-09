@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { UseCaseModule } from 'src/usecases/use-case.module';
 import { WebAuthController } from './auth/web-auth.controller';
 import { OrganizationRegistrationController } from './organization/organization-registration.controller';
+import { SecurityController } from './security/security.controller';
 import { TeamController } from './organization/team.controller';
 import { AdminOrganizationsController } from './admin/organizations.controller';
 import { AdminVolunteersController } from './admin/volunteers.controller';
@@ -49,6 +50,7 @@ import { MobileNewsController } from './_mobile/news/news.controller';
     MobileAuthController,
     OrganizationRegistrationController,
     TeamController,
+    SecurityController,
     AdminOrganizationsController,
     AdminVolunteersController,
     AccessCodeController,

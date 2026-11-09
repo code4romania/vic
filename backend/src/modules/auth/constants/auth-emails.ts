@@ -267,4 +267,70 @@ export const AUTH_EMAILS = {
           'Update the VIC app from the store, then log in with your email address: you get a code, no password.',
       },
     ),
+
+  // #508: the code asked before a sensitive action
+  sensitiveActionCode: (
+    code: string,
+    action: { ro: string; en: string },
+  ): AuthEmail =>
+    email(
+      `Cod de confirmare VIC: ${code} / VIC confirmation code: ${code}`,
+      {
+        title: 'Confirmă acțiunea în VIC',
+        subtitle: `Ai cerut să ${action.ro}. Introdu codul de mai jos în VIC pentru a confirma. Codul este valabil 10 minute. Dacă nu ai cerut tu acest cod, nu-l da nimănui și verifică cine are acces la contul tău.`,
+      },
+      {
+        title: 'Confirm the action in VIC',
+        subtitle: `You asked to ${action.en}. Enter the code below in VIC to confirm. The code is valid for 10 minutes. If you didn't ask for it, don't share it and check who has access to your account.`,
+      },
+      { code },
+    ),
+
+  // #508: the code sent to the new address, to confirm it
+  changeEmailCode: (code: string): AuthEmail =>
+    email(
+      `Confirmă noua adresă de email: ${code} / Confirm your new email: ${code}`,
+      {
+        title: 'Confirmă noua adresă de email',
+        subtitle:
+          'Cineva a cerut ca această adresă să devină emailul contului de VIC. Introdu codul în VIC pentru a confirma. Codul este valabil 10 minute. Dacă nu ai cerut tu, ignoră acest email.',
+      },
+      {
+        title: 'Confirm your new email address',
+        subtitle:
+          "Someone asked to make this address the email of a VIC account. Enter the code in VIC to confirm. The code is valid for 10 minutes. If it wasn't you, ignore this email.",
+      },
+      { code },
+    ),
+
+  // #508: sent to the old address once the email changed
+  emailChanged: (newEmail: string): AuthEmail =>
+    email(
+      'Emailul contului VIC a fost schimbat / Your VIC email was changed',
+      {
+        title: 'Emailul contului a fost schimbat',
+        subtitle: `De acum intri în VIC cu adresa ${newEmail}. Dacă nu ai făcut tu schimbarea, scrie-ne imediat.`,
+      },
+      {
+        title: 'Your account email was changed',
+        subtitle: `From now on you log in to VIC with ${newEmail}. If you didn't make this change, write to us right away.`,
+      },
+    ),
+
+  // #508: the VIC team learns that an NGO deleted its account
+  organizationDeleted: (
+    organization: { name: string; taxId: string | null },
+    deletedBy: { name: string; email: string },
+  ): AuthEmail =>
+    email(
+      `Organizația ${organization.name} și-a șters contul VIC / ${organization.name} deleted its VIC account`,
+      {
+        title: 'O organizație și-a șters contul',
+        subtitle: `${organization.name}${organization.taxId ? ` (CUI ${organization.taxId})` : ''} și-a șters contul din VIC, împreună cu toate datele. Ștergerea a fost făcută de ${deletedBy.name} (${deletedBy.email}).`,
+      },
+      {
+        title: 'An organization deleted its account',
+        subtitle: `${organization.name}${organization.taxId ? ` (CUI ${organization.taxId})` : ''} deleted its VIC account and all its data. Deleted by ${deletedBy.name} (${deletedBy.email}).`,
+      },
+    ),
 };

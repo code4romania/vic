@@ -15,6 +15,8 @@ export interface IssueTokenOptions {
   form: AuthTokenForm;
   sentById?: string;
   ttlMs?: number;
+  // #508: where the secret goes when not to the identity's own email (a new address to confirm)
+  sentTo?: string;
 }
 
 export interface IssuedToken {
@@ -63,7 +65,7 @@ export class OneTimeTokenService {
           form,
           tokenHash,
           expiresAt,
-          sentTo: identity.email,
+          sentTo: options.sentTo ?? identity.email,
           sentById: options.sentById,
         },
         m,
@@ -207,6 +209,9 @@ export class OneTimeTokenService {
           : AUTH_TOKEN_TTL_MS.LOGIN_LINK;
       case AuthTokenType.INVITE:
         return AUTH_TOKEN_TTL_MS.INVITE_LINK;
+      case AuthTokenType.SENSITIVE_ACTION:
+      case AuthTokenType.CHANGE_EMAIL:
+        return AUTH_TOKEN_TTL_MS.SENSITIVE_CODE;
     }
   }
 }

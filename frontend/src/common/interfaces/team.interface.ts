@@ -24,4 +24,6 @@ export interface IAddAdmin {
   lastName: string;
   email: string;
   phone: string;
+  // #508: the code emailed to the admin who adds
+  code: string;
 }

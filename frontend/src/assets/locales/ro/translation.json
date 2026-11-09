@@ -444,7 +444,8 @@
       "ORG_006": "Verificarea anti-robot nu a reușit. Încearcă din nou.",
       "ORG_008": "Acest administrator nu face parte din organizația ta.",
       "ORG_009": "Invitațiile sunt doar pentru administratorii care nu au intrat încă în cont.",
-      "ORG_010": "Nu îți poți schimba propriul status."
+      "ORG_010": "Nu îți poți schimba propriul status.",
+      "ORG_011": "Scrie exact numele organizației pentru a o șterge."
     },
     "form": {
       "description": {
@@ -1099,7 +1100,9 @@
     "statistics": {
       "volunteers": {
         "label": "Voluntari activi",
-        "info": "{{value}} cereri noi",
+        "info_one": "{{count}} cerere nouă",
+        "info_few": "{{count}} cereri noi",
+        "info_other": "{{count}} de cereri noi",
         "action": "Vezi voluntarii"
       },
       "events": {
@@ -1112,7 +1115,9 @@
       },
       "hours": {
         "label": "Ore voluntariat",
-        "info": "{{value}} ore de aprobat",
+        "info_one": "{{count}} oră de aprobat",
+        "info_few": "{{count}} ore de aprobat",
+        "info_other": "{{count}} de ore de aprobat",
         "action": "Vezi orele de aprobat"
       }
     },
@@ -1629,7 +1634,8 @@
       "required": "Câmpul este obligatoriu",
       "email_invalid": "Adresa de email nu este validă",
       "cancel": "Anulează",
-      "submit": "Adaugă și trimite invitația"
+      "submit": "Adaugă și trimite invitația",
+      "code_required": "Introdu codul de 6 cifre primit pe email"
     },
     "errors": {
       "load": "Echipa nu a putut fi încărcată",
@@ -1703,6 +1709,62 @@
       "title": "Profilul public al organizației",
       "description": "Ce văd voluntarii despre organizație în aplicația VIC.",
       "edit": "Editează profilul"
+    },
+    "security": {
+      "title": "Date și securitate",
+      "two_factor": {
+        "title": "Confirmare prin cod pe email",
+        "description": "Pentru acțiunile sensibile (schimbarea emailului, ștergerea contului organizației, adăugarea unui administrator) îți cerem un cod trimis pe email. Este activă pentru toate conturile și nu poate fi dezactivată.",
+        "on": "Activă"
+      },
+      "code": {
+        "description": "Pentru siguranță, confirmă cu un cod trimis pe emailul tău.",
+        "send": "Trimite codul pe email",
+        "resend": "Retrimite codul",
+        "sent": "Am trimis un cod de 6 cifre la {{email}}. E valabil 10 minute.",
+        "label": "Cod de confirmare*",
+        "error": "Nu am putut trimite codul. Încearcă din nou."
+      },
+      "email": {
+        "label": "Email de autentificare",
+        "action": "Schimbă emailul",
+        "title": "Schimbă emailul",
+        "description": "Acum intri în VIC cu {{email}}. Îți trimitem câte un cod pe adresa actuală și pe cea nouă.",
+        "new_email": "Email nou*",
+        "send": "Trimite codurile",
+        "sent": "Am trimis un cod la {{current}} și unul la {{next}}.",
+        "current_code": "Codul primit la {{email}}*",
+        "new_code": "Codul primit la {{email}}*",
+        "confirm": "Schimbă emailul",
+        "invalid": "Adresa de email nu este validă",
+        "same": "Este deja emailul tău",
+        "codes_required": "Completează ambele coduri de 6 cifre",
+        "success": "De acum intri în VIC cu {{email}}.",
+        "error": "Emailul nu a putut fi schimbat. Încearcă din nou."
+      },
+      "backup": {
+        "title": "Backup complet",
+        "description": "Toate datele organizației într-un fișier Excel: voluntari, ore, evenimente, înscrieri, anunțuri, documente, structură și istoric.",
+        "action": "Descarcă backup",
+        "loading": "Se pregătește...",
+        "error": "Backup-ul nu a putut fi descărcat."
+      },
+      "history": {
+        "title": "Istoric modificări",
+        "description": "Cine a modificat ce în organizație și când.",
+        "action": "Vezi istoricul"
+      }
+    },
+    "danger": {
+      "title": "Zonă periculoasă",
+      "delete_title": "Șterge contul organizației",
+      "delete_description": "Șterge definitiv organizația și toate datele ei din VIC. Acțiunea nu poate fi anulată.",
+      "action": "Șterge contul",
+      "modal_title": "Ștergi definitiv contul organizației?",
+      "modal_description": "Se șterg {{name}}, voluntarii ei din organizație, orele, evenimentele, anunțurile, documentele, structura, istoricul și toți administratorii. Voluntarii își păstrează contul de VIC. Recomandăm să descarci întâi backup-ul complet. Echipa VIC va fi anunțată.",
+      "type_name": "Scrie numele organizației ({{name}})*",
+      "confirm": "Șterge definitiv",
+      "error": "Contul nu a putut fi șters. Încearcă din nou."
     },
     "about": {
       "title": "Despre",

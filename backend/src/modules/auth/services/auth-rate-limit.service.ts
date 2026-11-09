@@ -16,6 +16,12 @@ const ISSUE_WINDOWS: Window[] = [
   { name: 'hour', seconds: 60 * 60, limit: 5 },
 ];
 
+// #508: codes before a sensitive action; an admin may add a few people in a row
+const SENSITIVE_WINDOWS: Window[] = [
+  { name: 'minute', seconds: 60, limit: 3 },
+  { name: 'hour', seconds: 60 * 60, limit: 10 },
+];
+
 // Send invite on the Team page: one per 10 minutes and five a day, per target.
 const INVITE_WINDOWS: Window[] = [
   { name: '10min', seconds: 10 * 60, limit: 1 },
@@ -33,6 +39,11 @@ export class AuthRateLimitService {
     type: AuthTokenType,
   ): Promise<void> {
     await this.hit(`auth:issue:${identityId}:${type}`, ISSUE_WINDOWS);
+  }
+
+  // AUTH_010 when the identity asked for too many sensitive-action codes (#508).
+  public async assertCanIssueSensitive(identityId: string): Promise<void> {
+    await this.hit(`auth:sensitive:${identityId}`, SENSITIVE_WINDOWS);
   }
 
   // AUTH_010 when the target was invited too recently.

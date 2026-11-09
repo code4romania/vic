@@ -29,6 +29,8 @@ import {
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { getAuthErrorCode } from '../common/utils/auth-error';
 import { formatDateWithTime } from '../common/utils/utils';
+import SensitiveCodeField from '../components/SensitiveCodeField';
+import { SensitiveAction } from '../services/security/security.api';
 
 const STATUS_COLOR: Record<TeamMemberStatus, string> = {
   active: 'bg-green-500',
@@ -257,6 +259,10 @@ const AddAdminModal = ({ isLoading, onClose, onSubmit }: AddAdminModalProps) => 
     lastName: yup.string().trim().required(t('form.required')).min(2).max(50),
     email: yup.string().trim().required(t('form.required')).email(t('form.email_invalid')),
     phone: yup.string().trim().required(t('form.required')).max(20),
+    code: yup
+      .string()
+      .required(t('form.code_required'))
+      .matches(/^\d{6}$/, t('form.code_required')),
   });
 
   const {
@@ -264,11 +270,11 @@ const AddAdminModal = ({ isLoading, onClose, onSubmit }: AddAdminModalProps) => 
     handleSubmit,
     formState: { errors },
   } = useForm<IAddAdmin>({
-    defaultValues: { firstName: '', lastName: '', email: '', phone: '' },
+    defaultValues: { firstName: '', lastName: '', email: '', phone: '', code: '' },
     resolver: yupResolver(schema),
   });
 
-  const fields: { name: keyof IAddAdmin; type: string }[] = [
+  const fields: { name: Exclude<keyof IAddAdmin, 'code'>; type: string }[] = [
     { name: 'firstName', type: 'text' },
     { name: 'lastName', type: 'text' },
     { name: 'email', type: 'email' },
@@ -300,6 +306,18 @@ const AddAdminModal = ({ isLoading, onClose, onSubmit }: AddAdminModalProps) => 
             )}
           />
         ))}
+        <Controller
+          name="code"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <SensitiveCodeField
+              action={SensitiveAction.ADD_ADMIN}
+              value={value}
+              onChange={onChange}
+              errorMessage={errors.code?.message}
+            />
+          )}
+        />
         <div className="flex justify-end gap-3">
           <Button
             type="button"

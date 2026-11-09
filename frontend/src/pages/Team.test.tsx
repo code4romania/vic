@@ -138,4 +138,42 @@ describe('Team', () => {
     );
     expect(calls).toEqual(['enable u-disabled']);
   });
+
+  // #508
+  it('adding an admin asks for the code emailed to me', async () => {
+    let added: unknown;
+    server.use(
+      http.post(api('/security/code'), async ({ request }) => {
+        expect(await request.json()).toEqual({ action: 'ADD_ADMIN' });
+        return HttpResponse.json({ maskedEmail: 'a•••@ong.test' });
+      }),
+      http.post(api('/organization/team'), async ({ request }) => {
+        added = await request.json();
+        return HttpResponse.json({ maskedEmail: 'm•••@ong.test' }, { status: 201 });
+      }),
+    );
+    renderPage(<Team />);
+    await screen.findByText('Bogdan Sent');
+    await userEvent.click(screen.getByText(t('team:add_admin')));
+    const dialog = await screen.findByRole('dialog');
+    for (const [field, value] of [
+      ['firstName', 'Maria'],
+      ['lastName', 'Ionescu'],
+      ['email', 'maria@ong.test'],
+      ['phone', '+40722222222'],
+    ]) {
+      await userEvent.type(within(dialog).getByLabelText(t(`team:form.${field}`)), value);
+    }
+    await userEvent.click(within(dialog).getByText(t('team:form.submit')));
+    expect(await within(dialog).findByText(t('team:form.code_required'))).toBeInTheDocument();
+    expect(added).toBeUndefined();
+
+    await userEvent.click(within(dialog).getByText(t('settings:security.code.send')));
+    await userEvent.type(
+      await within(dialog).findByLabelText(t('settings:security.code.label')),
+      '123456',
+    );
+    await userEvent.click(within(dialog).getByText(t('team:form.submit')));
+    await waitFor(() => expect(added).toMatchObject({ email: 'maria@ong.test', code: '123456' }));
+  });
 });

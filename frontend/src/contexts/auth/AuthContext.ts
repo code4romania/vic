@@ -9,6 +9,8 @@ export interface AuthContextProps {
   logout: () => Promise<void>;
   // After the login link (/login/link) or confirm-email answered with a web session.
   startSession: (session: IWebSession) => Promise<void>;
+  // #508: after the admin changed their email
+  refreshProfile: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -16,4 +18,5 @@ export const AuthContext = createContext<AuthContextProps>({
   isSuperAdmin: false,
   logout: async () => {},
   startSession: async (session: IWebSession) => {},
+  refreshProfile: async () => {},
 });

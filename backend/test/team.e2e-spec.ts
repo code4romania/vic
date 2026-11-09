@@ -42,6 +42,16 @@ describe('Team (e2e)', () => {
     return { userId: user.id, identity };
   };
 
+  // #508: adding an admin asks for the code emailed to the caller
+  const sensitiveCode = async (): Promise<string> => {
+    await http
+      .post('/security/code')
+      .set(auth())
+      .send({ action: 'ADD_ADMIN' })
+      .expect(200);
+    return testApp.mailbox.last('eu@ong.ro').context.code;
+  };
+
   const team = async (): Promise<
     Record<string, { status: string; [key: string]: unknown }>
   > => {
@@ -130,6 +140,7 @@ describe('Team (e2e)', () => {
         lastName: 'Ionescu',
         email: 'Bogdan@ONG.ro',
         phone: '+40722222222',
+        code: await sensitiveCode(),
       })
       .expect(201);
     expect(added.body).toEqual({ maskedEmail: 'b•••@ong.ro' });
@@ -169,6 +180,7 @@ describe('Team (e2e)', () => {
         lastName: 'Bogdan',
         email: 'bogdan@ong.ro',
         phone: '+40722222223',
+        code: await sensitiveCode(),
       })
       .expect(409);
     expect(taken.body.code_error).toBe('AUTH_009');
@@ -329,6 +341,7 @@ describe('Team (e2e)', () => {
         lastName: 'Tarziu',
         email: 'ion@ong.ro',
         phone: '+40733333333',
+        code: await sensitiveCode(),
       })
       .expect(201);
     const first = linkSecret(testApp.mailbox.last('ion@ong.ro'));

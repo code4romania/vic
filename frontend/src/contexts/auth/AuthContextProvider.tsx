@@ -59,6 +59,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     setProfile(session.user ?? (await authApi.getMe()));
   }, []);
 
+  const refreshProfile = useCallback(async () => {
+    setProfile(await authApi.getMe());
+  }, []);
+
   const logout = useCallback(async () => {
     try {
       await authApi.logout();
@@ -76,7 +80,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, profile, isSuperAdmin, logout, startSession }}
+      value={{ isAuthenticated, profile, isSuperAdmin, logout, startSession, refreshProfile }}
     >
       {!isLoading ? (
         children

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNormalizedEmail } from 'src/api/auth/dto/validators';
+import { IsNormalizedEmail, IsSixDigitCode } from 'src/api/auth/dto/validators';
 import { PersonName, Phone } from './organization-fields';
 
 export class AddAdminDto {
@@ -18,4 +18,9 @@ export class AddAdminDto {
   @ApiProperty({ example: '+40722222222' })
   @Phone()
   phone: string;
+
+  // #508: adding an admin is a sensitive action, confirmed with the code emailed to the caller
+  @ApiProperty({ example: '123456' })
+  @IsSixDigitCode()
+  code: string;
 }
