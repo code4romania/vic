@@ -104,13 +104,17 @@ export class EventRepository
 
     if (eventState) {
       const currentDate = new Date();
+      // an event with no end date has not finished
+      const notEnded =
+        '(event.endDate > :currentDate OR event.endDate IS NULL)';
       if (eventState === EventState.OPEN) {
-        query.andWhere(
-          '(event.endDate > :currentDate OR event.endDate IS NULL)',
-          {
-            currentDate,
-          },
-        );
+        query.andWhere(notEnded, { currentDate });
+      } else if (eventState === EventState.UPCOMING) {
+        query.andWhere('event.startDate > :currentDate', { currentDate });
+      } else if (eventState === EventState.ONGOING) {
+        query.andWhere(`event.startDate <= :currentDate AND ${notEnded}`, {
+          currentDate,
+        });
       } else {
         query.andWhere('event.endDate <= :currentDate', {
           currentDate,
