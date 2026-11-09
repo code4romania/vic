@@ -193,6 +193,11 @@
       "add_title": "Adaugă activitate",
       "description": "Orele oferite de voluntar în afara evenimentelor.",
       "saved": "Activitatea a fost adăugată."
+    },
+    "hours_history": {
+      "tab": "Istoric ore",
+      "title": "Istoric ore",
+      "description": "Ore aprobate, în așteptare și respinse, la evenimente și activități."
     }
   },
   "volunteers": {

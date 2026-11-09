@@ -193,6 +193,11 @@
       "add_title": "Add activity",
       "description": "Hours the volunteer gave outside events.",
       "saved": "The activity was added."
+    },
+    "hours_history": {
+      "tab": "Hours history",
+      "title": "Hours history",
+      "description": "Approved, pending and rejected hours, on events and activities."
     }
   },
   "volunteers": {
