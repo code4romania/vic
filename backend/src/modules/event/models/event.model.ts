@@ -80,6 +80,10 @@ export type IEventsMobileListItemModel = Pick<
   | 'capacity'
 > & {
   organizationLogo?: string;
+  // redesigned mobile list: the organization on each card and an "Înscris" badge
+  organizationId?: string;
+  organizationName?: string;
+  isGoing?: boolean;
 };
 
 export type CreateEventOptions = Pick<
@@ -118,6 +122,10 @@ export type FindManyEventOptions = {
 export type FindMyEventsOptions = {
   userId: string;
   eventFilter: EventFilterEnum;
+  // mobile search: one organization and/or a start date range (inclusive)
+  organizationId?: string;
+  startFrom?: Date;
+  startTo?: Date;
 } & IBasePaginationFilterModel;
 
 export type FindOngoingAndFinishedEventOptions = {
@@ -181,6 +189,8 @@ export class EventModelTransformer {
       capacity: entity.capacity,
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
       organizationLogo: entity.organization?.logo || '',
+      organizationId: entity.organizationId,
+      organizationName: entity.organization?.name,
     };
   }
 

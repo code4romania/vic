@@ -13,5 +13,9 @@ export interface IEventListItem {
   endDate: string;
   eventInterval: string; // TODO: remove after deprecation
   organizationLogo?: string;
+  // redesigned list cards: the organization and an "Înscris" badge
+  organizationId?: string;
+  organizationName?: string;
+  isGoing?: boolean;
   targets?: IOrganizationListItem[];
 }
