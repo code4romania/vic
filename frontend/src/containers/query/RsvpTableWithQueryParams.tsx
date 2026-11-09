@@ -24,7 +24,13 @@ export type RsvpTableBasicProps = IHOCQueryProps<RsvpTableQueryProps>;
 const DEFAULT_QUERY_PARAMS = getPaginationQueryParams({});
 
 // set defaults (if needed) for other specific filter params
-const RsvpTableWithQueryParams = ({ eventId }: { eventId: string }) => {
+const RsvpTableWithQueryParams = ({
+  eventId,
+  eventName,
+}: {
+  eventId: string;
+  eventName?: string;
+}) => {
   const queryConfig = {
     ...DEFAULT_QUERY_PARAMS,
     activeTab: StringParam,
@@ -38,7 +44,7 @@ const RsvpTableWithQueryParams = ({ eventId }: { eventId: string }) => {
   return (
     <QueryParams config={queryConfig}>
       {(props: any) => {
-        return <RsvpTable {...props} eventId={eventId} />;
+        return <RsvpTable {...props} eventId={eventId} eventName={eventName} />;
       }}
     </QueryParams>
   );

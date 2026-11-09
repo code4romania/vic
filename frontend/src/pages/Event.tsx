@@ -293,7 +293,7 @@ const Event = ({ query, setQuery }: EventProps) => {
           </>
         )}
         {query?.activeTab === EventTab.RESPONSES && (
-          <RsvpTableWithQueryParams eventId={id as string} />
+          <RsvpTableWithQueryParams eventId={id as string} eventName={event?.name} />
         )}
       </Tabs>
     </PageLayout>

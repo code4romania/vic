@@ -641,7 +641,7 @@
         "max": "The location can have a maximum of {{value}} characters"
       },
       "target": {
-        "label": "Target",
+        "label": "Audience",
         "public": "Public event",
         "all": "The whole organization",
         "placeholder": "Choose all that apply",
