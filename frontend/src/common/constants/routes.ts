@@ -12,6 +12,7 @@ import {
   ArchiveBoxIcon,
   DocumentDuplicateIcon,
   CheckBadgeIcon,
+  Cog6ToothIcon,
 } from '@heroicons/react/24/solid';
 
 import { IRoute } from '../interfaces/route.interface';
@@ -96,6 +97,13 @@ export const ROUTES: IRoute[] = [
     name: i18n.t('side_menu:options.announcements'),
     href: 'announcements',
     icon: MegaphoneIcon,
+  },
+  // #506
+  {
+    id: 11,
+    name: i18n.t('side_menu:options.settings'),
+    href: 'settings',
+    icon: Cog6ToothIcon,
   },
   {
     id: 9,

@@ -9,6 +9,7 @@ interface ImportMetaEnv {
   readonly VITE_MIGRATION_NOTICE_UNTIL: string;
   readonly VITE_TERMS_URL?: string;
   readonly VITE_PRIVACY_URL?: string;
+  readonly VITE_HELP_CENTER_URL?: string;
 }
 
 declare const APP_VERSION: string;

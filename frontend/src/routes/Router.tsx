@@ -7,6 +7,7 @@ import EditAccessCode from '../pages/EditAccessCode';
 import Login from '../pages/Login';
 import Organization from '../containers/query/OrganizationWithQueryParam';
 import Approvals from '../pages/Approvals';
+import Settings from '../pages/Settings';
 import AccessCodes from '../containers/query/AccessCodesWithQueryParams';
 import RootRoute from './RootRoute';
 import PublicRoute from './PublicRoute';
@@ -104,6 +105,7 @@ const Router = () => {
               <Route index element={<ActivityLogs />} />
               <Route path="add" element={<AddActivityLog />} />
             </Route>
+            <Route path="settings" element={<Settings />} />
             <Route path="approvals" element={<Approvals />} />
             <Route path="approvals/:type" element={<Approvals />} />
             <Route path="admin/validation" element={<OrganizationValidation />} />
