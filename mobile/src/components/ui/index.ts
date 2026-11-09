@@ -12,3 +12,4 @@ export * from './ListRow';
 export * from './Sheet';
 export * from './LargeTitleHeader';
 export * from './VTextField';
+export * from './EmptyState';

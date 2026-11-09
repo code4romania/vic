@@ -394,12 +394,56 @@
     "events": {
         "header": "Evenimente",
         "search": {
-            "placeholder": "Caută"
+            "placeholder": "Caută",
+            "title": "Caută evenimente",
+            "filters": "Filtre",
+            "summary_any": "Oricând · toate organizațiile",
+            "close": "Închide",
+            "what": "Ce",
+            "what_title": "Ce vrei să faci?",
+            "what_placeholder": "Copaci, alimente, copii…",
+            "any_activity": "Orice activitate",
+            "when": "Când",
+            "when_title": "Când?",
+            "when_options": {
+                "any": "Oricând",
+                "week": "Săptămâna asta",
+                "month": "Luna asta"
+            },
+            "organization": "Organizație",
+            "organization_title": "Organizație",
+            "all_organizations": "Toate",
+            "clear": "Șterge tot",
+            "show": "Arată evenimentele",
+            "show_one": "Arată 1 eveniment",
+            "show_count": "Arată {{n}} evenimente"
         },
         "tabs": {
             "going": "Particip",
-            "organizations": "Ale organizațiilor mele",
+            "organizations": "Organizațiile mele",
             "open": "Deschise"
+        },
+        "duration": "{{hours}} ore",
+        "duration_one": "1 oră",
+        "retry": "Încearcă din nou",
+        "errors": {
+            "generic": "Nu am putut încărca evenimentele."
+        },
+        "card": {
+            "public": "public",
+            "members": "doar membri",
+            "going": "Înscris",
+            "finished": "Încheiat"
+        },
+        "empty": {
+            "filtered_title": "Niciun eveniment pentru filtrele alese",
+            "filtered_description": "Încearcă altă perioadă sau altă organizație.",
+            "open_title": "Niciun eveniment deschis acum",
+            "open_description": "Revino mai târziu sau alătură-te unei organizații.",
+            "going_title": "Nu participi încă la niciun eveniment",
+            "going_description": "Când te înscrii la un eveniment, îl găsești aici.",
+            "organizations_title": "Organizațiile tale nu au evenimente acum",
+            "organizations_description": "Le vezi aici imediat ce le publică."
         }
     },
     "event": {
@@ -444,7 +488,19 @@
             "pending": "Așteaptă aprobarea organizației",
             "approved": "Aprobată",
             "rejected": "Respinsă",
-            "rejected_reason": "Respinsă. Motiv: {{reason}}"
+            "rejected_reason": "Respinsă. Motiv: {{reason}}",
+            "reason": "Motiv: {{reason}}"
+        },
+        "open_in_maps": "Deschide în Hărți",
+        "organized_by": "Organizat de {{name}}",
+        "capacity_places": "{{places}} locuri",
+        "about": "Despre",
+        "confirm": {
+            "title": "Te-ai înscris",
+            "description": "Organizația te așteaptă. Dacă nu mai poți ajunge, anulează din eveniment, ca locul să ajungă la altcineva.",
+            "pending_title": "Cererea a fost trimisă",
+            "pending_description": "Organizația îți confirmă înscrierea. Primești o notificare când decide.",
+            "done": "Gata"
         }
     },
     "activity_logs": {
