@@ -8,6 +8,7 @@ import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { IContractModel } from 'src/modules/documents/models/contract.model';
 import { ContractFacade } from 'src/modules/documents/services/contract.facade';
+import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class SignContractByVolunteer
@@ -37,6 +38,9 @@ export class SignContractByVolunteer
       this.exceptionService.notFoundException(
         ContractExceptionMessages.CONTRACT_002,
       );
+
+    // An inactive or blocked volunteer's contracts are read-only
+    assertVolunteerEditable(contract.volunteer);
 
     // 2. updaload new contract file to s3 and get the path
     try {

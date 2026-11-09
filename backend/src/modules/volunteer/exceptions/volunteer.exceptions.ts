@@ -6,6 +6,9 @@ enum VolunteerExceptionCodes {
   VOLUNTEER_003 = 'VOLUNTEER_003',
   VOLUNTEER_004 = 'VOLUNTEER_004',
   VOLUNTEER_005 = 'VOLUNTEER_005',
+  VOLUNTEER_006 = 'VOLUNTEER_006',
+  VOLUNTEER_007 = 'VOLUNTEER_007',
+  VOLUNTEER_008 = 'VOLUNTEER_008',
 
   // Profile
   VOLUNTEER_PROFILE_001 = 'VOLUNTEER_PROFILE_001',
@@ -31,11 +34,11 @@ export const VolunteerExceptionMessages: Record<
   },
   [VolunteerExceptionCodes.VOLUNTEER_003]: {
     code_error: VolunteerExceptionCodes.VOLUNTEER_003,
-    message: 'Only ACTIVE volunteers can be archived',
+    message: 'Only ACTIVE volunteers can be made inactive.',
   },
   [VolunteerExceptionCodes.VOLUNTEER_004]: {
     code_error: VolunteerExceptionCodes.VOLUNTEER_004,
-    message: 'Only ARCHIVED volunteers can be activated.',
+    message: 'Only INACTIVE volunteers can be activated.',
   },
   [VolunteerExceptionCodes.VOLUNTEER_PROFILE_001]: {
     code_error: VolunteerExceptionCodes.VOLUNTEER_PROFILE_001,
@@ -53,5 +56,19 @@ export const VolunteerExceptionMessages: Record<
   [VolunteerExceptionCodes.VOLUNTEER_005]: {
     code_error: VolunteerExceptionCodes.VOLUNTEER_005,
     message: 'The user does not have a volunteer profile on this organization',
+  },
+  [VolunteerExceptionCodes.VOLUNTEER_006]: {
+    code_error: VolunteerExceptionCodes.VOLUNTEER_006,
+    message: 'A blocked volunteer cannot change status.',
+  },
+  [VolunteerExceptionCodes.VOLUNTEER_007]: {
+    code_error: VolunteerExceptionCodes.VOLUNTEER_007,
+    message:
+      'The volunteer is not active: hours, documents and contracts are read-only.',
+  },
+  [VolunteerExceptionCodes.VOLUNTEER_008]: {
+    code_error: VolunteerExceptionCodes.VOLUNTEER_008,
+    message:
+      'The organization made this volunteer inactive; only the organization can activate them.',
   },
 };

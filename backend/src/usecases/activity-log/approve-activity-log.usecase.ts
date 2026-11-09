@@ -11,6 +11,7 @@ import { GetOneActivityLogUsecase } from './get-one-activity-log.usecase';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import ApproveHoursEvent from 'src/modules/notifications/events/volunteer-hours/approve-hours.event';
+import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class ApproveActivityLogUsecase
@@ -33,6 +34,8 @@ export class ApproveActivityLogUsecase
 
     // 1. Check if the log to be updated, exists
     const log = await this.getOneActivityLogUsecase.execute(id);
+    // An inactive or blocked volunteer's hours are read-only
+    assertVolunteerEditable(log.volunteer);
 
     if (log.status === ActivityLogStatus.APPROVED) {
       return log;

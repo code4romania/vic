@@ -25,6 +25,8 @@ export interface IRegularUserModel extends IUserModel {
   userPersonalData?: IUserPersonalDataModel;
   activeOrganization?: IOrganizationVolunteerModel;
   notificationsSettings: INotificationsSettingsModel;
+  // False while the person is only a placeholder added by an NGO (Candidate).
+  hasAccount?: boolean;
 }
 
 export interface IRegularUserProfileModel extends IRegularUserModel {
@@ -43,16 +45,19 @@ export type UpdateRegularUserOptions = Partial<
   Pick<
     IRegularUserModel,
     | 'userPersonalData'
+    | 'name'
     | 'firstName'
     | 'lastName'
     | 'birthday'
     | 'phone'
     | 'sex'
     | 'profilePicture'
+    | 'hasAccount'
   >
 > & {
   activeOrganizationId?: string;
   locationId?: number;
+  notificationsSettingsId?: string;
 };
 
 export type FindRegularUserOptions =
@@ -77,6 +82,7 @@ export class RegularUserTransformer {
       location: entity.location,
       firstName: entity.firstName,
       lastName: entity.lastName,
+      hasAccount: entity.hasAccount,
       userPersonalData: UserPersonalDataTransformer.fromEntity(
         entity.userPersonalData,
       ),
@@ -102,6 +108,7 @@ export class RegularUserTransformer {
     entity.firstName = model.firstName;
     entity.lastName = model.lastName;
     entity.notificationsSettingsId = model.notificationsSettingsId;
+    if (model.hasAccount !== undefined) entity.hasAccount = model.hasAccount;
     return entity;
   }
 }

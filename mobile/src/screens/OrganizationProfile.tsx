@@ -158,6 +158,13 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     return isCancelingAccessRequest || isFetchingOrganization || isRejoiningOrganization;
   };
 
+  // Inactive (set by the NGO), blocked and candidate volunteers can only look at the organization
+  const hasNoActions = [
+    OrganizatinVolunteerStatus.INACTIVE_VOLUNTEER,
+    OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER,
+    OrganizatinVolunteerStatus.CANDIDATE_VOLUNTEER,
+  ].includes(organization?.organizationVolunteerStatus as OrganizatinVolunteerStatus);
+
   const renderActionOptions = () => {
     let options: any = {
       primaryActionLabel: t('join'),
@@ -211,10 +218,14 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       <PageLayout
         title={t('title')}
         onBackButtonPress={navigation.goBack}
-        actionsOptions={{
-          ...renderActionOptions(),
-          loading: isLoading(),
-        }}
+        actionsOptions={
+          hasNoActions
+            ? undefined
+            : {
+                ...renderActionOptions(),
+                loading: isLoading(),
+              }
+        }
         headerStyle={{ paddingTop }}
       >
         {isFetchingOrganization && <OrganizationSkeleton />}
@@ -236,6 +247,14 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             {organization?.organizationVolunteerStatus ===
               OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER && (
               <Disclaimer text={t('disclaimer.volunteer_archived')} color="yellow" />
+            )}
+            {organization?.organizationVolunteerStatus ===
+              OrganizatinVolunteerStatus.INACTIVE_VOLUNTEER && (
+              <Disclaimer text={t('disclaimer.volunteer_inactive')} color="yellow" />
+            )}
+            {organization?.organizationVolunteerStatus ===
+              OrganizatinVolunteerStatus.CANDIDATE_VOLUNTEER && (
+              <Disclaimer text={t('disclaimer.volunteer_candidate')} color="yellow" />
             )}
             {organization?.organizationVolunteerStatus ===
               OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER && (

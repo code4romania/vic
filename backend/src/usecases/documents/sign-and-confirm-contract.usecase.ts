@@ -16,6 +16,7 @@ import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import ApproveContractEvent from 'src/modules/notifications/events/documents/approve-contract.event';
+import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class SignAndConfirmContractUsecase
@@ -48,6 +49,8 @@ export class SignAndConfirmContractUsecase
       organizationId: admin.organizationId,
       status: ContractStatus.PENDING_ADMIN,
     });
+    // An inactive or blocked volunteer's contracts are read-only
+    assertVolunteerEditable(contract.volunteer);
 
     try {
       // 2. upload file to s3 and get the path

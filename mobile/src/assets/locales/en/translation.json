@@ -337,7 +337,9 @@
       "access_request_pending": "Your registration awaits approval from the organization",
       "joined_from": "You joined from {{date}}",
       "volunteer_archived": "Your volunteer profile has been deactivated!",
-      "volunteer_blocked": "Your access to the organization has been restricted"
+      "volunteer_blocked": "Your access to the organization has been restricted",
+      "volunteer_inactive": "The organization marked you as an inactive volunteer. You can view the organization and download your documents.",
+      "volunteer_candidate": "The organization added you as a candidate. You can take part once the organization activates you."
     },
     "modal": {
       "identity_data_missing": {

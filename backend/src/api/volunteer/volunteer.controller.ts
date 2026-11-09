@@ -32,6 +32,8 @@ import { jsonToExcelBuffer } from 'src/common/helpers/utils';
 import { IVolunteerDownload } from 'src/modules/volunteer/intefaces/volunteer-download.interface';
 import { GetVolunteersForDownloadUseCase } from 'src/usecases/volunteer/get-many-for-download-volunteer.usecase';
 import { Response } from 'express';
+import { UpdateVolunteerDetailsDto } from './dto/update-volunteer-details.dto';
+import { UpdateVolunteerDetailsUsecase } from 'src/usecases/volunteer/update-volunteer-details.usecase';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, VolunteerGuard)
@@ -45,6 +47,7 @@ export class VolunteerController {
     private readonly archiveVolunteerUsecase: ArchiveVolunteerUsecase,
     private readonly updateVolunteerProfileUsecase: UpdateVolunteerProfileUsecase,
     private readonly getVolunteersForDownloadUseCase: GetVolunteersForDownloadUseCase,
+    private readonly updateVolunteerDetailsUsecase: UpdateVolunteerDetailsUsecase,
   ) {}
 
   @Get()
@@ -128,6 +131,22 @@ export class VolunteerController {
   ): Promise<VolunteerPresenter> {
     const volunteer = await this.activateVolunteerUsecase.execute(
       volunteerId,
+      admin,
+    );
+    return new VolunteerPresenter(volunteer);
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: UpdateVolunteerDetailsDto })
+  @Patch(':id/details')
+  async updateDetails(
+    @Param('id', UuidValidationPipe) volunteerId: string,
+    @Body() details: UpdateVolunteerDetailsDto,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<VolunteerPresenter> {
+    const volunteer = await this.updateVolunteerDetailsUsecase.execute(
+      volunteerId,
+      details,
       admin,
     );
     return new VolunteerPresenter(volunteer);

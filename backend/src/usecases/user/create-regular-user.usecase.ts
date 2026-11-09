@@ -3,6 +3,7 @@ import { IUseCaseService } from 'src/common/interfaces/use-case-service.interfac
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 import {
   CreateRegularUserOptions,
+  IRegularUserModel,
   IRegularUserProfileModel,
 } from 'src/modules/user/models/regular-user.model';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -40,10 +41,20 @@ export class CreateRegularUsereUseCaseService
       this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
     }
 
-    // 2. There is already an user with the same "phone"/"email", abort..
+    // 2. An NGO may have added this person before they had an account (Candidate):
+    // that placeholder row is claimed, so their organizations and history follow them.
+    const placeholder = await this.userService.findRegularUser({
+      email: identity.email,
+      hasAccount: false,
+    });
+    if (placeholder) {
+      return this.claimPlaceholder(placeholder, newUser, identity.id);
+    }
+
+    // 3. There is already an user with the same "phone"/"email", abort..
     const existingUser = await this.userService.findRegularUser([
       { email: identity.email },
-      { phone: newUser.phone },
+      { phone: newUser.phone, hasAccount: true },
     ]);
     if (existingUser) {
       this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
@@ -52,7 +63,7 @@ export class CreateRegularUsereUseCaseService
     const notificationsSettings =
       await this.notificationSettingsFacade.create();
 
-    // 3. create new user and link it to the login
+    // 4. create new user and link it to the login
     const user = await this.userService.createRegularUser({
       ...newUser,
       email: identity.email,
@@ -62,7 +73,42 @@ export class CreateRegularUsereUseCaseService
       userId: user.id,
     });
 
-    // 4. get user profile
+    // 5. get user profile
     return this.getRegularUserProfileUsecase.execute({ id: user.id });
+  }
+
+  private async claimPlaceholder(
+    placeholder: IRegularUserModel,
+    profile: Omit<CreateRegularUserOptions, 'email'>,
+    identityId: string,
+  ): Promise<IRegularUserProfileModel> {
+    // The phone must not belong to another real account.
+    const phoneOwner = await this.userService.findRegularUser({
+      phone: profile.phone,
+      hasAccount: true,
+    });
+    if (phoneOwner) {
+      this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
+    }
+
+    const userId = placeholder.id;
+    const notificationsSettingsId =
+      placeholder.notificationsSettings?.id ??
+      (await this.notificationSettingsFacade.create()).id;
+
+    await this.userService.updateRegularUser(userId, {
+      notificationsSettingsId,
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      name: `${profile.firstName} ${profile.lastName}`,
+      phone: profile.phone,
+      birthday: profile.birthday,
+      sex: profile.sex,
+      locationId: profile.locationId,
+      hasAccount: true,
+    });
+    await this.authIdentityFacade.updateIdentity(identityId, { userId });
+
+    return this.getRegularUserProfileUsecase.execute({ id: userId });
   }
 }

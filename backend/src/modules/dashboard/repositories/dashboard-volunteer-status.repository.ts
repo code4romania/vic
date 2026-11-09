@@ -55,7 +55,7 @@ export class DashboardRepository implements IDashboardRepository {
       .orderBy('dashboard.Date', 'ASC')
       .setParameters({
         active: VolunteerStatus.ACTIVE,
-        archived: VolunteerStatus.ARCHIVED,
+        archived: VolunteerStatus.INACTIVE,
       })
       .getRawMany();
 

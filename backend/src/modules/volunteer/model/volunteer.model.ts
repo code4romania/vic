@@ -24,8 +24,12 @@ import {
 export interface IVolunteerModel extends IBaseModel {
   id: string;
   status: VolunteerStatus;
+  source: string;
+  isFavorite: boolean;
 
   archivedOn: Date;
+  // Admin who made the volunteer inactive, or the volunteer's own user id when they left.
+  archivedById: string;
   blockedOn: Date;
 
   // Relations
@@ -46,6 +50,8 @@ export interface IVolunteerStats {
 export type CreateVolunteerOptions = {
   userId: IVolunteerModel['user']['id'];
   organizationId: IVolunteerModel['organization']['id'];
+  status?: VolunteerStatus;
+  source?: string;
 };
 
 export type JoinOrganizationByAccessCodeModel = {
@@ -55,7 +61,7 @@ export type JoinOrganizationByAccessCodeModel = {
 };
 
 export type ArchiveVolunteerOptions = {
-  status: VolunteerStatus.ARCHIVED;
+  status: VolunteerStatus.INACTIVE;
   archivedOn: Date;
   archivedById: string;
 };
@@ -78,6 +84,10 @@ export type UpdateVolunteerProfileIdOptions = {
   volunteerProfileId: IVolunteerProfileModel['id'];
 };
 
+export type UpdateVolunteerDetailsOptions = Partial<
+  Pick<IVolunteerModel, 'source' | 'isFavorite'>
+>;
+
 export type UpdateVolunteerOptions = Pick<IVolunteerModel, 'id'> &
   OneOf<
     [
@@ -85,6 +95,7 @@ export type UpdateVolunteerOptions = Pick<IVolunteerModel, 'id'> &
       BlockVolunteerOptions,
       ActivateVolunteerOptions,
       UpdateVolunteerProfileIdOptions,
+      UpdateVolunteerDetailsOptions,
     ]
   >;
 
@@ -118,8 +129,11 @@ export class VolunteerModelTransformer {
     return {
       id: volunteer.id,
       status: volunteer.status,
+      source: volunteer.source,
+      isFavorite: volunteer.isFavorite,
 
       archivedOn: volunteer.archivedOn,
+      archivedById: volunteer.archivedById,
       blockedOn: volunteer.blockedOn,
 
       archivedBy: AdminUserTransformer.fromEntity(volunteer.archivedBy),
@@ -142,6 +156,8 @@ export class VolunteerModelTransformer {
 
     entity.userId = volunteer.userId;
     entity.organizationId = volunteer.organizationId;
+    if (volunteer.status) entity.status = volunteer.status;
+    if (volunteer.source !== undefined) entity.source = volunteer.source;
 
     return entity;
   }

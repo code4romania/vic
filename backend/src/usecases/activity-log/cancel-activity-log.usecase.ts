@@ -6,6 +6,7 @@ import { ActivityLogFacade } from 'src/modules/activity-log/services/activity-lo
 import { GetOneActivityLogUsecase } from './get-one-activity-log.usecase';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { ActivityLogExceptionMessages } from 'src/modules/activity-log/exceptions/activity-log.exceptions';
+import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class CancelActivityLogUsecase
@@ -20,6 +21,8 @@ export class CancelActivityLogUsecase
   public async execute(id: string): Promise<void> {
     // 1. Check if the log to be delete, exists
     const log = await this.getOneActivityLogUsecase.execute(id);
+    // An inactive or blocked volunteer's hours are read-only
+    assertVolunteerEditable(log.volunteer);
 
     if (log.status !== ActivityLogStatus.PENDING) {
       this.exceptionService.badRequestException(

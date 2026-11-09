@@ -14,6 +14,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import ArchiveVolunteerEvent from 'src/modules/notifications/events/join-ngo/archive-volunteer.event';
 import { SyncUserOrganizationsUsecase } from '../user/sync-user-organizations.usecase';
+import { assertVolunteerNotBlocked } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class ArchiveVolunteerUsecase
@@ -34,6 +35,7 @@ export class ArchiveVolunteerUsecase
   ): Promise<IVolunteerModel> {
     const volunteer = await this.getOneVolunteerUsecase.execute(volunteerId);
 
+    assertVolunteerNotBlocked(volunteer);
     if (volunteer.status !== VolunteerStatus.ACTIVE) {
       this.exceptionService.badRequestException(
         VolunteerExceptionMessages.VOLUNTEER_003,

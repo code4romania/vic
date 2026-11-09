@@ -9,6 +9,7 @@ import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { GetOneTemplateUseCase } from './get-one-template.usecase';
 import { IContractModel } from 'src/modules/documents/models/contract.model';
+import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class CancelContractUsecase implements IUseCaseService<IContractModel> {
@@ -30,6 +31,8 @@ export class CancelContractUsecase implements IUseCaseService<IContractModel> {
       id,
       organizationId,
     });
+    // An inactive or blocked volunteer's contracts are read-only
+    assertVolunteerEditable(contract.volunteer);
 
     // 2. check if the contract is pending admin
     if (contract.status !== ContractStatus.PENDING_ADMIN) {

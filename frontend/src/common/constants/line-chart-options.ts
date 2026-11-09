@@ -3,7 +3,7 @@ import i18n from '../config/i18n';
 export const LINE_CHART_OPTIONS = {
   LABELS: {
     ACTIVE: i18n.t('volunteers:tabs.active'),
-    ARCHIVED: i18n.t('volunteers:tabs.archived'),
+    ARCHIVED: i18n.t('volunteers:tabs.inactive'),
   },
   COLOURS: {
     ACTIVE: '#0AA5A5',

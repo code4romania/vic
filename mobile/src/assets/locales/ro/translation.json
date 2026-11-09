@@ -337,7 +337,9 @@
             "access_request_pending": "Înscrierea ta așteaptă aprobare de la organizație",
             "joined_from": "Te-ai alăturat din {{date}}",
             "volunteer_archived": "Profilul tau de voluntar a fost dezactivat!",
-            "volunteer_blocked": "Accesul tau la organizație a fost restricționat"
+            "volunteer_blocked": "Accesul tau la organizație a fost restricționat",
+            "volunteer_inactive": "Organizația te-a marcat ca voluntar inactiv. Poți vedea organizația și descărca documentele.",
+            "volunteer_candidate": "Organizația te-a adăugat ca și candidat. Vei putea participa după ce organizația te activează."
         },
         "modal": {
             "identity_data_missing": {

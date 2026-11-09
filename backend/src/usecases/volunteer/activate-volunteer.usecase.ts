@@ -11,6 +11,7 @@ import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade
 import { GetOneVolunteerUsecase } from './get-one-volunteer.usecase';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { SwitchOrganizationUsecase } from '../organization/switch-organization.usecase';
+import { assertVolunteerNotBlocked } from 'src/modules/volunteer/volunteer-status.rules';
 
 @Injectable()
 export class ActivateVolunteerUsecase
@@ -30,7 +31,8 @@ export class ActivateVolunteerUsecase
   ): Promise<IVolunteerModel> {
     const volunteer = await this.getOneVolunteerUsecase.execute(volunteerId);
 
-    if (volunteer.status !== VolunteerStatus.ARCHIVED) {
+    assertVolunteerNotBlocked(volunteer);
+    if (volunteer.status !== VolunteerStatus.INACTIVE) {
       this.exceptionService.badRequestException(
         VolunteerExceptionMessages.VOLUNTEER_004,
       );

@@ -8,6 +8,7 @@ import { IBusinessException } from '../../common/interfaces/business-exception.i
 import {
   activateVolunteer,
   archiveVolunteer,
+  updateVolunteerDetails,
   blockVolunteer,
   getVolunteer,
   getVolunteerLineChart,
@@ -83,6 +84,16 @@ export const useVolunteer = (id: string) => {
     enabled: !!id,
     onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
   });
+};
+
+export const useUpdateVolunteerDetailsMutation = () => {
+  return useMutation(
+    ({ id, data }: { id: string; data: { source?: string | null; isFavorite?: boolean } }) =>
+      updateVolunteerDetails(id, data),
+    {
+      onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
+    },
+  );
 };
 
 export const useArchiveVolunteerMutation = () => {

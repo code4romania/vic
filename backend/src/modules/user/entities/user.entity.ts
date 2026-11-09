@@ -39,6 +39,11 @@ export class UserEntity extends BaseEntity {
 
   @Column({ type: 'text', name: 'phone' })
   phone: string;
+
+  // False for a person the NGO added by hand or by import (Candidate): no login yet.
+  // Becomes true when that email signs up and claims the row.
+  @Column({ type: 'boolean', name: 'has_account', default: true })
+  hasAccount: boolean;
 }
 
 @ChildEntity(UserType.ADMIN)

@@ -39,6 +39,12 @@ export class VolunteerHistoryEntity
   })
   status: VolunteerStatus;
 
+  @Column({ type: 'text', name: 'source', nullable: true })
+  source: string;
+
+  @Column({ type: 'boolean', name: 'is_favorite', default: false })
+  isFavorite: boolean;
+
   @Column({ type: 'timestamptz', name: 'archived_on', nullable: true })
   archivedOn: Date;
 
