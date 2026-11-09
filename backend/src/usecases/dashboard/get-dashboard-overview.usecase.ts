@@ -52,7 +52,7 @@ export class GetDashboardOverviewUsecase {
            WHERE organization_id = $1 AND status = 'pending' AND deleted_on IS NULL) AS "pendingAccessRequests",
          (SELECT COUNT(*) FROM event
            WHERE organization_id = $1 AND status = 'published' AND deleted_on IS NULL
-             AND COALESCE(end_date, start_date) >= now()) AS "upcomingEvents",
+             AND start_date >= now()) AS "upcomingEvents",
          (SELECT COALESCE(SUM(hours), 0) FROM activity_log
            WHERE organization_id = $1 AND status = 'approved' AND deleted_on IS NULL) AS "approvedHours",
          (SELECT COALESCE(SUM(hours), 0) FROM activity_log
@@ -71,7 +71,7 @@ export class GetDashboardOverviewUsecase {
     };
   }
 
-  // #467: the next published events, with approved registrations against the capacity
+  // #467: the next published events (not started yet), with approved registrations against the capacity
   public async upcomingEvents(
     organizationId: string,
   ): Promise<IDashboardUpcomingEvent[]> {
@@ -83,7 +83,7 @@ export class GetDashboardOverviewUsecase {
                   AND r.deleted_on IS NULL)::int AS going
          FROM event e
         WHERE e.organization_id = $1 AND e.status = 'published' AND e.deleted_on IS NULL
-          AND COALESCE(e.end_date, e.start_date) >= now()
+          AND e.start_date >= now()
         ORDER BY e.start_date ASC, e.id
         LIMIT $2`,
       [organizationId, DASHBOARD_LIST_SIZE],

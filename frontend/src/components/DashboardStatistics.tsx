@@ -20,7 +20,7 @@ const DashboardStatistics = () => {
         value={value(data?.activeVolunteers)}
         info={
           data?.pendingAccessRequests
-            ? t('volunteers.info', { value: data.pendingAccessRequests })
+            ? t('volunteers.info', { count: data.pendingAccessRequests })
             : undefined
         }
         action={{ label: t('volunteers.action'), onClick: () => navigate('/volunteers') }}
@@ -41,7 +41,7 @@ const DashboardStatistics = () => {
       <StatisticsCard
         label={t('hours.label')}
         value={value(data?.approvedHours)}
-        info={data?.pendingHours ? t('hours.info', { value: data.pendingHours }) : undefined}
+        info={data?.pendingHours ? t('hours.info', { count: data.pendingHours }) : undefined}
         action={{ label: t('hours.action'), onClick: () => navigate('/approvals/hours') }}
       />
     </div>

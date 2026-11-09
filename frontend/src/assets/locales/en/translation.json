@@ -1094,7 +1094,8 @@
     "statistics": {
       "volunteers": {
         "label": "Active volunteers",
-        "info": "{{value}} new requests",
+        "info_one": "{{count}} new request",
+        "info_other": "{{count}} new requests",
         "action": "See volunteers"
       },
       "events": {
@@ -1107,7 +1108,8 @@
       },
       "hours": {
         "label": "Volunteering hours",
-        "info": "{{value}} hours to approve",
+        "info_one": "{{count}} hour to approve",
+        "info_other": "{{count}} hours to approve",
         "action": "See hours to approve"
       }
     },

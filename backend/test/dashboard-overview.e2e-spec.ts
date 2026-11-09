@@ -141,6 +141,13 @@ describe('Dashboard overview (e2e)', () => {
       );
     }
 
+    // an ongoing event (started, not ended yet) is no longer upcoming
+    await q(
+      `INSERT INTO event (name, description, start_date, end_date, status, organization_id)
+       VALUES ('În desfășurare', '-', $1, $2, 'published', $3)`,
+      [days(-1), days(2), organizationId],
+    );
+
     const { body } = await get('/dashboard/overview');
     expect(body).toEqual({
       activeVolunteers: 2,

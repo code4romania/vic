@@ -1100,7 +1100,9 @@
     "statistics": {
       "volunteers": {
         "label": "Voluntari activi",
-        "info": "{{value}} cereri noi",
+        "info_one": "{{count}} cerere nouă",
+        "info_few": "{{count}} cereri noi",
+        "info_other": "{{count}} de cereri noi",
         "action": "Vezi voluntarii"
       },
       "events": {
@@ -1113,7 +1115,9 @@
       },
       "hours": {
         "label": "Ore voluntariat",
-        "info": "{{value}} ore de aprobat",
+        "info_one": "{{count}} oră de aprobat",
+        "info_few": "{{count}} ore de aprobat",
+        "info_other": "{{count}} de ore de aprobat",
         "action": "Vezi orele de aprobat"
       }
     },
