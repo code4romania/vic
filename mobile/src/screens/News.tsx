@@ -1,287 +1,296 @@
-import React from 'react';
-import { BackIcon } from '../layouts/PageLayout';
-import NewsListItem from '../components/NewsListItem';
-import InfiniteListLayout from '../layouts/InfiniteListLayout';
-import { View, StyleSheet } from 'react-native';
-import { useNewsInfiniteQuery } from '../services/news/news.service';
-import { INewsItem } from '../common/interfaces/news-item.interface';
-import { useTranslation } from 'react-i18next';
-import { NewsType } from '../common/enums/news-type.enum';
-import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
-import { TrackedEventName } from '../common/enums/tracked-event-name.enum';
-import { Text, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
-import { useUserProfile } from '../store/profile/profile.selector';
-import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
-import useStore from '../store/store';
-import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
-import { Screen } from '../components/Screen';
+import React, { useMemo, useState } from 'react';
+import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+import { useNewsInfiniteQuery } from '../services/news/news.service';
+import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
+import { NewsType } from '../common/enums/news-type.enum';
+import { TrackedEventName } from '../common/enums/tracked-event-name.enum';
+import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
+import { INewsItem } from '../common/interfaces/news-item.interface';
+import { colors, shadows, spacing, StatusTone } from '../common/theme/tokens';
+import useStore from '../store/store';
+import { useUserProfile } from '../store/profile/profile.selector';
+import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
+import { EventIcon, EventIconName } from '../components/events/EventIcons';
+import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
+import {
+  Avatar,
+  EmptyState,
+  Enter,
+  PressableScale,
+  SegmentedControl,
+  VText,
+} from '../components/ui';
 
-const NewsContent = ({
-  startText,
-  endText,
-  organizationName,
-}: {
-  startText: string;
-  endText?: string;
-  organizationName?: string;
-}) => {
-  const theme = useTheme();
-  return (
-    <Text
-      allowFontScaling={ALLOW_FONT_SCALLING}
-      category="c1"
-      numberOfLines={2}
-      ellipsizeMode="tail"
-      style={{ ...styles.newsText, color: theme['cool-gray-500'] }}
-    >
-      {startText}{' '}
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="s1" style={styles.newsText}>
-        {organizationName || ''}
-      </Text>{' '}
-      {endText || ''}
-    </Text>
-  );
+type NewsLine = { start: string; organization?: string; end?: string };
+
+const STATUS_ICON: Record<'ok' | 'no' | 'accent', { icon: EventIconName; tone: StatusTone }> = {
+  ok: { icon: 'check', tone: 'ok' },
+  no: { icon: 'close', tone: 'no' },
+  accent: { icon: 'open', tone: 'accent' },
 };
+
+/**
+ * VIC 2.0 Noutăți (canvas board "Noutăți"): what changed for the volunteer, by kind (hours, documents,
+ * organizations). Tapping an update opens it and makes its organization active first.
+ */
 const News = ({ navigation, route }: any) => {
-  const { type } = route.params;
   const { t } = useTranslation('news');
   const insets = useSafeAreaInsets();
+  useFocusedStatusBarStyle('dark');
+  const [type, setType] = useState<NewsType>(route.params?.type ?? NewsType.LOGGED_HOURS);
 
-  // switch organization
   const { mutate: switchOrganization } = useSwitchOrganizationMutation();
-
   const { setActiveOrganization } = useStore();
   const { userProfile } = useUserProfile();
 
   const {
-    data: news,
-    error: getNewsError,
-    isFetching: isFetchingNews,
+    data,
+    error,
+    isFetching,
     fetchNextPage,
     hasNextPage,
-    refetch: reloadNews,
+    refetch,
     isFetchingNextPage,
+    isRefetching,
   } = useNewsInfiniteQuery(type);
 
-  const onLoadMore = () => {
-    if (!isFetchingNews && hasNextPage) {
-      fetchNextPage();
-    }
-  };
-
-  const onRenderAnouncementListItem = ({ item }: { item: INewsItem }) => (
-    <View style={styles.listItemContainer}>
-      <NewsListItem
-        icon={item.organizationLogo}
-        subtitleElement={renderNewsItemDescription(item)}
-        onPress={onNewsItemPress.bind(null, item)}
-      />
-    </View>
+  const items = useMemo(
+    () => (data?.pages ?? []).flatMap((page: any) => page.items) as INewsItem[],
+    [data],
   );
 
-  const renderHeader = () => {
-    switch (type) {
-      case NewsType.CONTRACTS:
-        return t('header.documents');
-      case NewsType.LOGGED_HOURS:
-        return t('header.logs');
-      case NewsType.ORGANIZATIONS:
-        return t('header.organizations');
+  const describe = (item: INewsItem): { line: NewsLine; kind: 'ok' | 'no' | 'accent' } | null => {
+    switch (item.eventName) {
+      case TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS:
+        if (item.newStatus === ActivityLogStatus.APPROVED) {
+          return { kind: 'ok', line: { start: `${t('item.logs.approved')}` } };
+        }
+        if (item.newStatus === ActivityLogStatus.REJECTED) {
+          return { kind: 'no', line: { start: `${t('item.logs.rejected')}` } };
+        }
+        return null;
+      case TrackedEventName.CREATE_CONTRACT:
+        return {
+          kind: 'accent',
+          line: {
+            start: '',
+            organization: item.organizationName,
+            end: `${t('item.documents.new')}`,
+          },
+        };
+      case TrackedEventName.APPROVE_CONTRACT:
+        return {
+          kind: 'ok',
+          line: {
+            start: `${t('item.documents.approved_start')}`,
+            organization: item.organizationName,
+            end: `${t('item.documents.approved_end')}`,
+          },
+        };
+      case TrackedEventName.REJECT_CONTRACT:
+        return {
+          kind: 'no',
+          line: {
+            start: `${t('item.documents.rejected_start')}`,
+            organization: item.organizationName,
+            end: `${t('item.documents.rejected_end')}`,
+          },
+        };
+      case TrackedEventName.APPROVE_ACCESS_REQUEST:
+        return {
+          kind: 'ok',
+          line: {
+            start: `${t('item.organization.request')}`,
+            organization: item.organizationName,
+            end: `${t('item.organization.approved')}`,
+          },
+        };
+      case TrackedEventName.REJECT_ACCESS_REQUEST:
+        return {
+          kind: 'no',
+          line: {
+            start: `${t('item.organization.request')}`,
+            organization: item.organizationName,
+            end: `${t('item.organization.rejected')}`,
+          },
+        };
+      default:
+        return null;
     }
-
-    return '';
   };
 
-  const renderNewsItemDescription = (item: INewsItem) => {
-    switch (type) {
-      case NewsType.CONTRACTS:
-        return renderDocumentsNewsItemDescription(item);
-      case NewsType.LOGGED_HOURS:
-        return renderActivityLogsNewsItemDescription(item);
-      case NewsType.ORGANIZATIONS:
-        return renderOrganizationsNewsItemDescription(item);
-    }
-  };
-
-  const renderActivityLogsNewsItemDescription = (item: INewsItem) => {
-    if (
-      item.newStatus === ActivityLogStatus.APPROVED &&
-      item.eventName === TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS
-    ) {
-      return <NewsContent startText={t('item.logs.approved')} />;
-    }
-
-    if (
-      item.newStatus === ActivityLogStatus.REJECTED &&
-      item.eventName === TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS
-    ) {
-      return <NewsContent startText={t('item.logs.rejected')} />;
-    }
-
-    return <></>;
-  };
-
-  const renderDocumentsNewsItemDescription = (item: INewsItem) => {
-    if (item.eventName === TrackedEventName.CREATE_CONTRACT) {
-      return (
-        <NewsContent
-          startText={''}
-          endText={`${t('item.documents.new')}`}
-          organizationName={item.organizationName}
-        />
-      );
-    }
-
-    if (item.eventName === TrackedEventName.APPROVE_CONTRACT) {
-      return (
-        <NewsContent
-          startText={`${t('item.documents.approved_start')}`}
-          endText={`${t('item.documents.approved_end')}`}
-          organizationName={item.organizationName}
-        />
-      );
-    }
-
-    if (item.eventName === TrackedEventName.REJECT_CONTRACT) {
-      return (
-        <NewsContent
-          startText={`${t('item.documents.rejected_start')}`}
-          endText={`${t('item.documents.rejected_end')}`}
-          organizationName={item.organizationName}
-        />
-      );
-    }
-
-    return <></>;
-  };
-
-  const renderOrganizationsNewsItemDescription = (item: INewsItem) => {
-    if (item.eventName === TrackedEventName.APPROVE_ACCESS_REQUEST) {
-      return (
-        <NewsContent
-          startText={`${t('item.organization.request')}`}
-          endText={`${t('item.organization.approved')}`}
-          organizationName={item.organizationName}
-        />
-      );
-    }
-
-    if (item.eventName === TrackedEventName.REJECT_ACCESS_REQUEST) {
-      return (
-        <NewsContent
-          startText={`${t('item.organization.request')}`}
-          endText={`${t('item.organization.rejected')}`}
-          organizationName={item.organizationName}
-        />
-      );
-    }
-
-    return <></>;
-  };
-
-  const onNewsItemPress = (item: INewsItem) => {
-    if (userProfile?.activeOrganization?.id !== item.organizationId) {
-      const activeOrganization = userProfile?.myOrganizations.find(
-        (org) => org.id === item.organizationId,
-      );
-
-      if (activeOrganization) {
-        setActiveOrganization(activeOrganization as IOrganizationVolunteer);
+  const onPress = (item: INewsItem) => {
+    // the update belongs to an organization: make it the active one first
+    const organization = userProfile?.myOrganizations?.find(
+      (org) => org.id === item.organizationId,
+    );
+    if (item.organizationId && userProfile?.activeOrganization?.id !== item.organizationId) {
+      if (organization) {
+        setActiveOrganization(organization);
       }
-      switchOrganization({ organizationId: item.organizationId as string });
+      switchOrganization({ organizationId: item.organizationId });
+    }
 
-      if (type === NewsType.LOGGED_HOURS) {
+    switch (item.eventName) {
+      case TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS:
         navigation.navigate('activity-log', { activityLogId: item.activityLogId });
-      }
-
-      if (type === NewsType.CONTRACTS) {
-        if (item.eventName === TrackedEventName.REJECT_CONTRACT) {
-          navigation.navigate('rejected-contract', {
-            contractId: item.contractId,
-          });
-        } else {
-          navigation.navigate('documents', { volunteerId: activeOrganization?.volunteerId });
-        }
-      }
-
-      if (type === NewsType.ORGANIZATIONS) {
-        if (item.eventName === TrackedEventName.REJECT_ACCESS_REQUEST) {
-          navigation.navigate('rejected-request', { accessRequestId: item.accessRequestId });
-        } else {
-          navigation.navigate('organization-profile', { organizationId: item.organizationId });
-        }
-      }
-    } else {
-      if (type === NewsType.LOGGED_HOURS) {
-        navigation.navigate('activity-log', { activityLogId: item.activityLogId });
-      }
-
-      if (type === NewsType.CONTRACTS) {
-        if (item.eventName === TrackedEventName.REJECT_CONTRACT) {
-          navigation.navigate('rejected-contract', {
-            contractId: item.contractId,
-          });
-        } else {
-          navigation.navigate('documents', {});
-        }
-      }
-
-      if (type === NewsType.ORGANIZATIONS) {
-        if (item.eventName === TrackedEventName.REJECT_ACCESS_REQUEST) {
-          navigation.navigate('rejected-request', { accessRequestId: item.accessRequestId });
-        } else {
-          navigation.navigate('organization-profile', { organizationId: item.organizationId });
-        }
-      }
+        return;
+      case TrackedEventName.REJECT_CONTRACT:
+        navigation.navigate('rejected-contract', { contractId: item.contractId });
+        return;
+      case TrackedEventName.CREATE_CONTRACT:
+      case TrackedEventName.APPROVE_CONTRACT:
+        navigation.navigate(
+          'documents',
+          organization?.volunteerId ? { volunteerId: organization.volunteerId } : {},
+        );
+        return;
+      case TrackedEventName.REJECT_ACCESS_REQUEST:
+        navigation.navigate('rejected-request', { accessRequestId: item.accessRequestId });
+        return;
+      default:
+        navigation.navigate('organization-profile', { organizationId: item.organizationId });
     }
   };
 
-  const renderLeftControl = () => {
-    return <TopNavigationAction icon={BackIcon} onPress={navigation.goBack} />;
+  const renderItem = ({ item, index }: { item: INewsItem; index: number }) => {
+    const described = describe(item);
+    if (!described) {
+      return null;
+    }
+    const status = STATUS_ICON[described.kind];
+    const { line } = described;
+    return (
+      <Enter index={Math.min(index, 6)}>
+        <PressableScale
+          onPress={() => onPress(item)}
+          pressedScale={0.985}
+          style={styles.row}
+          testID={`news-row-${item.id}`}
+        >
+          <View>
+            <Avatar name={item.organizationName || '?'} uri={item.organizationLogo} size={44} />
+            <View style={[styles.badge, { backgroundColor: colors.status[status.tone].bg }]}>
+              <EventIcon name={status.icon} size={12} color={colors.status[status.tone].fg} />
+            </View>
+          </View>
+          <VText variant="body" style={styles.text} numberOfLines={3}>
+            {line.start ? `${line.start} ` : ''}
+            {!!line.organization && <VText variant="bodyStrong">{line.organization}</VText>}
+            {line.end ? ` ${line.end}` : ''}
+          </VText>
+        </PressableScale>
+      </Enter>
+    );
+  };
+
+  const renderEmpty = () => {
+    if (isFetching && !isRefetching && !items.length) {
+      return <NewsItemSkeleton />;
+    }
+    if (error) {
+      return (
+        <EmptyState
+          title={`${t('errors.generic')}`}
+          actionLabel={`${t('events:retry')}`}
+          onAction={() => refetch()}
+        />
+      );
+    }
+    return <EmptyState title={`${t('empty')}`} testID="news-empty" />;
   };
 
   return (
-    <Screen
-      preset="fixed"
-      contentContainerStyle={[styles.innerContainer, { paddingTop: insets.top }]}
-    >
-      <TopNavigation
-        title={renderHeader()}
-        alignment="start"
-        accessoryLeft={renderLeftControl}
-        style={styles.header}
+    <View style={styles.screen}>
+      <Animated.FlatList
+        data={items}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        ListHeaderComponent={
+          <View style={styles.header}>
+            <PressableScale
+              onPress={navigation.goBack}
+              style={[styles.back, shadows.back]}
+              accessibilityLabel={`${t('general:back')}`}
+              testID="news-back"
+            >
+              <EventIcon name="back" size={20} />
+            </PressableScale>
+            <Enter>
+              <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
+                {t('title')}
+              </VText>
+            </Enter>
+            <Enter index={1}>
+              <SegmentedControl
+                options={[
+                  { key: NewsType.LOGGED_HOURS, label: `${t('tabs.logs')}` },
+                  { key: NewsType.CONTRACTS, label: `${t('tabs.documents')}` },
+                  { key: NewsType.ORGANIZATIONS, label: `${t('tabs.organizations')}` },
+                ]}
+                value={type}
+                onChange={setType}
+                testID="news-type"
+              />
+            </Enter>
+          </View>
+        }
+        ListEmptyComponent={renderEmpty}
+        ListFooterComponent={
+          isFetchingNextPage ? <ActivityIndicator color={colors.navy} style={styles.more} /> : null
+        }
+        onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
+        onEndReachedThreshold={0.4}
+        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={() => refetch()} />}
+        contentContainerStyle={[
+          styles.list,
+          { paddingTop: insets.top + 12, paddingBottom: insets.bottom + 24 },
+        ]}
+        showsVerticalScrollIndicator={false}
+        testID="news"
       />
-      <InfiniteListLayout<INewsItem>
-        pages={news?.pages}
-        renderItem={onRenderAnouncementListItem}
-        loadMore={onLoadMore}
-        isLoading={isFetchingNews && !isFetchingNextPage}
-        refetch={reloadNews}
-        loadingLayout={<NewsItemSkeleton />}
-        hasDivider={false}
-        errorMessage={getNewsError ? `${t('errors.generic')}` : ''}
-      />
-    </Screen>
+    </View>
   );
 };
 
 export default News;
 
 const styles = StyleSheet.create({
-  innerContainer: { flex: 1, padding: 16 },
-  header: {
-    minHeight: 59,
-    marginLeft: -16,
+  screen: { flex: 1, backgroundColor: colors.white },
+  list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
+  header: { paddingBottom: 8, gap: 16 },
+  back: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  listItemContainer: {
-    paddingBottom: 16,
-    paddingHorizontal: 2,
+  title: { marginTop: 0 },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    paddingVertical: 14,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.line,
   },
-  newsText: {
-    paddingRight: 32,
-    lineHeight: 20,
+  badge: {
+    position: 'absolute',
+    right: -4,
+    bottom: -4,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  text: { flex: 1 },
+  more: { paddingVertical: 20 },
 });

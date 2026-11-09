@@ -36,7 +36,10 @@
     },
     "back": "Back to",
     "close": "Close",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "errors": {
+      "generic": "Error loading data"
+    }
   },
   "landing": {
     "message": "Log in or create an account in one of the following ways",
@@ -873,6 +876,16 @@
         "approved": "has been approved",
         "rejected": "was rejected"
       }
+    },
+    "title": "News",
+    "tabs": {
+      "logs": "Hours",
+      "documents": "Documents",
+      "organizations": "Organizations"
+    },
+    "empty": "No news here yet",
+    "errors": {
+      "generic": "Error loading news"
     }
   },
   "delete_account": {
@@ -909,7 +922,8 @@
       "ANNOUNCEMENT_006": "Only active volunteers can reply to an active announcement.",
       "ANNOUNCEMENT_007": "You already replied to this announcement.",
       "generic": "The reply could not be sent. Please try again."
-    }
+    },
+    "your_answer": "Your answer"
   },
   "onboarding": {
     "skip": "Skip",

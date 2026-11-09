@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import { Icon, Spinner } from '@ui-kitten/components';
+import { Spinner } from '@ui-kitten/components';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -31,9 +31,6 @@ interface PageLayoutProps {
   actionsOptions?: ActionsOptionsProps;
   headerStyle?: ViewStyle;
 }
-
-// legacy ui-kitten icon, still used by News
-export const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
 
 export const LoadingIndicator = (props: any): React.ReactElement => (
   <View style={[props.style, styles.indicator]}>
