@@ -17,6 +17,12 @@ import { GetDashboardVolunteersHoursUseCase } from 'src/usecases/dashboard/get-d
 import { VolunteerHoursPresenter } from './presenters/volunteer-hours.presenter';
 import { VolunteerStatusPresenter } from './presenters/volunteer-status.presenter';
 import { GetDashboardVolunteersStatusUseCase } from 'src/usecases/dashboard/get-dashboard-volunteers-status.usecase';
+import {
+  GetDashboardOverviewUsecase,
+  IDashboardAnnouncementResponse,
+  IDashboardOverview,
+  IDashboardUpcomingEvent,
+} from 'src/usecases/dashboard/get-dashboard-overview.usecase';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -28,7 +34,32 @@ export class DashboardController {
     private readonly getDashboardVolunteerHoursUseCase: GetDashboardVolunteersHoursUseCase,
     private readonly getDashboardVolunteerStatusUseCase: GetDashboardVolunteersStatusUseCase,
     private readonly getPendingApprovalsUseCase: GetPendingApprovalsUseCase,
+    private readonly getDashboardOverviewUsecase: GetDashboardOverviewUsecase,
   ) {}
+
+  // #466: Voluntari activi, Evenimente viitoare, Contracte în așteptare, Ore voluntariat
+  @Get('overview')
+  async getOverview(
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<IDashboardOverview> {
+    return this.getDashboardOverviewUsecase.overview(organizationId);
+  }
+
+  // #467: the next 3 events
+  @Get('upcoming-events')
+  async getUpcomingEvents(
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<IDashboardUpcomingEvent[]> {
+    return this.getDashboardOverviewUsecase.upcomingEvents(organizationId);
+  }
+
+  // #467: the last 3 responses to announcements
+  @Get('announcement-responses')
+  async getLatestResponses(
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<IDashboardAnnouncementResponse[]> {
+    return this.getDashboardOverviewUsecase.latestResponses(organizationId);
+  }
 
   // #499 / #468: pending approvals per type and in total
   @Get('pending-approvals')

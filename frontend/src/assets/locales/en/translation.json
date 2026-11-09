@@ -1089,21 +1089,37 @@
     }
   },
   "dashboard": {
-    "statistics_card": {
-      "activity_log": {
-        "label": "See hours awaiting approval",
-        "info": "{{value}} hours on hold"
+    "see_all": "See all",
+    "statistics": {
+      "volunteers": {
+        "label": "Active volunteers",
+        "info": "{{value}} new requests",
+        "action": "See volunteers"
       },
-      "volunteer": {
-        "label": "See requests",
-        "info": "{{value}} applications"
+      "events": {
+        "label": "Upcoming events",
+        "action": "See events"
+      },
+      "contracts": {
+        "label": "Pending contracts",
+        "action": "See contracts"
+      },
+      "hours": {
+        "label": "Volunteering hours",
+        "info": "{{value}} hours to approve",
+        "action": "See hours to approve"
       }
     },
-    "line_chart": {
-      "title": "Number of volunteers"
+    "upcoming_events": {
+      "title": "Upcoming events",
+      "empty": "No events scheduled.",
+      "going_capacity": "{{going}}/{{capacity}} registered",
+      "going": "{{going}} registered"
     },
-    "pie_chart": {
-      "title": "Organization volunteer statistics"
+    "announcement_responses": {
+      "title": "Announcement responses",
+      "empty": "No responses to announcements yet.",
+      "on": "on \"{{name}}\""
     }
   },
   "documents": {

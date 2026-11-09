@@ -148,6 +148,7 @@ import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
 import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
 import { DeleteContractUsecase } from './documents/delete-contract.usecase';
 import { UploadContractUsecase } from './documents/upload-contract.usecase';
+import { GetDashboardOverviewUsecase } from './dashboard/get-dashboard-overview.usecase';
 import { DeleteVolunteerUsecase } from './volunteer/delete-volunteer.usecase';
 import { CertificateUsecase } from './documents/certificate.usecase';
 import { GetVolunteerContractHistoryUsecase } from './documents/get-volunteer-contract-history.usecase';
@@ -365,6 +366,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,
     UploadContractUsecase,
+    GetDashboardOverviewUsecase,
     DeleteVolunteerUsecase,
     CertificateUsecase,
     GetVolunteerContractHistoryUsecase,
@@ -539,6 +541,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,
     UploadContractUsecase,
+    GetDashboardOverviewUsecase,
     DeleteVolunteerUsecase,
     CertificateUsecase,
     GetVolunteerContractHistoryUsecase,
