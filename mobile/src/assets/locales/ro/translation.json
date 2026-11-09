@@ -666,26 +666,52 @@
         "statistics": {
             "events": {
                 "title": "{{number}} evenimente",
-                "description": "luna asta"
+                "description": "luna asta",
+                "short": "evenimente luna asta"
             },
             "hours": {
                 "title": "{{number}} actualizări",
-                "description": "în ore voluntariat"
+                "description": "în ore voluntariat",
+                "short": "actualizări la ore"
             },
             "documents": {
                 "title": "{{number}} actualizări",
-                "description": "în documente"
+                "description": "în documente",
+                "short": "actualizări la documente"
             },
             "organizations": {
                 "title": "{{number}} actualizări",
-                "description": "în organizații"
+                "description": "în organizații",
+                "short": "actualizări la organizații"
             }
         },
         "anouncements": {
             "section": {
                 "header": "Ultimele noutăți",
                 "see_all": "Vezi toate",
-                "empty_list": "Nu aveți anunțuri noi!"
+                "empty_list": "Nu aveți anunțuri noi!",
+                "title": "Anunțuri"
+            }
+        },
+        "hello": "Bună, {{name}}",
+        "news": "Noutăți",
+        "join_ngo_short": "Caută organizații",
+        "see_all": "Toate",
+        "next": {
+            "title": "Urmează"
+        },
+        "todo": {
+            "title": "De făcut",
+            "contracts": {
+                "title": "Contracte de semnat: {{count}}"
+            },
+            "profile": {
+                "title": "Completează profilul de voluntar",
+                "subtitle": "Ca să poți trimite ore"
+            },
+            "hours": {
+                "title": "Trimite orele de voluntariat",
+                "subtitle": "La {{name}}"
             }
         }
     },
