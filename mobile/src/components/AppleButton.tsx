@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { Platform } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface AppleButtonProps {
@@ -9,15 +10,16 @@ interface AppleButtonProps {
 }
 
 const AppleButton = ({ onPress }: AppleButtonProps) => {
+  const { t } = useTranslation('landing');
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={onPress} accessibilityRole="button">
       <View style={styles.btnContainer}>
         <Image
           source={require('../assets/images/social/apple/apple-icon.png')}
           style={styles.image}
         />
         <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.textStyle} category="p2">
-          Sign in with Apple
+          {`${t('social.apple')}`}
         </Text>
       </View>
     </Pressable>

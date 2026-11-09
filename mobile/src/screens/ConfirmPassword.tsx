@@ -26,11 +26,11 @@ const schema = yup.object({
     .required(`${i18n.t('confirm_password:form.code.required')}`),
   password: yup
     .string()
-    .matches(REGEX.COGNITO_PASSWORD, `${i18n.t('confirm_password:form.password.pattern')}`)
+    .matches(REGEX.PASSWORD, `${i18n.t('confirm_password:form.password.pattern')}`)
     .required(`${i18n.t('confirm_password:form.password.required')}`),
   confirmPassword: yup
     .string()
-    .matches(REGEX.COGNITO_PASSWORD, `${i18n.t('confirm_password:form.password.pattern')}`)
+    .matches(REGEX.PASSWORD, `${i18n.t('confirm_password:form.password.pattern')}`)
     .oneOf(
       [yup.ref('password'), undefined],
       `${i18n.t('confirm_password:form.confirm_password.match')}`,
@@ -63,8 +63,8 @@ const ConfirmPassword = ({ navigation }: any) => {
   const onSubmit = async ({ code, password }: ConfirmPasswordFormTypes) => {
     try {
       setIsLoading(true);
+      // logs in: the Router switches to the private routes (or Landing opens CreateUser)
       await forgotPasswordSubmit(code, password);
-      navigation.navigate('login', undefined, { pop: true });
     } catch (error) {
       // error toast is shown by the auth context
     } finally {

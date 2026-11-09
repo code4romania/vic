@@ -40,11 +40,11 @@ const schema = yup
       .required(`${i18n.t('register:create_account.form.phone.required')}`),
     password: yup
       .string()
-      .matches(REGEX.COGNITO_PASSWORD, `${i18n.t('register:create_account.form.password.pattern')}`)
+      .matches(REGEX.PASSWORD, `${i18n.t('register:create_account.form.password.pattern')}`)
       .required(`${i18n.t('register:create_account.form.password.required')}`),
     confirmPassword: yup
       .string()
-      .matches(REGEX.COGNITO_PASSWORD, `${i18n.t('register:create_account.form.password.pattern')}`)
+      .matches(REGEX.PASSWORD, `${i18n.t('register:create_account.form.password.pattern')}`)
       .oneOf(
         [yup.ref('password'), undefined],
         `${i18n.t('register:create_account.form.confirm_password.match')}`,

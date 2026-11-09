@@ -1,22 +1,21 @@
 import React, { useEffect } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { Text } from '@ui-kitten/components';
-import { Image, StyleSheet } from 'react-native';
+import { Image, Platform, StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import LogInButton from '../components/LogInButton';
 import { useAuth } from '../hooks/useAuth';
-// import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import { useTranslation } from 'react-i18next';
-// import GoogleButton from '../components/GoogleButton';
-// import AppleButton from '../components/AppleButton';
-// import FacebookButton from '../components/FacebookButton';
+import GoogleButton from '../components/GoogleButton';
+import AppleButton from '../components/AppleButton';
+import FacebookButton from '../components/FacebookButton';
 import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import SignUpButton from '../components/SignUpButton';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 
 const Landing = ({ navigation }: any) => {
-  const { isUserPending } = useAuth();
+  const { isUserPending, loginWithSocial } = useAuth();
   const { t } = useTranslation('landing');
   const paddingTop = usePaddingTop();
 
@@ -44,17 +43,10 @@ const Landing = ({ navigation }: any) => {
           )}`}</Text>
           <View style={styles.buttonsContainer}>
             <SignUpButton onPress={onRegisterButtonPress} />
-            {/* {Platform.OS === 'ios' && (
-              <AppleButton
-                onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Apple)}
-              />
-            )}
-            <GoogleButton
-              onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Google)}
-            />
-            <FacebookButton
-              onPress={loginWithSocial.bind(null, CognitoHostedUIIdentityProvider.Facebook)}
-            /> */}
+            {/* Apple is required next to the other social logins on iOS (App Store guideline 4.8) */}
+            {Platform.OS === 'ios' && <AppleButton onPress={() => loginWithSocial('apple')} />}
+            <GoogleButton onPress={() => loginWithSocial('google')} />
+            <FacebookButton onPress={() => loginWithSocial('facebook')} />
           </View>
           <View style={styles.separator} />
           <LogInButton onPress={onLoginButtonPress} />

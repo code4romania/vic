@@ -31,7 +31,8 @@
     "error": {
       "load_entries": "Error loading data",
       "unknown": "An unknown error has occurred",
-      "generic_error": "Data processing error, code: #{{code}}"
+      "generic_error": "Data processing error, code: #{{code}}",
+      "ORG_005": "The organization is not validated yet or is suspended. Try again later."
     },
     "back": "Back to"
   },
@@ -41,9 +42,9 @@
     "email": "E-mail or phone",
     "login": "Log in",
     "social": {
-      "facebook": "Facebook",
-      "apple": "Apple",
-      "google": "Google"
+      "google": "Continue with Google",
+      "facebook": "Continue with Facebook",
+      "apple": "Continue with Apple"
     }
   },
   "register": {
@@ -92,17 +93,13 @@
       }
     },
     "validate_account": {
-      "heading": "Check code received by email",
-      "paragraph": "Fill in the fields below to register.",
-      "form": {
-        "code": {
-          "label": "Enter the code received by email",
-          "placeholder": "Enter the code received by email",
-          "required": "The code is mandatory",
-          "length": "The code must be 6 characters long",
-          "pattern": "The code must contain only digits"
-        }
-      }
+      "heading": "Check your email",
+      "check_email": "We sent a confirmation link to {{email}}. Open it, then come back to the app and log in.",
+      "not_received": "Didn't get the email? Check your Spam folder or ask for a new one.",
+      "resend": "Resend the link",
+      "resending": "Sending...",
+      "resent": "If the address exists, we sent you a new link.",
+      "go_to_login": "Go to login"
     },
     "create_user": {
       "heading": "User data",
@@ -145,7 +142,22 @@
       "invalid_password": "Password is not compliant with security policy",
       "password": "Password change error",
       "code_mismatch": "Code is invalid",
-      "forgot_password": "Password reset error"
+      "forgot_password": "Password reset error",
+      "AUTH_001": "Wrong email or password.",
+      "AUTH_002": "Too many wrong attempts. The account is locked for 15 minutes.",
+      "AUTH_003": "Your email address is not confirmed yet. Check your email.",
+      "AUTH_004": "The account is disabled.",
+      "AUTH_005": "The code is invalid or has expired.",
+      "AUTH_006": "Too many wrong codes. Ask for a new code.",
+      "AUTH_007": "The password does not meet the rules.",
+      "AUTH_008": "Your session has expired. Please log in again.",
+      "AUTH_009": "There is already an account with this email.",
+      "AUTH_010": "Too many requests. Try again in a minute.",
+      "AUTH_011": "This version of the app is too old. Update it from the store.",
+      "AUTH_012": "This is an organization account. Use VIC on the web.",
+      "AUTH_013": "Signing in with this account failed.",
+      "migration_hint": "Had an account before? Use the link we emailed you, or \"Forgot password?\".",
+      "social_failed": "Signing in failed. Try again or use your email and password."
     }
   },
   "login": {
@@ -165,7 +177,8 @@
         "placeholder": "Enter your password",
         "required": "Password is required"
       }
-    }
+    },
+    "migration_notice": "Already had a VIC account? Set your password with the link we emailed you, or tap \"Forgot password?\". If you used Google, Facebook or Apple, use the same button as before."
   },
   "forgot_password": {
     "header": "Reset password",
@@ -799,5 +812,15 @@
     "paragraph": "To delete your account on the VIC application, please confirm your decision below. Deleting your account will result in the permanent loss of your data and access to the application. If you are certain about this action, click the 'Confirm Deletion' button. Keep in mind that this process is irreversible, and you will need to create a new account if you wish to use VIC in the future.",
     "confirm": "Confirm Deletion",
     "error": "There was an error trying to delete your account. Please contact us at {{value}} to finalize the process."
+  },
+  "maintenance": {
+    "heading": "VIC is being updated",
+    "paragraph": "We'll be back in a few minutes. Please try again a little later.",
+    "retry": "Try again"
+  },
+  "update_required": {
+    "heading": "Update the app",
+    "paragraph": "This version of VIC is no longer supported. Install the latest version from the store to continue.",
+    "update": "Update"
   }
 }

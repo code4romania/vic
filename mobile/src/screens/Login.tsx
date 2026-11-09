@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import { useAuth } from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
@@ -10,10 +10,11 @@ import i18n from '../common/config/i18n';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { renderPasswordEyeIcon } from '../components/InputPrefixes';
 import Paragraph from '../components/Paragraph';
-import { Pressable } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { isMigrationNoticeActive } from '../common/utils/migration-notice';
 
 export type LoginFormTypes = {
   username: string;
@@ -29,7 +30,10 @@ const schema = yup.object({
   password: yup.string().required(`${i18n.t('login:form.password.required')}`),
 });
 
-const Login = ({ navigation }: any) => {
+// route.params.email: from the vic://login?email= link (set-password and confirm-email pages) or
+// from the check-email screen.
+const Login = ({ navigation, route }: any) => {
+  const linkEmail: string | undefined = route?.params?.email;
   const { login, resendConfirmationCode } = useAuth();
   const { t } = useTranslation('login');
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
@@ -40,12 +44,21 @@ const Login = ({ navigation }: any) => {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<LoginFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
+    defaultValues: { username: linkEmail ?? '', password: '' },
   });
+
+  // the link can also arrive while Login is already open
+  useEffect(() => {
+    if (linkEmail) {
+      setValue('username', linkEmail);
+    }
+  }, [linkEmail, setValue]);
 
   const onSubmit = async (credentials: LoginFormTypes) => {
     try {
@@ -53,7 +66,7 @@ const Login = ({ navigation }: any) => {
       await login(credentials);
       setIsLoading(false);
     } catch (error: any) {
-      // the user is created in cognito but the email/phone number is not verified
+      // the email is not confirmed yet: send the link again
       if (error.confirmAccount) {
         // resend validation email
         onRevalidateAccount(credentials.username);
@@ -91,6 +104,11 @@ const Login = ({ navigation }: any) => {
     >
       <FormLayout>
         <Paragraph>{`${t('paragraph')}`}</Paragraph>
+        {isMigrationNoticeActive() && (
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2" style={styles.notice}>
+            {`${t('migration_notice')}`}
+          </Text>
+        )}
         <FormInput
           control={control as any}
           name="username"
@@ -128,3 +146,7 @@ const Login = ({ navigation }: any) => {
 };
 
 export default Login;
+
+const styles = StyleSheet.create({
+  notice: { lineHeight: 20 },
+});

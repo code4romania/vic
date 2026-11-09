@@ -1,63 +1,38 @@
 import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
 import PageLayout from '../layouts/PageLayout';
 import { useTranslation } from 'react-i18next';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import i18n from '../common/config/i18n';
+import { Text } from '@ui-kitten/components';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useAuth } from '../hooks/useAuth';
 import FormLayout from '../layouts/FormLayout';
-import FormInput from '../components/FormInput';
-import { Text } from '@ui-kitten/components';
-import { ALLOW_FONT_SCALLING, REGEX } from '../common/constants/constants';
-import Paragraph from '../components/Paragraph';
+import InlineLink from '../components/InlineLink';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 
-export type ValidateAccountFormTypes = {
-  code: string;
-};
-
-const schema = yup
-  .object({
-    code: yup
-      .string()
-      .matches(REGEX.NUMBERS_ONLY, `${i18n.t('register:validate_account.form.code.pattern')}`)
-      .length(6, `${i18n.t('register:validate_account.form.code.length')}`)
-      .required(`${i18n.t('register:validate_account.form.code.required')}`),
-  })
-  .required();
-
+// After sign-up, or a login before confirming: the account is confirmed by the link in the email,
+// which opens in the browser and comes back to Login with the email filled in.
 const ValidateAccount = ({ navigation }: any) => {
   const { t } = useTranslation('register');
   const paddingTop = usePaddingTop();
+  const { userName, resendConfirmationCode } = useAuth();
+  const [isResending, setIsResending] = useState<boolean>(false);
 
-  const { confirmSignUp } = useAuth();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ValidateAccountFormTypes>({
-    mode: 'onSubmit',
-    reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
-  });
-
-  const onSubmit = async ({ code }: ValidateAccountFormTypes) => {
+  const onResend = async () => {
+    if (!userName || isResending) {
+      return;
+    }
+    setIsResending(true);
     try {
-      setIsLoading(true);
-      await confirmSignUp(code);
-      navigation.replace('create-user');
-    } catch (error) {
-      // error toast is shown by the auth context
+      await resendConfirmationCode(userName);
+      Toast.show({ type: 'success', text1: `${t('validate_account.resent')}` });
     } finally {
-      setIsLoading(false);
+      setIsResending(false);
     }
   };
 
   const onGoToLogin = () => {
-    navigation.navigate('login', undefined, { pop: true });
+    navigation.navigate('login', { email: userName }, { pop: true });
   };
 
   return (
@@ -65,12 +40,8 @@ const ValidateAccount = ({ navigation }: any) => {
       title={t('title')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
-        primaryActionLabel: t('general:continue'),
-        onPrimaryActionButtonClick: handleSubmit(onSubmit),
-        loading: isLoading,
-        onSecondaryActionButtonClick: onGoToLogin,
-        secondaryActionLabel: `${t('create_account.secondary_action.label')}`,
-        secondaryActionLink: `${t('create_account.secondary_action.link')}`,
+        primaryActionLabel: t('validate_account.go_to_login'),
+        onPrimaryActionButtonClick: onGoToLogin,
       }}
       headerStyle={{ paddingTop }}
     >
@@ -78,20 +49,25 @@ const ValidateAccount = ({ navigation }: any) => {
         <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">{`${t(
           'validate_account.heading',
         )}`}</Text>
-        <Paragraph>{`${t('validate_account.paragraph')}`}</Paragraph>
-        <FormInput
-          control={control as any}
-          name="code"
-          label={t('validate_account.form.code.label')}
-          placeholder={t('validate_account.form.code.placeholder')}
-          error={errors.code}
-          disabled={isLoading}
-          required={true}
-          keyboardType="phone-pad"
-        />
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1" style={styles.paragraph}>
+          {`${t('validate_account.check_email', { email: userName })}`}
+        </Text>
+        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1" style={styles.paragraph}>
+          {`${t('validate_account.not_received')}`}
+        </Text>
+        {!!userName && (
+          <InlineLink
+            label={isResending ? t('validate_account.resending') : t('validate_account.resend')}
+            onPress={onResend}
+          />
+        )}
       </FormLayout>
     </PageLayout>
   );
 };
 
 export default ValidateAccount;
+
+const styles = StyleSheet.create({
+  paragraph: { lineHeight: 22 },
+});

@@ -3,17 +3,47 @@ import { config } from 'dotenv';
 
 config(); // Load environment variables from .env file
 
+// Google sign-in on iOS needs the reversed iOS client id as a URL scheme.
+const googleIosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
+const googleIosUrlScheme = googleIosClientId
+  ? `com.googleusercontent.apps.${googleIosClientId.replace('.apps.googleusercontent.com', '')}`
+  : undefined;
+const facebookAppId = process.env.EXPO_PUBLIC_FACEBOOK_APP_ID;
+
+// The social plugins refuse to run without their ids, so a local build without them simply has no
+// Google / Facebook native setup. Store builds get the ids from eas.json.
+const socialPlugins: NonNullable<ExpoConfig['plugins']> = [
+  ...(googleIosUrlScheme
+    ? [['@react-native-google-signin/google-signin', { iosUrlScheme: googleIosUrlScheme }] as const]
+    : []),
+  ...(facebookAppId
+    ? [
+        [
+          'react-native-fbsdk-next',
+          {
+            appID: facebookAppId,
+            clientToken: process.env.FACEBOOK_CLIENT_TOKEN,
+            displayName: 'VIC',
+            isAutoInitEnabled: false,
+            autoLogAppEventsEnabled: false,
+            advertiserIDCollectionEnabled: false,
+          },
+        ] as const,
+      ]
+    : []),
+] as NonNullable<ExpoConfig['plugins']>;
+
 const expoConfig: ExpoConfig = {
   name: 'vic',
   slug: 'vic',
   scheme: 'vic',
-  version: '1.0.19',
+  version: '1.1.0',
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',
   userInterfaceStyle: 'light',
   assetBundlePatterns: ['**/*'],
   ios: {
-    buildNumber: '22',
+    buildNumber: '23',
     supportsTablet: false,
     bundleIdentifier: 'org.commitglobal.vic',
     entitlements: {
@@ -27,7 +57,7 @@ const expoConfig: ExpoConfig = {
     },
   },
   android: {
-    versionCode: 22,
+    versionCode: 23,
     adaptiveIcon: {
       foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
@@ -41,6 +71,9 @@ const expoConfig: ExpoConfig = {
   },
   plugins: [
     'expo-localization',
+    'expo-secure-store',
+    'expo-apple-authentication',
+    ...socialPlugins,
     'expo-font',
     // the app is always light at the bottom (tab bar, action bars), so keep the navigation buttons dark
     ['expo-navigation-bar', { style: 'dark' }],
@@ -79,8 +112,11 @@ const expoConfig: ExpoConfig = {
   updates: {
     url: 'https://u.expo.dev/6aaad982-5a5c-4af8-b66c-7689afe74e1f',
   },
+  // appVersion, not sdkVersion: own-auth builds must never share over-the-air updates with the
+  // 1.0.x builds (an update from this code would crash an install without expo-secure-store, and the
+  // "Update now" update for 1.0.x must not land on 1.1.0). Bump `version` for every native change.
   runtimeVersion: {
-    policy: 'sdkVersion',
+    policy: 'appVersion',
   },
   owner: 'commit-global',
 };

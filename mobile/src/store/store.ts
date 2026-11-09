@@ -16,6 +16,7 @@ import {
 } from '../common/interfaces/user-profile.interface';
 import { profileSlice } from './profile/profile.slice';
 import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
+import { appSlice } from './app/app.slice';
 
 interface UserProfileState {
   userProfile: IUserProfile | null;
@@ -52,6 +53,13 @@ interface ActivityLogState {
   setSelectedActivityLog: (activityLog: IActivityLog) => void;
 }
 
+interface AppState {
+  maintenance: boolean;
+  updateRequired: boolean;
+  setMaintenance: (maintenance: boolean) => void;
+  setUpdateRequired: (updateRequired: boolean) => void;
+}
+
 interface BottomSheetState {
   isOpen: boolean;
   open: () => void;
@@ -64,7 +72,8 @@ const useStore = create<
     VolunteerProfileState &
     EventState &
     ActivityLogState &
-    UserProfileState
+    UserProfileState &
+    AppState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...bottomSheetSlice(set),
@@ -72,6 +81,7 @@ const useStore = create<
   ...eventSlice(set),
   ...activityLogsSlice(set),
   ...profileSlice(set),
+  ...appSlice(set),
 }));
 
 export default useStore;

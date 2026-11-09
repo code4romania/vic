@@ -6,13 +6,12 @@ import { default as theme } from './src/common/theme/theme.json';
 import { default as mapping } from './src/common/theme/mappings.json';
 import * as Font from 'expo-font';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import { linking } from './src/routes/linking';
 import { Platform, StyleSheet, View } from 'react-native';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import AuthContextProvider from './src/contexts/auth/AuthContextProvider';
 import Router from './src/routes/Router';
-import { Amplify } from 'aws-amplify';
 import './src/common/config/i18n';
-import { AMPLIFY_CONFIG } from './src/common/config/amplify';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from './src/common/config/toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -23,14 +22,12 @@ import * as NavigationBar from 'expo-navigation-bar';
 import NotificationContextProvider from './src/contexts/notification/NotificationContextProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Keep the android navigation buttons dark on our light screens, regardless of the system theme
 if (Platform.OS === 'android') {
   NavigationBar.setStyle('dark');
 }
-
-// Configure Amplify for Login
-Amplify.configure(AMPLIFY_CONFIG as any);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -75,19 +72,27 @@ export default () => {
         theme={{ ...eva.dark, ...theme } as any}
         customMapping={mapping}
       >
-        <GestureHandlerRootView style={styles.gestureHandler}>
-          <KeyboardProvider>
-            <QueryClientProvider client={queryClient}>
-              <AuthContextProvider>
-                <NavigationContainer ref={navigationRef} navigationInChildEnabled>
-                  <NotificationContextProvider navigation={navigationRef}>
-                    <Router />
-                  </NotificationContextProvider>
-                </NavigationContainer>
-              </AuthContextProvider>
-            </QueryClientProvider>
-          </KeyboardProvider>
-        </GestureHandlerRootView>
+        {/* the Maintenance / UpdateRequired screens render outside the navigators, which otherwise
+            provide the safe area */}
+        <SafeAreaProvider>
+          <GestureHandlerRootView style={styles.gestureHandler}>
+            <KeyboardProvider>
+              <QueryClientProvider client={queryClient}>
+                <AuthContextProvider>
+                  <NavigationContainer
+                    ref={navigationRef}
+                    linking={linking}
+                    navigationInChildEnabled
+                  >
+                    <NotificationContextProvider navigation={navigationRef}>
+                      <Router />
+                    </NotificationContextProvider>
+                  </NavigationContainer>
+                </AuthContextProvider>
+              </QueryClientProvider>
+            </KeyboardProvider>
+          </GestureHandlerRootView>
+        </SafeAreaProvider>
 
         <ExpoStatusBar style="dark" />
       </ApplicationProvider>

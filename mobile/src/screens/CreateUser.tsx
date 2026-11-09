@@ -15,7 +15,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import i18n from '../common/config/i18n';
 import CountySelect from '../containers/CountySelect';
 import CitySelect from '../containers/CitySelect';
-import { Auth } from 'aws-amplify';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import Paragraph from '../components/Paragraph';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -94,32 +93,23 @@ const CreateUser = ({ navigation }: any) => {
     })();
   }, [reset, initialPhoneNumber]);
 
-  const onSubmit = async ({ cityId, phone, ...userPayload }: UserFormTypes) => {
-    try {
-      // get user phone and email data from aws
-      const user = await Auth.currentAuthenticatedUser({ bypassCache: true });
-
-      // create new user payload
-      const newUser = {
+  const onSubmit = ({ cityId, phone, ...userPayload }: UserFormTypes) => {
+    // The email is the login's: the backend takes it from the session.
+    createUserProfile(
+      {
         ...userPayload,
         locationId: cityId,
         phone: `${CONSTANTS.PHONE_PREFIX}${phone.trim()}`,
-        email: user.attributes.email,
-        cognitoId: user.username,
-      };
-
-      // create new profile
-      createUserProfile(newUser, {
+      },
+      {
         onError: (error: any) => {
           Toast.show({
             type: 'error',
             text1: `${InternalErrors.USER_ERRORS.getError(error.response?.data.code_error)}`,
           });
         },
-      });
-    } catch (error) {
-      Toast.show({ type: 'error', text1: `${t('auth:errors.init_profile')}` });
-    }
+      },
+    );
   };
 
   return (

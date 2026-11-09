@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { Platform } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 interface FacebookButtonProps {
@@ -9,15 +10,16 @@ interface FacebookButtonProps {
 }
 
 const FacebookButton = ({ onPress }: FacebookButtonProps) => {
+  const { t } = useTranslation('landing');
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={onPress} accessibilityRole="button">
       <View style={styles.btnContainer}>
         <Image
           source={require('../assets/images/social/facebook/facebook.png')}
           style={styles.image}
         />
         <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.textStyle} category="p2">
-          Login with Facebook
+          {`${t('social.facebook')}`}
         </Text>
       </View>
     </Pressable>
@@ -32,7 +34,7 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 240,
     flexDirection: 'row',
-    backgroundColor: '#4285F4',
+    backgroundColor: '#1877F2',
     alignItems: 'center',
     gap: 24,
     shadowColor: 'gray',
