@@ -197,6 +197,15 @@
     "profile": "Profile",
     "active": "Active",
     "volunteer_profile_missing": "Volunteer profile incomplete",
+    "stats": {
+      "hours": "approved hours",
+      "events": "events",
+      "in_vic": "in VIC",
+      "years_less": "<1 year",
+      "year": "1 year",
+      "years": "{{count}} years",
+      "years_de": "{{count}} years"
+    },
     "section_settings": "Settings",
     "footer": "VIC 2.0 · a Code for Romania project, built by Commit Global"
   },

@@ -20,6 +20,8 @@ const mockLogout = jest.fn();
 const mockUnsubscribe = jest.fn();
 const mockSwitch = jest.fn();
 let mockStats: any;
+let mockPersonal: any;
+const mockRefetchPersonal = jest.fn();
 
 jest.mock('../hooks/useAuth', () => ({ useAuth: () => ({ logout: mockLogout }) }));
 jest.mock('../services/organization/organization.service', () => ({
@@ -27,6 +29,9 @@ jest.mock('../services/organization/organization.service', () => ({
 }));
 jest.mock('../services/volunteer/volunteer.service', () => ({
   useVolunteerStats: () => ({ data: mockStats, refetch: jest.fn() }),
+}));
+jest.mock('../services/statistics/statistics.service', () => ({
+  usePersonalStatistics: () => ({ data: mockPersonal, refetch: mockRefetchPersonal }),
 }));
 jest.mock('../services/user/user.service', () => ({
   useGetUserProfileQuery: () => ({ refetch: jest.fn() }),
@@ -77,6 +82,7 @@ const org = (id: string, name: string, volunteerProfileId: string | null = 'p1')
 
 beforeEach(() => {
   jest.clearAllMocks();
+  mockPersonal = undefined;
   mockStats = {
     volunteerId: 'v-org-1',
     activityLogCount: 1,
@@ -98,7 +104,7 @@ beforeEach(() => {
 describe('Profil', () => {
   it('shows who you are, your organizations with the active one, and the settings', async () => {
     await renderApp();
-    expect(await screen.findByText('Ana Popescu')).toBeTruthy();
+    expect(await screen.findByText('Ana')).toBeTruthy();
     expect(screen.getByText('ana@example.com · București')).toBeTruthy();
     const active = screen.getByTestId('profile-organization-org-1');
     expect(within(active).getByText('Activă')).toBeTruthy();
@@ -108,6 +114,29 @@ describe('Profil', () => {
     expect(screen.getByText('Date personale')).toBeTruthy();
     expect(screen.getByText('Notificări')).toBeTruthy();
     expect(screen.getByText('Alătură-te unei organizații')).toBeTruthy();
+  });
+
+  it('shows approved hours, events and years in VIC, and refreshes them on focus', async () => {
+    mockPersonal = { approvedHours: 145, events: 18, memberSince: '2024-03-01', yearsInVic: 2 };
+    await renderApp();
+    expect(within(await screen.findByTestId('profile-stat-hours')).getByText('145')).toBeTruthy();
+    expect(within(screen.getByTestId('profile-stat-events')).getByText('18')).toBeTruthy();
+    expect(within(screen.getByTestId('profile-stat-years')).getByText('2 ani')).toBeTruthy();
+    expect(mockRefetchPersonal).toHaveBeenCalled();
+  });
+
+  it('says "<1 an" in the first year, "20 de ani" later, and a dash while loading', async () => {
+    mockPersonal = { approvedHours: 0, events: 0, memberSince: '2026-10-01', yearsInVic: 0 };
+    await renderApp();
+    expect(within(await screen.findByTestId('profile-stat-years')).getByText('<1 an')).toBeTruthy();
+    mockPersonal = { approvedHours: 0, events: 0, memberSince: '2006-10-01', yearsInVic: 20 };
+    await renderApp();
+    expect(
+      within(await screen.findByTestId('profile-stat-years')).getByText('20 de ani'),
+    ).toBeTruthy();
+    mockPersonal = undefined;
+    await renderApp();
+    expect(within(await screen.findByTestId('profile-stat-hours')).getByText('–')).toBeTruthy();
   });
 
   it('opening another organization makes it active, like the old drawer did', async () => {
