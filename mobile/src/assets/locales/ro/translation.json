@@ -179,18 +179,23 @@
         "title": "Setări cont",
         "my_organizations": "Organizațiile mele",
         "join_organization": "Alătură-te unei organizații",
-        "heading": "Date cont",
-        "notification": "Setări notificări",
-        "information": "Informații",
-        "logout": "Log out",
-        "delete": "Șterge cont",
+        "heading": "Date personale",
+        "notification": "Notificări",
+        "information": "Ajutor și informații",
+        "logout": "Deconectare",
+        "delete": "Șterge contul",
         "modal": {
             "confirm_logout": {
                 "heading": "Ești sigur că vrei să te deconectezi?",
                 "paragraph": "Va trebui să te autentifici din nou pentru a folosi aplicația.",
                 "action_label": "Deconectează-te"
             }
-        }
+        },
+        "profile": "Profil",
+        "active": "Activă",
+        "volunteer_profile_missing": "Profil de voluntar incomplet",
+        "section_settings": "Setări",
+        "footer": "VIC 2.0 · un proiect Code for Romania, realizat de Commit Global"
     },
     "account_data": {
         "title": "Date cont",
@@ -350,7 +355,8 @@
         },
         "menu_items": {
             "organization_profile": {
-                "title": "Profil organizație"
+                "title": "Profil organizație",
+                "subtitle": "Despre, contact, evenimente deschise"
             },
             "activity_log": {
                 "title": "Ore de voluntariat",
@@ -365,7 +371,8 @@
             },
             "volunteer_profile": {
                 "title": "Profil voluntar",
-                "subtitle": "Profil incomplet"
+                "subtitle": "Profil incomplet",
+                "details": "Rol, departament, filială"
             }
         },
         "age": "{{years}} de ani",
@@ -383,7 +390,18 @@
         "missing_profile": {
             "heading": "Nu ai creat încă un profil de utilizator",
             "action_btn": "Creează profil"
-        }
+        },
+        "leave": "Părăsește organizația",
+        "stats": {
+            "pending_logs": "cereri de ore în așteptare",
+            "pending_documents": "documente așteaptă răspuns"
+        },
+        "prompt": {
+            "title": "Completează profilul de voluntar",
+            "description": "Ca să poți adăuga ore, organizația are nevoie de emailul de contact și data de la care ești voluntar.",
+            "action": "Completează acum"
+        },
+        "no_org_description": "Caută o organizație și trimite o cerere de înscriere."
     },
     "create_volunteer": {
         "heading": "Completează profil voluntar",
