@@ -22,6 +22,8 @@ import { GetEventCountersDto } from './dto/get-event-counters.dto';
 import { GetEventCandidatesUseCase } from 'src/usecases/event/RSVP/get-event-candidates.usecase';
 import { AddVolunteersToEventUseCase } from 'src/usecases/event/RSVP/add-volunteers-to-event.usecase';
 import { AddVolunteersToEventDto } from './dto/add-volunteers-to-event.dto';
+import { DownloadRegistrationsDto } from './dto/download-registrations.dto';
+import { DownloadEventRegistrationsUseCase } from 'src/usecases/event/RSVP/download-registrations.usecase';
 import {
   EventCandidatePresenter,
   EventCandidatesPresenter,
@@ -66,6 +68,7 @@ import { TargetEventType } from 'src/modules/event/enums/target-event-type.enum'
 @Controller('event')
 export class EventController {
   constructor(
+    private readonly downloadEventRegistrationsUseCase: DownloadEventRegistrationsUseCase,
     private readonly getEventCandidatesUseCase: GetEventCandidatesUseCase,
     private readonly addVolunteersToEventUseCase: AddVolunteersToEventUseCase,
     private readonly getEventCountersUseCase: GetEventCountersUseCase,
@@ -282,5 +285,27 @@ export class EventController {
     });
 
     res.end(jsonToExcelBuffer<IEventRSVPDownload>(data, 'Lista raspunsuri'));
+  }
+
+  // #497: the registered ("going") volunteers, with the columns the NGO picked
+  @Get(':id/registrations/download')
+  @ApiParam({ name: 'id', type: 'string' })
+  @Header(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  )
+  @Header('Content-Disposition', 'attachment; filename="Inscrieri.xlsx"')
+  async downloadRegistrations(
+    @Param('id', UuidValidationPipe) eventId: string,
+    @Query() { fields }: DownloadRegistrationsDto,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
+    const data = await this.downloadEventRegistrationsUseCase.execute({
+      eventId,
+      organizationId,
+      fields,
+    });
+    res.end(jsonToExcelBuffer(data, 'Inscrieri'));
   }
 }

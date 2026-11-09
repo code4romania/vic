@@ -621,6 +621,23 @@
       "empty": "No volunteers to add.",
       "added_one": "{{count}} volunteer added",
       "added_other": "{{count}} volunteers added"
+    },
+    "export_registrations": {
+      "button": "Export registrations",
+      "title": "Export registered volunteers",
+      "description": "Choose the columns. The file has the volunteers who are going to the event.",
+      "submit": "Download XLSX",
+      "file": "Registrations {{event}}.xlsx",
+      "fields": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "department": "Department",
+        "branch": "Branch",
+        "role": "Role",
+        "hours": "Approved hours in the organization",
+        "registeredOn": "Registration date"
+      }
     }
   },
   "announcement": {

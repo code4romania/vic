@@ -98,6 +98,7 @@ import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-downlo
 import { GetManyEventRSVPUseCase } from './event/RSVP/get-many-rsvp.usecase';
 import { GetEventCandidatesUseCase } from './event/RSVP/get-event-candidates.usecase';
 import { AddVolunteersToEventUseCase } from './event/RSVP/add-volunteers-to-event.usecase';
+import { DownloadEventRegistrationsUseCase } from './event/RSVP/download-registrations.usecase';
 import { GetManyEventUseCase } from './event/get-many-event.usecase';
 import { GetEventCountersUseCase } from './event/get-event-counters.usecase';
 import { GetManyForDownloadEventUseCase } from './event/get-many-for-download-event.usecase';
@@ -314,6 +315,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetManyEventRSVPUseCase,
     GetEventCandidatesUseCase,
     AddVolunteersToEventUseCase,
+    DownloadEventRegistrationsUseCase,
     GetManyForDownloadEventRSVPUseCase,
     // Activity Log
     CreateActivityLogByAdmin,
@@ -488,6 +490,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetManyEventRSVPUseCase,
     GetEventCandidatesUseCase,
     AddVolunteersToEventUseCase,
+    DownloadEventRegistrationsUseCase,
     GetManyForDownloadEventRSVPUseCase,
     // Activity Log
     CreateActivityLogByAdmin,

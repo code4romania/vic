@@ -256,3 +256,15 @@ export interface IEventCandidateModel {
   totalHours: number;
   registered: boolean;
 }
+
+// #497: one registered ("going") volunteer of an event, with every exportable field
+export interface IEventRegistrationExportRow {
+  name: string;
+  email: string;
+  phone: string;
+  department?: string;
+  branch?: string;
+  role?: string;
+  hours: number;
+  registeredOn: Date;
+}

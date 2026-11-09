@@ -5,6 +5,7 @@ import {
 import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import * as request from 'supertest';
+import * as XLSX from 'xlsx';
 import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
@@ -205,5 +206,67 @@ describe('Add volunteers to an event (e2e)', () => {
       'Cristi',
       'Elena',
     ]);
+  });
+
+  // #497: export of the registered volunteers with the chosen columns
+  describe('export of registered volunteers', () => {
+    const download = async (fields?: string): Promise<unknown[][]> => {
+      const response = await http()
+        .get(`/event/${eventId}/registrations/download`)
+        .query(fields ? { fields } : {})
+        .set('Authorization', `Bearer ${await token()}`)
+        .buffer(true)
+        .parse((res, callback) => {
+          const chunks: Buffer[] = [];
+          res.on('data', (chunk: Buffer) => chunks.push(chunk));
+          res.on('end', () => callback(null, Buffer.concat(chunks)));
+        })
+        .expect(200);
+      const workbook = XLSX.read(response.body, { type: 'buffer' });
+      return XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {
+        header: 1,
+      });
+    };
+
+    it('exports only the chosen columns, in a fixed order, for the people going', async () => {
+      await add(['Ana'], 201);
+      // someone who said "not going" is not exported
+      await testApp.dataSource.query(
+        `INSERT INTO event_rsvp (going, event_id, user_id) SELECT false, $1, user_id FROM volunteer WHERE id = $2`,
+        [eventId, volunteers['Bogdan']],
+      );
+
+      expect(await download('hours,name')).toEqual([
+        ['Nume', 'Ore aprobate in organizatie'],
+        ['Ana', 8],
+        ['Elena', 0],
+      ]);
+
+      const [header, first] = await download();
+      expect(header).toEqual([
+        'Nume',
+        'Email',
+        'Telefon',
+        'Departament',
+        'Filiala',
+        'Rol',
+        'Ore aprobate in organizatie',
+        'Data inscrierii',
+      ]);
+      expect(first.slice(0, 4)).toEqual([
+        'Ana',
+        'ana@example.ro',
+        '+40722000000',
+        'Logistică',
+      ]);
+    });
+
+    it('refuses an unknown column', async () => {
+      await http()
+        .get(`/event/${eventId}/registrations/download`)
+        .query({ fields: 'name,password' })
+        .set('Authorization', `Bearer ${await token()}`)
+        .expect(400);
+    });
   });
 });
