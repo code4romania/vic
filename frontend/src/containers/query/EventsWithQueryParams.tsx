@@ -11,6 +11,8 @@ import { EventState } from '../../common/enums/event-state.enum';
 
 export interface EventsQueryProps extends IPaginationQueryParams {
   eventState?: EventState;
+  // #494
+  departmentId?: string;
 }
 
 export type EventsProps = IHOCQueryProps<EventsQueryProps>;
@@ -26,6 +28,7 @@ const EventsWithQueryParams = () => {
   const queryConfig = {
     ...DEFAULT_QUERY_PARAMS,
     eventState: EventStateParam,
+    departmentId: StringParam,
   };
 
   return (

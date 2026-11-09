@@ -41,6 +41,9 @@ import StatusWithMarker from '../components/StatusWithMarker';
 import Targets from '../components/Targets';
 import { getEventsForDownload } from '../services/event/event.api';
 import { EventsProps } from '../containers/query/EventsWithQueryParams';
+import SelectFilter from '../containers/SelectFilter';
+import { useDivisionsListItems } from '../services/division/division.service';
+import { DivisionType } from '../common/enums/division-type.enum';
 
 // VIC 2.0 (#495): upcoming (not started), ongoing (started, not ended) and finished, each paginated
 const EventsTabsOptions: SelectItem<EventState>[] = [
@@ -190,7 +193,9 @@ const Events = ({ query, setQuery }: EventsProps) => {
     query.eventState as EventState,
     query.orderBy,
     query.orderDirection as OrderDirection,
+    query.departmentId,
   );
+  const { data: departments } = useDivisionsListItems(DivisionType.DEPARTMENT);
   // actions
   const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
   const { mutateAsync: publishEvent, isLoading: isPublishingEvent } = usePublishEventMutation();
@@ -203,7 +208,12 @@ const Events = ({ query, setQuery }: EventsProps) => {
 
   const onTabClick = (tab: EventState) => {
     // reset filter queries on tab click
-    setQuery({ eventState: tab }, 'replaceIn');
+    setQuery({ eventState: tab, page: 1 }, 'replaceIn');
+  };
+
+  // #494: "all departments" clears the filter
+  const onDepartmentChange = (item?: SelectItem<string>) => {
+    setQuery({ departmentId: item?.key, page: 1 }, 'replaceIn');
   };
 
   // row actions
@@ -331,6 +341,7 @@ const Events = ({ query, setQuery }: EventsProps) => {
       query.eventState as EventState,
       query.orderBy,
       query.orderDirection as OrderDirection,
+      query.departmentId,
     );
 
     downloadExcel(eventsData as BlobPart, i18n.t('events:download', { context: query.eventState }));
@@ -380,6 +391,19 @@ const Events = ({ query, setQuery }: EventsProps) => {
       >
         {i18n.t('side_menu:options.events')}
       </PageHeaderAdd>
+      <div className="flex flex-wrap gap-4">
+        <SelectFilter
+          label={`${i18n.t('events:filters.department')}`}
+          placeholder={`${i18n.t('events:filters.all_departments')}`}
+          options={(departments?.items ?? []).map((department) => ({
+            key: department.id,
+            value: department.name,
+          }))}
+          onChange={onDepartmentChange}
+          defaultValue={query?.departmentId}
+          allowDeselect
+        />
+      </div>
       <Tabs<EventState>
         tabs={EventsTabsOptions}
         onClick={onTabClick}

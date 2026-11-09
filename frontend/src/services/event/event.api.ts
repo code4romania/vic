@@ -35,6 +35,7 @@ export const getEvents = async (
   orderBy?: string,
   orderDirection?: OrderDirection,
   search?: string,
+  departmentId?: string,
 ): Promise<IPaginatedEntity<IEvent>> => {
   return API.get('/event', {
     params: {
@@ -44,6 +45,7 @@ export const getEvents = async (
       orderBy,
       orderDirection,
       search,
+      departmentId,
     },
   }).then((res) => res.data);
 };
@@ -52,12 +54,14 @@ export const getEventsForDownload = async (
   eventState: EventState,
   orderBy?: string,
   orderDirection?: OrderDirection,
+  departmentId?: string,
 ): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
   return API.get('event/download', {
     params: {
       eventState,
       orderBy,
       orderDirection,
+      departmentId,
     },
     responseType: 'arraybuffer',
   }).then((res) => {

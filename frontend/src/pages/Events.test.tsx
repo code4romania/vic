@@ -7,6 +7,12 @@ import { renderPage, t } from '../test/render';
 import { api, server } from '../test/server';
 
 describe('Events tabs (#495)', () => {
+  beforeEach(() => {
+    server.use(
+      http.get(api('/listing/structures/department'), () => HttpResponse.json({ items: [] })),
+    );
+  });
+
   it('opens on Upcoming and asks the API for upcoming events', async () => {
     const states: (string | null)[] = [];
     server.use(
@@ -44,5 +50,30 @@ describe('Events tabs (#495)', () => {
       <Events query={{ limit: 10, page: 1, eventState: EventState.ONGOING }} setQuery={vi.fn()} />,
     );
     await waitFor(() => expect(states).toContain('ongoing'));
+  });
+
+  it('sends the department filter (#494) and offers "all departments"', async () => {
+    const params: URLSearchParams[] = [];
+    server.use(
+      http.get(api('/event'), ({ request }) => {
+        params.push(new URL(request.url).searchParams);
+        return HttpResponse.json({
+          items: [],
+          meta: { itemCount: 0, totalItems: 0, itemsPerPage: 10, totalPages: 0, currentPage: 1 },
+        });
+      }),
+      http.get(api('/listing/structures/department'), () =>
+        HttpResponse.json({ items: [{ id: 'd1', name: 'Comunicare', numberOfMembers: 3 }] }),
+      ),
+    );
+    renderPage(
+      <Events
+        query={{ limit: 10, page: 1, eventState: EventState.UPCOMING, departmentId: 'd1' }}
+        setQuery={vi.fn()}
+      />,
+    );
+    await waitFor(() => expect(params.some((p) => p.get('departmentId') === 'd1')).toBe(true));
+    expect(await screen.findByText('Comunicare')).toBeInTheDocument();
+    expect(screen.getByText(t('events:filters.department'))).toBeInTheDocument();
   });
 });
