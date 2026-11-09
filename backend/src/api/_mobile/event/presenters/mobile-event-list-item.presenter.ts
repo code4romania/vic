@@ -22,6 +22,9 @@ export class MobileEventListItemPresenter {
     this.endDate = event.endDate;
 
     this.organizationLogo = event.organizationLogo;
+    this.organizationId = event.organizationId;
+    this.organizationName = event.organizationName;
+    this.isGoing = !!event.isGoing;
 
     this.displayStatus = getEventDisplayStatus(event);
     this.capacity = event.capacity ?? null;
@@ -89,6 +92,18 @@ export class MobileEventListItemPresenter {
   @Expose()
   @ApiProperty({ description: 'The organization logo for this event' })
   organizationLogo?: string;
+
+  @Expose()
+  @ApiProperty({ description: 'The organization of the event' })
+  organizationId: string;
+
+  @Expose()
+  @ApiProperty({ description: 'The organization name, shown on the card' })
+  organizationName: string;
+
+  @Expose()
+  @ApiProperty({ description: 'The current user answered "going"' })
+  isGoing: boolean;
 
   @Expose()
   @ApiProperty({ description: 'Wether the event is public or not' })

@@ -7,7 +7,15 @@ import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.inter
 import API from '../api';
 import { RsvpResponse } from './event.service';
 
-interface PaginationQuery {
+// Redesigned search (Ce / Când / Organizație): one organization and/or a range for the start
+// date. A date with no time ("2026-11-20") as startTo covers that whole day.
+export interface EventsFilters {
+  organizationId?: string;
+  startFrom?: string;
+  startTo?: string;
+}
+
+interface PaginationQuery extends EventsFilters {
   pageParam?: number;
   orderDirection: OrderDirection;
   search: string;

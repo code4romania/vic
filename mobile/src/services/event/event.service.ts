@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { cancelRsvp, getEvent, getEvents, setRsvpEvent } from './event.api';
+import { cancelRsvp, EventsFilters, getEvent, getEvents, setRsvpEvent } from './event.api';
 import { EventType } from '../../common/enums/event-type.enum';
 import useStore from '../../store/store';
 import { IEvent } from '../../common/interfaces/event.interface';
@@ -14,10 +14,11 @@ export const useEventsInfiniteQuery = (
   orderDirection: OrderDirection,
   search: string,
   eventFilter: EventType,
+  filters: EventsFilters = {},
 ) => {
   return useInfiniteQuery(
-    ['events', orderDirection, search, eventFilter],
-    ({ pageParam }) => getEvents({ pageParam, orderDirection, search, eventFilter }),
+    ['events', orderDirection, search, eventFilter, filters],
+    ({ pageParam }) => getEvents({ pageParam, orderDirection, search, eventFilter, ...filters }),
     {
       getNextPageParam: (lastPage) => {
         return lastPage?.meta.totalPages > lastPage?.meta.currentPage

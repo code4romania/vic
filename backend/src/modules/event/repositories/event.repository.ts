@@ -327,7 +327,7 @@ export class EventRepository
   async findOpenEvents(
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
-    const { userId, ...filters } = findOptions;
+    const { userId } = findOptions;
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
     // Get all events in progress from the organizations i am part or public events
@@ -351,14 +351,14 @@ export class EventRepository
       },
     );
 
-    return this.searchOrderAndPaginate(query, filters);
+    return this.searchOrderAndPaginate(query, findOptions);
   }
 
   // Get all ongoing events public or from the organizations the user is part of
   async findMyOrganizationsEvents(
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
-    const { userId, ...filters } = findOptions;
+    const { userId } = findOptions;
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
     query.andWhere(
@@ -370,14 +370,14 @@ export class EventRepository
       },
     );
 
-    return this.searchOrderAndPaginate(query, filters);
+    return this.searchOrderAndPaginate(query, findOptions);
   }
 
   // get all ongoing or upcoming events where the user have confirmed going
   async findGoingEvents(
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
-    const { userId, ...filters } = findOptions;
+    const { userId } = findOptions;
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
     query.andWhere(
@@ -403,7 +403,7 @@ export class EventRepository
           .getQuery(),
     );
 
-    return this.searchOrderAndPaginate(query, filters);
+    return this.searchOrderAndPaginate(query, findOptions);
   }
 
   async findOngoingAndFinishedEvents(
@@ -450,6 +450,8 @@ export class EventRepository
         'event.location',
         'targets.id',
         'targets.name',
+        'organization.id',
+        'organization.name',
         'organization.logo',
       ])
       .where('event.status = :status', {
@@ -457,11 +459,19 @@ export class EventRepository
       });
   }
 
-  private searchOrderAndPaginate(
+  private async searchOrderAndPaginate(
     eventQuery: SelectQueryBuilder<EventEntity>,
-    findOptions: Omit<FindMyEventsOptions, 'eventFilter' | 'userId'>,
+    findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>> {
-    const { orderBy, orderDirection, search } = findOptions;
+    const {
+      orderBy,
+      orderDirection,
+      search,
+      userId,
+      organizationId,
+      startFrom,
+      startTo,
+    } = findOptions;
     const updatedQuery = eventQuery.orderBy(
       this.buildOrderByQuery(orderBy || 'startDate', 'event'),
       orderDirection || OrderDirection.ASC,
@@ -472,12 +482,44 @@ export class EventRepository
         this.buildBracketSearchQuery(['event.name'], search),
       );
     }
-    return this.paginateQuery(
+    if (organizationId) {
+      updatedQuery.andWhere('event.organizationId = :filterOrganizationId', {
+        filterOrganizationId: organizationId,
+      });
+    }
+    if (startFrom) {
+      updatedQuery.andWhere('event.startDate >= :startFrom', { startFrom });
+    }
+    if (startTo) {
+      updatedQuery.andWhere('event.startDate <= :startTo', { startTo });
+    }
+
+    const page = await this.paginateQuery(
       updatedQuery,
       findOptions.limit,
       findOptions.page,
       EventModelTransformer.fromEntityToMobileEventItem,
     );
+
+    // whether the volunteer said they are going, for the "Înscris" badge
+    const ids = page.items.map((event) => event.id);
+    const going = ids.length
+      ? await this.eventRepository.manager
+          .createQueryBuilder(EventRSVPEntity, 'rsvp')
+          .select('rsvp.eventId', 'eventId')
+          .where('rsvp.userId = :userId AND rsvp.going = true', { userId })
+          .andWhere('rsvp.eventId IN (:...ids)', { ids })
+          .getRawMany<{ eventId: string }>()
+      : [];
+    const goingIds = new Set(going.map((row) => row.eventId));
+
+    return {
+      ...page,
+      items: page.items.map((event) => ({
+        ...event,
+        isGoing: goingIds.has(event.id),
+      })),
+    };
   }
 
   public async countUpcomingEvents(userId: string): Promise<number> {
