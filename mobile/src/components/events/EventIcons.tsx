@@ -2,6 +2,7 @@ import React from 'react';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 import { colors } from '../../common/theme/tokens';
 
+export type EventIconName = IconName;
 type IconName =
   | 'search'
   | 'filters'

@@ -667,26 +667,52 @@
     "statistics": {
       "events": {
         "title": "{{number}} events",
-        "description": "this month"
+        "description": "this month",
+        "short": "events this month"
       },
       "hours": {
         "title": "{{number}} updates",
-        "description": "in volunteer hours"
+        "description": "in volunteer hours",
+        "short": "hours updates"
       },
       "documents": {
         "title": "{{number}} updates",
-        "description": "in documents"
+        "description": "in documents",
+        "short": "document updates"
       },
       "organizations": {
         "title": "{{number}} updates",
-        "description": "in organizations"
+        "description": "in organizations",
+        "short": "organization updates"
       }
     },
     "anouncements": {
       "section": {
         "header": "Latest news",
         "see_all": "See all",
-        "empty_list": "No new ads!"
+        "empty_list": "No new ads!",
+        "title": "Announcements"
+      }
+    },
+    "hello": "Hi, {{name}}",
+    "news": "News",
+    "join_ngo_short": "Find organizations",
+    "see_all": "All",
+    "next": {
+      "title": "Up next"
+    },
+    "todo": {
+      "title": "To do",
+      "contracts": {
+        "title": "Contracts to sign: {{count}}"
+      },
+      "profile": {
+        "title": "Complete your volunteer profile",
+        "subtitle": "So you can send hours"
+      },
+      "hours": {
+        "title": "Send your volunteering hours",
+        "subtitle": "At {{name}}"
       }
     }
   },
