@@ -11,6 +11,10 @@ export enum EVENT_ERRORS {
   EVENT_007 = 'EVENT_007',
   EVENT_008 = 'EVENT_008',
   EVENT_009 = 'EVENT_009',
+  EVENT_RSVP_006 = 'EVENT_RSVP_006',
+  EVENT_RSVP_007 = 'EVENT_RSVP_007',
+  EVENT_RSVP_008 = 'EVENT_RSVP_008',
+  EVENT_RSVP_009 = 'EVENT_RSVP_009',
 }
 
 export class EventError extends ErrorClass<EVENT_ERRORS> {
@@ -27,6 +31,10 @@ export class EventError extends ErrorClass<EVENT_ERRORS> {
       [EVENT_ERRORS.EVENT_007]: i18n.t('events:errors.EVENT_007'),
       [EVENT_ERRORS.EVENT_008]: i18n.t('events:errors.EVENT_008'),
       [EVENT_ERRORS.EVENT_009]: i18n.t('events:errors.EVENT_009'),
+      [EVENT_ERRORS.EVENT_RSVP_006]: i18n.t('events:errors.EVENT_RSVP_006'),
+      [EVENT_ERRORS.EVENT_RSVP_007]: i18n.t('events:errors.EVENT_RSVP_007'),
+      [EVENT_ERRORS.EVENT_RSVP_008]: i18n.t('events:errors.EVENT_RSVP_008'),
+      [EVENT_ERRORS.EVENT_RSVP_009]: i18n.t('events:errors.EVENT_RSVP_009'),
     });
   }
 

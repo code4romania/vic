@@ -6,6 +6,8 @@ export const EVENTS = {
   },
   NGO_EVENT: {
     ADD: 'ngo.event.add',
+    // #496: the NGO registered the volunteer to an event
+    VOLUNTEER_ADDED: 'ngo.event.volunteer.added',
   },
   VOLUNTEER_HOURS: {
     APPROVE: 'volunteer.hours.approve',

@@ -3,6 +3,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { MailService } from 'src/modules/mail/services/mail.service';
 import { EVENTS } from '../constants/events.constants';
 import AddNGOEventEvent from '../events/ngo-event/add-event.event';
+import VolunteerAddedToEventEvent from '../events/ngo-event/volunteer-added.event';
 import { PushNotificationsFacade } from '../notifications.facade';
 import { NOTIFICATIONS } from 'src/common/constants/notifications';
 
@@ -42,6 +43,47 @@ export class NGOEventListener {
           context: {
             title: NOTIFICATIONS.NEW_EVENT.EMAIL.subject(organizationName),
             subtitle: NOTIFICATIONS.NEW_EVENT.EMAIL.body,
+          },
+        }),
+    );
+  }
+
+  // #496
+  @OnEvent(EVENTS.NGO_EVENT.VOLUNTEER_ADDED)
+  async sendVolunteerAddedNotification(
+    payload: VolunteerAddedToEventEvent,
+  ): Promise<void> {
+    const {
+      organizationId,
+      organizationName,
+      eventId,
+      eventName,
+      userIds,
+      userEmails,
+    } = payload;
+
+    this.pushNotificationsFacade.send({
+      userIds,
+      title: NOTIFICATIONS.ADDED_TO_EVENT.PUSH.title,
+      body: NOTIFICATIONS.ADDED_TO_EVENT.PUSH.body(organizationName, eventName),
+      data: {
+        key: EVENTS.NGO_EVENT.VOLUNTEER_ADDED,
+        payload: { organizationId, eventId },
+      },
+    });
+
+    const subject = NOTIFICATIONS.ADDED_TO_EVENT.EMAIL.subject(
+      organizationName,
+      eventName,
+    );
+    userEmails.forEach(
+      async (email: string) =>
+        await this.mailService.sendEmail({
+          to: email,
+          subject,
+          context: {
+            title: subject,
+            subtitle: NOTIFICATIONS.ADDED_TO_EVENT.EMAIL.body,
           },
         }),
     );

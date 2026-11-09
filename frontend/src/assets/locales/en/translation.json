@@ -584,7 +584,11 @@
       "EVENT_006": "Only published events can be archived",
       "EVENT_007": "This event has recorded volunteer hours and cannot be deleted!",
       "EVENT_008": "Error uploading poster!",
-      "EVENT_009": "Error deleting poster"
+      "EVENT_009": "Error deleting poster",
+      "EVENT_RSVP_006": "The event is not published.",
+      "EVENT_RSVP_007": "The event has ended.",
+      "EVENT_RSVP_008": "The event is full: there are not enough places for all the selected volunteers.",
+      "EVENT_RSVP_009": "Only active volunteers from the event's departments can be added."
     },
     "download_open": "Active events.xlsx",
     "download_past": "Closed events.xlsx",
@@ -604,6 +608,19 @@
       "upcoming": "Upcoming events",
       "ongoing": "Ongoing events",
       "participants": "Participants"
+    },
+    "add_volunteers": {
+      "button": "Add volunteers",
+      "title": "Add volunteers to the event",
+      "description": "Active volunteers from the event's departments. They are registered right away and get a notification.",
+      "search": "Search by name or email",
+      "hours": "{{count}} h",
+      "registered": "Registered",
+      "places": "Places left: {{count}}",
+      "submit": "Add {{count}}",
+      "empty": "No volunteers to add.",
+      "added_one": "{{count}} volunteer added",
+      "added_other": "{{count}} volunteers added"
     }
   },
   "announcement": {

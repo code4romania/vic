@@ -197,3 +197,35 @@ export interface IEventCounters {
 export const getEventCounters = async (departmentId?: string): Promise<IEventCounters> => {
   return API.get('/event/counters', { params: { departmentId } }).then((res) => res.data);
 };
+
+// #496: volunteers the NGO can add to an event, and adding them
+export interface IEventCandidate {
+  volunteerId: string;
+  name: string;
+  email: string;
+  department: string | null;
+  totalHours: number;
+  registered: boolean;
+}
+
+export interface IEventCandidates {
+  items: IEventCandidate[];
+  // null: the event has no capacity
+  placesLeft: number | null;
+}
+
+export const getEventCandidates = async (
+  eventId: string,
+  search?: string,
+): Promise<IEventCandidates> => {
+  return API.get(`/event/${eventId}/candidates`, {
+    params: { search: search || undefined },
+  }).then((res) => res.data);
+};
+
+export const addVolunteersToEvent = async (
+  eventId: string,
+  volunteerIds: string[],
+): Promise<IEventCandidate[]> => {
+  return API.post(`/event/${eventId}/volunteers`, { volunteerIds }).then((res) => res.data);
+};

@@ -20,6 +20,8 @@ import {
   UpdateEventOptions,
   EventCountersOptions,
   IEventCountersModel,
+  FindEventCandidatesOptions,
+  IEventCandidateModel,
 } from '../models/event.model';
 import { EventRSVPRepository } from '../repositories/event-rsvp.repository';
 import { EventRepository } from '../repositories/event.repository';
@@ -43,6 +45,16 @@ export class EventFacade {
     findOptions: FindManyEventOptions,
   ): Promise<Pagination<IEventsListItemModel>> {
     return this.eventRepository.getMany(findOptions);
+  }
+
+  findCandidates(
+    options: FindEventCandidatesOptions,
+  ): Promise<IEventCandidateModel[]> {
+    return this.eventRepository.findCandidates(options);
+  }
+
+  countGoing(eventId: string): Promise<number> {
+    return this.eventRepository.countGoing(eventId);
   }
 
   async countByState(

@@ -16,6 +16,8 @@ import {
   getRsvps,
   publishEvent,
   getEventCounters,
+  getEventCandidates,
+  addVolunteersToEvent,
 } from './event.api';
 
 export const useEventsQuery = (
@@ -124,4 +126,24 @@ export const useDeleteEventMutation = () => {
 
 export const useEventCountersQuery = (departmentId?: string) => {
   return useQuery(['event-counters', departmentId], () => getEventCounters(departmentId));
+};
+
+export const useEventCandidatesQuery = (eventId: string, search?: string) => {
+  return useQuery(
+    ['event-candidates', eventId, search],
+    () => getEventCandidates(eventId, search),
+    {
+      keepPreviousData: true,
+    },
+  );
+};
+
+export const useAddVolunteersToEventMutation = () => {
+  return useMutation(
+    ({ eventId, volunteerIds }: { eventId: string; volunteerIds: string[] }) =>
+      addVolunteersToEvent(eventId, volunteerIds),
+    {
+      onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
+    },
+  );
 };

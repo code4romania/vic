@@ -96,6 +96,8 @@ import { DeleteEventRSVPUseCase } from './event/RSVP/delete-rsvp.usecase';
 import { GetAccessRequestsForDownloadUseCase } from './access-request/get-many-for-download-access-requests.usecase';
 import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-download-volunteer.usecase';
 import { GetManyEventRSVPUseCase } from './event/RSVP/get-many-rsvp.usecase';
+import { GetEventCandidatesUseCase } from './event/RSVP/get-event-candidates.usecase';
+import { AddVolunteersToEventUseCase } from './event/RSVP/add-volunteers-to-event.usecase';
 import { GetManyEventUseCase } from './event/get-many-event.usecase';
 import { GetEventCountersUseCase } from './event/get-event-counters.usecase';
 import { GetManyForDownloadEventUseCase } from './event/get-many-for-download-event.usecase';
@@ -310,6 +312,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetOneEventRSVPUseCase,
     DeleteEventRSVPUseCase,
     GetManyEventRSVPUseCase,
+    GetEventCandidatesUseCase,
+    AddVolunteersToEventUseCase,
     GetManyForDownloadEventRSVPUseCase,
     // Activity Log
     CreateActivityLogByAdmin,
@@ -482,6 +486,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetOneEventRSVPUseCase,
     DeleteEventRSVPUseCase,
     GetManyEventRSVPUseCase,
+    GetEventCandidatesUseCase,
+    AddVolunteersToEventUseCase,
     GetManyForDownloadEventRSVPUseCase,
     // Activity Log
     CreateActivityLogByAdmin,

@@ -585,7 +585,11 @@
       "EVENT_006": "Doar evenimentele publicate pot fi arhivate",
       "EVENT_007": "Acest eveniment are ore de voluntariat înregistrate și nu poate fi șters!",
       "EVENT_008": "Eroare la încărcarea posterului!",
-      "EVENT_009": "Eroare la ștergerea posterului"
+      "EVENT_009": "Eroare la ștergerea posterului",
+      "EVENT_RSVP_006": "Evenimentul nu este publicat.",
+      "EVENT_RSVP_007": "Evenimentul s-a încheiat.",
+      "EVENT_RSVP_008": "Evenimentul este complet: nu sunt destule locuri pentru toți voluntarii selectați.",
+      "EVENT_RSVP_009": "Se pot adăuga doar voluntari activi din departamentele evenimentului."
     },
     "download_open": "Evenimente active.xlsx",
     "download_past": "Evenimente încheiate.xlsx",
@@ -605,6 +609,20 @@
       "upcoming": "Evenimente viitoare",
       "ongoing": "Evenimente în desfășurare",
       "participants": "Participanți"
+    },
+    "add_volunteers": {
+      "button": "Adaugă voluntari",
+      "title": "Adaugă voluntari la eveniment",
+      "description": "Voluntari activi din departamentele evenimentului. Sunt înscriși imediat și primesc o notificare.",
+      "search": "Caută după nume sau email",
+      "hours": "{{count}} h",
+      "registered": "Înscris",
+      "places": "Locuri rămase: {{count}}",
+      "submit": "Adaugă {{count}}",
+      "empty": "Nu sunt voluntari de adăugat.",
+      "added_one": "{{count}} voluntar adăugat",
+      "added_few": "{{count}} voluntari adăugați",
+      "added_other": "{{count}} de voluntari adăugați"
     }
   },
   "announcement": {

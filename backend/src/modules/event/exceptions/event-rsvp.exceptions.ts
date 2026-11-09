@@ -8,6 +8,8 @@ export enum EventsRSVPExceptionCodes {
   EVENT_RSVP_005 = 'EVENT_RSVP_005',
   EVENT_RSVP_006 = 'EVENT_RSVP_006',
   EVENT_RSVP_007 = 'EVENT_RSVP_007',
+  EVENT_RSVP_008 = 'EVENT_RSVP_008',
+  EVENT_RSVP_009 = 'EVENT_RSVP_009',
 }
 
 type EventRSVPExceptionCodeType = keyof typeof EventsRSVPExceptionCodes;
@@ -46,5 +48,14 @@ export const EventRSVPExceptionMessages: Record<
   [EventsRSVPExceptionCodes.EVENT_RSVP_007]: {
     code_error: EventsRSVPExceptionCodes.EVENT_RSVP_007,
     message: 'You cannot respond to passed events',
+  },
+  [EventsRSVPExceptionCodes.EVENT_RSVP_008]: {
+    code_error: EventsRSVPExceptionCodes.EVENT_RSVP_008,
+    message: 'The event is full: adding these volunteers exceeds its capacity',
+  },
+  [EventsRSVPExceptionCodes.EVENT_RSVP_009]: {
+    code_error: EventsRSVPExceptionCodes.EVENT_RSVP_009,
+    message:
+      'Only active volunteers with a profile, from the event departments, can be added',
   },
 };

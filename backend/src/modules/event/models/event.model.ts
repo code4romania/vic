@@ -235,3 +235,24 @@ export interface IEventCountersModel {
   // "going" answers on the upcoming and ongoing events
   participants: number;
 }
+
+// #496: volunteers the NGO can add to an event (active, with a profile, in the event's departments)
+export type FindEventCandidatesOptions = {
+  eventId: string;
+  organizationId: string;
+  // null or empty: every department
+  departmentIds?: string[];
+  search?: string;
+  volunteerIds?: string[];
+};
+
+export interface IEventCandidateModel {
+  volunteerId: string;
+  userId: string;
+  name: string;
+  email: string;
+  department?: string;
+  // approved hours in the organization
+  totalHours: number;
+  registered: boolean;
+}
