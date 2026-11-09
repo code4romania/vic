@@ -1,3 +1,4 @@
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { Injectable } from '@nestjs/common';
 import { OrganizationGateService } from '../organization/organization-gate.service';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
@@ -67,7 +68,11 @@ export class CreateAccessRequestUseCase
       organizationId: organization.id,
     });
 
-    if (existingVolunteer) {
+    // #500: a volunteer who left the organization asks again and waits for the NGO's approval
+    const leftByThemselves =
+      existingVolunteer?.status === VolunteerStatus.INACTIVE &&
+      existingVolunteer.archivedById === user.id;
+    if (existingVolunteer && !leftByThemselves) {
       throw this.exceptionService.badRequestException(
         VolunteerExceptionMessages.VOLUNTEER_002,
       );

@@ -14,13 +14,15 @@ export const NOTIFICATIONS = {
   REJECT_ACCESS_REQUEST: {
     PUSH: {
       title: 'VIC',
-      body: (organizationName: string): string =>
-        `Cererea de înscriere în organizația ${organizationName} a fost respinsă`,
+      body: (organizationName: string, reason?: string): string =>
+        `Cererea de înscriere în organizația ${organizationName} a fost respinsă${
+          reason ? `. Motiv: ${reason}` : ''
+        }`,
     },
     EMAIL: {
       subject: (organizationName: string): string =>
         `Cererea de înscriere în organizația ${organizationName} a fost respinsă`,
-      body: '',
+      body: (reason?: string): string => (reason ? `Motivul: ${reason}` : ''),
     },
   },
   ARCHIVE_VOLUNTEER: {

@@ -8,6 +8,8 @@ export default class RejectRequestEvent extends BaseEvent {
     _notificationsViaPush: boolean,
     _notificationsViaEmail: boolean,
     _userEmail: string,
+    // #500: a rejection always has a reason, sent to the volunteer
+    private _rejectionReason: string,
   ) {
     super(
       _organizationId,
@@ -17,5 +19,9 @@ export default class RejectRequestEvent extends BaseEvent {
       _notificationsViaEmail,
       _userEmail,
     );
+  }
+
+  public get rejectionReason(): string {
+    return this._rejectionReason;
   }
 }

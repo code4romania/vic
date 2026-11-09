@@ -7,6 +7,7 @@ import { SelectItem } from '../components/Select';
 import Tabs from '../components/Tabs';
 import PageLayout from '../layouts/PageLayout';
 import {
+  useApprovedAccessRequestsQuery,
   useNewAccessRequestsQuery,
   useRejectedAccessRequestsQuery,
 } from '../services/access-requests/access-requests.service';
@@ -15,6 +16,7 @@ import AccessRequestTableWithQueryParams from '../containers/query/AccessRequest
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
   { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
+  { key: RequestStatus.APPROVED, value: i18n.t('access_requests:tabs.approved_requests') },
   { key: RequestStatus.REJECTED, value: i18n.t('access_requests:tabs.rejected_requests') },
 ];
 
@@ -36,6 +38,12 @@ const AccessRequests = ({ query, setQuery }: AccessRequestsProps) => {
           <AccessRequestTableWithQueryParams
             useAccessRequests={useNewAccessRequestsQuery}
             status={RequestStatus.PENDING}
+          />
+        )}
+        {query?.requestStatus === RequestStatus.APPROVED && (
+          <AccessRequestTableWithQueryParams
+            useAccessRequests={useApprovedAccessRequestsQuery}
+            status={RequestStatus.APPROVED}
           />
         )}
         {query?.requestStatus === RequestStatus.REJECTED && (

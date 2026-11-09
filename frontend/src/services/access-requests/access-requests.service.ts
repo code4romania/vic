@@ -7,6 +7,7 @@ import {
   approveAccessRequest,
   deleteAccessRequest,
   getAccessRequest,
+  getApprovedAccessRequests,
   getNewAccessRequests,
   getRejectedAccessRequests,
   rejectAccessRequest,
@@ -38,6 +39,49 @@ export const useNewAccessRequestsQuery = (
     ],
     () =>
       getNewAccessRequests(
+        limit,
+        page,
+        orderBy,
+        orderDirection,
+        search,
+        createdOnStart,
+        createdOnEnd,
+        city,
+        county,
+      ),
+    {
+      onError: (error: AxiosError<IBusinessException<ACCESS_REQUEST_ERRORS>>) => error,
+      enabled: !!(limit && page),
+    },
+  );
+};
+
+export const useApprovedAccessRequestsQuery = (
+  limit: number,
+  page: number,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+  search?: string,
+  createdOnStart?: Date,
+  createdOnEnd?: Date,
+  city?: string,
+  county?: string,
+) => {
+  return useQuery(
+    [
+      'approved-access-requests',
+      limit,
+      page,
+      orderBy,
+      orderDirection,
+      search,
+      createdOnStart,
+      createdOnEnd,
+      city,
+      county,
+    ],
+    () =>
+      getApprovedAccessRequests(
         limit,
         page,
         orderBy,

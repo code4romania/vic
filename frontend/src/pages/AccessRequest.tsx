@@ -38,10 +38,10 @@ const AccessRequest = () => {
     refetch,
   } = useAccessRequestQuery(id as string);
 
-  const { mutateAsync: rejectAccessRequestMutation, isLoading: isRejectAccessRequestLoading } =
+  const { mutate: rejectAccessRequestMutation, isLoading: isRejectAccessRequestLoading } =
     useRejectAccessRequestMutation();
 
-  const { mutateAsync: approveAccessRequestMutation, isLoading: isApproveAccessRequestLoading } =
+  const { mutate: approveAccessRequestMutation, isLoading: isApproveAccessRequestLoading } =
     useApproveAccessRequestMutation();
 
   useEffect(() => {
@@ -67,10 +67,13 @@ const AccessRequest = () => {
               option: i18n.t('volunteer:registration.confirmation_options.approved'),
             }),
           );
-          onBackButtonPress();
+          if (accessRequest.status === RequestStatus.PENDING) onBackButtonPress();
+          else refetch();
         },
         onError: (error) => {
-          InternalErrors.ACCESS_REQUEST_ERRORS.getError(error?.response?.data.code_error);
+          useErrorToast(
+            InternalErrors.ACCESS_REQUEST_ERRORS.getError(error?.response?.data.code_error),
+          );
         },
       });
   };
@@ -89,7 +92,9 @@ const AccessRequest = () => {
             refetch();
           },
           onError: (error) => {
-            InternalErrors.ACCESS_REQUEST_ERRORS.getError(error?.response?.data.code_error);
+            useErrorToast(
+              InternalErrors.ACCESS_REQUEST_ERRORS.getError(error?.response?.data.code_error),
+            );
           },
           onSettled: () => {
             setShowRejectModal(false);
@@ -133,10 +138,40 @@ const AccessRequest = () => {
                 </div>
               </div>
             )}
+            {accessRequest.status === RequestStatus.APPROVED && (
+              <Card>
+                <CardBody>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-2">
+                    <div className="flex gap-1 sm:gap-2 items-center">
+                      <CheckIcon className="w-6 h-6 text-green-500" />
+                      <h2>
+                        {i18n.t('access_requests:approved_message', {
+                          date: formatDate(accessRequest.updatedOn),
+                        })}
+                      </h2>
+                    </div>
+                    <Button
+                      label={i18n.t('access_requests:popover.change_to_rejected')}
+                      className="btn-outline-secondary w-full xs:w-auto"
+                      icon={<XMarkIcon className="w-5 h-5" />}
+                      onClick={setShowRejectModal.bind(null, true)}
+                    />
+                  </div>
+                </CardBody>
+              </Card>
+            )}
             {accessRequest.status === RequestStatus.REJECTED && (
               <Card>
                 <CardBody>
                   <div className="flex flex-col gap-2 sm:gap-4 py-2">
+                    <div className="flex justify-end">
+                      <Button
+                        label={i18n.t('access_requests:popover.change_to_approved')}
+                        className="btn-outline-secondary w-full xs:w-auto"
+                        icon={<CheckIcon className="w-5 h-5" />}
+                        onClick={approveAccessRequest}
+                      />
+                    </div>
                     <div className="flex gap-1 sm:gap-2 items-center">
                       <XMarkIcon className="w-6 h-6 text-red-600" />
                       <h2>
@@ -187,6 +222,7 @@ const AccessRequest = () => {
           title={i18n.t('reject_modal:title')}
           onClose={setShowRejectModal.bind(null, false)}
           onConfirm={confirmReject}
+          requireReason
         />
       )}
     </PageLayout>

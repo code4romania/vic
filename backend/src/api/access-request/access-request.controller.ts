@@ -1,3 +1,4 @@
+import { AccessRequestStatus } from 'src/modules/access-request/enums/access-request-status.enum';
 import { Body, Delete, Query, Header, Res } from '@nestjs/common';
 import { Post } from '@nestjs/common';
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
@@ -69,6 +70,27 @@ export class AccessRequestController {
         ...filters,
         organizationId: user.organizationId,
       });
+
+    return new PaginatedPresenter({
+      ...accessRequests,
+      items: accessRequests.items.map(
+        (accessRequest) => new AccessRequestPresenter(accessRequest),
+      ),
+    });
+  }
+
+  // #500: approved requests, so the NGO can change its decision
+  @Get('/approved')
+  @ApiPaginatedResponse(AccessRequestPresenter)
+  async getApproved(
+    @Query() filters: GetAccessRequestsDto,
+    @ExtractUser() user: IAdminUserModel,
+  ): Promise<PaginatedPresenter<AccessRequestPresenter>> {
+    const accessRequests =
+      await this.getManyRejectedAccessRequestsUseCase.execute(
+        { ...filters, organizationId: user.organizationId },
+        AccessRequestStatus.APPROVED,
+      );
 
     return new PaginatedPresenter({
       ...accessRequests,

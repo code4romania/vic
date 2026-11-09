@@ -77,6 +77,7 @@ export class JoinNGOListener {
       notificationsViaPush,
       userEmail,
       organizationName,
+      rejectionReason,
     } = payload;
 
     if (notificationsViaPush) {
@@ -84,13 +85,17 @@ export class JoinNGOListener {
         key: EVENTS.JOIN_NGO.REJECT_REQUEST,
         payload: {
           organizationId,
+          rejectionReason,
         },
       };
 
       this.pushNotificationsFacade.send({
         userIds: [userId],
         title: NOTIFICATIONS.REJECT_ACCESS_REQUEST.PUSH.title,
-        body: NOTIFICATIONS.REJECT_ACCESS_REQUEST.PUSH.body(organizationName),
+        body: NOTIFICATIONS.REJECT_ACCESS_REQUEST.PUSH.body(
+          organizationName,
+          rejectionReason,
+        ),
         data: notificationData,
       });
     }
@@ -104,7 +109,8 @@ export class JoinNGOListener {
         context: {
           title:
             NOTIFICATIONS.REJECT_ACCESS_REQUEST.EMAIL.subject(organizationName),
-          subtitle: NOTIFICATIONS.REJECT_ACCESS_REQUEST.EMAIL.body,
+          subtitle:
+            NOTIFICATIONS.REJECT_ACCESS_REQUEST.EMAIL.body(rejectionReason),
         },
       });
     }

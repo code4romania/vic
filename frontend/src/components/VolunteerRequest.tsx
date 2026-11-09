@@ -30,22 +30,27 @@ const VolunteerRequest = ({ email, phone, createdOn, answers }: VolunteerRequest
               label={i18n.t('general:created_on')}
             />
           </div>
-          <div className="pt-4 flex flex-col gap-6">
-            <div className="flex flex-col gap-2">
-              <h3>{i18n.t('volunteer:registration.answer')}</h3>
-              <p className="text-cool-gray-500">{i18n.t('volunteer:registration.description')}</p>
+          {/* #500: a volunteer who left and asks to rejoin sends no answers */}
+          {answers?.length >= 2 ? (
+            <div className="pt-4 flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <h3>{i18n.t('volunteer:registration.answer')}</h3>
+                <p className="text-cool-gray-500">{i18n.t('volunteer:registration.description')}</p>
+              </div>
+              <div className="flex flex-col gap-5">
+                <FormReadOnlyElement
+                  value={`${i18n.t(`volunteer:registration.referral.${answers[0].answer}`)}`}
+                  label={i18n.t('volunteer:registration.found_location')}
+                />
+                <FormReadOnlyElement
+                  value={answers[1].answer}
+                  label={i18n.t('volunteer:registration.motivation')}
+                />
+              </div>
             </div>
-            <div className="flex flex-col gap-5">
-              <FormReadOnlyElement
-                value={`${i18n.t(`volunteer:registration.referral.${answers[0].answer}`)}`}
-                label={i18n.t('volunteer:registration.found_location')}
-              />
-              <FormReadOnlyElement
-                value={answers[1].answer}
-                label={i18n.t('volunteer:registration.motivation')}
-              />
-            </div>
-          </div>
+          ) : (
+            <p className="pt-4 text-cool-gray-500">{i18n.t('volunteer:registration.rejoin')}</p>
+          )}
         </div>
       </CardBody>
     </Card>

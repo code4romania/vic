@@ -103,6 +103,17 @@ const RejectedAccessRequestsTableHeader = [
   },
 ];
 
+// #500: the decision can be changed, so the date the request was decided on is shown on both tabs
+const ApprovedAccessRequestsTableHeader = [
+  ...PendingAccessRequestsTableHeader,
+  {
+    id: 'updatedOn',
+    name: i18n.t('access_requests:approved_date'),
+    sortable: true,
+    cell: (row: IAccessRequest) => <CellLayout>{formatDate(row.updatedOn)}</CellLayout>,
+  },
+];
+
 const AccessRequestTable = ({
   useAccessRequests,
   status,
@@ -141,13 +152,13 @@ const AccessRequestTable = ({
   );
 
   // actions
-  const { mutateAsync: approveAccessRequest, isLoading: isApprovingRequest } =
+  const { mutate: approveAccessRequest, isLoading: isApprovingRequest } =
     useApproveAccessRequestMutation();
 
-  const { mutateAsync: rejectAccessRequest, isLoading: isRejectingAccessRequest } =
+  const { mutate: rejectAccessRequest, isLoading: isRejectingAccessRequest } =
     useRejectAccessRequestMutation();
 
-  const { mutateAsync: deleteAccessRequest, isLoading: isDeletingAccessRequest } =
+  const { mutate: deleteAccessRequest, isLoading: isDeletingAccessRequest } =
     useDeleteAccessRequestMutation();
 
   useEffect(() => {
@@ -190,12 +201,42 @@ const AccessRequestTable = ({
     };
   };
 
+  const buildApprovedAccessRequestsActionColumn = (): TableColumn<IAccessRequest> => {
+    const approvedAccessRequestsMenuItems = [
+      {
+        label: i18n.t('access_requests:popover.view'),
+        icon: <EyeIcon className="menu-icon" />,
+        onClick: onView,
+      },
+      {
+        label: i18n.t('access_requests:popover.change_to_rejected'),
+        icon: <XMarkIcon className="menu-icon" />,
+        onClick: onReject,
+        alert: true,
+      },
+    ];
+
+    return {
+      name: '',
+      cell: (row: IAccessRequest) => (
+        <Popover<IAccessRequest> row={row} items={approvedAccessRequestsMenuItems} />
+      ),
+      width: '50px',
+      allowOverflow: true,
+    };
+  };
+
   const buildRejectedAccessRequestsActionColumn = (): TableColumn<IAccessRequest> => {
     const rejectedAccessRequestsMenuItems = [
       {
         label: i18n.t('access_requests:popover.view'),
         icon: <EyeIcon className="menu-icon" />,
         onClick: onView,
+      },
+      {
+        label: i18n.t('access_requests:popover.change_to_approved'),
+        icon: <CheckIcon className="menu-icon" />,
+        onClick: onApprove,
       },
       {
         label: i18n.t('access_requests:popover.delete'),
@@ -215,10 +256,15 @@ const AccessRequestTable = ({
     };
   };
 
-  const buildAccessRequestActionColumns = () =>
-    status === RequestStatus.REJECTED
-      ? buildRejectedAccessRequestsActionColumn()
-      : buildPendingAccessRequestsActionColumn();
+  const buildAccessRequestActionColumns = () => {
+    if (status === RequestStatus.REJECTED) return buildRejectedAccessRequestsActionColumn();
+    if (status === RequestStatus.APPROVED) return buildApprovedAccessRequestsActionColumn();
+    return buildPendingAccessRequestsActionColumn();
+  };
+
+  const onActionError = (code?: ACCESS_REQUEST_ERRORS) => {
+    useErrorToast(InternalErrors.ACCESS_REQUEST_ERRORS.getError(code));
+  };
 
   // pagination
   const onRowsPerPageChange = (limit: number) => {
@@ -276,9 +322,7 @@ const AccessRequestTable = ({
         );
         refetch();
       },
-      onError: (error) => {
-        InternalErrors.ACCESS_REQUEST_ERRORS.getError(error.response?.data.code_error);
-      },
+      onError: (error) => onActionError(error.response?.data.code_error),
     });
   };
 
@@ -298,9 +342,7 @@ const AccessRequestTable = ({
             );
             refetch();
           },
-          onError: (error) => {
-            InternalErrors.ACCESS_REQUEST_ERRORS.getError(error.response?.data.code_error);
-          },
+          onError: (error) => onActionError(error.response?.data.code_error),
           onSettled: () => {
             setShowRejectAccessRequest(null);
           },
@@ -319,9 +361,7 @@ const AccessRequestTable = ({
           );
           refetch();
         },
-        onError: (error) => {
-          InternalErrors.ACCESS_REQUEST_ERRORS.getError(error.response?.data.code_error);
-        },
+        onError: (error) => onActionError(error.response?.data.code_error),
         onSettled: () => {
           setShowDeleteAccessRequest(null);
         },
@@ -440,7 +480,9 @@ const AccessRequestTable = ({
             columns={[
               ...(status === RequestStatus.REJECTED
                 ? RejectedAccessRequestsTableHeader
-                : PendingAccessRequestsTableHeader),
+                : status === RequestStatus.APPROVED
+                  ? ApprovedAccessRequestsTableHeader
+                  : PendingAccessRequestsTableHeader),
               buildAccessRequestActionColumns(),
             ]}
             data={accessRequests?.items}
@@ -465,6 +507,7 @@ const AccessRequestTable = ({
             title={i18n.t('reject_modal:title')}
             onClose={setShowRejectAccessRequest.bind(null, null)}
             onConfirm={confirmReject}
+            requireReason
           />
         )}
         {showDeleteAccessRequest && (

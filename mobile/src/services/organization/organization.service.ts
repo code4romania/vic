@@ -61,29 +61,15 @@ export const useLeaveOrganizationMutation = () => {
   );
 };
 
+// #500: asking to rejoin sends a request the organization has to approve; until then the
+// organization is not one of the volunteer's organizations.
 export const useRejoinOrganizationMutation = () => {
   const { setOrganization } = useStore();
-  const { userProfile, setUserProfile } = useStore();
   return useMutation(
     ['rejoin-organization'],
     ({ volunteerId }: { volunteerId: string }) => rejoinOrganization(volunteerId),
     {
-      onSuccess: (data: IOrganization, { volunteerId }) => {
-        setOrganization(data);
-        if (userProfile) {
-          const activeOrganization = {
-            id: data.id,
-            name: data.name,
-            logo: data.logo,
-            volunteerId,
-          };
-          setUserProfile({
-            ...userProfile,
-            activeOrganization,
-            myOrganizations: [...userProfile.myOrganizations, activeOrganization],
-          });
-        }
-      },
+      onSuccess: (data: IOrganization) => setOrganization(data),
     },
   );
 };
