@@ -8,8 +8,15 @@ import API from '../api';
 
 // One function per web auth route of the backend (docs/auth.md, Endpoints).
 
-export const login = async (email: string, password: string): Promise<IWebSession> =>
-  API.post('/auth/web/login', { email, password }).then((res) => res.data);
+// VIC 2.0 (#514): no passwords. Always 204 for an admin email (the page never says whether an account
+// exists); a volunteer email answers 409 AUTH_012 (use the app).
+export const requestLogin = async (email: string): Promise<void> => {
+  await API.post('/auth/web/login/request', { email });
+};
+
+// The emailed link (login, Team invite or cutover transition) → a web session and the vic_refresh cookie.
+export const loginWithLink = async (token: string): Promise<LinkResult> =>
+  API.post('/auth/login-link', { token }).then((res) => res.data);
 
 export const refresh = async (): Promise<IWebSession> =>
   API.post('/auth/web/refresh').then((res) => res.data);
@@ -21,20 +28,8 @@ export const logout = async (): Promise<void> => {
 export const getMe = async (): Promise<IAdminProfile> =>
   API.get('/auth/web/me').then((res) => res.data);
 
-// Always 200: the page never says whether an account exists.
-export const forgotPassword = async (email: string): Promise<void> => {
-  await API.post('/auth/web/forgot-password', { email });
-};
-
 export const resendVerification = async (email: string): Promise<void> => {
   await API.post('/auth/web/resend-verification', { email });
-};
-
-export const changePassword = async (
-  currentPassword: string,
-  newPassword: string,
-): Promise<void> => {
-  await API.patch('/auth/web/change-password', { currentPassword, newPassword });
 };
 
 export const getTokenInfo = async (secret: string): Promise<ITokenInfo> =>
@@ -44,9 +39,6 @@ export const getTokenInfo = async (secret: string): Promise<ITokenInfo> =>
 export const resendToken = async (secret: string): Promise<void> => {
   await API.post(`/auth/token/${encodeURIComponent(secret)}/resend`);
 };
-
-export const setPassword = async (token: string, password: string): Promise<LinkResult> =>
-  API.post('/auth/set-password', { token, password }).then((res) => res.data);
 
 export const confirmEmail = async (token: string): Promise<LinkResult> =>
   API.post('/auth/confirm-email', { token }).then((res) => res.data);

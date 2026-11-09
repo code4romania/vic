@@ -3,7 +3,6 @@ import PageLayout from '../layouts/PageLayout';
 import { Text } from '@ui-kitten/components';
 import { Image, Platform, StyleSheet } from 'react-native';
 import { View } from 'react-native';
-import LogInButton from '../components/LogInButton';
 import { useAuth } from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 import GoogleButton from '../components/GoogleButton';
@@ -29,10 +28,6 @@ const Landing = ({ navigation }: any) => {
     navigation.navigate('login');
   };
 
-  const onRegisterButtonPress = () => {
-    navigation.navigate('create-account');
-  };
-
   return (
     <PageLayout title="" headerStyle={{ paddingTop }}>
       <ScrollViewLayout>
@@ -42,14 +37,13 @@ const Landing = ({ navigation }: any) => {
             'message',
           )}`}</Text>
           <View style={styles.buttonsContainer}>
-            <SignUpButton onPress={onRegisterButtonPress} />
+            {/* Email: sign-up and login are the same flow, a code sent by email (#514) */}
+            <SignUpButton onPress={onLoginButtonPress} />
             {/* Apple is required next to the other social logins on iOS (App Store guideline 4.8) */}
             {Platform.OS === 'ios' && <AppleButton onPress={() => loginWithSocial('apple')} />}
             <GoogleButton onPress={() => loginWithSocial('google')} />
             <FacebookButton onPress={() => loginWithSocial('facebook')} />
           </View>
-          <View style={styles.separator} />
-          <LogInButton onPress={onLoginButtonPress} />
           {/* <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.version}>
             v0.14.10
           </Text> */}
@@ -66,9 +60,6 @@ const styles = StyleSheet.create({
     marginBottom: 45,
     height: 240,
     width: 130,
-  },
-  separator: {
-    height: 24,
   },
   container: {
     flex: 1,

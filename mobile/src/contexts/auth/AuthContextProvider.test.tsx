@@ -53,7 +53,6 @@ const toastTexts = () => toast.mock.calls.map(([options]) => [options.text1, opt
 beforeEach(() => {
   jest.clearAllMocks();
   useStore.setState({ userProfile: null });
-  delete process.env.EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL;
 });
 
 afterEach(() => {
@@ -76,127 +75,96 @@ describe('AuthContextProvider', () => {
     await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
   });
 
-  describe('login', () => {
-    it('stores the tokens and loads the profile', async () => {
-      api.login.mockResolvedValue(SESSION);
-      profileCall.mockResolvedValue(PROFILE);
+  describe('requestLoginCode (#514)', () => {
+    it('sends the trimmed email, remembers it and resolves with the masked email', async () => {
+      api.requestLogin.mockResolvedValue({ maskedEmail: 'e•••@seed.test' });
       const ctx = await setup();
 
-      await act(() => ctx.current.login({ username: ' elena@seed.test ', password: 'pw' }) as any);
+      let masked = '';
+      await act(async () => {
+        masked = await ctx.current.requestLoginCode(' elena@seed.test ');
+      });
 
-      expect(api.login).toHaveBeenCalledWith('elena@seed.test', 'pw');
+      expect(api.requestLogin).toHaveBeenCalledWith('elena@seed.test');
+      expect(masked).toBe('e•••@seed.test');
+      expect(ctx.current.userName).toBe('elena@seed.test');
+    });
+
+    it.each(['AUTH_010', 'AUTH_004'])('%s shows its message', async (code) => {
+      api.requestLogin.mockRejectedValue(httpError(code === 'AUTH_010' ? 429 : 403, code));
+      const ctx = await setup();
+
+      await expect(ctx.current.requestLoginCode('a@b.ro')).rejects.toBeDefined();
+      expect(toastTexts()).toEqual([[i18n.t(`auth:errors.${code}`), undefined]]);
+    });
+
+    it('shows no toast on 503: the Maintenance screen takes over', async () => {
+      api.requestLogin.mockRejectedValue(httpError(503, 'MAINTENANCE'));
+      const ctx = await setup();
+
+      await expect(ctx.current.requestLoginCode('a@b.ro')).rejects.toBeDefined();
+      expect(toast).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('loginWithCode (#514)', () => {
+    const codeSentTo = async (email: string) => {
+      api.requestLogin.mockResolvedValue({ maskedEmail: 'm•••' });
+      const ctx = await setup();
+      await act(async () => {
+        await ctx.current.requestLoginCode(email);
+      });
+      return ctx;
+    };
+
+    it('logs in with the code for the remembered email, stores the tokens, loads the profile', async () => {
+      api.loginWithCode.mockResolvedValue(SESSION);
+      profileCall.mockResolvedValue(PROFILE);
+      const ctx = await codeSentTo('elena@seed.test');
+
+      await act(() => ctx.current.loginWithCode(' 651778 '));
+
+      expect(api.loginWithCode).toHaveBeenCalledWith('elena@seed.test', '651778');
+      expect(await getAccessToken()).toBe('access');
       expect(await getRefreshToken()).toBe('refresh');
       await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
     });
 
-    it('AUTH_001 shows the migration hint until the notice date, and not after', async () => {
-      process.env.EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL = '2026-12-31';
-      api.login.mockRejectedValue(httpError(401, 'AUTH_001'));
-      const ctx = await setup();
-
-      jest.useFakeTimers({ now: new Date('2026-12-31T12:00:00'), doNotFake: ['nextTick'] });
-      await expect(ctx.current.login({ username: 'a@b.ro', password: 'x' })).rejects.toBeDefined();
-      expect(toastTexts()).toEqual([
-        [i18n.t('auth:errors.AUTH_001'), i18n.t('auth:errors.migration_hint')],
-      ]);
-
-      toast.mockClear();
-      jest.setSystemTime(new Date('2027-01-01T08:00:00'));
-      await expect(ctx.current.login({ username: 'a@b.ro', password: 'x' })).rejects.toBeDefined();
-      expect(toastTexts()).toEqual([[i18n.t('auth:errors.AUTH_001'), undefined]]);
-    });
-
-    it('AUTH_003 asks the screen to resend the confirmation link', async () => {
-      api.login.mockRejectedValue(httpError(403, 'AUTH_003'));
-      const ctx = await setup();
-
-      await expect(ctx.current.login({ username: 'a@b.ro', password: 'x' })).rejects.toEqual({
-        confirmAccount: true,
-      });
-      expect(toast).not.toHaveBeenCalled();
-      await waitFor(() => expect(ctx.current.userName).toBe('a@b.ro'));
-    });
-
-    it('settles with createUser when the login has no profile yet (404 or USER_001)', async () => {
-      api.login.mockResolvedValue(SESSION);
+    it('a new volunteer (no profile: 404 or USER_001) settles with createUser', async () => {
+      api.loginWithCode.mockResolvedValue(SESSION);
       profileCall.mockRejectedValue(httpError(400, 'USER_001'));
-      const ctx = await setup();
+      const ctx = await codeSentTo('new@a2.test');
 
-      await expect(ctx.current.login({ username: 'a@b.ro', password: 'x' })).rejects.toEqual({
-        createUser: true,
-      });
+      await expect(ctx.current.loginWithCode('123456')).rejects.toEqual({ createUser: true });
       await waitFor(() => expect(ctx.current.isUserPending).toBe(true));
     });
 
-    it('settles (no hang) when the profile fails for another reason', async () => {
-      api.login.mockResolvedValue(SESSION);
-      profileCall.mockRejectedValue(httpError(500));
-      const ctx = await setup();
+    it('a wrong code (AUTH_005) says so', async () => {
+      api.loginWithCode.mockRejectedValue(httpError(400, 'AUTH_005'));
+      const ctx = await codeSentTo('a@b.ro');
 
-      await expect(ctx.current.login({ username: 'a@b.ro', password: 'x' })).rejects.toMatchObject({
+      await expect(ctx.current.loginWithCode('111111')).rejects.toBeDefined();
+      expect(toastTexts()).toEqual([[i18n.t('auth:errors.code_mismatch'), undefined]]);
+    });
+
+    it('too many wrong codes (AUTH_006) asks for a new one', async () => {
+      api.loginWithCode.mockRejectedValue(httpError(400, 'AUTH_006'));
+      const ctx = await codeSentTo('a@b.ro');
+
+      await expect(ctx.current.loginWithCode('111111')).rejects.toBeDefined();
+      expect(toastTexts()).toEqual([[i18n.t('auth:errors.AUTH_006'), undefined]]);
+    });
+
+    it('settles (no hang) when the profile fails for another reason', async () => {
+      api.loginWithCode.mockResolvedValue(SESSION);
+      profileCall.mockRejectedValue(httpError(500));
+      const ctx = await codeSentTo('a@b.ro');
+
+      await expect(ctx.current.loginWithCode('123456')).rejects.toMatchObject({
         response: { status: 500 },
       });
       expect(toastTexts()).toEqual([[i18n.t('auth:errors.init_profile'), undefined]]);
     });
-
-    it('shows no toast on 503: the Maintenance screen takes over', async () => {
-      api.login.mockRejectedValue(httpError(503, 'MAINTENANCE'));
-      const ctx = await setup();
-
-      await expect(ctx.current.login({ username: 'a@b.ro', password: 'x' })).rejects.toBeDefined();
-      expect(toast).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('signUp', () => {
-    it('registers and remembers the email and phone for the next screens', async () => {
-      api.register.mockResolvedValue({ maskedEmail: 'm•••@a2.test' });
-      const ctx = await setup();
-
-      await act(
-        () =>
-          ctx.current.signUp({
-            username: 'mira@a2.test',
-            password: 'pw',
-            phoneNumber: '+40712340001',
-          }) as any,
-      );
-
-      expect(api.register).toHaveBeenCalledWith('mira@a2.test', 'pw', '+40712340001');
-      expect(ctx.current.userName).toBe('mira@a2.test');
-      expect(ctx.current.initialPhoneNumber).toBe('+40712340001');
-    });
-
-    it('AUTH_009 says the email is taken', async () => {
-      api.register.mockRejectedValue(httpError(409, 'AUTH_009'));
-      const ctx = await setup();
-
-      await expect(
-        ctx.current.signUp({ username: 'a@b.ro', password: 'pw', phoneNumber: '+40712340001' }),
-      ).rejects.toBeDefined();
-      expect(toastTexts()).toEqual([[i18n.t('auth:errors.username_exists'), undefined]]);
-    });
-  });
-
-  it('forgotPasswordSubmit resets with the code and logs in', async () => {
-    api.resetPassword.mockResolvedValue(SESSION);
-    profileCall.mockResolvedValue(PROFILE);
-    const ctx = await setup();
-
-    await act(() => ctx.current.forgotPassword('mira@a2.test'));
-    await act(() => ctx.current.forgotPasswordSubmit('651778', 'New-Pass1!'));
-
-    expect(api.resetPassword).toHaveBeenCalledWith('mira@a2.test', '651778', 'New-Pass1!');
-    expect(await getAccessToken()).toBe('access');
-    await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
-  });
-
-  it('a wrong reset code says so', async () => {
-    api.resetPassword.mockRejectedValue(httpError(400, 'AUTH_005'));
-    const ctx = await setup();
-
-    await expect(ctx.current.forgotPasswordSubmit('111111', 'New-Pass1!')).rejects.toBeDefined();
-    expect(toastTexts()).toEqual([[i18n.t('auth:errors.code_mismatch'), undefined]]);
   });
 
   describe('loginWithSocial', () => {
@@ -302,8 +270,16 @@ describe('AuthContextProvider', () => {
     expect(useStore.getState().userProfile).toBeNull();
   });
 
-  it('has no confirmSignUp any more (decisions R30)', async () => {
+  it('has no password flows any more (#514)', async () => {
     const ctx = await setup();
-    expect('confirmSignUp' in ctx.current).toBe(false);
+    for (const removed of [
+      'confirmSignUp',
+      'login',
+      'signUp',
+      'changePassword',
+      'forgotPassword',
+    ]) {
+      expect(removed in ctx.current).toBe(false);
+    }
   });
 });

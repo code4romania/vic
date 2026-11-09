@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
-import { AUTH_LOCKOUT } from '../auth.constants';
 import { AuthProvider, AuthTokenType } from '../enums/auth.enums';
 import {
   CreateAuthIdentityOptions,
@@ -82,36 +81,6 @@ export class AuthIdentityFacade {
 
   public async deleteUnverifiedMobileBefore(date: Date): Promise<number> {
     return this.authIdentityRepository.deleteUnverifiedMobileBefore(date);
-  }
-
-  // Lockout: the fifth failure in a row locks the login for 15 minutes and starts the count again.
-
-  public async registerFailedLogin(
-    identity: IAuthIdentityModel,
-  ): Promise<IAuthIdentityModel> {
-    const lockUntil = new Date(
-      Date.now() + AUTH_LOCKOUT.LOCK_MINUTES * 60 * 1000,
-    );
-
-    return this.authIdentityRepository.registerFailedLogin(
-      identity.id,
-      AUTH_LOCKOUT.MAX_FAILED_ATTEMPTS,
-      lockUntil,
-    );
-  }
-
-  public async registerSuccessfulLogin(
-    identity: IAuthIdentityModel,
-  ): Promise<IAuthIdentityModel> {
-    // lastLoginAt is set with the session (createSession)
-    return this.authIdentityRepository.update(identity.id, {
-      failedAttempts: 0,
-      lockedUntil: null,
-    });
-  }
-
-  public isLocked(identity: IAuthIdentityModel, now = new Date()): boolean {
-    return !!identity.lockedUntil && identity.lockedUntil > now;
   }
 
   // One-time tokens

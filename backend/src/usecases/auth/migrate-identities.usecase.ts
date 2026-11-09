@@ -1,7 +1,7 @@
 import { ISendMailOptions } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { AUTH_TOKEN_TTL_MS } from 'src/modules/auth/auth.constants';
-import { AUTH_EMAILS } from 'src/modules/auth/constants/auth-emails';
+import { AUTH_EMAILS, AuthEmail } from 'src/modules/auth/constants/auth-emails';
 import {
   AuthIdentityStatus,
   AuthProvider,
@@ -72,7 +72,7 @@ export function providerFromCognitoUsername(
 
 class DryRunRollback extends Error {}
 
-// auth:migrate (Layer 9). Every user row not deleted becomes an identity in pending_password: admins in
+// auth:migrate (Layer 9). Every user row not deleted becomes an identity in pending: admins in
 // the web realm, volunteers in the mobile realm (already verified: Cognito had confirmed them). Each new
 // identity gets a 30-day transition link (an invite nobody sent, R16) and a held transition email.
 // Upsert on (realm, email): a second run creates nothing and queues nothing. Nobody is imported disabled.
@@ -205,7 +205,7 @@ export class MigrateIdentitiesUseCase {
       {
         realm,
         email: row.email,
-        status: AuthIdentityStatus.PENDING_PASSWORD,
+        status: AuthIdentityStatus.PENDING,
         legacyCognitoUsername: row.cognito_id,
         userId: row.id,
         emailVerifiedAt: realm === AuthRealm.MOBILE ? row.created_on : null,
@@ -232,21 +232,25 @@ export class MigrateIdentitiesUseCase {
       }
     }
 
-    // No sentById: an invite nobody sent is a transition link (R16).
-    const { secret } = await this.oneTimeTokenService.issue(
-      {
-        identity,
-        type: AuthTokenType.INVITE,
-        form: AuthTokenForm.LINK,
-        ttlMs: AUTH_TOKEN_TTL_MS.TRANSITION_LINK,
-      },
-      manager,
-    );
-    const url = this.authMailer.setPasswordUrl(secret);
-    const email =
-      realm === AuthRealm.WEB
-        ? AUTH_EMAILS.transitionLinkAdmin(url)
-        : AUTH_EMAILS.transitionLinkVolunteer(url);
+    // VIC 2.0 (#514): no passwords. Admins get a first login link valid 30 days (an invite nobody sent
+    // is a transition link, R16); volunteers just log in with their email in the updated app.
+    let email: AuthEmail;
+    if (realm === AuthRealm.WEB) {
+      const { secret } = await this.oneTimeTokenService.issue(
+        {
+          identity,
+          type: AuthTokenType.INVITE,
+          form: AuthTokenForm.LINK,
+          ttlMs: AUTH_TOKEN_TTL_MS.TRANSITION_LINK,
+        },
+        manager,
+      );
+      email = AUTH_EMAILS.transitionLinkAdmin(
+        this.authMailer.loginLinkUrl(secret),
+      );
+    } else {
+      email = AUTH_EMAILS.transitionLinkVolunteer();
+    }
 
     emails.push({
       to: identity.email,

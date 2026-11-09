@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { AuthContext, SignInOptions, SignUpOptions } from './AuthContext';
+import { AuthContext } from './AuthContext';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import i18n from '../../common/config/i18n';
 import * as SplashScreen from 'expo-splash-screen';
@@ -21,7 +21,6 @@ import { getAuthErrorCode } from '../../common/utils/auth-error';
 import { AUTH_ERRORS } from '../../common/errors/entities/auth.errors';
 import { InternalErrors } from '../../common/errors/internal-errors.class';
 import { USER_ERRORS } from '../../common/errors/entities/user.errors';
-import { isMigrationNoticeActive } from '../../common/utils/migration-notice';
 
 const showError = (text1: string, text2?: string) => Toast.show({ type: 'error', text1, text2 });
 
@@ -40,13 +39,12 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   // logged in, but no volunteer profile yet: CreateUser
   const [isUserPending, setIsUserPending] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>('');
-  const [initialPhoneNumber, setPhoneNumber] = useState<string | undefined>();
   const { setUserProfile } = useStore();
   const { userProfile } = useUserProfile();
 
   useEffect(() => {
     initProfile();
-    // A refresh the backend refused (expired, revoked, password changed elsewhere).
+    // A refresh the backend refused (expired, revoked, login disabled).
     return authEvents.on('logout', endSession);
   }, []);
 
@@ -85,7 +83,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const profile = await getUserProfile();
       setUserProfile(profile);
-      setPhoneNumber(undefined);
       return profile;
     } catch (error: any) {
       if (isMissingProfile(error)) {
@@ -107,26 +104,34 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     await getProfile();
   };
 
-  const login = async ({ username, password }: SignInOptions) => {
-    const email = username.trim();
-    setUserName(email);
+  const requestLoginCode = async (rawEmail: string): Promise<string> => {
+    const email = rawEmail.trim();
+    try {
+      const { maskedEmail } = await authApi.requestLogin(email);
+      setUserName(email);
+      return maskedEmail;
+    } catch (error) {
+      if (!isHandledElsewhere(error)) {
+        showError(authErrorText(error, 'auth:errors.login'));
+      }
+      throw error;
+    }
+  };
+
+  const loginWithCode = async (code: string) => {
     let session: authApi.ISession;
     try {
-      session = await authApi.login(email, password);
+      session = await authApi.loginWithCode(userName, code.trim());
     } catch (error: any) {
-      const code = getAuthErrorCode(error);
-      if (code === AUTH_ERRORS.AUTH_003) {
-        // the email is not confirmed yet: Login resends the link and shows the check-email screen
-        throw { confirmAccount: true };
-      }
-      if (code === AUTH_ERRORS.AUTH_001 && isMigrationNoticeActive()) {
-        // migrated volunteers have no password until they use the emailed link
-        showError(authErrorText(error, 'auth:errors.login'), i18n.t('auth:errors.migration_hint'));
+      const errorCode = getAuthErrorCode(error);
+      if (errorCode === AUTH_ERRORS.AUTH_005) {
+        showError(i18n.t('auth:errors.code_mismatch'));
       } else if (!isHandledElsewhere(error)) {
         showError(authErrorText(error, 'auth:errors.login'));
       }
       throw error;
     }
+    // no profile yet: rejects with { createUser: true } and Login opens CreateUser
     await startSession(session);
   };
 
@@ -154,38 +159,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signUp = async ({ username, password, phoneNumber }: SignUpOptions) => {
-    const email = username.trim();
-    try {
-      await authApi.register(email, password, phoneNumber);
-      setUserName(email);
-      setPhoneNumber(phoneNumber);
-    } catch (error: any) {
-      console.log(
-        '[Auth][Signup]:',
-        error?.response?.status,
-        error?.response?.data ?? error?.message,
-      );
-      if (getAuthErrorCode(error) === AUTH_ERRORS.AUTH_009) {
-        showError(i18n.t('auth:errors.username_exists'));
-      } else if (!isHandledElsewhere(error)) {
-        showError(authErrorText(error, 'auth:errors.signup'));
-      }
-      throw error;
-    }
-  };
-
-  const resendConfirmationCode = async (username: string): Promise<void> => {
-    try {
-      setUserName(username.trim());
-      await authApi.resendVerification(username.trim());
-    } catch (error) {
-      if (!isHandledElsewhere(error)) {
-        showError(authErrorText(error, 'auth:errors.resend_code'));
-      }
-    }
-  };
-
   const logout = async () => {
     const refreshToken = await getRefreshToken();
     if (refreshToken) {
@@ -197,75 +170,16 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     endSession();
   };
 
-  const changePassword = async (oldPassword: string, newPassword: string) => {
-    try {
-      await authApi.changePassword(oldPassword, newPassword);
-      Toast.show({ text1: `${i18n.t('change_password:submit.success')}`, type: 'success' });
-    } catch (error: any) {
-      const code = getAuthErrorCode(error);
-      if (code === AUTH_ERRORS.AUTH_001) {
-        showError(i18n.t('auth:errors.unauthorized'));
-      } else if (code === AUTH_ERRORS.AUTH_007) {
-        showError(i18n.t('auth:errors.invalid_password'));
-      } else if (!isHandledElsewhere(error)) {
-        showError(authErrorText(error, 'auth:errors.password'));
-      }
-      throw error;
-    }
-  };
-
-  const forgotPassword = async (username: string) => {
-    const email = username.trim();
-    try {
-      await authApi.forgotPassword(email);
-      setUserName(email);
-    } catch (error) {
-      if (!isHandledElsewhere(error)) {
-        showError(authErrorText(error, 'auth:errors.forgot_password'));
-      }
-      throw error;
-    }
-  };
-
-  // The code from the email and the new password: logs in directly.
-  const forgotPasswordSubmit = async (code: string, newPassword: string) => {
-    let session: authApi.ISession;
-    try {
-      session = await authApi.resetPassword(userName, code, newPassword);
-    } catch (error: any) {
-      const errorCode = getAuthErrorCode(error);
-      if (errorCode === AUTH_ERRORS.AUTH_005) {
-        showError(i18n.t('auth:errors.code_mismatch'));
-      } else if (!isHandledElsewhere(error)) {
-        showError(authErrorText(error, 'auth:errors.forgot_password'));
-      }
-      throw error;
-    }
-    try {
-      await startSession(session);
-    } catch (error: any) {
-      // no profile yet: Landing sends the user to CreateUser
-      if (!error?.createUser) {
-        throw error;
-      }
-    }
-  };
-
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated,
         isUserPending,
         userName,
-        login,
-        logout,
-        signUp,
-        resendConfirmationCode,
+        requestLoginCode,
+        loginWithCode,
         loginWithSocial,
-        changePassword,
-        forgotPassword,
-        forgotPasswordSubmit,
-        initialPhoneNumber,
+        logout,
         reload: initProfile,
       }}
     >

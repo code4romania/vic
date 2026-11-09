@@ -22,11 +22,6 @@ export interface IAuthIdentityRepository {
     options: CreateAuthIdentityOptions,
     manager?: EntityManager,
   ): Promise<UpsertAuthIdentityResult>;
-  registerFailedLogin(
-    id: string,
-    maxAttempts: number,
-    lockUntil: Date,
-  ): Promise<IAuthIdentityModel>;
   deleteByUserId(userId: string): Promise<number>;
   findSuperAdmins(): Promise<IAuthIdentityModel[]>;
   findByOrganizationId(organizationId: string): Promise<IAuthIdentityModel[]>;

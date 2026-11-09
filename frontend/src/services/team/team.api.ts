@@ -9,7 +9,7 @@ export const getTeam = async (): Promise<ITeamMember[]> =>
 export const addAdmin = async (data: IAddAdmin): Promise<IMaskedEmail> =>
   API.post('/organization/team', data).then((res) => res.data);
 
-// Only for admins without a password (ORG_009 otherwise).
+// Only for admins who have never logged in (ORG_009 otherwise). The invite is a login link (#514).
 export const sendInvite = async (userId: string): Promise<IMaskedEmail> =>
   API.post(`/organization/team/${userId}/invite`).then((res) => res.data);
 

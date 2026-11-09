@@ -62,14 +62,13 @@ describe('API client', () => {
   });
 
   it.each([
-    ['post', '/auth/web/login'],
+    ['post', '/auth/web/login/request'],
     ['post', '/auth/web/refresh'],
     ['post', '/auth/web/logout'],
-    ['post', '/auth/web/forgot-password'],
     ['post', '/auth/web/resend-verification'],
     ['get', '/auth/token/abc'],
     ['post', '/auth/token/abc/resend'],
-    ['post', '/auth/set-password'],
+    ['post', '/auth/login-link'],
     ['post', '/auth/confirm-email'],
   ])('never refreshes on a 401 from the public route %s %s (R23)', async (method, path) => {
     let calls = 0;
@@ -95,7 +94,7 @@ describe('API client', () => {
 
   it.each([
     ['get', '/auth/web/me'],
-    ['patch', '/auth/web/change-password'],
+    ['patch', '/organization'],
   ])('refreshes on a 401 from %s %s (R23)', async (method, path) => {
     server.use(
       protectedRoute(path),

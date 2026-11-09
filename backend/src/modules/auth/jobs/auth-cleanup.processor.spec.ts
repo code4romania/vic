@@ -116,7 +116,7 @@ describe('AuthCleanupProcessor (database)', () => {
       tokens.save({
         identityId: owner.id,
         tokenHash: hash,
-        type: AuthTokenType.RESET_PASSWORD,
+        type: AuthTokenType.LOGIN,
         form: AuthTokenForm.LINK,
         expiresAt: usedAt,
         usedAt,

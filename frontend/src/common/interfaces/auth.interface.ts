@@ -1,4 +1,4 @@
-// The logged-in NGO admin (POST /auth/web/login `user`, GET /auth/web/me). Not the volunteer IUser.
+// The logged-in NGO admin (POST /auth/login-link `user`, GET /auth/web/me). Not the volunteer IUser.
 export interface IAdminProfile {
   id: string;
   name: string;
@@ -15,9 +15,9 @@ export interface IWebSession {
 }
 
 export type AuthRealm = 'web' | 'mobile';
-export type TokenType = 'verify_email' | 'reset_password' | 'invite';
-// transition = the cutover email; invite = Team page; reset = Forgot password (decisions R16).
-export type TokenPurpose = 'transition' | 'invite' | 'reset' | 'verify_email';
+export type TokenType = 'verify_email' | 'login' | 'invite';
+// transition = the cutover email; invite = Team page; login = the magic link from the login page (#514).
+export type TokenPurpose = 'transition' | 'invite' | 'login' | 'verify_email';
 
 // GET /auth/token/:secret
 export interface ITokenInfo {
@@ -28,7 +28,7 @@ export interface ITokenInfo {
   organizationName?: string;
 }
 
-// set-password and confirm-email for a volunteer: no web session, go to the app (decision 6, R17).
+// login-link and confirm-email for a volunteer: no web session, go to the app (decision 6, R17).
 export interface IMobileRealmResult {
   realm: 'mobile';
   email: string;

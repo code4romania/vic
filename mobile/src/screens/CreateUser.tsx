@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import FormLayout from '../layouts/FormLayout';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +20,6 @@ import Paragraph from '../components/Paragraph';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
-import { useAuth } from '../hooks/useAuth';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type UserFormTypes = {
@@ -66,13 +65,11 @@ const CreateUser = ({ navigation }: any) => {
   const paddingTop = usePaddingTop();
 
   const { mutate: createUserProfile, isLoading } = useCreateUserProfileMutation();
-  const { initialPhoneNumber } = useAuth();
 
   const {
     control,
     handleSubmit,
     watch,
-    reset,
     formState: { errors },
   } = useForm<UserFormTypes>({
     mode: 'onSubmit',
@@ -81,17 +78,6 @@ const CreateUser = ({ navigation }: any) => {
   });
 
   const watchCountyId = watch('countyId');
-
-  // request phone number for users without
-  useEffect(() => {
-    (async () => {
-      if (initialPhoneNumber) {
-        reset({
-          phone: initialPhoneNumber?.slice(3, initialPhoneNumber?.length),
-        });
-      }
-    })();
-  }, [reset, initialPhoneNumber]);
 
   const onSubmit = ({ cityId, phone, ...userPayload }: UserFormTypes) => {
     // The email is the login's: the backend takes it from the session.
