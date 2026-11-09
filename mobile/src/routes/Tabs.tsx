@@ -53,8 +53,8 @@ const HomeTab = withTabInset(Home);
 const EventsTab = Events;
 const HoursTab = ActivityLogs;
 const DocumentsTab = Documents;
-const ProfileTab = withTabInset(Settings);
-const VolunteerRoute = withTabInset(Volunteer);
+const ProfileTab = Settings;
+const VolunteerRoute = Volunteer;
 // Organizations pads its own list under the glass tab bar
 const OrganizationsRoute = Organizations;
 

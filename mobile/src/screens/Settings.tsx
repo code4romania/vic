@@ -1,32 +1,27 @@
-import React, { useContext, useMemo, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { SvgXml } from 'react-native-svg';
+import * as Linking from 'expo-linking';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import bell from '../assets/svg/bell';
 import information from '../assets/svg/information';
 import trash from '../assets/svg/trash';
 import logoutIcon from '../assets/svg/logout';
 import user from '../assets/svg/user';
-import organizationsIcon from '../assets/svg/organizations';
-import searchIcon from '../assets/svg/search';
-import { View, StyleSheet } from 'react-native';
-import { SvgXml } from 'react-native-svg';
-import { Text, Divider, List, useTheme, Icon } from '@ui-kitten/components';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
-import i18n from '../common/config/i18n';
-import PressableContainer from '../components/PressableContainer';
-import * as Linking from 'expo-linking';
-import ImageWithPreload from '../components/ImageWithPreload';
 import { NotificationContext } from '../contexts/notification/NotificationContext';
 import { useUserProfile } from '../store/profile/profile.selector';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { Screen } from '../components/Screen';
-import { usePaddingTop } from '../hooks/usePaddingTop';
-import BottomSheet from '@gorhom/bottom-sheet';
-import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
-import { renderBackdrop } from '../components/BottomSheet';
-import Paragraph from '../components/Paragraph';
-import InlineLink from '../components/InlineLink';
-import Button from '../components/Button';
-import { useReducedMotion } from 'react-native-reanimated';
+import useStore from '../store/store';
+import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
+import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
+import { colors, radius, spacing } from '../common/theme/tokens';
+import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
+import { useTabBarScroll } from '../components/navigation/TabBarScroll';
+import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
+import { Avatar, Badge, Chevron, Enter, ListRow, Sheet, VButton, VText } from '../components/ui';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -39,229 +34,209 @@ export enum SETTINGS_ROUTES {
   SEARCH_ORGANIZATIONS = 'search',
 }
 
-export const SETTING_SCREENS = [
-  {
-    icon: organizationsIcon,
-    label: i18n.t('settings:my_organizations'),
-    route: SETTINGS_ROUTES.MY_ORGANIZATIONS,
-  },
-  {
-    icon: searchIcon,
-    label: i18n.t('settings:join_organization'),
-    route: SETTINGS_ROUTES.SEARCH_ORGANIZATIONS,
-  },
-  { icon: user, label: i18n.t('settings:heading'), route: SETTINGS_ROUTES.ACCOUNT_DATA },
-  {
-    icon: bell,
-    label: i18n.t('settings:notification'),
-    route: SETTINGS_ROUTES.NOTIFICATIONS_SETTINGS,
-  },
-  { icon: information, label: i18n.t('settings:information'), route: SETTINGS_ROUTES.INFORMATION },
-  { icon: trash, label: i18n.t('settings:delete'), route: SETTINGS_ROUTES.DELETE_ACCOUNT },
-  { icon: logoutIcon, label: i18n.t('settings:logout'), route: SETTINGS_ROUTES.LOGOUT },
-];
+const RowIcon = ({ xml }: { xml: string }) => (
+  <View style={styles.rowIcon}>
+    <SvgXml xml={xml} width={20} height={20} />
+  </View>
+);
 
-interface IListItem {
-  icon: string;
-  label: string;
-  route: string;
-}
-
+/**
+ * VIC 2.0 Profil (canvas board "Profil"): who you are, your organizations (tap one to make it active
+ * and open its page; this replaces the old drawer) and the settings. Log out asks first.
+ */
 const Settings = ({ navigation }: any) => {
-  // translations
   const { t } = useTranslation('settings');
-  const paddingTop = usePaddingTop();
-  // theme
-  const theme = useTheme();
-  // auth
+  const insets = useSafeAreaInsets();
+  const bottomInset = useGlassTabBarInset();
+  useFocusedStatusBarStyle('dark');
+  const onScroll = useTabBarScroll();
+  const logoutSheet = useRef<BottomSheetModal>(null);
+
   const { userProfile } = useUserProfile();
+  const { setActiveOrganization } = useStore();
+  const { mutate: switchOrganization } = useSwitchOrganizationMutation();
   const { logout } = useAuth();
   const { unsubscribe } = useContext(NotificationContext);
 
-  // bottom sheet ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  // bottom sheet snap points
-  const snapPoints = useMemo(() => [1, 340], []);
+  const name = [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ');
+  const place = userProfile?.location?.name;
+  const organizations = userProfile?.myOrganizations ?? [];
+  const activeId = userProfile?.activeOrganization?.id;
 
-  const reducedMotion = useReducedMotion();
+  const onOpenOrganization = (organization: IOrganizationVolunteer) => {
+    if (organization.id !== activeId) {
+      setActiveOrganization(organization);
+      switchOrganization({ organizationId: organization.id });
+    }
+    navigation.navigate(SETTINGS_ROUTES.MY_ORGANIZATIONS);
+  };
 
-  const handleItemPress = (route: string) => {
-    if (route === SETTINGS_ROUTES.INFORMATION) {
-      onInfoListItemPress();
-    } else if (route === SETTINGS_ROUTES.LOGOUT) {
-      onOpenBottomSheet();
-    } else {
-      navigation.navigate(route);
+  const onInformation = () => {
+    if (process.env.EXPO_PUBLIC_INFORMATION_LINK) {
+      Linking.openURL(process.env.EXPO_PUBLIC_INFORMATION_LINK).catch(() => undefined);
     }
   };
 
-  const onInfoListItemPress = () => {
-    Linking.openURL(`${process.env.EXPO_PUBLIC_INFORMATION_LINK}`);
-  };
-
   const onLogout = () => {
-    onCloseBottomSheet();
-    // unregister token
+    logoutSheet.current?.dismiss();
+    // unregister the push token, then sign out
     unsubscribe();
-    // logout
     logout();
   };
 
-  const onCloseBottomSheet = () => {
-    bottomSheetRef.current?.close();
-  };
-
-  const onOpenBottomSheet = () => {
-    bottomSheetRef.current?.expand();
-  };
-
-  const renderItem = ({ item }: { item: IListItem }) => (
-    <PressableContainer onPress={handleItemPress.bind(null, item.route)}>
-      <View style={styles.screen}>
-        <View style={{ ...styles.iconWrapper, backgroundColor: theme['cool-gray-100'] }}>
-          <SvgXml xml={item.icon} />
-        </View>
-        <Text
-          allowFontScaling={ALLOW_FONT_SCALLING}
-          category="label"
-          style={{ color: theme['cool-gray-800'] }}
-        >
-          {item.label}
-        </Text>
-      </View>
-    </PressableContainer>
-  );
-
   return (
-    <>
-      <Screen preset="fixed" contentContainerStyle={[styles.childrenContainer, { paddingTop }]}>
-        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
-          {`${t('title')}`}
-        </Text>
-        <View style={styles.profileContainer}>
-          {!userProfile?.profilePicture && (
-            <View style={{ ...styles.iconWrapper, backgroundColor: theme['cool-gray-100'] }}>
-              <Icon
-                name="user"
-                style={{ ...styles.imagePlaceholder, color: theme['cool-gray-500'] }}
-              />
-            </View>
-          )}
-          {userProfile?.profilePicture && (
-            <ImageWithPreload source={userProfile?.profilePicture} styles={styles.image} />
-          )}
-          <Text
-            allowFontScaling={ALLOW_FONT_SCALLING}
-            category="h3"
-          >{`${userProfile?.firstName} ${userProfile?.lastName}`}</Text>
-        </View>
-        <List
-          data={SETTING_SCREENS}
-          ItemSeparatorComponent={Divider}
-          renderItem={renderItem}
-          style={styles.list}
-          bouncesZoom={false}
-          alwaysBounceHorizontal={false}
-          alwaysBounceVertical={false}
-          bounces={false}
-          showsVerticalScrollIndicator={false}
-        />
-      </Screen>
-      <SafeAreaBottomSheet
-        backdropComponent={renderBackdrop}
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-        animateOnMount={reducedMotion ? false : true}
+    <View style={styles.screen}>
+      <Animated.ScrollView
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        contentContainerStyle={[
+          styles.content,
+          { paddingTop: insets.top + 12, paddingBottom: bottomInset },
+        ]}
+        showsVerticalScrollIndicator={false}
+        testID="profile"
       >
-        <View style={styles.bottomSheetContainer}>
-          <View style={styles.textContainer}>
-            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1" style={styles.heading}>
-              {`${t('modal.confirm_logout.heading')}`}
-            </Text>
-            <Paragraph style={styles.bottomSheetParagraph}>
-              {`${t('modal.confirm_logout.paragraph')}`}
-            </Paragraph>
+        <Enter>
+          <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
+            {t('profile')}
+          </VText>
+        </Enter>
+
+        <Enter index={1} style={styles.me}>
+          <Avatar name={name || '?'} uri={userProfile?.profilePicture} size={64} />
+          <View style={styles.meText}>
+            <VText variant="h2" numberOfLines={1}>
+              {name}
+            </VText>
+            <VText variant="sub" numberOfLines={1}>
+              {[userProfile?.email, place].filter(Boolean).join(' · ')}
+            </VText>
           </View>
-          <View style={styles.buttonsContainer}>
-            <Button
-              label={t('modal.confirm_logout.action_label')}
-              status={'danger'}
-              onPress={onLogout}
+        </Enter>
+
+        <Enter index={2} style={styles.section}>
+          <VText variant="h2">{t('my_organizations')}</VText>
+          {organizations.map((organization) => (
+            <ListRow
+              key={organization.id}
+              leading={
+                <Avatar
+                  name={organization.name}
+                  uri={organization.logo}
+                  size={44}
+                  shape="rounded"
+                />
+              }
+              title={organization.name}
+              subtitle={
+                organization.volunteerProfileId ? undefined : `${t('volunteer_profile_missing')}`
+              }
+              trailing={
+                <View style={styles.trailing}>
+                  {organization.id === activeId && <Badge label={`${t('active')}`} tone="ok" />}
+                  <Chevron />
+                </View>
+              }
+              onPress={() => onOpenOrganization(organization)}
+              testID={`profile-organization-${organization.id}`}
             />
-            <InlineLink
-              style={{ color: theme['cool-gray-700'] }}
-              label={t('general:back')}
-              onPress={onCloseBottomSheet}
-            />
-          </View>
-        </View>
-      </SafeAreaBottomSheet>
-    </>
+          ))}
+          <ListRow
+            leading={
+              <View style={[styles.rowIcon, styles.addIcon]}>
+                <VText variant="h2" color={colors.navy}>
+                  +
+                </VText>
+              </View>
+            }
+            title={`${t('join_organization')}`}
+            onPress={() => navigation.navigate(SETTINGS_ROUTES.SEARCH_ORGANIZATIONS)}
+            divider={false}
+            testID="profile-join"
+          />
+        </Enter>
+
+        <Enter index={3} style={styles.section}>
+          <VText variant="h2">{t('section_settings')}</VText>
+          <ListRow
+            leading={<RowIcon xml={user} />}
+            title={`${t('heading')}`}
+            onPress={() => navigation.navigate(SETTINGS_ROUTES.ACCOUNT_DATA)}
+            testID="profile-account"
+          />
+          <ListRow
+            leading={<RowIcon xml={bell} />}
+            title={`${t('notification')}`}
+            onPress={() => navigation.navigate(SETTINGS_ROUTES.NOTIFICATIONS_SETTINGS)}
+            testID="profile-notifications"
+          />
+          <ListRow
+            leading={<RowIcon xml={information} />}
+            title={`${t('information')}`}
+            onPress={onInformation}
+            testID="profile-information"
+          />
+          <ListRow
+            leading={<RowIcon xml={trash} />}
+            title={`${t('delete')}`}
+            onPress={() => navigation.navigate(SETTINGS_ROUTES.DELETE_ACCOUNT)}
+            testID="profile-delete"
+          />
+          <ListRow
+            leading={<RowIcon xml={logoutIcon} />}
+            title={`${t('logout')}`}
+            destructive
+            divider={false}
+            onPress={() => logoutSheet.current?.present()}
+            testID="profile-logout"
+          />
+        </Enter>
+
+        <VText variant="cap" style={styles.footer}>
+          {t('footer')}
+        </VText>
+      </Animated.ScrollView>
+
+      <Sheet
+        ref={logoutSheet}
+        title={`${t('modal.confirm_logout.heading')}`}
+        subtitle={`${t('modal.confirm_logout.paragraph')}`}
+        testID="logout-sheet"
+      >
+        <VButton
+          variant="danger"
+          label={`${t('modal.confirm_logout.action_label')}`}
+          onPress={onLogout}
+          testID="logout-confirm"
+        />
+        <VButton
+          variant="soft"
+          label={`${t('general:back')}`}
+          onPress={() => logoutSheet.current?.dismiss()}
+        />
+      </Sheet>
+    </View>
   );
 };
 
 export default Settings;
 
 const styles = StyleSheet.create({
-  list: {
-    backgroundColor: 'white',
-  },
-  image: {
-    width: 48,
-    height: 48,
-    borderRadius: 100,
-  },
-  imagePlaceholder: { width: 24, height: 24 },
-  profileContainer: {
-    flexDirection: 'row',
-    gap: 12,
-    alignItems: 'center',
-    marginBottom: 28,
-  },
-  iconWrapper: {
-    width: 48,
-    height: 48,
-    borderRadius: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  screen: {
-    paddingVertical: 16,
-    gap: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  childrenContainer: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  title: { paddingLeft: 8, marginBottom: 16 },
-  bottomSheetContainer: {
-    flex: 1,
-    flexDirection: 'column',
+  screen: { flex: 1, backgroundColor: colors.white },
+  content: { paddingHorizontal: spacing.gutter },
+  title: { marginTop: 16 },
+  me: { flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 18 },
+  meText: { flex: 1, gap: 2, minWidth: 0 },
+  section: { marginTop: 28, gap: 2 },
+  trailing: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  rowIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: radius.button,
+    backgroundColor: colors.soft,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 40,
-    paddingVertical: 8,
-    gap: 24,
   },
-  textContainer: {
-    gap: 4,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-  heading: {
-    textAlign: 'center',
-  },
-  bottomSheetParagraph: {
-    textAlign: 'center',
-  },
-  buttonsContainer: {
-    gap: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  addIcon: { backgroundColor: colors.status.accent.bg },
+  footer: { textAlign: 'center', marginTop: 32 },
 });

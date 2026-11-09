@@ -179,9 +179,9 @@
     "title": "Account settings",
     "my_organizations": "My organizations",
     "join_organization": "Join an organization",
-    "heading": "Account data",
-    "notification": "Notifications settings",
-    "information": "Information",
+    "heading": "Personal data",
+    "notification": "Notifications",
+    "information": "Help and information",
     "logout": "Log out",
     "delete": "Delete account",
     "modal": {
@@ -190,7 +190,12 @@
         "paragraph": "You will need to sign in again to use the app.",
         "action_label": "Log out"
       }
-    }
+    },
+    "profile": "Profile",
+    "active": "Active",
+    "volunteer_profile_missing": "Volunteer profile incomplete",
+    "section_settings": "Settings",
+    "footer": "VIC 2.0 · a Code for Romania project, built by Commit Global"
   },
   "account_data": {
     "title": "Account data",
@@ -330,7 +335,7 @@
   "volunteer": {
     "title": "Volunteer profile",
     "no_org_added": "You have not added any organizations yet",
-    "no_org_description": "",
+    "no_org_description": "Find an organization and send a request to join.",
     "my_organizations": "My organizations",
     "join_organization": "Join an organization",
     "edit": "Edit volunteer profile",
@@ -352,7 +357,8 @@
     "details": "",
     "menu_items": {
       "organization_profile": {
-        "title": "Organization profile"
+        "title": "Organization profile",
+        "subtitle": "About, contact, open events"
       },
       "activity_log": {
         "title": "Volunteer hours",
@@ -367,7 +373,8 @@
       },
       "volunteer_profile": {
         "title": "Volunteer profile",
-        "subtitle": "Incomplete profile"
+        "subtitle": "Incomplete profile",
+        "details": "Role, department, branch"
       }
     },
     "age": "{{years}} years",
@@ -386,6 +393,16 @@
       "heading": "You have not yet created a user profile",
       "paragraph": "",
       "action_btn": "Create profile"
+    },
+    "leave": "Leave the organization",
+    "stats": {
+      "pending_logs": "hour requests pending",
+      "pending_documents": "documents awaiting a reply"
+    },
+    "prompt": {
+      "title": "Complete your volunteer profile",
+      "description": "To add hours, the organization needs your contact email and the date you started volunteering.",
+      "action": "Complete now"
     }
   },
   "create_volunteer": {
