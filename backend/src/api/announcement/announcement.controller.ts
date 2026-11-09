@@ -31,6 +31,10 @@ import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
 import { AnnouncementGuard } from './guards/announcement.guard';
 import { AnnouncementPresenter } from './presenters/announcement.presenter';
 import { AnnouncementResponsePresenter } from './presenters/announcement-response.presenter';
+import {
+  GetAnnouncementCountersUseCase,
+  IAnnouncementCounters,
+} from 'src/usecases/announcement/get-announcement-counters.usecase';
 import { GetAnnouncementResponsesUseCase } from 'src/usecases/announcement/get-announcement-responses.usecase';
 import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 
@@ -46,6 +50,7 @@ export class AnnouncementController {
     private readonly getOneAnnouncementUseCase: GetOneAnnouncementUseCase,
     private readonly changeAnnouncementStatusUseCase: ChangeAnnouncementStatusUseCase,
     private readonly getAnnouncementResponsesUseCase: GetAnnouncementResponsesUseCase,
+    private readonly getAnnouncementCountersUseCase: GetAnnouncementCountersUseCase,
   ) {}
 
   @Get()
@@ -68,6 +73,14 @@ export class AnnouncementController {
   }
 
   // #504: the volunteers' answers, newest first
+  // #502
+  @Get('counters')
+  async getCounters(
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<IAnnouncementCounters> {
+    return this.getAnnouncementCountersUseCase.execute(organizationId);
+  }
+
   @ApiParam({ name: 'id', type: 'string' })
   @ApiPaginatedResponse(AnnouncementResponsePresenter)
   @Get(':id/responses')

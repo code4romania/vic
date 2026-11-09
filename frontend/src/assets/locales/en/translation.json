@@ -868,6 +868,12 @@
       "volunteer": "Volunteer",
       "comment": "Comment",
       "date": "Date"
+    },
+    "counters": {
+      "active": "Active announcements",
+      "inactive": "Inactive announcements",
+      "archived": "Archived announcements",
+      "responses": "Total responses"
     }
   },
   "activity_log": {

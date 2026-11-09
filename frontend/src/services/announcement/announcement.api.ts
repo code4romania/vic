@@ -77,3 +77,15 @@ export const getAnnouncementResponses = async (
     (res) => res.data,
   );
 };
+
+// #502
+export interface IAnnouncementCounters {
+  active: number;
+  inactive: number;
+  archived: number;
+  responses: number;
+}
+
+export const getAnnouncementCounters = async (): Promise<IAnnouncementCounters> => {
+  return API.get('/announcement/counters').then((res) => res.data);
+};

@@ -874,6 +874,12 @@
       "volunteer": "Voluntar",
       "comment": "Comentariu",
       "date": "Data"
+    },
+    "counters": {
+      "active": "Anunțuri active",
+      "inactive": "Anunțuri inactive",
+      "archived": "Anunțuri arhivate",
+      "responses": "Total răspunsuri"
     }
   },
   "activity_log": {

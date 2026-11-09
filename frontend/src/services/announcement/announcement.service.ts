@@ -14,6 +14,7 @@ import {
   getAnnouncements,
   updateAnnouncement,
   getAnnouncementResponses,
+  getAnnouncementCounters,
 } from './announcement.api';
 
 export const useAnnouncements = (
@@ -83,4 +84,9 @@ export const useAnnouncementResponses = (id: string, page: number, limit: number
     () => getAnnouncementResponses(id, page, limit),
     { enabled: !!id, keepPreviousData: true },
   );
+};
+
+// #502: refetched with the list, since the list key starts with 'announcement'
+export const useAnnouncementCountersQuery = () => {
+  return useQuery(['announcement', 'counters'], () => getAnnouncementCounters());
 };
