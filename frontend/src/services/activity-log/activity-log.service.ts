@@ -6,6 +6,7 @@ import { IBusinessException } from '../../common/interfaces/business-exception.i
 import { ActivityLogFormTypes } from '../../components/ActivityLogForm';
 import {
   addActivityLog,
+  addVolunteerHours,
   approveActivityLog,
   editActivityLog,
   getActivityLog,
@@ -57,6 +58,12 @@ export const useActivityLogCounterQuery = (volunteerId?: string) => {
 
 export const useAddActivityLogMutation = () => {
   return useMutation((data: ActivityLogFormTypes) => addActivityLog(data), {
+    onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) => Promise.resolve(error),
+  });
+};
+
+export const useAddVolunteerHoursMutation = () => {
+  return useMutation((data: Parameters<typeof addVolunteerHours>[0]) => addVolunteerHours(data), {
     onError: (error: AxiosError<IBusinessException<ACTIVITY_LOG_ERRORS>>) => Promise.resolve(error),
   });
 };

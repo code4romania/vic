@@ -103,6 +103,29 @@ export const addActivityLog = async (data: ActivityLogFormTypes): Promise<void> 
   return API.post(`activity-log`, { ...formatAddActivityLogPayload(data) });
 };
 
+// #483: hours added by hand from the volunteer's profile (saved approved)
+export const addVolunteerHours = async ({
+  volunteerId,
+  hours,
+  date,
+  mentions,
+  event,
+}: {
+  volunteerId: string;
+  hours: number;
+  date: Date;
+  mentions?: string;
+  event?: { value: string };
+}): Promise<void> => {
+  return API.post('activity-log', {
+    volunteerId,
+    hours,
+    date: format(date, 'yyyy-MM-dd'),
+    ...(mentions ? { mentions } : {}),
+    ...(event ? { eventId: event.value } : {}),
+  });
+};
+
 export const editActivityLog = async (id: string, data: ActivityLogFormTypes): Promise<void> => {
   return API.patch(`/activity-log/${id}`, { ...formatEditActivityLogPayload(data) });
 };

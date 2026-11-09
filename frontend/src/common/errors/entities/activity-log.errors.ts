@@ -5,6 +5,7 @@ export enum ACTIVITY_LOG_ERRORS {
   ACTIVITY_LOG_001 = 'ACTIVITY_LOG_001',
   ACTIVITY_LOG_002 = 'ACTIVITY_LOG_002',
   ACTIVITY_LOG_003 = 'ACTIVITY_LOG_003',
+  ACTIVITY_LOG_005 = 'ACTIVITY_LOG_005',
 }
 
 export class ActivityLogError extends ErrorClass<ACTIVITY_LOG_ERRORS> {
@@ -15,6 +16,7 @@ export class ActivityLogError extends ErrorClass<ACTIVITY_LOG_ERRORS> {
       [ACTIVITY_LOG_ERRORS.ACTIVITY_LOG_001]: i18n.t('activity_log:errors.ACTIVITY_LOG_001'),
       [ACTIVITY_LOG_ERRORS.ACTIVITY_LOG_002]: i18n.t('activity_log:errors.ACTIVITY_LOG_002'),
       [ACTIVITY_LOG_ERRORS.ACTIVITY_LOG_003]: i18n.t('activity_log:errors.ACTIVITY_LOG_003'),
+      [ACTIVITY_LOG_ERRORS.ACTIVITY_LOG_005]: i18n.t('activity_log:errors.ACTIVITY_LOG_005'),
     });
   }
 

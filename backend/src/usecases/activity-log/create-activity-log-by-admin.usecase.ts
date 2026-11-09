@@ -47,12 +47,16 @@ export class CreateActivityLogByAdmin
     const volunteer = await this.volunteerFacade.find({
       id: newLogRequestDto.volunteerId,
       organizationId: admin.organizationId,
-      status: VolunteerStatus.ACTIVE,
     });
 
     if (!volunteer) {
       this.exceptionService.notFoundException(
         VolunteerExceptionMessages.VOLUNTEER_001,
+      );
+    } else if (volunteer.status !== VolunteerStatus.ACTIVE) {
+      // #483: no hours for a Blocked, Inactive or Candidate volunteer
+      this.exceptionService.badRequestException(
+        ActivityLogExceptionMessages.ACTIVITY_LOG_005,
       );
     } else if (!volunteer.volunteerProfile) {
       this.exceptionService.badRequestException(
