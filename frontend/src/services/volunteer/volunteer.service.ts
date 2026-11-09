@@ -5,6 +5,7 @@ import { IBusinessException } from '../../common/interfaces/business-exception.i
 import {
   IVolunteersFilters,
   activateVolunteer,
+  addVolunteer,
   archiveVolunteer,
   updateVolunteerDetails,
   blockVolunteer,
@@ -16,6 +17,7 @@ import {
   updateVolunteer,
 } from './volunteer.api';
 import { VolunteerFormTypes } from '../../pages/EditVolunteer';
+import { AddVolunteerFormTypes } from '../../pages/AddVolunteer';
 import { LineChartOption } from '../../common/constants/line-chart-options';
 import { PieChartOption } from '../../common/constants/pie-chart-options';
 
@@ -32,6 +34,12 @@ export const useVolunteer = (id: string) => {
   return useQuery(['volunteer', id], () => getVolunteer(id), {
     enabled: !!id,
     onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
+};
+
+export const useAddVolunteerMutation = () => {
+  return useMutation((data: AddVolunteerFormTypes) => addVolunteer(data), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
   });
 };
 

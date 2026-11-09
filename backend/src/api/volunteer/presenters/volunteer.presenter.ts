@@ -13,6 +13,7 @@ export class VolunteerPresenter {
     this.id = volunteer.id;
     this.status = volunteer.status;
     this.source = volunteer.source;
+    this.notes = volunteer.notes;
     this.isFavorite = volunteer.isFavorite;
     this.totalHours = volunteer.totalHours;
 
@@ -59,6 +60,13 @@ export class VolunteerPresenter {
   @Expose()
   @ApiProperty({ description: 'Where the volunteer came from', nullable: true })
   source: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Internal notes of the organization',
+    nullable: true,
+  })
+  notes: string;
 
   @Expose()
   @ApiProperty({ description: 'Starred by the organization' })

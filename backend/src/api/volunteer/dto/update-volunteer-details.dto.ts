@@ -8,6 +8,12 @@ export class UpdateVolunteerDetailsDto {
   @MaxLength(100)
   source?: string;
 
+  @ApiPropertyOptional({ description: 'Internal notes of the organization' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(1000)
+  notes?: string;
+
   @ApiPropertyOptional({ description: 'Starred by the organization' })
   @IsOptional()
   @IsBoolean()

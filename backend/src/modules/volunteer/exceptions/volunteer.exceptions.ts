@@ -9,6 +9,7 @@ enum VolunteerExceptionCodes {
   VOLUNTEER_006 = 'VOLUNTEER_006',
   VOLUNTEER_007 = 'VOLUNTEER_007',
   VOLUNTEER_008 = 'VOLUNTEER_008',
+  VOLUNTEER_009 = 'VOLUNTEER_009',
 
   // Profile
   VOLUNTEER_PROFILE_001 = 'VOLUNTEER_PROFILE_001',
@@ -70,5 +71,9 @@ export const VolunteerExceptionMessages: Record<
     code_error: VolunteerExceptionCodes.VOLUNTEER_008,
     message:
       'The organization made this volunteer inactive; only the organization can activate them.',
+  },
+  [VolunteerExceptionCodes.VOLUNTEER_009]: {
+    code_error: VolunteerExceptionCodes.VOLUNTEER_009,
+    message: 'A volunteer with this email already exists in the organization.',
   },
 };

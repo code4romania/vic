@@ -19,6 +19,10 @@ export const businessError = (status: number, code_error: string) =>
 
 // The happy path of every route the web app calls; a spec overrides what it tests with server.use().
 export const handlers = [
+  http.get(api('/listing/structures/:type'), () =>
+    HttpResponse.json({ items: [{ id: 'dep-1', name: 'Logistică', numberOfMembers: 0 }] }),
+  ),
+  http.get(api('/location/city'), () => HttpResponse.json({ items: [], meta: { itemCount: 0, totalItems: 0, itemsPerPage: 10, totalPages: 0, currentPage: 1 } })),
   http.post(api('/auth/web/refresh'), () => businessError(401, 'AUTH_008')),
   http.post(api('/auth/web/login/request'), () => new HttpResponse(null, { status: 204 })),
   http.post(api('/auth/web/logout'), () => new HttpResponse(null, { status: 204 })),

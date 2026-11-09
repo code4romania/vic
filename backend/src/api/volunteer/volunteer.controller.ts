@@ -5,6 +5,7 @@ import {
   Header,
   Param,
   Patch,
+  Post,
   Query,
   Res,
   UseGuards,
@@ -34,6 +35,8 @@ import { GetVolunteersForDownloadUseCase } from 'src/usecases/volunteer/get-many
 import { Response } from 'express';
 import { UpdateVolunteerDetailsDto } from './dto/update-volunteer-details.dto';
 import { UpdateVolunteerDetailsUsecase } from 'src/usecases/volunteer/update-volunteer-details.usecase';
+import { AddVolunteerUseCase } from 'src/usecases/volunteer/add-volunteer.usecase';
+import { AddVolunteerDto } from './dto/add-volunteer.dto';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, VolunteerGuard)
@@ -48,7 +51,19 @@ export class VolunteerController {
     private readonly updateVolunteerProfileUsecase: UpdateVolunteerProfileUsecase,
     private readonly getVolunteersForDownloadUseCase: GetVolunteersForDownloadUseCase,
     private readonly updateVolunteerDetailsUsecase: UpdateVolunteerDetailsUsecase,
+    private readonly addVolunteerUseCase: AddVolunteerUseCase,
   ) {}
+
+  // #471: add a volunteer by hand, as Candidate or Active
+  @ApiBody({ type: AddVolunteerDto })
+  @Post()
+  async add(
+    @Body() data: AddVolunteerDto,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<VolunteerPresenter> {
+    const volunteer = await this.addVolunteerUseCase.execute(data, admin);
+    return new VolunteerPresenter(volunteer);
+  }
 
   @Get()
   @ApiPaginatedResponse(VolunteerPresenter)

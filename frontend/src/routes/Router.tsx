@@ -17,6 +17,7 @@ import EditActivityType from '../pages/EditActivityType';
 import Announcements from '../containers/query/AnnouncementsWithQueryParms';
 import Volunteer from '../containers/query/VolunteerWithQueryParams';
 import EditVolunteer from '../pages/EditVolunteer';
+import AddVolunteer from '../pages/AddVolunteer';
 import AddActivityType from '../pages/AddActivityType';
 import ActivityTypes from '../containers/query/ActivityTypesWithQueryParams';
 import Events from '../containers/query/EventsWithQueryParams';
@@ -68,6 +69,7 @@ const Router = () => {
             </Route>
             <Route path="volunteers" element={<Outlet />}>
               <Route index element={<Volunteers />} />
+              <Route path="add" element={<AddVolunteer />} />
               <Route path=":id" element={<Volunteer />} />
               <Route path=":id/edit" element={<EditVolunteer />} />
               <Route path="access-codes" element={<Outlet />}>

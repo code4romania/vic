@@ -207,7 +207,8 @@
       "description": "Description",
       "event": "Event (optional)",
       "saved": "The hours were added."
-    }
+    },
+    "notes": "Internal notes"
   },
   "volunteers": {
     "department_and_role": "Department and role",
@@ -250,7 +251,8 @@
       "VOLUNTEER_PROFILE_002": "Wrong role/department/branch",
       "VOLUNTEER_PROFILE_003": "The volunteer has no profile to be updated. Create one before making changes.",
       "VOLUNTEER_006": "A blocked volunteer cannot change status",
-      "VOLUNTEER_007": "The volunteer is not active: hours, documents and contracts can no longer change"
+      "VOLUNTEER_007": "The volunteer is not active: hours, documents and contracts can no longer change",
+      "VOLUNTEER_009": "A volunteer with this email already exists in the organization."
     },
     "download": "Volunteers.xlsx",
     "inactive_on": "Inactive since",
@@ -265,7 +267,34 @@
       "blocked": "Blocked"
     },
     "found_one": "{{count}} volunteer found",
-    "found_other": "{{count}} volunteers found"
+    "found_other": "{{count}} volunteers found",
+    "add": {
+      "button": "Add volunteer",
+      "title": "Add volunteer",
+      "card_title": "Volunteer details",
+      "description": "Active: the volunteer gets the VIC app invitation by email. Candidate: nothing is sent, and the person has no account until they sign up in the app with this email.",
+      "firstName": "First name*",
+      "lastName": "Last name*",
+      "email": "Email*",
+      "phone": "Phone",
+      "birthday": "Date of birth",
+      "city": "City",
+      "department": "Department",
+      "notes": "Internal notes",
+      "notes_helper": "Only the organization sees them, not the volunteer.",
+      "status": "Status*",
+      "status_candidate": "Candidate (no email, no account)",
+      "status_active": "Active (gets the invitation by email)",
+      "required": "Field is required",
+      "min": "At least {{value}} characters",
+      "max": "At most {{value}} characters",
+      "email_invalid": "The email address is not valid",
+      "birthday_future": "The date of birth cannot be in the future",
+      "invalid_date": "The date is not valid",
+      "submit": "Add the volunteer",
+      "success_active": "{{name}} was added and got the invitation by email.",
+      "success_candidate": "{{name}} was added as a candidate."
+    }
   },
   "division": {
     "members": "Members",

@@ -12,6 +12,7 @@ import {
   PauseCircleIcon,
   NoSymbolIcon,
   CheckCircleIcon,
+  PlusIcon,
 } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
@@ -426,12 +427,20 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
       <Card>
         <CardHeader>
           <h2>{i18n.t('volunteers:found', { count: volunteers?.meta?.totalItems ?? 0 })}</h2>
-          <Button
-            label={i18n.t('general:download_table')}
-            icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-            className="btn-outline-secondary"
-            onClick={onExport}
-          />
+          <div className="flex gap-2">
+            <Button
+              label={i18n.t('general:download_table')}
+              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+              className="btn-outline-secondary"
+              onClick={onExport}
+            />
+            <Button
+              label={i18n.t('volunteers:add.button')}
+              icon={<PlusIcon className="h-5 w-5" />}
+              className="btn-primary"
+              onClick={() => navigate('add')}
+            />
+          </div>
         </CardHeader>
         <CardBody>
           <DataTableComponent

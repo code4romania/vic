@@ -207,7 +207,8 @@
       "description": "Descriere",
       "event": "Eveniment (opțional)",
       "saved": "Orele au fost adăugate."
-    }
+    },
+    "notes": "Note interne"
   },
   "volunteers": {
     "department_and_role": "Departament și rol",
@@ -250,7 +251,8 @@
       "VOLUNTEER_PROFILE_002": "Rol/Departament/Filiala eronate",
       "VOLUNTEER_PROFILE_003": "Voluntarul nu are profil pentru a fi actualizat. Creează unul înainte de a face modificările.",
       "VOLUNTEER_006": "Un voluntar blocat nu își mai poate schimba statusul",
-      "VOLUNTEER_007": "Voluntarul nu este activ: orele, documentele și contractele nu mai pot fi modificate"
+      "VOLUNTEER_007": "Voluntarul nu este activ: orele, documentele și contractele nu mai pot fi modificate",
+      "VOLUNTEER_009": "Există deja un voluntar cu acest email în organizație."
     },
     "download": "Voluntari.xlsx",
     "inactive_on": "Inactiv din",
@@ -266,7 +268,34 @@
     },
     "found_one": "{{count}} voluntar găsit",
     "found_other": "{{count}} voluntari găsiți",
-    "found_few": "{{count}} voluntari găsiți"
+    "found_few": "{{count}} voluntari găsiți",
+    "add": {
+      "button": "Adaugă voluntar",
+      "title": "Adaugă voluntar",
+      "card_title": "Date voluntar",
+      "description": "Activ: voluntarul primește pe email invitația în aplicația VIC. Candidat: nu se trimite nimic, iar persoana nu are cont până nu se înscrie în aplicație cu acest email.",
+      "firstName": "Prenume*",
+      "lastName": "Nume*",
+      "email": "Email*",
+      "phone": "Telefon",
+      "birthday": "Data nașterii",
+      "city": "Localitate",
+      "department": "Departament",
+      "notes": "Note interne",
+      "notes_helper": "Vizibile doar organizației, nu și voluntarului.",
+      "status": "Status*",
+      "status_candidate": "Candidat (fără email, fără cont)",
+      "status_active": "Activ (primește invitația pe email)",
+      "required": "Câmpul este obligatoriu",
+      "min": "Minimum {{value}} caractere",
+      "max": "Maximum {{value}} caractere",
+      "email_invalid": "Adresa de email nu este validă",
+      "birthday_future": "Data nașterii nu poate fi în viitor",
+      "invalid_date": "Data nu este validă",
+      "submit": "Adaugă voluntarul",
+      "success_active": "{{name}} a fost adăugat și a primit invitația pe email.",
+      "success_candidate": "{{name}} a fost adăugat ca și candidat."
+    }
   },
   "division": {
     "members": "Membri",

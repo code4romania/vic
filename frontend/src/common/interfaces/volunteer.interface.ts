@@ -9,6 +9,8 @@ export interface IVolunteer {
   user: IUser;
   status: VolunteerStatus;
   source?: string | null;
+  // Internal notes of the organization (#471)
+  notes?: string | null;
   isFavorite: boolean;
   // Approved hours in the organization; only in the volunteers list (#475).
   totalHours?: number;

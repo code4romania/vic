@@ -25,6 +25,7 @@ export interface IVolunteerModel extends IBaseModel {
   id: string;
   status: VolunteerStatus;
   source: string;
+  notes: string;
   isFavorite: boolean;
 
   archivedOn: Date;
@@ -54,6 +55,7 @@ export type CreateVolunteerOptions = {
   organizationId: IVolunteerModel['organization']['id'];
   status?: VolunteerStatus;
   source?: string;
+  notes?: string;
 };
 
 export type JoinOrganizationByAccessCodeModel = {
@@ -87,7 +89,7 @@ export type UpdateVolunteerProfileIdOptions = {
 };
 
 export type UpdateVolunteerDetailsOptions = Partial<
-  Pick<IVolunteerModel, 'source' | 'isFavorite'>
+  Pick<IVolunteerModel, 'source' | 'notes' | 'isFavorite'>
 >;
 
 export type UpdateVolunteerOptions = Pick<IVolunteerModel, 'id'> &
@@ -135,6 +137,7 @@ export class VolunteerModelTransformer {
       id: volunteer.id,
       status: volunteer.status,
       source: volunteer.source,
+      notes: volunteer.notes,
       isFavorite: volunteer.isFavorite,
 
       archivedOn: volunteer.archivedOn,
@@ -163,6 +166,7 @@ export class VolunteerModelTransformer {
     entity.organizationId = volunteer.organizationId;
     if (volunteer.status) entity.status = volunteer.status;
     if (volunteer.source !== undefined) entity.source = volunteer.source;
+    if (volunteer.notes !== undefined) entity.notes = volunteer.notes;
 
     return entity;
   }

@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+import { AddVolunteerFormTypes } from '../../pages/AddVolunteer';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../../common/enums/volunteer-status.enum';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -68,9 +70,22 @@ export const updateVolunteer = async (
   }).then((res) => res.data);
 };
 
+// #471: the single "add volunteer" form.
+export const addVolunteer = async (data: AddVolunteerFormTypes): Promise<IVolunteer> => {
+  const { city, department, birthday, phone, notes, ...rest } = data;
+  return API.post('volunteer', {
+    ...rest,
+    ...(phone?.trim() ? { phone: phone.trim() } : {}),
+    ...(notes?.trim() ? { notes: notes.trim() } : {}),
+    ...(birthday ? { birthday: format(birthday, 'yyyy-MM-dd') } : {}),
+    ...(city ? { locationId: Number(city.value) } : {}),
+    ...(department ? { departmentId: department.key } : {}),
+  }).then((res) => res.data);
+};
+
 export const updateVolunteerDetails = async (
   id: string,
-  data: { source?: string | null; isFavorite?: boolean },
+  data: { source?: string | null; notes?: string | null; isFavorite?: boolean },
 ): Promise<IVolunteer> => {
   return API.patch(`volunteer/${id}/details`, data).then((res) => res.data);
 };

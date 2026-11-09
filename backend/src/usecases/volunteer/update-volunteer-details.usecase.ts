@@ -11,7 +11,7 @@ import {
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneVolunteerUsecase } from './get-one-volunteer.usecase';
 
-// Source and favorite flag are NGO bookkeeping: editable in every status.
+// Source, notes and favorite flag are NGO bookkeeping: editable in every status.
 @Injectable()
 export class UpdateVolunteerDetailsUsecase
   implements IUseCaseService<IVolunteerModel>
@@ -33,6 +33,9 @@ export class UpdateVolunteerDetailsUsecase
     if (details.source !== undefined) {
       updates.source = details.source?.trim() || null;
     }
+    if (details.notes !== undefined) {
+      updates.notes = details.notes?.trim() || null;
+    }
     if (details.isFavorite !== undefined) {
       updates.isFavorite = details.isFavorite;
     }
@@ -51,8 +54,16 @@ export class UpdateVolunteerDetailsUsecase
       },
       admin,
       ObjectDiff.diff(
-        { source: volunteer.source, isFavorite: volunteer.isFavorite },
-        { source: updated.source, isFavorite: updated.isFavorite },
+        {
+          source: volunteer.source,
+          notes: volunteer.notes,
+          isFavorite: volunteer.isFavorite,
+        },
+        {
+          source: updated.source,
+          notes: updated.notes,
+          isFavorite: updated.isFavorite,
+        },
       ),
     );
 
