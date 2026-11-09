@@ -748,7 +748,28 @@
         },
         "confirmation_modal": {
             "paragraph": "Ești sigur că vrei să anulezi și să încarci un contract diferit?"
-        }
+        },
+        "download": "descarcă",
+        "download_error": "Nu am putut descărca documentul. Încearcă din nou.",
+        "see_all": "Vezi toate ({{count}})",
+        "status": {
+            "PENDING_VOLUNTEER": "De semnat",
+            "PENDING_ADMIN": "La organizație",
+            "NOT_STARTED": "Neînceput",
+            "ACTIVE": "Activ",
+            "CLOSED": "Încheiat",
+            "REJECTED": "Respins"
+        },
+        "empty": {
+            "title": "Niciun document încă",
+            "description": "Contractele de voluntariat trimise de organizație apar aici.",
+            "pending": "Nu ai contracte de semnat",
+            "signed": "Nu ai contracte semnate"
+        },
+        "errors": {
+            "generic": "Eroare la încărcarea documentelor"
+        },
+        "pending_callout": "Contracte care așteaptă semnătura ta: {{count}}"
     },
     "notifications": {
         "header": "Setări notificări",
