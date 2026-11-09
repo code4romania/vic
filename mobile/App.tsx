@@ -23,6 +23,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import NotificationContextProvider from './src/contexts/notification/NotificationContextProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Keep the android navigation buttons dark on our light screens, regardless of the system theme
 if (Platform.OS === 'android') {
@@ -75,19 +76,23 @@ export default () => {
         theme={{ ...eva.dark, ...theme } as any}
         customMapping={mapping}
       >
-        <GestureHandlerRootView style={styles.gestureHandler}>
-          <KeyboardProvider>
-            <QueryClientProvider client={queryClient}>
-              <AuthContextProvider>
-                <NavigationContainer ref={navigationRef} navigationInChildEnabled>
-                  <NotificationContextProvider navigation={navigationRef}>
-                    <Router />
-                  </NotificationContextProvider>
-                </NavigationContainer>
-              </AuthContextProvider>
-            </QueryClientProvider>
-          </KeyboardProvider>
-        </GestureHandlerRootView>
+        {/* the UpdateRequired screen renders outside the navigators, which otherwise provide the
+            safe area */}
+        <SafeAreaProvider>
+          <GestureHandlerRootView style={styles.gestureHandler}>
+            <KeyboardProvider>
+              <QueryClientProvider client={queryClient}>
+                <AuthContextProvider>
+                  <NavigationContainer ref={navigationRef} navigationInChildEnabled>
+                    <NotificationContextProvider navigation={navigationRef}>
+                      <Router />
+                    </NotificationContextProvider>
+                  </NavigationContainer>
+                </AuthContextProvider>
+              </QueryClientProvider>
+            </KeyboardProvider>
+          </GestureHandlerRootView>
+        </SafeAreaProvider>
 
         <ExpoStatusBar style="dark" />
       </ApplicationProvider>

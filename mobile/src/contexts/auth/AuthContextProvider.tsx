@@ -214,7 +214,10 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       } catch (error: any) {
         // if the profile doesn't exists redirect to the the create account page
         console.log('[Profile]:', JSONStringifyError(error));
-        if (error.response.status === 404) {
+        if (error?.response?.status === 426) {
+          // the UpdateRequired screen takes over (set by the API client): no toast, don't hang login
+          resolve(null);
+        } else if (error?.response?.status === 404) {
           setIsUserPending(true);
           reject();
         } else {

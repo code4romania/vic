@@ -16,6 +16,12 @@ import {
 } from '../common/interfaces/user-profile.interface';
 import { profileSlice } from './profile/profile.slice';
 import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
+import { appSlice } from './app/app.slice';
+
+interface AppState {
+  updateRequired: boolean;
+  setUpdateRequired: (updateRequired: boolean) => void;
+}
 
 interface UserProfileState {
   userProfile: IUserProfile | null;
@@ -64,8 +70,10 @@ const useStore = create<
     VolunteerProfileState &
     EventState &
     ActivityLogState &
-    UserProfileState
+    UserProfileState &
+    AppState
 >()((set: any) => ({
+  ...appSlice(set),
   ...organizationSlice(set),
   ...bottomSheetSlice(set),
   ...volunteerSlice(set),
