@@ -109,7 +109,7 @@ const Organizations = ({ navigation }: any) => {
             {item.name}
           </VText>
           <VText variant="cap">
-            {t('organization_profile:volunteers', { number: item.numberOfVolunteers })}
+            {t('organization_profile:volunteers', { count: item.numberOfVolunteers })}
           </VText>
         </View>
         {memberOf.has(item.id) && <Badge label={`${t('member')}`} tone="neutral" />}
