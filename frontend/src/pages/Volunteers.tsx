@@ -19,7 +19,13 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
-import { AgeRangeOptions, downloadExcel, formatDate, formatLocation } from '../common/utils/utils';
+import {
+  AgeRangeOptions,
+  downloadExcel,
+  formatDate,
+  VolunteerStatusMarkerColorMapper,
+} from '../common/utils/utils';
+import StatusWithMarker from '../components/StatusWithMarker';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
@@ -82,14 +88,6 @@ const ActiveVolunteersTableHeader = [
         : '-',
   },
   {
-    id: 'location.name',
-    name: i18n.t('volunteers:location'),
-    sortable: true,
-    grow: 1,
-    minWidth: '5rem',
-    selector: (row: IVolunteer) => formatLocation(row.user.location),
-  },
-  {
     id: 'volunteerProfile.email',
     name: i18n.t('general:contact'),
     sortable: true,
@@ -97,6 +95,35 @@ const ActiveVolunteersTableHeader = [
     minWidth: '14rem',
     selector: (row: IVolunteer) =>
       row.profile ? `${row.profile?.email}\n${row.user?.phone}` : '-',
+  },
+  // Hours is not sortable: it is computed per page (#475).
+  {
+    id: 'totalHours',
+    name: i18n.t('volunteers:hours'),
+    sortable: false,
+    grow: 0,
+    minWidth: '5rem',
+    selector: (row: IVolunteer) => row.totalHours ?? 0,
+  },
+  {
+    id: 'status',
+    name: i18n.t('volunteers:status'),
+    sortable: true,
+    grow: 0,
+    minWidth: '7rem',
+    cell: (row: IVolunteer) => (
+      <StatusWithMarker markerColor={VolunteerStatusMarkerColorMapper[row.status]}>
+        {i18n.t(`volunteers:status_label.${row.status}`)}
+      </StatusWithMarker>
+    ),
+  },
+  {
+    id: 'source',
+    name: i18n.t('volunteers:source'),
+    sortable: true,
+    grow: 1,
+    minWidth: '6rem',
+    selector: (row: IVolunteer) => row.source || '-',
   },
 ];
 

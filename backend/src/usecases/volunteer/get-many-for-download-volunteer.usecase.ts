@@ -5,6 +5,13 @@ import { IVolunteerDownload } from 'src/modules/volunteer/intefaces/volunteer-do
 import { FindManyVolunteersOptions } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
+const STATUS_LABEL: Record<VolunteerStatus, string> = {
+  [VolunteerStatus.ACTIVE]: 'Activ',
+  [VolunteerStatus.INACTIVE]: 'Inactiv',
+  [VolunteerStatus.BLOCKED]: 'Blocat',
+  [VolunteerStatus.CANDIDATE]: 'Candidat',
+};
+
 @Injectable()
 export class GetVolunteersForDownloadUseCase
   implements IUseCaseService<IVolunteerDownload[]>
@@ -24,16 +31,18 @@ export class GetVolunteersForDownloadUseCase
       return {
         Nume: volunteer.user.name,
         'Data nasterii': volunteer.user.birthday,
-        Locatie:
-          volunteer.user.location.name +
-          ', jud ' +
-          volunteer.user.location.county.name,
+        Locatie: volunteer.user.location
+          ? `${volunteer.user.location.name}, jud ${volunteer.user.location.county?.name}`
+          : '',
         Email: volunteer.volunteerProfile?.email,
         Telefon: volunteer.user?.phone,
         'Perioada activitate': volunteer.volunteerProfile?.activeSince,
         'Nume filiala': volunteer.volunteerProfile?.branch?.name,
         'Nume departament': volunteer.volunteerProfile?.department?.name,
         'Nume rol': volunteer.volunteerProfile?.role?.name,
+        Ore: volunteer.totalHours ?? 0,
+        Status: STATUS_LABEL[volunteer.status],
+        Sursa: volunteer.source ?? '',
         ...(volunteer.status === VolunteerStatus.INACTIVE
           ? { 'Inactiv din': volunteer.archivedOn }
           : {}),
