@@ -9,8 +9,7 @@ import { colors, fonts, radius, shadows, spacing } from '../common/theme/tokens'
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { EventIcon } from '../components/events/EventIcons';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
-import { Avatar, EmptyState, Enter, PressableScale, VText } from '../components/ui';
-import { StatusBarScrim } from '../components/ui/StatusBarScrim';
+import { Avatar, EmptyState, Enter, PressableScale, StatusBarScrim, VText } from '../components/ui';
 
 /**
  * VIC 2.0 Anunțuri (canvas board "Anunțuri"): announcements from the volunteer's organizations, each
@@ -41,7 +40,7 @@ const Anouncements = ({ navigation }: any) => {
   const renderItem = ({ item, index }: { item: IAnouncement; index: number }) => (
     <Enter index={Math.min(index, 6)} style={styles.card} testID={`anouncement-${item.id}`}>
       <View style={styles.cardHead}>
-        <Avatar name={item.title} uri={item.organizationLogo} size={36} />
+        <Avatar name={item.title} uri={item.organizationLogo} size={36} shape="rounded" />
         <VText variant="h3" style={styles.cardTitle}>
           {item.title}
         </VText>
@@ -134,7 +133,7 @@ const Anouncements = ({ navigation }: any) => {
 export default Anouncements;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
+  screen: { flex: 1, backgroundColor: colors.canvas },
   list: { paddingHorizontal: spacing.gutter, flexGrow: 1, gap: 12 },
   header: { paddingBottom: 8, gap: 16 },
   back: {
@@ -147,7 +146,7 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: radius.card,
-    backgroundColor: colors.soft,
+    backgroundColor: colors.white,
     padding: 16,
     gap: 10,
   },
@@ -155,7 +154,7 @@ const styles = StyleSheet.create({
   cardTitle: { flex: 1 },
   answer: {
     borderRadius: radius.button,
-    backgroundColor: colors.white,
+    backgroundColor: colors.navyTint,
     padding: 12,
     gap: 4,
   },

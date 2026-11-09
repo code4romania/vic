@@ -14,3 +14,5 @@ export * from './LargeTitleHeader';
 export * from './VTextField';
 export * from './EmptyState';
 export * from './StateIcon';
+export * from './Group';
+export * from './StatusBarScrim';

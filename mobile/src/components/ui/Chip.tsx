@@ -43,5 +43,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
-  on: { backgroundColor: colors.ink, borderColor: colors.ink },
+  on: { backgroundColor: colors.navy, borderColor: colors.navy },
 });

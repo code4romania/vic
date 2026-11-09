@@ -12,6 +12,10 @@ export const colors = {
   subtle: '#9CA3AF',
   line: '#E5E7EB',
   soft: '#F3F4F6',
+  // page background behind white cards (Andrew, 9 Nov: less white on white)
+  canvas: '#EEF2F6',
+  navyTint: '#E3ECF2',
+  tealTint: '#DDF3F1',
   grab: '#D1D5DB',
   white: '#FFFFFF',
   black: '#000000',

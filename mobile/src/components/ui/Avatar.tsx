@@ -27,7 +27,10 @@ const initialsStyle = (size: number) => {
   return { fontSize, lineHeight: Math.round(fontSize * 1.3) };
 };
 
-/** Photo or logo, falling back to initials on a soft background. */
+/**
+ * Photo or logo, falling back to initials: people get navy with yellow initials (canvas "Profil"),
+ * organizations a navy tint with navy initials.
+ */
 export const Avatar = ({ name, uri, size = 40, shape = 'circle' }: AvatarProps) => {
   const borderRadius = shape === 'circle' ? size / 2 : Math.round(size * 0.3);
   if (uri) {
@@ -45,9 +48,17 @@ export const Avatar = ({ name, uri, size = 40, shape = 'circle' }: AvatarProps) 
     <View
       accessible
       accessibilityLabel={name}
-      style={[styles.fallback, { width: size, height: size, borderRadius }]}
+      style={[
+        styles.fallback,
+        shape === 'circle' ? styles.person : styles.organization,
+        { width: size, height: size, borderRadius },
+      ]}
     >
-      <VText variant="h3" color={colors.navy} style={initialsStyle(size)}>
+      <VText
+        variant="h3"
+        color={shape === 'circle' ? colors.yellow : colors.navy}
+        style={initialsStyle(size)}
+      >
         {initials(name)}
       </VText>
     </View>
@@ -57,5 +68,7 @@ export const Avatar = ({ name, uri, size = 40, shape = 'circle' }: AvatarProps) 
 export default Avatar;
 
 const styles = StyleSheet.create({
-  fallback: { backgroundColor: colors.soft, alignItems: 'center', justifyContent: 'center' },
+  fallback: { alignItems: 'center', justifyContent: 'center' },
+  person: { backgroundColor: colors.navy },
+  organization: { backgroundColor: colors.navyTint },
 });

@@ -20,8 +20,10 @@ import {
   Avatar,
   EmptyState,
   Enter,
+  Group,
   ListRow,
   PressableScale,
+  StatusBarScrim,
   VButton,
   VText,
 } from '../components/ui';
@@ -110,13 +112,21 @@ const Volunteer = ({ navigation }: any) => {
         </Enter>
 
         <Enter index={1} style={styles.stats}>
-          <View style={styles.stat} testID="volunteer-stat-logs">
-            <VText style={styles.statValue}>{`${pendingLogs}`}</VText>
-            <VText variant="cap">{t('stats.pending_logs')}</VText>
+          <View style={[styles.stat, styles.statHours]} testID="volunteer-stat-logs">
+            <VText style={[styles.statValue, { color: colors.status.wait.fg }]}>
+              {`${pendingLogs}`}
+            </VText>
+            <VText variant="cap" color={colors.status.wait.fg}>
+              {t('stats.pending_logs')}
+            </VText>
           </View>
-          <View style={styles.stat} testID="volunteer-stat-documents">
-            <VText style={styles.statValue}>{`${pendingDocuments}`}</VText>
-            <VText variant="cap">{t('stats.pending_documents')}</VText>
+          <View style={[styles.stat, styles.statDocuments]} testID="volunteer-stat-documents">
+            <VText
+              style={[styles.statValue, { color: colors.navy }]}
+            >{`${pendingDocuments}`}</VText>
+            <VText variant="cap" color={colors.navy}>
+              {t('stats.pending_documents')}
+            </VText>
           </View>
         </Enter>
 
@@ -140,64 +150,72 @@ const Volunteer = ({ navigation }: any) => {
         )}
 
         <Enter index={3} style={styles.section}>
-          <ListRow
-            leading={
-              <Avatar name={organization.name} uri={organization.logo} size={40} shape="rounded" />
-            }
-            title={`${t('menu_items.organization_profile.title')}`}
-            subtitle={`${t('menu_items.organization_profile.subtitle')}`}
-            onPress={() =>
-              navigation.navigate('organization-profile', { organizationId: organization.id })
-            }
-            testID="volunteer-organization"
-          />
-          <ListRow
-            leading={<RowIcon xml={volunteerClockSVG} />}
-            title={`${t('menu_items.activity_log.title')}`}
-            subtitle={
-              pendingLogs
-                ? `${t(
-                    pendingLogs === 1
-                      ? 'menu_items.activity_log.subtitle.one'
-                      : 'menu_items.activity_log.subtitle.many',
-                    { number: pendingLogs },
-                  )}`
-                : undefined
-            }
-            onPress={() => navigation.navigate('activity-logs')}
-            testID="volunteer-hours"
-          />
-          <ListRow
-            leading={<RowIcon xml={volunteerDocumentSVG} />}
-            title={`${t('general:documents')}`}
-            subtitle={
-              pendingDocuments
-                ? `${t('menu_items.documents.subtitle', { number: pendingDocuments })}`
-                : undefined
-            }
-            onPress={() => navigation.navigate('documents')}
-            testID="volunteer-documents"
-          />
-          <ListRow
-            leading={<RowIcon xml={volunteerUserSVG} />}
-            title={`${t('menu_items.volunteer_profile.title')}`}
-            subtitle={
-              profileMissing
-                ? `${t('menu_items.volunteer_profile.subtitle')}`
-                : `${t('menu_items.volunteer_profile.details')}`
-            }
-            onPress={() => navigation.navigate('volunteer-profile')}
-            testID="volunteer-profile"
-          />
-          <ListRow
-            title={`${t('leave')}`}
-            destructive
-            divider={false}
-            onPress={() => navigation.navigate('leave-organization')}
-            testID="volunteer-leave"
-          />
+          <Group>
+            <ListRow
+              leading={
+                <Avatar
+                  name={organization.name}
+                  uri={organization.logo}
+                  size={40}
+                  shape="rounded"
+                />
+              }
+              title={`${t('menu_items.organization_profile.title')}`}
+              subtitle={`${t('menu_items.organization_profile.subtitle')}`}
+              onPress={() =>
+                navigation.navigate('organization-profile', { organizationId: organization.id })
+              }
+              testID="volunteer-organization"
+            />
+            <ListRow
+              leading={<RowIcon xml={volunteerClockSVG} />}
+              title={`${t('menu_items.activity_log.title')}`}
+              subtitle={
+                pendingLogs
+                  ? `${t(
+                      pendingLogs === 1
+                        ? 'menu_items.activity_log.subtitle.one'
+                        : 'menu_items.activity_log.subtitle.many',
+                      { number: pendingLogs },
+                    )}`
+                  : undefined
+              }
+              onPress={() => navigation.navigate('activity-logs')}
+              testID="volunteer-hours"
+            />
+            <ListRow
+              leading={<RowIcon xml={volunteerDocumentSVG} />}
+              title={`${t('general:documents')}`}
+              subtitle={
+                pendingDocuments
+                  ? `${t('menu_items.documents.subtitle', { number: pendingDocuments })}`
+                  : undefined
+              }
+              onPress={() => navigation.navigate('documents')}
+              testID="volunteer-documents"
+            />
+            <ListRow
+              leading={<RowIcon xml={volunteerUserSVG} />}
+              title={`${t('menu_items.volunteer_profile.title')}`}
+              subtitle={
+                profileMissing
+                  ? `${t('menu_items.volunteer_profile.subtitle')}`
+                  : `${t('menu_items.volunteer_profile.details')}`
+              }
+              onPress={() => navigation.navigate('volunteer-profile')}
+              testID="volunteer-profile"
+            />
+            <ListRow
+              title={`${t('leave')}`}
+              destructive
+              divider={false}
+              onPress={() => navigation.navigate('leave-organization')}
+              testID="volunteer-leave"
+            />
+          </Group>
         </Enter>
       </Animated.ScrollView>
+      <StatusBarScrim />
     </View>
   );
 };
@@ -205,7 +223,7 @@ const Volunteer = ({ navigation }: any) => {
 export default Volunteer;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
+  screen: { flex: 1, backgroundColor: colors.canvas },
   content: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
   back: {
     width: 40,
@@ -221,11 +239,12 @@ const styles = StyleSheet.create({
   stat: {
     flex: 1,
     borderRadius: radius.card,
-    backgroundColor: colors.soft,
     paddingVertical: 12,
     paddingHorizontal: 14,
     gap: 2,
   },
+  statHours: { backgroundColor: colors.status.wait.bg },
+  statDocuments: { backgroundColor: colors.navyTint },
   statValue: { fontFamily: fonts.title, fontSize: 22, lineHeight: 28, color: colors.ink },
   prompt: {
     marginTop: 18,

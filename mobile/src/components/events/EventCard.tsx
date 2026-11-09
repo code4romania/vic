@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { EventRegistrationStatus } from '../../common/enums/event-registration-status.enum';
 import { IEventListItem } from '../../common/interfaces/event-list-item.interface';
-import { colors, fonts, radius } from '../../common/theme/tokens';
+import { colors, fonts, radius, shadows } from '../../common/theme/tokens';
 import { dateTile, formatEventWhen } from '../../common/utils/event-format';
 import { Badge, PressableScale, VText } from '../ui';
 
@@ -14,6 +14,10 @@ export interface EventCardProps {
   onPress: (eventId: string) => void;
   /** Mark as joined even when the item has no isGoing (e.g. the "Particip" tab). */
   going?: boolean;
+  /** Hairline under the card; off for the last card in a group. */
+  divider?: boolean;
+  /** "row" sits inside a white group, "card" is its own white card on the tinted page. */
+  variant?: 'row' | 'card';
 }
 
 /**
@@ -21,7 +25,13 @@ export interface EventCardProps {
  * organizes it. "Înscris" when the volunteer is going, "În așteptare" while the organization still has to
  * approve the registration, "Încheiat" once it's over.
  */
-export const EventCard = ({ event, onPress, going }: EventCardProps) => {
+export const EventCard = ({
+  event,
+  onPress,
+  going,
+  divider = true,
+  variant = 'row',
+}: EventCardProps) => {
   const { t } = useTranslation('events');
   const tile = dateTile(event.startDate);
   const isGoing = going || event.isGoing;
@@ -35,7 +45,10 @@ export const EventCard = ({ event, onPress, going }: EventCardProps) => {
       onPress={() => onPress(event.id)}
       pressedScale={0.985}
       accessibilityLabel={`${event.name}, ${formatEventWhen(event.startDate, event.endDate)}`}
-      style={styles.card}
+      style={[
+        styles.card,
+        variant === 'card' ? [styles.standalone, shadows.card] : divider ? styles.divider : null,
+      ]}
       testID={`event-card-${event.id}`}
     >
       <View style={[styles.tile, finished ? styles.tileMuted : null]}>
@@ -73,9 +86,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 14,
     paddingVertical: 14,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.line,
   },
+  standalone: {
+    backgroundColor: colors.white,
+    borderRadius: radius.card,
+    paddingHorizontal: 14,
+    marginBottom: 10,
+  },
+  divider: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.line },
   tile: {
     width: 56,
     height: 64,

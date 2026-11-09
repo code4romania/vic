@@ -19,8 +19,7 @@ import { EventIcon } from '../components/events/EventIcons';
 import { DocumentRow } from '../components/documents/DocumentRow';
 import { useDownloadContract } from '../components/documents/useDownloadContract';
 import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list';
-import { EmptyState, Enter, PressableScale, VText } from '../components/ui';
-import { StatusBarScrim } from '../components/ui/StatusBarScrim';
+import { EmptyState, Enter, Group, PressableScale, StatusBarScrim, VText } from '../components/ui';
 
 // rows per section on the tab; "Vezi toate" opens the full list
 const PREVIEW = 3;
@@ -81,17 +80,19 @@ const Documents = ({ navigation, route }: any) => {
           </VText>
         )}
       </View>
-      {items.slice(0, PREVIEW).map((contract, index, shown) => (
-        <Enter key={contract.id} index={index}>
-          <DocumentRow
-            contract={contract}
-            kind={key}
-            onPress={onPress}
-            busy={downloadingId === contract.id}
-            divider={index < shown.length - 1}
-          />
-        </Enter>
-      ))}
+      <Group>
+        {items.slice(0, PREVIEW).map((contract, index, shown) => (
+          <Enter key={contract.id} index={index}>
+            <DocumentRow
+              contract={contract}
+              kind={key}
+              onPress={onPress}
+              busy={downloadingId === contract.id}
+              divider={index < shown.length - 1}
+            />
+          </Enter>
+        ))}
+      </Group>
     </View>
   );
 
@@ -185,7 +186,7 @@ const Documents = ({ navigation, route }: any) => {
 export default Documents;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.white },
+  screen: { flex: 1, backgroundColor: colors.canvas },
   content: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
   back: {
     width: 40,
@@ -207,7 +208,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 4,
+    marginBottom: 10,
   },
   link: { fontFamily: fonts.bold, textDecorationLine: 'underline' },
 });
