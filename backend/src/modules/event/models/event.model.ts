@@ -108,6 +108,7 @@ export type FindManyEventOptions = {
   organizationId: IOrganizationModel['id'];
   eventState?: EventState;
   status?: EventStatus;
+  departmentId?: string;
 } & IBasePaginationFilterModel;
 
 export type FindMyEventsOptions = {

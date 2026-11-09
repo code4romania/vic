@@ -60,6 +60,8 @@ describe('Events list tabs (e2e)', () => {
   beforeEach(async () => {
     await truncate(testApp.dataSource, [
       'auth_identity',
+      'event_targets_organization_structure',
+      'organization_structure',
       'event',
       'user',
       'organization',
@@ -109,5 +111,60 @@ describe('Events list tabs (e2e)', () => {
       'Acum',
       'Început fără sfârșit',
     ]);
+  });
+
+  // #494: filter by department ("all departments" = no filter)
+  it('filters by department: events that target it and events open to every department', async () => {
+    const department = async (name: string): Promise<string> => {
+      const [row] = await testApp.dataSource.query(
+        `INSERT INTO organization_structure (name, type, organization_id, created_by)
+         SELECT $1, 'department', $2, id FROM "user" WHERE type = 'admin' LIMIT 1 RETURNING id`,
+        [name, organizationId],
+      );
+      return row.id;
+    };
+    const comunicare = await department('Comunicare');
+    const logistica = await department('Logistică');
+    const target = (
+      eventName: string,
+      departmentId: string,
+    ): Promise<unknown> =>
+      testApp.dataSource.query(
+        `INSERT INTO event_targets_organization_structure ("eventId", "organizationStructureId")
+         SELECT id, $2 FROM event WHERE name = $1`,
+        [eventName, departmentId],
+      );
+    await target('Viitor', comunicare);
+    await target('Acum', logistica);
+    await target('Încheiat', comunicare);
+    await target('Încheiat', logistica);
+
+    expect(
+      (await list({ eventState: 'upcoming', departmentId: comunicare })).names,
+    ).toEqual(['Viitor', 'Viitor fără sfârșit']);
+    expect(
+      (await list({ eventState: 'upcoming', departmentId: logistica })).names,
+    ).toEqual(['Viitor fără sfârșit']);
+    expect(
+      (await list({ eventState: 'ongoing', departmentId: comunicare })).names,
+    ).toEqual(['Început fără sfârșit']);
+
+    // an event keeps all its targets in the list, not only the filtered one
+    const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
+    const response = await http()
+      .get('/event')
+      .query({
+        eventState: 'past',
+        departmentId: comunicare,
+        limit: 10,
+        page: 1,
+      })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+    expect(
+      response.body.items[0].targets
+        .map((t: { name: string }) => t.name)
+        .sort(),
+    ).toEqual(['Comunicare', 'Logistică']);
   });
 });

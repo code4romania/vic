@@ -57,6 +57,7 @@ export class EventRepository
       orderDirection,
       search,
       status,
+      departmentId,
     } = findOptions;
 
     const query = this.eventRepository
@@ -124,6 +125,16 @@ export class EventRepository
 
     if (status) {
       query.andWhere('event.status = :status', { status });
+    }
+
+    // #494: the events this department's volunteers can see: the ones that target it, and the ones
+    // with no target (open to every department). A subquery, so the targets stay complete.
+    if (departmentId) {
+      query.andWhere(
+        `(EXISTS (SELECT 1 FROM event_targets_organization_structure t WHERE t."eventId" = event.id AND t."organizationStructureId" = :departmentId)
+          OR NOT EXISTS (SELECT 1 FROM event_targets_organization_structure t WHERE t."eventId" = event.id))`,
+        { departmentId },
+      );
     }
 
     if (search) {

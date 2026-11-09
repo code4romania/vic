@@ -596,7 +596,11 @@
       "past": "Finalizate"
     },
     "download_upcoming": "Evenimente viitoare.xlsx",
-    "download_ongoing": "Evenimente în desfășurare.xlsx"
+    "download_ongoing": "Evenimente în desfășurare.xlsx",
+    "filters": {
+      "department": "Departament",
+      "all_departments": "Toate departamentele"
+    }
   },
   "announcement": {
     "title": "Istoric anunțuri",

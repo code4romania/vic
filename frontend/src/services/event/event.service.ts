@@ -23,10 +23,12 @@ export const useEventsQuery = (
   eventState: EventState,
   orderByColumn?: string,
   orderDirection?: OrderDirection,
+  departmentId?: string,
 ) => {
   return useQuery(
-    ['events', limit, page, orderByColumn, orderDirection, eventState],
-    () => getEvents(limit, page, eventState, orderByColumn, orderDirection),
+    ['events', limit, page, orderByColumn, orderDirection, eventState, departmentId],
+    () =>
+      getEvents(limit, page, eventState, orderByColumn, orderDirection, undefined, departmentId),
     {
       enabled: !!(limit && page && eventState),
       onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => error,
