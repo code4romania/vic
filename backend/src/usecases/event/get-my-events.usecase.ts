@@ -19,7 +19,8 @@ export class GetMyEventsUsecase
   ): Promise<Pagination<IEventsMobileListItemModel>> {
     const { eventFilter, ...filters } = findOptions;
     let events = null;
-    switch (eventFilter) {
+    // no filter means the open events list (it used to fall through and answer 500)
+    switch (eventFilter ?? EventFilterEnum.OPEN) {
       case EventFilterEnum.OPEN: {
         // 1. get all ongoing events public + from all my organization
         events = await this.eventFacade.findOpenEvents(filters);

@@ -172,6 +172,17 @@ describe('Mobile events filters (e2e)', () => {
     ).toEqual(['Maraton']);
   });
 
+  it('treats a request with no eventFilter as the open list', async () => {
+    const { body } = await request(testApp.app.getHttpServer())
+      .get('/mobile/event')
+      .set(
+        'Authorization',
+        `Bearer ${await testApp.mintAccessToken(elena, AuthRealm.MOBILE)}`,
+      )
+      .expect(200);
+    expect(body.meta.totalItems).toBe(4);
+  });
+
   it('refuses a malformed organization or date', async () => {
     await request(testApp.app.getHttpServer())
       .get('/mobile/event')
