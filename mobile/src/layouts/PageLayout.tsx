@@ -1,22 +1,15 @@
 import React, { ReactNode, useState } from 'react';
-import {
-  Layout,
-  TopNavigation,
-  Icon,
-  TopNavigationAction,
-  Spinner,
-  Text,
-  useTheme,
-} from '@ui-kitten/components';
-import Button from '../components/Button';
-import { View, StyleSheet, Platform, ViewStyle } from 'react-native';
+import { Icon, Spinner } from '@ui-kitten/components';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import { KeyboardStickyView } from 'react-native-keyboard-controller';
-import { ButtonType } from '../common/enums/button-type.enum';
-import InlineLink from '../components/InlineLink';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+import { ButtonType } from '../common/enums/button-type.enum';
+import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { FormLayoutBottomOffsetContext } from './FormLayout';
+import { EventIcon } from '../components/events/EventIcons';
+import { PressableScale, VButton, VText } from '../components/ui';
 
 interface ActionsOptionsProps {
   primaryActionLabel: string;
@@ -39,13 +32,8 @@ interface PageLayoutProps {
   headerStyle?: ViewStyle;
 }
 
+// legacy ui-kitten icon, still used by News
 export const BackIcon = (props: any) => <Icon {...props} name="arrow-left" />;
-const EditIcon = (props: any) => <Icon {...props} name="edit" />;
-const renderTitle = (title: string) => () => (
-  <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
-    {title}
-  </Text>
-);
 
 export const LoadingIndicator = (props: any): React.ReactElement => (
   <View style={[props.style, styles.indicator]}>
@@ -53,6 +41,16 @@ export const LoadingIndicator = (props: any): React.ReactElement => (
   </View>
 );
 
+const BUTTON_VARIANT = {
+  [ButtonType.PRIMARY]: 'primary',
+  [ButtonType.SECONDARY]: 'outline',
+  [ButtonType.DANGER]: 'danger',
+} as const;
+
+/**
+ * VIC 2.0 page: a round back button, the title, an optional edit link, the content, and the actions
+ * that stay above the keyboard.
+ */
 export const PageLayout = ({
   children,
   title,
@@ -61,150 +59,125 @@ export const PageLayout = ({
   actionsOptions,
   headerStyle,
 }: PageLayoutProps) => {
-  const theme = useTheme();
+  const { t } = useTranslation('general');
   const insets = useSafeAreaInsets();
   useFocusedStatusBarStyle('dark');
   const [actionsHeight, setActionsHeight] = useState(0);
 
-  const renderLeftControl = () => {
-    if (!onBackButtonPress) {
-      return <></>;
-    }
-
-    return <TopNavigationAction icon={BackIcon} onPress={onBackButtonPress} />;
-  };
-
-  const renderRightControl = () => {
-    if (!onEditButtonPress) {
-      return <></>;
-    }
-
-    return <TopNavigationAction icon={EditIcon} onPress={onEditButtonPress} />;
-  };
-
   return (
-    <>
-      <TopNavigation
-        title={renderTitle(title)}
-        alignment="start"
-        accessoryLeft={renderLeftControl}
-        accessoryRight={renderRightControl}
-        style={[styles.header, headerStyle]}
-      />
-      <Layout style={styles.layout}>
-        <View style={styles.childrenContainer}>
-          <FormLayoutBottomOffsetContext.Provider value={actionsHeight}>
-            {children}
-          </FormLayoutBottomOffsetContext.Provider>
-        </View>
-
-        {actionsOptions && (
-          // moves the buttons above the keyboard; the navigation bar inset is already
-          // covered by the keyboard, so it is left behind it
-          <KeyboardStickyView offset={{ opened: insets.bottom }}>
-            <View
-              style={styles.helperContainer}
-              onLayout={(event) => setActionsHeight(event.nativeEvent.layout.height)}
-            >
-              <View style={[styles.bottomActionContainer, { paddingBottom: insets.bottom + 16 }]}>
-                {actionsOptions.helperText && (
-                  <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
-                    {actionsOptions.helperText}
-                  </Text>
-                )}
-                <View style={styles.buttonsContainer}>
-                  <Button
-                    onPress={actionsOptions.onPrimaryActionButtonClick}
-                    label={`${actionsOptions.primaryActionLabel}`}
-                    status={actionsOptions.primaryBtnType || 'primary'}
-                    loading={actionsOptions.loading}
-                    disabled={actionsOptions.loading}
-                  />
-                  {actionsOptions.onSecondaryActionButtonClick &&
-                    actionsOptions.secondaryActionLink && (
-                      <View style={styles.secondaryButtonContainer}>
-                        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
-                          {actionsOptions.secondaryActionLabel || ''}
-                        </Text>
-                        <InlineLink
-                          style={[
-                            !actionsOptions.secondaryActionLabel &&
-                            !actionsOptions.secondaryLinkColor
-                              ? { color: theme['color-primary-700'] }
-                              : { color: theme['color-basic-1100'] },
-                            styles.inlineLink,
-                          ]}
-                          onPress={actionsOptions.onSecondaryActionButtonClick}
-                          label={actionsOptions.secondaryActionLink}
-                        />
-                      </View>
-                    )}
-                </View>
-              </View>
-            </View>
-          </KeyboardStickyView>
+    <View style={styles.screen}>
+      <View style={[styles.header, headerStyle]}>
+        {onBackButtonPress && (
+          <PressableScale
+            onPress={onBackButtonPress}
+            style={[styles.back, shadows.back]}
+            accessibilityLabel={`${t('back')}`}
+            testID="page-back"
+          >
+            <EventIcon name="back" size={20} />
+          </PressableScale>
         )}
-      </Layout>
-    </>
+        <VText variant="h2" numberOfLines={1} style={styles.title} accessibilityRole="header">
+          {title}
+        </VText>
+        {onEditButtonPress && (
+          <VText
+            variant="label"
+            style={styles.edit}
+            onPress={onEditButtonPress}
+            accessibilityRole="button"
+            testID="page-edit"
+          >
+            {t('edit', { item: '' }).trim()}
+          </VText>
+        )}
+      </View>
+      <View style={styles.childrenContainer}>
+        <FormLayoutBottomOffsetContext.Provider value={actionsHeight}>
+          {children}
+        </FormLayoutBottomOffsetContext.Provider>
+      </View>
+
+      {actionsOptions && (
+        // moves the buttons above the keyboard; the navigation bar inset is already
+        // covered by the keyboard, so it is left behind it
+        <KeyboardStickyView offset={{ opened: insets.bottom }}>
+          <View
+            style={[styles.actions, { paddingBottom: insets.bottom + 16 }]}
+            onLayout={(event) => setActionsHeight(event.nativeEvent.layout.height)}
+          >
+            {!!actionsOptions.helperText && (
+              <VText variant="sub" style={styles.center}>
+                {actionsOptions.helperText}
+              </VText>
+            )}
+            <VButton
+              onPress={() => actionsOptions.onPrimaryActionButtonClick(undefined)}
+              label={`${actionsOptions.primaryActionLabel}`}
+              variant={BUTTON_VARIANT[actionsOptions.primaryBtnType || ButtonType.PRIMARY]}
+              loading={actionsOptions.loading}
+              disabled={actionsOptions.loading}
+              testID="page-action"
+            />
+            {actionsOptions.onSecondaryActionButtonClick && actionsOptions.secondaryActionLink && (
+              <VText variant="sub" style={styles.center}>
+                {actionsOptions.secondaryActionLabel
+                  ? `${actionsOptions.secondaryActionLabel} `
+                  : ''}
+                <VText
+                  variant="label"
+                  style={styles.link}
+                  onPress={actionsOptions.onSecondaryActionButtonClick}
+                  accessibilityRole="button"
+                  testID="page-secondary"
+                >
+                  {actionsOptions.secondaryActionLink}
+                </VText>
+              </VText>
+            )}
+          </View>
+        </KeyboardStickyView>
+      )}
+    </View>
   );
 };
 
 export default PageLayout;
 
 const styles = StyleSheet.create({
-  header: { minHeight: 59 },
-  layout: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+  screen: { flex: 1, backgroundColor: colors.white },
+  header: {
+    minHeight: 64,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: spacing.gutter,
+    paddingVertical: 12,
   },
-  childrenContainer: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  bottomActionContainer: {
-    width: '100%',
-    minHeight: 120,
+  back: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: 'gray',
-    backgroundColor: 'white',
-    gap: 16,
-    paddingVertical: 16,
-    ...Platform.select({
-      android: {
-        elevation: 4,
-      },
-      ios: {
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-      },
-    }),
   },
+  title: { flex: 1 },
+  edit: { fontFamily: fonts.bold, textDecorationLine: 'underline' },
+  childrenContainer: { flex: 1, paddingHorizontal: spacing.l, paddingVertical: spacing.s },
+  actions: {
+    gap: 12,
+    paddingTop: 12,
+    paddingHorizontal: spacing.gutter,
+    backgroundColor: colors.white,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.line,
+  },
+  center: { textAlign: 'center' },
+  link: { fontFamily: fonts.bold, textDecorationLine: 'underline', color: colors.ink },
   indicator: {
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-  },
-  helperContainer: {
-    gap: 12,
-    alignItems: 'center',
-  },
-  title: {
-    paddingHorizontal: 8,
-  },
-  buttonsContainer: {
-    gap: 16,
-    alignItems: 'center',
-  },
-  secondaryButtonContainer: { flexDirection: 'row', gap: 2 },
-  contentContainer: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  inlineLink: {
-    fontWeight: '500',
   },
 });

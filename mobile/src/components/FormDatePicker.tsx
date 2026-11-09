@@ -9,8 +9,10 @@ import {
   useStyleSheet,
 } from '@ui-kitten/components';
 import { Control, Controller } from 'react-hook-form';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { colors, radius } from '../common/theme/tokens';
+import { VText } from './ui';
 
 interface FormDatepickerProps extends DatepickerProps {
   control: Control<Record<string, any>>;
@@ -22,12 +24,11 @@ interface FormDatepickerProps extends DatepickerProps {
 }
 
 const CalendarIcon = (props: any): IconElement => <Icon {...props} name="calendar" />;
-const renderPlaceholder = (placeholder: string, styles: any) => () =>
-  (
-    <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint" style={styles.marginHorizontal}>
-      {placeholder}
-    </Text>
-  );
+const renderPlaceholder = (placeholder: string, styles: any) => () => (
+  <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint" style={styles.marginHorizontal}>
+    {placeholder}
+  </Text>
+);
 
 //Add min or max props to date picker in order to let user select year
 const FormDatePicker: React.FC<FormDatepickerProps> = ({
@@ -44,10 +45,7 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
-        {label}
-        {required ? <Text status="danger">*</Text> : ''}
-      </Text>
+      <VText variant="cap">{required ? `${label} *` : label}</VText>
       <Controller
         control={control}
         name={name}
@@ -60,20 +58,20 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
             status={error ? 'danger' : 'basic'}
             disabled={disabled}
             style={styles.input}
-            controlStyle={disabled ? styles.disabled : {}}
+            controlStyle={[
+              fieldStyles.control,
+              error ? fieldStyles.invalid : null,
+              disabled ? styles.disabled : null,
+            ]}
             accessoryRight={CalendarIcon}
             {...rest}
           />
         )}
       />
-      {error && (
-        <Text
-          allowFontScaling={ALLOW_FONT_SCALLING}
-          category="c1"
-          status={error ? 'danger' : 'basic'}
-        >
+      {!!error?.message && (
+        <VText variant="cap" color={colors.danger}>
           {error.message}
-        </Text>
+        </VText>
       )}
     </View>
   );
@@ -83,20 +81,26 @@ export default FormDatePicker;
 
 const themedStyles = StyleService.create({
   container: {
-    gap: 4,
+    gap: 6,
   },
   marginHorizontal: {
     marginHorizontal: 8,
   },
   input: {
-    shadowColor: '$input-shadow-color',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
-    elevation: 1,
-    borderRadius: 6,
+    borderRadius: 12,
   },
   disabled: {
     backgroundColor: '$cool-gray-100',
   },
+});
+
+// VIC 2.0 field look (same box as VTextField)
+const fieldStyles = StyleSheet.create({
+  control: {
+    minHeight: 56,
+    borderRadius: radius.field,
+    borderColor: colors.subtle,
+    backgroundColor: colors.white,
+  },
+  invalid: { borderColor: colors.danger },
 });

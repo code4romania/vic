@@ -1,35 +1,21 @@
-import { Icon, useTheme } from '@ui-kitten/components';
 import React from 'react';
-import { Pressable, View, StyleSheet } from 'react-native';
-import { Text } from '@ui-kitten/components';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { StyleSheet, View } from 'react-native';
+import { colors } from '../common/theme/tokens';
+import { VText } from './ui';
 
-export const renderPasswordEyeIcon = (props: any): React.ReactElement => (
-  <Pressable onPress={props.setSecureTextEntry.bind(null, !props.secureTextEntry)}>
-    <Icon {...props} name={props.secureTextEntry ? 'eye-off' : 'eye'} />
-  </Pressable>
+/** "+40" before a Romanian phone number. */
+export const renderPhoneNumberPrefix = () => (
+  <View style={styles.phonePrefix}>
+    <VText variant="body" color={colors.muted}>
+      +40
+    </VText>
+  </View>
 );
-
-export const renderPhoneNumberPrefix = () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const theme = useTheme();
-  return (
-    <View
-      style={{
-        ...styles.phonePrefix,
-        borderRightColor: theme['cool-gray-300'],
-      }}
-    >
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint">
-        +40
-      </Text>
-    </View>
-  );
-};
 
 const styles = StyleSheet.create({
   phonePrefix: {
     borderRightWidth: 1,
+    borderRightColor: colors.line,
     paddingRight: 6,
   },
 });
