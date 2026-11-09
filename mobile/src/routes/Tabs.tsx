@@ -1,116 +1,83 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation, BottomNavigationTab, Icon, Text, useTheme } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
+import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home';
 import Events from '../screens/Events';
-import Organizations from '../screens/Organizations';
+import ActivityLogs from '../screens/ActivityLogs';
+import Documents from '../screens/Documents';
 import Settings from '../screens/Settings';
 import Volunteer from '../screens/Volunteer';
+import Organizations from '../screens/Organizations';
 import i18n from '../common/config/i18n';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors } from '../common/theme/tokens';
+import GlassTabBar, {
+  GlassTabBarItem,
+  useGlassTabBarInset,
+} from '../components/navigation/GlassTabBar';
+import { TabBarScrollProvider } from '../components/navigation/TabBarScroll';
+import { HIDDEN_TAB_ROUTES, TAB_ROUTES } from './tab-routes';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
-const Title = ({ title, active }: { title: string; active?: boolean }) => {
-  const theme = useTheme();
-  return (
-    <Text
-      category="c1"
-      style={[active ? { color: theme['color-primary-500'] } : {}, styles.title]}
-      allowFontScaling={ALLOW_FONT_SCALLING}
-      // Five tabs on a narrow screen (iPhone 8 with Display Zoom is 320pt): keep one line and
-      // shrink the label slightly instead of wrapping "Evenimente" / "Setări cont".
-      numberOfLines={1}
-      adjustsFontSizeToFit
-      minimumFontScale={0.7}
-    >
-      {title}
-    </Text>
-  );
+// VIC 2.0 tabs (approved redesign): Acasă, Evenimente, Ore, Documente, Profil.
+// "Voluntar" (the volunteer's page at an organization) and "Caută" (organizations) stay routes of
+// this navigator, so navigate('volunteer') / navigate('search') and the organization drawer keep
+// working, but they have no button in the bar: they are reached from Profil and Acasă.
+const items = (): Record<string, GlassTabBarItem> => ({
+  [TAB_ROUTES.HOME]: { icon: 'home', label: i18n.t('tabs:home') },
+  [TAB_ROUTES.EVENTS]: { icon: 'events', label: i18n.t('tabs:events') },
+  [TAB_ROUTES.HOURS]: { icon: 'hours', label: i18n.t('tabs:hours') },
+  [TAB_ROUTES.DOCUMENTS]: { icon: 'documents', label: i18n.t('tabs:documents') },
+  [TAB_ROUTES.PROFILE]: { icon: 'profile', label: i18n.t('tabs:profile') },
+});
+
+/**
+ * Keeps the bottom of a screen that is not redesigned yet clear of the floating bar. Redesigned
+ * screens scroll under the glass and add the inset to their own content instead.
+ */
+const withTabInset = (Component: React.ComponentType<any>) => {
+  const Wrapped = (props: any) => {
+    const inset = useGlassTabBarInset();
+    return (
+      <View style={[styles.scene, { paddingBottom: inset }]}>
+        <Component {...props} />
+      </View>
+    );
+  };
+  Wrapped.displayName = `withTabInset(${Component.displayName || Component.name})`;
+  return Wrapped;
 };
 
-const HomeIcon = (props: any) => <Icon {...props} style={[props.style, styles.icon]} name="home" />;
-const SunIcon = (props: any) => <Icon {...props} style={[props.style, styles.icon]} name="sun" />;
-const CalendarIcon = (props: any) => (
-  <Icon {...props} style={[props.style, styles.icon]} name="calendar" />
-);
-const SearchIcon = (props: any) => (
-  <Icon {...props} style={[props.style, styles.icon]} name="search" />
-);
-const SettingsIcon = (props: any) => (
-  <Icon {...props} style={[props.style, styles.icon]} name="settings" />
-);
+const HomeTab = withTabInset(Home);
+const EventsTab = withTabInset(Events);
+const HoursTab = withTabInset(ActivityLogs);
+const DocumentsTab = withTabInset(Documents);
+const ProfileTab = withTabInset(Settings);
+const VolunteerRoute = withTabInset(Volunteer);
+const OrganizationsRoute = withTabInset(Organizations);
 
-const BottomTabBar = ({ navigation, state }: any) => {
-  const onSelect = (index: number) => navigation.navigate(state.routeNames[index]);
-
-  return (
-    <BottomNavigation
-      selectedIndex={state.index}
-      onSelect={onSelect}
-      appearance="noIndicator"
-      style={[styles.tabs, { paddingBottom: useSafeAreaInsets().bottom }]}
-    >
-      <BottomNavigationTab
-        title={<Title title={`${i18n.t('tabs:home')}`} active={state.index === 0} />}
-        icon={HomeIcon}
-        style={styles.tab}
-      />
-      <BottomNavigationTab
-        title={<Title title={`${i18n.t('tabs:volunteer')}`} active={state.index === 1} />}
-        icon={SunIcon}
-        style={styles.tab}
-      />
-      <BottomNavigationTab
-        title={<Title title={`${i18n.t('tabs:events')}`} active={state.index === 2} />}
-        icon={CalendarIcon}
-        style={styles.tab}
-      />
-      <BottomNavigationTab
-        title={<Title title={`${i18n.t('tabs:search')}`} active={state.index === 3} />}
-        icon={SearchIcon}
-        style={styles.tab}
-      />
-      <BottomNavigationTab
-        title={<Title title={`${i18n.t('tabs:account_settings')}`} active={state.index === 4} />}
-        icon={SettingsIcon}
-        style={styles.tab}
-      />
-    </BottomNavigation>
-  );
-};
-
-const HomeComponent = (props: any) => <Home {...props} name="Acasa" />;
-const VolunteerComponent = (props: any) => <Volunteer {...props} name="Voluntar" />;
-const EventsComponent = (props: any) => <Events {...props} name="Evenimente" />;
-const SearchComponent = (props: any) => <Organizations {...props} name="Cauta" />;
-const SettingsComponent = (props: any) => <Settings {...props} name="Setari cont" />;
+const renderTabBar = (props: BottomTabBarProps) => <GlassTabBar {...props} items={items()} />;
 
 const Tabs = () => (
-  <Navigator
-    screenOptions={{ headerShown: false, lazy: true }}
-    tabBar={(props) => <BottomTabBar {...props} />}
-  >
-    <Screen name="dashboard" component={HomeComponent} />
-    <Screen name="volunteer" component={VolunteerComponent} />
-    <Screen name="events" component={EventsComponent} />
-    <Screen name="search" component={SearchComponent} />
-    <Screen name="settings" component={SettingsComponent} />
-  </Navigator>
+  <TabBarScrollProvider>
+    <Navigator
+      screenOptions={{ headerShown: false, lazy: true }}
+      backBehavior="history"
+      tabBar={renderTabBar}
+    >
+      <Screen name={TAB_ROUTES.HOME} component={HomeTab} />
+      <Screen name={TAB_ROUTES.EVENTS} component={EventsTab} />
+      <Screen name={TAB_ROUTES.HOURS} component={HoursTab} />
+      <Screen name={TAB_ROUTES.DOCUMENTS} component={DocumentsTab} />
+      <Screen name={TAB_ROUTES.PROFILE} component={ProfileTab} />
+      <Screen name={HIDDEN_TAB_ROUTES.VOLUNTEER} component={VolunteerRoute} />
+      <Screen name={HIDDEN_TAB_ROUTES.ORGANIZATIONS} component={OrganizationsRoute} />
+    </Navigator>
+  </TabBarScrollProvider>
 );
 
 export default Tabs;
 
 const styles = StyleSheet.create({
-  screenContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  tabs: {
-    borderTopColor: '#EDF1F7',
-    borderTopWidth: 1,
-    backgroundColor: 'white',
-  },
-  tab: { paddingVertical: 5 },
-  title: { paddingTop: 4 },
-  icon: { height: 24, width: 24 },
+  scene: { flex: 1, backgroundColor: colors.white },
 });

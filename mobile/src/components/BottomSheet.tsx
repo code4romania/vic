@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -12,6 +12,7 @@ import successIcon from '../assets/svg/success-icon';
 import upsIcon from '../assets/svg/ups-icon';
 import Button from './Button';
 import useStore from '../store/store';
+import { useHideTabBarWhile } from './navigation/tab-bar-overlay';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 type BottomSheetIconType = 'success' | 'warning';
@@ -45,6 +46,8 @@ const BottomSheet = ({
   secondaryAction,
 }: BottomSheetProps) => {
   const { close } = useStore();
+  const [open, setOpen] = useState(false);
+  useHideTabBarWhile(open);
   // variables
   const snapPoints = useMemo(() => {
     if (iconType) {
@@ -70,6 +73,7 @@ const BottomSheet = ({
   };
 
   const onBottomSheetStateChange = (state: number) => {
+    setOpen(state >= 0);
     if (state < 0) {
       close();
     }
@@ -83,6 +87,7 @@ const BottomSheet = ({
         snapPoints={snapPoints}
         enableDynamicSizing={false}
         onChange={onBottomSheetStateChange}
+        onDismiss={() => setOpen(false)}
         backdropComponent={renderBackdrop}
       >
         <View style={styles.container}>

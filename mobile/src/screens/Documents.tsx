@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import PageLayout from '../layouts/PageLayout';
+import { isTabRoute } from '../routes/tab-routes';
 import { Divider, Text, useTheme } from '@ui-kitten/components';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { Platform, StyleSheet } from 'react-native';
@@ -200,7 +201,7 @@ const Documents = ({ navigation, route }: any) => {
 
   return (
     <PageLayout
-      onBackButtonPress={navigation.goBack}
+      onBackButtonPress={isTabRoute(route) ? undefined : navigation.goBack}
       title={t('general:documents')}
       headerStyle={{ paddingTop: paddingTop }}
     >

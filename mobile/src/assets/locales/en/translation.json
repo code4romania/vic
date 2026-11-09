@@ -163,6 +163,8 @@
   },
   "settings": {
     "title": "Account settings",
+    "my_organizations": "My organizations",
+    "join_organization": "Join an organization",
     "heading": "Account data",
     "notification": "Notifications settings",
     "information": "Information",
@@ -510,7 +512,10 @@
     "volunteer": "Voluntar",
     "events": "Events",
     "search": "Search",
-    "account_settings": "Account settings"
+    "account_settings": "Account settings",
+    "hours": "Hours",
+    "documents": "Documents",
+    "profile": "Profile"
   },
   "home": {
     "greeting": "Hi, {{name}}!",

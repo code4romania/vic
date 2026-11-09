@@ -4,6 +4,8 @@ import information from '../assets/svg/information';
 import trash from '../assets/svg/trash';
 import logoutIcon from '../assets/svg/logout';
 import user from '../assets/svg/user';
+import organizationsIcon from '../assets/svg/organizations';
+import searchIcon from '../assets/svg/search';
 import { View, StyleSheet } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { Text, Divider, List, useTheme, Icon } from '@ui-kitten/components';
@@ -19,6 +21,7 @@ import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { Screen } from '../components/Screen';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import BottomSheet from '@gorhom/bottom-sheet';
+import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
 import { renderBackdrop } from '../components/BottomSheet';
 import Paragraph from '../components/Paragraph';
 import InlineLink from '../components/InlineLink';
@@ -31,9 +34,22 @@ export enum SETTINGS_ROUTES {
   INFORMATION = 'information',
   LOGOUT = 'logout',
   DELETE_ACCOUNT = 'delete-account',
+  // VIC 2.0: the volunteer page and the organization search left the tab bar and live under Profil.
+  MY_ORGANIZATIONS = 'volunteer',
+  SEARCH_ORGANIZATIONS = 'search',
 }
 
 export const SETTING_SCREENS = [
+  {
+    icon: organizationsIcon,
+    label: i18n.t('settings:my_organizations'),
+    route: SETTINGS_ROUTES.MY_ORGANIZATIONS,
+  },
+  {
+    icon: searchIcon,
+    label: i18n.t('settings:join_organization'),
+    route: SETTINGS_ROUTES.SEARCH_ORGANIZATIONS,
+  },
   { icon: user, label: i18n.t('settings:heading'), route: SETTINGS_ROUTES.ACCOUNT_DATA },
   {
     icon: bell,
@@ -151,7 +167,7 @@ const Settings = ({ navigation }: any) => {
           showsVerticalScrollIndicator={false}
         />
       </Screen>
-      <BottomSheet
+      <SafeAreaBottomSheet
         backdropComponent={renderBackdrop}
         ref={bottomSheetRef}
         index={-1}
@@ -181,7 +197,7 @@ const Settings = ({ navigation }: any) => {
             />
           </View>
         </View>
-      </BottomSheet>
+      </SafeAreaBottomSheet>
     </>
   );
 };

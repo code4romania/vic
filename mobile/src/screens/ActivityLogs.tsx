@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
+import { isTabRoute } from '../routes/tab-routes';
 import { Button as ButtonKitten, Icon, Text, useTheme } from '@ui-kitten/components';
 import i18n from '../common/config/i18n';
 import OrganizationIdentity from '../components/OrganizationIdentity';
@@ -40,7 +41,7 @@ export const ActivityLogsTabs: ISelectItem[] = [
   { key: ActivityLogStatus.REJECTED, label: i18n.t('activity_logs:tabs.rejected') },
 ];
 
-const ActivityLogs = ({ navigation }: any) => {
+const ActivityLogs = ({ navigation, route }: any) => {
   const theme = useTheme();
   // translations
   const { t } = useTranslation('activity_logs');
@@ -142,7 +143,7 @@ const ActivityLogs = ({ navigation }: any) => {
     <>
       <PageLayout
         title={t('title')}
-        onBackButtonPress={navigation.goBack}
+        onBackButtonPress={isTabRoute(route) ? undefined : navigation.goBack}
         headerStyle={{ paddingTop }}
       >
         {userProfile?.activeOrganization && (
