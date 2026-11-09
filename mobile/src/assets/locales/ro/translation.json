@@ -839,8 +839,10 @@
             "NOTIFICATIONS_002": "Eroare la modificarea setărilor!"
         },
         "warning_modal": {
-            "description": "Notificările sunt dezactivate pentru această aplicație. Pentru a primi actualizări și alerte importante, te rugăm să le activezi din setările telefonului.",
-            "btn_label": "Deschide setările"
+            "description": "Pornește-le din setările telefonului ca să afli când îți sunt aprobate orele sau când apare un eveniment nou.",
+            "btn_label": "Deschide setările",
+            "title": "Notificările sunt oprite",
+            "later": "Mai târziu"
         }
     },
     "user": {

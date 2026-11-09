@@ -64,18 +64,13 @@ const VolunteerProfile = ({ navigation }: any) => {
     VOLUNTEER_PROFILE_ERRORS.VOLUNTEER_PROFILE_003
   ) {
     return (
-      <PageLayout
-        title={t('title')}
+      <MissingEntity
         onBackButtonPress={navigation.goBack}
-        headerStyle={{ paddingTop }}
-      >
-        <MissingEntity
-          onActionBtnPress={onCreateVolunteerProfileButtonPress}
-          heading={t('missing_profile.heading')}
-          paragraph={t('missing_profile.paragraph')}
-          actionBtnLabel={t('missing_profile.action_btn')}
-        />
-      </PageLayout>
+        onActionBtnPress={onCreateVolunteerProfileButtonPress}
+        heading={t('missing_profile.heading')}
+        paragraph={t('missing_profile.paragraph')}
+        actionBtnLabel={t('missing_profile.action_btn')}
+      />
     );
   }
 

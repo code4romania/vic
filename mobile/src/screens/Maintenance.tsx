@@ -27,6 +27,7 @@ const Maintenance = () => {
 
   return (
     <MissingEntity
+      kind="error"
       heading={t('heading')}
       paragraph={t('paragraph')}
       actionBtnLabel={t('retry')}

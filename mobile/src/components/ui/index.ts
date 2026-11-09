@@ -13,3 +13,4 @@ export * from './Sheet';
 export * from './LargeTitleHeader';
 export * from './VTextField';
 export * from './EmptyState';
+export * from './StateIcon';

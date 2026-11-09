@@ -21,6 +21,7 @@ const UpdateRequired = () => {
 
   return (
     <MissingEntity
+      kind="update"
       heading={t('heading')}
       paragraph={t('paragraph')}
       actionBtnLabel={t('update')}
