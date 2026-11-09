@@ -247,7 +247,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                 {organization.name}
               </VText>
               <VText variant="sub">
-                {t('volunteers', { number: organization.numberOfVolunteers })}
+                {t('volunteers', { count: organization.numberOfVolunteers })}
               </VText>
             </Enter>
 

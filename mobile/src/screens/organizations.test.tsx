@@ -119,7 +119,7 @@ describe('Organizații', () => {
     expect(await screen.findByText('Organizații')).toBeTruthy();
     expect(screen.getByText('2 organizații')).toBeTruthy();
     const mine = screen.getByTestId('organization-row-org-1');
-    expect(within(mine).getByText('120 voluntari')).toBeTruthy();
+    expect(within(mine).getByText('120 de voluntari')).toBeTruthy();
     expect(within(mine).getByText('Membru')).toBeTruthy();
     expect(within(screen.getByTestId('organization-row-org-3')).queryByText('Membru')).toBeNull();
   });
