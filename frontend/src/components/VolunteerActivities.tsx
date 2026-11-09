@@ -38,6 +38,9 @@ const columns: TableColumn<IActivityLogListItem>[] = [
           <small className="font-robotoBold truncate">
             {row.activityType?.name || i18n.t('general:other')}
           </small>
+          {row.event?.name && (
+            <small className="truncate text-cool-gray-500">{row.event.name}</small>
+          )}
         </div>
       </div>
     ),
@@ -71,20 +74,29 @@ const columns: TableColumn<IActivityLogListItem>[] = [
   },
 ];
 
-interface VolunteerActivitiesProps {
+interface VolunteerLogsTableProps {
   volunteerId: string;
-  volunteerName?: string;
-  volunteerStatus?: VolunteerStatus;
+  // left out: event and activity hours together
+  source?: ActivityLogSource;
+  title: string;
+  description: string;
+  addLabel: string;
+  // hidden when the volunteer cannot get hours (only Active can)
+  canAdd: boolean;
+  onAdd: () => void;
 }
 
-// VIC 2.0 (#481): the volunteer's activities, meaning hours logged on an activity type and not on an
-// event, in every status. The NGO adds one from here.
-const VolunteerActivities = ({
+// VIC 2.0 (#481, #482): a volunteer's logged hours in every status (approved, pending, rejected).
+// The Activities tab shows only hours with no event; the hours history shows all of them.
+export const VolunteerLogsTable = ({
   volunteerId,
-  volunteerName,
-  volunteerStatus,
-}: VolunteerActivitiesProps) => {
-  const navigate = useNavigate();
+  source,
+  title,
+  description,
+  addLabel,
+  canAdd,
+  onAdd,
+}: VolunteerLogsTableProps) => {
   const [page, setPage] = useState<number>(1);
   const [selected, setSelected] = useState<string>();
 
@@ -92,38 +104,28 @@ const VolunteerActivities = ({
     limit: PAGE_SIZE,
     page,
     volunteerId,
-    source: ActivityLogSource.ACTIVITY,
+    source,
     orderBy: 'date',
     orderDirection: OrderDirection.DESC,
   });
-
-  const onAdd = () => {
-    const search = new URLSearchParams({
-      volunteerId,
-      volunteerName: volunteerName ?? '',
-      activity: 'true',
-    });
-    navigate(`/activity-log/add?${search.toString()}`);
-  };
 
   return (
     <>
       <Card>
         <CardHeader>
           <div className="flex flex-col">
-            <h2>{i18n.t('volunteer:activities.title')}</h2>
-            <small className="text-cool-gray-500">
-              {i18n.t('volunteer:activities.description')}
-            </small>
+            <h2>{title}</h2>
+            <small className="text-cool-gray-500">{description}</small>
           </div>
-          <Button
-            label={i18n.t('volunteer:activities.add')}
-            className="btn-primary"
-            icon={<PlusIcon className="h-5 w-5" />}
-            onClick={onAdd}
-            type="button"
-            disabled={volunteerStatus !== VolunteerStatus.ACTIVE}
-          />
+          {canAdd && (
+            <Button
+              label={addLabel}
+              className="btn-primary"
+              icon={<PlusIcon className="h-5 w-5" />}
+              onClick={onAdd}
+              type="button"
+            />
+          )}
         </CardHeader>
         <CardBody>
           <DataTableComponent
@@ -166,6 +168,42 @@ const VolunteerActivities = ({
         }}
       />
     </>
+  );
+};
+
+interface VolunteerActivitiesProps {
+  volunteerId: string;
+  volunteerName?: string;
+  volunteerStatus?: VolunteerStatus;
+}
+
+// #481: the volunteer's activities, meaning hours logged on an activity type and not on an event.
+const VolunteerActivities = ({
+  volunteerId,
+  volunteerName,
+  volunteerStatus,
+}: VolunteerActivitiesProps) => {
+  const navigate = useNavigate();
+
+  const onAdd = () => {
+    const search = new URLSearchParams({
+      volunteerId,
+      volunteerName: volunteerName ?? '',
+      activity: 'true',
+    });
+    navigate(`/activity-log/add?${search.toString()}`);
+  };
+
+  return (
+    <VolunteerLogsTable
+      volunteerId={volunteerId}
+      source={ActivityLogSource.ACTIVITY}
+      title={i18n.t('volunteer:activities.title')}
+      description={i18n.t('volunteer:activities.description')}
+      addLabel={i18n.t('volunteer:activities.add')}
+      canAdd={volunteerStatus === VolunteerStatus.ACTIVE}
+      onAdd={onAdd}
+    />
   );
 };
 

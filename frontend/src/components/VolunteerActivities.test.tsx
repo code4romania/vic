@@ -57,7 +57,7 @@ describe('VolunteerActivities (#481)', () => {
     );
   });
 
-  it('does not let the NGO add an activity for an inactive volunteer', async () => {
+  it('hides adding an activity for an inactive volunteer', async () => {
     server.use(
       http.get(api('/activity-log'), () =>
         HttpResponse.json({
@@ -67,8 +67,7 @@ describe('VolunteerActivities (#481)', () => {
       ),
     );
     renderPage(<VolunteerActivities volunteerId="v1" volunteerStatus={VolunteerStatus.INACTIVE} />);
-    expect(
-      await screen.findByRole('button', { name: t('volunteer:activities.add') }),
-    ).toBeDisabled();
+    expect(await screen.findByText(t('volunteer:activities.title'))).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: t('volunteer:activities.add') })).toBeNull();
   });
 });

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import i18n from '../common/config/i18n';
-import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolution-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
@@ -18,21 +17,19 @@ import {
   useVolunteer,
 } from '../services/volunteer/volunteer.service';
 import { VolunteerProps } from '../containers/query/VolunteerWithQueryParams';
-import ActivityLogTableWithQueryParams from '../containers/query/ActivityLogTableWithQueryParams';
+import VolunteerHoursHistory from '../components/VolunteerHoursHistory';
 import ContractsTableWithQueryParams from '../containers/query/ContractsTableWithQueryParams';
 import VolunteerActivities from '../components/VolunteerActivities';
 
 export enum VolunteerTabsOptions {
   ACTIVITIES = 'activities',
-  NEW = 'new',
-  SOLVED = 'solved',
+  HOURS = 'hours',
   DOCUMENTS = 'documents',
 }
 
 const VolunteerTabsOptons: SelectItem<VolunteerTabsOptions>[] = [
   { key: VolunteerTabsOptions.ACTIVITIES, value: i18n.t('volunteer:activities.tab') },
-  { key: VolunteerTabsOptions.NEW, value: i18n.t('activity_log:pending') },
-  { key: VolunteerTabsOptions.SOLVED, value: i18n.t('activity_log:past') },
+  { key: VolunteerTabsOptions.HOURS, value: i18n.t('volunteer:hours_history.tab') },
   { key: VolunteerTabsOptions.DOCUMENTS, value: i18n.t('side_menu:options.documents') },
 ];
 
@@ -117,16 +114,8 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
         onClick={onTabClick}
         defaultTab={VolunteerTabsOptons.find((option) => option.key === query.activeTab)}
       >
-        {query?.activeTab === VolunteerTabsOptions.NEW && (
-          <ActivityLogTableWithQueryParams
-            resolutionStatus={ActivityLogResolutionStatus.NEW}
-            volunteerId={id as string}
-            volunteerStatus={volunteer?.status}
-          />
-        )}
-        {query?.activeTab === VolunteerTabsOptions.SOLVED && (
-          <ActivityLogTableWithQueryParams
-            resolutionStatus={ActivityLogResolutionStatus.SOLVED}
+        {query?.activeTab === VolunteerTabsOptions.HOURS && (
+          <VolunteerHoursHistory
             volunteerId={id as string}
             volunteerName={volunteer?.user.name}
             volunteerStatus={volunteer?.status}
