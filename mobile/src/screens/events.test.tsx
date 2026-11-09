@@ -49,7 +49,7 @@ jest.mock('../services/event/event.service', () => ({
       items = [event('1'), event('2', { isPublic: false }), event('3')];
     }
     if (eventFilter === 'GOING') {
-      items = [event('4')];
+      items = [event('4'), event('5', { registrationStatus: 'pending' })];
     }
     if (search === 'nimic' || filters?.organizationId === 'org-2') {
       items = [];
@@ -130,7 +130,11 @@ describe('Evenimente', () => {
     await fireEvent.press(await screen.findByText('Particip'));
     expect(lastCall()[2]).toBe(EventType.GOING);
     expect(await screen.findByText('Eveniment 4')).toBeTruthy();
-    expect(screen.getByText('Înscris')).toBeTruthy();
+    expect(within(screen.getByTestId('event-card-4')).getByText('Înscris')).toBeTruthy();
+    // the organization hasn't approved this one yet
+    const pending = screen.getByTestId('event-card-5');
+    expect(within(pending).getByText('În așteptare')).toBeTruthy();
+    expect(within(pending).queryByText('Înscris')).toBeNull();
   });
 
   it('"Organizațiile mele" with nothing published shows its empty state', async () => {
