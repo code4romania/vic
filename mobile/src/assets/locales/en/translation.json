@@ -750,7 +750,28 @@
     },
     "confirmation_modal": {
       "paragraph": "Are you sure you wish to cancel and upload a different contract?"
-    }
+    },
+    "download": "download",
+    "download_error": "We could not download the document. Try again.",
+    "see_all": "See all ({{count}})",
+    "status": {
+      "PENDING_VOLUNTEER": "To sign",
+      "PENDING_ADMIN": "With the organization",
+      "NOT_STARTED": "Not started",
+      "ACTIVE": "Active",
+      "CLOSED": "Ended",
+      "REJECTED": "Rejected"
+    },
+    "empty": {
+      "title": "No documents yet",
+      "description": "Volunteering contracts sent by the organization show up here.",
+      "pending": "No contracts to sign",
+      "signed": "No signed contracts"
+    },
+    "errors": {
+      "generic": "Error loading your documents"
+    },
+    "pending_callout": "Contracts waiting for your signature: {{count}}"
   },
   "notifications": {
     "header": "Notifications settings",

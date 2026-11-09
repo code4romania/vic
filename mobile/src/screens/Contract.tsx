@@ -15,7 +15,7 @@ import FormLayout from '../layouts/FormLayout';
 import { Text, useTheme } from '@ui-kitten/components';
 import { Platform, StyleSheet, View } from 'react-native';
 import ContractItem from '../components/ContractItem';
-import { DocumentIcon } from './Documents';
+import { DocumentIcon } from '../components/DocumentIcon';
 import { ButtonType } from '../common/enums/button-type.enum';
 import * as FileSystem from 'expo-file-system/legacy';
 import { shareAsync } from 'expo-sharing';

@@ -52,7 +52,7 @@ const HomeTab = withTabInset(Home);
 // redesigned: scrolls under the glass bar and adds the inset itself
 const EventsTab = Events;
 const HoursTab = ActivityLogs;
-const DocumentsTab = withTabInset(Documents);
+const DocumentsTab = Documents;
 const ProfileTab = withTabInset(Settings);
 const VolunteerRoute = withTabInset(Volunteer);
 // Organizations pads its own list under the glass tab bar
