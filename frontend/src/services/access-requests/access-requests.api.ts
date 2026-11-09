@@ -34,6 +34,33 @@ export const getNewAccessRequests = async (
   }).then((res) => res.data);
 };
 
+// #500: approved requests, so the NGO can change its decision
+export const getApprovedAccessRequests = async (
+  limit: number,
+  page: number,
+  orderBy?: string,
+  orderDirection?: OrderDirection,
+  search?: string,
+  createdOnStart?: Date,
+  createdOnEnd?: Date,
+  city?: string,
+  county?: string,
+): Promise<IPaginatedEntity<IAccessRequest>> => {
+  return API.get('/access-request/approved', {
+    params: {
+      limit,
+      page,
+      orderBy,
+      orderDirection,
+      search,
+      ...(createdOnStart ? { createdOnStart: formatStartDateISO9075(createdOnStart) } : {}),
+      ...(createdOnEnd ? { createdOnEnd: formatEndDateISO9075(createdOnEnd) } : {}),
+      city,
+      county,
+    },
+  }).then((res) => res.data);
+};
+
 export const getRejectedAccessRequests = async (
   limit: number,
   page: number,

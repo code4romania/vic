@@ -49,16 +49,22 @@ export class GetOrganizationWithEventsUseCase
       status: AccessRequestStatus.PENDING,
     });
 
-    if (accessRequest) {
-      organization.organizationVolunteerStatus =
-        OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING;
-    }
-
     if (organization.volunteers.length > 0) {
       organization.organizationVolunteerStatus = this.toOrganizationStatus(
         organization.volunteers[0],
         userId,
       );
+    }
+
+    // A pending request wins over "left" (#500: asking to rejoin)
+    if (
+      accessRequest &&
+      (!organization.volunteers.length ||
+        organization.organizationVolunteerStatus ===
+          OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER)
+    ) {
+      organization.organizationVolunteerStatus =
+        OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING;
     }
 
     // 4. Send the organization back to the caller

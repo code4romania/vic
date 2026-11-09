@@ -141,6 +141,9 @@ const OrganizationProfile = ({ navigation, route }: any) => {
       rejoinOrganization(
         { volunteerId: organization.volunteer.id },
         {
+          onSuccess: () => {
+            Toast.show({ type: 'success', text1: `${t('rejoin_requested')}` });
+          },
           onError: (error: any) => {
             Toast.show({
               type: 'error',

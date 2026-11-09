@@ -13,6 +13,8 @@ import {
   assertVolunteerEditable,
   assertVolunteerNotBlocked,
 } from 'src/modules/volunteer/volunteer-status.rules';
+import { GetOrganizationWithEventsUseCase } from '../organization/get-organization-with-events.usecase';
+import { CreateAccessRequestUseCase } from '../access-request/create-access-request.usecase';
 import { SwitchOrganizationUsecase } from '../organization/switch-organization.usecase';
 import { RejoinOrganizationUsecase } from '../organization/rejoin-organization.usecase';
 import { CreateRegularUsereUseCaseService } from '../user/create-regular-user.usecase';
@@ -110,41 +112,45 @@ describe('status change usecases (#472)', () => {
   });
 });
 
-describe('RejoinOrganizationUsecase (#472)', () => {
+describe('RejoinOrganizationUsecase (#500)', () => {
   const user = { id: 'user-id' } as IRegularUserModel;
 
   const build = (
     current: IVolunteerModel,
   ): {
     useCase: RejoinOrganizationUsecase;
-    activate: { execute: jest.Mock };
+    request: { execute: jest.Mock };
   } => {
-    const activate = { execute: jest.fn().mockResolvedValue(current) };
+    const request = { execute: jest.fn() };
     const useCase = new RejoinOrganizationUsecase(
-      activate as unknown as ActivateVolunteerUsecase,
-      { execute: jest.fn() } as unknown as SwitchOrganizationUsecase,
+      request as unknown as CreateAccessRequestUseCase,
+      { execute: jest.fn() } as unknown as GetOrganizationWithEventsUseCase,
       {
         execute: jest.fn().mockResolvedValue(current),
       } as unknown as GetOneVolunteerUsecase,
       new ExceptionsService(),
     );
-    return { useCase, activate };
+    return { useCase, request };
   };
 
-  it('lets a volunteer who left by themselves rejoin', async () => {
-    const { useCase, activate } = build(
+  it('sends a request to the organization when the volunteer left by themselves', async () => {
+    const { useCase, request } = build(
       volunteer({ status: VolunteerStatus.INACTIVE, archivedById: 'user-id' }),
     );
     await useCase.execute('volunteer-id', user);
-    expect(activate.execute).toHaveBeenCalled();
+    expect(request.execute).toHaveBeenCalledWith({
+      organizationId: 'org-id',
+      requestedById: 'user-id',
+      answers: [],
+    });
   });
 
   it('refuses when the organization made the volunteer inactive', async () => {
-    const { useCase, activate } = build(
+    const { useCase, request } = build(
       volunteer({ status: VolunteerStatus.INACTIVE, archivedById: 'admin-id' }),
     );
     await rejectsWith(useCase.execute('volunteer-id', user), 'VOLUNTEER_008');
-    expect(activate.execute).not.toHaveBeenCalled();
+    expect(request.execute).not.toHaveBeenCalled();
   });
 });
 

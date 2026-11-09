@@ -15,6 +15,8 @@ interface RejectTextareaModalProps {
   primaryBtnClassName?: string;
   primaryBtnLabel?: string;
   secondaryBtnLabel?: string;
+  // #500: the reason is mandatory; the secondary button only closes the modal
+  requireReason?: boolean;
 }
 
 export type RejectTextareaType = {
@@ -31,6 +33,16 @@ const schema = yup
   })
   .required();
 
+const requiredReasonSchema = yup
+  .object({
+    rejectMessage: yup
+      .string()
+      .trim()
+      .required(`${i18n.t('reject_modal:form.required')}`)
+      .max(225, `${i18n.t('reject_modal:form.max')}`),
+  })
+  .required();
+
 const RejectTextareaModal = ({
   title,
   label,
@@ -39,6 +51,7 @@ const RejectTextareaModal = ({
   primaryBtnClassName,
   primaryBtnLabel,
   secondaryBtnLabel,
+  requireReason,
 }: RejectTextareaModalProps) => {
   const onSubmitWithMessage = (data: { rejectMessage: string }) => {
     onConfirm(data.rejectMessage);
@@ -57,7 +70,7 @@ const RejectTextareaModal = ({
   } = useForm<RejectTextareaType>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(requireReason ? requiredReasonSchema : schema),
   });
 
   return (
@@ -82,9 +95,15 @@ const RejectTextareaModal = ({
         </form>
         <div className="flex flex-col-reverse sm:flex-row gap-4 justify-end">
           <Button
-            label={secondaryBtnLabel ? secondaryBtnLabel : i18n.t('reject_modal:send')}
+            label={
+              secondaryBtnLabel
+                ? secondaryBtnLabel
+                : requireReason
+                  ? i18n.t('general:cancel')
+                  : i18n.t('reject_modal:send')
+            }
             className="btn-outline-secondary w-full sm:w-20"
-            onClick={onSubmitWithoutMessage}
+            onClick={requireReason ? onClose : onSubmitWithoutMessage}
           />
           <Button
             label={primaryBtnLabel ? primaryBtnLabel : i18n.t('general:send')}

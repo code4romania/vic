@@ -152,7 +152,8 @@
         "approved": "aprobată",
         "deleted": "ștearsă",
         "rejected": "respinsă"
-      }
+      },
+      "rejoin": "Fost voluntar al organizației, cere să revină."
     },
     "errors": {
       "VOL_001": "Nu s-a putut încărca cererea voluntarului"
@@ -448,9 +449,12 @@
   "access_requests": {
     "date": "Dată cerere acces",
     "rejected_date": "Dată respingere",
+    "approved_date": "Dată aprobare",
     "rejected_message": "Această cerere de înscriere a fost respinsă la {{date}}",
+    "approved_message": "Această cerere de înscriere a fost aprobată la {{date}}",
     "tabs": {
       "requests": "Cereri",
+      "approved_requests": "Cereri aprobate",
       "rejected_requests": "Cereri respinse"
     },
     "filters": {
@@ -461,14 +465,17 @@
       "view": "Vizualizează aplicare",
       "approve": "Aprobă cerere",
       "reject": "Respinge cerere",
-      "delete": "Șterge din listă"
+      "delete": "Șterge din listă",
+      "change_to_rejected": "Schimbă în respinsă",
+      "change_to_approved": "Schimbă în aprobată"
     },
     "errors": {
       "no_data": "Nu s-au putut încărca cererile de înscriere",
       "ACCESS_REQUEST_001": "Există deja o cerere pentru organization dumneavoastră",
       "ACCESS_REQUEST_002": "Cererea nu a fost găsită",
       "ACCESS_REQUEST_003": "Cererea trebuie să fie respinsă pentru a putea fi ștearsă",
-      "ACCESS_REQUEST_004": "Cererea nu este în starea potrivită"
+      "ACCESS_REQUEST_004": "Cererea are deja această decizie.",
+      "ACCESS_REQUEST_005": "Voluntarul are deja ore, contracte sau înscrieri la evenimente. Fă-l inactiv în loc să respingi cererea."
     },
     "confirmation_modal": {
       "title": "Sigur doriți să ștergeți această solicitare de înregistrare?",

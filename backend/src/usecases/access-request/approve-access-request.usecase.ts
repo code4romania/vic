@@ -15,6 +15,10 @@ import { CreateVolunteerUseCase } from '../volunteer/create-volunteer.usecase';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import ApproveRequestEvent from 'src/modules/notifications/events/join-ngo/approve-request.event';
+import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
+import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
+import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 
 @Injectable()
 export class ApproveAccessRequestUseCase
@@ -26,6 +30,8 @@ export class ApproveAccessRequestUseCase
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly exceptionService: ExceptionsService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly volunteerFacade: VolunteerFacade,
+    private readonly userFacade: UserFacadeService,
   ) {}
 
   public async execute(
@@ -42,18 +48,34 @@ export class ApproveAccessRequestUseCase
       );
     }
 
-    // Access Request must be in PENDING status to allow updates.
-    if (accessRequest.status !== AccessRequestStatus.PENDING) {
+    // A pending request, or a rejected one whose decision changes (#500)
+    if (accessRequest.status === AccessRequestStatus.APPROVED) {
       this.exceptionService.badRequestException(
         AccessRequestExceptionMessages.ACCESS_REQUEST_004,
       );
     }
 
-    // Create volunteer user for the organization
-    const volunteer = await this.createVolunteerUseCase.execute({
-      organizationId: accessRequest.organizationId,
+    // A volunteer who left the organization rejoins with the same record (#500); anyone else
+    // becomes a new volunteer of the organization.
+    const existing = await this.volunteerFacade.find({
       userId: accessRequest.requestedBy?.id,
+      organizationId: accessRequest.organizationId,
     });
+    let volunteer: IVolunteerModel;
+    if (
+      existing?.status === VolunteerStatus.INACTIVE &&
+      existing.archivedById === accessRequest.requestedBy?.id
+    ) {
+      volunteer = await this.volunteerFacade.activate(existing.id);
+      await this.userFacade.updateRegularUser(accessRequest.requestedBy.id, {
+        activeOrganizationId: accessRequest.organizationId,
+      });
+    } else {
+      volunteer = await this.createVolunteerUseCase.execute({
+        organizationId: accessRequest.organizationId,
+        userId: accessRequest.requestedBy?.id,
+      });
+    }
 
     const updated = await this.accessRequestFacade.update({
       ...updates,

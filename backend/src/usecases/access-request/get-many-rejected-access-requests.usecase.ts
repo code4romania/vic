@@ -20,10 +20,12 @@ export class GetManyRejectedAccessRequestsUseCase
 
   public async execute(
     findOptions: FindManyAccessRequestsOptions,
+    // #500: the Approved tab lists approved requests the same way
+    status: AccessRequestStatus = AccessRequestStatus.REJECTED,
   ): Promise<Pagination<IAccessRequestModel>> {
     const requests = await this.accessRequestFacade.findMany({
       ...findOptions,
-      status: AccessRequestStatus.REJECTED,
+      status,
     });
 
     // TODO: review this

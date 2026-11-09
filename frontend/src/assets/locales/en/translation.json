@@ -152,7 +152,8 @@
         "approved": "approved",
         "deleted": "deleted",
         "rejected": "rejected"
-      }
+      },
+      "rejoin": "A former volunteer of the organization, asking to rejoin."
     },
     "errors": {
       "VOL_001": "Could not upload volunteer application"
@@ -444,9 +445,12 @@
   "access_requests": {
     "date": "Access request date",
     "rejected_date": "Date rejected",
+    "approved_date": "Date approved",
     "rejected_message": "This application was rejected at {{date}}",
+    "approved_message": "This application was approved on {{date}}",
     "tabs": {
       "requests": "Requests",
+      "approved_requests": "Approved applications",
       "rejected_requests": "Rejected applications"
     },
     "filters": {
@@ -457,14 +461,17 @@
       "view": "View application",
       "approve": "Approve application",
       "reject": "Dismisses the application",
-      "delete": "Remove from list"
+      "delete": "Remove from list",
+      "change_to_rejected": "Change to rejected",
+      "change_to_approved": "Change to approved"
     },
     "errors": {
       "no_data": "Applications could not be uploaded",
       "ACCESS_REQUEST_001": "There is already an application for your organization",
       "ACCESS_REQUEST_002": "Request not found",
       "ACCESS_REQUEST_003": "The application must be rejected in order to be deleted",
-      "ACCESS_REQUEST_004": "Demand is not in the right state"
+      "ACCESS_REQUEST_004": "The request already has this decision.",
+      "ACCESS_REQUEST_005": "The volunteer already has hours, contracts or event registrations. Make them inactive instead of rejecting the request."
     },
     "confirmation_modal": {
       "title": "Are you sure you want to delete this registration request?",

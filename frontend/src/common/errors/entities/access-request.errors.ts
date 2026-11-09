@@ -6,6 +6,7 @@ export enum ACCESS_REQUEST_ERRORS {
   ACCESS_REQUEST_002 = 'ACCESS_REQUEST_002',
   ACCESS_REQUEST_003 = 'ACCESS_REQUEST_003',
   ACCESS_REQUEST_004 = 'ACCESS_REQUEST_004',
+  ACCESS_REQUEST_005 = 'ACCESS_REQUEST_005',
 }
 
 export class AccessRequestError extends ErrorClass<ACCESS_REQUEST_ERRORS> {
@@ -24,6 +25,9 @@ export class AccessRequestError extends ErrorClass<ACCESS_REQUEST_ERRORS> {
       ),
       [ACCESS_REQUEST_ERRORS.ACCESS_REQUEST_004]: i18n.t(
         'access_requests:errors.ACCESS_REQUEST_004',
+      ),
+      [ACCESS_REQUEST_ERRORS.ACCESS_REQUEST_005]: i18n.t(
+        'access_requests:errors.ACCESS_REQUEST_005',
       ),
     });
   }
