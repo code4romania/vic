@@ -1,8 +1,6 @@
+// VIC 2.0, #488: signed and not past its end date, waiting for the signed copy, or past its end date.
 export enum ClientContractStatus {
-  PENDING_VOLUNTEER = 'PENDING_VOLUNTEER',
-  PENDING_ADMIN = 'PENDING_ADMIN',
-  NOT_STARTED = 'NOT_STARTED',
-  CLOSED = 'CLOSED',
-  ACTIVE = 'ACTIVE',
-  REJECTED = 'REJECTED',
+  SIGNED = 'SIGNED',
+  PENDING = 'PENDING',
+  EXPIRED = 'EXPIRED',
 }

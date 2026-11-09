@@ -33,10 +33,7 @@ import ActivityLogs from '../containers/query/ActivityLogsWithQueryParams';
 import AddActivityLog from '../containers/query/AddActivityLogWithQueryParams';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
-import Contracts from '../containers/query/ContractsWithQueryParams';
-import AddContractTemplate from '../pages/AddContractTemplate';
-import EditContractTemplate from '../pages/EditContractTemplate';
-import AddContract from '../containers/query/AddContractWithQueryParams';
+import Contracts from '../pages/Contracts';
 import ActionsArchive from '../pages/ActionsArchive';
 import LoginLink from '../pages/LoginLink';
 import ConfirmEmail from '../pages/ConfirmEmail';
@@ -116,12 +113,7 @@ const Router = () => {
             </Route>
             <Route path="documents" element={<Outlet />}>
               <Route index element={<Navigate to={'contracts'} />} />
-              <Route path="contracts" element={<Outlet />}>
-                <Route index element={<Contracts />} />
-                <Route path="add-template" element={<AddContractTemplate />} />
-                <Route path="add" element={<AddContract />} />
-                <Route path=":id/edit" element={<EditContractTemplate />} />
-              </Route>
+              <Route path="contracts" element={<Contracts />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

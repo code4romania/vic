@@ -5,7 +5,6 @@ import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.serv
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { GetOneContractUsecase } from './get-one-contract.usecase';
 import { ContractFacade } from 'src/modules/documents/services/contract.facade';
-import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
 
@@ -28,13 +27,7 @@ export class DeleteContractUsecase implements IUseCaseService<string> {
     // An inactive or blocked volunteer's contracts are read-only
     assertVolunteerEditable(contract.volunteer);
 
-    // 2. check if the contract is approved
-    if (contract.status === ContractStatus.APPROVED) {
-      this.exceptionsService.badRequestException(
-        ContractExceptionMessages.CONTRACT_006,
-      );
-    }
-
+    // #486: the NGO uploaded it, so it can also remove a wrong upload, signed or not
     try {
       // 3. delete template file
       await this.s3Service.deleteFile(contract.path);

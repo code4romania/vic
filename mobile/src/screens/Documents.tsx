@@ -4,10 +4,7 @@ import Animated from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import {
-  useContractHistoryInfiniteQuery,
-  usePendingContractsInfiniteQuery,
-} from '../services/contract/contract.service';
+import { useContractHistoryInfiniteQuery } from '../services/contract/contract.service';
 import { IContractListItem } from '../common/interfaces/contract-list-item.interface';
 import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
 import { useUserProfile } from '../store/profile/profile.selector';
@@ -25,8 +22,8 @@ import { EmptyState, Enter, Group, PressableScale, StatusBarScrim, VText } from 
 const PREVIEW = 3;
 
 /**
- * VIC 2.0 Documente (canvas board "Documente"): the contracts of the active organization. Contracts
- * waiting for the volunteer open the signing page; signed ones download as a file.
+ * VIC 2.0 Documente (canvas board "Documente"): the contracts the organization uploaded for the
+ * volunteer (#486), with their status (#488). Each one downloads as a file.
  */
 const Documents = ({ navigation, route }: any) => {
   const { t } = useTranslation('documents');
@@ -39,26 +36,21 @@ const Documents = ({ navigation, route }: any) => {
   const volunteerId = route.params?.volunteerId || (organization?.volunteerId as string);
   const { downloadingId, download } = useDownloadContract();
 
-  const pending = usePendingContractsInfiniteQuery(volunteerId);
   const history = useContractHistoryInfiniteQuery(volunteerId);
-  const { refetch: reloadPending } = pending;
   const { refetch: reloadHistory } = history;
 
   const reload = useCallback(() => {
-    reloadPending();
     reloadHistory();
-  }, [reloadPending, reloadHistory]);
+  }, [reloadHistory]);
 
   useFocusEffect(reload);
 
-  const pendingItems = pending.data?.pages?.[0]?.items ?? [];
-  const pendingTotal = pending.data?.pages?.[0]?.meta?.totalItems ?? pendingItems.length;
   const signedItems = history.data?.pages?.[0]?.items ?? [];
   const signedTotal = history.data?.pages?.[0]?.meta?.totalItems ?? signedItems.length;
-  const isLoading = (pending.isFetching || history.isFetching) && !pending.data && !history.data;
+  const isLoading = history.isFetching && !history.data;
 
   const section = (
-    key: 'pending' | 'signed',
+    key: 'signed',
     title: string,
     items: IContractListItem[],
     total: number,
@@ -85,7 +77,6 @@ const Documents = ({ navigation, route }: any) => {
           <Enter key={contract.id} index={index}>
             <DocumentRow
               contract={contract}
-              kind={key}
               onPress={onPress}
               busy={downloadingId === contract.id}
               divider={index < shown.length - 1}
@@ -102,10 +93,7 @@ const Documents = ({ navigation, route }: any) => {
         onScroll={onScroll}
         scrollEventThrottle={16}
         refreshControl={
-          <RefreshControl
-            refreshing={!isLoading && (pending.isRefetching || history.isRefetching)}
-            onRefresh={reload}
-          />
+          <RefreshControl refreshing={!isLoading && history.isRefetching} onRefresh={reload} />
         }
         contentContainerStyle={[
           styles.content,
@@ -137,29 +125,11 @@ const Documents = ({ navigation, route }: any) => {
 
         {isLoading && <DocumentSkeletonList />}
 
-        {!isLoading && pendingItems.length > 0 && (
-          <Enter index={2}>
-            <View style={styles.callout}>
-              <VText variant="label" color={colors.status.wait.fg}>
-                {t('pending_callout', { count: pendingTotal })}
-              </VText>
-            </View>
-            {section(
-              'pending',
-              `${t('sections.pending')}`,
-              pendingItems,
-              pendingTotal,
-              () => navigation.navigate('pending-contracts'),
-              (contract) => navigation.navigate('contract', { id: contract.id }),
-            )}
-          </Enter>
-        )}
-
         {!isLoading && signedItems.length > 0 && (
           <Enter index={3}>
             {section(
               'signed',
-              `${t('sections.closed')}`,
+              `${t('sections.all')}`,
               signedItems,
               signedTotal,
               () => navigation.navigate('contract-history'),
@@ -168,12 +138,12 @@ const Documents = ({ navigation, route }: any) => {
           </Enter>
         )}
 
-        {!isLoading && !pendingItems.length && !signedItems.length && (
+        {!isLoading && !signedItems.length && (
           <EmptyState
-            title={`${pending.error || history.error ? t('errors.generic') : t('empty.title')}`}
-            description={pending.error || history.error ? undefined : `${t('empty.description')}`}
-            actionLabel={pending.error || history.error ? `${t('events:retry')}` : undefined}
-            onAction={pending.error || history.error ? reload : undefined}
+            title={`${history.error ? t('errors.generic') : t('empty.title')}`}
+            description={history.error ? undefined : `${t('empty.description')}`}
+            actionLabel={history.error ? `${t('events:retry')}` : undefined}
+            onAction={history.error ? reload : undefined}
             testID="documents-empty"
           />
         )}
@@ -197,12 +167,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: { marginTop: 16, marginBottom: 4 },
-  callout: {
-    marginTop: 20,
-    borderRadius: 12,
-    padding: 14,
-    backgroundColor: colors.status.wait.bg,
-  },
   section: { marginTop: 24 },
   sectionHead: {
     flexDirection: 'row',

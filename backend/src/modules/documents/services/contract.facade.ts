@@ -7,6 +7,7 @@ import {
   IContractModel,
   UpdateContractOptions,
 } from '../models/contract.model';
+import { ClientContractStatus } from '../enums/client-contract-status.enum';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
 
 @Injectable()
@@ -25,8 +26,11 @@ export class ContractFacade {
     return this.contractRepository.findMany(findOptions);
   }
 
-  public async count(findOptions: FindContractOptions): Promise<number> {
-    return this.contractRepository.count(findOptions);
+  public async countByStatus(
+    organizationId: string,
+    status: ClientContractStatus,
+  ): Promise<number> {
+    return this.contractRepository.countByStatus(organizationId, status);
   }
 
   public async findOne(

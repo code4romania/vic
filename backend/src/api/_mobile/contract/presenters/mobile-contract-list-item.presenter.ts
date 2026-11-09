@@ -2,6 +2,7 @@ import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IContractModel,
+  isContractExpiringSoon,
   mapContractStatusToClientContractStatus,
 } from 'src/modules/documents/models/contract.model';
 import { ClientContractStatus } from 'src/modules/documents/enums/client-contract-status.enum';
@@ -14,6 +15,7 @@ export class MobileContractListItemPresenter {
     this.endDate = contract.endDate;
     this.path = contract.path;
     this.status = mapContractStatusToClientContractStatus(contract);
+    this.expiringSoon = isContractExpiringSoon(contract);
     this.contractFileName = contract.fileName;
   }
 
@@ -59,4 +61,11 @@ export class MobileContractListItemPresenter {
     description: 'The contract fileName',
   })
   contractFileName: string;
+
+  @Expose()
+  @ApiProperty({
+    description:
+      '#488: a signed contract within a month of its end date ("Expiră în curând")',
+  })
+  expiringSoon: boolean;
 }

@@ -18,6 +18,7 @@ import {
 } from '../services/volunteer/volunteer.service';
 import { VolunteerProps } from '../containers/query/VolunteerWithQueryParams';
 import VolunteerHoursHistory from '../components/VolunteerHoursHistory';
+import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import ContractsTableWithQueryParams from '../containers/query/ContractsTableWithQueryParams';
 import VolunteerActivities from '../components/VolunteerActivities';
 import VolunteerEvents from '../components/VolunteerEvents';
@@ -138,8 +139,8 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
         )}
         {query?.activeTab === VolunteerTabsOptions.DOCUMENTS && (
           <ContractsTableWithQueryParams
-            volunteerName={volunteer?.user.name as string}
             volunteerId={volunteer?.id}
+            readOnly={volunteer?.status !== VolunteerStatus.ACTIVE}
           />
         )}
       </Tabs>

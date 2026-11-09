@@ -7,7 +7,6 @@ import Toast from 'react-native-toast-message';
 import '../common/config/i18n';
 import Documents from './Documents';
 import ContractHistory from './ContractHistory';
-import PendingContracts from './PendingContracts';
 import useStore from '../store/store';
 import { ClientContractStatus } from '../common/enums/client-contract-status.enum';
 import { formatContractDay } from '../components/documents/DocumentRow';
@@ -17,17 +16,22 @@ jest.mock('../common/utils/download-contract', () => ({
   downloadContract: (...args: any[]) => mockDownload(...args),
 }));
 
-const contract = (id: string, status: ClientContractStatus) => ({
+const contract = (
+  id: string,
+  status: ClientContractStatus,
+  over: Record<string, unknown> = {},
+) => ({
   id,
   contractNumber: `${id}/2026`,
   startDate: '2026-01-15T00:00:00.000Z',
   endDate: '2027-01-15T00:00:00.000Z',
   path: `https://files/${id}.pdf`,
   status,
+  expiringSoon: false,
   contractFileName: `contract-${id}.pdf`,
+  ...over,
 });
 
-let mockPending: any[] = [];
 let mockSigned: any[] = [];
 const page = (items: any[]) => ({
   data: { pages: [{ items, meta: { totalItems: items.length } }] },
@@ -41,16 +45,10 @@ const page = (items: any[]) => ({
 });
 
 jest.mock('../services/contract/contract.service', () => ({
-  usePendingContractsInfiniteQuery: () => page(mockPending),
   useContractHistoryInfiniteQuery: () => page(mockSigned),
 }));
 
 const { Navigator, Screen } = createNativeStackNavigator();
-const ContractStub = ({ route }: any) => {
-  const { Text } = require('react-native');
-  return <Text>{`contract:${route.params.id}`}</Text>;
-};
-
 const renderApp = (initialRouteName = 'docs') =>
   render(
     <SafeAreaProvider
@@ -62,9 +60,7 @@ const renderApp = (initialRouteName = 'docs') =>
       <NavigationContainer>
         <Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
           <Screen name="docs" component={Documents} />
-          <Screen name="pending-contracts" component={PendingContracts} />
           <Screen name="contract-history" component={ContractHistory} />
-          <Screen name="contract" component={ContractStub} />
         </Navigator>
       </NavigationContainer>
     </SafeAreaProvider>,
@@ -73,12 +69,11 @@ const renderApp = (initialRouteName = 'docs') =>
 beforeEach(() => {
   jest.clearAllMocks();
   mockDownload.mockResolvedValue(undefined);
-  mockPending = [contract('7', ClientContractStatus.PENDING_VOLUNTEER)];
   mockSigned = [
-    contract('3', ClientContractStatus.ACTIVE),
-    contract('2', ClientContractStatus.CLOSED),
-    contract('1', ClientContractStatus.CLOSED),
-    contract('0', ClientContractStatus.CLOSED),
+    contract('3', ClientContractStatus.SIGNED),
+    contract('2', ClientContractStatus.SIGNED, { expiringSoon: true }),
+    contract('1', ClientContractStatus.PENDING, { contractNumber: null, endDate: null }),
+    contract('0', ClientContractStatus.EXPIRED),
   ];
   useStore.setState({
     userProfile: {
@@ -95,25 +90,22 @@ beforeEach(() => {
 });
 
 describe('Documente', () => {
-  it('shows contracts to sign first, then the signed ones with their period and status', async () => {
+  it('lists the uploaded contracts with their period and status (#486, #488)', async () => {
     await renderApp();
     expect(await screen.findByText('Documente')).toBeTruthy();
     expect(screen.getByText('La Asociația Exemplu')).toBeTruthy();
-    expect(screen.getByText('Contracte care așteaptă semnătura ta: 1')).toBeTruthy();
-    const toSign = screen.getByTestId('document-row-7');
-    expect(within(toSign).getByText('Contract 7/2026')).toBeTruthy();
-    expect(within(toSign).getByText('15 ian 2026 – 15 ian 2027')).toBeTruthy();
-    expect(within(toSign).getByText('De semnat')).toBeTruthy();
-    expect(within(screen.getByTestId('document-row-3')).getByText('Activ')).toBeTruthy();
-    // three signed contracts on the tab, the fourth behind "Vezi toate"
+    const signed = screen.getByTestId('document-row-3');
+    expect(within(signed).getByText('Contract 3/2026')).toBeTruthy();
+    expect(within(signed).getByText('15 ian 2026 – 15 ian 2027')).toBeTruthy();
+    expect(within(signed).getByText('Semnat')).toBeTruthy();
+    expect(within(screen.getByTestId('document-row-2')).getByText('Expiră în curând')).toBeTruthy();
+    const pending = screen.getByTestId('document-row-1');
+    expect(within(pending).getByText('În așteptare')).toBeTruthy();
+    expect(within(pending).getByText('din 15 ian 2026, fără dată de final')).toBeTruthy();
+    // three contracts on the tab, the fourth behind "Vezi toate"
     expect(screen.queryByTestId('document-row-0')).toBeNull();
     expect(screen.getByText('Vezi toate (4)')).toBeTruthy();
-  });
-
-  it('a contract to sign opens the signing page', async () => {
-    await renderApp();
-    await fireEvent.press(await screen.findByTestId('document-row-7'));
-    expect(await screen.findByText('contract:7')).toBeTruthy();
+    expect(screen.queryByText(/semnătura ta/)).toBeNull();
   });
 
   it('a signed contract downloads, and a failed download says so', async () => {
@@ -129,19 +121,18 @@ describe('Documente', () => {
     );
   });
 
-  it('"Vezi toate" lists every signed contract', async () => {
+  it('"Vezi toate" lists every contract', async () => {
     await renderApp();
     await fireEvent.press(await screen.findByTestId('documents-signed-all'));
     expect(await screen.findByTestId('document-row-0')).toBeTruthy();
-    expect(screen.getByText('Istoric contracte semnate')).toBeTruthy();
+    expect(within(screen.getByTestId('document-row-0')).getByText('Expirat')).toBeTruthy();
   });
 
   it('without documents explains where contracts come from', async () => {
-    mockPending = [];
     mockSigned = [];
     await renderApp();
     expect(await screen.findByText('Niciun document încă')).toBeTruthy();
-    expect(screen.queryByTestId('documents-pending')).toBeNull();
+    expect(screen.getByText('Contractele încărcate de organizație apar aici.')).toBeTruthy();
   });
 
   it('formats contract days with Romanian short months', () => {

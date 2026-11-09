@@ -4,6 +4,7 @@ import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presen
 import { ClientContractStatus } from 'src/modules/documents/enums/client-contract-status.enum';
 import {
   IContractModel,
+  isContractExpiringSoon,
   mapContractStatusToClientContractStatus,
 } from 'src/modules/documents/models/contract.model';
 
@@ -14,6 +15,7 @@ export class ContractListItemPresenter {
     this.startDate = contract.startDate;
     this.endDate = contract.endDate;
     this.status = mapContractStatusToClientContractStatus(contract);
+    this.expiringSoon = isContractExpiringSoon(contract);
     this.volunteer = new IdAndNamePresenter({
       id: contract.volunteer.id,
       name: contract.volunteer.user.name,
@@ -71,4 +73,11 @@ export class ContractListItemPresenter {
     type: IdAndNamePresenter,
   })
   volunteer: IdAndNamePresenter<{ id: string; name: string }>;
+
+  @Expose()
+  @ApiProperty({
+    description:
+      '#488: a signed contract within a month of its end date ("Expiră în curând")',
+  })
+  expiringSoon: boolean;
 }

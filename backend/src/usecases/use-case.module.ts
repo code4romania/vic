@@ -142,25 +142,13 @@ import { CreateActivityLogByRegularUser } from './activity-log/create-activity-l
 import { GetEventsByOrganizationUsecase } from './event/get-events-by-organization.usecase';
 import { CancelActivityLogUsecase } from './activity-log/cancel-activity-log.usecase';
 import { DocumentsModule } from 'src/modules/documents/documents.module';
-import { CreateTemplateUsecase } from './documents/create-template.usecase';
-import { GetTemplatesUsecase } from './documents/get-templates.usecase';
-import { GetOneTemplateUseCase } from './documents/get-one-template.usecase';
-import { UpdateTemplateUsecase } from './documents/update-template.usecase';
-import { DeleteTemplateUseCase } from './documents/delete-template.usecase';
-import { GetAllTemplatesUsecase } from './documents/get-all-templates.usecase';
 import { GetManyContractsUsecase } from './documents/get-many-contracts.usecase';
-import { CreateContractUsecase } from './documents/create-contract.usecase';
 import { CountPendingContractsUsecase } from './documents/count-pending-contracts.usecase';
 import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
-import { SignContractByVolunteer } from './documents/sign-contract-by-volunteer.usecase';
-import { SignAndConfirmContractUsecase } from './documents/sign-and-confirm-contract.usecase';
-import { RejectContractUsecase } from './documents/reject-contract.usecase';
-import { GetTemplatesForDownloadUsecase } from './documents/get-templates-for-download.usecase';
 import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
 import { DeleteContractUsecase } from './documents/delete-contract.usecase';
+import { UploadContractUsecase } from './documents/upload-contract.usecase';
 import { GetVolunteerContractHistoryUsecase } from './documents/get-volunteer-contract-history.usecase';
-import { GetVolunteerPendingContractsUsecase } from './documents/get-volunteer-pending-contracts.usecase';
-import { CancelContractUsecase } from './documents/cancel-contract.usecase';
 import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
 import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
 import { GetVicStatisticsUsecase } from './dashboard/get-vic-statistics.usecase';
@@ -368,28 +356,14 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     UnregisterDevicePushTokenUseCase,
     GetVolunteerMonthlyNewsStatisticsUsecase,
     GetVicStatisticsUsecase,
-    // Templates
-    CreateTemplateUsecase,
-    GetTemplatesUsecase,
-    GetOneTemplateUseCase,
-    UpdateTemplateUsecase,
-    DeleteTemplateUseCase,
-    GetAllTemplatesUsecase,
-    GetTemplatesForDownloadUsecase,
     // Contracts
-    CreateContractUsecase,
     GetManyContractsUsecase,
     CountPendingContractsUsecase,
     GetOneContractUsecase,
-    SignContractByVolunteer,
-    SignAndConfirmContractUsecase,
-    SignAndConfirmContractUsecase,
-    RejectContractUsecase,
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,
+    UploadContractUsecase,
     GetVolunteerContractHistoryUsecase,
-    GetVolunteerPendingContractsUsecase,
-    CancelContractUsecase,
     // Notifications
     UpdateSettingsUsecase,
   ],
@@ -554,28 +528,14 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     RegisterDevicePushTokenUseCase,
     UnregisterDevicePushTokenUseCase,
     GetVolunteerMonthlyNewsStatisticsUsecase,
-    // Templates
-    CreateTemplateUsecase,
-    GetTemplatesUsecase,
-    GetOneTemplateUseCase,
-    UpdateTemplateUsecase,
-    DeleteTemplateUseCase,
-    GetAllTemplatesUsecase,
-    GetTemplatesForDownloadUsecase,
     // Contracts
-    CreateContractUsecase,
     GetManyContractsUsecase,
     CountPendingContractsUsecase,
     GetOneContractUsecase,
-    SignContractByVolunteer,
-    SignAndConfirmContractUsecase,
-    SignAndConfirmContractUsecase,
-    RejectContractUsecase,
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,
+    UploadContractUsecase,
     GetVolunteerContractHistoryUsecase,
-    GetVolunteerPendingContractsUsecase,
-    CancelContractUsecase,
     GetVicStatisticsUsecase,
     // Notifications
     UpdateSettingsUsecase,

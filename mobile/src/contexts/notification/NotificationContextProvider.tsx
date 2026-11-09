@@ -156,9 +156,8 @@ const NotificationContextProvider = ({
       case EVENTS.DOCUMENTS.GENERATE_CONTRACT:
       case EVENTS.DOCUMENTS.APPROVE_CONTRACT:
       case EVENTS.DOCUMENTS.REJECT_CONATRCT:
-        navigation.navigate('contract', {
-          id: payload.payload.contractId,
-        });
+        // #486: contracts are no longer signed in the app; they are listed on Documente
+        navigation.navigate('documents');
         break;
       case EVENTS.VOLUNTEER_HOURS.APPROVE:
       case EVENTS.VOLUNTEER_HOURS.REJECT:

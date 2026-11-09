@@ -1095,7 +1095,7 @@
   },
   "documents": {
     "title": "Volunteer contracts",
-    "description": "View the list of all your volunteer contracts in VIC. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years).",
+    "description": "The contracts your volunteers signed. A contract is signed outside VIC, then you upload it here as a PDF, with its period.",
     "templates": {
       "table": {
         "header": {
@@ -1170,17 +1170,20 @@
         "status": "Contract status"
       },
       "actions": {
-        "download": "Download approved",
-        "add": "Generate contract"
+        "download": "Download table",
+        "add": "Generate contract",
+        "upload": "Upload contract"
       },
       "headers": {
         "contract_number": "Contract number",
         "volunteer": "Voluntar",
         "status": "Status",
         "start_date": "Start date",
-        "end_date": "End date"
+        "end_date": "End date",
+        "period": "Period"
       },
-      "download": "Contracts.xlsx"
+      "download": "Contracts.xlsx",
+      "period_open": "from {{start}}, no end date"
     },
     "contract": {
       "add": {
@@ -1217,12 +1220,9 @@
         }
       },
       "status": {
-        "PENDING_VOLUNTEER": "Voluntary validation",
-        "PENDING_ADMIN": "NGO validation",
-        "REJECTED": "Rejected",
-        "ACTIVE": "Activ",
-        "CLOSED": "Closed",
-        "NOT_STARTED": "Not yet"
+        "SIGNED": "Signed",
+        "PENDING": "Pending",
+        "EXPIRED": "Expired"
       },
       "period": "Contract period",
       "signed": "Physically signed",
@@ -1253,12 +1253,35 @@
           "CONTRACT_002": "The contract was not found!",
           "CONTRACT_001": "Contract upload error!",
           "CONTRACT_003": "Document upload error!",
-          "CONTRACT_006": "You cannot delete a contract that has already been approved!"
+          "CONTRACT_006": "You cannot delete a contract that has already been approved!",
+          "CONTRACT_008": "The contract must be a PDF file",
+          "CONTRACT_009": "The end date must be after the start date",
+          "VOLUNTEER_007": "An inactive or blocked volunteer's contracts can no longer change"
         }
       },
       "upload": {
         "title": "Upload signed contract",
         "description": "View the list of all your volunteer contracts in VIC. The volunteer contract has a predefined structure. You can create multiple contract templates (e.g. volunteer contract &gt;16 years, volunteer contract &lt;16 years)."
+      },
+      "expiring_soon": "Expires soon",
+      "upload_form": {
+        "title": "Upload a signed contract",
+        "description": "Upload the PDF the volunteer signed and the period it is valid for.",
+        "volunteer": "Volunteer*",
+        "volunteer_required": "Pick the volunteer",
+        "file": "Signed contract (PDF)*",
+        "file_hint": "PDF, at most 10 MB",
+        "file_rejected": "The file must be a PDF of at most 10 MB",
+        "file_required": "Upload the signed PDF",
+        "start_date": "Start date*",
+        "start_required": "The start date is required",
+        "end_date": "End date",
+        "end_date_hint": "Leave empty if it does not expire",
+        "end_after_start": "The end date must be after the start date",
+        "contract_number": "Contract number",
+        "number_max": "The number can have at most 50 characters",
+        "submit": "Upload",
+        "success": "The contract was uploaded"
       }
     },
     "popover": {

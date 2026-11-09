@@ -17,11 +17,8 @@ import DrawerNavigator from './Drawer';
 import CreateVolunteer from '../screens/CreateVolunteer';
 import JoinByAccessCode from '../screens/JoinByAccessCode';
 import Documents from '../screens/Documents';
-import Contract from '../screens/Contract';
 import Anouncements from '../screens/Anouncements';
 import AnouncementResponse from '../screens/AnouncementResponse';
-import ContractRejectedReason from '../screens/ContractRejectedReason';
-import PendingContracts from '../screens/PendingContracts';
 import ContractHistory from '../screens/ContractHistory';
 import RequestRejectedReason from '../screens/RequestRejectedReason';
 import DeleteAccount from '../screens/DeleteAccount';
@@ -44,8 +41,6 @@ const Private = () => (
       <Screen name="account-data" component={AccountData} />
       <Screen name="notifications-settings" component={NotificationsSettings} />
       <Screen name="documents" component={Documents} />
-      <Screen name="contract" component={Contract} />
-      <Screen name="pending-contracts" component={PendingContracts} />
       <Screen name="contract-history" component={ContractHistory} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
@@ -55,7 +50,6 @@ const Private = () => (
       <Screen name="activity-log" component={ActivityLog} />
       <Screen name="edit-activity-log" component={EditActivityLog} />
       <Screen name="create-volunteer" component={CreateVolunteer} />
-      <Screen name="rejected-contract" component={ContractRejectedReason} />
       <Screen name="rejected-request" component={RequestRejectedReason} />
       <Screen name="delete-account" component={DeleteAccount} />
     </Group>

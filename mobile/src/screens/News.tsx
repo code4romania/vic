@@ -141,8 +141,6 @@ const News = ({ navigation, route }: any) => {
         navigation.navigate('activity-log', { activityLogId: item.activityLogId });
         return;
       case TrackedEventName.REJECT_CONTRACT:
-        navigation.navigate('rejected-contract', { contractId: item.contractId });
-        return;
       case TrackedEventName.CREATE_CONTRACT:
       case TrackedEventName.APPROVE_CONTRACT:
         navigation.navigate(

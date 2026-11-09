@@ -1101,7 +1101,7 @@
   },
   "documents": {
     "title": "Contracte de voluntariat",
-    "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din VIC. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani).",
+    "description": "Contractele semnate de voluntarii tăi. Contractul se semnează în afara VIC, apoi îl încarci aici ca PDF, cu perioada lui.",
     "templates": {
       "table": {
         "header": {
@@ -1176,17 +1176,20 @@
         "status": "Status contract"
       },
       "actions": {
-        "download": "Descarcă aprobate",
-        "add": "Generează contract"
+        "download": "Descarcă tabel",
+        "add": "Generează contract",
+        "upload": "Încarcă contract"
       },
       "headers": {
         "contract_number": "Număr contract",
         "volunteer": "Voluntar",
         "status": "Status",
         "start_date": "Data de început",
-        "end_date": "Data de final"
+        "end_date": "Data de final",
+        "period": "Perioadă"
       },
-      "download": "Contracts.xlsx"
+      "download": "Contracts.xlsx",
+      "period_open": "din {{start}}, fără dată de final"
     },
     "contract": {
       "add": {
@@ -1223,12 +1226,9 @@
         }
       },
       "status": {
-        "PENDING_VOLUNTEER": "Validare voluntar",
-        "PENDING_ADMIN": "Validare ONG",
-        "REJECTED": "Respins",
-        "ACTIVE": "Activ",
-        "CLOSED": "Încheiat",
-        "NOT_STARTED": "Neînceput"
+        "SIGNED": "Semnat",
+        "PENDING": "În așteptare",
+        "EXPIRED": "Expirat"
       },
       "period": "Perioada contract",
       "signed": "Semnat fizic",
@@ -1259,12 +1259,35 @@
           "CONTRACT_002": "Contractul nu a fost găsit!",
           "CONTRACT_001": "Eroare la încărcarea contractului!",
           "CONTRACT_003": "Eroare la upload-ul documentului!",
-          "CONTRACT_006": "Nu se poate șterge un contract deja aprobat!"
+          "CONTRACT_006": "Nu se poate șterge un contract deja aprobat!",
+          "CONTRACT_008": "Contractul trebuie să fie un fișier PDF",
+          "CONTRACT_009": "Data de final trebuie să fie după data de început",
+          "VOLUNTEER_007": "Contractele unui voluntar inactiv sau blocat nu mai pot fi modificate"
         }
       },
       "upload": {
         "title": "Încarcă contract semnat",
         "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din VIC. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
+      },
+      "expiring_soon": "Expiră în curând",
+      "upload_form": {
+        "title": "Încarcă contract semnat",
+        "description": "Încarcă PDF-ul contractului semnat de voluntar și perioada în care e valabil.",
+        "volunteer": "Voluntar*",
+        "volunteer_required": "Alege voluntarul",
+        "file": "Contract semnat (PDF)*",
+        "file_hint": "PDF, maxim 10 MB",
+        "file_rejected": "Fișierul trebuie să fie un PDF de maxim 10 MB",
+        "file_required": "Încarcă PDF-ul semnat",
+        "start_date": "Data de început*",
+        "start_required": "Data de început este obligatorie",
+        "end_date": "Data de final",
+        "end_date_hint": "Lasă gol dacă nu expiră",
+        "end_after_start": "Data de final trebuie să fie după data de început",
+        "contract_number": "Număr contract",
+        "number_max": "Numărul poate avea maxim 50 de caractere",
+        "submit": "Încarcă",
+        "success": "Contractul a fost încărcat"
       }
     },
     "popover": {

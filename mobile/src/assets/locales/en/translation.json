@@ -753,82 +753,33 @@
   },
   "documents": {
     "contract_prefix": "Contract",
-    "description": "Manage your contracts in the sections below. Download old contracts or sign contracts sent by your organization.",
+    "description": "The contracts you signed with the organization. Download them any time.",
     "sections": {
-      "pending": "Contract proposal",
-      "closed": "History of signed contracts"
+      "closed": "History of signed contracts",
+      "all": "Your contracts"
     },
     "contract_status": {
       "active": "active",
       "closed": "concluded",
       "not_started": "Unbeaten"
     },
-    "contract": {
-      "title": "Contract {{contractNumber}}",
-      "paragraph": {
-        "PENDING_VOLUNTEER": "The contract has been generated and requires your approval. Download the template below and read the document carefully. Please print out a copy of it, which you can sign, scan and upload here.",
-        "PENDING_ADMIN": "You sent a document for signature. The contract has been generated and requires approval from the organization.",
-        "NOT_STARTED": "Not started",
-        "CLOSED": "Closed",
-        "ACTIVE": "Active",
-        "REJECTED": "Rejected"
-      },
-      "disclaimer": {
-        "PENDING_VOLUNTEER": "The contract needs your signature",
-        "PENDING_ADMIN": "The contract requires the signature of the organization"
-      },
-      "actions": {
-        "upload": "Upload signed contract",
-        "cancel": "Cancel and upload another"
-      },
-      "bottom_sheet": {
-        "heading": "Confirm document?",
-        "paragraph": "You have uploaded the document",
-        "label": "Send for signature"
-      },
-      "upload": {
-        "success": "The contract has been sent!"
-      },
-      "cancel": {
-        "success": "The contract has been returned to its original state!"
-      },
-      "errors": {
-        "CONTRACT_002": "Contract not found",
-        "CONTRACT_001": "Could not upload the contract",
-        "CONTRACT_003": "Could not delete the document",
-        "CONTRACT_007": "Cannot cancel a contract approved by the admin",
-        "TEMPLATE_002": "Contract template not found!"
-      }
-    },
-    "contract_rejected": {
-      "header": "Contract Rejected",
-      "paragraph": "Your contract has been rejected",
-      "label": "Reason for rejection"
-    },
-    "confirmation_modal": {
-      "paragraph": "Are you sure you wish to cancel and upload a different contract?"
-    },
     "download": "download",
     "download_error": "We could not download the document. Try again.",
     "see_all": "See all ({{count}})",
     "status": {
-      "PENDING_VOLUNTEER": "To sign",
-      "PENDING_ADMIN": "With the organization",
-      "NOT_STARTED": "Not started",
-      "ACTIVE": "Active",
-      "CLOSED": "Ended",
-      "REJECTED": "Rejected"
+      "SIGNED": "Signed",
+      "PENDING": "Pending",
+      "EXPIRED": "Expired"
     },
     "empty": {
       "title": "No documents yet",
-      "description": "Volunteering contracts sent by the organization show up here.",
-      "pending": "No contracts to sign",
-      "signed": "No signed contracts"
+      "description": "The contracts your organization uploads show up here."
     },
     "errors": {
       "generic": "Error loading your documents"
     },
-    "pending_callout": "Contracts waiting for your signature: {{count}}"
+    "expiring_soon": "Expires soon",
+    "period_open": "from {{start}}, no end date"
   },
   "notifications": {
     "header": "Notifications settings",

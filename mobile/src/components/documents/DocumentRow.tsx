@@ -6,15 +6,13 @@ import { IContractListItem } from '../../common/interfaces/contract-list-item.in
 import { ClientContractStatus } from '../../common/enums/client-contract-status.enum';
 import { colors, fonts, StatusTone } from '../../common/theme/tokens';
 import { shortMonth } from '../../common/utils/event-format';
-import { Badge, Chevron, PressableScale, VText } from '../ui';
+import { Badge, PressableScale, VText } from '../ui';
 
-const STATUS: Partial<Record<ClientContractStatus, { tone: StatusTone; label: string }>> = {
-  [ClientContractStatus.PENDING_VOLUNTEER]: { tone: 'wait', label: 'status.PENDING_VOLUNTEER' },
-  [ClientContractStatus.PENDING_ADMIN]: { tone: 'neutral', label: 'status.PENDING_ADMIN' },
-  [ClientContractStatus.NOT_STARTED]: { tone: 'neutral', label: 'status.NOT_STARTED' },
-  [ClientContractStatus.ACTIVE]: { tone: 'ok', label: 'status.ACTIVE' },
-  [ClientContractStatus.CLOSED]: { tone: 'neutral', label: 'status.CLOSED' },
-  [ClientContractStatus.REJECTED]: { tone: 'no', label: 'status.REJECTED' },
+// #488: Semnat / În așteptare / Expirat; a signed contract in its last month shows "Expiră în curând"
+const STATUS: Record<ClientContractStatus, { tone: StatusTone; label: string }> = {
+  [ClientContractStatus.SIGNED]: { tone: 'ok', label: 'status.SIGNED' },
+  [ClientContractStatus.PENDING]: { tone: 'wait', label: 'status.PENDING' },
+  [ClientContractStatus.EXPIRED]: { tone: 'neutral', label: 'status.EXPIRED' },
 };
 
 /** "15 ian 2025" */
@@ -25,35 +23,32 @@ export const formatContractDay = (value?: string | null) =>
 
 export interface DocumentRowProps {
   contract: IContractListItem;
+  /** downloads the contract */
   onPress: (contract: IContractListItem) => void;
-  /** pending contracts open the contract page; signed ones download */
-  kind: 'pending' | 'signed';
   busy?: boolean;
   divider?: boolean;
 }
 
 /** A contract on Documente (canvas board "Documente"): file tile, number, period and status. */
-export const DocumentRow = ({
-  contract,
-  onPress,
-  kind,
-  busy,
-  divider = true,
-}: DocumentRowProps) => {
+export const DocumentRow = ({ contract, onPress, busy, divider = true }: DocumentRowProps) => {
   const { t } = useTranslation('documents');
-  const status = STATUS[contract.status];
-  const tone = colors.status[kind === 'pending' ? 'wait' : (status?.tone ?? 'neutral')];
-  const period = [formatContractDay(contract.startDate), formatContractDay(contract.endDate)]
-    .filter(Boolean)
-    .join(' – ');
-  const title = `${t('contract_prefix')} ${contract.contractNumber}`;
+  const status = contract.expiringSoon
+    ? { tone: 'wait' as StatusTone, label: 'expiring_soon' }
+    : STATUS[contract.status];
+  const tone = colors.status[status?.tone ?? 'neutral'];
+  const period = contract.endDate
+    ? `${formatContractDay(contract.startDate)} – ${formatContractDay(contract.endDate)}`
+    : `${t('period_open', { start: formatContractDay(contract.startDate) })}`;
+  const title = contract.contractNumber
+    ? `${t('contract_prefix')} ${contract.contractNumber}`
+    : `${t('contract_prefix')}`;
   return (
     <PressableScale
       onPress={() => onPress(contract)}
       disabled={busy}
       pressedScale={0.985}
       style={[styles.row, divider && styles.divider]}
-      accessibilityLabel={`${title}, ${period}${kind === 'signed' ? `, ${t('download')}` : ''}`}
+      accessibilityLabel={`${title}, ${period}, ${t('download')}`}
       testID={`document-row-${contract.id}`}
     >
       <View style={[styles.tile, { backgroundColor: tone.bg }]}>
@@ -70,7 +65,7 @@ export const DocumentRow = ({
         </VText>
       </View>
       {status && <Badge label={`${t(status.label)}`} tone={status.tone} />}
-      {busy ? <ActivityIndicator color={colors.navy} /> : kind === 'pending' && <Chevron />}
+      {busy && <ActivityIndicator color={colors.navy} />}
     </PressableScale>
   );
 };

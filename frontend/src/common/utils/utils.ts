@@ -117,12 +117,9 @@ export const EventStatusMarkerColorMapper = {
 } as Record<string, string>;
 
 export const ContractStatusMarkerColorMapper = {
-  [ContractStatus.ACTIVE]: 'bg-green-500',
-  [ContractStatus.CLOSED]: 'bg-cool-gray-800',
-  [ContractStatus.NOT_STARTED]: 'bg-blue-500',
-  [ContractStatus.PENDING_ADMIN]: 'bg-yellow-500',
-  [ContractStatus.PENDING_VOLUNTEER]: 'bg-yellow-500',
-  [ContractStatus.REJECTED]: 'bg-red-500',
+  [ContractStatus.SIGNED]: 'bg-green-500',
+  [ContractStatus.PENDING]: 'bg-yellow-500',
+  [ContractStatus.EXPIRED]: 'bg-cool-gray-800',
 };
 
 // Volunteers table (#475)

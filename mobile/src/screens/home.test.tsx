@@ -11,7 +11,6 @@ import { EventType } from '../common/enums/event-type.enum';
 import { NewsType } from '../common/enums/news-type.enum';
 
 const mockEventCalls: any[][] = [];
-let mockContractsTotal = 0;
 let mockGoing: any[] = [];
 
 const query = (data: unknown) => ({
@@ -49,10 +48,6 @@ jest.mock('../services/event/event.service', () => ({
     mockEventCalls.push(args);
     return query({ pages: [{ items: mockGoing, meta: { totalItems: mockGoing.length } }] });
   },
-}));
-jest.mock('../services/contract/contract.service', () => ({
-  usePendingContractsInfiniteQuery: () =>
-    query({ pages: [{ items: [], meta: { totalItems: mockContractsTotal } }] }),
 }));
 jest.mock('../services/user/user.api', () => ({ getUserProfile: jest.fn() }));
 
@@ -111,7 +106,6 @@ const org = (volunteerProfileId: string | null = 'p1') => ({
 beforeEach(() => {
   jest.clearAllMocks();
   mockEventCalls.length = 0;
-  mockContractsTotal = 0;
   mockGoing = [];
   setProfile(org());
 });
@@ -155,13 +149,10 @@ describe('Acasă', () => {
     expect(await screen.findByText('page:event')).toBeTruthy();
   });
 
-  it('"De făcut" shows contracts to sign and sending hours', async () => {
-    mockContractsTotal = 2;
+  it('"De făcut" shows sending hours, and no contracts to sign (#486)', async () => {
     await renderHome();
-    expect(await screen.findByText('Contracte de semnat: 2')).toBeTruthy();
-    expect(screen.getByText('Trimite orele de voluntariat')).toBeTruthy();
-    await fireEvent.press(screen.getByTestId('home-todo-contracts'));
-    expect(await screen.findByText('page:docs')).toBeTruthy();
+    expect(await screen.findByText('Trimite orele de voluntariat')).toBeTruthy();
+    expect(screen.queryByTestId('home-todo-contracts')).toBeNull();
   });
 
   it('"De făcut" asks for the volunteer profile before hours', async () => {

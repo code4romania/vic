@@ -102,7 +102,7 @@ describe('Super admin lists (e2e)', () => {
     );
   });
 
-  const get = (url: string, token = superAdminToken) =>
+  const get = (url: string, token = superAdminToken): request.Test =>
     request(testApp.app.getHttpServer())
       .get(url)
       .set('Authorization', `Bearer ${token}`);

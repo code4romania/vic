@@ -4,7 +4,7 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { In, LessThanOrEqual, MoreThanOrEqual, Not, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { ContractEntity } from '../entities/contract.entity';
 import { IContractRepository } from '../interfaces/contract-repository.interface';
 import {
@@ -53,8 +53,6 @@ export class ContractRepositoryService
       endDate,
       volunteerName,
       volunteerId,
-      pending,
-      contractStatus,
     } = findOptions;
 
     const query = this.contractRepository
@@ -104,47 +102,10 @@ export class ContractRepositoryService
     }
 
     if (status) {
-      if (status === ClientContractStatus.NOT_STARTED) {
-        query.andWhere(
-          'contract.startDate > :date AND contract.status = :status',
-          {
-            date: new Date(),
-            status: ContractStatus.APPROVED,
-          },
-        );
-      } else if (status === ClientContractStatus.ACTIVE) {
-        query.andWhere(
-          'contract.startDate <= :date AND contract.endDate >= :date AND contract.status = :status',
-          { date: new Date(), status: ContractStatus.APPROVED },
-        );
-      } else if (status === ClientContractStatus.CLOSED) {
-        query.andWhere(
-          'contract.endDate <= :date AND contract.status = :status',
-          {
-            date: new Date(),
-            status: ContractStatus.APPROVED,
-          },
-        );
-      } else {
-        query.andWhere('contract.status = :status', { status });
-      }
-    }
-
-    if (contractStatus) {
-      query.andWhere('contract.status = :contractStatus', {
-        contractStatus,
+      query.andWhere(contractStatusCondition(status, 'contract'), {
+        statusNow: new Date(),
+        activeStatus: ContractStatus.ACTIVE,
       });
-    }
-
-    // get all pending
-    if (pending) {
-      query.andWhere(
-        '(contract.status = :pendingVolunteer OR contract.status = :pendingAdmin)',
-        {
-          pendingVolunteer: ContractStatus.PENDING_VOLUNTEER,
-          pendingAdmin: ContractStatus.PENDING_ADMIN,
-        },
-      );
     }
 
     if (volunteerName) {
@@ -166,19 +127,8 @@ export class ContractRepositoryService
   }
 
   async find(findOptions: FindContractOptions): Promise<IContractModel> {
-    const { startDate, ...options } = findOptions;
-
     const contract = await this.contractRepository.findOne({
-      where: {
-        ...options,
-        ...(startDate
-          ? {
-              startDate: LessThanOrEqual(startDate),
-              endDate: MoreThanOrEqual(startDate),
-              status: Not(ContractStatus.REJECTED),
-            }
-          : {}),
-      },
+      where: findOptions,
       relations: {
         volunteer: {
           user: {
@@ -219,11 +169,34 @@ export class ContractRepositoryService
     return null;
   }
 
-  async count(findOptions: FindContractOptions): Promise<number> {
-    const { statuses, ...options } = findOptions;
-    const count = await this.contractRepository.count({
-      where: { ...options, status: In(statuses) },
-    });
-    return count;
+  // #488: how many contracts of an organization show the given status ("În așteptare" on the dashboard)
+  async countByStatus(
+    organizationId: string,
+    status: ClientContractStatus,
+  ): Promise<number> {
+    return this.contractRepository
+      .createQueryBuilder('contract')
+      .where('contract.organizationId = :organizationId', { organizationId })
+      .andWhere(contractStatusCondition(status, 'contract'), {
+        statusNow: new Date(),
+        activeStatus: ContractStatus.ACTIVE,
+      })
+      .getCount();
   }
 }
+
+// #488: the SQL behind each shown status. Uses :statusNow and :activeStatus.
+export const contractStatusCondition = (
+  status: ClientContractStatus,
+  alias: string,
+): string => {
+  const pastEnd = `(${alias}.endDate IS NOT NULL AND ${alias}.endDate < :statusNow)`;
+  switch (status) {
+    case ClientContractStatus.EXPIRED:
+      return pastEnd;
+    case ClientContractStatus.SIGNED:
+      return `(${alias}.status = :activeStatus AND NOT ${pastEnd})`;
+    default:
+      return `(${alias}.status <> :activeStatus AND NOT ${pastEnd})`;
+  }
+};

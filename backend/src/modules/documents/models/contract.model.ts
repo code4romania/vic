@@ -12,7 +12,7 @@ import {
   AdminUserTransformer,
   IAdminUserModel,
 } from 'src/modules/user/models/admin-user.model';
-import { compareAsc } from 'date-fns';
+import { addDays, compareAsc } from 'date-fns';
 
 export interface IContractDownloadModel {
   'Numar contract': string;
@@ -27,7 +27,7 @@ export interface IContractModel extends IBaseModel {
   contractNumber: string;
   path: string;
   startDate: Date;
-  endDate: Date;
+  endDate: Date | null;
   status: ContractStatus;
   organizationId: string;
   templateId?: string;
@@ -52,7 +52,7 @@ export type CreateContractOptions = Pick<
   | 'endDate'
   | 'templateId'
   | 'volunteerId'
-> & { createdByAdminId: string };
+> & { createdByAdminId: string; status?: ContractStatus };
 
 export type FindManyContractOptions = IBasePaginationFilterModel &
   Partial<
@@ -62,9 +62,7 @@ export type FindManyContractOptions = IBasePaginationFilterModel &
     > & {
       volunteerName?: string;
       status?: ClientContractStatus;
-      pending?: boolean;
       userId: string;
-      contractStatus?: ContractStatus;
     }
   >;
 
@@ -77,10 +75,7 @@ export type FindContractOptions = Partial<
     | 'contractNumber'
     | 'volunteerId'
     | 'templateId'
-  > & {
-    statuses?: ContractStatus[];
-    startDate?: Date;
-  }
+  >
 >;
 
 export type UpdateContractOptions = Partial<
@@ -113,8 +108,9 @@ export class ContractTransformer {
       status: entity.status,
       approvedOn: entity.approvedOn,
       rejectedOn: entity.rejectedOn,
-      fileName:
-        'Contract_' + entity.contractNumber + `.${entity.path.split('.')[1]}`,
+      fileName: `Contract_${entity.contractNumber ?? entity.id.slice(0, 8)}.${
+        entity.path.split('.').pop() || 'pdf'
+      }`,
       volunteer: VolunteerModelTransformer.fromEntity(entity.volunteer),
       template: TemplateTransformer.fromEntity(entity.template),
       createdByAdmin: AdminUserTransformer.fromEntity(entity.createdByAdmin),
@@ -135,43 +131,35 @@ export class ContractTransformer {
     entity.templateId = model.templateId;
     entity.volunteerId = model.volunteerId;
     entity.createdByAdminId = model.createdByAdminId;
+    entity.status = model.status ?? ContractStatus.ACTIVE;
 
     return entity;
   }
 }
 
+// #488: within a month of its end date a signed contract is tagged "Expiră în curând".
+export const EXPIRING_SOON_DAYS = 30;
+
+const isPastEnd = (
+  contract: Pick<IContractModel, 'endDate'>,
+  now: Date,
+): boolean => !!contract.endDate && compareAsc(contract.endDate, now) < 0;
+
 export const mapContractStatusToClientContractStatus = (
-  contract: IContractModel,
+  contract: Pick<IContractModel, 'status' | 'endDate'>,
+  now: Date = new Date(),
 ): ClientContractStatus => {
-  if (contract.status === ContractStatus.APPROVED) {
-    // not started
-    if (compareAsc(contract.startDate, new Date()) > 0) {
-      return ClientContractStatus.NOT_STARTED;
-    }
-
-    // active
-    if (
-      compareAsc(contract.startDate, new Date()) <= 0 &&
-      compareAsc(contract.endDate, new Date()) > 0
-    ) {
-      return ClientContractStatus.ACTIVE;
-    }
-
-    // closed
-    if (compareAsc(contract.endDate, new Date()) <= 0) {
-      return ClientContractStatus.CLOSED;
-    }
-  }
-
-  if (contract.status === ContractStatus.PENDING_ADMIN) {
-    return ClientContractStatus.PENDING_ADMIN;
-  }
-
-  if (contract.status === ContractStatus.PENDING_VOLUNTEER) {
-    return ClientContractStatus.PENDING_VOLUNTEER;
-  }
-
-  if (contract.status === ContractStatus.REJECTED) {
-    return ClientContractStatus.REJECTED;
-  }
+  if (isPastEnd(contract, now)) return ClientContractStatus.EXPIRED;
+  return contract.status === ContractStatus.ACTIVE
+    ? ClientContractStatus.SIGNED
+    : ClientContractStatus.PENDING;
 };
+
+export const isContractExpiringSoon = (
+  contract: Pick<IContractModel, 'status' | 'endDate'>,
+  now: Date = new Date(),
+): boolean =>
+  mapContractStatusToClientContractStatus(contract, now) ===
+    ClientContractStatus.SIGNED &&
+  !!contract.endDate &&
+  compareAsc(contract.endDate, addDays(now, EXPIRING_SOON_DAYS)) <= 0;

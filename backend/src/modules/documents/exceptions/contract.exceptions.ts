@@ -8,6 +8,8 @@ export enum ContractExceptionCodes {
   CONTRACT_005 = 'CONTRACT_005',
   CONTRACT_006 = 'CONTRACT_006',
   CONTRACT_007 = 'CONTRACT_007',
+  CONTRACT_008 = 'CONTRACT_008',
+  CONTRACT_009 = 'CONTRACT_009',
 }
 
 type ContractExceptionCodeType = keyof typeof ContractExceptionCodes;
@@ -44,5 +46,13 @@ export const ContractExceptionMessages: Record<
   [ContractExceptionCodes.CONTRACT_007]: {
     code_error: ContractExceptionCodes.CONTRACT_007,
     message: 'Can only cancel a contract pending to the ADMIN',
+  },
+  [ContractExceptionCodes.CONTRACT_008]: {
+    code_error: ContractExceptionCodes.CONTRACT_008,
+    message: 'The signed contract must be a PDF file',
+  },
+  [ContractExceptionCodes.CONTRACT_009]: {
+    code_error: ContractExceptionCodes.CONTRACT_009,
+    message: 'The end date must be after the start date',
   },
 };
