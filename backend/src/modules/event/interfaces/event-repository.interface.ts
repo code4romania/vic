@@ -12,6 +12,8 @@ import {
   UpdateStatusOptions,
   EventCountersOptions,
   IEventCountersModel,
+  FindEventCandidatesOptions,
+  IEventCandidateModel,
 } from '../models/event.model';
 
 export interface IEventRepository {
@@ -24,6 +26,10 @@ export interface IEventRepository {
     findOptions: FindManyEventOptions,
   ): Promise<Pagination<IEventsListItemModel>>;
   countByState(options: EventCountersOptions): Promise<IEventCountersModel>;
+  findCandidates(
+    options: FindEventCandidatesOptions,
+  ): Promise<IEventCandidateModel[]>;
+  countGoing(eventId: string): Promise<number>;
   findOpenEvents(
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>>;

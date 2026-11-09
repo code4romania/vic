@@ -47,6 +47,19 @@ export const NOTIFICATIONS = {
       body: '',
     },
   },
+  // #496
+  ADDED_TO_EVENT: {
+    PUSH: {
+      title: 'VIC',
+      body: (organizationName: string, eventName: string): string =>
+        `Organizația ${organizationName} te-a înscris la evenimentul ${eventName}`,
+    },
+    EMAIL: {
+      subject: (organizationName: string, eventName: string): string =>
+        `Organizația ${organizationName} te-a înscris la evenimentul ${eventName}`,
+      body: 'Îl găsești în aplicația VIC, la Evenimente.',
+    },
+  },
   APPROVED_HOURS: {
     PUSH: {
       title: 'VIC',

@@ -19,6 +19,13 @@ import {
 } from '@nestjs/swagger';
 import { GetEventCountersUseCase } from 'src/usecases/event/get-event-counters.usecase';
 import { GetEventCountersDto } from './dto/get-event-counters.dto';
+import { GetEventCandidatesUseCase } from 'src/usecases/event/RSVP/get-event-candidates.usecase';
+import { AddVolunteersToEventUseCase } from 'src/usecases/event/RSVP/add-volunteers-to-event.usecase';
+import { AddVolunteersToEventDto } from './dto/add-volunteers-to-event.dto';
+import {
+  EventCandidatePresenter,
+  EventCandidatesPresenter,
+} from './presenters/event-candidate.presenter';
 import { EventCountersPresenter } from './presenters/event-counters.presenter';
 
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
@@ -59,6 +66,8 @@ import { TargetEventType } from 'src/modules/event/enums/target-event-type.enum'
 @Controller('event')
 export class EventController {
   constructor(
+    private readonly getEventCandidatesUseCase: GetEventCandidatesUseCase,
+    private readonly addVolunteersToEventUseCase: AddVolunteersToEventUseCase,
     private readonly getEventCountersUseCase: GetEventCountersUseCase,
     private readonly createEventUsecase: CreateEventUseCase,
     private readonly updateEventUseCase: UpdateEventUseCase,
@@ -199,6 +208,40 @@ export class EventController {
     @ExtractUser() admin: IAdminUserModel,
   ): Promise<string> {
     return this.deleteEventUseCase.execute(eventId, admin);
+  }
+
+  // #496: volunteers the NGO can add (active, from the event's departments), with their hours
+  @Get(':id/candidates')
+  @ApiParam({ name: 'id', type: 'string' })
+  async getCandidates(
+    @Param('id', UuidValidationPipe) eventId: string,
+    @Query('search') search: string,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<EventCandidatesPresenter> {
+    return new EventCandidatesPresenter(
+      await this.getEventCandidatesUseCase.execute({
+        eventId,
+        organizationId,
+        search,
+      }),
+    );
+  }
+
+  // #496: register volunteers directly (no acceptance in the app); capacity is respected
+  @Post(':id/volunteers')
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: AddVolunteersToEventDto })
+  async addVolunteers(
+    @Param('id', UuidValidationPipe) eventId: string,
+    @Body() { volunteerIds }: AddVolunteersToEventDto,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<EventCandidatePresenter[]> {
+    const added = await this.addVolunteersToEventUseCase.execute({
+      eventId,
+      organizationId,
+      volunteerIds,
+    });
+    return added.map((candidate) => new EventCandidatePresenter(candidate));
   }
 
   @Get(':id/rsvp')

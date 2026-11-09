@@ -29,6 +29,8 @@ import {
   UpdateStatusOptions,
   EventCountersOptions,
   IEventCountersModel,
+  FindEventCandidatesOptions,
+  IEventCandidateModel,
 } from '../models/event.model';
 import { EventStatus } from '../enums/event-status.enum';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
@@ -47,6 +49,55 @@ export class EventRepository
     private readonly eventRepository: Repository<EventEntity>,
   ) {
     super(eventRepository);
+  }
+
+  // #496: active volunteers with a profile in the event's departments, their approved hours in the
+  // organization and whether they already said they are going
+  async findCandidates({
+    eventId,
+    organizationId,
+    departmentIds,
+    search,
+    volunteerIds,
+  }: FindEventCandidatesOptions): Promise<IEventCandidateModel[]> {
+    const rows = await this.eventRepository.query(
+      `SELECT v.id AS "volunteerId", u.id AS "userId", u.name, COALESCE(vp.email, u.email) AS email,
+              d.name AS department,
+              COALESCE((SELECT sum(l.hours) FROM activity_log l
+                        WHERE l.volunteer_id = v.id AND l.organization_id = v.organization_id AND l.status = 'approved'), 0) AS "totalHours",
+              EXISTS (SELECT 1 FROM event_rsvp r WHERE r.event_id = $2 AND r.user_id = u.id AND r.going) AS registered
+       FROM volunteer v
+       JOIN "user" u ON u.id = v.user_id
+       JOIN volunteer_profile vp ON vp.id = v.volunteer_profile_id
+       LEFT JOIN organization_structure d ON d.id = vp.department_id
+       WHERE v.organization_id = $1
+         AND v.status = 'active'
+         AND ($3::uuid[] IS NULL OR vp.department_id = ANY($3::uuid[]))
+         AND ($4::text IS NULL OR u.name ILIKE '%' || $4 || '%' OR u.email ILIKE '%' || $4 || '%')
+         AND ($5::uuid[] IS NULL OR v.id = ANY($5::uuid[]))
+       ORDER BY u.name
+       LIMIT 200`,
+      [
+        organizationId,
+        eventId,
+        departmentIds?.length ? departmentIds : null,
+        search?.trim() || null,
+        volunteerIds ?? null,
+      ],
+    );
+    return rows.map((row: IEventCandidateModel) => ({
+      ...row,
+      totalHours: +row.totalHours,
+    }));
+  }
+
+  countGoing(eventId: string): Promise<number> {
+    return this.eventRepository
+      .query(
+        `SELECT count(*) AS n FROM event_rsvp WHERE event_id = $1 AND going`,
+        [eventId],
+      )
+      .then(([row]) => +row.n);
   }
 
   // #493: one query; the department filter matches the list's (#494)

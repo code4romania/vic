@@ -19,6 +19,7 @@ import {
   CloudArrowUpIcon,
   PencilIcon,
   TrashIcon,
+  UserPlusIcon,
 } from '@heroicons/react/24/outline';
 import CardBody from '../components/CardBody';
 import FormLayout from '../layouts/FormLayout';
@@ -29,11 +30,12 @@ import LoadingContent from '../components/LoadingContent';
 import EmptyContent from '../components/EmptyContent';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { EventStatus } from '../common/enums/event-status';
+import { EventDisplayStatus, EventStatus } from '../common/enums/event-status';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { IEvent } from '../common/interfaces/event.interface';
 import { EventProps } from '../containers/query/EventWithQueryParams';
 import RsvpTableWithQueryParams from '../containers/query/RsvpTableWithQueryParams';
+import AddEventVolunteersModal from '../components/AddEventVolunteersModal';
 
 export enum EventTab {
   EVENT = 'event',
@@ -47,17 +49,38 @@ const EventTabs: SelectItem<EventTab>[] = [
 
 interface EventDetailsProps {
   event: IEvent;
+  onAddVolunteers: () => void;
   onDelete: () => void;
   onArchive: () => void;
   onEdit: () => void;
   onPublish: () => void;
 }
 
-const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDetailsProps) => (
+// #496: volunteers can be added while the event is published and has not finished
+const canAddVolunteers = (event: IEvent): boolean =>
+  event.status === EventStatus.PUBLISHED &&
+  (event.displayStatus ?? event.status) !== EventDisplayStatus.FINISHED;
+
+const EventDetails = ({
+  event,
+  onAddVolunteers,
+  onDelete,
+  onArchive,
+  onEdit,
+  onPublish,
+}: EventDetailsProps) => (
   <Card>
     <CardHeader>
       <h2>{i18n.t('events:details')}</h2>
-      <div className="flex flex-row gap-2 sm:gap-4">
+      <div className="flex flex-row flex-wrap gap-2 sm:gap-4">
+        {canAddVolunteers(event) && (
+          <Button
+            className="btn-outline-secondary"
+            label={i18n.t('events:add_volunteers.button')}
+            icon={<UserPlusIcon className="h-5 w-5 text-cool-gray-500" />}
+            onClick={onAddVolunteers}
+          />
+        )}
         <Button
           className="btn-outline-danger"
           label={i18n.t('general:delete')}
@@ -131,6 +154,7 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
 
 const Event = ({ query, setQuery }: EventProps) => {
   const [showDeleteEvent, setShowDeleteEvent] = useState<boolean>();
+  const [showAddVolunteers, setShowAddVolunteers] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -230,6 +254,7 @@ const Event = ({ query, setQuery }: EventProps) => {
             ) : event ? (
               <EventDetails
                 event={event}
+                onAddVolunteers={() => setShowAddVolunteers(true)}
                 onArchive={onArchive}
                 onDelete={onDelete}
                 onPublish={onPublish}
@@ -246,6 +271,12 @@ const Event = ({ query, setQuery }: EventProps) => {
                   </div>
                 </CardBody>
               </Card>
+            )}
+            {showAddVolunteers && event && (
+              <AddEventVolunteersModal
+                eventId={event.id}
+                onClose={() => setShowAddVolunteers(false)}
+              />
             )}
             {showDeleteEvent && (
               <ConfirmationModal
