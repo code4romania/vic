@@ -4,8 +4,8 @@ import { classNames } from '../common/utils/utils';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 
-// pdf: PDF only.
-type FileType = 'doc' | 'image' | 'pdf';
+// pdf: PDF only. sheet: the volunteer import, CSV or Excel.
+type FileType = 'doc' | 'image' | 'pdf' | 'sheet';
 
 const ACCEPT: Record<FileType, Record<string, string[]>> = {
   doc: {
@@ -18,6 +18,11 @@ const ACCEPT: Record<FileType, Record<string, string[]>> = {
     'image/jpeg': ['.jpg', '.jpeg'],
   },
   pdf: { 'application/pdf': ['.pdf'] },
+  sheet: {
+    'text/csv': ['.csv'],
+    'application/vnd.ms-excel': ['.xls', '.csv'],
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
+  },
 };
 
 interface FileUploadProps {

@@ -22,6 +22,13 @@ export interface IVolunteer {
   profile?: IVolunteerProfile;
 }
 
+// POST /volunteer/import (#473)
+export interface IImportVolunteersResult {
+  imported: number;
+  skipped: { row: number; email: string; reason: 'already_volunteer' | 'duplicate_in_file' }[];
+  errors: { row: number; reasons: string[] }[];
+}
+
 interface IVolunteerProfile {
   email: string;
   activeSince: Date;

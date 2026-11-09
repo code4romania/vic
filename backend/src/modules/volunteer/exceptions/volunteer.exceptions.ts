@@ -10,6 +10,7 @@ enum VolunteerExceptionCodes {
   VOLUNTEER_007 = 'VOLUNTEER_007',
   VOLUNTEER_008 = 'VOLUNTEER_008',
   VOLUNTEER_009 = 'VOLUNTEER_009',
+  VOLUNTEER_010 = 'VOLUNTEER_010',
 
   // Profile
   VOLUNTEER_PROFILE_001 = 'VOLUNTEER_PROFILE_001',
@@ -75,5 +76,10 @@ export const VolunteerExceptionMessages: Record<
   [VolunteerExceptionCodes.VOLUNTEER_009]: {
     code_error: VolunteerExceptionCodes.VOLUNTEER_009,
     message: 'A volunteer with this email already exists in the organization.',
+  },
+  [VolunteerExceptionCodes.VOLUNTEER_010]: {
+    code_error: VolunteerExceptionCodes.VOLUNTEER_010,
+    message:
+      'The import file cannot be read: it needs a header row with first name, last name and email, at most 1000 rows and 1 MB.',
   },
 };

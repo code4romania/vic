@@ -252,7 +252,8 @@
       "VOLUNTEER_PROFILE_003": "The volunteer has no profile to be updated. Create one before making changes.",
       "VOLUNTEER_006": "A blocked volunteer cannot change status",
       "VOLUNTEER_007": "The volunteer is not active: hours, documents and contracts can no longer change",
-      "VOLUNTEER_009": "A volunteer with this email already exists in the organization."
+      "VOLUNTEER_009": "A volunteer with this email already exists in the organization.",
+      "VOLUNTEER_010": "The file cannot be read. Use the template: a header row with first name, last name and email, at most 1000 rows and 1 MB."
     },
     "download": "Volunteers.xlsx",
     "inactive_on": "Inactive since",
@@ -294,6 +295,42 @@
       "submit": "Add the volunteer",
       "success_active": "{{name}} was added and got the invitation by email.",
       "success_candidate": "{{name}} was added as a candidate."
+    },
+    "import": {
+      "button": "Import",
+      "title": "Import volunteers",
+      "card_title": "Import from a file",
+      "description": "Fill in the template (CSV or Excel) with first name, last name, email and, optionally, phone, city, county and department. Imported volunteers become candidates: they get no email and have no VIC account until they sign up in the app with that email. An email that is already a volunteer of the organization is not imported again.",
+      "template": "Download the CSV template",
+      "template_name": "volunteer-import-template.csv",
+      "file": "The volunteers file",
+      "hint": "CSV or Excel, at most 1 MB and 1000 rows",
+      "rejected": "The file must be CSV or Excel, at most 1 MB",
+      "submit": "Import the volunteers",
+      "result": {
+        "title": "Import result",
+        "imported_one": "{{count}} volunteer was imported.",
+        "imported_other": "{{count}} volunteers were imported.",
+        "skipped_one": "{{count}} row was skipped:",
+        "skipped_other": "{{count}} rows were skipped:",
+        "errors_one": "{{count}} row has errors and was not imported:",
+        "errors_other": "{{count}} rows have errors and were not imported:",
+        "row": "Row {{row}}",
+        "to_list": "Back to the list"
+      },
+      "skip": {
+        "already_volunteer": "already a volunteer of the organization",
+        "duplicate_in_file": "the email appears more than once in the file"
+      },
+      "reason": {
+        "first_name": "the first name is missing or not 2 to 50 characters",
+        "last_name": "the last name is missing or not 2 to 50 characters",
+        "email": "the email is not valid",
+        "phone": "the phone has over 20 characters",
+        "city_not_found": "the city was not found",
+        "city_ambiguous": "several cities have this name, fill in the county",
+        "department_not_found": "the department does not exist in the organization"
+      }
     }
   },
   "division": {

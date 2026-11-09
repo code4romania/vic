@@ -22,6 +22,8 @@ export interface AddVolunteerOptions {
   locationId?: number;
   departmentId?: string;
   notes?: string;
+  // Where the volunteer came from, e.g. "Import CSV" (#473)
+  source?: string;
   status: VolunteerStatus.CANDIDATE | VolunteerStatus.ACTIVE;
 }
 
@@ -92,6 +94,7 @@ export class AddVolunteerUseCase implements IUseCaseService<IVolunteerModel> {
       organizationId,
       status: options.status,
       notes: options.notes ?? null,
+      source: options.source ?? null,
     });
     await this.volunteerFacade.createProfile({
       volunteerId: volunteer.id,
