@@ -1,3 +1,4 @@
+import { IPersonalStatistics } from '../../common/interfaces/personal-statistics.interface';
 import { IMonthlyStatistics } from '../../common/interfaces/monthly-statistics.interface';
 import { IVicStatistics } from '../../common/interfaces/vic-statistics.interface';
 import API from '../api';
@@ -8,4 +9,8 @@ export const getMonthlyStatistics = async (): Promise<IMonthlyStatistics> => {
 
 export const getVicStatistics = async (): Promise<IVicStatistics> => {
   return API.get('/mobile/statistics/vic').then((res) => res.data);
+};
+
+export const getPersonalStatistics = async (): Promise<IPersonalStatistics> => {
+  return API.get('/mobile/statistics/me').then((res) => res.data);
 };

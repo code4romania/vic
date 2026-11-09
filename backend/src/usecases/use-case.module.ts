@@ -169,6 +169,7 @@ import {
   ListAdminOrganizationsUseCase,
   ListAdminVolunteersUseCase,
 } from './admin/list-admin-overview.usecase';
+import { GetVolunteerPersonalStatisticsUsecase } from './dashboard/get-volunteer-personal-statistics.usecase';
 import { GetVolunteerReportUseCase } from './volunteer/get-volunteer-report.usecase';
 import { GetAnnouncementCountersUseCase } from './announcement/get-announcement-counters.usecase';
 import { GetAnnouncementResponsesUseCase } from './announcement/get-announcement-responses.usecase';
@@ -317,6 +318,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     ListAdminOrganizationsUseCase,
     ListAdminVolunteersUseCase,
     GetVolunteerReportUseCase,
+    GetVolunteerPersonalStatisticsUsecase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,
@@ -503,6 +505,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     ListAdminOrganizationsUseCase,
     ListAdminVolunteersUseCase,
     GetVolunteerReportUseCase,
+    GetVolunteerPersonalStatisticsUsecase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,

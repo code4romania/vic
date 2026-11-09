@@ -8,6 +8,10 @@ import { GetVolunteerMonthlyNewsStatisticsUsecase } from 'src/usecases/dashboard
 import { MonthlyStatisticsPresenter } from './presenters/monthly-statistics.presenter';
 import { GetVicStatisticsUsecase } from 'src/usecases/dashboard/get-vic-statistics.usecase';
 import { VicStatisticsPresenter } from './presenters/vic-statistics.presenter';
+import {
+  GetVolunteerPersonalStatisticsUsecase,
+  IVolunteerPersonalStatistics,
+} from 'src/usecases/dashboard/get-volunteer-personal-statistics.usecase';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -16,6 +20,7 @@ export class MobileStatisticsController {
   constructor(
     private readonly getVolunteerMonthlyNewsStatisticsUsecase: GetVolunteerMonthlyNewsStatisticsUsecase,
     private readonly getVicStatisticsUsecase: GetVicStatisticsUsecase,
+    private readonly getVolunteerPersonalStatisticsUsecase: GetVolunteerPersonalStatisticsUsecase,
   ) {}
 
   @Get('monthly')
@@ -26,6 +31,14 @@ export class MobileStatisticsController {
       await this.getVolunteerMonthlyNewsStatisticsUsecase.execute(id);
 
     return new MonthlyStatisticsPresenter(statistics);
+  }
+
+  // Profil: approved hours, events and years in VIC, across organizations
+  @Get('me')
+  async getMyStatistics(
+    @ExtractUser() { id }: IRegularUserModel,
+  ): Promise<IVolunteerPersonalStatistics> {
+    return this.getVolunteerPersonalStatisticsUsecase.execute(id);
   }
 
   @Get('vic')
