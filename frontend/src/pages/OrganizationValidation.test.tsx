@@ -17,11 +17,9 @@ const PENDING = [
     email: 'noua@ong.test',
     phone: '+40700000009',
     address: 'Str. Noua',
-    activityArea: 'Social',
     description: 'd'.repeat(60),
     website: null,
     logo: null,
-    statuteUrl: 'https://s3.test/statute.pdf',
     registeredOn: '2026-11-05T10:00:00.000Z',
     firstAdmin: { id: 'u-9', name: 'Tudor Noua', email: 'tudor@noua.test', phone: '+40711' },
   },
@@ -54,10 +52,8 @@ describe('OrganizationValidation', () => {
     renderPage(<OrganizationValidation />, { auth: { isSuperAdmin: true } });
 
     expect(await screen.findByText('Asociatia Noua')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: t('validation:open_statute') })).toHaveAttribute(
-      'href',
-      'https://s3.test/statute.pdf',
-    );
+    // #469: validated on the CUI; there is no statute any more
+    expect(screen.getByText('RO999')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: t(`validation:actions.${action}`) }));
     const dialog = await screen.findByRole('dialog');
     expect(called).toBe('');

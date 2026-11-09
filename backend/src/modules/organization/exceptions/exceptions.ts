@@ -7,7 +7,6 @@ export enum OrganizationExceptionCodes {
   ORG_004 = 'ORG_004',
   ORG_005 = 'ORG_005',
   ORG_006 = 'ORG_006',
-  ORG_007 = 'ORG_007',
   ORG_008 = 'ORG_008',
   ORG_009 = 'ORG_009',
   ORG_010 = 'ORG_010',
@@ -43,10 +42,6 @@ export const OrganizationExceptionMessages: Record<
   [OrganizationExceptionCodes.ORG_006]: {
     message: 'The anti-robot check failed, please try again',
     code_error: OrganizationExceptionCodes.ORG_006,
-  },
-  [OrganizationExceptionCodes.ORG_007]: {
-    message: 'The statute is missing or is not a PDF (at most 10 MB)',
-    code_error: OrganizationExceptionCodes.ORG_007,
   },
   // Team page
   [OrganizationExceptionCodes.ORG_008]: {

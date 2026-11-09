@@ -145,7 +145,6 @@ export const AUTH_EMAILS = {
       | 'email'
       | 'phone'
       | 'address'
-      | 'activityArea'
       | 'description'
       | 'website'
       | 'taxId'
@@ -157,7 +156,6 @@ export const AUTH_EMAILS = {
       `${organization.name} (CUI ${organization.taxId})`,
       `${organization.email}, ${organization.phone}`,
       organization.address,
-      organization.activityArea,
       organization.website,
       organization.description,
       `Admin: ${admin.name}, ${admin.email}, ${admin.phone}`,
@@ -170,13 +168,12 @@ export const AUTH_EMAILS = {
       `ONG nou de validat: ${organization.name} / New NGO to validate`,
       {
         title: `ONG nou de validat: ${organization.name}`,
-        subtitle: `${details}. Statutul și datele sunt pe pagina de validare, unde poți valida sau suspenda organizația. Pentru suspendare din linia de comandă: ${suspend}`,
+        subtitle: `${details}. Verifică CUI-ul, apoi validează sau suspendă organizația pe pagina de validare. Pentru suspendare din linia de comandă: ${suspend}`,
       },
       {
         title: `New NGO to validate: ${organization.name}`,
-        subtitle: `The statute and the details are on the validation page, where you can validate or suspend the organization. To suspend from the command line: ${suspend}`,
+        subtitle: `Check the CUI, then validate or suspend the organization on the validation page. To suspend from the command line: ${suspend}`,
       },
-      // Not the statute itself: a presigned link would expire a day after the email.
       {
         cta: { link: validationPageUrl, label: 'Deschide pagina de validare' },
       },

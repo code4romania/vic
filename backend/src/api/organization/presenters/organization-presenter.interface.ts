@@ -10,14 +10,12 @@ export class OrganizationPresenter {
     this.email = organization.email;
     this.phone = organization.phone;
     this.address = organization.address;
-    this.activityArea = organization.activityArea;
     this.logo = organization.logo;
     this.description = organization.description;
     this.status = organization.status;
     this.validatedAt = organization.validatedAt;
     this.taxId = organization.taxId;
     this.website = organization.website;
-    this.statuteUrl = organization.statuteUrl;
   }
 
   @Expose()
@@ -49,14 +47,9 @@ export class OrganizationPresenter {
   @Expose()
   @ApiProperty({
     description: 'The address of the Organization',
+    nullable: true,
   })
   address: string;
-
-  @Expose()
-  @ApiProperty({
-    description: 'The activity area of the Organization',
-  })
-  activityArea: string;
 
   @Expose()
   @ApiProperty({
@@ -89,11 +82,4 @@ export class OrganizationPresenter {
   @Expose()
   @ApiProperty({ nullable: true })
   website: string;
-
-  @Expose()
-  @ApiProperty({
-    description: 'A link to the statute PDF, valid for a day',
-    nullable: true,
-  })
-  statuteUrl: string;
 }

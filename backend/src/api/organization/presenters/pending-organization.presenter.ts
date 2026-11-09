@@ -21,7 +21,7 @@ export class PendingOrganizationAdminPresenter {
   @Expose() @ApiProperty() phone: string;
 }
 
-// The super admin's review page: everything the NGO sent, with its statute.
+// The super admin's review page: everything the NGO sent; the CUI is what gets checked.
 export class PendingOrganizationPresenter {
   constructor(organization: PendingOrganization) {
     this.id = organization.id;
@@ -30,11 +30,9 @@ export class PendingOrganizationPresenter {
     this.email = organization.email;
     this.phone = organization.phone;
     this.address = organization.address;
-    this.activityArea = organization.activityArea;
     this.description = organization.description;
     this.website = organization.website;
     this.logo = organization.logo;
-    this.statuteUrl = organization.statuteUrl;
     this.registeredOn = organization.createdOn;
     this.firstAdmin = organization.firstAdmin
       ? new PendingOrganizationAdminPresenter(organization.firstAdmin)
@@ -46,15 +44,10 @@ export class PendingOrganizationPresenter {
   @Expose() @ApiProperty({ description: 'CUI' }) taxId: string;
   @Expose() @ApiProperty() email: string;
   @Expose() @ApiProperty() phone: string;
-  @Expose() @ApiProperty() address: string;
-  @Expose() @ApiProperty() activityArea: string;
-  @Expose() @ApiProperty() description: string;
+  @Expose() @ApiProperty({ nullable: true }) address: string;
+  @Expose() @ApiProperty({ nullable: true }) description: string;
   @Expose() @ApiProperty({ nullable: true }) website: string;
   @Expose() @ApiProperty({ nullable: true }) logo: string;
-
-  @Expose()
-  @ApiProperty({ description: 'A link to the statute PDF, valid for a day' })
-  statuteUrl: string;
 
   @Expose() @ApiProperty() registeredOn: Date;
 

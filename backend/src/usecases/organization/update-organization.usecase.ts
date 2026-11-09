@@ -19,24 +19,16 @@ import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOrganizationUseCaseService } from './get-organization.usecase';
 import {
   isLogoImage,
-  isPdf,
   RegisterOrganizationFiles,
 } from './register-organization.usecase';
 
 // The fields an NGO's admin may edit; status and validation stay with the super admins.
 export type EditableOrganizationFields = Pick<
   UpdateOrganizationOptions,
-  | 'name'
-  | 'email'
-  | 'phone'
-  | 'address'
-  | 'activityArea'
-  | 'description'
-  | 'website'
-  | 'taxId'
+  'name' | 'email' | 'phone' | 'address' | 'description' | 'website' | 'taxId'
 >;
 
-// Replaces the description-only update: every field, and optionally a new logo or statute.
+// Replaces the description-only update: every field, and optionally a new logo.
 @Injectable()
 export class UpdateOrganizationUseCase
   implements IUseCaseService<IOrganizationModel>
@@ -57,9 +49,6 @@ export class UpdateOrganizationUseCase
       admin.organizationId,
     );
 
-    if (files.statute && !isPdf(files.statute)) {
-      throw new BadRequestException(OrganizationExceptionMessages.ORG_007);
-    }
     if (files.logo && !isLogoImage(files.logo)) {
       throw new BadRequestException(OrganizationExceptionMessages.ORG_003);
     }
@@ -82,15 +71,6 @@ export class UpdateOrganizationUseCase
       ...dropUndefined(changes),
       ...(files.logo
         ? { logo: await this.s3Service.uploadPublicFile(folder, files.logo) }
-        : {}),
-      ...(files.statute
-        ? {
-            statuteUrl: await this.s3Service.uploadFile(
-              folder,
-              files.statute,
-              'statute.pdf',
-            ),
-          }
         : {}),
     };
     const updated = await this.organizationFacade.updateOrganization(

@@ -16,13 +16,12 @@ const parse = async (
 const description = 'O descriere suficient de lunga pentru a trece de minim.';
 
 describe('UpdateOrganizationDto (multipart edit form)', () => {
-  it('treats fields left empty as unchanged, as Swagger sends them', async () => {
+  it('treats required fields left empty as unchanged, as Swagger sends them', async () => {
     const { dto, errors } = await parse({
       name: '',
       email: '',
       phone: '',
       address: '',
-      activityArea: '',
       taxId: '',
       description,
       website: 'https://seed-unu.ro',
@@ -33,8 +32,7 @@ describe('UpdateOrganizationDto (multipart edit form)', () => {
       name: undefined,
       email: undefined,
       phone: undefined,
-      address: undefined,
-      activityArea: undefined,
+      address: null,
       taxId: undefined,
       description,
       website: 'https://seed-unu.ro',
@@ -49,10 +47,16 @@ describe('UpdateOrganizationDto (multipart edit form)', () => {
     expect(dto.email).toBeUndefined();
   });
 
-  it('clears the website when it is sent empty', async () => {
-    const { dto, errors } = await parse({ website: '' });
+  it('clears the optional address, description and website when sent empty (#469)', async () => {
+    const { dto, errors } = await parse({
+      address: '',
+      description: ' ',
+      website: '',
+    });
 
     expect(errors).toEqual([]);
+    expect(dto.address).toBeNull();
+    expect(dto.description).toBeNull();
     expect(dto.website).toBeNull();
   });
 

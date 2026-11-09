@@ -16,7 +16,7 @@ export interface IOrganizationWithEventsModel {
   email: string;
   phone: string;
   address: string;
-  activityArea: string;
+  website: string;
   logo: string;
   description: string;
   numberOfVolunteers: number;
@@ -39,7 +39,7 @@ export class OrganizationWithEventTransformer {
       email: organizationEntity.email,
       phone: organizationEntity.phone,
       address: organizationEntity.address,
-      activityArea: organizationEntity.activityArea,
+      website: organizationEntity.website,
       logo: organizationEntity.logo,
       description: organizationEntity.description,
       numberOfVolunteers: organizationEntity.numberOfVolunteers,

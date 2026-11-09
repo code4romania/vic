@@ -17,7 +17,6 @@ export const getOrganization = async (): Promise<IOrganization> => {
 
 const appendFiles = (formData: FormData, files?: IOrganizationFiles): FormData => {
   if (files?.logo) formData.append('logo', files.logo);
-  if (files?.statute) formData.append('statute', files.statute);
   return formData;
 };
 
@@ -27,8 +26,8 @@ const toFormData = (fields: Record<string, string | boolean>): FormData => {
   return formData;
 };
 
-// Every field plus an optional new logo or statute. An empty field means "unchanged", except the
-// website, where empty clears it (backend UpdateOrganizationDto).
+// The profile fields plus an optional new logo. An empty field means "unchanged" (backend
+// UpdateOrganizationDto).
 export const updateOrganization = async (
   data: IOrganizationFields,
   files?: IOrganizationFiles,
@@ -38,7 +37,7 @@ export const updateOrganization = async (
   }).then((res) => res.data);
 };
 
-// Public: the NGO and its first admin, the statute PDF and the Turnstile token.
+// Public: the NGO (#469: name, CUI, email, phone), its first admin and the Turnstile token.
 export const registerOrganization = async (
   data: IRegisterOrganization,
   files: IOrganizationFiles,

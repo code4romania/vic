@@ -24,9 +24,6 @@ export const Phone = (): PropertyDecorator =>
 export const Address = (): PropertyDecorator =>
   applyDecorators(trimmed, IsString(), MinLength(2), MaxLength(500));
 
-export const ActivityArea = (): PropertyDecorator =>
-  applyDecorators(trimmed, IsString(), MinLength(2), MaxLength(200));
-
 export const Description = (): PropertyDecorator =>
   applyDecorators(trimmed, IsString(), MinLength(50), MaxLength(250));
 

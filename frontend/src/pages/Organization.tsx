@@ -118,25 +118,25 @@ const Organization = ({ query, setQuery }: OrganizationTableProps) => {
                 readOnly
               />
               <FormInput
-                label={i18n.t('general:address') || ''}
-                value={organization.address}
+                label={i18n.t('register_organization:form.address.label')}
+                value={organization.address ?? '-'}
                 readOnly
               />
               <FormInput
-                label={i18n.t('general:activity_area') || ''}
-                value={organization.activityArea}
-                readOnly
-              />
-              <FormInput
-                label={i18n.t('organization:tax_id')}
-                value={organization.taxId}
-                readOnly
-              />
-              <FormInput
-                label={i18n.t('organization:website')}
+                label={i18n.t('register_organization:form.website.label')}
                 value={organization.website ?? '-'}
                 readOnly
               />
+              <FormTextarea
+                label={i18n.t('general:description')}
+                defaultValue={organization.description ?? ''}
+                readOnly
+              />
+              <hr className="border-cool-gray-200" />
+              {/* #469: what the super admin validates the organization on */}
+              <Paragraph title={i18n.t('organization:validation.title')}>
+                {i18n.t('organization:validation.description')}
+              </Paragraph>
               <FormInput
                 label={i18n.t('general:status')}
                 value={i18n.t(`organization:status.${organization.status}`)}
@@ -151,26 +151,9 @@ const Organization = ({ query, setQuery }: OrganizationTableProps) => {
                 }
                 readOnly
               />
-              {organization.statuteUrl && (
-                <div className="flex flex-col gap-1">
-                  <small className="text-cool-gray-500">{i18n.t('organization:statute')}</small>
-                  <a
-                    className="underline text-turquoise-700 self-start"
-                    href={organization.statuteUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {i18n.t('organization:open_statute')}
-                  </a>
-                </div>
-              )}
-              <hr className="border-cool-gray-200" />
-              <Paragraph title={i18n.t('organization:description')}>
-                {i18n.t('organization:description_placeholder')}
-              </Paragraph>
-              <FormTextarea
-                label={i18n.t('general:description')}
-                defaultValue={organization.description}
+              <FormInput
+                label={i18n.t('organization:tax_id')}
+                value={organization.taxId}
                 readOnly
               />
             </FormLayout>

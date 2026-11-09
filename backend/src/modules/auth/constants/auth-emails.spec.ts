@@ -34,7 +34,6 @@ const organization = {
   email: 'contact@test.ro',
   phone: '+40700000000',
   address: 'Str. Test 1',
-  activityArea: 'Social',
   description: 'Descriere',
   website: 'https://test.ro',
   taxId: 'RO123',

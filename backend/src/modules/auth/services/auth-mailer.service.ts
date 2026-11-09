@@ -21,7 +21,7 @@ export class AuthMailerService {
     return `${this.authConfig.webAppUrl}/confirm-email?token=${encodeURIComponent(secret)}`;
   }
 
-  // The super admins' page for pending NGOs: details and statute, with links that do not expire.
+  // The super admins' page for pending NGOs: their details, to validate or suspend.
   public validationPageUrl(): string {
     return `${this.authConfig.webAppUrl}/admin/validation`;
   }

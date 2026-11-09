@@ -8,12 +8,7 @@ import logo from '../assets/images/app_logo.svg';
 import FormInput from '../components/FormInput';
 import Button from '../components/Button';
 import Turnstile from '../components/Turnstile';
-import {
-  isPdf,
-  OrganizationFields,
-  OrganizationFiles,
-  organizationFieldsSchema,
-} from '../components/OrganizationFields';
+import { OrganizationFields, organizationFieldsSchema } from '../components/OrganizationFields';
 import { useRegisterOrganizationMutation } from '../services/organization/organization.service';
 import { IRegisterOrganization } from '../common/interfaces/organization.interface';
 import { ORGANIZATION_ERRORS } from '../common/errors/entities/organization.errors';
@@ -26,10 +21,6 @@ const DEFAULTS: RegisterForm = {
   name: '',
   email: '',
   phone: '',
-  address: '',
-  activityArea: '',
-  description: '',
-  website: '',
   taxId: '',
   firstName: '',
   lastName: '',
@@ -39,12 +30,10 @@ const DEFAULTS: RegisterForm = {
 };
 
 // /register: an NGO and its first admin. The admin confirms the email, then the NGO waits for a super
-// admin's validation (decision 1). Statute PDF required (R32), Turnstile, free-text address (R6).
+// admin's validation (decision 1), on its CUI. Turnstile. #469: only name, CUI, email and phone; the
+// description, address, website and logo are filled in later from the Organization page.
 const RegisterOrganization = () => {
   const { t, i18n } = useTranslation('register_organization');
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [statute, setStatute] = useState<File | null>(null);
-  const [statuteError, setStatuteError] = useState<string>();
   const [turnstileToken, setTurnstileToken] = useState<string>('');
   const [turnstileKey, setTurnstileKey] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
@@ -80,26 +69,15 @@ const RegisterOrganization = () => {
     formState: { errors },
   } = useForm<RegisterForm>({ defaultValues: DEFAULTS, resolver: yupResolver(schema) });
 
-  const checkStatute = (file: File | null): boolean => {
-    const message = !file
-      ? t('form.statute.required')
-      : !isPdf(file)
-        ? t('form.statute.rejected')
-        : undefined;
-    setStatuteError(message);
-    return !message;
-  };
-
   const onSubmit = (form: RegisterForm) => {
     setError(null);
-    if (!checkStatute(statute)) return;
     if (!turnstileToken) {
       setError(t('errors.turnstile_missing'));
       return;
     }
 
     register.mutate(
-      { data: { ...form, turnstileToken }, files: { logo: logoFile, statute } },
+      { data: { ...form, turnstileToken }, files: {} },
       {
         onSuccess: ({ maskedEmail }) => setRegistered({ name: form.name.trim(), maskedEmail }),
         onError: (err) => {
@@ -107,10 +85,6 @@ const RegisterOrganization = () => {
           setTurnstileToken('');
           setTurnstileKey((key) => key + 1);
           const code = err.response?.data?.code_error;
-          if (code === ORGANIZATION_ERRORS.ORG_007) {
-            setStatuteError(InternalErrors.ORGANIZATION_ERRORS.getError(code));
-            return;
-          }
           if (code === ORGANIZATION_ERRORS.ORG_004 || code === ORGANIZATION_ERRORS.ORG_006) {
             setError(InternalErrors.ORGANIZATION_ERRORS.getError(code));
             return;
@@ -171,20 +145,12 @@ const RegisterOrganization = () => {
             </Link>
           </div>
         ) : (
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit, () => checkStatute(statute))} noValidate>
+          <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)} noValidate>
             <p className="text-cool-gray-500 text-center">{t('description')}</p>
 
             <section className="bg-white rounded-lg shadow p-6 flex flex-col gap-4">
               <h2 className="font-robotoBold text-lg">{t('organization_card')}</h2>
               <OrganizationFields control={control} errors={errors} />
-              <OrganizationFiles
-                onLogo={setLogoFile}
-                onStatute={(file) => {
-                  setStatute(file);
-                  checkStatute(file);
-                }}
-                statuteError={statuteError}
-              />
             </section>
 
             <section className="bg-white rounded-lg shadow p-6 flex flex-col gap-4">

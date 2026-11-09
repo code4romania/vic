@@ -38,13 +38,7 @@ export class OrganizationRegistrationController {
         { $ref: '#/components/schemas/RegisterOrganizationDto' },
         {
           type: 'object',
-          required: ['statute'],
           properties: {
-            statute: {
-              type: 'string',
-              format: 'binary',
-              description: 'PDF, at most 10 MB',
-            },
             logo: {
               type: 'string',
               format: 'binary',
@@ -67,7 +61,7 @@ export class OrganizationRegistrationController {
     const { acceptedTerms, ...options } = dto;
     const { maskedEmail } = await this.registerOrganizationUseCase.execute(
       options,
-      { logo: files?.logo?.[0], statute: files?.statute?.[0] },
+      { logo: files?.logo?.[0] },
       req.ip,
     );
     return new MaskedEmailPresenter(maskedEmail);
