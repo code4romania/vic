@@ -840,8 +840,10 @@
       "NOTIFICATIONS_002": "Error changing settings!"
     },
     "warning_modal": {
-      "description": "Notifications are currently disabled for this app. To receive important updates and alerts, please enable notifications in your phone's settings.",
-      "btn_label": "Open settings"
+      "description": "Turn them on in your phone settings to know when your hours are approved or a new event comes up.",
+      "btn_label": "Open settings",
+      "title": "Notifications are off",
+      "later": "Later"
     }
   },
   "user": {

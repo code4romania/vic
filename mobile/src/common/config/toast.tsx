@@ -1,22 +1,49 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { BaseToast } from 'react-native-toast-message';
+import { StyleSheet, View } from 'react-native';
+import { colors, fonts, radius, shadows } from '../theme/tokens';
+import { VText } from '../../components/ui/VText';
 
+type Tone = 'ok' | 'no' | 'neutral';
+
+const VicToast = ({ text1, text2, tone }: { text1?: string; text2?: string; tone: Tone }) => (
+  <View
+    style={[styles.toast, shadows.floating]}
+    accessibilityRole="alert"
+    accessibilityLiveRegion="polite"
+    testID={`toast-${tone}`}
+  >
+    <View style={[styles.dot, { backgroundColor: colors.status[tone].fg }]} />
+    <View style={styles.text}>
+      {!!text1 && (
+        <VText variant="label" style={styles.title}>
+          {text1}
+        </VText>
+      )}
+      {!!text2 && <VText variant="cap">{text2}</VText>}
+    </View>
+  </View>
+);
+
+/** VIC 2.0 toasts (canvas board "Stări"): a white card with a colored dot, over the content. */
 export const toastConfig = {
-  success: (props: any) => <BaseToast {...props} style={styles.success} text1Style={styles.text} />,
-  error: (props: any) => <BaseToast {...props} style={styles.error} text1Style={styles.text} />,
+  success: (props: any) => <VicToast {...props} tone="ok" />,
+  error: (props: any) => <VicToast {...props} tone="no" />,
+  info: (props: any) => <VicToast {...props} tone="neutral" />,
 };
 
 const styles = StyleSheet.create({
-  success: {
-    backgroundColor: '#12B6B6',
-    borderLeftWidth: 0,
+  toast: {
+    width: '92%',
+    maxWidth: 420,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: radius.card,
+    backgroundColor: colors.white,
   },
-  error: {
-    backgroundColor: '#E23D3D',
-    borderLeftWidth: 0,
-  },
-  text: {
-    color: '#fff',
-  },
+  dot: { width: 10, height: 10, borderRadius: 5 },
+  text: { flex: 1, gap: 2 },
+  title: { fontFamily: fonts.medium },
 });

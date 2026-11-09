@@ -19,9 +19,8 @@ import useStore from '../store/store';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { useReducedMotion } from 'react-native-reanimated';
 import { registerForPushNotificationsAsync } from '../common/utils/notifications';
-import { SvgXml } from 'react-native-svg';
-import upsIcon from '../assets/svg/ups-icon';
-import Button from '../components/Button';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { Sheet, StateIcon, VButton } from '../components/ui';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 
 interface NotificationSettingProps {
@@ -95,11 +94,10 @@ const NotificationsSettings = ({ navigation }: any) => {
   const { updateSettings } = useStore();
   // bottom sheet ref
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const notificationsBottomSheetRef = useRef<BottomSheet>(null);
+  const notificationsBottomSheetRef = useRef<BottomSheetModal>(null);
 
   // bottom sheet snap points
   const snapPoints = useMemo(() => ['1%', 200], []);
-  const notificationsSnapPoints = useMemo(() => ['1%', 410], []);
 
   // notifications state
   const [showNotificationFromOptions, setShowNotificationsFromOptions] = useState<boolean>(true);
@@ -153,7 +151,7 @@ const NotificationsSettings = ({ navigation }: any) => {
     Linking.openSettings().catch(() => {
       console.warn('Unable to open settings');
     });
-    notificationsBottomSheetRef.current?.close();
+    notificationsBottomSheetRef.current?.dismiss();
   };
 
   const onNotificationByOptionPress = async (value: string) => {
@@ -168,7 +166,7 @@ const NotificationsSettings = ({ navigation }: any) => {
       const { token } = await registerForPushNotificationsAsync();
       // if a token does not exist -> we did not grant access to notifications for the app -> show warning modal
       if (!token) {
-        notificationsBottomSheetRef?.current?.expand();
+        notificationsBottomSheetRef?.current?.present();
         bottomSheetRef.current?.close();
         return;
       }
@@ -293,26 +291,24 @@ const NotificationsSettings = ({ navigation }: any) => {
           )}
         </View>
       </SafeAreaBottomSheet>
-      <SafeAreaBottomSheet
-        backdropComponent={renderBackdrop}
+      <Sheet
         ref={notificationsBottomSheetRef}
-        index={-1}
-        snapPoints={notificationsSnapPoints}
-        enableDynamicSizing={false}
-        animateOnMount={reducedMotion ? false : true}
+        title={`${t('warning_modal.title')}`}
+        subtitle={`${t('warning_modal.description')}`}
+        testID="notifications-off-sheet"
       >
-        <View style={styles.warningSheetContainer}>
-          <SvgXml xml={upsIcon} height={100} width={100} />
-          <Text
-            allowFontScaling={ALLOW_FONT_SCALLING}
-            category="p2"
-            style={[styles.bottomSheetTitle, { textAlign: 'center', lineHeight: 24 }]}
-          >
-            {`${t('warning_modal.description')}`}
-          </Text>
-          <Button label={t('warning_modal.btn_label')} onPress={openAppSettings} />
-        </View>
-      </SafeAreaBottomSheet>
+        <StateIcon kind="notifications" size={56} />
+        <VButton
+          label={`${t('warning_modal.btn_label')}`}
+          onPress={openAppSettings}
+          testID="notifications-open-settings"
+        />
+        <VButton
+          variant="soft"
+          label={`${t('warning_modal.later')}`}
+          onPress={() => notificationsBottomSheetRef.current?.dismiss()}
+        />
+      </Sheet>
     </>
   );
 };
