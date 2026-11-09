@@ -1,3 +1,4 @@
+import { IImportVolunteersResult } from '../../common/interfaces/volunteer.interface';
 import { format } from 'date-fns';
 import { AddVolunteerFormTypes } from '../../pages/AddVolunteer';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
@@ -80,6 +81,15 @@ export const addVolunteer = async (data: AddVolunteerFormTypes): Promise<IVolunt
     ...(birthday ? { birthday: format(birthday, 'yyyy-MM-dd') } : {}),
     ...(city ? { locationId: Number(city.value) } : {}),
     ...(department ? { departmentId: department.key } : {}),
+  }).then((res) => res.data);
+};
+
+// #473: CSV or Excel import; every valid row becomes a Candidate.
+export const importVolunteers = async (file: File): Promise<IImportVolunteersResult> => {
+  const formData = new FormData();
+  formData.append('file', file);
+  return API.post('volunteer/import', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
 };
 

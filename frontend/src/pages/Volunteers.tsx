@@ -13,6 +13,7 @@ import {
   NoSymbolIcon,
   CheckCircleIcon,
   PlusIcon,
+  ArrowUpTrayIcon,
 } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
@@ -103,9 +104,15 @@ const VolunteersTableHeader = [
     grow: 0,
     minWidth: '7rem',
     cell: (row: IVolunteer) => (
-      <StatusWithMarker markerColor={VolunteerStatusMarkerColorMapper[row.status]}>
-        {i18n.t(`volunteers:status_label.${row.status}`)}
-      </StatusWithMarker>
+      <div className="flex flex-col">
+        <StatusWithMarker markerColor={VolunteerStatusMarkerColorMapper[row.status]}>
+          {i18n.t(`volunteers:status_label.${row.status}`)}
+        </StatusWithMarker>
+        {/* #473: separate from the status: whether the person has a VIC account yet */}
+        {row.user?.hasAccount === false && (
+          <small className="text-cool-gray-500">{i18n.t('volunteer:no_account')}</small>
+        )}
+      </div>
     ),
   },
   {
@@ -433,6 +440,12 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
               className="btn-outline-secondary"
               onClick={onExport}
+            />
+            <Button
+              label={i18n.t('volunteers:import.button')}
+              icon={<ArrowUpTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+              className="btn-outline-secondary"
+              onClick={() => navigate('import')}
             />
             <Button
               label={i18n.t('volunteers:add.button')}

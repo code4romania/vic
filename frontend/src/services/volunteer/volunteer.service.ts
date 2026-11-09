@@ -6,6 +6,7 @@ import {
   IVolunteersFilters,
   activateVolunteer,
   addVolunteer,
+  importVolunteers,
   archiveVolunteer,
   updateVolunteerDetails,
   blockVolunteer,
@@ -39,6 +40,12 @@ export const useVolunteer = (id: string) => {
 
 export const useAddVolunteerMutation = () => {
   return useMutation((data: AddVolunteerFormTypes) => addVolunteer(data), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
+  });
+};
+
+export const useImportVolunteersMutation = () => {
+  return useMutation((file: File) => importVolunteers(file), {
     onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
   });
 };

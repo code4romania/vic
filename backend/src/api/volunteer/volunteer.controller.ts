@@ -8,9 +8,17 @@ import {
   Post,
   Query,
   Res,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  IMPORT_MAX_BYTES,
+  ImportVolunteersResult,
+  ImportVolunteersUseCase,
+} from 'src/usecases/volunteer/import-volunteers.usecase';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import {
@@ -52,7 +60,35 @@ export class VolunteerController {
     private readonly getVolunteersForDownloadUseCase: GetVolunteersForDownloadUseCase,
     private readonly updateVolunteerDetailsUsecase: UpdateVolunteerDetailsUsecase,
     private readonly addVolunteerUseCase: AddVolunteerUseCase,
+    private readonly importVolunteersUseCase: ImportVolunteersUseCase,
   ) {}
+
+  // #473: import Candidates from a CSV or Excel file (`file`)
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description:
+            'CSV (UTF-8) or Excel, header row: Prenume, Nume, Email, Telefon, Localitate, Județ, Departament',
+        },
+      },
+    },
+  })
+  @UseInterceptors(
+    FileInterceptor('file', { limits: { fileSize: IMPORT_MAX_BYTES } }),
+  )
+  @Post('import')
+  async import(
+    @UploadedFile() file: Express.Multer.File,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<ImportVolunteersResult> {
+    return this.importVolunteersUseCase.execute(file, admin);
+  }
 
   // #471: add a volunteer by hand, as Candidate or Active
   @ApiBody({ type: AddVolunteerDto })
