@@ -204,10 +204,19 @@
     "organizations": {
         "title": "Caută",
         "search": {
-            "placeholder": "Denumirea organizației"
+            "placeholder": "Denumirea organizației",
+            "clear": "Șterge căutarea"
         },
         "errors": {
             "generic": "Eroare la încărcarea datelor"
+        },
+        "heading": "Organizații",
+        "subtitle": "Alătură-te celor care fac lucruri care contează pentru tine.",
+        "count": "{{n}} organizații",
+        "member": "Membru",
+        "empty": {
+            "title": "Nu există rezultate",
+            "description": "Verifică denumirea organizației."
         }
     },
     "organization_profile": {
@@ -245,6 +254,17 @@
                 "paragraph": "Cererea de înscriere a fost trimisă către coordonatorii organizației. Ești sigur că vrei să retragi cererea?",
                 "action_label": "Anulează cererea"
             }
+        },
+        "about": "Despre",
+        "bar": {
+            "pending": "Cerere trimisă",
+            "pending_hint": "Te anunțăm când organizația răspunde.",
+            "withdraw": "Retrage",
+            "member": "Membru",
+            "member_since": "din {{date}}",
+            "see_events": "Vezi evenimente",
+            "have_code": "Am un cod",
+            "join": "Vreau să ajut"
         }
     },
     "join_ngo": {

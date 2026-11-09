@@ -55,7 +55,8 @@ const HoursTab = withTabInset(ActivityLogs);
 const DocumentsTab = withTabInset(Documents);
 const ProfileTab = withTabInset(Settings);
 const VolunteerRoute = withTabInset(Volunteer);
-const OrganizationsRoute = withTabInset(Organizations);
+// Organizations pads its own list under the glass tab bar
+const OrganizationsRoute = Organizations;
 
 const renderTabBar = (props: BottomTabBarProps) => <GlassTabBar {...props} items={items()} />;
 
