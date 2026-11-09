@@ -206,8 +206,7 @@
       "years": "{{count}} years",
       "years_de": "{{count}} years"
     },
-    "section_settings": "Settings",
-    "footer": "VIC 2.0 · a Code for Romania project, built by Commit Global"
+    "section_settings": "Settings"
   },
   "account_data": {
     "title": "Account data",

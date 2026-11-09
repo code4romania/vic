@@ -271,10 +271,6 @@ const Settings = ({ navigation }: any) => {
             />
           </Group>
         </Enter>
-
-        <VText variant="cap" style={styles.footer}>
-          {t('footer')}
-        </VText>
       </Animated.ScrollView>
       <StatusBarScrim />
 
@@ -338,5 +334,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   addIcon: { backgroundColor: colors.status.accent.bg },
-  footer: { textAlign: 'center', marginTop: 32 },
 });
