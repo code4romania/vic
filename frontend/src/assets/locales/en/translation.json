@@ -774,7 +774,14 @@
       "deactivate": "Deactivate",
       "archive": "Archive"
     },
-    "all_organization": "The whole organization"
+    "all_organization": "The whole organization",
+    "responses": {
+      "title_one": "One answer from volunteers",
+      "title_other": "{{count}} answers from volunteers",
+      "volunteer": "Volunteer",
+      "comment": "Comment",
+      "date": "Date"
+    }
   },
   "activity_log": {
     "pending": "Requests for approval",

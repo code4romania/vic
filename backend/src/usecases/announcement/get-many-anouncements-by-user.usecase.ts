@@ -6,21 +6,38 @@ import {
   FindManyAnnouncementForUserOptions,
   IAnnouncementModel,
 } from 'src/modules/announcement/models/announcement.model';
+export type IAnnouncementWithMyResponse = IAnnouncementModel & {
+  myResponse: { comment: string; createdOn: Date } | null;
+};
+
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 
 @Injectable()
 export class GetManyAnouncementsByUserAsUsecase
-  implements IUseCaseService<Pagination<IAnnouncementModel>>
+  implements IUseCaseService<Pagination<IAnnouncementWithMyResponse>>
 {
   constructor(private readonly announcementFacade: AnnouncementFacade) {}
 
   public async execute(
     findOptions: FindManyAnnouncementForUserOptions,
-  ): Promise<Pagination<IAnnouncementModel>> {
-    return this.announcementFacade.findManyByRegularUser({
+  ): Promise<Pagination<IAnnouncementWithMyResponse>> {
+    const page = await this.announcementFacade.findManyByRegularUser({
       ...findOptions,
       status: AnnouncementStatus.ACTIVE,
       visibleOn: new Date(),
     });
+
+    // #504: the volunteer's own answers
+    const responses = await this.announcementFacade.findResponsesForUser(
+      findOptions.userId,
+      page.items.map((announcement) => announcement.id),
+    );
+    return {
+      ...page,
+      items: page.items.map((announcement) => ({
+        ...announcement,
+        myResponse: responses[announcement.id] ?? null,
+      })),
+    };
   }
 }

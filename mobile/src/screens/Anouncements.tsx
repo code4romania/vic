@@ -8,9 +8,13 @@ import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { Text } from '@ui-kitten/components';
+import InlineLink from '../components/InlineLink';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 const Anouncements = ({ navigation }: any) => {
   const { t } = useTranslation('general');
+  const { t: tResponse } = useTranslation('anouncement_response');
   const paddingTop = usePaddingTop();
 
   const {
@@ -37,6 +41,29 @@ const Anouncements = ({ navigation }: any) => {
         title={item.title}
         subtitle={item.description}
       />
+      {/* #504: answer once; then the answer is shown */}
+      <View style={styles.response}>
+        {item.myResponse ? (
+          <Text
+            allowFontScaling={ALLOW_FONT_SCALLING}
+            category="c1"
+            appearance="hint"
+            numberOfLines={2}
+          >
+            {`${tResponse('responded', { comment: item.myResponse.comment })}`}
+          </Text>
+        ) : (
+          <InlineLink
+            label={tResponse('respond')}
+            onPress={() =>
+              navigation.navigate('anouncement-response', {
+                anouncementId: item.id,
+                title: item.title,
+              })
+            }
+          />
+        )}
+      </View>
     </View>
   );
 
@@ -66,5 +93,9 @@ const styles = StyleSheet.create({
   listItemContainer: {
     paddingBottom: 16,
     paddingHorizontal: 2,
+  },
+  response: {
+    paddingTop: 8,
+    paddingHorizontal: 16,
   },
 });

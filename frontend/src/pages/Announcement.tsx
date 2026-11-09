@@ -30,6 +30,7 @@ import {
   useChangeAnnouncementStatusMutation,
 } from '../services/announcement/announcement.service';
 import { AnnouncementStatusAction } from '../services/announcement/announcement.api';
+import AnnouncementResponses from '../components/AnnouncementResponses';
 
 const Announcement = () => {
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
@@ -215,6 +216,7 @@ const Announcement = () => {
           </CardBody>
         </Card>
       )}
+      {announcement && <AnnouncementResponses announcementId={announcement.id} />}
       {selectedIdForDeletion && (
         <ConfirmationModal
           title={i18n.t('announcement:modal.title')}

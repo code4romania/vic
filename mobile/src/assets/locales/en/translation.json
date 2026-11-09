@@ -698,5 +698,24 @@
     "heading": "Update the app",
     "paragraph": "This version of VIC is no longer supported. Install the latest version from the store to continue.",
     "update": "Update"
+  },
+  "anouncement_response": {
+    "respond": "Reply",
+    "responded": "Your reply: {{comment}}",
+    "title": "Reply to the announcement",
+    "paragraph": "The organization sees your reply with your name. You can reply only once.",
+    "comment": {
+      "label": "Your message",
+      "placeholder": "E.g. I can come on Saturday morning",
+      "required": "Write a message",
+      "max": "The message can have at most 500 characters"
+    },
+    "submit": "Send reply",
+    "sent": "Your reply was sent",
+    "errors": {
+      "ANNOUNCEMENT_006": "Only active volunteers can reply to an active announcement.",
+      "ANNOUNCEMENT_007": "You already replied to this announcement.",
+      "generic": "The reply could not be sent. Please try again."
+    }
   }
 }

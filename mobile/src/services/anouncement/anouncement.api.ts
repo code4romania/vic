@@ -24,3 +24,8 @@ export const getAnouncements = async ({
     },
   }).then((res) => res.data);
 };
+
+// #504: answer an announcement with a comment, once
+export const respondToAnouncement = async (id: string, comment: string): Promise<void> => {
+  return API.post(`/mobile/anouncement/${id}/response`, { comment }).then((res) => res.data);
+};

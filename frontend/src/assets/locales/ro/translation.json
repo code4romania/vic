@@ -776,7 +776,15 @@
       "deactivate": "Dezactivează",
       "archive": "Arhivează"
     },
-    "all_organization": "Toată organizația"
+    "all_organization": "Toată organizația",
+    "responses": {
+      "title_one": "Un răspuns de la voluntari",
+      "title_few": "{{count}} răspunsuri de la voluntari",
+      "title_other": "{{count}} de răspunsuri de la voluntari",
+      "volunteer": "Voluntar",
+      "comment": "Comentariu",
+      "date": "Data"
+    }
   },
   "activity_log": {
     "pending": "Solicitări de aprobare",

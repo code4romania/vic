@@ -1,5 +1,5 @@
-import { useInfiniteQuery, useQuery } from 'react-query';
-import { getAnouncements } from './anouncement.api';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
+import { getAnouncements, respondToAnouncement } from './anouncement.api';
 
 export const useAnouncementsSnapshot = () => {
   return useQuery(['anouncements-snapshot'], () => getAnouncements({ limit: 2 }));
@@ -17,4 +17,18 @@ export const useAnouncementsInfiniteQuery = () => {
         : undefined;
     },
   });
+};
+
+// #504
+export const useRespondToAnouncementMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({ id, comment }: { id: string; comment: string }) => respondToAnouncement(id, comment),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['anouncements']);
+        queryClient.invalidateQueries(['anouncements-snapshot']);
+      },
+    },
+  );
 };

@@ -19,6 +19,7 @@ import JoinByAccessCode from '../screens/JoinByAccessCode';
 import Documents from '../screens/Documents';
 import Contract from '../screens/Contract';
 import Anouncements from '../screens/Anouncements';
+import AnouncementResponse from '../screens/AnouncementResponse';
 import ContractRejectedReason from '../screens/ContractRejectedReason';
 import PendingContracts from '../screens/PendingContracts';
 import ContractHistory from '../screens/ContractHistory';
@@ -33,6 +34,7 @@ const Private = () => (
       <Screen name="home" component={DrawerNavigator} />
       <Screen name="news" component={News} />
       <Screen name="announcements" component={Anouncements} />
+      <Screen name="anouncement-response" component={AnouncementResponse} />
       <Screen name="volunteer-profile" component={VolunteerProfile} />
       <Screen name="activity-logs" component={ActivityLogs} />
       <Screen name="organization-profile" component={OrganizationProfile} />
