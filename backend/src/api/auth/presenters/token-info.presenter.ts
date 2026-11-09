@@ -5,7 +5,7 @@ import { AuthRealm, AuthTokenType } from 'src/modules/auth/enums/auth.enums';
 export enum TokenPurpose {
   TRANSITION = 'transition', // the invite the cutover script sent: no sent_by (decisions R16)
   INVITE = 'invite',
-  RESET = 'reset',
+  LOGIN = 'login', // magic login link (VIC 2.0, #514)
   VERIFY_EMAIL = 'verify_email',
 }
 

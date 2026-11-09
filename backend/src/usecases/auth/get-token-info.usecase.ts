@@ -9,7 +9,7 @@ import {
 import { OneTimeTokenService } from 'src/modules/auth/services/one-time-token.service';
 import { AdminContextHelper, tokenPurpose } from './token-purpose.helper';
 
-// What the set-password and confirm-email pages need before the user types anything. AUTH_005 unless live.
+// What the login-link and confirm-email pages need before the user types anything. AUTH_005 unless live.
 @Injectable()
 export class GetTokenInfoUseCase implements IUseCaseService<ITokenInfo> {
   constructor(

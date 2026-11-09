@@ -3,15 +3,18 @@ export enum AuthRealm {
   MOBILE = 'mobile',
 }
 
+// VIC 2.0 (#514): no passwords. PENDING = never logged in yet (invited, or created by the
+// cutover); it becomes ACTIVE at the first login.
 export enum AuthIdentityStatus {
-  PENDING_PASSWORD = 'pending_password',
+  PENDING = 'pending',
   ACTIVE = 'active',
   DISABLED = 'disabled',
 }
 
 export enum AuthTokenType {
   VERIFY_EMAIL = 'verify_email',
-  RESET_PASSWORD = 'reset_password',
+  // Magic link (web) or 6-digit code (mobile) to log in (VIC 2.0, #514)
+  LOGIN = 'login',
   INVITE = 'invite',
 }
 

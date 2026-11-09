@@ -16,7 +16,7 @@ import { TeamAccessHelper } from './team-access.helper';
 
 // Disable or enable a colleague on the Team page; never yourself (ORG_010).
 // Disable: the login is disabled, its sessions end and its unused links stop working; its tokens are refused
-// on the next request. Enable: active again when it has a password, else back to waiting for one; no email
+// on the next request. Enable: active again when it has logged in before, else back to waiting; no email
 // is sent, a colleague uses Send invite (decisions R20, a recorded deviation from the design).
 // Both are recorded in the activity history (DISABLE_ADMIN / ENABLE_ADMIN).
 @Injectable()
@@ -61,9 +61,9 @@ export class SetAdminStatusUseCase implements IUseCaseService<void> {
           identity.id,
           {
             status: enabled
-              ? identity.passwordHash
+              ? identity.lastLoginAt
                 ? AuthIdentityStatus.ACTIVE
-                : AuthIdentityStatus.PENDING_PASSWORD
+                : AuthIdentityStatus.PENDING
               : AuthIdentityStatus.DISABLED,
           },
           manager,
@@ -74,7 +74,7 @@ export class SetAdminStatusUseCase implements IUseCaseService<void> {
             identity.id,
             [
               AuthTokenType.INVITE,
-              AuthTokenType.RESET_PASSWORD,
+              AuthTokenType.LOGIN,
               AuthTokenType.VERIFY_EMAIL,
             ],
             manager,

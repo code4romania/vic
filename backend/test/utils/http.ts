@@ -50,17 +50,34 @@ export function refreshCookie(response: request.Response): string {
   return cookie;
 }
 
-// Logs a web admin in through the API; the access token and the refresh cookie (for /auth/web/refresh).
+// The helpers need the mailbox (to read the emailed link or code) and Redis (a login email is rate
+// limited to one a minute per login, so the limit is reset first).
+interface LoginApp {
+  mailbox: { last(address?: string): ISendMailOptions };
+  flushRedis(): Promise<void>;
+}
+
+// Logs a web admin in through the API with a magic link (VIC 2.0, #514); the access token and the
+// refresh cookie (for /auth/web/refresh).
 export async function asWeb(
+  testApp: LoginApp,
   http: ReturnType<typeof api>,
   email: string,
-  password: string,
 ): Promise<{
   accessToken: string;
   cookie: string;
   auth: { Authorization: string };
 }> {
-  const res = await http.post('/auth/web/login').send({ email, password });
+  await testApp.flushRedis();
+  const requested = await http.post('/auth/web/login/request').send({ email });
+  if (requested.status !== 204) {
+    throw new Error(
+      `web login request ${email}: ${requested.status} ${JSON.stringify(requested.body)}`,
+    );
+  }
+  const res = await http
+    .post('/auth/login-link')
+    .send({ token: linkSecret(testApp.mailbox.last(email)) });
   if (res.status !== 200) {
     throw new Error(
       `web login ${email}: ${res.status} ${JSON.stringify(res.body)}`,
@@ -73,17 +90,28 @@ export async function asWeb(
   };
 }
 
-// Logs a volunteer in through the API; both tokens, as the app keeps them.
+// Logs a volunteer in through the API with the emailed code; both tokens, as the app keeps them.
 export async function asMobile(
+  testApp: LoginApp,
   http: ReturnType<typeof api>,
   email: string,
-  password: string,
 ): Promise<{
   accessToken: string;
   refreshToken: string;
   auth: { Authorization: string };
 }> {
-  const res = await http.post('/mobile/auth/login').send({ email, password });
+  await testApp.flushRedis();
+  const requested = await http
+    .post('/mobile/auth/login/request')
+    .send({ email });
+  if (requested.status !== 200) {
+    throw new Error(
+      `mobile login request ${email}: ${requested.status} ${JSON.stringify(requested.body)}`,
+    );
+  }
+  const res = await http
+    .post('/mobile/auth/login/code')
+    .send({ email, code: emailedCode(testApp.mailbox.last(email)) });
   if (res.status !== 200) {
     throw new Error(
       `mobile login ${email}: ${res.status} ${JSON.stringify(res.body)}`,

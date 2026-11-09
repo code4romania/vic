@@ -20,7 +20,7 @@ import { SocialTokenVerifierService } from 'src/modules/auth/services/social/soc
 import { DataSource } from 'typeorm';
 
 // Mobile only (decision 7). Finds the login by provider link, else by verified email, else creates one
-// without a password. Never sets or changes a password, so Forgot password keeps working for that email.
+// with the same email: the email code login keeps working for it too.
 @Injectable()
 export class SocialLoginUseCase implements IUseCaseService<SessionTokens> {
   constructor(
@@ -70,10 +70,10 @@ export class SocialLoginUseCase implements IUseCaseService<SessionTokens> {
           manager,
         );
       } else if (
-        current.status === AuthIdentityStatus.PENDING_PASSWORD ||
+        current.status === AuthIdentityStatus.PENDING ||
         !current.emailVerifiedAt
       ) {
-        // A migrated volunteer (pending_password) becomes active; the provider has confirmed the email (decisions R4).
+        // A volunteer who never logged in (pending) becomes active; the provider has confirmed the email (decisions R4).
         current = await this.authIdentityFacade.updateIdentity(
           current.id,
           {

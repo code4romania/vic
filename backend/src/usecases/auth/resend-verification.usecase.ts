@@ -31,7 +31,9 @@ export class ResendVerificationUseCase implements IUseCaseService<void> {
       realm,
       email,
     });
+    // Only NGO confirmation links remain (VIC 2.0, #514): the app logs in with a code, which confirms the email.
     if (
+      realm !== AuthRealm.WEB ||
       !identity ||
       identity.emailVerifiedAt ||
       identity.status === AuthIdentityStatus.DISABLED
@@ -53,12 +55,10 @@ export class ResendVerificationUseCase implements IUseCaseService<void> {
 
       await this.authMailer.send(
         identity.email,
-        realm === AuthRealm.WEB
-          ? AUTH_EMAILS.confirmOrganizationLink(
-              url,
-              (await this.adminContext.organizationName(identity)) ?? 'VIC',
-            )
-          : AUTH_EMAILS.verifyEmailLink(url),
+        AUTH_EMAILS.confirmOrganizationLink(
+          url,
+          (await this.adminContext.organizationName(identity)) ?? 'VIC',
+        ),
       );
     });
   }

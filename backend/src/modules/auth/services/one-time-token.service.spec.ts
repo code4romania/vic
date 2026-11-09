@@ -74,7 +74,7 @@ describe('OneTimeTokenService (database)', () => {
   });
 
   const issueLink = (
-    type = AuthTokenType.RESET_PASSWORD,
+    type = AuthTokenType.LOGIN,
     identity = ana,
   ): ReturnType<OneTimeTokenService['issue']> =>
     service.issue({ identity, type, form: AuthTokenForm.LINK });
@@ -84,7 +84,7 @@ describe('OneTimeTokenService (database)', () => {
   ): ReturnType<OneTimeTokenService['issue']> =>
     service.issue({
       identity,
-      type: AuthTokenType.RESET_PASSWORD,
+      type: AuthTokenType.LOGIN,
       form: AuthTokenForm.CODE,
     });
 
@@ -95,8 +95,9 @@ describe('OneTimeTokenService (database)', () => {
       expect(secret).toMatch(/^[A-Za-z0-9_-]{43}$/);
       expect(token.tokenHash).not.toContain(secret);
       expect(token.sentTo).toBe('ana@example.ro');
+      // a login link lasts 15 minutes (VIC 2.0, #514)
       expect(token.expiresAt.getTime() - Date.now()).toBeGreaterThan(
-        59 * 60 * 1000,
+        14 * 60 * 1000,
       );
     });
 
@@ -166,7 +167,7 @@ describe('OneTimeTokenService (database)', () => {
       const { secret } = await issueLink(AuthTokenType.INVITE);
 
       await expect(
-        service.peekLink(secret, AuthTokenType.RESET_PASSWORD),
+        service.peekLink(secret, AuthTokenType.LOGIN),
       ).resolves.toBeNull();
       await expect(
         service.peekLink(secret, AuthTokenType.INVITE),
@@ -209,7 +210,7 @@ describe('OneTimeTokenService (database)', () => {
       const { secret, token } = await issueCode();
 
       await expect(
-        service.verifyCode(ana, AuthTokenType.RESET_PASSWORD, secret),
+        service.verifyCode(ana, AuthTokenType.LOGIN, secret),
       ).resolves.toMatchObject({ id: token.id });
     });
 
@@ -218,7 +219,7 @@ describe('OneTimeTokenService (database)', () => {
       await issueCode(bogdan);
 
       await rejectsWith(
-        service.verifyCode(bogdan, AuthTokenType.RESET_PASSWORD, secret),
+        service.verifyCode(bogdan, AuthTokenType.LOGIN, secret),
         AuthExceptionCodes.AUTH_005,
       );
     });
@@ -229,16 +230,16 @@ describe('OneTimeTokenService (database)', () => {
 
       for (let attempt = 1; attempt <= 4; attempt++) {
         await rejectsWith(
-          service.verifyCode(ana, AuthTokenType.RESET_PASSWORD, wrong),
+          service.verifyCode(ana, AuthTokenType.LOGIN, wrong),
           AuthExceptionCodes.AUTH_005,
         );
       }
       await rejectsWith(
-        service.verifyCode(ana, AuthTokenType.RESET_PASSWORD, wrong),
+        service.verifyCode(ana, AuthTokenType.LOGIN, wrong),
         AuthExceptionCodes.AUTH_006,
       );
       await rejectsWith(
-        service.verifyCode(ana, AuthTokenType.RESET_PASSWORD, secret),
+        service.verifyCode(ana, AuthTokenType.LOGIN, secret),
         AuthExceptionCodes.AUTH_005,
       );
     });
@@ -247,13 +248,13 @@ describe('OneTimeTokenService (database)', () => {
       await issueLink();
 
       await rejectsWith(
-        service.verifyCode(ana, AuthTokenType.RESET_PASSWORD, '123456'),
+        service.verifyCode(ana, AuthTokenType.LOGIN, '123456'),
         AuthExceptionCodes.AUTH_005,
       );
 
       const { token } = await issueCode();
       await rejectsWith(
-        service.verifyCode(ana, AuthTokenType.RESET_PASSWORD, '12ab56'),
+        service.verifyCode(ana, AuthTokenType.LOGIN, '12ab56'),
         AuthExceptionCodes.AUTH_005,
       );
       const [row] = await dataSource.query(
@@ -274,7 +275,7 @@ describe('OneTimeTokenService (database)', () => {
 
     it('consuming a reset ends the live invite (the transition link) too', async () => {
       const invite = await issueLink(AuthTokenType.INVITE);
-      const reset = await issueLink(AuthTokenType.RESET_PASSWORD);
+      const reset = await issueLink(AuthTokenType.LOGIN);
       const verify = await issueLink(AuthTokenType.VERIFY_EMAIL);
 
       await service.consume(reset.token);

@@ -6,14 +6,13 @@ import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
 // The cutover import on seeded data, as `npm run auth:migrate` runs it: every admin and volunteer gets a
-// pending_password login and one held transition email; released, the emails let each kind of user in;
-// a second run changes nothing.
+// pending login and one held transition email (admins: a 30-day login link; volunteers: "log in with your
+// email in the app"); released, each kind of user gets in; a second run changes nothing.
 describe('Identity migration (e2e)', () => {
   let testApp: TestApp;
   let http: ReturnType<typeof api>;
   let migrate: MigrateIdentitiesUseCase;
   let transition: TransitionMailService;
-  const PASSWORD = 'Newpass#2026';
 
   const waitForEmails = async (count: number): Promise<void> => {
     for (let i = 0; i < 100 && testApp.mailbox.sent.length < count; i++) {
@@ -82,7 +81,7 @@ describe('Identity migration (e2e)', () => {
     ]);
   });
 
-  it('imports everyone pending_password, holds one email each, and a second run changes nothing', async () => {
+  it('imports everyone pending, holds one email each, and a second run changes nothing', async () => {
     const users = await seed();
 
     const report = await migrate.execute();
@@ -100,7 +99,7 @@ describe('Identity migration (e2e)', () => {
       );
     expect(identities).toHaveLength(5);
     expect(
-      identities.every((i) => i.status === AuthIdentityStatus.PENDING_PASSWORD),
+      identities.every((i) => i.status === AuthIdentityStatus.PENDING),
     ).toBe(true);
     expect(identities.map((i) => i.user_id)).not.toContain(users.deleted);
 
@@ -121,7 +120,8 @@ describe('Identity migration (e2e)', () => {
     const [{ count }] = await testApp.dataSource.query(
       `SELECT count(*)::int AS count FROM auth_token`,
     );
-    expect(count).toBe(5);
+    // Only the two admins get a link; volunteers log in with a code in the app (VIC 2.0, #514).
+    expect(count).toBe(2);
   });
 
   it('released, the emails let an admin and a volunteer back in with their old data', async () => {
@@ -140,27 +140,29 @@ describe('Identity migration (e2e)', () => {
       purpose: 'transition',
       realm: 'web',
     });
-    const set = await http
-      .post('/auth/set-password')
-      .send({ token: adminSecret, password: PASSWORD })
+    const used = await http
+      .post('/auth/login-link')
+      .send({ token: adminSecret })
       .expect(200);
-    expect(refreshCookie(set)).toBeDefined();
-    const web = await asWeb(http, 'admin@veche.ro', PASSWORD);
-    const me = await http.get('/auth/web/me').set(web.auth).expect(200);
+    expect(refreshCookie(used)).toBeDefined();
+    const me = await http
+      .get('/auth/web/me')
+      .set('Authorization', `Bearer ${used.body.accessToken}`)
+      .expect(200);
     expect(me.body).toMatchObject({
       id: users.admin,
       organizationId: users.organizationId,
     });
+    // The link works once; afterwards the admin asks for a new one.
+    await http
+      .post('/auth/login-link')
+      .send({ token: adminSecret })
+      .expect(400);
+    await asWeb(testApp, http, 'admin@veche.ro');
 
-    // Volunteer: the link sets the password and sends them to the app, no session (R17).
-    const volunteerSecret = linkSecret(testApp.mailbox.last('vol@veche.ro'));
-    const setMobile = await http
-      .post('/auth/set-password')
-      .send({ token: volunteerSecret, password: PASSWORD })
-      .expect(200);
-    expect(setMobile.body).toEqual({ realm: 'mobile', email: 'vol@veche.ro' });
-    expect(refreshCookie(setMobile)).toBeUndefined();
-    const mobile = await asMobile(http, 'vol@veche.ro', PASSWORD);
+    // Volunteer: the email has no link; the app logs in with an emailed code and finds the old profile.
+    expect(testApp.mailbox.last('vol@veche.ro').context.cta).toBeNull();
+    const mobile = await asMobile(testApp, http, 'vol@veche.ro');
     const profile = await http
       .get('/mobile/user/profile')
       .set(mobile.auth)
@@ -169,11 +171,5 @@ describe('Identity migration (e2e)', () => {
       id: users.volunteer,
       firstName: 'Vol',
     });
-
-    // The link works once.
-    await http
-      .post('/auth/set-password')
-      .send({ token: volunteerSecret, password: 'Other#20266' })
-      .expect(400);
   });
 });

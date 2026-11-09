@@ -58,7 +58,13 @@ export class ConfirmEmailUseCase implements IUseCaseService<LinkResult> {
       await this.oneTimeTokenService.consume(token, manager);
       const updated = await this.authIdentityFacade.updateIdentity(
         identity.id,
-        { emailVerifiedAt: identity.emailVerifiedAt ?? new Date() },
+        {
+          emailVerifiedAt: identity.emailVerifiedAt ?? new Date(),
+          // The NGO's first admin logs in here for the first time (VIC 2.0, #514: no password)
+          ...(identity.status === AuthIdentityStatus.PENDING
+            ? { status: AuthIdentityStatus.ACTIVE }
+            : {}),
+        },
         manager,
       );
       if (updated.realm === AuthRealm.WEB) {

@@ -4,8 +4,7 @@ import {
 } from 'src/modules/auth/enums/auth.enums';
 import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
-import { PasswordService } from 'src/modules/auth/services/password.service';
-import { api, linkSecret } from './utils/http';
+import { api, asWeb, linkSecret } from './utils/http';
 import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
@@ -17,7 +16,6 @@ describe('Team (e2e)', () => {
   let organizationId: string;
   let otherOrganizationId: string;
   let me: { userId: string; identity: IAuthIdentityModel; token: string };
-  const PASSWORD = 'Admin#2026x';
 
   const auth = (token = me.token): Record<string, string> => ({
     Authorization: `Bearer ${token}`,
@@ -26,7 +24,7 @@ describe('Team (e2e)', () => {
   const insertAdmin = async (
     email: string,
     orgId = organizationId,
-    login?: { status: AuthIdentityStatus; withPassword: boolean },
+    login?: { status: AuthIdentityStatus },
   ): Promise<{ userId: string; identity?: IAuthIdentityModel }> => {
     const [user] = await testApp.dataSource.query(
       `INSERT INTO "user" (type, name, email, phone, organization_id)
@@ -40,9 +38,6 @@ describe('Team (e2e)', () => {
       status: login.status,
       userId: user.id,
       emailVerifiedAt: new Date(),
-      passwordHash: login.withPassword
-        ? await testApp.app.get(PasswordService).hash(PASSWORD)
-        : undefined,
     });
     return { userId: user.id, identity };
   };
@@ -85,7 +80,6 @@ describe('Team (e2e)', () => {
     otherOrganizationId = other.id;
     const mine = await insertAdmin('eu@ong.ro', organizationId, {
       status: AuthIdentityStatus.ACTIVE,
-      withPassword: true,
     });
     me = {
       userId: mine.userId,
@@ -98,20 +92,16 @@ describe('Team (e2e)', () => {
   it('lists the team with a status per admin', async () => {
     await insertAdmin('activ@ong.ro', organizationId, {
       status: AuthIdentityStatus.ACTIVE,
-      withPassword: true,
     });
     await insertAdmin('dezactivat@ong.ro', organizationId, {
       status: AuthIdentityStatus.DISABLED,
-      withPassword: true,
     });
-    await insertAdmin('fara-parola@ong.ro', organizationId, {
-      status: AuthIdentityStatus.PENDING_PASSWORD,
-      withPassword: false,
+    await insertAdmin('nelogat@ong.ro', organizationId, {
+      status: AuthIdentityStatus.PENDING,
     });
     await insertAdmin('neimportat@ong.ro');
     await insertAdmin('alt-ong@ong.ro', otherOrganizationId, {
       status: AuthIdentityStatus.ACTIVE,
-      withPassword: true,
     });
 
     const members = await team();
@@ -121,17 +111,17 @@ describe('Team (e2e)', () => {
         'activ@ong.ro',
         'dezactivat@ong.ro',
         'eu@ong.ro',
-        'fara-parola@ong.ro',
+        'nelogat@ong.ro',
         'neimportat@ong.ro',
       ].sort(),
     );
     expect(members['activ@ong.ro'].status).toBe('active');
     expect(members['dezactivat@ong.ro'].status).toBe('disabled');
-    expect(members['fara-parola@ong.ro'].status).toBe('invite_expired');
+    expect(members['nelogat@ong.ro'].status).toBe('invite_expired');
     expect(members['neimportat@ong.ro'].status).toBe('no_login');
   });
 
-  it('add admin → invite email → token info names the NGO → set password → same organization', async () => {
+  it('add admin → invite email → token info names the NGO → the invite logs in → same organization', async () => {
     const added = await http
       .post('/organization/team')
       .set(auth())
@@ -162,8 +152,8 @@ describe('Team (e2e)', () => {
     expect(member.inviteExpiresAt).toEqual(expect.any(String));
 
     const set = await http
-      .post('/auth/set-password')
-      .send({ token: secret, password: PASSWORD })
+      .post('/auth/login-link')
+      .send({ token: secret })
       .expect(200);
     expect(set.body.user).toMatchObject({
       email: 'bogdan@ong.ro',
@@ -187,15 +177,12 @@ describe('Team (e2e)', () => {
   it('send invite: 400 for an active member, 403 for another NGO, 429 on a second press, and the old link dies', async () => {
     const active = await insertAdmin('activ@ong.ro', organizationId, {
       status: AuthIdentityStatus.ACTIVE,
-      withPassword: true,
     });
     const foreign = await insertAdmin('alt@alt.ro', otherOrganizationId, {
-      status: AuthIdentityStatus.PENDING_PASSWORD,
-      withPassword: false,
+      status: AuthIdentityStatus.PENDING,
     });
     const pending = await insertAdmin('nou@ong.ro', organizationId, {
-      status: AuthIdentityStatus.PENDING_PASSWORD,
-      withPassword: false,
+      status: AuthIdentityStatus.PENDING,
     });
 
     expect(
@@ -257,13 +244,9 @@ describe('Team (e2e)', () => {
   it('disable ends the colleague’s access at once; enable restores it without an email; both are recorded', async () => {
     const colleague = await insertAdmin('coleg@ong.ro', organizationId, {
       status: AuthIdentityStatus.ACTIVE,
-      withPassword: true,
     });
-    const login = await http
-      .post('/auth/web/login')
-      .send({ email: 'coleg@ong.ro', password: PASSWORD })
-      .expect(200);
-    const colleagueToken = login.body.accessToken;
+    const colleagueToken = (await asWeb(testApp, http, 'coleg@ong.ro'))
+      .accessToken;
 
     await http
       .patch(`/organization/team/${colleague.userId}/disable`)
@@ -271,14 +254,14 @@ describe('Team (e2e)', () => {
       .expect(204);
 
     await http.get('/auth/web/me').set(auth(colleagueToken)).expect(401);
-    expect(
-      (
-        await http
-          .post('/auth/web/login')
-          .send({ email: 'coleg@ong.ro', password: PASSWORD })
-          .expect(403)
-      ).body.code_error,
-    ).toBe('AUTH_004');
+    // a disabled admin gets no login link
+    testApp.mailbox.clear();
+    await testApp.flushRedis();
+    await http
+      .post('/auth/web/login/request')
+      .send({ email: 'coleg@ong.ro' })
+      .expect(204);
+    expect(testApp.mailbox.to('coleg@ong.ro')).toHaveLength(0);
     expect((await team())['coleg@ong.ro'].status).toBe('disabled');
 
     testApp.mailbox.clear();
@@ -287,10 +270,8 @@ describe('Team (e2e)', () => {
       .set(auth())
       .expect(204);
     expect(testApp.mailbox.sent).toHaveLength(0);
-    await http
-      .post('/auth/web/login')
-      .send({ email: 'coleg@ong.ro', password: PASSWORD })
-      .expect(200);
+    expect((await team())['coleg@ong.ro'].status).toBe('active');
+    await asWeb(testApp, http, 'coleg@ong.ro');
 
     // trackEvent is fire-and-forget; give it a moment.
     await new Promise((resolve) => setTimeout(resolve, 200));
@@ -303,10 +284,9 @@ describe('Team (e2e)', () => {
     ]);
   });
 
-  it('enabling an admin who never set a password puts them back to waiting for one', async () => {
+  it('enabling an admin who never logged in puts them back to waiting for the invite', async () => {
     const colleague = await insertAdmin('nou@ong.ro', organizationId, {
       status: AuthIdentityStatus.DISABLED,
-      withPassword: false,
     });
 
     await http
@@ -320,7 +300,6 @@ describe('Team (e2e)', () => {
   it('nobody can disable themselves (ORG_010) or a colleague of another NGO (ORG_008)', async () => {
     const foreign = await insertAdmin('alt@alt.ro', otherOrganizationId, {
       status: AuthIdentityStatus.ACTIVE,
-      withPassword: true,
     });
 
     expect(
@@ -371,10 +350,7 @@ describe('Team (e2e)', () => {
     });
     expect((await team())['ion@ong.ro'].status).toBe('invite_sent');
 
-    await http
-      .post('/auth/set-password')
-      .send({ token: fresh, password: PASSWORD })
-      .expect(200);
+    await http.post('/auth/login-link').send({ token: fresh }).expect(200);
     expect((await team())['ion@ong.ro'].status).toBe('active');
   });
 });

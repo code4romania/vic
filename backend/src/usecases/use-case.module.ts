@@ -15,19 +15,16 @@ import { AddAdminUseCase } from './team/add-admin.usecase';
 import { SendInviteUseCase } from './team/send-invite.usecase';
 import { SetAdminStatusUseCase } from './team/set-admin-status.usecase';
 import { TeamAccessHelper } from './team/team-access.helper';
-import { ApplyNewPasswordUseCase } from './auth/apply-new-password.usecase';
-import { LoginUseCase } from './auth/login.usecase';
-import { SetPasswordUseCase } from './auth/set-password.usecase';
-import { ResetPasswordWithCodeUseCase } from './auth/reset-password-with-code.usecase';
-import { ForgotPasswordUseCase } from './auth/forgot-password.usecase';
-import { RegisterMobileUseCase } from './auth/register-mobile.usecase';
 import { MigrateIdentitiesUseCase } from './auth/migrate-identities.usecase';
 import { AnnounceUseCase } from './auth/announce.usecase';
 import { ConfirmEmailUseCase } from './auth/confirm-email.usecase';
 import { RefreshSessionUseCase } from './auth/refresh-session.usecase';
 import { LogoutUseCase } from './auth/logout.usecase';
-import { ChangePasswordUseCase } from './auth/change-password.usecase';
 import { SocialLoginUseCase } from './auth/social-login.usecase';
+import { RequestLoginUseCase } from './auth/request-login.usecase';
+import { LoginWithLinkUseCase } from './auth/login-with-link.usecase';
+import { LoginWithCodeUseCase } from './auth/login-with-code.usecase';
+import { CompleteLoginHelper } from './auth/complete-login.helper';
 import { GetTokenInfoUseCase } from './auth/get-token-info.usecase';
 import { ResendTokenUseCase } from './auth/resend-token.usecase';
 import { ResendVerificationUseCase } from './auth/resend-verification.usecase';
@@ -205,19 +202,16 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     SetAdminStatusUseCase,
     TeamAccessHelper,
     // Auth
-    ApplyNewPasswordUseCase,
-    LoginUseCase,
-    SetPasswordUseCase,
-    ResetPasswordWithCodeUseCase,
-    ForgotPasswordUseCase,
-    RegisterMobileUseCase,
     MigrateIdentitiesUseCase,
     AnnounceUseCase,
     ConfirmEmailUseCase,
     RefreshSessionUseCase,
     LogoutUseCase,
-    ChangePasswordUseCase,
     SocialLoginUseCase,
+    RequestLoginUseCase,
+    LoginWithLinkUseCase,
+    LoginWithCodeUseCase,
+    CompleteLoginHelper,
     GetTokenInfoUseCase,
     ResendTokenUseCase,
     ResendVerificationUseCase,
@@ -379,18 +373,16 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     SendInviteUseCase,
     SetAdminStatusUseCase,
     // Auth
-    LoginUseCase,
-    SetPasswordUseCase,
-    ResetPasswordWithCodeUseCase,
-    ForgotPasswordUseCase,
-    RegisterMobileUseCase,
     MigrateIdentitiesUseCase,
     AnnounceUseCase,
     ConfirmEmailUseCase,
     RefreshSessionUseCase,
     LogoutUseCase,
-    ChangePasswordUseCase,
     SocialLoginUseCase,
+    RequestLoginUseCase,
+    LoginWithLinkUseCase,
+    LoginWithCodeUseCase,
+    CompleteLoginHelper,
     GetTokenInfoUseCase,
     ResendTokenUseCase,
     ResendVerificationUseCase,
