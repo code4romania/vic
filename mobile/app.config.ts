@@ -8,28 +8,12 @@ const googleIosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
 const googleIosUrlScheme = googleIosClientId
   ? `com.googleusercontent.apps.${googleIosClientId.replace('.apps.googleusercontent.com', '')}`
   : undefined;
-const facebookAppId = process.env.EXPO_PUBLIC_FACEBOOK_APP_ID;
 
-// The social plugins refuse to run without their ids, so a local build without them simply has no
-// Google / Facebook native setup. Store builds get the ids from eas.json.
+// The Google plugin refuses to run without its id, so a local build without it simply has no
+// Google native setup. Store builds get the ids from eas.json.
 const socialPlugins: NonNullable<ExpoConfig['plugins']> = [
   ...(googleIosUrlScheme
     ? [['@react-native-google-signin/google-signin', { iosUrlScheme: googleIosUrlScheme }] as const]
-    : []),
-  ...(facebookAppId
-    ? [
-        [
-          'react-native-fbsdk-next',
-          {
-            appID: facebookAppId,
-            clientToken: process.env.FACEBOOK_CLIENT_TOKEN,
-            displayName: 'VIC',
-            isAutoInitEnabled: false,
-            autoLogAppEventsEnabled: false,
-            advertiserIDCollectionEnabled: false,
-          },
-        ] as const,
-      ]
     : []),
 ] as NonNullable<ExpoConfig['plugins']>;
 

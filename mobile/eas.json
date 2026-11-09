@@ -16,8 +16,6 @@
         "EXPO_PUBLIC_CONTACT_EMAIL": "civic@commitglobal.org",
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
         "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "",
-        "EXPO_PUBLIC_FACEBOOK_APP_ID": "",
-        "FACEBOOK_CLIENT_TOKEN": "",
         "EXPO_PUBLIC_APP_STORE_URL": "",
         "EXPO_PUBLIC_PLAY_STORE_URL": "https://play.google.com/store/apps/details?id=org.commitglobal.vic",
         "EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL": ""
@@ -38,8 +36,6 @@
         "EXPO_PUBLIC_CONTACT_EMAIL": "civic@commitglobal.org",
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
         "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "",
-        "EXPO_PUBLIC_FACEBOOK_APP_ID": "",
-        "FACEBOOK_CLIENT_TOKEN": "",
         "EXPO_PUBLIC_APP_STORE_URL": "",
         "EXPO_PUBLIC_PLAY_STORE_URL": "https://play.google.com/store/apps/details?id=org.commitglobal.vic",
         "EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL": ""
@@ -57,8 +53,6 @@
         "EXPO_PUBLIC_CONTACT_EMAIL": "civic@commitglobal.org",
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
         "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "",
-        "EXPO_PUBLIC_FACEBOOK_APP_ID": "",
-        "FACEBOOK_CLIENT_TOKEN": "",
         "EXPO_PUBLIC_APP_STORE_URL": "",
         "EXPO_PUBLIC_PLAY_STORE_URL": "https://play.google.com/store/apps/details?id=org.commitglobal.vic",
         "EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL": ""
@@ -75,8 +69,6 @@
         "EXPO_PUBLIC_CONTACT_EMAIL": "civic@commitglobal.org",
         "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
         "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "",
-        "EXPO_PUBLIC_FACEBOOK_APP_ID": "",
-        "FACEBOOK_CLIENT_TOKEN": "",
         "EXPO_PUBLIC_APP_STORE_URL": "",
         "EXPO_PUBLIC_PLAY_STORE_URL": "https://play.google.com/store/apps/details?id=org.commitglobal.vic",
         "EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL": ""

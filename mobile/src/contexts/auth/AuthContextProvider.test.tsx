@@ -223,15 +223,6 @@ describe('AuthContextProvider', () => {
       expect(toast).not.toHaveBeenCalled();
     });
 
-    it('Facebook without an app id fails with the social message', async () => {
-      const ctx = await setup();
-
-      await act(() => ctx.current.loginWithSocial('facebook'));
-
-      expect(api.loginWithSocial).not.toHaveBeenCalled();
-      expect(toastTexts()).toEqual([[i18n.t('auth:errors.social_failed'), undefined]]);
-    });
-
     it('a refused social token (AUTH_013) shows its message', async () => {
       (AppleAuthentication.signInAsync as jest.Mock).mockResolvedValue({ identityToken: 't' });
       api.loginWithSocial.mockRejectedValue(httpError(401, 'AUTH_013'));

@@ -64,57 +64,16 @@ const appleIdentityToken = async (): Promise<string> => {
   }
 };
 
-// Loaded on first use: without EXPO_PUBLIC_FACEBOOK_APP_ID the native SDK is not set up (app.config.ts
-// leaves the plugin out) and merely importing the module crashes the app on Android.
-// app.config.ts turns the SDK's auto-init off (no app events before consent), so it is initialized
-// here, once, before the first login.
-let facebookInitialized = false;
-const facebookSdk = (): typeof import('react-native-fbsdk-next') | null => {
-  if (!process.env.EXPO_PUBLIC_FACEBOOK_APP_ID) {
-    return null;
-  }
-  const sdk: typeof import('react-native-fbsdk-next') = require('react-native-fbsdk-next');
-  if (!facebookInitialized) {
-    sdk.Settings.initializeSDK();
-    facebookInitialized = true;
-  }
-  return sdk;
-};
-
-// The backend verifies a classic Facebook access token. On iOS without tracking permission the SDK
-// only gives a Limited Login token, so there is no access token and the sign-in fails (social_failed).
-const facebookAccessToken = async (): Promise<string> => {
-  const sdk = facebookSdk();
-  if (!sdk) {
-    throw new Error('Facebook sign-in is not configured (EXPO_PUBLIC_FACEBOOK_APP_ID)');
-  }
-  const { AccessToken, LoginManager } = sdk;
-  LoginManager.logOut();
-  const result = await LoginManager.logInWithPermissions(['public_profile', 'email'], 'enabled');
-  if (result.isCancelled) {
-    throw new SocialCancelledError();
-  }
-  const token = await AccessToken.getCurrentAccessToken();
-  if (!token?.accessToken) {
-    throw new Error('Facebook returned no access token');
-  }
-  return token.accessToken;
-};
-
-// The token POST /mobile/auth/social expects: Google and Apple the identity token, Facebook the
-// access token.
+// The token POST /mobile/auth/social expects: the identity token from Google or Apple.
 export const getSocialToken = (provider: SocialProvider): Promise<string> => {
   switch (provider) {
     case 'google':
       return googleIdToken();
     case 'apple':
       return appleIdentityToken();
-    case 'facebook':
-      return facebookAccessToken();
   }
 };
 
 export const signOutSocial = async (): Promise<void> => {
   await GoogleSignin.signOut().catch(() => undefined);
-  facebookSdk()?.LoginManager.logOut();
 };
