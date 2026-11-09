@@ -1,3 +1,4 @@
+import { EventRegistrationStatus } from 'src/modules/event/enums/event-registration-status.enum';
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IEventsMobileListItemModel } from 'src/modules/event/models/event.model';
@@ -25,6 +26,7 @@ export class MobileEventListItemPresenter {
     this.organizationId = event.organizationId;
     this.organizationName = event.organizationName;
     this.isGoing = !!event.isGoing;
+    this.registrationStatus = event.registrationStatus ?? null;
 
     this.displayStatus = getEventDisplayStatus(event);
     this.capacity = event.capacity ?? null;
@@ -102,8 +104,19 @@ export class MobileEventListItemPresenter {
   organizationName: string;
 
   @Expose()
-  @ApiProperty({ description: 'The current user answered "going"' })
+  @ApiProperty({
+    description:
+      'The current user answered "going" and the NGO has not rejected it',
+  })
   isGoing: boolean;
+
+  @Expose()
+  @ApiProperty({
+    enum: EventRegistrationStatus,
+    nullable: true,
+    description: 'Status of the "going" registration (#501), null without one',
+  })
+  registrationStatus: EventRegistrationStatus | null;
 
   @Expose()
   @ApiProperty({ description: 'Wether the event is public or not' })
