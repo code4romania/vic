@@ -5,6 +5,7 @@ enum ActivityLogExceptionCodes {
   ACTIVITY_LOG_002 = 'ACTIVITY_LOG_002',
   ACTIVITY_LOG_003 = 'ACTIVITY_LOG_003',
   ACTIVITY_LOG_004 = 'ACTIVITY_LOG_004',
+  ACTIVITY_LOG_005 = 'ACTIVITY_LOG_005',
 }
 
 type ActivityTypeExceptionCodeType = keyof typeof ActivityLogExceptionCodes;
@@ -28,5 +29,9 @@ export const ActivityLogExceptionMessages: Record<
   [ActivityLogExceptionCodes.ACTIVITY_LOG_004]: {
     code_error: ActivityLogExceptionCodes.ACTIVITY_LOG_004,
     message: 'Could not cancel APPROVED or REJECTED requests.',
+  },
+  [ActivityLogExceptionCodes.ACTIVITY_LOG_005]: {
+    code_error: ActivityLogExceptionCodes.ACTIVITY_LOG_005,
+    message: 'Hours can only be added to an active volunteer',
   },
 };

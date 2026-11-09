@@ -115,11 +115,7 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
         defaultTab={VolunteerTabsOptons.find((option) => option.key === query.activeTab)}
       >
         {query?.activeTab === VolunteerTabsOptions.HOURS && (
-          <VolunteerHoursHistory
-            volunteerId={id as string}
-            volunteerName={volunteer?.user.name}
-            volunteerStatus={volunteer?.status}
-          />
+          <VolunteerHoursHistory volunteerId={id as string} volunteerStatus={volunteer?.status} />
         )}
         {query?.activeTab === VolunteerTabsOptions.ACTIVITIES && (
           <VolunteerActivities

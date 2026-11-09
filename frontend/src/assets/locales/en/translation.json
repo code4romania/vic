@@ -198,6 +198,13 @@
       "tab": "Hours history",
       "title": "Hours history",
       "description": "Approved, pending and rejected hours, on events and activities."
+    },
+    "add_hours": {
+      "title": "Add hours",
+      "hours": "Hours",
+      "description": "Description",
+      "event": "Event (optional)",
+      "saved": "The hours were added."
     }
   },
   "volunteers": {
@@ -751,7 +758,8 @@
       "no_data": "Volunteer hours could not be uploaded",
       "ACTIVITY_LOG_001": "Activity not found!",
       "ACTIVITY_LOG_002": "Volunteer must have profile to log in hours",
-      "ACTIVITY_LOG_003": "No changes can be made to requests in Approved or Rejected status"
+      "ACTIVITY_LOG_003": "No changes can be made to requests in Approved or Rejected status",
+      "ACTIVITY_LOG_005": "Hours can only be added to an active volunteer"
     },
     "download_file_name": "Volunteering hours history.xlsx"
   },

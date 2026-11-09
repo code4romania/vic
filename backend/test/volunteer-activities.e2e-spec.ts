@@ -191,4 +191,43 @@ describe('Volunteer activities (e2e)', () => {
       'Strângere de fonduri',
     );
   });
+
+  // #483: the NGO adds hours by hand (optional event); they are approved. Only an Active volunteer can get hours.
+  it('adds approved hours on an event, with a description', async () => {
+    const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
+    await http()
+      .post('/activity-log')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        date: '2026-11-02',
+        hours: 3,
+        volunteerId,
+        eventId,
+        mentions: 'Punct de hidratare',
+      })
+      .expect(201);
+
+    const items = await webList({ source: 'event' });
+    expect(items).toMatchObject([
+      { hours: 3, status: 'approved', event: { name: 'Maraton' } },
+    ]);
+  });
+
+  it.each(['blocked', 'inactive', 'candidate'])(
+    'refuses hours for a %s volunteer: 400 ACTIVITY_LOG_005',
+    async (status) => {
+      await testApp.dataSource.query(
+        `UPDATE volunteer SET status = $1 WHERE id = $2`,
+        [status, volunteerId],
+      );
+      const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
+      const response = await http()
+        .post('/activity-log')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ date: '2026-11-02', hours: 3, volunteerId })
+        .expect(400);
+      expect(response.body.code_error).toBe('ACTIVITY_LOG_005');
+      expect(await webList({})).toEqual([]);
+    },
+  );
 });
