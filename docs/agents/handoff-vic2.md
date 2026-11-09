@@ -12,7 +12,7 @@ Read `AGENTS.md` first. The scope is in the GitHub issues: tracking issue #464, 
 | `vic2/492-simplify-events` | feat/own-auth | Done (#492). |
 | `vic2/503-announcement-entity` | feat/own-auth | Done (#503). |
 | `vic2/integration` | feat/own-auth | feat/own-auth + the four branches above, merged. Phase 1 issue branches start here. |
-| `vic2/514-magic-link` | feat/own-auth | **In progress**: backend done and tested, web and mobile not started. Not merged into `vic2/integration` yet. |
+| `vic2/514-magic-link` | feat/own-auth | Backend done and tested. Web and mobile done (see below). Not merged into `vic2/integration` yet. |
 
 No PRs are open. Each done branch has its PR text ready (acceptance criteria and notes). Ask Laurentiu for it or rebuild it from the commit message.
 
@@ -31,26 +31,21 @@ Decision (team lead, 2026-11-09): VIC ships with its own login, converted to **m
 - Migration `1794200000000-MagicLinkLogin`: drops `password_hash`, `password_set_at`, `failed_attempts` and `locked_until`; renames `pending_password` → `pending` and the token type `reset_password` → `login` (old reset tokens are deleted). Run, reverted and re-run on a local DB.
 - Tests: backend unit 198/198 and e2e 72/72 (`npm run test:e2e`; needs local Postgres, Redis and the S3 emulator). The e2e helpers `asWeb(testApp, http, email)` and `asMobile(testApp, http, email)` log in through the real link and code flows.
 
-## #514: what is left
+## #514: web and mobile (done 2026-11-09)
 
 ### Web (`frontend/`)
-1. `services/auth/auth.api.ts`: replace `login`, `forgotPassword`, `changePassword` and `setPassword` with `requestLogin(email)` (`POST /auth/web/login/request`) and `loginWithLink(token)` (`POST /auth/login-link`).
-2. `contexts/auth/AuthContext(.Provider).tsx`: drop `login(email, password)`; the link page calls `startSession(result)` (it already exists).
-3. `pages/Login.tsx`: email only → "check your email" state (with "send again"). Keep the `AUTH_012` OpenAppBox. Remove the password field, the "forgot password" link and the `AUTH_003` resend.
-4. New `pages/LoginLink.tsx` on `/login/link?token=`: GET token info (show the NGO name for invites), then a **button** that posts the token. Do not consume it on page load: email scanners prefetch links. On `AUTH_005` show `ExpiredLink` (resend). Route `/set-password` → redirect to `/login/link`.
-5. Delete `pages/SetPassword.tsx`, `pages/ForgotPassword.tsx` and their tests; remove the `/forgot-password` route.
-6. `pages/RegisterOrganization.tsx`: remove the password and confirm-password fields (the API rejects nothing extra, but don't send them).
-7. `pages/Team.tsx`, `services/team/team.api.ts`, `common/interfaces/*`: wording "set a password" → "log in"; `PASSWORD_REGEX` in `common/constants/patterns.ts` becomes unused.
-8. Translations `assets/locales/{ro,en}`: login, link page, invite texts; remove the password strings.
-9. Tests: `test/server.ts` (msw handlers), `Login.test.tsx`, `RegisterOrganization.test.tsx`, `services/api.test.ts`. Then `npm run lint && npm run build`.
+- `Login.tsx`: email only → "check your email" state with "send again" and "use another email". `AUTH_012` still shows the OpenAppBox. No password, no forgot-password link, no `AUTH_003` resend.
+- New `LoginLink.tsx` on `/login/link?token=`: reads the token info (purpose login / invite / transition, NGO name for invites) and posts the token **only on a button click** (email scanners prefetch links). `AUTH_005` → `ExpiredLink` (resend). A mobile-realm token shows the OpenAppBox and never posts. `verify_email` → `/confirm-email`. `/set-password?token=` redirects to `/login/link`.
+- Removed: `SetPassword`, `ForgotPassword` (pages and tests), the `/forgot-password` route, `login(email, password)` in the AuthContext, the password fields of NGO registration, `PASSWORD_REGEX`. Team page wording says "login link".
+- `npx vitest run` 65/65, `npx eslint src --max-warnings=0` clean, `npm run build` passes.
 
 ### Mobile (`mobile/`)
-1. `services/auth/auth.api.ts`: `requestLogin(email)` and `loginWithCode(email, code)`; remove register, login, forgot, reset and change password.
-2. `contexts/auth/AuthContextProvider.tsx` and `AuthContext.ts`: same, storing tokens as the password login did.
-3. Screens: `Login.tsx` becomes email → code (6 digits, "send again" after 60 s, show `AUTH_010` / `AUTH_006`). Delete `CreateAccount.tsx`, `ForgotPassword.tsx`, `ConfirmPassword.tsx` and `ChangePassword.tsx`; remove them from `routes/Public.tsx`, `routes/Private.tsx`, `routes/linking.ts` and `Settings.tsx`. Keep the Google/Apple buttons.
-4. After the code login: no profile (404 `USER_001`) → `CreateUser`, as today.
-5. Optional later: a deep link from the code email into the app (needs universal links; the code alone is enough for release).
-6. `npm run lint`, `npx tsc --noEmit`, `npx jest`; test on a dev build (not Expo Go).
+- `Login.tsx`: email → 6-digit code (one screen, two steps). "Send a new code" after 60 s, "use another email". `AUTH_005` → "the code is not valid", `AUTH_006` / `AUTH_010` / `AUTH_004` show their texts. No profile → `CreateUser`, as before.
+- Landing: one "Continue with email" button (sign-up = login) next to the social buttons.
+- AuthContext: `requestLoginCode(email)` and `loginWithCode(code)`; removed `login`, `signUp`, `resendConfirmationCode`, `changePassword`, `forgotPassword`, `forgotPasswordSubmit`, `initialPhoneNumber`.
+- Removed screens: `CreateAccount`, `ValidateAccount`, `ForgotPassword`, `ConfirmPassword`, `ChangePassword` (and the Settings entry), `LogInButton`.
+- `npx jest` 37/37. `npx tsc --noEmit` and `eslint` show only errors that were already there before #514 (`activity-log.ts` duplicate key, `organization.service.ts` `volunteerProfileId`, `FormDatePicker`, `PaginatedSelect`).
+- Not done: a test on a real dev build (needs a device or simulator). Optional later: a deep link from the code email into the app (universal links).
 
 ### After web and mobile
 - Merge `vic2/514-magic-link` into `feat/own-auth`, then merge `feat/own-auth` into `vic2/integration` again. Expected conflict: `backend/src/usecases/user/create-regular-user.usecase.ts` and `regular-user.model.ts` (#472 Candidate claim + #478 optional phone). Keep all three behaviours.
