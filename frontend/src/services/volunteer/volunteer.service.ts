@@ -11,6 +11,8 @@ import {
   updateVolunteerDetails,
   blockVolunteer,
   getVolunteer,
+  getVolunteerEvents,
+  getVolunteerStats,
   getVolunteerLineChart,
   getVolunteerPieChart,
   getVolunteers,
@@ -33,6 +35,20 @@ export const useVolunteersQuery = (
 
 export const useVolunteer = (id: string) => {
   return useQuery(['volunteer', id], () => getVolunteer(id), {
+    enabled: !!id,
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
+};
+
+export const useVolunteerStatsQuery = (id: string) => {
+  return useQuery(['volunteer-stats', id], () => getVolunteerStats(id), {
+    enabled: !!id,
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
+  });
+};
+
+export const useVolunteerEventsQuery = (id: string) => {
+  return useQuery(['volunteer-events', id], () => getVolunteerEvents(id), {
     enabled: !!id,
     onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => error,
   });

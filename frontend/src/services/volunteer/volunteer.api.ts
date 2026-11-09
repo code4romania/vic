@@ -1,3 +1,7 @@
+import {
+  IVolunteerEvents,
+  IVolunteerStats,
+} from '../../common/interfaces/volunteer-events.interface';
 import { IImportVolunteersResult } from '../../common/interfaces/volunteer.interface';
 import { format } from 'date-fns';
 import { AddVolunteerFormTypes } from '../../pages/AddVolunteer';
@@ -57,6 +61,14 @@ export const getVolunteersForDownload = async (
 
 export const getVolunteer = async (id: string): Promise<IVolunteer> => {
   return API.get(`volunteer/${id}`).then((res) => res.data);
+};
+
+export const getVolunteerStats = async (id: string): Promise<IVolunteerStats> => {
+  return API.get(`volunteer/${id}/stats`).then((res) => res.data);
+};
+
+export const getVolunteerEvents = async (id: string): Promise<IVolunteerEvents> => {
+  return API.get(`volunteer/${id}/events`).then((res) => res.data);
 };
 
 export const updateVolunteer = async (

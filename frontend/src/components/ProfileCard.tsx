@@ -12,9 +12,10 @@ interface ProfileCardProps {
   age: number;
   sex: Sex;
   location: ICity;
+  children?: React.ReactNode;
 }
 
-const ProfileCard = ({ name, logo, age, sex, location }: ProfileCardProps) => {
+const ProfileCard = ({ name, logo, age, sex, location, children }: ProfileCardProps) => {
   return (
     <Card className="h-full flex justify-center align-center">
       <CardBody>
@@ -32,6 +33,7 @@ const ProfileCard = ({ name, logo, age, sex, location }: ProfileCardProps) => {
             </small>
           )}
           <small className="text-cool-gray-500">{formatLocation(location)}</small>
+          {children}
         </div>
       </CardBody>
     </Card>

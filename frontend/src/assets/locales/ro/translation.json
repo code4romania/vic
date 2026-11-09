@@ -209,7 +209,19 @@
       "event": "Eveniment (opțional)",
       "saved": "Orele au fost adăugate."
     },
-    "notes": "Note interne"
+    "notes": "Note interne",
+    "stats": {
+      "hours": "Ore aprobate",
+      "events": "Evenimente"
+    },
+    "events": {
+      "tab": "Evenimente",
+      "title": "Evenimente",
+      "upcoming": "Urmează",
+      "finished": "Încheiate",
+      "none": "Niciun eveniment.",
+      "hours": "{{hours}}h aprobate"
+    }
   },
   "volunteers": {
     "department_and_role": "Departament și rol",
