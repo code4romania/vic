@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presenter';
 import { ClientContractStatus } from 'src/modules/documents/enums/client-contract-status.enum';
+import { DocumentType } from 'src/modules/documents/enums/document-type.enum';
 import {
   IContractModel,
   isContractExpiringSoon,
@@ -16,6 +17,7 @@ export class ContractListItemPresenter {
     this.endDate = contract.endDate;
     this.status = mapContractStatusToClientContractStatus(contract);
     this.expiringSoon = isContractExpiringSoon(contract);
+    this.type = contract.type;
     this.volunteer = new IdAndNamePresenter({
       id: contract.volunteer.id,
       name: contract.volunteer.user.name,
@@ -80,4 +82,11 @@ export class ContractListItemPresenter {
       '#488: a signed contract within a month of its end date ("Expiră în curând")',
   })
   expiringSoon: boolean;
+
+  @Expose()
+  @ApiProperty({
+    description: '#490: a contract or a certificate ("adeverință")',
+    enum: DocumentType,
+  })
+  type: DocumentType;
 }

@@ -7,6 +7,7 @@ import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
+import { DocumentType } from 'src/modules/documents/enums/document-type.enum';
 import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { IContractModel } from 'src/modules/documents/models/contract.model';
 import { ContractFacade } from 'src/modules/documents/services/contract.facade';
@@ -21,6 +22,7 @@ export interface UploadContractOptions {
   startDate: Date;
   endDate?: Date | null;
   contractNumber?: string | null;
+  type?: DocumentType;
 }
 
 const isPdf = (file: Express.Multer.File): boolean =>
@@ -47,6 +49,10 @@ export class UploadContractUsecase {
     file: Express.Multer.File | undefined,
     admin: IAdminUserModel,
   ): Promise<IContractModel> {
+    const type = options.type ?? DocumentType.CONTRACT;
+    // #490: a certificate is issued on its start date and never expires
+    const endDate = type === DocumentType.CERTIFICATE ? null : options.endDate;
+
     // 1. A real PDF
     if (!file || !isPdf(file)) {
       this.exceptionsService.badRequestException(
@@ -55,7 +61,7 @@ export class UploadContractUsecase {
     }
 
     // 2. A period that makes sense; no end date means it never expires
-    if (options.endDate && compareAsc(options.endDate, options.startDate) < 0) {
+    if (endDate && compareAsc(endDate, options.startDate) < 0) {
       this.exceptionsService.badRequestException(
         ContractExceptionMessages.CONTRACT_009,
       );
@@ -80,6 +86,7 @@ export class UploadContractUsecase {
       (await this.contractFacade.findOne({
         contractNumber,
         organizationId: admin.organizationId,
+        type,
       }))
     ) {
       this.exceptionsService.badRequestException(
@@ -108,11 +115,12 @@ export class UploadContractUsecase {
       organizationId: admin.organizationId,
       volunteerId: volunteer.id,
       startDate: options.startDate,
-      endDate: options.endDate ?? null,
+      endDate: endDate ?? null,
       path,
       templateId: null,
       createdByAdminId: admin.id,
       status: ContractStatus.ACTIVE,
+      type,
     });
 
     const organization = await this.getOrganizationUsecase.execute(

@@ -131,4 +131,96 @@ describe('ContractsTable (#486, #488, #489)', () => {
       within(dialog).getByText(t('documents:contract.upload_form.start_required')),
     ).toBeInTheDocument();
   });
+
+  // #490
+  it('generates a certificate with the prefilled, editable hours', async () => {
+    let sent: Record<string, unknown> | undefined;
+    server.use(
+      http.get(api('/contract'), () => HttpResponse.json(page([]))),
+      http.get(api('/contract/certificate/prefill'), () =>
+        HttpResponse.json({
+          volunteerId: 'v1',
+          volunteerName: 'Elena Pop',
+          hours: 42,
+          since: '2026-02-01T00:00:00.000Z',
+        }),
+      ),
+      http.post(api('/contract/certificate'), async ({ request }) => {
+        sent = (await request.json()) as Record<string, unknown>;
+        return new HttpResponse(new Blob(['%PDF-1.4']), {
+          headers: {
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': 'attachment; filename="Adeverinta-Elena-Pop.pdf"',
+          },
+        });
+      }),
+    );
+    URL.createObjectURL = vi.fn(() => 'blob:x');
+    renderPage(
+      <ContractsTable query={{ limit: 10, page: 1 }} setQuery={vi.fn()} volunteerId="v1" />,
+    );
+    await userEvent.click(await screen.findByText(t('documents:contracts.actions.certificate')));
+    const dialog = await screen.findByRole('dialog');
+    const hours = within(dialog).getByLabelText(t('documents:certificate.form.hours'));
+    await waitFor(() => expect(hours).toHaveValue(42));
+    expect(within(dialog).getByText(/42 ore aprobate în VIC, din 01.02.2026/)).toBeInTheDocument();
+    await userEvent.clear(hours);
+    await userEvent.type(hours, '50');
+    await userEvent.type(
+      within(dialog).getByLabelText(t('documents:certificate.form.purpose')),
+      'Dosar de admitere',
+    );
+    await userEvent.type(
+      within(dialog).getByLabelText(t('documents:certificate.form.registration_number')),
+      '45/2026',
+    );
+    await userEvent.click(within(dialog).getByText(t('documents:certificate.form.submit')));
+
+    await waitFor(() => expect(sent).toBeDefined());
+    expect(sent).toMatchObject({
+      volunteerId: 'v1',
+      hours: 50,
+      purpose: 'Dosar de admitere',
+      registrationNumber: '45/2026',
+    });
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+  });
+
+  it('uploads a signed certificate: no end date, and the type is sent', async () => {
+    let form: FormData | undefined;
+    const interceptor = API.interceptors.request.use((config) => {
+      if (config.url === 'contract' && config.method === 'post') form = config.data as FormData;
+      return config;
+    });
+    server.use(
+      http.get(api('/contract'), () =>
+        HttpResponse.json(page([contract({ type: 'CERTIFICATE', endDate: null })])),
+      ),
+      http.post(api('/contract'), () => HttpResponse.json(contract({}), { status: 201 })),
+    );
+    renderPage(
+      <ContractsTable query={{ limit: 10, page: 1 }} setQuery={vi.fn()} volunteerId="v1" />,
+    );
+    expect(await screen.findByText(t('documents:contract.type.CERTIFICATE'))).toBeInTheDocument();
+    await userEvent.click(screen.getByText(t('documents:contracts.actions.upload')));
+    const dialog = await screen.findByRole('dialog');
+    await userEvent.click(within(dialog).getByLabelText(t('documents:contract.type.CERTIFICATE')));
+    expect(
+      within(dialog).queryByLabelText(t('documents:contract.upload_form.end_date')),
+    ).not.toBeInTheDocument();
+    await userEvent.upload(
+      dialog.querySelector('input[type=file]') as HTMLInputElement,
+      new File(['%PDF-1.4'], 'adeverinta.pdf', { type: 'application/pdf' }),
+    );
+    fireEvent.change(
+      within(dialog).getByLabelText(t('documents:contract.upload_form.certificate.start_date')),
+      { target: { value: '10.11.2026' } },
+    );
+    await userEvent.click(within(dialog).getByText(t('documents:contract.upload_form.submit')));
+    await waitFor(() => expect(form).toBeDefined());
+    expect(form?.get('type')).toBe('CERTIFICATE');
+    expect(form?.get('startDate')).toBe('2026-11-10');
+    expect(form?.has('endDate')).toBe(false);
+    API.interceptors.request.eject(interceptor);
+  });
 });

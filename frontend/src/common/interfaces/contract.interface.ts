@@ -1,4 +1,5 @@
 import { ContractStatus } from '../enums/contract-status.enum';
+import { DocumentType } from '../enums/document-type.enum';
 import { IdName } from './id-name.interface';
 
 export interface IContractListItem {
@@ -6,6 +7,8 @@ export interface IContractListItem {
   contractNumber: string | null;
   volunteer: IdName;
   status: ContractStatus;
+  // #490: a contract or a certificate
+  type: DocumentType;
   // #488: signed, and within a month of its end date
   expiringSoon: boolean;
   startDate: Date;
@@ -26,4 +29,21 @@ export interface IUploadContractPayload {
   endDate?: Date | null;
   contractNumber?: string;
   contract: File;
+  type?: DocumentType;
+}
+
+// #490: "Generează adeverință"
+export interface ICertificatePrefill {
+  volunteerId: string;
+  volunteerName: string;
+  hours: number;
+  since: string | null;
+}
+
+export interface IGenerateCertificatePayload {
+  volunteerId: string;
+  hours: number;
+  purpose: string;
+  registrationNumber: string;
+  issueDate: Date;
 }

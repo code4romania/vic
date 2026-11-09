@@ -35,6 +35,14 @@ import { jsonToExcelBuffer } from 'src/common/helpers/utils';
 import { IContractDownloadModel } from 'src/modules/documents/models/contract.model';
 import { Response } from 'express';
 import { DeleteContractUsecase } from 'src/usecases/documents/delete-contract.usecase';
+import {
+  CertificateUsecase,
+  ICertificatePrefill,
+} from 'src/usecases/documents/certificate.usecase';
+import {
+  CertificatePrefillDto,
+  GenerateCertificateDto,
+} from './dto/generate-certificate.dto';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
@@ -47,6 +55,7 @@ export class ContractController {
     private readonly getOneContractUsecase: GetOneContractUsecase,
     private readonly getContractsForDownloadUsecase: GetContractsForDownloadUsecase,
     private readonly deleteContractUsecase: DeleteContractUsecase,
+    private readonly certificateUsecase: CertificateUsecase,
   ) {}
 
   @Get()
@@ -94,6 +103,34 @@ export class ContractController {
     return this.countPendingContractsUsecase.execute({
       organizationId,
     });
+  }
+
+  // #490: the certificate form opens with the volunteer's approved hours
+  @Get('certificate/prefill')
+  async getCertificatePrefill(
+    @Query() { volunteerId }: CertificatePrefillDto,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<ICertificatePrefill> {
+    return this.certificateUsecase.prefill(volunteerId, admin);
+  }
+
+  // #490: the certificate as a PDF, to sign and upload back as a document
+  @Post('certificate')
+  async generateCertificate(
+    @Body() dto: GenerateCertificateDto,
+    @ExtractUser() admin: IAdminUserModel,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
+    const { fileName, pdf } = await this.certificateUsecase.generate(
+      dto,
+      admin,
+    );
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="${fileName}"`,
+      'Access-Control-Expose-Headers': 'Content-Disposition',
+    });
+    res.end(pdf);
   }
 
   // TODO: guard for contractId

@@ -1173,12 +1173,14 @@
       "filters": {
         "start_date": "Data de început perioadă contract",
         "end_date": "Data de sfârșit perioadă contract",
-        "status": "Status contract"
+        "status": "Status contract",
+        "type": "Tip document"
       },
       "actions": {
         "download": "Descarcă tabel",
         "add": "Generează contract",
-        "upload": "Încarcă contract"
+        "upload": "Încarcă contract",
+        "certificate": "Generează adeverință"
       },
       "headers": {
         "contract_number": "Număr contract",
@@ -1287,7 +1289,23 @@
         "contract_number": "Număr contract",
         "number_max": "Numărul poate avea maxim 50 de caractere",
         "submit": "Încarcă",
-        "success": "Contractul a fost încărcat"
+        "success": "Contractul a fost încărcat",
+        "type": "Tip document",
+        "certificate": {
+          "title": "Încarcă adeverință semnată",
+          "description": "Încarcă PDF-ul adeverinței semnate și ștampilate. Apare la documentele voluntarului.",
+          "file": "Adeverință semnată (PDF)*",
+          "file_required": "Încarcă PDF-ul semnat",
+          "file_rejected": "Fișierul trebuie să fie un PDF de maxim 10 MB",
+          "start_date": "Data emiterii*",
+          "start_required": "Data emiterii este obligatorie",
+          "contract_number": "Număr de înregistrare",
+          "success": "Adeverința a fost încărcată"
+        }
+      },
+      "type": {
+        "CONTRACT": "Contract",
+        "CERTIFICATE": "Adeverință"
       }
     },
     "popover": {
@@ -1297,6 +1315,29 @@
       "remove": "Elimină",
       "remove_from_list": "Elimină din listă",
       "confirm": "Confirmă și semnează"
+    },
+    "certificate": {
+      "form": {
+        "title": "Generează adeverință",
+        "description": "Completează datele și descarcă adeverința în format PDF. După ce o semnezi și o ștampilezi, încarc-o la documentele voluntarului.",
+        "volunteer": "Voluntar*",
+        "volunteer_required": "Alege voluntarul",
+        "hours": "Total ore de voluntariat*",
+        "hours_hint": "{{hours}} ore aprobate în VIC, din {{since}}. Poți modifica totalul.",
+        "hours_required": "Completează numărul de ore",
+        "hours_min": "Numărul de ore nu poate fi negativ",
+        "purpose": "Scopul adeverinței*",
+        "purpose_placeholder": "Ex: dosar de admitere la facultate",
+        "purpose_required": "Completează scopul adeverinței",
+        "purpose_max": "Scopul poate avea maxim 250 de caractere",
+        "registration_number": "Număr de înregistrare*",
+        "number_required": "Completează numărul de înregistrare",
+        "number_max": "Numărul poate avea maxim 50 de caractere",
+        "issue_date": "Data emiterii*",
+        "date_required": "Data emiterii este obligatorie",
+        "submit": "Generează PDF",
+        "success": "Adeverința a fost descărcată. După semnare, încarc-o din „Încarcă contract”, ca adeverință."
+      }
     }
   },
   "auth": {

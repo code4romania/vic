@@ -33,6 +33,7 @@ describe('Contracts (e2e)', () => {
 
   beforeEach(async () => {
     await truncate(testApp.dataSource, [
+      'activity_log',
       'contract',
       'auth_identity',
       'volunteer',
@@ -40,8 +41,8 @@ describe('Contracts (e2e)', () => {
       'organization',
     ]);
     const [org] = await testApp.dataSource.query(
-      `INSERT INTO organization (name, email, phone, status, validated_at)
-       VALUES ('Crucea Verde', 'org@crucea.ro', '+40700000001', 'active', now()) RETURNING id`,
+      `INSERT INTO organization (name, email, phone, status, validated_at, tax_id, address)
+       VALUES ('Crucea Verde', 'org@crucea.ro', '+40700000001', 'active', now(), '12345678', 'Str. Lalelelor 3, Cluj') RETURNING id`,
     );
     organizationId = org.id;
     const [other] = await testApp.dataSource.query(
@@ -272,5 +273,94 @@ describe('Contracts (e2e)', () => {
     await auth(http().patch(`/contract/${body.id}/confirm`)).expect(404);
     await auth(http().patch(`/contract/${body.id}/reject`)).expect(404);
     await auth(http().get('/template')).expect(404);
+  });
+
+  // #490: "Generează adeverință"
+  it('prefills a certificate with the approved hours and renders it as a PDF', async () => {
+    await testApp.dataSource.query(
+      `INSERT INTO activity_log (date, hours, status, volunteer_id, organization_id) VALUES
+         ('2026-02-01', 4, 'approved', $1, $2),
+         ('2026-03-01', 2, 'approved', $1, $2),
+         ('2026-04-01', 10, 'pending', $1, $2)`,
+      [volunteerId, organizationId],
+    );
+    const { body: prefill } = await auth(
+      http().get(`/contract/certificate/prefill?volunteerId=${volunteerId}`),
+    ).expect(200);
+    expect(prefill).toMatchObject({
+      volunteerId,
+      volunteerName: 'Elena Pop',
+      hours: 6,
+    });
+    expect(new Date(prefill.since).toLocaleDateString('sv-SE')).toBe(
+      '2026-02-01',
+    );
+
+    const res = await auth(http().post('/contract/certificate'))
+      .send({
+        volunteerId,
+        hours: 7,
+        purpose: 'Dosar de admitere',
+        registrationNumber: '45/2026',
+      })
+      .buffer(true)
+      .parse((r, done) => {
+        const chunks: Buffer[] = [];
+        r.on('data', (c: Buffer) => chunks.push(c));
+        r.on('end', () => done(null, Buffer.concat(chunks)));
+      })
+      .expect(201);
+    expect(res.headers['content-type']).toBe('application/pdf');
+    expect(res.headers['content-disposition']).toContain(
+      'Adeverinta-Elena-Pop.pdf',
+    );
+    expect((res.body as Buffer).subarray(0, 5).toString()).toBe('%PDF-');
+
+    await auth(http().post('/contract/certificate'))
+      .send({ volunteerId, hours: -1, purpose: '', registrationNumber: '' })
+      .expect(400);
+    await auth(
+      http().get(
+        `/contract/certificate/prefill?volunteerId=${otherVolunteerId}`,
+      ),
+    ).expect(404);
+  });
+
+  it('stores an uploaded certificate without an end date, next to the contracts', async () => {
+    await upload({
+      startDate: '2026-01-01',
+      endDate: '2026-12-31',
+      contractNumber: '45/2026',
+    }).expect(201);
+    // the same number as a contract is fine for a certificate, and its end date is ignored
+    const { body } = await upload({
+      type: 'CERTIFICATE',
+      startDate: '2026-11-10',
+      endDate: '2027-11-10',
+      contractNumber: '45/2026',
+    }).expect(201);
+    expect(body).toMatchObject({
+      type: 'CERTIFICATE',
+      status: 'SIGNED',
+      endDate: null,
+      expiringSoon: false,
+    });
+    expect(body.fileName).toMatch(/^Adeverinta_45\/2026\.pdf$/);
+    await upload({
+      type: 'CERTIFICATE',
+      startDate: '2026-11-10',
+      contractNumber: '45/2026',
+    }).expect(400);
+
+    const { body: certificates } = await auth(
+      http().get(`/contract?type=CERTIFICATE`),
+    ).expect(200);
+    expect(certificates.items.map((c: { type: string }) => c.type)).toEqual([
+      'CERTIFICATE',
+    ]);
+    const { body: all } = await auth(
+      http().get(`/contract?volunteerId=${volunteerId}`),
+    ).expect(200);
+    expect(all.meta.totalItems).toBe(2);
   });
 });

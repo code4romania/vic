@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowDownTrayIcon, ArrowUpTrayIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowDownTrayIcon,
+  ArrowUpTrayIcon,
+  DocumentTextIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
 import i18n from '../common/config/i18n';
 import { ContractStatus } from '../common/enums/contract-status.enum';
+import { DocumentType } from '../common/enums/document-type.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IContractListItem } from '../common/interfaces/contract.interface';
@@ -32,10 +38,16 @@ import Popover from './Popover';
 import Select, { SelectItem } from './Select';
 import StatusWithMarker from './StatusWithMarker';
 import UploadContractModal from './UploadContractModal';
+import GenerateCertificateModal from './GenerateCertificateModal';
 
 // #489: the Contracts page filters by status only
-export const ContractStatusOptions: SelectItem<ContractStatus>[] = Object.values(ContractStatus).map(
-  (status) => ({ key: status, value: `${i18n.t(`documents:contract.status.${status}`)}` }),
+export const ContractStatusOptions: SelectItem<ContractStatus>[] = Object.values(
+  ContractStatus,
+).map((status) => ({ key: status, value: `${i18n.t(`documents:contract.status.${status}`)}` }));
+
+// #490: contracts and certificates live in the same list
+export const DocumentTypeOptions: SelectItem<DocumentType>[] = Object.values(DocumentType).map(
+  (type) => ({ key: type, value: `${i18n.t(`documents:contract.type.${type}`)}` }),
 );
 
 export const ContractStatusCell = ({ row }: { row: IContractListItem }) => (
@@ -68,7 +80,17 @@ const numberColumn: TableColumn<IContractListItem> = {
   id: 'contractNumber',
   name: i18n.t('documents:contracts.headers.contract_number'),
   sortable: true,
-  selector: (row) => row.contractNumber ?? '–',
+  minWidth: '9rem',
+  cell: (row) => (
+    <CellLayout>
+      <div className="flex flex-col gap-1">
+        <span>{row.contractNumber ?? '–'}</span>
+        <span className="text-xs text-cool-gray-500">
+          {i18n.t(`documents:contract.type.${row.type ?? DocumentType.CONTRACT}`)}
+        </span>
+      </div>
+    </CellLayout>
+  ),
 };
 
 const volunteerColumn: TableColumn<IContractListItem> = {
@@ -103,6 +125,7 @@ interface ContractsTableProps extends ContractsTableBasicProps {
 const ContractsTable = ({ query, setQuery, volunteerId, readOnly }: ContractsTableProps) => {
   const { t } = useTranslation('documents');
   const [showUpload, setShowUpload] = useState(false);
+  const [showCertificate, setShowCertificate] = useState(false);
   const [toDelete, setToDelete] = useState<IContractListItem | null>(null);
   const { mutate: deleteContract, isLoading: isDeleting } = useDeleteContractMutation();
 
@@ -110,6 +133,7 @@ const ContractsTable = ({ query, setQuery, volunteerId, readOnly }: ContractsTab
     orderBy: query?.orderBy as string | undefined,
     orderDirection: query?.orderDirection as OrderDirection | undefined,
     status: volunteerId ? undefined : (query?.status as ContractStatus | undefined),
+    type: volunteerId ? undefined : (query?.type as DocumentType | undefined),
     volunteerId,
   };
   const {
@@ -156,7 +180,11 @@ const ContractsTable = ({ query, setQuery, volunteerId, readOnly }: ContractsTab
         row={row}
         items={[
           {
-            label: t('general:download', { item: i18n.t('general:contract').toLowerCase() }),
+            label: t('general:download', {
+              item: i18n
+                .t(`documents:contract.type.${row.type ?? DocumentType.CONTRACT}`)
+                .toLowerCase(),
+            }),
             icon: <ArrowDownTrayIcon className="menu-icon" />,
             onClick: () => downloadFile(row.uri, row.fileName),
           },
@@ -191,17 +219,31 @@ const ContractsTable = ({ query, setQuery, volunteerId, readOnly }: ContractsTab
   return (
     <>
       {!volunteerId && (
-        <div className="w-full sm:max-w-xs">
-          <Select
-            options={ContractStatusOptions}
-            onChange={(item: SelectItem<ContractStatus> | undefined) =>
-              setQuery({ status: item?.key, page: 1 })
-            }
-            placeholder={`${t('general:select', { item: '' })}`}
-            label={`${t('contracts.filters.status')}`}
-            allowDeselect
-            selected={ContractStatusOptions.find((option) => option.key === query?.status)}
-          />
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="w-full sm:max-w-xs">
+            <Select
+              options={ContractStatusOptions}
+              onChange={(item: SelectItem<ContractStatus> | undefined) =>
+                setQuery({ status: item?.key, page: 1 })
+              }
+              placeholder={`${t('general:select', { item: '' })}`}
+              label={`${t('contracts.filters.status')}`}
+              allowDeselect
+              selected={ContractStatusOptions.find((option) => option.key === query?.status)}
+            />
+          </div>
+          <div className="w-full sm:max-w-xs">
+            <Select
+              options={DocumentTypeOptions}
+              onChange={(item: SelectItem<DocumentType> | undefined) =>
+                setQuery({ type: item?.key, page: 1 })
+              }
+              placeholder={`${t('general:select', { item: '' })}`}
+              label={`${t('contracts.filters.type')}`}
+              allowDeselect
+              selected={DocumentTypeOptions.find((option) => option.key === query?.type)}
+            />
+          </div>
         </div>
       )}
       <Card>
@@ -214,6 +256,14 @@ const ContractsTable = ({ query, setQuery, volunteerId, readOnly }: ContractsTab
                 className="btn-outline-secondary"
                 icon={<ArrowDownTrayIcon className="h-5 w-5" />}
                 onClick={onExport}
+              />
+            )}
+            {!readOnly && (
+              <Button
+                label={t('contracts.actions.certificate')}
+                className="btn-outline-secondary"
+                icon={<DocumentTextIcon className="h-5 w-5" />}
+                onClick={() => setShowCertificate(true)}
               />
             )}
             {!readOnly && (
@@ -248,6 +298,12 @@ const ContractsTable = ({ query, setQuery, volunteerId, readOnly }: ContractsTab
             setShowUpload(false);
             if (saved) refetch();
           }}
+        />
+      )}
+      {showCertificate && (
+        <GenerateCertificateModal
+          volunteerId={volunteerId}
+          onClose={() => setShowCertificate(false)}
         />
       )}
       {toDelete && (

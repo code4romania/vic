@@ -2,6 +2,8 @@ import { useMutation, useQuery } from 'react-query';
 import {
   IContractsQueryParams,
   deleteContract,
+  generateCertificate,
+  getCertificatePrefill,
   getContracts,
   getPendingContractsCount,
   uploadContract,
@@ -9,7 +11,10 @@ import {
 import { AxiosError } from 'axios';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { CONTRACT_ERRORS } from '../../common/errors/entities/contract.errors';
-import { IUploadContractPayload } from '../../common/interfaces/contract.interface';
+import {
+  IGenerateCertificatePayload,
+  IUploadContractPayload,
+} from '../../common/interfaces/contract.interface';
 
 export const useContractsQuery = (
   params: IContractsQueryParams & { page: number; limit: number },
@@ -34,6 +39,24 @@ export const useUploadContractMutation = () => {
 
 export const useDeleteContractMutation = () => {
   return useMutation((id: string) => deleteContract(id), {
+    onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
+  });
+};
+
+// #490
+export const useCertificatePrefillQuery = (volunteerId?: string) => {
+  return useQuery(
+    ['certificate-prefill', volunteerId],
+    () => getCertificatePrefill(volunteerId as string),
+    {
+      enabled: !!volunteerId,
+      onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
+    },
+  );
+};
+
+export const useGenerateCertificateMutation = () => {
+  return useMutation((payload: IGenerateCertificatePayload) => generateCertificate(payload), {
     onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => Promise.resolve(error),
   });
 };

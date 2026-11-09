@@ -752,6 +752,7 @@
     },
     "documents": {
         "contract_prefix": "Contract",
+        "certificate_prefix": "Adeverință",
         "description": "Contractele semnate cu organizația. Le poți descărca oricând.",
         "sections": {
             "closed": "Istoric contracte semnate",
@@ -778,7 +779,8 @@
             "generic": "Eroare la încărcarea documentelor"
         },
         "expiring_soon": "Expiră în curând",
-        "period_open": "din {{start}}, fără dată de final"
+        "period_open": "din {{start}}, fără dată de final",
+        "issued_on": "emisă la {{date}}"
     },
     "notifications": {
         "header": "Setări notificări",

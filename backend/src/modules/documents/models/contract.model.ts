@@ -13,6 +13,7 @@ import {
   IAdminUserModel,
 } from 'src/modules/user/models/admin-user.model';
 import { addDays, compareAsc } from 'date-fns';
+import { DocumentType } from '../enums/document-type.enum';
 
 export interface IContractDownloadModel {
   'Numar contract': string;
@@ -29,6 +30,7 @@ export interface IContractModel extends IBaseModel {
   startDate: Date;
   endDate: Date | null;
   status: ContractStatus;
+  type: DocumentType;
   organizationId: string;
   templateId?: string;
   volunteerId: string;
@@ -52,7 +54,11 @@ export type CreateContractOptions = Pick<
   | 'endDate'
   | 'templateId'
   | 'volunteerId'
-> & { createdByAdminId: string; status?: ContractStatus };
+> & {
+  createdByAdminId: string;
+  status?: ContractStatus;
+  type?: DocumentType;
+};
 
 export type FindManyContractOptions = IBasePaginationFilterModel &
   Partial<
@@ -62,6 +68,7 @@ export type FindManyContractOptions = IBasePaginationFilterModel &
     > & {
       volunteerName?: string;
       status?: ClientContractStatus;
+      type?: DocumentType;
       userId: string;
     }
   >;
@@ -75,6 +82,7 @@ export type FindContractOptions = Partial<
     | 'contractNumber'
     | 'volunteerId'
     | 'templateId'
+    | 'type'
   >
 >;
 
@@ -106,9 +114,12 @@ export class ContractTransformer {
       startDate: entity.startDate,
       endDate: entity.endDate,
       status: entity.status,
+      type: entity.type ?? DocumentType.CONTRACT,
       approvedOn: entity.approvedOn,
       rejectedOn: entity.rejectedOn,
-      fileName: `Contract_${entity.contractNumber ?? entity.id.slice(0, 8)}.${
+      fileName: `${
+        entity.type === DocumentType.CERTIFICATE ? 'Adeverinta' : 'Contract'
+      }_${entity.contractNumber ?? entity.id.slice(0, 8)}.${
         entity.path.split('.').pop() || 'pdf'
       }`,
       volunteer: VolunteerModelTransformer.fromEntity(entity.volunteer),
@@ -132,6 +143,7 @@ export class ContractTransformer {
     entity.volunteerId = model.volunteerId;
     entity.createdByAdminId = model.createdByAdminId;
     entity.status = model.status ?? ContractStatus.ACTIVE;
+    entity.type = model.type ?? DocumentType.CONTRACT;
 
     return entity;
   }

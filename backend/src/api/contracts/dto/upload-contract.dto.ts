@@ -1,7 +1,9 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
+import { DocumentType } from 'src/modules/documents/enums/document-type.enum';
 import {
   IsDate,
+  IsEnum,
   IsOptional,
   IsString,
   IsUUID,
@@ -38,6 +40,14 @@ export class UploadContractDto {
   @IsString()
   @MaxLength(50)
   contractNumber?: string;
+
+  @ApiPropertyOptional({
+    enum: DocumentType,
+    description: '#490: a certificate has no end date',
+  })
+  @IsOptional()
+  @IsEnum(DocumentType)
+  type?: DocumentType;
 
   @ApiProperty({ type: 'string', format: 'binary' })
   contract?: unknown;
