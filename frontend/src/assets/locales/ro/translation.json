@@ -117,7 +117,8 @@
       "validation": "Validare ONG-uri",
       "events_list": "Listă evenimente",
       "event_registrations": "Înscrieri la evenimente",
-      "approvals": "Aprobări"
+      "approvals": "Aprobări",
+      "settings": "Setări"
     },
     "collapse": "Restrânge meniul"
   },
@@ -1575,6 +1576,27 @@
       "pending": "În așteptare",
       "approved": "Aprobate",
       "rejected": "Respinse"
+    }
+  },
+  "settings": {
+    "title": "Setări",
+    "account": {
+      "title": "Contul meu",
+      "description": "Datele contului tău de administrator. Le vezi doar tu și colegii din echipă.",
+      "login": "Te autentifici cu un link primit pe email; contul nu are parolă.",
+      "team": "Administratori și echipă"
+    },
+    "organization": {
+      "title": "Profilul public al organizației",
+      "description": "Ce văd voluntarii despre organizație în aplicația VIC.",
+      "edit": "Editează profilul"
+    },
+    "about": {
+      "title": "Despre",
+      "terms": "Termeni și condiții",
+      "privacy": "Politica de confidențialitate",
+      "help": "Centru de asistență",
+      "version": "Versiunea {{version}}"
     }
   }
 }

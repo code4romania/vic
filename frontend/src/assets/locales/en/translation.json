@@ -117,7 +117,8 @@
       "validation": "NGO validation",
       "events_list": "Events list",
       "event_registrations": "Event registrations",
-      "approvals": "Approvals"
+      "approvals": "Approvals",
+      "settings": "Settings"
     },
     "collapse": "Narrow the menu"
   },
@@ -1568,6 +1569,27 @@
       "pending": "Pending",
       "approved": "Approved",
       "rejected": "Rejected"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "account": {
+      "title": "My account",
+      "description": "Your administrator account. Only you and your team see it.",
+      "login": "You log in with a link sent by email; the account has no password.",
+      "team": "Admins and team"
+    },
+    "organization": {
+      "title": "Public organization profile",
+      "description": "What volunteers see about the organization in the VIC app.",
+      "edit": "Edit profile"
+    },
+    "about": {
+      "title": "About",
+      "terms": "Terms and conditions",
+      "privacy": "Privacy policy",
+      "help": "Help center",
+      "version": "Version {{version}}"
     }
   }
 }
