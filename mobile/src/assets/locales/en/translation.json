@@ -397,12 +397,56 @@
   "events": {
     "header": "Events",
     "search": {
-      "placeholder": "Search"
+      "placeholder": "Search",
+      "title": "Search events",
+      "filters": "Filters",
+      "summary_any": "Any time · all organizations",
+      "close": "Close",
+      "what": "What",
+      "what_title": "What do you want to do?",
+      "what_placeholder": "Trees, food, kids…",
+      "any_activity": "Any activity",
+      "when": "When",
+      "when_title": "When?",
+      "when_options": {
+        "any": "Any time",
+        "week": "This week",
+        "month": "This month"
+      },
+      "organization": "Organization",
+      "organization_title": "Organization",
+      "all_organizations": "All",
+      "clear": "Clear all",
+      "show": "Show events",
+      "show_one": "Show 1 event",
+      "show_count": "Show {{n}} events"
     },
     "tabs": {
       "going": "Particip",
       "organizations": "My organizations",
       "open": "Open"
+    },
+    "duration": "{{hours}} hours",
+    "duration_one": "1 hour",
+    "retry": "Try again",
+    "errors": {
+      "generic": "We couldn't load the events."
+    },
+    "card": {
+      "public": "public",
+      "members": "members only",
+      "going": "Going",
+      "finished": "Ended"
+    },
+    "empty": {
+      "filtered_title": "No events for these filters",
+      "filtered_description": "Try another period or another organization.",
+      "open_title": "No open events right now",
+      "open_description": "Come back later or join an organization.",
+      "going_title": "You're not going to any event yet",
+      "going_description": "Events you sign up for show up here.",
+      "organizations_title": "Your organizations have no events right now",
+      "organizations_description": "You'll see them here as soon as they publish them."
     }
   },
   "event": {
@@ -446,7 +490,19 @@
       "pending": "Waiting for the organization to approve it",
       "approved": "Approved",
       "rejected": "Rejected",
-      "rejected_reason": "Rejected. Reason: {{reason}}"
+      "rejected_reason": "Rejected. Reason: {{reason}}",
+      "reason": "Reason: {{reason}}"
+    },
+    "open_in_maps": "Open in Maps",
+    "organized_by": "Organized by {{name}}",
+    "capacity_places": "{{places}} places",
+    "about": "About",
+    "confirm": {
+      "title": "You're in",
+      "description": "The organization is expecting you. If you can't make it, cancel from the event so someone else gets the place.",
+      "pending_title": "Request sent",
+      "pending_description": "The organization confirms your registration. You'll get a notification when they decide.",
+      "done": "Done"
     }
   },
   "activity_logs": {

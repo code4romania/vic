@@ -1,115 +1,319 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import i18n from '../common/config/i18n';
-import Tabs from '../components/Tabs';
-import EventItem from '../components/EventItem';
-import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { OrderDirection } from '../common/enums/order-direction.enum';
-import InfiniteListLayout from '../layouts/InfiniteListLayout';
-import { IEventListItem } from '../common/interfaces/event-list-item.interface';
-import { useEventsInfiniteQuery } from '../services/event/event.service';
 import { EventType } from '../common/enums/event-type.enum';
-import { ISelectItem } from '../components/FormSelect';
-import EventSkeletonListItem from '../components/skeleton/event-skeleton-item';
+import { OrderDirection } from '../common/enums/order-direction.enum';
+import { colors, fonts, spacing } from '../common/theme/tokens';
+import { useEventsInfiniteQuery } from '../services/event/event.service';
 import { useEvent } from '../store/event/event.selector';
-import { Screen } from '../components/Screen';
-import { Text } from '@ui-kitten/components';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { StyleSheet } from 'react-native';
-import { usePaddingTop } from '../hooks/usePaddingTop';
+import useMyOrganizations from '../hooks/useMyOrganizations';
+import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
+import { useTabBarScroll } from '../components/navigation/TabBarScroll';
+import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
+import { EmptyState, Enter, PressableScale, UnderlineTabs, VText } from '../components/ui';
+import { EventCard, EventCardItem } from '../components/events/EventCard';
+import { EventIcon } from '../components/events/EventIcons';
+import { EventSearchModal } from '../components/events/EventSearchModal';
+import {
+  countActiveFilters,
+  EMPTY_EVENT_FILTERS,
+  EventFilters,
+  toEventQueryFilters,
+} from '../components/events/event-filters';
+import EventSkeletonListItem from '../components/skeleton/event-skeleton-item';
 
-const EventsTabs: ISelectItem[] = [
-  { key: EventType.GOING, label: i18n.t('events:tabs.going') },
-  { key: EventType.ORGANIZATIONS, label: i18n.t('events:tabs.organizations') },
-  { key: EventType.OPEN, label: i18n.t('events:tabs.open') },
-];
+const HEADER_HEIGHT = 150;
 
+const tabIcon = (name: 'open' | 'going' | 'organizations') => (active: boolean) => (
+  <EventIcon name={name} color={active ? colors.ink : colors.muted} />
+);
+
+/**
+ * VIC 2.0 Evenimente (canvas board "Evenimente"): a search pill that opens the full-screen
+ * search, category tabs with a sliding underline, and the list, which re-staggers whenever the
+ * tab or the filters change. The header gets a shadow once the list scrolls under it.
+ */
 const Events = ({ navigation }: any) => {
   const { t } = useTranslation('events');
-  const paddingTop = usePaddingTop();
-  // order direction filter
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
-  // search filter
-  const [search, setSearch] = useState<string>('');
-  // event tab filter
-  const [eventFilter, setEventFilter] = useState<EventType>(EventType.GOING);
+  const insets = useSafeAreaInsets();
+  const bottomInset = useGlassTabBarInset();
+  useFocusedStatusBarStyle('dark');
   const { event } = useEvent();
 
-  // events query
+  const [eventFilter, setEventFilter] = useState<EventType>(EventType.OPEN);
+  const [filters, setFilters] = useState<EventFilters>(EMPTY_EVENT_FILTERS);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  const scrollY = useSharedValue(0);
+  const onScroll = useTabBarScroll(scrollY);
+
+  const queryFilters = useMemo(() => toEventQueryFilters(filters), [filters]);
   const {
     data: events,
-    error: getEventsError,
-    isFetching: isFetchingEvents,
+    error,
+    isFetching,
+    isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
-    refetch: reloadEvents,
-    isFetchingNextPage,
-  } = useEventsInfiniteQuery(orderDirection, search, eventFilter);
+    refetch,
+    isRefetching,
+  } = useEventsInfiniteQuery(OrderDirection.ASC, filters.search, eventFilter, queryFilters);
 
-  // This will be triggered every time the organization state changes
-  const refetchEvents = useCallback(() => {
-    reloadEvents();
-  }, [reloadEvents]);
-
+  // an RSVP from the event page changes what the tabs show
+  const reload = useCallback(() => {
+    refetch();
+  }, [refetch]);
   useEffect(() => {
-    refetchEvents();
-  }, [event, refetchEvents]);
+    reload();
+  }, [event, reload]);
 
-  const onTabClick = (tabKey: string | number) => {
-    setEventFilter(tabKey as EventType);
-  };
+  const items = useMemo(
+    () => (events?.pages ?? []).flatMap((page) => page.items) as EventCardItem[],
+    [events],
+  );
+  const activeFilters = countActiveFilters(filters);
+  const organizations = useMyOrganizations();
+  const summary = useMemo(() => {
+    const parts = [
+      filters.search ? `„${filters.search}”` : null,
+      filters.when !== 'any' ? t(`search.when_options.${filters.when}`) : null,
+      organizations.find((org) => org.id === filters.organizationId)?.name ?? null,
+    ].filter(Boolean);
+    return parts.length ? parts.join(' · ') : t('search.summary_any');
+  }, [filters, organizations, t]);
 
-  const onLoadMore = () => {
-    if (!isFetchingEvents && hasNextPage) {
-      fetchNextPage();
-    }
-  };
+  // restagger the list when the tab or the filters change
+  const listKey = `${eventFilter}:${JSON.stringify(filters)}`;
+  const isInitialLoading = isFetching && !isFetchingNextPage && !isRefetching && !items.length;
 
-  const onEventListItemPress = (eventId: string) => {
-    navigation.navigate('event', { eventId });
-  };
+  const headerShadow = useAnimatedStyle(() => ({
+    shadowOpacity: interpolate(scrollY.value, [0, 12], [0, 0.06], Extrapolation.CLAMP),
+    borderBottomColor: scrollY.value > 4 ? colors.line : 'transparent',
+  }));
+  const pillStyle = useAnimatedStyle(() => ({
+    height: interpolate(scrollY.value, [0, 40], [56, 46], Extrapolation.CLAMP),
+  }));
+  const pillSummaryStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(scrollY.value, [0, 24], [1, 0], Extrapolation.CLAMP),
+    height: interpolate(scrollY.value, [0, 24], [16, 0], Extrapolation.CLAMP),
+  }));
 
-  const onRenderEventListItem = ({ item }: { item: IEventListItem }) => (
-    <EventItem event={item} onPress={onEventListItemPress} />
+  const onOpenEvent = (eventId: string) => navigation.navigate('event', { eventId });
+
+  const renderItem = ({ item, index }: { item: EventCardItem; index: number }) => (
+    <Enter index={index}>
+      <EventCard event={item} onPress={onOpenEvent} going={eventFilter === EventType.GOING} />
+    </Enter>
   );
 
-  const onSort = () => {
-    setOrderDirection(
-      orderDirection === OrderDirection.ASC ? OrderDirection.DESC : OrderDirection.ASC,
+  const renderEmpty = () => {
+    if (isInitialLoading) {
+      return <EventSkeletonListItem />;
+    }
+    if (error) {
+      return (
+        <EmptyState
+          title={`${t('errors.generic')}`}
+          actionLabel={`${t('retry')}`}
+          onAction={reload}
+          testID="events-error"
+        />
+      );
+    }
+    const filtered = activeFilters > 0 || !!filters.search;
+    return (
+      <EmptyState
+        icon={<EventIcon name="calendar" size={36} color={colors.subtle} />}
+        title={`${t(filtered ? 'empty.filtered_title' : `empty.${eventFilter.toLowerCase()}_title`)}`}
+        description={`${t(
+          filtered
+            ? 'empty.filtered_description'
+            : `empty.${eventFilter.toLowerCase()}_description`,
+        )}`}
+        actionLabel={filtered ? `${t('search.clear')}` : undefined}
+        onAction={filtered ? () => setFilters(EMPTY_EVENT_FILTERS) : undefined}
+        testID="events-empty"
+      />
     );
   };
 
   return (
-    <Screen preset="fixed" contentContainerStyle={[styles.childrenContainer, { paddingTop }]}>
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={styles.title}>
-        {`${t('header')}`}
-      </Text>
-      <Tabs tabs={EventsTabs} onPress={onTabClick} />
-      <SearchWithOrderAndFilters
-        placeholder={t('search.placeholder')}
-        onChange={setSearch}
-        onSort={onSort}
+    <View style={styles.screen}>
+      <Animated.FlatList
+        key={listKey}
+        data={items}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
+        onEndReachedThreshold={0.4}
+        ListEmptyComponent={renderEmpty}
+        ListFooterComponent={
+          isFetchingNextPage ? <ActivityIndicator color={colors.navy} style={styles.more} /> : null
+        }
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={reload}
+            progressViewOffset={insets.top + HEADER_HEIGHT}
+          />
+        }
+        contentContainerStyle={[
+          styles.list,
+          { paddingTop: insets.top + HEADER_HEIGHT, paddingBottom: bottomInset },
+        ]}
+        showsVerticalScrollIndicator={false}
+        testID="events-list"
       />
-      <InfiniteListLayout<IEventListItem>
-        pages={events?.pages}
-        renderItem={onRenderEventListItem}
-        loadMore={onLoadMore}
-        isLoading={isFetchingEvents && !isFetchingNextPage}
-        refetch={reloadEvents}
-        loadingLayout={<EventSkeletonListItem />}
-        errorMessage={getEventsError ? `${t('errors.generic')}` : ''}
+
+      <Animated.View style={[styles.top, { paddingTop: insets.top + 12 }, headerShadow]}>
+        <View style={styles.searchRow}>
+          <Animated.View style={[styles.pillWrap, pillStyle]}>
+            <PressableScale
+              onPress={() => setSearchOpen(true)}
+              style={styles.pill}
+              accessibilityLabel={`${t('search.title')}. ${summary}`}
+              testID="events-search-pill"
+            >
+              <EventIcon name="search" size={20} />
+              <View style={styles.pillText}>
+                <VText variant="label" style={styles.pillTitle}>
+                  {t('search.title')}
+                </VText>
+                <Animated.View style={pillSummaryStyle}>
+                  <VText variant="cap" numberOfLines={1}>
+                    {summary}
+                  </VText>
+                </Animated.View>
+              </View>
+            </PressableScale>
+          </Animated.View>
+          <PressableScale
+            onPress={() => setSearchOpen(true)}
+            style={styles.filterButton}
+            accessibilityLabel={`${t('search.filters')}${
+              activeFilters ? `, ${activeFilters}` : ''
+            }`}
+            testID="events-filter-button"
+          >
+            <EventIcon name="filters" size={18} />
+            {activeFilters > 0 && (
+              <View style={styles.filterCount} testID="events-filter-count">
+                <VText variant="cap" color={colors.white} style={styles.filterCountText}>
+                  {activeFilters}
+                </VText>
+              </View>
+            )}
+          </PressableScale>
+        </View>
+        <UnderlineTabs<EventType>
+          value={eventFilter}
+          onChange={setEventFilter}
+          testID="events-tabs"
+          tabs={[
+            {
+              key: EventType.OPEN,
+              label: t('tabs.open'),
+              icon: tabIcon('open'),
+            },
+            {
+              key: EventType.GOING,
+              label: t('tabs.going'),
+              icon: tabIcon('going'),
+            },
+            {
+              key: EventType.ORGANIZATIONS,
+              label: t('tabs.organizations'),
+              icon: tabIcon('organizations'),
+            },
+          ]}
+        />
+      </Animated.View>
+
+      <EventSearchModal
+        visible={searchOpen}
+        initialFilters={filters}
+        organizations={organizations}
+        eventFilter={eventFilter}
+        onApply={(next) => {
+          setFilters(next);
+          setSearchOpen(false);
+        }}
+        onClose={() => setSearchOpen(false)}
       />
-    </Screen>
+    </View>
   );
 };
 
 export default Events;
 
 const styles = StyleSheet.create({
-  childrenContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    flex: 1,
+  screen: { flex: 1, backgroundColor: colors.white },
+  list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
+  more: { paddingVertical: 20 },
+  top: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: colors.white,
+    paddingHorizontal: spacing.gutter,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    shadowColor: '#000',
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 6 },
+    zIndex: 4,
   },
-  title: { paddingLeft: 8, marginBottom: 16 },
+  searchRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  pillWrap: { flex: 1 },
+  pill: {
+    flex: 1,
+    borderRadius: 28,
+    backgroundColor: colors.white,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingLeft: 20,
+    paddingRight: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.04)',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 3,
+  },
+  pillText: { flex: 1 },
+  pillTitle: { fontFamily: fonts.bold },
+  filterButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.grab,
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  filterCount: {
+    position: 'absolute',
+    right: -4,
+    top: -4,
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: colors.ink,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  filterCountText: { fontSize: 11, lineHeight: 13, fontFamily: fonts.bold },
 });

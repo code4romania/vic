@@ -1,50 +1,86 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import PageLayout from '../layouts/PageLayout';
-import { Icon, Text, useTheme } from '@ui-kitten/components';
-import { StyleSheet } from 'react-native';
-import FormLayout from '../layouts/FormLayout';
-import OrganizationIdentity from '../components/OrganizationIdentity';
-import ReadOnlyElement from '../components/ReadOnlyElement';
-import { View } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import * as Linking from 'expo-linking';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { useTranslation } from 'react-i18next';
 import {
   useCancelRsvpMutation,
   useEventQuery,
   useSetRsvpEventMutation,
 } from '../services/event/event.service';
-import { mapEventType } from '../common/utils/helpers';
-import Toast from 'react-native-toast-message';
+import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { useTranslation } from 'react-i18next';
 import { EventVolunteerStatus } from '../common/enums/event-volunteer-status.enum';
 import { EventRegistrationStatus } from '../common/enums/event-registration-status.enum';
-import { ButtonType } from '../common/enums/button-type.enum';
+import { mapEventType } from '../common/utils/helpers';
+import { formatEventSpan, formatLongDay, formatShortDay } from '../common/utils/event-format';
+import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
 import { useEvent } from '../store/event/event.selector';
-import useStore from '../store/store';
-import EventSkeleton from '../components/skeleton/event-skeleton';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { formatEventDate } from '../common/utils/event.helper';
-import { usePaddingTop } from '../hooks/usePaddingTop';
 import { useUserProfile } from '../store/profile/profile.selector';
-import BottomSheet from '@gorhom/bottom-sheet';
-import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
-import { renderBackdrop } from '../components/BottomSheet';
-import { useReducedMotion } from 'react-native-reanimated';
-import { SvgXml } from 'react-native-svg';
-import upsIcon from '../assets/svg/ups-icon';
-import Paragraph from '../components/Paragraph';
-import Button from '../components/Button';
-import InlineLink from '../components/InlineLink';
-import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
+import useStore from '../store/store';
+import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
+import EventSkeleton from '../components/skeleton/event-skeleton';
+import { Avatar, Badge, Enter, PressableScale, Sheet, VButton, VText } from '../components/ui';
+import { EventIcon } from '../components/events/EventIcons';
 
+const Fact = ({
+  icon,
+  title,
+  subtitle,
+  action,
+  onAction,
+  testID,
+}: {
+  icon: React.ComponentProps<typeof EventIcon>['name'];
+  title: string;
+  subtitle?: string;
+  action?: string;
+  onAction?: () => void;
+  testID?: string;
+}) => (
+  <View style={styles.fact} testID={testID}>
+    <EventIcon name={icon} size={24} />
+    <View style={styles.factText}>
+      <VText variant="h3" style={styles.factTitle}>
+        {title}
+      </VText>
+      {(!!subtitle || !!action) && (
+        <VText variant="sub">
+          {subtitle}
+          {!!subtitle && !!action ? ' · ' : ''}
+          {!!action && (
+            <VText variant="sub" color={colors.ink} style={styles.underline} onPress={onAction}>
+              {action}
+            </VText>
+          )}
+        </VText>
+      )}
+    </View>
+  </View>
+);
+
+/**
+ * VIC 2.0 event page (canvas "Evenimente" > detail): title, organizer, when, where (opens Maps),
+ * places, who it is for, the volunteer's registration and the description. A bottom bar keeps
+ * the date and "Particip" / "Anulează" in reach; joining shows a confirmation sheet, and #501
+ * registrations that wait for the organization say so.
+ */
 const Event = ({ navigation, route }: any) => {
   const { t } = useTranslation('event');
-
-  const theme = useTheme();
-  const paddingTop = usePaddingTop();
+  const insets = useSafeAreaInsets();
+  useFocusedStatusBarStyle('dark');
   const { userProfile } = useUserProfile();
   const { eventId } = route.params;
   const { event } = useEvent();
-  // get the current event's organization from the list of the user's organizations
+  const { setActiveOrganization, declineEvent, canceRsvp, joinEvent } = useStore();
+  const { mutate: switchOrganization } = useSwitchOrganizationMutation();
+  const confirmRef = useRef<BottomSheetModal>(null);
+  const profileRef = useRef<BottomSheetModal>(null);
+  const [justJoined, setJustJoined] = useState(false);
+
+  // the event's organization among the user's organizations
   const currentEventOrganization = useMemo(
     () =>
       userProfile?.myOrganizations.find(
@@ -53,26 +89,14 @@ const Event = ({ navigation, route }: any) => {
       ),
     [userProfile, event],
   );
-  const { setActiveOrganization } = useStore();
-  const { mutate: switchOrganization } = useSwitchOrganizationMutation();
-
-  // bottom sheet ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  // bottom sheet snap points
-  const snapPoints = useMemo(() => [1, 410], []);
-  const reducedMotion = useReducedMotion();
-
-  const { declineEvent, canceRsvp, joinEvent } = useStore();
 
   const {
     isFetching: isLoadingEvent,
     error: getEventError,
     refetch: refetchEvent,
   } = useEventQuery(eventId);
-
   const { mutate: setRsvpEvent, isLoading: isResponding } = useSetRsvpEventMutation();
-
-  const { mutate: canceRsvpResponse, isLoading: isCancelingRsvp } = useCancelRsvpMutation();
+  const { mutate: cancelRsvp, isLoading: isCancelingRsvp } = useCancelRsvpMutation();
 
   useEffect(() => {
     // if the event request failed go back and show toast
@@ -87,19 +111,29 @@ const Event = ({ navigation, route }: any) => {
     }
   }, [getEventError, navigation]);
 
+  // after "Particip": the confirmation sheet once the registration status is known (#501)
+  useEffect(() => {
+    if (justJoined && !isLoadingEvent && event?.volunteerStatus === EventVolunteerStatus.JOINED) {
+      setJustJoined(false);
+      confirmRef.current?.present();
+    }
+  }, [justJoined, isLoadingEvent, event?.volunteerStatus]);
+
+  const showRsvpError = (error: any) =>
+    Toast.show({
+      type: 'error',
+      text1: `${InternalErrors.EVENT_ERRORS.getError(error?.response?.data?.code_error)}`,
+    });
+
   // VIC 2.0 (#492): every event uses a simple registration (no mention)
-  const onRsvpReponsePress = (going: boolean) => {
+  const onRsvp = (going: boolean) => {
     setRsvpEvent(
-      {
-        eventId,
-        rsvp: {
-          going,
-        },
-      },
+      { eventId, rsvp: { going } },
       {
         onSuccess: () => {
           if (going) {
             joinEvent();
+            setJustJoined(true);
             // #501: get the registration's status (approved right away or waiting for the NGO)
             refetchEvent();
           } else {
@@ -107,204 +141,301 @@ const Event = ({ navigation, route }: any) => {
           }
         },
         onError: (error: any) => {
-          //if we don't have a volunteerProfileId for this organization -> open error bottom sheet that will redirect the user to the volunteer profile page
-          if (userProfile && event) {
-            if (!currentEventOrganization?.volunteerProfileId) {
-              return bottomSheetRef.current?.expand();
-            }
+          // no volunteer profile for this organization yet: offer to complete it
+          if (userProfile && event && !currentEventOrganization?.volunteerProfileId) {
+            profileRef.current?.present();
+            return;
           }
-          Toast.show({
-            type: 'error',
-            text1: `${InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error)}`,
-          });
+          showRsvpError(error);
         },
       },
     );
   };
 
-  const onCancelRsvpResponse = () => {
-    canceRsvpResponse(
-      { eventId },
-      {
-        onSuccess: canceRsvp,
-        onError: (error: any) =>
-          Toast.show({
-            type: 'error',
-            text1: `${InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error)}`,
-          }),
-      },
+  const onCancelRsvp = () => {
+    cancelRsvp({ eventId }, { onSuccess: canceRsvp, onError: showRsvpError });
+  };
+
+  const onCompleteProfile = () => {
+    profileRef.current?.dismiss();
+    if (userProfile && currentEventOrganization) {
+      if (userProfile.activeOrganization?.id !== currentEventOrganization.id) {
+        setActiveOrganization(currentEventOrganization);
+        switchOrganization({ organizationId: currentEventOrganization.id });
+      }
+      navigation.navigate('volunteer-profile');
+    }
+  };
+
+  const openInMaps = () => {
+    if (!event?.location) {
+      return;
+    }
+    const query = encodeURIComponent(event.location);
+    const url = Platform.OS === 'ios' ? `maps://?q=${query}` : `geo:0,0?q=${query}`;
+    Linking.openURL(url).catch(() =>
+      Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${query}`),
     );
   };
 
-  const mapNumberOfPersonsToHelper = () => {
-    if (!event?.numberOfPersonsGoingToEvent && event?.numberOfPersonsGoingToEvent !== 0) {
+  const attendees = () => {
+    const n = event?.numberOfPersonsGoingToEvent;
+    if (n === undefined || n === null) {
       return '';
-    } else if (event.numberOfPersonsGoingToEvent === 1) {
-      return t('attending_one');
-    } else if (event.numberOfPersonsGoingToEvent < 20) {
-      return t('attending', { numberOfVolunteer: event.numberOfPersonsGoingToEvent });
-    } else {
-      return t('attending_of', { numberOfVolunteer: event.numberOfPersonsGoingToEvent });
     }
+    if (n === 1) {
+      return `${t('attending_one')}`;
+    }
+    return `${t(n < 20 ? 'attending' : 'attending_of', { numberOfVolunteer: n })}`;
   };
 
-  const onRedirectToVolunteerProfile = () => {
-    //check if the organization for the current event is the active organization for the user
-    if (userProfile && currentEventOrganization) {
-      if (userProfile.activeOrganization?.id === currentEventOrganization.id) {
-        //redirect to volunteer profile
-        onCloseBottomSheet();
-        navigation.navigate('volunteer-profile');
-      } else {
-        //switch the active organization for the user to the current event's organization and redirect to volunteer-profile
-        onCloseBottomSheet();
-        setActiveOrganization(currentEventOrganization!);
-        switchOrganization({
-          organizationId: currentEventOrganization.id,
-        });
-        navigation.navigate('volunteer-profile');
-      }
-    }
-  };
-
-  const onCloseBottomSheet = () => {
-    bottomSheetRef.current?.close();
-  };
+  const joined = event?.volunteerStatus === EventVolunteerStatus.JOINED;
+  const responded = event?.volunteerStatus !== EventVolunteerStatus.NO_RESPONSE;
+  const finished = event?.displayStatus === 'finished';
+  const registration = event?.registrationStatus;
+  const registrationTone =
+    registration === EventRegistrationStatus.APPROVED
+      ? 'ok'
+      : registration === EventRegistrationStatus.REJECTED
+        ? 'no'
+        : 'wait';
+  const busy = isLoadingEvent || isResponding || isCancelingRsvp;
 
   return (
-    <>
-      <PageLayout
-        title={t('details')}
-        headerStyle={{ paddingTop }}
-        onBackButtonPress={navigation.goBack}
-        actionsOptions={{
-          loading: isLoadingEvent || isResponding || isCancelingRsvp,
-          primaryActionLabel:
-            event?.volunteerStatus !== EventVolunteerStatus.NO_RESPONSE
-              ? `${t('rsvp.cancel')}`
-              : `${t('rsvp.going')}`,
-          onPrimaryActionButtonClick:
-            event?.volunteerStatus !== EventVolunteerStatus.NO_RESPONSE
-              ? onCancelRsvpResponse
-              : onRsvpReponsePress.bind(null, true),
-          primaryBtnType:
-            event?.volunteerStatus !== EventVolunteerStatus.NO_RESPONSE
-              ? ButtonType.DANGER
-              : ButtonType.PRIMARY,
-          ...(event?.volunteerStatus === EventVolunteerStatus.NO_RESPONSE && !isResponding
-            ? {
-                secondaryActionLink: `${t('rsvp.not_going')}`,
-                onSecondaryActionButtonClick: onRsvpReponsePress.bind(null, false),
-              }
-            : {}),
-          helperText: mapNumberOfPersonsToHelper(),
-        }}
+    <View style={styles.screen}>
+      <ScrollView
+        contentContainerStyle={[
+          styles.content,
+          { paddingTop: insets.top + 64, paddingBottom: insets.bottom + 120 },
+        ]}
+        showsVerticalScrollIndicator={false}
       >
-        {isLoadingEvent && <EventSkeleton />}
-        {event && !isLoadingEvent && (
-          <FormLayout>
-            <View style={{ ...styles.image, backgroundColor: theme['cool-gray-100'] }}>
-              <Icon
-                name="calendar"
-                style={{ ...styles.imagePlaceholder, color: theme['cool-gray-500'] }}
+        {isLoadingEvent && !event && <EventSkeleton />}
+        {event && (
+          <>
+            <Enter>
+              <VText variant="largeTitle" style={styles.title} accessibilityRole="header">
+                {event.name}
+              </VText>
+              <VText variant="sub" style={styles.subtitle}>
+                {[mapEventType(event), attendees()].filter(Boolean).join(' · ')}
+              </VText>
+            </Enter>
+
+            {joined && registration && (
+              <Enter index={1} style={styles.registration}>
+                <Badge label={`${t(`registration.${registration}`)}`} tone={registrationTone} />
+                {registration === EventRegistrationStatus.REJECTED && !!event.rejectionReason && (
+                  <VText variant="sub">
+                    {t('registration.reason', { reason: event.rejectionReason })}
+                  </VText>
+                )}
+              </Enter>
+            )}
+
+            <Enter index={1} style={[styles.organizer, styles.hair]}>
+              <Avatar
+                name={event.organizationName || ''}
+                uri={event.organizationLogo}
+                size={48}
+                shape="rounded"
+              />
+              <View style={styles.factText}>
+                <VText variant="h3" style={styles.factTitle}>
+                  {t('organized_by', { name: event.organizationName })}
+                </VText>
+              </View>
+            </Enter>
+
+            <Enter index={2}>
+              <View style={styles.hair}>
+                <Fact
+                  icon="calendar"
+                  title={formatLongDay(event.startDate)}
+                  subtitle={formatEventSpan(event.startDate, event.endDate)}
+                  testID="event-when"
+                />
+              </View>
+              {!!event.location && (
+                <View style={styles.hair}>
+                  <Fact
+                    icon="pin"
+                    title={event.location}
+                    action={`${t('open_in_maps')}`}
+                    onAction={openInMaps}
+                  />
+                </View>
+              )}
+              <View style={styles.hair}>
+                <Fact
+                  icon="people"
+                  title={
+                    event.capacity
+                      ? `${t('capacity_places', { places: event.capacity })}`
+                      : `${t('capacity_unlimited')}`
+                  }
+                  subtitle={`${t('capacity')}`}
+                />
+              </View>
+              {!event.isPublic && (
+                <View style={styles.hair}>
+                  <Fact icon="target" title={mapEventType(event)} subtitle={`${t('target')}`} />
+                </View>
+              )}
+            </Enter>
+
+            {!!event.description && (
+              <Enter index={3} style={styles.about}>
+                <VText variant="h2">{t('about')}</VText>
+                <VText variant="body" style={styles.description}>
+                  {event.description}
+                </VText>
+              </Enter>
+            )}
+          </>
+        )}
+      </ScrollView>
+
+      <PressableScale
+        onPress={navigation.goBack}
+        accessibilityLabel={`${t('general:back')}`}
+        style={[styles.back, shadows.back, { top: insets.top + 12 }]}
+        testID="event-back"
+      >
+        <EventIcon name="back" size={20} />
+      </PressableScale>
+
+      {event && !finished && (
+        <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 16) + 8 }]}>
+          <View style={styles.barText}>
+            <VText variant="h3" style={styles.factTitle}>
+              {formatShortDay(event.startDate)}
+            </VText>
+            <VText variant="cap" numberOfLines={1}>
+              {joined && registration ? `${t(`registration.${registration}`)}` : attendees()}
+            </VText>
+          </View>
+          {responded ? (
+            <VButton
+              variant="outline"
+              label={`${t('rsvp.cancel')}`}
+              onPress={onCancelRsvp}
+              loading={busy}
+              testID="event-cancel"
+            />
+          ) : (
+            <View style={styles.barActions}>
+              <Pressable
+                onPress={() => onRsvp(false)}
+                hitSlop={8}
+                disabled={busy}
+                testID="event-not-going"
+              >
+                <VText variant="label" style={styles.underline}>
+                  {t('rsvp.not_going')}
+                </VText>
+              </Pressable>
+              <VButton
+                label={`${t('rsvp.going')}`}
+                onPress={() => onRsvp(true)}
+                loading={busy}
+                style={styles.going}
+                testID="event-going"
               />
             </View>
-            <OrganizationIdentity
-              uri={event.organizationLogo || ''}
-              name={event.organizationName || ''}
-            />
-            {event.volunteerStatus === EventVolunteerStatus.JOINED && event.registrationStatus && (
-              <ReadOnlyElement
-                label={t('registration.label')}
-                value={
-                  event.registrationStatus === EventRegistrationStatus.REJECTED &&
-                  event.rejectionReason
-                    ? `${t('registration.rejected_reason', { reason: event.rejectionReason })}`
-                    : `${t(`registration.${event.registrationStatus}`)}`
-                }
-              />
-            )}
-            <ReadOnlyElement
-              label={t('date')}
-              value={formatEventDate(event.startDate, event.endDate)}
-            />
-            <ReadOnlyElement label={t('name')} value={event.name} />
-            <ReadOnlyElement label={t('target')} value={mapEventType(event)} />
-            <ReadOnlyElement label={t('location')} value={event.location} />
-            <ReadOnlyElement
-              label={t('capacity')}
-              value={event.capacity ? `${event.capacity}` : `${t('capacity_unlimited')}`}
-            />
-            <ReadOnlyElement label={t('description')} value={event.description} />
-          </FormLayout>
-        )}
-      </PageLayout>
-      {/* error bottom sheet -> displayed when the user tries to attend the event but doesn't have a volunteer profile for the event's organization */}
-      <SafeAreaBottomSheet
-        backdropComponent={renderBackdrop}
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-        animateOnMount={reducedMotion ? false : true}
-      >
-        <View style={styles.bottomSheetContainer}>
-          <SvgXml xml={upsIcon} height={100} width={100} />
-          <View style={styles.textContainer}>
-            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">
-              {`${t('error_modal.title')}`}
-            </Text>
-            <Paragraph style={styles.bottomSheetParagraph}>
-              {`${t('error_modal.description')}`}
-            </Paragraph>
-          </View>
-          <View style={styles.buttonsContainer}>
-            <Button
-              label={`${t('error_modal.action_btn_label')}`}
-              status={'primary'}
-              onPress={onRedirectToVolunteerProfile}
-            />
-            <InlineLink
-              label={t('general:back')}
-              style={{ color: theme['cool-gray-700'] }}
-              onPress={onCloseBottomSheet}
-            />
-          </View>
+          )}
         </View>
-      </SafeAreaBottomSheet>
-    </>
+      )}
+
+      <Sheet ref={confirmRef} testID="event-confirm">
+        <View style={styles.confirmIcon}>
+          <EventIcon name="check" size={30} color={colors.status.ok.fg} strokeWidth={2.6} />
+        </View>
+        <VText variant="largeTitle" style={styles.confirmTitle}>
+          {registration === EventRegistrationStatus.PENDING
+            ? t('confirm.pending_title')
+            : t('confirm.title')}
+        </VText>
+        <VText variant="sub">
+          {registration === EventRegistrationStatus.PENDING
+            ? t('confirm.pending_description')
+            : t('confirm.description')}
+        </VText>
+        <VButton
+          variant="soft"
+          label={`${t('confirm.done')}`}
+          onPress={() => confirmRef.current?.dismiss()}
+        />
+      </Sheet>
+
+      <Sheet
+        ref={profileRef}
+        title={`${t('error_modal.title')}`}
+        subtitle={`${t('error_modal.description')}`}
+        testID="event-profile-missing"
+      >
+        <VButton label={`${t('error_modal.action_btn_label')}`} onPress={onCompleteProfile} />
+        <VButton
+          variant="soft"
+          label={`${t('general:back')}`}
+          onPress={() => profileRef.current?.dismiss()}
+        />
+      </Sheet>
+    </View>
   );
 };
 
 export default Event;
 
 const styles = StyleSheet.create({
-  image: {
-    borderRadius: 16,
-    width: '100%',
-    aspectRatio: '16/9',
+  screen: { flex: 1, backgroundColor: colors.white },
+  content: { paddingHorizontal: spacing.gutter },
+  back: {
+    position: 'absolute',
+    left: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  imagePlaceholder: { width: 48, height: 48 },
-  bottomSheetContainer: {
-    flex: 1,
+  title: { fontSize: 28, lineHeight: 34 },
+  subtitle: { marginTop: 6 },
+  registration: { marginTop: 14, gap: 6 },
+  organizer: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 20 },
+  hair: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.line },
+  fact: { flexDirection: 'row', alignItems: 'flex-start', gap: 14, paddingVertical: 18 },
+  factText: { flex: 1, gap: 2 },
+  factTitle: { fontSize: 15 },
+  underline: { textDecorationLine: 'underline', fontFamily: fonts.bold },
+  about: { paddingVertical: 20, gap: 10 },
+  description: { lineHeight: 23 },
+  bar: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255,255,255,0.96)',
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.line,
+    paddingTop: 12,
+    paddingHorizontal: spacing.gutter,
+    flexDirection: 'row',
     alignItems: 'center',
-    gap: 24,
-    paddingVertical: 24,
-    paddingHorizontal: 20,
+    gap: 14,
   },
-  textContainer: {
-    gap: 4,
+  barText: { flex: 1 },
+  barActions: { flexDirection: 'row', alignItems: 'center', gap: 16 },
+  going: { paddingHorizontal: 28 },
+  confirmIcon: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: colors.status.ok.bg,
     alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-  bottomSheetParagraph: {
-    textAlign: 'center',
-  },
-  buttonsContainer: {
-    gap: 16,
     justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: 12,
   },
+  confirmTitle: { fontSize: 26 },
 });
