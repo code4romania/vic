@@ -113,7 +113,7 @@ const Volunteer = ({ navigation }: any) => {
 
         <Enter index={1} style={styles.stats}>
           <View style={[styles.stat, styles.statHours]} testID="volunteer-stat-logs">
-            <VText style={[styles.statValue, { color: colors.status.wait.fg }]}>
+            <VText style={[styles.statValue, { color: colors.figure.amber }]}>
               {`${pendingLogs}`}
             </VText>
             <VText variant="cap" color={colors.status.wait.fg}>
@@ -243,8 +243,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     gap: 2,
   },
-  statHours: { backgroundColor: colors.status.wait.bg },
-  statDocuments: { backgroundColor: colors.navyTint },
+  statHours: { backgroundColor: colors.white, ...shadows.card },
+  statDocuments: { backgroundColor: colors.white, ...shadows.card },
   statValue: { fontFamily: fonts.title, fontSize: 22, lineHeight: 28, color: colors.ink },
   prompt: {
     marginTop: 18,

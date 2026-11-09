@@ -95,7 +95,7 @@ export default SegmentedControl;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: colors.navyTint,
+    backgroundColor: colors.white,
     borderRadius: 10,
     padding: PADDING,
     height: 38,

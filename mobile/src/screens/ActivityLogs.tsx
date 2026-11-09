@@ -36,10 +36,11 @@ import {
 // newest first, like the canvas
 const ORDER = OrderDirection.DESC;
 
+// white stat cards with a strong colored figure (Andrew, 9 Nov: no pastel blocks)
 const STAT_TONE: Record<string, { bg: string; fg: string }> = {
-  approved: colors.status.ok,
-  pending: colors.status.wait,
-  rejected: colors.status.no,
+  approved: { bg: colors.white, fg: colors.figure.green },
+  pending: { bg: colors.white, fg: colors.figure.amber },
+  rejected: { bg: colors.white, fg: colors.figure.red },
 };
 
 /**
@@ -153,15 +154,13 @@ const ActivityLogs = ({ navigation, route }: any) => {
         {stats.map((stat) => (
           <View
             key={stat.key}
-            style={[styles.stat, { backgroundColor: STAT_TONE[stat.key].bg }]}
+            style={[styles.stat, shadows.card, { backgroundColor: STAT_TONE[stat.key].bg }]}
             testID={`hours-total-${stat.key}`}
           >
             <VText style={[styles.statValue, { color: STAT_TONE[stat.key].fg }]}>
               {`${stat.value || 0}h`}
             </VText>
-            <VText variant="cap" color={STAT_TONE[stat.key].fg}>
-              {stat.label}
-            </VText>
+            <VText variant="cap">{stat.label}</VText>
           </View>
         ))}
       </Enter>

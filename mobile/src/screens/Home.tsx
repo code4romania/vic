@@ -46,12 +46,13 @@ const BellIcon = ({ color = colors.ink }: { color?: string }) => (
   </Svg>
 );
 
-// "Luna asta" tiles, each with its own color (Andrew, 9 Nov: more color in places)
-const TILE_TONE: Record<string, { bg: string; fg: string }> = {
-  events: { bg: colors.navyTint, fg: colors.navy },
-  hours: colors.status.ok,
-  documents: colors.status.wait,
-  organizations: { bg: colors.tealTint, fg: '#0B6B6B' },
+// "Luna asta" tiles: one solid navy tile, the others white with a strong colored figure
+// (Andrew, 9 Nov: more color, but no pastel blocks)
+const TILE_TONE: Record<string, { bg: string; fg: string; label: string }> = {
+  events: { bg: colors.navy, fg: colors.yellow, label: colors.white },
+  hours: { bg: colors.white, fg: colors.figure.green, label: colors.muted },
+  documents: { bg: colors.white, fg: colors.figure.amber, label: colors.muted },
+  organizations: { bg: colors.white, fg: colors.figure.teal, label: colors.muted },
 };
 
 const SectionHead = ({
@@ -337,14 +338,14 @@ const Home = ({ navigation }: any) => {
                 <PressableScale
                   key={tile.key}
                   onPress={tile.onPress}
-                  style={[styles.tile, { backgroundColor: TILE_TONE[tile.key].bg }]}
+                  style={[styles.tile, shadows.card, { backgroundColor: TILE_TONE[tile.key].bg }]}
                   accessibilityLabel={`${tile.value ?? 0} ${tile.label}`}
                   testID={`home-stat-${tile.key}`}
                 >
                   <VText style={[styles.tileValue, { color: TILE_TONE[tile.key].fg }]}>
                     {`${tile.value ?? '–'}`}
                   </VText>
-                  <VText variant="cap" color={TILE_TONE[tile.key].fg}>
+                  <VText variant="cap" color={TILE_TONE[tile.key].label}>
                     {tile.label}
                   </VText>
                 </PressableScale>

@@ -12,10 +12,12 @@ export const colors = {
   subtle: '#9CA3AF',
   line: '#E5E7EB',
   soft: '#F3F4F6',
-  // page background behind white cards (Andrew, 9 Nov: less white on white)
-  canvas: '#EEF2F6',
+  // page background behind white cards (Andrew, 9 Nov: a gray that clearly sets off the white lists)
+  canvas: '#E4E9EF',
   navyTint: '#E3ECF2',
   tealTint: '#DDF3F1',
+  // strong figure colors on white (Andrew, 9 Nov: no pastel blocks)
+  figure: { green: '#15803D', amber: '#B45309', red: '#C62828', teal: '#0B7A7A' },
   grab: '#D1D5DB',
   white: '#FFFFFF',
   black: '#000000',

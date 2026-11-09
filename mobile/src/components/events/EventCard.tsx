@@ -52,8 +52,12 @@ export const EventCard = ({
       testID={`event-card-${event.id}`}
     >
       <View style={[styles.tile, finished ? styles.tileMuted : null]}>
-        <VText style={styles.tileDay}>{tile.day}</VText>
-        <VText variant="cap" color={finished ? colors.muted : colors.navy} style={styles.tileMonth}>
+        <VText style={[styles.tileDay, finished ? styles.tileDayMuted : null]}>{tile.day}</VText>
+        <VText
+          variant="cap"
+          color={finished ? colors.muted : colors.white}
+          style={styles.tileMonth}
+        >
           {tile.month}
         </VText>
       </View>
@@ -98,12 +102,14 @@ const styles = StyleSheet.create({
     width: 56,
     height: 64,
     borderRadius: radius.card - 2,
-    backgroundColor: '#FFF6CC',
+    // solid navy with a yellow day (Andrew, 9 Nov: no pastel blocks)
+    backgroundColor: colors.navy,
     alignItems: 'center',
     justifyContent: 'center',
   },
   tileMuted: { backgroundColor: colors.soft },
-  tileDay: { fontFamily: fonts.title, fontSize: 24, lineHeight: 26, color: colors.navy },
+  tileDay: { fontFamily: fonts.title, fontSize: 24, lineHeight: 26, color: colors.yellow },
+  tileDayMuted: { color: colors.muted },
   tileMonth: { fontFamily: fonts.bold, letterSpacing: 0.5 },
   body: { flex: 1, gap: 4 },
   titleRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
