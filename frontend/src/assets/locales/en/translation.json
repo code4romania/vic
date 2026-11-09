@@ -230,7 +230,8 @@
       "VOLUNTEER_007": "The volunteer is not active: hours, documents and contracts can no longer change"
     },
     "download": "Volunteers.xlsx",
-    "inactive_on": "Inactive since"
+    "inactive_on": "Inactive since",
+    "search_placeholder": "Search by name, email or city"
   },
   "division": {
     "members": "Members",

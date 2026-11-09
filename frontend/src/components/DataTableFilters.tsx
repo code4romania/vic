@@ -16,6 +16,8 @@ import { classNames } from '../common/utils/utils';
 interface DataTableFiltersProps {
   children?: React.ReactNode;
   searchValue?: string | null;
+  // Defaults to "Search..."; say what the search matches where it helps.
+  searchPlaceholder?: string;
   onSearch: (searchWord: string) => void;
   onResetFilters: () => void;
 }
@@ -23,6 +25,7 @@ interface DataTableFiltersProps {
 const DataTableFilters = ({
   children,
   searchValue,
+  searchPlaceholder,
   onSearch,
   onResetFilters,
 }: DataTableFiltersProps) => {
@@ -67,7 +70,7 @@ const DataTableFilters = ({
             type="text"
             value={searchWord}
             onChange={(event) => onSearchValueChange(event.target.value)}
-            placeholder={i18n.t('general:search').toString()}
+            placeholder={searchPlaceholder ?? i18n.t('general:search').toString()}
           />
         </div>
         <div className="w-full items-center justify-end gap-1 md:gap-4 flex flex-1">

@@ -80,6 +80,23 @@ export abstract class RepositoryWithPagination<T>
     });
   }
 
+  // Case and diacritics insensitive (VIC 2.0, #474): "brasov" finds "Brașov". Romanian letters are folded with
+  // translate() so the database needs no unaccent extension; the search text is folded the same way here.
+  protected buildAccentInsensitiveSearchQuery(
+    searchColumns: string[],
+    search: string,
+  ): Brackets {
+    const term = foldDiacritics(search.trim());
+    return new Brackets((qb) => {
+      searchColumns.forEach((column) =>
+        qb.orWhere(
+          `translate(lower(${column}), '${DIACRITICS_FROM}', '${DIACRITICS_TO}') LIKE :foldedSearch`,
+          { foldedSearch: `%${escapeLike(term)}%` },
+        ),
+      );
+    });
+  }
+
   protected addRangeConditionToQuery(
     query: SelectQueryBuilder<T>,
     column: string,
@@ -111,3 +128,18 @@ export abstract class RepositoryWithPagination<T>
     return query;
   }
 }
+
+// Lower-case letters with diacritics and their plain letter, the same length (translate() pairs them by position).
+export const DIACRITICS_FROM = 'ăâîșşțţáàäéèëíïóöőúüűç';
+export const DIACRITICS_TO = 'aaissttaaaeeeiiooouuuc';
+
+// Lower case without diacritics, as the database side of buildAccentInsensitiveSearchQuery compares.
+export const foldDiacritics = (value: string): string =>
+  value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .normalize('NFC');
+
+const escapeLike = (value: string): string =>
+  value.replace(/[\\%_]/g, (c) => `\\${c}`);
