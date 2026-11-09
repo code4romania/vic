@@ -4,7 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import { IEventListItem } from '../common/interfaces/event-list-item.interface';
 import PressableContainer from './PressableContainer';
 import { mapEventType } from '../common/utils/helpers';
-import ImageWithPreload from './ImageWithPreload';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { formatEventDate } from '../common/utils/event.helper';
 
@@ -61,19 +60,15 @@ const EventItem = ({ event, onPress }: EventItemProps) => {
   return (
     <PressableContainer onPress={onPress.bind(null, event.id)}>
       <View style={styles.container}>
-        {event.poster ? (
-          <ImageWithPreload source={event.poster} styles={styles.profileImage} />
-        ) : (
-          <View
-            style={{
-              ...styles.image,
-              borderColor: theme['cool-gray-200'],
-              backgroundColor: theme['cool-gray-100'],
-            }}
-          >
-            <Icon name="calendar" style={{ ...styles.icon, color: theme['cool-gray-500'] }} />
-          </View>
-        )}
+        <View
+          style={{
+            ...styles.image,
+            borderColor: theme['cool-gray-200'],
+            backgroundColor: theme['cool-gray-100'],
+          }}
+        >
+          <Icon name="calendar" style={{ ...styles.icon, color: theme['cool-gray-500'] }} />
+        </View>
         <View style={styles.content}>
           <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.title} category="p2">
             {event.name}
@@ -107,13 +102,6 @@ const styles = StyleSheet.create({
   title: {
     paddingBottom: 4,
     alignItems: 'center',
-  },
-  profileImage: {
-    borderRadius: 24,
-    width: 48,
-    height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   image: {
     width: 48,

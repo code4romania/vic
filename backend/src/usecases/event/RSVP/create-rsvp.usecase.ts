@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { EventAttendOptions } from 'src/modules/event/enums/event-attendance-options.enum';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { EventRSVPExceptionMessages } from 'src/modules/event/exceptions/event-rsvp.exceptions';
 import {
@@ -85,19 +84,9 @@ export class CreateEventRSVPUseCase
         : this.eventFacade.updateRSVP(existingRSVP.id, { going: data.going });
     }
 
-    // 8. Check if event requires mention and that mention is present
-    if (
-      event.attendanceType === EventAttendOptions.MENTION &&
-      !data.mention &&
-      data.going
-    ) {
-      this.exceptionsService.badRequestException(
-        EventRSVPExceptionMessages.EVENT_RSVP_004,
-      );
-    } else if (event.attendanceType === EventAttendOptions.SIMPLE) {
-      // 8.1. Simple events does not need mentions
-      data.mention = null;
-    }
+    // 8. VIC 2.0 (#492): events have no "registration with mention" any more;
+    // mentions given before stay on their RSVPs, new ones are not collected.
+    data.mention = null;
 
     return this.eventFacade.createRSVP(data);
   }

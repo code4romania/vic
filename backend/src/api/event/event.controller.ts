@@ -9,11 +9,9 @@ import {
   Post,
   Query,
   Res,
-  UploadedFiles,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { jsonToExcelBuffer } from 'src/common/helpers/utils';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
@@ -45,7 +43,6 @@ import { GetManyForDownloadEventUseCase } from 'src/usecases/event/get-many-for-
 import { GetManyForDownloadEventRSVPUseCase } from 'src/usecases/event/RSVP/get-many-for-download-rsvp.usecase';
 import { IEventRSVPDownload } from 'src/modules/event/interfaces/event-rsvp-download.interface';
 import { RSVPGoingEnum } from 'src/modules/event/enums/rsvp-going.enum';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { TargetEventType } from 'src/modules/event/enums/target-event-type.enum';
 
 @ApiBearerAuth()
@@ -101,13 +98,10 @@ export class EventController {
     res.end(jsonToExcelBuffer<IEventDownload>(data, 'Evenimente'));
   }
 
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileFieldsInterceptor([{ name: 'poster', maxCount: 1 }]))
   @Post()
   async create(
     @Body() createEventDto: CreateEventDto,
     @ExtractUser() adminUser: IAdminUserModel,
-    @UploadedFiles() { poster }: { poster?: Express.Multer.File[] },
   ): Promise<EventPresenter> {
     const event = await this.createEventUsecase.execute(
       {
@@ -116,21 +110,17 @@ export class EventController {
         isPublic: createEventDto.isPublic === TargetEventType.PUBLIC,
       },
       adminUser,
-      poster,
     );
 
     return new EventPresenter(event);
   }
 
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileFieldsInterceptor([{ name: 'poster', maxCount: 1 }]))
   @ApiBody({ type: UpdateEventDto })
   @Patch(':id')
   async update(
     @Param('id', UuidValidationPipe) eventId: string,
     @Body() updatesDto: UpdateEventDto,
     @ExtractUser() adminUser: IAdminUserModel,
-    @UploadedFiles() { poster }: { poster?: Express.Multer.File[] },
   ): Promise<EventPresenter> {
     const { isPublic, ...updates } = updatesDto;
     const event = await this.updateEventUseCase.execute(
@@ -145,7 +135,6 @@ export class EventController {
           : {}),
       },
       adminUser,
-      poster,
     );
     return new EventPresenter(event);
   }

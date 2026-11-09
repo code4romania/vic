@@ -1,7 +1,11 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IEventsListItemModel } from 'src/modules/event/models/event.model';
-import { EventStatus } from 'src/modules/event/enums/event-status.enum';
+import {
+  EventDisplayStatus,
+  EventStatus,
+  getEventDisplayStatus,
+} from 'src/modules/event/enums/event-status.enum';
 import { OrganizationStructureListItemPresenter } from 'src/api/organization/presenters/organization-structure-list-item.presenter';
 
 export class EventListItemPresenter {
@@ -9,12 +13,13 @@ export class EventListItemPresenter {
     this.id = event.id;
 
     this.name = event.name;
-    this.image = event.poster;
 
     this.startDate = event.startDate;
     this.endDate = event.endDate;
 
     this.status = event.status;
+    this.displayStatus = getEventDisplayStatus(event);
+    this.capacity = event.capacity ?? null;
     this.isPublic = event.isPublic;
     this.location = event.location;
 
@@ -44,8 +49,19 @@ export class EventListItemPresenter {
   location?: string;
 
   @Expose()
-  @ApiProperty({ description: 'The image of the Event' })
-  image: string;
+  @ApiProperty({
+    description:
+      'Status to show: a published event past its end date is "finished"',
+    enum: EventDisplayStatus,
+  })
+  displayStatus: EventDisplayStatus;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Maximum number of registered volunteers (null = no limit)',
+    nullable: true,
+  })
+  capacity: number;
 
   @Expose()
   @ApiProperty({ description: 'The Start Date of the Event' })

@@ -3,13 +3,14 @@ import {
   IsDate,
   IsEnum,
   IsIn,
+  IsInt,
+  Max,
+  Min,
   IsOptional,
   IsString,
   MaxLength,
   MinLength,
-  ValidateIf,
 } from 'class-validator';
-import { EventAttendOptions } from 'src/modules/event/enums/event-attendance-options.enum';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { TargetEventType } from 'src/modules/event/enums/target-event-type.enum';
 
@@ -43,25 +44,14 @@ export class CreateEventDto {
   @IsEnum(TargetEventType)
   isPublic: TargetEventType;
 
-  @IsEnum(EventAttendOptions)
-  attendanceType: EventAttendOptions;
-
-  @IsString()
-  @MinLength(2)
-  @MaxLength(250)
-  @ValidateIf((o) => o.attendanceType === EventAttendOptions.MENTION)
-  attendanceMention: string;
-
-  @IsString()
-  @IsOptional()
-  @MinLength(2)
-  @MaxLength(1500)
-  observation: string;
-
   @IsArray()
   @IsOptional()
   targetsIds: string[];
 
-  @IsArray()
-  tasksIds: string[];
+  // Maximum number of registered volunteers; empty = no limit
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(100000)
+  capacity?: number;
 }

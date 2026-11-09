@@ -5,7 +5,6 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { ActivityTypeTransformer } from 'src/modules/activity-type/models/activity-type.model';
 import { OrganizationStructureTransformer } from 'src/modules/organization/models/organization-structure.model';
 import {
   LessThanOrEqual,
@@ -90,7 +89,7 @@ export class EventRepository
         'event.createdOn',
         'event.organizationId',
         'event.location',
-        'event.poster',
+        'event.capacity',
         'targets.id',
         'targets.name', // TODO: need number of members per target, create a View
         'activityLog.volunteerId',
@@ -145,15 +144,13 @@ export class EventRepository
 
   async update(
     id: string,
-    { targetsIds, tasksIds, ...updates }: UpdateEventOptions,
+    { targetsIds, ...updates }: UpdateEventOptions,
   ): Promise<IEventModel> {
     const targets = targetsIds?.map(OrganizationStructureTransformer.toEntity);
-    const tasks = tasksIds?.map(ActivityTypeTransformer.toEntity);
 
     const toUpdate = await this.eventRepository.preload({
       id,
       targets,
-      tasks,
       ...updates,
     });
 
@@ -177,7 +174,6 @@ export class EventRepository
       relations: {
         organization: true,
         targets: true,
-        tasks: true,
         eventRSVPs: {
           user: true,
         },
@@ -320,7 +316,7 @@ export class EventRepository
         'event.isPublic',
         'event.createdOn',
         'event.organizationId',
-        'event.poster',
+        'event.capacity',
         'event.location',
         'targets.id',
         'targets.name',

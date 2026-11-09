@@ -4,14 +4,15 @@ import { IEventWithVolunteerStatus } from 'src/modules/event/models/event.model'
 import { OrganizationStructureListItemPresenter } from 'src/api/organization/presenters/organization-structure-list-item.presenter';
 import { formatEventDate } from '../helpers/event.helper';
 import { EventVolunteerStatus } from 'src/modules/event/enums/event-volunteer-status.enum';
-import { ActivityTypeListItemPresenter } from 'src/api/activity-type/presenters/activity-type-list-item.presenter';
-import { EventAttendOptions } from 'src/modules/event/enums/event-attendance-options.enum';
+import {
+  EventDisplayStatus,
+  getEventDisplayStatus,
+} from 'src/modules/event/enums/event-status.enum';
 
 export class MobileEventPresenter {
   constructor(event: IEventWithVolunteerStatus) {
     this.id = event.id;
     this.name = event.name;
-    this.poster = event.poster;
 
     this.isPublic = event.isPublic;
 
@@ -30,15 +31,11 @@ export class MobileEventPresenter {
     this.organizationName = event.organization.name;
     this.description = event.description;
 
-    this.tasks = event.tasks?.map(
-      (task) => new ActivityTypeListItemPresenter(task),
-    );
-
     this.volunteerStatus = event.volunteerStatus;
     this.numberOfPersonsGoingToEvent = event.numberOfPersonsGoingToEvent;
 
-    this.attendanceType = event.attendanceType;
-    this.attendanceMention = event.attendanceMention;
+    this.displayStatus = getEventDisplayStatus(event);
+    this.capacity = event.capacity ?? null;
   }
 
   @Expose()
@@ -81,10 +78,6 @@ export class MobileEventPresenter {
   endDate: Date;
 
   @Expose()
-  @ApiProperty({ description: 'The image of the Event' })
-  poster: string;
-
-  @Expose()
   @ApiProperty({ description: 'The organization logo for this event' })
   organizationLogo?: string;
 
@@ -98,24 +91,18 @@ export class MobileEventPresenter {
 
   @Expose()
   @ApiProperty({
-    description: 'The type of attendance',
-    enum: EventAttendOptions,
-    examples: Object.values(EventAttendOptions),
+    description:
+      'Status to show: a published event past its end date is "finished"',
+    enum: EventDisplayStatus,
   })
-  attendanceType: EventAttendOptions;
+  displayStatus: EventDisplayStatus;
 
   @Expose()
   @ApiProperty({
-    description: 'The attendance mention',
+    description: 'Maximum number of registered volunteers (null = no limit)',
+    nullable: true,
   })
-  attendanceMention?: string;
-
-  @Expose()
-  @ApiProperty({
-    type: ActivityTypeListItemPresenter,
-    isArray: true,
-  })
-  tasks: ActivityTypeListItemPresenter[];
+  capacity: number;
 
   @Expose()
   @ApiProperty({

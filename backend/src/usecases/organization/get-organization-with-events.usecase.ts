@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { AccessRequestStatus } from 'src/modules/access-request/enums/access-request-status.enum';
 import { AccessRequestFacade } from 'src/modules/access-request/services/access-request.facade';
 import { OrganizatinVolunteerStatus } from 'src/modules/organization/enums/organization-volunteer-status.enum';
@@ -18,7 +17,6 @@ export class GetOrganizationWithEventsUseCase
     private readonly organizationService: OrganizationFacadeService,
     private readonly exceptionService: ExceptionsService,
     private readonly accessRequestFacade: AccessRequestFacade,
-    private readonly s3Service: S3Service,
   ) {}
 
   public async execute(
@@ -62,19 +60,10 @@ export class GetOrganizationWithEventsUseCase
           : OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER;
     }
 
-    const eventsWithPaths = await Promise.all(
-      organization.events.slice(0, 2).map(async (item) => ({
-        ...item,
-        poster: item?.poster
-          ? await this.s3Service.generatePresignedURL(item.poster)
-          : null,
-      })),
-    );
-
     // 4. Send the organization back to the caller
     return {
       ...organization,
-      events: eventsWithPaths,
+      events: organization.events.slice(0, 2),
     };
   }
 }

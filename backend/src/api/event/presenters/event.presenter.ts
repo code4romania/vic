@@ -1,35 +1,30 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IEventModel } from 'src/modules/event/models/event.model';
-import { EventStatus } from 'src/modules/event/enums/event-status.enum';
-import { EventAttendOptions } from 'src/modules/event/enums/event-attendance-options.enum';
+import {
+  EventDisplayStatus,
+  EventStatus,
+  getEventDisplayStatus,
+} from 'src/modules/event/enums/event-status.enum';
 import { OrganizationStructureListItemPresenter } from 'src/api/organization/presenters/organization-structure-list-item.presenter';
-import { ActivityTypeListItemPresenter } from 'src/api/activity-type/presenters/activity-type-list-item.presenter';
 
 export class EventPresenter {
   constructor(event: IEventModel) {
     this.id = event.id;
 
     this.name = event.name;
-    this.image = event.poster;
     this.description = event.description;
     this.location = event.location;
     this.startDate = event.startDate;
     this.endDate = event.endDate;
     this.isPublic = event.isPublic;
     this.status = event.status;
-    this.attendanceType = event.attendanceType;
-    this.attendanceMention = event.attendanceMention;
-    this.observation = event.observation;
+    this.displayStatus = getEventDisplayStatus(event);
+    this.capacity = event.capacity ?? null;
     this.organizationId = event.organization?.id;
-    this.poster = event.poster;
 
     this.targets = event.targets?.map(
       (target) => new OrganizationStructureListItemPresenter(target),
-    );
-
-    this.tasks = event.tasks?.map(
-      (task) => new ActivityTypeListItemPresenter(task),
     );
 
     this.createdOn = event.createdOn;
@@ -46,10 +41,6 @@ export class EventPresenter {
   @Expose()
   @ApiProperty({ description: 'The name of the Event' })
   name: string;
-
-  @Expose()
-  @ApiProperty({ description: 'The image of the Event' })
-  image: string;
 
   @Expose()
   @ApiProperty({ description: 'The description of the Event' })
@@ -81,27 +72,22 @@ export class EventPresenter {
 
   @Expose()
   @ApiProperty({
-    description: 'The type of attendance',
-    enum: EventAttendOptions,
-    examples: Object.values(EventAttendOptions),
+    description:
+      'Status to show: a published event past its end date is "finished"',
+    enum: EventDisplayStatus,
   })
-  attendanceType: EventAttendOptions;
+  displayStatus: EventDisplayStatus;
 
   @Expose()
-  @ApiProperty({ description: 'The attendance mention' })
-  attendanceMention?: string;
-
-  @Expose()
-  @ApiProperty({ description: 'Event observations.' })
-  observation?: string;
+  @ApiProperty({
+    description: 'Maximum number of registered volunteers (null = no limit)',
+    nullable: true,
+  })
+  capacity: number;
 
   @Expose()
   @ApiProperty({ description: 'The id of organization who created the event.' })
   organizationId: string;
-
-  @Expose()
-  @ApiProperty({ description: 'The event poster' })
-  poster: string;
 
   @Expose()
   @ApiProperty({
@@ -109,13 +95,6 @@ export class EventPresenter {
     isArray: true,
   })
   targets: OrganizationStructureListItemPresenter[];
-
-  @Expose()
-  @ApiProperty({
-    type: ActivityTypeListItemPresenter,
-    isArray: true,
-  })
-  tasks: ActivityTypeListItemPresenter[];
 
   @Expose()
   @ApiProperty({ description: 'Date of creation' })

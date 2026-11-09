@@ -1,11 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { OrganizationGateService } from '../organization/organization-gate.service';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
-import { ActivityTypeFacade } from 'src/modules/activity-type/services/activity-type.facade';
-import { EventAttendOptions } from 'src/modules/event/enums/event-attendance-options.enum';
 import { EventExceptionMessages } from 'src/modules/event/exceptions/event.exceptions';
 import {
   CreateEventOptions,
@@ -16,28 +14,23 @@ import { OrganizationStructureType } from 'src/modules/organization/enums/organi
 import { OrganizationStructureFacade } from 'src/modules/organization/services/organization-structure.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
-import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
-import { S3_FILE_PATHS } from 'src/common/constants/constants';
-import { JSONStringifyError } from 'src/common/helpers/utils';
 import { GetVolunteersUserDataForNotificationsUsecase } from '../volunteer/get-volunteers-user-data-for-notifications.usecase';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import AddNGOEventEvent from 'src/modules/notifications/events/ngo-event/add-event.event';
 import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 
+// VIC 2.0 (#492): no banner, linked activities, internal notes or registration type;
+// the target is "public", "all departments" or a list of departments; capacity is new.
 @Injectable()
 export class CreateEventUseCase implements IUseCaseService<IEventModel> {
-  private readonly logger = new Logger(CreateEventUseCase.name);
-
   constructor(
     private readonly organizationGate: OrganizationGateService,
     private readonly eventFacade: EventFacade,
     private readonly getOrganizationUseCaseService: GetOrganizationUseCaseService,
     private readonly organizationStructureFacade: OrganizationStructureFacade,
-    private readonly activityTypeFacade: ActivityTypeFacade,
     private readonly exceptionsService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
-    private readonly s3Service: S3Service,
     private readonly getVolunteerUserDataForNotificationsUsecase: GetVolunteersUserDataForNotificationsUsecase,
     private readonly eventEmitter: EventEmitter2,
   ) {}
@@ -45,7 +38,6 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
   public async execute(
     data: CreateEventOptions,
     admin: IAdminUserModel,
-    files?: Express.Multer.File[],
   ): Promise<IEventModel> {
     // 0. An NGO that is not validated (or is suspended) cannot be joined, run events or log hours (decision 1)
     await this.organizationGate.assertValidated(data.organizationId);
@@ -55,25 +47,14 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
       data.organizationId,
     );
 
-    // 2. Check if the tasks exists in the organization
-    const tasksExists = await this.activityTypeFacade.exists(data.tasksIds, {
-      organizationId: data.organizationId,
-    });
-
-    if (!tasksExists) {
-      this.exceptionsService.badRequestException(
-        EventExceptionMessages.EVENT_003,
-      );
-    }
-    // 3. Check event visiblity and target=
+    // 2. Check event visiblity and target
     // - Public events are not targeted to any department within the organization and can be joined by anyone
     // - Not public events, can be available to the entire organization if no target is specified
-
-    // 3.1. For public events, target must be null
     if (data.isPublic) {
+      // 2.1. For public events, target must be null
       data.targetsIds = undefined;
     } else if (data.targetsIds?.length) {
-      // 3.2. Check if target is correct
+      // 2.2. Check if target is correct
       const targetExists = await this.organizationStructureFacade.exists(
         data.targetsIds,
         {
@@ -87,69 +68,41 @@ export class CreateEventUseCase implements IUseCaseService<IEventModel> {
         );
       }
     }
-    // 4. For SIMPLE attandanceType there should be no attendanceMention
-    if (data.attendanceType === EventAttendOptions.SIMPLE) {
-      data.attendanceMention = undefined;
-    }
 
-    // 5. save poster to s3
-    try {
-      let poster = null;
-      if (files?.length > 0) {
-        // 5.1. upload file to s3 and get the path
-        poster = await this.s3Service.uploadFile(
-          `${S3_FILE_PATHS.EVENTS}/${admin.organizationId}`,
-          files[0],
+    // 3. Save the event
+    const created = await this.eventFacade.create(data);
+
+    if (created.status === EventStatus.PUBLISHED) {
+      // send push notifications
+      const { userEmails, userIds } =
+        await this.getVolunteerUserDataForNotificationsUsecase.execute(
+          organization.id,
+          data.targetsIds,
         );
-      }
 
-      const created = await this.eventFacade.create({
-        ...data,
-        poster,
-      });
-
-      if (created.status === EventStatus.PUBLISHED) {
-        // send push notifications
-        const { userEmails, userIds } =
-          await this.getVolunteerUserDataForNotificationsUsecase.execute(
-            organization.id,
-            data.targetsIds,
-          );
-
-        // send notifications
-        this.eventEmitter.emit(
-          EVENTS.NGO_EVENT.ADD,
-          new AddNGOEventEvent(
-            organization.id,
-            userIds,
-            organization.name,
-            userEmails,
-            created.id,
-          ),
-        );
-      }
-
-      this.actionsArchiveFacade.trackEvent(
-        TrackedEventName.CREATE_EVENT,
-        {
-          eventId: created.id,
-          eventName: created.name,
-          status: created.status,
-        },
-        admin,
-      );
-
-      return created;
-    } catch (error) {
-      // log error
-      this.logger.error({
-        ...EventExceptionMessages.EVENT_008,
-        error: JSONStringifyError(error),
-      });
-      // error while uploading file to s3
-      this.exceptionsService.badRequestException(
-        EventExceptionMessages.EVENT_008,
+      // send notifications
+      this.eventEmitter.emit(
+        EVENTS.NGO_EVENT.ADD,
+        new AddNGOEventEvent(
+          organization.id,
+          userIds,
+          organization.name,
+          userEmails,
+          created.id,
+        ),
       );
     }
+
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CREATE_EVENT,
+      {
+        eventId: created.id,
+        eventName: created.name,
+        status: created.status,
+      },
+      admin,
+    );
+
+    return created;
   }
 }

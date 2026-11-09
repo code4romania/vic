@@ -458,6 +458,10 @@
       "subtitle": "Evenimentul este arhivat",
       "description": "Ai arhivat evenimentul, deci voluntarii nu îl mai pot vizualiza în aplicația mobilă."
     },
+    "finished": {
+      "subtitle": "Evenimentul s-a încheiat (finalizat)",
+      "description": "Data de final a trecut, deci evenimentul apare ca finalizat. Voluntarii nu se mai pot înscrie."
+    },
     "popover": {
       "view": "Vizualizează detalii",
       "publish": "Publică",
@@ -467,7 +471,8 @@
     "display_status": {
       "draft": "Draft",
       "published": "Publicat",
-      "archived": "Arhivat"
+      "archived": "Arhivat",
+      "finished": "Finalizat"
     },
     "modal": {
       "title": "Sigur doriți ștergerea acestui eveniment?",
@@ -512,12 +517,6 @@
         "label": "Imagine eveniment",
         "required": "Imaginea evenimentului este obligatorie"
       },
-      "noting": {
-        "label": "Înscriere eveniment",
-        "simple": "Simplă (fără mențiuni)",
-        "mention": "Cu mențiune",
-        "description": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi."
-      },
       "mention": {
         "label": "Mențiune",
         "description": "Adresează o întrebare voluntarilor.",
@@ -526,20 +525,12 @@
         "min": "Mențiunea poate să aibă minim {{value}} caractere",
         "max": "Mențiunea poate să aibă maxim {{value}} caractere"
       },
-      "task": {
-        "title": "Activitățile asociate evenimentului",
-        "description": "Alege activitățile specifice din lista organizației.",
-        "label": "Alege activități",
-        "tasks": "Activități",
-        "required": "Alegerea activităților este obligatorie.",
-        "helper": "Alege din lista care se deschide dacă dai click în câmpul de mai sus"
-      },
-      "observation": {
-        "title": "Observație (vizibil doar pentru administrator)",
-        "description": "Notează informații despre eveniment dacă este cazul, vizibile doar pentru tine.",
-        "label": "Observație",
-        "min": "Observația poate să aibă minim {{value}} caractere",
-        "max": "Observația poate să aibă maxim {{value}} caractere"
+      "capacity": {
+        "label": "Capacitate (număr maxim de voluntari)",
+        "helper": "Lasă gol dacă nu există o limită.",
+        "unlimited": "Fără limită",
+        "integer": "Capacitatea trebuie să fie un număr întreg",
+        "min": "Capacitatea trebuie să fie cel puțin {{value}}"
       }
     },
     "errors": {

@@ -508,25 +508,12 @@
         }
     },
     "event": {
-        "join": {
-            "header": "Doresc să particip",
-            "form": {
-                "mention": {
-                    "label": "Mențiune",
-                    "required": "Mențiunea este obligatorie",
-                    "min": "Mențiunea poate să aibă minim {{value}} caractere",
-                    "max": "Mențiunea poate să aibă maxim {{value}} caractere",
-                    "helper": "Completează câmpul pentru a te înscrie."
-                }
-            }
-        },
         "details": "Detalii eveniment",
         "date": "Data și ora",
         "name": "Denumire eveniment",
         "target": "Target",
         "location": "Locație",
         "description": "Descriere eveniment",
-        "tasks": "Task-uri asociate",
         "attending": "{{numberOfVolunteer}} persoane participă!",
         "attending_of": "{{numberOfVolunteer}} de persoane participă!",
         "attending_one": "O persoană participă!",
@@ -554,7 +541,9 @@
             "title": "Ups!",
             "description": "Încă nu ți-ai completat profilul de voluntar. Adaugă datele pentru a putea participa la eveniment.",
             "action_btn_label": "Completează datele"
-        }
+        },
+        "capacity": "Capacitate",
+        "capacity_unlimited": "Fără limită"
     },
     "activity_logs": {
         "title": "Ore de voluntariat",

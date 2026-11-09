@@ -6,7 +6,6 @@ import AddActivityLog from '../screens/AddActivityLog';
 import EditActivityLog from '../screens/EditActivityLog';
 import EditVolunteer from '../screens/EditVolunteer';
 import Event from '../screens/Event';
-import JoinEvent from '../screens/JoinEvent';
 import JoinOrganization from '../screens/JoinOrganization';
 import LeaveOrganization from '../screens/LeaveOrganization';
 import News from '../screens/News';
@@ -52,7 +51,6 @@ const Private = () => (
       <Screen name="contract-history" component={ContractHistory} />
     </Group>
     <Group screenOptions={{ presentation: 'modal' }}>
-      <Screen name="join-event" component={JoinEvent} />
       <Screen name="leave-organization" component={LeaveOrganization} />
       <Screen name="edit-volunteer" component={EditVolunteer} />
       <Screen name="add-activity-log" component={AddActivityLog} />

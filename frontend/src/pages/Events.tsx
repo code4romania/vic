@@ -54,7 +54,7 @@ const OpenEventsTableHeader = [
     sortable: true,
     minWidth: '10rem',
     grow: 2,
-    cell: (row: IEvent) => <MediaCell logo={row.image} title={row.name} />,
+    cell: (row: IEvent) => <MediaCell title={row.name} />,
   },
   {
     id: 'startDate',
@@ -93,8 +93,10 @@ const OpenEventsTableHeader = [
     sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
-        <StatusWithMarker markerColor={EventStatusMarkerColorMapper[row.status]}>
-          {i18n.t(`events:display_status.${row.status}`)}
+        <StatusWithMarker
+          markerColor={EventStatusMarkerColorMapper[row.displayStatus || row.status]}
+        >
+          {i18n.t(`events:display_status.${row.displayStatus || row.status}`)}
         </StatusWithMarker>
       </CellLayout>
     ),
@@ -108,7 +110,7 @@ const PastEventsTableHeader = [
     minWidth: '10rem',
     grow: 2,
     sortable: true,
-    cell: (row: IEvent) => <MediaCell logo={row.image} title={row.name} />,
+    cell: (row: IEvent) => <MediaCell title={row.name} />,
   },
   {
     id: 'startDate',
@@ -156,8 +158,10 @@ const PastEventsTableHeader = [
     sortable: true,
     cell: (row: IEvent) => (
       <CellLayout>
-        <StatusWithMarker markerColor={EventStatusMarkerColorMapper[row.status]}>
-          {i18n.t(`events:display_status.${row.status}`)}
+        <StatusWithMarker
+          markerColor={EventStatusMarkerColorMapper[row.displayStatus || row.status]}
+        >
+          {i18n.t(`events:display_status.${row.displayStatus || row.status}`)}
         </StatusWithMarker>
       </CellLayout>
     ),

@@ -5,7 +5,6 @@ import { StyleSheet } from 'react-native';
 import FormLayout from '../layouts/FormLayout';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import ReadOnlyElement from '../components/ReadOnlyElement';
-import TaskPill from '../components/TaskPill';
 import { View } from 'react-native';
 import {
   useCancelRsvpMutation,
@@ -20,9 +19,7 @@ import { EventVolunteerStatus } from '../common/enums/event-volunteer-status.enu
 import { ButtonType } from '../common/enums/button-type.enum';
 import { useEvent } from '../store/event/event.selector';
 import useStore from '../store/store';
-import { AttendanceType } from '../common/enums/attendance-type.enum';
 import EventSkeleton from '../components/skeleton/event-skeleton';
-import ImageWithPreload from '../components/ImageWithPreload';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { formatEventDate } from '../common/utils/event.helper';
 import { usePaddingTop } from '../hooks/usePaddingTop';
@@ -85,34 +82,31 @@ const Event = ({ navigation, route }: any) => {
     }
   }, [getEventError, navigation]);
 
+  // VIC 2.0 (#492): every event uses a simple registration (no mention)
   const onRsvpReponsePress = (going: boolean) => {
-    if (going && event?.attendanceType === AttendanceType.MENTION) {
-      navigation.navigate('join-event', { eventId });
-    } else {
-      setRsvpEvent(
-        {
-          eventId,
-          rsvp: {
-            going,
-          },
+    setRsvpEvent(
+      {
+        eventId,
+        rsvp: {
+          going,
         },
-        {
-          onSuccess: going ? joinEvent : declineEvent,
-          onError: (error: any) => {
-            //if we don't have a volunteerProfileId for this organization -> open error bottom sheet that will redirect the user to the volunteer profile page
-            if (userProfile && event) {
-              if (!currentEventOrganization?.volunteerProfileId) {
-                return bottomSheetRef.current?.expand();
-              }
+      },
+      {
+        onSuccess: going ? joinEvent : declineEvent,
+        onError: (error: any) => {
+          //if we don't have a volunteerProfileId for this organization -> open error bottom sheet that will redirect the user to the volunteer profile page
+          if (userProfile && event) {
+            if (!currentEventOrganization?.volunteerProfileId) {
+              return bottomSheetRef.current?.expand();
             }
-            Toast.show({
-              type: 'error',
-              text1: `${InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error)}`,
-            });
-          },
+          }
+          Toast.show({
+            type: 'error',
+            text1: `${InternalErrors.EVENT_ERRORS.getError(error.response?.data.code_error)}`,
+          });
         },
-      );
-    }
+      },
+    );
   };
 
   const onCancelRsvpResponse = () => {
@@ -196,16 +190,12 @@ const Event = ({ navigation, route }: any) => {
         {isLoadingEvent && <EventSkeleton />}
         {event && !isLoadingEvent && (
           <FormLayout>
-            {event.poster ? (
-              <ImageWithPreload source={event.poster} styles={styles.image} />
-            ) : (
-              <View style={{ ...styles.image, backgroundColor: theme['cool-gray-100'] }}>
-                <Icon
-                  name="calendar"
-                  style={{ ...styles.imagePlaceholder, color: theme['cool-gray-500'] }}
-                />
-              </View>
-            )}
+            <View style={{ ...styles.image, backgroundColor: theme['cool-gray-100'] }}>
+              <Icon
+                name="calendar"
+                style={{ ...styles.imagePlaceholder, color: theme['cool-gray-500'] }}
+              />
+            </View>
             <OrganizationIdentity
               uri={event.organizationLogo || ''}
               name={event.organizationName || ''}
@@ -217,17 +207,11 @@ const Event = ({ navigation, route }: any) => {
             <ReadOnlyElement label={t('name')} value={event.name} />
             <ReadOnlyElement label={t('target')} value={mapEventType(event)} />
             <ReadOnlyElement label={t('location')} value={event.location} />
+            <ReadOnlyElement
+              label={t('capacity')}
+              value={event.capacity ? `${event.capacity}` : `${t('capacity_unlimited')}`}
+            />
             <ReadOnlyElement label={t('description')} value={event.description} />
-            <View style={styles.container}>
-              <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1" appearance="hint">{`${t(
-                'tasks',
-              )}`}</Text>
-              <View style={styles.taskContainer}>
-                {event.tasks.map((task) => (
-                  <TaskPill key={task.id} label={task.name} />
-                ))}
-              </View>
-            </View>
           </FormLayout>
         )}
       </PageLayout>
@@ -277,14 +261,6 @@ const styles = StyleSheet.create({
     aspectRatio: '16/9',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  container: {
-    gap: 4,
-  },
-  taskContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
   },
   imagePlaceholder: { width: 48, height: 48 },
   bottomSheetContainer: {
