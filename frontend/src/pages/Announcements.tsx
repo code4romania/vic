@@ -30,7 +30,9 @@ import {
   useAnnouncements,
   useDeleteAnnouncementMutation,
   useChangeAnnouncementStatusMutation,
+  useAnnouncementCountersQuery,
 } from '../services/announcement/announcement.service';
+import StatisticsCard from '../components/StatisticsCard';
 import { AnnouncementStatusAction } from '../services/announcement/announcement.api';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
@@ -148,6 +150,8 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
     query?.type as AnnouncementType,
   );
 
+  const { data: counters, refetch: refetchCounters } = useAnnouncementCountersQuery();
+
   const { mutateAsync: changeStatus, isLoading: isUpdateAnnouncementLoading } =
     useChangeAnnouncementStatusMutation();
 
@@ -231,6 +235,7 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
         onSuccess: () => {
           useSuccessToast(i18n.t(`announcement:submit.messages.${action}`));
           refetch();
+          refetchCounters();
         },
         onError: (error) => {
           useErrorToast(
@@ -251,6 +256,7 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
         onSuccess: () => {
           useSuccessToast(i18n.t('announcement:submit.messages.delete'));
           refetch();
+          refetchCounters();
         },
         onError: (error) => {
           useErrorToast(
@@ -333,6 +339,15 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
           allowDeselect
         />
       </DataTableFilters>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {(['active', 'inactive', 'archived', 'responses'] as const).map((key) => (
+          <StatisticsCard
+            key={key}
+            label={`${i18n.t(`announcement:counters.${key}`)}`}
+            value={`${counters?.[key] ?? '-'}`}
+          />
+        ))}
+      </div>
       <Card>
         <CardHeader>
           <h3>{i18n.t('announcement:title')}</h3>
