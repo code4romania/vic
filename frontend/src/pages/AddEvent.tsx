@@ -17,7 +17,6 @@ import { useAddEventMutation } from '../services/event/event.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { EventStatus } from '../common/enums/event-status';
-import { AttendanceType } from '../common/enums/attendance-type.enum';
 
 export const eventValidationSchema = yup.object({
   name: yup
@@ -56,26 +55,12 @@ export const eventValidationSchema = yup.object({
         .min(1, `${i18n.t('events:form.target.required')}`)
         .required(`${i18n.t('events:form.target.required')}`),
   }),
-  logo: yup.mixed(),
-  attendanceType: yup.mixed<AttendanceType>().oneOf(Object.values(AttendanceType)).required(),
-  attendanceMention: yup
-    .string()
-    .min(2, `${i18n.t('events:form.mention.min', { value: '2' })}`)
-    .max(250, `${i18n.t('events:form.mention.max', { value: '250' })}`)
-    .optional()
-    .when('attendanceType', {
-      is: AttendanceType.MENTION,
-      then: (schema) => schema.required(`${i18n.t('events:form.mention.required')}`),
-    }),
-  tasks: yup
-    .array()
-    .min(1, `${i18n.t('events:form.task.required')}`)
-    .required(`${i18n.t('events:form.task.required')}`),
-  observation: yup
-    .string()
-    .min(2, `${i18n.t('events:form.observation.min', { value: '2' })}`)
-    .max(1500, `${i18n.t('events:form.observation.max', { value: '1500' })}`)
-    .optional(),
+  capacity: yup
+    .number()
+    .nullable()
+    .transform((value, original) => (original === '' || original === null ? null : value))
+    .integer(`${i18n.t('events:form.capacity.integer')}`)
+    .min(1, `${i18n.t('events:form.capacity.min', { value: '1' })}`),
 });
 
 const AddEvent = () => {
@@ -94,7 +79,6 @@ const AddEvent = () => {
     resolver: yupResolver(eventValidationSchema),
     defaultValues: {
       targetType: TargetType.PUBLIC,
-      attendanceType: AttendanceType.SIMPLE,
     },
   });
 

@@ -1,8 +1,5 @@
 import { IBaseModel } from 'src/common/interfaces/base.model';
-import {
-  ActivityTypeTransformer,
-  IActivityTypeModel,
-} from 'src/modules/activity-type/models/activity-type.model';
+import { IActivityTypeModel } from 'src/modules/activity-type/models/activity-type.model';
 import {
   IOrganizationStructureModel,
   OrganizationStructureTransformer,
@@ -12,7 +9,6 @@ import {
   OrganizationTransformer,
 } from 'src/modules/organization/models/organization.model';
 import { EventEntity } from '../entities/event.entity';
-import { EventAttendOptions } from '../enums/event-attendance-options.enum';
 import { EventStatus } from '../enums/event-status.enum';
 import { IBasePaginationFilterModel } from '../../../infrastructure/base/base-pagination-filter.model';
 import { EventState } from '../enums/event-time.enum';
@@ -26,7 +22,8 @@ export interface IEventModel extends IBaseModel {
   name: string;
   description: string;
   location?: string;
-  poster?: string;
+  // Maximum number of registered volunteers; null = no limit
+  capacity?: number;
 
   startDate: Date;
   endDate?: Date;
@@ -34,14 +31,8 @@ export interface IEventModel extends IBaseModel {
   status: EventStatus;
   isPublic: boolean;
 
-  attendanceType: EventAttendOptions;
-  attendanceMention?: string;
-
-  observation?: string;
-
   organization: IOrganizationModel;
   targets?: IOrganizationStructureModel[];
-  tasks: IActivityTypeModel[];
   eventRsvps?: IEventRSVPModel[];
 }
 
@@ -61,7 +52,7 @@ export interface IEventsListItemModel
     | 'isPublic'
     | 'targets'
     | 'location'
-    | 'poster'
+    | 'capacity'
   > {
   going: number;
   notGoing: number;
@@ -82,7 +73,7 @@ export type IEventsMobileListItemModel = Pick<
   | 'isPublic'
   | 'targets'
   | 'location'
-  | 'poster'
+  | 'capacity'
 > & {
   organizationLogo?: string;
 };
@@ -95,15 +86,11 @@ export type CreateEventOptions = Pick<
   | 'startDate'
   | 'endDate'
   | 'isPublic'
-  | 'attendanceType'
-  | 'attendanceMention'
-  | 'observation'
-  | 'poster'
+  | 'capacity'
 > & {
   status: EventStatus.DRAFT | EventStatus.PUBLISHED;
   organizationId: string;
   targetsIds: string[];
-  tasksIds: string[];
 };
 
 export type FindOneEventOptions = Pick<IActivityTypeModel, 'id'> & {
@@ -161,7 +148,7 @@ export class EventModelTransformer {
       notGoing: entity.notGoing,
       location: entity.location,
 
-      poster: entity.poster,
+      capacity: entity.capacity,
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
 
       activityLogged: {
@@ -186,7 +173,7 @@ export class EventModelTransformer {
       isPublic: entity.isPublic,
       location: entity.location,
 
-      poster: entity.poster,
+      capacity: entity.capacity,
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
       organizationLogo: entity.organization?.logo || '',
     };
@@ -206,15 +193,10 @@ export class EventModelTransformer {
       status: entity.status,
       isPublic: entity.isPublic,
 
-      poster: entity.poster,
-      attendanceType: entity.attendanceType,
-      attendanceMention: entity.attendanceMention,
-
-      observation: entity.observation,
+      capacity: entity.capacity,
 
       organization: OrganizationTransformer.fromEntity(entity.organization),
       targets: entity.targets?.map(OrganizationStructureTransformer.fromEntity),
-      tasks: entity.tasks?.map(ActivityTypeTransformer.fromEntity),
       eventRsvps: entity.eventRSVPs?.map(EventRSVPModelTransformer.fromEntity),
 
       createdOn: entity.createdOn,
@@ -231,15 +213,11 @@ export class EventModelTransformer {
     entity.location = model.location;
     entity.isPublic = model.isPublic;
     entity.status = model.status;
-    entity.attendanceType = model.attendanceType;
-    entity.attendanceMention = model.attendanceMention;
-    entity.observation = model.observation;
+    entity.capacity = model.capacity ?? null;
     entity.organizationId = model.organizationId;
     entity.targets = model.targetsIds?.map(
       OrganizationStructureTransformer.toEntity,
     );
-    entity.tasks = model.tasksIds?.map(ActivityTypeTransformer.toEntity);
-    entity.poster = model.poster;
     return entity;
   }
 }

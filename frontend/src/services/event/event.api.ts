@@ -14,18 +14,14 @@ enum TargetEventType {
 }
 
 export const addEvent = async (data: EventFormTypes): Promise<IEvent> => {
-  return API.post('event', formatAddEventPayload(data), {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  }).then((res) => res.data);
+  return API.post('event', formatAddEventPayload(data)).then((res) => res.data);
 };
 
 export const editEvent = async (
   id: string,
   data: Omit<EventFormTypes, 'status'>,
 ): Promise<IEvent> => {
-  return API.patch(`event/${id}`, formatEditEventPayload(data), {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  }).then((res) => res.data);
+  return API.patch(`event/${id}`, formatEditEventPayload(data)).then((res) => res.data);
 };
 
 export const getEvent = async (id: string): Promise<IEvent> => {
@@ -122,103 +118,46 @@ export const getEventRSVPsForDownload = async (
   });
 };
 
-const formatAddEventPayload = (data: EventFormTypes): FormData => {
-  const { targets, tasks, targetType } = data;
-  const formData = new FormData();
+// JSON since VIC 2.0 (#492): events have no banner upload any more
+const formatAddEventPayload = (data: EventFormTypes): object => {
+  const { targets, targetType } = data;
 
-  formData.append('name', data.name);
-  formData.append('startDate', data.startDate.toISOString());
-  formData.append('description', data.description);
-  formData.append('attendanceType', data.attendanceType);
-  formData.append(
-    'isPublic',
-    targetType === TargetType.PUBLIC ? TargetEventType.PUBLIC : TargetEventType.PRIVATE,
-  );
-
-  if (data.status) {
-    formData.append('status', data.status);
-  }
-
-  tasks.forEach((taks) => {
-    formData.append('tasksIds[]', taks.key);
-  });
-
-  if (targetType === TargetType.SELECT) {
-    targets?.forEach((target) => {
-      formData.append('targetsIds[]', target.key);
-    });
-  }
-
-  if (data.endDate) {
-    formData.append('endDate', data.endDate.toISOString());
-  }
-
-  if (data.logo) {
-    formData.append('poster', data.logo);
-  }
-
-  if (data.location) {
-    formData.append('location', data.location);
-  }
-
-  if (data.attendanceMention) {
-    formData.append('attendanceMention', data.attendanceMention);
-  }
-
-  if (data.observation) {
-    formData.append('observation', data.observation);
-  }
-
-  return formData;
+  return {
+    name: data.name,
+    startDate: data.startDate.toISOString(),
+    description: data.description,
+    isPublic: targetType === TargetType.PUBLIC ? TargetEventType.PUBLIC : TargetEventType.PRIVATE,
+    ...(data.status ? { status: data.status } : {}),
+    ...(targetType === TargetType.SELECT
+      ? { targetsIds: targets?.map((target) => target.key) }
+      : {}),
+    ...(data.endDate ? { endDate: data.endDate.toISOString() } : {}),
+    ...(data.location ? { location: data.location } : {}),
+    ...(data.capacity ? { capacity: data.capacity } : {}),
+  };
 };
 
 const formatEditEventPayload = (data: EventFormTypes): object => {
-  const { targets, tasks, targetType, status } = data;
-  const formData = new FormData();
+  const { targets, targetType, status } = data;
 
-  formData.append('name', data.name);
-  formData.append('startDate', data.startDate.toISOString());
-  formData.append('description', data.description);
-  formData.append('attendanceType', data.attendanceType);
-
-  if (status === EventStatus.DRAFT) {
-    formData.append(
-      'isPublic',
-      targetType === TargetType.PUBLIC ? TargetEventType.PUBLIC : TargetEventType.PRIVATE,
-    );
-
-    if (targetType === TargetType.SELECT) {
-      targets?.forEach((target) => {
-        formData.append('targetsIds[]', target.key);
-      });
-    }
-  }
-
-  tasks.forEach((taks) => {
-    formData.append('tasksIds[]', taks.key);
-  });
-
-  if (data.endDate) {
-    formData.append('endDate', data.endDate.toISOString());
-  }
-
-  if (data.logo) {
-    formData.append('poster', data.logo);
-  }
-
-  if (data.location) {
-    formData.append('location', data.location);
-  }
-
-  if (data.attendanceMention) {
-    formData.append('attendanceMention', data.attendanceMention);
-  }
-
-  if (data.observation) {
-    formData.append('observation', data.observation);
-  }
-
-  return formData;
+  return {
+    name: data.name,
+    startDate: data.startDate.toISOString(),
+    description: data.description,
+    ...(status === EventStatus.DRAFT
+      ? {
+          isPublic:
+            targetType === TargetType.PUBLIC ? TargetEventType.PUBLIC : TargetEventType.PRIVATE,
+          ...(targetType === TargetType.SELECT
+            ? { targetsIds: targets?.map((target) => target.key) }
+            : {}),
+        }
+      : {}),
+    ...(data.endDate ? { endDate: data.endDate.toISOString() } : {}),
+    ...(data.location ? { location: data.location } : {}),
+    // null clears the limit
+    capacity: data.capacity || null,
+  };
 };
 
 export const archiveEvent = async (id: string): Promise<IEvent> => {

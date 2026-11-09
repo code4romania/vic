@@ -42,10 +42,8 @@ const EditEvent = () => {
     // init form data
     if (event)
       reset({
-        attendanceType: event.attendanceType,
-        attendanceMention: event.attendanceMention || undefined,
-        observation: event.observation || undefined,
         name: event.name,
+        capacity: event.capacity ?? null,
         location: event.location || undefined,
         description: event.description,
         startDate: new Date(event.startDate),
@@ -56,7 +54,6 @@ const EditEvent = () => {
             ? TargetType.SELECT
             : TargetType.ALL,
         targets: !event.isPublic ? [...event.targets.map(mapDivisionListItemToSelectItem)] : [],
-        tasks: [...event.tasks.map(mapDivisionListItemToSelectItem)],
         status: event.status,
       });
   }, [event]);

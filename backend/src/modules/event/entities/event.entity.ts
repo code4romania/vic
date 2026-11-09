@@ -1,6 +1,5 @@
 import { BaseEntity } from 'src/infrastructure/base/base-entity';
 import { ActivityLogEntity } from 'src/modules/activity-log/entities/activity-log.entity';
-import { ActivityTypeEntity } from 'src/modules/activity-type/entities/activity-type.entity';
 import { OrganizationStructureEntity } from 'src/modules/organization/entities/organization-structure.entity';
 import { OrganizationEntity } from 'src/modules/organization/entities/organization.entity';
 
@@ -14,7 +13,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { EventAttendOptions } from '../enums/event-attendance-options.enum';
 import { EventStatus } from '../enums/event-status.enum';
 import { EventRSVPEntity } from './event-rsvp.entity';
 
@@ -41,9 +39,6 @@ export class EventEntity extends BaseEntity {
   @Column({ type: 'boolean', name: 'is_public', default: false })
   isPublic: boolean;
 
-  @Column({ type: 'text', name: 'poster', nullable: true })
-  poster?: string;
-
   @Column({
     type: 'enum',
     enum: EventStatus,
@@ -52,19 +47,9 @@ export class EventEntity extends BaseEntity {
   })
   status: EventStatus;
 
-  @Column({
-    type: 'enum',
-    enum: EventAttendOptions,
-    name: 'attendance_type',
-    default: EventAttendOptions.SIMPLE,
-  })
-  attendanceType: EventAttendOptions;
-
-  @Column({ type: 'text', name: 'attendance_mention', nullable: true })
-  attendanceMention: string;
-
-  @Column({ type: 'text', name: 'observation', nullable: true })
-  observation: string;
+  // Maximum number of registered volunteers; null = no limit (VIC 2.0)
+  @Column({ type: 'integer', name: 'capacity', nullable: true })
+  capacity?: number;
 
   @Column({
     type: 'varchar',
@@ -82,10 +67,6 @@ export class EventEntity extends BaseEntity {
   })
   @JoinTable()
   targets: OrganizationStructureEntity[];
-
-  @ManyToMany(() => ActivityTypeEntity, { onDelete: 'SET NULL' })
-  @JoinTable()
-  tasks: ActivityTypeEntity[];
 
   @OneToMany(() => EventRSVPEntity, (eventRSVP) => eventRSVP.event)
   eventRSVPs: EventRSVPEntity[];

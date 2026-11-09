@@ -1,5 +1,4 @@
-import { AttendanceType } from '../enums/attendance-type.enum';
-import { EventStatus } from '../enums/event-status';
+import { EventDisplayStatus, EventStatus } from '../enums/event-status';
 import { IDivisionListItem } from './division.interface';
 
 export interface IEvent {
@@ -8,15 +7,14 @@ export interface IEvent {
   startDate: Date;
   endDate?: Date;
   location?: string;
-  image?: string;
   isPublic: boolean;
   description: string;
-  observation?: string;
-  attendanceType: AttendanceType;
-  attendanceMention: string;
-  tasks: IDivisionListItem[];
   targets: IDivisionListItem[];
   status: EventStatus;
+  // What to show: a published event past its end date is "finished" (Finalizat)
+  displayStatus: EventDisplayStatus;
+  // Maximum number of registered volunteers; null = no limit
+  capacity?: number | null;
   going?: number;
   notGoing?: number;
   activityLogged?: { totalHours: number; volunteers: number };

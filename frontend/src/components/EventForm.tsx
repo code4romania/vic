@@ -8,19 +8,15 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 import i18n from '../common/config/i18n';
-import { AttendanceType } from '../common/enums/attendance-type.enum';
 import FormLayout from '../layouts/FormLayout';
 import FormDatePicker from './FormDatePicker';
 import FormInput from './FormInput';
 import FormTextarea from './FormTextarea';
 import { SelectItem } from './Select';
 import FormRadioGroup from './FormRadioGroup';
-import Paragraph from './Paragraph';
 import { DATE_FORMAT } from '../common/constants/patterns';
 import TargetsMultiSelect from '../containers/TargetsMultiSelect';
-import ActivityTypesSelect from '../containers/ActivityTypesSelect';
 import { EventStatus } from '../common/enums/event-status';
-import FileUpload from './FileUpload';
 
 export enum TargetType {
   PUBLIC = 'public',
@@ -43,11 +39,6 @@ const TargetRadioOptions = [
   },
 ];
 
-const RadioOptions = [
-  { key: AttendanceType.SIMPLE, value: i18n.t('events:form.noting.simple') },
-  { key: AttendanceType.MENTION, value: i18n.t('events:form.noting.mention') },
-];
-
 interface EventFormProps {
   control: Control<EventFormTypes, object>;
   errors: FieldErrorsImpl<DeepRequired<EventFormTypes>>;
@@ -63,18 +54,13 @@ export type EventFormTypes = {
   description: string;
   location?: string;
   endDate?: Date;
-
-  observation?: string;
+  // Maximum number of registered volunteers; empty = no limit
+  capacity?: number | null;
 
   targetType: TargetType;
   targets?: SelectItem<string>[];
 
-  tasks: SelectItem<string>[];
-
-  attendanceType: AttendanceType;
-  attendanceMention?: string;
   status?: EventStatus;
-  logo?: File;
 };
 
 const EventForm = ({
@@ -86,20 +72,6 @@ const EventForm = ({
   eventStatus,
 }: EventFormProps) => {
   const targetType = watch && watch('targetType');
-  const attendanceType = watch && watch('attendanceType');
-  const observation = watch && watch('observation');
-
-  useEffect(() => {
-    if (attendanceType === AttendanceType.SIMPLE) {
-      resetField && resetField('attendanceMention');
-    }
-  }, [attendanceType]);
-
-  useEffect(() => {
-    if (!observation) {
-      resetField && resetField('observation');
-    }
-  }, [observation]);
 
   useEffect(() => {
     if (targetType !== TargetType.SELECT) {
@@ -185,6 +157,32 @@ const EventForm = ({
             );
           }}
         />
+        <Controller
+          key="capacity"
+          name="capacity"
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <FormInput
+                type="number"
+                min={1}
+                readOnly={false}
+                value={value ?? ''}
+                errorMessage={errors.capacity?.message}
+                label={`${i18n.t('events:form.capacity.label')}`}
+                helper={
+                  <small className="text-cool-gray-500">
+                    {i18n.t('events:form.capacity.helper')}
+                  </small>
+                }
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  onChange(event.target.value === '' ? null : Number(event.target.value))
+                }
+                id="events-form__capacity"
+              />
+            );
+          }}
+        />
         <div className="flex flex-col gap-2">
           <Controller
             key="targetType"
@@ -244,113 +242,6 @@ const EventForm = ({
                 defaultValue={value}
                 onChange={onChange}
                 errorMessage={errors.description?.message}
-              />
-            );
-          }}
-        />
-        <Controller
-          key="logo"
-          name="logo"
-          control={control}
-          render={({ field: { onChange } }) => {
-            return (
-              <FileUpload
-                label={`${i18n.t('events:form.logo.label')}`}
-                onChange={onChange}
-                errorMessage={errors['logo']?.message as string}
-                type="image"
-              />
-            );
-          }}
-        />
-        <hr className="border-cool-gray-200 mb-2 mt-10" />
-        <Paragraph title={i18n.t('events:form.noting.label')}>
-          {i18n.t('events:form.noting.description')}
-        </Paragraph>
-        <Controller
-          key="attendanceType"
-          name="attendanceType"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <FormRadioGroup
-                name="attendanceType"
-                readOnly={false}
-                options={RadioOptions}
-                value={value}
-                errorMessage={errors.attendanceType?.message}
-                label={`${i18n.t('events:form.noting.label')}`}
-                onChange={onChange}
-                defaultValue={value}
-              />
-            );
-          }}
-        />
-        <Controller
-          key="attendanceMention"
-          name="attendanceMention"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <FormTextarea
-                label={i18n.t('events:form.mention.label')}
-                defaultValue={value}
-                onChange={onChange}
-                errorMessage={errors.attendanceMention?.message}
-                disabled={attendanceType === AttendanceType.SIMPLE}
-                helper={
-                  <small className="text-cool-gray-500">
-                    {i18n.t('events:form.mention.description')}
-                  </small>
-                }
-              />
-            );
-          }}
-        />
-        <hr className="border-cool-gray-200 mb-2 mt-10" />
-        <Paragraph title={i18n.t('events:form.task.title')}>
-          {i18n.t('events:form.task.description')}
-        </Paragraph>
-        <Controller
-          key="tasks"
-          name="tasks"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <ActivityTypesSelect
-                label={`${i18n.t('events:form.task.label')}*`}
-                placeholder={`${i18n.t('events:form.target.placeholder')}`}
-                selected={value}
-                onChange={onChange}
-                helper={
-                  errors.tasks?.message ? (
-                    <p className="text-red-500">{errors.tasks?.message}</p>
-                  ) : (
-                    <small className="text-cool-gray-500">
-                      {i18n.t('events:form.task.helper')}
-                    </small>
-                  )
-                }
-                aria-invalid={!!errors.tasks?.message}
-              />
-            );
-          }}
-        />
-        <hr className="border-cool-gray-200 mb-2 mt-10" />
-        <Paragraph title={i18n.t('events:form.observation.title')}>
-          {i18n.t('events:form.observation.description')}
-        </Paragraph>
-        <Controller
-          key="observation"
-          name="observation"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <FormTextarea
-                label={i18n.t('events:form.observation.label')}
-                defaultValue={value}
-                onChange={onChange}
-                errorMessage={errors.observation?.message}
               />
             );
           }}

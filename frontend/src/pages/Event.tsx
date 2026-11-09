@@ -32,7 +32,6 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import { EventStatus } from '../common/enums/event-status';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { IEvent } from '../common/interfaces/event.interface';
-import { AttendanceType } from '../common/enums/attendance-type.enum';
 import { EventProps } from '../containers/query/EventWithQueryParams';
 import RsvpTableWithQueryParams from '../containers/query/RsvpTableWithQueryParams';
 
@@ -90,8 +89,8 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
     </CardHeader>
     <CardBody>
       <FormLayout>
-        <Paragraph title={`${i18n.t(`events:${event.status}.subtitle`)}`}>
-          {i18n.t(`events:${event.status}.description`)}
+        <Paragraph title={`${i18n.t(`events:${event.displayStatus || event.status}.subtitle`)}`}>
+          {i18n.t(`events:${event.displayStatus || event.status}.description`)}
         </Paragraph>
         <hr className="border-cool-gray-200 mb-2 mt-10" />
         <Paragraph title={`${i18n.t('events:details')}`}>{''}</Paragraph>
@@ -106,6 +105,12 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
         />
         <FormReadOnlyElement label={i18n.t('events:form.location.label')} value={event.location} />
         <FormReadOnlyElement
+          label={i18n.t('events:form.capacity.label')}
+          value={
+            event.capacity ? `${event.capacity}` : `${i18n.t('events:form.capacity.unlimited')}`
+          }
+        />
+        <FormReadOnlyElement
           label={i18n.t('events:form.target.label')}
           value={
             event.isPublic
@@ -118,59 +123,6 @@ const EventDetails = ({ event, onDelete, onArchive, onEdit, onPublish }: EventDe
         <FormReadOnlyElement
           label={i18n.t('events:form.description.label')}
           value={event.description}
-        />
-        <div className="flex gap-2.5 flex-col">
-          {event.image && (
-            <>
-              <small className="text-cool-gray-500">{i18n.t('events:form.logo.label')}</small>
-
-              <img
-                src={event.image}
-                className="w-20 h-20 logo text-transparent"
-                alt={`${event.name} picture`}
-              />
-            </>
-          )}
-        </div>
-        <hr className="border-cool-gray-200 mb-2 mt-10" />
-        <Paragraph title={i18n.t('events:form.noting.label')}>{''}</Paragraph>
-        <FormReadOnlyElement
-          label={i18n.t('events:form.noting.label')}
-          value={`${
-            event.attendanceType === AttendanceType.MENTION
-              ? i18n.t('events:form.noting.mention')
-              : i18n.t('events:form.noting.simple')
-          }`}
-        />
-        <FormReadOnlyElement
-          label={i18n.t('events:form.mention.label')}
-          value={
-            event.attendanceMention
-              ? event.attendanceMention
-              : `${i18n.t('events:form.mention.empty')}`
-          }
-        />
-        <hr className="border-cool-gray-200 mb-2 mt-10" />
-
-        <Paragraph title={i18n.t('events:form.task.title')}>{''}</Paragraph>
-        <div className="flex gap-2.5 flex-col">
-          <small className="text-cool-gray-500">{i18n.t('events:form.task.tasks')}</small>
-          <div className="flex gap-2 flex-wrap">
-            {event.tasks.map((tasks) => (
-              <div
-                key={tasks.id}
-                className="h-7 rounded-xl bg-gray-100 shadow-sm px-3 grid place-items-center"
-              >
-                <small>{tasks.name}</small>
-              </div>
-            ))}
-          </div>
-        </div>
-        <hr className="border-cool-gray-200 mb-2 mt-10" />
-        <Paragraph title={i18n.t('events:form.observation.title')}>{''}</Paragraph>
-        <FormReadOnlyElement
-          label={i18n.t('events:form.observation.label')}
-          value={event.observation}
         />
       </FormLayout>
     </CardBody>

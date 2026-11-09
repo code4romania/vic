@@ -110,7 +110,9 @@ export const EventStatusMarkerColorMapper = {
   [EventStatus.DRAFT]: 'bg-yellow-500',
   [EventStatus.PUBLISHED]: 'bg-green-500',
   [EventStatus.ARCHIVED]: 'bg-red-500',
-};
+  // computed: a published event past its end date (VIC 2.0)
+  finished: 'bg-cool-gray-500',
+} as Record<string, string>;
 
 export const ContractStatusMarkerColorMapper = {
   [ContractStatus.ACTIVE]: 'bg-green-500',

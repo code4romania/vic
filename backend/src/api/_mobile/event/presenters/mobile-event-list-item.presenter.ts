@@ -3,12 +3,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IEventsMobileListItemModel } from 'src/modules/event/models/event.model';
 import { OrganizationStructureListItemPresenter } from 'src/api/organization/presenters/organization-structure-list-item.presenter';
 import { formatEventDate } from '../helpers/event.helper';
+import {
+  EventDisplayStatus,
+  getEventDisplayStatus,
+} from 'src/modules/event/enums/event-status.enum';
 
 export class MobileEventListItemPresenter {
   constructor(event: IEventsMobileListItemModel) {
     this.id = event.id;
     this.name = event.name;
-    this.image = event.poster;
 
     this.isPublic = event.isPublic;
 
@@ -20,7 +23,8 @@ export class MobileEventListItemPresenter {
 
     this.organizationLogo = event.organizationLogo;
 
-    this.poster = event.poster;
+    this.displayStatus = getEventDisplayStatus(event);
+    this.capacity = event.capacity ?? null;
 
     this.targets = event.targets?.map(
       (target) => new OrganizationStructureListItemPresenter(target),
@@ -68,8 +72,19 @@ export class MobileEventListItemPresenter {
   eventInterval: string;
 
   @Expose()
-  @ApiProperty({ description: 'The image of the Event' })
-  image: string;
+  @ApiProperty({
+    description:
+      'Status to show: a published event past its end date is "finished"',
+    enum: EventDisplayStatus,
+  })
+  displayStatus: EventDisplayStatus;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Maximum number of registered volunteers (null = no limit)',
+    nullable: true,
+  })
+  capacity: number;
 
   @Expose()
   @ApiProperty({ description: 'The organization logo for this event' })
@@ -78,10 +93,6 @@ export class MobileEventListItemPresenter {
   @Expose()
   @ApiProperty({ description: 'Wether the event is public or not' })
   isPublic: boolean;
-
-  @Expose()
-  @ApiProperty({ description: 'Event poster' })
-  poster: string;
 
   @Expose()
   @ApiProperty({

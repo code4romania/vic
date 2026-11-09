@@ -473,25 +473,12 @@
     }
   },
   "event": {
-    "join": {
-      "header": "I want to participate",
-      "form": {
-        "mention": {
-          "label": "Mention",
-          "required": "The mention is mandatory",
-          "min": "The mention can be a minimum of {{value}} characters",
-          "max": "The mention can have a maximum of {{value}} characters",
-          "helper": "Fill in the field to register."
-        }
-      }
-    },
     "details": "Event details",
     "date": "Date and time",
     "name": "Event name",
     "target": "Target",
     "location": "Location",
     "description": "Event description",
-    "tasks": "Related tasks",
     "attending": "{{numberOfVolunteer}} people participate!",
     "attending_of": "{{numberOfVolunteer}} of people participate!",
     "attending_one": "One person participates!",
@@ -518,7 +505,9 @@
       "title": "Ups!",
       "description": "You did not fill in the data for your volunteer profile. Fill it out in order to be able to attend the event.",
       "action_btn_label": "Complete data"
-    }
+    },
+    "capacity": "Capacity",
+    "capacity_unlimited": "No limit"
   },
   "activity_logs": {
     "title": "Volunteer hours",
