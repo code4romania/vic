@@ -8,6 +8,7 @@ import {
   addVolunteer,
   importVolunteers,
   archiveVolunteer,
+  deleteVolunteer,
   updateVolunteerDetails,
   blockVolunteer,
   getVolunteer,
@@ -74,6 +75,12 @@ export const useUpdateVolunteerDetailsMutation = () => {
       onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
     },
   );
+};
+
+export const useDeleteVolunteerMutation = () => {
+  return useMutation((id: string) => deleteVolunteer(id), {
+    onError: (error: AxiosError<IBusinessException<VOLUNTEER_ERRORS>>) => Promise.resolve(error),
+  });
 };
 
 export const useArchiveVolunteerMutation = () => {

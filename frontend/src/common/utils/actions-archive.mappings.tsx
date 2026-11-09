@@ -88,6 +88,9 @@ export const mapEventDataToActionDescription = (
           }}
         />
       );
+    // #484: the volunteer is gone, so no link
+    case TrackedEventName.DELETE_VOLUNTEER:
+      return `${i18n.t(`actions_archive:${eventName}.description`, { ...eventData })}`;
     case TrackedEventName.UPDATE_VOLUNTEER_PROFILE:
       return (
         <Trans

@@ -1,4 +1,8 @@
 import {
+  DeleteVolunteerUsecase,
+  IDeletedVolunteerData,
+} from 'src/usecases/volunteer/delete-volunteer.usecase';
+import {
   GetVolunteerEventsUseCase,
   IVolunteerEvents,
   IVolunteerStats,
@@ -6,6 +10,7 @@ import {
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Header,
   Param,
@@ -57,6 +62,7 @@ import { AddVolunteerDto } from './dto/add-volunteer.dto';
 @Controller('volunteer')
 export class VolunteerController {
   constructor(
+    private readonly deleteVolunteerUsecase: DeleteVolunteerUsecase,
     private readonly getOneVolunteerUsecase: GetOneVolunteerUsecase,
     private readonly getVolunteerEventsUseCase: GetVolunteerEventsUseCase,
     private readonly getVolunteerReportUseCase: GetVolunteerReportUseCase,
@@ -189,6 +195,16 @@ export class VolunteerController {
       'Access-Control-Expose-Headers': 'Content-Disposition',
     });
     res.end(pdf);
+  }
+
+  // #484: delete the volunteer and all their data in this NGO; final
+  @ApiParam({ name: 'id', type: 'string' })
+  @Delete(':id')
+  async delete(
+    @Param('id', UuidValidationPipe) volunteerId: string,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<IDeletedVolunteerData> {
+    return this.deleteVolunteerUsecase.execute(volunteerId, admin);
   }
 
   @ApiParam({ name: 'id', type: 'string' })

@@ -230,6 +230,15 @@
       "download": "Descarcă raport complet (PDF)",
       "loading": "Se generează raportul…",
       "error": "Raportul nu a putut fi generat. Încearcă din nou."
+    },
+    "delete": {
+      "action": "Șterge voluntar",
+      "title": "Ștergi voluntarul {{name}}?",
+      "description": "Se șterg definitiv toate datele voluntarului din organizație: orele, înscrierile la evenimente, documentele și răspunsurile la anunțuri. Acțiunea nu poate fi anulată. Contul lui de VIC rămâne.",
+      "download_hint": "Este recomandat să descarci contractul înainte de ștergere pentru a păstra o copie în arhivă.",
+      "download": "Descarcă contract",
+      "confirm": "Șterge definitiv",
+      "success": "{{name}} a fost șters, împreună cu datele lui din organizație."
     }
   },
   "volunteers": {
@@ -1019,6 +1028,10 @@
       "label": "Actualizează Profil Voluntar",
       "description": "Profilul voluntarului <inlineLink>{{volunteerName}}</inlineLink> a fost modificat."
     },
+    "DELETE_VOLUNTEER": {
+      "label": "Șterge Voluntar",
+      "description": "Voluntarul {{volunteerName}} a fost șters, împreună cu {{activityLogs}} înregistrări de ore, {{contracts}} documente și {{registrations}} înscrieri la evenimente."
+    },
     "REGISTER_ACTIVITY_LOG": {
       "label": "Înregistrează Ore de Voluntariat",
       "description": "Voluntarul <inlineLink>{{volunteerName}}</inlineLink> a logat ore de voluntariat."
@@ -1191,7 +1204,8 @@
         "period": "Perioadă"
       },
       "download": "Contracts.xlsx",
-      "period_open": "din {{start}}, fără dată de final"
+      "period_open": "din {{start}}, fără dată de final",
+      "issued_on": "emisă la {{date}}"
     },
     "contract": {
       "add": {

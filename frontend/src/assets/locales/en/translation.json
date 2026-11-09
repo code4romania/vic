@@ -230,6 +230,15 @@
       "download": "Download full report (PDF)",
       "loading": "Generating the report…",
       "error": "The report could not be generated. Please try again."
+    },
+    "delete": {
+      "action": "Delete volunteer",
+      "title": "Delete {{name}}?",
+      "description": "All of the volunteer's data in the organization is deleted for good: hours, event registrations, documents and announcement responses. This cannot be undone. Their VIC account stays.",
+      "download_hint": "We recommend downloading the contract before deleting it, to keep a copy in your archive.",
+      "download": "Download contract",
+      "confirm": "Delete for good",
+      "success": "{{name}} was deleted, together with their data in the organization."
     }
   },
   "volunteers": {
@@ -1013,6 +1022,10 @@
       "label": "Update Volunteer Profile",
       "description": "Volunteer profile <inlineLink>{{volunteerName}}</inlineLink> has been modified."
     },
+    "DELETE_VOLUNTEER": {
+      "label": "Delete Volunteer",
+      "description": "The volunteer {{volunteerName}} was deleted, together with {{activityLogs}} hour entries, {{contracts}} documents and {{registrations}} event registrations."
+    },
     "REGISTER_ACTIVITY_LOG": {
       "label": "Register Activity Log",
       "description": "Volunteer <inlineLink>{{volunteerName}}</inlineLink> logged volunteer hours."
@@ -1185,7 +1198,8 @@
         "period": "Period"
       },
       "download": "Contracts.xlsx",
-      "period_open": "from {{start}}, no end date"
+      "period_open": "from {{start}}, no end date",
+      "issued_on": "issued on {{date}}"
     },
     "contract": {
       "add": {

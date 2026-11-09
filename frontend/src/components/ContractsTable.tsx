@@ -63,9 +63,11 @@ export const ContractPeriodCell = ({ row }: { row: IContractListItem }) => (
   <CellLayout>
     <div className="flex flex-col gap-1">
       <span>
-        {row.endDate
-          ? `${formatDate(row.startDate)} – ${formatDate(row.endDate)}`
-          : i18n.t('documents:contracts.period_open', { start: formatDate(row.startDate) })}
+        {row.type === DocumentType.CERTIFICATE
+          ? i18n.t('documents:contracts.issued_on', { date: formatDate(row.startDate) })
+          : row.endDate
+            ? `${formatDate(row.startDate)} – ${formatDate(row.endDate)}`
+            : i18n.t('documents:contracts.period_open', { start: formatDate(row.startDate) })}
       </span>
       {row.expiringSoon && (
         <span className="self-start rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">

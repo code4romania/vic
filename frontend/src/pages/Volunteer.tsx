@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { TrashIcon } from '@heroicons/react/24/outline';
 import { useNavigate, useParams } from 'react-router';
 import i18n from '../common/config/i18n';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -9,13 +10,16 @@ import ProfileCard from '../components/ProfileCard';
 import { SelectItem } from '../components/Select';
 import Tabs from '../components/Tabs';
 import VolunteerProfile from '../components/VolunteerProfile';
-import { useErrorToast } from '../hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { useQueryClient } from 'react-query';
 import PageLayout from '../layouts/PageLayout';
 import {
+  useDeleteVolunteerMutation,
   useUpdateVolunteerDetailsMutation,
   useVolunteer,
 } from '../services/volunteer/volunteer.service';
+import Button from '../components/Button';
+import DeleteVolunteerModal from '../components/DeleteVolunteerModal';
 import { VolunteerProps } from '../containers/query/VolunteerWithQueryParams';
 import VolunteerHoursHistory from '../components/VolunteerHoursHistory';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
@@ -46,6 +50,25 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
   const { data: volunteer, isLoading, error } = useVolunteer(id as string);
   const queryClient = useQueryClient();
   const { mutate: updateDetails, isLoading: isSavingDetails } = useUpdateVolunteerDetailsMutation();
+  const { mutate: deleteVolunteer, isLoading: isDeleting } = useDeleteVolunteerMutation();
+  const [showDelete, setShowDelete] = useState(false);
+
+  // #484: final; the volunteer leaves the list with all their data in this NGO
+  const onDelete = () => {
+    if (!volunteer) return;
+    deleteVolunteer(volunteer.id, {
+      onSuccess: () => {
+        setShowDelete(false);
+        useSuccessToast(i18n.t('volunteer:delete.success', { name: volunteer.user.name }));
+        queryClient.invalidateQueries(['volunteers']);
+        navigate('/volunteers', { replace: true });
+      },
+      onError: (deleteError) =>
+        useErrorToast(
+          InternalErrors.VOLUNTEER_ERRORS.getError(deleteError?.response?.data.code_error),
+        ),
+    });
+  };
 
   const onUpdateDetails = (data: { source?: string | null; isFavorite?: boolean }) => {
     if (!volunteer) return;
@@ -93,6 +116,12 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
             >
               <VolunteerStats volunteerId={volunteer.id} />
               <VolunteerReportButton volunteerId={volunteer.id} />
+              <Button
+                className="btn-outline-danger w-full justify-center"
+                icon={<TrashIcon className="h-5 w-5" />}
+                label={i18n.t('volunteer:delete.action')}
+                onClick={() => setShowDelete(true)}
+              />
             </ProfileCard>
           </div>
           <div className="w-full lg:w-2/3 xl:w-3/4">
@@ -144,6 +173,15 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
           />
         )}
       </Tabs>
+      {showDelete && volunteer && (
+        <DeleteVolunteerModal
+          volunteerId={volunteer.id}
+          volunteerName={volunteer.user.name}
+          isDeleting={isDeleting}
+          onClose={() => setShowDelete(false)}
+          onConfirm={onDelete}
+        />
+      )}
     </PageLayout>
   );
 };

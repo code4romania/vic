@@ -23,6 +23,8 @@ export enum TrackedEventName {
   // Volunteers
   CHANGE_VOLUNTEER_STATUS = 'CHANGE_VOLUNTEER_STATUS',
   UPDATE_VOLUNTEER_PROFILE = 'UPDATE_VOLUNTEER_PROFILE',
+  // #484
+  DELETE_VOLUNTEER = 'DELETE_VOLUNTEER',
 
   // Activity Log
   REGISTER_ACTIVITY_LOG = 'REGISTER_ACTIVITY_LOG',
@@ -106,6 +108,14 @@ export interface TrackedEventData {
   [TrackedEventName.UPDATE_VOLUNTEER_PROFILE]: {
     volunteerId: string;
     volunteerName: string;
+  };
+  [TrackedEventName.DELETE_VOLUNTEER]: {
+    volunteerId: string;
+    volunteerName: string;
+    activityLogs: number;
+    contracts: number;
+    registrations: number;
+    announcementResponses: number;
   };
 
   // Activity Log
