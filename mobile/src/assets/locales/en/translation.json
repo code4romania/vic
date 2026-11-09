@@ -43,7 +43,14 @@
       "google": "Continue with Google",
       "facebook": "Continue with Facebook",
       "apple": "Continue with Apple"
-    }
+    },
+    "title": "All your volunteering, in one place",
+    "subtitle": "Sign in with an account you already have. No passwords.",
+    "email_hint": "We'll send you a 6-digit code. If it's your first time, we create your account right away.",
+    "send_code": "Send the code",
+    "intro": "See the intro",
+    "terms": "Terms and privacy",
+    "footer": "A Code for Romania project, built by Commit Global"
   },
   "register": {
     "title": "Create account",
@@ -157,7 +164,13 @@
       "resend": "Send a new code",
       "resend_in": "You can ask for a new code in {{seconds}} s",
       "resent": "We sent a new code.",
-      "change_email": "Use another email"
+      "change_email": "Use another email",
+      "sent_to": "We sent a 6-digit code to ",
+      "valid_for": ". The code is valid for 15 minutes and works once.",
+      "open_mail": "Open your email app",
+      "or_type": "or type the code from the email",
+      "other_email": "Other email",
+      "verifying": "Signing you in…"
     },
     "migration_notice": "Already had a VIC account? Enter the same email: we'll send you a code and you'll be in your account, no password needed. If you used Google or Apple, use the same button as before."
   },
@@ -722,6 +735,54 @@
       "ANNOUNCEMENT_006": "Only active volunteers can reply to an active announcement.",
       "ANNOUNCEMENT_007": "You already replied to this announcement.",
       "generic": "The reply could not be sent. Please try again."
+    }
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "next": "Next",
+    "start": "Get started",
+    "footer": "A Code for Romania project, built by Commit Global",
+    "a11y": {
+      "progress": "Intro {{current}} of {{total}}",
+      "stage": "VIC intro",
+      "stage_hint": "Tap right for the next one, left for the previous one. Hold to pause."
+    },
+    "stories": {
+      "organizations": {
+        "eyebrow": "Organizations",
+        "title": "Join the organizations that matter to you."
+      },
+      "events": {
+        "eyebrow": "Events",
+        "title": "See what's coming and sign up with one tap."
+      },
+      "hours": {
+        "eyebrow": "Volunteer hours",
+        "title": "You send your hours, the organization approves them."
+      },
+      "documents": {
+        "eyebrow": "Documents",
+        "title": "Your contracts and certificates, always with you."
+      }
+    },
+    "sample": {
+      "org1_meta": "Education · Bucharest",
+      "org2_meta": "Environment · Constanța",
+      "org3_meta": "Social · Cluj",
+      "join": "Join",
+      "event_date": "Sat, 22 Nov",
+      "event_title": "Earth Day",
+      "event_meta": "Băneasa Forest · 8 spots left",
+      "going": "I'm going",
+      "joined": "You're in",
+      "hours_year": "hours this year",
+      "log_title": "Training: First aid",
+      "log_meta": "8 Nov · 6 hours",
+      "pending": "Pending",
+      "approved": "Approved",
+      "cert_title": "Volunteering certificate",
+      "cert_meta": "No. 128/2026 · Asociația Exemplu",
+      "signed": "SIGNED"
     }
   }
 }
