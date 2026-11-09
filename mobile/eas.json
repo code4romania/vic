@@ -46,7 +46,7 @@
       }
     },
     "preview": {
-      // "distribution": "internal",
+      "distribution": "internal",
       "channel": "staging",
       "env": {
         "EXPO_PUBLIC_ENVIRONMENT": "staging",
