@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { useMonthlyStatistics } from '../services/statistics/statistics.service';
 import { useAnouncementsSnapshot } from '../services/anouncement/anouncement.service';
 import { useEventsInfiniteQuery } from '../services/event/event.service';
-import { usePendingContractsInfiniteQuery } from '../services/contract/contract.service';
 import { getUserProfile } from '../services/user/user.api';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { EventType } from '../common/enums/event-type.enum';
@@ -107,28 +106,17 @@ const Home = ({ navigation }: any) => {
   const statistics = useMonthlyStatistics();
   const anouncements = useAnouncementsSnapshot();
   const upcoming = useEventsInfiniteQuery(OrderDirection.ASC, '', EventType.GOING);
-  const pendingContracts = usePendingContractsInfiniteQuery(organization?.volunteerId as string);
 
   const { refetch: refetchStatistics } = statistics;
   const { refetch: refetchAnouncements } = anouncements;
   const { refetch: refetchUpcoming } = upcoming;
-  const { refetch: refetchContracts } = pendingContracts;
 
   useFocusEffect(
     useCallback(() => {
       refetchStatistics();
       refetchAnouncements();
       refetchUpcoming();
-      if (organization?.volunteerId) {
-        refetchContracts();
-      }
-    }, [
-      refetchStatistics,
-      refetchAnouncements,
-      refetchUpcoming,
-      refetchContracts,
-      organization?.volunteerId,
-    ]),
+    }, [refetchStatistics, refetchAnouncements, refetchUpcoming]),
   );
 
   const onRefresh = async () => {
@@ -147,19 +135,10 @@ const Home = ({ navigation }: any) => {
   )
     .filter((event) => !event.endDate || new Date(event.endDate) >= new Date())
     .slice(0, 2);
-  const contractsToSign = pendingContracts.data?.pages?.[0]?.meta?.totalItems ?? 0;
   const profileMissing = !!organization && !organization.volunteerProfileId;
   const stats = statistics.data;
 
   const todos = [
-    contractsToSign > 0 && {
-      key: 'contracts',
-      icon: 'open' as EventIconName,
-      tone: 'wait' as const,
-      title: `${t('todo.contracts.title', { count: contractsToSign })}`,
-      subtitle: organization?.name,
-      onPress: () => navigation.navigate(TAB_ROUTES.DOCUMENTS),
-    },
     profileMissing && {
       key: 'profile',
       icon: 'people' as EventIconName,

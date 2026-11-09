@@ -5,7 +5,6 @@ import {
   Get,
   Header,
   Param,
-  Patch,
   Post,
   Query,
   Res,
@@ -13,11 +12,11 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiConsumes, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
-import { CreateContractUsecase } from 'src/usecases/documents/create-contract.usecase';
-import { CreateContractDto } from './dto/create-contract.dto';
+import { UploadContractUsecase } from 'src/usecases/documents/upload-contract.usecase';
+import { UploadContractDto } from './dto/upload-contract.dto';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { ContractPresenter } from './presenters/contract.presenter';
 import {
@@ -31,9 +30,6 @@ import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { ContractListItemPresenter } from './presenters/contract-list-item.presenter';
 import { GetOneContractUsecase } from 'src/usecases/documents/get-one-contract.usecase';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { SignAndConfirmContractUsecase } from 'src/usecases/documents/sign-and-confirm-contract.usecase';
-import { RejectContractUsecase } from 'src/usecases/documents/reject-contract.usecase';
-import { RejectContractDto } from './dto/reject-contact.dto';
 import { GetContractsForDownloadUsecase } from 'src/usecases/documents/get-contracts-for-download.usecase';
 import { jsonToExcelBuffer } from 'src/common/helpers/utils';
 import { IContractDownloadModel } from 'src/modules/documents/models/contract.model';
@@ -45,12 +41,10 @@ import { DeleteContractUsecase } from 'src/usecases/documents/delete-contract.us
 @Controller('contract')
 export class ContractController {
   constructor(
-    private readonly createContractUsecase: CreateContractUsecase,
+    private readonly uploadContractUsecase: UploadContractUsecase,
     private readonly getManyContractsUsecase: GetManyContractsUsecase,
     private readonly countPendingContractsUsecase: CountPendingContractsUsecase,
     private readonly getOneContractUsecase: GetOneContractUsecase,
-    private readonly signAndConfirmContractUsecase: SignAndConfirmContractUsecase,
-    private readonly rejectContractUsecase: RejectContractUsecase,
     private readonly getContractsForDownloadUsecase: GetContractsForDownloadUsecase,
     private readonly deleteContractUsecase: DeleteContractUsecase,
   ) {}
@@ -117,57 +111,28 @@ export class ContractController {
     return new ContractPresenter(contract);
   }
 
-  @Post()
-  async create(
-    @Body() contract: CreateContractDto,
-    @ExtractUser() admin: IAdminUserModel,
-  ): Promise<ContractPresenter> {
-    const newContract = await this.createContractUsecase.execute(
-      {
-        ...contract,
-        organizationId: admin.organizationId,
-        createdByAdminId: admin.id,
-      },
-      admin,
-    );
-
-    return new ContractPresenter(newContract);
-  }
-
-  // TODO: guard for contractId
+  // #486: the NGO uploads a contract already signed, with its validity period
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileFieldsInterceptor([{ name: 'contract', maxCount: 1 }]))
-  @ApiParam({ name: 'contractId', type: 'string' })
-  @Patch(':contractId/confirm')
-  async sign(
-    @Param('contractId', UuidValidationPipe) contractId: string,
+  @ApiBody({ type: UploadContractDto })
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'contract', maxCount: 1 }], {
+      limits: { fileSize: 10 * 1024 * 1024 },
+    }),
+  )
+  @Post()
+  async upload(
+    @Body() dto: UploadContractDto,
+    @UploadedFiles() files: { contract?: Express.Multer.File[] },
     @ExtractUser() admin: IAdminUserModel,
-    @UploadedFiles() { contract }: { contract: Express.Multer.File[] },
   ): Promise<ContractPresenter> {
-    const newContract = await this.signAndConfirmContractUsecase.execute(
-      contractId,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { contract: _file, ...options } = dto;
+    const contract = await this.uploadContractUsecase.execute(
+      options,
+      files?.contract?.[0],
       admin,
-      contract,
     );
-
-    return new ContractPresenter(newContract);
-  }
-
-  // TODO: guard for contractId
-  @ApiParam({ name: 'contractId', type: 'string' })
-  @Patch(':contractId/reject')
-  async reject(
-    @Param('contractId', UuidValidationPipe) contractId: string,
-    @ExtractUser() admin: IAdminUserModel,
-    @Body() { rejectionReason }: RejectContractDto,
-  ): Promise<ContractPresenter> {
-    const newContract = await this.rejectContractUsecase.execute(
-      contractId,
-      admin,
-      rejectionReason,
-    );
-
-    return new ContractPresenter(newContract);
+    return new ContractPresenter(contract);
   }
 
   // TODO: guard for contractId

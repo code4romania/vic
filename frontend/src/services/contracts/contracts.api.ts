@@ -1,40 +1,31 @@
+import { format } from 'date-fns';
 import { ContractStatus } from '../../common/enums/contract-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
-import { IContract, IContractListItem } from '../../common/interfaces/contract.interface';
+import {
+  IContract,
+  IContractListItem,
+  IUploadContractPayload,
+} from '../../common/interfaces/contract.interface';
 import { IPaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { IAddContractPayload } from './contracts.service';
 import API from '../api';
 import { AxiosResponseHeaders } from 'axios';
 
-export const addContract = async (data: IAddContractPayload): Promise<void> => {
-  return API.post('contract', data).then((res) => res.data);
-};
-
-export const getContracts = async (params: {
-  page: number;
-  limit: number;
+export interface IContractsQueryParams {
   orderBy?: string;
   orderDirection?: OrderDirection;
-  search?: string;
-  volunteerName?: string;
-  startDate?: Date;
-  endDate?: Date;
   status?: ContractStatus;
   volunteerId?: string;
-}): Promise<IPaginatedEntity<IContractListItem>> => {
+}
+
+export const getContracts = async (
+  params: IContractsQueryParams & { page: number; limit: number },
+): Promise<IPaginatedEntity<IContractListItem>> => {
   return API.get('contract', { params }).then((res) => res.data);
 };
 
-export const getContractsForDownload = async (params: {
-  orderBy?: string;
-  orderDirection?: OrderDirection;
-  search?: string;
-  volunteerName?: string;
-  startDate?: Date;
-  endDate?: Date;
-  status?: ContractStatus;
-  volunteerId?: string;
-}): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
+export const getContractsForDownload = async (
+  params: IContractsQueryParams,
+): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
   return API.get('contract/download', {
     params,
     responseType: 'arraybuffer',
@@ -43,24 +34,27 @@ export const getContractsForDownload = async (params: {
   });
 };
 
-export const getActiveCountractsCount = async (): Promise<number> => {
+export const getPendingContractsCount = async (): Promise<number> => {
   return API.get('contract/active').then((res) => res.data);
 };
 
-export const getContract = async (contractId: string): Promise<IContract> => {
-  return API.get(`contract/${contractId}`).then((res) => res.data);
-};
-
-export const approveContract = async (id: string, contract: File): Promise<IContract> => {
+// #486: the NGO uploads a contract already signed, with its period (dates sent as calendar days)
+export const uploadContract = async ({
+  contract,
+  startDate,
+  endDate,
+  volunteerId,
+  contractNumber,
+}: IUploadContractPayload): Promise<IContract> => {
   const formData = new FormData();
+  formData.append('volunteerId', volunteerId);
+  formData.append('startDate', format(startDate, 'yyyy-MM-dd'));
+  if (endDate) formData.append('endDate', format(endDate, 'yyyy-MM-dd'));
+  if (contractNumber?.trim()) formData.append('contractNumber', contractNumber.trim());
   formData.append('contract', contract);
-  return API.patch(`contract/${id}/confirm`, formData, {
+  return API.post('contract', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
-};
-
-export const rejectContract = async (id: string, rejectionReason?: string): Promise<IContract> => {
-  return API.patch(`contract/${id}/reject`, { rejectionReason }).then((res) => res.data);
 };
 
 export const deleteContract = async (id: string): Promise<void> => {

@@ -22,6 +22,8 @@ import {
   VolunteerModelTransformer,
 } from '../model/volunteer.model';
 import { ContractStatus } from 'src/modules/documents/enums/contract-status.enum';
+import { ClientContractStatus } from 'src/modules/documents/enums/client-contract-status.enum';
+import { contractStatusCondition } from 'src/modules/documents/repositories/contract.repository';
 import { ActivityLogStatus } from 'src/modules/activity-log/enums/activity-log-status.enum';
 import { ContractEntity } from 'src/modules/documents/entities/contract.entity';
 import { ActivityLogEntity } from 'src/modules/activity-log/entities/activity-log.entity';
@@ -314,12 +316,13 @@ export class VolunteerRepositoryService
           .select('COUNT(contract.id)', 'contractCount')
           .from(ContractEntity, 'contract')
           .where('contract.volunteerId = :volunteerId', { volunteerId })
-          .andWhere('contract.status IN (:...statuses)', {
-            statuses: [
-              ContractStatus.PENDING_ADMIN,
-              ContractStatus.PENDING_VOLUNTEER,
-            ],
-          });
+          .andWhere(
+            contractStatusCondition(ClientContractStatus.PENDING, 'contract'),
+            {
+              statusNow: new Date(),
+              activeStatus: ContractStatus.ACTIVE,
+            },
+          );
       }, 'contractCount')
       .addSelect((subQuery) => {
         return subQuery

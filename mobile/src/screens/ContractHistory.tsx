@@ -13,8 +13,7 @@ const ContractHistory = ({ navigation }: any) => {
   return (
     <ContractsListPage
       navigation={navigation}
-      title={`${t('sections.closed')}`}
-      kind="signed"
+      title={`${t('sections.all')}`}
       query={query as any}
       testID="contract-history"
     />

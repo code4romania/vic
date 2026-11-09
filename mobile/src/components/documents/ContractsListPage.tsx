@@ -16,7 +16,6 @@ import { useDownloadContract } from './useDownloadContract';
 export interface ContractsListPageProps {
   navigation: any;
   title: string;
-  kind: 'pending' | 'signed';
   query: {
     data?: { pages: { items: IContractListItem[] }[] };
     error: unknown;
@@ -29,14 +28,8 @@ export interface ContractsListPageProps {
   testID?: string;
 }
 
-/** "Vezi toate" from Documente: every pending or signed contract of the active organization. */
-export const ContractsListPage = ({
-  navigation,
-  title,
-  kind,
-  query,
-  testID,
-}: ContractsListPageProps) => {
+/** "Vezi toate" from Documente: every contract of the active organization (#486). */
+export const ContractsListPage = ({ navigation, title, query, testID }: ContractsListPageProps) => {
   const { t } = useTranslation('documents');
   const insets = useSafeAreaInsets();
   useFocusedStatusBarStyle('dark');
@@ -52,8 +45,7 @@ export const ContractsListPage = ({
 
   const items = useMemo(() => (data?.pages ?? []).flatMap((page) => page.items), [data]);
 
-  const onPress = (contract: IContractListItem) =>
-    kind === 'pending' ? navigation.navigate('contract', { id: contract.id }) : download(contract);
+  const onPress = download;
 
   const renderEmpty = () => {
     if (isFetching && !items.length) {
@@ -68,7 +60,7 @@ export const ContractsListPage = ({
         />
       );
     }
-    return <EmptyState title={`${t(`empty.${kind}`)}`} />;
+    return <EmptyState title={`${t('empty.title')}`} description={`${t('empty.description')}`} />;
   };
 
   return (
@@ -78,12 +70,7 @@ export const ContractsListPage = ({
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
           <Enter index={Math.min(index, 6)}>
-            <DocumentRow
-              contract={item}
-              kind={kind}
-              onPress={onPress}
-              busy={downloadingId === item.id}
-            />
+            <DocumentRow contract={item} onPress={onPress} busy={downloadingId === item.id} />
           </Enter>
         )}
         ListHeaderComponent={

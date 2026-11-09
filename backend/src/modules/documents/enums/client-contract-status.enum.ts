@@ -1,8 +1,7 @@
+// VIC 2.0, #488: what the web and the app show. SIGNED = active and not past its end date,
+// PENDING = inactive and not past its end date, EXPIRED = past its end date.
 export enum ClientContractStatus {
-  PENDING_VOLUNTEER = 'PENDING_VOLUNTEER',
-  PENDING_ADMIN = 'PENDING_ADMIN',
-  NOT_STARTED = 'NOT_STARTED',
-  CLOSED = 'CLOSED',
-  ACTIVE = 'ACTIVE',
-  REJECTED = 'REJECTED',
+  SIGNED = 'SIGNED',
+  PENDING = 'PENDING',
+  EXPIRED = 'EXPIRED',
 }

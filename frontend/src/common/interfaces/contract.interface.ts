@@ -3,21 +3,27 @@ import { IdName } from './id-name.interface';
 
 export interface IContractListItem {
   id: string;
-  contractNumber: string;
+  contractNumber: string | null;
   volunteer: IdName;
   status: ContractStatus;
+  // #488: signed, and within a month of its end date
+  expiringSoon: boolean;
   startDate: Date;
-  endDate: Date;
+  // #486: no end date means the contract never expires
+  endDate: Date | null;
   fileName: string;
   uri: string;
 }
 
 export interface IContract extends IContractListItem {
-  template: IdName;
   createdBy: IdName;
   createdOn: Date;
-  approvedOn?: Date;
-  rejectedBy?: { id: string; name: string };
-  rejectedOn?: Date;
-  rejectionReason?: string;
+}
+
+export interface IUploadContractPayload {
+  volunteerId: string;
+  startDate: Date;
+  endDate?: Date | null;
+  contractNumber?: string;
+  contract: File;
 }

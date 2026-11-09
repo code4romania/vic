@@ -752,82 +752,33 @@
     },
     "documents": {
         "contract_prefix": "Contract",
-        "description": "Gestionează contractele tale din secțiunile de mai jos. Descarcă contracte vechi, sau semnează contractele trimise de organizație.",
+        "description": "Contractele semnate cu organizația. Le poți descărca oricând.",
         "sections": {
-            "pending": "Propunere contract",
-            "closed": "Istoric contracte semnate"
+            "closed": "Istoric contracte semnate",
+            "all": "Contractele tale"
         },
         "contract_status": {
             "active": "activ",
             "closed": "încheiat",
             "not_started": "neînceput"
         },
-        "contract": {
-            "title": "Contract {{contractNumber}}",
-            "paragraph": {
-                "PENDING_VOLUNTEER": "Contractul a fost generat și necesită aprobarea ta. Descarcă modelul de mai jos și citește documentul cu atenție. Te rugăm să printezi o copie a acestuia, pe care să o semnezi, scanezi și încarci aici.",
-                "PENDING_ADMIN": "Ai trimis un document spre semnare. Contractul a fost generat și necesită aprobarea organizației.",
-                "NOT_STARTED": "Neînceput",
-                "CLOSED": "Închis",
-                "ACTIVE": "Activ",
-                "REJECTED": "Respins"
-            },
-            "disclaimer": {
-                "PENDING_VOLUNTEER": "Contractul necesită semnătura ta",
-                "PENDING_ADMIN": "Contractul necesită semnătura organizației"
-            },
-            "actions": {
-                "upload": "Încarcă contract semnat",
-                "cancel": "Anulează și încarcă altul"
-            },
-            "bottom_sheet": {
-                "heading": "Confirmi documentul?",
-                "paragraph": "Ai încărcat documentul",
-                "label": "Trimite spre semnare"
-            },
-            "upload": {
-                "success": "Contractul a fost trimis!"
-            },
-            "cancel": {
-                "success": "Contractul a fost întors la starea inițială!"
-            },
-            "errors": {
-                "CONTRACT_002": "Contractul nu a fost găsit",
-                "CONTRACT_001": "Nu s-a putut încărca contractul",
-                "CONTRACT_003": "Nu s-a putut șterge documentul",
-                "CONTRACT_007": "Nu se poate anula un contract aprobat de admin",
-                "TEMPLATE_002": "Template-ul contractului nu a fost găsit!"
-            }
-        },
-        "contract_rejected": {
-            "header": "Contract Respins",
-            "paragraph": "Contractul tău a fost respins",
-            "label": "Motivul respingerii"
-        },
-        "confirmation_modal": {
-            "paragraph": "Ești sigur că vrei să anulezi și să încarci un contract diferit?"
-        },
         "download": "descarcă",
         "download_error": "Nu am putut descărca documentul. Încearcă din nou.",
         "see_all": "Vezi toate ({{count}})",
         "status": {
-            "PENDING_VOLUNTEER": "De semnat",
-            "PENDING_ADMIN": "La organizație",
-            "NOT_STARTED": "Neînceput",
-            "ACTIVE": "Activ",
-            "CLOSED": "Încheiat",
-            "REJECTED": "Respins"
+            "SIGNED": "Semnat",
+            "PENDING": "În așteptare",
+            "EXPIRED": "Expirat"
         },
         "empty": {
             "title": "Niciun document încă",
-            "description": "Contractele de voluntariat trimise de organizație apar aici.",
-            "pending": "Nu ai contracte de semnat",
-            "signed": "Nu ai contracte semnate"
+            "description": "Contractele încărcate de organizație apar aici."
         },
         "errors": {
             "generic": "Eroare la încărcarea documentelor"
         },
-        "pending_callout": "Contracte care așteaptă semnătura ta: {{count}}"
+        "expiring_soon": "Expiră în curând",
+        "period_open": "din {{start}}, fără dată de final"
     },
     "notifications": {
         "header": "Setări notificări",

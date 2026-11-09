@@ -23,6 +23,8 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
       <div className="relative">
         <DatePicker
           {...datePickerProps}
+          // the label points at the input
+          id={datePickerProps.id ?? (label ? `${label}__datepicker` : undefined)}
           wrapperClassName="w-full"
           className={classNames(
             className || '',

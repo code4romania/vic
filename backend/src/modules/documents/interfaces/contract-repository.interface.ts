@@ -1,5 +1,6 @@
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
 import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
+import { ClientContractStatus } from '../enums/client-contract-status.enum';
 import { ContractEntity } from '../entities/contract.entity';
 import {
   CreateContractOptions,
@@ -16,7 +17,10 @@ export interface IContractRepository
     findOptions: FindManyContractOptions,
   ): Promise<Pagination<IContractModel>>;
   find(findOptions: FindContractOptions): Promise<IContractModel>;
-  count(findOptions: FindContractOptions): Promise<number>;
+  countByStatus(
+    organizationId: string,
+    status: ClientContractStatus,
+  ): Promise<number>;
   update(id: string, updates: UpdateContractOptions): Promise<IContractModel>;
   delete(id: string): Promise<string>;
 }

@@ -26,7 +26,7 @@ export class ContractEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'text', name: 'contract_number' })
+  @Column({ type: 'text', name: 'contract_number', nullable: true })
   contractNumber: string;
 
   @Column({ type: 'text', name: 'path' })
@@ -35,14 +35,15 @@ export class ContractEntity extends BaseEntity {
   @Column({ type: 'timestamptz', name: 'start_date' })
   startDate: Date;
 
-  @Column({ type: 'timestamptz', name: 'end_date' })
-  endDate: Date;
+  // #486: optional, a contract without an end date never expires
+  @Column({ type: 'timestamptz', name: 'end_date', nullable: true })
+  endDate: Date | null;
 
   @Column({
     type: 'enum',
     enum: ContractStatus,
     name: 'status',
-    default: ContractStatus.PENDING_VOLUNTEER,
+    default: ContractStatus.ACTIVE,
   })
   status: ContractStatus;
 

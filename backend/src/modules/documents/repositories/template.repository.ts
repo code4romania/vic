@@ -66,9 +66,7 @@ export class TemplateRepositoryService
         'template.contracts',
         'numberOfContracts',
         (qb) =>
-          qb.where(
-            `"numberOfContracts"."status" = '${ContractStatus.APPROVED}' OR "numberOfContracts"."status" = '${ContractStatus.REJECTED}'`,
-          ),
+          qb.where(`"numberOfContracts"."status" = '${ContractStatus.ACTIVE}'`),
       )
       .select()
       .where('template.organizationId = :organizationId', {

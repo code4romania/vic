@@ -11,6 +11,9 @@ export enum CONTRACT_ERRORS {
   CONTRACT_001 = 'CONTRACT_001',
   CONTRACT_003 = 'CONTRACT_003',
   CONTRACT_006 = 'CONTRACT_006',
+  CONTRACT_008 = 'CONTRACT_008',
+  CONTRACT_009 = 'CONTRACT_009',
+  VOLUNTEER_007 = 'VOLUNTEER_007',
 }
 
 export class ContractError extends ErrorClass<CONTRACT_ERRORS> {
@@ -29,6 +32,9 @@ export class ContractError extends ErrorClass<CONTRACT_ERRORS> {
       [CONTRACT_ERRORS.CONTRACT_001]: i18n.t('documents:contract.submit.errors.CONTRACT_001'),
       [CONTRACT_ERRORS.CONTRACT_003]: i18n.t('documents:contract.submit.errors.CONTRACT_003'),
       [CONTRACT_ERRORS.CONTRACT_006]: i18n.t('documents:contract.submit.errors.CONTRACT_006'),
+      [CONTRACT_ERRORS.CONTRACT_008]: i18n.t('documents:contract.submit.errors.CONTRACT_008'),
+      [CONTRACT_ERRORS.CONTRACT_009]: i18n.t('documents:contract.submit.errors.CONTRACT_009'),
+      [CONTRACT_ERRORS.VOLUNTEER_007]: i18n.t('documents:contract.submit.errors.VOLUNTEER_007'),
     });
   }
 
