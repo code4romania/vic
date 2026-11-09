@@ -75,7 +75,8 @@ export const renderVolunteerReport = (
     };
 
     const heading = (text: string): void => {
-      ensureSpace(60);
+      // keep the heading with a table header and its first row
+      ensureSpace(90);
       doc.moveDown(1.2);
       doc.font('bold').fontSize(13).fillColor(NAVY).text(text, left, doc.y);
       doc.moveDown(0.4);
@@ -100,6 +101,8 @@ export const renderVolunteerReport = (
               columns.map((c) => c.header),
               true,
             );
+          // the repeated header leaves the bold font set
+          doc.font(bold ? 'bold' : 'regular').fontSize(9);
         }
         const y = doc.y;
         let x = left;
