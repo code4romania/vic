@@ -30,6 +30,7 @@ import {
   VButton,
   VText,
 } from '../components/ui';
+import { StatusBarScrim } from '../components/ui/StatusBarScrim';
 
 // newest first, like the canvas
 const ORDER = OrderDirection.DESC;
@@ -235,6 +236,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
           onPress={() => profileSheet.current?.dismiss()}
         />
       </Sheet>
+      <StatusBarScrim />
     </View>
   );
 };

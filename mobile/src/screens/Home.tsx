@@ -24,6 +24,7 @@ import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
 import { EventCard } from '../components/events/EventCard';
 import { EventIcon, EventIconName } from '../components/events/EventIcons';
 import { Avatar, Enter, ListRow, PressableScale, VButton, VText } from '../components/ui';
+import { StatusBarScrim } from '../components/ui/StatusBarScrim';
 
 const BellIcon = () => (
   <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
@@ -340,6 +341,7 @@ const Home = ({ navigation }: any) => {
           </Enter>
         )}
       </Animated.ScrollView>
+      <StatusBarScrim />
     </View>
   );
 };

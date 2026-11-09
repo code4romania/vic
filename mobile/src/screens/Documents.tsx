@@ -20,6 +20,7 @@ import { DocumentRow } from '../components/documents/DocumentRow';
 import { useDownloadContract } from '../components/documents/useDownloadContract';
 import DocumentSkeletonList from '../components/skeleton/documents-skeleton-list';
 import { EmptyState, Enter, PressableScale, VText } from '../components/ui';
+import { StatusBarScrim } from '../components/ui/StatusBarScrim';
 
 // rows per section on the tab; "Vezi toate" opens the full list
 const PREVIEW = 3;
@@ -176,6 +177,7 @@ const Documents = ({ navigation, route }: any) => {
           />
         )}
       </Animated.ScrollView>
+      <StatusBarScrim />
     </View>
   );
 };

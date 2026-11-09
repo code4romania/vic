@@ -24,6 +24,7 @@ import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
 import { Avatar, Badge, Chevron, Enter, ListRow, Sheet, VButton, VText } from '../components/ui';
+import { StatusBarScrim } from '../components/ui/StatusBarScrim';
 
 export enum SETTINGS_ROUTES {
   ACCOUNT_DATA = 'account-data',
@@ -275,6 +276,7 @@ const Settings = ({ navigation }: any) => {
           onPress={() => logoutSheet.current?.dismiss()}
         />
       </Sheet>
+      <StatusBarScrim />
     </View>
   );
 };

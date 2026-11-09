@@ -503,7 +503,7 @@
         "details": "Detalii eveniment",
         "date": "Data și ora",
         "name": "Denumire eveniment",
-        "target": "Target",
+        "target": "Public țintă",
         "location": "Locație",
         "description": "Descriere eveniment",
         "attending": "{{numberOfVolunteer}} persoane participă!",
@@ -547,6 +547,8 @@
         "open_in_maps": "Deschide în Hărți",
         "organized_by": "Organizat de {{name}}",
         "capacity_places": "{{places}} locuri",
+        "capacity_place": "1 loc",
+        "capacity_places_de": "{{places}} de locuri",
         "about": "Despre",
         "confirm": {
             "title": "Te-ai înscris",

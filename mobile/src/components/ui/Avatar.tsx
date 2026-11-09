@@ -20,6 +20,13 @@ export const initials = (name: string) =>
     .map((word) => word[0]?.toUpperCase())
     .join('');
 
+// The line height follows the font size and leaves room for diacritics (Ș, Ț), so big initials
+// aren't cut by the variant's fixed line height.
+const initialsStyle = (size: number) => {
+  const fontSize = Math.max(12, size * 0.36);
+  return { fontSize, lineHeight: Math.round(fontSize * 1.3) };
+};
+
 /** Photo or logo, falling back to initials on a soft background. */
 export const Avatar = ({ name, uri, size = 40, shape = 'circle' }: AvatarProps) => {
   const borderRadius = shape === 'circle' ? size / 2 : Math.round(size * 0.3);
@@ -40,7 +47,7 @@ export const Avatar = ({ name, uri, size = 40, shape = 'circle' }: AvatarProps) 
       accessibilityLabel={name}
       style={[styles.fallback, { width: size, height: size, borderRadius }]}
     >
-      <VText variant="h3" color={colors.navy} style={{ fontSize: Math.max(12, size * 0.36) }}>
+      <VText variant="h3" color={colors.navy} style={initialsStyle(size)}>
         {initials(name)}
       </VText>
     </View>

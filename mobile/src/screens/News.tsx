@@ -23,6 +23,7 @@ import {
   SegmentedControl,
   VText,
 } from '../components/ui';
+import { StatusBarScrim } from '../components/ui/StatusBarScrim';
 
 type NewsLine = { start: string; organization?: string; end?: string };
 
@@ -252,6 +253,7 @@ const News = ({ navigation, route }: any) => {
         showsVerticalScrollIndicator={false}
         testID="news"
       />
+      <StatusBarScrim />
     </View>
   );
 };

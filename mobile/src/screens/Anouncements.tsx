@@ -10,6 +10,7 @@ import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { EventIcon } from '../components/events/EventIcons';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
 import { Avatar, EmptyState, Enter, PressableScale, VText } from '../components/ui';
+import { StatusBarScrim } from '../components/ui/StatusBarScrim';
 
 /**
  * VIC 2.0 Anunțuri (canvas board "Anunțuri"): announcements from the volunteer's organizations, each
@@ -125,6 +126,7 @@ const Anouncements = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}
         testID="anouncements"
       />
+      <StatusBarScrim />
     </View>
   );
 };

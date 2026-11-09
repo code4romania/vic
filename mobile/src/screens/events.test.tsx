@@ -203,7 +203,7 @@ describe('Eveniment', () => {
     await renderApp('event', { eventId: '9' });
     expect(await screen.findByText('Eveniment 9')).toBeTruthy();
     expect(screen.getByText('Organizat de Asociația Exemplu')).toBeTruthy();
-    expect(screen.getByText('50 locuri')).toBeTruthy();
+    expect(screen.getByText('50 de locuri')).toBeTruthy();
     expect(screen.getByText('Deschide în Hărți')).toBeTruthy();
     expect(screen.getByText('Ne întâlnim la intrare.')).toBeTruthy();
     expect(screen.getAllByText(/42 de persoane participă/).length).toBeGreaterThan(0);

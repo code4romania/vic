@@ -505,7 +505,7 @@
     "details": "Event details",
     "date": "Date and time",
     "name": "Event name",
-    "target": "Target",
+    "target": "Audience",
     "location": "Location",
     "description": "Event description",
     "attending": "{{numberOfVolunteer}} people participate!",
@@ -548,6 +548,8 @@
     "open_in_maps": "Open in Maps",
     "organized_by": "Organized by {{name}}",
     "capacity_places": "{{places}} places",
+    "capacity_place": "1 place",
+    "capacity_places_de": "{{places}} places",
     "about": "About",
     "confirm": {
       "title": "You're in",

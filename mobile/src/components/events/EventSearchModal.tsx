@@ -113,7 +113,8 @@ export const EventSearchModal = ({
           <VText variant="h3" style={styles.headerTitle}>
             {t('search.title')}
           </VText>
-          <View style={styles.round} />
+          {/* keeps the title centered; no background, unlike the close button */}
+          <View style={styles.spacer} />
         </View>
 
         <ScrollView
@@ -252,6 +253,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   headerTitle: { fontSize: 15 },
+  spacer: { width: 40, height: 40 },
   round: {
     width: 40,
     height: 40,
