@@ -273,8 +273,13 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                 <ReadOnlyElement label={t('description')} value={organization.description} />
                 <ReadOnlyElement label={t('email')} value={organization.email} />
                 <ReadOnlyElement label={t('phone')} value={organization.phone} />
-                <ReadOnlyElement label={t('address')} value={organization.address} />
-                <ReadOnlyElement label={t('area')} value={organization.activityArea} />
+                {/* #469: the address and website are optional */}
+                {!!organization.address && (
+                  <ReadOnlyElement label={t('address')} value={organization.address} />
+                )}
+                {!!organization.website && (
+                  <ReadOnlyElement label={t('website')} value={organization.website} />
+                )}
               </View>
               <SectionWrapper title={t('events')}>
                 <ScrollViewLayout>

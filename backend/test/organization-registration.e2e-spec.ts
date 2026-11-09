@@ -10,9 +10,6 @@ import { api, asWeb, linkSecret, refreshCookie } from './utils/http';
 import { createTestApp, TestApp, TURNSTILE_OK } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
-const PDF = Buffer.from(
-  '%PDF-1.4\n1 0 obj << >> endobj\ntrailer << >>\n%%EOF\n',
-);
 // A 1x1 transparent PNG.
 const PNG = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
@@ -34,11 +31,7 @@ describe('Organization registration and validation (e2e)', () => {
     name: 'Asociatia Noua',
     email: 'contact@ong-nou.ro',
     phone: '+40700000100',
-    address: 'Str. Exemplu 1, Iasi',
-    activityArea: 'Educatie',
-    description:
-      'O asociatie noua care face educatie non-formala pentru copiii din mediul rural.',
-    website: 'https://ong-nou.ro',
+    // #469: only the minimum; description, address, website and logo come later
     taxId: 'RO12345678',
     firstName: 'Ana',
     lastName: 'Popescu',
@@ -51,21 +44,11 @@ describe('Organization registration and validation (e2e)', () => {
 
   const register = (
     overrides: Record<string, string> = {},
-    files: {
-      statute?: Buffer | false;
-      statuteType?: string;
-      logo?: Buffer;
-    } = {},
+    files: { logo?: Buffer } = {},
   ): Test => {
     let req = http.post('/organizations/register');
     for (const [key, value] of Object.entries(fields(overrides))) {
       req = req.field(key, value);
-    }
-    if (files.statute !== false) {
-      req = req.attach('statute', files.statute ?? PDF, {
-        filename: 'statut.pdf',
-        contentType: files.statuteType ?? 'application/pdf',
-      });
     }
     if (files.logo) {
       req = req.attach('logo', files.logo, {
@@ -79,7 +62,7 @@ describe('Organization registration and validation (e2e)', () => {
   const organizationRow = async (): Promise<Record<string, unknown>> =>
     (
       await testApp.dataSource.query(
-        `SELECT id, status, validated_at, statute_url, logo FROM organization WHERE lower(name) = 'asociatia noua'`,
+        `SELECT id, status, validated_at, statute_url, description, address, website, logo FROM organization WHERE lower(name) = 'asociatia noua'`,
       )
     )[0];
 
@@ -162,21 +145,12 @@ describe('Organization registration and validation (e2e)', () => {
     expect(identity.lastLoginAt).toBeInstanceOf(Date);
   });
 
-  it('refuses a failed anti-robot check (ORG_006), a missing or non-PDF statute (ORG_007), unaccepted terms', async () => {
+  it('refuses a failed anti-robot check (ORG_006), a missing CUI, a short description, unaccepted terms', async () => {
     expect(
       (await register({ turnstileToken: 'bot' }).expect(400)).body.code_error,
     ).toBe('ORG_006');
-    expect(
-      (await register({}, { statute: false }).expect(400)).body.code_error,
-    ).toBe('ORG_007');
-    expect(
-      (
-        await register(
-          {},
-          { statute: Buffer.from('not a pdf'), statuteType: 'application/pdf' },
-        ).expect(400)
-      ).body.code_error,
-    ).toBe('ORG_007');
+    await register({ taxId: '' }).expect(400);
+    await register({ description: 'prea scurta' }).expect(400);
     await register({ acceptedTerms: 'false' }).expect(400);
 
     const [{ count }] = await testApp.dataSource.query(
@@ -186,16 +160,27 @@ describe('Organization registration and validation (e2e)', () => {
     expect(testApp.mailbox.sent).toHaveLength(0);
   });
 
-  it('registers a pending NGO with its files; it is hidden and its admin cannot log in before confirming', async () => {
+  it('registers a pending NGO with only the minimum, and no statute', async () => {
+    await register().expect(201);
+
+    const organization = await organizationRow();
+    expect(organization).toMatchObject({
+      status: 'pending',
+      statute_url: null,
+      description: null,
+      address: null,
+      website: null,
+      logo: null,
+    });
+  });
+
+  it('registers a pending NGO with its logo; it is hidden and its admin cannot log in before confirming', async () => {
     const res = await register({}, { logo: PNG }).expect(201);
     expect(res.body).toEqual({ maskedEmail: 'a•••@ong-nou.ro' });
 
     const organization = await organizationRow();
     expect(organization.status).toBe('pending');
     expect(organization.validated_at).toBeNull();
-    expect(organization.statute_url).toMatch(
-      new RegExp(`^organizations/${organization.id}/.+statute\\.pdf$`),
-    );
     // The logo is a public URL (local S3 emulator here); it serves the uploaded image.
     expect(organization.logo).toMatch(
       new RegExp(
@@ -280,19 +265,7 @@ describe('Organization registration and validation (e2e)', () => {
     const notice = testApp.mailbox.last('super@vic.ro');
     expect(notice.subject).toContain('ONG nou de validat: Asociatia Noua');
     expect(notice.context.subtitle).toContain('RO12345678');
-    // The button opens the validation page (a presigned statute link would expire in a day);
-    // the statute is downloaded from there.
     expect(notice.context.cta.link).toBe('https://vic.test/admin/validation');
-    const pending = await http
-      .get('/admin/organizations/pending-validation')
-      .set('Authorization', `Bearer ${superAdminToken}`)
-      .expect(200);
-    const listed = pending.body.find(
-      (item: { name: string }) => item.name === 'Asociatia Noua',
-    );
-    const statute = await fetch(listed.statuteUrl);
-    expect(statute.status).toBe(200);
-    expect(Buffer.from(await statute.arrayBuffer()).equals(PDF)).toBe(true);
 
     const own = await http
       .get('/organization')
@@ -303,7 +276,8 @@ describe('Organization registration and validation (e2e)', () => {
       validatedAt: null,
       taxId: 'RO12345678',
     });
-    expect(own.body.statuteUrl).toMatch(/^http/);
+    expect(own.body).not.toHaveProperty('statuteUrl');
+    expect(own.body).not.toHaveProperty('activityArea');
   });
 
   it('a confirmed but unvalidated NGO is hidden from volunteers and its admin gets 403 ORG_005 on an event', async () => {
@@ -344,7 +318,7 @@ describe('Organization registration and validation (e2e)', () => {
       taxId: 'RO12345678',
       firstAdmin: expect.objectContaining({ email: ADMIN_EMAIL }),
     });
-    expect(pending.body[0].statuteUrl).toMatch(/^http/);
+    expect(pending.body[0]).not.toHaveProperty('statuteUrl');
 
     testApp.mailbox.clear();
     await http

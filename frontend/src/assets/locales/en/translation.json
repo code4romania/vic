@@ -341,7 +341,6 @@
       "ORG_004": "An organization with the same name, email, phone or tax ID already exists.",
       "ORG_005": "The organization is not validated yet. This will be possible after the VIC team validates it.",
       "ORG_006": "The anti-robot check failed. Please try again.",
-      "ORG_007": "The statute is missing or is not a PDF (at most 10 MB).",
       "ORG_008": "This administrator is not in your organization.",
       "ORG_009": "Invites are only for admins who have not logged in yet.",
       "ORG_010": "You cannot change your own status."
@@ -360,16 +359,17 @@
     "website": "Website",
     "validated_on": "Validated on",
     "not_validated": "Awaiting validation",
-    "statute": "Statute",
-    "open_statute": "Open the statute (PDF)",
     "replace_logo": "New logo (optional)",
-    "replace_statute": "New statute (optional)",
     "status": {
       "pending": "Email not confirmed",
       "active": "Active",
       "suspended": "Suspended"
     },
-    "validation_banner": "Your organization is awaiting validation by the VIC team. You can set everything up meanwhile. Until then volunteers can't see it, you can't start a campaign and no hours can be registered."
+    "validation_banner": "Your organization is awaiting validation by the VIC team. You can set everything up meanwhile. Until then volunteers can't see it, you can't start a campaign and no hours can be registered.",
+    "validation": {
+      "title": "Validation",
+      "description": "The VIC super admin validates the organization based on its tax ID (CUI)."
+    }
   },
   "pagination": {
     "rows_per_page": "Rows per page",
@@ -1320,27 +1320,19 @@
         "label": "Organization phone"
       },
       "address": {
-        "label": "Address"
-      },
-      "activityArea": {
-        "label": "Area of activity"
+        "label": "Headquarters address (optional)"
       },
       "website": {
-        "label": "Website (optional)"
+        "label": "Website or social page (optional)"
       },
       "description": {
-        "label": "Description for volunteers (50 to 250 characters)"
+        "label": "Description for volunteers (optional, 50 to 250 characters)",
+        "length": "The description has 50 to 250 characters"
       },
       "logo": {
         "label": "Logo (optional)",
         "hint": "PNG or JPG, at most 5 MB",
         "rejected": "The logo must be a PNG or JPG of at most 5 MB"
-      },
-      "statute": {
-        "label": "Statute of the organization",
-        "hint": "PDF only, at most 10 MB",
-        "required": "The statute is required",
-        "rejected": "The statute must be a PDF of at most 10 MB"
       },
       "firstName": {
         "label": "First name"
@@ -1441,14 +1433,12 @@
   },
   "validation": {
     "title": "NGO validation",
-    "description": "Organizations that confirmed their email and wait for validation. Check the statute before validating.",
-    "open_statute": "Statute (PDF)",
+    "description": "Organizations that confirmed their email and wait for validation. Check the tax ID (CUI) before validating.",
     "columns": {
       "name": "Organization",
       "tax_id": "CUI",
       "registered_on": "Registered on",
-      "first_admin": "First admin",
-      "statute": "Statute"
+      "first_admin": "First admin"
     },
     "actions": {
       "validate": "Validate",

@@ -342,7 +342,6 @@
       "ORG_004": "Există deja o organizație cu același nume, email, telefon sau CUI.",
       "ORG_005": "Organizația nu este validată încă. Va fi posibil după ce echipa VIC o validează.",
       "ORG_006": "Verificarea anti-robot nu a reușit. Încearcă din nou.",
-      "ORG_007": "Statutul lipsește sau nu este PDF (maximum 10 MB).",
       "ORG_008": "Acest administrator nu face parte din organizația ta.",
       "ORG_009": "Invitațiile sunt doar pentru administratorii care nu au intrat încă în cont.",
       "ORG_010": "Nu îți poți schimba propriul status."
@@ -361,16 +360,17 @@
     "website": "Website",
     "validated_on": "Validată la",
     "not_validated": "În așteptarea validării",
-    "statute": "Statut",
-    "open_statute": "Deschide statutul (PDF)",
     "replace_logo": "Logo nou (opțional)",
-    "replace_statute": "Statut nou (opțional)",
     "status": {
       "pending": "Email neconfirmat",
       "active": "Activă",
       "suspended": "Suspendată"
     },
-    "validation_banner": "Organizația ta așteaptă validarea echipei VIC. Între timp poți configura totul. Până atunci voluntarii nu o pot vedea, nu poți porni o campanie și nu se pot înregistra ore."
+    "validation_banner": "Organizația ta așteaptă validarea echipei VIC. Între timp poți configura totul. Până atunci voluntarii nu o pot vedea, nu poți porni o campanie și nu se pot înregistra ore.",
+    "validation": {
+      "title": "Validare",
+      "description": "Super adminul VIC validează organizația pe baza CUI-ului."
+    }
   },
   "pagination": {
     "rows_per_page": "Rânduri pe pagină",
@@ -1323,27 +1323,19 @@
         "label": "Telefonul organizației"
       },
       "address": {
-        "label": "Adresa"
-      },
-      "activityArea": {
-        "label": "Domeniul de activitate"
+        "label": "Adresa sediului (opțional)"
       },
       "website": {
-        "label": "Website (opțional)"
+        "label": "Website sau pagină socială (opțional)"
       },
       "description": {
-        "label": "Descriere pentru voluntari (50-250 de caractere)"
+        "label": "Descriere pentru voluntari (opțional, 50-250 de caractere)",
+        "length": "Descrierea are între 50 și 250 de caractere"
       },
       "logo": {
         "label": "Logo (opțional)",
         "hint": "PNG sau JPG, maximum 5 MB",
         "rejected": "Logoul trebuie să fie PNG sau JPG de maximum 5 MB"
-      },
-      "statute": {
-        "label": "Statutul organizației",
-        "hint": "Doar PDF, maximum 10 MB",
-        "required": "Statutul este obligatoriu",
-        "rejected": "Statutul trebuie să fie un PDF de maximum 10 MB"
       },
       "firstName": {
         "label": "Prenume"
@@ -1444,14 +1436,12 @@
   },
   "validation": {
     "title": "Validare ONG-uri",
-    "description": "Organizații care și-au confirmat emailul și așteaptă validarea. Verifică statutul înainte de validare.",
-    "open_statute": "Statut (PDF)",
+    "description": "Organizații care și-au confirmat emailul și așteaptă validarea. Verifică CUI-ul înainte de validare.",
     "columns": {
       "name": "Organizație",
       "tax_id": "CUI",
       "registered_on": "Înregistrată la",
-      "first_admin": "Primul administrator",
-      "statute": "Statut"
+      "first_admin": "Primul administrator"
     },
     "actions": {
       "validate": "Validează",

@@ -18,7 +18,6 @@ import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOrganizationUseCaseService } from 'src/usecases/organization/get-organization.usecase';
-import { OrganizationFilesHelper } from 'src/usecases/organization/organization-files.helper';
 import { UpdateOrganizationUseCase } from 'src/usecases/organization/update-organization.usecase';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import {
@@ -36,7 +35,6 @@ export class OrganizationController {
   constructor(
     private readonly getOrganizationUseCase: GetOrganizationUseCaseService,
     private readonly updateOrganizationUseCase: UpdateOrganizationUseCase,
-    private readonly organizationFiles: OrganizationFilesHelper,
   ) {}
 
   @ApiOkResponse({ type: OrganizationPresenter })
@@ -46,12 +44,10 @@ export class OrganizationController {
   ): Promise<OrganizationPresenter> {
     const organization =
       await this.getOrganizationUseCase.execute(organizationId);
-    return new OrganizationPresenter(
-      await this.organizationFiles.withStatuteLink(organization),
-    );
+    return new OrganizationPresenter(organization);
   }
 
-  // Every field, and optionally a new logo or statute (multipart, like PATCH /mobile/user/profile).
+  // Every field, and optionally a new logo (multipart, like PATCH /mobile/user/profile).
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -60,11 +56,6 @@ export class OrganizationController {
         {
           type: 'object',
           properties: {
-            statute: {
-              type: 'string',
-              format: 'binary',
-              description: 'PDF, at most 10 MB',
-            },
             logo: {
               type: 'string',
               format: 'binary',
@@ -86,10 +77,8 @@ export class OrganizationController {
     const organization = await this.updateOrganizationUseCase.execute(
       changes,
       admin,
-      { logo: files?.logo?.[0], statute: files?.statute?.[0] },
+      { logo: files?.logo?.[0] },
     );
-    return new OrganizationPresenter(
-      await this.organizationFiles.withStatuteLink(organization),
-    );
+    return new OrganizationPresenter(organization);
   }
 }

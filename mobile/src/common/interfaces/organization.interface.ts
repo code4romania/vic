@@ -7,8 +7,8 @@ export interface IOrganization {
   name: string;
   email: string;
   phone: string;
-  address: string;
-  activityArea: string;
+  address: string | null;
+  website: string | null;
   logo: string;
   description: string;
   numberOfVolunteers: number;

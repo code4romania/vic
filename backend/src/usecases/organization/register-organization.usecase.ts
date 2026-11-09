@@ -27,9 +27,9 @@ export interface RegisterOrganizationOptions {
   name: string;
   email: string;
   phone: string;
-  address: string; // free text; no county or city (decisions R6)
-  activityArea: string;
-  description: string;
+  // #469: optional, filled in later from the Organization page
+  address?: string;
+  description?: string;
   website?: string;
   taxId: string;
   firstName: string;
@@ -41,10 +41,8 @@ export interface RegisterOrganizationOptions {
 
 export interface RegisterOrganizationFiles {
   logo?: Express.Multer.File;
-  statute?: Express.Multer.File;
 }
 
-export const STATUTE_MAX_BYTES = 10 * 1024 * 1024;
 export const LOGO_MAX_BYTES = 5 * 1024 * 1024;
 
 // A new NGO registers in VIC (decision 4). It starts `pending`; its first admin confirms the email
@@ -74,10 +72,7 @@ export class RegisterOrganizationUseCase
       throw new BadRequestException(OrganizationExceptionMessages.ORG_006);
     }
 
-    // 2. The statute is required and must be a PDF (ORG_007); the logo, when given, an image
-    if (!isPdf(files.statute)) {
-      throw new BadRequestException(OrganizationExceptionMessages.ORG_007);
-    }
+    // 2. The logo, when given, is an image (#469: no statute, the CUI is what gets validated)
     if (files.logo && !isLogoImage(files.logo)) {
       throw new BadRequestException(OrganizationExceptionMessages.ORG_003);
     }
@@ -93,10 +88,10 @@ export class RegisterOrganizationUseCase
             name: options.name.trim(),
             email: options.email,
             phone: options.phone.trim(),
-            address: options.address,
-            activityArea: options.activityArea,
-            description: options.description,
-            website: options.website,
+            address: options.address ?? null,
+            activityArea: null,
+            description: options.description ?? null,
+            website: options.website ?? null,
             taxId: options.taxId.trim(),
             logo: null,
             status: OrganizationStatus.PENDING,
@@ -105,19 +100,13 @@ export class RegisterOrganizationUseCase
         );
 
         const folder = `${S3_FILE_PATHS.ORGANIZATIONS}/${organization.id}`;
-        const statuteKey = await this.s3Service.uploadFile(
-          folder,
-          files.statute,
-          'statute.pdf',
-        );
-        const logoUrl = files.logo
-          ? await this.s3Service.uploadPublicFile(folder, files.logo)
-          : null;
-        await this.organizationFacade.updateOrganization(
-          organization.id,
-          { statuteUrl: statuteKey, logo: logoUrl },
-          manager,
-        );
+        if (files.logo) {
+          await this.organizationFacade.updateOrganization(
+            organization.id,
+            { logo: await this.s3Service.uploadPublicFile(folder, files.logo) },
+            manager,
+          );
+        }
 
         const adminUser = await this.userFacade.createAdmin(
           {
@@ -185,7 +174,6 @@ export class RegisterOrganizationUseCase
   }
 }
 
-// The file says it is a PDF and starts like one ("%PDF-"); at most 10 MB.
 // The image types a logo may be, told apart by their first bytes. No SVG: it can carry scripts, and logos
 // are served from the public bucket.
 const LOGO_SIGNATURES: {
@@ -227,14 +215,5 @@ export function isLogoImage(file: Express.Multer.File): boolean {
       ({ mimetype, matches }) =>
         file.mimetype === mimetype && matches(file.buffer),
     )
-  );
-}
-
-export function isPdf(file: Express.Multer.File): boolean {
-  return (
-    !!file?.buffer &&
-    file.size <= STATUTE_MAX_BYTES &&
-    file.mimetype === 'application/pdf' &&
-    file.buffer.subarray(0, 5).toString('latin1') === '%PDF-'
   );
 }

@@ -108,8 +108,7 @@ export class ConfirmEmailUseCase implements IUseCaseService<LinkResult> {
     return { organization: active, admin };
   }
 
-  // The "new NGO to validate" email, with every field and a link to the validation page (the statute is
-  // there; a presigned link in the email would expire after a day).
+  // The "new NGO to validate" email, with every field and a link to the validation page.
   private async notifySuperAdmins(
     organization: IOrganizationModel,
     admin: IAdminUserModel,

@@ -1,9 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { Equals, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  Equals,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 import { IsNormalizedEmail } from 'src/api/auth/dto/validators';
 import {
-  ActivityArea,
   Address,
   Description,
   OrganizationName,
@@ -13,7 +18,8 @@ import {
   Website,
 } from './organization-fields';
 
-// multipart/form-data: these fields plus the `statute` (PDF, required) and `logo` (image, optional) files.
+// multipart/form-data: these fields plus an optional `logo` image. #469: only name, CUI, email, phone,
+// the declarations and the first admin are required; the rest is filled in from the Organization page.
 export class RegisterOrganizationDto {
   @ApiProperty({ example: 'Asociatia Exemplu' })
   @OrganizationName()
@@ -27,19 +33,17 @@ export class RegisterOrganizationDto {
   @Phone()
   phone: string;
 
-  @ApiProperty({ description: 'Free text; no county or city select' })
+  @ApiPropertyOptional()
+  @IsOptional()
   @Address()
-  address: string;
+  address?: string;
 
-  @ApiProperty({ example: 'Social' })
-  @ActivityArea()
-  activityArea: string;
-
-  @ApiProperty({ minLength: 50, maxLength: 250 })
+  @ApiPropertyOptional({ minLength: 50, maxLength: 250 })
+  @IsOptional()
   @Description()
-  description: string;
+  description?: string;
 
-  @ApiPropertyOptional({ example: 'https://exemplu.ro' })
+  @ApiPropertyOptional()
   @Website()
   website?: string;
 

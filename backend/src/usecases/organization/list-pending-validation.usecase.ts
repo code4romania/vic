@@ -5,7 +5,6 @@ import { IOrganizationModel } from 'src/modules/organization/models/organization
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
-import { OrganizationFilesHelper } from './organization-files.helper';
 
 export type PendingOrganization = IOrganizationModel & {
   firstAdmin: IAdminUserModel;
@@ -19,7 +18,6 @@ export class ListPendingValidationUseCase
   constructor(
     private readonly organizationFacade: OrganizationFacadeService,
     private readonly userFacade: UserFacadeService,
-    private readonly files: OrganizationFilesHelper,
   ) {}
 
   async execute(): Promise<PendingOrganization[]> {
@@ -36,7 +34,7 @@ export class ListPendingValidationUseCase
           orderDirection: OrderDirection.ASC,
         });
         return {
-          ...(await this.files.withStatuteLink(organization)),
+          ...organization,
           firstAdmin: admins.items[0] ?? null,
         };
       }),

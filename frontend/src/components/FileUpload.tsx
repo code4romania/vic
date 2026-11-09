@@ -4,7 +4,7 @@ import { classNames } from '../common/utils/utils';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 
-// pdf: the NGO statute, PDF only (R32).
+// pdf: PDF only.
 type FileType = 'doc' | 'image' | 'pdf';
 
 const ACCEPT: Record<FileType, Record<string, string[]>> = {

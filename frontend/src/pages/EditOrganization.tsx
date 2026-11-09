@@ -21,22 +21,18 @@ import PageHeader from '../components/PageHeader';
 import FormLayout from '../layouts/FormLayout';
 import Paragraph from '../components/Paragraph';
 import {
-  isPdf,
   OrganizationFields,
-  OrganizationFiles,
-  organizationFieldsSchema,
+  OrganizationLogo,
+  organizationProfileSchema,
 } from '../components/OrganizationFields';
 import { IOrganizationFields } from '../common/interfaces/organization.interface';
-import { ORGANIZATION_ERRORS } from '../common/errors/entities/organization.errors';
 
-const schema = yup.object(organizationFieldsSchema).required();
+const schema = yup.object(organizationProfileSchema).required();
 
-// Every organization field, a new logo and a new statute (W3). The NGO Hub sync is gone.
+// #469: name, CUI, email, phone, address, website, description and a new logo. The NGO Hub sync is gone.
 const EditOrganization = () => {
   const navigate = useNavigate();
   const [logo, setLogo] = useState<File | null>(null);
-  const [statute, setStatute] = useState<File | null>(null);
-  const [statuteError, setStatuteError] = useState<string>();
 
   const {
     data: organization,
@@ -52,7 +48,7 @@ const EditOrganization = () => {
     formState: { errors },
     control,
     reset,
-  } = useForm<IOrganizationFields>({
+  } = useForm<Required<IOrganizationFields>>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema),
@@ -64,11 +60,10 @@ const EditOrganization = () => {
         name: organization.name,
         email: organization.email,
         phone: organization.phone,
-        address: organization.address,
-        activityArea: organization.activityArea,
-        description: organization.description,
-        website: organization.website ?? '',
         taxId: organization.taxId ?? '',
+        address: organization.address ?? '',
+        website: organization.website ?? '',
+        description: organization.description ?? '',
       });
   }, [organization]);
 
@@ -79,25 +74,18 @@ const EditOrganization = () => {
       );
   }, [organizationError]);
 
-  const onSubmit = (data: IOrganizationFields) => {
-    if (statute && !isPdf(statute)) {
-      setStatuteError(i18n.t('register_organization:form.statute.rejected'));
-      return;
-    }
+  const onSubmit = (data: Required<IOrganizationFields>) => {
     updateOrganization(
-      { data, files: { logo, statute } },
+      { data, files: { logo } },
       {
         onSuccess: () => {
           useSuccessToast(i18n.t('organization:submit.success'));
           navigate('/organization', { replace: true });
         },
         onError: (error) => {
-          const code = error.response?.data.code_error;
-          if (code === ORGANIZATION_ERRORS.ORG_007) {
-            setStatuteError(InternalErrors.ORGANIZATION_ERRORS.getError(code));
-            return;
-          }
-          useErrorToast(InternalErrors.ORGANIZATION_ERRORS.getError(code));
+          useErrorToast(
+            InternalErrors.ORGANIZATION_ERRORS.getError(error.response?.data.code_error),
+          );
         },
       },
     );
@@ -128,17 +116,8 @@ const EditOrganization = () => {
                 {i18n.t('organization:description_placeholder')}
               </Paragraph>
               <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-                <OrganizationFields control={control} errors={errors} />
-                <OrganizationFiles
-                  onLogo={setLogo}
-                  onStatute={(file) => {
-                    setStatute(file);
-                    setStatuteError(undefined);
-                  }}
-                  statuteError={statuteError}
-                  logoLabel={i18n.t('organization:replace_logo')}
-                  statuteLabel={i18n.t('organization:replace_statute')}
-                />
+                <OrganizationFields control={control} errors={errors} withProfile />
+                <OrganizationLogo onLogo={setLogo} logoLabel={i18n.t('organization:replace_logo')} />
               </form>
             </FormLayout>
           </CardBody>

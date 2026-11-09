@@ -98,15 +98,6 @@ const OrganizationValidation = () => {
         ),
     },
     {
-      id: 'statute',
-      name: t('columns.statute'),
-      cell: (organization) => (
-        <a className="underline" href={organization.statuteUrl} target="_blank" rel="noreferrer">
-          {t('open_statute')}
-        </a>
-      ),
-    },
-    {
       name: '',
       minWidth: '14rem',
       cell: (organization) => (

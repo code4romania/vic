@@ -1,14 +1,7 @@
-import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
-import { OrganizationFilesHelper } from './organization-files.helper';
 import { OrganizationGateService } from './organization-gate.service';
-import {
-  isLogoImage,
-  isPdf,
-  LOGO_MAX_BYTES,
-  STATUTE_MAX_BYTES,
-} from './register-organization.usecase';
+import { isLogoImage, LOGO_MAX_BYTES } from './register-organization.usecase';
 
 const file = (
   content: Buffer,
@@ -20,26 +13,6 @@ const file = (
     mimetype: 'application/pdf',
     ...overrides,
   }) as Express.Multer.File;
-
-describe('isPdf (the statute)', () => {
-  const pdf = Buffer.from('%PDF-1.7\n%%EOF');
-
-  it('accepts a PDF by type and by its first bytes', () => {
-    expect(isPdf(file(pdf))).toBe(true);
-  });
-
-  it.each([
-    ['no file', undefined],
-    ['a PDF type with other content', file(Buffer.from('<html>'))],
-    [
-      'PDF content with another type',
-      file(pdf, { mimetype: 'application/msword' }),
-    ],
-    ['more than 10 MB', file(pdf, { size: STATUTE_MAX_BYTES + 1 })],
-  ])('refuses %s', (_, candidate) => {
-    expect(isPdf(candidate)).toBe(false);
-  });
-});
 
 describe('isLogoImage (the logo)', () => {
   const png = Buffer.from([
@@ -82,35 +55,6 @@ describe('isLogoImage (the logo)', () => {
     ['a PNG of more than 5 MB', image(png, 'image/png', LOGO_MAX_BYTES + 1)],
   ])('refuses %s', (_, candidate) => {
     expect(isLogoImage(candidate)).toBe(false);
-  });
-});
-
-describe('OrganizationFilesHelper', () => {
-  const s3 = {
-    generatePresignedURL: jest.fn(
-      async (key: string) => `https://signed.example/${key}?sig=1`,
-    ),
-  };
-  const helper = new OrganizationFilesHelper(s3 as unknown as S3Service);
-
-  beforeEach(() => s3.generatePresignedURL.mockClear());
-
-  it('turns a statute key into a presigned link', async () => {
-    await expect(
-      helper.withStatuteLink({ statuteUrl: 'organizations/1/statute.pdf' }),
-    ).resolves.toEqual({
-      statuteUrl: 'https://signed.example/organizations/1/statute.pdf?sig=1',
-    });
-  });
-
-  it('leaves a missing statute and an existing URL alone', async () => {
-    await expect(helper.withStatuteLink({ statuteUrl: null })).resolves.toEqual(
-      { statuteUrl: null },
-    );
-    await expect(
-      helper.withStatuteLink({ statuteUrl: 'https://already.example/s.pdf' }),
-    ).resolves.toEqual({ statuteUrl: 'https://already.example/s.pdf' });
-    expect(s3.generatePresignedURL).not.toHaveBeenCalled();
   });
 });
 
