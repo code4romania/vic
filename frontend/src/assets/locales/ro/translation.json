@@ -1095,21 +1095,37 @@
     }
   },
   "dashboard": {
-    "statistics_card": {
-      "activity_log": {
-        "label": "Vezi ore care așteaptă aprobare",
-        "info": "{{value}} ore în așteptare"
+    "see_all": "Vezi toate",
+    "statistics": {
+      "volunteers": {
+        "label": "Voluntari activi",
+        "info": "{{value}} cereri noi",
+        "action": "Vezi voluntarii"
       },
-      "volunteer": {
-        "label": "Vezi solicitări",
-        "info": "{{value}} solicitări de înscriere"
+      "events": {
+        "label": "Evenimente viitoare",
+        "action": "Vezi evenimentele"
+      },
+      "contracts": {
+        "label": "Contracte în așteptare",
+        "action": "Vezi contractele"
+      },
+      "hours": {
+        "label": "Ore voluntariat",
+        "info": "{{value}} ore de aprobat",
+        "action": "Vezi orele de aprobat"
       }
     },
-    "line_chart": {
-      "title": "Număr voluntari"
+    "upcoming_events": {
+      "title": "Evenimente viitoare",
+      "empty": "Nu ai evenimente programate.",
+      "going_capacity": "{{going}}/{{capacity}} înscriși",
+      "going": "{{going}} înscriși"
     },
-    "pie_chart": {
-      "title": "Statistici voluntari organizație"
+    "announcement_responses": {
+      "title": "Răspunsuri la anunțuri",
+      "empty": "Niciun răspuns la anunțuri încă.",
+      "on": "la „{{name}}”"
     }
   },
   "documents": {
