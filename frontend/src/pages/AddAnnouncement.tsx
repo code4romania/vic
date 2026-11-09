@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
-import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
+import { AnnouncementType } from '../common/enums/announcement-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import AnnouncementForm, { AnnouncementFormTypes } from '../components/AnnouncementForm';
 import Button from '../components/Button';
@@ -16,7 +16,7 @@ import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { useCreateAnnouncementMutation } from '../services/announcement/announcement.service';
-import { BookmarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 export const anouncementFormValidationSchema = yup.object({
   name: yup
@@ -29,7 +29,32 @@ export const anouncementFormValidationSchema = yup.object({
     .required(`${i18n.t('announcement:form.description.required')}`)
     .min(2, `${i18n.t('announcement:form.description.min', { value: '2' })}`)
     .max(225, `${i18n.t('announcement:form.description.max', { value: '225' })}`),
-  targets: yup.array().default([]),
+  type: yup
+    .mixed<AnnouncementType>()
+    .oneOf(Object.values(AnnouncementType))
+    .required(`${i18n.t('announcement:form.type.required')}`),
+  volunteersNeeded: yup
+    .number()
+    .nullable()
+    .transform((value, original) => (original === '' || original === null ? null : value))
+    .integer(`${i18n.t('announcement:form.volunteers_needed.integer')}`)
+    .min(1, `${i18n.t('announcement:form.volunteers_needed.min', { value: '1' })}`),
+  displayStartDate: yup
+    .date()
+    .typeError(`${i18n.t('announcement:form.display_start_date.required')}`)
+    .required(`${i18n.t('announcement:form.display_start_date.required')}`),
+  displayEndDate: yup
+    .date()
+    .nullable()
+    .when('displayStartDate', ([displayStartDate], schema) =>
+      displayStartDate
+        ? schema.min(
+            yup.ref('displayStartDate'),
+            `${i18n.t('announcement:form.display_end_date.min')}`,
+          )
+        : schema,
+    ),
+  publishNow: yup.boolean(),
 });
 
 const AddAnnouncement = () => {
@@ -45,6 +70,11 @@ const AddAnnouncement = () => {
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(anouncementFormValidationSchema),
+    defaultValues: {
+      type: AnnouncementType.RECRUITMENT,
+      displayStartDate: new Date(),
+      publishNow: true,
+    },
   });
 
   const onBackButtonPress = () => {
@@ -55,9 +85,9 @@ const AddAnnouncement = () => {
     createAnnouncement(formValues, {
       onSuccess: () => {
         useSuccessToast(
-          formValues.status === AnnouncementStatus.DRAFT
-            ? i18n.t('announcement:submit.messages.draft')
-            : i18n.t('announcement:submit.messages.publish'),
+          formValues.publishNow
+            ? i18n.t('announcement:submit.messages.activate')
+            : i18n.t('announcement:submit.messages.create'),
         );
         onBackButtonPress();
       },
@@ -65,14 +95,6 @@ const AddAnnouncement = () => {
         useErrorToast(InternalErrors.ANNOUNCEMENT_ERRORS.getError(error.response?.data.code_error));
       },
     });
-  };
-
-  const onSaveDraft = (formValues: AnnouncementFormTypes) => {
-    onSubmit({ ...formValues, status: AnnouncementStatus.DRAFT });
-  };
-
-  const onPublish = (formValues: AnnouncementFormTypes) => {
-    onSubmit({ ...formValues, status: AnnouncementStatus.PUBLISHED });
   };
 
   return (
@@ -87,16 +109,10 @@ const AddAnnouncement = () => {
             <h4 className="text-sm sm:text-xl">{i18n.t('announcement:form.title')}</h4>
             <div className="flex flex-row gap-4">
               <Button
-                label={i18n.t('general:save_draft')}
-                icon={<BookmarkIcon className="h-5 w-5" />}
-                className="btn-outline-secondary"
-                onClick={handleSubmit(onSaveDraft)}
-              />
-              <Button
-                label={i18n.t('general:publish')}
+                label={i18n.t('announcement:actions.create')}
                 icon={<PaperAirplaneIcon className="h-5 w-5" />}
                 className="btn-primary"
-                onClick={handleSubmit(onPublish)}
+                onClick={handleSubmit(onSubmit)}
               />
             </div>
           </CardHeader>

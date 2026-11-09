@@ -1,14 +1,16 @@
-import { PaperAirplaneIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+  ArchiveBoxIcon,
+  CheckIcon,
+  PauseIcon,
+  PencilIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import {
-  AnouncementStatusMarkerColorMapper,
-  arrayOfNamesToString,
-  formatDate,
-} from '../common/utils/utils';
+import { AnouncementStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
 import CardHeader from '../components/CardHeader';
@@ -25,8 +27,9 @@ import PageLayout from '../layouts/PageLayout';
 import {
   useAnnouncement,
   useDeleteAnnouncementMutation,
-  useUpdateAnnouncementMutation,
+  useChangeAnnouncementStatusMutation,
 } from '../services/announcement/announcement.service';
+import { AnnouncementStatusAction } from '../services/announcement/announcement.api';
 
 const Announcement = () => {
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
@@ -41,8 +44,8 @@ const Announcement = () => {
     error: announcementError,
   } = useAnnouncement(id as string);
 
-  const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
-    useUpdateAnnouncementMutation();
+  const { mutateAsync: changeStatus, isLoading: isUpdateAnnouncementLoading } =
+    useChangeAnnouncementStatusMutation();
 
   const { mutateAsync: deleteAnnouncement, isLoading: isDeleteAnnouncementLoading } =
     useDeleteAnnouncementMutation();
@@ -58,19 +61,14 @@ const Announcement = () => {
     navigate('/announcements');
   };
 
-  const onPublish = () => {
+  const onChangeStatus = (action: AnnouncementStatusAction) => {
     if (announcement) {
-      updateAnnouncement(
-        {
-          id: announcement.id,
-          updateData: {
-            status: AnnouncementStatus.PUBLISHED,
-          },
-        },
+      changeStatus(
+        { id: announcement.id, action },
         {
           onSuccess: () => {
             onBackButtonPress();
-            useSuccessToast(i18n.t('announcement:submit.messages.publish'));
+            useSuccessToast(i18n.t(`announcement:submit.messages.${action}`));
           },
           onError: (error) => {
             useErrorToast(
@@ -127,20 +125,36 @@ const Announcement = () => {
                 label={i18n.t('general:delete')}
                 onClick={onDelete}
               />
-              {announcement.status === AnnouncementStatus.DRAFT && (
+              {announcement.status !== AnnouncementStatus.ARCHIVED && (
+                <>
+                  <Button
+                    className="btn-outline-secondary"
+                    label={i18n.t('general:edit', { item: '' })}
+                    icon={<PencilIcon className="menu-icon" />}
+                    onClick={onEdit}
+                  />
+                  <Button
+                    className="btn-outline-secondary"
+                    icon={<ArchiveBoxIcon className="h-5 w-5" />}
+                    label={i18n.t('announcement:actions.archive')}
+                    onClick={() => onChangeStatus('archive')}
+                  />
+                </>
+              )}
+              {announcement.status === AnnouncementStatus.ACTIVE && (
                 <Button
                   className="btn-outline-secondary"
-                  label={i18n.t('general:edit', { item: '' })}
-                  icon={<PencilIcon className="menu-icon" />}
-                  onClick={onEdit}
+                  icon={<PauseIcon className="h-5 w-5" />}
+                  label={i18n.t('announcement:actions.deactivate')}
+                  onClick={() => onChangeStatus('deactivate')}
                 />
               )}
-              {announcement.status === AnnouncementStatus.DRAFT && (
+              {announcement.status === AnnouncementStatus.INACTIVE && (
                 <Button
                   className="btn-primary"
-                  icon={<PaperAirplaneIcon className="h-5 w-5" />}
-                  label={i18n.t('general:publish')}
-                  onClick={onPublish}
+                  icon={<CheckIcon className="h-5 w-5" />}
+                  label={i18n.t('announcement:actions.activate')}
+                  onClick={() => onChangeStatus('activate')}
                 />
               )}
             </div>
@@ -158,11 +172,21 @@ const Announcement = () => {
                 readOnly
               />
               <FormInput
-                label={`${i18n.t('announcement:header.target')}`}
-                value={`(${announcement.targetedVolunteers}) ${
-                  announcement.targets.length !== 0
-                    ? arrayOfNamesToString(announcement.targets, ', ')
-                    : i18n.t('announcement:all_organization')
+                label={`${i18n.t('announcement:header.type')}`}
+                value={`${i18n.t(`announcement:type.${announcement.type}`)}`}
+                readOnly
+              />
+              <FormInput
+                label={`${i18n.t('announcement:header.volunteers_needed')}`}
+                value={`${announcement.volunteersNeeded ?? '-'}`}
+                readOnly
+              />
+              <FormInput
+                label={`${i18n.t('announcement:header.display_period')}`}
+                value={`${formatDate(announcement.displayStartDate)} - ${
+                  announcement.displayEndDate
+                    ? formatDate(announcement.displayEndDate)
+                    : i18n.t('announcement:no_end')
                 }`}
                 readOnly
               />

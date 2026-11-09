@@ -23,6 +23,8 @@ import { DeleteAnnouncementUseCase } from 'src/usecases/announcement/delete-anno
 import { GetManyAnnouncementUseCase } from 'src/usecases/announcement/get-many-announcement.usecase';
 import { GetOneAnnouncementUseCase } from 'src/usecases/announcement/get-one-announcement.usecase';
 import { UpdateAnnouncementUseCase } from 'src/usecases/announcement/update-announcement.usecase';
+import { ChangeAnnouncementStatusUseCase } from 'src/usecases/announcement/change-announcement-status.usecase';
+import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { GetManyAnnouncementDto } from './dto/get-many-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
@@ -39,6 +41,7 @@ export class AnnouncementController {
     private readonly updateAnnouncementUseCase: UpdateAnnouncementUseCase,
     private readonly deleteAnnouncementUseCase: DeleteAnnouncementUseCase,
     private readonly getOneAnnouncementUseCase: GetOneAnnouncementUseCase,
+    private readonly changeAnnouncementStatusUseCase: ChangeAnnouncementStatusUseCase,
   ) {}
 
   @Get()
@@ -91,18 +94,59 @@ export class AnnouncementController {
   async update(
     @Param('id', UuidValidationPipe) id: string,
     @Body() updateAnnouncementDto: UpdateAnnouncementDto,
-    @ExtractUser() admin: IAdminUserModel,
   ): Promise<AnnouncementPresenter> {
     const announcement = await this.updateAnnouncementUseCase.execute(
       id,
-      {
-        ...updateAnnouncementDto,
-        organizationId: admin.organizationId,
-      },
-      admin,
+      updateAnnouncementDto,
     );
 
     return new AnnouncementPresenter(announcement);
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @Patch(':id/activate')
+  async activate(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<AnnouncementPresenter> {
+    return new AnnouncementPresenter(
+      await this.changeAnnouncementStatusUseCase.execute(
+        id,
+        AnnouncementStatus.ACTIVE,
+        admin,
+      ),
+    );
+  }
+
+  @ApiParam({ name: 'id', type: 'string' })
+  @Patch(':id/deactivate')
+  async deactivate(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<AnnouncementPresenter> {
+    return new AnnouncementPresenter(
+      await this.changeAnnouncementStatusUseCase.execute(
+        id,
+        AnnouncementStatus.INACTIVE,
+        admin,
+      ),
+    );
+  }
+
+  // Archiving is manual and final (VIC 2.0, #503)
+  @ApiParam({ name: 'id', type: 'string' })
+  @Patch(':id/archive')
+  async archive(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<AnnouncementPresenter> {
+    return new AnnouncementPresenter(
+      await this.changeAnnouncementStatusUseCase.execute(
+        id,
+        AnnouncementStatus.ARCHIVED,
+        admin,
+      ),
+    );
   }
 
   @ApiParam({ name: 'id', type: 'string' })

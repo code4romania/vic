@@ -102,8 +102,9 @@ export const VolunteerProfileStatusTextColorMapper = {
 };
 
 export const AnouncementStatusMarkerColorMapper = {
-  [AnnouncementStatus.PUBLISHED]: 'bg-green-500',
-  [AnnouncementStatus.DRAFT]: 'bg-yellow-500',
+  [AnnouncementStatus.ACTIVE]: 'bg-green-500',
+  [AnnouncementStatus.INACTIVE]: 'bg-yellow-500',
+  [AnnouncementStatus.ARCHIVED]: 'bg-cool-gray-500',
 };
 
 export const EventStatusMarkerColorMapper = {

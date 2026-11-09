@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { StringParam, QueryParams, ArrayParam } from 'use-query-params';
+import { StringParam, QueryParams } from 'use-query-params';
 import {
   getPaginationQueryParams,
   IPaginationQueryParams,
@@ -12,7 +12,7 @@ import Announcements from '../../pages/Announcements';
 export interface AnnouncementsQueryProps extends IPaginationQueryParams {
   status?: string;
   search?: string;
-  targets?: string[];
+  type?: string;
 }
 
 export type AnnouncementsProps = IHOCQueryProps<AnnouncementsQueryProps>;
@@ -30,7 +30,7 @@ const AnnouncementsWithQueryParams = () => {
     ...DEFAULT_QUERY_PARAMS,
     status: StringParam,
     search: StringParam,
-    targets: ArrayParam,
+    type: StringParam,
   };
 
   return (

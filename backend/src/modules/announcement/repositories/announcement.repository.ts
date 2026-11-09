@@ -5,7 +5,6 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { OrganizationStructureTransformer } from 'src/modules/organization/models/organization-structure.model';
 import { Repository } from 'typeorm';
 import { AnnouncementEntity } from '../entities/announcement.entity';
 import { IAnnouncementRepository } from '../interfaces/announcement-repository.interface';
@@ -36,9 +35,6 @@ export class AnnouncementRepositoryService
   ): Promise<IAnnouncementModel> {
     const announcement = await this.announcementRepository.findOne({
       where: findOptions,
-      relations: {
-        targets: true,
-      },
     });
 
     return AnnouncementStructureTransformer.fromEntity(announcement);
@@ -47,17 +43,12 @@ export class AnnouncementRepositoryService
   async findMany(
     findOptions: FindManyAnnouncementOptions,
   ): Promise<Pagination<IAnnouncementModel>> {
-    const { orderBy, orderDirection, organizationId, search, targets, status } =
+    const { orderBy, orderDirection, organizationId, search, type, status } =
       findOptions;
 
     // create query
     const query = this.announcementRepository
       .createQueryBuilder('announcement')
-      .leftJoinAndMapMany(
-        'announcement.targets',
-        'announcement.targets',
-        'targets',
-      )
       .select()
       .orderBy(
         this.buildOrderByQuery(orderBy || 'createdOn', 'announcement'),
@@ -80,13 +71,8 @@ export class AnnouncementRepositoryService
       query.andWhere('announcement.status = :status', { status });
     }
 
-    if (targets) {
-      query.innerJoin(
-        'announcement.targets',
-        'target',
-        'target.name IN (:...targets)',
-        { targets },
-      );
+    if (type) {
+      query.andWhere('announcement.type = :type', { type });
     }
 
     return this.paginateQuery(
@@ -100,16 +86,12 @@ export class AnnouncementRepositoryService
   public async findManyByRegularUser(
     findOptions: FindManyAnnouncementOptions,
   ): Promise<Pagination<IAnnouncementModel>> {
-    const { orderBy, orderDirection, userId, search, status } = findOptions;
+    const { orderBy, orderDirection, userId, search, status, visibleOn } =
+      findOptions;
 
     // create query
     const query = this.announcementRepository
       .createQueryBuilder('announcement')
-      .leftJoinAndMapMany(
-        'announcement.targets',
-        'announcement.targets',
-        'targets',
-      )
       .leftJoinAndMapOne(
         'announcement.organization',
         'announcement.organization',
@@ -127,13 +109,17 @@ export class AnnouncementRepositoryService
           .subQuery()
           .select('volunteer.organizationId')
           .from(VolunteerEntity, 'volunteer')
-          .leftJoin('volunteer.volunteerProfile', 'volunteerProfile')
-          .where(
-            'volunteer.userId = :userId AND (volunteerProfile.departmentId = targets.id OR targets.id IS NULL)',
-            { userId },
-          )
+          .where('volunteer.userId = :userId', { userId })
           .getQuery(),
     );
+
+    // VIC 2.0 (#503): only inside the display period
+    if (visibleOn) {
+      query.andWhere(
+        'announcement.displayStartDate <= :visibleOn AND (announcement.displayEndDate IS NULL OR announcement.displayEndDate >= :visibleOn)',
+        { visibleOn },
+      );
+    }
 
     if (search) {
       query.andWhere(
@@ -165,13 +151,10 @@ export class AnnouncementRepositoryService
 
   async update(
     id: string,
-    { targetsIds, ...updates }: UpdateAnnouncementOptions,
+    updates: UpdateAnnouncementOptions,
   ): Promise<IAnnouncementModel> {
-    const targets = targetsIds?.map(OrganizationStructureTransformer.toEntity);
-
     const toUpdate = await this.announcementRepository.preload({
       id,
-      targets,
       ...updates,
     });
 

@@ -1,6 +1,7 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IAnnouncementModel } from 'src/modules/announcement/models/announcement.model';
+import { AnnouncementType } from 'src/modules/announcement/enums/announcement-type.enum';
 
 export class MobileAnouncementPresenter {
   constructor(anouncement: IAnnouncementModel) {
@@ -8,7 +9,22 @@ export class MobileAnouncementPresenter {
     this.title = anouncement.name;
     this.description = anouncement.description;
     this.organizationLogo = anouncement?.organization.logo || '';
+    this.type = anouncement.type;
+    this.volunteersNeeded = anouncement.volunteersNeeded ?? null;
+    this.displayEndDate = anouncement.displayEndDate ?? null;
   }
+
+  @Expose()
+  @ApiProperty({ enum: AnnouncementType })
+  type: AnnouncementType;
+
+  @Expose()
+  @ApiProperty({ description: 'Number of volunteers needed', nullable: true })
+  volunteersNeeded: number;
+
+  @Expose()
+  @ApiProperty({ description: 'Shown until this date', nullable: true })
+  displayEndDate: Date;
 
   @Expose()
   @ApiProperty({

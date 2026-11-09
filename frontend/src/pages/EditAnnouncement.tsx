@@ -1,12 +1,10 @@
-import { BookmarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
-import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { mapDivisionListItemToSelectItem } from '../common/utils/utils';
 import AnnouncementForm, { AnnouncementFormTypes } from '../components/AnnouncementForm';
 import Button from '../components/Button';
 import CardBody from '../components/CardBody';
@@ -49,11 +47,13 @@ const EditAnnouncement = () => {
 
   useEffect(() => {
     if (announcement) {
-      const { targets, ...anouncementFormData } = announcement;
       reset({
-        name: anouncementFormData.name,
-        description: anouncementFormData.description,
-        ...(targets ? { targets: targets.map(mapDivisionListItemToSelectItem) } : {}),
+        name: announcement.name,
+        description: announcement.description,
+        type: announcement.type,
+        volunteersNeeded: announcement.volunteersNeeded ?? null,
+        displayStartDate: new Date(announcement.displayStartDate),
+        displayEndDate: announcement.displayEndDate ? new Date(announcement.displayEndDate) : null,
       });
     }
   }, [announcement]);
@@ -78,11 +78,7 @@ const EditAnnouncement = () => {
         },
         {
           onSuccess: () => {
-            useSuccessToast(
-              formValues.status === AnnouncementStatus.DRAFT
-                ? i18n.t('announcement:submit.messages.draft')
-                : i18n.t('announcement:submit.messages.publish'),
-            );
+            useSuccessToast(i18n.t('announcement:submit.messages.edit'));
             onBackButtonPress();
           },
           onError: (error) => {
@@ -93,14 +89,6 @@ const EditAnnouncement = () => {
         },
       );
     }
-  };
-
-  const onSaveDraft = (formValues: AnnouncementFormTypes) => {
-    onSubmit({ ...formValues, status: AnnouncementStatus.DRAFT });
-  };
-
-  const onPublish = (formValues: AnnouncementFormTypes) => {
-    onSubmit({ ...formValues, status: AnnouncementStatus.PUBLISHED });
   };
 
   return (
@@ -115,21 +103,15 @@ const EditAnnouncement = () => {
             <h4 className="text-sm sm:text-xl">{i18n.t('announcement:form.title')}</h4>
             <div className="flex flex-row gap-4">
               <Button
-                label={i18n.t('general:save_draft')}
-                icon={<BookmarkIcon className="h-5 w-5" />}
-                className="btn-outline-secondary"
-                onClick={handleSubmit(onSaveDraft)}
-              />
-              <Button
-                label={i18n.t('general:publish')}
+                label={i18n.t('general:save')}
                 icon={<PaperAirplaneIcon className="h-5 w-5" />}
                 className="btn-primary"
-                onClick={handleSubmit(onPublish)}
+                onClick={handleSubmit(onSubmit)}
               />
             </div>
           </CardHeader>
           <CardBody>
-            <AnnouncementForm control={control} errors={errors} />
+            <AnnouncementForm control={control} errors={errors} isEditForm />
           </CardBody>
         </Card>
       )}

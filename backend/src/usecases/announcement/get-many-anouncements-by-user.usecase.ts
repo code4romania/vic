@@ -19,7 +19,8 @@ export class GetManyAnouncementsByUserAsUsecase
   ): Promise<Pagination<IAnnouncementModel>> {
     return this.announcementFacade.findManyByRegularUser({
       ...findOptions,
-      status: AnnouncementStatus.PUBLISHED,
+      status: AnnouncementStatus.ACTIVE,
+      visibleOn: new Date(),
     });
   }
 }

@@ -12,8 +12,15 @@ import { IAnnouncement } from '../common/interfaces/announcement.interface';
 import CellLayout from '../layouts/CellLayout';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
-import { CheckIcon, EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
+import {
+  ArchiveBoxIcon,
+  CheckIcon,
+  EyeIcon,
+  PauseIcon,
+  PencilIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
+import { AnnouncementStatus, AnnouncementType } from '../common/enums/announcement-status.enum';
 import {
   AnouncementStatusMarkerColorMapper,
   formatDate,
@@ -22,31 +29,33 @@ import {
 import {
   useAnnouncements,
   useDeleteAnnouncementMutation,
-  useUpdateAnnouncementMutation,
+  useChangeAnnouncementStatusMutation,
 } from '../services/announcement/announcement.service';
+import { AnnouncementStatusAction } from '../services/announcement/announcement.api';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../components/ConfirmationModal';
 import StatusWithMarker from '../components/StatusWithMarker';
-import Targets from '../components/Targets';
 import DataTableFilters from '../components/DataTableFilters';
 import { SelectItem } from '../components/Select';
 import { AnnouncementsProps } from '../containers/query/AnnouncementsWithQueryParms';
 import SelectFilter from '../containers/SelectFilter';
-import TargetsMultiSelectFilter from '../containers/TargetsMultiSelectFilter';
 
-const StatusOptions: SelectItem<AnnouncementStatus>[] = [
-  {
-    key: AnnouncementStatus.DRAFT,
-    value: i18n.t('announcement:status.draft'),
-  },
-  {
-    key: AnnouncementStatus.PUBLISHED,
-    value: i18n.t('announcement:status.published'),
-  },
-];
+const StatusOptions: SelectItem<AnnouncementStatus>[] = Object.values(AnnouncementStatus).map(
+  (status) => ({ key: status, value: i18n.t(`announcement:status.${status}`) }),
+);
+
+const TypeOptions: SelectItem<AnnouncementType>[] = Object.values(AnnouncementType).map((type) => ({
+  key: type,
+  value: i18n.t(`announcement:type.${type}`),
+}));
+
+const formatDisplayPeriod = (row: IAnnouncement): string =>
+  `${formatDate(row.displayStartDate)} - ${
+    row.displayEndDate ? formatDate(row.displayEndDate) : i18n.t('announcement:no_end')
+  }`;
 
 const AnnouncementTableHeader = [
   {
@@ -92,24 +101,35 @@ const AnnouncementTableHeader = [
     cell: (row: IAnnouncement) => <CellLayout>{formatDateWithTime(row.publishedOn)}</CellLayout>,
   },
   {
-    id: 'targetedVolunteers',
-    name: i18n.t('announcement:header.target'),
-    minWidth: '10rem',
+    id: 'type',
+    name: i18n.t('announcement:header.type'),
+    sortable: true,
+    grow: 1,
+    minWidth: '9rem',
+    cell: (row: IAnnouncement) => (
+      <CellLayout>{i18n.t(`announcement:type.${row.type}`)}</CellLayout>
+    ),
+  },
+  {
+    id: 'volunteersNeeded',
+    name: i18n.t('announcement:header.volunteers_needed'),
+    sortable: true,
+    grow: 1,
+    minWidth: '7rem',
+    cell: (row: IAnnouncement) => <CellLayout>{row.volunteersNeeded ?? '-'}</CellLayout>,
+  },
+  {
+    id: 'displayStartDate',
+    name: i18n.t('announcement:header.display_period'),
     sortable: true,
     grow: 2,
-    cell: (row: IAnnouncement) => (
-      <CellLayout>
-        <Targets targets={row.targets} targetedMembers={row.targetedVolunteers} />
-      </CellLayout>
-    ),
+    minWidth: '12rem',
+    cell: (row: IAnnouncement) => <CellLayout>{formatDisplayPeriod(row)}</CellLayout>,
   },
 ];
 
 const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
-
-  // filters
-  const [targets, setTargets] = useState<SelectItem<string>[]>([]);
 
   const navigate = useNavigate();
 
@@ -125,11 +145,11 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
     query.orderDirection as OrderDirection,
     query.search,
     query?.status as AnnouncementStatus,
-    query?.targets,
+    query?.type as AnnouncementType,
   );
 
-  const { mutateAsync: updateAnnouncement, isLoading: isUpdateAnnouncementLoading } =
-    useUpdateAnnouncementMutation();
+  const { mutateAsync: changeStatus, isLoading: isUpdateAnnouncementLoading } =
+    useChangeAnnouncementStatusMutation();
 
   const { mutateAsync: deleteAnnouncement, isLoading: isDeleteAnnouncementLoading } =
     useDeleteAnnouncementMutation();
@@ -143,56 +163,49 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
   }, [announcementsError]);
 
   const buildAnnouncementActionColumn = (): TableColumn<IAnnouncement> => {
-    const announcementDraftMenuItems = [
-      {
-        label: i18n.t('general:view'),
-        icon: <EyeIcon className="menu-icon" />,
-        onClick: onViewOne,
-      },
-      {
-        label: i18n.t('general:edit', { item: '' }),
-        icon: <PencilIcon className="menu-icon" />,
-        onClick: onEdit,
-      },
-      {
-        label: i18n.t('general:publish'),
-        icon: <CheckIcon className="menu-icon" />,
-        onClick: onPublish,
-        primary: true,
-      },
-      {
-        label: i18n.t('general:delete', { item: '' }),
-        icon: <TrashIcon className="menu-icon" />,
-        onClick: onDelete,
-        alert: true,
-      },
-    ];
+    const view = {
+      label: i18n.t('general:view'),
+      icon: <EyeIcon className="menu-icon" />,
+      onClick: onViewOne,
+    };
+    const edit = {
+      label: i18n.t('general:edit', { item: '' }),
+      icon: <PencilIcon className="menu-icon" />,
+      onClick: onEdit,
+    };
+    const activate = {
+      label: i18n.t('announcement:actions.activate'),
+      icon: <CheckIcon className="menu-icon" />,
+      onClick: (row: IAnnouncement) => onChangeStatus(row, 'activate'),
+      primary: true,
+    };
+    const deactivate = {
+      label: i18n.t('announcement:actions.deactivate'),
+      icon: <PauseIcon className="menu-icon" />,
+      onClick: (row: IAnnouncement) => onChangeStatus(row, 'deactivate'),
+    };
+    const archive = {
+      label: i18n.t('announcement:actions.archive'),
+      icon: <ArchiveBoxIcon className="menu-icon" />,
+      onClick: (row: IAnnouncement) => onChangeStatus(row, 'archive'),
+    };
+    const remove = {
+      label: i18n.t('general:delete', { item: '' }),
+      icon: <TrashIcon className="menu-icon" />,
+      onClick: onDelete,
+      alert: true,
+    };
 
-    const announcementPublishedMenuItems = [
-      {
-        label: i18n.t('general:view'),
-        icon: <EyeIcon className="menu-icon" />,
-        onClick: onViewOne,
-      },
-      {
-        label: i18n.t('general:delete', { item: '' }),
-        icon: <TrashIcon className="menu-icon" />,
-        onClick: onDelete,
-        alert: true,
-      },
-    ];
+    const menuItemsByStatus = {
+      [AnnouncementStatus.ACTIVE]: [view, edit, deactivate, archive, remove],
+      [AnnouncementStatus.INACTIVE]: [view, edit, activate, archive, remove],
+      [AnnouncementStatus.ARCHIVED]: [view, remove],
+    };
 
     return {
       name: '',
       cell: (row: IAnnouncement) => (
-        <Popover<IAnnouncement>
-          row={row}
-          items={
-            row.status === AnnouncementStatus.PUBLISHED
-              ? announcementPublishedMenuItems
-              : announcementDraftMenuItems
-          }
-        />
+        <Popover<IAnnouncement> row={row} items={menuItemsByStatus[row.status] || [view]} />
       ),
       width: '50px',
       allowOverflow: true,
@@ -211,17 +224,12 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
     navigate(`${row.id}`);
   };
 
-  const onPublish = (row: IAnnouncement) => {
-    updateAnnouncement(
-      {
-        id: row.id,
-        updateData: {
-          status: AnnouncementStatus.PUBLISHED,
-        },
-      },
+  const onChangeStatus = (row: IAnnouncement, action: AnnouncementStatusAction) => {
+    changeStatus(
+      { id: row.id, action },
       {
         onSuccess: () => {
-          useSuccessToast(i18n.t('announcement:submit.messages.publish'));
+          useSuccessToast(i18n.t(`announcement:submit.messages.${action}`));
           refetch();
         },
         onError: (error) => {
@@ -280,10 +288,9 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
     });
   };
 
-  const onTargetsChange = (targets: SelectItem<string>[]) => {
-    setTargets(targets);
+  const onTypeChange = (type: SelectItem<string> | undefined) => {
     setQuery({
-      targets: targets.map((target) => target.value),
+      type: type?.key,
     });
   };
 
@@ -299,7 +306,6 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
 
   const onResetFilters = () => {
     setQuery({}, 'push');
-    setTargets([]);
   };
 
   return (
@@ -318,12 +324,13 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
           placeholder={`${i18n.t('general:select', { item: '' })}`}
           allowDeselect
         />
-        <TargetsMultiSelectFilter
-          onChange={onTargetsChange}
-          selected={targets}
-          label={`${i18n.t('announcement:header.target')}`}
-          defaultValues={query?.targets}
+        <SelectFilter
+          label={`${i18n.t('announcement:header.type')}`}
+          onChange={onTypeChange}
+          options={TypeOptions}
+          defaultValue={query.type}
           placeholder={`${i18n.t('general:select', { item: '' })}`}
+          allowDeselect
         />
       </DataTableFilters>
       <Card>

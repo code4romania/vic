@@ -565,12 +565,14 @@
       "updated_on": "Edited at",
       "status": "Display status",
       "published_on": "Published at",
-      "target": "Target"
+      "type": "Type",
+      "volunteers_needed": "Volunteers needed",
+      "display_period": "Display period"
     },
-    "all_organization": "The whole organization",
     "status": {
-      "draft": "Draft",
-      "published": "Published"
+      "active": "Active",
+      "inactive": "Inactive",
+      "archived": "Archived"
     },
     "form": {
       "title": "Announcement",
@@ -587,6 +589,27 @@
         "max": "The ad description can have a maximum of {{value}} characters",
         "placeholder": "Enter ad content"
       },
+      "type": {
+        "label": "Announcement type",
+        "required": "The announcement type is required"
+      },
+      "volunteers_needed": {
+        "label": "Volunteers needed",
+        "placeholder": "e.g. 2",
+        "integer": "The number of volunteers must be a whole number",
+        "min": "The number of volunteers must be at least {{value}}"
+      },
+      "display_start_date": {
+        "label": "Show from",
+        "required": "The display start date is required"
+      },
+      "display_end_date": {
+        "label": "Show until",
+        "min": "The end date must be after the start date"
+      },
+      "publish_now": {
+        "label": "Activate right after creating"
+      },
       "target": {
         "label": "Target",
         "placeholder": "Choose all that apply",
@@ -595,9 +618,12 @@
     },
     "submit": {
       "messages": {
-        "draft": "Draft ad successfully created",
-        "publish": "Ad successfully created and published",
-        "delete": "Ad successfully deleted"
+        "delete": "Ad successfully deleted",
+        "create": "Announcement created (inactive)",
+        "activate": "Announcement activated",
+        "deactivate": "Announcement deactivated",
+        "archive": "Announcement archived",
+        "edit": "Announcement updated"
       }
     },
     "modal": {
@@ -606,9 +632,22 @@
     },
     "error": {
       "ANNOUNCEMENT_001": "The ad was not found",
-      "ANNOUNCEMENT_002": "The notice is already published and cannot be modified",
-      "ANNOUNCEMENT_003": "Incorrect department selection, only departments can be chosen as targets"
-    }
+      "ANNOUNCEMENT_002": "The announcement is archived and can no longer be changed",
+      "ANNOUNCEMENT_003": "Incorrect department selection, only departments can be chosen as targets",
+      "ANNOUNCEMENT_005": "The display period must end after it starts"
+    },
+    "type": {
+      "recruitment": "General recruitment",
+      "activity": "Specific activity"
+    },
+    "no_end": "no end date",
+    "actions": {
+      "create": "Create announcement",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "archive": "Archive"
+    },
+    "all_organization": "The whole organization"
   },
   "activity_log": {
     "pending": "Requests for approval",

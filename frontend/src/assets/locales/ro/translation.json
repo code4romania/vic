@@ -565,12 +565,14 @@
       "updated_on": "Editat la",
       "status": "Status afișare",
       "published_on": "Publicat la",
-      "target": "Target"
+      "type": "Tip",
+      "volunteers_needed": "Voluntari necesari",
+      "display_period": "Perioadă afișare"
     },
-    "all_organization": "Toată organizația",
     "status": {
-      "draft": "Draft",
-      "published": "Publicat"
+      "active": "Activ",
+      "inactive": "Inactiv",
+      "archived": "Arhivat"
     },
     "form": {
       "title": "Anunț",
@@ -587,6 +589,27 @@
         "max": "Descrierea anunțului poate să aibă maxim {{value}} caractere",
         "placeholder": "Introdu conținutul anunțului"
       },
+      "type": {
+        "label": "Tip anunț",
+        "required": "Tipul anunțului este obligatoriu"
+      },
+      "volunteers_needed": {
+        "label": "Voluntari necesari",
+        "placeholder": "ex: 2",
+        "integer": "Numărul de voluntari trebuie să fie întreg",
+        "min": "Numărul de voluntari trebuie să fie cel puțin {{value}}"
+      },
+      "display_start_date": {
+        "label": "Afișare de la",
+        "required": "Data de început a afișării este obligatorie"
+      },
+      "display_end_date": {
+        "label": "Afișare până la",
+        "min": "Data de final trebuie să fie după data de început"
+      },
+      "publish_now": {
+        "label": "Activează imediat după creare"
+      },
       "target": {
         "label": "Target",
         "placeholder": "Alege toate variantele care se aplică",
@@ -595,9 +618,12 @@
     },
     "submit": {
       "messages": {
-        "draft": "Anunț draft creat cu succes",
-        "publish": "Anunț creat și publicat cu succes",
-        "delete": "Anunț șters cu succes"
+        "delete": "Anunț șters cu succes",
+        "create": "Anunț creat cu succes (inactiv)",
+        "activate": "Anunț activat cu succes",
+        "deactivate": "Anunț dezactivat cu succes",
+        "archive": "Anunț arhivat cu succes",
+        "edit": "Anunț modificat cu succes"
       }
     },
     "modal": {
@@ -606,9 +632,22 @@
     },
     "error": {
       "ANNOUNCEMENT_001": "Anunțul nu a fost găsit",
-      "ANNOUNCEMENT_002": "Anunțul este deja publicat și nu poate fi modificat",
-      "ANNOUNCEMENT_003": "Selecție departament incorectă, doar departamentele pot fi alese ca target"
-    }
+      "ANNOUNCEMENT_002": "Anunțul este arhivat și nu mai poate fi modificat",
+      "ANNOUNCEMENT_003": "Selecție departament incorectă, doar departamentele pot fi alese ca target",
+      "ANNOUNCEMENT_005": "Perioada de afișare trebuie să se încheie după ce începe"
+    },
+    "type": {
+      "recruitment": "Recrutare generală",
+      "activity": "Activitate specifică"
+    },
+    "no_end": "fără dată de final",
+    "actions": {
+      "create": "Creează anunț",
+      "activate": "Activează",
+      "deactivate": "Dezactivează",
+      "archive": "Arhivează"
+    },
+    "all_organization": "Toată organizația"
   },
   "activity_log": {
     "pending": "Solicitări de aprobare",
