@@ -1,3 +1,4 @@
+import { GetPendingApprovalsUseCase } from './dashboard/get-pending-approvals.usecase';
 import { GetVolunteerEventsUseCase } from './volunteer/get-volunteer-events.usecase';
 import { Module } from '@nestjs/common';
 import { RegisterOrganizationUseCase } from './organization/register-organization.usecase';
@@ -290,6 +291,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     UpdateVolunteerDetailsUsecase,
     AddVolunteerUseCase,
     GetVolunteerEventsUseCase,
+    GetPendingApprovalsUseCase,
     ImportVolunteersUseCase,
     GetVolunteersForDownloadUseCase,
     GetVolunteerProfileUsecase,
@@ -470,6 +472,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     UpdateVolunteerDetailsUsecase,
     AddVolunteerUseCase,
     GetVolunteerEventsUseCase,
+    GetPendingApprovalsUseCase,
     ImportVolunteersUseCase,
     GetVolunteersForDownloadUseCase,
     GetVolunteerProfileUsecase,

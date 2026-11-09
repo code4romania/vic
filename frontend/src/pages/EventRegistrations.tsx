@@ -128,7 +128,7 @@ const columns = (status: EventRegistrationStatus): TableColumn<IEventRegistratio
 // VIC 2.0 (#501): the NGO approves or rejects registrations to its events. Volunteers from the
 // event's departments are approved automatically, so the pending tab holds everyone else. A decision
 // can be changed from the other tabs; the volunteer is notified each time.
-const EventRegistrations = () => {
+const EventRegistrations = ({ embedded }: { embedded?: boolean } = {}) => {
   const [query, setQuery] = useQueryParams({
     status: withDefault(StringParam, EventRegistrationStatus.PENDING),
     search: StringParam,
@@ -190,9 +190,8 @@ const EventRegistrations = () => {
       : []),
   ];
 
-  return (
-    <PageLayout>
-      <PageHeader>{i18n.t('events:registrations.title')}</PageHeader>
+  const content = (
+    <>
       <p className="text-cool-gray-500">{i18n.t('events:registrations.description')}</p>
       <Tabs<EventRegistrationStatus>
         tabs={tabs}
@@ -247,6 +246,16 @@ const EventRegistrations = () => {
           onConfirm={(reason) => onDecide(rejecting, reason)}
         />
       )}
+    </>
+  );
+
+  // #499: shown inside the approvals page
+  if (embedded) return content;
+
+  return (
+    <PageLayout>
+      <PageHeader>{i18n.t('events:registrations.title')}</PageHeader>
+      {content}
     </PageLayout>
   );
 };

@@ -238,10 +238,13 @@ interface ActivityLogTableProps extends ActivityLogTableBasicProps {
   volunteerId?: string;
   volunteerStatus?: VolunteerStatus;
   volunteerName?: string;
+  // #499: the approvals page shows approved and rejected hours on separate tabs
+  fixedStatus?: ActivityLogStatus;
 }
 
 const ActivityLogTable = ({
   resolutionStatus,
+  fixedStatus,
   volunteerId,
   volunteerStatus,
   volunteerName,
@@ -275,7 +278,7 @@ const ActivityLogTable = ({
     orderDirection: query.orderDirection as OrderDirection,
     approvedOrRejectedBy: query.approvedOrRejectedBy,
     search: query.search,
-    status: query.status,
+    status: fixedStatus ?? query.status,
     executionDateStart: query.executionDateStart,
     executionDateEnd: query.executionDateEnd,
     registrationDateStart: query.registrationDateStart,
@@ -402,7 +405,7 @@ const ActivityLogTable = ({
       orderBy: query.orderBy,
       orderDirection: query.orderDirection as OrderDirection,
       search: query.search,
-      status: query.status,
+      status: fixedStatus ?? query.status,
       approvedOrRejectedBy: query.approvedOrRejectedBy,
       executionDateStart: query.executionDateStart,
       executionDateEnd: query.executionDateEnd,
@@ -418,7 +421,20 @@ const ActivityLogTable = ({
     if (volunteerId) {
       setQuery({ activeTab: query.activeTab }, 'push');
     } else {
-      setQuery({ resolutionStatus: query.resolutionStatus }, 'push');
+      // clear only the filters, so the page's own tabs (#499) stay as they are
+      setQuery(
+        {
+          search: undefined,
+          status: undefined,
+          executionDateStart: undefined,
+          executionDateEnd: undefined,
+          registrationDateStart: undefined,
+          registrationDateEnd: undefined,
+          approvedOrRejectedBy: undefined,
+          page: 1,
+        },
+        'replaceIn',
+      );
     }
   };
 
@@ -453,15 +469,19 @@ const ActivityLogTable = ({
         )}
         {resolutionStatus === ActivityLogResolutionStatus.SOLVED && (
           <>
-            <Select
-              label={`${i18n.t('activity_log:status')}`}
-              placeholder={`${i18n.t('general:select', { item: '' })}`}
-              options={StatusOptions}
-              onChange={onStatusChange}
-              selected={
-                query.status ? StatusOptions.find((option) => option.key === query.status) : status
-              }
-            />
+            {!fixedStatus && (
+              <Select
+                label={`${i18n.t('activity_log:status')}`}
+                placeholder={`${i18n.t('general:select', { item: '' })}`}
+                options={StatusOptions}
+                onChange={onStatusChange}
+                selected={
+                  query.status
+                    ? StatusOptions.find((option) => option.key === query.status)
+                    : status
+                }
+              />
+            )}
             <AdminSelect
               label={i18n.t('activity_log:filters.approved_rejected')}
               onSelect={onApprovedOrRejectedByChange}

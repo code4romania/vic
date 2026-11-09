@@ -116,7 +116,8 @@
       "team": "Team",
       "validation": "NGO validation",
       "events_list": "Events list",
-      "event_registrations": "Event registrations"
+      "event_registrations": "Event registrations",
+      "approvals": "Approvals"
     },
     "collapse": "Narrow the menu"
   },
@@ -1552,5 +1553,21 @@
     "title": "Access denied",
     "description": "You do not have access to this page.",
     "home": "Go to the home page"
+  },
+  "approvals": {
+    "title": "Approvals",
+    "description": "Requests waiting for the organization's decision.",
+    "pending_total_one": "One request is waiting for your decision.",
+    "pending_total_other": "{{count}} requests are waiting for your decision.",
+    "tabs": {
+      "volunteers": "Volunteer applications",
+      "hours": "Volunteer hours",
+      "events": "Event registrations"
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
   }
 }

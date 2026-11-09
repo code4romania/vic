@@ -34,8 +34,10 @@ const ActivityLogTableWithQueryParams = ({
   volunteerId,
   volunteerName,
   volunteerStatus,
+  fixedStatus,
 }: {
   resolutionStatus?: ActivityLogResolutionStatus;
+  fixedStatus?: ActivityLogStatus;
   volunteerId?: string;
   volunteerName?: string;
   volunteerStatus?: VolunteerStatus;
@@ -69,6 +71,7 @@ const ActivityLogTableWithQueryParams = ({
             volunteerId={volunteerId}
             volunteerStatus={volunteerStatus}
             volunteerName={volunteerName}
+            fixedStatus={fixedStatus}
           />
         );
       }}

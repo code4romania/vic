@@ -1,3 +1,7 @@
+import {
+  GetPendingApprovalsUseCase,
+  IPendingApprovals,
+} from 'src/usecases/dashboard/get-pending-approvals.usecase';
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
@@ -23,7 +27,16 @@ export class DashboardController {
     private readonly getDashboardVolunteerGroupedUsecase: GetDashboardVolunteerGroupedUsecase,
     private readonly getDashboardVolunteerHoursUseCase: GetDashboardVolunteersHoursUseCase,
     private readonly getDashboardVolunteerStatusUseCase: GetDashboardVolunteersStatusUseCase,
+    private readonly getPendingApprovalsUseCase: GetPendingApprovalsUseCase,
   ) {}
+
+  // #499 / #468: pending approvals per type and in total
+  @Get('pending-approvals')
+  async getPendingApprovals(
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<IPendingApprovals> {
+    return this.getPendingApprovalsUseCase.execute(organizationId);
+  }
 
   @Get('volunteer-status-timeseries')
   async getDashboardVolunteerStatusTimeseries(
