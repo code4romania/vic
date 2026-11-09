@@ -83,6 +83,7 @@ import { GetOneAnnouncementUseCase } from './announcement/get-one-announcement.u
 import { GetManyAnnouncementUseCase } from './announcement/get-many-announcement.usecase';
 import { CreateAnnouncementUseCase } from './announcement/create-announcement.usecase';
 import { UpdateAnnouncementUseCase } from './announcement/update-announcement.usecase';
+import { ChangeAnnouncementStatusUseCase } from './announcement/change-announcement-status.usecase';
 import { DeleteAnnouncementUseCase } from './announcement/delete-announcement.usecase';
 import { EventModule } from 'src/modules/event/event.module';
 import { CreateEventUseCase } from './event/create-event.usecase';
@@ -293,6 +294,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetManyAnnouncementUseCase,
     CreateAnnouncementUseCase,
     UpdateAnnouncementUseCase,
+    ChangeAnnouncementStatusUseCase,
     DeleteAnnouncementUseCase,
     GetManyAnouncementsByUserAsUsecase,
     // Events
@@ -464,6 +466,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetManyAnnouncementUseCase,
     CreateAnnouncementUseCase,
     UpdateAnnouncementUseCase,
+    ChangeAnnouncementStatusUseCase,
     DeleteAnnouncementUseCase,
     CreateEventUseCase,
     GetManyAnouncementsByUserAsUsecase,

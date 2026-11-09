@@ -5,6 +5,7 @@ export enum AnnouncementExceptionCodes {
   ANNOUNCEMENT_002 = 'ANNOUNCEMENT_002',
   ANNOUNCEMENT_003 = 'ANNOUNCEMENT_003',
   ANNOUNCEMENT_004 = 'ANNOUNCEMENT_004',
+  ANNOUNCEMENT_005 = 'ANNOUNCEMENT_005',
 }
 
 type AnnouncementExceptionCodeType = keyof typeof AnnouncementExceptionCodes;
@@ -19,7 +20,7 @@ export const AnnouncementExceptionMessages: Record<
   },
   [AnnouncementExceptionCodes.ANNOUNCEMENT_002]: {
     code_error: AnnouncementExceptionCodes.ANNOUNCEMENT_002,
-    message: 'A published announcement cannot be modified',
+    message: 'An archived announcement cannot be modified',
   },
   [AnnouncementExceptionCodes.ANNOUNCEMENT_003]: {
     code_error: AnnouncementExceptionCodes.ANNOUNCEMENT_003,
@@ -28,5 +29,9 @@ export const AnnouncementExceptionMessages: Record<
   [AnnouncementExceptionCodes.ANNOUNCEMENT_004]: {
     code_error: AnnouncementExceptionCodes.ANNOUNCEMENT_004,
     message: 'Error while sending the anouncement notifications',
+  },
+  [AnnouncementExceptionCodes.ANNOUNCEMENT_005]: {
+    code_error: AnnouncementExceptionCodes.ANNOUNCEMENT_005,
+    message: 'The display period must end after it starts',
   },
 };

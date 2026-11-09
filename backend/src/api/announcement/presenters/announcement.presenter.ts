@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { OrganizationStructureListItemPresenter } from 'src/api/organization/presenters/organization-structure-list-item.presenter';
 import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
+import { AnnouncementType } from 'src/modules/announcement/enums/announcement-type.enum';
 import { IAnnouncementModel } from 'src/modules/announcement/models/announcement.model';
 
 export class AnnouncementPresenter {
@@ -10,10 +10,12 @@ export class AnnouncementPresenter {
     this.name = announcement.name;
     this.description = announcement.description;
     this.status = announcement.status;
+    this.type = announcement.type;
+    this.volunteersNeeded = announcement.volunteersNeeded ?? null;
+    this.displayStartDate = announcement.displayStartDate;
+    this.displayEndDate = announcement.displayEndDate ?? null;
     this.publishedOn = announcement.publishedOn;
-    this.targets = announcement.targets.map(
-      (target) => new OrganizationStructureListItemPresenter(target),
-    );
+    this.archivedOn = announcement.archivedOn ?? null;
     this.updatedOn = announcement.updatedOn;
     this.targetedVolunteers = announcement.targetedVolunteers;
   }
@@ -56,11 +58,30 @@ export class AnnouncementPresenter {
   publishedOn: Date;
 
   @Expose()
+  @ApiProperty({ enum: AnnouncementType })
+  type: AnnouncementType;
+
+  @Expose()
   @ApiProperty({
-    type: OrganizationStructureListItemPresenter,
-    isArray: true,
+    description: 'Number of volunteers needed',
+    nullable: true,
   })
-  targets: OrganizationStructureListItemPresenter[];
+  volunteersNeeded: number;
+
+  @Expose()
+  @ApiProperty({ description: 'Shown in mobile from this date' })
+  displayStartDate: Date;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Shown in mobile until this date (null = no end)',
+    nullable: true,
+  })
+  displayEndDate: Date;
+
+  @Expose()
+  @ApiProperty({ description: 'When it was archived', nullable: true })
+  archivedOn: Date;
 
   @Expose()
   @ApiProperty({

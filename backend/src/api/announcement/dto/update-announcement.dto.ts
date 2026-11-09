@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/swagger';
+import { OmitType, PartialType } from '@nestjs/swagger';
 import { CreateAnnouncementDto } from './create-announcement.dto';
 
-export class UpdateAnnouncementDto extends PartialType(CreateAnnouncementDto) {}
+// Activation and archiving have their own endpoints
+export class UpdateAnnouncementDto extends PartialType(
+  OmitType(CreateAnnouncementDto, ['publishNow']),
+) {}

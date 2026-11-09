@@ -1,12 +1,14 @@
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from 'react-query';
-import { AnnouncementStatus } from '../../common/enums/announcement-status.enum';
+import { AnnouncementStatus, AnnouncementType } from '../../common/enums/announcement-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { ANNOUNCEMENT_ERRORS } from '../../common/errors/entities/announcement.errors';
 import { IBusinessException } from '../../common/interfaces/business-exception.interface';
 import { AnnouncementFormTypes } from '../../components/AnnouncementForm';
 import {
+  AnnouncementStatusAction,
   addAnnouncement,
+  changeAnnouncementStatus,
   deleteAnnouncement,
   getAnnouncement,
   getAnnouncements,
@@ -20,11 +22,11 @@ export const useAnnouncements = (
   orderDirection?: OrderDirection,
   searchWord?: string,
   status?: AnnouncementStatus,
-  targets?: string[],
+  type?: AnnouncementType,
 ) => {
   return useQuery(
-    ['announcement', limit, page, orderBy, orderDirection, searchWord, status, targets],
-    () => getAnnouncements(limit, page, orderBy, orderDirection, searchWord, status, targets),
+    ['announcement', limit, page, orderBy, orderDirection, searchWord, status, type],
+    () => getAnnouncements(limit, page, orderBy, orderDirection, searchWord, status, type),
     {
       onError: (error: AxiosError<IBusinessException<ANNOUNCEMENT_ERRORS>>) => error,
       enabled: !!(limit && page),
@@ -49,6 +51,17 @@ export const useUpdateAnnouncementMutation = () => {
   return useMutation(
     ({ id, updateData }: { id: string; updateData: Partial<AnnouncementFormTypes> }) =>
       updateAnnouncement(id, updateData),
+    {
+      onError: (error: AxiosError<IBusinessException<ANNOUNCEMENT_ERRORS>>) =>
+        Promise.resolve(error),
+    },
+  );
+};
+
+export const useChangeAnnouncementStatusMutation = () => {
+  return useMutation(
+    ({ id, action }: { id: string; action: AnnouncementStatusAction }) =>
+      changeAnnouncementStatus(id, action),
     {
       onError: (error: AxiosError<IBusinessException<ANNOUNCEMENT_ERRORS>>) =>
         Promise.resolve(error),
