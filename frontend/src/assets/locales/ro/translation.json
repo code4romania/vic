@@ -1249,7 +1249,7 @@
       },
       "delete_modal": {
         "title": "Ești sigur că dorești ștergerea acestui contract?",
-        "description": "Vizualizează lista tuturor contractelor voluntarilor tăi din VIC. Contractul de voluntar are o structura prestabilită. Poți crea mai multe template-uri de contracte (ex. contract pentru voluntari >16 ani, contract pentru voluntari <16 ani)."
+        "description": "Contractul se șterge din lista organizației și din aplicația voluntarului. Acțiunea nu poate fi anulată."
       },
       "submit": {
         "confirm": "Contractul a fost confirmat",
