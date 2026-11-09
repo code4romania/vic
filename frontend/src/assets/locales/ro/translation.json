@@ -589,7 +589,14 @@
     },
     "download_open": "Evenimente active.xlsx",
     "download_past": "Evenimente încheiate.xlsx",
-    "download_rsvp": "Listă răspunsuri.xlsx"
+    "download_rsvp": "Listă răspunsuri.xlsx",
+    "tabs": {
+      "upcoming": "Viitoare",
+      "ongoing": "În desfășurare",
+      "past": "Finalizate"
+    },
+    "download_upcoming": "Evenimente viitoare.xlsx",
+    "download_ongoing": "Evenimente în desfășurare.xlsx"
   },
   "announcement": {
     "title": "Istoric anunțuri",

@@ -42,10 +42,15 @@ import Targets from '../components/Targets';
 import { getEventsForDownload } from '../services/event/event.api';
 import { EventsProps } from '../containers/query/EventsWithQueryParams';
 
+// VIC 2.0 (#495): upcoming (not started), ongoing (started, not ended) and finished, each paginated
 const EventsTabsOptions: SelectItem<EventState>[] = [
-  { key: EventState.OPEN, value: i18n.t('side_menu:options.events') },
-  { key: EventState.PAST, value: i18n.t('events:past_events') },
+  { key: EventState.UPCOMING, value: i18n.t('events:tabs.upcoming') },
+  { key: EventState.ONGOING, value: i18n.t('events:tabs.ongoing') },
+  { key: EventState.PAST, value: i18n.t('events:tabs.past') },
 ];
+
+const currentTab = (state?: string): SelectItem<EventState> =>
+  EventsTabsOptions.find((tab) => tab.key === state) ?? EventsTabsOptions[0];
 
 const OpenEventsTableHeader = [
   {
@@ -378,19 +383,11 @@ const Events = ({ query, setQuery }: EventsProps) => {
       <Tabs<EventState>
         tabs={EventsTabsOptions}
         onClick={onTabClick}
-        defaultTab={
-          query?.eventState
-            ? EventsTabsOptions.find((tab) => tab.key === query?.eventState)
-            : EventsTabsOptions[0]
-        }
+        defaultTab={currentTab(query?.eventState)}
       >
         <Card>
           <CardHeader>
-            <h2>
-              {query.eventState === EventState.OPEN
-                ? i18n.t('side_menu:options.events')
-                : i18n.t('events:past_events')}
-            </h2>
+            <h2>{currentTab(query.eventState).value}</h2>
             <Button
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}

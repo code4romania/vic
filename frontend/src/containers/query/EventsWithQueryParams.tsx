@@ -21,7 +21,7 @@ const DEFAULT_QUERY_PARAMS = getPaginationQueryParams({});
 // set defaults (if needed) for other specific filter params
 const EventsWithQueryParams = () => {
   // set event state default
-  const EventStateParam = withDefault(StringParam, EventState.OPEN);
+  const EventStateParam = withDefault(StringParam, EventState.UPCOMING);
   // set query config
   const queryConfig = {
     ...DEFAULT_QUERY_PARAMS,

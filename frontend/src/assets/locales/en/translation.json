@@ -588,7 +588,14 @@
     },
     "download_open": "Active events.xlsx",
     "download_past": "Closed events.xlsx",
-    "download_rsvp": "List of answers.xlsx"
+    "download_rsvp": "List of answers.xlsx",
+    "tabs": {
+      "upcoming": "Upcoming",
+      "ongoing": "Ongoing",
+      "past": "Finished"
+    },
+    "download_upcoming": "Upcoming events.xlsx",
+    "download_ongoing": "Ongoing events.xlsx"
   },
   "announcement": {
     "title": "Ads history",
