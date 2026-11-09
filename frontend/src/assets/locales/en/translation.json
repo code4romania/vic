@@ -185,7 +185,15 @@
     "source_placeholder": "E.g. Facebook, event, referral",
     "favorite": "Add to favorites",
     "unfavorite": "Remove from favorites",
-    "no_account": "No VIC account"
+    "no_account": "No VIC account",
+    "activities": {
+      "tab": "Activities",
+      "title": "Activities",
+      "add": "Add activity",
+      "add_title": "Add activity",
+      "description": "Hours the volunteer gave outside events.",
+      "saved": "The activity was added."
+    }
   },
   "volunteers": {
     "department_and_role": "Department and role",

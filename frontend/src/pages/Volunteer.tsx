@@ -20,17 +20,17 @@ import {
 import { VolunteerProps } from '../containers/query/VolunteerWithQueryParams';
 import ActivityLogTableWithQueryParams from '../containers/query/ActivityLogTableWithQueryParams';
 import ContractsTableWithQueryParams from '../containers/query/ContractsTableWithQueryParams';
-import ActionsArchiveWithQueryParams from '../containers/query/ActionsArchiveWithQueryParams';
+import VolunteerActivities from '../components/VolunteerActivities';
 
 export enum VolunteerTabsOptions {
-  ARCHIVE = 'archive',
+  ACTIVITIES = 'activities',
   NEW = 'new',
   SOLVED = 'solved',
   DOCUMENTS = 'documents',
 }
 
 const VolunteerTabsOptons: SelectItem<VolunteerTabsOptions>[] = [
-  { key: VolunteerTabsOptions.ARCHIVE, value: i18n.t('side_menu:options.actions_archive') },
+  { key: VolunteerTabsOptions.ACTIVITIES, value: i18n.t('volunteer:activities.tab') },
   { key: VolunteerTabsOptions.NEW, value: i18n.t('activity_log:pending') },
   { key: VolunteerTabsOptions.SOLVED, value: i18n.t('activity_log:past') },
   { key: VolunteerTabsOptions.DOCUMENTS, value: i18n.t('side_menu:options.documents') },
@@ -132,8 +132,12 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
             volunteerStatus={volunteer?.status}
           />
         )}
-        {query?.activeTab === VolunteerTabsOptions.ARCHIVE && (
-          <ActionsArchiveWithQueryParams volunteerId={id} />
+        {query?.activeTab === VolunteerTabsOptions.ACTIVITIES && (
+          <VolunteerActivities
+            volunteerId={id as string}
+            volunteerName={volunteer?.user.name}
+            volunteerStatus={volunteer?.status}
+          />
         )}
         {query?.activeTab === VolunteerTabsOptions.DOCUMENTS && (
           <ContractsTableWithQueryParams

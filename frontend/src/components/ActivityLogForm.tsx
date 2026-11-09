@@ -14,6 +14,8 @@ interface ActivityLogFormProps {
   errors: FieldErrorsImpl<DeepRequired<ActivityLogFormTypes>>;
   disabled?: boolean;
   lockVoluneer?: boolean;
+  // #481: an activity is never linked to an event
+  hideEvent?: boolean;
 }
 
 export type ActivityLogFormTypes = {
@@ -25,7 +27,13 @@ export type ActivityLogFormTypes = {
   task: ListItem;
 };
 
-const ActivityLogForm = ({ control, errors, disabled, lockVoluneer }: ActivityLogFormProps) => {
+const ActivityLogForm = ({
+  control,
+  errors,
+  disabled,
+  lockVoluneer,
+  hideEvent,
+}: ActivityLogFormProps) => {
   return (
     <FormLayout>
       {!disabled && <p className="text-cool-gray-500">{i18n.t('activity_log:form.description')}</p>}
@@ -48,21 +56,23 @@ const ActivityLogForm = ({ control, errors, disabled, lockVoluneer }: ActivityLo
             }}
           />
         )}
-        <Controller
-          key="event"
-          name="event"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <EventSelect
-                defaultValue={value}
-                onSelect={onChange}
-                label={i18n.t('general:event')}
-                errorMessage={errors['event']?.value?.message}
-              />
-            );
-          }}
-        />
+        {!hideEvent && (
+          <Controller
+            key="event"
+            name="event"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <EventSelect
+                  defaultValue={value}
+                  onSelect={onChange}
+                  label={i18n.t('general:event')}
+                  errorMessage={errors['event']?.value?.message}
+                />
+              );
+            }}
+          />
+        )}
         <Controller
           key="task"
           name="task"

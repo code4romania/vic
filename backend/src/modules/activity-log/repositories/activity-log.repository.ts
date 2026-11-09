@@ -1,3 +1,4 @@
+import { ActivityLogSource } from '../enums/activity-log-source.enum';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
@@ -117,11 +118,20 @@ export class ActivityLogRepositoryService
       });
     }
 
+    if (findOptions.source === ActivityLogSource.ACTIVITY) {
+      query.andWhere('activityLog.eventId IS NULL');
+    } else if (findOptions.source === ActivityLogSource.EVENT) {
+      query.andWhere('activityLog.eventId IS NOT NULL');
+    }
+
+    // no resolutionStatus: every status (#481)
     if (findOptions.resolutionStatus === ActivityLogResolutionStatus.NEW) {
       query.andWhere('activityLog.status = :status', {
         status: ActivityLogStatus.PENDING,
       });
-    } else {
+    } else if (
+      findOptions.resolutionStatus === ActivityLogResolutionStatus.SOLVED
+    ) {
       // Only APPROVED or REJECTED can be filtered by STATUS
       if (findOptions.status) {
         query.andWhere('activityLog.status = :status', {
