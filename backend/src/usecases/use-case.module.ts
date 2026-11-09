@@ -161,6 +161,8 @@ import { CancelContractUsecase } from './documents/cancel-contract.usecase';
 import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
 import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
 import { GetVicStatisticsUsecase } from './dashboard/get-vic-statistics.usecase';
+import { RespondToAnnouncementUseCase } from './announcement/respond-to-announcement.usecase';
+import { GetAnnouncementResponsesUseCase } from './announcement/get-announcement-responses.usecase';
 import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anouncements-by-user.usecase';
 import { LeaveOrganizationUsecase } from './organization/leave-organization.usecase';
 import { RejoinOrganizationUsecase } from './organization/rejoin-organization.usecase';
@@ -297,6 +299,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     ChangeAnnouncementStatusUseCase,
     DeleteAnnouncementUseCase,
     GetManyAnouncementsByUserAsUsecase,
+    RespondToAnnouncementUseCase,
+    GetAnnouncementResponsesUseCase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,
@@ -474,6 +478,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     DeleteAnnouncementUseCase,
     CreateEventUseCase,
     GetManyAnouncementsByUserAsUsecase,
+    RespondToAnnouncementUseCase,
+    GetAnnouncementResponsesUseCase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,

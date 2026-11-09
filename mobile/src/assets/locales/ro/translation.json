@@ -696,5 +696,24 @@
         "heading": "Actualizează aplicația",
         "paragraph": "Această versiune a aplicației VIC nu mai este acceptată. Instalează ultima versiune din magazin pentru a continua.",
         "update": "Actualizează"
+    },
+    "anouncement_response": {
+        "respond": "Răspunde",
+        "responded": "Răspunsul tău: {{comment}}",
+        "title": "Răspunde la anunț",
+        "paragraph": "Organizația vede răspunsul tău împreună cu numele tău. Poți răspunde o singură dată.",
+        "comment": {
+            "label": "Mesajul tău",
+            "placeholder": "Ex: Pot veni sâmbătă dimineața",
+            "required": "Scrie un mesaj",
+            "max": "Mesajul poate avea cel mult 500 de caractere"
+        },
+        "submit": "Trimite răspunsul",
+        "sent": "Răspunsul a fost trimis",
+        "errors": {
+            "ANNOUNCEMENT_006": "Doar voluntarii activi pot răspunde la un anunț activ.",
+            "ANNOUNCEMENT_007": "Ai răspuns deja la acest anunț.",
+            "generic": "Răspunsul nu a putut fi trimis. Încearcă din nou."
+        }
     }
 }

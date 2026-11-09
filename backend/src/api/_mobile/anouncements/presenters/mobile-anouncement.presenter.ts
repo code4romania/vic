@@ -4,7 +4,11 @@ import { IAnnouncementModel } from 'src/modules/announcement/models/announcement
 import { AnnouncementType } from 'src/modules/announcement/enums/announcement-type.enum';
 
 export class MobileAnouncementPresenter {
-  constructor(anouncement: IAnnouncementModel) {
+  constructor(
+    anouncement: IAnnouncementModel,
+    myResponse?: { comment: string; createdOn: Date },
+  ) {
+    this.myResponse = myResponse ?? null;
     this.id = anouncement.id;
     this.title = anouncement.name;
     this.description = anouncement.description;
@@ -13,6 +17,13 @@ export class MobileAnouncementPresenter {
     this.volunteersNeeded = anouncement.volunteersNeeded ?? null;
     this.displayEndDate = anouncement.displayEndDate ?? null;
   }
+
+  @Expose()
+  @ApiProperty({
+    description: "#504: the volunteer's answer, null when not answered yet",
+    nullable: true,
+  })
+  myResponse: { comment: string; createdOn: Date } | null;
 
   @Expose()
   @ApiProperty({ enum: AnnouncementType })

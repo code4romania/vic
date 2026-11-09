@@ -58,3 +58,22 @@ export const changeAnnouncementStatus = async (
 export const deleteAnnouncement = async (id: string): Promise<string> => {
   return API.delete(`/announcement/${id}`).then((res) => res.data);
 };
+
+// #504: volunteers' answers from the app
+export interface IAnnouncementResponse {
+  id: string;
+  comment: string;
+  createdOn: Date;
+  user: { id: string; name: string; email: string };
+  volunteerId: string | null;
+}
+
+export const getAnnouncementResponses = async (
+  id: string,
+  page: number,
+  limit: number,
+): Promise<IPaginatedEntity<IAnnouncementResponse>> => {
+  return API.get(`/announcement/${id}/responses`, { params: { page, limit } }).then(
+    (res) => res.data,
+  );
+};

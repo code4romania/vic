@@ -13,6 +13,7 @@ import {
   getAnnouncement,
   getAnnouncements,
   updateAnnouncement,
+  getAnnouncementResponses,
 } from './announcement.api';
 
 export const useAnnouncements = (
@@ -73,4 +74,13 @@ export const useDeleteAnnouncementMutation = () => {
   return useMutation((id: string) => deleteAnnouncement(id), {
     onError: (error: AxiosError<IBusinessException<ANNOUNCEMENT_ERRORS>>) => Promise.resolve(error),
   });
+};
+
+// #504
+export const useAnnouncementResponses = (id: string, page: number, limit: number) => {
+  return useQuery(
+    ['announcement-responses', id, page, limit],
+    () => getAnnouncementResponses(id, page, limit),
+    { enabled: !!id, keepPreviousData: true },
+  );
 };

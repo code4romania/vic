@@ -30,6 +30,9 @@ import { GetManyAnnouncementDto } from './dto/get-many-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
 import { AnnouncementGuard } from './guards/announcement.guard';
 import { AnnouncementPresenter } from './presenters/announcement.presenter';
+import { AnnouncementResponsePresenter } from './presenters/announcement-response.presenter';
+import { GetAnnouncementResponsesUseCase } from 'src/usecases/announcement/get-announcement-responses.usecase';
+import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, AnnouncementGuard)
@@ -42,6 +45,7 @@ export class AnnouncementController {
     private readonly deleteAnnouncementUseCase: DeleteAnnouncementUseCase,
     private readonly getOneAnnouncementUseCase: GetOneAnnouncementUseCase,
     private readonly changeAnnouncementStatusUseCase: ChangeAnnouncementStatusUseCase,
+    private readonly getAnnouncementResponsesUseCase: GetAnnouncementResponsesUseCase,
   ) {}
 
   @Get()
@@ -59,6 +63,27 @@ export class AnnouncementController {
       ...announcements,
       items: announcements.items.map(
         (announcement) => new AnnouncementPresenter(announcement),
+      ),
+    });
+  }
+
+  // #504: the volunteers' answers, newest first
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiPaginatedResponse(AnnouncementResponsePresenter)
+  @Get(':id/responses')
+  async getResponses(
+    @Param('id', UuidValidationPipe) id: string,
+    @Query() { limit, page }: BasePaginationFilterDto,
+  ): Promise<PaginatedPresenter<AnnouncementResponsePresenter>> {
+    const responses = await this.getAnnouncementResponsesUseCase.execute({
+      announcementId: id,
+      limit,
+      page,
+    });
+    return new PaginatedPresenter({
+      ...responses,
+      items: responses.items.map(
+        (response) => new AnnouncementResponsePresenter(response),
       ),
     });
   }
