@@ -12,7 +12,6 @@ import News from '../screens/News';
 import OrganizationProfile from '../screens/OrganizationProfile';
 import VolunteerProfile from '../screens/VolunteerProfile';
 import AccountData from '../screens/AccountData';
-import ChangePassword from '../screens/ChangePassword';
 import NotificationsSettings from '../screens/NotificationsSettings';
 import DrawerNavigator from './Drawer';
 import CreateVolunteer from '../screens/CreateVolunteer';
@@ -41,7 +40,6 @@ const Private = () => (
       <Screen name="join-by-access-code" component={JoinByAccessCode} />
       <Screen name="event" component={Event} />
       <Screen name="account-data" component={AccountData} />
-      <Screen name="change-password" component={ChangePassword} />
       <Screen name="notifications-settings" component={NotificationsSettings} />
       <Screen name="documents" component={Documents} />
       <Screen name="contract" component={Contract} />

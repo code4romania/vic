@@ -11,12 +11,12 @@ export class AuthMailerService {
     private readonly authConfig: AuthConfigService,
   ) {}
 
-  // Transition, reset and invite links.
-  public setPasswordUrl(secret: string): string {
-    return `${this.authConfig.webAppUrl}/set-password?token=${encodeURIComponent(secret)}`;
+  // Magic login links, Team invites and the cutover's transition links (VIC 2.0, #514).
+  public loginLinkUrl(secret: string): string {
+    return `${this.authConfig.webAppUrl}/login/link?token=${encodeURIComponent(secret)}`;
   }
 
-  // Mobile sign-up and NGO confirmation links.
+  // NGO confirmation links.
   public confirmEmailUrl(secret: string): string {
     return `${this.authConfig.webAppUrl}/confirm-email?token=${encodeURIComponent(secret)}`;
   }

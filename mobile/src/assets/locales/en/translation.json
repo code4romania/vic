@@ -37,10 +37,8 @@
     "back": "Back to"
   },
   "landing": {
-    "message": "Register in the app using one of the following ways",
-    "registered": "Already have an account?",
-    "email": "E-mail or phone",
-    "login": "Log in",
+    "message": "Log in or create an account in one of the following ways",
+    "email": "Continue with email",
     "social": {
       "google": "Continue with Google",
       "facebook": "Continue with Facebook",
@@ -66,18 +64,6 @@
           "required": "Phone is mandatory",
           "pattern": "The telephone number must contain only numbers"
         },
-        "password": {
-          "label": "Password",
-          "placeholder": "Enter your password",
-          "required": "Password is required",
-          "pattern": "The password must contain a minimum of 8 characters, uppercase letters, lowercase letters, numbers and special characters, without spaces"
-        },
-        "confirm_password": {
-          "label": "Confirm password",
-          "placeholder": "Confirm password",
-          "required": "Password is required",
-          "match": "Passwords must be identical"
-        },
         "terms": {
           "agree": "I agree with ",
           "conditions": "Terms and Conditions",
@@ -91,15 +77,6 @@
         "label": "Already have an account?",
         "link": "Log in"
       }
-    },
-    "validate_account": {
-      "heading": "Check your email",
-      "check_email": "We sent a confirmation link to {{email}}. Open it, then come back to the app and log in.",
-      "not_received": "Didn't get the email? Check your Spam folder or ask for a new one.",
-      "resend": "Resend the link",
-      "resending": "Sending...",
-      "resent": "If the address exists, we sent you a new link.",
-      "go_to_login": "Go to login"
     },
     "create_user": {
       "heading": "User data",
@@ -134,16 +111,9 @@
   },
   "auth": {
     "errors": {
-      "unauthorized": "Wrong username or password",
-      "username_exists": "There is already a user with this email address",
-      "signup": "Registration error. Check your registration details and try again.",
-      "resend_code": "Error sending confirmation code",
       "init_profile": "Error loading profile",
       "login": "Login error, please try again",
-      "invalid_password": "Password is not compliant with security policy",
-      "password": "Password change error",
       "code_mismatch": "Code is invalid",
-      "forgot_password": "Password reset error",
       "AUTH_001": "Wrong email or password.",
       "AUTH_002": "Too many wrong attempts. The account is locked for 15 minutes.",
       "AUTH_003": "Your email address is not confirmed yet. Check your email.",
@@ -157,15 +127,13 @@
       "AUTH_011": "This version of the app is too old. Update it from the store.",
       "AUTH_012": "This is an organization account. Use VIC on the web.",
       "AUTH_013": "Signing in with this account failed.",
-      "migration_hint": "Had an account before? Use the link we emailed you, or \"Forgot password?\".",
       "social_failed": "Signing in failed. Try again or use your email and password."
     }
   },
   "login": {
-    "title": "Login",
-    "paragraph": "Enter your email and password to log in.",
-    "submit": "Log in",
-    "forgot_password": "Forgot your password? ",
+    "title": "Log in",
+    "paragraph": "Enter your email. We'll send you a 6-digit code to log in. If you don't have an account yet, we'll create one now.",
+    "submit": "Send code",
     "form": {
       "email": {
         "label": "E-mail",
@@ -173,59 +141,29 @@
         "required": "Email is required",
         "pattern": "Email format is invalid"
       },
-      "password": {
-        "label": "Password",
-        "placeholder": "Enter your password",
-        "required": "Password is required"
-      }
-    },
-    "migration_notice": "Already had a VIC account? Set your password with the link we emailed you, or tap \"Forgot password?\". If you used Google, Facebook or Apple, use the same button as before."
-  },
-  "forgot_password": {
-    "header": "Reset password",
-    "paragraph": "Please enter your account email or phone number to reset your password.",
-    "form": {
-      "email": {
-        "label": "E-mail",
-        "required": "Email is required",
-        "pattern": "Email format is invalid"
-      }
-    },
-    "submit": {
-      "label": "Send reset code"
-    }
-  },
-  "confirm_password": {
-    "header": "Reset password",
-    "form": {
       "code": {
-        "label": "Enter the code received by email",
-        "placeholder": "Enter the code received by email",
-        "required": "The code is mandatory",
-        "length": "The code must be 6 characters long",
-        "pattern": "The code must contain only digits"
-      },
-      "password": {
-        "label": "Password",
-        "placeholder": "Enter your password",
-        "required": "Password is required",
-        "pattern": "The password must contain a minimum of 8 characters, uppercase letters, lowercase letters, numbers and special characters, without spaces"
-      },
-      "confirm_password": {
-        "label": "Confirm password",
-        "placeholder": "Confirm password",
-        "required": "Password is required",
-        "match": "Passwords must be identical"
+        "label": "Code from the email",
+        "placeholder": "6 digits",
+        "required": "The code is required",
+        "length": "The code has 6 digits",
+        "pattern": "The code has only digits"
       }
     },
-    "submit": {
-      "label": "Save changes"
-    }
+    "code": {
+      "title": "Check your email",
+      "paragraph": "We sent a 6-digit code to {{email}}. It is valid for 15 minutes.",
+      "submit": "Log in",
+      "not_received": "Didn't get the code? Check Spam or Promotions too.",
+      "resend": "Send a new code",
+      "resend_in": "You can ask for a new code in {{seconds}} s",
+      "resent": "We sent a new code.",
+      "change_email": "Use another email"
+    },
+    "migration_notice": "Already had a VIC account? Enter the same email: we'll send you a code and you'll be in your account, no password needed. If you used Google or Apple, use the same button as before."
   },
   "settings": {
     "title": "Account settings",
     "heading": "Account data",
-    "password": "Change password",
     "notification": "Notifications settings",
     "information": "Information",
     "logout": "Log out",
@@ -247,26 +185,6 @@
     },
     "errors": {
       "USER_006": "Error changing profile photo"
-    }
-  },
-  "change_password": {
-    "title": "Change password",
-    "form": {
-      "old_password": {
-        "label": "Current password",
-        "placeholder": "Enter your current password"
-      },
-      "new_password": {
-        "label": "New password",
-        "placeholder": "Enter your new password"
-      },
-      "confirm_password": {
-        "label": "Confirm new password",
-        "placeholder": "Confirm new password"
-      }
-    },
-    "submit": {
-      "success": "Password has been changed!"
     }
   },
   "organizations": {

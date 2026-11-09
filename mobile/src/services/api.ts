@@ -15,10 +15,9 @@ const API = axios.create({
   },
 });
 
-// The public auth routes: a 401 from them is an answer (wrong password, wrong code), never a reason
-// to refresh. Every other 401, change-password included, refreshes once (decisions R23).
-const NO_REFRESH_ROUTE =
-  /^\/?mobile\/auth\/(register|resend-verification|login|social|refresh|logout|forgot-password|reset-password)$/;
+// The public auth routes: a 401 from them is an answer (wrong code, refused social token), never a
+// reason to refresh. Every other 401 refreshes once (decisions R23).
+const NO_REFRESH_ROUTE = /^\/?mobile\/auth\/(login\/request|login\/code|social|refresh|logout)$/;
 
 export const isPublicAuthRoute = (url = ''): boolean => NO_REFRESH_ROUTE.test(url);
 

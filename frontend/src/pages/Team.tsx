@@ -38,7 +38,7 @@ const STATUS_COLOR: Record<TeamMemberStatus, string> = {
   no_login: 'bg-cool-gray-400',
 };
 
-// Statuses that can get an invite: the admin has no password yet (ORG_009 otherwise).
+// Statuses that can get an invite: the admin has never logged in (ORG_009 otherwise).
 const INVITABLE: TeamMemberStatus[] = ['invite_sent', 'invite_expired', 'no_login'];
 
 const daysUntil = (date: string): number =>

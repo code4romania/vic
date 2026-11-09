@@ -132,7 +132,7 @@ describe('MigrateIdentitiesUseCase (database)', () => {
   const identities = (): Promise<AuthIdentityEntity[]> =>
     dataSource.getRepository(AuthIdentityEntity).find();
 
-  it('imports admins and volunteers in pending_password with one held transition email each', async () => {
+  it('imports admins and volunteers in pending with one held transition email each', async () => {
     const adminId = await insertUser('admin', 'Admin@Org.ro');
     const volunteerCreated = new Date('2024-05-01T10:00:00Z');
     const volunteerId = await insertUser('regular', 'vol@x.ro', {
@@ -153,9 +153,9 @@ describe('MigrateIdentitiesUseCase (database)', () => {
     });
     const rows = await identities();
     expect(rows).toHaveLength(4);
-    expect(
-      rows.every((r) => r.status === AuthIdentityStatus.PENDING_PASSWORD),
-    ).toBe(true);
+    expect(rows.every((r) => r.status === AuthIdentityStatus.PENDING)).toBe(
+      true,
+    );
 
     const admin = rows.find((r) => r.userId === adminId);
     expect(admin).toMatchObject({
@@ -176,9 +176,10 @@ describe('MigrateIdentitiesUseCase (database)', () => {
         .sort(),
     ).toEqual([AuthRealm.MOBILE, AuthRealm.WEB]);
 
-    // One 30-day transition link per identity: an invite nobody sent (R16).
+    // One 30-day transition link per admin: an invite nobody sent (R16). Volunteers get no link; they log in
+    // with an emailed code in the app (VIC 2.0, #514).
     const tokens = await dataSource.getRepository(AuthTokenEntity).find();
-    expect(tokens).toHaveLength(4);
+    expect(tokens).toHaveLength(2);
     for (const token of tokens) {
       expect(token.type).toBe(AuthTokenType.INVITE);
       expect(token.sentById).toBeNull();
@@ -190,11 +191,12 @@ describe('MigrateIdentitiesUseCase (database)', () => {
     const adminEmail = held.find((e) => e.to === 'admin@org.ro');
     expect(adminEmail.context.subtitle).toContain('Echipă');
     expect(adminEmail.context.cta.link).toMatch(
-      /^https:\/\/vic\.test\/set-password\?token=[A-Za-z0-9_-]{43}$/,
+      /^https:\/\/vic\.test\/login\/link\?token=[A-Za-z0-9_-]{43}$/,
     );
     const volunteerEmail = held.find((e) => e.to === 'vol@x.ro');
+    expect(volunteerEmail.context.cta).toBeNull();
     expect(volunteerEmail.context.english.subtitle).toContain(
-      'Set a password with this link, or sign in with Google, Facebook or Apple in the app as before.',
+      'enter your email in the app and you will get a login code',
     );
   });
 
@@ -231,7 +233,7 @@ describe('MigrateIdentitiesUseCase (database)', () => {
       emailsQueued: 0,
     });
     expect(held).toHaveLength(0);
-    expect(await dataSource.getRepository(AuthTokenEntity).count()).toBe(2);
+    expect(await dataSource.getRepository(AuthTokenEntity).count()).toBe(1);
   });
 
   it('keeps the newest of two rows with the same email in one realm and reports the other', async () => {

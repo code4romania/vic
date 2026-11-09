@@ -89,7 +89,7 @@ describe('auth repositories (database)', () => {
     const token = await tokens.create({
       identityId,
       tokenHash,
-      type: AuthTokenType.RESET_PASSWORD,
+      type: AuthTokenType.LOGIN,
       form: AuthTokenForm.LINK,
       expiresAt: fromNow(60 * MINUTE),
     });
@@ -109,8 +109,7 @@ describe('auth repositories (database)', () => {
       });
 
       expect(found.email).toBe('ana@example.ro');
-      expect(found.status).toBe(AuthIdentityStatus.PENDING_PASSWORD);
-      expect(found.failedAttempts).toBe(0);
+      expect(found.status).toBe(AuthIdentityStatus.PENDING);
     });
 
     it('allows the same email once per realm', async () => {
@@ -145,27 +144,6 @@ describe('auth repositories (database)', () => {
       expect(second.created).toBe(false);
       expect(second.identity.id).toBe(first.identity.id);
       expect(second.identity.legacyCognitoUsername).toBe('first');
-    });
-
-    it('locks on the fifth failure in a row and starts the count again', async () => {
-      const identity = await createIdentity('locked@example.ro');
-      const lockUntil = fromNow(15 * MINUTE);
-
-      let current = identity;
-      for (let attempt = 1; attempt <= 4; attempt++) {
-        current = await identities.registerFailedLogin(
-          identity.id,
-          5,
-          lockUntil,
-        );
-      }
-      expect(current.failedAttempts).toBe(4);
-      expect(current.lockedUntil).toBeNull();
-
-      current = await identities.registerFailedLogin(identity.id, 5, lockUntil);
-
-      expect(current.failedAttempts).toBe(0);
-      expect(current.lockedUntil.getTime()).toBe(lockUntil.getTime());
     });
 
     it('deleteByUserId removes the identity with its tokens, sessions and provider links', async () => {
@@ -298,7 +276,7 @@ describe('auth repositories (database)', () => {
         }),
       ).resolves.toBeNull();
       await expect(identities.find({ id: existing.id })).resolves.toMatchObject(
-        { status: AuthIdentityStatus.PENDING_PASSWORD },
+        { status: AuthIdentityStatus.PENDING },
       );
     });
   });
@@ -340,7 +318,7 @@ describe('auth repositories (database)', () => {
       });
 
       await expect(
-        tokens.replaceLiveTokens(identityId, [AuthTokenType.RESET_PASSWORD]),
+        tokens.replaceLiveTokens(identityId, [AuthTokenType.LOGIN]),
       ).resolves.toBe(1);
 
       await expect(tokens.findByHash('reset')).resolves.toBeNull();

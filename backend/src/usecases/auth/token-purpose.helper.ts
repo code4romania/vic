@@ -13,8 +13,8 @@ export function tokenPurpose(
   switch (token.type) {
     case AuthTokenType.INVITE:
       return token.sentById ? TokenPurpose.INVITE : TokenPurpose.TRANSITION;
-    case AuthTokenType.RESET_PASSWORD:
-      return TokenPurpose.RESET;
+    case AuthTokenType.LOGIN:
+      return TokenPurpose.LOGIN;
     case AuthTokenType.VERIFY_EMAIL:
       return TokenPurpose.VERIFY_EMAIL;
   }

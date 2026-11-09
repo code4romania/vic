@@ -18,10 +18,9 @@ import { useRegisterOrganizationMutation } from '../services/organization/organi
 import { IRegisterOrganization } from '../common/interfaces/organization.interface';
 import { ORGANIZATION_ERRORS } from '../common/errors/entities/organization.errors';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { PASSWORD_REGEX } from '../common/constants/patterns';
 import { getAuthErrorCode } from '../common/utils/auth-error';
 
-type RegisterForm = Omit<IRegisterOrganization, 'turnstileToken'> & { confirmPassword: string };
+type RegisterForm = Omit<IRegisterOrganization, 'turnstileToken'>;
 
 const DEFAULTS: RegisterForm = {
   name: '',
@@ -36,8 +35,6 @@ const DEFAULTS: RegisterForm = {
   lastName: '',
   adminEmail: '',
   adminPhone: '',
-  password: '',
-  confirmPassword: '',
   acceptedTerms: false,
 };
 
@@ -74,14 +71,6 @@ const RegisterOrganization = () => {
       .trim()
       .required(t('form.required'))
       .max(20, t('form.max', { value: 20 })),
-    password: yup
-      .string()
-      .required(t('form.required'))
-      .matches(PASSWORD_REGEX, t('form.password.rule')),
-    confirmPassword: yup
-      .string()
-      .required(t('form.required'))
-      .oneOf([yup.ref('password')], t('form.confirm_password.mismatch')),
     acceptedTerms: yup.boolean().oneOf([true], t('form.terms.required')).required(),
   });
 
@@ -109,10 +98,8 @@ const RegisterOrganization = () => {
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { confirmPassword, ...fields } = form;
     register.mutate(
-      { data: { ...fields, turnstileToken }, files: { logo: logoFile, statute } },
+      { data: { ...form, turnstileToken }, files: { logo: logoFile, statute } },
       {
         onSuccess: ({ maskedEmail }) => setRegistered({ name: form.name.trim(), maskedEmail }),
         onError: (err) => {
@@ -136,7 +123,7 @@ const RegisterOrganization = () => {
   };
 
   const adminField = (
-    name: 'firstName' | 'lastName' | 'adminEmail' | 'adminPhone' | 'password' | 'confirmPassword',
+    name: 'firstName' | 'lastName' | 'adminEmail' | 'adminPhone',
     type = 'text',
     autoComplete?: string,
   ) => (
@@ -152,7 +139,6 @@ const RegisterOrganization = () => {
           onChange={onChange}
           onBlur={onBlur}
           errorMessage={errors[name]?.message}
-          helper={name === 'password' ? <p>{t('form.password.rule')}</p> : undefined}
         />
       )}
     />
@@ -208,8 +194,6 @@ const RegisterOrganization = () => {
               {adminField('lastName', 'text', 'family-name')}
               {adminField('adminEmail', 'email', 'email')}
               {adminField('adminPhone', 'tel', 'tel')}
-              {adminField('password', 'password', 'new-password')}
-              {adminField('confirmPassword', 'password', 'new-password')}
             </section>
 
             <section className="bg-white rounded-lg shadow p-6 flex flex-col gap-4">

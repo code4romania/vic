@@ -3,19 +3,27 @@ import {
   AuthIdentityStatus,
   AuthProvider,
   AuthRealm,
+  AuthTokenForm,
   AuthTokenType,
 } from 'src/modules/auth/enums/auth.enums';
-import { AuthExceptionCodes } from 'src/modules/auth/exceptions/exceptions';
+import {
+  AuthException,
+  AuthExceptionCodes,
+} from 'src/modules/auth/exceptions/exceptions';
 import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
-import { PasswordService } from 'src/modules/auth/services/password.service';
 import { SessionService } from 'src/modules/auth/services/session.service';
 import { SocialTokenVerifierService } from 'src/modules/auth/services/social/social-token-verifier.service';
-import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
-import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
-import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 import { DataSource } from 'typeorm';
-import { LoginUseCase } from './login.usecase';
+import { LoginWithCodeUseCase } from './login-with-code.usecase';
+import { LoginWithLinkUseCase } from './login-with-link.usecase';
+import { RequestLoginUseCase } from './request-login.usecase';
+import { ResendVerificationUseCase } from './resend-verification.usecase';
+import { CompleteLoginHelper } from './complete-login.helper';
+import { WebSessionHelper } from './web-session.helper';
+import { OneTimeTokenService } from 'src/modules/auth/services/one-time-token.service';
+import { AuthRateLimitService } from 'src/modules/auth/services/auth-rate-limit.service';
+import { AuthMailerService } from 'src/modules/auth/services/auth-mailer.service';
 import { SocialLoginUseCase } from './social-login.usecase';
 import { tokenPurpose } from './token-purpose.helper';
 
@@ -25,14 +33,10 @@ const identity = (
   id: 'identity-id',
   realm: AuthRealm.WEB,
   email: 'ana@example.ro',
-  passwordHash: 'hash',
   status: AuthIdentityStatus.ACTIVE,
   superAdmin: false,
   emailVerifiedAt: new Date(),
-  passwordSetAt: new Date(),
   lastLoginAt: null,
-  failedAttempts: 0,
-  lockedUntil: null,
   legacyCognitoUsername: null,
   userId: 'user-id',
   createdOn: new Date(),
@@ -46,154 +50,238 @@ const rejectsWith = (
 ): Promise<void> =>
   expect(promise).rejects.toMatchObject({ response: { code_error: code } });
 
-describe('LoginUseCase (branch order)', () => {
-  let facade: {
-    findIdentity: jest.Mock;
-    registerFailedLogin: jest.Mock;
-    registerSuccessfulLogin: jest.Mock;
-    isLocked: jest.Mock;
-  };
-  let passwords: { verify: jest.Mock; hash: jest.Mock };
-  let sessions: { createSession: jest.Mock };
-  let users: { findAdminUser: jest.Mock };
-  let organizations: { findOrganization: jest.Mock };
-  let useCase: LoginUseCase;
-
-  const login = (realm = AuthRealm.WEB): Promise<unknown> =>
-    useCase.execute(realm, 'ana@example.ro', 'Volunteer#2026');
+describe('RequestLoginUseCase (VIC 2.0, #514)', () => {
+  let facade: { findIdentity: jest.Mock; createIdentity: jest.Mock };
+  let tokens: { issue: jest.Mock; maskEmail: jest.Mock };
+  let rateLimit: { assertCanIssue: jest.Mock };
+  let mailer: { send: jest.Mock; loginLinkUrl: jest.Mock };
+  let resendVerification: { execute: jest.Mock };
+  let useCase: RequestLoginUseCase;
 
   beforeEach(() => {
-    facade = {
-      findIdentity: jest.fn(),
-      registerFailedLogin: jest.fn(),
-      registerSuccessfulLogin: jest.fn(),
-      isLocked: jest.fn((found: IAuthIdentityModel) => !!found.lockedUntil),
+    facade = { findIdentity: jest.fn(), createIdentity: jest.fn() };
+    tokens = {
+      issue: jest.fn().mockResolvedValue({ secret: 'secret' }),
+      maskEmail: jest.fn().mockReturnValue('a•••@example.ro'),
     };
-    passwords = {
-      verify: jest.fn().mockResolvedValue(true),
-      hash: jest.fn().mockResolvedValue('dummy-hash'),
+    rateLimit = { assertCanIssue: jest.fn() };
+    mailer = {
+      send: jest.fn(),
+      loginLinkUrl: jest.fn((secret: string) => `https://vic.test/${secret}`),
     };
-    sessions = {
-      createSession: jest.fn().mockResolvedValue({ accessToken: 'token' }),
-    };
-    users = {
-      findAdminUser: jest
-        .fn()
-        .mockResolvedValue({ id: 'user-id', organizationId: 'org-id' }),
-    };
-    organizations = {
-      findOrganization: jest
-        .fn()
-        .mockResolvedValue({ status: OrganizationStatus.ACTIVE }),
-    };
-    useCase = new LoginUseCase(
+    resendVerification = { execute: jest.fn() };
+    useCase = new RequestLoginUseCase(
       facade as unknown as AuthIdentityFacade,
-      passwords as unknown as PasswordService,
-      sessions as unknown as SessionService,
-      users as unknown as UserFacadeService,
-      organizations as unknown as OrganizationFacadeService,
+      tokens as unknown as OneTimeTokenService,
+      rateLimit as unknown as AuthRateLimitService,
+      mailer as unknown as AuthMailerService,
+      resendVerification as unknown as ResendVerificationUseCase,
     );
   });
 
-  it('web login for an email that only has a mobile login: AUTH_012, without the dummy hash', async () => {
+  it('web: an admin gets a login link', async () => {
+    facade.findIdentity.mockResolvedValue(identity());
+
+    await useCase.execute(AuthRealm.WEB, 'ana@example.ro');
+
+    expect(tokens.issue).toHaveBeenCalledWith({
+      identity: expect.objectContaining({ id: 'identity-id' }),
+      type: AuthTokenType.LOGIN,
+      form: AuthTokenForm.LINK,
+    });
+    expect(mailer.send).toHaveBeenCalledTimes(1);
+  });
+
+  it('web: an unknown, disabled or rate-limited email gets the same answer and no email', async () => {
+    facade.findIdentity.mockResolvedValue(null);
+    await expect(
+      useCase.execute(AuthRealm.WEB, 'nobody@example.ro'),
+    ).resolves.toEqual({ maskedEmail: 'a•••@example.ro' });
+
+    facade.findIdentity.mockResolvedValue(
+      identity({ status: AuthIdentityStatus.DISABLED }),
+    );
+    await useCase.execute(AuthRealm.WEB, 'ana@example.ro');
+
+    facade.findIdentity.mockResolvedValue(identity());
+    rateLimit.assertCanIssue.mockRejectedValue(
+      new AuthException(AuthExceptionCodes.AUTH_010),
+    );
+    await useCase.execute(AuthRealm.WEB, 'ana@example.ro');
+
+    expect(mailer.send).not.toHaveBeenCalled();
+  });
+
+  it('web: a volunteer email is sent to the app (AUTH_012)', async () => {
     facade.findIdentity.mockImplementation(async ({ realm }) =>
       realm === AuthRealm.MOBILE ? identity({ realm }) : null,
     );
 
-    await rejectsWith(login(), AuthExceptionCodes.AUTH_012);
-    expect(passwords.verify).not.toHaveBeenCalled();
-  });
-
-  it('unknown email: AUTH_001 after verifying against the dummy hash', async () => {
-    facade.findIdentity.mockResolvedValue(null);
-
-    await rejectsWith(login(AuthRealm.MOBILE), AuthExceptionCodes.AUTH_001);
-    expect(passwords.verify).toHaveBeenCalledWith(
-      'dummy-hash',
-      'Volunteer#2026',
+    await rejectsWith(
+      useCase.execute(AuthRealm.WEB, 'ana@example.ro'),
+      AuthExceptionCodes.AUTH_012,
     );
   });
 
-  it('a migrated login with no password yet: AUTH_001 the same way', async () => {
-    facade.findIdentity.mockResolvedValue(
-      identity({
-        passwordHash: null,
-        status: AuthIdentityStatus.PENDING_PASSWORD,
-      }),
-    );
-
-    await rejectsWith(login(), AuthExceptionCodes.AUTH_001);
-    expect(passwords.verify).toHaveBeenCalledWith(
-      'dummy-hash',
-      'Volunteer#2026',
-    );
-    expect(facade.registerFailedLogin).not.toHaveBeenCalled();
-  });
-
-  it('disabled: AUTH_004', async () => {
-    facade.findIdentity.mockResolvedValue(
-      identity({ status: AuthIdentityStatus.DISABLED }),
-    );
-
-    await rejectsWith(login(), AuthExceptionCodes.AUTH_004);
-  });
-
-  it('an admin of a suspended NGO: AUTH_004', async () => {
-    facade.findIdentity.mockResolvedValue(identity());
-    organizations.findOrganization.mockResolvedValue({
-      status: OrganizationStatus.SUSPENDED,
-    });
-
-    await rejectsWith(login(), AuthExceptionCodes.AUTH_004);
-  });
-
-  it('locked: AUTH_002 even with the right password, and no attempt counted', async () => {
-    facade.findIdentity.mockResolvedValue(
-      identity({ lockedUntil: new Date(Date.now() + 60000) }),
-    );
-
-    await rejectsWith(login(), AuthExceptionCodes.AUTH_002);
-    expect(passwords.verify).not.toHaveBeenCalled();
-  });
-
-  it('wrong password: counts the failure, AUTH_001', async () => {
-    const found = identity();
-    facade.findIdentity.mockResolvedValue(found);
-    passwords.verify.mockResolvedValue(false);
-
-    await rejectsWith(login(), AuthExceptionCodes.AUTH_001);
-    expect(facade.registerFailedLogin).toHaveBeenCalledWith(found);
-  });
-
-  it('right password, email not confirmed: AUTH_003 (checked after the password)', async () => {
+  it('web: an admin who never confirmed gets the NGO confirmation link again', async () => {
     facade.findIdentity.mockResolvedValue(identity({ emailVerifiedAt: null }));
 
-    await rejectsWith(login(AuthRealm.MOBILE), AuthExceptionCodes.AUTH_003);
-    expect(passwords.verify).toHaveBeenCalled();
-    expect(sessions.createSession).not.toHaveBeenCalled();
+    await useCase.execute(AuthRealm.WEB, 'ana@example.ro');
+
+    expect(resendVerification.execute).toHaveBeenCalledWith(
+      AuthRealm.WEB,
+      'ana@example.ro',
+    );
+    expect(tokens.issue).not.toHaveBeenCalled();
   });
 
-  it('success: resets the counters, creates a session and returns the admin on the web', async () => {
-    const found = identity({ superAdmin: true });
-    facade.findIdentity.mockResolvedValue(found);
+  it('mobile: an unknown email gets a pending login and a 6-digit code', async () => {
+    facade.findIdentity.mockResolvedValue(null);
+    facade.createIdentity.mockResolvedValue(
+      identity({ realm: AuthRealm.MOBILE, status: AuthIdentityStatus.PENDING }),
+    );
 
-    await expect(login()).resolves.toEqual({
-      tokens: { accessToken: 'token' },
-      admin: { id: 'user-id', organizationId: 'org-id', superAdmin: true },
+    await useCase.execute(AuthRealm.MOBILE, 'ana@example.ro');
+
+    expect(facade.createIdentity).toHaveBeenCalledWith({
+      realm: AuthRealm.MOBILE,
+      email: 'ana@example.ro',
+      status: AuthIdentityStatus.PENDING,
     });
-    expect(facade.registerSuccessfulLogin).toHaveBeenCalledWith(found);
+    expect(tokens.issue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: AuthTokenType.LOGIN,
+        form: AuthTokenForm.CODE,
+      }),
+    );
+  });
+
+  it('mobile: a disabled login is AUTH_004 and a rate limit is shown (AUTH_010)', async () => {
+    facade.findIdentity.mockResolvedValue(
+      identity({
+        realm: AuthRealm.MOBILE,
+        status: AuthIdentityStatus.DISABLED,
+      }),
+    );
+    await rejectsWith(
+      useCase.execute(AuthRealm.MOBILE, 'ana@example.ro'),
+      AuthExceptionCodes.AUTH_004,
+    );
+
+    facade.findIdentity.mockResolvedValue(
+      identity({ realm: AuthRealm.MOBILE }),
+    );
+    rateLimit.assertCanIssue.mockRejectedValue(
+      new AuthException(AuthExceptionCodes.AUTH_010),
+    );
+    await rejectsWith(
+      useCase.execute(AuthRealm.MOBILE, 'ana@example.ro'),
+      AuthExceptionCodes.AUTH_010,
+    );
+    expect(mailer.send).not.toHaveBeenCalled();
+  });
+});
+
+describe('LoginWithCodeUseCase / LoginWithLinkUseCase (VIC 2.0, #514)', () => {
+  const completeLogin = {
+    consume: jest.fn(async (found: IAuthIdentityModel) => ({
+      ...found,
+      status: AuthIdentityStatus.ACTIVE,
+    })),
+  };
+
+  it('code: verifies the code, uses it and starts a mobile session', async () => {
+    const volunteer = identity({
+      realm: AuthRealm.MOBILE,
+      status: AuthIdentityStatus.PENDING,
+    });
+    const tokens = {
+      verifyCode: jest.fn().mockResolvedValue({ id: 'token-id' }),
+    };
+    const sessions = {
+      createSession: jest.fn().mockResolvedValue({ accessToken: 'a' }),
+    };
+    const useCase = new LoginWithCodeUseCase(
+      {
+        findIdentity: jest.fn().mockResolvedValue(volunteer),
+      } as unknown as AuthIdentityFacade,
+      tokens as unknown as OneTimeTokenService,
+      completeLogin as unknown as CompleteLoginHelper,
+      sessions as unknown as SessionService,
+    );
+
+    await useCase.execute('ana@example.ro', '012345');
+
+    expect(tokens.verifyCode).toHaveBeenCalledWith(
+      volunteer,
+      AuthTokenType.LOGIN,
+      '012345',
+    );
     expect(sessions.createSession).toHaveBeenCalledWith(
-      found,
-      AuthRealm.WEB,
+      expect.objectContaining({ status: AuthIdentityStatus.ACTIVE }),
+      AuthRealm.MOBILE,
       {},
     );
   });
 
-  it('a web login whose admin row is missing: AUTH_001, never the first admin', async () => {
-    facade.findIdentity.mockResolvedValue(identity({ userId: null }));
+  it('code: an unknown email is AUTH_005, a disabled login AUTH_004', async () => {
+    const findIdentity = jest.fn().mockResolvedValue(null);
+    const useCase = new LoginWithCodeUseCase(
+      { findIdentity } as unknown as AuthIdentityFacade,
+      {} as OneTimeTokenService,
+      completeLogin as unknown as CompleteLoginHelper,
+      {} as SessionService,
+    );
 
-    await rejectsWith(login(), AuthExceptionCodes.AUTH_001);
-    expect(users.findAdminUser).not.toHaveBeenCalled();
+    await rejectsWith(
+      useCase.execute('x@example.ro', '012345'),
+      AuthExceptionCodes.AUTH_005,
+    );
+    findIdentity.mockResolvedValue(
+      identity({
+        realm: AuthRealm.MOBILE,
+        status: AuthIdentityStatus.DISABLED,
+      }),
+    );
+    await rejectsWith(
+      useCase.execute('x@example.ro', '012345'),
+      AuthExceptionCodes.AUTH_004,
+    );
+  });
+
+  it('link: only a web login or invite link logs in; a confirmation link or a mobile login does not', async () => {
+    const peekLink = jest.fn();
+    const webSession = { start: jest.fn().mockResolvedValue({}) };
+    const useCase = new LoginWithLinkUseCase(
+      { peekLink } as unknown as OneTimeTokenService,
+      completeLogin as unknown as CompleteLoginHelper,
+      webSession as unknown as WebSessionHelper,
+    );
+
+    peekLink.mockResolvedValue({
+      type: AuthTokenType.VERIFY_EMAIL,
+      identity: identity(),
+    });
+    await rejectsWith(useCase.execute('s'), AuthExceptionCodes.AUTH_005);
+
+    peekLink.mockResolvedValue({
+      type: AuthTokenType.LOGIN,
+      identity: identity({ realm: AuthRealm.MOBILE }),
+    });
+    await rejectsWith(useCase.execute('s'), AuthExceptionCodes.AUTH_005);
+
+    peekLink.mockResolvedValue({
+      type: AuthTokenType.INVITE,
+      identity: identity({ status: AuthIdentityStatus.DISABLED }),
+    });
+    await rejectsWith(useCase.execute('s'), AuthExceptionCodes.AUTH_004);
+
+    peekLink.mockResolvedValue({
+      type: AuthTokenType.LOGIN,
+      identity: identity(),
+    });
+    await useCase.execute('s');
+    expect(webSession.start).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -292,8 +380,7 @@ describe('SocialLoginUseCase', () => {
       identity({
         id: 'migrated',
         realm: AuthRealm.MOBILE,
-        passwordHash: null,
-        status: AuthIdentityStatus.PENDING_PASSWORD,
+        status: AuthIdentityStatus.PENDING,
         emailVerifiedAt: null,
       }),
     );
@@ -341,7 +428,7 @@ describe('tokenPurpose (decisions R16)', () => {
   it.each([
     [AuthTokenType.INVITE, null, TokenPurpose.TRANSITION],
     [AuthTokenType.INVITE, 'admin-id', TokenPurpose.INVITE],
-    [AuthTokenType.RESET_PASSWORD, null, TokenPurpose.RESET],
+    [AuthTokenType.LOGIN, null, TokenPurpose.LOGIN],
     [AuthTokenType.VERIFY_EMAIL, null, TokenPurpose.VERIFY_EMAIL],
   ])('%s sent by %p is %s', (type, sentById, purpose) => {
     expect(tokenPurpose({ type, sentById })).toBe(purpose);

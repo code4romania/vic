@@ -78,49 +78,41 @@ describe('AuthRateLimitService', () => {
   });
 
   it('allows one token a minute per identity and type', async () => {
-    await service.assertCanIssue('ana', AuthTokenType.RESET_PASSWORD);
+    await service.assertCanIssue('ana', AuthTokenType.LOGIN);
 
-    await rejectsWith10(
-      service.assertCanIssue('ana', AuthTokenType.RESET_PASSWORD),
-    );
+    await rejectsWith10(service.assertCanIssue('ana', AuthTokenType.LOGIN));
     await expect(
       service.assertCanIssue('ana', AuthTokenType.VERIFY_EMAIL),
     ).resolves.toBeUndefined();
     await expect(
-      service.assertCanIssue('bogdan', AuthTokenType.RESET_PASSWORD),
+      service.assertCanIssue('bogdan', AuthTokenType.LOGIN),
     ).resolves.toBeUndefined();
   });
 
   it('refuses the sixth token in an hour', async () => {
     for (let minute = 0; minute < 5; minute++) {
       jest.setSystemTime(new Date(Date.UTC(2026, 9, 30, 10, minute * 2)));
-      await service.assertCanIssue('ana', AuthTokenType.RESET_PASSWORD);
+      await service.assertCanIssue('ana', AuthTokenType.LOGIN);
     }
 
     jest.setSystemTime(new Date(Date.UTC(2026, 9, 30, 10, 30)));
-    await rejectsWith10(
-      service.assertCanIssue('ana', AuthTokenType.RESET_PASSWORD),
-    );
+    await rejectsWith10(service.assertCanIssue('ana', AuthTokenType.LOGIN));
 
     jest.setSystemTime(new Date(Date.UTC(2026, 9, 30, 11, 0)));
     await expect(
-      service.assertCanIssue('ana', AuthTokenType.RESET_PASSWORD),
+      service.assertCanIssue('ana', AuthTokenType.LOGIN),
     ).resolves.toBeUndefined();
   });
 
   it('sets an expiry on every key', async () => {
-    await service.assertCanIssue('ana', AuthTokenType.RESET_PASSWORD);
+    await service.assertCanIssue('ana', AuthTokenType.LOGIN);
 
     const bucket = Math.floor(Date.now() / 1000);
     expect(
-      redis.ttl(
-        `auth:issue:ana:reset_password:minute:${Math.floor(bucket / 60)}`,
-      ),
+      redis.ttl(`auth:issue:ana:login:minute:${Math.floor(bucket / 60)}`),
     ).toBe(60);
     expect(
-      redis.ttl(
-        `auth:issue:ana:reset_password:hour:${Math.floor(bucket / 3600)}`,
-      ),
+      redis.ttl(`auth:issue:ana:login:hour:${Math.floor(bucket / 3600)}`),
     ).toBe(3600);
   });
 

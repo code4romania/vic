@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import AccessRequest from '../pages/AccessRequest';
 import Dashboard from '../pages/Dashboard';
 import EditOrganization from '../pages/EditOrganization';
@@ -34,13 +34,17 @@ import AddContractTemplate from '../pages/AddContractTemplate';
 import EditContractTemplate from '../pages/EditContractTemplate';
 import AddContract from '../containers/query/AddContractWithQueryParams';
 import ActionsArchive from '../pages/ActionsArchive';
-import ForgotPassword from '../pages/ForgotPassword';
-import SetPassword from '../pages/SetPassword';
+import LoginLink from '../pages/LoginLink';
 import ConfirmEmail from '../pages/ConfirmEmail';
 import NotFound from '../pages/NotFound';
 import RegisterOrganization from '../pages/RegisterOrganization';
 import Team from '../pages/Team';
 import OrganizationValidation from '../pages/OrganizationValidation';
+
+const SetPasswordRedirect = () => {
+  const { search } = useLocation();
+  return <Navigate to={`/login/link${search}`} replace />;
+};
 
 const Router = () => {
   return (
@@ -48,10 +52,11 @@ const Router = () => {
       <QueryParamProvider adapter={ReactRouter6Adapter}>
         <Routes>
           <Route path="/login" element={<PublicRoute element={<Login />} />} />
-          <Route path="/forgot-password" element={<PublicRoute element={<ForgotPassword />} />} />
           <Route path="/register" element={<PublicRoute element={<RegisterOrganization />} />} />
           {/* Neutral: reachable logged in or out (a link opened in a browser with a session). */}
-          <Route path="/set-password" element={<SetPassword />} />
+          <Route path="/login/link" element={<LoginLink />} />
+          {/* Links emailed before the switch to magic links (#514) pointed here. */}
+          <Route path="/set-password" element={<SetPasswordRedirect />} />
           <Route path="/confirm-email" element={<ConfirmEmail />} />
           <Route path="/" element={<RootRoute />}>
             <Route index element={<Dashboard />}></Route>

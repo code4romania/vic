@@ -90,13 +90,14 @@ export class ListTeamUseCase implements IUseCaseService<ITeamMember[]> {
 }
 
 function memberStatus(
-  identity: { status: AuthIdentityStatus; passwordHash: string } | undefined,
+  identity: { status: AuthIdentityStatus } | undefined,
   hasLiveInvite: boolean,
 ): TeamMemberStatus {
   if (!identity) return TeamMemberStatus.NO_LOGIN;
   if (identity.status === AuthIdentityStatus.DISABLED)
     return TeamMemberStatus.DISABLED;
-  if (identity.status === AuthIdentityStatus.ACTIVE && identity.passwordHash) {
+  // Active = has logged in at least once (VIC 2.0, #514: no passwords)
+  if (identity.status === AuthIdentityStatus.ACTIVE) {
     return TeamMemberStatus.ACTIVE;
   }
   return hasLiveInvite

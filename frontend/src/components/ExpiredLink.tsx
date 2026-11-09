@@ -38,8 +38,8 @@ const ExpiredLink = ({ token }: { token: string | null }) => {
           disabled={resendToken.isLoading}
         />
       ) : (
-        <Link to="/forgot-password" className="text-sm underline text-center">
-          {t('expired_link.forgot_password')}
+        <Link to="/login" className="text-sm underline text-center">
+          {t('expired_link.new_login')}
         </Link>
       )}
     </div>

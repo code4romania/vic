@@ -42,11 +42,10 @@ const organization = {
 
 const builders: Array<[string, AuthEmail, string | null]> = [
   ['transitionLinkAdmin', AUTH_EMAILS.transitionLinkAdmin(URL), URL],
-  ['transitionLinkVolunteer', AUTH_EMAILS.transitionLinkVolunteer(URL), URL],
-  ['resetLink', AUTH_EMAILS.resetLink(URL), URL],
-  ['resetCode', AUTH_EMAILS.resetCode('012345'), null],
+  ['transitionLinkVolunteer', AUTH_EMAILS.transitionLinkVolunteer(), null],
+  ['loginLink', AUTH_EMAILS.loginLink(URL), URL],
+  ['loginCode', AUTH_EMAILS.loginCode('012345'), null],
   ['inviteLink', AUTH_EMAILS.inviteLink(URL, 'Asociatia Test', 'Ana'), URL],
-  ['verifyEmailLink', AUTH_EMAILS.verifyEmailLink(URL), URL],
   [
     'confirmOrganizationLink',
     AUTH_EMAILS.confirmOrganizationLink(URL, 'Asociatia Test'),
@@ -66,7 +65,6 @@ const builders: Array<[string, AuthEmail, string | null]> = [
     AUTH_EMAILS.organizationValidated('Test', 'https://vic.test/login'),
     'https://vic.test/login',
   ],
-  ['passwordChanged', AUTH_EMAILS.passwordChanged(), null],
   // The bulk messages around the cutover go to every user: render them too.
   ['announce', AUTH_EMAILS.announce('15 decembrie 2026'), null],
   ['reminder', AUTH_EMAILS.reminder('15 decembrie 2026'), null],
@@ -96,8 +94,8 @@ describe('AUTH_EMAILS', () => {
     },
   );
 
-  it('the reset code email shows the code, leading zero included, and has no button', () => {
-    const email = AUTH_EMAILS.resetCode('012345');
+  it('the login code email shows the code, leading zero included, and has no button', () => {
+    const email = AUTH_EMAILS.loginCode('012345');
 
     expect(email.context.cta).toBeNull();
     expect(render(email)).toContain('<p class="code">012345</p>');
@@ -110,13 +108,21 @@ describe('AUTH_EMAILS', () => {
     expect(context.english.subtitle).toContain('Team page');
   });
 
-  it('the volunteer transition email offers social sign-in (decisions R36)', () => {
-    const { context } = AUTH_EMAILS.transitionLinkVolunteer(URL);
+  it('the volunteer transition email explains the email code and offers social sign-in, without a link', () => {
+    const { context } = AUTH_EMAILS.transitionLinkVolunteer();
 
-    expect(context.english.subtitle).toContain(
-      'Set a password with this link, or sign in with Google, Facebook or Apple in the app as before.',
-    );
-    expect(context.subtitle).toContain('Google, Facebook sau Apple');
+    expect(context.cta).toBeNull();
+    expect(context.english.subtitle).toContain('No more passwords');
+    expect(context.english.subtitle).toContain('Google or Apple');
+    expect(context.subtitle).toContain('Google sau Apple');
+  });
+
+  it('no email talks about choosing or changing a password (VIC 2.0, #514)', () => {
+    for (const [, email] of builders) {
+      expect(email.context.english.subtitle).not.toMatch(
+        /set (a|your|a new) password|choose a (new )?password/i,
+      );
+    }
   });
 
   it('the new-NGO email gives every field and the ready suspend command', () => {

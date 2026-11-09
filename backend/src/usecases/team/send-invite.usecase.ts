@@ -16,7 +16,7 @@ import { OrganizationFacadeService } from 'src/modules/organization/services/org
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { TeamAccessHelper } from './team-access.helper';
 
-// "Send invite" on the Team page: a 14-day link to set a password, for a colleague who has none. Nothing is
+// "Send invite" on the Team page: a 14-day login link for a colleague who has never logged in. Nothing is
 // ever re-sent in bulk. One per 10 minutes and five a day per colleague (AUTH_010). The email address cannot
 // be changed here.
 @Injectable()
@@ -38,7 +38,7 @@ export class SendInviteUseCase
   ): Promise<{ maskedEmail: string }> {
     const target = await this.teamAccess.colleague(caller, targetUserId);
 
-    // An admin without a VIC login yet gets one now, waiting for a password.
+    // An admin without a VIC login yet gets one now, waiting for its first use.
     let identity = await this.authIdentityFacade.findIdentity({
       userId: target.id,
     });
@@ -47,16 +47,13 @@ export class SendInviteUseCase
         await this.authIdentityFacade.upsertIdentity({
           realm: AuthRealm.WEB,
           email: target.email,
-          status: AuthIdentityStatus.PENDING_PASSWORD,
+          status: AuthIdentityStatus.PENDING,
           userId: target.id,
           legacyCognitoUsername: target.cognitoId,
         })
       ).identity;
     }
-    if (
-      identity.status !== AuthIdentityStatus.PENDING_PASSWORD ||
-      identity.passwordHash
-    ) {
+    if (identity.status !== AuthIdentityStatus.PENDING) {
       throw new BadRequestException(OrganizationExceptionMessages.ORG_009);
     }
 
@@ -74,7 +71,7 @@ export class SendInviteUseCase
     await this.authMailer.send(
       identity.email,
       AUTH_EMAILS.inviteLink(
-        this.authMailer.setPasswordUrl(secret),
+        this.authMailer.loginLinkUrl(secret),
         organization?.name ?? 'VIC',
         caller.name,
       ),

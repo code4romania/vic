@@ -20,23 +20,20 @@ export const businessError = (status: number, code_error: string) =>
 // The happy path of every route the web app calls; a spec overrides what it tests with server.use().
 export const handlers = [
   http.post(api('/auth/web/refresh'), () => businessError(401, 'AUTH_008')),
-  http.post(api('/auth/web/login'), () =>
-    HttpResponse.json({ accessToken: 'access-1', expiresIn: 900, user: ADMIN }),
-  ),
+  http.post(api('/auth/web/login/request'), () => new HttpResponse(null, { status: 204 })),
   http.post(api('/auth/web/logout'), () => new HttpResponse(null, { status: 204 })),
   http.get(api('/auth/web/me'), () => HttpResponse.json(ADMIN)),
-  http.post(api('/auth/web/forgot-password'), () => new HttpResponse(null, { status: 200 })),
   http.post(api('/auth/web/resend-verification'), () => new HttpResponse(null, { status: 200 })),
   http.get(api('/auth/token/:secret'), () =>
     HttpResponse.json({
-      type: 'reset_password',
-      purpose: 'reset',
+      type: 'login',
+      purpose: 'login',
       realm: 'web',
       maskedEmail: 'a•••@ong.test',
     }),
   ),
   http.post(api('/auth/token/:secret/resend'), () => new HttpResponse(null, { status: 200 })),
-  http.post(api('/auth/set-password'), () =>
+  http.post(api('/auth/login-link'), () =>
     HttpResponse.json({ accessToken: 'access-2', expiresIn: 900, user: ADMIN }),
   ),
   http.post(api('/auth/confirm-email'), () =>

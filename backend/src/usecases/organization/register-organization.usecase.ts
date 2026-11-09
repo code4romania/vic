@@ -14,14 +14,9 @@ import {
   AuthTokenForm,
   AuthTokenType,
 } from 'src/modules/auth/enums/auth.enums';
-import {
-  AuthException,
-  AuthExceptionCodes,
-} from 'src/modules/auth/exceptions/exceptions';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import { AuthMailerService } from 'src/modules/auth/services/auth-mailer.service';
 import { OneTimeTokenService } from 'src/modules/auth/services/one-time-token.service';
-import { PasswordService } from 'src/modules/auth/services/password.service';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { OrganizationExceptionMessages } from 'src/modules/organization/exceptions/exceptions';
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
@@ -41,7 +36,6 @@ export interface RegisterOrganizationOptions {
   lastName: string;
   adminEmail: string;
   adminPhone: string;
-  password: string;
   turnstileToken: string;
 }
 
@@ -64,7 +58,6 @@ export class RegisterOrganizationUseCase
     private readonly organizationFacade: OrganizationFacadeService,
     private readonly userFacade: UserFacadeService,
     private readonly authIdentityFacade: AuthIdentityFacade,
-    private readonly passwordService: PasswordService,
     private readonly oneTimeTokenService: OneTimeTokenService,
     private readonly authMailer: AuthMailerService,
     private readonly s3Service: S3Service,
@@ -91,10 +84,6 @@ export class RegisterOrganizationUseCase
 
     // 3. Unique name, email, phone and tax id ignoring case, and an admin email not already a web login (409 ORG_004)
     await this.assertUnique(options);
-    if (!this.passwordService.meetsPolicy(options.password)) {
-      throw new AuthException(AuthExceptionCodes.AUTH_007);
-    }
-    const passwordHash = await this.passwordService.hash(options.password);
 
     // 4. One transaction: organization, its first admin, the admin's login, the files, the confirmation link
     const { admin, secret } = await this.dataSource.transaction(
@@ -143,9 +132,8 @@ export class RegisterOrganizationUseCase
           {
             realm: AuthRealm.WEB,
             email: options.adminEmail,
-            passwordHash,
-            status: AuthIdentityStatus.ACTIVE,
-            passwordSetAt: new Date(),
+            // The confirmation link logs the admin in and activates the login (VIC 2.0, #514: no password)
+            status: AuthIdentityStatus.PENDING,
             userId: adminUser.id,
           },
           manager,

@@ -26,14 +26,11 @@ export class AuthIdentityEntity extends BaseEntity {
   @Column({ type: 'text', name: 'email' })
   email: string;
 
-  @Column({ type: 'text', name: 'password_hash', nullable: true })
-  passwordHash: string;
-
   @Column({
     type: 'enum',
     enum: AuthIdentityStatus,
     name: 'status',
-    default: AuthIdentityStatus.PENDING_PASSWORD,
+    default: AuthIdentityStatus.PENDING,
   })
   status: AuthIdentityStatus;
 
@@ -43,17 +40,8 @@ export class AuthIdentityEntity extends BaseEntity {
   @Column({ type: 'timestamptz', name: 'email_verified_at', nullable: true })
   emailVerifiedAt: Date;
 
-  @Column({ type: 'timestamptz', name: 'password_set_at', nullable: true })
-  passwordSetAt: Date;
-
   @Column({ type: 'timestamptz', name: 'last_login_at', nullable: true })
   lastLoginAt: Date;
-
-  @Column({ type: 'integer', name: 'failed_attempts', default: 0 })
-  failedAttempts: number;
-
-  @Column({ type: 'timestamptz', name: 'locked_until', nullable: true })
-  lockedUntil: Date;
 
   @Column({ type: 'text', name: 'legacy_cognito_username', nullable: true })
   legacyCognitoUsername: string;

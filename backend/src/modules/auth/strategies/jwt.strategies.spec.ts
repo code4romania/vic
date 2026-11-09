@@ -16,14 +16,10 @@ const identity = (
   id: 'identity-id',
   realm: AuthRealm.WEB,
   email: 'person@example.ro',
-  passwordHash: 'hash',
   status: AuthIdentityStatus.ACTIVE,
   superAdmin: false,
   emailVerifiedAt: new Date(),
-  passwordSetAt: new Date(),
   lastLoginAt: null,
-  failedAttempts: 0,
-  lockedUntil: null,
   legacyCognitoUsername: null,
   userId: 'user-id',
   createdOn: new Date(),
@@ -90,7 +86,7 @@ describe('JWT strategies', () => {
       ],
       [
         'an identity still waiting for a password',
-        identity({ status: AuthIdentityStatus.PENDING_PASSWORD }),
+        identity({ status: AuthIdentityStatus.PENDING }),
       ],
       ['a mobile identity', identity({ realm: AuthRealm.MOBILE })],
     ])('rejects %s', async (_, found) => {
