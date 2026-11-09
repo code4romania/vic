@@ -71,7 +71,7 @@
     "invalid_date": "Va rugam să introduceți o dată",
     "unlimited": "nelimitat",
     "search": "Cauta...",
-    "publish": "Publica",
+    "publish": "Publică",
     "filters": {
       "show": "Filtre",
       "reset": "Resetează filtre",
@@ -645,7 +645,7 @@
         "max": "Locația poate să aibă maxim {{value}} caractere"
       },
       "target": {
-        "label": "Target",
+        "label": "Public țintă",
         "public": "Eveniment public",
         "all": "Toată organizația",
         "placeholder": "Alege toate variantele care se aplică",

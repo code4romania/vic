@@ -79,9 +79,11 @@ const ResponseSelectOptions: SelectItem<RSVPGoingEnum>[] = [
 
 interface RsvpTableProps extends RsvpTableBasicProps {
   eventId: string;
+  // names the exported file: "Înscrieri <event>.xlsx"
+  eventName?: string;
 }
 
-const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
+const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
   // #497
   const [showExport, setShowExport] = useState<boolean>(false);
   // filters
@@ -284,7 +286,11 @@ const RsvpTable = ({ eventId, query, setQuery }: RsvpTableProps) => {
         </CardBody>
       </Card>
       {showExport && (
-        <ExportRegistrationsModal eventId={eventId} onClose={() => setShowExport(false)} />
+        <ExportRegistrationsModal
+          eventId={eventId}
+          eventName={eventName}
+          onClose={() => setShowExport(false)}
+        />
       )}
     </>
   );
