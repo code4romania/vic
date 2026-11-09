@@ -21,6 +21,7 @@ interface VolunteerProfileProps {
   branch?: string;
   createdOn: Date;
   source?: string | null;
+  notes?: string | null;
   isFavorite?: boolean;
   hasAccount?: boolean;
   onToggleFavorite?: () => void;
@@ -38,6 +39,7 @@ const VolunteerProfile = ({
   role,
   createdOn,
   source,
+  notes,
   isFavorite,
   hasAccount = true,
   onToggleFavorite,
@@ -156,6 +158,12 @@ const VolunteerProfile = ({
                 </div>
               )}
             </div>
+            {notes && (
+              <div className="col-span-full flex gap-2.5 flex-col">
+                <small className="text-cool-gray-500">{i18n.t('volunteer:notes')}</small>
+                <p className="whitespace-pre-line">{notes}</p>
+              </div>
+            )}
           </div>
         </div>
       </CardBody>

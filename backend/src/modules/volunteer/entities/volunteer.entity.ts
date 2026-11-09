@@ -38,6 +38,10 @@ export class VolunteerEntity extends BaseEntity {
   @Column({ type: 'text', name: 'source', nullable: true })
   source: string;
 
+  // Internal notes of the NGO, never shown to the volunteer (#471).
+  @Column({ type: 'text', name: 'notes', nullable: true })
+  notes: string;
+
   // Star set by the NGO.
   @Column({ type: 'boolean', name: 'is_favorite', default: false })
   isFavorite: boolean;

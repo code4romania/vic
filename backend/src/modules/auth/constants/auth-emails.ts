@@ -69,6 +69,27 @@ export const AUTH_EMAILS = {
       },
     ),
 
+  // #471: an NGO added the person as an Active volunteer.
+  volunteerInvitation: (
+    organizationName: string,
+    hasAccount: boolean,
+  ): AuthEmail =>
+    email(
+      `${organizationName} te-a adăugat ca voluntar în VIC / ${organizationName} added you as a volunteer in VIC`,
+      {
+        title: `Ești voluntar la ${organizationName}`,
+        subtitle: hasAccount
+          ? `${organizationName} te-a adăugat ca voluntar. Deschide aplicația VIC ca să vezi organizația, evenimentele, orele și documentele tale.`
+          : `${organizationName} te-a adăugat ca voluntar în VIC. Instalează aplicația VIC din App Store sau Google Play și intră cu această adresă de email: primești un cod de autentificare, iar organizația, evenimentele, orele și documentele tale te așteaptă acolo.`,
+      },
+      {
+        title: `You are a volunteer at ${organizationName}`,
+        subtitle: hasAccount
+          ? `${organizationName} added you as a volunteer. Open the VIC app to see the organization, your events, hours and documents.`
+          : `${organizationName} added you as a volunteer in VIC. Install the VIC app from the App Store or Google Play and sign in with this email address: you will get a login code, and the organization, your events, hours and documents will be there.`,
+      },
+    ),
+
   loginLink: (url: string): AuthEmail =>
     email(
       'Linkul tău de autentificare VIC / Your VIC login link',

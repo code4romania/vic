@@ -97,6 +97,7 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
               role={volunteer.profile?.role?.name}
               createdOn={volunteer.createdOn}
               source={volunteer.source}
+              notes={volunteer.notes}
               isFavorite={volunteer.isFavorite}
               hasAccount={volunteer.user?.hasAccount}
               onToggleFavorite={() => onUpdateDetails({ isFavorite: !volunteer.isFavorite })}
