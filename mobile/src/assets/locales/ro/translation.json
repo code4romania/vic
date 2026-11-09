@@ -36,7 +36,10 @@
         },
         "back": "Înapoi",
         "close": "Închide",
-        "cancel": "Anulează"
+        "cancel": "Anulează",
+        "errors": {
+            "generic": "Eroare la încărcarea datelor"
+        }
     },
     "landing": {
         "message": "Intră în aplicație sau creează-ți cont folosind una dintre modalitățile următoare",
@@ -872,6 +875,16 @@
                 "approved": "a fost aprobată",
                 "rejected": "a fost respinsă"
             }
+        },
+        "title": "Noutăți",
+        "tabs": {
+            "logs": "Ore",
+            "documents": "Documente",
+            "organizations": "Organizații"
+        },
+        "empty": "Nicio noutate aici încă",
+        "errors": {
+            "generic": "Eroare la încărcarea noutăților"
         }
     },
     "delete_account": {
@@ -908,7 +921,8 @@
             "ANNOUNCEMENT_006": "Doar voluntarii activi pot răspunde la un anunț activ.",
             "ANNOUNCEMENT_007": "Ai răspuns deja la acest anunț.",
             "generic": "Răspunsul nu a putut fi trimis. Încearcă din nou."
-        }
+        },
+        "your_answer": "Răspunsul tău"
     },
     "onboarding": {
         "skip": "Sari peste",
