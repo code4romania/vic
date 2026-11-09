@@ -31,7 +31,7 @@ export type AccountDataFormTypes = {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phone?: string;
   countyId: number;
   cityId: number;
   birthday: Date;
@@ -59,11 +59,17 @@ const schema = yup.object({
         value: '50',
       })}`,
     ),
+  // Optional since VIC 2.0
   phone: yup
     .string()
+    .transform((value) => (value ? value : undefined))
     .matches(REGEX.NUMBERS_ONLY, `${i18n.t('register:create_account.form.phone.pattern')}`)
-    .length(9, `${i18n.t('register:create_account.form.phone.length', { number: 10 })}`)
-    .required(`${i18n.t('register:create_account.form.phone.required')}`),
+    .length(9, `${i18n.t('register:create_account.form.phone.length', { number: 10 })}`),
+  // Mandatory since VIC 2.0 (replaces the ID card data)
+  birthday: yup
+    .date()
+    .typeError(`${i18n.t('register:create_user.form.birthday.required')}`)
+    .required(`${i18n.t('register:create_user.form.birthday.required')}`),
 });
 
 const AccountData = ({ navigation }: any) => {
@@ -117,7 +123,9 @@ const AccountData = ({ navigation }: any) => {
       {
         userProfile: {
           ...payload,
-          phone: `${CONSTANTS.PHONE_PREFIX}${payload.phone.trim()}`,
+          phone: payload.phone?.trim()
+            ? `${CONSTANTS.PHONE_PREFIX}${payload.phone.trim()}`
+            : undefined,
         },
         profilePicture: selectedProfilePicture || undefined,
       },
@@ -248,7 +256,6 @@ const AccountData = ({ navigation }: any) => {
           disabled={isUpdatingProfile}
           keyboardType="phone-pad"
           accessoryLeft={renderPhoneNumberPrefix}
-          required={true}
         />
         <CountySelect
           control={control as any}
@@ -275,6 +282,7 @@ const AccountData = ({ navigation }: any) => {
           placeholder={t('general:select')}
           min={new Date(1900, 1, 1)}
           disabled={isUpdatingProfile}
+          required={true}
         />
         <FormSelect
           control={control as any}

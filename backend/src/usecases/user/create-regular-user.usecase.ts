@@ -52,9 +52,10 @@ export class CreateRegularUsereUseCaseService
     }
 
     // 3. There is already an user with the same "phone"/"email", abort..
+    // (phone is optional: an empty condition would match every user)
     const existingUser = await this.userService.findRegularUser([
       { email: identity.email },
-      { phone: newUser.phone, hasAccount: true },
+      ...(newUser.phone ? [{ phone: newUser.phone, hasAccount: true }] : []),
     ]);
     if (existingUser) {
       this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
@@ -82,11 +83,13 @@ export class CreateRegularUsereUseCaseService
     profile: Omit<CreateRegularUserOptions, 'email'>,
     identityId: string,
   ): Promise<IRegularUserProfileModel> {
-    // The phone must not belong to another real account.
-    const phoneOwner = await this.userService.findRegularUser({
-      phone: profile.phone,
-      hasAccount: true,
-    });
+    // The phone (optional) must not belong to another real account.
+    const phoneOwner = profile.phone
+      ? await this.userService.findRegularUser({
+          phone: profile.phone,
+          hasAccount: true,
+        })
+      : null;
     if (phoneOwner) {
       this.exceptionService.badRequestException(UserExceptionMessages.USER_003);
     }

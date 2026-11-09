@@ -15,7 +15,6 @@ import {
   TableInheritance,
 } from 'typeorm';
 import { SEX, UserType } from '../enums/user.enum';
-import { UserPersonalDataEntity } from './user-personal-data.entity';
 import { NotificationsSettingsEntity } from 'src/modules/notifications/entities/notifications-settings.entity';
 
 @Entity({ name: 'user' })
@@ -37,7 +36,8 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'text', name: 'email' })
   email: string;
 
-  @Column({ type: 'text', name: 'phone' })
+  // Optional since VIC 2.0
+  @Column({ type: 'text', name: 'phone', nullable: true })
   phone: string;
 
   // False for a person the NGO added by hand or by import (Candidate): no login yet.
@@ -90,13 +90,6 @@ export class RegularUserEntity extends UserEntity {
 
   @OneToMany(() => VolunteerEntity, (volunteer) => volunteer.user)
   volunteer: VolunteerEntity[];
-
-  @Column({ type: 'varchar', name: 'user_personal_data_id', nullable: true })
-  userPersonalDataId: string;
-
-  @OneToOne(() => UserPersonalDataEntity, { eager: true })
-  @JoinColumn({ name: 'user_personal_data_id' })
-  userPersonalData: UserPersonalDataEntity;
 
   @Column({
     type: 'varchar',

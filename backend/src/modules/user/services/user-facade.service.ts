@@ -15,19 +15,12 @@ import {
 } from '../models/regular-user.model';
 import { AdminUserRepositoryService } from '../repositories/admin-user.repository';
 import { RegularUserRepositoryService } from '../repositories/regular-user.repository';
-import {
-  CreateUserPersonalDataOptions,
-  FindUserPersonalDataOptions,
-  IUserPersonalDataModel,
-} from '../models/user-personal-data.model';
-import { UserPersonalDataRepository } from '../repositories/user-personal-data.repository';
 
 @Injectable()
 export class UserFacadeService {
   constructor(
     private readonly adminUserRepository: AdminUserRepositoryService,
     private readonly regularUserRepository: RegularUserRepositoryService,
-    private readonly userPersonalDataRepository: UserPersonalDataRepository,
   ) {}
 
   public async findAdminUser(
@@ -72,28 +65,5 @@ export class UserFacadeService {
     id: string,
   ): Promise<IRegularUserModel> {
     return this.regularUserRepository.softDeleteAndAnonimize(id);
-  }
-
-  public async createUserPersonalData(
-    userPersonalDataModel: CreateUserPersonalDataOptions,
-  ): Promise<IUserPersonalDataModel> {
-    return this.userPersonalDataRepository.create(userPersonalDataModel);
-  }
-
-  public async updateUserPersonalData(
-    id: string,
-    updates: Partial<CreateUserPersonalDataOptions>,
-  ): Promise<IUserPersonalDataModel> {
-    return this.userPersonalDataRepository.update(id, updates);
-  }
-
-  public async deleteUserPersonalData(id: string): Promise<string> {
-    return this.userPersonalDataRepository.delete(id);
-  }
-
-  public async findUserPersonalData(
-    findOptions: FindUserPersonalDataOptions,
-  ): Promise<IUserPersonalDataModel> {
-    return this.userPersonalDataRepository.find(findOptions);
   }
 }

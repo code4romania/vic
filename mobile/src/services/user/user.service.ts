@@ -1,13 +1,6 @@
 import { useMutation, useQuery } from 'react-query';
-import {
-  createUserProfile,
-  deleteAccount,
-  getUserProfile,
-  updateUserPersonalData,
-  updateUserProfile,
-} from './user.api';
+import { createUserProfile, deleteAccount, getUserProfile, updateUserProfile } from './user.api';
 import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.interface';
-import { IdentityDataFormTypes } from '../../screens/IdentityData';
 import { AccountDataFormTypes } from '../../screens/AccountData';
 import { ImageAttachement } from '../../common/interfaces/image-attachement.interface';
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
@@ -42,15 +35,6 @@ export const useGetUserProfileQuery = () => {
       }
     },
   });
-};
-
-export const useUpdateUserPersonalDataMutation = () => {
-  const { setIdentityData } = useStore();
-  return useMutation(
-    ['personal-data'],
-    (personalData: IdentityDataFormTypes) => updateUserPersonalData(personalData),
-    { onSuccess: (data: IUserProfile) => setIdentityData(data.userPersonalData) },
-  );
 };
 
 export const useUpdateUserProfileMutation = () => {

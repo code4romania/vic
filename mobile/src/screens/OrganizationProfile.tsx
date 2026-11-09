@@ -83,8 +83,8 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   }, [getOrganizationError, navigation]);
 
   const onJoinOrganizationButtonPress = () => {
-    if (!userProfile?.userPersonalData) {
-      // 1. if the user doesn't have the identity data filled in show modal
+    if (!userProfile?.birthday) {
+      // 1. a volunteer needs a date of birth to join (VIC 2.0, no ID card data)
       bottomSheetRef.current?.expand();
       return;
     }
@@ -98,8 +98,8 @@ const OrganizationProfile = ({ navigation, route }: any) => {
   };
 
   const onJoinOrganizationByAccessCodeButtonPress = () => {
-    if (!userProfile?.userPersonalData) {
-      // 1. if the user doesn't have the identity data filled in show modal
+    if (!userProfile?.birthday) {
+      // 1. a volunteer needs a date of birth to join (VIC 2.0, no ID card data)
       bottomSheetRef.current?.expand();
       return;
     }
@@ -112,9 +112,9 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     });
   };
 
-  const onGoToIdentityDataScreen = () => {
+  const onGoToAccountDataScreen = () => {
     onCloseBottomSheet();
-    navigation.navigate('identity-data', { shouldGoBack: true });
+    navigation.navigate('account-data');
   };
 
   const onCancelAccessRequest = () => {
@@ -340,17 +340,17 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                 <SvgXml xml={upsIcon} height={100} width={100} />
                 <View style={styles.textContainer}>
                   <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
-                    'modal.identity_data_missing.heading',
+                    'modal.birthday_missing.heading',
                   )}`}</Text>
                   <Paragraph style={styles.bottomSheetParagraph}>{`${t(
-                    'modal.identity_data_missing.paragraph',
+                    'modal.birthday_missing.paragraph',
                   )}`}</Paragraph>
                 </View>
                 <View style={styles.buttonsContainer}>
                   <Button
-                    label={t('modal.identity_data_missing.action_label')}
+                    label={t('modal.birthday_missing.action_label')}
                     status={'primary'}
-                    onPress={onGoToIdentityDataScreen}
+                    onPress={onGoToAccountDataScreen}
                   />
                   <InlineLink
                     label={t('general:back')}

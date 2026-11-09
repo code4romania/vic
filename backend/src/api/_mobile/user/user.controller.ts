@@ -14,10 +14,7 @@ import { CreateRegularUsereUseCaseService } from 'src/usecases/user/create-regul
 import { CreateRegularUserDto } from './dto/create-regular-user.dto';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
-import { UserPresenter } from './presenters/user.presenter';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
-import { UpdateUserPersonalDataDto } from './dto/update-user-personal-data.dto';
-import { UpdateUserPersonalDataUsecase } from 'src/usecases/user/update-user-personal-data.usecase';
 import { UpdateRegularUserDto } from './dto/update-regular-user.dto';
 import { UpdateRegularUserUsecase } from 'src/usecases/user/update-regular-user.usecase';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
@@ -33,7 +30,6 @@ export class MobileRegularUserController {
   constructor(
     private readonly createRegularUsereUseCaseService: CreateRegularUsereUseCaseService,
     private readonly getOneRegularUserProfileUseCase: GetOneRegularUserProfileUseCase,
-    private readonly updateUserPersonalData: UpdateUserPersonalDataUsecase,
     private readonly updateRegularUserUsecase: UpdateRegularUserUsecase,
     private readonly deleteAccountRegularUserUsecase: DeleteAccountRegularUserUsecase,
   ) {}
@@ -84,19 +80,6 @@ export class MobileRegularUserController {
       file?.profilePicture,
     );
     return new UserProfilePresenter(regularUser);
-  }
-
-  @ApiBody({ type: UpdateUserPersonalDataDto })
-  @Patch('personal-data')
-  async updatePerosnalData(
-    @Body() userPersonalData: UpdateUserPersonalDataDto,
-    @ExtractUser() regularUser: IRegularUserModel,
-  ): Promise<UserPresenter> {
-    const updatedUser = await this.updateUserPersonalData.execute(
-      regularUser.id,
-      userPersonalData,
-    );
-    return new UserPresenter(updatedUser);
   }
 
   @Delete()

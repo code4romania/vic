@@ -125,7 +125,6 @@ import { UnregisterDevicePushTokenUseCase } from './push-notifications/unregiste
 import { GetCitiesByCountyIdUseCase } from './location/get-cities-by-county-id.usecase';
 import { GetOrganizationsUseCase } from './organization/get-organizations.usecase';
 import { GetOrganizationWithEventsUseCase } from './organization/get-organization-with-events.usecase';
-import { UpdateUserPersonalDataUsecase } from './user/update-user-personal-data.usecase';
 import { JoinOrganizationByAccessCodeUsecase } from './volunteer/join-organization-by-access-code.usecase';
 import { CancelAccessRequestUsecase } from './access-request/cancel-access-request.usecase';
 import { SwitchOrganizationUsecase } from './organization/switch-organization.usecase';
@@ -248,7 +247,6 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
-    UpdateUserPersonalDataUsecase,
     UpdateRegularUserUsecase,
     GetOneRegularUserProfileUseCase,
     SyncUserOrganizationsUsecase,
@@ -420,7 +418,6 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     CreateRegularUsereUseCaseService,
     GetOneRegularUserUseCase,
     GetManyAdminUsersUseCase,
-    UpdateUserPersonalDataUsecase,
     UpdateRegularUserUsecase,
     GetOneRegularUserProfileUseCase,
     SyncUserOrganizationsUsecase,

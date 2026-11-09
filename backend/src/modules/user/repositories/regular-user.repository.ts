@@ -49,7 +49,6 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
         location: {
           county: true,
         },
-        userPersonalData: true,
         activeOrganization: {
           volunteers: true,
         },
@@ -69,7 +68,6 @@ export class RegularUserRepositoryService implements IRegularUserRepository {
       phone: 'Deleted',
       name: 'Deleted',
       birthday: new Date(),
-      userPersonalDataId: null,
     });
 
     const updated = await this.regularUserRepository.save(userToUpdate);

@@ -27,7 +27,7 @@ export type UserFormTypes = {
   firstName: string;
   lastName: string;
   countyId: number;
-  phone: string;
+  phone?: string;
   cityId: number;
   birthday: Date;
   sex: Sex;
@@ -44,11 +44,17 @@ const schema = yup.object({
         value: '50',
       })}`,
     ),
+  // Optional since VIC 2.0
   phone: yup
     .string()
+    .transform((value) => (value ? value : undefined))
     .matches(REGEX.NUMBERS_ONLY, `${i18n.t('register:create_account.form.phone.pattern')}`)
-    .length(9, `${i18n.t('register:create_account.form.phone.length', { number: 10 })}`)
-    .required(`${i18n.t('register:create_account.form.phone.required')}`),
+    .length(9, `${i18n.t('register:create_account.form.phone.length', { number: 10 })}`),
+  // Mandatory since VIC 2.0 (replaces the ID card data)
+  birthday: yup
+    .date()
+    .typeError(`${i18n.t('register:create_user.form.birthday.required')}`)
+    .required(`${i18n.t('register:create_user.form.birthday.required')}`),
   lastName: yup
     .string()
     .required(`${i18n.t('register:create_user.form.last_name.required')}`)
@@ -99,7 +105,7 @@ const CreateUser = ({ navigation }: any) => {
       {
         ...userPayload,
         locationId: cityId,
-        phone: `${CONSTANTS.PHONE_PREFIX}${phone.trim()}`,
+        phone: phone?.trim() ? `${CONSTANTS.PHONE_PREFIX}${phone.trim()}` : undefined,
       },
       {
         onError: (error: any) => {
@@ -155,7 +161,6 @@ const CreateUser = ({ navigation }: any) => {
           disabled={isLoading}
           keyboardType="phone-pad"
           accessoryLeft={renderPhoneNumberPrefix}
-          required={true}
         />
         <CountySelect
           control={control as any}
@@ -182,6 +187,7 @@ const CreateUser = ({ navigation }: any) => {
           disabled={isLoading}
           name="birthday"
           error={errors.birthday}
+          required={true}
         />
         <FormSelect
           control={control as any}
