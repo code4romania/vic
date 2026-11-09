@@ -204,10 +204,19 @@
   "organizations": {
     "title": "Search",
     "search": {
-      "placeholder": "Name of organization"
+      "placeholder": "Name of organization",
+      "clear": "Clear search"
     },
     "errors": {
       "generic": "Error loading data"
+    },
+    "heading": "Organizations",
+    "subtitle": "Join the people doing things that matter to you.",
+    "count": "{{n}} organizations",
+    "member": "Member",
+    "empty": {
+      "title": "No results",
+      "description": "Check the name of the organization."
     }
   },
   "organization_profile": {
@@ -245,6 +254,17 @@
         "paragraph": "The application has been sent to the organization's coordinators. Are you sure you want to withdraw your application?",
         "action_label": "Cancel request"
       }
+    },
+    "about": "About",
+    "bar": {
+      "pending": "Request sent",
+      "pending_hint": "We will let you know when the organization replies.",
+      "withdraw": "Withdraw",
+      "member": "Member",
+      "member_since": "since {{date}}",
+      "see_events": "See events",
+      "have_code": "I have a code",
+      "join": "I want to help"
     }
   },
   "join_ngo": {

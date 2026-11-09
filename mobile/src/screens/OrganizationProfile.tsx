@@ -1,77 +1,63 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import PageLayout from '../layouts/PageLayout';
-import { Divider, Text, useTheme } from '@ui-kitten/components';
-import { StyleSheet, View } from 'react-native';
-import ReadOnlyElement from '../components/ReadOnlyElement';
-import SectionWrapper from '../components/SectionWrapper';
-import ProfileIntro from '../components/ProfileIntro';
+import React, { useEffect, useRef } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import * as Linking from 'expo-linking';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { useTranslation } from 'react-i18next';
 import {
   useOrganizationQuery,
   useRejoinOrganizationMutation,
 } from '../services/organization/organization.service';
-import { formatDate } from '../common/utils/utils';
-import ScrollViewLayout from '../layouts/ScrollViewLayout';
-import EventItem from '../components/EventItem';
-import { useTranslation } from 'react-i18next';
-import { ButtonType } from '../common/enums/button-type.enum';
-import Disclaimer from '../components/Disclaimer';
-import { OrganizatinVolunteerStatus } from '../common/enums/organization-volunteer-status.enum';
-import { useOrganization } from '../store/organization/organization.selector';
 import { useCancelAccessRequestMutation } from '../services/access-request/access-request.service';
-import Toast from 'react-native-toast-message';
+import { OrganizatinVolunteerStatus } from '../common/enums/organization-volunteer-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import Paragraph from '../components/Paragraph';
-import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
-import BottomSheet from '@gorhom/bottom-sheet';
-import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
-import { renderBackdrop } from '../components/BottomSheet';
-import { SvgXml } from 'react-native-svg';
-import upsIcon from '../assets/svg/ups-icon';
-import Button from '../components/Button';
-import InlineLink from '../components/InlineLink';
+import { formatDate } from '../common/utils/utils';
+import { colors, fonts, radius, shadows, spacing, StatusTone } from '../common/theme/tokens';
+import { useOrganization } from '../store/organization/organization.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { useReducedMotion } from 'react-native-reanimated';
-import { usePaddingTop } from '../hooks/usePaddingTop';
+import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
+import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
+import { EventCard } from '../components/events/EventCard';
+import { EventIcon } from '../components/events/EventIcons';
+import {
+  Avatar,
+  Badge,
+  Enter,
+  ListRow,
+  PressableScale,
+  Sheet,
+  VButton,
+  VText,
+} from '../components/ui';
 
+type Banner = { tone: StatusTone; text: string };
+
+/**
+ * VIC 2.0 organization page (canvas board "Organizație"): navy header with the logo, the name and
+ * how many volunteers it has, the description, contact details and open events. The bottom bar
+ * follows the volunteer's status: "Am un cod" + "Vreau să ajut", a pending request that can be
+ * withdrawn, a member who can see the events, or a former volunteer who can ask to rejoin.
+ */
 const OrganizationProfile = ({ navigation, route }: any) => {
   const { t } = useTranslation('organization_profile');
-  // theme
-  const theme = useTheme();
-  const paddingTop = usePaddingTop();
-
-  // user profile context
+  const insets = useSafeAreaInsets();
+  useFocusedStatusBarStyle('light');
   const { userProfile } = useUserProfile();
-
   const { organization } = useOrganization();
-
-  // bottom sheet ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  // bottom sheet snap points
-  const snapPoints = useMemo(
-    () =>
-      organization?.organizationVolunteerStatus ===
-      OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING
-        ? ['1%', 300]
-        : ['1%', 420],
-    [organization],
-  );
-
-  const reducedMotion = useReducedMotion();
+  const birthdaySheet = useRef<BottomSheetModal>(null);
+  const cancelSheet = useRef<BottomSheetModal>(null);
 
   const { isFetching: isFetchingOrganization, error: getOrganizationError } = useOrganizationQuery(
     route.params.organizationId,
   );
-
   const { isLoading: isCancelingAccessRequest, mutate: cancelAccessRequest } =
     useCancelAccessRequestMutation();
-
   const { isLoading: isRejoiningOrganization, mutate: rejoinOrganization } =
     useRejoinOrganizationMutation();
 
   useEffect(() => {
     if (getOrganizationError) {
-      // useToa
       Toast.show({
         type: 'error',
         text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(
@@ -82,324 +68,393 @@ const OrganizationProfile = ({ navigation, route }: any) => {
     }
   }, [getOrganizationError, navigation]);
 
-  const onJoinOrganizationButtonPress = () => {
+  const status = organization?.organizationVolunteerStatus;
+  const loaded = !!organization && organization.id === route.params.organizationId;
+  const busy = isFetchingOrganization || isCancelingAccessRequest || isRejoiningOrganization;
+
+  // a volunteer needs a date of birth to join (VIC 2.0, no ID card data)
+  const goJoin = (screen: 'join-organization' | 'join-by-access-code') => {
     if (!userProfile?.birthday) {
-      // 1. a volunteer needs a date of birth to join (VIC 2.0, no ID card data)
-      bottomSheetRef.current?.expand();
+      birthdaySheet.current?.present();
       return;
     }
-
-    // 2. otherwise go to join organization
-    navigation.navigate('join-organization', {
+    navigation.navigate(screen, {
       organizationId: organization?.id,
       logo: organization?.logo,
       name: organization?.name,
     });
-  };
-
-  const onJoinOrganizationByAccessCodeButtonPress = () => {
-    if (!userProfile?.birthday) {
-      // 1. a volunteer needs a date of birth to join (VIC 2.0, no ID card data)
-      bottomSheetRef.current?.expand();
-      return;
-    }
-
-    // 2. otherwise go to join organization
-    navigation.navigate('join-by-access-code', {
-      organizationId: organization?.id,
-      logo: organization?.logo,
-      name: organization?.name,
-    });
-  };
-
-  const onGoToAccountDataScreen = () => {
-    onCloseBottomSheet();
-    navigation.navigate('account-data');
   };
 
   const onCancelAccessRequest = () => {
-    onCloseBottomSheet();
+    cancelSheet.current?.dismiss();
     if (organization) {
       cancelAccessRequest(
         { organizationId: organization.id },
         {
-          onError: (error: any) => {
+          onError: (error: any) =>
             Toast.show({
               type: 'error',
               text1: `${InternalErrors.ACCESS_CODE_ERRORS.getError(
                 error.response?.data.code_error,
               )}`,
-            });
-          },
+            }),
         },
       );
     }
   };
 
-  const onRejoinOrganization = () => {
+  const onRejoin = () => {
     if (organization) {
       rejoinOrganization(
         { volunteerId: organization.volunteer.id },
         {
-          onSuccess: () => {
-            Toast.show({ type: 'success', text1: `${t('rejoin_requested')}` });
-          },
-          onError: (error: any) => {
+          onSuccess: () => Toast.show({ type: 'success', text1: `${t('rejoin_requested')}` }),
+          onError: (error: any) =>
             Toast.show({
               type: 'error',
               text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(
                 error.response?.data.code_error,
               )}`,
-            });
-          },
+            }),
         },
       );
     }
   };
 
-  const isLoading = () => {
-    return isCancelingAccessRequest || isFetchingOrganization || isRejoiningOrganization;
-  };
-
-  // Inactive (set by the NGO), blocked and candidate volunteers can only look at the organization
-  const hasNoActions = [
-    OrganizatinVolunteerStatus.INACTIVE_VOLUNTEER,
-    OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER,
-    OrganizatinVolunteerStatus.CANDIDATE_VOLUNTEER,
-  ].includes(organization?.organizationVolunteerStatus as OrganizatinVolunteerStatus);
-
-  const renderActionOptions = () => {
-    let options: any = {
-      primaryActionLabel: t('join'),
-      onPrimaryActionButtonClick: onJoinOrganizationButtonPress,
-      secondaryActionLink: `${t('code')}`,
-      onSecondaryActionButtonClick: onJoinOrganizationByAccessCodeButtonPress,
-      secondaryLinkColor: true,
-    };
-
-    switch (organization?.organizationVolunteerStatus) {
+  const banner = (): Banner | null => {
+    switch (status) {
       case OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING:
-        options = {
-          primaryActionLabel: t('cancel_request'),
-          onPrimaryActionButtonClick: () => bottomSheetRef.current?.expand(),
-          primaryBtnType: ButtonType.DANGER,
-        };
-        break;
-      case OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER:
-        options = {
-          primaryActionLabel: t('leave'),
-          onPrimaryActionButtonClick: onLeaveOrganization,
-          primaryBtnType: ButtonType.DANGER,
-        };
-        break;
+        return { tone: 'wait', text: `${t('disclaimer.access_request_pending')}` };
       case OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER:
-        options = {
-          primaryActionLabel: t('rejoin'),
-          onPrimaryActionButtonClick: onRejoinOrganization,
-          primaryBtnType: ButtonType.PRIMARY,
-        };
-        break;
+        return { tone: 'wait', text: `${t('disclaimer.volunteer_archived')}` };
+      case OrganizatinVolunteerStatus.INACTIVE_VOLUNTEER:
+        return { tone: 'wait', text: `${t('disclaimer.volunteer_inactive')}` };
+      case OrganizatinVolunteerStatus.CANDIDATE_VOLUNTEER:
+        return { tone: 'wait', text: `${t('disclaimer.volunteer_candidate')}` };
+      case OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER:
+        return { tone: 'no', text: `${t('disclaimer.volunteer_blocked')}` };
+      default:
+        return null;
     }
-
-    return options;
   };
 
-  const onEventPress = (eventId: string) => {
-    navigation.navigate('event', { eventId });
+  const renderBar = () => {
+    if (!organization) {
+      return null;
+    }
+    switch (status) {
+      case OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING:
+        return (
+          <>
+            <View style={styles.barText}>
+              <VText variant="h3" style={styles.barTitle}>
+                {t('bar.pending')}
+              </VText>
+              <VText variant="cap">{t('bar.pending_hint')}</VText>
+            </View>
+            <VButton
+              variant="outline"
+              label={`${t('bar.withdraw')}`}
+              onPress={() => cancelSheet.current?.present()}
+              loading={busy}
+              testID="organization-withdraw"
+            />
+          </>
+        );
+      case OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER:
+        return (
+          <>
+            <Badge label={`${t('bar.member')}`} tone="ok" />
+            <VText variant="cap" style={styles.barText} numberOfLines={1}>
+              {t('bar.member_since', {
+                date: formatDate(new Date(organization.volunteer.createdOn)),
+              })}
+            </VText>
+            <VButton
+              variant="navy"
+              label={`${t('bar.see_events')}`}
+              onPress={() => navigation.navigate('events')}
+              testID="organization-events"
+            />
+          </>
+        );
+      case OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER:
+        return (
+          <VButton
+            label={`${t('rejoin')}`}
+            onPress={onRejoin}
+            loading={busy}
+            style={styles.fill}
+            testID="organization-rejoin"
+          />
+        );
+      case OrganizatinVolunteerStatus.INACTIVE_VOLUNTEER:
+      case OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER:
+      case OrganizatinVolunteerStatus.CANDIDATE_VOLUNTEER:
+        // they can only look at the organization
+        return null;
+      default:
+        return (
+          <>
+            <VText
+              variant="label"
+              style={[styles.barText, styles.link]}
+              onPress={() => goJoin('join-by-access-code')}
+              accessibilityRole="button"
+              testID="organization-code"
+            >
+              {t('bar.have_code')}
+            </VText>
+            <VButton
+              label={`${t('bar.join')}`}
+              onPress={() => goJoin('join-organization')}
+              loading={busy}
+              testID="organization-join"
+            />
+          </>
+        );
+    }
   };
 
-  const onLeaveOrganization = () => {
-    navigation.navigate('leave-organization');
-  };
-
-  const onCloseBottomSheet = () => {
-    bottomSheetRef.current?.close();
-  };
+  const bar = loaded ? renderBar() : null;
+  const statusBanner = loaded ? banner() : null;
 
   return (
-    <>
-      <PageLayout
-        title={t('title')}
-        onBackButtonPress={navigation.goBack}
-        actionsOptions={
-          hasNoActions
-            ? undefined
-            : {
-                ...renderActionOptions(),
-                loading: isLoading(),
-              }
-        }
-        headerStyle={{ paddingTop }}
+    <View style={styles.screen}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: insets.bottom + (bar ? 120 : 40) }}
+        showsVerticalScrollIndicator={false}
       >
-        {isFetchingOrganization && <OrganizationSkeleton />}
-        {!isFetchingOrganization && organization && (
-          <>
-            {organization?.organizationVolunteerStatus ===
-              OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
-              <Disclaimer
-                text={t('disclaimer.joined_from', {
-                  date: formatDate(new Date(organization.volunteer.createdOn)),
-                })}
-                color="green"
-              />
-            )}
-            {organization?.organizationVolunteerStatus ===
-              OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING && (
-              <Disclaimer text={t('disclaimer.access_request_pending')} color="yellow" />
-            )}
-            {organization?.organizationVolunteerStatus ===
-              OrganizatinVolunteerStatus.ARCHIVED_VOLUNTEER && (
-              <Disclaimer text={t('disclaimer.volunteer_archived')} color="yellow" />
-            )}
-            {organization?.organizationVolunteerStatus ===
-              OrganizatinVolunteerStatus.INACTIVE_VOLUNTEER && (
-              <Disclaimer text={t('disclaimer.volunteer_inactive')} color="yellow" />
-            )}
-            {organization?.organizationVolunteerStatus ===
-              OrganizatinVolunteerStatus.CANDIDATE_VOLUNTEER && (
-              <Disclaimer text={t('disclaimer.volunteer_candidate')} color="yellow" />
-            )}
-            {organization?.organizationVolunteerStatus ===
-              OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER && (
-              <Disclaimer text={t('disclaimer.volunteer_blocked')} color="danger" />
+        <View style={[styles.hero, { height: insets.top + 160 }]}>
+          {loaded && (
+            <View style={[styles.logo, shadows.card]}>
+              <Avatar name={organization.name} uri={organization.logo} size={80} shape="rounded" />
+            </View>
+          )}
+        </View>
+
+        {!loaded && isFetchingOrganization && (
+          <View style={styles.body}>
+            <OrganizationSkeleton />
+          </View>
+        )}
+
+        {loaded && (
+          <View style={styles.body}>
+            <Enter style={styles.gap6}>
+              <VText variant="largeTitle" style={styles.name} accessibilityRole="header">
+                {organization.name}
+              </VText>
+              <VText variant="sub">
+                {t('volunteers', { number: organization.numberOfVolunteers })}
+              </VText>
+            </Enter>
+
+            {statusBanner && (
+              <Enter
+                index={1}
+                style={[styles.banner, { backgroundColor: colors.status[statusBanner.tone].bg }]}
+              >
+                <VText variant="label" color={colors.status[statusBanner.tone].fg}>
+                  {statusBanner.text}
+                </VText>
+              </Enter>
             )}
 
-            <ScrollViewLayout>
-              <ProfileIntro
-                uri={organization.logo}
-                name={organization.name}
-                description={`${organization.numberOfVolunteers} ${t(
-                  'general:volunteers',
-                ).toLowerCase()}`}
-              />
-              <View style={styles.container}>
-                <ReadOnlyElement label={t('description')} value={organization.description} />
-                <ReadOnlyElement label={t('email')} value={organization.email} />
-                <ReadOnlyElement label={t('phone')} value={organization.phone} />
-                {/* #469: the address and website are optional */}
-                {!!organization.address && (
-                  <ReadOnlyElement label={t('address')} value={organization.address} />
-                )}
-                {!!organization.website && (
-                  <ReadOnlyElement label={t('website')} value={organization.website} />
-                )}
-              </View>
-              <SectionWrapper title={t('events')}>
-                <ScrollViewLayout>
-                  <View>
-                    {!organization.events || organization.events.length === 0 ? (
-                      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">{`${t(
-                        'no_events',
-                      )}`}</Text>
-                    ) : (
-                      organization.events.map((event) => (
-                        <View key={event.id}>
-                          <EventItem event={event} onPress={onEventPress} />
-                          <Divider />
-                        </View>
-                      ))
-                    )}
-                  </View>
-                </ScrollViewLayout>
-              </SectionWrapper>
-            </ScrollViewLayout>
-          </>
-        )}
-      </PageLayout>
-      <SafeAreaBottomSheet
-        backdropComponent={renderBackdrop}
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-        animateOnMount={reducedMotion ? false : true}
-      >
-        <View style={styles.bottomSheetContainer}>
-          {organization?.organizationVolunteerStatus ===
-            OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING && (
-            <>
-              <View style={styles.textContainer}>
-                <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
-                  'modal.confirm_cancel_request.heading',
-                )}`}</Text>
-                <Paragraph style={styles.bottomSheetParagraph}>{`${t(
-                  'modal.confirm_cancel_request.paragraph',
-                )}`}</Paragraph>
-              </View>
-              <View style={styles.buttonsContainer}>
-                <Button
-                  label={t('modal.confirm_cancel_request.action_label')}
-                  status={'danger'}
-                  onPress={onCancelAccessRequest}
-                />
-                <InlineLink
-                  style={{ color: theme['cool-gray-700'] }}
-                  label={t('general:back')}
-                  onPress={onCloseBottomSheet}
-                />
-              </View>
-            </>
-          )}
-          {organization?.organizationVolunteerStatus !==
-            OrganizatinVolunteerStatus.ACCESS_REQUEST_PENDING &&
-            organization?.organizationVolunteerStatus !==
-              OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
-              <>
-                <SvgXml xml={upsIcon} height={100} width={100} />
-                <View style={styles.textContainer}>
-                  <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
-                    'modal.birthday_missing.heading',
-                  )}`}</Text>
-                  <Paragraph style={styles.bottomSheetParagraph}>{`${t(
-                    'modal.birthday_missing.paragraph',
-                  )}`}</Paragraph>
-                </View>
-                <View style={styles.buttonsContainer}>
-                  <Button
-                    label={t('modal.birthday_missing.action_label')}
-                    status={'primary'}
-                    onPress={onGoToAccountDataScreen}
-                  />
-                  <InlineLink
-                    label={t('general:back')}
-                    style={{ color: theme['cool-gray-700'] }}
-                    onPress={onCloseBottomSheet}
-                  />
-                </View>
-              </>
+            {!!organization.description && (
+              <Enter index={1} style={styles.section}>
+                <VText variant="h2">{t('about')}</VText>
+                <VText variant="body" style={styles.paragraph}>
+                  {organization.description}
+                </VText>
+              </Enter>
             )}
+
+            <Enter index={2}>
+              {!!organization.address && (
+                <ListRow
+                  leading={<EventIcon name="pin" />}
+                  title={organization.address}
+                  onPress={() =>
+                    Linking.openURL(
+                      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        organization.address as string,
+                      )}`,
+                    ).catch(() => undefined)
+                  }
+                />
+              )}
+              {!!organization.website && (
+                <ListRow
+                  leading={<EventIcon name="open" />}
+                  title={organization.website.replace(/^https?:\/\//, '')}
+                  onPress={() =>
+                    Linking.openURL(
+                      /^https?:\/\//.test(organization.website as string)
+                        ? (organization.website as string)
+                        : `https://${organization.website}`,
+                    ).catch(() => undefined)
+                  }
+                />
+              )}
+              {!!organization.email && (
+                <ListRow
+                  leading={<EventIcon name="people" />}
+                  title={organization.email}
+                  subtitle={`${t('email')}`}
+                  onPress={() =>
+                    Linking.openURL(`mailto:${organization.email}`).catch(() => undefined)
+                  }
+                />
+              )}
+              {!!organization.phone && (
+                <ListRow
+                  leading={<EventIcon name="calendar" />}
+                  title={organization.phone}
+                  subtitle={`${t('phone')}`}
+                  onPress={() =>
+                    Linking.openURL(`tel:${organization.phone}`).catch(() => undefined)
+                  }
+                  divider={false}
+                />
+              )}
+            </Enter>
+
+            <Enter index={3} style={styles.section}>
+              <VText variant="h2">{t('events')}</VText>
+              {!organization.events?.length ? (
+                <VText variant="sub">{t('no_events')}</VText>
+              ) : (
+                organization.events.map((event) => (
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    onPress={(eventId) => navigation.navigate('event', { eventId })}
+                  />
+                ))
+              )}
+            </Enter>
+
+            {status === OrganizatinVolunteerStatus.ACTIVE_VOLUNTEER && (
+              <Enter index={4}>
+                <ListRow
+                  title={`${t('leave')}`}
+                  destructive
+                  divider={false}
+                  onPress={() => navigation.navigate('leave-organization')}
+                  testID="organization-leave"
+                />
+              </Enter>
+            )}
+          </View>
+        )}
+      </ScrollView>
+
+      <PressableScale
+        onPress={navigation.goBack}
+        accessibilityLabel={`${t('general:back')}`}
+        style={[styles.back, shadows.back, { top: insets.top + 12 }]}
+        testID="organization-back"
+      >
+        <EventIcon name="back" size={20} />
+      </PressableScale>
+
+      {bar && (
+        <View
+          style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 16) + 8 }]}
+          testID="organization-bar"
+        >
+          {bar}
         </View>
-      </SafeAreaBottomSheet>
-    </>
+      )}
+
+      <Sheet
+        ref={birthdaySheet}
+        title={`${t('modal.birthday_missing.heading')}`}
+        subtitle={`${t('modal.birthday_missing.paragraph')}`}
+        testID="organization-birthday-sheet"
+      >
+        <VButton
+          label={`${t('modal.birthday_missing.action_label')}`}
+          onPress={() => {
+            birthdaySheet.current?.dismiss();
+            navigation.navigate('account-data');
+          }}
+        />
+        <VButton
+          variant="soft"
+          label={`${t('general:back')}`}
+          onPress={() => birthdaySheet.current?.dismiss()}
+        />
+      </Sheet>
+
+      <Sheet
+        ref={cancelSheet}
+        title={`${t('modal.confirm_cancel_request.heading')}`}
+        subtitle={`${t('modal.confirm_cancel_request.paragraph')}`}
+        testID="organization-cancel-sheet"
+      >
+        <VButton
+          variant="danger"
+          label={`${t('modal.confirm_cancel_request.action_label')}`}
+          onPress={onCancelAccessRequest}
+          testID="organization-cancel-confirm"
+        />
+        <VButton
+          variant="soft"
+          label={`${t('general:back')}`}
+          onPress={() => cancelSheet.current?.dismiss()}
+        />
+      </Sheet>
+    </View>
   );
 };
 
 export default OrganizationProfile;
 
 const styles = StyleSheet.create({
-  container: {
-    gap: 16,
+  screen: { flex: 1, backgroundColor: colors.white },
+  hero: { backgroundColor: colors.navy },
+  logo: {
+    position: 'absolute',
+    left: spacing.gutter,
+    bottom: -32,
+    borderRadius: 24,
+    backgroundColor: colors.white,
+    padding: 0,
   },
-  bottomSheetContainer: {
-    flex: 1,
-    flexDirection: 'column',
+  body: { paddingHorizontal: spacing.gutter, paddingTop: 48, gap: 20 },
+  gap6: { gap: 6 },
+  name: { fontSize: 28, lineHeight: 34 },
+  banner: { borderRadius: radius.button, padding: 14 },
+  section: { gap: 10 },
+  paragraph: { lineHeight: 23 },
+  back: {
+    position: 'absolute',
+    left: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.white,
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 20,
-    paddingVertical: 24,
-    gap: 24,
-  },
-  textContainer: {
-    gap: 4,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-  bottomSheetParagraph: {
-    textAlign: 'center',
-  },
-  buttonsContainer: {
-    gap: 16,
     justifyContent: 'center',
-    alignItems: 'center',
   },
+  bar: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255,255,255,0.96)',
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.line,
+    paddingTop: 12,
+    paddingHorizontal: spacing.gutter,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
+  barText: { flex: 1 },
+  barTitle: { fontSize: 15 },
+  link: { fontFamily: fonts.bold, textDecorationLine: 'underline' },
+  fill: { flex: 1 },
 });

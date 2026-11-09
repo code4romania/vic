@@ -1,151 +1,268 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Text, Avatar, useStyleSheet, StyleService } from '@ui-kitten/components';
-import { ImageStyle, View } from 'react-native';
-import { useOrganizationsInfiniteQuery } from '../services/organization/organization.service';
-import { IOrganizationListItemWithNumberOfVolunteers } from '../common/interfaces/organization-list-item.interface';
-import InfiniteListLayout from '../layouts/InfiniteListLayout';
-import SearchWithOrderAndFilters from '../components/SearchWithOrderAndFilters';
-import { OrderDirection } from '../common/enums/order-direction.enum';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  ActivityIndicator,
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
+import Animated from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import PressableContainer from '../components/PressableContainer';
-import OrganizationSkeletonListItem from '../components/skeleton/organization-sekelton-item';
+import { OrderDirection } from '../common/enums/order-direction.enum';
+import { IOrganizationListItemWithNumberOfVolunteers } from '../common/interfaces/organization-list-item.interface';
+import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
+import { useOrganizationsInfiniteQuery } from '../services/organization/organization.service';
 import { useOrganization } from '../store/organization/organization.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { Screen } from '../components/Screen';
-import { usePaddingTop } from '../hooks/usePaddingTop';
+import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
+import useMyOrganizations from '../hooks/useMyOrganizations';
+import { useTabBarScroll } from '../components/navigation/TabBarScroll';
+import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
+import { EventIcon } from '../components/events/EventIcons';
+import { Avatar, Badge, Chevron, EmptyState, Enter, PressableScale, VText } from '../components/ui';
+import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 
-interface OrganizationItemProps {
-  item: IOrganizationListItemWithNumberOfVolunteers;
-  onClick: () => void;
-}
+const SEARCH_DEBOUNCE_MS = 300;
 
-const OrganizationListItem = ({ item, onClick }: OrganizationItemProps) => {
-  const { t } = useTranslation('organization_profile');
-
-  const styles = useStyleSheet(themedStyles);
-
-  return (
-    <PressableContainer onPress={onClick}>
-      <View style={styles.renderItem}>
-        <Avatar source={{ uri: item.logo }} size="large" style={styles.avatar as ImageStyle} />
-        <View style={styles.textWrapper}>
-          <Text
-            allowFontScaling={ALLOW_FONT_SCALLING}
-            category="p2"
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {item.name}
-          </Text>
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="c1" appearance="hint">
-            {`${t('volunteers', { number: item.numberOfVolunteers })}`}
-          </Text>
-        </View>
-      </View>
-    </PressableContainer>
-  );
-};
-
+/**
+ * VIC 2.0 Organizații (canvas board "Organizații"): large title, a search that filters as you
+ * type, and rows with the logo, the number of volunteers and "Membru" for your organizations.
+ */
 const Organizations = ({ navigation }: any) => {
   const { t } = useTranslation('organizations');
-  const paddingTop = usePaddingTop();
+  const insets = useSafeAreaInsets();
+  const bottomInset = useGlassTabBarInset();
+  useFocusedStatusBarStyle('dark');
+  const onScroll = useTabBarScroll();
 
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>(OrderDirection.ASC);
-  const [search, setSearch] = useState<string>('');
-  // organization state
+  const [query, setQuery] = useState('');
+  const [search, setSearch] = useState('');
   const { organization } = useOrganization();
-  // user profile
   const { userProfile } = useUserProfile();
-
-  // organizations query
-  const {
-    data: organizations,
-    error: getOrganizationsError,
-    isFetching: isFetchingOrganizations,
-    fetchNextPage,
-    hasNextPage,
-    refetch: reloadOrganizations,
-    isFetchingNextPage,
-  } = useOrganizationsInfiniteQuery(orderDirection, search);
-
-  // This will be triggered every time the organization state changes
-  const refetchOrganizations = useCallback(() => {
-    reloadOrganizations();
-  }, [reloadOrganizations]);
+  const myOrganizations = useMyOrganizations();
+  const memberOf = useMemo(() => new Set(myOrganizations.map((org) => org.id)), [myOrganizations]);
 
   useEffect(() => {
-    refetchOrganizations();
-  }, [organization, refetchOrganizations, userProfile]);
+    const timer = setTimeout(() => setSearch(query.trim()), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [query]);
 
-  const onViewOrganizationProfileButtonPress = (organizationId: string) => {
-    navigation.navigate('organization-profile', { organizationId });
-  };
+  const {
+    data,
+    error,
+    isFetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    refetch,
+    isRefetching,
+  } = useOrganizationsInfiniteQuery(OrderDirection.ASC, search);
 
-  const onLoadMore = () => {
-    if (!isFetchingOrganizations && hasNextPage) {
-      fetchNextPage();
+  // joining or leaving changes the "Membru" badges
+  const reload = useCallback(() => {
+    refetch();
+  }, [refetch]);
+  useEffect(() => {
+    reload();
+  }, [organization, userProfile, reload]);
+
+  const items = useMemo(
+    () =>
+      (data?.pages ?? []).flatMap(
+        (page) => page.items,
+      ) as IOrganizationListItemWithNumberOfVolunteers[],
+    [data],
+  );
+  const total = data?.pages?.[0]?.meta?.totalItems;
+
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: IOrganizationListItemWithNumberOfVolunteers;
+    index: number;
+  }) => (
+    <Enter index={index}>
+      <PressableScale
+        onPress={() => navigation.navigate('organization-profile', { organizationId: item.id })}
+        pressedScale={0.985}
+        style={styles.row}
+        accessibilityLabel={item.name}
+        testID={`organization-row-${item.id}`}
+      >
+        <Avatar name={item.name} uri={item.logo} size={56} shape="rounded" />
+        <View style={styles.rowText}>
+          <VText variant="h3" numberOfLines={1}>
+            {item.name}
+          </VText>
+          <VText variant="cap">
+            {t('organization_profile:volunteers', { number: item.numberOfVolunteers })}
+          </VText>
+        </View>
+        {memberOf.has(item.id) && <Badge label={`${t('member')}`} tone="neutral" />}
+        <Chevron />
+      </PressableScale>
+    </Enter>
+  );
+
+  const header = (
+    <View style={styles.header}>
+      <View style={styles.topRow}>
+        {navigation.canGoBack() ? (
+          <PressableScale
+            onPress={navigation.goBack}
+            style={[styles.back, shadows.back]}
+            accessibilityLabel={`${t('general:back')}`}
+            testID="organizations-back"
+          >
+            <EventIcon name="back" size={20} />
+          </PressableScale>
+        ) : (
+          <View />
+        )}
+        {total !== undefined && <VText variant="cap">{t('count', { n: total })}</VText>}
+      </View>
+      <Enter>
+        <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
+          {t('heading')}
+        </VText>
+      </Enter>
+      <Enter index={1}>
+        <VText variant="sub" style={styles.subtitle}>
+          {t('subtitle')}
+        </VText>
+      </Enter>
+      <Enter index={2} style={styles.search}>
+        <EventIcon name="search" size={18} color={colors.muted} />
+        <TextInput
+          value={query}
+          onChangeText={setQuery}
+          placeholder={`${t('search.placeholder')}`}
+          placeholderTextColor={colors.muted}
+          allowFontScaling={ALLOW_FONT_SCALLING}
+          returnKeyType="search"
+          autoCorrect={false}
+          accessibilityLabel={`${t('search.placeholder')}`}
+          style={styles.searchInput}
+          testID="organizations-search"
+        />
+        {!!query && (
+          <Pressable
+            onPress={() => setQuery('')}
+            hitSlop={8}
+            style={styles.clear}
+            accessibilityLabel={`${t('search.clear')}`}
+            testID="organizations-search-clear"
+          >
+            <EventIcon name="close" size={12} color={colors.white} strokeWidth={3} />
+          </Pressable>
+        )}
+      </Enter>
+    </View>
+  );
+
+  const renderEmpty = () => {
+    if (isFetching && !isRefetching && !items.length) {
+      return <OrganizationSkeleton />;
     }
-  };
-
-  const onSort = () => {
-    setOrderDirection(
-      orderDirection === OrderDirection.ASC ? OrderDirection.DESC : OrderDirection.ASC,
+    if (error) {
+      return (
+        <EmptyState
+          title={`${t('errors.generic')}`}
+          actionLabel={`${t('events:retry')}`}
+          onAction={reload}
+        />
+      );
+    }
+    return (
+      <EmptyState
+        title={`${t('empty.title')}`}
+        description={`${t('empty.description')}`}
+        testID="organizations-empty"
+      />
     );
   };
 
-  const onRenderOrganizationListItem = ({
-    item,
-  }: {
-    item: IOrganizationListItemWithNumberOfVolunteers;
-  }) => (
-    <OrganizationListItem
-      item={item}
-      onClick={onViewOrganizationProfileButtonPress.bind(null, item.id)}
-    />
-  );
-
   return (
-    <Screen preset="fixed" contentContainerStyle={[themedStyles.childrenContainer, { paddingTop }]}>
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3" style={themedStyles.title}>
-        {`${t('title')}`}
-      </Text>
-      <SearchWithOrderAndFilters
-        placeholder={t('search.placeholder')}
-        onChange={setSearch}
-        onSort={onSort}
+    <View style={styles.screen}>
+      <Animated.FlatList
+        data={items}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        ListHeaderComponent={header}
+        ListEmptyComponent={renderEmpty}
+        ListFooterComponent={
+          isFetchingNextPage ? <ActivityIndicator color={colors.navy} style={styles.more} /> : null
+        }
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        onEndReached={() => hasNextPage && !isFetching && fetchNextPage()}
+        onEndReachedThreshold={0.4}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={reload} />}
+        contentContainerStyle={[
+          styles.list,
+          { paddingTop: insets.top + 12, paddingBottom: bottomInset },
+        ]}
+        showsVerticalScrollIndicator={false}
+        testID="organizations-list"
       />
-      <InfiniteListLayout<IOrganizationListItemWithNumberOfVolunteers>
-        pages={organizations?.pages}
-        renderItem={onRenderOrganizationListItem}
-        loadMore={onLoadMore}
-        isLoading={isFetchingOrganizations && !isFetchingNextPage}
-        refetch={reloadOrganizations}
-        loadingLayout={<OrganizationSkeletonListItem />}
-        errorMessage={getOrganizationsError ? `${t('errors.generic')}` : ''}
-      />
-    </Screen>
+    </View>
   );
 };
 
 export default Organizations;
 
-const themedStyles = StyleService.create({
-  childrenContainer: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  title: { paddingLeft: 8, marginBottom: 16 },
-  avatar: { borderWidth: 1, borderColor: '$cool-gray-200' },
-  textWrapper: {
-    gap: 4,
-    flexShrink: 2,
-  },
-  renderItem: {
-    gap: 16,
-    paddingVertical: 16,
+const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: colors.white },
+  list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
+  header: { paddingBottom: 6 },
+  topRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    minHeight: 40,
   },
+  back: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: { marginTop: 16 },
+  subtitle: { marginTop: 4, marginBottom: 16 },
+  search: {
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: colors.soft,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 16,
+  },
+  searchInput: { flex: 1, fontFamily: fonts.regular, fontSize: 15, color: colors.ink, padding: 0 },
+  clear: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: colors.grab,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    paddingVertical: 14,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.line,
+  },
+  rowText: { flex: 1, gap: 2, minWidth: 0 },
+  more: { paddingVertical: 20 },
 });
