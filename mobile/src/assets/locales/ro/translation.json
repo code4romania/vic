@@ -38,12 +38,19 @@
     },
     "landing": {
         "message": "Intră în aplicație sau creează-ți cont folosind una dintre modalitățile următoare",
-        "email": "Continuă cu emailul",
+        "email": "Continuă cu email",
         "social": {
             "google": "Continuă cu Google",
             "facebook": "Continuă cu Facebook",
             "apple": "Continuă cu Apple"
-        }
+        },
+        "title": "Voluntariatul tău, într-un singur loc",
+        "subtitle": "Intră cu un cont pe care îl ai deja. Fără parole.",
+        "email_hint": "Îți trimitem un cod de 6 cifre. Dacă e prima dată, îți facem contul pe loc.",
+        "send_code": "Trimite codul",
+        "intro": "Vezi prezentarea",
+        "terms": "Termeni și confidențialitate",
+        "footer": "Un proiect Code for Romania, realizat de Commit Global"
     },
     "register": {
         "title": "Creare cont",
@@ -157,7 +164,13 @@
             "resend": "Trimite un cod nou",
             "resend_in": "Poți cere un cod nou în {{seconds}} s",
             "resent": "Am trimis un cod nou.",
-            "change_email": "Folosește alt email"
+            "change_email": "Folosește alt email",
+            "sent_to": "Am trimis un cod de 6 cifre la ",
+            "valid_for": ". Codul e valabil 15 minute și merge o singură dată.",
+            "open_mail": "Deschide aplicația de email",
+            "or_type": "sau scrie codul din email",
+            "other_email": "Alt email",
+            "verifying": "Te conectăm…"
         },
         "migration_notice": "Aveai deja cont în VIC? Introdu același email: îți trimitem un cod și intri în contul tău, fără parolă. Dacă intrai cu Google sau Apple, folosește același buton ca înainte."
     },
@@ -720,6 +733,54 @@
             "ANNOUNCEMENT_006": "Doar voluntarii activi pot răspunde la un anunț activ.",
             "ANNOUNCEMENT_007": "Ai răspuns deja la acest anunț.",
             "generic": "Răspunsul nu a putut fi trimis. Încearcă din nou."
+        }
+    },
+    "onboarding": {
+        "skip": "Sari peste",
+        "next": "Mai departe",
+        "start": "Începe",
+        "footer": "Un proiect Code for Romania, realizat de Commit Global",
+        "a11y": {
+            "progress": "Prezentarea {{current}} din {{total}}",
+            "stage": "Prezentare VIC",
+            "stage_hint": "Atinge în dreapta pentru următoarea, în stânga pentru cea dinainte. Ține apăsat ca să oprești."
+        },
+        "stories": {
+            "organizations": {
+                "eyebrow": "Organizații",
+                "title": "Alătură-te organizațiilor care contează pentru tine."
+            },
+            "events": {
+                "eyebrow": "Evenimente",
+                "title": "Vezi ce urmează și înscrie-te dintr-o atingere."
+            },
+            "hours": {
+                "eyebrow": "Ore de voluntariat",
+                "title": "Trimiți orele, organizația le aprobă."
+            },
+            "documents": {
+                "eyebrow": "Documente",
+                "title": "Contractele și adeverințele tale, mereu la tine."
+            }
+        },
+        "sample": {
+            "org1_meta": "Educație · București",
+            "org2_meta": "Mediu · Constanța",
+            "org3_meta": "Social · Cluj",
+            "join": "Alătură-te",
+            "event_date": "Sâm, 22 nov",
+            "event_title": "Ziua Pământului",
+            "event_meta": "Pădurea Băneasa · 8 locuri libere",
+            "going": "Particip",
+            "joined": "Te-ai înscris",
+            "hours_year": "ore anul ăsta",
+            "log_title": "Training: Prim ajutor",
+            "log_meta": "8 nov · 6 ore",
+            "pending": "În așteptare",
+            "approved": "Aprobat",
+            "cert_title": "Adeverință de voluntariat",
+            "cert_meta": "Nr. 128/2026 · Asociația Exemplu",
+            "signed": "SEMNATĂ"
         }
     }
 }
