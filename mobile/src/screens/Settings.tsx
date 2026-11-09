@@ -1,8 +1,9 @@
-import React, { useContext, useRef } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SvgXml } from 'react-native-svg';
 import * as Linking from 'expo-linking';
+import { useFocusEffect } from '@react-navigation/native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -16,8 +17,9 @@ import { NotificationContext } from '../contexts/notification/NotificationContex
 import { useUserProfile } from '../store/profile/profile.selector';
 import useStore from '../store/store';
 import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
+import { usePersonalStatistics } from '../services/statistics/statistics.service';
 import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
-import { colors, radius, spacing } from '../common/theme/tokens';
+import { colors, radius, shadows, spacing } from '../common/theme/tokens';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
@@ -33,6 +35,25 @@ export enum SETTINGS_ROUTES {
   MY_ORGANIZATIONS = 'volunteer',
   SEARCH_ORGANIZATIONS = 'search',
 }
+
+const Stat = ({
+  value,
+  label,
+  last,
+  testID,
+}: {
+  value: string;
+  label: string;
+  last?: boolean;
+  testID: string;
+}) => (
+  <View style={[styles.stat, !last && styles.statDivider]} testID={testID}>
+    <VText variant="h3" style={styles.statValue}>
+      {value}
+    </VText>
+    <VText variant="cap">{label}</VText>
+  </View>
+);
 
 const RowIcon = ({ xml }: { xml: string }) => (
   <View style={styles.rowIcon}>
@@ -57,6 +78,26 @@ const Settings = ({ navigation }: any) => {
   const { mutate: switchOrganization } = useSwitchOrganizationMutation();
   const { logout } = useAuth();
   const { unsubscribe } = useContext(NotificationContext);
+  const { data: stats, refetch: refetchStats } = usePersonalStatistics();
+
+  // hours get approved and events pass while the app is open: refresh when Profil comes back
+  useFocusEffect(
+    useCallback(() => {
+      refetchStats();
+    }, [refetchStats]),
+  );
+
+  const years = (count: number) => {
+    if (count < 1) {
+      return `${t('stats.years_less')}`;
+    }
+    if (count === 1) {
+      return `${t('stats.year')}`;
+    }
+    // Romanian: "2 ani", but "20 de ani"
+    const rest = count % 100;
+    return `${t(rest === 0 || rest >= 20 ? 'stats.years_de' : 'stats.years', { count })}`;
+  };
 
   const name = [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ');
   const place = userProfile?.location?.name;
@@ -102,15 +143,34 @@ const Settings = ({ navigation }: any) => {
           </VText>
         </Enter>
 
-        <Enter index={1} style={styles.me}>
-          <Avatar name={name || '?'} uri={userProfile?.profilePicture} size={64} />
+        <Enter index={1} style={[styles.me, shadows.card]}>
           <View style={styles.meText}>
-            <VText variant="h2" numberOfLines={1}>
-              {name}
+            <Avatar name={name || '?'} uri={userProfile?.profilePicture} size={88} />
+            <VText variant="h2" numberOfLines={1} style={[styles.center, styles.name]}>
+              {userProfile?.firstName || name}
             </VText>
-            <VText variant="sub" numberOfLines={1}>
+            <VText variant="cap" numberOfLines={2} style={styles.center}>
               {[userProfile?.email, place].filter(Boolean).join(' · ')}
             </VText>
+          </View>
+          <View style={styles.meDivider} />
+          <View style={styles.stats}>
+            <Stat
+              value={stats ? `${stats.approvedHours}` : '–'}
+              label={`${t('stats.hours')}`}
+              testID="profile-stat-hours"
+            />
+            <Stat
+              value={stats ? `${stats.events}` : '–'}
+              label={`${t('stats.events')}`}
+              testID="profile-stat-events"
+            />
+            <Stat
+              value={stats ? years(stats.yearsInVic) : '–'}
+              label={`${t('stats.in_vic')}`}
+              last
+              testID="profile-stat-years"
+            />
           </View>
         </Enter>
 
@@ -225,8 +285,27 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.white },
   content: { paddingHorizontal: spacing.gutter },
   title: { marginTop: 16 },
-  me: { flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 18 },
-  meText: { flex: 1, gap: 2, minWidth: 0 },
+  me: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+    marginTop: 16,
+    padding: 20,
+    borderRadius: radius.card,
+    backgroundColor: colors.white,
+  },
+  meText: { flex: 1, alignItems: 'center', gap: 6, minWidth: 0 },
+  center: { textAlign: 'center' },
+  name: { fontSize: 24, lineHeight: 28 },
+  statValue: { fontSize: 20, lineHeight: 24 },
+  meDivider: {
+    width: StyleSheet.hairlineWidth,
+    alignSelf: 'stretch',
+    backgroundColor: colors.line,
+  },
+  stats: { width: 110 },
+  stat: { paddingVertical: 8 },
+  statDivider: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.line },
   section: { marginTop: 28, gap: 2 },
   trailing: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   rowIcon: {
