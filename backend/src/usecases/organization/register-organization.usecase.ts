@@ -95,6 +95,8 @@ export class RegisterOrganizationUseCase
             taxId: options.taxId.trim(),
             logo: null,
             status: OrganizationStatus.PENDING,
+            // #510: the DTO only gets here with both declarations ticked
+            selfDeclaredAt: new Date(),
           },
           manager,
         );

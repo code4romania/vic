@@ -1452,6 +1452,12 @@
         "and": "and the",
         "privacy": "privacy policy",
         "required": "You must accept the terms"
+      },
+      "declaration": {
+        "title": "Self-declaration",
+        "declaresRegisteredNgo": "I declare on my own responsibility that the organization is an NGO registered in Romania and that the data entered is correct.",
+        "declaresRepresentative": "I am entitled to represent the organization and to create this account on its behalf.",
+        "required": "Tick the declaration to continue"
       }
     },
     "submit": "Register",

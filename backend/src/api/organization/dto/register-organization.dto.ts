@@ -82,6 +82,32 @@ export class RegisterOrganizationDto {
   @Equals(true, { message: 'the terms must be accepted' })
   acceptedTerms: boolean;
 
+  // #510: self-declaration, both required. No statute and no manual check of documents.
+  @ApiProperty({
+    description:
+      'The organization is an NGO registered in Romania and the data is correct',
+    example: true,
+  })
+  @Transform(
+    ({ obj }) =>
+      obj.declaresRegisteredNgo === true ||
+      obj.declaresRegisteredNgo === 'true',
+  )
+  @Equals(true, { message: 'the self-declaration must be accepted' })
+  declaresRegisteredNgo: boolean;
+
+  @ApiProperty({
+    description: 'The person registering may represent the organization',
+    example: true,
+  })
+  @Transform(
+    ({ obj }) =>
+      obj.declaresRepresentative === true ||
+      obj.declaresRepresentative === 'true',
+  )
+  @Equals(true, { message: 'the self-declaration must be accepted' })
+  declaresRepresentative: boolean;
+
   @ApiProperty({ description: 'The Cloudflare Turnstile token from the form' })
   @IsString()
   @IsNotEmpty()

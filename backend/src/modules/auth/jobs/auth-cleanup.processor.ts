@@ -86,15 +86,14 @@ export class AuthCleanupProcessor implements OnModuleInit {
   }
 
   // A pending NGO never had its email confirmed, so nothing else can point at it yet: it goes with its
-  // admin users, their identities (tokens and sessions cascade) and its uploaded statute and logo.
+  // admin users, their identities (tokens and sessions cascade) and its logo.
   // One transaction per NGO; an NGO that cannot be deleted is logged and skipped.
   private async deletePendingOrganizations(before: Date): Promise<number> {
     const organizations: {
       id: string;
       logo: string;
-      statute_url: string;
     }[] = await this.dataSource.query(
-      `SELECT id, logo, statute_url FROM organization
+      `SELECT id, logo FROM organization
         WHERE status = $1 AND created_on < $2 AND deleted_on IS NULL`,
       [OrganizationStatus.PENDING, before],
     );
@@ -134,15 +133,8 @@ export class AuthCleanupProcessor implements OnModuleInit {
   private async deleteFiles(organization: {
     id: string;
     logo: string;
-    statute_url: string;
   }): Promise<void> {
     try {
-      if (
-        organization.statute_url &&
-        !organization.statute_url.startsWith('http')
-      ) {
-        await this.s3Service.deleteFile(organization.statute_url);
-      }
       if (organization.logo) {
         await this.s3Service.deletePublicFile(organization.logo);
       }

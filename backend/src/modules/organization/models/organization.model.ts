@@ -16,7 +16,7 @@ export interface IOrganizationModel {
   validatedById: string;
   taxId: string;
   website: string;
-  statuteUrl: string;
+  selfDeclaredAt: Date;
   suspendedAt: Date;
   createdOn?: Date;
 }
@@ -29,11 +29,11 @@ export type ICreateOrganizationModel = Omit<
   | 'validatedById'
   | 'taxId'
   | 'website'
-  | 'statuteUrl'
+  | 'selfDeclaredAt'
   | 'suspendedAt'
 > &
   Partial<
-    Pick<IOrganizationModel, 'status' | 'taxId' | 'website' | 'statuteUrl'>
+    Pick<IOrganizationModel, 'status' | 'taxId' | 'website' | 'selfDeclaredAt'>
   >;
 
 export type UpdateOrganizationOptions = Partial<
@@ -51,7 +51,6 @@ export type UpdateOrganizationOptions = Partial<
     | 'validatedById'
     | 'taxId'
     | 'website'
-    | 'statuteUrl'
     | 'suspendedAt'
   >
 >;
@@ -89,7 +88,7 @@ export class OrganizationTransformer {
       validatedById: organizationEntity.validatedById,
       taxId: organizationEntity.taxId,
       website: organizationEntity.website,
-      statuteUrl: organizationEntity.statuteUrl,
+      selfDeclaredAt: organizationEntity.selfDeclaredAt,
       suspendedAt: organizationEntity.suspendedAt,
       createdOn: organizationEntity.createdOn,
     };
@@ -109,7 +108,7 @@ export class OrganizationTransformer {
     organizationEntity.status = organizationModel.status;
     organizationEntity.taxId = organizationModel.taxId;
     organizationEntity.website = organizationModel.website;
-    organizationEntity.statuteUrl = organizationModel.statuteUrl;
+    organizationEntity.selfDeclaredAt = organizationModel.selfDeclaredAt;
     return organizationEntity;
   }
 }

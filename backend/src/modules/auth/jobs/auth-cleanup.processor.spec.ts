@@ -70,15 +70,14 @@ describe('AuthCleanupProcessor (database)', () => {
     createdOn: Date,
   ): Promise<string> => {
     const [row] = await dataSource.query(
-      `INSERT INTO organization (name, email, phone, status, created_on, statute_url, logo)
-       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
+      `INSERT INTO organization (name, email, phone, status, created_on, logo)
+       VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
       [
         name,
         `${name}@org.test`,
         `+40${Math.floor(Math.random() * 1e9)}`,
         status,
         createdOn,
-        `organizations/${name}/statute.pdf`,
         `http://localhost:9090/vic-local-public/organizations/${name}/logo.png`,
       ],
     );
@@ -171,13 +170,10 @@ describe('AuthCleanupProcessor (database)', () => {
         .getRepository(AuthIdentityEntity)
         .findOneBy({ email: 'admin@oldpending.test' }),
     ).toBeNull();
-    expect(s3.deleteFile).toHaveBeenCalledWith(
-      'organizations/oldpending/statute.pdf',
-    );
     expect(s3.deletePublicFile).toHaveBeenCalledWith(
       'http://localhost:9090/vic-local-public/organizations/oldpending/logo.png',
     );
-    expect(s3.deleteFile).toHaveBeenCalledTimes(1);
+    expect(s3.deleteFile).not.toHaveBeenCalled();
 
     const mobile = await dataSource
       .getRepository(AuthIdentityEntity)

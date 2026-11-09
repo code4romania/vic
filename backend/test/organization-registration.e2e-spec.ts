@@ -38,6 +38,8 @@ describe('Organization registration and validation (e2e)', () => {
     adminEmail: ADMIN_EMAIL,
     adminPhone: '+40711111100',
     acceptedTerms: 'true',
+    declaresRegisteredNgo: 'true',
+    declaresRepresentative: 'true',
     turnstileToken: TURNSTILE_OK,
     ...overrides,
   });
@@ -62,7 +64,7 @@ describe('Organization registration and validation (e2e)', () => {
   const organizationRow = async (): Promise<Record<string, unknown>> =>
     (
       await testApp.dataSource.query(
-        `SELECT id, status, validated_at, statute_url, description, address, website, logo FROM organization WHERE lower(name) = 'asociatia noua'`,
+        `SELECT id, status, validated_at, self_declared_at, description, address, website, logo FROM organization WHERE lower(name) = 'asociatia noua'`,
       )
     )[0];
 
@@ -152,6 +154,9 @@ describe('Organization registration and validation (e2e)', () => {
     await register({ taxId: '' }).expect(400);
     await register({ description: 'prea scurta' }).expect(400);
     await register({ acceptedTerms: 'false' }).expect(400);
+    // #510: both self-declarations are required
+    await register({ declaresRegisteredNgo: 'false' }).expect(400);
+    await register({ declaresRepresentative: 'false' }).expect(400);
 
     const [{ count }] = await testApp.dataSource.query(
       `SELECT count(*)::int AS count FROM organization`,
@@ -166,12 +171,14 @@ describe('Organization registration and validation (e2e)', () => {
     const organization = await organizationRow();
     expect(organization).toMatchObject({
       status: 'pending',
-      statute_url: null,
       description: null,
       address: null,
       website: null,
       logo: null,
     });
+    // #510: the self-declaration is recorded, the statute is no longer asked for
+    expect(organization.self_declared_at).toBeInstanceOf(Date);
+    expect(organization).not.toHaveProperty('statute_url');
   });
 
   it('registers a pending NGO with its logo; it is hidden and its admin cannot log in before confirming', async () => {

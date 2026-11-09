@@ -1458,6 +1458,12 @@
         "and": "și cu",
         "privacy": "politica de confidențialitate",
         "required": "Trebuie să accepți termenii"
+      },
+      "declaration": {
+        "title": "Declarație pe propria răspundere",
+        "declaresRegisteredNgo": "Declar pe propria răspundere că organizația este un ONG înregistrat în România și că datele introduse sunt corecte.",
+        "declaresRepresentative": "Am dreptul să reprezint organizația și să creez acest cont în numele ei.",
+        "required": "Bifează declarația ca să continui"
       }
     },
     "submit": "Înregistrează",

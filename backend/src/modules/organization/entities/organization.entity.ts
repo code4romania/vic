@@ -68,8 +68,9 @@ export class OrganizationEntity extends BaseEntity {
   @Column({ type: 'text', name: 'website', nullable: true })
   website: string;
 
-  @Column({ type: 'text', name: 'statute_url', nullable: true })
-  statuteUrl: string;
+  // #510: when the first admin ticked the self-declaration at registration
+  @Column({ type: 'timestamptz', name: 'self_declared_at', nullable: true })
+  selfDeclaredAt: Date;
 
   @Column({ type: 'timestamptz', name: 'suspended_at', nullable: true })
   suspendedAt: Date;

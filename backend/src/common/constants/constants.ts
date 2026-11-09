@@ -23,5 +23,5 @@ export const S3_FILE_PATHS = {
   CONTRACTS: 'contracts',
   PROFILE: 'profile',
   EVENTS: 'events',
-  ORGANIZATIONS: 'organizations', // organizations/<id>/: logo (public bucket), statute (private)
+  ORGANIZATIONS: 'organizations', // organizations/<id>/: logo (public bucket)
 };
