@@ -5,6 +5,7 @@ import { WebAuthController } from './auth/web-auth.controller';
 import { OrganizationRegistrationController } from './organization/organization-registration.controller';
 import { TeamController } from './organization/team.controller';
 import { AdminOrganizationsController } from './admin/organizations.controller';
+import { AdminVolunteersController } from './admin/volunteers.controller';
 import { TokenController } from './auth/token.controller';
 import { MobileAuthController } from './_mobile/auth/auth.controller';
 import { PublicController } from './public/public.controller';
@@ -50,6 +51,7 @@ import { MobileNewsController } from './_mobile/news/news.controller';
     OrganizationRegistrationController,
     TeamController,
     AdminOrganizationsController,
+    AdminVolunteersController,
     AccessCodeController,
     OrganizationStructureController,
     AccessRequestController,

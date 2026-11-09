@@ -165,6 +165,10 @@ import { UpdateRegularUserUsecase } from './user/update-regular-user.usecase';
 import { GetVolunteerMonthlyNewsStatisticsUsecase } from './dashboard/get-volunteer-monthly-news.usecase';
 import { GetVicStatisticsUsecase } from './dashboard/get-vic-statistics.usecase';
 import { RespondToAnnouncementUseCase } from './announcement/respond-to-announcement.usecase';
+import {
+  ListAdminOrganizationsUseCase,
+  ListAdminVolunteersUseCase,
+} from './admin/list-admin-overview.usecase';
 import { GetAnnouncementCountersUseCase } from './announcement/get-announcement-counters.usecase';
 import { GetAnnouncementResponsesUseCase } from './announcement/get-announcement-responses.usecase';
 import { GetManyAnouncementsByUserAsUsecase } from './announcement/get-many-anouncements-by-user.usecase';
@@ -309,6 +313,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     RespondToAnnouncementUseCase,
     GetAnnouncementResponsesUseCase,
     GetAnnouncementCountersUseCase,
+    ListAdminOrganizationsUseCase,
+    ListAdminVolunteersUseCase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,
@@ -492,6 +498,8 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     RespondToAnnouncementUseCase,
     GetAnnouncementResponsesUseCase,
     GetAnnouncementCountersUseCase,
+    ListAdminOrganizationsUseCase,
+    ListAdminVolunteersUseCase,
     // Events
     CreateEventUseCase,
     GetOneEventUseCase,

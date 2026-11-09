@@ -4,6 +4,7 @@ import {
   Param,
   ParseUUIDPipe,
   Patch,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
@@ -16,6 +17,12 @@ import {
   SuspendOrganizationUseCase,
   UnsuspendOrganizationUseCase,
 } from 'src/usecases/organization/suspend-organization.usecase';
+import { Pagination } from 'src/infrastructure/base/repository-with-pagination.class';
+import {
+  IAdminOrganizationListItem,
+  ListAdminOrganizationsUseCase,
+} from 'src/usecases/admin/list-admin-overview.usecase';
+import { GetAdminOrganizationsDto } from './dto/get-admin-lists.dto';
 import { ValidateOrganizationUseCase } from 'src/usecases/organization/validate-organization.usecase';
 import { OrganizationPresenter } from '../organization/presenters/organization-presenter.interface';
 import { PendingOrganizationPresenter } from '../organization/presenters/pending-organization.presenter';
@@ -31,7 +38,21 @@ export class AdminOrganizationsController {
     private readonly validateOrganizationUseCase: ValidateOrganizationUseCase,
     private readonly suspendOrganizationUseCase: SuspendOrganizationUseCase,
     private readonly unsuspendOrganizationUseCase: UnsuspendOrganizationUseCase,
+    private readonly listAdminOrganizationsUseCase: ListAdminOrganizationsUseCase,
   ) {}
+
+  // #511
+  @Get()
+  async getAll(
+    @Query() { page, limit, search, status }: GetAdminOrganizationsDto,
+  ): Promise<Pagination<IAdminOrganizationListItem>> {
+    return this.listAdminOrganizationsUseCase.execute({
+      page,
+      limit,
+      search,
+      status,
+    });
+  }
 
   @ApiOkResponse({ type: PendingOrganizationPresenter, isArray: true })
   @Get('pending-validation')

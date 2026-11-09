@@ -8,6 +8,7 @@ import Login from '../pages/Login';
 import Organization from '../containers/query/OrganizationWithQueryParam';
 import Approvals from '../pages/Approvals';
 import Settings from '../pages/Settings';
+import SuperAdminLists from '../pages/SuperAdminLists';
 import AccessCodes from '../containers/query/AccessCodesWithQueryParams';
 import RootRoute from './RootRoute';
 import PublicRoute from './PublicRoute';
@@ -109,6 +110,7 @@ const Router = () => {
             <Route path="approvals" element={<Approvals />} />
             <Route path="approvals/:type" element={<Approvals />} />
             <Route path="admin/validation" element={<OrganizationValidation />} />
+            <Route path="admin/:list" element={<SuperAdminLists />} />
             <Route path="actions-archive" element={<Outlet />}>
               <Route index element={<ActionsArchive />} />
             </Route>
