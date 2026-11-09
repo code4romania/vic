@@ -10,6 +10,8 @@ import {
   IEventsMobileListItemModel,
   UpdateEventOptions,
   UpdateStatusOptions,
+  EventCountersOptions,
+  IEventCountersModel,
 } from '../models/event.model';
 
 export interface IEventRepository {
@@ -21,6 +23,7 @@ export interface IEventRepository {
   getMany(
     findOptions: FindManyEventOptions,
   ): Promise<Pagination<IEventsListItemModel>>;
+  countByState(options: EventCountersOptions): Promise<IEventCountersModel>;
   findOpenEvents(
     findOptions: Omit<FindMyEventsOptions, 'eventFilter'>,
   ): Promise<Pagination<IEventsMobileListItemModel>>;

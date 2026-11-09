@@ -27,6 +27,8 @@ import {
   IEventsMobileListItemModel,
   UpdateEventOptions,
   UpdateStatusOptions,
+  EventCountersOptions,
+  IEventCountersModel,
 } from '../models/event.model';
 import { EventStatus } from '../enums/event-status.enum';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
@@ -45,6 +47,35 @@ export class EventRepository
     private readonly eventRepository: Repository<EventEntity>,
   ) {
     super(eventRepository);
+  }
+
+  // #493: one query; the department filter matches the list's (#494)
+  async countByState({
+    organizationId,
+    departmentId,
+  }: EventCountersOptions): Promise<IEventCountersModel> {
+    const [row] = await this.eventRepository.query(
+      `WITH e AS (
+         SELECT event.id, event.start_date > now() AS upcoming
+         FROM event
+         WHERE event.organization_id = $1
+           AND event.status = 'published'
+           AND (event.end_date > now() OR event.end_date IS NULL)
+           AND ($2::uuid IS NULL
+             OR EXISTS (SELECT 1 FROM event_targets_organization_structure t WHERE t."eventId" = event.id AND t."organizationStructureId" = $2)
+             OR NOT EXISTS (SELECT 1 FROM event_targets_organization_structure t WHERE t."eventId" = event.id))
+       )
+       SELECT
+         (SELECT count(*) FROM e WHERE e.upcoming) AS upcoming,
+         (SELECT count(*) FROM e WHERE NOT e.upcoming) AS ongoing,
+         (SELECT count(*) FROM event_rsvp r JOIN e ON e.id = r.event_id WHERE r.going) AS participants`,
+      [organizationId, departmentId ?? null],
+    );
+    return {
+      upcoming: +row.upcoming,
+      ongoing: +row.ongoing,
+      participants: +row.participants,
+    };
   }
 
   async getMany(

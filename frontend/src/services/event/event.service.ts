@@ -15,6 +15,7 @@ import {
   getEvents,
   getRsvps,
   publishEvent,
+  getEventCounters,
 } from './event.api';
 
 export const useEventsQuery = (
@@ -119,4 +120,8 @@ export const useDeleteEventMutation = () => {
   return useMutation((id: string) => deleteEvent(id), {
     onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => Promise.resolve(error),
   });
+};
+
+export const useEventCountersQuery = (departmentId?: string) => {
+  return useQuery(['event-counters', departmentId], () => getEventCounters(departmentId));
 };

@@ -222,3 +222,16 @@ export class EventModelTransformer {
     return entity;
   }
 }
+
+// #493: the events page counters (published events only; a draft or archived event is not happening)
+export type EventCountersOptions = {
+  organizationId: string;
+  departmentId?: string;
+};
+
+export interface IEventCountersModel {
+  upcoming: number;
+  ongoing: number;
+  // "going" answers on the upcoming and ongoing events
+  participants: number;
+}

@@ -97,6 +97,7 @@ import { GetAccessRequestsForDownloadUseCase } from './access-request/get-many-f
 import { GetVolunteersForDownloadUseCase } from './volunteer/get-many-for-download-volunteer.usecase';
 import { GetManyEventRSVPUseCase } from './event/RSVP/get-many-rsvp.usecase';
 import { GetManyEventUseCase } from './event/get-many-event.usecase';
+import { GetEventCountersUseCase } from './event/get-event-counters.usecase';
 import { GetManyForDownloadEventUseCase } from './event/get-many-for-download-event.usecase';
 import { CreateActivityLogByAdmin } from './activity-log/create-activity-log-by-admin.usecase';
 import { ActivityLogModule } from 'src/modules/activity-log/activity-log.module';
@@ -300,6 +301,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     ArchiveEventUseCase,
     GetManyForDownloadEventUseCase,
     GetManyEventUseCase,
+    GetEventCountersUseCase,
     GetMyEventsUsecase,
     GetOneEventWithVolunteerStatusUsecase,
     GetEventsByOrganizationUsecase,
@@ -470,6 +472,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     PublishEventUseCase,
     ArchiveEventUseCase,
     GetManyEventUseCase,
+    GetEventCountersUseCase,
     GetManyForDownloadEventUseCase,
     GetMyEventsUsecase,
     GetOneEventWithVolunteerStatusUsecase,

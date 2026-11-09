@@ -600,6 +600,11 @@
     "filters": {
       "department": "Departament",
       "all_departments": "Toate departamentele"
+    },
+    "counters": {
+      "upcoming": "Evenimente viitoare",
+      "ongoing": "Evenimente în desfășurare",
+      "participants": "Participanți"
     }
   },
   "announcement": {

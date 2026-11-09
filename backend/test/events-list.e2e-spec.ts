@@ -60,6 +60,7 @@ describe('Events list tabs (e2e)', () => {
   beforeEach(async () => {
     await truncate(testApp.dataSource, [
       'auth_identity',
+      'event_rsvp',
       'event_targets_organization_structure',
       'organization_structure',
       'event',
@@ -166,5 +167,45 @@ describe('Events list tabs (e2e)', () => {
         .map((t: { name: string }) => t.name)
         .sort(),
     ).toEqual(['Comunicare', 'Logistică']);
+  });
+
+  // #493: counters for upcoming and ongoing published events and their "going" answers
+  it('counts upcoming and ongoing published events and their participants', async () => {
+    await addEvent('Ciornă', daysFromNow(2), null);
+    await testApp.dataSource.query(
+      `UPDATE event SET status = 'draft' WHERE name = 'Ciornă'`,
+    );
+    const rsvp = async (
+      eventName: string,
+      going: boolean,
+      n: number,
+    ): Promise<void> => {
+      for (let i = 0; i < n; i += 1) {
+        const [user] = await testApp.dataSource.query(
+          `INSERT INTO "user" (type, name, email, phone) VALUES ('regular', 'V', $1, '+40733000000') RETURNING id`,
+          [
+            `${eventName}-${going}-${i}@example.ro`.replace(
+              /[^a-z0-9@.-]/gi,
+              '',
+            ),
+          ],
+        );
+        await testApp.dataSource.query(
+          `INSERT INTO event_rsvp (going, event_id, user_id) SELECT $2, id, $3 FROM event WHERE name = $1`,
+          [eventName, going, user.id],
+        );
+      }
+    };
+    await rsvp('Viitor', true, 2);
+    await rsvp('Acum', true, 3);
+    await rsvp('Acum', false, 4);
+    await rsvp('Încheiat', true, 5);
+
+    const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
+    const response = await http()
+      .get('/event/counters')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+    expect(response.body).toEqual({ upcoming: 2, ongoing: 2, participants: 5 });
   });
 });

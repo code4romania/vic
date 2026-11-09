@@ -11,7 +11,16 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiParam,
+} from '@nestjs/swagger';
+import { GetEventCountersUseCase } from 'src/usecases/event/get-event-counters.usecase';
+import { GetEventCountersDto } from './dto/get-event-counters.dto';
+import { EventCountersPresenter } from './presenters/event-counters.presenter';
+
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { jsonToExcelBuffer } from 'src/common/helpers/utils';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
@@ -50,6 +59,7 @@ import { TargetEventType } from 'src/modules/event/enums/target-event-type.enum'
 @Controller('event')
 export class EventController {
   constructor(
+    private readonly getEventCountersUseCase: GetEventCountersUseCase,
     private readonly createEventUsecase: CreateEventUseCase,
     private readonly updateEventUseCase: UpdateEventUseCase,
     private readonly getOneEventUsecase: GetOneEventUseCase,
@@ -77,6 +87,20 @@ export class EventController {
       ...events,
       items: events.items.map((event) => new EventListItemPresenter(event)),
     });
+  }
+
+  // #493
+  @Get('counters')
+  @ApiOkResponse({ type: EventCountersPresenter })
+  async getCounters(
+    @Query() { departmentId }: GetEventCountersDto,
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<EventCountersPresenter> {
+    const counters = await this.getEventCountersUseCase.execute({
+      organizationId,
+      departmentId,
+    });
+    return new EventCountersPresenter(counters);
   }
 
   @Get('download')

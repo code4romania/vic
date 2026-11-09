@@ -27,6 +27,7 @@ import {
   useArchiveEventMutation,
   useDeleteEventMutation,
   useEventsQuery,
+  useEventCountersQuery,
   usePublishEventMutation,
 } from '../services/event/event.service';
 import { downloadExcel, formatEventDate } from '../common/utils/utils';
@@ -42,6 +43,7 @@ import Targets from '../components/Targets';
 import { getEventsForDownload } from '../services/event/event.api';
 import { EventsProps } from '../containers/query/EventsWithQueryParams';
 import SelectFilter from '../containers/SelectFilter';
+import StatisticsCard from '../components/StatisticsCard';
 import { useDivisionsListItems } from '../services/division/division.service';
 import { DivisionType } from '../common/enums/division-type.enum';
 
@@ -196,6 +198,7 @@ const Events = ({ query, setQuery }: EventsProps) => {
     query.departmentId,
   );
   const { data: departments } = useDivisionsListItems(DivisionType.DEPARTMENT);
+  const { data: counters } = useEventCountersQuery(query.departmentId);
   // actions
   const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
   const { mutateAsync: publishEvent, isLoading: isPublishingEvent } = usePublishEventMutation();
@@ -402,6 +405,20 @@ const Events = ({ query, setQuery }: EventsProps) => {
           onChange={onDepartmentChange}
           defaultValue={query?.departmentId}
           allowDeselect
+        />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <StatisticsCard
+          label={`${i18n.t('events:counters.upcoming')}`}
+          value={`${counters?.upcoming ?? '-'}`}
+        />
+        <StatisticsCard
+          label={`${i18n.t('events:counters.ongoing')}`}
+          value={`${counters?.ongoing ?? '-'}`}
+        />
+        <StatisticsCard
+          label={`${i18n.t('events:counters.participants')}`}
+          value={`${counters?.participants ?? '-'}`}
         />
       </div>
       <Tabs<EventState>
