@@ -8,88 +8,171 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { renderPasswordEyeIcon } from '../components/InputPrefixes';
 import Paragraph from '../components/Paragraph';
-import { Pressable, StyleSheet } from 'react-native';
+import InlineLink from '../components/InlineLink';
+import { StyleSheet } from 'react-native';
 import { Text } from '@ui-kitten/components';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { ALLOW_FONT_SCALLING, REGEX } from '../common/constants/constants';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 import { isMigrationNoticeActive } from '../common/utils/migration-notice';
 
-export type LoginFormTypes = {
-  username: string;
-  password: string;
-};
+// A new code can be asked for once a minute (the backend answers AUTH_010 sooner).
+export const RESEND_AFTER_SECONDS = 60;
 
-const schema = yup.object({
-  username: yup
+type EmailForm = { email: string };
+type CodeForm = { code: string };
+
+const emailSchema = yup.object({
+  email: yup
     .string()
     .trim()
     .email(`${i18n.t('login:form.email.pattern')}`)
     .required(`${i18n.t('login:form.email.required')}`),
-  password: yup.string().required(`${i18n.t('login:form.password.required')}`),
 });
 
-// route.params.email: from the vic://login?email= link (set-password and confirm-email pages) or
-// from the check-email screen.
+const codeSchema = yup.object({
+  code: yup
+    .string()
+    .trim()
+    .matches(REGEX.NUMBERS_ONLY, `${i18n.t('login:form.code.pattern')}`)
+    .length(6, `${i18n.t('login:form.code.length')}`)
+    .required(`${i18n.t('login:form.code.required')}`),
+});
+
+// VIC 2.0 (#514): no passwords. Step 1: the email; step 2: the 6-digit code we emailed. A new email
+// gets an account too (sign-up = login); without a volunteer profile yet the app opens CreateUser.
+// route.params.email: from the vic://login?email= link (the web's pages for volunteers).
 const Login = ({ navigation, route }: any) => {
   const linkEmail: string | undefined = route?.params?.email;
-  const { login, resendConfirmationCode } = useAuth();
+  const { requestLoginCode, loginWithCode } = useAuth();
   const { t } = useTranslation('login');
-  const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const paddingTop = usePaddingTop();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // set once a code was sent: the screen shows the code step
+  const [maskedEmail, setMaskedEmail] = useState<string | null>(null);
+  const [secondsLeft, setSecondsLeft] = useState<number>(0);
 
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<LoginFormTypes>({
+  const emailForm = useForm<EmailForm>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
-    resolver: yupResolver(schema),
-    defaultValues: { username: linkEmail ?? '', password: '' },
+    resolver: yupResolver(emailSchema),
+    defaultValues: { email: linkEmail ?? '' },
   });
 
+  const codeForm = useForm<CodeForm>({
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(codeSchema),
+    defaultValues: { code: '' },
+  });
+
+  const { setValue } = emailForm;
   // the link can also arrive while Login is already open
   useEffect(() => {
     if (linkEmail) {
-      setValue('username', linkEmail);
+      setValue('email', linkEmail);
+      setMaskedEmail(null);
     }
   }, [linkEmail, setValue]);
 
-  const onSubmit = async (credentials: LoginFormTypes) => {
+  useEffect(() => {
+    if (secondsLeft <= 0) {
+      return;
+    }
+    const timer = setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [secondsLeft]);
+
+  // errors are shown by the auth context
+  const sendCode = async (email: string): Promise<boolean> => {
     try {
       setIsLoading(true);
-      await login(credentials);
-      setIsLoading(false);
-    } catch (error: any) {
-      // the email is not confirmed yet: send the link again
-      if (error.confirmAccount) {
-        // resend validation email
-        onRevalidateAccount(credentials.username);
-      } else if (error.createUser) {
-        navigation.navigate('create-user');
-      } else {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const onRevalidateAccount = async (username: string) => {
-    try {
-      await resendConfirmationCode(username);
-      navigation.navigate('validate-account');
+      setMaskedEmail(await requestLoginCode(email));
+      setSecondsLeft(RESEND_AFTER_SECONDS);
+      return true;
+    } catch {
+      return false;
     } finally {
       setIsLoading(false);
     }
   };
 
-  const onGoToResetPassword = () => {
-    navigation.navigate('forgot-password');
+  const onSubmitEmail = async ({ email }: EmailForm) => {
+    await sendCode(email);
   };
+
+  const onResend = async () => {
+    if (secondsLeft > 0 || isLoading) {
+      return;
+    }
+    codeForm.reset({ code: '' });
+    if (await sendCode(emailForm.getValues('email'))) {
+      Toast.show({ type: 'success', text1: `${t('code.resent')}` });
+    }
+  };
+
+  const onSubmitCode = async ({ code }: CodeForm) => {
+    try {
+      setIsLoading(true);
+      // logs in: the Router switches to the private routes
+      await loginWithCode(code);
+    } catch (error: any) {
+      if (error?.createUser) {
+        navigation.navigate('create-user');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onChangeEmail = () => {
+    codeForm.reset({ code: '' });
+    setMaskedEmail(null);
+  };
+
+  if (maskedEmail) {
+    return (
+      <PageLayout
+        title={t('code.title')}
+        onBackButtonPress={onChangeEmail}
+        actionsOptions={{
+          primaryActionLabel: t('code.submit'),
+          onPrimaryActionButtonClick: codeForm.handleSubmit(onSubmitCode),
+          loading: isLoading,
+        }}
+        headerStyle={{ paddingTop }}
+      >
+        <FormLayout>
+          <Paragraph>{`${t('code.paragraph', { email: maskedEmail })}`}</Paragraph>
+          <FormInput
+            control={codeForm.control as any}
+            name="code"
+            label={t('form.code.label')}
+            placeholder={t('form.code.placeholder')}
+            error={codeForm.formState.errors.code}
+            disabled={isLoading}
+            required={true}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            autoComplete="one-time-code"
+            maxLength={6}
+          />
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2" style={styles.hint}>
+            {`${t('code.not_received')}`}
+          </Text>
+          {secondsLeft > 0 ? (
+            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2" appearance="hint">
+              {`${t('code.resend_in', { seconds: secondsLeft })}`}
+            </Text>
+          ) : (
+            <InlineLink label={t('code.resend')} onPress={onResend} />
+          )}
+          <InlineLink label={t('code.change_email')} onPress={onChangeEmail} />
+        </FormLayout>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout
@@ -97,7 +180,7 @@ const Login = ({ navigation, route }: any) => {
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         primaryActionLabel: t('submit'),
-        onPrimaryActionButtonClick: handleSubmit(onSubmit),
+        onPrimaryActionButtonClick: emailForm.handleSubmit(onSubmitEmail),
         loading: isLoading,
       }}
       headerStyle={{ paddingTop }}
@@ -105,41 +188,22 @@ const Login = ({ navigation, route }: any) => {
       <FormLayout>
         <Paragraph>{`${t('paragraph')}`}</Paragraph>
         {isMigrationNoticeActive() && (
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2" style={styles.notice}>
+          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2" style={styles.hint}>
             {`${t('migration_notice')}`}
           </Text>
         )}
         <FormInput
-          control={control as any}
-          name="username"
+          control={emailForm.control as any}
+          name="email"
           label={t('form.email.label')}
           placeholder={t('form.email.placeholder')}
-          error={errors.username}
+          error={emailForm.formState.errors.email}
           disabled={isLoading}
           required={true}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoComplete="email"
         />
-        <FormInput
-          control={control as any}
-          name="password"
-          label={t('form.password.label')}
-          placeholder={t('form.password.placeholder')}
-          error={errors.password}
-          accessoryRight={(props: any) =>
-            renderPasswordEyeIcon({
-              ...props,
-              setSecureTextEntry,
-              secureTextEntry,
-            })
-          }
-          secureTextEntry={secureTextEntry}
-          disabled={isLoading}
-          required={true}
-        />
-        <Pressable onPress={onGoToResetPassword}>
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">
-            {`${t('forgot_password')}`}
-          </Text>
-        </Pressable>
       </FormLayout>
     </PageLayout>
   );
@@ -148,5 +212,5 @@ const Login = ({ navigation, route }: any) => {
 export default Login;
 
 const styles = StyleSheet.create({
-  notice: { lineHeight: 20 },
+  hint: { lineHeight: 20 },
 });

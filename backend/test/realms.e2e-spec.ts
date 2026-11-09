@@ -9,9 +9,8 @@ import {
 } from 'src/modules/auth/enums/auth.enums';
 import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
-import { PasswordService } from 'src/modules/auth/services/password.service';
 import { SessionService } from 'src/modules/auth/services/session.service';
-import { api, asMobile, asWeb } from './utils/http';
+import { api, asMobile, asWeb, emailedCode, linkSecret } from './utils/http';
 import { generateTestAuthKeys } from './utils/auth-test-config';
 import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
@@ -27,8 +26,6 @@ describe('Realms (e2e)', () => {
   let volunteer: IAuthIdentityModel;
   let volunteerUserId: string;
   const EMAIL = 'dana@example.ro';
-  const WEB_PASSWORD = 'Web#Password1';
-  const MOBILE_PASSWORD = 'Mobile#Password2';
 
   const sign = (
     privateKeyBase64: string,
@@ -66,7 +63,7 @@ describe('Realms (e2e)', () => {
     await testApp?.close();
   });
 
-  // The same person as an NGO admin and as a volunteer, with a different password in each realm.
+  // The same person as an NGO admin and as a volunteer: one login in each realm.
   beforeEach(async () => {
     await testApp.flushRedis();
     await truncate(testApp.dataSource, [
@@ -74,7 +71,6 @@ describe('Realms (e2e)', () => {
       'user',
       'organization',
     ]);
-    const passwords = testApp.app.get(PasswordService);
     const [organization] = await testApp.dataSource.query(
       `INSERT INTO organization (name, email, phone, status, validated_at)
        VALUES ('Org', 'org@example.ro', '+40700000000', 'active', now()) RETURNING id`,
@@ -94,8 +90,6 @@ describe('Realms (e2e)', () => {
       realm: AuthRealm.WEB,
       email: EMAIL,
       status: AuthIdentityStatus.ACTIVE,
-      passwordHash: await passwords.hash(WEB_PASSWORD),
-      passwordSetAt: new Date(),
       emailVerifiedAt: new Date(),
       userId: adminUser.id,
     });
@@ -103,50 +97,47 @@ describe('Realms (e2e)', () => {
       realm: AuthRealm.MOBILE,
       email: EMAIL,
       status: AuthIdentityStatus.ACTIVE,
-      passwordHash: await passwords.hash(MOBILE_PASSWORD),
-      passwordSetAt: new Date(),
       emailVerifiedAt: new Date(),
       userId: volunteerUser.id,
     });
   });
 
-  it('one email in both realms has two independent passwords', async () => {
-    await asWeb(http, EMAIL, WEB_PASSWORD);
-    await asMobile(http, EMAIL, MOBILE_PASSWORD);
+  it('one email in both realms has two independent logins, each with its own secret', async () => {
+    await asWeb(testApp, http, EMAIL);
+    await asMobile(testApp, http, EMAIL);
 
-    expect(
-      (
-        await http
-          .post('/auth/web/login')
-          .send({ email: EMAIL, password: MOBILE_PASSWORD })
-          .expect(401)
-      ).body.code_error,
-    ).toBe('AUTH_001');
-    expect(
-      (
-        await http
-          .post('/mobile/auth/login')
-          .send({ email: EMAIL, password: WEB_PASSWORD })
-          .expect(401)
-      ).body.code_error,
-    ).toBe('AUTH_001');
-
-    // Changing the app password leaves the web password as it was.
-    const mobile = await asMobile(http, EMAIL, MOBILE_PASSWORD);
+    // A link and a code for the same email, one per realm.
+    await testApp.flushRedis();
     await http
-      .patch('/mobile/auth/change-password')
-      .set(mobile.auth)
-      .send({
-        currentPassword: MOBILE_PASSWORD,
-        newPassword: 'Mobile#Changed3',
-      })
+      .post('/auth/web/login/request')
+      .send({ email: EMAIL })
       .expect(204);
-    await asWeb(http, EMAIL, WEB_PASSWORD);
+    const webLink = linkSecret(testApp.mailbox.last(EMAIL));
+    await http
+      .post('/mobile/auth/login/request')
+      .send({ email: EMAIL })
+      .expect(200);
+    const appCode = emailedCode(testApp.mailbox.last(EMAIL));
+
+    expect(
+      (
+        await http
+          .post('/auth/login-link')
+          .send({ token: 'A'.repeat(43) })
+          .expect(400)
+      ).body.code_error,
+    ).toBe('AUTH_005');
+    // The two secrets still work in their own realm.
+    await http.post('/auth/login-link').send({ token: webLink }).expect(200);
+    await http
+      .post('/mobile/auth/login/code')
+      .send({ email: EMAIL, code: appCode })
+      .expect(200);
   });
 
   it('a mobile token on a web route and a web token on a mobile route are 401', async () => {
-    const web = await asWeb(http, EMAIL, WEB_PASSWORD);
-    const mobile = await asMobile(http, EMAIL, MOBILE_PASSWORD);
+    const web = await asWeb(testApp, http, EMAIL);
+    const mobile = await asMobile(testApp, http, EMAIL);
 
     await http.get('/volunteer').set(mobile.auth).expect(401);
     await http.get('/mobile/user/profile').set(web.auth).expect(401);

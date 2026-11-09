@@ -23,7 +23,6 @@ import { RefreshTokenRepository } from './repositories/refresh-token.repository'
 import { AuthIdentityProviderRepository } from './repositories/auth-identity-provider.repository';
 import { AuthIdentityFacade } from './services/auth-identity.facade';
 import { AuthConfigService } from 'src/infrastructure/config/auth.config';
-import { PasswordService } from './services/password.service';
 import { OneTimeTokenService } from './services/one-time-token.service';
 import { SessionService } from './services/session.service';
 import { AuthRateLimitService } from './services/auth-rate-limit.service';
@@ -61,7 +60,6 @@ import { AuthCleanupProcessor } from './jobs/auth-cleanup.processor';
     AuthIdentityProviderRepository,
     AuthIdentityFacade,
     AuthConfigService,
-    PasswordService,
     OneTimeTokenService,
     SessionService,
     AuthRateLimitService,
@@ -78,7 +76,6 @@ import { AuthCleanupProcessor } from './jobs/auth-cleanup.processor';
   exports: [
     AuthIdentityFacade,
     AuthConfigService,
-    PasswordService,
     OneTimeTokenService,
     SessionService,
     AuthRateLimitService,

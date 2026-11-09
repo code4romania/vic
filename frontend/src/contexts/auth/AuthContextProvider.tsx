@@ -59,14 +59,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     setProfile(session.user ?? (await authApi.getMe()));
   }, []);
 
-  const login = useCallback(
-    async (email: string, password: string) => {
-      const session = await authApi.login(email, password);
-      await startSession(session);
-    },
-    [startSession],
-  );
-
   const logout = useCallback(async () => {
     try {
       await authApi.logout();
@@ -84,7 +76,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, profile, isSuperAdmin, login, logout, startSession }}
+      value={{ isAuthenticated, profile, isSuperAdmin, logout, startSession }}
     >
       {!isLoading ? (
         children

@@ -61,13 +61,13 @@ describe('e2e harness', () => {
 
   it('collects emails in the fake mailbox', async () => {
     const mailer = testApp.app.get(AuthMailerService);
-    const url = mailer.setPasswordUrl('secret');
+    const url = mailer.loginLinkUrl('secret');
 
-    await mailer.send('admin@example.ro', AUTH_EMAILS.resetLink(url));
+    await mailer.send('admin@example.ro', AUTH_EMAILS.loginLink(url));
 
-    expect(url).toBe('https://vic.test/set-password?token=secret');
+    expect(url).toBe('https://vic.test/login/link?token=secret');
     expect(testApp.mailbox.last('admin@example.ro')).toMatchObject({
-      subject: expect.stringContaining('Resetare parolă'),
+      subject: expect.stringContaining('Linkul tău de autentificare'),
       context: expect.objectContaining({
         cta: expect.objectContaining({ link: url }),
       }),

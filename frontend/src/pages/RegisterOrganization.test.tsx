@@ -32,8 +32,6 @@ const fillAll = async () => {
   await type(f('lastName'), 'Testescu');
   await type(f('adminEmail'), 'tudor@ong.test');
   await type(f('adminPhone'), '+40711000000');
-  await type(f('password'), 'Secret#123');
-  await type(f('confirmPassword'), 'Secret#123');
   await userEvent.click(screen.getByRole('checkbox'));
 };
 
@@ -46,7 +44,7 @@ describe('RegisterOrganization', () => {
   it('requires every field, the statute and the terms', async () => {
     renderPage(<RegisterOrganization />, { auth: { isAuthenticated: false } });
     await submit();
-    expect(await screen.findAllByText(t('register_organization:form.required'))).toHaveLength(13);
+    expect(await screen.findAllByText(t('register_organization:form.required'))).toHaveLength(11);
     expect(screen.getByText(t('register_organization:form.statute.required'))).toBeInTheDocument();
     expect(screen.getByText(t('register_organization:form.terms.required'))).toBeInTheDocument();
   });
@@ -62,13 +60,9 @@ describe('RegisterOrganization', () => {
     ).toBeInTheDocument();
   });
 
-  it('refuses a weak password', async () => {
+  it('has no password fields: admins log in with an emailed link (#514)', () => {
     renderPage(<RegisterOrganization />, { auth: { isAuthenticated: false } });
-    await userEvent.type(screen.getByLabelText(f('password')), 'weak');
-    await submit();
-    expect(await screen.findByText(t('register_organization:form.password.rule'))).toHaveClass(
-      'text-red-500',
-    );
+    expect(document.querySelector('input[type="password"]')).toBeNull();
   });
 
   it('sends the multipart form with the Turnstile token and shows the masked email', async () => {
@@ -96,6 +90,7 @@ describe('RegisterOrganization', () => {
     expect(form?.get('address')).toBe('Str. Test 1, Cluj');
     expect(form?.get('acceptedTerms')).toBe('true');
     expect((form?.get('statute') as File).name).toBe('statut.pdf');
+    expect(form?.has('password')).toBe(false);
     expect(form?.has('confirmPassword')).toBe(false);
     API.interceptors.request.eject(interceptor);
   });

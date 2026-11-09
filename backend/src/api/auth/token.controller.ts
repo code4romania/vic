@@ -18,10 +18,9 @@ import { LinkResult } from 'src/usecases/auth/auth-results';
 import { ConfirmEmailUseCase } from 'src/usecases/auth/confirm-email.usecase';
 import { GetTokenInfoUseCase } from 'src/usecases/auth/get-token-info.usecase';
 import { ResendTokenUseCase } from 'src/usecases/auth/resend-token.usecase';
-import { SetPasswordUseCase } from 'src/usecases/auth/set-password.usecase';
+import { LoginWithLinkUseCase } from 'src/usecases/auth/login-with-link.usecase';
 import { setRefreshCookie } from './cookies';
 import { ConfirmEmailDto } from './dto/confirm-email.dto';
-import { SetPasswordDto } from './dto/set-password.dto';
 import { AdminProfilePresenter } from './presenters/admin-profile.presenter';
 import { MobileRealmResultPresenter } from './presenters/mobile-realm-result.presenter';
 import { SessionPresenter } from './presenters/session.presenter';
@@ -41,14 +40,14 @@ const LINK_RESULT_SCHEMA = {
     'Web login: a session and the vic_refresh cookie. Mobile login: { realm: "mobile", email } and no session.',
 };
 
-// The pages behind emailed links (/set-password, /confirm-email), for both realms. All public.
+// The pages behind emailed links (/login/link, /confirm-email). All public.
 @ApiExtraModels(SessionPresenter, MobileRealmResultPresenter)
 @Controller('auth')
 export class TokenController {
   constructor(
     private readonly getTokenInfoUseCase: GetTokenInfoUseCase,
     private readonly resendTokenUseCase: ResendTokenUseCase,
-    private readonly setPasswordUseCase: SetPasswordUseCase,
+    private readonly loginWithLinkUseCase: LoginWithLinkUseCase,
     private readonly confirmEmailUseCase: ConfirmEmailUseCase,
     private readonly authConfig: AuthConfigService,
   ) {}
@@ -75,18 +74,14 @@ export class TokenController {
   @Throttle(AUTH_THROTTLE)
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse(LINK_RESULT_SCHEMA)
-  @Post('set-password')
-  async setPassword(
-    @Body() { token, password }: SetPasswordDto,
+  @Post('login-link')
+  async loginWithLink(
+    @Body() { token }: ConfirmEmailDto,
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<SessionPresenter | MobileRealmResultPresenter> {
     return this.present(
-      await this.setPasswordUseCase.execute(
-        token,
-        password,
-        requestClient(req),
-      ),
+      await this.loginWithLinkUseCase.execute(token, requestClient(req)),
       res,
     );
   }

@@ -54,7 +54,7 @@ export const OrganizationExceptionMessages: Record<
     code_error: OrganizationExceptionCodes.ORG_008,
   },
   [OrganizationExceptionCodes.ORG_009]: {
-    message: 'Invites are only for admins who have not set a password',
+    message: 'Invites are only for admins who have not logged in yet',
     code_error: OrganizationExceptionCodes.ORG_009,
   },
   [OrganizationExceptionCodes.ORG_010]: {

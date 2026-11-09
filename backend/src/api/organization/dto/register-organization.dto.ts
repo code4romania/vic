@@ -1,10 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { Equals, IsNotEmpty, IsString, MaxLength } from 'class-validator';
-import {
-  IsNormalizedEmail,
-  IsStrongPassword,
-} from 'src/api/auth/dto/validators';
+import { IsNormalizedEmail } from 'src/api/auth/dto/validators';
 import {
   ActivityArea,
   Address,
@@ -71,10 +68,6 @@ export class RegisterOrganizationDto {
   @ApiProperty({ example: '+40711111111' })
   @Phone()
   adminPhone: string;
-
-  @ApiProperty({ example: 'Admin#2026x' })
-  @IsStrongPassword()
-  password: string;
 
   // Form fields arrive as strings, and the global pipe's implicit conversion would turn "false" into true
   // before a transform sees it, so this reads the raw form value.

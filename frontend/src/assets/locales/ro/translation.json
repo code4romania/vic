@@ -308,7 +308,7 @@
       "ORG_006": "Verificarea anti-robot nu a reușit. Încearcă din nou.",
       "ORG_007": "Statutul lipsește sau nu este PDF (maximum 10 MB).",
       "ORG_008": "Acest administrator nu face parte din organizația ta.",
-      "ORG_009": "Invitațiile sunt doar pentru administratorii care nu și-au setat parola.",
+      "ORG_009": "Invitațiile sunt doar pentru administratorii care nu au intrat încă în cont.",
       "ORG_010": "Nu îți poți schimba propriul status."
     },
     "form": {
@@ -1062,33 +1062,33 @@
       "description": "Linkul nu mai este valabil: a expirat sau a fost deja folosit.",
       "resend": "Trimite-mi un link nou",
       "sent": "Dacă linkul poate fi reînnoit, am trimis unul nou. Verifică-ți emailul.",
-      "forgot_password": "Resetează parola"
+      "new_login": "Cere un link nou din pagina de autentificare"
     }
   },
   "login": {
     "title": "Autentificare în VIC",
-    "migration_notice": "Aveai cont înainte de schimbare? Folosește linkul primit pe email pentru a-ți seta parola, sau Ai uitat parola.",
+    "description": "Introdu emailul contului tău de administrator. Îți trimitem un link cu care intri în cont, fără parolă.",
+    "migration_notice": "Aveai cont înainte de schimbare? Introdu emailul mai jos: îți trimitem un link de autentificare. Nu mai ai nevoie de parolă.",
     "form": {
       "email": {
         "label": "Email",
         "invalid": "Adresa de email nu este validă",
         "required": "Emailul este obligatoriu"
-      },
-      "password": {
-        "label": "Parola",
-        "required": "Parola este obligatorie"
       }
     },
-    "forgot_password": "Ai uitat parola?",
-    "submit": "Intră în cont",
+    "submit": "Trimite linkul de autentificare",
+    "sent": {
+      "title": "Verifică-ți emailul",
+      "description": "Dacă {{email}} are un cont de administrator, am trimis un link de autentificare. Linkul este valabil 15 minute și poate fi folosit o singură dată.",
+      "hint": "Nu găsești emailul? Uită-te și în Spam sau Promoții.",
+      "again": "Trimite din nou",
+      "again_done": "Am trimis un link nou.",
+      "other_email": "Folosește alt email"
+    },
     "no_account": "Organizația ta nu are cont?",
     "register": "Înregistrează organizația",
     "errors": {
       "generic": "Autentificarea nu a reușit. Încearcă din nou."
-    },
-    "resend_verification": {
-      "button": "Retrimite emailul de confirmare",
-      "sent": "Dacă adresa are un cont neconfirmat, am trimis un link nou."
     },
     "volunteer_account": {
       "title": "Acesta este un cont de voluntar",
@@ -1096,50 +1096,23 @@
       "open_app": "Deschide aplicația"
     }
   },
-  "forgot_password": {
-    "title": "Ai uitat parola",
-    "description": "Introdu emailul contului. Dacă există un cont, îți trimitem un link pentru a alege o parolă nouă.",
-    "email": {
-      "label": "Email",
-      "invalid": "Adresa de email nu este validă",
-      "required": "Emailul este obligatoriu"
-    },
-    "submit": "Trimite linkul",
-    "sent": "Dacă există un cont pentru această adresă, am trimis un link pentru a alege o parolă nouă. Verifică-ți emailul.",
-    "back_to_login": "Înapoi la autentificare",
-    "errors": {
-      "generic": "A apărut o eroare. Încearcă din nou."
-    }
-  },
-  "set_password": {
+  "login_link": {
     "title": {
+      "login": "Intră în VIC",
       "transition": "VIC are o nouă autentificare",
-      "invite": "Bine ai venit în {{organization}}",
-      "reset": "Alege o parolă nouă"
+      "invite": "Bine ai venit în {{organization}}"
     },
     "description": {
-      "transition": "Alege parola pentru {{email}}.",
-      "invite": "Alege parola pentru {{email}}.",
-      "reset": "Alege o parolă nouă pentru {{email}}.",
-      "volunteer_social": "Setează o parolă cu acest link sau intră cu Google, Facebook sau Apple în aplicație, ca înainte."
+      "login": "Continuă pentru a intra în cont ca {{email}}.",
+      "transition": "De acum intri în VIC cu un link primit pe email, fără parolă. Continuă pentru a intra în cont ca {{email}}.",
+      "invite": "Ai fost invitat ca administrator. Continuă pentru a intra în cont ca {{email}}. Data viitoare, intră cu emailul tău din pagina de autentificare."
     },
+    "submit": "Intră în cont",
     "expired_title": "Linkul nu mai este valabil",
-    "form": {
-      "password": {
-        "label": "Parola",
-        "required": "Parola este obligatorie",
-        "rule": "Minimum 8 caractere, cu o literă mare, o literă mică, o cifră și un simbol."
-      },
-      "confirm": {
-        "label": "Confirmă parola",
-        "required": "Confirmă parola",
-        "mismatch": "Parolele nu coincid"
-      }
-    },
-    "submit": "Salvează parola",
-    "done": {
-      "title": "Parola a fost salvată",
-      "open_app": "Gata. Deschide aplicația și intră în cont."
+    "volunteer": {
+      "title": "Folosește aplicația VIC",
+      "open_app": "Acesta este un cont de voluntar",
+      "description": "Voluntarii intră în aplicația mobilă VIC cu emailul și un cod primit pe email."
     },
     "errors": {
       "generic": "A apărut o eroare. Încearcă din nou."
@@ -1246,16 +1219,6 @@
       "adminPhone": {
         "label": "Telefonul tău"
       },
-      "password": {
-        "label": "Parola",
-        "rule": "Minimum 8 caractere, cu o literă mare, o literă mică, o cifră și un simbol."
-      },
-      "confirmPassword": {
-        "label": "Confirmă parola"
-      },
-      "confirm_password": {
-        "mismatch": "Parolele nu coincid"
-      },
       "terms": {
         "label": "Sunt de acord cu",
         "terms": "termenii și condițiile",
@@ -1305,7 +1268,7 @@
     "confirm": {
       "invite": {
         "title": "Trimite invitație",
-        "description": "Trimiți lui {{name}} un link pentru setarea parolei la {{email}}? Invitațiile anterioare nu vor mai funcționa.",
+        "description": "Trimiți lui {{name}} un link de autentificare la {{email}}? Invitațiile anterioare nu vor mai funcționa.",
         "button": "Trimite"
       },
       "disable": {
@@ -1315,7 +1278,7 @@
       },
       "enable": {
         "title": "Activează administratorul",
-        "description": "{{name}} poate intra din nou în cont. Nu se trimite niciun email; dacă nu are parolă încă, trimite-i o invitație.",
+        "description": "{{name}} poate intra din nou în cont. Nu se trimite niciun email; dacă nu a intrat niciodată în cont, trimite-i o invitație.",
         "button": "Activează"
       }
     },
@@ -1325,7 +1288,7 @@
       "enabled": "{{name}} a fost activat"
     },
     "form": {
-      "description": "Îi trimitem pe email un link pentru a-și alege parola.",
+      "description": "Îi trimitem pe email un link cu care intră în cont.",
       "firstName": "Prenume",
       "lastName": "Nume",
       "email": "Email",

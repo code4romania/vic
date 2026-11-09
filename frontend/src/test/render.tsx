@@ -16,7 +16,6 @@ export const authValue = (overrides: Partial<AuthContextProps> = {}): AuthContex
   isAuthenticated: true,
   profile: ADMIN,
   isSuperAdmin: false,
-  login: vi.fn(),
   logout: vi.fn(),
   startSession: vi.fn(),
   ...overrides,
@@ -24,7 +23,7 @@ export const authValue = (overrides: Partial<AuthContextProps> = {}): AuthContex
 
 interface Options {
   route?: string;
-  // The route pattern the element is mounted on, e.g. "/set-password".
+  // The route pattern the element is mounted on, e.g. "/login/link".
   path?: string;
   auth?: Partial<AuthContextProps>;
   // Extra routes, e.g. a stub "/" to see where a page navigates.

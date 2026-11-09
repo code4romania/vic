@@ -44,60 +44,59 @@ export const AUTH_EMAILS = {
       {
         title: 'VIC are un nou sistem de autentificare',
         subtitle:
-          'Alege o parolă nouă cu linkul de mai jos. Linkul este valabil 30 de zile. După autentificare, te rugăm să verifici pagina Echipă a organizației și să dezactivezi persoanele care nu mai fac parte din ea.',
+          'Nu mai folosești parolă: intri în VIC cu un link trimis pe email. Primul link este mai jos și este valabil 30 de zile; după aceea, cere un link nou din pagina de autentificare. Te rugăm să verifici pagina Echipă a organizației și să dezactivezi persoanele care nu mai fac parte din ea.',
       },
       {
         title: 'VIC has a new login',
         subtitle:
-          "Choose a new password with the link below. The link is valid for 30 days. Once you are in, please review your organization's Team page and disable anyone who has left.",
+          "No more passwords: you log in to VIC with a link sent by email. Your first link is below and is valid for 30 days; after that, ask for a new one on the login page. Please review your organization's Team page and disable anyone who has left.",
       },
-      { cta: { link: url, label: 'Setează parola' } },
+      { cta: { link: url, label: 'Intră în VIC' } },
     ),
 
-  transitionLinkVolunteer: (url: string): AuthEmail =>
+  transitionLinkVolunteer: (): AuthEmail =>
     email(
       'VIC are un nou sistem de autentificare / VIC has a new login',
       {
         title: 'VIC are un nou sistem de autentificare',
         subtitle:
-          'Actualizează aplicația VIC din magazin. Setează o parolă cu acest link sau intră în aplicație cu Google, Facebook sau Apple, ca înainte. Linkul este valabil 30 de zile.',
+          'Actualizează aplicația VIC din magazin. Nu mai folosești parolă: introdu adresa de email în aplicație și primești un cod de autentificare. Poți intra în continuare și cu Google sau Apple.',
       },
       {
         title: 'VIC has a new login',
         subtitle:
-          'Update the VIC app from the store. Set a password with this link, or sign in with Google, Facebook or Apple in the app as before. The link is valid for 30 days.',
+          'Update the VIC app from the store. No more passwords: enter your email in the app and you will get a login code. You can still sign in with Google or Apple.',
       },
-      { cta: { link: url, label: 'Setează parola' } },
     ),
 
-  resetLink: (url: string): AuthEmail =>
+  loginLink: (url: string): AuthEmail =>
     email(
-      'Resetare parolă VIC / Reset your VIC password',
+      'Linkul tău de autentificare VIC / Your VIC login link',
       {
-        title: 'Resetare parolă',
+        title: 'Intră în VIC',
         subtitle:
-          'Folosește linkul de mai jos pentru a alege o parolă nouă. Linkul este valabil o oră. Dacă nu ai cerut resetarea, ignoră acest email.',
+          'Folosește linkul de mai jos pentru a intra în contul tău. Linkul este valabil 15 minute și poate fi folosit o singură dată. Dacă nu ai cerut acest link, ignoră emailul.',
       },
       {
-        title: 'Reset your password',
+        title: 'Log in to VIC',
         subtitle:
-          "Use the link below to choose a new password. The link is valid for one hour. If you didn't ask for this, ignore this email.",
+          "Use the link below to log in to your account. The link is valid for 15 minutes and works once. If you didn't ask for it, ignore this email.",
       },
-      { cta: { link: url, label: 'Setează parola' } },
+      { cta: { link: url, label: 'Intră în VIC' } },
     ),
 
-  resetCode: (code: string): AuthEmail =>
+  loginCode: (code: string): AuthEmail =>
     email(
       `Codul tău VIC: ${code} / Your VIC code: ${code}`,
       {
-        title: 'Codul pentru resetarea parolei',
+        title: 'Codul de autentificare',
         subtitle:
-          'Introdu acest cod în aplicație împreună cu parola nouă. Codul este valabil 15 minute. Dacă nu ai cerut resetarea, ignoră acest email.',
+          'Introdu acest cod în aplicația VIC. Codul este valabil 15 minute. Dacă nu ai cerut codul, ignoră acest email.',
       },
       {
-        title: 'Your password reset code',
+        title: 'Your login code',
         subtitle:
-          "Enter this code in the app together with your new password. The code is valid for 15 minutes. If you didn't ask for this, ignore this email.",
+          "Enter this code in the VIC app. The code is valid for 15 minutes. If you didn't ask for it, ignore this email.",
       },
       { code },
     ),
@@ -112,30 +111,14 @@ export const AUTH_EMAILS = {
       {
         title: `${invitedBy} te-a invitat în ${organizationName}`,
         subtitle:
-          'Acceptă invitația și alege o parolă pentru a administra organizația în VIC. Invitația este valabilă 14 zile.',
+          'Acceptă invitația pentru a administra organizația în VIC. Nu ai nevoie de parolă: data viitoare intri cu un link primit pe email. Invitația este valabilă 14 zile.',
       },
       {
         title: `${invitedBy} invited you to ${organizationName}`,
         subtitle:
-          'Accept the invitation and choose a password to manage the organization in VIC. The invitation is valid for 14 days.',
+          'Accept the invitation to manage the organization in VIC. No password needed: next time you log in with a link sent by email. The invitation is valid for 14 days.',
       },
       { cta: { link: url, label: 'Acceptă invitația' } },
-    ),
-
-  verifyEmailLink: (url: string): AuthEmail =>
-    email(
-      'Confirmă adresa de email VIC / Confirm your VIC email',
-      {
-        title: 'Confirmă adresa de email',
-        subtitle:
-          'Deschide linkul de mai jos pentru a-ți confirma contul, apoi întoarce-te în aplicație. Linkul este valabil 24 de ore.',
-      },
-      {
-        title: 'Confirm your email address',
-        subtitle:
-          'Open the link below to confirm your account, then go back to the app. The link is valid for 24 hours.',
-      },
-      { cta: { link: url, label: 'Confirmă adresa' } },
     ),
 
   confirmOrganizationLink: (url: string, organizationName: string): AuthEmail =>
@@ -226,12 +209,12 @@ export const AUTH_EMAILS = {
       {
         title: `Pe ${date} VIC are un nou sistem de autentificare`,
         subtitle:
-          'În acea zi, VIC va fi indisponibil câteva ore. După aceea, actualizează aplicația și folosește linkul pe care ți-l trimitem pe email pentru a seta o parolă nouă.',
+          'În acea zi, VIC va fi indisponibil câteva ore. După aceea, actualizează aplicația și intră cu adresa de email: primești un link sau un cod, fără parolă.',
       },
       {
         title: `On ${date} VIC gets a new login`,
         subtitle:
-          "VIC will be unavailable for a few hours that day. Afterwards, update the app and use the link we'll email you to set a new password.",
+          'VIC will be unavailable for a few hours that day. Afterwards, update the app and log in with your email address: you get a link or a code, no password.',
       },
     ),
 
@@ -242,12 +225,12 @@ export const AUTH_EMAILS = {
       {
         title: `Mâine, ${date}, VIC are un nou sistem de autentificare`,
         subtitle:
-          'VIC va fi indisponibil câteva ore. După aceea, actualizează aplicația și folosește linkul pe care ți-l trimitem pe email pentru a seta o parolă nouă.',
+          'VIC va fi indisponibil câteva ore. După aceea, actualizează aplicația și intră cu adresa de email: primești un link sau un cod, fără parolă.',
       },
       {
         title: `Tomorrow, ${date}, VIC gets a new login`,
         subtitle:
-          "VIC will be unavailable for a few hours. Afterwards, update the app and use the link we'll email you to set a new password.",
+          'VIC will be unavailable for a few hours. Afterwards, update the app and log in with your email address: you get a link or a code, no password.',
       },
     ),
 
@@ -258,27 +241,12 @@ export const AUTH_EMAILS = {
       {
         title: 'VIC funcționează din nou',
         subtitle:
-          'Actualizează aplicația VIC din magazin, apoi folosește linkul din emailul „VIC are un nou sistem de autentificare” pentru a seta parola.',
+          'Actualizează aplicația VIC din magazin, apoi intră cu adresa de email: primești un cod, fără parolă.',
       },
       {
         title: 'VIC is back',
         subtitle:
-          'Update the VIC app from the store, then use the link in the "VIC has a new login" email in your inbox to set your password.',
-      },
-    ),
-
-  passwordChanged: (): AuthEmail =>
-    email(
-      'Parola ta VIC a fost schimbată / Your VIC password was changed',
-      {
-        title: 'Parola ta a fost schimbată',
-        subtitle:
-          'Dacă nu tu ai făcut această schimbare, scrie-ne imediat la adresa de contact de mai jos.',
-      },
-      {
-        title: 'Your password was changed',
-        subtitle:
-          "If you didn't make this change, write to us right away at the contact address below.",
+          'Update the VIC app from the store, then log in with your email address: you get a code, no password.',
       },
     ),
 };

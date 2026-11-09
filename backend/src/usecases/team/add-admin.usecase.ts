@@ -21,8 +21,8 @@ export interface AddAdminOptions {
   phone: string;
 }
 
-// "Add admin" on the Team page: a new admin of the caller's organization and a login waiting for a
-// password, then the invite. AUTH_009 when the email already has a web login or an admin profile.
+// "Add admin" on the Team page: a new admin of the caller's organization and a login waiting for its
+// first use, then the invite (a magic link, VIC 2.0 #514). AUTH_009 when the email already has a web login or an admin profile.
 @Injectable()
 export class AddAdminUseCase
   implements IUseCaseService<{ userId: string; maskedEmail: string }>
@@ -59,7 +59,7 @@ export class AddAdminUseCase
         {
           realm: AuthRealm.WEB,
           email: options.email,
-          status: AuthIdentityStatus.PENDING_PASSWORD,
+          status: AuthIdentityStatus.PENDING,
           userId: created.id,
         },
         manager,

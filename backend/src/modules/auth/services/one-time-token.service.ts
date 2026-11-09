@@ -25,8 +25,8 @@ export interface IssuedToken {
 const LINK_PATTERN = /^[A-Za-z0-9_-]{43}$/;
 const CODE_PATTERN = /^\d{6}$/;
 
-// Consuming one of these ends every other live one for the identity: setting a password ends every set-password link.
-const SET_PASSWORD_TYPES = [AuthTokenType.RESET_PASSWORD, AuthTokenType.INVITE];
+// Consuming one of these ends every other live one for the identity: logging in ends every other login link or invite.
+const LOGIN_TYPES = [AuthTokenType.LOGIN, AuthTokenType.INVITE];
 
 @Injectable()
 export class OneTimeTokenService {
@@ -145,10 +145,10 @@ export class OneTimeTokenService {
       throw new AuthException(AuthExceptionCodes.AUTH_005);
     }
 
-    if (SET_PASSWORD_TYPES.includes(token.type)) {
+    if (LOGIN_TYPES.includes(token.type)) {
       await this.authIdentityFacade.replaceLiveTokens(
         token.identityId,
-        SET_PASSWORD_TYPES,
+        LOGIN_TYPES,
         manager,
       );
     }
@@ -201,10 +201,10 @@ export class OneTimeTokenService {
     switch (type) {
       case AuthTokenType.VERIFY_EMAIL:
         return AUTH_TOKEN_TTL_MS.VERIFY_EMAIL_LINK;
-      case AuthTokenType.RESET_PASSWORD:
+      case AuthTokenType.LOGIN:
         return form === AuthTokenForm.CODE
-          ? AUTH_TOKEN_TTL_MS.RESET_PASSWORD_CODE
-          : AUTH_TOKEN_TTL_MS.RESET_PASSWORD_LINK;
+          ? AUTH_TOKEN_TTL_MS.LOGIN_CODE
+          : AUTH_TOKEN_TTL_MS.LOGIN_LINK;
       case AuthTokenType.INVITE:
         return AUTH_TOKEN_TTL_MS.INVITE_LINK;
     }

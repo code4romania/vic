@@ -40,7 +40,6 @@ export interface IRegisterOrganization extends IOrganizationFields {
   lastName: string;
   adminEmail: string;
   adminPhone: string;
-  password: string;
   acceptedTerms: boolean;
   turnstileToken: string;
 }

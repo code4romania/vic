@@ -8,7 +8,7 @@ import { MigrateIdentitiesUseCase } from 'src/usecases/auth/migrate-identities.u
 import { TransitionMailService } from 'src/modules/auth/services/transition-mail.service';
 import { Test } from 'supertest';
 import { socialToken, SocialFixture } from './utils/fake-social';
-import { api } from './utils/http';
+import { api, emailedCode } from './utils/http';
 import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
@@ -35,7 +35,7 @@ describe('Social sign-in (e2e)', () => {
       `SELECT provider, subject, identity_id FROM auth_identity_provider ORDER BY provider`,
     );
 
-  // A volunteer as the cutover import leaves them: a profile from before, a pending_password login.
+  // A volunteer as the cutover import leaves them: a profile from before, a pending login.
   const legacyVolunteer = async (
     email: string,
     cognitoId: string,
@@ -75,7 +75,7 @@ describe('Social sign-in (e2e)', () => {
   });
 
   it.each([AuthProvider.GOOGLE, AuthProvider.APPLE, AuthProvider.FACEBOOK])(
-    '%s: a new email gets a login without a password and a provider link; a second sign-in reuses it',
+    '%s: a new email gets a login and a provider link; a second sign-in reuses it',
     async (provider) => {
       const fixture = { sub: `${provider}-sub-1`, email: 'Nou@Example.ro' };
 
@@ -93,7 +93,6 @@ describe('Social sign-in (e2e)', () => {
       });
       expect(identity).toMatchObject({
         status: AuthIdentityStatus.ACTIVE,
-        passwordHash: null,
       });
       expect(identity.emailVerifiedAt).toBeInstanceOf(Date);
       expect(await links()).toEqual([
@@ -111,12 +110,22 @@ describe('Social sign-in (e2e)', () => {
       );
       expect(count).toBe(1);
 
-      // No password was set: the volunteer has no password login until Forgot password.
-      const login = await http
-        .post('/mobile/auth/login')
-        .send({ email: 'nou@example.ro', password: 'Anything#2026' })
-        .expect(401);
-      expect(login.body.code_error).toBe('AUTH_001');
+      // The same login also works with the emailed code (VIC 2.0, #514: no passwords).
+      await http
+        .post('/mobile/auth/login/request')
+        .send({ email: 'nou@example.ro' })
+        .expect(200);
+      await http
+        .post('/mobile/auth/login/code')
+        .send({
+          email: 'nou@example.ro',
+          code: emailedCode(testApp.mailbox.last('nou@example.ro')),
+        })
+        .expect(200);
+      const [{ logins }] = await testApp.dataSource.query(
+        `SELECT count(*)::int AS logins FROM auth_identity`,
+      );
+      expect(logins).toBe(1);
     },
   );
 
@@ -139,7 +148,7 @@ describe('Social sign-in (e2e)', () => {
     expect(await links()).toHaveLength(0);
   });
 
-  it('a migrated volunteer in pending_password lands on the old profile and is active afterwards (R4)', async () => {
+  it('a migrated volunteer in pending lands on the old profile and is active afterwards (R4)', async () => {
     const userId = await legacyVolunteer(
       'mara@example.ro',
       'f81c-plain-cognito-user',

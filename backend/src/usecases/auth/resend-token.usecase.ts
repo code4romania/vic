@@ -57,10 +57,13 @@ export class ResendTokenUseCase implements IUseCaseService<void> {
     identity: IAuthIdentityModel,
   ): boolean {
     if (identity.status === AuthIdentityStatus.DISABLED) return true;
+    // Links are web only since VIC 2.0 (#514): the app logs in with a code.
+    if (identity.realm !== AuthRealm.WEB) return true;
     if (token.type === AuthTokenType.VERIFY_EMAIL)
       return !!identity.emailVerifiedAt;
-    // An invite is done once the person has a password; Forgot password covers the rest.
-    if (token.type === AuthTokenType.INVITE) return !!identity.passwordHash;
+    // An invite is done once the person has logged in; the login page covers the rest.
+    if (token.type === AuthTokenType.INVITE)
+      return identity.status === AuthIdentityStatus.ACTIVE;
     return false;
   }
 
@@ -69,30 +72,22 @@ export class ResendTokenUseCase implements IUseCaseService<void> {
     identity: IAuthIdentityModel,
     secret: string,
   ): Promise<AuthEmail> {
-    const setPassword = this.authMailer.setPasswordUrl(secret);
+    const loginLink = this.authMailer.loginLinkUrl(secret);
     switch (old.type) {
       case AuthTokenType.INVITE:
-        if (!old.sentById) {
-          return identity.realm === AuthRealm.WEB
-            ? AUTH_EMAILS.transitionLinkAdmin(setPassword)
-            : AUTH_EMAILS.transitionLinkVolunteer(setPassword);
-        }
+        if (!old.sentById) return AUTH_EMAILS.transitionLinkAdmin(loginLink);
         return AUTH_EMAILS.inviteLink(
-          setPassword,
+          loginLink,
           (await this.adminContext.organizationName(identity)) ?? 'VIC',
           (await this.adminContext.adminName(old.sentById)) ?? 'VIC',
         );
-      case AuthTokenType.RESET_PASSWORD:
-        return AUTH_EMAILS.resetLink(setPassword);
-      case AuthTokenType.VERIFY_EMAIL: {
-        const confirm = this.authMailer.confirmEmailUrl(secret);
-        return identity.realm === AuthRealm.WEB
-          ? AUTH_EMAILS.confirmOrganizationLink(
-              confirm,
-              (await this.adminContext.organizationName(identity)) ?? 'VIC',
-            )
-          : AUTH_EMAILS.verifyEmailLink(confirm);
-      }
+      case AuthTokenType.LOGIN:
+        return AUTH_EMAILS.loginLink(loginLink);
+      case AuthTokenType.VERIFY_EMAIL:
+        return AUTH_EMAILS.confirmOrganizationLink(
+          this.authMailer.confirmEmailUrl(secret),
+          (await this.adminContext.organizationName(identity)) ?? 'VIC',
+        );
     }
   }
 }

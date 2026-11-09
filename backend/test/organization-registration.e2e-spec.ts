@@ -5,9 +5,8 @@ import {
 } from 'src/modules/auth/enums/auth.enums';
 import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
-import { PasswordService } from 'src/modules/auth/services/password.service';
 import { Test } from 'supertest';
-import { api, linkSecret, refreshCookie } from './utils/http';
+import { api, asWeb, linkSecret, refreshCookie } from './utils/http';
 import { createTestApp, TestApp, TURNSTILE_OK } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
@@ -28,7 +27,6 @@ describe('Organization registration and validation (e2e)', () => {
   let superAdminToken: string;
   let volunteerToken: string;
   const ADMIN_EMAIL = 'ana@ong-nou.ro';
-  const PASSWORD = 'Admin#2026x';
 
   const fields = (
     overrides: Record<string, string> = {},
@@ -46,7 +44,6 @@ describe('Organization registration and validation (e2e)', () => {
     lastName: 'Popescu',
     adminEmail: ADMIN_EMAIL,
     adminPhone: '+40711111100',
-    password: PASSWORD,
     acceptedTerms: 'true',
     turnstileToken: TURNSTILE_OK,
     ...overrides,
@@ -214,11 +211,17 @@ describe('Organization registration and validation (e2e)', () => {
     );
     expect(await mobileOrganizationNames()).not.toContain('Asociatia Noua');
 
-    const login = await http
-      .post('/auth/web/login')
-      .send({ email: ADMIN_EMAIL, password: PASSWORD })
-      .expect(403);
-    expect(login.body.code_error).toBe('AUTH_003');
+    // Asking for a login link before confirming sends the confirmation link again: it is what activates
+    // the organization (VIC 2.0, #514: no password).
+    testApp.mailbox.clear();
+    await testApp.flushRedis();
+    await http
+      .post('/auth/web/login/request')
+      .send({ email: ADMIN_EMAIL })
+      .expect(204);
+    expect(testApp.mailbox.last(ADMIN_EMAIL).subject).toContain(
+      'Activează Asociatia Noua',
+    );
   });
 
   it('refuses a duplicate name, email, phone or tax id ignoring case, and a taken admin email: 409 ORG_004', async () => {
@@ -307,17 +310,17 @@ describe('Organization registration and validation (e2e)', () => {
     const { accessToken } = await registeredAndConfirmed();
 
     expect(await mobileOrganizationNames()).not.toContain('Asociatia Noua');
-    // Multipart, as the web app sends it (the event controller expects the files object).
+    // JSON, as the web app sends it since the poster was removed (#492).
     const event = await http
       .post('/event')
       .set('Authorization', `Bearer ${accessToken}`)
-      .field('name', 'Eveniment')
-      .field('description', 'Un eveniment de test')
-      .field('startDate', new Date(Date.now() + 86400000).toISOString())
-      .field('status', 'draft')
-      .field('isPublic', 'public')
-      .field('attendanceType', 'simple')
-      .field('tasksIds[]', '00000000-0000-4000-8000-000000000000')
+      .send({
+        name: 'Eveniment',
+        description: 'Un eveniment de test',
+        startDate: new Date(Date.now() + 86400000).toISOString(),
+        status: 'draft',
+        isPublic: 'public',
+      })
       .expect(403);
     expect(event.body.code_error).toBe('ORG_005');
   });
@@ -377,7 +380,6 @@ describe('Organization registration and validation (e2e)', () => {
       realm: AuthRealm.WEB,
       email: 'fost@ong-nou.ro',
       status: AuthIdentityStatus.DISABLED,
-      passwordHash: await testApp.app.get(PasswordService).hash(PASSWORD),
       emailVerifiedAt: new Date(),
       userId: colleague.id,
     });
@@ -388,9 +390,14 @@ describe('Organization registration and validation (e2e)', () => {
       .expect(200);
 
     expect(await mobileOrganizationNames()).not.toContain('Asociatia Noua');
+    await testApp.flushRedis();
+    await http
+      .post('/auth/web/login/request')
+      .send({ email: ADMIN_EMAIL })
+      .expect(204);
     const blocked = await http
-      .post('/auth/web/login')
-      .send({ email: ADMIN_EMAIL, password: PASSWORD })
+      .post('/auth/login-link')
+      .send({ token: linkSecret(testApp.mailbox.last(ADMIN_EMAIL)) })
       .expect(403);
     expect(blocked.body.code_error).toBe('AUTH_004');
     await http.post('/auth/web/refresh').set('Cookie', cookie).expect(401);
@@ -408,18 +415,13 @@ describe('Organization registration and validation (e2e)', () => {
       .set('Authorization', `Bearer ${superAdminToken}`)
       .expect(200);
 
+    await asWeb(testApp, http, ADMIN_EMAIL);
+    testApp.mailbox.clear();
     await http
-      .post('/auth/web/login')
-      .send({ email: ADMIN_EMAIL, password: PASSWORD })
-      .expect(200);
-    expect(
-      (
-        await http
-          .post('/auth/web/login')
-          .send({ email: disabled.email, password: PASSWORD })
-          .expect(403)
-      ).body.code_error,
-    ).toBe('AUTH_004');
+      .post('/auth/web/login/request')
+      .send({ email: disabled.email })
+      .expect(204);
+    expect(testApp.mailbox.to(disabled.email)).toHaveLength(0);
     expect(await mobileOrganizationNames()).toContain('Asociatia Noua');
   });
   it('a registration never confirmed is removed by the daily cleanup after 7 days, files included, and the name is free again', async () => {

@@ -13,12 +13,12 @@ const API = axios.create({
   },
 });
 
-// The public auth routes: a 401 from them is an answer (wrong password, dead link), never a reason to
-// refresh. Every other 401, /auth/web/me and change-password included, refreshes once (decisions R23).
+// The public auth routes: a 401 from them is an answer (dead link), never a reason to refresh. Every
+// other 401, /auth/web/me included, refreshes once (decisions R23).
 const NO_REFRESH_ROUTES = [
-  /^\/?auth\/web\/(login|refresh|logout|forgot-password|resend-verification)$/,
+  /^\/?auth\/web\/(login\/request|refresh|logout|resend-verification)$/,
   /^\/?auth\/token\//,
-  /^\/?auth\/(set-password|confirm-email)$/,
+  /^\/?auth\/(login-link|confirm-email)$/,
 ];
 
 const isPublicAuthRoute = (url = ''): boolean =>

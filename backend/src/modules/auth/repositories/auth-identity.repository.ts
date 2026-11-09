@@ -81,30 +81,6 @@ export class AuthIdentityRepository implements IAuthIdentityRepository {
     return { identity, created };
   }
 
-  public async registerFailedLogin(
-    id: string,
-    maxAttempts: number,
-    lockUntil: Date,
-  ): Promise<IAuthIdentityModel> {
-    if (!id) return null;
-
-    // One statement, so concurrent failures cannot skip the lock. Both CASEs read the old failed_attempts.
-    await this.authIdentityRepository
-      .createQueryBuilder()
-      .update()
-      .set({
-        failedAttempts: () =>
-          'CASE WHEN "failed_attempts" + 1 >= :maxAttempts THEN 0 ELSE "failed_attempts" + 1 END',
-        lockedUntil: () =>
-          'CASE WHEN "failed_attempts" + 1 >= :maxAttempts THEN CAST(:lockUntil AS timestamptz) ELSE "locked_until" END',
-      })
-      .where('id = :id', { id })
-      .setParameters({ maxAttempts, lockUntil })
-      .execute();
-
-    return this.findWith({ id });
-  }
-
   public async deleteByUserId(userId: string): Promise<number> {
     if (!userId) return 0;
 
