@@ -376,6 +376,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
           direction.toLocaleUpperCase() === OrderDirection.ASC
             ? OrderDirection.ASC
             : OrderDirection.DESC,
+        page: 1,
       },
       'replaceIn',
     );
@@ -385,6 +386,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     setQuery(
       {
         search,
+        page: 1,
       },
       'replaceIn',
     );
@@ -395,6 +397,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     setQuery(
       {
         branch: branch?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -405,6 +408,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     setQuery(
       {
         department: department?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -415,6 +419,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     setQuery(
       {
         role: role?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -439,6 +444,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
         branch: undefined,
         department: undefined,
         role: undefined,
+        page: 1,
       },
       'replaceIn',
     );

@@ -128,13 +128,17 @@ const ActionsArchiveTable = ({ query, setQuery, volunteerId }: ActionsArchiveTab
   }, [actionsError]);
 
   const onSort = (column: TableColumn<IAction>, direction: SortOrder) => {
-    setQuery({
-      orderBy: column.id as string,
-      orderDirection:
-        direction.toLocaleUpperCase() === OrderDirection.ASC
-          ? OrderDirection.ASC
-          : OrderDirection.DESC,
-    });
+    setQuery(
+      {
+        orderBy: column.id as string,
+        orderDirection:
+          direction.toLocaleUpperCase() === OrderDirection.ASC
+            ? OrderDirection.ASC
+            : OrderDirection.DESC,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onChangePage = (page: number) => {
@@ -144,33 +148,44 @@ const ActionsArchiveTable = ({ query, setQuery, volunteerId }: ActionsArchiveTab
   };
 
   const onRowsPerPageChange = (limit: number) => {
-    setQuery({
-      limit,
-      page: 1,
-    });
+    setQuery(
+      {
+        limit,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onSearch = (search: string) => {
-    setQuery({
-      search,
-    });
+    setQuery(
+      {
+        search,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onActionDateRangeChange = ([actionStartDate, actionEndDate]: Date[]) => {
-    setQuery({
-      actionStartDate,
-      actionEndDate,
-    });
+    setQuery(
+      {
+        actionStartDate,
+        actionEndDate,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onAuthorChange = (admin: ListItem) => {
     setAuthor(admin);
-    setQuery({ author: admin.label });
+    setQuery({ author: admin.label, page: 1 }, 'replaceIn');
   };
 
   const onResetFilters = () => {
     setAuthor(undefined);
-    setQuery({}, 'push');
+    setQuery({}, 'replace');
   };
 
   return (

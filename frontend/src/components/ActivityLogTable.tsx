@@ -354,10 +354,13 @@ const ActivityLogTable = ({
 
   // pagination
   const onRowsPerPageChange = (limit: number) => {
-    setQuery({
-      limit,
-      page: 1,
-    });
+    setQuery(
+      {
+        limit,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onChangePage = (page: number) => {
@@ -367,43 +370,59 @@ const ActivityLogTable = ({
   };
 
   const onSort = (column: TableColumn<IActivityLogListItem>, direction: SortOrder) => {
-    setQuery({
-      orderBy: column.id as string,
-      orderDirection:
-        direction.toLocaleUpperCase() === OrderDirection.ASC
-          ? OrderDirection.ASC
-          : OrderDirection.DESC,
-    });
+    setQuery(
+      {
+        orderBy: column.id as string,
+        orderDirection:
+          direction.toLocaleUpperCase() === OrderDirection.ASC
+            ? OrderDirection.ASC
+            : OrderDirection.DESC,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onSearch = (search: string) => {
-    setQuery({
-      search,
-    });
+    setQuery(
+      {
+        search,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onStatusChange = (status: SelectItem<ActivityLogStatus> | undefined) => {
     setStatus(status);
-    setQuery({ status: status?.key });
+    setQuery({ status: status?.key, page: 1 }, 'replaceIn');
   };
 
   const onExecutionOnRangeChange = ([executionDateStart, executionDateEnd]: Date[]) => {
-    setQuery({
-      executionDateStart,
-      executionDateEnd,
-    });
+    setQuery(
+      {
+        executionDateStart,
+        executionDateEnd,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onRegistrationOnRangeChange = ([registrationDateStart, registrationDateEnd]: Date[]) => {
-    setQuery({
-      registrationDateStart,
-      registrationDateEnd,
-    });
+    setQuery(
+      {
+        registrationDateStart,
+        registrationDateEnd,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onApprovedOrRejectedByChange = (admin: ListItem) => {
     setApprovedOrRejectedBy(admin);
-    setQuery({ approvedOrRejectedBy: admin.label });
+    setQuery({ approvedOrRejectedBy: admin.label, page: 1 }, 'replaceIn');
   };
 
   const onExport = async () => {
@@ -430,7 +449,7 @@ const ActivityLogTable = ({
     setStatus(undefined);
     setApprovedOrRejectedBy(undefined);
     if (volunteerId) {
-      setQuery({ activeTab: query.activeTab }, 'push');
+      setQuery({ activeTab: query.activeTab }, 'replace');
     } else {
       // clear only the filters, so the page's own tabs (#499) stay as they are
       setQuery(

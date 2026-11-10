@@ -313,6 +313,7 @@ const AccessRequestTable = ({
           direction.toLocaleUpperCase() === OrderDirection.ASC
             ? OrderDirection.ASC
             : OrderDirection.DESC,
+        page: 1,
       },
       'replaceIn',
     );
@@ -389,7 +390,7 @@ const AccessRequestTable = ({
 
   const onResetFilters = () => {
     setLocation(undefined);
-    setQuery({ requestStatus: query.requestStatus }, 'push');
+    setQuery({ requestStatus: query.requestStatus }, 'replace');
   };
 
   const onLocationChange = (location: ListItem) => {
@@ -397,6 +398,7 @@ const AccessRequestTable = ({
     setQuery(
       {
         location: location.label.split(', '),
+        page: 1,
       },
       'replaceIn',
     );
@@ -406,6 +408,7 @@ const AccessRequestTable = ({
     setQuery(
       {
         search,
+        page: 1,
       },
       'replaceIn',
     );
@@ -416,6 +419,7 @@ const AccessRequestTable = ({
       {
         createdOnStart,
         createdOnEnd,
+        page: 1,
       },
       'replaceIn',
     );
@@ -426,6 +430,7 @@ const AccessRequestTable = ({
       {
         rejectedOnStart,
         rejectedOnEnd,
+        page: 1,
       },
       'replaceIn',
     );

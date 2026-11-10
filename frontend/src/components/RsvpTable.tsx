@@ -151,13 +151,14 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
           direction.toLocaleUpperCase() === OrderDirection.ASC
             ? OrderDirection.ASC
             : OrderDirection.DESC,
+        page: 1,
       },
       'replaceIn',
     );
   };
 
   const onResponseChange = (response: SelectItem<string> | undefined) => {
-    setQuery({ going: response?.key as RSVPGoingEnum }, 'replaceIn');
+    setQuery({ going: response?.key as RSVPGoingEnum, page: 1 }, 'replaceIn');
   };
 
   const onResetFilters = () => {
@@ -197,6 +198,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
     setQuery(
       {
         branch: branch?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -207,6 +209,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
     setQuery(
       {
         department: department?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -217,6 +220,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
     setQuery(
       {
         role: role?.value,
+        page: 1,
       },
       'replaceIn',
     );
@@ -246,6 +250,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
     setQuery(
       {
         search,
+        page: 1,
       },
       'replaceIn',
     );
