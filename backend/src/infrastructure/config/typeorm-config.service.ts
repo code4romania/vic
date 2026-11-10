@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+import { shouldRunMigrations } from './environment-config';
 import { VolunteerHistorySubscriber } from 'src/modules/volunteer/entities/history/volunteer-history.subscriber';
 
 @Injectable()
@@ -17,7 +18,11 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.configService.get('DATABASE_NAME'),
       migrations: ['dist/migrations/*.js'],
       autoLoadEntities: true,
-      migrationsRun: true,
+      // RUN_MIGRATIONS=false on the deployed service: several tasks booting together would each run them.
+      // Staging and production migrate once per deploy with `npm run migration:run:prod`.
+      migrationsRun: shouldRunMigrations(
+        this.configService.get('RUN_MIGRATIONS'),
+      ),
       synchronize: false, // never set it to TRUE in production
       subscribers: [VolunteerHistorySubscriber],
       logging: parseInt(this.configService.get('TYPEORM_DEBUG')) ? true : false,

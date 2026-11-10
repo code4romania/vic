@@ -21,7 +21,8 @@ export const dataSource = new DataSource({
   database: process.env.DATABASE_NAME,
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/migrations/*.js'],
-  migrationsRun: true,
+  // Used by the TypeORM CLI (migration:run, migration:run:prod), which runs them explicitly.
+  migrationsRun: false,
   synchronize: false, // never set it to TRUE in production
   ssl:
     process.env.NODE_ENV === 'local' // enable SSL for REMOTE deployment, and disable for local to let migrations work

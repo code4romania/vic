@@ -9,6 +9,9 @@ import { Environment } from './infrastructure/config/environment-config';
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // SIGTERM (ECS stopping a task) closes the app: HTTP server, Bull queues and the Redis and database connections.
+  app.enableShutdownHooks();
+
   // trust proxy, cookies, CORS limited to CORS_ORIGINS with credentials, the exception filter, the validation pipe
   // and the queue board (only when BULL_BOARD_ENABLED, behind basic auth).
   setupApp(app);
