@@ -1,7 +1,6 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useRef } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import i18n from '../common/config/i18n';
-import { Text, useTheme } from '@ui-kitten/components';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -13,17 +12,12 @@ import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useTranslation } from 'react-i18next';
 import { useOrganization } from '../store/organization/organization.selector';
-import Paragraph from '../components/Paragraph';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import BottomSheet from '@gorhom/bottom-sheet';
-import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
 import { StyleSheet, View } from 'react-native';
-import { renderBackdrop } from '../components/BottomSheet';
-import { SvgXml } from 'react-native-svg';
-import successIcon from '../assets/svg/success-icon';
-import Button from '../components/Button';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { Sheet, VButton, VText } from '../components/ui';
+import { EventIcon } from '../components/events/EventIcons';
 import InlineLink from '../components/InlineLink';
-import { useReducedMotion } from 'react-native-reanimated';
+import { colors, spacing } from '../common/theme/tokens';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 
 type AccessCodeFormTypes = {
@@ -46,7 +40,6 @@ const schema = yup
   .required();
 
 const JoinByAccessCode = ({ navigation }: any) => {
-  const theme = useTheme();
   const { t } = useTranslation('access_code');
   const paddingTop = usePaddingTop();
 
@@ -59,12 +52,9 @@ const JoinByAccessCode = ({ navigation }: any) => {
     mutate: joinOrganization,
   } = useJoinByAccessCodeMutation();
 
-  // bottom sheet ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  // bottom sheet snap points
-  const snapPoints = useMemo(() => [1, 410], []);
-
-  const reducedMotion = useReducedMotion();
+  const successRef = useRef<BottomSheetModal>(null);
+  // the user already joined: closing the sheet (button, swipe, Back) leaves the form
+  const leavingTo = useRef<'back' | 'profile'>('back');
 
   const {
     control,
@@ -76,14 +66,6 @@ const JoinByAccessCode = ({ navigation }: any) => {
     resolver: yupResolver(schema),
   });
 
-  const onCloseBottomSheet = () => {
-    bottomSheetRef.current?.close();
-  };
-
-  const onOpenBottomSheet = () => {
-    bottomSheetRef.current?.expand();
-  };
-
   const onSubmit = (payload: AccessCodeFormTypes) => {
     // build the access request payload
     const joinPayload = {
@@ -94,8 +76,7 @@ const JoinByAccessCode = ({ navigation }: any) => {
     // make the access request
     joinOrganization(joinPayload, {
       onSuccess: () => {
-        // show modal which will eventually become bottom sheet
-        onOpenBottomSheet();
+        successRef.current?.present();
       },
       onError: (error: any) => {
         Toast.show({
@@ -107,15 +88,19 @@ const JoinByAccessCode = ({ navigation }: any) => {
   };
 
   const onCompleteVolunteerProfile = () => {
-    onCloseBottomSheet();
-    navigation.navigate('create-volunteer', {
-      volunteerId: volunteer?.id,
-    });
+    leavingTo.current = 'profile';
+    successRef.current?.dismiss();
   };
 
-  const closeBottomSheet = () => {
-    onCloseBottomSheet();
-    navigation.goBack();
+  const onSuccessDismiss = () => {
+    if (leavingTo.current === 'profile') {
+      leavingTo.current = 'back';
+      navigation.navigate('create-volunteer', {
+        volunteerId: volunteer?.id,
+      });
+    } else {
+      navigation.goBack();
+    }
   };
 
   return (
@@ -131,54 +116,46 @@ const JoinByAccessCode = ({ navigation }: any) => {
         headerStyle={{ paddingTop }}
       >
         <FormLayout>
-          <OrganizationIdentity name={organization?.name || ''} uri={organization?.logo || ''} />
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2">{`${t('title')}`}</Text>
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint">{`${t(
-            'description',
-          )}`}</Text>
-          <FormInput
-            control={control as any}
-            error={errors.code}
-            label={t('title')}
-            name="code"
-            placeholder={t('form.code.placeholder')}
-            disabled={isJoiningByAccessCode}
-            // #593: codes are usually upper case; the API matches them whatever the case
-            autoCapitalize="characters"
-            autoCorrect={false}
-          />
+          <View style={styles.content}>
+            <OrganizationIdentity name={organization?.name || ''} uri={organization?.logo || ''} />
+            <VText variant="sub">{`${t('description')}`}</VText>
+            <FormInput
+              control={control as any}
+              error={errors.code}
+              label={t('form.code.label')}
+              name="code"
+              placeholder={t('form.code.placeholder')}
+              disabled={isJoiningByAccessCode}
+              // #593: codes are usually upper case; the API matches them whatever the case
+              autoCapitalize="characters"
+              autoCorrect={false}
+            />
+          </View>
         </FormLayout>
       </PageLayout>
-      <SafeAreaBottomSheet
-        backdropComponent={renderBackdrop}
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-        animateOnMount={reducedMotion ? false : true}
-      >
-        <View style={styles.container}>
-          <SvgXml xml={successIcon} height={100} width={100} />
-          <View style={styles.textContainer}>
-            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">
-              {`${t('modal.success.heading')}`}
-            </Text>
-            <Paragraph>{`${t('modal.success.paragraph')}`}</Paragraph>
-          </View>
-          <View style={styles.buttonsContainer}>
-            <Button
-              label={`${t('modal.success.primary_action_label')}`}
-              status={'primary'}
-              onPress={onCompleteVolunteerProfile}
-            />
-            <InlineLink
-              label={`${t('modal.success.secondary_action_label')}`}
-              onPress={closeBottomSheet}
-              style={{ color: theme['cool-gray-700'] }}
-            />
-          </View>
+      {/* sized to its content: the text is never cut on a small screen */}
+      <Sheet ref={successRef} onDismiss={onSuccessDismiss} testID="access-code-success-sheet">
+        <View style={styles.checkIcon}>
+          <EventIcon name="check" size={30} color={colors.status.ok.fg} strokeWidth={2.6} />
         </View>
-      </SafeAreaBottomSheet>
+        <View style={styles.sheetText}>
+          <VText variant="largeTitle" style={styles.sheetTitle} accessibilityRole="header">
+            {`${t('modal.success.heading')}`}
+          </VText>
+          <VText variant="sub">{`${t('modal.success.paragraph')}`}</VText>
+        </View>
+        <VButton
+          label={`${t('modal.success.primary_action_label')}`}
+          onPress={onCompleteVolunteerProfile}
+          testID="access-code-complete-profile"
+        />
+        <View style={styles.link}>
+          <InlineLink
+            label={`${t('modal.success.secondary_action_label')}`}
+            onPress={() => successRef.current?.dismiss()}
+          />
+        </View>
+      </Sheet>
     </>
   );
 };
@@ -186,22 +163,18 @@ const JoinByAccessCode = ({ navigation }: any) => {
 export default JoinByAccessCode;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  // FormLayout's content sits at 16: 4 more align it with the 20pt gutter of the page title
+  content: { gap: spacing.l, paddingHorizontal: spacing.gutter - spacing.l },
+  checkIcon: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: colors.status.ok.bg,
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    gap: 24,
-    paddingVertical: 24,
-  },
-  textContainer: {
-    paddingHorizontal: 40,
-    gap: 4,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-  buttonsContainer: {
-    gap: 16,
     justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: spacing.m,
   },
+  sheetText: { gap: 6 },
+  sheetTitle: { fontSize: 26 },
+  link: { alignItems: 'center' },
 });

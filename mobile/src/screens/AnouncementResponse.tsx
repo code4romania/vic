@@ -6,7 +6,9 @@ import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 import i18n from '../common/config/i18n';
 import FormInput from '../components/FormInput';
-import Paragraph from '../components/Paragraph';
+import { StyleSheet, View } from 'react-native';
+import { VText } from '../components/ui';
+import { spacing } from '../common/theme/tokens';
 import FormLayout from '../layouts/FormLayout';
 import PageLayout from '../layouts/PageLayout';
 import { usePaddingTop } from '../hooks/usePaddingTop';
@@ -70,22 +72,36 @@ const AnouncementResponse = ({ navigation, route }: any) => {
       }}
     >
       <FormLayout>
-        {title && <Paragraph>{title}</Paragraph>}
-        <Paragraph>{`${t('paragraph')}`}</Paragraph>
-        <FormInput
-          control={control as any}
-          name="comment"
-          label={t('comment.label')}
-          placeholder={t('comment.placeholder')}
-          error={errors.comment}
-          disabled={isLoading}
-          required={true}
-          multiline
-          maxLength={500}
-        />
+        <View style={styles.content}>
+          <View style={styles.intro}>
+            {!!title && (
+              <VText variant="h3" accessibilityRole="header">
+                {title}
+              </VText>
+            )}
+            <VText variant="sub">{`${t('paragraph')}`}</VText>
+          </View>
+          <FormInput
+            control={control as any}
+            name="comment"
+            label={t('comment.label')}
+            placeholder={t('comment.placeholder')}
+            error={errors.comment}
+            disabled={isLoading}
+            required={true}
+            multiline
+            maxLength={500}
+          />
+        </View>
       </FormLayout>
     </PageLayout>
   );
 };
 
 export default AnouncementResponse;
+
+const styles = StyleSheet.create({
+  // FormLayout's content sits at 16: 4 more align it with the 20pt gutter of the page title
+  content: { gap: spacing.l, paddingHorizontal: spacing.gutter - spacing.l },
+  intro: { gap: 6 },
+});

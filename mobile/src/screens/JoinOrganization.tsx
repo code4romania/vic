@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Text } from '@ui-kitten/components';
 import i18n from '../common/config/i18n';
 import * as yup from 'yup';
 import OrganizationIdentity from '../components/OrganizationIdentity';
@@ -15,12 +14,12 @@ import { useCreateAccessrequestMutation } from '../services/access-request/acces
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
-import successIcon from '../assets/svg/success-icon';
 import { StyleSheet, View } from 'react-native';
-import { SvgXml } from 'react-native-svg';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { Sheet, VButton } from '../components/ui';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { Sheet, VButton, VText } from '../components/ui';
+import { EventIcon } from '../components/events/EventIcons';
+import InlineLink from '../components/InlineLink';
+import { colors, spacing } from '../common/theme/tokens';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type JoinNgoFormTypes = {
@@ -71,7 +70,6 @@ const JoinOrganization = ({ navigation, route }: any) => {
     // make the access request
     createAccessRequest(accessRequestPayload, {
       onSuccess: () => {
-        // show modal which will eventually become bottom sheet
         bottomSheetRef.current?.present();
       },
       onError: (error: any) => {
@@ -104,37 +102,34 @@ const JoinOrganization = ({ navigation, route }: any) => {
         headerStyle={{ paddingTop }}
       >
         <FormLayout>
-          <OrganizationIdentity uri={logo} name={name} />
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2">{`${t(
-            'registration_form',
-          )}`}</Text>
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint">{`${t('complete')}`}</Text>
-          <FormSelect
-            control={control as any}
-            label={t('form.referral.label')}
-            error={errors.referral}
-            name="referral"
-            options={ReferralOptions}
-            placeholder={t('general:select')}
-            disabled={isCreatingAccessRequest}
-          />
-          <FormInput
-            control={control as any}
-            label={t('form.motivation.label')}
-            error={errors.motivation}
-            name="motivation"
-            multiline={true}
-            helper={`${t('form.motivation.helper')}`}
-            placeholder=""
-            disabled={isCreatingAccessRequest}
-          />
+          <View style={styles.content}>
+            <OrganizationIdentity uri={logo} name={name} />
+            <VText variant="sub">{`${t('complete')}`}</VText>
+            <FormSelect
+              control={control as any}
+              label={t('form.referral.label')}
+              error={errors.referral}
+              name="referral"
+              options={ReferralOptions}
+              placeholder={t('general:select')}
+              disabled={isCreatingAccessRequest}
+            />
+            <FormInput
+              control={control as any}
+              label={t('form.motivation.label')}
+              error={errors.motivation}
+              name="motivation"
+              multiline={true}
+              helper={`${t('form.motivation.helper')}`}
+              placeholder=""
+              disabled={isCreatingAccessRequest}
+            />
+          </View>
         </FormLayout>
       </PageLayout>
       {/* sized to its content: the text is never cut on a small screen */}
       <Sheet
         ref={bottomSheetRef}
-        title={`${t('modal.success.heading')}`}
-        subtitle={`${t('modal.success.paragraph')}`}
         onDismiss={() => {
           if (leavingTo.current === 'search') {
             navigation.navigate('search');
@@ -144,18 +139,25 @@ const JoinOrganization = ({ navigation, route }: any) => {
         }}
         testID="join-success-sheet"
       >
-        <View style={styles.icon}>
-          <SvgXml xml={successIcon} height={88} width={88} />
+        <View style={styles.checkIcon}>
+          <EventIcon name="check" size={30} color={colors.status.ok.fg} strokeWidth={2.6} />
+        </View>
+        <View style={styles.sheetText}>
+          <VText variant="largeTitle" style={styles.sheetTitle} accessibilityRole="header">
+            {`${t('modal.success.heading')}`}
+          </VText>
+          <VText variant="sub">{`${t('modal.success.paragraph')}`}</VText>
         </View>
         <VButton
           label={t('modal.success.primary_action_label')}
           onPress={onSearchNewOrganizations}
         />
-        <VButton
-          variant="soft"
-          label={t('modal.success.secondary_action_label')}
-          onPress={() => bottomSheetRef.current?.dismiss()}
-        />
+        <View style={styles.link}>
+          <InlineLink
+            label={t('modal.success.secondary_action_label')}
+            onPress={() => bottomSheetRef.current?.dismiss()}
+          />
+        </View>
       </Sheet>
     </>
   );
@@ -164,5 +166,18 @@ const JoinOrganization = ({ navigation, route }: any) => {
 export default JoinOrganization;
 
 const styles = StyleSheet.create({
-  icon: { alignItems: 'center' },
+  // FormLayout's content sits at 16: 4 more align it with the 20pt gutter of the page title
+  content: { gap: spacing.l, paddingHorizontal: spacing.gutter - spacing.l },
+  checkIcon: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: colors.status.ok.bg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: spacing.m,
+  },
+  sheetText: { gap: 6 },
+  sheetTitle: { fontSize: 26 },
+  link: { alignItems: 'center' },
 });
