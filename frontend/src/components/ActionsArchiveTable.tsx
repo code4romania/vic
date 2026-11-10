@@ -18,6 +18,24 @@ import { ActionsArchiveProps } from '../containers/query/ActionsArchiveWithQuery
 import CellLayout from '../layouts/CellLayout';
 import { mapEventDataToActionDescription } from '../common/utils/actions-archive.mappings';
 import { formatDateWithTime } from '../common/utils/utils';
+import StatusBadge from './StatusBadge';
+import InitialsAvatar from './InitialsAvatar';
+
+// The part of VIC an action belongs to, shown as a tag under its name.
+const AREAS: [string, string][] = [
+  ['ACTIVITY_LOG', 'hours'],
+  ['ACTIVITY_TYPE', 'activity_types'],
+  ['ACCESS_REQUEST', 'volunteers'],
+  ['VOLUNTEER', 'volunteers'],
+  ['ORGANIZATION', 'organization'],
+  ['ANNOUNCEMENT', 'announcements'],
+  ['EVENT', 'events'],
+  ['CONTRACT', 'documents'],
+  ['ADMIN', 'team'],
+];
+
+export const actionArea = (eventName: string): string | undefined =>
+  AREAS.find(([needle]) => eventName.includes(needle))?.[1];
 
 const TableHeader = [
   {
@@ -25,8 +43,22 @@ const TableHeader = [
     name: i18n.t('actions_archive:area'),
     sortable: true,
     grow: 2,
-    minWidth: '10rem',
-    selector: (row: IAction) => i18n.t(`actions_archive:${row.eventName}.label`),
+    minWidth: '12rem',
+    cell: (row: IAction) => {
+      const area = actionArea(row.eventName);
+      return (
+        <CellLayout>
+          <div className="flex flex-col items-start gap-1">
+            <span className="font-robotoMedium text-cool-gray-900">
+              {i18n.t(`actions_archive:${row.eventName}.label`)}
+            </span>
+            {area && (
+              <StatusBadge tone="gray">{i18n.t(`actions_archive:areas.${area}`)}</StatusBadge>
+            )}
+          </div>
+        </CellLayout>
+      );
+    },
   },
 
   {
@@ -34,8 +66,13 @@ const TableHeader = [
     name: i18n.t('actions_archive:author'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
-    selector: (row: IAction) => row.author.name,
+    minWidth: '11rem',
+    cell: (row: IAction) => (
+      <div className="flex items-center gap-3 min-w-0">
+        <InitialsAvatar name={row.author.name} size="sm" />
+        <span className="text-sm truncate">{row.author.name}</span>
+      </div>
+    ),
   },
   {
     id: 'eventData',
@@ -140,6 +177,10 @@ const ActionsArchiveTable = ({ query, setQuery, volunteerId }: ActionsArchiveTab
         onSearch={onSearch}
         searchValue={query?.search}
         onResetFilters={onResetFilters}
+        searchPlaceholder={`${i18n.t('actions_archive:filters.search')}`}
+        results={i18n.t('actions_archive:filters.found', {
+          count: actions?.meta?.totalItems ?? 0,
+        })}
       >
         <DateRangePicker
           label={i18n.t('actions_archive:filters.execution')}
@@ -159,7 +200,10 @@ const ActionsArchiveTable = ({ query, setQuery, volunteerId }: ActionsArchiveTab
       </DataTableFilters>
       <Card>
         <CardHeader>
-          <h2>{i18n.t(`actions_archive:card_title`)}</h2>
+          <div>
+            <h2>{i18n.t(`actions_archive:card_title`)}</h2>
+            <p className="text-sm text-cool-gray-500">{i18n.t('actions_archive:card_subtitle')}</p>
+          </div>
         </CardHeader>
         <CardBody>
           <DataTableComponent

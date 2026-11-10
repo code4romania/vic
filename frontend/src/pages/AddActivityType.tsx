@@ -77,14 +77,22 @@ const AddActivityType = () => {
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={navigateBack}>
-        {i18n.t('general:add', { item: '' })}
+      <PageHeader
+        onBackButtonPress={navigateBack}
+        subtitle={i18n.t('activity_types:page.add_subtitle')}
+      >
+        {i18n.t('activity_types:page.add_title')}
       </PageHeader>
       {isCreatingActivityType && <LoadingContent />}
       {!isCreatingActivityType && (
         <Card>
           <CardHeader>
-            <h2>{`${i18n.t('general:category')} ${i18n.t('general:activity').toLowerCase()}`}</h2>
+            <div>
+              <h2>{i18n.t('activity_types:page.form_title')}</h2>
+              <p className="text-sm text-cool-gray-500">
+                {i18n.t('activity_types:page.form_subtitle')}
+              </p>
+            </div>
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"

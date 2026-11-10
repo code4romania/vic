@@ -1,44 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
-import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
-import { CheckCircleIcon, EnvelopeIcon, NoSymbolIcon } from '@heroicons/react/24/outline';
+import {
+  CheckCircleIcon,
+  EnvelopeIcon,
+  NoSymbolIcon,
+  PlusIcon,
+  ShieldCheckIcon,
+  UserIcon,
+} from '@heroicons/react/24/outline';
 import PageLayout from '../layouts/PageLayout';
-import PageHeaderAdd from '../components/PageHeaderAdd';
+import PageHeader from '../components/PageHeader';
 import Card from '../layouts/CardLayout';
 import CardBody from '../components/CardBody';
+import CardHeader from '../components/CardHeader';
 import DataTableComponent from '../components/DataTableComponent';
 import Popover from '../components/Popover';
-import StatusWithMarker from '../components/StatusWithMarker';
+import StatusBadge from '../components/StatusBadge';
+import StatisticsCard from '../components/StatisticsCard';
+import InitialsAvatar from '../components/InitialsAvatar';
 import ConfirmationModal from '../components/ConfirmationModal';
-import Modal from '../components/Modal';
-import FormInput from '../components/FormInput';
 import Button from '../components/Button';
+import CellLayout from '../layouts/CellLayout';
 import { useAuth } from '../hooks/useAuth';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
-import { IAddAdmin, ITeamMember, TeamMemberStatus } from '../common/interfaces/team.interface';
+import { ITeamMember, TeamMemberStatus } from '../common/interfaces/team.interface';
 import {
-  TeamApiError,
   useAddAdminMutation,
   useSendInviteMutation,
   useSetAdminStatusMutation,
   useTeamQuery,
 } from '../services/team/team.service';
-import { InternalErrors } from '../common/errors/internal-errors.class';
-import { getAuthErrorCode } from '../common/utils/auth-error';
 import { formatDateWithTime } from '../common/utils/utils';
-import SensitiveCodeField from '../components/SensitiveCodeField';
-import { SensitiveAction } from '../services/security/security.api';
+import TeamAddAdminModal, {
+  showTeamError,
+  TEAM_STATUS_TONE,
+} from '../components/TeamAddAdminModal';
 
-const STATUS_COLOR: Record<TeamMemberStatus, string> = {
-  active: 'bg-green-500',
-  invite_sent: 'bg-yellow-500',
-  invite_expired: 'bg-red-500',
-  disabled: 'bg-cool-gray-400',
-  no_login: 'bg-cool-gray-400',
-};
+// The counters on top: who can log in, who still has to accept an invite, who is disabled.
+const COUNTERS: {
+  key: string;
+  statuses: TeamMemberStatus[];
+  Icon: typeof UserIcon;
+  color: string;
+}[] = [
+  { key: 'active', statuses: ['active'], Icon: ShieldCheckIcon, color: 'text-figure-green' },
+  {
+    key: 'pending',
+    statuses: ['invite_sent', 'invite_expired', 'no_login'],
+    Icon: EnvelopeIcon,
+    color: 'text-figure-amber',
+  },
+  { key: 'disabled', statuses: ['disabled'], Icon: NoSymbolIcon, color: 'text-cool-gray-500' },
+];
 
 // Statuses that can get an invite: the admin has never logged in (ORG_009 otherwise).
 const INVITABLE: TeamMemberStatus[] = ['invite_sent', 'invite_expired', 'no_login'];
@@ -67,18 +81,6 @@ const Team = () => {
     if (error) useErrorToast(t('errors.load'));
   }, [error]);
 
-  const showError = (err: TeamApiError) => {
-    const code = err.response?.data?.code_error;
-    if (err.response?.status === 429) {
-      useErrorToast(t('errors.too_many'));
-    } else if (code && code.startsWith('ORG_')) {
-      useErrorToast(InternalErrors.ORGANIZATION_ERRORS.getError(code));
-    } else {
-      const authCode = getAuthErrorCode(err);
-      useErrorToast(authCode ? InternalErrors.AUTH_ERRORS.getError(authCode) : t('errors.generic'));
-    }
-  };
-
   const confirm = () => {
     if (!action) return;
     const { member } = action;
@@ -88,7 +90,7 @@ const Team = () => {
       sendInvite.mutate(member.id, {
         onSuccess: ({ maskedEmail }) =>
           useSuccessToast(t('toast.invite_sent', { email: maskedEmail })),
-        onError: showError,
+        onError: showTeamError,
       });
       return;
     }
@@ -98,7 +100,7 @@ const Team = () => {
       {
         onSuccess: () =>
           useSuccessToast(t(enabled ? 'toast.enabled' : 'toast.disabled', { name: member.name })),
-        onError: showError,
+        onError: showTeamError,
       },
     );
   };
@@ -143,13 +145,19 @@ const Team = () => {
       id: 'name',
       name: t('columns.name'),
       grow: 2,
+      minWidth: '16rem',
       cell: (member) => (
-        <div className="flex flex-col py-2">
-          <span>
-            {member.name}
-            {member.id === profile?.id && <span className="text-cool-gray-500"> ({t('you')})</span>}
-          </span>
-          <small className="text-cool-gray-500">{member.email}</small>
+        <div className="flex items-center gap-3 py-2 min-w-0">
+          <InitialsAvatar name={member.name} />
+          <div className="flex flex-col min-w-0">
+            <span className="font-robotoMedium text-cool-gray-900">
+              {member.name}
+              {member.id === profile?.id && (
+                <span className="text-cool-gray-500 font-roboto"> ({t('you')})</span>
+              )}
+            </span>
+            <span className="text-xs text-cool-gray-500 truncate">{member.email}</span>
+          </div>
         </div>
       ),
     },
@@ -157,11 +165,11 @@ const Team = () => {
     {
       id: 'status',
       name: t('columns.status'),
-      minWidth: '12rem',
+      minWidth: '16rem',
       cell: (member) => (
-        <StatusWithMarker markerColor={STATUS_COLOR[member.status]}>
-          {statusLabel(member)}
-        </StatusWithMarker>
+        <CellLayout>
+          <StatusBadge tone={TEAM_STATUS_TONE[member.status]}>{statusLabel(member)}</StatusBadge>
+        </CellLayout>
       ),
     },
     {
@@ -177,7 +185,7 @@ const Team = () => {
         member.lastInviteSentAt ? (
           <div className="flex flex-col">
             <span>{formatDateWithTime(member.lastInviteSentAt)}</span>
-            <small className="text-cool-gray-500">
+            <small className="text-xs text-cool-gray-500">
               {member.lastInviteSentBy ?? t('transition_link')}
             </small>
           </div>
@@ -196,13 +204,44 @@ const Team = () => {
     },
   ];
 
+  const countOf = (statuses: TeamMemberStatus[]) =>
+    team ? `${team.filter((member) => statuses.includes(member.status)).length}` : '-';
+
   return (
     <PageLayout>
-      <PageHeaderAdd onAddButtonPress={() => setShowAdd(true)} label={t('add_admin')}>
+      <PageHeader
+        subtitle={t('description')}
+        actions={
+          <Button
+            className="btn-primary"
+            label={t('add_admin')}
+            icon={<PlusIcon className="h-5 w-5" aria-hidden="true" />}
+            onClick={() => setShowAdd(true)}
+          />
+        }
+      >
         {t('title')}
-      </PageHeaderAdd>
-      <p className="text-cool-gray-500">{t('description')}</p>
+      </PageHeader>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xl:gap-6">
+        {COUNTERS.map(({ key, statuses, Icon, color }) => (
+          <StatisticsCard
+            key={key}
+            label={t(`counters.${key}.label`)}
+            value={countOf(statuses)}
+            icon={<Icon className={`w-5 h-5 ${color}`} aria-hidden="true" />}
+            info={
+              <span className="text-cool-gray-500 font-roboto">{t(`counters.${key}.info`)}</span>
+            }
+          />
+        ))}
+      </div>
       <Card>
+        <CardHeader>
+          <div>
+            <h2>{t('list.title', { count: team?.length ?? 0 })}</h2>
+            <p className="text-sm text-cool-gray-500">{t('list.subtitle')}</p>
+          </div>
+        </CardHeader>
         <CardBody>
           <DataTableComponent<ITeamMember>
             columns={columns}
@@ -227,7 +266,7 @@ const Team = () => {
       )}
 
       {showAdd && (
-        <AddAdminModal
+        <TeamAddAdminModal
           isLoading={addAdmin.isLoading}
           onClose={() => setShowAdd(false)}
           onSubmit={(data) =>
@@ -236,104 +275,12 @@ const Team = () => {
                 setShowAdd(false);
                 useSuccessToast(t('toast.invite_sent', { email: maskedEmail }));
               },
-              onError: showError,
+              onError: showTeamError,
             })
           }
         />
       )}
     </PageLayout>
-  );
-};
-
-interface AddAdminModalProps {
-  isLoading: boolean;
-  onClose: () => void;
-  onSubmit: (data: IAddAdmin) => void;
-}
-
-const AddAdminModal = ({ isLoading, onClose, onSubmit }: AddAdminModalProps) => {
-  const { t } = useTranslation('team');
-
-  const schema = yup.object({
-    firstName: yup.string().trim().required(t('form.required')).min(2).max(50),
-    lastName: yup.string().trim().required(t('form.required')).min(2).max(50),
-    email: yup.string().trim().required(t('form.required')).email(t('form.email_invalid')),
-    phone: yup.string().trim().required(t('form.required')).max(20),
-    code: yup
-      .string()
-      .required(t('form.code_required'))
-      .matches(/^\d{6}$/, t('form.code_required')),
-  });
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IAddAdmin>({
-    defaultValues: { firstName: '', lastName: '', email: '', phone: '', code: '' },
-    resolver: yupResolver(schema),
-  });
-
-  const fields: { name: Exclude<keyof IAddAdmin, 'code'>; type: string }[] = [
-    { name: 'firstName', type: 'text' },
-    { name: 'lastName', type: 'text' },
-    { name: 'email', type: 'email' },
-    { name: 'phone', type: 'tel' },
-  ];
-
-  return (
-    <Modal title={t('add_admin')} onClose={onClose}>
-      <form
-        className="flex flex-col gap-4"
-        onSubmit={handleSubmit((data) => onSubmit(data))}
-        noValidate
-      >
-        <p className="text-sm text-cool-gray-500">{t('form.description')}</p>
-        {fields.map(({ name, type }) => (
-          <Controller
-            key={name}
-            name={name}
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <FormInput
-                type={type}
-                label={t(`form.${name}`)}
-                value={value}
-                onChange={onChange}
-                onBlur={onBlur}
-                errorMessage={errors[name]?.message}
-              />
-            )}
-          />
-        ))}
-        <Controller
-          name="code"
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <SensitiveCodeField
-              action={SensitiveAction.ADD_ADMIN}
-              value={value}
-              onChange={onChange}
-              errorMessage={errors.code?.message}
-            />
-          )}
-        />
-        <div className="flex justify-end gap-3">
-          <Button
-            type="button"
-            label={t('form.cancel')}
-            className="btn-outline-secondary"
-            onClick={onClose}
-          />
-          <Button
-            type="submit"
-            label={t('form.submit')}
-            className="btn-primary"
-            disabled={isLoading}
-          />
-        </div>
-      </form>
-    </Modal>
   );
 };
 

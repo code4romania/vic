@@ -7,7 +7,9 @@ import ActionsArchiveWithQueryParams from '../containers/query/ActionsArchiveWit
 const ActionsArchive = () => {
   return (
     <PageLayout>
-      <PageHeader>{i18n.t('side_menu:options.actions_archive')}</PageHeader>
+      <PageHeader subtitle={i18n.t('actions_archive:subtitle')}>
+        {i18n.t('side_menu:options.actions_archive')}
+      </PageHeader>
       <ActionsArchiveWithQueryParams />
     </PageLayout>
   );

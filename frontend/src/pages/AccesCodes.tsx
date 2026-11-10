@@ -1,4 +1,4 @@
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { KeyIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +23,9 @@ import {
 } from '../services/organization/organization.service';
 import { AccessCodesProps } from '../containers/query/AccessCodesWithQueryParams';
 import LinkCell from '../components/LinkCell';
+import PageHeader from '../components/PageHeader';
+import StatusBadge, { BadgeTone } from '../components/StatusBadge';
+import InitialsAvatar from '../components/InitialsAvatar';
 export interface IAccessCode {
   id: string;
   code: string;
@@ -33,32 +36,69 @@ export interface IAccessCode {
   createdBy: IUser;
 }
 
-const AccessCodeTableHeader = [
+type AccessCodeStatus = 'active' | 'scheduled' | 'expired';
+
+const STATUS_TONE: Record<AccessCodeStatus, BadgeTone> = {
+  active: 'green',
+  scheduled: 'amber',
+  expired: 'gray',
+};
+
+// Valid today, not started yet, or past its end date (an empty end date never expires).
+export const accessCodeStatus = (code: IAccessCode, now = new Date()): AccessCodeStatus => {
+  const day = (date: Date | string) => new Date(date).setHours(0, 0, 0, 0);
+  const today = day(now);
+  if (day(code.startDate) > today) return 'scheduled';
+  if (code.endDate && day(code.endDate) < today) return 'expired';
+  return 'active';
+};
+
+const AccessCodeTableHeader: TableColumn<IAccessCode>[] = [
   {
     id: 'code',
     name: i18n.t('access_code:name'),
     sortable: true,
-    minWidth: '5rem',
-    selector: (row: IAccessCode) => row.code,
+    minWidth: '10rem',
+    cell: (row: IAccessCode) => (
+      <CellLayout>
+        <span className="inline-flex items-center gap-2 rounded-md bg-cool-gray-50 border border-cool-gray-200 px-2 py-1 font-mono text-sm font-semibold text-cool-gray-900">
+          <KeyIcon className="w-4 h-4 text-navy" aria-hidden="true" />
+          {row.code}
+        </span>
+      </CellLayout>
+    ),
   },
   {
     id: 'startDate',
     name: i18n.t('general:availability'),
     sortable: true,
-    grow: 1,
-    minWidth: '5rem',
+    grow: 2,
+    minWidth: '15rem',
     cell: (row: IAccessCode) => (
-      <CellLayout>{`${formatDate(row.startDate)} -\n${
-        row.endDate ? `${formatDate(row.endDate)}` : i18n.t('general:unlimited')
-      }`}</CellLayout>
+      <CellLayout>
+        <div className="flex flex-col items-start gap-1">
+          <span>{`${formatDate(row.startDate)} – ${
+            row.endDate ? formatDate(row.endDate) : i18n.t('general:unlimited')
+          }`}</span>
+          <StatusBadge tone={STATUS_TONE[accessCodeStatus(row)]}>
+            {i18n.t(`access_code:status.${accessCodeStatus(row)}`)}
+          </StatusBadge>
+        </div>
+      </CellLayout>
     ),
   },
   {
     id: 'usageCount',
     name: i18n.t('general:uses'),
     sortable: true,
-    minWidth: '2rem',
-    selector: (row: IAccessCode) => row.usageCount,
+    minWidth: '6rem',
+    cell: (row: IAccessCode) => (
+      <CellLayout>
+        <span className="font-robotoMedium text-cool-gray-900">
+          {i18n.t('access_code:page.uses', { count: row.usageCount })}
+        </span>
+      </CellLayout>
+    ),
   },
   {
     id: 'createdOn',
@@ -71,11 +111,14 @@ const AccessCodeTableHeader = [
     id: 'createdBy.name',
     name: i18n.t('general:created_by'),
     sortable: true,
-    minWidth: '5rem',
+    minWidth: '12rem',
     cell: (row: IAccessCode) => (
-      <LinkCell href={`/actions-archive?author=${row.createdBy.name}`}>
-        {row.createdBy.name}
-      </LinkCell>
+      <div className="flex items-center gap-3 min-w-0">
+        <InitialsAvatar name={row.createdBy.name} size="sm" />
+        <LinkCell href={`/actions-archive?author=${row.createdBy.name}`}>
+          {row.createdBy.name}
+        </LinkCell>
+      </div>
     ),
   },
 ];
@@ -190,36 +233,45 @@ const AccessCodes = ({ query, setQuery }: AccessCodesProps) => {
 
   return (
     <PageLayout>
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-row justify-between">
-          <h1>{i18n.t('side_menu:options.access_codes')}</h1>
+      <PageHeader
+        subtitle={i18n.t('access_code:page.subtitle')}
+        actions={
           <Button
             className="btn-primary"
             label={i18n.t('access_code:create')}
-            icon={<PlusIcon className="h-5 w-5" />}
+            icon={<PlusIcon className="h-5 w-5" aria-hidden="true" />}
             onClick={onAdd}
           />
-        </div>
-        <Card>
-          <CardHeader>
-            <h3 className="font-titilliumBold">{i18n.t('side_menu:options.access_codes')}</h3>
-          </CardHeader>
-          <CardBody>
-            <DataTableComponent<IAccessCode>
-              data={accessCodes?.items}
-              columns={[...AccessCodeTableHeader, buildAccessCodeActionColumn()]}
-              loading={isAccessCodesLoading || isDeleteAccessCodeLoading}
-              pagination
-              paginationPerPage={query.limit as number}
-              paginationTotalRows={accessCodes?.meta?.totalItems}
-              paginationDefaultPage={query.page as number}
-              onChangeRowsPerPage={onRowsPerPageChange}
-              onChangePage={onChangePage}
-              onSort={onSort}
-            />
-          </CardBody>
-        </Card>
-      </div>
+        }
+      >
+        {i18n.t('side_menu:options.access_codes')}
+      </PageHeader>
+      <Card>
+        <CardHeader>
+          <div>
+            <h2>
+              {i18n.t('access_code:page.list_title', {
+                count: accessCodes?.meta?.totalItems ?? 0,
+              })}
+            </h2>
+            <p className="text-sm text-cool-gray-500">{i18n.t('access_code:page.list_subtitle')}</p>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <DataTableComponent<IAccessCode>
+            data={accessCodes?.items}
+            columns={[...AccessCodeTableHeader, buildAccessCodeActionColumn()]}
+            loading={isAccessCodesLoading || isDeleteAccessCodeLoading}
+            pagination
+            paginationPerPage={query.limit as number}
+            paginationTotalRows={accessCodes?.meta?.totalItems}
+            paginationDefaultPage={query.page as number}
+            onChangeRowsPerPage={onRowsPerPageChange}
+            onChangePage={onChangePage}
+            onSort={onSort}
+          />
+        </CardBody>
+      </Card>
       {showDeleteAccessCode && (
         <ConfirmationModal
           title={i18n.t('access_code:modal.title')}

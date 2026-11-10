@@ -111,18 +111,24 @@ const AddActivityLog = ({ query }: AddActivityLogProps) => {
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={navigateBack}>
-        {i18n.t('general:add', { item: '' })}
+      <PageHeader
+        onBackButtonPress={navigateBack}
+        subtitle={isActivity ? query.volunteerName : `${i18n.t('activity_log:page.add_subtitle')}`}
+      >
+        {isActivity
+          ? i18n.t('volunteer:activities.add_title')
+          : i18n.t('activity_log:page.add_title')}
       </PageHeader>
       {isAddingActivityLog && <LoadingContent />}
       {!isAddingActivityLog && (
         <Card>
           <CardHeader>
-            <h2>
-              {isActivity
-                ? i18n.t('volunteer:activities.add_title')
-                : i18n.t('side_menu:options.activity_log')}
-            </h2>
+            <div>
+              <h2>{i18n.t('activity_log:page.form_title')}</h2>
+              <p className="text-sm text-cool-gray-500">
+                {i18n.t('activity_log:page.form_subtitle')}
+              </p>
+            </div>
             <Button
               label={i18n.t('general:save')}
               className="btn-primary"

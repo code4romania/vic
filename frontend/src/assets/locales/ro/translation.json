@@ -578,7 +578,7 @@
     "name": "Cod acces",
     "create": "Creează cod nou",
     "title": "Informații cod acces",
-    "description": "Introduceți un cod de acces nou. Folosind codul de acces, un utilizator VIC se poate alătura organizației ca voluntar, fără a fi necesar să aprobați cererea manual.",
+    "description": "Cu un cod de acces, un utilizator VIC se alătură organizației ca voluntar, fără să mai aprobi tu cererea.",
     "start_date": "Dată de început valabilitate*",
     "end_date": "Dată de final valabilitate",
     "modal": {
@@ -606,6 +606,27 @@
     "errors": {
       "ACCESS_CODE_001": "Nu există cod de acces cu acest nume",
       "ACCESS_CODE_002": "Există deja un cod de acces cu acest nume"
+    },
+    "status": {
+      "active": "Activ",
+      "scheduled": "Programat",
+      "expired": "Expirat"
+    },
+    "page": {
+      "subtitle": "Cu un cod de acces, un voluntar intră în organizație fără să aștepte aprobarea ta",
+      "list_title_one": "{{count}} cod de acces",
+      "list_title_few": "{{count}} coduri de acces",
+      "list_title_other": "{{count}} de coduri de acces",
+      "list_subtitle": "Dă codul voluntarilor; îl introduc în aplicația VIC când cer să se alăture",
+      "uses_one": "{{count}} folosire",
+      "uses_few": "{{count}} folosiri",
+      "uses_other": "{{count}} de folosiri",
+      "add_title": "Creează cod de acces",
+      "add_subtitle": "Alege codul și perioada în care poate fi folosit",
+      "edit_title": "Editează codul de acces",
+      "edit_subtitle": "Poți schimba doar data de final",
+      "form_subtitle": "Codul și perioada de valabilitate",
+      "form_title": "Detalii cod de acces"
     }
   },
   "reject_modal": {
@@ -645,6 +666,36 @@
       "ACTIVITY_TYPE_002": "Există deja o categorie cu aceste date pentru organizația dumneavoastră",
       "ACTIVITY_TYPE_003": "Categoria nu este în statusul potrivit",
       "ACTIVITY_TYPE_004": "Nu s-a putut crea categoria"
+    },
+    "status": {
+      "active": "Activă",
+      "archived": "Arhivată"
+    },
+    "all_structure": "Toată organizația",
+    "page": {
+      "subtitle": "Tipurile de activități pe care voluntarii le aleg când își înregistrează orele",
+      "add": "Adaugă categorie",
+      "search": "Caută după denumire",
+      "found_one": "{{count}} categorie găsită",
+      "found_few": "{{count}} categorii găsite",
+      "found_other": "{{count}} de categorii găsite",
+      "list_subtitle": "Deschide o categorie ca să o modifici sau să o arhivezi",
+      "counters": {
+        "active": {
+          "label": "Categorii active",
+          "info": "Pot fi alese la orele de voluntariat"
+        },
+        "archived": {
+          "label": "Categorii arhivate",
+          "info": "Nu mai pot fi alese, istoricul rămâne"
+        }
+      },
+      "add_title": "Adaugă categorie de activitate",
+      "add_subtitle": "O categorie nouă apare la înregistrarea orelor de voluntariat",
+      "edit_title": "Editează categoria",
+      "edit_subtitle": "Categorie de activitate",
+      "form_title": "Categorie de activitate",
+      "form_subtitle": "Denumirea, iconița și partea din organizație căreia îi aparține"
     }
   },
   "events": {
@@ -982,7 +1033,11 @@
     "filters": {
       "execution": "Perioadă efectuare activitate",
       "registration": "Perioadă Înregistrare",
-      "approved_rejected": "Aprobat/Respins de"
+      "approved_rejected": "Aprobat/Respins de",
+      "search": "Caută după voluntar, activitate sau eveniment",
+      "found_one": "{{count}} înregistrare găsită",
+      "found_few": "{{count}} înregistrări găsite",
+      "found_other": "{{count}} de înregistrări găsite"
     },
     "modal": {
       "title": "Argumentează respingere",
@@ -1037,14 +1092,41 @@
       "ACTIVITY_LOG_003": "Nu se pot face modificări pe request-uri în status-ul Aprobat sau Respins",
       "ACTIVITY_LOG_005": "Orele se pot adăuga doar unui voluntar activ"
     },
-    "download_file_name": "Istoric ore de voluntariat.xlsx"
+    "download_file_name": "Istoric ore de voluntariat.xlsx",
+    "counters": {
+      "hours_one": "{{count}} oră",
+      "hours_few": "{{count}} ore",
+      "hours_other": "{{count}} de ore",
+      "pending": {
+        "label": "Ore în așteptare",
+        "info": "Așteaptă aprobarea ta"
+      },
+      "approved": {
+        "label": "Ore aprobate",
+        "info": "Contează în istoricul voluntarilor"
+      },
+      "rejected": {
+        "label": "Ore respinse",
+        "info": "Voluntarul a primit motivul"
+      }
+    },
+    "page": {
+      "add_title": "Adaugă ore de voluntariat",
+      "add_subtitle": "Orele adăugate de tine sunt aprobate direct",
+      "form_title": "Detalii activitate",
+      "form_subtitle": "Voluntarul, activitatea, data și numărul de ore"
+    }
   },
   "actions_archive": {
     "card_title": "Istoric acțiuni",
     "area": "Tip Acțiune",
     "author": "Autor",
     "filters": {
-      "execution": "Perioadă efectuare acțiune"
+      "execution": "Perioadă efectuare acțiune",
+      "search": "Caută după voluntar, eveniment, anunț sau categorie",
+      "found_one": "{{count}} acțiune găsită",
+      "found_few": "{{count}} acțiuni găsite",
+      "found_other": "{{count}} de acțiuni găsite"
     },
     "UPDATE_ORGANIZATION_PROFILE": {
       "label": "Actualizează Profil Organizație",
@@ -1152,6 +1234,26 @@
     "REJECT_CONTRACT": {
       "label": "Respinge Contract",
       "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost respins"
+    },
+    "subtitle": "Cine a modificat ce în organizație și când",
+    "card_subtitle": "Toate acțiunile administratorilor, de la cea mai veche",
+    "areas": {
+      "hours": "Ore",
+      "activity_types": "Categorii",
+      "volunteers": "Voluntari",
+      "organization": "Organizație",
+      "announcements": "Anunțuri",
+      "events": "Evenimente",
+      "documents": "Documente",
+      "team": "Echipă"
+    },
+    "DISABLE_ADMIN": {
+      "label": "Dezactivează Administrator",
+      "description": "Administratorul <inlineLink>{{adminName}}</inlineLink> a fost dezactivat."
+    },
+    "ENABLE_ADMIN": {
+      "label": "Activează Administrator",
+      "description": "Administratorul <inlineLink>{{adminName}}</inlineLink> a fost activat."
     }
   },
   "dashboard": {
@@ -1738,7 +1840,7 @@
   },
   "team": {
     "title": "Echipa",
-    "description": "Administratorii organizației tale.",
+    "description": "Administratorii organizației tale: cine are acces, cine are o invitație în așteptare și cine este dezactivat.",
     "add_admin": "Adaugă administrator",
     "you": "tu",
     "transition_link": "VIC (noua autentificare)",
@@ -1799,6 +1901,33 @@
       "load": "Echipa nu a putut fi încărcată",
       "too_many": "Prea multe invitații. Încearcă mai târziu.",
       "generic": "A apărut o eroare. Încearcă din nou."
+    },
+    "status_short": {
+      "active": "Activ",
+      "invite_sent": "Invitație trimisă",
+      "invite_expired": "Invitație expirată",
+      "disabled": "Dezactivat",
+      "no_login": "Fără cont încă"
+    },
+    "counters": {
+      "active": {
+        "label": "Administratori activi",
+        "info": "Pot intra în cont"
+      },
+      "pending": {
+        "label": "Invitații în așteptare",
+        "info": "Nu au intrat încă în cont"
+      },
+      "disabled": {
+        "label": "Dezactivați",
+        "info": "Nu mai au acces până la reactivare"
+      }
+    },
+    "list": {
+      "title_one": "{{count}} administrator",
+      "title_few": "{{count}} administratori",
+      "title_other": "{{count}} de administratori",
+      "subtitle": "Trimite din nou invitația sau dezactivează un cont din meniul de pe rând."
     }
   },
   "validation": {
@@ -1864,15 +1993,18 @@
   "settings": {
     "title": "Setări",
     "account": {
-      "title": "Contul meu",
-      "description": "Datele contului tău de administrator. Le vezi doar tu și colegii din echipă.",
+      "title": "Informații cont",
+      "description": "Datele contului tău de administrator și ale organizației",
       "login": "Te autentifici cu un link primit pe email; contul nu are parolă.",
-      "team": "Administratori și echipă"
+      "organization": "Organizație",
+      "tax_id": "CUI/CIF (cod de identificare fiscală)",
+      "name": "Nume complet",
+      "email": "Email",
+      "phone": "Telefon",
+      "edit_hint": "Numele, CUI-ul și profilul public al organizației le modifici din pagina Organizație."
     },
     "organization": {
-      "title": "Profilul public al organizației",
-      "description": "Ce văd voluntarii despre organizație în aplicația VIC.",
-      "edit": "Editează profilul"
+      "edit": "Editează organizația"
     },
     "security": {
       "title": "Date și securitate",
@@ -1909,14 +2041,23 @@
       "backup": {
         "title": "Backup complet",
         "description": "Toate datele organizației într-un fișier Excel: voluntari, ore, evenimente, înscrieri, anunțuri, documente, structură și istoric.",
-        "action": "Descarcă backup",
+        "action": "Backup",
         "loading": "Se pregătește...",
         "error": "Backup-ul nu a putut fi descărcat."
       },
       "history": {
         "title": "Istoric modificări",
-        "description": "Cine a modificat ce în organizație și când.",
+        "description": "Cine a modificat ce în organizație și când",
         "action": "Vezi istoricul"
+      },
+      "data_title": "Gestionare date",
+      "data_description": "Export, backup și istoricul modificărilor",
+      "account_title": "Securitate cont",
+      "export": {
+        "title": "Export date voluntari",
+        "description": "Descarcă lista tuturor voluntarilor într-un fișier Excel",
+        "action": "Export",
+        "error": "Lista voluntarilor nu a putut fi descărcată."
       }
     },
     "danger": {
@@ -1928,14 +2069,57 @@
       "modal_description": "Se șterg {{name}}, voluntarii ei din organizație, orele, evenimentele, anunțurile, documentele, structura, istoricul și toți administratorii. Voluntarii își păstrează contul de VIC. Recomandăm să descarci întâi backup-ul complet. Echipa VIC va fi anunțată.",
       "type_name": "Scrie numele organizației ({{name}})*",
       "confirm": "Șterge definitiv",
-      "error": "Contul nu a putut fi șters. Încearcă din nou."
+      "error": "Contul nu a putut fi șters. Încearcă din nou.",
+      "description": "Acțiuni ireversibile, care șterg definitiv datele"
     },
     "about": {
-      "title": "Despre",
+      "title": "Despre și sprijin",
       "terms": "Termeni și condiții",
       "privacy": "Politica de confidențialitate",
       "help": "Centru de asistență",
-      "version": "Versiunea {{version}}"
+      "version": "Versiunea {{version}}",
+      "description": "Resurse utile și informații despre platformă",
+      "terms_description": "Citește termenii de utilizare a platformei",
+      "privacy_description": "Află cum sunt protejate datele tale",
+      "help_description": "Primește ajutor și răspunsuri la întrebări"
+    },
+    "subtitle": "Configurează contul tău de administrator și setările organizației",
+    "tabs": {
+      "account": "Setări cont",
+      "notifications": "Notificări",
+      "security": "Date și securitate",
+      "about": "Despre și sprijin"
+    },
+    "team": {
+      "title": "Utilizatori adăugați",
+      "description": "Persoanele care au acces la această platformă",
+      "invite": "Invită administrator nou",
+      "manage": "Gestionează echipa",
+      "note": "Doar administratorii au acces la platformă. Voluntarii folosesc aplicația mobilă VIC."
+    },
+    "notifications": {
+      "title": "Setări notificări",
+      "description": "Ce emailuri primești de la VIC și unde",
+      "email": "Email pentru notificări",
+      "email_help": "Toate emailurile ajung la adresa cu care te autentifici.",
+      "list_title": "Notificări pe email",
+      "always_on": "Mereu active",
+      "items": {
+        "login": {
+          "title": "Link de autentificare",
+          "description": "Primești un link de fiecare dată când intri în cont"
+        },
+        "codes": {
+          "title": "Coduri de confirmare",
+          "description": "Pentru schimbarea emailului, adăugarea unui administrator și ștergerea contului organizației"
+        },
+        "invites": {
+          "title": "Invitații în echipă",
+          "description": "Când un coleg te adaugă ca administrator al unei organizații"
+        }
+      },
+      "approvals": "Cererile de înscriere, orele și înscrierile la evenimente care așteaptă răspunsul tău le găsești în",
+      "approvals_link": "Aprobări"
     }
   },
   "super_admin": {

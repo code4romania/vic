@@ -7,6 +7,11 @@ import { renderPage, t } from '../test/render';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 
 vi.mock('../hooks/useToast', () => ({ useErrorToast: vi.fn(), useSuccessToast: vi.fn() }));
+vi.mock('../common/utils/utils', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../common/utils/utils')>()),
+  downloadExcel: vi.fn(),
+}));
+import { downloadExcel } from '../common/utils/utils';
 import { ADMIN, api, server } from '../test/server';
 
 const ORGANIZATION = {
@@ -17,38 +22,95 @@ const ORGANIZATION = {
   website: 'https://test.ro',
   description: 'Ajutăm comunitatea.',
   logo: null,
+  taxId: '12345678',
 };
 
-describe('Settings (#506, #509)', () => {
+const TEAM = [
+  {
+    id: ADMIN.id,
+    name: ADMIN.name,
+    email: ADMIN.email,
+    phone: '+40700000000',
+    status: 'active',
+    inviteExpiresAt: null,
+    lastInviteSentAt: null,
+    lastInviteSentBy: null,
+    lastLoginAt: null,
+  },
+  {
+    id: 'u-2',
+    name: 'Ion Popescu',
+    email: 'ion@ong.test',
+    phone: '+40700000002',
+    status: 'invite_sent',
+    inviteExpiresAt: null,
+    lastInviteSentAt: null,
+    lastInviteSentBy: null,
+    lastLoginAt: null,
+  },
+];
+
+describe('Settings (#506, #508, #509)', () => {
   beforeEach(() => {
-    server.use(http.get(api('/organization'), () => HttpResponse.json(ORGANIZATION)));
+    server.use(
+      http.get(api('/organization'), () => HttpResponse.json(ORGANIZATION)),
+      http.get(api('/organization/team'), () => HttpResponse.json(TEAM)),
+    );
   });
 
   afterEach(() => vi.unstubAllEnvs());
 
-  it('keeps the admin account apart from the public organization profile', async () => {
+  it('has the four tabs of the prototype', () => {
+    renderPage(<Settings />, { route: '/settings' });
+    for (const tab of ['account', 'notifications', 'security', 'about']) {
+      expect(screen.getByLabelText(t(`settings:tabs.${tab}`))).toBeInTheDocument();
+    }
+  });
+
+  it('Setări cont: the admin account, the organization and who has access', async () => {
     renderPage(<Settings />, { route: '/settings' });
 
     expect(screen.getByText(t('settings:account.title'))).toBeInTheDocument();
     expect(screen.getAllByText(ADMIN.email).length).toBeGreaterThan(0);
-    expect(screen.getByRole('link', { name: t('settings:account.team') })).toHaveAttribute(
-      'href',
-      '/organization/team',
-    );
-
     expect(await screen.findByText(ORGANIZATION.name)).toBeInTheDocument();
-    expect(screen.getByText(ORGANIZATION.email)).toBeInTheDocument();
+    expect(screen.getByText(ORGANIZATION.taxId)).toBeInTheDocument();
+    // #506: the organization is edited on its own page
     expect(screen.getByRole('link', { name: t('settings:organization.edit') })).toHaveAttribute(
       'href',
       '/organization',
     );
+
+    expect(await screen.findByText('Ion Popescu')).toBeInTheDocument();
+    expect(screen.getByText(t('team:status_short.invite_sent'))).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: t('settings:team.manage') })).toHaveAttribute(
+      'href',
+      '/organization/team',
+    );
   });
 
-  it('opens the configured About links in a new tab and hides missing ones', () => {
+  it('inviting an admin from Setări asks for the emailed code (#508)', async () => {
+    renderPage(<Settings />, { route: '/settings' });
+    await userEvent.click(screen.getByText(t('settings:team.invite')));
+    const dialog = await screen.findByRole('dialog');
+    expect(within(dialog).getByText(t('settings:security.code.send'))).toBeInTheDocument();
+  });
+
+  it('Notificări: the address the emails go to, with no toggles we do not support', () => {
+    renderPage(<Settings />, { route: '/settings?tab=notifications' });
+    expect(screen.getByText(t('settings:notifications.title'))).toBeInTheDocument();
+    expect(screen.getByText(ADMIN.email)).toBeInTheDocument();
+    expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
+    expect(screen.queryByRole('switch')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: t('settings:notifications.approvals_link') }),
+    ).toHaveAttribute('href', '/approvals');
+  });
+
+  it('Despre și sprijin: opens the configured links in a new tab and hides missing ones', () => {
     vi.stubEnv('VITE_TERMS_URL', 'https://vic.test/terms');
     vi.stubEnv('VITE_PRIVACY_URL', 'https://vic.test/privacy');
     vi.stubEnv('VITE_HELP_CENTER_URL', '');
-    renderPage(<Settings />, { route: '/settings' });
+    renderPage(<Settings />, { route: '/settings?tab=about' });
 
     const terms = screen.getByRole('link', { name: t('settings:about.terms') });
     expect(terms).toHaveAttribute('href', 'https://vic.test/terms');
@@ -60,8 +122,34 @@ describe('Settings (#506, #509)', () => {
     expect(screen.queryByRole('link', { name: t('settings:about.help') })).not.toBeInTheDocument();
   });
 
+  it('switching tabs keeps the tab in the URL', async () => {
+    renderPage(<Settings />, { route: '/settings' });
+    await userEvent.click(screen.getByLabelText(t('settings:tabs.security')));
+    expect(await screen.findByText(t('settings:security.data_title'))).toBeInTheDocument();
+    expect(screen.queryByText(t('settings:account.title'))).not.toBeInTheDocument();
+  });
+
   // #508
   describe('Date și securitate', () => {
+    it('exports every volunteer and links to the history', async () => {
+      let exported = false;
+      server.use(
+        http.get(api('/volunteer/download'), () => {
+          exported = true;
+          return new HttpResponse(new ArrayBuffer(1));
+        }),
+      );
+      renderPage(<Settings />, { route: '/settings?tab=security' });
+      expect(
+        screen.getByRole('link', { name: t('settings:security.history.action') }),
+      ).toHaveAttribute('href', '/actions-archive');
+      await userEvent.click(
+        screen.getByRole('button', { name: t('settings:security.export.action') }),
+      );
+      await waitFor(() => expect(downloadExcel).toHaveBeenCalled());
+      expect(exported).toBe(true);
+    });
+
     it('shows the always-on email code, and changes the email with both codes', async () => {
       const sent: unknown[] = [];
       server.use(
@@ -75,7 +163,7 @@ describe('Settings (#506, #509)', () => {
         }),
       );
       const refreshProfile = vi.fn();
-      renderPage(<Settings />, { route: '/settings', auth: { refreshProfile } });
+      renderPage(<Settings />, { route: '/settings?tab=security', auth: { refreshProfile } });
       expect(screen.getByText(t('settings:security.two_factor.on'))).toBeInTheDocument();
 
       await userEvent.click(
@@ -113,8 +201,10 @@ describe('Settings (#506, #509)', () => {
         }),
       );
       const logout = vi.fn().mockResolvedValue(undefined);
-      renderPage(<Settings />, { route: '/settings', auth: { logout } });
-      await screen.findByText(ORGANIZATION.name);
+      renderPage(<Settings />, { route: '/settings?tab=security', auth: { logout } });
+      await waitFor(() =>
+        expect(screen.getByRole('button', { name: t('settings:danger.action') })).toBeEnabled(),
+      );
       await userEvent.click(screen.getByRole('button', { name: t('settings:danger.action') }));
       const dialog = await screen.findByRole('dialog');
       const confirm = within(dialog).getByRole('button', { name: t('settings:danger.confirm') });
