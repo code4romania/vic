@@ -11,7 +11,7 @@ import FormDatePicker from '../components/FormDatePicker';
 import { BIRTHDAY_INITIAL_VISIBLE, BIRTHDAY_MIN, birthdayMax } from '../common/utils/birthday';
 import FormSelect from '../components/FormSelect';
 import { SexOptions } from '../common/constants/sex-options';
-import { Platform, View } from 'react-native';
+import { Linking, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Text, Button, Icon, useTheme } from '@ui-kitten/components';
 import { useTranslation } from 'react-i18next';
@@ -145,12 +145,18 @@ const AccountData = ({ navigation }: any) => {
   };
 
   const onChangePicturePress = async () => {
-    if (Platform.OS === 'ios') {
-      const cameraRollStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
-      if (cameraRollStatus.status !== 'granted' || cameraStatus.status !== 'granted') {
-        return;
-      }
+    // The photo comes from the gallery only: no camera permission. A refusal is explained.
+    const library = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!library.granted) {
+      Toast.show({
+        type: 'error',
+        text1: `${t('photo_permission.title')}`,
+        text2: `${t('photo_permission.description')}`,
+        onPress: () => {
+          Linking.openSettings().catch(() => undefined);
+        },
+      });
+      return;
     }
 
     let result = await ImagePicker.launchImageLibraryAsync({
