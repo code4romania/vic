@@ -19,6 +19,7 @@ import { DeleteOrganizationUsecase } from 'src/usecases/security/delete-organiza
 import { OrganizationBackupUsecase } from 'src/usecases/security/organization-backup.usecase';
 import {
   SENSITIVE_CODE_HEADER,
+  SensitiveAction,
   SensitiveActionUsecase,
 } from 'src/usecases/security/sensitive-action.usecase';
 import { clearRefreshCookie } from '../auth/cookies';
@@ -79,7 +80,7 @@ export class SecurityController {
     @Headers(SENSITIVE_CODE_HEADER) code: string,
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
-    await this.sensitiveAction.verify(admin, code);
+    await this.sensitiveAction.verify(admin, code, SensitiveAction.BACKUP);
     const { fileName, data } = await this.backup.execute(admin.organizationId);
     res.set({
       'Content-Type':
