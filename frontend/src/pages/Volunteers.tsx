@@ -16,7 +16,7 @@ import {
   PlusIcon,
   ArrowUpTrayIcon,
 } from '@heroicons/react/24/outline';
-import { SortOrder, TableColumn } from 'react-data-table-component';
+import { SortOrder, TableColumn, Media } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
@@ -90,6 +90,7 @@ const VolunteersTableHeader = [
   },
   {
     id: 'volunteerProfile.email',
+    hide: Media.SM,
     name: i18n.t('general:contact'),
     sortable: true,
     grow: 2,
@@ -105,6 +106,7 @@ const VolunteersTableHeader = [
   },
   {
     id: 'department.name',
+    hide: Media.SM,
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
     grow: 1,
@@ -123,6 +125,7 @@ const VolunteersTableHeader = [
   // Hours is not sortable: it is computed per page (#475).
   {
     id: 'totalHours',
+    hide: Media.SM,
     name: i18n.t('volunteers:hours'),
     sortable: false,
     grow: 0,
@@ -151,6 +154,7 @@ const VolunteersTableHeader = [
   },
   {
     id: 'source',
+    hide: Media.SM,
     name: i18n.t('volunteers:source'),
     sortable: true,
     grow: 1,

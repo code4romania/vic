@@ -10,7 +10,7 @@ import {
   TrashIcon,
   UsersIcon,
 } from '@heroicons/react/24/outline';
-import { SortOrder, TableColumn } from 'react-data-table-component';
+import { SortOrder, TableColumn, Media } from 'react-data-table-component';
 import i18n from '../common/config/i18n';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -78,6 +78,7 @@ const nameColumn: TableColumn<IEvent> = {
 const periodColumn: TableColumn<IEvent> = {
   id: 'startDate',
   name: i18n.t('events:table.period'),
+  hide: Media.SM,
   minWidth: '13rem',
   grow: 1,
   sortable: true,
@@ -87,6 +88,8 @@ const periodColumn: TableColumn<IEvent> = {
 const locationColumn: TableColumn<IEvent> = {
   id: 'location',
   name: i18n.t('events:table.location'),
+  // tablets and phones: name, status and the actions stay visible
+  hide: Media.MD,
   minWidth: '10rem',
   grow: 1,
   cell: (row: IEvent) => <EventLocation location={row.location} />,
@@ -95,6 +98,7 @@ const locationColumn: TableColumn<IEvent> = {
 const departmentsColumn: TableColumn<IEvent> = {
   id: 'target',
   name: i18n.t('events:table.departments'),
+  hide: Media.MD,
   minWidth: '9rem',
   grow: 1,
   cell: (row: IEvent) => <EventTargets event={row} />,
@@ -103,6 +107,7 @@ const departmentsColumn: TableColumn<IEvent> = {
 const participantsColumn: TableColumn<IEvent> = {
   id: 'going',
   name: i18n.t('events:table.participants'),
+  hide: Media.MD,
   minWidth: '8rem',
   grow: 1,
   cell: (row: IEvent) => (
@@ -114,6 +119,7 @@ const participantsColumn: TableColumn<IEvent> = {
 const hoursColumn: TableColumn<IEvent> = {
   id: 'hours',
   name: i18n.t('events:table.hours'),
+  hide: Media.MD,
   minWidth: '7rem',
   grow: 0,
   cell: (row: IEvent) => (
