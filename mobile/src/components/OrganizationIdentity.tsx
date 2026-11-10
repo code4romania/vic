@@ -1,27 +1,25 @@
-import { StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import React from 'react';
-import { Image, ImageStyle, View } from 'react-native';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { StyleSheet, View } from 'react-native';
+import { Avatar, VText } from './ui';
 
 interface OrganizationIdentityProps {
   name: string;
-  uri: string;
+  uri?: string | null;
 }
 
-const OrganizationIdentity = ({ name, uri }: OrganizationIdentityProps) => {
-  const styles = useStyleSheet(themedStyles);
-
-  return (
-    <View style={styles.container}>
-      <Image source={{ uri }} style={styles.image as ImageStyle} />
-      <Text allowFontScaling={ALLOW_FONT_SCALLING}>{name}</Text>
-    </View>
-  );
-};
+/** Organization logo (initials when it has none) and name, at the top of the join / leave screens. */
+const OrganizationIdentity = ({ name, uri }: OrganizationIdentityProps) => (
+  <View style={styles.container}>
+    <Avatar name={name} uri={uri || null} size={44} shape="rounded" />
+    <VText variant="h3" style={styles.name} numberOfLines={2}>
+      {name}
+    </VText>
+  </View>
+);
 
 export default OrganizationIdentity;
 
-const themedStyles = StyleService.create({
-  image: { width: 32, height: 32, borderRadius: 32, borderWidth: 1, borderColor: '$cool-gray-200' },
-  container: { gap: 4, flexDirection: 'row', alignItems: 'center' },
+const styles = StyleSheet.create({
+  container: { gap: 12, flexDirection: 'row', alignItems: 'center' },
+  name: { flex: 1 },
 });
