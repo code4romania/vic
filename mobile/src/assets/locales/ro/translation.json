@@ -32,8 +32,17 @@
             "load_entries": "Eroare la încărcarea datelor",
             "unknown": "A apărut o eroare necunoscută",
             "generic_error": "Eroare de procesare a datelor, cod: #{{code}}",
-            "ORG_005": "Organizația nu este validată încă sau este suspendată. Încearcă din nou mai târziu."
+            "ORG_005": "Organizația nu este validată încă sau este suspendată. Încearcă din nou mai târziu.",
+            "network": "Nu ai conexiune la internet. Verifică și încearcă din nou.",
+            "ACTIVITY_LOG_003": "Orele aprobate sau respinse nu mai pot fi modificate.",
+            "VOLUNTEER_007": "Nu mai ești voluntar activ la această organizație: orele și documentele pot fi doar consultate.",
+            "VOLUNTEER_008": "Organizația te-a marcat ca voluntar inactiv. Doar organizația te poate reactiva.",
+            "USER_007": "Contul nu a putut fi șters. Încearcă din nou sau scrie-ne.",
+            "NOTIFICATIONS_001": "Setările de notificări nu au fost găsite.",
+            "VOLUNTEER_005": "Nu ești încă voluntar la o organizație activă. Alătură-te unei organizații ca să adaugi ore."
         },
+        "today": "Azi",
+        "yesterday": "Ieri",
         "back": "Înapoi",
         "close": "Închide",
         "cancel": "Anulează",
@@ -54,6 +63,8 @@
         "send_code": "Trimite codul",
         "intro": "Vezi prezentarea",
         "terms": "Termeni și confidențialitate",
+        "terms_link": "Termeni și condiții",
+        "privacy_link": "Confidențialitate",
         "footer": "Un proiect Code for Romania, realizat de Commit Global"
     },
     "register": {
@@ -76,11 +87,12 @@
                     "pattern": "Numărul de telefon trebuie să conțină doar numere"
                 },
                 "terms": {
-                    "agree": "Sunt de acord cu ",
-                    "conditions": "Termenii și Condițiile",
-                    "and": "cât și cu ",
-                    "privacy_policy": "Politica de Confidențialitate ",
-                    "application": "a aplicației",
+                    "agree": "Am citit și sunt de acord cu ",
+                    "conditions": "Termenii și condițiile",
+                    "and": "și cu ",
+                    "privacy_policy": "Politica de confidențialitate",
+                    "application": " ale aplicației VIC.",
+                    "accessibility": "Accept Termenii și condițiile și Politica de confidențialitate",
                     "required": "Trebuie să accepți Termenii, Condițiile și Politica de Confidențialitate pentru a putea merge mai departe"
                 }
             },
@@ -125,13 +137,13 @@
             "init_profile": "Eroare la încărcarea profilului",
             "login": "Eroare la autentificare, vă rugăm încercați din nou",
             "code_mismatch": "Codul este invalid",
-            "AUTH_001": "Email sau parolă greșită.",
+            "AUTH_001": "Autentificarea nu a reușit. Verifică adresa de email și încearcă din nou.",
             "AUTH_002": "Prea multe încercări greșite. Contul este blocat 15 minute.",
             "AUTH_003": "Adresa de email nu este confirmată încă. Verifică-ți emailul.",
             "AUTH_004": "Contul este dezactivat.",
             "AUTH_005": "Codul nu este valid sau a expirat.",
             "AUTH_006": "Prea multe coduri greșite. Cere un cod nou.",
-            "AUTH_007": "Parola nu respectă regulile.",
+            "AUTH_007": "Datele trimise nu sunt valide.",
             "AUTH_008": "Sesiunea a expirat. Autentifică-te din nou.",
             "AUTH_009": "Există deja un cont cu acest email.",
             "AUTH_010": "Prea multe cereri. Încearcă din nou peste un minut.",
@@ -213,6 +225,10 @@
         "title": "Date cont",
         "profile_picture": "Poza profil",
         "change_profile_picture": "Schimbă poza",
+        "photo_permission": {
+            "title": "Nu avem acces la poze",
+            "description": "Permite accesul la poze din Setări ca să-ți alegi fotografia de profil. Atinge aici."
+        },
         "submit": {
             "success": "Datele au fost modificate!"
         },
@@ -259,8 +275,8 @@
         "disclaimer": {
             "access_request_pending": "Înscrierea ta așteaptă aprobare de la organizație",
             "joined_from": "Te-ai alăturat din {{date}}",
-            "volunteer_archived": "Profilul tau de voluntar a fost dezactivat!",
-            "volunteer_blocked": "Accesul tau la organizație a fost restricționat",
+            "volunteer_archived": "Profilul tău de voluntar a fost dezactivat!",
+            "volunteer_blocked": "Accesul tău la organizație a fost restricționat",
             "volunteer_inactive": "Organizația te-a marcat ca voluntar inactiv. Poți vedea organizația și descărca documentele.",
             "volunteer_candidate": "Organizația te-a adăugat ca și candidat. Vei putea participa după ce organizația te activează."
         },
@@ -406,6 +422,7 @@
         },
         "missing_profile": {
             "heading": "Nu ai creat încă un profil de voluntar",
+            "paragraph": "Completează profilul de voluntar ca organizația să te poată contacta și ca să poți adăuga ore.",
             "action_btn": "Creează profil"
         },
         "leave": "Părăsește organizația",
@@ -526,9 +543,15 @@
             "EVENT_RSVP_006": "Evenimentul nu este încă publicat",
             "EVENT_RSVP_007": "Evenimentul este încheiat",
             "EVENT_RSVP_003": "Profilul de voluntar nu este activ",
-            "EVENT_RSVP_005": "Te rugăm să completezi profilul de voluntar înainte da a te alătura evenimentului",
+            "EVENT_RSVP_005": "Te rugăm să completezi profilul de voluntar înainte de a te alătura evenimentului",
             "EVENT_RSVP_002": "Trebuie să fii voluntar în organizație pentru a putea să participi la acest eveniment",
-            "EVENT_RSVP_004": "Pentru acest eveniment este obligatorie mențiunea"
+            "EVENT_RSVP_004": "Pentru acest eveniment este obligatorie mențiunea",
+            "EVENT_RSVP_008": "Evenimentul este complet: nu mai sunt locuri libere."
+        },
+        "not_found": {
+            "title": "Evenimentul nu mai există",
+            "description": "Organizația l-a șters sau nu mai este disponibil pentru tine.",
+            "action": "Vezi evenimentele"
         },
         "rsvp": {
             "going": "Particip",
@@ -605,7 +628,7 @@
         }
     },
     "activity_log": {
-        "title": "Log",
+        "title": "Ore de voluntariat",
         "add_title": "Adaugă ore de voluntariat",
         "rejection_reason": "Motiv respingere",
         "other": "Altă opțiune",
@@ -626,7 +649,8 @@
             },
             "date": {
                 "label": "Data",
-                "required": "Data este obligatorie"
+                "required": "Data este obligatorie",
+                "future": "Data nu poate fi în viitor"
             },
             "hours": {
                 "label": "Număr de ore",
@@ -650,7 +674,9 @@
             "ACTIVITY_LOG_004": "Nu se pot anula request-uri aprobate sau respinse",
             "VOLUNTEER_001": "Voluntarul nu există",
             "EVENT_001": "Evenimentul nu există",
-            "ACTIVITY_TYPE_001": "Tipul activității nu există"
+            "ACTIVITY_TYPE_001": "Tipul activității nu există",
+            "not_found": "Înregistrarea nu mai există. Poate a fost ștearsă.",
+            "generic": "Nu am putut încărca înregistrarea."
         },
         "confirmation_modal": {
             "paragraph": " Ești sigur că vrei să ștergi această înregistrare?",
@@ -828,16 +854,19 @@
     "news": {
         "header": {
             "logs": "Actualizări în Ore de voluntariat",
-            "documents": "Actualizați în Documente",
-            "organizations": "Actualizați în Organizații"
+            "documents": "Actualizări în Documente",
+            "organizations": "Actualizări în Organizații"
         },
         "item": {
             "logs": {
                 "approved": "Orele de voluntariat înregistrate au fost aprobate",
-                "rejected": "Orele de voluntariat înregistrate au fost respinse"
+                "rejected": "Orele de voluntariat înregistrate au fost respinse",
+                "at": "Orele tale de la",
+                "approved_end": "au fost aprobate",
+                "rejected_end": "au fost respinse"
             },
             "documents": {
-                "new": "ți-a generat contractul de voluntariat. Descarcă și semnează.",
+                "new": "ți-a încărcat un contract. Îl găsești în Documente.",
                 "approved_start": "Contractul tău cu",
                 "approved_end": "a fost aprobat și semnat.",
                 "rejected_start": "Contractul tău cu",
@@ -861,10 +890,15 @@
         }
     },
     "delete_account": {
-        "title": "Confirma ștergerea contului",
+        "title": "Confirmă ștergerea contului",
         "header": "Ești sigur că vrei să ștergi permanent contul?",
-        "paragraph": "Pentru a șterge contul tău în aplicația VIC, te rugăm să confirmi decizia mai jos. Ștergerea contului va duce la pierderea permanentă a datelor tale și a accesului la aplicație. Dacă ești sigur în privința acestei acțiuni, apasă butonul 'Confirmă Ștergerea'. Menționează că acest proces este ireversibil și va trebui să creezi un cont nou dacă dorești să utilizezi VIC în viitor.",
-        "confirm": "Confirmă Ștergerea",
+        "paragraph": "Ștergerea contului duce la pierderea definitivă a datelor tale și a accesului la aplicație. Procesul este ireversibil: ca să folosești VIC din nou, va trebui să îți creezi un cont nou.",
+        "confirm": "Confirmă ștergerea",
+        "second_confirmation": {
+            "title": "Ștergi contul definitiv?",
+            "description": "Datele tale și legătura cu organizațiile se pierd. Acțiunea nu poate fi anulată.",
+            "action": "Da, șterge contul"
+        },
         "error": "A apărut o eroare la ștergerea contului. Contactează-ne la adresa de e-mail {{value}}, și te vom ajuta să finalizezi procesul."
     },
     "maintenance": {
