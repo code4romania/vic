@@ -40,7 +40,7 @@ const tabIcon = (name: 'open' | 'going' | 'organizations') => (active: boolean) 
  * search, category tabs with a sliding underline, and the list, which re-staggers whenever the
  * tab or the filters change. The header gets a shadow once the list scrolls under it.
  */
-const Events = ({ navigation }: any) => {
+const Events = ({ navigation, route }: any) => {
   const { t } = useTranslation('events');
   const insets = useSafeAreaInsets();
   const bottomInset = useGlassTabBarInset();
@@ -50,6 +50,24 @@ const Events = ({ navigation }: any) => {
   const [eventFilter, setEventFilter] = useState<EventType>(EventType.OPEN);
   const [filters, setFilters] = useState<EventFilters>(EMPTY_EVENT_FILTERS);
   const [searchOpen, setSearchOpen] = useState(false);
+
+  // "Vezi evenimente" on an organization's page and "Vezi toate" on Acasă open this tab already
+  // filtered; the params are consumed once, so the tab keeps working as usual afterwards.
+  const requestedOrganizationId: string | undefined = route?.params?.organizationId;
+  const requestedEventFilter: EventType | undefined = route?.params?.eventFilter;
+  useEffect(() => {
+    if (!requestedOrganizationId && !requestedEventFilter) {
+      return;
+    }
+    if (requestedEventFilter) {
+      setEventFilter(requestedEventFilter);
+    }
+    if (requestedOrganizationId) {
+      setEventFilter(requestedEventFilter ?? EventType.OPEN);
+      setFilters({ ...EMPTY_EVENT_FILTERS, organizationId: requestedOrganizationId });
+    }
+    navigation.setParams({ organizationId: undefined, eventFilter: undefined });
+  }, [requestedOrganizationId, requestedEventFilter, navigation]);
 
   const scrollY = useSharedValue(0);
   const onScroll = useTabBarScroll(scrollY);

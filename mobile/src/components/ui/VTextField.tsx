@@ -2,7 +2,7 @@ import React, { forwardRef, useState } from 'react';
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 import { VText } from './VText';
 import { colors, fonts, radius } from '../../common/theme/tokens';
-import { ALLOW_FONT_SCALLING } from '../../common/constants/constants';
+import { MAX_FONT_SCALE } from '../../common/constants/constants';
 
 export interface VTextFieldProps extends TextInputProps {
   label: string;
@@ -30,7 +30,8 @@ export const VTextField = forwardRef<any, VTextFieldProps>(
             {leading}
             <Input
               ref={ref}
-              allowFontScaling={ALLOW_FONT_SCALLING}
+              allowFontScaling
+              maxFontSizeMultiplier={MAX_FONT_SCALE.text}
               placeholderTextColor={colors.subtle}
               accessibilityLabel={label}
               {...props}

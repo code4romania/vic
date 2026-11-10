@@ -11,7 +11,11 @@ export const CONSTANTS = {
   OTHER_OPTION: 'other',
 };
 
+// The legacy (UI Kitten) screens keep a fixed size: their layouts break when the text grows.
 export const ALLOW_FONT_SCALLING = false;
+
+// VIC 2.0 text follows the system text size, up to these caps (large titles grow less).
+export const MAX_FONT_SCALE = { title: 1.2, text: 1.5 } as const;
 
 export const MIME_TYPES: any = {
   doc: 'application/msword',

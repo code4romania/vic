@@ -7,6 +7,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { VText } from './VText';
+import { MAX_FONT_SCALE } from '../../common/constants/constants';
 import { colors, motion } from '../../common/theme/tokens';
 
 export interface SegmentOption<T extends string> {
@@ -80,6 +81,7 @@ export function SegmentedControl<T extends string>({
               color={selected ? colors.white : colors.navy}
               style={styles.label}
               numberOfLines={1}
+              maxFontSizeMultiplier={MAX_FONT_SCALE.title}
             >
               {option.label}
             </VText>

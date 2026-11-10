@@ -23,7 +23,13 @@ export const Chip = ({ label, selected, onPress, icon, testID }: ChipProps) => (
     style={[styles.chip, selected ? styles.on : null]}
   >
     {icon}
-    <VText variant="label" color={selected ? colors.white : colors.ink} numberOfLines={1}>
+    <VText
+      variant="label"
+      color={selected ? colors.white : colors.ink}
+      numberOfLines={1}
+      ellipsizeMode="tail"
+      style={styles.label}
+    >
       {label}
     </VText>
   </PressableScale>
@@ -34,6 +40,9 @@ export default Chip;
 const styles = StyleSheet.create({
   chip: {
     height: 36,
+    // a long organization name is cut with "…" instead of leaving the card
+    maxWidth: '100%',
+    flexShrink: 1,
     paddingHorizontal: 14,
     borderRadius: radius.chip,
     borderWidth: 1,
@@ -43,5 +52,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
+  label: { flexShrink: 1 },
   on: { backgroundColor: colors.navy, borderColor: colors.navy },
 });

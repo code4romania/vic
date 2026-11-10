@@ -8,8 +8,10 @@ export const colors = {
   yellowPressed: '#F5C800',
   navy: '#01344F',
   ink: '#1F2937',
-  muted: '#6B7280',
-  subtle: '#9CA3AF',
+  // WCAG AA: 4.5:1 on white and on the canvas (#6B7280 was 3.96:1 on #E4E9EF)
+  muted: '#4B5563',
+  // placeholders and field borders: 4.8:1 on white (#9CA3AF was 2.5:1)
+  subtle: '#6B7280',
   line: '#E5E7EB',
   soft: '#F3F4F6',
   // page background behind white cards (Andrew, 9 Nov: a gray that clearly sets off the white lists)
@@ -21,7 +23,8 @@ export const colors = {
   grab: '#D1D5DB',
   white: '#FFFFFF',
   black: '#000000',
-  danger: '#E23D3D',
+  // error text on white: 5.6:1 (#E23D3D was 4.23:1)
+  danger: '#C62828',
   teal: '#0AA5A5',
   tealLight: '#3BC9BC',
   scrim: 'rgba(0,0,0,0.4)',

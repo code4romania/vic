@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TextProps } from 'react-native';
 import { typography } from '../../common/theme/tokens';
-import { ALLOW_FONT_SCALLING } from '../../common/constants/constants';
+import { MAX_FONT_SCALE } from '../../common/constants/constants';
 
 export type TextVariant = keyof typeof typography;
 
@@ -10,10 +10,18 @@ export interface VTextProps extends TextProps {
   color?: string;
 }
 
-/** Text with the VIC 2.0 type scale (Titillium Web titles, Roboto body). */
+const TITLE_VARIANTS: TextVariant[] = ['largeTitle', 'h2'];
+
+/**
+ * Text with the VIC 2.0 type scale (Titillium Web titles, Roboto body). It follows the system text
+ * size (accessibility), capped so the layouts hold.
+ */
 export const VText = ({ variant = 'body', color, style, ...props }: VTextProps) => (
   <Text
-    allowFontScaling={ALLOW_FONT_SCALLING}
+    allowFontScaling
+    maxFontSizeMultiplier={
+      TITLE_VARIANTS.includes(variant) ? MAX_FONT_SCALE.title : MAX_FONT_SCALE.text
+    }
     {...props}
     style={[typography[variant], color ? { color } : null, style]}
   />

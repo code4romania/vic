@@ -17,6 +17,7 @@ import { colors, fonts, radius, shadows, spacing, StatusTone } from '../common/t
 import { useOrganization } from '../store/organization/organization.selector';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
+import { TAB_ROUTES } from '../routes/tab-routes';
 import OrganizationSkeleton from '../components/skeleton/organization-skeleton';
 import { EventCard } from '../components/events/EventCard';
 import { EventIcon } from '../components/events/EventIcons';
@@ -28,6 +29,7 @@ import {
   ListRow,
   PressableScale,
   Sheet,
+  StatusBarScrim,
   VButton,
   VText,
 } from '../components/ui';
@@ -174,7 +176,9 @@ const OrganizationProfile = ({ navigation, route }: any) => {
             <VButton
               variant="navy"
               label={`${t('bar.see_events')}`}
-              onPress={() => navigation.navigate('events')}
+              onPress={() =>
+                navigation.navigate(TAB_ROUTES.EVENTS, { organizationId: organization.id })
+              }
               testID="organization-events"
             />
           </>
@@ -362,6 +366,8 @@ const OrganizationProfile = ({ navigation, route }: any) => {
           </View>
         )}
       </ScrollView>
+      {/* light clock over the navy header: keep navy behind it once the page scrolls */}
+      <StatusBarScrim color={colors.navy} />
 
       <PressableScale
         onPress={navigation.goBack}
