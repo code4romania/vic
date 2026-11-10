@@ -137,10 +137,11 @@ const Settings = ({ navigation }: any) => {
     navigation.navigate(SETTINGS_ROUTES.MY_ORGANIZATIONS);
   };
 
+  // the VIC page on NGO Hub, as in the store builds (eas.json), also when a local .env lacks it
   const onInformation = () => {
-    if (process.env.EXPO_PUBLIC_INFORMATION_LINK) {
-      Linking.openURL(process.env.EXPO_PUBLIC_INFORMATION_LINK).catch(() => undefined);
-    }
+    Linking.openURL(
+      process.env.EXPO_PUBLIC_INFORMATION_LINK || 'https://www.ngohub.ro/ro/vic',
+    ).catch(() => undefined);
   };
 
   const onLogout = async () => {
@@ -275,6 +276,7 @@ const Settings = ({ navigation }: any) => {
             <ListRow
               leading={<RowIcon xml={trash} />}
               title={`${t('delete')}`}
+              destructive
               onPress={() => navigation.navigate(SETTINGS_ROUTES.DELETE_ACCOUNT)}
               testID="profile-delete"
             />

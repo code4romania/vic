@@ -48,11 +48,13 @@ const BellIcon = ({ color = colors.ink }: { color?: string }) => (
 
 // "Luna asta" tiles: one solid navy tile, the others white with a strong colored figure
 // (Andrew, 9 Nov: more color, but no pastel blocks)
+// White cards with navy figures: yellow stays on the primary action only (Andrew, 9 Nov).
+const TILE = { bg: colors.white, fg: colors.navy, label: colors.muted };
 const TILE_TONE: Record<string, { bg: string; fg: string; label: string }> = {
-  events: { bg: colors.navy, fg: colors.yellow, label: colors.white },
-  hours: { bg: colors.white, fg: colors.figure.green, label: colors.muted },
-  documents: { bg: colors.white, fg: colors.figure.amber, label: colors.muted },
-  organizations: { bg: colors.white, fg: colors.figure.teal, label: colors.muted },
+  events: TILE,
+  hours: TILE,
+  documents: TILE,
+  organizations: TILE,
 };
 
 const SectionHead = ({

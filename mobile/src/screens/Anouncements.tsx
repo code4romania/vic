@@ -97,6 +97,7 @@ const Anouncements = ({ navigation }: any) => {
       return (
         <EmptyState
           title={`${t('errors.generic')}`}
+          error
           actionLabel={`${t('events:retry')}`}
           onAction={() => refetch()}
         />

@@ -13,6 +13,7 @@ import { parse } from 'date-fns';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { CONSTANTS } from '../common/constants/constants';
+import { useConfirmDiscard } from '../hooks/useConfirmDiscard';
 
 const EditActivityLog = ({ navigation }: any) => {
   const { t } = useTranslation();
@@ -24,13 +25,14 @@ const EditActivityLog = ({ navigation }: any) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     reset,
   } = useForm<ActivityLogFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(activityLogSchema) as any,
   });
+  const allowLeave = useConfirmDiscard(navigation, isDirty);
 
   useEffect(() => {
     if (selectedActivityLog) {
@@ -52,7 +54,10 @@ const EditActivityLog = ({ navigation }: any) => {
           activityLog,
         },
         {
-          onSuccess: () => navigation.goBack(),
+          onSuccess: () => {
+            allowLeave();
+            navigation.goBack();
+          },
           onError: (error: any) => {
             Toast.show({
               type: 'error',

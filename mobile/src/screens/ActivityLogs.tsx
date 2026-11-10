@@ -119,9 +119,10 @@ const ActivityLogs = ({ navigation, route }: any) => {
           </PressableScale>
         )}
         {!inactive && !!organization && (
+          // the screen's primary action: yellow, as on the canvas board "Ore"
           <VButton
             size="small"
-            variant="soft"
+            variant="primary"
             label={`+ ${t('add')}`}
             onPress={onAdd}
             testID="hours-add"
@@ -192,6 +193,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
       return (
         <EmptyState
           title={`${t('errors.generic')}`}
+          error
           actionLabel={`${t('events:retry')}`}
           onAction={reload}
         />

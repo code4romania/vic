@@ -1,115 +1,93 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Divider, Icon, StyleService, Text, useStyleSheet, useTheme } from '@ui-kitten/components';
-import PageLayout from '../layouts/PageLayout';
+import React, { useEffect, useRef, useState } from 'react';
+import { Linking, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Linking, View } from 'react-native';
-import PressableContainer from '../components/PressableContainer';
-import BottomSheet from '@gorhom/bottom-sheet';
-import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import Svg, { Path } from 'react-native-svg';
+import Toast from 'react-native-toast-message';
+import PageLayout from '../layouts/PageLayout';
 import { NotificationsFrom } from '../common/enums/notifications-from.enum';
 import { NotificationBy } from '../common/enums/notification-by.enum';
 import { useUpdateSettingsMutation } from '../services/settings/settings.service';
 import { ISettingsUpdatesPayload } from '../services/settings/settings.api';
 import { INotificationsSettings } from '../common/interfaces/user-profile.interface';
-import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { renderBackdrop } from '../components/BottomSheet';
 import { useUserProfile } from '../store/profile/profile.selector';
 import useStore from '../store/store';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { useReducedMotion } from 'react-native-reanimated';
 import { registerForPushNotificationsAsync } from '../common/utils/notifications';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { Sheet, StateIcon, VButton } from '../components/ui';
+import { colors, spacing } from '../common/theme/tokens';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { Group, ListRow, PressableScale, Sheet, StateIcon, VButton, VText } from '../components/ui';
 
-interface NotificationSettingProps {
-  title: string;
-  description: string;
-  onPress: () => void;
-}
+const Check = () => (
+  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="m5 12 5 5 9-10"
+      stroke={colors.navy}
+      strokeWidth={2.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
 
 interface NotificationOptionProps {
   label: string;
   value: string;
   selected?: boolean;
+  /** several options can be on at once (email and push) */
   multi?: boolean;
+  disabled?: boolean;
+  last?: boolean;
   onPress: (value: string) => void;
 }
 
-const NotificationSetting = ({ title, description, onPress }: NotificationSettingProps) => {
-  const styles = useStyleSheet(themedStyles);
-  return (
-    <PressableContainer onPress={onPress}>
-      <View style={styles.settingContainer}>
-        <Text allowFontScaling={ALLOW_FONT_SCALLING} style={styles.settingTite} category="p2">
-          {title}
-        </Text>
-        <Text
-          allowFontScaling={ALLOW_FONT_SCALLING}
-          style={styles.settingDescription}
-          category="c1"
-        >
-          {description}
-        </Text>
-      </View>
-    </PressableContainer>
-  );
-};
-
+/** One option in the sheet: the label and a navy check on the selected one (like FormSelect). */
 const NotificationOption = ({
   label,
   value,
   selected,
   multi,
+  disabled,
+  last,
   onPress,
-}: NotificationOptionProps) => {
-  const styles = useStyleSheet(themedStyles);
-  const theme = useTheme();
-
-  return (
-    <PressableContainer onPress={onPress.bind(null, value)}>
-      <View style={styles.bottomSheetOption}>
-        {multi && selected && (
-          <Icon name={'check'} style={styles.checkIcon} fill={theme['color-primary-800']} />
-        )}
-        <Text
-          allowFontScaling={ALLOW_FONT_SCALLING}
-          style={selected ? { color: theme['color-primary-800'] } : {}}
-          category="p2"
-        >
-          {label}
-        </Text>
-      </View>
-    </PressableContainer>
-  );
-};
+}: NotificationOptionProps) => (
+  <PressableScale
+    onPress={() => onPress(value)}
+    disabled={disabled}
+    pressedScale={0.99}
+    style={[styles.option, !last && styles.optionDivider]}
+    accessibilityRole={multi ? 'checkbox' : 'button'}
+    accessibilityLabel={label}
+    accessibilityState={multi ? { checked: !!selected, disabled } : { selected, disabled }}
+    testID={`notifications-option-${value.toLowerCase()}`}
+  >
+    <VText variant={selected ? 'bodyStrong' : 'body'} style={styles.optionText}>
+      {label}
+    </VText>
+    {selected && <Check />}
+  </PressableScale>
+);
 
 const NotificationsSettings = ({ navigation }: any) => {
-  const styles = useStyleSheet(themedStyles);
   const { t } = useTranslation('notifications');
   const paddingTop = usePaddingTop();
 
   const { userProfile } = useUserProfile();
   const { updateSettings } = useStore();
-  // bottom sheet ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  const fromSheetRef = useRef<BottomSheetModal>(null);
+  const bySheetRef = useRef<BottomSheetModal>(null);
   const notificationsBottomSheetRef = useRef<BottomSheetModal>(null);
 
-  // bottom sheet snap points
-  const snapPoints = useMemo(() => ['1%', 200], []);
-
   // notifications state
-  const [showNotificationFromOptions, setShowNotificationsFromOptions] = useState<boolean>(true);
   const [notificationFrom, setNotificationFrom] = useState<NotificationsFrom>(
     NotificationsFrom.ALL_ORGANIZATIONS,
   );
   const [notificationBy, setNotificationBy] = useState<NotificationBy[]>([]);
 
-  const reducedMotion = useReducedMotion();
-
   // mutation
-  const { mutate: updateNotificationsSettings } = useUpdateSettingsMutation();
+  const { mutate: updateNotificationsSettings, isLoading: isUpdating } =
+    useUpdateSettingsMutation();
 
   // init values from database
   useEffect(() => {
@@ -129,19 +107,9 @@ const NotificationsSettings = ({ navigation }: any) => {
     }
   }, [userProfile]);
 
-  const onOrganizationNotificationFromPress = () => {
-    setShowNotificationsFromOptions(true);
-    bottomSheetRef.current?.expand();
-  };
-
-  const onOrganizationNotificationByPress = () => {
-    setShowNotificationsFromOptions(false);
-    bottomSheetRef.current?.expand();
-  };
-
   const onNotificationFromOptionPress = (value: string) => {
     setNotificationFrom(value as NotificationsFrom);
-    bottomSheetRef.current?.close();
+    fromSheetRef.current?.dismiss();
     onUpdateSettings({
       notificationsFrom: value as NotificationsFrom,
     });
@@ -164,8 +132,8 @@ const NotificationsSettings = ({ navigation }: any) => {
       const { token } = await registerForPushNotificationsAsync();
       // if a token does not exist -> we did not grant access to notifications for the app -> show warning modal
       if (!token) {
+        bySheetRef.current?.dismiss();
         notificationsBottomSheetRef?.current?.present();
-        bottomSheetRef.current?.close();
         return;
       }
     }
@@ -212,83 +180,70 @@ const NotificationsSettings = ({ navigation }: any) => {
       <PageLayout
         title={t('header')}
         onBackButtonPress={navigation.goBack}
-        headerStyle={{ paddingTop }}
+        headerStyle={{ paddingTop, backgroundColor: colors.canvas }}
       >
-        <NotificationSetting
-          title={t('from.title')}
-          description={
-            notificationFrom === NotificationsFrom.ALL_ORGANIZATIONS
-              ? t('from.options.all_organizations')
-              : t('from.options.my_organizations')
-          }
-          onPress={onOrganizationNotificationFromPress}
-        />
-        <Divider />
-        <NotificationSetting
-          title={t('by.title')}
-          description={notificationBy.length > 0 ? byNotificationDescription : `${t('disabled')}`}
-          onPress={onOrganizationNotificationByPress}
-        />
-        <Divider />
-      </PageLayout>
-      <SafeAreaBottomSheet
-        backdropComponent={renderBackdrop}
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-        animateOnMount={reducedMotion ? false : true}
-      >
-        <View style={styles.contentContainer}>
-          {showNotificationFromOptions ? (
-            <>
-              <Text
-                allowFontScaling={ALLOW_FONT_SCALLING}
-                category="p2"
-                style={styles.bottomSheetTitle}
-              >
-                {`${t('from.title')}`}
-              </Text>
-              <NotificationOption
-                label={t('from.options.all_organizations')}
-                value={NotificationsFrom.ALL_ORGANIZATIONS}
-                selected={notificationFrom === NotificationsFrom.ALL_ORGANIZATIONS}
-                onPress={onNotificationFromOptionPress}
-              />
-              <NotificationOption
-                label={t('from.options.my_organizations')}
-                value={NotificationsFrom.MY_ORGANIZATIONS}
-                selected={notificationFrom === NotificationsFrom.MY_ORGANIZATIONS}
-                onPress={onNotificationFromOptionPress}
-              />
-            </>
-          ) : (
-            <>
-              <Text
-                allowFontScaling={ALLOW_FONT_SCALLING}
-                category="p2"
-                style={styles.bottomSheetTitle}
-              >
-                {`${t('by.title')}`}
-              </Text>
-              <NotificationOption
-                multi
-                label={t('by.options.email')}
-                value={NotificationBy.EMAIL}
-                selected={notificationBy.includes(NotificationBy.EMAIL)}
-                onPress={onNotificationByOptionPress}
-              />
-              <NotificationOption
-                multi
-                label={t('by.options.push')}
-                value={NotificationBy.PUSH}
-                selected={notificationBy.includes(NotificationBy.PUSH)}
-                onPress={onNotificationByOptionPress}
-              />
-            </>
-          )}
+        <View style={styles.canvas}>
+          <Group>
+            <ListRow
+              title={`${t('from.title')}`}
+              subtitle={
+                notificationFrom === NotificationsFrom.ALL_ORGANIZATIONS
+                  ? `${t('from.options.all_organizations')}`
+                  : `${t('from.options.my_organizations')}`
+              }
+              onPress={() => fromSheetRef.current?.present()}
+              testID="notifications-from"
+            />
+            <ListRow
+              title={`${t('by.title')}`}
+              subtitle={notificationBy.length > 0 ? byNotificationDescription : `${t('disabled')}`}
+              onPress={() => bySheetRef.current?.present()}
+              divider={false}
+              testID="notifications-by"
+            />
+          </Group>
         </View>
-      </SafeAreaBottomSheet>
+      </PageLayout>
+      <Sheet ref={fromSheetRef} title={`${t('from.title')}`} testID="notifications-from-sheet">
+        <View>
+          <NotificationOption
+            label={t('from.options.all_organizations')}
+            value={NotificationsFrom.ALL_ORGANIZATIONS}
+            selected={notificationFrom === NotificationsFrom.ALL_ORGANIZATIONS}
+            disabled={isUpdating}
+            onPress={onNotificationFromOptionPress}
+          />
+          <NotificationOption
+            label={t('from.options.my_organizations')}
+            value={NotificationsFrom.MY_ORGANIZATIONS}
+            selected={notificationFrom === NotificationsFrom.MY_ORGANIZATIONS}
+            disabled={isUpdating}
+            last
+            onPress={onNotificationFromOptionPress}
+          />
+        </View>
+      </Sheet>
+      <Sheet ref={bySheetRef} title={`${t('by.title')}`} testID="notifications-by-sheet">
+        <View>
+          <NotificationOption
+            multi
+            label={t('by.options.email')}
+            value={NotificationBy.EMAIL}
+            selected={notificationBy.includes(NotificationBy.EMAIL)}
+            disabled={isUpdating}
+            onPress={onNotificationByOptionPress}
+          />
+          <NotificationOption
+            multi
+            label={t('by.options.push')}
+            value={NotificationBy.PUSH}
+            selected={notificationBy.includes(NotificationBy.PUSH)}
+            disabled={isUpdating}
+            last
+            onPress={onNotificationByOptionPress}
+          />
+        </View>
+      </Sheet>
       <Sheet
         ref={notificationsBottomSheetRef}
         title={`${t('warning_modal.title')}`}
@@ -313,44 +268,27 @@ const NotificationsSettings = ({ navigation }: any) => {
 
 export default NotificationsSettings;
 
-const themedStyles = StyleService.create({
-  settingContainer: {
-    paddingVertical: 16,
-  },
-  settingTite: {
-    lineHeight: 24,
-  },
-  settingDescription: {
-    lineHeight: 20,
-  },
-  contentContainer: {
+const styles = StyleSheet.create({
+  // PageLayout pads its content by 16 on white: the gray canvas fills it edge to edge, with the
+  // 20pt page margins
+  canvas: {
     flex: 1,
-    alignItems: 'flex-start',
-    paddingHorizontal: 16,
-    width: '100%',
+    marginHorizontal: -spacing.l,
+    marginVertical: -spacing.s,
+    paddingHorizontal: spacing.gutter,
+    paddingTop: spacing.s,
+    backgroundColor: colors.canvas,
   },
-  bottomSheetTitle: {
-    color: '$cool-gray-400',
-    paddingVertical: 14,
-  },
-  bottomSheetOption: {
+  option: {
+    minHeight: 48,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16,
-    paddingVertical: 16,
-    minWidth: 200,
+    gap: 10,
+    paddingVertical: 14,
   },
-  checkIcon: {
-    height: 24,
-    width: 24,
-    color: '$color-primary-800',
+  optionDivider: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.line,
   },
-  warningSheetContainer: {
-    backgroundColor: 'white',
-    paddingVertical: 24,
-    paddingHorizontal: 32,
-    flex: 1,
-    alignItems: 'center',
-    gap: 16,
-  },
+  optionText: { flex: 1 },
 });

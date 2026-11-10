@@ -1,83 +1,39 @@
-import { Icon, Text, useTheme } from '@ui-kitten/components';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import ImageWithPreload from './ImageWithPreload';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { Avatar, Card, VText } from './ui';
+import { spacing } from '../common/theme/tokens';
 
 interface ProfileIntroProps {
-  uri: string;
+  /** profile picture; initials on navy when there is none */
+  uri?: string | null;
   name: string;
-  description: string;
+  /** one line under the name (age, sex, city); hidden when empty */
+  description?: string;
+  /** extra content under the person, in the same card (e.g. the organization) */
+  children?: React.ReactNode;
+  testID?: string;
 }
 
-const ProfileIntro = ({ uri, name, description }: ProfileIntroProps) => {
-  const theme = useTheme();
-  return (
-    <View style={styles.container}>
-      <View style={styles.imageWrapper}>
-        {uri ? (
-          <ImageWithPreload source={uri} styles={styles.profileImage} />
-        ) : (
-          <View
-            style={{
-              ...styles.profileImage,
-              borderColor: theme['cool-gray-200'],
-              backgroundColor: theme['cool-gray-100'],
-            }}
-          >
-            <Icon name="user" style={{ ...styles.icon, color: theme['cool-gray-500'] }} />
-          </View>
-        )}
-      </View>
-      <View style={styles.textContainer}>
-        <Text
-          allowFontScaling={ALLOW_FONT_SCALLING}
-          category="h3"
-          numberOfLines={3}
-          ellipsizeMode="tail"
-        >
+/** VIC 2.0 person card: round avatar, the full name and a meta line, on a white card. */
+const ProfileIntro = ({ uri, name, description, children, testID }: ProfileIntroProps) => (
+  <Card style={styles.card} testID={testID}>
+    <View style={styles.person}>
+      <Avatar name={name} uri={uri || null} size={64} shape="circle" />
+      <View style={styles.text}>
+        <VText variant="h2" accessibilityRole="header" numberOfLines={3}>
           {name}
-        </Text>
-        <Text
-          allowFontScaling={ALLOW_FONT_SCALLING}
-          category="c1"
-          appearance="hint"
-          style={styles.description}
-        >
-          {description}
-        </Text>
+        </VText>
+        {!!description && <VText variant="sub">{description}</VText>}
       </View>
     </View>
-  );
-};
+    {children}
+  </Card>
+);
 
 export default ProfileIntro;
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 24,
-  },
-  textContainer: {
-    gap: 16,
-    flexShrink: 2,
-  },
-  imageWrapper: {
-    borderRadius: 100,
-  },
-  profileImage: {
-    borderRadius: 70,
-    width: 138,
-    height: 138,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  description: {
-    lineHeight: 20,
-  },
-  icon: {
-    width: 48,
-    height: 48,
-  },
+  card: { padding: spacing.l, gap: spacing.l },
+  person: { flexDirection: 'row', alignItems: 'center', gap: spacing.l },
+  text: { flex: 1, gap: 2 },
 });

@@ -8,6 +8,7 @@ import { useVolunteer } from '../store/volunteer/volunteer.selector';
 import { useUpdateVolunteerProfileMutation } from '../services/volunteer/volunteer.service';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useConfirmDiscard } from '../hooks/useConfirmDiscard';
 
 const EditVolunteer = ({ navigation }: any) => {
   const { t } = useTranslation('volunteer');
@@ -16,13 +17,14 @@ const EditVolunteer = ({ navigation }: any) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     reset,
   } = useForm<VolunteerFormTypes>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(volunteerSchema) as any,
   });
+  const allowLeave = useConfirmDiscard(navigation, isDirty);
 
   const { isLoading: isUpdateingProfile, mutate: updateVolunteerProfile } =
     useUpdateVolunteerProfileMutation();
@@ -62,7 +64,10 @@ const EditVolunteer = ({ navigation }: any) => {
             )}`,
           });
         },
-        onSuccess: () => navigation.goBack(),
+        onSuccess: () => {
+          allowLeave();
+          navigation.goBack();
+        },
       },
     );
   };

@@ -15,6 +15,8 @@ import { colors } from '../../common/theme/tokens';
 
 const ORBIT = 250;
 const ORB = 44;
+// the hero's natural height
+const FULL = 330;
 
 const stroke = {
   stroke: colors.navy,
@@ -53,11 +55,14 @@ const orbIcons = [
 ];
 
 /** Login hero: the VIC mark with a slowly turning ring of feature icons (40s per turn). */
-export const LoginHero = ({ height = 330 }: { height?: number }) => {
+export const LoginHero = ({ height = FULL }: { height?: number }) => {
+  // shorter heroes (small phones) scale the whole drawing instead of cropping it
+  const scale = Math.min(1, height / FULL);
   const reducedMotion = useReducedMotion();
   const rotation = useSharedValue(0);
-  const logoScale = useSharedValue(reducedMotion ? 1 : 0.6);
-  const logoOpacity = useSharedValue(reducedMotion ? 1 : 0);
+  // the mark is visible from the first frame: only its scale animates, so it can't stay hidden
+  // when the entry animation doesn't run (seen on a slow Android emulator)
+  const logoScale = useSharedValue(reducedMotion ? 1 : 0.85);
 
   useEffect(() => {
     if (reducedMotion) {
@@ -65,8 +70,7 @@ export const LoginHero = ({ height = 330 }: { height?: number }) => {
     }
     rotation.value = withRepeat(withTiming(360, { duration: 40000, easing: Easing.linear }), -1);
     logoScale.value = withSpring(1, { damping: 12, stiffness: 140 });
-    logoOpacity.value = withTiming(1, { duration: 360 });
-  }, [reducedMotion, rotation, logoScale, logoOpacity]);
+  }, [reducedMotion, rotation, logoScale]);
 
   const orbitStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${rotation.value}deg` }],
@@ -76,7 +80,6 @@ export const LoginHero = ({ height = 330 }: { height?: number }) => {
     transform: [{ rotate: `${-rotation.value}deg` }],
   }));
   const logoStyle = useAnimatedStyle(() => ({
-    opacity: logoOpacity.value,
     transform: [{ scale: logoScale.value }],
   }));
 
@@ -86,39 +89,44 @@ export const LoginHero = ({ height = 330 }: { height?: number }) => {
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
-      <Svg width={220} height={220} style={styles.glow}>
-        <Defs>
-          <RadialGradient id="glow" cx="50%" cy="50%" r="50%">
-            <Stop offset="0" stopColor={colors.yellow} stopOpacity={0.35} />
-            <Stop offset="0.7" stopColor={colors.yellow} stopOpacity={0} />
-          </RadialGradient>
-        </Defs>
-        <Circle cx={110} cy={110} r={110} fill="url(#glow)" />
-      </Svg>
-      <View style={styles.ring} />
-      <Animated.View style={[styles.orbit, orbitStyle]}>
-        {orbIcons.map((icon, index) => {
-          const angle = (index / orbIcons.length) * 2 * Math.PI - Math.PI / 2;
-          const r = ORBIT / 2;
-          return (
-            <Animated.View
-              key={index}
-              style={[
-                styles.orb,
-                { left: r + r * Math.cos(angle) - ORB / 2, top: r + r * Math.sin(angle) - ORB / 2 },
-                orbStyle,
-              ]}
-            >
-              <Svg width={20} height={20} viewBox="0 0 24 24">
-                {icon}
-              </Svg>
-            </Animated.View>
-          );
-        })}
-      </Animated.View>
-      <Animated.View style={logoStyle}>
-        <VicLogo size={88} />
-      </Animated.View>
+      <View style={[styles.inner, { transform: [{ scale }] }]}>
+        <Svg width={220} height={220} style={styles.glow}>
+          <Defs>
+            <RadialGradient id="glow" cx="50%" cy="50%" r="50%">
+              <Stop offset="0" stopColor={colors.yellow} stopOpacity={0.35} />
+              <Stop offset="0.7" stopColor={colors.yellow} stopOpacity={0} />
+            </RadialGradient>
+          </Defs>
+          <Circle cx={110} cy={110} r={110} fill="url(#glow)" />
+        </Svg>
+        <View style={styles.ring} />
+        <Animated.View style={[styles.orbit, orbitStyle]}>
+          {orbIcons.map((icon, index) => {
+            const angle = (index / orbIcons.length) * 2 * Math.PI - Math.PI / 2;
+            const r = ORBIT / 2;
+            return (
+              <Animated.View
+                key={index}
+                style={[
+                  styles.orb,
+                  {
+                    left: r + r * Math.cos(angle) - ORB / 2,
+                    top: r + r * Math.sin(angle) - ORB / 2,
+                  },
+                  orbStyle,
+                ]}
+              >
+                <Svg width={20} height={20} viewBox="0 0 24 24">
+                  {icon}
+                </Svg>
+              </Animated.View>
+            );
+          })}
+        </Animated.View>
+        <Animated.View style={logoStyle}>
+          <VicLogo size={88} />
+        </Animated.View>
+      </View>
     </View>
   );
 };
@@ -127,6 +135,7 @@ export default LoginHero;
 
 const styles = StyleSheet.create({
   stage: { alignItems: 'center', justifyContent: 'center' },
+  inner: { width: FULL, height: FULL, alignItems: 'center', justifyContent: 'center' },
   glow: { position: 'absolute' },
   ring: {
     position: 'absolute',

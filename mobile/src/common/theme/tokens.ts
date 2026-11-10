@@ -28,10 +28,12 @@ export const colors = {
   teal: '#0AA5A5',
   tealLight: '#3BC9BC',
   scrim: 'rgba(0,0,0,0.4)',
+  // Status = colored figure on a neutral gray chip, no pastel tints (Andrew, 9 Nov: "solid
+  // navy/white with colored figures, green/red only for status").
   status: {
-    ok: { bg: '#E7F6EC', fg: '#166534' },
-    wait: { bg: '#FEF3C7', fg: '#92400E' },
-    no: { bg: '#FEE2E2', fg: '#991B1B' },
+    ok: { bg: '#F3F4F6', fg: '#166534' },
+    wait: { bg: '#F3F4F6', fg: '#92400E' },
+    no: { bg: '#F3F4F6', fg: '#991B1B' },
     neutral: { bg: '#F3F4F6', fg: '#374151' },
     accent: { bg: '#FFD209', fg: '#01344F' },
   },

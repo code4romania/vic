@@ -154,7 +154,7 @@ describe('Ore', () => {
     await fireEvent.press(await screen.findByText('Aprobate'));
     expect(mockListCalls[mockListCalls.length - 1][3]).toBe(ActivityLogStatus.APPROVED);
     expect(within(await screen.findByTestId('log-row-3')).getByText('Aprobat')).toBeTruthy();
-    await fireEvent.press(screen.getByText('Refuzate'));
+    await fireEvent.press(screen.getByText('Respinse'));
     expect(await screen.findByText('Nicio înregistrare refuzată')).toBeTruthy();
   });
 
@@ -218,7 +218,7 @@ describe('Ore: detaliu', () => {
       rejectionReason: 'Transportul a fost făcut în altă zi.',
     });
     await renderApp('activity-log', detailParams);
-    expect(await screen.findByText('Respins la 14 octombrie 2026')).toBeTruthy();
+    expect(await screen.findByText('Respinsă la 14 octombrie 2026')).toBeTruthy();
     expect(screen.getByText(/Transportul a fost făcut în altă zi\./)).toBeTruthy();
     expect(screen.queryByTestId('log-edit')).toBeNull();
     expect(screen.queryByTestId('log-delete')).toBeNull();

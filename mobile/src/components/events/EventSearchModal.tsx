@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
 import Animated, { FadeIn, FadeInDown, LinearTransition } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { colors, fonts, motion, shadows } from '../../common/theme/tokens';
-import { ALLOW_FONT_SCALLING } from '../../common/constants/constants';
+import { MAX_FONT_SCALE } from '../../common/constants/constants';
 import { Chip, PressableScale, VButton, VText } from '../ui';
 import { EventIcon } from './EventIcons';
 import { EMPTY_EVENT_FILTERS, EventFilters, EventWhen, toEventQueryFilters } from './event-filters';
@@ -100,7 +109,12 @@ export const EventSearchModal = ({
       transparent
       statusBarTranslucent
     >
-      <View style={[styles.screen, { paddingTop: insets.top }]} testID="event-search">
+      {/* the bottom bar (Șterge tot / Arată N evenimente) stays above the keyboard */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={[styles.screen, { paddingTop: insets.top }]}
+        testID="event-search"
+      >
         <View style={styles.header}>
           <PressableScale
             onPress={onClose}
@@ -138,7 +152,8 @@ export const EventSearchModal = ({
                       onChangeText={(search) => setDraft((d) => ({ ...d, search }))}
                       placeholder={`${t('search.what_placeholder')}`}
                       placeholderTextColor={colors.muted}
-                      allowFontScaling={ALLOW_FONT_SCALLING}
+                      allowFontScaling
+                      maxFontSizeMultiplier={MAX_FONT_SCALE.text}
                       returnKeyType="search"
                       onSubmitEditing={() => setOpen('when')}
                       autoFocus
@@ -235,7 +250,7 @@ export const EventSearchModal = ({
             testID="search-apply"
           />
         </Animated.View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
@@ -243,7 +258,7 @@ export const EventSearchModal = ({
 export default EventSearchModal;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#F7F7F7' },
+  screen: { flex: 1, backgroundColor: colors.canvas },
   header: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -12,7 +12,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { IOrganizationListItemWithNumberOfVolunteers } from '../common/interfaces/organization-list-item.interface';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { MAX_FONT_SCALE } from '../common/constants/constants';
 import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
 import { useOrganizationsInfiniteQuery } from '../services/organization/organization.service';
 import { useOrganization } from '../store/organization/organization.selector';
@@ -105,14 +105,17 @@ const Organizations = ({ navigation }: any) => {
       >
         <Avatar name={item.name} uri={item.logo} size={56} shape="rounded" />
         <View style={styles.rowText}>
-          <VText variant="h3" numberOfLines={1}>
+          <VText variant="h3" numberOfLines={2}>
             {item.name}
           </VText>
-          <VText variant="cap">
-            {t('organization_profile:volunteers', { count: item.numberOfVolunteers })}
-          </VText>
+          {/* the "Membru" badge goes under the name so it doesn't cut it on small screens */}
+          <View style={styles.meta}>
+            <VText variant="cap">
+              {t('organization_profile:volunteers', { count: item.numberOfVolunteers })}
+            </VText>
+            {memberOf.has(item.id) && <Badge label={`${t('member')}`} tone="neutral" />}
+          </View>
         </View>
-        {memberOf.has(item.id) && <Badge label={`${t('member')}`} tone="neutral" />}
         <Chevron />
       </PressableScale>
     </Enter>
@@ -152,7 +155,8 @@ const Organizations = ({ navigation }: any) => {
           onChangeText={setQuery}
           placeholder={`${t('search.placeholder')}`}
           placeholderTextColor={colors.muted}
-          allowFontScaling={ALLOW_FONT_SCALLING}
+          allowFontScaling
+          maxFontSizeMultiplier={MAX_FONT_SCALE.text}
           returnKeyType="search"
           autoCorrect={false}
           accessibilityLabel={`${t('search.placeholder')}`}
@@ -182,6 +186,7 @@ const Organizations = ({ navigation }: any) => {
       return (
         <EmptyState
           title={`${t('errors.generic')}`}
+          error
           actionLabel={`${t('events:retry')}`}
           onAction={reload}
         />
@@ -229,6 +234,7 @@ const Organizations = ({ navigation }: any) => {
 export default Organizations;
 
 const styles = StyleSheet.create({
+  meta: { flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' },
   screen: { flex: 1, backgroundColor: colors.canvas },
   list: { paddingHorizontal: spacing.gutter, flexGrow: 1 },
   header: { paddingBottom: 6 },

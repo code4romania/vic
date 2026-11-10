@@ -55,6 +55,7 @@ export const ContractsListPage = ({ navigation, title, query, testID }: Contract
       return (
         <EmptyState
           title={`${t('errors.generic')}`}
+          error
           actionLabel={`${t('events:retry')}`}
           onAction={() => refetch()}
         />

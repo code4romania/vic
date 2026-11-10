@@ -2,16 +2,15 @@ import React, { useRef } from 'react';
 import ModalLayout from '../layouts/ModalLayout';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useOrganization } from '../store/organization/organization.selector';
-import { Text } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ButtonType } from '../common/enums/button-type.enum';
 import { useLeaveOrganizationMutation } from '../services/organization/organization.service';
 import Toast from 'react-native-toast-message';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { Sheet, VButton } from '../components/ui';
+import { Sheet, VButton, VText } from '../components/ui';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
+import { spacing } from '../common/theme/tokens';
 
 // The organization comes in the route params (#592): the organization store is only filled once
 // its profile was opened, so leaving straight from Profil › Organizațiile mele did nothing.
@@ -85,9 +84,7 @@ const LeaveOrganization = ({ navigation, route }: any) => {
         {organization && (
           <OrganizationIdentity uri={organization.logo || ''} name={organization.name} />
         )}
-        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1" style={styles.paragraph}>
-          {`${t('paragraph')}`}
-        </Text>
+        <VText variant="body">{`${t('paragraph')}`}</VText>
       </View>
       {/* inside the modal's own sheet provider, sized to its content */}
       <Sheet
@@ -111,12 +108,11 @@ const LeaveOrganization = ({ navigation, route }: any) => {
 export default LeaveOrganization;
 
 const styles = StyleSheet.create({
+  // the modal's content sits at 16: 4 more align it with the 20pt gutter of the title
   container: {
-    paddingVertical: 16,
+    paddingVertical: spacing.l,
+    paddingHorizontal: spacing.gutter - spacing.l,
     flex: 1,
-    gap: 16,
-  },
-  paragraph: {
-    lineHeight: 24,
+    gap: spacing.l,
   },
 });

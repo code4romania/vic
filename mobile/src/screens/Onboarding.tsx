@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   GestureResponderEvent,
+  Platform,
   Pressable,
   StyleSheet,
   useWindowDimensions,
@@ -18,6 +19,8 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { StatusBar } from 'expo-status-bar';
+import * as NavigationBar from 'expo-navigation-bar';
+import { useFocusEffect } from '@react-navigation/native';
 import Svg, { Circle } from 'react-native-svg';
 import { VText } from '../components/ui/VText';
 import { VButton } from '../components/ui/VButton';
@@ -61,6 +64,16 @@ const ProgressSegment = ({
 const Onboarding = ({ navigation }: any) => {
   const { t } = useTranslation('onboarding');
   const insets = useSafeAreaInsets();
+  // Android: light navigation buttons on the navy screen, dark again for the rest of the app
+  useFocusEffect(
+    useCallback(() => {
+      if (Platform.OS !== 'android') {
+        return undefined;
+      }
+      NavigationBar.setStyle('light');
+      return () => NavigationBar.setStyle('dark');
+    }, []),
+  );
   const { width } = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const progress = useSharedValue(0);

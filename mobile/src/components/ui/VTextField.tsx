@@ -1,5 +1,5 @@
-import React, { forwardRef, useState } from 'react';
-import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { Pressable, StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 import { VText } from './VText';
 import { colors, fonts, radius } from '../../common/theme/tokens';
 import { MAX_FONT_SCALE } from '../../common/constants/constants';
@@ -20,16 +20,26 @@ export const VTextField = forwardRef<any, VTextFieldProps>(
   ({ label, error, InputComponent, leading, helper, onFocus, onBlur, style, ...props }, ref) => {
     const Input: React.ComponentType<any> = InputComponent ?? TextInput;
     const [focused, setFocused] = useState(false);
+    const inputRef = useRef<any>(null);
+    useImperativeHandle(ref, () => inputRef.current);
     return (
       <View style={styles.wrapper}>
-        <View
-          style={[styles.field, focused ? styles.focused : null, error ? styles.invalid : null]}
+        {/* the whole box focuses the input, not only the line of text */}
+        <Pressable
+          accessible={false}
+          onPress={() => inputRef.current?.focus()}
+          style={[
+            styles.field,
+            focused ? styles.focused : null,
+            error ? styles.invalid : null,
+            props.editable === false ? styles.fieldDisabled : null,
+          ]}
         >
           <VText variant="cap">{label}</VText>
           <View style={styles.row}>
             {leading}
             <Input
-              ref={ref}
+              ref={inputRef}
               allowFontScaling
               maxFontSizeMultiplier={MAX_FONT_SCALE.text}
               placeholderTextColor={colors.subtle}
@@ -51,7 +61,7 @@ export const VTextField = forwardRef<any, VTextFieldProps>(
               ]}
             />
           </View>
-        </View>
+        </Pressable>
         {!!error && (
           <VText variant="cap" color={colors.danger} accessibilityLiveRegion="polite">
             {error}
@@ -78,6 +88,8 @@ const styles = StyleSheet.create({
   },
   focused: { borderWidth: 2, borderColor: colors.ink, paddingHorizontal: 13, paddingVertical: 7 },
   invalid: { borderColor: colors.danger },
+  // read-only fields (e.g. the email of the account) look different from the editable ones
+  fieldDisabled: { backgroundColor: colors.soft, borderColor: colors.line },
   row: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   input: {
     flex: 1,

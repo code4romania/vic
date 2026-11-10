@@ -81,7 +81,8 @@ const expoConfig: ExpoConfig = {
       },
     ],
     // the app is always light at the bottom (tab bar, action bars), so keep the navigation buttons dark
-    ['expo-navigation-bar', { style: 'dark' }],
+    // no gray scrim behind the 3-button navigation: the screens already pad the bottom inset
+    ['expo-navigation-bar', { style: 'dark', enforceContrast: false }],
     [
       'expo-splash-screen',
       {

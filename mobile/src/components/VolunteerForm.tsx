@@ -2,7 +2,7 @@ import React from 'react';
 import { endOfToday } from '../common/utils/date-bounds';
 import FormLayout from '../layouts/FormLayout';
 import OrganizationIdentity from './OrganizationIdentity';
-import { Text } from '@ui-kitten/components';
+import { VText } from './ui';
 import FormInput from './FormInput';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
@@ -13,7 +13,6 @@ import { OrganizationStructureType } from '../common/enums/organization-structur
 import FormDatePicker from './FormDatePicker';
 import { Control, FieldErrors } from 'react-hook-form';
 import { useUserProfile } from '../store/profile/profile.selector';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 
 export type VolunteerFormTypes = {
   email: string;
@@ -47,7 +46,7 @@ const VolunteerForm = ({ paragraph, isLoading, control, errors }: VolunteerFormP
 
   return (
     <FormLayout>
-      <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint">{`${paragraph || ''}`}</Text>
+      {!!paragraph && <VText variant="sub">{paragraph}</VText>}
       <OrganizationIdentity
         name={userProfile?.activeOrganization?.name || ''}
         uri={userProfile?.activeOrganization?.logo || ''}

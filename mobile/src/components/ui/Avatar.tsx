@@ -10,6 +10,8 @@ export interface AvatarProps {
   size?: number;
   /** Organizations use rounded squares, people use circles. */
   shape?: 'circle' | 'rounded';
+  /** on the gray canvas the navy tint of an organization blends in: use a white tile instead */
+  onCanvas?: boolean;
 }
 
 export const initials = (name: string) =>
@@ -31,7 +33,7 @@ const initialsStyle = (size: number) => {
  * Photo or logo, falling back to initials: people get navy with yellow initials (canvas "Profil"),
  * organizations a navy tint with navy initials.
  */
-export const Avatar = ({ name, uri, size = 40, shape = 'circle' }: AvatarProps) => {
+export const Avatar = ({ name, uri, size = 40, shape = 'circle', onCanvas }: AvatarProps) => {
   const borderRadius = shape === 'circle' ? size / 2 : Math.round(size * 0.3);
   if (uri) {
     return (
@@ -51,6 +53,7 @@ export const Avatar = ({ name, uri, size = 40, shape = 'circle' }: AvatarProps) 
       style={[
         styles.fallback,
         shape === 'circle' ? styles.person : styles.organization,
+        onCanvas && shape === 'rounded' ? styles.canvas : null,
         { width: size, height: size, borderRadius },
       ]}
     >
@@ -71,4 +74,5 @@ const styles = StyleSheet.create({
   fallback: { alignItems: 'center', justifyContent: 'center' },
   person: { backgroundColor: colors.navy },
   organization: { backgroundColor: colors.navyTint },
+  canvas: { backgroundColor: colors.white },
 });

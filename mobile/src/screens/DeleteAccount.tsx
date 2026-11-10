@@ -1,22 +1,36 @@
 import React, { useRef } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { Sheet, VButton } from '../components/ui';
-import ModalLayout from '../layouts/ModalLayout';
-import { Text, useTheme } from '@ui-kitten/components';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { ButtonType } from '../common/enums/button-type.enum';
+import Svg, { Path } from 'react-native-svg';
 import { useTranslation } from 'react-i18next';
-import FormLayout from '../layouts/FormLayout';
+import { Sheet, VButton, VText } from '../components/ui';
+import ModalLayout from '../layouts/ModalLayout';
+import { ButtonType } from '../common/enums/button-type.enum';
 import { useDeleteAccountMutation } from '../services/user/user.service';
 import { useAuth } from '../hooks/useAuth';
-import { SvgXml } from 'react-native-svg';
-import upsIcon from '../assets/svg/ups-icon';
-import { StyleSheet, View } from 'react-native';
+import { colors, spacing } from '../common/theme/tokens';
+
+/** Solid danger circle with a white trash can (no pastel illustration). */
+const DangerIcon = () => (
+  <View style={styles.icon} testID="delete-account-icon">
+    <Svg
+      width={30}
+      height={30}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={colors.white}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <Path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6" />
+    </Svg>
+  </View>
+);
 
 const DeleteAccount = ({ navigation }: any) => {
   const { t } = useTranslation('delete_account');
   const { logout } = useAuth();
-  const theme = useTheme();
 
   const {
     mutate: deleteAccount,
@@ -47,27 +61,19 @@ const DeleteAccount = ({ navigation }: any) => {
       }}
       onDismiss={navigation.goBack}
     >
-      <FormLayout>
-        <View style={styles.contentContainer}>
-          <SvgXml xml={upsIcon} width={100} height={100} />
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1" style={styles.header}>
-            {`${t('header')}`}
-          </Text>
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1" style={styles.paragraph}>
-            {`${t('paragraph')}`}
-          </Text>
-        </View>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <DangerIcon />
+        <VText variant="h2" accessibilityRole="header">
+          {`${t('header')}`}
+        </VText>
+        <VText variant="sub">{`${t('paragraph')}`}</VText>
 
         {!!deleteAccountError && (
-          <Text
-            allowFontScaling={ALLOW_FONT_SCALLING}
-            style={{ color: theme['color-danger-500'] }}
-            category="p1"
-          >
+          <VText variant="body" color={colors.danger} accessibilityRole="alert">
             {`${t('error', { value: process.env.EXPO_PUBLIC_CONTACT_EMAIL })}`}
-          </Text>
+          </VText>
         )}
-      </FormLayout>
+      </ScrollView>
       <Sheet
         ref={confirmSheet}
         title={`${t('second_confirmation.title')}`}
@@ -93,17 +99,20 @@ const DeleteAccount = ({ navigation }: any) => {
 export default DeleteAccount;
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
+  // ModalLayout pads by 16: 4 more for the 20pt page margins
+  content: {
+    paddingHorizontal: spacing.gutter - spacing.l,
+    paddingTop: spacing.l,
+    paddingBottom: spacing.xl,
+    gap: spacing.m,
+  },
+  icon: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: colors.danger,
     alignItems: 'center',
-    gap: 24,
-  },
-  header: {
-    paddingHorizontal: 16,
-    textAlign: 'center',
-  },
-  paragraph: {
-    textAlign: 'center',
-    lineHeight: 24,
+    justifyContent: 'center',
+    marginBottom: spacing.s,
   },
 });

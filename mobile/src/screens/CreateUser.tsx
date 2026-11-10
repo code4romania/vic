@@ -5,10 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 import * as Linking from 'expo-linking';
 import { Checkbox, VText } from '../components/ui';
-import { colors, fonts } from '../common/theme/tokens';
-import { StyleSheet } from 'react-native';
+import { colors, fonts, spacing } from '../common/theme/tokens';
+import { StyleSheet, View } from 'react-native';
 import * as yup from 'yup';
-import { Text } from '@ui-kitten/components';
 import { useCreateUserProfileMutation } from '../services/user/user.service';
 import FormInput from '../components/FormInput';
 import FormSelect from '../components/FormSelect';
@@ -26,9 +25,8 @@ import i18n from '../common/config/i18n';
 import CountySelect from '../containers/CountySelect';
 import CitySelect from '../containers/CitySelect';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import Paragraph from '../components/Paragraph';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/constants';
+import { CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 
@@ -142,114 +140,119 @@ const CreateUser = ({ navigation }: any) => {
       headerStyle={{ paddingTop }}
     >
       <FormLayout>
-        <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h3">{`${t(
-          'create_user.heading',
-        )}`}</Text>
-        <Paragraph>{`${t('create_user.paragraph')}`}</Paragraph>
-        <FormInput
-          control={control as any}
-          placeholder={t('create_user.form.first_name.placeholder')}
-          label={t('create_user.form.first_name.label')}
-          name="firstName"
-          disabled={isLoading}
-          error={errors.firstName}
-          required={true}
-        />
-        <FormInput
-          control={control as any}
-          placeholder={t('create_user.form.last_name.placeholder')}
-          label={t('create_user.form.last_name.label')}
-          name="lastName"
-          error={errors.lastName}
-          disabled={isLoading}
-          required={true}
-        />
-        <FormInput
-          control={control as any}
-          name="phone"
-          label={t('create_account.form.phone.label')}
-          placeholder={t('create_account.form.phone.placeholder')}
-          error={errors.phone}
-          disabled={isLoading}
-          keyboardType="phone-pad"
-          accessoryLeft={renderPhoneNumberPrefix}
-        />
-        <CountySelect
-          control={control as any}
-          name="countyId"
-          label={t('create_user.form.county.label')}
-          error={errors.countyId}
-          disabled={isLoading}
-          placeholder={t('general:select')}
-        />
-        <CitySelect
-          control={control as any}
-          name="cityId"
-          label={t('create_user.form.city.label')}
-          error={errors.cityId}
-          disabled={isLoading}
-          placeholder={t('general:select')}
-          countyId={watchCountyId}
-        />
-        <FormDatePicker
-          control={control as any}
-          placeholder={t('general:select')}
-          label={t('create_user.form.birthday.label')}
-          min={BIRTHDAY_MIN}
-          max={birthdayMax()}
-          initialVisibleDate={BIRTHDAY_INITIAL_VISIBLE}
-          disabled={isLoading}
-          name="birthday"
-          error={errors.birthday}
-          required={true}
-        />
-        <FormSelect
-          control={control as any}
-          name="sex"
-          label={t('general:sex', { sex_type: '' })}
-          error={errors.sex}
-          disabled={isLoading}
-          placeholder={t('general:select')}
-          options={SexOptions}
-        />
-        <Controller
-          control={control}
-          name="acceptTerms"
-          render={({ field: { value, onChange } }) => (
-            <Checkbox
-              checked={!!value}
-              onChange={onChange}
-              disabled={isLoading}
-              error={errors.acceptTerms?.message}
-              accessibilityLabel={`${t('create_account.form.terms.accessibility')}`}
-              testID="create-user-terms"
-            >
-              <VText variant="body">
-                {t('create_account.form.terms.agree')}
-                <VText
-                  variant="body"
-                  style={styles.link}
-                  accessibilityRole="link"
-                  onPress={() => openLink(process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK)}
-                  testID="create-user-terms-link"
-                >
-                  {t('create_account.form.terms.conditions')}
+        {/* 20pt side margins: the layout gives 16 */}
+        <View style={styles.content}>
+          <View style={styles.intro}>
+            <VText variant="largeTitle" style={styles.heading} accessibilityRole="header">
+              {t('create_user.heading')}
+            </VText>
+            <VText variant="sub">{t('create_user.paragraph')}</VText>
+          </View>
+          <FormInput
+            control={control as any}
+            placeholder={t('create_user.form.first_name.placeholder')}
+            label={t('create_user.form.first_name.label')}
+            name="firstName"
+            disabled={isLoading}
+            error={errors.firstName}
+            required={true}
+          />
+          <FormInput
+            control={control as any}
+            placeholder={t('create_user.form.last_name.placeholder')}
+            label={t('create_user.form.last_name.label')}
+            name="lastName"
+            error={errors.lastName}
+            disabled={isLoading}
+            required={true}
+          />
+          <FormInput
+            control={control as any}
+            name="phone"
+            label={t('create_account.form.phone.label')}
+            placeholder={t('create_account.form.phone.placeholder')}
+            error={errors.phone}
+            disabled={isLoading}
+            keyboardType="phone-pad"
+            accessoryLeft={renderPhoneNumberPrefix}
+          />
+          <CountySelect
+            control={control as any}
+            name="countyId"
+            label={t('create_user.form.county.label')}
+            error={errors.countyId}
+            disabled={isLoading}
+            placeholder={t('general:select')}
+          />
+          <CitySelect
+            control={control as any}
+            name="cityId"
+            label={t('create_user.form.city.label')}
+            error={errors.cityId}
+            disabled={isLoading}
+            placeholder={t('general:select')}
+            countyId={watchCountyId}
+          />
+          <FormDatePicker
+            control={control as any}
+            placeholder={t('general:select')}
+            label={t('create_user.form.birthday.label')}
+            min={BIRTHDAY_MIN}
+            max={birthdayMax()}
+            initialVisibleDate={BIRTHDAY_INITIAL_VISIBLE}
+            disabled={isLoading}
+            name="birthday"
+            error={errors.birthday}
+            required={true}
+          />
+          <FormSelect
+            control={control as any}
+            name="sex"
+            label={t('general:sex', { sex_type: '' })}
+            error={errors.sex}
+            disabled={isLoading}
+            placeholder={t('general:select')}
+            options={SexOptions}
+          />
+          <Controller
+            control={control}
+            name="acceptTerms"
+            render={({ field: { value, onChange } }) => (
+              <Checkbox
+                checked={!!value}
+                onChange={onChange}
+                disabled={isLoading}
+                error={errors.acceptTerms?.message}
+                accessibilityLabel={`${t('create_account.form.terms.accessibility')}`}
+                testID="create-user-terms"
+              >
+                <VText variant="body">
+                  {t('create_account.form.terms.agree')}
+                  <VText
+                    variant="body"
+                    style={styles.link}
+                    accessibilityRole="link"
+                    onPress={() => openLink(process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK)}
+                    testID="create-user-terms-link"
+                  >
+                    {t('create_account.form.terms.conditions')}
+                  </VText>
+                  {` ${t('create_account.form.terms.and')}`}
+                  <VText
+                    variant="body"
+                    style={styles.link}
+                    accessibilityRole="link"
+                    onPress={() => openLink(process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK)}
+                    testID="create-user-privacy-link"
+                  >
+                    {t('create_account.form.terms.privacy_policy')}
+                  </VText>
+                  {t('create_account.form.terms.application')}
                 </VText>
-                {` ${t('create_account.form.terms.and')}`}
-                <VText
-                  variant="body"
-                  style={styles.link}
-                  accessibilityRole="link"
-                  onPress={() => openLink(process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK)}
-                  testID="create-user-privacy-link"
-                >
-                  {t('create_account.form.terms.privacy_policy')}
-                </VText>
-                {t('create_account.form.terms.application')}
-              </VText>
-            </Checkbox>
-          )}
-        />
+              </Checkbox>
+            )}
+          />
+        </View>
       </FormLayout>
     </PageLayout>
   );
@@ -258,5 +261,8 @@ const CreateUser = ({ navigation }: any) => {
 export default CreateUser;
 
 const styles = StyleSheet.create({
+  content: { marginHorizontal: spacing.gutter - spacing.l, gap: spacing.l },
+  intro: { gap: spacing.s, paddingTop: spacing.s },
+  heading: { fontSize: 26, lineHeight: 32 },
   link: { fontFamily: fonts.bold, color: colors.navy, textDecorationLine: 'underline' },
 });

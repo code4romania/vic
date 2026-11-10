@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import * as Linking from 'expo-linking';
 import { useFocusEffect } from '@react-navigation/native';
 import { BottomSheetModal, BottomSheetTextInput } from '@gorhom/bottom-sheet';
@@ -25,6 +32,7 @@ const Landing = ({ navigation }: any) => {
   const { isUserPending, loginWithSocial, requestLoginCode } = useAuth();
   const { t } = useTranslation('landing');
   const insets = useSafeAreaInsets();
+  const { height: windowHeight } = useWindowDimensions();
   useFocusedStatusBarStyle('dark');
   const sheetRef = useRef<BottomSheetModal>(null);
   const [email, setEmail] = useState('');
@@ -87,7 +95,8 @@ const Landing = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false}
         bounces={false}
       >
-        <LoginHero />
+        {/* on 667pt phones (iPhone SE) a smaller hero keeps the links and the footer on screen */}
+        <LoginHero height={windowHeight < 700 ? 230 : undefined} />
         <Enter>
           <VText variant="largeTitle" style={styles.title} accessibilityRole="header">
             {t('title')}
