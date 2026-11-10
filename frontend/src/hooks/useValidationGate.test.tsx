@@ -20,7 +20,8 @@ describe('validation gate (blocker 5)', () => {
 
     await waitFor(() => expect(button('add_volunteer')).toBeDisabled());
     expect(button('add_event')).toBeDisabled();
-    expect(button('add_hours')).toBeDisabled();
+    // contracts can be managed before validation, as announcements
+    expect(button('manage_contracts')).toBeEnabled();
     expect(button('add_volunteer')).toHaveAttribute('title', t('organization:validation_required'));
     // announcements do not reach new people: they stay available
     expect(button('add_announcement')).toBeEnabled();

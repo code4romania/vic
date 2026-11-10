@@ -34,7 +34,7 @@ const TargetRadioOptions = [
   },
   {
     key: TargetType.SELECT,
-    value: i18n.t('general:select', { item: i18n.t('volunteer:form.department.label') }),
+    value: i18n.t('events:form.target.select'),
   },
 ];
 

@@ -85,10 +85,10 @@ const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
   };
 
   const countOf = (status: ActivityTypeStatus) =>
-    allActivityTypes ? `${allActivityTypes.filter((type) => type.status === status).length}` : '-';
+    allActivityTypes ? `${allActivityTypes.filter((type) => type.status === status).length}` : '–';
 
   const counters = [
-    { status: ActivityTypeStatus.ACTIVE, Icon: CheckCircleIcon, color: 'text-figure-green' },
+    { status: ActivityTypeStatus.ACTIVE, Icon: CheckCircleIcon, color: 'text-navy' },
     { status: ActivityTypeStatus.ARCHIVED, Icon: ArchiveBoxIcon, color: 'text-cool-gray-500' },
   ];
 
@@ -114,11 +114,7 @@ const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
             label={i18n.t(`activity_types:page.counters.${status}.label`)}
             value={countOf(status)}
             icon={<Icon className={`w-5 h-5 ${color}`} aria-hidden="true" />}
-            info={
-              <span className="text-cool-gray-500 font-roboto">
-                {i18n.t(`activity_types:page.counters.${status}.info`)}
-              </span>
-            }
+            subtitle={i18n.t(`activity_types:page.counters.${status}.info`)}
           />
         ))}
       </div>

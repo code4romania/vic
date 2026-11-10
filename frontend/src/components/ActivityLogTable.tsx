@@ -5,8 +5,7 @@ import CardBody from './CardBody';
 import DataTableComponent from './DataTableComponent';
 import i18n from '../common/config/i18n';
 import { ArrowDownTrayIcon, EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
-import { SortOrder, TableColumn } from 'react-data-table-component';
-import Popover from './Popover';
+import { Media, SortOrder, TableColumn } from 'react-data-table-component';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import Select, { SelectItem } from './Select';
 import { downloadExcel, formatDate } from '../common/utils/utils';
@@ -18,7 +17,7 @@ import {
 } from '../services/activity-log/activity-log.service';
 import { IActivityLogListItem } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
-import StatusBadge, { BadgeTone } from './StatusBadge';
+import StatusBadge, { ACTIVITY_LOG_STATUS_TONE } from './StatusBadge';
 import InitialsAvatar from './InitialsAvatar';
 import { useNavigate } from 'react-router';
 import ActivityLogSidePanel from './ActivityLogSidePanel';
@@ -40,11 +39,7 @@ const StatusOptions: SelectItem<ActivityLogStatus>[] = [
   { key: ActivityLogStatus.REJECTED, value: i18n.t('activity_log:display_status.rejected') },
 ];
 
-const STATUS_TONE: Record<ActivityLogStatus, BadgeTone> = {
-  [ActivityLogStatus.APPROVED]: 'green',
-  [ActivityLogStatus.REJECTED]: 'red',
-  [ActivityLogStatus.PENDING]: 'amber',
-};
+const STATUS_TONE = ACTIVITY_LOG_STATUS_TONE;
 
 const VolunteerCell = ({ volunteer }: { volunteer: { id: string; name: string } }) => (
   <div className="flex items-center gap-3 min-w-0">
@@ -54,7 +49,7 @@ const VolunteerCell = ({ volunteer }: { volunteer: { id: string; name: string } 
 );
 
 const ActivityTypeCell = ({ item }: { item: IActivityLogListItem }) => (
-  <div className="flex items-center gap-3 shrink-0 w-full">
+  <div className="flex items-center gap-3 w-full min-w-0">
     {item.activityType ? (
       <ImageOption
         item={item.activityType?.icon}
@@ -63,7 +58,7 @@ const ActivityTypeCell = ({ item }: { item: IActivityLogListItem }) => (
     ) : (
       <ImageOption item="package" component={ICON_MAPPER['package']} />
     )}
-    <div className="flex flex-col w-4/5">
+    <div className="flex flex-col min-w-0 flex-1">
       <small className="font-robotoBold truncate ">
         {item.activityType?.name || i18n.t('general:other')}
       </small>
@@ -94,7 +89,7 @@ const PendingVolunteerActivityLogTableHeader = [
     name: i18n.t('activity_log:header.execution_date'),
     sortable: true,
     grow: 1,
-    minWidth: '8rem',
+    minWidth: '8.5rem',
     selector: (row: IActivityLogListItem) => formatDate(row?.date),
   },
   {
@@ -102,7 +97,7 @@ const PendingVolunteerActivityLogTableHeader = [
     name: i18n.t('activity_log:header.registration_date'),
     sortable: true,
     grow: 1,
-    minWidth: '8rem',
+    minWidth: '8.5rem',
     selector: (row: IActivityLogListItem) => formatDate(row.createdOn),
   },
 ];
@@ -129,7 +124,7 @@ const PastVolunteerActivityLogTableHeader = [
     name: i18n.t('activity_log:header.execution_date'),
     sortable: true,
     grow: 1,
-    minWidth: '8rem',
+    minWidth: '8.5rem',
     selector: (row: IActivityLogListItem) => formatDate(row.date),
   },
   {
@@ -137,7 +132,7 @@ const PastVolunteerActivityLogTableHeader = [
     name: i18n.t('activity_log:status'),
     sortable: true,
     grow: 1,
-    minWidth: '8rem',
+    minWidth: '8.5rem',
     cell: (row: IActivityLogListItem) => (
       <CellLayout>
         <StatusBadge tone={STATUS_TONE[row.status]}>
@@ -151,26 +146,31 @@ const PastVolunteerActivityLogTableHeader = [
 const PendingActivityLogTableHeader = [
   {
     id: 'activityType.name',
+    // phones: the volunteer and the action; the side panel shows the rest
+    hide: Media.SM,
     name: i18n.t('activity_log:header.task'),
     sortable: true,
     grow: 3,
-    minWidth: '10rem',
+    minWidth: '9rem',
     cell: (row: IActivityLogListItem) => <ActivityTypeCell item={row} />,
   },
   {
     id: 'hours',
+    hide: Media.SM,
     name: i18n.t('general:hours'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '4rem',
     cell: (row: IActivityLogListItem) => <CellLayout>{`${row.hours}h`}</CellLayout>,
   },
   {
     id: 'date',
+    // tablets: the volunteer's name keeps its room; the side panel shows the date
+    hide: Media.MD,
     name: i18n.t('activity_log:header.execution_date'),
     sortable: true,
     grow: 1,
-    minWidth: '8rem',
+    minWidth: '7.5rem',
     cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row?.date)}</CellLayout>,
   },
   {
@@ -178,16 +178,18 @@ const PendingActivityLogTableHeader = [
     name: i18n.t('volunteer:name', { status: '' }),
     sortable: true,
     grow: 2,
-    minWidth: '13rem',
+    minWidth: '11rem',
     cell: (row: IActivityLogListItem) =>
       row.volunteer && <VolunteerCell volunteer={row.volunteer} />,
   },
   {
     id: 'createdOn',
+    // laptops and tablets: the "Revizuiește" button stays in view; the side panel has the date
+    hide: 1300,
     name: i18n.t('activity_log:header.registration_date'),
     sortable: true,
     grow: 1,
-    minWidth: '8rem',
+    minWidth: '8.5rem',
     cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
   },
 ];
@@ -195,26 +197,31 @@ const PendingActivityLogTableHeader = [
 const PastActivityLogTableHeader = [
   {
     id: 'activityType.name',
+    // phones: the volunteer and the action; the side panel shows the rest
+    hide: Media.SM,
     name: i18n.t('activity_log:header.task'),
     sortable: true,
     grow: 3,
-    minWidth: '10rem',
+    minWidth: '9rem',
     cell: (row: IActivityLogListItem) => <ActivityTypeCell item={row} />,
   },
   {
     id: 'hours',
+    // tablets: the status and "Fișă de activitate" stay in view; the side panel has the rest
+    hide: Media.MD,
     name: i18n.t('general:hours'),
     sortable: true,
     grow: 1,
-    minWidth: '5rem',
+    minWidth: '4rem',
     cell: (row: IActivityLogListItem) => <CellLayout>{`${row.hours}h`}</CellLayout>,
   },
   {
     id: 'date',
+    hide: Media.MD,
     name: i18n.t('activity_log:header.execution_date'),
     sortable: true,
     grow: 1,
-    minWidth: '8rem',
+    minWidth: '8.5rem',
     cell: (row: IActivityLogListItem) => <CellLayout>{formatDate(row.date)}</CellLayout>,
   },
   {
@@ -222,7 +229,7 @@ const PastActivityLogTableHeader = [
     name: i18n.t('volunteer:name', { status: '' }),
     sortable: true,
     grow: 2,
-    minWidth: '13rem',
+    minWidth: '11rem',
     cell: (row: IActivityLogListItem) =>
       row.volunteer && <VolunteerCell volunteer={row.volunteer} />,
   },
@@ -230,7 +237,7 @@ const PastActivityLogTableHeader = [
     id: 'status',
     name: i18n.t('activity_log:status'),
     sortable: true,
-    grow: 1,
+    grow: 0,
     minWidth: '8rem',
     cell: (row: IActivityLogListItem) => (
       <CellLayout>
@@ -303,22 +310,29 @@ const ActivityLogTable = ({
       );
   }, [activityLogsError]);
 
-  // menu items
+  // M10: every row has a visible action, as in the design: "Revizuiește" on requests that wait for
+  // a decision (the side panel has Aprobă / Respinge), the activity sheet on the others.
   const buildActivityLogActionColumn = (): TableColumn<IActivityLogListItem> => {
-    const activeVolunteersMenuItems = [
-      {
-        label: i18n.t('activity_log:popover.view'),
-        icon: <EyeIcon className="menu-icon" />,
-        onClick: onView,
-      },
-    ];
+    const pending = resolutionStatus === ActivityLogResolutionStatus.NEW;
+    const label = pending ? i18n.t('approvals:review') : i18n.t('activity_log:popover.view');
 
     return {
       name: '',
       cell: (row: IActivityLogListItem) => (
-        <Popover<IActivityLogListItem> row={row} items={activeVolunteersMenuItems} />
+        <button
+          type="button"
+          className="btn-outline-secondary py-1.5 px-3 whitespace-nowrap"
+          aria-label={`${label}: ${row.activityType?.name || i18n.t('general:other')}${
+            row.volunteer ? `, ${row.volunteer.name}` : ''
+          }`}
+          onClick={() => onView(row)}
+        >
+          <EyeIcon className="w-4 h-4" aria-hidden="true" />
+          {label}
+        </button>
       ),
-      width: '50px',
+      minWidth: pending ? '9.5rem' : '11.5rem',
+      right: true,
       allowOverflow: true,
     };
   };
@@ -422,7 +436,11 @@ const ActivityLogTable = ({
 
   const onApprovedOrRejectedByChange = (admin: ListItem) => {
     setApprovedOrRejectedBy(admin);
-    setQuery({ approvedOrRejectedBy: admin.label, page: 1 }, 'replaceIn');
+    // the API filters by the admin's id (two admins can have the same name)
+    setQuery(
+      { approvedOrRejectedBy: admin.value, approvedOrRejectedByName: admin.label, page: 1 },
+      'replaceIn',
+    );
   };
 
   const onExport = async () => {
@@ -461,6 +479,7 @@ const ActivityLogTable = ({
           registrationDateStart: undefined,
           registrationDateEnd: undefined,
           approvedOrRejectedBy: undefined,
+          approvedOrRejectedByName: undefined,
           page: 1,
         },
         'replaceIn',
@@ -475,9 +494,24 @@ const ActivityLogTable = ({
         searchValue={query?.search}
         onResetFilters={onResetFilters}
         searchPlaceholder={`${i18n.t('activity_log:filters.search')}`}
-        results={i18n.t('activity_log:filters.found', {
-          count: activityLogs?.meta?.totalItems ?? 0,
-        })}
+        results={
+          <>
+            <span>
+              {i18n.t('activity_log:filters.found', {
+                count: activityLogs?.meta?.totalItems ?? 0,
+              })}
+            </span>
+            {resolutionStatus === ActivityLogResolutionStatus.SOLVED && (
+              <Button
+                label={i18n.t('general:download_table')}
+                className="btn-text-primary px-2"
+                icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+                onClick={onExport}
+                type="button"
+              />
+            )}
+          </>
+        }
       >
         <DateRangePicker
           label={i18n.t('activity_log:filters.execution')}
@@ -521,7 +555,10 @@ const ActivityLogTable = ({
               onSelect={onApprovedOrRejectedByChange}
               defaultValue={
                 query.approvedOrRejectedBy
-                  ? { value: '', label: query.approvedOrRejectedBy }
+                  ? {
+                      value: query.approvedOrRejectedBy,
+                      label: query.approvedOrRejectedByName ?? query.approvedOrRejectedBy,
+                    }
                   : approvedOrRejectedBy
               }
             />
@@ -533,23 +570,15 @@ const ActivityLogTable = ({
           <h2>
             {resolutionStatus === ActivityLogResolutionStatus.NEW
               ? i18n.t('activity_log:pending_header', {
-                  hours: counters?.pending ?? '-',
+                  hours: counters?.pending ?? '–',
                 })
               : `${i18n.t('activity_log:past_header', {
-                  hours: counters?.approved ?? '-',
-                  rejected: counters?.rejected ?? '-',
+                  hours: counters?.approved ?? '–',
+                  rejected: counters?.rejected ?? '–',
                 })}`}
           </h2>
           {resolutionStatus === ActivityLogResolutionStatus.SOLVED && (
             <div className="flex gap-2 lg:gap-6 flex-wrap">
-              <Button
-                label={i18n.t('general:download_table')}
-                className="btn-outline-secondary grow"
-                icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-                onClick={onExport}
-                aria-label={`${i18n.t('general:download_table')}`}
-                type="button"
-              />
               {volunteerId && (
                 <Button
                   label={i18n.t('activity_log:add')}

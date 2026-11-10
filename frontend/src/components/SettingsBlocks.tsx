@@ -95,7 +95,7 @@ export const SettingsField = ({ label, value }: { label: string; value?: string 
   <div className="flex flex-col gap-1.5 min-w-0">
     <span className="text-sm font-robotoMedium text-cool-gray-700">{label}</span>
     <p className="rounded-lg bg-cool-gray-50 border border-cool-gray-200 px-3 py-2.5 text-cool-gray-900 break-words">
-      {value || '-'}
+      {value || '–'}
     </p>
   </div>
 );

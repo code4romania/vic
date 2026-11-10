@@ -99,7 +99,7 @@ const VolunteerProfile = ({
             <hr className="border-cool-gray-200 col-span-full" />
             <FormReadOnlyElement value={branch} label={i18n.t('division:entity.branch')} />
             <div className="flex gap-2.5 flex-col">
-              <small className="text-cool-gray-500">{`${i18n.t('general:status')} in VIC`}</small>
+              <small className="text-cool-gray-500">{i18n.t('volunteer:status_in_vic')}</small>
               <p className={`${VolunteerProfileStatusTextColorMapper[status]}`}>
                 {i18n.t(`volunteer:name`, {
                   status: i18n.t(`volunteer:status.${status}`),
@@ -111,7 +111,7 @@ const VolunteerProfile = ({
             </div>
             <FormReadOnlyElement value={department} label={i18n.t('division:entity.department')} />
             <FormReadOnlyElement
-              value={startedOn ? formatDate(startedOn) : '-'}
+              value={startedOn ? formatDate(startedOn) : '–'}
               label={i18n.t('volunteer:name', {
                 status: i18n.t('pagination:range_separator_text'),
               })}
@@ -145,7 +145,7 @@ const VolunteerProfile = ({
                 </div>
               ) : (
                 <div className="flex gap-2 items-center">
-                  <p>{source || '-'}</p>
+                  <p>{source || '–'}</p>
                   {onSaveSource && (
                     <button
                       type="button"

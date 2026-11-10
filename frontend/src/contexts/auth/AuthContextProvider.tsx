@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { toastOptions } from '../../hooks/useToast';
 import { AuthContext } from './AuthContext';
 import { IAdminProfile, IWebSession } from '../../common/interfaces/auth.interface';
 import * as authApi from '../../services/auth/auth.api';
@@ -33,7 +34,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     // A refresh failed in the middle of the session (expired, revoked, disabled): back to the login page.
     const offSessionEnded = apiEvents.onSessionEnded(() => {
       setProfile((current) => {
-        if (current) toast.info(t('session_ended'));
+        if (current) toast.info(t('session_ended'), toastOptions('info'));
         return undefined;
       });
       queryClient.clear();
@@ -108,7 +109,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         <div role="status" className="h-[100vh] w-full flex items-center justify-center">
           <svg
             aria-hidden="true"
-            className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+            className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-navy"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

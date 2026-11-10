@@ -20,7 +20,7 @@ const FormDatePicker = ({
   ...props
 }: FormDatePickerProps) => {
   return readOnly ? (
-    <FormReadOnlyElement label={label || ''} value={value ? formatDate(value) : '-'} />
+    <FormReadOnlyElement label={label || ''} value={value ? formatDate(value) : '–'} />
   ) : (
     <DatePickerInput
       {...(props as DatePickerInputProps)}

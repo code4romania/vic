@@ -29,12 +29,12 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
           wrapperClassName="w-full"
           className={classNames(
             className || '',
-            'block w-full border-cool-gray-200 shadow-sm rounded-md sm:text-sm lg:text-base text-xs leading-loose max-h-[42px]',
+            'block w-full border-cool-gray-300 rounded-lg text-base sm:text-sm h-[42px]',
           )}
           dateFormat={dateFormat}
         />
         <CalendarIcon
-          className="sm:h-5 sm:w-5 h-4 w-4 text-gray-400 absolute mt-[-2rem] right-2"
+          className="sm:h-5 sm:w-5 h-4 w-4 text-cool-gray-500 absolute mt-[-2rem] right-2"
           aria-hidden="true"
         />
       </div>

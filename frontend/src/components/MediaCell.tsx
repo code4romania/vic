@@ -18,9 +18,14 @@ const MediaCell = ({ logo, title, subtitle }: MediaCellProps) => (
     ) : (
       <InitialsAvatar name={title} />
     )}
-    <div className="flex flex-col w-4/5">
-      <small className="font-robotoMedium text-cool-gray-900 truncate">{title}</small>
-      <small className="truncate text-cool-gray-500">{subtitle || ''}</small>
+    {/* long names wrap on two lines; the full name is in the tooltip */}
+    <div className="flex flex-col min-w-0 flex-1">
+      <small className="font-robotoMedium text-cool-gray-900 line-clamp-2" title={title}>
+        {title}
+      </small>
+      <small className="line-clamp-2 text-cool-gray-500" title={subtitle}>
+        {subtitle || ''}
+      </small>
     </div>
   </div>
 );

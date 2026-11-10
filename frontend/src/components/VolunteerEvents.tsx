@@ -2,7 +2,7 @@ import React from 'react';
 import { CalendarIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import i18n from '../common/config/i18n';
 import { IVolunteerEvent } from '../common/interfaces/volunteer-events.interface';
-import { formatDate } from '../common/utils/utils';
+import { formatDate, formatDateRange } from '../common/utils/utils';
 import Card from '../layouts/CardLayout';
 import { useVolunteerEventsQuery } from '../services/volunteer/volunteer.service';
 import CardBody from './CardBody';
@@ -12,7 +12,7 @@ import LoadingContent from './LoadingContent';
 
 const period = (event: IVolunteerEvent) =>
   event.endDate && formatDate(event.endDate) !== formatDate(event.startDate)
-    ? `${formatDate(event.startDate)} - ${formatDate(event.endDate)}`
+    ? formatDateRange(event.startDate, event.endDate)
     : formatDate(event.startDate);
 
 const EventList = ({

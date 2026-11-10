@@ -1,6 +1,6 @@
 import { KeyIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
-import { SortOrder, TableColumn } from 'react-data-table-component';
+import { Media, SortOrder, TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { OrderDirection } from '../common/enums/order-direction.enum';
@@ -90,6 +90,7 @@ const AccessCodeTableHeader: TableColumn<IAccessCode>[] = [
   },
   {
     id: 'usageCount',
+    hide: Media.SM,
     name: i18n.t('general:uses'),
     sortable: true,
     minWidth: '6rem',
@@ -103,6 +104,7 @@ const AccessCodeTableHeader: TableColumn<IAccessCode>[] = [
   },
   {
     id: 'createdOn',
+    hide: 1100,
     name: i18n.t('general:created_on'),
     sortable: true,
     minWidth: '8rem',
@@ -110,6 +112,7 @@ const AccessCodeTableHeader: TableColumn<IAccessCode>[] = [
   },
   {
     id: 'createdBy.name',
+    hide: Media.MD,
     name: i18n.t('general:created_by'),
     sortable: true,
     minWidth: '12rem',
@@ -210,7 +213,7 @@ const AccessCodes = ({ query, setQuery }: AccessCodesProps) => {
     return {
       name: '',
       cell: (row: IAccessCode) => <Popover<IAccessCode> row={row} items={accessCodeMenuItems} />,
-      width: '50px',
+      width: '64px',
       allowOverflow: true,
     };
   };

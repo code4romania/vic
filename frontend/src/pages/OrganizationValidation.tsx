@@ -78,7 +78,7 @@ const OrganizationValidation = () => {
 
   const pending = data ?? [];
   const busy = validate.isLoading || suspend.isLoading;
-  const total = (count?: number) => (count === undefined ? '-' : String(count));
+  const total = (count?: number) => (count === undefined ? '–' : String(count));
 
   const waiting = (registeredOn: string) => {
     const days = differenceInCalendarDays(new Date(), new Date(registeredOn));
@@ -92,14 +92,14 @@ const OrganizationValidation = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatisticsCard
           label={t('stats.pending')}
-          value={isLoading || error ? '-' : String(pending.length)}
+          value={isLoading || error ? '–' : String(pending.length)}
           icon={<ClockIcon className="w-5 h-5 text-figure-amber" aria-hidden="true" />}
           info={pending.length ? t('stats.pending_info') : undefined}
         />
         <StatisticsCard
           label={t('stats.active')}
           value={total(active.data?.meta.totalItems)}
-          icon={<CheckCircleIcon className="w-5 h-5 text-figure-green" aria-hidden="true" />}
+          icon={<CheckCircleIcon className="w-5 h-5 text-navy" aria-hidden="true" />}
           action={{
             label: t('stats.see_all'),
             onClick: () => navigate('/admin/organizations?status=active'),
@@ -197,7 +197,7 @@ const OrganizationValidation = () => {
                       </span>
                     </>
                   ) : (
-                    '-'
+                    '–'
                   )}
                 </Field>
                 {organization.address && (

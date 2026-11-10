@@ -20,7 +20,10 @@ const DashboardAnnouncementResponses = () => {
   return (
     <Card>
       <CardHeader>
-        <h2>{t('title')}</h2>
+        <div>
+          <h2>{t('title')}</h2>
+          <p className="text-sm text-cool-gray-600">{t('subtitle')}</p>
+        </div>
       </CardHeader>
       <CardBody>
         {!!error && <LoadErrorContent onRetry={refetch} />}

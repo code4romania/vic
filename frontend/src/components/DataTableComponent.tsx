@@ -9,10 +9,12 @@ import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { PaginationConfig } from '../common/constants/pagination';
 
 // Phones (the table library's "sm" breakpoint): the columns marked hide: Media.SM are gone, and
-// the rest drop their desktop minimum widths so status and the "⋮" menu stay on screen.
+// the rest drop their desktop minimum widths so status and the "⋮" menu stay on screen. The main
+// column (grow 2 or more: the name) takes the room left; the others (status, hours) take only the
+// width of their content.
 const NARROW = '(max-width: 599px)';
 
-const useNarrowScreen = (): boolean => {
+export const useNarrowScreen = (): boolean => {
   const query = typeof window !== 'undefined' && window.matchMedia?.(NARROW);
   const [narrow, setNarrow] = useState<boolean>(!!query && query.matches);
   useEffect(() => {
@@ -31,6 +33,8 @@ interface DataTableProps<T> {
   // The request failed: show the error and a retry button instead of "no data"
   error?: unknown;
   onRetry?: () => void;
+  // What an empty list says, and what to do next ("Adaugă primul voluntar"); generic otherwise
+  empty?: { title?: string; description: string; action?: React.ReactNode };
   pagination?: boolean;
   sortServer?: boolean;
   paginationPerPage?: number;
@@ -49,6 +53,7 @@ const DataTableComponent = <T extends object>({
   loading,
   error,
   onRetry,
+  empty,
   pagination,
   sortServer,
   paginationPerPage,
@@ -62,7 +67,14 @@ const DataTableComponent = <T extends object>({
 }: DataTableProps<T>) => {
   const narrow = useNarrowScreen();
   const responsiveColumns = useMemo(
-    () => (narrow ? columns.map((column) => ({ ...column, minWidth: undefined })) : columns),
+    () =>
+      narrow
+        ? // a column with a button (allowOverflow) keeps its width, so the button is not cut
+          columns.map((column) => {
+            if (column.allowOverflow || column.width) return column;
+            return { ...column, minWidth: (column.grow ?? 1) >= 2 ? '0' : 'fit-content' };
+          })
+        : columns,
     [narrow, columns],
   );
 
@@ -70,6 +82,9 @@ const DataTableComponent = <T extends object>({
     <DataTable
       className={classNames(
         !loading && !error && data?.length ? 'border-cool-gray-200' : '',
+        narrow && columns.some((column) => column.hide) ? 'rdt-fit' : '',
+        // the last column holds the row actions: it stays visible while the table scrolls sideways
+        columns[columns.length - 1]?.allowOverflow ? 'rdt-sticky-actions' : '',
         `rdt_TableWrapper`,
       )}
       noHeader
@@ -96,7 +111,11 @@ const DataTableComponent = <T extends object>({
         error ? (
           <LoadErrorContent onRetry={onRetry} />
         ) : (
-          <EmptyContent description={i18n.t('general:empty_table')} />
+          <EmptyContent
+            title={empty?.title}
+            description={empty?.description ?? i18n.t('general:empty_table')}
+            action={empty?.action}
+          />
         )
       }
       progressComponent={<LoadingContent />}

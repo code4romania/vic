@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import {
   ArrowDownTrayIcon,
+  CalendarIcon,
   CloudArrowUpIcon,
   DocumentMinusIcon,
   EyeIcon,
@@ -12,6 +13,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn, Media } from 'react-data-table-component';
 import i18n from '../common/config/i18n';
+import EmptyContent from '../components/EmptyContent';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IEvent } from '../common/interfaces/event.interface';
@@ -89,7 +91,7 @@ const locationColumn: TableColumn<IEvent> = {
   id: 'location',
   name: i18n.t('events:table.location'),
   // tablets and phones: name, status and the actions stay visible
-  hide: Media.MD,
+  hide: 1100,
   minWidth: '10rem',
   grow: 1,
   cell: (row: IEvent) => <EventLocation location={row.location} />,
@@ -98,7 +100,7 @@ const locationColumn: TableColumn<IEvent> = {
 const departmentsColumn: TableColumn<IEvent> = {
   id: 'target',
   name: i18n.t('events:table.departments'),
-  hide: Media.MD,
+  hide: 1300,
   minWidth: '9rem',
   grow: 1,
   cell: (row: IEvent) => <EventTargets event={row} />,
@@ -137,7 +139,7 @@ const hoursColumn: TableColumn<IEvent> = {
 const statusColumn: TableColumn<IEvent> = {
   id: 'status',
   name: i18n.t('events:table.status'),
-  minWidth: '8rem',
+  minWidth: '9.5rem',
   grow: 0,
   sortable: true,
   cell: (row: IEvent) => (
@@ -209,7 +211,7 @@ const Events = ({ query, setQuery }: EventsProps) => {
     queryClient.invalidateQueries(['event-counters']);
   };
   const { data: departments } = useDivisionsListItems(DivisionType.DEPARTMENT);
-  const { data: counters } = useEventCountersQuery(query.departmentId);
+  const { data: counters, isError: countersFailed } = useEventCountersQuery(query.departmentId);
   // actions
   const { mutateAsync: archiveEvent, isLoading: isArchivingEvent } = useArchiveEventMutation();
   const { mutateAsync: publishEvent, isLoading: isPublishingEvent } = usePublishEventMutation();
@@ -418,7 +420,7 @@ const Events = ({ query, setQuery }: EventsProps) => {
 
   // audit, major 11: one number per thing. Upcoming / ongoing / past are counted on the tabs (with
   // the filters applied), so the cards that repeated them and the "N evenimente găsite" line are gone.
-  const COUNTERS = [{ key: 'participants', Icon: UsersIcon, color: 'text-figure-teal' }] as const;
+  const COUNTERS = [{ key: 'participants', Icon: UsersIcon, color: 'text-navy' }] as const;
 
   return (
     <PageLayout>
@@ -441,13 +443,9 @@ const Events = ({ query, setQuery }: EventsProps) => {
           <StatisticsCard
             key={key}
             label={`${i18n.t(`events:counters.${key}`)}`}
-            value={`${counters?.[key] ?? '-'}`}
+            value={counters ? `${counters[key] ?? 0}` : countersFailed ? '–' : undefined}
             icon={<Icon className={`w-5 h-5 ${color}`} aria-hidden="true" />}
-            info={
-              <span className="text-cool-gray-500 font-roboto">
-                {i18n.t(`events:counters_info.${key}`)}
-              </span>
-            }
+            subtitle={i18n.t(`events:counters_info.${key}`)}
           />
         ))}
       </div>
@@ -483,7 +481,27 @@ const Events = ({ query, setQuery }: EventsProps) => {
         <Card>
           <CardBody>
             {!isEventsLoading && !eventsError && !events?.items?.length ? (
-              <p className="py-12 text-center text-cool-gray-500">{i18n.t('events:page.empty')}</p>
+              <EmptyContent
+                icon={<CalendarIcon className="w-6 h-6" />}
+                title={`${i18n.t('events:page.empty_title')}`}
+                description={
+                  search || query.departmentId
+                    ? `${i18n.t('general:empty_filtered')}`
+                    : `${i18n.t('events:page.empty')}`
+                }
+                action={
+                  !search &&
+                  !query.departmentId && (
+                    <Button
+                      label={i18n.t('events:page.add')}
+                      icon={<PlusIcon className="h-5 w-5" />}
+                      className="btn-primary"
+                      onClick={onAddEvent}
+                      {...gate}
+                    />
+                  )
+                }
+              />
             ) : (
               <DataTableComponent
                 columns={[

@@ -6,6 +6,7 @@ import Router from './routes/Router';
 import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { TOAST_DURATION } from './hooks/useToast';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +25,14 @@ const queryClient = new QueryClient({
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthContextProvider>
-      <ToastContainer position="top-right" autoClose={30000} limit={3} closeOnClick rtl={false} />
+      {/* bottom right (full width at the bottom on phones): never over the header's buttons */}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={TOAST_DURATION.success}
+        limit={3}
+        closeOnClick
+        rtl={false}
+      />
       <Router />
     </AuthContextProvider>
   </QueryClientProvider>

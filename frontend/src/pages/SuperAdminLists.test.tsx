@@ -90,7 +90,7 @@ describe('Super admin lists (#511)', () => {
     );
   });
 
-  it('counts the results and sends pending organizations to the validation page', async () => {
+  it('counts the results and sends organizations waiting for validation to the validation page', async () => {
     server.use(
       http.get(api('/admin/organizations'), () =>
         HttpResponse.json({
@@ -101,7 +101,7 @@ describe('Super admin lists (#511)', () => {
               email: 'noua@ong.test',
               phone: '',
               taxId: 'RO999',
-              status: 'pending',
+              status: 'active',
               validatedAt: null,
               createdOn: '2026-11-01T10:00:00Z',
               volunteers: 0,
@@ -113,13 +113,51 @@ describe('Super admin lists (#511)', () => {
     );
     render('/admin/organizations');
     expect(await screen.findByText('Asociatia Noua')).toBeInTheDocument();
-    expect(screen.getByText(t('super_admin:status.pending'))).toBeInTheDocument();
+    expect(screen.getByText(t('super_admin:status.validation'))).toBeInTheDocument();
     expect(
       screen.getByText(t('super_admin:found.organizations', { count: 1 })),
     ).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: `${t('super_admin:review')} Asociatia Noua` }),
     ).toBeInTheDocument();
+  });
+
+  // audit M1: "pending" is an email not confirmed yet, not an organization waiting for validation
+  it('shows an unconfirmed organization as such, with no validation action', async () => {
+    server.use(
+      http.get(api('/admin/organizations'), () =>
+        HttpResponse.json({
+          items: [
+            {
+              id: 'o3',
+              name: 'Asociatia Neconfirmata',
+              email: 'nec@ong.test',
+              phone: '',
+              taxId: 'RO777',
+              status: 'pending',
+              validatedAt: null,
+              createdOn: '2026-11-01T10:00:00Z',
+              volunteers: 0,
+            },
+          ],
+          meta: meta(1),
+        }),
+      ),
+    );
+    render('/admin/organizations');
+    expect(await screen.findByText('Asociatia Neconfirmata')).toBeInTheDocument();
+    expect(screen.getByText(t('super_admin:status.unconfirmed'))).toBeInTheDocument();
+    expect(screen.queryByText(t('super_admin:status.validation'))).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: `${t('super_admin:review')} Asociatia Neconfirmata` }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('filters "În validare" as confirmed organizations never validated', async () => {
+    render('/admin/organizations?status=validation');
+    await screen.findByText('Crucea Verde');
+    expect(organizationParams[0].get('status')).toBe('active');
+    expect(organizationParams[0].get('awaitingValidation')).toBe('true');
   });
 
   it('suspends an active organization after confirmation (blocker 4)', async () => {

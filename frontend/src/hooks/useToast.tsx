@@ -16,12 +16,19 @@ const EDGES: Record<ToastTone, string> = {
   info: '!border-l-navy',
 };
 
+// Long enough to read, short enough not to stay over the page: errors a bit longer than the rest
+export const TOAST_DURATION: Record<ToastTone, number> = {
+  success: 5000,
+  info: 6000,
+  error: 8000,
+};
+
 // White card with a colored edge and icon, like the rest of the app (no colored blocks, no CSS file).
 export const toastOptions = (tone: ToastTone): ToastOptions => ({
   icon: ICONS[tone],
   theme: 'light',
   hideProgressBar: true,
-  autoClose: 3000,
+  autoClose: TOAST_DURATION[tone],
   className: `!rounded-xl !border !border-l-4 !border-cool-gray-200 ${EDGES[tone]} !shadow-menu !font-roboto !text-sm !text-cool-gray-900 !min-h-[56px]`,
   bodyClassName: '!items-center !gap-1 !p-1',
 });

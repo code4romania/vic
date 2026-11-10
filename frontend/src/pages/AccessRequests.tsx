@@ -15,9 +15,10 @@ import { AccessRequestsProps } from '../containers/query/AccessRequestsWithQuery
 import AccessRequestTableWithQueryParams from '../containers/query/AccessRequestTableWithQueryParams';
 
 const AccessRequestsTabs: SelectItem<RequestStatus>[] = [
-  { key: RequestStatus.PENDING, value: i18n.t('access_requests:tabs.requests') },
-  { key: RequestStatus.APPROVED, value: i18n.t('access_requests:tabs.approved_requests') },
-  { key: RequestStatus.REJECTED, value: i18n.t('access_requests:tabs.rejected_requests') },
+  // the same three labels as the hours and the event registrations (audit m18)
+  { key: RequestStatus.PENDING, value: i18n.t('approvals:status.pending') },
+  { key: RequestStatus.APPROVED, value: i18n.t('approvals:status.approved') },
+  { key: RequestStatus.REJECTED, value: i18n.t('approvals:status.rejected') },
 ];
 
 const AccessRequests = ({

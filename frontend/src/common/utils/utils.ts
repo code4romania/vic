@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { endOfDay, format, formatISO9075, isSameDay } from 'date-fns';
 import { SelectItem } from '../../components/Select';
-import { ActivityLogStatus } from '../enums/activity-log.status.enum';
 import { ICity } from '../interfaces/city.interface';
 import { IDivisionListItem } from '../interfaces/division.interface';
 import { AnnouncementStatus } from '../enums/announcement-status.enum';
@@ -33,11 +32,19 @@ export const debouncePromise = (fn: any, delay: number) => {
  * FORMATTERS
  */
 
+// What a cell shows when there is no value: always the same dash
+export const EMPTY_VALUE = '–';
+
+// One date format everywhere: 14.11.2026
 export const formatDate = (value?: Date | string | null, dateFormat?: string): string =>
-  value ? format(new Date(value), dateFormat || 'dd.LL.y') : '-';
+  value ? format(new Date(value), dateFormat || 'dd.LL.y') : EMPTY_VALUE;
 
 export const formatDateWithTime = (value?: Date | string | null): string =>
-  value ? format(new Date(value), 'dd.LL.y HH:mm') : '-';
+  value ? format(new Date(value), 'dd.LL.y, HH:mm') : EMPTY_VALUE;
+
+// "04.05.2026 – 24.08.2026": an en dash, and a line can only break after it, never inside a date
+export const formatDateRange = (start?: Date | string | null, end?: Date | string | null): string =>
+  `${formatDate(start)}\u00a0– ${formatDate(end)}`;
 
 export const arrayOfNamesToString = (array: { name: string }[], separator: string): string => {
   return array.map((item) => item.name).join(separator);
@@ -45,28 +52,23 @@ export const arrayOfNamesToString = (array: { name: string }[], separator: strin
 
 // "-" when there is no city; never the text "null" or "undefined"
 export const formatLocation = (location?: ICity | null): string =>
-  [location?.name, location?.county?.abbreviation].filter(Boolean).join(', ') || '-';
+  [location?.name, location?.county?.abbreviation].filter(Boolean).join(', ') || EMPTY_VALUE;
 
 export const getHoursAndMinutes = (value: Date | string): string =>
   format(new Date(value), 'HH:mm');
 
-export const formatEventDate = (startDate: Date, endDate?: Date): string => {
-  let eventDate = '';
-  if (!endDate) {
-    eventDate = `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}`;
-  } else {
-    if (isSameDay(new Date(startDate), new Date(endDate))) {
-      eventDate = `${formatDate(startDate)}, ${getHoursAndMinutes(
-        startDate,
-      )}-\n${getHoursAndMinutes(endDate)}`;
-    } else {
-      eventDate = `${formatDate(startDate)}, ${getHoursAndMinutes(startDate)}-\n${formatDate(
-        endDate,
-      )}, ${getHoursAndMinutes(endDate)}`;
-    }
-  }
-
-  return eventDate;
+// "14.11.2026, 18:04 – 23:04" on one day, "14.11.2026, 18:04 – 15.11.2026, 10:00" otherwise.
+// Non-breaking spaces keep each date with its hour.
+export const formatEventDate = (
+  startDate: Date | string,
+  endDate?: Date | string | null,
+): string => {
+  const start = `${formatDate(startDate)},\u00a0${getHoursAndMinutes(startDate)}`;
+  if (!endDate) return start;
+  const end = isSameDay(new Date(startDate), new Date(endDate))
+    ? getHoursAndMinutes(endDate)
+    : `${formatDate(endDate)},\u00a0${getHoursAndMinutes(endDate)}`;
+  return `${start}\u00a0– ${end}`;
 };
 
 export const downloadExcel = (data: BlobPart, name: string): void => {
@@ -126,14 +128,8 @@ export const ContractStatusMarkerColorMapper = {
 export const VolunteerStatusMarkerColorMapper: Record<string, string> = {
   active: 'bg-green-500',
   inactive: 'bg-yellow-500',
-  candidate: 'bg-blue-500',
+  candidate: 'bg-navy',
   blocked: 'bg-red-500',
-};
-
-export const ActivityLogStatusMarkerColorMapper = {
-  [ActivityLogStatus.APPROVED]: 'bg-green-500',
-  [ActivityLogStatus.REJECTED]: 'bg-red-500',
-  [ActivityLogStatus.PENDING]: 'bg-yellow-500',
 };
 
 export const mapDivisionListItemToSelectItem = (item: IDivisionListItem): SelectItem<string> => ({

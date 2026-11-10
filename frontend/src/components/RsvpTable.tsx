@@ -18,7 +18,7 @@ import CellLayout from '../layouts/CellLayout';
 import StatusBadge, { BadgeTone } from './StatusBadge';
 import { useErrorToast } from '../hooks/useToast';
 import { OrderDirection } from '../common/enums/order-direction.enum';
-import { SortOrder, TableColumn } from 'react-data-table-component';
+import { Media, SortOrder, TableColumn } from 'react-data-table-component';
 import { IRsvp } from '../common/interfaces/rsvp.interface';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import i18n from '../common/config/i18n';
@@ -72,6 +72,7 @@ const TableHeader = [
   },
   {
     id: 'createdOn',
+    hide: Media.SM,
     name: i18n.t('events:registrations.header.registered_on'),
     minWidth: '8rem',
     grow: 1,
@@ -79,13 +80,15 @@ const TableHeader = [
   },
   {
     id: 'volunteerId',
+    hide: Media.SM,
     name: i18n.t('events:volunteer'),
-    minWidth: '12rem',
+    minWidth: '8rem',
     grow: 1,
     selector: (row: IRsvp) => (row.volunteerId ? i18n.t('general:yes') : i18n.t('general:no')),
   },
   {
     id: 'mention',
+    hide: Media.MD,
     name: i18n.t('events:form.mention.label'),
     minWidth: '9rem',
     grow: 1,
@@ -93,7 +96,7 @@ const TableHeader = [
     cell: (row: IRsvp) => (
       <CellLayout>
         <small title={row.mention} className="text-overflow">
-          {row.mention ? row.mention : '-'}
+          {row.mention ? row.mention : '–'}
         </small>
       </CellLayout>
     ),

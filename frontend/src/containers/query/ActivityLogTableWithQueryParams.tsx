@@ -21,7 +21,9 @@ export interface ActivityLogTableQueryProps extends IPaginationQueryParams {
   executionDateEnd?: Date;
   registrationDateStart?: Date;
   registrationDateEnd?: Date;
+  // the admin's id, sent to the API; the name only shows the choice in the filter
   approvedOrRejectedBy?: string;
+  approvedOrRejectedByName?: string;
 }
 
 export type ActivityLogTableBasicProps = IHOCQueryProps<ActivityLogTableQueryProps>;
@@ -59,6 +61,7 @@ const ActivityLogTableWithQueryParams = ({
     registrationDateStart: DateParam,
     registrationDateEnd: DateParam,
     approvedOrRejectedBy: StringParam,
+    approvedOrRejectedByName: StringParam,
   };
 
   return (

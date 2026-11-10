@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { TableColumn } from 'react-data-table-component';
+import { Media, TableColumn } from 'react-data-table-component';
 import { useQueryClient } from 'react-query';
 import { StringParam, useQueryParams, withDefault } from 'use-query-params';
 import i18n from '../common/config/i18n';
@@ -83,6 +83,7 @@ const columns = (status: EventRegistrationStatus): TableColumn<IEventRegistratio
   },
   {
     id: 'volunteerStatus',
+    hide: Media.MD,
     name: i18n.t('events:registrations.header.in_organization'),
     grow: 1,
     minWidth: '9rem',
@@ -93,6 +94,7 @@ const columns = (status: EventRegistrationStatus): TableColumn<IEventRegistratio
   },
   {
     id: 'createdOn',
+    hide: 1100,
     name: i18n.t('events:registrations.header.registered_on'),
     grow: 1,
     minWidth: '8rem',
@@ -103,6 +105,7 @@ const columns = (status: EventRegistrationStatus): TableColumn<IEventRegistratio
     : [
         {
           id: 'decided',
+          hide: Media.SM,
           name: i18n.t('events:registrations.header.decided'),
           grow: 2,
           minWidth: '12rem',
@@ -228,7 +231,7 @@ const EventRegistrations = ({ embedded }: { embedded?: boolean } = {}) => {
                 ...columns(status),
                 {
                   name: '',
-                  width: '50px',
+                  width: '64px',
                   allowOverflow: true,
                   cell: (row: IEventRegistration) => (
                     <Popover<IEventRegistration> row={row} items={actions(row)} />

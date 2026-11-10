@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TableColumn } from 'react-data-table-component';
+import { Media, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
 import {
   CheckCircleIcon,
@@ -44,7 +44,7 @@ const COUNTERS: {
   Icon: typeof UserIcon;
   color: string;
 }[] = [
-  { key: 'active', statuses: ['active'], Icon: ShieldCheckIcon, color: 'text-figure-green' },
+  { key: 'active', statuses: ['active'], Icon: ShieldCheckIcon, color: 'text-navy' },
   {
     key: 'pending',
     statuses: ['invite_sent', 'invite_expired', 'no_login'],
@@ -161,11 +161,16 @@ const Team = () => {
         </div>
       ),
     },
-    { id: 'phone', name: t('columns.phone'), selector: (member) => member.phone },
+    {
+      id: 'phone',
+      hide: Media.MD,
+      name: t('columns.phone'),
+      selector: (member) => member.phone,
+    },
     {
       id: 'status',
       name: t('columns.status'),
-      minWidth: '16rem',
+      minWidth: '10rem',
       cell: (member) => (
         <CellLayout>
           <StatusBadge tone={TEAM_STATUS_TONE[member.status]}>{statusLabel(member)}</StatusBadge>
@@ -174,11 +179,13 @@ const Team = () => {
     },
     {
       id: 'lastLogin',
+      hide: 1100,
       name: t('columns.last_login'),
       selector: (member) => formatDateWithTime(member.lastLoginAt),
     },
     {
       id: 'lastInvite',
+      hide: Media.SM,
       name: t('columns.last_invite'),
       minWidth: '12rem',
       cell: (member) =>
@@ -190,12 +197,12 @@ const Team = () => {
             </small>
           </div>
         ) : (
-          '-'
+          '–'
         ),
     },
     {
       name: '',
-      width: '50px',
+      width: '64px',
       allowOverflow: true,
       cell: (member) => {
         const items = actionsFor(member);
@@ -205,7 +212,7 @@ const Team = () => {
   ];
 
   const countOf = (statuses: TeamMemberStatus[]) =>
-    team ? `${team.filter((member) => statuses.includes(member.status)).length}` : '-';
+    team ? `${team.filter((member) => statuses.includes(member.status)).length}` : '–';
 
   return (
     <PageLayout>
@@ -229,9 +236,7 @@ const Team = () => {
             label={t(`counters.${key}.label`)}
             value={countOf(statuses)}
             icon={<Icon className={`w-5 h-5 ${color}`} aria-hidden="true" />}
-            info={
-              <span className="text-cool-gray-500 font-roboto">{t(`counters.${key}.info`)}</span>
-            }
+            subtitle={t(`counters.${key}.info`)}
           />
         ))}
       </div>

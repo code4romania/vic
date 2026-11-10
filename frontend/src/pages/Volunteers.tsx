@@ -75,7 +75,7 @@ const VolunteersTableHeader = [
     name: i18n.t('general:name'),
     sortable: true,
     grow: 2,
-    minWidth: '14rem',
+    minWidth: '13rem',
     cell: (row: IVolunteer) => (
       <MediaCell
         logo={row.user?.profilePicture || ''}
@@ -90,7 +90,8 @@ const VolunteersTableHeader = [
   },
   {
     id: 'volunteerProfile.email',
-    hide: Media.SM,
+    // shown on wide screens only, so status and the menu fit on a laptop (the profile has it)
+    hide: 1300,
     name: i18n.t('general:contact'),
     sortable: true,
     grow: 2,
@@ -109,8 +110,8 @@ const VolunteersTableHeader = [
     hide: Media.SM,
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
-    grow: 1,
-    minWidth: '10rem',
+    grow: 2,
+    minWidth: '13rem',
     cell: (row: IVolunteer) =>
       row.profile?.department || row.profile?.role || row.profile?.branch ? (
         <div className="flex flex-wrap gap-1">
@@ -119,13 +120,13 @@ const VolunteersTableHeader = [
           {row.profile?.branch && <Chip>{row.profile.branch.name}</Chip>}
         </div>
       ) : (
-        <span className="text-cool-gray-400">–</span>
+        <span className="text-cool-gray-500">–</span>
       ),
   },
   // Hours is not sortable: it is computed per page (#475).
   {
     id: 'totalHours',
-    hide: Media.SM,
+    hide: Media.MD,
     name: i18n.t('volunteers:hours'),
     sortable: false,
     grow: 0,
@@ -160,7 +161,7 @@ const VolunteersTableHeader = [
     grow: 1,
     minWidth: '7rem',
     cell: (row: IVolunteer) =>
-      row.source ? <Chip>{row.source}</Chip> : <span className="text-cool-gray-400">–</span>,
+      row.source ? <Chip>{row.source}</Chip> : <span className="text-cool-gray-500">–</span>,
   },
 ];
 
@@ -270,6 +271,8 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
   const favoriteColumn: TableColumn<IVolunteer> = {
     name: '',
     width: '48px',
+    // on phones the name needs the room; the star stays on the profile
+    hide: Media.SM,
     cell: (row: IVolunteer) => (
       <button
         type="button"
@@ -295,7 +298,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
   const actionColumn: TableColumn<IVolunteer> = {
     name: '',
     cell: (row: IVolunteer) => <Popover<IVolunteer> row={row} items={menuItemsFor(row)} />,
-    width: '50px',
+    width: '64px',
     allowOverflow: true,
   };
 
@@ -557,7 +560,38 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
       <Card>
         <CardBody>
           <DataTableComponent
-            columns={[favoriteColumn, ...VolunteersTableHeader, actionColumn]}
+            // "Sursă" only when a volunteer on the page has one (audit m7: an all-"–" column)
+            columns={[
+              favoriteColumn,
+              ...VolunteersTableHeader.filter(
+                (column) =>
+                  column.id !== 'source' ||
+                  volunteers?.items?.some((volunteer) => volunteer.source),
+              ),
+              actionColumn,
+            ]}
+            empty={
+              query?.search ||
+              query?.volunteerStatus ||
+              query?.branch ||
+              query?.department ||
+              query?.role ||
+              query?.activityTypeId
+                ? { description: `${i18n.t('general:empty_filtered')}` }
+                : {
+                    title: `${i18n.t('volunteers:empty.title')}`,
+                    description: `${i18n.t('volunteers:empty.description')}`,
+                    action: (
+                      <Button
+                        label={i18n.t('volunteers:empty.action')}
+                        icon={<PlusIcon className="h-5 w-5" />}
+                        className="btn-primary"
+                        onClick={() => navigate('add')}
+                        {...gate}
+                      />
+                    ),
+                  }
+            }
             data={volunteers?.items}
             loading={
               isVolunteersLoading ||

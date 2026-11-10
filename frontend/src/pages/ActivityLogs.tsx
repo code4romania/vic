@@ -21,7 +21,7 @@ const ActivityLogTabsOptions: TabItem<ActivityLogResolutionStatus>[] = [
 // Hours, not entries: the API counts the hours in each state.
 const COUNTERS = [
   { key: 'pending', Icon: ClockIcon, color: 'text-figure-amber' },
-  { key: 'approved', Icon: CheckCircleIcon, color: 'text-figure-green' },
+  { key: 'approved', Icon: CheckCircleIcon, color: 'text-navy' },
   { key: 'rejected', Icon: XCircleIcon, color: 'text-figure-red' },
 ] as const;
 
@@ -29,7 +29,7 @@ const ActivityLogs = ({ query, setQuery }: ActivityLogsProps) => {
   // routing
   const navigate = useNavigate();
   const { gate } = useValidationGate();
-  const { data: counters } = useActivityLogCounterQuery();
+  const { data: counters, isError: countersFailed } = useActivityLogCounterQuery();
 
   const onTabClick = (tab: ActivityLogResolutionStatus) => {
     setQuery({ resolutionStatus: tab }, 'push');
@@ -59,14 +59,12 @@ const ActivityLogs = ({ query, setQuery }: ActivityLogsProps) => {
             value={
               counters
                 ? i18n.t('activity_log:counters.hours', { count: Number(counters[key]) })
-                : '-'
+                : countersFailed
+                  ? '–'
+                  : undefined
             }
             icon={<Icon className={`w-5 h-5 ${color}`} aria-hidden="true" />}
-            info={
-              <span className="text-cool-gray-500 font-roboto">
-                {i18n.t(`activity_log:counters.${key}.info`)}
-              </span>
-            }
+            subtitle={i18n.t(`activity_log:counters.${key}.info`)}
           />
         ))}
       </div>

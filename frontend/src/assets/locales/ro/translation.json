@@ -44,7 +44,7 @@
     "back": "Înapoi",
     "send": "Trimite",
     "reject": "Respinge",
-    "templates": "Template-uri",
+    "templates": "Modele de contract",
     "approve": "Aprobă",
     "save_changes": "Salvează modificări",
     "save": "Salvează",
@@ -55,8 +55,14 @@
     "contact": "Date contact",
     "error": {
       "load_entries": "Eroare la încărcarea datelor",
-      "unknown": "A apărut o eroare necunoscuta",
-      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}"
+      "unknown": "A apărut o eroare necunoscută",
+      "generic_error": "Eroare la procesarea datelor, cod: #{{code}}",
+      "codes": {
+        "INVALID_ORDER_BY": "Lista nu se poate sorta după această coloană.",
+        "FILE_TOO_LARGE": "Fișierul este prea mare.",
+        "DUPLICATE_ENTRY": "Există deja o înregistrare cu aceste date.",
+        "INTERNAL_ERROR": "A apărut o eroare. Încearcă din nou peste câteva momente."
+      }
     },
     "cancel": "Anulează",
     "years_old": "{{age}} ani",
@@ -80,7 +86,7 @@
       "subtitle": "Găsește rapid ce cauți"
     },
     "select_interval": "Selectează interval",
-    "save_draft": "Salvează ca draft",
+    "save_draft": "Salvează ca ciornă",
     "other": "Altă opțiune",
     "add_file": {
       "p1": "Plasează aici sau",
@@ -90,7 +96,9 @@
     "confirm": "Confirmă",
     "no_options": "Fără opțiuni",
     "type_for_options": "Începeți să scrieți pentru opțiuni...",
-    "actions": "Acțiuni"
+    "actions": "Acțiuni",
+    "more": "Mai multe",
+    "empty_filtered": "Niciun rezultat pentru căutarea sau filtrele alese. Încearcă altă căutare sau resetează filtrele."
   },
   "header": {
     "login": "Login",
@@ -105,13 +113,13 @@
   "side_menu": {
     "options": {
       "dashboard": "Dashboard",
-      "organization": "Structură ONG",
+      "organization": "Organizație",
       "volunteers": "Voluntari",
       "events": "Evenimente",
       "volunteers_list": "Listă voluntari",
       "access_requests": "Cereri de înscriere",
       "access_codes": "Coduri de acces",
-      "documents": "Documente",
+      "documents": "Contracte",
       "announcements": "Anunțuri",
       "activity_types": "Categorii activități",
       "activity_log": "Ore de voluntariat",
@@ -127,7 +135,11 @@
       "all_volunteers": "Toți voluntarii"
     },
     "collapse": "Restrânge meniul",
-    "aria": "Meniu principal"
+    "aria": "Meniu principal",
+    "sections": {
+      "vic_admin": "Administrare VIC"
+    },
+    "expand": "Extinde meniul"
   },
   "volunteer": {
     "all": "Toți voluntarii",
@@ -244,7 +256,8 @@
       "download": "Descarcă contract",
       "confirm": "Șterge definitiv",
       "success": "{{name}} a fost șters, împreună cu datele lui din organizație."
-    }
+    },
+    "status_in_vic": "Status în VIC"
   },
   "volunteers": {
     "department_and_role": "Departament și rol",
@@ -373,7 +386,12 @@
       }
     },
     "subtitle": "Baza de date cu voluntarii organizației",
-    "member_since": "Membru din {{date}}"
+    "member_since": "Membru din {{date}}",
+    "empty": {
+      "title": "Niciun voluntar încă",
+      "description": "Adaugă primul voluntar sau importă lista voluntarilor dintr-un fișier Excel.",
+      "action": "Adaugă primul voluntar"
+    }
   },
   "division": {
     "members": "Membri",
@@ -453,7 +471,9 @@
       "ORG_009": "Invitațiile sunt doar pentru administratorii care nu au intrat încă în cont.",
       "ORG_010": "Nu îți poți schimba propriul status.",
       "ORG_011": "Scrie exact numele organizației pentru a o șterge.",
-      "ORG_003": "Logo-ul nu este valid: alege o imagine PNG, JPG, GIF sau WEBP de cel mult 5 MB."
+      "ORG_003": "Logo-ul nu este valid: alege o imagine PNG, JPG, GIF sau WEBP de cel mult 5 MB.",
+      "ORG_012": "CUI-ul nu se mai poate schimba după validarea organizației.",
+      "ORG_013": "Un alt administrator a schimbat între timp echipa. Reîncarcă pagina și încearcă din nou."
     },
     "form": {
       "description": {
@@ -718,8 +738,8 @@
     "responses_list": "Listă răspunsuri",
     "observation": "Menționează dacă înscrierea la eveniment este simplă, sau dorești mențiuni extra de la voluntarii tăi.",
     "draft": {
-      "subtitle": "Evenimentul nu este publicat (draft)",
-      "description": "Ai salvat ca draft evenimentul, deci voluntarii nu îl mai pot vizualiza în aplicația mobilă."
+      "subtitle": "Evenimentul nu este publicat (ciornă)",
+      "description": "Ai salvat evenimentul ca ciornă, deci voluntarii nu îl mai pot vedea în aplicația mobilă."
     },
     "published": {
       "subtitle": "Evenimentul este publicat",
@@ -740,7 +760,7 @@
       "delete": "Șterge eveniment"
     },
     "display_status": {
-      "draft": "Draft",
+      "draft": "Ciornă",
       "published": "Publicat",
       "archived": "Arhivat",
       "finished": "Finalizat"
@@ -760,11 +780,11 @@
       },
       "end_date": {
         "label": "Dată de final",
-        "min": "Data de final trebuie sa fie mai mare decat data de inceput."
+        "min": "Data de final trebuie să fie după data de început."
       },
       "submit": {
         "published": "Evenimentul a fost publicat cu succes",
-        "draft": "Evenimentul a fost salvat ca draft cu succes",
+        "draft": "Evenimentul a fost salvat ca ciornă",
         "edit": "Evenimentul a fost modificat cu succes",
         "archived": "Evenimentul a fost arhivat cu succes"
       },
@@ -778,8 +798,9 @@
         "public": "Eveniment public",
         "all": "Toată organizația",
         "placeholder": "Alege toate variantele care se aplică",
-        "disclaimer": "Disclaimer: Dacă nu este selectat niciun departament, atunci 'Toată organizația' va fi selectată",
-        "required": "Departamentele sunt obligatorii"
+        "disclaimer": "Notă: dacă nu alegi niciun departament, evenimentul e pentru toată organizația.",
+        "required": "Departamentele sunt obligatorii",
+        "select": "Selectează departamente"
       },
       "description": {
         "label": "Descriere eveniment"
@@ -816,9 +837,11 @@
       "EVENT_009": "Eroare la ștergerea posterului",
       "EVENT_RSVP_006": "Evenimentul nu este publicat.",
       "EVENT_RSVP_007": "Evenimentul s-a încheiat.",
-      "EVENT_RSVP_008": "Evenimentul este complet: nu sunt destule locuri pentru toți voluntarii selectați.",
+      "EVENT_RSVP_008": "Evenimentul este complet: nu mai sunt locuri libere.",
       "EVENT_RSVP_009": "Se pot adăuga doar voluntari activi din departamentele evenimentului.",
-      "EVENT_RSVP_010": "Înscrierea nu a fost găsită."
+      "EVENT_RSVP_010": "Înscrierea nu a fost găsită.",
+      "EVENT_010": "Data de final trebuie să fie după data de început.",
+      "EVENT_011": "Capacitatea nu poate fi mai mică decât numărul voluntarilor deja aprobați."
     },
     "download_open": "Evenimente active.xlsx",
     "download_past": "Evenimente încheiate.xlsx",
@@ -930,7 +953,8 @@
       "found_one": "{{count}} eveniment găsit",
       "found_few": "{{count}} evenimente găsite",
       "found_other": "{{count}} de evenimente găsite",
-      "empty": "Nu există evenimente în această categorie"
+      "empty": "Nu există evenimente în această categorie",
+      "empty_title": "Niciun eveniment aici"
     },
     "table": {
       "event": "Eveniment",
@@ -1055,9 +1079,9 @@
         "label": "Activează imediat după creare"
       },
       "target": {
-        "label": "Target",
+        "label": "Public țintă",
         "placeholder": "Alege toate variantele care se aplică",
-        "disclaimer": "Disclaimer: Dacă nu este selectat niciun departament, atunci 'Toată organizația' va fi selectată"
+        "disclaimer": "Notă: dacă nu alegi niciun departament, anunțul e pentru toată organizația."
       }
     },
     "submit": {
@@ -1137,7 +1161,8 @@
       },
       "pagination": "Pagina {{page}} din {{pages}}",
       "previous": "Înapoi",
-      "next": "Înainte"
+      "next": "Înainte",
+      "empty_title": "Niciun anunț aici"
     },
     "tabs": {
       "active": "Active",
@@ -1243,7 +1268,7 @@
       "hours": {
         "required": "Numărul de ore este obligatoriu",
         "min": "Numărul de ore trebuie să fie mai mare ca 0",
-        "max": "Numărul de ore trebuie să fie mai mic ca {{value}}",
+        "max": "Maximum {{value}} de ore într-o zi",
         "integer": "Numărul de ore trebuie să fie întreg"
       },
       "submit": {
@@ -1261,7 +1286,11 @@
       "ACTIVITY_LOG_002": "Voluntarul trebuie să aibă profil pentru a loga ore",
       "ACTIVITY_LOG_003": "Nu se pot face modificări pe request-uri în status-ul Aprobat sau Respins",
       "ACTIVITY_LOG_005": "Orele se pot adăuga doar unui voluntar activ",
-      "ACTIVITY_LOG_006": "Scrie motivul pentru care respingi orele"
+      "ACTIVITY_LOG_006": "Scrie motivul pentru care respingi orele",
+      "ACTIVITY_LOG_007": "Data activității nu poate fi în viitor.",
+      "ACTIVITY_LOG_008": "Un voluntar nu poate avea mai mult de 24 de ore într-o zi.",
+      "ACTIVITY_LOG_009": "Aceste ore sunt deja înregistrate pentru voluntar în aceeași zi.",
+      "ACTIVITY_LOG_010": "Nu se pot înregistra ore la un eveniment nepublicat (ciornă)."
     },
     "download_file_name": "Istoric ore de voluntariat.xlsx",
     "counters": {
@@ -1463,34 +1492,40 @@
         "info_one": "{{count}} cerere nouă",
         "info_few": "{{count}} cereri noi",
         "info_other": "{{count}} de cereri noi",
-        "action": "Vezi voluntarii"
+        "action": "Vezi voluntarii",
+        "subtitle": "membri activi ai organizației"
       },
       "events": {
         "label": "Evenimente viitoare",
-        "action": "Vezi evenimentele"
+        "action": "Vezi evenimentele",
+        "subtitle": "evenimente planificate"
       },
       "contracts": {
         "label": "Contracte în așteptare",
-        "action": "Vezi contractele"
+        "action": "Vezi contractele",
+        "subtitle": "necesită semnare"
       },
       "hours": {
         "label": "Ore voluntariat",
         "info_one": "{{count}} oră de aprobat",
         "info_few": "{{count}} ore de aprobat",
         "info_other": "{{count}} de ore de aprobat",
-        "action": "Vezi orele de aprobat"
+        "action": "Vezi orele de aprobat",
+        "subtitle": "ore aprobate în total"
       }
     },
     "upcoming_events": {
       "title": "Evenimente viitoare",
       "empty": "Nu ai evenimente programate.",
       "going_capacity": "{{going}}/{{capacity}} înscriși",
-      "going": "{{going}} înscriși"
+      "going": "{{going}} înscriși",
+      "subtitle": "Următoarele evenimente planificate"
     },
     "announcement_responses": {
       "title": "Răspunsuri la anunțuri",
       "empty": "Niciun răspuns la anunțuri încă.",
-      "on": "la „{{name}}”"
+      "on": "la „{{name}}”",
+      "subtitle": "Ultimele răspunsuri la anunțuri"
     },
     "subtitle": "Activitatea voluntarilor dintr-o privire",
     "quick_actions": {
@@ -1498,7 +1533,9 @@
       "add_volunteer": "Adaugă voluntar",
       "add_event": "Creează eveniment",
       "add_announcement": "Creează anunț",
-      "add_hours": "Adaugă ore"
+      "add_hours": "Adaugă ore",
+      "subtitle": "Comenzi frecvent utilizate",
+      "manage_contracts": "Gestionează contracte"
     },
     "pending": {
       "title": "Aprobări în așteptare",
@@ -1606,7 +1643,11 @@
       },
       "download": "Contracts.xlsx",
       "period_open": "din {{start}}, fără dată de final",
-      "issued_on": "emisă la {{date}}"
+      "issued_on": "emisă la {{date}}",
+      "empty": {
+        "title": "Niciun contract încă",
+        "description": "Încarcă un contract semnat cu un voluntar ca să îl vezi aici."
+      }
     },
     "contract": {
       "add": {
@@ -1769,6 +1810,10 @@
         "EXPIRED": {
           "label": "Expirate",
           "info": "necesită reînnoire"
+        },
+        "EXPIRING_SOON": {
+          "label": "Expiră în curând",
+          "info": "se termină în următoarele 30 de zile"
         }
       },
       "filters": {
@@ -1815,23 +1860,23 @@
       }
     },
     "models": {
-      "button": "Template-uri",
-      "title": "Template-uri de contract",
+      "button": "Modele de contract",
+      "title": "Modele de contract",
       "description": "Modele goale de contract pe care le descarci, le completezi și le semnezi în afara VIC. Contractul semnat îl încarci apoi cu „Încarcă contract”.",
-      "empty": "Nu ai încărcat încă niciun template.",
-      "add": "Adaugă template",
+      "empty": "Nu ai încărcat încă niciun model de contract.",
+      "add": "Adaugă model",
       "name": "Denumire",
       "file": "Fișier PDF",
       "file_hint": "PDF, maxim 10 MB",
       "name_required": "Denumirea are minim 2 caractere",
       "file_required": "Alege fișierul PDF",
-      "upload": "Încarcă template",
+      "upload": "Încarcă model",
       "download": "Descarcă",
       "delete": "Șterge",
-      "uploaded": "Template-ul a fost încărcat",
-      "deleted": "Template-ul a fost șters",
-      "upload_error": "Template-ul nu s-a putut încărca. Verifică să fie PDF.",
-      "delete_error": "Template-ul nu s-a putut șterge"
+      "uploaded": "Modelul a fost încărcat",
+      "deleted": "Modelul a fost șters",
+      "upload_error": "Modelul nu s-a putut încărca. Verifică să fie PDF.",
+      "delete_error": "Modelul nu s-a putut șterge"
     }
   },
   "auth": {
@@ -1999,7 +2044,7 @@
       "max": "Maximum {{value}} caractere",
       "email_invalid": "Adresa de email nu este validă",
       "website_invalid": "Introdu adresa completă, care începe cu https://",
-      "tax_id_invalid": "CUI-ul conține doar cifre, opțional cu RO în față",
+      "tax_id_invalid": "CUI-ul nu este valid. Verifică cifrele; poate începe cu RO, iar spațiile nu contează.",
       "name": {
         "label": "Numele organizației"
       },
@@ -2424,7 +2469,9 @@
       "all": "Toate",
       "pending": "În validare",
       "active": "Activă",
-      "suspended": "Suspendată"
+      "suspended": "Suspendată",
+      "unconfirmed": "Email neconfirmat",
+      "validation": "În validare"
     },
     "subtitle": {
       "organizations": "Toate organizațiile înregistrate în VIC, cu statusul lor",

@@ -43,7 +43,7 @@ export const activityLogValidationSchema = yup
       .typeError(`${i18n.t('activity_log:form.hours.required')}`)
       .integer(`${i18n.t('activity_log:form.hours.integer')}`)
       .min(1, `${i18n.t('activity_log:form.hours.min')}`)
-      .max(300, `${i18n.t('activity_log:form.hours.max', { value: 300 })}`)
+      .max(24, `${i18n.t('activity_log:form.hours.max', { value: 24 })}`)
       .required(`${i18n.t('activity_log:form.hours.required')}`),
     date: yup
       .date()
