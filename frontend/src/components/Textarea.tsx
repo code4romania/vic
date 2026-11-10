@@ -5,11 +5,12 @@ export interface TextareaProps extends ComponentPropsWithoutRef<'textarea'> {
   helper?: ReactNode;
 }
 
-const Textarea = ({ label, helper, ...props }: TextareaProps) => {
+const Textarea = ({ label, helper, id, ...props }: TextareaProps) => {
+  const textareaId = id ?? label;
   return (
     <div className="flex gap-1 flex-col">
-      <label htmlFor={label}>{label}</label>
-      <textarea id={label} {...props}></textarea>
+      <label htmlFor={textareaId}>{label}</label>
+      <textarea id={textareaId} {...props}></textarea>
       {helper}
     </div>
   );

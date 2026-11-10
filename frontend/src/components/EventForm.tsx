@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import {
   Control,
   Controller,
@@ -8,7 +8,6 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 import i18n from '../common/config/i18n';
-import FormLayout from '../layouts/FormLayout';
 import FormDatePicker from './FormDatePicker';
 import FormInput from './FormInput';
 import FormTextarea from './FormTextarea';
@@ -63,6 +62,17 @@ export type EventFormTypes = {
   status?: EventStatus;
 };
 
+// One group of fields with a small title
+const Section = ({ title, children }: { title: string; children: ReactNode }) => (
+  <fieldset className="flex flex-col gap-5">
+    <legend className="mb-4 text-xs font-robotoMedium uppercase tracking-wide text-cool-gray-500">
+      {title}
+    </legend>
+    {children}
+  </fieldset>
+);
+
+// Every field has its own id, so each label points at its input (screen readers, clicking the label)
 const EventForm = ({
   control,
   errors,
@@ -80,8 +90,8 @@ const EventForm = ({
   }, [targetType]);
 
   return (
-    <FormLayout>
-      <form>
+    <form className="flex flex-col gap-8" onSubmit={(event) => event.preventDefault()} noValidate>
+      <Section title={i18n.t('events:form_page.details')}>
         <Controller
           key="name"
           name="name"
@@ -91,7 +101,8 @@ const EventForm = ({
               <FormInput
                 type="text"
                 label={`${i18n.t('events:form.name.label')}*`}
-                value={value}
+                placeholder={`${i18n.t('events:form_page.placeholders.name')}`}
+                value={value ?? ''}
                 errorMessage={errors.name?.message}
                 onChange={onChange}
                 id="events-form__name"
@@ -100,45 +111,71 @@ const EventForm = ({
           }}
         />
         <Controller
-          key="startDate"
-          name="startDate"
+          name="description"
+          key="description"
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
-              <FormDatePicker
-                name="startDate"
-                label={`${i18n.t('events:form.start_date.label')}*`}
+              <FormTextarea
+                id="events-form__description"
+                label={`${i18n.t('events:form.description.label')}*`}
+                placeholder={`${i18n.t('events:form_page.placeholders.description')}`}
+                value={value ?? ''}
+                rows={4}
                 onChange={onChange}
-                value={value}
-                errorMessage={errors.startDate?.message}
-                dateFormat={DATE_FORMAT.DD_MM_YY_HH_MM}
-                showTimeSelect
-                timeIntervals={15}
-                timeFormat={DATE_FORMAT.HH_MM}
+                errorMessage={errors.description?.message}
               />
             );
           }}
         />
-        <Controller
-          key="endDate"
-          name="endDate"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <FormDatePicker
-                name="endDate"
-                label={i18n.t('events:form.end_date.label') as string}
-                onChange={onChange}
-                value={value}
-                errorMessage={errors.endDate?.message}
-                dateFormat={DATE_FORMAT.DD_MM_YY_HH_MM}
-                showTimeSelect
-                timeIntervals={15}
-                timeFormat={DATE_FORMAT.HH_MM}
-              />
-            );
-          }}
-        />
+      </Section>
+      <Section title={i18n.t('events:form_page.when_where')}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <Controller
+            key="startDate"
+            name="startDate"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <FormDatePicker
+                  id="events-form__start-date"
+                  name="startDate"
+                  label={`${i18n.t('events:form.start_date.label')}*`}
+                  placeholder={`${i18n.t('events:form_page.placeholders.start_date')}`}
+                  onChange={onChange}
+                  value={value}
+                  errorMessage={errors.startDate?.message}
+                  dateFormat={DATE_FORMAT.DD_MM_YY_HH_MM}
+                  showTimeSelect
+                  timeIntervals={15}
+                  timeFormat={DATE_FORMAT.HH_MM}
+                />
+              );
+            }}
+          />
+          <Controller
+            key="endDate"
+            name="endDate"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <FormDatePicker
+                  id="events-form__end-date"
+                  name="endDate"
+                  label={i18n.t('events:form.end_date.label') as string}
+                  placeholder={`${i18n.t('events:form_page.placeholders.end_date')}`}
+                  onChange={onChange}
+                  value={value}
+                  errorMessage={errors.endDate?.message}
+                  dateFormat={DATE_FORMAT.DD_MM_YY_HH_MM}
+                  showTimeSelect
+                  timeIntervals={15}
+                  timeFormat={DATE_FORMAT.HH_MM}
+                />
+              );
+            }}
+          />
+        </div>
         <Controller
           key="location"
           name="location"
@@ -148,42 +185,19 @@ const EventForm = ({
               <FormInput
                 type="text"
                 readOnly={false}
-                value={value}
+                value={value ?? ''}
+                placeholder={`${i18n.t('events:form_page.placeholders.location')}`}
                 errorMessage={errors.location?.message}
                 label={`${i18n.t('events:form.location.label')}`}
                 onChange={onChange}
-                id="events-form__name"
+                id="events-form__location"
               />
             );
           }}
         />
-        <Controller
-          key="capacity"
-          name="capacity"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <FormInput
-                type="number"
-                min={1}
-                readOnly={false}
-                value={value ?? ''}
-                errorMessage={errors.capacity?.message}
-                label={`${i18n.t('events:form.capacity.label')}`}
-                helper={
-                  <small className="text-cool-gray-500">
-                    {i18n.t('events:form.capacity.helper')}
-                  </small>
-                }
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  onChange(event.target.value === '' ? null : Number(event.target.value))
-                }
-                id="events-form__capacity"
-              />
-            );
-          }}
-        />
-        <div className="flex flex-col gap-2">
+      </Section>
+      <Section title={i18n.t('events:form_page.audience')}>
+        <div className="flex flex-col gap-3">
           <Controller
             key="targetType"
             name="targetType"
@@ -211,6 +225,8 @@ const EventForm = ({
             render={({ field: { onChange, value } }) => {
               return (
                 <TargetsMultiSelect
+                  inputId="events-form__targets"
+                  label={`${i18n.t('events:detail.departments')}`}
                   placeholder={`${i18n.t('events:form.target.placeholder')}`}
                   onChange={onChange}
                   selected={value}
@@ -223,7 +239,9 @@ const EventForm = ({
                     errors.targets?.message ? (
                       <p className="text-red-500">{errors.targets?.message}</p>
                     ) : (
-                      i18n.t('announcement:form.target.disclaimer')
+                      <small className="text-cool-gray-500">
+                        {i18n.t('announcement:form.target.disclaimer')}
+                      </small>
                     )
                   }
                 />
@@ -231,23 +249,37 @@ const EventForm = ({
             }}
           />
         </div>
-        <Controller
-          name="description"
-          key="description"
-          control={control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <FormTextarea
-                label={`${i18n.t('events:form.description.label')}*`}
-                defaultValue={value}
-                onChange={onChange}
-                errorMessage={errors.description?.message}
-              />
-            );
-          }}
-        />
-      </form>
-    </FormLayout>
+        <div className="md:w-1/2 md:pr-2.5">
+          <Controller
+            key="capacity"
+            name="capacity"
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <FormInput
+                  type="number"
+                  min={1}
+                  readOnly={false}
+                  value={value ?? ''}
+                  placeholder={`${i18n.t('events:form_page.placeholders.capacity')}`}
+                  errorMessage={errors.capacity?.message}
+                  label={`${i18n.t('events:form.capacity.label')}`}
+                  helper={
+                    <small className="text-cool-gray-500">
+                      {i18n.t('events:form.capacity.helper')}
+                    </small>
+                  }
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                    onChange(event.target.value === '' ? null : Number(event.target.value))
+                  }
+                  id="events-form__capacity"
+                />
+              );
+            }}
+          />
+        </div>
+      </Section>
+    </form>
   );
 };
 

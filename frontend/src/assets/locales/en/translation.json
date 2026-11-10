@@ -771,8 +771,8 @@
     },
     "counters": {
       "upcoming": "Upcoming events",
-      "ongoing": "Ongoing events",
-      "participants": "Participants"
+      "ongoing": "Ongoing",
+      "participants": "Total participants"
     },
     "add_volunteers": {
       "button": "Add volunteers",
@@ -843,6 +843,81 @@
         "confirm": "Reject registration",
         "required": "The reason is required",
         "max": "The reason can have at most {{value}} characters"
+      }
+    },
+    "counters_info": {
+      "upcoming": "planned",
+      "ongoing": "active now",
+      "participants": "registered volunteers"
+    },
+    "page": {
+      "subtitle": "Manage events and volunteer registrations",
+      "add": "Create event",
+      "search": "Search by event name",
+      "found_one": "{{count}} event found",
+      "found_other": "{{count}} events found",
+      "empty": "There are no events in this category"
+    },
+    "table": {
+      "event": "Event",
+      "period": "Period",
+      "location": "Location",
+      "departments": "Departments",
+      "participants": "Participants",
+      "status": "Status",
+      "actions": "Actions",
+      "view": "View",
+      "view_label": "View event {{name}}",
+      "until": "until {{date}}",
+      "public": "Public event",
+      "all": "Whole organization",
+      "not_going_one": "{{count}} not going",
+      "not_going_other": "{{count}} not going",
+      "pending_one": "{{count}} pending",
+      "pending_other": "{{count}} pending",
+      "hours": "Logged hours",
+      "hours_value": "{{hours}} h",
+      "hours_people_one": "{{count}} volunteer",
+      "hours_people_other": "{{count}} volunteers"
+    },
+    "detail": {
+      "period": "Period",
+      "location": "Location",
+      "departments": "Departments",
+      "capacity": "Capacity",
+      "capacity_value": "{{going}} / {{capacity}} registered",
+      "capacity_unlimited": "{{going}} registered, no limit",
+      "description": "Description",
+      "pending_title": "Pending registrations ({{count}})",
+      "pending_hint": "People outside the event's departments. Approve or reject the registration; the volunteer is notified.",
+      "pending_empty": "No pending registrations.",
+      "registered_on": "Registered: {{date}}",
+      "all_registrations": "All registrations",
+      "responses_title": "Registered volunteers and answers ({{count}})",
+      "responses_found_one": "{{count}} answer found",
+      "responses_found_other": "{{count}} answers found",
+      "search": "Search by name"
+    },
+    "rsvp_status": {
+      "approved": "Going",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "not_going": "Not going"
+    },
+    "form_page": {
+      "add_title": "Create new event",
+      "edit_title": "Edit event",
+      "subtitle": "Fill in the event details for volunteers",
+      "details": "Details",
+      "when_where": "When and where",
+      "audience": "Who takes part",
+      "placeholders": {
+        "name": "E.g. Leadership workshop",
+        "description": "Describe the event...",
+        "location": "E.g. Training centre, Bucharest",
+        "capacity": "E.g. 30",
+        "start_date": "dd.mm.yy hh:mm",
+        "end_date": "dd.mm.yy hh:mm"
       }
     }
   },

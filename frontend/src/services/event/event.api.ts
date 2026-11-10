@@ -57,6 +57,7 @@ export const getEventsForDownload = async (
   orderBy?: string,
   orderDirection?: OrderDirection,
   departmentId?: string,
+  search?: string,
 ): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
   return API.get('event/download', {
     params: {
@@ -64,6 +65,7 @@ export const getEventsForDownload = async (
       orderBy,
       orderDirection,
       departmentId,
+      search,
     },
     responseType: 'arraybuffer',
   }).then((res) => {

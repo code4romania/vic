@@ -4,7 +4,6 @@ import i18n from '../common/config/i18n';
 import PageHeader from '../components/PageHeader';
 import PageLayout from '../layouts/PageLayout';
 import Card from '../layouts/CardLayout';
-import CardHeader from '../components/CardHeader';
 import Button from '../components/Button';
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import CardBody from '../components/CardBody';
@@ -58,8 +57,9 @@ const EditEvent = () => {
       });
   }, [event]);
 
+  // back to where the edit started: the event's page
   const navigateBack = () => {
-    navigate('/events', { replace: true });
+    navigate(`/events/${id}`, { replace: true });
   };
 
   const onSaveChanges = (data: EventFormTypes) => {
@@ -83,31 +83,38 @@ const EditEvent = () => {
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={navigateBack}>
-        {i18n.t('general:edit', { item: '' })}
+      <PageHeader onBackButtonPress={navigateBack} subtitle={event?.name}>
+        {i18n.t('events:form_page.edit_title')}
       </PageHeader>
-      {isEditEventLoading && <LoadingContent />}
-      {!isEditEventLoading && (
+      {isEditEventLoading || !event ? (
+        <LoadingContent />
+      ) : (
         <Card>
-          <CardHeader>
-            <h2>{i18n.t('general:event')}</h2>
+          <CardBody>
+            <div className="max-w-[37rem]">
+              <EventForm
+                control={control}
+                errors={errors}
+                watch={watch}
+                resetField={resetField}
+                isEditForm
+                eventStatus={event?.status}
+              />
+            </div>
+          </CardBody>
+          <div className="flex flex-wrap justify-end gap-3 sm:px-6 px-4 py-4">
+            <Button
+              className="btn-outline-secondary"
+              label={i18n.t('general:cancel')}
+              onClick={navigateBack}
+            />
             <Button
               className="btn-primary"
               label={i18n.t('general:save_changes')}
-              icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
+              icon={<CloudArrowUpIcon className="h-5 w-5" />}
               onClick={handleSubmit(onSaveChanges)}
             />
-          </CardHeader>
-          <CardBody>
-            <EventForm
-              control={control}
-              errors={errors}
-              watch={watch}
-              resetField={resetField}
-              isEditForm
-              eventStatus={event?.status}
-            />
-          </CardBody>
+          </div>
         </Card>
       )}
     </PageLayout>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import OrganizationStructureSelect from '../containers/OrganizationStructureSelect';
-import { downloadExcel } from '../common/utils/utils';
+import { downloadExcel, formatDate } from '../common/utils/utils';
 import Card from '../layouts/CardLayout';
 import Button from './Button';
 import ExportRegistrationsModal from './ExportRegistrationsModal';
@@ -15,6 +15,7 @@ import { SelectItem } from './Select';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
 import CellLayout from '../layouts/CellLayout';
+import StatusBadge, { BadgeTone } from './StatusBadge';
 import { useErrorToast } from '../hooks/useToast';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SortOrder, TableColumn } from 'react-data-table-component';
@@ -25,6 +26,24 @@ import { useRsvpsQuery } from '../services/event/event.service';
 import CardBody from './CardBody';
 import { RsvpTableBasicProps } from '../containers/query/RsvpTableWithQueryParams';
 import SelectFilter from '../containers/SelectFilter';
+
+type RsvpAnswer = 'approved' | 'pending' | 'rejected' | 'not_going';
+
+const rsvpAnswer = (row: IRsvp): RsvpAnswer =>
+  !row.going
+    ? 'not_going'
+    : row.status === EventRegistrationStatus.PENDING
+      ? 'pending'
+      : row.status === EventRegistrationStatus.REJECTED
+        ? 'rejected'
+        : 'approved';
+
+const ANSWER_TONE: Record<RsvpAnswer, BadgeTone> = {
+  approved: 'green',
+  pending: 'amber',
+  rejected: 'red',
+  not_going: 'gray',
+};
 
 const TableHeader = [
   {
@@ -38,21 +57,30 @@ const TableHeader = [
   {
     id: 'going',
     name: i18n.t('general:answer'),
-    minWidth: '11rem',
+    minWidth: '9rem',
     grow: 1,
     sortable: true,
     // #501: a "going" answer shows the NGO's decision too
-    selector: (row: IRsvp) =>
-      row.going
-        ? row.status && row.status !== EventRegistrationStatus.APPROVED
-          ? `${i18n.t('events:participate')} (${i18n.t(`events:registrations.status.${row.status}`)})`
-          : i18n.t('events:participate')
-        : i18n.t('events:not_participate'),
+    cell: (row: IRsvp) => {
+      const answer = rsvpAnswer(row);
+      return (
+        <StatusBadge tone={ANSWER_TONE[answer]}>
+          {i18n.t(`events:rsvp_status.${answer}`)}
+        </StatusBadge>
+      );
+    },
+  },
+  {
+    id: 'createdOn',
+    name: i18n.t('events:registrations.header.registered_on'),
+    minWidth: '8rem',
+    grow: 1,
+    selector: (row: IRsvp) => formatDate(row.createdOn),
   },
   {
     id: 'volunteerId',
     name: i18n.t('events:volunteer'),
-    minWidth: '10rem',
+    minWidth: '12rem',
     grow: 1,
     selector: (row: IRsvp) => (row.volunteerId ? i18n.t('general:yes') : i18n.t('general:no')),
   },
@@ -135,7 +163,17 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
     setBranch(undefined);
     setDepartment(undefined);
     setRole(undefined);
-    setQuery({ activeTab: query.activeTab }, 'replaceIn');
+    setQuery(
+      {
+        search: undefined,
+        branch: undefined,
+        department: undefined,
+        role: undefined,
+        going: undefined,
+        page: 1,
+      },
+      'replaceIn',
+    );
   };
 
   const onExportRSVPs = async () => {
@@ -217,7 +255,21 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
       <DataTableFilters
         onSearch={onSearch}
         searchValue={query?.search}
+        searchPlaceholder={`${i18n.t('events:detail.search')}`}
         onResetFilters={onResetFilters}
+        results={
+          <>
+            <span>
+              {i18n.t('events:detail.responses_found', { count: rsvps?.meta?.totalItems ?? 0 })}
+            </span>
+            <Button
+              label={i18n.t('general:download_table')}
+              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+              className="btn-text-primary px-2"
+              onClick={onExportRSVPs}
+            />
+          </>
+        }
       >
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.branch')}`}
@@ -254,21 +306,15 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
       </DataTableFilters>
       <Card>
         <CardHeader>
-          <h2>{i18n.t('events:responses_list')}</h2>
-          <div className="flex flex-wrap gap-2 sm:gap-4 ml-auto">
-            <Button
-              label={i18n.t('events:export_registrations.button')}
-              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-              className="btn-outline-secondary"
-              onClick={() => setShowExport(true)}
-            />
-            <Button
-              label={i18n.t('general:download_table')}
-              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-              className="btn-outline-secondary"
-              onClick={onExportRSVPs}
-            />
-          </div>
+          <h2>
+            {i18n.t('events:detail.responses_title', { count: rsvps?.meta?.totalItems ?? 0 })}
+          </h2>
+          <Button
+            label={i18n.t('events:export_registrations.button')}
+            icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+            className="btn-outline-secondary ml-auto"
+            onClick={() => setShowExport(true)}
+          />
         </CardHeader>
         <CardBody>
           <DataTableComponent

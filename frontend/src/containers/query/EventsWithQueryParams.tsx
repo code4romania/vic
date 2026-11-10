@@ -13,6 +13,7 @@ export interface EventsQueryProps extends IPaginationQueryParams {
   eventState?: EventState;
   // #494
   departmentId?: string;
+  search?: string;
 }
 
 export type EventsProps = IHOCQueryProps<EventsQueryProps>;
@@ -29,6 +30,7 @@ const EventsWithQueryParams = () => {
     ...DEFAULT_QUERY_PARAMS,
     eventState: EventStateParam,
     departmentId: StringParam,
+    search: StringParam,
   };
 
   return (

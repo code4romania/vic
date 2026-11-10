@@ -8,9 +8,11 @@ export interface RadioGroupProps extends ComponentPropsWithoutRef<'input'> {
 }
 
 const RadioGroup = ({ options, helper, label, defaultValue, ...props }: RadioGroupProps) => {
+  // the title names the group of radios (a <label> must point at one field)
+  const groupLabelId = label ? `${props.name ?? label}__radiogroup` : undefined;
   return (
-    <div className="flex gap-1 flex-col">
-      {label && <label>{label}</label>}
+    <div className="flex gap-1 flex-col" role="radiogroup" aria-labelledby={groupLabelId}>
+      {label && <span id={groupLabelId}>{label}</span>}
       {options.map((radio) => (
         <div key={radio.key} className="flex gap-1 sm:gap-2 items-center">
           <input

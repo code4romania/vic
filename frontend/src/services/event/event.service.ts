@@ -31,11 +31,11 @@ export const useEventsQuery = (
   orderByColumn?: string,
   orderDirection?: OrderDirection,
   departmentId?: string,
+  search?: string,
 ) => {
   return useQuery(
-    ['events', limit, page, orderByColumn, orderDirection, eventState, departmentId],
-    () =>
-      getEvents(limit, page, eventState, orderByColumn, orderDirection, undefined, departmentId),
+    ['events', limit, page, orderByColumn, orderDirection, eventState, departmentId, search],
+    () => getEvents(limit, page, eventState, orderByColumn, orderDirection, search, departmentId),
     {
       enabled: !!(limit && page && eventState),
       onError: (error: AxiosError<IBusinessException<EVENT_ERRORS>>) => error,
@@ -158,6 +158,8 @@ export const useEventRegistrationsQuery = (params: {
   page: number;
   limit: number;
   search?: string;
+  // one event's registrations (event page, pending count in the events list)
+  eventId?: string;
 }) => {
   return useQuery(['event-registrations', params], () => getEventRegistrations(params), {
     keepPreviousData: true,

@@ -17,14 +17,15 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
   dateFormat = 'dd.MM.yyyy',
   ...datePickerProps
 }) => {
+  // the label points at the input, also when the caller passes its own id
+  const inputId = datePickerProps.id ?? (label ? `${label}__datepicker` : undefined);
   return (
     <div className="flex gap-1 flex-col max-w-[37rem]">
-      {label && <label htmlFor={`${label}__datepicker`}>{label}</label>}
+      {label && <label htmlFor={inputId}>{label}</label>}
       <div className="relative">
         <DatePicker
           {...datePickerProps}
-          // the label points at the input
-          id={datePickerProps.id ?? (label ? `${label}__datepicker` : undefined)}
+          id={inputId}
           wrapperClassName="w-full"
           className={classNames(
             className || '',
