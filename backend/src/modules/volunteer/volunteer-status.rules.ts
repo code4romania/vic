@@ -26,3 +26,22 @@ export function assertVolunteerNotBlocked(
     throw new BadRequestException(VolunteerExceptionMessages.VOLUNTEER_006);
   }
 }
+
+// M16: an inactive volunteer's hours stay read-only, but the NGO can still upload (or remove) their
+// contracts and certificates (adeverințe), e.g. a certificate asked for after they left. Blocked and
+// candidate volunteers get none. 400 VOLUNTEER_007 otherwise.
+export const DOCUMENT_VOLUNTEER_STATUSES = [
+  VolunteerStatus.ACTIVE,
+  VolunteerStatus.INACTIVE,
+];
+
+export function assertVolunteerAcceptsDocuments(
+  volunteer: { status?: VolunteerStatus } | null | undefined,
+): void {
+  if (
+    volunteer?.status &&
+    !DOCUMENT_VOLUNTEER_STATUSES.includes(volunteer.status)
+  ) {
+    throw new BadRequestException(VolunteerExceptionMessages.VOLUNTEER_007);
+  }
+}

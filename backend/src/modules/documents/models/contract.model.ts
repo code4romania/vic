@@ -12,7 +12,8 @@ import {
   AdminUserTransformer,
   IAdminUserModel,
 } from 'src/modules/user/models/admin-user.model';
-import { addDays, compareAsc } from 'date-fns';
+import { addDays } from 'date-fns';
+import { bucharestDay } from 'src/common/helpers/bucharest-time';
 import { DocumentType } from '../enums/document-type.enum';
 
 export interface IContractDownloadModel {
@@ -152,10 +153,13 @@ export class ContractTransformer {
 // #488: within a month of its end date a signed contract is tagged "Expiră în curând".
 export const EXPIRING_SOON_DAYS = 30;
 
+// A contract is valid through its whole last day in Bucharest (see contractStatusCondition)
 const isPastEnd = (
   contract: Pick<IContractModel, 'endDate'>,
   now: Date,
-): boolean => !!contract.endDate && compareAsc(contract.endDate, now) < 0;
+): boolean =>
+  !!contract.endDate &&
+  bucharestDay(new Date(contract.endDate)) < bucharestDay(now);
 
 export const mapContractStatusToClientContractStatus = (
   contract: Pick<IContractModel, 'status' | 'endDate'>,
@@ -174,4 +178,5 @@ export const isContractExpiringSoon = (
   mapContractStatusToClientContractStatus(contract, now) ===
     ClientContractStatus.SIGNED &&
   !!contract.endDate &&
-  compareAsc(contract.endDate, addDays(now, EXPIRING_SOON_DAYS)) <= 0;
+  bucharestDay(new Date(contract.endDate)) <=
+    bucharestDay(addDays(now, EXPIRING_SOON_DAYS));

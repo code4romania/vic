@@ -4,4 +4,7 @@ export enum ClientContractStatus {
   SIGNED = 'SIGNED',
   PENDING = 'PENDING',
   EXPIRED = 'EXPIRED',
+  // #489: a filter (and a counter), not a status of its own: SIGNED contracts within
+  // EXPIRING_SOON_DAYS of their end date. A contract is never mapped to it.
+  EXPIRING_SOON = 'EXPIRING_SOON',
 }

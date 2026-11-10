@@ -205,7 +205,9 @@ describe('Contracts (e2e)', () => {
     // the counters on top of the contracts page
     expect(
       (await auth(http().get('/contract/counters')).expect(200)).body,
-    ).toEqual({ SIGNED: 3, PENDING: 1, EXPIRED: 1 });
+    ).toEqual({ SIGNED: 3, PENDING: 1, EXPIRED: 1, EXPIRING_SOON: 1 });
+    // #489: the "Expiră în curând" filter
+    expect(await filtered('EXPIRING_SOON')).toEqual(['soon']);
 
     // each row carries the volunteer's email, and the search matches it
     expect(body.items[0].volunteerEmail).toEqual(expect.any(String));
@@ -217,6 +219,75 @@ describe('Contracts (e2e)', () => {
       ).expect(200)
     ).body.items;
     expect(byEmail).toHaveLength(5);
+  });
+
+  it("lists an inactive volunteer's contracts like the counters; a contract is valid through its last day in Bucharest", async () => {
+    // ends today (stored as today's midnight UTC, the way a date-only field arrives): still signed
+    const today = new Date(
+      new Date()
+        .toLocaleDateString('en-CA', { timeZone: 'Europe/Bucharest' })
+        .concat('T00:00:00Z'),
+    );
+    await insert('ACTIVE', days(-300), today, 'azi');
+    await insert('ACTIVE', days(-300), days(-2), 'ieri');
+    await testApp.dataSource.query(
+      `UPDATE volunteer SET status = 'inactive' WHERE id = $1`,
+      [volunteerId],
+    );
+
+    const list = async (query = ''): Promise<[string, string][]> =>
+      (
+        await auth(
+          http().get(
+            `/contract?orderBy=contractNumber&orderDirection=ASC${query}`,
+          ),
+        ).expect(200)
+      ).body.items.map((c: { contractNumber: string; status: string }) => [
+        c.contractNumber,
+        c.status,
+      ]);
+    expect(await list()).toEqual([
+      ['azi', 'SIGNED'],
+      ['ieri', 'EXPIRED'],
+    ]);
+    expect(await list(`&volunteerId=${volunteerId}`)).toHaveLength(2);
+    expect(
+      (await auth(http().get('/contract/counters')).expect(200)).body,
+    ).toMatchObject({ SIGNED: 1, EXPIRED: 1 });
+    // diacritics-insensitive search on the volunteer's name
+    await testApp.dataSource.query(
+      `UPDATE "user" SET name = 'Elena Știrbu' WHERE email = 'elena@example.ro'`,
+    );
+    expect(await list('&search=stirbu')).toHaveLength(2);
+
+    // a blocked volunteer's contracts leave the organization's list and counters, both alike,
+    // but stay on their own tab
+    await testApp.dataSource.query(
+      `UPDATE volunteer SET status = 'blocked' WHERE id = $1`,
+      [volunteerId],
+    );
+    expect(await list()).toEqual([]);
+    expect(
+      (await auth(http().get('/contract/counters')).expect(200)).body,
+    ).toMatchObject({ SIGNED: 0, EXPIRED: 0 });
+    expect(await list(`&volunteerId=${volunteerId}`)).toHaveLength(2);
+  });
+
+  it('uploads a certificate for an inactive volunteer, not for a blocked one', async () => {
+    await testApp.dataSource.query(
+      `UPDATE volunteer SET status = 'inactive' WHERE id = $1`,
+      [volunteerId],
+    );
+    await upload({ startDate: '2026-01-01', type: 'CERTIFICATE' }).expect(201);
+    await testApp.dataSource.query(
+      `UPDATE volunteer SET status = 'blocked' WHERE id = $1`,
+      [volunteerId],
+    );
+    const refused = await upload({
+      startDate: '2026-01-01',
+      type: 'CERTIFICATE',
+    }).expect(400);
+    expect(refused.body.code_error).toBe('VOLUNTEER_007');
   });
 
   it('uploads a signed PDF with its period; no end date means it never expires', async () => {
