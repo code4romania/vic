@@ -1,73 +1,52 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# VIC backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+NestJS API for VIC (web app for NGO admins, mobile app for volunteers).
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- Authentication: [`docs/auth.md`](docs/auth.md)
+- Production deploy checklist: [`docs/deploy-production.md`](docs/deploy-production.md)
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+## Local setup
 
 ```bash
-$ npm install
+npm ci
+cp .env.example .env      # fill in; docs/auth.md has the key generation commands
+docker compose up -d      # Postgres, Redis, mailcatcher (S3: adobe/s3mock on :9090, see .env.example)
+npm run start:dev
 ```
 
-## Running the app
+Pending migrations run when the API boots (`RUN_MIGRATIONS`, default `true`). Locally, missing `MAIL_FROM`,
+`THROTTLE_TTL` (milliseconds), `THROTTLE_LIMIT`, `CACHE_TTL` get defaults; in `staging` and `production` the API
+refuses to start without them (`src/infrastructure/config/environment-config.ts`).
+
+## Tests
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npx tsc --noEmit -p tsconfig.json
+npm run lint:check                                  # `npm run lint` also fixes
+npx jest --maxWorkers=2                             # unit (some use the local Postgres)
+npx jest --config ./test/jest-e2e.json --maxWorkers=2   # e2e: local Postgres, Redis and S3 emulator
 ```
 
-## Test
+CI (`.github/workflows/ci.yml`) runs the same commands against Postgres 16, Redis 7 and adobe/s3mock.
 
-```bash
-# unit tests
-$ npm run test
+## Scripts
 
-# e2e tests
-$ npm run test:e2e
+| Development (ts-node, `src/`) | Production image (`node`, `dist/`) |
+|---|---|
+| `npm run migration:run` | `npm run migration:run:prod` |
+| `npm run migration:show` | `npm run migration:show:prod` |
+| `npm run auth:migrate -- [--dry-run]` | `npm run auth:migrate:prod -- [--dry-run]` |
+| `npm run auth:super-admin -- <email>` | `npm run auth:super-admin:prod -- <email>` |
+| `npm run org:suspend -- <id>` / `org:unsuspend` | `npm run org:suspend:prod -- <id>` / `org:unsuspend:prod` |
+| `npm run announce -- ...` | `npm run announce:prod -- ...` |
 
-# test coverage
-$ npm run test:cov
-```
+The production image contains only `dist/` and the production dependencies (no `src/`, no ts-node), so on a
+deployed environment use the `:prod` scripts, e.g. as a one-off ECS task with the command overridden.
 
-## Support
+## Running in production
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- The image (`Dockerfile`) runs `node dist/main` as the `node` user.
+- Health check: `GET /public/health` — 200 when Postgres and Redis answer, 503 otherwise.
+- `SIGTERM` closes the app gracefully (HTTP server, Bull queues, Redis and database connections).
+- Set `RUN_MIGRATIONS=false` on the service and run `npm run migration:run:prod` once per deploy, so that
+  several tasks booting together do not each run the migrations.
