@@ -33,7 +33,7 @@ const Documents = ({ navigation, route }: any) => {
   const onScroll = useTabBarScroll();
   const { userProfile } = useUserProfile();
   const organization = userProfile?.activeOrganization;
-  const volunteerId = route.params?.volunteerId || (organization?.volunteerId as string);
+  const volunteerId: string | undefined = route.params?.volunteerId || organization?.volunteerId;
   const { downloadingId, download } = useDownloadContract();
 
   const history = useContractHistoryInfiniteQuery(volunteerId);
@@ -138,7 +138,18 @@ const Documents = ({ navigation, route }: any) => {
           </Enter>
         )}
 
-        {!isLoading && !signedItems.length && (
+        {!volunteerId && (
+          // no active organization: nothing to ask the API for
+          <EmptyState
+            title={`${t('volunteer:no_org_added')}`}
+            description={`${t('volunteer:no_org_description')}`}
+            actionLabel={`${t('volunteer:join_organization')}`}
+            onAction={() => navigation.navigate('search')}
+            testID="documents-no-organization"
+          />
+        )}
+
+        {!!volunteerId && !isLoading && !signedItems.length && (
           <EmptyState
             title={`${history.error ? t('errors.generic') : t('empty.title')}`}
             description={history.error ? undefined : `${t('empty.description')}`}

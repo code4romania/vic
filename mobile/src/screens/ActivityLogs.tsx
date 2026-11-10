@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -58,7 +58,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
   const profileSheet = useRef<BottomSheetModal>(null);
 
   const [status, setStatus] = useState<ActivityLogStatus>(ActivityLogStatus.PENDING);
-  const { approvedHours, rejectedHours, pendingHours, activityLog } = useActivityLogs();
+  const { approvedHours, rejectedHours, pendingHours } = useActivityLogs();
   const { userProfile } = useUserProfile();
   const organization = userProfile?.activeOrganization;
   const inactive = isInactiveVolunteer(organization);
@@ -72,24 +72,15 @@ const ActivityLogs = ({ navigation, route }: any) => {
     hasNextPage,
     refetch: reloadActivityLogs,
     isRefetching,
-  } = useActivityLogsInfiniteQuery(ORDER, '', status);
+  } = useActivityLogsInfiniteQuery(organization?.id, ORDER, '', status);
 
-  const { refetch: reloadCounters } = useActivityLogsCounters(
-    status,
-    organization?.volunteerId as string,
-  );
+  // adding, editing or deleting an entry invalidates the list and these totals
+  const { refetch: reloadCounters } = useActivityLogsCounters(organization?.volunteerId);
 
   const reload = useCallback(() => {
     reloadActivityLogs();
     reloadCounters();
   }, [reloadActivityLogs, reloadCounters]);
-
-  // adding, editing or deleting an entry stores it; reload the list and the totals then
-  useEffect(() => {
-    if (activityLog) {
-      reload();
-    }
-  }, [activityLog, reload]);
 
   const items = useMemo(
     () => (data?.pages ?? []).flatMap((page) => page.items) as IActivityLogItem[],
@@ -104,14 +95,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
     navigation.navigate('add-activity-log');
   };
 
-  const onOpen = (activityLogId: string) =>
-    navigation.navigate('activity-log', {
-      activityLogId,
-      orderDirection: ORDER,
-      search: '',
-      status,
-      volunteerId: organization?.volunteerId,
-    });
+  const onOpen = (activityLogId: string) => navigation.navigate('activity-log', { activityLogId });
 
   const stats = [
     { key: 'approved', value: approvedHours, label: t('totals.approved') },
@@ -134,7 +118,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
             <EventIcon name="back" size={20} />
           </PressableScale>
         )}
-        {!inactive && (
+        {!inactive && !!organization && (
           <VButton
             size="small"
             variant="soft"
@@ -154,36 +138,52 @@ const ActivityLogs = ({ navigation, route }: any) => {
           <VText variant="sub">{t('at', { name: organization.name })}</VText>
         </Enter>
       )}
-      <Enter index={2} style={styles.stats}>
-        {stats.map((stat) => (
-          <View
-            key={stat.key}
-            style={[styles.stat, shadows.card, { backgroundColor: STAT_TONE[stat.key].bg }]}
-            testID={`hours-total-${stat.key}`}
-          >
-            <VText style={[styles.statValue, { color: STAT_TONE[stat.key].fg }]}>
-              {`${stat.value || 0}h`}
-            </VText>
-            <VText variant="cap">{stat.label}</VText>
-          </View>
-        ))}
-      </Enter>
-      <Enter index={3}>
-        <SegmentedControl
-          options={[
-            { key: ActivityLogStatus.PENDING, label: `${t('tabs.pending')}` },
-            { key: ActivityLogStatus.APPROVED, label: `${t('tabs.approved')}` },
-            { key: ActivityLogStatus.REJECTED, label: `${t('tabs.rejected')}` },
-          ]}
-          value={status}
-          onChange={setStatus}
-          testID="hours-status"
-        />
-      </Enter>
+      {!!organization && (
+        <>
+          <Enter index={2} style={styles.stats}>
+            {stats.map((stat) => (
+              <View
+                key={stat.key}
+                style={[styles.stat, shadows.card, { backgroundColor: STAT_TONE[stat.key].bg }]}
+                testID={`hours-total-${stat.key}`}
+              >
+                <VText style={[styles.statValue, { color: STAT_TONE[stat.key].fg }]}>
+                  {`${stat.value || 0}h`}
+                </VText>
+                <VText variant="cap">{stat.label}</VText>
+              </View>
+            ))}
+          </Enter>
+          <Enter index={3}>
+            <SegmentedControl
+              options={[
+                { key: ActivityLogStatus.PENDING, label: `${t('tabs.pending')}` },
+                { key: ActivityLogStatus.APPROVED, label: `${t('tabs.approved')}` },
+                { key: ActivityLogStatus.REJECTED, label: `${t('tabs.rejected')}` },
+              ]}
+              value={status}
+              onChange={setStatus}
+              testID="hours-status"
+            />
+          </Enter>
+        </>
+      )}
     </View>
   );
 
   const renderEmpty = () => {
+    // no active organization: no hours to show, and nothing was asked from the API
+    if (!organization) {
+      return (
+        <EmptyState
+          title={`${t('volunteer:no_org_added')}`}
+          description={`${t('volunteer:no_org_description')}`}
+          actionLabel={`${t('volunteer:join_organization')}`}
+          onAction={() => navigation.navigate('search')}
+          testID="hours-no-organization"
+        />
+      );
+    }
     const canAdd = status === ActivityLogStatus.PENDING && !inactive;
     if (isFetching && !isRefetching && !items.length) {
       return <ActivityLogSkeletonItem />;

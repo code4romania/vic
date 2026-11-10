@@ -22,6 +22,7 @@ jest.mock('../components/FormInput', () => () => null);
 const mockListCalls: any[][] = [];
 const mockCancel = jest.fn();
 const mockCreate = jest.fn();
+let mockLogQuery: any = { isFetching: false };
 
 const entry = (id: string, extra: Record<string, unknown> = {}) => ({
   id,
@@ -35,9 +36,11 @@ const entry = (id: string, extra: Record<string, unknown> = {}) => ({
 jest.mock('../services/activity-log/activity-log.service', () => ({
   useActivityLogsInfiniteQuery: (...args: any[]) => {
     mockListCalls.push(args);
-    const status = args[2];
-    const items =
-      status === 'pending'
+    const status = args[3];
+    // disabled without an organization: no data
+    const items = !args[0]
+      ? []
+      : status === 'pending'
         ? [entry('1'), entry('2', { event: undefined, activityType: undefined, hours: 3 })]
         : status === 'approved'
           ? [entry('3', { hours: 4 })]
@@ -54,7 +57,7 @@ jest.mock('../services/activity-log/activity-log.service', () => ({
     };
   },
   useActivityLogsCounters: () => ({ refetch: jest.fn() }),
-  useActivityLogQuery: () => ({ isFetching: false }),
+  useActivityLogQuery: () => mockLogQuery,
   useCancelActivityLogMutation: () => ({ mutate: mockCancel, isLoading: false }),
   useCreateActivityLogMutation: () => ({ mutate: mockCreate, isLoading: false }),
 }));
@@ -118,6 +121,7 @@ const detailParams = {
 };
 
 beforeEach(() => {
+  mockLogQuery = { isFetching: false, error: null, refetch: jest.fn() };
   mockListCalls.length = 0;
   jest.clearAllMocks();
   setProfile();
@@ -131,8 +135,10 @@ describe('Ore', () => {
     expect(within(screen.getByTestId('hours-total-approved')).getByText('145h')).toBeTruthy();
     expect(within(screen.getByTestId('hours-total-pending')).getByText('9h')).toBeTruthy();
     const last = mockListCalls[mockListCalls.length - 1];
-    expect(last[0]).toBe(OrderDirection.DESC);
-    expect(last[2]).toBe(ActivityLogStatus.PENDING);
+    // the organization is part of the query (audit #8)
+    expect(last[0]).toBe('org-1');
+    expect(last[1]).toBe(OrderDirection.DESC);
+    expect(last[3]).toBe(ActivityLogStatus.PENDING);
     const row = screen.getByTestId('log-row-1');
     expect(within(row).getByText('6h')).toBeTruthy();
     expect(within(row).getByText('Asistență medicală')).toBeTruthy();
@@ -146,10 +152,19 @@ describe('Ore', () => {
   it('switches status with the segmented control and shows an empty state', async () => {
     await renderApp();
     await fireEvent.press(await screen.findByText('Aprobate'));
-    expect(mockListCalls[mockListCalls.length - 1][2]).toBe(ActivityLogStatus.APPROVED);
+    expect(mockListCalls[mockListCalls.length - 1][3]).toBe(ActivityLogStatus.APPROVED);
     expect(within(await screen.findByTestId('log-row-3')).getByText('Aprobat')).toBeTruthy();
     await fireEvent.press(screen.getByText('Refuzate'));
     expect(await screen.findByText('Nicio înregistrare refuzată')).toBeTruthy();
+  });
+
+  it('without an active organization shows an empty state and asks nothing (audit #7)', async () => {
+    useStore.setState({ userProfile: { firstName: 'Ana', activeOrganization: null } as any });
+    await renderApp();
+    expect(await screen.findByTestId('hours-no-organization')).toBeTruthy();
+    expect(mockListCalls[mockListCalls.length - 1][0]).toBeUndefined();
+    expect(screen.queryByTestId('hours-add')).toBeNull();
+    expect(screen.queryByTestId('hours-total-approved')).toBeNull();
   });
 
   it('"+ Adaugă ore" without a volunteer profile asks to fill it in', async () => {
@@ -185,6 +200,16 @@ describe('Ore: detaliu', () => {
     ).toBeTruthy();
     await fireEvent.press(screen.getByTestId('log-delete-confirm'));
     expect(mockCancel).toHaveBeenCalledWith({ activityLogId: '1' }, expect.any(Object));
+  });
+
+  it('an entry that no longer exists says so instead of a blank page', async () => {
+    mockLogQuery = {
+      isFetching: false,
+      error: { response: { status: 404 } },
+      refetch: jest.fn(),
+    };
+    await renderApp('activity-log', detailParams);
+    expect(await screen.findByTestId('log-error')).toBeTruthy();
   });
 
   it('a rejected entry shows the reason and cannot be edited', async () => {

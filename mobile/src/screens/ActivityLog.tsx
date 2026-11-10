@@ -6,8 +6,6 @@ import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
 import {
   useActivityLogQuery,
-  useActivityLogsCounters,
-  useActivityLogsInfiniteQuery,
   useCancelActivityLogMutation,
 } from '../services/activity-log/activity-log.service';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
@@ -19,7 +17,7 @@ import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import ActivityLogSkeleton from '../components/skeleton/activity-log-skeleton';
 import { EventIcon } from '../components/events/EventIcons';
 import { LOG_STATUS_TONE } from '../components/hours/LogRow';
-import { Enter, PressableScale, Sheet, VButton, VText } from '../components/ui';
+import { EmptyState, Enter, PressableScale, Sheet, VButton, VText } from '../components/ui';
 
 /**
  * VIC 2.0 hours entry (canvas board "OraDetaliu"): the hours in a tile, the task, a status note
@@ -30,17 +28,13 @@ const ActivityLog = ({ navigation, route }: any) => {
   const insets = useSafeAreaInsets();
   useFocusedStatusBarStyle('dark');
   const deleteSheet = useRef<BottomSheetModal>(null);
-  const { activityLogId, orderDirection, search, status, volunteerId } = route.params;
+  const { activityLogId } = route.params;
 
   const { activityLog } = useActivityLogs();
-  const { isFetching } = useActivityLogQuery(activityLogId);
+  const { isFetching, error: loadError, refetch } = useActivityLogQuery(activityLogId);
+  const notFound = (loadError as any)?.response?.status === 404;
+  // the delete invalidates the list and the totals
   const { isLoading: isDeleting, mutate: cancelLog } = useCancelActivityLogMutation();
-  const { refetch: reloadCounters } = useActivityLogsCounters(status, volunteerId);
-  const { refetch: reloadActivityLogs } = useActivityLogsInfiniteQuery(
-    orderDirection,
-    search,
-    status,
-  );
 
   const log = activityLog && activityLog.id === activityLogId ? activityLog : undefined;
   const isPending = log?.status === ActivityLogStatus.PENDING;
@@ -52,8 +46,6 @@ const ActivityLog = ({ navigation, route }: any) => {
       { activityLogId },
       {
         onSuccess: () => {
-          reloadActivityLogs();
-          reloadCounters();
           navigation.goBack();
           Toast.show({ type: 'success', text1: `${t('toast.success')}` });
         },
@@ -139,6 +131,16 @@ const ActivityLog = ({ navigation, route }: any) => {
           </View>
 
           {!log && isFetching && <ActivityLogSkeleton />}
+
+          {!log && !isFetching && !!loadError && (
+            // deleted in the meantime (404) or the request failed: say so instead of a blank page
+            <EmptyState
+              title={`${notFound ? t('errors.not_found') : t('errors.generic')}`}
+              actionLabel={notFound ? undefined : `${t('events:retry')}`}
+              onAction={notFound ? undefined : () => refetch()}
+              testID="log-error"
+            />
+          )}
 
           {log && (
             <>
