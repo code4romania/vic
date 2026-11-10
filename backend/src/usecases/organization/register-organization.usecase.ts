@@ -22,6 +22,7 @@ import { OrganizationExceptionMessages } from 'src/modules/organization/exceptio
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 import { DataSource } from 'typeorm';
+import { isUniqueViolation } from 'src/infrastructure/filters/exception.filter';
 
 export interface RegisterOrganizationOptions {
   name: string;
@@ -81,8 +82,8 @@ export class RegisterOrganizationUseCase
     await this.assertUnique(options);
 
     // 4. One transaction: organization, its first admin, the admin's login, the files, the confirmation link
-    const { admin, secret } = await this.dataSource.transaction(
-      async (manager) => {
+    const { admin, secret } = await this.dataSource
+      .transaction(async (manager) => {
         const organization = await this.organizationFacade.createOrganization(
           {
             name: options.name.trim(),
@@ -139,8 +140,15 @@ export class RegisterOrganizationUseCase
         );
 
         return { admin: identity, secret: issued.secret, organization };
-      },
-    );
+      })
+      .catch((error) => {
+        // Two registrations with the same data at once both pass assertUnique; the unique index refuses
+        // the second, which gets the same 409 ORG_004 as it would have a moment later.
+        if (isUniqueViolation(error)) {
+          throw new ConflictException(OrganizationExceptionMessages.ORG_004);
+        }
+        throw error;
+      });
 
     // 5. After the commit: the 24 h confirmation link
     await this.authMailer.send(
