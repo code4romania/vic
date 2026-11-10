@@ -82,7 +82,12 @@ const EventInfo = ({ event, going }: { event: IEvent; going?: number }) => {
             <InfoItem label={i18n.t('events:detail.location')}>
               <EventLocation location={event.location} />
             </InfoItem>
-            <InfoItem label={i18n.t('events:detail.departments')}>
+            {/* a public event has no departments: say who sees it instead */}
+            <InfoItem
+              label={i18n.t(
+                event.isPublic ? 'events:detail.visibility' : 'events:detail.departments',
+              )}
+            >
               <EventTargets event={event} />
             </InfoItem>
             <InfoItem label={i18n.t('events:detail.capacity')}>
