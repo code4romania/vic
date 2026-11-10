@@ -18,6 +18,20 @@ export interface Pagination<T> {
   meta: IPaginationMeta;
 }
 
+// A page with nothing in it, e.g. for a volunteer without an active organization.
+export function emptyPagination<T>(limit = 10): Pagination<T> {
+  return {
+    items: [],
+    meta: {
+      itemCount: 0,
+      totalItems: 0,
+      itemsPerPage: limit,
+      totalPages: 0,
+      currentPage: 1,
+    },
+  };
+}
+
 export abstract class RepositoryWithPagination<T>
   implements IRepositoryWithPagination<T>
 {

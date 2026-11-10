@@ -14,6 +14,7 @@ import { CreateEventRSVPUseCase } from 'src/usecases/event/RSVP/create-rsvp.usec
 import { DeleteEventRSVPUseCase } from 'src/usecases/event/RSVP/delete-rsvp.usecase';
 import { EventRSVPDto } from './dto/create-rsvp.dto';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
+import { MobileProfileGuard } from '../common/guards/mobile-profile.guard';
 import {
   ApiPaginatedResponse,
   PaginatedPresenter,
@@ -31,7 +32,7 @@ import { IdAndNamePresenter } from 'src/infrastructure/presenters/id-name.presen
 import { IEventModel } from 'src/modules/event/models/event.model';
 
 @ApiBearerAuth()
-@UseGuards(MobileJwtAuthGuard) // VolunteerGuard
+@UseGuards(MobileJwtAuthGuard, MobileProfileGuard) // VolunteerGuard
 @Controller('mobile/event')
 export class MobileEventController {
   constructor(

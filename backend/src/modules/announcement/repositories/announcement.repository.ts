@@ -1,3 +1,4 @@
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
@@ -109,7 +110,13 @@ export class AnnouncementRepositoryService
           .subQuery()
           .select('volunteer.organizationId')
           .from(VolunteerEntity, 'volunteer')
-          .where('volunteer.userId = :userId', { userId })
+          // Only the NGO's active volunteers: not Candidates, not blocked ones, and not inactive
+          // ones (made inactive by the NGO, #589, they keep only the NGO profile and documents;
+          // or left by themselves). Answering already needs ACTIVE (#504).
+          .where('volunteer.userId = :userId AND volunteer.status = :active', {
+            userId,
+            active: VolunteerStatus.ACTIVE,
+          })
           .getQuery(),
     );
 

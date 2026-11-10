@@ -23,6 +23,7 @@ export class MobileEventPresenter {
     this.startDate = event.startDate;
     this.endDate = event.endDate;
 
+    this.organizationId = event.organization.id;
     this.organizationLogo = event.organization.logo;
 
     this.targets = event.targets?.map(
@@ -79,6 +80,10 @@ export class MobileEventPresenter {
     description: 'End date of the event',
   })
   endDate: Date;
+
+  @Expose()
+  @ApiProperty({ description: 'The uuid of the organization of this event' })
+  organizationId: string;
 
   @Expose()
   @ApiProperty({ description: 'The organization logo for this event' })

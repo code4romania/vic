@@ -14,6 +14,7 @@ import { RespondToAnnouncementUseCase } from 'src/usecases/announcement/respond-
 import { RespondToAnouncementDto } from './dto/respond-to-anouncement.dto';
 
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
+import { MobileProfileGuard } from '../common/guards/mobile-profile.guard';
 import {
   ApiPaginatedResponse,
   PaginatedPresenter,
@@ -25,7 +26,7 @@ import { MobileAnouncementPresenter } from './presenters/mobile-anouncement.pres
 import { GetManyAnouncementsByUserAsUsecase } from 'src/usecases/announcement/get-many-anouncements-by-user.usecase';
 
 @ApiBearerAuth()
-@UseGuards(MobileJwtAuthGuard)
+@UseGuards(MobileJwtAuthGuard, MobileProfileGuard)
 @Controller('mobile/anouncement')
 export class MobileAnouncementsController {
   constructor(

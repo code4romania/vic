@@ -6,6 +6,7 @@ import { AccessRequestPresenter } from 'src/api/access-request/presenters/access
 import { CreateAccessRequestUseCase } from 'src/usecases/access-request/create-access-request.usecase';
 import { CreateAccessRequestDto } from './dto/create-access-request.dto';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
+import { MobileProfileGuard } from '../common/guards/mobile-profile.guard';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { CancelAccessRequestUsecase } from 'src/usecases/access-request/cancel-access-request.usecase';
@@ -14,7 +15,7 @@ import { MobileRejectedAccessRequestPresenter } from './presenters/rejected-acce
 import { GetRejectedAccessRequestUsecase } from 'src/usecases/access-request/get-rejected-access-request.usecase';
 
 @ApiBearerAuth()
-@UseGuards(MobileJwtAuthGuard)
+@UseGuards(MobileJwtAuthGuard, MobileProfileGuard)
 @Controller('mobile/access-request')
 export class MobileAccessRequestController {
   constructor(

@@ -15,7 +15,12 @@ export class NewsPresenter {
     this.organizationId = item.author.organization.id;
     this.eventName = item.eventName;
     this.newStatus = (item.eventData as never)['newStatus'];
+    this.createdOn = item.createdOn;
   }
+
+  @Expose()
+  @ApiProperty({ description: 'When it happened' })
+  createdOn: Date;
 
   @Expose()
   @ApiProperty({

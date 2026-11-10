@@ -126,6 +126,13 @@ export class SessionService {
     return this.authIdentityFacade.revokeSession(sessionId, manager);
   }
 
+  // The session a refresh token belongs to (revoked or expired included), or null.
+  public async findByRefreshToken(secret: string): Promise<IRefreshTokenModel> {
+    if (typeof secret !== 'string' || !secret) return null;
+
+    return this.authIdentityFacade.findSessionByHash(this.hash(secret));
+  }
+
   // Logout presents the refresh token itself; an unknown token is ignored.
   public async revokeByRefreshToken(secret: string): Promise<boolean> {
     if (typeof secret !== 'string' || !secret) return false;

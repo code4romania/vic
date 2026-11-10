@@ -10,6 +10,7 @@ import {
   UnsuspendOrganizationUseCase,
 } from './organization/suspend-organization.usecase';
 import { OrganizationGateService } from './organization/organization-gate.service';
+import { MobileOwnershipService } from './volunteer/mobile-ownership.service';
 import { TurnstileService } from 'src/infrastructure/providers/turnstile/turnstile.service';
 import { ListTeamUseCase } from './team/list-team.usecase';
 import { AddAdminUseCase } from './team/add-admin.usecase';
@@ -210,6 +211,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     SuspendOrganizationUseCase,
     UnsuspendOrganizationUseCase,
     OrganizationGateService,
+    MobileOwnershipService,
     TurnstileService,
     // Team
     ListTeamUseCase,
@@ -396,6 +398,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     SuspendOrganizationUseCase,
     UnsuspendOrganizationUseCase,
     OrganizationGateService,
+    MobileOwnershipService,
     // Team
     ListTeamUseCase,
     AddAdminUseCase,

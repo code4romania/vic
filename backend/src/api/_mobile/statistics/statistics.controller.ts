@@ -3,6 +3,7 @@ import { Controller } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
+import { MobileProfileGuard } from '../common/guards/mobile-profile.guard';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { GetVolunteerMonthlyNewsStatisticsUsecase } from 'src/usecases/dashboard/get-volunteer-monthly-news.usecase';
 import { MonthlyStatisticsPresenter } from './presenters/monthly-statistics.presenter';
@@ -14,7 +15,7 @@ import {
 } from 'src/usecases/dashboard/get-volunteer-personal-statistics.usecase';
 
 @ApiBearerAuth()
-@UseGuards(MobileJwtAuthGuard)
+@UseGuards(MobileJwtAuthGuard, MobileProfileGuard)
 @Controller('mobile/statistics')
 export class MobileStatisticsController {
   constructor(

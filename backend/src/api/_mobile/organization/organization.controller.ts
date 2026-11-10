@@ -24,6 +24,8 @@ import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { SwitchOrganizationUsecase } from 'src/usecases/organization/switch-organization.usecase';
 import { LeaveOrganizationUsecase } from 'src/usecases/organization/leave-organization.usecase';
 import { RejoinOrganizationUsecase } from 'src/usecases/organization/rejoin-organization.usecase';
+import { MobileProfileGuard } from '../common/guards/mobile-profile.guard';
+import { VolunteerMobileGuard } from '../volunteer/guards/volunteer-mobile.guard';
 
 @ApiBearerAuth()
 @UseGuards(MobileJwtAuthGuard)
@@ -56,6 +58,8 @@ export class MobileOrganizationController {
     });
   }
 
+  // Browsing the list works before the profile exists; the rest acts on the user's own data
+  @UseGuards(MobileProfileGuard)
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   async get(
@@ -69,6 +73,8 @@ export class MobileOrganizationController {
     return new OrganizationWithEventsPresenter(organization);
   }
 
+  // The volunteer leaving must be the user's own (audit B4); others answer 404
+  @UseGuards(VolunteerMobileGuard)
   @ApiParam({ name: 'volunteerId', type: 'string' })
   @Delete(':volunteerId')
   async leave(
@@ -83,6 +89,7 @@ export class MobileOrganizationController {
     return new OrganizationWithEventsPresenter(organization);
   }
 
+  @UseGuards(VolunteerMobileGuard)
   @ApiParam({ name: 'volunteerId', type: 'string' })
   @Patch(':volunteerId/rejoin')
   async rejoin(
@@ -97,6 +104,7 @@ export class MobileOrganizationController {
     return new OrganizationWithEventsPresenter(organization);
   }
 
+  @UseGuards(MobileProfileGuard)
   @ApiParam({ name: 'id', type: 'string' })
   @Patch(':id')
   async switchOrganization(
