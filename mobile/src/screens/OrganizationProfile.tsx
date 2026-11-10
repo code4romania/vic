@@ -305,7 +305,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                 )}
                 {!!organization.email && (
                   <ListRow
-                    leading={<EventIcon name="people" />}
+                    leading={<EventIcon name="mail" />}
                     title={organization.email}
                     subtitle={`${t('email')}`}
                     onPress={() =>
@@ -315,7 +315,7 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                 )}
                 {!!organization.phone && (
                   <ListRow
-                    leading={<EventIcon name="calendar" />}
+                    leading={<EventIcon name="phone" />}
                     title={organization.phone}
                     subtitle={`${t('phone')}`}
                     onPress={() =>
