@@ -2,7 +2,7 @@ import { ISendMailOptions } from '@nestjs-modules/mailer';
 import { InjectQueue } from '@nestjs/bull';
 import { Injectable } from '@nestjs/common';
 import { JobCounts, Queue } from 'bull';
-import { QUEUES } from 'src/common/constants/constants';
+import { QUEUES, SENSITIVE_JOB_OPTIONS } from 'src/common/constants/constants';
 
 // The transition emails auth:migrate composes are held in their own Bull queue, paused for every worker
 // (a global pause, stored in Redis), until `announce --release-transition` resumes it after go. Until
@@ -24,7 +24,7 @@ export class TransitionMailService {
         opts: {
           attempts: 3,
           backoff: { type: 'exponential', delay: 5000 },
-          removeOnComplete: true,
+          ...SENSITIVE_JOB_OPTIONS,
         },
       })),
     );

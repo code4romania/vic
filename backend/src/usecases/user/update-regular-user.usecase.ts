@@ -10,6 +10,7 @@ import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { S3_FILE_PATHS } from 'src/common/constants/constants';
 import { JSONStringifyError } from 'src/common/helpers/utils';
+import { isImage } from 'src/infrastructure/uploads/upload-options';
 import { GetOneRegularUserProfileUseCase } from './get-regule-user-profile.usecase';
 
 @Injectable()
@@ -43,7 +44,10 @@ export class UpdateRegularUserUsecase
       this.exceptionService.notFoundException(UserExceptionMessages.USER_001);
     }
 
-    // 3. check if new profilePicture is provided
+    // 3. check if new profilePicture is provided: an image (the controller caps its size and type)
+    if (profilePicture?.length && !isImage(profilePicture[0].buffer)) {
+      this.exceptionService.badRequestException(UserExceptionMessages.USER_009);
+    }
     if (profilePicture) {
       try {
         // 3.1 upload File and get path

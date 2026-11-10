@@ -10,7 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PushTokensRepository } from './repositories/push-tokens.repository';
 import { PushNotificationsFacade } from './notifications.facade';
 import { BullModule } from '@nestjs/bull';
-import { QUEUES } from 'src/common/constants/constants';
+import { QUEUES, SENSITIVE_JOB_OPTIONS } from 'src/common/constants/constants';
 import { PushTicketsCheckerProcessor } from './services/push-tickets-checker.processor';
 import { NotificationsSettingsEntity } from './entities/notifications-settings.entity';
 import { NotificationsSettingsRepository } from './repositories/notifications-settings.repository';
@@ -22,6 +22,8 @@ import { DocumentsListener } from './listeners/documents.listener';
     TypeOrmModule.forFeature([PushTokensEntity, NotificationsSettingsEntity]),
     BullModule.registerQueue({
       name: QUEUES.PUSH_NOTIFICATIONS_TICKETS,
+      // Push tokens: not kept once checked
+      defaultJobOptions: SENSITIVE_JOB_OPTIONS,
     }),
     MailModule,
   ],

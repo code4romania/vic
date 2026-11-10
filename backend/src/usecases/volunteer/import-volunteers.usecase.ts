@@ -8,6 +8,7 @@ import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/vol
 import { DataSource } from 'typeorm';
 import * as XLSX from 'xlsx';
 import { AddVolunteerUseCase } from './add-volunteer.usecase';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 
 export const IMPORT_MAX_ROWS = 1000;
 export const IMPORT_MAX_BYTES = 1024 * 1024;
@@ -81,12 +82,16 @@ export class ImportVolunteersUseCase
     private readonly addVolunteer: AddVolunteerUseCase,
     private readonly dataSource: DataSource,
     private readonly exceptionService: ExceptionsService,
+    private readonly organizationGate: OrganizationGateService,
   ) {}
 
   async execute(
     file: Express.Multer.File,
     admin: IAdminUserModel,
   ): Promise<ImportVolunteersResult> {
+    // The whole import is refused for an NGO not validated yet (403 ORG_005), not every row one by one
+    await this.organizationGate.assertValidated(admin.organizationId);
+
     const rows = this.readRows(file);
 
     const result: ImportVolunteersResult = {

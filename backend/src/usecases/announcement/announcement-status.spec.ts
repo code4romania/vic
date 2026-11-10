@@ -7,6 +7,7 @@ import { IAnnouncementModel } from 'src/modules/announcement/models/announcement
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
 import { GetVolunteersUserDataForNotificationsUsecase } from '../volunteer/get-volunteers-user-data-for-notifications.usecase';
 import { ChangeAnnouncementStatusUseCase } from './change-announcement-status.usecase';
@@ -130,6 +131,9 @@ describe('CreateAnnouncementUseCase (#503)', () => {
       { trackEvent: jest.fn() } as unknown as ActionsArchiveFacade,
       { execute: jest.fn() } as unknown as GetOrganizationUseCaseService,
       change,
+      {
+        assertValidated: jest.fn(),
+      } as unknown as OrganizationGateService,
     );
     return { useCase, facade, changeSpy };
   };

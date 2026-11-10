@@ -1,7 +1,9 @@
+import { BadRequestException } from '@nestjs/common';
 import { Brackets, Repository, SelectQueryBuilder } from 'typeorm';
 import { format } from 'date-fns';
 import { DATE_CONSTANTS } from 'src/common/constants/constants';
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
+import { ORDER_BY_PATTERN } from './base-pagination-filter.dto';
 
 export interface IPaginationMeta {
   itemCount: number;
@@ -62,6 +64,10 @@ export abstract class RepositoryWithPagination<T>
   protected buildOrderByQuery = (orderBy: string, prefix: string): string => {
     // if order by is undefined skip
     if (!orderBy) return orderBy;
+
+    // TypeORM writes an ORDER BY it cannot resolve to a column as it is. The list DTOs only let their own
+    // columns through (@SortableBy); this stops anything else here, should a caller skip the DTO.
+    assertSafeOrderBy(orderBy);
 
     // if orderBy contains field from relation entity leave it as is otherwise add entity prefix
     return orderBy.split('.').length > 1 ? orderBy : `${prefix}.${orderBy}`;
@@ -143,3 +149,15 @@ export const foldDiacritics = (value: string): string =>
 
 const escapeLike = (value: string): string =>
   value.replace(/[\\%_]/g, (c) => `\\${c}`);
+
+export const INVALID_ORDER_BY = {
+  message: 'Invalid sort column',
+  code_error: 'INVALID_ORDER_BY',
+};
+
+// A column or a relation's column (`name`, `user.name`) and nothing else, or a 400.
+export function assertSafeOrderBy(orderBy: string): void {
+  if (typeof orderBy !== 'string' || !ORDER_BY_PATTERN.test(orderBy)) {
+    throw new BadRequestException(INVALID_ORDER_BY);
+  }
+}

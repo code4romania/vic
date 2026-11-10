@@ -3,6 +3,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as cookieParser from 'cookie-parser';
 import { AuthConfigService } from './infrastructure/config/auth.config';
 import { ExceptionsFilter } from './infrastructure/filters/exception.filter';
+import { mountQueueMonitoring } from './infrastructure/config/create-bull-board';
 
 // Request-level setup shared by main.ts and the e2e harness, so tests run the same app as production.
 export function setupApp(app: NestExpressApplication): void {
@@ -29,4 +30,7 @@ export function setupApp(app: NestExpressApplication): void {
       forbidNonWhitelisted: false,
     }),
   );
+
+  // Off by default: /admin/queues is a 404 unless BULL_BOARD_ENABLED=true with basic auth credentials.
+  mountQueueMonitoring(app);
 }

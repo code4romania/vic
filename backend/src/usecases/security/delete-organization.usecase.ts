@@ -8,7 +8,10 @@ import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.faca
 import { AuthMailerService } from 'src/modules/auth/services/auth-mailer.service';
 import { OrganizationExceptionMessages } from 'src/modules/organization/exceptions/exceptions';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
-import { SensitiveActionUsecase } from './sensitive-action.usecase';
+import {
+  SensitiveAction,
+  SensitiveActionUsecase,
+} from './sensitive-action.usecase';
 
 // The confirmation must be the organization's name, typed exactly (spaces and case aside).
 const sameName = (a: string, b: string): boolean =>
@@ -47,7 +50,11 @@ export class DeleteOrganizationUsecase {
         OrganizationExceptionMessages.ORG_011,
       );
     }
-    await this.sensitiveAction.verify(admin, code);
+    await this.sensitiveAction.verify(
+      admin,
+      code,
+      SensitiveAction.DELETE_ORGANIZATION,
+    );
 
     const id = organization.id;
     const paths = await this.dataSource.transaction(async (m) => {

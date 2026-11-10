@@ -92,7 +92,11 @@ export class ChangeEmailUsecase {
       newEmailCode,
     );
     const newEmail = token.sentTo;
-    await this.sensitiveAction.verify(admin, code);
+    await this.sensitiveAction.verify(
+      admin,
+      code,
+      SensitiveAction.CHANGE_EMAIL,
+    );
     await this.assertFree(newEmail, admin);
 
     await this.dataSource.transaction(async (manager) => {

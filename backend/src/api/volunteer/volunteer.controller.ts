@@ -64,6 +64,7 @@ import { AddVolunteerUseCase } from 'src/usecases/volunteer/add-volunteer.usecas
 import { AddVolunteerDto } from './dto/add-volunteer.dto';
 import {
   SENSITIVE_CODE_HEADER,
+  SensitiveAction,
   SensitiveActionUsecase,
 } from 'src/usecases/security/sensitive-action.usecase';
 import { IWebRequestUser } from 'src/modules/auth/interfaces/request-user.interface';
@@ -155,7 +156,11 @@ export class VolunteerController {
     @Headers(SENSITIVE_CODE_HEADER) code: string,
   ): Promise<void> {
     // #593: the volunteers' personal data leaves VIC only after the emailed code
-    await this.sensitiveActionUsecase.verify(user, code);
+    await this.sensitiveActionUsecase.verify(
+      user,
+      code,
+      SensitiveAction.EXPORT_VOLUNTEERS,
+    );
 
     const data = await this.getVolunteersForDownloadUseCase.execute({
       ...filters,

@@ -1,8 +1,14 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { RSVPGoingEnum } from 'src/modules/event/enums/rsvp-going.enum';
-import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
+import {
+  BasePaginationFilterDto,
+  SortableBy,
+} from 'src/infrastructure/base/base-pagination-filter.dto';
 
 export class GetPaginatedEventRSVPsDto extends BasePaginationFilterDto {
+  @SortableBy('user.name', 'going', 'mention', 'createdOn')
+  orderBy?: string;
+
   @IsOptional()
   @IsString()
   branch?: string;

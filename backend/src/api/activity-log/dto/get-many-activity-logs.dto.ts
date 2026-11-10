@@ -1,10 +1,23 @@
 import { IsDate, IsEnum, IsOptional, IsString } from 'class-validator';
-import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
+import {
+  BasePaginationFilterDto,
+  SortableBy,
+} from 'src/infrastructure/base/base-pagination-filter.dto';
 import { ActivityLogResolutionStatus } from 'src/modules/activity-log/enums/activity-log-resolution-status.enum';
 import { ActivityLogSource } from 'src/modules/activity-log/enums/activity-log-source.enum';
 import { ActivityLogStatusForSolvedLogs } from 'src/modules/activity-log/enums/activity-log-status.enum';
 
 export class GetManyActivityLogsDto extends BasePaginationFilterDto {
+  @SortableBy(
+    'activityType.name',
+    'hours',
+    'date',
+    'createdOn',
+    'status',
+    'user.name',
+  )
+  orderBy?: string;
+
   // Left out: every status (#481, #482).
   @IsEnum(ActivityLogResolutionStatus)
   @IsOptional()

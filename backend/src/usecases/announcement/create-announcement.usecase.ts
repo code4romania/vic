@@ -12,6 +12,7 @@ import {
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 import { ChangeAnnouncementStatusUseCase } from './change-announcement-status.usecase';
 
 export type CreateAnnouncementInput = Omit<
@@ -43,6 +44,7 @@ export class CreateAnnouncementUseCase
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly getOrganizationUsecase: GetOrganizationUseCaseService,
     private readonly changeAnnouncementStatusUseCase: ChangeAnnouncementStatusUseCase,
+    private readonly organizationGate: OrganizationGateService,
   ) {}
 
   public async execute(
@@ -50,6 +52,8 @@ export class CreateAnnouncementUseCase
     admin: IAdminUserModel,
   ): Promise<IAnnouncementModel> {
     await this.getOrganizationUsecase.execute(announcement.organizationId);
+    // Decision 1: an NGO a super admin has not validated does not notify volunteers in VIC's name (403 ORG_005)
+    await this.organizationGate.assertValidated(announcement.organizationId);
 
     assertDisplayPeriod(
       announcement.displayStartDate,

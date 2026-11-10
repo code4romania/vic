@@ -18,6 +18,12 @@ import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { UpdateRegularUserDto } from './dto/update-regular-user.dto';
 import { UpdateRegularUserUsecase } from 'src/usecases/user/update-regular-user.usecase';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import {
+  PROFILE_PICTURE_MAX_BYTES,
+  PROFILE_PICTURE_MIMETYPES,
+  singleFileUpload,
+} from 'src/infrastructure/uploads/upload-options';
+import { UserExceptionMessages } from 'src/modules/user/exceptions/exceptions';
 import { GetOneRegularUserProfileUseCase } from 'src/usecases/user/get-regule-user-profile.usecase';
 import { UserProfilePresenter } from './presenters/user-profile.presenter';
 import { DeleteAccountRegularUserUsecase } from 'src/usecases/user/delete-account.usecase';
@@ -64,7 +70,14 @@ export class MobileRegularUserController {
 
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
-    FileFieldsInterceptor([{ name: 'profilePicture', maxCount: 1 }]),
+    FileFieldsInterceptor(
+      [{ name: 'profilePicture', maxCount: 1 }],
+      singleFileUpload({
+        maxBytes: PROFILE_PICTURE_MAX_BYTES,
+        mimetypes: PROFILE_PICTURE_MIMETYPES,
+        invalidType: UserExceptionMessages.USER_009,
+      }),
+    ),
   )
   @ApiBody({ type: UpdateRegularUserDto })
   @Patch('profile')

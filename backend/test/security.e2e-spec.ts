@@ -124,6 +124,30 @@ describe('Data and security (e2e)', () => {
     }).expect(400);
   });
 
+  it('a code asked for one action does not authorize another (the add-admin code does not delete the NGO)', async () => {
+    const addAdminCode = await code('ADD_ADMIN');
+
+    const refused = await post('/security/organization/delete', {
+      confirmation: 'Crucea Verde',
+      code: addAdminCode,
+    }).expect(400);
+    expect(refused.body.code_error).toBe('AUTH_005');
+    expect(
+      await count(`SELECT count(*) FROM organization WHERE id = $1`, [
+        organizationId,
+      ]),
+    ).toBe(1);
+
+    // still good for what it was asked for
+    await post('/organization/team', {
+      firstName: 'Bogdan',
+      lastName: 'Ionescu',
+      email: 'bogdan@crucea.ro',
+      phone: '+40722222222',
+      code: addAdminCode,
+    }).expect(201);
+  });
+
   it('changes the email with a code to the old address and one to the new one', async () => {
     await post('/security/email/codes', { newEmail: 'super@vic.ro' }).expect(
       409,

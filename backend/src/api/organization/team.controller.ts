@@ -23,7 +23,10 @@ import { ListTeamUseCase } from 'src/usecases/team/list-team.usecase';
 import { SendInviteUseCase } from 'src/usecases/team/send-invite.usecase';
 import { SetAdminStatusUseCase } from 'src/usecases/team/set-admin-status.usecase';
 import { AddAdminDto } from './dto/add-admin.dto';
-import { SensitiveActionUsecase } from 'src/usecases/security/sensitive-action.usecase';
+import {
+  SensitiveAction,
+  SensitiveActionUsecase,
+} from 'src/usecases/security/sensitive-action.usecase';
 import { MaskedEmailPresenter } from './presenters/masked-email.presenter';
 import { TeamMemberPresenter } from './presenters/team-member.presenter';
 
@@ -55,7 +58,7 @@ export class TeamController {
     @ExtractUser() admin: IWebRequestUser,
     @Body() { code, ...dto }: AddAdminDto,
   ): Promise<MaskedEmailPresenter> {
-    await this.sensitiveAction.verify(admin, code);
+    await this.sensitiveAction.verify(admin, code, SensitiveAction.ADD_ADMIN);
     const { maskedEmail } = await this.addAdminUseCase.execute(admin, dto);
     return new MaskedEmailPresenter(maskedEmail);
   }

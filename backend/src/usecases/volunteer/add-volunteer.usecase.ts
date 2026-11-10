@@ -11,6 +11,7 @@ import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/vol
 import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOrganizationUseCaseService } from '../organization/get-organization.usecase';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 import { GetOneOrganizationStructureUseCase } from '../organization/organization-structure/get-one-organization-structure.usecase';
 
 export interface AddVolunteerOptions {
@@ -39,6 +40,7 @@ export class AddVolunteerUseCase implements IUseCaseService<IVolunteerModel> {
     private readonly getOneOrganizationStructureUseCase: GetOneOrganizationStructureUseCase,
     private readonly authMailer: AuthMailerService,
     private readonly exceptionService: ExceptionsService,
+    private readonly organizationGate: OrganizationGateService,
   ) {}
 
   async execute(
@@ -46,6 +48,9 @@ export class AddVolunteerUseCase implements IUseCaseService<IVolunteerModel> {
     admin: IAdminUserModel,
   ): Promise<IVolunteerModel> {
     const { organizationId } = admin;
+    // Decision 1: an NGO a super admin has not validated takes no volunteers in and sends no invitations
+    // in VIC's name (403 ORG_005)
+    await this.organizationGate.assertValidated(organizationId);
     const organization =
       await this.getOrganizationUseCase.execute(organizationId);
 

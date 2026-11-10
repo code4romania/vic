@@ -39,11 +39,16 @@ export class RequestLoginUseCase
     private readonly resendVerification: ResendVerificationUseCase,
   ) {}
 
-  async execute(realm: AuthRealm, email: string): Promise<RequestLoginResult> {
+  // ip: the client's address, for the app's per-client limit (the web sends links to known admins only).
+  async execute(
+    realm: AuthRealm,
+    email: string,
+    ip?: string,
+  ): Promise<RequestLoginResult> {
     const maskedEmail = this.oneTimeTokenService.maskEmail(email);
     return realm === AuthRealm.WEB
       ? this.requestWeb(email, maskedEmail)
-      : this.requestMobile(email, maskedEmail);
+      : this.requestMobile(email, maskedEmail, ip);
   }
 
   private async requestWeb(
@@ -92,7 +97,11 @@ export class RequestLoginUseCase
   private async requestMobile(
     email: string,
     maskedEmail: string,
+    ip?: string,
   ): Promise<RequestLoginResult> {
+    // Before anything is created: a client sending codes to many addresses stops here (AUTH_010)
+    await this.rateLimit.assertCanRequestMobileCode(ip);
+
     let identity = await this.authIdentityFacade.findIdentity({
       realm: AuthRealm.MOBILE,
       email,

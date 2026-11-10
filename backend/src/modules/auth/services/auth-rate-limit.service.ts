@@ -28,6 +28,13 @@ const INVITE_WINDOWS: Window[] = [
   { name: 'day', seconds: 24 * 60 * 60, limit: 5 },
 ];
 
+// Login codes from the app, per client address, whatever the email: the sign-up is open (no captcha), so
+// one client cannot send codes to a long list of addresses. Generous enough for many people behind one NAT.
+const MOBILE_CODE_PER_CLIENT_WINDOWS: Window[] = [
+  { name: 'hour', seconds: 60 * 60, limit: 30 },
+  { name: 'day', seconds: 24 * 60 * 60, limit: 100 },
+];
+
 // Fixed-window counters in Redis (INCR + EXPIRE). Every call counts, allowed or not.
 @Injectable()
 export class AuthRateLimitService {
@@ -44,6 +51,12 @@ export class AuthRateLimitService {
   // AUTH_010 when the identity asked for too many sensitive-action codes (#508).
   public async assertCanIssueSensitive(identityId: string): Promise<void> {
     await this.hit(`auth:sensitive:${identityId}`, SENSITIVE_WINDOWS);
+  }
+
+  // AUTH_010 when this client address asked for too many app login codes.
+  public async assertCanRequestMobileCode(ip: string): Promise<void> {
+    if (!ip) return;
+    await this.hit(`auth:mobile-code:ip:${ip}`, MOBILE_CODE_PER_CLIENT_WINDOWS);
   }
 
   // AUTH_010 when the target was invited too recently.

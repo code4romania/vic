@@ -1,3 +1,9 @@
-import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
+import {
+  BasePaginationFilterDto,
+  SortableBy,
+} from 'src/infrastructure/base/base-pagination-filter.dto';
 
-export class GetManyOrganizationsDto extends BasePaginationFilterDto {}
+export class GetManyOrganizationsDto extends BasePaginationFilterDto {
+  @SortableBy('name')
+  orderBy?: string;
+}

@@ -66,6 +66,8 @@ export class SensitiveActionUsecase {
       identity: { id: admin.identityId, email: admin.email },
       type: AuthTokenType.SENSITIVE_ACTION,
       form: AuthTokenForm.CODE,
+      // The code works only for the action it was asked for
+      purpose: action,
     });
     await this.authMailer.send(
       admin.email,
@@ -74,12 +76,18 @@ export class SensitiveActionUsecase {
     return { maskedEmail: this.oneTimeTokenService.maskEmail(admin.email) };
   }
 
-  // AUTH_005 for a wrong or expired code (the fifth wrong one ends it, AUTH_006). A good code is used up.
-  public async verify(admin: IWebRequestUser, code: string): Promise<void> {
+  // AUTH_005 for a wrong or expired code, or one asked for another action (the fifth wrong one ends it,
+  // AUTH_006). A good code is used up.
+  public async verify(
+    admin: IWebRequestUser,
+    code: string,
+    action: SensitiveAction,
+  ): Promise<void> {
     const token = await this.oneTimeTokenService.verifyCode(
       { id: admin.identityId },
       AuthTokenType.SENSITIVE_ACTION,
       code,
+      action,
     );
     await this.oneTimeTokenService.consume(token);
   }

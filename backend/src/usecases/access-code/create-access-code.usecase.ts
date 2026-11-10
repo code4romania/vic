@@ -11,6 +11,7 @@ import {
 import { AccessCodeFacade } from 'src/modules/organization/services/access-code.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { assertAccessCodePeriod } from './access-code-period';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 
 @Injectable()
 export class CreateAccessCodeUseCase
@@ -20,12 +21,18 @@ export class CreateAccessCodeUseCase
     private readonly accessCodeFacade: AccessCodeFacade,
     private readonly exceptionService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly organizationGate: OrganizationGateService,
   ) {}
 
   public async execute(
     createAccessCodeModel: ICreateAccessCodeModel,
     admin: IAdminUserModel,
   ): Promise<IAccessCodeModel> {
+    // No way in to an NGO a super admin has not validated (403 ORG_005)
+    await this.organizationGate.assertValidated(
+      createAccessCodeModel.organizationId,
+    );
+
     assertAccessCodePeriod(
       createAccessCodeModel.startDate,
       createAccessCodeModel.endDate,

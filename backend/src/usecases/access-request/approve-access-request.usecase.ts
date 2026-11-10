@@ -19,6 +19,7 @@ import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 
 @Injectable()
 export class ApproveAccessRequestUseCase
@@ -32,12 +33,16 @@ export class ApproveAccessRequestUseCase
     private readonly eventEmitter: EventEmitter2,
     private readonly volunteerFacade: VolunteerFacade,
     private readonly userFacade: UserFacadeService,
+    private readonly organizationGate: OrganizationGateService,
   ) {}
 
   public async execute(
     updates: ApproveAccessRequestModel,
     admin: IAdminUserModel,
   ): Promise<IAccessRequestModel> {
+    // Decision 1: an NGO a super admin has not validated takes no volunteers in (403 ORG_005)
+    await this.organizationGate.assertValidated(admin.organizationId);
+
     const accessRequest = await this.accessRequestFacade.find({
       id: updates.id,
     });
