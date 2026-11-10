@@ -1849,7 +1849,13 @@
       "pending": "În așteptare",
       "approved": "Aprobate",
       "rejected": "Respinse"
-    }
+    },
+    "counters": {
+      "volunteers": "cereri noi de înscriere",
+      "hours": "cereri de ore de aprobat",
+      "events": "înscrieri la evenimente de aprobat"
+    },
+    "review": "Revizuiește"
   },
   "settings": {
     "title": "Setări",

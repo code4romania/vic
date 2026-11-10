@@ -195,9 +195,21 @@ const AccessRequestTable = ({
     return {
       name: '',
       cell: (row: IAccessRequest) => (
-        <Popover<IAccessRequest> row={row} items={pendingAccessRequestsMenuItems} />
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            className="btn-outline-secondary py-1.5"
+            aria-label={`${i18n.t('approvals:review')} ${row.requestedBy.name}`}
+            onClick={() => onView(row)}
+          >
+            <EyeIcon className="w-4 h-4" aria-hidden="true" />
+            {i18n.t('approvals:review')}
+          </button>
+          <Popover<IAccessRequest> row={row} items={pendingAccessRequestsMenuItems} />
+        </div>
       ),
-      width: '50px',
+      minWidth: '11rem',
+      right: true,
       allowOverflow: true,
     };
   };
@@ -469,6 +481,13 @@ const AccessRequestTable = ({
       </DataTableFilters>
       <Card>
         <CardHeader>
+          <h2>
+            {`${i18n.t(
+              `access_requests:tabs.${
+                status === RequestStatus.PENDING ? 'requests' : `${status}_requests`
+              }`,
+            )} (${accessRequests?.meta?.totalItems ?? 0})`}
+          </h2>
           <Button
             label={i18n.t('general:download_table')}
             icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}

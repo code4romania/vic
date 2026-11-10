@@ -194,6 +194,7 @@ const EventRegistrations = ({ embedded }: { embedded?: boolean } = {}) => {
     <>
       <p className="text-cool-gray-500">{i18n.t('events:registrations.description')}</p>
       <Tabs<EventRegistrationStatus>
+        variant="pills"
         tabs={tabs}
         onClick={(tab) => {
           setPage(1);
