@@ -1,6 +1,6 @@
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
-import { QUEUES } from 'src/common/constants/constants';
+import { QUEUES, SENSITIVE_JOB_OPTIONS } from 'src/common/constants/constants';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -45,6 +45,7 @@ import { AuthCleanupProcessor } from './jobs/auth-cleanup.processor';
     BullModule.registerQueue({
       name: QUEUES.AUTH_TRANSITION,
       limiter: { max: 10, duration: 1000 },
+      defaultJobOptions: SENSITIVE_JOB_OPTIONS,
     }),
     BullModule.registerQueue({ name: QUEUES.AUTH_MAINTENANCE }),
     UserModule,

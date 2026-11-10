@@ -13,6 +13,13 @@ export const QUEUES: Record<QUEUES_TYPES, string> = {
   AUTH_MAINTENANCE: 'auth-maintenance-vic',
 };
 
+// Jobs that carry secrets (login links and codes in emails) or personal data are not kept in Redis once done:
+// a completed job is removed at once, a failed one is kept at most a day (100 at most) to look into.
+export const SENSITIVE_JOB_OPTIONS = {
+  removeOnComplete: true,
+  removeOnFail: { age: 24 * 60 * 60, count: 100 },
+};
+
 export const DATE_CONSTANTS = {
   YYYY_MM_DD_HH_SS: 'yyyy-MM-dd HH:mm:ss',
   YYYY_MM_DD: 'yyyy-MM-dd',
