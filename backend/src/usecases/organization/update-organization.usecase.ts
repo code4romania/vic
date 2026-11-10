@@ -17,6 +17,7 @@ import {
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { GetOrganizationUseCaseService } from './get-organization.usecase';
+import { normalizeCui } from 'src/modules/organization/cui';
 import {
   isLogoImage,
   RegisterOrganizationFiles,
@@ -48,6 +49,19 @@ export class UpdateOrganizationUseCase
     const current = await this.getOrganizationUseCase.execute(
       admin.organizationId,
     );
+
+    // M9: the CUI is what the super admin checked; once validated it is locked (400 ORG_012).
+    // Sending the same CUI (in any spelling) is fine: the edit form always sends it.
+    if (
+      current.validatedAt &&
+      changes.taxId !== undefined &&
+      normalizeCui(changes.taxId ?? '') !== normalizeCui(current.taxId ?? '')
+    ) {
+      throw new BadRequestException(OrganizationExceptionMessages.ORG_012);
+    }
+    if (current.validatedAt) {
+      changes = { ...changes, taxId: undefined };
+    }
 
     if (files.logo && !isLogoImage(files.logo)) {
       throw new BadRequestException(OrganizationExceptionMessages.ORG_003);

@@ -1,13 +1,14 @@
 import { applyDecorators } from '@nestjs/common';
 import { Transform } from 'class-transformer';
+import { isValidCui, normalizeCui } from 'src/modules/organization/cui';
 import {
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUrl,
-  Matches,
   MaxLength,
   MinLength,
+  ValidateBy,
 } from 'class-validator';
 
 const trimmed = Transform(({ value }) =>
@@ -27,12 +28,20 @@ export const Address = (): PropertyDecorator =>
 export const Description = (): PropertyDecorator =>
   applyDecorators(trimmed, IsString(), MinLength(50), MaxLength(250));
 
-// The CUI: digits, optionally prefixed by RO.
+// M9: the CUI, normalized (no RO prefix, spaces, dots or leading zeros) and with a valid check digit
 export const TaxId = (): PropertyDecorator =>
   applyDecorators(
-    trimmed,
+    Transform(({ value }) =>
+      typeof value === 'string' ? normalizeCui(value.trim()) : value,
+    ),
     IsString(),
-    Matches(/^(RO)?\d{2,10}$/i, { message: 'taxId must be a CUI' }),
+    ValidateBy(
+      {
+        name: 'isCui',
+        validator: { validate: (value) => isValidCui(value) },
+      },
+      { message: 'taxId must be a valid CUI' },
+    ),
   );
 
 export const Website = (): PropertyDecorator =>
