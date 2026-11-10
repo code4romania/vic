@@ -436,38 +436,44 @@ export class EventRepository
   }
 
   private createSelectOpenOrganizationGoingEventsBaseSelectQuery(): SelectQueryBuilder<EventEntity> {
-    return this.eventRepository
-      .createQueryBuilder('event')
-      .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
-      .leftJoinAndMapOne(
-        'event.organization',
-        'event.organization',
-        'organization',
-      )
-      .leftJoin(VolunteerEntity, 'v', 'v.organizationId = event.organizationId')
-      .leftJoin(VolunteerProfileEntity, 'vp', 'vp.id = v.volunteerProfileId')
-      .select([
-        'event.id',
-        'event.name',
-        'event.startDate',
-        'event.endDate',
-        'event.status',
-        'event.isPublic',
-        'event.createdOn',
-        'event.organizationId',
-        'event.capacity',
-        'event.location',
-        'targets.id',
-        'targets.name',
-        'organization.id',
-        'organization.name',
-        'organization.logo',
-      ])
-      .where('event.status = :status', {
-        status: EventStatus.PUBLISHED,
-      })
-      // M7: no events of a suspended or not yet validated NGO in the app's lists and search
-      .andWhere(visibleToVolunteersCondition('organization'));
+    return (
+      this.eventRepository
+        .createQueryBuilder('event')
+        .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
+        .leftJoinAndMapOne(
+          'event.organization',
+          'event.organization',
+          'organization',
+        )
+        .leftJoin(
+          VolunteerEntity,
+          'v',
+          'v.organizationId = event.organizationId',
+        )
+        .leftJoin(VolunteerProfileEntity, 'vp', 'vp.id = v.volunteerProfileId')
+        .select([
+          'event.id',
+          'event.name',
+          'event.startDate',
+          'event.endDate',
+          'event.status',
+          'event.isPublic',
+          'event.createdOn',
+          'event.organizationId',
+          'event.capacity',
+          'event.location',
+          'targets.id',
+          'targets.name',
+          'organization.id',
+          'organization.name',
+          'organization.logo',
+        ])
+        .where('event.status = :status', {
+          status: EventStatus.PUBLISHED,
+        })
+        // M7: no events of a suspended or not yet validated NGO in the app's lists and search
+        .andWhere(visibleToVolunteersCondition('organization'))
+    );
   }
 
   private async searchOrderAndPaginate(
