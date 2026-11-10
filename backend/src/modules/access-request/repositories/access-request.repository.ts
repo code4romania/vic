@@ -66,10 +66,10 @@ export class AccessRequestRepository
         orderDirection || OrderDirection.ASC,
       );
 
-    // search filter
+    // search filter: case and diacritics insensitive, like the volunteers list (#474)
     if (search) {
       query.andWhere(
-        this.buildBracketSearchQuery(
+        this.buildAccentInsensitiveSearchQuery(
           ['requestedBy.name', 'requestedBy.email', 'requestedBy.phone'],
           search,
         ),

@@ -2,6 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 import { Brackets, Repository, SelectQueryBuilder } from 'typeorm';
 import { format } from 'date-fns';
 import { DATE_CONSTANTS } from 'src/common/constants/constants';
+import { APP_TIME_ZONE } from 'src/common/helpers/bucharest-time';
 import { IRepositoryWithPagination } from 'src/common/interfaces/repository-with-pagination.interface';
 import { ORDER_BY_PATTERN } from './base-pagination-filter.dto';
 
@@ -117,6 +118,11 @@ export abstract class RepositoryWithPagination<T>
     });
   }
 
+  // The web sends a range as wall-clock times with no zone ("2026-11-20 00:00:00" to
+  // "2026-11-20 23:59:59", the user's day in Romania), which the global pipe has turned into Dates in
+  // the server's zone; format() gives the same wall-clock text back. A timestamp column is compared
+  // as Bucharest wall-clock time, so the range is the user's day whatever the server's or the
+  // database's zone. A date column (customDateFormat) is compared as is.
   protected addRangeConditionToQuery(
     query: SelectQueryBuilder<T>,
     column: string,
@@ -125,8 +131,11 @@ export abstract class RepositoryWithPagination<T>
     customDateFormat?: string,
   ): SelectQueryBuilder<T> {
     const prefix = column.split('.').join('');
+    const target = customDateFormat
+      ? column
+      : `(${column} AT TIME ZONE '${APP_TIME_ZONE}')`;
     if (end) {
-      query.andWhere(`${column} BETWEEN :${prefix}Start AND :${prefix}End`, {
+      query.andWhere(`${target} BETWEEN :${prefix}Start AND :${prefix}End`, {
         [`${prefix}Start`]: format(
           start,
           customDateFormat || DATE_CONSTANTS.YYYY_MM_DD_HH_SS,
@@ -137,7 +146,7 @@ export abstract class RepositoryWithPagination<T>
         ),
       });
     } else {
-      query.andWhere(`${column} >= :${prefix}Start`, {
+      query.andWhere(`${target} >= :${prefix}Start`, {
         [`${prefix}Start`]: format(
           start,
           customDateFormat || DATE_CONSTANTS.YYYY_MM_DD,
