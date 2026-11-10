@@ -209,7 +209,13 @@ const Volunteer = ({ navigation }: any) => {
               title={`${t('leave')}`}
               destructive
               divider={false}
-              onPress={() => navigation.navigate('leave-organization')}
+              onPress={() =>
+                navigation.navigate('leave-organization', {
+                  volunteerId: organization.volunteerId,
+                  name: organization.name,
+                  logo: organization.logo,
+                })
+              }
               testID="volunteer-leave"
             />
           </Group>

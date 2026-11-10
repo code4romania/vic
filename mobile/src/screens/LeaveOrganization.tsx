@@ -18,7 +18,9 @@ import Button from '../components/Button';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { useReducedMotion } from 'react-native-reanimated';
 
-const LeaveOrganization = ({ navigation }: any) => {
+// The organization comes in the route params (#592): the organization store is only filled once
+// its profile was opened, so leaving straight from Profil › Organizațiile mele did nothing.
+const LeaveOrganization = ({ navigation, route }: any) => {
   const { t } = useTranslation('leave_ngo');
 
   const theme = useTheme();
@@ -31,30 +33,45 @@ const LeaveOrganization = ({ navigation }: any) => {
   const { isLoading: isLeavingOrganization, mutate: leaveOrganization } =
     useLeaveOrganizationMutation();
 
-  const { organization } = useOrganization();
+  const { organization: storedOrganization } = useOrganization();
+  const organization = route?.params?.volunteerId
+    ? {
+        name: route.params.name as string,
+        logo: route.params.logo as string | undefined,
+        volunteerId: route.params.volunteerId as string,
+      }
+    : storedOrganization?.volunteer
+      ? {
+          name: storedOrganization.name,
+          logo: storedOrganization.logo,
+          volunteerId: storedOrganization.volunteer.id,
+        }
+      : undefined;
 
   const reducedMotion = useReducedMotion();
 
   const onLeaveOrganizationConfirm = () => {
-    if (organization) {
-      leaveOrganization(
-        { volunteerId: organization.volunteer.id },
-        {
-          onSuccess: () => {
-            navigation.goBack();
-          },
-          onError: (error: any) => {
-            Toast.show({
-              type: 'error',
-              text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(
-                error.response?.data.code_error,
-              )}`,
-            });
-          },
-        },
-      );
-      onCloseBottomSheet();
+    onCloseBottomSheet();
+    if (!organization) {
+      Toast.show({ type: 'error', text1: `${t('errors.generic')}` });
+      return;
     }
+    leaveOrganization(
+      { volunteerId: organization.volunteerId },
+      {
+        onSuccess: () => {
+          navigation.goBack();
+        },
+        onError: (error: any) => {
+          Toast.show({
+            type: 'error',
+            text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(
+              error.response?.data.code_error,
+            )}`,
+          });
+        },
+      },
+    );
   };
 
   const onCloseBottomSheet = () => {

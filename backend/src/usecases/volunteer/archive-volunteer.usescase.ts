@@ -56,18 +56,21 @@ export class ArchiveVolunteerUsecase
       );
     }
 
-    // send notifications
-    this.eventEmitter.emit(
-      EVENTS.JOIN_NGO.ARCHIVE_VOLUNTEER,
-      new ArchiveVolunteerEvent(
-        volunteer.organization.id,
-        volunteer.user.id,
-        volunteer.organization.name,
-        volunteer.user.notificationsSettings.notificationsViaPush,
-        volunteer.user.notificationsSettings.notificationsViaEmail,
-        volunteer.user.email,
-      ),
-    );
+    // "The organization deactivated you" is for the NGO's decision only; a volunteer who leaves by
+    // themselves gets no such message (#592).
+    if (admin.id !== volunteer.user.id) {
+      this.eventEmitter.emit(
+        EVENTS.JOIN_NGO.ARCHIVE_VOLUNTEER,
+        new ArchiveVolunteerEvent(
+          volunteer.organization.id,
+          volunteer.user.id,
+          volunteer.organization.name,
+          volunteer.user.notificationsSettings.notificationsViaPush,
+          volunteer.user.notificationsSettings.notificationsViaEmail,
+          volunteer.user.email,
+        ),
+      );
+    }
 
     // Track event
     this.actionsArchiveFacade.trackEvent(
