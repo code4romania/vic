@@ -45,7 +45,11 @@ const menuOf = async (name: string): Promise<string[]> => {
   const button = within(row(name)).queryByRole('button');
   if (!button) return [];
   await userEvent.click(button);
-  const texts = [...row(name).querySelectorAll('label')].map((label) => label.textContent ?? '');
+  // the row menu's options are buttons (keyboard access, audit major 7)
+  const texts = within(row(name))
+    .getAllByRole('button')
+    .filter((option) => option !== button)
+    .map((option) => option.textContent ?? '');
   await userEvent.click(button);
   return texts;
 };
