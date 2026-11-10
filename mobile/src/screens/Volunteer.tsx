@@ -105,7 +105,13 @@ const Volunteer = ({ navigation }: any) => {
       >
         {back}
         <Enter style={styles.head}>
-          <Avatar name={organization.name} uri={organization.logo} size={72} shape="rounded" />
+          <Avatar
+            name={organization.name}
+            uri={organization.logo}
+            size={72}
+            shape="rounded"
+            onCanvas
+          />
           <VText variant="largeTitle" style={styles.name} accessibilityRole="header">
             {organization.name}
           </VText>
