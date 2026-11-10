@@ -53,7 +53,10 @@ const rejectsWith = (
 describe('RequestLoginUseCase (VIC 2.0, #514)', () => {
   let facade: { findIdentity: jest.Mock; createIdentity: jest.Mock };
   let tokens: { issue: jest.Mock; maskEmail: jest.Mock };
-  let rateLimit: { assertCanIssue: jest.Mock };
+  let rateLimit: {
+    assertCanIssue: jest.Mock;
+    assertCanRequestMobileCode: jest.Mock;
+  };
   let mailer: { send: jest.Mock; loginLinkUrl: jest.Mock };
   let resendVerification: { execute: jest.Mock };
   let useCase: RequestLoginUseCase;
@@ -64,7 +67,10 @@ describe('RequestLoginUseCase (VIC 2.0, #514)', () => {
       issue: jest.fn().mockResolvedValue({ secret: 'secret' }),
       maskEmail: jest.fn().mockReturnValue('a•••@example.ro'),
     };
-    rateLimit = { assertCanIssue: jest.fn() };
+    rateLimit = {
+      assertCanIssue: jest.fn(),
+      assertCanRequestMobileCode: jest.fn(),
+    };
     mailer = {
       send: jest.fn(),
       loginLinkUrl: jest.fn((secret: string) => `https://vic.test/${secret}`),
@@ -178,6 +184,23 @@ describe('RequestLoginUseCase (VIC 2.0, #514)', () => {
       useCase.execute(AuthRealm.MOBILE, 'ana@example.ro'),
       AuthExceptionCodes.AUTH_010,
     );
+    expect(mailer.send).not.toHaveBeenCalled();
+  });
+
+  it('mobile: a client over its limit of codes (any email) is AUTH_010, before a login is created', async () => {
+    rateLimit.assertCanRequestMobileCode.mockRejectedValue(
+      new AuthException(AuthExceptionCodes.AUTH_010),
+    );
+
+    await rejectsWith(
+      useCase.execute(AuthRealm.MOBILE, 'new@example.ro', '203.0.113.5'),
+      AuthExceptionCodes.AUTH_010,
+    );
+    expect(rateLimit.assertCanRequestMobileCode).toHaveBeenCalledWith(
+      '203.0.113.5',
+    );
+    expect(facade.findIdentity).not.toHaveBeenCalled();
+    expect(facade.createIdentity).not.toHaveBeenCalled();
     expect(mailer.send).not.toHaveBeenCalled();
   });
 });

@@ -57,9 +57,14 @@ export class MobileAuthController {
   @Post('login/request')
   async requestLogin(
     @Body() { email }: RequestLoginDto,
+    @Req() req: Request,
   ): Promise<RequestLoginResultPresenter> {
     return new RequestLoginResultPresenter(
-      await this.requestLoginUseCase.execute(AuthRealm.MOBILE, email),
+      await this.requestLoginUseCase.execute(
+        AuthRealm.MOBILE,
+        email,
+        requestClient(req).ip,
+      ),
     );
   }
 
