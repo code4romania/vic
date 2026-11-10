@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { IOrganizationVolunteerModel } from 'src/modules/organization/models/organization-volunteer.models';
 
 export class OrganizationVolunteerPresenter {
@@ -9,6 +10,7 @@ export class OrganizationVolunteerPresenter {
     this.logo = organization.logo;
     this.volunteerId = organization.volunteerId;
     this.volunteerProfileId = organization.volunteerProfileId;
+    this.volunteerStatus = organization.volunteerStatus;
   }
 
   @Expose()
@@ -42,4 +44,12 @@ export class OrganizationVolunteerPresenter {
     description: 'The volunteer profile id for this organization',
   })
   volunteerProfileId: string;
+
+  @Expose()
+  @ApiProperty({
+    enum: VolunteerStatus,
+    description:
+      'Active, or Inactive when the organization made the volunteer inactive: the app then only shows the organization and its documents',
+  })
+  volunteerStatus: VolunteerStatus;
 }

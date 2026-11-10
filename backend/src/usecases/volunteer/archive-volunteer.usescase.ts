@@ -47,11 +47,14 @@ export class ArchiveVolunteerUsecase
       archivedById: admin.id,
     });
 
-    // sync organization data
-    await this.syncUseOrganizatinosUsecase.execute(
-      volunteer.user.id,
-      volunteer.organization.id,
-    );
+    // A volunteer who leaves by themselves no longer has the organization; one the organization
+    // made inactive keeps it in the app, read-only (#472, #589).
+    if (admin.id === volunteer.user.id) {
+      await this.syncUseOrganizatinosUsecase.execute(
+        volunteer.user.id,
+        volunteer.organization.id,
+      );
+    }
 
     // send notifications
     this.eventEmitter.emit(
