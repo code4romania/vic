@@ -657,8 +657,8 @@
                 "number": "Numărul trebuie să conțină doar cifre",
                 "placeholder": "Adaugă numărul de ore",
                 "required": "Numărul de ore este obligatoriu",
-                "min": "Numărul de ore trebuie să fie mai mare ca {{value}}",
-                "max": "Numărul de ore trebuie să fie mai mic ca {{value}}",
+                "min": "Numărul de ore trebuie să fie cel puțin {{value}}",
+                "max": "Poți înregistra cel mult {{value}} de ore pe zi",
                 "integer": "Numărul de ore trebuie să fie întreg"
             },
             "mentions": {
@@ -672,6 +672,10 @@
             "ACTIVITY_LOG_001": "Nu există înregistrarea de logare ore",
             "ACTIVITY_LOG_002": "Voluntarul nu are profilul completat",
             "ACTIVITY_LOG_004": "Nu se pot anula request-uri aprobate sau respinse",
+            "ACTIVITY_LOG_007": "Nu poți înregistra ore pentru o dată din viitor.",
+            "ACTIVITY_LOG_008": "Nu se pot înregistra mai mult de 24 de ore într-o zi.",
+            "ACTIVITY_LOG_009": "Aceste ore sunt deja înregistrate pentru aceeași zi, același eveniment și aceeași activitate.",
+            "ACTIVITY_LOG_010": "Nu se pot înregistra ore pentru un eveniment care nu este publicat.",
             "VOLUNTEER_001": "Voluntarul nu există",
             "EVENT_001": "Evenimentul nu există",
             "ACTIVITY_TYPE_001": "Tipul activității nu există",
