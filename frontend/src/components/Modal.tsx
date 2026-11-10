@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import i18n from '../common/config/i18n';
 
 interface ModalProps {
   title: string;
@@ -46,10 +47,10 @@ const Modal = ({ children, title, onClose }: ModalProps) => {
                   <button
                     className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
                     onClick={onClose}
-                    aria-label="close-modal"
+                    aria-label={`${i18n.t('general:close')}`}
                     type="button"
                   >
-                    <XMarkIcon className="h-6 w-6" />
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
                 {children}

@@ -4,6 +4,7 @@ import { Bars3Icon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import UserMenu from './UserMenu';
+import i18n from '../common/config/i18n';
 
 interface HeaderProps {
   openSlidingMenu: (isOpen: boolean) => void;
@@ -20,11 +21,12 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
         {isAuthenticated && (
           <button
             id="side_menu__open-btn"
-            aria-label="Menu"
+            aria-label={`${i18n.t('header:open_menu')}`}
+            type="button"
             className="p-2 -ml-2 rounded-lg text-cool-gray-700 hover:bg-cool-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-navy"
             onClick={openSlidingMenu.bind(null, true)}
           >
-            <Bars3Icon className="w-6 h-6" />
+            <Bars3Icon className="w-6 h-6" aria-hidden="true" />
           </button>
         )}
         <button type="button" className="flex items-center" onClick={() => navigate('/')}>

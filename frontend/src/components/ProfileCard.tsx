@@ -24,7 +24,7 @@ const ProfileCard = ({ name, logo, age, sex, location, children }: ProfileCardPr
           {logo ? (
             <img
               src={`${logo}`}
-              alt="Profile picture"
+              alt={name}
               className="logo w-28 lg:w-32 border-white border-4 shadow-blur text-transparent"
             />
           ) : (

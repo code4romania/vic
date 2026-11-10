@@ -141,7 +141,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
             <button
               className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
               onClick={onEdit}
-              aria-label="edit-activity-log"
+              aria-label={`${i18n.t('general:edit', { item: '' })}`}
               type="button"
             >
               <PencilIcon className="h-5 w-5" />
@@ -150,7 +150,7 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
           <button
             className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
             onClick={onCloseSidePanel}
-            aria-label="close-modal"
+            aria-label={`${i18n.t('general:close')}`}
             type="button"
           >
             <XMarkIcon className="h-6 w-6" />

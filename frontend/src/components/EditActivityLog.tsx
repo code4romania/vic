@@ -78,7 +78,7 @@ const EditActivityLog = ({ isOpen, onClose, activityLog }: EditActivityLogProps)
         <button
           className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
           onClick={onClose.bind(null, false)}
-          aria-label="close-modal"
+          aria-label={`${i18n.t('general:close')}`}
           type="button"
         >
           <ArrowLongLeftIcon className="h-6 w-6" />
