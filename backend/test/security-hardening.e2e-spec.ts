@@ -371,7 +371,7 @@ describe('Security hardening (e2e)', () => {
           name: `Asociatia ${suffix}`,
           email: `contact@${suffix}.ro`,
           phone: `+4070000${suffix === 'unu' ? '1111' : '2222'}`,
-          taxId: 'RO99999999',
+          taxId: 'RO18547290',
           firstName: 'Ana',
           lastName: 'Popescu',
           adminEmail: `ana@${suffix}.ro`,
@@ -393,9 +393,7 @@ describe('Security hardening (e2e)', () => {
       expect(JSON.stringify(refused.body)).not.toMatch(/duplicate key/);
       expect(
         (
-          await q(
-            `SELECT count(*) FROM organization WHERE tax_id = 'RO99999999'`,
-          )
+          await q(`SELECT count(*) FROM organization WHERE tax_id = '18547290'`)
         )[0].count,
       ).toBe('1');
     });

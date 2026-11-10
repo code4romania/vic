@@ -200,9 +200,10 @@ describe('Mobile authorization (e2e)', () => {
       expect(forIon.body.code_error).toBe('VOLUNTEER_001');
 
       await e.post('/mobile/activity-log').send(body).expect(201);
+      // another day: the same hours twice are a duplicate (ACTIVITY_LOG_009)
       await e
         .post('/mobile/activity-log')
-        .send({ ...body, volunteerId: elena.volunteerId })
+        .send({ ...body, date: '2026-01-11', volunteerId: elena.volunteerId })
         .expect(201);
 
       const rows = await q(`SELECT volunteer_id FROM activity_log`);
