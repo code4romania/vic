@@ -118,4 +118,44 @@ describe('Volunteers (#475, #476)', () => {
     await waitFor(() => expect(downloadExcel).toHaveBeenCalled());
     expect(exportCode).toBe('654321');
   });
+
+  it('a Candidate with a VIC account can be activated from the row menu; one without cannot (#590)', async () => {
+    const activated: string[] = [];
+    const withAccount = { ...volunteer('c1', 'Cora Cont', 'candidate', 0) };
+    withAccount.user = { ...withAccount.user, hasAccount: true } as typeof withAccount.user;
+    const withoutAccount = { ...volunteer('c2', 'Dan Fără', 'candidate', 0) };
+    withoutAccount.user = {
+      ...withoutAccount.user,
+      hasAccount: false,
+    } as typeof withoutAccount.user;
+    server.use(
+      http.get(api('/volunteer'), () => HttpResponse.json(page([withAccount, withoutAccount]))),
+      http.patch(api('/volunteer/:id/activate'), ({ params }) => {
+        activated.push(params.id as string);
+        return HttpResponse.json({ ...withAccount, status: 'active' });
+      }),
+      http.get(api('/listing/*'), () => HttpResponse.json([])),
+    );
+
+    renderPage(<Volunteers query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
+
+    const rowOf = async (name: string) =>
+      (await screen.findByText(name)).closest('[role="row"]') as HTMLElement;
+
+    await userEvent.click(
+      within(await rowOf('Dan Fără'))
+        .getAllByRole('button')
+        .at(-1) as HTMLElement,
+    );
+    expect(screen.queryByText(t('volunteers:popover.activate'))).toBeNull();
+    await userEvent.keyboard('{Escape}');
+
+    await userEvent.click(
+      within(await rowOf('Cora Cont'))
+        .getAllByRole('button')
+        .at(-1) as HTMLElement,
+    );
+    await userEvent.click(await screen.findByText(t('volunteers:popover.activate')));
+    await waitFor(() => expect(activated).toEqual(['c1']));
+  });
 });

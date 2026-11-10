@@ -1,4 +1,5 @@
 import API from '../api';
+import { birthdayToApi } from '../../common/utils/birthday';
 import { IUserProfile } from '../../common/interfaces/user-profile.interface';
 import { ICreateUserPayload } from '../../common/interfaces/create-user-payload.interface';
 import { AccountDataFormTypes } from '../../screens/AccountData';
@@ -27,7 +28,7 @@ export const updateUserProfile = async (
     formData.append('locationId', updates.cityId.toString());
   }
   if (updates.birthday) {
-    formData.append('birthday', updates.birthday.toISOString());
+    formData.append('birthday', birthdayToApi(updates.birthday).toISOString());
   }
   if (updates.sex) {
     formData.append('sex', updates.sex);

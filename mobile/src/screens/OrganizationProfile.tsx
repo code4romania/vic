@@ -347,7 +347,14 @@ const OrganizationProfile = ({ navigation, route }: any) => {
                   title={`${t('leave')}`}
                   destructive
                   divider={false}
-                  onPress={() => navigation.navigate('leave-organization')}
+                  onPress={() =>
+                    organization &&
+                    navigation.navigate('leave-organization', {
+                      volunteerId: organization.volunteer.id,
+                      name: organization.name,
+                      logo: organization.logo,
+                    })
+                  }
                   testID="organization-leave"
                 />
               </Enter>

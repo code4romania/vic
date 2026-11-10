@@ -22,6 +22,7 @@ import { useTabBarScroll } from '../components/navigation/TabBarScroll';
 import { useGlassTabBarInset } from '../components/navigation/GlassTabBar';
 import { EventCard } from '../components/events/EventCard';
 import { EventIcon, EventIconName } from '../components/events/EventIcons';
+import { isInactiveVolunteer } from '../common/interfaces/organization-list-item.interface';
 import {
   Avatar,
   Enter,
@@ -135,7 +136,8 @@ const Home = ({ navigation }: any) => {
   )
     .filter((event) => !event.endDate || new Date(event.endDate) >= new Date())
     .slice(0, 2);
-  const profileMissing = !!organization && !organization.volunteerProfileId;
+  const inactive = isInactiveVolunteer(organization);
+  const profileMissing = !!organization && !inactive && !organization.volunteerProfileId;
   const stats = statistics.data;
 
   const todos = [
@@ -148,6 +150,7 @@ const Home = ({ navigation }: any) => {
       onPress: () => navigation.navigate('volunteer-profile'),
     },
     !!organization &&
+      !inactive &&
       !profileMissing && {
         key: 'hours',
         icon: 'check' as EventIconName,
@@ -258,6 +261,12 @@ const Home = ({ navigation }: any) => {
         </View>
 
         <View style={styles.content}>
+          {inactive && (
+            <Enter index={1} style={[styles.join, shadows.card]} testID="home-inactive">
+              <VText variant="sub">{t('organization_profile:disclaimer.volunteer_inactive')}</VText>
+            </Enter>
+          )}
+
           {!organization && (
             <Enter index={1} style={[styles.join, shadows.card]}>
               <VText variant="h3">{t('no_ngo_title')}</VText>

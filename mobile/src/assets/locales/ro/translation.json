@@ -138,7 +138,7 @@
             "AUTH_011": "Versiunea aplicației este prea veche. Actualizeaz-o din magazin.",
             "AUTH_012": "Acesta este un cont de organizație. Folosește VIC pe web.",
             "AUTH_013": "Autentificarea cu acest cont nu a reușit.",
-            "social_failed": "Autentificarea nu a reușit. Încearcă din nou sau folosește emailul și parola."
+            "social_failed": "Autentificarea nu a reușit. Încearcă din nou sau intră cu emailul."
         }
     },
     "login": {
@@ -195,6 +195,7 @@
             }
         },
         "profile": "Profil",
+        "waiting": "În așteptare",
         "active": "Activă",
         "volunteer_profile_missing": "Profil de voluntar incomplet",
         "stats": {
@@ -335,12 +336,15 @@
     },
     "leave_ngo": {
         "header": "Părăsește organizația",
-        "paragraph": "Daca părăsești organizația, aceasta îți va șterge datele.",
+        "paragraph": "Dacă părăsești organizația, nu o mai vezi în aplicație și nu mai poți trimite ore sau documente. Orele și documentele tale rămân la organizație.",
         "action_btn": "Părăsește organizația",
+        "errors": {
+            "generic": "Ceva nu a mers. Încearcă din nou."
+        },
         "modal": {
             "confirm_leave_organization": {
-                "heading": "Ești sigur ca dorești să părăsești organizația?",
-                "paragraph": "Daca părăsești organizația, aceasta îți va șterge datele, inclusiv orele înregistrate și documentele de voluntar. Pentru mai multe detalii, poți contacta organizația.",
+                "heading": "Ești sigur că vrei să părăsești organizația?",
+                "paragraph": "Orele și documentele tale rămân la organizație. Poți cere oricând să te alături din nou.",
                 "action_label": "Părăsește organizația"
             }
         }
@@ -654,7 +658,7 @@
             "description": "Cele {{hours}} ore de la {{title}} nu mai ajung la organizație."
         },
         "toast": {
-            "success": "Înregistrarea a fost ștearsă cu success."
+            "success": "Înregistrarea a fost ștearsă cu succes."
         },
         "edit_title": "Editează orele",
         "status": {

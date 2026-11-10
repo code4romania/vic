@@ -32,7 +32,13 @@ export class ActivateVolunteerUsecase
     const volunteer = await this.getOneVolunteerUsecase.execute(volunteerId);
 
     assertVolunteerNotBlocked(volunteer);
-    if (volunteer.status !== VolunteerStatus.INACTIVE) {
+    // Inactive comes back to Active; a Candidate becomes Active once they have a VIC account (#590):
+    // one without an account has nothing to log in with yet.
+    const fromInactive = volunteer.status === VolunteerStatus.INACTIVE;
+    const fromCandidate =
+      volunteer.status === VolunteerStatus.CANDIDATE &&
+      volunteer.user?.hasAccount === true;
+    if (!fromInactive && !fromCandidate) {
       this.exceptionService.badRequestException(
         VolunteerExceptionMessages.VOLUNTEER_004,
       );

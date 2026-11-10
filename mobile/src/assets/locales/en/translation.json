@@ -138,7 +138,7 @@
       "AUTH_011": "This version of the app is too old. Update it from the store.",
       "AUTH_012": "This is an organization account. Use VIC on the web.",
       "AUTH_013": "Signing in with this account failed.",
-      "social_failed": "Signing in failed. Try again or use your email and password."
+      "social_failed": "Signing in failed. Try again or continue with your email."
     }
   },
   "login": {
@@ -196,6 +196,7 @@
     },
     "profile": "Profile",
     "active": "Active",
+    "waiting": "Pending",
     "volunteer_profile_missing": "Volunteer profile incomplete",
     "stats": {
       "hours": "approved hours",
@@ -334,12 +335,15 @@
   },
   "leave_ngo": {
     "header": "Leaving the organization",
-    "paragraph": "If you leave the organization, it will delete your data.",
+    "paragraph": "If you leave the organization, you will no longer see it in the app or be able to log hours or documents. Your hours and documents stay with the organization.",
     "action_btn": "Leaving the organization",
+    "errors": {
+        "generic": "Something went wrong. Please try again."
+    },
     "modal": {
       "confirm_leave_organization": {
         "heading": "Are you sure you want to leave the organization?",
-        "paragraph": "If you leave the organization, it will delete your data, including your registered hours and volunteer documents. For more details, you can contact the organization.",
+        "paragraph": "Your hours and documents stay with the organization. You can ask to join again at any time.",
         "action_label": "Leaving the organization"
       }
     }

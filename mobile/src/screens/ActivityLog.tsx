@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
@@ -105,128 +105,134 @@ const ActivityLog = ({ navigation, route }: any) => {
   const statusNote = note();
 
   return (
-    <View style={styles.screen}>
-      <ScrollView
-        contentContainerStyle={[
-          styles.content,
-          { paddingTop: insets.top + 12, paddingBottom: insets.bottom + (isPending ? 120 : 40) },
-        ]}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.topRow}>
-          <PressableScale
-            onPress={navigation.goBack}
-            style={[styles.back, shadows.back]}
-            accessibilityLabel={`${t('general:back')}`}
-            testID="log-back"
-          >
-            <EventIcon name="back" size={20} />
-          </PressableScale>
-          {isPending && (
-            <VText
-              variant="label"
-              style={styles.link}
-              onPress={onEdit}
-              accessibilityRole="button"
-              testID="log-edit-link"
+    // On iOS this screen is a native modal: the app-level sheet provider renders behind it, so the
+    // delete confirmation needs a provider of its own to show on top (#591).
+    <BottomSheetModalProvider>
+      <View style={styles.screen}>
+        <ScrollView
+          contentContainerStyle={[
+            styles.content,
+            { paddingTop: insets.top + 12, paddingBottom: insets.bottom + (isPending ? 120 : 40) },
+          ]}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.topRow}>
+            <PressableScale
+              onPress={navigation.goBack}
+              style={[styles.back, shadows.back]}
+              accessibilityLabel={`${t('general:back')}`}
+              testID="log-back"
             >
-              {t('general:edit', { item: '' }).trim()}
-            </VText>
-          )}
-        </View>
-
-        {!log && isFetching && <ActivityLogSkeleton />}
-
-        {log && (
-          <>
-            <Enter style={styles.tile}>
-              <VText style={styles.tileText}>{`${log.hours}h`}</VText>
-            </Enter>
-            <Enter index={1}>
-              <VText variant="largeTitle" style={styles.title} accessibilityRole="header">
-                {title}
-              </VText>
-              <VText variant="sub">{log.organization?.name}</VText>
-            </Enter>
-
-            {statusNote && (
-              <Enter
-                index={2}
-                style={[styles.note, { backgroundColor: statusNote.tone.bg }]}
-                testID="log-status"
+              <EventIcon name="back" size={20} />
+            </PressableScale>
+            {isPending && (
+              <VText
+                variant="label"
+                style={styles.link}
+                onPress={onEdit}
+                accessibilityRole="button"
+                testID="log-edit-link"
               >
-                <VText variant="label" color={statusNote.tone.fg}>
-                  {statusNote.text}
+                {t('general:edit', { item: '' }).trim()}
+              </VText>
+            )}
+          </View>
+
+          {!log && isFetching && <ActivityLogSkeleton />}
+
+          {log && (
+            <>
+              <Enter style={styles.tile}>
+                <VText style={styles.tileText}>{`${log.hours}h`}</VText>
+              </Enter>
+              <Enter index={1}>
+                <VText variant="largeTitle" style={styles.title} accessibilityRole="header">
+                  {title}
                 </VText>
-                {!!statusNote.reason && (
-                  <VText variant="body" color={statusNote.tone.fg}>
-                    <VText variant="bodyStrong" color={statusNote.tone.fg}>
-                      {`${t('rejection_reason')}: `}
-                    </VText>
-                    {statusNote.reason}
+                <VText variant="sub">{log.organization?.name}</VText>
+              </Enter>
+
+              {statusNote && (
+                <Enter
+                  index={2}
+                  style={[styles.note, { backgroundColor: statusNote.tone.bg }]}
+                  testID="log-status"
+                >
+                  <VText variant="label" color={statusNote.tone.fg}>
+                    {statusNote.text}
                   </VText>
+                  {!!statusNote.reason && (
+                    <VText variant="body" color={statusNote.tone.fg}>
+                      <VText variant="bodyStrong" color={statusNote.tone.fg}>
+                        {`${t('rejection_reason')}: `}
+                      </VText>
+                      {statusNote.reason}
+                    </VText>
+                  )}
+                </Enter>
+              )}
+
+              <Enter index={3}>
+                {facts.map((fact) => (
+                  <View key={fact.key} style={styles.fact}>
+                    <VText variant="sub">{fact.label}</VText>
+                    <VText variant="bodyStrong" style={styles.factValue}>
+                      {fact.value}
+                    </VText>
+                  </View>
+                ))}
+                {!!log.mentions && (
+                  <View style={styles.mentions}>
+                    <VText variant="sub">{t('form.mentions.label')}</VText>
+                    <VText variant="body">{log.mentions}</VText>
+                  </View>
                 )}
               </Enter>
-            )}
+            </>
+          )}
+        </ScrollView>
 
-            <Enter index={3}>
-              {facts.map((fact) => (
-                <View key={fact.key} style={styles.fact}>
-                  <VText variant="sub">{fact.label}</VText>
-                  <VText variant="bodyStrong" style={styles.factValue}>
-                    {fact.value}
-                  </VText>
-                </View>
-              ))}
-              {!!log.mentions && (
-                <View style={styles.mentions}>
-                  <VText variant="sub">{t('form.mentions.label')}</VText>
-                  <VText variant="body">{log.mentions}</VText>
-                </View>
-              )}
-            </Enter>
-          </>
+        {isPending && (
+          <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 16) + 8 }]}>
+            <VButton
+              variant="soft"
+              label={`${t('general:delete')}`}
+              onPress={() => deleteSheet.current?.present()}
+              loading={isDeleting}
+              style={styles.fill}
+              testID="log-delete"
+            />
+            <VButton
+              label={`${t('general:edit', { item: '' }).trim()}`}
+              onPress={onEdit}
+              style={styles.fill}
+              testID="log-edit"
+            />
+          </View>
         )}
-      </ScrollView>
 
-      {isPending && (
-        <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 16) + 8 }]}>
+        <Sheet
+          ref={deleteSheet}
+          title={`${t('confirmation_modal.heading')}`}
+          subtitle={
+            log ? `${t('confirmation_modal.description', { hours: log.hours, title })}` : ''
+          }
+          testID="log-delete-sheet"
+        >
+          <VButton
+            variant="danger"
+            label={`${t('general:delete')}`}
+            onPress={onDelete}
+            testID="log-delete-confirm"
+          />
           <VButton
             variant="soft"
-            label={`${t('general:delete')}`}
-            onPress={() => deleteSheet.current?.present()}
-            loading={isDeleting}
-            style={styles.fill}
-            testID="log-delete"
+            label={`${t('general:cancel')}`}
+            onPress={() => deleteSheet.current?.dismiss()}
           />
-          <VButton
-            label={`${t('general:edit', { item: '' }).trim()}`}
-            onPress={onEdit}
-            style={styles.fill}
-            testID="log-edit"
-          />
-        </View>
-      )}
-
-      <Sheet
-        ref={deleteSheet}
-        title={`${t('confirmation_modal.heading')}`}
-        subtitle={log ? `${t('confirmation_modal.description', { hours: log.hours, title })}` : ''}
-        testID="log-delete-sheet"
-      >
-        <VButton
-          variant="danger"
-          label={`${t('general:delete')}`}
-          onPress={onDelete}
-          testID="log-delete-confirm"
-        />
-        <VButton
-          variant="soft"
-          label={`${t('general:cancel')}`}
-          onPress={() => deleteSheet.current?.dismiss()}
-        />
-      </Sheet>
-    </View>
+        </Sheet>
+      </View>
+    </BottomSheetModalProvider>
   );
 };
 

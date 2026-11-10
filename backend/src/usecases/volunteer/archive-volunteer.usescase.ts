@@ -47,24 +47,30 @@ export class ArchiveVolunteerUsecase
       archivedById: admin.id,
     });
 
-    // sync organization data
-    await this.syncUseOrganizatinosUsecase.execute(
-      volunteer.user.id,
-      volunteer.organization.id,
-    );
-
-    // send notifications
-    this.eventEmitter.emit(
-      EVENTS.JOIN_NGO.ARCHIVE_VOLUNTEER,
-      new ArchiveVolunteerEvent(
-        volunteer.organization.id,
+    // A volunteer who leaves by themselves no longer has the organization; one the organization
+    // made inactive keeps it in the app, read-only (#472, #589).
+    if (admin.id === volunteer.user.id) {
+      await this.syncUseOrganizatinosUsecase.execute(
         volunteer.user.id,
-        volunteer.organization.name,
-        volunteer.user.notificationsSettings.notificationsViaPush,
-        volunteer.user.notificationsSettings.notificationsViaEmail,
-        volunteer.user.email,
-      ),
-    );
+        volunteer.organization.id,
+      );
+    }
+
+    // "The organization deactivated you" is for the NGO's decision only; a volunteer who leaves by
+    // themselves gets no such message (#592).
+    if (admin.id !== volunteer.user.id) {
+      this.eventEmitter.emit(
+        EVENTS.JOIN_NGO.ARCHIVE_VOLUNTEER,
+        new ArchiveVolunteerEvent(
+          volunteer.organization.id,
+          volunteer.user.id,
+          volunteer.organization.name,
+          volunteer.user.notificationsSettings.notificationsViaPush,
+          volunteer.user.notificationsSettings.notificationsViaEmail,
+          volunteer.user.email,
+        ),
+      );
+    }
 
     // Track event
     this.actionsArchiveFacade.trackEvent(
