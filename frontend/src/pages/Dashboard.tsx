@@ -13,7 +13,9 @@ import i18n from '../common/config/i18n';
 const Dashboard = () => {
   return (
     <PageLayout>
-      <PageHeader subtitle={`${i18n.t('dashboard:subtitle')}`}>Dashboard</PageHeader>
+      <PageHeader subtitle={`${i18n.t('dashboard:subtitle')}`}>
+        {`${i18n.t('side_menu:options.dashboard')}`}
+      </PageHeader>
       <div className="flex flex-col gap-6">
         <DashboardStatistics />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">

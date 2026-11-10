@@ -6,6 +6,7 @@ import Card from '../layouts/CardLayout';
 import { usePendingApprovalsQuery } from '../services/approvals/approvals.service';
 import CardBody from './CardBody';
 import CardHeader from './CardHeader';
+import LoadErrorContent from './LoadErrorContent';
 
 const t = (key: string, options?: Record<string, unknown>): string =>
   `${i18n.t(`dashboard:pending.${key}`, options)}`;
@@ -19,7 +20,7 @@ const ROWS = [
 // What waits for the organization's decision, with a shortcut to each tab of Aprobări.
 const DashboardPendingApprovals = () => {
   const navigate = useNavigate();
-  const { data } = usePendingApprovalsQuery();
+  const { data, error, refetch } = usePendingApprovalsQuery();
 
   return (
     <Card>
@@ -35,7 +36,9 @@ const DashboardPendingApprovals = () => {
         )}
       </CardHeader>
       <CardBody>
-        {data && !data.total ? (
+        {error ? (
+          <LoadErrorContent onRetry={refetch} />
+        ) : data && !data.total ? (
           <p className="text-cool-gray-500">{t('none')}</p>
         ) : (
           <ul className="flex flex-col gap-2">
