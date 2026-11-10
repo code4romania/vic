@@ -1,27 +1,47 @@
 import React, { useEffect } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import PageLayout from '../layouts/PageLayout';
-import { StyleService, Text, useStyleSheet } from '@ui-kitten/components';
 import ProfileIntro from '../components/ProfileIntro';
-import { View } from 'react-native';
-import ReadOnlyElement from '../components/ReadOnlyElement';
 import { formatDate } from '../common/utils/utils';
 import OrganizationIdentity from '../components/OrganizationIdentity';
 import { useVolunteerProfile } from '../services/volunteer/volunteer.service';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { VOLUNTEER_PROFILE_ERRORS } from '../common/errors/entities/volunteer-profile';
 import MissingEntity from './MissingEntity';
-import { useTranslation } from 'react-i18next';
 import { useVolunteer } from '../store/volunteer/volunteer.selector';
-import ScrollViewLayout from '../layouts/ScrollViewLayout';
 import VolunteerProfileSkeleton from '../components/skeleton/volunteer-profile.skeleton';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useUserProfile } from '../store/profile/profile.selector';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { colors, spacing } from '../common/theme/tokens';
+import { Group, VText } from '../components/ui';
 
+const EMPTY = '–';
+
+/** One read-only line of the volunteer info: the label small and gray, the value under it. */
+const InfoRow = ({
+  label,
+  value,
+  last,
+  testID,
+}: {
+  label: string;
+  value?: string | null;
+  last?: boolean;
+  testID?: string;
+}) => (
+  <View style={[styles.row, !last && styles.divider]} accessible testID={testID}>
+    <VText variant="cap">{label}</VText>
+    <VText variant="body">{value?.trim() ? value : EMPTY}</VText>
+  </View>
+);
+
+/**
+ * VIC 2.0 volunteer profile at the active organization: the person (photo, name, age, city) with
+ * the organization, then what the organization knows about the volunteer, on the gray canvas.
+ */
 const VolunteerProfile = ({ navigation }: any) => {
-  const styles = useStyleSheet(themedStyles);
-
   const { t } = useTranslation('volunteer');
   const paddingTop = usePaddingTop();
 
@@ -74,32 +94,27 @@ const VolunteerProfile = ({ navigation }: any) => {
     );
   }
 
+  // age (only with a birthday: the API sends 0 without one) · sex · "Oraș, jud. Județ"
   const buildProfileDescription = (): string => {
-    if (volunteer) {
-      let description = `${t('age', {
-        years: volunteer.user.age,
-      })}\n`;
-
-      if (volunteer.user.sex) {
-        description += `${
-          volunteer.user.sex
-            ? t('general:sex', {
-                sex_type: t(`general:${volunteer.user.sex}`),
-              })
-            : ''
-        }\n`;
-      }
-
-      if (volunteer.user.location) {
-        description += `${volunteer.user.location?.name || ''}${t('county', {
-          name: volunteer.user.location?.county.name,
-        })}`;
-      }
-
-      return description;
+    if (!volunteer) {
+      return '';
     }
-
-    return '';
+    const { age, sex, location } = volunteer.user;
+    const parts: string[] = [];
+    if (userProfile?.birthday || age > 0) {
+      parts.push(`${t('age', { years: age })}`);
+    }
+    if (sex) {
+      parts.push(`${t('general:sex', { sex_type: t(`general:${sex}`) })}`);
+    }
+    if (location?.name) {
+      parts.push(
+        `${location.name}${
+          location.county?.name ? `${t('county', { name: location.county.name })}` : ''
+        }`,
+      );
+    }
+    return parts.join(' · ');
   };
 
   return (
@@ -109,50 +124,93 @@ const VolunteerProfile = ({ navigation }: any) => {
       onEditButtonPress={
         volunteer && !isLoadingProfile ? onEditVolunteerProfileButtonPress : undefined
       }
-      headerStyle={{ paddingTop }}
+      headerStyle={{ paddingTop, backgroundColor: colors.canvas }}
     >
-      {isLoadingProfile && <VolunteerProfileSkeleton />}
-      {volunteer && userProfile?.activeOrganization && !isLoadingProfile && (
-        <ScrollViewLayout>
-          <ProfileIntro
-            uri={userProfile?.profilePicture || ''}
-            name={`${userProfile.lastName} ${userProfile.firstName}`}
-            description={buildProfileDescription()}
-          />
-          <View style={styles.profileContent}>
-            <OrganizationIdentity
-              uri={userProfile?.activeOrganization.logo || ''}
-              name={userProfile?.activeOrganization.name}
-            />
-            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2">{`${t(
-              'information',
-            )}`}</Text>
-            <ReadOnlyElement label={t('email')} value={volunteer.profile.email} />
-            <ReadOnlyElement label={t('general:phone')} value={volunteer.user.phone} />
-            <ReadOnlyElement label={t('general:role')} value={volunteer.profile.role?.name} />
-            <ReadOnlyElement
-              label={t('general:department')}
-              value={volunteer.profile.department?.name}
-            />
-            <ReadOnlyElement label={t('general:branch')} value={volunteer.profile.branch?.name} />
-            <ReadOnlyElement
-              label={t('active_since')}
-              value={
-                volunteer.profile.activeSince ? formatDate(volunteer.profile.activeSince) : '-'
-              }
-            />
-            <ReadOnlyElement label={t('created_on')} value={formatDate(volunteer.createdOn)} />
+      <View style={styles.canvas}>
+        {isLoadingProfile && (
+          <View style={styles.content}>
+            <VolunteerProfileSkeleton />
           </View>
-        </ScrollViewLayout>
-      )}
+        )}
+        {volunteer && userProfile?.activeOrganization && !isLoadingProfile && (
+          <ScrollView
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+            testID="volunteer-profile-details"
+          >
+            <ProfileIntro
+              uri={userProfile.profilePicture}
+              name={`${userProfile.firstName} ${userProfile.lastName}`}
+              description={buildProfileDescription()}
+              testID="volunteer-profile-person"
+            >
+              <View style={styles.organization}>
+                <OrganizationIdentity
+                  uri={userProfile.activeOrganization.logo || ''}
+                  name={userProfile.activeOrganization.name}
+                />
+              </View>
+            </ProfileIntro>
+
+            <View style={styles.section}>
+              <VText variant="label" color={colors.muted} style={styles.sectionTitle}>
+                {`${t('information')}`}
+              </VText>
+              <Group>
+                <InfoRow label={t('email')} value={volunteer.profile?.email} />
+                <InfoRow label={t('general:phone')} value={volunteer.user.phone} />
+                <InfoRow label={t('general:role')} value={volunteer.profile?.role?.name} />
+                <InfoRow
+                  label={t('general:department')}
+                  value={volunteer.profile?.department?.name}
+                />
+                <InfoRow label={t('general:branch')} value={volunteer.profile?.branch?.name} />
+                <InfoRow
+                  label={t('active_since')}
+                  value={
+                    volunteer.profile?.activeSince
+                      ? formatDate(volunteer.profile.activeSince)
+                      : null
+                  }
+                />
+                <InfoRow
+                  label={t('created_on')}
+                  value={volunteer.createdOn ? formatDate(volunteer.createdOn) : null}
+                  last
+                />
+              </Group>
+            </View>
+          </ScrollView>
+        )}
+      </View>
     </PageLayout>
   );
 };
 
 export default VolunteerProfile;
 
-const themedStyles = StyleService.create({
-  profileContent: {
-    gap: 16,
+const styles = StyleSheet.create({
+  // PageLayout pads its content by 16 on white: the gray canvas fills it edge to edge, with the
+  // 20pt page margins
+  canvas: {
+    flex: 1,
+    marginHorizontal: -spacing.l,
+    marginVertical: -spacing.s,
+    backgroundColor: colors.canvas,
   },
+  content: {
+    paddingHorizontal: spacing.gutter,
+    paddingTop: spacing.s,
+    paddingBottom: spacing.xxl,
+    gap: spacing.xl,
+  },
+  organization: {
+    paddingTop: spacing.l,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.line,
+  },
+  section: { gap: spacing.s },
+  sectionTitle: { paddingHorizontal: spacing.xs },
+  row: { gap: 2, paddingVertical: spacing.m, minHeight: 44, justifyContent: 'center' },
+  divider: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.line },
 });
