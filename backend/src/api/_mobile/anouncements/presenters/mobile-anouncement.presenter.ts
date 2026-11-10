@@ -2,6 +2,7 @@ import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IAnnouncementModel } from 'src/modules/announcement/models/announcement.model';
 import { AnnouncementType } from 'src/modules/announcement/enums/announcement-type.enum';
+import { OrganizationProfilePresenter } from 'src/api/_mobile/organization/presenters/organization-profile.presenter';
 
 export class MobileAnouncementPresenter {
   constructor(
@@ -12,11 +13,34 @@ export class MobileAnouncementPresenter {
     this.id = anouncement.id;
     this.title = anouncement.name;
     this.description = anouncement.description;
-    this.organizationLogo = anouncement?.organization.logo || '';
+    this.organizationLogo = anouncement?.organization?.logo || '';
     this.type = anouncement.type;
     this.volunteersNeeded = anouncement.volunteersNeeded ?? null;
     this.displayEndDate = anouncement.displayEndDate ?? null;
+    this.organization = anouncement.organization
+      ? new OrganizationProfilePresenter(anouncement.organization)
+      : null;
+    this.createdOn = anouncement.createdOn;
+    this.publishedOn = anouncement.publishedOn ?? null;
   }
+
+  @Expose()
+  @ApiProperty({
+    type: OrganizationProfilePresenter,
+    description: 'The organization that sent it: id, name and logo',
+  })
+  organization: OrganizationProfilePresenter;
+
+  @Expose()
+  @ApiProperty({ description: 'Date of creation' })
+  createdOn: Date;
+
+  @Expose()
+  @ApiProperty({
+    description: 'When it was published (made active)',
+    nullable: true,
+  })
+  publishedOn: Date;
 
   @Expose()
   @ApiProperty({
