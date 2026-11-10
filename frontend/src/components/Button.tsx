@@ -8,9 +8,10 @@ interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
 
 const Button = ({ label, icon, ...rest }: ButtonProps) => {
   return (
-    <button {...rest} aria-label={label}>
+    // a passed aria-label wins (e.g. "Suspendă <organizație>" on a table row)
+    <button aria-label={label} {...rest}>
       {icon}
-      <div className={classNames(icon ? 'hidden md:block' : '')}>{label}</div>
+      <span className={classNames(icon ? 'hidden md:block' : '')}>{label}</span>
     </button>
   );
 };

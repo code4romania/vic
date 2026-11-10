@@ -4,6 +4,7 @@ import { classNames } from '../common/utils/utils';
 import i18n from '../common/config/i18n';
 import EmptyContent from './EmptyContent';
 import LoadingContent from './LoadingContent';
+import LoadErrorContent from './LoadErrorContent';
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { PaginationConfig } from '../common/constants/pagination';
 
@@ -11,6 +12,9 @@ interface DataTableProps<T> {
   columns: TableColumn<T>[];
   data?: T[];
   loading?: boolean;
+  // The request failed: show the error and a retry button instead of "no data"
+  error?: unknown;
+  onRetry?: () => void;
   pagination?: boolean;
   sortServer?: boolean;
   paginationPerPage?: number;
@@ -27,6 +31,8 @@ const DataTableComponent = <T extends object>({
   columns,
   data,
   loading,
+  error,
+  onRetry,
   pagination,
   sortServer,
   paginationPerPage,
@@ -41,12 +47,12 @@ const DataTableComponent = <T extends object>({
   return (
     <DataTable
       className={classNames(
-        !loading && data?.length ? 'border-cool-gray-200' : '',
+        !loading && !error && data?.length ? 'border-cool-gray-200' : '',
         `rdt_TableWrapper`,
       )}
       noHeader
       columns={columns}
-      data={data || []}
+      data={error ? [] : data || []}
       progressPending={loading}
       pagination={pagination}
       paginationServer={pagination}
@@ -64,7 +70,13 @@ const DataTableComponent = <T extends object>({
       paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
       onChangePage={onChangePage}
       onChangeRowsPerPage={onChangeRowsPerPage}
-      noDataComponent={<EmptyContent description={i18n.t('general:empty_table')} />}
+      noDataComponent={
+        error ? (
+          <LoadErrorContent onRetry={onRetry} />
+        ) : (
+          <EmptyContent description={i18n.t('general:empty_table')} />
+        )
+      }
       progressComponent={<LoadingContent />}
       defaultSortFieldId={defaultSortFieldId}
       defaultSortAsc={defaultSortAsc}
