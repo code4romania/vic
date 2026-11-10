@@ -5,14 +5,12 @@ import {
   Icon,
   IconElement,
   StyleService,
-  Text,
   useStyleSheet,
 } from '@ui-kitten/components';
 import { Control, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { datePickerService } from '../common/utils/birthday';
 import { StyleSheet, View } from 'react-native';
-import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { colors, radius } from '../common/theme/tokens';
 import { VText } from './ui';
 
@@ -27,9 +25,9 @@ interface FormDatepickerProps extends DatepickerProps {
 
 const CalendarIcon = (props: any): IconElement => <Icon {...props} name="calendar" />;
 const renderPlaceholder = (placeholder: string, styles: any) => () => (
-  <Text allowFontScaling={ALLOW_FONT_SCALLING} appearance="hint" style={styles.marginHorizontal}>
+  <VText variant="body" color={colors.subtle} style={styles.marginHorizontal}>
     {placeholder}
-  </Text>
+  </VText>
 );
 
 //Add min or max props to date picker in order to let user select year

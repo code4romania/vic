@@ -11,9 +11,7 @@ import FormDatePicker from '../components/FormDatePicker';
 import { BIRTHDAY_INITIAL_VISIBLE, BIRTHDAY_MIN, birthdayMax } from '../common/utils/birthday';
 import FormSelect from '../components/FormSelect';
 import { SexOptions } from '../common/constants/sex-options';
-import { Linking, View } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { Text, Button, Icon, useTheme } from '@ui-kitten/components';
+import { Linking, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useUpdateUserProfileMutation } from '../services/user/user.service';
 import * as ImagePicker from 'expo-image-picker';
@@ -22,8 +20,9 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import CountySelect from '../containers/CountySelect';
 import CitySelect from '../containers/CitySelect';
-import ImageWithPreload from '../components/ImageWithPreload';
-import { ALLOW_FONT_SCALLING, CONSTANTS, REGEX } from '../common/constants/constants';
+import { Avatar, VButton } from '../components/ui';
+import { spacing } from '../common/theme/tokens';
+import { CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
@@ -76,8 +75,6 @@ const schema = yup.object({
 const AccountData = ({ navigation }: any) => {
   // translations
   const { t } = useTranslation('account_data');
-  // theme
-  const theme = useTheme();
   const paddingTop = usePaddingTop();
   // user profile
   const { userProfile } = useUserProfile();
@@ -182,7 +179,8 @@ const AccountData = ({ navigation }: any) => {
 
   return (
     <PageLayout
-      title={t('title')}
+      // same name as the Profil menu entry
+      title={t('settings:heading')}
       onBackButtonPress={navigation.goBack}
       actionsOptions={{
         onPrimaryActionButtonClick: handleSubmit(onSubmit),
@@ -192,116 +190,103 @@ const AccountData = ({ navigation }: any) => {
       headerStyle={{ paddingTop }}
     >
       <FormLayout>
-        <View style={styles.container}>
-          <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p1">{`${t(
-            'profile_picture',
-          )}`}</Text>
-          <View style={styles.wrapper}>
-            {selectedProfilePictureUri || userProfile?.profilePicture ? (
-              <ImageWithPreload
-                source={(selectedProfilePictureUri || userProfile?.profilePicture) as string}
-                styles={{ ...styles.image, borderColor: theme['cool-gray-200'] }}
-              />
-            ) : (
-              <View
-                style={{
-                  ...styles.image,
-                  borderColor: theme['cool-gray-200'],
-                  backgroundColor: theme['cool-gray-100'],
-                }}
-              >
-                <Icon name="user" style={{ ...styles.icon, color: theme['cool-gray-500'] }} />
-              </View>
-            )}
-            <Button
+        {/* 20pt side margins: the layout gives 16 */}
+        <View style={styles.content}>
+          <View style={styles.picture}>
+            <Avatar
+              name={
+                `${userProfile?.firstName ?? ''} ${userProfile?.lastName ?? ''}`.trim() ||
+                t('profile_picture')
+              }
+              uri={selectedProfilePictureUri || userProfile?.profilePicture}
+              size={88}
+            />
+            <VButton
+              label={t('change_profile_picture')}
               onPress={onChangePicturePress}
-              status="basic"
-              appearance="outline"
-              style={styles.button}
-            >
-              {() => (
-                <Text allowFontScaling={ALLOW_FONT_SCALLING} category="p2">{`${t(
-                  'change_profile_picture',
-                )}`}</Text>
-              )}
-            </Button>
+              variant="outline"
+              size="small"
+              disabled={isUpdatingProfile}
+              style={styles.pictureButton}
+              testID="account-data-change-picture"
+            />
           </View>
+          <FormInput
+            control={control as any}
+            name="firstName"
+            error={errors.firstName}
+            placeholder={t('register:create_user.form.first_name.placeholder')}
+            label={t('register:create_user.form.first_name.label')}
+            required={true}
+            disabled={isUpdatingProfile}
+          />
+          <FormInput
+            control={control as any}
+            name="lastName"
+            error={errors.lastName}
+            placeholder={t('register:create_user.form.last_name.placeholder')}
+            label={t('register:create_user.form.last_name.label')}
+            required={true}
+            disabled={isUpdatingProfile}
+          />
+          <FormInput
+            control={control as any}
+            name="email"
+            error={errors.email}
+            placeholder={t('register:create_account.form.email.placeholder')}
+            label={t('register:create_account.form.email.label')}
+            required={true}
+            disabled
+          />
+          <FormInput
+            control={control as any}
+            name="phone"
+            label={t('register:create_account.form.phone.label')}
+            placeholder={t('register:create_account.form.phone.placeholder')}
+            error={errors.phone}
+            disabled={isUpdatingProfile}
+            keyboardType="phone-pad"
+            accessoryLeft={renderPhoneNumberPrefix}
+          />
+          <CountySelect
+            control={control as any}
+            name="countyId"
+            label={t('register:create_user.form.county.label')}
+            error={errors.countyId}
+            placeholder={t('general:select')}
+            disabled={isUpdatingProfile}
+          />
+          <CitySelect
+            control={control as any}
+            name="cityId"
+            label={t('register:create_user.form.city.label')}
+            error={errors.cityId}
+            placeholder={t('general:select')}
+            countyId={watchCountyId || (userProfile?.location?.county.id as number)}
+            disabled={isUpdatingProfile}
+          />
+          <FormDatePicker
+            control={control as any}
+            name="birthday"
+            label={t('register:create_user.form.birthday.label')}
+            error={errors.birthday}
+            placeholder={t('general:select')}
+            min={BIRTHDAY_MIN}
+            max={birthdayMax()}
+            initialVisibleDate={BIRTHDAY_INITIAL_VISIBLE}
+            disabled={isUpdatingProfile}
+            required={true}
+          />
+          <FormSelect
+            control={control as any}
+            name="sex"
+            label={t('general:sex', { sex_type: '' })}
+            error={errors.sex}
+            placeholder={t('general:select')}
+            options={SexOptions}
+            disabled={isUpdatingProfile}
+          />
         </View>
-        <FormInput
-          control={control as any}
-          name="firstName"
-          error={errors.firstName}
-          placeholder={t('register:create_user.form.first_name.placeholder')}
-          label={t('register:create_user.form.first_name.label')}
-          required={true}
-          disabled={isUpdatingProfile}
-        />
-        <FormInput
-          control={control as any}
-          name="lastName"
-          error={errors.lastName}
-          placeholder={t('register:create_user.form.last_name.placeholder')}
-          label={t('register:create_user.form.last_name.label')}
-          required={true}
-          disabled={isUpdatingProfile}
-        />
-        <FormInput
-          control={control as any}
-          name="email"
-          error={errors.email}
-          placeholder={t('register:create_account.form.email.placeholder')}
-          label={t('register:create_account.form.email.label')}
-          required={true}
-          disabled
-        />
-        <FormInput
-          control={control as any}
-          name="phone"
-          label={t('register:create_account.form.phone.label')}
-          placeholder={t('register:create_account.form.phone.placeholder')}
-          error={errors.phone}
-          disabled={isUpdatingProfile}
-          keyboardType="phone-pad"
-          accessoryLeft={renderPhoneNumberPrefix}
-        />
-        <CountySelect
-          control={control as any}
-          name="countyId"
-          label={t('register:create_user.form.county.label')}
-          error={errors.countyId}
-          placeholder={t('general:select')}
-          disabled={isUpdatingProfile}
-        />
-        <CitySelect
-          control={control as any}
-          name="cityId"
-          label={t('register:create_user.form.city.label')}
-          error={errors.cityId}
-          placeholder={t('general:select')}
-          countyId={watchCountyId || (userProfile?.location?.county.id as number)}
-          disabled={isUpdatingProfile}
-        />
-        <FormDatePicker
-          control={control as any}
-          name="birthday"
-          label={t('register:create_user.form.birthday.label')}
-          error={errors.birthday}
-          placeholder={t('general:select')}
-          min={BIRTHDAY_MIN}
-          max={birthdayMax()}
-          initialVisibleDate={BIRTHDAY_INITIAL_VISIBLE}
-          disabled={isUpdatingProfile}
-          required={true}
-        />
-        <FormSelect
-          control={control as any}
-          name="sex"
-          label={t('general:sex', { sex_type: '' })}
-          error={errors.sex}
-          placeholder={t('general:select')}
-          options={SexOptions}
-          disabled={isUpdatingProfile}
-        />
       </FormLayout>
     </PageLayout>
   );
@@ -310,30 +295,13 @@ const AccountData = ({ navigation }: any) => {
 export default AccountData;
 
 const styles = StyleSheet.create({
-  container: {
-    gap: 4,
-  },
-  image: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    width: 48,
-    height: 48,
-  },
-  wrapper: {
-    paddingVertical: 8,
-    gap: 16,
+  content: { marginHorizontal: spacing.gutter - spacing.l, gap: spacing.l },
+  picture: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: spacing.l,
+    paddingVertical: spacing.s,
   },
-  button: {
-    borderRadius: 6,
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-  },
+  // 44pt touch target (the small pill is 36)
+  pictureButton: { height: 44, borderRadius: 22 },
 });
