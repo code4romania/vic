@@ -14,6 +14,7 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { EventIcon, EventIconName } from '../components/events/EventIcons';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
+import { formatPostedAt } from '../common/utils/event-format';
 import {
   Avatar,
   EmptyState,
@@ -65,11 +66,30 @@ const News = ({ navigation, route }: any) => {
   const describe = (item: INewsItem): { line: NewsLine; kind: 'ok' | 'no' | 'accent' } | null => {
     switch (item.eventName) {
       case TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS:
+        // "Orele tale de la <organizație> au fost aprobate"
         if (item.newStatus === ActivityLogStatus.APPROVED) {
-          return { kind: 'ok', line: { start: `${t('item.logs.approved')}` } };
+          return item.organizationName
+            ? {
+                kind: 'ok',
+                line: {
+                  start: `${t('item.logs.at')}`,
+                  organization: item.organizationName,
+                  end: `${t('item.logs.approved_end')}`,
+                },
+              }
+            : { kind: 'ok', line: { start: `${t('item.logs.approved')}` } };
         }
         if (item.newStatus === ActivityLogStatus.REJECTED) {
-          return { kind: 'no', line: { start: `${t('item.logs.rejected')}` } };
+          return item.organizationName
+            ? {
+                kind: 'no',
+                line: {
+                  start: `${t('item.logs.at')}`,
+                  organization: item.organizationName,
+                  end: `${t('item.logs.rejected_end')}`,
+                },
+              }
+            : { kind: 'no', line: { start: `${t('item.logs.rejected')}` } };
         }
         return null;
       case TrackedEventName.CREATE_CONTRACT:
@@ -163,6 +183,7 @@ const News = ({ navigation, route }: any) => {
     }
     const status = STATUS_ICON[described.kind];
     const { line } = described;
+    const postedAt = formatPostedAt(item.createdOn);
     return (
       <Enter index={Math.min(index, 6)} style={groupedItem(index, items.length)}>
         <PressableScale
@@ -182,11 +203,14 @@ const News = ({ navigation, route }: any) => {
               <EventIcon name={status.icon} size={12} color={colors.status[status.tone].fg} />
             </View>
           </View>
-          <VText variant="body" style={styles.text} numberOfLines={3}>
-            {line.start ? `${line.start} ` : ''}
-            {!!line.organization && <VText variant="bodyStrong">{line.organization}</VText>}
-            {line.end ? ` ${line.end}` : ''}
-          </VText>
+          <View style={styles.text}>
+            <VText variant="body" numberOfLines={3}>
+              {line.start ? `${line.start} ` : ''}
+              {!!line.organization && <VText variant="bodyStrong">{line.organization}</VText>}
+              {line.end ? ` ${line.end}` : ''}
+            </VText>
+            {!!postedAt && <VText variant="cap">{postedAt}</VText>}
+          </View>
         </PressableScale>
       </Enter>
     );
@@ -297,6 +321,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text: { flex: 1 },
+  text: { flex: 1, gap: 2 },
   more: { paddingVertical: 20 },
 });

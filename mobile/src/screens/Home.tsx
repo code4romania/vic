@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { RefreshControl, StyleSheet, View } from 'react-native';
+import { Pressable, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 import { useFocusEffect } from '@react-navigation/native';
@@ -69,15 +69,18 @@ const SectionHead = ({
   <View style={styles.sectionHead}>
     <VText variant="h2">{title}</VText>
     {!!action && (
-      <VText
-        variant="label"
-        style={styles.link}
+      // 44pt touch target around the short link
+      <Pressable
         onPress={onAction}
         accessibilityRole="button"
+        hitSlop={{ top: 12, bottom: 12, left: 12, right: 8 }}
+        style={styles.linkTouch}
         testID={testID}
       >
-        {action}
-      </VText>
+        <VText variant="label" style={styles.link}>
+          {action}
+        </VText>
+      </Pressable>
     )}
   </View>
 );
@@ -284,7 +287,9 @@ const Home = ({ navigation }: any) => {
               <SectionHead
                 title={`${t('next.title')}`}
                 action={`${t('see_all')}`}
-                onAction={() => navigation.navigate(TAB_ROUTES.EVENTS)}
+                onAction={() =>
+                  navigation.navigate(TAB_ROUTES.EVENTS, { eventFilter: EventType.GOING })
+                }
                 testID="home-next-all"
               />
               <Group>
@@ -360,14 +365,18 @@ const Home = ({ navigation }: any) => {
                       key={item.id}
                       leading={
                         <Avatar
-                          name={item.title}
-                          uri={item.organizationLogo}
+                          name={item.organization?.name || item.title}
+                          uri={item.organization?.logo || item.organizationLogo}
                           size={40}
                           shape="rounded"
                         />
                       }
                       title={item.title}
-                      subtitle={item.description}
+                      subtitle={[item.organization?.name, item.description]
+                        .filter(Boolean)
+                        .join(' · ')}
+                      titleLines={2}
+                      subtitleLines={2}
                       onPress={() => navigation.navigate('announcements')}
                       divider={index < all.length - 1}
                       testID={`home-anouncement-${item.id}`}
@@ -425,6 +434,7 @@ const styles = StyleSheet.create({
   section: { marginTop: 28, gap: 10 },
   sectionHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   link: { textDecorationLine: 'underline' },
+  linkTouch: { minHeight: 44, justifyContent: 'center' },
   todoIcon: {
     width: 40,
     height: 40,

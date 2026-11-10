@@ -74,3 +74,28 @@ export const formatEventSpan = (startDate: string, endDate?: string | null) => {
       : '';
   return `${formatTime(startDate)} – ${formatTime(endDate)}${duration}`;
 };
+
+/**
+ * When something was posted: "Azi, 14:30", "Ieri, 09:05", "12 nov, 14:30", "12 nov 2025" for an
+ * older year. Empty for a missing or invalid date (older backends do not send it).
+ */
+export const formatPostedAt = (value?: string | Date | null, now: Date = new Date()): string => {
+  if (!value) {
+    return '';
+  }
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return '';
+  }
+  const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  if (isSameDay(date, now)) {
+    return `${i18n.t('general:today')}, ${formatTime(date)}`;
+  }
+  if (isSameDay(date, yesterday)) {
+    return `${i18n.t('general:yesterday')}, ${formatTime(date)}`;
+  }
+  if (date.getFullYear() !== now.getFullYear()) {
+    return `${format(date, 'd')} ${shortMonth(date)} ${date.getFullYear()}`;
+  }
+  return `${format(date, 'd')} ${shortMonth(date)}, ${formatTime(date)}`;
+};

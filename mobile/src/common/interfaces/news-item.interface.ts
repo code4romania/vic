@@ -11,4 +11,6 @@ export interface INewsItem {
   organizationId?: string;
   eventName: TrackedEventName;
   newStatus?: ActivityLogStatus;
+  // when it happened (sent by newer backends)
+  createdOn?: string | Date;
 }

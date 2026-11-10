@@ -9,6 +9,7 @@ import { colors, fonts, radius, shadows, spacing } from '../common/theme/tokens'
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { EventIcon } from '../components/events/EventIcons';
 import NewsItemSkeleton from '../components/skeleton/news-item.skeleton';
+import { formatPostedAt } from '../common/utils/event-format';
 import { Avatar, EmptyState, Enter, PressableScale, StatusBarScrim, VText } from '../components/ui';
 
 /**
@@ -37,40 +38,56 @@ const Anouncements = ({ navigation }: any) => {
     [data],
   );
 
-  const renderItem = ({ item, index }: { item: IAnouncement; index: number }) => (
-    <Enter index={Math.min(index, 6)} style={styles.card} testID={`anouncement-${item.id}`}>
-      <View style={styles.cardHead}>
-        <Avatar name={item.title} uri={item.organizationLogo} size={36} shape="rounded" />
-        <VText variant="h3" style={styles.cardTitle}>
-          {item.title}
-        </VText>
-      </View>
-      <VText variant="body">{item.description}</VText>
-      {item.myResponse ? (
-        <View style={styles.answer}>
-          <VText variant="cap">{tResponse('your_answer')}</VText>
-          <VText variant="body" numberOfLines={3}>
-            {item.myResponse.comment}
-          </VText>
+  const renderItem = ({ item, index }: { item: IAnouncement; index: number }) => {
+    // who posted it and when: a volunteer in several organizations tells them apart
+    const organizationName = item.organization?.name;
+    const postedAt = formatPostedAt(item.publishedOn || item.createdOn);
+    return (
+      <Enter index={Math.min(index, 6)} style={styles.card} testID={`anouncement-${item.id}`}>
+        <View style={styles.cardHead}>
+          <Avatar
+            name={organizationName || item.title}
+            uri={item.organization?.logo || item.organizationLogo}
+            size={36}
+            shape="rounded"
+          />
+          <View style={styles.cardSource}>
+            {!!organizationName && (
+              <VText variant="label" numberOfLines={1}>
+                {organizationName}
+              </VText>
+            )}
+            {!!postedAt && <VText variant="cap">{postedAt}</VText>}
+          </View>
         </View>
-      ) : (
-        <VText
-          variant="label"
-          style={styles.link}
-          onPress={() =>
-            navigation.navigate('anouncement-response', {
-              anouncementId: item.id,
-              title: item.title,
-            })
-          }
-          accessibilityRole="button"
-          testID={`anouncement-respond-${item.id}`}
-        >
-          {tResponse('respond')}
-        </VText>
-      )}
-    </Enter>
-  );
+        <VText variant="h3">{item.title}</VText>
+        <VText variant="body">{item.description}</VText>
+        {item.myResponse ? (
+          <View style={styles.answer}>
+            <VText variant="cap">{tResponse('your_answer')}</VText>
+            <VText variant="body" numberOfLines={3}>
+              {item.myResponse.comment}
+            </VText>
+          </View>
+        ) : (
+          <VText
+            variant="label"
+            style={styles.link}
+            onPress={() =>
+              navigation.navigate('anouncement-response', {
+                anouncementId: item.id,
+                title: item.title,
+              })
+            }
+            accessibilityRole="button"
+            testID={`anouncement-respond-${item.id}`}
+          >
+            {tResponse('respond')}
+          </VText>
+        )}
+      </Enter>
+    );
+  };
 
   const renderEmpty = () => {
     if (isFetching && !isRefetching && !items.length) {
@@ -151,7 +168,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   cardHead: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  cardTitle: { flex: 1 },
+  cardSource: { flex: 1, minWidth: 0, gap: 2 },
   answer: {
     borderRadius: radius.button,
     backgroundColor: colors.navyTint,

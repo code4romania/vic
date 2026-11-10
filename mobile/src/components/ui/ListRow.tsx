@@ -14,6 +14,9 @@ export interface ListRowProps {
   /** Hairline under the row, as in iOS settings lists. */
   divider?: boolean;
   destructive?: boolean;
+  /** cap long texts (e.g. an announcement on Acasă); unlimited by default */
+  titleLines?: number;
+  subtitleLines?: number;
   testID?: string;
 }
 
@@ -38,16 +41,26 @@ export const ListRow = ({
   onPress,
   divider = true,
   destructive,
+  titleLines,
+  subtitleLines,
   testID,
 }: ListRowProps) => {
   const content = (
     <>
       {leading}
       <View style={styles.text}>
-        <VText variant="bodyStrong" color={destructive ? colors.danger : colors.ink}>
+        <VText
+          variant="bodyStrong"
+          color={destructive ? colors.danger : colors.ink}
+          numberOfLines={titleLines}
+        >
           {title}
         </VText>
-        {!!subtitle && <VText variant="sub">{subtitle}</VText>}
+        {!!subtitle && (
+          <VText variant="sub" numberOfLines={subtitleLines}>
+            {subtitle}
+          </VText>
+        )}
       </View>
       {trailing ?? (onPress ? <Chevron /> : null)}
     </>
