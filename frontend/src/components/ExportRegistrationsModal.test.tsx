@@ -42,4 +42,21 @@ describe('ExportRegistrationsModal (#497)', () => {
       screen.getByRole('button', { name: t('events:export_registrations.submit') }),
     ).toBeDisabled();
   });
+
+  it('offers the answers as filtered in the table when the event page passes them (major 11)', async () => {
+    const onExportAnswers = vi.fn(() => Promise.resolve());
+    const onClose = vi.fn();
+    renderPage(
+      <ExportRegistrationsModal eventId="e1" onClose={onClose} onExportAnswers={onExportAnswers} />,
+    );
+
+    await userEvent.click(screen.getByLabelText(t('events:export_registrations.kind.answers')));
+    expect(screen.queryAllByRole('checkbox')).toHaveLength(0);
+    await userEvent.click(
+      screen.getByRole('button', { name: t('events:export_registrations.submit') }),
+    );
+
+    await waitFor(() => expect(onExportAnswers).toHaveBeenCalledTimes(1));
+    expect(onClose).toHaveBeenCalled();
+  });
 });

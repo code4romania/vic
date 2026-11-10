@@ -82,7 +82,7 @@ describe('Events tabs (#495)', () => {
     expect(screen.getByText(t('events:filters.department'))).toBeInTheDocument();
   });
 
-  it('shows the counters from the API (#493)', async () => {
+  it('shows only the counter no tab repeats (#493, audit major 11)', async () => {
     server.use(
       http.get(api('/event'), () =>
         HttpResponse.json({
@@ -96,8 +96,9 @@ describe('Events tabs (#495)', () => {
     );
     expect(await screen.findByText('37')).toBeInTheDocument();
     expect(screen.getByText(t('events:counters.participants'))).toBeInTheDocument();
-    expect(screen.getByText('4')).toBeInTheDocument();
-    expect(screen.getByText(t('events:counters.ongoing'))).toBeInTheDocument();
+    // upcoming / ongoing are counted on the tabs only
+    expect(screen.queryByText(t('events:counters.ongoing'))).not.toBeInTheDocument();
+    expect(screen.queryByText(t('events:counters.upcoming'))).not.toBeInTheDocument();
   });
 
   it('shows each tab with its count, as in the design', async () => {
@@ -181,7 +182,6 @@ describe('Events tabs (#495)', () => {
     expect(screen.getByText('Sediu, București')).toBeInTheDocument();
     expect(screen.getByText('Comunicare')).toBeInTheDocument();
     expect(screen.getByText('2 / 5')).toBeInTheDocument();
-    expect(screen.getByText(t('events:page.found', { count: 1 }))).toBeInTheDocument();
     expect(await screen.findByText(t('events:table.pending', { count: 2 }))).toBeInTheDocument();
     expect(
       screen.getByRole('button', {

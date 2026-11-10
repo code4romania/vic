@@ -46,10 +46,9 @@ const STATUSES: { status: AnnouncementStatus; Icon: HeroIcon }[] = [
 
 type CounterKey = 'active' | 'inactive' | 'archived' | 'responses';
 
+// Active / Inactive / Archived are counted on the tabs only (audit, major 11: no number twice);
+// the responses have no tab, so they keep their card.
 const COUNTERS: { key: CounterKey; Icon: HeroIcon; color: string }[] = [
-  { key: 'active', Icon: EyeIcon, color: 'text-figure-green' },
-  { key: 'inactive', Icon: EyeSlashIcon, color: 'text-cool-gray-500' },
-  { key: 'archived', Icon: ArchiveBoxIcon, color: 'text-figure-amber' },
   { key: 'responses', Icon: ChatBubbleLeftRightIcon, color: 'text-navy' },
 ];
 

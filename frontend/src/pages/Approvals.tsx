@@ -8,13 +8,7 @@ import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import PageHeader from '../components/PageHeader';
 import { SelectItem } from '../components/Select';
 import Tabs, { TabItem } from '../components/Tabs';
-import StatisticsCard from '../components/StatisticsCard';
-import {
-  CalendarIcon,
-  ClockIcon,
-  ExclamationCircleIcon,
-  UserPlusIcon,
-} from '@heroicons/react/24/outline';
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import AccessRequestsWithQueryParams from '../containers/query/AccessRequestsWithQueryParams';
 import ActivityLogTableWithQueryParams from '../containers/query/ActivityLogTableWithQueryParams';
 import PageLayout from '../layouts/PageLayout';
@@ -33,12 +27,6 @@ const COUNTER: Record<ApprovalType, keyof IPendingApprovals> = {
   [ApprovalType.HOURS]: 'activityLogs',
   [ApprovalType.EVENTS]: 'eventRegistrations',
 };
-
-const COUNTER_CARDS = [
-  { type: ApprovalType.VOLUNTEERS, Icon: UserPlusIcon },
-  { type: ApprovalType.HOURS, Icon: ClockIcon },
-  { type: ApprovalType.EVENTS, Icon: CalendarIcon },
-];
 
 type HoursTab = 'pending' | ActivityLogStatus.APPROVED | ActivityLogStatus.REJECTED;
 
@@ -78,6 +66,8 @@ const HoursApprovals = () => {
 
 // #499: one page for everything the NGO approves: volunteer applications, hours and event
 // registrations, each with Pending / Approved / Rejected, and the pending counters on the tabs.
+// Each count shows once (audit, major 11): per type on its tab, the sum in the header; the
+// counter cards that repeated the tabs are gone.
 const Approvals = () => {
   const navigate = useNavigate();
   const { type } = useParams();
@@ -114,25 +104,6 @@ const Approvals = () => {
       >
         {i18n.t('approvals:title')}
       </PageHeader>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xl:gap-6">
-        {COUNTER_CARDS.map(({ type: card, Icon }) => (
-          <StatisticsCard
-            key={card}
-            label={`${i18n.t(`approvals:tabs.${card}`)}`}
-            value={pending ? `${pending[COUNTER[card]]}` : '-'}
-            icon={<Icon className="w-5 h-5 text-navy" aria-hidden="true" />}
-            info={
-              <span className="text-cool-gray-500 font-roboto">
-                {i18n.t(`approvals:counters.${card}`)}
-              </span>
-            }
-            action={{
-              label: `${i18n.t('approvals:review')}`,
-              onClick: () => navigate(`/approvals/${card}`),
-            }}
-          />
-        ))}
-      </div>
       <Tabs<ApprovalType>
         tabs={tabs}
         // switching type starts from that type's pending requests, with no filters

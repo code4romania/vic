@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import {
   ArrowDownTrayIcon,
-  CalendarIcon,
-  ClockIcon,
   CloudArrowUpIcon,
   DocumentMinusIcon,
   EyeIcon,
@@ -412,11 +410,9 @@ const Events = ({ query, setQuery }: EventsProps) => {
     );
   };
 
-  const COUNTERS = [
-    { key: 'upcoming', Icon: CalendarIcon, color: 'text-figure-green' },
-    { key: 'ongoing', Icon: ClockIcon, color: 'text-navy' },
-    { key: 'participants', Icon: UsersIcon, color: 'text-figure-teal' },
-  ] as const;
+  // audit, major 11: one number per thing. Upcoming / ongoing / past are counted on the tabs (with
+  // the filters applied), so the cards that repeated them and the "N evenimente găsite" line are gone.
+  const COUNTERS = [{ key: 'participants', Icon: UsersIcon, color: 'text-figure-teal' }] as const;
 
   return (
     <PageLayout>
@@ -456,7 +452,6 @@ const Events = ({ query, setQuery }: EventsProps) => {
         onResetFilters={onResetFilters}
         results={
           <>
-            <span>{i18n.t('events:page.found', { count: events?.meta?.totalItems ?? 0 })}</span>
             <Button
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}

@@ -262,12 +262,6 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
             <span>
               {i18n.t('events:detail.responses_found', { count: rsvps?.meta?.totalItems ?? 0 })}
             </span>
-            <Button
-              label={i18n.t('general:download_table')}
-              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-              className="btn-text-primary px-2"
-              onClick={onExportRSVPs}
-            />
           </>
         }
       >
@@ -310,7 +304,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
             {i18n.t('events:detail.responses_title', { count: rsvps?.meta?.totalItems ?? 0 })}
           </h2>
           <Button
-            label={i18n.t('events:export_registrations.button')}
+            label={i18n.t('events:export_registrations.export')}
             icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
             className="btn-outline-secondary ml-auto"
             onClick={() => setShowExport(true)}
@@ -336,6 +330,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
           eventId={eventId}
           eventName={eventName}
           onClose={() => setShowExport(false)}
+          onExportAnswers={onExportRSVPs}
         />
       )}
     </>
