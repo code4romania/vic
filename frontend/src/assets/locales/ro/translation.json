@@ -1453,6 +1453,25 @@
           ]
         }
       }
+    },
+    "models": {
+      "button": "Template-uri",
+      "title": "Template-uri de contract",
+      "description": "Modele goale de contract pe care le descarci, le completezi și le semnezi în afara VIC. Contractul semnat îl încarci apoi cu „Încarcă contract”.",
+      "empty": "Nu ai încărcat încă niciun template.",
+      "add": "Adaugă template",
+      "name": "Denumire",
+      "file": "Fișier PDF",
+      "file_hint": "PDF, maxim 10 MB",
+      "name_required": "Denumirea are minim 2 caractere",
+      "file_required": "Alege fișierul PDF",
+      "upload": "Încarcă template",
+      "download": "Descarcă",
+      "delete": "Șterge",
+      "uploaded": "Template-ul a fost încărcat",
+      "deleted": "Template-ul a fost șters",
+      "upload_error": "Template-ul nu s-a putut încărca. Verifică să fie PDF.",
+      "delete_error": "Template-ul nu s-a putut șterge"
     }
   },
   "auth": {

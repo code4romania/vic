@@ -145,6 +145,7 @@ import { DocumentsModule } from 'src/modules/documents/documents.module';
 import { GetManyContractsUsecase } from './documents/get-many-contracts.usecase';
 import { CountPendingContractsUsecase } from './documents/count-pending-contracts.usecase';
 import { CountContractsByStatusUsecase } from './documents/count-contracts-by-status.usecase';
+import { ContractModelsUsecase } from './documents/contract-models.usecase';
 import { GetOneContractUsecase } from './documents/get-one-contract.usecase';
 import { GetContractsForDownloadUsecase } from './documents/get-contracts-for-download.usecase';
 import { DeleteContractUsecase } from './documents/delete-contract.usecase';
@@ -368,6 +369,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetManyContractsUsecase,
     CountPendingContractsUsecase,
     CountContractsByStatusUsecase,
+    ContractModelsUsecase,
     GetOneContractUsecase,
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,
@@ -548,6 +550,7 @@ import { DeleteAccountRegularUserUsecase } from './user/delete-account.usecase';
     GetManyContractsUsecase,
     CountPendingContractsUsecase,
     CountContractsByStatusUsecase,
+    ContractModelsUsecase,
     GetOneContractUsecase,
     GetContractsForDownloadUsecase,
     DeleteContractUsecase,

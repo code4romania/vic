@@ -287,7 +287,6 @@ describe('Contracts (e2e)', () => {
 
     await auth(http().patch(`/contract/${body.id}/confirm`)).expect(404);
     await auth(http().patch(`/contract/${body.id}/reject`)).expect(404);
-    await auth(http().get('/template')).expect(404);
   });
 
   // #490: "Generează adeverință"
@@ -377,5 +376,42 @@ describe('Contracts (e2e)', () => {
       http().get(`/contract?volunteerId=${volunteerId}`),
     ).expect(200);
     expect(all.meta.totalItems).toBe(2);
+  });
+
+  it('keeps blank contract models: upload a PDF with a name, list, delete; nothing else', async () => {
+    await auth(
+      http()
+        .post('/template')
+        .field('name', 'Model contract')
+        .attach('template', Buffer.from('nu e pdf'), {
+          filename: 'model.txt',
+          contentType: 'text/plain',
+        }),
+    ).expect(400);
+
+    const { body: created } = await auth(
+      http()
+        .post('/template')
+        .field('name', 'Model contract')
+        .attach('template', PDF, {
+          filename: 'model.pdf',
+          contentType: 'application/pdf',
+        }),
+    ).expect(201);
+    expect(created).toEqual({
+      id: expect.any(String),
+      name: 'Model contract',
+      createdOn: expect.any(String),
+      uri: expect.any(String),
+    });
+
+    const { body: listed } = await auth(http().get('/template')).expect(200);
+    expect(listed.map((t: { name: string }) => t.name)).toEqual([
+      'Model contract',
+    ]);
+
+    await auth(http().delete(`/template/${created.id}`)).expect(200);
+    expect((await auth(http().get('/template')).expect(200)).body).toEqual([]);
+    await auth(http().patch(`/template/${created.id}`)).expect(404);
   });
 });

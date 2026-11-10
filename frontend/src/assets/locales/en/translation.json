@@ -1443,6 +1443,25 @@
           ]
         }
       }
+    },
+    "models": {
+      "button": "Templates",
+      "title": "Contract templates",
+      "description": "Blank contract models you download, fill in and sign outside VIC. You then upload the signed contract with \"Upload contract\".",
+      "empty": "You have not uploaded any template yet.",
+      "add": "Add template",
+      "name": "Name",
+      "file": "PDF file",
+      "file_hint": "PDF, at most 10 MB",
+      "name_required": "The name has at least 2 characters",
+      "file_required": "Choose the PDF file",
+      "upload": "Upload template",
+      "download": "Download",
+      "delete": "Delete",
+      "uploaded": "The template was uploaded",
+      "deleted": "The template was deleted",
+      "upload_error": "The template could not be uploaded. Make sure it is a PDF.",
+      "delete_error": "The template could not be deleted"
     }
   },
   "auth": {

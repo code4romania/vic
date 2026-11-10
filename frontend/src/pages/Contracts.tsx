@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   CheckCircleIcon,
@@ -7,6 +7,7 @@ import {
   DocumentMinusIcon,
   DocumentTextIcon,
   InformationCircleIcon,
+  RectangleStackIcon,
 } from '@heroicons/react/24/outline';
 import PageHeader from '../components/PageHeader';
 import StatisticsCard from '../components/StatisticsCard';
@@ -15,6 +16,8 @@ import PageLayout from '../layouts/PageLayout';
 import Card from '../layouts/CardLayout';
 import { ContractStatus } from '../common/enums/contract-status.enum';
 import { useContractCountersQuery } from '../services/contracts/contracts.service';
+import Button from '../components/Button';
+import ContractModelsModal from '../components/ContractModelsModal';
 
 const COUNTERS = [
   { status: ContractStatus.SIGNED, Icon: DocumentCheckIcon, color: 'text-figure-green' },
@@ -23,10 +26,12 @@ const COUNTERS = [
 ];
 
 // VIC 2.0, #486/#489: every contract and certificate the NGO uploaded, signed, with its period.
-// No templates and no generation of contracts; certificates are generated (#490).
+// Templates are blank models to download; VIC does not generate or sign contracts. Certificates are
+// generated (#490).
 const Contracts = () => {
   const { t } = useTranslation('documents');
   const { data: counters } = useContractCountersQuery();
+  const [showModels, setShowModels] = useState(false);
 
   const list = (key: 'upload' | 'status') =>
     (t(`page.how.${key}.items`, { returnObjects: true }) as string[]).map((item) => (
@@ -38,7 +43,20 @@ const Contracts = () => {
       <ContractsTableWithQueryParams
         renderHeader={(actions) => (
           <>
-            <PageHeader subtitle={t('page.subtitle')} actions={actions}>
+            <PageHeader
+              subtitle={t('page.subtitle')}
+              actions={
+                <>
+                  <Button
+                    label={t('models.button')}
+                    className="btn-outline-secondary"
+                    icon={<RectangleStackIcon className="h-5 w-5" />}
+                    onClick={() => setShowModels(true)}
+                  />
+                  {actions}
+                </>
+              }
+            >
               {t('page.title')}
             </PageHeader>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xl:gap-6">
@@ -83,6 +101,7 @@ const Contracts = () => {
           </div>
         </div>
       </Card>
+      {showModels && <ContractModelsModal onClose={() => setShowModels(false)} />}
     </PageLayout>
   );
 };
