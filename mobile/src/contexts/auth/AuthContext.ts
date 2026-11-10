@@ -13,7 +13,8 @@ interface AuthContextProps {
   // when there is no volunteer profile yet.
   loginWithCode: (code: string) => Promise<void>;
   loginWithSocial: (provider: SocialProvider) => Promise<void>;
-  logout: () => void;
+  // Unregisters the push token, ends the session on the backend, then clears every local trace.
+  logout: () => Promise<void>;
   // Loads the profile again if logged in (the Maintenance screen's Retry).
   reload: () => Promise<void>;
 }
@@ -25,6 +26,6 @@ export const AuthContext = createContext<AuthContextProps>({
   requestLoginCode: (email: string) => Promise.resolve(''),
   loginWithCode: (code: string) => Promise.resolve(),
   loginWithSocial: () => Promise.resolve(),
-  logout: () => {},
+  logout: () => Promise.resolve(),
   reload: () => Promise.resolve(),
 });

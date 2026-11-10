@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SvgXml } from 'react-native-svg';
@@ -13,7 +13,6 @@ import trash from '../assets/svg/trash';
 import logoutIcon from '../assets/svg/logout';
 import user from '../assets/svg/user';
 import { useAuth } from '../hooks/useAuth';
-import { NotificationContext } from '../contexts/notification/NotificationContext';
 import { useUserProfile } from '../store/profile/profile.selector';
 import useStore from '../store/store';
 import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
@@ -93,7 +92,6 @@ const Settings = ({ navigation }: any) => {
   const { setActiveOrganization } = useStore();
   const { mutate: switchOrganization } = useSwitchOrganizationMutation();
   const { logout } = useAuth();
-  const { unsubscribe } = useContext(NotificationContext);
   const { data: stats, refetch: refetchStats } = usePersonalStatistics();
 
   // hours get approved and events pass while the app is open: refresh when Profil comes back
@@ -139,11 +137,10 @@ const Settings = ({ navigation }: any) => {
     }
   };
 
-  const onLogout = () => {
+  const onLogout = async () => {
     logoutSheet.current?.dismiss();
-    // unregister the push token, then sign out
-    unsubscribe();
-    logout();
+    // unregisters the push token first, then ends the session and clears the local data
+    await logout();
   };
 
   return (

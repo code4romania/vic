@@ -29,7 +29,6 @@ export async function registerForPushNotificationsAsync() {
     }
 
     if (finalStatus !== 'granted') {
-      console.error('Failed to get push token for push notification!');
       return { token: undefined, userWasAsked };
     }
     try {
@@ -38,12 +37,9 @@ export async function registerForPushNotificationsAsync() {
           projectId: Constants.expoConfig?.extra?.eas.projectId,
         })
       ).data;
-    } catch (error) {
-      console.error('Error retrieving push token:', error);
+    } catch {
       return { token: undefined, userWasAsked };
     }
-  } else {
-    console.error('Must use physical device for Push Notifications');
   }
 
   return { token, userWasAsked };

@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { registerForPushNotificationsAsync } from '../../common/utils/notifications';
 import * as Notifications from 'expo-notifications';
-import { registerPushToken, unregisterPushToken } from '../../services/settings/settings.api';
-import { NotificationContext } from './NotificationContext';
+import { registerPushToken } from '../../services/settings/settings.api';
+import { setPushToken } from '../../services/push/push-token';
 import { useUserProfile } from '../../store/profile/profile.selector';
 import useStore from '../../store/store';
 import { useAuth } from '../../hooks/useAuth';
@@ -44,7 +44,6 @@ const NotificationContextProvider = ({
   children: React.ReactNode;
   navigation: any;
 }) => {
-  const [pushToken, setPushToken] = useState<string>();
   // covers both taps while the app is running and the tap that launched the app from a killed state
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   const handledResponseId = useRef<string>(undefined);
@@ -52,16 +51,20 @@ const NotificationContextProvider = ({
   const { userProfile } = useUserProfile();
   const { setUserProfile, updateSettings } = useStore();
   const { isAuthenticated } = useAuth();
-  const [isRegistered, setIsRegistered] = useState<boolean>(false);
+  // once per session: the effect below runs on every navigation change
+  const registration = useRef<'idle' | 'running' | 'done'>('idle');
   const { mutate: updateNotificationsSettings } = useUpdateSettingsMutation();
 
   const initNotifications = async () => {
     const { token, userWasAsked } = await registerForPushNotificationsAsync();
 
-    setPushToken(token);
-
     if (token) {
-      await registerPushToken(token);
+      try {
+        await registerPushToken(token);
+        setPushToken(token);
+      } catch {
+        // not registered: the next app start tries again
+      }
     }
 
     if (userWasAsked && userProfile) {
@@ -76,30 +79,26 @@ const NotificationContextProvider = ({
           onSuccess: (data: INotificationsSettings) => {
             updateSettings(data);
           },
-          onError: () => {
-            console.log('Could not update notifications settings data.');
-          },
         },
       );
     }
-
-    setIsRegistered(true);
   };
-
-  const init = useCallback(initNotifications, [initNotifications]);
-
-  useEffect(() => {
-    const state = navigation.getRootState();
-    if (isAuthenticated && !isRegistered && state?.routeNames?.includes('home')) {
-      init();
-    }
-  }, [navigation, init, isAuthenticated, isRegistered]);
 
   useEffect(() => {
     if (!isAuthenticated) {
-      setIsRegistered(false);
+      registration.current = 'idle';
+      return;
     }
-  }, [isAuthenticated]);
+    if (registration.current === 'idle' && isNavigationReady) {
+      registration.current = 'running';
+      initNotifications()
+        .catch(() => undefined)
+        .finally(() => {
+          registration.current = 'done';
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, isNavigationReady]);
 
   // the private routes are mounted only after the user is authenticated
   useEffect(() => {
@@ -183,25 +182,7 @@ const NotificationContextProvider = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastNotificationResponse, isAuthenticated, isNavigationReady, userProfile]);
 
-  const unsubscribe = () => {
-    try {
-      if (pushToken) {
-        unregisterPushToken(pushToken);
-      }
-    } catch (error) {
-      console.error('Error while unregistering push token');
-    }
-  };
-
-  return (
-    <NotificationContext.Provider
-      value={{
-        unsubscribe,
-      }}
-    >
-      {children}
-    </NotificationContext.Provider>
-  );
+  return <>{children}</>;
 };
 
 export default NotificationContextProvider;

@@ -31,6 +31,7 @@ export const loginWithSocial = async (
   return API.post('/mobile/auth/social', { provider, token }).then((res) => res.data);
 };
 
-export const logout = async (refreshToken: string): Promise<void> => {
-  await API.post('/mobile/auth/logout', { refreshToken });
+// pushToken: the backend forgets this device's push token with the session.
+export const logout = async (refreshToken: string, pushToken?: string): Promise<void> => {
+  await API.post('/mobile/auth/logout', { refreshToken, ...(pushToken ? { pushToken } : {}) });
 };
