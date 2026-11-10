@@ -70,6 +70,8 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
               accessoryRight={CalendarIcon}
               dateService={dateService}
               {...rest}
+              // open on the chosen date when there is one, else on the hint (e.g. a plausible year)
+              initialVisibleDate={value || rest.initialVisibleDate}
             />
             {/* the label sits inside the box, like VTextField */}
             <VText variant="cap" style={fieldStyles.label} pointerEvents="none">
