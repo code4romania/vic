@@ -122,7 +122,10 @@ const SuperAdminLists = () => {
     {
       id: 'validatedAt',
       name: t('columns.validated_on'),
-      selector: (row) => formatDate(row.validatedAt),
+      minWidth: '8rem',
+      cell: (row) => (
+        <span className="text-sm whitespace-nowrap">{formatDate(row.validatedAt)}</span>
+      ),
     },
     {
       id: 'actions',
