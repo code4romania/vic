@@ -263,7 +263,9 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     padding: 16,
     gap: 6,
-    backgroundColor: colors.status.wait.bg,
+    // on the gray canvas: a white card, the amber stays on the text
+    backgroundColor: colors.white,
+    ...shadows.card,
   },
   promptAction: { alignSelf: 'flex-start', marginTop: 6 },
   section: { marginTop: 20 },
