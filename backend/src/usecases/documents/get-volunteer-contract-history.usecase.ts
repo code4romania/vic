@@ -7,6 +7,8 @@ import {
   IContractModel,
 } from 'src/modules/documents/models/contract.model';
 import { ContractFacade } from 'src/modules/documents/services/contract.facade';
+import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 
 @Injectable()
@@ -17,17 +19,31 @@ export class GetVolunteerContractHistoryUsecase
     private readonly volunteerFacade: VolunteerFacade,
     private readonly contractFacade: ContractFacade,
     private readonly s3Service: S3Service,
+    private readonly exceptionsService: ExceptionsService,
   ) {}
 
   public async execute(
     findOptions: FindManyContractOptions,
   ): Promise<Pagination<IContractModel>> {
-    const volunteer = await this.volunteerFacade.find({
-      id: findOptions.volunteerId,
-    });
+    // Only a volunteer of this user; never look up { id: undefined } (TypeORM would drop the key
+    // and match any volunteer, listing another organization's contracts).
+    const volunteer =
+      findOptions.volunteerId && findOptions.userId
+        ? await this.volunteerFacade.find({
+            id: findOptions.volunteerId,
+            userId: findOptions.userId,
+          })
+        : null;
+
+    if (!volunteer) {
+      this.exceptionsService.notFoundException(
+        VolunteerExceptionMessages.VOLUNTEER_001,
+      );
+    }
 
     const contracts = await this.contractFacade.findMany({
       ...findOptions,
+      volunteerId: volunteer.id,
       organizationId: volunteer.organization.id,
     });
 

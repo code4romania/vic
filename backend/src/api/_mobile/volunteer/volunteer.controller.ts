@@ -11,7 +11,8 @@ import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { JoinOrganizationByAccessCodeUsecase } from 'src/usecases/volunteer/join-organization-by-access-code.usecase';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
-import { VolunteerPresenter } from 'src/api/volunteer/presenters/volunteer.presenter';
+import { MobileVolunteerPresenter } from './presenters/mobile-volunteer.presenter';
+import { MobileProfileGuard } from '../common/guards/mobile-profile.guard';
 import { VolunteerMobileGuard } from './guards/volunteer-mobile.guard';
 import { GetVolunteerProfileUsecase } from 'src/usecases/volunteer/get-volunteer-profile.usecase';
 import { UpdateVolunteerProfileDto } from './dto/update-volunteer-profile.dto';
@@ -20,7 +21,7 @@ import { GetVolunteerOrganizationStatusUsecase } from 'src/usecases/volunteer/ge
 import { VolunteerStatsPresenter } from './presenters/volunteer-stats.presenter';
 
 @ApiBearerAuth()
-@UseGuards(MobileJwtAuthGuard)
+@UseGuards(MobileJwtAuthGuard, MobileProfileGuard)
 @Controller('mobile/volunteer')
 export class MobileVolunteerController {
   constructor(
@@ -31,16 +32,19 @@ export class MobileVolunteerController {
     private readonly getVolunteerOrganizationStatusUsecase: GetVolunteerOrganizationStatusUsecase,
   ) {}
 
+  // Only the user's own volunteers (audit B5), without the NGO's notes (#471)
+  @UseGuards(VolunteerMobileGuard)
   @Get(':id')
   async getVolunteerProfile(
     @Param('id', UuidValidationPipe) volunteerId: string,
-  ): Promise<VolunteerPresenter> {
+  ): Promise<MobileVolunteerPresenter> {
     const volunteer =
       await this.getVolunteerProfileUsecase.execute(volunteerId);
 
-    return new VolunteerPresenter(volunteer);
+    return new MobileVolunteerPresenter(volunteer);
   }
 
+  @UseGuards(VolunteerMobileGuard)
   @Get(':id/organization')
   async getVolunteerOrganizationStats(
     @Param('id', UuidValidationPipe) volunteerId: string,
@@ -56,14 +60,14 @@ export class MobileVolunteerController {
   async joinOrganizationByAccessCode(
     @Body() { code, organizationId }: JoinByAccessCodeDto,
     @ExtractUser() user: IRegularUserModel,
-  ): Promise<VolunteerPresenter> {
+  ): Promise<MobileVolunteerPresenter> {
     const volunteer = await this.joinOrganizationByAccessCodeUsecase.execute({
       code,
       organizationId,
       requestedById: user.id,
     });
 
-    return new VolunteerPresenter(volunteer);
+    return new MobileVolunteerPresenter(volunteer);
   }
 
   @UseGuards(VolunteerMobileGuard)
@@ -93,12 +97,12 @@ export class MobileVolunteerController {
     @Param('id', UuidValidationPipe) volunteerId: string,
     @Body() updatesDTO: UpdateVolunteerProfileDto,
     @ExtractUser() user: IRegularUserModel,
-  ): Promise<VolunteerPresenter> {
+  ): Promise<MobileVolunteerPresenter> {
     const volunteer = await this.updateVolunteerProfileUsecase.execute(
       volunteerId,
       updatesDTO,
       user,
     );
-    return new VolunteerPresenter(volunteer);
+    return new MobileVolunteerPresenter(volunteer);
   }
 }

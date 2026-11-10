@@ -1,6 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
+import { MobileProfileGuard } from '../common/guards/mobile-profile.guard';
 import {
   ApiPaginatedResponse,
   PaginatedPresenter,
@@ -12,7 +13,7 @@ import { NewsPresenter } from './presenters/news.presenter';
 import { GetNewsDto } from './dto/get-news.dto';
 
 @ApiBearerAuth()
-@UseGuards(MobileJwtAuthGuard)
+@UseGuards(MobileJwtAuthGuard, MobileProfileGuard)
 @Controller('/mobile/news')
 export class MobileNewsController {
   constructor(private readonly getManyNewsUsecase: GetManyNewsUsecase) {}

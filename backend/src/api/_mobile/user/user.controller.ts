@@ -13,6 +13,7 @@ import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { CreateRegularUsereUseCaseService } from 'src/usecases/user/create-regular-user.usecase';
 import { CreateRegularUserDto } from './dto/create-regular-user.dto';
 import { MobileJwtAuthGuard } from 'src/modules/auth/guards/jwt-mobile.guard';
+import { MobileProfileGuard } from '../common/guards/mobile-profile.guard';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 import { UpdateRegularUserDto } from './dto/update-regular-user.dto';
@@ -80,6 +81,7 @@ export class MobileRegularUserController {
     ),
   )
   @ApiBody({ type: UpdateRegularUserDto })
+  @UseGuards(MobileProfileGuard)
   @Patch('profile')
   async updateProfile(
     @ExtractUser() user: IRegularUserModel,
@@ -95,6 +97,7 @@ export class MobileRegularUserController {
     return new UserProfilePresenter(regularUser);
   }
 
+  @UseGuards(MobileProfileGuard)
   @Delete()
   async deleteUserData(
     @ExtractUser() regularUser: IRegularUserModel,

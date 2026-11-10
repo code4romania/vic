@@ -31,9 +31,14 @@ import { MobileActivityLogPresenter } from './presenters/activity-log.presenter'
 import { CancelActivityLogUsecase } from 'src/usecases/activity-log/cancel-activity-log.usecase';
 import { UpdateActivityLogDto } from 'src/api/activity-log/dto/update-activity-log.dto';
 import { UpdateActivityLogUsecase } from 'src/usecases/activity-log/update-activity-log.usecase';
+import { ActivityLogMobileGuard } from './guards/activity-log-mobile.guard';
+import { CreateActivityLogByVolunteerDto } from './dto/create-activity-log-by-volunteer.dto';
+import { emptyPagination } from 'src/infrastructure/base/repository-with-pagination.class';
+import { MobileOwnershipService } from 'src/usecases/volunteer/mobile-ownership.service';
 
 @ApiBearerAuth()
-@UseGuards(MobileJwtAuthGuard)
+// The volunteer is always the user of the token in their active organization (audit B2).
+@UseGuards(MobileJwtAuthGuard, ActivityLogMobileGuard)
 @Controller('mobile/activity-log')
 export class MobileActivityLogController {
   constructor(
@@ -43,15 +48,20 @@ export class MobileActivityLogController {
     private readonly getOneActivityLogUsecase: GetOneActivityLogUsecase,
     private readonly cancelActivityLogUsecase: CancelActivityLogUsecase,
     private readonly updateActivityLogUsecase: UpdateActivityLogUsecase,
+    private readonly ownership: MobileOwnershipService,
   ) {}
 
-  // TODO: VolunteerGuard
   @Get()
   @ApiPaginatedResponse(MobileActivityLogListItemPresenter)
   async getMany(
     @Query() filters: GetActivityLogsForVolunteerDto,
     @ExtractUser() { activeOrganization }: IRegularUserModel,
   ): Promise<PaginatedPresenter<MobileActivityLogListItemPresenter>> {
+    // No active organization: nothing to list (it used to answer 500)
+    if (!activeOrganization?.volunteerId) {
+      return new PaginatedPresenter(emptyPagination(filters.limit));
+    }
+
     const logs = await this.getManyActivityLogsUsecase.execute({
       ...filters,
       orderBy: 'date',
@@ -67,20 +77,27 @@ export class MobileActivityLogController {
     });
   }
 
-  // TODO: VolunteerGuard
   @Get('counters')
   async getCountHoursByStatus(
-    @Query() { volunteerId }: GetManyActivityLogCountersDto,
+    // ?volunteerId is kept for older apps and ignored: the totals are always the user's own
+    @Query() _filters: GetManyActivityLogCountersDto,
     @ExtractUser() { activeOrganization }: IRegularUserModel,
   ): Promise<ActivityLogCountersPresenter> {
+    if (!activeOrganization?.volunteerId) {
+      return new ActivityLogCountersPresenter({
+        pending: 0,
+        approved: 0,
+        rejected: 0,
+      });
+    }
+
     const counters = await this.getActivityLogCountersUsecase.execute({
-      volunteerId,
+      volunteerId: activeOrganization.volunteerId,
       organizationId: activeOrganization.id,
     });
     return new ActivityLogCountersPresenter(counters);
   }
 
-  // TODO: VolunteerGuard
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   async get(
@@ -90,7 +107,6 @@ export class MobileActivityLogController {
     return new MobileActivityLogPresenter(log);
   }
 
-  // TODO: VolunteerGuard
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
   async cancel(
@@ -100,22 +116,27 @@ export class MobileActivityLogController {
     await this.cancelActivityLogUsecase.execute(activityLogId, regularUser);
   }
 
-  // TODO: VolunteerGuard
-  @ApiBody({ type: CreateActivityLogByAdminDto })
+  @ApiBody({ type: CreateActivityLogByVolunteerDto })
   @Post()
   async create(
-    @Body() createActivityLog: CreateActivityLogByAdminDto,
+    @Body() createActivityLog: CreateActivityLogByVolunteerDto,
     @ExtractUser() regularUser: IRegularUserModel,
   ): Promise<MobileActivityLogPresenter> {
+    // Hours are logged for the user's own volunteer in the active organization. A volunteerId in
+    // the body (older apps send it) must be that one.
+    const volunteerId = this.ownership.activeVolunteerId(
+      regularUser,
+      createActivityLog.volunteerId,
+    );
+
     const log = await this.createActivityLogByRegularUser.execute(
-      createActivityLog,
+      { ...createActivityLog, volunteerId } as CreateActivityLogByAdminDto,
       regularUser,
     );
 
     return new MobileActivityLogPresenter(log);
   }
 
-  // TODO: VolunteerGuard
   @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: UpdateActivityLogDto })
   @Patch(':id')

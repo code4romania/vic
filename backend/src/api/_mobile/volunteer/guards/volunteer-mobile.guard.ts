@@ -1,26 +1,27 @@
+import { isUUID } from 'class-validator';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { GetOneVolunteerUsecase } from 'src/usecases/volunteer/get-one-volunteer.usecase';
-import { IVolunteerModel } from 'src/modules/volunteer/model/volunteer.model';
 import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
+import { MobileOwnershipService } from 'src/usecases/volunteer/mobile-ownership.service';
 
+// The volunteer in the route (:volunteerId, or :id on /mobile/volunteer) must belong to the user
+// of the token; otherwise 404 VOLUNTEER_001.
 @Injectable()
 export class VolunteerMobileGuard implements CanActivate {
-  constructor(private getOneVolunteerUsecase: GetOneVolunteerUsecase) {}
+  constructor(private readonly ownership: MobileOwnershipService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-
-    const volunteerId: string = request?.params?.id;
     const user: IRegularUserModel = request.user;
-
     if (!user) return false;
-    if (!volunteerId) return true;
 
-    const volunteer: IVolunteerModel =
-      await this.getOneVolunteerUsecase.execute(volunteerId);
+    this.ownership.assertHasProfile(user);
 
-    if (volunteer.user.id !== user.id) return false;
+    const volunteerId: string =
+      request.params?.volunteerId ?? request.params?.id;
+    // A malformed id is left to the UuidValidationPipe (400)
+    if (!volunteerId || !isUUID(volunteerId)) return true;
 
+    await this.ownership.volunteer(user.id, volunteerId);
     return true;
   }
 }

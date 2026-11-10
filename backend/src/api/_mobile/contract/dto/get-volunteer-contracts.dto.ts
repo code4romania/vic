@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsOptional, IsUUID } from 'class-validator';
 import {
   BasePaginationFilterDto,
   SortableBy,
@@ -8,6 +8,8 @@ export class GetVolunteerContractsDto extends BasePaginationFilterDto {
   @SortableBy('createdOn', 'startDate')
   orderBy?: string;
 
-  @IsString()
+  // One of the user's own volunteers; defaults to the one in the active organization.
+  @IsUUID()
+  @IsOptional()
   volunteerId?: string;
 }
