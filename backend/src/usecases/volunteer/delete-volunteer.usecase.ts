@@ -8,6 +8,7 @@ import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { SyncUserOrganizationsUsecase } from '../user/sync-user-organizations.usecase';
+import { eraseUsersWithoutAccount } from '../user/personal-data-erasure';
 
 export interface IDeletedVolunteerData {
   activityLogs: number;
@@ -48,8 +49,8 @@ export class DeleteVolunteerUsecase {
     const userId = volunteer.user.id;
     const organizationId = admin.organizationId;
 
-    const { deleted, contractPaths } = await this.dataSource.transaction(
-      async (manager) => {
+    const { deleted, contractPaths, erased } =
+      await this.dataSource.transaction(async (manager) => {
         const count = async (sql: string, params: unknown[]): Promise<number> =>
           (await manager.query(sql, params))[1] ?? 0;
 
@@ -95,12 +96,20 @@ export class DeleteVolunteerUsecase {
             removed.volunteer_profile_id,
           ]);
         }
+        // M8: a person the NGO added without a VIC account has nobody else keeping their data
+        const { files, erasedUserIds } = await eraseUsersWithoutAccount(
+          manager,
+          [userId],
+        );
         return {
           deleted: result,
-          contractPaths: contracts.map((c) => c.path).filter(Boolean),
+          contractPaths: [
+            ...contracts.map((c) => c.path).filter(Boolean),
+            ...files,
+          ],
+          erased: erasedUserIds.length > 0,
         };
-      },
-    );
+      });
 
     // The signed PDFs go too; a file left behind is only logged
     await Promise.all(
@@ -113,8 +122,10 @@ export class DeleteVolunteerUsecase {
       ),
     );
 
-    // The app moves the user to another NGO when this one was active
-    await this.syncUserOrganizationsUsecase.execute(userId, organizationId);
+    // The app moves the user to another NGO when this one was active (an erased person has no app)
+    if (!erased) {
+      await this.syncUserOrganizationsUsecase.execute(userId, organizationId);
+    }
 
     this.actionsArchiveFacade.trackEvent(
       TrackedEventName.DELETE_VOLUNTEER,

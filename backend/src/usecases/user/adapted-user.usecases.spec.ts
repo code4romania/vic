@@ -135,31 +135,27 @@ describe('user use cases adapted to own auth', () => {
       expect(users.findRegularUser).not.toHaveBeenCalled();
     });
 
-    it('delete account, which then deletes the login through the facade', async () => {
+    it('delete account, in one transaction', async () => {
+      const query = jest.fn().mockResolvedValue([]);
+      const transaction = jest.fn((work) => work({ query }));
       const useCase = new DeleteAccountRegularUserUsecase(
         users as unknown as UserFacadeService,
-        {} as GetOneRegularUserProfileUseCase,
         exceptions,
         { deleteFile: jest.fn() } as unknown as S3Service,
-        identities as unknown as AuthIdentityFacade,
-        { deleteMany: jest.fn() } as never,
-        {
-          softDeleteManyAndProfiles: jest
-            .fn()
-            .mockResolvedValue({ deletedVolunteers: [] }),
-        } as never,
-        { deleteManyByVolunteerId: jest.fn() } as never,
-        { deleteAllForUser: jest.fn() } as never,
-        { deleteAllRSVPsForUser: jest.fn() } as never,
+        { transaction } as never,
       );
 
       await expect(useCase.execute(undefined)).rejects.toMatchObject(notFound);
       expect(users.findRegularUser).not.toHaveBeenCalled();
-      expect(identities.deleteByUserId).not.toHaveBeenCalled();
+      expect(transaction).not.toHaveBeenCalled();
 
       users.findRegularUser.mockResolvedValue({ id: 'user-id' });
       await useCase.execute('user-id');
-      expect(identities.deleteByUserId).toHaveBeenCalledWith('user-id');
+      expect(transaction).toHaveBeenCalledTimes(1);
+      expect(query).toHaveBeenCalledWith(
+        expect.stringContaining('FROM "user"'),
+        ['user-id'],
+      );
     });
   });
 });

@@ -320,6 +320,16 @@ describe('Data and security (e2e)', () => {
       [organizationId, adminId],
     );
 
+    // M8: someone the NGO added without a VIC account
+    const [ghost] = await q(
+      `INSERT INTO "user" (type, name, email, phone, has_account)
+       VALUES ('regular', 'Ion Fără Cont', 'ion@example.ro', '+40720000009', false) RETURNING id`,
+    );
+    await q(
+      `INSERT INTO volunteer (user_id, organization_id, status) VALUES ($1, $2, 'active')`,
+      [ghost.id, organizationId],
+    );
+
     const good = await code('DELETE_ORGANIZATION');
     expect(
       (
@@ -366,6 +376,15 @@ describe('Data and security (e2e)', () => {
     );
     expect(left.active_organization_id).toBe(otherOrganizationId);
     expect(await count(`SELECT count(*) FROM volunteer`)).toBe(1);
+    // M8: the person without an account is anonymized
+    const [erased] = await q(
+      `SELECT name, email, phone, deleted_on FROM "user" WHERE id = $1`,
+      [ghost.id],
+    );
+    expect(erased.name).not.toContain('Ion');
+    expect(erased.email).not.toContain('ion@');
+    expect(erased.phone).toBeNull();
+    expect(erased.deleted_on).not.toBeNull();
     // the admins and their logins are gone; the VIC team was told
     expect(
       await count(`SELECT count(*) FROM "user" WHERE id = $1`, [adminId]),

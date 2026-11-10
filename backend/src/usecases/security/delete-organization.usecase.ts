@@ -12,6 +12,7 @@ import {
   SensitiveAction,
   SensitiveActionUsecase,
 } from './sensitive-action.usecase';
+import { eraseUsersWithoutAccount } from '../user/personal-data-erasure';
 
 // The confirmation must be the organization's name, typed exactly (spaces and case aside).
 const sameName = (a: string, b: string): boolean =>
@@ -85,6 +86,10 @@ export class DeleteOrganizationUsecase {
       await run(`DELETE FROM access_request WHERE organization_id = $1`);
       await run(`DELETE FROM access_code WHERE organization_id = $1`);
       await run(`DELETE FROM volunteer_history WHERE organization_id = $1`);
+      const people: { user_id: string }[] = await m.query(
+        `SELECT DISTINCT user_id FROM volunteer WHERE organization_id = $1`,
+        [id],
+      );
       const profiles: { volunteer_profile_id: string }[] = await m.query(
         `SELECT volunteer_profile_id FROM volunteer
           WHERE organization_id = $1 AND volunteer_profile_id IS NOT NULL`,
@@ -121,8 +126,13 @@ export class DeleteOrganizationUsecase {
       await run(
         `DELETE FROM "user" WHERE type = 'admin' AND organization_id = $1`,
       );
+      // M8: people the NGO added without a VIC account and no other NGO keeps
+      const { files: erasedFiles } = await eraseUsersWithoutAccount(
+        m,
+        people.map((p) => p.user_id),
+      );
       await run(`DELETE FROM organization WHERE id = $1`);
-      return files.map((f) => f.path).filter(Boolean);
+      return [...files.map((f) => f.path).filter(Boolean), ...erasedFiles];
     });
 
     // files are best effort: a leftover is only logged
