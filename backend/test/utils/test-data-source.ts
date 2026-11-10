@@ -84,11 +84,21 @@ export async function createTestDataSource(): Promise<DataSource> {
 }
 
 // Empties the tables a spec writes to; CASCADE also clears the rows that reference them.
+// An audit write left over from the previous test (actions_archive is filled by an async
+// listener) can deadlock with the TRUNCATE, so a deadlock is retried a few times.
 export async function truncate(
   dataSource: DataSource,
   tables: string[],
 ): Promise<void> {
-  await dataSource.query(
-    `TRUNCATE ${tables.map((table) => `"${table}"`).join(', ')} CASCADE`,
-  );
+  const sql = `TRUNCATE ${tables.map((table) => `"${table}"`).join(', ')} CASCADE`;
+  for (let attempt = 1; ; attempt++) {
+    try {
+      await dataSource.query(sql);
+      return;
+    } catch (error) {
+      const deadlock = (error as { code?: string }).code === '40P01';
+      if (!deadlock || attempt >= 3) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 100 * attempt));
+    }
+  }
 }
