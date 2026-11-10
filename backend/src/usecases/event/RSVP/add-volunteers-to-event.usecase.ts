@@ -11,6 +11,7 @@ import { hasEventEnded } from 'src/modules/event/event-end';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import VolunteerAddedToEventEvent from 'src/modules/notifications/events/ngo-event/volunteer-added.event';
 import { OrganizationGateService } from 'src/usecases/organization/organization-gate.service';
+import { DataSource } from 'typeorm';
 import { GetOneEventUseCase } from '../get-one-event.usecase';
 
 // VIC 2.0 (#496): the NGO registers volunteers to an event directly. They are "going" right away (no
@@ -26,6 +27,7 @@ export class AddVolunteersToEventUseCase
     private readonly organizationGate: OrganizationGateService,
     private readonly exceptionsService: ExceptionsService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly dataSource: DataSource,
   ) {}
 
   async execute({
@@ -118,13 +120,29 @@ export class AddVolunteersToEventUseCase
     });
 
     if (toAdd.length) {
+      // like every other notification, only by the channels each volunteer turned on
+      const settings: { id: string; push: boolean; email: boolean }[] =
+        await this.dataSource.query(
+          `SELECT u.id, COALESCE(ns.notifications_via_push, false) AS push,
+                  COALESCE(ns.notifications_via_email, false) AS email
+             FROM "user" u
+             LEFT JOIN notifications_settings ns ON ns.id = u.notifications_settings_id
+            WHERE u.id = ANY($1::uuid[])`,
+          [toAdd.map((candidate) => candidate.userId)],
+        );
+      const wants = new Map(settings.map((row) => [row.id, row]));
       this.eventEmitter.emit(
         EVENTS.NGO_EVENT.VOLUNTEER_ADDED,
         new VolunteerAddedToEventEvent(
           organizationId,
-          toAdd.map((candidate) => candidate.userId),
+          toAdd
+            .filter((candidate) => wants.get(candidate.userId)?.push)
+            .map((candidate) => candidate.userId),
           event.organization?.name,
-          toAdd.map((candidate) => candidate.email).filter(Boolean),
+          toAdd
+            .filter((candidate) => wants.get(candidate.userId)?.email)
+            .map((candidate) => candidate.email)
+            .filter(Boolean),
           event.id,
           event.name,
         ),

@@ -4,6 +4,7 @@ import {
 } from 'src/modules/auth/enums/auth.enums';
 import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
+import { PushNotificationsFacade } from 'src/modules/notifications/notifications.facade';
 import * as request from 'supertest';
 import * as XLSX from 'xlsx';
 import { createTestApp, TestApp } from './utils/test-app';
@@ -80,7 +81,9 @@ describe('Add volunteers to an event (e2e)', () => {
       'organization_structure',
       'user',
       'organization',
+      'notifications_settings',
     ]);
+    testApp.mailbox.clear();
     const [organization] = await testApp.dataSource.query(
       `INSERT INTO organization (name, email, phone, status, validated_at) VALUES ('Org', 'org@example.ro', '+40700000000', 'active', now()) RETURNING id`,
     );
@@ -185,6 +188,43 @@ describe('Add volunteers to an event (e2e)', () => {
       [volunteers['Ana']],
     );
     expect(rsvp).toEqual({ status: 'approved', decided: true });
+  });
+
+  it('notifies each volunteer only by the channels they turned on', async () => {
+    const settings = async (
+      name: string,
+      push: boolean,
+      email: boolean,
+    ): Promise<void> => {
+      const [row] = await testApp.dataSource.query(
+        `INSERT INTO notifications_settings (notifications_via_push, notifications_via_email) VALUES ($1, $2) RETURNING id`,
+        [push, email],
+      );
+      await testApp.dataSource.query(
+        `UPDATE "user" SET notifications_settings_id = $1 WHERE id = (SELECT user_id FROM volunteer WHERE id = $2)`,
+        [row.id, volunteers[name]],
+      );
+    };
+    await settings('Ana', false, true);
+    await settings('Bogdan', true, false);
+    await testApp.dataSource.query(`UPDATE event SET capacity = NULL`);
+    const push = jest
+      .spyOn(testApp.app.get(PushNotificationsFacade), 'send')
+      .mockResolvedValue(undefined);
+
+    await add(['Ana', 'Bogdan'], 201);
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(testApp.mailbox.sent.map((m) => m.to)).toEqual(['ana@example.ro']);
+    expect(push).toHaveBeenCalledTimes(1);
+    const [{ userIds }] = push.mock.calls[0];
+    expect(userIds).toHaveLength(1);
+    const [bogdan] = await testApp.dataSource.query(
+      `SELECT user_id FROM volunteer WHERE id = $1`,
+      [volunteers['Bogdan']],
+    );
+    expect(userIds).toEqual([bogdan.user_id]);
+    push.mockRestore();
   });
 
   it('respects the capacity: 400 EVENT_RSVP_008 and nobody is added', async () => {

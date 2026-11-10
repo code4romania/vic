@@ -63,15 +63,21 @@ export class NGOEventListener {
       userEmails,
     } = payload;
 
-    this.pushNotificationsFacade.send({
-      userIds,
-      title: NOTIFICATIONS.ADDED_TO_EVENT.PUSH.title,
-      body: NOTIFICATIONS.ADDED_TO_EVENT.PUSH.body(organizationName, eventName),
-      data: {
-        key: EVENTS.NGO_EVENT.VOLUNTEER_ADDED,
-        payload: { organizationId, eventId },
-      },
-    });
+    // userIds and userEmails hold only the people who turned that channel on
+    if (userIds.length) {
+      this.pushNotificationsFacade.send({
+        userIds,
+        title: NOTIFICATIONS.ADDED_TO_EVENT.PUSH.title,
+        body: NOTIFICATIONS.ADDED_TO_EVENT.PUSH.body(
+          organizationName,
+          eventName,
+        ),
+        data: {
+          key: EVENTS.NGO_EVENT.VOLUNTEER_ADDED,
+          payload: { organizationId, eventId },
+        },
+      });
+    }
 
     const subject = NOTIFICATIONS.ADDED_TO_EVENT.EMAIL.subject(
       organizationName,
