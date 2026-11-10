@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { TableColumn } from 'react-data-table-component';
+import { Media, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
+import i18n from '../common/config/i18n';
 import PageLayout from '../layouts/PageLayout';
 import PageHeader from '../components/PageHeader';
 import Card from '../layouts/CardLayout';
@@ -21,7 +22,10 @@ import { useAuth } from '../hooks/useAuth';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { formatDate } from '../common/utils/utils';
 import {
-  AdminOrganizationStatus,
+  ADMIN_ORGANIZATION_DISPLAY_STATUSES,
+  AdminOrganizationDisplayStatus,
+  displayStatusOf,
+  filterOfDisplayStatus,
   IAdminOrganizationListItem,
   IAdminVolunteerListItem,
 } from '../services/admin/admin-lists.api';
@@ -36,7 +40,7 @@ import {
 
 type AdminList = 'organizations' | 'volunteers';
 const LISTS: AdminList[] = ['organizations', 'volunteers'];
-const STATUSES: AdminOrganizationStatus[] = ['pending', 'active', 'suspended'];
+const STATUSES = ADMIN_ORGANIZATION_DISPLAY_STATUSES;
 const DEFAULT_LIMIT = 10;
 
 type RowAction = { kind: 'suspend' | 'unsuspend'; organization: IAdminOrganizationListItem };
@@ -46,8 +50,9 @@ const positive = (value: string | null, fallback: number): number => {
   return Number.isInteger(number) && number > 0 ? number : fallback;
 };
 
-const STATUS_TONES: Record<AdminOrganizationStatus, BadgeTone> = {
-  pending: 'amber',
+const STATUS_TONES: Record<AdminOrganizationDisplayStatus, BadgeTone> = {
+  unconfirmed: 'gray',
+  validation: 'amber',
   active: 'green',
   suspended: 'red',
 };
@@ -55,7 +60,7 @@ const STATUS_TONES: Record<AdminOrganizationStatus, BadgeTone> = {
 const Contact = ({ email, phone }: { email: string; phone: string }) => (
   <div className="flex flex-col py-3 min-w-0">
     <span className="text-sm text-cool-gray-900 truncate">{email}</span>
-    <small className="text-cool-gray-500">{phone || '-'}</small>
+    <small className="text-cool-gray-500">{phone || '–'}</small>
   </div>
 );
 
@@ -73,7 +78,11 @@ const SuperAdminLists = () => {
   const page = positive(searchParams.get('page'), 1);
   const limit = positive(searchParams.get('limit'), DEFAULT_LIMIT);
   const search = searchParams.get('search') || undefined;
-  const statusParam = searchParams.get('status') as AdminOrganizationStatus | null;
+  // links from older pages say "pending" for the organizations waiting for validation
+  const rawStatus = searchParams.get('status');
+  const statusParam = (
+    rawStatus === 'pending' ? 'validation' : rawStatus
+  ) as AdminOrganizationDisplayStatus | null;
   const status = statusParam && STATUSES.includes(statusParam) ? statusParam : undefined;
 
   const updateParams = (updates: Record<string, string | number | undefined>) =>
@@ -96,7 +105,7 @@ const SuperAdminLists = () => {
 
   const query = { page, limit, search };
   const organizations = useAdminOrganizationsQuery(
-    { ...query, status },
+    { ...query, ...filterOfDisplayStatus(status) },
     isSuperAdmin && list === 'organizations',
   );
   const volunteers = useAdminVolunteersQuery(query, isSuperAdmin && list === 'volunteers');
@@ -127,7 +136,7 @@ const SuperAdminLists = () => {
       id: 'name',
       name: t('columns.organization'),
       grow: 3,
-      minWidth: '17rem',
+      minWidth: '14rem',
       cell: (row) => (
         <div className="py-3 w-full">
           <MediaCell title={row.name} subtitle={t('since', { date: formatDate(row.createdOn) })} />
@@ -136,15 +145,19 @@ const SuperAdminLists = () => {
     },
     {
       id: 'taxId',
+      // phones: the organization, its status and the action; under 1100px the CUI is in the
+      // validation details, so status and actions keep their room
+      hide: 1100,
       name: t('columns.tax_id'),
       cell: (row) => (
         <span className="text-sm font-robotoMedium text-cool-gray-900 whitespace-nowrap">
-          {row.taxId || '-'}
+          {row.taxId || '–'}
         </span>
       ),
     },
     {
       id: 'contact',
+      hide: Media.SM,
       name: t('columns.contact'),
       grow: 2,
       cell: (row) => <Contact email={row.email} phone={row.phone} />,
@@ -152,18 +165,22 @@ const SuperAdminLists = () => {
     {
       id: 'status',
       name: t('columns.status'),
-      cell: (row) => (
-        <StatusBadge tone={STATUS_TONES[row.status]}>{t(`status.${row.status}`)}</StatusBadge>
-      ),
+      minWidth: '8rem',
+      cell: (row) => {
+        const displayed = displayStatusOf(row);
+        return <StatusBadge tone={STATUS_TONES[displayed]}>{t(`status.${displayed}`)}</StatusBadge>;
+      },
     },
     {
       id: 'volunteers',
+      hide: Media.SM,
       name: t('columns.volunteers'),
-      minWidth: '9rem',
+      minWidth: '6rem',
       cell: (row) => <span className="text-sm font-robotoBold text-navy">{row.volunteers}</span>,
     },
     {
       id: 'validatedAt',
+      hide: 1300,
       name: t('columns.validated_on'),
       minWidth: '8rem',
       cell: (row) => (
@@ -175,8 +192,12 @@ const SuperAdminLists = () => {
       name: '',
       minWidth: '9rem',
       right: true,
+      allowOverflow: true,
       cell: (row) => {
-        if (row.status === 'pending')
+        const displayed = displayStatusOf(row);
+        // not confirmed yet: nothing to decide until the NGO confirms its email
+        if (displayed === 'unconfirmed') return <span className="text-cool-gray-500">–</span>;
+        if (displayed === 'validation')
           return (
             <Button
               type="button"
@@ -216,6 +237,7 @@ const SuperAdminLists = () => {
     },
     {
       id: 'contact',
+      hide: Media.SM,
       name: t('columns.contact'),
       grow: 2,
       cell: (row) => <Contact email={row.email} phone={row.phone} />,
@@ -242,6 +264,7 @@ const SuperAdminLists = () => {
     },
     {
       id: 'createdOn',
+      hide: Media.SM,
       name: t('columns.account_created'),
       selector: (row) => formatDate(row.createdOn),
     },
@@ -261,7 +284,10 @@ const SuperAdminLists = () => {
 
   return (
     <PageLayout>
-      <PageHeader subtitle={t(`subtitle.${list}`)}>{t('title')}</PageHeader>
+      {/* the title says what the menu entry says ("Toate organizațiile", "Toți voluntarii") */}
+      <PageHeader subtitle={t(`subtitle.${list}`)}>
+        {i18n.t(`side_menu:options.all_${list}`)}
+      </PageHeader>
       <Tabs<AdminList>
         tabs={tabs}
         defaultTab={tabs.find((tab) => tab.key === list)}
