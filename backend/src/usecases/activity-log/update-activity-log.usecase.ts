@@ -13,6 +13,10 @@ import { ActivityTypeFacade } from 'src/modules/activity-type/services/activity-
 import { GetOneEventUseCase } from '../event/get-one-event.usecase';
 import { GetOneActivityLogUsecase } from './get-one-activity-log.usecase';
 import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
+import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 
 @Injectable()
 export class UpdateActivityLogUsecase
@@ -24,11 +28,13 @@ export class UpdateActivityLogUsecase
     private readonly getOneEventUsecase: GetOneEventUseCase,
     private readonly activityTypeFacade: ActivityTypeFacade,
     private readonly exceptionService: ExceptionsService,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
     id: string,
     updates: UpdateActivityLogOptions,
+    author: IAdminUserModel | IRegularUserModel,
   ): Promise<IActivityLogModel> {
     // 1. Check if the log to be updated, exists
     const log = await this.getOneActivityLogUsecase.execute(id);
@@ -62,9 +68,23 @@ export class UpdateActivityLogUsecase
       }
     }
 
-    return this.activityLogFacade.update(id, {
+    const updated = await this.activityLogFacade.update(id, {
       ...updates,
       activityTypeId: (updates.activityTypeId || null) as never,
     });
+
+    // #593: edits are in the actions history, also when the volunteer is the author
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.UPDATE_ACTIVITY_LOG,
+      {
+        activityLogId: log.id,
+        volunteerId: log.volunteer?.id,
+        volunteerName: log.volunteer?.user?.name,
+        organizationId: log.organization?.id,
+      },
+      author,
+    );
+
+    return updated;
   }
 }

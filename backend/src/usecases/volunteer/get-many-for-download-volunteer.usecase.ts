@@ -30,24 +30,24 @@ export class GetVolunteersForDownloadUseCase
     return volunteers.items.map((volunteer): IVolunteerDownload => {
       return {
         Nume: volunteer.user.name,
-        'Data nasterii': volunteer.user.birthday,
-        Locatie: volunteer.user.location
-          ? `${volunteer.user.location.name}, jud ${volunteer.user.location.county?.name}`
+        'Data nașterii': volunteer.user.birthday,
+        Locație: volunteer.user.location
+          ? `${volunteer.user.location.name}, jud. ${volunteer.user.location.county?.name}`
           : '',
         Email: volunteer.volunteerProfile?.email,
         Telefon: volunteer.user?.phone,
-        'Perioada activitate': volunteer.volunteerProfile?.activeSince,
-        'Nume filiala': volunteer.volunteerProfile?.branch?.name,
+        'Activ din': volunteer.volunteerProfile?.activeSince,
+        'Nume filială': volunteer.volunteerProfile?.branch?.name,
         'Nume departament': volunteer.volunteerProfile?.department?.name,
         'Nume rol': volunteer.volunteerProfile?.role?.name,
         Ore: volunteer.totalHours ?? 0,
         Status: STATUS_LABEL[volunteer.status],
-        Sursa: volunteer.source ?? '',
+        Sursă: volunteer.source ?? '',
         ...(volunteer.status === VolunteerStatus.INACTIVE
           ? { 'Inactiv din': volunteer.archivedOn }
           : {}),
         ...(volunteer.status === VolunteerStatus.BLOCKED
-          ? { 'Data blocarii': volunteer.blockedOn }
+          ? { 'Data blocării': volunteer.blockedOn }
           : {}),
       };
     });

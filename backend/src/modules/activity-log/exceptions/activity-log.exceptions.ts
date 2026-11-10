@@ -6,6 +6,7 @@ enum ActivityLogExceptionCodes {
   ACTIVITY_LOG_003 = 'ACTIVITY_LOG_003',
   ACTIVITY_LOG_004 = 'ACTIVITY_LOG_004',
   ACTIVITY_LOG_005 = 'ACTIVITY_LOG_005',
+  ACTIVITY_LOG_006 = 'ACTIVITY_LOG_006',
 }
 
 type ActivityTypeExceptionCodeType = keyof typeof ActivityLogExceptionCodes;
@@ -33,5 +34,9 @@ export const ActivityLogExceptionMessages: Record<
   [ActivityLogExceptionCodes.ACTIVITY_LOG_005]: {
     code_error: ActivityLogExceptionCodes.ACTIVITY_LOG_005,
     message: 'Hours can only be added to an active volunteer',
+  },
+  [ActivityLogExceptionCodes.ACTIVITY_LOG_006]: {
+    code_error: ActivityLogExceptionCodes.ACTIVITY_LOG_006,
+    message: 'A reason is required to reject hours',
   },
 };

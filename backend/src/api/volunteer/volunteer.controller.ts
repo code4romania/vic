@@ -12,7 +12,7 @@ import {
   Controller,
   Delete,
   Get,
-  Header,
+  Headers,
   Param,
   Patch,
   Post,
@@ -22,7 +22,13 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiHeader,
+  ApiParam,
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   IMPORT_MAX_BYTES,
@@ -56,6 +62,11 @@ import { UpdateVolunteerDetailsDto } from './dto/update-volunteer-details.dto';
 import { UpdateVolunteerDetailsUsecase } from 'src/usecases/volunteer/update-volunteer-details.usecase';
 import { AddVolunteerUseCase } from 'src/usecases/volunteer/add-volunteer.usecase';
 import { AddVolunteerDto } from './dto/add-volunteer.dto';
+import {
+  SENSITIVE_CODE_HEADER,
+  SensitiveActionUsecase,
+} from 'src/usecases/security/sensitive-action.usecase';
+import { IWebRequestUser } from 'src/modules/auth/interfaces/request-user.interface';
 
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard, VolunteerGuard)
@@ -75,6 +86,7 @@ export class VolunteerController {
     private readonly updateVolunteerDetailsUsecase: UpdateVolunteerDetailsUsecase,
     private readonly addVolunteerUseCase: AddVolunteerUseCase,
     private readonly importVolunteersUseCase: ImportVolunteersUseCase,
+    private readonly sensitiveActionUsecase: SensitiveActionUsecase,
   ) {}
 
   // #473: import Candidates from a CSV or Excel file (`file`)
@@ -135,21 +147,27 @@ export class VolunteerController {
   }
 
   @Get('download')
-  @Header(
-    'Content-Type',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  )
-  @Header('Content-Disposition', 'attachment; filename="Voluntari.xlsx"')
+  @ApiHeader({ name: SENSITIVE_CODE_HEADER, required: true })
   async downloadAccessRequests(
     @Res({ passthrough: true }) res: Response,
-    @ExtractUser() user: IAdminUserModel,
+    @ExtractUser() user: IWebRequestUser,
     @Query() filters: GetVolunteersDto,
+    @Headers(SENSITIVE_CODE_HEADER) code: string,
   ): Promise<void> {
+    // #593: the volunteers' personal data leaves VIC only after the emailed code
+    await this.sensitiveActionUsecase.verify(user, code);
+
     const data = await this.getVolunteersForDownloadUseCase.execute({
       ...filters,
       organizationId: user.organizationId,
     });
 
+    // set here, so an error above answers JSON
+    res.set({
+      'Content-Type':
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'Content-Disposition': 'attachment; filename="Voluntari.xlsx"',
+    });
     res.end(jsonToExcelBuffer<IVolunteerDownload>(data, 'Voluntari'));
   }
 

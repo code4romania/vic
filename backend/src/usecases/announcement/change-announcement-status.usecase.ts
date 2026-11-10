@@ -49,14 +49,18 @@ export class ChangeAnnouncementStatusUseCase
     if (announcement.status === status) return announcement;
 
     if (status === AnnouncementStatus.ARCHIVED) {
-      return this.announcementFacade.update(id, {
+      const archived = await this.announcementFacade.update(id, {
         status,
         archivedOn: new Date(),
       });
+      this.trackStatusChange(announcement, archived, admin);
+      return archived;
     }
 
     if (status === AnnouncementStatus.INACTIVE) {
-      return this.announcementFacade.update(id, { status });
+      const deactivated = await this.announcementFacade.update(id, { status });
+      this.trackStatusChange(announcement, deactivated, admin);
+      return deactivated;
     }
 
     // ACTIVE: notify only the first time it goes live
@@ -101,8 +105,28 @@ export class ChangeAnnouncementStatusUseCase
         },
         admin,
       );
+    } else {
+      this.trackStatusChange(announcement, activated, admin);
     }
 
     return activated;
+  }
+
+  // #593: every status change is in the actions history (the first activation is PUBLISH_ANNOUNCEMENT)
+  private trackStatusChange(
+    before: IAnnouncementModel,
+    after: IAnnouncementModel,
+    admin: IAdminUserModel,
+  ): void {
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CHANGE_ANNOUNCEMENT_STATUS,
+      {
+        announcementId: after.id,
+        announcementTitle: after.name,
+        oldStatus: before.status,
+        newStatus: after.status,
+      },
+      admin,
+    );
   }
 }

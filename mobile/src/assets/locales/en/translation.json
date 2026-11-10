@@ -492,6 +492,7 @@
       "members": "members only",
       "going": "Going",
       "pending": "Pending",
+      "rejected": "Rejected",
       "finished": "Ended"
     },
     "empty": {
@@ -801,7 +802,7 @@
       "title": "Receive notifications via",
       "options": {
         "email": "Email",
-        "push": "Push Notifications"
+        "push": "Push notifications"
       }
     },
     "disabled": "Notifications are disabled",

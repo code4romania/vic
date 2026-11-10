@@ -96,4 +96,26 @@ describe('Announcement counters (e2e)', () => {
 
     expect(body).toEqual({ active: 2, inactive: 1, archived: 1, responses: 3 });
   });
+
+  // #593: "Active" means seen in the app now; a scheduled or ended announcement is not counted
+  it('counts as active only the announcements inside their display period', async () => {
+    const [own] = orgs;
+    await announcement(own, 'active');
+    await testApp.dataSource.query(
+      `INSERT INTO announcement (name, description, status, organization_id, display_start_date, display_end_date) VALUES
+         ('Programat', 'd', 'active', $1, now() + interval '3 days', NULL),
+         ('Încheiat', 'd', 'active', $1, now() - interval '5 days', now() - interval '1 day')`,
+      [own],
+    );
+
+    const { body } = await request(testApp.app.getHttpServer())
+      .get('/announcement/counters')
+      .set(
+        'Authorization',
+        `Bearer ${await testApp.mintAccessToken(admin, AuthRealm.WEB)}`,
+      )
+      .expect(200);
+
+    expect(body.active).toBe(1);
+  });
 });

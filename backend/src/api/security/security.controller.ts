@@ -2,13 +2,14 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   HttpCode,
   HttpStatus,
   Post,
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
 import { Response } from 'express';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
@@ -16,7 +17,10 @@ import { IWebRequestUser } from 'src/modules/auth/interfaces/request-user.interf
 import { ChangeEmailUsecase } from 'src/usecases/security/change-email.usecase';
 import { DeleteOrganizationUsecase } from 'src/usecases/security/delete-organization.usecase';
 import { OrganizationBackupUsecase } from 'src/usecases/security/organization-backup.usecase';
-import { SensitiveActionUsecase } from 'src/usecases/security/sensitive-action.usecase';
+import {
+  SENSITIVE_CODE_HEADER,
+  SensitiveActionUsecase,
+} from 'src/usecases/security/sensitive-action.usecase';
 import { clearRefreshCookie } from '../auth/cookies';
 import {
   ConfirmEmailChangeDto,
@@ -67,13 +71,16 @@ export class SecurityController {
     return this.changeEmail.confirm(admin, code, newEmailCode);
   }
 
-  // "Backup complet": one Excel workbook with all the organization's data
+  // "Backup complet": one Excel workbook with all the organization's data, after the emailed code (#593)
+  @ApiHeader({ name: SENSITIVE_CODE_HEADER, required: true })
   @Get('backup')
   async getBackup(
-    @ExtractUser() { organizationId }: IWebRequestUser,
+    @ExtractUser() admin: IWebRequestUser,
+    @Headers(SENSITIVE_CODE_HEADER) code: string,
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
-    const { fileName, data } = await this.backup.execute(organizationId);
+    await this.sensitiveAction.verify(admin, code);
+    const { fileName, data } = await this.backup.execute(admin.organizationId);
     res.set({
       'Content-Type':
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

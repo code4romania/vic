@@ -5,11 +5,13 @@ import ApproveHoursEvent from '../events/volunteer-hours/approve-hours.event';
 import RejectHoursEvent from '../events/volunteer-hours/reject-hours.event';
 import { NOTIFICATIONS } from 'src/common/constants/notifications';
 import { PushNotificationsFacade } from '../notifications.facade';
+import { MailService } from 'src/modules/mail/services/mail.service';
 import { format } from 'date-fns';
 
 @Injectable()
 export class VolunteerHoursListener {
   constructor(
+    private readonly mailService: MailService,
     private readonly pushNotificationsFacade: PushNotificationsFacade,
   ) {}
 
@@ -21,6 +23,8 @@ export class VolunteerHoursListener {
       userId,
       organizationId,
       notificationsViaPush,
+      notificationsViaEmail,
+      userEmail,
       organizationName,
       hours,
       date,
@@ -47,6 +51,21 @@ export class VolunteerHoursListener {
         data: notificationData,
       });
     }
+
+    // #593: the decision also goes by email, for a volunteer with push turned off
+    if (notificationsViaEmail) {
+      await this.mailService.sendEmail({
+        to: userEmail,
+        subject: NOTIFICATIONS.APPROVED_HOURS.EMAIL.subject(organizationName),
+        context: {
+          title: NOTIFICATIONS.APPROVED_HOURS.EMAIL.subject(organizationName),
+          subtitle: NOTIFICATIONS.APPROVED_HOURS.EMAIL.body(
+            hours,
+            format(date, 'dd/MM/yyy'),
+          ),
+        },
+      });
+    }
   }
 
   @OnEvent(EVENTS.VOLUNTEER_HOURS.REJECT)
@@ -57,10 +76,13 @@ export class VolunteerHoursListener {
       userId,
       organizationId,
       notificationsViaPush,
+      notificationsViaEmail,
+      userEmail,
       organizationName,
       hours,
       date,
       activityLogId,
+      rejectionReason,
     } = payload;
 
     if (notificationsViaPush) {
@@ -81,6 +103,22 @@ export class VolunteerHoursListener {
           format(date, 'dd/MM/yyy'),
         ),
         data: notificationData,
+      });
+    }
+
+    // #593: the decision also goes by email, with the reason
+    if (notificationsViaEmail) {
+      await this.mailService.sendEmail({
+        to: userEmail,
+        subject: NOTIFICATIONS.REJECTED_HOURS.EMAIL.subject(organizationName),
+        context: {
+          title: NOTIFICATIONS.REJECTED_HOURS.EMAIL.subject(organizationName),
+          subtitle: NOTIFICATIONS.REJECTED_HOURS.EMAIL.body(
+            hours,
+            format(date, 'dd/MM/yyy'),
+            rejectionReason,
+          ),
+        },
       });
     }
   }

@@ -310,8 +310,8 @@
             }
         },
         "errors": {
-            "ACCESS_CODE_001": "Codul de access este invalid",
-            "ACCESS_REQUEST_001": "Există deja un request de access pentru aceasta organizație",
+            "ACCESS_CODE_001": "Codul de acces este invalid",
+            "ACCESS_REQUEST_001": "Există deja o cerere de acces pentru această organizație",
             "ORG_001": "Organizația nu a fost găsită",
             "USER_001": "Utilizatorul nu a fost găsit",
             "VOLUNTEER_002": "Utilizatorul este deja parte a organizației",
@@ -491,6 +491,7 @@
             "members": "doar membri",
             "going": "Înscris",
             "pending": "În așteptare",
+            "rejected": "Respinsă",
             "finished": "Încheiat"
         },
         "empty": {
@@ -686,8 +687,8 @@
         "statistics": {
             "events": {
                 "title": "{{number}} evenimente",
-                "description": "luna asta",
-                "short": "evenimente luna asta"
+                "description": "luna aceasta",
+                "short": "evenimente luna aceasta"
             },
             "hours": {
                 "title": "{{number}} actualizări",
@@ -801,7 +802,7 @@
             "title": "Primește notificări prin",
             "options": {
                 "email": "Email",
-                "push": "Push Notifications"
+                "push": "Notificări push"
             }
         },
         "disabled": "Notificările sunt dezactivate",

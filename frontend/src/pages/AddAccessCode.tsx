@@ -43,7 +43,9 @@ export const AddAccessCodeValidationSchema = yup.object({
     .date()
     .typeError(`${i18n.t('general:invalid_date')}`)
     .nullable()
-    .optional(),
+    .optional()
+    // #593: a code cannot end before it starts
+    .min(yup.ref('startDate'), `${i18n.t('access_code:form.end_date.min')}`),
 });
 
 const AddAccessCode = () => {

@@ -5,6 +5,7 @@ import { EVENTS } from '../constants/events.constants';
 import ApproveRequestEvent from '../events/join-ngo/approve-request.event';
 import ArchiveVolunteerEvent from '../events/join-ngo/archive-volunteer.event';
 import RejectRequestEvent from '../events/join-ngo/reject-request.event';
+import VolunteerLeftEvent from '../events/join-ngo/volunteer-left.event';
 import { PushNotificationsFacade } from '../notifications.facade';
 import { NOTIFICATIONS } from 'src/common/constants/notifications';
 
@@ -158,5 +159,30 @@ export class JoinNGOListener {
         },
       });
     }
+  }
+
+  // #593: the organization's admins learn that a volunteer left
+  @OnEvent(EVENTS.JOIN_NGO.VOLUNTEER_LEFT)
+  async sendVolunteerLeftNotification(
+    payload: VolunteerLeftEvent,
+  ): Promise<void> {
+    const { organizationName, userEmails, volunteerName } = payload;
+
+    // one email per admin, so they do not see each other's address
+    await Promise.all(
+      userEmails.map((email) =>
+        this.mailService.sendEmail({
+          to: email,
+          subject: NOTIFICATIONS.VOLUNTEER_LEFT.EMAIL.subject(volunteerName),
+          context: {
+            title: NOTIFICATIONS.VOLUNTEER_LEFT.EMAIL.subject(volunteerName),
+            subtitle: NOTIFICATIONS.VOLUNTEER_LEFT.EMAIL.body(
+              volunteerName,
+              organizationName,
+            ),
+          },
+        }),
+      ),
+    );
   }
 }

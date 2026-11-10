@@ -23,11 +23,11 @@ export class GetAccessRequestsForDownloadUseCase
     return accessRequests.items.map((accessRequest): IAccessRequestDownload => {
       return {
         Nume: accessRequest.requestedBy.name,
-        'Data nasterii': accessRequest.requestedBy.birthday,
+        'Data nașterii': accessRequest.requestedBy.birthday,
         Sex: accessRequest.requestedBy.sex,
         Email: accessRequest.requestedBy.email,
         Telefon: accessRequest.requestedBy.phone,
-        Locatie:
+        Locație:
           accessRequest.requestedBy.location.name +
           ', jud. ' +
           accessRequest.requestedBy.location.county.name,

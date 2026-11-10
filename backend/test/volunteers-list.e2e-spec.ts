@@ -143,10 +143,20 @@ describe('Volunteers list columns (e2e)', () => {
     expect((await list('candidate')).map((v) => v.totalHours)).toEqual([0]);
 
     const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
+    // #593: the export needs the emailed code
+    await http()
+      .post('/security/code')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ action: 'EXPORT_VOLUNTEERS' })
+      .expect(200);
     await http()
       .get('/volunteer/download')
       .query({ status: 'candidate' })
       .set('Authorization', `Bearer ${token}`)
+      .set(
+        'X-Sensitive-Code',
+        testApp.mailbox.last('ana@example.ro').context.code,
+      )
       .expect(200);
   });
 

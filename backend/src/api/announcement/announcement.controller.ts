@@ -132,10 +132,12 @@ export class AnnouncementController {
   async update(
     @Param('id', UuidValidationPipe) id: string,
     @Body() updateAnnouncementDto: UpdateAnnouncementDto,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<AnnouncementPresenter> {
     const announcement = await this.updateAnnouncementUseCase.execute(
       id,
       updateAnnouncementDto,
+      admin,
     );
 
     return new AnnouncementPresenter(announcement);

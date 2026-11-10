@@ -74,15 +74,18 @@ export class AccessCodeController {
   @Post()
   async create(
     @Body() { code, startDate, endDate }: CreateAccessCodeDto,
-    @ExtractUser() { organizationId, id }: IAdminUserModel,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<AccessCodePresenter> {
-    const accessCodeModel = await this.createAccessCodeUseCase.execute({
-      code,
-      startDate,
-      endDate,
-      organizationId: organizationId,
-      createdById: id,
-    });
+    const accessCodeModel = await this.createAccessCodeUseCase.execute(
+      {
+        code,
+        startDate,
+        endDate,
+        organizationId: admin.organizationId,
+        createdById: admin.id,
+      },
+      admin,
+    );
     return new AccessCodePresenter(accessCodeModel);
   }
 
@@ -92,17 +95,21 @@ export class AccessCodeController {
   async update(
     @Param('id', UuidValidationPipe) accessCodeId: string,
     @Body() { endDate }: UpdateAccessCodeDto,
+    @ExtractUser() admin: IAdminUserModel,
   ): Promise<AccessCodePresenter> {
-    const accessCodeModel = await this.updateAccessCodeUseCase.execute({
-      id: accessCodeId,
-      endDate,
-    });
+    const accessCodeModel = await this.updateAccessCodeUseCase.execute(
+      { id: accessCodeId, endDate },
+      admin,
+    );
     return new AccessCodePresenter(accessCodeModel);
   }
 
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
-  async delete(@Param('id', UuidValidationPipe) id: string): Promise<string> {
-    return this.deleteAccessCodeUseCase.execute(id);
+  async delete(
+    @Param('id', UuidValidationPipe) id: string,
+    @ExtractUser() admin: IAdminUserModel,
+  ): Promise<string> {
+    return this.deleteAccessCodeUseCase.execute(id, admin);
   }
 }

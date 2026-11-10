@@ -14,6 +14,12 @@ interface VolunteerRequestProps {
   answers: IQuestionAnswer[];
 }
 
+// #593: the app sends the referral as a key ("social", "friend"...); older requests carry free text, shown as is.
+const referralAnswer = (answer: string): string =>
+  i18n.exists(`volunteer:registration.referral.${answer}`)
+    ? `${i18n.t(`volunteer:registration.referral.${answer}`)}`
+    : answer;
+
 const VolunteerRequest = ({ email, phone, createdOn, answers }: VolunteerRequestProps) => {
   return (
     <Card>
@@ -39,7 +45,7 @@ const VolunteerRequest = ({ email, phone, createdOn, answers }: VolunteerRequest
               </div>
               <div className="flex flex-col gap-5">
                 <FormReadOnlyElement
-                  value={`${i18n.t(`volunteer:registration.referral.${answers[0].answer}`)}`}
+                  value={referralAnswer(answers[0].answer)}
                   label={i18n.t('volunteer:registration.found_location')}
                 />
                 <FormReadOnlyElement

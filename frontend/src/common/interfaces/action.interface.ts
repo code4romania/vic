@@ -35,4 +35,6 @@ export interface IEventData {
   contractNumber?: string;
   adminId?: string;
   adminName?: string;
+  accessCodeId?: string;
+  accessCode?: string;
 }

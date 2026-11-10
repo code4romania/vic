@@ -26,6 +26,7 @@ const AREAS: [string, string][] = [
   ['ACTIVITY_LOG', 'hours'],
   ['ACTIVITY_TYPE', 'activity_types'],
   ['ACCESS_REQUEST', 'volunteers'],
+  ['ACCESS_CODE', 'volunteers'],
   ['VOLUNTEER', 'volunteers'],
   ['ORGANIZATION', 'organization'],
   ['ANNOUNCEMENT', 'announcements'],

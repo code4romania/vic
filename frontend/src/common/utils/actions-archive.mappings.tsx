@@ -121,6 +121,22 @@ export const mapEventDataToActionDescription = (
           }}
         />
       );
+    // #593: hours edited by the NGO or the volunteer, pending hours deleted by the volunteer
+    case TrackedEventName.UPDATE_ACTIVITY_LOG:
+    case TrackedEventName.CANCEL_ACTIVITY_LOG:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/${eventData.volunteerId}`}
+                content={eventData.volunteerName}
+              />
+            ),
+          }}
+        />
+      );
     case TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS:
       return (
         <Trans
@@ -165,8 +181,9 @@ export const mapEventDataToActionDescription = (
             ),
           }}
           values={{
-            oldStatus: i18n.t(`volunteer:status.${eventData.oldStatus}`),
-            newStatus: i18n.t(`volunteer:status.${eventData.newStatus}`),
+            // #593: an activity type's own statuses (active / archived)
+            oldStatus: i18n.t(`activity_types:status.${eventData.oldStatus}`).toLowerCase(),
+            newStatus: i18n.t(`activity_types:status.${eventData.newStatus}`).toLowerCase(),
           }}
         />
       );
@@ -206,6 +223,7 @@ export const mapEventDataToActionDescription = (
     // Announcements
     case TrackedEventName.CREATE_ANNOUNCEMENT:
     case TrackedEventName.PUBLISH_ANNOUNCEMENT:
+    case TrackedEventName.UPDATE_ANNOUNCEMENT:
       return (
         <Trans
           i18nKey={`actions_archive:${eventName}.description`}
@@ -219,6 +237,43 @@ export const mapEventDataToActionDescription = (
           }}
         />
       );
+    // #593
+    case TrackedEventName.CHANGE_ANNOUNCEMENT_STATUS:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/announcements/${eventData.announcementId}`}
+                content={eventData.announcementTitle}
+              />
+            ),
+          }}
+          values={{
+            oldStatus: i18n.t(`announcement:status.${eventData.oldStatus}`).toLowerCase(),
+            newStatus: i18n.t(`announcement:status.${eventData.newStatus}`).toLowerCase(),
+          }}
+        />
+      );
+    // Access codes (#593)
+    case TrackedEventName.CREATE_ACCESS_CODE:
+    case TrackedEventName.UPDATE_ACCESS_CODE:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: (
+              <LinkText
+                url={`/volunteers/access-codes/${eventData.accessCodeId}/edit`}
+                content={eventData.accessCode}
+              />
+            ),
+          }}
+        />
+      );
+    case TrackedEventName.DELETE_ACCESS_CODE:
+      return `${i18n.t(`actions_archive:${eventName}.description`, { ...eventData })}`;
     case TrackedEventName.CREATE_CONTRACT:
       return (
         <Trans

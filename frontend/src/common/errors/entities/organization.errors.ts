@@ -12,6 +12,7 @@ export enum ORGANIZATION_ERRORS {
   ORG_011 = 'ORG_011',
   ACCESS_CODE_001 = 'ACCESS_CODE_001',
   ACCESS_CODE_002 = 'ACCESS_CODE_002',
+  ACCESS_CODE_003 = 'ACCESS_CODE_003',
 }
 
 export class OrganizationError extends ErrorClass<ORGANIZATION_ERRORS> {
@@ -29,6 +30,7 @@ export class OrganizationError extends ErrorClass<ORGANIZATION_ERRORS> {
       [ORGANIZATION_ERRORS.ORG_011]: i18n.t('organization:errors.ORG_011'),
       [ORGANIZATION_ERRORS.ACCESS_CODE_001]: i18n.t('access_code:errors.ACCESS_CODE_001'),
       [ORGANIZATION_ERRORS.ACCESS_CODE_002]: i18n.t('access_code:errors.ACCESS_CODE_002'),
+      [ORGANIZATION_ERRORS.ACCESS_CODE_003]: i18n.t('access_code:errors.ACCESS_CODE_003'),
     });
   }
 

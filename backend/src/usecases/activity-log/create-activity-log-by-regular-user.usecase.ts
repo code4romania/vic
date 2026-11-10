@@ -95,6 +95,7 @@ export class CreateActivityLogByRegularUser
         activityLogId: created.id,
         volunteerId: volunteer.id,
         volunteerName: volunteer.user?.name,
+        organizationId: user.activeOrganization.id,
       },
       user,
     );

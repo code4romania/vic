@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
 import { AnnouncementStatus } from 'src/modules/announcement/enums/announcement-status.enum';
 import { AnnouncementExceptionMessages } from 'src/modules/announcement/exceptions/announcement.exceptions';
 import {
@@ -8,6 +10,7 @@ import {
   UpdateAnnouncementOptions,
 } from 'src/modules/announcement/models/announcement.model';
 import { AnnouncementFacade } from 'src/modules/announcement/services/announcement.facade';
+import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { assertDisplayPeriod } from './create-announcement.usecase';
 import { GetOneAnnouncementUseCase } from './get-one-announcement.usecase';
 
@@ -21,6 +24,7 @@ export class UpdateAnnouncementUseCase
     private readonly announcementFacade: AnnouncementFacade,
     private readonly exceptionsService: ExceptionsService,
     private readonly getOneAnnouncementUseCase: GetOneAnnouncementUseCase,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
   public async execute(
@@ -29,6 +33,7 @@ export class UpdateAnnouncementUseCase
       UpdateAnnouncementOptions,
       'status' | 'publishedOn' | 'archivedOn' | 'targetedVolunteers'
     >,
+    admin: IAdminUserModel,
   ): Promise<IAnnouncementModel> {
     const announcement = await this.getOneAnnouncementUseCase.execute({ id });
 
@@ -46,6 +51,18 @@ export class UpdateAnnouncementUseCase
       this.exceptionsService,
     );
 
-    return this.announcementFacade.update(id, updateData);
+    const updated = await this.announcementFacade.update(id, updateData);
+
+    // #593: edits are in the actions history
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.UPDATE_ANNOUNCEMENT,
+      {
+        announcementId: updated.id,
+        announcementTitle: updated.name,
+      },
+      admin,
+    );
+
+    return updated;
   }
 }

@@ -1,3 +1,4 @@
+import { sensitiveCodeHeader } from '../security/security.api';
 import {
   IVolunteerEvents,
   IVolunteerStats,
@@ -48,12 +49,15 @@ export const getVolunteers = async (
   }).then((res) => res.data);
 };
 
+// #593: the export needs the code emailed for SensitiveAction.EXPORT_VOLUNTEERS
 export const getVolunteersForDownload = async (
   filters: IVolunteersFilters,
+  code: string,
 ): Promise<{ data: unknown; headers: AxiosResponseHeaders }> => {
   return API.get('volunteer/download', {
     params: filterParams(filters),
     responseType: 'arraybuffer',
+    headers: sensitiveCodeHeader(code),
   }).then((res) => {
     return { data: res.data, headers: res.headers as AxiosResponseHeaders };
   });
