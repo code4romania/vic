@@ -28,7 +28,12 @@ export const VTextField = forwardRef<any, VTextFieldProps>(
         <Pressable
           accessible={false}
           onPress={() => inputRef.current?.focus()}
-          style={[styles.field, focused ? styles.focused : null, error ? styles.invalid : null]}
+          style={[
+            styles.field,
+            focused ? styles.focused : null,
+            error ? styles.invalid : null,
+            props.editable === false ? styles.fieldDisabled : null,
+          ]}
         >
           <VText variant="cap">{label}</VText>
           <View style={styles.row}>
@@ -83,6 +88,8 @@ const styles = StyleSheet.create({
   },
   focused: { borderWidth: 2, borderColor: colors.ink, paddingHorizontal: 13, paddingVertical: 7 },
   invalid: { borderColor: colors.danger },
+  // read-only fields (e.g. the email of the account) look different from the editable ones
+  fieldDisabled: { backgroundColor: colors.soft, borderColor: colors.line },
   row: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   input: {
     flex: 1,
