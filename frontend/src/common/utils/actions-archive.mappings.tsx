@@ -273,6 +273,16 @@ export const mapEventDataToActionDescription = (
           }}
         />
       );
+    case TrackedEventName.DISABLE_ADMIN:
+    case TrackedEventName.ENABLE_ADMIN:
+      return (
+        <Trans
+          i18nKey={`actions_archive:${eventName}.description`}
+          components={{
+            inlineLink: <LinkText url="/organization/team" content={eventData.adminName} />,
+          }}
+        />
+      );
     case TrackedEventName.DELETE_ANNOUNCEMENT:
       return `${i18n.t(`actions_archive:${eventName}.description`, {
         ...eventData,

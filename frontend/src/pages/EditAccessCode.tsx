@@ -73,14 +73,22 @@ const EditAccessCode = () => {
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={onNavigateBack}>
-        {i18n.t('general:edit', { item: i18n.t('access_code:name').toLocaleLowerCase() })}
+      <PageHeader
+        onBackButtonPress={onNavigateBack}
+        subtitle={i18n.t('access_code:page.edit_subtitle')}
+      >
+        {i18n.t('access_code:page.edit_title')}
       </PageHeader>
       {isLoading && <LoadingContent />}
       {!isLoading && (
         <Card>
           <CardHeader>
-            <h4 className="text-sm sm:text-xl">{i18n.t('access_code:name')}</h4>
+            <div>
+              <h2>{i18n.t('access_code:page.form_title')}</h2>
+              <p className="text-sm text-cool-gray-500">
+                {i18n.t('access_code:page.form_subtitle')}
+              </p>
+            </div>
             <Button
               label={i18n.t('general:save_changes')}
               className="btn-primary"

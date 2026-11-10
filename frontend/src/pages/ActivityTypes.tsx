@@ -16,7 +16,11 @@ import OrganizationStructureSelect from '../containers/OrganizationStructureSele
 import { DivisionType } from '../common/enums/division-type.enum';
 import { SelectItem } from '../components/Select';
 import DataTableFilters from '../components/DataTableFilters';
-import PageHeaderAdd from '../components/PageHeaderAdd';
+import PageHeader from '../components/PageHeader';
+import Button from '../components/Button';
+import StatisticsCard from '../components/StatisticsCard';
+import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
+import { ArchiveBoxIcon, CheckCircleIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { ActivityTypesProps } from '../containers/query/ActivityTypesWithQueryParams';
 
 const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
@@ -84,18 +88,50 @@ const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
     });
   };
 
+  const countOf = (status: ActivityTypeStatus) =>
+    activityTypes ? `${activityTypes.filter((type) => type.status === status).length}` : '-';
+
+  const counters = [
+    { status: ActivityTypeStatus.ACTIVE, Icon: CheckCircleIcon, color: 'text-figure-green' },
+    { status: ActivityTypeStatus.ARCHIVED, Icon: ArchiveBoxIcon, color: 'text-cool-gray-500' },
+  ];
+
   return (
     <PageLayout>
-      <PageHeaderAdd
-        label={`${i18n.t('general:add', { item: i18n.t('general:category').toLowerCase() })}`}
-        onAddButtonPress={onAddActivityType}
+      <PageHeader
+        subtitle={i18n.t('activity_types:page.subtitle')}
+        actions={
+          <Button
+            className="btn-primary"
+            label={i18n.t('activity_types:page.add')}
+            icon={<PlusIcon className="h-5 w-5" aria-hidden="true" />}
+            onClick={onAddActivityType}
+          />
+        }
       >
         {i18n.t('side_menu:options.activity_types')}
-      </PageHeaderAdd>
+      </PageHeader>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:gap-6">
+        {counters.map(({ status, Icon, color }) => (
+          <StatisticsCard
+            key={status}
+            label={i18n.t(`activity_types:page.counters.${status}.label`)}
+            value={countOf(status)}
+            icon={<Icon className={`w-5 h-5 ${color}`} aria-hidden="true" />}
+            info={
+              <span className="text-cool-gray-500 font-roboto">
+                {i18n.t(`activity_types:page.counters.${status}.info`)}
+              </span>
+            }
+          />
+        ))}
+      </div>
       <DataTableFilters
         onSearch={onSearch}
         searchValue={query?.search}
         onResetFilters={onResetFilters}
+        searchPlaceholder={`${i18n.t('activity_types:page.search')}`}
+        results={i18n.t('activity_types:page.found', { count: activityTypes?.length ?? 0 })}
       >
         <OrganizationStructureSelect
           label={`${i18n.t('division:entity.branch')}`}
@@ -126,10 +162,15 @@ const ActivityTypes = ({ query, setQuery }: ActivityTypesProps) => {
       {activityTypes && !isFetchingActivityTypes && (
         <Card>
           <CardHeader>
-            <h2>{i18n.t('side_menu:options.activity_types')}</h2>
+            <div>
+              <h2>{i18n.t('side_menu:options.activity_types')}</h2>
+              <p className="text-sm text-cool-gray-500">
+                {i18n.t('activity_types:page.list_subtitle')}
+              </p>
+            </div>
           </CardHeader>
           <CardBody>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:py-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
               {activityTypes.map((activityType: IActivityType) => (
                 <ActivityType
                   key={activityType.id}

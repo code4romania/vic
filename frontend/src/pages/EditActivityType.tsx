@@ -24,6 +24,7 @@ import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
 import { ArchiveBoxIcon, ArchiveBoxXMarkIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import { mapDivisionListItemToSelectItem } from '../common/utils/utils';
 import { ActivityTypeFormSchema } from './AddActivityType';
+import StatusBadge from '../components/StatusBadge';
 
 const EditActivityType = () => {
   // get query params
@@ -133,8 +134,11 @@ const EditActivityType = () => {
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={onBackButtonPress}>
-        {i18n.t('general:edit', { item: '' })}
+      <PageHeader
+        onBackButtonPress={onBackButtonPress}
+        subtitle={activityType?.name ?? i18n.t('activity_types:page.edit_subtitle')}
+      >
+        {i18n.t('activity_types:page.edit_title')}
       </PageHeader>
       {(isFetchingActivityType ||
         isUpdateingActivityType ||
@@ -147,7 +151,16 @@ const EditActivityType = () => {
         !isArchivingActivityType && (
           <Card>
             <CardHeader>
-              <h2>{`${i18n.t('general:category')} ${i18n.t('general:activity').toLowerCase()}`}</h2>
+              <div className="flex flex-col gap-1">
+                <h2>{i18n.t('activity_types:page.form_title')}</h2>
+                <span className="self-start">
+                  <StatusBadge
+                    tone={activityType.status === ActivityTypeStatus.ARCHIVED ? 'gray' : 'green'}
+                  >
+                    {i18n.t(`activity_types:status.${activityType.status}`)}
+                  </StatusBadge>
+                </span>
+              </div>
               <div className="flex flex-row gap-2 sm:gap-4">
                 {activityType.status === ActivityTypeStatus.ARCHIVED && (
                   <Button

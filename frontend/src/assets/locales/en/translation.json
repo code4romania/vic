@@ -601,6 +601,25 @@
     "errors": {
       "ACCESS_CODE_001": "There is no access code with this name",
       "ACCESS_CODE_002": "There is already an access code with this name"
+    },
+    "status": {
+      "active": "Active",
+      "scheduled": "Scheduled",
+      "expired": "Expired"
+    },
+    "page": {
+      "subtitle": "With an access code, a volunteer joins the organization without waiting for your approval",
+      "list_title_one": "{{count}} access code",
+      "list_title_other": "{{count}} access codes",
+      "list_subtitle": "Give the code to volunteers; they enter it in the VIC app when they ask to join",
+      "uses_one": "{{count}} use",
+      "uses_other": "{{count}} uses",
+      "add_title": "Create access code",
+      "add_subtitle": "Choose the code and the period it can be used",
+      "edit_title": "Edit access code",
+      "edit_subtitle": "Only the end date can be changed",
+      "form_subtitle": "The code and its validity period",
+      "form_title": "Access code details"
     }
   },
   "reject_modal": {
@@ -640,6 +659,35 @@
       "ACTIVITY_TYPE_002": "There is already a category with this data for your organization",
       "ACTIVITY_TYPE_003": "Category is not in the right status",
       "ACTIVITY_TYPE_004": "Could not create the category"
+    },
+    "status": {
+      "active": "Active",
+      "archived": "Archived"
+    },
+    "all_structure": "Whole organization",
+    "page": {
+      "subtitle": "The kinds of activities volunteers pick when they log their hours",
+      "add": "Add category",
+      "search": "Search by name",
+      "found_one": "{{count}} category found",
+      "found_other": "{{count}} categories found",
+      "list_subtitle": "Open a category to change or archive it",
+      "counters": {
+        "active": {
+          "label": "Active categories",
+          "info": "Can be picked when logging hours"
+        },
+        "archived": {
+          "label": "Archived categories",
+          "info": "Can no longer be picked; history stays"
+        }
+      },
+      "add_title": "Add activity category",
+      "add_subtitle": "A new category shows up when hours are logged",
+      "edit_title": "Edit category",
+      "edit_subtitle": "Activity category",
+      "form_title": "Activity category",
+      "form_subtitle": "The name, the icon and the part of the organization it belongs to"
     }
   },
   "events": {
@@ -1122,7 +1170,10 @@
     "filters": {
       "execution": "Task period",
       "registration": "Period Registration",
-      "approved_rejected": "Approved/Rejected by"
+      "approved_rejected": "Approved/Rejected by",
+      "search": "Search by volunteer, activity or event",
+      "found_one": "{{count}} entry found",
+      "found_other": "{{count}} entries found"
     },
     "modal": {
       "title": "Arguments for rejection",
@@ -1177,14 +1228,39 @@
       "ACTIVITY_LOG_003": "No changes can be made to requests in Approved or Rejected status",
       "ACTIVITY_LOG_005": "Hours can only be added to an active volunteer"
     },
-    "download_file_name": "Volunteering hours history.xlsx"
+    "download_file_name": "Volunteering hours history.xlsx",
+    "counters": {
+      "hours_one": "{{count}} hour",
+      "hours_other": "{{count}} hours",
+      "pending": {
+        "label": "Pending hours",
+        "info": "Waiting for your approval"
+      },
+      "approved": {
+        "label": "Approved hours",
+        "info": "Count in the volunteers' history"
+      },
+      "rejected": {
+        "label": "Rejected hours",
+        "info": "The volunteer got the reason"
+      }
+    },
+    "page": {
+      "add_title": "Add volunteering hours",
+      "add_subtitle": "Hours you add are approved right away",
+      "form_title": "Activity details",
+      "form_subtitle": "The volunteer, the activity, the date and the number of hours"
+    }
   },
   "actions_archive": {
     "card_title": "Action history",
     "area": "Type Action",
     "author": "Author",
     "filters": {
-      "execution": "Action period"
+      "execution": "Action period",
+      "search": "Search by volunteer, event, announcement or category",
+      "found_one": "{{count}} action found",
+      "found_other": "{{count}} actions found"
     },
     "UPDATE_ORGANIZATION_PROFILE": {
       "label": "Update Organization Profile",
@@ -1292,6 +1368,26 @@
     "REJECT_CONTRACT": {
       "label": "Reject Contract",
       "description": "Contract number <inlineContractLink>{{contractNumber}}</inlineContractLink> for <inlineLink>{{volunteerName}}</inlineLink> has been rejected"
+    },
+    "subtitle": "Who changed what in the organization, and when",
+    "card_subtitle": "Every admin action, oldest first",
+    "areas": {
+      "hours": "Hours",
+      "activity_types": "Categories",
+      "volunteers": "Volunteers",
+      "organization": "Organization",
+      "announcements": "Announcements",
+      "events": "Events",
+      "documents": "Documents",
+      "team": "Team"
+    },
+    "DISABLE_ADMIN": {
+      "label": "Disable Admin",
+      "description": "Admin <inlineLink>{{adminName}}</inlineLink> was disabled."
+    },
+    "ENABLE_ADMIN": {
+      "label": "Enable Admin",
+      "description": "Admin <inlineLink>{{adminName}}</inlineLink> was enabled."
     }
   },
   "dashboard": {
@@ -1900,7 +1996,7 @@
   },
   "team": {
     "title": "Team",
-    "description": "The administrators of your organization.",
+    "description": "Your organization's admins: who has access, who has a pending invite and who is disabled.",
     "add_admin": "Add admin",
     "you": "you",
     "transition_link": "VIC (new login)",
@@ -1961,6 +2057,32 @@
       "load": "The team could not be loaded",
       "too_many": "Too many invites. Try again later.",
       "generic": "Something went wrong. Please try again."
+    },
+    "status_short": {
+      "active": "Active",
+      "invite_sent": "Invite sent",
+      "invite_expired": "Invite expired",
+      "disabled": "Disabled",
+      "no_login": "No login yet"
+    },
+    "counters": {
+      "active": {
+        "label": "Active admins",
+        "info": "Can log in"
+      },
+      "pending": {
+        "label": "Pending invites",
+        "info": "Have not logged in yet"
+      },
+      "disabled": {
+        "label": "Disabled",
+        "info": "No access until re-enabled"
+      }
+    },
+    "list": {
+      "title_one": "{{count}} admin",
+      "title_other": "{{count}} admins",
+      "subtitle": "Resend the invite or disable an account from the row's menu."
     }
   },
   "validation": {
@@ -2057,15 +2179,18 @@
   "settings": {
     "title": "Settings",
     "account": {
-      "title": "My account",
-      "description": "Your administrator account. Only you and your team see it.",
+      "title": "Account information",
+      "description": "Your administrator account and your organization",
       "login": "You log in with a link sent by email; the account has no password.",
-      "team": "Admins and team"
+      "organization": "Organization",
+      "tax_id": "Tax ID (CUI/CIF)",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "edit_hint": "Change the organization's name, tax ID and public profile on the Organization page."
     },
     "organization": {
-      "title": "Public organization profile",
-      "description": "What volunteers see about the organization in the VIC app.",
-      "edit": "Edit profile"
+      "edit": "Edit organization"
     },
     "security": {
       "title": "Data and security",
@@ -2102,14 +2227,23 @@
       "backup": {
         "title": "Full backup",
         "description": "All the organization's data in one Excel file: volunteers, hours, events, registrations, announcements, documents, structure and history.",
-        "action": "Download backup",
+        "action": "Backup",
         "loading": "Preparing...",
         "error": "The backup couldn't be downloaded."
       },
       "history": {
         "title": "Change history",
-        "description": "Who changed what in the organization, and when.",
-        "action": "See history"
+        "description": "Who changed what in the organization, and when",
+        "action": "View history"
+      },
+      "data_title": "Data management",
+      "data_description": "Export, backup and change history",
+      "account_title": "Account security",
+      "export": {
+        "title": "Export volunteer data",
+        "description": "Download the list of all volunteers as an Excel file",
+        "action": "Export",
+        "error": "The volunteers list could not be downloaded."
       }
     },
     "danger": {
@@ -2121,14 +2255,57 @@
       "modal_description": "This deletes {{name}}, its volunteers in the organization, hours, events, announcements, documents, structure, history and all administrators. Volunteers keep their VIC account. We recommend downloading the full backup first. The VIC team will be notified.",
       "type_name": "Type the organization's name ({{name}})*",
       "confirm": "Delete for good",
-      "error": "The account couldn't be deleted. Try again."
+      "error": "The account couldn't be deleted. Try again.",
+      "description": "Irreversible actions that permanently delete data"
     },
     "about": {
-      "title": "About",
+      "title": "About and support",
       "terms": "Terms and conditions",
       "privacy": "Privacy policy",
       "help": "Help center",
-      "version": "Version {{version}}"
+      "version": "Version {{version}}",
+      "description": "Useful resources and information about the platform",
+      "terms_description": "Read the platform's terms of use",
+      "privacy_description": "Find out how your data is protected",
+      "help_description": "Get help and answers to your questions"
+    },
+    "subtitle": "Configure your administrator account and your organization's settings",
+    "tabs": {
+      "account": "Account",
+      "notifications": "Notifications",
+      "security": "Data and security",
+      "about": "About and support"
+    },
+    "team": {
+      "title": "Users",
+      "description": "The people who have access to this platform",
+      "invite": "Invite a new admin",
+      "manage": "Manage team",
+      "note": "Only admins have access to the platform. Volunteers use the VIC mobile app."
+    },
+    "notifications": {
+      "title": "Notification settings",
+      "description": "Which emails VIC sends you and where",
+      "email": "Notification email",
+      "email_help": "Every email goes to the address you log in with.",
+      "list_title": "Email notifications",
+      "always_on": "Always on",
+      "items": {
+        "login": {
+          "title": "Login link",
+          "description": "You get a link every time you log in"
+        },
+        "codes": {
+          "title": "Confirmation codes",
+          "description": "To change your email, add an admin and delete the organization account"
+        },
+        "invites": {
+          "title": "Team invites",
+          "description": "When a colleague adds you as an organization admin"
+        }
+      },
+      "approvals": "Access requests, hours and event registrations waiting for you are in",
+      "approvals_link": "Approvals"
     }
   },
   "super_admin": {

@@ -9,11 +9,7 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from './Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import Select, { SelectItem } from './Select';
-import {
-  ActivityLogStatusMarkerColorMapper,
-  downloadExcel,
-  formatDate,
-} from '../common/utils/utils';
+import { downloadExcel, formatDate } from '../common/utils/utils';
 import { useErrorToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import {
@@ -22,7 +18,8 @@ import {
 } from '../services/activity-log/activity-log.service';
 import { IActivityLogListItem } from '../common/interfaces/activity-log.interface';
 import CellLayout from '../layouts/CellLayout';
-import StatusWithMarker from './StatusWithMarker';
+import StatusBadge, { BadgeTone } from './StatusBadge';
+import InitialsAvatar from './InitialsAvatar';
 import { useNavigate } from 'react-router';
 import ActivityLogSidePanel from './ActivityLogSidePanel';
 import DataTableFilters from './DataTableFilters';
@@ -43,10 +40,26 @@ const StatusOptions: SelectItem<ActivityLogStatus>[] = [
   { key: ActivityLogStatus.REJECTED, value: i18n.t('activity_log:display_status.rejected') },
 ];
 
+const STATUS_TONE: Record<ActivityLogStatus, BadgeTone> = {
+  [ActivityLogStatus.APPROVED]: 'green',
+  [ActivityLogStatus.REJECTED]: 'red',
+  [ActivityLogStatus.PENDING]: 'amber',
+};
+
+const VolunteerCell = ({ volunteer }: { volunteer: { id: string; name: string } }) => (
+  <div className="flex items-center gap-3 min-w-0">
+    <InitialsAvatar name={volunteer.name} size="sm" />
+    <LinkCell href={`/volunteers/${volunteer.id}`}>{volunteer.name}</LinkCell>
+  </div>
+);
+
 const ActivityTypeCell = ({ item }: { item: IActivityLogListItem }) => (
   <div className="flex items-center gap-3 shrink-0 w-full">
     {item.activityType ? (
-      <ImageOption item={item.activityType?.icon} component={ICON_MAPPER[item.activityType.icon]} />
+      <ImageOption
+        item={item.activityType?.icon}
+        component={ICON_MAPPER[item.activityType.icon] ?? ICON_MAPPER['package']}
+      />
     ) : (
       <ImageOption item="package" component={ICON_MAPPER['package']} />
     )}
@@ -127,9 +140,9 @@ const PastVolunteerActivityLogTableHeader = [
     minWidth: '8rem',
     cell: (row: IActivityLogListItem) => (
       <CellLayout>
-        <StatusWithMarker markerColor={ActivityLogStatusMarkerColorMapper[row.status]}>
+        <StatusBadge tone={STATUS_TONE[row.status]}>
           {i18n.t(`activity_log:display_status.${row.status}`)}
-        </StatusWithMarker>
+        </StatusBadge>
       </CellLayout>
     ),
   },
@@ -164,12 +177,10 @@ const PendingActivityLogTableHeader = [
     id: 'user.name',
     name: i18n.t('volunteer:name', { status: '' }),
     sortable: true,
-    grow: 1,
-    minWidth: '10rem',
+    grow: 2,
+    minWidth: '13rem',
     cell: (row: IActivityLogListItem) =>
-      row.volunteer && (
-        <LinkCell href={`/volunteers/${row.volunteer.id}`}>{row.volunteer.name}</LinkCell>
-      ),
+      row.volunteer && <VolunteerCell volunteer={row.volunteer} />,
   },
   {
     id: 'createdOn',
@@ -210,12 +221,10 @@ const PastActivityLogTableHeader = [
     id: 'user.name',
     name: i18n.t('volunteer:name', { status: '' }),
     sortable: true,
-    grow: 1,
-    minWidth: '10rem',
+    grow: 2,
+    minWidth: '13rem',
     cell: (row: IActivityLogListItem) =>
-      row.volunteer && (
-        <LinkCell href={`/volunteers/${row.volunteer.id}`}>{row.volunteer.name}</LinkCell>
-      ),
+      row.volunteer && <VolunteerCell volunteer={row.volunteer} />,
   },
   {
     id: 'status',
@@ -225,9 +234,9 @@ const PastActivityLogTableHeader = [
     minWidth: '8rem',
     cell: (row: IActivityLogListItem) => (
       <CellLayout>
-        <StatusWithMarker markerColor={ActivityLogStatusMarkerColorMapper[row.status]}>
+        <StatusBadge tone={STATUS_TONE[row.status]}>
           {i18n.t(`activity_log:display_status.${row.status}`)}
-        </StatusWithMarker>
+        </StatusBadge>
       </CellLayout>
     ),
   },
@@ -444,6 +453,10 @@ const ActivityLogTable = ({
         onSearch={onSearch}
         searchValue={query?.search}
         onResetFilters={onResetFilters}
+        searchPlaceholder={`${i18n.t('activity_log:filters.search')}`}
+        results={i18n.t('activity_log:filters.found', {
+          count: activityLogs?.meta?.totalItems ?? 0,
+        })}
       >
         <DateRangePicker
           label={i18n.t('activity_log:filters.execution')}

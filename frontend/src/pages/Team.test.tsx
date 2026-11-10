@@ -56,6 +56,16 @@ beforeEach(() => {
 });
 
 describe('Team', () => {
+  it('counts active admins, pending invites and disabled admins', async () => {
+    renderPage(<Team />);
+    await screen.findByText('Bogdan Sent');
+    const counter = (key: string) =>
+      screen.getByText(t(`team:counters.${key}.label`)).parentElement as HTMLElement;
+    expect(within(counter('active')).getByText('2')).toBeInTheDocument();
+    expect(within(counter('pending')).getByText('2')).toBeInTheDocument();
+    expect(within(counter('disabled')).getByText('1')).toBeInTheDocument();
+  });
+
   it('shows each status, with the days left on a sent invite', async () => {
     renderPage(<Team />);
     expect(await screen.findByText('Bogdan Sent')).toBeInTheDocument();
