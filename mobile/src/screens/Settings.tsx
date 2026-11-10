@@ -17,6 +17,7 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import { useActivateOrganization } from '../services/organization/organization.service';
 import Toast from 'react-native-toast-message';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { romanianNeedsDe } from '../common/utils/plural';
 import { usePersonalStatistics } from '../services/statistics/statistics.service';
 import {
   IOrganizationVolunteer,
@@ -109,8 +110,7 @@ const Settings = ({ navigation }: any) => {
       return `${t('stats.year')}`;
     }
     // Romanian: "2 ani", but "20 de ani"
-    const rest = count % 100;
-    return `${t(rest === 0 || rest >= 20 ? 'stats.years_de' : 'stats.years', { count })}`;
+    return `${t(romanianNeedsDe(count) ? 'stats.years_de' : 'stats.years', { count })}`;
   };
 
   const name = [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ');

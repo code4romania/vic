@@ -10,8 +10,13 @@ import {
   useEventQuery,
   useSetRsvpEventMutation,
 } from '../services/event/event.service';
-import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
-import { InternalErrors } from '../common/errors/internal-errors.class';
+import { useActivateOrganization } from '../services/organization/organization.service';
+import {
+  findEventOrganization,
+  isProfileIncompleteError,
+  rsvpErrorMessage,
+} from '../common/utils/event-rsvp-error';
+import { romanianNeedsDe } from '../common/utils/plural';
 import { EventVolunteerStatus } from '../common/enums/event-volunteer-status.enum';
 import { EventRegistrationStatus } from '../common/enums/event-registration-status.enum';
 import { mapEventType } from '../common/utils/helpers';
@@ -22,7 +27,18 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import useStore from '../store/store';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import EventSkeleton from '../components/skeleton/event-skeleton';
-import { Avatar, Badge, Enter, PressableScale, Sheet, VButton, VText } from '../components/ui';
+import MissingEntity from './MissingEntity';
+import { TAB_ROUTES } from '../routes/tab-routes';
+import {
+  Avatar,
+  Badge,
+  Enter,
+  PressableScale,
+  Sheet,
+  StatusBarScrim,
+  VButton,
+  VText,
+} from '../components/ui';
 import { EventIcon } from '../components/events/EventIcons';
 
 const Fact = ({
@@ -74,27 +90,24 @@ const Event = ({ navigation, route }: any) => {
     if (places === 1) {
       return t('capacity_place');
     }
-    const rest = places % 100;
-    return t(rest === 0 || rest >= 20 ? 'capacity_places_de' : 'capacity_places', { places });
+    return t(romanianNeedsDe(places) ? 'capacity_places_de' : 'capacity_places', { places });
   };
   const insets = useSafeAreaInsets();
   useFocusedStatusBarStyle('dark');
   const { userProfile } = useUserProfile();
   const { eventId } = route.params;
-  const { event } = useEvent();
-  const { setActiveOrganization, declineEvent, canceRsvp, joinEvent } = useStore();
-  const { mutate: switchOrganization } = useSwitchOrganizationMutation();
+  const { event: storedEvent } = useEvent();
+  // the store keeps the last event opened: never show another event while this one loads
+  const event = storedEvent?.id === eventId ? storedEvent : undefined;
+  const { declineEvent, canceRsvp, joinEvent } = useStore();
+  const { activate } = useActivateOrganization();
   const confirmRef = useRef<BottomSheetModal>(null);
   const profileRef = useRef<BottomSheetModal>(null);
   const [justJoined, setJustJoined] = useState(false);
 
   // the event's organization among the user's organizations
   const currentEventOrganization = useMemo(
-    () =>
-      userProfile?.myOrganizations.find(
-        //TODO: use the organization 'id' instead of 'name' when the backend returns it
-        (organization) => organization.name === event?.organizationName,
-      ),
+    () => findEventOrganization(userProfile?.myOrganizations, event),
     [userProfile, event],
   );
 
@@ -106,18 +119,8 @@ const Event = ({ navigation, route }: any) => {
   const { mutate: setRsvpEvent, isLoading: isResponding } = useSetRsvpEventMutation();
   const { mutate: cancelRsvp, isLoading: isCancelingRsvp } = useCancelRsvpMutation();
 
-  useEffect(() => {
-    // if the event request failed go back and show toast
-    if (getEventError) {
-      navigation.goBack();
-      Toast.show({
-        type: 'error',
-        text1: `${InternalErrors.EVENT_ERRORS.getError(
-          (getEventError as any).response?.data.code_error,
-        )}`,
-      });
-    }
-  }, [getEventError, navigation]);
+  // deleted (or no longer visible): this can be the first screen, opened from a push
+  const eventGone = [403, 404].includes((getEventError as any)?.response?.status);
 
   // after "Particip": the confirmation sheet once the registration status is known (#501)
   useEffect(() => {
@@ -128,10 +131,7 @@ const Event = ({ navigation, route }: any) => {
   }, [justJoined, isLoadingEvent, event?.volunteerStatus]);
 
   const showRsvpError = (error: any) =>
-    Toast.show({
-      type: 'error',
-      text1: `${InternalErrors.EVENT_ERRORS.getError(error?.response?.data?.code_error)}`,
-    });
+    Toast.show({ type: 'error', text1: rsvpErrorMessage(error) });
 
   // VIC 2.0 (#492): every event uses a simple registration (no mention)
   const onRsvp = (going: boolean) => {
@@ -150,7 +150,7 @@ const Event = ({ navigation, route }: any) => {
         },
         onError: (error: any) => {
           // no volunteer profile for this organization yet: offer to complete it
-          if (userProfile && event && !currentEventOrganization?.volunteerProfileId) {
+          if (isProfileIncompleteError(error) && currentEventOrganization) {
             profileRef.current?.present();
             return;
           }
@@ -164,15 +164,19 @@ const Event = ({ navigation, route }: any) => {
     cancelRsvp({ eventId }, { onSuccess: canceRsvp, onError: showRsvpError });
   };
 
-  const onCompleteProfile = () => {
+  const onCompleteProfile = async () => {
     profileRef.current?.dismiss();
-    if (userProfile && currentEventOrganization) {
-      if (userProfile.activeOrganization?.id !== currentEventOrganization.id) {
-        setActiveOrganization(currentEventOrganization);
-        switchOrganization({ organizationId: currentEventOrganization.id });
-      }
-      navigation.navigate('volunteer-profile');
+    if (!currentEventOrganization) {
+      return;
     }
+    try {
+      // the volunteer profile belongs to the active organization: switch first, then open it
+      await activate(currentEventOrganization);
+    } catch (error) {
+      showRsvpError(error);
+      return;
+    }
+    navigation.navigate('volunteer-profile');
   };
 
   const openInMaps = () => {
@@ -194,7 +198,7 @@ const Event = ({ navigation, route }: any) => {
     if (n === 1) {
       return `${t('attending_one')}`;
     }
-    return `${t(n < 20 ? 'attending' : 'attending_of', { numberOfVolunteer: n })}`;
+    return `${t(romanianNeedsDe(n) ? 'attending_of' : 'attending', { numberOfVolunteer: n })}`;
   };
 
   const joined = event?.volunteerStatus === EventVolunteerStatus.JOINED;
@@ -208,6 +212,27 @@ const Event = ({ navigation, route }: any) => {
         ? 'no'
         : 'wait';
   const busy = isLoadingEvent || isResponding || isCancelingRsvp;
+
+  if (!event && !isLoadingEvent && getEventError) {
+    return eventGone ? (
+      <MissingEntity
+        heading={`${t('not_found.title')}`}
+        paragraph={`${t('not_found.description')}`}
+        actionBtnLabel={`${t('not_found.action')}`}
+        onActionBtnPress={() => navigation.navigate(TAB_ROUTES.EVENTS)}
+        onBackButtonPress={navigation.canGoBack() ? navigation.goBack : undefined}
+      />
+    ) : (
+      <MissingEntity
+        kind="error"
+        heading={`${t('general:error.load_entries')}`}
+        paragraph=""
+        actionBtnLabel={`${t('events:retry')}`}
+        onActionBtnPress={() => refetchEvent()}
+        onBackButtonPress={navigation.canGoBack() ? navigation.goBack : undefined}
+      />
+    );
+  }
 
   return (
     <View style={styles.screen}>
@@ -226,7 +251,10 @@ const Event = ({ navigation, route }: any) => {
                 {event.name}
               </VText>
               <VText variant="sub" style={styles.subtitle}>
-                {[mapEventType(event), attendees()].filter(Boolean).join(' · ')}
+                {/* a non-public event lists its departments under "Pentru" below */}
+                {[event.isPublic ? mapEventType(event) : '', attendees()]
+                  .filter(Boolean)
+                  .join(' · ')}
               </VText>
             </Enter>
 
@@ -303,6 +331,8 @@ const Event = ({ navigation, route }: any) => {
           </>
         )}
       </ScrollView>
+      {/* the content scrolls under the clock otherwise */}
+      <StatusBarScrim color={colors.white} />
 
       <PressableScale
         onPress={navigation.goBack}
@@ -382,7 +412,11 @@ const Event = ({ navigation, route }: any) => {
         subtitle={`${t('error_modal.description')}`}
         testID="event-profile-missing"
       >
-        <VButton label={`${t('error_modal.action_btn_label')}`} onPress={onCompleteProfile} />
+        <VButton
+          label={`${t('error_modal.action_btn_label')}`}
+          onPress={onCompleteProfile}
+          testID="event-complete-profile"
+        />
         <VButton
           variant="soft"
           label={`${t('general:back')}`}
