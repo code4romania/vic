@@ -20,7 +20,8 @@ export class EmailConfigService {
         },
       },
       defaults: {
-        from: '"No Reply" <no-reply@localhost>',
+        // Required in staging and production (environment-config.ts); a local default otherwise.
+        from: this.configService.get('MAIL_FROM'),
       },
       // Opens each email in the browser. Not in the iOS Simulator: on a Mac with Xcode but no booted
       // simulator, preview-email polls `simctl` forever and the mail queue stops. preview-email accepts
