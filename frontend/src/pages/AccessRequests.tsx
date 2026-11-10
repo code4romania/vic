@@ -32,6 +32,7 @@ const AccessRequests = ({
 
   const content = (
     <Tabs<RequestStatus>
+      variant="pills"
       tabs={AccessRequestsTabs}
       onClick={onTabClick}
       defaultTab={AccessRequestsTabs.find((tab) => tab.key === query?.requestStatus)}

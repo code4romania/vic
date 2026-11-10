@@ -1837,7 +1837,13 @@
       "pending": "Pending",
       "approved": "Approved",
       "rejected": "Rejected"
-    }
+    },
+    "counters": {
+      "volunteers": "new applications",
+      "hours": "hour requests to approve",
+      "events": "event registrations to approve"
+    },
+    "review": "Review"
   },
   "settings": {
     "title": "Settings",

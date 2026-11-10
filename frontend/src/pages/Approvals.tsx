@@ -7,7 +7,14 @@ import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolu
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import PageHeader from '../components/PageHeader';
 import { SelectItem } from '../components/Select';
-import Tabs from '../components/Tabs';
+import Tabs, { TabItem } from '../components/Tabs';
+import StatisticsCard from '../components/StatisticsCard';
+import {
+  CalendarIcon,
+  ClockIcon,
+  ExclamationCircleIcon,
+  UserPlusIcon,
+} from '@heroicons/react/24/outline';
 import AccessRequestsWithQueryParams from '../containers/query/AccessRequestsWithQueryParams';
 import ActivityLogTableWithQueryParams from '../containers/query/ActivityLogTableWithQueryParams';
 import PageLayout from '../layouts/PageLayout';
@@ -27,6 +34,12 @@ const COUNTER: Record<ApprovalType, keyof IPendingApprovals> = {
   [ApprovalType.EVENTS]: 'eventRegistrations',
 };
 
+const COUNTER_CARDS = [
+  { type: ApprovalType.VOLUNTEERS, Icon: UserPlusIcon },
+  { type: ApprovalType.HOURS, Icon: ClockIcon },
+  { type: ApprovalType.EVENTS, Icon: CalendarIcon },
+];
+
 type HoursTab = 'pending' | ActivityLogStatus.APPROVED | ActivityLogStatus.REJECTED;
 
 const HOURS_TABS: SelectItem<HoursTab>[] = [
@@ -42,6 +55,7 @@ const HoursApprovals = () => {
 
   return (
     <Tabs<HoursTab>
+      variant="pills"
       tabs={HOURS_TABS}
       onClick={(hours) => setQuery({ hours }, 'push')}
       defaultTab={HOURS_TABS.find((item) => item.key === tab)}
@@ -79,19 +93,46 @@ const Approvals = () => {
     return <Navigate to={`/approvals/${ApprovalType.VOLUNTEERS}`} replace />;
   }
 
-  const tabs: SelectItem<ApprovalType>[] = Object.values(ApprovalType).map((key) => ({
+  const tabs: TabItem<ApprovalType>[] = Object.values(ApprovalType).map((key) => ({
     key,
-    value: `${i18n.t(`approvals:tabs.${key}`)}${pending ? ` (${pending[COUNTER[key]]})` : ''}`,
+    value: `${i18n.t(`approvals:tabs.${key}`)}`,
+    count: pending?.[COUNTER[key]],
   }));
 
   return (
     <PageLayout>
-      <PageHeader>{i18n.t('approvals:title')}</PageHeader>
-      <p className="text-cool-gray-500">
-        {pending
-          ? i18n.t('approvals:pending_total', { count: pending.total })
-          : i18n.t('approvals:description')}
-      </p>
+      <PageHeader
+        subtitle={`${i18n.t('approvals:description')}`}
+        actions={
+          !!pending?.total && (
+            <span className="flex items-center gap-2 rounded-lg bg-figure-red px-4 py-2 text-white font-robotoMedium">
+              <ExclamationCircleIcon className="w-5 h-5" aria-hidden="true" />
+              {i18n.t('approvals:pending_total', { count: pending.total })}
+            </span>
+          )
+        }
+      >
+        {i18n.t('approvals:title')}
+      </PageHeader>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xl:gap-6">
+        {COUNTER_CARDS.map(({ type: card, Icon }) => (
+          <StatisticsCard
+            key={card}
+            label={`${i18n.t(`approvals:tabs.${card}`)}`}
+            value={pending ? `${pending[COUNTER[card]]}` : '-'}
+            icon={<Icon className="w-5 h-5 text-navy" aria-hidden="true" />}
+            info={
+              <span className="text-cool-gray-500 font-roboto">
+                {i18n.t(`approvals:counters.${card}`)}
+              </span>
+            }
+            action={{
+              label: `${i18n.t('approvals:review')}`,
+              onClick: () => navigate(`/approvals/${card}`),
+            }}
+          />
+        ))}
+      </div>
       <Tabs<ApprovalType>
         tabs={tabs}
         // switching type starts from that type's pending requests, with no filters
