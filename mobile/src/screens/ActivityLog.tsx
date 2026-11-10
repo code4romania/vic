@@ -17,7 +17,16 @@ import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import ActivityLogSkeleton from '../components/skeleton/activity-log-skeleton';
 import { EventIcon } from '../components/events/EventIcons';
 import { LOG_STATUS_TONE } from '../components/hours/LogRow';
-import { EmptyState, Enter, PressableScale, Sheet, VButton, VText } from '../components/ui';
+import { ToastHost } from '../common/config/toast';
+import {
+  EmptyState,
+  Enter,
+  PressableScale,
+  Sheet,
+  StatusBarScrim,
+  VButton,
+  VText,
+} from '../components/ui';
 
 /**
  * VIC 2.0 hours entry (canvas board "OraDetaliu"): the hours in a tile, the task, a status note
@@ -193,6 +202,7 @@ const ActivityLog = ({ navigation, route }: any) => {
             </>
           )}
         </ScrollView>
+        <StatusBarScrim color={colors.white} />
 
         {isPending && (
           <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 16) + 8 }]}>
@@ -233,6 +243,8 @@ const ActivityLog = ({ navigation, route }: any) => {
             onPress={() => deleteSheet.current?.dismiss()}
           />
         </Sheet>
+        {/* iOS modal: the app-level toasts would be hidden behind it */}
+        <ToastHost />
       </View>
     </BottomSheetModalProvider>
   );

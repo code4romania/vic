@@ -1,8 +1,9 @@
-import React, { forwardRef, useCallback, useMemo, useState } from 'react';
+import React, { forwardRef, useCallback, useMemo, useRef, useState } from 'react';
 import BottomSheet, { BottomSheetProps } from '@gorhom/bottom-sheet';
 import { Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useHideTabBarWhile } from './navigation/tab-bar-overlay';
+import { useBackToClose } from '../hooks/useBackToClose';
 
 // the closed snap point used across the app (1px / 1%) is left untouched
 const isOpenSnapPoint = (snapPoint: number | string) =>
@@ -20,6 +21,20 @@ const SafeAreaBottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
     // index 0 is the 1px "closed" snap point used across the app; anything above is open
     const [open, setOpen] = useState(false);
     useHideTabBarWhile(open);
+    const sheetRef = useRef<BottomSheet | null>(null);
+    const setRefs = useCallback(
+      (node: BottomSheet | null) => {
+        sheetRef.current = node;
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+      },
+      [ref],
+    );
+    const close = useCallback(() => sheetRef.current?.close(), []);
+    useBackToClose(open, close);
     const handleChange = useCallback<NonNullable<BottomSheetProps['onChange']>>(
       (index, position, type) => {
         setOpen(index > 0);
@@ -40,7 +55,7 @@ const SafeAreaBottomSheet = forwardRef<BottomSheet, BottomSheetProps>(
     );
 
     return (
-      <BottomSheet ref={ref} snapPoints={safeSnapPoints} onChange={handleChange} {...props}>
+      <BottomSheet ref={setRefs} snapPoints={safeSnapPoints} onChange={handleChange} {...props}>
         <View style={[styles.content, { paddingBottom: bottomInset }]}>{children}</View>
       </BottomSheet>
     );

@@ -12,8 +12,7 @@ import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import AuthContextProvider from './src/contexts/auth/AuthContextProvider';
 import Router from './src/routes/Router';
 import './src/common/config/i18n';
-import Toast from 'react-native-toast-message';
-import { toastConfig } from './src/common/config/toast';
+import { ToastHost } from './src/common/config/toast';
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from './src/services/query-client';
 import { FeatherIconsPack } from './src/common/adapters/feather-icons.adapter';
@@ -84,11 +83,11 @@ export default () => {
               </QueryClientProvider>
             </KeyboardProvider>
           </GestureHandlerRootView>
+          <ToastHost />
         </SafeAreaProvider>
 
         <ExpoStatusBar style="dark" />
       </ApplicationProvider>
-      <Toast config={toastConfig} />
     </>
   ) : (
     <View />

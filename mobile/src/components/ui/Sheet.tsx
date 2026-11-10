@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactNode, useCallback, useState } from 'react';
+import React, { forwardRef, ReactNode, useCallback, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
   BottomSheetBackdrop,
@@ -13,6 +13,7 @@ import { useReducedMotion } from 'react-native-reanimated';
 import { VText } from './VText';
 import { colors, motion, radius, spacing } from '../../common/theme/tokens';
 import { useHideTabBarWhile } from '../navigation/tab-bar-overlay';
+import { useBackToClose } from '../../hooks/useBackToClose';
 
 export interface SheetProps extends Omit<BottomSheetModalProps, 'children'> {
   title?: string;
@@ -30,6 +31,20 @@ export const Sheet = forwardRef<BottomSheetModal, SheetProps>(
     const insets = useSafeAreaInsets();
     const [open, setOpen] = useState(false);
     useHideTabBarWhile(open);
+    const sheetRef = useRef<BottomSheetModal | null>(null);
+    const setRefs = useCallback(
+      (node: BottomSheetModal | null) => {
+        sheetRef.current = node;
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+      },
+      [ref],
+    );
+    const dismiss = useCallback(() => sheetRef.current?.dismiss(), []);
+    useBackToClose(open, dismiss);
     const reducedMotion = useReducedMotion();
     const animationConfigs = useBottomSheetTimingConfigs({
       duration: reducedMotion ? 1 : motion.sheet.duration,
@@ -51,7 +66,7 @@ export const Sheet = forwardRef<BottomSheetModal, SheetProps>(
 
     return (
       <BottomSheetModal
-        ref={ref}
+        ref={setRefs}
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
