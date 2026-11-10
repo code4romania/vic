@@ -13,6 +13,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -24,11 +25,18 @@
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
     "migration:show": "npm run typeorm -- migration:show",
+    "migration:run:prod": "typeorm migration:run -d dist/infrastructure/config/ormconfig.js",
+    "migration:show:prod": "typeorm migration:show -d dist/infrastructure/config/ormconfig.js",
     "auth:migrate": "ts-node -r tsconfig-paths/register src/commands/migrate-identities.command.ts",
     "auth:super-admin": "ts-node -r tsconfig-paths/register src/commands/super-admin.command.ts",
     "org:suspend": "ts-node -r tsconfig-paths/register src/commands/organization-status.command.ts --suspend",
     "org:unsuspend": "ts-node -r tsconfig-paths/register src/commands/organization-status.command.ts --unsuspend",
-    "announce": "ts-node -r tsconfig-paths/register src/commands/announce.command.ts"
+    "announce": "ts-node -r tsconfig-paths/register src/commands/announce.command.ts",
+    "auth:migrate:prod": "node dist/commands/migrate-identities.command.js",
+    "auth:super-admin:prod": "node dist/commands/super-admin.command.js",
+    "org:suspend:prod": "node dist/commands/organization-status.command.js --suspend",
+    "org:unsuspend:prod": "node dist/commands/organization-status.command.js --unsuspend",
+    "announce:prod": "node dist/commands/announce.command.js"
   },
   "dependencies": {
     "@anchan828/typeorm-history": "1.0.38",
