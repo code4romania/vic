@@ -6,17 +6,14 @@ import FormInput from './FormInput';
 import FormTextarea from './FormTextarea';
 import FileUpload from './FileUpload';
 import { IOrganizationFields } from '../common/interfaces/organization.interface';
+import { isValidCui } from '../common/utils/cui';
 
 export const LOGO_MAX_BYTES = 5 * 1024 * 1024;
 
 const t = (key: string, options?: Record<string, unknown>) =>
   i18n.t(`register_organization:form.${key}`, options) as string;
 
-const optionalText = () =>
-  yup
-    .string()
-    .ensure()
-    .trim();
+const optionalText = () => yup.string().ensure().trim();
 
 // The same rules as backend/src/api/organization/dto/organization-fields.ts. #469: registration asks only
 // for name, CUI, email and phone; description, address and website are optional and filled in later.
@@ -37,7 +34,8 @@ export const organizationFieldsSchema = {
     .string()
     .trim()
     .required(t('required'))
-    .matches(/^(RO)?\d{2,10}$/i, t('tax_id_invalid')),
+    // as the backend: "RO" and spaces are fine, the check digit must be right
+    .test('cui', t('tax_id_invalid'), (value) => !value || isValidCui(value)),
 };
 
 // The profile fields an admin fills in later from the Organization page.

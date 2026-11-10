@@ -13,7 +13,7 @@ const ORGANIZATION = {
   name: 'Asociația Test',
   email: 'contact@test.ro',
   phone: '+40700000001',
-  taxId: 'RO123456',
+  taxId: 'RO18547290',
   address: 'Str. Exemplu 1',
   website: 'https://test.ro',
   description: 'Ajutăm comunitatea din cartier cu activități pentru copii și vârstnici.',
@@ -56,7 +56,7 @@ describe('Configurare organizație', () => {
     );
     renderPage(<Organization />, { route: '/organization' });
 
-    expect(await screen.findByDisplayValue('RO123456')).toBeInTheDocument();
+    expect(await screen.findByDisplayValue('RO18547290')).toBeInTheDocument();
     expect(
       screen.getByText(t('organization:setup.info.validated', { date: '01.11.2026' })),
     ).toBeInTheDocument();

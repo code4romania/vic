@@ -21,7 +21,7 @@ const fillAll = async () => {
   const type = (label: string, value: string) =>
     userEvent.type(screen.getByLabelText(label), value);
   await type(f('name'), 'Asociatia Test');
-  await type(f('taxId'), 'RO123456');
+  await type(f('taxId'), 'RO18547290');
   await type(f('email'), 'contact@ong.test');
   await type(f('phone'), '+40700000001');
   await type(f('firstName'), 'Tudor');
@@ -43,6 +43,19 @@ describe('RegisterOrganization', () => {
     expect(screen.getAllByText(t('register_organization:form.declaration.required'))).toHaveLength(
       2,
     );
+  });
+
+  it('checks the CUI like the backend: RO and spaces are fine, the check digit is not', async () => {
+    renderPage(<RegisterOrganization />, { auth: { isAuthenticated: false } });
+    await userEvent.type(screen.getByLabelText(f('taxId')), 'RO 185 472 91');
+    await submit();
+    expect(
+      await screen.findByText(t('register_organization:form.tax_id_invalid')),
+    ).toBeInTheDocument();
+    await userEvent.clear(screen.getByLabelText(f('taxId')));
+    await userEvent.type(screen.getByLabelText(f('taxId')), 'RO 185 472 90');
+    await submit();
+    expect(screen.queryByText(t('register_organization:form.tax_id_invalid'))).toBeNull();
   });
 
   it('asks only the minimum: no description, address, website, logo or statute (#469)', () => {
@@ -78,7 +91,7 @@ describe('RegisterOrganization', () => {
       screen.getByText(t('register_organization:success.description', { email: 't•••@ong.test' })),
     ).toBeInTheDocument();
     expect(form?.get('turnstileToken')).toBe('turnstile-ok');
-    expect(form?.get('taxId')).toBe('RO123456');
+    expect(form?.get('taxId')).toBe('RO18547290');
     // #469: only the minimum
     for (const key of ['address', 'activityArea', 'website', 'description', 'logo', 'statute']) {
       expect(form?.has(key)).toBe(false);
