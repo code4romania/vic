@@ -43,8 +43,11 @@ export class ActionsArchiveRepository
       .select()
       // the organization's admins' actions, and the volunteers' actions on its data (#593)
       .where(
-        `(author.organizationId = :organizationId OR "actionsArchive".event_data->>'organizationId' = :organizationId)`,
-        { organizationId: findOptions.organizationId },
+        `(author.organizationId = :organizationId OR "actionsArchive".event_data->>'organizationId' = :organizationIdText)`,
+        {
+          organizationId: findOptions.organizationId,
+          organizationIdText: findOptions.organizationId,
+        },
       )
       .orderBy(
         this.buildOrderByQuery(

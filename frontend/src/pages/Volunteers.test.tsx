@@ -1,9 +1,16 @@
 import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import Volunteers from './Volunteers';
 import { renderPage, t } from '../test/render';
 import { api, server } from '../test/server';
+
+vi.mock('../common/utils/utils', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../common/utils/utils')>()),
+  downloadExcel: vi.fn(),
+}));
+import { downloadExcel } from '../common/utils/utils';
 
 const volunteer = (id: string, name: string, status: string, totalHours: number) => ({
   id,
@@ -79,5 +86,36 @@ describe('Volunteers (#475, #476)', () => {
     await waitFor(() => expect(params.length).toBeGreaterThan(0));
     expect(params[0].get('status')).toBe('inactive');
     expect(params[0].get('activityTypeId')).toBe('type-1');
+  });
+
+  // #593: the export carries personal data; it asks for the emailed code first
+  it('downloads the table only after the emailed code', async () => {
+    let exportCode: string | null | undefined;
+    server.use(
+      http.get(api('/volunteer'), () => HttpResponse.json(page([]))),
+      http.get(api('/listing/*'), () => HttpResponse.json([])),
+      http.post(api('/security/code'), () => HttpResponse.json({ maskedEmail: 'a•••@ong.test' })),
+      http.get(api('/volunteer/download'), ({ request }) => {
+        exportCode = request.headers.get('x-sensitive-code');
+        return new HttpResponse(new ArrayBuffer(1));
+      }),
+    );
+    renderPage(<Volunteers query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
+
+    await userEvent.click(await screen.findByRole('button', { name: t('general:download_table') }));
+    const dialog = await screen.findByRole('dialog');
+    expect(exportCode).toBeUndefined();
+    await userEvent.click(
+      within(dialog).getByRole('button', { name: t('settings:security.code.send') }),
+    );
+    await userEvent.type(
+      await within(dialog).findByLabelText(t('settings:security.code.label')),
+      '654321',
+    );
+    await userEvent.click(
+      within(dialog).getByRole('button', { name: t('settings:security.download_code.confirm') }),
+    );
+    await waitFor(() => expect(downloadExcel).toHaveBeenCalled());
+    expect(exportCode).toBe('654321');
   });
 });

@@ -171,9 +171,20 @@ describe('Data and security (e2e)', () => {
       `INSERT INTO volunteer (user_id, organization_id, status) VALUES ($1, $2, 'active')`,
       [user.id, organizationId],
     );
+    // #593: the backup needs the emailed code too
+    expect(
+      (
+        await http()
+          .get('/security/backup')
+          .set('Authorization', `Bearer ${token}`)
+          .expect(400)
+      ).body.code_error,
+    ).toBe('AUTH_005');
+
     const res = await http()
       .get('/security/backup')
       .set('Authorization', `Bearer ${token}`)
+      .set('X-Sensitive-Code', await code('BACKUP'))
       .buffer(true)
       .parse((r, done) => {
         const chunks: Buffer[] = [];
@@ -192,6 +203,25 @@ describe('Data and security (e2e)', () => {
     expect(volunteers).toEqual([
       expect.objectContaining({ Nume: 'Elena Pop', Status: 'active' }),
     ]);
+  });
+
+  // #593: the volunteers export carries personal data; it needs the emailed code, used once
+  it('exports the volunteers only with a valid emailed code', async () => {
+    const download = (sensitiveCode?: string): request.Test => {
+      const req = http()
+        .get('/volunteer/download')
+        .set('Authorization', `Bearer ${token}`);
+      return sensitiveCode ? req.set('X-Sensitive-Code', sensitiveCode) : req;
+    };
+
+    expect((await download().expect(400)).body.code_error).toBe('AUTH_005');
+    const valid = await code('EXPORT_VOLUNTEERS');
+    expect(testApp.mailbox.last('ana@crucea.ro').subject).toBeTruthy();
+    await download('000000').expect(400);
+    const res = await download(valid).expect(200);
+    expect(res.headers['content-disposition']).toContain('Voluntari.xlsx');
+    // a code works once
+    await download(valid).expect(400);
   });
 
   it('deletes the organization and all its data after the typed name and the code', async () => {

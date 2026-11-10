@@ -5,7 +5,13 @@ export enum SensitiveAction {
   CHANGE_EMAIL = 'CHANGE_EMAIL',
   DELETE_ORGANIZATION = 'DELETE_ORGANIZATION',
   ADD_ADMIN = 'ADD_ADMIN',
+  // #593: downloads of the organization's data
+  EXPORT_VOLUNTEERS = 'EXPORT_VOLUNTEERS',
+  BACKUP = 'BACKUP',
 }
+
+// The emailed code on a GET download (#593)
+export const sensitiveCodeHeader = (code: string) => ({ 'X-Sensitive-Code': code });
 
 // Emails a 6-digit code to the admin; the answer names the masked address.
 export const requestSensitiveCode = async (
@@ -25,12 +31,14 @@ export const confirmEmailChange = async (
 ): Promise<{ email: string }> =>
   API.post('/security/email', { code, newEmailCode }).then((res) => res.data);
 
-export const getBackup = async (): Promise<{ data: Blob; fileName: string }> =>
-  API.get('/security/backup', { responseType: 'blob' }).then((res) => {
-    const disposition = (res.headers['content-disposition'] as string | undefined) ?? '';
-    const fileName = /filename="([^"]+)"/.exec(disposition)?.[1] ?? 'VIC-backup.xlsx';
-    return { data: res.data, fileName };
-  });
+export const getBackup = async (code: string): Promise<{ data: Blob; fileName: string }> =>
+  API.get('/security/backup', { responseType: 'blob', headers: sensitiveCodeHeader(code) }).then(
+    (res) => {
+      const disposition = (res.headers['content-disposition'] as string | undefined) ?? '';
+      const fileName = /filename="([^"]+)"/.exec(disposition)?.[1] ?? 'VIC-backup.xlsx';
+      return { data: res.data, fileName };
+    },
+  );
 
 export const deleteOrganization = async (confirmation: string, code: string): Promise<void> => {
   await API.post('/security/organization/delete', { confirmation, code });

@@ -2262,7 +2262,7 @@
       "title": "Date și securitate",
       "two_factor": {
         "title": "Confirmare prin cod pe email",
-        "description": "Pentru acțiunile sensibile (schimbarea emailului, ștergerea contului organizației, adăugarea unui administrator) îți cerem un cod trimis pe email. Este activă pentru toate conturile și nu poate fi dezactivată.",
+        "description": "Pentru acțiunile sensibile (schimbarea emailului, ștergerea contului organizației, adăugarea unui administrator, exportul voluntarilor și backup-ul) îți cerem un cod trimis pe email. Este activă pentru toate conturile și nu poate fi dezactivată.",
         "on": "Activă"
       },
       "code": {
@@ -2272,6 +2272,11 @@
         "sent": "Am trimis un cod de 6 cifre la {{email}}. E valabil 10 minute.",
         "label": "Cod de confirmare*",
         "error": "Nu am putut trimite codul. Încearcă din nou."
+      },
+      "download_code": {
+        "description": "Fișierul conține date personale. Pentru siguranță, confirmă descărcarea cu un cod trimis pe emailul tău.",
+        "confirm": "Descarcă",
+        "loading": "Se pregătește..."
       },
       "email": {
         "label": "Email de autentificare",

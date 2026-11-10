@@ -41,6 +41,8 @@ import OrganizationStructureSelect from '../containers/OrganizationStructureSele
 import { DivisionType } from '../common/enums/division-type.enum';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { getVolunteersForDownload } from '../services/volunteer/volunteer.api';
+import { SensitiveAction } from '../services/security/security.api';
+import SensitiveDownloadModal from '../components/SensitiveDownloadModal';
 import { useActivityTypeListItemsQuery } from '../services/activity-type/activity-type.service';
 import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
 import { VolunteersProps } from '../containers/query/VolunteersWithQueryParams';
@@ -425,17 +427,23 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
     );
   };
 
-  const onExport = async () => {
-    const { data: volunteersData } = await getVolunteersForDownload({
-      status: query?.volunteerStatus as VolunteerStatus | undefined,
-      orderBy: query?.orderBy as string,
-      orderDirection: query?.orderDirection as OrderDirection,
-      search: query?.search as string,
-      branch: query?.branch,
-      department: query?.department,
-      role: query?.role,
-      activityTypeId: query?.activityTypeId,
-    });
+  // #593: the export asks for the emailed code first
+  const [isExportOpen, setIsExportOpen] = useState(false);
+
+  const onExport = async (code: string) => {
+    const { data: volunteersData } = await getVolunteersForDownload(
+      {
+        status: query?.volunteerStatus as VolunteerStatus | undefined,
+        orderBy: query?.orderBy as string,
+        orderDirection: query?.orderDirection as OrderDirection,
+        search: query?.search as string,
+        branch: query?.branch,
+        department: query?.department,
+        role: query?.role,
+        activityTypeId: query?.activityTypeId,
+      },
+      code,
+    );
 
     downloadExcel(volunteersData as BlobPart, i18n.t('volunteers:download'));
   };
@@ -475,7 +483,7 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
               label={i18n.t('general:download_table')}
               icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
               className="btn-text-primary px-2"
-              onClick={onExport}
+              onClick={() => setIsExportOpen(true)}
             />
           </>
         }
@@ -550,6 +558,15 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
           confirmBtnClassName="btn-danger"
           onClose={setBlockVolunteerCandidate.bind(null, null)}
           onConfirm={onConfirmBlockModal}
+        />
+      )}
+      {isExportOpen && (
+        <SensitiveDownloadModal
+          action={SensitiveAction.EXPORT_VOLUNTEERS}
+          title={`${i18n.t('settings:security.export.title')}`}
+          errorMessage={`${i18n.t('settings:security.export.error')}`}
+          onDownload={onExport}
+          onClose={() => setIsExportOpen(false)}
         />
       )}
     </PageLayout>

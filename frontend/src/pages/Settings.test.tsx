@@ -52,6 +52,7 @@ const TEAM = [
 
 describe('Settings (#506, #508, #509)', () => {
   beforeEach(() => {
+    vi.clearAllMocks();
     server.use(
       http.get(api('/organization'), () => HttpResponse.json(ORGANIZATION)),
       http.get(api('/organization/team'), () => HttpResponse.json(TEAM)),
@@ -131,11 +132,17 @@ describe('Settings (#506, #508, #509)', () => {
 
   // #508
   describe('Date și securitate', () => {
-    it('exports every volunteer and links to the history', async () => {
-      let exported = false;
+    // #593: the export and the backup need the emailed code
+    it('exports every volunteer after the emailed code, and links to the history', async () => {
+      let exportCode: string | null = null;
+      let action: unknown;
       server.use(
-        http.get(api('/volunteer/download'), () => {
-          exported = true;
+        http.post(api('/security/code'), async ({ request }) => {
+          action = await request.json();
+          return HttpResponse.json({ maskedEmail: 'a•••@ong.test' });
+        }),
+        http.get(api('/volunteer/download'), ({ request }) => {
+          exportCode = request.headers.get('x-sensitive-code');
           return new HttpResponse(new ArrayBuffer(1));
         }),
       );
@@ -146,8 +153,50 @@ describe('Settings (#506, #508, #509)', () => {
       await userEvent.click(
         screen.getByRole('button', { name: t('settings:security.export.action') }),
       );
+      const dialog = await screen.findByRole('dialog');
+      const confirm = within(dialog).getByRole('button', {
+        name: t('settings:security.download_code.confirm'),
+      });
+      expect(confirm).toBeDisabled();
+      expect(exportCode).toBeNull();
+
+      await userEvent.click(
+        within(dialog).getByRole('button', { name: t('settings:security.code.send') }),
+      );
+      await userEvent.type(
+        await within(dialog).findByLabelText(t('settings:security.code.label')),
+        '123456',
+      );
+      await userEvent.click(confirm);
       await waitFor(() => expect(downloadExcel).toHaveBeenCalled());
-      expect(exported).toBe(true);
+      expect(action).toEqual({ action: 'EXPORT_VOLUNTEERS' });
+      expect(exportCode).toBe('123456');
+    });
+
+    it('shows the wrong-code error when the backup code is refused', async () => {
+      server.use(
+        http.post(api('/security/code'), () => HttpResponse.json({ maskedEmail: 'a•••@ong.test' })),
+        http.get(api('/security/backup'), () =>
+          HttpResponse.json({ statusCode: 400, code_error: 'AUTH_005' }, { status: 400 }),
+        ),
+      );
+      renderPage(<Settings />, { route: '/settings?tab=security' });
+      await userEvent.click(
+        screen.getByRole('button', { name: t('settings:security.backup.action') }),
+      );
+      const dialog = await screen.findByRole('dialog');
+      await userEvent.click(
+        within(dialog).getByRole('button', { name: t('settings:security.code.send') }),
+      );
+      await userEvent.type(
+        await within(dialog).findByLabelText(t('settings:security.code.label')),
+        '000000',
+      );
+      await userEvent.click(
+        within(dialog).getByRole('button', { name: t('settings:security.download_code.confirm') }),
+      );
+      await waitFor(() => expect(useErrorToast).toHaveBeenCalledWith(t('auth:errors.AUTH_005')));
+      expect(downloadExcel).not.toHaveBeenCalled();
     });
 
     it('shows the always-on email code, and changes the email with both codes', async () => {

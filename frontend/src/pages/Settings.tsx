@@ -25,8 +25,9 @@ import { useOrganizationQuery } from '../services/organization/organization.serv
 import ChangeEmailModal from '../components/ChangeEmailModal';
 import DeleteOrganizationModal from '../components/DeleteOrganizationModal';
 import { downloadExcel } from '../common/utils/utils';
-import { useErrorToast, useSuccessToast } from '../hooks/useToast';
-import { getBackup } from '../services/security/security.api';
+import { useSuccessToast } from '../hooks/useToast';
+import { SensitiveAction, getBackup } from '../services/security/security.api';
+import SensitiveDownloadModal from '../components/SensitiveDownloadModal';
 import { getVolunteersForDownload } from '../services/volunteer/volunteer.api';
 import Tabs, { TabItem } from '../components/Tabs';
 import StatusBadge from '../components/StatusBadge';
@@ -245,33 +246,19 @@ const SecurityTab = ({ onChangeEmail }: { onChangeEmail: () => void }) => {
   const { profile } = useAuth();
   const { data: organization } = useOrganizationQuery();
   const [showDelete, setShowDelete] = useState(false);
-  const [isBackingUp, setIsBackingUp] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
+  // #593: both downloads ask for the emailed code first
+  const [download, setDownload] = useState<'backup' | 'export'>();
 
   // everything the organization has in VIC, as one Excel workbook
-  const onBackup = async () => {
-    setIsBackingUp(true);
-    try {
-      const { data, fileName } = await getBackup();
-      downloadExcel(data, fileName);
-    } catch {
-      useErrorToast(t('security.backup.error'));
-    } finally {
-      setIsBackingUp(false);
-    }
+  const onBackup = async (code: string) => {
+    const { data, fileName } = await getBackup(code);
+    downloadExcel(data, fileName);
   };
 
   // the volunteers list, every status, the same file as on the Voluntari page
-  const onExport = async () => {
-    setIsExporting(true);
-    try {
-      const { data } = await getVolunteersForDownload({});
-      downloadExcel(data as BlobPart, i18n.t('volunteers:download'));
-    } catch {
-      useErrorToast(t('security.export.error'));
-    } finally {
-      setIsExporting(false);
-    }
+  const onExport = async (code: string) => {
+    const { data } = await getVolunteersForDownload({}, code);
+    downloadExcel(data as BlobPart, i18n.t('volunteers:download'));
   };
 
   return (
@@ -289,9 +276,8 @@ const SecurityTab = ({ onChangeEmail }: { onChangeEmail: () => void }) => {
               <RowButton
                 className="btn-outline-secondary"
                 icon={<ArrowDownTrayIcon className="h-5 w-5" aria-hidden="true" />}
-                label={t(isExporting ? 'security.backup.loading' : 'security.export.action')}
-                disabled={isExporting}
-                onClick={onExport}
+                label={t('security.export.action')}
+                onClick={() => setDownload('export')}
               />
             }
           />
@@ -302,9 +288,8 @@ const SecurityTab = ({ onChangeEmail }: { onChangeEmail: () => void }) => {
               <RowButton
                 className="btn-outline-secondary"
                 icon={<ArrowDownTrayIcon className="h-5 w-5" aria-hidden="true" />}
-                label={t(isBackingUp ? 'security.backup.loading' : 'security.backup.action')}
-                disabled={isBackingUp}
-                onClick={onBackup}
+                label={t('security.backup.action')}
+                onClick={() => setDownload('backup')}
               />
             }
           />
@@ -374,6 +359,19 @@ const SecurityTab = ({ onChangeEmail }: { onChangeEmail: () => void }) => {
         <DeleteOrganizationModal
           organizationName={organization.name}
           onClose={() => setShowDelete(false)}
+        />
+      )}
+      {download && (
+        <SensitiveDownloadModal
+          action={
+            download === 'backup' ? SensitiveAction.BACKUP : SensitiveAction.EXPORT_VOLUNTEERS
+          }
+          title={t(download === 'backup' ? 'security.backup.title' : 'security.export.title')}
+          errorMessage={t(
+            download === 'backup' ? 'security.backup.error' : 'security.export.error',
+          )}
+          onDownload={download === 'backup' ? onBackup : onExport}
+          onClose={() => setDownload(undefined)}
         />
       )}
     </>

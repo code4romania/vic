@@ -2234,7 +2234,7 @@
       "title": "Data and security",
       "two_factor": {
         "title": "Email code confirmation",
-        "description": "For sensitive actions (changing your email, deleting the organization account, adding an administrator) we ask for a code sent by email. It is on for every account and cannot be turned off.",
+        "description": "For sensitive actions (changing your email, deleting the organization account, adding an administrator, the volunteers export and the backup) we ask for a code sent by email. It is on for every account and cannot be turned off.",
         "on": "On"
       },
       "code": {
@@ -2244,6 +2244,11 @@
         "sent": "We sent a 6-digit code to {{email}}. It is valid for 10 minutes.",
         "label": "Confirmation code*",
         "error": "We couldn't send the code. Try again."
+      },
+      "download_code": {
+        "description": "The file holds personal data. To keep it safe, confirm the download with a code sent to your email.",
+        "confirm": "Download",
+        "loading": "Preparing..."
       },
       "email": {
         "label": "Login email",
