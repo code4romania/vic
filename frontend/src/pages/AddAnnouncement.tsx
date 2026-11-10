@@ -1,22 +1,20 @@
 import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import i18n from '../common/config/i18n';
 import { AnnouncementType } from '../common/enums/announcement-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
+import { IAnnouncement } from '../common/interfaces/announcement.interface';
 import AnnouncementForm, { AnnouncementFormTypes } from '../components/AnnouncementForm';
-import Button from '../components/Button';
-import CardBody from '../components/CardBody';
-import CardHeader from '../components/CardHeader';
+import AnnouncementFormCard from '../components/AnnouncementFormCard';
 import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
-import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { useCreateAnnouncementMutation } from '../services/announcement/announcement.service';
-import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 export const anouncementFormValidationSchema = yup.object({
   name: yup
@@ -57,8 +55,25 @@ export const anouncementFormValidationSchema = yup.object({
   publishNow: yup.boolean(),
 });
 
+// "Duplică" from the list opens this page with the original in the router state: the copy
+// keeps its content and starts showing today.
+const defaultValuesFor = (original?: IAnnouncement): Partial<AnnouncementFormTypes> =>
+  original
+    ? {
+        name: original.name,
+        description: original.description,
+        type: original.type,
+        volunteersNeeded: original.volunteersNeeded ?? null,
+        displayStartDate: new Date(),
+        displayEndDate: null,
+        publishNow: false,
+      }
+    : { type: AnnouncementType.RECRUITMENT, displayStartDate: new Date(), publishNow: true };
+
 const AddAnnouncement = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const duplicateOf = (location.state as { duplicateOf?: IAnnouncement } | null)?.duplicateOf;
 
   const { mutateAsync: createAnnouncement, isLoading } = useCreateAnnouncementMutation();
 
@@ -70,11 +85,7 @@ const AddAnnouncement = () => {
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(anouncementFormValidationSchema),
-    defaultValues: {
-      type: AnnouncementType.RECRUITMENT,
-      displayStartDate: new Date(),
-      publishNow: true,
-    },
+    defaultValues: defaultValuesFor(duplicateOf),
   });
 
   const onBackButtonPress = () => {
@@ -99,27 +110,30 @@ const AddAnnouncement = () => {
 
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={onBackButtonPress}>
-        {i18n.t('general:add', { item: '' })}
+      <PageHeader
+        onBackButtonPress={onBackButtonPress}
+        subtitle={`${i18n.t('announcement:page.subtitle')}`}
+      >
+        {i18n.t('announcement:page.title')}
       </PageHeader>
       {isLoading && <LoadingContent />}
       {!isLoading && (
-        <Card>
-          <CardHeader>
-            <h4 className="text-sm sm:text-xl">{i18n.t('announcement:form.title')}</h4>
-            <div className="flex flex-row gap-4">
-              <Button
-                label={i18n.t('announcement:actions.create')}
-                icon={<PaperAirplaneIcon className="h-5 w-5" />}
-                className="btn-primary"
-                onClick={handleSubmit(onSubmit)}
-              />
-            </div>
-          </CardHeader>
-          <CardBody>
-            <AnnouncementForm control={control} errors={errors} />
-          </CardBody>
-        </Card>
+        <AnnouncementFormCard
+          title={i18n.t(
+            duplicateOf ? 'announcement:create.duplicate_title' : 'announcement:create.title',
+          )}
+          subtitle={
+            duplicateOf
+              ? i18n.t('announcement:create.duplicate_subtitle', { name: duplicateOf.name })
+              : i18n.t('announcement:create.subtitle')
+          }
+          submitLabel={i18n.t('announcement:actions.create')}
+          submitIcon={<PlusIcon className="h-5 w-5" />}
+          onCancel={onBackButtonPress}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <AnnouncementForm control={control} errors={errors} />
+        </AnnouncementFormCard>
       )}
     </PageLayout>
   );

@@ -869,14 +869,15 @@
         "required": "The name of the ad is required",
         "min": "The ad name can have a minimum of {{value}} characters",
         "max": "The ad name can have a maximum of {{value}} characters",
-        "placeholder": "Enter the title of the ad"
+        "placeholder": "e.g. We are looking for 2 marketing volunteers",
+        "label": "Title"
       },
       "description": {
-        "label": "Ad content",
+        "label": "Description",
         "required": "The description of the advertisement is required",
         "min": "The description can be a minimum of {{value}} characters",
         "max": "The ad description can have a maximum of {{value}} characters",
-        "placeholder": "Enter ad content"
+        "placeholder": "Describe the announcement and its requirements..."
       },
       "type": {
         "label": "Announcement type",
@@ -934,7 +935,11 @@
       "create": "Create announcement",
       "activate": "Activate",
       "deactivate": "Deactivate",
-      "archive": "Archive"
+      "archive": "Archive",
+      "view": "View details",
+      "edit": "Edit",
+      "duplicate": "Duplicate",
+      "delete": "Delete"
     },
     "all_organization": "The whole organization",
     "responses": {
@@ -945,10 +950,77 @@
       "date": "Date"
     },
     "counters": {
-      "active": "Active announcements",
-      "inactive": "Inactive announcements",
-      "archived": "Archived announcements",
-      "responses": "Total responses"
+      "active": "Active",
+      "inactive": "Inactive",
+      "archived": "Archived",
+      "responses": "Total responses",
+      "info": {
+        "active": "Visible in the app now",
+        "inactive": "Hidden from the app",
+        "archived": "Closed for good",
+        "responses": "From volunteers, across all announcements"
+      }
+    },
+    "page": {
+      "title": "Announcements",
+      "subtitle": "Manage announcements for recruitment and activities",
+      "search": "Search announcements...",
+      "add": "New announcement",
+      "all_types": "All types",
+      "sort": "Sort by",
+      "sort_options": {
+        "updatedOn": "Recently edited",
+        "publishedOn": "Recently published",
+        "displayStartDate": "Display start date",
+        "name": "Title (A–Z)"
+      },
+      "empty": {
+        "active": "You have no active announcements.",
+        "inactive": "You have no inactive announcements.",
+        "archived": "You have no archived announcements.",
+        "search": "No announcement matches the search."
+      },
+      "pagination": "Page {{page}} of {{pages}}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "tabs": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "archived": "Archived"
+    },
+    "type_short": {
+      "recruitment": "Recruitment",
+      "activity": "Activity"
+    },
+    "card": {
+      "volunteers_needed_one": "{{count}} volunteer needed",
+      "volunteers_needed_other": "{{count}} volunteers needed",
+      "no_volunteers_needed": "No fixed number of volunteers",
+      "from": "From {{date}}",
+      "published": "Published: {{date}}",
+      "updated": "Edited: {{date}}",
+      "responses_one": "{{count}} response",
+      "responses_other": "{{count}} responses",
+      "no_responses": "No responses yet",
+      "view_responses": "View responses"
+    },
+    "create": {
+      "title": "Create a new announcement",
+      "subtitle": "Fill in the announcement details for volunteers",
+      "duplicate_title": "Duplicate the announcement",
+      "duplicate_subtitle": "Starting from “{{name}}”; the new announcement is saved separately"
+    },
+    "edit": {
+      "title": "Edit the announcement",
+      "subtitle": "Change the announcement details for volunteers"
+    },
+    "detail": {
+      "title": "Announcement details",
+      "responses_title": "Responses to the announcement",
+      "responses_subtitle": "What volunteers answered from the app",
+      "contact": "Contact",
+      "no_responses": "No volunteer has answered this announcement yet."
     }
   },
   "activity_log": {

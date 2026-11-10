@@ -1,4 +1,4 @@
-import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -6,14 +6,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import AnnouncementForm, { AnnouncementFormTypes } from '../components/AnnouncementForm';
-import Button from '../components/Button';
-import CardBody from '../components/CardBody';
-import CardHeader from '../components/CardHeader';
+import AnnouncementFormCard from '../components/AnnouncementFormCard';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
-import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import {
   useAnnouncement,
@@ -37,8 +34,8 @@ const EditAnnouncement = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
     reset,
+    formState: { errors },
   } = useForm<AnnouncementFormTypes>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -66,7 +63,7 @@ const EditAnnouncement = () => {
   }, [announcementError]);
 
   const onBackButtonPress = () => {
-    navigate('/announcements', { replace: true });
+    navigate(id ? `/announcements/${id}` : '/announcements', { replace: true });
   };
 
   const onSubmit = (formValues: AnnouncementFormTypes) => {
@@ -91,31 +88,30 @@ const EditAnnouncement = () => {
     }
   };
 
+  const isLoading = isAnnouncementLoading || isUpdateAnnouncementLoading;
+
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={onBackButtonPress}>
-        {i18n.t('general:edit', { item: i18n.t('announcement:name') })}
+      <PageHeader
+        onBackButtonPress={onBackButtonPress}
+        subtitle={announcement?.name ?? `${i18n.t('announcement:page.subtitle')}`}
+      >
+        {i18n.t('announcement:page.title')}
       </PageHeader>
-      {isAnnouncementLoading && isUpdateAnnouncementLoading && <LoadingContent />}
-      {!isUpdateAnnouncementLoading && !isAnnouncementLoading && (
-        <Card>
-          <CardHeader>
-            <h4 className="text-sm sm:text-xl">{i18n.t('announcement:form.title')}</h4>
-            <div className="flex flex-row gap-4">
-              <Button
-                label={i18n.t('general:save')}
-                icon={<PaperAirplaneIcon className="h-5 w-5" />}
-                className="btn-primary"
-                onClick={handleSubmit(onSubmit)}
-              />
-            </div>
-          </CardHeader>
-          <CardBody>
-            <AnnouncementForm control={control} errors={errors} isEditForm />
-          </CardBody>
-        </Card>
+      {isLoading && <LoadingContent />}
+      {!isLoading && announcement && (
+        <AnnouncementFormCard
+          title={i18n.t('announcement:edit.title')}
+          subtitle={i18n.t('announcement:edit.subtitle')}
+          submitLabel={i18n.t('general:save_changes')}
+          submitIcon={<CheckIcon className="h-5 w-5" />}
+          onCancel={onBackButtonPress}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <AnnouncementForm control={control} errors={errors} isEditForm />
+        </AnnouncementFormCard>
       )}
-      {!announcement && !isAnnouncementLoading && !isUpdateAnnouncementLoading && (
+      {!announcement && !isLoading && (
         <EmptyContent description={i18n.t('general:error.load_entries')} />
       )}
     </PageLayout>

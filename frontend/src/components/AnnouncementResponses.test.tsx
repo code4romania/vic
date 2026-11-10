@@ -31,6 +31,24 @@ describe('AnnouncementResponses (#504)', () => {
       '/volunteers/v1',
     );
     expect(screen.getByText('bogdan@ong.ro')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: t('announcement:detail.contact') })).toHaveAttribute(
+      'href',
+      'mailto:bogdan@ong.ro',
+    );
     expect(screen.getByText(t('announcement:responses.title', { count: 1 }))).toBeInTheDocument();
+  });
+
+  it('says when nobody answered yet', async () => {
+    server.use(
+      http.get(api('/announcement/a2/responses'), () =>
+        HttpResponse.json({
+          items: [],
+          meta: { itemCount: 0, totalItems: 0, itemsPerPage: 10, totalPages: 0, currentPage: 1 },
+        }),
+      ),
+    );
+    renderPage(<AnnouncementResponses announcementId="a2" />);
+
+    expect(await screen.findByText(t('announcement:detail.no_responses'))).toBeInTheDocument();
   });
 });

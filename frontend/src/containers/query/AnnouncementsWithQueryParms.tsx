@@ -19,7 +19,7 @@ export type AnnouncementsProps = IHOCQueryProps<AnnouncementsQueryProps>;
 
 // set page default params
 const DEFAULT_QUERY_PARAMS = getPaginationQueryParams({
-  orderBy: 'name',
+  orderBy: 'updatedOn',
   orderDirection: OrderDirection.DESC,
 });
 
