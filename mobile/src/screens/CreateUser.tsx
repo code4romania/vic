@@ -2,7 +2,11 @@ import React from 'react';
 import PageLayout from '../layouts/PageLayout';
 import FormLayout from '../layouts/FormLayout';
 import { useTranslation } from 'react-i18next';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import * as Linking from 'expo-linking';
+import { Checkbox, VText } from '../components/ui';
+import { colors, fonts } from '../common/theme/tokens';
+import { StyleSheet } from 'react-native';
 import * as yup from 'yup';
 import { Text } from '@ui-kitten/components';
 import { useCreateUserProfileMutation } from '../services/user/user.service';
@@ -36,6 +40,13 @@ export type UserFormTypes = {
   cityId: number;
   birthday: Date;
   sex: Sex;
+  acceptTerms: boolean;
+};
+
+const openLink = (url?: string) => {
+  if (url) {
+    Linking.openURL(url).catch(() => undefined);
+  }
 };
 
 const schema = yup.object({
@@ -70,6 +81,11 @@ const schema = yup.object({
         value: '50',
       })}`,
     ),
+  // the account is created here: the terms and the privacy policy are accepted explicitly
+  acceptTerms: yup
+    .boolean()
+    .oneOf([true], `${i18n.t('register:create_account.form.terms.required')}`)
+    .required(`${i18n.t('register:create_account.form.terms.required')}`),
 });
 
 const CreateUser = ({ navigation }: any) => {
@@ -87,11 +103,14 @@ const CreateUser = ({ navigation }: any) => {
     mode: 'onSubmit',
     reValidateMode: 'onChange',
     resolver: yupResolver(schema as any),
+    defaultValues: { acceptTerms: false },
   });
 
   const watchCountyId = watch('countyId');
 
-  const onSubmit = ({ cityId, phone, ...userPayload }: UserFormTypes) => {
+  // acceptTerms only gates the form; the backend records the account creation itself
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onSubmit = ({ cityId, phone, acceptTerms, ...userPayload }: UserFormTypes) => {
     // The email is the login's: the backend takes it from the session.
     createUserProfile(
       {
@@ -193,9 +212,51 @@ const CreateUser = ({ navigation }: any) => {
           placeholder={t('general:select')}
           options={SexOptions}
         />
+        <Controller
+          control={control}
+          name="acceptTerms"
+          render={({ field: { value, onChange } }) => (
+            <Checkbox
+              checked={!!value}
+              onChange={onChange}
+              disabled={isLoading}
+              error={errors.acceptTerms?.message}
+              accessibilityLabel={`${t('create_account.form.terms.accessibility')}`}
+              testID="create-user-terms"
+            >
+              <VText variant="body">
+                {t('create_account.form.terms.agree')}
+                <VText
+                  variant="body"
+                  style={styles.link}
+                  accessibilityRole="link"
+                  onPress={() => openLink(process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK)}
+                  testID="create-user-terms-link"
+                >
+                  {t('create_account.form.terms.conditions')}
+                </VText>
+                {` ${t('create_account.form.terms.and')}`}
+                <VText
+                  variant="body"
+                  style={styles.link}
+                  accessibilityRole="link"
+                  onPress={() => openLink(process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK)}
+                  testID="create-user-privacy-link"
+                >
+                  {t('create_account.form.terms.privacy_policy')}
+                </VText>
+                {t('create_account.form.terms.application')}
+              </VText>
+            </Checkbox>
+          )}
+        />
       </FormLayout>
     </PageLayout>
   );
 };
 
 export default CreateUser;
+
+const styles = StyleSheet.create({
+  link: { fontFamily: fonts.bold, color: colors.navy, textDecorationLine: 'underline' },
+});

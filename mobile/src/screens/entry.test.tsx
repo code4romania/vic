@@ -154,6 +154,18 @@ describe('Login, email step', () => {
     expect(mockAuth.requestLoginCode).toHaveBeenCalledWith('ana@example.ro');
     expect(await screen.findByText('Verifică-ți emailul')).toBeTruthy();
   });
+
+  it('opens the terms and the privacy policy, not the VIC information page (audit #11)', async () => {
+    process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK = 'https://example.ro/termeni';
+    process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK = 'https://example.ro/confidentialitate';
+    const Linking = require('expo-linking');
+    await AsyncStorage.setItem('vic.onboarding.seen', '1');
+    await renderStack('landing');
+    await fireEvent.press(await screen.findByTestId('landing-terms'));
+    expect(Linking.openURL).toHaveBeenCalledWith('https://example.ro/termeni');
+    await fireEvent.press(screen.getByTestId('landing-privacy'));
+    expect(Linking.openURL).toHaveBeenCalledWith('https://example.ro/confidentialitate');
+  });
 });
 
 describe('Landing', () => {

@@ -71,9 +71,9 @@ const Landing = ({ navigation }: any) => {
     }
   };
 
-  const openInformation = () => {
-    if (process.env.EXPO_PUBLIC_INFORMATION_LINK) {
-      Linking.openURL(process.env.EXPO_PUBLIC_INFORMATION_LINK).catch(() => undefined);
+  const openLink = (url?: string) => {
+    if (url) {
+      Linking.openURL(url).catch(() => undefined);
     }
   };
 
@@ -127,9 +127,24 @@ const Landing = ({ navigation }: any) => {
               {t('intro')}
             </VText>
           </Pressable>
-          <Pressable onPress={openInformation} hitSlop={8}>
+          <Pressable
+            onPress={() => openLink(process.env.EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK)}
+            hitSlop={12}
+            accessibilityRole="link"
+            testID="landing-terms"
+          >
             <VText variant="cap" style={styles.link}>
-              {t('terms')}
+              {t('terms_link')}
+            </VText>
+          </Pressable>
+          <Pressable
+            onPress={() => openLink(process.env.EXPO_PUBLIC_PRIVACY_POLICY_LINK)}
+            hitSlop={12}
+            accessibilityRole="link"
+            testID="landing-privacy"
+          >
+            <VText variant="cap" style={styles.link}>
+              {t('privacy_link')}
             </VText>
           </Pressable>
         </Enter>
@@ -180,7 +195,14 @@ const styles = StyleSheet.create({
   title: { textAlign: 'center', fontSize: 30, lineHeight: 36 },
   subtitle: { textAlign: 'center', marginTop: 10, marginBottom: 24 },
   buttons: { gap: 10 },
-  links: { flexDirection: 'row', justifyContent: 'center', gap: 18, marginTop: 18 },
+  links: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    columnGap: 18,
+    rowGap: 8,
+    marginTop: 18,
+  },
   link: { fontSize: 13 },
   spacer: { flex: 1, minHeight: 24 },
   footer: { textAlign: 'center' },
