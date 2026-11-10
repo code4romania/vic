@@ -94,7 +94,7 @@
     "menu": {
       "options": {
         "my_account": "Contul meu",
-        "logout": "Log out"
+        "logout": "Ieși din cont"
       }
     }
   },
@@ -1131,6 +1131,26 @@
       "title": "Răspunsuri la anunțuri",
       "empty": "Niciun răspuns la anunțuri încă.",
       "on": "la „{{name}}”"
+    },
+    "subtitle": "Activitatea voluntarilor dintr-o privire",
+    "quick_actions": {
+      "title": "Acțiuni rapide",
+      "add_volunteer": "Adaugă voluntar",
+      "add_event": "Creează eveniment",
+      "add_announcement": "Creează anunț",
+      "add_hours": "Adaugă ore"
+    },
+    "pending": {
+      "title": "Aprobări în așteptare",
+      "subtitle": "Cereri care așteaptă decizia ta",
+      "review": "Revizuiește",
+      "volunteers": "Aplicații voluntari",
+      "hours": "Ore de voluntariat",
+      "events": "Înscrieri la evenimente",
+      "count_one": "{{count}} cerere",
+      "count_few": "{{count}} cereri",
+      "count_other": "{{count}} de cereri",
+      "none": "Nicio cerere nu așteaptă decizia ta."
     }
   },
   "documents": {

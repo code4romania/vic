@@ -1,93 +1,37 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import logo from '../assets/images/app_logo.svg';
-import { Bars3Icon, ChevronDownIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
-import { Menu, Transition } from '@headlessui/react';
-import { classNames } from '../common/utils/utils';
+import UserMenu from './UserMenu';
 
 interface HeaderProps {
   openSlidingMenu: (isOpen: boolean) => void;
 }
 
+// Top bar for screens narrower than xl, where the side menu slides in from the left.
 const Header = ({ openSlidingMenu }: HeaderProps) => {
-  const { logout, isAuthenticated, profile } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const { t } = useTranslation('header');
-
-  const onNavigate = (route: string): void => navigate(route);
-
   return (
-    <header className="bg-white py-4 px-4 md:px-10">
-      <nav className="w-full flex justify-between items-center">
-        <div className="flex gap-4">
-          {isAuthenticated && (
-            <div className="flex xl:hidden items-center">
-              <button
-                id="side_menu__open-btn"
-                aria-label="Menu"
-                className="flex items-center gap-4 hover:bg-green-tab py-2 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
-                onClick={openSlidingMenu.bind(null, true)}
-              >
-                <Bars3Icon className="w-5 h-5" />
-              </button>
-            </div>
-          )}
-          <div className="flex items-center cursor-pointer" onClick={onNavigate.bind(null, '/')}>
-            <img src={logo} alt="Code 4 Romania - VIC" className="max-h-8 w-full sm:max-h-11" />
-          </div>
-        </div>
+    <header className="bg-white border-b border-cool-gray-200 shadow-none h-16 px-4 sm:px-6 flex items-center justify-between">
+      <div className="flex items-center gap-3">
         {isAuthenticated && (
-          <div className="flex space-x-4 items-center">
-            <Menu as="div" className="relative inline-block text-left">
-              <div>
-                <Menu.Button
-                  id="account_menu__open-btn"
-                  className="flex items-center gap-4 hover:bg-green-tab sm:py-2 sm:px-4 py-1 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
-                >
-                  <h4 className="tracking-wide text-right">{profile?.name || ''}</h4>
-                  <ChevronDownIcon className="w-5 h-5 md:w-6 md:h-6 text-gray-900" />
-                </Menu.Button>
-              </div>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-              >
-                <Menu.Items className="origin-top-right  absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-1 divide-y divide-gray-200">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          id="logout__menu-item"
-                          aria-label="logout"
-                          className={classNames(
-                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                            'group flex items-center px-4 py-2',
-                          )}
-                          onClick={logout}
-                        >
-                          <ArrowRightOnRectangleIcon
-                            className="mr-3 sm:h-5 sm:w-5 h-4 w-4 text-gray-800 "
-                            aria-hidden="true"
-                          />
-                          <small>{t('menu.options.logout')}</small>
-                        </a>
-                      )}
-                    </Menu.Item>
-                  </div>
-                </Menu.Items>
-              </Transition>
-            </Menu>
-          </div>
+          <button
+            id="side_menu__open-btn"
+            aria-label="Menu"
+            className="p-2 -ml-2 rounded-lg text-cool-gray-700 hover:bg-cool-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-navy"
+            onClick={openSlidingMenu.bind(null, true)}
+          >
+            <Bars3Icon className="w-6 h-6" />
+          </button>
         )}
-      </nav>
+        <button type="button" className="flex items-center" onClick={() => navigate('/')}>
+          <img src={logo} alt="VIC" className="h-8" />
+        </button>
+      </div>
+      {isAuthenticated && <UserMenu isNarrow placement="down" />}
     </header>
   );
 };

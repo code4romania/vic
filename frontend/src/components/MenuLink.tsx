@@ -6,29 +6,35 @@ interface MenuLinkProps {
   item: IRoute;
   active: boolean;
   isNarrow?: boolean;
+  isChild?: boolean;
   onClick: (item: IRoute) => void;
 }
 
-const MenuLink = ({ item, active, isNarrow, onClick }: MenuLinkProps) => {
+const MenuLink = ({ item, active, isNarrow, isChild, onClick }: MenuLinkProps) => {
   return (
     <a
       id={`${item.name}__menu-item`}
       aria-label={item.name}
+      aria-current={active ? 'page' : undefined}
+      title={isNarrow ? item.name : undefined}
       className={classNames(
-        active ? 'bg-yellow/[0.15] text-yellow' : 'text-gray-50',
-        active && item.childRoutes ? 'bg-transparent' : '',
-        isNarrow ? 'justify-center px-0 space-x-0' : 'px-4 space-x-5 ',
-        'h-10 flex items-center px-2 py-2 font-medium rounded-md hover:bg-yellow/[0.15]  hover:text-yellow',
+        active && !item.childRoutes
+          ? 'bg-navy-100 text-navy'
+          : active
+            ? 'text-navy'
+            : 'text-cool-gray-600 hover:bg-cool-gray-100 hover:text-cool-gray-900',
+        isNarrow ? 'justify-center px-0' : 'px-3 gap-3',
+        isChild ? 'h-9 pl-12 text-sm' : 'h-11',
+        'flex items-center rounded-lg font-robotoMedium text-[15px] transition-colors',
       )}
       onClick={() => onClick(item)}
     >
-      {item.icon ? <item.icon className="w-6 h-6" /> : <div className="w-6 h-6"></div>}
-      <span
-        className={classNames(
-          isNarrow ? '-translate-x-2 hidden' : '',
-          'transition-transform duration-50 whitespace-nowrap',
-        )}
-      >
+      {item.icon ? (
+        <item.icon className="w-5 h-5 shrink-0" aria-hidden="true" />
+      ) : (
+        !isChild && <div className="w-5 h-5" />
+      )}
+      <span className={classNames(isNarrow ? 'hidden' : '', 'whitespace-nowrap truncate')}>
         {item.name}
       </span>
     </a>

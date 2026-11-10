@@ -6,7 +6,7 @@ interface CardProps extends ComponentPropsWithoutRef<'div'> {
 
 const Card = ({ children, className }: CardProps) => (
   <div
-    className={`overflow-visible bg-white rounded-lg flex flex-col divide-y divide-cool-gray-200 gap-0 shadow-section grow ${className}`}
+    className={`overflow-visible bg-white rounded-xl border border-cool-gray-200 flex flex-col divide-y divide-cool-gray-200 gap-0 shadow-card grow ${className || ''}`}
   >
     {children}
   </div>

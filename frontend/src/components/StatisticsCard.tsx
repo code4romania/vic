@@ -1,5 +1,6 @@
 import React from 'react';
 import { ReactNode } from 'react';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Card from '../layouts/CardLayout';
 
 interface StatisticsCardProps {
@@ -10,31 +11,23 @@ interface StatisticsCardProps {
   info?: ReactNode;
 }
 
+// A counter: label with an optional icon on top, the number, a short note and an optional link.
 const StatisticsCard = ({ label, value, action, icon, info }: StatisticsCardProps) => {
   return (
     <Card>
-      <div className="flex flex-col">
-        <div className="flex sm:gap-5 gap-2 sm:p-6 p-3 items-center">
-          {icon}
-          <div className="flex flex-col gap-2 shrink-[80]">
-            <p className="text-cool-gray-500 leading-5">{label}</p>
-            <div className="flex flex-wrap gap-2 items-end">
-              <p className="text-4xl leading-8 font-semibold ">{value}</p>
-              {info && (
-                <span className="bg-yellow-200 h-7 leading-7 rounded-xl px-2.5 whitespace-nowrap">
-                  {info}
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
+      <div className="relative flex flex-col h-full p-5 gap-3">
+        {icon && <span className="absolute top-5 right-5">{icon}</span>}
+        <p className="text-sm text-cool-gray-600 font-robotoMedium leading-5 pr-8">{label}</p>
+        <p className="text-[2rem] leading-9 font-titilliumBold text-cool-gray-900">{value}</p>
+        {info && <span className="text-sm text-figure-amber font-robotoMedium">{info}</span>}
         {action && (
           <button
-            className="p-4 text-base leading-5 w-full bg-cool-gray-100 text-left hover:bg-cool-gray-200 rounded-b-lg"
+            className="mt-auto pt-1 self-start flex items-center gap-1.5 text-sm font-robotoMedium text-navy hover:underline"
             onClick={action.onClick}
             aria-label={action.label}
           >
             {action.label}
+            <ArrowRightIcon className="w-4 h-4" aria-hidden="true" />
           </button>
         )}
       </div>

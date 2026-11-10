@@ -5,8 +5,6 @@ import {
   SunIcon,
   UsersIcon,
   BuildingOffice2Icon,
-} from '@heroicons/react/24/outline';
-import {
   ClockIcon,
   PuzzlePieceIcon,
   CalendarIcon,
@@ -14,10 +12,10 @@ import {
   DocumentDuplicateIcon,
   CheckBadgeIcon,
   Cog6ToothIcon,
-} from '@heroicons/react/24/solid';
+  MegaphoneIcon,
+} from '@heroicons/react/24/outline';
 
 import { IRoute } from '../interfaces/route.interface';
-import { MegaphoneIcon } from '@heroicons/react/24/solid';
 
 export const ROUTES: IRoute[] = [
   { id: 0, name: i18n.t('side_menu:options.dashboard'), href: '', icon: RectangleGroupIcon },

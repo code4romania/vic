@@ -58,7 +58,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-cool-gray-900/40 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-hidden">
@@ -88,7 +88,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
                         id="close_panel__btn"
                         aria-label="Close panel"
                         type="button"
-                        className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                        className="rounded-md text-white hover:text-cool-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
                         onClick={setSlidingMenuOpen.bind(null, false)}
                       >
                         <XMarkIcon className="w-6 h-6" />
@@ -96,12 +96,12 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
                       </button>
                     </div>
                   </Transition.Child>
-                  <div className="h-full overflow-y-auto bg-gray-900">
+                  <div className="h-full overflow-y-auto bg-white">
                     <div className="space-y-6">
                       <nav
                         className={classNames(
                           'w-full',
-                          'transition-width duration-300 ease-out p-6 pt-10 space-y-4 bg-gray-900 rounded-xl cursor-pointer select-none',
+                          'p-3 pt-6 space-y-0.5 bg-white cursor-pointer select-none',
                         )}
                         aria-label="Sidebar"
                       >
@@ -115,7 +115,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
                             onClick={onMenuItemClick}
                           />
                         ))}
-                        <div className="text-white text-xs fixed bottom-4">{`v${APP_VERSION}`}</div>
+                        <div className="text-cool-gray-400 text-xs px-3 pt-6">{`v${APP_VERSION}`}</div>
                       </nav>
                     </div>
                   </div>

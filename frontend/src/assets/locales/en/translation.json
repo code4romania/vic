@@ -1123,6 +1123,25 @@
       "title": "Announcement responses",
       "empty": "No responses to announcements yet.",
       "on": "on \"{{name}}\""
+    },
+    "subtitle": "Volunteer activity at a glance",
+    "quick_actions": {
+      "title": "Quick actions",
+      "add_volunteer": "Add volunteer",
+      "add_event": "Create event",
+      "add_announcement": "Create announcement",
+      "add_hours": "Add hours"
+    },
+    "pending": {
+      "title": "Pending approvals",
+      "subtitle": "Requests waiting for your decision",
+      "review": "Review",
+      "volunteers": "Volunteer applications",
+      "hours": "Volunteer hours",
+      "events": "Event registrations",
+      "count_one": "{{count}} request",
+      "count_other": "{{count}} requests",
+      "none": "No requests are waiting for your decision."
     }
   },
   "documents": {

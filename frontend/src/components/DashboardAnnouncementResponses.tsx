@@ -20,25 +20,25 @@ const DashboardAnnouncementResponses = () => {
     <Card>
       <CardHeader>
         <h2>{t('title')}</h2>
-        <Button
-          label={`${i18n.t('dashboard:see_all')}`}
-          className="btn-outline-secondary"
-          onClick={() => navigate('/announcements')}
-        />
       </CardHeader>
       <CardBody>
         {!isLoading && !data?.length && <p className="text-cool-gray-500">{t('empty')}</p>}
-        <ul className="flex flex-col divide-y divide-cool-gray-200">
+        <ul className="flex flex-col gap-2">
           {data?.map((response) => (
-            <li key={response.id} className="py-3 first:pt-0 last:pb-0 flex flex-col gap-1">
+            <li
+              key={response.id}
+              className="flex flex-col gap-1 rounded-lg bg-cool-gray-50 px-4 py-3"
+            >
               <span className="flex flex-wrap justify-between gap-x-3 text-sm">
-                <span className="font-medium">{response.volunteerName}</span>
+                <span className="font-robotoMedium text-cool-gray-900">
+                  {response.volunteerName}
+                </span>
                 <span className="text-cool-gray-500">{formatDateWithTime(response.createdOn)}</span>
               </span>
               <p className="text-cool-gray-800 break-words">{response.comment}</p>
               <button
                 type="button"
-                className="self-start text-sm text-cool-gray-500 hover:text-yellow-600 text-left"
+                className="self-start text-sm text-cool-gray-500 hover:text-navy hover:underline text-left"
                 onClick={() => navigate(`/announcements/${response.announcementId}`)}
               >
                 {t('on', { name: response.announcementName })}
@@ -46,6 +46,11 @@ const DashboardAnnouncementResponses = () => {
             </li>
           ))}
         </ul>
+        <Button
+          label={`${i18n.t('dashboard:see_all')}`}
+          className="btn-outline-secondary w-full mt-4"
+          onClick={() => navigate('/announcements')}
+        />
       </CardBody>
     </Card>
   );

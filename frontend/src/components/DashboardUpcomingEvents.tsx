@@ -21,48 +21,53 @@ const DashboardUpcomingEvents = () => {
     <Card>
       <CardHeader>
         <h2>{t('title')}</h2>
-        <Button
-          label={`${i18n.t('dashboard:see_all')}`}
-          className="btn-outline-secondary"
-          onClick={() => navigate('/events')}
-        />
       </CardHeader>
       <CardBody>
         {!isLoading && !data?.length && <p className="text-cool-gray-500">{t('empty')}</p>}
-        <ul className="flex flex-col divide-y divide-cool-gray-200">
+        <ul className="flex flex-col gap-2">
           {data?.map((event) => (
-            <li key={event.id} className="py-3 first:pt-0 last:pb-0">
+            <li key={event.id}>
               <button
                 type="button"
-                className="w-full text-left flex flex-col gap-1 hover:text-yellow-600"
+                className="w-full text-left flex gap-3 rounded-lg bg-cool-gray-50 hover:bg-navy-50 px-4 py-3"
                 onClick={() => navigate(`/events/${event.id}`)}
               >
-                <span className="font-medium">{event.name}</span>
-                <span className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-cool-gray-500">
-                  <span className="flex items-center gap-1 whitespace-pre-line">
-                    <CalendarIcon className="h-4 w-4 shrink-0" />
-                    {formatEventDate(
-                      new Date(event.startDate),
-                      event.endDate ? new Date(event.endDate) : undefined,
-                    )}
-                  </span>
-                  {event.location && (
-                    <span className="flex items-center gap-1">
-                      <MapPinIcon className="h-4 w-4 shrink-0" />
-                      {event.location}
+                <span className="w-9 h-9 shrink-0 rounded-lg bg-white border border-cool-gray-200 text-figure-green flex items-center justify-center">
+                  <CalendarIcon className="w-5 h-5" aria-hidden="true" />
+                </span>
+                <span className="flex-1 min-w-0 flex flex-col gap-1">
+                  <span className="font-robotoMedium text-cool-gray-900">{event.name}</span>
+                  <span className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-cool-gray-500">
+                    <span className="flex items-center gap-1 whitespace-pre-line">
+                      <CalendarIcon className="h-4 w-4 shrink-0" />
+                      {formatEventDate(
+                        new Date(event.startDate),
+                        event.endDate ? new Date(event.endDate) : undefined,
+                      )}
                     </span>
-                  )}
-                  <span className="flex items-center gap-1">
-                    <UsersIcon className="h-4 w-4 shrink-0" />
-                    {event.capacity
-                      ? t('going_capacity', { going: event.going, capacity: event.capacity })
-                      : t('going', { going: event.going })}
+                    {event.location && (
+                      <span className="flex items-center gap-1">
+                        <MapPinIcon className="h-4 w-4 shrink-0" />
+                        {event.location}
+                      </span>
+                    )}
+                    <span className="flex items-center gap-1">
+                      <UsersIcon className="h-4 w-4 shrink-0" />
+                      {event.capacity
+                        ? t('going_capacity', { going: event.going, capacity: event.capacity })
+                        : t('going', { going: event.going })}
+                    </span>
                   </span>
                 </span>
               </button>
             </li>
           ))}
         </ul>
+        <Button
+          label={`${i18n.t('dashboard:see_all')}`}
+          className="btn-outline-secondary w-full mt-4"
+          onClick={() => navigate('/events')}
+        />
       </CardBody>
     </Card>
   );
