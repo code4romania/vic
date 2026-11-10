@@ -25,10 +25,15 @@ runCommand('auth:migrate', async (app, args) => {
   });
 
   if (report.duplicates.length) {
-    console.log('Duplicates to fix by hand (newest kept):');
+    // M18: the decision for each email, also on a dry run, to review before the real run
+    const describe = (u: (typeof report.duplicates)[number]['kept']): string =>
+      `${u.userId} (history ${u.history}, created ${new Date(u.createdOn).toISOString().slice(0, 10)})`;
+    console.log(
+      'Duplicates to fix by hand (kept: the most history, else the oldest):',
+    );
     for (const d of report.duplicates) {
       console.log(
-        `  ${d.realm} ${d.email}: kept ${d.keptUserId}, not imported ${d.otherUserIds.join(', ')}`,
+        `  ${d.realm} ${d.email}: kept ${describe(d.kept)}; not imported ${d.others.map(describe).join(', ')}`,
       );
     }
   }

@@ -22,11 +22,20 @@ export interface MigrateIdentitiesOptions {
   batchSize?: number;
 }
 
+export interface MigrationDuplicateUser {
+  userId: string;
+  history: number; // volunteer records, their hours and the admin's change history
+  createdOn: Date;
+}
+
 export interface MigrationDuplicate {
   realm: AuthRealm;
   email: string;
   keptUserId: string;
   otherUserIds: string[];
+  // M18: why the kept one: the most history, else the oldest
+  kept: MigrationDuplicateUser;
+  others: MigrationDuplicateUser[];
 }
 
 export interface MigrateIdentitiesReport {
@@ -38,7 +47,7 @@ export interface MigrateIdentitiesReport {
   unchanged: number; // an identity with that realm and email already existed
   skippedDeleted: number; // user rows with deleted_on set
   skippedNoEmail: number;
-  duplicates: MigrationDuplicate[]; // same lowercased email twice in one realm: newest kept
+  duplicates: MigrationDuplicate[]; // same lowercased email twice in one realm: the one with history kept
   emailsQueued: number; // held transition emails (would be, on a dry run)
 }
 
@@ -48,6 +57,7 @@ interface LegacyUserRow {
   email: string;
   cognito_id: string;
   created_on: Date;
+  history: number;
 }
 
 // Cognito usernames of federated users: <provider>_<subject>.
@@ -110,10 +120,16 @@ export class MigrateIdentitiesUseCase {
     );
     report.skippedDeleted = count;
 
+    // M18: for an email used twice, the row with the history (volunteer records and their hours,
+    // the admin's change history) is the one kept; with the same history, the oldest
     const rows: LegacyUserRow[] = await this.dataSource.query(
-      `SELECT id, type, email, cognito_id, created_on FROM "user"
-        WHERE deleted_on IS NULL
-        ORDER BY created_on DESC, id`,
+      `SELECT u.id, u.type, u.email, u.cognito_id, u.created_on,
+              ((SELECT count(*) FROM volunteer v WHERE v.user_id = u.id)
+               + (SELECT count(*) FROM activity_log l JOIN volunteer v ON v.id = l.volunteer_id WHERE v.user_id = u.id)
+               + (SELECT count(*) FROM actions_archive a WHERE a.author_id = u.id))::int AS history
+         FROM "user" u
+        WHERE u.deleted_on IS NULL
+        ORDER BY history DESC, u.created_on ASC, u.id`,
     );
     report.users = rows.length;
 
@@ -154,7 +170,7 @@ export class MigrateIdentitiesUseCase {
     return report;
   }
 
-  // Rows come newest first, so the first one seen for a realm and email is the one kept.
+  // Rows come with the most history (then the oldest) first, so the first one seen for a realm and email is kept.
   private dedupe(
     rows: LegacyUserRow[],
     report: MigrateIdentitiesReport,
@@ -175,13 +191,21 @@ export class MigrateIdentitiesUseCase {
         kept.set(key, row);
         continue;
       }
+      const summary = (user: LegacyUserRow): MigrationDuplicateUser => ({
+        userId: user.id,
+        history: +user.history,
+        createdOn: user.created_on,
+      });
       const duplicate = duplicates.get(key) ?? {
         realm,
         email,
         keptUserId: first.id,
         otherUserIds: [],
+        kept: summary(first),
+        others: [],
       };
       duplicate.otherUserIds.push(row.id);
+      duplicate.others.push(summary(row));
       duplicates.set(key, duplicate);
     }
 
