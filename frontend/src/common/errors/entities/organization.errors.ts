@@ -3,6 +3,7 @@ import { ErrorClass } from '../base-error.class';
 
 export enum ORGANIZATION_ERRORS {
   ORG_001 = 'ORG_001',
+  ORG_003 = 'ORG_003',
   ORG_004 = 'ORG_004',
   ORG_005 = 'ORG_005',
   ORG_006 = 'ORG_006',
@@ -21,6 +22,7 @@ export class OrganizationError extends ErrorClass<ORGANIZATION_ERRORS> {
   private constructor() {
     super({
       [ORGANIZATION_ERRORS.ORG_001]: i18n.t('organization:errors.ORG_001'),
+      [ORGANIZATION_ERRORS.ORG_003]: i18n.t('organization:errors.ORG_003'),
       [ORGANIZATION_ERRORS.ORG_004]: i18n.t('organization:errors.ORG_004'),
       [ORGANIZATION_ERRORS.ORG_005]: i18n.t('organization:errors.ORG_005'),
       [ORGANIZATION_ERRORS.ORG_006]: i18n.t('organization:errors.ORG_006'),
