@@ -9,7 +9,7 @@ import { truncate } from './utils/test-data-source';
 
 // #589 (#472): a volunteer the NGO makes inactive keeps the NGO in the app, read-only; one who
 // leaves by themselves does not.
-describe('Inactive volunteer keeps the organization (e2e)', () => {
+describe('Inactive and Candidate volunteers in the app (e2e)', () => {
   let testApp: TestApp;
   let adminToken: string;
   let volunteerToken: string;
@@ -115,5 +115,41 @@ describe('Inactive volunteer keeps the organization (e2e)', () => {
     );
 
     expect((await profile()).body.myOrganizations).toEqual([]);
+  });
+
+  // #590: a Candidate the NGO added who then made an account sees the NGO as waiting, and the NGO
+  // activates them from the web; a Candidate without an account cannot be activated.
+  it('a Candidate with an account is listed as candidate and can be activated', async () => {
+    await q(`UPDATE volunteer SET status = 'candidate' WHERE id = $1`, [
+      volunteerId,
+    ]);
+
+    expect((await profile()).body.myOrganizations).toEqual([
+      expect.objectContaining({
+        id: organizationId,
+        volunteerStatus: 'candidate',
+      }),
+    ]);
+
+    await request(testApp.app.getHttpServer())
+      .patch(`/volunteer/${volunteerId}/activate`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .expect(200);
+    expect((await profile()).body.myOrganizations).toEqual([
+      expect.objectContaining({ volunteerStatus: 'active' }),
+    ]);
+  });
+
+  it('a Candidate without an account cannot be activated', async () => {
+    await q(`UPDATE volunteer SET status = 'candidate' WHERE id = $1`, [
+      volunteerId,
+    ]);
+    await q(`UPDATE "user" SET has_account = false WHERE id = $1`, [userId]);
+
+    const res = await request(testApp.app.getHttpServer())
+      .patch(`/volunteer/${volunteerId}/activate`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .expect(400);
+    expect(res.body.code_error).toBe('VOLUNTEER_004');
   });
 });

@@ -195,6 +195,7 @@
             }
         },
         "profile": "Profil",
+        "waiting": "În așteptare",
         "active": "Activă",
         "volunteer_profile_missing": "Profil de voluntar incomplet",
         "stats": {

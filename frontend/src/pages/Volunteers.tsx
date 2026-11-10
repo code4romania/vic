@@ -240,7 +240,18 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
           block,
         ];
       case VolunteerStatus.CANDIDATE:
-        return [view, block];
+        // A Candidate who has made a VIC account waits for the NGO to activate them (#590).
+        return row.user?.hasAccount
+          ? [
+              view,
+              {
+                label: i18n.t('volunteers:popover.activate'),
+                icon: <CheckCircleIcon className="menu-icon" />,
+                onClick: onActivate,
+              },
+              block,
+            ]
+          : [view, block];
       default:
         return [view];
     }

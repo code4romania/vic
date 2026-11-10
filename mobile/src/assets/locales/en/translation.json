@@ -196,6 +196,7 @@
     },
     "profile": "Profile",
     "active": "Active",
+    "waiting": "Pending",
     "volunteer_profile_missing": "Volunteer profile incomplete",
     "stats": {
       "hours": "approved hours",

@@ -18,7 +18,10 @@ import { useUserProfile } from '../store/profile/profile.selector';
 import useStore from '../store/store';
 import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
 import { usePersonalStatistics } from '../services/statistics/statistics.service';
-import { IOrganizationVolunteer } from '../common/interfaces/organization-list-item.interface';
+import {
+  IOrganizationVolunteer,
+  isCandidateVolunteer,
+} from '../common/interfaces/organization-list-item.interface';
 import { colors, radius, shadows, spacing } from '../common/theme/tokens';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { useTabBarScroll } from '../components/navigation/TabBarScroll';
@@ -118,6 +121,11 @@ const Settings = ({ navigation }: any) => {
   const activeId = userProfile?.activeOrganization?.id;
 
   const onOpenOrganization = (organization: IOrganizationVolunteer) => {
+    // A Candidate only sees the organization's page, which says it waits for activation (#590).
+    if (isCandidateVolunteer(organization)) {
+      navigation.navigate('organization-profile', { organizationId: organization.id });
+      return;
+    }
     if (organization.id !== activeId) {
       setActiveOrganization(organization);
       switchOrganization({ organizationId: organization.id });
@@ -206,11 +214,17 @@ const Settings = ({ navigation }: any) => {
                 }
                 title={organization.name}
                 subtitle={
-                  organization.volunteerProfileId ? undefined : `${t('volunteer_profile_missing')}`
+                  isCandidateVolunteer(organization) || organization.volunteerProfileId
+                    ? undefined
+                    : `${t('volunteer_profile_missing')}`
                 }
                 trailing={
                   <View style={styles.trailing}>
-                    {organization.id === activeId && <Badge label={`${t('active')}`} tone="ok" />}
+                    {isCandidateVolunteer(organization) ? (
+                      <Badge label={`${t('waiting')}`} tone="wait" />
+                    ) : (
+                      organization.id === activeId && <Badge label={`${t('active')}`} tone="ok" />
+                    )}
                     <Chevron />
                   </View>
                 }
