@@ -10,6 +10,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import {
+  PDF_MAX_BYTES,
+  PDF_MIMETYPES,
+  singleFileUpload,
+} from 'src/infrastructure/uploads/upload-options';
+import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { ApiBearerAuth, ApiConsumes, ApiParam } from '@nestjs/swagger';
 import { IsString, MaxLength, MinLength } from 'class-validator';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
@@ -60,7 +66,16 @@ export class TemplateController {
   }
 
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileFieldsInterceptor([{ name: 'template', maxCount: 1 }]))
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [{ name: 'template', maxCount: 1 }],
+      singleFileUpload({
+        maxBytes: PDF_MAX_BYTES,
+        mimetypes: PDF_MIMETYPES,
+        invalidType: ContractExceptionMessages.CONTRACT_008,
+      }),
+    ),
+  )
   @Post()
   async create(
     @Body() { name }: CreateContractModelDto,

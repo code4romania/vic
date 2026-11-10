@@ -8,6 +8,7 @@ export enum UserExceptionCodes {
   USER_006 = 'USER_006',
   USER_007 = 'USER_007',
   USER_008 = 'USER_008',
+  USER_009 = 'USER_009',
 }
 
 type UserExceptionCodeType = keyof typeof UserExceptionCodes;
@@ -45,5 +46,9 @@ export const UserExceptionMessages: Record<
   [UserExceptionCodes.USER_008]: {
     code_error: UserExceptionCodes.USER_008,
     message: 'Error while trying to update the user data',
+  },
+  [UserExceptionCodes.USER_009]: {
+    code_error: UserExceptionCodes.USER_009,
+    message: 'The profile picture must be a JPEG, PNG, WebP or HEIC image',
   },
 };

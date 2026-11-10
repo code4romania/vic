@@ -30,10 +30,16 @@ import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { ContractListItemPresenter } from './presenters/contract-list-item.presenter';
 import { GetOneContractUsecase } from 'src/usecases/documents/get-one-contract.usecase';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import {
+  PDF_MAX_BYTES,
+  PDF_MIMETYPES,
+  singleFileUpload,
+} from 'src/infrastructure/uploads/upload-options';
 import { GetContractsForDownloadUsecase } from 'src/usecases/documents/get-contracts-for-download.usecase';
 import { jsonToExcelBuffer } from 'src/common/helpers/utils';
 import { IContractDownloadModel } from 'src/modules/documents/models/contract.model';
 import { Response } from 'express';
+import { ContractExceptionMessages } from 'src/modules/documents/exceptions/contract.exceptions';
 import { DeleteContractUsecase } from 'src/usecases/documents/delete-contract.usecase';
 import {
   CertificateUsecase,
@@ -164,9 +170,14 @@ export class ContractController {
   @ApiConsumes('multipart/form-data')
   @ApiBody({ type: UploadContractDto })
   @UseInterceptors(
-    FileFieldsInterceptor([{ name: 'contract', maxCount: 1 }], {
-      limits: { fileSize: 10 * 1024 * 1024 },
-    }),
+    FileFieldsInterceptor(
+      [{ name: 'contract', maxCount: 1 }],
+      singleFileUpload({
+        maxBytes: PDF_MAX_BYTES,
+        mimetypes: PDF_MIMETYPES,
+        invalidType: ContractExceptionMessages.CONTRACT_008,
+      }),
+    ),
   )
   @Post()
   async upload(
