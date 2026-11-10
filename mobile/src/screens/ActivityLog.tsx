@@ -82,12 +82,17 @@ const ActivityLog = ({ navigation, route }: any) => {
       case ActivityLogStatus.APPROVED:
         return {
           tone,
-          text: `${t('disclaimer.approved', { date: formatLogLongDay(log.approvedOn) })}`,
+          // older entries may have no approval date
+          text: log.approvedOn
+            ? `${t('disclaimer.approved', { date: formatLogLongDay(log.approvedOn) })}`
+            : `${t('disclaimer.approved_undated')}`,
         };
       case ActivityLogStatus.REJECTED:
         return {
           tone,
-          text: `${t('disclaimer.rejected', { date: formatLogLongDay(log.rejectedOn) })}`,
+          text: log.rejectedOn
+            ? `${t('disclaimer.rejected', { date: formatLogLongDay(log.rejectedOn) })}`
+            : `${t('disclaimer.rejected_undated')}`,
           reason: log.rejectionReason,
         };
       default:
@@ -126,17 +131,6 @@ const ActivityLog = ({ navigation, route }: any) => {
             >
               <EventIcon name="back" size={20} />
             </PressableScale>
-            {isPending && (
-              <VText
-                variant="label"
-                style={styles.link}
-                onPress={onEdit}
-                accessibilityRole="button"
-                testID="log-edit-link"
-              >
-                {t('general:edit', { item: '' }).trim()}
-              </VText>
-            )}
           </View>
 
           {!log && isFetching && <ActivityLogSkeleton />}
@@ -145,6 +139,7 @@ const ActivityLog = ({ navigation, route }: any) => {
             // deleted in the meantime (404) or the request failed: say so instead of a blank page
             <EmptyState
               title={`${notFound ? t('errors.not_found') : t('errors.generic')}`}
+              error={!notFound}
               actionLabel={notFound ? undefined : `${t('events:retry')}`}
               onAction={notFound ? undefined : () => refetch()}
               testID="log-error"

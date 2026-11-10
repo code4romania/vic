@@ -148,6 +148,7 @@ const Events = ({ navigation, route }: any) => {
       return (
         <EmptyState
           title={`${t('errors.generic')}`}
+          error
           actionLabel={`${t('retry')}`}
           onAction={reload}
           testID="events-error"

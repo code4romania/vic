@@ -152,6 +152,7 @@ const Documents = ({ navigation, route }: any) => {
         {!!volunteerId && !isLoading && !signedItems.length && (
           <EmptyState
             title={`${history.error ? t('errors.generic') : t('empty.title')}`}
+            error={!!history.error}
             description={history.error ? undefined : `${t('empty.description')}`}
             actionLabel={history.error ? `${t('events:retry')}` : undefined}
             onAction={history.error ? reload : undefined}

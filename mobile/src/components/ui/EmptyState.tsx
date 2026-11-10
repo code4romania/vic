@@ -1,7 +1,9 @@
 import React, { ReactNode } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { VText } from './VText';
-import { colors } from '../../common/theme/tokens';
+import { VButton } from './VButton';
+import { StateIcon } from './StateIcon';
 
 export interface EmptyStateProps {
   icon?: ReactNode;
@@ -9,43 +11,50 @@ export interface EmptyStateProps {
   description?: string;
   actionLabel?: string;
   onAction?: () => void;
+  /** a failed load: the error icon and the "not your fault, try again" line of the canvas board "Stări" */
+  error?: boolean;
   testID?: string;
 }
 
-/** Centered empty / no-results message with an optional underlined action (canvas `.empty`). */
+/** Centered empty / no-results / error message with an optional action (canvas board "Stări"). */
 export const EmptyState = ({
   icon,
   title,
   description,
   actionLabel,
   onAction,
+  error,
   testID,
-}: EmptyStateProps) => (
-  <View style={styles.empty} testID={testID}>
-    {icon}
-    <VText variant="h3" style={styles.center}>
-      {title}
-    </VText>
-    {!!description && (
-      <VText variant="sub" style={styles.center}>
-        {description}
+}: EmptyStateProps) => {
+  const { t } = useTranslation('general');
+  return (
+    <View style={styles.empty} testID={testID}>
+      {icon ?? (error ? <StateIcon kind="error" size={64} /> : null)}
+      <VText variant="h3" style={styles.center} accessibilityRole="header">
+        {title}
       </VText>
-    )}
-    {!!actionLabel && onAction && (
-      <Pressable onPress={onAction} hitSlop={8} accessibilityRole="button" style={styles.action}>
-        <VText variant="label" color={colors.ink} style={styles.link}>
-          {actionLabel}
+      {!!(description || error) && (
+        <VText variant="sub" style={styles.center}>
+          {description || `${t('error.load_hint')}`}
         </VText>
-      </Pressable>
-    )}
-  </View>
-);
+      )}
+      {!!actionLabel && onAction && (
+        <VButton
+          label={actionLabel}
+          onPress={onAction}
+          variant="navy"
+          size="small"
+          style={styles.action}
+        />
+      )}
+    </View>
+  );
+};
 
 export default EmptyState;
 
 const styles = StyleSheet.create({
   empty: { alignItems: 'center', gap: 8, paddingVertical: 60, paddingHorizontal: 20 },
   center: { textAlign: 'center' },
-  action: { marginTop: 6 },
-  link: { fontFamily: 'roboto-bold', textDecorationLine: 'underline' },
+  action: { marginTop: 10, minHeight: 44, paddingHorizontal: 20 },
 });

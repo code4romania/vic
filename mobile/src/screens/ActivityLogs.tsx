@@ -192,6 +192,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
       return (
         <EmptyState
           title={`${t('errors.generic')}`}
+          error
           actionLabel={`${t('events:retry')}`}
           onAction={reload}
         />
