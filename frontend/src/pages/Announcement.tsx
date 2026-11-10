@@ -1,28 +1,28 @@
 import {
   ArchiveBoxIcon,
+  CalendarIcon,
   CheckIcon,
+  ClockIcon,
+  DocumentDuplicateIcon,
   PauseIcon,
   PencilIcon,
   TrashIcon,
+  UsersIcon,
 } from '@heroicons/react/24/outline';
-import React, { useState, useEffect } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import i18n from '../common/config/i18n';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
-import { AnouncementStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
+import { formatDate, formatDateWithTime } from '../common/utils/utils';
 import Button from '../components/Button';
-import CardBody from '../components/CardBody';
-import CardHeader from '../components/CardHeader';
 import ConfirmationModal from '../components/ConfirmationModal';
 import EmptyContent from '../components/EmptyContent';
-import FormInput from '../components/FormInput';
 import LoadingContent from '../components/LoadingContent';
 import PageHeader from '../components/PageHeader';
-import StatusWithMarker from '../components/StatusWithMarker';
+import StatusBadge from '../components/StatusBadge';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
-import FormLayout from '../layouts/FormLayout';
 import PageLayout from '../layouts/PageLayout';
 import {
   useAnnouncement,
@@ -31,6 +31,19 @@ import {
 } from '../services/announcement/announcement.service';
 import { AnnouncementStatusAction } from '../services/announcement/announcement.api';
 import AnnouncementResponses from '../components/AnnouncementResponses';
+import {
+  ANNOUNCEMENT_STATUS_TONE,
+  AnnouncementTypeChip,
+  formatAnnouncementPeriod,
+  formatVolunteersNeeded,
+} from '../components/AnnouncementCard';
+
+const DetailRow = ({ label, children }: { label: string; children: ReactNode }) => (
+  <div className="flex flex-col gap-0.5">
+    <dt className="text-sm text-cool-gray-500">{label}</dt>
+    <dd className="text-cool-gray-900">{children}</dd>
+  </div>
+);
 
 const Announcement = () => {
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
@@ -43,6 +56,7 @@ const Announcement = () => {
     data: announcement,
     isLoading: isAnnouncementLoading,
     error: announcementError,
+    refetch,
   } = useAnnouncement(id as string);
 
   const { mutateAsync: changeStatus, isLoading: isUpdateAnnouncementLoading } =
@@ -62,14 +76,15 @@ const Announcement = () => {
     navigate('/announcements');
   };
 
+  // stays on the page: the status badge and the actions follow the new status
   const onChangeStatus = (action: AnnouncementStatusAction) => {
     if (announcement) {
       changeStatus(
         { id: announcement.id, action },
         {
           onSuccess: () => {
-            onBackButtonPress();
             useSuccessToast(i18n.t(`announcement:submit.messages.${action}`));
+            refetch();
           },
           onError: (error) => {
             useErrorToast(
@@ -83,6 +98,10 @@ const Announcement = () => {
 
   const onEdit = () => {
     navigate(`edit`);
+  };
+
+  const onDuplicate = () => {
+    if (announcement) navigate('/announcements/add', { state: { duplicateOf: announcement } });
   };
 
   const onDelete = () => {
@@ -108,115 +127,127 @@ const Announcement = () => {
     }
   };
 
+  const isBusy = isUpdateAnnouncementLoading || isDeleteAnnouncementLoading;
+
+  const actions = announcement && (
+    <>
+      <Button
+        className="btn-outline-secondary text-figure-red"
+        icon={<TrashIcon className="h-5 w-5" />}
+        label={i18n.t('announcement:actions.delete')}
+        disabled={isBusy}
+        onClick={onDelete}
+      />
+      <Button
+        className="btn-outline-secondary"
+        icon={<DocumentDuplicateIcon className="h-5 w-5" />}
+        label={i18n.t('announcement:actions.duplicate')}
+        onClick={onDuplicate}
+      />
+      {announcement.status !== AnnouncementStatus.ARCHIVED && (
+        <>
+          <Button
+            className="btn-outline-secondary"
+            icon={<ArchiveBoxIcon className="h-5 w-5" />}
+            label={i18n.t('announcement:actions.archive')}
+            disabled={isBusy}
+            onClick={() => onChangeStatus('archive')}
+          />
+          <Button
+            className="btn-outline-secondary"
+            icon={<PencilIcon className="h-5 w-5" />}
+            label={i18n.t('announcement:actions.edit')}
+            onClick={onEdit}
+          />
+        </>
+      )}
+      {announcement.status === AnnouncementStatus.ACTIVE && (
+        <Button
+          className="btn-secondary"
+          icon={<PauseIcon className="h-5 w-5" />}
+          label={i18n.t('announcement:actions.deactivate')}
+          disabled={isBusy}
+          onClick={() => onChangeStatus('deactivate')}
+        />
+      )}
+      {announcement.status === AnnouncementStatus.INACTIVE && (
+        <Button
+          className="btn-primary"
+          icon={<CheckIcon className="h-5 w-5" />}
+          label={i18n.t('announcement:actions.activate')}
+          disabled={isBusy}
+          onClick={() => onChangeStatus('activate')}
+        />
+      )}
+    </>
+  );
+
   return (
     <PageLayout>
-      <PageHeader onBackButtonPress={onBackButtonPress}>{i18n.t('general:view')}</PageHeader>
-      {isAnnouncementLoading && isUpdateAnnouncementLoading && isDeleteAnnouncementLoading && (
-        <LoadingContent />
-      )}
+      <PageHeader
+        onBackButtonPress={onBackButtonPress}
+        subtitle={
+          announcement ? (
+            <span className="flex flex-wrap items-center gap-2">
+              <StatusBadge tone={ANNOUNCEMENT_STATUS_TONE[announcement.status]}>
+                {i18n.t(`announcement:status.${announcement.status}`)}
+              </StatusBadge>
+              <AnnouncementTypeChip announcement={announcement} />
+            </span>
+          ) : undefined
+        }
+        actions={actions}
+      >
+        {announcement?.name ?? `${i18n.t('announcement:detail.title')}`}
+      </PageHeader>
+      {isAnnouncementLoading && <LoadingContent />}
       {announcementError && <EmptyContent description={i18n.t('general:error.load_entries')} />}
       {announcement && (
-        <Card>
-          <CardHeader>
-            <h4 className="text-sm sm:text-xl">{i18n.t('announcement:form.title')}</h4>
-            <div className="flex flex-row gap-4">
-              <Button
-                className="btn-text-danger"
-                icon={<TrashIcon className="menu-icon" />}
-                label={i18n.t('general:delete')}
-                onClick={onDelete}
-              />
-              {announcement.status !== AnnouncementStatus.ARCHIVED && (
-                <>
-                  <Button
-                    className="btn-outline-secondary"
-                    label={i18n.t('general:edit', { item: '' })}
-                    icon={<PencilIcon className="menu-icon" />}
-                    onClick={onEdit}
-                  />
-                  <Button
-                    className="btn-outline-secondary"
-                    icon={<ArchiveBoxIcon className="h-5 w-5" />}
-                    label={i18n.t('announcement:actions.archive')}
-                    onClick={() => onChangeStatus('archive')}
-                  />
-                </>
-              )}
-              {announcement.status === AnnouncementStatus.ACTIVE && (
-                <Button
-                  className="btn-outline-secondary"
-                  icon={<PauseIcon className="h-5 w-5" />}
-                  label={i18n.t('announcement:actions.deactivate')}
-                  onClick={() => onChangeStatus('deactivate')}
-                />
-              )}
-              {announcement.status === AnnouncementStatus.INACTIVE && (
-                <Button
-                  className="btn-primary"
-                  icon={<CheckIcon className="h-5 w-5" />}
-                  label={i18n.t('announcement:actions.activate')}
-                  onClick={() => onChangeStatus('activate')}
-                />
-              )}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
+          <Card className="xl:col-span-1">
+            <div className="px-5 sm:px-6 py-4">
+              <h2>{i18n.t('announcement:detail.title')}</h2>
             </div>
-          </CardHeader>
-          <CardBody>
-            <FormLayout>
-              <FormInput
-                label={`${i18n.t('announcement:header.name')}`}
-                value={announcement.name}
-                readOnly
-              />
-              <FormInput
-                label={`${i18n.t('announcement:form.description.label')}`}
-                value={announcement.description}
-                readOnly
-              />
-              <FormInput
-                label={`${i18n.t('announcement:header.type')}`}
-                value={`${i18n.t(`announcement:type.${announcement.type}`)}`}
-                readOnly
-              />
-              <FormInput
-                label={`${i18n.t('announcement:header.volunteers_needed')}`}
-                value={`${announcement.volunteersNeeded ?? '-'}`}
-                readOnly
-              />
-              <FormInput
-                label={`${i18n.t('announcement:header.display_period')}`}
-                value={`${formatDate(announcement.displayStartDate)} - ${
-                  announcement.displayEndDate
-                    ? formatDate(announcement.displayEndDate)
-                    : i18n.t('announcement:no_end')
-                }`}
-                readOnly
-              />
-              <hr className="border-cool-gray-200" />
-              <div className="flex gap-2.5 flex-col">
-                <small className="text-cool-gray-500">{i18n.t('announcement:header.status')}</small>
-                <StatusWithMarker
-                  markerColor={AnouncementStatusMarkerColorMapper[announcement.status]}
-                >
-                  {i18n.t(`announcement:status.${announcement.status}`)}
-                </StatusWithMarker>
-              </div>
-              {announcement.publishedOn && (
-                <FormInput
-                  label={`${i18n.t('announcement:header.published_on')}`}
-                  value={formatDate(announcement.publishedOn)}
-                  readOnly
-                />
-              )}
-              <FormInput
-                label={`${i18n.t('announcement:header.updated_on')}`}
-                value={formatDate(announcement.updatedOn)}
-                readOnly
-              />
-            </FormLayout>
-          </CardBody>
-        </Card>
+            <div className="p-5 sm:p-6 flex flex-col gap-5">
+              <p className="text-cool-gray-800 whitespace-pre-line break-words">
+                {announcement.description}
+              </p>
+              <ul className="flex flex-col gap-2 text-sm text-cool-gray-700">
+                <li className="flex items-center gap-2">
+                  <UsersIcon className="w-4 h-4 text-cool-gray-500" aria-hidden="true" />
+                  {formatVolunteersNeeded(announcement)}
+                </li>
+                <li className="flex items-center gap-2">
+                  <CalendarIcon className="w-4 h-4 text-cool-gray-500" aria-hidden="true" />
+                  {formatAnnouncementPeriod(announcement)}
+                </li>
+              </ul>
+              <dl className="grid grid-cols-2 gap-4 pt-4 border-t border-cool-gray-200">
+                <DetailRow label={`${i18n.t('announcement:header.type')}`}>
+                  {i18n.t(`announcement:type.${announcement.type}`)}
+                </DetailRow>
+                <DetailRow label={`${i18n.t('announcement:header.published_on')}`}>
+                  {announcement.publishedOn ? formatDateWithTime(announcement.publishedOn) : '-'}
+                </DetailRow>
+                <DetailRow label={`${i18n.t('announcement:header.updated_on')}`}>
+                  <span className="flex items-center gap-1.5">
+                    <ClockIcon className="w-4 h-4 text-cool-gray-500" aria-hidden="true" />
+                    {formatDate(announcement.updatedOn)}
+                  </span>
+                </DetailRow>
+                {announcement.archivedOn && (
+                  <DetailRow label={`${i18n.t('announcement:status.archived')}`}>
+                    {formatDate(announcement.archivedOn)}
+                  </DetailRow>
+                )}
+              </dl>
+            </div>
+          </Card>
+          <div className="xl:col-span-2">
+            <AnnouncementResponses announcementId={announcement.id} />
+          </div>
+        </div>
       )}
-      {announcement && <AnnouncementResponses announcementId={announcement.id} />}
       {selectedIdForDeletion && (
         <ConfirmationModal
           title={i18n.t('announcement:modal.title')}

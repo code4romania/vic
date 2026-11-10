@@ -955,14 +955,15 @@
         "required": "Numele anunțului este obligatoriu",
         "min": "Numele anunțului poate să aibă minim {{value}} caractere",
         "max": "Numele anunțului poate să aibă maxim {{value}} caractere",
-        "placeholder": "Introdu titlul anunțului"
+        "placeholder": "ex: Căutăm 2 voluntari pentru marketing",
+        "label": "Titlu"
       },
       "description": {
-        "label": "Conținut anunț",
+        "label": "Descriere",
         "required": "Descrierea anunțului este obligatorie",
         "min": "Descrierea poate să aibă minim {{value}} caractere",
         "max": "Descrierea anunțului poate să aibă maxim {{value}} caractere",
-        "placeholder": "Introdu conținutul anunțului"
+        "placeholder": "Descrie anunțul și cerințele..."
       },
       "type": {
         "label": "Tip anunț",
@@ -1020,7 +1021,11 @@
       "create": "Creează anunț",
       "activate": "Activează",
       "deactivate": "Dezactivează",
-      "archive": "Arhivează"
+      "archive": "Arhivează",
+      "view": "Vezi detalii",
+      "edit": "Editează",
+      "duplicate": "Duplică",
+      "delete": "Șterge"
     },
     "all_organization": "Toată organizația",
     "responses": {
@@ -1032,10 +1037,79 @@
       "date": "Data"
     },
     "counters": {
-      "active": "Anunțuri active",
-      "inactive": "Anunțuri inactive",
-      "archived": "Anunțuri arhivate",
-      "responses": "Total răspunsuri"
+      "active": "Active",
+      "inactive": "Inactive",
+      "archived": "Arhivate",
+      "responses": "Răspunsuri totale",
+      "info": {
+        "active": "Se văd acum în aplicație",
+        "inactive": "Ascunse din aplicație",
+        "archived": "Închise definitiv",
+        "responses": "De la voluntari, pe toate anunțurile"
+      }
+    },
+    "page": {
+      "title": "Anunțuri",
+      "subtitle": "Gestionează anunțurile pentru recrutare și activități",
+      "search": "Caută anunțuri...",
+      "add": "Anunț nou",
+      "all_types": "Toate tipurile",
+      "sort": "Ordonare",
+      "sort_options": {
+        "updatedOn": "Modificate recent",
+        "publishedOn": "Publicate recent",
+        "displayStartDate": "Data de început a afișării",
+        "name": "Titlu (A–Z)"
+      },
+      "empty": {
+        "active": "Nu ai niciun anunț activ.",
+        "inactive": "Nu ai niciun anunț inactiv.",
+        "archived": "Nu ai niciun anunț arhivat.",
+        "search": "Niciun anunț nu se potrivește căutării."
+      },
+      "pagination": "Pagina {{page}} din {{pages}}",
+      "previous": "Înapoi",
+      "next": "Înainte"
+    },
+    "tabs": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "archived": "Arhivate"
+    },
+    "type_short": {
+      "recruitment": "Recrutare",
+      "activity": "Activitate"
+    },
+    "card": {
+      "volunteers_needed_one": "{{count}} voluntar necesar",
+      "volunteers_needed_few": "{{count}} voluntari necesari",
+      "volunteers_needed_other": "{{count}} de voluntari necesari",
+      "no_volunteers_needed": "Fără număr fix de voluntari",
+      "from": "De la {{date}}",
+      "published": "Publicat: {{date}}",
+      "updated": "Modificat: {{date}}",
+      "responses_one": "{{count}} răspuns",
+      "responses_few": "{{count}} răspunsuri",
+      "responses_other": "{{count}} de răspunsuri",
+      "no_responses": "Niciun răspuns încă",
+      "view_responses": "Vezi răspunsurile"
+    },
+    "create": {
+      "title": "Creează anunț nou",
+      "subtitle": "Completează detaliile anunțului pentru voluntari",
+      "duplicate_title": "Duplică anunțul",
+      "duplicate_subtitle": "Pornești de la „{{name}}”; anunțul nou se salvează separat"
+    },
+    "edit": {
+      "title": "Editează anunțul",
+      "subtitle": "Modifică detaliile anunțului pentru voluntari"
+    },
+    "detail": {
+      "title": "Detalii anunț",
+      "responses_title": "Răspunsuri la anunț",
+      "responses_subtitle": "Ce au răspuns voluntarii din aplicație",
+      "contact": "Contactează",
+      "no_responses": "Niciun voluntar nu a răspuns încă la acest anunț."
     }
   },
   "activity_log": {
