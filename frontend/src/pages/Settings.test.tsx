@@ -40,7 +40,7 @@ describe('Settings (#506, #509)', () => {
     expect(screen.getByText(ORGANIZATION.email)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: t('settings:organization.edit') })).toHaveAttribute(
       'href',
-      '/organization/edit',
+      '/organization',
     );
   });
 

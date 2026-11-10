@@ -2,10 +2,9 @@ import React from 'react';
 import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import AccessRequest from '../pages/AccessRequest';
 import Dashboard from '../pages/Dashboard';
-import EditOrganization from '../pages/EditOrganization';
 import EditAccessCode from '../pages/EditAccessCode';
 import Login from '../pages/Login';
-import Organization from '../containers/query/OrganizationWithQueryParam';
+import Organization from '../pages/Organization';
 import Approvals from '../pages/Approvals';
 import Settings from '../pages/Settings';
 import SuperAdminLists from '../pages/SuperAdminLists';
@@ -63,7 +62,8 @@ const Router = () => {
             <Route index element={<Dashboard />}></Route>
             <Route path="organization" element={<Outlet />}>
               <Route index element={<Organization />} />
-              <Route path="edit" element={<EditOrganization />} />
+              {/* the profile is edited in place on "Configurare organizație" */}
+              <Route path="edit" element={<Navigate to="/organization" replace />} />
               <Route path="team" element={<Team />} />
             </Route>
             <Route path="volunteers" element={<Outlet />}>

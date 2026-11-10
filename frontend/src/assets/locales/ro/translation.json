@@ -112,7 +112,7 @@
       "activity_types": "Categorii activități",
       "activity_log": "Ore de voluntariat",
       "actions_archive": "Arhivă acțiuni",
-      "organization_profile": "Profil",
+      "organization_profile": "Configurare",
       "team": "Echipa",
       "validation": "Validare ONG-uri",
       "events_list": "Listă evenimente",
@@ -471,6 +471,61 @@
     "validation": {
       "title": "Validare",
       "description": "Super adminul VIC validează organizația pe baza CUI-ului."
+    },
+    "setup": {
+      "title": "Configurare organizație",
+      "subtitle": "Datele organizației, departamentele, rolurile, filialele și activitățile",
+      "save": "Salvează modificările",
+      "public_banner": {
+        "title": "Pagina publică a organizației",
+        "text": "Datele de mai jos apar voluntarilor în aplicația VIC, pe pagina organizației. Ține-le actualizate."
+      },
+      "info": {
+        "title": "Informații organizație",
+        "subtitle": "Datele generale despre organizația ta",
+        "validated": "Validată la {{date}}"
+      },
+      "logo": {
+        "title": "Logo",
+        "current": "Logo actual",
+        "none": "Fără logo"
+      },
+      "chips": {
+        "add": "Adaugă",
+        "edit": "Editează {{name}}",
+        "remove": "Șterge {{name}}",
+        "members_one": "{{count}} membru",
+        "members_few": "{{count}} membri",
+        "members_other": "{{count}} de membri",
+        "department": {
+          "title": "Departamente",
+          "subtitle": "Departamentele din organizația ta",
+          "placeholder": "Departament nou (ex: Comunicare, Logistică)",
+          "empty": "Niciun departament încă."
+        },
+        "role": {
+          "title": "Roluri",
+          "subtitle": "Rolurile pe care le pot avea voluntarii",
+          "placeholder": "Rol nou (ex: Coordonator, Fundraiser)",
+          "empty": "Niciun rol încă."
+        },
+        "branch": {
+          "title": "Filiale",
+          "subtitle": "Filialele și sucursalele organizației",
+          "placeholder": "Filială nouă (ex: Cluj-Napoca)",
+          "empty": "Nicio filială încă."
+        },
+        "activity": {
+          "title": "Activități",
+          "subtitle": "Categoriile de activitate pentru orele de voluntariat",
+          "placeholder": "Activitate nouă (ex: Colectare fonduri)",
+          "empty": "Nicio activitate încă.",
+          "archive_title": "Arhivează {{name}}",
+          "archive_text": "Activitatea nu mai poate fi aleasă pentru ore noi. Orele înregistrate deja o păstrează și o poți reactiva oricând.",
+          "archive": "Arhivează",
+          "manage": "Pictograme, legături cu departamente și activități arhivate"
+        }
+      }
     }
   },
   "pagination": {

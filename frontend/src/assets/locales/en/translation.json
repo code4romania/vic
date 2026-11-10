@@ -112,7 +112,7 @@
       "activity_types": "Activity categories",
       "activity_log": "Volunteer hours",
       "actions_archive": "Actions archive",
-      "organization_profile": "Profile",
+      "organization_profile": "Setup",
       "team": "Team",
       "validation": "NGO validation",
       "events_list": "Events list",
@@ -467,6 +467,60 @@
     "validation": {
       "title": "Validation",
       "description": "The VIC super admin validates the organization based on its tax ID (CUI)."
+    },
+    "setup": {
+      "title": "Organization setup",
+      "subtitle": "Organization details, departments, roles, branches and activities",
+      "save": "Save changes",
+      "public_banner": {
+        "title": "Public organization page",
+        "text": "The details below are shown to volunteers in the VIC app, on the organization's page. Keep them up to date."
+      },
+      "info": {
+        "title": "Organization details",
+        "subtitle": "General details about your organization",
+        "validated": "Validated on {{date}}"
+      },
+      "logo": {
+        "title": "Logo",
+        "current": "Current logo",
+        "none": "No logo"
+      },
+      "chips": {
+        "add": "Add",
+        "edit": "Edit {{name}}",
+        "remove": "Delete {{name}}",
+        "members_one": "{{count}} member",
+        "members_other": "{{count}} members",
+        "department": {
+          "title": "Departments",
+          "subtitle": "Your organization's departments",
+          "placeholder": "New department (e.g. Communication, Logistics)",
+          "empty": "No department yet."
+        },
+        "role": {
+          "title": "Roles",
+          "subtitle": "The roles volunteers can have",
+          "placeholder": "New role (e.g. Coordinator, Fundraiser)",
+          "empty": "No role yet."
+        },
+        "branch": {
+          "title": "Branches",
+          "subtitle": "The organization's branches",
+          "placeholder": "New branch (e.g. Cluj-Napoca)",
+          "empty": "No branch yet."
+        },
+        "activity": {
+          "title": "Activities",
+          "subtitle": "Activity categories for volunteer hours",
+          "placeholder": "New activity (e.g. Fundraising)",
+          "empty": "No activity yet.",
+          "archive_title": "Archive {{name}}",
+          "archive_text": "The activity can no longer be chosen for new hours. Hours already logged keep it, and you can reactivate it anytime.",
+          "archive": "Archive",
+          "manage": "Icons, links to departments and archived activities"
+        }
+      }
     }
   },
   "pagination": {

@@ -15,6 +15,8 @@ interface DivisionInputModalProps {
   onClose: () => void;
   onSubmit: (division: DivisionFormTypes) => void;
   defaultValue?: string;
+  // extra content under the field, e.g. a link to the members
+  children?: React.ReactNode;
 }
 
 export type DivisionFormTypes = {
@@ -43,6 +45,7 @@ const DivisionInputModal = ({
   onClose,
   onSubmit,
   defaultValue,
+  children,
 }: DivisionInputModalProps) => {
   const {
     handleSubmit,
@@ -81,6 +84,7 @@ const DivisionInputModal = ({
             );
           }}
         />
+        {children}
       </form>
       <div className="flex flex-row-reverse">
         <Button
