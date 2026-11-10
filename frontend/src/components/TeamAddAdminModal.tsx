@@ -32,7 +32,7 @@ export const showTeamError = (err: TeamApiError) => {
     useErrorToast(i18n.t('team:errors.too_many'));
   } else if (code && code.startsWith('ORG_')) {
     useErrorToast(InternalErrors.ORGANIZATION_ERRORS.getError(code));
-  } else if (code === 'USER_001') {
+  } else if ((code as string | undefined) === 'USER_001') {
     // the admin was removed meanwhile (another tab, another admin)
     useErrorToast(i18n.t('team:errors.USER_001'));
   } else {
