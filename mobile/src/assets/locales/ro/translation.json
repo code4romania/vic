@@ -653,7 +653,7 @@
             "description": "Cele {{hours}} ore de la {{title}} nu mai ajung la organizație."
         },
         "toast": {
-            "success": "Înregistrarea a fost ștearsă cu success."
+            "success": "Înregistrarea a fost ștearsă cu succes."
         },
         "edit_title": "Editează orele",
         "status": {
