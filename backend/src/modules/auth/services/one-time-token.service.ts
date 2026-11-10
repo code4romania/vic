@@ -17,6 +17,8 @@ export interface IssueTokenOptions {
   ttlMs?: number;
   // #508: where the secret goes when not to the identity's own email (a new address to confirm)
   sentTo?: string;
+  // A code for one action only (e.g. a sensitive action): verifyCode must name the same purpose.
+  purpose?: string;
 }
 
 export interface IssuedToken {
@@ -50,7 +52,7 @@ export class OneTimeTokenService {
         : randomBytes(32).toString('base64url');
     const tokenHash =
       form === AuthTokenForm.CODE
-        ? this.hashCode(identity.id, type, secret)
+        ? this.hashCode(identity.id, type, secret, options.purpose)
         : this.hashLink(type, secret);
     const expiresAt = new Date(
       Date.now() + (options.ttlMs ?? this.defaultTtl(type, form)),
@@ -96,12 +98,15 @@ export class OneTimeTokenService {
     );
   }
 
-  // Returns the live code row when the code matches. A mismatch counts an attempt (AUTH_005);
-  // the fifth ends the code (AUTH_006). No live code at all is AUTH_005.
+  // Returns the live code row when the code matches. Every try takes one of the code's five attempts
+  // first, atomically, so parallel requests cannot compare more than five codes. A mismatch is AUTH_005;
+  // the fifth ends the code (AUTH_006). No live code at all is AUTH_005. A code issued for a purpose only
+  // matches when verified for the same purpose.
   public async verifyCode(
     identity: Pick<IAuthIdentityModel, 'id'>,
     type: AuthTokenType,
     code: string,
+    purpose?: string,
   ): Promise<IAuthTokenModel> {
     const token = await this.authIdentityFacade.findLiveToken(
       identity.id,
@@ -111,9 +116,24 @@ export class OneTimeTokenService {
       throw new AuthException(AuthExceptionCodes.AUTH_005);
     }
 
+    const attempts = await this.authIdentityFacade.claimTokenAttempt(
+      token.id,
+      AUTH_CODE_MAX_ATTEMPTS,
+    );
+    if (attempts === null) {
+      // Every attempt was taken (by parallel requests too): the code is over.
+      await this.authIdentityFacade.replaceLiveTokens(identity.id, [type]);
+      throw new AuthException(AuthExceptionCodes.AUTH_006);
+    }
+
     const expected = Buffer.from(token.tokenHash, 'hex');
     const actual = Buffer.from(
-      this.hashCode(identity.id, type, CODE_PATTERN.test(code) ? code : ''),
+      this.hashCode(
+        identity.id,
+        type,
+        CODE_PATTERN.test(code) ? code : '',
+        purpose,
+      ),
       'hex',
     );
     if (
@@ -124,9 +144,6 @@ export class OneTimeTokenService {
       return token;
     }
 
-    const attempts = await this.authIdentityFacade.incrementTokenAttempts(
-      token.id,
-    );
     if (attempts >= AUTH_CODE_MAX_ATTEMPTS) {
       await this.authIdentityFacade.replaceLiveTokens(identity.id, [type]);
       throw new AuthException(AuthExceptionCodes.AUTH_006);
@@ -169,12 +186,18 @@ export class OneTimeTokenService {
   }
 
   // Codes are short, so their hash is also bound to the identity: the same digits never match another person.
+  // A purpose binds it to one action as well (the code to add an admin does not delete the NGO).
   private hashCode(
     identityId: string,
     type: AuthTokenType,
     code: string,
+    purpose?: string,
   ): string {
-    return this.hmac(`${identityId}:${type}:${code}`);
+    return this.hmac(
+      purpose
+        ? `${identityId}:${type}:${purpose}:${code}`
+        : `${identityId}:${type}:${code}`,
+    );
   }
 
   private hmac(value: string): string {

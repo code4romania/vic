@@ -244,6 +244,74 @@ describe('OneTimeTokenService (database)', () => {
       );
     });
 
+    it('parallel wrong guesses cannot compare more than five codes: the right one afterwards fails', async () => {
+      const { secret, token } = await issueCode();
+      const wrong = (n: number): string =>
+        String((Number(secret) + 1 + n) % 1_000_000).padStart(6, '0');
+
+      const results = await Promise.allSettled(
+        Array.from({ length: 20 }, (_, n) =>
+          service.verifyCode(ana, AuthTokenType.LOGIN, wrong(n)),
+        ),
+      );
+      expect(results.every((r) => r.status === 'rejected')).toBe(true);
+
+      const [row] = await dataSource.query(
+        'SELECT attempts FROM auth_token WHERE id = $1',
+        [token.id],
+      );
+      expect(row.attempts).toBe(5);
+      await rejectsWith(
+        service.verifyCode(ana, AuthTokenType.LOGIN, secret),
+        AuthExceptionCodes.AUTH_005,
+      );
+    });
+
+    it('a code on its fifth attempt still works when right', async () => {
+      const { secret, token } = await issueCode();
+      const wrong = secret === '000000' ? '000001' : '000000';
+      for (let attempt = 1; attempt <= 4; attempt++) {
+        await rejectsWith(
+          service.verifyCode(ana, AuthTokenType.LOGIN, wrong),
+          AuthExceptionCodes.AUTH_005,
+        );
+      }
+      await expect(
+        service.verifyCode(ana, AuthTokenType.LOGIN, secret),
+      ).resolves.toMatchObject({ id: token.id });
+    });
+
+    it('a code issued for one purpose does not verify for another, nor without one', async () => {
+      const { secret, token } = await service.issue({
+        identity: ana,
+        type: AuthTokenType.SENSITIVE_ACTION,
+        form: AuthTokenForm.CODE,
+        purpose: 'ADD_ADMIN',
+      });
+
+      await rejectsWith(
+        service.verifyCode(
+          ana,
+          AuthTokenType.SENSITIVE_ACTION,
+          secret,
+          'DELETE_ORGANIZATION',
+        ),
+        AuthExceptionCodes.AUTH_005,
+      );
+      await rejectsWith(
+        service.verifyCode(ana, AuthTokenType.SENSITIVE_ACTION, secret),
+        AuthExceptionCodes.AUTH_005,
+      );
+      await expect(
+        service.verifyCode(
+          ana,
+          AuthTokenType.SENSITIVE_ACTION,
+          secret,
+          'ADD_ADMIN',
+        ),
+      ).resolves.toMatchObject({ id: token.id });
+    });
+
     it('refuses a code when only a link is live, and a malformed code', async () => {
       await issueLink();
 

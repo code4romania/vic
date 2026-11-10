@@ -109,6 +109,22 @@ export class AuthTokenRepository implements IAuthTokenRepository {
     return result.raw[0]?.attempts ?? null;
   }
 
+  // Takes one of the code's attempts, in one statement: the new count, or null when all `max` were taken.
+  // Taken before the code is compared, so parallel guesses cannot all be compared while the count lags.
+  public async claimAttempt(id: string, max: number): Promise<number> {
+    if (!id) return null;
+
+    const result = await this.authTokenRepository
+      .createQueryBuilder()
+      .update()
+      .set({ attempts: () => '"attempts" + 1' })
+      .where('id = :id AND "attempts" < :max', { id, max })
+      .returning(['attempts'])
+      .execute();
+
+    return result.raw[0]?.attempts ?? null;
+  }
+
   // The newest token of a type for a login, in any state (the Team page's "last invite sent").
   public async findLatest(
     identityId: string,

@@ -137,6 +137,10 @@ export class AuthIdentityFacade {
     return this.authTokenRepository.incrementAttempts(id);
   }
 
+  public async claimTokenAttempt(id: string, max: number): Promise<number> {
+    return this.authTokenRepository.claimAttempt(id, max);
+  }
+
   public async deleteTokensEndedBefore(date: Date): Promise<number> {
     return this.authTokenRepository.deleteEndedBefore(date);
   }
