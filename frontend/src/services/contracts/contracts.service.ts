@@ -4,6 +4,7 @@ import {
   deleteContract,
   generateCertificate,
   getCertificatePrefill,
+  getContractCounters,
   getContracts,
   getPendingContractsCount,
   uploadContract,
@@ -20,6 +21,12 @@ export const useContractsQuery = (
   params: IContractsQueryParams & { page: number; limit: number },
 ) => {
   return useQuery(['contracts', params], () => getContracts(params), {
+    onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
+  });
+};
+
+export const useContractCountersQuery = () => {
+  return useQuery(['contracts-counters'], () => getContractCounters(), {
     onError: (error: AxiosError<IBusinessException<CONTRACT_ERRORS>>) => error,
   });
 };

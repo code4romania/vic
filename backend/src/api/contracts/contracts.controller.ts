@@ -44,6 +44,10 @@ import {
   GenerateCertificateDto,
 } from './dto/generate-certificate.dto';
 
+import {
+  ContractCounters,
+  CountContractsByStatusUsecase,
+} from 'src/usecases/documents/count-contracts-by-status.usecase';
 @ApiBearerAuth()
 @UseGuards(WebJwtAuthGuard)
 @Controller('contract')
@@ -56,6 +60,7 @@ export class ContractController {
     private readonly getContractsForDownloadUsecase: GetContractsForDownloadUsecase,
     private readonly deleteContractUsecase: DeleteContractUsecase,
     private readonly certificateUsecase: CertificateUsecase,
+    private readonly countContractsByStatusUsecase: CountContractsByStatusUsecase,
   ) {}
 
   @Get()
@@ -94,6 +99,13 @@ export class ContractController {
     });
 
     res.end(jsonToExcelBuffer<IContractDownloadModel>(data, 'Contracts'));
+  }
+
+  @Get('counters')
+  async getCounters(
+    @ExtractUser() { organizationId }: IAdminUserModel,
+  ): Promise<ContractCounters> {
+    return this.countContractsByStatusUsecase.execute({ organizationId });
   }
 
   @Get('active')

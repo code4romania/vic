@@ -56,22 +56,46 @@ describe('ContractsTable (#486, #488, #489)', () => {
     expect(screen.getAllByText('Elena Pop')).toHaveLength(3);
   });
 
-  it('filters by status only, and sends it to the API', async () => {
-    const statuses: (string | null)[] = [];
+  it('filters by status and searches by volunteer, email or number, through the API', async () => {
+    const sent: { status: string | null; search: string | null }[] = [];
     server.use(
       http.get(api('/contract'), ({ request }) => {
-        statuses.push(new URL(request.url).searchParams.get('status'));
+        const params = new URL(request.url).searchParams;
+        sent.push({ status: params.get('status'), search: params.get('search') });
         return HttpResponse.json(page([]));
       }),
     );
+    const setQuery = vi.fn();
     renderPage(
       <ContractsTable
-        query={{ limit: 10, page: 1, status: 'EXPIRED' as never }}
-        setQuery={vi.fn()}
+        query={{ limit: 10, page: 1, status: 'EXPIRED' as never, search: 'elena' }}
+        setQuery={setQuery}
       />,
     );
-    await waitFor(() => expect(statuses).toContain('EXPIRED'));
-    expect(screen.queryByPlaceholderText(t('general:search'))).not.toBeInTheDocument();
+    await waitFor(() => expect(sent).toContainEqual({ status: 'EXPIRED', search: 'elena' }));
+    expect(await screen.findByText('0 documente găsite')).toBeInTheDocument();
+
+    await userEvent.clear(screen.getByLabelText(t('documents:page.filters.search')));
+    await userEvent.type(screen.getByLabelText(t('documents:page.filters.search')), 'R-1');
+    await waitFor(() => expect(setQuery).toHaveBeenCalledWith({ search: 'R-1', page: 1 }));
+  });
+
+  it('shows the volunteer with initials and email, the document and the Vezi / PDF actions', async () => {
+    server.use(
+      http.get(api('/contract'), () =>
+        HttpResponse.json(page([contract({ volunteerEmail: 'elena@pop.ro' })])),
+      ),
+    );
+    renderPage(<ContractsTable query={{ limit: 10, page: 1 }} setQuery={vi.fn()} />);
+
+    expect(await screen.findByText('elena@pop.ro')).toBeInTheDocument();
+    expect(screen.getByText('EP')).toBeInTheDocument();
+    expect(screen.getByText('Nr. 1/2026')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: t('documents:page.view') })).toHaveAttribute(
+      'href',
+      'https://files/c1.pdf',
+    );
+    expect(screen.getByRole('button', { name: /PDF Contract_1.pdf/ })).toBeInTheDocument();
   });
 
   it('on the profile: no volunteer column, no filter, and uploads a signed PDF with its period', async () => {

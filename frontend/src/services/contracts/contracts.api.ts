@@ -19,7 +19,15 @@ export interface IContractsQueryParams {
   status?: ContractStatus;
   type?: DocumentType;
   volunteerId?: string;
+  search?: string;
 }
+
+export type IContractCounters = Record<ContractStatus, number>;
+
+// The counters on top of "Contracte și documente"
+export const getContractCounters = async (): Promise<IContractCounters> => {
+  return API.get('contract/counters').then((res) => res.data);
+};
 
 export const getContracts = async (
   params: IContractsQueryParams & { page: number; limit: number },

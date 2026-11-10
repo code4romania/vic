@@ -6,6 +6,7 @@ export interface IContractListItem {
   id: string;
   contractNumber: string | null;
   volunteer: IdName;
+  volunteerEmail?: string | null;
   status: ContractStatus;
   // #490: a contract or a certificate
   type: DocumentType;

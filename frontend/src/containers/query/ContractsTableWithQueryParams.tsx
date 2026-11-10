@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { QueryParams, StringParam } from 'use-query-params';
 import { IHOCQueryProps } from '../../common/interfaces/hoc-query-props.interface';
 import ContractsTable from '../../components/ContractsTable';
@@ -14,6 +14,7 @@ import { VolunteerTabsOptions } from '../../pages/Volunteer';
 export interface ContractsTableQueryProps extends IPaginationQueryParams {
   status?: ContractStatus;
   type?: DocumentType;
+  search?: string;
   activeTab?: VolunteerTabsOptions;
 }
 
@@ -24,20 +25,30 @@ const DEFAULT_QUERY_PARAMS = getPaginationQueryParams();
 const ContractsTableWithQueryParams = ({
   volunteerId,
   readOnly,
+  renderHeader,
 }: {
   volunteerId?: string;
   readOnly?: boolean;
+  renderHeader?: (actions: ReactNode) => ReactNode;
 }) => {
   const queryConfig = {
     ...DEFAULT_QUERY_PARAMS,
     status: StringParam,
     type: StringParam,
+    search: StringParam,
     activeTab: StringParam,
   };
 
   return (
     <QueryParams config={queryConfig}>
-      {(props: any) => <ContractsTable volunteerId={volunteerId} readOnly={readOnly} {...props} />}
+      {(props: any) => (
+        <ContractsTable
+          volunteerId={volunteerId}
+          readOnly={readOnly}
+          renderHeader={renderHeader}
+          {...props}
+        />
+      )}
     </QueryParams>
   );
 };

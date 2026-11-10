@@ -202,6 +202,21 @@ describe('Contracts (e2e)', () => {
     expect((await auth(http().get('/contract/active')).expect(200)).text).toBe(
       '1',
     );
+    // the counters on top of the contracts page
+    expect(
+      (await auth(http().get('/contract/counters')).expect(200)).body,
+    ).toEqual({ SIGNED: 3, PENDING: 1, EXPIRED: 1 });
+
+    // each row carries the volunteer's email, and the search matches it
+    expect(body.items[0].volunteerEmail).toEqual(expect.any(String));
+    const byEmail = (
+      await auth(
+        http().get(
+          `/contract?search=${encodeURIComponent(body.items[0].volunteerEmail)}`,
+        ),
+      ).expect(200)
+    ).body.items;
+    expect(byEmail).toHaveLength(5);
   });
 
   it('uploads a signed PDF with its period; no end date means it never expires', async () => {
@@ -272,7 +287,6 @@ describe('Contracts (e2e)', () => {
 
     await auth(http().patch(`/contract/${body.id}/confirm`)).expect(404);
     await auth(http().patch(`/contract/${body.id}/reject`)).expect(404);
-    await auth(http().get('/template')).expect(404);
   });
 
   // #490: "Generează adeverință"
@@ -362,5 +376,42 @@ describe('Contracts (e2e)', () => {
       http().get(`/contract?volunteerId=${volunteerId}`),
     ).expect(200);
     expect(all.meta.totalItems).toBe(2);
+  });
+
+  it('keeps blank contract models: upload a PDF with a name, list, delete; nothing else', async () => {
+    await auth(
+      http()
+        .post('/template')
+        .field('name', 'Model contract')
+        .attach('template', Buffer.from('nu e pdf'), {
+          filename: 'model.txt',
+          contentType: 'text/plain',
+        }),
+    ).expect(400);
+
+    const { body: created } = await auth(
+      http()
+        .post('/template')
+        .field('name', 'Model contract')
+        .attach('template', PDF, {
+          filename: 'model.pdf',
+          contentType: 'application/pdf',
+        }),
+    ).expect(201);
+    expect(created).toEqual({
+      id: expect.any(String),
+      name: 'Model contract',
+      createdOn: expect.any(String),
+      uri: expect.any(String),
+    });
+
+    const { body: listed } = await auth(http().get('/template')).expect(200);
+    expect(listed.map((t: { name: string }) => t.name)).toEqual([
+      'Model contract',
+    ]);
+
+    await auth(http().delete(`/template/${created.id}`)).expect(200);
+    expect((await auth(http().get('/template')).expect(200)).body).toEqual([]);
+    await auth(http().patch(`/template/${created.id}`)).expect(404);
   });
 });

@@ -34,6 +34,7 @@ import { MobileOrganizationStructureController } from './_mobile/organization/or
 import { MobileActivityLogController } from './_mobile/activity-log/activity-log.controller';
 import { MobileActivityTypeController } from './_mobile/activity-type/activity-type.controller';
 import { ContractController } from './contracts/contracts.controller';
+import { TemplateController } from './template/template.controller';
 import { MobileContractController } from './_mobile/contract/contract.controller';
 import { MobileStatisticsController } from './_mobile/statistics/statistics.controller';
 import { MobileAnouncementsController } from './_mobile/anouncements/anouncements.controller';
@@ -67,6 +68,7 @@ import { MobileNewsController } from './_mobile/news/news.controller';
     ActionsArchiveController,
     DashboardController,
     ContractController,
+    TemplateController,
     // Mobile
     MobileRegularUserController,
     MobileAccessRequestController,
