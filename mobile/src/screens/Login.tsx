@@ -1,14 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Keyboard,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import * as Linking from 'expo-linking';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import Svg, { Path } from 'react-native-svg';
 import { useTranslation } from 'react-i18next';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useAuth } from '../hooks/useAuth';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
-import { Enter, PressableScale, VButton, VText, VTextField } from '../components/ui';
+import {
+  Enter,
+  PressableScale,
+  StatusBarScrim,
+  VButton,
+  VText,
+  VTextField,
+} from '../components/ui';
 import { CodeInput, CodeInputHandle } from '../components/auth/CodeInput';
 import { colors, fonts, shadows, spacing } from '../common/theme/tokens';
 import { isMigrationNoticeActive } from '../common/utils/migration-notice';
@@ -77,6 +91,23 @@ const Login = ({ navigation, route }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [secondsLeft, setSecondsLeft] = useState<number>(sentTo ? RESEND_AFTER_SECONDS : 0);
+  // while the keyboard is open the code step drops the mail tile and the "open mail" button,
+  // so the boxes, "Alt email" and the spam hint fit above it on small phones (iPhone SE)
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  useEffect(() => {
+    const show = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      () => setKeyboardOpen(true),
+    );
+    const hide = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      () => setKeyboardOpen(false),
+    );
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
 
   // the link can also arrive while Login is already open
   useEffect(() => {
@@ -169,18 +200,20 @@ const Login = ({ navigation, route }: any) => {
   if (maskedEmail) {
     return (
       <View style={styles.screen}>
-        <KeyboardAwareScrollView
+        {/* compact while typing, so it fits above the keyboard without scrolling the back button away */}
+        <ScrollView
           contentContainerStyle={[
             styles.content,
             { paddingTop: insets.top + spacing.l, paddingBottom: insets.bottom + spacing.xl },
           ]}
           keyboardShouldPersistTaps="handled"
-          bottomOffset={24}
         >
           <BackButton onPress={onChangeEmail} label={`${t('code.change_email')}`} />
-          <Enter style={styles.tileWrap}>
-            <MailTile />
-          </Enter>
+          {!keyboardOpen && (
+            <Enter style={styles.tileWrap}>
+              <MailTile />
+            </Enter>
+          )}
           <Enter index={1} style={styles.gap8}>
             <VText variant="largeTitle" accessibilityRole="header">
               {t('code.title')}
@@ -193,7 +226,7 @@ const Login = ({ navigation, route }: any) => {
               {t('code.valid_for')}
             </VText>
           </Enter>
-          {Platform.OS === 'ios' && (
+          {Platform.OS === 'ios' && !keyboardOpen && (
             <Enter index={2}>
               <VButton variant="navy" label={t('code.open_mail')} onPress={openMailApp} />
             </Enter>
@@ -235,7 +268,8 @@ const Login = ({ navigation, route }: any) => {
             </Pressable>
           </Enter>
           <VText variant="cap">{t('code.not_received')}</VText>
-        </KeyboardAwareScrollView>
+        </ScrollView>
+        <StatusBarScrim color={colors.white} />
         {isVerifying && (
           <View style={styles.verifying} accessibilityLiveRegion="polite">
             <ActivityIndicator color={colors.navy} />
