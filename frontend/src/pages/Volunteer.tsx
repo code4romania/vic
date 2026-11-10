@@ -166,9 +166,11 @@ const Volunteer = ({ query, setQuery }: VolunteerProps) => {
         {query?.activeTab === VolunteerTabsOptions.EVENTS && (
           <VolunteerEvents volunteerId={id as string} />
         )}
-        {query?.activeTab === VolunteerTabsOptions.DOCUMENTS && (
+        {/* only once the volunteer is known: without an id the table would list the whole
+            organization's contracts */}
+        {query?.activeTab === VolunteerTabsOptions.DOCUMENTS && volunteer?.id && (
           <ContractsTableWithQueryParams
-            volunteerId={volunteer?.id}
+            volunteerId={volunteer.id}
             readOnly={volunteer?.status !== VolunteerStatus.ACTIVE}
           />
         )}
