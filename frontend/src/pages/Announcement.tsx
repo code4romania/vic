@@ -227,7 +227,7 @@ const Announcement = () => {
                   {i18n.t(`announcement:type.${announcement.type}`)}
                 </DetailRow>
                 <DetailRow label={`${i18n.t('announcement:header.published_on')}`}>
-                  {announcement.publishedOn ? formatDateWithTime(announcement.publishedOn) : '-'}
+                  {formatDateWithTime(announcement.publishedOn)}
                 </DetailRow>
                 <DetailRow label={`${i18n.t('announcement:header.updated_on')}`}>
                   <span className="flex items-center gap-1.5">

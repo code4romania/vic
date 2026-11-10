@@ -1,5 +1,6 @@
 import React from 'react';
 import { isSameDay } from 'date-fns';
+import { formatDate } from '../common/utils/utils';
 import { CalendarIcon, MapPinIcon, UsersIcon } from '@heroicons/react/24/outline';
 import i18n from '../common/config/i18n';
 import { EventDisplayStatus } from '../common/enums/event-status';
@@ -13,9 +14,8 @@ import StatusBadge, { BadgeTone } from './StatusBadge';
 
 const locale = () => (i18n.language?.startsWith('en') ? 'en-GB' : 'ro-RO');
 
-// "15 nov. 2026"
-export const formatEventDay = (value: Date | string): string =>
-  new Date(value).toLocaleDateString(locale(), { day: 'numeric', month: 'short', year: 'numeric' });
+// "15.11.2026", the date format of the whole app
+export const formatEventDay = (value: Date | string): string => formatDate(value);
 
 // "21:20"
 export const formatEventTime = (value: Date | string): string =>
@@ -25,15 +25,15 @@ export const formatEventTime = (value: Date | string): string =>
 export const formatEventEnd = (startDate: Date | string, endDate: Date | string): string =>
   isSameDay(new Date(startDate), new Date(endDate))
     ? formatEventTime(endDate)
-    : `${formatEventDay(endDate)}, ${formatEventTime(endDate)}`;
+    : `${formatEventDay(endDate)},\u00a0${formatEventTime(endDate)}`;
 
 export const EventPeriod = ({ event }: { event: Pick<IEvent, 'startDate' | 'endDate'> }) => (
   <div className="flex items-start gap-2 text-sm text-cool-gray-900">
     <CalendarIcon className="w-4 h-4 mt-0.5 shrink-0 text-cool-gray-500" aria-hidden="true" />
     <div className="flex flex-col">
-      <span className="text-sm">{`${formatEventDay(event.startDate)}, ${formatEventTime(
+      <span className="text-sm whitespace-nowrap">{`${formatEventDay(
         event.startDate,
-      )}`}</span>
+      )}, ${formatEventTime(event.startDate)}`}</span>
       {event.endDate && (
         <span className="text-xs text-cool-gray-500">
           {i18n.t('events:table.until', { date: formatEventEnd(event.startDate, event.endDate) })}
@@ -50,7 +50,7 @@ export const EventLocation = ({ location }: { location?: string | null }) =>
       <span className="text-sm">{location}</span>
     </div>
   ) : (
-    <span className="text-cool-gray-400">–</span>
+    <span className="text-cool-gray-500">–</span>
   );
 
 const Chip = ({ children }: { children: React.ReactNode }) => (

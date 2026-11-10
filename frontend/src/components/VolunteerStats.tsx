@@ -20,7 +20,7 @@ const VolunteerStats = ({ volunteerId }: { volunteerId: string }) => {
         >
           <dt className="text-cool-gray-500 text-sm">{counter.label}</dt>
           <dd className="font-robotoBold text-cool-gray-800 text-xl" aria-label={counter.label}>
-            {counter.value ?? '-'}
+            {counter.value ?? '–'}
           </dd>
         </div>
       ))}
