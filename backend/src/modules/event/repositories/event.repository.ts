@@ -37,7 +37,11 @@ import {
 import { EventStatus } from '../enums/event-status.enum';
 import { VolunteerEntity } from 'src/modules/volunteer/entities/volunteer.entity';
 import { EventRSVPEntity } from '../entities/event-rsvp.entity';
-import { endOfDay, endOfMonth } from 'date-fns';
+import { endOfMonth } from 'date-fns';
+import {
+  bucharestDay,
+  endOfBucharestDay,
+} from 'src/common/helpers/bucharest-time';
 import { VolunteerProfileEntity } from 'src/modules/volunteer/entities/volunteer-profile.entity';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { visibleToVolunteersCondition } from 'src/modules/organization/organization-visibility';
@@ -566,7 +570,7 @@ export class EventRepository
         {
           eventRSVPs: { userId, going: true },
           startDate: LessThanOrEqual(endOfMonth(new Date())),
-          endDate: MoreThan(endOfDay(new Date())),
+          endDate: MoreThan(endOfBucharestDay(bucharestDay())),
         },
       ],
     });

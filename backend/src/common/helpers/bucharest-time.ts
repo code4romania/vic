@@ -62,3 +62,9 @@ export function endOfBucharestDay(day: string): Date {
     .slice(0, 10);
   return new Date(startOfBucharestDay(next).getTime() - 1);
 }
+
+// An instant's day in Bucharest as Romanians write it: 20.11.2026.
+export function formatBucharestDate(instant: Date): string {
+  const [year, month, day] = bucharestDay(instant).split('-');
+  return `${day}.${month}.${year}`;
+}

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { format } from 'date-fns';
+import { formatBucharestDate } from 'src/common/helpers/bucharest-time';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import {
   REGISTRATION_EXPORT_COLUMNS,
@@ -40,7 +40,7 @@ export class DownloadEventRegistrationsUseCase
         chosen.map((field) => [
           REGISTRATION_EXPORT_COLUMNS[field],
           field === RegistrationExportField.REGISTERED_ON
-            ? format(new Date(row.registeredOn), 'dd.MM.yyyy')
+            ? formatBucharestDate(new Date(row.registeredOn))
             : row[field] ?? '',
         ]),
       ),

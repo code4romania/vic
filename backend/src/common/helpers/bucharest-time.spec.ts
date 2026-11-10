@@ -1,6 +1,7 @@
 import {
   bucharestDay,
   endOfBucharestDay,
+  formatBucharestDate,
   startOfBucharestDay,
 } from './bucharest-time';
 
@@ -39,6 +40,12 @@ describe('Bucharest days', () => {
     );
     expect(endOfBucharestDay('2026-10-25').toISOString()).toBe(
       '2026-10-25T21:59:59.999Z',
+    );
+  });
+
+  it('writes an instant as its Bucharest day, dd.MM.yyyy', () => {
+    expect(formatBucharestDate(new Date('2026-11-19T22:30:00Z'))).toBe(
+      '20.11.2026',
     );
   });
 });
