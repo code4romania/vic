@@ -65,7 +65,7 @@ const Contracts = () => {
                 <StatisticsCard
                   key={status}
                   label={t(`page.counters.${status}.label`)}
-                  value={counters ? `${counters[status] ?? 0}` : countersFailed ? '–' : undefined}
+                  value={counters ? `${counters[status] ?? '–'}` : countersFailed ? '–' : undefined}
                   icon={<Icon className={`w-5 h-5 ${color}`} aria-hidden="true" />}
                   subtitle={t(`page.counters.${status}.info`)}
                 />

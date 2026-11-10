@@ -122,7 +122,9 @@ const volunteerColumn: TableColumn<IContractListItem> = {
   cell: (row) => (
     <CellLayout>
       <div className="flex items-center gap-3 min-w-0">
-        <InitialsAvatar name={row.volunteer.name} />
+        <span className="hidden sm:block">
+          <InitialsAvatar name={row.volunteer.name} />
+        </span>
         <div className="flex flex-col min-w-0">
           <LinkCell href={`/volunteers/${row.volunteer.id}`}>{row.volunteer.name}</LinkCell>
           {row.volunteerEmail && (
