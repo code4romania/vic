@@ -119,7 +119,7 @@ export class MobileAuthController {
   @Public()
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('logout')
-  async logout(@Body() { refreshToken }: LogoutDto): Promise<void> {
-    await this.logoutUseCase.execute(refreshToken);
+  async logout(@Body() { refreshToken, pushToken }: LogoutDto): Promise<void> {
+    await this.logoutUseCase.execute(refreshToken, pushToken);
   }
 }
