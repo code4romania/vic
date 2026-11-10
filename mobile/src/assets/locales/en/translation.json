@@ -39,7 +39,9 @@
     "cancel": "Cancel",
     "errors": {
       "generic": "Error loading data"
-    }
+    },
+    "search_list": "Search the list",
+    "no_results": "No results for “{{query}}”"
   },
   "landing": {
     "message": "Log in or create an account in one of the following ways",
@@ -338,7 +340,7 @@
     "paragraph": "If you leave the organization, you will no longer see it in the app or be able to log hours or documents. Your hours and documents stay with the organization.",
     "action_btn": "Leaving the organization",
     "errors": {
-        "generic": "Something went wrong. Please try again."
+      "generic": "Something went wrong. Please try again."
     },
     "modal": {
       "confirm_leave_organization": {

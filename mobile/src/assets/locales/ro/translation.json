@@ -48,7 +48,9 @@
         "cancel": "Anulează",
         "errors": {
             "generic": "Eroare la încărcarea datelor"
-        }
+        },
+        "search_list": "Caută în listă",
+        "no_results": "Niciun rezultat pentru „{{query}}”"
     },
     "landing": {
         "message": "Intră în aplicație sau creează-ți cont folosind una dintre modalitățile următoare",
