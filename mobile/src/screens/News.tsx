@@ -4,13 +4,12 @@ import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useNewsInfiniteQuery } from '../services/news/news.service';
-import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
+import { useActivateOrganization } from '../services/organization/organization.service';
 import { NewsType } from '../common/enums/news-type.enum';
 import { TrackedEventName } from '../common/enums/tracked-event-name.enum';
 import { ActivityLogStatus } from '../common/enums/activity-log.status.enum';
 import { INewsItem } from '../common/interfaces/news-item.interface';
 import { colors, shadows, spacing, StatusTone } from '../common/theme/tokens';
-import useStore from '../store/store';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { useFocusedStatusBarStyle } from '../hooks/useFocusedStatusBarStyle';
 import { EventIcon, EventIconName } from '../components/events/EventIcons';
@@ -44,8 +43,7 @@ const News = ({ navigation, route }: any) => {
   useFocusedStatusBarStyle('dark');
   const [type, setType] = useState<NewsType>(route.params?.type ?? NewsType.LOGGED_HOURS);
 
-  const { mutate: switchOrganization } = useSwitchOrganizationMutation();
-  const { setActiveOrganization } = useStore();
+  const { activate } = useActivateOrganization();
   const { userProfile } = useUserProfile();
 
   const {
@@ -124,16 +122,18 @@ const News = ({ navigation, route }: any) => {
     }
   };
 
-  const onPress = (item: INewsItem) => {
-    // the update belongs to an organization: make it the active one first
+  const onPress = async (item: INewsItem) => {
+    // the update belongs to one of the volunteer's organizations: make it the active one first,
+    // and wait for the backend, so the next screen loads that organization's data
     const organization = userProfile?.myOrganizations?.find(
       (org) => org.id === item.organizationId,
     );
-    if (item.organizationId && userProfile?.activeOrganization?.id !== item.organizationId) {
-      if (organization) {
-        setActiveOrganization(organization);
+    if (organization) {
+      try {
+        await activate(organization);
+      } catch {
+        // the screen below still opens; it shows the organization's own data by id
       }
-      switchOrganization({ organizationId: item.organizationId });
     }
 
     switch (item.eventName) {

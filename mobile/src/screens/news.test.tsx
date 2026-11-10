@@ -58,7 +58,17 @@ jest.mock('../services/news/news.service', () => ({
   },
 }));
 jest.mock('../services/organization/organization.service', () => ({
-  useSwitchOrganizationMutation: () => ({ mutate: mockSwitch }),
+  // the real hook waits for the backend; here the switch resolves at once
+  useActivateOrganization: () => ({
+    activate: async (organization: any) => {
+      const store = require('../store/store').default;
+      if (store.getState().userProfile?.activeOrganization?.id === organization.id) {
+        return;
+      }
+      store.getState().setActiveOrganization(organization);
+      await mockSwitch({ organizationId: organization.id });
+    },
+  }),
 }));
 jest.mock('../services/anouncement/anouncement.service', () => ({
   useAnouncementsInfiniteQuery: () =>

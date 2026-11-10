@@ -14,8 +14,9 @@ import logoutIcon from '../assets/svg/logout';
 import user from '../assets/svg/user';
 import { useAuth } from '../hooks/useAuth';
 import { useUserProfile } from '../store/profile/profile.selector';
-import useStore from '../store/store';
-import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
+import { useActivateOrganization } from '../services/organization/organization.service';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
 import { usePersonalStatistics } from '../services/statistics/statistics.service';
 import {
   IOrganizationVolunteer,
@@ -89,8 +90,7 @@ const Settings = ({ navigation }: any) => {
   const logoutSheet = useRef<BottomSheetModal>(null);
 
   const { userProfile } = useUserProfile();
-  const { setActiveOrganization } = useStore();
-  const { mutate: switchOrganization } = useSwitchOrganizationMutation();
+  const { activate } = useActivateOrganization();
   const { logout } = useAuth();
   const { data: stats, refetch: refetchStats } = usePersonalStatistics();
 
@@ -118,15 +118,21 @@ const Settings = ({ navigation }: any) => {
   const organizations = userProfile?.myOrganizations ?? [];
   const activeId = userProfile?.activeOrganization?.id;
 
-  const onOpenOrganization = (organization: IOrganizationVolunteer) => {
+  const onOpenOrganization = async (organization: IOrganizationVolunteer) => {
     // A Candidate only sees the organization's page, which says it waits for activation (#590).
     if (isCandidateVolunteer(organization)) {
       navigation.navigate('organization-profile', { organizationId: organization.id });
       return;
     }
-    if (organization.id !== activeId) {
-      setActiveOrganization(organization);
-      switchOrganization({ organizationId: organization.id });
+    try {
+      // the backend must have the new active organization before its page loads
+      await activate(organization);
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(error?.response?.data?.code_error)}`,
+      });
+      return;
     }
     navigation.navigate(SETTINGS_ROUTES.MY_ORGANIZATIONS);
   };
