@@ -9,18 +9,20 @@ const MainLayout = () => {
   const [isSlidingMenuOpen, setSlidingMenuOpen] = useState<boolean>(false);
 
   return (
-    <div className="w-screen h-screen max-w-full">
-      <Header openSlidingMenu={setSlidingMenuOpen} />
-      <SlidingMenu isOpen={isSlidingMenuOpen} setSlidingMenuOpen={setSlidingMenuOpen} />
-      <section className="flex flex-row sm:p-6 p-4 gap-6">
-        <div className="hidden xl:flex">
-          <SideMenu />
+    <div className="min-h-screen w-full flex bg-canvas">
+      <div className="hidden xl:block shrink-0 bg-white border-r border-cool-gray-200">
+        <SideMenu />
+      </div>
+      <div className="flex-1 min-w-0 flex flex-col">
+        <div className="xl:hidden">
+          <Header openSlidingMenu={setSlidingMenuOpen} />
         </div>
-        <div className="w-full overflow-scroll no-scrollbar flex flex-col gap-6">
+        <SlidingMenu isOpen={isSlidingMenuOpen} setSlidingMenuOpen={setSlidingMenuOpen} />
+        <main className="w-full max-w-[90rem] mx-auto px-4 sm:px-6 xl:px-10 py-6 xl:py-8 flex flex-col gap-6">
           <ValidationBanner />
           <Outlet />
-        </div>
-      </section>
+        </main>
+      </div>
     </div>
   );
 };

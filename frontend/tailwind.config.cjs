@@ -62,6 +62,20 @@ module.exports = {
           DEFAULT: '#2563EB',
           600: '#2563EB',
         },
+        // VIC 2.0 web: same brand colors as the mobile redesign
+        navy: {
+          DEFAULT: '#01344F',
+          50: '#F1F5F8',
+          100: '#E3ECF2',
+          700: '#01283D',
+        },
+        canvas: '#EEF2F6',
+        figure: {
+          green: '#15803D',
+          amber: '#B45309',
+          red: '#C62828',
+          teal: '#0B7A7A',
+        },
       },
       transitionProperty: {
         width: 'width',
@@ -79,7 +93,9 @@ module.exports = {
       boxShadow: {
         blur: '0px 3px 6px rgba(48, 60, 108, 0.1)',
         header: '0px 2px 10px rgba(0, 0, 0, 0.05)',
-        section: '0px 2px 10px rgba(0, 0, 0, 0.1)',
+        section: '0 1px 2px rgba(16, 24, 40, 0.04)',
+        card: '0 1px 2px rgba(16, 24, 40, 0.04)',
+        menu: '0 8px 24px rgba(16, 24, 40, 0.12)',
         yellow: '0 1px 2px #0000000d, 0 0 0 2px #fff, 0 0 0 4px #ffde33;',
         blue: '0 1px 2px #0000000d, 0 0 0 2px #fff, 0 0 0 4px #6366f1;',
         error: '0 0 0 1px #ef4444',
