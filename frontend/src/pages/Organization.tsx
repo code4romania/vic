@@ -1,175 +1,228 @@
-import React, { useEffect } from 'react';
-import { useErrorToast } from '../hooks/useToast';
-import PageLayout from '../layouts/PageLayout';
-import { useOrganizationQuery } from '../services/organization/organization.service';
-import { InternalErrors } from '../common/errors/internal-errors.class';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { BuildingOffice2Icon, CheckBadgeIcon, ClockIcon } from '@heroicons/react/24/outline';
 import i18n from '../common/config/i18n';
-import EmptyContent from '../components/EmptyContent';
-import LoadingContent from '../components/LoadingContent';
-import PageHeader from '../components/PageHeader';
 import { DivisionType } from '../common/enums/division-type.enum';
-import Tabs from '../components/Tabs';
-import { SelectItem } from '../components/Select';
-import { useNavigate } from 'react-router-dom';
-import Card from '../layouts/CardLayout';
-import CardHeader from '../components/CardHeader';
-import Button from '../components/Button';
-import { PencilIcon } from '@heroicons/react/24/outline';
-import CardBody from '../components/CardBody';
-import FormLayout from '../layouts/FormLayout';
-import Paragraph from '../components/Paragraph';
+import { InternalErrors } from '../common/errors/internal-errors.class';
+import { IOrganizationFields } from '../common/interfaces/organization.interface';
 import { formatDate } from '../common/utils/utils';
+import ActivityTypeChips from '../components/ActivityTypeChips';
+import CardBody from '../components/CardBody';
+import CardHeader from '../components/CardHeader';
+import DivisionChips from '../components/DivisionChips';
+import EmptyContent from '../components/EmptyContent';
 import FormInput from '../components/FormInput';
 import FormTextarea from '../components/FormTextarea';
-import DivisionTable from '../containers/query/DivisionTableWithQueryParams';
-import { OrganizationTableProps } from '../containers/query/OrganizationWithQueryParam';
+import LoadingContent from '../components/LoadingContent';
+import { OrganizationLogo, organizationProfileSchema } from '../components/OrganizationFields';
+import PageHeader from '../components/PageHeader';
+import StatusBadge from '../components/StatusBadge';
+import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import Card from '../layouts/CardLayout';
+import PageLayout from '../layouts/PageLayout';
+import {
+  useOrganizationQuery,
+  useUpdateOrganizationMutation,
+} from '../services/organization/organization.service';
 
-export const DivisionsTabs: SelectItem<DivisionType>[] = [
-  { key: DivisionType.BRANCH, value: i18n.t(`division:table.title.branch`) },
-  { key: DivisionType.DEPARTMENT, value: i18n.t('division:table.title.department') },
-  { key: DivisionType.ROLE, value: i18n.t('division:table.title.role') },
-];
+const schema = yup.object(organizationProfileSchema).required();
 
-const Organization = ({ query, setQuery }: OrganizationTableProps) => {
-  const navigate = useNavigate();
+const t = (key: string, options?: Record<string, unknown>): string =>
+  `${i18n.t(`organization:setup.${key}`, options)}`;
+const label = (name: string): string => `${i18n.t(`register_organization:form.${name}.label`)}`;
+
+type Field = keyof IOrganizationFields;
+
+// "Configurare organizație" (VIC 2.0 web design): the public profile edited in place, with the CUI
+// and its validation status (#469), the logo, and departments, roles, branches and activity types as
+// chips. No activity area, no statute and no NGO Hub sync.
+const Organization = () => {
+  const [logo, setLogo] = useState<File | null>(null);
+  const { data: organization, error, isLoading, refetch } = useOrganizationQuery();
+  const { mutate: updateOrganization, isLoading: isSaving } = useUpdateOrganizationMutation();
 
   const {
-    data: organization,
-    error: organizationError,
-    isLoading: isOrganizationLoading,
-  } = useOrganizationQuery();
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors, isDirty },
+  } = useForm<Required<IOrganizationFields>>({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(schema),
+  });
 
-  // error handling
   useEffect(() => {
-    // map error messages for ORGANIZATION fetch
-    if (organizationError) {
+    if (organization)
+      reset({
+        name: organization.name,
+        email: organization.email,
+        phone: organization.phone,
+        taxId: organization.taxId ?? '',
+        address: organization.address ?? '',
+        website: organization.website ?? '',
+        description: organization.description ?? '',
+      });
+  }, [organization]);
+
+  useEffect(() => {
+    if (error)
       useErrorToast(
-        InternalErrors.ORGANIZATION_ERRORS.getError(organizationError.response?.data.code_error),
+        InternalErrors.ORGANIZATION_ERRORS.getError(error.response?.data.code_error),
         'organization_error',
       );
-    }
-  }, [organizationError]);
+  }, [error]);
 
-  const onTabClick = (id: DivisionType) => {
-    const selectedTab = DivisionsTabs.find((tab) => tab.key === id)?.key as DivisionType;
-    setQuery(
+  const onSubmit = (data: Required<IOrganizationFields>) =>
+    updateOrganization(
+      { data, files: { logo } },
       {
-        type: selectedTab,
+        onSuccess: () => {
+          useSuccessToast(i18n.t('organization:submit.success'));
+          setLogo(null);
+          refetch();
+        },
+        onError: (saveError) =>
+          useErrorToast(
+            InternalErrors.ORGANIZATION_ERRORS.getError(saveError.response?.data.code_error),
+          ),
       },
-      'replaceIn',
     );
-  };
 
-  const onEditButtonClick = () => {
-    navigate('edit');
-  };
+  const field = (
+    name: Field,
+    options: { type?: string; textarea?: boolean; placeholder?: string; wide?: boolean } = {},
+  ) => (
+    <div className={options.wide ? 'md:col-span-2' : ''}>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) =>
+          options.textarea ? (
+            <FormTextarea
+              label={label(name)}
+              value={value ?? ''}
+              onChange={onChange}
+              onBlur={onBlur}
+              errorMessage={errors[name]?.message as string}
+            />
+          ) : (
+            <FormInput
+              type={options.type ?? 'text'}
+              label={label(name)}
+              placeholder={options.placeholder}
+              value={value ?? ''}
+              onChange={onChange}
+              onBlur={onBlur}
+              className="max-w-none"
+              errorMessage={errors[name]?.message as string}
+            />
+          )
+        }
+      />
+    </div>
+  );
 
   return (
     <PageLayout>
-      <PageHeader>{i18n.t('side_menu:options.organization')}</PageHeader>
-      {/* fetching organization data */}
-      {isOrganizationLoading && <LoadingContent />}
-      {/* error while fetching organization data */}
-      {organizationError && (
+      <PageHeader
+        subtitle={t('subtitle')}
+        actions={
+          organization && (
+            <button
+              type="button"
+              className="btn-primary"
+              disabled={isSaving || (!isDirty && !logo)}
+              onClick={handleSubmit(onSubmit)}
+            >
+              {t('save')}
+            </button>
+          )
+        }
+      >
+        {t('title')}
+      </PageHeader>
+      {isLoading && <LoadingContent />}
+      {error && !organization && (
         <EmptyContent
-          description={InternalErrors.ORGANIZATION_ERRORS.getError(
-            organizationError.response?.data.code_error,
-          )}
+          description={InternalErrors.ORGANIZATION_ERRORS.getError(error.response?.data.code_error)}
         />
       )}
-      {/* show organization data */}
       {organization && (
-        <Card>
-          <CardHeader>
-            <h2>{i18n.t('organization:title.view')}</h2>
-            <Button
-              className="btn-outline-secondary w-20"
-              label={i18n.t('general:edit', { item: '' })}
-              icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
-              onClick={onEditButtonClick}
-            />
-          </CardHeader>
-          <CardBody>
-            <FormLayout>
-              <Paragraph title={i18n.t('organization:title.view')}>
-                {i18n.t('organization:subtitle')}
-              </Paragraph>
-              <div className="flex flex-col gap-1">
-                <small className="text-cool-gray-500">{i18n.t('organization:logo')}</small>
-                <img
-                  src={organization.logo || 'logo.svg'}
-                  alt="Organization Logo"
-                  className="h-28 object-contain self-start p-2"
-                />
+        <>
+          <div className="flex gap-3 rounded-xl border border-navy/20 bg-navy-50 p-4 sm:p-5">
+            <BuildingOffice2Icon className="w-6 h-6 shrink-0 text-navy" aria-hidden="true" />
+            <div>
+              <p className="font-robotoMedium text-navy">{t('public_banner.title')}</p>
+              <p className="text-sm text-cool-gray-700">{t('public_banner.text')}</p>
+            </div>
+          </div>
+          <Card>
+            <CardHeader>
+              <div className="flex items-start gap-3">
+                <BuildingOffice2Icon className="mt-0.5 w-5 h-5 text-navy" aria-hidden="true" />
+                <div>
+                  <h2>{t('info.title')}</h2>
+                  <p className="text-sm text-cool-gray-500">{t('info.subtitle')}</p>
+                </div>
               </div>
-              <FormInput
-                label={i18n.t('organization:name') || ''}
-                value={organization.name}
-                readOnly
-              />
-              <FormInput
-                label={i18n.t('general:email') || ''}
-                value={organization.email}
-                readOnly
-              />
-              <FormInput
-                label={i18n.t('general:phone') || ''}
-                value={organization.phone}
-                readOnly
-              />
-              <FormInput
-                label={i18n.t('register_organization:form.address.label')}
-                value={organization.address ?? '-'}
-                readOnly
-              />
-              <FormInput
-                label={i18n.t('register_organization:form.website.label')}
-                value={organization.website ?? '-'}
-                readOnly
-              />
-              <FormTextarea
-                label={i18n.t('general:description')}
-                defaultValue={organization.description ?? ''}
-                readOnly
-              />
-              <hr className="border-cool-gray-200" />
-              {/* #469: what the super admin validates the organization on */}
-              <Paragraph title={i18n.t('organization:validation.title')}>
-                {i18n.t('organization:validation.description')}
-              </Paragraph>
-              <FormInput
-                label={i18n.t('general:status')}
-                value={i18n.t(`organization:status.${organization.status}`)}
-                readOnly
-              />
-              <FormInput
-                label={i18n.t('organization:validated_on')}
-                value={
-                  organization.validatedAt
-                    ? formatDate(organization.validatedAt)
-                    : i18n.t('organization:not_validated')
-                }
-                readOnly
-              />
-              <FormInput
-                label={i18n.t('organization:tax_id')}
-                value={organization.taxId}
-                readOnly
-              />
-            </FormLayout>
-          </CardBody>
-        </Card>
+              {organization.validatedAt ? (
+                <StatusBadge tone="green">
+                  <CheckBadgeIcon className="w-4 h-4 mr-1" aria-hidden="true" />
+                  {t('info.validated', { date: formatDate(organization.validatedAt) })}
+                </StatusBadge>
+              ) : (
+                <StatusBadge tone="amber">
+                  <ClockIcon className="w-4 h-4 mr-1" aria-hidden="true" />
+                  {i18n.t('organization:not_validated')}
+                </StatusBadge>
+              )}
+            </CardHeader>
+            <CardBody>
+              <form
+                className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                {field('name')}
+                {field('email', { type: 'email' })}
+                {field('phone', { type: 'tel' })}
+                {field('taxId', { placeholder: 'RO12345678' })}
+                {field('address', { wide: true })}
+                {field('website', { type: 'url', placeholder: 'https://', wide: true })}
+                {field('description', { textarea: true, wide: true })}
+                <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 items-start">
+                  <div className="flex flex-col gap-1">
+                    <small className="text-cool-gray-500">{t('logo.current')}</small>
+                    {organization.logo ? (
+                      <img
+                        src={organization.logo}
+                        alt={t('logo.current')}
+                        className="h-24 w-24 object-contain rounded-lg border border-cool-gray-200 p-2 bg-white"
+                      />
+                    ) : (
+                      <span className="h-24 w-24 rounded-lg border border-dashed border-cool-gray-300 flex items-center justify-center text-xs text-cool-gray-500">
+                        {t('logo.none')}
+                      </span>
+                    )}
+                  </div>
+                  <OrganizationLogo
+                    onLogo={setLogo}
+                    logoLabel={`${i18n.t('organization:replace_logo')}`}
+                  />
+                </div>
+              </form>
+            </CardBody>
+          </Card>
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
+            <DivisionChips type={DivisionType.DEPARTMENT} />
+            <DivisionChips type={DivisionType.ROLE} />
+            <ActivityTypeChips />
+            <DivisionChips type={DivisionType.BRANCH} />
+          </div>
+        </>
       )}
-      {/* organization structure tables */}
-      <Tabs<DivisionType>
-        tabs={DivisionsTabs}
-        onClick={onTabClick}
-        defaultTab={DivisionsTabs.find((tab) => tab.key === query.type)}
-      >
-        {query.type === DivisionType.BRANCH && <DivisionTable type={DivisionType.BRANCH} />}
-        {query.type === DivisionType.DEPARTMENT && <DivisionTable type={DivisionType.DEPARTMENT} />}
-        {query.type === DivisionType.ROLE && <DivisionTable type={DivisionType.ROLE} />}
-      </Tabs>
     </PageLayout>
   );
 };

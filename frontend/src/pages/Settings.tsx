@@ -98,7 +98,7 @@ const Settings = () => {
         <CardHeader>
           <h2>{i18n.t('settings:organization.title')}</h2>
           <ActionLink
-            to="/organization/edit"
+            to="/organization"
             icon={<PencilIcon className="h-5 w-5" />}
             label={i18n.t('settings:organization.edit')}
           />
