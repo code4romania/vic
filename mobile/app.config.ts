@@ -81,7 +81,8 @@ const expoConfig: ExpoConfig = {
       },
     ],
     // the app is always light at the bottom (tab bar, action bars), so keep the navigation buttons dark
-    ['expo-navigation-bar', { style: 'dark' }],
+    // no gray scrim behind the 3-button navigation: the screens already pad the bottom inset
+    ['expo-navigation-bar', { style: 'dark', enforceContrast: false }],
     [
       'expo-splash-screen',
       {
@@ -99,8 +100,7 @@ const expoConfig: ExpoConfig = {
       'expo-image-picker',
       {
         // the profile photo is picked from the gallery only: no camera, no microphone
-        photosPermission:
-          'VIC folosește galeria foto doar pentru a-ți alege fotografia de profil.',
+        photosPermission: 'VIC folosește galeria foto doar pentru a-ți alege fotografia de profil.',
         cameraPermission: false,
         microphonePermission: false,
       },
