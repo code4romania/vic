@@ -288,8 +288,14 @@ export class OrganizationRepositoryService
     );
   }
 
+  // The public figure: only the organizations volunteers can see (active and validated)
   public count(): Promise<number> {
-    return this.organizationRepository.count();
+    return this.organizationRepository
+      .createQueryBuilder('organization')
+      .where(VISIBLE_TO_VOLUNTEERS, {
+        visibleStatus: OrganizationStatus.ACTIVE,
+      })
+      .getCount();
   }
 
   private repositoryFor(

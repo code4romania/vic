@@ -366,4 +366,33 @@ describe('Team (e2e)', () => {
     await http.post('/auth/login-link').send({ token: fresh }).expect(200);
     expect((await team())['ion@ong.ro'].status).toBe('active');
   });
+
+  it('two admins disabling each other at the same time: one wins, the NGO keeps an admin (ORG_013)', async () => {
+    const colleague = await insertAdmin('coleg@ong.ro', organizationId, {
+      status: AuthIdentityStatus.ACTIVE,
+    });
+    const colleagueToken = await testApp.mintAccessToken(
+      colleague.identity,
+      AuthRealm.WEB,
+    );
+
+    const [mine, theirs] = await Promise.all([
+      http.patch(`/organization/team/${colleague.userId}/disable`).set(auth()),
+      http
+        .patch(`/organization/team/${me.userId}/disable`)
+        .set(auth(colleagueToken)),
+    ]);
+    // the loser is refused by the lock (403 ORG_013), or by the guard if it arrives after the commit
+    const statuses = [mine.status, theirs.status].sort();
+    expect(statuses[0]).toBe(204);
+    expect([401, 403]).toContain(statuses[1]);
+    const loser = [mine, theirs].find((r) => r.status === 403);
+    if (loser) expect(loser.body.code_error).toBe('ORG_013');
+    const [{ enabled }] = await testApp.dataSource.query(
+      `SELECT count(*)::int AS enabled FROM auth_identity i JOIN "user" u ON u.id = i.user_id
+        WHERE u.organization_id = $1 AND i.status <> 'disabled'`,
+      [organizationId],
+    );
+    expect(enabled).toBe(1);
+  });
 });

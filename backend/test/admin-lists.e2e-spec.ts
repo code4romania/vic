@@ -1,3 +1,4 @@
+import { GetVicStatisticsUsecase } from 'src/usecases/dashboard/get-vic-statistics.usecase';
 import {
   AuthIdentityStatus,
   AuthRealm,
@@ -153,6 +154,21 @@ describe('Super admin lists (e2e)', () => {
         (o: { name: string; volunteers: number }) => o.name,
       ),
     ).toEqual(['Salvați Pădurea']);
+
+    // awaiting validation: confirmed (active) and not validated yet
+    await testApp.dataSource.query(
+      `UPDATE organization SET validated_at = now() WHERE name = 'VIC'`,
+    );
+    const names = async (query: string): Promise<string[]> =>
+      (await get(`/admin/organizations?${query}`)).body.items.map(
+        (o: { name: string }) => o.name,
+      );
+    expect(await names('awaitingValidation=true')).toEqual(['Crucea Verde']);
+    expect(await names('awaitingValidation=false')).toEqual(['VIC']);
+
+    // the public figure in the app counts only the organizations volunteers can see
+    const statistics = await testApp.app.get(GetVicStatisticsUsecase).execute();
+    expect(statistics.numberOfOrganizations).toBe(1);
   });
 
   it('lists volunteer accounts with their active organizations, searchable', async () => {

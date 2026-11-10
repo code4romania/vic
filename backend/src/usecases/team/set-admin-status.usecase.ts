@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
 import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
@@ -57,6 +61,25 @@ export class SetAdminStatusUseCase implements IUseCaseService<void> {
 
     if (identity) {
       await this.dataSource.transaction(async (manager) => {
+        // Two admins disabling each other at the same time would leave the NGO with no admin: the
+        // changes to one NGO's team run one at a time (a lock on the organization row), and the
+        // caller must still be enabled when theirs runs (403 ORG_013), so one admin always remains.
+        if (!enabled) {
+          await manager.query(
+            `SELECT id FROM organization WHERE id = $1 FOR UPDATE`,
+            [caller.organizationId],
+          );
+          const [callerIdentity] = await manager.query(
+            `SELECT status FROM auth_identity WHERE user_id = $1 AND realm = 'web'`,
+            [caller.id],
+          );
+          if (
+            !callerIdentity ||
+            callerIdentity.status === AuthIdentityStatus.DISABLED
+          ) {
+            throw new ForbiddenException(OrganizationExceptionMessages.ORG_013);
+          }
+        }
         await this.authIdentityFacade.updateIdentity(
           identity.id,
           {
