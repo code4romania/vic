@@ -50,9 +50,7 @@ describe('ImportVolunteers (#473)', () => {
     expect(screen.getByRole('button', { name: f('submit') })).toBeDisabled();
     await pickAndImport();
 
-    expect(await screen.findByRole('status')).toHaveTextContent(
-      f('result.imported', { count: 2 }),
-    );
+    expect(await screen.findByRole('status')).toHaveTextContent(f('result.imported', { count: 2 }));
     expect((form?.get('file') as File).name).toBe('voluntari.csv');
     API.interceptors.request.eject(interceptor);
     expect(

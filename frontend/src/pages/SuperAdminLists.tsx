@@ -9,6 +9,10 @@ import CardBody from '../components/CardBody';
 import DataTableComponent from '../components/DataTableComponent';
 import DataTableFilters from '../components/DataTableFilters';
 import Tabs from '../components/Tabs';
+import StatusBadge, { BadgeTone } from '../components/StatusBadge';
+import MediaCell from '../components/MediaCell';
+import InitialsAvatar from '../components/InitialsAvatar';
+import Button from '../components/Button';
 import { SelectItem } from '../components/Select';
 import SelectFilter from '../containers/SelectFilter';
 import Forbidden from './Forbidden';
@@ -28,10 +32,16 @@ type AdminList = 'organizations' | 'volunteers';
 const LISTS: AdminList[] = ['organizations', 'volunteers'];
 const STATUSES: AdminOrganizationStatus[] = ['pending', 'active', 'suspended'];
 
+const STATUS_TONES: Record<AdminOrganizationStatus, BadgeTone> = {
+  pending: 'amber',
+  active: 'green',
+  suspended: 'red',
+};
+
 const Contact = ({ email, phone }: { email: string; phone: string }) => (
-  <div className="flex flex-col py-2">
-    <span>{email}</span>
-    <small className="text-cool-gray-500">{phone}</small>
+  <div className="flex flex-col py-3 min-w-0">
+    <span className="text-sm text-cool-gray-900 truncate">{email}</span>
+    <small className="text-cool-gray-500">{phone || '-'}</small>
   </div>
 );
 
@@ -73,22 +83,61 @@ const SuperAdminLists = () => {
     {
       id: 'name',
       name: t('columns.organization'),
-      grow: 2,
-      cell: (row) => <span className="font-robotoBold">{row.name}</span>,
+      grow: 3,
+      minWidth: '17rem',
+      cell: (row) => (
+        <div className="py-3 w-full">
+          <MediaCell title={row.name} subtitle={t('since', { date: formatDate(row.createdOn) })} />
+        </div>
+      ),
     },
-    { id: 'taxId', name: t('columns.tax_id'), selector: (row) => row.taxId || '-' },
+    {
+      id: 'taxId',
+      name: t('columns.tax_id'),
+      cell: (row) => (
+        <span className="text-sm font-robotoMedium text-cool-gray-900 whitespace-nowrap">
+          {row.taxId || '-'}
+        </span>
+      ),
+    },
     {
       id: 'contact',
       name: t('columns.contact'),
       grow: 2,
       cell: (row) => <Contact email={row.email} phone={row.phone} />,
     },
-    { id: 'status', name: t('columns.status'), selector: (row) => t(`status.${row.status}`) },
-    { id: 'volunteers', name: t('columns.volunteers'), selector: (row) => row.volunteers },
     {
-      id: 'createdOn',
-      name: t('columns.registered_on'),
-      selector: (row) => formatDate(row.createdOn),
+      id: 'status',
+      name: t('columns.status'),
+      cell: (row) => (
+        <StatusBadge tone={STATUS_TONES[row.status]}>{t(`status.${row.status}`)}</StatusBadge>
+      ),
+    },
+    {
+      id: 'volunteers',
+      name: t('columns.volunteers'),
+      minWidth: '9rem',
+      cell: (row) => <span className="text-sm font-robotoBold text-navy">{row.volunteers}</span>,
+    },
+    {
+      id: 'validatedAt',
+      name: t('columns.validated_on'),
+      selector: (row) => formatDate(row.validatedAt),
+    },
+    {
+      id: 'actions',
+      name: '',
+      minWidth: '9rem',
+      right: true,
+      cell: (row) =>
+        row.status === 'pending' ? (
+          <Button
+            type="button"
+            className="btn-text-primary px-2"
+            label={t('review')}
+            onClick={() => navigate('/admin/validation')}
+          />
+        ) : null,
     },
   ];
 
@@ -97,7 +146,13 @@ const SuperAdminLists = () => {
       id: 'name',
       name: t('columns.name'),
       grow: 2,
-      cell: (row) => <span className="font-robotoBold">{row.name}</span>,
+      minWidth: '13rem',
+      cell: (row) => (
+        <div className="flex items-center gap-3 py-3 min-w-0">
+          <InitialsAvatar name={row.name} />
+          <span className="font-robotoMedium text-sm text-cool-gray-900 truncate">{row.name}</span>
+        </div>
+      ),
     },
     {
       id: 'contact',
@@ -109,8 +164,21 @@ const SuperAdminLists = () => {
       id: 'organizations',
       name: t('columns.organizations'),
       grow: 3,
-      selector: (row) => (row.organizations.length ? row.organizations.join(', ') : '-'),
-      wrap: true,
+      cell: (row) =>
+        row.organizations.length ? (
+          <ul className="flex flex-wrap gap-1.5 py-3" aria-label={row.organizations.join(', ')}>
+            {row.organizations.map((organization) => (
+              <li
+                key={organization}
+                className="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-robotoMedium text-cool-gray-700 ring-1 ring-inset ring-cool-gray-300 bg-white"
+              >
+                {organization}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <span className="text-sm text-cool-gray-500">{t('no_organization')}</span>
+        ),
     },
     {
       id: 'createdOn',
@@ -131,9 +199,12 @@ const SuperAdminLists = () => {
     },
   });
 
+  const current = list === 'organizations' ? organizations : volunteers;
+  const found = current.data?.meta.totalItems;
+
   return (
     <PageLayout>
-      <PageHeader>{t('title')}</PageHeader>
+      <PageHeader subtitle={t(`subtitle.${list}`)}>{t('title')}</PageHeader>
       <Tabs<AdminList>
         tabs={tabs}
         defaultTab={tabs.find((tab) => tab.key === list)}
@@ -151,6 +222,7 @@ const SuperAdminLists = () => {
             setPage(1);
           }}
           onResetFilters={reset}
+          results={found !== undefined && <span>{t(`found.${list}`, { count: found })}</span>}
         >
           {list === 'organizations' && (
             <SelectFilter

@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import LoadingContent from '../components/LoadingContent';
 import ExpiredLink from '../components/ExpiredLink';
 import OpenAppBox from '../components/OpenAppBox';
-import AuthLayout from '../layouts/AuthLayout';
+import AuthShell from '../components/AuthShell';
+import { CheckBadgeIcon, EnvelopeIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../hooks/useAuth';
 import { confirmEmail } from '../services/auth/auth.api';
 import { isMobileRealmResult } from '../common/interfaces/auth.interface';
@@ -41,24 +42,34 @@ const ConfirmEmail = () => {
 
   if (state.kind === 'mobile') {
     return (
-      <AuthLayout title={t('done.title')}>
+      <AuthShell
+        title={t('done.title')}
+        icon={<CheckBadgeIcon className="w-6 h-6" aria-hidden="true" />}
+      >
         <OpenAppBox title={t('done.open_app')} email={state.email} />
-      </AuthLayout>
+      </AuthShell>
     );
   }
 
   if (state.kind === 'failed') {
     return (
-      <AuthLayout title={t('failed_title')}>
+      <AuthShell
+        title={t('failed_title')}
+        icon={<ExclamationTriangleIcon className="w-6 h-6" aria-hidden="true" />}
+      >
         <ExpiredLink token={token} />
-      </AuthLayout>
+      </AuthShell>
     );
   }
 
   return (
-    <AuthLayout title={t('title')}>
+    <AuthShell
+      title={t('title')}
+      subtitle={t('wait')}
+      icon={<EnvelopeIcon className="w-6 h-6" aria-hidden="true" />}
+    >
       <LoadingContent />
-    </AuthLayout>
+    </AuthShell>
   );
 };
 

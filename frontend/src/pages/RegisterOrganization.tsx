@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import logo from '../assets/images/app_logo.svg';
 import FormInput from '../components/FormInput';
 import Button from '../components/Button';
 import Turnstile from '../components/Turnstile';
+import AuthShell, { AuthNotice } from '../components/AuthShell';
+import { BuildingOffice2Icon, CheckBadgeIcon, EnvelopeOpenIcon } from '@heroicons/react/24/outline';
 import { OrganizationFields, organizationFieldsSchema } from '../components/OrganizationFields';
 import { useRegisterOrganizationMutation } from '../services/organization/organization.service';
 import { IRegisterOrganization } from '../common/interfaces/organization.interface';
@@ -125,132 +126,159 @@ const RegisterOrganization = () => {
   const termsUrl = import.meta.env.VITE_TERMS_URL;
   const privacyUrl = import.meta.env.VITE_PRIVACY_URL;
 
-  return (
-    <div className="min-h-[100vh] w-full bg-gray-50 px-4 py-8">
-      <div className="w-full max-w-2xl mx-auto flex flex-col gap-6">
-        <Link to="/" className="self-center">
-          <img src={logo} alt="VIC" className="max-h-11" />
-        </Link>
-        <h1 className="font-robotoBold text-2xl text-center">{t('title')}</h1>
+  const checkbox = (checked: boolean, onChange: (value: boolean) => void, label: ReactNode) => (
+    <label
+      className={`flex items-start gap-3 rounded-lg border p-4 text-sm cursor-pointer ${
+        checked ? 'border-navy bg-navy-50' : 'border-cool-gray-200 bg-white hover:bg-cool-gray-50'
+      }`}
+    >
+      <input
+        type="checkbox"
+        className="mt-0.5 h-4 w-4 rounded border-cool-gray-300 text-navy focus:ring-navy"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+      />
+      <span className="text-cool-gray-800">{label}</span>
+    </label>
+  );
 
-        {registered ? (
-          <div
-            role="status"
-            className="bg-white rounded-lg shadow p-8 flex flex-col gap-4 text-center"
-          >
-            <h2 className="font-robotoBold text-lg">
-              {t('success.title', { organization: registered.name })}
-            </h2>
-            <p className="text-cool-gray-500">
-              {t('success.description', { email: registered.maskedEmail })}
-            </p>
-            <Link to="/login" className="underline">
-              {t('success.login')}
-            </Link>
-          </div>
-        ) : (
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)} noValidate>
-            <p className="text-cool-gray-500 text-center">{t('description')}</p>
-
-            <section className="bg-white rounded-lg shadow p-6 flex flex-col gap-4">
-              <h2 className="font-robotoBold text-lg">{t('organization_card')}</h2>
-              <OrganizationFields control={control} errors={errors} />
-            </section>
-
-            <section className="bg-white rounded-lg shadow p-6 flex flex-col gap-4">
-              <h2 className="font-robotoBold text-lg">{t('admin_card')}</h2>
-              <p className="text-sm text-cool-gray-500">{t('admin_card_description')}</p>
-              {adminField('firstName', 'text', 'given-name')}
-              {adminField('lastName', 'text', 'family-name')}
-              {adminField('adminEmail', 'email', 'email')}
-              {adminField('adminPhone', 'tel', 'tel')}
-            </section>
-
-            <section className="bg-white rounded-lg shadow p-6 flex flex-col gap-4">
-              {/* #510: self-declaration instead of the statute; a super admin still validates the NGO */}
-              <h3 className="font-semibold">{t('form.declaration.title')}</h3>
-              {(['declaresRegisteredNgo', 'declaresRepresentative'] as const).map((name) => (
-                <div key={name} className="flex flex-col gap-1">
-                  <Controller
-                    name={name}
-                    control={control}
-                    render={({ field: { onChange, value } }) => (
-                      <label className="flex items-start gap-2 text-sm">
-                        <input
-                          type="checkbox"
-                          className="mt-1"
-                          checked={value}
-                          onChange={(event) => onChange(event.target.checked)}
-                        />
-                        <span>{t(`form.declaration.${name}`)}</span>
-                      </label>
-                    )}
-                  />
-                  {errors[name] && <p className="text-red-500 text-sm">{errors[name]?.message}</p>}
-                </div>
-              ))}
-              <Controller
-                name="acceptedTerms"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <label className="flex items-start gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      className="mt-1"
-                      checked={value}
-                      onChange={(event) => onChange(event.target.checked)}
-                    />
-                    <span>
-                      {t('form.terms.label')}{' '}
-                      {termsUrl && (
-                        <a className="underline" href={termsUrl} target="_blank" rel="noreferrer">
-                          {t('form.terms.terms')}
-                        </a>
-                      )}
-                      {termsUrl && privacyUrl && ` ${t('form.terms.and')} `}
-                      {privacyUrl && (
-                        <a className="underline" href={privacyUrl} target="_blank" rel="noreferrer">
-                          {t('form.terms.privacy')}
-                        </a>
-                      )}
-                    </span>
-                  </label>
-                )}
-              />
-              {errors.acceptedTerms && (
-                <p className="text-red-500 text-sm">{errors.acceptedTerms.message}</p>
-              )}
-              <Turnstile
-                onToken={setTurnstileToken}
-                resetKey={turnstileKey}
-                language={i18n.language}
-              />
-              {error && (
-                <div
-                  role="alert"
-                  className="rounded-lg bg-red-50 border border-red-300 p-4 text-sm"
-                >
-                  {error}
-                </div>
-              )}
-              <Button
-                type="submit"
-                label={t('submit')}
-                disabled={register.isLoading}
-                className="btn-primary self-start"
-              />
-            </section>
-
-            <p className="text-sm text-center">
-              {t('has_account')}{' '}
-              <Link to="/login" className="underline">
-                {t('login')}
-              </Link>
-            </p>
-          </form>
-        )}
+  const step = (index: number, title: string, description?: string) => (
+    <div className="flex items-start gap-3">
+      <span className="w-7 h-7 shrink-0 rounded-full bg-navy text-yellow text-sm font-robotoBold flex items-center justify-center">
+        {index}
+      </span>
+      <div>
+        <h2>{title}</h2>
+        {description && <p className="text-sm text-cool-gray-500">{description}</p>}
       </div>
     </div>
+  );
+
+  if (registered) {
+    return (
+      <AuthShell
+        title={t('success.title', { organization: registered.name })}
+        icon={<EnvelopeOpenIcon className="w-6 h-6" aria-hidden="true" />}
+      >
+        <AuthNotice tone="success">
+          {t('success.description', { email: registered.maskedEmail })}
+        </AuthNotice>
+        <ol className="flex flex-col gap-3 text-sm text-cool-gray-700">
+          {(['confirm', 'validation', 'volunteers'] as const).map((key, index) => (
+            <li key={key} className="flex items-start gap-3">
+              <span className="w-6 h-6 shrink-0 rounded-full bg-cool-gray-100 text-cool-gray-700 text-xs font-robotoBold flex items-center justify-center">
+                {index + 1}
+              </span>
+              <span>{t(`success.next.${key}`)}</span>
+            </li>
+          ))}
+        </ol>
+        <Link to="/login" className="btn-outline-secondary w-full">
+          {t('success.login')}
+        </Link>
+      </AuthShell>
+    );
+  }
+
+  return (
+    <AuthShell
+      wide
+      title={t('title')}
+      subtitle={t('description')}
+      icon={<BuildingOffice2Icon className="w-6 h-6" aria-hidden="true" />}
+    >
+      <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <section className="flex flex-col gap-4">
+          {step(1, t('organization_card'), t('organization_card_description'))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <OrganizationFields control={control} errors={errors} />
+          </div>
+        </section>
+
+        <section className="flex flex-col gap-4 pt-6 border-t border-cool-gray-200">
+          {step(2, t('admin_card'), t('admin_card_description'))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {adminField('firstName', 'text', 'given-name')}
+            {adminField('lastName', 'text', 'family-name')}
+            {adminField('adminEmail', 'email', 'email')}
+            {adminField('adminPhone', 'tel', 'tel')}
+          </div>
+        </section>
+
+        <section className="flex flex-col gap-4 pt-6 border-t border-cool-gray-200">
+          {/* #510: self-declaration instead of the statute; a super admin still validates the NGO */}
+          {step(3, t('form.declaration.title'), t('form.declaration.description'))}
+          {(['declaresRegisteredNgo', 'declaresRepresentative'] as const).map((name) => (
+            <div key={name} className="flex flex-col gap-1">
+              <Controller
+                name={name}
+                control={control}
+                render={({ field: { onChange, value } }) =>
+                  checkbox(value, onChange, t(`form.declaration.${name}`))
+                }
+              />
+              {errors[name] && <p className="text-red-500 text-sm">{errors[name]?.message}</p>}
+            </div>
+          ))}
+          <Controller
+            name="acceptedTerms"
+            control={control}
+            render={({ field: { onChange, value } }) =>
+              checkbox(
+                value,
+                onChange,
+                <>
+                  {t('form.terms.label')}{' '}
+                  {termsUrl && (
+                    <a
+                      className="text-sm text-navy underline"
+                      href={termsUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('form.terms.terms')}
+                    </a>
+                  )}
+                  {termsUrl && privacyUrl && ` ${t('form.terms.and')} `}
+                  {privacyUrl && (
+                    <a
+                      className="text-sm text-navy underline"
+                      href={privacyUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('form.terms.privacy')}
+                    </a>
+                  )}
+                </>,
+              )
+            }
+          />
+          {errors.acceptedTerms && (
+            <p className="text-red-500 text-sm">{errors.acceptedTerms.message}</p>
+          )}
+          <Turnstile onToken={setTurnstileToken} resetKey={turnstileKey} language={i18n.language} />
+          {error && <AuthNotice tone="error">{error}</AuthNotice>}
+          <div className="flex items-start gap-3 rounded-lg bg-cool-gray-50 border border-cool-gray-200 p-4 text-sm text-cool-gray-700">
+            <CheckBadgeIcon className="w-5 h-5 shrink-0 text-navy" aria-hidden="true" />
+            <span>{t('validation_note')}</span>
+          </div>
+          <Button
+            type="submit"
+            label={t('submit')}
+            disabled={register.isLoading}
+            className="btn-primary w-full sm:w-auto sm:self-start"
+          />
+        </section>
+      </form>
+
+      <p className="text-sm text-center text-cool-gray-600 pt-6 border-t border-cool-gray-200">
+        {t('has_account')}{' '}
+        <Link to="/login" className="text-sm text-navy underline">
+          {t('login')}
+        </Link>
+      </p>
+    </AuthShell>
   );
 };
 

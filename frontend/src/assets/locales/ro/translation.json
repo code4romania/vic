@@ -1560,18 +1560,31 @@
       "description": "Linkul nu mai este valabil: a expirat sau a fost deja folosit.",
       "resend": "Trimite-mi un link nou",
       "sent": "Dacă linkul poate fi reînnoit, am trimis unul nou. Verifică-ți emailul.",
-      "new_login": "Cere un link nou din pagina de autentificare"
+      "new_login": "Cere un link nou din pagina de autentificare",
+      "why": "Din motive de siguranță, un link funcționează o singură dată și doar pentru scurt timp.",
+      "back_to_login": "Înapoi la autentificare"
+    },
+    "shell": {
+      "headline": "Voluntarii organizației tale, într-un singur loc",
+      "description": "VIC este platforma gratuită prin care ONG-urile își gestionează voluntarii, evenimentele, orele de voluntariat și contractele.",
+      "points": {
+        "volunteers": "Cereri de înscriere, profiluri și echipe, toate într-o listă",
+        "hours": "Ore de voluntariat trimise din aplicație și aprobate de tine",
+        "free": "Gratuit pentru organizațiile neguvernamentale din România"
+      },
+      "footer": "VIC · Volunteer Manager, un proiect Code for Romania"
     }
   },
   "login": {
-    "title": "Autentificare în VIC",
+    "title": "Intră în cont",
     "description": "Introdu emailul contului tău de administrator. Îți trimitem un link cu care intri în cont, fără parolă.",
     "migration_notice": "Aveai cont înainte de schimbare? Introdu emailul mai jos: îți trimitem un link de autentificare. Nu mai ai nevoie de parolă.",
     "form": {
       "email": {
         "label": "Email",
         "invalid": "Adresa de email nu este validă",
-        "required": "Emailul este obligatoriu"
+        "required": "Emailul este obligatoriu",
+        "placeholder": "nume@organizatie.ro"
       }
     },
     "submit": "Trimite linkul de autentificare",
@@ -1592,7 +1605,8 @@
       "title": "Acesta este un cont de voluntar",
       "description": "Voluntarii folosesc aplicația mobilă VIC. Platforma web este pentru administratorii organizațiilor.",
       "open_app": "Deschide aplicația"
-    }
+    },
+    "no_password": "Fără parolă: primești pe email un link valabil 15 minute."
   },
   "login_link": {
     "title": {
@@ -1614,7 +1628,8 @@
     },
     "errors": {
       "generic": "A apărut o eroare. Încearcă din nou."
-    }
+    },
+    "single_use": "Linkul funcționează o singură dată."
   },
   "confirm_email": {
     "title": "Confirmăm emailul",
@@ -1622,11 +1637,12 @@
     "done": {
       "title": "Email confirmat",
       "open_app": "Email confirmat. Deschide aplicația și intră în cont."
-    }
+    },
+    "wait": "Durează doar câteva secunde."
   },
   "landing": {
     "title": "Gestionează voluntarii într-un singur loc",
-    "subtitle": "VIC ajută organizațiile să recruteze voluntari, să organizeze evenimente, să înregistreze orele de voluntariat și să semneze contracte, gratuit.",
+    "subtitle": "VIC ajută organizațiile să recruteze voluntari, să organizeze evenimente, să țină evidența orelor de voluntariat și a contractelor, gratuit.",
     "login": "Intră în cont",
     "register": "Înregistrează organizația",
     "features": {
@@ -1644,18 +1660,20 @@
       },
       "documents": {
         "title": "Contracte",
-        "description": "Contracte de voluntariat generate și semnate online."
+        "description": "Contractele semnate se încarcă în VIC, cu perioada lor, ca să știi mereu ce expiră."
       }
     },
     "volunteers": {
       "title": "Ești voluntar?",
       "description": "Voluntarii folosesc aplicația mobilă VIC."
-    }
+    },
+    "footer": "VIC · Volunteer Manager, un proiect Code for Romania"
   },
   "not_found": {
     "title": "Pagina nu a fost găsită",
-    "description": "Pagina pe care o cauți nu există.",
-    "home": "Mergi la pagina principală"
+    "description": "Pagina pe care o cauți nu există sau a fost mutată.",
+    "home": "Mergi la pagina principală",
+    "back": "Înapoi"
   },
   "register_organization": {
     "title": "Înregistrează organizația",
@@ -1720,7 +1738,8 @@
         "title": "Declarație pe propria răspundere",
         "declaresRegisteredNgo": "Declar pe propria răspundere că organizația este un ONG înregistrat în România și că datele introduse sunt corecte.",
         "declaresRepresentative": "Am dreptul să reprezint organizația și să creez acest cont în numele ei.",
-        "required": "Bifează declarația ca să continui"
+        "required": "Bifează declarația ca să continui",
+        "description": "Bifează ambele declarații ca să trimiți înregistrarea."
       }
     },
     "submit": "Înregistrează",
@@ -1729,12 +1748,19 @@
     "success": {
       "title": "Confirmă emailul pentru a activa {{organization}}",
       "description": "Am trimis un link la {{email}}. Deschide-l pentru a confirma adresa și a intra în cont.",
-      "login": "Mergi la autentificare"
+      "login": "Mergi la autentificare",
+      "next": {
+        "confirm": "Deschide linkul din email ca să confirmi adresa și să intri în cont.",
+        "validation": "Echipa VIC verifică CUI-ul și validează organizația.",
+        "volunteers": "După validare, voluntarii pot găsi organizația în aplicație."
+      }
     },
     "errors": {
       "turnstile_missing": "Completează verificarea anti-robot.",
       "generic": "Înregistrarea nu a reușit. Verifică datele și încearcă din nou."
-    }
+    },
+    "organization_card_description": "Datele oficiale ale ONG-ului. CUI-ul este verificat de echipa VIC.",
+    "validation_note": "După confirmarea emailului, echipa VIC verifică CUI-ul organizației. Până la validare, voluntarii nu văd organizația."
   },
   "team": {
     "title": "Echipa",
@@ -1803,7 +1829,7 @@
   },
   "validation": {
     "title": "Validare ONG-uri",
-    "description": "Organizații care și-au confirmat emailul și așteaptă validarea. Verifică CUI-ul înainte de validare.",
+    "description": "Organizații care și-au confirmat emailul și așteaptă validarea. Verifică CUI-ul înainte să validezi.",
     "columns": {
       "name": "Organizație",
       "tax_id": "CUI",
@@ -1831,11 +1857,45 @@
     "errors": {
       "load": "Organizațiile nu au putut fi încărcate",
       "generic": "A apărut o eroare. Încearcă din nou."
+    },
+    "stats": {
+      "pending": "În așteptarea validării",
+      "pending_info": "Verifică CUI-ul și decide",
+      "active": "Organizații active",
+      "suspended": "Organizații suspendate",
+      "see_all": "Vezi toate"
+    },
+    "list_title_one": "{{count}} organizație de validat",
+    "list_title_few": "{{count}} organizații de validat",
+    "list_title_other": "{{count}} de organizații de validat",
+    "list_title_zero": "Nicio organizație de validat",
+    "cui_hint": "Validarea se face pe baza CUI-ului.",
+    "cui_check": "Verifică CUI-ul în registrul public al ONG-urilor înainte de validare.",
+    "empty": {
+      "title": "Nicio organizație nu așteaptă validarea",
+      "description": "Organizațiile noi apar aici după ce își confirmă adresa de email."
+    },
+    "registered": "Înregistrată la {{date}}",
+    "waiting_today": "așteaptă de azi",
+    "waiting_days_one": "așteaptă de o zi",
+    "waiting_days_few": "așteaptă de {{count}} zile",
+    "waiting_days_other": "așteaptă de {{count}} de zile",
+    "pending_badge": "În validare",
+    "fields": {
+      "contact": "Contact organizație",
+      "address": "Adresa sediului",
+      "website": "Website",
+      "description": "Descriere",
+      "declarations": "Declarații pe propria răspundere"
+    },
+    "declarations": {
+      "registered_ngo": "Organizația este un ONG înregistrat în România, iar datele sunt corecte",
+      "representative": "Persoana care a creat contul are dreptul să reprezinte organizația"
     }
   },
   "forbidden": {
     "title": "Acces interzis",
-    "description": "Nu ai acces la această pagină.",
+    "description": "Nu ai drepturi pentru această pagină. Dacă ai nevoie de acces, cere-l unui administrator al organizației.",
     "home": "Mergi la pagina principală"
   },
   "approvals": {
@@ -1957,13 +2017,33 @@
       "volunteers": "Voluntari activi",
       "registered_on": "Înregistrată la",
       "organizations": "Organizații",
-      "account_created": "Cont creat la"
+      "account_created": "Cont creat la",
+      "validated_on": "Validată la"
     },
     "status": {
       "all": "Toate",
       "pending": "În validare",
       "active": "Activă",
       "suspended": "Suspendată"
+    },
+    "subtitle": {
+      "organizations": "Toate organizațiile înregistrate în VIC, cu statusul lor",
+      "volunteers": "Toți voluntarii cu cont în aplicația VIC"
+    },
+    "since": "Înregistrată la {{date}}",
+    "review": "Revizuiește",
+    "no_organization": "Nicio organizație",
+    "found": {
+      "organizations_one": "{{count}} organizație găsită",
+      "organizations_few": "{{count}} organizații găsite",
+      "organizations_other": "{{count}} de organizații găsite",
+      "volunteers_one": "{{count}} voluntar găsit",
+      "volunteers_few": "{{count}} voluntari găsiți",
+      "volunteers_other": "{{count}} de voluntari găsiți"
     }
+  },
+  "states": {
+    "loading": "Se încarcă…",
+    "error_title": "Datele nu au putut fi încărcate"
   }
 }

@@ -5,13 +5,15 @@ import * as yup from 'yup';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { EnvelopeIcon, EnvelopeOpenIcon } from '@heroicons/react/24/outline';
 import FormInput from '../components/FormInput';
+import { toastOptions } from '../hooks/useToast';
 import Button from '../components/Button';
 import { AUTH_ERRORS } from '../common/errors/entities/auth.errors';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useRequestLoginMutation } from '../services/auth/auth.service';
 import { getAuthErrorCode } from '../common/utils/auth-error';
-import AuthLayout from '../layouts/AuthLayout';
+import AuthShell, { AuthNotice } from '../components/AuthShell';
 import OpenAppBox from '../components/OpenAppBox';
 
 type LoginForm = { email: string };
@@ -60,51 +62,54 @@ const Login = () => {
   const onSubmit = ({ email }: LoginForm) => send(email.trim());
 
   const onSendAgain = () => {
-    if (sentTo) send(sentTo, () => toast.success(t('sent.again_done')));
+    if (sentTo) send(sentTo, () => toast.success(t('sent.again_done'), toastOptions('success')));
   };
 
   const errorBox = error && error !== AUTH_ERRORS.AUTH_012 && (
-    <div role="alert" className="rounded-lg bg-red-50 border border-red-300 p-4 text-sm">
+    <AuthNotice tone="error">
       {error === 'generic' ? t('errors.generic') : InternalErrors.AUTH_ERRORS.getError(error)}
-    </div>
+    </AuthNotice>
   );
 
   if (sentTo) {
     return (
-      <AuthLayout title={t('sent.title')}>
-        <div role="status" className="rounded-lg bg-green-50 border border-green-300 p-4 text-sm">
-          {t('sent.description', { email: sentTo })}
-        </div>
+      <AuthShell
+        title={t('sent.title')}
+        icon={<EnvelopeOpenIcon className="w-6 h-6" aria-hidden="true" />}
+      >
+        <AuthNotice tone="success">{t('sent.description', { email: sentTo })}</AuthNotice>
         {errorBox}
         <p className="text-sm text-cool-gray-500">{t('sent.hint')}</p>
-        <Button
-          type="button"
-          label={t('sent.again')}
-          className="btn-outline-secondary"
-          onClick={onSendAgain}
-          disabled={requestLogin.isLoading}
-        />
-        <button
-          type="button"
-          className="text-sm underline self-center"
-          onClick={() => {
-            setSentTo(null);
-            setError(null);
-          }}
-        >
-          {t('sent.other_email')}
-        </button>
-      </AuthLayout>
+        <div className="flex flex-col gap-3">
+          <Button
+            type="button"
+            label={t('sent.again')}
+            className="btn-outline-secondary w-full"
+            onClick={onSendAgain}
+            disabled={requestLogin.isLoading}
+          />
+          <button
+            type="button"
+            className="btn-text-primary w-full"
+            onClick={() => {
+              setSentTo(null);
+              setError(null);
+            }}
+          >
+            {t('sent.other_email')}
+          </button>
+        </div>
+      </AuthShell>
     );
   }
 
   return (
-    <AuthLayout title={t('title')}>
-      {showMigrationNotice() && (
-        <div className="rounded-lg bg-yellow-50 border border-yellow-300 p-4 text-sm">
-          {t('migration_notice')}
-        </div>
-      )}
+    <AuthShell
+      title={t('title')}
+      subtitle={t('description')}
+      icon={<EnvelopeIcon className="w-6 h-6" aria-hidden="true" />}
+    >
+      {showMigrationNotice() && <AuthNotice tone="warning">{t('migration_notice')}</AuthNotice>}
 
       {errorBox}
 
@@ -117,7 +122,6 @@ const Login = () => {
       )}
 
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
-        <p className="text-sm text-cool-gray-500">{t('description')}</p>
         <Controller
           name="email"
           control={control}
@@ -125,6 +129,7 @@ const Login = () => {
             <FormInput
               type="email"
               autoComplete="email"
+              placeholder={t('form.email.placeholder')}
               label={t('form.email.label')}
               value={value}
               onChange={onChange}
@@ -137,17 +142,18 @@ const Login = () => {
           type="submit"
           label={t('submit')}
           disabled={requestLogin.isLoading}
-          className="btn-primary"
+          className="btn-primary w-full"
         />
+        <p className="text-xs text-cool-gray-500 text-center">{t('no_password')}</p>
       </form>
 
-      <p className="text-sm text-center">
-        {t('no_account')}{' '}
-        <Link to="/register" className="underline">
+      <div className="flex flex-col gap-3 pt-6 border-t border-cool-gray-200">
+        <p className="text-sm text-cool-gray-600 text-center">{t('no_account')}</p>
+        <Link to="/register" className="btn-outline-secondary w-full">
           {t('register')}
         </Link>
-      </p>
-    </AuthLayout>
+      </div>
+    </AuthShell>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { DevicePhoneMobileIcon } from '@heroicons/react/24/outline';
 
 export const isMobileDevice = (): boolean => /android|iphone|ipad|ipod/i.test(navigator.userAgent);
 
@@ -20,25 +21,32 @@ const OpenAppBox = ({ title, description, email }: OpenAppBoxProps) => {
   return (
     <div
       role="status"
-      className="rounded-lg bg-blue-50 border border-blue-300 p-4 text-sm flex flex-col gap-2"
+      className="rounded-lg border border-cool-gray-200 bg-cool-gray-50 p-4 text-sm flex items-start gap-3"
     >
-      <p className="font-robotoBold">{title}</p>
-      {description && <p>{description}</p>}
-      {isMobileDevice() && (
-        <a className="btn-primary text-center" href={deepLink}>
-          {t('open_app')}
-        </a>
-      )}
-      <div className="flex gap-4">
-        {appStore && (
-          <a className="underline" href={appStore} target="_blank" rel="noreferrer">
-            App Store
+      <span className="w-9 h-9 shrink-0 rounded-full bg-navy text-yellow flex items-center justify-center">
+        <DevicePhoneMobileIcon className="w-5 h-5" aria-hidden="true" />
+      </span>
+      <div className="flex-1 min-w-0 flex flex-col gap-2">
+        <p className="font-robotoBold text-cool-gray-900">{title}</p>
+        {description && <p className="text-cool-gray-600">{description}</p>}
+        {isMobileDevice() && (
+          <a className="btn-primary text-center" href={deepLink}>
+            {t('open_app')}
           </a>
         )}
-        {playStore && (
-          <a className="underline" href={playStore} target="_blank" rel="noreferrer">
-            Google Play
-          </a>
+        {(appStore || playStore) && (
+          <div className="flex flex-wrap gap-2">
+            {appStore && (
+              <a className="btn-secondary py-1.5" href={appStore} target="_blank" rel="noreferrer">
+                App Store
+              </a>
+            )}
+            {playStore && (
+              <a className="btn-secondary py-1.5" href={playStore} target="_blank" rel="noreferrer">
+                Google Play
+              </a>
+            )}
+          </div>
         )}
       </div>
     </div>
