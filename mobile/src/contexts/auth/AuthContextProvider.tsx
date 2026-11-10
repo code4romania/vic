@@ -16,7 +16,12 @@ import {
   setTokens,
 } from '../../services/auth/token.storage';
 import { authEvents } from '../../services/auth/auth.events';
-import { getSocialToken, signOutSocial, SocialCancelledError } from '../../services/auth/social';
+import {
+  getSocialCredential,
+  ISocialCredential,
+  signOutSocial,
+  SocialCancelledError,
+} from '../../services/auth/social';
 import { getAuthErrorCode } from '../../common/utils/auth-error';
 import { AUTH_ERRORS } from '../../common/errors/entities/auth.errors';
 import { InternalErrors } from '../../common/errors/internal-errors.class';
@@ -156,18 +161,19 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const loginWithSocial = async (provider: SocialProvider) => {
-    let token: string;
+    let credential: ISocialCredential;
     try {
-      token = await getSocialToken(provider);
+      credential = await getSocialCredential(provider);
     } catch (error) {
       if (!(error instanceof SocialCancelledError)) {
-        console.log('[Auth][Social]:', provider, error);
         showError(i18n.t('auth:errors.social_failed'));
       }
       return;
     }
     try {
-      await startSession(await authApi.loginWithSocial(provider, token));
+      await startSession(
+        await authApi.loginWithSocial(provider, credential.token, credential.authorizationCode),
+      );
     } catch (error: any) {
       if (error?.createUser) {
         // Landing sends a pending user to CreateUser

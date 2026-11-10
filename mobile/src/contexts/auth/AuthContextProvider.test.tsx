@@ -190,26 +190,33 @@ describe('AuthContextProvider', () => {
             data: { idToken: 'google-id-token' },
           }),
         'google-id-token',
+        undefined,
       ],
       [
         'apple' as const,
         () =>
           (AppleAuthentication.signInAsync as jest.Mock).mockResolvedValue({
             identityToken: 'apple-id-token',
+            authorizationCode: 'apple-code',
           }),
         'apple-id-token',
+        'apple-code',
       ],
-    ])('%s posts the provider token and loads the profile', async (provider, arrange, token) => {
-      arrange();
-      api.loginWithSocial.mockResolvedValue(SESSION);
-      profileCall.mockResolvedValue(PROFILE);
-      const ctx = await setup();
+    ])(
+      '%s posts the provider token and loads the profile',
+      async (provider, arrange, token, code?) => {
+        arrange();
+        api.loginWithSocial.mockResolvedValue(SESSION);
+        profileCall.mockResolvedValue(PROFILE);
+        const ctx = await setup();
 
-      await act(() => ctx.current.loginWithSocial(provider));
+        await act(() => ctx.current.loginWithSocial(provider));
 
-      expect(api.loginWithSocial).toHaveBeenCalledWith(provider, token);
-      await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
-    });
+        // Apple's authorization code goes along so the backend can revoke the token (audit #9)
+        expect(api.loginWithSocial).toHaveBeenCalledWith(provider, token, code);
+        await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
+      },
+    );
 
     it('a new social volunteer goes to CreateUser', async () => {
       (GoogleSignin.signIn as jest.Mock).mockResolvedValue({

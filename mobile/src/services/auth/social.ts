@@ -11,6 +11,14 @@ import { SocialProvider } from './auth.api';
 // The user closed the provider's sheet: no error to show.
 export class SocialCancelledError extends Error {}
 
+// What POST /mobile/auth/social needs from the provider. Apple also gives a one-time
+// authorization code: the backend exchanges it for a refresh token it can revoke when the account
+// is deleted (App Store guideline 5.1.1(v)).
+export interface ISocialCredential {
+  token: string;
+  authorizationCode?: string;
+}
+
 let googleConfigured = false;
 
 const googleIdToken = async (): Promise<string> => {
@@ -44,7 +52,7 @@ const googleIdToken = async (): Promise<string> => {
   }
 };
 
-const appleIdentityToken = async (): Promise<string> => {
+const appleCredential = async (): Promise<ISocialCredential> => {
   try {
     const credential = await AppleAuthentication.signInAsync({
       requestedScopes: [
@@ -55,7 +63,10 @@ const appleIdentityToken = async (): Promise<string> => {
     if (!credential.identityToken) {
       throw new Error('Apple returned no identityToken');
     }
-    return credential.identityToken;
+    return {
+      token: credential.identityToken,
+      ...(credential.authorizationCode ? { authorizationCode: credential.authorizationCode } : {}),
+    };
   } catch (error: any) {
     if (error?.code === 'ERR_REQUEST_CANCELED') {
       throw new SocialCancelledError();
@@ -64,13 +75,14 @@ const appleIdentityToken = async (): Promise<string> => {
   }
 };
 
-// The token POST /mobile/auth/social expects: the identity token from Google or Apple.
-export const getSocialToken = (provider: SocialProvider): Promise<string> => {
+// What POST /mobile/auth/social expects: the identity token from Google or Apple (and Apple's
+// authorization code).
+export const getSocialCredential = async (provider: SocialProvider): Promise<ISocialCredential> => {
   switch (provider) {
     case 'google':
-      return googleIdToken();
+      return { token: await googleIdToken() };
     case 'apple':
-      return appleIdentityToken();
+      return appleCredential();
   }
 };
 
