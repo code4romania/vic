@@ -63,6 +63,8 @@ const withProviders = () => {
 
 describe('Login with Google and Apple (#512)', () => {
   it('shows no social button when no id is configured', () => {
+    vi.stubEnv('VITE_GOOGLE_CLIENT_ID', '');
+    vi.stubEnv('VITE_APPLE_SERVICES_ID', '');
     renderPage(<Login />, { auth: { isAuthenticated: false } });
     expect(screen.queryByTestId('google-signin')).toBeNull();
     expect(screen.queryByRole('button', { name: t('login:social.apple') })).toBeNull();

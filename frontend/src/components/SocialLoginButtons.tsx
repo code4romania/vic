@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  APPLE_SDK_URL,
   appleRedirectUri,
+  appleSdkUrl,
   appleServicesId,
-  GOOGLE_SDK_URL,
   googleClientId,
+  googleSdkUrl,
   isAppleCancel,
   loadScript,
 } from '../common/utils/social-sdk';
@@ -27,7 +27,8 @@ const AppleLogo = () => (
 // "Continuă cu Google" / "Continuă cu Apple" on the login page (#512). Each button appears only when its
 // id is configured; Google draws its own button (brand rules), Apple's is ours, in Apple's black.
 const SocialLoginButtons = ({ onToken, onError, disabled }: SocialLoginButtonsProps) => {
-  const { t } = useTranslation('login');
+  const { t, i18n } = useTranslation('login');
+  const language = i18n.language === 'en' ? 'en' : 'ro';
   const googleId = googleClientId();
   const appleId = appleServicesId();
   const googleButton = useRef<HTMLDivElement>(null);
@@ -39,7 +40,7 @@ const SocialLoginButtons = ({ onToken, onError, disabled }: SocialLoginButtonsPr
   useEffect(() => {
     if (!googleId) return;
     let cancelled = false;
-    loadScript(GOOGLE_SDK_URL)
+    loadScript(googleSdkUrl(language))
       .then(() => {
         const gis = window.google?.accounts.id;
         if (cancelled || !gis || !googleButton.current) return;
@@ -58,7 +59,7 @@ const SocialLoginButtons = ({ onToken, onError, disabled }: SocialLoginButtonsPr
           text: 'continue_with',
           shape: 'rectangular',
           logo_alignment: 'center',
-          locale: 'ro',
+          locale: language,
           width: googleButton.current.offsetWidth || 360,
         });
       })
@@ -66,12 +67,12 @@ const SocialLoginButtons = ({ onToken, onError, disabled }: SocialLoginButtonsPr
     return () => {
       cancelled = true;
     };
-  }, [googleId]);
+  }, [googleId, language]);
 
   useEffect(() => {
     if (!appleId) return;
     let cancelled = false;
-    loadScript(APPLE_SDK_URL)
+    loadScript(appleSdkUrl(language))
       .then(() => {
         if (cancelled || !window.AppleID) return;
         window.AppleID.auth.init({
@@ -86,7 +87,7 @@ const SocialLoginButtons = ({ onToken, onError, disabled }: SocialLoginButtonsPr
     return () => {
       cancelled = true;
     };
-  }, [appleId]);
+  }, [appleId, language]);
 
   if (!googleId && !appleId) return null;
 

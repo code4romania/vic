@@ -30,9 +30,11 @@ declare global {
   }
 }
 
-export const GOOGLE_SDK_URL = 'https://accounts.google.com/gsi/client';
-export const APPLE_SDK_URL =
-  'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/ro_RO/appleid.auth.js';
+// The button text follows the UI language: Google reads hl, Apple has one script per locale.
+export const googleSdkUrl = (language: string): string =>
+  `https://accounts.google.com/gsi/client?hl=${language === 'en' ? 'en' : 'ro'}`;
+export const appleSdkUrl = (language: string): string =>
+  `https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/${language === 'en' ? 'en_US' : 'ro_RO'}/appleid.auth.js`;
 
 const loading = new Map<string, Promise<void>>();
 
