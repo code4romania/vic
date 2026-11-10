@@ -12,9 +12,15 @@ import { authEvents } from '../../services/auth/auth.events';
 import useStore from '../../store/store';
 import i18n from '../../common/config/i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Notifications from 'expo-notifications';
+import { unregisterPushToken } from '../../services/settings/settings.api';
+import { getPushToken, setPushToken } from '../../services/push/push-token';
+import { queryClient } from '../../services/query-client';
 
 jest.mock('../../services/auth/auth.api');
 jest.mock('../../services/user/user.api', () => ({ getUserProfile: jest.fn() }));
+jest.mock('../../services/settings/settings.api', () => ({ unregisterPushToken: jest.fn() }));
+jest.mock('expo-notifications', () => ({ unregisterForNotificationsAsync: jest.fn() }));
 
 const api = authApi as jest.Mocked<typeof authApi>;
 const profileCall = getUserProfile as jest.Mock;
@@ -50,9 +56,16 @@ const loggedInBefore = async () => {
 
 const toastTexts = () => toast.mock.calls.map(([options]) => [options.text1, options.text2]);
 
+const unregisterCall = unregisterPushToken as jest.Mock;
+const osUnregister = Notifications.unregisterForNotificationsAsync as jest.Mock;
+
 beforeEach(() => {
   jest.clearAllMocks();
   useStore.setState({ userProfile: null });
+  setPushToken(undefined);
+  unregisterCall.mockResolvedValue(undefined);
+  osUnregister.mockResolvedValue(undefined);
+  queryClient.clear();
 });
 
 afterEach(() => {
@@ -177,26 +190,33 @@ describe('AuthContextProvider', () => {
             data: { idToken: 'google-id-token' },
           }),
         'google-id-token',
+        undefined,
       ],
       [
         'apple' as const,
         () =>
           (AppleAuthentication.signInAsync as jest.Mock).mockResolvedValue({
             identityToken: 'apple-id-token',
+            authorizationCode: 'apple-code',
           }),
         'apple-id-token',
+        'apple-code',
       ],
-    ])('%s posts the provider token and loads the profile', async (provider, arrange, token) => {
-      arrange();
-      api.loginWithSocial.mockResolvedValue(SESSION);
-      profileCall.mockResolvedValue(PROFILE);
-      const ctx = await setup();
+    ])(
+      '%s posts the provider token and loads the profile',
+      async (provider, arrange, token, code?) => {
+        arrange();
+        api.loginWithSocial.mockResolvedValue(SESSION);
+        profileCall.mockResolvedValue(PROFILE);
+        const ctx = await setup();
 
-      await act(() => ctx.current.loginWithSocial(provider));
+        await act(() => ctx.current.loginWithSocial(provider));
 
-      expect(api.loginWithSocial).toHaveBeenCalledWith(provider, token);
-      await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
-    });
+        // Apple's authorization code goes along so the backend can revoke the token (audit #9)
+        expect(api.loginWithSocial).toHaveBeenCalledWith(provider, token, code);
+        await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
+      },
+    );
 
     it('a new social volunteer goes to CreateUser', async () => {
       (GoogleSignin.signIn as jest.Mock).mockResolvedValue({
@@ -243,10 +263,85 @@ describe('AuthContextProvider', () => {
 
     await act(() => ctx.current.logout() as any);
 
-    expect(api.logout).toHaveBeenCalledWith('r');
+    expect(api.logout).toHaveBeenCalledWith('r', undefined);
     expect(await getRefreshToken()).toBeNull();
     expect(useStore.getState().userProfile).toBeNull();
     expect(ctx.current.isAuthenticated).toBe(false);
+  });
+
+  describe('logout leaves nothing of the account behind (audit #5, #6)', () => {
+    const loggedIn = async () => {
+      await loggedInBefore();
+      profileCall.mockResolvedValue(PROFILE);
+      api.logout.mockResolvedValue();
+      const ctx = await setup();
+      await waitFor(() => expect(ctx.current.isAuthenticated).toBe(true));
+      return ctx;
+    };
+
+    it('clears the query cache and every user store', async () => {
+      const ctx = await loggedIn();
+      queryClient.setQueryData(['activity-logs', 'org-1'], { pages: [] });
+      useStore.setState({
+        organization: { id: 'org-1' } as any,
+        volunteer: { id: 'v1' } as any,
+        event: { id: 'e1' } as any,
+        counters: { approved: 5, pending: 1, rejected: 0 },
+        selectedActivityLog: { id: 'l1' } as any,
+      });
+
+      await act(() => ctx.current.logout());
+
+      expect(queryClient.getQueryCache().getAll()).toHaveLength(0);
+      const state = useStore.getState();
+      expect(state.organization).toBeUndefined();
+      expect(state.volunteer).toBeUndefined();
+      expect(state.event).toBeUndefined();
+      expect(state.selectedActivityLog).toBeUndefined();
+      expect(state.counters).toEqual({ approved: 0, pending: 0, rejected: 0 });
+    });
+
+    it('unregisters the push token before ending the session and sends it with the logout', async () => {
+      const ctx = await loggedIn();
+      setPushToken('ExponentPushToken[x]');
+      const order: string[] = [];
+      unregisterCall.mockImplementation(async () => order.push('unregister'));
+      api.logout.mockImplementation(async () => {
+        order.push('logout');
+      });
+
+      await act(() => ctx.current.logout());
+
+      expect(unregisterCall).toHaveBeenCalledWith('ExponentPushToken[x]');
+      expect(api.logout).toHaveBeenCalledWith('r', 'ExponentPushToken[x]');
+      expect(order).toEqual(['unregister', 'logout']);
+      expect(getPushToken()).toBeUndefined();
+      // the backend forgot the token: the device keeps its registration for the next login
+      expect(osUnregister).not.toHaveBeenCalled();
+    });
+
+    it('offline: the device stops receiving pushes itself', async () => {
+      const ctx = await loggedIn();
+      setPushToken('ExponentPushToken[x]');
+      unregisterCall.mockRejectedValue(new Error('Network Error'));
+      api.logout.mockRejectedValue(new Error('Network Error'));
+
+      await act(() => ctx.current.logout());
+
+      expect(osUnregister).toHaveBeenCalled();
+      expect(ctx.current.isAuthenticated).toBe(false);
+    });
+
+    it('a refused refresh also stops the pushes and clears the cache', async () => {
+      const ctx = await loggedIn();
+      queryClient.setQueryData(['news', 'all'], { pages: [] });
+
+      await act(async () => authEvents.emit('logout'));
+
+      await waitFor(() => expect(ctx.current.isAuthenticated).toBe(false));
+      expect(osUnregister).toHaveBeenCalled();
+      await waitFor(() => expect(queryClient.getQueryCache().getAll()).toHaveLength(0));
+    });
   });
 
   it('a refresh the backend refused (authEvents logout) logs out', async () => {

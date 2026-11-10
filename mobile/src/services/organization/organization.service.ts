@@ -10,6 +10,7 @@ import { OrderDirection } from '../../common/enums/order-direction.enum';
 import useStore from '../../store/store';
 import { IOrganization } from '../../common/interfaces/organization.interface';
 import { getUserProfile } from '../user/user.api';
+import { IOrganizationVolunteer } from '../../common/interfaces/organization-list-item.interface';
 
 export const useOrganizationsInfiniteQuery = (orderDirection: OrderDirection, search: string) => {
   return useInfiniteQuery(
@@ -40,6 +41,30 @@ export const useSwitchOrganizationMutation = () => {
   return useMutation(['switch-organization'], ({ organizationId }: { organizationId: string }) =>
     switchOrganization(organizationId),
   );
+};
+
+// Makes an organization the active one and resolves once the backend has it too, so the next
+// screen asks for that organization's data (not the previous one's). On failure the previous one
+// comes back and the promise rejects with the API error.
+export const useActivateOrganization = () => {
+  const { mutateAsync, isLoading } = useSwitchOrganizationMutation();
+  const activate = async (organization: IOrganizationVolunteer): Promise<void> => {
+    const { userProfile, setActiveOrganization } = useStore.getState();
+    const previous = userProfile?.activeOrganization;
+    if (previous?.id === organization.id) {
+      return;
+    }
+    setActiveOrganization(organization);
+    try {
+      await mutateAsync({ organizationId: organization.id });
+    } catch (error) {
+      if (previous) {
+        setActiveOrganization(previous);
+      }
+      throw error;
+    }
+  };
+  return { activate, isLoading };
 };
 
 export const useLeaveOrganizationMutation = () => {

@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import Toast from 'react-native-toast-message';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, fonts, radius, shadows } from '../theme/tokens';
 import { VText } from '../../components/ui/VText';
 
@@ -47,3 +49,13 @@ const styles = StyleSheet.create({
   text: { flex: 1, gap: 2 },
   title: { fontFamily: fonts.medium },
 });
+
+/**
+ * Where the toasts show. One sits at the app root; every modal screen renders its own, because on
+ * iOS a native modal covers the root one (the last mounted host is the one that shows). Below the
+ * notch / Dynamic Island.
+ */
+export const ToastHost = () => {
+  const insets = useSafeAreaInsets();
+  return <Toast config={toastConfig} topOffset={Math.max(insets.top, 12) + 8} />;
+};

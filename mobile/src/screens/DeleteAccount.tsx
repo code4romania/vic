@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { Sheet, VButton } from '../components/ui';
 import ModalLayout from '../layouts/ModalLayout';
 import { Text, useTheme } from '@ui-kitten/components';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
@@ -22,7 +24,11 @@ const DeleteAccount = ({ navigation }: any) => {
     error: deleteAccountError,
   } = useDeleteAccountMutation();
 
+  const confirmSheet = useRef<BottomSheetModal>(null);
+
+  // irreversible: a second, explicit confirmation before anything is deleted
   const onConfirmDeleteAccount = () => {
+    confirmSheet.current?.dismiss();
     deleteAccount(undefined, {
       onSuccess: () => {
         logout();
@@ -35,7 +41,7 @@ const DeleteAccount = ({ navigation }: any) => {
       title={t('title')}
       actionsOptions={{
         buttonType: ButtonType.DANGER,
-        onActionButtonClick: onConfirmDeleteAccount,
+        onActionButtonClick: () => confirmSheet.current?.present(),
         actionLabel: t('confirm'),
         loading: isDeletingAccount,
       }}
@@ -62,6 +68,24 @@ const DeleteAccount = ({ navigation }: any) => {
           </Text>
         )}
       </FormLayout>
+      <Sheet
+        ref={confirmSheet}
+        title={`${t('second_confirmation.title')}`}
+        subtitle={`${t('second_confirmation.description')}`}
+        testID="delete-account-sheet"
+      >
+        <VButton
+          variant="danger"
+          label={`${t('second_confirmation.action')}`}
+          onPress={onConfirmDeleteAccount}
+          testID="delete-account-confirm"
+        />
+        <VButton
+          variant="soft"
+          label={`${t('general:cancel')}`}
+          onPress={() => confirmSheet.current?.dismiss()}
+        />
+      </Sheet>
     </ModalLayout>
   );
 };

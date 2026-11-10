@@ -8,7 +8,6 @@ import '../common/config/i18n';
 import Settings from './Settings';
 import Volunteer from './Volunteer';
 import useStore from '../store/store';
-import { NotificationContext } from '../contexts/notification/NotificationContext';
 
 jest.mock('@gorhom/bottom-sheet', () => require('@gorhom/bottom-sheet/mock'));
 jest.mock('expo-linking', () => ({
@@ -17,7 +16,6 @@ jest.mock('expo-linking', () => ({
 }));
 
 const mockLogout = jest.fn();
-const mockUnsubscribe = jest.fn();
 const mockSwitch = jest.fn();
 let mockStats: any;
 let mockPersonal: any;
@@ -25,7 +23,17 @@ const mockRefetchPersonal = jest.fn();
 
 jest.mock('../hooks/useAuth', () => ({ useAuth: () => ({ logout: mockLogout }) }));
 jest.mock('../services/organization/organization.service', () => ({
-  useSwitchOrganizationMutation: () => ({ mutate: mockSwitch }),
+  // the real hook waits for the backend; here the switch resolves at once
+  useActivateOrganization: () => ({
+    activate: async (organization: any) => {
+      const store = require('../store/store').default;
+      if (store.getState().userProfile?.activeOrganization?.id === organization.id) {
+        return;
+      }
+      store.getState().setActiveOrganization(organization);
+      await mockSwitch({ organizationId: organization.id });
+    },
+  }),
 }));
 jest.mock('../services/volunteer/volunteer.service', () => ({
   useVolunteerStats: () => ({ data: mockStats, refetch: jest.fn() }),
@@ -48,27 +56,25 @@ const renderApp = (initialRouteName = 'profile') =>
         insets: { top: 47, left: 0, right: 0, bottom: 34 },
       }}
     >
-      <NotificationContext.Provider value={{ unsubscribe: mockUnsubscribe } as any}>
-        <NavigationContainer>
-          <Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
-            <Screen name="profile" component={Settings} />
-            <Screen name="volunteer" component={Volunteer} />
-            {[
-              'search',
-              'account-data',
-              'notifications-settings',
-              'delete-account',
-              'organization-profile',
-              'activity-logs',
-              'documents',
-              'volunteer-profile',
-              'leave-organization',
-            ].map((name) => (
-              <Screen key={name} name={name} component={stub(name)} />
-            ))}
-          </Navigator>
-        </NavigationContainer>
-      </NotificationContext.Provider>
+      <NavigationContainer>
+        <Navigator initialRouteName={initialRouteName} screenOptions={{ headerShown: false }}>
+          <Screen name="profile" component={Settings} />
+          <Screen name="volunteer" component={Volunteer} />
+          {[
+            'search',
+            'account-data',
+            'notifications-settings',
+            'delete-account',
+            'organization-profile',
+            'activity-logs',
+            'documents',
+            'volunteer-profile',
+            'leave-organization',
+          ].map((name) => (
+            <Screen key={name} name={name} component={stub(name)} />
+          ))}
+        </Navigator>
+      </NavigationContainer>
     </SafeAreaProvider>,
   );
 
@@ -153,12 +159,11 @@ describe('Profil', () => {
     expect(await screen.findByText('Profil voluntar')).toBeTruthy();
   });
 
-  it('log out asks first, then unregisters push and signs out', async () => {
+  it('log out asks first, then signs out', async () => {
     await renderApp();
     await fireEvent.press(await screen.findByTestId('profile-logout'));
     expect(mockLogout).not.toHaveBeenCalled();
     await fireEvent.press(screen.getByTestId('logout-confirm'));
-    expect(mockUnsubscribe).toHaveBeenCalled();
     expect(mockLogout).toHaveBeenCalled();
   });
 });

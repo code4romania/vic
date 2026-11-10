@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import i18n from '../common/config/i18n';
 import { useUserProfile } from '../store/profile/profile.selector';
+import { ACTIVITY_LOG_DATE_MIN, endOfToday, isFutureDay } from '../common/utils/date-bounds';
 
 export type ActivityLogFormTypes = {
   eventId: string;
@@ -32,7 +33,14 @@ interface ActivityLogFormProps {
 export const activityLogSchema = yup
   .object({
     activityTypeId: yup.string().required(`${i18n.t('activity_log:form.task.required')}`),
-    date: yup.date().required(`${i18n.t('activity_log:form.date.required')}`),
+    date: yup
+      .date()
+      .required(`${i18n.t('activity_log:form.date.required')}`)
+      .test(
+        'not-future',
+        `${i18n.t('activity_log:form.date.future')}`,
+        (date) => !isFutureDay(date),
+      ),
     hours: yup
       .number()
       .typeError(`${i18n.t('activity_log:form.hours.number')}`)
@@ -91,7 +99,8 @@ const ActivityLogForm = ({ isLoading, control, errors }: ActivityLogFormProps) =
         name="date"
         control={control as any}
         error={errors.date}
-        min={new Date(2000)}
+        min={ACTIVITY_LOG_DATE_MIN}
+        max={endOfToday()}
         label={t('form.date.label')}
         placeholder={t('general:select')}
         required

@@ -1,4 +1,5 @@
 import React from 'react';
+import { endOfToday } from '../common/utils/date-bounds';
 import FormLayout from '../layouts/FormLayout';
 import OrganizationIdentity from './OrganizationIdentity';
 import { Text } from '@ui-kitten/components';
@@ -105,7 +106,8 @@ const VolunteerForm = ({ paragraph, isLoading, control, errors }: VolunteerFormP
         error={errors.activeSince}
         label={t('form.active_since.label')}
         placeholder={t('general:select')}
-        min={new Date(1920, 1, 1)}
+        min={new Date(1920, 0, 1)}
+        max={endOfToday()}
         disabled={isLoading}
       />
     </FormLayout>

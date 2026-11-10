@@ -21,8 +21,8 @@ const CitySelect = ({ countyId, disabled, ...props }: CitySelectProps) => {
       const rawCities = await getCities(countyId);
       const mappedCities = rawCities.map((city) => ({ label: city.name, key: city.id }));
       setCities(mappedCities);
-    } catch (error: any) {
-      console.log('error while loading counties', error);
+    } catch {
+      // the select stays empty; the form still shows its other fields
     }
   };
 

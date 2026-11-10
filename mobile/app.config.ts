@@ -10,7 +10,18 @@ const googleIosUrlScheme = googleIosClientId
   : undefined;
 
 // The Google plugin refuses to run without its id, so a local build without it simply has no
-// Google native setup. Store builds get the ids from eas.json.
+// Google native setup. Store builds get the ids from eas.json (or the EAS environment).
+// A production build without them would ship a Google button that always fails: stop it here.
+if (
+  process.env.EXPO_PUBLIC_ENVIRONMENT === 'production' &&
+  (!process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || !googleIosClientId)
+) {
+  throw new Error(
+    'Production build without EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID / EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID: ' +
+      'set them in the EAS "production" environment (eas env:create) or in eas.json.',
+  );
+}
+
 const socialPlugins: NonNullable<ExpoConfig['plugins']> = [
   ...(googleIosUrlScheme
     ? [['@react-native-google-signin/google-signin', { iosUrlScheme: googleIosUrlScheme }] as const]
@@ -21,6 +32,8 @@ const expoConfig: ExpoConfig = {
   name: 'vic',
   slug: 'vic',
   scheme: 'vic',
+  // Store builds take buildNumber / versionCode from EAS (appVersionSource: remote, autoIncrement
+  // in eas.json); the numbers below are only the starting point and the local/dev value.
   version: '1.1.0',
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',
@@ -59,6 +72,14 @@ const expoConfig: ExpoConfig = {
     'expo-apple-authentication',
     ...socialPlugins,
     'expo-font',
+    [
+      'expo-notifications',
+      {
+        // Android draws the small notification icon as a white silhouette
+        icon: './src/assets/images/notification-icon.png',
+        color: '#01344F',
+      },
+    ],
     // the app is always light at the bottom (tab bar, action bars), so keep the navigation buttons dark
     ['expo-navigation-bar', { style: 'dark' }],
     [
@@ -75,16 +96,12 @@ const expoConfig: ExpoConfig = {
       },
     ],
     [
-      'expo-document-picker',
-      {
-        iCloudContainerEnvironment: 'Development',
-      },
-    ],
-    [
       'expo-image-picker',
       {
-        photosPermission: 'The app accesses your photos to allow you to set a profile picture.',
-        cameraPermission: 'The app accesses your camera to allow you to set a profile picture.',
+        // the profile photo is picked from the gallery only: no camera, no microphone
+        photosPermission: 'VIC folosește galeria foto doar pentru a-ți alege fotografia de profil.',
+        cameraPermission: false,
+        microphonePermission: false,
       },
     ],
   ],

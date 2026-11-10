@@ -80,3 +80,17 @@ const useStore = create<
 }));
 
 export default useStore;
+
+// Everything that belongs to the logged-in user. The app flags (maintenance, update required)
+// stay: they describe the backend, not the account.
+export const resetUserState = (): void => {
+  useStore.setState({
+    userProfile: null,
+    organization: undefined,
+    volunteer: undefined,
+    event: undefined,
+    counters: { approved: 0, pending: 0, rejected: 0 },
+    selectedActivityLog: undefined,
+    isOpen: false,
+  });
+};

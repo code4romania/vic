@@ -13,7 +13,7 @@ import OrganizationProfile from '../screens/OrganizationProfile';
 import VolunteerProfile from '../screens/VolunteerProfile';
 import AccountData from '../screens/AccountData';
 import NotificationsSettings from '../screens/NotificationsSettings';
-import DrawerNavigator from './Drawer';
+import Tabs from './Tabs';
 import CreateVolunteer from '../screens/CreateVolunteer';
 import JoinByAccessCode from '../screens/JoinByAccessCode';
 import Documents from '../screens/Documents';
@@ -28,7 +28,7 @@ const { Navigator, Screen, Group } = createNativeStackNavigator();
 const Private = () => (
   <Navigator screenOptions={{ headerShown: false }}>
     <Group>
-      <Screen name="home" component={DrawerNavigator} />
+      <Screen name="home" component={Tabs} />
       <Screen name="news" component={News} />
       <Screen name="announcements" component={Anouncements} />
       <Screen name="anouncement-response" component={AnouncementResponse} />

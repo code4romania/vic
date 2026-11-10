@@ -200,7 +200,7 @@ describe('Organizație', () => {
   it('a blocked volunteer only sees the banner', async () => {
     setOrganization(OrganizatinVolunteerStatus.BLOCKED_VOLUNTEER);
     await renderApp('organization-profile');
-    expect(await screen.findByText('Accesul tau la organizație a fost restricționat')).toBeTruthy();
+    expect(await screen.findByText('Accesul tău la organizație a fost restricționat')).toBeTruthy();
     expect(screen.queryByTestId('organization-bar')).toBeNull();
   });
 });

@@ -36,6 +36,7 @@ const mockNews: Record<string, any[]> = {
       eventName: TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS,
       newStatus: ActivityLogStatus.APPROVED,
       activityLogId: 'log-9',
+      createdOn: new Date().toISOString(),
     },
   ],
   [NewsType.ORGANIZATIONS]: [
@@ -58,7 +59,17 @@ jest.mock('../services/news/news.service', () => ({
   },
 }));
 jest.mock('../services/organization/organization.service', () => ({
-  useSwitchOrganizationMutation: () => ({ mutate: mockSwitch }),
+  // the real hook waits for the backend; here the switch resolves at once
+  useActivateOrganization: () => ({
+    activate: async (organization: any) => {
+      const store = require('../store/store').default;
+      if (store.getState().userProfile?.activeOrganization?.id === organization.id) {
+        return;
+      }
+      store.getState().setActiveOrganization(organization);
+      await mockSwitch({ organizationId: organization.id });
+    },
+  }),
 }));
 jest.mock('../services/anouncement/anouncement.service', () => ({
   useAnouncementsInfiniteQuery: () =>
@@ -130,7 +141,10 @@ describe('Noutăți', () => {
   it('opens on the kind it was asked for and switches with the segmented control', async () => {
     await renderApp('news', { type: NewsType.LOGGED_HOURS });
     expect(await screen.findByText('Noutăți')).toBeTruthy();
-    expect(screen.getByText(/Orele de voluntariat înregistrate au fost aprobate/)).toBeTruthy();
+    // with the organization and when it happened (audit #22)
+    expect(screen.getByText(/Orele tale de la/)).toBeTruthy();
+    expect(screen.getByText('Verde Mare')).toBeTruthy();
+    expect(screen.getByText(/^Azi, \d\d:\d\d$/)).toBeTruthy();
     await fireEvent.press(screen.getByText('Organizații'));
     expect(mockNewsCalls[mockNewsCalls.length - 1]).toBe(NewsType.ORGANIZATIONS);
     expect(await screen.findByText('Crucea Verde')).toBeTruthy();

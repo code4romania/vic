@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SvgXml } from 'react-native-svg';
@@ -13,10 +13,11 @@ import trash from '../assets/svg/trash';
 import logoutIcon from '../assets/svg/logout';
 import user from '../assets/svg/user';
 import { useAuth } from '../hooks/useAuth';
-import { NotificationContext } from '../contexts/notification/NotificationContext';
 import { useUserProfile } from '../store/profile/profile.selector';
-import useStore from '../store/store';
-import { useSwitchOrganizationMutation } from '../services/organization/organization.service';
+import { useActivateOrganization } from '../services/organization/organization.service';
+import Toast from 'react-native-toast-message';
+import { InternalErrors } from '../common/errors/internal-errors.class';
+import { romanianNeedsDe } from '../common/utils/plural';
 import { usePersonalStatistics } from '../services/statistics/statistics.service';
 import {
   IOrganizationVolunteer,
@@ -90,10 +91,8 @@ const Settings = ({ navigation }: any) => {
   const logoutSheet = useRef<BottomSheetModal>(null);
 
   const { userProfile } = useUserProfile();
-  const { setActiveOrganization } = useStore();
-  const { mutate: switchOrganization } = useSwitchOrganizationMutation();
+  const { activate } = useActivateOrganization();
   const { logout } = useAuth();
-  const { unsubscribe } = useContext(NotificationContext);
   const { data: stats, refetch: refetchStats } = usePersonalStatistics();
 
   // hours get approved and events pass while the app is open: refresh when Profil comes back
@@ -111,8 +110,7 @@ const Settings = ({ navigation }: any) => {
       return `${t('stats.year')}`;
     }
     // Romanian: "2 ani", but "20 de ani"
-    const rest = count % 100;
-    return `${t(rest === 0 || rest >= 20 ? 'stats.years_de' : 'stats.years', { count })}`;
+    return `${t(romanianNeedsDe(count) ? 'stats.years_de' : 'stats.years', { count })}`;
   };
 
   const name = [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(' ');
@@ -120,15 +118,21 @@ const Settings = ({ navigation }: any) => {
   const organizations = userProfile?.myOrganizations ?? [];
   const activeId = userProfile?.activeOrganization?.id;
 
-  const onOpenOrganization = (organization: IOrganizationVolunteer) => {
+  const onOpenOrganization = async (organization: IOrganizationVolunteer) => {
     // A Candidate only sees the organization's page, which says it waits for activation (#590).
     if (isCandidateVolunteer(organization)) {
       navigation.navigate('organization-profile', { organizationId: organization.id });
       return;
     }
-    if (organization.id !== activeId) {
-      setActiveOrganization(organization);
-      switchOrganization({ organizationId: organization.id });
+    try {
+      // the backend must have the new active organization before its page loads
+      await activate(organization);
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: `${InternalErrors.ORGANIZATION_ERRORS.getError(error?.response?.data?.code_error)}`,
+      });
+      return;
     }
     navigation.navigate(SETTINGS_ROUTES.MY_ORGANIZATIONS);
   };
@@ -139,11 +143,10 @@ const Settings = ({ navigation }: any) => {
     }
   };
 
-  const onLogout = () => {
+  const onLogout = async () => {
     logoutSheet.current?.dismiss();
-    // unregister the push token, then sign out
-    unsubscribe();
-    logout();
+    // unregisters the push token first, then ends the session and clears the local data
+    await logout();
   };
 
   return (

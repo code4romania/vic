@@ -25,8 +25,8 @@ const ActivityTypeSelect = ({ organizationId, ...props }: ActivityTypeSelectProp
         key: structure.id,
       }));
       setStructures([...mappedStructures, { label: t('other'), key: CONSTANTS.OTHER_OPTION }]);
-    } catch (error: any) {
-      console.log('error while loading types', error);
+    } catch {
+      // the select stays empty; the form still shows its other fields
     }
   };
 

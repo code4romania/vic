@@ -12,8 +12,9 @@ import { EventVolunteerStatus } from '../common/enums/event-volunteer-status.enu
 import { EventRegistrationStatus } from '../common/enums/event-registration-status.enum';
 import { toEventQueryFilters } from '../components/events/event-filters';
 
+const mockActivate = jest.fn(async () => undefined);
 jest.mock('../services/organization/organization.service', () => ({
-  useSwitchOrganizationMutation: () => ({ mutate: jest.fn() }),
+  useActivateOrganization: () => ({ activate: mockActivate }),
 }));
 jest.mock('@gorhom/bottom-sheet', () => require('@gorhom/bottom-sheet/mock'));
 jest.mock('expo-linking', () => ({
@@ -24,6 +25,7 @@ jest.mock('expo-linking', () => ({
 const mockCalls: any[][] = [];
 const mockSetRsvp = jest.fn();
 const mockRefetchEvent = jest.fn();
+let mockEventError: any = null;
 
 const event = (id: string, extra: Record<string, unknown> = {}) => ({
   id,
@@ -65,7 +67,7 @@ jest.mock('../services/event/event.service', () => ({
       refetch: jest.fn(),
     };
   },
-  useEventQuery: () => ({ isFetching: false, error: null, refetch: mockRefetchEvent }),
+  useEventQuery: () => ({ isFetching: false, error: mockEventError, refetch: mockRefetchEvent }),
   useSetRsvpEventMutation: () => ({ mutate: mockSetRsvp, isLoading: false }),
   useCancelRsvpMutation: () => ({ mutate: jest.fn(), isLoading: false }),
 }));
@@ -90,6 +92,7 @@ const renderApp = (initialRouteName = 'events', params?: Record<string, unknown>
   );
 
 beforeEach(() => {
+  mockEventError = null;
   mockCalls.length = 0;
   jest.clearAllMocks();
   useStore.setState({
@@ -232,6 +235,66 @@ describe('Eveniment', () => {
     await renderApp('event', { eventId: '9' });
     expect(await screen.findByTestId('event-cancel')).toBeTruthy();
     expect(screen.getAllByText('Așteaptă aprobarea organizației').length).toBeGreaterThan(0);
+  });
+
+  const rsvpFails = (code_error?: string) =>
+    mockSetRsvp.mockImplementation((_payload, { onError }) =>
+      onError(
+        code_error
+          ? { response: { status: 400, data: { code_error } } }
+          : new Error('Network Error'),
+      ),
+    );
+
+  it('a refused "Particip" shows the real reason, not the profile sheet (audit #10)', async () => {
+    const Toast = require('react-native-toast-message').default;
+    setEvent({ organizationId: 'org-1' });
+    rsvpFails('EVENT_RSVP_007');
+    await renderApp('event', { eventId: '9' });
+    await act(async () => {
+      await fireEvent.press(await screen.findByTestId('event-going'));
+    });
+    expect(Toast.show).toHaveBeenCalledWith({ type: 'error', text1: 'Evenimentul este încheiat' });
+  });
+
+  it('offline "Particip" says so', async () => {
+    const Toast = require('react-native-toast-message').default;
+    setEvent({ organizationId: 'org-1' });
+    rsvpFails();
+    await renderApp('event', { eventId: '9' });
+    await act(async () => {
+      await fireEvent.press(await screen.findByTestId('event-going'));
+    });
+    expect(Toast.show).toHaveBeenCalledWith(
+      expect.objectContaining({ text1: expect.stringMatching(/conexiune/) }),
+    );
+  });
+
+  it('a missing volunteer profile (EVENT_RSVP_005) offers to complete it at the event organization', async () => {
+    // matched by id, even when the name differs
+    setEvent({ organizationId: 'org-2', organizationName: 'Alt nume' });
+    rsvpFails('EVENT_RSVP_005');
+    await renderApp('event', { eventId: '9' });
+    await act(async () => {
+      await fireEvent.press(await screen.findByTestId('event-going'));
+    });
+    await act(async () => {
+      await fireEvent.press(await screen.findByTestId('event-complete-profile'));
+    });
+    expect(mockActivate).toHaveBeenCalledWith(expect.objectContaining({ id: 'org-2' }));
+  });
+
+  it('counts 101 people without "de"', async () => {
+    setEvent({ numberOfPersonsGoingToEvent: 101 });
+    await renderApp('event', { eventId: '9' });
+    expect((await screen.findAllByText(/^101 persoane participă/)).length).toBeGreaterThan(0);
+  });
+
+  it('a deleted event shows that it no longer exists', async () => {
+    mockEventError = { response: { status: 404, data: { code_error: 'EVENT_001' } } };
+    await renderApp('event', { eventId: '9' });
+    expect(await screen.findByTestId('state-action')).toBeTruthy();
+    expect(screen.getByTestId('state-icon-missing')).toBeTruthy();
   });
 
   it('a finished event has no registration bar', async () => {

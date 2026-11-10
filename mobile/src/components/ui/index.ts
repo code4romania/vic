@@ -16,3 +16,4 @@ export * from './EmptyState';
 export * from './StateIcon';
 export * from './Group';
 export * from './StatusBarScrim';
+export * from './Checkbox';

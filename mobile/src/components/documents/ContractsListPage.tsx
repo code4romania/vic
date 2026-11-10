@@ -9,7 +9,7 @@ import { colors, shadows, spacing } from '../../common/theme/tokens';
 import { useFocusedStatusBarStyle } from '../../hooks/useFocusedStatusBarStyle';
 import { EventIcon } from '../events/EventIcons';
 import DocumentSkeletonList from '../skeleton/documents-skeleton-list';
-import { EmptyState, Enter, PressableScale, VText } from '../ui';
+import { EmptyState, Enter, PressableScale, StatusBarScrim, VText } from '../ui';
 import { DocumentRow } from './DocumentRow';
 import { useDownloadContract } from './useDownloadContract';
 
@@ -106,6 +106,7 @@ export const ContractsListPage = ({ navigation, title, query, testID }: Contract
         showsVerticalScrollIndicator={false}
         testID={testID}
       />
+      <StatusBarScrim color={colors.white} />
     </View>
   );
 };

@@ -16,8 +16,8 @@ const CountySelect = (props: CountySelectProps) => {
       const rawCounties = await getCounties();
       const mappedCounties = rawCounties.map((county) => ({ label: county.name, key: county.id }));
       setCounties(mappedCounties);
-    } catch (error: any) {
-      console.log('error while loading counties', error);
+    } catch {
+      // the select stays empty; the form still shows its other fields
     }
   };
 

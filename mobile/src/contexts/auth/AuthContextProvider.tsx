@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import i18n from '../../common/config/i18n';
@@ -16,11 +16,22 @@ import {
   setTokens,
 } from '../../services/auth/token.storage';
 import { authEvents } from '../../services/auth/auth.events';
-import { getSocialToken, signOutSocial, SocialCancelledError } from '../../services/auth/social';
+import {
+  getSocialCredential,
+  ISocialCredential,
+  signOutSocial,
+  SocialCancelledError,
+} from '../../services/auth/social';
 import { getAuthErrorCode } from '../../common/utils/auth-error';
 import { AUTH_ERRORS } from '../../common/errors/entities/auth.errors';
 import { InternalErrors } from '../../common/errors/internal-errors.class';
 import { USER_ERRORS } from '../../common/errors/entities/user.errors';
+import { clearSessionData } from '../../services/auth/session-cleanup';
+import {
+  forgetPushToken,
+  getPushToken,
+  unregisterPushTokenFromBackend,
+} from '../../services/push/push-token';
 
 const showError = (text1: string, text2?: string) => Toast.show({ type: 'error', text1, text2 });
 
@@ -44,8 +55,12 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     initProfile();
-    // A refresh the backend refused (expired, revoked, login disabled).
-    return authEvents.on('logout', endSession);
+    // A refresh the backend refused (expired, revoked, login disabled): the backend cannot be
+    // asked to forget the push token any more, so the device stops receiving pushes itself.
+    return authEvents.on('logout', () => {
+      forgetPushToken({ backendForgot: false });
+      endSession();
+    });
   }, []);
 
   useEffect(() => {
@@ -53,6 +68,16 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAuthenticated(userProfile !== null);
     }
   }, [userProfile]);
+
+  // Logged out: the private screens are gone by now (this runs after they unmounted), so the
+  // cache and the stores can go without anything refetching them.
+  const wasAuthenticated = useRef(false);
+  useEffect(() => {
+    if (wasAuthenticated.current && !isAuthenticated) {
+      clearSessionData();
+    }
+    wasAuthenticated.current = isAuthenticated;
+  }, [isAuthenticated]);
 
   const endSession = () => {
     setIsAuthenticated(false);
@@ -136,18 +161,19 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const loginWithSocial = async (provider: SocialProvider) => {
-    let token: string;
+    let credential: ISocialCredential;
     try {
-      token = await getSocialToken(provider);
+      credential = await getSocialCredential(provider);
     } catch (error) {
       if (!(error instanceof SocialCancelledError)) {
-        console.log('[Auth][Social]:', provider, error);
         showError(i18n.t('auth:errors.social_failed'));
       }
       return;
     }
     try {
-      await startSession(await authApi.loginWithSocial(provider, token));
+      await startSession(
+        await authApi.loginWithSocial(provider, credential.token, credential.authorizationCode),
+      );
     } catch (error: any) {
       if (error?.createUser) {
         // Landing sends a pending user to CreateUser
@@ -161,12 +187,17 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
     const refreshToken = await getRefreshToken();
+    const pushToken = getPushToken();
+    // First, while the session still works: this device must stop getting the user's pushes.
+    const pushForgotten = await unregisterPushTokenFromBackend();
     if (refreshToken) {
-      // ends the session on the backend; offline or already dead is fine
-      await authApi.logout(refreshToken).catch(() => undefined);
+      // ends the session on the backend (and drops the push token with it); offline or already
+      // dead is fine
+      await authApi.logout(refreshToken, pushToken).catch(() => undefined);
     }
     await clearTokens();
     await signOutSocial().catch(() => undefined);
+    await forgetPushToken({ backendForgot: pushForgotten });
     endSession();
   };
 

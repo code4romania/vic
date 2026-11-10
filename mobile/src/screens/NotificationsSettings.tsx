@@ -148,9 +148,7 @@ const NotificationsSettings = ({ navigation }: any) => {
   };
 
   const openAppSettings = () => {
-    Linking.openSettings().catch(() => {
-      console.warn('Unable to open settings');
-    });
+    Linking.openSettings().catch(() => undefined);
     notificationsBottomSheetRef.current?.dismiss();
   };
 

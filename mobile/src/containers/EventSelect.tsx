@@ -22,8 +22,8 @@ const EventSelect = ({ organizationId, ...props }: EventSelectProps) => {
         key: structure.id,
       }));
       setStructures(mappedStructures);
-    } catch (error: any) {
-      console.log('error while loading events', error);
+    } catch {
+      // the select stays empty; the form still shows its other fields
     }
   };
 

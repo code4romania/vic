@@ -23,14 +23,21 @@ export const loginWithCode = async (email: string, code: string): Promise<ISessi
   return API.post('/mobile/auth/login/code', { email, code }).then((res) => res.data);
 };
 
-// The identity token from Google or Apple.
+// The identity token from Google or Apple. authorizationCode: Apple only, so the backend can revoke
+// the Apple token when the account is deleted.
 export const loginWithSocial = async (
   provider: SocialProvider,
   token: string,
+  authorizationCode?: string,
 ): Promise<ISession> => {
-  return API.post('/mobile/auth/social', { provider, token }).then((res) => res.data);
+  return API.post('/mobile/auth/social', {
+    provider,
+    token,
+    ...(authorizationCode ? { authorizationCode } : {}),
+  }).then((res) => res.data);
 };
 
-export const logout = async (refreshToken: string): Promise<void> => {
-  await API.post('/mobile/auth/logout', { refreshToken });
+// pushToken: the backend forgets this device's push token with the session.
+export const logout = async (refreshToken: string, pushToken?: string): Promise<void> => {
+  await API.post('/mobile/auth/logout', { refreshToken, ...(pushToken ? { pushToken } : {}) });
 };

@@ -10,6 +10,7 @@ import { usePaddingTop } from '../hooks/usePaddingTop';
 import { FormLayoutBottomOffsetContext } from './FormLayout';
 import { EventIcon } from '../components/events/EventIcons';
 import { PressableScale, VButton, VText } from '../components/ui';
+import { ToastHost } from '../common/config/toast';
 
 interface ActionsOptionsProps {
   actionLabel: string;
@@ -107,6 +108,8 @@ export const ModalLayout = ({
             </View>
           </KeyboardStickyView>
         )}
+        {/* a failed save must be visible: on iOS this modal covers the app-level toasts */}
+        <ToastHost />
       </View>
     </BottomSheetModalProvider>
   );
@@ -125,9 +128,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   close: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: colors.soft,
     alignItems: 'center',
     justifyContent: 'center',

@@ -1,6 +1,6 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useRef } from 'react';
 import PageLayout from '../layouts/PageLayout';
-import { Text, useTheme } from '@ui-kitten/components';
+import { Text } from '@ui-kitten/components';
 import i18n from '../common/config/i18n';
 import * as yup from 'yup';
 import OrganizationIdentity from '../components/OrganizationIdentity';
@@ -16,16 +16,11 @@ import { InternalErrors } from '../common/errors/internal-errors.class';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
 import successIcon from '../assets/svg/success-icon';
-import Paragraph from '../components/Paragraph';
-import BottomSheet from '@gorhom/bottom-sheet';
-import SafeAreaBottomSheet from '../components/SafeAreaBottomSheet';
-import { renderBackdrop } from '../components/BottomSheet';
 import { StyleSheet, View } from 'react-native';
-import Button from '../components/Button';
-import InlineLink from '../components/InlineLink';
 import { SvgXml } from 'react-native-svg';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { Sheet, VButton } from '../components/ui';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
-import { useReducedMotion } from 'react-native-reanimated';
 import { usePaddingTop } from '../hooks/usePaddingTop';
 
 export type JoinNgoFormTypes = {
@@ -45,19 +40,13 @@ const schema = yup.object({
 const JoinOrganization = ({ navigation, route }: any) => {
   const { t } = useTranslation('join_ngo');
 
-  // bottom sheet ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  // bottom sheet snap points
-  const snapPoints = useMemo(() => [1, 410], []);
-  // theme
-  const theme = useTheme();
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const leavingTo = useRef<'back' | 'search'>('back');
   const paddingTop = usePaddingTop();
 
   const { organizationId, logo, name } = route.params;
   const { isLoading: isCreatingAccessRequest, mutate: createAccessRequest } =
     useCreateAccessrequestMutation();
-
-  const reducedMotion = useReducedMotion();
 
   const {
     control,
@@ -83,7 +72,7 @@ const JoinOrganization = ({ navigation, route }: any) => {
     createAccessRequest(accessRequestPayload, {
       onSuccess: () => {
         // show modal which will eventually become bottom sheet
-        bottomSheetRef.current?.expand();
+        bottomSheetRef.current?.present();
       },
       onError: (error: any) => {
         Toast.show({
@@ -96,14 +85,10 @@ const JoinOrganization = ({ navigation, route }: any) => {
     });
   };
 
+  // closing the sheet (button, swipe, Back) leaves the form: the request is sent
   const onSearchNewOrganizations = () => {
-    navigation.navigate('search');
-    bottomSheetRef.current?.close();
-  };
-
-  const onCloseBottomSheet = () => {
-    navigation.goBack();
-    bottomSheetRef.current?.close();
+    leavingTo.current = 'search';
+    bottomSheetRef.current?.dismiss();
   };
 
   return (
@@ -145,35 +130,33 @@ const JoinOrganization = ({ navigation, route }: any) => {
           />
         </FormLayout>
       </PageLayout>
-      <SafeAreaBottomSheet
-        backdropComponent={renderBackdrop}
+      {/* sized to its content: the text is never cut on a small screen */}
+      <Sheet
         ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-        animateOnMount={reducedMotion ? false : true}
+        title={`${t('modal.success.heading')}`}
+        subtitle={`${t('modal.success.paragraph')}`}
+        onDismiss={() => {
+          if (leavingTo.current === 'search') {
+            navigation.navigate('search');
+          } else {
+            navigation.goBack();
+          }
+        }}
+        testID="join-success-sheet"
       >
-        <View style={styles.bottomSheetContainer}>
-          <SvgXml xml={successIcon} height={100} width={100} />
-          <View style={styles.textContainer}>
-            <Text allowFontScaling={ALLOW_FONT_SCALLING} category="h1">{`${t(
-              'modal.success.heading',
-            )}`}</Text>
-            <Paragraph>{`${t('modal.success.paragraph')}`}</Paragraph>
-          </View>
-          <View style={styles.buttonsContainer}>
-            <Button
-              label={t('modal.success.primary_action_label')}
-              onPress={onSearchNewOrganizations}
-            />
-            <InlineLink
-              style={{ color: theme['cool-gray-700'] }}
-              label={t('modal.success.secondary_action_label')}
-              onPress={onCloseBottomSheet}
-            />
-          </View>
+        <View style={styles.icon}>
+          <SvgXml xml={successIcon} height={88} width={88} />
         </View>
-      </SafeAreaBottomSheet>
+        <VButton
+          label={t('modal.success.primary_action_label')}
+          onPress={onSearchNewOrganizations}
+        />
+        <VButton
+          variant="soft"
+          label={t('modal.success.secondary_action_label')}
+          onPress={() => bottomSheetRef.current?.dismiss()}
+        />
+      </Sheet>
     </>
   );
 };
@@ -181,26 +164,5 @@ const JoinOrganization = ({ navigation, route }: any) => {
 export default JoinOrganization;
 
 const styles = StyleSheet.create({
-  bottomSheetContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingHorizontal: 40,
-    paddingVertical: 24,
-    gap: 24,
-  },
-  textContainer: {
-    gap: 4,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-  bottomSheetParagraph: {
-    textAlign: 'center',
-  },
-  buttonsContainer: {
-    gap: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  icon: { alignItems: 'center' },
 });

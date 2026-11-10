@@ -37,7 +37,12 @@ jest.mock('expo-splash-screen', () => ({
 }));
 
 jest.mock('react-native-toast-message/lib/src/Toast', () => ({ Toast: { show: jest.fn() } }));
-jest.mock('react-native-toast-message', () => ({ __esModule: true, default: { show: jest.fn() } }));
+jest.mock('react-native-toast-message', () => {
+  // a host component (rendered at the root and in modal screens) that also has Toast.show
+  const Toast: any = () => null;
+  Toast.show = jest.fn();
+  return { __esModule: true, default: Toast };
+});
 
 // The three social SDKs: each test sets what the sheet answers.
 jest.mock('@react-native-google-signin/google-signin', () => ({

@@ -1,53 +1,45 @@
-# Publish new versions
+# VIC mobile
 
-## 1. New development build
+Expo (React Native) app for volunteers. Authentication is VIC's own: an emailed 6-digit code, Google
+or Apple sign-in, with access and refresh tokens from the backend (`/mobile/auth/*`). No Cognito.
 
-1. Create a new file at the root of the project called `.env.development`;
-2. Go to your firebase console for your app and download the `google-services.json` and copy it in the root of your project and remove it from .gitignore
-3. Add the following lines with values from your cognito app client for your development environment:
+## Environment
 
-> EXPO_PUBLIC_AWS_REGION={{value}}
-> EXPO_PUBLIC_USER_POOL_ID={{value}}
-> EXPO_PUBLIC_USER_POOL_CLIENT_ID={{value}}
-> EXPO_PUBLIC_AWS_DOMAIN={{value}}
+The public settings are `EXPO_PUBLIC_*` variables (see `.env.example`):
 
-4. Create a new build either a [local build](https://docs.expo.dev/workflow/prebuild/) with `npx expo prebuild --platform <platform>` or a new eas build to be downloaded: `eas build --platform all --profile development`. Using the prebuild value since it's not an eas build it will require us to have also the environment variables from the `eas.json` in the `.env.development` created at point 1.
-5. Run the the app in development mode: `npm run start`
+| Variable | Use |
+| --- | --- |
+| `EXPO_PUBLIC_API_URL` | backend URL |
+| `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID`, `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` | Google sign-in; the backend must list them in `GOOGLE_CLIENT_IDS` |
+| `EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK`, `EXPO_PUBLIC_PRIVACY_POLICY_LINK` | accepted when the account is created |
+| `EXPO_PUBLIC_INFORMATION_LINK`, `EXPO_PUBLIC_CONTACT_EMAIL` | Profil › Informații, contact |
+| `EXPO_PUBLIC_APP_STORE_URL`, `EXPO_PUBLIC_PLAY_STORE_URL` | the "Update required" screen |
 
-## 2. New test build
+Store builds take them from the build profile in `eas.json` or from the EAS environment
+(`eas env:list --environment production`). A production build stops if the Google client ids are
+missing. `GOOGLE_SERVICES_JSON` (Firebase config for Android push) is a file secret in EAS.
 
-1. Create a new file at the root of the project called `.env.test`;
-2. Check if the `google-services.json` is present in the secrets (`eas secret:list`), otherwise go to your firebase console for your app and download the `google-services.json` and copy it in the root of your project
-3. Add the following lines with values from your cognito app client for your test environment:
+## Development
 
-> EXPO_PUBLIC_AWS_REGION={{value}}
-> EXPO_PUBLIC_USER_POOL_ID={{value}}
-> EXPO_PUBLIC_USER_POOL_CLIENT_ID={{value}}
-> EXPO_PUBLIC_AWS_DOMAIN={{value}}
+1. Copy `.env.example` to `.env` and fill it in.
+2. Build a development client: `eas build --profile development --platform <ios|android>` (or
+   `npx expo prebuild` and `npx expo run:<platform>` for a local build).
+3. `npm run start`.
 
-4. Update your eas secrets with the values from your `.env` file with `eas secret:push --scope project --env-file ./.env.test`
-5. Create a new eas build `eas build --platform all --profile preview`
-6. Download the build from `expo.dev`.
-7. Start testing :)
+Checks: `npx tsc --noEmit`, `npx eslint src`, `npx jest`.
 
-## 3. New production build
+## Builds
 
-1. Create a new file at the root of the project called `.env.production`;
-2. Check if the `google-services.json` is present in the secrets (`eas secret:list`), otherwise go to your firebase console for your app and download the `google-services.json` and copy it in the root of your project. If not present in secrets push it.
-3. Add the following lines with values from your cognito app client for your production environment:
+- `preview`: internal build against staging (`eas build --profile preview --platform all`).
+- `production`: `eas build --profile production --platform all`, then `eas submit`.
 
-> EXPO_PUBLIC_AWS_REGION={{value}}
-> EXPO_PUBLIC_USER_POOL_ID={{value}}
-> EXPO_PUBLIC_USER_POOL_CLIENT_ID={{value}}
-> EXPO_PUBLIC_AWS_DOMAIN={{value}}
-
-4. Update your eas secrets with the values from your `.env` file with `eas secret:push --scope project --env-file ./.env.production`
-5. Update `buildNumber` and `versionCode` from your `app.json` file and commit them.
-6. Create a new eas build `eas build --platform all --profile production`
-7. Upload the build through Testflight/Stores
+Version numbers: `version` lives in `app.config.ts` (bump it for every native change: it is also the
+over-the-air `runtimeVersion`). Build numbers are managed by EAS (`appVersionSource: remote`,
+`autoIncrement` on production); check them with `eas build:version:get` and set a floor with
+`eas build:version:set` if the stores are ahead.
 
 ## Useful docs
 
-1. [Environment variables values precedence](https://docs.expo.dev/build-reference/variables/#how-are-naming-collisions-between-secrets-the-env--field-in-easjson-and-env-files-handled)
-2. [Local build](https://docs.expo.dev/build-reference/local-builds/)
-3. [Prebuild](https://docs.expo.dev/workflow/prebuild/)
+1. [Environment variables in EAS](https://docs.expo.dev/eas/environment-variables/)
+2. [App version management](https://docs.expo.dev/build-reference/app-versions/)
+3. [Local builds](https://docs.expo.dev/build-reference/local-builds/)
