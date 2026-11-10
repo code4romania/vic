@@ -1,7 +1,8 @@
+import { StarIcon } from '@heroicons/react/24/outline';
+import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
 import React, { useEffect, useState } from 'react';
 import PageLayout from '../layouts/PageLayout';
 import Card from '../layouts/CardLayout';
-import CardHeader from '../components/CardHeader';
 import CardBody from '../components/CardBody';
 import Button from '../components/Button';
 import DataTableComponent from '../components/DataTableComponent';
@@ -19,16 +20,17 @@ import { SortOrder, TableColumn } from 'react-data-table-component';
 import Popover from '../components/Popover';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { SelectItem } from '../components/Select';
-import { downloadExcel, VolunteerStatusMarkerColorMapper } from '../common/utils/utils';
-import StatusWithMarker from '../components/StatusWithMarker';
+import { downloadExcel, formatDate } from '../common/utils/utils';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import MediaCell from '../components/MediaCell';
+import StatusBadge, { BadgeTone } from '../components/StatusBadge';
 import {
   useActivateVolunteerMutation,
   useArchiveVolunteerMutation,
   useBlockVolunteerMutation,
   useVolunteersQuery,
+  useUpdateVolunteerDetailsMutation,
 } from '../services/volunteer/volunteer.service';
 import PageHeader from '../components/PageHeader';
 import { IVolunteer } from '../common/interfaces/volunteer.interface';
@@ -51,19 +53,51 @@ const STATUS_OPTIONS: SelectItem<string>[] = [
   VolunteerStatus.BLOCKED,
 ].map((status) => ({ key: status, value: i18n.t(`volunteers:status_label.${status}`) }));
 
+const STATUS_TONE: Record<VolunteerStatus, BadgeTone> = {
+  [VolunteerStatus.ACTIVE]: 'green',
+  [VolunteerStatus.INACTIVE]: 'gray',
+  [VolunteerStatus.CANDIDATE]: 'navy',
+  [VolunteerStatus.BLOCKED]: 'red',
+};
+
+const Chip = ({ children }: { children: React.ReactNode }) => (
+  <span className="inline-flex rounded-md border border-cool-gray-300 bg-white px-1.5 py-0.5 text-xs text-cool-gray-700 whitespace-nowrap">
+    {children}
+  </span>
+);
+
 const VolunteersTableHeader = [
   {
     id: 'user.firstName',
     name: i18n.t('general:name'),
     sortable: true,
-    grow: 1,
-    minWidth: '5rem',
+    grow: 2,
+    minWidth: '14rem',
     cell: (row: IVolunteer) => (
       <MediaCell
         logo={row.user?.profilePicture || ''}
         title={row.user.name}
-        subtitle={row.profile?.branch?.name || ''}
+        subtitle={
+          row.profile?.activeSince
+            ? `${i18n.t('volunteers:member_since', { date: formatDate(row.profile.activeSince) })}`
+            : row.profile?.branch?.name || ''
+        }
       />
+    ),
+  },
+  {
+    id: 'volunteerProfile.email',
+    name: i18n.t('general:contact'),
+    sortable: true,
+    grow: 2,
+    minWidth: '13rem',
+    cell: (row: IVolunteer) => (
+      <div className="flex flex-col text-sm">
+        <span className="text-sm text-cool-gray-900 truncate">
+          {row.profile?.email || row.user?.email}
+        </span>
+        {row.user?.phone && <span className="text-sm text-cool-gray-500">{row.user.phone}</span>}
+      </div>
     ),
   },
   {
@@ -71,22 +105,17 @@ const VolunteersTableHeader = [
     name: i18n.t('volunteers:department_and_role'),
     sortable: true,
     grow: 1,
-    minWidth: '9rem',
-    selector: (row: IVolunteer) =>
-      row.profile?.department || row?.profile?.role
-        ? `${row.profile?.role?.name || ''}${
-            row.profile?.role && row.profile?.department ? '\n' : ''
-          }${row.profile?.department?.name || ''}`
-        : '-',
-  },
-  {
-    id: 'volunteerProfile.email',
-    name: i18n.t('general:contact'),
-    sortable: true,
-    grow: 1,
-    minWidth: '14rem',
-    selector: (row: IVolunteer) =>
-      row.profile ? `${row.profile?.email}\n${row.user?.phone}` : '-',
+    minWidth: '10rem',
+    cell: (row: IVolunteer) =>
+      row.profile?.department || row.profile?.role || row.profile?.branch ? (
+        <div className="flex flex-wrap gap-1">
+          {row.profile?.department && <Chip>{row.profile.department.name}</Chip>}
+          {row.profile?.role && <Chip>{row.profile.role.name}</Chip>}
+          {row.profile?.branch && <Chip>{row.profile.branch.name}</Chip>}
+        </div>
+      ) : (
+        <span className="text-cool-gray-400">–</span>
+      ),
   },
   // Hours is not sortable: it is computed per page (#475).
   {
@@ -95,19 +124,21 @@ const VolunteersTableHeader = [
     sortable: false,
     grow: 0,
     minWidth: '5rem',
-    selector: (row: IVolunteer) => row.totalHours ?? 0,
+    cell: (row: IVolunteer) => (
+      <span className="font-robotoMedium text-navy">{`${row.totalHours ?? 0}h`}</span>
+    ),
   },
   {
     id: 'status',
     name: i18n.t('volunteers:status'),
     sortable: true,
     grow: 0,
-    minWidth: '7rem',
+    minWidth: '8rem',
     cell: (row: IVolunteer) => (
-      <div className="flex flex-col">
-        <StatusWithMarker markerColor={VolunteerStatusMarkerColorMapper[row.status]}>
+      <div className="flex flex-col items-start gap-1">
+        <StatusBadge tone={STATUS_TONE[row.status]}>
           {i18n.t(`volunteers:status_label.${row.status}`)}
-        </StatusWithMarker>
+        </StatusBadge>
         {/* #473: separate from the status: whether the person has a VIC account yet */}
         {row.user?.hasAccount === false && (
           <small className="text-cool-gray-500">{i18n.t('volunteer:no_account')}</small>
@@ -120,8 +151,9 @@ const VolunteersTableHeader = [
     name: i18n.t('volunteers:source'),
     sortable: true,
     grow: 1,
-    minWidth: '6rem',
-    selector: (row: IVolunteer) => row.source || '-',
+    minWidth: '7rem',
+    cell: (row: IVolunteer) =>
+      row.source ? <Chip>{row.source}</Chip> : <span className="text-cool-gray-400">–</span>,
   },
 ];
 
@@ -212,6 +244,33 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
       default:
         return [view];
     }
+  };
+
+  // #471: the star marks the NGO's favorite volunteers, as on the profile
+  const { mutate: updateDetails } = useUpdateVolunteerDetailsMutation();
+  const favoriteColumn: TableColumn<IVolunteer> = {
+    name: '',
+    width: '48px',
+    cell: (row: IVolunteer) => (
+      <button
+        type="button"
+        aria-label={`${i18n.t(row.isFavorite ? 'volunteer:unfavorite' : 'volunteer:favorite')} ${row.user.name}`}
+        aria-pressed={row.isFavorite}
+        className="p-1 rounded-md hover:bg-cool-gray-100"
+        onClick={() =>
+          updateDetails(
+            { id: row.id, data: { isFavorite: !row.isFavorite } },
+            { onSuccess: () => refetch() },
+          )
+        }
+      >
+        {row.isFavorite ? (
+          <StarSolidIcon className="w-5 h-5 text-yellow-500" />
+        ) : (
+          <StarIcon className="w-5 h-5 text-cool-gray-400" />
+        )}
+      </button>
+    ),
   };
 
   const actionColumn: TableColumn<IVolunteer> = {
@@ -383,12 +442,43 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
 
   return (
     <PageLayout>
-      <PageHeader>{i18n.t('side_menu:options.volunteers_list')}</PageHeader>
+      <PageHeader
+        subtitle={`${i18n.t('volunteers:subtitle')}`}
+        actions={
+          <>
+            <Button
+              label={i18n.t('volunteers:import.button')}
+              icon={<ArrowUpTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+              className="btn-outline-secondary"
+              onClick={() => navigate('import')}
+            />
+            <Button
+              label={i18n.t('volunteers:add.button')}
+              icon={<PlusIcon className="h-5 w-5" />}
+              className="btn-primary"
+              onClick={() => navigate('add')}
+            />
+          </>
+        }
+      >
+        {i18n.t('side_menu:options.volunteers_list')}
+      </PageHeader>
       <DataTableFilters
         onSearch={onSearch}
         searchValue={query?.search}
         searchPlaceholder={i18n.t('volunteers:search_placeholder').toString()}
         onResetFilters={onResetFilters}
+        results={
+          <>
+            <span>{i18n.t('volunteers:found', { count: volunteers?.meta?.totalItems ?? 0 })}</span>
+            <Button
+              label={i18n.t('general:download_table')}
+              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+              className="btn-text-primary px-2"
+              onClick={onExport}
+            />
+          </>
+        }
       >
         <SelectFilter
           label={`${i18n.t('volunteers:status')}`}
@@ -432,32 +522,9 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
         />
       </DataTableFilters>
       <Card>
-        <CardHeader>
-          <h2>{i18n.t('volunteers:found', { count: volunteers?.meta?.totalItems ?? 0 })}</h2>
-          <div className="flex gap-2">
-            <Button
-              label={i18n.t('general:download_table')}
-              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-              className="btn-outline-secondary"
-              onClick={onExport}
-            />
-            <Button
-              label={i18n.t('volunteers:import.button')}
-              icon={<ArrowUpTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-              className="btn-outline-secondary"
-              onClick={() => navigate('import')}
-            />
-            <Button
-              label={i18n.t('volunteers:add.button')}
-              icon={<PlusIcon className="h-5 w-5" />}
-              className="btn-primary"
-              onClick={() => navigate('add')}
-            />
-          </div>
-        </CardHeader>
         <CardBody>
           <DataTableComponent
-            columns={[...VolunteersTableHeader, actionColumn]}
+            columns={[favoriteColumn, ...VolunteersTableHeader, actionColumn]}
             data={volunteers?.items}
             loading={
               isVolunteersLoading ||
