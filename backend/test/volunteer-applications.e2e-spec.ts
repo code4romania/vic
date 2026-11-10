@@ -205,4 +205,38 @@ describe('Volunteer applications (e2e)', () => {
       expect.objectContaining({ id: volunteer.id, status: 'active' }),
     ]);
   });
+
+  // #593: the NGO's active admins are emailed when a volunteer leaves by themselves
+  it("emails the NGO's active admins when a volunteer leaves", async () => {
+    await decide(await apply(), 'approve', 201);
+    const [volunteer] = await volunteers();
+    // an invited admin who never logged in is left out
+    const [invited] = await testApp.dataSource.query(
+      `INSERT INTO "user" (type, name, email, phone, organization_id)
+       VALUES ('admin', 'Ion Invitat', 'ion@crucea.ro', '+40733333333', $1) RETURNING id`,
+      [organizationId],
+    );
+    await testApp.app.get(AuthIdentityFacade).createIdentity({
+      realm: AuthRealm.WEB,
+      email: 'ion@crucea.ro',
+      status: AuthIdentityStatus.PENDING,
+      userId: invited.id,
+    });
+    testApp.mailbox.clear();
+
+    await http()
+      .delete(`/mobile/organization/${volunteer.id}`)
+      .set('Authorization', await mobile())
+      .expect(200);
+
+    await eventually(() => !!testApp.mailbox.last('ana@crucea.ro'));
+    const email = testApp.mailbox.last('ana@crucea.ro');
+    expect(email.subject).toBe('Elena Pop a părăsit organizația');
+    expect(email.context.subtitle).toContain('Crucea');
+    expect(testApp.mailbox.to('ion@crucea.ro')).toEqual([]);
+
+    // leaving also clears the volunteer's active organization after the response (not awaited by the
+    // use case); let it finish before the app closes
+    await new Promise((resolve) => setTimeout(resolve, 300));
+  });
 });

@@ -290,7 +290,8 @@ const ActivityLogSidePanel = ({ isOpen, onClose, activityLogId }: ActivityLogSid
           title={i18n.t('activity_log:modal.title')}
           onClose={setIsRejectModalOpen.bind(null, false)}
           onConfirm={onConfirmRejectModal}
-          secondaryBtnLabel={`${i18n.t('activity_log:modal.reject')}`}
+          // #593: rejections always carry a reason, which the volunteer sees in the app
+          requireReason
           primaryBtnLabel={`${i18n.t('general:reject')}`}
           primaryBtnClassName="btn-danger"
         />

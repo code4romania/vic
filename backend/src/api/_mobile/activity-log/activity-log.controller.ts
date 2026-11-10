@@ -95,8 +95,9 @@ export class MobileActivityLogController {
   @Delete(':id')
   async cancel(
     @Param('id', UuidValidationPipe) activityLogId: string,
+    @ExtractUser() regularUser: IRegularUserModel,
   ): Promise<void> {
-    await this.cancelActivityLogUsecase.execute(activityLogId);
+    await this.cancelActivityLogUsecase.execute(activityLogId, regularUser);
   }
 
   // TODO: VolunteerGuard
@@ -121,10 +122,12 @@ export class MobileActivityLogController {
   async update(
     @Param('id', UuidValidationPipe) activityLogId: string,
     @Body() updates: UpdateActivityLogDto,
+    @ExtractUser() regularUser: IRegularUserModel,
   ): Promise<MobileActivityLogPresenter> {
     const activityLog = await this.updateActivityLogUsecase.execute(
       activityLogId,
       updates,
+      regularUser,
     );
     return new MobileActivityLogPresenter(activityLog);
   }

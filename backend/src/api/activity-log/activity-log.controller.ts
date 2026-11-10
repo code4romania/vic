@@ -140,10 +140,12 @@ export class ActivityLogController {
   async update(
     @Param('id', UuidValidationPipe) activityLogId: string,
     @Body() updates: UpdateActivityLogDto,
+    @ExtractUser() adminUser: IAdminUserModel,
   ): Promise<ActivityLogPresenter> {
     const activityType = await this.updateActivityLogUsecase.execute(
       activityLogId,
       updates,
+      adminUser,
     );
     return new ActivityLogPresenter(activityType);
   }

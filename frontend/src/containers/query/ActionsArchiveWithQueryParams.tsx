@@ -6,6 +6,7 @@ import {
   IPaginationQueryParams,
 } from '../../common/constants/pagination';
 import { IHOCQueryProps } from '../../common/interfaces/hoc-query-props.interface';
+import { OrderDirection } from '../../common/enums/order-direction.enum';
 import ActionsArchiveTable from '../../components/ActionsArchiveTable';
 
 export interface ActionsArchiveQueryProps extends IPaginationQueryParams {
@@ -19,8 +20,11 @@ export type ActionsArchiveProps = IHOCQueryProps<ActionsArchiveQueryProps> & {
   volunteerId?: string;
 };
 
-// set page default params
-const DEFAULT_QUERY_PARAMS = getPaginationQueryParams({});
+// set page default params: the latest actions first (#593)
+const DEFAULT_QUERY_PARAMS = getPaginationQueryParams({
+  orderBy: 'createdOn',
+  orderDirection: OrderDirection.DESC,
+});
 
 const ActionsArchiveWithQueryParams = ({ volunteerId }: { volunteerId?: string }) => {
   // set query config

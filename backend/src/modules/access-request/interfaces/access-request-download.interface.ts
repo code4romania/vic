@@ -2,11 +2,11 @@ import { SEX } from 'src/modules/user/enums/user.enum';
 
 export interface IAccessRequestDownload {
   Nume: string;
-  'Data nasterii': Date;
+  'Data nașterii': Date;
   Sex: SEX;
   Email: string;
   Telefon: string;
-  Locatie: string;
+  Locație: string;
   'Data creare cerere': Date;
   'Data refuz cerere'?: Date;
   'Motivul refuzului'?: string;

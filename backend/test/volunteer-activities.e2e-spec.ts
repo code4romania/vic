@@ -230,4 +230,89 @@ describe('Volunteer activities (e2e)', () => {
       expect(await webList({})).toEqual([]);
     },
   );
+
+  // #593: a rejection needs a reason; the decision reaches the volunteer by email too, when it is on
+  describe('decisions on pending hours', () => {
+    let logId: string;
+
+    const decide = async (
+      decision: 'approve' | 'reject',
+      body: Record<string, unknown> = {},
+    ): Promise<request.Response> =>
+      http()
+        .patch(`/activity-log/${logId}/${decision}`)
+        .set(
+          'Authorization',
+          `Bearer ${await testApp.mintAccessToken(admin, AuthRealm.WEB)}`,
+        )
+        .send(body);
+
+    const emailOn = (on: boolean): Promise<unknown> =>
+      testApp.dataSource.query(
+        `UPDATE notifications_settings SET notifications_via_email = $1`,
+        [on],
+      );
+
+    const eventually = async (check: () => boolean): Promise<void> => {
+      for (let i = 0; i < 50 && !check(); i++) {
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
+    };
+
+    beforeEach(async () => {
+      testApp.mailbox.clear();
+      const [row] = await testApp.dataSource.query(
+        `INSERT INTO activity_log (date, hours, status, volunteer_id, organization_id, activity_type_id)
+         VALUES ('2026-11-03', 4, 'pending', $1, $2, $3) RETURNING id`,
+        [volunteerId, organizationId, activityTypeId],
+      );
+      logId = row.id;
+    });
+
+    it.each([{}, { rejectionReason: '' }, { rejectionReason: '   ' }])(
+      'refuses to reject without a reason (%j): 400 ACTIVITY_LOG_006',
+      async (body) => {
+        const response = await decide('reject', body);
+        expect(response.status).toBe(400);
+        expect(response.body.code_error).toBe('ACTIVITY_LOG_006');
+        expect((await webList({}))[0].status).toBe('pending');
+      },
+    );
+
+    it('emails the rejection and its reason when email is on', async () => {
+      await emailOn(true);
+      await decide('reject', {
+        rejectionReason: '  Nu ai fost la eveniment  ',
+      }).then((response) => expect(response.status).toBe(200));
+
+      await eventually(() => !!testApp.mailbox.last('elena@example.ro'));
+      const email = testApp.mailbox.last('elena@example.ro');
+      expect(email.subject).toBe(
+        'Orele tale de voluntariat la Org au fost respinse',
+      );
+      expect(email.context.subtitle).toBe(
+        '4 ore de voluntariat din 03/11/2026 au fost respinse. Motiv: Nu ai fost la eveniment',
+      );
+    });
+
+    it('emails the approval when email is on', async () => {
+      await emailOn(true);
+      await decide('approve').then((response) =>
+        expect(response.status).toBe(200),
+      );
+
+      await eventually(() => !!testApp.mailbox.last('elena@example.ro'));
+      expect(testApp.mailbox.last('elena@example.ro').subject).toBe(
+        'Orele tale de voluntariat la Org au fost aprobate',
+      );
+    });
+
+    it('sends no email when the volunteer turned email off', async () => {
+      await decide('approve').then((response) =>
+        expect(response.status).toBe(200),
+      );
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      expect(testApp.mailbox.to('elena@example.ro')).toEqual([]);
+    });
+  });
 });

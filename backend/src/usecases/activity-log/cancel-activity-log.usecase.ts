@@ -7,6 +7,9 @@ import { GetOneActivityLogUsecase } from './get-one-activity-log.usecase';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { ActivityLogExceptionMessages } from 'src/modules/activity-log/exceptions/activity-log.exceptions';
 import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
+import { ActionsArchiveFacade } from 'src/modules/actions-archive/actions-archive.facade';
+import { TrackedEventName } from 'src/modules/actions-archive/enums/action-resource-types.enum';
+import { IRegularUserModel } from 'src/modules/user/models/regular-user.model';
 
 @Injectable()
 export class CancelActivityLogUsecase
@@ -16,9 +19,10 @@ export class CancelActivityLogUsecase
     private readonly getOneActivityLogUsecase: GetOneActivityLogUsecase,
     private readonly exceptionService: ExceptionsService,
     private readonly activityLogFacade: ActivityLogFacade,
+    private readonly actionsArchiveFacade: ActionsArchiveFacade,
   ) {}
 
-  public async execute(id: string): Promise<void> {
+  public async execute(id: string, user: IRegularUserModel): Promise<void> {
     // 1. Check if the log to be delete, exists
     const log = await this.getOneActivityLogUsecase.execute(id);
     // An inactive or blocked volunteer's hours are read-only
@@ -31,5 +35,17 @@ export class CancelActivityLogUsecase
     }
 
     await this.activityLogFacade.delete(id);
+
+    // #593: the volunteer deleted their pending hours; the NGO sees it in the actions history
+    this.actionsArchiveFacade.trackEvent(
+      TrackedEventName.CANCEL_ACTIVITY_LOG,
+      {
+        activityLogId: log.id,
+        volunteerId: log.volunteer?.id,
+        volunteerName: log.volunteer?.user?.name,
+        organizationId: log.organization?.id,
+      },
+      user,
+    );
   }
 }

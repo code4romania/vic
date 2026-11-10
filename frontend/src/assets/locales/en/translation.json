@@ -271,7 +271,7 @@
       }
     },
     "submit": {
-      "archive": "The volunteer was archived",
+      "archive": "The volunteer was marked as inactive",
       "activate": "The volunteer has been activated",
       "block": "The volunteer was stuck"
     },
@@ -590,6 +590,9 @@
       },
       "start_date": {
         "required": "Start date is mandatory"
+      },
+      "end_date": {
+        "min": "The end date cannot be before the start date"
       }
     },
     "submit": {
@@ -600,7 +603,8 @@
     },
     "errors": {
       "ACCESS_CODE_001": "There is no access code with this name",
-      "ACCESS_CODE_002": "There is already an access code with this name"
+      "ACCESS_CODE_002": "There is already an access code with this name",
+      "ACCESS_CODE_003": "The end date cannot be before the start date"
     },
     "status": {
       "active": "Active",
@@ -1177,8 +1181,7 @@
     },
     "modal": {
       "title": "Arguments for rejection",
-      "description": "Send a message to the volunteer explaining the reason for refusal.",
-      "reject": "Reject without message "
+      "description": "Write why you reject these hours. The volunteer sees it in the app and by email."
     },
     "side_panel": {
       "reject": "Move to rejected",
@@ -1226,7 +1229,8 @@
       "ACTIVITY_LOG_001": "Activity not found!",
       "ACTIVITY_LOG_002": "Volunteer must have profile to log in hours",
       "ACTIVITY_LOG_003": "No changes can be made to requests in Approved or Rejected status",
-      "ACTIVITY_LOG_005": "Hours can only be added to an active volunteer"
+      "ACTIVITY_LOG_005": "Hours can only be added to an active volunteer",
+      "ACTIVITY_LOG_006": "Write why you reject these hours"
     },
     "download_file_name": "Volunteering hours history.xlsx",
     "counters": {
@@ -1370,7 +1374,7 @@
       "description": "Contract number <inlineContractLink>{{contractNumber}}</inlineContractLink> for <inlineLink>{{volunteerName}}</inlineLink> has been rejected"
     },
     "subtitle": "Who changed what in the organization, and when",
-    "card_subtitle": "Every admin action, oldest first",
+    "card_subtitle": "Every action in the organization, latest first",
     "areas": {
       "hours": "Hours",
       "activity_types": "Categories",
@@ -1384,6 +1388,34 @@
     "DISABLE_ADMIN": {
       "label": "Disable Admin",
       "description": "Admin <inlineLink>{{adminName}}</inlineLink> was disabled."
+    },
+    "UPDATE_ACTIVITY_LOG": {
+      "label": "Update Volunteer Hours",
+      "description": "The volunteer hours of <inlineLink>{{volunteerName}}</inlineLink> were edited."
+    },
+    "CANCEL_ACTIVITY_LOG": {
+      "label": "Delete Volunteer Hours",
+      "description": "The volunteer <inlineLink>{{volunteerName}}</inlineLink> deleted pending volunteer hours."
+    },
+    "UPDATE_ANNOUNCEMENT": {
+      "label": "Update Announcement",
+      "description": "The announcement <inlineLink>{{announcementTitle}}</inlineLink> was edited."
+    },
+    "CHANGE_ANNOUNCEMENT_STATUS": {
+      "label": "Change Announcement Status",
+      "description": "The status of the announcement <inlineLink>{{announcementTitle}}</inlineLink> changed from {{oldStatus}} to {{newStatus}}."
+    },
+    "CREATE_ACCESS_CODE": {
+      "label": "Create Access Code",
+      "description": "The access code <inlineLink>{{accessCode}}</inlineLink> was created."
+    },
+    "UPDATE_ACCESS_CODE": {
+      "label": "Update Access Code",
+      "description": "The access code <inlineLink>{{accessCode}}</inlineLink> was edited."
+    },
+    "DELETE_ACCESS_CODE": {
+      "label": "Delete Access Code",
+      "description": "The access code {{accessCode}} was deleted."
     },
     "ENABLE_ADMIN": {
       "label": "Enable Admin",

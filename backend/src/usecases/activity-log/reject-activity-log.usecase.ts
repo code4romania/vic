@@ -12,6 +12,8 @@ import RejectHoursEvent from 'src/modules/notifications/events/volunteer-hours/r
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { assertVolunteerEditable } from 'src/modules/volunteer/volunteer-status.rules';
+import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ActivityLogExceptionMessages } from 'src/modules/activity-log/exceptions/activity-log.exceptions';
 
 @Injectable()
 export class RejectActivityLogUsecase
@@ -22,6 +24,7 @@ export class RejectActivityLogUsecase
     private readonly activityLogFacade: ActivityLogFacade,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
     private readonly eventEmitter: EventEmitter2,
+    private readonly exceptionService: ExceptionsService,
   ) {}
 
   public async execute(
@@ -29,6 +32,13 @@ export class RejectActivityLogUsecase
     { rejectionReason }: RejectActivityLogDto,
     admin: IAdminUserModel,
   ): Promise<IActivityLogModel> {
+    // 0. Rejections always carry a reason, shown to the volunteer (#593)
+    if (!rejectionReason?.trim()) {
+      this.exceptionService.badRequestException(
+        ActivityLogExceptionMessages.ACTIVITY_LOG_006,
+      );
+    }
+
     // 1. Check if the log to be updated, exists
     const log = await this.getOneActivityLogUsecase.execute(id);
     // An inactive or blocked volunteer's hours are read-only
@@ -44,7 +54,7 @@ export class RejectActivityLogUsecase
       approvedOn: null,
       rejectedById: admin.id,
       rejectedOn: new Date(),
-      rejectionReason,
+      rejectionReason: rejectionReason.trim(),
     });
 
     // send push notifications and or email
@@ -59,7 +69,8 @@ export class RejectActivityLogUsecase
         rejected.volunteer.user.email,
         rejected.id,
         rejected.hours,
-        rejected.createdOn,
+        rejected.date,
+        rejected.rejectionReason,
       ),
     );
 

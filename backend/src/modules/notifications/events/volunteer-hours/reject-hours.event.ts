@@ -11,6 +11,7 @@ export default class RejectHoursEvent extends BaseEvent {
     private _activityLogId: string,
     private _hours: number,
     private _date: Date,
+    private _rejectionReason: string,
   ) {
     super(
       _organizationId,
@@ -32,5 +33,9 @@ export default class RejectHoursEvent extends BaseEvent {
 
   public get date(): Date {
     return this._date;
+  }
+
+  public get rejectionReason(): string {
+    return this._rejectionReason;
   }
 }

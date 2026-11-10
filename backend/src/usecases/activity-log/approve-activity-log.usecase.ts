@@ -62,7 +62,7 @@ export class ApproveActivityLogUsecase
         approved.volunteer.user.email,
         approved.id,
         approved.hours,
-        approved.createdOn,
+        approved.date,
       ),
     );
 

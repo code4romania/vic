@@ -29,6 +29,9 @@ export enum TrackedEventName {
   // Activity Log
   REGISTER_ACTIVITY_LOG = 'REGISTER_ACTIVITY_LOG',
   CHANGE_ACTIVITY_LOG_STATUS = 'CHANGE_ACTIVITY_LOG_STATUS',
+  // #593
+  UPDATE_ACTIVITY_LOG = 'UPDATE_ACTIVITY_LOG',
+  CANCEL_ACTIVITY_LOG = 'CANCEL_ACTIVITY_LOG',
 
   // Activity Categories/Types
   CREATE_ACTIVITY_TYPE = 'CREATE_ACTIVITY_TYPE',
@@ -45,6 +48,14 @@ export enum TrackedEventName {
   CREATE_ANNOUNCEMENT = 'CREATE_ANNOUNCEMENT',
   DELETE_ANNOUNCEMENT = 'DELETE_ANNOUNCEMENT',
   PUBLISH_ANNOUNCEMENT = 'PUBLISH_ANNOUNCEMENT',
+  // #593
+  UPDATE_ANNOUNCEMENT = 'UPDATE_ANNOUNCEMENT',
+  CHANGE_ANNOUNCEMENT_STATUS = 'CHANGE_ANNOUNCEMENT_STATUS',
+
+  // Access Codes (#593)
+  CREATE_ACCESS_CODE = 'CREATE_ACCESS_CODE',
+  UPDATE_ACCESS_CODE = 'UPDATE_ACCESS_CODE',
+  DELETE_ACCESS_CODE = 'DELETE_ACCESS_CODE',
 
   // Documents
   CREATE_CONTRACT = 'CREATE_CONTRACT',
@@ -123,6 +134,8 @@ export interface TrackedEventData {
     activityLogId: string;
     volunteerId: string;
     volunteerName: string;
+    // set when the volunteer is the author, so the NGO sees the action (#593)
+    organizationId?: string;
   };
   [TrackedEventName.CHANGE_ACTIVITY_LOG_STATUS]: {
     activityLogId: string;
@@ -130,6 +143,19 @@ export interface TrackedEventData {
     volunteerName: string;
     oldStatus: ActivityLogStatus;
     newStatus: ActivityLogStatus;
+  };
+  // #593: edited or deleted (pending hours) by the volunteer or the NGO
+  [TrackedEventName.UPDATE_ACTIVITY_LOG]: {
+    activityLogId: string;
+    volunteerId: string;
+    volunteerName: string;
+    organizationId: string;
+  };
+  [TrackedEventName.CANCEL_ACTIVITY_LOG]: {
+    activityLogId: string;
+    volunteerId: string;
+    volunteerName: string;
+    organizationId: string;
   };
 
   // Activity Type
@@ -182,6 +208,30 @@ export interface TrackedEventData {
   [TrackedEventName.DELETE_ANNOUNCEMENT]: {
     announcementId: string;
     announcementTitle: string;
+  };
+  [TrackedEventName.UPDATE_ANNOUNCEMENT]: {
+    announcementId: string;
+    announcementTitle: string;
+  };
+  [TrackedEventName.CHANGE_ANNOUNCEMENT_STATUS]: {
+    announcementId: string;
+    announcementTitle: string;
+    oldStatus: AnnouncementStatus;
+    newStatus: AnnouncementStatus;
+  };
+
+  // Access Codes
+  [TrackedEventName.CREATE_ACCESS_CODE]: {
+    accessCodeId: string;
+    accessCode: string;
+  };
+  [TrackedEventName.UPDATE_ACCESS_CODE]: {
+    accessCodeId: string;
+    accessCode: string;
+  };
+  [TrackedEventName.DELETE_ACCESS_CODE]: {
+    accessCodeId: string;
+    accessCode: string;
   };
 
   // Documents

@@ -41,15 +41,18 @@ export class ActionsArchiveRepository
         'author',
       )
       .select()
-      .where('author.organizationId = :organizationId', {
-        organizationId: findOptions.organizationId,
-      })
+      // the organization's admins' actions, and the volunteers' actions on its data (#593)
+      .where(
+        `(author.organizationId = :organizationId OR "actionsArchive".event_data->>'organizationId' = :organizationId)`,
+        { organizationId: findOptions.organizationId },
+      )
       .orderBy(
         this.buildOrderByQuery(
           findOptions.orderBy || 'createdOn',
           'actionsArchive',
         ),
-        findOptions.orderDirection || OrderDirection.ASC,
+        // the latest actions first (#593)
+        findOptions.orderDirection || OrderDirection.DESC,
       );
 
     if (findOptions.author) {

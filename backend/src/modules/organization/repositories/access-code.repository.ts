@@ -5,7 +5,7 @@ import {
   Pagination,
   RepositoryWithPagination,
 } from 'src/infrastructure/base/repository-with-pagination.class';
-import { Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 import { AccessCodeEntity } from '../entities/access-code.entity';
 import { IAccessCodeRepository } from '../interfaces/access-code-repository.interface';
 import {
@@ -72,9 +72,22 @@ export class AccessCodeRepositoryService
     );
   }
 
-  async find(findOptions: IFindAccessCodeModel): Promise<IAccessCodeModel> {
+  async find({
+    code,
+    ...findOptions
+  }: IFindAccessCodeModel): Promise<IAccessCodeModel> {
     const accessCodeEntity = await this.accessCodeRepository.findOne({
-      where: { ...findOptions },
+      where: {
+        ...findOptions,
+        // #593: codes match whatever the case ("qatest1" finds "QATEST1")
+        ...(code !== undefined
+          ? {
+              code: Raw((alias) => `LOWER(${alias}) = LOWER(:code)`, {
+                code,
+              }),
+            }
+          : {}),
+      },
       relations: {
         createdBy: true,
       },

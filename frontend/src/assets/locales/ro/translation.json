@@ -271,7 +271,7 @@
       }
     },
     "submit": {
-      "archive": "Voluntarul a fost arhivat",
+      "archive": "Voluntarul a fost marcat ca inactiv",
       "activate": "Voluntarul a fost activat",
       "block": "Voluntarul a fost blocat"
     },
@@ -584,7 +584,7 @@
     "modal": {
       "title": "Sigur doriți ștergerea acestui cod?",
       "description": "Această acțiune va șterge definitiv acest cod de acces și toate informațiile asociate acestuia",
-      "delete": "Codul de access a fost șters cu succes"
+      "delete": "Codul de acces a fost șters cu succes"
     },
     "form": {
       "code": {
@@ -595,6 +595,9 @@
       },
       "start_date": {
         "required": "Data de început este obligatorie"
+      },
+      "end_date": {
+        "min": "Data de final nu poate fi înaintea datei de început"
       }
     },
     "submit": {
@@ -605,7 +608,8 @@
     },
     "errors": {
       "ACCESS_CODE_001": "Nu există cod de acces cu acest nume",
-      "ACCESS_CODE_002": "Există deja un cod de acces cu acest nume"
+      "ACCESS_CODE_002": "Există deja un cod de acces cu acest nume",
+      "ACCESS_CODE_003": "Data de final nu poate fi înaintea datei de început"
     },
     "status": {
       "active": "Activ",
@@ -651,7 +655,7 @@
         "placeholder": "Denumire"
       },
       "submit": {
-        "add": "Categorie adăugată cu success",
+        "add": "Categorie adăugată cu succes",
         "update": "Categoria a fost modificată",
         "activate": "Categoria a fost activată",
         "archive": "Categoria a fost arhivată"
@@ -1195,8 +1199,7 @@
     },
     "modal": {
       "title": "Argumentează respingere",
-      "description": "Trimite un mesaj voluntarului prin care să argumentezi refuzul cererii.",
-      "reject": "Respinge fără mesaj "
+      "description": "Scrie motivul pentru care respingi orele. Voluntarul îl vede în aplicație și pe email."
     },
     "side_panel": {
       "reject": "Mută în respinse",
@@ -1244,7 +1247,8 @@
       "ACTIVITY_LOG_001": "Activitatea nu a fost găsită!",
       "ACTIVITY_LOG_002": "Voluntarul trebuie să aibă profil pentru a loga ore",
       "ACTIVITY_LOG_003": "Nu se pot face modificări pe request-uri în status-ul Aprobat sau Respins",
-      "ACTIVITY_LOG_005": "Orele se pot adăuga doar unui voluntar activ"
+      "ACTIVITY_LOG_005": "Orele se pot adăuga doar unui voluntar activ",
+      "ACTIVITY_LOG_006": "Scrie motivul pentru care respingi orele"
     },
     "download_file_name": "Istoric ore de voluntariat.xlsx",
     "counters": {
@@ -1339,7 +1343,7 @@
     },
     "CREATE_ACTIVITY_TYPE": {
       "label": "Creează Categorie Activitate",
-      "description": "Categoria de activitate <inlineLink>{{activityTypeName}}</inlineLink> a fost creata."
+      "description": "Categoria de activitate <inlineLink>{{activityTypeName}}</inlineLink> a fost creată."
     },
     "UPDATE_ACTIVITY_TYPE": {
       "label": "Actualizează Categorie Activitate",
@@ -1390,7 +1394,7 @@
       "description": "Contractul cu numărul <inlineContractLink>{{contractNumber}}</inlineContractLink> pentru <inlineLink>{{volunteerName}}</inlineLink> a fost respins"
     },
     "subtitle": "Cine a modificat ce în organizație și când",
-    "card_subtitle": "Toate acțiunile administratorilor, de la cea mai veche",
+    "card_subtitle": "Toate acțiunile din organizație, de la cea mai recentă",
     "areas": {
       "hours": "Ore",
       "activity_types": "Categorii",
@@ -1404,6 +1408,34 @@
     "DISABLE_ADMIN": {
       "label": "Dezactivează Administrator",
       "description": "Administratorul <inlineLink>{{adminName}}</inlineLink> a fost dezactivat."
+    },
+    "UPDATE_ACTIVITY_LOG": {
+      "label": "Actualizează Ore de Voluntariat",
+      "description": "Orele de voluntariat pentru <inlineLink>{{volunteerName}}</inlineLink> au fost modificate."
+    },
+    "CANCEL_ACTIVITY_LOG": {
+      "label": "Șterge Ore de Voluntariat",
+      "description": "Voluntarul <inlineLink>{{volunteerName}}</inlineLink> a șters ore de voluntariat în așteptare."
+    },
+    "UPDATE_ANNOUNCEMENT": {
+      "label": "Actualizează Anunț",
+      "description": "Anunțul <inlineLink>{{announcementTitle}}</inlineLink> a fost modificat."
+    },
+    "CHANGE_ANNOUNCEMENT_STATUS": {
+      "label": "Modifică Status Anunț",
+      "description": "Statusul anunțului <inlineLink>{{announcementTitle}}</inlineLink> a fost schimbat din {{oldStatus}} în {{newStatus}}."
+    },
+    "CREATE_ACCESS_CODE": {
+      "label": "Creează Cod de Acces",
+      "description": "Codul de acces <inlineLink>{{accessCode}}</inlineLink> a fost creat."
+    },
+    "UPDATE_ACCESS_CODE": {
+      "label": "Actualizează Cod de Acces",
+      "description": "Codul de acces <inlineLink>{{accessCode}}</inlineLink> a fost modificat."
+    },
+    "DELETE_ACCESS_CODE": {
+      "label": "Șterge Cod de Acces",
+      "description": "Codul de acces {{accessCode}} a fost șters."
     },
     "ENABLE_ADMIN": {
       "label": "Activează Administrator",

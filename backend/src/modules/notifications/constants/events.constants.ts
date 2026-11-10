@@ -3,6 +3,8 @@ export const EVENTS = {
     APPROVE_REQUEST: 'join.ngo.approve.request',
     REJECT_REQUEST: 'join.ngo.reject.request',
     ARCHIVE_VOLUNTEER: 'join.ngo.archive.volunteer',
+    // #593: the volunteer left the organization by themselves
+    VOLUNTEER_LEFT: 'join.ngo.volunteer.left',
   },
   NGO_EVENT: {
     ADD: 'ngo.event.add',

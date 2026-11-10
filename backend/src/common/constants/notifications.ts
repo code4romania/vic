@@ -37,6 +37,15 @@ export const NOTIFICATIONS = {
       body: '',
     },
   },
+  // #593: to the organization's admins
+  VOLUNTEER_LEFT: {
+    EMAIL: {
+      subject: (volunteerName: string): string =>
+        `${volunteerName} a părăsit organizația`,
+      body: (volunteerName: string, organizationName: string): string =>
+        `${volunteerName} a ieșit din ${organizationName} din aplicația VIC. Profilul rămâne în VIC, la Voluntari inactivi.`,
+    },
+  },
   NEW_EVENT: {
     PUSH: {
       title: 'VIC',
@@ -93,12 +102,26 @@ export const NOTIFICATIONS = {
       body: (hours: number, date: string): string =>
         `${hours} ore de voluntariat din ${date} au fost aprobate`,
     },
+    // #593
+    EMAIL: {
+      subject: (organizationName: string): string =>
+        `Orele tale de voluntariat la ${organizationName} au fost aprobate`,
+      body: (hours: number, date: string): string =>
+        `${hours} ore de voluntariat din ${date} au fost aprobate. Le găsești în aplicația VIC.`,
+    },
   },
   REJECTED_HOURS: {
     PUSH: {
       title: 'VIC',
       body: (hours: number, date: string): string =>
         `${hours} ore de voluntariat din ${date} au fost respinse`,
+    },
+    // #593
+    EMAIL: {
+      subject: (organizationName: string): string =>
+        `Orele tale de voluntariat la ${organizationName} au fost respinse`,
+      body: (hours: number, date: string, reason: string): string =>
+        `${hours} ore de voluntariat din ${date} au fost respinse. Motiv: ${reason}`,
     },
   },
   NEW_CONTRACT: {

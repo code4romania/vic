@@ -23,7 +23,7 @@ export interface EventCardProps {
 /**
  * Event row: a date tile (events have no poster since #492), the title, when and where, and who
  * organizes it. "Înscris" when the volunteer is going, "În așteptare" while the organization still has to
- * approve the registration, "Încheiat" once it's over.
+ * approve the registration, "Respinsă" when it turned the registration down (#593), "Încheiat" once it's over.
  */
 export const EventCard = ({
   event,
@@ -37,6 +37,7 @@ export const EventCard = ({
   const isGoing = going || event.isGoing;
   const finished = event.displayStatus === 'finished';
   const pending = event.registrationStatus === EventRegistrationStatus.PENDING;
+  const rejected = event.registrationStatus === EventRegistrationStatus.REJECTED;
   const audience = event.isPublic ? t('card.public') : t('card.members');
   const meta = [event.organizationName, audience].filter(Boolean).join(' · ');
 
@@ -67,7 +68,10 @@ export const EventCard = ({
             {event.name}
           </VText>
           {pending && !finished && <Badge label={t('card.pending')} tone="wait" />}
-          {isGoing && !pending && !finished && <Badge label={t('card.going')} tone="ok" />}
+          {rejected && !finished && <Badge label={t('card.rejected')} tone="no" />}
+          {isGoing && !pending && !rejected && !finished && (
+            <Badge label={t('card.going')} tone="ok" />
+          )}
           {finished && <Badge label={t('card.finished')} tone="neutral" />}
         </View>
         <VText variant="sub" numberOfLines={1}>

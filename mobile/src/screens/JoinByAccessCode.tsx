@@ -143,6 +143,9 @@ const JoinByAccessCode = ({ navigation }: any) => {
             name="code"
             placeholder={t('form.code.placeholder')}
             disabled={isJoiningByAccessCode}
+            // #593: codes are usually upper case; the API matches them whatever the case
+            autoCapitalize="characters"
+            autoCorrect={false}
           />
         </FormLayout>
       </PageLayout>

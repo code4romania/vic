@@ -19,7 +19,10 @@ export class GetAnnouncementCountersUseCase
   public async execute(organizationId: string): Promise<IAnnouncementCounters> {
     const [row] = await this.dataSource.query(
       `SELECT
-         COUNT(*) FILTER (WHERE a.status = 'active') AS active,
+         -- #593: "active" = seen in the app right now, inside the display period like the app's list
+         COUNT(*) FILTER (WHERE a.status = 'active'
+           AND a.display_start_date <= now()
+           AND (a.display_end_date IS NULL OR a.display_end_date >= now())) AS active,
          COUNT(*) FILTER (WHERE a.status = 'inactive') AS inactive,
          COUNT(*) FILTER (WHERE a.status = 'archived') AS archived,
          (SELECT COUNT(*) FROM announcement_response r
