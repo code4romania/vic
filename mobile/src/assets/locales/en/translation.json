@@ -42,7 +42,13 @@
       "generic": "Error loading data"
     },
     "search_list": "Search the list",
-    "no_results": "No results for “{{query}}”"
+    "no_results": "No results for “{{query}}”",
+    "discard": {
+      "title": "Discard changes?",
+      "message": "The changes you haven't saved will be lost.",
+      "keep": "Keep editing",
+      "leave": "Discard"
+    }
   },
   "landing": {
     "message": "Log in or create an account in one of the following ways",

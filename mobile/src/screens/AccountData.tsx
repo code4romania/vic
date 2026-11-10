@@ -26,6 +26,7 @@ import { CONSTANTS, REGEX } from '../common/constants/constants';
 import { renderPhoneNumberPrefix } from '../components/InputPrefixes';
 import { useUserProfile } from '../store/profile/profile.selector';
 import { usePaddingTop } from '../hooks/usePaddingTop';
+import { useConfirmDiscard } from '../hooks/useConfirmDiscard';
 
 export type AccountDataFormTypes = {
   firstName: string;
@@ -86,7 +87,7 @@ const AccountData = ({ navigation }: any) => {
 
   const {
     control,
-    formState: { errors },
+    formState: { errors, isDirty },
     handleSubmit,
     watch,
     reset,
@@ -95,6 +96,7 @@ const AccountData = ({ navigation }: any) => {
     reValidateMode: 'onChange',
     resolver: yupResolver(schema as any),
   });
+  useConfirmDiscard(navigation, isDirty || !!selectedProfilePicture);
 
   const { isLoading: isUpdatingProfile, mutate: updateUserProfile } =
     useUpdateUserProfileMutation();
@@ -129,6 +131,9 @@ const AccountData = ({ navigation }: any) => {
       },
       {
         onSuccess: () => {
+          // the saved values become the new baseline: leaving no longer asks to discard
+          reset(payload);
+          setSelectedProfilePicture(null);
           Toast.show({ text1: `${t('submit.success')}`, type: 'success' });
         },
         onError: (error: any) => {

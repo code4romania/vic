@@ -51,7 +51,13 @@
             "generic": "Eroare la încărcarea datelor"
         },
         "search_list": "Caută în listă",
-        "no_results": "Niciun rezultat pentru „{{query}}”"
+        "no_results": "Niciun rezultat pentru „{{query}}”",
+        "discard": {
+            "title": "Renunți la modificări?",
+            "message": "Modificările pe care nu le-ai salvat se pierd.",
+            "keep": "Continuă editarea",
+            "leave": "Renunță"
+        }
     },
     "landing": {
         "message": "Intră în aplicație sau creează-ți cont folosind una dintre modalitățile următoare",
