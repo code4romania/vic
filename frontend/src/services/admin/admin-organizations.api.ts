@@ -14,3 +14,7 @@ export const validateOrganization = async (id: string): Promise<IOrganization> =
 // Blocks every admin of the NGO at login (AUTH_004) without changing their own status (R8).
 export const suspendOrganization = async (id: string): Promise<IOrganization> =>
   API.patch(`/admin/organizations/${id}/suspend`).then((res) => res.data);
+
+// Lifts the suspension: the NGO is active again and its admins can log in as before (R8).
+export const unsuspendOrganization = async (id: string): Promise<IOrganization> =>
+  API.patch(`/admin/organizations/${id}/unsuspend`).then((res) => res.data);

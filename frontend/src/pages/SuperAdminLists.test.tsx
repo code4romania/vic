@@ -117,7 +117,89 @@ describe('Super admin lists (#511)', () => {
     expect(
       screen.getByText(t('super_admin:found.organizations', { count: 1 })),
     ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: t('super_admin:review') })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: `${t('super_admin:review')} Asociatia Noua` }),
+    ).toBeInTheDocument();
+  });
+
+  it('suspends an active organization after confirmation (blocker 4)', async () => {
+    const suspended: string[] = [];
+    server.use(
+      http.patch(api('/admin/organizations/:id/suspend'), ({ params }) => {
+        suspended.push(params.id as string);
+        return HttpResponse.json({ id: params.id });
+      }),
+    );
+    render('/admin/organizations');
+    await userEvent.click(
+      await screen.findByRole('button', {
+        name: `${t('super_admin:actions.suspend')} Crucea Verde`,
+      }),
+    );
+    expect(suspended).toHaveLength(0);
+    const dialog = await screen.findByRole('dialog');
+    await userEvent.click(
+      within(dialog).getByRole('button', { name: t('super_admin:actions.suspend') }),
+    );
+    await waitFor(() => expect(suspended).toEqual(['o1']));
+  });
+
+  it('reactivates a suspended organization and reads the status filter from the URL', async () => {
+    const unsuspended: string[] = [];
+    server.use(
+      http.get(api('/admin/organizations'), ({ request }) => {
+        organizationParams.push(new URL(request.url).searchParams);
+        return HttpResponse.json({
+          items: [
+            {
+              id: 'o3',
+              name: 'Asociatia Suspendata',
+              email: 's@ong.test',
+              phone: '',
+              taxId: 'RO777',
+              status: 'suspended',
+              validatedAt: '2026-10-01T10:00:00Z',
+              createdOn: '2026-09-01T10:00:00Z',
+              volunteers: 3,
+            },
+          ],
+          meta: meta(1),
+        });
+      }),
+      http.patch(api('/admin/organizations/:id/unsuspend'), ({ params }) => {
+        unsuspended.push(params.id as string);
+        return HttpResponse.json({ id: params.id });
+      }),
+    );
+    render('/admin/organizations?status=suspended');
+    await userEvent.click(
+      await screen.findByRole('button', {
+        name: `${t('super_admin:actions.unsuspend')} Asociatia Suspendata`,
+      }),
+    );
+    expect(organizationParams[0].get('status')).toBe('suspended');
+    const dialog = await screen.findByRole('dialog');
+    await userEvent.click(
+      within(dialog).getByRole('button', { name: t('super_admin:actions.unsuspend') }),
+    );
+    await waitFor(() => expect(unsuspended).toEqual(['o3']));
+  });
+
+  it('shows a load error with a retry instead of an empty list (major 8)', async () => {
+    let calls = 0;
+    server.use(
+      http.get(api('/admin/organizations'), () => {
+        calls++;
+        return calls === 1
+          ? HttpResponse.json({ message: 'down' }, { status: 500 })
+          : HttpResponse.json({ items: [], meta: meta(0) });
+      }),
+    );
+    render('/admin/organizations');
+    expect(await screen.findByText(t('general:error.load_entries'))).toBeInTheDocument();
+    expect(screen.queryByText(t('general:empty_table'))).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: t('states:retry') }));
+    expect(await screen.findByText(t('general:empty_table'))).toBeInTheDocument();
   });
 
   it('is forbidden to a plain admin', () => {

@@ -18,6 +18,7 @@ import StatusBadge from '../components/StatusBadge';
 import InitialsAvatar from '../components/InitialsAvatar';
 import EmptyContent from '../components/EmptyContent';
 import LoadingContent from '../components/LoadingContent';
+import LoadErrorContent from '../components/LoadErrorContent';
 import ConfirmationModal from '../components/ConfirmationModal';
 import Button from '../components/Button';
 import Forbidden from './Forbidden';
@@ -50,7 +51,7 @@ const OrganizationValidation = () => {
   const navigate = useNavigate();
   const [action, setAction] = useState<PendingAction | null>(null);
 
-  const { data, isLoading, error } = usePendingValidationQuery(isSuperAdmin);
+  const { data, isLoading, error, refetch } = usePendingValidationQuery(isSuperAdmin);
   const active = useAdminOrganizationsQuery({ page: 1, limit: 1, status: 'active' }, isSuperAdmin);
   const suspended = useAdminOrganizationsQuery(
     { page: 1, limit: 1, status: 'suspended' },
@@ -91,7 +92,7 @@ const OrganizationValidation = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatisticsCard
           label={t('stats.pending')}
-          value={isLoading ? '-' : String(pending.length)}
+          value={isLoading || error ? '-' : String(pending.length)}
           icon={<ClockIcon className="w-5 h-5 text-figure-amber" aria-hidden="true" />}
           info={pending.length ? t('stats.pending_info') : undefined}
         />
@@ -99,18 +100,24 @@ const OrganizationValidation = () => {
           label={t('stats.active')}
           value={total(active.data?.meta.totalItems)}
           icon={<CheckCircleIcon className="w-5 h-5 text-figure-green" aria-hidden="true" />}
-          action={{ label: t('stats.see_all'), onClick: () => navigate('/admin/organizations') }}
+          action={{
+            label: t('stats.see_all'),
+            onClick: () => navigate('/admin/organizations?status=active'),
+          }}
         />
         <StatisticsCard
           label={t('stats.suspended')}
           value={total(suspended.data?.meta.totalItems)}
           icon={<NoSymbolIcon className="w-5 h-5 text-figure-red" aria-hidden="true" />}
-          action={{ label: t('stats.see_all'), onClick: () => navigate('/admin/organizations') }}
+          action={{
+            label: t('stats.see_all'),
+            onClick: () => navigate('/admin/organizations?status=suspended'),
+          }}
         />
       </div>
 
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h2>{t('list_title', { count: pending.length })}</h2>
+        <h2>{error ? t('title') : t('list_title', { count: pending.length })}</h2>
         <span className="text-sm text-cool-gray-500">{t('cui_hint')}</span>
       </div>
 
@@ -120,7 +127,13 @@ const OrganizationValidation = () => {
         </Card>
       )}
 
-      {!isLoading && pending.length === 0 && (
+      {!isLoading && !!error && (
+        <Card>
+          <LoadErrorContent onRetry={refetch} />
+        </Card>
+      )}
+
+      {!isLoading && !error && pending.length === 0 && (
         <Card>
           <EmptyContent
             icon={<ShieldCheckIcon className="w-6 h-6" />}
