@@ -53,8 +53,15 @@ export const EventCard = ({
       testID={`event-card-${event.id}`}
     >
       <View style={[styles.tile, finished ? styles.tileMuted : null]}>
-        <VText style={[styles.tileDay, finished ? styles.tileDayMuted : null]}>{tile.day}</VText>
+        {/* the date tile has a fixed size: its text grows less than the rest */}
         <VText
+          maxFontSizeMultiplier={1.15}
+          style={[styles.tileDay, finished ? styles.tileDayMuted : null]}
+        >
+          {tile.day}
+        </VText>
+        <VText
+          maxFontSizeMultiplier={1.15}
           variant="cap"
           color={finished ? colors.muted : colors.white}
           style={styles.tileMonth}
