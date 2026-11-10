@@ -174,7 +174,12 @@ export class OrganizationRepositoryService
         },
       )
       .where('(volunteer.status IN (:...statuses) OR volunteer.id IS NULL)', {
-        statuses: [VolunteerStatus.ACTIVE, VolunteerStatus.INACTIVE],
+        // A Candidate who made an account sees the NGO too, as waiting for activation (#590).
+        statuses: [
+          VolunteerStatus.ACTIVE,
+          VolunteerStatus.INACTIVE,
+          VolunteerStatus.CANDIDATE,
+        ],
       })
       .andWhere(VISIBLE_TO_VOLUNTEERS, {
         visibleStatus: OrganizationStatus.ACTIVE,
@@ -251,8 +256,9 @@ export class OrganizationRepositoryService
   public async findMyOrganizations(
     userId: string,
   ): Promise<IOrganizationVolunteerModel[]> {
-    // Organizations where the user is an active volunteer, plus those where the organization made
-    // them inactive: they can still see the organization and download documents (#472, #589).
+    // Organizations where the user is an active volunteer, a Candidate waiting for the NGO to activate
+    // them (#590), or made inactive by the organization: they can still see the organization and
+    // download documents (#472, #589).
     // Inactive after leaving by themselves (archived_by = the user) is not "mine" any more.
     const organizationEntities = await this.organizationRepository
       .createQueryBuilder('organization')
@@ -265,8 +271,8 @@ export class OrganizationRepositoryService
       .where(
         new Brackets((qb) =>
           qb
-            .where('volunteers.status = :active', {
-              active: VolunteerStatus.ACTIVE,
+            .where('volunteers.status IN (:...listed)', {
+              listed: [VolunteerStatus.ACTIVE, VolunteerStatus.CANDIDATE],
             })
             .orWhere(
               'volunteers.status = :inactive AND volunteers.archivedById IS DISTINCT FROM :userId',

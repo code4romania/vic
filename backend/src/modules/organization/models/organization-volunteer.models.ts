@@ -8,7 +8,7 @@ import {
 export interface IOrganizationVolunteerModel extends IOrganizationModel {
   volunteerId: string;
   volunteerProfileId: string;
-  // Active, or Inactive when the organization made the volunteer inactive (view and documents only).
+  // Active; Candidate until the NGO activates them; Inactive when the organization made them inactive.
   volunteerStatus: VolunteerStatus;
 }
 
