@@ -5,6 +5,7 @@ import {
 import { IAuthIdentityModel } from 'src/modules/auth/models/auth-identity.model';
 import { AuthIdentityFacade } from 'src/modules/auth/services/auth-identity.facade';
 import * as request from 'supertest';
+import * as XLSX from 'xlsx';
 import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
@@ -228,6 +229,38 @@ describe('Event registrations (e2e)', () => {
       rejectionReason: null,
       numberOfPersonsGoingToEvent: 1,
     });
+  });
+
+  it('the "going" answers list and its export leave out rejected registrations', async () => {
+    await rsvp('Bogdan', true);
+    await rsvp('Cristi', true);
+    await decide('Cristi', 'reject', 200, { reason: 'Nu' });
+
+    const going = await http()
+      .get(`/event/${eventId}/rsvp`)
+      .query({ going: 'yes' })
+      .set('Authorization', `Bearer ${await adminToken()}`)
+      .expect(200);
+    expect(
+      going.body.items.map((r: { userName: string }) => r.userName),
+    ).toEqual(['Bogdan']);
+
+    const file = await http()
+      .get(`/event/${eventId}/rsvp/download`)
+      .query({ going: 'yes' })
+      .set('Authorization', `Bearer ${await adminToken()}`)
+      .buffer(true)
+      .parse((res, done) => {
+        const chunks: Buffer[] = [];
+        res.on('data', (c: Buffer) => chunks.push(c));
+        res.on('end', () => done(null, Buffer.concat(chunks)));
+      })
+      .expect(200);
+    const book = XLSX.read(file.body, { type: 'buffer' });
+    const rows = XLSX.utils.sheet_to_json<{ Nume: string }>(
+      book.Sheets[book.SheetNames[0]],
+    );
+    expect(rows.map((r) => r.Nume)).toEqual(['Bogdan']);
   });
 
   it('respects the capacity when approving: 400 EVENT_RSVP_008', async () => {

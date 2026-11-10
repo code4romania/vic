@@ -150,6 +150,13 @@ export class EventRSVPRepository
       query.andWhere('rsvp.going = :going', {
         going: findOptions.going,
       });
+      // "going" means a registration the NGO has not rejected (#501), in the list and its export
+      if (findOptions.going) {
+        query.andWhere(
+          '(rsvp.status IS NULL OR rsvp.status <> :rejectedRegistration)',
+          { rejectedRegistration: 'rejected' },
+        );
+      }
     }
 
     if (findOptions.search) {
