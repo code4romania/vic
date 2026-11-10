@@ -22,6 +22,7 @@ export class ContractListItemPresenter {
       id: contract.volunteer.id,
       name: contract.volunteer.user.name,
     });
+    this.volunteerEmail = contract.volunteer.user.email ?? null;
     this.fileName = contract.fileName;
     this.uri = contract.path;
   }
@@ -75,6 +76,10 @@ export class ContractListItemPresenter {
     type: IdAndNamePresenter,
   })
   volunteer: IdAndNamePresenter<{ id: string; name: string }>;
+
+  @Expose()
+  @ApiProperty({ description: "The volunteer's email, shown under the name" })
+  volunteerEmail: string | null;
 
   @Expose()
   @ApiProperty({

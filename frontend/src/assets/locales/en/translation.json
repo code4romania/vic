@@ -1384,6 +1384,65 @@
         "submit": "Generate PDF",
         "success": "The certificate was downloaded. Once signed, upload it from \"Upload contract\", as a certificate."
       }
+    },
+    "page": {
+      "title": "Contracts and documents",
+      "subtitle": "Your volunteers' contracts and certificates, uploaded signed, with their period",
+      "counters": {
+        "SIGNED": {
+          "label": "Signed contracts",
+          "info": "active"
+        },
+        "PENDING": {
+          "label": "Pending",
+          "info": "waiting for the signed copy"
+        },
+        "EXPIRED": {
+          "label": "Expired",
+          "info": "need renewal"
+        }
+      },
+      "filters": {
+        "title": "Filters and search",
+        "subtitle": "Quickly find a contract or a certificate",
+        "search": "Search by volunteer, email or number",
+        "all_statuses": "All statuses",
+        "all_types": "All types",
+        "found_one": "{{count}} document found",
+        "found_other": "{{count}} documents found"
+      },
+      "headers": {
+        "volunteer": "Volunteer",
+        "document": "Document",
+        "period": "Period",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "number": "No. {{number}}",
+      "no_number": "no number",
+      "view": "View",
+      "pdf": "PDF",
+      "how": {
+        "title": "How it works",
+        "upload": {
+          "title": "Upload",
+          "items": [
+            "The contract is signed outside VIC, on paper or electronically.",
+            "You upload it here as a PDF, with its number and period.",
+            "The volunteer sees it right away in the app, under Documents.",
+            "Certificates are generated in VIC from the approved hours, signed and uploaded the same way."
+          ]
+        },
+        "status": {
+          "title": "Statuses",
+          "items": [
+            "Signed: the contract is active and within its period.",
+            "Pending: the signed copy is missing.",
+            "Expiring soon: less than a month until the end.",
+            "Expired: the period has ended; upload a new contract."
+          ]
+        }
+      }
     }
   },
   "auth": {

@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import {
   ArrowDownTrayIcon,
   ArrowUpTrayIcon,
   DocumentTextIcon,
+  EyeIcon,
+  MagnifyingGlassIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
 import { SortOrder, TableColumn } from 'react-data-table-component';
+import { useQueryClient } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import i18n from '../common/config/i18n';
 import { ContractStatus } from '../common/enums/contract-status.enum';
@@ -13,12 +16,7 @@ import { DocumentType } from '../common/enums/document-type.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IContractListItem } from '../common/interfaces/contract.interface';
-import {
-  ContractStatusMarkerColorMapper,
-  downloadExcel,
-  downloadFile,
-  formatDate,
-} from '../common/utils/utils';
+import { downloadExcel, downloadFile, formatDate } from '../common/utils/utils';
 import { ContractsTableBasicProps } from '../containers/query/ContractsTableWithQueryParams';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
@@ -36,7 +34,8 @@ import DataTableComponent from './DataTableComponent';
 import LinkCell from './LinkCell';
 import Popover from './Popover';
 import Select, { SelectItem } from './Select';
-import StatusWithMarker from './StatusWithMarker';
+import StatusBadge, { BadgeTone } from './StatusBadge';
+import InitialsAvatar from './InitialsAvatar';
 import UploadContractModal from './UploadContractModal';
 import GenerateCertificateModal from './GenerateCertificateModal';
 
@@ -50,11 +49,17 @@ export const DocumentTypeOptions: SelectItem<DocumentType>[] = Object.values(Doc
   (type) => ({ key: type, value: `${i18n.t(`documents:contract.type.${type}`)}` }),
 );
 
+const STATUS_TONE: Record<ContractStatus, BadgeTone> = {
+  [ContractStatus.SIGNED]: 'green',
+  [ContractStatus.PENDING]: 'amber',
+  [ContractStatus.EXPIRED]: 'gray',
+};
+
 export const ContractStatusCell = ({ row }: { row: IContractListItem }) => (
   <CellLayout>
-    <StatusWithMarker markerColor={ContractStatusMarkerColorMapper[row.status]}>
+    <StatusBadge tone={STATUS_TONE[row.status]}>
       {i18n.t(`documents:contract.status.${row.status}`)}
-    </StatusWithMarker>
+    </StatusBadge>
   </CellLayout>
 );
 
@@ -70,7 +75,7 @@ export const ContractPeriodCell = ({ row }: { row: IContractListItem }) => (
             : i18n.t('documents:contracts.period_open', { start: formatDate(row.startDate) })}
       </span>
       {row.expiringSoon && (
-        <span className="self-start rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
+        <span className="self-start rounded-md px-2 py-0.5 text-xs font-robotoMedium text-figure-amber ring-1 ring-inset ring-figure-amber">
           {i18n.t('documents:contract.expiring_soon')}
         </span>
       )}
@@ -80,15 +85,19 @@ export const ContractPeriodCell = ({ row }: { row: IContractListItem }) => (
 
 const numberColumn: TableColumn<IContractListItem> = {
   id: 'contractNumber',
-  name: i18n.t('documents:contracts.headers.contract_number'),
+  name: i18n.t('documents:page.headers.document'),
   sortable: true,
-  minWidth: '9rem',
+  minWidth: '10rem',
   cell: (row) => (
     <CellLayout>
-      <div className="flex flex-col gap-1">
-        <span>{row.contractNumber ?? '–'}</span>
-        <span className="text-xs text-cool-gray-500">
+      <div className="flex flex-col gap-0.5">
+        <span className="font-robotoMedium text-cool-gray-900">
           {i18n.t(`documents:contract.type.${row.type ?? DocumentType.CONTRACT}`)}
+        </span>
+        <span className="text-xs text-cool-gray-500">
+          {row.contractNumber
+            ? i18n.t('documents:page.number', { number: row.contractNumber })
+            : i18n.t('documents:page.no_number')}
         </span>
       </div>
     </CellLayout>
@@ -97,21 +106,34 @@ const numberColumn: TableColumn<IContractListItem> = {
 
 const volunteerColumn: TableColumn<IContractListItem> = {
   id: 'volunteer',
-  name: i18n.t('documents:contracts.headers.volunteer'),
+  name: i18n.t('documents:page.headers.volunteer'),
   grow: 2,
-  cell: (row) => <LinkCell href={`/volunteers/${row.volunteer.id}`}>{row.volunteer.name}</LinkCell>,
+  minWidth: '15rem',
+  cell: (row) => (
+    <CellLayout>
+      <div className="flex items-center gap-3 min-w-0">
+        <InitialsAvatar name={row.volunteer.name} />
+        <div className="flex flex-col min-w-0">
+          <LinkCell href={`/volunteers/${row.volunteer.id}`}>{row.volunteer.name}</LinkCell>
+          {row.volunteerEmail && (
+            <span className="text-xs text-cool-gray-500 truncate">{row.volunteerEmail}</span>
+          )}
+        </div>
+      </div>
+    </CellLayout>
+  ),
 };
 
 const statusColumn: TableColumn<IContractListItem> = {
   id: 'status',
-  name: i18n.t('documents:contracts.headers.status'),
+  name: i18n.t('documents:page.headers.status'),
   minWidth: '9rem',
   cell: (row) => <ContractStatusCell row={row} />,
 };
 
 const periodColumn: TableColumn<IContractListItem> = {
   id: 'startDate',
-  name: i18n.t('documents:contracts.headers.period'),
+  name: i18n.t('documents:page.headers.period'),
   minWidth: '14rem',
   sortable: true,
   cell: (row) => <ContractPeriodCell row={row} />,
@@ -122,32 +144,56 @@ interface ContractsTableProps extends ContractsTableBasicProps {
   volunteerId?: string;
   // An inactive or blocked volunteer's contracts are read-only
   readOnly?: boolean;
+  // On "Contracte și documente" the buttons go in the page header
+  renderHeader?: (actions: ReactNode) => ReactNode;
 }
 
-const ContractsTable = ({ query, setQuery, volunteerId, readOnly }: ContractsTableProps) => {
+const ContractsTable = ({
+  query,
+  setQuery,
+  volunteerId,
+  readOnly,
+  renderHeader,
+}: ContractsTableProps) => {
   const { t } = useTranslation('documents');
   const [showUpload, setShowUpload] = useState(false);
   const [showCertificate, setShowCertificate] = useState(false);
   const [toDelete, setToDelete] = useState<IContractListItem | null>(null);
   const { mutate: deleteContract, isLoading: isDeleting } = useDeleteContractMutation();
+  const queryClient = useQueryClient();
 
   const params = {
     orderBy: query?.orderBy as string | undefined,
     orderDirection: query?.orderDirection as OrderDirection | undefined,
     status: volunteerId ? undefined : (query?.status as ContractStatus | undefined),
     type: volunteerId ? undefined : (query?.type as DocumentType | undefined),
+    search: volunteerId ? undefined : (query?.search as string | undefined) || undefined,
     volunteerId,
   };
+  const [search, setSearch] = useState<string>((query?.search as string) || '');
+
+  // the search waits for a short pause in typing before it reaches the URL and the API
+  useEffect(() => {
+    if (volunteerId || search === ((query?.search as string) || '')) return;
+    const timeout = setTimeout(() => setQuery({ search: search || undefined, page: 1 }), 400);
+    return () => clearTimeout(timeout);
+  }, [search]);
   const {
     data: contracts,
     isLoading,
     error,
-    refetch,
+    refetch: refetchList,
   } = useContractsQuery({
     ...params,
     limit: query?.limit as number,
     page: query?.page as number,
   });
+
+  // the counters on top of the page follow every upload and delete
+  const refetch = () => {
+    refetchList();
+    queryClient.invalidateQueries(['contracts-counters']);
+  };
 
   useEffect(() => {
     if (error)
@@ -174,40 +220,50 @@ const ContractsTable = ({ query, setQuery, volunteerId, readOnly }: ContractsTab
   };
 
   const actionColumn: TableColumn<IContractListItem> = {
-    name: '',
-    width: '50px',
+    name: i18n.t('documents:page.headers.actions'),
+    minWidth: '13rem',
+    right: true,
     allowOverflow: true,
     cell: (row) => (
-      <Popover<IContractListItem>
-        row={row}
-        items={[
-          {
-            label: t('general:download', {
-              item: i18n
-                .t(`documents:contract.type.${row.type ?? DocumentType.CONTRACT}`)
-                .toLowerCase(),
-            }),
-            icon: <ArrowDownTrayIcon className="menu-icon" />,
-            onClick: () => downloadFile(row.uri, row.fileName),
-          },
-          ...(readOnly
-            ? []
-            : [
-                {
-                  label: t('popover.remove'),
-                  icon: <TrashIcon className="menu-icon" />,
-                  alert: true,
-                  onClick: setToDelete,
-                },
-              ]),
-        ]}
-      />
+      <div className="flex items-center justify-end gap-1">
+        <a
+          href={row.uri}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-robotoMedium text-cool-gray-700 hover:bg-cool-gray-100 hover:text-cool-gray-900"
+        >
+          <EyeIcon className="w-4 h-4" aria-hidden="true" />
+          {t('page.view')}
+        </a>
+        <button
+          type="button"
+          aria-label={`${t('page.pdf')} ${row.fileName}`}
+          className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-robotoMedium text-cool-gray-700 hover:bg-cool-gray-100 hover:text-cool-gray-900"
+          onClick={() => downloadFile(row.uri, row.fileName)}
+        >
+          <ArrowDownTrayIcon className="w-4 h-4" aria-hidden="true" />
+          {t('page.pdf')}
+        </button>
+        {!readOnly && (
+          <Popover<IContractListItem>
+            row={row}
+            items={[
+              {
+                label: t('popover.remove'),
+                icon: <TrashIcon className="menu-icon" />,
+                alert: true,
+                onClick: setToDelete,
+              },
+            ]}
+          />
+        )}
+      </div>
     ),
   };
 
   const columns = volunteerId
     ? [numberColumn, statusColumn, periodColumn, actionColumn]
-    : [numberColumn, volunteerColumn, statusColumn, periodColumn, actionColumn];
+    : [volunteerColumn, numberColumn, periodColumn, statusColumn, actionColumn];
 
   const onSort = (column: TableColumn<IContractListItem>, direction: SortOrder) =>
     setQuery({
@@ -218,66 +274,100 @@ const ContractsTable = ({ query, setQuery, volunteerId, readOnly }: ContractsTab
           : OrderDirection.DESC,
     });
 
-  return (
+  const actions = (
     <>
       {!volunteerId && (
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="w-full sm:max-w-xs">
-            <Select
-              options={ContractStatusOptions}
-              onChange={(item: SelectItem<ContractStatus> | undefined) =>
-                setQuery({ status: item?.key, page: 1 })
-              }
-              placeholder={`${t('general:select', { item: '' })}`}
-              label={`${t('contracts.filters.status')}`}
-              allowDeselect
-              selected={ContractStatusOptions.find((option) => option.key === query?.status)}
-            />
-          </div>
-          <div className="w-full sm:max-w-xs">
-            <Select
-              options={DocumentTypeOptions}
-              onChange={(item: SelectItem<DocumentType> | undefined) =>
-                setQuery({ type: item?.key, page: 1 })
-              }
-              placeholder={`${t('general:select', { item: '' })}`}
-              label={`${t('contracts.filters.type')}`}
-              allowDeselect
-              selected={DocumentTypeOptions.find((option) => option.key === query?.type)}
-            />
-          </div>
-        </div>
+        <Button
+          label={t('contracts.actions.download')}
+          className="btn-outline-secondary"
+          icon={<ArrowDownTrayIcon className="h-5 w-5" />}
+          onClick={onExport}
+        />
+      )}
+      {!readOnly && (
+        <Button
+          label={t('contracts.actions.certificate')}
+          className="btn-outline-secondary"
+          icon={<DocumentTextIcon className="h-5 w-5" />}
+          onClick={() => setShowCertificate(true)}
+        />
+      )}
+      {!readOnly && (
+        <Button
+          label={t('contracts.actions.upload')}
+          className="btn-primary"
+          icon={<ArrowUpTrayIcon className="h-5 w-5" />}
+          onClick={() => setShowUpload(true)}
+        />
+      )}
+    </>
+  );
+
+  return (
+    <>
+      {renderHeader?.(actions)}
+      {!volunteerId && (
+        <Card>
+          <CardHeader>
+            <div>
+              <h2>{t('page.filters.title')}</h2>
+              <p className="text-sm text-cool-gray-500">{t('page.filters.subtitle')}</p>
+            </div>
+          </CardHeader>
+          <CardBody>
+            <div className="flex flex-col lg:flex-row gap-3">
+              <div className="relative flex-1">
+                <MagnifyingGlassIcon
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-cool-gray-400"
+                  aria-hidden="true"
+                />
+                <input
+                  type="search"
+                  aria-label={t('page.filters.search')}
+                  placeholder={t('page.filters.search')}
+                  className="w-full max-w-none pl-10"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                />
+              </div>
+              <div className="w-full lg:w-56">
+                <Select
+                  options={ContractStatusOptions}
+                  onChange={(item: SelectItem<ContractStatus> | undefined) =>
+                    setQuery({ status: item?.key, page: 1 })
+                  }
+                  placeholder={t('page.filters.all_statuses')}
+                  ariaLabel={t('contracts.filters.status')}
+                  allowDeselect
+                  selected={ContractStatusOptions.find((option) => option.key === query?.status)}
+                />
+              </div>
+              <div className="w-full lg:w-56">
+                <Select
+                  options={DocumentTypeOptions}
+                  onChange={(item: SelectItem<DocumentType> | undefined) =>
+                    setQuery({ type: item?.key, page: 1 })
+                  }
+                  placeholder={t('page.filters.all_types')}
+                  ariaLabel={t('contracts.filters.type')}
+                  allowDeselect
+                  selected={DocumentTypeOptions.find((option) => option.key === query?.type)}
+                />
+              </div>
+            </div>
+            <p className="mt-4 pt-4 border-t border-cool-gray-200 text-sm text-cool-gray-600">
+              {t('page.filters.found', { count: contracts?.meta.totalItems ?? 0 })}
+            </p>
+          </CardBody>
+        </Card>
       )}
       <Card>
-        <CardHeader>
-          <h2>{t('contracts.statistics.total', { total: contracts?.meta.totalItems ?? 0 })}</h2>
-          <div className="flex gap-2 lg:gap-6">
-            {!volunteerId && (
-              <Button
-                label={t('contracts.actions.download')}
-                className="btn-outline-secondary"
-                icon={<ArrowDownTrayIcon className="h-5 w-5" />}
-                onClick={onExport}
-              />
-            )}
-            {!readOnly && (
-              <Button
-                label={t('contracts.actions.certificate')}
-                className="btn-outline-secondary"
-                icon={<DocumentTextIcon className="h-5 w-5" />}
-                onClick={() => setShowCertificate(true)}
-              />
-            )}
-            {!readOnly && (
-              <Button
-                label={t('contracts.actions.upload')}
-                className="btn-primary"
-                icon={<ArrowUpTrayIcon className="h-5 w-5" />}
-                onClick={() => setShowUpload(true)}
-              />
-            )}
-          </div>
-        </CardHeader>
+        {(volunteerId || !renderHeader) && (
+          <CardHeader>
+            <h2>{t('contracts.statistics.total', { total: contracts?.meta.totalItems ?? 0 })}</h2>
+            <div className="flex gap-2 lg:gap-6">{actions}</div>
+          </CardHeader>
+        )}
         <CardBody>
           <DataTableComponent
             columns={columns}

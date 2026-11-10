@@ -202,6 +202,21 @@ describe('Contracts (e2e)', () => {
     expect((await auth(http().get('/contract/active')).expect(200)).text).toBe(
       '1',
     );
+    // the counters on top of the contracts page
+    expect(
+      (await auth(http().get('/contract/counters')).expect(200)).body,
+    ).toEqual({ SIGNED: 3, PENDING: 1, EXPIRED: 1 });
+
+    // each row carries the volunteer's email, and the search matches it
+    expect(body.items[0].volunteerEmail).toEqual(expect.any(String));
+    const byEmail = (
+      await auth(
+        http().get(
+          `/contract?search=${encodeURIComponent(body.items[0].volunteerEmail)}`,
+        ),
+      ).expect(200)
+    ).body.items;
+    expect(byEmail).toHaveLength(5);
   });
 
   it('uploads a signed PDF with its period; no end date means it never expires', async () => {

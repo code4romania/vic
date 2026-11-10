@@ -1393,6 +1393,66 @@
         "submit": "Generează PDF",
         "success": "Adeverința a fost descărcată. După semnare, încarc-o din „Încarcă contract”, ca adeverință."
       }
+    },
+    "page": {
+      "title": "Contracte și documente",
+      "subtitle": "Contractele și adeverințele voluntarilor tăi, încărcate semnate, cu perioada lor",
+      "counters": {
+        "SIGNED": {
+          "label": "Contracte semnate",
+          "info": "active"
+        },
+        "PENDING": {
+          "label": "În așteptare",
+          "info": "așteaptă copia semnată"
+        },
+        "EXPIRED": {
+          "label": "Expirate",
+          "info": "necesită reînnoire"
+        }
+      },
+      "filters": {
+        "title": "Filtre și căutare",
+        "subtitle": "Găsește rapid un contract sau o adeverință",
+        "search": "Caută după voluntar, email sau număr",
+        "all_statuses": "Toate statusurile",
+        "all_types": "Toate tipurile",
+        "found_one": "{{count}} document găsit",
+        "found_few": "{{count}} documente găsite",
+        "found_other": "{{count}} de documente găsite"
+      },
+      "headers": {
+        "volunteer": "Voluntar",
+        "document": "Document",
+        "period": "Perioadă",
+        "status": "Status",
+        "actions": "Acțiuni"
+      },
+      "number": "Nr. {{number}}",
+      "no_number": "fără număr",
+      "view": "Vezi",
+      "pdf": "PDF",
+      "how": {
+        "title": "Cum funcționează",
+        "upload": {
+          "title": "Încărcare",
+          "items": [
+            "Contractul se semnează în afara VIC, pe hârtie sau electronic.",
+            "Îl încarci aici ca PDF, cu numărul și perioada lui.",
+            "Voluntarul îl vede imediat în aplicație, la Documente.",
+            "Adeverințele se generează din VIC cu orele aprobate, se semnează și se încarcă la fel."
+          ]
+        },
+        "status": {
+          "title": "Statusuri",
+          "items": [
+            "Semnat: contractul e activ și în perioadă.",
+            "În așteptare: lipsește copia semnată.",
+            "Expiră în curând: mai puțin de o lună până la final.",
+            "Expirat: perioada s-a încheiat; încarcă un contract nou."
+          ]
+        }
+      }
     }
   },
   "auth": {

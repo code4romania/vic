@@ -88,7 +88,7 @@ export class ContractRepositoryService
     if (search) {
       query.andWhere(
         this.buildBracketSearchQuery(
-          ['contract.contractNumber', 'user.name'],
+          ['contract.contractNumber', 'user.name', 'user.email'],
           search,
         ),
       );

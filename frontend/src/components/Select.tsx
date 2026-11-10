@@ -22,6 +22,8 @@ export interface SelectProps<T> {
   helper?: ReactNode;
   minWidth?: boolean;
   allowDeselect?: boolean;
+  // names the field when it has no visible label (filters)
+  ariaLabel?: string;
 }
 
 const Select = <T extends React.Key>({
@@ -33,6 +35,7 @@ const Select = <T extends React.Key>({
   helper,
   minWidth,
   allowDeselect = false,
+  ariaLabel,
 }: SelectProps<T>) => {
   const handleChange = (item: SelectItem<T>) => {
     if (allowDeselect && selected && item?.key === selected.key) {
@@ -49,9 +52,10 @@ const Select = <T extends React.Key>({
           {label && <Listbox.Label>{label}</Listbox.Label>}
           <div className="relative">
             <Listbox.Button
+              aria-label={ariaLabel}
               className={`h-[42px] ${
                 minWidth ? 'min-w-[90px] md:min-w-[100px]' : ''
-              } max-w-[37rem] bg-white relative w-full border border-cool-gray-200 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm disabled:bg-cool-gray-100`}
+              } max-w-[37rem] bg-white relative w-full border border-cool-gray-300 rounded-lg pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-navy focus:border-navy sm:text-base text-sm disabled:bg-cool-gray-100`}
             >
               <span className="block truncate lg:text-base text-sm">
                 {selected ? (
