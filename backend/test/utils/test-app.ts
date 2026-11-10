@@ -19,7 +19,6 @@ import { createTestDataSource } from './test-data-source';
 import { FakeSocialVerifier } from './fake-social';
 import { GoogleTokenVerifier } from 'src/modules/auth/services/social/google.verifier';
 import { AppleTokenVerifier } from 'src/modules/auth/services/social/apple.verifier';
-import { FacebookTokenVerifier } from 'src/modules/auth/services/social/facebook.verifier';
 import Redis from 'ioredis';
 
 export const TURNSTILE_OK = 'turnstile-ok';
@@ -60,12 +59,10 @@ export async function createTestApp(
     // No call to Cloudflare from the tests: TURNSTILE_OK passes, anything else fails.
     .overrideProvider(TurnstileService)
     .useValue({ verify: async (token: string) => token === TURNSTILE_OK })
-    // No call to Google, Apple or Facebook: fixture tokens from test/utils/fake-social.ts.
+    // No call to Google or Apple: fixture tokens from test/utils/fake-social.ts.
     .overrideProvider(GoogleTokenVerifier)
     .useValue(new FakeSocialVerifier())
     .overrideProvider(AppleTokenVerifier)
-    .useValue(new FakeSocialVerifier())
-    .overrideProvider(FacebookTokenVerifier)
     .useValue(new FakeSocialVerifier());
   if (options.authConfig) {
     const keys = Object.fromEntries(

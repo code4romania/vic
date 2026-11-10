@@ -14,11 +14,10 @@
         "EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK": "https://www.ngohub.ro/ro/termeni-si-conditii",
         "EXPO_PUBLIC_INFORMATION_LINK": "https://www.ngohub.ro/ro/vic",
         "EXPO_PUBLIC_CONTACT_EMAIL": "civic@commitglobal.org",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
-        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "",
-        "EXPO_PUBLIC_APP_STORE_URL": "",
+        "EXPO_PUBLIC_APP_STORE_URL": "https://apps.apple.com/ro/app/vic/id6474194051",
         "EXPO_PUBLIC_PLAY_STORE_URL": "https://play.google.com/store/apps/details?id=org.commitglobal.vic",
-        "EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL": ""
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "584495752855-8s4vks6ufmamnnplvs10arsuhqggobom.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "584495752855-ebpn9ei6dhpogrp6geg6fkvtfobk054j.apps.googleusercontent.com"
       }
     },
     "development-simulator": {
@@ -34,11 +33,10 @@
         "EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK": "https://www.ngohub.ro/ro/termeni-si-conditii",
         "EXPO_PUBLIC_INFORMATION_LINK": "https://www.ngohub.ro/ro/vic",
         "EXPO_PUBLIC_CONTACT_EMAIL": "civic@commitglobal.org",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
-        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "",
-        "EXPO_PUBLIC_APP_STORE_URL": "",
+        "EXPO_PUBLIC_APP_STORE_URL": "https://apps.apple.com/ro/app/vic/id6474194051",
         "EXPO_PUBLIC_PLAY_STORE_URL": "https://play.google.com/store/apps/details?id=org.commitglobal.vic",
-        "EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL": ""
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "584495752855-8s4vks6ufmamnnplvs10arsuhqggobom.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "584495752855-ebpn9ei6dhpogrp6geg6fkvtfobk054j.apps.googleusercontent.com"
       }
     },
     "preview": {
@@ -51,11 +49,10 @@
         "EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK": "https://www.ngohub.ro/ro/termeni-si-conditii",
         "EXPO_PUBLIC_INFORMATION_LINK": "https://www.ngohub.ro/ro/vic",
         "EXPO_PUBLIC_CONTACT_EMAIL": "civic@commitglobal.org",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
-        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "",
-        "EXPO_PUBLIC_APP_STORE_URL": "",
+        "EXPO_PUBLIC_APP_STORE_URL": "https://apps.apple.com/ro/app/vic/id6474194051",
         "EXPO_PUBLIC_PLAY_STORE_URL": "https://play.google.com/store/apps/details?id=org.commitglobal.vic",
-        "EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL": ""
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "584495752855-8s4vks6ufmamnnplvs10arsuhqggobom.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "584495752855-ebpn9ei6dhpogrp6geg6fkvtfobk054j.apps.googleusercontent.com"
       }
     },
     "production": {
@@ -67,11 +64,8 @@
         "EXPO_PUBLIC_TERMS_AND_CONDITIONS_LINK": "https://www.ngohub.ro/ro/termeni-si-conditii",
         "EXPO_PUBLIC_INFORMATION_LINK": "https://www.ngohub.ro/ro/vic",
         "EXPO_PUBLIC_CONTACT_EMAIL": "civic@commitglobal.org",
-        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "",
-        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "",
-        "EXPO_PUBLIC_APP_STORE_URL": "",
-        "EXPO_PUBLIC_PLAY_STORE_URL": "https://play.google.com/store/apps/details?id=org.commitglobal.vic",
-        "EXPO_PUBLIC_MIGRATION_NOTICE_UNTIL": ""
+        "EXPO_PUBLIC_APP_STORE_URL": "https://apps.apple.com/ro/app/vic/id6474194051",
+        "EXPO_PUBLIC_PLAY_STORE_URL": "https://play.google.com/store/apps/details?id=org.commitglobal.vic"
       }
     }
   },

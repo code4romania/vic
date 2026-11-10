@@ -1779,7 +1779,8 @@
       "AUTH_010": "Too many requests. Try again in a minute.",
       "AUTH_011": "The app version is too old.",
       "AUTH_012": "This is a volunteer account. Use the VIC mobile app.",
-      "AUTH_013": "Signing in with this account failed."
+      "AUTH_013": "Signing in with this account failed.",
+      "AUTH_014": "There is no admin account with this account's email. Use your organization email or register your organization."
     },
     "maintenance": {
       "title": "VIC is under maintenance",
@@ -1838,7 +1839,12 @@
       "description": "Volunteers use the VIC mobile app. The web platform is for organization admins.",
       "open_app": "Open the app"
     },
-    "no_password": "No password: you get a link by email, valid for 15 minutes."
+    "no_password": "No password: you get a link by email, valid for 15 minutes.",
+    "social": {
+      "google": "Continue with Google",
+      "apple": "Continue with Apple",
+      "or": "or with your email"
+    }
   },
   "login_link": {
     "title": {

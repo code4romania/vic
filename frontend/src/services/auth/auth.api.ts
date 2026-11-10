@@ -18,6 +18,13 @@ export const requestLogin = async (email: string): Promise<void> => {
 export const loginWithLink = async (token: string): Promise<LinkResult> =>
   API.post('/auth/login-link', { token }).then((res) => res.data);
 
+// Google or Apple ID token (#512) → a web session for an existing admin, same answer as a magic link.
+export const loginWithSocial = async (
+  provider: 'google' | 'apple',
+  token: string,
+): Promise<IWebSession> =>
+  API.post('/auth/web/social', { provider, token }).then((res) => res.data);
+
 export const refresh = async (): Promise<IWebSession> =>
   API.post('/auth/web/refresh').then((res) => res.data);
 

@@ -8,11 +8,11 @@ import { MigrateIdentitiesUseCase } from 'src/usecases/auth/migrate-identities.u
 import { TransitionMailService } from 'src/modules/auth/services/transition-mail.service';
 import { Test } from 'supertest';
 import { socialToken, SocialFixture } from './utils/fake-social';
-import { api, emailedCode } from './utils/http';
+import { api, emailedCode, refreshCookie } from './utils/http';
 import { createTestApp, TestApp } from './utils/test-app';
 import { truncate } from './utils/test-data-source';
 
-// Google, Apple and Facebook sign-in in the app (mobile only), with fixture tokens instead of the providers.
+// Google and Apple sign-in in the app and on the web (#512), with fixture tokens instead of the providers.
 describe('Social sign-in (e2e)', () => {
   let testApp: TestApp;
   let http: ReturnType<typeof api>;
@@ -74,7 +74,7 @@ describe('Social sign-in (e2e)', () => {
     await testApp.dataSource.query(`DELETE FROM notifications_settings`);
   });
 
-  it.each([AuthProvider.GOOGLE, AuthProvider.APPLE, AuthProvider.FACEBOOK])(
+  it.each([AuthProvider.GOOGLE, AuthProvider.APPLE])(
     '%s: a new email gets a login and a provider link; a second sign-in reuses it',
     async (provider) => {
       const fixture = { sub: `${provider}-sub-1`, email: 'Nou@Example.ro' };
@@ -217,5 +217,147 @@ describe('Social sign-in (e2e)', () => {
       email: 'off@example.ro',
     }).expect(403);
     expect(res.body.code_error).toBe('AUTH_004');
+  });
+
+  it('Facebook is no longer accepted (#512): 400 before any lookup', async () => {
+    await http
+      .post('/mobile/auth/social')
+      .send({
+        provider: AuthProvider.FACEBOOK,
+        token: socialToken({ sub: 'fb-1', email: 'fb@example.ro' }),
+      })
+      .expect(400);
+    expect(await links()).toHaveLength(0);
+  });
+
+  describe('on the web (#512)', () => {
+    const webSocial = (provider: AuthProvider, fixture: SocialFixture): Test =>
+      http
+        .post('/auth/web/social')
+        .send({ provider, token: socialToken(fixture) });
+
+    // An NGO admin as the sign-up or the cutover leaves them; one NGO each, with its own phone numbers.
+    let admins = 0;
+    const admin = async (
+      email: string,
+      status: AuthIdentityStatus,
+      emailVerifiedAt: Date | null = new Date(),
+    ): Promise<string> => {
+      const [organization] = await testApp.dataSource.query(
+        `INSERT INTO organization (name, email, phone, status, validated_at)
+         VALUES ('Asociatia ' || $1, $1, $2, 'active', now()) RETURNING id`,
+        [email, `+4070000000${admins}`],
+      );
+      const [user] = await testApp.dataSource.query(
+        `INSERT INTO "user" (type, name, email, phone, organization_id)
+         VALUES ('admin', 'Ana Admin', $1, $3, $2) RETURNING id`,
+        [email, organization.id, `+4071111111${admins++}`],
+      );
+      await facade.createIdentity({
+        realm: AuthRealm.WEB,
+        email,
+        status,
+        userId: user.id,
+        emailVerifiedAt,
+      });
+      return user.id;
+    };
+
+    it.each([AuthProvider.GOOGLE, AuthProvider.APPLE])(
+      '%s: an admin is signed in by verified email, with the refresh cookie and no provider link',
+      async (provider) => {
+        const userId = await admin('ana@ong.ro', AuthIdentityStatus.ACTIVE);
+
+        const res = await webSocial(provider, {
+          sub: `${provider}-admin`,
+          email: 'Ana@Ong.ro',
+        }).expect(200);
+
+        expect(res.body).toMatchObject({
+          accessToken: expect.any(String),
+          user: { id: userId, email: 'ana@ong.ro', superAdmin: false },
+        });
+        expect(res.body.refreshToken).toBeUndefined();
+        expect(refreshCookie(res)).toMatch(/vic_refresh=.+HttpOnly/);
+        await http
+          .get('/auth/web/me')
+          .set('Authorization', `Bearer ${res.body.accessToken}`)
+          .expect(200);
+        expect(await links()).toHaveLength(0);
+      },
+    );
+
+    it('an invited admin who never used the invite becomes active', async () => {
+      await admin('nou@ong.ro', AuthIdentityStatus.PENDING);
+
+      await webSocial(AuthProvider.GOOGLE, {
+        sub: 'g-new-admin',
+        email: 'nou@ong.ro',
+      }).expect(200);
+
+      expect(
+        (
+          await facade.findIdentity({
+            realm: AuthRealm.WEB,
+            email: 'nou@ong.ro',
+          })
+        ).status,
+      ).toBe(AuthIdentityStatus.ACTIVE);
+    });
+
+    it('never creates a login: an unknown email is 404 AUTH_014, a volunteer is 409 AUTH_012', async () => {
+      const unknown = await webSocial(AuthProvider.GOOGLE, {
+        sub: 'g-x',
+        email: 'nimeni@example.ro',
+      }).expect(404);
+      expect(unknown.body.code_error).toBe('AUTH_014');
+
+      await social(AuthProvider.GOOGLE, {
+        sub: 'g-vol',
+        email: 'vol@example.ro',
+      }).expect(200);
+      const volunteer = await webSocial(AuthProvider.GOOGLE, {
+        sub: 'g-vol',
+        email: 'vol@example.ro',
+      }).expect(409);
+      expect(volunteer.body.code_error).toBe('AUTH_012');
+
+      const [{ count }] = await testApp.dataSource.query(
+        `SELECT count(*)::int AS count FROM auth_identity WHERE realm = 'web'`,
+      );
+      expect(count).toBe(0);
+    });
+
+    it('refuses a disabled admin (AUTH_004), an unconfirmed NGO sign-up (AUTH_003) and a bad token (AUTH_013)', async () => {
+      await admin('off@ong.ro', AuthIdentityStatus.DISABLED);
+      expect(
+        (
+          await webSocial(AuthProvider.APPLE, {
+            sub: 'a-off',
+            email: 'off@ong.ro',
+          }).expect(403)
+        ).body.code_error,
+      ).toBe('AUTH_004');
+
+      await admin('new@ong.ro', AuthIdentityStatus.PENDING, null);
+      expect(
+        (
+          await webSocial(AuthProvider.GOOGLE, {
+            sub: 'g-new',
+            email: 'new@ong.ro',
+          }).expect(403)
+        ).body.code_error,
+      ).toBe('AUTH_003');
+
+      expect(
+        (
+          await webSocial(AuthProvider.GOOGLE, {
+            sub: 'g-new',
+            email: 'new@ong.ro',
+            email_verified: false,
+          }).expect(401)
+        ).body.code_error,
+      ).toBe('AUTH_013');
+    });
   });
 });

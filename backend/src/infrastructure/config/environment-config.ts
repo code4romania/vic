@@ -98,11 +98,10 @@ class EnvironmentVariables {
   @IsString()
   GOOGLE_CLIENT_IDS: string; // comma separated
   @IsString()
-  FACEBOOK_APP_ID: string;
-  @IsString()
-  FACEBOOK_APP_SECRET: string;
-  @IsString()
   APPLE_BUNDLE_ID: string;
+  @IsOptional()
+  @IsString()
+  APPLE_SERVICES_ID: string; // web sign-in
   @IsString()
   MAIL_CONTACT: string;
   @IsOptional()

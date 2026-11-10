@@ -1,7 +1,7 @@
 import i18n from '../../config/i18n';
 import { ErrorClass } from '../base-error.class';
 
-// The backend's AUTH_001 to AUTH_013 (backend/docs/auth.md, Error codes).
+// The backend's AUTH_001 to AUTH_014 (backend/docs/auth.md, Error codes).
 export enum AUTH_ERRORS {
   AUTH_001 = 'AUTH_001',
   AUTH_002 = 'AUTH_002',
@@ -16,6 +16,7 @@ export enum AUTH_ERRORS {
   AUTH_011 = 'AUTH_011',
   AUTH_012 = 'AUTH_012',
   AUTH_013 = 'AUTH_013',
+  AUTH_014 = 'AUTH_014',
 }
 
 export class AuthError extends ErrorClass<AUTH_ERRORS> {

@@ -12,7 +12,7 @@ import {
 import { UserFacadeService } from 'src/modules/user/services/user-facade.service';
 import { OrganizationFacadeService } from 'src/modules/organization/services/organization.facade';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
-import { LinkResult } from './auth-results';
+import { WebLoginResult } from './auth-results';
 
 // Starts a web session after a link (magic link, invite, confirm-email) and loads the admin for the answer.
 // An admin of a suspended NGO cannot log in (AUTH_004, decisions R8).
@@ -27,7 +27,7 @@ export class WebSessionHelper {
   async start(
     identity: IAuthIdentityModel,
     client: SessionClient,
-  ): Promise<LinkResult> {
+  ): Promise<WebLoginResult> {
     // Checked before the lookup: TypeORM drops an undefined where key and would return the first admin.
     const admin = identity.userId
       ? await this.userFacade.findAdminUser({ id: identity.userId })
