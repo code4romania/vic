@@ -159,7 +159,7 @@ const formatAddActivityLogPayload = (data: ActivityLogFormTypes): object => {
   };
 };
 
-const formatEditActivityLogPayload = (data: ActivityLogFormTypes): object => {
+export const formatEditActivityLogPayload = (data: ActivityLogFormTypes): object => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { volunteer, task, event, ...payload } = data;
 
@@ -167,7 +167,8 @@ const formatEditActivityLogPayload = (data: ActivityLogFormTypes): object => {
     ...payload,
     date: format(payload.date, 'yyyy-MM-dd'),
     ...(task.value !== CONSTANTS.OTHER ? { activityTypeId: task.value } : {}),
-    ...(event ? { eventId: event.value } : {}),
+    // null removes the event from the log; leaving the field out would keep the old one
+    eventId: event?.value ?? null,
   };
 };
 
