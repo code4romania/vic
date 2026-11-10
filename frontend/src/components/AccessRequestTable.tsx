@@ -28,6 +28,7 @@ import LocationSelect from '../containers/LocationSelect';
 import { ListItem } from '../common/interfaces/list-item.interface';
 import { downloadAccessRequests } from '../services/access-requests/access-requests.api';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 import Card from '../layouts/CardLayout';
 import {
   useApproveAccessRequestMutation,
@@ -152,6 +153,9 @@ const AccessRequestTable = ({
     query?.rejectedOnEnd,
   );
 
+  // approving brings a member in: only for a validated organization (decision 1)
+  const { gate } = useValidationGate();
+
   // actions
   const { mutate: approveAccessRequest, isLoading: isApprovingRequest } =
     useApproveAccessRequestMutation();
@@ -183,6 +187,7 @@ const AccessRequestTable = ({
         label: i18n.t('access_requests:popover.approve'),
         icon: <CheckIcon className="menu-icon" />,
         onClick: onApprove,
+        ...gate,
       },
       {
         label: i18n.t('access_requests:popover.reject'),
@@ -250,6 +255,7 @@ const AccessRequestTable = ({
         label: i18n.t('access_requests:popover.change_to_approved'),
         icon: <CheckIcon className="menu-icon" />,
         onClick: onApprove,
+        ...gate,
       },
       {
         label: i18n.t('access_requests:popover.delete'),

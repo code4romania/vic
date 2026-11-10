@@ -14,6 +14,7 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import DataTableComponent from '../components/DataTableComponent';
 import Popover from '../components/Popover';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 import Card from '../layouts/CardLayout';
 import CellLayout from '../layouts/CellLayout';
 import PageLayout from '../layouts/PageLayout';
@@ -126,6 +127,7 @@ const AccessCodeTableHeader: TableColumn<IAccessCode>[] = [
 const AccessCodes = ({ query, setQuery }: AccessCodesProps) => {
   const [showDeleteAccessCode, setShowDeleteAccessCode] = useState<null | IAccessCode>();
   const navigate = useNavigate();
+  const { gate } = useValidationGate();
 
   const {
     data: accessCodes,
@@ -195,6 +197,7 @@ const AccessCodes = ({ query, setQuery }: AccessCodesProps) => {
         label: i18n.t('general:edit', { item: '' }),
         icon: <PencilIcon className="menu-icon" />,
         onClick: onEdit,
+        ...gate,
       },
       {
         label: i18n.t('general:delete'),
@@ -241,6 +244,7 @@ const AccessCodes = ({ query, setQuery }: AccessCodesProps) => {
             label={i18n.t('access_code:create')}
             icon={<PlusIcon className="h-5 w-5" aria-hidden="true" />}
             onClick={onAdd}
+            {...gate}
           />
         }
       >

@@ -11,6 +11,7 @@ import PageHeader from '../components/PageHeader';
 import ProfileCard from '../components/ProfileCard';
 import VolunteerRequest from '../components/VolunteerRequest';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 import PageLayout from '../layouts/PageLayout';
 import Button from '../components/Button';
 import RejectTextareaModal from '../components/RejectTextareaModal';
@@ -27,6 +28,7 @@ const AccessRequest = () => {
   // navigation state
   const navigate = useNavigate();
   const { id } = useParams();
+  const { gate } = useValidationGate();
 
   // modal state
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -134,6 +136,7 @@ const AccessRequest = () => {
                     className="btn-primary w-full xs:w-auto"
                     icon={<CheckIcon className="w-5 h-5" />}
                     onClick={approveAccessRequest}
+                    {...gate}
                   />
                 </div>
               </div>
@@ -170,6 +173,7 @@ const AccessRequest = () => {
                         className="btn-outline-secondary w-full xs:w-auto"
                         icon={<CheckIcon className="w-5 h-5" />}
                         onClick={approveAccessRequest}
+                        {...gate}
                       />
                     </div>
                     <div className="flex gap-1 sm:gap-2 items-center">

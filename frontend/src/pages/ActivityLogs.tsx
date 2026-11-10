@@ -11,6 +11,7 @@ import { ActivityLogResolutionStatus } from '../common/enums/activity-log-resolu
 import ActivityLogTableWithQueryParams from '../containers/query/ActivityLogTableWithQueryParams';
 import { ActivityLogsProps } from '../containers/query/ActivityLogsWithQueryParams';
 import { useActivityLogCounterQuery } from '../services/activity-log/activity-log.service';
+import { useValidationGate } from '../hooks/useValidationGate';
 
 const ActivityLogTabsOptions: TabItem<ActivityLogResolutionStatus>[] = [
   { key: ActivityLogResolutionStatus.NEW, value: i18n.t('activity_log:pending') },
@@ -27,6 +28,7 @@ const COUNTERS = [
 const ActivityLogs = ({ query, setQuery }: ActivityLogsProps) => {
   // routing
   const navigate = useNavigate();
+  const { gate } = useValidationGate();
   const { data: counters } = useActivityLogCounterQuery();
 
   const onTabClick = (tab: ActivityLogResolutionStatus) => {
@@ -43,6 +45,7 @@ const ActivityLogs = ({ query, setQuery }: ActivityLogsProps) => {
             label={i18n.t('activity_log:add')}
             icon={<PlusIcon className="h-5 w-5" aria-hidden="true" />}
             onClick={() => navigate('add')}
+            {...gate}
           />
         }
       >

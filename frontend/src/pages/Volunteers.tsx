@@ -47,6 +47,7 @@ import { useActivityTypeListItemsQuery } from '../services/activity-type/activit
 import { ActivityTypeStatus } from '../common/enums/activity-type-status.enum';
 import { VolunteersProps } from '../containers/query/VolunteersWithQueryParams';
 import SelectFilter from '../containers/SelectFilter';
+import { useValidationGate } from '../hooks/useValidationGate';
 
 const STATUS_OPTIONS: SelectItem<string>[] = [
   VolunteerStatus.ACTIVE,
@@ -161,6 +162,7 @@ const VolunteersTableHeader = [
 
 const Volunteers = ({ query, setQuery }: VolunteersProps) => {
   const navigate = useNavigate();
+  const { gate } = useValidationGate();
   // Modal
   const [blockVolunteerCandidate, setBlockVolunteerCandidate] = useState<null | IVolunteer>();
   // filters
@@ -470,12 +472,14 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
               icon={<ArrowUpTrayIcon className="h-5 w-5 text-cool-gray-600" />}
               className="btn-outline-secondary"
               onClick={() => navigate('import')}
+              {...gate}
             />
             <Button
               label={i18n.t('volunteers:add.button')}
               icon={<PlusIcon className="h-5 w-5" />}
               className="btn-primary"
               onClick={() => navigate('add')}
+              {...gate}
             />
           </>
         }

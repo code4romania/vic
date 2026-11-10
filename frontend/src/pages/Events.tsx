@@ -24,6 +24,7 @@ import Popover from '../components/Popover';
 import { SelectItem } from '../components/Select';
 import Tabs from '../components/Tabs';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 import Card from '../layouts/CardLayout';
 import PageLayout from '../layouts/PageLayout';
 import { EventState } from '../common/enums/event-state.enum';
@@ -144,6 +145,7 @@ const statusColumn: TableColumn<IEvent> = {
 };
 
 const Events = ({ query, setQuery }: EventsProps) => {
+  const { gate } = useValidationGate();
   const [showDeleteEvent, setShowDeleteEvent] = useState<null | IEvent>();
 
   const navigate = useNavigate();
@@ -426,6 +428,7 @@ const Events = ({ query, setQuery }: EventsProps) => {
             icon={<PlusIcon className="h-5 w-5" />}
             className="btn-primary"
             onClick={onAddEvent}
+            {...gate}
           />
         }
       >

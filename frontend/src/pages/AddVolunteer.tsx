@@ -27,6 +27,7 @@ import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { useAddVolunteerMutation } from '../services/volunteer/volunteer.service';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
+import { useValidationGate } from '../hooks/useValidationGate';
 
 export type AddVolunteerFormTypes = {
   firstName: string;
@@ -80,6 +81,7 @@ const schema = yup.object({
 // the person has no account until they sign up in the app with this email.
 const AddVolunteer = () => {
   const navigate = useNavigate();
+  const { blocked, gate } = useValidationGate();
   const { mutate: addVolunteer, isLoading } = useAddVolunteerMutation();
 
   const {
@@ -151,7 +153,8 @@ const AddVolunteer = () => {
             className="btn-primary shrink-0"
             icon={<CloudArrowUpIcon className="h-5 w-5 md:hidden" />}
             onClick={handleSubmit(onSubmit)}
-            disabled={isLoading}
+            {...gate}
+            disabled={isLoading || blocked}
           />
         </CardHeader>
         <CardBody>

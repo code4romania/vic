@@ -47,6 +47,7 @@ import { EventRegistrationStatus } from '../common/enums/event-registration-stat
 import { IEvent } from '../common/interfaces/event.interface';
 import { IEventRegistration } from '../common/interfaces/event-registration.interface';
 import RsvpTableWithQueryParams from '../containers/query/RsvpTableWithQueryParams';
+import { useValidationGate } from '../hooks/useValidationGate';
 
 // #496: volunteers can be added while the event is published and has not finished
 const canAddVolunteers = (event: IEvent): boolean =>
@@ -137,6 +138,7 @@ const PendingRegistrations = ({ eventId }: { eventId: string }) => {
     eventId,
   });
   const { mutate: decide, isLoading: isDeciding } = useDecideEventRegistrationMutation();
+  const { blocked, gate } = useValidationGate();
   const items = data?.items ?? [];
   const total = data?.meta?.totalItems ?? items.length;
 
@@ -206,7 +208,8 @@ const PendingRegistrations = ({ eventId }: { eventId: string }) => {
                     <button
                       type="button"
                       className="btn-secondary py-1.5"
-                      disabled={isDeciding}
+                      {...gate}
+                      disabled={isDeciding || blocked}
                       aria-label={`${i18n.t('events:registrations.approve')} ${row.user.name}`}
                       onClick={() => onDecide(row)}
                     >
@@ -252,6 +255,7 @@ const PendingRegistrations = ({ eventId }: { eventId: string }) => {
 const Event = () => {
   const [showDeleteEvent, setShowDeleteEvent] = useState<boolean>();
   const [showAddVolunteers, setShowAddVolunteers] = useState<boolean>(false);
+  const { gate } = useValidationGate();
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -351,6 +355,7 @@ const Event = () => {
           label={i18n.t('general:publish')}
           icon={<CloudArrowUpIcon className="h-5 w-5" aria-hidden="true" />}
           onClick={onPublish}
+          {...gate}
         />
       )}
       {canAddVolunteers(event) && (
@@ -359,6 +364,7 @@ const Event = () => {
           label={i18n.t('events:add_volunteers.button')}
           icon={<UserPlusIcon className="h-5 w-5" aria-hidden="true" />}
           onClick={() => setShowAddVolunteers(true)}
+          {...gate}
         />
       )}
     </>
