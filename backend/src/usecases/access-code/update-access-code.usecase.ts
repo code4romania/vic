@@ -8,6 +8,7 @@ import { IAccessCodeModel } from 'src/modules/organization/models/access-code.mo
 import { AccessCodeFacade } from 'src/modules/organization/services/access-code.facade';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
 import { assertAccessCodePeriod } from './access-code-period';
+import { OrganizationGateService } from '../organization/organization-gate.service';
 
 @Injectable()
 export class UpdateAccessCodeUseCase
@@ -17,6 +18,7 @@ export class UpdateAccessCodeUseCase
     private readonly accessCodeFacade: AccessCodeFacade,
     private readonly exceptionService: ExceptionsService,
     private readonly actionsArchiveFacade: ActionsArchiveFacade,
+    private readonly organizationGate: OrganizationGateService,
   ) {}
 
   // The NGO only changes the end date of a code.
@@ -31,6 +33,9 @@ export class UpdateAccessCodeUseCase
         AccessCodeExceptionMessages.ACCESS_CODE_001,
       );
     }
+
+    // Extending a code only for a validated NGO (403 ORG_005)
+    await this.organizationGate.assertValidated(accessCode.organizationId);
 
     // #593: the end date cannot be before the start date
     assertAccessCodePeriod(
