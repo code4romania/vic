@@ -28,7 +28,7 @@ import { MobileProfileGuard } from '../common/guards/mobile-profile.guard';
 import { VolunteerMobileGuard } from '../volunteer/guards/volunteer-mobile.guard';
 
 @ApiBearerAuth()
-@UseGuards(MobileJwtAuthGuard, MobileProfileGuard)
+@UseGuards(MobileJwtAuthGuard)
 @Controller('/mobile/organization')
 export class MobileOrganizationController {
   constructor(
@@ -58,6 +58,8 @@ export class MobileOrganizationController {
     });
   }
 
+  // Browsing the list works before the profile exists; the rest acts on the user's own data
+  @UseGuards(MobileProfileGuard)
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
   async get(
@@ -102,6 +104,7 @@ export class MobileOrganizationController {
     return new OrganizationWithEventsPresenter(organization);
   }
 
+  @UseGuards(MobileProfileGuard)
   @ApiParam({ name: 'id', type: 'string' })
   @Patch(':id')
   async switchOrganization(
