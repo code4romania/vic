@@ -117,3 +117,32 @@ describe('API client', () => {
     off();
   });
 });
+
+describe('API client, suspended organization (major 10)', () => {
+  it('a 403 AUTH_004 mid-session clears the token and tells the app once per request', async () => {
+    server.use(http.get(api('/volunteer'), () => businessError(403, 'AUTH_004')));
+    const blocked = vi.fn();
+    const off = apiEvents.onAccessBlocked(blocked);
+    tokenStore.set('access-1');
+
+    await expect(API.get('/volunteer')).rejects.toMatchObject({ response: { status: 403 } });
+
+    expect(tokenStore.get()).toBeNull();
+    expect(blocked).toHaveBeenCalledTimes(1);
+    off();
+  });
+
+  it('AUTH_004 on a login form (no session yet) is left to the page', async () => {
+    server.use(http.post(api('/auth/web/social'), () => businessError(403, 'AUTH_004')));
+    const blocked = vi.fn();
+    const off = apiEvents.onAccessBlocked(blocked);
+    tokenStore.clear();
+
+    await expect(API.post('/auth/web/social', {})).rejects.toMatchObject({
+      response: { status: 403 },
+    });
+
+    expect(blocked).not.toHaveBeenCalled();
+    off();
+  });
+});
