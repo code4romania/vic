@@ -91,13 +91,14 @@ export class MobileAuthController {
   @ApiOkResponse({ type: SessionPresenter })
   @Post('social')
   async social(
-    @Body() { provider, token }: SocialLoginDto,
+    @Body() { provider, token, authorizationCode }: SocialLoginDto,
     @Req() req: Request,
   ): Promise<SessionPresenter> {
     const tokens = await this.socialLoginUseCase.execute(
       provider,
       token,
       requestClient(req),
+      authorizationCode,
     );
     return new SessionPresenter(tokens, { includeRefreshToken: true });
   }

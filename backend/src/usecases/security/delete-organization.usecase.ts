@@ -13,6 +13,7 @@ import {
   SensitiveActionUsecase,
 } from './sensitive-action.usecase';
 import { eraseUsersWithoutAccount } from '../user/personal-data-erasure';
+import { AppleTokenService } from 'src/modules/auth/services/social/apple-token.service';
 
 // The confirmation must be the organization's name, typed exactly (spaces and case aside).
 const sameName = (a: string, b: string): boolean =>
@@ -36,6 +37,7 @@ export class DeleteOrganizationUsecase {
     private readonly s3Service: S3Service,
     private readonly exceptionsService: ExceptionsService,
     private readonly dataSource: DataSource,
+    private readonly appleTokens: AppleTokenService,
   ) {}
 
   public async execute(
@@ -58,6 +60,14 @@ export class DeleteOrganizationUsecase {
     );
 
     const id = organization.id;
+    // App Store 5.1.1(v): the admins' Apple sign-ins are revoked with their logins
+    const admins: { id: string }[] = await this.dataSource.query(
+      `SELECT id FROM "user" WHERE type = 'admin' AND organization_id = $1`,
+      [id],
+    );
+    const appleGrants = await this.appleTokens.grantsOfUsers(
+      admins.map((a) => a.id),
+    );
     const paths = await this.dataSource.transaction(async (m) => {
       const run = (sql: string): Promise<unknown> => m.query(sql, [id]);
       const files: { path: string }[] = await m.query(
@@ -134,6 +144,8 @@ export class DeleteOrganizationUsecase {
       await run(`DELETE FROM organization WHERE id = $1`);
       return [...files.map((f) => f.path).filter(Boolean), ...erasedFiles];
     });
+
+    await this.appleTokens.revoke(appleGrants);
 
     // files are best effort: a leftover is only logged
     await Promise.all([

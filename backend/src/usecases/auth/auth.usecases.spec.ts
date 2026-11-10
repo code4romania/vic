@@ -354,6 +354,7 @@ describe('SocialLoginUseCase', () => {
       facade as unknown as AuthIdentityFacade,
       sessions as unknown as SessionService,
       dataSource,
+      { storeFromAuthorizationCode: jest.fn() } as never,
     );
   });
 

@@ -143,6 +143,10 @@ describe('user use cases adapted to own auth', () => {
         exceptions,
         { deleteFile: jest.fn() } as unknown as S3Service,
         { transaction } as never,
+        {
+          grantsOfUsers: jest.fn().mockResolvedValue([]),
+          revoke: jest.fn(),
+        } as never,
       );
 
       await expect(useCase.execute(undefined)).rejects.toMatchObject(notFound);

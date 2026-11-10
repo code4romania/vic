@@ -7,6 +7,7 @@ import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.serv
 import { S3Service } from 'src/infrastructure/providers/s3/module/s3.service';
 import { JSONStringifyError } from 'src/common/helpers/utils';
 import { eraseRegularUser } from './personal-data-erasure';
+import { AppleTokenService } from 'src/modules/auth/services/social/apple-token.service';
 
 // A volunteer deletes their VIC account (M8, GDPR): everything about them goes in one transaction
 // (see personal-data-erasure.ts for what is deleted and what is anonymized); the files in S3 are
@@ -20,6 +21,7 @@ export class DeleteAccountRegularUserUsecase implements IUseCaseService<void> {
     private readonly exceptionService: ExceptionsService,
     private readonly s3Service: S3Service,
     private readonly dataSource: DataSource,
+    private readonly appleTokens: AppleTokenService,
   ) {}
 
   async execute(userId: string): Promise<void> {
@@ -33,6 +35,9 @@ export class DeleteAccountRegularUserUsecase implements IUseCaseService<void> {
     if (!user) {
       this.exceptionService.notFoundException(UserExceptionMessages.USER_001);
     }
+
+    // App Store 5.1.1(v): the Apple sign-in is revoked once the account is gone
+    const appleGrants = await this.appleTokens.grantsOfUsers([userId]);
 
     let files: string[];
     try {
@@ -48,6 +53,8 @@ export class DeleteAccountRegularUserUsecase implements IUseCaseService<void> {
         UserExceptionMessages.USER_007,
       );
     }
+
+    await this.appleTokens.revoke(appleGrants);
 
     await Promise.all(
       files.map((path) =>

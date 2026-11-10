@@ -74,7 +74,7 @@ export class WebAuthController {
   @ApiOkResponse({ type: SessionPresenter })
   @Post('social')
   async social(
-    @Body() { provider, token }: SocialLoginDto,
+    @Body() { provider, token, authorizationCode }: SocialLoginDto,
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<SessionPresenter> {
@@ -82,6 +82,7 @@ export class WebAuthController {
       provider,
       token,
       requestClient(req),
+      authorizationCode,
     );
     setRefreshCookie(res, result.tokens.refreshToken, this.authConfig);
     return new SessionPresenter(result.tokens, {

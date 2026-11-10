@@ -95,6 +95,34 @@ export class AuthConfigService implements JwtOptionsFactory {
     ].filter(Boolean);
   }
 
+  // Revoking Apple tokens on account deletion needs the team's Sign in with Apple key. Without all
+  // three settings the feature is off: logins work, nothing is exchanged or revoked.
+  get appleSignInKey(): {
+    teamId: string;
+    keyId: string;
+    privateKey: string;
+  } | null {
+    const teamId = this.configService.get<string>('APPLE_TEAM_ID');
+    const keyId = this.configService.get<string>('APPLE_KEY_ID');
+    const raw = this.configService.get<string>('APPLE_PRIVATE_KEY');
+    if (!teamId || !keyId || !raw) return null;
+    const privateKey = raw.includes('BEGIN')
+      ? raw.replace(/\\n/g, '\n')
+      : decodePem(raw);
+    return { teamId, keyId, privateKey };
+  }
+
+  get appleWebRedirectUri(): string | undefined {
+    return (
+      this.configService.get<string>('APPLE_WEB_REDIRECT_URI') || undefined
+    );
+  }
+
+  // The client id an Apple token was issued to: the app's bundle id, or the web Services ID
+  get appleWebClientId(): string | undefined {
+    return splitList(this.configService.get('APPLE_SERVICES_ID'))[0];
+  }
+
   createJwtOptions(): JwtModuleOptions {
     return {
       privateKey: this.privateKey,
