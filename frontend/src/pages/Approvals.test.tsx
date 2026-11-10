@@ -50,7 +50,7 @@ describe('Approvals (#499)', () => {
     expect(screen.getByLabelText(`${t('approvals:tabs.hours')} (1)`)).toBeInTheDocument();
     expect(screen.getByLabelText(`${t('approvals:tabs.events')} (4)`)).toBeInTheDocument();
     // volunteer applications: Pending / Approved / Rejected
-    expect(screen.getByLabelText(t('access_requests:tabs.approved_requests'))).toBeInTheDocument();
+    expect(screen.getByLabelText(t('approvals:status.approved'))).toBeInTheDocument();
   });
 
   it('lists approved hours on their own tab', async () => {
@@ -71,6 +71,6 @@ describe('Approvals (#499)', () => {
 
   it('opens the volunteer applications for an unknown type', async () => {
     render('/approvals/whatever');
-    expect(await screen.findByLabelText(t('access_requests:tabs.requests'))).toBeInTheDocument();
+    expect(await screen.findByLabelText(t('approvals:status.pending'))).toBeInTheDocument();
   });
 });

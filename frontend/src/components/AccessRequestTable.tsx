@@ -7,7 +7,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { AxiosError } from 'axios';
-import { SortOrder, TableColumn } from 'react-data-table-component';
+import { Media, SortOrder, TableColumn } from 'react-data-table-component';
 import { UseQueryResult } from 'react-query';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
@@ -75,20 +75,23 @@ const PendingAccessRequestsTableHeader = [
   },
   {
     id: 'requestedBy.email',
+    hide: Media.SM,
     name: i18n.t('general:contact'),
     sortable: true,
-    minWidth: '14rem',
+    minWidth: '12rem',
     selector: (row: IAccessRequest) =>
       [row.requestedBy.email, row.requestedBy.phone].filter(Boolean).join('\n'),
   },
   {
     id: 'location.name',
+    hide: Media.SM,
     name: i18n.t('general:location'),
     sortable: true,
     selector: (row: IAccessRequest) => formatLocation(row.requestedBy.location),
   },
   {
     id: 'createdOn',
+    hide: Media.SM,
     name: i18n.t('access_requests:date'),
     sortable: true,
     cell: (row: IAccessRequest) => <CellLayout>{formatDate(row.createdOn)}</CellLayout>,
@@ -99,6 +102,7 @@ const RejectedAccessRequestsTableHeader = [
   ...PendingAccessRequestsTableHeader,
   {
     id: 'updatedOn',
+    hide: Media.SM,
     name: i18n.t('access_requests:rejected_date'),
     sortable: true,
     cell: (row: IAccessRequest) => <CellLayout>{formatDate(row.updatedOn)}</CellLayout>,
@@ -110,6 +114,7 @@ const ApprovedAccessRequestsTableHeader = [
   ...PendingAccessRequestsTableHeader,
   {
     id: 'updatedOn',
+    hide: Media.SM,
     name: i18n.t('access_requests:approved_date'),
     sortable: true,
     cell: (row: IAccessRequest) => <CellLayout>{formatDate(row.updatedOn)}</CellLayout>,
@@ -239,7 +244,7 @@ const AccessRequestTable = ({
       cell: (row: IAccessRequest) => (
         <Popover<IAccessRequest> row={row} items={approvedAccessRequestsMenuItems} />
       ),
-      width: '50px',
+      width: '64px',
       allowOverflow: true,
     };
   };
@@ -270,7 +275,7 @@ const AccessRequestTable = ({
       cell: (row: IAccessRequest) => (
         <Popover<IAccessRequest> row={row} items={rejectedAccessRequestsMenuItems} />
       ),
-      width: '50px',
+      width: '64px',
       allowOverflow: true,
     };
   };
@@ -459,6 +464,18 @@ const AccessRequestTable = ({
         onSearch={onSearch}
         searchValue={query?.search}
         onResetFilters={onResetFilters}
+        results={
+          <>
+            {/* the count is in the table's title; only the export here */}
+            <span />
+            <Button
+              label={i18n.t('general:download_table')}
+              icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+              className="btn-text-primary px-2"
+              onClick={onExport}
+            />
+          </>
+        }
       >
         <DateRangePicker
           label={i18n.t('access_requests:filters.access_request_range')}
@@ -499,12 +516,6 @@ const AccessRequestTable = ({
               }`,
             )} (${accessRequests?.meta?.totalItems ?? 0})`}
           </h2>
-          <Button
-            label={i18n.t('general:download_table')}
-            icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
-            className="btn-outline-secondary ml-auto"
-            onClick={onExport}
-          />
         </CardHeader>
         <CardBody>
           <DataTableComponent
