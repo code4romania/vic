@@ -266,6 +266,8 @@ const AccessCodes = ({ query, setQuery }: AccessCodesProps) => {
             data={accessCodes?.items}
             columns={[...AccessCodeTableHeader, buildAccessCodeActionColumn()]}
             loading={isAccessCodesLoading || isDeleteAccessCodeLoading}
+            error={accessCodesError}
+            onRetry={refetch}
             pagination
             paginationPerPage={query.limit as number}
             paginationTotalRows={accessCodes?.meta?.totalItems}

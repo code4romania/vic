@@ -518,6 +518,8 @@ const AccessRequestTable = ({
               isRejectingAccessRequest ||
               isDeletingAccessRequest
             }
+            error={accessCodeRequestError}
+            onRetry={refetch}
             pagination
             paginationPerPage={query.limit}
             paginationTotalRows={accessRequests?.meta?.totalItems}

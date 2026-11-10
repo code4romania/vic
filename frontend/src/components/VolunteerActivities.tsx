@@ -103,7 +103,7 @@ export const VolunteerLogsTable = ({
   const [page, setPage] = useState<number>(1);
   const [selected, setSelected] = useState<string>();
 
-  const { data, isLoading, refetch } = useActivityLogsQuery({
+  const { data, isLoading, error, refetch } = useActivityLogsQuery({
     limit: PAGE_SIZE,
     page,
     volunteerId,
@@ -155,6 +155,8 @@ export const VolunteerLogsTable = ({
             ]}
             data={data?.items}
             loading={isLoading}
+            error={error}
+            onRetry={refetch}
             pagination
             paginationPerPage={PAGE_SIZE}
             paginationTotalRows={data?.meta?.totalItems}

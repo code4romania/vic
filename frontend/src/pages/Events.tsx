@@ -476,7 +476,7 @@ const Events = ({ query, setQuery }: EventsProps) => {
       <Tabs<EventState> tabs={tabs} onClick={onTabClick} defaultTab={currentTab(query?.eventState)}>
         <Card>
           <CardBody>
-            {!isEventsLoading && !events?.items?.length ? (
+            {!isEventsLoading && !eventsError && !events?.items?.length ? (
               <p className="py-12 text-center text-cool-gray-500">{i18n.t('events:page.empty')}</p>
             ) : (
               <DataTableComponent
@@ -494,6 +494,8 @@ const Events = ({ query, setQuery }: EventsProps) => {
                 loading={
                   isEventsLoading || isArchivingEvent || isDeletingEvent || isPublishingEvent
                 }
+                error={eventsError}
+                onRetry={refetch}
                 pagination
                 paginationPerPage={query.limit}
                 paginationTotalRows={events?.meta?.totalItems}

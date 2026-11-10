@@ -555,6 +555,8 @@ const Volunteers = ({ query, setQuery }: VolunteersProps) => {
               isActivatingVolunteer ||
               isBlockingVolunteer
             }
+            error={volunteersError}
+            onRetry={refetch}
             pagination
             paginationPerPage={query.limit as number}
             paginationTotalRows={volunteers?.meta?.totalItems}

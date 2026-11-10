@@ -109,6 +109,7 @@ const ActionsArchiveTable = ({ query, setQuery, volunteerId }: ActionsArchiveTab
     data: actions,
     isLoading: isActionsLoading,
     error: actionsError,
+    refetch: refetchActions,
   } = useActionsQuery({
     orderBy: query?.orderBy,
     orderDirection: query.orderDirection as OrderDirection,
@@ -211,6 +212,8 @@ const ActionsArchiveTable = ({ query, setQuery, volunteerId }: ActionsArchiveTab
             columns={TableHeader}
             data={actions?.items}
             loading={isActionsLoading}
+            error={actionsError}
+            onRetry={refetchActions}
             pagination
             paginationPerPage={query.limit}
             paginationTotalRows={actions?.meta?.totalItems}

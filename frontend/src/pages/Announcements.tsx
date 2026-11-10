@@ -33,6 +33,7 @@ import { SelectItem } from '../components/Select';
 import { AnnouncementsProps } from '../containers/query/AnnouncementsWithQueryParms';
 import SelectFilter from '../containers/SelectFilter';
 import LoadingContent from '../components/LoadingContent';
+import LoadErrorContent from '../components/LoadErrorContent';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementPager from '../components/AnnouncementPager';
 
@@ -302,7 +303,12 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
         </div>
       </div>
       {isBusy && !items.length && <LoadingContent />}
-      {!isBusy && !items.length && (
+      {!isBusy && !!announcementsError && (
+        <Card>
+          <LoadErrorContent onRetry={refetch} />
+        </Card>
+      )}
+      {!isBusy && !announcementsError && !items.length && (
         <Card>
           <p className="p-8 text-center text-cool-gray-500">
             {query.search || query.type

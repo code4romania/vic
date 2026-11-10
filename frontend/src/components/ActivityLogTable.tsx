@@ -550,6 +550,8 @@ const ActivityLogTable = ({
             columns={[...buildActivityLogTableHeader(), buildActivityLogActionColumn()]}
             data={activityLogs?.items}
             loading={isActivityLogsLoading}
+            error={activityLogsError}
+            onRetry={refetch}
             pagination
             paginationPerPage={query.limit}
             paginationTotalRows={activityLogs?.meta?.totalItems}

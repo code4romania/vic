@@ -123,6 +123,7 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
     data: rsvps,
     isLoading: isRsvpsLoading,
     error: rsvpsError,
+    refetch: refetchRsvps,
   } = useRsvpsQuery(
     eventId,
     query.limit,
@@ -315,6 +316,8 @@ const RsvpTable = ({ eventId, eventName, query, setQuery }: RsvpTableProps) => {
             columns={TableHeader}
             data={rsvps?.items}
             loading={isRsvpsLoading}
+            error={rsvpsError}
+            onRetry={refetchRsvps}
             pagination
             paginationPerPage={query.limit}
             paginationTotalRows={rsvps?.meta?.totalItems}
