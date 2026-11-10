@@ -7,16 +7,20 @@ import {
   MagnifyingGlassIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
-import { SortOrder, TableColumn } from 'react-data-table-component';
+import { Media, SortOrder, TableColumn } from 'react-data-table-component';
 import { useQueryClient } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import i18n from '../common/config/i18n';
-import { ContractStatus } from '../common/enums/contract-status.enum';
+import {
+  ContractFilterStatus,
+  ContractStatus,
+  EXPIRING_SOON,
+} from '../common/enums/contract-status.enum';
 import { DocumentType } from '../common/enums/document-type.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import { IContractListItem } from '../common/interfaces/contract.interface';
-import { downloadExcel, downloadFile, formatDate } from '../common/utils/utils';
+import { downloadExcel, downloadFile, formatDate, formatDateRange } from '../common/utils/utils';
 import { ContractsTableBasicProps } from '../containers/query/ContractsTableWithQueryParams';
 import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import Card from '../layouts/CardLayout';
@@ -40,9 +44,13 @@ import UploadContractModal from './UploadContractModal';
 import GenerateCertificateModal from './GenerateCertificateModal';
 
 // #489: the Contracts page filters by status only
-export const ContractStatusOptions: SelectItem<ContractStatus>[] = Object.values(
-  ContractStatus,
-).map((status) => ({ key: status, value: `${i18n.t(`documents:contract.status.${status}`)}` }));
+export const ContractStatusOptions: SelectItem<ContractFilterStatus>[] = [
+  ...Object.values(ContractStatus).map((status) => ({
+    key: status as ContractFilterStatus,
+    value: `${i18n.t(`documents:contract.status.${status}`)}`,
+  })),
+  { key: EXPIRING_SOON, value: `${i18n.t('documents:contract.expiring_soon')}` },
+];
 
 // #490: contracts and certificates live in the same list
 export const DocumentTypeOptions: SelectItem<DocumentType>[] = Object.values(DocumentType).map(
@@ -71,7 +79,7 @@ export const ContractPeriodCell = ({ row }: { row: IContractListItem }) => (
         {row.type === DocumentType.CERTIFICATE
           ? i18n.t('documents:contracts.issued_on', { date: formatDate(row.startDate) })
           : row.endDate
-            ? `${formatDate(row.startDate)} – ${formatDate(row.endDate)}`
+            ? formatDateRange(row.startDate, row.endDate)
             : i18n.t('documents:contracts.period_open', { start: formatDate(row.startDate) })}
       </span>
       {row.expiringSoon && (
@@ -85,6 +93,8 @@ export const ContractPeriodCell = ({ row }: { row: IContractListItem }) => (
 
 const numberColumn: TableColumn<IContractListItem> = {
   id: 'contractNumber',
+  // the type and number are on the document itself: laptops keep room for the actions
+  hide: 1300,
   name: i18n.t('documents:page.headers.document'),
   sortable: true,
   minWidth: '10rem',
@@ -108,7 +118,7 @@ const volunteerColumn: TableColumn<IContractListItem> = {
   id: 'volunteer',
   name: i18n.t('documents:page.headers.volunteer'),
   grow: 2,
-  minWidth: '15rem',
+  minWidth: '13rem',
   cell: (row) => (
     <CellLayout>
       <div className="flex items-center gap-3 min-w-0">
@@ -133,6 +143,7 @@ const statusColumn: TableColumn<IContractListItem> = {
 
 const periodColumn: TableColumn<IContractListItem> = {
   id: 'startDate',
+  hide: Media.MD,
   name: i18n.t('documents:page.headers.period'),
   minWidth: '14rem',
   sortable: true,
@@ -276,14 +287,6 @@ const ContractsTable = ({
 
   const actions = (
     <>
-      {!volunteerId && (
-        <Button
-          label={t('contracts.actions.download')}
-          className="btn-outline-secondary"
-          icon={<ArrowDownTrayIcon className="h-5 w-5" />}
-          onClick={onExport}
-        />
-      )}
       {!readOnly && (
         <Button
           label={t('contracts.actions.certificate')}
@@ -333,7 +336,7 @@ const ContractsTable = ({
               <div className="w-full lg:w-56">
                 <Select
                   options={ContractStatusOptions}
-                  onChange={(item: SelectItem<ContractStatus> | undefined) =>
+                  onChange={(item: SelectItem<ContractFilterStatus> | undefined) =>
                     setQuery({ status: item?.key, page: 1 })
                   }
                   placeholder={t('page.filters.all_statuses')}
@@ -355,9 +358,16 @@ const ContractsTable = ({
                 />
               </div>
             </div>
-            <p className="mt-4 pt-4 border-t border-cool-gray-200 text-sm text-cool-gray-600">
-              {t('page.filters.found', { count: contracts?.meta.totalItems ?? 0 })}
-            </p>
+            {/* the export sits with the results, as on every list (audit m17) */}
+            <div className="mt-4 pt-4 border-t border-cool-gray-200 flex flex-wrap items-center justify-between gap-3 text-sm text-cool-gray-600">
+              <span>{t('page.filters.found', { count: contracts?.meta.totalItems ?? 0 })}</span>
+              <Button
+                label={t('contracts.actions.download')}
+                className="btn-text-primary px-2"
+                icon={<ArrowDownTrayIcon className="h-5 w-5 text-cool-gray-600" />}
+                onClick={onExport}
+              />
+            </div>
           </CardBody>
         </Card>
       )}
@@ -371,6 +381,22 @@ const ContractsTable = ({
         <CardBody>
           <DataTableComponent
             columns={columns}
+            empty={
+              volunteerId || query?.search || query?.status || query?.type
+                ? undefined
+                : {
+                    title: t('contracts.empty.title'),
+                    description: t('contracts.empty.description'),
+                    action: !readOnly && (
+                      <Button
+                        label={t('contracts.actions.upload')}
+                        className="btn-primary"
+                        icon={<ArrowUpTrayIcon className="h-5 w-5" />}
+                        onClick={() => setShowUpload(true)}
+                      />
+                    ),
+                  }
+            }
             data={contracts?.items}
             loading={isLoading || isDeleting}
             error={error}

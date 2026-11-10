@@ -4,3 +4,9 @@ export enum ContractStatus {
   PENDING = 'PENDING',
   EXPIRED = 'EXPIRED',
 }
+
+// #489: a filter and a counter, not a status a contract shows: signed contracts that end within
+// 30 days. The server decides which ones (one rule with the "Expiră în curând" tag).
+export const EXPIRING_SOON = 'EXPIRING_SOON';
+
+export type ContractFilterStatus = ContractStatus | typeof EXPIRING_SOON;

@@ -7,12 +7,12 @@ import {
   IPaginationQueryParams,
   getPaginationQueryParams,
 } from '../../common/constants/pagination';
-import { ContractStatus } from '../../common/enums/contract-status.enum';
+import { ContractFilterStatus } from '../../common/enums/contract-status.enum';
 import { DocumentType } from '../../common/enums/document-type.enum';
 import { VolunteerTabsOptions } from '../../pages/Volunteer';
 
 export interface ContractsTableQueryProps extends IPaginationQueryParams {
-  status?: ContractStatus;
+  status?: ContractFilterStatus;
   type?: DocumentType;
   search?: string;
   activeTab?: VolunteerTabsOptions;

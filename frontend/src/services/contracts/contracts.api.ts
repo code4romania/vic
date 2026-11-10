@@ -1,5 +1,9 @@
 import { format } from 'date-fns';
-import { ContractStatus } from '../../common/enums/contract-status.enum';
+import {
+  ContractFilterStatus,
+  ContractStatus,
+  EXPIRING_SOON,
+} from '../../common/enums/contract-status.enum';
 import { OrderDirection } from '../../common/enums/order-direction.enum';
 import { DocumentType } from '../../common/enums/document-type.enum';
 import {
@@ -16,13 +20,15 @@ import { AxiosResponseHeaders } from 'axios';
 export interface IContractsQueryParams {
   orderBy?: string;
   orderDirection?: OrderDirection;
-  status?: ContractStatus;
+  status?: ContractFilterStatus;
   type?: DocumentType;
   volunteerId?: string;
   search?: string;
 }
 
-export type IContractCounters = Record<ContractStatus, number>;
+export type IContractCounters = Record<ContractStatus, number> & {
+  [EXPIRING_SOON]?: number;
+};
 
 // The counters on top of "Contracte și documente"
 export const getContractCounters = async (): Promise<IContractCounters> => {
