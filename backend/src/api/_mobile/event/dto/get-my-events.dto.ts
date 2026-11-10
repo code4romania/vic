@@ -1,7 +1,10 @@
 import { Transform } from 'class-transformer';
 import { IsDate, IsEnum, IsOptional, IsUUID } from 'class-validator';
 import { endOfDay } from 'date-fns';
-import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
+import {
+  BasePaginationFilterDto,
+  SortableBy,
+} from 'src/infrastructure/base/base-pagination-filter.dto';
 import { EventFilterEnum } from 'src/modules/event/enums/event-filter.enum';
 
 // A date with no time ("2026-11-20") as the end of the range means the whole day.
@@ -21,6 +24,9 @@ const toEndDate = ({
 };
 
 export class GetMyEventsDto extends BasePaginationFilterDto {
+  @SortableBy('startDate', 'name', 'createdOn')
+  orderBy?: string;
+
   @IsEnum(EventFilterEnum)
   @IsOptional()
   eventFilter: EventFilterEnum;

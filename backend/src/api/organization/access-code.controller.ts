@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
-import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
+import { GetAccessCodesDto } from './dto/get-access-codes.dto';
 import { UuidValidationPipe } from 'src/infrastructure/pipes/uuid.pipe';
 import { WebJwtAuthGuard } from 'src/modules/auth/guards/jwt-web.guard';
 import { IAdminUserModel } from 'src/modules/user/models/admin-user.model';
@@ -44,7 +44,7 @@ export class AccessCodeController {
   @Get()
   @ApiPaginatedResponse(AccessCodePresenter)
   async getAll(
-    @Query() filters: BasePaginationFilterDto,
+    @Query() filters: GetAccessCodesDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<PaginatedPresenter<AccessCodePresenter>> {
     const accessCodes = await this.findAllAccessCodeUseCase.execute({

@@ -7,10 +7,24 @@ import {
   ValidateIf,
 } from 'class-validator';
 import { AgeRangeEnum } from 'src/common/enums/age-range.enum';
-import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
+import {
+  BasePaginationFilterDto,
+  SortableBy,
+} from 'src/infrastructure/base/base-pagination-filter.dto';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 
 export class GetVolunteersDto extends BasePaginationFilterDto {
+  @SortableBy(
+    'user.name',
+    'user.firstName',
+    'volunteerProfile.email',
+    'department.name',
+    'status',
+    'source',
+    'createdOn',
+  )
+  orderBy?: string;
+
   // All statuses when left out (VIC 2.0 #476: one list with a status filter, no tabs).
   @IsEnum(VolunteerStatus)
   @IsOptional()

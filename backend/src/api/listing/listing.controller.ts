@@ -1,7 +1,8 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { ExtractUser } from 'src/common/decorators/extract-user.decorator';
-import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
+import { GetOrganizationStructuresDto } from '../organization/dto/get-organization-structures.dto';
+import { GetListingAdminsDto } from './dto/get-listing-admins.dto';
 import {
   ApiPaginatedResponse,
   PaginatedPresenter,
@@ -96,7 +97,7 @@ export class ListingController {
   @Get('admins')
   @ApiPaginatedResponse(IdAndNamePresenter)
   async admins(
-    @Query() filters: BasePaginationFilterDto,
+    @Query() filters: GetListingAdminsDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<PaginatedPresenter<IdAndNamePresenter<IAdminUserModel>>> {
     const admins = await this.getManyAdminUserUseCase.execute({
@@ -115,7 +116,7 @@ export class ListingController {
   @Get('structures/:type')
   async getAllPaginated(
     @Param('type') type: OrganizationStructureType,
-    @Query() filters: BasePaginationFilterDto,
+    @Query() filters: GetOrganizationStructuresDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<PaginatedPresenter<OrganizationStructureListItemPresenter>> {
     const structures = await this.getAllStructureUsecase.execute({

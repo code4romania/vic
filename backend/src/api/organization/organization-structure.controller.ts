@@ -23,7 +23,7 @@ import { CreateOrganizationStructureDto } from './dto/create-org-structure.dto';
 import { UpdateOrganizationStructureDto } from './dto/update-org-structure.dto';
 import { OrganizationStructurePresenter } from './presenters/organization-structure.presenter';
 import { OrganizationStructureGuard } from 'src/api/organization/guards/organization-structure.guard';
-import { BasePaginationFilterDto } from 'src/infrastructure/base/base-pagination-filter.dto';
+import { GetOrganizationStructuresDto } from './dto/get-organization-structures.dto';
 import {
   ApiPaginatedResponse,
   PaginatedPresenter,
@@ -47,7 +47,7 @@ export class OrganizationStructureController {
   @Get(':type')
   async getAllPaginated(
     @Param('type') type: OrganizationStructureType,
-    @Query() filters: BasePaginationFilterDto,
+    @Query() filters: GetOrganizationStructuresDto,
     @ExtractUser() { organizationId }: IAdminUserModel,
   ): Promise<PaginatedPresenter<OrganizationStructurePresenter>> {
     const structures = await this.getAllStructureUsecase.execute({
