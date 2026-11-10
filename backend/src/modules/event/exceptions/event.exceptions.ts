@@ -10,6 +10,8 @@ export enum EventsExceptionCodes {
   EVENT_007 = 'EVENT_007',
   EVENT_008 = 'EVENT_008',
   EVENT_009 = 'EVENT_009',
+  EVENT_010 = 'EVENT_010',
+  EVENT_011 = 'EVENT_011',
 }
 
 type EventExceptionCodeType = keyof typeof EventsExceptionCodes;
@@ -54,5 +56,14 @@ export const EventExceptionMessages: Record<
   [EventsExceptionCodes.EVENT_009]: {
     code_error: EventsExceptionCodes.EVENT_009,
     message: 'Error while deleting the poster from s3.',
+  },
+  [EventsExceptionCodes.EVENT_010]: {
+    code_error: EventsExceptionCodes.EVENT_010,
+    message: 'The end date cannot be before the start date.',
+  },
+  [EventsExceptionCodes.EVENT_011]: {
+    code_error: EventsExceptionCodes.EVENT_011,
+    message:
+      'The capacity cannot be lower than the number of approved registrations.',
   },
 };

@@ -15,6 +15,7 @@ import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/vol
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
 import { GetOneRegularUserUseCase } from 'src/usecases/user/get-one-regular-user.usecase';
 import { GetOneEventUseCase } from '../get-one-event.usecase';
+import { OrganizationGateService } from 'src/usecases/organization/organization-gate.service';
 
 @Injectable()
 export class CreateEventRSVPUseCase
@@ -26,6 +27,7 @@ export class CreateEventRSVPUseCase
     private readonly getOneRegularUserUseCase: GetOneRegularUserUseCase,
     private readonly volunteerFacade: VolunteerFacade,
     private readonly exceptionsService: ExceptionsService,
+    private readonly organizationGate: OrganizationGateService,
   ) {}
 
   public async execute(data: CreateEventRSVPOptions): Promise<IEventRSVPModel> {
@@ -37,6 +39,9 @@ export class CreateEventRSVPUseCase
         EventRSVPExceptionMessages.EVENT_RSVP_006,
       );
     }
+
+    // 1b. M7: no registrations for the events of a suspended or not yet validated NGO (403 ORG_005)
+    await this.organizationGate.assertValidated(event.organization?.id);
 
     // 2. check if the event has passed
     if (event.endDate && compareAsc(new Date(event.endDate), new Date()) < 1) {
@@ -84,13 +89,7 @@ export class CreateEventRSVPUseCase
       );
     }
 
-    // 7. Check if userId and eventId is unique in RSVP, if exists, update only the "going" response
-    const existingRSVP = await this.eventFacade.findRSVP({
-      userId: data.userId,
-      eventId: data.eventId,
-    });
-
-    // 8. #501: "going" is a registration. Volunteers already in the organization (active, with a
+    // 7. #501: "going" is a registration. Volunteers already in the organization (active, with a
     // profile) and in one of the event's departments (or the event targets everyone) are approved
     // automatically; everyone else waits for the NGO's decision. Not going has no status.
     const targetIds = (event.targets ?? []).map((target) => target.id);
@@ -100,28 +99,75 @@ export class CreateEventRSVPUseCase
       !!volunteer.volunteerProfile &&
       (targetIds.length === 0 ||
         (!!departmentId && targetIds.includes(departmentId)));
-    const status = data.going
-      ? autoApproved
-        ? EventRegistrationStatus.APPROVED
-        : EventRegistrationStatus.PENDING
-      : null;
 
-    if (existingRSVP) {
-      return existingRSVP.going === data.going
-        ? existingRSVP
-        : this.eventFacade.updateRSVP(existingRSVP.id, {
-            going: data.going,
-            status,
-            rejectionReason: null,
-            decidedOn: null,
-            decidedById: null,
-          });
-    }
+    // 8. B7: the capacity is checked and the answer saved under a lock on the event, so concurrent
+    // answers cannot take more seats than the event has.
+    const rsvpId = await this.eventFacade.withEventLock(
+      data.eventId,
+      async (tx) => {
+        const existing = await tx.findStatus(data.userId);
+        if (existing && existing.going === data.going) return existing.id;
 
-    // 9. VIC 2.0 (#492): events have no "registration with mention" any more;
-    // mentions given before stay on their RSVPs, new ones are not collected.
-    data.mention = null;
+        // M13: a volunteer the NGO rejected for this event keeps the rejection when they cancel,
+        // and answering "going" again goes back to the NGO (never approved automatically). The
+        // rejection reason stays on the registration as the marker until the NGO approves it.
+        const wasRejected =
+          existing?.status === EventRegistrationStatus.REJECTED ||
+          !!existing?.rejectionReason;
 
-    return this.eventFacade.createRSVP({ ...data, status });
+        if (!data.going && !existing) {
+          return tx.create({ ...data, mention: null, status: null });
+        }
+        if (!data.going) {
+          await tx.update(
+            existing.id,
+            wasRejected
+              ? { going: false, status: EventRegistrationStatus.REJECTED }
+              : {
+                  going: false,
+                  status: null,
+                  rejectionReason: null,
+                  decidedOn: null,
+                  decidedById: null,
+                },
+          );
+          return existing.id;
+        }
+
+        // A full event takes no new registrations (pending ones included): 400 EVENT_RSVP_008
+        if (tx.capacity && (await tx.countApproved()) >= tx.capacity) {
+          this.exceptionsService.badRequestException(
+            EventRSVPExceptionMessages.EVENT_RSVP_008,
+          );
+        }
+
+        const status =
+          autoApproved && !wasRejected
+            ? EventRegistrationStatus.APPROVED
+            : EventRegistrationStatus.PENDING;
+
+        if (existing) {
+          await tx.update(
+            existing.id,
+            wasRejected
+              ? { going: true, status, decidedOn: null, decidedById: null }
+              : {
+                  going: true,
+                  status,
+                  rejectionReason: null,
+                  decidedOn: null,
+                  decidedById: null,
+                },
+          );
+          return existing.id;
+        }
+
+        // 9. VIC 2.0 (#492): events have no "registration with mention" any more;
+        // mentions given before stay on their RSVPs, new ones are not collected.
+        return tx.create({ ...data, mention: null, status });
+      },
+    );
+
+    return this.eventFacade.findRSVP({ id: rsvpId });
   }
 }

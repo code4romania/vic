@@ -66,24 +66,27 @@ export class DecideEventRegistrationUseCase
       return rsvp;
     }
 
-    if (
-      status === EventRegistrationStatus.APPROVED &&
-      rsvp.status !== EventRegistrationStatus.APPROVED &&
-      event.capacity &&
-      (await this.eventFacade.countGoing(event.id)) >= event.capacity
-    ) {
-      this.exceptionsService.badRequestException(
-        EventRSVPExceptionMessages.EVENT_RSVP_008,
-      );
-    }
-
-    const updated = await this.eventFacade.updateRSVP(id, {
-      going: true,
-      status,
-      rejectionReason: reason,
-      decidedById: adminId,
-      decidedOn: new Date(),
+    // B7: approving takes a seat; the count and the write happen under a lock on the event
+    await this.eventFacade.withEventLock(event.id, async (tx) => {
+      if (
+        status === EventRegistrationStatus.APPROVED &&
+        rsvp.status !== EventRegistrationStatus.APPROVED &&
+        tx.capacity &&
+        (await tx.countApproved()) >= tx.capacity
+      ) {
+        this.exceptionsService.badRequestException(
+          EventRSVPExceptionMessages.EVENT_RSVP_008,
+        );
+      }
+      await tx.update(id, {
+        going: true,
+        status,
+        rejectionReason: reason,
+        decidedById: adminId,
+        decidedOn: new Date(),
+      });
     });
+    const updated = await this.eventFacade.findRSVP({ id });
 
     const settings = rsvp.user?.notificationsSettings;
     this.eventEmitter.emit(

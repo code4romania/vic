@@ -16,6 +16,7 @@ import {
   FindManyEventRSVPOptions,
   IEventRegistrationListItem,
   IEventRSVPModel,
+  IEventRSVPTransaction,
   UpdateEventRSVPOptions,
 } from '../models/event-rsvp.model';
 
@@ -37,6 +38,52 @@ export class EventRSVPRepository
     );
 
     return this.find({ id: rsvpEntity.id });
+  }
+
+  // B7: registrations of one event change one at a time. The event row is locked (SELECT ... FOR
+  // UPDATE) for the whole transaction, so two volunteers (or a volunteer and an admin) cannot both
+  // take the last seat: the second one waits, then counts the first one's registration.
+  async withEventLock<T>(
+    eventId: string,
+    work: (tx: IEventRSVPTransaction) => Promise<T>,
+  ): Promise<T> {
+    return this.rsvpRepository.manager.transaction(async (manager) => {
+      const [event] = await manager.query(
+        `SELECT capacity FROM event WHERE id = $1 FOR UPDATE`,
+        [eventId],
+      );
+      const tx: IEventRSVPTransaction = {
+        capacity: event?.capacity ?? null,
+        countApproved: async () => {
+          const [row] = await manager.query(
+            `SELECT count(*) AS n FROM event_rsvp WHERE event_id = $1 AND going AND status = 'approved'`,
+            [eventId],
+          );
+          return +row.n;
+        },
+        findStatus: async (userId) =>
+          (await manager.findOne(EventRSVPEntity, {
+            select: {
+              id: true,
+              going: true,
+              status: true,
+              rejectionReason: true,
+            },
+            where: { eventId, userId },
+          })) ?? null,
+        create: async (rsvp) =>
+          (
+            await manager.save(
+              EventRSVPEntity,
+              EventRSVPModelTransformer.toEntity(rsvp),
+            )
+          ).id,
+        update: async (id, updates) => {
+          await manager.update(EventRSVPEntity, { id }, { ...updates });
+        },
+      };
+      return work(tx);
+    });
   }
 
   async find(findOptions: FindEventRSVPOptions): Promise<IEventRSVPModel> {

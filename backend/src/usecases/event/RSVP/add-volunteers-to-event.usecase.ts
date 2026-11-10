@@ -69,43 +69,52 @@ export class AddVolunteersToEventUseCase
       );
     }
 
-    const toAdd = candidates.filter((candidate) => !candidate.registered);
-    if (event.capacity) {
-      const going = await this.eventFacade.countGoing(eventId);
-      if (going + toAdd.length > event.capacity) {
-        this.exceptionsService.badRequestException(
-          EventRSVPExceptionMessages.EVENT_RSVP_008,
-        );
-      }
-    }
-
-    // #501: added by the NGO = an approved registration (a pending or rejected one becomes approved)
+    // #501: added by the NGO = an approved registration (a pending or rejected one becomes approved).
+    // B7: the capacity check and the writes happen under a lock on the event.
     const decision = {
       status: EventRegistrationStatus.APPROVED,
       decidedById: adminId ?? null,
       decidedOn: new Date(),
     };
-    for (const candidate of toAdd) {
-      const existing = await this.eventFacade.findRSVP({
-        eventId,
-        userId: candidate.userId,
-      });
-      if (existing) {
-        await this.eventFacade.updateRSVP(existing.id, {
-          going: true,
-          rejectionReason: null,
-          ...decision,
-        });
-      } else {
-        await this.eventFacade.createRSVP({
-          eventId,
-          userId: candidate.userId,
-          going: true,
-          mention: null,
-          ...decision,
-        });
+    const toAdd = await this.eventFacade.withEventLock(eventId, async (tx) => {
+      const pending = [];
+      for (const candidate of candidates) {
+        const existing = await tx.findStatus(candidate.userId);
+        if (
+          existing?.going &&
+          existing.status === EventRegistrationStatus.APPROVED
+        ) {
+          continue;
+        }
+        pending.push({ candidate, existing });
       }
-    }
+      if (
+        tx.capacity &&
+        (await tx.countApproved()) + pending.length > tx.capacity
+      ) {
+        this.exceptionsService.badRequestException(
+          EventRSVPExceptionMessages.EVENT_RSVP_008,
+        );
+      }
+      for (const { candidate, existing } of pending) {
+        if (existing) {
+          await tx.update(existing.id, {
+            going: true,
+            rejectionReason: null,
+            ...decision,
+          });
+        } else {
+          await tx.create({
+            eventId,
+            userId: candidate.userId,
+            going: true,
+            mention: null,
+            ...decision,
+          });
+        }
+      }
+      return pending.map(({ candidate }) => candidate);
+    });
 
     if (toAdd.length) {
       this.eventEmitter.emit(
