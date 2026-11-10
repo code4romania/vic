@@ -9,6 +9,8 @@ import {
   useStyleSheet,
 } from '@ui-kitten/components';
 import { Control, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { datePickerService } from '../common/utils/birthday';
 import { StyleSheet, View } from 'react-native';
 import { ALLOW_FONT_SCALLING } from '../common/constants/constants';
 import { colors, radius } from '../common/theme/tokens';
@@ -42,6 +44,8 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
   ...rest
 }: FormDatepickerProps) => {
   const styles = useStyleSheet(themedStyles);
+  const { i18n } = useTranslation();
+  const dateService = React.useMemo(() => datePickerService(i18n.language), [i18n.language]);
 
   return (
     <View style={styles.container}>
@@ -64,6 +68,7 @@ const FormDatePicker: React.FC<FormDatepickerProps> = ({
                 disabled ? styles.disabled : null,
               ]}
               accessoryRight={CalendarIcon}
+              dateService={dateService}
               {...rest}
             />
             {/* the label sits inside the box, like VTextField */}

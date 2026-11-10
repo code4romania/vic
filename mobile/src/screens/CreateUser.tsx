@@ -11,6 +11,12 @@ import FormSelect from '../components/FormSelect';
 import { Sex } from '../common/enums/sex.enum';
 import { SexOptions } from '../common/constants/sex-options';
 import FormDatePicker from '../components/FormDatePicker';
+import {
+  BIRTHDAY_INITIAL_VISIBLE,
+  BIRTHDAY_MIN,
+  birthdayMax,
+  birthdayToApi,
+} from '../common/utils/birthday';
 import { yupResolver } from '@hookform/resolvers/yup';
 import i18n from '../common/config/i18n';
 import CountySelect from '../containers/CountySelect';
@@ -90,6 +96,7 @@ const CreateUser = ({ navigation }: any) => {
     createUserProfile(
       {
         ...userPayload,
+        birthday: birthdayToApi(userPayload.birthday),
         locationId: cityId,
         phone: phone?.trim() ? `${CONSTANTS.PHONE_PREFIX}${phone.trim()}` : undefined,
       },
@@ -169,7 +176,9 @@ const CreateUser = ({ navigation }: any) => {
           control={control as any}
           placeholder={t('general:select')}
           label={t('create_user.form.birthday.label')}
-          min={new Date(1900, 0, 0)}
+          min={BIRTHDAY_MIN}
+          max={birthdayMax()}
+          initialVisibleDate={BIRTHDAY_INITIAL_VISIBLE}
           disabled={isLoading}
           name="birthday"
           error={errors.birthday}

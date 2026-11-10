@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Sex } from '../common/enums/sex.enum';
 import FormDatePicker from '../components/FormDatePicker';
+import { BIRTHDAY_INITIAL_VISIBLE, BIRTHDAY_MIN, birthdayMax } from '../common/utils/birthday';
 import FormSelect from '../components/FormSelect';
 import { SexOptions } from '../common/constants/sex-options';
 import { Platform, View } from 'react-native';
@@ -280,7 +281,9 @@ const AccountData = ({ navigation }: any) => {
           label={t('register:create_user.form.birthday.label')}
           error={errors.birthday}
           placeholder={t('general:select')}
-          min={new Date(1900, 1, 1)}
+          min={BIRTHDAY_MIN}
+          max={birthdayMax()}
+          initialVisibleDate={BIRTHDAY_INITIAL_VISIBLE}
           disabled={isUpdatingProfile}
           required={true}
         />
