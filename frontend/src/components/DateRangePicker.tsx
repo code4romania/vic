@@ -38,15 +38,12 @@ const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) =
 
       <div className="relative">
         <div className="absolute inset-y-0 right-0 pl-3 flex items-center pointer-events-none z-10">
-          <CalendarIcon
-            className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4 text-gray-400"
-            aria-hidden="true"
-          />
+          <CalendarIcon className="-ml-1 mr-2 h-5 w-5 text-cool-gray-500" aria-hidden="true" />
         </div>
 
         <DatePicker
           wrapperClassName="w-full"
-          className="block w-full pr-10 border-cool-gray-200 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose max-w-[37rem] py-2 pl-3"
+          className="block w-full h-[42px] pr-10 border-cool-gray-300 rounded-lg focus:ring-navy focus:border-navy text-base sm:text-sm max-w-[37rem] py-2 pl-3"
           selectsRange={true}
           startDate={startDate}
           endDate={endDate}

@@ -116,7 +116,7 @@ const ChipCard = ({
                 type="text"
                 aria-label={addPlaceholder}
                 placeholder={addPlaceholder}
-                className="flex-1 max-w-none"
+                className="flex-1 min-w-0 max-w-none"
                 value={name}
                 aria-invalid={error ? 'true' : 'false'}
                 onChange={(event) => {
@@ -132,7 +132,7 @@ const ChipCard = ({
               />
               <button
                 type="button"
-                className="btn-secondary"
+                className="btn-secondary shrink-0"
                 disabled={!name.trim() || isAdding}
                 onClick={add}
               >

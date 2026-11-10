@@ -45,10 +45,11 @@ const menuOf = async (name: string): Promise<string[]> => {
   const button = within(row(name)).queryByRole('button');
   if (!button) return [];
   await userEvent.click(button);
-  // the row menu's options are buttons (keyboard access, audit major 7)
-  const texts = within(row(name))
+  // the row menu's options are buttons (keyboard access, audit major 7), in a panel anchored to
+  // "⋮" outside the table (audit M3)
+  const panel = document.getElementById(button.getAttribute('aria-controls') ?? '') as HTMLElement;
+  const texts = within(panel)
     .getAllByRole('button')
-    .filter((option) => option !== button)
     .map((option) => option.textContent ?? '');
   await userEvent.click(button);
   return texts;

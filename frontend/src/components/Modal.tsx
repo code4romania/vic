@@ -37,15 +37,16 @@ const Modal = ({ children, title, onClose }: ModalProps) => {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative flex gap-[18px] flex-col bg-white rounded-lg p-6 text-left overflow-hidden shadow-section transform transition-all sm:max-w-lg sm:w-full">
-                <div className="flex justify-between items-center text-center sm:text-left">
+                <div className="flex justify-between items-start gap-3 text-left">
+                  {/* one title size for every modal, on every screen */}
                   <Dialog.Title
                     as="h3"
-                    className="sm:text-lg lg:text-xl leading-6 font-robotoBold line-clamp-2"
+                    className="!text-lg !leading-7 !font-titilliumBold text-cool-gray-900 line-clamp-2"
                   >
                     {title}
                   </Dialog.Title>
                   <button
-                    className="bg-white rounded-md text-cool-gray-900 hover:text-cool-gray-500 focus:outline-none focus:shadow-blue"
+                    className="-mr-2 -mt-1.5 p-2 shrink-0 bg-white rounded-lg text-cool-gray-700 hover:bg-cool-gray-100 focus:outline-none focus-visible:shadow-focus"
                     onClick={onClose}
                     aria-label={`${i18n.t('general:close')}`}
                     type="button"

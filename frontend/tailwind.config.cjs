@@ -58,15 +58,12 @@ module.exports = {
           800: '#F57F17',
           900: '#a46604',
         },
-        blue: {
-          DEFAULT: '#2563EB',
-          600: '#2563EB',
-        },
         // VIC 2.0 web: same brand colors as the mobile redesign
         navy: {
           DEFAULT: '#01344F',
           50: '#F1F5F8',
           100: '#E3ECF2',
+          200: '#C5D6E2',
           700: '#01283D',
         },
         canvas: '#EEF2F6',
@@ -97,9 +94,12 @@ module.exports = {
         card: '0 1px 2px rgba(16, 24, 40, 0.04)',
         menu: '0 8px 24px rgba(16, 24, 40, 0.12)',
         yellow: '0 1px 2px #0000000d, 0 0 0 2px #fff, 0 0 0 4px #ffde33;',
-        blue: '0 1px 2px #0000000d, 0 0 0 2px #fff, 0 0 0 4px #6366f1;',
+        // keyboard focus everywhere: a navy ring outside a white gap, visible on white, gray and yellow
+        focus: '0 0 0 2px #fff, 0 0 0 4px #01344F',
+        // old name, kept so existing classes get the navy ring instead of indigo
+        blue: '0 0 0 2px #fff, 0 0 0 4px #01344F',
         error: '0 0 0 1px #ef4444',
-        focused: '0 0 0 1px #6366F1',
+        focused: '0 0 0 1px #01344F',
       },
       borderWidth: {
         1: '1px',

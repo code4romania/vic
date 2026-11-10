@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { EyeIcon, PlusIcon } from '@heroicons/react/24/outline';
-import { TableColumn } from 'react-data-table-component';
+import { Media, TableColumn } from 'react-data-table-component';
 import i18n from '../common/config/i18n';
 import { ActivityLogSource } from '../common/enums/activity-log-source.enum';
 import { OrderDirection } from '../common/enums/order-direction.enum';
 import { VolunteerStatus } from '../common/enums/volunteer-status.enum';
 import { IActivityLogListItem } from '../common/interfaces/activity-log.interface';
-import { ActivityLogStatusMarkerColorMapper, formatDate } from '../common/utils/utils';
+import { formatDate } from '../common/utils/utils';
 import Card from '../layouts/CardLayout';
 import CellLayout from '../layouts/CellLayout';
 import { useActivityLogsQuery } from '../services/activity-log/activity-log.service';
@@ -17,7 +17,7 @@ import CardBody from './CardBody';
 import CardHeader from './CardHeader';
 import DataTableComponent from './DataTableComponent';
 import { ICON_MAPPER, ImageOption } from './ImagePicker';
-import StatusWithMarker from './StatusWithMarker';
+import StatusBadge, { ACTIVITY_LOG_STATUS_TONE } from './StatusBadge';
 import Popover from './Popover';
 import { useValidationGate } from '../hooks/useValidationGate';
 
@@ -48,6 +48,7 @@ const columns: TableColumn<IActivityLogListItem>[] = [
   },
   {
     id: 'hours',
+    hide: Media.SM,
     name: i18n.t('general:hours'),
     grow: 1,
     minWidth: '5rem',
@@ -55,6 +56,7 @@ const columns: TableColumn<IActivityLogListItem>[] = [
   },
   {
     id: 'date',
+    hide: Media.SM,
     name: i18n.t('activity_log:header.execution_date'),
     grow: 1,
     minWidth: '8rem',
@@ -67,9 +69,9 @@ const columns: TableColumn<IActivityLogListItem>[] = [
     minWidth: '8rem',
     cell: (row) => (
       <CellLayout>
-        <StatusWithMarker markerColor={ActivityLogStatusMarkerColorMapper[row.status]}>
+        <StatusBadge tone={ACTIVITY_LOG_STATUS_TONE[row.status]}>
           {i18n.t(`activity_log:display_status.${row.status}`)}
-        </StatusWithMarker>
+        </StatusBadge>
       </CellLayout>
     ),
   },
@@ -137,7 +139,7 @@ export const VolunteerLogsTable = ({
               ...columns,
               {
                 name: '',
-                width: '50px',
+                width: '64px',
                 allowOverflow: true,
                 cell: (row: IActivityLogListItem) => (
                   <Popover<IActivityLogListItem>
