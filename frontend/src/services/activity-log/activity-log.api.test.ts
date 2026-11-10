@@ -1,4 +1,10 @@
-import { formatEditActivityLogPayload } from './activity-log.api';
+import { http, HttpResponse } from 'msw';
+import {
+  formatEditActivityLogPayload,
+  getActivityLogs,
+  getActivityLogsForDownload,
+} from './activity-log.api';
+import { api, server } from '../../test/server';
 
 const base = {
   date: new Date(2026, 10, 3),
@@ -19,5 +25,37 @@ describe('formatEditActivityLogPayload', () => {
     const payload = formatEditActivityLogPayload({ ...base, event: undefined });
     expect(payload).toHaveProperty('eventId', null);
     expect(payload).not.toHaveProperty('volunteer');
+  });
+});
+
+describe('hours export (major 6)', () => {
+  it('sends every filter the list sends, the registration date included', async () => {
+    const seen: Record<string, URLSearchParams> = {};
+    server.use(
+      http.get(api('/activity-log'), ({ request }) => {
+        seen.list = new URL(request.url).searchParams;
+        return HttpResponse.json({ items: [], meta: {} });
+      }),
+      http.get(api('/activity-log/download'), ({ request }) => {
+        seen.download = new URL(request.url).searchParams;
+        return new HttpResponse(new ArrayBuffer(1));
+      }),
+    );
+    const filters = {
+      limit: 10,
+      page: 1,
+      search: 'ana',
+      approvedOrRejectedBy: 'admin-1',
+      executionDateStart: new Date(2026, 9, 1),
+      executionDateEnd: new Date(2026, 9, 31),
+      registrationDateStart: new Date(2026, 10, 1),
+      registrationDateEnd: new Date(2026, 10, 9),
+    };
+
+    await getActivityLogs(filters);
+    await getActivityLogsForDownload(filters);
+
+    expect(seen.download.get('registrationDateStart')).toBeTruthy();
+    expect(Object.fromEntries(seen.download)).toEqual(Object.fromEntries(seen.list));
   });
 });

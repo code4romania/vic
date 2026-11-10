@@ -31,64 +31,42 @@ export interface GetActivityLogsParams {
   registrationDateEnd?: Date;
 }
 
-export const getActivityLogs = async ({
+// One mapping for the list and its export, so the file holds exactly the rows on screen.
+export const activityLogFilterParams = ({
   executionDateStart,
   executionDateEnd,
   registrationDateStart,
   registrationDateEnd,
   ...params
-}: GetActivityLogsParams): Promise<IPaginatedEntity<IActivityLogListItem>> => {
-  return API.get('activity-log', {
-    params: {
-      ...params,
-      ...(executionDateStart
-        ? { executionDateStart: format(executionDateStart, 'yyyy-MM-dd') }
-        : {}),
-      ...(executionDateEnd ? { executionDateEnd: format(executionDateEnd, 'yyyy-MM-dd') } : {}),
-      ...(registrationDateStart
-        ? { registrationDateStart: formatStartDateISO9075(registrationDateStart) }
-        : {}),
-      ...(registrationDateEnd
-        ? { registrationDateEnd: formatEndDateISO9075(registrationDateEnd) }
-        : {}),
-    },
-  }).then((res) => res.data);
+}: GetActivityLogsParams): Record<string, unknown> => ({
+  ...params,
+  ...(executionDateStart ? { executionDateStart: format(executionDateStart, 'yyyy-MM-dd') } : {}),
+  ...(executionDateEnd ? { executionDateEnd: format(executionDateEnd, 'yyyy-MM-dd') } : {}),
+  ...(registrationDateStart
+    ? { registrationDateStart: formatStartDateISO9075(registrationDateStart) }
+    : {}),
+  ...(registrationDateEnd
+    ? { registrationDateEnd: formatEndDateISO9075(registrationDateEnd) }
+    : {}),
+});
+
+export const getActivityLogs = async (
+  params: GetActivityLogsParams,
+): Promise<IPaginatedEntity<IActivityLogListItem>> => {
+  return API.get('activity-log', { params: activityLogFilterParams(params) }).then(
+    (res) => res.data,
+  );
 };
 
-export const getActivityLogsForDownload = async ({
-  limit,
-  page,
-  resolutionStatus,
-  orderBy,
-  orderDirection,
-  search,
-  status,
-  approvedOrRejectedBy,
-  executionDateStart,
-  executionDateEnd,
-  volunteerId,
-}: GetActivityLogsParams): Promise<{
+// The API exports every matching row: page and limit are ignored there.
+export const getActivityLogsForDownload = async (
+  params: GetActivityLogsParams,
+): Promise<{
   data: unknown;
   headers: AxiosResponseHeaders;
 }> => {
   return API.get('activity-log/download', {
-    params: {
-      limit,
-      page,
-      resolutionStatus,
-      orderBy,
-      orderDirection,
-      search,
-      status,
-      approvedOrRejectedBy,
-      executionDateStart: executionDateStart
-        ? format(executionDateStart, 'yyyy-MM-dd')
-        : executionDateStart,
-      executionDateEnd: executionDateEnd
-        ? format(executionDateEnd, 'yyyy-MM-dd')
-        : executionDateEnd,
-      volunteerId,
-    },
+    params: activityLogFilterParams(params),
     responseType: 'arraybuffer',
   }).then((res) => {
     return { data: res.data, headers: res.headers as AxiosResponseHeaders };

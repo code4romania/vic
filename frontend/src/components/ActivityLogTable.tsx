@@ -418,6 +418,8 @@ const ActivityLogTable = ({
       approvedOrRejectedBy: query.approvedOrRejectedBy,
       executionDateStart: query.executionDateStart,
       executionDateEnd: query.executionDateEnd,
+      registrationDateStart: query.registrationDateStart,
+      registrationDateEnd: query.registrationDateEnd,
       volunteerId: volunteerId,
     });
 
