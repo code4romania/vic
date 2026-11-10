@@ -15,7 +15,7 @@ import {
 import i18n from '../common/config/i18n';
 import { AnnouncementStatus } from '../common/enums/announcement-status.enum';
 import { IAnnouncement } from '../common/interfaces/announcement.interface';
-import { formatDate } from '../common/utils/utils';
+import { formatDate, formatDateRange } from '../common/utils/utils';
 import { useAnnouncementResponses } from '../services/announcement/announcement.service';
 import { AnnouncementStatusAction } from '../services/announcement/announcement.api';
 import Popover from './Popover';
@@ -29,7 +29,7 @@ export const ANNOUNCEMENT_STATUS_TONE: Record<AnnouncementStatus, BadgeTone> = {
 
 export const formatAnnouncementPeriod = (announcement: IAnnouncement): string =>
   announcement.displayEndDate
-    ? `${formatDate(announcement.displayStartDate)} - ${formatDate(announcement.displayEndDate)}`
+    ? formatDateRange(announcement.displayStartDate, announcement.displayEndDate)
     : `${i18n.t('announcement:card.from', { date: formatDate(announcement.displayStartDate) })}`;
 
 export const formatVolunteersNeeded = (announcement: IAnnouncement): string =>
@@ -62,6 +62,7 @@ interface AnnouncementCardProps {
   onDuplicate: (announcement: IAnnouncement) => void;
   onChangeStatus: (announcement: IAnnouncement, action: AnnouncementStatusAction) => void;
   onDelete: (announcement: IAnnouncement) => void;
+  showStatus?: boolean;
 }
 
 // One announcement in the list: title with status and type, text, details, responses.
@@ -72,6 +73,7 @@ const AnnouncementCard = ({
   onDuplicate,
   onChangeStatus,
   onDelete,
+  showStatus = false,
 }: AnnouncementCardProps) => {
   const responses = useAnnouncementResponseCount(announcement.id);
 
@@ -136,9 +138,12 @@ const AnnouncementCard = ({
                 {announcement.name}
               </button>
             </h3>
-            <StatusBadge tone={ANNOUNCEMENT_STATUS_TONE[announcement.status]}>
-              {i18n.t(`announcement:status.${announcement.status}`)}
-            </StatusBadge>
+            {/* the list shows one status per tab, so the status chip is only for other places */}
+            {showStatus && (
+              <StatusBadge tone={ANNOUNCEMENT_STATUS_TONE[announcement.status]}>
+                {i18n.t(`announcement:status.${announcement.status}`)}
+              </StatusBadge>
+            )}
             <AnnouncementTypeChip announcement={announcement} />
           </div>
           <div className="shrink-0 pt-1">
@@ -172,13 +177,16 @@ const AnnouncementCard = ({
           <ChatBubbleLeftRightIcon className="w-5 h-5 text-cool-gray-500" aria-hidden="true" />
           {responses === undefined ? '…' : responsesLabel(responses)}
         </span>
-        <button
-          type="button"
-          className="btn-outline-secondary"
-          onClick={() => onView(announcement)}
-        >
-          {i18n.t('announcement:card.view_responses')}
-        </button>
+        {/* nothing to open while there is no response */}
+        {!!responses && (
+          <button
+            type="button"
+            className="btn-outline-secondary"
+            onClick={() => onView(announcement)}
+          >
+            {i18n.t('announcement:card.view_responses')}
+          </button>
+        )}
       </div>
     </article>
   );

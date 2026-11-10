@@ -1,6 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import { CalendarIcon, ClockIcon, MegaphoneIcon, UserPlusIcon } from '@heroicons/react/24/outline';
+import {
+  CalendarIcon,
+  DocumentCheckIcon,
+  MegaphoneIcon,
+  UserPlusIcon,
+} from '@heroicons/react/24/outline';
 import i18n from '../common/config/i18n';
 import Card from '../layouts/CardLayout';
 import CardBody from './CardBody';
@@ -13,7 +18,8 @@ const ACTIONS = [
   { key: 'add_volunteer', href: '/volunteers/add', Icon: UserPlusIcon, needsValidation: true },
   { key: 'add_event', href: '/events/add', Icon: CalendarIcon, needsValidation: true },
   { key: 'add_announcement', href: '/announcements/add', Icon: MegaphoneIcon },
-  { key: 'add_hours', href: '/activity-log/add', Icon: ClockIcon, needsValidation: true },
+  // as in the design: the fourth shortcut opens the contracts
+  { key: 'manage_contracts', href: '/documents/contracts', Icon: DocumentCheckIcon },
 ];
 
 // Shortcuts to the forms admins open most often.
@@ -24,7 +30,10 @@ const DashboardQuickActions = () => {
   return (
     <Card>
       <CardHeader>
-        <h2>{t('title')}</h2>
+        <div>
+          <h2>{t('title')}</h2>
+          <p className="text-sm text-cool-gray-600">{t('subtitle')}</p>
+        </div>
       </CardHeader>
       <CardBody>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">

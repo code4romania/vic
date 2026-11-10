@@ -10,7 +10,7 @@ interface HeaderProps {
   openSlidingMenu: (isOpen: boolean) => void;
 }
 
-// Top bar for screens narrower than xl, where the side menu slides in from the left.
+// Top bar for screens narrower than lg (tablets, phones), where the side menu slides in from the left.
 const Header = ({ openSlidingMenu }: HeaderProps) => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -29,7 +29,12 @@ const Header = ({ openSlidingMenu }: HeaderProps) => {
             <Bars3Icon className="w-6 h-6" aria-hidden="true" />
           </button>
         )}
-        <button type="button" className="flex items-center" onClick={() => navigate('/')}>
+        <button
+          type="button"
+          aria-label="VIC"
+          className="flex items-center rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-navy"
+          onClick={() => navigate('/')}
+        >
           <img src={logo} alt="VIC" className="h-8" />
         </button>
       </div>

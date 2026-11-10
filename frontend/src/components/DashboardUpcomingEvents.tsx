@@ -21,7 +21,10 @@ const DashboardUpcomingEvents = () => {
   return (
     <Card>
       <CardHeader>
-        <h2>{t('title')}</h2>
+        <div>
+          <h2>{t('title')}</h2>
+          <p className="text-sm text-cool-gray-600">{t('subtitle')}</p>
+        </div>
       </CardHeader>
       <CardBody>
         {!!error && <LoadErrorContent onRetry={refetch} />}
@@ -36,7 +39,7 @@ const DashboardUpcomingEvents = () => {
                 className="w-full text-left flex gap-3 rounded-lg bg-cool-gray-50 hover:bg-navy-50 px-4 py-3"
                 onClick={() => navigate(`/events/${event.id}`)}
               >
-                <span className="w-9 h-9 shrink-0 rounded-lg bg-white border border-cool-gray-200 text-figure-green flex items-center justify-center">
+                <span className="w-9 h-9 shrink-0 rounded-lg bg-white border border-cool-gray-200 text-navy flex items-center justify-center">
                   <CalendarIcon className="w-5 h-5" aria-hidden="true" />
                 </span>
                 <span className="flex-1 min-w-0 flex flex-col gap-1">
@@ -49,7 +52,7 @@ const DashboardUpcomingEvents = () => {
                         {formatEventDate(
                           new Date(event.startDate),
                           event.endDate ? new Date(event.endDate) : undefined,
-                        ).replace('-\n', ' - ')}
+                        )}
                       </span>
                     </span>
                     {event.location && (

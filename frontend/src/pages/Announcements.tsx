@@ -2,11 +2,9 @@ import React, { ComponentType, SVGProps, useEffect, useMemo, useState } from 're
 import debounce from 'lodash.debounce';
 import { useNavigate } from 'react-router-dom';
 import {
-  ArchiveBoxIcon,
   ChatBubbleLeftRightIcon,
-  EyeIcon,
-  EyeSlashIcon,
   MagnifyingGlassIcon,
+  MegaphoneIcon,
   PlusIcon,
 } from '@heroicons/react/24/outline';
 import PageHeader from '../components/PageHeader';
@@ -30,19 +28,21 @@ import { useErrorToast, useSuccessToast } from '../hooks/useToast';
 import { InternalErrors } from '../common/errors/internal-errors.class';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { SelectItem } from '../components/Select';
+import { TabList } from '../components/Tabs';
 import { AnnouncementsProps } from '../containers/query/AnnouncementsWithQueryParms';
 import SelectFilter from '../containers/SelectFilter';
 import LoadingContent from '../components/LoadingContent';
+import EmptyContent from '../components/EmptyContent';
 import LoadErrorContent from '../components/LoadErrorContent';
 import AnnouncementCard from '../components/AnnouncementCard';
 import AnnouncementPager from '../components/AnnouncementPager';
 
 type HeroIcon = ComponentType<SVGProps<SVGSVGElement>>;
 
-const STATUSES: { status: AnnouncementStatus; Icon: HeroIcon }[] = [
-  { status: AnnouncementStatus.ACTIVE, Icon: EyeIcon },
-  { status: AnnouncementStatus.INACTIVE, Icon: EyeSlashIcon },
-  { status: AnnouncementStatus.ARCHIVED, Icon: ArchiveBoxIcon },
+const STATUSES: AnnouncementStatus[] = [
+  AnnouncementStatus.ACTIVE,
+  AnnouncementStatus.INACTIVE,
+  AnnouncementStatus.ARCHIVED,
 ];
 
 type CounterKey = 'active' | 'inactive' | 'archived' | 'responses';
@@ -69,53 +69,6 @@ const SORT_OPTIONS: SelectItem<string>[] = [
 const isStatus = (value?: string | null): value is AnnouncementStatus =>
   Object.values(AnnouncementStatus).includes(value as AnnouncementStatus);
 
-// The page's main tabs, one per status, with how many announcements each holds.
-const StatusTabs = ({
-  active,
-  counts,
-  onChange,
-}: {
-  active: AnnouncementStatus;
-  counts?: Partial<Record<AnnouncementStatus, number>>;
-  onChange: (status: AnnouncementStatus) => void;
-}) => (
-  <div
-    role="tablist"
-    aria-label={`${i18n.t('announcement:page.title')}`}
-    className="flex gap-1 p-1 rounded-xl bg-cool-gray-200/70 w-full sm:w-auto self-start"
-  >
-    {STATUSES.map(({ status, Icon }) => {
-      const selected = status === active;
-      return (
-        <button
-          key={status}
-          type="button"
-          role="tab"
-          aria-selected={selected}
-          onClick={() => onChange(status)}
-          className={classNames(
-            selected
-              ? 'bg-white text-cool-gray-900 shadow-card'
-              : 'text-cool-gray-600 hover:text-cool-gray-900',
-            'flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-lg text-sm font-robotoMedium whitespace-nowrap',
-          )}
-        >
-          <Icon className="hidden sm:block w-4 h-4" aria-hidden="true" />
-          {i18n.t(`announcement:tabs.${status}`)}
-          <span
-            className={classNames(
-              selected ? 'bg-navy text-white' : 'bg-white text-cool-gray-700',
-              'min-w-[1.25rem] h-5 px-1.5 rounded-full text-xs font-robotoBold flex items-center justify-center',
-            )}
-          >
-            {counts?.[status] ?? '-'}
-          </span>
-        </button>
-      );
-    })}
-  </div>
-);
-
 const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
   const [selectedIdForDeletion, setSelectedIdForDeletion] = useState<string>();
   const [searchWord, setSearchWord] = useState<string>(query?.search || '');
@@ -141,7 +94,11 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
     query?.type as AnnouncementType,
   );
 
-  const { data: counters, refetch: refetchCounters } = useAnnouncementCountersQuery();
+  const {
+    data: counters,
+    isError: countersFailed,
+    refetch: refetchCounters,
+  } = useAnnouncementCountersQuery();
 
   const { mutateAsync: changeStatus, isLoading: isUpdateAnnouncementLoading } =
     useChangeAnnouncementStatusMutation();
@@ -255,22 +212,29 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
           <StatisticsCard
             key={key}
             label={`${i18n.t(`announcement:counters.${key}`)}`}
-            value={`${counters?.[key] ?? '-'}`}
+            value={counters ? `${counters[key] ?? 0}` : countersFailed ? '–' : undefined}
             icon={<Icon className={`w-5 h-5 ${color}`} aria-hidden="true" />}
-            info={
-              <span className="text-cool-gray-500 font-roboto">
-                {i18n.t(`announcement:counters.info.${key}`)}
-              </span>
-            }
+            subtitle={i18n.t(`announcement:counters.info.${key}`)}
           />
         ))}
       </div>
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-3">
-        <StatusTabs active={status} counts={counters} onChange={onStatusChange} />
+        <TabList<AnnouncementStatus>
+          tabs={STATUSES.map((key) => ({
+            key,
+            value: i18n.t(`announcement:tabs.${key}`),
+            count: counters?.[key],
+          }))}
+          active={status}
+          onSelect={(tab) => onStatusChange(tab.key)}
+          countTone="neutral"
+          fit
+          ariaLabel={`${i18n.t('announcement:page.title')}`}
+        />
         <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
           <div className="relative sm:w-56">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <MagnifyingGlassIcon className="h-5 w-5 text-cool-gray-400" aria-hidden="true" />
+              <MagnifyingGlassIcon className="h-5 w-5 text-cool-gray-500" aria-hidden="true" />
             </div>
             <input
               type="search"
@@ -310,11 +274,27 @@ const Announcements = ({ query, setQuery }: AnnouncementsProps) => {
       )}
       {!isBusy && !announcementsError && !items.length && (
         <Card>
-          <p className="p-8 text-center text-cool-gray-500">
-            {query.search || query.type
-              ? i18n.t('announcement:page.empty.search')
-              : i18n.t(`announcement:page.empty.${status}`)}
-          </p>
+          <EmptyContent
+            icon={<MegaphoneIcon className="w-6 h-6" />}
+            title={`${i18n.t('announcement:page.empty_title')}`}
+            description={
+              query.search || query.type
+                ? `${i18n.t('announcement:page.empty.search')}`
+                : `${i18n.t(`announcement:page.empty.${status}`)}`
+            }
+            action={
+              !query.search &&
+              !query.type &&
+              status === AnnouncementStatus.ACTIVE && (
+                <Button
+                  icon={<PlusIcon className="h-5 w-5" />}
+                  className="btn-primary"
+                  label={i18n.t('announcement:page.add')}
+                  onClick={onAdd}
+                />
+              )
+            }
+          />
         </Card>
       )}
       {items.length > 0 && (

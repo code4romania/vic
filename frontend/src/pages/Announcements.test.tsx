@@ -71,7 +71,7 @@ describe('Announcements (#502)', () => {
     expect(
       within(card).getByText(t('announcement:card.volunteers_needed', { count: 4 })),
     ).toBeInTheDocument();
-    expect(within(card).getByText('01.11.2026 - 30.11.2026')).toBeInTheDocument();
+    expect(within(card).getByText(/01\.11\.2026\s–\s30\.11\.2026/)).toBeInTheDocument();
     expect(
       await within(card).findByText(t('announcement:card.responses', { count: 2 })),
     ).toBeInTheDocument();

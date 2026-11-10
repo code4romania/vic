@@ -24,7 +24,14 @@ interface DataTableFiltersProps {
   title?: string;
   // Under the filters: how many results, and actions on them (export)
   results?: React.ReactNode;
+  // how many filters are set, shown on the "Filtre" button while the filters are hidden
+  activeFilters?: number;
 }
+
+// Phones: the filters start hidden behind the "Filtre" button, so the list is on the first screen
+const PHONE = '(max-width: 767px)';
+const startsOpen = () =>
+  !(typeof window !== 'undefined' && window.matchMedia && window.matchMedia(PHONE).matches);
 
 const DataTableFilters = ({
   children,
@@ -34,9 +41,11 @@ const DataTableFilters = ({
   onResetFilters,
   title,
   results,
+  activeFilters,
 }: DataTableFiltersProps) => {
-  // "collapsed" historically means the filter panel is open; open by default, as in the design
-  const [filtersCollapsed, setFiltersCollapsed] = useState<boolean>(true);
+  // "collapsed" historically means the filter panel is open; open by default on larger screens,
+  // as in the design
+  const [filtersCollapsed, setFiltersCollapsed] = useState<boolean>(startsOpen);
   const [searchWord, setSearchWord] = useState<string>('');
 
   useEffect(() => {
@@ -69,7 +78,9 @@ const DataTableFilters = ({
       <CardHeader>
         <div>
           <h2>{title ?? i18n.t('general:filters.title')}</h2>
-          <p className="text-sm text-cool-gray-500">{i18n.t('general:filters.subtitle')}</p>
+          <p className="hidden sm:block text-sm text-cool-gray-600">
+            {i18n.t('general:filters.subtitle')}
+          </p>
         </div>
         <Button
           type="button"
@@ -81,10 +92,10 @@ const DataTableFilters = ({
       </CardHeader>
       <CardBody>
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row gap-3 sm:items-end">
+          <div className="flex flex-col md:flex-row gap-3 md:items-end">
             <div className="relative w-full flex-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <MagnifyingGlassIcon className="h-5 w-5 text-cool-gray-400" aria-hidden="true" />
+                <MagnifyingGlassIcon className="h-5 w-5 text-cool-gray-500" aria-hidden="true" />
               </div>
               <Input
                 id="search__filter"
@@ -98,9 +109,13 @@ const DataTableFilters = ({
             {children && (
               <Button
                 type="button"
-                className="btn-outline-secondary w-auto"
+                className="btn-outline-secondary w-full md:w-auto"
                 label={
-                  filtersCollapsed ? i18n.t('general:filters.hide') : i18n.t('general:filters.show')
+                  filtersCollapsed
+                    ? i18n.t('general:filters.hide')
+                    : activeFilters
+                      ? `${i18n.t('general:filters.show')} (${activeFilters})`
+                      : i18n.t('general:filters.show')
                 }
                 aria-expanded={filtersCollapsed}
                 onClick={setFiltersCollapsed.bind(null, !filtersCollapsed)}
@@ -112,7 +127,7 @@ const DataTableFilters = ({
             <div
               className={classNames(
                 filtersCollapsed ? '' : 'hidden',
-                'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4',
+                'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 [&>*]:min-w-0',
               )}
             >
               {children}

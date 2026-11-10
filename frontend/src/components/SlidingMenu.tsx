@@ -3,9 +3,10 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IChildRoute, IRoute } from '../common/interfaces/route.interface';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { classNames } from '../common/utils/utils';
 import { findParentRoute, useVisibleRoutes } from '../hooks/useVisibleRoutes';
-import MenuItem from './MenuItem';
+import MenuList from './MenuList';
+import UserMenu from './UserMenu';
+import logo from '../assets/images/app_logo.svg';
 import i18n from '../common/config/i18n';
 
 interface SlidingMenuProps {
@@ -64,7 +65,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
 
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
-            <div className="pointer-events-none fixed inset-y-0 left-0 flex max-w-full pr-10">
+            <div className="pointer-events-none fixed inset-y-0 left-0 flex max-w-full">
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-500 sm:duration-700"
@@ -74,50 +75,35 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: SlidingMenuP
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-[-18rem]"
               >
-                <Dialog.Panel className="pointer-events-auto relative w-72">
-                  <Transition.Child
-                    as={Fragment}
-                    enter="ease-in-out duration-500"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="ease-in-out duration-500"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
+                <Dialog.Panel className="pointer-events-auto relative w-72 max-w-[85vw] h-full flex flex-col bg-white shadow-menu">
+                  {/* the panel's own header: the logo, and the close button inside the panel */}
+                  <div className="h-16 shrink-0 px-4 flex items-center justify-between border-b border-cool-gray-200">
+                    <img src={logo} alt="VIC" className="h-8" />
+                    <button
+                      id="close_panel__btn"
+                      aria-label={`${i18n.t('general:close')}`}
+                      type="button"
+                      className="p-2.5 -mr-2 rounded-lg text-cool-gray-700 hover:bg-cool-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-navy"
+                      onClick={setSlidingMenuOpen.bind(null, false)}
+                    >
+                      <XMarkIcon className="w-6 h-6" aria-hidden="true" />
+                    </button>
+                  </div>
+                  <nav
+                    className="flex-1 overflow-y-auto p-3 space-y-0.5 bg-white cursor-pointer select-none"
+                    aria-label={`${i18n.t('side_menu:aria')}`}
                   >
-                    <div className="absolute top-0 -right-8 flex pt-4">
-                      <button
-                        id="close_panel__btn"
-                        aria-label={`${i18n.t('general:close')}`}
-                        type="button"
-                        className="rounded-md text-white hover:text-cool-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
-                        onClick={setSlidingMenuOpen.bind(null, false)}
-                      >
-                        <XMarkIcon className="w-6 h-6" aria-hidden="true" />
-                      </button>
-                    </div>
-                  </Transition.Child>
-                  <div className="h-full overflow-y-auto bg-white">
-                    <div className="space-y-6">
-                      <nav
-                        className={classNames(
-                          'w-full',
-                          'p-3 pt-6 space-y-0.5 bg-white cursor-pointer select-none',
-                        )}
-                        aria-label={`${i18n.t('side_menu:aria')}`}
-                      >
-                        {routes.map((item) => (
-                          <MenuItem
-                            key={item.id}
-                            item={item}
-                            activeParentRoute={activeParentRoute}
-                            activeSubRoute={activeSubRoute}
-                            isNarrow={false}
-                            onClick={onMenuItemClick}
-                          />
-                        ))}
-                        <div className="text-cool-gray-400 text-xs px-3 pt-6">{`v${APP_VERSION}`}</div>
-                      </nav>
-                    </div>
+                    <MenuList
+                      routes={routes}
+                      activeParentRoute={activeParentRoute}
+                      activeSubRoute={activeSubRoute}
+                      onClick={onMenuItemClick}
+                    />
+                  </nav>
+                  {/* who is signed in, and "Ieșire", as at the bottom of the desktop menu */}
+                  <div className="shrink-0 border-t border-cool-gray-200 px-3 py-3 space-y-1">
+                    <UserMenu />
+                    <p className="pl-3 text-xs text-cool-gray-500">{`v${APP_VERSION}`}</p>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

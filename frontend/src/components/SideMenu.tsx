@@ -5,15 +5,29 @@ import { useTranslation } from 'react-i18next';
 import { findParentRoute, useVisibleRoutes } from '../hooks/useVisibleRoutes';
 import { classNames } from '../common/utils/utils';
 import { IChildRoute, IRoute } from '../common/interfaces/route.interface';
-import MenuItem from './MenuItem';
+import MenuList from './MenuList';
 import UserMenu from './UserMenu';
 import logo from '../assets/images/app_logo.svg';
+
+// Below xl (laptops, tablets in landscape) the menu starts as an icon rail, so the page keeps its
+// width; the button at the bottom widens it.
+const RAIL = '(max-width: 1279px)';
+const startsNarrow = () =>
+  typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia(RAIL).matches;
 
 const SideMenu = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const routes = useVisibleRoutes();
-  const [isNarrow, setIsNarrow] = useState<boolean>(false);
+  const [isNarrow, setIsNarrow] = useState<boolean>(startsNarrow);
+
+  useEffect(() => {
+    const query = window.matchMedia?.(RAIL);
+    if (!query) return;
+    const onChange = (event: MediaQueryListEvent) => setIsNarrow(event.matches);
+    query.addEventListener?.('change', onChange);
+    return () => query.removeEventListener?.('change', onChange);
+  }, []);
   const [activeParentRoute, setActiveParentRoute] = useState<IRoute>(routes[0]);
   const [activeSubRoute, setActiveSubRoute] = useState<IChildRoute | null>(null);
   const { t } = useTranslation('side_menu');
@@ -62,16 +76,13 @@ const SideMenu = () => {
         <img src={logo} alt="VIC" className={isNarrow ? 'h-7' : 'h-9'} />
       </Link>
       <div className="flex-1 overflow-y-auto no-scrollbar px-3 py-4 space-y-0.5 cursor-pointer">
-        {routes.map((item) => (
-          <MenuItem
-            key={item.id}
-            item={item}
-            activeParentRoute={activeParentRoute}
-            activeSubRoute={activeSubRoute}
-            isNarrow={isNarrow}
-            onClick={onMenuItemClick}
-          />
-        ))}
+        <MenuList
+          routes={routes}
+          activeParentRoute={activeParentRoute}
+          activeSubRoute={activeSubRoute}
+          isNarrow={isNarrow}
+          onClick={onMenuItemClick}
+        />
       </div>
       <div className="border-t border-cool-gray-200 px-3 py-3 space-y-1">
         <UserMenu isNarrow={isNarrow} />
@@ -81,12 +92,13 @@ const SideMenu = () => {
             'flex items-center',
           )}
         >
-          {!isNarrow && <span className="text-xs text-cool-gray-400">{`v${APP_VERSION}`}</span>}
+          {!isNarrow && <span className="text-xs text-cool-gray-500">{`v${APP_VERSION}`}</span>}
           <button
             type="button"
-            aria-label={t('collapse')}
-            title={t('collapse')}
-            className="p-2 rounded-lg text-cool-gray-500 hover:bg-cool-gray-100 hover:text-cool-gray-900"
+            aria-label={isNarrow ? t('expand') : t('collapse')}
+            aria-expanded={!isNarrow}
+            title={isNarrow ? t('expand') : t('collapse')}
+            className="p-2.5 rounded-lg text-cool-gray-600 hover:bg-cool-gray-100 hover:text-cool-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-navy"
             onClick={() => setIsNarrow(!isNarrow)}
           >
             {isNarrow ? (

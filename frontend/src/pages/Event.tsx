@@ -19,6 +19,7 @@ import Card from '../layouts/CardLayout';
 import CardHeader from '../components/CardHeader';
 import CardBody from '../components/CardBody';
 import Button from '../components/Button';
+import Popover from '../components/Popover';
 import LoadingContent from '../components/LoadingContent';
 import EmptyContent from '../components/EmptyContent';
 import ConfirmationModal from '../components/ConfirmationModal';
@@ -332,28 +333,53 @@ const Event = () => {
 
   const busy = isLoading || isPublishingEvent || isArchivingEvent || isDeletingEvent;
 
+  // Edit first, Archive and Delete after it (never Delete first); on phones those two go into a
+  // "Mai multe" menu, and the main (yellow) action keeps its label on the full width.
+  const secondary = event
+    ? [
+        ...(event.status === EventStatus.PUBLISHED
+          ? [
+              {
+                label: i18n.t('general:archive', { item: '' }),
+                icon: <ArchiveBoxIcon className="menu-icon" />,
+                onClick: onArchive,
+              },
+            ]
+          : []),
+        {
+          label: i18n.t('general:delete'),
+          icon: <TrashIcon className="menu-icon" />,
+          onClick: () => setShowDeleteEvent(true),
+          alert: true,
+        },
+      ]
+    : [];
+
   const actions = event && (
     <>
       <Button
-        className="btn-outline-danger"
-        label={i18n.t('general:delete')}
-        icon={<TrashIcon className="h-5 w-5" aria-hidden="true" />}
-        onClick={() => setShowDeleteEvent(true)}
+        className="btn-outline-secondary"
+        label={i18n.t('general:edit', { item: '' })}
+        icon={<PencilIcon className="h-5 w-5 text-cool-gray-600" aria-hidden="true" />}
+        onClick={() => navigate(`/events/${id}/edit`)}
       />
       {event.status === EventStatus.PUBLISHED && (
         <Button
-          className="btn-outline-secondary"
+          className="btn-outline-secondary hidden sm:flex"
           label={i18n.t('general:archive', { item: '' })}
-          icon={<ArchiveBoxIcon className="h-5 w-5 text-cool-gray-500" aria-hidden="true" />}
+          icon={<ArchiveBoxIcon className="h-5 w-5 text-cool-gray-600" aria-hidden="true" />}
           onClick={onArchive}
         />
       )}
       <Button
-        className="btn-outline-secondary"
-        label={i18n.t('general:edit', { item: '' })}
-        icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" aria-hidden="true" />}
-        onClick={() => navigate(`/events/${id}/edit`)}
+        className="btn-outline-danger hidden sm:flex"
+        label={i18n.t('general:delete')}
+        icon={<TrashIcon className="h-5 w-5" aria-hidden="true" />}
+        onClick={() => setShowDeleteEvent(true)}
       />
+      <div className="sm:hidden !grow-0 rounded-lg border border-cool-gray-300 bg-white">
+        <Popover<IEvent> row={event} items={secondary} label={`${i18n.t('general:more')}`} />
+      </div>
       {event.status !== EventStatus.PUBLISHED && (
         <Button
           className="btn-primary"
@@ -365,7 +391,7 @@ const Event = () => {
       )}
       {canAddVolunteers(event) && (
         <Button
-          className="btn-primary"
+          className="btn-primary basis-full sm:basis-auto"
           label={i18n.t('events:add_volunteers.button')}
           icon={<UserPlusIcon className="h-5 w-5" aria-hidden="true" />}
           onClick={() => setShowAddVolunteers(true)}
@@ -381,8 +407,10 @@ const Event = () => {
         onBackButtonPress={navigateBack}
         subtitle={event ? <EventStatusBadge event={event} /> : undefined}
         actions={busy ? undefined : actions}
+        loading={isLoading}
+        compact
       >
-        {event?.name ?? i18n.t('general:view')}
+        {event?.name ?? ''}
       </PageHeader>
       {busy ? (
         <LoadingContent />

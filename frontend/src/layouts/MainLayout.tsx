@@ -11,15 +11,15 @@ const MainLayout = () => {
 
   return (
     <div className="min-h-screen w-full flex bg-canvas">
-      <div className="hidden xl:block shrink-0 bg-white border-r border-cool-gray-200">
+      <div className="hidden lg:block shrink-0 bg-white border-r border-cool-gray-200">
         <SideMenu />
       </div>
       <div className="flex-1 min-w-0 flex flex-col">
-        <div className="xl:hidden">
+        <div className="lg:hidden">
           <Header openSlidingMenu={setSlidingMenuOpen} />
         </div>
         <SlidingMenu isOpen={isSlidingMenuOpen} setSlidingMenuOpen={setSlidingMenuOpen} />
-        <main className="w-full max-w-[90rem] mx-auto px-4 sm:px-6 xl:px-10 py-6 xl:py-8 flex flex-col gap-6">
+        <main className="w-full max-w-[90rem] mx-auto px-4 sm:px-6 xl:px-10 py-5 sm:py-6 xl:py-8 flex flex-col gap-6">
           <ValidationBanner />
           {/* pages load lazily: the menu and header stay while a page's chunk arrives */}
           <Suspense fallback={<LoadingContent />}>
