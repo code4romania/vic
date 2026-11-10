@@ -39,7 +39,8 @@
             "VOLUNTEER_008": "Organizația te-a marcat ca voluntar inactiv. Doar organizația te poate reactiva.",
             "USER_007": "Contul nu a putut fi șters. Încearcă din nou sau scrie-ne.",
             "NOTIFICATIONS_001": "Setările de notificări nu au fost găsite.",
-            "VOLUNTEER_005": "Nu ești încă voluntar la o organizație activă. Alătură-te unei organizații ca să adaugi ore."
+            "VOLUNTEER_005": "Nu ești încă voluntar la o organizație activă. Alătură-te unei organizații ca să adaugi ore.",
+            "load_hint": "Nu am putut încărca datele. Nu e vina ta, încearcă din nou peste câteva secunde."
         },
         "today": "Azi",
         "yesterday": "Ieri",
@@ -104,8 +105,8 @@
             }
         },
         "create_user": {
-            "heading": "Date utilizator",
-            "paragraph": "Completează câmpurile de mai jos pentru finalizarea înregistrării.",
+            "heading": "Spune-ne cine ești",
+            "paragraph": "Organizațiile au nevoie de datele astea pentru contract și adeverințe.",
             "form": {
                 "first_name": {
                     "label": "Prenume",
@@ -224,7 +225,7 @@
         "section_settings": "Setări"
     },
     "account_data": {
-        "title": "Date cont",
+        "title": "Date personale",
         "profile_picture": "Poza profil",
         "change_profile_picture": "Schimbă poza",
         "photo_permission": {
@@ -277,15 +278,15 @@
         "disclaimer": {
             "access_request_pending": "Înscrierea ta așteaptă aprobare de la organizație",
             "joined_from": "Te-ai alăturat din {{date}}",
-            "volunteer_archived": "Profilul tău de voluntar a fost dezactivat!",
-            "volunteer_blocked": "Accesul tău la organizație a fost restricționat",
+            "volunteer_archived": "Profilul tău de voluntar a fost dezactivat.",
+            "volunteer_blocked": "Accesul tău la organizație a fost restricționat.",
             "volunteer_inactive": "Organizația te-a marcat ca voluntar inactiv. Poți vedea organizația și descărca documentele.",
             "volunteer_candidate": "Organizația te-a adăugat ca și candidat. Vei putea participa după ce organizația te activează."
         },
         "modal": {
             "birthday_missing": {
                 "heading": "Ups!",
-                "paragraph": "Nu ai completat data nașterii în Contul meu. Completeaz-o pentru a te putea alătura unei organizații.",
+                "paragraph": "Nu ai completat data nașterii în Date personale. Completeaz-o pentru a te putea alătura unei organizații.",
                 "action_label": "Completează datele"
             },
             "confirm_cancel_request": {
@@ -328,12 +329,12 @@
             }
         },
         "errors": {
-            "ACCESS_CODE_001": "Codul de acces este invalid",
-            "ACCESS_REQUEST_001": "Există deja o cerere de acces pentru această organizație",
+            "ACCESS_CODE_001": "Codul de acces nu este valid",
+            "ACCESS_REQUEST_001": "Ai trimis deja o cerere de înscriere la această organizație",
             "ORG_001": "Organizația nu a fost găsită",
             "USER_001": "Utilizatorul nu a fost găsit",
             "VOLUNTEER_002": "Utilizatorul este deja parte a organizației",
-            "USER_005": "Completează data nașterii în Contul meu pentru a te alătura unei organizații."
+            "USER_005": "Completează data nașterii în Date personale pentru a te alătura unei organizații."
         },
         "modal": {
             "success": {
@@ -349,7 +350,7 @@
         "paragraph": "Cererea ta de acces din data {{date}} a fost respinsă.",
         "reason": "Motivul respingerii",
         "errors": {
-            "ACCESS_REQUEST_002": "Request-ul nu a fost găsit"
+            "ACCESS_REQUEST_002": "Cererea nu a fost găsită"
         }
     },
     "leave_ngo": {
@@ -411,7 +412,7 @@
             }
         },
         "age": "{{years}} de ani",
-        "county": ", jud {{name}}",
+        "county": ", jud. {{name}}",
         "information": "Informații voluntar",
         "email": "Email de contact",
         "active_since": "Voluntar din",
@@ -594,7 +595,7 @@
         "tabs": {
             "pending": "În așteptare",
             "approved": "Aprobate",
-            "rejected": "Refuzate"
+            "rejected": "Respinse"
         },
         "search": {
             "placeholder": "Caută"
@@ -609,7 +610,7 @@
         "totals": {
             "approved": "aprobate",
             "pending": "în așteptare",
-            "rejected": "refuzate"
+            "rejected": "respinse"
         },
         "errors": {
             "generic": "Eroare la încărcarea orelor"
@@ -638,8 +639,10 @@
         "disclaimer": {
             "approved": "Aprobată la {{date}}",
             "pending": "Necesită aprobare din partea organizației",
-            "rejected": "Respins la {{date}}",
-            "pending_editable": "Necesită aprobare din partea organizației. Până atunci o poți edita sau șterge."
+            "rejected": "Respinsă la {{date}}",
+            "pending_editable": "Necesită aprobare din partea organizației. Până atunci o poți edita sau șterge.",
+            "approved_undated": "Aprobată",
+            "rejected_undated": "Respinsă"
         },
         "form": {
             "event": {
@@ -673,7 +676,7 @@
         "errors": {
             "ACTIVITY_LOG_001": "Nu există înregistrarea de logare ore",
             "ACTIVITY_LOG_002": "Voluntarul nu are profilul completat",
-            "ACTIVITY_LOG_004": "Nu se pot anula request-uri aprobate sau respinse",
+            "ACTIVITY_LOG_004": "Nu se pot anula cereri aprobate sau respinse",
             "ACTIVITY_LOG_007": "Nu poți înregistra ore pentru o dată din viitor.",
             "ACTIVITY_LOG_008": "Nu se pot înregistra mai mult de 24 de ore într-o zi.",
             "ACTIVITY_LOG_009": "Aceste ore sunt deja înregistrate pentru aceeași zi, același eveniment și aceeași activitate.",
@@ -777,7 +780,8 @@
                 "required": "Codul de acces este obligatoriu",
                 "invalid": "Codul introdus nu este valid.",
                 "min": "Codul poate să aibă minim {{value}} caractere",
-                "max": "Codul poate să aibă maxim {{value}} caractere"
+                "max": "Codul poate să aibă maxim {{value}} caractere",
+                "label": "Codul primit de la organizație"
             }
         },
         "modal": {
@@ -898,7 +902,7 @@
     "delete_account": {
         "title": "Confirmă ștergerea contului",
         "header": "Ești sigur că vrei să ștergi permanent contul?",
-        "paragraph": "Ștergerea contului duce la pierderea definitivă a datelor tale și a accesului la aplicație. Procesul este ireversibil: ca să folosești VIC din nou, va trebui să îți creezi un cont nou.",
+        "paragraph": "Ștergerea contului este definitivă: pierzi datele și accesul la aplicație, iar orele, documentele și legătura cu organizațiile se șterg și ele. Dacă vrei să folosești VIC din nou, va trebui să îți creezi un cont nou.",
         "confirm": "Confirmă ștergerea",
         "second_confirmation": {
             "title": "Ștergi contul definitiv?",

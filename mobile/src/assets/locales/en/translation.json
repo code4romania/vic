@@ -32,7 +32,8 @@
       "load_entries": "Error loading data",
       "unknown": "An unknown error has occurred",
       "generic_error": "Data processing error, code: #{{code}}",
-      "ORG_005": "The organization is not validated yet or is suspended. Try again later."
+      "ORG_005": "The organization is not validated yet or is suspended. Try again later.",
+      "load_hint": "We couldn't load the data. It's not your fault, try again in a few seconds."
     },
     "back": "Back to",
     "close": "Close",
@@ -92,8 +93,8 @@
       }
     },
     "create_user": {
-      "heading": "User data",
-      "paragraph": "Fill in the fields below to complete the registration.",
+      "heading": "Tell us who you are",
+      "paragraph": "Organizations need this information for the contract and certificates.",
       "form": {
         "first_name": {
           "label": "First name",
@@ -212,7 +213,7 @@
     "section_settings": "Settings"
   },
   "account_data": {
-    "title": "Account data",
+    "title": "Personal data",
     "profile_picture": "Profile picture",
     "change_profile_picture": "Change photo",
     "submit": {
@@ -268,7 +269,7 @@
     "modal": {
       "birthday_missing": {
         "heading": "Oops!",
-        "paragraph": "You have not filled in your date of birth in My account. Fill it in to join an organization.",
+        "paragraph": "You have not filled in your date of birth in Personal data. Fill it in to join an organization.",
         "action_label": "Complete your data"
       },
       "confirm_cancel_request": {
@@ -316,7 +317,7 @@
       "ORG_001": "The organization has not been found",
       "USER_001": "User not found",
       "VOLUNTEER_002": "The user is already part of the organization",
-      "USER_005": "Fill in your date of birth in My account to join an organization."
+      "USER_005": "Fill in your date of birth in Personal data to join an organization."
     },
     "modal": {
       "success": {
@@ -396,8 +397,8 @@
       }
     },
     "age": "{{years}} years",
-    "county": ", jud {{name}}",
-    "information": "Voluntary information",
+    "county": ", {{name}} County",
+    "information": "Volunteer information",
     "email": "Contact email",
     "active_since": "Volunteer from",
     "created_on": "Registered in VIC since",
@@ -616,7 +617,9 @@
       "approved": "Approved at {{date}}",
       "pending": "Requires approval from the organization",
       "rejected": "Rejected at {{date}}",
-      "pending_editable": "Needs approval from the organization. Until then you can edit or delete it."
+      "pending_editable": "Needs approval from the organization. Until then you can edit or delete it.",
+      "approved_undated": "Approved",
+      "rejected_undated": "Rejected"
     },
     "form": {
       "event": {
@@ -751,7 +754,8 @@
         "required": "The access code is mandatory",
         "invalid": "The code entered is invalid.",
         "min": "The code can be a minimum of {{value}} characters",
-        "max": "The code can have a maximum of {{value}} characters"
+        "max": "The code can have a maximum of {{value}} characters",
+        "label": "Code from the organization"
       }
     },
     "modal": {
@@ -869,9 +873,14 @@
   "delete_account": {
     "title": "Confirm account deletion",
     "header": "Are you sure you wish to permanently delete your account?",
-    "paragraph": "To delete your account on the VIC application, please confirm your decision below. Deleting your account will result in the permanent loss of your data and access to the application. If you are certain about this action, click the 'Confirm Deletion' button. Keep in mind that this process is irreversible, and you will need to create a new account if you wish to use VIC in the future.",
-    "confirm": "Confirm Deletion",
-    "error": "There was an error trying to delete your account. Please contact us at {{value}} to finalize the process."
+    "paragraph": "Deleting your account is permanent: you lose your data and access to the app, and your hours, documents and links to organizations are deleted as well. If you want to use VIC again, you will need to create a new account.",
+    "confirm": "Confirm deletion",
+    "error": "There was an error trying to delete your account. Please contact us at {{value}} to finalize the process.",
+    "second_confirmation": {
+      "title": "Delete your account for good?",
+      "description": "Your data and your links to organizations are lost. This cannot be undone.",
+      "action": "Yes, delete my account"
+    }
   },
   "maintenance": {
     "heading": "VIC is being updated",
