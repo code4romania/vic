@@ -75,7 +75,9 @@
     "filters": {
       "show": "Filter",
       "reset": "Reset filters",
-      "hide": "Hide filters"
+      "hide": "Hide filters",
+      "title": "Filters and search",
+      "subtitle": "Quickly find what you need"
     },
     "select_interval": "Select range",
     "save_draft": "Save as draft",
@@ -362,7 +364,9 @@
         "city_ambiguous": "several cities have this name, fill in the county",
         "department_not_found": "the department does not exist in the organization"
       }
-    }
+    },
+    "subtitle": "Your organization's volunteer database",
+    "member_since": "Member since {{date}}"
   },
   "division": {
     "members": "Members",

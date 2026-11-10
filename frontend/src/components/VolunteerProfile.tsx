@@ -67,7 +67,7 @@ const VolunteerProfile = ({
     <Card>
       <CardHeader>
         <h2>{i18n.t('volunteer:card_title')}</h2>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap justify-end gap-2">
           {onToggleFavorite && (
             <Button
               className="btn-outline-secondary"
@@ -84,7 +84,7 @@ const VolunteerProfile = ({
             />
           )}
           <Button
-            className="btn-outline-secondary w-20"
+            className="btn-outline-secondary"
             label={i18n.t('general:edit', { item: '' })}
             icon={<PencilIcon className="h-5 w-5 text-cool-gray-500" />}
             onClick={onEdit}

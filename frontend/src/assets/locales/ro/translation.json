@@ -75,7 +75,9 @@
     "filters": {
       "show": "Filtre",
       "reset": "Resetează filtre",
-      "hide": "Ascunde filtre"
+      "hide": "Ascunde filtre",
+      "title": "Filtre și căutare",
+      "subtitle": "Găsește rapid ce cauți"
     },
     "select_interval": "Selectează interval",
     "save_draft": "Salvează ca draft",
@@ -366,7 +368,9 @@
         "city_ambiguous": "există mai multe localități cu acest nume, completează județul",
         "department_not_found": "departamentul nu există în organizație"
       }
-    }
+    },
+    "subtitle": "Baza de date cu voluntarii organizației",
+    "member_since": "Membru din {{date}}"
   },
   "division": {
     "members": "Membri",

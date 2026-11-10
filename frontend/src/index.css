@@ -98,6 +98,11 @@
   form {
     @apply flex flex-col gap-6;
   }
+
+  [type='radio'],
+  [type='checkbox'] {
+    @apply text-navy border-cool-gray-400 focus:ring-navy;
+  }
 }
 
 @layer components {

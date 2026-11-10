@@ -20,6 +20,10 @@ interface DataTableFiltersProps {
   searchPlaceholder?: string;
   onSearch: (searchWord: string) => void;
   onResetFilters: () => void;
+  // Defaults to "Filtre și căutare"
+  title?: string;
+  // Under the filters: how many results, and actions on them (export)
+  results?: React.ReactNode;
 }
 
 const DataTableFilters = ({
@@ -28,8 +32,11 @@ const DataTableFilters = ({
   searchPlaceholder,
   onSearch,
   onResetFilters,
+  title,
+  results,
 }: DataTableFiltersProps) => {
-  const [filtersCollapsed, setFiltersCollapsed] = useState<boolean>(false);
+  // "collapsed" historically means the filter panel is open; open by default, as in the design
+  const [filtersCollapsed, setFiltersCollapsed] = useState<boolean>(true);
   const [searchWord, setSearchWord] = useState<string>('');
 
   useEffect(() => {
@@ -45,7 +52,6 @@ const DataTableFilters = ({
 
   const resetFilters = () => {
     onResetFilters();
-    setFiltersCollapsed(true);
     setSearchWord('');
   };
 
@@ -61,46 +67,64 @@ const DataTableFilters = ({
   return (
     <Card>
       <CardHeader>
-        <div className="relative w-full flex-1">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-          </div>
-          <Input
-            id="search__filter"
-            type="text"
-            value={searchWord}
-            onChange={(event) => onSearchValueChange(event.target.value)}
-            placeholder={searchPlaceholder ?? i18n.t('general:search').toString()}
-          />
+        <div>
+          <h2>{title ?? i18n.t('general:filters.title')}</h2>
+          <p className="text-sm text-cool-gray-500">{i18n.t('general:filters.subtitle')}</p>
         </div>
-        <div className="w-full items-center justify-end gap-1 md:gap-4 flex flex-1">
-          {filtersCollapsed && (
-            <Button
-              type="button"
-              className="btn-outline-secondary w-auto"
-              label={i18n.t('general:filters.reset')}
-              onClick={resetFilters}
-              icon={<TrashIcon className="h-5 w-5" aria-hidden="true" />}
-            />
-          )}
-          <Button
-            type="button"
-            className="btn-outline-secondary w-auto"
-            label={
-              filtersCollapsed ? i18n.t('general:filters.hide') : i18n.t('general:filters.show')
-            }
-            onClick={setFiltersCollapsed.bind(null, !filtersCollapsed)}
-            icon={<AdjustmentsVerticalIcon className="h-5 w-5" aria-hidden="true" />}
-          />
-        </div>
+        <Button
+          type="button"
+          className="btn-text-primary px-2"
+          label={i18n.t('general:filters.reset')}
+          onClick={resetFilters}
+          icon={<TrashIcon className="h-4 w-4" aria-hidden="true" />}
+        />
       </CardHeader>
-      <div className={classNames(filtersCollapsed ? '' : 'hidden')}>
-        <CardBody>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-6">
-            {children}
+      <CardBody>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:items-end">
+            <div className="relative w-full flex-1">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <MagnifyingGlassIcon className="h-5 w-5 text-cool-gray-400" aria-hidden="true" />
+              </div>
+              <Input
+                id="search__filter"
+                type="text"
+                aria-label={searchPlaceholder ?? i18n.t('general:search').toString()}
+                value={searchWord}
+                onChange={(event) => onSearchValueChange(event.target.value)}
+                placeholder={searchPlaceholder ?? i18n.t('general:search').toString()}
+              />
+            </div>
+            {children && (
+              <Button
+                type="button"
+                className="btn-outline-secondary w-auto"
+                label={
+                  filtersCollapsed ? i18n.t('general:filters.hide') : i18n.t('general:filters.show')
+                }
+                aria-expanded={filtersCollapsed}
+                onClick={setFiltersCollapsed.bind(null, !filtersCollapsed)}
+                icon={<AdjustmentsVerticalIcon className="h-5 w-5" aria-hidden="true" />}
+              />
+            )}
           </div>
-        </CardBody>
-      </div>
+          {children && (
+            <div
+              className={classNames(
+                filtersCollapsed ? '' : 'hidden',
+                'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4',
+              )}
+            >
+              {children}
+            </div>
+          )}
+          {results && (
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-cool-gray-200 text-sm text-cool-gray-600">
+              {results}
+            </div>
+          )}
+        </div>
+      </CardBody>
     </Card>
   );
 };

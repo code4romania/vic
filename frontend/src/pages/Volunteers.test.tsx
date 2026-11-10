@@ -50,7 +50,7 @@ describe('Volunteers (#475, #476)', () => {
 
     expect(await screen.findByText('Ana Activ')).toBeInTheDocument();
     expect(screen.getByText('Cora Candidat')).toBeInTheDocument();
-    expect(screen.getByText('12')).toBeInTheDocument();
+    expect(screen.getByText('12h')).toBeInTheDocument();
     expect(screen.getByText(t('volunteers:status_label.candidate'))).toBeInTheDocument();
     expect(screen.getByText('Târg ONG')).toBeInTheDocument();
     expect(screen.getByText(t('volunteers:found', { count: 2 }))).toBeInTheDocument();
