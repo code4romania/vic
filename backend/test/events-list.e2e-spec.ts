@@ -63,6 +63,8 @@ describe('Events list tabs (e2e)', () => {
       'event_rsvp',
       'event_targets_organization_structure',
       'organization_structure',
+      'activity_log',
+      'volunteer',
       'event',
       'user',
       'organization',
@@ -95,22 +97,23 @@ describe('Events list tabs (e2e)', () => {
       'Viitor',
       'Viitor fără sfârșit',
     ]);
-    expect((await list({ eventState: 'ongoing' })).names).toEqual([
-      'Acum',
+    expect((await list({ eventState: 'ongoing' })).names).toEqual(['Acum']);
+    // an event with no end date is over after its start day
+    expect((await list({ eventState: 'past' })).names).toEqual([
       'Început fără sfârșit',
+      'Încheiat',
     ]);
-    expect((await list({ eventState: 'past' })).names).toEqual(['Încheiat']);
     // "open" (the app and older links) is upcoming + ongoing
-    expect((await list({ eventState: 'open' })).total).toBe(4);
+    expect((await list({ eventState: 'open' })).total).toBe(3);
   });
 
   it('paginates each tab on its own', async () => {
-    const first = await list({ eventState: 'ongoing', limit: 1, page: 1 });
-    const second = await list({ eventState: 'ongoing', limit: 1, page: 2 });
+    const first = await list({ eventState: 'past', limit: 1, page: 1 });
+    const second = await list({ eventState: 'past', limit: 1, page: 2 });
     expect(first.total).toBe(2);
     expect([...first.names, ...second.names].sort()).toEqual([
-      'Acum',
       'Început fără sfârșit',
+      'Încheiat',
     ]);
   });
 
@@ -147,8 +150,8 @@ describe('Events list tabs (e2e)', () => {
       (await list({ eventState: 'upcoming', departmentId: logistica })).names,
     ).toEqual(['Viitor fără sfârșit']);
     expect(
-      (await list({ eventState: 'ongoing', departmentId: comunicare })).names,
-    ).toEqual(['Început fără sfârșit']);
+      (await list({ eventState: 'ongoing', departmentId: logistica })).names,
+    ).toEqual(['Acum']);
 
     // an event keeps all its targets in the list, not only the filtered one
     const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
@@ -157,6 +160,7 @@ describe('Events list tabs (e2e)', () => {
       .query({
         eventState: 'past',
         departmentId: comunicare,
+        search: 'Încheiat',
         limit: 10,
         page: 1,
       })
@@ -169,8 +173,9 @@ describe('Events list tabs (e2e)', () => {
     ).toEqual(['Comunicare', 'Logistică']);
   });
 
-  // #493: counters for upcoming and ongoing published events and their "going" answers
-  it('counts upcoming and ongoing published events and their participants', async () => {
+  // #493: counters for the upcoming and ongoing tabs (drafts included, like the tabs) and the
+  // approved registrations of those events
+  it('counts upcoming and ongoing events like the tabs, and their participants', async () => {
     await addEvent('Ciornă', daysFromNow(2), null);
     await testApp.dataSource.query(
       `UPDATE event SET status = 'draft' WHERE name = 'Ciornă'`,
@@ -206,6 +211,38 @@ describe('Events list tabs (e2e)', () => {
       .get('/event/counters')
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
-    expect(response.body).toEqual({ upcoming: 2, ongoing: 2, participants: 5 });
+    expect(response.body).toEqual({ upcoming: 3, ongoing: 1, participants: 5 });
+  });
+
+  // M11: the event's hours in the list are its approved hours
+  it('totals only the approved hours of an event', async () => {
+    const [user] = await testApp.dataSource.query(
+      `INSERT INTO "user" (type, name, email, phone) VALUES ('regular', 'V', 'v@example.ro', '+40733000000') RETURNING id`,
+    );
+    const [volunteer] = await testApp.dataSource.query(
+      `INSERT INTO volunteer (user_id, organization_id, status) VALUES ($1, $2, 'active') RETURNING id`,
+      [user.id, organizationId],
+    );
+    for (const [hours, status] of [
+      [3, 'approved'],
+      [5, 'pending'],
+      [7, 'rejected'],
+    ] as const) {
+      await testApp.dataSource.query(
+        `INSERT INTO activity_log (date, hours, status, volunteer_id, organization_id, event_id)
+         SELECT now(), $1, $2, $3, $4, id FROM event WHERE name = 'Încheiat'`,
+        [hours, status, volunteer.id, organizationId],
+      );
+    }
+    const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
+    const response = await http()
+      .get('/event')
+      .query({ eventState: 'past', search: 'Încheiat', limit: 10, page: 1 })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+    expect(response.body.items[0].activityLogged).toEqual({
+      totalHours: 3,
+      volunteers: 1,
+    });
   });
 });

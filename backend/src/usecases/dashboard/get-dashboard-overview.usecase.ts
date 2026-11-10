@@ -55,8 +55,9 @@ export class GetDashboardOverviewUsecase {
              AND start_date >= now()) AS "upcomingEvents",
          (SELECT COALESCE(SUM(hours), 0) FROM activity_log
            WHERE organization_id = $1 AND status = 'approved' AND deleted_on IS NULL) AS "approvedHours",
-         (SELECT COALESCE(SUM(hours), 0) FROM activity_log
-           WHERE organization_id = $1 AND status = 'pending' AND deleted_on IS NULL) AS "pendingHours"`,
+         (SELECT COALESCE(SUM(l.hours), 0) FROM activity_log l JOIN volunteer v ON v.id = l.volunteer_id
+           WHERE l.organization_id = $1 AND l.status = 'pending' AND l.deleted_on IS NULL
+             AND v.status = 'active') AS "pendingHours"`,
       [organizationId],
     );
     return {

@@ -1,3 +1,5 @@
+import { hasEventEnded } from '../event-end';
+
 export enum EventStatus {
   DRAFT = 'draft',
   PUBLISHED = 'published',
@@ -13,14 +15,19 @@ export enum EventDisplayStatus {
   ARCHIVED = 'archived',
 }
 
+// An event with no end date is finished after its start day (see event-end.ts).
 export function getEventDisplayStatus(
-  event: { status: EventStatus; endDate?: Date | null },
+  event: {
+    status: EventStatus;
+    startDate?: Date | null;
+    endDate?: Date | null;
+  },
   now: Date = new Date(),
 ): EventDisplayStatus {
   if (
     event.status === EventStatus.PUBLISHED &&
-    event.endDate &&
-    new Date(event.endDate).getTime() < now.getTime()
+    (event.endDate || event.startDate) &&
+    hasEventEnded(event as { startDate: Date; endDate?: Date }, now)
   ) {
     return EventDisplayStatus.FINISHED;
   }

@@ -41,6 +41,10 @@ import { endOfDay, endOfMonth } from 'date-fns';
 import { VolunteerProfileEntity } from 'src/modules/volunteer/entities/volunteer-profile.entity';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { visibleToVolunteersCondition } from 'src/modules/organization/organization-visibility';
+import { eventEndSql } from '../event-end';
+
+// The query builder's event end: the end date, or the end of the start day (event-end.ts)
+const EVENT_END = eventEndSql('event.startDate', 'event.endDate');
 
 @Injectable()
 export class EventRepository
@@ -131,7 +135,7 @@ export class EventRepository
       .then(([row]) => +row.n);
   }
 
-  // #493: one query; the department filter matches the list's (#494)
+  // #493: one query; the department filter matches the list's (#494). Like the tabs, drafts count too.
   async countByState({
     organizationId,
     departmentId,
@@ -141,8 +145,8 @@ export class EventRepository
          SELECT event.id, event.start_date > now() AS upcoming
          FROM event
          WHERE event.organization_id = $1
-           AND event.status = 'published'
-           AND (event.end_date > now() OR event.end_date IS NULL)
+           AND event.deleted_on IS NULL
+           AND ${eventEndSql('event.start_date', 'event.end_date')} > now()
            AND ($2::uuid IS NULL
              OR EXISTS (SELECT 1 FROM event_targets_organization_structure t WHERE t."eventId" = event.id AND t."organizationStructureId" = $2)
              OR NOT EXISTS (SELECT 1 FROM event_targets_organization_structure t WHERE t."eventId" = event.id))
@@ -176,10 +180,13 @@ export class EventRepository
     const query = this.eventRepository
       .createQueryBuilder('event')
       .leftJoinAndMapMany('event.targets', 'event.targets', 'targets')
+      // M11: the event's hours are its approved hours
       .leftJoinAndMapMany(
         'event.activityLogs',
         'event.activityLogs',
         'activityLog',
+        'activityLog.status = :approvedLogStatus',
+        { approvedLogStatus: 'approved' },
       )
       .loadRelationCountAndMap(
         'event.going',
@@ -223,8 +230,7 @@ export class EventRepository
     if (eventState) {
       const currentDate = new Date();
       // an event with no end date has not finished
-      const notEnded =
-        '(event.endDate > :currentDate OR event.endDate IS NULL)';
+      const notEnded = `${EVENT_END} > :currentDate`;
       if (eventState === EventState.OPEN) {
         query.andWhere(notEnded, { currentDate });
       } else if (eventState === EventState.UPCOMING) {
@@ -234,7 +240,7 @@ export class EventRepository
           currentDate,
         });
       } else {
-        query.andWhere('event.endDate <= :currentDate', {
+        query.andWhere(`${EVENT_END} <= :currentDate`, {
           currentDate,
         });
       }
@@ -334,7 +340,7 @@ export class EventRepository
 
     // Get all events in progress from the organizations i am part or public events
     query.andWhere(
-      '(event.endDate > :currentDate OR event.endDate IS NULL) AND ((event.isPublic = :isPublic AND event.organizationId NOT IN ' +
+      `${EVENT_END} > :currentDate AND ((event.isPublic = :isPublic AND event.organizationId NOT IN ` +
         query
           .subQuery()
           .select('vol.organizationId')
@@ -364,7 +370,7 @@ export class EventRepository
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
     query.andWhere(
-      '(event.endDate > :currentDate OR event.endDate IS NULL) AND v.userId = :userId AND v.status = :volunteerStatus AND (targets.id = vp.departmentId OR targets.id IS NULL)',
+      `${EVENT_END} > :currentDate AND v.userId = :userId AND v.status = :volunteerStatus AND (targets.id = vp.departmentId OR targets.id IS NULL)`,
       {
         currentDate: new Date(),
         userId,
@@ -383,7 +389,7 @@ export class EventRepository
     const query = this.createSelectOpenOrganizationGoingEventsBaseSelectQuery();
 
     query.andWhere(
-      '(event.endDate > :currentDate OR event.endDate IS NULL) AND ((v.status = :active AND v.userId = :userId) OR event.isPublic = :isPublic)',
+      `${EVENT_END} > :currentDate AND ((v.status = :active AND v.userId = :userId) OR event.isPublic = :isPublic)`,
       {
         currentDate: new Date(),
         active: VolunteerStatus.ACTIVE,

@@ -7,6 +7,7 @@ import {
 } from 'src/infrastructure/base/repository-with-pagination.class';
 import { Repository } from 'typeorm';
 import { EventRSVPEntity } from '../entities/event-rsvp.entity';
+import { eventEndSql } from '../event-end';
 import { IEventRSVPRepository } from '../interfaces/event-rsvp-repository.interface';
 import {
   CreateEventRSVPOptions,
@@ -234,6 +235,8 @@ export class EventRSVPRepository
        LEFT JOIN "user" a ON a.id = r.decided_by
        WHERE e.organization_id = $1 AND r.going AND r.status = $2
          AND ($3::uuid IS NULL OR e.id = $3)
+         -- M10: a pending registration to an event that has ended can no longer be decided
+         AND (r.status <> 'pending' OR ${eventEndSql('e.start_date', 'e.end_date')} > now())
          AND ($4::text IS NULL OR u.name ILIKE '%' || $4 || '%' OR u.email ILIKE '%' || $4 || '%' OR e.name ILIKE '%' || $4 || '%')`;
     const [{ total }] = await this.rsvpRepository.query(
       `SELECT count(*) AS total ${where}`,

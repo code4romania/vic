@@ -14,6 +14,7 @@ import {
   UpdateOrganizationOptions,
 } from '../models/organization.model';
 import { OrganizationStatus } from '../enums/organization-status.enum';
+import { eventEndSql } from 'src/modules/event/event-end';
 
 // What volunteers may see in the app (decision 1): confirmed (active, not pending or suspended) and validated.
 const VISIBLE_TO_VOLUNTEERS =
@@ -223,7 +224,7 @@ export class OrganizationRepositoryService
       .leftJoinAndSelect(
         'organization.events',
         'event',
-        'event.isPublic = :isPublic AND (event.endDate > :date OR event.endDate IS NULL) AND event.status = :status',
+        `event.isPublic = :isPublic AND ${eventEndSql('event.startDate', 'event.endDate')} > :date AND event.status = :status`,
         {
           isPublic: true,
           date: new Date(),

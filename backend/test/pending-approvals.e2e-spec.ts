@@ -126,4 +126,100 @@ describe('Pending approvals (e2e)', () => {
       total: 5,
     });
   });
+
+  // M10: only what can still be decided
+  it("leaves out an inactive or blocked volunteer's hours and registrations to ended events", async () => {
+    const [own] = orgs;
+    const volunteer = async (user: string, status: string): Promise<string> =>
+      (
+        await testApp.dataSource.query(
+          `INSERT INTO volunteer (user_id, organization_id, status) VALUES ($1, $2, $3) RETURNING id`,
+          [user, own, status],
+        )
+      )[0].id;
+    const active = await volunteer(users[0], 'active');
+    const inactive = await volunteer(users[1], 'inactive');
+    const blocked = await volunteer(users[2], 'blocked');
+    for (const id of [active, inactive, blocked]) {
+      await testApp.dataSource.query(
+        `INSERT INTO activity_log (date, hours, status, volunteer_id, organization_id) VALUES (now(), 2, 'pending', $1, $2)`,
+        [id, own],
+      );
+    }
+    const event = async (start: string, end: string | null): Promise<string> =>
+      (
+        await testApp.dataSource.query(
+          `INSERT INTO event (name, description, start_date, end_date, organization_id) VALUES ('E', 'd', ${start}, ${end ?? 'NULL'}, $1) RETURNING id`,
+          [own],
+        )
+      )[0].id;
+    const upcoming = await event(`now() + interval '1 day'`, null);
+    const ended = await event(
+      `now() - interval '3 days'`,
+      `now() - interval '2 days'`,
+    );
+    const endedWithoutEndDate = await event(`now() - interval '3 days'`, null);
+    for (const id of [upcoming, ended, endedWithoutEndDate]) {
+      await testApp.dataSource.query(
+        `INSERT INTO event_rsvp (going, status, event_id, user_id) VALUES (true, 'pending', $1, $2)`,
+        [id, users[0]],
+      );
+    }
+
+    const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
+    const { body } = await request(testApp.app.getHttpServer())
+      .get('/dashboard/pending-approvals')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+    expect(body).toEqual({
+      accessRequests: 0,
+      activityLogs: 1,
+      eventRegistrations: 1,
+      total: 2,
+    });
+
+    // the lists behind the counters agree
+    const registrations = await request(testApp.app.getHttpServer())
+      .get('/event-registrations')
+      .query({ status: 'pending' })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+    expect(registrations.body.items).toHaveLength(1);
+    const logs = await request(testApp.app.getHttpServer())
+      .get('/activity-log')
+      .query({ resolutionStatus: 'new', limit: 10, page: 1 })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+    expect(logs.body.meta.totalItems).toBe(1);
+  });
+
+  it('filters decided hours by the admin who decided them, by id (or name)', async () => {
+    const [own] = orgs;
+    const [volunteer] = await testApp.dataSource.query(
+      `INSERT INTO volunteer (user_id, organization_id, status) VALUES ($1, $2, 'active') RETURNING id`,
+      [users[0], own],
+    );
+    await testApp.dataSource.query(
+      `INSERT INTO activity_log (date, hours, status, volunteer_id, organization_id, approved_by, approved_on)
+       VALUES (now(), 2, 'approved', $1, $2, $3, now()), (now(), 3, 'approved', $1, $2, NULL, now())`,
+      [volunteer.id, own, admin.userId],
+    );
+    const token = await testApp.mintAccessToken(admin, AuthRealm.WEB);
+    const total = async (approvedOrRejectedBy: string): Promise<number> =>
+      (
+        await request(testApp.app.getHttpServer())
+          .get('/activity-log')
+          .query({
+            resolutionStatus: 'solved',
+            approvedOrRejectedBy,
+            limit: 10,
+            page: 1,
+          })
+          .set('Authorization', `Bearer ${token}`)
+          .expect(200)
+      ).body.meta.totalItems;
+    expect(await total(admin.userId)).toBe(1);
+    expect(await total('00000000-0000-4000-8000-000000000000')).toBe(0);
+    expect(await total('Ana')).toBe(1);
+  });
 });

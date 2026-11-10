@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { compareAsc } from 'date-fns';
 import { IUseCaseService } from 'src/common/interfaces/use-case-service.interface';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { EventRegistrationStatus } from 'src/modules/event/enums/event-registration-status.enum';
@@ -10,6 +9,7 @@ import {
   IEventRSVPModel,
 } from 'src/modules/event/models/event-rsvp.model';
 import { EventFacade } from 'src/modules/event/services/event.facade';
+import { hasEventEnded } from 'src/modules/event/event-end';
 import { VolunteerStatus } from 'src/modules/volunteer/enums/volunteer-status.enum';
 import { VolunteerExceptionMessages } from 'src/modules/volunteer/exceptions/volunteer.exceptions';
 import { VolunteerFacade } from 'src/modules/volunteer/services/volunteer.facade';
@@ -44,7 +44,7 @@ export class CreateEventRSVPUseCase
     await this.organizationGate.assertValidated(event.organization?.id);
 
     // 2. check if the event has passed
-    if (event.endDate && compareAsc(new Date(event.endDate), new Date()) < 1) {
+    if (hasEventEnded(event)) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_007,
       );

@@ -6,6 +6,7 @@ import { EventRegistrationStatus } from 'src/modules/event/enums/event-registrat
 import { EventRSVPExceptionMessages } from 'src/modules/event/exceptions/event-rsvp.exceptions';
 import { IEventRSVPModel } from 'src/modules/event/models/event-rsvp.model';
 import { EventFacade } from 'src/modules/event/services/event.facade';
+import { hasEventEnded } from 'src/modules/event/event-end';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import RegistrationDecidedEvent from 'src/modules/notifications/events/ngo-event/registration-decided.event';
 import { OrganizationGateService } from 'src/usecases/organization/organization-gate.service';
@@ -52,7 +53,7 @@ export class DecideEventRegistrationUseCase
         EventRSVPExceptionMessages.EVENT_RSVP_010,
       );
     }
-    if (event.endDate && new Date(event.endDate) <= new Date()) {
+    if (hasEventEnded(event)) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_007,
       );

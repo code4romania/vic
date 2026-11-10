@@ -7,6 +7,7 @@ import { EventStatus } from 'src/modules/event/enums/event-status.enum';
 import { EventRSVPExceptionMessages } from 'src/modules/event/exceptions/event-rsvp.exceptions';
 import { IEventCandidateModel } from 'src/modules/event/models/event.model';
 import { EventFacade } from 'src/modules/event/services/event.facade';
+import { hasEventEnded } from 'src/modules/event/event-end';
 import { EVENTS } from 'src/modules/notifications/constants/events.constants';
 import VolunteerAddedToEventEvent from 'src/modules/notifications/events/ngo-event/volunteer-added.event';
 import { OrganizationGateService } from 'src/usecases/organization/organization-gate.service';
@@ -50,7 +51,7 @@ export class AddVolunteersToEventUseCase
         EventRSVPExceptionMessages.EVENT_RSVP_006,
       );
     }
-    if (event.endDate && new Date(event.endDate) <= new Date()) {
+    if (hasEventEnded(event)) {
       this.exceptionsService.badRequestException(
         EventRSVPExceptionMessages.EVENT_RSVP_007,
       );

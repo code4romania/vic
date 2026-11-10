@@ -29,12 +29,30 @@ describe('getEventDisplayStatus (#492)', () => {
         now,
       ),
     ).toBe(EventDisplayStatus.PUBLISHED);
+    // no end date: running through its start day (in Bucharest)
     expect(
       getEventDisplayStatus(
-        { status: EventStatus.PUBLISHED, endDate: null },
+        {
+          status: EventStatus.PUBLISHED,
+          startDate: new Date('2026-11-09T08:00:00Z'),
+          endDate: null,
+        },
         now,
       ),
     ).toBe(EventDisplayStatus.PUBLISHED);
+  });
+
+  it('a published event without end date is finished after its start day', () => {
+    expect(
+      getEventDisplayStatus(
+        {
+          status: EventStatus.PUBLISHED,
+          startDate: new Date('2026-11-08T08:00:00Z'),
+          endDate: null,
+        },
+        now,
+      ),
+    ).toBe(EventDisplayStatus.FINISHED);
   });
 
   it('drafts and archived events keep their status', () => {
