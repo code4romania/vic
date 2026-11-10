@@ -56,7 +56,13 @@
     "error": {
       "load_entries": "Error loading data",
       "unknown": "An unknown error has occurred",
-      "generic_error": "Data processing error, code: #{{code}}"
+      "generic_error": "Data processing error, code: #{{code}}",
+      "codes": {
+        "INVALID_ORDER_BY": "The list cannot be sorted by this column.",
+        "FILE_TOO_LARGE": "The file is too large.",
+        "DUPLICATE_ENTRY": "An entry with these details already exists.",
+        "INTERNAL_ERROR": "Something went wrong. Try again in a few moments."
+      }
     },
     "cancel": "Cancel",
     "years_old": "{{age}} years",
@@ -90,7 +96,9 @@
     "confirm": "Confirm",
     "no_options": "No options",
     "type_for_options": "Type for options...",
-    "actions": "Actions"
+    "actions": "Actions",
+    "more": "More",
+    "empty_filtered": "No results for this search or these filters. Try another search or reset the filters."
   },
   "header": {
     "login": "Login",
@@ -105,13 +113,13 @@
   "side_menu": {
     "options": {
       "dashboard": "Dashboard",
-      "organization": "NGO Structure",
+      "organization": "Organization",
       "volunteers": "Volunteers",
       "events": "Events",
       "volunteers_list": "List of volunteers",
       "access_requests": "Applications",
       "access_codes": "Access codes",
-      "documents": "Documents",
+      "documents": "Contracts",
       "announcements": "Announcements",
       "activity_types": "Activity categories",
       "activity_log": "Volunteer hours",
@@ -127,7 +135,11 @@
       "all_volunteers": "All volunteers"
     },
     "collapse": "Narrow the menu",
-    "aria": "Main menu"
+    "aria": "Main menu",
+    "sections": {
+      "vic_admin": "VIC administration"
+    },
+    "expand": "Expand menu"
   },
   "volunteer": {
     "all": "All volunteers",
@@ -244,7 +256,8 @@
       "download": "Download contract",
       "confirm": "Delete for good",
       "success": "{{name}} was deleted, together with their data in the organization."
-    }
+    },
+    "status_in_vic": "Status in VIC"
   },
   "volunteers": {
     "department_and_role": "Department and role",
@@ -369,7 +382,12 @@
       }
     },
     "subtitle": "Your organization's volunteer database",
-    "member_since": "Member since {{date}}"
+    "member_since": "Member since {{date}}",
+    "empty": {
+      "title": "No volunteers yet",
+      "description": "Add the first volunteer or import your volunteers from an Excel file.",
+      "action": "Add the first volunteer"
+    }
   },
   "division": {
     "members": "Members",
@@ -449,7 +467,9 @@
       "ORG_009": "Invites are only for admins who have not logged in yet.",
       "ORG_010": "You cannot change your own status.",
       "ORG_011": "Type the organization's name exactly to delete it.",
-      "ORG_003": "The logo is not valid: pick a PNG, JPG, GIF or WEBP image of at most 5 MB."
+      "ORG_003": "The logo is not valid: pick a PNG, JPG, GIF or WEBP image of at most 5 MB.",
+      "ORG_012": "The tax id cannot change after the organization was validated.",
+      "ORG_013": "Another admin changed the team meanwhile. Reload the page and try again."
     },
     "form": {
       "description": {
@@ -771,7 +791,8 @@
         "all": "The whole organization",
         "placeholder": "Choose all that apply",
         "disclaimer": "Disclaimer: If no department is selected, then 'Whole organization' will be selected",
-        "required": "Departments are mandatory"
+        "required": "Departments are mandatory",
+        "select": "Select departments"
       },
       "description": {
         "label": "Event description"
@@ -808,9 +829,11 @@
       "EVENT_009": "Error deleting poster",
       "EVENT_RSVP_006": "The event is not published.",
       "EVENT_RSVP_007": "The event has ended.",
-      "EVENT_RSVP_008": "The event is full: there are not enough places for all the selected volunteers.",
+      "EVENT_RSVP_008": "The event is full: there are no free places left.",
       "EVENT_RSVP_009": "Only active volunteers from the event's departments can be added.",
-      "EVENT_RSVP_010": "Registration not found."
+      "EVENT_RSVP_010": "Registration not found.",
+      "EVENT_010": "The end date must be after the start date.",
+      "EVENT_011": "The capacity cannot be lower than the number of approved volunteers."
     },
     "download_open": "Active events.xlsx",
     "download_past": "Closed events.xlsx",
@@ -920,7 +943,8 @@
       "search": "Search by event name",
       "found_one": "{{count}} event found",
       "found_other": "{{count}} events found",
-      "empty": "There are no events in this category"
+      "empty": "There are no events in this category",
+      "empty_title": "No events here"
     },
     "table": {
       "event": "Event",
@@ -1122,7 +1146,8 @@
       },
       "pagination": "Page {{page}} of {{pages}}",
       "previous": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "empty_title": "No announcements here"
     },
     "tabs": {
       "active": "Active",
@@ -1225,7 +1250,7 @@
       "hours": {
         "required": "The number of hours is compulsory",
         "min": "The number of hours must be greater than 0",
-        "max": "The number of hours must be less than {{value}}",
+        "max": "At most {{value}} hours in a day",
         "integer": "The number of hours must be whole"
       },
       "submit": {
@@ -1243,7 +1268,11 @@
       "ACTIVITY_LOG_002": "Volunteer must have profile to log in hours",
       "ACTIVITY_LOG_003": "No changes can be made to requests in Approved or Rejected status",
       "ACTIVITY_LOG_005": "Hours can only be added to an active volunteer",
-      "ACTIVITY_LOG_006": "Write why you reject these hours"
+      "ACTIVITY_LOG_006": "Write why you reject these hours",
+      "ACTIVITY_LOG_007": "The activity date cannot be in the future.",
+      "ACTIVITY_LOG_008": "A volunteer cannot have more than 24 hours in a day.",
+      "ACTIVITY_LOG_009": "These hours are already logged for the volunteer on the same day.",
+      "ACTIVITY_LOG_010": "Hours cannot be logged for an unpublished (draft) event."
     },
     "download_file_name": "Volunteering hours history.xlsx",
     "counters": {
@@ -1442,33 +1471,39 @@
         "label": "Active volunteers",
         "info_one": "{{count}} new request",
         "info_other": "{{count}} new requests",
-        "action": "See volunteers"
+        "action": "See volunteers",
+        "subtitle": "active members of the organization"
       },
       "events": {
         "label": "Upcoming events",
-        "action": "See events"
+        "action": "See events",
+        "subtitle": "planned events"
       },
       "contracts": {
         "label": "Pending contracts",
-        "action": "See contracts"
+        "action": "See contracts",
+        "subtitle": "awaiting signature"
       },
       "hours": {
         "label": "Volunteering hours",
         "info_one": "{{count}} hour to approve",
         "info_other": "{{count}} hours to approve",
-        "action": "See hours to approve"
+        "action": "See hours to approve",
+        "subtitle": "approved hours in total"
       }
     },
     "upcoming_events": {
       "title": "Upcoming events",
       "empty": "No events scheduled.",
       "going_capacity": "{{going}}/{{capacity}} registered",
-      "going": "{{going}} registered"
+      "going": "{{going}} registered",
+      "subtitle": "The next planned events"
     },
     "announcement_responses": {
       "title": "Announcement responses",
       "empty": "No responses to announcements yet.",
-      "on": "on \"{{name}}\""
+      "on": "on \"{{name}}\"",
+      "subtitle": "Latest responses to announcements"
     },
     "subtitle": "Volunteer activity at a glance",
     "quick_actions": {
@@ -1476,7 +1511,9 @@
       "add_volunteer": "Add volunteer",
       "add_event": "Create event",
       "add_announcement": "Create announcement",
-      "add_hours": "Add hours"
+      "add_hours": "Add hours",
+      "subtitle": "Frequently used commands",
+      "manage_contracts": "Manage contracts"
     },
     "pending": {
       "title": "Pending approvals",
@@ -1583,7 +1620,11 @@
       },
       "download": "Contracts.xlsx",
       "period_open": "from {{start}}, no end date",
-      "issued_on": "issued on {{date}}"
+      "issued_on": "issued on {{date}}",
+      "empty": {
+        "title": "No contracts yet",
+        "description": "Upload a contract signed with a volunteer to see it here."
+      }
     },
     "contract": {
       "add": {
@@ -1746,6 +1787,10 @@
         "EXPIRED": {
           "label": "Expired",
           "info": "need renewal"
+        },
+        "EXPIRING_SOON": {
+          "label": "Expiring soon",
+          "info": "end within the next 30 days"
         }
       },
       "filters": {
@@ -1975,7 +2020,7 @@
       "max": "At most {{value}} characters",
       "email_invalid": "The email address is not valid",
       "website_invalid": "Enter a full address, starting with https://",
-      "tax_id_invalid": "The tax ID (CUI) has digits only, optionally with RO in front",
+      "tax_id_invalid": "The tax id is not valid. Check the digits; it may start with RO, spaces do not matter.",
       "name": {
         "label": "Organization name"
       },
@@ -2396,7 +2441,9 @@
       "all": "All",
       "pending": "Pending validation",
       "active": "Active",
-      "suspended": "Suspended"
+      "suspended": "Suspended",
+      "unconfirmed": "Email not confirmed",
+      "validation": "Awaiting validation"
     },
     "subtitle": {
       "organizations": "Every organization registered in VIC, with its status",
