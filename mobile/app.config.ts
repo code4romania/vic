@@ -99,8 +99,7 @@ const expoConfig: ExpoConfig = {
       'expo-image-picker',
       {
         // the profile photo is picked from the gallery only: no camera, no microphone
-        photosPermission:
-          'VIC folosește galeria foto doar pentru a-ți alege fotografia de profil.',
+        photosPermission: 'VIC folosește galeria foto doar pentru a-ți alege fotografia de profil.',
         cameraPermission: false,
         microphonePermission: false,
       },
