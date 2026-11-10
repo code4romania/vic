@@ -224,10 +224,10 @@ export class OrganizationRepositoryService
       .leftJoinAndSelect(
         'organization.events',
         'event',
-        `event.isPublic = :isPublic AND ${eventEndSql('event.startDate', 'event.endDate')} > :date AND event.status = :status`,
+        `event.isPublic = :isPublic AND ${eventEndSql('event.startDate', 'event.endDate')} > :openEventsNow AND event.status = :status`,
         {
           isPublic: true,
-          date: new Date(),
+          openEventsNow: new Date(),
           status: EventStatus.PUBLISHED,
         },
       )

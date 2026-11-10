@@ -26,5 +26,6 @@ export function hasEventEnded(
 // The same in SQL, from the start and end expressions of a query (columns or query builder
 // properties, e.g. `eventEndSql('e.start_date', 'e.end_date')`).
 export function eventEndSql(start: string, end: string): string {
-  return `COALESCE(${end}, ((((${start}) AT TIME ZONE '${APP_TIME_ZONE}')::date + 1)::timestamp AT TIME ZONE '${APP_TIME_ZONE}'))`;
+  // CAST, not "::": the query builder would read "::date" as a :date parameter
+  return `COALESCE(${end}, (CAST(CAST((${start}) AT TIME ZONE '${APP_TIME_ZONE}' AS date) + 1 AS timestamp) AT TIME ZONE '${APP_TIME_ZONE}'))`;
 }

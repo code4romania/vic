@@ -215,8 +215,9 @@ export const contractStatusCondition = (
   status: ClientContractStatus,
   alias: string,
 ): string => {
+  // CAST, not "::": the query builder would read "::date" as a :date parameter
   const day = (expression: string): string =>
-    `((${expression}) AT TIME ZONE '${APP_TIME_ZONE}')::date`;
+    `CAST((${expression}) AT TIME ZONE '${APP_TIME_ZONE}' AS date)`;
   const today = day('CAST(:statusNow AS timestamptz)');
   const pastEnd = `(${alias}.endDate IS NOT NULL AND ${day(`${alias}.endDate`)} < ${today})`;
   switch (status) {
