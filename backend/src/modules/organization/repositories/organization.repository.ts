@@ -251,18 +251,30 @@ export class OrganizationRepositoryService
   public async findMyOrganizations(
     userId: string,
   ): Promise<IOrganizationVolunteerModel[]> {
-    // get all organizations where this user has an active volunteer profile
-    const organizationEntities = await this.organizationRepository.find({
-      where: {
-        volunteers: {
-          userId,
-          status: VolunteerStatus.ACTIVE,
-        },
-      },
-      relations: {
-        volunteers: true,
-      },
-    });
+    // Organizations where the user is an active volunteer, plus those where the organization made
+    // them inactive: they can still see the organization and download documents (#472, #589).
+    // Inactive after leaving by themselves (archived_by = the user) is not "mine" any more.
+    const organizationEntities = await this.organizationRepository
+      .createQueryBuilder('organization')
+      .innerJoinAndSelect(
+        'organization.volunteers',
+        'volunteers',
+        'volunteers.userId = :userId',
+        { userId },
+      )
+      .where(
+        new Brackets((qb) =>
+          qb
+            .where('volunteers.status = :active', {
+              active: VolunteerStatus.ACTIVE,
+            })
+            .orWhere(
+              'volunteers.status = :inactive AND volunteers.archivedById IS DISTINCT FROM :userId',
+              { inactive: VolunteerStatus.INACTIVE },
+            ),
+        ),
+      )
+      .getMany();
 
     return organizationEntities.map((entity) =>
       OrganizationVolunteerTransformer.fromEntity(entity, userId),

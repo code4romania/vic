@@ -4,6 +4,7 @@ import Animated from 'react-native-reanimated';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import { isInactiveVolunteer } from '../common/interfaces/organization-list-item.interface';
 import {
   useActivityLogsCounters,
   useActivityLogsInfiniteQuery,
@@ -60,6 +61,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
   const { approvedHours, rejectedHours, pendingHours, activityLog } = useActivityLogs();
   const { userProfile } = useUserProfile();
   const organization = userProfile?.activeOrganization;
+  const inactive = isInactiveVolunteer(organization);
 
   const {
     data,
@@ -132,13 +134,15 @@ const ActivityLogs = ({ navigation, route }: any) => {
             <EventIcon name="back" size={20} />
           </PressableScale>
         )}
-        <VButton
-          size="small"
-          variant="soft"
-          label={`+ ${t('add')}`}
-          onPress={onAdd}
-          testID="hours-add"
-        />
+        {!inactive && (
+          <VButton
+            size="small"
+            variant="soft"
+            label={`+ ${t('add')}`}
+            onPress={onAdd}
+            testID="hours-add"
+          />
+        )}
       </View>
       <Enter>
         <VText variant="largeTitle" accessibilityRole="header" style={styles.title}>
@@ -180,6 +184,7 @@ const ActivityLogs = ({ navigation, route }: any) => {
   );
 
   const renderEmpty = () => {
+    const canAdd = status === ActivityLogStatus.PENDING && !inactive;
     if (isFetching && !isRefetching && !items.length) {
       return <ActivityLogSkeletonItem />;
     }
@@ -196,8 +201,8 @@ const ActivityLogs = ({ navigation, route }: any) => {
       <EmptyState
         title={`${t(`empty.${status}.title`)}`}
         description={`${t(`empty.${status}.description`)}`}
-        actionLabel={status === ActivityLogStatus.PENDING ? `${t('add')}` : undefined}
-        onAction={status === ActivityLogStatus.PENDING ? onAdd : undefined}
+        actionLabel={canAdd ? `${t('add')}` : undefined}
+        onAction={canAdd ? onAdd : undefined}
         testID="hours-empty"
       />
     );
