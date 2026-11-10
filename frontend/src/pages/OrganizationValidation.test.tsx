@@ -25,7 +25,48 @@ const PENDING = [
   },
 ];
 
+const meta = (totalItems: number) => ({
+  itemCount: totalItems,
+  totalItems,
+  itemsPerPage: 1,
+  totalPages: 1,
+  currentPage: 1,
+});
+
 describe('OrganizationValidation', () => {
+  beforeEach(() => {
+    server.use(
+      http.get(api('/admin/organizations'), ({ request }) => {
+        const status = new URL(request.url).searchParams.get('status');
+        return HttpResponse.json({ items: [], meta: meta(status === 'active' ? 14 : 3) });
+      }),
+    );
+  });
+
+  it('shows the CUI, the first admin and both self-declarations, with the counters', async () => {
+    server.use(
+      http.get(api('/admin/organizations/pending-validation'), () => HttpResponse.json(PENDING)),
+    );
+    renderPage(<OrganizationValidation />, { auth: { isSuperAdmin: true } });
+
+    expect(await screen.findByText('Asociatia Noua')).toBeInTheDocument();
+    expect(screen.getByText('Tudor Noua')).toBeInTheDocument();
+    expect(screen.getByText(t('validation:declarations.registered_ngo'))).toBeInTheDocument();
+    expect(screen.getByText(t('validation:declarations.representative'))).toBeInTheDocument();
+    expect(screen.getByText(t('validation:list_title', { count: 1 }))).toBeInTheDocument();
+    expect(await screen.findByText('14')).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument();
+  });
+
+  it('says so when no organization waits', async () => {
+    server.use(
+      http.get(api('/admin/organizations/pending-validation'), () => HttpResponse.json([])),
+    );
+    renderPage(<OrganizationValidation />, { auth: { isSuperAdmin: true } });
+    expect(await screen.findByText(t('validation:empty.title'))).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: t('validation:actions.validate') })).toBeNull();
+  });
+
   it('is a 403 for plain admins and loads nothing', async () => {
     const load = vi.fn();
     server.use(

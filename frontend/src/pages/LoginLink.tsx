@@ -5,7 +5,12 @@ import Button from '../components/Button';
 import LoadingContent from '../components/LoadingContent';
 import ExpiredLink from '../components/ExpiredLink';
 import OpenAppBox from '../components/OpenAppBox';
-import AuthLayout from '../layouts/AuthLayout';
+import AuthShell, { AuthNotice } from '../components/AuthShell';
+import {
+  ArrowRightOnRectangleIcon,
+  DevicePhoneMobileIcon,
+  ExclamationTriangleIcon,
+} from '@heroicons/react/24/outline';
 import { useAuth } from '../hooks/useAuth';
 import { useLoginWithLinkMutation, useTokenInfoQuery } from '../services/auth/auth.service';
 import { getAuthErrorCode } from '../common/utils/auth-error';
@@ -31,17 +36,20 @@ const LoginLink = () => {
 
   if (!token || isError || expired) {
     return (
-      <AuthLayout title={t('expired_title')}>
+      <AuthShell
+        title={t('expired_title')}
+        icon={<ExclamationTriangleIcon className="w-6 h-6" aria-hidden="true" />}
+      >
         <ExpiredLink token={token} />
-      </AuthLayout>
+      </AuthShell>
     );
   }
 
   if (isLoading || !info) {
     return (
-      <AuthLayout title={t('title.login')}>
+      <AuthShell title={t('title.login')}>
         <LoadingContent />
-      </AuthLayout>
+      </AuthShell>
     );
   }
 
@@ -53,13 +61,16 @@ const LoginLink = () => {
   // A volunteer belongs in the app, which logs in with an emailed code.
   if (appEmail || info.realm === 'mobile') {
     return (
-      <AuthLayout title={t('volunteer.title')}>
+      <AuthShell
+        title={t('volunteer.title')}
+        icon={<DevicePhoneMobileIcon className="w-6 h-6" aria-hidden="true" />}
+      >
         <OpenAppBox
           title={t('volunteer.open_app')}
           description={t('volunteer.description')}
           email={appEmail ?? undefined}
         />
-      </AuthLayout>
+      </AuthShell>
     );
   }
 
@@ -86,23 +97,21 @@ const LoginLink = () => {
   };
 
   return (
-    <AuthLayout title={t(`title.${info.purpose}`, { organization: info.organizationName ?? '' })}>
-      <p className="text-sm text-cool-gray-500">
-        {t(`description.${info.purpose}`, { email: info.maskedEmail })}
-      </p>
-      {error && (
-        <div role="alert" className="rounded-lg bg-red-50 border border-red-300 p-4 text-sm">
-          {error}
-        </div>
-      )}
+    <AuthShell
+      title={t(`title.${info.purpose}`, { organization: info.organizationName ?? '' })}
+      subtitle={t(`description.${info.purpose}`, { email: info.maskedEmail })}
+      icon={<ArrowRightOnRectangleIcon className="w-6 h-6" aria-hidden="true" />}
+    >
+      {error && <AuthNotice tone="error">{error}</AuthNotice>}
       <Button
         type="button"
         label={t('submit')}
         disabled={loginWithLink.isLoading}
-        className="btn-primary"
+        className="btn-primary w-full"
         onClick={onContinue}
       />
-    </AuthLayout>
+      <p className="text-xs text-cool-gray-500 text-center">{t('single_use')}</p>
+    </AuthShell>
   );
 };
 

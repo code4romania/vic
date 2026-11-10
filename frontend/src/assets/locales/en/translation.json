@@ -1696,18 +1696,31 @@
       "description": "This link is no longer valid: it expired or was already used.",
       "resend": "Send me a new link",
       "sent": "If the link can be renewed, we sent a new one. Check your email.",
-      "new_login": "Ask for a new link on the login page"
+      "new_login": "Ask for a new link on the login page",
+      "why": "For your safety, a link works only once and only for a short time.",
+      "back_to_login": "Back to login"
+    },
+    "shell": {
+      "headline": "Your organization's volunteers, in one place",
+      "description": "VIC is the free platform NGOs use to manage their volunteers, events, volunteering hours and contracts.",
+      "points": {
+        "volunteers": "Sign-up requests, profiles and teams, all in one list",
+        "hours": "Volunteering hours sent from the app and approved by you",
+        "free": "Free for non-governmental organizations in Romania"
+      },
+      "footer": "VIC · Volunteer Manager, a Code for Romania project"
     }
   },
   "login": {
-    "title": "Log in to VIC",
+    "title": "Log in",
     "description": "Enter the email of your admin account. We'll send you a link to log in, no password needed.",
     "migration_notice": "Had an account before the switch? Enter your email below and we'll send you a login link. You no longer need a password.",
     "form": {
       "email": {
         "label": "Email",
         "invalid": "The email address is not valid",
-        "required": "Email is required"
+        "required": "Email is required",
+        "placeholder": "name@organization.org"
       }
     },
     "submit": "Send login link",
@@ -1728,7 +1741,8 @@
       "title": "This is a volunteer account",
       "description": "Volunteers use the VIC mobile app. The web platform is for organization admins.",
       "open_app": "Open the app"
-    }
+    },
+    "no_password": "No password: you get a link by email, valid for 15 minutes."
   },
   "login_link": {
     "title": {
@@ -1750,7 +1764,8 @@
     },
     "errors": {
       "generic": "Something went wrong. Please try again."
-    }
+    },
+    "single_use": "The link works only once."
   },
   "confirm_email": {
     "title": "Confirming your email",
@@ -1758,11 +1773,12 @@
     "done": {
       "title": "Email confirmed",
       "open_app": "Email confirmed. Open the app and log in."
-    }
+    },
+    "wait": "This takes just a few seconds."
   },
   "landing": {
     "title": "Manage your volunteers in one place",
-    "subtitle": "VIC helps organizations recruit volunteers, plan events, record volunteering hours and sign contracts, for free.",
+    "subtitle": "VIC helps organizations recruit volunteers, plan events and keep track of volunteering hours and contracts, for free.",
     "login": "Log in",
     "register": "Register your organization",
     "features": {
@@ -1780,18 +1796,20 @@
       },
       "documents": {
         "title": "Contracts",
-        "description": "Volunteering contracts generated and signed online."
+        "description": "Signed contracts are uploaded to VIC with their period, so you always know what expires."
       }
     },
     "volunteers": {
       "title": "Are you a volunteer?",
       "description": "Volunteers use the VIC mobile app."
-    }
+    },
+    "footer": "VIC · Volunteer Manager, a Code for Romania project"
   },
   "not_found": {
     "title": "Page not found",
-    "description": "The page you are looking for does not exist.",
-    "home": "Go to the home page"
+    "description": "The page you are looking for does not exist or has moved.",
+    "home": "Go to the home page",
+    "back": "Back"
   },
   "register_organization": {
     "title": "Register your organization",
@@ -1856,7 +1874,8 @@
         "title": "Self-declaration",
         "declaresRegisteredNgo": "I declare on my own responsibility that the organization is an NGO registered in Romania and that the data entered is correct.",
         "declaresRepresentative": "I am entitled to represent the organization and to create this account on its behalf.",
-        "required": "Tick the declaration to continue"
+        "required": "Tick the declaration to continue",
+        "description": "Tick both declarations to send the registration."
       }
     },
     "submit": "Register",
@@ -1865,12 +1884,19 @@
     "success": {
       "title": "Confirm your email to activate {{organization}}",
       "description": "We sent a link to {{email}}. Open it to confirm the address and log in.",
-      "login": "Go to login"
+      "login": "Go to login",
+      "next": {
+        "confirm": "Open the link in the email to confirm the address and log in.",
+        "validation": "The VIC team checks the tax ID and validates the organization.",
+        "volunteers": "Once validated, volunteers can find the organization in the app."
+      }
     },
     "errors": {
       "turnstile_missing": "Complete the anti-robot check.",
       "generic": "The registration failed. Check the fields and try again."
-    }
+    },
+    "organization_card_description": "The NGO's official details. The VIC team checks the tax ID (CUI).",
+    "validation_note": "After you confirm your email, the VIC team checks the organization's tax ID. Until it is validated, volunteers can't see the organization."
   },
   "team": {
     "title": "Team",
@@ -1967,11 +1993,43 @@
     "errors": {
       "load": "The organizations could not be loaded",
       "generic": "Something went wrong. Please try again."
+    },
+    "stats": {
+      "pending": "Waiting for validation",
+      "pending_info": "Check the tax ID and decide",
+      "active": "Active organizations",
+      "suspended": "Suspended organizations",
+      "see_all": "See all"
+    },
+    "list_title_one": "{{count}} organization to validate",
+    "list_title_other": "{{count}} organizations to validate",
+    "list_title_zero": "No organization to validate",
+    "cui_hint": "Validation is based on the tax ID (CUI).",
+    "cui_check": "Check the tax ID in the public NGO registry before validating.",
+    "empty": {
+      "title": "No organization is waiting for validation",
+      "description": "New organizations show up here once they confirm their email address."
+    },
+    "registered": "Registered on {{date}}",
+    "waiting_today": "waiting since today",
+    "waiting_days_one": "waiting for a day",
+    "waiting_days_other": "waiting for {{count}} days",
+    "pending_badge": "Pending",
+    "fields": {
+      "contact": "Organization contact",
+      "address": "Address",
+      "website": "Website",
+      "description": "Description",
+      "declarations": "Self-declarations"
+    },
+    "declarations": {
+      "registered_ngo": "The organization is an NGO registered in Romania and the details are correct",
+      "representative": "The person who created the account may represent the organization"
     }
   },
   "forbidden": {
     "title": "Access denied",
-    "description": "You do not have access to this page.",
+    "description": "You don't have rights for this page. If you need access, ask an admin of your organization.",
     "home": "Go to the home page"
   },
   "approvals": {
@@ -2092,13 +2150,31 @@
       "volunteers": "Active volunteers",
       "registered_on": "Registered on",
       "organizations": "Organizations",
-      "account_created": "Account created on"
+      "account_created": "Account created on",
+      "validated_on": "Validated on"
     },
     "status": {
       "all": "All",
       "pending": "Pending validation",
       "active": "Active",
       "suspended": "Suspended"
+    },
+    "subtitle": {
+      "organizations": "Every organization registered in VIC, with its status",
+      "volunteers": "Every volunteer with an account in the VIC app"
+    },
+    "since": "Registered on {{date}}",
+    "review": "Review",
+    "no_organization": "No organization",
+    "found": {
+      "organizations_one": "{{count}} organization found",
+      "organizations_other": "{{count}} organizations found",
+      "volunteers_one": "{{count}} volunteer found",
+      "volunteers_other": "{{count}} volunteers found"
     }
+  },
+  "states": {
+    "loading": "Loading…",
+    "error_title": "The data could not be loaded"
   }
 }
